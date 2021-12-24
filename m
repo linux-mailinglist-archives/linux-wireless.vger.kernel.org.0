@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9ED347EE5C
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 11:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BDBA47EE5E
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 11:58:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352496AbhLXK6e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Dec 2021 05:58:34 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:51840 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343969AbhLXK6d (ORCPT
+        id S1352502AbhLXK6h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Dec 2021 05:58:37 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:44356 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343969AbhLXK6g (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Dec 2021 05:58:33 -0500
+        Fri, 24 Dec 2021 05:58:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BAFD6202C
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Dec 2021 10:58:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1F3C36AEA;
-        Fri, 24 Dec 2021 10:58:31 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4EFE8B82287
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Dec 2021 10:58:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1465BC36AE8;
+        Fri, 24 Dec 2021 10:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640343512;
-        bh=rR/HRd3dHOiBB0i7DsjwTYpuh7vNvLiluIqYcVFIZms=;
+        s=k20201202; t=1640343514;
+        bh=SvM5BeOUtWVls+FK8zLQvD62SeS7aSWyOVj/bVOyWqE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DiBPH4oIZwZH4hxo12Zlu2qeXdlGL127kimA4ms+ybOxIyUji7d0nTdVE30QvenMu
-         k04yiSyeBROcIZYoKVb1PX7iMYoTBFmZlc93d+znCAXAC5BvTse9O48fa1rS7UhdlD
-         2fGMlQGa5pqRS3IcW4ytC8xwRPXrtJfmZoI8aj4hge1PIJkBHh4ZHraYuEop9d8dm+
-         NDho9q1fH30Ce853cBLZZ/aTqcehdN+EWim1SkS1ocWQqtmjhWKwhgIbOTvZJALS+Z
-         sHUWVppDy4ulzMBfe9F83flfyBSx9vl0Bu6OF+K6Lyma6RM+xDTwGgUgukEJvkw9S+
-         TEvPgkMK4fmbQ==
+        b=XqpgxE3c3wOBQswhydbFOukTi0fyoRy/XUZNXqkexxtYTSvKQSAtTDEQBn+xB8Sqq
+         wYkQvCVgew9Vuyixd3J2nxfhOBVHsD2zIvUfIVfLlYH1ZA0J5M4N/bzGCTRziBNtpz
+         fioVUkahdxcn4IddGajuCYZ69DhKl94hzcy9Q3ivRWnBwjdZCYxWleK+KhAldbwuHk
+         1QJ2/jzmPFjuNojcOQx6Xnv7iy206E/ydFZG1L89/1eOwYzkRGEcKfqvhY2NbbKEv2
+         3SNWNTx1v06YRy2/HHvqJwQGPMRJae4vFBiz8fuas3ldZfQzFMRqT6f5S/FpkpXEzX
+         EkAEAhAbaKJsg==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         ryder.lee@mediatek.com
-Subject: [PATCH 02/10] mt76: connac: move mt76_connac_mcu_set_pm in connac module
-Date:   Fri, 24 Dec 2021 11:58:03 +0100
-Message-Id: <45836afa1bd86a9c57df6ff82ea664ebaa3aaf5b.1640342400.git.lorenzo@kernel.org>
+Subject: [PATCH 03/10] mt76: mt7921: get rid of mt7921_mcu_get_eeprom
+Date:   Fri, 24 Dec 2021 11:58:04 +0100
+Message-Id: <bdbb57a655ec30b72c79ccbafe21e16da36f8e83.1640342400.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <cover.1640342400.git.lorenzo@kernel.org>
 References: <cover.1640342400.git.lorenzo@kernel.org>
@@ -45,200 +45,61 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move mt76_connac_mcu_set_pm utility routine in connac module since it is
-shared between mt7615 and mt7915 drivers.
+Remove mt7921_mcu_get_eeprom since it is no longer used.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 27 +---------------
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 32 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
- .../net/wireless/mediatek/mt76/mt7915/main.c  |  8 ++---
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 31 ------------------
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  1 -
- 6 files changed, 38 insertions(+), 62 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 24 -------------------
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 -
+ 2 files changed, 25 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 31f40e5ead10..3b94e4f675ca 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -756,32 +756,7 @@ mt7615_mcu_add_beacon_offload(struct mt7615_dev *dev,
- static int
- mt7615_mcu_ctrl_pm_state(struct mt7615_dev *dev, int band, int state)
- {
--#define ENTER_PM_STATE	1
--#define EXIT_PM_STATE	2
--	struct {
--		u8 pm_number;
--		u8 pm_state;
--		u8 bssid[ETH_ALEN];
--		u8 dtim_period;
--		u8 wlan_idx;
--		__le16 bcn_interval;
--		__le32 aid;
--		__le32 rx_filter;
--		u8 band_idx;
--		u8 rsv[3];
--		__le32 feature;
--		u8 omac_idx;
--		u8 wmm_idx;
--		u8 bcn_loss_cnt;
--		u8 bcn_sp_duration;
--	} __packed req = {
--		.pm_number = 5,
--		.pm_state = state ? ENTER_PM_STATE : EXIT_PM_STATE,
--		.band_idx = band,
--	};
--
--	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(PM_STATE_CTRL),
--				 &req, sizeof(req), true);
-+	return mt76_connac_mcu_set_pm(&dev->mt76, band, state);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index b0022713c469..7ca1e2291674 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -960,30 +960,6 @@ int mt7921_mcu_set_eeprom(struct mt7921_dev *dev)
  }
+ EXPORT_SYMBOL_GPL(mt7921_mcu_set_eeprom);
  
- static int
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 142017457f72..6b714928d70a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -2718,5 +2718,37 @@ int mt76_connac_mcu_bss_basic_tlv(struct sk_buff *skb,
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_bss_basic_tlv);
- 
-+#define ENTER_PM_STATE		1
-+#define EXIT_PM_STATE		2
-+int mt76_connac_mcu_set_pm(struct mt76_dev *dev, int band, int enter)
-+{
-+	struct {
-+		u8 pm_number;
-+		u8 pm_state;
-+		u8 bssid[ETH_ALEN];
-+		u8 dtim_period;
-+		u8 wlan_idx_lo;
-+		__le16 bcn_interval;
-+		__le32 aid;
-+		__le32 rx_filter;
-+		u8 band_idx;
-+		u8 wlan_idx_hi;
-+		u8 rsv[2];
-+		__le32 feature;
-+		u8 omac_idx;
-+		u8 wmm_idx;
-+		u8 bcn_loss_cnt;
-+		u8 bcn_sp_duration;
-+	} __packed req = {
-+		.pm_number = 5,
-+		.pm_state = enter ? ENTER_PM_STATE : EXIT_PM_STATE,
-+		.band_idx = band,
-+	};
-+
-+	return mt76_mcu_send_msg(dev, MCU_EXT_CMD(PM_STATE_CTRL), &req,
-+				 sizeof(req), true);
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_pm);
-+
- MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
- MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 0908d30552d4..285c6529474d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1609,4 +1609,5 @@ void mt76_connac_mcu_sta_uapsd(struct sk_buff *skb, struct ieee80211_vif *vif,
- void mt76_connac_mcu_wtbl_smps_tlv(struct sk_buff *skb,
- 				   struct ieee80211_sta *sta,
- 				   void *sta_wtbl, void *wtbl_tlv);
-+int mt76_connac_mcu_set_pm(struct mt76_dev *dev, int band, int enter);
- #endif /* __MT76_CONNAC_MCU_H */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index a6553a8298c8..228bbc6e98c8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -34,7 +34,7 @@ static int mt7915_start(struct ieee80211_hw *hw)
- 	running = mt7915_dev_running(dev);
- 
- 	if (!running) {
--		ret = mt7915_mcu_set_pm(dev, 0, 0);
-+		ret = mt76_connac_mcu_set_pm(&dev->mt76, 0, 0);
- 		if (ret)
- 			goto out;
- 
-@@ -50,7 +50,7 @@ static int mt7915_start(struct ieee80211_hw *hw)
- 	}
- 
- 	if (phy != &dev->phy) {
--		ret = mt7915_mcu_set_pm(dev, 1, 0);
-+		ret = mt76_connac_mcu_set_pm(&dev->mt76, 1, 0);
- 		if (ret)
- 			goto out;
- 
-@@ -106,12 +106,12 @@ static void mt7915_stop(struct ieee80211_hw *hw)
- 	clear_bit(MT76_STATE_RUNNING, &phy->mt76->state);
- 
- 	if (phy != &dev->phy) {
--		mt7915_mcu_set_pm(dev, 1, 1);
-+		mt76_connac_mcu_set_pm(&dev->mt76, 1, 1);
- 		mt7915_mcu_set_mac(dev, 1, false, false);
- 	}
- 
- 	if (!mt7915_dev_running(dev)) {
--		mt7915_mcu_set_pm(dev, 0, 1);
-+		mt76_connac_mcu_set_pm(&dev->mt76, 0, 1);
- 		mt7915_mcu_set_mac(dev, 0, false, false);
- 	}
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 06458384f62e..b8640422d475 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2651,37 +2651,6 @@ int mt7915_mcu_set_tx(struct mt7915_dev *dev, struct ieee80211_vif *vif)
- 	return mt7915_mcu_update_edca(dev, &req);
- }
- 
--int mt7915_mcu_set_pm(struct mt7915_dev *dev, int band, int enter)
+-int mt7921_mcu_get_eeprom(struct mt7921_dev *dev, u32 offset)
 -{
--#define ENTER_PM_STATE		1
--#define EXIT_PM_STATE		2
--	struct {
--		u8 pm_number;
--		u8 pm_state;
--		u8 bssid[ETH_ALEN];
--		u8 dtim_period;
--		u8 wlan_idx_lo;
--		__le16 bcn_interval;
--		__le32 aid;
--		__le32 rx_filter;
--		u8 band_idx;
--		u8 wlan_idx_hi;
--		u8 rsv[2];
--		__le32 feature;
--		u8 omac_idx;
--		u8 wmm_idx;
--		u8 bcn_loss_cnt;
--		u8 bcn_sp_duration;
--	} __packed req = {
--		.pm_number = 5,
--		.pm_state = (enter) ? ENTER_PM_STATE : EXIT_PM_STATE,
--		.band_idx = band,
+-	struct mt7921_mcu_eeprom_info req = {
+-		.addr = cpu_to_le32(round_down(offset, 16)),
 -	};
+-	struct mt7921_mcu_eeprom_info *res;
+-	struct sk_buff *skb;
+-	int ret;
+-	u8 *buf;
 -
--	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(PM_STATE_CTRL), &req,
--				 sizeof(req), true);
+-	ret = mt76_mcu_send_and_get_msg(&dev->mt76,
+-					MCU_EXT_QUERY(EFUSE_ACCESS),
+-					&req, sizeof(req), true, &skb);
+-	if (ret)
+-		return ret;
+-
+-	res = (struct mt7921_mcu_eeprom_info *)skb->data;
+-	buf = dev->mt76.eeprom.data + le32_to_cpu(res->addr);
+-	memcpy(buf, res->data, 16);
+-	dev_kfree_skb(skb);
+-
+-	return 0;
 -}
 -
- int mt7915_mcu_rdd_cmd(struct mt7915_dev *dev,
- 		       enum mt7915_rdd_cmd cmd, u8 index,
- 		       u8 rx_sel, u8 val)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 3be14a6a0604..9fb2810f9c33 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -441,7 +441,6 @@ int mt7915_mcu_set_test_param(struct mt7915_dev *dev, u8 param, bool test_mode,
- int mt7915_mcu_set_scs(struct mt7915_dev *dev, u8 band, bool enable);
- int mt7915_mcu_set_ser(struct mt7915_dev *dev, u8 action, u8 set, u8 band);
- int mt7915_mcu_set_rts_thresh(struct mt7915_phy *phy, u32 val);
--int mt7915_mcu_set_pm(struct mt7915_dev *dev, int band, int enter);
- int mt7915_mcu_set_sku_en(struct mt7915_phy *phy, bool enable);
- int mt7915_mcu_set_txpower_sku(struct mt7915_phy *phy);
- int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len);
+ int mt7921_mcu_uni_bss_ps(struct mt7921_dev *dev, struct ieee80211_vif *vif)
+ {
+ 	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index c0fcc5eda5ca..f9c0fd7ca073 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -297,7 +297,6 @@ int mt7921_mcu_sta_update(struct mt7921_dev *dev, struct ieee80211_sta *sta,
+ int mt7921_mcu_set_chan_info(struct mt7921_phy *phy, int cmd);
+ int mt7921_mcu_set_tx(struct mt7921_dev *dev, struct ieee80211_vif *vif);
+ int mt7921_mcu_set_eeprom(struct mt7921_dev *dev);
+-int mt7921_mcu_get_eeprom(struct mt7921_dev *dev, u32 offset);
+ int mt7921_mcu_get_rx_rate(struct mt7921_phy *phy, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta, struct rate_info *rate);
+ int mt7921_mcu_fw_log_2_host(struct mt7921_dev *dev, u8 ctrl);
 -- 
 2.33.1
 
