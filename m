@@ -2,150 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC1C247F06A
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 18:38:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BEA647F0B6
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 20:28:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353356AbhLXRin (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Dec 2021 12:38:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36282 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353341AbhLXRil (ORCPT
+        id S1353534AbhLXT0y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Dec 2021 14:26:54 -0500
+Received: from relmlor1.renesas.com ([210.160.252.171]:32129 "EHLO
+        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1353470AbhLXT0t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Dec 2021 12:38:41 -0500
-Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F786C061401
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Dec 2021 09:38:41 -0800 (PST)
-Received: by mail-il1-x135.google.com with SMTP id b1so7059408ilj.2
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Dec 2021 09:38:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=egauge.net; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :organization:user-agent:mime-version:content-transfer-encoding;
-        bh=U47rTAPXH+aLFRV5bwaR5qoQIKBvtt8C4VdyaJsNXDc=;
-        b=YT53nncZQkXbKVlUkM490Q/adPXhTSoawpsSGMxPGkw2Hgz3QHlCS1hD0/tBG8zQ6F
-         AzWS4093FHsc897g452gLe9pUqRHXitZTCZlvI5JxM3q8u8pJOh+2NwoRrGFDJaZ1Enu
-         H/+a45kB87oTu99tP/wh+ZfDY1OzWMiVSGnINGplU55dQb3PL/m9f7nU+l5BUhv3DgTo
-         lYm8a/wz8HQ33jpBwaUtUhMupOb2aaCt9NNwt9JMXXgD5INW2HhLZQ3NgiYqtcw0dFpn
-         EFFSlA7DT+qm1aigkwJsXgMuRZQpaYU4bsJEWyM1YvFS5E11kQ+RyzEpN3q9cJGxvA9/
-         Q9Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:organization:user-agent:mime-version
-         :content-transfer-encoding;
-        bh=U47rTAPXH+aLFRV5bwaR5qoQIKBvtt8C4VdyaJsNXDc=;
-        b=ohG/cHDZTm/3nQLLXUyXYl2pJbQGPYl6t+VKbGFsnlqdj06BgCvzefWNd7tdPfNsl5
-         GkbC1Td/6/aJYo/eIVeg7IDAbKlcGtPx+6DIlwlIZxLrSPZ173KQhPyDJSEHGnCUidKk
-         faAUikuhHHv4jd46U6nDzvXTWibkoTvC9iMdellE1B03mbYVLKTUKPCpFFUI8nixlucJ
-         PvOSlfXXxUJYUbKPpnN/aKSLoStZXRBP9n6Dak/zw73ZhMhnL0MfFw7b5oR7A+6g4zgm
-         Zy7K8vw3EfDtxFhbaXpCaa+/LKJalcl0ofl0hkQk9Mhj4ePwk5LDwEPiF/z/3p3x4sAT
-         zzQg==
-X-Gm-Message-State: AOAM533d7DAyyz2tCMViASWcCWELBT6xsPQAqZKky/ZJbn5gkYgqdQcD
-        9VcbPoJG37QkDmQa6xWOqMe5h7RHPgTj0+w=
-X-Google-Smtp-Source: ABdhPJwsSrpQmBjHLE7h+SrvCAYWvXBcLL6X7fPC9nsRP+9XodzueLnH/Y5A0hSfBSPJLAhheZn6xg==
-X-Received: by 2002:a92:c681:: with SMTP id o1mr3342064ilg.23.1640367520820;
-        Fri, 24 Dec 2021 09:38:40 -0800 (PST)
-Received: from ?IPv6:2601:281:8300:4e0:2ba9:697d:eeec:13b? ([2601:281:8300:4e0:2ba9:697d:eeec:13b])
-        by smtp.gmail.com with ESMTPSA id j5sm4687504ilo.77.2021.12.24.09.38.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Dec 2021 09:38:40 -0800 (PST)
-Message-ID: <e7247265d5309165140d7a9a3af646129a789d58.camel@egauge.net>
-Subject: Re: [PATCH] wilc1000: Allow setting power_save before driver is
- initialized
-From:   David Mosberger-Tang <davidm@egauge.net>
-To:     Ajay.Kathat@microchip.com
-Cc:     Claudiu.Beznea@microchip.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Fri, 24 Dec 2021 10:38:37 -0700
-In-Reply-To: <9272b86e-61ab-1c25-0efb-3cdd2c590db8@microchip.com>
-References: <20211212011835.3719001-1-davidm@egauge.net>
-         <6fc9f00aa0b0867029fb6406a55c1e72d4c13af6.camel@egauge.net>
-         <5378e756-8173-4c63-1f0d-e5836b235a48@microchip.com>
-         <31d5e7447e4574d0fcfc46019d7ca96a3db4ecb6.camel@egauge.net>
-         <49a5456d-6a63-652e-d356-9678f6a9b266@microchip.com>
-         <523698d845e0b235e4cbb2a0f3cfaa0f5ed98ec0.camel@egauge.net>
-         <122f79b7-7936-325c-b2d9-e15db6642d0f@microchip.com>
-         <be3c95c8310504222e88c602a937b7f05cc01286.camel@egauge.net>
-         <9272b86e-61ab-1c25-0efb-3cdd2c590db8@microchip.com>
-Organization: eGauge Systems LLC
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Fri, 24 Dec 2021 14:26:49 -0500
+X-IronPort-AV: E=Sophos;i="5.88,233,1635174000"; 
+   d="scan'208";a="104635857"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 25 Dec 2021 04:26:48 +0900
+Received: from localhost.localdomain (unknown [10.226.36.204])
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 9B29440F520F;
+        Sat, 25 Dec 2021 04:26:46 +0900 (JST)
+From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+To:     netdev@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: [PATCH 6/8] wcn36xx: Use platform_get_irq_byname() to get the interrupt
+Date:   Fri, 24 Dec 2021 19:26:24 +0000
+Message-Id: <20211224192626.15843-7-prabhakar.mahadev-lad.rj@bp.renesas.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20211224192626.15843-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <20211224192626.15843-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ajay,
+platform_get_resource_byname(pdev, IORESOURCE_IRQ, ..) relies on static
+allocation of IRQ resources in DT core code, this causes an issue
+when using hierarchical interrupt domains using "interrupts" property
+in the node as this bypasses the hierarchical setup and messes up the
+irq chaining.
 
-On Fri, 2021-12-24 at 16:20 +0000, Ajay.Kathat@microchip.com wrote:
-> On 23/12/21 22:38, David Mosberger-Tang wrote:
-> > First, on a freshly booted system and with wilc1000-spi autoloaded by
-> > the kernel, try this sequence (copy & paste the commands):
-> > 
-> >     /usr/sbin/wpa_supplicant -Bs -iwlan0 -c/etc/wpa_supplicant.conf
-> >     sleep 10
-> >     iw dev wlan0 set power_save on
-> > 
-> > The above yields a power consumption of 1.4W reliably.  The "sleep 10"
-> > doesn't matter here; the behavior is the same with or without it.  I
-> > tried waiting up to 120 seconds with no difference.
-> 
-> I have tested by making the WILC as build-in module to insert driver 
-> automatically at boot-up. I hope it should be fine. Because I have 
-> already tested as loadable module earlier.
-> 
-> Below are the number observed
-> ------------------------------ --------------------------
-> - before starting wpa_supplicant             : ~16.3 mA
-> - wpa_supplicant started                         : ~40 mA
-> - PSM on                                                  :  ~6 mA
-> 
-> 
-> The 'sleep 10' would have no impact in my setup because I have measured 
-> the current consumption for wilc1000 chip.
-> 
-> I have shared the screenshot at https://postimg.cc/67S41dkb
+In preparation for removal of static setup of IRQ resource from DT core
+code use platform_get_irq_byname().
 
-Huh, that's curious.  I definitely cannot reproduce this.  To match
-your setup as closely as possibly, I also built wilc1000-spi into the
-kernel, but that makes no difference (as expected).
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+---
+ drivers/net/wireless/ath/wcn36xx/main.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
-What kernel version are you on?  I switched to wireless-drivers-next as
-of today (latest commit d430dffbe9dd30759f3c64b65bf85b0245c8d8ab).
-
-With this kernel, the numbers are about 100mW lower than reported
-before, but the relative behavior is the same: about 300mW higher
-power-consumption when PSM is not taking effect properly.
-
-To recap, back with wilc1000-spi being a module again, after freshly
-booting the system and issuing this commands:
-
-   /usr/sbin/wpa_supplicant -Bs -iwlan0 -c/etc/wpa_supplicant.conf
-   /usr/sbin/iw dev wlan0 set power_save on
-
-I see a power-consumption of about 1.25W.  PSM on/off makes no
-difference in this state.  Then, if I issue the commands:
-
-rmmod wilc1000-spi
-modprobe wilc1000-spi
-sleep 10
-iw dev wlan0 set power_save on
-
-power-consumption drops to about 0.9W.
-
-Here is a screenshot that shows the annotated power-measurements:
-
-   https://postimg.cc/3dbKSGht
-
-Apart from kernel version, the only things that I can think of that'd
-be different is that we don't have the ENABLE pin wired to a GPIO.
- Instead, the chip is always enabled.  I doubt this would explain the
-difference (~RESET is wired to a GPIO).
-
-
-  --david
-
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index 9575d7373bf2..bd334a302057 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -1446,25 +1446,20 @@ static int wcn36xx_platform_get_resources(struct wcn36xx *wcn,
+ {
+ 	struct device_node *mmio_node;
+ 	struct device_node *iris_node;
+-	struct resource *res;
+ 	int index;
+ 	int ret;
+ 
+ 	/* Set TX IRQ */
+-	res = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "tx");
+-	if (!res) {
+-		wcn36xx_err("failed to get tx_irq\n");
+-		return -ENOENT;
+-	}
+-	wcn->tx_irq = res->start;
++	ret = platform_get_irq_byname(pdev, "tx");
++	if (ret < 0)
++		return ret;
++	wcn->tx_irq = ret;
+ 
+ 	/* Set RX IRQ */
+-	res = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "rx");
+-	if (!res) {
+-		wcn36xx_err("failed to get rx_irq\n");
+-		return -ENOENT;
+-	}
+-	wcn->rx_irq = res->start;
++	ret = platform_get_irq_byname(pdev, "rx");
++	if (ret < 0)
++		return ret;
++	wcn->rx_irq = ret;
+ 
+ 	/* Acquire SMSM tx enable handle */
+ 	wcn->tx_enable_state = qcom_smem_state_get(&pdev->dev,
+-- 
+2.17.1
 
