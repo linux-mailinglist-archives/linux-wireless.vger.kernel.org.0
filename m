@@ -2,126 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2078447E9E3
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 01:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9F4A47EC3E
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 07:49:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241229AbhLXA26 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Dec 2021 19:28:58 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:38060 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbhLXA2z (ORCPT
+        id S1351536AbhLXGs6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Dec 2021 01:48:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35954 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229832AbhLXGs5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Dec 2021 19:28:55 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BO0SYiH4000307, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BO0SYiH4000307
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 24 Dec 2021 08:28:34 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Fri, 24 Dec 2021 08:28:34 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Fri, 24 Dec 2021 08:28:34 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01]) by
- RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01%5]) with mapi id
- 15.01.2308.020; Fri, 24 Dec 2021 08:28:33 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Bernie Huang <phhuang@realtek.com>,
-        "open list:REALTEK WIRELESS DRIVER (rtw88)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-CC:     "kernel@collabora.com" <kernel@collabora.com>
-Subject: RE: [PATCH] rtw88: check for validity before using pointer
-Thread-Topic: [PATCH] rtw88: check for validity before using pointer
-Thread-Index: AQHX+CW4CiEO5Mr47Uyo81NvZcLlw6xAwyPg
-Date:   Fri, 24 Dec 2021 00:28:33 +0000
-Message-ID: <100d06e2398742bb82bd5300ce70d900@realtek.com>
-References: <YcS3D2lwMd0Kox3z@debian-BULLSEYE-live-builder-AMD64>
-In-Reply-To: <YcS3D2lwMd0Kox3z@debian-BULLSEYE-live-builder-AMD64>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/12/23_=3F=3F_07:48:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Fri, 24 Dec 2021 01:48:57 -0500
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74353C061401;
+        Thu, 23 Dec 2021 22:48:57 -0800 (PST)
+Received: by mail-pj1-x1033.google.com with SMTP id y16-20020a17090a6c9000b001b13ffaa625so10798351pjj.2;
+        Thu, 23 Dec 2021 22:48:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=H0q+XDRfnZXxgq12FkhmCb0ciBJ4BstWZtud1YzQGTo=;
+        b=Kn/iAchpftdVczpWSjgc9ps3mXs4dI7cdL9/2qUaQPakfcnjLt2EgPYohgeYtyatZ+
+         dhMlqNDkPxfhzK24dYpvrDQJ8PFkP5as0i9VikD3C6rqnrvWTriesAYT4MEvVDIEM7Os
+         A1pGE6aV/+4Vm4pnU4ESBe/QUKwcHnYwS3yV9C9W+XfSBuZLvjaMnRZBuQxipCrom0BV
+         w2kjvwxN9mL2cSSye6sy7MM+iJphTzc0/LNJORtmBU23nd94gtdUOixdW8zMW/A7Kf9P
+         wdoOVzuWpLezqn7+y/Idi0q4WOvbag45naQbqbEy17pLtinPb5BoGIQZNfrMNDV1zDSC
+         RR3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=H0q+XDRfnZXxgq12FkhmCb0ciBJ4BstWZtud1YzQGTo=;
+        b=MOqcButx7W/LUBA/28RamzNAKQ4hj+/6iYYFQdTprPq8aoaikxVyoYXXXSRFLBwGX/
+         sMofJcnnxy8QynOaDAMRUbncfAbXH+t9z/DHDjx21H9VXA9YXNWxi7RaBFE9QPVjlzT8
+         ZmlI7k2BDK2tigF7EuL5/rYz38iIt0yC9dOA3sigGqOMTMED3o8RmcB3y2izltZqeUBz
+         vdSlBqnTSjrRCUPNJsbcwruI7BToITMr/uTfyhJxy+oz2d/gs0HQ2GHRqiosjoSuyeqi
+         fniK0qyC/hgZn+NTlM5t+F0JQE5edpWoDPfyMCDgmGbjHEPGwWJXPP3j1OGoljrrvdkU
+         s9Hw==
+X-Gm-Message-State: AOAM5336WGahjh7meNlHdbaY1y1SoQlZMgnFkaZyaAsd7IH4xNiPfc6x
+        jXQYdYbu/qNiz8nj/nC1yrnJV3xtzx/aSUJ6
+X-Google-Smtp-Source: ABdhPJx1Jwh0/c7vIVV9uaa+8rFODIi0ETGFnueus2zFfFrTNmqTpjRelv7AkPp8uuy4CJTL589EPQ==
+X-Received: by 2002:a17:90b:3507:: with SMTP id ls7mr6516834pjb.220.1640328537105;
+        Thu, 23 Dec 2021 22:48:57 -0800 (PST)
+Received: from ruantu-linux-2.. ([174.139.180.74])
+        by smtp.gmail.com with ESMTPSA id w7sm8653393pfu.180.2021.12.23.22.48.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Dec 2021 22:48:56 -0800 (PST)
+From:   Yu-Tung Chang <mtwget@gmail.com>
+To:     tony0620emma@gmail.com
+Cc:     kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yu-Tung Chang <mtwget@gmail.com>
+Subject: [PATCH] rtw88: add quirk to disable pci caps on HP Slim Desktop S01-pF1000i
+Date:   Fri, 24 Dec 2021 14:48:46 +0800
+Message-Id: <20211224064846.1171-1-mtwget@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+8821CE causes random freezes on HP Slim Desktop S01-pF1000i. Add a quirk
+to disable pci ASPM capability.
 
+Signed-off-by: Yu-Tung Chang <mtwget@gmail.com>
+---
+ drivers/net/wireless/realtek/rtw88/pci.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-> -----Original Message-----
-> From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> Sent: Friday, December 24, 2021 1:51 AM
-> To: Yan-Hsuan Chuang <tony0620emma@gmail.com>; Kalle Valo <kvalo@kernel.org>; David S. Miller
-> <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; Pkshih <pkshih@realtek.com>; Bernie Huang
-> <phhuang@realtek.com>; open list:REALTEK WIRELESS DRIVER (rtw88) <linux-wireless@vger.kernel.org>; open
-> list:NETWORKING DRIVERS <netdev@vger.kernel.org>; open list <linux-kernel@vger.kernel.org>
-> Cc: usama.anjum@collabora.com; kernel@collabora.com
-> Subject: [PATCH] rtw88: check for validity before using pointer
-> 
-> ieee80211_probereq_get() can return NULL. Pointer skb should be checked
-> for validty before use.
-> 
-> Fixes: 10d162b2ed39 ("rtw88: 8822c: add ieee80211_ops::hw_scan")
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/fw.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-> index 2f7c036f9022..0fc05a810d05 100644
-> --- a/drivers/net/wireless/realtek/rtw88/fw.c
-> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
-> @@ -1866,6 +1866,8 @@ static int rtw_hw_scan_update_probe_req(struct rtw_dev *rtwdev,
->  					     req->ssids[i].ssid,
->  					     req->ssids[i].ssid_len,
->  					     req->ie_len);
-> +		if (!skb)
-> +			return -ENOMEM;
->  		rtw_append_probe_req_ie(rtwdev, skb, &list, rtwvif);
->  		kfree_skb(skb);
->  	}
-
-Without properly freeing skb(s) in list, it leads memory leak.
-We need something below to free them:
-
-	if (!skb)
-		goto out;
-
-	[...]
-
-out:
-	skb_queue_walk(&list, skb)
-		kfree_skb(skb);
-
-	return -ENOMEM;
-
-So, NACK this patch.
-
---
-Ping-Ke
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index a7a6ebfaa203..f8999d7dee61 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -1738,6 +1738,15 @@ static const struct dmi_system_id rtw88_pci_quirks[] = {
+ 		},
+ 		.driver_data = (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
+ 	},
++	{
++		.callback = disable_pci_caps,
++		.ident = "HP HP Slim Desktop S01-pF1xxx",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP Slim Desktop S01-pF1xxx"),
++		},
++		.driver_data = (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
++	},
+ 	{}
+ };
+ 
+-- 
+2.34.1
 
