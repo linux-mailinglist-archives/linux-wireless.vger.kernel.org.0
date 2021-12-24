@@ -2,180 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFA5047ED40
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 09:34:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AE8047ED74
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 09:52:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352007AbhLXIeK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Dec 2021 03:34:10 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:33676 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1343611AbhLXIeJ (ORCPT
+        id S1343657AbhLXIwz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Dec 2021 03:52:55 -0500
+Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:62138 "EHLO
+        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S241541AbhLXIwy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Dec 2021 03:34:09 -0500
-X-UUID: 2f9c233a9d9545ef9a02fb328b28e51a-20211224
-X-UUID: 2f9c233a9d9545ef9a02fb328b28e51a-20211224
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1198058581; Fri, 24 Dec 2021 16:34:06 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 24 Dec 2021 16:34:04 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 24 Dec 2021 16:34:04 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Mark-YW.Chen@mediatek.com>,
-        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
-        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
-        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
-        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
-        <abhishekpandit@google.com>, <shawnku@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH 2/2] mt76: mt7921: set EDCA parameters with the MCU CE command
-Date:   Fri, 24 Dec 2021 16:33:56 +0800
-Message-ID: <6205eecc21a1a02762ffeb1f6499799b0cfc40b5.1640332407.git.sean.wang@kernel.org>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <a6323ac53fca2bf3221a1e9178ba1ca3f827dde4.1640332407.git.sean.wang@kernel.org>
-References: <a6323ac53fca2bf3221a1e9178ba1ca3f827dde4.1640332407.git.sean.wang@kernel.org>
+        Fri, 24 Dec 2021 03:52:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1640335974; x=1671871974;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=T6yczIZsdajMiqnGS9NhC5afIZkzDMJoJouZGNwCQuI=;
+  b=KHX2oTpvl8oNw0wExNeA/BJLlSnHfChKOO+pg+vohk8nThmp8Qd79u2O
+   kZTaPDT7PSq6oCTmqlFDEqbCvW3Nl6HbfeOAstn92m4H8UbcXw451saKS
+   mH2zJEDpt8YBKCuFJz+ZLDYviVJY7hfFaBPLGI4f5NQFqhzJBKdSVPHxZ
+   U=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 24 Dec 2021 00:52:54 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2021 00:52:54 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Fri, 24 Dec 2021 00:52:54 -0800
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Fri, 24 Dec 2021 00:52:52 -0800
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH v2 00/15] ath11k: add support for 6 GHz station for various modes : LPI, SP and VLP
+Date:   Fri, 24 Dec 2021 03:52:21 -0500
+Message-ID: <20211224085236.9064-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+v2: 
+   1. change some minor comments by Kalle.
+   2. rebased to ath.git ath-202112220603
 
-The command MCU_EXT_CMD_EDCA_UPDATE is not fully supported by the MT7921
-firmware, so we apply CE command MCU_CE_CMD_SET_EDCA_PARAMS instead which
-is supported even in the oldest firmware to properly set up EDCA parameters
-for each AC.
+Depends on one patch:
+[v5] cfg80211: save power spectral density(psd) of regulatory rule
+https://patchwork.kernel.org/project/linux-wireless/patch/20210928085211.26186-1-wgong@codeaurora.org/
 
-Fixes: 1c099ab44727 ("mt76: mt7921: add MCU support")
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 49 ++++++++-----------
- 2 files changed, 22 insertions(+), 28 deletions(-)
+It introduced some new concept:
+power type of AP(STANDARD_POWER_AP, INDOOR_AP, VERY_LOW_POWER_AP)
+power type of STATION(DEFAULT_CLIENT, SUBORDINATE_CLIENT)
+power spectral density(psd)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 0f4a9d2edb5c..ceb0784be395 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -998,6 +998,7 @@ enum {
- 	MCU_CE_CMD_SET_BSS_ABORT = 0x17,
- 	MCU_CE_CMD_CANCEL_HW_SCAN = 0x1b,
- 	MCU_CE_CMD_SET_ROC = 0x1c,
-+	MCU_CE_CMD_SET_EDCA_PARMS = 0x1d,
- 	MCU_CE_CMD_SET_P2P_OPPPS = 0x33,
- 	MCU_CE_CMD_SET_RATE_TX_POWER = 0x5d,
- 	MCU_CE_CMD_SCHED_SCAN_ENABLE = 0x61,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index d014e574ce6a..ba8a91d56b6a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -785,33 +785,28 @@ EXPORT_SYMBOL_GPL(mt7921_mcu_exit);
- 
- int mt7921_mcu_set_tx(struct mt7921_dev *dev, struct ieee80211_vif *vif)
- {
--#define WMM_AIFS_SET		BIT(0)
--#define WMM_CW_MIN_SET		BIT(1)
--#define WMM_CW_MAX_SET		BIT(2)
--#define WMM_TXOP_SET		BIT(3)
--#define WMM_PARAM_SET		GENMASK(3, 0)
--#define TX_CMD_MODE		1
-+	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
-+
- 	struct edca {
--		u8 queue;
--		u8 set;
--		u8 aifs;
--		u8 cw_min;
-+		__le16 cw_min;
- 		__le16 cw_max;
- 		__le16 txop;
--	};
-+		__le16 aifs;
-+		u8 guardtime;
-+		u8 acm;
-+	} __packed;
- 	struct mt7921_mcu_tx {
--		u8 total;
--		u8 action;
--		u8 valid;
--		u8 mode;
--
- 		struct edca edca[IEEE80211_NUM_ACS];
-+		u8 bss_idx;
-+		u8 qos;
-+		u8 wmm_idx;
-+		u8 pad;
- 	} __packed req = {
--		.valid = true,
--		.mode = TX_CMD_MODE,
--		.total = IEEE80211_NUM_ACS,
-+		.bss_idx = mvif->mt76.idx,
-+		.qos = vif->bss_conf.qos,
-+		.wmm_idx = mvif->mt76.wmm_idx,
- 	};
--	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
-+
- 	struct mu_edca {
- 		u8 cw_min;
- 		u8 cw_max;
-@@ -835,30 +830,29 @@ int mt7921_mcu_set_tx(struct mt7921_dev *dev, struct ieee80211_vif *vif)
- 		.qos = vif->bss_conf.qos,
- 		.wmm_idx = mvif->mt76.wmm_idx,
- 	};
-+	int to_aci[] = {1, 0, 2, 3};
- 	int ac, ret;
- 
- 	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
- 		struct ieee80211_tx_queue_params *q = &mvif->queue_params[ac];
--		struct edca *e = &req.edca[ac];
-+		struct edca *e = &req.edca[to_aci[ac]];
- 
--		e->set = WMM_PARAM_SET;
--		e->queue = ac + mvif->mt76.wmm_idx * MT7921_MAX_WMM_SETS;
- 		e->aifs = q->aifs;
- 		e->txop = cpu_to_le16(q->txop);
- 
- 		if (q->cw_min)
--			e->cw_min = fls(q->cw_min);
-+			e->cw_min = cpu_to_le16(q->cw_min);
- 		else
- 			e->cw_min = 5;
- 
- 		if (q->cw_max)
--			e->cw_max = cpu_to_le16(fls(q->cw_max));
-+			e->cw_max = cpu_to_le16(q->cw_max);
- 		else
- 			e->cw_max = cpu_to_le16(10);
- 	}
- 
--	ret = mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(EDCA_UPDATE),
--				&req, sizeof(req), true);
-+	ret = mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_EDCA_PARMS), &req,
-+				sizeof(req), false);
- 	if (ret)
- 		return ret;
- 
-@@ -868,7 +862,6 @@ int mt7921_mcu_set_tx(struct mt7921_dev *dev, struct ieee80211_vif *vif)
- 	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
- 		struct ieee80211_he_mu_edca_param_ac_rec *q;
- 		struct mu_edca *e;
--		int to_aci[] = {1, 0, 2, 3};
- 
- 		if (!mvif->queue_params[ac].mu_edca)
- 			break;
+This patchset is to implement the new rules for 6 GHz band in
+ath11k.
+
+ath11k parsed the reg rules from new wmi event
+WMI_REG_CHAN_LIST_CC_EXT_EVENTID and parse the
+transmit power envelope element in beacon of AP
+and then set new wmi cmd WMI_VDEV_SET_TPC_POWER_CMDID
+to firmware when connect to 6G AP, also support backward
+compatibility with firmware which not support new wmi
+cmd WMI_VDEV_SET_TPC_POWER_CMDID.
+
+Wen Gong (15):
+  ath11k: add support for extended wmi service bit
+  ath11k: Add support to parse new wmi event for 6 GHz regulatory
+  ath11k: add support to select 6 GHz Regulatory type
+  ath11k: allow only one interface up simultaneously for WCN6855
+  ath11k: store cur_regulatory_info for each radio
+  ath11k: update regulatory rules when interface added
+  ath11k: update regulatory rules when connect to AP on 6 GHz band for
+    station
+  ath11k: save power spectral density(psd) of regulatory rule
+  ath11k: add parse of transmit power envelope element
+  ath11k: save max tx power in vdev start response event from firmware
+  ath11k: fill parameters for vdev_set_tpc_power wmi command
+  ath11k: add WMI_TLV_SERVICE_EXT_TPC_REG_SUPPORT service bit
+  ath11k: discard BSS_CHANGED_TXPOWER when EXT_TPC_REG_SUPPORT for 6 GHz
+  ath11k: add handler for WMI_VDEV_SET_TPC_POWER_CMDID
+  ath11k: send TPC power to firmware for 6 GHz station
+
+ drivers/net/wireless/ath/ath11k/core.c |   6 +
+ drivers/net/wireless/ath/ath11k/core.h |  40 ++
+ drivers/net/wireless/ath/ath11k/hw.c   |  17 +
+ drivers/net/wireless/ath/ath11k/hw.h   |   5 +
+ drivers/net/wireless/ath/ath11k/mac.c  | 539 ++++++++++++++++-
+ drivers/net/wireless/ath/ath11k/mac.h  |   5 +-
+ drivers/net/wireless/ath/ath11k/reg.c  | 105 +++-
+ drivers/net/wireless/ath/ath11k/reg.h  |   6 +-
+ drivers/net/wireless/ath/ath11k/wmi.c  | 799 +++++++++++++++++++++++--
+ drivers/net/wireless/ath/ath11k/wmi.h  | 219 ++++++-
+ 10 files changed, 1659 insertions(+), 82 deletions(-)
+
+
+base-commit: e5da5e8c54e27d8fa86765cd733c1a05aee53ae9
+prerequisite-patch-id: d0941cb1e08f82e9bd5feaf01b160807b4b0faa9
 -- 
-2.25.1
+2.31.1
 
