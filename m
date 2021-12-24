@@ -2,45 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80D2C47ED7A
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 09:53:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C489347ED82
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 09:53:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352113AbhLXIxG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Dec 2021 03:53:06 -0500
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:62138 "EHLO
-        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1352056AbhLXIxD (ORCPT
+        id S1352066AbhLXIxf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Dec 2021 03:53:35 -0500
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:58584 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229608AbhLXIxf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Dec 2021 03:53:03 -0500
+        Fri, 24 Dec 2021 03:53:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1640335983; x=1671871983;
+  t=1640336015; x=1671872015;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=DtXcuBlSExBATrIdB55cL/NY3zQkOo2HdkOUWKlgm/A=;
-  b=FKjvBZ5DlzqYjHh9vufGd3ahg3uhq6p4KE6HVGBxLewSh7WAAXx/OuaO
-   ykM/6xy28lHVeKHUN98iN1mQHIZcT2x68BppNH3258plvsrIfBxu1QxwT
-   JG3TpFlWsqrxT62MrPW0bWK+e8jwfI+THE4K/yoKkqUnWnUAtMVcsQ/JP
-   0=;
-Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 24 Dec 2021 00:53:03 -0800
+  bh=6pUrSYGayLlBM3YlPgtaNKECZuj3PHuIRNHg8mqvdig=;
+  b=FLCVDibmrUJj2/Bvk2Mfb7kfxbhY5wfqX9JECPUe6xEGZKwVEc3Sh3Ip
+   AMprDd8iSRZEws3G3sAtEWjU5us9V1pYDbmwdgLoVg7iJBdpvvoeP40Da
+   IoTVVwrIOaw/iUo7CuQrk4KqR3X/e1xtk17iN0IFwpGxuVdJMR8cpTjp1
+   Y=;
+Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
+  by alexa-out.qualcomm.com with ESMTP; 24 Dec 2021 00:53:34 -0800
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2021 00:53:03 -0800
+  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2021 00:53:04 -0800
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Fri, 24 Dec 2021 00:53:02 -0800
+ 15.2.922.19; Fri, 24 Dec 2021 00:53:04 -0800
 Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Fri, 24 Dec 2021 00:53:01 -0800
+ 15.2.922.19; Fri, 24 Dec 2021 00:53:02 -0800
 From:   Wen Gong <quic_wgong@quicinc.com>
 To:     <ath11k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
-Subject: [PATCH v2 06/15] ath11k: update regulatory rules when interface added
-Date:   Fri, 24 Dec 2021 03:52:27 -0500
-Message-ID: <20211224085236.9064-7-quic_wgong@quicinc.com>
+Subject: [PATCH v2 07/15] ath11k: update regulatory rules when connect to AP on 6 GHz band for station
+Date:   Fri, 24 Dec 2021 03:52:28 -0500
+Message-ID: <20211224085236.9064-8-quic_wgong@quicinc.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211224085236.9064-1-quic_wgong@quicinc.com>
 References: <20211224085236.9064-1-quic_wgong@quicinc.com>
@@ -54,39 +54,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When wlan boot up, WMI_REG_CHAN_LIST_CC_EXT_EVENTID is sent from
-firmware at an early stage, the interface mode is not decided at
-this point, then ath11k select reg rules of AP mode as default.
-
-After interface is created, it is exactly decided AP/station mode,
-then ath11k need to update reg rules to the exact one.
+When station connect to AP on 6 GHz band, it need switch the regulatory
+rules according to the regulatory info subfield in HE operation element.
+Swith to the power type of AP for station mode.
 
 Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
 
 Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/wireless/ath/ath11k/mac.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index ae7e40332cef..fc9556a1327e 100644
+index fc9556a1327e..a18b12abb63d 100644
 --- a/drivers/net/wireless/ath/ath11k/mac.c
 +++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -6352,6 +6352,14 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
- 		}
- 	}
+@@ -6998,6 +6998,8 @@ ath11k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
+ 	struct ath11k_vif *arvif = (void *)vif->drv_priv;
+ 	int ret;
+ 	struct peer_create_params param;
++	struct cur_regulatory_info *reg_info;
++	enum ieee80211_ap_reg_power power_type;
  
-+	if (ath11k_hw_supports_6g_cc_ext(ar)) {
-+		struct cur_regulatory_info *reg_info;
-+
+ 	mutex_lock(&ar->conf_mutex);
+ 
+@@ -7005,6 +7007,17 @@ ath11k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
+ 		   "mac chanctx assign ptr %pK vdev_id %i\n",
+ 		   ctx, arvif->vdev_id);
+ 
++	if (ar->supports_6ghz && ctx->def.chan->band == NL80211_BAND_6GHZ &&
++	    arvif->vdev_type == WMI_VDEV_TYPE_STA) {
 +		reg_info = &ab->reg_info_store[ar->pdev_idx];
-+		ath11k_dbg(ab, ATH11K_DBG_MAC, "mac interface added to change reg rules\n");
-+		ath11k_reg_handle_chan_list(ab, reg_info, IEEE80211_REG_LPI_AP);
++		power_type = vif->bss_conf.power_type;
++		ath11k_dbg(ab, ATH11K_DBG_MAC, "mac chanctx power type %d\n",
++			   power_type);
++		if (power_type == IEEE80211_REG_UNSET_AP)
++			power_type = IEEE80211_REG_LPI_AP;
++		ath11k_reg_handle_chan_list(ab, reg_info, power_type);
 +	}
 +
- 	mutex_unlock(&ar->conf_mutex);
- 
- 	return 0;
+ 	/* for QCA6390 bss peer must be created before vdev_start */
+ 	if (ab->hw_params.vdev_start_delay &&
+ 	    arvif->vdev_type != WMI_VDEV_TYPE_AP &&
 -- 
 2.31.1
 
