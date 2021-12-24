@@ -2,113 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9663347E9B6
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 00:50:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2078447E9E3
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 01:29:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245139AbhLWXum (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Dec 2021 18:50:42 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:55682 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S240979AbhLWXul (ORCPT
+        id S241229AbhLXA26 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Dec 2021 19:28:58 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:38060 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229995AbhLXA2z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Dec 2021 18:50:41 -0500
-X-UUID: 871a362597054bbcb46a46d156f291f3-20211224
-X-UUID: 871a362597054bbcb46a46d156f291f3-20211224
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1385285128; Fri, 24 Dec 2021 07:50:37 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Fri, 24 Dec 2021 07:50:36 +0800
-Received: from mtksdccf07 (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 24 Dec 2021 07:50:36 +0800
-Message-ID: <6d3a52918457d4fedf91a6a224cf35eaf940f22c.camel@mediatek.com>
-Subject: Re: [PATCH 1/1] mt76: add mt7916 to set wlan_idx_hi
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Bo Jiao <bo.jiao@mediatek.com>
-CC:     Felix Fietkau <nbd@nbd.name>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Xing Song <xing.song@mediatek.com>,
-        "Sujuan Chen" <sujuan.chen@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-Date:   Fri, 24 Dec 2021 07:50:36 +0800
-In-Reply-To: <YcTwP6Hu5VoTMHEq@lore-desk>
-References: <cover.1640175865.git.Bo.Jiao@mediatek.com>
-         <5b82d68ee7c879591e22da51bfdb4af2e5fad228.1640175865.git.Bo.Jiao@mediatek.com>
-         <YcTwP6Hu5VoTMHEq@lore-desk>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        Thu, 23 Dec 2021 19:28:55 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BO0SYiH4000307, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BO0SYiH4000307
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 24 Dec 2021 08:28:34 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17; Fri, 24 Dec 2021 08:28:34 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Fri, 24 Dec 2021 08:28:34 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01]) by
+ RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01%5]) with mapi id
+ 15.01.2308.020; Fri, 24 Dec 2021 08:28:33 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Bernie Huang <phhuang@realtek.com>,
+        "open list:REALTEK WIRELESS DRIVER (rtw88)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+CC:     "kernel@collabora.com" <kernel@collabora.com>
+Subject: RE: [PATCH] rtw88: check for validity before using pointer
+Thread-Topic: [PATCH] rtw88: check for validity before using pointer
+Thread-Index: AQHX+CW4CiEO5Mr47Uyo81NvZcLlw6xAwyPg
+Date:   Fri, 24 Dec 2021 00:28:33 +0000
+Message-ID: <100d06e2398742bb82bd5300ce70d900@realtek.com>
+References: <YcS3D2lwMd0Kox3z@debian-BULLSEYE-live-builder-AMD64>
+In-Reply-To: <YcS3D2lwMd0Kox3z@debian-BULLSEYE-live-builder-AMD64>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/12/23_=3F=3F_07:48:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-MTK:  N
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2021-12-23 at 22:55 +0100, Lorenzo Bianconi wrote:
-> > From: Bo Jiao <Bo.Jiao@mediatek.com>
-> > 
-> > since mt7916 support up to 544 wcid entries,
-> > add it to set wlan_idx_hi.
-> > 
-> > Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> > Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
-> > ---
-> >  drivers/net/wireless/mediatek/mt76/mt76_connac.h     | 5 +++++
-> >  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 2 +-
-> >  2 files changed, 6 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> > b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> > index e999d71..8701f04 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> > @@ -110,6 +110,11 @@ static inline bool is_mt7915(struct mt76_dev
-> > *dev)
-> >  	return mt76_chip(dev) == 0x7915;
-> >  }
-> >  
-> > +static inline bool is_mt7916(struct mt76_dev *dev)
-> > +{
-> > +	return mt76_chip(dev) == 0x7906;
-> > +}
-> > +
-> >  static inline u8 mt76_connac_chan_bw(struct cfg80211_chan_def
-> > *chandef)
-> >  {
-> >  	static const u8 width_to_bw[] = {
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> > b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> > index edad583..fc9a084 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> > @@ -1464,7 +1464,7 @@ mt76_connac_mcu_get_wlan_idx(struct mt76_dev
-> > *dev, struct mt76_wcid *wcid,
-> >  {
-> >  	*wlan_idx_hi = 0;
-> >  
-> > -	if (is_mt7921(dev) || is_mt7915(dev)) {
-> > +	if (is_mt7921(dev) || is_mt7915(dev) || is_mt7916(dev)) {
-> >  		*wlan_idx_lo = wcid ? to_wcid_lo(wcid->idx) : 0;
-> >  		*wlan_idx_hi = wcid ? to_wcid_hi(wcid->idx) : 0;
-> 
-> I guess I have already included the fix here:
-> 
-https://patchwork.kernel.org/project/linux-wireless/patch/df4d462f1ef4cfc1ae4f6482051a28a10c78262b.1640260901.git.lorenzo@kernel.org/
-> 
-> Regards,
-> Lorenzo
-> 
 
-I think we can fold these patches together and use !is_connac_v1
-instead so that we can avoid endless is_mtxxxx || ... || ...
 
-Ryder
+> -----Original Message-----
+> From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> Sent: Friday, December 24, 2021 1:51 AM
+> To: Yan-Hsuan Chuang <tony0620emma@gmail.com>; Kalle Valo <kvalo@kernel.org>; David S. Miller
+> <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; Pkshih <pkshih@realtek.com>; Bernie Huang
+> <phhuang@realtek.com>; open list:REALTEK WIRELESS DRIVER (rtw88) <linux-wireless@vger.kernel.org>; open
+> list:NETWORKING DRIVERS <netdev@vger.kernel.org>; open list <linux-kernel@vger.kernel.org>
+> Cc: usama.anjum@collabora.com; kernel@collabora.com
+> Subject: [PATCH] rtw88: check for validity before using pointer
+> 
+> ieee80211_probereq_get() can return NULL. Pointer skb should be checked
+> for validty before use.
+> 
+> Fixes: 10d162b2ed39 ("rtw88: 8822c: add ieee80211_ops::hw_scan")
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> ---
+>  drivers/net/wireless/realtek/rtw88/fw.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+> index 2f7c036f9022..0fc05a810d05 100644
+> --- a/drivers/net/wireless/realtek/rtw88/fw.c
+> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
+> @@ -1866,6 +1866,8 @@ static int rtw_hw_scan_update_probe_req(struct rtw_dev *rtwdev,
+>  					     req->ssids[i].ssid,
+>  					     req->ssids[i].ssid_len,
+>  					     req->ie_len);
+> +		if (!skb)
+> +			return -ENOMEM;
+>  		rtw_append_probe_req_ie(rtwdev, skb, &list, rtwvif);
+>  		kfree_skb(skb);
+>  	}
 
+Without properly freeing skb(s) in list, it leads memory leak.
+We need something below to free them:
+
+	if (!skb)
+		goto out;
+
+	[...]
+
+out:
+	skb_queue_walk(&list, skb)
+		kfree_skb(skb);
+
+	return -ENOMEM;
+
+So, NACK this patch.
+
+--
+Ping-Ke
 
