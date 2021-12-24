@@ -2,125 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1384A47ED13
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 09:24:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5EEE47ED39
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 09:33:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351958AbhLXIYI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Dec 2021 03:24:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56890 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351955AbhLXIYH (ORCPT
+        id S1351999AbhLXIc6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Dec 2021 03:32:58 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:35558 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1343611AbhLXIc6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Dec 2021 03:24:07 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4DC5C061401;
-        Fri, 24 Dec 2021 00:24:07 -0800 (PST)
-Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74] helo=[192.168.66.200]); authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1n0fru-0007sC-JA; Fri, 24 Dec 2021 09:24:02 +0100
-Message-ID: <b4470632-9209-ce77-937f-656566d333b3@leemhuis.info>
-Date:   Fri, 24 Dec 2021 09:24:02 +0100
+        Fri, 24 Dec 2021 03:32:58 -0500
+X-UUID: 25330c09b8074d6195a5fdcea0ecea8a-20211224
+X-UUID: 25330c09b8074d6195a5fdcea0ecea8a-20211224
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 475527213; Fri, 24 Dec 2021 16:32:54 +0800
+Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Fri, 24 Dec 2021 16:32:53 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb02.mediatek.inc
+ (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 24 Dec
+ 2021 16:32:52 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 24 Dec 2021 16:32:52 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Mark-YW.Chen@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
+        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
+        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH 1/2] mt76: mt7921e: make dev->fw_assert usage consistent
+Date:   Fri, 24 Dec 2021 16:32:48 +0800
+Message-ID: <6a32d0cfc105b85bbeae11acd3214d7ce41bdb8b.1640331647.git.sean.wang@kernel.org>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Content-Language: en-BS
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     Luca Coelho <luciano.coelho@intel.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        mmokrejs@gmail.com
-Subject: iwlwifi: loosing connection to AP (regression from 5.4.143) (fwd from
- b.k.o bug 215401)
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1640334247;04d431dd;
-X-HE-SMSGID: 1n0fru-0007sC-JA
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, this is your Linux kernel regression tracker speaking.
+From: Sean Wang <sean.wang@mediatek.com>
 
-Forwarding a regression reported in bugzilla.kernel.org, to ensure
-all the interested parties are aware of it, as quite a few (many?)
-subsystems don't react at all to reports in that bug tracker.
+Clear dev->fw_assert flag in mt7921s to be consistent with mt7921s driver.
 
-https://bugzilla.kernel.org/show_bug.cgi?id=215401
-
-> Martin Mokrejs 2021-12-23 20:25:45 UTC
-> 
-> Created attachment 300133 [details] dmesg-5.4.167.txt
-> 
-> Hi, I jumped from 5.4.143 to 5.4.167 but the connection to wifi was
-> so unstable I had to reboot to use the old kernel. I never used git
-> bisect and am not sure I have that much time to play with that.
-> However, let me say that I lost about 5x connection to AP. Sooner or
-> later after each situation I disconnected from the AP using nm-applet
-> and re-connected. That has helped for a short while, liek a few
-> minutes, then I again lost network connection. Maybe you can find the
-> event in the dmesg output.
-> 
-> Once, for some reason, there is also a stacktrace from the kernel.
-> Why just onceinstead of about 5 times I have no idea.
-> 
-> I could provide the same kernel messages supplemented with daemon
-> messages from syslog.
-> 
-> Hope this helps to some extent,
-
-Feel free to either continue discussing this here or in the ticket, I
-don't care.
-
-To be sure this issue doesn't fall through the cracks unnoticed, I'm
-also adding it to regzbot, my Linux kernel regression tracking bot:
-
-#regzbot introduced v5.4.143 to v5.4.167
-#regzbot title: net: iwlwifi: frequently loosing connection to AP
-#regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=215401
-
-Reminder: when fixing the issue, please link to this mail and the bug
-entry with a link tag.
-
-Ciao, Thorsten (wearing his 'Linux kernel regression tracker' hat).
-
-P.S.: As a Linux kernel regression tracker I'm getting a lot of reports
-on my table. I can only look briefly into most of them. Unfortunately
-therefore I sometimes will get things wrong or miss something important.
-I hope that's not the case here; if you think it is, don't hesitate to
-tell me about it in a public reply. That's in everyone's interest, as
-what I wrote above might be misleading to everyone reading this; any
-suggestion I gave thus might sent someone reading this down the wrong
-rabbit hole, which none of us wants.
-
-BTW, I have no personal interest in this issue, which is tracked using
-regzbot, my Linux kernel regression tracking bot
-(https://linux-regtracking.leemhuis.info/regzbot/). I'm only posting
-this mail to get things rolling again and hence don't need to be CC on
-all further activities wrt to this regression.
-
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
-Additional information about regzbot:
+ drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-If you want to know more about regzbot, check out its web-interface, the
-getting start guide, and/or the references documentation:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+index 85286cc9add1..a63ef5de5115 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+@@ -314,6 +314,7 @@ int mt7921e_mac_reset(struct mt7921_dev *dev)
+ 	}
+ 	local_bh_enable();
+ 
++	dev->fw_assert = false;
+ 	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
+ 
+ 	mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA,
+-- 
+2.25.1
 
-https://linux-regtracking.leemhuis.info/regzbot/
-https://gitlab.com/knurd42/regzbot/-/blob/main/docs/getting_started.md
-https://gitlab.com/knurd42/regzbot/-/blob/main/docs/reference.md
-
-The last two documents will explain how you can interact with regzbot
-yourself if your want to.
-
-Hint for reporters: when reporting a regression it's in your interest to
-tell #regzbot about it in the report, as that will ensure the regression
-gets on the radar of regzbot and the regression tracker. That's in your
-interest, as they will make sure the report won't fall through the
-cracks unnoticed.
-
-Hint for developers: you normally don't need to care about regzbot once
-it's involved. Fix the issue as you normally would, just remember to
-include a 'Link:' tag to the report in the commit message, as explained
-in Documentation/process/submitting-patches.rst
-That aspect was recently was made more explicit in commit 1f57bd42b77c:
-https://git.kernel.org/linus/1f57bd42b77c
