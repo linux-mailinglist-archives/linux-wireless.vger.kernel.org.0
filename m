@@ -2,138 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7272447ECE1
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 08:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1384A47ED13
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 09:24:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343680AbhLXHv6 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Dec 2021 02:51:58 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:36097 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234111AbhLXHvz (ORCPT
+        id S1351958AbhLXIYI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Dec 2021 03:24:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56890 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1351955AbhLXIYH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Dec 2021 02:51:55 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BO7pbtR7026286, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BO7pbtR7026286
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 24 Dec 2021 15:51:37 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Fri, 24 Dec 2021 15:51:37 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Fri, 24 Dec 2021 15:51:36 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01]) by
- RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01%5]) with mapi id
- 15.01.2308.020; Fri, 24 Dec 2021 15:51:36 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Bernie Huang <phhuang@realtek.com>,
-        "open list:REALTEK WIRELESS DRIVER (rtw88)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-CC:     "kernel@collabora.com" <kernel@collabora.com>
-Subject: RE: [PATCH v2] rtw88: check for validity before using a pointer
-Thread-Topic: [PATCH v2] rtw88: check for validity before using a pointer
-Thread-Index: AQHX+JjdqbMhpjQqZU2TmT2RdU93eaxBQ8nw
-Date:   Fri, 24 Dec 2021 07:51:36 +0000
-Message-ID: <df6c53db84a14723b6ba059cfa8cb0ae@realtek.com>
-References: <YcV4Qkc9PrrmkOim@debian-BULLSEYE-live-builder-AMD64>
-In-Reply-To: <YcV4Qkc9PrrmkOim@debian-BULLSEYE-live-builder-AMD64>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/12/24_=3F=3F_04:02:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Fri, 24 Dec 2021 03:24:07 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4DC5C061401;
+        Fri, 24 Dec 2021 00:24:07 -0800 (PST)
+Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74] helo=[192.168.66.200]); authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1n0fru-0007sC-JA; Fri, 24 Dec 2021 09:24:02 +0100
+Message-ID: <b4470632-9209-ce77-937f-656566d333b3@leemhuis.info>
+Date:   Fri, 24 Dec 2021 09:24:02 +0100
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Content-Language: en-BS
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+To:     Luca Coelho <luciano.coelho@intel.com>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        mmokrejs@gmail.com
+Subject: iwlwifi: loosing connection to AP (regression from 5.4.143) (fwd from
+ b.k.o bug 215401)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1640334247;04d431dd;
+X-HE-SMSGID: 1n0fru-0007sC-JA
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi, this is your Linux kernel regression tracker speaking.
 
-> -----Original Message-----
-> From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> Sent: Friday, December 24, 2021 3:36 PM
-> To: Yan-Hsuan Chuang <tony0620emma@gmail.com>; Kalle Valo <kvalo@kernel.org>; David S. Miller
-> <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; Bernie Huang <phhuang@realtek.com>; Pkshih
-> <pkshih@realtek.com>; open list:REALTEK WIRELESS DRIVER (rtw88) <linux-wireless@vger.kernel.org>; open
-> list:NETWORKING DRIVERS <netdev@vger.kernel.org>; open list <linux-kernel@vger.kernel.org>
-> Cc: usama.anjum@collabora.com; kernel@collabora.com
-> Subject: [PATCH v2] rtw88: check for validity before using a pointer
-> 
-> ieee80211_probereq_get() can return NULL. Pointer skb should be checked
-> for validty before use. If it is not valid, list of skbs needs to be
-> freed to not memory leak.
-> 
-> Fixes: 10d162b2ed39 ("rtw88: 8822c: add ieee80211_ops::hw_scan")
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> 
-> ---
-> v2:
-> Free the list in case of error
-> ---
->  drivers/net/wireless/realtek/rtw88/fw.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-> index 2f7c036f9022..7e1fab7afb69 100644
-> --- a/drivers/net/wireless/realtek/rtw88/fw.c
-> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
-> @@ -1857,7 +1857,7 @@ static int rtw_hw_scan_update_probe_req(struct rtw_dev *rtwdev,
->  {
->  	struct cfg80211_scan_request *req = rtwvif->scan_req;
->  	struct sk_buff_head list;
-> -	struct sk_buff *skb;
-> +	struct sk_buff *skb, *tmp;
->  	u8 num = req->n_ssids, i;
-> 
->  	skb_queue_head_init(&list);
-> @@ -1866,11 +1866,19 @@ static int rtw_hw_scan_update_probe_req(struct rtw_dev *rtwdev,
->  					     req->ssids[i].ssid,
->  					     req->ssids[i].ssid_len,
->  					     req->ie_len);
-> +		if (!skb)
-> +			goto out;
->  		rtw_append_probe_req_ie(rtwdev, skb, &list, rtwvif);
->  		kfree_skb(skb);
->  	}
-> 
->  	return _rtw_hw_scan_update_probe_req(rtwdev, num, &list);
-> +
-> +out:
-> +	skb_queue_walk_safe(&list, skb, tmp)
+Forwarding a regression reported in bugzilla.kernel.org, to ensure
+all the interested parties are aware of it, as quite a few (many?)
+subsystems don't react at all to reports in that bug tracker.
 
-Don't you think skb_queue_walk() is enough? Because we don't need to do
-skb_unlink() in the loop.
+https://bugzilla.kernel.org/show_bug.cgi?id=215401
 
-> +		kfree_skb(skb);
-> +
-> +	return -ENOMEM;
->  }
+> Martin Mokrejs 2021-12-23 20:25:45 UTC
 > 
->  static int rtw_add_chan_info(struct rtw_dev *rtwdev, struct rtw_chan_info *info,
-> --
+> Created attachment 300133 [details] dmesg-5.4.167.txt
+> 
+> Hi, I jumped from 5.4.143 to 5.4.167 but the connection to wifi was
+> so unstable I had to reboot to use the old kernel. I never used git
+> bisect and am not sure I have that much time to play with that.
+> However, let me say that I lost about 5x connection to AP. Sooner or
+> later after each situation I disconnected from the AP using nm-applet
+> and re-connected. That has helped for a short while, liek a few
+> minutes, then I again lost network connection. Maybe you can find the
+> event in the dmesg output.
+> 
+> Once, for some reason, there is also a stacktrace from the kernel.
+> Why just onceinstead of about 5 times I have no idea.
+> 
+> I could provide the same kernel messages supplemented with daemon
+> messages from syslog.
+> 
+> Hope this helps to some extent,
 
-Ping-Ke
+Feel free to either continue discussing this here or in the ticket, I
+don't care.
 
+To be sure this issue doesn't fall through the cracks unnoticed, I'm
+also adding it to regzbot, my Linux kernel regression tracking bot:
+
+#regzbot introduced v5.4.143 to v5.4.167
+#regzbot title: net: iwlwifi: frequently loosing connection to AP
+#regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=215401
+
+Reminder: when fixing the issue, please link to this mail and the bug
+entry with a link tag.
+
+Ciao, Thorsten (wearing his 'Linux kernel regression tracker' hat).
+
+P.S.: As a Linux kernel regression tracker I'm getting a lot of reports
+on my table. I can only look briefly into most of them. Unfortunately
+therefore I sometimes will get things wrong or miss something important.
+I hope that's not the case here; if you think it is, don't hesitate to
+tell me about it in a public reply. That's in everyone's interest, as
+what I wrote above might be misleading to everyone reading this; any
+suggestion I gave thus might sent someone reading this down the wrong
+rabbit hole, which none of us wants.
+
+BTW, I have no personal interest in this issue, which is tracked using
+regzbot, my Linux kernel regression tracking bot
+(https://linux-regtracking.leemhuis.info/regzbot/). I'm only posting
+this mail to get things rolling again and hence don't need to be CC on
+all further activities wrt to this regression.
+
+---
+Additional information about regzbot:
+
+If you want to know more about regzbot, check out its web-interface, the
+getting start guide, and/or the references documentation:
+
+https://linux-regtracking.leemhuis.info/regzbot/
+https://gitlab.com/knurd42/regzbot/-/blob/main/docs/getting_started.md
+https://gitlab.com/knurd42/regzbot/-/blob/main/docs/reference.md
+
+The last two documents will explain how you can interact with regzbot
+yourself if your want to.
+
+Hint for reporters: when reporting a regression it's in your interest to
+tell #regzbot about it in the report, as that will ensure the regression
+gets on the radar of regzbot and the regression tracker. That's in your
+interest, as they will make sure the report won't fall through the
+cracks unnoticed.
+
+Hint for developers: you normally don't need to care about regzbot once
+it's involved. Fix the issue as you normally would, just remember to
+include a 'Link:' tag to the report in the commit message, as explained
+in Documentation/process/submitting-patches.rst
+That aspect was recently was made more explicit in commit 1f57bd42b77c:
+https://git.kernel.org/linus/1f57bd42b77c
