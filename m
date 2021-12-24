@@ -2,333 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5396B47EE66
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 11:58:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D90D47EF50
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Dec 2021 15:01:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352519AbhLXK6s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Dec 2021 05:58:48 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:44464 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352521AbhLXK6r (ORCPT
+        id S1352839AbhLXOBd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Dec 2021 09:01:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:44963 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235825AbhLXOBd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Dec 2021 05:58:47 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E4ADAB82288
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Dec 2021 10:58:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC0EC36AEA;
-        Fri, 24 Dec 2021 10:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640343524;
-        bh=AlTKVkA2Bm/6RYSCYjgK5BTEo7uSCpenuFcUCOwdBSw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T2m+BelS21vidwIrw8sSuYcGjiS54Gl8L2AqJ3Kfo0/zxnUAMlqnVaccjvkRM2/EZ
-         6ROXRRagZnarZD0ju584xjI8uKAC3MSlrkFf+U9qSK7o5ttrSEtuaJAEEdM0dq3mc0
-         8c8QJ6aC8FWwYyiPkBs8oTpz8LL0g4daCzPVv5SlSZls/TgIeJCWX/o+hmXJCEnHfW
-         tVC/21bedf14yMecwM+uraR/OWavn58EXvLSdZVBNz8GkEwl7GJFVqKqSGR/tjUfA0
-         6xEMV4w0bTsoL3z1LvGPnxYhbGVvXHZFcNyE3fPwJ0yD92xVQJQ/IDV0TykGPFB0jA
-         IGf8rg96qgV6Q==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com
-Subject: [PATCH 10/10] mt76: connac: move mt76_connac_mcu_rdd_cmd in mt76-connac module
-Date:   Fri, 24 Dec 2021 11:58:11 +0100
-Message-Id: <6cb9ec1f8e1c70c78098a1a699e5976900d8fff9.1640342400.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <cover.1640342400.git.lorenzo@kernel.org>
-References: <cover.1640342400.git.lorenzo@kernel.org>
+        Fri, 24 Dec 2021 09:01:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1640354492;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=IN+CtEcaEinaxpMiViZCvrtQMokm+URmuzrnUgB2Q/M=;
+        b=UqJGFU7s3cMaB3rQDBSk9RD0+z/PUqsRqqKYfiAfMdNsMYHXserBtpm8hgHrtdDEAXNBl3
+        5KPDTDwBtqrebcVSKwy3H9TwVn/A9FDws7keI1mj3k+2RYG6BCHUR6QqXrei7NnNhGQFxT
+        v2R5n0eDPkBFgKFRh5srEOlxR1Ii/qY=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-648-xvx3UW0nMUWI_3LuP2V9Lw-1; Fri, 24 Dec 2021 09:01:31 -0500
+X-MC-Unique: xvx3UW0nMUWI_3LuP2V9Lw-1
+Received: by mail-qt1-f197.google.com with SMTP id x10-20020ac8700a000000b002c3ef8fc44cso5770363qtm.8
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Dec 2021 06:01:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=IN+CtEcaEinaxpMiViZCvrtQMokm+URmuzrnUgB2Q/M=;
+        b=XkrFl/w/qWqj6shT7KIMbuOLDjNPaDZPL9Xe5Q/UQf5MBsWJpXF7/wIx5EZ2niNU0t
+         p01Z5SjcZelxfcdpWTLUGuGId8/bgQCO05oZjwMvnX4+0hZlsmgjAIAUWOeLfuOEPuWi
+         CcwcMhYQELMBlEshvmlr0G3ClGM2UMMF9n4GNLrNbmif5N83JycOt94Ib9vtmh+4++gS
+         mTkI42rI3kVW6awCZktk9M1gHuHL7LwdgrUACBGJRRc4rmaYBc3sMGa1uchaUgmR5ufs
+         268/66BCPjDgeHHK5SjN0TMwhzl2Yb35nlDF9Z69O6oSHmL4DDgh4Ye8YEz6t4mG9c3d
+         mq5Q==
+X-Gm-Message-State: AOAM532faEJdswlYVmCLpNLtp1K41YUTYadywIv/8vgJEvLT2sQVVvEK
+        WTZgBNagONI08Zcx3juftMQDi1LHS9IiOsayA7I63bFesrH1rRkgMxb95uQW68a3C7LLlidEYdO
+        5B6yaPlPjgAoFIqDXE8CTM82mG8s=
+X-Received: by 2002:a05:622a:587:: with SMTP id c7mr5701406qtb.354.1640354491032;
+        Fri, 24 Dec 2021 06:01:31 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzgua9fDI5gqPyYFuhyR50QDvtW9otecaneV8fLd7WGIwVyWmxQ32LcVE2LOEYOmt43L8GEng==
+X-Received: by 2002:a05:622a:587:: with SMTP id c7mr5701363qtb.354.1640354490682;
+        Fri, 24 Dec 2021 06:01:30 -0800 (PST)
+Received: from localhost.localdomain (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id t30sm6510844qkj.125.2021.12.24.06.01.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Dec 2021 06:01:30 -0800 (PST)
+Subject: Re: [PATCH] mac80211: initialize variable have_higher_than_11mbit
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org,
+        nathan@kernel.org, linville@tuxdriver.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+References: <20211223162848.3243702-1-trix@redhat.com>
+ <CAKwvOd=dLjMAim_FRNyWegzEjy0_1vF2xVW1hNPQ55=32qO4Wg@mail.gmail.com>
+From:   Tom Rix <trix@redhat.com>
+Message-ID: <b3ef8d23-7c77-7c83-0bc8-2054b7ac1d8b@redhat.com>
+Date:   Fri, 24 Dec 2021 06:01:27 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKwvOd=dLjMAim_FRNyWegzEjy0_1vF2xVW1hNPQ55=32qO4Wg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move mt76_connac_mcu_rdd_cmd routine in mt76-connac module and remove
-duplicated code.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 23 +++++++++++--------
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 21 -----------------
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  3 ---
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 21 +++++++++++++++++
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  2 ++
- .../wireless/mediatek/mt76/mt7915/debugfs.c   |  2 +-
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 23 +++++++++++--------
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 21 -----------------
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 --
- 9 files changed, 52 insertions(+), 66 deletions(-)
+On 12/23/21 12:30 PM, Nick Desaulniers wrote:
+> On Thu, Dec 23, 2021 at 8:29 AM <trix@redhat.com> wrote:
+>> From: Tom Rix <trix@redhat.com>
+>>
+>> Clang static analysis reports this warnings
+>>
+>> mlme.c:5332:7: warning: Branch condition evaluates to a
+>>    garbage value
+>>      have_higher_than_11mbit)
+>>      ^~~~~~~~~~~~~~~~~~~~~~~
+>>
+>> have_higher_than_11mbit is only set to true some of the time in
+>> ieee80211_get_rates() but is checked all of the time.  So
+>> have_higher_than_11mbit needs to be initialized to false.
+> LGTM. There's only one caller of ieee80211_get_rates() today; if there
+> were others, they could make a similar mistake in the future. An
+> alternate approach: ieee80211_get_rates() could unconditionally write
+> false before the loop that could later write true. Then call sites
+> don't need to worry about this conditional assignment. Perhaps that
+> would be preferable? If not:
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index ec25e5a95d44..8f8a7bc0169b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -2160,21 +2160,24 @@ static void mt7615_dfs_stop_radar_detector(struct mt7615_phy *phy)
- 	struct mt7615_dev *dev = phy->dev;
- 
- 	if (phy->rdd_state & BIT(0))
--		mt7615_mcu_rdd_cmd(dev, RDD_STOP, 0, MT_RX_SEL0, 0);
-+		mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_STOP, 0,
-+					MT_RX_SEL0, 0);
- 	if (phy->rdd_state & BIT(1))
--		mt7615_mcu_rdd_cmd(dev, RDD_STOP, 1, MT_RX_SEL0, 0);
-+		mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_STOP, 1,
-+					MT_RX_SEL0, 0);
- }
- 
- static int mt7615_dfs_start_rdd(struct mt7615_dev *dev, int chain)
- {
- 	int err;
- 
--	err = mt7615_mcu_rdd_cmd(dev, RDD_START, chain, MT_RX_SEL0, 0);
-+	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_START, chain,
-+				      MT_RX_SEL0, 0);
- 	if (err < 0)
- 		return err;
- 
--	return mt7615_mcu_rdd_cmd(dev, RDD_DET_MODE, chain,
--				  MT_RX_SEL0, 1);
-+	return mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_DET_MODE, chain,
-+				       MT_RX_SEL0, 1);
- }
- 
- static int mt7615_dfs_start_radar_detector(struct mt7615_phy *phy)
-@@ -2185,7 +2188,8 @@ static int mt7615_dfs_start_radar_detector(struct mt7615_phy *phy)
- 	int err;
- 
- 	/* start CAC */
--	err = mt7615_mcu_rdd_cmd(dev, RDD_CAC_START, ext_phy, MT_RX_SEL0, 0);
-+	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_CAC_START, ext_phy,
-+				      MT_RX_SEL0, 0);
- 	if (err < 0)
- 		return err;
- 
-@@ -2280,12 +2284,13 @@ int mt7615_dfs_init_radar_detector(struct mt7615_phy *phy)
- 		if (chandef->chan->dfs_state != NL80211_DFS_AVAILABLE)
- 			return mt7615_dfs_start_radar_detector(phy);
- 
--		return mt7615_mcu_rdd_cmd(dev, RDD_CAC_END, ext_phy,
--					  MT_RX_SEL0, 0);
-+		return mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_CAC_END, ext_phy,
-+					       MT_RX_SEL0, 0);
- 	}
- 
- stop:
--	err = mt7615_mcu_rdd_cmd(dev, RDD_NORMAL_START, ext_phy, MT_RX_SEL0, 0);
-+	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_NORMAL_START, ext_phy,
-+				      MT_RX_SEL0, 0);
- 	if (err < 0)
- 		return err;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 0a914494bb32..f992e1285eaa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -1891,27 +1891,6 @@ int mt7615_mcu_del_wtbl_all(struct mt7615_dev *dev)
- 				 &req, sizeof(req), true);
- }
- 
--int mt7615_mcu_rdd_cmd(struct mt7615_dev *dev,
--		       enum mt7615_rdd_cmd cmd, u8 index,
--		       u8 rx_sel, u8 val)
--{
--	struct {
--		u8 ctrl;
--		u8 rdd_idx;
--		u8 rdd_rx_sel;
--		u8 val;
--		u8 rsv[4];
--	} req = {
--		.ctrl = cmd,
--		.rdd_idx = index,
--		.rdd_rx_sel = rx_sel,
--		.val = val,
--	};
--
--	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(SET_RDD_CTRL),
--				 &req, sizeof(req), true);
--}
--
- int mt7615_mcu_set_fcc5_lpn(struct mt7615_dev *dev, int val)
- {
- 	struct {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 07b833654920..3b66aa749a21 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -403,9 +403,6 @@ int mt7615_mcu_set_chan_info(struct mt7615_phy *phy, int cmd);
- int mt7615_mcu_set_wmm(struct mt7615_dev *dev, u8 queue,
- 		       const struct ieee80211_tx_queue_params *params);
- void mt7615_mcu_rx_event(struct mt7615_dev *dev, struct sk_buff *skb);
--int mt7615_mcu_rdd_cmd(struct mt7615_dev *dev,
--		       enum mt7615_rdd_cmd cmd, u8 index,
--		       u8 rx_sel, u8 val);
- int mt7615_mcu_rdd_send_pattern(struct mt7615_dev *dev);
- int mt7615_mcu_fw_log_2_host(struct mt7615_dev *dev, u8 ctrl);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 2b647c19521b..1b2340e4ce0c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -2764,5 +2764,26 @@ int mt76_connac_mcu_restart(struct mt76_dev *dev)
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_restart);
- 
-+int mt76_connac_mcu_rdd_cmd(struct mt76_dev *dev, int cmd, u8 index,
-+			    u8 rx_sel, u8 val)
-+{
-+	struct {
-+		u8 ctrl;
-+		u8 rdd_idx;
-+		u8 rdd_rx_sel;
-+		u8 val;
-+		u8 rsv[4];
-+	} __packed req = {
-+		.ctrl = cmd,
-+		.rdd_idx = index,
-+		.rdd_rx_sel = rx_sel,
-+		.val = val,
-+	};
-+
-+	return mt76_mcu_send_msg(dev, MCU_EXT_CMD(SET_RDD_CTRL), &req,
-+				 sizeof(req), true);
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac_mcu_rdd_cmd);
-+
- MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
- MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index bce3134e36a1..9277a6a2c95e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1649,4 +1649,6 @@ void mt76_connac_mcu_wtbl_smps_tlv(struct sk_buff *skb,
- 				   void *sta_wtbl, void *wtbl_tlv);
- int mt76_connac_mcu_set_pm(struct mt76_dev *dev, int band, int enter);
- int mt76_connac_mcu_restart(struct mt76_dev *dev);
-+int mt76_connac_mcu_rdd_cmd(struct mt76_dev *dev, int cmd, u8 index,
-+			    u8 rx_sel, u8 val);
- #endif /* __MT76_CONNAC_MCU_H */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index 710f8cad6245..c59ef08a5306 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -75,7 +75,7 @@ mt7915_radar_trigger(void *data, u64 val)
- {
- 	struct mt7915_dev *dev = data;
- 
--	return mt7915_mcu_rdd_cmd(dev, RDD_RADAR_EMULATE, 1, 0, 0);
-+	return mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_RADAR_EMULATE, 1, 0, 0);
- }
- 
- DEFINE_DEBUGFS_ATTRIBUTE(fops_radar_trigger, NULL,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index d83e828b6e3e..e0200f84a2f9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -2346,20 +2346,24 @@ static void mt7915_dfs_stop_radar_detector(struct mt7915_phy *phy)
- 	struct mt7915_dev *dev = phy->dev;
- 
- 	if (phy->rdd_state & BIT(0))
--		mt7915_mcu_rdd_cmd(dev, RDD_STOP, 0, MT_RX_SEL0, 0);
-+		mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_STOP, 0,
-+					MT_RX_SEL0, 0);
- 	if (phy->rdd_state & BIT(1))
--		mt7915_mcu_rdd_cmd(dev, RDD_STOP, 1, MT_RX_SEL0, 0);
-+		mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_STOP, 1,
-+					MT_RX_SEL0, 0);
- }
- 
- static int mt7915_dfs_start_rdd(struct mt7915_dev *dev, int chain)
- {
- 	int err;
- 
--	err = mt7915_mcu_rdd_cmd(dev, RDD_START, chain, MT_RX_SEL0, 0);
-+	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_START, chain,
-+				      MT_RX_SEL0, 0);
- 	if (err < 0)
- 		return err;
- 
--	return mt7915_mcu_rdd_cmd(dev, RDD_DET_MODE, chain, MT_RX_SEL0, 1);
-+	return mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_DET_MODE, chain,
-+				       MT_RX_SEL0, 1);
- }
- 
- static int mt7915_dfs_start_radar_detector(struct mt7915_phy *phy)
-@@ -2370,7 +2374,8 @@ static int mt7915_dfs_start_radar_detector(struct mt7915_phy *phy)
- 	int err;
- 
- 	/* start CAC */
--	err = mt7915_mcu_rdd_cmd(dev, RDD_CAC_START, ext_phy, MT_RX_SEL0, 0);
-+	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_CAC_START, ext_phy,
-+				      MT_RX_SEL0, 0);
- 	if (err < 0)
- 		return err;
- 
-@@ -2459,13 +2464,13 @@ int mt7915_dfs_init_radar_detector(struct mt7915_phy *phy)
- 		if (chandef->chan->dfs_state != NL80211_DFS_AVAILABLE)
- 			return mt7915_dfs_start_radar_detector(phy);
- 
--		return mt7915_mcu_rdd_cmd(dev, RDD_CAC_END, ext_phy,
--					  MT_RX_SEL0, 0);
-+		return mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_CAC_END,
-+					       ext_phy, MT_RX_SEL0, 0);
- 	}
- 
- stop:
--	err = mt7915_mcu_rdd_cmd(dev, RDD_NORMAL_START, ext_phy,
--				 MT_RX_SEL0, 0);
-+	err = mt76_connac_mcu_rdd_cmd(&dev->mt76, RDD_NORMAL_START, ext_phy,
-+				      MT_RX_SEL0, 0);
- 	if (err < 0)
- 		return err;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index eb9ce86d5303..74cdfd3d13b9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2528,27 +2528,6 @@ int mt7915_mcu_set_tx(struct mt7915_dev *dev, struct ieee80211_vif *vif)
- 	return mt7915_mcu_update_edca(dev, &req);
- }
- 
--int mt7915_mcu_rdd_cmd(struct mt7915_dev *dev,
--		       enum mt7915_rdd_cmd cmd, u8 index,
--		       u8 rx_sel, u8 val)
--{
--	struct {
--		u8 ctrl;
--		u8 rdd_idx;
--		u8 rdd_rx_sel;
--		u8 val;
--		u8 rsv[4];
--	} __packed req = {
--		.ctrl = cmd,
--		.rdd_idx = index,
--		.rdd_rx_sel = rx_sel,
--		.val = val,
--	};
--
--	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(SET_RDD_CTRL), &req,
--				 sizeof(req), true);
--}
--
- int mt7915_mcu_set_fcc5_lpn(struct mt7915_dev *dev, int val)
- {
- 	struct {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 3f32ae274600..5adde022d4e2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -457,8 +457,6 @@ int mt7915_mcu_get_temperature(struct mt7915_phy *phy);
- int mt7915_mcu_set_thermal_throttling(struct mt7915_phy *phy, u8 state);
- int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
- 			   struct ieee80211_sta *sta, struct rate_info *rate);
--int mt7915_mcu_rdd_cmd(struct mt7915_dev *dev, enum mt7915_rdd_cmd cmd,
--		       u8 index, u8 rx_sel, u8 val);
- int mt7915_mcu_wa_cmd(struct mt7915_dev *dev, int cmd, u32 a1, u32 a2, u32 a3);
- int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 type, u8 ctrl);
- int mt7915_mcu_fw_dbg_ctrl(struct mt7915_dev *dev, u32 module, u8 level);
--- 
-2.33.1
+The have_higher_than_11mbit variable had previously be initialized to false.
+
+The commit 5d6a1b069b7f moved the variable without initializing.
+
+Tom
+
+>
+> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+>
+>> Fixes: 5d6a1b069b7f ("mac80211: set basic rates earlier")
+>> Signed-off-by: Tom Rix <trix@redhat.com>
+>> ---
+>>   net/mac80211/mlme.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+>> index 51f55c4ee3c6e..766cbbc9c3a72 100644
+>> --- a/net/mac80211/mlme.c
+>> +++ b/net/mac80211/mlme.c
+>> @@ -5279,7 +5279,7 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+>>           */
+>>          if (new_sta) {
+>>                  u32 rates = 0, basic_rates = 0;
+>> -               bool have_higher_than_11mbit;
+>> +               bool have_higher_than_11mbit = false;
+>>                  int min_rate = INT_MAX, min_rate_index = -1;
+>>                  const struct cfg80211_bss_ies *ies;
+>>                  int shift = ieee80211_vif_get_shift(&sdata->vif);
+>> --
+>> 2.26.3
+>>
+>
 
