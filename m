@@ -2,97 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0FFC47F421
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Dec 2021 18:46:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3E9347F439
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Dec 2021 19:24:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230235AbhLYRqT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 25 Dec 2021 12:46:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36300 "EHLO
+        id S232650AbhLYSX5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 25 Dec 2021 13:23:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbhLYRqS (ORCPT
+        with ESMTP id S229488AbhLYSX5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 25 Dec 2021 12:46:18 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 215F9C061401;
-        Sat, 25 Dec 2021 09:46:18 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id l5so10095142edj.13;
-        Sat, 25 Dec 2021 09:46:18 -0800 (PST)
+        Sat, 25 Dec 2021 13:23:57 -0500
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57F1EC061401;
+        Sat, 25 Dec 2021 10:23:57 -0800 (PST)
+Received: by mail-io1-xd36.google.com with SMTP id e128so14360244iof.1;
+        Sat, 25 Dec 2021 10:23:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NXb9uQGaBtKvbUMdmPuJokNHrFa4LJfUh42PbPdY2O0=;
-        b=m2+AcCualK7LXu4tDURUtUBF5v2codGDVRlKX9kp0wQ9/h7Bkjk/tRqiIUPyjcYCfp
-         3X4EmNvokdC3x2jFzo1kcKFMt3WORIxJHm0M+nCvwNwSpKF8TinpKsbpvWeIHNVqsh11
-         trRqYXsitm2Xyyaqw3GANaaehNAVQgHADFVoKpniZdGqFUa4ic2iBB0a1Iz38+CAzOKL
-         O7AO3nmqk5R7pi+4B+xBk0xtCEvgM3sBOtF0wWZviuOTemG5wIrn71vMmd1jRIXwKTFF
-         zTHlqtNGQbM5wn+u7eLXTKagMaOjAXk2a1gVE+qLqyQ63KXpP7hIcWoJRNO3wJDrTwy4
-         GEBQ==
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=76GQIt0sZ1We5Jshemf66kFRSNu6kCz1Xq1pIPR9qK0=;
+        b=AGpOyQ7LoDyVAAKtGuejoG/4bZAVsFUFaq6dt3Gm71r9Oacr9Cz9it/BV6II7ygRiC
+         FUKBMAVj8A5WIaCItvTALfMZXSKB07PBZHvo6oxSgNNKz0gf37MgxBEh0Wdni+CaR+QI
+         LeBtPqARd4uMucPtmSVIlY6FHDt+jGu2EyBojq/bmVTZTKQ/KLQDqVfBfs4WKTKKSow3
+         tyGxnuBCrANzBVCSrfP2wihDcF+/EGOKjI1jEhNyndqLs2UTLCVCEEYFqHUgSet8D+QD
+         peGCwR/I4wlEoBaazeRKw/7OgMSzKJW79GlESuD/yjfBVgXQ49uEJnoDI2iq8s3sbcMn
+         cahQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NXb9uQGaBtKvbUMdmPuJokNHrFa4LJfUh42PbPdY2O0=;
-        b=PmPHH9ZzmcgmYWAcCbfJNTvWTKmMhLT8jXJbsQqdkiS6juAgMstoH21kihK+Ix2Gqv
-         w2pqZB1ZAuFdNBhbfHZC/+TGcRXCBoyU0Sc5jAcn5rPavh/e/MroUufU2S95jI4QREft
-         l+ZoSkv8Cqkxv1bXYHL/YNnqc+0r0mit2xePUPhvrX1FqfO0vdXAJPZCndCAMLxGx+R/
-         vdNUGifw+tqgndLDDMRbRBcaOtEx4V48oPM8pwO1hN1md6QhRoNgriVlrdZ/oG9RQ26Y
-         g5lctAS9XY2fghb8dl8yRLtQRQH6e5P0yDVEryDg9st30m4QUJWcV48Tl7919U4SSUdj
-         nCQw==
-X-Gm-Message-State: AOAM530YVQ1arLLd+e/KTryFwf6Pykj+cj8opxbmflteHPqj+46reXL0
-        BIu+NZ0fZCiTSBzgjSCVpnULSLJshyhPIB7Uag0=
-X-Google-Smtp-Source: ABdhPJzFNqtcTmeGAERJ2OocFZXaP5GIk96d2ImLGhcYfpgRxVghQdn5+Y0P7jDmGNN7swGGetBiSan5jGNfi97Fc0w=
-X-Received: by 2002:a17:906:3ed0:: with SMTP id d16mr8497390ejj.636.1640454376658;
- Sat, 25 Dec 2021 09:46:16 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=76GQIt0sZ1We5Jshemf66kFRSNu6kCz1Xq1pIPR9qK0=;
+        b=V1+h0A5bEjP3gnUWVKOtNbYqvtb09oq6hMq+yJtg4rVGpDvjBgA/XkbIjWzw4FaXZB
+         qelRNm3S4Px0TYHIzzcBrjmMmz7TdxeMidRZ/AZ0BQkZPietrj02tHVPmgdnzG2qnfR5
+         QkS/WWjWzwBvme88Y6KYWAdV4+68fR3+Bi9Mq22rzbmJFPBLKlmkalK78aMT0a+1k1zF
+         ozAW7qcDHGo2zxJi2VqAZLWkhnoSkRwLtl23UlLC3WXxy/IEmoQSPuiz53ovh3mtVWHI
+         h2w12+ZMEhR7TIJnO8c2HV4yBiFGsY4xAVKj+Vde4RrrWAq6OVJyIdIBHAap4pqY9lAz
+         beoQ==
+X-Gm-Message-State: AOAM533shO9RdXdW0+nnXpgkdbF7GFnd9oYlMWOEAYycwVDr27GL5GFQ
+        Kp18XPZzT6FlnbacggKqcrca7uR34hManLxZex/Kb3MAOOO3nw==
+X-Google-Smtp-Source: ABdhPJw5R8R8n+cHJuC6jOxQ4tFL1IHe1BHVHu2GEmwDcwEWZlVnosK4C9bANjTaOdKc3crMLwGnTJXU3JV9nPs9wbg=
+X-Received: by 2002:a05:6638:1456:: with SMTP id l22mr4841012jad.306.1640456636186;
+ Sat, 25 Dec 2021 10:23:56 -0800 (PST)
 MIME-Version: 1.0
-References: <20211223002225.3738385-1-f.fainelli@gmail.com> <20211223002225.3738385-6-f.fainelli@gmail.com>
-In-Reply-To: <20211223002225.3738385-6-f.fainelli@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 25 Dec 2021 19:45:40 +0200
-Message-ID: <CAHp75VeLAuGbeh+DJ=Oox5o8vdt=iLxr80sS3RrZbdJ9smh4OA@mail.gmail.com>
-Subject: Re: [PATCH 5/9] mtd: rawnand: brcmnand: Allow working without interrupts
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     "open list:MEMORY TECHNOLOGY..." <linux-mtd@lists.infradead.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Cai Huoqing <caihuoqing@baidu.com>,
-        Colin Ian King <colin.king@intel.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:BROADCOM SPECIFIC AMBA DRIVER (BCMA)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:BROADCOM STB NAND FLASH DRIVER" 
-        <bcm-kernel-feedback-list@broadcom.com>
+References: <20211221015751.116328-1-sashal@kernel.org> <20211221015751.116328-7-sashal@kernel.org>
+In-Reply-To: <20211221015751.116328-7-sashal@kernel.org>
+Reply-To: sedat.dilek@gmail.com
+From:   Sedat Dilek <sedat.dilek@gmail.com>
+Date:   Sat, 25 Dec 2021 19:23:19 +0100
+Message-ID: <CA+icZUXqtz5CbuC_gOMgJRCuLbsnSO0gsB7zS0ZwMQW3PBOCAw@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 5.15 07/29] nl80211: reset regdom when reloading regdb
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Finn Behrens <me@kloenk.dev>, Finn Behrens <fin@nyantec.com>,
+        Johannes Berg <johannes.berg@intel.com>, davem@davemloft.net,
+        kuba@kernel.org, Johannes Berg <johannes@sipsolutions.net>,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Dec 25, 2021 at 1:41 AM Florian Fainelli <f.fainelli@gmail.com> wrote:
+On Tue, Dec 21, 2021 at 2:58 AM Sasha Levin <sashal@kernel.org> wrote:
 >
-> The BCMA devices include the brcmnand controller but they do not wire up
-> any interrupt line, allow the main interrupt to be optional and update
-> the completion path to also check for the lack of an interrupt line.
+> From: Finn Behrens <me@kloenk.dev>
 >
-> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+> [ Upstream commit 1eda919126b420fee6b8d546f7f728fbbd4b8f11 ]
+>
+> Reload the regdom when the regulatory db is reloaded.
+> Otherwise, the user had to change the regulatoy domain
+> to a different one and then reset it to the correct
+> one to have a new regulatory db take effect after a
+> reload.
+>
+> Signed-off-by: Finn Behrens <fin@nyantec.com>
+> Link: https://lore.kernel.org/r/YaIIZfxHgqc/UTA7@gimli.kloenk.dev
+> [edit commit message]
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-> -       unsigned int            irq;
-> +       int                     irq;
+This requires [1] to fix this warning:
 
-instead.,,
+net/wireless/reg.c:1137:23: warning: implicit conversion from
+enumeration type 'enum nl80211_user_reg_hint_type' to different
+enumeration type 'enum nl80211_reg_
+initiator' [-Wenum-conversion]
 
-> +       ctrl->irq = platform_get_irq_optional(pdev, 0);
-> +       if (ctrl->irq >= 0) {
+[PATCH] nl80211: remove reload flag from regulatory_request
 
-ret = ...
-if (ret > 0) {
+- Sedat -
 
-And drop 0 from the equation, OF never uses 0 as valid vIRQ.
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/patch/?id=37d33114240ede043c42463a6347f68ed72d6904
 
--- 
-With Best Regards,
-Andy Shevchenko
+> ---
+>  include/net/regulatory.h |  1 +
+>  net/wireless/reg.c       | 27 +++++++++++++++++++++++++--
+>  2 files changed, 26 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/net/regulatory.h b/include/net/regulatory.h
+> index 47f06f6f5a67c..0cf9335431e07 100644
+> --- a/include/net/regulatory.h
+> +++ b/include/net/regulatory.h
+> @@ -83,6 +83,7 @@ struct regulatory_request {
+>         enum nl80211_dfs_regions dfs_region;
+>         bool intersect;
+>         bool processed;
+> +       bool reload;
+>         enum environment_cap country_ie_env;
+>         struct list_head list;
+>  };
+> diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+> index df87c7f3a0492..61f1bf1bc4a73 100644
+> --- a/net/wireless/reg.c
+> +++ b/net/wireless/reg.c
+> @@ -133,6 +133,7 @@ static u32 reg_is_indoor_portid;
+>
+>  static void restore_regulatory_settings(bool reset_user, bool cached);
+>  static void print_regdomain(const struct ieee80211_regdomain *rd);
+> +static void reg_process_hint(struct regulatory_request *reg_request);
+>
+>  static const struct ieee80211_regdomain *get_cfg80211_regdom(void)
+>  {
+> @@ -1098,6 +1099,8 @@ int reg_reload_regdb(void)
+>         const struct firmware *fw;
+>         void *db;
+>         int err;
+> +       const struct ieee80211_regdomain *current_regdomain;
+> +       struct regulatory_request *request;
+>
+>         err = request_firmware(&fw, "regulatory.db", &reg_pdev->dev);
+>         if (err)
+> @@ -1118,8 +1121,27 @@ int reg_reload_regdb(void)
+>         if (!IS_ERR_OR_NULL(regdb))
+>                 kfree(regdb);
+>         regdb = db;
+> -       rtnl_unlock();
+>
+> +       /* reset regulatory domain */
+> +       current_regdomain = get_cfg80211_regdom();
+> +
+> +       request = kzalloc(sizeof(*request), GFP_KERNEL);
+> +       if (!request) {
+> +               err = -ENOMEM;
+> +               goto out_unlock;
+> +       }
+> +
+> +       request->wiphy_idx = WIPHY_IDX_INVALID;
+> +       request->alpha2[0] = current_regdomain->alpha2[0];
+> +       request->alpha2[1] = current_regdomain->alpha2[1];
+> +       request->initiator = NL80211_USER_REG_HINT_USER;
+> +       request->user_reg_hint_type = NL80211_USER_REG_HINT_USER;
+> +       request->reload = true;
+> +
+> +       reg_process_hint(request);
+> +
+> +out_unlock:
+> +       rtnl_unlock();
+>   out:
+>         release_firmware(fw);
+>         return err;
+> @@ -2690,7 +2712,8 @@ reg_process_hint_user(struct regulatory_request *user_request)
+>
+>         treatment = __reg_process_hint_user(user_request);
+>         if (treatment == REG_REQ_IGNORE ||
+> -           treatment == REG_REQ_ALREADY_SET)
+> +           (treatment == REG_REQ_ALREADY_SET &&
+> +            !user_request->reload))
+>                 return REG_REQ_IGNORE;
+>
+>         user_request->intersect = treatment == REG_REQ_INTERSECT;
+> --
+> 2.34.1
+>
