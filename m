@@ -2,134 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C300147F983
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Dec 2021 00:34:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BE8B47F9C2
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Dec 2021 03:25:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234834AbhLZXeQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Dec 2021 18:34:16 -0500
-Received: from mail-qt1-f176.google.com ([209.85.160.176]:43986 "EHLO
-        mail-qt1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234825AbhLZXeP (ORCPT
+        id S234980AbhL0CZw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Dec 2021 21:25:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32826 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229637AbhL0CZw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Dec 2021 18:34:15 -0500
-Received: by mail-qt1-f176.google.com with SMTP id q14so12232934qtx.10;
-        Sun, 26 Dec 2021 15:34:14 -0800 (PST)
+        Sun, 26 Dec 2021 21:25:52 -0500
+Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19378C06173E
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Dec 2021 18:25:52 -0800 (PST)
+Received: by mail-oi1-x230.google.com with SMTP id t19so23452861oij.1
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Dec 2021 18:25:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
+        b=M3RDnFS87Rs2xfWEmf0S5mKyB2iU85F0yqKK4aZcCZBgCFm6vNGXVy/Y2l04/5ZZdm
+         IOo2ELMV348IckktM0TqlAaezm9whByO17X4ZxODDfes7W5YPtP5VhHVPSsTr/ttcR20
+         RNA14ulINXE9tq0Gq9n39qCMjFW/J2N0Gyz8bYe93ClJDxGSlZigCt/OVMb/l8Zmfwst
+         WFAR9MeZqXQcoKY3bPYkBQ2rxyXyOkdGjr7dODkUjBhkOq+QIgETRP0+i2URl2eMvW2I
+         /pWhStD6xJMsYj0vYeXh7SFxrik5TpD1hjMReAArASQ55BVyORFFwohZryz1u2k1VtIS
+         HxYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=NETpgQreEkE0gE9DQPwpFwXA1UStvlAU8ygbD7hK0Xk=;
-        b=sSJF8U6ipR58Rj9cbyqf+uzLiI7il0x8Mi6pVFPkYqfGK5HPb4ThoFp3xLAIglmDGV
-         L4r3lTtzlwt7QSVxKsg9VwBzDGYQ+vNzmSE7Lu6cpjjQ3LbMPH6qOzKZQgch8jZLSc6r
-         HEk1IVy2Ck3JCXto7C9yLe4j5/SLseDqDQWiPg9GV3ILbCzcKE4AcPJvMRMw3cbW36AG
-         +CrHB1GE2ebK5E8KghCZ3LQm8hsxidSoWi5HnIyx+5U2UmXxl9GjrTOG5FZCflpxhToC
-         baAjp16XF9Fpx8/hYOUQuN0IwoJsUUUBjnBUsP93Uk9ytBFEoq515ktnfhBsNXBg0Cuj
-         m6kw==
-X-Gm-Message-State: AOAM532X0Z3vz+sSqAZfJq8eIlmaBiCdBJDc/IWTwgkO8XN7omQqjFVK
-        T83I38JojqipMbbSqeV1rg==
-X-Google-Smtp-Source: ABdhPJwmB8l3yVdPMaOhVjqp2R1FQK7EFPIjxgr6FKQwo2ucLUotMAZlPjmh25e/mpIixU+4R6wxYQ==
-X-Received: by 2002:a05:622a:194:: with SMTP id s20mr13118002qtw.617.1640561654156;
-        Sun, 26 Dec 2021 15:34:14 -0800 (PST)
-Received: from robh.at.kernel.org ([24.55.105.145])
-        by smtp.gmail.com with ESMTPSA id y124sm11455493qkd.105.2021.12.26.15.34.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Dec 2021 15:34:13 -0800 (PST)
-Received: (nullmailer pid 393573 invoked by uid 1000);
-        Sun, 26 Dec 2021 23:34:07 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Hector Martin <marcan@marcan.st>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        "Daniel (Deognyoun) Kim" <dekim@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Wright Feng <wright.feng@infineon.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Len Brown <lenb@kernel.org>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        linux-acpi@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        Franky Lin <franky.lin@broadcom.com>,
-        linux-wireless@vger.kernel.org, SHA-cyfmac-dev-list@infineon.com,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
-In-Reply-To: <20211226153624.162281-2-marcan@marcan.st>
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-2-marcan@marcan.st>
-Subject: Re: [PATCH 01/34] dt-bindings: net: bcm4329-fmac: Add Apple properties & chips
-Date:   Sun, 26 Dec 2021 19:34:07 -0400
-Message-Id: <1640561647.363614.393572.nullmailer@robh.at.kernel.org>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
+        b=tkp68wpHEjYFTEwssAcS/tuv1QJOgyXeDOvpzlcYsK2eu8horHlTj0RNp0Ld3shaC6
+         b6wU/4YF5Inw8ecTKlh4LUhH3w9Bp1yW+i3YLGVNhpouB7GRFUsUwsfu2RKEnoeNTprV
+         C+8zyY3iADU8YfVoj48OGfSj0rPxrGw7VVQNXlfiyE8MI+uyoEmjUvxWn83JPmRzwoP4
+         1niiBNs2z3Q0o0BD4m0k4I5MK7YHbVGHqq8gLNTjb9tLlKghmfpdK+5owNien/27Eamz
+         h6+pNqWkyXVesh2nfzXTXOttJwz5R4vpcJNICD4GrYrEmlN2DSp8ofSM9SjhCnoakvYA
+         7Y7A==
+X-Gm-Message-State: AOAM53016dx/Wxj/aFNFpXfW962OM1ghM8Ab2Xc7rHH4QTTM3n4vsgrX
+        yJOvyVzvPg46cz+knk7vCB+B83/lHafPiOux4i8=
+X-Google-Smtp-Source: ABdhPJy9n6gHfuOCgclRWsxDoePee/408f3dZ8qSNiqhNGMDBexa5uq9QX9YNJDsDUTwFTz2LODOTfJkJ5E7yOWZeVw=
+X-Received: by 2002:a05:6808:171c:: with SMTP id bc28mr11761730oib.102.1640571951292;
+ Sun, 26 Dec 2021 18:25:51 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a05:6838:5cd1:0:0:0:0 with HTTP; Sun, 26 Dec 2021 18:25:50
+ -0800 (PST)
+Reply-To: avamedicinemed3@gmail.com
+From:   Dr Ava Smith <doctortracywilliam@gmail.com>
+Date:   Sun, 26 Dec 2021 18:25:50 -0800
+Message-ID: <CAJiqmQFvHW1zQZFfiOG3OzruHaMv7R5i0xWAyUu+D-D1+Sap9Q@mail.gmail.com>
+Subject: From Dr Ava Smith from United States
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 27 Dec 2021 00:35:51 +0900, Hector Martin wrote:
-> This binding is currently used for SDIO devices, but these chips are
-> also used as PCIe devices on DT platforms and may be represented in the
-> DT. Re-use the existing binding and add chip compatibles used by Apple
-> T2 and M1 platforms (the T2 ones are not known to be used in DT
-> platforms, but we might as well document them).
-> 
-> Then, add properties required for firmware selection and calibration on
-> M1 machines.
-> 
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-> ---
->  .../net/wireless/brcm,bcm4329-fmac.yaml       | 32 +++++++++++++++++--
->  1 file changed, 29 insertions(+), 3 deletions(-)
-> 
-
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml: properties:apple,antenna-sku: '$def' is not one of ['$ref', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'const', 'contains', 'default', 'dependencies', 'dependentRequired', 'dependentSchemas', 'deprecated', 'description', 'else', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'items', 'if', 'minItems', 'minimum', 'maxItems', 'maximum', 'multipleOf', 'not', 'oneOf', 'pattern', 'patternProperties', 'properties', 'required', 'then', 'type', 'typeSize', 'unevaluatedProperties', 'uniqueItems']
-	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml: properties:apple,antenna-sku: 'oneOf' conditional failed, one must be fixed:
-	'type' is a required property
-		hint: A vendor boolean property can use "type: boolean"
-	Additional properties are not allowed ('$def' was unexpected)
-		hint: A vendor boolean property can use "type: boolean"
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml: properties:apple,antenna-sku: 'oneOf' conditional failed, one must be fixed:
-		'enum' is a required property
-		'const' is a required property
-		hint: A vendor string property with exact values has an implicit type
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml: properties:apple,antenna-sku: 'oneOf' conditional failed, one must be fixed:
-		'$ref' is a required property
-		'allOf' is a required property
-		hint: A vendor property needs a $ref to types.yaml
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml: ignoring, error in schema: properties: apple,antenna-sku
-Documentation/devicetree/bindings/mmc/mmc-controller.example.dt.yaml:0:0: /example-0/mmc@1c12000/wifi@1: failed to match any schema with compatible: ['brcm,bcm4329-fmac']
-Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.example.dt.yaml:0:0: /example-0/mmc@80118000/wifi@1: failed to match any schema with compatible: ['brcm,bcm4334-fmac', 'brcm,bcm4329-fmac']
-Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.example.dt.yaml:0:0: /example-0/mmc@80118000/wifi@1: failed to match any schema with compatible: ['brcm,bcm4334-fmac', 'brcm,bcm4329-fmac']
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/1573232
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+-- 
+Hello Dear,
+how are you today?hope you are fine
+My name is Dr Ava Smith ,Am an English and French nationalities.
+I will give you pictures and more details about me as soon as i hear from you
+Thanks
+Ava
