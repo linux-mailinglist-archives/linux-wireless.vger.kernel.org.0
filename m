@@ -2,198 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5441547FB0D
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Dec 2021 09:31:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8692847FBC4
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Dec 2021 11:11:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235692AbhL0Iby (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Dec 2021 03:31:54 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:34097 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231500AbhL0Ibx (ORCPT
+        id S235870AbhL0KLb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Dec 2021 05:11:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:49857 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233255AbhL0KLb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Dec 2021 03:31:53 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BR8Vj8zA020769, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BR8Vj8zA020769
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 27 Dec 2021 16:31:45 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Mon, 27 Dec 2021 16:31:45 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Mon, 27 Dec
- 2021 16:31:44 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] rtw89: remove duplicate definition of hardware port number
-Date:   Mon, 27 Dec 2021 16:31:34 +0800
-Message-ID: <20211227083134.35248-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 27 Dec 2021 05:11:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1640599890;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mpi7vBYS3XnKL4Kj8OO6j7beShRGlrvlj+Yo2wkNZyE=;
+        b=BWa00zW0JgO7m7zgFcgERw0VQQjYGTRnG0Peu2o2q2w24CXYtyJs1b2RgRfQrbFjHkYOgW
+        eIb76HWUF4pPAO3MVlFALunyFmidizo+ecV3rEmTevGltMhlSufsYNitneVYMRS+0XW1QQ
+        pKFj/G7Ltk0rV0i++vhXIc8+QiIBh6M=
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
+ [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-466-InHziDtVOFyQufZ0qE5NaQ-1; Mon, 27 Dec 2021 05:11:29 -0500
+X-MC-Unique: InHziDtVOFyQufZ0qE5NaQ-1
+Received: by mail-io1-f69.google.com with SMTP id s8-20020a056602168800b005e96bba1363so6614157iow.21
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Dec 2021 02:11:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=mpi7vBYS3XnKL4Kj8OO6j7beShRGlrvlj+Yo2wkNZyE=;
+        b=IE88YHHmRR1RhgAiHN5fU7HvSnqozuSFRtLxB6Sl7PZlKgp1UHQMHPsd9iLQJXsf5R
+         pXy1SgEWusdCuBYxbdIbyKyIZJVPMqU+9r5PJh6/Psb0j7b5/LrUTk7wWlvL/1YQUtrk
+         LgDUUt+pvyFZPfr+MUKCni9P8/jq1eXE6oUGDglGmoTr/tcUX7jNsot6Vy7NdC6UQepm
+         V7PG73+PoAjw5TkaP7TPfafomLyctIuxoPBE07dXogB68xESNouYjM1vxwiMfS0en1fk
+         wktRl66uldj8ndsC6BlrU/pyMzM0NGhSKr7wS2yfLYbF6Ww4yuV7FLpgx0cD1yPTebqS
+         twIA==
+X-Gm-Message-State: AOAM530dRrkgRQhVPaW357KagMPG/5uXfj82UZY16aTFJ/CnWRdITMep
+        JQQavczM2SxxmNDIhwy8ICvzaskp6ue2dQ1oTaaXoxyXMsCh4pKpp0yOkiEjIhJKiqlHBjANP8I
+        JiSzb0hOGJYg/NEI+jXkgBNQylKDgfDel5/swQJOge9s=
+X-Received: by 2002:a02:9f92:: with SMTP id a18mr7541312jam.4.1640599888654;
+        Mon, 27 Dec 2021 02:11:28 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxgwpN/yx9wfHEX0MHG5ZIGHNxnXz+ofFsurQNeXugutT8dbFTXjOzHu0Lbxupibwx+LAtidzn7h170SQp21dY=
+X-Received: by 2002:a02:9f92:: with SMTP id a18mr7541302jam.4.1640599888485;
+ Mon, 27 Dec 2021 02:11:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 12/27/2021 08:14:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEyLzI3IKRXpMggMDY6MDA6MDA=?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+References: <CABXGCsODP8ze_mvzfJKcRYxuS-esVgHXAvDXS5KN3xFUN6bWgA@mail.gmail.com>
+ <CABXGCsMc1_-s5vVv=XVuMJaAtntrfHpCeT3h7wKkK71NuY-izw@mail.gmail.com> <CABXGCsMJOfGU8axS4FdGfPCgcPL5iuedpZxa4PETSyFHDckOAg@mail.gmail.com>
+In-Reply-To: <CABXGCsMJOfGU8axS4FdGfPCgcPL5iuedpZxa4PETSyFHDckOAg@mail.gmail.com>
+From:   =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>
+Date:   Mon, 27 Dec 2021 11:11:17 +0100
+Message-ID: <CACT4oud-7rpKgcapoNY7Ywd0socwQ-5BPteOxe7S7RNCaUzN+A@mail.gmail.com>
+Subject: Re: [Bug] Driver mt7921e cause computer reboot.
+To:     Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc:     Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        sean.wang@mediatek.com,
+        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
+        objelf@gmail.com, lorenzo@kernel.org, Soul.Huang@mediatek.com,
+        nbd@nbd.name
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RTW89_MAX_HW_PORT_NUM and RTW89_PORT_NUM refer to the same thing, so remove
-the one of them.
+Hi,
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/coex.c     | 10 +++++-----
- drivers/net/wireless/realtek/rtw89/core.h     |  7 +++----
- drivers/net/wireless/realtek/rtw89/fw.c       |  4 ++--
- drivers/net/wireless/realtek/rtw89/mac80211.c |  4 ++--
- 4 files changed, 12 insertions(+), 13 deletions(-)
+On Thu, Nov 25, 2021 at 11:43 PM Mikhail Gavrilov
+<mikhail.v.gavrilov@gmail.com> wrote:
+> With recent kernel 5.16.0-0.rc2 commit 5d9f4cf36721 the behavior has
+> been changed for the better, but the WiFi adapter still works with
+> bugs.
+>
+> Now spontaneous endless reboots do not occur. But if I restart the
+> laptop instead of shutting down, then the next time I boot, the WiFi
+> adapter disappears. In order for the WiFi adapter to appear again, it
+> needs to turn off the laptop and then turn on. Can this be somehow
+> fixed?
+> lspci output after reboot and boot after shutdown is different:
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index 9f7d4f8d0c56f..516d0bc34526e 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -594,7 +594,7 @@ static void _reset_btc_var(struct rtw89_dev *rtwdev, u8 type)
- 		memset(&btc->dm, 0, sizeof(btc->dm));
- 		memset(bt_linfo->rssi_state, 0, sizeof(bt_linfo->rssi_state));
- 
--		for (i = 0; i < RTW89_MAX_HW_PORT_NUM; i++)
-+		for (i = 0; i < RTW89_PORT_NUM; i++)
- 			memset(wl_linfo[i].rssi_state, 0,
- 			       sizeof(wl_linfo[i].rssi_state));
- 
-@@ -1698,7 +1698,7 @@ static void _set_bt_afh_info(struct rtw89_dev *rtwdev)
- 		   wl_rinfo->link_mode == BTC_WLINK_2G_SCC) {
- 		en = true;
- 		/* get p2p channel */
--		for (i = 0; i < RTW89_MAX_HW_PORT_NUM; i++) {
-+		for (i = 0; i < RTW89_PORT_NUM; i++) {
- 			if (wl_rinfo->active_role[i].role ==
- 			    RTW89_WIFI_ROLE_P2P_GO ||
- 			    wl_rinfo->active_role[i].role ==
-@@ -1711,7 +1711,7 @@ static void _set_bt_afh_info(struct rtw89_dev *rtwdev)
- 	} else {
- 		en = true;
- 		/* get 2g channel  */
--		for (i = 0; i < RTW89_MAX_HW_PORT_NUM; i++) {
-+		for (i = 0; i < RTW89_PORT_NUM; i++) {
- 			if (wl_rinfo->active_role[i].connected &&
- 			    wl_rinfo->active_role[i].band == RTW89_BAND_2G) {
- 				ch = wl_rinfo->active_role[i].ch;
-@@ -3287,7 +3287,7 @@ static void _update_wl_info(struct rtw89_dev *rtwdev)
- 
- 	memset(wl_rinfo, 0, sizeof(*wl_rinfo));
- 
--	for (i = 0; i < RTW89_MAX_HW_PORT_NUM; i++) {
-+	for (i = 0; i < RTW89_PORT_NUM; i++) {
- 		/* check if role active? */
- 		if (!wl_linfo[i].active)
- 			continue;
-@@ -4676,7 +4676,7 @@ static void _show_wl_role_info(struct rtw89_dev *rtwdev, struct seq_file *m)
- 			   wl_dinfo->real_band[RTW89_PHY_1]);
- 	}
- 
--	for (i = 0; i < RTW89_MAX_HW_PORT_NUM; i++) {
-+	for (i = 0; i < RTW89_PORT_NUM; i++) {
- 		plink = &btc->cx.wl.link_info[i];
- 
- 		if (!plink->active)
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 7c84556ec4ada..44fe596485725 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -33,7 +33,6 @@ extern const struct rtw89_chip_info rtw8852a_chip_info;
- #define MAX_RSSI 110
- #define RSSI_FACTOR 1
- #define RTW89_RSSI_RAW_TO_DBM(rssi) ((s8)((rssi) >> RSSI_FACTOR) - MAX_RSSI)
--#define RTW89_MAX_HW_PORT_NUM 5
- 
- #define RTW89_HTC_MASK_VARIANT GENMASK(1, 0)
- #define RTW89_HTC_VARIANT_HE 3
-@@ -1048,7 +1047,7 @@ struct rtw89_btc_wl_role_info { /* struct size must be n*4 bytes */
- 	u8 connect_cnt;
- 	u8 link_mode;
- 	union rtw89_btc_wl_role_info_map role_map;
--	struct rtw89_btc_wl_active_role active_role[RTW89_MAX_HW_PORT_NUM];
-+	struct rtw89_btc_wl_active_role active_role[RTW89_PORT_NUM];
- };
- 
- struct rtw89_btc_wl_ver_info {
-@@ -1151,7 +1150,7 @@ struct rtw89_btc_rf_para {
- };
- 
- struct rtw89_btc_wl_info {
--	struct rtw89_btc_wl_link_info link_info[RTW89_MAX_HW_PORT_NUM];
-+	struct rtw89_btc_wl_link_info link_info[RTW89_PORT_NUM];
- 	struct rtw89_btc_wl_rfk_info rfk_info;
- 	struct rtw89_btc_wl_ver_info  ver_info;
- 	struct rtw89_btc_wl_afh_info afh_info;
-@@ -2805,7 +2804,7 @@ struct rtw89_dev {
- 
- 	struct rtw89_ser ser;
- 
--	DECLARE_BITMAP(hw_port, RTW89_MAX_HW_PORT_NUM);
-+	DECLARE_BITMAP(hw_port, RTW89_PORT_NUM);
- 	DECLARE_BITMAP(mac_id_map, RTW89_MAX_MAC_ID_NUM);
- 	DECLARE_BITMAP(flags, NUM_OF_RTW89_FLAGS);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index d4b59fbe73659..3aef95bd3bf06 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -1212,7 +1212,7 @@ int rtw89_fw_h2c_cxdrv_init(struct rtw89_dev *rtwdev)
- 	return -EBUSY;
- }
- 
--#define H2C_LEN_CXDRVINFO_ROLE (4 + 12 * RTW89_MAX_HW_PORT_NUM + H2C_LEN_CXDRVHDR)
-+#define H2C_LEN_CXDRVINFO_ROLE (4 + 12 * RTW89_PORT_NUM + H2C_LEN_CXDRVHDR)
- int rtw89_fw_h2c_cxdrv_role(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
-@@ -1251,7 +1251,7 @@ int rtw89_fw_h2c_cxdrv_role(struct rtw89_dev *rtwdev)
- 	RTW89_SET_FWCMD_CXROLE_ROLE_P2P_GO(cmd, bpos->p2p_go);
- 	RTW89_SET_FWCMD_CXROLE_ROLE_NAN(cmd, bpos->nan);
- 
--	for (i = 0; i < RTW89_MAX_HW_PORT_NUM; i++, active++) {
-+	for (i = 0; i < RTW89_PORT_NUM; i++, active++) {
- 		RTW89_SET_FWCMD_CXROLE_ACT_CONNECTED(cmd, active->connected, i);
- 		RTW89_SET_FWCMD_CXROLE_ACT_PID(cmd, active->pid, i);
- 		RTW89_SET_FWCMD_CXROLE_ACT_PHY(cmd, active->phy, i);
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index a322259f4cc4a..2ff6d33c178d7 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -108,8 +108,8 @@ static int rtw89_ops_add_interface(struct ieee80211_hw *hw,
- 	rtw89_traffic_stats_init(rtwdev, &rtwvif->stats);
- 	rtw89_vif_type_mapping(vif, false);
- 	rtwvif->port = rtw89_core_acquire_bit_map(rtwdev->hw_port,
--						  RTW89_MAX_HW_PORT_NUM);
--	if (rtwvif->port == RTW89_MAX_HW_PORT_NUM) {
-+						  RTW89_PORT_NUM);
-+	if (rtwvif->port == RTW89_PORT_NUM) {
- 		ret = -ENOSPC;
- 		goto out;
- 	}
--- 
-2.25.1
+I've been experiencing similar problems, but they're solved at v5.15
+version, at least for me.
+
+How are you installing the kernel? Custom build? Have you updated the
+firmware to latest versions, as well?
+
+> After reboot:
+> Subsystem: AzureWave Device 4680
+> Flags: fast devsel, IRQ 84, IOMMU group 14
+> Memory at fc30300000 (64-bit, prefetchable) [size=3D1M]
+> Memory at fc30400000 (64-bit, prefetchable) [size=3D16K]
+> Memory at fc30404000 (64-bit, prefetchable) [size=3D4K]
+> Capabilities: [80] Express Endpoint, MSI 00
+> Capabilities: [e0] MSI: Enable- Count=3D1/32 Maskable+ 64bit+
+> Capabilities: [f8] Power Management version 3
+> Capabilities: [100] Vendor Specific Information: ID=3D1556 Rev=3D1 Len=3D=
+008 <?>
+> Capabilities: [108] Latency Tolerance Reporting
+> Capabilities: [110] L1 PM Substates
+> Capabilities: [200] Advanced Error Reporting
+> Kernel modules: mt7921e
+>
+> After shutdown:
+> 05:00.0 Network controller: MEDIATEK Corp. Device 7961
+> Subsystem: AzureWave Device 4680
+> Flags: bus master, fast devsel, latency 0, IRQ 85, IOMMU group 14
+> Memory at fc30300000 (64-bit, prefetchable) [size=3D1M]
+> Memory at fc30400000 (64-bit, prefetchable) [size=3D16K]
+> Memory at fc30404000 (64-bit, prefetchable) [size=3D4K]
+> Capabilities: [80] Express Endpoint, MSI 00
+> Capabilities: [e0] MSI: Enable+ Count=3D1/32 Maskable+ 64bit+
+> Capabilities: [f8] Power Management version 3
+> Capabilities: [100] Vendor Specific Information: ID=3D1556 Rev=3D1 Len=3D=
+008 <?>
+> Capabilities: [108] Latency Tolerance Reporting
+> Capabilities: [110] L1 PM Substates
+> Capabilities: [200] Advanced Error Reporting
+> Kernel driver in use: mt7921e
+> Kernel modules: mt7921e
+>
+> Screen of a visual comparison of lspci in meld: https://postimg.cc/642NKJ=
+5Y
+
+For me, these differences seem to be the normal effect of the driver
+not recognizing the device.
+
+Regards
+--=20
+=C3=8D=C3=B1igo Huguet
 
