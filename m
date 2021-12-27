@@ -2,94 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E904F47FCA3
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Dec 2021 13:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 695BC47FC83
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Dec 2021 13:12:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236703AbhL0MaR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Dec 2021 07:30:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51458 "EHLO
+        id S233731AbhL0MMJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Dec 2021 07:12:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236696AbhL0MaQ (ORCPT
+        with ESMTP id S233695AbhL0MMI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Dec 2021 07:30:16 -0500
-X-Greylist: delayed 1652 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Dec 2021 04:30:15 PST
-Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6156C06173E;
-        Mon, 27 Dec 2021 04:30:15 -0800 (PST)
-Received: by bues.ch with esmtpsa (Exim 4.92)
-        (envelope-from <m@bues.ch>)
-        id 1n1oi0-0007gR-Kw; Mon, 27 Dec 2021 13:02:32 +0100
-Date:   Mon, 27 Dec 2021 13:01:48 +0100
-From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-To:     Chaofan Li <lichaofan@cdjrlc.com>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ssb: Use true and false for bool variable
-Message-ID: <20211227130148.0fd19710@wiggum>
-In-Reply-To: <20211227062159.22746-1-lichaofan@cdjrlc.com>
-References: <20211227062159.22746-1-lichaofan@cdjrlc.com>
-X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        Mon, 27 Dec 2021 07:12:08 -0500
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B341C06173E
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Dec 2021 04:12:08 -0800 (PST)
+Received: by mail-io1-xd30.google.com with SMTP id y11so13395257iod.6
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Dec 2021 04:12:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=l7Kh5rtUsCjTkH5/Txyeuta1EOC4pl0Rqghl8KzLAZA=;
+        b=lCsd5gI5qystnhuHNdT9v5LI7x51Yb33qRvOOEQn9/p6L/rIamJ9hNps1PRkoCrn28
+         rSqF0eoUMM58RpTvGA4uuX5ELTxZP5YOZ8yQcKMyrkJjolpHYBOtbxKlMQKV9W3CJ3WZ
+         6WgVsscV6T9dqtv9CaEjIdGECD493QqCdEBDg+DMsgIvoQWgu0L9lK4HHKv2htqEcTow
+         7Bhpa8w8IrO/6THI022HUGz8Jdsl5v6p7DC4Ai8KS5u5OlwqgNQGPIAQlkFFTBDvZjal
+         w0Iho1quvOdpW8g5ZHGd/JWxQWgRnupgzd+wnyaCxaU+5qtpjiZqzcESKVjqLwE7vyP5
+         4vZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=l7Kh5rtUsCjTkH5/Txyeuta1EOC4pl0Rqghl8KzLAZA=;
+        b=jUDpuARFmY0fTxBgh1Oo1v4pfMFflj0yHS3EEsWeFqM0zpPWB+6dGalMWFdrCxBPBo
+         SOkcV3L3jxcej85EExr/iSrEJdZEXIdfEDcTjJj+K4pexMMqNBadU9e303Bkqq3KOw6V
+         yCjHtBbtZTqbmkkPUUcUaEDIqwKr9qTBSoVWG6HYZsmmkEeutU2dGwi2ggFTwH+dj/b8
+         R+xX5kNOBqa47TZ07Ljn9wmMkdR+05ZtMIiXA6FH0yxmRfYAVD7uWRyKFoQL1k1IqIYr
+         qTQSw18NnkBHc2ZyprWtd5eZroousGEy4nEX6DtIhWyg9tESO8pAxyWXaGzcEK4J/is1
+         NWpQ==
+X-Gm-Message-State: AOAM533IOrt5b/AqnidOHd91M35KL+Zu57GPbr184ydKBe3LXQT1NWhr
+        CnXknw2oztLOvFRRfJCMJ6Q/Xkj6Xy8XMiWXP4A=
+X-Google-Smtp-Source: ABdhPJyNSzDs3Ha7XE1dBsFCYhjwSd7ohrOcu8Q84/F3w437oSe+Vas1EFn9b02x/LahsGlJmaXWNHE5Rj2VJy58pI0=
+X-Received: by 2002:a5d:9857:: with SMTP id p23mr7293770ios.137.1640607127123;
+ Mon, 27 Dec 2021 04:12:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/Ewtc7_jKL/358o1fj2OylCA";
- protocol="application/pgp-signature"; micalg=pgp-sha512
+Received: by 2002:a6b:dc11:0:0:0:0:0 with HTTP; Mon, 27 Dec 2021 04:12:06
+ -0800 (PST)
+Reply-To: tonysiruno9@gmail.com
+From:   Tony Siruno <barrscottg@gmail.com>
+Date:   Mon, 27 Dec 2021 12:12:06 +0000
+Message-ID: <CAOhf+xwM=4QDN2_jbwC+9cQqkg=DXUKO86P7QGzwSgEdgZMC2Q@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/Ewtc7_jKL/358o1fj2OylCA
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Frohe Weihnachten dir und deiner Familie? Warum schweigen Sie? Ich
+hoffe, es geht Ihnen gut, denn jetzt habe ich Ihnen diese Mail zweimal
+gesendet, ohne von Ihnen zu h=C3=B6ren. Heute komme ich von meiner Reise
+zur=C3=BCck und Sie schweigen =C3=BCber die Post, die ich Ihnen seit letzte=
+r
+Woche gesendet habe. Bitte lassen Sie mich Ich kenne den Grund, warum
+Sie geschwiegen haben. Ich habe mir vorgestellt, warum Sie mir nicht
+sehr wichtig geantwortet haben. Bitte, Liebes, ich brauche Ihr
+ehrliches Vertrauen und Ihre Hilfe. Mit meiner guten Absicht kann ich
+Ihnen vertrauen, dass Sie die Summe von 12.500.000,00 Millionen
+US-Dollar in =C3=BCberweisen Ihr Konto in Ihrem Land, wenn m=C3=B6glich, me=
+lden
+Sie sich bei mir, um weitere Informationen zu erhalten. Ich warte auf
+Ihre Antwort und bitte lassen Sie es mich wissen, als zu schweigen.
 
-On Mon, 27 Dec 2021 14:21:59 +0800
-Chaofan Li <lichaofan@cdjrlc.com> wrote:
-
-> Signed-off-by: Chaofan Li <lichaofan@cdjrlc.com>
-> ---
->  include/linux/ssb/ssb_driver_gige.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/include/linux/ssb/ssb_driver_gige.h b/include/linux/ssb/ssb_=
-driver_gige.h
-> index 15ba0df1ee0d..28c145a51e57 100644
-> --- a/include/linux/ssb/ssb_driver_gige.h
-> +++ b/include/linux/ssb/ssb_driver_gige.h
-> @@ -95,7 +95,7 @@ static inline bool ssb_gige_must_flush_posted_writes(st=
-ruct pci_dev *pdev)
->  	struct ssb_gige *dev =3D pdev_to_ssb_gige(pdev);
->  	if (dev)
->  		return (dev->dev->bus->chip_id =3D=3D 0x4785);
-> -	return 0;
-> +	return false;
->  }
-> =20
->  /* Get the device MAC address */
-
-
-Acked-by: Michael B=C3=BCsch <m@bues.ch>
-
-
---=20
-Michael
-https://bues.ch/
-
---Sig_/Ewtc7_jKL/358o1fj2OylCA
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmHJqywACgkQ9TK+HZCN
-iw5ByQ//eeYeD/EWJrr0y6YdWL0G9X1yUgAUejS4A/A7qb4o8U82kcfwpjXHp1+1
-d1nE6wWH9uevSGOMwmxqNPNMMXjOqCiCSey/9Vxn+yDBH6sRWOBoTQU2UkekwmOm
-PJqWImE18+xy8VlcC0V+tsEPF7r5Yl7WYpwJIK6K9vqoBL+BUv9d0L6aMKEJdyon
-zEnhsxPl5ykDbLzHFbifRD0/zGTb5FtvaIkq//jexG32DWLYHljniZdO8Q19CsCr
-X99JPedrAXgZ2q6NHNs4Ahl5pMSGxJUvopcrdR0qSBcm9TDZnKYnRZ2RK4M5aLp0
-b2gcsE1xxcv8EyV3RjFjApvpRdsYchJYe9JtmlMvwykJaxE2HDWhDOYtlf4FZyrC
-Y3fqHtip/mELAabeC5t5RqqGS89hZHv7UZVX0HhsQ3AcGuWZnomccVid1plx5/Vo
-G1YnkcuhXm0kzRHxw00tIufjvVmHIhsQDm+WOE1kwWy8lSvb08mt0prNQjW1lio4
-kYgHsq8oGjX4w9qD3uCeEJmi7ePUzXtnY4eqUqSy5pKGon394vhT7j8P6+SIcVmF
-mibtdBzBqIuBGdB7B6zwcLpBnzO9h7g4Q+Qcb8LLReOCVky3UF2Fvm++QqB/6Gjg
-9sydgWEBpZlZZYN1EwhWvMb3cR5Drl0fWWNJajF1X+4Zm0SRkpg=
-=K+ZT
------END PGP SIGNATURE-----
-
---Sig_/Ewtc7_jKL/358o1fj2OylCA--
+Herr Tony Siruno.
