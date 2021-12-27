@@ -2,147 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF824480306
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Dec 2021 18:49:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E842E480460
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Dec 2021 20:18:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231173AbhL0RtD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Dec 2021 12:49:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39770 "EHLO
+        id S232115AbhL0TSK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Dec 2021 14:18:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229973AbhL0Rs6 (ORCPT
+        with ESMTP id S231442AbhL0TSK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Dec 2021 12:48:58 -0500
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59D31C06173E;
-        Mon, 27 Dec 2021 09:48:58 -0800 (PST)
-Received: by mail-oi1-x22c.google.com with SMTP id p4so26342029oia.9;
-        Mon, 27 Dec 2021 09:48:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:to:cc:references:from:subject:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=pEDTSevr8Wui7/9Ib0ms0N7Elw3SuXo4ylecnWyhlSo=;
-        b=ehv/beOOjVHY0/sgKdcpY8YzavbZDivcQVdBoIeoRKI4qC8EayE8VBARAwiSsJBeMg
-         Zz3lXu+y9k2nNSuIlCNv/KXJeQUZt+jBe9GlImPC6RkELaI4OwGtotJ8lJT4/RYUvXeg
-         5Yx++5EIDR1wB7QuoetS4tNem0svdSDSCecLUq4Nl5eBOUOKs2Gs+UisJK8zu7iYw2pq
-         PcDsXaJJl8yT+sBrdf2ZMSprNPKxdo/1kTE/fvwlcME88l50Ds0vKqwzoH4bPkfvnAPw
-         BW+JRWfrn/ItjQte78Dwgt8Dko2eYYW3nLA+EyqURprwTeFBH4+RkctBrk7LJGBiMFCC
-         vwig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:to:cc:references:from:subject:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=pEDTSevr8Wui7/9Ib0ms0N7Elw3SuXo4ylecnWyhlSo=;
-        b=grPxdLNZWxzd6MLJXLvlie32V5D+cK6q+VbTuMDzkR3MJP1KD4OB5da1uChIe9RmTa
-         5cVLVRaTYgXzxS223geGtti6TYnB9rkSBXhDePMy5/Q5lbGJzIg1t5xaZFudVus9p7MV
-         s3GA06+kfgruyHj1/n5ABoFhx39H260P5fpgXQNQ5inu0t8j0ZiWu56eCz2L+JOoRBCQ
-         UUWLMM4LFEARQQ41292Vzfm55apBrIcH8CAZZ2ZTNhMWbnoVb2AV5xJtrAEGFGPBogPA
-         dubgaDij7gl1Lq4RaK/z9Dz0VvBt4DaSzE3fFrgvoa1JVXXZzjWHpP6yg57wVH/GZsZs
-         GDlA==
-X-Gm-Message-State: AOAM532nUlvdX7rl9vye27j1VwVn4NtgHVc4eR4Xfztr203T7CRcMktC
-        WxhMOD3US83YiuD8VfYl7fk=
-X-Google-Smtp-Source: ABdhPJxb6+7biAtxOQefdtgXxvyx2b2YNDyhmSemqV7yYJxoDKcbxu7R4xufBgYDTWnPfrrEWMwb0g==
-X-Received: by 2002:a05:6808:20a6:: with SMTP id s38mr14781112oiw.152.1640627337723;
-        Mon, 27 Dec 2021 09:48:57 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 23sm2931424oty.6.2021.12.27.09.48.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Dec 2021 09:48:57 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-To:     Niklas Schnelle <schnelle@linux.ibm.com>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        John Garry <john.garry@huawei.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Ian Abbott <abbotti@mev.co.uk>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jean Delvare <jdelvare@suse.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sathya Prakash <sathya.prakash@broadcom.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        Michael Grzeschik <m.grzeschik@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Kalle Valo <kvalo@kernel.org>, Jouni Malinen <j@w1.fi>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Hannes Reinecke <hare@suse.com>,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Sumit Saxena <sumit.saxena@broadcom.com>,
-        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        GR-QLogic-Storage-Upstream@marvell.com,
-        Mark Brown <broonie@kernel.org>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Teddy Wang <teddy.wang@siliconmotion.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Forest Bond <forest@alittletooquiet.net>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-csky@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-input@vger.kernel.org,
-        netdev@vger.kernel.org, linux-media@vger.kernel.org,
-        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
-        intel-wired-lan@lists.osuosl.org, linux-wireless@vger.kernel.org,
-        megaraidlinux.pdl@broadcom.com, linux-spi@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-serial@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-watchdog@vger.kernel.org, alsa-devel@alsa-project.org
-References: <20211227164317.4146918-1-schnelle@linux.ibm.com>
- <20211227164317.4146918-2-schnelle@linux.ibm.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [RFC 01/32] Kconfig: introduce and depend on LEGACY_PCI
-Message-ID: <281298ec-3898-9b02-1d92-66bf6df41170@roeck-us.net>
-Date:   Mon, 27 Dec 2021 09:48:50 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        Mon, 27 Dec 2021 14:18:10 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3B2BC06173E;
+        Mon, 27 Dec 2021 11:18:09 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 859FD6112D;
+        Mon, 27 Dec 2021 19:18:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B2CC36AEA;
+        Mon, 27 Dec 2021 19:18:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640632688;
+        bh=n5gKVOMAx5d3Lm9+UJVfBhmS+gppM0kjtgJrzvZySQo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=OTn+aDN93CQcpoBpQH7fKL7Vmm2o6JTMsGal7zmx0Cqd5+RTzsx3or0rwT81VTax7
+         gNXTetjD0PhVDRZ8HgczJElJfhJ9udTr1WZT85l9KtbUlsY10MCuWFQx/hi6qzps3d
+         nOKQ1R792h/KbDpgxpasvUR8uCVR88hWpp9WQ/HBbJb+ChtYWIm0CerPv02cQBST8K
+         ITORhEg5MnPFq6w8mp8jFji6v8BGr9tKqERDtjh+6GPlpuyEDsYiHyvgp+DEr/3zf+
+         Fl1j/n7teqF2tWXjl8tBiHwUmlcReQz7v1KvkabTwOn0iE5dKBmurJi2uNWzqLWSoV
+         uBgljiECpFiZg==
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Luca Coelho <luciano.coelho@intel.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH] iwlwifi: mvm: Use div_s64 instead of do_div in iwl_mvm_ftm_rtt_smoothing()
+Date:   Mon, 27 Dec 2021 12:17:57 -0700
+Message-Id: <20211227191757.2354329-1-nathan@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-In-Reply-To: <20211227164317.4146918-2-schnelle@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/27/21 8:42 AM, Niklas Schnelle wrote:
-> Introduce a new LEGACY_PCI Kconfig option which gates support for legacy
-> PCI devices including those attached to a PCI-to-PCI Express bridge and
-> PCI Express devices using legacy I/O spaces. Note that this is different
-> from non PCI uses of I/O ports such as by ACPI.
-> 
-> Add dependencies on LEGACY_PCI for all PCI drivers which only target
-> legacy PCI devices and ifdef legacy PCI specific functions in ata
-> handling.
-> 
+When building ARCH=arm allmodconfig:
 
-This effectively disables all default configurations which now depend
-on CONFIG_LEGACY_PCI. Yet, I don't see CONFIG_LEGACY_PCI added to
-configuration files which explicitly enable any of the affected
-configurations. Is that on purpose ? If so, I think it should at least
-be mentioned in the commit description. However, I think it would be
-more appropriate to either delete all affected configuration flags from
-the affected configuration files, or to add CONFIG_LEGACY_PCI=y to those
-files.
+drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c: In function ‘iwl_mvm_ftm_rtt_smoothing’:
+./include/asm-generic/div64.h:222:35: error: comparison of distinct pointer types lacks a cast [-Werror]
+  222 |         (void)(((typeof((n)) *)0) == ((uint64_t *)0));  \
+      |                                   ^~
+drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c:1070:9: note: in expansion of macro ‘do_div’
+ 1070 |         do_div(rtt_avg, 100);
+      |         ^~~~~~
 
-Guenter
+do_div() has to be used with an unsigned 64-bit integer dividend but
+rtt_avg is a signed 64-bit integer.
+
+div_s64() expects a signed 64-bit integer dividend and signed 32-bit
+divisor, which fits this scenario, so use that function here to fix the
+warning.
+
+Fixes: 8b0f92549f2c ("iwlwifi: mvm: fix 32-bit build in FTM")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+index 9449d1af3c11..628aee634b2a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+@@ -1066,8 +1066,7 @@ static void iwl_mvm_ftm_rtt_smoothing(struct iwl_mvm *mvm,
+ 	overshoot = IWL_MVM_FTM_INITIATOR_SMOOTH_OVERSHOOT;
+ 	alpha = IWL_MVM_FTM_INITIATOR_SMOOTH_ALPHA;
+ 
+-	rtt_avg = alpha * rtt + (100 - alpha) * resp->rtt_avg;
+-	do_div(rtt_avg, 100);
++	rtt_avg = div_s64(alpha * rtt + (100 - alpha) * resp->rtt_avg, 100);
+ 
+ 	IWL_DEBUG_INFO(mvm,
+ 		       "%pM: prev rtt_avg=%lld, new rtt_avg=%lld, rtt=%lld\n",
+
+base-commit: bcbddc4f9d020a4a0b881cc065729c3aaeb28098
+-- 
+2.34.1
+
