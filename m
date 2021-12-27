@@ -2,151 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A658947FC5E
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Dec 2021 12:53:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E904F47FCA3
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Dec 2021 13:30:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236544AbhL0Lxc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Dec 2021 06:53:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43378 "EHLO
+        id S236703AbhL0MaR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Dec 2021 07:30:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233640AbhL0Lxb (ORCPT
+        with ESMTP id S236696AbhL0MaQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Dec 2021 06:53:31 -0500
-Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 073DBC06173E;
-        Mon, 27 Dec 2021 03:53:30 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 51CFA419BC;
-        Mon, 27 Dec 2021 11:53:20 +0000 (UTC)
-Subject: Re: [RFC PATCH 00/34] brcmfmac: Support Apple T2 and M1 platforms
-To:     Hans de Goede <hdegoede@redhat.com>, Lukas Wunner <lukas@wunner.de>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        Rafa?? Mi??ecki <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20211226153624.162281-1-marcan@marcan.st>
- <20211226191728.GA687@wunner.de>
- <06e801a0-7580-48ed-cac2-227c32a74ec2@redhat.com>
-From:   Hector Martin <marcan@marcan.st>
-Message-ID: <0a028b79-01eb-b69f-79b2-c9588dd31ad1@marcan.st>
-Date:   Mon, 27 Dec 2021 20:53:14 +0900
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:78.0)
- Gecko/20100101 Thunderbird/78.7.1
+        Mon, 27 Dec 2021 07:30:16 -0500
+X-Greylist: delayed 1652 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Dec 2021 04:30:15 PST
+Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6156C06173E;
+        Mon, 27 Dec 2021 04:30:15 -0800 (PST)
+Received: by bues.ch with esmtpsa (Exim 4.92)
+        (envelope-from <m@bues.ch>)
+        id 1n1oi0-0007gR-Kw; Mon, 27 Dec 2021 13:02:32 +0100
+Date:   Mon, 27 Dec 2021 13:01:48 +0100
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Chaofan Li <lichaofan@cdjrlc.com>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ssb: Use true and false for bool variable
+Message-ID: <20211227130148.0fd19710@wiggum>
+In-Reply-To: <20211227062159.22746-1-lichaofan@cdjrlc.com>
+References: <20211227062159.22746-1-lichaofan@cdjrlc.com>
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <06e801a0-7580-48ed-cac2-227c32a74ec2@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/Ewtc7_jKL/358o1fj2OylCA";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021/12/27 6:42, Hans de Goede wrote:
-> Hi,
-> 
-> On 12/26/21 20:17, Lukas Wunner wrote:
->> On Mon, Dec 27, 2021 at 12:35:50AM +0900, Hector Martin wrote:
->>> # On firmware
->>>
->>> As you might expect, the firmware for these machines is not available
->>> under a redistributable license; however, every owner of one of these
->>> machines *is* implicitly licensed to posess the firmware, and the OS
->>> packages containing it are available under well-known URLs on Apple's
->>> CDN with no authentication.
->>
->> Apple's EFI firmware contains a full-fledged network stack for
->> downloading macOS images from osrecovery.apple.com.  I suspect
->> that it also contains wifi firmware.
->>
->> You may want to check if it's passed to the OS as an EFI property.
->> Using that would sidestep license issues.  There's EDID data,
->> Thunderbolt DROM data and whatnot in those properties, so I
->> wouldn't be surprised if it contained wifi stuff as well.
->>
->> Enable CONFIG_APPLE_PROPERTIES and pass "dump_apple_properties"
->> on the command line to see all EFI properties in dmesg.
->> Alternatively, check "ioreg -l" on macOS.  Generally, what's
->> available in the I/O registry should also be available on Linux
->> either as an ACPI or EFI property.
-> 
-> Interesting, note that even if the files are not available as
-> a property we also have CONFIG_EFI_EMBEDDED_FIRMWARE, see:
-> 
-> drivers/firmware/efi/embedded-firmware.c
-> Documentation/driver-api/firmware/fallback-mechanisms.rst
-> 
-> I wrote this to pry/dig out some touchscreen firmwares (where
-> we have been unable to get permission to redistribute) out of
-> EFI boot_services_code mem regions on tablets where
-> the touchsceen is supported under the EFI environment.
-> 
-> This may need some tweaks, but if there is an embedded copy
-> of the firmware files in the EFI mem regions somewhere it
-> should be possible to adjust this code to grab it and present
-> it to the firmware-loader mechanism as a fallback option.
+--Sig_/Ewtc7_jKL/358o1fj2OylCA
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Note that this wouldn't work on M1 Macs anyway, since those don't have
-EFI (we provide EFI via U-Boot as a chained bootloader on those), and
-their bootloader doesn't support any networking (it doesn't even do USB
-or any kind of UI).
+On Mon, 27 Dec 2021 14:21:59 +0800
+Chaofan Li <lichaofan@cdjrlc.com> wrote:
 
-Quick recap for those not familiar with the M1 boot process: the
-bootloader is iBoot, which is extremely simple (at least compared to
-EFI). All it can do is boot kernels from APFS volumes on internal NVMe.
-The boot selection menu and recovery options are implemented as macOS
-apps running from a recovery image (~1GB), and "USB boot" is implemented
-by copying the macOS equivalent of /boot to NVMe. There is a global
-recovery image as well as per-OS recovery image. The WiFi firmware is
-present in this image as well as on normal macOS root volumes.
+> Signed-off-by: Chaofan Li <lichaofan@cdjrlc.com>
+> ---
+>  include/linux/ssb/ssb_driver_gige.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/include/linux/ssb/ssb_driver_gige.h b/include/linux/ssb/ssb_=
+driver_gige.h
+> index 15ba0df1ee0d..28c145a51e57 100644
+> --- a/include/linux/ssb/ssb_driver_gige.h
+> +++ b/include/linux/ssb/ssb_driver_gige.h
+> @@ -95,7 +95,7 @@ static inline bool ssb_gige_must_flush_posted_writes(st=
+ruct pci_dev *pdev)
+>  	struct ssb_gige *dev =3D pdev_to_ssb_gige(pdev);
+>  	if (dev)
+>  		return (dev->dev->bus->chip_id =3D=3D 0x4785);
+> -	return 0;
+> +	return false;
+>  }
+> =20
+>  /* Get the device MAC address */
 
-Our Linux install script is actually mostly a macOS install script that
-sets up all the boot components that macOS would normally have,
-including the recovery image, minus the main root filesystem. This is
-all required to work properly within Apple's security and multi-boot
-framework. So, since we're installing the recovery image, we're already
-in an easy position to pull the firmware out and stick it in the EFI
-partition for Linux to easily use. The alternative would be for Linux
-userspace to read it from APFS directly, but that seems unlikely to be
-practical until linux-apfs is upstreamed.
 
-For T2 Macs I'm sure the firmware will be in EFI somewhere, but even if
-we can get it from there (I wouldn't be surprised if it's e.g. still
-compressed in the normal boot path that doesn't start network services),
-I'm not sure it's worth implementing yet another mechanism for those
-machines. Once we have the vendor-firmware mechanism implemented for M1,
-it's easy to just run the same script on T2s and get the proper firmware
-from macOS (which might even be different from the EFI firmware...).
-macOS definitely doesn't read the firmware from EFI on those machines,
-so a hack to do it by scanning the code would probably not be something
-we can rely on to continue working across firmware updates (and they do
-update WiFi firmware; it's a rather well known source of security
-issues... so then we'd have to play the update-the-sha256 cat and mouse
-game). I'm pretty sure there's no property containing the big firmware
-blob passed explicitly to the OS; it has its own copy.
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
 
--- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+
+--=20
+Michael
+https://bues.ch/
+
+--Sig_/Ewtc7_jKL/358o1fj2OylCA
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmHJqywACgkQ9TK+HZCN
+iw5ByQ//eeYeD/EWJrr0y6YdWL0G9X1yUgAUejS4A/A7qb4o8U82kcfwpjXHp1+1
+d1nE6wWH9uevSGOMwmxqNPNMMXjOqCiCSey/9Vxn+yDBH6sRWOBoTQU2UkekwmOm
+PJqWImE18+xy8VlcC0V+tsEPF7r5Yl7WYpwJIK6K9vqoBL+BUv9d0L6aMKEJdyon
+zEnhsxPl5ykDbLzHFbifRD0/zGTb5FtvaIkq//jexG32DWLYHljniZdO8Q19CsCr
+X99JPedrAXgZ2q6NHNs4Ahl5pMSGxJUvopcrdR0qSBcm9TDZnKYnRZ2RK4M5aLp0
+b2gcsE1xxcv8EyV3RjFjApvpRdsYchJYe9JtmlMvwykJaxE2HDWhDOYtlf4FZyrC
+Y3fqHtip/mELAabeC5t5RqqGS89hZHv7UZVX0HhsQ3AcGuWZnomccVid1plx5/Vo
+G1YnkcuhXm0kzRHxw00tIufjvVmHIhsQDm+WOE1kwWy8lSvb08mt0prNQjW1lio4
+kYgHsq8oGjX4w9qD3uCeEJmi7ePUzXtnY4eqUqSy5pKGon394vhT7j8P6+SIcVmF
+mibtdBzBqIuBGdB7B6zwcLpBnzO9h7g4Q+Qcb8LLReOCVky3UF2Fvm++QqB/6Gjg
+9sydgWEBpZlZZYN1EwhWvMb3cR5Drl0fWWNJajF1X+4Zm0SRkpg=
+=K+ZT
+-----END PGP SIGNATURE-----
+
+--Sig_/Ewtc7_jKL/358o1fj2OylCA--
