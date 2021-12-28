@@ -2,235 +2,167 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F8F1480BFE
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Dec 2021 18:13:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F20D5480CAD
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Dec 2021 19:56:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236732AbhL1RNY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Dec 2021 12:13:24 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:55424 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233056AbhL1RNU (ORCPT
+        id S237082AbhL1S4L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Dec 2021 13:56:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59498 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233840AbhL1S4K (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Dec 2021 12:13:20 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2B9F3B8168C;
-        Tue, 28 Dec 2021 17:13:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC36C36AF0;
-        Tue, 28 Dec 2021 17:13:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640711595;
-        bh=T3HUEllg1Pw7vYBFjSPgjWTc0i5UwlDCIB5VYMi9zQk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=aC2AgnEYsVn8ajMr8WXjrdgvYdxaICxzBEIqsQvRNJDdSNTmgYKxxE13ldY57jvt6
-         wtSnEDHwfFeP7WPa1v2BXHsL164j0gjjc1waprQ7FxnadoJwpFcS8YPlJ1fRUUEgNG
-         1n8B6ybs2qiYbmmANluzHzAR+HA2JhBdfnB5r0OInhaGxnhy9LnnhUQ0kSAmYqyjvt
-         U8WA12Q8XWC6B4+2O+Uw+3c+bVIkQEInrB+E4lsE9bM/HIbStWglKd4TfiZn9oNjTC
-         71qzDaDkiqAQz8JEolGNowQ5U8m10M955+gDpfmp1KuoHVnN/ysNieqn8T0FB5YrhX
-         IQJmZwEC33MlQ==
-Date:   Tue, 28 Dec 2021 18:12:58 +0100
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-To:     Niklas Schnelle <schnelle@linux.ibm.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Ettore Chimenti <ek5.chimenti@gmail.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        John Garry <john.garry@huawei.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Ian Abbott <abbotti@mev.co.uk>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Sathya Prakash <sathya.prakash@broadcom.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        Michael Grzeschik <m.grzeschik@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Kalle Valo <kvalo@kernel.org>, Jouni Malinen <j@w1.fi>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Hannes Reinecke <hare@suse.com>,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Sumit Saxena <sumit.saxena@broadcom.com>,
-        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        GR-QLogic-Storage-Upstream@marvell.com,
-        Mark Brown <broonie@kernel.org>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Teddy Wang <teddy.wang@siliconmotion.com>,
-        Forest Bond <forest@alittletooquiet.net>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-input@vger.kernel.org, netdev@vger.kernel.org,
-        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
-        linux-scsi@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-wireless@vger.kernel.org, megaraidlinux.pdl@broadcom.com,
-        linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-watchdog@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [RFC 01/32] Kconfig: introduce and depend on LEGACY_PCI
-Message-ID: <20211228181107.2d476028@coco.lan>
-In-Reply-To: <4b630b7b87bd983291f628c42a1394fc0d2d86bd.camel@linux.ibm.com>
-References: <20211227164317.4146918-1-schnelle@linux.ibm.com>
-        <20211227164317.4146918-2-schnelle@linux.ibm.com>
-        <YcrJAwsKIxxX18pW@kroah.com>
-        <20211228101435.3a55b983@coco.lan>
-        <b1475f6aecb752a858941f44a957b2183cd68405.camel@linux.ibm.com>
-        <20211228135425.0a69168c@coco.lan>
-        <4b630b7b87bd983291f628c42a1394fc0d2d86bd.camel@linux.ibm.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-redhat-linux-gnu)
+        Tue, 28 Dec 2021 13:56:10 -0500
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D6CBC061574
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Dec 2021 10:56:09 -0800 (PST)
+Received: by mail-lj1-x230.google.com with SMTP id x4so14539059ljc.6
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Dec 2021 10:56:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OxdfxLuiSeWnXlU6gfhg71wxiE+vMrvatpHVdz5QN7g=;
+        b=Ras2/40KS2Q64dMJMWOqT02xLehnyD9+zE9s4u71NAFP7NawCp4DUYULihV9fus3RP
+         ALyQKuaOOAH0lWSb453txIGSfhV+pIOaoLS9cxI/lfw3q59NXIp5yCSK+NIhCS9HsqNy
+         FzweukWxgmcCnSqkf28bmkySDucRpjSaGZubd87qkka5xdiBdZ4YaSX6NpRFasCAt3pc
+         DLcfmQIxWW3ff+h1y5KQhbPc6dI1454ukl6B5pQVXRxp8Eq6jqGzUZdJP42V6+ujDHFH
+         KXznw2J0FudkddglGUcHE0hoXGEmbM82vK1bp5a8ekWIc5bdUiaBFhoHOgwfQaFRG0pr
+         ApBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OxdfxLuiSeWnXlU6gfhg71wxiE+vMrvatpHVdz5QN7g=;
+        b=eI2dJBi7f+KI/1qgKPB3TVQU7K1PP/gxIqeqEwgMsgup0BYhGvnmKxfxLWIntcXO0K
+         VL9FboHIlU/K6plv3O6DZiERzhNvR0tSp9IEzmgrBZMMm9TCTChir2dacUtwRf6xG5oi
+         vDY7wRKL4P5jtKx2sWjaxnz5JJSwRI4vnpysPHYJqOtcktTtbPWTD75+yJ0sBkXcmANK
+         08XF/dXY5dMXqlbIWUGtmz3E8N9XE7K+xFXGIvv7OwSP4tfsBv1JL6KQJdh1K2N3f3O/
+         b+CJMrbVZ5cUCvb/VllKLnnknuPsrBTdQr5Hc/HtJ4QMXfIkj8J6R0ZLELqGx9bFm57O
+         r1tw==
+X-Gm-Message-State: AOAM5302Eah4auu/0sdOOAcNd/qU6cS3wtabl5XWJnkwUmzk6sAYmoie
+        C/wTNS5SDCRyKbZx6r1hO4KH+vXgOvSY+HAROSPI5w==
+X-Google-Smtp-Source: ABdhPJxSHEH7S9BL9eRVIvEVwtJoh0q7t8Ea+aoQCnO5P1krfwZ0pAqTW/eFTemIqU9uH8bmc+kunDU8qLoyC8UA3jk=
+X-Received: by 2002:a2e:141c:: with SMTP id u28mr19256751ljd.338.1640717767195;
+ Tue, 28 Dec 2021 10:56:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20211223162848.3243702-1-trix@redhat.com> <CAKwvOd=dLjMAim_FRNyWegzEjy0_1vF2xVW1hNPQ55=32qO4Wg@mail.gmail.com>
+ <b3ef8d23-7c77-7c83-0bc8-2054b7ac1d8b@redhat.com>
+In-Reply-To: <b3ef8d23-7c77-7c83-0bc8-2054b7ac1d8b@redhat.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Tue, 28 Dec 2021 10:55:55 -0800
+Message-ID: <CAKwvOdkUQARWd7qG_hkUJYuVcvObMYTif_HDSEmJ5mSXP6y1=A@mail.gmail.com>
+Subject: Re: [PATCH] mac80211: initialize variable have_higher_than_11mbit
+To:     Tom Rix <trix@redhat.com>
+Cc:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org,
+        nathan@kernel.org, linville@tuxdriver.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Em Tue, 28 Dec 2021 16:06:44 +0100
-Niklas Schnelle <schnelle@linux.ibm.com> escreveu:
+On Fri, Dec 24, 2021 at 6:01 AM Tom Rix <trix@redhat.com> wrote:
+>
+>
+> On 12/23/21 12:30 PM, Nick Desaulniers wrote:
+> > On Thu, Dec 23, 2021 at 8:29 AM <trix@redhat.com> wrote:
+> >> From: Tom Rix <trix@redhat.com>
+> >>
+> >> Clang static analysis reports this warnings
+> >>
+> >> mlme.c:5332:7: warning: Branch condition evaluates to a
+> >>    garbage value
+> >>      have_higher_than_11mbit)
+> >>      ^~~~~~~~~~~~~~~~~~~~~~~
+> >>
+> >> have_higher_than_11mbit is only set to true some of the time in
+> >> ieee80211_get_rates() but is checked all of the time.  So
+> >> have_higher_than_11mbit needs to be initialized to false.
+> > LGTM. There's only one caller of ieee80211_get_rates() today; if there
+> > were others, they could make a similar mistake in the future. An
+> > alternate approach: ieee80211_get_rates() could unconditionally write
+> > false before the loop that could later write true. Then call sites
+> > don't need to worry about this conditional assignment. Perhaps that
+> > would be preferable? If not:
+>
+> The have_higher_than_11mbit variable had previously be initialized to false.
+>
+> The commit 5d6a1b069b7f moved the variable without initializing.
 
-(on a side note: the c/c list of this patch is too long. I would try to
-avoid using a too long list, as otherwise this e-mail may end being rejected
-by mail servers)
+I'm not disagreeing with that.
 
-> On Tue, 2021-12-28 at 13:54 +0100, Mauro Carvalho Chehab wrote:
-> >  
-> ---8<---
-> >     
-> > > > > All you really care about is the "legacy" I/O spaces here, this isn't
-> > > > > tied to PCI specifically at all, right?
-> > > > > 
-> > > > > So why not just have a OLD_STYLE_IO config option or something like
-> > > > > that, to show that it's the i/o functions we care about here, not PCI at
-> > > > > all?
-> > > > > 
-> > > > > And maybe not call it "old" or "legacy" as time constantly goes forward,
-> > > > > just describe it as it is, "DIRECT_IO"?    
-> > > > 
-> > > > Agreed. HAVE_PCI_DIRECT_IO (or something similar) seems a more appropriate
-> > > > name for it.
-> > > > 
-> > > > Thanks,
-> > > > Mauro    
-> > > 
-> > > Hmm, I might be missing something here but that sounds a lot like the
-> > > HAS_IOPORT option added in patch 02.
-> > > 
-> > > We add both LEGACY_PCI and HAS_IOPORT to differentiate between two
-> > > cases. HAS_IOPORT is for PC-style devices that are not on a PCI card
-> > > while LEGACY_PCI is for PCI drivers that require port I/O.   
-> > 
-> > I didn't look at the other patches on this series, but why it is needed
-> > to deal with them on a separate way? Won't "PCI" and "HAS_IOPORT" be enough? 
-> > 
-> > I mean, are there any architecture where HAVE_PCI=y and HAS_IOPORT=y
-> > where LEGACY_PCI shall be "n"?  
-> 
-> In the current patch set LEGACY_PCI is not currently selected by
-> architectures, though of course it could be if we know that an
-> architecture requires it. We should probably also set it in any
-> defconfig that has devices depending on it so as not to break these.
-> 
-> Other than that it would be set during kernel configuration if one
-> wants/needs support for legacy PCI devices. For testing I ran with
-> HAVE_PCI=y, HAS_IOPORT=y and LEGACY_PCI=n on both my local Ryzen 3990X
-> based workstation and Raspberry Pi 4 (DT). I guess at the moment it
-> would make most sense for special configs such as those tailored for
-> vitualization guets but in the end that would be something for
-> distributions to decide.
+My point is that these sometimes uninitialized warnings you're
+finding+fixing with clang static analyzer are demonstrating a
+recurring pattern with code.
 
-IMO, it makes sense to have a "default y" there, as on systems that
-support I/O space, disabling it will just randomly disable some drivers
-that could be required by some hardware. I won't doubt that some of 
-those could be ported from using inb/outb to use, instead, readb/writeb.
+When _not_ using the static analyzer, -Wuninitialized and
+-Wsometimes-uninitialized work in Clang by building a control flow
+graph, but they only analyze a function locally.
 
-> 
-> Arnd described the options here:
-> https://lore.kernel.org/lkml/CAK8P3a3HHeP+Gw_k2P7Qtig0OmErf0HN30G22+qHic_uZTh11Q@mail.gmail.com/
+For example, consider the following code:
+```
+_Bool is_thursday(void);
+void hello(int);
 
-Based on Arnd's description, LEGACY_PCI should depend on HAS_IOPORT.
-This is missing on patch 1. You should probably reorder your patch
-series to first create HAS_IOPORT and then add LEGACY_PCI with
-depends on, as otherwise it may cause randconfig build issues
-at robots and/or git bisect.
+void init (int* x) {
+  if (is_thursday())
+    *x = 1;
+}
 
-I would also suggest to first introduce such change and then send
-a per-subsystem LEGACY_PCI patch, as it would be a lot easier for
-maintainers to review.
+void foo (void) {
+  int x;
+  init(&x);
+  hello(x);
+}
+```
+(Clang+GCC today will warn on the above; x is considered to "escape"
+the scope of foo as init could write the address of x to a global.
+Instead clang's static analyzer will take the additional time to
+analyze the callee.  But here's a spooky question: what happens when
+init is in another translation unit? IIRC, the static analyzer doesn't
+do cross TU analysis; I could be wrong though, I haven't run it in a
+while.)
 
-> 
-> >   
-> > > This
-> > > includes pre-PCIe devices as well as PCIe devices which require
-> > > features like I/O spaces. The "legacy" naming is comes from the PCIe
-> > > spec which in section 2.1.1.2 says "PCI Express supports I/O Space for
-> > > compatibility with legacy devices which require their use. Future
-> > > revisions of this specification may deprecate the use of I/O Space."  
-> > 
-> > I would still avoid calling it LEGACY_PCI, as this sounds too generic.
-> > 
-> > I didn't read the PCI/PCIe specs, but I suspect that are a lot more
-> > features that were/will be deprecated on PCI specs as time goes by.
-> > 
-> > So, I would, instead, use something like PCI_LEGACY_IO_SPACE or 
-> > HAVE_PCI_LEGACY_IO_SPACE, in order to let it clear what "legacy"
-> > means.  
-> 
-> Hmm, I'd like to hear Bjorn's opinion on this. Personally I feel like
-> LEGACY_PCI is pretty clear since most devices are either pre-PCIe
-> devices or a compatibility feature allowing drivers for a pre-PCIe
-> device to work with a PCIe device.
+My point is that you're sending patches initializing x, when I think
+it might be nicer to instead have functions like init always write a
+value (unconditionally, rather than conditionally).  That way other
+callers of init don't have to worry about sometimes initialized
+variables.
 
-That's the main point: it is *not* disabling pre-PCIe devices or
-even legacy PCI drivers. It just disables a random set of drivers just
-because they use inb/outb instead of readb/writeb. It keeps several pure 
-PCI drivers selected, and disables some PCIe for no real reason.
+>
+> Tom
+>
+> >
+> > Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+> >
+> >> Fixes: 5d6a1b069b7f ("mac80211: set basic rates earlier")
+> >> Signed-off-by: Tom Rix <trix@redhat.com>
+> >> ---
+> >>   net/mac80211/mlme.c | 2 +-
+> >>   1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+> >> index 51f55c4ee3c6e..766cbbc9c3a72 100644
+> >> --- a/net/mac80211/mlme.c
+> >> +++ b/net/mac80211/mlme.c
+> >> @@ -5279,7 +5279,7 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+> >>           */
+> >>          if (new_sta) {
+> >>                  u32 rates = 0, basic_rates = 0;
+> >> -               bool have_higher_than_11mbit;
+> >> +               bool have_higher_than_11mbit = false;
+> >>                  int min_rate = INT_MAX, min_rate_index = -1;
+> >>                  const struct cfg80211_bss_ies *ies;
+> >>                  int shift = ieee80211_vif_get_shift(&sdata->vif);
+> >> --
+> >> 2.26.3
+> >>
+> >
+>
 
-Just to give one example, this symbol:
 
-> diff --git a/drivers/media/cec/platform/Kconfig b/drivers/media/cec/platform/Kconfig
-> index b672d3142eb7..5e92ece5b104 100644
-> --- a/drivers/media/cec/platform/Kconfig
-> +++ b/drivers/media/cec/platform/Kconfig
-> @@ -100,7 +100,7 @@ config CEC_TEGRA
->  config CEC_SECO
->  	tristate "SECO Boards HDMI CEC driver"
->  	depends on (X86 || IA64) || COMPILE_TEST
-> -	depends on PCI && DMI
-> +	depends on LEGACY_PCI && DMI
->  	select CEC_CORE
->  	select CEC_NOTIFIER
->  	help
-
-Disables HDMI CEC support on some Intel motherboards.
-Any distro meant to run on generic hardware should keep it selected.
-
-I can see some value of a "PCI_LEGACY" option to disable all
-non-PCIe drivers, but this is not the case here.
-
+-- 
 Thanks,
-Mauro
+~Nick Desaulniers
