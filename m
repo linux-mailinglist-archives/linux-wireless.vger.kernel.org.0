@@ -2,249 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A63A7480951
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Dec 2021 13:54:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D2F5480A02
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Dec 2021 15:34:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231918AbhL1Myw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Dec 2021 07:54:52 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:45878 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231695AbhL1Myr (ORCPT
+        id S231139AbhL1OeJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Dec 2021 09:34:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57180 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230051AbhL1OeJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Dec 2021 07:54:47 -0500
+        Tue, 28 Dec 2021 09:34:09 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ACB3C061574
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Dec 2021 06:34:09 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 55AA6B811D9;
-        Tue, 28 Dec 2021 12:54:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4546BC36AE8;
-        Tue, 28 Dec 2021 12:54:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A7C6161206
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Dec 2021 14:34:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2855DC36AE8;
+        Tue, 28 Dec 2021 14:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640696083;
-        bh=Gap0GwZ7QhskHCBuxCWJ0ehIbXdcDMw/3DRBfuFroAo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=uT1Bi526RdiqCovjK+BsZ0LQ21O6eAGdLfperJgxt/T4KZXCQHLowjI+U/BnL+30l
-         HJRegFW6ceEx7gRTUzAnY/lOi8+345syFMoVZJg23IyMTVv8lxOmatGJsejunnysTY
-         b7cgtAhK1rV1ciaHNDicksS8OtcQVVqsJ8fTaLs35K3JpOGyDL1M7tu/pQlaK0TC5o
-         847l3oZwcFMOo4LfbX6OTisn674FFeznktD1n6AMeVW9VoFWIsJndv9O02I/tcIR5D
-         xfPFEZmvAPeSdi4V+6+pSCDV5v0lZDnuzytqnQmuAjGw0iIL513WDap3bYMORE0U6k
-         6wPKV3GCt3SBA==
-Date:   Tue, 28 Dec 2021 13:54:25 +0100
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-To:     Niklas Schnelle <schnelle@linux.ibm.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        John Garry <john.garry@huawei.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Ian Abbott <abbotti@mev.co.uk>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sathya Prakash <sathya.prakash@broadcom.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        Michael Grzeschik <m.grzeschik@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Kalle Valo <kvalo@kernel.org>, Jouni Malinen <j@w1.fi>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Hannes Reinecke <hare@suse.com>,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Sumit Saxena <sumit.saxena@broadcom.com>,
-        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        GR-QLogic-Storage-Upstream@marvell.com,
-        Mark Brown <broonie@kernel.org>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Teddy Wang <teddy.wang@siliconmotion.com>,
-        Forest Bond <forest@alittletooquiet.net>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-input@vger.kernel.org, netdev@vger.kernel.org,
-        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
-        linux-scsi@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-wireless@vger.kernel.org, megaraidlinux.pdl@broadcom.com,
-        linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-watchdog@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [RFC 01/32] Kconfig: introduce and depend on LEGACY_PCI
-Message-ID: <20211228135425.0a69168c@coco.lan>
-In-Reply-To: <b1475f6aecb752a858941f44a957b2183cd68405.camel@linux.ibm.com>
-References: <20211227164317.4146918-1-schnelle@linux.ibm.com>
-        <20211227164317.4146918-2-schnelle@linux.ibm.com>
-        <YcrJAwsKIxxX18pW@kroah.com>
-        <20211228101435.3a55b983@coco.lan>
-        <b1475f6aecb752a858941f44a957b2183cd68405.camel@linux.ibm.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-redhat-linux-gnu)
+        s=k20201202; t=1640702048;
+        bh=tctkp2xPAbz3U+bEQ5CFcCWbV/37SD3FtCOANXB3s5Y=;
+        h=From:To:Cc:Subject:Date:From;
+        b=CSA4WWID48W9GT0u/MjYPkIDUeKdB4/JOjAQbkkfmUS2YYuZ676d7WqGt+oBHp0n8
+         40h6eD+uJYNpkQKx6fS0rnY2uNi/dL7rc4M/stUcsTpzaI8FJ1MBrayzNDA0Ux1GHI
+         n6AVEXI2eDpCOBhBffq2ipALAv8JFuSj/IMGPIu2ZPwETna9rwfUxH+meiiOl631j4
+         N3FYNMCKkg+Spr1SgpPAQMVQOK0UxcRJwU0Wx2eONORalQadqABG4JAriWDMVSz8yg
+         MxptwhLTqz1gVfCe5BgJkfNarzJl0dGQ+dH4FVrM5JM/RSIMyPkXg1EktPxLk1FS4s
+         SK9nDlW+MfkCA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [RFT] mt76: mt7615e: process txfree and txstatus without allocating skbs
+Date:   Tue, 28 Dec 2021 15:33:57 +0100
+Message-Id: <ef5df272b8b2068fc5f84039b381fbf32befe297.1640701977.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Em Tue, 28 Dec 2021 11:58:55 +0100
-Niklas Schnelle <schnelle@linux.ibm.com> escreveu:
+Similar to mt7915 driver, process txfree and txstatus without allocating
+skbs in order to reduce pressure on the memory allocator
 
-> On Tue, 2021-12-28 at 10:15 +0100, Mauro Carvalho Chehab wrote:
-> > Em Tue, 28 Dec 2021 09:21:23 +0100
-> > Greg Kroah-Hartman <gregkh@linuxfoundation.org> escreveu:
-> >   
-> > > On Mon, Dec 27, 2021 at 05:42:46PM +0100, Niklas Schnelle wrote:  
-> > > > --- a/drivers/pci/Kconfig
-> > > > +++ b/drivers/pci/Kconfig
-> > > > @@ -23,6 +23,17 @@ menuconfig PCI
-> > > >  
-> > > >  if PCI
-> > > >  
-> > > > +config LEGACY_PCI
-> > > > +	bool "Enable support for legacy PCI devices"
-> > > > +	depends on HAVE_PCI
-> > > > +	help
-> > > > +	   This option enables support for legacy PCI devices. This includes
-> > > > +	   PCI devices attached directly or via a bridge on a PCI Express bus.
-> > > > +	   It also includes compatibility features on PCI Express devices which
-> > > > +	   make use of legacy I/O spaces.    
-> > 
-> > This Kconfig doesn't seem what it is needed there, as this should be an 
-> > arch-dependent feature, and not something that the poor user should be
-> > aware if a given architecture supports it or not. Also, the above will keep
-> > causing warnings or errors with randconfigs.
-> > 
-> > Also, the "depends on HAVE_CPI" is bogus, as PCI already depends on 
-> > HAVE_PCI:  
-> 
-> Ah yes you're right.
-> 
-> > 
-> > 	menuconfig PCI
-> > 	bool "PCI support"
-> > 	depends on HAVE_PCI
-> > 	help
-> > 	  This option enables support for the PCI local bus, including
-> > 	  support for PCI-X and the foundations for PCI Express support.
-> > 	  Say 'Y' here unless you know what you are doing.
-> > 
-> > So, instead, I would expect that a new HAVE_xxx option would be
-> > added at arch/*/Kconfig, like:
-> > 
-> > 	config X86
-> > 		...
-> > 		select HAVE_PCI_DIRECT_IO
-> > 
-> > It would also make sense to document it at Documentation/features/.  
-> 
-> I'll look into that, thanks.
-> 
-> >   
-> > > All you really care about is the "legacy" I/O spaces here, this isn't
-> > > tied to PCI specifically at all, right?
-> > > 
-> > > So why not just have a OLD_STYLE_IO config option or something like
-> > > that, to show that it's the i/o functions we care about here, not PCI at
-> > > all?
-> > > 
-> > > And maybe not call it "old" or "legacy" as time constantly goes forward,
-> > > just describe it as it is, "DIRECT_IO"?  
-> > 
-> > Agreed. HAVE_PCI_DIRECT_IO (or something similar) seems a more appropriate
-> > name for it.
-> > 
-> > Thanks,
-> > Mauro  
-> 
-> Hmm, I might be missing something here but that sounds a lot like the
-> HAS_IOPORT option added in patch 02.
-> 
-> We add both LEGACY_PCI and HAS_IOPORT to differentiate between two
-> cases. HAS_IOPORT is for PC-style devices that are not on a PCI card
-> while LEGACY_PCI is for PCI drivers that require port I/O. 
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 38 ++++++++++++++++---
+ .../net/wireless/mediatek/mt76/mt7615/mmio.c  |  1 +
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  1 +
+ 3 files changed, 35 insertions(+), 5 deletions(-)
 
-I didn't look at the other patches on this series, but why it is needed
-to deal with them on a separate way? Won't "PCI" and "HAS_IOPORT" be enough? 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 8f8a7bc0169b..2d81cbf2600c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1642,9 +1642,10 @@ mt7615_mac_tx_free_token(struct mt7615_dev *dev, u16 token)
+ 	mt7615_txwi_free(dev, txwi);
+ }
+ 
+-static void mt7615_mac_tx_free(struct mt7615_dev *dev, struct sk_buff *skb)
++static void mt7615_mac_tx_free(struct mt7615_dev *dev, void *data, int len)
+ {
+-	struct mt7615_tx_free *free = (struct mt7615_tx_free *)skb->data;
++	struct mt7615_tx_free *free = (struct mt7615_tx_free *)data;
++	void *end = data + len;
+ 	u8 i, count;
+ 
+ 	mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[MT_TXQ_PSD], false);
+@@ -1659,17 +1660,21 @@ static void mt7615_mac_tx_free(struct mt7615_dev *dev, struct sk_buff *skb)
+ 	if (is_mt7615(&dev->mt76)) {
+ 		__le16 *token = &free->token[0];
+ 
++		if (WARN_ON_ONCE((void *)&token[count] > end))
++			return;
++
+ 		for (i = 0; i < count; i++)
+ 			mt7615_mac_tx_free_token(dev, le16_to_cpu(token[i]));
+ 	} else {
+ 		__le32 *token = (__le32 *)&free->token[0];
+ 
++		if (WARN_ON_ONCE((void *)&token[count] > end))
++			return;
++
+ 		for (i = 0; i < count; i++)
+ 			mt7615_mac_tx_free_token(dev, le32_to_cpu(token[i]));
+ 	}
+ 
+-	dev_kfree_skb(skb);
+-
+ 	rcu_read_lock();
+ 	mt7615_mac_sta_poll(dev);
+ 	rcu_read_unlock();
+@@ -1677,6 +1682,28 @@ static void mt7615_mac_tx_free(struct mt7615_dev *dev, struct sk_buff *skb)
+ 	mt76_worker_schedule(&dev->mt76.tx_worker);
+ }
+ 
++bool mt7615_rx_check(struct mt76_dev *mdev, void *data, int len)
++{
++	struct mt7615_dev *dev = container_of(mdev, struct mt7615_dev, mt76);
++	__le32 *rxd = (__le32 *)data;
++	__le32 *end = (__le32 *)&rxd[len / 4];
++	enum rx_pkt_type type;
++
++	type = FIELD_GET(MT_RXD0_PKT_TYPE, le32_to_cpu(rxd[0]));
++	switch (type) {
++	case PKT_TYPE_TXRX_NOTIFY:
++		mt7615_mac_tx_free(dev, data, len);
++		return false;
++	case PKT_TYPE_TXS:
++		for (rxd++; rxd + 7 <= end; rxd += 7)
++			mt7615_mac_add_txs(dev, rxd);
++		return false;
++	default:
++		return true;
++	}
++}
++EXPORT_SYMBOL_GPL(mt7615_rx_check);
++
+ void mt7615_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
+ 			 struct sk_buff *skb)
+ {
+@@ -1698,7 +1725,8 @@ void mt7615_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
+ 		dev_kfree_skb(skb);
+ 		break;
+ 	case PKT_TYPE_TXRX_NOTIFY:
+-		mt7615_mac_tx_free(dev, skb);
++		mt7615_mac_tx_free(dev, skb->data, skb->len);
++		dev_kfree_skb(skb);
+ 		break;
+ 	case PKT_TYPE_RX_EVENT:
+ 		mt7615_mcu_rx_event(dev, skb);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
+index 33f72f3657d0..ce45c3bfc443 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
+@@ -194,6 +194,7 @@ int mt7615_mmio_probe(struct device *pdev, void __iomem *mem_base,
+ 		.token_size = MT7615_TOKEN_SIZE,
+ 		.tx_prepare_skb = mt7615_tx_prepare_skb,
+ 		.tx_complete_skb = mt7615_tx_complete_skb,
++		.rx_check = mt7615_rx_check,
+ 		.rx_skb = mt7615_queue_rx_skb,
+ 		.rx_poll_complete = mt7615_rx_poll_complete,
+ 		.sta_ps = mt7615_sta_ps,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 3b66aa749a21..600fa2be4da0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -509,6 +509,7 @@ int mt7615_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ void mt7615_tx_worker(struct mt76_worker *w);
+ void mt7615_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_entry *e);
+ void mt7615_tx_token_put(struct mt7615_dev *dev);
++bool mt7615_rx_check(struct mt76_dev *mdev, void *data, int len);
+ void mt7615_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
+ 			 struct sk_buff *skb);
+ void mt7615_sta_ps(struct mt76_dev *mdev, struct ieee80211_sta *sta, bool ps);
+-- 
+2.33.1
 
-I mean, are there any architecture where HAVE_PCI=y and HAS_IOPORT=y
-where LEGACY_PCI shall be "n"?
-
-> This
-> includes pre-PCIe devices as well as PCIe devices which require
-> features like I/O spaces. The "legacy" naming is comes from the PCIe
-> spec which in section 2.1.1.2 says "PCI Express supports I/O Space for
-> compatibility with legacy devices which require their use. Future
-> revisions of this specification may deprecate the use of I/O Space."
-
-I would still avoid calling it LEGACY_PCI, as this sounds too generic.
-
-I didn't read the PCI/PCIe specs, but I suspect that are a lot more
-features that were/will be deprecated on PCI specs as time goes by.
-
-So, I would, instead, use something like PCI_LEGACY_IO_SPACE or 
-HAVE_PCI_LEGACY_IO_SPACE, in order to let it clear what "legacy"
-means.
-
-> These two separate config options allow us to compile without support
-> for these legacy PCI devices even on a system where inb()/outb() and
-> friends are required for some PC style devices and for example ACPI.
-
-Hmm... why this patch make SND_BT87X dependent on LEGACY_PCI?
-
-> @@ -172,6 +177,7 @@ config SND_AZT3328
->  
->  config SND_BT87X
->  	tristate "Bt87x Audio Capture"
-> +	depends on LEGACY_PCI
->  	select SND_PCM
->  	help
->  	  If you want to record audio from TV cards based on
-
-I couldn't find any usage of inb/outb & friends on it:
-
-	$ grep -E '(inb|outb|inw|outw|inl|outl)\b' ./sound/pci/bt87x.c
-
-It uses, instead, readl/writel:
-
-	static inline u32 snd_bt87x_readl(struct snd_bt87x *chip, u32 reg)
-	{
-	        return readl(chip->mmio + reg);
-	}
-
-	static inline void snd_bt87x_writel(struct snd_bt87x *chip, u32 reg, u32 value)
-	{
-	        writel(value, chip->mmio + reg);
-	}
-
-I failed to see what makes it different from VIDEO_BT848 and
-DVB_BT8XX drivers. They all support exactly the same chipset:
-Brooktree/Conexant BT8xx. On those devices, depending on the exact
-model, up to three separate interfaces are provided, each one with
-its own Kconfig var:
-
-	- audio I/O (SND_BT87X);
-	- video I/O (VIDEO_BT848);
-	- MPEG-TS I/O (DVB_BT8XX).
-
-Thanks,
-Mauro
