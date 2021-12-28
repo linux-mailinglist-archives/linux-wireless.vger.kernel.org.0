@@ -2,163 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D2F5480A02
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Dec 2021 15:34:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CACA480A9F
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Dec 2021 16:01:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231139AbhL1OeJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Dec 2021 09:34:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57180 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230051AbhL1OeJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Dec 2021 09:34:09 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ACB3C061574
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Dec 2021 06:34:09 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A7C6161206
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Dec 2021 14:34:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2855DC36AE8;
-        Tue, 28 Dec 2021 14:34:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640702048;
-        bh=tctkp2xPAbz3U+bEQ5CFcCWbV/37SD3FtCOANXB3s5Y=;
-        h=From:To:Cc:Subject:Date:From;
-        b=CSA4WWID48W9GT0u/MjYPkIDUeKdB4/JOjAQbkkfmUS2YYuZ676d7WqGt+oBHp0n8
-         40h6eD+uJYNpkQKx6fS0rnY2uNi/dL7rc4M/stUcsTpzaI8FJ1MBrayzNDA0Ux1GHI
-         n6AVEXI2eDpCOBhBffq2ipALAv8JFuSj/IMGPIu2ZPwETna9rwfUxH+meiiOl631j4
-         N3FYNMCKkg+Spr1SgpPAQMVQOK0UxcRJwU0Wx2eONORalQadqABG4JAriWDMVSz8yg
-         MxptwhLTqz1gVfCe5BgJkfNarzJl0dGQ+dH4FVrM5JM/RSIMyPkXg1EktPxLk1FS4s
-         SK9nDlW+MfkCA==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [RFT] mt76: mt7615e: process txfree and txstatus without allocating skbs
-Date:   Tue, 28 Dec 2021 15:33:57 +0100
-Message-Id: <ef5df272b8b2068fc5f84039b381fbf32befe297.1640701977.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.33.1
+        id S234872AbhL1PBK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Dec 2021 10:01:10 -0500
+Received: from mga11.intel.com ([192.55.52.93]:21728 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232601AbhL1PBK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 28 Dec 2021 10:01:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1640703670; x=1672239670;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rcNpKB1llm2B0gb8gi5xUfCyAetOvaC5FJnKSR6tyRM=;
+  b=Ym5fLwGP6YTtt8vyjNCSkj3JsGeyBgDh/Rscgiw5upYWgaFC4RIbzW3m
+   rf8gf2BXJ9EXsxhoMsQnIb1zLPbxALuxCqXL+HwNFGUj+uIouf6bMxF9N
+   vQsViuVnNkTeieqSuP3xRWUl1X4vu73Qv8pYsOvejqL0ROCv+NIlXURo+
+   BcYxlU9QAICrZ90mF7nzCLwJk4I/5pC+q0KS5MuWS2FJGMcrrAuzz0u5E
+   d4z8dmCGI/TeZJHcc3uQ/oxkWH2Hi2Fspt0Vdzf5CJmJqPcPhca0enxZu
+   dbjTzZ7gDhLWEjuybn8e9sh5XWcHQGS/I3WGdgedTT5uGmQpuUkIynePu
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10210"; a="238920236"
+X-IronPort-AV: E=Sophos;i="5.88,242,1635231600"; 
+   d="scan'208";a="238920236"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2021 07:01:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,242,1635231600"; 
+   d="scan'208";a="554233377"
+Received: from lkp-server01.sh.intel.com (HELO e357b3ef1427) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 28 Dec 2021 07:01:07 -0800
+Received: from kbuild by e357b3ef1427 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1n2DyM-0007f6-Mb; Tue, 28 Dec 2021 15:01:06 +0000
+Date:   Tue, 28 Dec 2021 23:00:20 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     David Mosberger-Tang <davidm@egauge.net>,
+        Ajay Singh <ajay.kathat@microchip.com>
+Cc:     kbuild-all@lists.01.org,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        David Mosberger-Tang <davidm@egauge.net>
+Subject: Re: [PATCH v2 37/50] wilc1000: introduce set_header() function
+Message-ID: <202112282213.rH4qGL7z-lkp@intel.com>
+References: <20211223011358.4031459-38-davidm@egauge.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211223011358.4031459-38-davidm@egauge.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Similar to mt7915 driver, process txfree and txstatus without allocating
-skbs in order to reduce pressure on the memory allocator
+Hi David,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Thank you for the patch! Perhaps something to improve:
+
+[auto build test WARNING on kvalo-wireless-drivers-next/master]
+[also build test WARNING on kvalo-wireless-drivers/master v5.16-rc7 next-20211224]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/0day-ci/linux/commits/David-Mosberger-Tang/wilc1000-rework-tx-path-to-use-sk_buffs-throughout/20211223-091915
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+config: sparc-randconfig-s031-20211228 (https://download.01.org/0day-ci/archive/20211228/202112282213.rH4qGL7z-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 11.2.0
+reproduce:
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # apt-get install sparse
+        # sparse version: v0.6.4-dirty
+        # https://github.com/0day-ci/linux/commit/65a4186b405c72cc6e1a405db7ed0145a28a372f
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review David-Mosberger-Tang/wilc1000-rework-tx-path-to-use-sk_buffs-throughout/20211223-091915
+        git checkout 65a4186b405c72cc6e1a405db7ed0145a28a372f
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=sparc SHELL=/bin/bash drivers/net/wireless/microchip/wilc1000/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+
+sparse warnings: (new ones prefixed by >>)
+   drivers/net/wireless/microchip/wilc1000/wlan.c:640:16: sparse: sparse: incorrect type in return expression (different base types) @@     expected unsigned int @@     got restricted __le32 [usertype] @@
+   drivers/net/wireless/microchip/wilc1000/wlan.c:640:16: sparse:     expected unsigned int
+   drivers/net/wireless/microchip/wilc1000/wlan.c:640:16: sparse:     got restricted __le32 [usertype]
+>> drivers/net/wireless/microchip/wilc1000/wlan.c:660:17: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned int [usertype] vmm_hdr @@     got restricted __le32 [usertype] @@
+   drivers/net/wireless/microchip/wilc1000/wlan.c:660:17: sparse:     expected unsigned int [usertype] vmm_hdr
+   drivers/net/wireless/microchip/wilc1000/wlan.c:660:17: sparse:     got restricted __le32 [usertype]
+>> drivers/net/wireless/microchip/wilc1000/wlan.c:668:22: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned int [usertype] prio @@     got restricted __le32 [usertype] @@
+   drivers/net/wireless/microchip/wilc1000/wlan.c:668:22: sparse:     expected unsigned int [usertype] prio
+   drivers/net/wireless/microchip/wilc1000/wlan.c:668:22: sparse:     got restricted __le32 [usertype]
+
+vim +660 drivers/net/wireless/microchip/wilc1000/wlan.c
+
+   642	
+   643	/**
+   644	 * set_header() - set WILC-specific header
+   645	 * @wilc: Pointer to the wilc structure.
+   646	 * @tqe: The packet to add to the chip queue.
+   647	 * @vmm_sz: The final size of the packet, including VMM header and padding.
+   648	 * @hdr: Pointer to the header to set
+   649	 */
+   650	static void set_header(struct wilc *wilc, struct sk_buff *tqe,
+   651			       u32 vmm_sz, void *hdr)
+   652	{
+   653		struct wilc_skb_tx_cb *tx_cb = WILC_SKB_TX_CB(tqe);
+   654		u32 mgmt_pkt = 0, vmm_hdr, prio, data_len = tqe->len;
+   655		struct wilc_vif *vif;
+   656	
+   657		/* add the VMM header word: */
+   658		if (tx_cb->type == WILC_MGMT_PKT)
+   659			mgmt_pkt = FIELD_PREP(WILC_VMM_HDR_MGMT_FIELD, 1);
+ > 660		vmm_hdr = cpu_to_le32(mgmt_pkt |
+   661				      FIELD_PREP(WILC_VMM_HDR_TYPE, tx_cb->type) |
+   662				      FIELD_PREP(WILC_VMM_HDR_PKT_SIZE, data_len) |
+   663				      FIELD_PREP(WILC_VMM_HDR_BUFF_SIZE, vmm_sz));
+   664		memcpy(hdr, &vmm_hdr, 4);
+   665	
+   666		if (tx_cb->type == WILC_NET_PKT) {
+   667			vif = netdev_priv(tqe->dev);
+ > 668			prio = cpu_to_le32(tx_cb->q_num);
+   669			memcpy(hdr + 4, &prio, sizeof(prio));
+   670			memcpy(hdr + 8, vif->bssid, ETH_ALEN);
+   671		}
+   672	}
+   673	
+
 ---
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 38 ++++++++++++++++---
- .../net/wireless/mediatek/mt76/mt7615/mmio.c  |  1 +
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  1 +
- 3 files changed, 35 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 8f8a7bc0169b..2d81cbf2600c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1642,9 +1642,10 @@ mt7615_mac_tx_free_token(struct mt7615_dev *dev, u16 token)
- 	mt7615_txwi_free(dev, txwi);
- }
- 
--static void mt7615_mac_tx_free(struct mt7615_dev *dev, struct sk_buff *skb)
-+static void mt7615_mac_tx_free(struct mt7615_dev *dev, void *data, int len)
- {
--	struct mt7615_tx_free *free = (struct mt7615_tx_free *)skb->data;
-+	struct mt7615_tx_free *free = (struct mt7615_tx_free *)data;
-+	void *end = data + len;
- 	u8 i, count;
- 
- 	mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[MT_TXQ_PSD], false);
-@@ -1659,17 +1660,21 @@ static void mt7615_mac_tx_free(struct mt7615_dev *dev, struct sk_buff *skb)
- 	if (is_mt7615(&dev->mt76)) {
- 		__le16 *token = &free->token[0];
- 
-+		if (WARN_ON_ONCE((void *)&token[count] > end))
-+			return;
-+
- 		for (i = 0; i < count; i++)
- 			mt7615_mac_tx_free_token(dev, le16_to_cpu(token[i]));
- 	} else {
- 		__le32 *token = (__le32 *)&free->token[0];
- 
-+		if (WARN_ON_ONCE((void *)&token[count] > end))
-+			return;
-+
- 		for (i = 0; i < count; i++)
- 			mt7615_mac_tx_free_token(dev, le32_to_cpu(token[i]));
- 	}
- 
--	dev_kfree_skb(skb);
--
- 	rcu_read_lock();
- 	mt7615_mac_sta_poll(dev);
- 	rcu_read_unlock();
-@@ -1677,6 +1682,28 @@ static void mt7615_mac_tx_free(struct mt7615_dev *dev, struct sk_buff *skb)
- 	mt76_worker_schedule(&dev->mt76.tx_worker);
- }
- 
-+bool mt7615_rx_check(struct mt76_dev *mdev, void *data, int len)
-+{
-+	struct mt7615_dev *dev = container_of(mdev, struct mt7615_dev, mt76);
-+	__le32 *rxd = (__le32 *)data;
-+	__le32 *end = (__le32 *)&rxd[len / 4];
-+	enum rx_pkt_type type;
-+
-+	type = FIELD_GET(MT_RXD0_PKT_TYPE, le32_to_cpu(rxd[0]));
-+	switch (type) {
-+	case PKT_TYPE_TXRX_NOTIFY:
-+		mt7615_mac_tx_free(dev, data, len);
-+		return false;
-+	case PKT_TYPE_TXS:
-+		for (rxd++; rxd + 7 <= end; rxd += 7)
-+			mt7615_mac_add_txs(dev, rxd);
-+		return false;
-+	default:
-+		return true;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(mt7615_rx_check);
-+
- void mt7615_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 			 struct sk_buff *skb)
- {
-@@ -1698,7 +1725,8 @@ void mt7615_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 		dev_kfree_skb(skb);
- 		break;
- 	case PKT_TYPE_TXRX_NOTIFY:
--		mt7615_mac_tx_free(dev, skb);
-+		mt7615_mac_tx_free(dev, skb->data, skb->len);
-+		dev_kfree_skb(skb);
- 		break;
- 	case PKT_TYPE_RX_EVENT:
- 		mt7615_mcu_rx_event(dev, skb);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
-index 33f72f3657d0..ce45c3bfc443 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
-@@ -194,6 +194,7 @@ int mt7615_mmio_probe(struct device *pdev, void __iomem *mem_base,
- 		.token_size = MT7615_TOKEN_SIZE,
- 		.tx_prepare_skb = mt7615_tx_prepare_skb,
- 		.tx_complete_skb = mt7615_tx_complete_skb,
-+		.rx_check = mt7615_rx_check,
- 		.rx_skb = mt7615_queue_rx_skb,
- 		.rx_poll_complete = mt7615_rx_poll_complete,
- 		.sta_ps = mt7615_sta_ps,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 3b66aa749a21..600fa2be4da0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -509,6 +509,7 @@ int mt7615_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- void mt7615_tx_worker(struct mt76_worker *w);
- void mt7615_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_entry *e);
- void mt7615_tx_token_put(struct mt7615_dev *dev);
-+bool mt7615_rx_check(struct mt76_dev *mdev, void *data, int len);
- void mt7615_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 			 struct sk_buff *skb);
- void mt7615_sta_ps(struct mt76_dev *mdev, struct ieee80211_sta *sta, bool ps);
--- 
-2.33.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
