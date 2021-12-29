@@ -2,152 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04B3E4814D7
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Dec 2021 17:03:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F04D481524
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Dec 2021 17:38:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237303AbhL2QDZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Dec 2021 11:03:25 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:54328 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229528AbhL2QDU (ORCPT
+        id S240817AbhL2Qiz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Dec 2021 11:38:55 -0500
+Received: from sibelius.xs4all.nl ([83.163.83.176]:50849 "EHLO
+        sibelius.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240794AbhL2Qiy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Dec 2021 11:03:20 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C75F16151F;
-        Wed, 29 Dec 2021 16:03:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8504C36AE7;
-        Wed, 29 Dec 2021 16:03:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640793799;
-        bh=JjpeFlX1D08ft528esGQ/Dmp3d8gak2dGxLVU5277kI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=JpP2t1WEsiIyRq1md3yeDJqKD5b+v6vPK3dQL5KYtPRU6IzcCE2hfeoejuHeG11gd
-         lC8IFpViEh+GNBkNBx4n5nW244Tql53dIjOETTsQ8i+5UfJvW9Ilc8EhjCT4Q4lOA4
-         QM42sYWxI3kXC/do4dsN3O/F/5QTnKyWIH4D+TjWyd3Qv8ZelIjD6sZhRig841ypqR
-         mTWsO71n3E7t2fJyuxqamjyrcVx+C0YBZwG9aCQStF11NC5RlZEPgKB5Mk28JwNuWp
-         wwR/on9msDkJi5KBJfEq5mX9Wm2DfRpIzk3oUTTCtQJyiHOzO2W6s1m8x+iPToCIeX
-         pL3LlEJMF3ouw==
-Date:   Wed, 29 Dec 2021 10:03:17 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc:     Niklas Schnelle <schnelle@linux.ibm.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Ettore Chimenti <ek5.chimenti@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        John Garry <john.garry@huawei.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Ian Abbott <abbotti@mev.co.uk>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Sathya Prakash <sathya.prakash@broadcom.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        Michael Grzeschik <m.grzeschik@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Kalle Valo <kvalo@kernel.org>, Jouni Malinen <j@w1.fi>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Hannes Reinecke <hare@suse.com>,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Sumit Saxena <sumit.saxena@broadcom.com>,
-        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        GR-QLogic-Storage-Upstream@marvell.com,
-        Mark Brown <broonie@kernel.org>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Teddy Wang <teddy.wang@siliconmotion.com>,
-        Forest Bond <forest@alittletooquiet.net>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-input@vger.kernel.org, netdev@vger.kernel.org,
-        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
-        linux-scsi@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-wireless@vger.kernel.org, megaraidlinux.pdl@broadcom.com,
-        linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-serial@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-watchdog@vger.kernel.org
-Subject: Re: [RFC 01/32] Kconfig: introduce and depend on LEGACY_PCI
-Message-ID: <20211229160317.GA1681139@bhelgaas>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211229131207.1ac25424@coco.lan>
+        Wed, 29 Dec 2021 11:38:54 -0500
+Received: from localhost (bloch.sibelius.xs4all.nl [local])
+        by bloch.sibelius.xs4all.nl (OpenSMTPD) with ESMTPA id 7e0a267d;
+        Wed, 29 Dec 2021 17:38:51 +0100 (CET)
+Date:   Wed, 29 Dec 2021 17:38:51 +0100 (CET)
+From:   Mark Kettenis <mark.kettenis@xs4all.nl>
+To:     Hector Martin <marcan@marcan.st>
+Cc:     robh@kernel.org, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, rafael@kernel.org, lenb@kernel.org,
+        aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@infineon.com,
+        wright.feng@infineon.com, sven@svenpeter.dev, alyssa@rosenzweig.io,
+        kettenis@openbsd.org, zajec5@gmail.com,
+        pieter-paul.giesberts@broadcom.com, linus.walleij@linaro.org,
+        hdegoede@redhat.com, linville@tuxdriver.com,
+        sandals@crustytoothpaste.net, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+In-Reply-To: <1e5e88a1-5457-2211-dc08-fe98415ae21b@marcan.st> (message from
+        Hector Martin on Tue, 28 Dec 2021 02:23:02 +0900)
+Subject: Re: [PATCH 01/34] dt-bindings: net: bcm4329-fmac: Add Apple
+ properties & chips
+References: <20211226153624.162281-1-marcan@marcan.st>
+ <20211226153624.162281-2-marcan@marcan.st>
+ <YcnrjySZ9mPbkidZ@robh.at.kernel.org> <1e5e88a1-5457-2211-dc08-fe98415ae21b@marcan.st>
+Message-ID: <d3cb7aff430324ca@bloch.sibelius.xs4all.nl>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Dec 29, 2021 at 01:12:07PM +0100, Mauro Carvalho Chehab wrote:
-> Em Wed, 29 Dec 2021 12:45:38 +0100
-> Niklas Schnelle <schnelle@linux.ibm.com> escreveu:
-> > ...
-
-> > I do think we agree that once done correctly there is value in
-> > such an option independent of HAS_IOPORT only gating inb() etc uses.
-
-I'm not sure I'm convinced about this.  For s390, you could do this
-patch series, where you don't define inb() at all, and you add new
-dependencies to prevent compile errors.  Or you could define inb() to
-return ~0, which is what happens on other platforms when the device is
-not present.
-
-> Personally, I don't see much value on a Kconfig var for legacy PCI I/O 
-> space. From maintenance PoV, bots won't be triggered if someone use
-> HAS_IOPORT instead of the PCI specific one - or vice-versa. So, we
-> could end having a mix of both at the wrong places, in long term.
+> From: Hector Martin <marcan@marcan.st>
+> Date: Tue, 28 Dec 2021 02:23:02 +0900
 > 
-> Also, assuming that PCIe hardware will some day abandon support for 
-> "legacy" PCI I/O space, I guess some runtime logic would be needed, 
-> in order to work with both kinds of PCIe controllers. So, having a
-> Kconfig option won't help much, IMO.
+> On 28/12/2021 01.36, Rob Herring wrote:
+> > On Mon, Dec 27, 2021 at 12:35:51AM +0900, Hector Martin wrote:
+> >> +  brcm,cal-blob:
+> >> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+> >> +    description: A per-device calibration blob for the Wi-Fi radio. This
+> >> +      should be filled in by the bootloader from platform configuration
+> >> +      data, if necessary, and will be uploaded to the device if present.
+> >> +
+> >> +  apple,module-instance:
+> >> +    $ref: /schemas/types.yaml#/definitions/string
+> >> +    description: Module codename used to identify a specific board on
+> >> +      Apple platforms. This is used to build the firmware filenames, to allow
+> >> +      different platforms to have different firmware and/or NVRAM config.
+> >> +
+> >> +  apple,antenna-sku:
+> >> +    $def: /schemas/types.yaml#/definitions/string
+> >> +    description: Antenna SKU used to identify a specific antenna configuration
+> >> +      on Apple platforms. This is use to build firmware filenames, to allow
+> >> +      platforms with different antenna configs to have different firmware and/or
+> >> +      NVRAM. This would normally be filled in by the bootloader from platform
+> >> +      configuration data.
+> > 
+> > Is there a known set of strings that can be defined?
 > 
-> So, my personal preference would be to have just one Kconfig var, but
-> I'm ok if the PCI maintainers decide otherwise.
+> For apple,module-instance there is, though it will grow with every new
+> machine. If you're happy with me pushing updates to this through
+> asahi-soc I can keep it maintained as we add DTs and compatibles there.
+> 
+> I'm curious whether you prefer this approach or something like
+> brcm,board-name instead. Right now we do:
+> 
+> apple,module-instance = "honshu"
+> 
+> That gets converted to board_name="apple,honshu" in the code, which is
+> what the firmwares are named after (plus extra info later appended, if
+> the rest of the Apple data is available).
+> 
+> But we could also do:
+> 
+> brcm,board-name = "apple,honshu"
+> 
+> The latter would be more generically useful for other platforms, since
+> it would allow e.g. having DTs for different boards that use the same
+> WiFi module/subsystem and thus a compatible NVRAM fw file alias to the
+> same file name (right now this is done with symlinks in /lib/firmware,
+> one for each equivalent board). For non-Apple platforms (i.e. if
+> antenna-sku and/or the OTP aren't available to do the funky Apple
+> firmware selection), this just ends up replacing what would normally be
+> the OF root node compatible in the firmware filename.
+> 
+> E.g. right now we have:
+> 
+> brcmfmac43430-sdio.AP6212.txt
+> brcmfmac43430-sdio.raspberrypi,3-model-b.txt
+> brcmfmac43430-sdio.raspberrypi,model-zero-w.txt -> brcmfmac43430-sdio.raspberrypi,3-model-b.txt
+> brcmfmac43430-sdio.sinovoip,bpi-m2-plus.txt -> brcmfmac43430-sdio.AP6212.txt
+> brcmfmac43430-sdio.sinovoip,bpi-m2-ultra.txt -> brcmfmac43430-sdio.AP6212.txt
+> brcmfmac43430-sdio.sinovoip,bpi-m2-zero.txt -> brcmfmac43430-sdio.AP6212.txt
+> brcmfmac43430-sdio.sinovoip,bpi-m3.txt -> brcmfmac43430-sdio.AP6212.txt
+> 
+> And this could allow the sinovoip.* DTs to say:
+> 	brcm,board-name = "AP6212";
+> 
+> And the rPi zero one:
+> 	brcm,board-name = "raspberrypi,3-model-b";
+> 
+> And avoid the symlinks.
+> 
+> The antenna-sku thing is specific to the Apple firmware selection
+> process and doesn't make sense as a more generic property.
+> 
+> antenna-sku right now always seems to be one of "ID", "X0", "X2", "X3",
+> though that could presumably change in the future. I can add this to the
+> binding if you want, though since this will be filled in by the
+> bootloader from platform data we wouldn't be validating it anyway. Not
+> sure if it's worth it.
 
-I don't really like the "LEGACY_PCI" Kconfig option.  "Legacy" just
-means something old and out of favor; it doesn't say *what* that
-something is.
+Actually what Apple does here makes quite a bit of sense.  Typically
+WiFi chips are integrated with some analog components into a shielded
+module.  The AP6212 mentioned above is an example of such a module.  I
+suspect that the module defines some of the characteristics encoded in
+the "nvmram" files, but certainly not all because the connected
+antenna will also affect how the thing behaves.  Of course many SBCs
+come without an antenna so the actual antenna depends on whatever the
+user connects to the board.  So using a module-specific "nvram" file
+is probably the best one can do here.  So I think if you want to have
+a generic module name property, it should be called "brcm,module-name"
+instead of "brcm,board-name".  However...
 
-I think you're specifically interested in I/O port space usage, and it
-seems that you want all PCI drivers that *only* use I/O port space to
-depend on LEGACY_PCI?  Drivers that can use either I/O or memory
-space or both would not depend on LEGACY_PCI?  This seems a little
-murky and error-prone.
+> > There's also the somewhat standard 'firmware-name' property that
+> > serves similar purpose, but if there's multiple files, then I guess
+> > this approach is fine.
+> 
+> Yeah, and the firmware name is constructed using non-DT information too
+> (and we have several attempted filenames times several firmware types),
+> so it wouldn't be complete.
 
-What if you used the approach from [1] but just dropped the warning?
-The inb() would return ~0 if the platform doesn't support I/O port
-space.  Drivers should be prepared to handle that because that's what
-happens if the device doesn't exist.  
-
-HAS_IOPORT and LEGACY_PCI is a lot of Kconfiggery that basically just
-avoids building drivers that aren't useful on s390.  I'm not sure the
-benefit outweighs the complication.
-
-Bjorn
-
-[1] https://lore.kernel.org/lkml/CAHk-=wg80je=K7madF4e7WrRNp37e3qh6y10Svhdc7O8SZ_-8g@mail.gmail.com/
-
+...if the way the firmware name is constructed remains Apple-specific
+because of this non-DT information, keeping the "apple,xxx" properties
+has the benefit of signalling that firmware names constructed this way
+are desired.  Or rather, their absence can signal that the
+Apple-specific code in the driver should be skipped.
