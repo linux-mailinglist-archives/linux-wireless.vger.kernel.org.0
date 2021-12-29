@@ -2,115 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F23954813CD
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Dec 2021 15:06:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04B3E4814D7
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Dec 2021 17:03:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237255AbhL2OGe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Dec 2021 09:06:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:47611 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S239742AbhL2OGd (ORCPT
+        id S237303AbhL2QDZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Dec 2021 11:03:25 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:54328 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229528AbhL2QDU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Dec 2021 09:06:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1640786793;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=aO/4Yp6T43XLmNMDQP+OwTqaYv7whlIlyBDq4dbPFsg=;
-        b=H4uN9kuFYKp06DXETLs651CfCfMow5IxU1wso1WjUjemw+q+GszkuqbBaRHdFqRJfqqWGr
-        MI2bpyBE0SmetWDmhcD93tlcZfxtVftbYE6NOfcNysHSFFWCWS9Wek9upKsTV+L2xR0Wos
-        ZyHDbWLh2sVqDfFTa5QcqlrWVLJd6rs=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-571-nfbdOnJcN9yWX1u-7yoRUQ-1; Wed, 29 Dec 2021 09:06:31 -0500
-X-MC-Unique: nfbdOnJcN9yWX1u-7yoRUQ-1
-Received: by mail-qt1-f198.google.com with SMTP id w14-20020ac87e8e000000b002b6583adcfcso15810111qtj.0
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Dec 2021 06:06:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=aO/4Yp6T43XLmNMDQP+OwTqaYv7whlIlyBDq4dbPFsg=;
-        b=3L/RRE7IS/tDP/8IR3OuNAMnKiFRZ9HjvTckPXcZ3gh825VTncFS/+DCE6fYy6d4HX
-         OMPoGsN7+cEJHGJnPUwxd8TpcA45ZO2Ytm5RoqKf4oV4oYdZP2thKn+8boMFKFEVmNTH
-         d6H6D5RG8MmP90N8wLMbys6o8EvsCJvntwxhjVwhk3eMLXqYWAXihIKkmk0ptzXr6yhF
-         ICBTEPHTLUINZLcb6RNEfrEH1nUvNnZmsDfF6ygWmY3q3Vu3olfRaMfoFUouCexRQj0v
-         ouJGkZ9UsonunOL/4HjfB3qvPVIkLM09pGxc03Kvg7e/qKl8a/AoA0iRy5gX2PZR/uXQ
-         a/9A==
-X-Gm-Message-State: AOAM5321B5D5s/mcBvrBFW52VK2qr0dbViHNHtflCyK+NgzC/U4pvyEp
-        FIhI3OPIoZIu0VxdUDaUw9XNz0hCsmCn/yx/mdIzmy+FueZ59ti5Zo6COlbvOhH8OjcvMitkCrX
-        EAEvI6FiPMSOPV0f6ttgnJW1UYho=
-X-Received: by 2002:a05:620a:4003:: with SMTP id h3mr18549159qko.153.1640786790502;
-        Wed, 29 Dec 2021 06:06:30 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyimHrQiLRtzxiuwvtJVztliA6HApJnsXsaqWdLb9ltPripN76oNC87N68Zld9IushfHCBQfg==
-X-Received: by 2002:a05:620a:4003:: with SMTP id h3mr18549076qko.153.1640786790152;
-        Wed, 29 Dec 2021 06:06:30 -0800 (PST)
-Received: from steredhat (host-87-10-236-9.retail.telecomitalia.it. [87.10.236.9])
-        by smtp.gmail.com with ESMTPSA id h2sm18124352qkn.136.2021.12.29.06.06.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Dec 2021 06:06:29 -0800 (PST)
-Date:   Wed, 29 Dec 2021 15:05:57 +0100
-From:   Stefano Garzarella <sgarzare@redhat.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     ast@kernel.org, daniel@iogearbox.net, bpf@vger.kernel.org,
-        netdev@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>,
-        marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
-        dledford@redhat.com, jgg@ziepe.ca, mustafa.ismail@intel.com,
-        shiraz.saleem@intel.com, leon@kernel.org, ap420073@gmail.com,
-        wg@grandegger.com, woojung.huh@microchip.com, andrew@lunn.ch,
-        vivien.didelot@gmail.com, f.fainelli@gmail.com, olteanv@gmail.com,
-        george.mccollister@gmail.com, michael.chan@broadcom.com,
-        jesse.brandeburg@intel.com, anthony.l.nguyen@intel.com,
-        hawk@kernel.org, john.fastabend@gmail.com, tariqt@nvidia.com,
-        saeedm@nvidia.com, ecree.xilinx@gmail.com,
-        habetsm.xilinx@gmail.com, jreuter@yaina.de, dsahern@kernel.org,
-        kvalo@codeaurora.org, pkshih@realtek.com,
-        trond.myklebust@hammerspace.com, anna.schumaker@netapp.com,
-        viro@zeniv.linux.org.uk, andrii@kernel.org, mcgrof@kernel.org,
-        keescook@chromium.org, yzaikin@google.com, nikolay@nvidia.com,
-        jiri@nvidia.com, wintera@linux.ibm.com, wenjia@linux.ibm.com,
-        pablo@netfilter.org, kadlec@netfilter.org, fw@strlen.de,
-        ralf@linux-mips.org, jhs@mojatatu.com, xiyou.wangcong@gmail.com,
-        kgraul@linux.ibm.com, steffen.klassert@secunet.com,
-        herbert@gondor.apana.org.au, arnd@arndb.de,
-        linux-bluetooth@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-can@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-hams@vger.kernel.org, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-nfs@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, bridge@lists.linux-foundation.org,
-        linux-decnet-user@lists.sourceforge.net,
-        linux-s390@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH bpf-next v2] net: don't include filter.h from net/sock.h
-Message-ID: <20211229140557.cuap5jjqz47yevda@steredhat>
-References: <20211229004913.513372-1-kuba@kernel.org>
+        Wed, 29 Dec 2021 11:03:20 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C75F16151F;
+        Wed, 29 Dec 2021 16:03:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8504C36AE7;
+        Wed, 29 Dec 2021 16:03:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640793799;
+        bh=JjpeFlX1D08ft528esGQ/Dmp3d8gak2dGxLVU5277kI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=JpP2t1WEsiIyRq1md3yeDJqKD5b+v6vPK3dQL5KYtPRU6IzcCE2hfeoejuHeG11gd
+         lC8IFpViEh+GNBkNBx4n5nW244Tql53dIjOETTsQ8i+5UfJvW9Ilc8EhjCT4Q4lOA4
+         QM42sYWxI3kXC/do4dsN3O/F/5QTnKyWIH4D+TjWyd3Qv8ZelIjD6sZhRig841ypqR
+         mTWsO71n3E7t2fJyuxqamjyrcVx+C0YBZwG9aCQStF11NC5RlZEPgKB5Mk28JwNuWp
+         wwR/on9msDkJi5KBJfEq5mX9Wm2DfRpIzk3oUTTCtQJyiHOzO2W6s1m8x+iPToCIeX
+         pL3LlEJMF3ouw==
+Date:   Wed, 29 Dec 2021 10:03:17 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc:     Niklas Schnelle <schnelle@linux.ibm.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Ettore Chimenti <ek5.chimenti@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        John Garry <john.garry@huawei.com>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Ian Abbott <abbotti@mev.co.uk>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        Sathya Prakash <sathya.prakash@broadcom.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        Michael Grzeschik <m.grzeschik@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Kalle Valo <kvalo@kernel.org>, Jouni Malinen <j@w1.fi>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Hannes Reinecke <hare@suse.com>,
+        Kashyap Desai <kashyap.desai@broadcom.com>,
+        Sumit Saxena <sumit.saxena@broadcom.com>,
+        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        GR-QLogic-Storage-Upstream@marvell.com,
+        Mark Brown <broonie@kernel.org>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Teddy Wang <teddy.wang@siliconmotion.com>,
+        Forest Bond <forest@alittletooquiet.net>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-input@vger.kernel.org, netdev@vger.kernel.org,
+        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
+        linux-scsi@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+        linux-wireless@vger.kernel.org, megaraidlinux.pdl@broadcom.com,
+        linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-serial@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-watchdog@vger.kernel.org
+Subject: Re: [RFC 01/32] Kconfig: introduce and depend on LEGACY_PCI
+Message-ID: <20211229160317.GA1681139@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211229004913.513372-1-kuba@kernel.org>
+In-Reply-To: <20211229131207.1ac25424@coco.lan>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Dec 28, 2021 at 04:49:13PM -0800, Jakub Kicinski wrote:
->sock.h is pretty heavily used (5k objects rebuilt on x86 after
->it's touched). We can drop the include of filter.h from it and
->add a forward declaration of struct sk_filter instead.
->This decreases the number of rebuilt objects when bpf.h
->is touched from ~5k to ~1k.
->
->There's a lot of missing includes this was masking. Primarily
->in networking tho, this time.
->
->Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
->Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->---
->v2: https://lore.kernel.org/all/20211228192519.386913-1-kuba@kernel.org/
-> - fix build in bond on ia64
-> - fix build in ip6_fib with randconfig
+On Wed, Dec 29, 2021 at 01:12:07PM +0100, Mauro Carvalho Chehab wrote:
+> Em Wed, 29 Dec 2021 12:45:38 +0100
+> Niklas Schnelle <schnelle@linux.ibm.com> escreveu:
+> > ...
 
-For AF_VSOCK:
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+> > I do think we agree that once done correctly there is value in
+> > such an option independent of HAS_IOPORT only gating inb() etc uses.
+
+I'm not sure I'm convinced about this.  For s390, you could do this
+patch series, where you don't define inb() at all, and you add new
+dependencies to prevent compile errors.  Or you could define inb() to
+return ~0, which is what happens on other platforms when the device is
+not present.
+
+> Personally, I don't see much value on a Kconfig var for legacy PCI I/O 
+> space. From maintenance PoV, bots won't be triggered if someone use
+> HAS_IOPORT instead of the PCI specific one - or vice-versa. So, we
+> could end having a mix of both at the wrong places, in long term.
+> 
+> Also, assuming that PCIe hardware will some day abandon support for 
+> "legacy" PCI I/O space, I guess some runtime logic would be needed, 
+> in order to work with both kinds of PCIe controllers. So, having a
+> Kconfig option won't help much, IMO.
+> 
+> So, my personal preference would be to have just one Kconfig var, but
+> I'm ok if the PCI maintainers decide otherwise.
+
+I don't really like the "LEGACY_PCI" Kconfig option.  "Legacy" just
+means something old and out of favor; it doesn't say *what* that
+something is.
+
+I think you're specifically interested in I/O port space usage, and it
+seems that you want all PCI drivers that *only* use I/O port space to
+depend on LEGACY_PCI?  Drivers that can use either I/O or memory
+space or both would not depend on LEGACY_PCI?  This seems a little
+murky and error-prone.
+
+What if you used the approach from [1] but just dropped the warning?
+The inb() would return ~0 if the platform doesn't support I/O port
+space.  Drivers should be prepared to handle that because that's what
+happens if the device doesn't exist.  
+
+HAS_IOPORT and LEGACY_PCI is a lot of Kconfiggery that basically just
+avoids building drivers that aren't useful on s390.  I'm not sure the
+benefit outweighs the complication.
+
+Bjorn
+
+[1] https://lore.kernel.org/lkml/CAHk-=wg80je=K7madF4e7WrRNp37e3qh6y10Svhdc7O8SZ_-8g@mail.gmail.com/
 
