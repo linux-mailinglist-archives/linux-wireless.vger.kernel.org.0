@@ -2,121 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1A9D480E98
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Dec 2021 02:33:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 691C0480F76
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Dec 2021 05:00:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238217AbhL2Bdw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Dec 2021 20:33:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34314 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232378AbhL2Bdu (ORCPT
+        id S230166AbhL2EAu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Dec 2021 23:00:50 -0500
+Received: from smtp12.infineon.com ([217.10.52.106]:35702 "EHLO
+        smtp12.infineon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229690AbhL2EAu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Dec 2021 20:33:50 -0500
-Received: from mail-vk1-xa34.google.com (mail-vk1-xa34.google.com [IPv6:2607:f8b0:4864:20::a34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06494C061574;
-        Tue, 28 Dec 2021 17:33:50 -0800 (PST)
-Received: by mail-vk1-xa34.google.com with SMTP id b77so11211673vka.11;
-        Tue, 28 Dec 2021 17:33:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=IBcil9O+VRrBlwSK9WQFnnXvi87jfhzw0Yvv4tQzzQ4=;
-        b=noDIEQ8P8sUYyX/OE18Q5FGCEdOtXRbYUWogiKJXUl19FWceFTLSzy33NO7370WsVb
-         xNtywJS1aHmXYo/ZkLPfxpKAuLKxK4YE+eVz8VTkizITqKtfycFbgYZ8mkgMJWEJt21+
-         SNTUf5JrpwvWrXhCSoo6DxEmJYz1lYAcgrZn5Siak7Xevszf8m10NCTaN+zXiqI+KIS/
-         Eu3eNT4oCfEFd0fiD/WXOlhQ5EblQr9RpaZdLMvylKbA5ymBdmZHyFsCK1nxmVisoAn9
-         uYVylo+Wo6Qmr7pTJyQxMeOn82Ns+dOHizKeng6bH3WIfBKj/q/NPdRFTbbgDlFIWhAW
-         0Xqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=IBcil9O+VRrBlwSK9WQFnnXvi87jfhzw0Yvv4tQzzQ4=;
-        b=3eKziM9dojfbmU9z227wmvZxlUvkvXHU2ObjzOZ+JHo4TGEQOGkgkHXx0VIKXk6Rbf
-         wp0K0vm1TgBxuOtxfbryl3o+2Q18d/kTpo/EmRMCUboBYL7iH5dvQ7NnrwPvBIVala5L
-         Fb960C6ya+ThkV7RaGLzjOyzm3tR+1bNlgdjqUfG8MpB7CevtAbtY7PdIYXACooshlDs
-         j1Q4KTlpU0pYnu58qkRrzYRTUMRb0lo92oRsgedX0pJsGZ6vYSOF06g2nYBBGO5Cfbtx
-         L4uMl89CL7qfLKHaZ9X3cz0A0lM51OeW0utowExoHZO2TBteF5pymxgUYdMpmghYxy9q
-         1/8w==
-X-Gm-Message-State: AOAM533T5kB3Po560hb5BI3iCorpl3jAHUh+HrfpwytPABF935FHV/k4
-        rWQ/s+0C5WOUZuoj/Dh2Apo=
-X-Google-Smtp-Source: ABdhPJwKKoiH34wYig8kLDUOCk3RH8x02XOvCc3/C+ewf+rsM//1r3lSXc1Bk8D6hTuZbPILWEIFJw==
-X-Received: by 2002:a1f:9f04:: with SMTP id i4mr7411735vke.33.1640741629056;
-        Tue, 28 Dec 2021 17:33:49 -0800 (PST)
-Received: from [10.230.2.158] ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d15sm3964460vsb.18.2021.12.28.17.33.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Dec 2021 17:33:48 -0800 (PST)
-Message-ID: <5a82690c-7dc0-81de-4dd6-06e26e4b9b92@gmail.com>
-Date:   Tue, 28 Dec 2021 17:33:39 -0800
+        Tue, 28 Dec 2021 23:00:50 -0500
+X-Greylist: delayed 425 seconds by postgrey-1.27 at vger.kernel.org; Tue, 28 Dec 2021 23:00:50 EST
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
+  t=1640750451; x=1672286451;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Jf5dW9y17LfNXimn/oPMDAFuJwoZ0NI6Dg8EDDpDDDo=;
+  b=MTRSlt9jniEeFa1vpxG+QOO4UhJys3Lmcb3Pv+sektITaNlcKZasExl6
+   nnTA7BFVnH0ZFo/8rkt7BZMX+ni3yJZQfVMmfvhkLKBOjbgWiync0Vgz8
+   9UHEYlXDat0qDPPn2NtOrGyJGL/kjvM+Jw4BqNZm2jyz6JKJ2qz5vhG6G
+   M=;
+X-SBRS: None
+X-IronPort-AV: E=McAfee;i="6200,9189,10211"; a="275088866"
+X-IronPort-AV: E=Sophos;i="5.88,244,1635199200"; 
+   d="scan'208";a="275088866"
+Received: from unknown (HELO mail.spansion.com) ([10.248.30.8])
+  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-SHA384; 29 Dec 2021 04:53:44 +0100
+Received: from inf2.aus.cypress.com (10.248.80.6) by BIZ-EXHT102.spansion.com
+ (10.248.30.8) with Microsoft SMTP Server id 14.3.498.0; Tue, 28 Dec 2021
+ 21:53:42 -0600
+Received: from iot-wlan-dev-u01.aus.cypress.com (iot-wlan-dev-u01
+ [10.248.81.191])       by inf2.aus.cypress.com (Postfix) with ESMTP id 4FA64100243;
+        Tue, 28 Dec 2021 21:53:42 -0600 (CST)
+Received: by iot-wlan-dev-u01.aus.cypress.com (Postfix, from userid 27991)      id
+ 42C941AC562; Tue, 28 Dec 2021 21:53:42 -0600 (CST)
+From:   Ian Lin <ian.lin-ee@infineon.com>
+To:     <linux-wireless@vger.kernel.org>
+CC:     <brcm80211-dev-list@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <kvalo@codeaurora.org>,
+        <Chi-Hsien.Lin@infineon.com>, <Wright.Feng@infineon.com>,
+        <Double.Lo@infineon.com>, Ian Lin <ian.lin-ee@infineon.com>
+Subject: [PATCH v3] brcmfmac: add CYW43570 PCIE device
+Date:   Tue, 28 Dec 2021 21:51:44 -0600
+Message-ID: <20211229035144.9205-1-ian.lin-ee@infineon.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.1
-Subject: Re: [PATCH bpf-next v2] net: don't include filter.h from net/sock.h
-Content-Language: en-US
-To:     Jakub Kicinski <kuba@kernel.org>, ast@kernel.org,
-        daniel@iogearbox.net
-Cc:     bpf@vger.kernel.org, netdev@vger.kernel.org,
-        Marc Kleine-Budde <mkl@pengutronix.de>, marcel@holtmann.org,
-        johan.hedberg@gmail.com, luiz.dentz@gmail.com, dledford@redhat.com,
-        jgg@ziepe.ca, mustafa.ismail@intel.com, shiraz.saleem@intel.com,
-        leon@kernel.org, ap420073@gmail.com, wg@grandegger.com,
-        woojung.huh@microchip.com, andrew@lunn.ch,
-        vivien.didelot@gmail.com, olteanv@gmail.com,
-        george.mccollister@gmail.com, michael.chan@broadcom.com,
-        jesse.brandeburg@intel.com, anthony.l.nguyen@intel.com,
-        hawk@kernel.org, john.fastabend@gmail.com, tariqt@nvidia.com,
-        saeedm@nvidia.com, ecree.xilinx@gmail.com,
-        habetsm.xilinx@gmail.com, jreuter@yaina.de, dsahern@kernel.org,
-        kvalo@codeaurora.org, pkshih@realtek.com,
-        trond.myklebust@hammerspace.com, anna.schumaker@netapp.com,
-        viro@zeniv.linux.org.uk, andrii@kernel.org, mcgrof@kernel.org,
-        keescook@chromium.org, yzaikin@google.com, nikolay@nvidia.com,
-        jiri@nvidia.com, wintera@linux.ibm.com, wenjia@linux.ibm.com,
-        pablo@netfilter.org, kadlec@netfilter.org, fw@strlen.de,
-        ralf@linux-mips.org, jhs@mojatatu.com, xiyou.wangcong@gmail.com,
-        kgraul@linux.ibm.com, sgarzare@redhat.com,
-        steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
-        arnd@arndb.de, linux-bluetooth@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-can@vger.kernel.org,
-        intel-wired-lan@lists.osuosl.org, linux-hams@vger.kernel.org,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-nfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        bridge@lists.linux-foundation.org,
-        linux-decnet-user@lists.sourceforge.net,
-        linux-s390@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, virtualization@lists.linux-foundation.org
-References: <20211229004913.513372-1-kuba@kernel.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20211229004913.513372-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Soontak Lee <soontak.lee@cypress.com>
 
+CYW43570 is a 3-antenna, 2x2 MIMO,802.11a/b/g/n/ac, PCIe 3.0 for WLAN.
+It is BT/WIFI combo.
 
-On 12/28/2021 4:49 PM, Jakub Kicinski wrote:
-> sock.h is pretty heavily used (5k objects rebuilt on x86 after
-> it's touched). We can drop the include of filter.h from it and
-> add a forward declaration of struct sk_filter instead.
-> This decreases the number of rebuilt objects when bpf.h
-> is touched from ~5k to ~1k.
-> 
-> There's a lot of missing includes this was masking. Primarily
-> in networking tho, this time.
-> 
-> Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Soontak Lee <soontak.lee@cypress.com>
+Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@infineon.com>
+Signed-off-by: Ian Lin <ian.lin-ee@infineon.com>
+---
+Changes in v3:
+  - Fix indentation
+Changes in v2:
+  - Add missing Signed-off-by in commit message
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c       | 1 +
+ drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-It would be nice if we used the number of files rebuilt because of a 
-header file change as another metric that the kernel is evaluated with 
-from release to release (or even on a commit by commit basis). Food for 
-thought.
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+index 8b149996fc00..ceeb1f10752a 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+@@ -2106,6 +2106,7 @@ static const struct pci_device_id brcmf_pcie_devid_table[] = {
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4356_DEVICE_ID),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43567_DEVICE_ID),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43570_DEVICE_ID),
++	BRCMF_PCIE_DEVICE(BRCM_PCIE_43570_RAW_DEVICE_ID),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4358_DEVICE_ID),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4359_DEVICE_ID),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_DEVICE_ID),
+diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+index 9d81320164ce..3bbe2388ec54 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
++++ b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+@@ -71,6 +71,7 @@
+ #define BRCM_PCIE_4356_DEVICE_ID	0x43ec
+ #define BRCM_PCIE_43567_DEVICE_ID	0x43d3
+ #define BRCM_PCIE_43570_DEVICE_ID	0x43d9
++#define BRCM_PCIE_43570_RAW_DEVICE_ID	0xaa31
+ #define BRCM_PCIE_4358_DEVICE_ID	0x43e9
+ #define BRCM_PCIE_4359_DEVICE_ID	0x43ef
+ #define BRCM_PCIE_43602_DEVICE_ID	0x43ba
 -- 
-Florian
+2.25.0
+
