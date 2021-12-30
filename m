@@ -2,179 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E1B5481645
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Dec 2021 20:26:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43CDE4817E5
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Dec 2021 01:21:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230376AbhL2T0W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Dec 2021 14:26:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:26054 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230305AbhL2T0W (ORCPT
+        id S233630AbhL3AVV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Dec 2021 19:21:21 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:52470 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230083AbhL3AVV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Dec 2021 14:26:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1640805981;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7X92anWu7YA4HMgaOFRPoEtvjubDlUwqFYaCnsFgT4Q=;
-        b=I5D7QiesfISaCKVfCO1RzK3X2j0llU4QPSbSFsUjy0vqqGfB8vpmMatznyznZyQDLjJuzj
-        Fddw6W0zS4XPwJTqOLY9d+I17gx2aQe9GiMBLMJPQp4nSnt0GGi8sBYH/lqWB/sck8xu6B
-        ch2cTzgkHcQMzaG+Gw1s2KmW5PD2kB4=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-96-b9M_l2w1M6aQaXG1kj3QUg-1; Wed, 29 Dec 2021 14:26:11 -0500
-X-MC-Unique: b9M_l2w1M6aQaXG1kj3QUg-1
-Received: by mail-qt1-f200.google.com with SMTP id o12-20020a05622a008c00b002aff5552c89so16073334qtw.23
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Dec 2021 11:26:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=7X92anWu7YA4HMgaOFRPoEtvjubDlUwqFYaCnsFgT4Q=;
-        b=YRGYoBTcOZ6+iPaTGLhm3TnSqFlx+fZhbhrV6nLf0mhJyju9WSLQwIeQvgGnTHKHIE
-         KDO5OupVleZUInlyZLvPGcdmTQ1rj1SdVB86rS1onT7y/iWLudlbfz9MZ2Gm/mjQjenf
-         4AYq/bKObvepFGeasAE8zUhgYeBx84Oe3JOJuKRrGs8NPSTb2LbH4wedj2cvfaCAO9X5
-         EYtqJYPUkvyVcdZoNDXYYWXHW5yhJHabT533Xi6h53FvG+UnWuLxYZYn4dygAw+zBPpt
-         tQ6QNIeE0QCi0GNEqm0Qv7YMA6dErjXKWfr8+q+7fUkk7pEVm5BlCofsGu5VrpMi6JuM
-         GhAQ==
-X-Gm-Message-State: AOAM532nZU0eJoJ/rJl7jkHgBZuGGRDOYQIlRR5wAViY3cccTHHcl6Os
-        J9xzb5EDxq9KrFhXTeTlT0yS40V4MZ2Dy3oqYq9v7wxfHpo+4TlzcOwJcW5VOMq4sBru7yXdz1C
-        M2WFsmFHUTAYSu1r03Q9L3dE2VHA=
-X-Received: by 2002:a05:622a:180c:: with SMTP id t12mr24151801qtc.507.1640805963405;
-        Wed, 29 Dec 2021 11:26:03 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyCMkCBBIEHoU7TQXcXidUDS5rm91MbIisjUvsPSiogTt212anKiDlDRNSIU+0yzvg7HIrUDQ==
-X-Received: by 2002:a05:622a:180c:: with SMTP id t12mr24151786qtc.507.1640805963173;
-        Wed, 29 Dec 2021 11:26:03 -0800 (PST)
-Received: from localhost.localdomain (075-142-250-213.res.spectrum.com. [75.142.250.213])
-        by smtp.gmail.com with ESMTPSA id p16sm15294493qtx.19.2021.12.29.11.26.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Dec 2021 11:26:02 -0800 (PST)
-Subject: Re: [PATCH] mac80211: initialize variable have_higher_than_11mbit
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org,
-        nathan@kernel.org, linville@tuxdriver.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-        Linus Torvalds <torvalds@linux-foundation.org>
-References: <20211223162848.3243702-1-trix@redhat.com>
- <CAKwvOd=dLjMAim_FRNyWegzEjy0_1vF2xVW1hNPQ55=32qO4Wg@mail.gmail.com>
- <b3ef8d23-7c77-7c83-0bc8-2054b7ac1d8b@redhat.com>
- <CAKwvOdkUQARWd7qG_hkUJYuVcvObMYTif_HDSEmJ5mSXP6y1=A@mail.gmail.com>
-From:   Tom Rix <trix@redhat.com>
-Message-ID: <3db47d49-68fb-c286-b237-bfce1cb0ff08@redhat.com>
-Date:   Wed, 29 Dec 2021 11:26:00 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        Wed, 29 Dec 2021 19:21:21 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A91D615B1;
+        Thu, 30 Dec 2021 00:21:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24313C36AEA;
+        Thu, 30 Dec 2021 00:21:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640823680;
+        bh=OM8FADTZVaGNNxsuvbX2jzyT1YNPuBV7MwXBf2jO49w=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=qX+X0xYm8PbaX17wb/R1gATM3gDotmaQQ2Em7IuBUdRpKt7BcuHfaR6KhaFamhWiS
+         fTs9tu4L5uO1Aq/qyhDcxrcWJYzgsDE7cH14YvN4P1LKMHzzJNoWvYAqvQmbY19dMW
+         dNCLXMoDEEIucjeUq/5Wrs+Kzw6TH6YxQpBD6YCoj/IJv9rVMCmfubCYlAJwsr1deo
+         cKeZIUehmX7EHZ8m4NBgDJ9C4HmHWlflp1Q6M4sZN2Es3ru2OkX0DPC3rcHqHcFhGQ
+         mQgRwwa81QAOwMYNjKqONUCy/bbhBFiEW/pYv0ho4C2o99nZLHtPbEkC7O659miwEa
+         xj/lqG7ABd4zg==
+Date:   Wed, 29 Dec 2021 18:21:18 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc:     =?iso-8859-1?B?zfFpZ28=?= Huguet <ihuguet@redhat.com>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        sean.wang@mediatek.com,
+        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
+        objelf@gmail.com, lorenzo@kernel.org, Soul.Huang@mediatek.com,
+        Felix Fietkau <nbd@nbd.name>, linux-pci@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: Re: [Bug] Driver mt7921e cause computer reboot.
+Message-ID: <20211230002118.GA1717394@bhelgaas>
 MIME-Version: 1.0
-In-Reply-To: <CAKwvOdkUQARWd7qG_hkUJYuVcvObMYTif_HDSEmJ5mSXP6y1=A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABXGCsOX72u3yDcGNF64zbm5mC+Z=_8rxKM0cu7m4i1D8iWvbA@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+[+cc Lorenzo, Ryder (the rest of the mt7921 maintainers)]
 
-On 12/28/21 10:55 AM, Nick Desaulniers wrote:
-> On Fri, Dec 24, 2021 at 6:01 AM Tom Rix <trix@redhat.com> wrote:
->>
->> On 12/23/21 12:30 PM, Nick Desaulniers wrote:
->>> On Thu, Dec 23, 2021 at 8:29 AM <trix@redhat.com> wrote:
->>>> From: Tom Rix <trix@redhat.com>
->>>>
->>>> Clang static analysis reports this warnings
->>>>
->>>> mlme.c:5332:7: warning: Branch condition evaluates to a
->>>>     garbage value
->>>>       have_higher_than_11mbit)
->>>>       ^~~~~~~~~~~~~~~~~~~~~~~
->>>>
->>>> have_higher_than_11mbit is only set to true some of the time in
->>>> ieee80211_get_rates() but is checked all of the time.  So
->>>> have_higher_than_11mbit needs to be initialized to false.
->>> LGTM. There's only one caller of ieee80211_get_rates() today; if there
->>> were others, they could make a similar mistake in the future. An
->>> alternate approach: ieee80211_get_rates() could unconditionally write
->>> false before the loop that could later write true. Then call sites
->>> don't need to worry about this conditional assignment. Perhaps that
->>> would be preferable? If not:
->> The have_higher_than_11mbit variable had previously be initialized to false.
->>
->> The commit 5d6a1b069b7f moved the variable without initializing.
-> I'm not disagreeing with that.
->
-> My point is that these sometimes uninitialized warnings you're
-> finding+fixing with clang static analyzer are demonstrating a
-> recurring pattern with code.
->
-> When _not_ using the static analyzer, -Wuninitialized and
-> -Wsometimes-uninitialized work in Clang by building a control flow
-> graph, but they only analyze a function locally.
->
-> For example, consider the following code:
-> ```
-> _Bool is_thursday(void);
-> void hello(int);
->
-> void init (int* x) {
->    if (is_thursday())
->      *x = 1;
-> }
->
-> void foo (void) {
->    int x;
->    init(&x);
->    hello(x);
-> }
-> ```
-> (Clang+GCC today will warn on the above; x is considered to "escape"
-> the scope of foo as init could write the address of x to a global.
-> Instead clang's static analyzer will take the additional time to
-> analyze the callee.  But here's a spooky question: what happens when
-> init is in another translation unit? IIRC, the static analyzer doesn't
-> do cross TU analysis; I could be wrong though, I haven't run it in a
-> while.)
->
-> My point is that you're sending patches initializing x, when I think
-> it might be nicer to instead have functions like init always write a
-> value (unconditionally, rather than conditionally).  That way other
-> callers of init don't have to worry about sometimes initialized
-> variables.
+Thread: https://lore.kernel.org/all/CABXGCsODP8ze_mvzfJKcRYxuS-esVgHXAvDXS5KN3xFUN6bWgA@mail.gmail.com/T/#u
 
-The variable is passed to only to the static function ieee80211_get_rates().
+On Mon, Dec 27, 2021 at 04:30:11PM +0500, Mikhail Gavrilov wrote:
+> On Mon, 27 Dec 2021 at 15:11, Íñigo Huguet <ihuguet@redhat.com> wrote:
+> > I've been experiencing similar problems, but they're solved at v5.15
+> > version, at least for me.
+> >
+> > How are you installing the kernel? Custom build? Have you updated the
+> > firmware to latest versions, as well?
+> 
+> I use Fedora Rawhide with default kernel and firmware packages.
+> 
+> $ uname -r
+> 5.16.0-0.rc6.20211223gitbc491fb12513.44.fc36.x86_64
+> $ rpm -q linux-firmware
+> linux-firmware-20211027-126.fc36.noarch
+> 
+> >
+> > For me, these differences seem to be the normal effect of the driver
+> > not recognizing the device.
+> 
+> By the kernel logs, it looks like this:
+> After reboot:
+> $ dmesg | grep mt7921e
+> [    8.629358] mt7921e 0000:05:00.0: enabling device (0000 -> 0002)
+> [    8.630229] mt7921e 0000:05:00.0: ASIC revision: 79610010
+> [    9.687652] mt7921e: probe of 0000:05:00.0 failed with error -110
+> 
+> # rmmod mt7921e
+> # modprobe mt7921e
+> 
+> [  215.514503] mt7921e 0000:05:00.0: ASIC revision: feed0000
+> [  216.604741] mt7921e: probe of 0000:05:00.0 failed with error -110
+> 
+> After cold boot after shutdown:
+> $ dmesg | grep mt7921e
+> [    8.545171] mt7921e 0000:05:00.0: enabling device (0000 -> 0002)
+> [    8.545757] mt7921e 0000:05:00.0: ASIC revision: 79610010
+> [    8.631156] mt7921e 0000:05:00.0: HW/SW Version: 0x8a108a10, Build
+> Time: 20211014150838a
+> [    8.912687] mt7921e 0000:05:00.0: WM Firmware Version: ____010000,
+> Build Time: 20211014150922
+> [    8.938756] mt7921e 0000:05:00.0: Firmware init done
+> [    9.753257] mt7921e 0000:05:00.0 wlp5s0: renamed from wlan0
+> 
+> It looks like something is not re-initialized after a reboot.
+> Laptop BIOS is latest: Version 316
+> https://dlcdnets.asus.com/pub/ASUS/GamingNB/G513QY/G513QYAS316.zip
+> 
+> Maybe anyone from the pci mailing list can lid some light why pci
+> device not re-initialized after a reboot?
 
-Tom
+Sorry for the inconvenience and thank you very much for the report!
 
->
->> Tom
->>
->>> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
->>>
->>>> Fixes: 5d6a1b069b7f ("mac80211: set basic rates earlier")
->>>> Signed-off-by: Tom Rix <trix@redhat.com>
->>>> ---
->>>>    net/mac80211/mlme.c | 2 +-
->>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
->>>> index 51f55c4ee3c6e..766cbbc9c3a72 100644
->>>> --- a/net/mac80211/mlme.c
->>>> +++ b/net/mac80211/mlme.c
->>>> @@ -5279,7 +5279,7 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
->>>>            */
->>>>           if (new_sta) {
->>>>                   u32 rates = 0, basic_rates = 0;
->>>> -               bool have_higher_than_11mbit;
->>>> +               bool have_higher_than_11mbit = false;
->>>>                   int min_rate = INT_MAX, min_rate_index = -1;
->>>>                   const struct cfg80211_bss_ies *ies;
->>>>                   int shift = ieee80211_vif_get_shift(&sdata->vif);
->>>> --
->>>> 2.26.3
->>>>
->
+If I understand correctly, when you do a cold boot, the mt7921e device
+works properly.
+
+But when you simply reboot, without a power off, the device does not
+work, and the dmesg log contains:
+
+  pci 0000:05:00.0: [14c3:7961] type 00 class 0x028000
+  pci 0000:05:00.0: reg 0x10: [mem 0xfc30300000-0xfc303fffff 64bit pref]
+  pci 0000:05:00.0: reg 0x18: [mem 0xfc30400000-0xfc30403fff 64bit pref]
+  pci 0000:05:00.0: reg 0x20: [mem 0xfc30404000-0xfc30404fff 64bit pref]
+  ...
+  mt7921e 0000:05:00.0: enabling device (0000 -> 0002)
+  mt7921e 0000:05:00.0: ASIC revision: 79610010
+  mt7921e: probe of 0000:05:00.0 failed with error -110
+
+That means the device responds to PCI config reads and writes, but the
+probe failed with -ETIMEDOUT after printing the ASIC revision [1].
+
+devm_request_irq() should not return -ETIMEDOUT, but it looks like
+mt7921_dma_init() can (via mt7921_dma_disable()).  Maybe the mt7921e
+driver can't tolerate some state the device was left in by reboot?
+
+I don't see anything obviously wrong from a PCI core perspective.  The
+PCI core does not reset devices either when going down for a reboot or
+when coming up at boot-time.
+
+Bjorn
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/mediatek/mt76/mt7921/pci.c?id=v5.16-rc6#n187
+
 
