@@ -2,79 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 362714823C4
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Dec 2021 12:36:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AE42482453
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Dec 2021 15:28:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229531AbhLaLgO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Dec 2021 06:36:14 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:40226 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbhLaLgO (ORCPT
+        id S230429AbhLaO20 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Dec 2021 09:28:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42206 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229854AbhLaO2Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Dec 2021 06:36:14 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E2340B81D72
-        for <linux-wireless@vger.kernel.org>; Fri, 31 Dec 2021 11:36:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE94C36AEA;
-        Fri, 31 Dec 2021 11:36:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640950570;
-        bh=0lv7bmaHgkW1YigwoZ315t0CBlNONLGdakWjZz605cw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=U9Ym8jDuYnMCtr4iFZEtaflhBg2BGcvvXNTU82iRxIKiA7aWKdfqtAhTVcLkrBUwE
-         8lF0sz5RtUKe0X/hv0VbQnNM8gdoQIBFzMphAY1Flm/2dWQ0wx6AbowlURs8R9pd0N
-         K/EeES2xDUenJ/8Y1bcFH5NA/FuB3js84hkveWYX+XO0MjxqmlqBR6Q9dcGrwxQwJV
-         N9bhkKWs3ztz4odhGodOt7XvgFbE/U3gSoPzWQB9dn6csiG65gfcV+0JPQZhl3KpYG
-         RNmW30Ku+hepSRriqqHhzdg62uYjN97kD9EZf/bOsNhl2deVtK8W50+xQ34HgyRXj9
-         ugl+nl8Ok+JpQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sean.wang@mediatek.com, deren.wu@mediatek.com
-Subject: [PATCH] mt76: mt7921: do not always disable fw runtime-pm
-Date:   Fri, 31 Dec 2021 12:36:02 +0100
-Message-Id: <910ea351fa27e39b9116a3895090291235e24b4b.1640950454.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.33.1
+        Fri, 31 Dec 2021 09:28:25 -0500
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45190C061574
+        for <linux-wireless@vger.kernel.org>; Fri, 31 Dec 2021 06:28:25 -0800 (PST)
+Received: by mail-wr1-x42e.google.com with SMTP id v7so56151989wrv.12
+        for <linux-wireless@vger.kernel.org>; Fri, 31 Dec 2021 06:28:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=VFAYdUcoAa/RBUsWThLomBm2E0VJ5Yt60qDK5YTAZfk=;
+        b=Sjd2++SlTY7Ep5rJHoiLdyVSkuItuPllLW/jtqria6MiRM0b42kgDvR15F4zIGTpod
+         RorrzXe7uZ5uJaoZ01kkJh9MCnLegCmdvlah9QcpRPh0r2ZPqXIbGSn7oWT6bFM/+3+Z
+         j5v8vevAo0uVCvucUtn37P2TQjs26pzKAVddM2FpsT45hTAIj4dvdL7vzUohYDexg4iZ
+         jypCqPAkjlblQoeIs+tCzG8lTUWocM+L7VQUsug2ooPvlO+sPW0XgNbTqLK0nVN8CryM
+         ehyg4Kc+CG1uoFv4BNyDT3z/obVkilXAHINIf6jJX7z2njm9BcLwvCoh9G5pGHDf9gvQ
+         331g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=VFAYdUcoAa/RBUsWThLomBm2E0VJ5Yt60qDK5YTAZfk=;
+        b=mNrduxWAhz4U4FQxsylGNIIfsKz+H3nbavEDfxPH8CGwzKc4HAYBIbAjPorlTTJm02
+         Rb7K53N7XZ0KNR1jfnINjyT0BcMbD0iMrcZVQZVxWjtEKuA9hHkdGTjUr6/hcHwKEVoN
+         OjU4bsez6kF6OT86LFH2/dov8CaV43sifzDCaqD5CbKjymMWrKlbAv/JY6yLpg6qZYzr
+         KFH2a1+7Y6JEAu1QoEBypPNUwZ83PgNUajHMyHanQJjhXIgPIp1upANS40jXnW6s6KmC
+         6qhVzG5Dox2a0WodeUy/0R064XJgruNUKSsYryTPue1XYgF0WVapxm2+K/I8gunmhzOy
+         hCIA==
+X-Gm-Message-State: AOAM5309CWdby1jka9RsaPvZrngKQMJss2V1hDxTez7Zt5YmpbgtvUM4
+        FqYQp4kqhZDM+ReqTmeiS5gh4OF4xKhnyA==
+X-Google-Smtp-Source: ABdhPJz+hI1OAMWyBGgxLh8hrNAkxkf0LF1jpF1Tp/QkPnBQX2o7Gj+OZSYsIzOxI94msCyG+8Ndiw==
+X-Received: by 2002:a5d:4acf:: with SMTP id y15mr28930193wrs.340.1640960903705;
+        Fri, 31 Dec 2021 06:28:23 -0800 (PST)
+Received: from [192.168.1.79] ([102.64.218.242])
+        by smtp.gmail.com with ESMTPSA id c187sm29328745wme.33.2021.12.31.06.28.19
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Fri, 31 Dec 2021 06:28:23 -0800 (PST)
+Message-ID: <61cf1387.1c69fb81.c166c.09c7@mx.google.com>
+From:   Rebecca Lawrence <issatraorewassila@gmail.com>
+X-Google-Original-From: Rebecca Lawrence
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Hello
+To:     Recipients <Rebecca@vger.kernel.org>
+Date:   Fri, 31 Dec 2021 14:28:17 +0000
+Reply-To: ribeccalawrence@gmail.com
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-After commit 'd430dffbe9dd ("mt76: mt7921: fix a possible race
-enabling/disabling runtime-pm")', runtime-pm is always disabled in the
-fw even if the user requests to enable it toggling debugfs node since
-mt7921_pm_interface_iter routine will use pm->enable to configure the fw.
-Fix the issue moving enable variable configuration before running
-mt7921_pm_interface_iter routine.
-
-Fixes: d430dffbe9dd ("mt76: mt7921: fix a possible race enabling/disabling runtime-pm")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-index 86fd7292b229..45a393070e46 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-@@ -291,13 +291,12 @@ mt7921_pm_set(void *data, u64 val)
- 	pm->enable = false;
- 	mt76_connac_pm_wake(&dev->mphy, pm);
- 
-+	pm->enable = val;
- 	ieee80211_iterate_active_interfaces(mt76_hw(dev),
- 					    IEEE80211_IFACE_ITER_RESUME_ALL,
- 					    mt7921_pm_interface_iter, dev);
- 
- 	mt76_connac_mcu_set_deep_sleep(&dev->mt76, pm->ds_enable);
--
--	pm->enable = val;
- 	mt76_connac_power_save_sched(&dev->mphy, pm);
- out:
- 	mutex_unlock(&dev->mt76.mutex);
--- 
-2.33.1
-
+Hello Dear,
+My name is Rebecca, I am a United States and a military woman who has never=
+ married with no kids yet. I came across your profile, and I personally too=
+k interest in being your friend. For confidential matters, please contact m=
+e back through my private email ribeccalawrence@gmail.com to enable me to s=
+end you my pictures and give you more details about me. I Hope to hear from=
+ you soon.
+Regards
+Rebecca.
