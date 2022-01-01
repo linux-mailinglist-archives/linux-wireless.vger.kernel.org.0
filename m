@@ -2,19 +2,19 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09C6248286A
+	by mail.lfdr.de (Postfix) with ESMTP id 82A0748286B
 	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jan 2022 21:27:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232676AbiAAU1e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S232680AbiAAU1e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Sat, 1 Jan 2022 15:27:34 -0500
-Received: from mout.kundenserver.de ([212.227.17.10]:36489 "EHLO
+Received: from mout.kundenserver.de ([212.227.17.13]:43967 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231513AbiAAU1d (ORCPT
+        with ESMTP id S231542AbiAAU1d (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sat, 1 Jan 2022 15:27:33 -0500
 Received: from localhost.localdomain ([37.4.249.169]) by
  mrelayeu.kundenserver.de (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis)
- id 1MfZDK-1mSCEf2Wfw-00g13p; Sat, 01 Jan 2022 21:27:17 +0100
+ id 1MK3mS-1mq4fg1juI-00LTZn; Sat, 01 Jan 2022 21:27:18 +0100
 From:   Stefan Wahren <stefan.wahren@i2se.com>
 To:     Rob Herring <robh+dt@kernel.org>,
         Florian Fainelli <f.fainelli@gmail.com>,
@@ -35,52 +35,201 @@ Cc:     Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
         brcm80211-dev-list.pdl@broadcom.com,
         linux-rpi-kernel@lists.infradead.org,
         Stefan Wahren <stefan.wahren@i2se.com>
-Subject: [PATCH RFC 2/4] dt-bindings: arm: bcm2835: Add Raspberry Pi Zero 2 W
-Date:   Sat,  1 Jan 2022 21:26:50 +0100
-Message-Id: <1641068812-5851-3-git-send-email-stefan.wahren@i2se.com>
+Subject: [PATCH RFC 3/4] ARM: dts: Add Raspberry Pi Zero 2 W
+Date:   Sat,  1 Jan 2022 21:26:51 +0100
+Message-Id: <1641068812-5851-4-git-send-email-stefan.wahren@i2se.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1641068812-5851-1-git-send-email-stefan.wahren@i2se.com>
 References: <1641068812-5851-1-git-send-email-stefan.wahren@i2se.com>
-X-Provags-ID: V03:K1:/F4aUJqeYItmMr5Xkbt5w/NV6TF/mg6jj6khyL26kHagOjvPDzP
- 67MAt3RXnAhWGKDz2F5r+Mumr6w6YWmsjPENlkHL0oZeaJ4/vLM46hrTuhGs/FlkavSH9RS
- VypmT7/GMis7HiXHC8JpNcpevy0NY+Sc2460HfzvH7axSkTfQIBI6PzDEubck6CQMBFlFWr
- YNrM7uqzvnfIUTyiJ1U7w==
+X-Provags-ID: V03:K1:Ugrnq3amehdAgqqPE2x4fooxljBnrwEoKjV2c9w9SvlkLmFrD6e
+ KxgeYJ+EcN+8ZGBaHFFFL/dxKt5/k/IVfZuvll5uHNREtKEEnxVcQLuLcDcljb1EiKDCXV+
+ sN6nA4Cmw+0y7cLS6Urs6VkvdxeLyxB5AYtxGLXxdIqra4cSTkpxdieVhq7aPeW59l5j8HD
+ 5eWYHkk22/qqlB65KFWkg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:sENR6rDv6vs=:KM0QArLvRm8xCG/YV5DJ+j
- WKvsTzR1GhriCC9RkdoecD9EiPduo/yLxOuQ6WxZhBWiybf5QJmrsIKzJ4RIRq47lWHKJ6q9p
- 24sblnP9bAnruQHYhx+QzBw9e7MEZ7VbCR6gG0DH5rAXU6OXoQOjqlxjptk68KS0eDPjlkV4w
- /XsHd6anhRI5q17homEATDxgAwMgoY2Xmav5l7c62/Tn16TVrtzEM9Aiavp1zw62OLQCvcR5q
- dfKrGQcYF6rBMzPU2glQPuhyCN0ZK2cZih4pD1Tnsoq63CfVwAHTyIDO8/bsJYGtE+sqdxDG+
- 6zLS1fvqb5q/Xs1Trqt9mdc1T0xMh425g2CaRQR3AhHioVhXc2fhaEeQVqq0iNMjUs1m2PMmZ
- rnkW42j8nGjgXVJAU2hGI9LU32Ifnxzh1W2CrGDTKow+4VZ2kiHZ1xQIEgfiTS7r1oK99FakH
- zDoCu1R4hctbpmNstz8sCmUvOMmgjoTZIqoFv9Nj7jGuNIf2nY1c9HCrVEHcYsEXJQEb5dNQG
- /Gq3vav6vapnii76U83wr5cfJf/teStStkLN69dgzyu5REL1BqiREIQX8+56gPcPKcUM9gj3w
- 9Lix466O+nOLnCIkMvuP7O82LL+oR05Z7e5+loJcBveMRbqyKh1c7FBFGI7HWjeW7yg0AqbrJ
- AdtamXem5DsSButYJs8zksLnqfysPgkzfCp8z2/qHnaIm8SMZaJGMLu2a672hGax11UeWcNcl
- 6TaFHZQgiVnLg47d
+X-UI-Out-Filterresults: notjunk:1;V03:K0:3GftqFuhLOA=:CmWLUwUBkzm4jDzmS7HfDx
+ zD+7dbhGIbefbiotjdiE4fcLXzdb/dSLDGFC6fHkl+iuYIEQE48xU/ECZLVCxQ74cmZOioMs/
+ tG+KdKh+9TGPpWPTdBwqgNfZZ/YbsRmHq3bq8xZqea4Ogpy4G4GycfmblkWMAGXrFLWrG+Wb9
+ Eamf1eoQZKCRmXzNXnoD0OMuJVqQXcfqwq1zH4hwbsZ/5u6j+lM228xxmUNLvFMEmEHbQcnpj
+ mDSbnvT5/FmM7bJfFZvmVBAe/jXG40bhFqAL0YVGJokHRwyPYjyZDFMVHw6EIxyr1Zx0pGReI
+ vUuJJr8TdROUtAUhqNPdpl1pEH1A7idihAQOuIlSuuH98Kr0n5DWYkdg4OHp2sApYJQbHc1sJ
+ 5Z6WoQaOKVoJ3XGIw9cqg7xE40qucQ1CqJdY/JaIalYEzaFuO0cw8FrHQitZwaO9hjJnG7l5T
+ ThGa45iSdkjHmjIVUXML1m449i3SSJod3IN6gzr0Eh6o7byCA+u3JLMTKeoP3epGkEb6YW8FW
+ +5UWNo+LTUqudxFdJtFxotdfZ9nHihG5kCbi8cNnkhd/voxe6m2deCZVfdhKBBQgX1XKUCNCi
+ cFBVUm+KRewBlQtVTtbritCiZEGysnHJVeOoiFrScSEUmz6JxiuCJ3ZwO59jCGwEy5Kv/mVJx
+ dvI5a565RO1J6hY9VqtBbL9qNbUB85uBDC4BRDCRRAbMFJ+sJqogDufb4FLKk78TMaKkpBiCf
+ fSiNGwbC3C9ECP0P
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add the Raspberry Pi Zero 2 W to DT schema.
+The Raspberry Pi Zero 2 W mostly bases on the Raspberry Pi Zero W with
+the following differences:
+* Broadcom BCM2710A1, quad-core 64-bit SoC @ 1 GHz
+* Synaptics BCM43436, 2.4GHz IEEE 802.11b/g/n wireless LAN
+
+Contrary to the Raspberry Pi 3 boards there is no GPIO expander.
 
 Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
 ---
- Documentation/devicetree/bindings/arm/bcm/bcm2835.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/Makefile                 |   1 +
+ arch/arm/boot/dts/bcm2837-rpi-zero-2-w.dts | 136 +++++++++++++++++++++++++++++
+ 2 files changed, 137 insertions(+)
+ create mode 100644 arch/arm/boot/dts/bcm2837-rpi-zero-2-w.dts
 
-diff --git a/Documentation/devicetree/bindings/arm/bcm/bcm2835.yaml b/Documentation/devicetree/bindings/arm/bcm/bcm2835.yaml
-index 5dc4824..8051a75 100644
---- a/Documentation/devicetree/bindings/arm/bcm/bcm2835.yaml
-+++ b/Documentation/devicetree/bindings/arm/bcm/bcm2835.yaml
-@@ -51,6 +51,7 @@ properties:
-               - raspberrypi,3-model-b-plus
-               - raspberrypi,3-compute-module
-               - raspberrypi,3-compute-module-lite
-+              - raspberrypi,model-zero-2-w
-           - const: brcm,bcm2837
- 
- additionalProperties: true
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index e41eca7..3d5785a 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -93,6 +93,7 @@ dtb-$(CONFIG_ARCH_BCM2835) += \
+ 	bcm2837-rpi-3-b.dtb \
+ 	bcm2837-rpi-3-b-plus.dtb \
+ 	bcm2837-rpi-cm3-io3.dtb \
++	bcm2837-rpi-zero-2-w.dtb \
+ 	bcm2711-rpi-400.dtb \
+ 	bcm2711-rpi-4-b.dtb \
+ 	bcm2711-rpi-cm4-io.dtb \
+diff --git a/arch/arm/boot/dts/bcm2837-rpi-zero-2-w.dts b/arch/arm/boot/dts/bcm2837-rpi-zero-2-w.dts
+new file mode 100644
+index 0000000..60e6880
+--- /dev/null
++++ b/arch/arm/boot/dts/bcm2837-rpi-zero-2-w.dts
+@@ -0,0 +1,136 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2022 Stefan Wahren <stefan.wahren@i2se.com>
++ */
++
++/dts-v1/;
++#include "bcm2837.dtsi"
++#include "bcm2836-rpi.dtsi"
++#include "bcm283x-rpi-usb-otg.dtsi"
++#include "bcm283x-rpi-wifi-bt.dtsi"
++
++/ {
++	compatible = "raspberrypi,model-zero-2-w", "brcm,bcm2837";
++	model = "Raspberry Pi Zero 2 W";
++
++	memory@0 {
++		device_type = "memory";
++		reg = <0 0x20000000>;
++	};
++
++	chosen {
++		/* 8250 auxiliary UART instead of pl011 */
++		stdout-path = "serial1:115200n8";
++	};
++
++	leds {
++		led-act {
++			gpios = <&gpio 29 GPIO_ACTIVE_LOW>;
++		};
++	};
++};
++
++&bt {
++	shutdown-gpios = <&gpio 42 GPIO_ACTIVE_HIGH>;
++};
++
++&gpio {
++	/*
++	 * This is based on the official GPU firmware DT blob.
++	 *
++	 * Legend:
++	 * "NC" = not connected (no rail from the SoC)
++	 * "FOO" = GPIO line named "FOO" on the schematic
++	 * "FOO_N" = GPIO line named "FOO" on schematic, active low
++	 */
++	gpio-line-names = "ID_SDA",
++			  "ID_SCL",
++			  "SDA1",
++			  "SCL1",
++			  "GPIO_GCLK",
++			  "GPIO5",
++			  "GPIO6",
++			  "SPI_CE1_N",
++			  "SPI_CE0_N",
++			  "SPI_MISO",
++			  "SPI_MOSI",
++			  "SPI_SCLK",
++			  "GPIO12",
++			  "GPIO13",
++			  /* Serial port */
++			  "TXD0",
++			  "RXD0",
++			  "GPIO16",
++			  "GPIO17",
++			  "GPIO18",
++			  "GPIO19",
++			  "GPIO20",
++			  "GPIO21",
++			  "GPIO22",
++			  "GPIO23",
++			  "GPIO24",
++			  "GPIO25",
++			  "GPIO26",
++			  "GPIO27",
++			  "HDMI_HPD_N",
++			  "STATUS_LED_N",
++			  "NC", /* GPIO30 */
++			  "NC", /* GPIO31 */
++			  "NC", /* GPIO32 */
++			  "NC", /* GPIO33 */
++			  "NC", /* GPIO34 */
++			  "NC", /* GPIO35 */
++			  "NC", /* GPIO36 */
++			  "NC", /* GPIO37 */
++			  "NC", /* GPIO38 */
++			  "NC", /* GPIO39 */
++			  "CAM_GPIO0", /* GPIO40 */
++			  "WL_ON", /* GPIO41 */
++			  "BT_ON", /* GPIO42 */
++			  "WIFI_CLK", /* GPIO43 */
++			  "SDA0", /* GPIO44 */
++			  "SCL0", /* GPIO45 */
++			  "SMPS_SCL",
++			  "SMPS_SDA",
++			  /* Used by SD Card */
++			  "SD_CLK_R",
++			  "SD_CMD_R",
++			  "SD_DATA0_R",
++			  "SD_DATA1_R",
++			  "SD_DATA2_R",
++			  "SD_DATA3_R";
++
++	pinctrl-0 = <&gpioout &alt0>;
++};
++
++&hdmi {
++	hpd-gpios = <&gpio 28 GPIO_ACTIVE_LOW>;
++	power-domains = <&power RPI_POWER_DOMAIN_HDMI>;
++	status = "okay";
++};
++
++&sdhci {
++	pinctrl-0 = <&emmc_gpio34 &gpclk2_gpio43>;
++};
++
++&sdhost {
++	pinctrl-names = "default";
++	pinctrl-0 = <&sdhost_gpio48>;
++	bus-width = <4>;
++	status = "okay";
++};
++
++&uart0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart0_gpio32 &uart0_ctsrts_gpio30>;
++};
++
++&uart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart1_gpio14>;
++	status = "okay";
++};
++
++&wifi_pwrseq {
++	reset-gpios = <&gpio 41 GPIO_ACTIVE_LOW>;
++};
 -- 
 2.7.4
 
