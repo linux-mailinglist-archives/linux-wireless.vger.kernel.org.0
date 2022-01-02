@@ -2,55 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DC36482A19
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jan 2022 07:18:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F574482A1E
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jan 2022 07:18:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230351AbiABGSA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Jan 2022 01:18:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44970 "EHLO
+        id S231862AbiABGSy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Jan 2022 01:18:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231863AbiABGR7 (ORCPT
+        with ESMTP id S231240AbiABGSy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Jan 2022 01:17:59 -0500
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9838C061747
-        for <linux-wireless@vger.kernel.org>; Sat,  1 Jan 2022 22:17:57 -0800 (PST)
-Received: by mail-lf1-x129.google.com with SMTP id k21so68597247lfu.0
-        for <linux-wireless@vger.kernel.org>; Sat, 01 Jan 2022 22:17:57 -0800 (PST)
+        Sun, 2 Jan 2022 01:18:54 -0500
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D945C061401
+        for <linux-wireless@vger.kernel.org>; Sat,  1 Jan 2022 22:18:53 -0800 (PST)
+Received: by mail-lj1-x22c.google.com with SMTP id h21so39156349ljh.3
+        for <linux-wireless@vger.kernel.org>; Sat, 01 Jan 2022 22:18:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=iC7A+GoR8RwKEFgUsuTtN/Q+BKY7a0f+GB28CxnS1+8=;
-        b=EINnMhs6LPEv3m6DkNvSnaeGNwGSWEal/4Gvy41xt8Gz7JvcWUehAeGnHGc9w18cC/
-         9AqXW7Xkl2yaz8zK+T0PkXB9E9yhz8EvogGdimkVLnTQ/caxU9qx9zWGdlo8SNHsF0lQ
-         WXrHBsFLFebrbVS4AwYJ4ECo12nRXcDJIm2o8+YCIEA1ef5DTwzs5UByuKPpnkwIuWWv
-         txrSShZA/0OpCm1DXp1q2wO9g7RWLOyROOOXFpN9Qs3jksXIZ6W+mNMLd4gqfpaeYKJR
-         NFrfEZ8++NAvZe/M6ozutMW3QuyEmnFRZ/Pn9D9LOQncZndpqy9hqbVMybX4Uo3xy8NX
-         5tzw==
+        bh=4bIpZkSSwUqhTYMnQk3E9gHCYpVd9Az41cx0tuuegs8=;
+        b=OucrQEUNhyBWKSnCvR9D16DFgQtdfmnAf29tqqy6+HKU6EZirHATPRfr10cwmrj5xi
+         IPnUytEzWZkMLH+qlYRtqKr6tkjD2acjFa8Qdt31WUwJZ0Kno7EF8cJ5yqKKdl+mIdXk
+         ilZepGNn3QIJA9g9iha95KxYbhJAcndKTwo8OirDIHlUGnAdEFWHmw7J+zB2KAAyb0qA
+         DGpK0SR3rHZGaEmaOOxy+GPwhbI0G69v6YuwFCUy46a/hbaigcKMuTA7q+kBsz8VjjUC
+         YQCOT9EVAwprQARP6JU4KpdkQY/CElKrtyH6lZ4C2WTeJ9eL4ZP/uUI1VzPhZBo9NNGu
+         DaXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=iC7A+GoR8RwKEFgUsuTtN/Q+BKY7a0f+GB28CxnS1+8=;
-        b=jIbzjitX40iPGOmP1pKWYiBj992Vypcm6vlFQmUUB14y3y2Ijc3Tz4rJzfGTtWAabd
-         4KLYV2Tud8inKifN2/Fd1frXsMoohfy8E7AR7LmMy/o2HBva5rFFUDftMgavRgJG5ZZb
-         gjBSw9TK3YUYuSNTdeCganvD8b8XClPiMqhsU9eG6ZxAv7jrjiRgGOgkH1UBmHJu2H6V
-         paUyCwaS/Mhodt0Q0hdsYIZFXTpr3zGA1ld31FbT6tnivieUjAo/EkvBOQPc8myQ8bHD
-         1sMKPSfCjZH0fZOrcfREu+mwvb95xkJ0O80xBZs+97FfrLERRcqEEuT4y1X0wjG682bX
-         0ucg==
-X-Gm-Message-State: AOAM532yU2Wm80RMz1k5j7iNs5/4mQxDKkVTysszKOdFbyuHtZ01p3ZO
-        rxFxjK+BTg7T/AI0Q2bOf4kpGtvfsGOxPAk4oskrHQ==
-X-Google-Smtp-Source: ABdhPJwULsbFGX/DZNANVtAff9Bt8eVxG0y9VQmg8HurFIplcLKzs8UUUcAzDGECT5bKHr22NRhPANGVwYZPhZgN4uo=
-X-Received: by 2002:ac2:5445:: with SMTP id d5mr37503031lfn.349.1641104276112;
- Sat, 01 Jan 2022 22:17:56 -0800 (PST)
+        bh=4bIpZkSSwUqhTYMnQk3E9gHCYpVd9Az41cx0tuuegs8=;
+        b=ALJAVqTYQLiXyVtzfXwmG/KzHwnQTAKnJ/waSVo365hLPKG6G8UHCnYxlg75T0uij/
+         ncligVoPy8Z3XZNoep3yjy5R01fSdRFMs9WhH9I8izAtiZia/2FLBEOs9clsV7gJUq1X
+         iIRXBvZ+G56NuYo1n5FXZEKaIF6qjx9mr6PCTh8S3GPvXwVca24ecjnNxDqRZkEvbt4E
+         ioUwvXfrFutxRzRH/05Tb2GL0yCEu45J2yeGsPJr6KqOxvWmBvkpckvk9w42vDgs0KAV
+         uD9Wrd5qV8wc4SMiNpZ8BD3ob4CLgfcXcCC+QWjaPvg2YZuDxKU7Oz+Vg4edM8YdtN6E
+         sEZQ==
+X-Gm-Message-State: AOAM532Gfoq1QvtNsj4YOXZpgIwrxkn3qydhxbreyiG5LG7vnEg6AgAZ
+        dwcW1yiBFyn9bVgczOKWH4hyUr8aOfuNUULyHlvw0g==
+X-Google-Smtp-Source: ABdhPJzZTch5KFk/VIhETikoFA4AzemvKxIUlgqqKTF8a4qqacW7BOlB0kgbtiXPJUPQfLEeQYoq5Y6boyIoaHacTf0=
+X-Received: by 2002:a2e:b808:: with SMTP id u8mr24179798ljo.282.1641104331778;
+ Sat, 01 Jan 2022 22:18:51 -0800 (PST)
 MIME-Version: 1.0
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-32-marcan@marcan.st>
-In-Reply-To: <20211226153624.162281-32-marcan@marcan.st>
+References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-33-marcan@marcan.st>
+In-Reply-To: <20211226153624.162281-33-marcan@marcan.st>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 2 Jan 2022 07:17:43 +0100
-Message-ID: <CACRpkdbQgF6WHTJWgM6w++SWG7M8m7KViVqAim7K+-m+8wUzow@mail.gmail.com>
-Subject: Re: [PATCH 31/34] brcmfmac: fwil: Constify iovar name arguments
+Date:   Sun, 2 Jan 2022 07:18:39 +0100
+Message-ID: <CACRpkdZJiizvQfhqyVefXNj+L8ajhY-QcvKXtfMy3BVVwC3Vsg@mail.gmail.com>
+Subject: Re: [PATCH 32/34] brcmfmac: common: Add support for downloading TxCap blobs
 To:     Hector Martin <marcan@marcan.st>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -84,11 +84,12 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Sun, Dec 26, 2021 at 4:40 PM Hector Martin <marcan@marcan.st> wrote:
 
-> Make all the iovar name arguments const char * instead of just char *.
+> The TxCap blobs are additional data blobs used on Apple devices, and
+> are uploaded analogously to CLM blobs. Add core support for doing this.
 >
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
 Linus Walleij
