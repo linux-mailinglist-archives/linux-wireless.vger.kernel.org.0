@@ -2,55 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FA26482960
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jan 2022 06:38:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F5AF482965
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jan 2022 06:41:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230379AbiABFil (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Jan 2022 00:38:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36036 "EHLO
+        id S230448AbiABFlE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Jan 2022 00:41:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230331AbiABFik (ORCPT
+        with ESMTP id S230391AbiABFlC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Jan 2022 00:38:40 -0500
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B5C9C06173E
-        for <linux-wireless@vger.kernel.org>; Sat,  1 Jan 2022 21:38:39 -0800 (PST)
-Received: by mail-lf1-x130.google.com with SMTP id o12so68503525lfk.1
-        for <linux-wireless@vger.kernel.org>; Sat, 01 Jan 2022 21:38:39 -0800 (PST)
+        Sun, 2 Jan 2022 00:41:02 -0500
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBE07C06173F
+        for <linux-wireless@vger.kernel.org>; Sat,  1 Jan 2022 21:41:01 -0800 (PST)
+Received: by mail-lj1-x231.google.com with SMTP id v15so51196994ljc.0
+        for <linux-wireless@vger.kernel.org>; Sat, 01 Jan 2022 21:41:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=NKM5pDpKGo5CtAH2kaYK05iHThvnh/g8xXIKQdgPzT4=;
-        b=Jaa78xZz4Ef1rWk+5+c+lsETsvvfUKfaFf2NdHyTLKUbozrIHly0Eb9oAX2cbexbA6
-         JfqMuVuwGZ7a2wmeOJkQUblcPzxM4WjQxcztd2DRYI5dsNnvbK1fAsK1Osvniu0eptPf
-         jX+lqvjCrkef75juC+FtShWUq8RsfAI/eiChjMHu8God82rZ5elKzIuJ5Pcx7hjdR9/G
-         Szd3hPGvTv6CVGJnnMejGdd5GAB2UuxdVLgTaJHCvuCEjUOJgbdMImQrFFLjPEUcC3dJ
-         n8mS+18IpE93eTslSNobZIPTClvNekn6UV1EOKyZ28XCVO0dTYNVzfMMJBnKlG7nXRf/
-         ykrA==
+        bh=9BPVOsdEqjOxajqEoJCegalHFCf3/pMHIsfcU5ymJBg=;
+        b=f5VQtVdgWJBxHVNjSpPkkwFvOGIQpZeOMrpOLwtPyqAQh2ATfL6Y1fIlA87m7TPWlD
+         +bDl0tr8jE46HyO2/g98YM0Nfd5iTyGEfaqibj4jcepqBu44itaFODOfAIRAhaHDm+i8
+         enHuSW+sJZtaCrAP+8R5kjL9a+hC49XOLGBHWZ4z30ys/8TLiWXGH+0T9geoeZ++Qq2a
+         Q5jV8QkSrUDwyC9DZoE2eTWRpv4w+lzoqxm8QI8ojGZQdwXdg+WhW6DPAK9s6C/2b7Eg
+         wnfnpLHVRUMdVgYhgV0Q6XmUOUifFlPT4L4xTojREdKFFkz6hv3/ZpJS4dWyKl6G/2ak
+         hVhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=NKM5pDpKGo5CtAH2kaYK05iHThvnh/g8xXIKQdgPzT4=;
-        b=iRnrmKIfw/D6JUU5JxStZN3HhV1MQHyrjRzyAY2/rjg9vPptp1wMofPOj2nV5WXyQr
-         DYpzoea80ONMYaMSTzmH0fT49et5W9YaQRFCQpYWkQMp4m1p6ybtNqnArzMuuOIPket7
-         7AmXLYN148688D9jLj4FiVphbroBnk1ita4h7f8gvUMkneMUMZl9/a+GbC2zWs4j/w00
-         bjIC4f5BgA5/kAj+KkVwDs8zRE+nNqwQ/Oumlz6nljhplxYomkPAzF1Q2fGoUT4pAjbg
-         0l0ZN61wPPPHadjE1dpHpfJQNQHUDtwykO+MlvYDh1yTNtexnHwqnrbg9On3h+0S1vUo
-         hRpQ==
-X-Gm-Message-State: AOAM533iT1yLU2OL+Wde0o1gJCOmBTUuz9142Ptsxz63uZsBJMCsRYDI
-        BK2fjoBAMLIBKyfRgHliiHXICmktolH8kGvmEcfhjA==
-X-Google-Smtp-Source: ABdhPJwScD+cSe/FoT2vC+ARQMc7NMM24G1QSYXN5N9jDj/84sI63A0trDPqp1K62en32Eo/3RO6hb6S+ag/FDiF8VA=
-X-Received: by 2002:a05:6512:750:: with SMTP id c16mr37581258lfs.622.1641101917347;
- Sat, 01 Jan 2022 21:38:37 -0800 (PST)
+        bh=9BPVOsdEqjOxajqEoJCegalHFCf3/pMHIsfcU5ymJBg=;
+        b=oMDfBzQg/5YHXeEj4F+sz9FSBhN9h0+zSuXMFm1OkvhCPSkcNNzOaYBemPncMKrkOR
+         lwHEPJ8WTyiXa2yGOj6butZWOkcS2O2goL5fbir5LthIMk5xuUrLRbzjsDZ4LQ9cN1SN
+         STcGiJnFGRDXlsHA2JWN3yHK51Xb375N14d+7jvgnrejLEiaYkj8Rv4+CdDvB8uWr3MX
+         R5scBG3lqnm8apQWgoT8yVHscQGmHuk68xvEnFEQ7/i792I8eBRKHEPOsKkEF7ExA/Ws
+         3WC4zeATuPJghOkfNEaDYtRyMw52YsXQpOtexTjxKxCV39ngkP9N/KQVdqBDODoGcM3x
+         TmsQ==
+X-Gm-Message-State: AOAM530e1OnnKYE8D8URxKelY+fR56vEjNlye03XiAljJxq1GNimEKp/
+        OMsGSGMGTdEYWqRPd15gLMQ2FoTqGeGc3NTRWm1peg==
+X-Google-Smtp-Source: ABdhPJwlq9o1i1c8yySPLmZXKqgSTy84XHmf+/Wv+oOgBlfYhtIr8GM2itL5v6JvbCXjJqGEJ1ZoeVJEbd3+k/2/yEM=
+X-Received: by 2002:a05:651c:623:: with SMTP id k35mr35519889lje.133.1641102060025;
+ Sat, 01 Jan 2022 21:41:00 -0800 (PST)
 MIME-Version: 1.0
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-8-marcan@marcan.st>
-In-Reply-To: <20211226153624.162281-8-marcan@marcan.st>
+References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-9-marcan@marcan.st>
+In-Reply-To: <20211226153624.162281-9-marcan@marcan.st>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 2 Jan 2022 06:38:25 +0100
-Message-ID: <CACRpkdbyFr-ZQuKOtx4+RRRBddmPGGUTY0j2VvT_7KxRBEQzNQ@mail.gmail.com>
-Subject: Re: [PATCH 07/34] brcmfmac: pcie: Read Apple OTP information
+Date:   Sun, 2 Jan 2022 06:40:47 +0100
+Message-ID: <CACRpkdZx2Y6aMbOohAoa60GXT8NPg1iyw4+PzUQrs_V8b4=yrA@mail.gmail.com>
+Subject: Re: [PATCH 08/34] brcmfmac: of: Fetch Apple properties
 To:     Hector Martin <marcan@marcan.st>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -84,29 +84,21 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Sun, Dec 26, 2021 at 4:37 PM Hector Martin <marcan@marcan.st> wrote:
 
-> On Apple platforms, the One Time Programmable ROM in the Broadcom chips
-> contains information about the specific board design (module, vendor,
-> version) that is required to select the correct NVRAM file. Parse this
-> OTP ROM and extract the required strings.
+> On Apple ARM64 platforms, firmware selection requires two properties
+> that come from system firmware: the module-instance (aka "island", a
+> codename representing a given hardware platform) and the antenna-sku.
 >
-> Note that the user OTP offset/size is per-chip. This patch does not add
-> any chips yet.
+> The module-instance is hard-coded in per-board DTS files, while the
+> antenna-sku is forwarded by our bootloader from the Apple Device Tree
+> into the FDT. Grab them from the DT so firmware selection can use
+> them.
+>
+> The module-instance is used to construct a board_type by prepending it
+> with "apple,".
 >
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 
-Overall looks fine!
-
-> +       const char *chip_params;
-> +       const char *module_params;
-
-This variable name "module_params" is a bit confusing since loadable
-kernel modules have params...
-
-Can we think of another name and just put a comment that this
-refers to the WiFi module building block?
-
-Sometimes people talk about SoM:s (system-on-modules), so
-maybe som_params or brcm_som_params?
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
 Linus Walleij
