@@ -2,56 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8536E4829D0
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jan 2022 07:00:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87CEC4829D6
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jan 2022 07:00:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231633AbiABGAI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Jan 2022 01:00:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40842 "EHLO
+        id S231650AbiABGAy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Jan 2022 01:00:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230026AbiABGAH (ORCPT
+        with ESMTP id S231284AbiABGAw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Jan 2022 01:00:07 -0500
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E0B2C06173F
-        for <linux-wireless@vger.kernel.org>; Sat,  1 Jan 2022 22:00:07 -0800 (PST)
-Received: by mail-lj1-x22b.google.com with SMTP id by39so51061684ljb.2
-        for <linux-wireless@vger.kernel.org>; Sat, 01 Jan 2022 22:00:06 -0800 (PST)
+        Sun, 2 Jan 2022 01:00:52 -0500
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5157BC061574
+        for <linux-wireless@vger.kernel.org>; Sat,  1 Jan 2022 22:00:52 -0800 (PST)
+Received: by mail-lf1-x12d.google.com with SMTP id g26so68445176lfv.11
+        for <linux-wireless@vger.kernel.org>; Sat, 01 Jan 2022 22:00:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Rjti7d90WP8Xg6Hp0kYEpjGAZMuupp9s0gpIcrJvVXQ=;
-        b=L1tmfP4ShxzOgVIz2PEl+IiE+pc1ShqKkzJJ3FuYtfcWHhlrJjkBbrlzQHfZfIdCUM
-         PXAkJt+SUZEoMSaVFBM3Nq06zF4p2yiOFu7CRXwL5CtCCJa1tzVSU5SW2HmWTE4Y0Vom
-         MGbq/EvQRtsdpZ8mkfr+feE+xoqZk4AVLIt9U2HW06NUr1jOQ82yEcjRbpe9tprarXF4
-         BoDEEUZ/qPvEThxmwys0ZFwWAh4kYjvLJ43MsSpmPzAa+EoHrzVb7nspqlRkMVUpuW4d
-         WSoB4RqbFdaXgtm3ufJy+Rjle+oc1q5LstR9kV6Jnr2vNbOE2iUpez/gxylWrX2HZOC0
-         lqMQ==
+        bh=HTLmkAGe0nMUNWPjMKpLbDUGkN7ojNy65opvZtoCGow=;
+        b=ngXXgI5MFCua4XE6UIuvOL3zYQCZkNeU6n0Khg3UpYyr3l07WCX0OrVf4nSBfQeEbq
+         alRr1JnZ3PvXvKSeNKXQboDjsFpBF8CGwnT0a2KA1dWftbkA9oU/CB2gJIdOV2xbuqz5
+         Zfj/reC5Hu+RzVnaphUVbKDvy9Bk9J8R0DTJZPuEYB/7fNiZmCyOJwHIHmulsQnGt47j
+         qoGpu4AeEmvW/zi77f+SQnYyOjkH/NnFGRmtH9LTYCIOtDGvoU/Lei32PPFZvC7iteGl
+         k7/2fp4iU7etc8itLW19f/8h/5/9OvOupfCfEhDTnUI+zu9WUF/LKZlsTck5AWcbhWe5
+         h5pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Rjti7d90WP8Xg6Hp0kYEpjGAZMuupp9s0gpIcrJvVXQ=;
-        b=yBB/5x1qN2aqCpGp3Vopde9OUoy1k5O0DZZkWSKZsQGCUyXKVmWqlsGAfBzdS3i1ew
-         08LK3MHmrktRB8BF2MwgfkP7Lil4BEwrR/B+OAFGqACCAqni4Wttk8dFqcfO3hhTSlI6
-         J92LASZ/eUqr58wpsR8K4jssujsIx3uGTHDn8O52i91CCKv55fMtdVHnp80J827y+tdd
-         JkvSuEpHm53cOCoz/0+66Tw+bpXwrnfTWA69a96xkVGMys68zGlMG9cNQUuTCvzaUned
-         sy0XP3gOzpMXpbGVOu7/zAwFP0omAcgEhMIcMMWlgQ1mptR8DWJ87h4WmhglZTw0pf/g
-         1cCg==
-X-Gm-Message-State: AOAM531dlhY81MtZZG/5yimrjFzSVNWvN0TJtupT4SXmTK51ixqef96W
-        LuN9RmqgKgYTFHbK2rSye4MIskFWYG85/+C2nFyqzA==
-X-Google-Smtp-Source: ABdhPJyv1Mvd6Mp+D18WKgLy8no0MQSmte5uMFeAHGA5tMcWXaralMbmZV5qMWOi9pa6EMdURgIDyO+USZ9oJ0EGv5k=
-X-Received: by 2002:a2e:b808:: with SMTP id u8mr24152647ljo.282.1641103205129;
- Sat, 01 Jan 2022 22:00:05 -0800 (PST)
+        bh=HTLmkAGe0nMUNWPjMKpLbDUGkN7ojNy65opvZtoCGow=;
+        b=PCN8kFFlAYLhhUFac1wW2OIVquJw2pM8D3FIW/7Z011JG73kDgfk5N6aea/P+KaDli
+         4UN11dKwZQPfcPMQL6hdRL/oz32PypRb2uszpl//vQOaE+2Tj0uRUl+ioLzzAboph/Ey
+         EWYvV2viQKFmqCQfL4OIQphzSR+FMoJQoJwkdPMruBIfC1N6nsNMDey7ZS5kNru/+P06
+         XzKjOnF+M+/jdEI3SVlPhfyfuAqRcO8uWp+GEYwULEe29sQR6CPvbmqFZPiBVTrw6wEX
+         llr17O+LyNlnxqA+72RtZ22qG/V6J5itzEstCqUAkpY9xao+mgSPIlsyGMkDtCQdfSOu
+         mtQQ==
+X-Gm-Message-State: AOAM533abKJx7ZUWcS2f7GpThV+BGOJ0CQFD1VgAzK16c0ymAbDfC5FY
+        h/UqU7WVcq35LuJQ3O7SdSjA8AUK6+rIwZEpIcxIIA==
+X-Google-Smtp-Source: ABdhPJycF0PZrYIBhbNaYzZXJsO4SuCYCZ+KgaA+cK/5b51H/hols6a1ZdcsP/UHLOD7kBzjTTaIwnvv1hnAoxJDvUM=
+X-Received: by 2002:a05:6512:39ce:: with SMTP id k14mr19035581lfu.508.1641103250662;
+ Sat, 01 Jan 2022 22:00:50 -0800 (PST)
 MIME-Version: 1.0
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-18-marcan@marcan.st>
-In-Reply-To: <20211226153624.162281-18-marcan@marcan.st>
+References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-19-marcan@marcan.st>
+In-Reply-To: <20211226153624.162281-19-marcan@marcan.st>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 2 Jan 2022 06:59:52 +0100
-Message-ID: <CACRpkda=bD6BRVko5MZOnfLbKxLVbrwYmv4T4NSwY1vq9AGoTw@mail.gmail.com>
-Subject: Re: [PATCH 17/34] brcmfmac: pcie: Provide a buffer of random bytes to
- the device
+Date:   Sun, 2 Jan 2022 07:00:38 +0100
+Message-ID: <CACRpkdZ1gRO+qyEPmKMVdMcLuOdekEMye5_4gLQCdFDF8f=r0g@mail.gmail.com>
+Subject: Re: [PATCH 18/34] brcmfmac: pcie: Add IDs/properties for BCM4355
 To:     Hector Martin <marcan@marcan.st>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -83,15 +82,12 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Dec 26, 2021 at 4:38 PM Hector Martin <marcan@marcan.st> wrote:
+On Sun, Dec 26, 2021 at 4:39 PM Hector Martin <marcan@marcan.st> wrote:
 
-> Newer Apple firmwares on chipsets without a hardware RNG require the
-> host to provide a buffer of 256 random bytes to the device on
-> initialization. This buffer is present immediately before NVRAM,
-> suffixed by a footer containing a magic number and the buffer length.
+> This chip is present on at least these Apple T2 Macs:
 >
-> This won't affect chips/firmwares that do not use this feature, so do it
-> unconditionally.
+> * hawaii: MacBook Air 13" (Late 2018)
+> * hawaii: MacBook Air 13" (True Tone, 2019)
 >
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 
