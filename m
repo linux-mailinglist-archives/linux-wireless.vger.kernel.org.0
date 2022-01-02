@@ -2,56 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B1EC4829FE
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jan 2022 07:13:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C9C4482A05
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jan 2022 07:14:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231777AbiABGN3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Jan 2022 01:13:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43878 "EHLO
+        id S231752AbiABGOA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Jan 2022 01:14:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230503AbiABGN2 (ORCPT
+        with ESMTP id S231784AbiABGOA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Jan 2022 01:13:28 -0500
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 322BAC061574
-        for <linux-wireless@vger.kernel.org>; Sat,  1 Jan 2022 22:13:28 -0800 (PST)
-Received: by mail-lj1-x234.google.com with SMTP id h15so37652583ljh.12
-        for <linux-wireless@vger.kernel.org>; Sat, 01 Jan 2022 22:13:28 -0800 (PST)
+        Sun, 2 Jan 2022 01:14:00 -0500
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75DFEC06173E
+        for <linux-wireless@vger.kernel.org>; Sat,  1 Jan 2022 22:13:59 -0800 (PST)
+Received: by mail-lf1-x12b.google.com with SMTP id h7so23941075lfu.4
+        for <linux-wireless@vger.kernel.org>; Sat, 01 Jan 2022 22:13:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=PQZLwT+w1+Y2g2ul+2mg6iUoYfiNjzZt86lCdfnWPtA=;
-        b=AW/ZNbPSLW468zW/twl9o/cgXt0oE2gt8F4kyzPQGwiulKCrpOaWwAM0cyUJ1FPKJk
-         A6QNbIDZTy9H6jycg5ZpeCoAvVEmfyIIjdo3JyNI2Bhc+9jijMoFpYbDWad9ao1nxGzv
-         l2D6ltASDWxaZJpXCGXEYIRszLKvpLrBVLODpBTSIWex436szk5LoV/gKPejKrDnng1z
-         4BI5m2do8sdvrhOCT7NxgfYh1xc9b0e0LKCI6S7MtVpl6KHt977Da09LB2yfTeDOrSL6
-         UEMNeDcgaXkmkUG3wWnTXp3OHn23qojCG9T0srXLdJc4wmrqdKZafnFL67r2CQFmmMiN
-         BtLg==
+        bh=7sMkTbPGbS0cdXIJfh5+hY6EL0S/5OB7ShD5HL8BaBM=;
+        b=rmQuPjCG2uqpfl7GAsWopsTum5R+urfC4iVA+Jw2YDMc4nMNlQVXZ98SoTT19ykAyM
+         bENJgReEL1K3Q1ZQthPkm0blthX4P2W394ZPBBSpZRyaQ0WCnmdIpXcLd5qbWrupAzK1
+         IRTY3defpG+7cQ4fyHKq0MS3fx7QrQxlk+wI7qq9MYAdR2KRMnGpzcQrs6Yqs5QViaUM
+         HTsGMetzCPWjjVpkJxhChVR2gbSwuh8HzDZdxeTHBgJwGdxPmWPf+AQxRYcyW+9yAMJ1
+         xjOrEVGTY4uvbPyeoqUqrwW4KEWYRxk60EmoBcNZcvXlWJ7rAd7UXDb4y3frdrpemIhR
+         Sqfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=PQZLwT+w1+Y2g2ul+2mg6iUoYfiNjzZt86lCdfnWPtA=;
-        b=zw8oArstsQEiV4BDeeCq6hG+pnAu6vXaI8iYeOG9jydGf0NnzbQ1G9sQBc8xnNUL5+
-         yUslBUQzbD0iNjDjA7vPIc6STkfpTX+u1RvkcGxbmVTOF8TADL84+GD3/TobY+xTXC5I
-         EgWmB9u4QHmovoiMijXnJj9LedDNg9ZuRJDigEcBDzyRbXOD1nE0QJ98KuSG/AnWBn7h
-         t44GoUO29T89fpW+zzygxm+XuGhdKh1/RHrUTQVh4VCARbOp6xpIkORxfhdY7ixyLx3r
-         J2U7MHHbhj0pANXWbKqRBABkZA7m9dBBchl/lipMdm83Rc7kaqraO2iIpL++GGdpudQ5
-         W+bg==
-X-Gm-Message-State: AOAM533/Y1IOdLl3tQj0YxC4h0qndnnNxmvwQQum7bu986OHZtenVVej
-        eJM8z+Vb7Y4Gy4OQhwf75aBfBL+C8LCAFQa1KCaLyQ==
-X-Google-Smtp-Source: ABdhPJxM2f7u0RlwdZkYufWQhioNOnTnjJqHgjzjatwX6cpu+GxEYVnS/6kGtZs3QlqQ09MrlhCLnoOvUxy7A8YmozA=
-X-Received: by 2002:a05:651c:623:: with SMTP id k35mr35568925lje.133.1641104006495;
- Sat, 01 Jan 2022 22:13:26 -0800 (PST)
+        bh=7sMkTbPGbS0cdXIJfh5+hY6EL0S/5OB7ShD5HL8BaBM=;
+        b=oB1FGMBMmjIvqKhgesPta3nbie7ryXqebocHc/+F1YGTlMnOTIJELjvaQBm901Z3EW
+         7MxjNd7awb/7VG0cmO8V8QiflpSqF3z+Qv6u41PTTZnty5inmL3Os1+T6EYhmU2L+raZ
+         rIqTPXOxcH6+QNZE2KfM0NW5F/+VFuKFhMdzaiADp+tBTWSSmMrj2y9g0AXsETWY83ag
+         E3ULsEvn1nnLLsJhzOwjch6TC+9kd2pj20kQ4e4Lm8srj81ykCLbhnGwXLuGzCe87VAm
+         qeUQY46hDVAP0hI2qVnI6YZoh2Pnp5iBXTvrLPNnNlbNBInW6P80ln9nWvMbJ1NyUIvU
+         if/w==
+X-Gm-Message-State: AOAM531S4qctzPB3HOXHmsWwI5HkQiNlE7Go5dIkdROQyc0uhaGom0YP
+        DTdPgCX7XZ7Xp/mj2NZcxZ0ei42frDF67flS+Uessg==
+X-Google-Smtp-Source: ABdhPJyCazaSB74rZNFvZ78lLcqbHNTpihP04lLu4fdMubHBanaKA0y68FD4EU6Z5Gy/QZM4n49VaW3rXzl4eiRD8EE=
+X-Received: by 2002:a05:6512:118d:: with SMTP id g13mr36266419lfr.591.1641104037812;
+ Sat, 01 Jan 2022 22:13:57 -0800 (PST)
 MIME-Version: 1.0
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-27-marcan@marcan.st>
-In-Reply-To: <20211226153624.162281-27-marcan@marcan.st>
+References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-28-marcan@marcan.st>
+In-Reply-To: <20211226153624.162281-28-marcan@marcan.st>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 2 Jan 2022 07:13:13 +0100
-Message-ID: <CACRpkdZ4w1Ftq+UcpmYVzcESG-2tJTkUs8RViqRPv9EKmL4NLg@mail.gmail.com>
-Subject: Re: [PATCH 26/34] brcmfmac: cfg80211: Pass the PMK in binary instead
- of hex
+Date:   Sun, 2 Jan 2022 07:13:45 +0100
+Message-ID: <CACRpkdarpOowF79TjcT_Wh5uiOzTTAL_-mxZ+tPvY0DhShAAHw@mail.gmail.com>
+Subject: Re: [PATCH 27/34] brcmfmac: pcie: Add IDs/properties for BCM4387
 To:     Hector Martin <marcan@marcan.st>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -85,15 +84,12 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Sun, Dec 26, 2021 at 4:40 PM Hector Martin <marcan@marcan.st> wrote:
 
-> Apparently the hex passphrase mechanism does not work on newer
-> chips/firmware (e.g. BCM4387). It seems there was a simple way of
-> passing it in binary all along, so use that and avoid the hexification.
+> This chip is present on Apple M1 Pro/Max (t600x) platforms:
 >
-> OpenBSD has been doing it like this from the beginning, so this should
-> work on all chips.
->
-> Also clear the structure before setting the PMK. This was leaking
-> uninitialized stack contents to the device.
+> * maldives   (apple,j314s): MacBook Pro (14-inch, M1 Pro, 2021)
+> * maldives   (apple,j314c): MacBook Pro (14-inch, M1 Max, 2021)
+> * madagascar (apple,j316s): MacBook Pro (16-inch, M1 Pro, 2021)
+> * madagascar (apple,j316c): MacBook Pro (16-inch, M1 Max, 2021)
 >
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 
