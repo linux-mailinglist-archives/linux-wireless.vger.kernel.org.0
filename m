@@ -2,98 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7448482871
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jan 2022 21:27:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4C0E482955
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jan 2022 06:32:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232696AbiAAU1i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 1 Jan 2022 15:27:38 -0500
-Received: from mout.kundenserver.de ([217.72.192.74]:49315 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232693AbiAAU1i (ORCPT
+        id S230115AbiABFc0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Jan 2022 00:32:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34660 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229952AbiABFcZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 1 Jan 2022 15:27:38 -0500
-Received: from localhost.localdomain ([37.4.249.169]) by
- mrelayeu.kundenserver.de (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis)
- id 1Mhl4Q-1mQ0NL0gWe-00do8f; Sat, 01 Jan 2022 21:27:19 +0100
-From:   Stefan Wahren <stefan.wahren@i2se.com>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        Sun, 2 Jan 2022 00:32:25 -0500
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 253A3C06173E
+        for <linux-wireless@vger.kernel.org>; Sat,  1 Jan 2022 21:32:25 -0800 (PST)
+Received: by mail-lj1-x234.google.com with SMTP id g13so38785478ljj.10
+        for <linux-wireless@vger.kernel.org>; Sat, 01 Jan 2022 21:32:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=eoiQ1KQCJ264ktaBoIMzabH4DC3BnHoyNUOH7R2xfGE=;
+        b=yYBSC5lysVvJJvnfgAikjlfcPvXtpBeSHCMXW02NeblK+R7M2cdUuXlPIQsC8hgj6S
+         m9MClDBjLME/csDB9yr+lu2tJAczUjiZQugxQKJKJ/Y85c0/CIZyIoPEUl5o83nLjsQd
+         yFYszFo2r81u/y51uN6O+HurpwmOo9M8TkZ4VgMSukjVAFnYKhDuS3QHNRSQ6xsYhBuU
+         X2cMVp6CObIuuli55848qIysWAP/7IrvkE4fhng5L0fYkpzLBfjbObzyYm21uv35RX2N
+         lmBWtfArOezp5xg7xGM6xXq9gv7w/3zSNrW+TqVYg/upO7oPZtc1kWklBnnTV0A7NqS3
+         h1Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=eoiQ1KQCJ264ktaBoIMzabH4DC3BnHoyNUOH7R2xfGE=;
+        b=VXOG05zL1o09VXxpouSM421gSPn72QVZyl1XTE5yJXpXRcLcOrzJhPh0pAEfgOlouI
+         hD3Ix1N7d5S31eTDcZAPNjE1HuPIz2az5dKulA6vz4RpNrHeqP9kwRpyo6P6nokYVbrV
+         zCGXnNra3VNmGkPacXg7Eek7d4A3QAlwKLVGk4HGU1FcVuKNRGHrLhJ3Fly/3keQv3Qn
+         LEG6wIN4qsCXnFsvig7xfRoKTTc4bG1ANvNMtfUIxHd58y8HWmBGIXDsNI5WzeYxPZLK
+         WwB71uRD8vr3/VGiADnFGuH3ZPhJgnHizuhTzm0aC3jMPqyRzAPwSRdJK6Sz/92SNjFB
+         qfbg==
+X-Gm-Message-State: AOAM530/pDAdYMuRuZ4als+VolNX8z5w+DJvRzgBkNMnVZAfIeTcf8Ok
+        08FW7V+TG7YwkaQfjtVMlWO+jG7c75oeknt/YFVmvQ==
+X-Google-Smtp-Source: ABdhPJw4xEaszeQin5r2Odu1gmvGU60LgLA3geDvlmTokl3LciZbSNZGYLPNPKmSyqjJHa3BrTln8FjKn/xFLZmC/AY=
+X-Received: by 2002:a2e:7c01:: with SMTP id x1mr33669767ljc.145.1641101543185;
+ Sat, 01 Jan 2022 21:32:23 -0800 (PST)
+MIME-Version: 1.0
+References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-4-marcan@marcan.st>
+In-Reply-To: <20211226153624.162281-4-marcan@marcan.st>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 2 Jan 2022 06:31:26 +0100
+Message-ID: <CACRpkdZc75XUJh7afPhcBNaVE63Ovby2HVBe+HObvURN8i84KQ@mail.gmail.com>
+Subject: Re: [PATCH 03/34] brcmfmac: firmware: Support having multiple alt paths
+To:     Hector Martin <marcan@marcan.st>,
+        Dmitry Osipenko <digetx@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
         Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-hsien Lin <chi-hsien.lin@infineon.com>,
         Wright Feng <wright.feng@infineon.com>,
         Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        Phil Elwell <phil@raspberrypi.com>, devicetree@vger.kernel.org,
-        soc@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        linux-rpi-kernel@lists.infradead.org,
-        Stefan Wahren <stefan.wahren@i2se.com>
-Subject: [PATCH RFC 4/4] arm64: dts: broadcom: Add reference to RPi Zero 2 W
-Date:   Sat,  1 Jan 2022 21:26:52 +0100
-Message-Id: <1641068812-5851-5-git-send-email-stefan.wahren@i2se.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1641068812-5851-1-git-send-email-stefan.wahren@i2se.com>
-References: <1641068812-5851-1-git-send-email-stefan.wahren@i2se.com>
-X-Provags-ID: V03:K1:VUyfbNXMUTZ28FWicxIVh7Ab5XomgIvGNewGUykBBN+BdaVpTKF
- fd7K7/AnwSw54Q0jUcXxTbOIfhv8T8RjrbjfKAia1quN1RBqi/XZmgrjgFjAv75LD9yX+JF
- INqg6VlqwzPXQ6PdGlSM+QDKzN469ASPClUj3ix89M+Tj3J+wz4Pe6y206R7USzYomvTcYp
- g2ArOhhnuZE0AWPDLKlPg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:RTIGgM0LfcE=:DCJ33IC5XicleX2NVL6AhH
- kNbu+Pd9g618cFxUyXyMLcHmaZIwOq7pmcDK+evfa+u7n+xIl98nIu0pISkkoU3pG/mo6GkW+
- UGotZI8fuaYN293E3gEBovMt6Lldi/FTEW/dLJ+kZTbEJnuCIzPplORrkc7XUjCp5j83A4L3X
- kcPIfuDPP7D3s6Rsex2UpbZAl9X+p3xrqdmDwrk+aGTXUtg9ZPGWGt0NNN3Dk+p7R3zga5jmz
- 0joFRiWdgGOOAQmczHkayjlOc1xzK3j/3sCNjW+6MczECngs7dc9A4vSLJNCkTE/XDdgLvXrN
- v0Vdo+Iyn3x3XtyPFDm1J4dGB1zZhTFV3UZfcfgFgF8cBGLH4fW0WulSQCECO0pvMVG4Q3Z8J
- 67XC11Vz6hQd/fiFIfBOQEgPWSzQV16f2EU7zAQ7DZkC+hYLDk1hJuy92es+9c1DoVGt4nRse
- zwUHN2WY3McuxFRzkR+YuyjhJ7+y5Ys7QM1zLZ8g+URkrFCMEHDcJUTzl2sOB5QzMccLO/rju
- cOsOjy0WIf0J3mLe5tCWZtDUA4pwbJnFlKeh3MJi1bJKJsybK7NuScwDWMKKL2SOiNlhTmkZl
- vSN437/oVlR/GmxiqXmlvQMEd94JzHalBaAUkQZ4V0EFnceV0cV9p4zET4JdmqGtPAQ8lGBV1
- vZ6nGNlFEdLsg5Vgl1vyVHHHy7sUhmjlqBPnNfIY3kN5aE4RsYV9KE5lluqkwPuID32XktJ0B
- sWa0rSu5ctgsjFpn
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "Daniel (Deognyoun) Kim" <dekim@broadcom.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This adds a reference to the dts of the Raspberry Pi Zero 2 W,
-so we don't need to maintain the content in arm64.
+On Sun, Dec 26, 2021 at 4:37 PM Hector Martin <marcan@marcan.st> wrote:
 
-Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
----
- arch/arm64/boot/dts/broadcom/Makefile                 | 3 ++-
- arch/arm64/boot/dts/broadcom/bcm2837-rpi-zero-2-w.dts | 2 ++
- 2 files changed, 4 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm64/boot/dts/broadcom/bcm2837-rpi-zero-2-w.dts
+> Apple platforms have firmware and config files identified with multiple
+> dimensions. We want to be able to find the most specific firmware
+> available for any given platform, progressively trying more general
+> firmwares.
+>
+> First, add support for having multiple alternate firmware paths.
+>
+> Signed-off-by: Hector Martin <marcan@marcan.st>
 
-diff --git a/arch/arm64/boot/dts/broadcom/Makefile b/arch/arm64/boot/dts/broadcom/Makefile
-index c688203..5082fcd 100644
---- a/arch/arm64/boot/dts/broadcom/Makefile
-+++ b/arch/arm64/boot/dts/broadcom/Makefile
-@@ -5,7 +5,8 @@ dtb-$(CONFIG_ARCH_BCM2835) += bcm2711-rpi-400.dtb \
- 			      bcm2837-rpi-3-a-plus.dtb \
- 			      bcm2837-rpi-3-b.dtb \
- 			      bcm2837-rpi-3-b-plus.dtb \
--			      bcm2837-rpi-cm3-io3.dtb
-+			      bcm2837-rpi-cm3-io3.dtb \
-+			      bcm2837-rpi-zero-2-w.dtb
- 
- subdir-y	+= bcm4908
- subdir-y	+= northstar2
-diff --git a/arch/arm64/boot/dts/broadcom/bcm2837-rpi-zero-2-w.dts b/arch/arm64/boot/dts/broadcom/bcm2837-rpi-zero-2-w.dts
-new file mode 100644
-index 0000000..307ae69
---- /dev/null
-+++ b/arch/arm64/boot/dts/broadcom/bcm2837-rpi-zero-2-w.dts
-@@ -0,0 +1,2 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include "arm/bcm2837-rpi-zero-2-w.dts"
--- 
-2.7.4
+This looks OK to me so FWIW:
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
+Make sure Dmitry Osipenko gets to review this though, he has many
+valuable insights about how the FW is loaded and helped me out a
+lot when I patched this.
+
+Yours,
+Linus Walleij
