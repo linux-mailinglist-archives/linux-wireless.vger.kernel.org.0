@@ -2,56 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8C054829E9
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jan 2022 07:03:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D4574829EE
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jan 2022 07:10:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231620AbiABGD3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Jan 2022 01:03:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41664 "EHLO
+        id S231569AbiABGKK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Jan 2022 01:10:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230405AbiABGD2 (ORCPT
+        with ESMTP id S230325AbiABGKJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Jan 2022 01:03:28 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D24CC061574
-        for <linux-wireless@vger.kernel.org>; Sat,  1 Jan 2022 22:03:28 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id h2so57931439lfv.9
-        for <linux-wireless@vger.kernel.org>; Sat, 01 Jan 2022 22:03:28 -0800 (PST)
+        Sun, 2 Jan 2022 01:10:09 -0500
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 502B0C061574
+        for <linux-wireless@vger.kernel.org>; Sat,  1 Jan 2022 22:10:09 -0800 (PST)
+Received: by mail-lj1-x22d.google.com with SMTP id t14so22631860ljh.8
+        for <linux-wireless@vger.kernel.org>; Sat, 01 Jan 2022 22:10:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=eOSEt2UYspkO7KlpH0taqWCjFFVAh5LxlRawNiLoSCA=;
-        b=tGCb3hDZ09NPFPr6FT12MbJtVURDBtkxRXV2FAUpIK+IdsXRbxxLlxD5RF8xeHOlEc
-         rdmSfOvohYAfAqnQntjwxXcMrg8fpekXTKeiEFtU+MjoWUpWzrz6GxsLS2PcAK2OmQEy
-         YumzH+DZG7mHqw7l6y3F2G18Ru+zT6NqLuwsAIkADGyZ4dRhzF7YoWyMV5/9RlP8Nu+b
-         z51JezLya73SyPTWGXQTVea/ARxo88mAjh5xPmHLM3Y+UnVUeA3Ir/OY3xosGv89OQP1
-         vyZohRjymVa7nmmoZKQUluLyyA9P0Wnp6d0ZturGsebk89CRpkHYtSDzYi333r+AjIv+
-         uUoA==
+        bh=sfx54z3g7sfFs7JsVZzrDRW1hVLAL2mHFjv2JYjNFmE=;
+        b=MO5AUuIABvQLLi+tkM6OuNl1SFRhfjnfNdZf/WF35ksOELjU+aknIlVmUV02Ge74mb
+         N3E4241Z0dw7sXALiXjlHzNENbvq6pG+ee/D2LydEggYwYAa8czMTDe3mHtrOQ8e2PQm
+         2xmYzsBAGAKlurQRe+J9yA0c71rgTnhonBW3Fh2rb/pu4cVvamPrnhv1qBbKx+YXBSs9
+         DY8RNrjy2JeWUCKgV9ulHQY/8KTYAbQyvG1+2LvdSLzm+azP8+d1m3g8gcUuUqsjX6Kh
+         9X9+2vFCALVdFZDfDXttI1v4K3ewSf+XMGm7SSRKcf55LRGb+ZYsJhypGmvUSvUqKQF0
+         Cvnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=eOSEt2UYspkO7KlpH0taqWCjFFVAh5LxlRawNiLoSCA=;
-        b=ihPJ7wnKD+FjYAzjZFVxPCKdA+pRSTXfDw8wlm9Y6A4nCgR9+BYUyX6jwZ1QQkbRlQ
-         dFBKS6U1l5jh1TuOY4kHyTW9ad9o4U67IugDbTQ35S+HKkxADcdQWJN7moN4bB024ls5
-         /+YvaY2ATx7sNlnlGXl9/X+WZy55WvFXXJgyHzDfKR51w4kyu2xVQEgTStXla4i00GC0
-         Xs0+ozJaCNXKnKYGcApxjlr3MYh5wMOdOvWRyhlT5BRxdRajjQisK+Y5iWKK69WrGAcU
-         Es/6kKhpw6KkPD9temvJLtcp91BTwUd5Wb7KXOtaVXA18/gjDn2i6VNJG6it0zHt3idR
-         JJ4Q==
-X-Gm-Message-State: AOAM531y40gsFkIffZatbmWc4q92eFDXsFtsnki4nBvT31Mf0iwqMH/R
-        9CHY3nXqQnMtNtq+enpceH+ymBfJC7FuB2Y4c9wS+g==
-X-Google-Smtp-Source: ABdhPJyUsJK/0aqdGyEKpwuU7vg2NlhR00lEWpxX20MF2aZZkZEtuybziC46nnAcrr7lYQhYJfFsFAUfCpx4oTaGd/A=
-X-Received: by 2002:a05:6512:2303:: with SMTP id o3mr36790809lfu.362.1641103406623;
- Sat, 01 Jan 2022 22:03:26 -0800 (PST)
+        bh=sfx54z3g7sfFs7JsVZzrDRW1hVLAL2mHFjv2JYjNFmE=;
+        b=uVNs70bUdw5zg3BI3iJGA+q/K5jx7wGO76v9+slujawWZDUVYv+RTcsVY4OFfxFEL3
+         8QD2siczWyFvSfz8SyZxMhyiEzjAk4BjIL1ifPlCBOCcRaq6JH0kEZDDJvtt/BqpeOJe
+         O6bEefI6JZNnW0QfHziw1EWHoIp6iNtscoUTG4T7bXQGUjZeJ73apCrBv6DTFnG7qbna
+         30C094fLryuXMrSwxihNuXq3J1fVm/pa/uVEKqR+cc5GKmj4H+fxIishHEUO0oE3GJgl
+         ii3PftsnHK21GTu6jxhpNEK6KCFdx8eftKWY5+dM1l+fSWUi6ieG4lzCJvwAgrhbaMr9
+         yylg==
+X-Gm-Message-State: AOAM533H9ydC6gjTDxSFr/yj/2C8cKTdTmuBLtEP96fsNufsR9DO1fHc
+        XDfQj38lZykBeX1C8nHYQAmQkN06hptprL/Xa+sJ4Q==
+X-Google-Smtp-Source: ABdhPJxWp3CGlZRZaaUTWpT7/gu8dnteeqOe+rMzZGWFHzCxm8tDGyYTI5LyPDXA6ulkKiQb/xXECrpR2ZqPp9nlH6I=
+X-Received: by 2002:a2e:8810:: with SMTP id x16mr31131176ljh.78.1641103807519;
+ Sat, 01 Jan 2022 22:10:07 -0800 (PST)
 MIME-Version: 1.0
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-22-marcan@marcan.st>
-In-Reply-To: <20211226153624.162281-22-marcan@marcan.st>
+References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-23-marcan@marcan.st>
+In-Reply-To: <20211226153624.162281-23-marcan@marcan.st>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 2 Jan 2022 07:03:14 +0100
-Message-ID: <CACRpkdaPwG7gQd6Zk81NH_u2ZzPA8=33kCThm+SPn_fywBm6AQ@mail.gmail.com>
-Subject: Re: [PATCH 21/34] brcmfmac: chip: Only disable D11 cores; handle an
- arbitrary number
+Date:   Sun, 2 Jan 2022 07:09:55 +0100
+Message-ID: <CACRpkdYkMMJnL9yyXJfhTc8Rn57ChB2bZWsKs=uJNKKea2DvXg@mail.gmail.com>
+Subject: Re: [PATCH 22/34] brcmfmac: chip: Handle 1024-unit sizes for TCM blocks
 To:     Hector Martin <marcan@marcan.st>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -85,15 +84,9 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Sun, Dec 26, 2021 at 4:39 PM Hector Martin <marcan@marcan.st> wrote:
 
-> At least on BCM4387, the D11 cores are held in reset on cold startup and
-> firmware expects to release reset itself. Just assert reset here and let
-> firmware deassert it. Premature deassertion results in the firmware
-> failing to initialize properly some of the time, with strange AXI bus
-> errors.
->
-> Also, BCM4387 has 3 cores, up from 2. The logic for handling that is in
-> brcmf_chip_ai_resetcore(), but since we aren't using that any more, just
-> handle it here.
+> BCM4387 has trailing odd-sized blocks as part of TCM which have
+> their size described as a multiple of 1024 instead of 8192. Handle this
+> so we can compute the TCM size properly.
 >
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 
