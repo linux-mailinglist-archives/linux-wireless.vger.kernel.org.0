@@ -2,60 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D3C8483585
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jan 2022 18:24:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62FAE48358B
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jan 2022 18:27:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233145AbiACRYa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jan 2022 12:24:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52006 "EHLO
+        id S235236AbiACR1d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jan 2022 12:27:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232003AbiACRY3 (ORCPT
+        with ESMTP id S232075AbiACR1d (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jan 2022 12:24:29 -0500
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F71CC061761;
-        Mon,  3 Jan 2022 09:24:29 -0800 (PST)
-Received: by mail-pj1-x1029.google.com with SMTP id jw3so29286468pjb.4;
-        Mon, 03 Jan 2022 09:24:29 -0800 (PST)
+        Mon, 3 Jan 2022 12:27:33 -0500
+Received: from mail-vk1-xa31.google.com (mail-vk1-xa31.google.com [IPv6:2607:f8b0:4864:20::a31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B85FC061761;
+        Mon,  3 Jan 2022 09:27:32 -0800 (PST)
+Received: by mail-vk1-xa31.google.com with SMTP id h67so19233500vkh.1;
+        Mon, 03 Jan 2022 09:27:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=0L/XmYFJf7rrncW5i02VYWysmo3VfvrxIa/jZ7I+BkQ=;
-        b=ED4rqF+g9MCRv017zZ8RyDk0oWyweMGo8g7V0buGpzdZ3DhieYnVpLRtullR+zrVBt
-         StidQeLg8O47qNCDe7npV4B4k4v9Equw317TeBMu+XVWNMHmKA8vYEywU3X0Lsvom1pb
-         J+SyrVFQU3/4aP/PvVpd8Hblb2ey+Kp6FJklpzdkw0WEOKajkqPMGwCVp4jkCqG8qFI5
-         nbI14EGtpXWC2bZqNA+pNuHrdcSZnIjeTJCdHY9A394+es//ZBfpbzsMr1Bb565gMon8
-         4ogvTHANLrO8vKeEMD5mOuvsf7YUiBUMmGZg+J/zeQ7SkpcCQTP0WU++XaRpe2/B/JvN
-         ImbA==
+        bh=Grh3iRZLDkYqgCiFWJobaJkZx4Mto9jnEwXBQ73vVs4=;
+        b=mMZ8yh5BwCDZZkz+NRrigwzXbRhzhr0uT47SGJR5vQ41rWiwsqT75T/KjbMPToqiOU
+         ONeOVHXANG/jIWe6RYJ3tpVidoHTRfmCGdwb62w6tp1ND329HnY4TQ3brTu4cjnySEro
+         E7JvCakWwdQ8GNodifagl0smURKNMV/i7BaNbTkfslU4WP4FFTEuqzAtYegsMPjbvruC
+         MmabsvRR7PK3R5O2fGvEMroZnY3/W643AZX7WGsoqlMoNsczeuKmHx2X24T0x2rGdIkT
+         ShdqfeUeECkDZ9fNBgWAMNl7JJOt+LjGXYTmt6XBVS+ciYmE+DynpwBCMOztEkoLpE/q
+         ekUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=0L/XmYFJf7rrncW5i02VYWysmo3VfvrxIa/jZ7I+BkQ=;
-        b=qzSQIDzPVP6JzpTBApjYMPJTlA+uT6CkXDdd8JZSDcceSy+ie2EiII/ZBgUyz3H381
-         bM2ZglsAl0tGJHLNgRb5ivOXvZMaMGIYNBf2GPrkmiyHPpT76wX9wytOX+m05RFTERtv
-         EdY56EMl1PPiq+5AkfDtrsHtH9nPuqpufF0J0Kfun4cAcQhIMTdB1/i0cQ++YPYgDn7n
-         W29qJHexQbrURNfciXhY9DM50djmjjAiw+MGCqB2bu7n2HH5hfz9URtdBZyDdpMagJIt
-         wb438XgtwpGTshbITVVVn0JXKSuJ7WvE/uLt4WZjrhBImdeTxzB9iuMGGfmAXxRP8sCr
-         erQg==
-X-Gm-Message-State: AOAM532791c+62NOEqX1KzastMu7S2T2ZbhWdJwY9HfEm3t8Pw8WQzu2
-        L59R5U4dN4+pQgL0dmv8thU=
-X-Google-Smtp-Source: ABdhPJxU+vdH181ESxpFTV/gZNCfEJtI3PFpJP0OJhjASZvO61OpFsO4xDf9+cjutucymgULxohxJA==
-X-Received: by 2002:a17:903:110d:b0:149:a908:16a2 with SMTP id n13-20020a170903110d00b00149a90816a2mr16078909plh.77.1641230669038;
-        Mon, 03 Jan 2022 09:24:29 -0800 (PST)
-Received: from [192.168.1.3] (ip72-194-116-95.oc.oc.cox.net. [72.194.116.95])
-        by smtp.gmail.com with ESMTPSA id f5sm40896020pfc.102.2022.01.03.09.24.27
+        bh=Grh3iRZLDkYqgCiFWJobaJkZx4Mto9jnEwXBQ73vVs4=;
+        b=UJSNpKL3ce8+UIP85Otn2tWlOnAptY+pdg1aX0lJ+Z5+Hcmr+p8GHQgUDuIuBqDlIV
+         G9ZLDqJws5oc07a7lWZJsMDokl5XzdsxZTe7x5q/tOTV0FySiPJbPjvUefZEkLiLraaC
+         edhWgBE4zSSNMzFuMet6y/VQr40QawjVK7ackRuAsabSuU5r2FN/ypJfWExqimER/RR8
+         Dc/TIywsH4cTfQKc8sLHiaZsrv8vrlWW0c+dd9PXc2CMCtr7eji0MxPqIRBQlgaWEqlW
+         jA973nj7RTf+uKEFMIrtIEiq7T+SCf7G6jPHSD8hha9EiVCB9uXnLue74wSWyleYWXgJ
+         wFmw==
+X-Gm-Message-State: AOAM531vJnRLPWVxNO7kfs4qfj8ylem1J3e9Yis/fHl54WDxu7zydrFo
+        gr4OEIpPcWQz5TKhtbJz5YjOgW+/IjE=
+X-Google-Smtp-Source: ABdhPJxUFUMmfH39/l/tXRgkH25UICIz6jPCAdEbL/I7WJI7MiJEefbIklc92it83hGd4QWS/zKivw==
+X-Received: by 2002:a05:6122:220d:: with SMTP id bb13mr6095735vkb.33.1641230851556;
+        Mon, 03 Jan 2022 09:27:31 -0800 (PST)
+Received: from [10.230.2.158] ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id r2sm7449338vsk.28.2022.01.03.09.27.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Jan 2022 09:24:28 -0800 (PST)
-Message-ID: <299bf6ed-80e6-ad15-8dc7-5ededaca15c5@gmail.com>
-Date:   Mon, 3 Jan 2022 09:24:26 -0800
+        Mon, 03 Jan 2022 09:27:31 -0800 (PST)
+Message-ID: <00d8af2f-45ff-48d7-43e7-14c59a0aca62@gmail.com>
+Date:   Mon, 3 Jan 2022 09:27:28 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.4.1
-Subject: Re: [PATCH 1/9] mtd: rawnand: brcmnand: Allow SoC to provide I/O
- operations
+Subject: Re: [PATCH 4/9] mtd: rawnand: brcmnand: Move OF operations out of
+ brcmnand_init_cs()
 Content-Language: en-US
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Florian Fainelli <f.fainelli@gmail.com>
@@ -74,10 +74,10 @@ Cc:     linux-mtd@lists.infradead.org,
         "open list:BROADCOM STB NAND FLASH DRIVER" 
         <bcm-kernel-feedback-list@broadcom.com>
 References: <20211223002225.3738385-1-f.fainelli@gmail.com>
- <20211223002225.3738385-2-f.fainelli@gmail.com>
- <20220103174953.40d7fa52@xps13>
+ <20211223002225.3738385-5-f.fainelli@gmail.com>
+ <20220103175606.71a4eb93@xps13>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20220103174953.40d7fa52@xps13>
+In-Reply-To: <20220103175606.71a4eb93@xps13>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -86,119 +86,27 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 
 
-On 1/3/2022 8:49 AM, Miquel Raynal wrote:
+On 1/3/2022 8:56 AM, Miquel Raynal wrote:
 > Hi Florian,
 > 
-> f.fainelli@gmail.com wrote on Wed, 22 Dec 2021 16:22:17 -0800:
+> f.fainelli@gmail.com wrote on Wed, 22 Dec 2021 16:22:20 -0800:
 > 
->> Allow a brcmnand_soc instance to provide a custom set of I/O operations
->> which we will require when using this driver on a BCMA bus which is not
->> directly memory mapped I/O. Update the nand_{read,write}_reg accordingly
->> to use the SoC operations if provided.
->>
->> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
->> ---
->>   drivers/mtd/nand/raw/brcmnand/brcmnand.c | 14 ++++++++++++--
->>   drivers/mtd/nand/raw/brcmnand/brcmnand.h | 23 +++++++++++++++++++++++
->>   2 files changed, 35 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
->> index f75929783b94..7a1673b1b1af 100644
->> --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
->> +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
->> @@ -594,13 +594,18 @@ enum {
->>   
->>   static inline u32 nand_readreg(struct brcmnand_controller *ctrl, u32 offs)
->>   {
->> +	if (brcmnand_soc_has_ops(ctrl->soc))
->> +		return brcmnand_soc_read(ctrl->soc, offs);
->>   	return brcmnand_readl(ctrl->nand_base + offs);
->>   }
->>   
->>   static inline void nand_writereg(struct brcmnand_controller *ctrl, u32 offs,
->>   				 u32 val)
->>   {
->> -	brcmnand_writel(val, ctrl->nand_base + offs);
->> +	if (brcmnand_soc_has_ops(ctrl->soc))
->> +		brcmnand_soc_write(ctrl->soc, val, offs);
->> +	else
->> +		brcmnand_writel(val, ctrl->nand_base + offs);
->>   }
->>   
->>   static int brcmnand_revision_init(struct brcmnand_controller *ctrl)
->> @@ -766,13 +771,18 @@ static inline void brcmnand_rmw_reg(struct brcmnand_controller *ctrl,
->>   
->>   static inline u32 brcmnand_read_fc(struct brcmnand_controller *ctrl, int word)
->>   {
->> +	if (brcmnand_soc_has_ops(ctrl->soc))
->> +		return brcmnand_soc_read(ctrl->soc, ~0);
->>   	return __raw_readl(ctrl->nand_fc + word * 4);
->>   }
->>   
->>   static inline void brcmnand_write_fc(struct brcmnand_controller *ctrl,
->>   				     int word, u32 val)
->>   {
->> -	__raw_writel(val, ctrl->nand_fc + word * 4);
->> +	if (brcmnand_soc_has_ops(ctrl->soc))
->> +		brcmnand_soc_write(ctrl->soc, val, ~0);
->> +	else
->> +		__raw_writel(val, ctrl->nand_fc + word * 4);
->>   }
->>   
->>   static inline void edu_writel(struct brcmnand_controller *ctrl,
->> diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.h b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
->> index eb498fbe505e..a3f2ad5f6572 100644
->> --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.h
->> +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
->> @@ -11,12 +11,19 @@
->>   
->>   struct platform_device;
->>   struct dev_pm_ops;
->> +struct brcmnand_io_ops;
->>   
->>   struct brcmnand_soc {
->>   	bool (*ctlrdy_ack)(struct brcmnand_soc *soc);
->>   	void (*ctlrdy_set_enabled)(struct brcmnand_soc *soc, bool en);
->>   	void (*prepare_data_bus)(struct brcmnand_soc *soc, bool prepare,
->>   				 bool is_param);
->> +	const struct brcmnand_io_ops *ops;
->> +};
->> +
->> +struct brcmnand_io_ops {
->> +	u32 (*read_reg)(struct brcmnand_soc *soc, u32 offset);
->> +	void (*write_reg)(struct brcmnand_soc *soc, u32 val, u32 offset);
->>   };
->>   
->>   static inline void brcmnand_soc_data_bus_prepare(struct brcmnand_soc *soc,
->> @@ -58,6 +65,22 @@ static inline void brcmnand_writel(u32 val, void __iomem *addr)
->>   		writel_relaxed(val, addr);
->>   }
->>   
->> +static inline bool brcmnand_soc_has_ops(struct brcmnand_soc *soc)
->> +{
->> +	return soc && soc->ops && soc->ops->read_reg && soc->ops->write_reg;
->> +}
->> +
->> +static inline u32 brcmnand_soc_read(struct brcmnand_soc *soc, u32 offset)
->> +{
->> +	return soc->ops->read_reg(soc, offset);
->> +}
->> +
->> +static inline void brcmnand_soc_write(struct brcmnand_soc *soc, u32 val,
->> +				      u32 offset)
->> +{
->> +	soc->ops->write_reg(soc, val, offset);
->> +}
->> +
+>> In order to initialize a given chip select object for use by the
+>> brcmnand driver, move all of the Device Tree specific routines outside
+>> of brcmnand_init_cs() in order to make it usable in a platform data
+>> configuration which will be necessary for supporting BCMA chips.
 > 
-> It might be worth looking into more optimized ways to do these checks,
-> in particular the read/write_reg ones because you're checking against
-> some static data which cannot be optimized out by the compiler but
-> won't change in the lifetime of the kernel.
+> TBH I'm note a big fan of the idea. I'm not sure going back to
+> supporting platform data this way really is a good idea... There are so
+> much things that are well described with DT that we now rely upon that
+> I am not entirely convinced by these changes :-/ The move is generally
+> in the other direction: getting rid of the legacy platform data.
 
-I suppose I could add an addition if 
-IS_ENABLED(CONFIG_MTD_NAND_BRCMNAND_BCMA) at the front of 
-brcmnand_soc_has_ops(), would that address your concern or you have 
-something else in mind?
---
+In the cover letter there is an explanation as to why we need to 
+introduce platform data/device support here: the platforms on which this 
+NAND controller shim is used do not have Device Tree support, and won't 
+have it in the future either. They are old platforms (first SoC 
+supported by bcm47xx is maybe 15 years old now) but they are still in 
+active and wide use by the OpenWrt, dd-wrt communities.
+-- 
 Florian
