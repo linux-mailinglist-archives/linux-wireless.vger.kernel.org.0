@@ -2,121 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB00A48305C
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jan 2022 12:15:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CEAB483519
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jan 2022 17:50:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229686AbiACLPF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jan 2022 06:15:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52536 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229851AbiACLPE (ORCPT
+        id S233578AbiACQuB convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jan 2022 11:50:01 -0500
+Received: from relay10.mail.gandi.net ([217.70.178.230]:60049 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234917AbiACQt7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jan 2022 06:15:04 -0500
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49EBAC061785
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Jan 2022 03:15:04 -0800 (PST)
-Received: by mail-ot1-x32b.google.com with SMTP id o3-20020a9d4043000000b0058f31f4312fso41103480oti.1
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Jan 2022 03:15:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fAa5qBTWMNqav9vIr3Fk0gv7glNbc0fpvfZZDW8y3qw=;
-        b=DPhbxHZXVLBQgvjBjVMRRm/S3fMu9gJX9VFXmPACLHk6waVE+XwwvGDZQ0FxhgUr5X
-         H+djmebIMwj1mEe+RHWCO6RRhiF4n/4KwUv8ywEhQ9N+3nq837hnEmvthI8Zzi8WxKoy
-         Hes4o6db7tUV8pkguW9spmpFQzZLkiXNsDj+H5NdqNtU4irvyc2s+kkIRr83PaxhFspB
-         nMgSGDbmP634hPtb8jNaGeFSAVgJe9C/4diGS/qXrX9FLjy2x8qTyFfWGl/LqjsFfGXg
-         HOLE1ZrMevIKm0dq1MKEXjjb2TOaSU85zaio6JvssKYy8B5DPH0lQEaGWl3//6tNyCY9
-         wGfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fAa5qBTWMNqav9vIr3Fk0gv7glNbc0fpvfZZDW8y3qw=;
-        b=b9DKTCnfVmFzBRw110aDO2TgEUctuhmzU8GJDJF6N4PyUV/FhZU7RTfUKWhqAtYWHV
-         DZZlHsdDbwW1G0/mQ8rmwdVkaD3+igHiv2SswdTYD10p/egMX6AqSjVpy7ZFKlQ7LNPM
-         WZojK4vuilIYbVD/QIIxqK5Q4PSS1cmoro5pVJ/H8dySqsQtmng7MlG8eKsVg8mwi0IR
-         0PQ0JtVXzG2zNKpNT55UpE65vUv36P6Q9BNgPmUIstNRMCVugGXD4EwjQffRWPvLqEEu
-         tomjnLKpnVLArHoZ43EH9GIausXCmFDOQd15lNBcHeFkni+IE5zlFgaLLB0UQCdgCZvS
-         Gm5g==
-X-Gm-Message-State: AOAM533LwUFtHMIUBw4hCJcDF3g3YXhm8HWk7k28+WYV02+/AWBzuoaM
-        +M2oFr+3sEh3/GLVSoHi14FtJUumZ+mtnG9VDzRWnA==
-X-Google-Smtp-Source: ABdhPJyor5Hr2xHJLuBQnoyHYYNhaI9p6OwuLVzxn7Bt5ylBXiYFPnwEejhIeedKe/iPMvzJplplZYEek0Jh+LMI0qY=
-X-Received: by 2002:a9d:a42:: with SMTP id 60mr33720842otg.179.1641208503260;
- Mon, 03 Jan 2022 03:15:03 -0800 (PST)
-MIME-Version: 1.0
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-17-marcan@marcan.st>
- <CACRpkdbWs=5s-5qZXoDOf+f-y=c6XZOGZb7w0LL7bDEJpnnVpw@mail.gmail.com> <fa19a8d2-f65d-c998-4c84-ae4d7736a681@marcan.st>
-In-Reply-To: <fa19a8d2-f65d-c998-4c84-ae4d7736a681@marcan.st>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 3 Jan 2022 12:14:51 +0100
-Message-ID: <CACRpkdaQGwO-YbQS2VM6FPoxV4eiJ+Beod+A1N8VTHGr_4JyQQ@mail.gmail.com>
-Subject: Re: [PATCH 16/34] brcmfmac: acpi: Add support for fetching Apple ACPI properties
-To:     Hector Martin <marcan@marcan.st>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
+        Mon, 3 Jan 2022 11:49:59 -0500
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 7F7CE240005;
+        Mon,  3 Jan 2022 16:49:54 +0000 (UTC)
+Date:   Mon, 3 Jan 2022 17:49:53 +0100
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     linux-mtd@lists.infradead.org,
         =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "Daniel (Deognyoun) Kim" <dekim@broadcom.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Content-Type: text/plain; charset="UTF-8"
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Cai Huoqing <caihuoqing@baidu.com>,
+        Colin Ian King <colin.king@intel.com>,
+        linux-kernel@vger.kernel.org (open list),
+        linux-wireless@vger.kernel.org (open list:BROADCOM SPECIFIC AMBA DRIVER
+        (BCMA)),
+        bcm-kernel-feedback-list@broadcom.com (open list:BROADCOM STB NAND
+        FLASH DRIVER)
+Subject: Re: [PATCH 1/9] mtd: rawnand: brcmnand: Allow SoC to provide I/O
+ operations
+Message-ID: <20220103174953.40d7fa52@xps13>
+In-Reply-To: <20211223002225.3738385-2-f.fainelli@gmail.com>
+References: <20211223002225.3738385-1-f.fainelli@gmail.com>
+        <20211223002225.3738385-2-f.fainelli@gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jan 3, 2022 at 7:03 AM Hector Martin <marcan@marcan.st> wrote:
-> On 2022/01/02 14:58, Linus Walleij wrote:
-> > On Sun, Dec 26, 2021 at 4:38 PM Hector Martin <marcan@marcan.st> wrote:
-> >
-> >> On DT platforms, the module-instance and antenna-sku-info properties
-> >> are passed in the DT. On ACPI platforms, module-instance is passed via
-> >> the analogous Apple device property mechanism, while the antenna SKU
-> >> info is instead obtained via an ACPI method that grabs it from
-> >> non-volatile storage.
-> >>
-> >> Add support for this, to allow proper firmware selection on Apple
-> >> platforms.
-> >>
-> >> Signed-off-by: Hector Martin <marcan@marcan.st>
-> >
-> > If the strings treated here are exactly the same as for the device tree,
-> > you should be able to just use "devprops" (firmware node) to handle it
-> > abstractly, and then the respective DT and ACPI backend will provide
-> > the properties.
-> >
-> > I don't know if this patch I made recently is enough of an examples:
-> > https://lore.kernel.org/linux-hwmon/20211206020423.62402-2-linus.walleij@linaro.org/
-> >
-> > If the ACPI and DT differs a lot in format and strings etc it may not
-> > be worth it.
->
-> It's not quite the same; module-instance is the same from macOS'
-> perspective, but we don't use Apple's device tree directly but rather
-> roll our own DT which uses a different property name in this case.
-> antenna-sku-info uses an ACPI method on x86, so that one is completely
-> different. So in the end nothing is actually shared.
+Hi Florian,
 
-OK then!
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+f.fainelli@gmail.com wrote on Wed, 22 Dec 2021 16:22:17 -0800:
 
-Yours,
-Linus Walleij
+> Allow a brcmnand_soc instance to provide a custom set of I/O operations
+> which we will require when using this driver on a BCMA bus which is not
+> directly memory mapped I/O. Update the nand_{read,write}_reg accordingly
+> to use the SoC operations if provided.
+> 
+> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+> ---
+>  drivers/mtd/nand/raw/brcmnand/brcmnand.c | 14 ++++++++++++--
+>  drivers/mtd/nand/raw/brcmnand/brcmnand.h | 23 +++++++++++++++++++++++
+>  2 files changed, 35 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+> index f75929783b94..7a1673b1b1af 100644
+> --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+> +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+> @@ -594,13 +594,18 @@ enum {
+>  
+>  static inline u32 nand_readreg(struct brcmnand_controller *ctrl, u32 offs)
+>  {
+> +	if (brcmnand_soc_has_ops(ctrl->soc))
+> +		return brcmnand_soc_read(ctrl->soc, offs);
+>  	return brcmnand_readl(ctrl->nand_base + offs);
+>  }
+>  
+>  static inline void nand_writereg(struct brcmnand_controller *ctrl, u32 offs,
+>  				 u32 val)
+>  {
+> -	brcmnand_writel(val, ctrl->nand_base + offs);
+> +	if (brcmnand_soc_has_ops(ctrl->soc))
+> +		brcmnand_soc_write(ctrl->soc, val, offs);
+> +	else
+> +		brcmnand_writel(val, ctrl->nand_base + offs);
+>  }
+>  
+>  static int brcmnand_revision_init(struct brcmnand_controller *ctrl)
+> @@ -766,13 +771,18 @@ static inline void brcmnand_rmw_reg(struct brcmnand_controller *ctrl,
+>  
+>  static inline u32 brcmnand_read_fc(struct brcmnand_controller *ctrl, int word)
+>  {
+> +	if (brcmnand_soc_has_ops(ctrl->soc))
+> +		return brcmnand_soc_read(ctrl->soc, ~0);
+>  	return __raw_readl(ctrl->nand_fc + word * 4);
+>  }
+>  
+>  static inline void brcmnand_write_fc(struct brcmnand_controller *ctrl,
+>  				     int word, u32 val)
+>  {
+> -	__raw_writel(val, ctrl->nand_fc + word * 4);
+> +	if (brcmnand_soc_has_ops(ctrl->soc))
+> +		brcmnand_soc_write(ctrl->soc, val, ~0);
+> +	else
+> +		__raw_writel(val, ctrl->nand_fc + word * 4);
+>  }
+>  
+>  static inline void edu_writel(struct brcmnand_controller *ctrl,
+> diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.h b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
+> index eb498fbe505e..a3f2ad5f6572 100644
+> --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.h
+> +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
+> @@ -11,12 +11,19 @@
+>  
+>  struct platform_device;
+>  struct dev_pm_ops;
+> +struct brcmnand_io_ops;
+>  
+>  struct brcmnand_soc {
+>  	bool (*ctlrdy_ack)(struct brcmnand_soc *soc);
+>  	void (*ctlrdy_set_enabled)(struct brcmnand_soc *soc, bool en);
+>  	void (*prepare_data_bus)(struct brcmnand_soc *soc, bool prepare,
+>  				 bool is_param);
+> +	const struct brcmnand_io_ops *ops;
+> +};
+> +
+> +struct brcmnand_io_ops {
+> +	u32 (*read_reg)(struct brcmnand_soc *soc, u32 offset);
+> +	void (*write_reg)(struct brcmnand_soc *soc, u32 val, u32 offset);
+>  };
+>  
+>  static inline void brcmnand_soc_data_bus_prepare(struct brcmnand_soc *soc,
+> @@ -58,6 +65,22 @@ static inline void brcmnand_writel(u32 val, void __iomem *addr)
+>  		writel_relaxed(val, addr);
+>  }
+>  
+> +static inline bool brcmnand_soc_has_ops(struct brcmnand_soc *soc)
+> +{
+> +	return soc && soc->ops && soc->ops->read_reg && soc->ops->write_reg;
+> +}
+> +
+> +static inline u32 brcmnand_soc_read(struct brcmnand_soc *soc, u32 offset)
+> +{
+> +	return soc->ops->read_reg(soc, offset);
+> +}
+> +
+> +static inline void brcmnand_soc_write(struct brcmnand_soc *soc, u32 val,
+> +				      u32 offset)
+> +{
+> +	soc->ops->write_reg(soc, val, offset);
+> +}
+> +
+
+It might be worth looking into more optimized ways to do these checks,
+in particular the read/write_reg ones because you're checking against
+some static data which cannot be optimized out by the compiler but
+won't change in the lifetime of the kernel.
+
+Thanks,
+Miquèl
