@@ -2,21 +2,21 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CEAB483519
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jan 2022 17:50:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F5CD483535
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jan 2022 17:56:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233578AbiACQuB convert rfc822-to-8bit (ORCPT
+        id S230425AbiACQ4V convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jan 2022 11:50:01 -0500
-Received: from relay10.mail.gandi.net ([217.70.178.230]:60049 "EHLO
-        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234917AbiACQt7 (ORCPT
+        Mon, 3 Jan 2022 11:56:21 -0500
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:42373 "EHLO
+        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233561AbiACQ4Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jan 2022 11:49:59 -0500
+        Mon, 3 Jan 2022 11:56:16 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 7F7CE240005;
-        Mon,  3 Jan 2022 16:49:54 +0000 (UTC)
-Date:   Mon, 3 Jan 2022 17:49:53 +0100
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 7D4312000C;
+        Mon,  3 Jan 2022 16:56:07 +0000 (UTC)
+Date:   Mon, 3 Jan 2022 17:56:06 +0100
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Florian Fainelli <f.fainelli@gmail.com>
 Cc:     linux-mtd@lists.infradead.org,
@@ -33,12 +33,12 @@ Cc:     linux-mtd@lists.infradead.org,
         (BCMA)),
         bcm-kernel-feedback-list@broadcom.com (open list:BROADCOM STB NAND
         FLASH DRIVER)
-Subject: Re: [PATCH 1/9] mtd: rawnand: brcmnand: Allow SoC to provide I/O
- operations
-Message-ID: <20220103174953.40d7fa52@xps13>
-In-Reply-To: <20211223002225.3738385-2-f.fainelli@gmail.com>
+Subject: Re: [PATCH 4/9] mtd: rawnand: brcmnand: Move OF operations out of
+ brcmnand_init_cs()
+Message-ID: <20220103175606.71a4eb93@xps13>
+In-Reply-To: <20211223002225.3738385-5-f.fainelli@gmail.com>
 References: <20211223002225.3738385-1-f.fainelli@gmail.com>
-        <20211223002225.3738385-2-f.fainelli@gmail.com>
+        <20211223002225.3738385-5-f.fainelli@gmail.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -50,112 +50,73 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi Florian,
 
-f.fainelli@gmail.com wrote on Wed, 22 Dec 2021 16:22:17 -0800:
+f.fainelli@gmail.com wrote on Wed, 22 Dec 2021 16:22:20 -0800:
 
-> Allow a brcmnand_soc instance to provide a custom set of I/O operations
-> which we will require when using this driver on a BCMA bus which is not
-> directly memory mapped I/O. Update the nand_{read,write}_reg accordingly
-> to use the SoC operations if provided.
-> 
+> In order to initialize a given chip select object for use by the
+> brcmnand driver, move all of the Device Tree specific routines outside
+> of brcmnand_init_cs() in order to make it usable in a platform data
+> configuration which will be necessary for supporting BCMA chips.
+
+TBH I'm note a big fan of the idea. I'm not sure going back to
+supporting platform data this way really is a good idea... There are so
+much things that are well described with DT that we now rely upon that
+I am not entirely convinced by these changes :-/ The move is generally
+in the other direction: getting rid of the legacy platform data.
+
 > Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+
+Cheers,
+Miquèl
+
 > ---
->  drivers/mtd/nand/raw/brcmnand/brcmnand.c | 14 ++++++++++++--
->  drivers/mtd/nand/raw/brcmnand/brcmnand.h | 23 +++++++++++++++++++++++
->  2 files changed, 35 insertions(+), 2 deletions(-)
+>  drivers/mtd/nand/raw/brcmnand/brcmnand.c | 20 +++++++++++---------
+>  1 file changed, 11 insertions(+), 9 deletions(-)
 > 
 > diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-> index f75929783b94..7a1673b1b1af 100644
+> index 35f8d8e02d4a..60a7f375df83 100644
 > --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
 > +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-> @@ -594,13 +594,18 @@ enum {
->  
->  static inline u32 nand_readreg(struct brcmnand_controller *ctrl, u32 offs)
->  {
-> +	if (brcmnand_soc_has_ops(ctrl->soc))
-> +		return brcmnand_soc_read(ctrl->soc, offs);
->  	return brcmnand_readl(ctrl->nand_base + offs);
->  }
->  
->  static inline void nand_writereg(struct brcmnand_controller *ctrl, u32 offs,
->  				 u32 val)
->  {
-> -	brcmnand_writel(val, ctrl->nand_base + offs);
-> +	if (brcmnand_soc_has_ops(ctrl->soc))
-> +		brcmnand_soc_write(ctrl->soc, val, offs);
-> +	else
-> +		brcmnand_writel(val, ctrl->nand_base + offs);
->  }
->  
->  static int brcmnand_revision_init(struct brcmnand_controller *ctrl)
-> @@ -766,13 +771,18 @@ static inline void brcmnand_rmw_reg(struct brcmnand_controller *ctrl,
->  
->  static inline u32 brcmnand_read_fc(struct brcmnand_controller *ctrl, int word)
->  {
-> +	if (brcmnand_soc_has_ops(ctrl->soc))
-> +		return brcmnand_soc_read(ctrl->soc, ~0);
->  	return __raw_readl(ctrl->nand_fc + word * 4);
->  }
->  
->  static inline void brcmnand_write_fc(struct brcmnand_controller *ctrl,
->  				     int word, u32 val)
->  {
-> -	__raw_writel(val, ctrl->nand_fc + word * 4);
-> +	if (brcmnand_soc_has_ops(ctrl->soc))
-> +		brcmnand_soc_write(ctrl->soc, val, ~0);
-> +	else
-> +		__raw_writel(val, ctrl->nand_fc + word * 4);
->  }
->  
->  static inline void edu_writel(struct brcmnand_controller *ctrl,
-> diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.h b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
-> index eb498fbe505e..a3f2ad5f6572 100644
-> --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.h
-> +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
-> @@ -11,12 +11,19 @@
->  
->  struct platform_device;
->  struct dev_pm_ops;
-> +struct brcmnand_io_ops;
->  
->  struct brcmnand_soc {
->  	bool (*ctlrdy_ack)(struct brcmnand_soc *soc);
->  	void (*ctlrdy_set_enabled)(struct brcmnand_soc *soc, bool en);
->  	void (*prepare_data_bus)(struct brcmnand_soc *soc, bool prepare,
->  				 bool is_param);
-> +	const struct brcmnand_io_ops *ops;
-> +};
-> +
-> +struct brcmnand_io_ops {
-> +	u32 (*read_reg)(struct brcmnand_soc *soc, u32 offset);
-> +	void (*write_reg)(struct brcmnand_soc *soc, u32 val, u32 offset);
+> @@ -2760,7 +2760,7 @@ static const struct nand_controller_ops brcmnand_controller_ops = {
+>  	.attach_chip = brcmnand_attach_chip,
 >  };
 >  
->  static inline void brcmnand_soc_data_bus_prepare(struct brcmnand_soc *soc,
-> @@ -58,6 +65,22 @@ static inline void brcmnand_writel(u32 val, void __iomem *addr)
->  		writel_relaxed(val, addr);
->  }
+> -static int brcmnand_init_cs(struct brcmnand_host *host, struct device_node *dn)
+> +static int brcmnand_init_cs(struct brcmnand_host *host)
+>  {
+>  	struct brcmnand_controller *ctrl = host->ctrl;
+>  	struct device *dev = ctrl->dev;
+> @@ -2769,16 +2769,9 @@ static int brcmnand_init_cs(struct brcmnand_host *host, struct device_node *dn)
+>  	int ret;
+>  	u16 cfg_offs;
 >  
-> +static inline bool brcmnand_soc_has_ops(struct brcmnand_soc *soc)
-> +{
-> +	return soc && soc->ops && soc->ops->read_reg && soc->ops->write_reg;
-> +}
+> -	ret = of_property_read_u32(dn, "reg", &host->cs);
+> -	if (ret) {
+> -		dev_err(dev, "can't get chip-select\n");
+> -		return -ENXIO;
+> -	}
+> -
+>  	mtd = nand_to_mtd(&host->chip);
+>  	chip = &host->chip;
+>  
+> -	nand_set_flash_node(chip, dn);
+>  	nand_set_controller_data(chip, host);
+>  	mtd->name = devm_kasprintf(dev, GFP_KERNEL, "brcmnand.%d",
+>  				   host->cs);
+> @@ -3179,7 +3172,16 @@ int brcmnand_probe(struct platform_device *pdev, struct brcmnand_soc *soc)
+>  			host->pdev = pdev;
+>  			host->ctrl = ctrl;
+>  
+> -			ret = brcmnand_init_cs(host, child);
+> +			ret = of_property_read_u32(dn, "reg", &host->cs);
+> +			if (ret) {
+> +				dev_err(dev, "can't get chip-select\n");
+> +				devm_kfree(dev, host);
+> +				continue;
+> +			}
 > +
-> +static inline u32 brcmnand_soc_read(struct brcmnand_soc *soc, u32 offset)
-> +{
-> +	return soc->ops->read_reg(soc, offset);
-> +}
+> +			nand_set_flash_node(&host->chip, dn);
 > +
-> +static inline void brcmnand_soc_write(struct brcmnand_soc *soc, u32 val,
-> +				      u32 offset)
-> +{
-> +	soc->ops->write_reg(soc, val, offset);
-> +}
-> +
-
-It might be worth looking into more optimized ways to do these checks,
-in particular the read/write_reg ones because you're checking against
-some static data which cannot be optimized out by the compiler but
-won't change in the lifetime of the kernel.
-
-Thanks,
-Miquèl
+> +			ret = brcmnand_init_cs(host);
+>  			if (ret) {
+>  				devm_kfree(dev, host);
+>  				continue; /* Try all chip-selects */
