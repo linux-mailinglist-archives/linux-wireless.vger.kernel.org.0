@@ -2,110 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC2C44840E0
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 12:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63BFE4842ED
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 15:00:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232289AbiADLah (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jan 2022 06:30:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40914 "EHLO
+        id S233957AbiADOAv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jan 2022 09:00:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229964AbiADLah (ORCPT
+        with ESMTP id S229778AbiADOAu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jan 2022 06:30:37 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E829C061761;
-        Tue,  4 Jan 2022 03:30:36 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id q14so139440733edi.3;
-        Tue, 04 Jan 2022 03:30:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0yty/Vql/ha5wH7OZotX+MYGyccXlZrjOYzGRLc8osI=;
-        b=Ob1v2V/1KmrPCwBo+PVBUCo0h9Yl9nquFidnZ8qBujjcJn1jOUUljpHnQMqCS7tPci
-         HLE7SFA0YHB334q34rR9tA8qGWWO4Ln2svhzpOTrj20UxtANmtpCZwCbZQ5UhvXQQC9E
-         Ve98gHi3SaDehDkyPzU5f88IztLdsJgRrbHNvKbXU1V1pzJV4OHgbOFmUG9H04JqpxlW
-         1aVJ1SxwLbAkxqS4REP4JvObUEJw1uppLw1yJnz4LMLzKPGx0OC+OugT4oNW4R/uvgw1
-         N2RfLJ7hUflX7cmDAffiCRRY+vkvO9OF0tD1Iv83TBSk/9a0j4XubYzDuvlW+qfak3pp
-         0AhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0yty/Vql/ha5wH7OZotX+MYGyccXlZrjOYzGRLc8osI=;
-        b=z900lw44t4Kt7PtqiyLHo5IHVL9je4y60XXOK9BjlcUfK5rZ4/12Na+6aJWt6n/Qih
-         tkpoGmQjrxpgbIL4MdBMRQZB5zsYJUlAZTzv98+3XYCOw6ua8jTiuc0HAxdHqAtwL9nP
-         eQMR41IaoIeFJ6M2U/0kxcc+NXiDUMusyKJ51JDgnHMqUUvraAX5wF44vpKQSSGHr9hD
-         clvtDUYBAUVHHXo7TMopuWKS2DYjl621/I9bNeugFjkNYRydNxb1ojTmlcS3mhkJ42Ux
-         6s9fn+UbaT2dzmzh0kg75m/ZBEPcn8M+9fYaKxtvWTYRaV2/G50b3Zw/vXqEvRK/v4uD
-         ekZg==
-X-Gm-Message-State: AOAM5313Zrx+jeXDuaT5H63MaKQBJ0f8LJgUsqD3VixaFWzOWWk6P3U8
-        g0fBHFlmGEQf13t2ABaDCrSNBWSpYsGwyYx5vTY=
-X-Google-Smtp-Source: ABdhPJzstuNjGXH7i4SJZO7W6jJ03BLb3g5gKSn1e6dIAouguCI/zvBRkWCkEcva7qTCxiSiFsVGFOqOCRh/YPwjBtU=
-X-Received: by 2002:a17:906:3ed0:: with SMTP id d16mr38212898ejj.636.1641295835170;
- Tue, 04 Jan 2022 03:30:35 -0800 (PST)
-MIME-Version: 1.0
-References: <20220104072658.69756-1-marcan@marcan.st> <20220104072658.69756-7-marcan@marcan.st>
-In-Reply-To: <20220104072658.69756-7-marcan@marcan.st>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 4 Jan 2022 13:28:44 +0200
-Message-ID: <CAHp75VcXgVTZhPiPmbpAJr21xUopRXU6yi=wvyzs6ByR8C+rzw@mail.gmail.com>
-Subject: Re: [PATCH v2 06/35] brcmfmac: firmware: Support passing in multiple board_types
-To:     Hector Martin <marcan@marcan.st>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com
+        Tue, 4 Jan 2022 09:00:50 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE8CEC061761;
+        Tue,  4 Jan 2022 06:00:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=73qDrcF8HJ4n4L/Q4Low3qdhLg9wrOxB8G80OyB209Y=;
+        t=1641304849; x=1642514449; b=tIfuhmk3ZnN0Cc5QG/CmhRQU2WDkeEThC2ZlZM9U6CA5Oe/
+        0Ye4X+TtwCOj5cj9SfbDQFbUAwCnpHDFb1pKqmsb+WS4a25XrdRs3A8pL+kWgjR2+bz9SBr9ocmLK
+        wQHZyuk3ct/cZVyCETvVZr14wWaPvQlWQwDS6dzm3MGK1LAC0YYlpZLoWyXiZFG1XRwtoTf1AE3Ut
+        LsDBR0PO4fg10wJ3b5kMpvhUycBG4hyLNUWlzuVzxVYFQGMigpW9rcFwaXkDDQEG55bNzJ6QxkqAL
+        0nS5dDPu1vW14/abPcCYXfZyYt0M+aRbApaFvm0zjotzgeghfRlDeTjAchoXQAwA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1n4kMi-001m4D-HF;
+        Tue, 04 Jan 2022 15:00:40 +0100
+Message-ID: <b0bdc3b69e955197d6e756e98099a9a438cb64cc.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211: mlme: check for null after calling kmemdup
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jiasheng Jiang <jiasheng@iscas.ac.cn>, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 04 Jan 2022 15:00:39 +0100
+In-Reply-To: <20211231100311.1964437-1-jiasheng@iscas.ac.cn>
+References: <20211231100311.1964437-1-jiasheng@iscas.ac.cn>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.2 (3.42.2-1.fc35) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jan 4, 2022 at 9:28 AM Hector Martin <marcan@marcan.st> wrote:
->
-> In order to make use of the multiple alt_path functionality, change
-> board_type to an array. Bus drivers can pass in a NULL-terminated list
-> of board type strings to try for the firmware fetch.
+On Fri, 2021-12-31 at 18:03 +0800, Jiasheng Jiang wrote:
+> As the possible failure of the alloc, the ifmgd->assoc_req_ies might be
+> NULL pointer and will be used by cfg80211_rx_assoc_resp() with the wrong
+> length.
+> Therefore it might be better to set length to 0 if fails as same as
+> ieee80211_mgd_stop().
+> 
 
-> +               /* strip extension at the end */
-> +               strscpy(alt_path, path, BRCMF_FW_NAME_LEN);
-> +               alt_path[suffix - path] = 0;
->
-> -       alt_paths[0] = kstrdup(alt_path, GFP_KERNEL);
-> +               strlcat(alt_path, ".", BRCMF_FW_NAME_LEN);
-> +               strlcat(alt_path, board_types[i], BRCMF_FW_NAME_LEN);
-> +               strlcat(alt_path, suffix, BRCMF_FW_NAME_LEN);
-> +
-> +               alt_paths[i] = kstrdup(alt_path, GFP_KERNEL);
-> +               brcmf_dbg(TRACE, "FW alt path: %s\n", alt_paths[i]);
+That feels a bit vague, and indeed I cannot find any place that would
+actually dereference the pointer if it's NULL?
 
-Consider replacing these string manipulations with kasprintf().
+Still maybe a good as a cleanup.
 
--- 
-With Best Regards,
-Andy Shevchenko
+> Fixes: 4d9ec73d2b78 ("cfg80211: Report Association Request frame IEs in association events")
+> Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+> ---
+>  net/mac80211/mlme.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+> index 9bed6464c5bd..258b492c699c 100644
+> --- a/net/mac80211/mlme.c
+> +++ b/net/mac80211/mlme.c
+> @@ -1058,7 +1058,10 @@ static void ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+>  	pos = skb_tail_pointer(skb);
+>  	kfree(ifmgd->assoc_req_ies);
+>  	ifmgd->assoc_req_ies = kmemdup(ie_start, pos - ie_start, GFP_ATOMIC);
+> -	ifmgd->assoc_req_ies_len = pos - ie_start;
+> +	if (!ifmgd->assoc_req_ies)
+> +		ifmgd->assoc_req_ies_len = 0;
+> +	else
+> +		ifmgd->assoc_req_ies_len = pos - ie_start;
+> 
+
+But it seems it would be better to actually fail the association in this
+case? There's a reason we're reporting this, so that we can see
+HT/VHT/..., and I'm sure that will be necessary in many cases.
+
+johannes
