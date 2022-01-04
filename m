@@ -2,89 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63BFE4842ED
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 15:00:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79AFA484320
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 15:14:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233957AbiADOAv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jan 2022 09:00:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47460 "EHLO
+        id S232716AbiADOOk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jan 2022 09:14:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229778AbiADOAu (ORCPT
+        with ESMTP id S230361AbiADOOk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jan 2022 09:00:50 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE8CEC061761;
-        Tue,  4 Jan 2022 06:00:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=73qDrcF8HJ4n4L/Q4Low3qdhLg9wrOxB8G80OyB209Y=;
-        t=1641304849; x=1642514449; b=tIfuhmk3ZnN0Cc5QG/CmhRQU2WDkeEThC2ZlZM9U6CA5Oe/
-        0Ye4X+TtwCOj5cj9SfbDQFbUAwCnpHDFb1pKqmsb+WS4a25XrdRs3A8pL+kWgjR2+bz9SBr9ocmLK
-        wQHZyuk3ct/cZVyCETvVZr14wWaPvQlWQwDS6dzm3MGK1LAC0YYlpZLoWyXiZFG1XRwtoTf1AE3Ut
-        LsDBR0PO4fg10wJ3b5kMpvhUycBG4hyLNUWlzuVzxVYFQGMigpW9rcFwaXkDDQEG55bNzJ6QxkqAL
-        0nS5dDPu1vW14/abPcCYXfZyYt0M+aRbApaFvm0zjotzgeghfRlDeTjAchoXQAwA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1n4kMi-001m4D-HF;
-        Tue, 04 Jan 2022 15:00:40 +0100
-Message-ID: <b0bdc3b69e955197d6e756e98099a9a438cb64cc.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: mlme: check for null after calling kmemdup
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jiasheng Jiang <jiasheng@iscas.ac.cn>, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Tue, 04 Jan 2022 15:00:39 +0100
-In-Reply-To: <20211231100311.1964437-1-jiasheng@iscas.ac.cn>
-References: <20211231100311.1964437-1-jiasheng@iscas.ac.cn>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.2 (3.42.2-1.fc35) 
+        Tue, 4 Jan 2022 09:14:40 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2430C061761;
+        Tue,  4 Jan 2022 06:14:39 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id n30so36904178eda.13;
+        Tue, 04 Jan 2022 06:14:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=2JWj20KokVmbJ1KQKxKTcG8eJrd73Z/FrzXrGHNXIYQ=;
+        b=imO7AvZwhSqnGrvwQeVkNBV4cnKH740zTDdLNAdNiGGp8f1uzMHM0ttEykYxr4BWkl
+         EkpRaK27dAFloGoRxR/z3ktW/nI2W1fjbRqdG/vW2Rzbz8W5GsA8BmfeRrBxDuIF6YAc
+         gsobO4KfR1xNVt8kv6nGcpxJJ9MlEx03qb2MIeox+TvS6rChq2QG/jh5F3+3fjer/OWF
+         EXugqwqpk99xC2zv8OvQkthpwRisIS48WSh2YJBvH28BpBkjlc+TAK11GHvyd2Zgw62T
+         cNZrAoybRhVa0DH0GWIto1H1D3kAStNkvi9lWPyoQ8gZFkO8lzTMRwINGVlA8fhIRLo5
+         s7bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2JWj20KokVmbJ1KQKxKTcG8eJrd73Z/FrzXrGHNXIYQ=;
+        b=DsR2lMJofNzmgKf1icbosWwLFoDU5EA1iP/BLYwce7Gs8F8k+ODTbPYDJ4D5dUMNBv
+         snPZ2mW0lnfJ9s6lMN0Pf++HGEl1AVUl2P4MZtMUDLqLB6GdCGTZeuG9V/vr/Ar5MgH0
+         4IaOQWJ7E1TLR5zmnTkIHXgo856wdbGfQ5xlDooU9YN7W7PLtoUngsuAmFiJcrvSjpD1
+         Oh/8HBSekFOlzBQdyYNJ28o0p4qA9mJr/ACl7tYfsx16R0uVe6tYMEF7P/owj+JrOF5L
+         6irrro/Ik99nlufHghTL2OV11SRQgGfd+QJYU+rA4pg0OUBo7f7VGhlG46sziA+YjgiR
+         RPUw==
+X-Gm-Message-State: AOAM530IuWULbuDyBpNdWwR66K/MoKJyT0pMZFzegVfg/nX0wL6Ezk+C
+        PKc54qvtZ9udkQRsI+bpTR9nwHlVBPHEkcopBN0=
+X-Google-Smtp-Source: ABdhPJxFlwpFpUZdQ6bUszycW6INa0R+GLudK5872rFm8RVazA48OfXiqtyIAKFwq0RNQGHYzU8rSvivGo46xnrW/5g=
+X-Received: by 2002:a17:906:3ed0:: with SMTP id d16mr38660386ejj.636.1641305678365;
+ Tue, 04 Jan 2022 06:14:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+References: <20220104072658.69756-1-marcan@marcan.st> <20220104072658.69756-13-marcan@marcan.st>
+In-Reply-To: <20220104072658.69756-13-marcan@marcan.st>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 4 Jan 2022 16:12:47 +0200
+Message-ID: <CAHp75VdeNhmRUW1mFY-H5vyzTRHZ9Y2dv03eo+rfcTQKjn9tuQ@mail.gmail.com>
+Subject: Re: [PATCH v2 12/35] brcmfmac: pcie: Fix crashes due to early IRQs
+To:     Hector Martin <marcan@marcan.st>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2021-12-31 at 18:03 +0800, Jiasheng Jiang wrote:
-> As the possible failure of the alloc, the ifmgd->assoc_req_ies might be
-> NULL pointer and will be used by cfg80211_rx_assoc_resp() with the wrong
-> length.
-> Therefore it might be better to set length to 0 if fails as same as
-> ieee80211_mgd_stop().
-> 
+On Tue, Jan 4, 2022 at 9:29 AM Hector Martin <marcan@marcan.st> wrote:
+>
+> The driver was enabling IRQs before the message processing was
+> initialized. This could cause IRQs to come in too early and crash the
+> driver. Instead, move the IRQ enable and hostready to a bus preinit
+> function, at which point everything is properly initialized.
+>
+> Fixes: 9e37f045d5e7 ("brcmfmac: Adding PCIe bus layer support.")
 
-That feels a bit vague, and indeed I cannot find any place that would
-actually dereference the pointer if it's NULL?
+You should gather fixes at the beginning of the series, and even
+possible to send them as a separate series. In the current state it's
+unclear if there are dependencies on your new feature (must not be for
+fixes that meant to be backported).
 
-Still maybe a good as a cleanup.
-
-> Fixes: 4d9ec73d2b78 ("cfg80211: Report Association Request frame IEs in association events")
-> Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-> ---
->  net/mac80211/mlme.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-> index 9bed6464c5bd..258b492c699c 100644
-> --- a/net/mac80211/mlme.c
-> +++ b/net/mac80211/mlme.c
-> @@ -1058,7 +1058,10 @@ static void ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
->  	pos = skb_tail_pointer(skb);
->  	kfree(ifmgd->assoc_req_ies);
->  	ifmgd->assoc_req_ies = kmemdup(ie_start, pos - ie_start, GFP_ATOMIC);
-> -	ifmgd->assoc_req_ies_len = pos - ie_start;
-> +	if (!ifmgd->assoc_req_ies)
-> +		ifmgd->assoc_req_ies_len = 0;
-> +	else
-> +		ifmgd->assoc_req_ies_len = pos - ie_start;
-> 
-
-But it seems it would be better to actually fail the association in this
-case? There's a reason we're reporting this, so that we can see
-HT/VHT/..., and I'm sure that will be necessary in many cases.
-
-johannes
+-- 
+With Best Regards,
+Andy Shevchenko
