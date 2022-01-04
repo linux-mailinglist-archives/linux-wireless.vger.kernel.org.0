@@ -2,193 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FD15483E6A
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 09:44:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4127C483E8D
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 09:58:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234241AbiADIoJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jan 2022 03:44:09 -0500
-Received: from marcansoft.com ([212.63.210.85]:37428 "EHLO mail.marcansoft.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232830AbiADIoG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jan 2022 03:44:06 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 2FC5841F5D;
-        Tue,  4 Jan 2022 08:43:54 +0000 (UTC)
-Message-ID: <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
-Date:   Tue, 4 Jan 2022 17:43:52 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.4.1
-Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt
- paths
-Content-Language: en-US
-To:     Dmitry Osipenko <digetx@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
+        id S229584AbiADI6A convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jan 2022 03:58:00 -0500
+Received: from relay4-d.mail.gandi.net ([217.70.183.196]:56207 "EHLO
+        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229472AbiADI6A (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 4 Jan 2022 03:58:00 -0500
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 22E05E000C;
+        Tue,  4 Jan 2022 08:57:57 +0000 (UTC)
+Date:   Tue, 4 Jan 2022 09:57:55 +0100
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     linux-mtd@lists.infradead.org,
         =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-5-marcan@marcan.st>
- <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com>
-From:   Hector Martin <marcan@marcan.st>
-In-Reply-To: <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com>
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Cai Huoqing <caihuoqing@baidu.com>,
+        Colin Ian King <colin.king@intel.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:BROADCOM SPECIFIC AMBA DRIVER (BCMA)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:BROADCOM STB NAND FLASH DRIVER" 
+        <bcm-kernel-feedback-list@broadcom.com>
+Subject: Re: [PATCH 1/9] mtd: rawnand: brcmnand: Allow SoC to provide I/O
+ operations
+Message-ID: <20220104095755.46858287@xps13>
+In-Reply-To: <20220104093221.6414aab9@xps13>
+References: <20211223002225.3738385-1-f.fainelli@gmail.com>
+        <20211223002225.3738385-2-f.fainelli@gmail.com>
+        <20220103174953.40d7fa52@xps13>
+        <299bf6ed-80e6-ad15-8dc7-5ededaca15c5@gmail.com>
+        <20220104093221.6414aab9@xps13>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2022/01/04 17:26, Dmitry Osipenko wrote:
-> 04.01.2022 10:26, Hector Martin пишет:
->> Apple platforms have firmware and config files identified with multiple
->> dimensions. We want to be able to find the most specific firmware
->> available for any given platform, progressively trying more general
->> firmwares.
->>
->> First, add support for having multiple alternate firmware paths.
->>
->> Acked-by: Linus Walleij <linus.walleij@linaro.org>
->> Signed-off-by: Hector Martin <marcan@marcan.st>
->> ---
->>  .../broadcom/brcm80211/brcmfmac/firmware.c    | 75 ++++++++++++++-----
->>  .../broadcom/brcm80211/brcmfmac/firmware.h    |  2 +
->>  2 files changed, 59 insertions(+), 18 deletions(-)
->>
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
->> index 0497b721136a..7570dbf22cdd 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
->> @@ -427,6 +427,8 @@ void brcmf_fw_nvram_free(void *nvram)
->>  struct brcmf_fw {
->>  	struct device *dev;
->>  	struct brcmf_fw_request *req;
->> +	const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS];
->> +	int alt_index;
+Hi Miquel,
+
+miquel.raynal@bootlin.com wrote on Tue, 4 Jan 2022 09:32:21 +0100:
+
+> Hi Florian,
 > 
-> unsigned int
-
-Ack.
-
+> f.fainelli@gmail.com wrote on Mon, 3 Jan 2022 09:24:26 -0800:
 > 
->>  	u32 curpos;
->>  	void (*done)(struct device *dev, int err, struct brcmf_fw_request *req);
->>  };
->> @@ -592,14 +594,18 @@ static int brcmf_fw_complete_request(const struct firmware *fw,
->>  	return (cur->flags & BRCMF_FW_REQF_OPTIONAL) ? 0 : ret;
->>  }
->>  
->> -static char *brcm_alt_fw_path(const char *path, const char *board_type)
->> +static int brcm_alt_fw_paths(const char *path, const char *board_type,
->> +			     const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS])>  {
->>  	char alt_path[BRCMF_FW_NAME_LEN];
->>  	const char *suffix;
->>  
->> +	memset(alt_paths, 0, array_size(sizeof(*alt_paths),
->> +					BRCMF_FW_MAX_ALT_PATHS));
-> You don't need to use array_size() since size of a fixed array is
-> already known.
+> > On 1/3/2022 8:49 AM, Miquel Raynal wrote:  
+> > > Hi Florian,
+> > > 
+> > > f.fainelli@gmail.com wrote on Wed, 22 Dec 2021 16:22:17 -0800:
+> > >     
+> > >> Allow a brcmnand_soc instance to provide a custom set of I/O operations
+> > >> which we will require when using this driver on a BCMA bus which is not
+> > >> directly memory mapped I/O. Update the nand_{read,write}_reg accordingly
+> > >> to use the SoC operations if provided.
+> > >>
+> > >> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+> > >> ---
+> > >>   drivers/mtd/nand/raw/brcmnand/brcmnand.c | 14 ++++++++++++--
+> > >>   drivers/mtd/nand/raw/brcmnand/brcmnand.h | 23 +++++++++++++++++++++++
+> > >>   2 files changed, 35 insertions(+), 2 deletions(-)
+> > >>
+> > >> diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+> > >> index f75929783b94..7a1673b1b1af 100644
+> > >> --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+> > >> +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+> > >> @@ -594,13 +594,18 @@ enum {    
+> > >>   >>   static inline u32 nand_readreg(struct brcmnand_controller *ctrl, u32 offs)    
+> > >>   {
+> > >> +	if (brcmnand_soc_has_ops(ctrl->soc))
+> > >> +		return brcmnand_soc_read(ctrl->soc, offs);
+> > >>   	return brcmnand_readl(ctrl->nand_base + offs);
+> > >>   }    
+> > >>   >>   static inline void nand_writereg(struct brcmnand_controller *ctrl, u32 offs,    
+> > >>   				 u32 val)
+> > >>   {
+> > >> -	brcmnand_writel(val, ctrl->nand_base + offs);
+> > >> +	if (brcmnand_soc_has_ops(ctrl->soc))
+> > >> +		brcmnand_soc_write(ctrl->soc, val, offs);
+> > >> +	else
+> > >> +		brcmnand_writel(val, ctrl->nand_base + offs);
+> > >>   }    
+> > >>   >>   static int brcmnand_revision_init(struct brcmnand_controller *ctrl)    
+> > >> @@ -766,13 +771,18 @@ static inline void brcmnand_rmw_reg(struct brcmnand_controller *ctrl,    
+> > >>   >>   static inline u32 brcmnand_read_fc(struct brcmnand_controller *ctrl, int word)    
+> > >>   {
+> > >> +	if (brcmnand_soc_has_ops(ctrl->soc))
+> > >> +		return brcmnand_soc_read(ctrl->soc, ~0);
+> > >>   	return __raw_readl(ctrl->nand_fc + word * 4);
+> > >>   }    
+> > >>   >>   static inline void brcmnand_write_fc(struct brcmnand_controller *ctrl,    
+> > >>   				     int word, u32 val)
+> > >>   {
+> > >> -	__raw_writel(val, ctrl->nand_fc + word * 4);
+> > >> +	if (brcmnand_soc_has_ops(ctrl->soc))
+> > >> +		brcmnand_soc_write(ctrl->soc, val, ~0);
+> > >> +	else
+> > >> +		__raw_writel(val, ctrl->nand_fc + word * 4);
+> > >>   }    
+> > >>   >>   static inline void edu_writel(struct brcmnand_controller *ctrl,    
+> > >> diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.h b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
+> > >> index eb498fbe505e..a3f2ad5f6572 100644
+> > >> --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.h
+> > >> +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
+> > >> @@ -11,12 +11,19 @@    
+> > >>   >>   struct platform_device;    
+> > >>   struct dev_pm_ops;
+> > >> +struct brcmnand_io_ops;    
+> > >>   >>   struct brcmnand_soc {    
+> > >>   	bool (*ctlrdy_ack)(struct brcmnand_soc *soc);
+> > >>   	void (*ctlrdy_set_enabled)(struct brcmnand_soc *soc, bool en);
+> > >>   	void (*prepare_data_bus)(struct brcmnand_soc *soc, bool prepare,
+> > >>   				 bool is_param);
+> > >> +	const struct brcmnand_io_ops *ops;
+> > >> +};
+> > >> +
+> > >> +struct brcmnand_io_ops {
+> > >> +	u32 (*read_reg)(struct brcmnand_soc *soc, u32 offset);
+> > >> +	void (*write_reg)(struct brcmnand_soc *soc, u32 val, u32 offset);
+> > >>   };    
+> > >>   >>   static inline void brcmnand_soc_data_bus_prepare(struct brcmnand_soc *soc,    
+> > >> @@ -58,6 +65,22 @@ static inline void brcmnand_writel(u32 val, void __iomem *addr)
+> > >>   		writel_relaxed(val, addr);
+> > >>   }    
+> > >>   >> +static inline bool brcmnand_soc_has_ops(struct brcmnand_soc *soc)    
+> > >> +{
+> > >> +	return soc && soc->ops && soc->ops->read_reg && soc->ops->write_reg;
+> > >> +}
+> > >> +
+> > >> +static inline u32 brcmnand_soc_read(struct brcmnand_soc *soc, u32 offset)
+> > >> +{
+> > >> +	return soc->ops->read_reg(soc, offset);
+> > >> +}
+> > >> +
+> > >> +static inline void brcmnand_soc_write(struct brcmnand_soc *soc, u32 val,
+> > >> +				      u32 offset)
+> > >> +{
+> > >> +	soc->ops->write_reg(soc, val, offset);
+> > >> +}
+> > >> +    
+> > > 
+> > > It might be worth looking into more optimized ways to do these checks,
+> > > in particular the read/write_reg ones because you're checking against
+> > > some static data which cannot be optimized out by the compiler but
+> > > won't change in the lifetime of the kernel.    
+> > 
+> > I suppose I could add an addition if IS_ENABLED(CONFIG_MTD_NAND_BRCMNAND_BCMA) at the front of brcmnand_soc_has_ops(), would that address your concern or you have something else in mind?  
 > 
-> memset(alt_paths, 0, sizeof(alt_paths));
+> I don't like much the #ifdef solution, instead you might think of
+> static keys, or even better using a regmap. Regmap implementation is
+> free, you can use either one way or the other and for almost no
+> overhead compared to the bunch of functions you have here.
 
-It's a function argument, so that doesn't work and actually throws a
-warning. Array function argument notation is informative only; they
-behave strictly equivalent to pointers. Try it:
+Maybe regmaps will actually be slower than these regular if's. Perhaps
+static keys are the best option?
 
-$ cat test.c
-#include <stdio.h>
-
-void foo(char x[42])
-{
-	printf("%ld\n", sizeof(x));
-}
-
-int main() {
-	char x[42];
-
-	foo(x);
-}
-$ gcc test.c
-test.c: In function ‘foo’:
-test.c:5:31: warning: ‘sizeof’ on array function parameter ‘x’ will
-return size of ‘char *’ [-Wsizeof-array-argument]
-    5 |         printf("%ld\n", sizeof(x));
-      |                               ^
-test.c:3:15: note: declared here
-    3 | void foo(char x[42])
-      |          ~~~~~^~~~~
-$ ./a.out
-8
-
-
-> 
-> ...
->> +static void
->> +brcm_free_alt_fw_paths(const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS])
->> +{
->> +	unsigned int i;
->> +
->> +	for (i = 0; alt_paths[i]; i++)
-> 
-> What if array is fully populated and there is no null in the end? Please
-> don't do this, use BRCMF_FW_MAX_ALT_PATHS or ARRAY_SIZE().
-
-Argh, forgot to change this one. I used BRCMF_FW_MAX_ALT_PATHS
-elsewhere; ARRAY_SIZE won't work as I explained above.
-
-> 
->> +		kfree(alt_paths[i]);
->>  }
->>  
->>  static int brcmf_fw_request_firmware(const struct firmware **fw,
->> @@ -617,19 +634,25 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
->>  {
->>  	struct brcmf_fw_item *cur = &fwctx->req->items[fwctx->curpos];
->>  	int ret;
->> +	unsigned int i;
-> 
-> Keep reverse Xmas tree coding style.
-
-First time I hear this one, heh. Sure.
-
-> 
-> ...
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h
->> @@ -11,6 +11,8 @@
->>  
->>  #define BRCMF_FW_DEFAULT_PATH		"brcm/"
->>  
->> +#define BRCMF_FW_MAX_ALT_PATHS	8
-> 
-> Two tabs are needed here.
-
-Will do.
-
--- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+Cheers,
+Miquèl
