@@ -2,189 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B799E4847FB
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 19:37:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 670B448485B
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 20:13:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236381AbiADShm convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jan 2022 13:37:42 -0500
-Received: from relay3-d.mail.gandi.net ([217.70.183.195]:33031 "EHLO
-        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229543AbiADShm (ORCPT
+        id S232228AbiADTNT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jan 2022 14:13:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35720 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231406AbiADTNS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jan 2022 13:37:42 -0500
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 5BA126000B;
-        Tue,  4 Jan 2022 18:37:37 +0000 (UTC)
-Date:   Tue, 4 Jan 2022 19:37:36 +0100
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     linux-mtd@lists.infradead.org,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Cai Huoqing <caihuoqing@baidu.com>,
-        Colin Ian King <colin.king@intel.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:BROADCOM SPECIFIC AMBA DRIVER (BCMA)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:BROADCOM STB NAND FLASH DRIVER" 
-        <bcm-kernel-feedback-list@broadcom.com>
-Subject: Re: [PATCH 1/9] mtd: rawnand: brcmnand: Allow SoC to provide I/O
- operations
-Message-ID: <20220104193736.7eb6a445@xps13>
-In-Reply-To: <9e4c0120-e088-fca0-0194-c45fcf9181cb@gmail.com>
-References: <20211223002225.3738385-1-f.fainelli@gmail.com>
-        <20211223002225.3738385-2-f.fainelli@gmail.com>
-        <20220103174953.40d7fa52@xps13>
-        <299bf6ed-80e6-ad15-8dc7-5ededaca15c5@gmail.com>
-        <20220104093221.6414aab9@xps13>
-        <20220104095755.46858287@xps13>
-        <9e4c0120-e088-fca0-0194-c45fcf9181cb@gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Tue, 4 Jan 2022 14:13:18 -0500
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45981C061761
+        for <linux-wireless@vger.kernel.org>; Tue,  4 Jan 2022 11:13:18 -0800 (PST)
+Received: by mail-ed1-x52b.google.com with SMTP id f5so152367612edq.6
+        for <linux-wireless@vger.kernel.org>; Tue, 04 Jan 2022 11:13:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:content-language:to:cc:from
+         :subject:content-transfer-encoding;
+        bh=uLWU2kAC9/lpUhLh3yvTIcB8Vh86j85qIHlZ+84XM1U=;
+        b=k/yPdttxibP0/wvnnkHakFmndQ3tW+LAE37xWJEjlsOXESKRM+3Zpq+KIejSKvpKvs
+         Az+OVxVQm2XtWOA5dZijh7qqxjQ3Kdyn0Yyp27MW8J8R6jpkNodqAVcY+dkEBYP+m9oW
+         uOVOzNk3k2C/1vPNmi485ROvB4WEiVkU0b27cqJ0pBBMADS3sisgnIcKZfZrMGCqOrm1
+         gEVWN9WjYQDTikgjGmt2QkIG9HLnC3MuQT2MOQmUCDf3QOX5/mLbvYOaWUpG5XKbvC6i
+         XaKGHQt29ljZP0CTv9Ib/7VbKrTthgJhSbOy61w8YLcWgeRhbSuqTyAlbUZjPQmetbM2
+         7YJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent
+         :content-language:to:cc:from:subject:content-transfer-encoding;
+        bh=uLWU2kAC9/lpUhLh3yvTIcB8Vh86j85qIHlZ+84XM1U=;
+        b=gMxlLQYE3xAfkUZUJNbMWVAxfllB2dA0fzx8e2yyhTDhocA+/1DM/88dLrim+EJKaQ
+         XaS0bnz25dTh4iZAKqvKjyHdcvGyITRfMJtU6rVCwxDGQFYE48avCjSUbcC+riBtKwlF
+         aXQluXfpcdyymkLvcizh58/0ZDAh7GZ5OUlfvUWhkJJ2htiIHbBt9GQkiP36LB0nwX/8
+         f+vOwQ3JgcVriO3SlCFQUl5y4uGpIEzT64kTPo/rOB1qZENM/YOSiRt+ZPpyXuiGQnm0
+         GG4KQnEDIGmil1/DPqw0jdThHQZoiiISKQF4LiruSLb1zPVI/sWTX2kmMCoGUOQgGVP7
+         g4Ng==
+X-Gm-Message-State: AOAM530QFnaV3c6eTqqOXpucRTGTms5jYZ1BRTVzbhgaIT0C81C4wTS+
+        nTNfcy5whvCxQChq1kE2gB+HqWAV1HY=
+X-Google-Smtp-Source: ABdhPJwoKVvuLh+/WLUdHaue6WN/uCqNDid1aLQFHElzOrjOoDisryeD/OypyMAvf58LnRItfJOwNA==
+X-Received: by 2002:aa7:dad0:: with SMTP id x16mr50339278eds.404.1641323596768;
+        Tue, 04 Jan 2022 11:13:16 -0800 (PST)
+Received: from [192.168.0.74] ([178.233.26.119])
+        by smtp.gmail.com with ESMTPSA id gn15sm11609642ejc.184.2022.01.04.11.13.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Jan 2022 11:13:16 -0800 (PST)
+Message-ID: <994addcb-a203-d718-fc92-c7f1d9ef05fb@gmail.com>
+Date:   Tue, 4 Jan 2022 22:13:12 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.1
+Content-Language: en-US
+To:     linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
+        Zong-Zhe Yang <kevin_yang@realtek.com>
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>
+From:   Alper Nebi Yasak <alpernebiyasak@gmail.com>
+Subject: rtw88: EDCCA makes Wi-Fi unusable with a USB 3.0 SSD connected
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Florian,
+Hi,
 
-f.fainelli@gmail.com wrote on Tue, 4 Jan 2022 10:34:35 -0800:
+I have a laptop with a rtw_8822be wireless card and boot Debian on it
+from an external USB 3.0 SSD. I also configured the wireless regulatory
+domain as TR (DFS-ETSI). Things worked fine this way until the v5.16-rc
+releases where I have been practically unable to use Wi-Fi. The network
+shows as connected but I can't load any website, pings to my router
+mostly fail with "Destination Host Unreachable".
 
-> On 1/4/22 12:57 AM, Miquel Raynal wrote:
-> > Hi Miquel,
-> > 
-> > miquel.raynal@bootlin.com wrote on Tue, 4 Jan 2022 09:32:21 +0100:
-> >   
-> >> Hi Florian,
-> >>
-> >> f.fainelli@gmail.com wrote on Mon, 3 Jan 2022 09:24:26 -0800:
-> >>  
-> >>> On 1/3/2022 8:49 AM, Miquel Raynal wrote:    
-> >>>> Hi Florian,
-> >>>>
-> >>>> f.fainelli@gmail.com wrote on Wed, 22 Dec 2021 16:22:17 -0800:
-> >>>>       
-> >>>>> Allow a brcmnand_soc instance to provide a custom set of I/O operations
-> >>>>> which we will require when using this driver on a BCMA bus which is not
-> >>>>> directly memory mapped I/O. Update the nand_{read,write}_reg accordingly
-> >>>>> to use the SoC operations if provided.
-> >>>>>
-> >>>>> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-> >>>>> ---
-> >>>>>   drivers/mtd/nand/raw/brcmnand/brcmnand.c | 14 ++++++++++++--
-> >>>>>   drivers/mtd/nand/raw/brcmnand/brcmnand.h | 23 +++++++++++++++++++++++
-> >>>>>   2 files changed, 35 insertions(+), 2 deletions(-)
-> >>>>>
-> >>>>> diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-> >>>>> index f75929783b94..7a1673b1b1af 100644
-> >>>>> --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-> >>>>> +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-> >>>>> @@ -594,13 +594,18 @@ enum {      
-> >>>>>   >>   static inline u32 nand_readreg(struct brcmnand_controller *ctrl, u32 offs)      
-> >>>>>   {
-> >>>>> +	if (brcmnand_soc_has_ops(ctrl->soc))
-> >>>>> +		return brcmnand_soc_read(ctrl->soc, offs);
-> >>>>>   	return brcmnand_readl(ctrl->nand_base + offs);
-> >>>>>   }      
-> >>>>>   >>   static inline void nand_writereg(struct brcmnand_controller *ctrl, u32 offs,      
-> >>>>>   				 u32 val)
-> >>>>>   {
-> >>>>> -	brcmnand_writel(val, ctrl->nand_base + offs);
-> >>>>> +	if (brcmnand_soc_has_ops(ctrl->soc))
-> >>>>> +		brcmnand_soc_write(ctrl->soc, val, offs);
-> >>>>> +	else
-> >>>>> +		brcmnand_writel(val, ctrl->nand_base + offs);
-> >>>>>   }      
-> >>>>>   >>   static int brcmnand_revision_init(struct brcmnand_controller *ctrl)      
-> >>>>> @@ -766,13 +771,18 @@ static inline void brcmnand_rmw_reg(struct brcmnand_controller *ctrl,      
-> >>>>>   >>   static inline u32 brcmnand_read_fc(struct brcmnand_controller *ctrl, int word)      
-> >>>>>   {
-> >>>>> +	if (brcmnand_soc_has_ops(ctrl->soc))
-> >>>>> +		return brcmnand_soc_read(ctrl->soc, ~0);
-> >>>>>   	return __raw_readl(ctrl->nand_fc + word * 4);
-> >>>>>   }      
-> >>>>>   >>   static inline void brcmnand_write_fc(struct brcmnand_controller *ctrl,      
-> >>>>>   				     int word, u32 val)
-> >>>>>   {
-> >>>>> -	__raw_writel(val, ctrl->nand_fc + word * 4);
-> >>>>> +	if (brcmnand_soc_has_ops(ctrl->soc))
-> >>>>> +		brcmnand_soc_write(ctrl->soc, val, ~0);
-> >>>>> +	else
-> >>>>> +		__raw_writel(val, ctrl->nand_fc + word * 4);
-> >>>>>   }      
-> >>>>>   >>   static inline void edu_writel(struct brcmnand_controller *ctrl,      
-> >>>>> diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.h b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
-> >>>>> index eb498fbe505e..a3f2ad5f6572 100644
-> >>>>> --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.h
-> >>>>> +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
-> >>>>> @@ -11,12 +11,19 @@      
-> >>>>>   >>   struct platform_device;      
-> >>>>>   struct dev_pm_ops;
-> >>>>> +struct brcmnand_io_ops;      
-> >>>>>   >>   struct brcmnand_soc {      
-> >>>>>   	bool (*ctlrdy_ack)(struct brcmnand_soc *soc);
-> >>>>>   	void (*ctlrdy_set_enabled)(struct brcmnand_soc *soc, bool en);
-> >>>>>   	void (*prepare_data_bus)(struct brcmnand_soc *soc, bool prepare,
-> >>>>>   				 bool is_param);
-> >>>>> +	const struct brcmnand_io_ops *ops;
-> >>>>> +};
-> >>>>> +
-> >>>>> +struct brcmnand_io_ops {
-> >>>>> +	u32 (*read_reg)(struct brcmnand_soc *soc, u32 offset);
-> >>>>> +	void (*write_reg)(struct brcmnand_soc *soc, u32 val, u32 offset);
-> >>>>>   };      
-> >>>>>   >>   static inline void brcmnand_soc_data_bus_prepare(struct brcmnand_soc *soc,      
-> >>>>> @@ -58,6 +65,22 @@ static inline void brcmnand_writel(u32 val, void __iomem *addr)
-> >>>>>   		writel_relaxed(val, addr);
-> >>>>>   }      
-> >>>>>   >> +static inline bool brcmnand_soc_has_ops(struct brcmnand_soc *soc)      
-> >>>>> +{
-> >>>>> +	return soc && soc->ops && soc->ops->read_reg && soc->ops->write_reg;
-> >>>>> +}
-> >>>>> +
-> >>>>> +static inline u32 brcmnand_soc_read(struct brcmnand_soc *soc, u32 offset)
-> >>>>> +{
-> >>>>> +	return soc->ops->read_reg(soc, offset);
-> >>>>> +}
-> >>>>> +
-> >>>>> +static inline void brcmnand_soc_write(struct brcmnand_soc *soc, u32 val,
-> >>>>> +				      u32 offset)
-> >>>>> +{
-> >>>>> +	soc->ops->write_reg(soc, val, offset);
-> >>>>> +}
-> >>>>> +      
-> >>>>
-> >>>> It might be worth looking into more optimized ways to do these checks,
-> >>>> in particular the read/write_reg ones because you're checking against
-> >>>> some static data which cannot be optimized out by the compiler but
-> >>>> won't change in the lifetime of the kernel.      
-> >>>
-> >>> I suppose I could add an addition if IS_ENABLED(CONFIG_MTD_NAND_BRCMNAND_BCMA) at the front of brcmnand_soc_has_ops(), would that address your concern or you have something else in mind?    
-> >>
-> >> I don't like much the #ifdef solution, instead you might think of
-> >> static keys, or even better using a regmap. Regmap implementation is
-> >> free, you can use either one way or the other and for almost no
-> >> overhead compared to the bunch of functions you have here.  
-> > 
-> > Maybe regmaps will actually be slower than these regular if's. Perhaps
-> > static keys are the best option?  
-> 
-> OK static keys would probably work. I am not sure that the additional
-> branches for each register access would actually be causing a noticeable
-> performance impact. Pretty much any chip where this controller is used
-> has a DMA interface that you program and kick, the PIO is already
-> assumed to be slow, and each register access is about 200ns on STB chips
-> at least.
+I tracked it down to commit 7285eb9693a2 ("rtw88: support adaptivity for
+ETSI/JP DFS region"), tried the debugfs toggle mentioned in that commit,
+and found a few more things that also work:
 
-I see. I'll let you decide what you prefer, I won't block if you stick
-to the regular if/else implementation.
+- echo 0 | sudo tee /sys/kernel/debug/ieee80211/phy0/rtw88/edcca_enable
+- Connecting the SSD through a USB 2.0 hub
+- Connecting the SSD to the port on other side of the laptop
+- Putting my phone next to the display, "shielding" it from the ports
 
-Thanks,
-Miquèl
+All combined lead me to think it's interference from USB 3.0 that's the
+real cause of my problems.
+
+I also see this mail on a previous version of the patch [1]:
+
+> As mentioned in commit message, the debugfs is expected to be used when debugging
+> in noisy environment. In that case, we think all rtw88 devices will probably
+> be affected. Besides, we believe that turning EDCCA off is a temporary state under
+> debugging.
+
+[1]
+https://lore.kernel.org/linux-wireless/61a242c186bf453d80820d81e1c48464@realtek.com/
+
+So I'm not sure what to think and wanted to ask here. Is EDCCA
+working-as-intended in my case, meaning I should fix my "noisy
+environment"? Or is something wrong with the implementation that should
+be debugged? I think it'll be very easy for other people to run into
+this issue, maybe it should be disabled by default, or turned into a
+module option?
+
+Thanks in advance.
