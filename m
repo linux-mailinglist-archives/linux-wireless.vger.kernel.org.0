@@ -2,261 +2,314 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12A8A483BD1
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 07:07:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB1C1483C3C
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 08:27:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232771AbiADGH3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jan 2022 01:07:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52002 "EHLO
+        id S233174AbiADH1r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jan 2022 02:27:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231751AbiADGH2 (ORCPT
+        with ESMTP id S231707AbiADH1q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jan 2022 01:07:28 -0500
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1201C061785
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Jan 2022 22:07:27 -0800 (PST)
-Received: by mail-io1-xd36.google.com with SMTP id y18so34668930iob.8
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Jan 2022 22:07:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=egauge.net; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :organization:user-agent:mime-version:content-transfer-encoding;
-        bh=nx5TEoMR327bXdXNPVuwuMbG4iUKlSWKPeyufsnSwk4=;
-        b=aPtTkfNCbSTj9HkncfH7DdyXSIT92UhpTJ7nygMD3QFqmJDJ6k+lGIKdsuiMPHQ/uq
-         MCW3o0WIUABBSdPKAL8PNN/ZXmCkt57FXRbAWQRtfejIhomx9Mg0wtORq9M0INs1LFVP
-         nJ8MMYcuQ80/ODy6r4eh0G/J5H234T6F79mb2w0Gi0WsbaMvMAJecKQQ/Qmd0505FCAG
-         +B1YLJnwNsDHsv9cMTNyZ5kKWXoUNyJDijrL8ltqPN/whXIzN2hY9TVx3iSTNA5bhrt2
-         2/CSLyObCbwbSP9iNTs0gg52fAwBfu2y5cA9NKY9l1fEaPcdc/eXTo6A2W8J4ndnnj0y
-         K0mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:organization:user-agent:mime-version
-         :content-transfer-encoding;
-        bh=nx5TEoMR327bXdXNPVuwuMbG4iUKlSWKPeyufsnSwk4=;
-        b=XOEl/3rt74kf7FjtClYbVVSVYHl5HcalvFu2mgUSxSt8JxHGC1MjuWpe4GryVvJr4G
-         o+N7ppAjUSJb6mq5tk73hd1FPx2tKyF8daeZUzAFLyf7sDFSWUwdMPDwRnwmM7ck+0m/
-         dbYMT20A8fLKmszr1mLkPx9ewqFixApOXtdWUTIVajv4zKuNF6PIswKInhu4IAFwPMzL
-         7/8iEw3eSIEBbB6JNd7M/y2p1h5Wgo/FPWlgbpXDnynoiILulUjAQuWhI+T182pKSlA+
-         4gO0kCU6965XVVlLV2Gqh3r/A/W48GXhLQeYhcdIatRyzmt1yG8uN0PP+/E9m0aQQbAI
-         ZLZA==
-X-Gm-Message-State: AOAM533YKFaUTMWLXl7O2uMTzAPCMMgnDlQAf5fY1xkzZxaE+A2CJUeP
-        rvJV+YrE1BtT3ZoZmXXMHikc
-X-Google-Smtp-Source: ABdhPJxM7SkcTdr6BLfIsTxkuWhKpEt8bp/Mi6QSizBZDQLTwLvRj6lMEd+ZK+CG0kaJqshHOyGX2g==
-X-Received: by 2002:a05:6638:348c:: with SMTP id t12mr22943034jal.269.1641276446974;
-        Mon, 03 Jan 2022 22:07:26 -0800 (PST)
-Received: from ?IPv6:2601:281:8300:4e0:2ba9:697d:eeec:13b? ([2601:281:8300:4e0:2ba9:697d:eeec:13b])
-        by smtp.gmail.com with ESMTPSA id w6sm15483471ilv.18.2022.01.03.22.07.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jan 2022 22:07:26 -0800 (PST)
-Message-ID: <75d5d39874f28b91c5abfff6e6a05421e8529264.camel@egauge.net>
-Subject: Re: [PATCH] wilc1000: Allow setting power_save before driver is
- initialized
-From:   David Mosberger-Tang <davidm@egauge.net>
-To:     Ajay.Kathat@microchip.com
-Cc:     Claudiu.Beznea@microchip.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org,
+        Tue, 4 Jan 2022 02:27:46 -0500
+Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36BC9C061761;
+        Mon,  3 Jan 2022 23:27:46 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: hector@marcansoft.com)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 56BCF419BC;
+        Tue,  4 Jan 2022 07:27:36 +0000 (UTC)
+From:   Hector Martin <marcan@marcan.st>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>
+Cc:     Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Mon, 03 Jan 2022 23:07:24 -0700
-In-Reply-To: <f961481a-3f4c-5fd2-c46a-037d923fea4c@microchip.com>
-References: <20211212011835.3719001-1-davidm@egauge.net>
-         <6fc9f00aa0b0867029fb6406a55c1e72d4c13af6.camel@egauge.net>
-         <5378e756-8173-4c63-1f0d-e5836b235a48@microchip.com>
-         <31d5e7447e4574d0fcfc46019d7ca96a3db4ecb6.camel@egauge.net>
-         <49a5456d-6a63-652e-d356-9678f6a9b266@microchip.com>
-         <523698d845e0b235e4cbb2a0f3cfaa0f5ed98ec0.camel@egauge.net>
-         <122f79b7-7936-325c-b2d9-e15db6642d0f@microchip.com>
-         <be3c95c8310504222e88c602a937b7f05cc01286.camel@egauge.net>
-         <9272b86e-61ab-1c25-0efb-3cdd2c590db8@microchip.com>
-         <e7247265d5309165140d7a9a3af646129a789d58.camel@egauge.net>
-         <f961481a-3f4c-5fd2-c46a-037d923fea4c@microchip.com>
-Organization: eGauge Systems LLC
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: [PATCH v2 00/35] brcmfmac: Support Apple T2 and M1 platforms
+Date:   Tue,  4 Jan 2022 16:26:23 +0900
+Message-Id: <20220104072658.69756-1-marcan@marcan.st>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ajay,
+Hi everyone,
 
-On Thu, 2021-12-30 at 16:24 +0000, Ajay.Kathat@microchip.com wrote:
-> On 24/12/21 23:08, David Mosberger-Tang wrote:
-> > On Fri, 2021-12-24 at 16:20 +0000, Ajay.Kathat@microchip.com wrote:
-> > > On 23/12/21 22:38, David Mosberger-Tang wrote:
-> > > > First, on a freshly booted system and with wilc1000-spi autoloaded by
-> > > > the kernel, try this sequence (copy & paste the commands):
-> > > > 
-> > > >     /usr/sbin/wpa_supplicant -Bs -iwlan0 -c/etc/wpa_supplicant.conf
-> > > >     sleep 10
-> > > >     iw dev wlan0 set power_save on
-> > > > 
-> > > > The above yields a power consumption of 1.4W reliably.  The "sleep 10"
-> > > > doesn't matter here; the behavior is the same with or without it.  I
-> > > > tried waiting up to 120 seconds with no difference.
-> > > 
-> > > I have tested by making the WILC as build-in module to insert driver
-> > > automatically at boot-up. I hope it should be fine. Because I have
-> > > already tested as loadable module earlier.
-> > > 
-> > > Below are the number observed
-> > > ------------------------------ --------------------------
-> > > - before starting wpa_supplicant             : ~16.3 mA
-> > > - wpa_supplicant started                         : ~40 mA
-> > > - PSM on                                                  :  ~6 mA
-> > > 
-> > > 
-> > > The 'sleep 10' would have no impact in my setup because I have measured
-> > > the current consumption for wilc1000 chip.
-> > > 
-> > > I have shared the screenshot at https://postimg.cc/67S41dkb
-> > 
-> > Huh, that's curious.  I definitely cannot reproduce this.  To match
-> > your setup as closely as possibly, I also built wilc1000-spi into the
-> > kernel, but that makes no difference (as expected).
-> > 
-> > What kernel version are you on?  I switched to wireless-drivers-next as
-> > of today (latest commit d430dffbe9dd30759f3c64b65bf85b0245c8d8ab).
-> 
-> I have tested with 5.10 as well as with 5.16-rc1(commit#
-> fa55b7dcdc43). I don't think WILC1000 chip PS gets affected because
-> of a specific kernel version. 
-> 
-> > With this kernel, the numbers are about 100mW lower than reported
-> > before, but the relative behavior is the same: about 300mW higher
-> > power-consumption when PSM is not taking effect properly.
-> > 
-> > To recap, back with wilc1000-spi being a module again, after freshly
-> > booting the system and issuing this commands:
-> > 
-> >    /usr/sbin/wpa_supplicant -Bs -iwlan0 -c/etc/wpa_supplicant.conf
-> >    /usr/sbin/iw dev wlan0 set power_save on
-> > 
-> > I see a power-consumption of about 1.25W.  PSM on/off makes no
-> > difference in this state.  Then, if I issue the commands:
-> > 
-> > rmmod wilc1000-spi
-> > modprobe wilc1000-spi
-> > sleep 10
-> > iw dev wlan0 set power_save on
-> > 
-> > power-consumption drops to about 0.9W.
-> > 
-> > Here is a screenshot that shows the annotated power-measurements:
-> > 
-> >    https://postimg.cc/3dbKSGht
-> > 
-> > Apart from kernel version, the only things that I can think of that'd
-> > be different is that we don't have the ENABLE pin wired to a GPIO.
-> >  Instead, the chip is always enabled.  I doubt this would explain the
-> > difference (~RESET is wired to a GPIO).
-> 
-> When PS mode is enabled, the host can wake-up the chip, if there is
-> some data to transfer. Just check, if there is any network
-> application trying to access WILC (send continuous data) in your
-> setup.
+Happy new year! This 35-patch series adds proper support for the
+Broadcom FullMAC chips used on Apple T2 and M1 platforms:
 
-That shouldn't be an issue.  To confirm, in the output below, I
-included the ifconfig stats so you can see that there is virtually no
-traffic during the measurement periods.
+- BCM4355C1
+- BCM4364B2/B3
+- BCM4377B3
+- BCM4378B1
+- BCM4387C2
 
->  Also, you have mentioned that removing the module(without killing
-> the wpa_supplicant) worked so I guess, it might be possible that the
-> application got interrupted when the module was removed and didn't
-> start when the module was inserted again. 
+As usual for Apple, things are ever so slightly different on these
+machines from every other Broadcom platform. In particular, besides
+the normal device/firmware support changes, a large fraction of this
+series deals with selecting and loading the correct firmware. These
+platforms use multiple dimensions for firmware selection, and the values
+for these dimensions are variously sourced from DT or OTP (see the
+commit message for #9 for the gory details).
 
-There are no applications running on the system at all.  I tested the
-two command sequences in the exact same setup, with everything that
-normally runs on our system disabled.  CPU utilization is basically 0%.
+This is what is included:
 
-> Try disabling CONFIG_CFG80211_DEFAULT_PS config to check if it has any impact.
+# 01: DT bindings (M1 platforms)
 
-I already had CONFIG_CFG80211_DEFAULT_PS disabled.  It makes no
-difference, except that with CONFIG_CFG80211_DEFAULT_PS enabled, you
-have to issue "power_save off" before "power_save on" to get PSM to
-take effect since cfg80211 thinks power-save is already enabled when
-it's not.
+On M1 platforms, we use the device tree to provide properties for PCIe
+devices like these cards. This patch re-uses the existing SDIO binding
+and adds the compatibles for these PCIe chips, plus the properties we
+need to correctly instantiate them:
 
-To mirror your setup more closely, I installed a 1 ohm shunt resistor
-on the 3.3V supply to the WILC1000 so I can measure current draw of the
-WILC1000 alone.  This is just for paranoia's sake to make sure there is
-nothing wonky going on outside of the WILC1000 (there is not).  So the
-current draws mentioned below are at 3.3V and DC average measures
-across 1 minute.
+- brcm,board-type: Overrides the board-type which is used for firmware
+  selection on all platforms, which normally comes from the DMI device
+  name or the root node compatible. Apple have their own
+  mapping/identifier here ("island" name), so we prefix it with "apple,"
+  and use it as the board-type override.
 
-First test command sequence (power saving fails to take effect):
+- apple,antenna-sku: Specifies the specific antenna configuration in a
+  produt. This would normally be filled in by the bootloader from
+  device-specific configuration data. On ACPI platforms, this is
+  provided via ACPI instead. This is used to build the funky Apple
+  firmware filenames. Note: it seems the antenna doesn't actually matter
+  for any of the above platforms (they are all aliases to the same files
+  and our firmware copier collapses down this dimension), but since
+  Apple do support having different firmware or NVRAM depending on
+  antenna SKU, we ough to support it in case it starts mattering on a
+  future platform.
 
-   ------------------------------------------------------------------
-   REBOOT SYSTEM
-   # ifconfig wlan0 | tail -5
-             RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-             TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
-             collisions:0 txqueuelen:1000
-             RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
-   # /usr/sbin/wpa_supplicant -Bs -iwlan0 -c/etc/wpa_supplicant.conf
-   # iw dev wlan0 set power_save on
-   # sleep 60
-   # ifconfig wlan0 | tail -5
-             RX packets:51 errors:0 dropped:0 overruns:0 frame:0
-             TX packets:37 errors:0 dropped:0 overruns:0 carrier:0
-             collisions:0 txqueuelen:1000
-             RX bytes:5980 (5.8 KiB)  TX bytes:5425 (5.2 KiB)
-   ------------------------------------------------------------------
+- brcm,cal-blob: A calibration blob for the Wi-Fi module, specific to a
+  given unit. On most platforms, this is stored in SROM on the module,
+  and does not need to be provided externally, but Apple instead stores
+  this in platform configuration for M1 machines and the driver needs to
+  upload it to the device after initializing the firmware. This has a
+  generic brcm name, since a priori this mechanism shouldn't be
+  Apple-specific, although chances are only Apple do it like this so far.
 
-with the above command sequence, current-draw remains pretty much
-constant at 76mA.
+# 02~09: Apple firmware selection (M1 platforms)
 
+These patches add support for choosing firmwares (binaries, CLM blobs,
+and NVRAM configs alike) using all the dimensions that Apple uses. The
+firmware files are renamed to conform to the existing brcmfmac
+convention. See the commit message for #9 for the gory details as to how
+these filenames are constructed. The data to make the firmware selection
+comes from the above DT properties and from an OTP ROM on the chips on
+M1 platforms.
 
-Second test command sequence (power saving successfully takes effect):
+# 10~14: BCM4378 support (M1 T8103 platforms)
 
-   ------------------------------------------------------------------
-   REBOOT SYSTEM
-   # ifconfig wlan0 | tail -5
-             RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-             TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
-             collisions:0 txqueuelen:1000
-             RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
-   # /usr/sbin/wpa_supplicant -Bs -iwlan0 -c/etc/wpa_supplicant.conf
-   # sleep 15
-   # iw dev wlan0 set power_save on
-   # sleep 60
-   # ifconfig wlan0 | tail -5
-             RX packets:41 errors:0 dropped:0 overruns:0 frame:0
-             TX packets:34 errors:0 dropped:0 overruns:0 carrier:0
-             collisions:0 txqueuelen:1000
-             RX bytes:5007 (4.8 KiB)  TX bytes:5436 (5.3 KiB)
-   ------------------------------------------------------------------
+These patches make changes required to support the BCM4378 chip present
+in Apple M1 (T8103) platforms. This includes adding support for passing
+in the MAC address via the DT (this is standard on DT platforms) since
+the chip does not have a burned-in MAC; adding support for PCIe core
+revs >64 (which moved around some registers); tweaking ring buffer
+sizes; and fixing a bug.
 
-with the above command sequence, current-draw fluctuates quite a bit,
-but averages to somewhere around 15mA.
+# 15~20: BCM4355/4364/4377 support (T2 platforms)
 
-The exact amount of time needed between starting wpa_supplicant and
-issuing the PSM on command fluctuates a bit.  Sometimes 9 seconds is
-enough, but oftentimes a pause of 10-15 seconds is required.
+These patches add support for the chips found across T2 Mac platforms.
+This includes ACPI support for fetching properties instead of using DT,
+providing a buffer of entropy to the devices (required for some of the
+firmwares), and adding the required IDs. This also fixes the BCM4364
+firmware naming; it was added without consideration that there are two
+incompatible chip revisions. To avoid this ambiguity in the future, all
+the chips added by this series use firmware names ending in the revision
+(apple/brcm style, that is letter+number), so that future revisions can
+be added without creating confusion.
 
-A screenshot of the current draw for this command sequence is graphed
-here:
+# 21~27: BCM4387 support (M1 Pro/Max T600x platforms)
 
-  https://postimg.cc/bZc1v0jR
+These patches add support for the newer BCM4387 present in the recently
+launched M1 Pro/Max platforms. This chip requires a few changes to D11
+reset behavior and TCM size calculation to work properly, and it uses
+newer firmware which needs support for newer firmware interfaces
+in the cfg80211 support. Backwards compatibility is maintained via
+feature flags discovered at runtime from information provided by the
+firmware.
 
-Oh, and just at the off-chance that the association details matters:
+A note on #26: it seems this chip broke the old hack of passing the PMK
+in hexdump form as a PSK, but it seems brcmfmac chips supported passing
+it in binary all along. I'm not sure why it was done this way in the
+Linux driver, but it seems OpenBSD always did it in binary and works
+with older chips, so this should be reasonably well tested. Any further
+insight as to why this was done this way would be appreciated.
 
-      # wpa_cli status
-      Selected interface 'wlan0'
-      bssid=d8:07:b6:af:4b:e4
-      freq=2442
-      ssid=MOSTANG
-      id=0
-      mode=station
-      pairwise_cipher=CCMP
-      group_cipher=CCMP
-      key_mgmt=WPA2-PSK
-      wpa_state=COMPLETED
-      p2p_device_address=f8:f0:05:62:76:48
-      address=f8:f0:05:62:76:48
-      uuid=22b21bb3-ec5a-5038-aa7f-911a2b012173
+# 28~32: Fixes
 
-  --david
+These are just random things I came across while developing this series.
+#31 is required to avoid a compile warning in subsequent patches. None
+of these are strictly required to support these chips/platforms.
+
+# 33-35: TxCap and calibration blobs
+
+These patches add support for uploading TxCap blobs, which are another
+kind of firmware blob that Apple platforms use (T2 and M1), as well as
+providing Wi-Fi calibration data from the device tree (M1).
+
+I'm not sure what the TxCap blobs do. Given the stray function
+prototype at [5], it would seem the Broadcom folks in charge of Linux
+drivers also know all about Apple's fancy OTP for firmware selection
+and the existence of TxCap blobs, so it would be great if you could
+share any insight here ;-)
+
+These patches are not required for the chips to function, but presumably
+having proper per-device calibration data available matters, and I
+assume the TxCap blobs aren't just for show either.
+
+# On firmware
+
+As you might expect, the firmware for these machines is not available
+under a redistributable license; however, every owner of one of these
+machines *is* implicitly licensed to posess the firmware, and the OS
+packages containing it are available under well-known URLs on Apple's
+CDN with no authentication.
+
+Our plan to support this is to propose a platform firmware mechanism,
+where platforms can provide a firmware package in the EFI system
+partition along with a manifest, and distros will extract it to
+/lib/firmware on boot or otherwise make it available to the kernel.
+
+Then, on M1 platforms, our install script, which performs all the
+bootloader installation steps required to run Linux on these machines in
+the first place, will also take care of copying the firmware from the
+base macOS image to the EFI partition. On T2 platforms, we'll provide an
+analogous script that users can manually run prior to a normal EFI Linux
+installation to just grab the firmware from /usr/share/firmware/wifi in
+the running macOS.
+
+There is an example firmware manifest at [1] which details the files
+copied by our firmware rename script [2], as of macOS 12.0.1.
+
+To test this series on a supported Mac today (T2 or M1), boot into macOS
+and run:
+
+$ git clone https://github.com/AsahiLinux/asahi-installer
+$ cd asahi-installer/src
+$ python -m firmware.wifi /usr/share/firmware/wifi firmware.tar
+
+Then copy firmware.tar to Linux and extract it into /lib/firmware.
+
+# Acknowledgements
+
+This patch series was developed referencing the OpenBSD support for the
+BCM4378 [3] and the bcmdhd-4359 GPL release [4], which contained some
+interesting tidbits about newer chips, registers, OTP, etc.
+
+[1] https://gist.github.com/marcan/5cfaad948e224279f09a4a79ccafd9b6
+[2] https://github.com/AsahiLinux/asahi-installer/blob/main/src/firmware/wifi.py
+[3] https://github.com/openbsd/src/blob/master/sys/dev/pci/if_bwfm_pci.c
+[4] https://github.com/StreamUnlimited/broadcom-bcmdhd-4359/
+[5] https://github.com/StreamUnlimited/broadcom-bcmdhd-4359/blob/master/dhd_pcie.h#L594
+
+# Known bugs
+
+WPA3 does not yet work on M1 platforms. This is probably more missing
+firmware interfaces; I'll look into it shortly and it can go into v3 or
+a separate add-on patch.
+
+# Changes since v1
+
+- Replaced new DT compatibles with pciXXXX,YYYY ones (this seems to be
+  the way to do it)
+- Replaced apple,module instance DT prop with brcm,board-type (more
+  generic)
+- Reduced stack usage of brcmf_pmksa_v3_op
+- Changed alt_paths/board_names to be a fixed, max size instead of
+  statically allocated.
+- Fixed broken build halfway through the series
+- Addressed other review comments (style/etc)
+- Fixed typos and other minor issues
+
+Hector Martin (35):
+  dt-bindings: net: bcm4329-fmac: Add Apple properties & chips
+  brcmfmac: pcie: Declare missing firmware files in pcie.c
+  brcmfmac: firmware: Handle per-board clm_blob files
+  brcmfmac: firmware: Support having multiple alt paths
+  brcmfmac: pcie/sdio/usb: Get CLM blob via standard firmware mechanism
+  brcmfmac: firmware: Support passing in multiple board_types
+  brcmfmac: pcie: Read Apple OTP information
+  brcmfmac: of: Fetch Apple properties
+  brcmfmac: pcie: Perform firmware selection for Apple platforms
+  brcmfmac: firmware: Allow platform to override macaddr
+  brcmfmac: msgbuf: Increase RX ring sizes to 1024
+  brcmfmac: pcie: Fix crashes due to early IRQs
+  brcmfmac: pcie: Support PCIe core revisions >= 64
+  brcmfmac: pcie: Add IDs/properties for BCM4378
+  ACPI / property: Support strings in Apple _DSM props
+  brcmfmac: acpi: Add support for fetching Apple ACPI properties
+  brcmfmac: pcie: Provide a buffer of random bytes to the device
+  brcmfmac: pcie: Add IDs/properties for BCM4355
+  brcmfmac: pcie: Add IDs/properties for BCM4377
+  brcmfmac: pcie: Perform correct BCM4364 firmware selection
+  brcmfmac: chip: Only disable D11 cores; handle an arbitrary number
+  brcmfmac: chip: Handle 1024-unit sizes for TCM blocks
+  brcmfmac: cfg80211: Add support for scan params v2
+  brcmfmac: feature: Add support for setting feats based on WLC version
+  brcmfmac: cfg80211: Add support for PMKID_V3 operations
+  brcmfmac: cfg80211: Pass the PMK in binary instead of hex
+  brcmfmac: pcie: Add IDs/properties for BCM4387
+  brcmfmac: pcie: Replace brcmf_pcie_copy_mem_todev with memcpy_toio
+  brcmfmac: pcie: Read the console on init and shutdown
+  brcmfmac: pcie: Release firmwares in the brcmf_pcie_setup error path
+  brcmfmac: firmware: Allocate space for default boardrev in nvram
+  brcmfmac: fwil: Constify iovar name arguments
+  brcmfmac: common: Add support for downloading TxCap blobs
+  brcmfmac: pcie: Load and provide TxCap blobs
+  brcmfmac: common: Add support for external calibration blobs
+
+ .../net/wireless/brcm,bcm4329-fmac.yaml       |  37 +-
+ drivers/acpi/x86/apple.c                      |  11 +-
+ .../broadcom/brcm80211/brcmfmac/Makefile      |   2 +
+ .../broadcom/brcm80211/brcmfmac/acpi.c        |  47 ++
+ .../broadcom/brcm80211/brcmfmac/bus.h         |  20 +-
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 178 +++++-
+ .../broadcom/brcm80211/brcmfmac/chip.c        |  36 +-
+ .../broadcom/brcm80211/brcmfmac/common.c      | 130 +++-
+ .../broadcom/brcm80211/brcmfmac/common.h      |  12 +
+ .../broadcom/brcm80211/brcmfmac/feature.c     |  49 ++
+ .../broadcom/brcm80211/brcmfmac/feature.h     |   6 +-
+ .../broadcom/brcm80211/brcmfmac/firmware.c    | 136 +++-
+ .../broadcom/brcm80211/brcmfmac/firmware.h    |   4 +-
+ .../broadcom/brcm80211/brcmfmac/fwil.c        |  34 +-
+ .../broadcom/brcm80211/brcmfmac/fwil.h        |  28 +-
+ .../broadcom/brcm80211/brcmfmac/fwil_types.h  | 157 ++++-
+ .../broadcom/brcm80211/brcmfmac/msgbuf.h      |   4 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/of.c |  20 +-
+ .../broadcom/brcm80211/brcmfmac/pcie.c        | 599 +++++++++++++++---
+ .../broadcom/brcm80211/brcmfmac/sdio.c        |  39 +-
+ .../broadcom/brcm80211/brcmfmac/sdio.h        |   2 +
+ .../broadcom/brcm80211/brcmfmac/usb.c         |  23 +-
+ .../broadcom/brcm80211/include/brcm_hw_ids.h  |   8 +
+ include/linux/bcma/bcma_driver_chipcommon.h   |   1 +
+ 24 files changed, 1313 insertions(+), 270 deletions(-)
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
+
+-- 
+2.33.0
 
