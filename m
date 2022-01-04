@@ -2,133 +2,261 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64B6D483BBD
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 06:47:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12A8A483BD1
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 07:07:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231126AbiADFrh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jan 2022 00:47:37 -0500
-Received: from marcansoft.com ([212.63.210.85]:48898 "EHLO mail.marcansoft.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230181AbiADFrh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jan 2022 00:47:37 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id CF9BA419BC;
-        Tue,  4 Jan 2022 05:47:25 +0000 (UTC)
-Message-ID: <4cbafb7b-cdde-8555-40d3-f37e998c7e64@marcan.st>
-Date:   Tue, 4 Jan 2022 14:47:23 +0900
+        id S232771AbiADGH3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jan 2022 01:07:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52002 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231751AbiADGH2 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 4 Jan 2022 01:07:28 -0500
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1201C061785
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Jan 2022 22:07:27 -0800 (PST)
+Received: by mail-io1-xd36.google.com with SMTP id y18so34668930iob.8
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Jan 2022 22:07:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=egauge.net; s=google;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :organization:user-agent:mime-version:content-transfer-encoding;
+        bh=nx5TEoMR327bXdXNPVuwuMbG4iUKlSWKPeyufsnSwk4=;
+        b=aPtTkfNCbSTj9HkncfH7DdyXSIT92UhpTJ7nygMD3QFqmJDJ6k+lGIKdsuiMPHQ/uq
+         MCW3o0WIUABBSdPKAL8PNN/ZXmCkt57FXRbAWQRtfejIhomx9Mg0wtORq9M0INs1LFVP
+         nJ8MMYcuQ80/ODy6r4eh0G/J5H234T6F79mb2w0Gi0WsbaMvMAJecKQQ/Qmd0505FCAG
+         +B1YLJnwNsDHsv9cMTNyZ5kKWXoUNyJDijrL8ltqPN/whXIzN2hY9TVx3iSTNA5bhrt2
+         2/CSLyObCbwbSP9iNTs0gg52fAwBfu2y5cA9NKY9l1fEaPcdc/eXTo6A2W8J4ndnnj0y
+         K0mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:organization:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=nx5TEoMR327bXdXNPVuwuMbG4iUKlSWKPeyufsnSwk4=;
+        b=XOEl/3rt74kf7FjtClYbVVSVYHl5HcalvFu2mgUSxSt8JxHGC1MjuWpe4GryVvJr4G
+         o+N7ppAjUSJb6mq5tk73hd1FPx2tKyF8daeZUzAFLyf7sDFSWUwdMPDwRnwmM7ck+0m/
+         dbYMT20A8fLKmszr1mLkPx9ewqFixApOXtdWUTIVajv4zKuNF6PIswKInhu4IAFwPMzL
+         7/8iEw3eSIEBbB6JNd7M/y2p1h5Wgo/FPWlgbpXDnynoiILulUjAQuWhI+T182pKSlA+
+         4gO0kCU6965XVVlLV2Gqh3r/A/W48GXhLQeYhcdIatRyzmt1yG8uN0PP+/E9m0aQQbAI
+         ZLZA==
+X-Gm-Message-State: AOAM533YKFaUTMWLXl7O2uMTzAPCMMgnDlQAf5fY1xkzZxaE+A2CJUeP
+        rvJV+YrE1BtT3ZoZmXXMHikc
+X-Google-Smtp-Source: ABdhPJxM7SkcTdr6BLfIsTxkuWhKpEt8bp/Mi6QSizBZDQLTwLvRj6lMEd+ZK+CG0kaJqshHOyGX2g==
+X-Received: by 2002:a05:6638:348c:: with SMTP id t12mr22943034jal.269.1641276446974;
+        Mon, 03 Jan 2022 22:07:26 -0800 (PST)
+Received: from ?IPv6:2601:281:8300:4e0:2ba9:697d:eeec:13b? ([2601:281:8300:4e0:2ba9:697d:eeec:13b])
+        by smtp.gmail.com with ESMTPSA id w6sm15483471ilv.18.2022.01.03.22.07.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jan 2022 22:07:26 -0800 (PST)
+Message-ID: <75d5d39874f28b91c5abfff6e6a05421e8529264.camel@egauge.net>
+Subject: Re: [PATCH] wilc1000: Allow setting power_save before driver is
+ initialized
+From:   David Mosberger-Tang <davidm@egauge.net>
+To:     Ajay.Kathat@microchip.com
+Cc:     Claudiu.Beznea@microchip.com, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Mon, 03 Jan 2022 23:07:24 -0700
+In-Reply-To: <f961481a-3f4c-5fd2-c46a-037d923fea4c@microchip.com>
+References: <20211212011835.3719001-1-davidm@egauge.net>
+         <6fc9f00aa0b0867029fb6406a55c1e72d4c13af6.camel@egauge.net>
+         <5378e756-8173-4c63-1f0d-e5836b235a48@microchip.com>
+         <31d5e7447e4574d0fcfc46019d7ca96a3db4ecb6.camel@egauge.net>
+         <49a5456d-6a63-652e-d356-9678f6a9b266@microchip.com>
+         <523698d845e0b235e4cbb2a0f3cfaa0f5ed98ec0.camel@egauge.net>
+         <122f79b7-7936-325c-b2d9-e15db6642d0f@microchip.com>
+         <be3c95c8310504222e88c602a937b7f05cc01286.camel@egauge.net>
+         <9272b86e-61ab-1c25-0efb-3cdd2c590db8@microchip.com>
+         <e7247265d5309165140d7a9a3af646129a789d58.camel@egauge.net>
+         <f961481a-3f4c-5fd2-c46a-037d923fea4c@microchip.com>
+Organization: eGauge Systems LLC
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.4.1
-Subject: Re: [PATCH 01/34] dt-bindings: net: bcm4329-fmac: Add Apple
- properties & chips
-Content-Language: en-US
-To:     Mark Kettenis <mark.kettenis@xs4all.nl>
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        robh+dt@kernel.org, rafael@kernel.org, lenb@kernel.org,
-        aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, chi-hsien.lin@infineon.com,
-        wright.feng@infineon.com, sven@svenpeter.dev, alyssa@rosenzweig.io,
-        kettenis@openbsd.org, zajec5@gmail.com,
-        pieter-paul.giesberts@broadcom.com, linus.walleij@linaro.org,
-        hdegoede@redhat.com, linville@tuxdriver.com,
-        sandals@crustytoothpaste.net, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20211226153624.162281-1-marcan@marcan.st>
- <20211226153624.162281-2-marcan@marcan.st>
- <d3cb7b3782b16029@bloch.sibelius.xs4all.nl>
-From:   Hector Martin <marcan@marcan.st>
-In-Reply-To: <d3cb7b3782b16029@bloch.sibelius.xs4all.nl>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021/12/30 1:42, Mark Kettenis wrote:
->> From: Hector Martin <marcan@marcan.st>
->> Cc: Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
->>         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
->>         Mark Kettenis <kettenis@openbsd.org>,
->>         Rafał Miłecki <zajec5@gmail.com>,
->>         Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
->>         Linus Walleij <linus.walleij@linaro.org>,
->>         Hans de Goede <hdegoede@redhat.com>,
->>         "John W. Linville" <linville@tuxdriver.com>,
->>         "Daniel (Deognyoun) Kim" <dekim@broadcom.com>,
->>         "brian m. carlson" <sandals@crustytoothpaste.net>,
->>         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
->>         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
->>         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
->>         SHA-cyfmac-dev-list@infineon.com
->> Date: Mon, 27 Dec 2021 00:35:51 +0900
->>
->> This binding is currently used for SDIO devices, but these chips are
->> also used as PCIe devices on DT platforms and may be represented in the
->> DT. Re-use the existing binding and add chip compatibles used by Apple
->> T2 and M1 platforms (the T2 ones are not known to be used in DT
->> platforms, but we might as well document them).
->>
->> Then, add properties required for firmware selection and calibration on
->> M1 machines.
->>
->> Signed-off-by: Hector Martin <marcan@marcan.st>
->> ---
->>  .../net/wireless/brcm,bcm4329-fmac.yaml       | 32 +++++++++++++++++--
->>  1 file changed, 29 insertions(+), 3 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
->> index c11f23b20c4c..2530ff3e7b90 100644
->> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
->> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
->> @@ -4,7 +4,7 @@
->>  $id: http://devicetree.org/schemas/net/wireless/brcm,bcm4329-fmac.yaml#
->>  $schema: http://devicetree.org/meta-schemas/core.yaml#
->>  
->> -title: Broadcom BCM4329 family fullmac wireless SDIO devices
->> +title: Broadcom BCM4329 family fullmac wireless SDIO/PCIE devices
->>  
->>  maintainers:
->>    - Arend van Spriel <arend@broadcom.com>
->> @@ -36,16 +36,22 @@ properties:
->>                - brcm,bcm43455-fmac
->>                - brcm,bcm43456-fmac
->>                - brcm,bcm4354-fmac
->> +              - brcm,bcm4355c1-fmac
->>                - brcm,bcm4356-fmac
->>                - brcm,bcm4359-fmac
->> +              - brcm,bcm4364b2-fmac
->> +              - brcm,bcm4364b3-fmac
->> +              - brcm,bcm4377b3-fmac
->> +              - brcm,bcm4378b1-fmac
->> +              - brcm,bcm4387c2-fmac
->>                - cypress,cyw4373-fmac
->>                - cypress,cyw43012-fmac
->>            - const: brcm,bcm4329-fmac
->>        - const: brcm,bcm4329-fmac
+Ajay,
+
+On Thu, 2021-12-30 at 16:24 +0000, Ajay.Kathat@microchip.com wrote:
+> On 24/12/21 23:08, David Mosberger-Tang wrote:
+> > On Fri, 2021-12-24 at 16:20 +0000, Ajay.Kathat@microchip.com wrote:
+> > > On 23/12/21 22:38, David Mosberger-Tang wrote:
+> > > > First, on a freshly booted system and with wilc1000-spi autoloaded by
+> > > > the kernel, try this sequence (copy & paste the commands):
+> > > > 
+> > > >     /usr/sbin/wpa_supplicant -Bs -iwlan0 -c/etc/wpa_supplicant.conf
+> > > >     sleep 10
+> > > >     iw dev wlan0 set power_save on
+> > > > 
+> > > > The above yields a power consumption of 1.4W reliably.  The "sleep 10"
+> > > > doesn't matter here; the behavior is the same with or without it.  I
+> > > > tried waiting up to 120 seconds with no difference.
+> > > 
+> > > I have tested by making the WILC as build-in module to insert driver
+> > > automatically at boot-up. I hope it should be fine. Because I have
+> > > already tested as loadable module earlier.
+> > > 
+> > > Below are the number observed
+> > > ------------------------------ --------------------------
+> > > - before starting wpa_supplicant             : ~16.3 mA
+> > > - wpa_supplicant started                         : ~40 mA
+> > > - PSM on                                                  :  ~6 mA
+> > > 
+> > > 
+> > > The 'sleep 10' would have no impact in my setup because I have measured
+> > > the current consumption for wilc1000 chip.
+> > > 
+> > > I have shared the screenshot at https://postimg.cc/67S41dkb
+> > 
+> > Huh, that's curious.  I definitely cannot reproduce this.  To match
+> > your setup as closely as possibly, I also built wilc1000-spi into the
+> > kernel, but that makes no difference (as expected).
+> > 
+> > What kernel version are you on?  I switched to wireless-drivers-next as
+> > of today (latest commit d430dffbe9dd30759f3c64b65bf85b0245c8d8ab).
 > 
-> I suppose this helps with validation of device trees.  However, nodes
-> for PCI devices are not supposed to have a "compatible" property as
-> the PCI vendor and device IDs are supposed to be used to identify a
-> device.
+> I have tested with 5.10 as well as with 5.16-rc1(commit#
+> fa55b7dcdc43). I don't think WILC1000 chip PS gets affected because
+> of a specific kernel version. 
 > 
-> That does raise the question how a schema for additional properties
-> for PCI device nodes is supposed to be defined...
+> > With this kernel, the numbers are about 100mW lower than reported
+> > before, but the relative behavior is the same: about 300mW higher
+> > power-consumption when PSM is not taking effect properly.
+> > 
+> > To recap, back with wilc1000-spi being a module again, after freshly
+> > booting the system and issuing this commands:
+> > 
+> >    /usr/sbin/wpa_supplicant -Bs -iwlan0 -c/etc/wpa_supplicant.conf
+> >    /usr/sbin/iw dev wlan0 set power_save on
+> > 
+> > I see a power-consumption of about 1.25W.  PSM on/off makes no
+> > difference in this state.  Then, if I issue the commands:
+> > 
+> > rmmod wilc1000-spi
+> > modprobe wilc1000-spi
+> > sleep 10
+> > iw dev wlan0 set power_save on
+> > 
+> > power-consumption drops to about 0.9W.
+> > 
+> > Here is a screenshot that shows the annotated power-measurements:
+> > 
+> >    https://postimg.cc/3dbKSGht
+> > 
+> > Apart from kernel version, the only things that I can think of that'd
+> > be different is that we don't have the ENABLE pin wired to a GPIO.
+> >  Instead, the chip is always enabled.  I doubt this would explain the
+> > difference (~RESET is wired to a GPIO).
+> 
+> When PS mode is enabled, the host can wake-up the chip, if there is
+> some data to transfer. Just check, if there is any network
+> application trying to access WILC (send continuous data) in your
+> setup.
 
-Apparently using a "pciVVVV,DDDD" compatible is one way, see
-bindings/net/wireless/qca,ath9k.yaml
+That shouldn't be an issue.  To confirm, in the output below, I
+included the ifconfig stats so you can see that there is virtually no
+traffic during the measurement periods.
 
-There's apparently exactly one example of this in in-tree devicetrees:
-boot/dts/rockchip/rk3399-gru-chromebook.dtsi
+>  Also, you have mentioned that removing the module(without killing
+> the wpa_supplicant) worked so I guess, it might be possible that the
+> application got interrupted when the module was removed and didn't
+> start when the module was inserted again. 
 
-I guess this is the way to go then, unless Rob has a different idea :)
+There are no applications running on the system at all.  I tested the
+two command sequences in the exact same setup, with everything that
+normally runs on our system disabled.  CPU utilization is basically 0%.
 
--- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+> Try disabling CONFIG_CFG80211_DEFAULT_PS config to check if it has any impact.
+
+I already had CONFIG_CFG80211_DEFAULT_PS disabled.  It makes no
+difference, except that with CONFIG_CFG80211_DEFAULT_PS enabled, you
+have to issue "power_save off" before "power_save on" to get PSM to
+take effect since cfg80211 thinks power-save is already enabled when
+it's not.
+
+To mirror your setup more closely, I installed a 1 ohm shunt resistor
+on the 3.3V supply to the WILC1000 so I can measure current draw of the
+WILC1000 alone.  This is just for paranoia's sake to make sure there is
+nothing wonky going on outside of the WILC1000 (there is not).  So the
+current draws mentioned below are at 3.3V and DC average measures
+across 1 minute.
+
+First test command sequence (power saving fails to take effect):
+
+   ------------------------------------------------------------------
+   REBOOT SYSTEM
+   # ifconfig wlan0 | tail -5
+             RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+             TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+             collisions:0 txqueuelen:1000
+             RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+   # /usr/sbin/wpa_supplicant -Bs -iwlan0 -c/etc/wpa_supplicant.conf
+   # iw dev wlan0 set power_save on
+   # sleep 60
+   # ifconfig wlan0 | tail -5
+             RX packets:51 errors:0 dropped:0 overruns:0 frame:0
+             TX packets:37 errors:0 dropped:0 overruns:0 carrier:0
+             collisions:0 txqueuelen:1000
+             RX bytes:5980 (5.8 KiB)  TX bytes:5425 (5.2 KiB)
+   ------------------------------------------------------------------
+
+with the above command sequence, current-draw remains pretty much
+constant at 76mA.
+
+
+Second test command sequence (power saving successfully takes effect):
+
+   ------------------------------------------------------------------
+   REBOOT SYSTEM
+   # ifconfig wlan0 | tail -5
+             RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+             TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+             collisions:0 txqueuelen:1000
+             RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+   # /usr/sbin/wpa_supplicant -Bs -iwlan0 -c/etc/wpa_supplicant.conf
+   # sleep 15
+   # iw dev wlan0 set power_save on
+   # sleep 60
+   # ifconfig wlan0 | tail -5
+             RX packets:41 errors:0 dropped:0 overruns:0 frame:0
+             TX packets:34 errors:0 dropped:0 overruns:0 carrier:0
+             collisions:0 txqueuelen:1000
+             RX bytes:5007 (4.8 KiB)  TX bytes:5436 (5.3 KiB)
+   ------------------------------------------------------------------
+
+with the above command sequence, current-draw fluctuates quite a bit,
+but averages to somewhere around 15mA.
+
+The exact amount of time needed between starting wpa_supplicant and
+issuing the PSM on command fluctuates a bit.  Sometimes 9 seconds is
+enough, but oftentimes a pause of 10-15 seconds is required.
+
+A screenshot of the current draw for this command sequence is graphed
+here:
+
+  https://postimg.cc/bZc1v0jR
+
+Oh, and just at the off-chance that the association details matters:
+
+      # wpa_cli status
+      Selected interface 'wlan0'
+      bssid=d8:07:b6:af:4b:e4
+      freq=2442
+      ssid=MOSTANG
+      id=0
+      mode=station
+      pairwise_cipher=CCMP
+      group_cipher=CCMP
+      key_mgmt=WPA2-PSK
+      wpa_state=COMPLETED
+      p2p_device_address=f8:f0:05:62:76:48
+      address=f8:f0:05:62:76:48
+      uuid=22b21bb3-ec5a-5038-aa7f-911a2b012173
+
+  --david
+
