@@ -2,98 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C77804844B5
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 16:34:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37E814844F1
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 16:44:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233572AbiADPeM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jan 2022 10:34:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41440 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231406AbiADPeM (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jan 2022 10:34:12 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF241C061761;
-        Tue,  4 Jan 2022 07:34:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=m+xMehLESnZE+MHCEBfhc+Ab4EEeMmNaYRMbaBZFbxM=; t=1641310451; x=1642520051; 
-        b=sPbv/qkKs3+tCkwTdF0cu+xMS1iS7Szv3cRjym0Zr15Pf2NRvChZxiTBnt3SVxxApEr3BajBY6y
-        PzOJp6Nbnid0dLlv6cbrX8JAA4k24dFReK+hTHeOGfNrPTH5lIcdk7ZOEwT8kZfm8PeMGlYpA/J3o
-        qgGt9xnNLVTXnN/hXQU6M60RmUs3G7rlAtPZzQPkGBZwJZHcLw6rs3ExqzQhwkDuP3+Qum/P3HjaL
-        5iQeQQV5+32i/2MhAfUMn1nBJspUiM7K89kUEP2ukcfOYrmSXN2nAQU7hGj8My5NoI2tChGeVngfV
-        dzXZdgWLZHZHtAbgOIyWik+cGYvwD+4CzINQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1n4lpC-001noH-3I;
-        Tue, 04 Jan 2022 16:34:10 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211-next 2022-01-04
-Date:   Tue,  4 Jan 2022 16:34:02 +0100
-Message-Id: <20220104153403.69749-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.33.1
+        id S233891AbiADPoA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jan 2022 10:44:00 -0500
+Received: from mga02.intel.com ([134.134.136.20]:10197 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232505AbiADPn6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 4 Jan 2022 10:43:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1641311038; x=1672847038;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=22y9EjrBRaMVy/mz9REdCI0A1LxLuq5BPOq8HpG1+gg=;
+  b=UnovQSwallIVIqbAQyjb9NCARDilaA1Ue7nDtEe8kXT723v2h7NU6tzj
+   LD6SUjbvz3nozkJw8+lesaECkScGnd3tq1MXNUhS6ph/dAAdDj9SGhGDW
+   t9O1lZy5P95H2zSPB49Cg2C+Q5W4gojbfFrRI+7YvtubgVf3LL17XC36p
+   iRNu6nngL5TFQCIXF/T+2ah1UzGqBz3z9U3LSSr/hy1MHXgIHwiXKsXYk
+   5KYL4R3+5otT7W3IRllPUq6NF+Cxf78guqRC8FDxs0dMLx8dPHYp6PXL/
+   QGseiTvWtgDcIgNUhUWJTKsqAffWp71R3vWF4Ng/dugEYwryWUUfNtkUd
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10216"; a="229559359"
+X-IronPort-AV: E=Sophos;i="5.88,261,1635231600"; 
+   d="scan'208";a="229559359"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2022 07:43:58 -0800
+X-IronPort-AV: E=Sophos;i="5.88,261,1635231600"; 
+   d="scan'208";a="688600650"
+Received: from smile.fi.intel.com ([10.237.72.61])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2022 07:43:52 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1n4lxK-006GMj-Qz;
+        Tue, 04 Jan 2022 17:42:34 +0200
+Date:   Tue, 4 Jan 2022 17:42:34 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jakub Kicinski <kuba@kernel.org>, mingo@kernel.org
+Cc:     Florian Fainelli <f.fainelli@gmail.com>, ast@kernel.org,
+        daniel@iogearbox.net, bpf@vger.kernel.org, netdev@vger.kernel.org,
+        linux-bluetooth@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-can@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+        linux-hams@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, linux-nfs@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, bridge@lists.linux-foundation.org,
+        linux-decnet-user@lists.sourceforge.net,
+        linux-s390@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH bpf-next v2] net: don't include filter.h from net/sock.h
+Message-ID: <YdRq6vKceOqscaKK@smile.fi.intel.com>
+References: <20211229004913.513372-1-kuba@kernel.org>
+ <5a82690c-7dc0-81de-4dd6-06e26e4b9b92@gmail.com>
+ <20211229092012.635e9f2b@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211229092012.635e9f2b@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Wed, Dec 29, 2021 at 09:20:12AM -0800, Jakub Kicinski wrote:
+> On Tue, 28 Dec 2021 17:33:39 -0800 Florian Fainelli wrote:
+> > It would be nice if we used the number of files rebuilt because of a 
+> > header file change as another metric that the kernel is evaluated with 
+> > from release to release (or even on a commit by commit basis). Food for 
+> > thought.
+> 
+> Maybe Andy has some thoughts, he has been working on dropping
+> unnecessary includes of kernel.h, it seems.
 
-And a couple of more patches for -next... I have more, but most
-of those are related to EHT (WiFi 7) and so not really relevant
-in the short term - not going to send them this time around, as
-I still need to review anyway.
+With this [1] announcement I believe Ingo is the best to tell you if this is a
+right direction.
 
-Please pull and let me know if there's any problem.
+> It'd be cool to plug something that'd warn us about significant
+> increases in dependencies into the patchwork build bot.
+> 
+> I have one more small series which un-includes uapi/bpf.h from
+> netdevice.h at which point I hope we'll be largely in the clear 
+> from build bot performance perspective.
 
-Thanks,
-johannes
+[1]: https://lore.kernel.org/lkml/YdIfz+LMewetSaEB@gmail.com/T/#u
 
+-- 
+With Best Regards,
+Andy Shevchenko
 
-
-The following changes since commit 416b27439df9ecb36b03da63dc37a8840b6f2efe:
-
-  ethernet/sfc: remove redundant rc variable (2022-01-04 12:41:41 +0000)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-net-next-2022-01-04
-
-for you to fetch changes up to b3c1906ed02ad2b9f4db2f652cb7ea7b333963e5:
-
-  mac80211: use ieee80211_bss_get_elem() (2022-01-04 15:50:36 +0100)
-
-----------------------------------------------------------------
-Just a few more changes:
- * mac80211: allow non-standard VHT MCSes 10/11
- * mac80211: add sleepable station iterator for drivers
- * nl80211: clarify a comment
- * mac80211: small cleanup to use typed element helpers
-
-----------------------------------------------------------------
-Felix Fietkau (1):
-      nl80211: clarify comment for mesh PLINK_BLOCKED state
-
-Johannes Berg (1):
-      mac80211: use ieee80211_bss_get_elem()
-
-Martin Blumenstingl (1):
-      mac80211: Add stations iterator where the iterator function may sleep
-
-Ping-Ke Shih (1):
-      mac80211: allow non-standard VHT MCS-10/11
-
- include/net/mac80211.h       | 21 +++++++++++++++++++++
- include/uapi/linux/nl80211.h |  2 +-
- net/mac80211/mlme.c          | 14 +++++++-------
- net/mac80211/rx.c            |  2 +-
- net/mac80211/util.c          | 13 +++++++++++++
- 5 files changed, 43 insertions(+), 9 deletions(-)
 
