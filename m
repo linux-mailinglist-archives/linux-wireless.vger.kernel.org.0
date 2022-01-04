@@ -2,172 +2,224 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4127C483E8D
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 09:58:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC20E483FC0
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 11:21:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229584AbiADI6A convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jan 2022 03:58:00 -0500
-Received: from relay4-d.mail.gandi.net ([217.70.183.196]:56207 "EHLO
-        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbiADI6A (ORCPT
+        id S231262AbiADKVf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jan 2022 05:21:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53224 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231200AbiADKVe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jan 2022 03:58:00 -0500
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 22E05E000C;
-        Tue,  4 Jan 2022 08:57:57 +0000 (UTC)
-Date:   Tue, 4 Jan 2022 09:57:55 +0100
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     linux-mtd@lists.infradead.org,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Cai Huoqing <caihuoqing@baidu.com>,
-        Colin Ian King <colin.king@intel.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:BROADCOM SPECIFIC AMBA DRIVER (BCMA)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:BROADCOM STB NAND FLASH DRIVER" 
-        <bcm-kernel-feedback-list@broadcom.com>
-Subject: Re: [PATCH 1/9] mtd: rawnand: brcmnand: Allow SoC to provide I/O
- operations
-Message-ID: <20220104095755.46858287@xps13>
-In-Reply-To: <20220104093221.6414aab9@xps13>
-References: <20211223002225.3738385-1-f.fainelli@gmail.com>
-        <20211223002225.3738385-2-f.fainelli@gmail.com>
-        <20220103174953.40d7fa52@xps13>
-        <299bf6ed-80e6-ad15-8dc7-5ededaca15c5@gmail.com>
-        <20220104093221.6414aab9@xps13>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Tue, 4 Jan 2022 05:21:34 -0500
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8A0FC061761
+        for <linux-wireless@vger.kernel.org>; Tue,  4 Jan 2022 02:21:34 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id o63-20020a17090a0a4500b001b1c2db8145so40363273pjo.5
+        for <linux-wireless@vger.kernel.org>; Tue, 04 Jan 2022 02:21:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=message-id:date:mime-version:user-agent:subject:to:cc:references
+         :from:in-reply-to;
+        bh=pJ0sezsEhEJYSb+dYPbla2feFSKb/OPTZcqJz58vYoo=;
+        b=MkHRaVyXE+cJI1qfnV56kpEO/0guSlks29jyqyM8plcTi9MnFQp94Ohk4rTRBfxd0C
+         A7EOo5IBAjwrYZXr297z+I1os2/pJzmgYlZPIul8fKnRhvxlQ2x6dVxorcAPEooRptX9
+         QhyjqQlrDQtT3TWIPJ44KFKz18Hy4HCPA1OF0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :to:cc:references:from:in-reply-to;
+        bh=pJ0sezsEhEJYSb+dYPbla2feFSKb/OPTZcqJz58vYoo=;
+        b=15OZ2kkvwSzzDF2MLXaNYjBAhYdAAmwz7DJx8GI8DK9G8WRscgUBYPtFQiyjOC/hy0
+         sCx3qbJwRjks46afqKfq5giqAkY03rARtDQET9s6xiWjKfBx1qEALPLOM5umvlufHpkd
+         kgJFx/gvXo/JWpyC6fxeKPltWwDycNNGqFkgEeaQ5uNbVG+CHLtJ7HWSmyL5fnSXj3tE
+         fookTK4W1FB21CMzrdah4w7ooMmopLI6uadm0PUZ73YPl2nkjxISu0I0PsiGXo9KtIb8
+         X2yF5K1XRShQOixTcfBJawPXCnuXUwFCi6kPYwseCF/AIj0TOLI1TcRKHhAj+OHlN5EG
+         4T/Q==
+X-Gm-Message-State: AOAM533KTbI8d7PzN4nmdf+3XSV/M8wknaqrTcCLyQ9QtN/K6QWfPERt
+        CYyCBiqUiUj8KIvCajUOk6TgUg==
+X-Google-Smtp-Source: ABdhPJxt6OBthtvvZrLi+n+/1plQapFxmWrH4JXTjsSi2R+JGB6b5nzVoeHEvKC19iRBP2wNlW/OHw==
+X-Received: by 2002:a17:903:183:b0:149:2b6:65ff with SMTP id z3-20020a170903018300b0014902b665ffmr48440359plg.128.1641291694198;
+        Tue, 04 Jan 2022 02:21:34 -0800 (PST)
+Received: from [192.168.178.242] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id h7sm42646573pfc.152.2022.01.04.02.21.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Jan 2022 02:21:33 -0800 (PST)
+Message-ID: <a50d7d46-9298-3d4b-049d-4b3360c6efa7@broadcom.com>
+Date:   Tue, 4 Jan 2022 11:21:24 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v2 16/35] brcmfmac: acpi: Add support for fetching Apple
+ ACPI properties
+To:     Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>
+Cc:     Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220104072658.69756-1-marcan@marcan.st>
+ <20220104072658.69756-17-marcan@marcan.st>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <20220104072658.69756-17-marcan@marcan.st>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="0000000000006d7f9805d4bf008e"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Miquel,
+--0000000000006d7f9805d4bf008e
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-miquel.raynal@bootlin.com wrote on Tue, 4 Jan 2022 09:32:21 +0100:
-
-> Hi Florian,
+On 1/4/2022 8:26 AM, Hector Martin wrote:
+> On DT platforms, the module-instance and antenna-sku-info properties
+> are passed in the DT. On ACPI platforms, module-instance is passed via
+> the analogous Apple device property mechanism, while the antenna SKU
+> info is instead obtained via an ACPI method that grabs it from
+> non-volatile storage.
 > 
-> f.fainelli@gmail.com wrote on Mon, 3 Jan 2022 09:24:26 -0800:
+> Add support for this, to allow proper firmware selection on Apple
+> platforms.
 > 
-> > On 1/3/2022 8:49 AM, Miquel Raynal wrote:  
-> > > Hi Florian,
-> > > 
-> > > f.fainelli@gmail.com wrote on Wed, 22 Dec 2021 16:22:17 -0800:
-> > >     
-> > >> Allow a brcmnand_soc instance to provide a custom set of I/O operations
-> > >> which we will require when using this driver on a BCMA bus which is not
-> > >> directly memory mapped I/O. Update the nand_{read,write}_reg accordingly
-> > >> to use the SoC operations if provided.
-> > >>
-> > >> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-> > >> ---
-> > >>   drivers/mtd/nand/raw/brcmnand/brcmnand.c | 14 ++++++++++++--
-> > >>   drivers/mtd/nand/raw/brcmnand/brcmnand.h | 23 +++++++++++++++++++++++
-> > >>   2 files changed, 35 insertions(+), 2 deletions(-)
-> > >>
-> > >> diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-> > >> index f75929783b94..7a1673b1b1af 100644
-> > >> --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-> > >> +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-> > >> @@ -594,13 +594,18 @@ enum {    
-> > >>   >>   static inline u32 nand_readreg(struct brcmnand_controller *ctrl, u32 offs)    
-> > >>   {
-> > >> +	if (brcmnand_soc_has_ops(ctrl->soc))
-> > >> +		return brcmnand_soc_read(ctrl->soc, offs);
-> > >>   	return brcmnand_readl(ctrl->nand_base + offs);
-> > >>   }    
-> > >>   >>   static inline void nand_writereg(struct brcmnand_controller *ctrl, u32 offs,    
-> > >>   				 u32 val)
-> > >>   {
-> > >> -	brcmnand_writel(val, ctrl->nand_base + offs);
-> > >> +	if (brcmnand_soc_has_ops(ctrl->soc))
-> > >> +		brcmnand_soc_write(ctrl->soc, val, offs);
-> > >> +	else
-> > >> +		brcmnand_writel(val, ctrl->nand_base + offs);
-> > >>   }    
-> > >>   >>   static int brcmnand_revision_init(struct brcmnand_controller *ctrl)    
-> > >> @@ -766,13 +771,18 @@ static inline void brcmnand_rmw_reg(struct brcmnand_controller *ctrl,    
-> > >>   >>   static inline u32 brcmnand_read_fc(struct brcmnand_controller *ctrl, int word)    
-> > >>   {
-> > >> +	if (brcmnand_soc_has_ops(ctrl->soc))
-> > >> +		return brcmnand_soc_read(ctrl->soc, ~0);
-> > >>   	return __raw_readl(ctrl->nand_fc + word * 4);
-> > >>   }    
-> > >>   >>   static inline void brcmnand_write_fc(struct brcmnand_controller *ctrl,    
-> > >>   				     int word, u32 val)
-> > >>   {
-> > >> -	__raw_writel(val, ctrl->nand_fc + word * 4);
-> > >> +	if (brcmnand_soc_has_ops(ctrl->soc))
-> > >> +		brcmnand_soc_write(ctrl->soc, val, ~0);
-> > >> +	else
-> > >> +		__raw_writel(val, ctrl->nand_fc + word * 4);
-> > >>   }    
-> > >>   >>   static inline void edu_writel(struct brcmnand_controller *ctrl,    
-> > >> diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.h b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
-> > >> index eb498fbe505e..a3f2ad5f6572 100644
-> > >> --- a/drivers/mtd/nand/raw/brcmnand/brcmnand.h
-> > >> +++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.h
-> > >> @@ -11,12 +11,19 @@    
-> > >>   >>   struct platform_device;    
-> > >>   struct dev_pm_ops;
-> > >> +struct brcmnand_io_ops;    
-> > >>   >>   struct brcmnand_soc {    
-> > >>   	bool (*ctlrdy_ack)(struct brcmnand_soc *soc);
-> > >>   	void (*ctlrdy_set_enabled)(struct brcmnand_soc *soc, bool en);
-> > >>   	void (*prepare_data_bus)(struct brcmnand_soc *soc, bool prepare,
-> > >>   				 bool is_param);
-> > >> +	const struct brcmnand_io_ops *ops;
-> > >> +};
-> > >> +
-> > >> +struct brcmnand_io_ops {
-> > >> +	u32 (*read_reg)(struct brcmnand_soc *soc, u32 offset);
-> > >> +	void (*write_reg)(struct brcmnand_soc *soc, u32 val, u32 offset);
-> > >>   };    
-> > >>   >>   static inline void brcmnand_soc_data_bus_prepare(struct brcmnand_soc *soc,    
-> > >> @@ -58,6 +65,22 @@ static inline void brcmnand_writel(u32 val, void __iomem *addr)
-> > >>   		writel_relaxed(val, addr);
-> > >>   }    
-> > >>   >> +static inline bool brcmnand_soc_has_ops(struct brcmnand_soc *soc)    
-> > >> +{
-> > >> +	return soc && soc->ops && soc->ops->read_reg && soc->ops->write_reg;
-> > >> +}
-> > >> +
-> > >> +static inline u32 brcmnand_soc_read(struct brcmnand_soc *soc, u32 offset)
-> > >> +{
-> > >> +	return soc->ops->read_reg(soc, offset);
-> > >> +}
-> > >> +
-> > >> +static inline void brcmnand_soc_write(struct brcmnand_soc *soc, u32 val,
-> > >> +				      u32 offset)
-> > >> +{
-> > >> +	soc->ops->write_reg(soc, val, offset);
-> > >> +}
-> > >> +    
-> > > 
-> > > It might be worth looking into more optimized ways to do these checks,
-> > > in particular the read/write_reg ones because you're checking against
-> > > some static data which cannot be optimized out by the compiler but
-> > > won't change in the lifetime of the kernel.    
-> > 
-> > I suppose I could add an addition if IS_ENABLED(CONFIG_MTD_NAND_BRCMNAND_BCMA) at the front of brcmnand_soc_has_ops(), would that address your concern or you have something else in mind?  
+> Signed-off-by: Hector Martin <marcan@marcan.st>
+> ---
+>   .../broadcom/brcm80211/brcmfmac/Makefile      |  2 +
+>   .../broadcom/brcm80211/brcmfmac/acpi.c        | 47 +++++++++++++++++++
+>   .../broadcom/brcm80211/brcmfmac/common.c      |  1 +
+>   .../broadcom/brcm80211/brcmfmac/common.h      |  9 ++++
+>   4 files changed, 59 insertions(+)
+>   create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
 > 
-> I don't like much the #ifdef solution, instead you might think of
-> static keys, or even better using a regmap. Regmap implementation is
-> free, you can use either one way or the other and for almost no
-> overhead compared to the bunch of functions you have here.
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Makefile b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Makefile
+> index 13c13504a6e8..19009eb9db93 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Makefile
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Makefile
+> @@ -47,3 +47,5 @@ brcmfmac-$(CONFIG_OF) += \
+>   		of.o
+>   brcmfmac-$(CONFIG_DMI) += \
+>   		dmi.o
+> +brcmfmac-$(CONFIG_ACPI) += \
+> +		acpi.o
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
+> new file mode 100644
+> index 000000000000..2b1a4448b291
+> --- /dev/null
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
+> @@ -0,0 +1,47 @@
+> +// SPDX-License-Identifier: ISC
+> +/*
+> + * Copyright The Asahi Linux Contributors
+> + */
 
-Maybe regmaps will actually be slower than these regular if's. Perhaps
-static keys are the best option?
+Common format for copyright statement (in this folder) seems to be:
 
-Cheers,
-Miquèl
+Copyright (c) <YEAR> <COPYRIGHT_HOLDER>
+
+Regards,
+Arend
+
+--0000000000006d7f9805d4bf008e
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
+yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
+0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
+NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
+FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
+aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
+OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
+UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAICMxJ8gqwRoi8GQ7r
+ZEYbotw57lRNVZ96qg6AdVkf5jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMDQxMDIxMzRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEALKn+kwb2MtKuky6rIv9kcAdMtDzFv19BBFY9
+OEU82Xy3xxrSpnt03LbopcYbXWvjJThqIlWhZnheCtAaX6Uv6828jcAEMDg+4IIf848EOinIo2Rh
+fJYmLCcXg41qsMPlhxG1r8qm22HWsKwitjhRARKXgMEiM14jPlwpsGTqJooGw2vO4Tdwsb/x8bQc
+6U8sVE1eQtmWGtY/CKl60RLC2lDhy90JmYi9mEPfycj5DQTuZi2gmnE+JmROQlY1h899gchxfJHx
+W0EPqonfA1jjs5fnmjytEamHs0S/km9OT/ObhgZMaL2faQrBJ4Ng/Av4vjIeGmosf46noUynKBKe
+gQ==
+--0000000000006d7f9805d4bf008e--
