@@ -2,53 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A573484A79
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 23:09:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25493484ACC
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 23:37:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235244AbiADWJy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jan 2022 17:09:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48060 "EHLO
+        id S235587AbiADWhA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jan 2022 17:37:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231725AbiADWJw (ORCPT
+        with ESMTP id S231766AbiADWhA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jan 2022 17:09:52 -0500
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC23AC061761;
-        Tue,  4 Jan 2022 14:09:51 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id k21so84827972lfu.0;
-        Tue, 04 Jan 2022 14:09:51 -0800 (PST)
+        Tue, 4 Jan 2022 17:37:00 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 941EEC061761;
+        Tue,  4 Jan 2022 14:36:59 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id j11so83130597lfg.3;
+        Tue, 04 Jan 2022 14:36:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=J+tOL9aMBTynfbO5F5IU1d3i5H7vwKI9tttVAfJxxGo=;
-        b=aS5gsRuJvKrVBvBjl/Qv/73+UDYrsukVayLyAFFOTjh2wUnczIUFg74tLFKjdTJfwB
-         NS/KZDlQDwovNy6XOSuAR78XSWkLRk3REZu0ij+7yHv7svkVMuLBsFLGz6StWpU+mR7u
-         1FVMTYxfdUo/w6ayUpQFW49HF/a7RCw3PqL+NIBzx5j+t1GP+WxsvFpzj9K4sRBq2Xvz
-         QKsgHULpYQHouP+gyBJgF4n/8UtfD52kL/00MaQzEHSerZ60+9Lnf8+h6lPR6EuFhT3L
-         DVjvsXXlM/IZmWKwQvYWQsMg78FPo7ORO+JsfCjUhqPIUN8RHMGS4Q4vawxQ6g7zHwmv
-         at5w==
+        bh=SWHLs1+8AGixFefgPwIBMLydHGeV8v/ZsUKViQpOe0k=;
+        b=fp08NDVwBLUGh/tTWFkzbHYwHcvO3Em/Uo+0CEYx7y02tQ61mmn5ZIgnU5yVJCNb3h
+         N/fW6sXdeG4L4OYJLjTEkWmYU8qsvp12gNH6RvACmLhtpnADYOkx/OQBitWjKPebQhIU
+         tJHk8vJEvO/W4IuaGhJujM7jdCM4E8M+gnk23wjKNvULatcg7lh9lJ6WzO8DCAyre9Z+
+         t59N1LeffI4Py1MUL50Ctb6pTLRUcrGnAvJAlhrRrTAYXnstNJLoPn/cyHPSqc5yn4Lo
+         MV7k/OhfUPXDT9PB2GjbRXxt9GQmulBy7pRZAJlFaeEHPzzantkqTVNaDKcQG16DUKXf
+         QMlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=J+tOL9aMBTynfbO5F5IU1d3i5H7vwKI9tttVAfJxxGo=;
-        b=qCKoqU+16a3wuAKcm5XcMmpApH8tLFvTLvXJaY+Xt4L6sTnQSNVEiw/mFrC8gPem4o
-         Dpfb7C69f47cyS/QtcDT/yUBdEeNeaWjQb8OE2N9yvHKpMlNBXfdcolpRxIPadlx4cPQ
-         FmMHSwh7mUTqUk+dOHRD+aMRQMvV8Mxo8++CjmnRSl4aGv/8nGyT2V6Yc/GwBl0sRfp3
-         K1lFe8Ca65xfUrkbtM1vg6ePAwvjD4dc0rDhITkt782EOHSAlisf9NzXuC2gWA2be47X
-         bsvlNG8F66TWEiBToAQs+RYsoxYfXp4Z3cJ45LO23J1DhZTPkKDkT7v+f6vgTLtXl0vV
-         GM3w==
-X-Gm-Message-State: AOAM533hfGnPyqgMHX4lRd3QH/a3KX7AFe/1ofJpixdR1hwX4KR6OQ+l
-        +3WTsQ/bU1ZlHOqZ9E7Rahc=
-X-Google-Smtp-Source: ABdhPJwJjIwEF+zefQ2eGIPjV+eC1WWmcKPEqDAXegj0HkQephGbAVfsgOqZwbildelu2ACZAt/Yvw==
-X-Received: by 2002:a05:6512:3d8b:: with SMTP id k11mr44058704lfv.212.1641334190236;
-        Tue, 04 Jan 2022 14:09:50 -0800 (PST)
+        bh=SWHLs1+8AGixFefgPwIBMLydHGeV8v/ZsUKViQpOe0k=;
+        b=FkQusJrPKhbnS62orerLG5hWiW9UTq6xsHYSNmMF7VZzxvxL8hh8T8qfRyl9k0S/RK
+         9GVtnCFxE8rDLJmHS9v5ZenIPkpjpqXnQievA1z9SB69NFmLm3WhNzppdmQ4Jv0JUc7q
+         f80glahOKUspUziALRAcEb0ZQ/3XB/cWHmbVCROrIOZz+g9BiTQDozD2Njgq6Sz9MqQb
+         rnHrl+rbhn1WAsbGJv0o+sUFC4CK3rXRJ8+/yzXTAIP/pmqRWjK7oqKIjG+aNwWj+8ao
+         4Aa0+242Z3UwOJOd6tXjesHiobmqvRSX43YQQpdTEl6OExUpnECKiN4OOqgUVXqH1wHF
+         CwOA==
+X-Gm-Message-State: AOAM532QrNueufbdIzQ+VTg65IWVjVowg6v9/Z5Tg7opyobQsioo4nWR
+        jYyTatfi2pDaDxewRW5YzyY=
+X-Google-Smtp-Source: ABdhPJxx7opaGXu++2IUwz15ROp0urc/sjDfTDL2SUbki0cQbhAv0CuIMwM1BgLpbLWLIqnKSDsYlw==
+X-Received: by 2002:a05:6512:2294:: with SMTP id f20mr41539763lfu.546.1641335817926;
+        Tue, 04 Jan 2022 14:36:57 -0800 (PST)
 Received: from [192.168.2.145] (46-138-43-24.dynamic.spd-mgts.ru. [46.138.43.24])
-        by smtp.googlemail.com with ESMTPSA id t16sm3593004ljk.28.2022.01.04.14.09.46
+        by smtp.googlemail.com with ESMTPSA id k8sm4014966lfv.71.2022.01.04.14.36.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Jan 2022 14:09:49 -0800 (PST)
+        Tue, 04 Jan 2022 14:36:57 -0800 (PST)
 Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt
  paths
 To:     Hector Martin <marcan@marcan.st>,
@@ -82,8 +82,8 @@ References: <20220104072658.69756-1-marcan@marcan.st>
  <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com>
  <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
 From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <8394dbcd-f500-b1ae-fcd8-15485d8c0888@gmail.com>
-Date:   Wed, 5 Jan 2022 01:09:45 +0300
+Message-ID: <d03c0125-0252-d6f0-2db1-7fccd1394dca@gmail.com>
+Date:   Wed, 5 Jan 2022 01:36:55 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
 MIME-Version: 1.0
@@ -96,66 +96,15 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 04.01.2022 11:43, Hector Martin пишет:
->>> +static int brcm_alt_fw_paths(const char *path, const char *board_type,
->>> +			     const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS])>  {
->>>  	char alt_path[BRCMF_FW_NAME_LEN];
->>>  	const char *suffix;
->>>  
->>> +	memset(alt_paths, 0, array_size(sizeof(*alt_paths),
->>> +					BRCMF_FW_MAX_ALT_PATHS));
->> You don't need to use array_size() since size of a fixed array is
->> already known.
->>
->> memset(alt_paths, 0, sizeof(alt_paths));
-> It's a function argument, so that doesn't work and actually throws a
-> warning. Array function argument notation is informative only; they
-> behave strictly equivalent to pointers. Try it:
+>>> @@ -427,6 +427,8 @@ void brcmf_fw_nvram_free(void *nvram)
+>>>  struct brcmf_fw {
+>>>  	struct device *dev;
+>>>  	struct brcmf_fw_request *req;
+>>> +	const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS];
+>>> +	int alt_index;
+>> unsigned int
+> Ack.
 > 
-> $ cat test.c
-> #include <stdio.h>
-> 
-> void foo(char x[42])
-> {
-> 	printf("%ld\n", sizeof(x));
-> }
-> 
-> int main() {
-> 	char x[42];
-> 
-> 	foo(x);
-> }
-> $ gcc test.c
-> test.c: In function ‘foo’:
-> test.c:5:31: warning: ‘sizeof’ on array function parameter ‘x’ will
-> return size of ‘char *’ [-Wsizeof-array-argument]
->     5 |         printf("%ld\n", sizeof(x));
->       |                               ^
-> test.c:3:15: note: declared here
->     3 | void foo(char x[42])
->       |          ~~~~~^~~~~
-> $ ./a.out
-> 8
 
-Then please use "const char **alt_paths" for the function argument to
-make code cleaner and add another argument to pass the number of array
-elements.
-
-static int brcm_alt_fw_paths(const char *path, const char *board_type,
-			     const char **alt_paths, unsigned int num_paths)
-{
-	size_t alt_paths_size = array_size(sizeof(*alt_paths), num_paths);
-	
-	memset(alt_paths, 0, alt_paths_size);
-}
-
-...
-
-Maybe even better create a dedicated struct for the alt_paths:
-
-struct brcmf_fw_alt_paths {
-	const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS];
-	unsigned int index;
-};
-
-and then use the ".index" in the brcm_free_alt_fw_paths(). I suppose
-this will make code a bit nicer and easier to follow.
+The same applies to the rest of the patches. If value can't be negative,
+then please use unsigned type. This makes code more consistent.
