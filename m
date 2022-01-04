@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CF9348439F
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 15:44:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C77804844B5
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jan 2022 16:34:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234339AbiADOo5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jan 2022 09:44:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57766 "EHLO
+        id S233572AbiADPeM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jan 2022 10:34:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234151AbiADOo5 (ORCPT
+        with ESMTP id S231406AbiADPeM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jan 2022 09:44:57 -0500
+        Tue, 4 Jan 2022 10:34:12 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8528EC061761;
-        Tue,  4 Jan 2022 06:44:56 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF241C061761;
+        Tue,  4 Jan 2022 07:34:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
         Resent-Message-ID:In-Reply-To:References;
-        bh=C9wVj34hcXacMvzo/tgZg0X8D36JV4yUehWYG3GA9+w=; t=1641307496; x=1642517096; 
-        b=vgKVkU/rTNhVmdvdNaVcKBkiRHmdZ8BlhB2B7jyRcwfFBNt+dY4rDnWVEDDUxZ1cQWDHCXY6hN0
-        ZSe7lPCP94wzVCk0ExyDPvC8qery6YB95ln3/wZJUxUVYIZokBfs/3xan1myIjBDs4gae5DPy/Prx
-        70Up666g3jHrpmYg/4GJKcwUHb7iQMV1VEhX17IBsLKSJoCDAo+OUSqbJwZFK5dnmMveQxmpaaK+F
-        eTVVwksvVR2G6CKtTFNqIsGRYM7U+5wl9SgMGNuifgNvr51u4ZFz1GrAiAZK+c/TQA+Qk/DUt18Is
-        7S/NJrpeXAHLB9y4/3puL6E/DbvARPYHV2Nw==;
+        bh=m+xMehLESnZE+MHCEBfhc+Ab4EEeMmNaYRMbaBZFbxM=; t=1641310451; x=1642520051; 
+        b=sPbv/qkKs3+tCkwTdF0cu+xMS1iS7Szv3cRjym0Zr15Pf2NRvChZxiTBnt3SVxxApEr3BajBY6y
+        PzOJp6Nbnid0dLlv6cbrX8JAA4k24dFReK+hTHeOGfNrPTH5lIcdk7ZOEwT8kZfm8PeMGlYpA/J3o
+        qgGt9xnNLVTXnN/hXQU6M60RmUs3G7rlAtPZzQPkGBZwJZHcLw6rs3ExqzQhwkDuP3+Qum/P3HjaL
+        5iQeQQV5+32i/2MhAfUMn1nBJspUiM7K89kUEP2ukcfOYrmSXN2nAQU7hGj8My5NoI2tChGeVngfV
+        dzXZdgWLZHZHtAbgOIyWik+cGYvwD+4CzINQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1n4l3W-001n4R-UD;
-        Tue, 04 Jan 2022 15:44:55 +0100
+        id 1n4lpC-001noH-3I;
+        Tue, 04 Jan 2022 16:34:10 +0100
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     netdev@vger.kernel.org
 Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211 2022-01-04
-Date:   Tue,  4 Jan 2022 15:44:48 +0100
-Message-Id: <20220104144449.64937-1-johannes@sipsolutions.net>
+Subject: pull-request: mac80211-next 2022-01-04
+Date:   Tue,  4 Jan 2022 16:34:02 +0100
+Message-Id: <20220104153403.69749-1-johannes@sipsolutions.net>
 X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -46,8 +46,10 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi,
 
-So I know it's getting late, but two more fixes came to
-me over the holidays/vacations.
+And a couple of more patches for -next... I have more, but most
+of those are related to EHT (WiFi 7) and so not really relevant
+in the short term - not going to send them this time around, as
+I still need to review anyway.
 
 Please pull and let me know if there's any problem.
 
@@ -56,34 +58,42 @@ johannes
 
 
 
-The following changes since commit 1ef5e1d0dca5b4ffd49d7dec4a83660882f1fda4:
+The following changes since commit 416b27439df9ecb36b03da63dc37a8840b6f2efe:
 
-  net/fsl: Remove leftover definition in xgmac_mdio (2022-01-02 18:43:42 +0000)
+  ethernet/sfc: remove redundant rc variable (2022-01-04 12:41:41 +0000)
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-net-2022-01-04
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-net-next-2022-01-04
 
-for you to fetch changes up to 8b5cb7e41d9d77ffca036b0239177de123394a55:
+for you to fetch changes up to b3c1906ed02ad2b9f4db2f652cb7ea7b333963e5:
 
-  mac80211: mesh: embedd mesh_paths and mpp_paths into ieee80211_if_mesh (2022-01-04 15:11:49 +0100)
-
-----------------------------------------------------------------
-Two more changes:
- * mac80211: initialize a variable to avoid using it uninitialized
- * mac80211 mesh: put some data structures into the container to
-   fix bugs with and not have to deal with allocation failures
+  mac80211: use ieee80211_bss_get_elem() (2022-01-04 15:50:36 +0100)
 
 ----------------------------------------------------------------
-Pavel Skripkin (1):
-      mac80211: mesh: embedd mesh_paths and mpp_paths into ieee80211_if_mesh
+Just a few more changes:
+ * mac80211: allow non-standard VHT MCSes 10/11
+ * mac80211: add sleepable station iterator for drivers
+ * nl80211: clarify a comment
+ * mac80211: small cleanup to use typed element helpers
 
-Tom Rix (1):
-      mac80211: initialize variable have_higher_than_11mbit
+----------------------------------------------------------------
+Felix Fietkau (1):
+      nl80211: clarify comment for mesh PLINK_BLOCKED state
 
- net/mac80211/ieee80211_i.h  | 24 +++++++++++-
- net/mac80211/mesh.h         | 22 +----------
- net/mac80211/mesh_pathtbl.c | 89 ++++++++++++++++-----------------------------
- net/mac80211/mlme.c         |  2 +-
- 4 files changed, 55 insertions(+), 82 deletions(-)
+Johannes Berg (1):
+      mac80211: use ieee80211_bss_get_elem()
+
+Martin Blumenstingl (1):
+      mac80211: Add stations iterator where the iterator function may sleep
+
+Ping-Ke Shih (1):
+      mac80211: allow non-standard VHT MCS-10/11
+
+ include/net/mac80211.h       | 21 +++++++++++++++++++++
+ include/uapi/linux/nl80211.h |  2 +-
+ net/mac80211/mlme.c          | 14 +++++++-------
+ net/mac80211/rx.c            |  2 +-
+ net/mac80211/util.c          | 13 +++++++++++++
+ 5 files changed, 43 insertions(+), 9 deletions(-)
 
