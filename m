@@ -2,136 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F195D485390
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jan 2022 14:27:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7E7D485784
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jan 2022 18:42:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240363AbiAEN07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Jan 2022 08:26:59 -0500
-Received: from marcansoft.com ([212.63.210.85]:43092 "EHLO mail.marcansoft.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236846AbiAEN04 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Jan 2022 08:26:56 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id CAEB441F4A;
-        Wed,  5 Jan 2022 13:26:46 +0000 (UTC)
-Subject: Re: [PATCH v2 10/35] brcmfmac: firmware: Allow platform to override
- macaddr
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        id S242460AbiAERmn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Jan 2022 12:42:43 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:4352 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242412AbiAERmi (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 Jan 2022 12:42:38 -0500
+Received: from fraeml707-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JTcDP1FRwz67w73;
+        Thu,  6 Jan 2022 01:39:17 +0800 (CST)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ fraeml707-chm.china.huawei.com (10.206.15.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Wed, 5 Jan 2022 18:42:31 +0100
+Received: from [10.47.27.56] (10.47.27.56) by lhreml724-chm.china.huawei.com
+ (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Wed, 5 Jan
+ 2022 17:42:28 +0000
+From:   John Garry <john.garry@huawei.com>
+Subject: Re: [RFC 01/32] Kconfig: introduce and depend on LEGACY_PCI
+To:     Niklas Schnelle <schnelle@linux.ibm.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        "Arnd Bergmann" <arnd@arndb.de>
+CC:     Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Ettore Chimenti <ek5.chimenti@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        "Palmer Dabbelt" <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        "Ian Abbott" <abbotti@mev.co.uk>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-11-marcan@marcan.st>
- <CAHp75VcU1vVSucvegmSiMLoKBoPoGW5XLmqVUG0vXGdeafm2Jw@mail.gmail.com>
-From:   Hector Martin <marcan@marcan.st>
-Message-ID: <b4f50489-fa4b-2c40-31ad-1b74e916cdb4@marcan.st>
-Date:   Wed, 5 Jan 2022 22:26:44 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "Karsten Keil" <isdn@linux-pingi.de>,
+        Sathya Prakash <sathya.prakash@broadcom.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        Michael Grzeschik <m.grzeschik@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Kalle Valo <kvalo@kernel.org>, Jouni Malinen <j@w1.fi>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Hannes Reinecke <hare@suse.com>,
+        Kashyap Desai <kashyap.desai@broadcom.com>,
+        Sumit Saxena <sumit.saxena@broadcom.com>,
+        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        <GR-QLogic-Storage-Upstream@marvell.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        "Teddy Wang" <teddy.wang@siliconmotion.com>,
+        Forest Bond <forest@alittletooquiet.net>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        "Wim Van Sebroeck" <wim@linux-watchdog.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        "Takashi Iwai" <tiwai@suse.com>, <linux-kernel@vger.kernel.org>,
+        <linux-arch@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-riscv@lists.infradead.org>, <linux-csky@vger.kernel.org>,
+        <linux-ide@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+        <linux-hwmon@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+        <linux-input@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-media@vger.kernel.org>, <MPT-FusionLinux.pdl@broadcom.com>,
+        <linux-scsi@vger.kernel.org>, <intel-wired-lan@lists.osuosl.org>,
+        <linux-wireless@vger.kernel.org>, <megaraidlinux.pdl@broadcom.com>,
+        <linux-spi@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
+        <linux-serial@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <linux-watchdog@vger.kernel.org>
+References: <20211229160317.GA1681139@bhelgaas>
+ <e0877e91d7d50299ea5a3ffcee2cf1016458ce10.camel@linux.ibm.com>
+Message-ID: <3f39d8a2-2e57-a671-2926-eb4f2bf20c76@huawei.com>
+Date:   Wed, 5 Jan 2022 17:42:16 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VcU1vVSucvegmSiMLoKBoPoGW5XLmqVUG0vXGdeafm2Jw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: es-ES
+In-Reply-To: <e0877e91d7d50299ea5a3ffcee2cf1016458ce10.camel@linux.ibm.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.27.56]
+X-ClientProxiedBy: lhreml736-chm.china.huawei.com (10.201.108.87) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 04/01/2022 23.23, Andy Shevchenko wrote:
-> On Tue, Jan 4, 2022 at 9:29 AM Hector Martin <marcan@marcan.st> wrote:
+On 29/12/2021 16:55, Niklas Schnelle wrote:
+> On Wed, 2021-12-29 at 10:03 -0600, Bjorn Helgaas wrote:
+>> On Wed, Dec 29, 2021 at 01:12:07PM +0100, Mauro Carvalho Chehab wrote:
+>>> Em Wed, 29 Dec 2021 12:45:38 +0100
+>>> Niklas Schnelle<schnelle@linux.ibm.com>  escreveu:
+>>>> ...
+>>>> I do think we agree that once done correctly there is value in
+>>>> such an option independent of HAS_IOPORT only gating inb() etc uses.
+>> I'm not sure I'm convinced about this.  For s390, you could do this
+>> patch series, where you don't define inb() at all, and you add new
+>> dependencies to prevent compile errors.  Or you could define inb() to
+>> return ~0, which is what happens on other platforms when the device is
+>> not present.
 >>
->> On Device Tree platforms, it is customary to be able to set the MAC
->> address via the Device Tree, as it is often stored in system firmware.
->> This is particularly relevant for Apple ARM64 platforms, where this
->> information comes from system configuration and passed through by the
->> bootloader into the DT.
+>>> Personally, I don't see much value on a Kconfig var for legacy PCI I/O
+>>> space. From maintenance PoV, bots won't be triggered if someone use
+>>> HAS_IOPORT instead of the PCI specific one - or vice-versa. So, we
+>>> could end having a mix of both at the wrong places, in long term.
+>>>
+>>> Also, assuming that PCIe hardware will some day abandon support for
+>>> "legacy" PCI I/O space, I guess some runtime logic would be needed,
+>>> in order to work with both kinds of PCIe controllers. So, having a
+>>> Kconfig option won't help much, IMO.
+>>>
+>>> So, my personal preference would be to have just one Kconfig var, but
+>>> I'm ok if the PCI maintainers decide otherwise.
+>> I don't really like the "LEGACY_PCI" Kconfig option.  "Legacy" just
+>> means something old and out of favor; it doesn't say*what*  that
+>> something is.
 >>
->> Implement support for this by fetching the platform MAC address and
->> adding or replacing the macaddr= property in nvram. This becomes the
->> dongle's default MAC address.
->>
->> On platforms with an SROM MAC address, this overrides it. On platforms
->> without one, such as Apple ARM64 devices, this is required for the
->> firmware to boot (it will fail if it does not have a valid MAC at all).
-> 
-> ...
-> 
->> +#define BRCMF_FW_MACADDR_FMT                   "macaddr=%pM"
->> +#define BRCMF_FW_MACADDR_LEN                   (7 + ETH_ALEN * 3)
-> 
-> ...
-> 
->>                 if (strncmp(&nvp->data[nvp->entry], "boardrev", 8) == 0)
->>                         nvp->boardrev_found = true;
->> +               /* strip macaddr if platform MAC overrides */
->> +               if (nvp->strip_mac &&
->> +                   strncmp(&nvp->data[nvp->entry], "macaddr", 7) == 0)
-> 
-> If it has no side effects, I would rather swap the operands of && so
-> you match string first (it will be in align with above code at least,
-> although I haven't checked bigger context).
-
-I usually check for trivial flags before calling more expensive
-functions because it's more efficient in the common case. Obviously here
-performance doesn't matter though.
-
-> 
-> ....
-> 
->> +static void brcmf_fw_add_macaddr(struct nvram_parser *nvp, u8 *mac)
->> +{
->> +       snprintf(&nvp->nvram[nvp->nvram_len], BRCMF_FW_MACADDR_LEN + 1,
->> +                BRCMF_FW_MACADDR_FMT, mac);
-> 
-> Please, avoid using implict format string, it's dangerous from security p.o.v.
-
-What do you mean by implicit format string? The format string is at the
-top of the file and its length is right next to it, which makes it
-harder for them to accidentally fall out of sync.
-
-+#define BRCMF_FW_MACADDR_FMT			"macaddr=%pM"
-+#define BRCMF_FW_MACADDR_LEN			(7 + ETH_ALEN * 3)
-
-> 
->> +       nvp->nvram_len += BRCMF_FW_MACADDR_LEN + 1;
-> 
-> Also, with temporary variable the code can be better to read
-> 
-> size_t mac_len = ...;
+>> I think you're specifically interested in I/O port space usage, and it
+>> seems that you want all PCI drivers that*only*  use I/O port space to
+>> depend on LEGACY_PCI?  Drivers that can use either I/O or memory
+>> space or both would not depend on LEGACY_PCI?  This seems a little
+>> murky and error-prone.
+> I'd like to hear Arnd's opinion on this but you're the PCI maintainer
+> so of course your buy-in would be quite important for such an option.
 > 
 
-Sure.
+Hi Niklas,
 
--- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+I can't see the value in the LEGACY_PCI config - however I don't really 
+understand Arnd's original intention.
+
+It was written that it would allow us to control "whether we have any 
+pre-PCIe devices or those PCIe drivers that need PIO accessors other 
+than ioport_map()/pci_iomap()".
+
+However I just don't see why CONFIG_PCI=y and CONFIG_HAS_IOPORT=y aren't 
+always the gating factor here. Arnd?
+
+Thanks,
+John
