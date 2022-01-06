@@ -2,123 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB902486947
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jan 2022 18:59:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FB9648694E
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jan 2022 19:00:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242454AbiAFR7R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jan 2022 12:59:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48384 "EHLO
+        id S242492AbiAFSAL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jan 2022 13:00:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242232AbiAFR7Q (ORCPT
+        with ESMTP id S242485AbiAFSAG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jan 2022 12:59:16 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90101C061245;
-        Thu,  6 Jan 2022 09:59:15 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id w16so12398542edc.11;
-        Thu, 06 Jan 2022 09:59:15 -0800 (PST)
+        Thu, 6 Jan 2022 13:00:06 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CA2DC061245
+        for <linux-wireless@vger.kernel.org>; Thu,  6 Jan 2022 10:00:05 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id j6so12399538edw.12
+        for <linux-wireless@vger.kernel.org>; Thu, 06 Jan 2022 10:00:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Xu3gtBGXL1jf6kCxzSaeWpzGpdunrBP5nIzH9T+JX7A=;
-        b=QABhckc492awaaxXuAXNmNQu84OS4dvWLO16RonMxReG9y4I9SOXpp9WNwch9Fu6UD
-         wmm3heRhU9A29LYtvo6Fn7aozoN+g991Jwt9RQ7xtA5tdoKYkbngv0/w3NI4ZVAmWjEe
-         Qf4FaRnSLHeLAijAeS/SW44fLuapJUWTDIGRkFNvJpXa8kJPYZ+hODXTxDEvfvkWa3zg
-         T6+U8IghcX2VT+PrROhDOtA9Sc5BZrHyPtOxSVkXOiPtglKvyuZManVi2xWmII9unYNd
-         sqJ+ex5Wb8WXfDFg6t08ESunjSYjwNDofHokjRvAm3QXtSggwSxZDRb7FLTRRDuEpWPv
-         48Cg==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=2PgRoxCtv9qdbY4kSqNqkLfjaX/8ZiAucAGuwYGFduE=;
+        b=Nc++vwXbq0JPVnUBzJYVdISYnoQwhUxFjB+iJ7IE5IgbMyRXh/2YrU1aBknGDQXQ82
+         JTxDxP/RRFMocguUYbke4k0HTr4oT5Aphzojrcic4RJdkcQ2Nc3OjOYFIn6nHCKfVRmG
+         cF/MaoZTQnRpkWHVdih+Xh7jyPy9bJVY1gcWgE5oJfJcYGbtIzlMIMzKPdrrb9yjcI3X
+         UrwEzU9/AbndWFdZZagTVRDNeX8gjNlgEmp8trm/Jyif50kO35/GbF436of9c5K2Gr4k
+         iaNYFUTekXd90DnZYhXSkTgsSRuoMRMgP52+BdsUk56vhgQFNPrVDVjtHlAiJZ+nXjEQ
+         f+UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Xu3gtBGXL1jf6kCxzSaeWpzGpdunrBP5nIzH9T+JX7A=;
-        b=V5MWU30OhNB7Epl0PXpk98tB9JE17mQCpHrrwl6U7KSQQ8ZkA3X2zSHEdu7jFAwV6E
-         axKGcgcFZimeC6sl6E0nlsJcYykwzK8GuQ7HLPVg5BPQFu8HjA1QJ4G2iSUCUHOY6/0h
-         JB4eEmR1vjfsMUkobX6EbpyrQkr903BtDCdVskkgs5roFD9rLlciFtTrwfbsv/UBisrw
-         cehX9FsOXGZntjrgZmRMm9lua0H1WAbG1TehKQmo3N9CGxiQBILEnmp4ObhIGmQ+ZSgk
-         b8bC2DcDs/LRASQLI5tyzpDkzSJxlxM2gROn99L9x2bshrT7RVDs+CX7ahV6PpVFrcl2
-         PyzA==
-X-Gm-Message-State: AOAM533BhJ8y7qI86syCGmfFVbA9Ms97BYonjU6DAngL5HBFqDLtXlFw
-        i923WQzGlF8/PP44OsHnPsq7BDmUJZUiTBJiuSbZ7hP1hiE=
-X-Google-Smtp-Source: ABdhPJzBNWHoXSccLNv4/kXTZMpIBFu2W7xWcOFWFZ0eKIGCw7v4B7Ac94VkJf5xLM106JYy95MA0G2b5DDQhfv1iuU=
-X-Received: by 2002:a05:6402:d51:: with SMTP id ec17mr7460258edb.296.1641491954182;
- Thu, 06 Jan 2022 09:59:14 -0800 (PST)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=2PgRoxCtv9qdbY4kSqNqkLfjaX/8ZiAucAGuwYGFduE=;
+        b=xlIvfmm0AMT7VwFdB0V5sBuu2WWordXAmPBxDJCEDHeqFkrEXBNLghMMmu3/z5FU1b
+         mnittF0V1Sl2Hkz7igmUOUDTVrPDAv7Q79UN+exfDZ35Lxm3L1EFp/LROhLSA5r/VGtD
+         xFkBRO2mbgrIXxu4KTFojwba3cQ2dQbQNyG1TWXWe16MDteY8XO2iVyky3dCdqVX+L/c
+         nxfOiuJsVdF2wds5nB/FHlOwaRkBoRfk1b/2IoulZjbzBYmRfDgp0WyrvHm6HnJ2d5X/
+         RIVxdbpmErwsKnrjZ546qx9+pcrp4kO+t3daQwuyb671cxKTu1m0HlJYX9Tr/2HZMCCx
+         Gxpg==
+X-Gm-Message-State: AOAM5311isYfwwkAYLwOOtZSMbnAKDj/iHuI4BotkRzQUWZvIoBcNzlf
+        7W0BUN8OYZSvPHQ9VXpVWWIxQNHdq64=
+X-Google-Smtp-Source: ABdhPJyhNNGHe4cssHSBASc0CMY8sT0QTbe1M8Q5PcI1RGY2JJi3v0+oPo6Pl9/ssrkU4lD91sC8kg==
+X-Received: by 2002:a17:907:b05:: with SMTP id h5mr46201673ejl.687.1641492004090;
+        Thu, 06 Jan 2022 10:00:04 -0800 (PST)
+Received: from [192.168.0.74] ([178.233.26.119])
+        by smtp.gmail.com with ESMTPSA id o6sm982735eds.35.2022.01.06.10.00.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Jan 2022 10:00:03 -0800 (PST)
+Message-ID: <00a8fc90-a70e-7d53-609a-2b1db5b7590b@gmail.com>
+Date:   Thu, 6 Jan 2022 20:59:59 +0300
 MIME-Version: 1.0
-References: <20220104072658.69756-1-marcan@marcan.st> <20220104072658.69756-5-marcan@marcan.st>
- <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com> <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
- <8394dbcd-f500-b1ae-fcd8-15485d8c0888@gmail.com> <6a936aea-ada4-fe2d-7ce6-7a42788e4d63@marcan.st>
- <57716712-024d-af7e-394b-72ca9cb008d0@gmail.com>
-In-Reply-To: <57716712-024d-af7e-394b-72ca9cb008d0@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 6 Jan 2022 19:58:37 +0200
-Message-ID: <CAHp75VdXk87x7oDT1O5Q32ZsL4n0HYt-fijeiXw8n9fgypkOgg@mail.gmail.com>
-Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt paths
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.1
+Subject: Re: rtw88: EDCCA makes Wi-Fi unusable with a USB 3.0 SSD connected
+Content-Language: en-US
+To:     Pkshih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Kevin Yang <kevin_yang@realtek.com>
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>
+References: <994addcb-a203-d718-fc92-c7f1d9ef05fb@gmail.com>
+ <c1a47f94d9a7408e9891dd15ba177992@realtek.com>
+From:   Alper Nebi Yasak <alpernebiyasak@gmail.com>
+In-Reply-To: <c1a47f94d9a7408e9891dd15ba177992@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jan 6, 2022 at 7:40 PM Dmitry Osipenko <digetx@gmail.com> wrote:
-> 05.01.2022 16:22, Hector Martin =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
-> > On 05/01/2022 07.09, Dmitry Osipenko wrote:
+On 06/01/2022 08:53, Pkshih wrote:
+> I think you have sorted the problem that USB 3.0 is the interference source.
+> Since the clock of USB 3.0 is 2.5G, so please try to connect a 5G AP to see if the 
+> problem is still existing.
 
-...
+I don't have a standalone modem/router that can use 5GHz, but I managed
+to create an AP from another laptop and connect to it. Pinging the
+second laptop works fine at 5GHz (but pings are still late/dropped at
+2.4GHz as expected).
 
-> > I'm confused; the array size is constant. What would index contain and
-> > why would would brcm_free_alt_fw_paths use it? Just as an iterator
-> > variable instead of using a local variable? Or do you mean count?
->
-> Yes, use index for the count of active entries in the alt_paths[].
->
-> for (i =3D 0; i < alt_paths.index; i++)
->         kfree(alt_paths.path[i]);
->
-> alt_paths.index =3D 0;
->
-> or
->
-> while (alt_paths.index)
->         kfree(alt_paths.path[--alt_paths.index]);
+> The adaptivity patch is to detect signal energy and stop to transmit if the 
+> energy is over a threshold, and I think the USB 3.0 interference does.
+> I will discuss internally how we can debug this symptom.
 
-Usual pattern is
-
-  while (x--)
-    kfree(x);
-
-easier to read, extend (if needed).
-
---=20
-With Best Regards,
-Andy Shevchenko
+Thanks, feel free to ask for more information or testing if you need it.
