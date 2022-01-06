@@ -2,159 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 565444868D9
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jan 2022 18:41:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB902486947
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jan 2022 18:59:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241989AbiAFRl2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jan 2022 12:41:28 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:4360 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241966AbiAFRlY (ORCPT
+        id S242454AbiAFR7R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jan 2022 12:59:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48384 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242232AbiAFR7Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jan 2022 12:41:24 -0500
-Received: from fraeml714-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JVD6c3dG6z67wb3;
-        Fri,  7 Jan 2022 01:36:24 +0800 (CST)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- fraeml714-chm.china.huawei.com (10.206.15.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Thu, 6 Jan 2022 18:41:19 +0100
-Received: from [10.47.27.56] (10.47.27.56) by lhreml724-chm.china.huawei.com
- (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Thu, 6 Jan
- 2022 17:41:15 +0000
-Subject: Re: [RFC 01/32] Kconfig: introduce and depend on LEGACY_PCI
-To:     Bjorn Helgaas <helgaas@kernel.org>
-CC:     Niklas Schnelle <schnelle@linux.ibm.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Ettore Chimenti <ek5.chimenti@gmail.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "Paul Walmsley" <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
-        "Damien Le Moal" <damien.lemoal@opensource.wdc.com>,
-        Ian Abbott <abbotti@mev.co.uk>,
-        "H Hartley Sweeten" <hsweeten@visionengravers.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        "Sathya Prakash" <sathya.prakash@broadcom.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        Michael Grzeschik <m.grzeschik@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Kalle Valo <kvalo@kernel.org>, Jouni Malinen <j@w1.fi>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Hannes Reinecke <hare@suse.com>,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Sumit Saxena <sumit.saxena@broadcom.com>,
-        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        <GR-QLogic-Storage-Upstream@marvell.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        "Teddy Wang" <teddy.wang@siliconmotion.com>,
-        Forest Bond <forest@alittletooquiet.net>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        "Wim Van Sebroeck" <wim@linux-watchdog.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        "Takashi Iwai" <tiwai@suse.com>, <linux-kernel@vger.kernel.org>,
-        <linux-arch@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-riscv@lists.infradead.org>, <linux-csky@vger.kernel.org>,
-        <linux-ide@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-        <linux-hwmon@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-        <linux-input@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-media@vger.kernel.org>, <MPT-FusionLinux.pdl@broadcom.com>,
-        <linux-scsi@vger.kernel.org>, <intel-wired-lan@lists.osuosl.org>,
-        <linux-wireless@vger.kernel.org>, <megaraidlinux.pdl@broadcom.com>,
-        <linux-spi@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
-        <linux-serial@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-watchdog@vger.kernel.org>
-References: <20220105194748.GA215560@bhelgaas>
-From:   John Garry <john.garry@huawei.com>
-Message-ID: <74bf4fde-3972-1c36-ca04-58089da0d82b@huawei.com>
-Date:   Thu, 6 Jan 2022 17:41:00 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
+        Thu, 6 Jan 2022 12:59:16 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90101C061245;
+        Thu,  6 Jan 2022 09:59:15 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id w16so12398542edc.11;
+        Thu, 06 Jan 2022 09:59:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=Xu3gtBGXL1jf6kCxzSaeWpzGpdunrBP5nIzH9T+JX7A=;
+        b=QABhckc492awaaxXuAXNmNQu84OS4dvWLO16RonMxReG9y4I9SOXpp9WNwch9Fu6UD
+         wmm3heRhU9A29LYtvo6Fn7aozoN+g991Jwt9RQ7xtA5tdoKYkbngv0/w3NI4ZVAmWjEe
+         Qf4FaRnSLHeLAijAeS/SW44fLuapJUWTDIGRkFNvJpXa8kJPYZ+hODXTxDEvfvkWa3zg
+         T6+U8IghcX2VT+PrROhDOtA9Sc5BZrHyPtOxSVkXOiPtglKvyuZManVi2xWmII9unYNd
+         sqJ+ex5Wb8WXfDFg6t08ESunjSYjwNDofHokjRvAm3QXtSggwSxZDRb7FLTRRDuEpWPv
+         48Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Xu3gtBGXL1jf6kCxzSaeWpzGpdunrBP5nIzH9T+JX7A=;
+        b=V5MWU30OhNB7Epl0PXpk98tB9JE17mQCpHrrwl6U7KSQQ8ZkA3X2zSHEdu7jFAwV6E
+         axKGcgcFZimeC6sl6E0nlsJcYykwzK8GuQ7HLPVg5BPQFu8HjA1QJ4G2iSUCUHOY6/0h
+         JB4eEmR1vjfsMUkobX6EbpyrQkr903BtDCdVskkgs5roFD9rLlciFtTrwfbsv/UBisrw
+         cehX9FsOXGZntjrgZmRMm9lua0H1WAbG1TehKQmo3N9CGxiQBILEnmp4ObhIGmQ+ZSgk
+         b8bC2DcDs/LRASQLI5tyzpDkzSJxlxM2gROn99L9x2bshrT7RVDs+CX7ahV6PpVFrcl2
+         PyzA==
+X-Gm-Message-State: AOAM533BhJ8y7qI86syCGmfFVbA9Ms97BYonjU6DAngL5HBFqDLtXlFw
+        i923WQzGlF8/PP44OsHnPsq7BDmUJZUiTBJiuSbZ7hP1hiE=
+X-Google-Smtp-Source: ABdhPJzBNWHoXSccLNv4/kXTZMpIBFu2W7xWcOFWFZ0eKIGCw7v4B7Ac94VkJf5xLM106JYy95MA0G2b5DDQhfv1iuU=
+X-Received: by 2002:a05:6402:d51:: with SMTP id ec17mr7460258edb.296.1641491954182;
+ Thu, 06 Jan 2022 09:59:14 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20220105194748.GA215560@bhelgaas>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.27.56]
-X-ClientProxiedBy: lhreml736-chm.china.huawei.com (10.201.108.87) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
+References: <20220104072658.69756-1-marcan@marcan.st> <20220104072658.69756-5-marcan@marcan.st>
+ <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com> <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
+ <8394dbcd-f500-b1ae-fcd8-15485d8c0888@gmail.com> <6a936aea-ada4-fe2d-7ce6-7a42788e4d63@marcan.st>
+ <57716712-024d-af7e-394b-72ca9cb008d0@gmail.com>
+In-Reply-To: <57716712-024d-af7e-394b-72ca9cb008d0@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 6 Jan 2022 19:58:37 +0200
+Message-ID: <CAHp75VdXk87x7oDT1O5Q32ZsL4n0HYt-fijeiXw8n9fgypkOgg@mail.gmail.com>
+Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt paths
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 05/01/2022 19:47, Bjorn Helgaas wrote:
->>>>>   ok if the PCI maintainers decide otherwise.
->>>> I don't really like the "LEGACY_PCI" Kconfig option.  "Legacy" just
->>>> means something old and out of favor; it doesn't say*what*  that
->>>> something is.
->>>>
->>>> I think you're specifically interested in I/O port space usage, and it
->>>> seems that you want all PCI drivers that*only*  use I/O port space to
->>>> depend on LEGACY_PCI?  Drivers that can use either I/O or memory
->>>> space or both would not depend on LEGACY_PCI?  This seems a little
->>>> murky and error-prone.
->>> I'd like to hear Arnd's opinion on this but you're the PCI maintainer
->>> so of course your buy-in would be quite important for such an option.
-> I'd like to hear Arnd's opinion, too.  If we do add LEGACY_PCI, I
-> think we need a clear guide for when to use it, e.g., "a PCI driver
-> that uses inb() must depend on LEGACY_PCI" or whatever it is.
-> 
-> I must be missing something because I don't see what we gain from
-> this.  We have PCI drivers, e.g., megaraid [1], for devices that have
-> either MEM or I/O BARs.  I think we want to build drivers like that on
-> any arch that supports PCI.
-> 
-> If the arch doesn't support I/O port space, devices that only have I/O
-> BARs won't work, of course, and hopefully the PCI core and driver can
-> figure that out and gracefully fail the probe.
-> 
-> But that same driver should still work with devices that have MEM
-> BARs.  If inb() isn't always present, I guess we could litter these
-> drivers with #ifdefs, but that would be pretty ugly. 
+On Thu, Jan 6, 2022 at 7:40 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+> 05.01.2022 16:22, Hector Martin =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+> > On 05/01/2022 07.09, Dmitry Osipenko wrote:
 
-There were some ifdefs added to the 8250 drivers in Arnd's original 
-patch [0], but it does not seem included here.
+...
 
-Niklas, what happened to the 8250 and the other driver changes?
+> > I'm confused; the array size is constant. What would index contain and
+> > why would would brcm_free_alt_fw_paths use it? Just as an iterator
+> > variable instead of using a local variable? Or do you mean count?
+>
+> Yes, use index for the count of active entries in the alt_paths[].
+>
+> for (i =3D 0; i < alt_paths.index; i++)
+>         kfree(alt_paths.path[i]);
+>
+> alt_paths.index =3D 0;
+>
+> or
+>
+> while (alt_paths.index)
+>         kfree(alt_paths.path[--alt_paths.index]);
 
-[0] 
-https://lore.kernel.org/lkml/CAK8P3a0MNbx-iuzW_-=0ab6-TTZzwV-PT_6gAC1Gp5PgYyHcrA@mail.gmail.com/
+Usual pattern is
 
-> IMO inb() should
-> be present but do something innocuous like return ~0, as it would if
-> I/O port space is supported but there's no device at that address.
-> 
-> [1]https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/scsi/megaraid.c?id=v5.15#n4210
-> 
+  while (x--)
+    kfree(x);
 
-That driver would prob not be used on systems which does not support 
-PIO, and so could have a HAS_IOPORT dependency. But it is not strictly 
-necessary.
+easier to read, extend (if needed).
 
-Anyway, it would be good to have an idea of how much ifdeffery is 
-required in drivers.
-
-Thanks,
-John
+--=20
+With Best Regards,
+Andy Shevchenko
