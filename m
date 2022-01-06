@@ -2,128 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05076486983
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jan 2022 19:14:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE065486AAD
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jan 2022 20:50:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242598AbiAFSOT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jan 2022 13:14:19 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:57816 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241192AbiAFSOM (ORCPT
+        id S243481AbiAFTuV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jan 2022 14:50:21 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:42796 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S243486AbiAFTuS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jan 2022 13:14:12 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4870561D17;
-        Thu,  6 Jan 2022 18:14:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A780C36AEB;
-        Thu,  6 Jan 2022 18:14:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641492850;
-        bh=pk9c3vFsS24A9H9YRNmuoLU04tTgveyiSfxz/RguLrg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=tWL9ah320xPJ7ZLvQrLFkjIeV1LTlPrJ2qSY/t0fKFbU+5MxnpWBBUesVfIjO0xOO
-         l+Yvi8TANgRjNK2vReZYRlLqehfzP4qE2oNJarfvWixIS0OfQkuKWpI6rrQEfWGn25
-         oroVHI/IQA8JEpMkHqxWMkHxAKg+IVXn/Zqji7RoVtpWyymeRt5WcM4qay0A7EFOWe
-         jnI4JpbaAmAttF9a/Yhl/wWUUgx6A1s8zF9Wpc8ft5Y9hFSMLv91rRujQQ/od6scnA
-         LsHiF+8iYMGoQ6RcvIn/+ZU8WqHN0Y3LnsXMJdYHRbXi/+K/WGfnGi+pM9zExj10bs
-         +smYL/+iBYHZg==
-Date:   Thu, 6 Jan 2022 12:14:09 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     John Garry <john.garry@huawei.com>
-Cc:     Niklas Schnelle <schnelle@linux.ibm.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Ettore Chimenti <ek5.chimenti@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Ian Abbott <abbotti@mev.co.uk>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Sathya Prakash <sathya.prakash@broadcom.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        Michael Grzeschik <m.grzeschik@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Kalle Valo <kvalo@kernel.org>, Jouni Malinen <j@w1.fi>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Hannes Reinecke <hare@suse.com>,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Sumit Saxena <sumit.saxena@broadcom.com>,
-        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        GR-QLogic-Storage-Upstream@marvell.com,
-        Mark Brown <broonie@kernel.org>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Teddy Wang <teddy.wang@siliconmotion.com>,
-        Forest Bond <forest@alittletooquiet.net>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-input@vger.kernel.org, netdev@vger.kernel.org,
-        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
-        linux-scsi@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-wireless@vger.kernel.org, megaraidlinux.pdl@broadcom.com,
-        linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-serial@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-watchdog@vger.kernel.org
-Subject: Re: [RFC 01/32] Kconfig: introduce and depend on LEGACY_PCI
-Message-ID: <20220106181409.GA297735@bhelgaas>
+        Thu, 6 Jan 2022 14:50:18 -0500
+X-UUID: b3967e4467ce492c89f51241ae778c76-20220107
+X-UUID: b3967e4467ce492c89f51241ae778c76-20220107
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1222017295; Fri, 07 Jan 2022 03:50:13 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Fri, 7 Jan 2022 03:50:11 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 7 Jan 2022 03:50:11 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Mark-YW.Chen@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
+        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
+        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        "Leon Yen" <leon.yen@mediatek.com>
+Subject: [PATCH] mt76: mt7921s: fix mt7921s_mcu_[fw|drv]_pmctrl
+Date:   Fri, 7 Jan 2022 03:50:10 +0800
+Message-ID: <5d5622916a35bf3efedcd553b925e14f1d5bf46f.1641498203.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <74bf4fde-3972-1c36-ca04-58089da0d82b@huawei.com>
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jan 06, 2022 at 05:41:00PM +0000, John Garry wrote:
-> On 05/01/2022 19:47, Bjorn Helgaas wrote:
+From: Leon Yen <leon.yen@mediatek.com>
 
-> > IMO inb() should
-> > be present but do something innocuous like return ~0, as it would if
-> > I/O port space is supported but there's no device at that address.
-> > 
-> > [1]https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/scsi/megaraid.c?id=v5.15#n4210
-> > 
-> 
-> That driver would prob not be used on systems which does not support PIO,
-> and so could have a HAS_IOPORT dependency. But it is not strictly necessary.
+According to the firmware behavior (even the oldest one in linux-firmware)
+If the firmware is downloaded, MT7921S must rely on the additional mailbox
+mechanism that resides in firmware to check if the device is the right
+state for mt7921s_mcu_[fw|drv]_pmctrl. Otherwise, we still apply the old
+way for that.
 
-I don't want the path of "this driver isn't needed because the device
-is unlikely to be used on this arch."
+That is a necessary patch before we enable runtime pm for mt7921s as
+default.
 
-Maybe it's not _always_ possible, but if the device can be plugged
-into the platform, I think we should be able to build the driver for
-it.
+Fixes: 48fab5bbef40 ("mt76: mt7921: introduce mt7921s support")
+Co-developed-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
+---
+ .../wireless/mediatek/mt76/mt7921/sdio_mcu.c  | 38 +++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/sdio.h     |  2 +
+ 2 files changed, 40 insertions(+)
 
-If the device requires I/O port space and the platform doesn't support
-it, the PCI core or the driver should detect that and give a useful
-diagnostic.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
+index d20f2ff01be1..5d8af18c7026 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
+@@ -49,6 +49,26 @@ mt7921s_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
+ 	return ret;
+ }
+ 
++static u32 mt7921s_read_rm3r(struct mt7921_dev *dev)
++{
++	struct mt76_sdio *sdio = &dev->mt76.sdio;
++
++	return sdio_readl(sdio->func, MCR_D2HRM3R, NULL);
++}
++
++static u32 mt7921s_clear_rm3r_drv_own(struct mt7921_dev *dev)
++{
++	struct mt76_sdio *sdio = &dev->mt76.sdio;
++	u32 val;
++
++	val = sdio_readl(sdio->func, MCR_D2HRM3R, NULL);
++	if (val)
++		sdio_writel(sdio->func, H2D_SW_INT_CLEAR_MAILBOX_ACK,
++			    MCR_WSICR, NULL);
++
++	return val;
++}
++
+ int mt7921s_mcu_init(struct mt7921_dev *dev)
+ {
+ 	static const struct mt76_mcu_ops mt7921s_mcu_ops = {
+@@ -88,6 +108,12 @@ int mt7921s_mcu_drv_pmctrl(struct mt7921_dev *dev)
+ 
+ 	err = readx_poll_timeout(mt76s_read_pcr, &dev->mt76, status,
+ 				 status & WHLPCR_IS_DRIVER_OWN, 2000, 1000000);
++
++	if (!err && test_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state))
++		err = readx_poll_timeout(mt7921s_read_rm3r, dev, status,
++					 status & D2HRM3R_IS_DRIVER_OWN,
++					 2000, 1000000);
++
+ 	sdio_release_host(func);
+ 
+ 	if (err < 0) {
+@@ -115,12 +141,24 @@ int mt7921s_mcu_fw_pmctrl(struct mt7921_dev *dev)
+ 
+ 	sdio_claim_host(func);
+ 
++	if (test_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state)) {
++		err = readx_poll_timeout(mt7921s_clear_rm3r_drv_own,
++					 dev, status,
++					 !(status & D2HRM3R_IS_DRIVER_OWN),
++					 2000, 1000000);
++		if (err < 0) {
++			dev_err(dev->mt76.dev, "mailbox ACK not cleared\n");
++			goto err;
++		}
++	}
++
+ 	sdio_writel(func, WHLPCR_FW_OWN_REQ_SET, MCR_WHLPCR, NULL);
+ 
+ 	err = readx_poll_timeout(mt76s_read_pcr, &dev->mt76, status,
+ 				 !(status & WHLPCR_IS_DRIVER_OWN), 2000, 1000000);
+ 	sdio_release_host(func);
+ 
++err:
+ 	if (err < 0) {
+ 		dev_err(dev->mt76.dev, "firmware own failed\n");
+ 		clear_bit(MT76_STATE_PM, &mphy->state);
+diff --git a/drivers/net/wireless/mediatek/mt76/sdio.h b/drivers/net/wireless/mediatek/mt76/sdio.h
+index 99db4ad93b7c..27d5d2077eba 100644
+--- a/drivers/net/wireless/mediatek/mt76/sdio.h
++++ b/drivers/net/wireless/mediatek/mt76/sdio.h
+@@ -65,6 +65,7 @@
+ #define MCR_H2DSM0R			0x0070
+ #define H2D_SW_INT_READ			BIT(16)
+ #define H2D_SW_INT_WRITE		BIT(17)
++#define H2D_SW_INT_CLEAR_MAILBOX_ACK	BIT(22)
+ 
+ #define MCR_H2DSM1R			0x0074
+ #define MCR_D2HRM0R			0x0078
+@@ -109,6 +110,7 @@
+ #define MCR_H2DSM2R			0x0160 /* supported in CONNAC2 */
+ #define MCR_H2DSM3R			0x0164 /* supported in CONNAC2 */
+ #define MCR_D2HRM3R			0x0174 /* supported in CONNAC2 */
++#define D2HRM3R_IS_DRIVER_OWN		BIT(0)
+ #define MCR_WTQCR8			0x0190 /* supported in CONNAC2 */
+ #define MCR_WTQCR9			0x0194 /* supported in CONNAC2 */
+ #define MCR_WTQCR10			0x0198 /* supported in CONNAC2 */
+-- 
+2.25.1
 
-Bjorn
