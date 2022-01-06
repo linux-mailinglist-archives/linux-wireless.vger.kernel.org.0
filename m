@@ -2,25 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36DA4486503
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jan 2022 14:13:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAAA84865F2
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jan 2022 15:20:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239397AbiAFNNI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jan 2022 08:13:08 -0500
-Received: from marcansoft.com ([212.63.210.85]:59596 "EHLO mail.marcansoft.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238990AbiAFNNH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jan 2022 08:13:07 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 6B6A841F5D;
-        Thu,  6 Jan 2022 13:12:58 +0000 (UTC)
-Subject: Re: [PATCH v2 09/35] brcmfmac: pcie: Perform firmware selection for
- Apple platforms
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+        id S240012AbiAFOUp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jan 2022 09:20:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55156 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239990AbiAFOUo (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 6 Jan 2022 09:20:44 -0500
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36F7CC061245;
+        Thu,  6 Jan 2022 06:20:44 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id bm14so9994016edb.5;
+        Thu, 06 Jan 2022 06:20:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=RHiowUInnnx0H26/RXZyWD79AVSBptAd7GCtWrosRcw=;
+        b=i+Il7uIAwS57J/WQVwj8yPstgKlCF8siSQ98tZahJdpu7uZLeqKpL88rjqm7t3W/bi
+         xdrKOVzOMd2cv9o/N0ocdRwx9M2n5fBXHRA6hroezMSLI6XJuWBT+R9li4Lfv+zz43P2
+         s+2hfOSSNS8gyHEq5uOdFDUyR+7pwIl7l08KXtnVsqZBDK86QOyFMuTnbGCGov4k5OLP
+         RsG++K1CyzwJ9pG32qh4Sqpzx89LcC3u9Jum6SA19Jx5IAWBklGVc9FE0+bc8gpaE/KX
+         gjCJ/szBpXK6R6MOucwBIov62kaHe/4955JWIO0ybz6jJedJdvbVjRb+EwwgakUFII/Q
+         jZlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RHiowUInnnx0H26/RXZyWD79AVSBptAd7GCtWrosRcw=;
+        b=E8LhU49Thm1dyceAz3I8w49dAXTq/tvslXYTXII2Bo9Fit9xwzRFyFwlZA8CmJftBA
+         X7YBCVlfI7UVWYRtXxkqdz3Mrfamd3rOKxz0Bzy8vydQOuuUH4+/5cn6IWzeh9X1qLcW
+         BDDnupd5GoXvXuriCSN8dnGHxjR1KjYhk5GzFImYh0nOmFqDOXiNY5myMCfD+eESdbAk
+         M9kxuRcV7DPs9znMpopI5+enNfohtzG7D1Uq/4fua2w/Z1KgdbAGTIQfvaFAf3tlRjNt
+         QF2l5MuA+j0w1R0ZO/s3eMQ+uNqCtLwBBpk6575Mf0BDXc542fmpXvZ9obtns0lq50Hd
+         WDFw==
+X-Gm-Message-State: AOAM530QntUGxFU6QFcSyx57uuDptVa2gXE5hGa8o/eJfyoN62db8OIQ
+        khXg7Xc1veyLt/jSVFe14i8lBB9ulYwuZEbd7lc=
+X-Google-Smtp-Source: ABdhPJyySld/ws4jSU/lnZk1P1wL08Oiw3ChicoBJkwdGmMZdfL2+4XatgScRCEss7yjBh/BtqU4GL3uVxy2Q+kbnYE=
+X-Received: by 2002:a17:907:6d8d:: with SMTP id sb13mr47302126ejc.132.1641478842777;
+ Thu, 06 Jan 2022 06:20:42 -0800 (PST)
+MIME-Version: 1.0
+References: <20220104072658.69756-1-marcan@marcan.st> <20220104072658.69756-11-marcan@marcan.st>
+ <CAHp75VcU1vVSucvegmSiMLoKBoPoGW5XLmqVUG0vXGdeafm2Jw@mail.gmail.com> <b4f50489-fa4b-2c40-31ad-1b74e916cdb4@marcan.st>
+In-Reply-To: <b4f50489-fa4b-2c40-31ad-1b74e916cdb4@marcan.st>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 6 Jan 2022 16:20:05 +0200
+Message-ID: <CAHp75VdzQhkj3ovFSAG4g1tD1scBK7H0xFFot0rfz2u6i8a3FA@mail.gmail.com>
+Subject: Re: [PATCH v2 10/35] brcmfmac: firmware: Allow platform to override macaddr
+To:     Hector Martin <marcan@marcan.st>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -50,79 +82,47 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
         <brcm80211-dev-list.pdl@broadcom.com>,
         SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-10-marcan@marcan.st>
- <CAHp75VeN=RkBHnNkQB7_WwjtKuk9OP=utZp+tMf18VF2=CogkA@mail.gmail.com>
-From:   Hector Martin <marcan@marcan.st>
-Message-ID: <f4dfbb6b-b635-e9b3-5e5b-8527cf1e4f60@marcan.st>
-Date:   Thu, 6 Jan 2022 22:12:56 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-MIME-Version: 1.0
-In-Reply-To: <CAHp75VeN=RkBHnNkQB7_WwjtKuk9OP=utZp+tMf18VF2=CogkA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: es-ES
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 04/01/2022 23.24, Andy Shevchenko wrote:
-> On Tue, Jan 4, 2022 at 9:28 AM Hector Martin <marcan@marcan.st> wrote:
+On Wed, Jan 5, 2022 at 3:26 PM Hector Martin <marcan@marcan.st> wrote:
+> On 04/01/2022 23.23, Andy Shevchenko wrote:
+> > On Tue, Jan 4, 2022 at 9:29 AM Hector Martin <marcan@marcan.st> wrote:
 
->> +               /* Example: apple,shikoku-RASP-m-6.11-X3 */
->> +               len = (strlen(devinfo->settings->board_type) + 1 +
->> +                      strlen(devinfo->otp.module) + 1 +
->> +                      strlen(devinfo->otp.vendor) + 1 +
->> +                      strlen(devinfo->otp.version) + 1 +
->> +                      strlen(devinfo->settings->antenna_sku) + 1);
-> 
-> NIH devm_kasprrintf() ?
+...
 
-This one builds it incrementally, but you're right, kasprintf is
-probably more readable here and fewer lines even though it'll duplicate
-all the previous argument references for each pattern. I'll redo it with
-devm_kasprintf().
+> >> +#define BRCMF_FW_MACADDR_FMT                   "macaddr=%pM"
 
-> 
->> +               /* apple,shikoku */
->> +               fwreq->board_types[5] = devinfo->settings->board_type;
->> +
->> +               buf = devm_kzalloc(&devinfo->pdev->dev, len, GFP_KERNEL);
->> +
->> +               strscpy(buf, devinfo->settings->board_type, len);
->> +               strlcat(buf, "-", len);
->> +               strlcat(buf, devinfo->settings->antenna_sku, len);
->> +               /* apple,shikoku-X3 */
->> +               fwreq->board_types[4] = devm_kstrdup(&devinfo->pdev->dev, buf,
->> +                                                    GFP_KERNEL);
->> +
->> +               strscpy(buf, devinfo->settings->board_type, len);
->> +               strlcat(buf, "-", len);
->> +               strlcat(buf, devinfo->otp.module, len);
->> +               /* apple,shikoku-RASP */
->> +               fwreq->board_types[3] = devm_kstrdup(&devinfo->pdev->dev, buf,
->> +                                                    GFP_KERNEL);
->> +
->> +               strlcat(buf, "-", len);
->> +               strlcat(buf, devinfo->otp.vendor, len);
->> +               /* apple,shikoku-RASP-m */
->> +               fwreq->board_types[2] = devm_kstrdup(&devinfo->pdev->dev, buf,
->> +                                                    GFP_KERNEL);
->> +
->> +               strlcat(buf, "-", len);
->> +               strlcat(buf, devinfo->otp.version, len);
->> +               /* apple,shikoku-RASP-m-6.11 */
->> +               fwreq->board_types[1] = devm_kstrdup(&devinfo->pdev->dev, buf,
->> +                                                    GFP_KERNEL);
->> +
->> +               strlcat(buf, "-", len);
->> +               strlcat(buf, devinfo->settings->antenna_sku, len);
->> +               /* apple,shikoku-RASP-m-6.11-X3 */
->> +               fwreq->board_types[0] = buf;
-> 
+> >> +       snprintf(&nvp->nvram[nvp->nvram_len], BRCMF_FW_MACADDR_LEN + 1,
+> >> +                BRCMF_FW_MACADDR_FMT, mac);
+> >
+> > Please, avoid using implict format string, it's dangerous from security p.o.v.
+>
+> What do you mean by implicit format string?
+
+When I read the above code I feel uncomfortable because no-one can see
+(without additional action and more reading and checking) if it's
+correct or not. This is potential to be error prone.
+
+> The format string is at the
+> top of the file and its length is right next to it, which makes it
+> harder for them to accidentally fall out of sync.
+
+It is not an argument. Just you may do the same in the code directly
+and more explicitly:
+
+Also you don't check the return code of snprintf which means that you
+don't care about the result, which seems to me wrong approach. If you
+don't care about the result, so it means it's not very important,
+right?
+
+> +#define BRCMF_FW_MACADDR_FMT                   "macaddr=%pM"
+> +#define BRCMF_FW_MACADDR_LEN                   (7 + ETH_ALEN * 3)
+
 
 
 -- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+With Best Regards,
+Andy Shevchenko
