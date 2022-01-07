@@ -2,99 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F7D4870C5
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 03:50:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB2DE4870EA
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 04:04:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345577AbiAGCun (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jan 2022 21:50:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57228 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344814AbiAGCum (ORCPT
+        id S1345695AbiAGDEb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jan 2022 22:04:31 -0500
+Received: from mail-ot1-f47.google.com ([209.85.210.47]:39818 "EHLO
+        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345697AbiAGDE2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jan 2022 21:50:42 -0500
-Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C0A1C061245;
-        Thu,  6 Jan 2022 18:50:42 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id A6A7E4388F;
-        Fri,  7 Jan 2022 02:50:22 +0000 (UTC)
-Message-ID: <e2ac1706-6471-0188-00d8-1c68735d24f7@marcan.st>
-Date:   Fri, 7 Jan 2022 11:50:20 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.4.1
-Subject: Re: [PATCH v2 06/35] brcmfmac: firmware: Support passing in multiple
- board_types
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Thu, 6 Jan 2022 22:04:28 -0500
+Received: by mail-ot1-f47.google.com with SMTP id p8-20020a9d7448000000b005907304d0c5so5250825otk.6;
+        Thu, 06 Jan 2022 19:04:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NBar8N+1gW94C3fgFMqpUysSc+AeI/hjDEO8pXAcURg=;
+        b=Gda/pja9vOnM7kcsAvhCwdf1Ti4eEHTh5isUZ4QueZdbPrLnY3clpo6qzr1V1Wj2RW
+         f3pOTH/RBnPsYSLDh6DtOFtSTM2vnR26rPye1egIk2Pxd908Q3skrlpF61VmXQmspIiu
+         r80FFGY/vPWNBz8t5s0cQCtKtNQIBHMsx6KLPoR7oyxc0EHdit5zvEX1xiMoVYhrOtM9
+         dUxz4ej1tYcpjBJtn5p2piYJqJiU1nX/JoCdqFYxVGRj7JqEoZjjSrDiicRtW21Uy9w4
+         WnEX3L3uHEc+HHVlUS4lytOpB/OLjLEDf7Ck/Cm0TkKdhdgcpKf2UrxQQgySZgYOqE9w
+         rC8A==
+X-Gm-Message-State: AOAM5327J0zct/lRu2xDAkxf3F/YXbqJn547ZL0vtwIovRCxNtRcqFRA
+        nAKsSrDpQ22s5kt68KRjHA==
+X-Google-Smtp-Source: ABdhPJzttxN24jpI2p+TdOXTWAvbQK6w0JRyEjAdIzTeHDE2eH/HHDwVvIRge1Nv30K0X6SqEy9hcQ==
+X-Received: by 2002:a9d:6b14:: with SMTP id g20mr3065468otp.37.1641524668136;
+        Thu, 06 Jan 2022 19:04:28 -0800 (PST)
+Received: from xps15.herring.priv (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.googlemail.com with ESMTPSA id k11sm692385ots.22.2022.01.06.19.04.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Jan 2022 19:04:27 -0800 (PST)
+From:   Rob Herring <robh@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-7-marcan@marcan.st>
- <CAHp75VcXgVTZhPiPmbpAJr21xUopRXU6yi=wvyzs6ByR8C+rzw@mail.gmail.com>
-From:   Hector Martin <marcan@marcan.st>
-In-Reply-To: <CAHp75VcXgVTZhPiPmbpAJr21xUopRXU6yi=wvyzs6ByR8C+rzw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] dt-bindings: net: wireless: mt76: Fix 8-bit property sizes
+Date:   Thu,  6 Jan 2022 21:04:17 -0600
+Message-Id: <20220107030419.2380198-1-robh@kernel.org>
+X-Mailer: git-send-email 2.32.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2022/01/04 20:28, Andy Shevchenko wrote:
-> On Tue, Jan 4, 2022 at 9:28 AM Hector Martin <marcan@marcan.st> wrote:
->>
->> In order to make use of the multiple alt_path functionality, change
->> board_type to an array. Bus drivers can pass in a NULL-terminated list
->> of board type strings to try for the firmware fetch.
-> 
->> +               /* strip extension at the end */
->> +               strscpy(alt_path, path, BRCMF_FW_NAME_LEN);
->> +               alt_path[suffix - path] = 0;
->>
->> -       alt_paths[0] = kstrdup(alt_path, GFP_KERNEL);
->> +               strlcat(alt_path, ".", BRCMF_FW_NAME_LEN);
->> +               strlcat(alt_path, board_types[i], BRCMF_FW_NAME_LEN);
->> +               strlcat(alt_path, suffix, BRCMF_FW_NAME_LEN);
->> +
->> +               alt_paths[i] = kstrdup(alt_path, GFP_KERNEL);
->> +               brcmf_dbg(TRACE, "FW alt path: %s\n", alt_paths[i]);
-> 
-> Consider replacing these string manipulations with kasprintf().
-> 
+The '/bits/ 8' notation applies the next <> list of values. Another <> list
+is encoded as 32-bits by default. IOW, each <> list needs to be preceeded
+with '/bits/ 8'.
 
-Done, thanks!
+While the dts format allows this, as a rule we don't mix sizes for DT
+properties since all size information is lost in the dtb file.
 
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ .../devicetree/bindings/net/wireless/mediatek,mt76.yaml       | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+index 1489d3c1cd6e..269cd63fb544 100644
+--- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+@@ -191,9 +191,9 @@ examples:
+                    channels = <36 48>;
+                    rates-ofdm = /bits/ 8 <23 23 23 23 23 23 23 23>;
+                    rates-mcs = /bits/ 8 <1 23 23 23 23 23 23 23 23 23 23>,
+-                                        <3 22 22 22 22 22 22 22 22 22 22>;
++                               /bits/ 8 <3 22 22 22 22 22 22 22 22 22 22>;
+                    rates-ru = /bits/ 8 <3 22 22 22 22 22 22 22 22 22 22 22 22>,
+-                                       <4 20 20 20 20 20 20 20 20 20 20 20 20>;
++                              /bits/ 8 <4 20 20 20 20 20 20 20 20 20 20 20 20>;
+                };
+                b1 {
+                    channels = <100 181>;
 -- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+2.32.0
+
