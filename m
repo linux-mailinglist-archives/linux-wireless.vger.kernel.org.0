@@ -2,86 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2817487496
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 10:18:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BF09487497
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 10:19:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236503AbiAGJSo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jan 2022 04:18:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58480 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236298AbiAGJSn (ORCPT
+        id S236577AbiAGJTm convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jan 2022 04:19:42 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:36423 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236298AbiAGJTl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jan 2022 04:18:43 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 984FAC061245;
-        Fri,  7 Jan 2022 01:18:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=oK6uBavdA5Gnt8mEB1fkktbayvYWRTqUAEziGOUdNos=;
-        t=1641547123; x=1642756723; b=T50b+xb1EVsoX/LYS2H1+sF35SQVRh6urP7juC+EKzvQUjz
-        0SvcOuAWimdi44xMjW9LwyyWtH7cOx+2KgSpXKaakk+rb894iDYRwIKwSBTqoPwv8EkjKuNqIpHCv
-        erRIozk2tTIwdNwawMF+tgSd2oz/n5I2auW6/OZ69n+NNQi1Wnqlc68cMVxux9ew/ous/pIRwK6Jp
-        oh3qiP/9SaZMhX1QrE/JaQ0GqQbw36WYTp5izdFuLp+sRxXjv5X/S1AxgiqNthhPgQQaJhC4hgYEK
-        R2AUz///Rzlc2hIarijigvZSWgutYXSl46kENsJhPJbw4j8QT3/RESO/v5IuA/Xw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1n5lOF-002qrE-GQ;
-        Fri, 07 Jan 2022 10:18:27 +0100
-Message-ID: <f61c6a25c7ad1ed452b4facf38c7e451d47c5dc0.camel@sipsolutions.net>
-Subject: Re: [PATCH] mt76: mt7915: fix a couple information leaks
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Felix Fietkau <nbd@nbd.name>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        MeiChia Chiu <meichia.chiu@mediatek.com>,
-        Money Wang <Money.Wang@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Date:   Fri, 07 Jan 2022 10:18:25 +0100
-In-Reply-To: <20220107073609.GH22086@kili>
-References: <20220107073609.GH22086@kili>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.2 (3.42.2-1.fc35) 
+        Fri, 7 Jan 2022 04:19:41 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2079JQf14008073, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2079JQf14008073
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 7 Jan 2022 17:19:26 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17; Fri, 7 Jan 2022 17:19:25 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Fri, 7 Jan 2022 17:19:25 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e]) by
+ RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e%5]) with mapi id
+ 15.01.2308.020; Fri, 7 Jan 2022 17:19:25 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Neo Jou <neojou@gmail.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>
+Subject: RE: [PATCH 0/9] rtw88: prepare locking for SDIO support
+Thread-Topic: [PATCH 0/9] rtw88: prepare locking for SDIO support
+Thread-Index: AQHX/DAWPbJm+q1QhEWX1RQxGTv+PKxXT6ng
+Date:   Fri, 7 Jan 2022 09:19:25 +0000
+Message-ID: <daba93973e5945f8bf611ce4c33c82e7@realtek.com>
+References: <20211228211501.468981-1-martin.blumenstingl@googlemail.com>
+In-Reply-To: <20211228211501.468981-1-martin.blumenstingl@googlemail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/1/7_=3F=3F_07:17:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2022-01-07 at 10:36 +0300, Dan Carpenter wrote:
-> Unfortunately this code has stumbled into some deep C standards
-> nonsense.  These two structs have a 3 byte struct hole at the end.  If
-> you partially initialize a struct then the C standard specifies that
-> all the struct holes are zeroed out.  But when you initialize all the
-> members of the struct, as this code does, then struct holes may be left
-> with uninitialized stack data.  This is from C11 section 6.7.9 and how
-> it is implemented in GCC.
 
-Wow, nice find ...
-
-> +	memset(&data, 0, sizeof(data));
-> +	data.cmd = cpu_to_le32(MURU_SET_TXC_TX_STATS_EN);
-> +	data.enable = enabled;
+> -----Original Message-----
+> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Sent: Wednesday, December 29, 2021 5:15 AM
+> To: linux-wireless@vger.kernel.org
+> Cc: tony0620emma@gmail.com; kvalo@codeaurora.org; johannes@sipsolutions.net; netdev@vger.kernel.org;
+> linux-kernel@vger.kernel.org; Neo Jou <neojou@gmail.com>; Jernej Skrabec <jernej.skrabec@gmail.com>;
+> Pkshih <pkshih@realtek.com>; Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Subject: [PATCH 0/9] rtw88: prepare locking for SDIO support
 > 
+> Hello rtw88 and mac80211 maintainers/contributors,
+> 
+> there is an ongoing effort where Jernej and I are working on adding
+> SDIO support to the rtw88 driver [0].
+> The hardware we use at the moment is RTL8822BS and RTL8822CS.
+> We are at a point where scanning, assoc etc. works (though it's not
+> fast yet, in my tests I got ~6Mbit/s in either direction).
 
-Maybe add a comment? This is not going to be obvious in the future.
+Could I know if you have improvement of this throughput issue?
 
->  	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(MURU_CTRL),
-> &data,
->  				sizeof(data), false);
+I have done simple test of this patchset on RTL8822CE, and it works
+well. But, I think I don't test all flows yet, so I will do more
+test that will take a while. After that, I can give a Tested-by tag.
 
-Or maybe instead just mark the thing __packed (and/or explicitly add the
-padding if needed), it seems weird that we'd send something to the
-*firmware* that has a struct layout subject to compiler/arch padding
-rules.
+Thank you
+Ping-Ke
 
-johannes
+
