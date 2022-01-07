@@ -2,126 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4629487E2E
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 22:23:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97B24487E6C
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 22:44:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229504AbiAGVXA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jan 2022 16:23:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53384 "EHLO
+        id S230097AbiAGVo1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jan 2022 16:44:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229851AbiAGVW7 (ORCPT
+        with ESMTP id S230037AbiAGVo0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jan 2022 16:22:59 -0500
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F4BBC06173F
-        for <linux-wireless@vger.kernel.org>; Fri,  7 Jan 2022 13:22:59 -0800 (PST)
-Received: by mail-io1-xd30.google.com with SMTP id i14so8689856ioj.12
-        for <linux-wireless@vger.kernel.org>; Fri, 07 Jan 2022 13:22:59 -0800 (PST)
+        Fri, 7 Jan 2022 16:44:26 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D33BC061574;
+        Fri,  7 Jan 2022 13:44:25 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id b13so26983580edd.8;
+        Fri, 07 Jan 2022 13:44:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=googlemail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=gLPG68maHzuWQkm+1YT+E6wsnchCrh1nEIPBO2jLick=;
-        b=ZUSjKTHkRHJvy2UfGzJr1qPKAQ9x2xc6LT2yVEJn/JlYNQ43chWeUkOVGmqJA9gSoA
-         qQRsliX1Tz6To1gwCxVfxt3X3xor8NZ0fFGvpqI2zIHPUKCAUOZsdBz2gftGHoTf/CMA
-         77MEFoTnyeYciVlgnsgmsQ2rQpslfmFAO5mhM=
+        bh=zXtdlL7gt6DxK0b+DlUcls5cPx4gO0iu5itPDk8XQcQ=;
+        b=Hi4VtCwsWIj23EKOp/A6OS4R5FtBNKeI8CL0vWZxvdWb1gb6kQ/h/XUVeg9hJ3J7oX
+         /F1S89XHIym6LwpmFOfswFIi0Jh77zWQhwHNyrfip0NwmmNZ7Y3ZZAn1evG+G8UbrKOJ
+         O8y1WcDwarI1fNIXVU3B+MZfAW9wyFG5w/5mapVnUhrwuyqNcL8v80vjxLlDXDoFrP61
+         FRE9tCErIJjQECRPCIGfoDxqKo1DB7P189pj7YOwiVSDY0AjrHqBdDpCcAdMbz9FNOma
+         74ZQhpx9jL4N1zMNyyMXKmCMWaRnCRmtZJnH7ynxtogSSFqi+DdbAWo4RedWggI1bck2
+         O6vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=gLPG68maHzuWQkm+1YT+E6wsnchCrh1nEIPBO2jLick=;
-        b=a9RGSeDLIPCk3Gv9MCP2pk+wl5PjSs5G7Imiy8EgiNoWQprY9RdqPV3ZJzC55x71jk
-         04QvBL6nuA5bgfECbHiy72xaPnugXs82fTrmLfbSXyuSDhFg8MlQJRBAR0NUwMJ8ftsX
-         5ae95v0vqqUlM1u7VSxm9UaMqPUc0eOnJUJvmx3Ddt/uNvRZZhuThYVFLSChe2OWJp84
-         K4GAFGCV7Wj1MBXTJP3T21j9adb3QC5vB/5Y4TIy6UJX+9K+S3w7jVJvwlWPQWxBpfN9
-         EcbLU4hnkATHbvB/LeFcrm318Wz/a+HIifPEKNRD7ZUiH9YqCatem2RL4pCPBqngviZE
-         WhPQ==
-X-Gm-Message-State: AOAM531J8gTYoiLKWAb3aNlxU6n6R/Hj8I6vZiBuqX47DPyzRqJchA+L
-        TMzZjhQHQ9Kxzn9WhzM1mii/LOO8c5dYzQ==
-X-Google-Smtp-Source: ABdhPJynzpMSS03J8aPHGcd2353MMVjnIbfefG2Nze8CPdX73+F8MYk1GXp2D4Z5JfFMYUuOY4EKSg==
-X-Received: by 2002:a6b:1496:: with SMTP id 144mr5558554iou.119.1641590578372;
-        Fri, 07 Jan 2022 13:22:58 -0800 (PST)
-Received: from mail-io1-f43.google.com (mail-io1-f43.google.com. [209.85.166.43])
-        by smtp.gmail.com with ESMTPSA id b15sm1286602ilv.46.2022.01.07.13.22.57
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Jan 2022 13:22:57 -0800 (PST)
-Received: by mail-io1-f43.google.com with SMTP id u8so8727220iol.5
-        for <linux-wireless@vger.kernel.org>; Fri, 07 Jan 2022 13:22:57 -0800 (PST)
-X-Received: by 2002:a02:c60e:: with SMTP id i14mr25520700jan.207.1641590577234;
- Fri, 07 Jan 2022 13:22:57 -0800 (PST)
+        bh=zXtdlL7gt6DxK0b+DlUcls5cPx4gO0iu5itPDk8XQcQ=;
+        b=OFjul4SQnLnXvpbFk3YfuTItxX53aG6WAE9HkFHwmAxiEXIusNr5SfGpI/pfguvgEn
+         zDh7pT5PIIBIrI/F84ehhfjaMW4Gy4OnY/SjhOWItDHAXoOm2Ffvfz2I5f5f7JGJqL8R
+         vWYPJOonLKvk0HxiK5AmS7FK8jnMK3szfGRvUTnLkewMYBRwxjHk74T9bOkWJZDUr5H5
+         c13IiNKv9i6/KndQqms5qL4dktQ/0Ouw06asaJ/xO5k9OPy9uBqoa7Q9bViJ6zNhq35Y
+         WqeKj09rD0gsKV6lwQaWpV77NtWXHVy2SYSktE88yhAr9kK+6+l7Tp/BCPr9qY0XgK/o
+         A+Wg==
+X-Gm-Message-State: AOAM530FbD1Funs5PoW4WEGIMMO2IKpnd4KbEyB3Kn97q9BZUOlISZvN
+        rWSMIjZx1VyhqfSRO0AECrjMkeDjUZi+kz1dQMxzm2ByEcQ=
+X-Google-Smtp-Source: ABdhPJyGa1XDoDP+0UdWLvgJj03UHE2OeJYIuZujmLHlyW3eTuHIJrCF8DVyiHmRb75V3oYfSBp4Zp6lBnOJMjycXZQ=
+X-Received: by 2002:a05:6402:518a:: with SMTP id q10mr61045735edd.29.1641591863806;
+ Fri, 07 Jan 2022 13:44:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20220107200417.1.Ie4dcc45b0bf365077303c596891d460d716bb4c5@changeid>
-In-Reply-To: <20220107200417.1.Ie4dcc45b0bf365077303c596891d460d716bb4c5@changeid>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Fri, 7 Jan 2022 13:22:45 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=W5fHP8K-PcoYWxYHiDWnPUVQQzOzw=REbuJSSqGeVVfg@mail.gmail.com>
-Message-ID: <CAD=FV=W5fHP8K-PcoYWxYHiDWnPUVQQzOzw=REbuJSSqGeVVfg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ath10k: search for default BDF name provided in DT
-To:     Abhishek Kumar <kuabhs@chromium.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Rakesh Pillai <pillair@codeaurora.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        ath10k <ath10k@lists.infradead.org>,
-        netdev <netdev@vger.kernel.org>
+References: <20211228211501.468981-1-martin.blumenstingl@googlemail.com>
+ <20211228211501.468981-4-martin.blumenstingl@googlemail.com> <1e9ed12ac55e42beb2197524c524e69f@realtek.com>
+In-Reply-To: <1e9ed12ac55e42beb2197524c524e69f@realtek.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Fri, 7 Jan 2022 22:44:13 +0100
+Message-ID: <CAFBinCBUJHWb+VpLdqDh49RSX9oMPjCxU1hzzqsCL31ouG=zmw@mail.gmail.com>
+Subject: Re: [PATCH 3/9] rtw88: Move rtw_update_sta_info() out of rtw_ra_mask_info_update_iter()
+To:     Pkshih <pkshih@realtek.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Neo Jou <neojou@gmail.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hi Ping-Ke,
 
-On Fri, Jan 7, 2022 at 12:05 PM Abhishek Kumar <kuabhs@chromium.org> wrote:
+On Fri, Jan 7, 2022 at 9:42 AM Pkshih <pkshih@realtek.com> wrote:
+[...]
 >
-> There can be cases where the board-2.bin does not contain
-> any BDF matching the chip-id+board-id+variant combination.
-> This causes the wlan probe to fail and renders wifi unusable.
-> For e.g. if the board-2.bin has default BDF as:
-> bus=snoc,qmi-board-id=67 but for some reason the board-id
-> on the wlan chip is not programmed and read 0xff as the
-> default value. In such cases there won't be any matching BDF
-> because the board-2.bin will be searched with following:
-> bus=snoc,qmi-board-id=ff
-> To address these scenarios, there can be an option to provide
-> fallback default BDF name in the device tree. If none of the
-> BDF names match then the board-2.bin file can be searched with
-> default BDF names assigned in the device tree.
+> > @@ -699,11 +702,20 @@ static void rtw_ra_mask_info_update(struct rtw_dev *rtwdev,
+> >                                   const struct cfg80211_bitrate_mask *mask)
+> >  {
+> >       struct rtw_iter_bitrate_mask_data br_data;
+> > +     unsigned int i;
+> > +
+> > +     mutex_lock(&rtwdev->mutex);
 >
-> The default BDF name can be set as:
-> wifi@a000000 {
->         status = "okay";
->         qcom,ath10k-default-bdf = "bus=snoc,qmi-board-id=67";
+> I think this lock is used to protect br_data.si[i], right?
+Correct, I chose this lock because it's also used in
+rtw_ops_sta_remove() and rtw_ops_sta_add() (which could modify the
+data in br_data.si[i]).
 
-Rather than add a new device tree property, wouldn't it be good enough
-to leverage the existing variant? Right now I think that the board
-file contains:
+> And, I prefer to move mutex lock to caller, like:
+>
+> @@ -734,7 +734,9 @@ static int rtw_ops_set_bitrate_mask(struct ieee80211_hw *hw,
+>  {
+>         struct rtw_dev *rtwdev = hw->priv;
+>
+> +       mutex_lock(&rtwdev->mutex);
+>         rtw_ra_mask_info_update(rtwdev, vif, mask);
+> +       mutex_unlock(&rtwdev->mutex);
+>
+>         return 0;
+>  }
+Thank you for this hint - if I do it like you suggest then the locking
+will be consistent with other functions.
+I'll send a v3 with this fixed.
 
-'bus=snoc,qmi-board-id=67.bin'
-'bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_LAZOR.bin'
-'bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_POMPOM.bin'
-'bus=snoc,qmi-board-id=67,qmi-chip-id=4320,variant=GO_LAZOR.bin'
-'bus=snoc,qmi-board-id=67,qmi-chip-id=4320,variant=GO_POMPOM.bin'
 
-...and, on lazor for instance, we have:
-
-qcom,ath10k-calibration-variant = "GO_LAZOR";
-
-The problem you're trying to solve is that on some early lazor
-prototype hardware we didn't have the "board-id" programmed we could
-get back 0xff from the hardware. As I understand it 0xff always means
-"unprogrammed".
-
-It feels like you could just have a special case such that if the
-hardware reports board ID of 0xff and you don't get a "match" that you
-could just treat 0xff as a wildcard. That means that you'd see the
-"variant" in the device tree and pick one of the "GO_LAZOR" entries.
-
-Anyway, I guess it's up to the people who spend more time in this file
-which they'd prefer, but that seems like it'd be simple and wouldn't
-require a bindings addition...
-
--Doug
+Best regards,
+Martin
