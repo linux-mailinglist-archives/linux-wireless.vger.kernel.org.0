@@ -2,98 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BF09487497
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 10:19:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E53448751A
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 10:55:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236577AbiAGJTm convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jan 2022 04:19:42 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:36423 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236298AbiAGJTl (ORCPT
+        id S1346621AbiAGJzv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jan 2022 04:55:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38598 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237113AbiAGJzr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jan 2022 04:19:41 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2079JQf14008073, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2079JQf14008073
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 7 Jan 2022 17:19:26 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Fri, 7 Jan 2022 17:19:25 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Fri, 7 Jan 2022 17:19:25 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e]) by
- RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e%5]) with mapi id
- 15.01.2308.020; Fri, 7 Jan 2022 17:19:25 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Neo Jou <neojou@gmail.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: RE: [PATCH 0/9] rtw88: prepare locking for SDIO support
-Thread-Topic: [PATCH 0/9] rtw88: prepare locking for SDIO support
-Thread-Index: AQHX/DAWPbJm+q1QhEWX1RQxGTv+PKxXT6ng
-Date:   Fri, 7 Jan 2022 09:19:25 +0000
-Message-ID: <daba93973e5945f8bf611ce4c33c82e7@realtek.com>
-References: <20211228211501.468981-1-martin.blumenstingl@googlemail.com>
-In-Reply-To: <20211228211501.468981-1-martin.blumenstingl@googlemail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/1/7_=3F=3F_07:17:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Fri, 7 Jan 2022 04:55:47 -0500
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A3D0C061245;
+        Fri,  7 Jan 2022 01:55:47 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id w16so19963928edc.11;
+        Fri, 07 Jan 2022 01:55:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=ooscPa9TOlryt6N2qyAjoWJG3ETCPGiTW3k86Hswt4s=;
+        b=cks1zYcs1Xgs5V1uOxCxOR/Qf1h3YplePHLQt8PrFB2csgVE4qG07afD/fyjCaGyzl
+         1WD7t+TBP31vbykr5v82qNPkwItSkh5TD7OkW8rLgrqDrBW4vt9LwZfppqrYmXtcZoGR
+         pi8XMTOHozBg7Am5I9HMsNAGfqbe68i3T8Ytvx47Ueot+iht4SELH1YhT6VKYZulNBAY
+         0sZRwJJi/r5pYjrZ0j6jeUPMzPzGpVWt/HPZYGiKVfWnI4BA3JCMo1lLG2XPwKpipJ+5
+         Dtwto3PdHvkXi3e6bsp1hoM4ZSRZvkbqCcyuKtAgcEtQhD4zTpYOv6A/lHpE61aa+Kgx
+         +RPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=ooscPa9TOlryt6N2qyAjoWJG3ETCPGiTW3k86Hswt4s=;
+        b=wcPi0OkYHbvoxpPydP1k/PEoB/2jK+h0BP9Gdi/o6Yj0bu0oPteK8az95QCAeqAYI1
+         GXKI0r+br6J7AuKhHn95aenr5u6nTc+8bqEyg9USQNJnF6V0sugOwpHi58FBBBc1XLsP
+         8cIPwwrrou9X1mSpDW2ibNeFUxqRbdWxASPQMLaUWQA+Yl5EbCXcnWIQu0KPcpB9rp3x
+         +zmHeKVBr30tX5SHtl+GnvZRBVIq9c0sRzseO61PSRq0MV0XHgrunO9W+K0l8IPIUoLL
+         +Y8CRuuBxYh7rsgNNUZs4xImNIBewsKu84ZL1ECEIgP2YjqbY0MGDG6OT4Mu8cTTCSBG
+         uCSA==
+X-Gm-Message-State: AOAM533YLE9H6ztzuDzj1wQee/7OskkMAnrPepGEi7XCc4HKI3WANd16
+        XWbjJ6cZAkE697TwtZrTnPcpRsulYDLquCY/MLY=
+X-Google-Smtp-Source: ABdhPJyB4zmiPw+DT/UfLBkSbY7FHKdVrFhtBv4VRloJ0St9kcs4gSdd/nWXaQV+hqqHdpMvkryUkooa/wovLjUVVQQ=
+X-Received: by 2002:a17:907:6d8d:: with SMTP id sb13mr50102935ejc.132.1641549345664;
+ Fri, 07 Jan 2022 01:55:45 -0800 (PST)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+References: <20220104072658.69756-1-marcan@marcan.st> <20220104072658.69756-5-marcan@marcan.st>
+ <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com> <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
+ <8394dbcd-f500-b1ae-fcd8-15485d8c0888@gmail.com> <6a936aea-ada4-fe2d-7ce6-7a42788e4d63@marcan.st>
+ <57716712-024d-af7e-394b-72ca9cb008d0@gmail.com> <CAHp75VdXk87x7oDT1O5Q32ZsL4n0HYt-fijeiXw8n9fgypkOgg@mail.gmail.com>
+ <d608ab82-cffe-0d66-99d2-d0abd214dd0d@gmail.com>
+In-Reply-To: <d608ab82-cffe-0d66-99d2-d0abd214dd0d@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 7 Jan 2022 11:55:09 +0200
+Message-ID: <CAHp75VfCJhMi35OnnE+hxp43PjpGYN1vteuMqX0J+1xZ+=az5w@mail.gmail.com>
+Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt paths
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Fri, Jan 7, 2022 at 5:12 AM Dmitry Osipenko <digetx@gmail.com> wrote:
+> 06.01.2022 20:58, Andy Shevchenko =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+> > On Thu, Jan 6, 2022 at 7:40 PM Dmitry Osipenko <digetx@gmail.com> wrote=
+:
+> >> 05.01.2022 16:22, Hector Martin =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
 
-> -----Original Message-----
-> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Sent: Wednesday, December 29, 2021 5:15 AM
-> To: linux-wireless@vger.kernel.org
-> Cc: tony0620emma@gmail.com; kvalo@codeaurora.org; johannes@sipsolutions.net; netdev@vger.kernel.org;
-> linux-kernel@vger.kernel.org; Neo Jou <neojou@gmail.com>; Jernej Skrabec <jernej.skrabec@gmail.com>;
-> Pkshih <pkshih@realtek.com>; Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Subject: [PATCH 0/9] rtw88: prepare locking for SDIO support
-> 
-> Hello rtw88 and mac80211 maintainers/contributors,
-> 
-> there is an ongoing effort where Jernej and I are working on adding
-> SDIO support to the rtw88 driver [0].
-> The hardware we use at the moment is RTL8822BS and RTL8822CS.
-> We are at a point where scanning, assoc etc. works (though it's not
-> fast yet, in my tests I got ~6Mbit/s in either direction).
+...
 
-Could I know if you have improvement of this throughput issue?
+> >> while (alt_paths.index)
+> >>         kfree(alt_paths.path[--alt_paths.index]);
+> >
+> > Usual pattern is
+> >
+> >   while (x--)
+> >     kfree(x);
 
-I have done simple test of this patchset on RTL8822CE, and it works
-well. But, I think I don't test all flows yet, so I will do more
-test that will take a while. After that, I can give a Tested-by tag.
+I have to elaborate that my point is to have postdecrement in the
+while() instead of doing predecrement in its body. So the above
+example will look
 
-Thank you
-Ping-Ke
+  while (alt_paths.index--)
+    kfree(alt_paths.path[alt_paths.index]);
+
+> > easier to read, extend (if needed).
+>
+> That is indeed a usual patter for the driver removal code paths. I
+> didn't like to have index of struct brcmf_fw underflowed, but I see now
+> that fwctx is dynamically created and freed during driver probe, so it
+> should be fine to use that usual pattern here too.
 
 
+
+--=20
+With Best Regards,
+Andy Shevchenko
