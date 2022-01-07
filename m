@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F83C48715E
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 04:43:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD8AA48715F
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 04:43:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345904AbiAGDnV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jan 2022 22:43:21 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:51097 "EHLO
+        id S1345905AbiAGDnX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jan 2022 22:43:23 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:51099 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345890AbiAGDnU (ORCPT
+        with ESMTP id S1345895AbiAGDnW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jan 2022 22:43:20 -0500
+        Thu, 6 Jan 2022 22:43:22 -0500
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2073hGaM5022977, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2073hHpmD022989, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2073hGaM5022977
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2073hHpmD022989
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 7 Jan 2022 11:43:16 +0800
+        Fri, 7 Jan 2022 11:43:17 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Fri, 7 Jan 2022 11:43:15 +0800
+ 15.1.2308.20; Fri, 7 Jan 2022 11:43:17 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Fri, 7 Jan
- 2022 11:43:15 +0800
+ 2022 11:43:17 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 11/19] rtw89: set mac_id and port ID to TXWD
-Date:   Fri, 7 Jan 2022 11:42:31 +0800
-Message-ID: <20220107034239.22002-12-pkshih@realtek.com>
+Subject: [PATCH 12/19] rtw89: separate {init,deinit}_addr_cam functions
+Date:   Fri, 7 Jan 2022 11:42:32 +0800
+Message-ID: <20220107034239.22002-13-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220107034239.22002-1-pkshih@realtek.com>
 References: <20220107034239.22002-1-pkshih@realtek.com>
@@ -60,121 +60,133 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-One mac_id is corresponding to one connected station, and port ID is a
-ID of virtual interfaces. With proper mac_id and port ID, firmware and
-hardware can handle a packet with correct context.
+Each stations connected to AP needs to set an address CAM, so don't combine
+address and BSSID CAM.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 26 +++++++++++++++++++++--
- drivers/net/wireless/realtek/rtw89/core.h |  2 ++
- drivers/net/wireless/realtek/rtw89/txrx.h |  1 +
- 3 files changed, 27 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/cam.c  | 34 ++++++++++++++---------
+ drivers/net/wireless/realtek/rtw89/cam.h  |  5 ++++
+ drivers/net/wireless/realtek/rtw89/core.h |  1 -
+ 3 files changed, 26 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 50bbc93196085..8f8891badf0e8 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -375,6 +375,8 @@ static void
- rtw89_core_tx_update_mgmt_info(struct rtw89_dev *rtwdev,
- 			       struct rtw89_core_tx_request *tx_req)
- {
-+	struct ieee80211_vif *vif = tx_req->vif;
-+	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
- 	struct rtw89_tx_desc_info *desc_info = &tx_req->desc_info;
- 	u8 qsel, ch_dma;
- 
-@@ -383,6 +385,7 @@ rtw89_core_tx_update_mgmt_info(struct rtw89_dev *rtwdev,
- 
- 	desc_info->qsel = qsel;
- 	desc_info->ch_dma = ch_dma;
-+	desc_info->port = desc_info->hiq ? rtwvif->port : 0;
- 	desc_info->hw_ssn_sel = RTW89_MGMT_HW_SSN_SEL;
- 	desc_info->hw_seq_mode = RTW89_MGMT_HW_SEQ_MODE;
- 
-@@ -520,6 +523,21 @@ rtw89_core_tx_update_he_qos_htc(struct rtw89_dev *rtwdev,
- 	desc_info->bk = true;
+diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
+index bd34e4bbe107b..2114d117b603d 100644
+--- a/drivers/net/wireless/realtek/rtw89/cam.c
++++ b/drivers/net/wireless/realtek/rtw89/cam.c
+@@ -427,15 +427,23 @@ static void rtw89_cam_reset_key_iter(struct ieee80211_hw *hw,
+ 	rtw89_cam_deinit(rtwdev, rtwvif);
  }
  
-+static u8 rtw89_core_tx_get_mac_id(struct rtw89_dev *rtwdev,
-+				   struct rtw89_core_tx_request *tx_req)
++void rtw89_cam_deinit_addr_cam(struct rtw89_dev *rtwdev,
++			       struct rtw89_addr_cam_entry *addr_cam)
 +{
-+	struct ieee80211_vif *vif = tx_req->vif;
-+	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
-+	struct ieee80211_sta *sta = tx_req->sta;
-+	struct rtw89_sta *rtwsta;
++	struct rtw89_cam_info *cam_info = &rtwdev->cam_info;
 +
-+	if (!sta)
-+		return rtwvif->mac_id;
-+
-+	rtwsta = (struct rtw89_sta *)sta->drv_priv;
-+	return rtwsta->mac_id;
++	addr_cam->valid = false;
++	clear_bit(addr_cam->addr_cam_idx, cam_info->addr_cam_map);
 +}
 +
- static void
- rtw89_core_tx_update_data_info(struct rtw89_dev *rtwdev,
- 			       struct rtw89_core_tx_request *tx_req)
-@@ -541,6 +559,8 @@ rtw89_core_tx_update_data_info(struct rtw89_dev *rtwdev,
- 	desc_info->ch_dma = ch_dma;
- 	desc_info->tid_indicate = tid_indicate;
- 	desc_info->qsel = qsel;
-+	desc_info->mac_id = rtw89_core_tx_get_mac_id(rtwdev, tx_req);
-+	desc_info->port = desc_info->hiq ? rtwvif->port : 0;
- 
- 	/* enable wd_info for AMPDU */
- 	desc_info->en_wd_info = true;
-@@ -723,7 +743,8 @@ static __le32 rtw89_build_txwd_body2(struct rtw89_tx_desc_info *desc_info)
+ void rtw89_cam_deinit(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
  {
- 	u32 dword = FIELD_PREP(RTW89_TXWD_BODY2_TID_INDICATE, desc_info->tid_indicate) |
- 		    FIELD_PREP(RTW89_TXWD_BODY2_QSEL, desc_info->qsel) |
--		    FIELD_PREP(RTW89_TXWD_BODY2_TXPKT_SIZE, desc_info->pkt_size);
-+		    FIELD_PREP(RTW89_TXWD_BODY2_TXPKT_SIZE, desc_info->pkt_size) |
-+		    FIELD_PREP(RTW89_TXWD_BODY2_MACID, desc_info->mac_id);
+ 	struct rtw89_cam_info *cam_info = &rtwdev->cam_info;
+ 	struct rtw89_addr_cam_entry *addr_cam = &rtwvif->addr_cam;
+ 	struct rtw89_bssid_cam_entry *bssid_cam = &rtwvif->bssid_cam;
  
- 	return cpu_to_le32(dword);
+-	addr_cam->valid = false;
++	rtw89_cam_deinit_addr_cam(rtwdev, addr_cam);
+ 	bssid_cam->valid = false;
+-	clear_bit(addr_cam->addr_cam_idx, cam_info->addr_cam_map);
+ 	clear_bit(bssid_cam->bssid_cam_idx, cam_info->bssid_cam_map);
  }
-@@ -741,7 +762,8 @@ static __le32 rtw89_build_txwd_info0(struct rtw89_tx_desc_info *desc_info)
+ 
+@@ -464,10 +472,10 @@ static int rtw89_cam_get_avail_addr_cam(struct rtw89_dev *rtwdev,
+ 	return 0;
+ }
+ 
+-static int rtw89_cam_init_addr_cam(struct rtw89_dev *rtwdev,
+-				   struct rtw89_vif *rtwvif)
++int rtw89_cam_init_addr_cam(struct rtw89_dev *rtwdev,
++			    struct rtw89_addr_cam_entry *addr_cam,
++			    const struct rtw89_bssid_cam_entry *bssid_cam)
  {
- 	u32 dword = FIELD_PREP(RTW89_TXWD_INFO0_USE_RATE, desc_info->use_rate) |
- 		    FIELD_PREP(RTW89_TXWD_INFO0_DATA_RATE, desc_info->data_rate) |
--		    FIELD_PREP(RTW89_TXWD_INFO0_DISDATAFB, desc_info->dis_data_fb);
-+		    FIELD_PREP(RTW89_TXWD_INFO0_DISDATAFB, desc_info->dis_data_fb) |
-+		    FIELD_PREP(RTW89_TXWD_INFO0_MULTIPORT_ID, desc_info->port);
+-	struct rtw89_addr_cam_entry *addr_cam = &rtwvif->addr_cam;
+ 	u8 addr_cam_idx;
+ 	int i;
+ 	int ret;
+@@ -484,14 +492,17 @@ static int rtw89_cam_init_addr_cam(struct rtw89_dev *rtwdev,
+ 	addr_cam->valid = true;
+ 	addr_cam->addr_mask = 0;
+ 	addr_cam->mask_sel = RTW89_NO_MSK;
++	addr_cam->sec_ent_mode = RTW89_ADDR_CAM_SEC_NORMAL;
+ 	bitmap_zero(addr_cam->sec_cam_map, RTW89_SEC_CAM_IN_ADDR_CAM);
+-	ether_addr_copy(addr_cam->sma, rtwvif->mac_addr);
  
- 	return cpu_to_le32(dword);
+ 	for (i = 0; i < RTW89_SEC_CAM_IN_ADDR_CAM; i++) {
+ 		addr_cam->sec_ent_keyid[i] = 0;
+ 		addr_cam->sec_ent[i] = 0;
+ 	}
+ 
++	/* associate addr cam with bssid cam */
++	addr_cam->bssid_cam_idx = bssid_cam->bssid_cam_idx;
++
+ 	return 0;
  }
+ 
+@@ -549,21 +560,18 @@ int rtw89_cam_init(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
+ 	struct rtw89_bssid_cam_entry *bssid_cam = &rtwvif->bssid_cam;
+ 	int ret;
+ 
+-	ret = rtw89_cam_init_addr_cam(rtwdev, rtwvif);
++	ret = rtw89_cam_init_bssid_cam(rtwdev, rtwvif);
+ 	if (ret) {
+-		rtw89_err(rtwdev, "failed to init addr cam\n");
++		rtw89_err(rtwdev, "failed to init bssid cam\n");
+ 		return ret;
+ 	}
+ 
+-	ret = rtw89_cam_init_bssid_cam(rtwdev, rtwvif);
++	ret = rtw89_cam_init_addr_cam(rtwdev, addr_cam, bssid_cam);
+ 	if (ret) {
+-		rtw89_err(rtwdev, "failed to init bssid cam\n");
++		rtw89_err(rtwdev, "failed to init addr cam\n");
+ 		return ret;
+ 	}
+ 
+-	/* associate addr cam with bssid cam */
+-	addr_cam->bssid_cam_idx = bssid_cam->bssid_cam_idx;
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/cam.h b/drivers/net/wireless/realtek/rtw89/cam.h
+index 33a3ad582b818..3a6a786530d17 100644
+--- a/drivers/net/wireless/realtek/rtw89/cam.h
++++ b/drivers/net/wireless/realtek/rtw89/cam.h
+@@ -346,6 +346,11 @@ static inline void FWCMD_SET_ADDR_BSSID_BSSID5(void *cmd, u32 value)
+ 
+ int rtw89_cam_init(struct rtw89_dev *rtwdev, struct rtw89_vif *vif);
+ void rtw89_cam_deinit(struct rtw89_dev *rtwdev, struct rtw89_vif *vif);
++int rtw89_cam_init_addr_cam(struct rtw89_dev *rtwdev,
++			    struct rtw89_addr_cam_entry *addr_cam,
++			    const struct rtw89_bssid_cam_entry *bssid_cam);
++void rtw89_cam_deinit_addr_cam(struct rtw89_dev *rtwdev,
++			       struct rtw89_addr_cam_entry *addr_cam);
+ void rtw89_cam_fill_addr_cam_info(struct rtw89_dev *rtwdev,
+ 				  struct rtw89_vif *vif,
+ 				  struct rtw89_sta *rtwsta,
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index cf795d2f14776..8cb907da6cb05 100644
+index 8cb907da6cb05..2dd5c4f0a3636 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -670,6 +670,7 @@ struct rtw89_rxdesc_long {
- struct rtw89_tx_desc_info {
- 	u16 pkt_size;
- 	u8 wp_offset;
-+	u8 mac_id;
- 	u8 qsel;
- 	u8 ch_dma;
- 	u8 hdr_llc_len;
-@@ -696,6 +697,7 @@ struct rtw89_tx_desc_info {
- 	u8 hw_seq_mode;
- #define RTW89_MGMT_HW_SEQ_MODE	1
- 	bool hiq;
-+	u8 port;
- };
+@@ -1884,7 +1884,6 @@ struct rtw89_addr_cam_entry {
+ 	u8 wapi		: 1;
+ 	u8 mask_sel	: 2;
+ 	u8 bssid_cam_idx: 6;
+-	u8 sma[ETH_ALEN];
  
- struct rtw89_core_tx_request {
-diff --git a/drivers/net/wireless/realtek/rtw89/txrx.h b/drivers/net/wireless/realtek/rtw89/txrx.h
-index fb92973e96c66..86e3d8b400d6c 100644
---- a/drivers/net/wireless/realtek/rtw89/txrx.h
-+++ b/drivers/net/wireless/realtek/rtw89/txrx.h
-@@ -58,6 +58,7 @@
- #define RTW89_TXWD_INFO0_GI_LTF GENMASK(27, 25)
- #define RTW89_TXWD_INFO0_DATA_RATE GENMASK(24, 16)
- #define RTW89_TXWD_INFO0_DISDATAFB BIT(10)
-+#define RTW89_TXWD_INFO0_MULTIPORT_ID GENMASK(6, 4)
- 
- /* TX WD INFO DWORD 1 */
- #define RTW89_TXWD_INFO1_DATA_RTY_LOWEST_RATE GENMASK(24, 16)
+ 	u8 sec_ent_mode;
+ 	DECLARE_BITMAP(sec_cam_map, RTW89_SEC_CAM_IN_ADDR_CAM);
 -- 
 2.25.1
 
