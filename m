@@ -2,72 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB2F24870BB
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 03:48:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94F7D4870C5
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 03:50:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344951AbiAGCsB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jan 2022 21:48:01 -0500
-Received: from p-impout007aa.msg.pkvw.co.charter.net ([47.43.26.138]:45003
-        "EHLO p-impout007.msg.pkvw.co.charter.net" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1344895AbiAGCsB (ORCPT
+        id S1345577AbiAGCun (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jan 2022 21:50:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57228 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344814AbiAGCum (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jan 2022 21:48:01 -0500
-Received: from localhost.localdomain ([24.31.246.181])
-        by cmsmtp with ESMTP
-        id 5fINnexpttfLp5fINnBfIU; Fri, 07 Jan 2022 02:48:00 +0000
-X-Authority-Analysis: v=2.4 cv=A+F/goaG c=1 sm=1 tr=0 ts=61d7a9e0
- a=cAe/7qmlxnd6JlJqP68I9A==:117 a=cAe/7qmlxnd6JlJqP68I9A==:17 a=n9Sqmae0AAAA:8
- a=OLL_FvSJAAAA:8 a=pGLkceISAAAA:8 a=yQdBAQUQAAAA:8 a=nXKJQCjKDyof0ucNp9gA:9
- a=0A4Jcq2VObsA:10 a=fJnPzuQwECQA:10 a=UmAUUZEt6-oIqEbegvw9:22
- a=oIrB72frpwYPwTMnlWqB:22 a=SzazLyfi1tnkUD6oumHU:22
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
-        masterzorag <masterzorag@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Subject: [PATCH] rtw88: rtw8821c: enable rfe 6 devices
-Date:   Thu,  6 Jan 2022 20:47:39 -0600
-Message-Id: <20220107024739.20967-1-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.34.1
+        Thu, 6 Jan 2022 21:50:42 -0500
+Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C0A1C061245;
+        Thu,  6 Jan 2022 18:50:42 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id A6A7E4388F;
+        Fri,  7 Jan 2022 02:50:22 +0000 (UTC)
+Message-ID: <e2ac1706-6471-0188-00d8-1c68735d24f7@marcan.st>
+Date:   Fri, 7 Jan 2022 11:50:20 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfIysOHecWnGHramGsNFsavxIOikeloq57U6i41WRqq9Fu5/rp07KzoBfmwMWGFWPccVgrD8biFg0AKgun3cc542NLtukAr8JqZd4c+FgVGzbiAefWG3A
- xYpPJyH4Ku0YQwizoEGc9ofsP+oViwdxGrUF+ua9UJFjdOBKeCkVkxgnCnRdqWNYX0HwdXj8joFaNKkiSJH+TZ7LBNVe7IghLFboJ0GKnfnXGq+Lo1F38+ZV
- Pa4bWv/YGT5vuWsnplv9YdR6vBhP7ZmvPALpKtgwWhL/C/GMEEmz06QjLgiQe6ql5WpK+DCw/UZYB30NfQHUCGNqSjrEXpMZREayImfi1YXXXXGnND1+wIEe
- fyTxEPD+
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.4.1
+Subject: Re: [PATCH v2 06/35] brcmfmac: firmware: Support passing in multiple
+ board_types
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220104072658.69756-1-marcan@marcan.st>
+ <20220104072658.69756-7-marcan@marcan.st>
+ <CAHp75VcXgVTZhPiPmbpAJr21xUopRXU6yi=wvyzs6ByR8C+rzw@mail.gmail.com>
+From:   Hector Martin <marcan@marcan.st>
+In-Reply-To: <CAHp75VcXgVTZhPiPmbpAJr21xUopRXU6yi=wvyzs6ByR8C+rzw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+On 2022/01/04 20:28, Andy Shevchenko wrote:
+> On Tue, Jan 4, 2022 at 9:28 AM Hector Martin <marcan@marcan.st> wrote:
+>>
+>> In order to make use of the multiple alt_path functionality, change
+>> board_type to an array. Bus drivers can pass in a NULL-terminated list
+>> of board type strings to try for the firmware fetch.
+> 
+>> +               /* strip extension at the end */
+>> +               strscpy(alt_path, path, BRCMF_FW_NAME_LEN);
+>> +               alt_path[suffix - path] = 0;
+>>
+>> -       alt_paths[0] = kstrdup(alt_path, GFP_KERNEL);
+>> +               strlcat(alt_path, ".", BRCMF_FW_NAME_LEN);
+>> +               strlcat(alt_path, board_types[i], BRCMF_FW_NAME_LEN);
+>> +               strlcat(alt_path, suffix, BRCMF_FW_NAME_LEN);
+>> +
+>> +               alt_paths[i] = kstrdup(alt_path, GFP_KERNEL);
+>> +               brcmf_dbg(TRACE, "FW alt path: %s\n", alt_paths[i]);
+> 
+> Consider replacing these string manipulations with kasprintf().
+> 
 
-In https://www.spinics.net/lists/linux-wireless/msg217116.html, Ping-Ke Shih
-answered a question for a user about an rtl8821ce device that reported
-RFE 6, which the driver did not support. Ping-Ke suggested a possible
-fix, but the user never reported back.
+Done, thanks!
 
-A second user discovered the above thread and tested the proposed fix.
-Accordingly, I am pushing this change, even though I am not the author.
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Reported-and-tested-by: masterzorag <masterzorag@gmail.com>
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
----
- drivers/net/wireless/realtek/rtw88/rtw8821c.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-index db078df63f85..b1f4afb50830 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-@@ -1514,6 +1514,7 @@ static const struct rtw_rfe_def rtw8821c_rfe_defs[] = {
- 	[0] = RTW_DEF_RFE(8821c, 0, 0),
- 	[2] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),
- 	[4] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),
-+	[6] = RTW_DEF_RFE(8821c, 0, 0),
- };
- 
- static struct rtw_hw_reg rtw8821c_dig[] = {
 -- 
-2.34.1
-
+Hector Martin (marcan@marcan.st)
+Public Key: https://mrcn.st/pub
