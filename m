@@ -2,139 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86B64487116
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 04:12:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FB95487151
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 04:43:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345772AbiAGDMr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jan 2022 22:12:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34086 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229769AbiAGDMq (ORCPT
+        id S1345842AbiAGDm7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jan 2022 22:42:59 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:51029 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229645AbiAGDm7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jan 2022 22:12:46 -0500
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AB61C061245;
-        Thu,  6 Jan 2022 19:12:46 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id k21so10819319lfu.0;
-        Thu, 06 Jan 2022 19:12:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=A7Z4QRcMvrmjlPeHV4GkEs76XEk9AgjLCHWeAaK4KqI=;
-        b=ElDNw1cPek0Kf7E4LomCE17N63Q6E1qVcxOWExxLE8F3XGOZ0rIx7UdsZg74McZ4tq
-         buNog03fKRLlt7iaBaAaNf2fUWtdmdQKegsE5NORsfMhU76iHvvh0bSNioX4hXIXZidG
-         aMDcL9ajmwPg7vX8DvR8kZUHHQZ4OZ4J0CONG1exFtIPaalbiPwY4WHRi6G5bIMO8/iy
-         9L3DgOHcyZAlOlNCVdVeYSPTjQbqQn5IaFSEW48PdI7FeVvaQrXfB6j7/AzWctQt2SsN
-         jz8KfIZLyGS5Lvbo7B3Z40UhgZjwZAUBlFPiBF/N34mqJx1EGKYABJMqrSjZazuLp0ob
-         zSmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=A7Z4QRcMvrmjlPeHV4GkEs76XEk9AgjLCHWeAaK4KqI=;
-        b=yPXq8px53ktMxwQIFXS63tbKgHlkDkWTEOcGb5/BMZOA0HSkVwooixsTKkv+uyFYqH
-         P9hgwQWxNEJ/jhiW3errm5uCdB4NdrYJoeWwHCXztBULSvgshN8LKePPY1zTKZXCSDQ7
-         13yLaLOwKKk4KtRXp6djQjKVitXQ8aFSJqJfAxJrUZt6ryUDPmzGfB0kP6xannG/NhpD
-         ZfNKY78JQCy0xLxvtrksoM68jQPwqfzLKVSJGjKTAryxL3jSLdBR4moF5ScGNVKdH5jv
-         DlCvRIFveFUivmpMyOiPWSfS7btMdvqe4YsTXnV7UA/vGKAGbxEf0AOYvjwkNlqIwrvd
-         CKUA==
-X-Gm-Message-State: AOAM533yuNSn2meLsA0XWJdvlVtk5EbMzS97jnF3jpqzuOh1k1dC7Ux2
-        GVwnRwdLCdMne7FNApU6aBo=
-X-Google-Smtp-Source: ABdhPJxHXV0k57MxWhuqfwmKFIiBmrRHiyLSJvJehH8MQgm0fNUeowax2AmLxwXnW0uI0iduRkbzBg==
-X-Received: by 2002:ac2:5f8b:: with SMTP id r11mr54565777lfe.44.1641525164286;
-        Thu, 06 Jan 2022 19:12:44 -0800 (PST)
-Received: from [192.168.2.145] (94-29-46-141.dynamic.spd-mgts.ru. [94.29.46.141])
-        by smtp.googlemail.com with ESMTPSA id p18sm402828ljn.65.2022.01.06.19.12.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Jan 2022 19:12:43 -0800 (PST)
-Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt
- paths
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-5-marcan@marcan.st>
- <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com>
- <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
- <8394dbcd-f500-b1ae-fcd8-15485d8c0888@gmail.com>
- <6a936aea-ada4-fe2d-7ce6-7a42788e4d63@marcan.st>
- <57716712-024d-af7e-394b-72ca9cb008d0@gmail.com>
- <CAHp75VdXk87x7oDT1O5Q32ZsL4n0HYt-fijeiXw8n9fgypkOgg@mail.gmail.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <d608ab82-cffe-0d66-99d2-d0abd214dd0d@gmail.com>
-Date:   Fri, 7 Jan 2022 06:12:42 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        Thu, 6 Jan 2022 22:42:59 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2073gqFA3022853, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2073gqFA3022853
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 7 Jan 2022 11:42:52 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Fri, 7 Jan 2022 11:42:52 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Fri, 7 Jan
+ 2022 11:42:51 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH 00/19] rtw89: support AP mode
+Date:   Fri, 7 Jan 2022 11:42:20 +0800
+Message-ID: <20220107034239.22002-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VdXk87x7oDT1O5Q32ZsL4n0HYt-fijeiXw8n9fgypkOgg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 01/07/2022 03:26:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEvNyCkV6TIIDAxOjMzOjAw?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-06.01.2022 20:58, Andy Shevchenko пишет:
-> On Thu, Jan 6, 2022 at 7:40 PM Dmitry Osipenko <digetx@gmail.com> wrote:
->> 05.01.2022 16:22, Hector Martin пишет:
->>> On 05/01/2022 07.09, Dmitry Osipenko wrote:
-> 
-> ...
-> 
->>> I'm confused; the array size is constant. What would index contain and
->>> why would would brcm_free_alt_fw_paths use it? Just as an iterator
->>> variable instead of using a local variable? Or do you mean count?
->>
->> Yes, use index for the count of active entries in the alt_paths[].
->>
->> for (i = 0; i < alt_paths.index; i++)
->>         kfree(alt_paths.path[i]);
->>
->> alt_paths.index = 0;
->>
->> or
->>
->> while (alt_paths.index)
->>         kfree(alt_paths.path[--alt_paths.index]);
-> 
-> Usual pattern is
-> 
->   while (x--)
->     kfree(x);
-> 
-> easier to read, extend (if needed).
-> 
+To support AP mode, we implement ::start_ap and ::stop_ap to configure
+firmware and hardware to play an AP. Then, we download beacon content to
+firmware, so firmware can send out periodically the frames that must have
+continual sequence number with other management frames.
 
-That is indeed a usual patter for the driver removal code paths. I
-didn't like to have index of struct brcmf_fw underflowed, but I see now
-that fwctx is dynamically created and freed during driver probe, so it
-should be fine to use that usual pattern here too.
+When mac80211 buffers unicast packets for certain STAs, it tells driver via
+::set_tim, and then we download the beacon content to firmware again. On the
+other hand, if a broadcast packet is going to send out, it should go via
+HIQ (HI queue) that hardware will raise group frame bit in TIM of beacon
+frame. But if no STA sleeps, a broadcast packet is sent via AC queue.
+
+When a STA is going to connect, it issues a probe request frame and then
+auth/assoc frames. To receive these frames before it is connected, we need
+to consider more RX filter flags to set registers properly.
+
+When a connection is established, we need to assign a mac_id as a behalf of
+this peer in firmware and hardware, and then use this mac_id to initialize
+an instance in firmware via H2C(s). The most important part is to add a
+corresponding address CAM entry that contains peer's MAC address and BSSID,
+so hardware can determine a packet is belong to which peer. If it is a
+security connection, keys will be filled to security CAM as well.
+
+Since there are many CAM ID(s), I add a debugfs entry to see if the
+relations between ID(s) and STA(s) are expected.
+
+Ping-Ke Shih (19):
+  rtw89: configure rx_filter according to FIF_PROBE_REQ
+  rtw89: use hardware SSN to TX management frame
+  rtw89: download beacon content to firmware
+  rtw89: add C2H handle of BCN_CNT
+  rtw89: implement mac80211_ops::set_tim to indicate STA to receive
+    packets
+  rtw89: allocate mac_id for each station in AP mode
+  rtw89: extend firmware commands on states of sta_assoc and
+    sta_disconnect
+  rtw89: rename vif_maintain to role_maintain
+  rtw89: configure mac port HIQ registers
+  rtw89: send broadcast/multicast packets via HIQ if STAs are in sleep
+    mode
+  rtw89: set mac_id and port ID to TXWD
+  rtw89: separate {init,deinit}_addr_cam functions
+  rtw89: extend role_maintain to support AP mode
+  rtw89: add addr_cam field to sta to support AP mode
+  rtw89: only STA mode change vif_type mapping dynamically
+  rtw89: maintain assoc/disassoc STA states of firmware and hardware
+  rtw89: implement ieee80211_ops::start_ap and stop_ap
+  rtw89: debug: add stations entry to show ID assignment
+  rtw89: declare AP mode support
+
+ drivers/net/wireless/realtek/rtw89/cam.c      |  40 +++---
+ drivers/net/wireless/realtek/rtw89/cam.h      |   5 +
+ drivers/net/wireless/realtek/rtw89/core.c     | 107 ++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/core.h     |  83 ++++++++-----
+ drivers/net/wireless/realtek/rtw89/debug.c    |  71 +++++++++++
+ drivers/net/wireless/realtek/rtw89/fw.c       | 110 ++++++++++++++---
+ drivers/net/wireless/realtek/rtw89/fw.h       | 115 +++++++++++++++++-
+ drivers/net/wireless/realtek/rtw89/mac.c      |  50 +++++++-
+ drivers/net/wireless/realtek/rtw89/mac.h      |   2 +
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  67 +++++++++-
+ drivers/net/wireless/realtek/rtw89/reg.h      |  14 ++-
+ drivers/net/wireless/realtek/rtw89/txrx.h     |   3 +
+ 12 files changed, 575 insertions(+), 92 deletions(-)
+
+-- 
+2.25.1
+
