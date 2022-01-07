@@ -2,182 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DEE50486F23
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 01:53:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B42E487094
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 03:39:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344728AbiAGAxu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jan 2022 19:53:50 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:43710 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344587AbiAGAxu (ORCPT
+        id S1345494AbiAGCjZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jan 2022 21:39:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54624 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345477AbiAGCjX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jan 2022 19:53:50 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Thu, 6 Jan 2022 21:39:23 -0500
+Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB556C061245;
+        Thu,  6 Jan 2022 18:39:22 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B74DF61C55
-        for <linux-wireless@vger.kernel.org>; Fri,  7 Jan 2022 00:53:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BE4C36AF2
-        for <linux-wireless@vger.kernel.org>; Fri,  7 Jan 2022 00:53:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641516829;
-        bh=nYMfX0PQEEcGyF0H8x+KlP1s0dR8rB1ycPBC9UYkQso=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=TDgQUoazanv32fETyq7r+fCtK2KZ7Mo65QL5VwqIpftXwZDXZdmaLH/VnZrqiTaNA
-         ZU5nj9eh6NyahngxRnYIvuXAYz4Q6Kchc3Z+0cgXKjAa8lpD4MNnROwyvCqUUUI8rz
-         AizidV7wBVzEfLYGnpbyE4hZYysA3ldTjbD+EB2NzAGOFeHyNrAai3KfEDZGu9K+tg
-         S5sCzQe8rnQzAB8EptnqDISWOUSRwiNJe/96ZBBLEaQq1ZEqE9f30pPMTCAsl6X/j3
-         Xjp5WsxssWfK7A6x5CIGvOfoXtYfStEb+i/Bp5qXwAvUpl9rB/VcCCIBzyvi9MfVco
-         C0oA58FWh5pqA==
-Received: by mail-ed1-f50.google.com with SMTP id a18so14949590edj.7
-        for <linux-wireless@vger.kernel.org>; Thu, 06 Jan 2022 16:53:49 -0800 (PST)
-X-Gm-Message-State: AOAM532aAlxtSEo7n5aldKHK/78pCY992eZkDegks0i/lBrVF4BJSEf/
-        QYja5AGgXP0xK0BgYUcl0M49tnELWiEO7punih8=
-X-Google-Smtp-Source: ABdhPJw0Gc0TNtKOHZ5twchJsi3kTNJ1Wu5XZ+ztGL+GlEdOyTbnfsvhpaOq1NuMYoFC4vUCi4Nz44/bY9IiymXRnIE=
-X-Received: by 2002:a05:6402:1a35:: with SMTP id be21mr58560242edb.215.1641516827342;
- Thu, 06 Jan 2022 16:53:47 -0800 (PST)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 0F82943320;
+        Fri,  7 Jan 2022 02:39:11 +0000 (UTC)
+Message-ID: <8febb957-9653-dac4-ea20-f2750d400d01@marcan.st>
+Date:   Fri, 7 Jan 2022 11:39:09 +0900
 MIME-Version: 1.0
-References: <77cd7840525c8c967ced523bcc954471930e17c5.1641420635.git.objelf@gmail.com>
-In-Reply-To: <77cd7840525c8c967ced523bcc954471930e17c5.1641420635.git.objelf@gmail.com>
-From:   Sean Wang <sean.wang@kernel.org>
-Date:   Thu, 6 Jan 2022 16:53:34 -0800
-X-Gmail-Original-Message-ID: <CAGp9LzoZyYZgT8_mvQHPRYW2gS5QuYcPpNjXnWscrUJEB4_OZg@mail.gmail.com>
-Message-ID: <CAGp9LzoZyYZgT8_mvQHPRYW2gS5QuYcPpNjXnWscrUJEB4_OZg@mail.gmail.com>
-Subject: Re: [PATCH] mt76: mt7921e: fix reset failure in mt7921_pci_probe
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com,
-        =?UTF-8?B?U2VhbiBXYW5nICjnjovlv5fkupgp?= <sean.wang@mediatek.com>,
-        Soul.Huang@mediatek.com, YN.Chen@mediatek.com,
-        Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com,
-        Mark-YW.Chen@mediatek.com, Deren.Wu@mediatek.com,
-        km.lin@mediatek.com, jenhao.yang@mediatek.com,
-        robin.chiu@mediatek.com, Eddie.Chen@mediatek.com,
-        ch.yeh@mediatek.com, posh.sun@mediatek.com, ted.huang@mediatek.com,
-        Eric.Liang@mediatek.com, Stella.Chang@mediatek.com,
-        Tom.Chou@mediatek.com, steve.lee@mediatek.com, jsiuda@google.com,
-        frankgor@google.com, jemele@google.com, abhishekpandit@google.com,
-        shawnku@google.com, linux-wireless@vger.kernel.org,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.4.1
+Subject: Re: [PATCH v2 10/35] brcmfmac: firmware: Allow platform to override
+ macaddr
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220104072658.69756-1-marcan@marcan.st>
+ <20220104072658.69756-11-marcan@marcan.st>
+ <CAHp75VcU1vVSucvegmSiMLoKBoPoGW5XLmqVUG0vXGdeafm2Jw@mail.gmail.com>
+ <b4f50489-fa4b-2c40-31ad-1b74e916cdb4@marcan.st>
+ <CAHp75VdzQhkj3ovFSAG4g1tD1scBK7H0xFFot0rfz2u6i8a3FA@mail.gmail.com>
+From:   Hector Martin <marcan@marcan.st>
+In-Reply-To: <CAHp75VdzQhkj3ovFSAG4g1tD1scBK7H0xFFot0rfz2u6i8a3FA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-@nbd please drop the patch, I will post a new one to fix the aspm issue
+On 2022/01/06 23:20, Andy Shevchenko wrote:
+> On Wed, Jan 5, 2022 at 3:26 PM Hector Martin <marcan@marcan.st> wrote:
+>> On 04/01/2022 23.23, Andy Shevchenko wrote:
+>>> On Tue, Jan 4, 2022 at 9:29 AM Hector Martin <marcan@marcan.st> wrote:
+> 
+> ...
+> 
+>>>> +#define BRCMF_FW_MACADDR_FMT                   "macaddr=%pM"
+> 
+>>>> +       snprintf(&nvp->nvram[nvp->nvram_len], BRCMF_FW_MACADDR_LEN + 1,
+>>>> +                BRCMF_FW_MACADDR_FMT, mac);
+>>>
+>>> Please, avoid using implict format string, it's dangerous from security p.o.v.
+>>
+>> What do you mean by implicit format string?
+> 
+> When I read the above code I feel uncomfortable because no-one can see
+> (without additional action and more reading and checking) if it's
+> correct or not. This is potential to be error prone.
+> 
+>> The format string is at the
+>> top of the file and its length is right next to it, which makes it
+>> harder for them to accidentally fall out of sync.
+> 
+> It is not an argument. Just you may do the same in the code directly
+> and more explicitly:
 
-On Thu, Jan 6, 2022 at 1:32 PM <sean.wang@mediatek.com> wrote:
->
-> From: Deren Wu <deren.wu@mediatek.com>
->
-> Ensure that the device returns to the driver's own state to switch ASPM
-> into the active state before we start resetting the device to fix
-> the following kernel panic.
->
-> [   17.164952]  dump_stack_lvl+0x48/0x5e
-> [   17.164955]  bad_page.cold+0x63/0x94
-> [   17.164957]  free_pcppages_bulk+0x1f2/0x360
-> [   17.164961]  free_unref_page+0xb4/0x120
-> [   17.164963]  mt76_dma_rx_cleanup+0x94/0x110 [mt76]
-> [   17.164969]  mt7921_wpdma_reset+0xbc/0x1c0 [mt7921e]
-> [   17.164972]  mt7921_register_device+0x32b/0x5d0 [mt7921_common]
-> [   17.164976]  mt7921_pci_probe+0x1d5/0x210 [mt7921e]
-> [   17.164977]  ? __pm_runtime_resume+0x58/0x80
-> [   17.164979]  local_pci_probe+0x45/0x80
-> [   17.164981]  ? pci_match_device+0xac/0x130
-> [   17.164983]  pci_device_probe+0xd2/0x1c0
-> [   17.164984]  really_probe+0x1f5/0x3f0
-> [   17.164987]  __driver_probe_device+0xfe/0x180
-> [   17.164988]  driver_probe_device+0x1e/0x90
-> [   17.164990]  __driver_attach+0xc0/0x1c0
-> [   17.164991]  ? __device_attach_driver+0xe0/0xe0
-> [   17.164992]  ? __device_attach_driver+0xe0/0xe0
-> [   17.164994]  bus_for_each_dev+0x78/0xc0
-> [   17.164995]  new_id_store+0xfc/0x1d0
-> [   17.164996]  kernfs_fop_write_iter+0x11c/0x1b0
-> [   17.164998]  new_sync_write+0x11f/0x1b0
-> [   17.165001]  vfs_write+0x209/0x2a0
-> [   17.165003]  ksys_write+0x5f/0xe0
-> [   17.165004]  do_syscall_64+0x3b/0xc0
-> [   17.165006]
->
-> Fixes: bf3747ae2e25 ("mt76: mt7921: enable aspm by default")
-> Reported-by: Kai-Chuan Hsieh <kaichuan.hsieh@canonical.com>
-> Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> ---
->  .../net/wireless/mediatek/mt76/mt7921/dma.c    |  4 ++++
->  .../net/wireless/mediatek/mt76/mt7921/mt7921.h |  1 +
->  .../wireless/mediatek/mt76/mt7921/pci_mcu.c    | 18 ++++++++++++++----
->  3 files changed, 19 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-> index cdff1fd52d93..0c4b0e0e634a 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-> @@ -364,6 +364,10 @@ int mt7921_dma_init(struct mt7921_dev *dev)
->         if (ret)
->                 return ret;
->
-> +       ret = __mt7921e_mcu_drv_pmctrl(dev);
-> +       if (ret)
-> +               return ret;
-> +
->         ret = mt7921_wfsys_reset(dev);
->         if (ret)
->                 return ret;
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> index 8b674e042568..63e3c7ef5e89 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> @@ -443,6 +443,7 @@ int mt7921e_mcu_init(struct mt7921_dev *dev);
->  int mt7921s_wfsys_reset(struct mt7921_dev *dev);
->  int mt7921s_mac_reset(struct mt7921_dev *dev);
->  int mt7921s_init_reset(struct mt7921_dev *dev);
-> +int __mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev);
->  int mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev);
->  int mt7921e_mcu_fw_pmctrl(struct mt7921_dev *dev);
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
-> index f9e350b67fdc..36669e5aeef3 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
-> @@ -59,10 +59,8 @@ int mt7921e_mcu_init(struct mt7921_dev *dev)
->         return err;
->  }
->
-> -int mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev)
-> +int __mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev)
->  {
-> -       struct mt76_phy *mphy = &dev->mt76.phy;
-> -       struct mt76_connac_pm *pm = &dev->pm;
->         int i, err = 0;
->
->         for (i = 0; i < MT7921_DRV_OWN_RETRY_COUNT; i++) {
-> @@ -75,9 +73,21 @@ int mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev)
->         if (i == MT7921_DRV_OWN_RETRY_COUNT) {
->                 dev_err(dev->mt76.dev, "driver own failed\n");
->                 err = -EIO;
-> -               goto out;
->         }
->
-> +       return err;
-> +}
-> +
-> +int mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev)
-> +{
-> +       struct mt76_phy *mphy = &dev->mt76.phy;
-> +       struct mt76_connac_pm *pm = &dev->pm;
-> +       int err;
-> +
-> +       err = __mt7921e_mcu_drv_pmctrl(dev);
-> +       if (err < 0)
-> +               goto out;
-> +
->         mt7921_wpdma_reinit_cond(dev);
->         clear_bit(MT76_STATE_PM, &mphy->state);
->
-> --
-> 2.25.1
->
+The point is that BRCMF_FW_MACADDR_LEN and BRCMF_FW_MACADDR_FMT need to
+be in sync, and BRCMF_FW_MACADDR_LEN is used in two different places. If
+I inline the format string into the code, someone could change it
+without changing the length, or changing the length inline only next to
+the format string. Then we overflow the NVRAM buffer because the
+allocation is not sized properly.
+
+By having them as defines, it is obvious that they go together, and if
+one changes the other one has to change too, and the nvram allocation
+can't end up improperly sized as long as they are kept in sync.
+
+> Also you don't check the return code of snprintf which means that you
+> don't care about the result, which seems to me wrong approach. If you
+> don't care about the result, so it means it's not very important,
+> right?
+> 
+
+That snprintf can never fail as long as the format string/length are in
+sync. I'll make it BUG_ON(... != size), so it complains loudly if
+someone screws up the format string in the future.
+
+-- 
+Hector Martin (marcan@marcan.st)
+Public Key: https://mrcn.st/pub
