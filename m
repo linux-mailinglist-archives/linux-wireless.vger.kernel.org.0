@@ -2,148 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D806B487438
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 09:43:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2817487496
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 10:18:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236430AbiAGImg convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jan 2022 03:42:36 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:60462 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236390AbiAGImf (ORCPT
+        id S236503AbiAGJSo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jan 2022 04:18:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58480 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236298AbiAGJSn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jan 2022 03:42:35 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2078gC4z9031079, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2078gC4z9031079
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 7 Jan 2022 16:42:12 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Fri, 7 Jan 2022 16:42:12 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Fri, 7 Jan 2022 00:42:12 -0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e]) by
- RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e%5]) with mapi id
- 15.01.2308.020; Fri, 7 Jan 2022 16:42:12 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Neo Jou <neojou@gmail.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: RE: [PATCH 3/9] rtw88: Move rtw_update_sta_info() out of rtw_ra_mask_info_update_iter()
-Thread-Topic: [PATCH 3/9] rtw88: Move rtw_update_sta_info() out of
- rtw_ra_mask_info_update_iter()
-Thread-Index: AQHX/DAKvkoPg4jC/0epBaMSmZ/kxKxXS7/A
-Date:   Fri, 7 Jan 2022 08:42:11 +0000
-Message-ID: <1e9ed12ac55e42beb2197524c524e69f@realtek.com>
-References: <20211228211501.468981-1-martin.blumenstingl@googlemail.com>
- <20211228211501.468981-4-martin.blumenstingl@googlemail.com>
-In-Reply-To: <20211228211501.468981-4-martin.blumenstingl@googlemail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/1/7_=3F=3F_06:00:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Fri, 7 Jan 2022 04:18:43 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 984FAC061245;
+        Fri,  7 Jan 2022 01:18:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=oK6uBavdA5Gnt8mEB1fkktbayvYWRTqUAEziGOUdNos=;
+        t=1641547123; x=1642756723; b=T50b+xb1EVsoX/LYS2H1+sF35SQVRh6urP7juC+EKzvQUjz
+        0SvcOuAWimdi44xMjW9LwyyWtH7cOx+2KgSpXKaakk+rb894iDYRwIKwSBTqoPwv8EkjKuNqIpHCv
+        erRIozk2tTIwdNwawMF+tgSd2oz/n5I2auW6/OZ69n+NNQi1Wnqlc68cMVxux9ew/ous/pIRwK6Jp
+        oh3qiP/9SaZMhX1QrE/JaQ0GqQbw36WYTp5izdFuLp+sRxXjv5X/S1AxgiqNthhPgQQaJhC4hgYEK
+        R2AUz///Rzlc2hIarijigvZSWgutYXSl46kENsJhPJbw4j8QT3/RESO/v5IuA/Xw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1n5lOF-002qrE-GQ;
+        Fri, 07 Jan 2022 10:18:27 +0100
+Message-ID: <f61c6a25c7ad1ed452b4facf38c7e451d47c5dc0.camel@sipsolutions.net>
+Subject: Re: [PATCH] mt76: mt7915: fix a couple information leaks
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Felix Fietkau <nbd@nbd.name>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        MeiChia Chiu <meichia.chiu@mediatek.com>,
+        Money Wang <Money.Wang@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org
+Date:   Fri, 07 Jan 2022 10:18:25 +0100
+In-Reply-To: <20220107073609.GH22086@kili>
+References: <20220107073609.GH22086@kili>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.2 (3.42.2-1.fc35) 
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Fri, 2022-01-07 at 10:36 +0300, Dan Carpenter wrote:
+> Unfortunately this code has stumbled into some deep C standards
+> nonsense.  These two structs have a 3 byte struct hole at the end.  If
+> you partially initialize a struct then the C standard specifies that
+> all the struct holes are zeroed out.  But when you initialize all the
+> members of the struct, as this code does, then struct holes may be left
+> with uninitialized stack data.  This is from C11 section 6.7.9 and how
+> it is implemented in GCC.
 
-> -----Original Message-----
-> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Sent: Wednesday, December 29, 2021 5:15 AM
-> To: linux-wireless@vger.kernel.org
-> Cc: tony0620emma@gmail.com; kvalo@codeaurora.org; johannes@sipsolutions.net; netdev@vger.kernel.org;
-> linux-kernel@vger.kernel.org; Neo Jou <neojou@gmail.com>; Jernej Skrabec <jernej.skrabec@gmail.com>;
-> Pkshih <pkshih@realtek.com>; Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Subject: [PATCH 3/9] rtw88: Move rtw_update_sta_info() out of rtw_ra_mask_info_update_iter()
-> 
-> rtw_update_sta_info() internally access some registers while being
-> called unter an atomic lock acquired by rtw_iterate_vifs_atomic(). Move
-> rtw_update_sta_info() call out of (rtw_ra_mask_info_update_iter) in
-> preparation for SDIO support where register access may sleep.
-> 
-> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> ---
-> v1 -> v2:
-> - this patch is new in v2
-> - keep rtw_iterate_vifs_atomic() to prevent deadlocks as Johannes
->   suggested. Keep track of all relevant stations inside
->   rtw_ra_mask_info_update_iter() and the iter-data and then call
->   rtw_update_sta_info() while held under rtwdev->mutex instead
-> 
->  drivers/net/wireless/realtek/rtw88/mac80211.c | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c
-> b/drivers/net/wireless/realtek/rtw88/mac80211.c
-> index ae7d97de5fdf..3bd12354a8a1 100644
-> --- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-> +++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+Wow, nice find ...
 
-[...]
-
-> @@ -699,11 +702,20 @@ static void rtw_ra_mask_info_update(struct rtw_dev *rtwdev,
->  				    const struct cfg80211_bitrate_mask *mask)
->  {
->  	struct rtw_iter_bitrate_mask_data br_data;
-> +	unsigned int i;
-> +
-> +	mutex_lock(&rtwdev->mutex);
-
-I think this lock is used to protect br_data.si[i], right?
-
-And, I prefer to move mutex lock to caller, like:
-
-@@ -734,7 +734,9 @@ static int rtw_ops_set_bitrate_mask(struct ieee80211_hw *hw,
- {
-        struct rtw_dev *rtwdev = hw->priv;
-
-+       mutex_lock(&rtwdev->mutex);
-        rtw_ra_mask_info_update(rtwdev, vif, mask);
-+       mutex_unlock(&rtwdev->mutex);
-
-        return 0;
- }
-
-> 
->  	br_data.rtwdev = rtwdev;
->  	br_data.vif = vif;
->  	br_data.mask = mask;
-> +	br_data.num_si = 0;
->  	rtw_iterate_stas_atomic(rtwdev, rtw_ra_mask_info_update_iter, &br_data);
-> +
-> +	for (i = 0; i < br_data.num_si; i++)
-> +		rtw_update_sta_info(rtwdev, br_data.si[i]);
-> +
-> +	mutex_unlock(&rtwdev->mutex);
->  }
+> +	memset(&data, 0, sizeof(data));
+> +	data.cmd = cpu_to_le32(MURU_SET_TXC_TX_STATS_EN);
+> +	data.enable = enabled;
 > 
 
---
-Ping-Ke
+Maybe add a comment? This is not going to be obvious in the future.
 
+>  	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(MURU_CTRL),
+> &data,
+>  				sizeof(data), false);
 
+Or maybe instead just mark the thing __packed (and/or explicitly add the
+padding if needed), it seems weird that we'd send something to the
+*firmware* that has a struct layout subject to compiler/arch padding
+rules.
+
+johannes
