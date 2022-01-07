@@ -2,100 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46B41487D74
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 21:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4629487E2E
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 22:23:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233913AbiAGUGE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jan 2022 15:06:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36482 "EHLO
+        id S229504AbiAGVXA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jan 2022 16:23:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233027AbiAGUGD (ORCPT
+        with ESMTP id S229851AbiAGVW7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jan 2022 15:06:03 -0500
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10690C061574
-        for <linux-wireless@vger.kernel.org>; Fri,  7 Jan 2022 12:06:03 -0800 (PST)
-Received: by mail-pf1-x432.google.com with SMTP id u192so66023pfc.5
-        for <linux-wireless@vger.kernel.org>; Fri, 07 Jan 2022 12:06:03 -0800 (PST)
+        Fri, 7 Jan 2022 16:22:59 -0500
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F4BBC06173F
+        for <linux-wireless@vger.kernel.org>; Fri,  7 Jan 2022 13:22:59 -0800 (PST)
+Received: by mail-io1-xd30.google.com with SMTP id i14so8689856ioj.12
+        for <linux-wireless@vger.kernel.org>; Fri, 07 Jan 2022 13:22:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=9aQGqZRmHVofJdgbyQpqYP9ZVw8rgMp4fyAd54UvKjI=;
-        b=oKB02UKX2GpWx89gjvdWfZ0z7iFyz6jXVLhUcI83TOu0Dm2uqbBoVD9trbzfsQO5bt
-         C9hzF5hu33iB+xe3NVipbIwJ5YLYNGsbtTHg+bzfI9LOPj10iuYdglFU1gmrLqOrSqOC
-         6iEb4Atd6HINbMwKeExRhl9iT9grnwCGhzDBY=
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gLPG68maHzuWQkm+1YT+E6wsnchCrh1nEIPBO2jLick=;
+        b=ZUSjKTHkRHJvy2UfGzJr1qPKAQ9x2xc6LT2yVEJn/JlYNQ43chWeUkOVGmqJA9gSoA
+         qQRsliX1Tz6To1gwCxVfxt3X3xor8NZ0fFGvpqI2zIHPUKCAUOZsdBz2gftGHoTf/CMA
+         77MEFoTnyeYciVlgnsgmsQ2rQpslfmFAO5mhM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=9aQGqZRmHVofJdgbyQpqYP9ZVw8rgMp4fyAd54UvKjI=;
-        b=IyzqpoEKpP5jUIAfYSbmKIzsCJs+iVjzoi24ifSlF4sSQ4d0n/LBwVN5I9Wh/B9zrK
-         Ua1IgNDy1ahcAOSxi53qTSGC0zTm0wmvJzUSJnvlP9wIXYlXppA3JQFsGNhtKIel+Tow
-         Tq7yDsXk5QrIyIIs0+YOx/fdR/GS8UQ9lFHLWPUCstw543/oOUlnR49LMXoMGQCS7WJ6
-         3WPbiCX/Y0JGbNAYBNho/q4VA5rP3WmXE6AbyXl+t4DiQaQC3vSEFjgdY3rtmc0TTbou
-         wUSiwTVKx6jDbwUaCGhl0WBo4/ESVBoSw10OeFfI75kZWj+2tYp1AH4U+T3DAG6+0554
-         ZD3g==
-X-Gm-Message-State: AOAM531HZOMhS+g6rjME3iWIu3C/kXYyMSXq3O8ibn9MmVhgAHaLyL61
-        sf4+vrnvn7/rNv6I4PKpu2UtGg==
-X-Google-Smtp-Source: ABdhPJxRLSIDf45pCKTTtVhB5TKIpwBXdiQ5iVWYe9E4TZ3n2ODOwkimZzHR1vjLIHQzP8qdcUQ82g==
-X-Received: by 2002:a63:f254:: with SMTP id d20mr57812751pgk.127.1641585962552;
-        Fri, 07 Jan 2022 12:06:02 -0800 (PST)
-Received: from kuabhs-cdev.c.googlers.com.com (254.80.82.34.bc.googleusercontent.com. [34.82.80.254])
-        by smtp.gmail.com with ESMTPSA id y18sm5929492pfn.202.2022.01.07.12.06.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jan 2022 12:06:02 -0800 (PST)
-From:   Abhishek Kumar <kuabhs@chromium.org>
-To:     kvalo@codeaurora.org, dianders@chromium.org
-Cc:     pillair@codeaurora.org, kuabhs@chromium.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gLPG68maHzuWQkm+1YT+E6wsnchCrh1nEIPBO2jLick=;
+        b=a9RGSeDLIPCk3Gv9MCP2pk+wl5PjSs5G7Imiy8EgiNoWQprY9RdqPV3ZJzC55x71jk
+         04QvBL6nuA5bgfECbHiy72xaPnugXs82fTrmLfbSXyuSDhFg8MlQJRBAR0NUwMJ8ftsX
+         5ae95v0vqqUlM1u7VSxm9UaMqPUc0eOnJUJvmx3Ddt/uNvRZZhuThYVFLSChe2OWJp84
+         K4GAFGCV7Wj1MBXTJP3T21j9adb3QC5vB/5Y4TIy6UJX+9K+S3w7jVJvwlWPQWxBpfN9
+         EcbLU4hnkATHbvB/LeFcrm318Wz/a+HIifPEKNRD7ZUiH9YqCatem2RL4pCPBqngviZE
+         WhPQ==
+X-Gm-Message-State: AOAM531J8gTYoiLKWAb3aNlxU6n6R/Hj8I6vZiBuqX47DPyzRqJchA+L
+        TMzZjhQHQ9Kxzn9WhzM1mii/LOO8c5dYzQ==
+X-Google-Smtp-Source: ABdhPJynzpMSS03J8aPHGcd2353MMVjnIbfefG2Nze8CPdX73+F8MYk1GXp2D4Z5JfFMYUuOY4EKSg==
+X-Received: by 2002:a6b:1496:: with SMTP id 144mr5558554iou.119.1641590578372;
+        Fri, 07 Jan 2022 13:22:58 -0800 (PST)
+Received: from mail-io1-f43.google.com (mail-io1-f43.google.com. [209.85.166.43])
+        by smtp.gmail.com with ESMTPSA id b15sm1286602ilv.46.2022.01.07.13.22.57
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Jan 2022 13:22:57 -0800 (PST)
+Received: by mail-io1-f43.google.com with SMTP id u8so8727220iol.5
+        for <linux-wireless@vger.kernel.org>; Fri, 07 Jan 2022 13:22:57 -0800 (PST)
+X-Received: by 2002:a02:c60e:: with SMTP id i14mr25520700jan.207.1641590577234;
+ Fri, 07 Jan 2022 13:22:57 -0800 (PST)
+MIME-Version: 1.0
+References: <20220107200417.1.Ie4dcc45b0bf365077303c596891d460d716bb4c5@changeid>
+In-Reply-To: <20220107200417.1.Ie4dcc45b0bf365077303c596891d460d716bb4c5@changeid>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Fri, 7 Jan 2022 13:22:45 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=W5fHP8K-PcoYWxYHiDWnPUVQQzOzw=REbuJSSqGeVVfg@mail.gmail.com>
+Message-ID: <CAD=FV=W5fHP8K-PcoYWxYHiDWnPUVQQzOzw=REbuJSSqGeVVfg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ath10k: search for default BDF name provided in DT
+To:     Abhishek Kumar <kuabhs@chromium.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Rakesh Pillai <pillair@codeaurora.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Kalle Valo <kvalo@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH 2/2] dt: bindings: add dt entry for ath10k default BDF name
-Date:   Fri,  7 Jan 2022 20:04:31 +0000
-Message-Id: <20220107200417.2.Ia0365467994f8f9085c86b5674b57ff507c669f8@changeid>
-X-Mailer: git-send-email 2.34.1.575.g55b058a8bb-goog
-In-Reply-To: <20220107200417.1.Ie4dcc45b0bf365077303c596891d460d716bb4c5@changeid>
-References: <20220107200417.1.Ie4dcc45b0bf365077303c596891d460d716bb4c5@changeid>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        ath10k <ath10k@lists.infradead.org>,
+        netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It is possible that BDF name with board-id+chip-id+variant
-combination is not found in the board-2.bin. Such cases can
-cause wlan probe to fail and completely break wifi. In such
-case there can be an optional property to define a default
-BDF name to search for in the board-2.bin file when none of
-the combinations (board-id,chip-id,variant) match.
-To address the above concern provide an optional proptery:
-qcom,ath10k-default-bdf
+Hi,
 
-Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
----
+On Fri, Jan 7, 2022 at 12:05 PM Abhishek Kumar <kuabhs@chromium.org> wrote:
+>
+> There can be cases where the board-2.bin does not contain
+> any BDF matching the chip-id+board-id+variant combination.
+> This causes the wlan probe to fail and renders wifi unusable.
+> For e.g. if the board-2.bin has default BDF as:
+> bus=snoc,qmi-board-id=67 but for some reason the board-id
+> on the wlan chip is not programmed and read 0xff as the
+> default value. In such cases there won't be any matching BDF
+> because the board-2.bin will be searched with following:
+> bus=snoc,qmi-board-id=ff
+> To address these scenarios, there can be an option to provide
+> fallback default BDF name in the device tree. If none of the
+> BDF names match then the board-2.bin file can be searched with
+> default BDF names assigned in the device tree.
+>
+> The default BDF name can be set as:
+> wifi@a000000 {
+>         status = "okay";
+>         qcom,ath10k-default-bdf = "bus=snoc,qmi-board-id=67";
 
- .../devicetree/bindings/net/wireless/qcom,ath10k.txt          | 4 ++++
- 1 file changed, 4 insertions(+)
+Rather than add a new device tree property, wouldn't it be good enough
+to leverage the existing variant? Right now I think that the board
+file contains:
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-index b61c2d5a0ff7..d76d1392863d 100644
---- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-+++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-@@ -63,6 +63,10 @@ Optional properties:
- 				 hw versions.
- - qcom,ath10k-pre-calibration-data : pre calibration data as an array,
- 				     the length can vary between hw versions.
-+- qcom,ath10k-default-bdf : default board data file name to be searched in
-+			    board-2.bin. This is searched if no BDF is found
-+			    in board-2.bin that matches, chip-id, board-id and
-+			    variant combination
- - <supply-name>-supply: handle to the regulator device tree node
- 			   optional "supply-name" are "vdd-0.8-cx-mx",
- 			   "vdd-1.8-xo", "vdd-1.3-rfa", "vdd-3.3-ch0",
--- 
-2.34.1.575.g55b058a8bb-goog
+'bus=snoc,qmi-board-id=67.bin'
+'bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_LAZOR.bin'
+'bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_POMPOM.bin'
+'bus=snoc,qmi-board-id=67,qmi-chip-id=4320,variant=GO_LAZOR.bin'
+'bus=snoc,qmi-board-id=67,qmi-chip-id=4320,variant=GO_POMPOM.bin'
 
+...and, on lazor for instance, we have:
+
+qcom,ath10k-calibration-variant = "GO_LAZOR";
+
+The problem you're trying to solve is that on some early lazor
+prototype hardware we didn't have the "board-id" programmed we could
+get back 0xff from the hardware. As I understand it 0xff always means
+"unprogrammed".
+
+It feels like you could just have a special case such that if the
+hardware reports board ID of 0xff and you don't get a "match" that you
+could just treat 0xff as a wildcard. That means that you'd see the
+"variant" in the device tree and pick one of the "GO_LAZOR" entries.
+
+Anyway, I guess it's up to the people who spend more time in this file
+which they'd prefer, but that seems like it'd be simple and wouldn't
+require a bindings addition...
+
+-Doug
