@@ -2,192 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35715486DFE
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 00:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51402486E62
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 01:14:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343984AbiAFXn4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jan 2022 18:43:56 -0500
-Received: from m43-7.mailgun.net ([69.72.43.7]:31831 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1343629AbiAFXnk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jan 2022 18:43:40 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1641512620; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=LDg2IuUpQHgd81Rt3y0bTVyxDjVuwqNi3C5sPLC5o3o=; b=foqCz47i2ZQ6LpVs6QfzOkx0e5iqMPeN+rdWdXPq7y+a2qYXmLbjMuOb5td2uNM7fmXcEsjj
- IBuNihnmXIwxg3TiErjgtJWCZWBiAga3jNH9ar5Q+MARiZnrwXxg5G243WPByOuwzt8Tq2Nf
- ALz3qDoKFFtJQmpAGK3KXCPHEqo=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
- 61d77ea9b0cf5ba492d3acd3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 06 Jan 2022 23:43:37
- GMT
-Sender: msinada=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E3500C43619; Thu,  6 Jan 2022 23:43:36 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from msinada-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: msinada)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 53766C4338F;
-        Thu,  6 Jan 2022 23:43:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 53766C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Muna Sinada <msinada@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Muna Sinada <msinada@codeaurora.org>
-Subject: [PATCH v3] cfg80211: Handle driver updated MU-EDCA params
-Date:   Thu,  6 Jan 2022 15:43:29 -0800
-Message-Id: <1641512609-29774-1-git-send-email-msinada@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1343762AbiAGAOD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jan 2022 19:14:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49638 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343764AbiAGAOC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 6 Jan 2022 19:14:02 -0500
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5888C061245;
+        Thu,  6 Jan 2022 16:14:01 -0800 (PST)
+Received: by mail-pj1-x1035.google.com with SMTP id y16-20020a17090a6c9000b001b13ffaa625so10320395pjj.2;
+        Thu, 06 Jan 2022 16:14:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bHp8KHmssnLYTaOK1agSupyvSqkjwpt0DTwhR+0qxuQ=;
+        b=OXC+WfjOI7Dw/780ZlSKKOJzpuyxzgwPvAn3vd5y6IIL5/USBcS/+EaFEydk/P9fQW
+         I8seI4B9zA0/MGxPODSkOM9ZDZRH+cO8KQ6b0oDrQXmRtDE/44L5wYuaL8ZxDwXL1G3K
+         b3XBMgo5lMG9hXK0h5wObvGX5v+4NIBh7krq4ad1ieKoJ4O1jP44XxoEhjGH9jcwJwhz
+         ty6BtKXTF2hpc/1tgHTjkmdSf8x0jYj8LiAj69jCG2AOoYo1Q2ZvMX496O7PmOjiBO3d
+         CXkf7I9yF7IPB7Qo40feEfYj8pP6Qk3Qido+AHnwlFaM4t/7xP77Vr+tN10CWwrCcs2S
+         m5Ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bHp8KHmssnLYTaOK1agSupyvSqkjwpt0DTwhR+0qxuQ=;
+        b=W6PyeQnI7bT3TaPL+fArsyh7GkTjV5XvwgDcj9uRqtGpWsHgYYKaGR0AW4D3ItVUKd
+         wXwH/eFzblQjL1onUl2fFFzTv5g7+Q5OJin5s5polciu54O+BXKAQJTa7nnAEKUhuCT4
+         DSzoj8LU+2d1ToNFJHfgw9vWfS7r9xMa22DX0JsCImDGztiGUjUbWUXhk144yTaO2QPy
+         n/bPmvjwscmJi+TrcAbPJaRhNTGp/eaBrsfW2x5D5FgW0mXAegr3GPYQ0rcsdaUv+Olq
+         0OuTYbNOjZ75+peZFWyT8RPszGK5splPzHC7aiQTUVDP78IJsglldZ1z9Bn2EoZKMpEr
+         H5Hw==
+X-Gm-Message-State: AOAM530zngTVuBHh8Bmjj+wj1M3tRVuyBg6xM5APjmRIz0/NrLbARa2i
+        1a53bGryg1ZlY7MLV6hvPOE=
+X-Google-Smtp-Source: ABdhPJxs5ngIS8diKlG5kij1EnlAAnRL98ICjCAo5rn2ZWpvA4FWNRG7fhGUSWexig/0VqQWjrMFHQ==
+X-Received: by 2002:a17:903:300b:b0:149:f48b:e8b8 with SMTP id o11-20020a170903300b00b00149f48be8b8mr4420991pla.108.1641514441399;
+        Thu, 06 Jan 2022 16:14:01 -0800 (PST)
+Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id y3sm3301906pju.37.2022.01.06.16.13.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Jan 2022 16:14:00 -0800 (PST)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     linux-mtd@lists.infradead.org
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Cai Huoqing <caihuoqing@baidu.com>,
+        Colin Ian King <colin.king@intel.com>,
+        linux-kernel@vger.kernel.org (open list),
+        linux-wireless@vger.kernel.org (open list:BROADCOM SPECIFIC AMBA DRIVER
+        (BCMA)),
+        bcm-kernel-feedback-list@broadcom.com (open list:BROADCOM STB NAND
+        FLASH DRIVER)
+Subject: [PATCH v2 0/9] BCMA support for brcmnand
+Date:   Thu,  6 Jan 2022 16:13:19 -0800
+Message-Id: <20220107001328.2233896-1-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add necessary functions and attributes to receive updated MU-EDCA
-parameters from driver and send to user space, where management
-frame are updated to reflect latest parameters.
+Hi all,
 
-The updated parameters from driver are part of an AP mode feature
-where firmware determines better MU-EDCA parameters based on channel
-conditions. The updated parameters are used and reported to user space
-to reflect in AP management frames. These dynamic parameter updates
-are offloaded to firmware for better user experience, thus details on
-algorithm are not provided. This is a driver specific feature, thus
-no IEEE80211 spec references.
+This patch series adds support for the BRCMNAND controller revision 3.4
+embedded in MIPS-based SoCs such as 5357, typically found in the Netgear
+WNR3500L v2 and other kinds of Wi-Fi routers. The upstream platform that
+uses this controller is under arch/mips/bcm47xx/ and does not use Device
+Tree (and probably never will by now). BCMA (Broadcom AMBA) is a special
+kind of discoverable memory mapped interface which requires the use of
+special accessors to read from/write to the hardware block.
 
-Signed-off-by: Muna Sinada <msinada@codeaurora.org>
----
-v3
- - modified commit message
----
- include/net/cfg80211.h       | 12 ++++++++++++
- include/uapi/linux/nl80211.h | 13 +++++++++++++
- net/wireless/nl80211.c       | 36 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 61 insertions(+)
+The integration of brcmnand into that SoC is a bit quirky in that every
+register offering byte level data about the flash (OOB, device ID, etc.)
+requires byte swapping. The command shift should also have been 24, but
+is in fact 0, took me a while to understand why no reads were actually
+working because of that.
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index a887086cb103..7c8f0091bcb8 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -8422,4 +8422,16 @@ static inline int cfg80211_color_change_notify(struct net_device *dev)
- 					 0, 0);
- }
- 
-+/**
-+ * cfg80211_update_muedca_params_event - Notify userspace about updated
-+ *	MU-EDCA parameters
-+ *
-+ * @wiphy: the wiphy
-+ * @params: Updated MU-EDCA parameters
-+ * @gfp: allocation flags
-+ */
-+void cfg80211_update_muedca_params_event(struct wiphy *wiphy,
-+					 const struct ieee80211_mu_edca_param_set *params,
-+					 gfp_t gfp);
-+
- #endif /* __NET_CFG80211_H */
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 3e734826792f..5752ef962457 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -1232,6 +1232,11 @@
-  *	&NL80211_ATTR_FILS_NONCES - for FILS Nonces
-  *		(STA Nonce 16 bytes followed by AP Nonce 16 bytes)
-  *
-+ * @NL80211_CMD_UPDATE_HE_MUEDCA_PARAMS: Updated MU-EDCA parameters from
-+ *	driver. This event is used to update dynamic MU-EDCA parameters in
-+ *	management frames, coming from driver and now need to be reflected in
-+ *	management frames.
-+ *
-  * @NL80211_CMD_MAX: highest used command number
-  * @__NL80211_CMD_AFTER_LAST: internal use
-  */
-@@ -1474,6 +1479,8 @@ enum nl80211_commands {
- 
- 	NL80211_CMD_SET_FILS_AAD,
- 
-+	NL80211_CMD_UPDATE_HE_MUEDCA_PARAMS,
-+
- 	/* add new commands above here */
- 
- 	/* used to define NL80211_CMD_MAX below */
-@@ -2646,6 +2653,10 @@ enum nl80211_commands {
-  *	switching on a different channel during CAC detection on the selected
-  *	radar channel.
-  *
-+ * @NL80211_ATTR_HE_MUEDCA_PARAMS: MU-EDCA AC parameters for the
-+ *	%NL80211_CMD_UPDATE_HE_MUEDCA_PARAMS command in format described in
-+ *	P802.11ax_D4.0 section 9.4.2.245
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -3154,6 +3165,8 @@ enum nl80211_attrs {
- 
- 	NL80211_ATTR_RADAR_OFFCHAN,
- 
-+	NL80211_ATTR_HE_MUEDCA_PARAMS,
-+
- 	/* add attributes here, update the policy in nl80211.c */
- 
- 	__NL80211_ATTR_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index bfa5d7428a3f..49c8249863e9 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -18512,6 +18512,42 @@ void cfg80211_update_owe_info_event(struct net_device *netdev,
- }
- EXPORT_SYMBOL(cfg80211_update_owe_info_event);
- 
-+void
-+cfg80211_update_muedca_params_event(struct wiphy *wiphy,
-+				    const struct ieee80211_mu_edca_param_set *params,
-+				    gfp_t gfp)
-+{
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-+	struct sk_buff *msg;
-+	void *hdr;
-+
-+	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, gfp);
-+	if (!msg)
-+		return;
-+
-+	hdr = nl80211hdr_put(msg, 0, 0, 0, NL80211_CMD_UPDATE_HE_MUEDCA_PARAMS);
-+	if (!hdr)
-+		goto nla_put_failure;
-+
-+	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx))
-+		goto nla_put_failure;
-+
-+	if (nla_put(msg, NL80211_ATTR_HE_MUEDCA_PARAMS,
-+		    sizeof(*params), params))
-+		goto nla_put_failure;
-+
-+	genlmsg_end(msg, hdr);
-+
-+	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
-+				NL80211_MCGRP_MLME, gfp);
-+	return;
-+
-+nla_put_failure:
-+	genlmsg_cancel(msg, hdr);
-+	nlmsg_free(msg);
-+}
-+EXPORT_SYMBOL(cfg80211_update_muedca_params_event);
-+
- /* initialisation/exit functions */
- 
- int __init nl80211_init(void)
+This has been tested with Linux 5.10.82 and Linus' master with OpenWrt
+and confirmed that the squashfs + jffs2 overlay that OpenWrt creates is
+entirely functional and that written data is made persistent.
+
+Changes in v2:
+
+- re-ordered the patch such that the soc variable is initialized as
+  early as possible
+- corrected bug in the conversion of brcmnand_init_cs() which
+  incorrectly used the wrong device_node variable (parent instead of
+  child)
+- took Andy's feedback to make the test for a valid interrupt to be > 0
+  while calling platform_get_irq_optional()
+- utilized static branch (disabled by default) and conditional
+  compilation and confirm with disassembly that the generated code is
+  as efficient as before if not enabling the BCMA shim and as efficient
+  as possible if enabling BCMA shim
+- updated BCMA shim driver descriptor, author and added helper function
+  to encapsulate the container_of usage
+- added comment to explain why a slightly different platform device name
+  is used for the 5357-style NAND controller
+
+Florian Fainelli (9):
+  mtd: rawnand: brcmnand: Assign soc as early as possible
+  mtd: rawnand: brcmnand: Allow SoC to provide I/O operations
+  mtd: rawnand: brcmnand: Avoid pdev in brcmnand_init_cs()
+  mtd: rawnand: brcmnand: Move OF operations out of brcmnand_init_cs()
+  mtd: rawnand: brcmnand: Allow working without interrupts
+  mtd: rawnand: brcmnand: Add platform data structure for BCMA
+  mtd: rawnand: brcmnand: Allow platform data instantation
+  mtd: rawnand: brcmnand: BCMA controller uses command shift of 0
+  mtd: rawnand: brcmnand: Add BCMA shim
+
+ MAINTAINERS                                 |   1 +
+ drivers/bcma/driver_chipcommon_nflash.c     |  20 ++-
+ drivers/mtd/nand/raw/Kconfig                |  13 ++
+ drivers/mtd/nand/raw/brcmnand/Makefile      |   2 +
+ drivers/mtd/nand/raw/brcmnand/bcma_nand.c   | 132 ++++++++++++++++
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c    | 160 +++++++++++++-------
+ drivers/mtd/nand/raw/brcmnand/brcmnand.h    |  29 ++++
+ include/linux/bcma/bcma_driver_chipcommon.h |   5 +
+ include/linux/platform_data/brcmnand.h      |  12 ++
+ 9 files changed, 321 insertions(+), 53 deletions(-)
+ create mode 100644 drivers/mtd/nand/raw/brcmnand/bcma_nand.c
+ create mode 100644 include/linux/platform_data/brcmnand.h
+
 -- 
-2.7.4
+2.25.1
 
