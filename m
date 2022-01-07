@@ -2,125 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B42E487094
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 03:39:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB2F24870BB
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jan 2022 03:48:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345494AbiAGCjZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jan 2022 21:39:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54624 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345477AbiAGCjX (ORCPT
+        id S1344951AbiAGCsB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jan 2022 21:48:01 -0500
+Received: from p-impout007aa.msg.pkvw.co.charter.net ([47.43.26.138]:45003
+        "EHLO p-impout007.msg.pkvw.co.charter.net" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1344895AbiAGCsB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jan 2022 21:39:23 -0500
-Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB556C061245;
-        Thu,  6 Jan 2022 18:39:22 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 0F82943320;
-        Fri,  7 Jan 2022 02:39:11 +0000 (UTC)
-Message-ID: <8febb957-9653-dac4-ea20-f2750d400d01@marcan.st>
-Date:   Fri, 7 Jan 2022 11:39:09 +0900
+        Thu, 6 Jan 2022 21:48:01 -0500
+Received: from localhost.localdomain ([24.31.246.181])
+        by cmsmtp with ESMTP
+        id 5fINnexpttfLp5fINnBfIU; Fri, 07 Jan 2022 02:48:00 +0000
+X-Authority-Analysis: v=2.4 cv=A+F/goaG c=1 sm=1 tr=0 ts=61d7a9e0
+ a=cAe/7qmlxnd6JlJqP68I9A==:117 a=cAe/7qmlxnd6JlJqP68I9A==:17 a=n9Sqmae0AAAA:8
+ a=OLL_FvSJAAAA:8 a=pGLkceISAAAA:8 a=yQdBAQUQAAAA:8 a=nXKJQCjKDyof0ucNp9gA:9
+ a=0A4Jcq2VObsA:10 a=fJnPzuQwECQA:10 a=UmAUUZEt6-oIqEbegvw9:22
+ a=oIrB72frpwYPwTMnlWqB:22 a=SzazLyfi1tnkUD6oumHU:22
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
+        masterzorag <masterzorag@gmail.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: [PATCH] rtw88: rtw8821c: enable rfe 6 devices
+Date:   Thu,  6 Jan 2022 20:47:39 -0600
+Message-Id: <20220107024739.20967-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.4.1
-Subject: Re: [PATCH v2 10/35] brcmfmac: firmware: Allow platform to override
- macaddr
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-11-marcan@marcan.st>
- <CAHp75VcU1vVSucvegmSiMLoKBoPoGW5XLmqVUG0vXGdeafm2Jw@mail.gmail.com>
- <b4f50489-fa4b-2c40-31ad-1b74e916cdb4@marcan.st>
- <CAHp75VdzQhkj3ovFSAG4g1tD1scBK7H0xFFot0rfz2u6i8a3FA@mail.gmail.com>
-From:   Hector Martin <marcan@marcan.st>
-In-Reply-To: <CAHp75VdzQhkj3ovFSAG4g1tD1scBK7H0xFFot0rfz2u6i8a3FA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfIysOHecWnGHramGsNFsavxIOikeloq57U6i41WRqq9Fu5/rp07KzoBfmwMWGFWPccVgrD8biFg0AKgun3cc542NLtukAr8JqZd4c+FgVGzbiAefWG3A
+ xYpPJyH4Ku0YQwizoEGc9ofsP+oViwdxGrUF+ua9UJFjdOBKeCkVkxgnCnRdqWNYX0HwdXj8joFaNKkiSJH+TZ7LBNVe7IghLFboJ0GKnfnXGq+Lo1F38+ZV
+ Pa4bWv/YGT5vuWsnplv9YdR6vBhP7ZmvPALpKtgwWhL/C/GMEEmz06QjLgiQe6ql5WpK+DCw/UZYB30NfQHUCGNqSjrEXpMZREayImfi1YXXXXGnND1+wIEe
+ fyTxEPD+
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2022/01/06 23:20, Andy Shevchenko wrote:
-> On Wed, Jan 5, 2022 at 3:26 PM Hector Martin <marcan@marcan.st> wrote:
->> On 04/01/2022 23.23, Andy Shevchenko wrote:
->>> On Tue, Jan 4, 2022 at 9:29 AM Hector Martin <marcan@marcan.st> wrote:
-> 
-> ...
-> 
->>>> +#define BRCMF_FW_MACADDR_FMT                   "macaddr=%pM"
-> 
->>>> +       snprintf(&nvp->nvram[nvp->nvram_len], BRCMF_FW_MACADDR_LEN + 1,
->>>> +                BRCMF_FW_MACADDR_FMT, mac);
->>>
->>> Please, avoid using implict format string, it's dangerous from security p.o.v.
->>
->> What do you mean by implicit format string?
-> 
-> When I read the above code I feel uncomfortable because no-one can see
-> (without additional action and more reading and checking) if it's
-> correct or not. This is potential to be error prone.
-> 
->> The format string is at the
->> top of the file and its length is right next to it, which makes it
->> harder for them to accidentally fall out of sync.
-> 
-> It is not an argument. Just you may do the same in the code directly
-> and more explicitly:
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-The point is that BRCMF_FW_MACADDR_LEN and BRCMF_FW_MACADDR_FMT need to
-be in sync, and BRCMF_FW_MACADDR_LEN is used in two different places. If
-I inline the format string into the code, someone could change it
-without changing the length, or changing the length inline only next to
-the format string. Then we overflow the NVRAM buffer because the
-allocation is not sized properly.
+In https://www.spinics.net/lists/linux-wireless/msg217116.html, Ping-Ke Shih
+answered a question for a user about an rtl8821ce device that reported
+RFE 6, which the driver did not support. Ping-Ke suggested a possible
+fix, but the user never reported back.
 
-By having them as defines, it is obvious that they go together, and if
-one changes the other one has to change too, and the nvram allocation
-can't end up improperly sized as long as they are kept in sync.
+A second user discovered the above thread and tested the proposed fix.
+Accordingly, I am pushing this change, even though I am not the author.
 
-> Also you don't check the return code of snprintf which means that you
-> don't care about the result, which seems to me wrong approach. If you
-> don't care about the result, so it means it's not very important,
-> right?
-> 
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Reported-and-tested-by: masterzorag <masterzorag@gmail.com>
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+---
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-That snprintf can never fail as long as the format string/length are in
-sync. I'll make it BUG_ON(... != size), so it complains loudly if
-someone screws up the format string in the future.
-
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index db078df63f85..b1f4afb50830 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -1514,6 +1514,7 @@ static const struct rtw_rfe_def rtw8821c_rfe_defs[] = {
+ 	[0] = RTW_DEF_RFE(8821c, 0, 0),
+ 	[2] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),
+ 	[4] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),
++	[6] = RTW_DEF_RFE(8821c, 0, 0),
+ };
+ 
+ static struct rtw_hw_reg rtw8821c_dig[] = {
 -- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+2.34.1
+
