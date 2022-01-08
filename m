@@ -2,141 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 163204884DA
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jan 2022 18:08:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C2F7488588
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jan 2022 20:08:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234801AbiAHRI5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Jan 2022 12:08:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58426 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234778AbiAHRI4 (ORCPT
+        id S231262AbiAHTIT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 8 Jan 2022 14:08:19 -0500
+Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.48]:45406 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229538AbiAHTIT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Jan 2022 12:08:56 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32F6DC061746
-        for <linux-wireless@vger.kernel.org>; Sat,  8 Jan 2022 09:08:56 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id o203-20020a1ca5d4000000b003477d032384so3093690wme.2
-        for <linux-wireless@vger.kernel.org>; Sat, 08 Jan 2022 09:08:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=IZ9wQElu7gxaZRjK3LghSKU0X1qkME6nh55EQ6D9bBM=;
-        b=aTho56GKtJR2hrR9HbKbKmd0cOwCdSYOJAKGV2Zbru2QRyd61qr/VsOK2uvtRxDOug
-         HQBIFzKFtP2YIKufQHpi3N/s8M2j5t51/w7y7rD1rL54M1B718ErVMQBlL7ZXgikUueF
-         VnqxLtJKrmt+Ab/lTbYEUm9974un6zJ/Pnzx8Q3lX0LjqjhiY6vyhCHccWOo7L/Sda+Q
-         T2UUVSR94A3w1HyXbQVZCBHJfNMaRq6kN8to8VN6ko4aHBWKGrj8m7nFG0uvqONnp5Tq
-         rKaEU+OwqeuFOqwBYaXOlj9qC+5I9PTJLR3KMKgi1sP/mB/cMFDsIWwdWbQv3o4HlCZ3
-         Sw1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=IZ9wQElu7gxaZRjK3LghSKU0X1qkME6nh55EQ6D9bBM=;
-        b=hvm0e7iTG2uOw0kT6NF+uBMXrSE7miqn9zJrCEr6huDVdoZI1aurOSg64MjcNcTS7+
-         2VrJhxQRg/9wOhh8AT8AA8BaMKQqt4MoHdpvn8hwALAw0YxZbmG3KJIC+16J27KXMW2c
-         Bi7v1GYs8GsxX3Z4TiyhLdLEFk8n9FoKaJFosVBdUBWjyEWGEpfgwL3cM57lq+vxJlrV
-         +nocDdWLcn4lfDqSoX9pYRjj3sudKe/OP0Q74wfNuiueQzddylM4J9oXt8Iw8XB0GXNY
-         /vcKzeiBdEZZmjfQ/nqSlMTowzdns87Rd7qc+aXxFo4+lHFz1kPQu7GFhftCNGN8pBD3
-         2Vlw==
-X-Gm-Message-State: AOAM531Japprp4te+BgmyyqJNjxfPJWz0Q6Y9YW/PQgYeh9OIrUsAXHA
-        5bNQP1jQuvhW7RC2792TED4C5A==
-X-Google-Smtp-Source: ABdhPJxiIjlaYgp7K94rOhV97AOMYsiqk+QMow0BKlCzUDyUSBwOprHdD6obhJTH7WkH2C5c1kkz7w==
-X-Received: by 2002:a1c:4e04:: with SMTP id g4mr15263008wmh.156.1641661734871;
-        Sat, 08 Jan 2022 09:08:54 -0800 (PST)
-Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id d22sm2154727wrb.83.2022.01.08.09.08.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Jan 2022 09:08:54 -0800 (PST)
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        wcn36xx@lists.infradead.org, linux-arm-msm@vger.kernel.org
-Cc:     loic.poulain@linaro.org, benl@squareup.com,
-        bryan.odonoghue@linaro.org, kernel test robot <lkp@intel.com>
-Subject: [PATCH v2 4/4] wcn36xx: Add SNR reporting via get_survey()
-Date:   Sat,  8 Jan 2022 17:10:57 +0000
-Message-Id: <20220108171057.1823315-5-bryan.odonoghue@linaro.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20220108171057.1823315-1-bryan.odonoghue@linaro.org>
-References: <20220108171057.1823315-1-bryan.odonoghue@linaro.org>
+        Sat, 8 Jan 2022 14:08:19 -0500
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.66.135])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id ED84A1C0071
+        for <linux-wireless@vger.kernel.org>; Sat,  8 Jan 2022 19:08:17 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id CCB684C007B
+        for <linux-wireless@vger.kernel.org>; Sat,  8 Jan 2022 19:08:17 +0000 (UTC)
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 39AFE13C2B0;
+        Sat,  8 Jan 2022 11:08:17 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 39AFE13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1641668897;
+        bh=vCD19AV8X1SIgerqo55s/x/8MGrMoDcFg4XS4yCBhY0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ZnPSp3RO54IZpGZgR+ERT2exYxwACAzv25KihopZcY2cZxRnxyM2DLI31ktOb6UsT
+         7caLLQFc/HqnG2C3YnW7g8XDqUL4/hhZqHny/93+v/W5TnaPkKvYGouysBP5WRtx0t
+         fParHtrbRWVCAQuqu0surbEcZVDoC6O/WvtXG2TQ=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH] mt76: mt7921: fix crash when startup fails.
+Date:   Sat,  8 Jan 2022 11:08:14 -0800
+Message-Id: <20220108190814.3841-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-MDID: 1641668898-avXO6vJk1COK
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support for get_survey() reporting. Current channel and noise-floor are
-reported, other parameters such as scan, busy, TX and RX time are not
-immediately available.
+From: Ben Greear <greearb@candelatech.com>
 
-Noise is a useful metric to report, so bring it out now.
+If the nic fails to start, it is possible that the
+reset_work has already been scheduled.  Ensure the
+work item is canceled so we do not have use-after-free
+crash in case cleanup is called before the work item
+is executed.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+This fixes crash on my x86_64 apu2 when mt7921k radio
+fails to work.  Radio still fails, but OS does not
+crash.
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- drivers/net/wireless/ath/wcn36xx/main.c | 42 +++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index 0e1f3dc4f69d4..9ccfe752767b7 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1357,6 +1357,47 @@ static void wcn36xx_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	}
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 6073bedaa1c08..9b33002dcba4a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -272,6 +272,7 @@ static void mt7921_stop(struct ieee80211_hw *hw)
  
-+static int wcn36xx_get_survey(struct ieee80211_hw *hw, int idx,
-+			      struct survey_info *survey)
-+{
-+	struct wcn36xx *wcn = hw->priv;
-+	struct ieee80211_supported_band *sband;
-+	struct wcn36xx_chan_survey *chan_survey;
-+	unsigned long flags;
-+
-+	sband = wcn->hw->wiphy->bands[NL80211_BAND_2GHZ];
-+	if (idx >= sband->n_channels) {
-+		idx -= sband->n_channels;
-+		sband = wcn->hw->wiphy->bands[NL80211_BAND_5GHZ];
-+	}
-+
-+	if (!sband || idx >= sband->n_channels)
-+		return -ENOENT;
-+
-+	spin_lock_irqsave(&wcn->survey_lock, flags);
-+
-+	chan_survey = &wcn->chan_survey[idx];
-+	survey->channel = &sband->channels[idx];
-+	survey->noise = chan_survey->rssi - chan_survey->snr;
-+	survey->filled = 0;
-+
-+	if (chan_survey->rssi > -100 && chan_survey->rssi < 0)
-+		survey->filled |= SURVEY_INFO_NOISE_DBM;
-+
-+	if (survey->channel == wcn->channel)
-+		survey->filled |= SURVEY_INFO_IN_USE;
-+
-+	spin_unlock_irqrestore(&wcn->survey_lock, flags);
-+
-+	 wcn36xx_dbg(WCN36XX_DBG_MAC,
-+		     "ch %d rssi %d snr %d noise %d filled %x freq %d\n",
-+		     HW_VALUE_CHANNEL(survey->channel->hw_value),
-+		     chan_survey->rssi, chan_survey->snr, survey->noise,
-+		     survey->filled, survey->channel->center_freq);
-+
-+	return 0;
-+}
-+
- static const struct ieee80211_ops wcn36xx_ops = {
- 	.start			= wcn36xx_start,
- 	.stop			= wcn36xx_stop,
-@@ -1385,6 +1426,7 @@ static const struct ieee80211_ops wcn36xx_ops = {
- 	.ipv6_addr_change	= wcn36xx_ipv6_addr_change,
- #endif
- 	.flush			= wcn36xx_flush,
-+	.get_survey		= wcn36xx_get_survey,
+ 	cancel_delayed_work_sync(&dev->pm.ps_work);
+ 	cancel_work_sync(&dev->pm.wake_work);
++	cancel_work_sync(&dev->reset_work);
+ 	mt76_connac_free_pending_tx_skbs(&dev->pm, NULL);
  
- 	CFG80211_TESTMODE_CMD(wcn36xx_tm_cmd)
- };
+ 	mt7921_mutex_acquire(dev);
 -- 
-2.33.0
+2.26.3
 
