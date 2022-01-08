@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30B0A4885C1
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jan 2022 21:03:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 092054885C4
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jan 2022 21:03:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232583AbiAHUD3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Jan 2022 15:03:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39920 "EHLO
+        id S232628AbiAHUD4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 8 Jan 2022 15:03:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232596AbiAHUD2 (ORCPT
+        with ESMTP id S232613AbiAHUD4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Jan 2022 15:03:28 -0500
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DF7AC061748
-        for <linux-wireless@vger.kernel.org>; Sat,  8 Jan 2022 12:03:28 -0800 (PST)
-Received: by mail-ed1-x52d.google.com with SMTP id u25so36371430edf.1
-        for <linux-wireless@vger.kernel.org>; Sat, 08 Jan 2022 12:03:27 -0800 (PST)
+        Sat, 8 Jan 2022 15:03:56 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B0A0C061747
+        for <linux-wireless@vger.kernel.org>; Sat,  8 Jan 2022 12:03:55 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id 30so34673364edv.3
+        for <linux-wireless@vger.kernel.org>; Sat, 08 Jan 2022 12:03:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:to:cc:references
-         :from:in-reply-to;
-        bh=NUgjIM5j8GOX+V6R7xRxbAJODXODY5YyioyYNdpSKPI=;
-        b=Owgp5aPbj3kycdEFqN/f6L7yNNggyJ2uRL8QWv5oe8i7q/tqUtGSJelcUE9/XiBCfU
-         WNRB81fA7URUbfom2A9h3mJ+fbjMrFzdb0YYACXHomu5hd8vNkCD+hu2RBw0oXtNSguE
-         qYO4PIWfje5gVi6gXq747UNajeOBwJeBwDZwo=
+        h=message-id:date:mime-version:user-agent:from:subject:to:cc
+         :references:in-reply-to;
+        bh=NBvh51kusuCWkH6Vq0QhjvCw2s5c20rn4RPAyrY0GXI=;
+        b=SjX3fOVHCbwICuqij8YDqq2oY9MgKThoYpS5HVOlJt0tgDlSax88AS8g9cOJWPC9ls
+         fYWlD2FPwEGcJ2mAcFflLSzZZcTiyhGMTdwZzHR/BmScvgPAuzBGdvkw/blfAcPrw9fe
+         fQxCc2QJyTP7LDtHvxhbkUdqy7X68oeHn/CPs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :to:cc:references:from:in-reply-to;
-        bh=NUgjIM5j8GOX+V6R7xRxbAJODXODY5YyioyYNdpSKPI=;
-        b=pbtX+yS2j+P66GM/fGxZNuJeFktHvycj/QI1ADtjDVhzzLPqJVJ5tyGOW8LH5DgO7J
-         C5EqSMnue67v1grlr634EhlYKX/PgugpOZuaAcKfLYJ2ec83Fi8hN4fXPcBfHlhgfEjp
-         rZlA39MPkOC+GdVAnsv8zz2y4DODjDMp6EYOnS+U+BA3qU5s4XbKD09DO5CT3TjSU7cq
-         Tp6FasXerEBPvX2kKS+EiU97s52M5qodVp96b3fGvRB8n1aucp+lP6scf1Kbv039m/6l
-         v8w0Crfeiurf3a8E50UZCFPtOItGkSApCYixsBWCqBRGinOU9G5JHIx2RMMfZvtbYa8Y
-         cpug==
-X-Gm-Message-State: AOAM5329IL4fGpKZgE5WbWcRh07KWflUSc2XibNNCDfyB7A420OQpTW+
-        1MrVl/jg226KxJ5tAJnwfBhu9Q==
-X-Google-Smtp-Source: ABdhPJxOG3HajlEIK91A5aC9LG0/ayYQT2g9rcWtdkw+//IjK2AuS3X+m4dQ6tqxvqrwMJfEVQ/VPw==
-X-Received: by 2002:a17:907:a427:: with SMTP id sg39mr57015014ejc.158.1641672205875;
-        Sat, 08 Jan 2022 12:03:25 -0800 (PST)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:from
+         :subject:to:cc:references:in-reply-to;
+        bh=NBvh51kusuCWkH6Vq0QhjvCw2s5c20rn4RPAyrY0GXI=;
+        b=iU5PsLrhowbaL13tpROdQ8Bnw/LL6PFqh+e2ibEJZCNHAJ970HweJkbqd4yMPazOFS
+         eLzbn+VBD0msDe7NQnWfmDK1GEgknAEMDoCd4C+s8Zz3SBTHP0fm3ibfGjo6lC6I2bTg
+         6umldAZMH1lC1d1/vTQtsfNST2VjVHuvTfb8T/QcjXeYsQeTjXyqlU5TtIX2tT0UR5Mz
+         zvGo9G5JeeHKrpRRRgpqZnEnr5ayACt+16DwTD8lDtPKtzGbp7IAsylC7T8VLW3FpVqD
+         OnlXs67CBAK4z2rAQ92bt9Vb3H4PjYzGCi6hs2D2RlIXtvcWL8FboFBk1aOOgqAELYcg
+         Wo4Q==
+X-Gm-Message-State: AOAM530KLfTwzJP0nhu423mkhNsY3SiOXZv/XorA7qqV8l7UTP8ZMUGU
+        IpLjCwyOSMmaPmTW6EiKA/YGvJsXU9QM9CNXB7Y=
+X-Google-Smtp-Source: ABdhPJxEj5QtxYp69Tu/sjz+rj4m98k40ICyCTgmMYaTtewbUseT2NOzXo6otD2YrgkQ9GXwCaE10A==
+X-Received: by 2002:a17:906:b151:: with SMTP id bt17mr54435508ejb.193.1641672234004;
+        Sat, 08 Jan 2022 12:03:54 -0800 (PST)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id j17sm756558ejg.164.2022.01.08.12.03.23
+        by smtp.gmail.com with ESMTPSA id cm12sm1123654edb.6.2022.01.08.12.03.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Jan 2022 12:03:24 -0800 (PST)
-Message-ID: <0e169c4e-ce51-3592-f114-46cb3cde1f7d@broadcom.com>
-Date:   Sat, 8 Jan 2022 21:03:20 +0100
+        Sat, 08 Jan 2022 12:03:52 -0800 (PST)
+Message-ID: <ce80bf55-dad7-4f25-765b-67648007a651@broadcom.com>
+Date:   Sat, 8 Jan 2022 21:03:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.4.0
-Subject: Re: [PATCH v2 09/35] brcmfmac: pcie: Perform firmware selection for
- Apple platforms
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: Re: [PATCH v2 08/35] brcmfmac: of: Fetch Apple properties
 To:     Hector Martin <marcan@marcan.st>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -80,137 +80,91 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-10-marcan@marcan.st>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20220104072658.69756-10-marcan@marcan.st>
+ <20220104072658.69756-9-marcan@marcan.st>
+In-Reply-To: <20220104072658.69756-9-marcan@marcan.st>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000afe40805d51798ae"
+        boundary="0000000000005d2f7305d5179a99"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000afe40805d51798ae
+--0000000000005d2f7305d5179a99
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 1/4/2022 8:26 AM, Hector Martin wrote:
-> On Apple platforms, firmware selection uses the following elements:
+> On Apple ARM64 platforms, firmware selection requires two properties
+> that come from system firmware: the module-instance (aka "island", a
+> codename representing a given hardware platform) and the antenna-sku.
+> We map Apple's module codenames to board_types in the form
+> "apple,<module-instance>".
 > 
->    Property         Example   Source
->    ==============   =======   ========================
-> * Chip name        4378      Device ID
-> * Chip revision    B1        OTP
-> * Platform         shikoku   DT (ARM64) or ACPI (x86)
-> * Module type      RASP      OTP
-> * Module vendor    m         OTP
-> * Module version   6.11      OTP
-> * Antenna SKU      X3        DT (ARM64) or ACPI (x86)
-> 
-> In macOS, these firmwares are stored using filenames in this format
-> under /usr/share/firmware/wifi:
-> 
->      C-4378__s-B1/P-shikoku-X3_M-RASP_V-m__m-6.11.txt
-> 
-> To prepare firmwares for Linux, we rename these to a scheme following
-> the existing brcmfmac convention:
-> 
->      brcmfmac<chip><lower(rev)>-pcie.apple,<platform>-<mod_type>-\
-> 	<mod_vendor>-<mod_version>-<antenna_sku>.txt
-> 
-> The NVRAM uses all the components, while the firmware and CLM blob only
-> use the chip/revision/platform/antenna_sku:
-> 
->      brcmfmac<chip><lower(rev)>-pcie.apple,<platform>-<antenna_sku>.bin
-> 
-> e.g.
-> 
->      brcm/brcmfmac4378b1-pcie.apple,shikoku-RASP-m-6.11-X3.txt
->      brcm/brcmfmac4378b1-pcie.apple,shikoku-X3.bin
-> 
-> In addition, since there are over 1000 files in total, many of which are
-> symlinks or outright duplicates, we deduplicate and prune the firmware
-> tree to reduce firmware filenames to fewer dimensions. For example, the
-> shikoku platform (MacBook Air M1 2020) simplifies to just 4 files:
-> 
->      brcm/brcmfmac4378b1-pcie.apple,shikoku.clm_blob
->      brcm/brcmfmac4378b1-pcie.apple,shikoku.bin
->      brcm/brcmfmac4378b1-pcie.apple,shikoku-RASP-m.txt
->      brcm/brcmfmac4378b1-pcie.apple,shikoku-RASP-u.txt
-> 
-> This reduces the total file count to around 170, of which 75 are
-> symlinks and 95 are regular files: 7 firmware blobs, 27 CLM blobs, and
-> 61 NVRAM config files. We also slightly process NVRAM files to correct
-> some formatting issues.
-> 
-> To handle this, the driver must try the following path formats when
-> looking for firmware files:
-> 
->      brcm/brcmfmac4378b1-pcie.apple,shikoku-RASP-m-6.11-X3.txt
->      brcm/brcmfmac4378b1-pcie.apple,shikoku-RASP-m-6.11.txt
->      brcm/brcmfmac4378b1-pcie.apple,shikoku-RASP-m.txt
->      brcm/brcmfmac4378b1-pcie.apple,shikoku-RASP.txt
->      brcm/brcmfmac4378b1-pcie.apple,shikoku-X3.txt *
->      brcm/brcmfmac4378b1-pcie.apple,shikoku.txt
-> 
-> * Not relevant for NVRAM, only for firmware/CLM.
-> 
-> The chip revision nominally comes from OTP on Apple platforms, but it
-> can be mapped to the PCI revision number, so we ignore the OTP revision
-> and continue to use the existing PCI revision mechanism to identify chip
-> revisions, as the driver already does for other chips. Unfortunately,
-> the mapping is not consistent between different chip types, so this has
-> to be determined experimentally.
-
-Not sure I understand this. The chip revision comes from the chipcommon 
-register [1]. Maybe that is what you mean by "PCI revision number". For 
-some chips it is possible OTP is used to override that.
-
+> The mapped board_type is added to the DTS file in that form, while the
+> antenna-sku is forwarded by our bootloader from the Apple Device Tree
+> into the FDT. Grab them from the DT so firmware selection can use
+> them.
 Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 > ---
->   .../broadcom/brcm80211/brcmfmac/pcie.c        | 58 ++++++++++++++++++-
->   1 file changed, 56 insertions(+), 2 deletions(-)
+>   .../wireless/broadcom/brcm80211/brcmfmac/common.h    |  1 +
+>   .../net/wireless/broadcom/brcm80211/brcmfmac/of.c    | 12 +++++++++++-
+>   2 files changed, 12 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> index 74c9a4f74813..250e0bd40cb3 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> @@ -2094,8 +2094,62 @@ brcmf_pcie_prepare_fw_request(struct brcmf_pciedev_info *devinfo)
->   	fwreq->domain_nr = pci_domain_nr(devinfo->pdev->bus) + 1;
->   	fwreq->bus_nr = devinfo->pdev->bus->number;
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
+> index 8b5f49997c8b..d4aa25d646fe 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
+> @@ -50,6 +50,7 @@ struct brcmf_mp_device {
+>   	bool		ignore_probe_fail;
+>   	struct brcmfmac_pd_cc *country_codes;
+>   	const char	*board_type;
+> +	const char	*antenna_sku;
+>   	union {
+>   		struct brcmfmac_sdio_pd sdio;
+>   	} bus;
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> index 513c7e6421b2..085d34176b78 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> @@ -63,14 +63,24 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+>   {
+>   	struct brcmfmac_sdio_pd *sdio = &settings->bus.sdio;
+>   	struct device_node *root, *np = dev->of_node;
+> +	const char *prop;
+>   	int irq;
+>   	int err;
+>   	u32 irqf;
+>   	u32 val;
 >   
-> -	brcmf_dbg(PCIE, "Board: %s\n", devinfo->settings->board_type);
-> -	fwreq->board_types[0] = devinfo->settings->board_type;
-> +	/* Apple platforms with fancy firmware/NVRAM selection */
-> +	if (devinfo->settings->board_type &&
-> +	    devinfo->settings->antenna_sku &&
-> +	    devinfo->otp.valid) {
-> +		char *buf;
-> +		int len;
+> +	/* Apple ARM64 platforms have their own idea of board type, passed in
+> +	 * via the device tree. They also have an antenna SKU parameter
+> +	 */
+> +	if (!of_property_read_string(np, "brcm,board-type", &prop))
+> +		settings->board_type = devm_kstrdup(dev, prop, GFP_KERNEL);
 > +
-> +		brcmf_dbg(PCIE, "Apple board: %s\n",
-> +			  devinfo->settings->board_type);
-
-maybe good to use local reference for devinfo->settings->board_type, 
-which is used several times below.
-
+> +	if (!of_property_read_string(np, "apple,antenna-sku", &prop))
+> +		settings->antenna_sku = devm_kstrdup(dev, prop, GFP_KERNEL);
 > +
-> +		/* Example: apple,shikoku-RASP-m-6.11-X3 */
-> +		len = (strlen(devinfo->settings->board_type) + 1 +
-> +		       strlen(devinfo->otp.module) + 1 +
-> +		       strlen(devinfo->otp.vendor) + 1 +
-> +		       strlen(devinfo->otp.version) + 1 +
-> +		       strlen(devinfo->settings->antenna_sku) + 1);
-> +
-> +		/* apple,shikoku */
-> +		fwreq->board_types[5] = devinfo->settings->board_type;
+>   	/* Set board-type to the first string of the machine compatible prop */
+>   	root = of_find_node_by_path("/");
 
-[1] 
-https://elixir.bootlin.com/linux/latest/source/include/linux/bcma/bcma_driver_chipcommon.h#L12
+I assume this only returns NULL when there is no device tree. Is that a 
+safe assumption (Rob)? If so you could bail out here if root is NULL...
 
---000000000000afe40805d51798ae
+> -	if (root) {
+> +	if (root && !settings->board_type) {
+
+...and only check the board_type here. Or only check board_type and 
+lookup the root node inside this if-statement if it is not needed 
+elsewhere in this probe function.
+
+>   		int i, len;
+>   		char *board_type;
+>   		const char *tmp;
+
+--0000000000005d2f7305d5179a99
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -281,14 +235,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDsnc8BBY4UFK4vmPhe
-chPqQa5ul+YB+LivRDlveMD7uTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMDgyMDAzMjZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCl8msug+Mvk01mlJaw
+y+VNxUWgjqgLsv6pfn+kbe797TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMDgyMDAzNTRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEATgRX/OsfHEqeY22wFGwGBp/Ul+kGNKh2x0De
-TSsxqZO9YUpXf7P+1pAKU4rUxCYolVHZw4ATtUgBz6vh7J5skkAM0vOpUI3DDs/z7NYBoRH0kv7p
-bcWJHK9Jf3G+Yzbk9b8i/l5aYPd/t5p65yfH89ThxSU6v4A2Dqh+rsnJ66kHlT2H3ud3fr+ACXQ6
-RNXyisODf3MH6N75wX3lsUpZgICtX715WHsr+YvM/mHEBStyriyrFy9ZpNCs3g8/DbFlrRv4OJXC
-DjgmYCkg+WL8FtFUFU1mq0KZXB4JeWqWMm7W+bJiAfBijBHkstkrRxeTOKAVznnuVGQ6peZ5c/Im
-4Q==
---000000000000afe40805d51798ae--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAmd/7fji1nmSw43x1It4wB08tw4GOhnGHo+Tq
+UQ4JQytSLoT32gy+BKdlvlo8Y95I1XGJJP27VlxHnXtHLH54BokXHLrKfYNUZpsBhSM4yVTf856a
+sPdCNTDLYW0BEUCYkXC7MGaPuCK5o2aS7AX8ziauVHRQBJdOiftuIr6FOYpVnKgXewEcyG+PtkSg
+WpXApnbKhySdRuxIa9PoUCsQx5dUPD9rDdkanfSAQ7v0wIdN3tM3/T7DzDWPqRgjeN2x+xWgcy91
+0nHmKuOuQSLdx0itLB0wqoVOPUzUGoR3zPdbkKFfERfM+XfQ7FI+X5DLtAzTrM8iCP2Gx1FxMB/L
+Ig==
+--0000000000005d2f7305d5179a99--
