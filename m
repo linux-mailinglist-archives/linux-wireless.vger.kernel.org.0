@@ -2,60 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C10244884D8
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jan 2022 18:08:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 163204884DA
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jan 2022 18:08:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234772AbiAHRI5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S234801AbiAHRI5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Sat, 8 Jan 2022 12:08:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58422 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234545AbiAHRI4 (ORCPT
+        with ESMTP id S234778AbiAHRI4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sat, 8 Jan 2022 12:08:56 -0500
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41AD5C06173F
-        for <linux-wireless@vger.kernel.org>; Sat,  8 Jan 2022 09:08:55 -0800 (PST)
-Received: by mail-wr1-x42c.google.com with SMTP id a5so13705390wrh.5
-        for <linux-wireless@vger.kernel.org>; Sat, 08 Jan 2022 09:08:55 -0800 (PST)
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32F6DC061746
+        for <linux-wireless@vger.kernel.org>; Sat,  8 Jan 2022 09:08:56 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id o203-20020a1ca5d4000000b003477d032384so3093690wme.2
+        for <linux-wireless@vger.kernel.org>; Sat, 08 Jan 2022 09:08:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ifHYhg9lgz2l6KYN7T9KQIx0nPNIgtcpUCQsgxaZoMA=;
-        b=e1Sa4gmSEGM0KwszzJYbFkSYK3l6Cb9Ew3IhFTGgkPfmIdHXXtXUjggNeab/PXZDGs
-         l+NxPfRyqTgPsY7yZF/GDfZTNt231h+9YLwSRbLFaWHD2jWX17xWAtwtCw4PHv37WKRX
-         5TvccpZL+ZLmtQTt3GVeCl4+i70bW86QyAOT7sQSN39olY5V0KFLWEecaU83OEy4jwi/
-         1W6OwPK0Hs362QhRUPZgw6lnhvg6/B1ccyIK0N7pxCbwlOzl8Stj8uIUgnSX9qLieMX2
-         mLvhDGlktWbZsaQ6WH8kkFvGEGp6CXpztmKk/OeJyQMFN46hlqIZ9juU+pU4SEy1xvId
-         Ob/A==
+        bh=IZ9wQElu7gxaZRjK3LghSKU0X1qkME6nh55EQ6D9bBM=;
+        b=aTho56GKtJR2hrR9HbKbKmd0cOwCdSYOJAKGV2Zbru2QRyd61qr/VsOK2uvtRxDOug
+         HQBIFzKFtP2YIKufQHpi3N/s8M2j5t51/w7y7rD1rL54M1B718ErVMQBlL7ZXgikUueF
+         VnqxLtJKrmt+Ab/lTbYEUm9974un6zJ/Pnzx8Q3lX0LjqjhiY6vyhCHccWOo7L/Sda+Q
+         T2UUVSR94A3w1HyXbQVZCBHJfNMaRq6kN8to8VN6ko4aHBWKGrj8m7nFG0uvqONnp5Tq
+         rKaEU+OwqeuFOqwBYaXOlj9qC+5I9PTJLR3KMKgi1sP/mB/cMFDsIWwdWbQv3o4HlCZ3
+         Sw1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ifHYhg9lgz2l6KYN7T9KQIx0nPNIgtcpUCQsgxaZoMA=;
-        b=LKH9DrthnX+9reJg8oNnaclXYbQ1rCpV8mY2qS03+ui3lfkaizGFMKdpbRObW87sNp
-         DMvk69YNLZ7+FCyQGS66Emhu+RS8uhMWB0tqJdvlmOfiaIJzJ/POsjS2ZhRlRThGoYuf
-         9iUJ0G1nvqkdnlzfkXdRu3CW3UwohEoBsHdC6aSJ+CG0SVe7aViUITLNqkpQtgBii273
-         98TwTxIcoe6U9Zc3GplaM37l1Zn/mfNwuI+R6R4SlN/mqtmoQ07bx30Cf8IG91HD7WoE
-         Jl05+MwymxRRZAgYxX3Owdpw9A29GcKk43QLmWMdql6kZirZdBhCspuLEPwPEfbRwRwY
-         twSw==
-X-Gm-Message-State: AOAM533tFIveg+hg3bfzg6PPmpfDwgcIV+o0yaGEY7bEfHaLIwZtyILS
-        ESWZDjNtDr2z8MUrAiUqkFl8hQ==
-X-Google-Smtp-Source: ABdhPJzBFcGaNdgVByAcNh091Bc+Shqq/R5YirEAQkGwGenAx/ud00wx2RaylzjRn3qXlxpRapO0Vw==
-X-Received: by 2002:a05:6000:144d:: with SMTP id v13mr59849590wrx.411.1641661733832;
-        Sat, 08 Jan 2022 09:08:53 -0800 (PST)
+        bh=IZ9wQElu7gxaZRjK3LghSKU0X1qkME6nh55EQ6D9bBM=;
+        b=hvm0e7iTG2uOw0kT6NF+uBMXrSE7miqn9zJrCEr6huDVdoZI1aurOSg64MjcNcTS7+
+         2VrJhxQRg/9wOhh8AT8AA8BaMKQqt4MoHdpvn8hwALAw0YxZbmG3KJIC+16J27KXMW2c
+         Bi7v1GYs8GsxX3Z4TiyhLdLEFk8n9FoKaJFosVBdUBWjyEWGEpfgwL3cM57lq+vxJlrV
+         +nocDdWLcn4lfDqSoX9pYRjj3sudKe/OP0Q74wfNuiueQzddylM4J9oXt8Iw8XB0GXNY
+         /vcKzeiBdEZZmjfQ/nqSlMTowzdns87Rd7qc+aXxFo4+lHFz1kPQu7GFhftCNGN8pBD3
+         2Vlw==
+X-Gm-Message-State: AOAM531Japprp4te+BgmyyqJNjxfPJWz0Q6Y9YW/PQgYeh9OIrUsAXHA
+        5bNQP1jQuvhW7RC2792TED4C5A==
+X-Google-Smtp-Source: ABdhPJxiIjlaYgp7K94rOhV97AOMYsiqk+QMow0BKlCzUDyUSBwOprHdD6obhJTH7WkH2C5c1kkz7w==
+X-Received: by 2002:a1c:4e04:: with SMTP id g4mr15263008wmh.156.1641661734871;
+        Sat, 08 Jan 2022 09:08:54 -0800 (PST)
 Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
         by smtp.gmail.com with ESMTPSA id d22sm2154727wrb.83.2022.01.08.09.08.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Jan 2022 09:08:53 -0800 (PST)
+        Sat, 08 Jan 2022 09:08:54 -0800 (PST)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
         wcn36xx@lists.infradead.org, linux-arm-msm@vger.kernel.org
 Cc:     loic.poulain@linaro.org, benl@squareup.com,
         bryan.odonoghue@linaro.org, kernel test robot <lkp@intel.com>
-Subject: [PATCH v2 3/4] wcn36xx: Track SNR and RSSI for each RX frame
-Date:   Sat,  8 Jan 2022 17:10:56 +0000
-Message-Id: <20220108171057.1823315-4-bryan.odonoghue@linaro.org>
+Subject: [PATCH v2 4/4] wcn36xx: Add SNR reporting via get_survey()
+Date:   Sat,  8 Jan 2022 17:10:57 +0000
+Message-Id: <20220108171057.1823315-5-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20220108171057.1823315-1-bryan.odonoghue@linaro.org>
 References: <20220108171057.1823315-1-bryan.odonoghue@linaro.org>
@@ -65,149 +65,78 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The BDs for each RX frame contain both the RSSI and SNR for the received
-frame. If we track and store this information it can be useful to us in
-get_survey() and potentially elsewhere.
+Add support for get_survey() reporting. Current channel and noise-floor are
+reported, other parameters such as scan, busy, TX and RX time are not
+immediately available.
+
+Noise is a useful metric to report, so bring it out now.
 
 Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/wcn36xx/main.c    | 12 +++++++++
- drivers/net/wireless/ath/wcn36xx/txrx.c    | 31 ++++++++++++++++++++++
- drivers/net/wireless/ath/wcn36xx/wcn36xx.h | 10 +++++++
- 3 files changed, 53 insertions(+)
+ drivers/net/wireless/ath/wcn36xx/main.c | 42 +++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
 diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index d2b99f6112f6b..0e1f3dc4f69d4 100644
+index 0e1f3dc4f69d4..9ccfe752767b7 100644
 --- a/drivers/net/wireless/ath/wcn36xx/main.c
 +++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -331,6 +331,7 @@ static int wcn36xx_start(struct ieee80211_hw *hw)
- 
- 	INIT_LIST_HEAD(&wcn->vif_list);
- 	spin_lock_init(&wcn->dxe_lock);
-+	spin_lock_init(&wcn->survey_lock);
- 
- 	return 0;
- 
-@@ -394,6 +395,7 @@ static void wcn36xx_change_opchannel(struct wcn36xx *wcn, int ch)
- 	struct wcn36xx_vif *tmp;
- 	struct ieee80211_supported_band *band;
- 	struct ieee80211_channel *channel;
-+	unsigned long flags;
- 	int i, j;
- 
- 	for (i = 0; i < ARRAY_SIZE(wcn->hw->wiphy->bands); i++) {
-@@ -415,8 +417,10 @@ static void wcn36xx_change_opchannel(struct wcn36xx *wcn, int ch)
- 		return;
+@@ -1357,6 +1357,47 @@ static void wcn36xx_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
  	}
- 
-+	spin_lock_irqsave(&wcn->survey_lock, flags);
- 	wcn->band = band;
- 	wcn->channel = channel;
-+	spin_unlock_irqrestore(&wcn->survey_lock, flags);
- 
- 	list_for_each_entry(tmp, &wcn->vif_list, list) {
- 		vif = wcn36xx_priv_to_vif(tmp);
-@@ -1562,6 +1566,7 @@ static int wcn36xx_probe(struct platform_device *pdev)
- 	void *wcnss;
- 	int ret;
- 	const u8 *addr;
-+	int n_channels;
- 
- 	wcn36xx_dbg(WCN36XX_DBG_MAC, "platform probe\n");
- 
-@@ -1589,6 +1594,13 @@ static int wcn36xx_probe(struct platform_device *pdev)
- 		goto out_wq;
- 	}
- 
-+	n_channels = wcn_band_2ghz.n_channels + wcn_band_5ghz.n_channels;
-+	wcn->chan_survey = devm_kmalloc(wcn->dev, n_channels, GFP_KERNEL);
-+	if (!wcn->chan_survey) {
-+		ret = -ENOMEM;
-+		goto out_wq;
-+	}
-+
- 	ret = dma_set_mask_and_coherent(wcn->dev, DMA_BIT_MASK(32));
- 	if (ret < 0) {
- 		wcn36xx_err("failed to set DMA mask: %d\n", ret);
-diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
-index a3eb476c2cbc4..8e8f014225dba 100644
---- a/drivers/net/wireless/ath/wcn36xx/txrx.c
-+++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
-@@ -271,6 +271,34 @@ static void __skb_queue_purge_irq(struct sk_buff_head *list)
- 		dev_kfree_skb_irq(skb);
  }
  
-+static void wcn36xx_update_survey(struct wcn36xx *wcn, int rssi, int snr,
-+				  int band, int freq)
++static int wcn36xx_get_survey(struct ieee80211_hw *hw, int idx,
++			      struct survey_info *survey)
 +{
-+	static struct ieee80211_channel *channel;
++	struct wcn36xx *wcn = hw->priv;
 +	struct ieee80211_supported_band *sband;
-+	int idx;
-+	int i;
++	struct wcn36xx_chan_survey *chan_survey;
++	unsigned long flags;
 +
-+	idx = 0;
-+	if (band == NL80211_BAND_5GHZ)
-+		idx = wcn->hw->wiphy->bands[NL80211_BAND_2GHZ]->n_channels;
-+
-+	sband = wcn->hw->wiphy->bands[band];
-+	channel = sband->channels;
-+
-+	for (i = 0; i < sband->n_channels; i++, channel++) {
-+		if (channel->center_freq == freq) {
-+			idx += i;
-+			break;
-+		}
++	sband = wcn->hw->wiphy->bands[NL80211_BAND_2GHZ];
++	if (idx >= sband->n_channels) {
++		idx -= sband->n_channels;
++		sband = wcn->hw->wiphy->bands[NL80211_BAND_5GHZ];
 +	}
 +
-+	spin_lock(&wcn->survey_lock);
-+	wcn->chan_survey[idx].rssi = rssi;
-+	wcn->chan_survey[idx].snr = snr;
-+	spin_unlock(&wcn->survey_lock);
++	if (!sband || idx >= sband->n_channels)
++		return -ENOENT;
++
++	spin_lock_irqsave(&wcn->survey_lock, flags);
++
++	chan_survey = &wcn->chan_survey[idx];
++	survey->channel = &sband->channels[idx];
++	survey->noise = chan_survey->rssi - chan_survey->snr;
++	survey->filled = 0;
++
++	if (chan_survey->rssi > -100 && chan_survey->rssi < 0)
++		survey->filled |= SURVEY_INFO_NOISE_DBM;
++
++	if (survey->channel == wcn->channel)
++		survey->filled |= SURVEY_INFO_IN_USE;
++
++	spin_unlock_irqrestore(&wcn->survey_lock, flags);
++
++	 wcn36xx_dbg(WCN36XX_DBG_MAC,
++		     "ch %d rssi %d snr %d noise %d filled %x freq %d\n",
++		     HW_VALUE_CHANNEL(survey->channel->hw_value),
++		     chan_survey->rssi, chan_survey->snr, survey->noise,
++		     survey->filled, survey->channel->center_freq);
++
++	return 0;
 +}
 +
- int wcn36xx_rx_skb(struct wcn36xx *wcn, struct sk_buff *skb)
- {
- 	struct ieee80211_rx_status status;
-@@ -348,6 +376,9 @@ int wcn36xx_rx_skb(struct wcn36xx *wcn, struct sk_buff *skb)
- 		status.freq = WCN36XX_CENTER_FREQ(wcn);
- 	}
+ static const struct ieee80211_ops wcn36xx_ops = {
+ 	.start			= wcn36xx_start,
+ 	.stop			= wcn36xx_stop,
+@@ -1385,6 +1426,7 @@ static const struct ieee80211_ops wcn36xx_ops = {
+ 	.ipv6_addr_change	= wcn36xx_ipv6_addr_change,
+ #endif
+ 	.flush			= wcn36xx_flush,
++	.get_survey		= wcn36xx_get_survey,
  
-+	 wcn36xx_update_survey(wcn, status.signal, get_snr(bd),
-+			       status.band, status.freq);
-+
- 	if (bd->rate_id < ARRAY_SIZE(wcn36xx_rate_table)) {
- 		rate = &wcn36xx_rate_table[bd->rate_id];
- 		status.encoding = rate->encoding;
-diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-index dd2570e468084..81eaa74601d0f 100644
---- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-+++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-@@ -194,7 +194,14 @@ struct wcn36xx_sta {
- 	enum wcn36xx_ampdu_state ampdu_state[16];
- 	int non_agg_frame_ct;
+ 	CFG80211_TESTMODE_CMD(wcn36xx_tm_cmd)
  };
-+
- struct wcn36xx_dxe_ch;
-+
-+struct wcn36xx_chan_survey {
-+	s8	rssi;
-+	u8	snr;
-+};
-+
- struct wcn36xx {
- 	struct ieee80211_hw	*hw;
- 	struct device		*dev;
-@@ -284,6 +291,9 @@ struct wcn36xx {
- 
- 	struct ieee80211_supported_band *band;
- 	struct ieee80211_channel *channel;
-+
-+	spinlock_t survey_lock;		/* protects chan_survey */
-+	struct wcn36xx_chan_survey	*chan_survey;
- };
- 
- static inline bool wcn36xx_is_fw_version(struct wcn36xx *wcn,
 -- 
 2.33.0
 
