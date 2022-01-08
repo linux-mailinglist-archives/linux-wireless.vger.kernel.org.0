@@ -2,76 +2,226 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2401048844B
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jan 2022 16:46:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD1B34884D2
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jan 2022 18:08:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234585AbiAHPqE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Jan 2022 10:46:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40284 "EHLO
+        id S232369AbiAHRIx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 8 Jan 2022 12:08:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234587AbiAHPqE (ORCPT
+        with ESMTP id S229909AbiAHRIw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Jan 2022 10:46:04 -0500
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95221C061401
-        for <linux-wireless@vger.kernel.org>; Sat,  8 Jan 2022 07:46:03 -0800 (PST)
-Received: by mail-wr1-x42c.google.com with SMTP id l10so17295546wrh.7
-        for <linux-wireless@vger.kernel.org>; Sat, 08 Jan 2022 07:46:03 -0800 (PST)
+        Sat, 8 Jan 2022 12:08:52 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C223C061401
+        for <linux-wireless@vger.kernel.org>; Sat,  8 Jan 2022 09:08:52 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id h10so7490322wrb.1
+        for <linux-wireless@vger.kernel.org>; Sat, 08 Jan 2022 09:08:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=+nUfroBA5dnOzmQt6qJzThSCFeTi3yMn552LUIzKkMI=;
-        b=j0dA03crvqc2AxJFJDkwJuC7YsdxUkaH/jV/JJN2Jos9wA8mafZmV9kfK6HJHTy0UY
-         X8br4266acaPNh1woC8ksjCXQK1PG3eJaicmEAXCKOEusp0LVvDlapC7+Euv4s8aZtn+
-         +XieI3k/YTKmvyI0mHHmEfmk6eE6jH9E+nuMXHMicU7CDwNDwTINw6B0A5l2nXgbSykI
-         c3Lo9sIJa1X/Brwir/lUb7YBRcwHL75fePHupfCFoLdOYb9D2UDO9aBqwAQwhkDDFaVS
-         F9f2Ck0x5FSmel60zo9cmpHjk7kM2S2iQvZxJcQFiJR2g59J5maGpkTuSdFAhKKc8zrr
-         XOYg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JHBX507AUoJu4v3MDP9bEanjo6mkJkh7c+Gy5zgVn4o=;
+        b=dLAXZ1crAwAICq09KTmjl31jpd25gsdibtEqejj8+DksvpG+fv6WZLaHIhGOxMjs0W
+         FgsLm1fUkUl8VCsanLxTuCP/qe3o2pylAkEzjP/5I9blHk9i+nZBeL1J2pw97fmJZKZ/
+         P73u4kRRDXl0qDUO+OuZOnIblrHWuklY8BKMki1U2Q7SccqpN7jJnj6Y//YzTFnyYdnl
+         p1zG+IdDYoVbeD2TjVgeyJlTelVbtXWFiHXlLsAu1Pv06U3LMWjqP5RgZMpgyEOSGPTc
+         4TDvLqyYw+VS8KrKA3lmyzWsYIKi1duQWDg5Nh94sGdCThCJedbNLYAVyRTjmfX78O2Y
+         ZAkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=+nUfroBA5dnOzmQt6qJzThSCFeTi3yMn552LUIzKkMI=;
-        b=SLMuZ1pqGKkvYsVtNyvEyZ2HkcnZKzv1HdfuWCFjEu0X3izxRBLvL1BLyXG3brofJV
-         h4h5HgeWzZj5Pv7jWk7ygEROnN1CLuNUH45tvfx+gi6UYfsBQpBBzAZnRIA4UNcMd+Nu
-         D+MZ2HU0i/cxNAzfw0NvFnflt6wmeDugWiwkkPNFNVmZW3L3ZdWjGRaocAbJ/kugGWUM
-         eR+EMpDgyxSVIhYBwDqkxq3T0VJK4YAYw7FQzg2j1pnCMtDbhMI17RI6HAUSoROUGSU7
-         4Emv5sqgZuMJGoIhtbdWoIEfDinp1Sb0cU+cLwuX2nXJzKsdt4rvnGFzrfAuWfdUvE3g
-         eqcw==
-X-Gm-Message-State: AOAM531/s61BAyo1McacGuhXxIYBFAgSZjkg1Jsg1/NuSCAjAqiHIceL
-        LKjP50fA/Npf1NB5Ja5aqCOkIg==
-X-Google-Smtp-Source: ABdhPJxrmoC2/r3N4ofOHzLqqYiSFPiGjG8H0UCP9omFngTKn6nvFQSOKG7w/shWu9mAyve08cUnMw==
-X-Received: by 2002:a5d:6842:: with SMTP id o2mr55917500wrw.615.1641656762100;
-        Sat, 08 Jan 2022 07:46:02 -0800 (PST)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id x8sm1855348wmj.44.2022.01.08.07.46.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Jan 2022 07:46:01 -0800 (PST)
-Message-ID: <6c44bf59-3ee9-3055-c2c6-cf497a39ca05@linaro.org>
-Date:   Sat, 8 Jan 2022 15:48:12 +0000
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.1
-Subject: Re: [PATCH 3/4] wcn36xx: Track SNR and RSSI for each RX frame
-Content-Language: en-US
-To:     kernel test robot <lkp@intel.com>, kvalo@codeaurora.org,
-        linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        loic.poulain@linaro.org, benl@squareup.com
-References: <20220107153323.1807905-4-bryan.odonoghue@linaro.org>
- <202201081611.NwbnsnbW-lkp@intel.com>
+        bh=JHBX507AUoJu4v3MDP9bEanjo6mkJkh7c+Gy5zgVn4o=;
+        b=u1hLzkQbQXopS4TsoPHQulE6uKenBm1FpWkBGl68XB8oAGdmKjp/7/P2O1MqW2Kgje
+         iIfv2xs1w/rPxc+tpdm0tj88ABn3xKhZjql/XseOhT2DpesqjeGvM4LxWUTlxlJbSGkA
+         J//TvxtFpymDzw31/U/XUJAmuQ/q5ep8f2rpp0zFcG6CvYTn/ZsZkIlAWB15CeJRdiye
+         Cd6ohBeqhKSgTjLhiOqutQlYIgb0nCtFvJu4ieWI1qcEdHLxdeHL6XnD3nKzoJOa+/ZV
+         7pGXlFKvHWn11f7yT7IE7p+rwJF70nZIqMHtGpugSFA+RfWrSKBTjq3uaRERdR59Tr+m
+         23pA==
+X-Gm-Message-State: AOAM532rkt9bPyEzOwyOt1SyT6gQBYu0QUuO8Sr+F+P1DsCEWbYCnhrC
+        owhRMwHyk36eBZLW7L32DR1O8g==
+X-Google-Smtp-Source: ABdhPJxI96to6VPRbB9lxQvQkyyV7u6jymDzoOmSyyPRSYxGao+MYLbaWKhT1mjSr6W4K/pX7yHvWA==
+X-Received: by 2002:a5d:6c6a:: with SMTP id r10mr58203074wrz.60.1641661730736;
+        Sat, 08 Jan 2022 09:08:50 -0800 (PST)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id d22sm2154727wrb.83.2022.01.08.09.08.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Jan 2022 09:08:50 -0800 (PST)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <202201081611.NwbnsnbW-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        wcn36xx@lists.infradead.org, linux-arm-msm@vger.kernel.org
+Cc:     loic.poulain@linaro.org, benl@squareup.com,
+        bryan.odonoghue@linaro.org
+Subject: [PATCH v2 0/4] wcn36xx: Add spectrum survey reporting
+Date:   Sat,  8 Jan 2022 17:10:53 +0000
+Message-Id: <20220108171057.1823315-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.33.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 08/01/2022 08:41, kernel test robot wrote:
-> ret -= ENOMEM;
+V2:
+- Fixes typo "ret -= ENOMEM" => "ret = -ENOMEM" - kernel test bot
+- Makes get_survey() static - kernel test bot
+- Ignores riscv warnings since none apply to code in this patch - bod
 
-nice catch
+V1:
+This series enables get_survey() on wcn36xx. Tested with wcn3620 and
+wcn3680b.
+
+wcn36xx reports RSSI and SNR in the buffer descriptor of each delivered
+frame wcn36xx -> host. Thus far we have only extracted RSSI but, extracting
+the SNR lets us also report the noise-floor.
+
+Adding in some background tracking of the current tuned channel lets us
+flag which channel is currently in use when running "iw wlan0 survey dump"
+
+For both wcn3620 and wcn3680b I have verified both the STA and AP's view of
+RSSI and noise.
+
+Example wcn3620:
+  AP Asus RT-AX88U
+    SSID: "linaro-test"
+    noise: -78 dBm	Channel: 8
+    BSSID: 04:D4:C4:AA:BB:CC
+
+    MAC               RSSI
+    02:00:16:qq:xx:yy -35dBm
+
+  STA
+    root@linaro-developer:~# iw wlan0 link
+    Connected to 04:d4:c4:aa:bb:cc (on wlan0)
+          SSID: linaro-test
+          freq: 2447
+          RX: 768377 bytes (4250 packets)
+          TX: 8136 bytes (97 packets)
+          signal: -37 dBm
+
+    root@linaro-developer:~# iw wlan0 survey dump
+    Survey data from wlan0
+            frequency:                      2412 MHz
+    Survey data from wlan0
+            frequency:                      2417 MHz
+            noise:                          -12 dBm
+    Survey data from wlan0
+            frequency:                      2422 MHz
+            noise:                          -82 dBm
+    Survey data from wlan0
+            frequency:                      2427 MHz
+            noise:                          -76 dBm
+    Survey data from wlan0
+            frequency:                      2432 MHz
+            noise:                          -78 dBm
+    Survey data from wlan0
+            frequency:                      2437 MHz
+            noise:                          -100 dBm
+    Survey data from wlan0
+            frequency:                      2442 MHz
+            noise:                          -41 dBm
+    Survey data from wlan0
+            frequency:                      2447 MHz [in use]
+            noise:                          -75 dBm
+
+Example wcn3680b:
+  AP Asus RT-AX88U:
+    SSID: "linaro-test"
+    noise: -80 dBm	Channel: 60/160
+    BSSID: 04:D4:C4:DD:EE:FF	
+
+    MAC               RSSI
+    E2:C0:10:YY:XX:QQ -31dBm
+
+  STA:
+    root@linaro-developer:~# iw wlan0 link
+    Connected to 04:d4:c4:dd:ee:ff (on wlan0)
+            SSID: linaro-test
+            freq: 5300
+            RX: 5999294 bytes (32764 packets)
+            TX: 35443 bytes (493 packets)
+            signal: -27 dBm
+            rx bitrate: 433.3 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 1
+            tx bitrate: 6.0 MBit/s
+
+            bss flags:      short-slot-time
+            dtim period:    3
+            beacon int:     100
+
+    root@linaro-developer:~# iw wlan0 survey dump
+    Survey data from wlan0
+            frequency:                      2412 MHz
+            noise:                          -63 dBm
+    Survey data from wlan0
+            frequency:                      2417 MHz
+            noise:                          -57 dBm
+    Survey data from wlan0
+            frequency:                      2422 MHz
+            noise:                          -74 dBm
+    Survey data from wlan0
+            frequency:                      2427 MHz
+            noise:                          -90 dBm
+    Survey data from wlan0
+            frequency:                      2432 MHz
+            noise:                          -72 dBm
+    Survey data from wlan0
+            frequency:                      2437 MHz
+            noise:                          -33 dBm
+    Survey data from wlan0
+            frequency:                      2442 MHz
+            noise:                          -72 dBm
+    Survey data from wlan0
+            frequency:                      2447 MHz
+            noise:                          -68 dBm
+    Survey data from wlan0
+            frequency:                      2452 MHz
+            noise:                          -33 dBm
+    Survey data from wlan0
+            frequency:                      2457 MHz
+            noise:                          -33 dBm
+    Survey data from wlan0
+            frequency:                      2462 MHz
+            noise:                          -36 dBm
+    Survey data from wlan0
+            frequency:                      2467 MHz
+            noise:                          -68 dBm
+    Survey data from wlan0
+            frequency:                      2472 MHz
+            noise:                          -34 dBm
+    Survey data from wlan0
+            frequency:                      5180 MHz
+            noise:                          -63 dBm
+    Survey data from wlan0
+            frequency:                      5200 MHz
+            noise:                          -57 dBm
+    Survey data from wlan0
+            frequency:                      5220 MHz
+            noise:                          -74 dBm
+    Survey data from wlan0
+            frequency:                      5240 MHz
+            noise:                          -90 dBm
+    Survey data from wlan0
+            frequency:                      5260 MHz
+            noise:                          -72 dBm
+    Survey data from wlan0
+            frequency:                      5280 MHz
+            noise:                          -33 dBm
+    Survey data from wlan0
+            frequency:                      5300 MHz [in use]
+            noise:                          -72 dBm
+
+Bryan O'Donoghue (4):
+  wcn36xx: Implement get_snr()
+  wcn36xx: Track the band and channel we are tuned to
+  wcn36xx: Track SNR and RSSI for each RX frame
+  wcn36xx: Add SNR reporting via get_survey()
+
+ drivers/net/wireless/ath/wcn36xx/main.c    | 81 ++++++++++++++++++++++
+ drivers/net/wireless/ath/wcn36xx/txrx.c    | 36 ++++++++++
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h | 13 ++++
+ 3 files changed, 130 insertions(+)
+
+-- 
+2.33.0
+
