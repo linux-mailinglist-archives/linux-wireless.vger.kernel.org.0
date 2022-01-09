@@ -2,96 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73C9E48885C
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jan 2022 09:34:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97C5348892C
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jan 2022 13:00:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233276AbiAIId5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jan 2022 03:33:57 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:39616 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229867AbiAIId5 (ORCPT
+        id S233906AbiAIMAh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jan 2022 07:00:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47534 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233861AbiAIMAh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Jan 2022 03:33:57 -0500
-X-UUID: 324762a3ce5b4e3ca70be4fbd775b2b0-20220109
-X-UUID: 324762a3ce5b4e3ca70be4fbd775b2b0-20220109
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1977126466; Sun, 09 Jan 2022 16:33:53 +0800
-Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Sun, 9 Jan 2022 16:33:51 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb02.mediatek.inc
- (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Sun, 9 Jan
- 2022 16:33:51 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sun, 9 Jan 2022 16:33:50 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Mark-YW.Chen@mediatek.com>,
-        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
-        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
-        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
-        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
-        <abhishekpandit@google.com>, <shawnku@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        "Leon Yen" <leon.yen@mediatek.com>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] mt76: sdio: disable interrupt in mt76s_sdio_irq
-Date:   Sun, 9 Jan 2022 16:33:50 +0800
-Message-ID: <a8a84184942de2214979f46482c77c5921c40af5.1641716611.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
+        Sun, 9 Jan 2022 07:00:37 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFDD4C06173F
+        for <linux-wireless@vger.kernel.org>; Sun,  9 Jan 2022 04:00:36 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id 30so40491760edv.3
+        for <linux-wireless@vger.kernel.org>; Sun, 09 Jan 2022 04:00:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:date:message-id:in-reply-to:references:user-agent:subject
+         :mime-version:content-transfer-encoding;
+        bh=poUgC5wKRDFbB2X+5xZYyIxQ2hN/TiHg2QZl46PgYUI=;
+        b=a+o2YFGPzTgBkanAK4XXWl1I/BbokDrY2UcZTekKOfb1983MsBPjDys8L2IfRn2hzu
+         aI5cQ7maW8fqKKmERL1sS9EPJG+F4Y0VvfGqenR/iSfQ8eXmmOJMprN0RWegQ3DoZy/W
+         tJMk7P0AR+5bZfMFixG/ijNISTst+rozgnEVihgBSpLmEXlrkZg9bLCVSZisZfNnadMT
+         DjcbeMhV2dUKTBrYQQ0HHpmYnOO/VYRNO+znGsGu+83vwrlRW0UI9VHoAtT41Rs0FD+x
+         uQbMpSQxVThSxGHc55lzrGX2OHJ91q4JGkDdc3GA3O5KpFY3L3V2tmjdXaGSeJNZ+/M7
+         7eBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:date:message-id:in-reply-to:references
+         :user-agent:subject:mime-version:content-transfer-encoding;
+        bh=poUgC5wKRDFbB2X+5xZYyIxQ2hN/TiHg2QZl46PgYUI=;
+        b=i6yOYlS+6zElmZQGn0ufTwNCOPZjo4EZMUyZVERlxNf7gkReH9VKKQuxCWvaVjFB6V
+         CNy1HulU3VwCguJIj6bWb2lBWHsyBLKLWHv/I8zUBKjIe3oE7MI4lKtQR/+knsTyHmU8
+         u8JlEFEycUf3H53/LlKcAouwPvPzwkNeYcUZtYFE4HxqLk1Uiox8pT/QqMIpzeUrbrOR
+         l0SNiEztYJrcqD4VhWUZH85upTF35RWkXXuJx3ZFAAl8qhd2KN4ndDxC211Xr08koT5H
+         WAs89CkJIKZT1U9rZrkvOKz5Lzk0i0mW+Ku11/IimPrvXrx/ixWms0ONjhrgnf6d/oF1
+         VHPQ==
+X-Gm-Message-State: AOAM530D8/T3xn06iJuUpBU0P8yACaKITkuLolcgamD/wrHhIa9ojkui
+        EWxck6K9q/KWARqdSsQwjEY=
+X-Google-Smtp-Source: ABdhPJzYTxEFuzfBHKuxkqcrWSz77CXk9qRDFaUsgMYQenaTrNprXF1roV3hOl/O+7dmXrtov3hHQQ==
+X-Received: by 2002:a17:906:4c95:: with SMTP id q21mr11831633eju.173.1641729635512;
+        Sun, 09 Jan 2022 04:00:35 -0800 (PST)
+Received: from [192.168.178.38] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id w11sm1940351edd.21.2022.01.09.04.00.34
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 09 Jan 2022 04:00:34 -0800 (PST)
+From:   Arend van Spriel <aspriel@gmail.com>
+To:     James Prestwood <prestwoj@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+Date:   Sun, 09 Jan 2022 13:00:34 +0100
+Message-ID: <17e3eb62ed0.279b.9696ff82abe5fb6502268bdc3b0467d4@gmail.com>
+In-Reply-To: <58ebff51d64d1ae6b01d85cff7bb9e137e19848a.camel@gmail.com>
+References: <2b18f86924c3d64437aa139f6401ee2e7705eeb0.camel@gmail.com>
+ <47ba74aa23a5c4fb42660d5b40e974c24acf24bf.camel@sipsolutions.net>
+ <91d38c40a62100dc6355c98e85b8b793ed8890df.camel@gmail.com>
+ <d8250f97a2be736736374974095f219d858acb1e.camel@sipsolutions.net>
+ <58ebff51d64d1ae6b01d85cff7bb9e137e19848a.camel@gmail.com>
+User-Agent: AquaMail/1.33.0 (build: 103300102)
+Subject: Re: Adding CMD_SET_CHANNEL for station iftypes
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+On January 8, 2022 12:31:19 AM James Prestwood <prestwoj@gmail.com> wrote:
 
-It is unnecessary to keep the interrupt enabled in mt76s_sdio_irq because
-the driver is already aware of the interrupt, schedules the
-mt76s_txrx_worker to handle the corresponding actions, and eventually,
-the interrupt would be enabled again when mt76s_txrx_worker finishes its
-work.
+> On Thu, 2022-01-06 at 23:01 +0100, Johannes Berg wrote:
+>> Hi Preston,
+>>
+>> Ugh, sorry. I'm way behind on a whole bunch of emails (about 4 dozen
+>> to
+>> be honest) ... trying to catch up, but only so many hours a day.
+>
+> No worries, thanks for getting to it :)
+>
+>>
 
-So we can safely disable the interrupt in mt76s_sdio_irq as soon as
-possible to increase the CPU productivity by dropping the redundant
-interrupt triggers.
+[...]
 
-Note that sdio lock acquired/released would be handled in sdio_irq_work
-at mmc driver so we don't take care in mt76s_sdio_irq at function driver.
+>
+>>
+>> At which point it's probably not really worth it? Emulating it in the
+>> driver by repeatedly issuing time events also seems like a bad idea,
+>> worse even than doing it in the application, since the application
+>> could
+>> at least try to synchronise it a bit with whatever it needs to be
+>> doing,
+>> whereas the driver can't do that at all.
+>
+> If this is the case then sure, its just offloading the same nasty
+> procedure into the driver/FW. You know more than me about this topic
+> but I'm still trying to understand how this would differ much from AP
+> mode?
+>
+> In my own mind I see SET_CHANNEL doing the same thing as START_AP, just
+> without sending out beacons/probes and the iftype being station. Maybe
+> this is an oversimplifation but it seems like the FW/driver *can* sit
+> on channel without some time constraint if it supports AP mode.
 
-Co-developed-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/sdio_txrx.c | 1 +
- 1 file changed, 1 insertion(+)
+Even if it only supports STA mode it can. The constraint being that it is 
+not associated (or busy trying to associate) to an AP. When it is 
+associated it has to sit on the channel of the AP, as announced in it's 
+beacon and/or probe response, at regular intervals. You referred to DPP to 
+provision the STA so I assume it is not associated, right? Could you write 
+out the whole scenario as you think it should/could be done?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-index f2b46975d831..488ad7734d85 100644
---- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-+++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-@@ -349,6 +349,7 @@ void mt76s_sdio_irq(struct sdio_func *func)
- 	    test_bit(MT76_MCU_RESET, &dev->phy.state))
- 		return;
- 
-+	sdio_writel(sdio->func, WHLPCR_INT_EN_CLR, MCR_WHLPCR, NULL);
- 	mt76_worker_schedule(&sdio->txrx_worker);
- }
- EXPORT_SYMBOL_GPL(mt76s_sdio_irq);
--- 
-2.25.1
+Regards,
+Arend
+
 
