@@ -2,74 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A011488642
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jan 2022 22:23:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73C9E48885C
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jan 2022 09:34:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230398AbiAHVWk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Jan 2022 16:22:40 -0500
-Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.184]:49170 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229953AbiAHVWk (ORCPT
+        id S233276AbiAIId5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jan 2022 03:33:57 -0500
+Received: from mailgw01.mediatek.com ([60.244.123.138]:39616 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229867AbiAIId5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Jan 2022 16:22:40 -0500
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.165])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 3A3451A0065;
-        Sat,  8 Jan 2022 21:22:39 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id F26AC9C0066;
-        Sat,  8 Jan 2022 21:22:38 +0000 (UTC)
-Received: from [192.168.1.115] (unknown [98.97.67.209])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 1B8D513C2B0;
-        Sat,  8 Jan 2022 13:22:38 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 1B8D513C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1641676958;
-        bh=WLKmX5Q2RY3NhoARrelA6B2rooJW1BdFE7M1A8kF6MQ=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=S/WeKrL45WyDRzzz7/43jdMd8GOhZTwlsBFtL5O6lEqIJ38/A4jdMhD4sm87ehiCJ
-         qOi3eP8mnM5R/Zl2K/bM7avqC+uwyjWOlE7SZ6Sq3aW5lDUZN0wbsi/s+IBqEfLmsq
-         Em1GWvq2bZ01JM72Jje3EvR6NdichMEF1U4Z7sBA=
-Subject: Re: iwlwifi: AX201 not using 2 receive streams
-To:     Brandon Nielsen <nielsenb@jetfuse.net>,
-        linux-wireless@vger.kernel.org
-References: <3cb11500-6828-6ded-bebc-cdb6e1f97bc0@jetfuse.net>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <521b0dba-5866-ff34-da5a-479bc95cc9d9@candelatech.com>
-Date:   Sat, 8 Jan 2022 13:22:37 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        Sun, 9 Jan 2022 03:33:57 -0500
+X-UUID: 324762a3ce5b4e3ca70be4fbd775b2b0-20220109
+X-UUID: 324762a3ce5b4e3ca70be4fbd775b2b0-20220109
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1977126466; Sun, 09 Jan 2022 16:33:53 +0800
+Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Sun, 9 Jan 2022 16:33:51 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb02.mediatek.inc
+ (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Sun, 9 Jan
+ 2022 16:33:51 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sun, 9 Jan 2022 16:33:50 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Mark-YW.Chen@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
+        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
+        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        "Leon Yen" <leon.yen@mediatek.com>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH] mt76: sdio: disable interrupt in mt76s_sdio_irq
+Date:   Sun, 9 Jan 2022 16:33:50 +0800
+Message-ID: <a8a84184942de2214979f46482c77c5921c40af5.1641716611.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-In-Reply-To: <3cb11500-6828-6ded-bebc-cdb6e1f97bc0@jetfuse.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
-X-MDID: 1641676959-UjgTLmQ3XhO6
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/8/22 12:50 PM, Brandon Nielsen wrote:
-> I have a system with Intel AX201 not using 2 spatial streams in the RX (download) direction. TX (upload) functions as expected. I'm seeing similar behavior with 
-> an AX200 system. I'm seeing the same behavior on 5.15.12 as I am with 5.16.0-rc8 so I didn't mark it as a regression. Windows works as expected.
-> 
-> I have opened bug 215465[0] with some more detail.
-> 
-> [0] - https://bugzilla.kernel.org/show_bug.cgi?id=215465
-> 
+From: Sean Wang <sean.wang@mediatek.com>
 
-We saw something similar with ax210, but only on 6E, in kernel 5.15.7+.  On 5Ghz, it worked 2x2 as expected.
-On a 5.15.0-rc something, it worked OK for us.
+It is unnecessary to keep the interrupt enabled in mt76s_sdio_irq because
+the driver is already aware of the interrupt, schedules the
+mt76s_txrx_worker to handle the corresponding actions, and eventually,
+the interrupt would be enabled again when mt76s_txrx_worker finishes its
+work.
 
-We verified same firmware is used in both cases, but have not fully bisected the problem yet but we are
-working on it.  In case you find the problem patch before us, please let me know!
+So we can safely disable the interrupt in mt76s_sdio_irq as soon as
+possible to increase the CPU productivity by dropping the redundant
+interrupt triggers.
 
-Thanks,
-Ben
+Note that sdio lock acquired/released would be handled in sdio_irq_work
+at mmc driver so we don't take care in mt76s_sdio_irq at function driver.
 
+Co-developed-by: Leon Yen <leon.yen@mediatek.com>
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
+Co-developed-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/sdio_txrx.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+index f2b46975d831..488ad7734d85 100644
+--- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
++++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+@@ -349,6 +349,7 @@ void mt76s_sdio_irq(struct sdio_func *func)
+ 	    test_bit(MT76_MCU_RESET, &dev->phy.state))
+ 		return;
+ 
++	sdio_writel(sdio->func, WHLPCR_INT_EN_CLR, MCR_WHLPCR, NULL);
+ 	mt76_worker_schedule(&sdio->txrx_worker);
+ }
+ EXPORT_SYMBOL_GPL(mt76s_sdio_irq);
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.25.1
+
