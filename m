@@ -2,123 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DDD648A225
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jan 2022 22:48:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5570848A2C8
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jan 2022 23:30:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345060AbiAJVsP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jan 2022 16:48:15 -0500
-Received: from mga17.intel.com ([192.55.52.151]:60615 "EHLO mga17.intel.com"
+        id S1345458AbiAJWag (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jan 2022 17:30:36 -0500
+Received: from mout.gmx.net ([212.227.17.20]:39123 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345050AbiAJVsP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jan 2022 16:48:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1641851295; x=1673387295;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=i4fnz1dnrL/P4chx0iwVAgPTFqYaCdWs1yvPiUjCFz0=;
-  b=A5F6y07tHeBWA6vslTtZjCJfe8JUwBHCNmzti3Sh/cUndXoW7WYOXUOW
-   TGV8JwZCAAyaOqOqkOoZRp0dSBPbjotiHVI0+1JZUwqGNbmfeouQzHFq/
-   je2CJQABf3hJjZ5ow+COXqI0U7kDlRR6ToTUec7i40TbzQgh4iouEDeT0
-   GK+BZGHQ4tn4fvjmgw28JCUeJ9rbAL5MsLk744K0M+pLQ4VYUeMPrcWY+
-   /6ZVN3nlJq4igbVFzJJ4gyPzOoq8Lo98kl8Eq9HLnP0YVXmp2MKITq1/x
-   T0h8NGlZvaVxRQPJC6QUik0GgrjDRVfILuB0BSJ7auIwkCxJVAlxavZjP
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10223"; a="224028437"
-X-IronPort-AV: E=Sophos;i="5.88,278,1635231600"; 
-   d="scan'208";a="224028437"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2022 13:48:15 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,278,1635231600"; 
-   d="scan'208";a="622817202"
-Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 10 Jan 2022 13:48:13 -0800
-Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1n72WS-0003zO-ND; Mon, 10 Jan 2022 21:48:12 +0000
-Date:   Tue, 11 Jan 2022 05:47:58 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [jberg-mac80211:master] BUILD SUCCESS
- dd3ca4c5184ea98e40acb8eb293d85b88ea04ee2
-Message-ID: <61dca98e.N892zETRua4l0AFb%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1345433AbiAJWad (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 10 Jan 2022 17:30:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1641853823;
+        bh=pq3G8YNOhj4t7nDtwp3ftybIIxEtEenASnHUGrCP1U8=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=IGZqpnN+CladoaCkxLf2HpZrldlIuveOyqE0zAtDlJQldI7ygcJBNewmaz/rx4OLU
+         PvVAofhYcixo9Xs1X8rD5bOTzugb+szJrvzCN2m0jrDuX58YD/piMBIG1fQqiepYeC
+         hlhUi/TxOLCGQRb7OOqzWxj8IEvef3UjAWQ9bSbg=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from localhost.fritz.box ([62.216.209.151]) by mail.gmx.net
+ (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1N8obG-1mJz9V1rPS-015nmM; Mon, 10 Jan 2022 23:30:23 +0100
+From:   Peter Seiderer <ps.report@gmx.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Jiri Slaby <jirislaby@kernel.org>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v1 1/5] ath5k: remove unused ah_txq_isr_qtrig member from struct ath5k_hw
+Date:   Mon, 10 Jan 2022 23:30:17 +0100
+Message-Id: <20220110223021.17655-1-ps.report@gmx.net>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+X-Provags-ID: V03:K1:d5g9VGq2YYCdJZbuUoG8tfgp837QNFH7tHCixBv85xAi5Ge94DM
+ PiKn7g8qPMv2zD0wvM8jRW0/cofi4jqQU0TUm9d8Dv0PWoyCk9YY/jf3QC9vlcgo5DqRTqu
+ ys0lOqSXroVQdvNqBXhQClpcB1iDUvljHb7EoTFiMwE6+/hvVCNfTri9h95NYHWNdWaamwC
+ 90dcwdtKLLE5JMhCVLQxA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Eo/s0/EISKw=:m6zrDnwVio5PNQiVTZNzvg
+ 39OQXget1cXi7qp/NqgoQrqpSKOPD2FBkmfWAOqKD0l3IRLiqowk6GrCfXPUVF6i1tHKOKcHn
+ tzSL5AEbXuLytt6NIfbCdb/+DSZeHfH6uRiNWTW3QBrCRGxtPMshpmdnGwcZa40omxuQtJGaB
+ 87xqgyncBwjx6zxySnDKU7gGzwRx5dEZaYf0W4XyOedcK+5fBVR84oPKZyU8hHwXeeWfDr8iN
+ r4EiemufDj9hQ4+AnmnoqAiKFgB/QHX0p3mcjnlLUED21dx9Zp3vjTYufk/MS9wItoC7ElOmr
+ hHwqFXkOIZJtFx0R/BP4+OC1MSZVG1RXZRFlG+LaAlDuWpb5iFx0vj31K+YPtqS9OP5CbRyGh
+ ZDCZxrvwKxm7fV2DyT0W8bQ9S5qC6MI5Lempa5HOhjCiGhvehEGDFx5y4B+vbeVNtKv65aTpi
+ ElvRenR47BJnyQL86mDk0VBUVDXtLWGLme+bjt1ZKbFq1XmodGlpoxbmN9bWap9GBuDV/+C0H
+ cg0ZRBH3Qhr72hwcaFAXODt7a1AZr82mg07JeMpLv9zHy/Wrl6sdlwGfULOk6arvlb+w9+cNR
+ nzduFs0n7gYRPzRNbHFFIOQxnLzA3+DNoR2XWw6EOScrsjeLb6X5hq7P8rEBD0wehH4wweKW+
+ BO/673coT+yKxzxWO65yDykbjH3URt2cUWfcIsLB1keOaXTFqx9RB29lob3aYX6KEqPv7NDo2
+ bRtJlVuB2I3bbylvudhXJ2jerm6cclT1b+wPkp1CRZ6Wo8NOsREBVOjO1dE7+ZfTAvHcJ1dPm
+ bTVI9gR5rJIA3+DaF7o7efd2AK5tldtZkFxo6ZzoXMHoF4bGd8P/p9q/I/CpiJYPGw3cYOo1Z
+ VD9G2nIpMJ9z2CwHX7hGPrSS3IKqASyAxQD0+QbJDwysRxT/48QZLGyKWvzsb/TuxukwTNXN8
+ E33IzcCBAdGtrDXAr+rQGCGa8G5E2EiTf9RyjpoAVjMGEvUDfSJ5mnWomdNrdIF2IgMOD1Xy/
+ 38B7O8u/JoqS9cq7fteEf6uQoqLESHFr24ZD09yheQfpBxDC/URfim7/o6/GiIMXBGZswaoxJ
+ fYuy259Q9KIBe4=
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git master
-branch HEAD: dd3ca4c5184ea98e40acb8eb293d85b88ea04ee2  amt: fix wrong return type of amt_send_membership_update()
-
-elapsed time: 1235m
-
-configs tested: 54
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-sparc                            allyesconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+UmVtb3ZlIHVudXNlZCBhaF90eHFfaXNyX3F0cmlnIG1lbWJlciBmcm9tIHN0cnVjdCBhdGg1a19o
+dyAoc2V0IGluCmF0aDVrX2h3X2dldF9pc3IoKSBidXQgbmV2ZXIgdXNlZCBhbnl3aGVyZSkuCgpT
+aWduZWQtb2ZmLWJ5OiBQZXRlciBTZWlkZXJlciA8cHMucmVwb3J0QGdteC5uZXQ+Ci0tLQogZHJp
+dmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDVrL2F0aDVrLmggfCAxIC0KIGRyaXZlcnMvbmV0L3dp
+cmVsZXNzL2F0aC9hdGg1ay9kbWEuYyAgIHwgNSArLS0tLQogMiBmaWxlcyBjaGFuZ2VkLCAxIGlu
+c2VydGlvbigrKSwgNSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJl
+bGVzcy9hdGgvYXRoNWsvYXRoNWsuaCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2F0aC9hdGg1ay9h
+dGg1ay5oCmluZGV4IDIzNGVhOTM5ZDMxNi4uZGI2YmE0MzNjMDVkIDEwMDY0NAotLS0gYS9kcml2
+ZXJzL25ldC93aXJlbGVzcy9hdGgvYXRoNWsvYXRoNWsuaAorKysgYi9kcml2ZXJzL25ldC93aXJl
+bGVzcy9hdGgvYXRoNWsvYXRoNWsuaApAQCAtMTM5OCw3ICsxMzk4LDYgQEAgc3RydWN0IGF0aDVr
+X2h3IHsKIAl1MzIJCQlhaF90eHFfaXNyX3R4dXJuOwogCXUzMgkJCWFoX3R4cV9pc3JfcWNib3Ju
+OwogCXUzMgkJCWFoX3R4cV9pc3JfcWNidXJuOwotCXUzMgkJCWFoX3R4cV9pc3JfcXRyaWc7CiAK
+IAl1MzIJCQkqYWhfcmZfYmFua3M7CiAJc2l6ZV90CQkJYWhfcmZfYmFua3Nfc2l6ZTsKZGlmZiAt
+LWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2F0aC9hdGg1ay9kbWEuYyBiL2RyaXZlcnMvbmV0
+L3dpcmVsZXNzL2F0aC9hdGg1ay9kbWEuYwppbmRleCBlNmM1MmY3YzI2ZTcuLjc4Yjg3MzcyZGE5
+NSAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDVrL2RtYS5jCisrKyBi
+L2RyaXZlcnMvbmV0L3dpcmVsZXNzL2F0aC9hdGg1ay9kbWEuYwpAQCAtNzIzLDExICs3MjMsOCBA
+QCBhdGg1a19od19nZXRfaXNyKHN0cnVjdCBhdGg1a19odyAqYWgsIGVudW0gYXRoNWtfaW50ICpp
+bnRlcnJ1cHRfbWFzaykKIAkJfQogCiAJCS8qIEEgcXVldWUgZ290IHRyaWdnZXJlZCAqLwotCQlp
+ZiAodW5saWtlbHkocGlzciAmIChBUjVLX0lTUl9RVFJJRykpKSB7CisJCWlmICh1bmxpa2VseShw
+aXNyICYgKEFSNUtfSVNSX1FUUklHKSkpCiAJCQkqaW50ZXJydXB0X21hc2sgfD0gQVI1S19JTlRf
+UVRSSUc7Ci0JCQlhaC0+YWhfdHhxX2lzcl9xdHJpZyB8PSBBUjVLX1JFR19NUyhzaXNyNCwKLQkJ
+CQkJCUFSNUtfU0lTUjRfUVRSSUcpOwotCQl9CiAKIAkJZGF0YSA9IHBpc3I7CiAJfQotLSAKMi4z
+NC4xCgo=
