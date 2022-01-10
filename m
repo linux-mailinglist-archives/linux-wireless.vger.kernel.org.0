@@ -2,89 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C0BB488CF7
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jan 2022 00:09:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCB1E488D7F
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jan 2022 01:33:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237358AbiAIXJY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jan 2022 18:09:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52320 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235684AbiAIXJY (ORCPT
+        id S237568AbiAJAdc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jan 2022 19:33:32 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:44860 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236630AbiAJAdb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Jan 2022 18:09:24 -0500
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D894DC06173F;
-        Sun,  9 Jan 2022 15:09:23 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id l10so23447419wrh.7;
-        Sun, 09 Jan 2022 15:09:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=wPKxhx2q2jFWM/iTPcuC0q3uyZMxRL+DFdkOTJpxQpo=;
-        b=KHldNEm7dvXtVKNXy5NlD2dhVd5mD3/YMiy32sXTM/M1vKQoWtl+PfTeaUoXJMsYPX
-         Ie27hhsdRfTkdDiUjqHEiofWJAPYPya2LhydpxS+lS6QSDY0Xxm1jB6Bb3+0YKT3Ruiq
-         hkrnXteJ5KB7BHYG4KHquk/R06/salx8RMRHNqN72PX76sg/K3zf9F/gFSmz3+Ud0rgi
-         SyxGAYUujsdTocQWL0hmjpn1tkhBwnDcR+fIliN/JErwP2QlqkoThhH2l7Zx99h7unJi
-         nl4uRzASe4/00HzU4wvZHyp/svQNALgLUNMuOQheRbl1vYfAGBNHuJp1xTfb9Pc9K/sR
-         eYTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=wPKxhx2q2jFWM/iTPcuC0q3uyZMxRL+DFdkOTJpxQpo=;
-        b=DVEggE4kMSi7KvcenenBkTljSv0Jg8Tu+N64+DvBTSmoZLMuLjoTRImfRjHQ4X44Lq
-         kXiwM2iyM837nzDVHZ1lTiLc9kCjGllGo3j61PGkg1xSac5VLLeLMZHZ9UpeY32X0nou
-         QJ32cBiVI5nRldxyDZ0gHstOZ0gOlK2e/DwXRbNlF/ITUnaT3xSrQbJp3NsS3UFSHUaE
-         Voc4Clk+fJfWOHEDEYqKWFh4vyhTo3HuKQi5AEouyNSW5cBZ2Y+qqkozFUyEvapFWrVk
-         ueCpgv9ptD87OkdqGcbdxJbUNwtI8V41khU9gPSTY0KEhl5sBCdDkg+ghKmfyDN1BPYx
-         btRg==
-X-Gm-Message-State: AOAM531cYTl2p4vIfB8IDGF13tkMRi/XElDcq6UgovrdFKFmJ4xlbBbp
-        HU625VdL2HwS1/rBgFS5QJLoom55Dc73lA==
-X-Google-Smtp-Source: ABdhPJwAN4zPVaVuJsz4AbwLIOh62v6SI6YY3h8LSW0dH5S/icrAlJKJQefw1zJtQnaV8C0leiemkA==
-X-Received: by 2002:adf:f4ca:: with SMTP id h10mr63293743wrp.512.1641769762151;
-        Sun, 09 Jan 2022 15:09:22 -0800 (PST)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id l6sm6889932wry.18.2022.01.09.15.09.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Jan 2022 15:09:21 -0800 (PST)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Solomon Peachy <pizza@shaftnet.org>, Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] cw1200: wsm: make array queue_id_to_wmm_aci static const
-Date:   Sun,  9 Jan 2022 23:09:21 +0000
-Message-Id: <20220109230921.58766-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.33.1
+        Sun, 9 Jan 2022 19:33:31 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F1E1F61005;
+        Mon, 10 Jan 2022 00:33:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0758C36AEB;
+        Mon, 10 Jan 2022 00:33:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641774810;
+        bh=wWT1fu6zu/5275otEoebHlxBFqfJwEiHlelMDWOWul0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=RXA520KxqRLcdFBZyoka8CczruBS06TmpqOy9d1UK98dGQ98pAXKmlQvGGZDfbLzg
+         LgnOTvaT768JvBy+rmz+ETqz9ZePqVRPLNGOfLIGaAiXgXKYyhgsOji6n2rC6SX+fa
+         LxofvJSNFfCC/SaP1EiaRmr0Guoy9SPDl8p/E/MYvJ8N7gxtBnt9q52KTjW0F2rwKM
+         VNlF9RSPYKnZYxa/izpnKNvVnJqUcdMY9clUZcRdKhscb82f0FCxpVsh9zfhPOKEy4
+         A6k9beQFjgpshNWkKHYyCh5KvldpCZXnmObSMia+ASlmFDTet+o3TxWZdMUB/Szpaj
+         7uPXLBm5IaNHw==
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     nathan@kernel.org
+Cc:     johannes.berg@intel.com, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        luciano.coelho@intel.com, netdev@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH] iwlwifi: mvm: Use div_s64 instead of do_div in iwl_mvm_ftm_rtt_smoothing()
+Date:   Sun,  9 Jan 2022 16:33:26 -0800
+Message-Id: <20220110003326.2745615-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20211227191757.2354329-1-nathan@kernel.org>
+References: <20211227191757.2354329-1-nathan@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Don't populate the read-only array queue_id_to_wmm_aci on the stack
-but instead make it static. Also makes the object code a little smaller.
+> When building ARCH=arm allmodconfig:
+> 
+> drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c: In function ‘iwl_mvm_ftm_rtt_smoothing’:
+> ./include/asm-generic/div64.h:222:35: error: comparison of distinct pointer types lacks a cast [-Werror]
+>   222 |         (void)(((typeof((n)) *)0) == ((uint64_t *)0));  \
+>       |                                   ^~
+> drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c:1070:9: note: in expansion of macro ‘do_div’
+>  1070 |         do_div(rtt_avg, 100);
+>       |         ^~~~~~
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/net/wireless/st/cw1200/wsm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Let me take this one directly to net-next, hope that's okay.
 
-diff --git a/drivers/net/wireless/st/cw1200/wsm.c b/drivers/net/wireless/st/cw1200/wsm.c
-index 99624dd34886..5a3e7a626702 100644
---- a/drivers/net/wireless/st/cw1200/wsm.c
-+++ b/drivers/net/wireless/st/cw1200/wsm.c
-@@ -537,7 +537,7 @@ int wsm_set_tx_queue_params(struct cw1200_common *priv,
- {
- 	int ret;
- 	struct wsm_buf *buf = &priv->wsm_cmd_buf;
--	u8 queue_id_to_wmm_aci[] = {3, 2, 0, 1};
-+	static const u8 queue_id_to_wmm_aci[] = { 3, 2, 0, 1 };
- 
- 	wsm_cmd_lock(priv);
- 
--- 
-2.32.0
-
+Thanks!
