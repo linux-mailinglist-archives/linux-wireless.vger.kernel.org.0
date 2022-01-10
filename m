@@ -2,141 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26D92489E7A
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jan 2022 18:36:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69870489E81
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jan 2022 18:38:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238428AbiAJRgO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jan 2022 12:36:14 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:52216 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S238197AbiAJRgI (ORCPT
+        id S238345AbiAJRib (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jan 2022 12:38:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49728 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238197AbiAJRib (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jan 2022 12:36:08 -0500
-Received: from 91-155-254-253.elisa-laajakaista.fi ([91.155.254.253] helo=[192.168.100.150])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1n6yaP-001Zpv-Kf; Mon, 10 Jan 2022 19:36:02 +0200
-Message-ID: <2aa6a2bb7efda2b9b322371211eff7a7d0aae706.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kyle@infradead.org" <kyle@infradead.org>,
-        "jwboyer@kernel.org" <jwboyer@kernel.org>,
-        "ben@decadent.org.uk" <ben@decadent.org.uk>,
-        golan.ben.ami@intel.com,
-        You-Sheng Yang <vicamo.yang@canonical.com>, luca@coelho.fi
-Date:   Mon, 10 Jan 2022 19:36:00 +0200
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-dSlQ9WtmYm0owTBeLcgH"
-User-Agent: Evolution 3.42.2-1 
+        Mon, 10 Jan 2022 12:38:31 -0500
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ED86C06173F;
+        Mon, 10 Jan 2022 09:38:31 -0800 (PST)
+Received: by mail-yb1-xb30.google.com with SMTP id m6so29713805ybc.9;
+        Mon, 10 Jan 2022 09:38:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=4Pn6vNul4e8iM8CW/s9gLrUxSfmYfz22osJ3AQncpgc=;
+        b=dYKHIkrcNLqV7aZ5YS2d0PD7VjHHEGH8HDRv9QyfT5dn+VCNyEcsW2FxN6Vmk0NMTf
+         bcXskwMcgp7C8CIj99r8+LrXobvEIY19i80LN6AuCDpX89pf2S2gvaHXtRlwdJvzLoYC
+         /ye74Evk/XKaQiHWGGykaQkyiEzGDQT55tc2NaFeqj5pFGnMrp3n2N6qW2oG9SjsiSSY
+         aJRNYFTa7EBx3DZwxw1/waiUF74t9ATkYpmwHD5IgAKFRoZ7BAch8tO9/yTBh2ljMOSN
+         1PyIrijWdjE4LtCR4zaWhrwO+Kk5ZMIkEHWvPLznZSDVHBnBkxBfqwETQ8Q7YtN0TDdz
+         uI4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4Pn6vNul4e8iM8CW/s9gLrUxSfmYfz22osJ3AQncpgc=;
+        b=AXNO4hvR8ruoB972sDib7gbmdwJh23EPMsOCUZzM8HkrvG+7vxZcjbP8bCn7c03wZI
+         tfaWe/W3X8e9MPXNfAiWx9TgF9885YkyTTxfbD4gHTYqwvk0AtN/tFJMSB3zSTF7FHp3
+         wxKPV0Kw2DQ42j8rsltdSMofDS1SZ54eDYpqfF0PJBg/DksuPAG+5BZh7r8BB/KfS9Nk
+         nsGPIWp1cQZRZP53d97zSW9/YG41Vxzh4wD7Cm7Bi4nb9n2T1QLR93caqs+pcjm9gjr5
+         EIfHp4JJCb/Wl7TSuCDuJfGwh0d/5fxTH6Dyexv2Q5F91KJj0q8Dvm1AIb04ZL1oXmoW
+         8O7g==
+X-Gm-Message-State: AOAM533YbtcqCwXqY1OOcRjPa3LiyxN15IbWgiYufWByMi7idD5juMsZ
+        2oYPMO1CZFW0EOTEmdBsJ3IZxCBErj/pA/In/W4=
+X-Google-Smtp-Source: ABdhPJwcUSh0xH7r+hddfZUIZH6eKPebjm73mmFFYO2yTdvDNeKVFMfghW3SvqjRYFJPTH8P/2ccW96yDptlmUnXVLo=
+X-Received: by 2002:a25:4153:: with SMTP id o80mr834176yba.147.1641836310214;
+ Mon, 10 Jan 2022 09:38:30 -0800 (PST)
 MIME-Version: 1.0
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
-Subject: pull request: iwlwifi firmware updates 2022-01-10 v2
+References: <20220107184614.2670254-1-f.fainelli@gmail.com>
+In-Reply-To: <20220107184614.2670254-1-f.fainelli@gmail.com>
+From:   Kamal Dasu <kdasu.kdev@gmail.com>
+Date:   Mon, 10 Jan 2022 12:38:19 -0500
+Message-ID: <CAC=U0a3V8973MqyCU2M=hG0bkhcNZN3kSySZGaZmFHnEZeqYRA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/9] BCMA support for brcmnand
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     MTD Maling List <linux-mtd@lists.infradead.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Cai Huoqing <caihuoqing@baidu.com>,
+        Colin Ian King <colin.king@intel.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:BROADCOM SPECIFIC AMBA DRIVER (BCMA)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:BROADCOM STB NAND FLASH DRIVER" 
+        <bcm-kernel-feedback-list@broadcom.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Florian,
 
---=-dSlQ9WtmYm0owTBeLcgH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Fri, Jan 7, 2022 at 1:46 PM Florian Fainelli <f.fainelli@gmail.com> wrote:
+>
+> Hi all,
+>
+> This patch series adds support for the BRCMNAND controller revision 3.4
+> embedded in MIPS-based SoCs such as 5357, typically found in the Netgear
+> WNR3500L v2 and other kinds of Wi-Fi routers. The upstream platform that
+> uses this controller is under arch/mips/bcm47xx/ and does not use Device
+> Tree (and probably never will by now). BCMA (Broadcom AMBA) is a special
+> kind of discoverable memory mapped interface which requires the use of
+> special accessors to read from/write to the hardware block.
+>
+> The integration of brcmnand into that SoC is a bit quirky in that every
+> register offering byte level data about the flash (OOB, device ID, etc.)
+> requires byte swapping. The command shift should also have been 24, but
+> is in fact 0, took me a while to understand why no reads were actually
+> working because of that.
+>
+> This has been tested with Linux 5.10.82 and Linus' master with OpenWrt
+> and confirmed that the squashfs + jffs2 overlay that OpenWrt creates is
+> entirely functional and that written data is made persistent.
+>
+> Changes in v3:
+>
+> - fixed a few typo/grammar errors in the commit messages, mention when
+>   changes are non functional changes
+> - removed the stray hunk in 2 to enable the static key
+>
+> Changes in v2:
+>
+> - re-ordered the patch such that the soc variable is initialized as
+>   early as possible
+> - corrected bug in the conversion of brcmnand_init_cs() which
+>   incorrectly used the wrong device_node variable (parent instead of
+>   child)
+> - took Andy's feedback to make the test for a valid interrupt to be > 0
+>   while calling platform_get_irq_optional()
+> - utilized static branch (disabled by default) and conditional
+>   compilation and confirm with disassembly that the generated code is
+>   as efficient as before if not enabling the BCMA shim and as efficient
+>   as possible if enabling BCMA shim
+> - updated BCMA shim driver descriptor, author and added helper function
+>   to encapsulate the container_of usage
+> - added comment to explain why a slightly different platform device name
+>   is used for the 5357-style NAND controller
+>
+> Florian Fainelli (9):
+>   mtd: rawnand: brcmnand: Assign soc as early as possible
+>   mtd: rawnand: brcmnand: Allow SoC to provide I/O operations
+>   mtd: rawnand: brcmnand: Avoid pdev in brcmnand_init_cs()
+>   mtd: rawnand: brcmnand: Move OF operations out of brcmnand_init_cs()
+>   mtd: rawnand: brcmnand: Allow working without interrupts
+>   mtd: rawnand: brcmnand: Add platform data structure for BCMA
+>   mtd: rawnand: brcmnand: Allow platform data instantation
+>   mtd: rawnand: brcmnand: BCMA controller uses command shift of 0
+>   mtd: rawnand: brcmnand: Add BCMA shim
+>
+>  MAINTAINERS                                 |   1 +
+>  drivers/bcma/driver_chipcommon_nflash.c     |  20 ++-
+>  drivers/mtd/nand/raw/Kconfig                |  13 ++
+>  drivers/mtd/nand/raw/brcmnand/Makefile      |   2 +
+>  drivers/mtd/nand/raw/brcmnand/bcma_nand.c   | 132 ++++++++++++++++
+>  drivers/mtd/nand/raw/brcmnand/brcmnand.c    | 160 +++++++++++++-------
+>  drivers/mtd/nand/raw/brcmnand/brcmnand.h    |  29 ++++
+>  include/linux/bcma/bcma_driver_chipcommon.h |   5 +
+>  include/linux/platform_data/brcmnand.h      |  12 ++
+>  9 files changed, 321 insertions(+), 53 deletions(-)
+>  create mode 100644 drivers/mtd/nand/raw/brcmnand/bcma_nand.c
+>  create mode 100644 include/linux/platform_data/brcmnand.h
+>
+> --
+> 2.25.1
+>
 
-Hi,
+The patch series as in v3  LGTM
 
-This contains some new and updated firmwares for all our currently
-maintained FW binaries.
-
-In v2, I fixed the so/s0 issue in WHENCE.
-
-Please pull or let me know if there are any issues.
-
---
-Cheers,
-Luca.
-
-
-The following changes since commit 182a186c570baab3968ca9116ee58b1875fb0168=
-:
-
-  Merge branch 'for-upstream' of git://git.chelsio.net/pub/git/linux-firmwa=
-re into main (2022-01-07 07:20:18 -0500)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git =
-tags/iwlwifi-fw-2022-01-10-v2
-
-for you to fetch changes up to 23e0197e9e6fe9ca0d2ead3a3df3c41df97ad16b:
-
-  iwlwifi: add new FWs from core66-88 release (2022-01-10 19:30:31 +0200)
-
-----------------------------------------------------------------
-Update and add iwlwifi firmware binaries for release Core66-88
-
-----------------------------------------------------------------
-Luca Coelho (2):
-      iwlwifi: update 9000-family firmwares to core66-88
-      iwlwifi: add new FWs from core66-88 release
-
- WHENCE                            |  44 ++++++++++++++++++++++++++++++++++=
-++++++++--
- iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 1519264 -> 1519544 bytes
- iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 1490096 -> 1490376 bytes
- iwlwifi-Qu-b0-hr-b0-68.ucode      | Bin 0 -> 1355836 bytes
- iwlwifi-Qu-b0-jf-b0-68.ucode      | Bin 0 -> 1275268 bytes
- iwlwifi-Qu-c0-hr-b0-68.ucode      | Bin 0 -> 1355852 bytes
- iwlwifi-Qu-c0-jf-b0-68.ucode      | Bin 0 -> 1275284 bytes
- iwlwifi-QuZ-a0-hr-b0-68.ucode     | Bin 0 -> 1355800 bytes
- iwlwifi-QuZ-a0-jf-b0-68.ucode     | Bin 0 -> 1275264 bytes
- iwlwifi-cc-a0-68.ucode            | Bin 0 -> 1314392 bytes
- iwlwifi-so-a0-gf-a0-68.ucode      | Bin 0 -> 1533812 bytes
- iwlwifi-so-a0-gf-a0.pnvm          | Bin 41804 -> 41808 bytes
- iwlwifi-so-a0-gf4-a0-68.ucode     | Bin 0 -> 1552216 bytes
- iwlwifi-so-a0-gf4-a0.pnvm         | Bin 21576 -> 21576 bytes
- iwlwifi-so-a0-hr-b0-68.ucode      | Bin 0 -> 1429192 bytes
- iwlwifi-so-a0-jf-b0-68.ucode      | Bin 0 -> 1378284 bytes
- iwlwifi-ty-a0-gf-a0-68.ucode      | Bin 0 -> 1494304 bytes
- iwlwifi-ty-a0-gf-a0.pnvm          | Bin 41612 -> 41588 bytes
- 18 files changed, 42 insertions(+), 2 deletions(-)
- create mode 100644 iwlwifi-Qu-b0-hr-b0-68.ucode
- create mode 100644 iwlwifi-Qu-b0-jf-b0-68.ucode
- create mode 100644 iwlwifi-Qu-c0-hr-b0-68.ucode
- create mode 100644 iwlwifi-Qu-c0-jf-b0-68.ucode
- create mode 100644 iwlwifi-QuZ-a0-hr-b0-68.ucode
- create mode 100644 iwlwifi-QuZ-a0-jf-b0-68.ucode
- create mode 100644 iwlwifi-cc-a0-68.ucode
- create mode 100644 iwlwifi-so-a0-gf-a0-68.ucode
- create mode 100644 iwlwifi-so-a0-gf4-a0-68.ucode
- create mode 100644 iwlwifi-so-a0-hr-b0-68.ucode
- create mode 100644 iwlwifi-so-a0-jf-b0-68.ucode
- create mode 100644 iwlwifi-ty-a0-gf-a0-68.ucode
-
-
---=-dSlQ9WtmYm0owTBeLcgH
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAmHcboAACgkQoUecoho8
-xfqVtQ//V9+cGZiiaV011HItWyK8GTLDg7tOpNu0M05Ri3M3/RX/rPoDdDvdc923
-5tB5KspSVLR8Dr14jid2BfJaT+aswNfxXzD7yb4w/8+jXJF5BkexuyBhXzy0rxkS
-SCD1uZyhnLA7ujz/apXDCfR40oj2s0IYkC0ZHgR3MxW3YFTrQj6XA70yHJQkdgJM
-/R/WkSPmEMhomrCTGGFiQbp18cWaD9uxxf7wvmTCJSH7A2k+OfWcyWxW8zZBjfRl
-LlOGIHv6d3UNzSR3RRfeXPTKYJVRxjRa9nHPvJMqyOftyfKiWEoQ+xXAZyY7aVZZ
-GXe1SrbY7Z91uRgzTwLmhdCz6kAwfG5oBXglnlOEIkielO25y8YaxzV7cwMgZiY6
-Fwk0X/LW+kG4Zm05itiY5YTfqitr2VYbmjdEqvJIk93WwyqD5edZC1V9sl5MQKss
-ve5EViZ0UHphLx4RZFtB8hwiMr2CbQ2vMADXcOVINXkcJlF/up6dTpZwj8QNTUca
-rdYfOloScsQNaItfztrGVqHzh21hiKCAMhek9KILCHClyOeM/mgvQZ5m5OLGV5kN
-TLpaiS9VZbD16JGyau3dlvoaeVcqR7QIW/hhhA21BkqhmGdmzd10+EunIZTvKbTo
-Pwy6SnTsIYElvNU4ly20RO0MS1fhHespN45RWhTpawZ8nY8Sv+M=
-=JMra
------END PGP SIGNATURE-----
-
---=-dSlQ9WtmYm0owTBeLcgH--
+Kamal
