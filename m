@@ -2,151 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69870489E81
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jan 2022 18:38:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CD0748A12D
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jan 2022 21:53:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238345AbiAJRib (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jan 2022 12:38:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49728 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238197AbiAJRib (ORCPT
+        id S1343620AbiAJUx4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jan 2022 15:53:56 -0500
+Received: from mail-ot1-f41.google.com ([209.85.210.41]:45624 "EHLO
+        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243927AbiAJUx4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jan 2022 12:38:31 -0500
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ED86C06173F;
-        Mon, 10 Jan 2022 09:38:31 -0800 (PST)
-Received: by mail-yb1-xb30.google.com with SMTP id m6so29713805ybc.9;
-        Mon, 10 Jan 2022 09:38:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4Pn6vNul4e8iM8CW/s9gLrUxSfmYfz22osJ3AQncpgc=;
-        b=dYKHIkrcNLqV7aZ5YS2d0PD7VjHHEGH8HDRv9QyfT5dn+VCNyEcsW2FxN6Vmk0NMTf
-         bcXskwMcgp7C8CIj99r8+LrXobvEIY19i80LN6AuCDpX89pf2S2gvaHXtRlwdJvzLoYC
-         /ye74Evk/XKaQiHWGGykaQkyiEzGDQT55tc2NaFeqj5pFGnMrp3n2N6qW2oG9SjsiSSY
-         aJRNYFTa7EBx3DZwxw1/waiUF74t9ATkYpmwHD5IgAKFRoZ7BAch8tO9/yTBh2ljMOSN
-         1PyIrijWdjE4LtCR4zaWhrwO+Kk5ZMIkEHWvPLznZSDVHBnBkxBfqwETQ8Q7YtN0TDdz
-         uI4g==
+        Mon, 10 Jan 2022 15:53:56 -0500
+Received: by mail-ot1-f41.google.com with SMTP id a23-20020a9d4717000000b0056c15d6d0caso16353042otf.12;
+        Mon, 10 Jan 2022 12:53:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4Pn6vNul4e8iM8CW/s9gLrUxSfmYfz22osJ3AQncpgc=;
-        b=AXNO4hvR8ruoB972sDib7gbmdwJh23EPMsOCUZzM8HkrvG+7vxZcjbP8bCn7c03wZI
-         tfaWe/W3X8e9MPXNfAiWx9TgF9885YkyTTxfbD4gHTYqwvk0AtN/tFJMSB3zSTF7FHp3
-         wxKPV0Kw2DQ42j8rsltdSMofDS1SZ54eDYpqfF0PJBg/DksuPAG+5BZh7r8BB/KfS9Nk
-         nsGPIWp1cQZRZP53d97zSW9/YG41Vxzh4wD7Cm7Bi4nb9n2T1QLR93caqs+pcjm9gjr5
-         EIfHp4JJCb/Wl7TSuCDuJfGwh0d/5fxTH6Dyexv2Q5F91KJj0q8Dvm1AIb04ZL1oXmoW
-         8O7g==
-X-Gm-Message-State: AOAM533YbtcqCwXqY1OOcRjPa3LiyxN15IbWgiYufWByMi7idD5juMsZ
-        2oYPMO1CZFW0EOTEmdBsJ3IZxCBErj/pA/In/W4=
-X-Google-Smtp-Source: ABdhPJwcUSh0xH7r+hddfZUIZH6eKPebjm73mmFFYO2yTdvDNeKVFMfghW3SvqjRYFJPTH8P/2ccW96yDptlmUnXVLo=
-X-Received: by 2002:a25:4153:: with SMTP id o80mr834176yba.147.1641836310214;
- Mon, 10 Jan 2022 09:38:30 -0800 (PST)
-MIME-Version: 1.0
-References: <20220107184614.2670254-1-f.fainelli@gmail.com>
-In-Reply-To: <20220107184614.2670254-1-f.fainelli@gmail.com>
-From:   Kamal Dasu <kdasu.kdev@gmail.com>
-Date:   Mon, 10 Jan 2022 12:38:19 -0500
-Message-ID: <CAC=U0a3V8973MqyCU2M=hG0bkhcNZN3kSySZGaZmFHnEZeqYRA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/9] BCMA support for brcmnand
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     MTD Maling List <linux-mtd@lists.infradead.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Brian Norris <computersforpeace@gmail.com>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=5jViEVNaH5ssihtRUb66g7EwfG1jcOv2MY8O9pmmorg=;
+        b=jr1y3+cvYiz38kI6D8xwntQ2GZx5zT5oxD2hwInrp7ZsxhrtOWP1BVyZpxkzu8jMHC
+         z3FE1X3jmvE3Zp1vBlDs+bWZYsOzPaOggu3dEFlkjjzUpj5oMpQh8RKeJS3XuO874oy1
+         4oSVZMXvTWShSQ0jSIrwvxg8wDkrFUWCwG6zCXmrvo+681nIanJM0m0Nt8q11TMFJJbh
+         1va90ozhCRdhao/cmZr4Ff85Xg9RPpJ9Fql3a6nhM7GLS83ybtHn2mVX1AegFX4AxObl
+         mbK4u3NV5Sn74aIjd4lJqvblIOt7Ps0y1wyw+45v7QLv+LJVFCwUaJQqHdbSQfxmWtip
+         0FYg==
+X-Gm-Message-State: AOAM5327reslkrOuqZydBKI9wD4PG1PEv+srzdJFZ4vv+GRB+y2KKHNr
+        PFYmJeJ3Jmy1FVqhEMbx3g==
+X-Google-Smtp-Source: ABdhPJxjZ2jynEBItpLqt9NCVitbIruGA6hhf1Cn4rtASR80GBQRgNzOVwIYNjaQXtPgE6AnPKlWyg==
+X-Received: by 2002:a05:6830:314b:: with SMTP id c11mr1192713ots.145.1641848035368;
+        Mon, 10 Jan 2022 12:53:55 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id bc10sm1337791oib.44.2022.01.10.12.53.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jan 2022 12:53:54 -0800 (PST)
+Received: (nullmailer pid 1489114 invoked by uid 1000);
+        Mon, 10 Jan 2022 20:53:52 -0000
+Date:   Mon, 10 Jan 2022 14:53:52 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Stefan Wahren <stefan.wahren@i2se.com>
+Cc:     Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>, soc@kernel.org,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Franky Lin <franky.lin@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        linux-wireless@vger.kernel.org, Olof Johansson <olof@lixom.net>,
+        Ray Jui <rjui@broadcom.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        linux-rpi-kernel@lists.infradead.org,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Phil Elwell <phil@raspberrypi.com>, devicetree@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
         Arnd Bergmann <arnd@arndb.de>,
-        Cai Huoqing <caihuoqing@baidu.com>,
-        Colin Ian King <colin.king@intel.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:BROADCOM SPECIFIC AMBA DRIVER (BCMA)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:BROADCOM STB NAND FLASH DRIVER" 
-        <bcm-kernel-feedback-list@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
+        brcm80211-dev-list.pdl@broadcom.com,
+        Hante Meuleman <hante.meuleman@broadcom.com>
+Subject: Re: [PATCH RFC 2/4] dt-bindings: arm: bcm2835: Add Raspberry Pi Zero
+ 2 W
+Message-ID: <Ydyc4IwORMPNep4z@robh.at.kernel.org>
+References: <1641068812-5851-1-git-send-email-stefan.wahren@i2se.com>
+ <1641068812-5851-3-git-send-email-stefan.wahren@i2se.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1641068812-5851-3-git-send-email-stefan.wahren@i2se.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Florian,
+On Sat, 01 Jan 2022 21:26:50 +0100, Stefan Wahren wrote:
+> Add the Raspberry Pi Zero 2 W to DT schema.
+> 
+> Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
+> ---
+>  Documentation/devicetree/bindings/arm/bcm/bcm2835.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-On Fri, Jan 7, 2022 at 1:46 PM Florian Fainelli <f.fainelli@gmail.com> wrote:
->
-> Hi all,
->
-> This patch series adds support for the BRCMNAND controller revision 3.4
-> embedded in MIPS-based SoCs such as 5357, typically found in the Netgear
-> WNR3500L v2 and other kinds of Wi-Fi routers. The upstream platform that
-> uses this controller is under arch/mips/bcm47xx/ and does not use Device
-> Tree (and probably never will by now). BCMA (Broadcom AMBA) is a special
-> kind of discoverable memory mapped interface which requires the use of
-> special accessors to read from/write to the hardware block.
->
-> The integration of brcmnand into that SoC is a bit quirky in that every
-> register offering byte level data about the flash (OOB, device ID, etc.)
-> requires byte swapping. The command shift should also have been 24, but
-> is in fact 0, took me a while to understand why no reads were actually
-> working because of that.
->
-> This has been tested with Linux 5.10.82 and Linus' master with OpenWrt
-> and confirmed that the squashfs + jffs2 overlay that OpenWrt creates is
-> entirely functional and that written data is made persistent.
->
-> Changes in v3:
->
-> - fixed a few typo/grammar errors in the commit messages, mention when
->   changes are non functional changes
-> - removed the stray hunk in 2 to enable the static key
->
-> Changes in v2:
->
-> - re-ordered the patch such that the soc variable is initialized as
->   early as possible
-> - corrected bug in the conversion of brcmnand_init_cs() which
->   incorrectly used the wrong device_node variable (parent instead of
->   child)
-> - took Andy's feedback to make the test for a valid interrupt to be > 0
->   while calling platform_get_irq_optional()
-> - utilized static branch (disabled by default) and conditional
->   compilation and confirm with disassembly that the generated code is
->   as efficient as before if not enabling the BCMA shim and as efficient
->   as possible if enabling BCMA shim
-> - updated BCMA shim driver descriptor, author and added helper function
->   to encapsulate the container_of usage
-> - added comment to explain why a slightly different platform device name
->   is used for the 5357-style NAND controller
->
-> Florian Fainelli (9):
->   mtd: rawnand: brcmnand: Assign soc as early as possible
->   mtd: rawnand: brcmnand: Allow SoC to provide I/O operations
->   mtd: rawnand: brcmnand: Avoid pdev in brcmnand_init_cs()
->   mtd: rawnand: brcmnand: Move OF operations out of brcmnand_init_cs()
->   mtd: rawnand: brcmnand: Allow working without interrupts
->   mtd: rawnand: brcmnand: Add platform data structure for BCMA
->   mtd: rawnand: brcmnand: Allow platform data instantation
->   mtd: rawnand: brcmnand: BCMA controller uses command shift of 0
->   mtd: rawnand: brcmnand: Add BCMA shim
->
->  MAINTAINERS                                 |   1 +
->  drivers/bcma/driver_chipcommon_nflash.c     |  20 ++-
->  drivers/mtd/nand/raw/Kconfig                |  13 ++
->  drivers/mtd/nand/raw/brcmnand/Makefile      |   2 +
->  drivers/mtd/nand/raw/brcmnand/bcma_nand.c   | 132 ++++++++++++++++
->  drivers/mtd/nand/raw/brcmnand/brcmnand.c    | 160 +++++++++++++-------
->  drivers/mtd/nand/raw/brcmnand/brcmnand.h    |  29 ++++
->  include/linux/bcma/bcma_driver_chipcommon.h |   5 +
->  include/linux/platform_data/brcmnand.h      |  12 ++
->  9 files changed, 321 insertions(+), 53 deletions(-)
->  create mode 100644 drivers/mtd/nand/raw/brcmnand/bcma_nand.c
->  create mode 100644 include/linux/platform_data/brcmnand.h
->
-> --
-> 2.25.1
->
-
-The patch series as in v3  LGTM
-
-Kamal
+Acked-by: Rob Herring <robh@kernel.org>
