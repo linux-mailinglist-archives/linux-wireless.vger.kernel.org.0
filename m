@@ -2,57 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25CBA4894D0
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jan 2022 10:12:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 353004894D6
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jan 2022 10:12:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242719AbiAJJMa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jan 2022 04:12:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45452 "EHLO
+        id S242658AbiAJJMf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jan 2022 04:12:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242563AbiAJJMC (ORCPT
+        with ESMTP id S242657AbiAJJMO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jan 2022 04:12:02 -0500
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72343C06175A
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Jan 2022 01:11:55 -0800 (PST)
-Received: by mail-pl1-x62c.google.com with SMTP id x15so11287176plg.1
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Jan 2022 01:11:55 -0800 (PST)
+        Mon, 10 Jan 2022 04:12:14 -0500
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4F24C06175E
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jan 2022 01:12:08 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id x4so218285wru.7
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jan 2022 01:12:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=message-id:date:mime-version:user-agent:from:subject:to:cc
          :references:in-reply-to;
-        bh=ta/07s8/9JaS0ct85PjKkQi5N5Xnh05bpQDJB/vapn8=;
-        b=ENZbiQxpA5w5j7awdJmhQkes7kXCLp2CznN/ESiyQiii/C3+lzDPDmn9icGMYRjAz+
-         XjwFJ1fQQSdk9P3p6Or/GZPngEz0AVCQzxp6rntDzfAC2CyQ9z8AWrCsUjJ4Mei+eBvW
-         +useF4/zE311E19iWBiET8nL7BM2aGQWJrvXU=
+        bh=gA1mD/8uRbD9Nq6vkFTtSKgotb3nQkoHSJaWw1W50q4=;
+        b=I62Pnb0ex+ROq+7vOZrn04Om8+/uWMcSNiLWWtJI1ENksddyNCJLEgTcRG7Lm6CqIa
+         f9u/NN7HJsD6stopMyK9q0luVrxTIbKCRy16IvC2liMLxHOpqWyBc27zK1mMFaTKRZJM
+         TKC2M0vAmxJVPvwtOJ7+WBlvbFtBXHnOxg+Fw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:from
          :subject:to:cc:references:in-reply-to;
-        bh=ta/07s8/9JaS0ct85PjKkQi5N5Xnh05bpQDJB/vapn8=;
-        b=5ParaZTTYkOYgmz8Q1W5BGe57d9wM/Tv8WoEyJAobcxnq59pAOW7XITKk3uSPvMQuR
-         hc/7FaxdQHPcjtxQuDUHi0pHjrbVXuTSZ85AUQzZKZnFS/Vt+pN3C5JO3CdcotvT1+UI
-         c3/oLnMQNJoZHI3eZLBov6Q7zKpTC6Dx7s0cvo0Wp9tWRxeQZ0M/pxPizvmnzi/OZCnC
-         LasmY5TLlNigc/yFqVTOo6aeMNEu0cLls90fZfGm+8UMptfil08r+ekmzBQiOkacAh8B
-         NAhWaeNvCJBQVSD7gmk9Nd9+mSsY8hNrzaFuz4vtCNmwwN/87W7Oce3k9uQ/VhFGCWXk
-         bW3g==
-X-Gm-Message-State: AOAM530+gj6xK0IrBD6UiV5hEVGKoRR3l8ikD8Jsu6WMvut7fjPcOrR6
-        bNJAcK1rTYj3Ll5rWE89ds9keA==
-X-Google-Smtp-Source: ABdhPJzlcllZKCuDbPdG9hZPHisOG3UVGgCRSQeH0o3TjTXPx/PNKhEJ/xce+TjjwuPs1G2dNAe83g==
-X-Received: by 2002:a17:90a:bb0d:: with SMTP id u13mr29309797pjr.119.1641805914957;
-        Mon, 10 Jan 2022 01:11:54 -0800 (PST)
-Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id p50sm3106945pfw.51.2022.01.10.01.11.46
+        bh=gA1mD/8uRbD9Nq6vkFTtSKgotb3nQkoHSJaWw1W50q4=;
+        b=Xq5qM+rayagzZuLNVN5W+vAARSjX0/0aZ8IpfOtjxeXxFCxVRsPv865APiOIk6wuTY
+         4RRGAYFStP2bOavcKdu7vISMMwq+AgfmEvzcyXEBcAd6upsIQh2xcsieiSTWQFA92aUC
+         hAOJV5Zc8dyHk360UKFXtKwZfdGbA76EGU2JEaBv7DVRts/f/pkNGCMyJLUJwCMi8HCr
+         /Cj5f8Ug63Zmwyj3qlxlyKUcEtAcfRlf053IHlemV9QsF9nJPLD1Qo9KCKm+hF0U/u+R
+         8cv1LMlelxLZ6v/kDqrhRI9g+Ys8eaxAY14T52Iftl8LIebG5rCXWi+so7mn41YP+qWd
+         /AbA==
+X-Gm-Message-State: AOAM5333TZXgiLrVqV7K8gvsmvzxSrn/HBfm6FlIXN+282uQWBBTKTxm
+        XwZx7XN+2scSEkpVObyHTZam5g==
+X-Google-Smtp-Source: ABdhPJzyhagBCqErAah7InvdCzT466zzYtOBPwKqsv/Bar+WnzOfftC5NywfS1M8jbmJKO/8Y4NjZg==
+X-Received: by 2002:adf:ee8b:: with SMTP id b11mr11015456wro.88.1641805927430;
+        Mon, 10 Jan 2022 01:12:07 -0800 (PST)
+Received: from [10.230.32.81] ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id n12sm6683187wrf.29.2022.01.10.01.12.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jan 2022 01:11:54 -0800 (PST)
-Message-ID: <3844c03f-627b-8bf6-f526-8fda3e7892e0@broadcom.com>
-Date:   Mon, 10 Jan 2022 10:11:44 +0100
+        Mon, 10 Jan 2022 01:12:06 -0800 (PST)
+Message-ID: <67630b95-2b1a-a922-bdf1-21a1accde60b@broadcom.com>
+Date:   Mon, 10 Jan 2022 10:12:04 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.4.0
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH v2 17/35] brcmfmac: pcie: Provide a buffer of random bytes
- to the device
+Subject: Re: [PATCH v2 18/35] brcmfmac: pcie: Add IDs/properties for BCM4355
 To:     Hector Martin <marcan@marcan.st>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -81,40 +80,61 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-18-marcan@marcan.st>
-In-Reply-To: <20220104072658.69756-18-marcan@marcan.st>
+ <20220104072658.69756-19-marcan@marcan.st>
+In-Reply-To: <20220104072658.69756-19-marcan@marcan.st>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000005de02c05d536ba41"
+        boundary="0000000000001bbe3f05d536bbda"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000005de02c05d536ba41
+--0000000000001bbe3f05d536bbda
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 1/4/2022 8:26 AM, Hector Martin wrote:
-> Newer Apple firmwares on chipsets without a hardware RNG require the
-> host to provide a buffer of 256 random bytes to the device on
-> initialization. This buffer is present immediately before NVRAM,
-> suffixed by a footer containing a magic number and the buffer length.
+> This chip is present on at least these Apple T2 Macs:
 > 
-> This won't affect chips/firmwares that do not use this feature, so do it
-> unconditionally.
-
-Not sure what the general opinion is here, but pulling random bytes for 
-naught seems wasteful to me. So if there is a way of knowing it is 
-needed please make it conditional.
+> * hawaii: MacBook Air 13" (Late 2018)
+> * hawaii: MacBook Air 13" (True Tone, 2019)
 
 Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 > ---
->   .../broadcom/brcm80211/brcmfmac/pcie.c        | 30 +++++++++++++++++++
->   1 file changed, 30 insertions(+)
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c   | 1 +
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 8 ++++++++
+>   .../net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h | 2 ++
+>   3 files changed, 11 insertions(+)
 
---0000000000005de02c05d536ba41
+[...]
+
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> index a8cccfbea20b..fdba2b5b46f0 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> @@ -49,6 +49,7 @@ enum brcmf_pcie_state {
+>   BRCMF_FW_DEF(43602, "brcmfmac43602-pcie");
+>   BRCMF_FW_DEF(4350, "brcmfmac4350-pcie");
+>   BRCMF_FW_DEF(4350C, "brcmfmac4350c2-pcie");
+> +BRCMF_FW_CLM_DEF(4355C1, "brcmfmac4355c1-pcie");
+>   BRCMF_FW_CLM_DEF(4356, "brcmfmac4356-pcie");
+>   BRCMF_FW_CLM_DEF(43570, "brcmfmac43570-pcie");
+>   BRCMF_FW_DEF(4358, "brcmfmac4358-pcie");
+> @@ -75,6 +76,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
+>   	BRCMF_FW_ENTRY(BRCM_CC_4350_CHIP_ID, 0x000000FF, 4350C),
+>   	BRCMF_FW_ENTRY(BRCM_CC_4350_CHIP_ID, 0xFFFFFF00, 4350),
+>   	BRCMF_FW_ENTRY(BRCM_CC_43525_CHIP_ID, 0xFFFFFFF0, 4365C),
+> +	BRCMF_FW_ENTRY(BRCM_CC_4355_CHIP_ID, 0xFFFFFFFF, 4355C1), /* 12 */
+
+still intrigued what that trailing number means ;-)
+
+>   	BRCMF_FW_ENTRY(BRCM_CC_4356_CHIP_ID, 0xFFFFFFFF, 4356),
+>   	BRCMF_FW_ENTRY(BRCM_CC_43567_CHIP_ID, 0xFFFFFFFF, 43570),
+>   	BRCMF_FW_ENTRY(BRCM_CC_43569_CHIP_ID, 0xFFFFFFFF, 43570),
+
+--0000000000001bbe3f05d536bbda
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -185,14 +205,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCsp5MARUdwO7FA09sa
-79Pfcag2xXl/xpUSU4dIpZnSrDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMTAwOTExNTVaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCSdLPZut26JW5wCRyJ
+oK8kf3rEhnJ0QV2xOdkvysAOBTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMTAwOTEyMDdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEARj6Y0//B5XLb7/wD/P0xF7o/P/O9sPVs77f0
-xKf+LcYQgSjhBQT8ZGDkvZUQDoTUvClq/UW2W6rRR2wvrVZApJATAhMl/5R1oyTlCF0k6hjP3dOG
-eFIvsSO51iPB/x5WR1Omm/iT+fm0BqSUl03sSijM4KuJODsS2t5YPxPYc3hngsal9sbus/gjcIG5
-cYZ9lPhuiIALzmhFY7AzSxLenSLHaCBTlSpzbkdS6RzkT/CvG/LhN2g6/AnO2dnvm2fFh5eyBGaV
-KLEolQUy81CYJviaGpust3BlY0/vlFQ8xBH4m2TTDKWQ1b2BBwRd5cLRZ42T+4TCBn6hwDCOOOMI
-sg==
---0000000000005de02c05d536ba41--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEASN3sbamDxsLdAuhq1ukaWR/A6GAwYt6rav9u
+TTdGdrQiDNW99l9w/fuDKMoUwk9C+oRA/GrDRiXDpGXq0cSE3E4MUu90cEmKI6aOLLLDrkoh2nVT
+zs4TD7m/X/tbJGZU89yDPhHx1VhhAmKG/LXHZ3PlQIgSEvOFC++msrOBsYL/pfzMevTZgjtI0r0W
+sKXFGmE9VRHi6/rOMLXXocC4rMigApjUf75xvwSF1pZTv2F6Lh9bW0aRSwLvuwuBDY54eBK55mTr
+hOJD8h5KxM1d+ay3d7XdoCC58jXx7+6LeV+EbVEegtNmWiGfmuqG1KhDSy7862xE8+6HC+oeXM8c
+aw==
+--0000000000001bbe3f05d536bbda--
