@@ -2,242 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E1094891EA
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jan 2022 08:43:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57C5848930C
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jan 2022 09:08:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240078AbiAJHhM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jan 2022 02:37:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50782 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241586AbiAJHf6 (ORCPT
+        id S236362AbiAJIIR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jan 2022 03:08:17 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:53744 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230223AbiAJIIO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jan 2022 02:35:58 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FBB4C02526C
-        for <linux-wireless@vger.kernel.org>; Sun,  9 Jan 2022 23:31:18 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id m4so8351241edb.10
-        for <linux-wireless@vger.kernel.org>; Sun, 09 Jan 2022 23:31:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:to:cc:references
-         :from:in-reply-to;
-        bh=lPUcSfs/f4G3bCqSWgpDvpwPfPrunZCLYUTmgBBdg4c=;
-        b=FKn0jUWzwNSJBlfjArgfbOIxDaFuUG1O5Q6Ax+YwjJlq76PZJRCaDdzKV9fSz2WoY8
-         yo+Dwxdp6G1dyKxYTeo3+BOjdOJxgdWv7meqLiA0dZhPDSi2oLxg05VWUUzNIVzUht1w
-         7g4ylGy9T4npDKErn9Ie43Y1JVxmoGmWIH0xM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :to:cc:references:from:in-reply-to;
-        bh=lPUcSfs/f4G3bCqSWgpDvpwPfPrunZCLYUTmgBBdg4c=;
-        b=Bl0wWFbBdc4noO7ZXgVZZO7AobFHNEshpsLM0/8LtW7YbUeZiLmCk3yNeHYkeKnUJu
-         19jra4vYZjMDLfobzE7h+J5rvv/WEqGLED7RhvvSEw7JS16F8R+Stndif1UgUf8D+lsd
-         gWtEpW8lcq4aCxqzxNTFNxK6DDEa3bA1Ot57Gwm8qbqGTRVpscDcwHlIO/th/+9LXNJw
-         QfkjLtHbsuuhb7dv6fDbHVriczkbM5qchm8ET7jfMHwALwDPXt3Pxygr5+IEi3yg1Sju
-         Mod780N4aleC7fIGQRYE5AzT/PNhzpY2RekmLQwX3ItJYeUKZDsd9EbzLkeBjmVoq95w
-         rRjQ==
-X-Gm-Message-State: AOAM531Ko1ZAZJga66i1q2BEdjiPme9qhTwwOZNZAVSvGxy6bELNY8MA
-        BR6CTdm+lXm0Me26EHQfySUfdw==
-X-Google-Smtp-Source: ABdhPJzcqUFUcyau+JE99UOL3CsWj/phSfOLhbnr8767xEwydrl/xib9+q0VG6B1t0ak4+R9Rh3Bmg==
-X-Received: by 2002:a17:907:7fa9:: with SMTP id qk41mr59746482ejc.422.1641799876948;
-        Sun, 09 Jan 2022 23:31:16 -0800 (PST)
-Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id sc3sm2106026ejc.93.2022.01.09.23.31.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Jan 2022 23:31:15 -0800 (PST)
-Message-ID: <1224597a-960c-71dd-817b-9f857697c9c6@broadcom.com>
-Date:   Mon, 10 Jan 2022 08:31:12 +0100
+        Mon, 10 Jan 2022 03:08:14 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 0CECACE127D;
+        Mon, 10 Jan 2022 08:08:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B72C36AED;
+        Mon, 10 Jan 2022 08:08:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641802091;
+        bh=PnoU2Zz1OK3gxh6Vjy12PzEUe4rZHQBJaKNe/vb3GSs=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=KdPFkR/3ZvDQlrr/md1l5hrX2u7l7pjgz0YHP4afAFrvdIW+zl/s0sHXHc39NQPEg
+         w+KE7IHSOiYA4uogkQaJxSDuk80k/ZVNdvfoGPQYVdCErJz5ngCTSHjH4LFQWBAnb+
+         afPxNm+y0plBZpHsmPMbOmXNRVVlvDrmiHc1JQEZXFN0owAGEDi++I5Hm2gLfJPMzo
+         8j8USbb9tqYBjKMy4CEQ9D+VCtkn0MhdClDysCMPgtppPnhIWveECDm2KT9DgT9yFc
+         X30pYzA7kxF3cDLgDSCrMrbEoAjR2gxRIqRKzaUk7F5O80mP1Hr389N2/L4deoX23t
+         XNV6vaUY5LjYQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     nathan@kernel.org, johannes.berg@intel.com,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        luciano.coelho@intel.com, netdev@vger.kernel.org
+Subject: Re: [PATCH] iwlwifi: mvm: Use div_s64 instead of do_div in iwl_mvm_ftm_rtt_smoothing()
+References: <20211227191757.2354329-1-nathan@kernel.org>
+        <20220110003326.2745615-1-kuba@kernel.org>
+Date:   Mon, 10 Jan 2022 10:08:06 +0200
+In-Reply-To: <20220110003326.2745615-1-kuba@kernel.org> (Jakub Kicinski's
+        message of "Sun, 9 Jan 2022 16:33:26 -0800")
+Message-ID: <875yqsvwrd.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH v2 13/35] brcmfmac: pcie: Support PCIe core revisions >=
- 64
-To:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-14-marcan@marcan.st>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20220104072658.69756-14-marcan@marcan.st>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000784bfa05d5355204"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000784bfa05d5355204
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Jakub Kicinski <kuba@kernel.org> writes:
 
-On 1/4/2022 8:26 AM, Hector Martin wrote:
-> These newer PCIe core revisions include new sets of registers that must
-> be used instead of the legacy ones. Introduce a brcmf_pcie_reginfo to
-> hold the specific register offsets and values to use for a given
-> platform, and change all the register accesses to indirect through it.
+>> When building ARCH=3Darm allmodconfig:
+>>=20
+>> drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c: In function
+>> =E2=80=98iwl_mvm_ftm_rtt_smoothing=E2=80=99:
+>> ./include/asm-generic/div64.h:222:35: error: comparison of distinct
+>> pointer types lacks a cast [-Werror]
+>>   222 |         (void)(((typeof((n)) *)0) =3D=3D ((uint64_t *)0));  \
+>>       |                                   ^~
+>> drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c:1070:9: note:
+>> in expansion of macro =E2=80=98do_div=E2=80=99
+>>  1070 |         do_div(rtt_avg, 100);
+>>       |         ^~~~~~
+>
+> Let me take this one directly to net-next, hope that's okay.
 
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-> ---
->   .../broadcom/brcm80211/brcmfmac/pcie.c        | 125 +++++++++++++++---
->   1 file changed, 105 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> index 595815164e18..f3744e806157 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> @@ -118,6 +118,12 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
->   #define BRCMF_PCIE_PCIE2REG_H2D_MAILBOX_0	0x140
->   #define BRCMF_PCIE_PCIE2REG_H2D_MAILBOX_1	0x144
->   
-> +#define BRCMF_PCIE_64_PCIE2REG_INTMASK		0xC14
-> +#define BRCMF_PCIE_64_PCIE2REG_MAILBOXINT	0xC30
-> +#define BRCMF_PCIE_64_PCIE2REG_MAILBOXMASK	0xC34
-> +#define BRCMF_PCIE_64_PCIE2REG_H2D_MAILBOX_0	0xA20
-> +#define BRCMF_PCIE_64_PCIE2REG_H2D_MAILBOX_1	0xA24
-> +
->   #define BRCMF_PCIE2_INTA			0x01
->   #define BRCMF_PCIE2_INTB			0x02
->   
-> @@ -137,6 +143,8 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
->   #define	BRCMF_PCIE_MB_INT_D2H3_DB0		0x400000
->   #define	BRCMF_PCIE_MB_INT_D2H3_DB1		0x800000
->   
-> +#define BRCMF_PCIE_MB_INT_FN0			(BRCMF_PCIE_MB_INT_FN0_0 | \
-> +						 BRCMF_PCIE_MB_INT_FN0_1)
->   #define BRCMF_PCIE_MB_INT_D2H_DB		(BRCMF_PCIE_MB_INT_D2H0_DB0 | \
->   						 BRCMF_PCIE_MB_INT_D2H0_DB1 | \
->   						 BRCMF_PCIE_MB_INT_D2H1_DB0 | \
-> @@ -146,6 +154,40 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
->   						 BRCMF_PCIE_MB_INT_D2H3_DB0 | \
->   						 BRCMF_PCIE_MB_INT_D2H3_DB1)
->   
-> +#define	BRCMF_PCIE_64_MB_INT_D2H0_DB0		0x1
-> +#define	BRCMF_PCIE_64_MB_INT_D2H0_DB1		0x2
-> +#define	BRCMF_PCIE_64_MB_INT_D2H1_DB0		0x4
-> +#define	BRCMF_PCIE_64_MB_INT_D2H1_DB1		0x8
-> +#define	BRCMF_PCIE_64_MB_INT_D2H2_DB0		0x10
-> +#define	BRCMF_PCIE_64_MB_INT_D2H2_DB1		0x20
-> +#define	BRCMF_PCIE_64_MB_INT_D2H3_DB0		0x40
-> +#define	BRCMF_PCIE_64_MB_INT_D2H3_DB1		0x80
+Thanks, please do, I was offline for a longer period and just came back.
 
-Just an observation. So these are legacy ones with a 16 bit right shift...
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-> +#define	BRCMF_PCIE_64_MB_INT_D2H4_DB0		0x100
-> +#define	BRCMF_PCIE_64_MB_INT_D2H4_DB1		0x200
-> +#define	BRCMF_PCIE_64_MB_INT_D2H5_DB0		0x400
-> +#define	BRCMF_PCIE_64_MB_INT_D2H5_DB1		0x800
-> +#define	BRCMF_PCIE_64_MB_INT_D2H6_DB0		0x1000
-> +#define	BRCMF_PCIE_64_MB_INT_D2H6_DB1		0x2000
-> +#define	BRCMF_PCIE_64_MB_INT_D2H7_DB0		0x4000
-> +#define	BRCMF_PCIE_64_MB_INT_D2H7_DB1		0x8000
-
-...and these are new doorbell interrupts.
-
---000000000000784bfa05d5355204
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
-yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
-0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
-NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
-FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
-aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
-OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
-UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCC8jysogIQKI0Bvql0
-tk7WdbpnA/BKmufIVcbxPsoO7TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMTAwNzMxMTdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAjxt2/L6igEP+CMWj0XQbPBtjGO9v5Qj6CP6y
-3vhx0WFW7B3ZmXjSkYX24PPv1ehrC2LZmMWzWw3TZjrrcZpbcYC2BpJhc2auRZtki+CKzzrggPqp
-HjBD6ThNjbUT/iNe8osf/wX1SmI07QUAxRip7MOHeb5EqfNCxo77/gktEwcvOT4Lz3NHIMLB4Fhx
-bWjmrSY1yIvrFtkeHye/ljb1CEZp31VYVecxulpKzbrPD6rawGP9ig6rO/yURSEY6pY8euuu1wQm
-/QTtZCFazzVWpaDX9+rFIVr3V7U796ZcCmi1tcFANLL1MUYmIBxO/8mRRkYJXguCTv9WaJheWBXa
-Mw==
---000000000000784bfa05d5355204--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
