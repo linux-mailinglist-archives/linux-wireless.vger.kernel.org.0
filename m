@@ -2,78 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B98B48AF90
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 15:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5466548AFB0
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 15:38:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241898AbiAKOaY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jan 2022 09:30:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56864 "EHLO
+        id S242164AbiAKOim (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jan 2022 09:38:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240845AbiAKOaX (ORCPT
+        with ESMTP id S240088AbiAKOil (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jan 2022 09:30:23 -0500
+        Tue, 11 Jan 2022 09:38:41 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59CD1C06173F
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 06:30:23 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABF6AC06173F
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 06:38:41 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECAF261684
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 14:30:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F4D8C36AE3;
-        Tue, 11 Jan 2022 14:30:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D5CF6168A
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 14:38:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4018C36AE3;
+        Tue, 11 Jan 2022 14:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641911422;
-        bh=3YbvXQFmoeKr2zfRncYcsBgKf0u9oU4rKKvV8f5NIlc=;
+        s=k20201202; t=1641911920;
+        bh=BzfEzZiGgzx0tSuP84HARdUdUuAEdyL2H9x7G3VY19s=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=OYshFZk95oY2p64CHl23tb8JQMXUmqR8SN8OD5QPbpSMAFcIB28Jfr6hDkfrRe4XM
-         /dP14IcarB12CBlctSPQJPhNgC8vNS1kfM9VfCif9Jh/oGqM7uw4/515lAruEMQ5AE
-         q7/iF2lkIal3Ll43QxmrEzuZTzlOdX3h+lmtRM4u2vnT+Rou3XX1e0Qu9LbEwY6tW5
-         szqYEuYHnHXv9OAzGZQ0fKoVBY18+g32yu1rtxaMcda3J9NvMdd0feE8RldlO6/HbN
-         nYZ6htPbEbKpW8X3oWEQwT7t7ka6PtFQ2zZth+N8prlQ3K3jh5LIghFLgMraCpBDq2
-         Ce6Y5t3Gv9NUQ==
+        b=OoiHGODEO0VELV7/2HpZM/cc+jlfUxM7UHhErYDlQPKJiyV9ZozvDZk1R14J2qJHe
+         YJk8gZ395CeLu7/1eMxCFcqpsqfyFpti4KaXZFvHJoQ957ksHcg5hbtz4uYDbbutN3
+         N5SBTUXE4C4YD3Gt0/kRgYt52fTdWgYmfUKJ2kPl9KneRkDS0cTv6yiEYkGjU8Eqwx
+         jTMzPioeQ7vA0lYx4KTUbJko0iRVmMqmONZ2k6ywhnd4qpWuEeI87xp+mtD8zVR9+9
+         YEYJtKV0eVVG5UBZ5nVGpF5eSiCgVQMghP6FBXZOgTI9agBMcgv91TdGTfQBdo8YM4
+         R+yeOG96cvXTg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k: fix memory overwrite of the WoWLAN wakeup packet
- pattern
+Subject: Re: [PATCH] ath11k: fix workqueue not getting destroyed after rmmod
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211222031347.25463-1-quic_wgong@quicinc.com>
-References: <20211222031347.25463-1-quic_wgong@quicinc.com>
-To:     Wen Gong <quic_wgong@quicinc.com>
-Cc:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <quic_wgong@quicinc.com>
+In-Reply-To: <1640231787-17408-1-git-send-email-quic_adisi@quicinc.com>
+References: <1640231787-17408-1-git-send-email-quic_adisi@quicinc.com>
+To:     Aditya Kumar Singh <quic_adisi@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164191141967.24158.14971399294793691071.kvalo@kernel.org>
-Date:   Tue, 11 Jan 2022 14:30:21 +0000 (UTC)
+Message-ID: <164191191704.24158.8323554268454002040.kvalo@kernel.org>
+Date:   Tue, 11 Jan 2022 14:38:39 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <quic_wgong@quicinc.com> wrote:
+Aditya Kumar Singh <quic_adisi@quicinc.com> wrote:
 
-> In function ath10k_wow_convert_8023_to_80211(), it will do memcpy for
-> the new->pattern, and currently the new->pattern and new->mask is same
-> with the old, then the memcpy of new->pattern will also overwrite the
-> old->pattern, because the header format of new->pattern is 802.11,
-> its length is larger than the old->pattern which is 802.3. Then the
-> operation of "Copy frame body" will copy a mistake value because the
-> body memory has been overwrite when memcpy the new->pattern.
+> Currently, ath11k_core_alloc() creates a single thread workqueue.
+> This workqueue is not detroyed during clean up when ath11k modules
+> are unloaded from the kernel and is left as it is.
+> If workqueue is not destroyed, it could lead to kernel
+> memory scarcity in a longer run. This could affect self and
+> other drivers workability as well.
 > 
-> Assign another empty value to new_pattern to avoid the overwrite issue.
+> Add destroy workqueue in ath11k_core_free().
 > 
-> Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00049
+> Tested on: IPQ8074 WLAN.HK.2.4.0.1-01746-QCAHKSWPL_SILICONZ-1
 > 
-> Fixes: fa3440fa2fa1 ("ath10k: convert wow pattern from 802.3 to 802.11")
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-e3fb3d4418fc ath10k: fix memory overwrite of the WoWLAN wakeup packet pattern
+9f4ecacf2fa4 ath11k: fix workqueue not getting destroyed after rmmod
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211222031347.25463-1-quic_wgong@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/1640231787-17408-1-git-send-email-quic_adisi@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
