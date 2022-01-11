@@ -2,91 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90A8B48A93C
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 09:21:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E71748A961
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 09:30:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348859AbiAKIVV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jan 2022 03:21:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56768 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348845AbiAKIVU (ORCPT
+        id S1348927AbiAKIaq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jan 2022 03:30:46 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:52256 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S234988AbiAKIaq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jan 2022 03:21:20 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52282C06173F
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 00:21:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-        Cc:To:Subject:From:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=74LppIN78kWsgtYa9gWatruyKUpD9I2goC0oUvXXRvA=; b=r7eusmroYUe3aNo4VJF4cwmt5Q
-        HnZzRlBvCmVZI7RBnlXXgpz5F6Jz1tzM5oYA63oUwYlBLFaRPevntm4Jltlm+otpKTPy5PlJI/9lO
-        AjuNorPk2ybGupFB7pwCpv48Hg7uoPoMlltHNHOPzRdI3/900wFSfUgFPEtlOEu+3GWk=;
-Received: from p54ae97a7.dip0.t-ipconnect.de ([84.174.151.167] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1n7CP5-0000TK-MI; Tue, 11 Jan 2022 09:21:15 +0100
-Message-ID: <87571e0b-bbd2-f0e7-51c6-8bb94350c152@nbd.name>
-Date:   Tue, 11 Jan 2022 09:21:14 +0100
+        Tue, 11 Jan 2022 03:30:46 -0500
+Received: from 91-155-254-253.elisa-laajakaista.fi ([91.155.254.253] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1n7CYE-001aBz-50; Tue, 11 Jan 2022 10:30:43 +0200
+Message-ID: <39ee0e148eb24523830b766da9c637c41ad3673c.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kyle@infradead.org" <kyle@infradead.org>,
+        "jwboyer@kernel.org" <jwboyer@kernel.org>,
+        "ben@decadent.org.uk" <ben@decadent.org.uk>,
+        golan.ben.ami@intel.com,
+        You-Sheng Yang <vicamo.yang@canonical.com>, luca@coelho.fi
+Date:   Tue, 11 Jan 2022 10:30:39 +0200
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-dINLJ9GLSlSS2le+06Cu"
+User-Agent: Evolution 3.42.2-1 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.4.1
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH 2/5] mt76: rework dma.c to adapt mt7986 changes
-To:     Bo Jiao <bo.jiao@mediatek.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Xing Song <xing.song@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-References: <351271a274dc236f027c58487df6b21c7dbf9fd0.1641886298.git.Bo.Jiao@mediatek.com>
- <73fb8a688cfa53e030492f344f72ef64b4167a36.1641886298.git.Bo.Jiao@mediatek.com>
-Content-Language: en-US
-In-Reply-To: <73fb8a688cfa53e030492f344f72ef64b4167a36.1641886298.git.Bo.Jiao@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
+Subject: pull request: iwlwifi firmware updates 2022-01-11
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2022-01-11 08:51, Bo Jiao wrote:
-> From: Bo Jiao <Bo.Jiao@mediatek.com>
-> 
-> Check ndesc of q_rx to avoid potential hole in iteration.
-> This is an intermediate patch to add mt7986 support.
-> 
-> Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
-> Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
-> Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
-> ---
->   drivers/net/wireless/mediatek/mt76/dma.c | 10 ++++++----
->   1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-> index fd4c51b..83f045a 100644
-> --- a/drivers/net/wireless/mediatek/mt76/dma.c
-> +++ b/drivers/net/wireless/mediatek/mt76/dma.c
-> @@ -660,10 +660,12 @@ mt76_dma_init(struct mt76_dev *dev,
->   		 wiphy_name(dev->hw->wiphy));
->   	dev->napi_dev.threaded = 1;
->   
-> -	mt76_for_each_q_rx(dev, i) {
-> -		netif_napi_add(&dev->napi_dev, &dev->napi[i], poll, 64);
-> -		mt76_dma_rx_fill(dev, &dev->q_rx[i]);
-> -		napi_enable(&dev->napi[i]);
-> +	for (i = 0; i < ARRAY_SIZE(dev->q_rx); i++) {
-> +		if (dev->q_rx[i].ndesc) {
-Please fix mt76_for_each_q_rx instead. You can simply define it to
 
-for (i = 0; i < ARRAY_SIZE((dev)->q_rx); i++)		\
-	if ((dev)->q_rx[i].ndesc)
+--=-dINLJ9GLSlSS2le+06Cu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thanks,
+Hi,
 
-- Felix
+This contains some new and updated firmwares for all our currently
+maintained FW binaries.
 
+This adds firmwares from an older stable branch, because this version
+is what is support in v5.15 LTS.  Sorry for not including this in my
+previous pull-request, but only today I realized they were missing.
+
+Please pull or let me know if there are any issues.
+
+--
+Cheers,
+Luca.
+
+
+The following changes since commit 13fc9c285a399932f5a6205b827cf690b4a3c29b=
+:
+
+  Merge tag 'iwlwifi-fw-2022-01-10-v2' of git://git.kernel.org/pub/scm/linu=
+x/kernel/git/iwlwifi/linux-firmware into main (2022-01-10 13:20:21 -0500)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git =
+tags/iwlwifi-fw-2022-01-11
+
+for you to fetch changes up to 76e8373e07753ebe406f314894f6eae9f8493dfe:
+
+  iwlwifi: add new FWs from core63-136 release (2022-01-11 10:23:38 +0200)
+
+----------------------------------------------------------------
+Update and add iwlwifi firmware binaries for release Core63-136
+
+----------------------------------------------------------------
+Luca Coelho (1):
+      iwlwifi: add new FWs from core63-136 release
+
+ WHENCE                        |  23 ++++++++++++++++++++++-
+ iwlwifi-Qu-b0-hr-b0-66.ucode  | Bin 0 -> 1344220 bytes
+ iwlwifi-Qu-b0-jf-b0-66.ucode  | Bin 0 -> 1262312 bytes
+ iwlwifi-Qu-c0-hr-b0-66.ucode  | Bin 0 -> 1344236 bytes
+ iwlwifi-Qu-c0-jf-b0-66.ucode  | Bin 0 -> 1262328 bytes
+ iwlwifi-QuZ-a0-hr-b0-66.ucode | Bin 0 -> 1344216 bytes
+ iwlwifi-QuZ-a0-jf-b0-66.ucode | Bin 0 -> 1262244 bytes
+ iwlwifi-cc-a0-66.ucode        | Bin 0 -> 1307180 bytes
+ iwlwifi-ty-a0-gf-a0-66.ucode  | Bin 1477864 -> 1481960 bytes
+ 9 files changed, 22 insertions(+), 1 deletion(-)
+ create mode 100644 iwlwifi-Qu-b0-hr-b0-66.ucode
+ create mode 100644 iwlwifi-Qu-b0-jf-b0-66.ucode
+ create mode 100644 iwlwifi-Qu-c0-hr-b0-66.ucode
+ create mode 100644 iwlwifi-Qu-c0-jf-b0-66.ucode
+ create mode 100644 iwlwifi-QuZ-a0-hr-b0-66.ucode
+ create mode 100644 iwlwifi-QuZ-a0-jf-b0-66.ucode
+ create mode 100644 iwlwifi-cc-a0-66.ucode
+
+
+--=-dINLJ9GLSlSS2le+06Cu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAmHdQC8ACgkQoUecoho8
+xfp++BAAtKtg9DelR3nkQdk3PZvqf9JNXPUFxrx24qVLbelcDwsUgS+vPWVxyoHS
+ncFmI9YjzZYeKAb6tghMU0WBIEjfne/cjiz3cn0BtWurOgmxZOTHlukuz8UBxSHX
+r8v58vVp32CCVJrvPSHE526uh11va3EEV44F9SoD0ij0WulFKa8c5UYVmDz2BtOq
+KPIDuQYZpGknwrt6fxbL1OTdjX9OpKwNSYX+mNdfcB6roDyu/TpBL6aKM+kPu8V7
+EZEn1IEnGMP4VOoLc/b9M0v0CfZDEgZmaWNALCFuLp15xROm0pL1x5maM5TIGEvn
++kn48SVxiC2L5vp0BP+8W6PqrzszpGQ1Anbvx10OVhNUTM1D/P7tThS3IrLE4+KX
+d8MdsRaMv9Eu5dLX+3BV+ffSXv9rMxRWNrflM8V1v9z4Cvt25WCYusjRhjPajC47
+RAGIAo5ofzQ62DMFn1edlZvqtGlcT3M0bEIpP7W4zlLRmmQaEyD+HN/OL7VmMYAo
+r3XNh716I/Xr7B9VE8ExI4WuclUFwDCDxNO7y/lZkt7XRkqxmt2b8+znMQNtHyIt
+jzUdpBXZxRjSWu7cnfNRfn9OxMjGVJgf85CO+9Sw40gO3c2cTJ9AOxeD1pNVYWbD
+pYLFiem2gMdFVnD+vhbvTgIDmuLcJmFDRyMNDtUoiAKIeG0vONY=
+=AX1R
+-----END PGP SIGNATURE-----
+
+--=-dINLJ9GLSlSS2le+06Cu--
