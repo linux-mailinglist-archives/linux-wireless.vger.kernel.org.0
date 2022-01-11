@@ -2,96 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F91148B5FD
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 19:45:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA15F48B798
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 20:46:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245403AbiAKSpU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jan 2022 13:45:20 -0500
-Received: from mail-ot1-f42.google.com ([209.85.210.42]:41517 "EHLO
-        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241456AbiAKSpU (ORCPT
+        id S238600AbiAKTqI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jan 2022 14:46:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47216 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238580AbiAKTqH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jan 2022 13:45:20 -0500
-Received: by mail-ot1-f42.google.com with SMTP id a12-20020a0568301dcc00b005919e149b4cso1583926otj.8;
-        Tue, 11 Jan 2022 10:45:19 -0800 (PST)
+        Tue, 11 Jan 2022 14:46:07 -0500
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D353C061751
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 11:46:07 -0800 (PST)
+Received: by mail-il1-x135.google.com with SMTP id h30so109923ila.12
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 11:46:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jetfuse-net.20210112.gappssmtp.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :references:from:in-reply-to:content-transfer-encoding;
+        bh=m976ZOOfMhMYP97/OdAcDhlMaDfdLKB2SzSP79pG6rU=;
+        b=Ifh952qNWH/v7QHzjjr+UkhcmbE8oThNA+/hfkXMpfqJdYrXBidv0a9+fajrrpAsCO
+         Mu0/vEe1PT/rg0LfQI7sl+tJxIqowzdcnP8c+v1MdZTNF8rOycO7Uvf0tXifkfS9j8FW
+         iW51ShC/a4ZAY76wfHzxHLaIjD7a+MBwkTck8AvP4Qa5MshuLxjvGSZh4r1nH3GnDa8D
+         9aTcvs7s7p4iiv5DB3n2YYF9yQE/Mt3ier2bjRES3mnTAiTFMbA+e/5/hBasW7eXkHEi
+         lftdPngBgZpiBkrEJcCH0OIUXugN0srklU7sVUlFwHwXzn13jGGeEPg6CHGA3lyVb9gO
+         qp7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=F0e3m98RqwjSlzmyX1kOm+vOF2VQm1ViKY66pyPBG2s=;
-        b=8Dmj46V2KKz2ydt3O+/Lg7d+MJE8wawHM8m7YjDwcubdwFNRERbIPAeVe+OrnYZbyo
-         acmqkvv+heo45vQ4crT0PwXwsDu/qbiTHNvetPoWfYw2USc2Cde9mrOsfUCrII2OlQfH
-         bb8iFX6VXOAhoSnp4PTrExHTk4+hbshMVlxF7/qNUy20v+hItc/46MCsOUw7HzI9sO2/
-         /UMnug9MasAkZFfc+KDKBexCFj0RwSyCnwC0rhMpS5tzEOmXzDzWvsBWXcw2TeyGdy7d
-         5Xgkq7tmfaK3Kk/D+SfcHEj8NzBkO1q3Wr7cGgd2ltH6toofdMbIwPz59Obb98wdLnX2
-         wYUg==
-X-Gm-Message-State: AOAM5304PTya0mZAoJIBISGBNPcen1D/0L6dqIBpWN582SXVlq9bInzl
-        6XUoXT4KqtO86FruKB07rQ==
-X-Google-Smtp-Source: ABdhPJxy8a1EpLFMlB6hTOJMVu4IhrR2rQpyht3PAS0epH89Pr9U2ltlySSjVA6xxzQVEcZbuo4ZRg==
-X-Received: by 2002:a9d:6e91:: with SMTP id a17mr4265345otr.138.1641926719396;
-        Tue, 11 Jan 2022 10:45:19 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id o12sm434552ooi.15.2022.01.11.10.45.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jan 2022 10:45:18 -0800 (PST)
-Received: (nullmailer pid 3304828 invoked by uid 1000);
-        Tue, 11 Jan 2022 18:45:16 -0000
-Date:   Tue, 11 Jan 2022 12:45:16 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Hector Martin <marcan@marcan.st>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        SHA-cyfmac-dev-list@infineon.com, Rob Herring <robh+dt@kernel.org>,
-        linux-acpi@vger.kernel.org,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com, Len Brown <lenb@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: Re: [PATCH v2 01/35] dt-bindings: net: bcm4329-fmac: Add Apple
- properties & chips
-Message-ID: <Yd3QPF0KxD3RFfXM@robh.at.kernel.org>
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-2-marcan@marcan.st>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=m976ZOOfMhMYP97/OdAcDhlMaDfdLKB2SzSP79pG6rU=;
+        b=S/PXmlXTq+qaBC9WrQ/XkbvnF8zucfax1qFT73S0w2yXo3Oudj3Ie4OuDlBcIRRMAE
+         EjkkktDp7gJ4s1cJGQglU7MCf7vbSlF0Z6m+J1AEHPlHNKxyiBWAam7IlXGP8F0jAyGw
+         6dmmUVdL4gAzLBP+eVW1pZs0bR2hrPUoKjIlhC/S9Jm17aDSxFBZIQtaV+C6GJPCG+u+
+         3GaoQBgzZcg/Xe5PH0yZFeXKcc/U6/dHWosOYnPI/bC9hvG4OPGKPzbLMm1ZWrvFWxq2
+         KjBMv0Z7hpc1nroc7vAnrVX09cL2zdYVsNcUwJsc4eGvtOnHmYNoEe81lRzL31+3c/Na
+         nkKQ==
+X-Gm-Message-State: AOAM5306ncximP6L67tzgCx3R7L8A9YVPbmkmScDVz63b153AWvaW631
+        rTu2SAOXxrQ3IMsmL44M6rZ1wHuacMr+Bg==
+X-Google-Smtp-Source: ABdhPJysshWlktfuU0b3wQF3JPvuMgWIrb9HU3eVShPilmklu/AhKCJZaimyCT6VEpkQtn0csyMuFg==
+X-Received: by 2002:a05:6e02:1c2f:: with SMTP id m15mr3186081ilh.206.1641930366539;
+        Tue, 11 Jan 2022 11:46:06 -0800 (PST)
+Received: from [192.168.1.15] (174-082-179-210.res.spectrum.com. [174.82.179.210])
+        by smtp.gmail.com with ESMTPSA id o21sm6885077iov.48.2022.01.11.11.46.05
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Jan 2022 11:46:06 -0800 (PST)
+Message-ID: <60724ae6-e8e2-183d-575a-0186e45c3fae@jetfuse.net>
+Date:   Tue, 11 Jan 2022 13:46:04 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220104072658.69756-2-marcan@marcan.st>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: iwlwifi: AX201 not using 2 receive streams
+Content-Language: en-US
+To:     linux-wireless@vger.kernel.org
+References: <3cb11500-6828-6ded-bebc-cdb6e1f97bc0@jetfuse.net>
+ <521b0dba-5866-ff34-da5a-479bc95cc9d9@candelatech.com>
+From:   Brandon Nielsen <nielsenb@jetfuse.net>
+In-Reply-To: <521b0dba-5866-ff34-da5a-479bc95cc9d9@candelatech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 04 Jan 2022 16:26:24 +0900, Hector Martin wrote:
-> This binding is currently used for SDIO devices, but these chips are
-> also used as PCIe devices on DT platforms and may be represented in the
-> DT. Re-use the existing binding and add chip compatibles used by Apple
-> T2 and M1 platforms (the T2 ones are not known to be used in DT
-> platforms, but we might as well document them).
+On 1/8/22 3:22 PM, Ben Greear wrote:
+> On 1/8/22 12:50 PM, Brandon Nielsen wrote:
+>> I have a system with Intel AX201 not using 2 spatial streams in the RX 
+>> (download) direction. TX (upload) functions as expected. I'm seeing 
+>> similar behavior with an AX200 system. I'm seeing the same behavior on 
+>> 5.15.12 as I am with 5.16.0-rc8 so I didn't mark it as a regression. 
+>> Windows works as expected.
+>>
+>> I have opened bug 215465[0] with some more detail.
+>>
+>> [0] - https://bugzilla.kernel.org/show_bug.cgi?id=215465
+>>
 > 
-> Then, add properties required for firmware selection and calibration on
-> M1 machines.
+> We saw something similar with ax210, but only on 6E, in kernel 5.15.7+.  
+> On 5Ghz, it worked 2x2 as expected.
+> On a 5.15.0-rc something, it worked OK for us.
 > 
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-> ---
->  .../net/wireless/brcm,bcm4329-fmac.yaml       | 37 +++++++++++++++++--
->  1 file changed, 34 insertions(+), 3 deletions(-)
+> We verified same firmware is used in both cases, but have not fully 
+> bisected the problem yet but we are
+> working on it.  In case you find the problem patch before us, please let 
+> me know!
+> 
+> Thanks,
+> Ben
 > 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+I'm still seeing this as far back as 5.11.12, so I'm not convinced this 
+is a regression. At least for the 5 GHz / 802.11ac case.
