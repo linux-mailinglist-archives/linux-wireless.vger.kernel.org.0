@@ -2,108 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFEB348ABBA
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 11:54:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C038148AC0B
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 11:59:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238080AbiAKKyM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jan 2022 05:54:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35114 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238019AbiAKKyL (ORCPT
+        id S238178AbiAKK67 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jan 2022 05:58:59 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:59062 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349489AbiAKK6i (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jan 2022 05:54:11 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9993DC06173F
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 02:54:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-        Cc:To:Subject:From:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=QfzM5wdLd0BHrMdguTSEuLuhAyxlju54ulDYhWkJ770=; b=uagkFkCBfkQq+2Cy5cPKD96xZj
-        KWbtyJrAXDyfB5t9xmSoMDF28aKw6uoKsYzEic11qu780USFMhTlnEB2t6XT1+McoNkV6wUxKPehP
-        0vM2fQjUXQCeOVZvtBfbNrrwTeXJXcAfqSkJ3g8TXgbSHa3OMbIzb4ivGUeBcyHqpLao=;
-Received: from p54ae97a7.dip0.t-ipconnect.de ([84.174.151.167] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1n7Emy-0006Yr-6Z; Tue, 11 Jan 2022 11:54:04 +0100
-Message-ID: <94eb0f94-6d86-45b8-54e3-424be3395fc9@nbd.name>
-Date:   Tue, 11 Jan 2022 11:54:03 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.4.1
-From:   Felix Fietkau <nbd@nbd.name>
+        Tue, 11 Jan 2022 05:58:38 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E21E6615C9
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 10:58:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE44C36AE3;
+        Tue, 11 Jan 2022 10:58:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641898717;
+        bh=7A2HmM/Ser53J1c4qOSiBQ1vG++Nn3K+WnGPh4pjdcQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=i3hbOcaesOCvzyj73w6+c4w0O7Z/Q7FFRi5ji1kLw49lcuqJcyJmIquXqY9n+gwEG
+         znMDSAKG2OloncSBMqHB8jf2rA8NLtxbSaS8SxK47X5LCoGXM5gbUY3s2ek10jRClp
+         fsld4NpZKQNKtTXsNpwvR/U2lGeZC7wSHwmeXz8aumU7OOEyjmURi54RX9jV2ASBhN
+         P+2ZIPlBvtnfIPZHza1GsbyzHm5uDEdTVOddZof6SHFBQkOhVZYKo5HDmxmt6RTvER
+         YEhnZ6jegdCxSdWYDGbKsMcv511GKwFMFCeq1Iw4zgKAPlZw0WRiVJPd7QRqWabTxX
+         nXyHdPYJh+3jg==
+Date:   Tue, 11 Jan 2022 11:58:33 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, sean.wang@mediatek.com,
+        deren.wu@mediatek.com
 Subject: Re: [PATCH 1/2] mt76: mt7921: fix a leftover race in runtime-pm
-To:     Kalle Valo <kvalo@kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sean.wang@mediatek.com, deren.wu@mediatek.com
+Message-ID: <Yd1i2dzT7l/gLUb/@lore-desk>
 References: <cover.1640897147.git.lorenzo@kernel.org>
  <65e65daddbcec420392befa3b4f9a6aaaea21315.1640897147.git.lorenzo@kernel.org>
  <87zgo2k1b2.fsf@tynnyri.adurom.net>
-Content-Language: en-US
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ShYKOc29s3nnGLt4"
+Content-Disposition: inline
 In-Reply-To: <87zgo2k1b2.fsf@tynnyri.adurom.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On 2022-01-11 11:35, Kalle Valo wrote:
+--ShYKOc29s3nnGLt4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
 > Lorenzo Bianconi <lorenzo@kernel.org> writes:
-> 
->> Fix a possible race in mt7921_pm_power_save_work() if rx/tx napi
->> schedules ps_work and we are currently accessing device register
->> on a different cpu.
->>
->> Fixes: 1d8efc741df8 ("mt76: mt7921: introduce Runtime PM support")
->> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->> ---
->>  drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 8 ++++++++
->>  1 file changed, 8 insertions(+)
->>
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->> index defef3496246..0744f6e42ba3 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->> @@ -1553,6 +1553,14 @@ void mt7921_pm_power_save_work(struct work_struct *work)
->>  	    dev->fw_assert)
->>  		goto out;
->>  
->> +	if (mutex_is_locked(&dev->mt76.mutex))
->> +		/* if mt76 mutex is held we should not put the device
->> +		 * to sleep since we are currently accessing device
->> +		 * register map. We need to wait for the next power_save
->> +		 * trigger.
->> +		 */
->> +		goto out;
-> 
+>=20
+> > Fix a possible race in mt7921_pm_power_save_work() if rx/tx napi
+> > schedules ps_work and we are currently accessing device register
+> > on a different cpu.
+> >
+> > Fixes: 1d8efc741df8 ("mt76: mt7921: introduce Runtime PM support")
+> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > ---
+> >  drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/=
+net/wireless/mediatek/mt76/mt7921/mac.c
+> > index defef3496246..0744f6e42ba3 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+> > @@ -1553,6 +1553,14 @@ void mt7921_pm_power_save_work(struct work_struc=
+t *work)
+> >  	    dev->fw_assert)
+> >  		goto out;
+> > =20
+> > +	if (mutex_is_locked(&dev->mt76.mutex))
+> > +		/* if mt76 mutex is held we should not put the device
+> > +		 * to sleep since we are currently accessing device
+> > +		 * register map. We need to wait for the next power_save
+> > +		 * trigger.
+> > +		 */
+> > +		goto out;
+>=20
 > This looks fishy to me. What protects the case when ps_work is run first
 > and at the same time another cpu starts accessing the registers?
-> 
+>=20
 > Do note that I didn't check the code, so I might be missing something.
-For atomic context there is a locked counter pm->wake.count which is 
-used to prevent the device from going to sleep. If the device is 
-sleeping already on irq/tx, it is woken up and the function is 
-rescheduled. The device is never put to sleep while the wake count is 
-non-zero.
 
-For non-atomic context, the mutex is always held. There is a wrapper for 
-acquiring and releasing the mutex, which cancels the work after 
-acquiring the mutex and reschedules the delayed work after updating the 
-last activity timestamp (which gets checked here after checking the mutex).
+before accessing chip registers, we run mt7921_mutex_acquire() so we grab m=
+t76
+mutex and run mt76_connac_pm_wake(). In mt76_connac_pm_wake() we cancel
+ps_work, so it is not possible to access regs while mt7921_pm_power_save_wo=
+rk() is
+running. The only leftover case is the other way around, i.e. if we
+schedule mt7921_pm_power_save_work while we are already reading/writing chip
+regs. This is only possible when mt7921_pm_power_save_work is scheduled by
+rx_napi and this patch is fixing the latter case. Agree?
 
-The corner case that needs this mutex check here is when the work was 
-scheduled again after processing some NAPI, tx or irq activity and the 
-work gets run all while another cpu is in the middle of a long running 
-non-atomic activity that holds the mutex.
+Regards,
+Lorenzo
 
-For that we really do need the simple mutex_is_locked check, since 
-actually holding the lock here would cause a deadlock with the 
-mutex_acquire wrapper.
+>=20
+> --=20
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>=20
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
 
-- Felix
+--ShYKOc29s3nnGLt4
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYd1i2QAKCRA6cBh0uS2t
+rJBYAQDx1cEByJO4CirfWzK/IjMAJ1l4DzG0E8PM35o/umH65QEAyPYdHZgLrSnK
+l5xDcLbN2LVG8UI68zcNh6bXrJ4jTgU=
+=i4dQ
+-----END PGP SIGNATURE-----
+
+--ShYKOc29s3nnGLt4--
