@@ -2,52 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 407E648A8D9
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 08:51:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38E6C48A8E0
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 08:51:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348648AbiAKHvA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jan 2022 02:51:00 -0500
-Received: from mail.BETTERBIZ.PL ([45.86.209.138]:54260 "EHLO
-        mail.betterbiz.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235893AbiAKHvA (ORCPT
+        id S1348708AbiAKHvS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jan 2022 02:51:18 -0500
+Received: from mailgw01.mediatek.com ([60.244.123.138]:58602 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S235911AbiAKHvS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jan 2022 02:51:00 -0500
-Received: by mail.betterbiz.pl (Postfix, from userid 1001)
-        id DBCA182D92; Tue, 11 Jan 2022 02:45:50 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=betterbiz.pl; s=mail;
-        t=1641887459; bh=07NAgW1e0WiNB9zqagiM2BnwZfWBCpNa2E4+ccxBPgw=;
-        h=Date:From:To:Subject:From;
-        b=iTUGp/vgyx6Rh7RErrSjqh7E37qtIDZnRrPR1lvCHzkgmJGGOKFJEr04TQ0ae/8uG
-         eivgk5MR/k6gWNv7d+co6nIkwDFKDuXzxCC/IxP2cjoSyIP8FJVJZFntXLPe40nDgZ
-         Sryfbx3Xagc6OTDgAK8biqUmZlOaLFzYOCDEvmMd9Qlu81AxsfqItOaQEL5hn4UCA3
-         YYdhDs4cU22ZxKWwknf/lIhM8bGt/LrWJEiU0WRGU1rqPETebOCVdiZh4fEViBQSn2
-         2oFryKtmy5pGMr1A378dBOrpKNNURzr0sgGGEn8p8eEnBHE4iUcYLs6eoBcH3+q971
-         FXwP0biVcSXbQ==
-Received: by mail.betterbiz.pl for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 07:45:45 GMT
-Message-ID: <20220111024500-0.1.o.10av.0.tdz5cg7pl8@betterbiz.pl>
-Date:   Tue, 11 Jan 2022 07:45:45 GMT
-From:   "Jakub Daroch" <jakub.daroch@betterbiz.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.betterbiz.pl
+        Tue, 11 Jan 2022 02:51:18 -0500
+X-UUID: a1ca0a13e6284976ab4dfc0aaf695c46-20220111
+X-UUID: a1ca0a13e6284976ab4dfc0aaf695c46-20220111
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
+        (envelope-from <bo.jiao@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1076703475; Tue, 11 Jan 2022 15:51:14 +0800
+Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 11 Jan 2022 15:51:13 +0800
+Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
+ (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 11 Jan
+ 2022 15:51:13 +0800
+Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
+ MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
+ 15.0.1497.2 via Frontend Transport; Tue, 11 Jan 2022 15:51:12 +0800
+From:   Bo Jiao <bo.jiao@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Xing Song <xing.song@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <Bo.Jiao@mediatek.com>,
+        "Peter Chiu" <chui-hao.chiu@mediatek.com>,
+        <devicetree@vger.kernel.org>
+Subject: [PATCH 1/5] dt-bindings: net: wireless: mt76: document bindings for MT7986
+Date:   Tue, 11 Jan 2022 15:51:04 +0800
+Message-ID: <351271a274dc236f027c58487df6b21c7dbf9fd0.1641886298.git.Bo.Jiao@mediatek.com>
+X-Mailer: git-send-email 2.17.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
+From: Bo Jiao <Bo.Jiao@mediatek.com>
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+Add an entry for MT7986 SoC.
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+Cc: devicetree@vger.kernel.org
+---
+ .../bindings/net/wireless/mediatek,mt76.yaml  | 29 +++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
+diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+index 1489d3c..4444524 100644
+--- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+@@ -18,7 +18,7 @@ description: |
+   wireless device. The node is expected to be specified as a child
+   node of the PCI controller to which the wireless chip is connected.
+   Alternatively, it can specify the wireless part of the MT7628/MT7688
+-  or MT7622 SoC.
++  or MT7622/MT7986 SoC.
+ 
+ allOf:
+   - $ref: ieee80211.yaml#
+@@ -29,9 +29,10 @@ properties:
+       - mediatek,mt76
+       - mediatek,mt7628-wmac
+       - mediatek,mt7622-wmac
++      - mediatek,mt7986-wmac
+ 
+   reg:
+-    maxItems: 1
++    maxItems: 3
+ 
+   interrupts:
+     maxItems: 1
+@@ -39,6 +40,17 @@ properties:
+   power-domains:
+     maxItems: 1
+ 
++  memory-region:
++    maxItems: 1
++
++  resets:
++    maxItems: 1
++    description:
++      Specify the consys reset for mt7986.
++
++  reset-name:
++    const: consys
++
+   mediatek,infracfg:
+     $ref: /schemas/types.yaml#/definitions/phandle
+     description:
+@@ -231,3 +243,16 @@ examples:
+ 
+       power-domains = <&scpsys 3>;
+     };
++
++  - |
++    #include <dt-bindings/reset/mt7986-resets.h>
++    wifi@18000000 {
++        compatible = "mediatek,mt7986-wmac";
++        resets = <&watchdog MT7986_TOPRGU_CONSYS_RST>;
++        reset-names = "consys";
++        reg = <0 0x18000000 0 0x1000000>,
++              <0 0x10003000 0 0x1000>,
++              <0 0x011d1000 0 0x1000>;
++        interrupts = <GIC_SPI 213 IRQ_TYPE_LEVEL_HIGH>;
++        memory-region = <&wmcpu_emi>;
++    };
+-- 
+2.18.0
 
-
-Pozdrawiam,
-Jakub Daroch
