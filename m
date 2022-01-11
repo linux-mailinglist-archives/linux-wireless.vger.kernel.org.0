@@ -2,116 +2,235 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A812C48B021
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 16:01:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD27448B07B
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 16:10:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243384AbiAKPBC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jan 2022 10:01:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35564 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243484AbiAKPA7 (ORCPT
+        id S240375AbiAKPKS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jan 2022 10:10:18 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:50838 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231876AbiAKPKS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jan 2022 10:00:59 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97DEDC06173F
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 07:00:57 -0800 (PST)
+        Tue, 11 Jan 2022 10:10:18 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 32545B81B35
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 15:00:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3DAC36AEB;
-        Tue, 11 Jan 2022 15:00:53 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id CD02ECE17B8
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 15:10:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E58FC36AEB;
+        Tue, 11 Jan 2022 15:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641913254;
-        bh=P5vG9fHxqRv8zbrgTAGykm+5NFhHtGWyBu1F9lyR5fE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=RAKYbcpjqWOipnZQJCWSGyc5QYtMfIHh1J0KaA1yISsRZCQSPDLLbBA/Rvd2GcYfH
-         CojlNa8RDYbgBBnOwrEiUuZW/4wYQYB8s8R0+lgZAwglWVTM+xmxUPjS7DZO8L2g97
-         Ewlo6Sf5JTEElCv42VZdafYtBMijF2LfD9eEPIydhSCD7Qw5qTB/r1sUZh5SasThBZ
-         cmh86Dn5tpPUBCyRnZMqhcCkHnf50+LHrT66jTzD2iL8G9Z+UmLjAvpPcscUEoDJ2P
-         rafO8kEPgTRHO87VrgBWpJemBMsHOVnDqIe4Bs6g9nX1ZN5JqsTuxQmg2ua487uJSK
-         Wlx4QSDyzk36A==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, lorenzo.bianconi@redhat.com,
-        linux-wireless@vger.kernel.org, sean.wang@mediatek.com,
-        deren.wu@mediatek.com
-Subject: Re: [PATCH 1/2] mt76: mt7921: fix a leftover race in runtime-pm
-References: <cover.1640897147.git.lorenzo@kernel.org>
-        <65e65daddbcec420392befa3b4f9a6aaaea21315.1640897147.git.lorenzo@kernel.org>
-        <87zgo2k1b2.fsf@tynnyri.adurom.net>
-        <94eb0f94-6d86-45b8-54e3-424be3395fc9@nbd.name>
-Date:   Tue, 11 Jan 2022 17:00:50 +0200
-In-Reply-To: <94eb0f94-6d86-45b8-54e3-424be3395fc9@nbd.name> (Felix Fietkau's
-        message of "Tue, 11 Jan 2022 11:54:03 +0100")
-Message-ID: <87wnj6tizh.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1641913815;
+        bh=PEIDX/NK1IgwrjgcmC7KUyvZCr9AC09LwvOEY5DSK8k=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qgJFqZY3mYRL/Ls5WAQ3JH9iBC8QbW3c7pfkfSOsAEWUKkQAJQd8UQ/Z+rFpjX7vE
+         sQt7g4iD01qnJNHo0D567Scntd0D9z6IcFc5c2rvxEcem4TJx0mQ4/BRFmdntz4INj
+         JbHhExBpnVlgo7oyGZXViUI6ajzGZoSFwlfevf3IqTIGbqpeayB/uSeVbmi+UYA1qf
+         t2uwDHe8aZJRBiJ3YS7GklUNE7/tjxsFIbbjWzAeaIlbe9MW67rBD/OxVfW/Ep4AuP
+         t3cA35n6S5NJPyx52jxfx9SOh7AfC8yHb05mLJkHXQJEXa7j7C+tzp5dxTq/rkTCqv
+         r4GNAW+wJHNPA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sean.wang@mediatek.com, deren.wu@mediatek.com,
+        ryder.lee@mediatek.com, xing.song@mediatek.com
+Subject: [RFT] mt76: do not always copy ethhdr in reverse_frag0_hdr_trans
+Date:   Tue, 11 Jan 2022 16:10:05 +0100
+Message-Id: <896ddb611e2f1f68c6da87c6baee61df5d2f295a.1641913505.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Do not always copy ethernet header in mt{7615,7915,7921}_reverse_frag0_hdr_trans
+and use a pointer instead.
 
-> On 2022-01-11 11:35, Kalle Valo wrote:
->> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->>
->>> Fix a possible race in mt7921_pm_power_save_work() if rx/tx napi
->>> schedules ps_work and we are currently accessing device register
->>> on a different cpu.
->>>
->>> Fixes: 1d8efc741df8 ("mt76: mt7921: introduce Runtime PM support")
->>> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->>> ---
->>>  drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 8 ++++++++
->>>  1 file changed, 8 insertions(+)
->>>
->>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->>> index defef3496246..0744f6e42ba3 100644
->>> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->>> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->>> @@ -1553,6 +1553,14 @@ void mt7921_pm_power_save_work(struct work_struct *work)
->>>  	    dev->fw_assert)
->>>  		goto out;
->>>  +	if (mutex_is_locked(&dev->mt76.mutex))
->>> +		/* if mt76 mutex is held we should not put the device
->>> +		 * to sleep since we are currently accessing device
->>> +		 * register map. We need to wait for the next power_save
->>> +		 * trigger.
->>> +		 */
->>> +		goto out;
->>
->> This looks fishy to me. What protects the case when ps_work is run first
->> and at the same time another cpu starts accessing the registers?
->>
->> Do note that I didn't check the code, so I might be missing something.
-> For atomic context there is a locked counter pm->wake.count which is
-> used to prevent the device from going to sleep. If the device is
-> sleeping already on irq/tx, it is woken up and the function is
-> rescheduled. The device is never put to sleep while the wake count is
-> non-zero.
->
-> For non-atomic context, the mutex is always held. There is a wrapper
-> for acquiring and releasing the mutex, which cancels the work after
-> acquiring the mutex and reschedules the delayed work after updating
-> the last activity timestamp (which gets checked here after checking
-> the mutex).
->
-> The corner case that needs this mutex check here is when the work was
-> scheduled again after processing some NAPI, tx or irq activity and the
-> work gets run all while another cpu is in the middle of a long running
-> non-atomic activity that holds the mutex.
->
-> For that we really do need the simple mutex_is_locked check, since
-> actually holding the lock here would cause a deadlock with the
-> mutex_acquire wrapper.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 19 +++++++++----------
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 19 +++++++++----------
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 19 +++++++++----------
+ 3 files changed, 27 insertions(+), 30 deletions(-)
 
-Very good, thanks Felix and Lorenzo for explaining all this. I just
-always get wary when I see mutex_is_locked() being used.
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index bc72791cdcb5..beb4c8db157d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -253,12 +253,12 @@ static void mt7615_mac_fill_tm_rx(struct mt7615_phy *phy, __le32 *rxv)
+ static int mt7615_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
+ {
+ 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
++	struct ethhdr *eth_hdr = (struct ethhdr *)(skb->data + hdr_gap);
+ 	struct mt7615_sta *msta = (struct mt7615_sta *)status->wcid;
++	__le32 *rxd = (__le32 *)skb->data;
+ 	struct ieee80211_sta *sta;
+ 	struct ieee80211_vif *vif;
+ 	struct ieee80211_hdr hdr;
+-	struct ethhdr eth_hdr;
+-	__le32 *rxd = (__le32 *)skb->data;
+ 	__le32 qos_ctrl, ht_ctrl;
+ 
+ 	if (FIELD_GET(MT_RXD1_NORMAL_ADDR_TYPE, le32_to_cpu(rxd[1])) !=
+@@ -275,7 +275,6 @@ static int mt7615_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
+ 	vif = container_of((void *)msta->vif, struct ieee80211_vif, drv_priv);
+ 
+ 	/* store the info from RXD and ethhdr to avoid being overridden */
+-	memcpy(&eth_hdr, skb->data + hdr_gap, sizeof(eth_hdr));
+ 	hdr.frame_control = FIELD_GET(MT_RXD4_FRAME_CONTROL, rxd[4]);
+ 	hdr.seq_ctrl = FIELD_GET(MT_RXD6_SEQ_CTRL, rxd[6]);
+ 	qos_ctrl = FIELD_GET(MT_RXD6_QOS_CTL, rxd[6]);
+@@ -290,24 +289,24 @@ static int mt7615_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
+ 		ether_addr_copy(hdr.addr3, vif->bss_conf.bssid);
+ 		break;
+ 	case IEEE80211_FCTL_FROMDS:
+-		ether_addr_copy(hdr.addr3, eth_hdr.h_source);
++		ether_addr_copy(hdr.addr3, eth_hdr->h_source);
+ 		break;
+ 	case IEEE80211_FCTL_TODS:
+-		ether_addr_copy(hdr.addr3, eth_hdr.h_dest);
++		ether_addr_copy(hdr.addr3, eth_hdr->h_dest);
+ 		break;
+ 	case IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS:
+-		ether_addr_copy(hdr.addr3, eth_hdr.h_dest);
+-		ether_addr_copy(hdr.addr4, eth_hdr.h_source);
++		ether_addr_copy(hdr.addr3, eth_hdr->h_dest);
++		ether_addr_copy(hdr.addr4, eth_hdr->h_source);
+ 		break;
+ 	default:
+ 		break;
+ 	}
+ 
+ 	skb_pull(skb, hdr_gap + sizeof(struct ethhdr) - 2);
+-	if (eth_hdr.h_proto == htons(ETH_P_AARP) ||
+-	    eth_hdr.h_proto == htons(ETH_P_IPX))
++	if (eth_hdr->h_proto == cpu_to_be16(ETH_P_AARP) ||
++	    eth_hdr->h_proto == cpu_to_be16(ETH_P_IPX))
+ 		ether_addr_copy(skb_push(skb, ETH_ALEN), bridge_tunnel_header);
+-	else if (eth_hdr.h_proto >= htons(ETH_P_802_3_MIN))
++	else if (eth_hdr->h_proto >= cpu_to_be16(ETH_P_802_3_MIN))
+ 		ether_addr_copy(skb_push(skb, ETH_ALEN), rfc1042_header);
+ 	else
+ 		skb_pull(skb, 2);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 08ec8ce34d77..39163567d712 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -391,12 +391,12 @@ mt7915_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u32 mode)
+ static int mt7915_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
+ {
+ 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
++	struct ethhdr *eth_hdr = (struct ethhdr *)(skb->data + hdr_gap);
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)status->wcid;
++	__le32 *rxd = (__le32 *)skb->data;
+ 	struct ieee80211_sta *sta;
+ 	struct ieee80211_vif *vif;
+ 	struct ieee80211_hdr hdr;
+-	struct ethhdr eth_hdr;
+-	__le32 *rxd = (__le32 *)skb->data;
+ 	__le32 qos_ctrl, ht_ctrl;
+ 
+ 	if (FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, le32_to_cpu(rxd[3])) !=
+@@ -413,7 +413,6 @@ static int mt7915_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
+ 	vif = container_of((void *)msta->vif, struct ieee80211_vif, drv_priv);
+ 
+ 	/* store the info from RXD and ethhdr to avoid being overridden */
+-	memcpy(&eth_hdr, skb->data + hdr_gap, sizeof(eth_hdr));
+ 	hdr.frame_control = FIELD_GET(MT_RXD6_FRAME_CONTROL, rxd[6]);
+ 	hdr.seq_ctrl = FIELD_GET(MT_RXD8_SEQ_CTRL, rxd[8]);
+ 	qos_ctrl = FIELD_GET(MT_RXD8_QOS_CTL, rxd[8]);
+@@ -428,24 +427,24 @@ static int mt7915_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
+ 		ether_addr_copy(hdr.addr3, vif->bss_conf.bssid);
+ 		break;
+ 	case IEEE80211_FCTL_FROMDS:
+-		ether_addr_copy(hdr.addr3, eth_hdr.h_source);
++		ether_addr_copy(hdr.addr3, eth_hdr->h_source);
+ 		break;
+ 	case IEEE80211_FCTL_TODS:
+-		ether_addr_copy(hdr.addr3, eth_hdr.h_dest);
++		ether_addr_copy(hdr.addr3, eth_hdr->h_dest);
+ 		break;
+ 	case IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS:
+-		ether_addr_copy(hdr.addr3, eth_hdr.h_dest);
+-		ether_addr_copy(hdr.addr4, eth_hdr.h_source);
++		ether_addr_copy(hdr.addr3, eth_hdr->h_dest);
++		ether_addr_copy(hdr.addr4, eth_hdr->h_source);
+ 		break;
+ 	default:
+ 		break;
+ 	}
+ 
+ 	skb_pull(skb, hdr_gap + sizeof(struct ethhdr) - 2);
+-	if (eth_hdr.h_proto == htons(ETH_P_AARP) ||
+-	    eth_hdr.h_proto == htons(ETH_P_IPX))
++	if (eth_hdr->h_proto == cpu_to_be16(ETH_P_AARP) ||
++	    eth_hdr->h_proto == cpu_to_be16(ETH_P_IPX))
+ 		ether_addr_copy(skb_push(skb, ETH_ALEN), bridge_tunnel_header);
+-	else if (eth_hdr.h_proto >= htons(ETH_P_802_3_MIN))
++	else if (eth_hdr->h_proto >= cpu_to_be16(ETH_P_802_3_MIN))
+ 		ether_addr_copy(skb_push(skb, ETH_ALEN), rfc1042_header);
+ 	else
+ 		skb_pull(skb, 2);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 0744f6e42ba3..83fd4fb6283c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -402,12 +402,12 @@ mt7921_mac_assoc_rssi(struct mt7921_dev *dev, struct sk_buff *skb)
+ static int mt7921_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
+ {
+ 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
++	struct ethhdr *eth_hdr = (struct ethhdr *)(skb->data + hdr_gap);
+ 	struct mt7921_sta *msta = (struct mt7921_sta *)status->wcid;
++	__le32 *rxd = (__le32 *)skb->data;
+ 	struct ieee80211_sta *sta;
+ 	struct ieee80211_vif *vif;
+ 	struct ieee80211_hdr hdr;
+-	struct ethhdr eth_hdr;
+-	__le32 *rxd = (__le32 *)skb->data;
+ 	__le32 qos_ctrl, ht_ctrl;
+ 
+ 	if (FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, le32_to_cpu(rxd[3])) !=
+@@ -424,7 +424,6 @@ static int mt7921_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
+ 	vif = container_of((void *)msta->vif, struct ieee80211_vif, drv_priv);
+ 
+ 	/* store the info from RXD and ethhdr to avoid being overridden */
+-	memcpy(&eth_hdr, skb->data + hdr_gap, sizeof(eth_hdr));
+ 	hdr.frame_control = FIELD_GET(MT_RXD6_FRAME_CONTROL, rxd[6]);
+ 	hdr.seq_ctrl = FIELD_GET(MT_RXD8_SEQ_CTRL, rxd[8]);
+ 	qos_ctrl = FIELD_GET(MT_RXD8_QOS_CTL, rxd[8]);
+@@ -439,24 +438,24 @@ static int mt7921_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
+ 		ether_addr_copy(hdr.addr3, vif->bss_conf.bssid);
+ 		break;
+ 	case IEEE80211_FCTL_FROMDS:
+-		ether_addr_copy(hdr.addr3, eth_hdr.h_source);
++		ether_addr_copy(hdr.addr3, eth_hdr->h_source);
+ 		break;
+ 	case IEEE80211_FCTL_TODS:
+-		ether_addr_copy(hdr.addr3, eth_hdr.h_dest);
++		ether_addr_copy(hdr.addr3, eth_hdr->h_dest);
+ 		break;
+ 	case IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS:
+-		ether_addr_copy(hdr.addr3, eth_hdr.h_dest);
+-		ether_addr_copy(hdr.addr4, eth_hdr.h_source);
++		ether_addr_copy(hdr.addr3, eth_hdr->h_dest);
++		ether_addr_copy(hdr.addr4, eth_hdr->h_source);
+ 		break;
+ 	default:
+ 		break;
+ 	}
+ 
+ 	skb_pull(skb, hdr_gap + sizeof(struct ethhdr) - 2);
+-	if (eth_hdr.h_proto == htons(ETH_P_AARP) ||
+-	    eth_hdr.h_proto == htons(ETH_P_IPX))
++	if (eth_hdr->h_proto == cpu_to_be16(ETH_P_AARP) ||
++	    eth_hdr->h_proto == cpu_to_be16(ETH_P_IPX))
+ 		ether_addr_copy(skb_push(skb, ETH_ALEN), bridge_tunnel_header);
+-	else if (eth_hdr.h_proto >= htons(ETH_P_802_3_MIN))
++	else if (eth_hdr->h_proto >= cpu_to_be16(ETH_P_802_3_MIN))
+ 		ether_addr_copy(skb_push(skb, ETH_ALEN), rfc1042_header);
+ 	else
+ 		skb_pull(skb, 2);
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
