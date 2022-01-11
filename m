@@ -2,92 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E7A948AB53
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 11:26:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDD1248AB80
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 11:35:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237866AbiAKK0B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jan 2022 05:26:01 -0500
-Received: from dvalin.narfation.org ([213.160.73.56]:47560 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237658AbiAKK0A (ORCPT
+        id S237368AbiAKKfg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jan 2022 05:35:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59134 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349304AbiAKKfV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jan 2022 05:26:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1641896759;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=3+S4TZBvovdjyS6f0BrlMjVtfRnHbOvMJAUwQCrw9Yg=;
-        b=nGO+YcnHHWpsPIerAkGByxJ5FzUyF7wmzon0c9BNa5NCdSzhyTxtd/ZdjYem5JcVl2USaJ
-        jOUtHQle6Jj6aWFgSaYAuxt+z5EHj8yBmmCORzGtPUJ8lmsKw0TM3v5eAzxfCU1v6iQfsX
-        5oNuvlj9tq9WVaLuN5rWdTBRgJi6LGM=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     luciano.coelho@intel.com,
-        Sharadanand Karanjkar <sk@simonwunderlich.de>,
-        johannes.berg@intel.com
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: iwlwifi: ax210: 6GHz channels disabled in Germany by firmware
-Date:   Tue, 11 Jan 2022 11:25:56 +0100
-Message-ID: <1718688.u4LHSoq7CI@ripper>
-In-Reply-To: <8620510.1Rxf2nTHJ8@sven-desktop>
-References: <57f467ec-074c-8260-7872-84eccfdcc1c7@simonwunderlich.de> <6520824.1yIjQniEF0@sven-l14> <8620510.1Rxf2nTHJ8@sven-desktop>
+        Tue, 11 Jan 2022 05:35:21 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FB0BC061748
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 02:35:21 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0E7B1B81616
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 10:35:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91716C36AE3;
+        Tue, 11 Jan 2022 10:35:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641897318;
+        bh=SmlyaW+tLvrpX0Zv/pe2CErTT/E585XFtwSwIV6NSlk=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ip4+UBc99ZnCvmZtW47i6Uhq40LLnGXYoPCO3g4UfDoGAi75kLudMbWCzzN9uMB7r
+         TAdlqSD2fY/fCSnWEB4REJNDYx8i05H8loRMBUT6rvekDrg0BMcNMR5bK/PiVXqKwn
+         Yb4zz+PHH8XKeXmosrz1mW5kYndvdkGZt4NqKMebLSecokgtt2GOxcLgcA7unNe1Er
+         SKr8q1ZoDjMnzD/HDUDDHP9L31krmT5TZNQ3t/TclMlwgEcUov3UUHyFBbo+bNcx24
+         ooJ6u+RecyIEmzprCYFYQkwUYIDiDfU0MyVeL4Z/UYyC03OHYr8gxGfkbvEDAWHka3
+         gOCu+sepnJPoA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, sean.wang@mediatek.com,
+        deren.wu@mediatek.com
+Subject: Re: [PATCH 1/2] mt76: mt7921: fix a leftover race in runtime-pm
+References: <cover.1640897147.git.lorenzo@kernel.org>
+        <65e65daddbcec420392befa3b4f9a6aaaea21315.1640897147.git.lorenzo@kernel.org>
+Date:   Tue, 11 Jan 2022 12:35:13 +0200
+In-Reply-To: <65e65daddbcec420392befa3b4f9a6aaaea21315.1640897147.git.lorenzo@kernel.org>
+        (Lorenzo Bianconi's message of "Thu, 30 Dec 2021 21:47:05 +0100")
+Message-ID: <87zgo2k1b2.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3683306.TFpEzV6JuY"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart3683306.TFpEzV6JuY
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: luciano.coelho@intel.com, Sharadanand Karanjkar <sk@simonwunderlich.de>, johannes.berg@intel.com
-Cc: linux-wireless@vger.kernel.org
-Subject: Re: iwlwifi: ax210: 6GHz channels disabled in Germany by firmware
-Date: Tue, 11 Jan 2022 11:25:56 +0100
-Message-ID: <1718688.u4LHSoq7CI@ripper>
-In-Reply-To: <8620510.1Rxf2nTHJ8@sven-desktop>
-References: <57f467ec-074c-8260-7872-84eccfdcc1c7@simonwunderlich.de> <6520824.1yIjQniEF0@sven-l14> <8620510.1Rxf2nTHJ8@sven-desktop>
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
-On Saturday, 13 November 2021 09:23:17 CET Sven Eckelmann wrote:
-> Johannes asked to forward it to the support system [1]. This was done now by 
-> Sharadanand [2]. Interested persons might check the status there in case there 
-> is no update in this thread.
+> Fix a possible race in mt7921_pm_power_save_work() if rx/tx napi
+> schedules ps_work and we are currently accessing device register
+> on a different cpu.
+>
+> Fixes: 1d8efc741df8 ("mt76: mt7921: introduce Runtime PM support")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+> index defef3496246..0744f6e42ba3 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+> @@ -1553,6 +1553,14 @@ void mt7921_pm_power_save_work(struct work_struct *work)
+>  	    dev->fw_assert)
+>  		goto out;
+>  
+> +	if (mutex_is_locked(&dev->mt76.mutex))
+> +		/* if mt76 mutex is held we should not put the device
+> +		 * to sleep since we are currently accessing device
+> +		 * register map. We need to wait for the next power_save
+> +		 * trigger.
+> +		 */
+> +		goto out;
 
-The new firmware [3] seems to solve this. I have posted some output in the 
-intel community thread [4].
+This looks fishy to me. What protects the case when ps_work is run first
+and at the same time another cpu starts accessing the registers?
 
-Kind regards,
-	Sven
+Do note that I didn't check the code, so I might be missing something.
 
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-> [1] https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi#support
-> [2] https://community.intel.com/t5/Wireless/6-GHz-Wifi-with-AX210/td-p/1329556
-[3] https://patchwork.kernel.org/project/linux-wireless/patch/2aa6a2bb7efda2b9b322371211eff7a7d0aae706.camel@coelho.fi/
-[4] https://community.intel.com/t5/Wireless/6-GHz-Wifi-with-AX210/m-p/1350364/highlight/true#M39752
---nextPart3683306.TFpEzV6JuY
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmHdWzQACgkQXYcKB8Em
-e0ZufBAAnxp3GfF3M1dJ/9wNUyJ1Lxyg05IMbV71yiKngNJ4woxyV2z2w+XJ2nVa
-Wc1dJIEeYIbOSesoE6T3d3clZyJZ5iBS0zrnpDpTUSB6clLmRQvHrqROeipvIHBj
-iKpRX1DuDxeQ3ZExJOE5BgfxbkFsXor7PIlzPsMU10TebVROL6rBECJxzaBDGGeb
-EiWeFCFBIiA66ZDSC+DeKS8GYg77fzVSnAe3dQBhdL6BOCcB4Pi6JasDCMwBMDWt
-2ZSgUDbJdj7H4nvkwlFrlnXfdPfP/tXQwUKu7iaKSNzpYcHvdoiH+0/bSbMF2BPo
-KOGQZlan35dXZxtoK4U5iUxllPB6x3zd7MQJWgFPN9kod065Y7B2uP03SXmGQNlr
-Y9sKbq9frlNe9/t488ssQH2oiLF5bQAB3rmpngLAm34jJZIMgLPu9Lucj+zDiNCS
-W7HWUMTm7u8dBj4+poYUP3Dxut746MChwCH/yyxmmAIiBrD9WJCQyyaKDojjeQe5
-3Uo/il5Ov6z167DhTUqRugqpFCvfgacTyXBXlRN6xJANGuxsLScBorfMAh5RHysR
-o0wkm4bMat+yH0G0uqd2fcLW0eEvnrxgOJOtm8aqK7ar2hgs76MSTPuRGLhMfabv
-sOQAIufvb6PEILtzKbnH+WXvi/17tFvTZy9CXSiBi45zFWxzy1E=
-=rw2n
------END PGP SIGNATURE-----
-
---nextPart3683306.TFpEzV6JuY--
-
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
