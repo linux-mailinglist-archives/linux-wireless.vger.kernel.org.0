@@ -2,103 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B0EA48AC16
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 12:02:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15C7F48AD2B
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 12:59:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238133AbiAKLCq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jan 2022 06:02:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37150 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235439AbiAKLCq (ORCPT
+        id S239387AbiAKL7i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jan 2022 06:59:38 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:56410 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S239000AbiAKL73 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jan 2022 06:02:46 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43491C06173F
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 03:02:46 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D5576615C3
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 11:02:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B638DC36AE9;
-        Tue, 11 Jan 2022 11:02:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641898965;
-        bh=bpDyuPCSeMVqJyeugkA7wQopRLRWRBPLU2LF5wLNe8w=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=B0JjGXgMGBwLwKbWaaEtu9QTD3QigaJQOdps+TZWdEkW6WFieqW4J9e3+UIsFrfBM
-         NI0K5G08992uKy502/kb+TgYY/J/u6q2/2A4egeEpzevxrbua5DbAgH97Ptfna71Bp
-         vW+U52aTuLF9fov697XcyMNLSPnMW6MeZZWGosBxy/Ss5Lh+cqpGEI9MENKvL85t+N
-         3uJ5wb4T3bE7b9jN87/l9EzZhGfQ2agOrY8F0FxXOKIrU+xSOB8Sws0iPVz8zrBcqN
-         Tru4X9WDWzOMzyJRQga9IPQsy9dTiB7juVdSH28g2sPUF0252y455I9/vUDKe1KrLz
-         zwZg8zIrQaM9Q==
-Date:   Tue, 11 Jan 2022 12:02:41 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Sven Eckelmann <sven@narfation.org>
-Cc:     lorenzo.bianconi@redhat.com, sean.wang@mediatek.com, nbd@nbd.name,
-        jf@simonwunderlich.de, linux-wireless@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: Re: mt76: MT7921K monitor mode not working
-Message-ID: <Yd1j0UFVkDC50x8D@lore-desk>
-References: <YapTmM3EztojTS9F@lore-desk--annotate>
- <12706913.cppxkphV4n@ripper>
- <YbusBazb4GAC6YQl@lore-desk>
- <34944167.qDeGz8lmHr@ripper>
+        Tue, 11 Jan 2022 06:59:29 -0500
+X-UUID: 71c0c93ed9ff4885ae866f23637965fc-20220111
+X-UUID: 71c0c93ed9ff4885ae866f23637965fc-20220111
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
+        (envelope-from <bo.jiao@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1391068710; Tue, 11 Jan 2022 19:59:26 +0800
+Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Tue, 11 Jan 2022 19:59:25 +0800
+Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
+ (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 11 Jan
+ 2022 19:59:24 +0800
+Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
+ MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
+ 15.0.1497.2 via Frontend Transport; Tue, 11 Jan 2022 19:59:24 +0800
+From:   Bo Jiao <bo.jiao@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Xing Song <xing.song@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Subject: [PATCH v2 0/5] add mt7986 support
+Date:   Tue, 11 Jan 2022 19:59:16 +0800
+Message-ID: <cover.1641901681.git.Bo.Jiao@mediatek.com>
+X-Mailer: git-send-email 2.17.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="jWgpeJokEZ4CKhaP"
-Content-Disposition: inline
-In-Reply-To: <34944167.qDeGz8lmHr@ripper>
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Bo Jiao <Bo.Jiao@mediatek.com>
 
---jWgpeJokEZ4CKhaP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This adds support for MT7986 SoC which integrated multi-band
+4x4 WiFi 6/6E.
+Detailed link: https://www.mediatek.com/products/mediatek-filogic-830
 
-> Hi,
->=20
-> On Thursday, 16 December 2021 22:13:41 CET Lorenzo Bianconi wrote:
-> > can you please try the patch below to see if it fixes the crash/hang in=
- monitor
-> > mode?
->=20
-> I have tested it now. But it seems like it was already applied. Otherwise=
- I=20
-> would have provided my Tested-by.
->=20
-> The only problem I have with the monitor mode is the missing beacons (and=
-=20
-> maybe more frames which I haven't yet identified).
->=20
-> Kind regards,
-> 	Sven
+Bo Jiao (3):
+  mt76: redefine mt76_for_each_q_rx to adapt mt7986 changes
+  mt76: mt7915: add support for MT7986
+  mt76: mt7915: introduce band_idx in mt7915_phy
 
-Hi Sven,
+Peter Chiu (1):
+  dt-bindings: net: wireless: mt76: document bindings for MT7986
 
-can you please test my latest patch?
-https://patchwork.kernel.org/project/linux-wireless/patch/f6ad709b1a64152b5=
-955e71b7eef9f9c4c7f127e.1641893305.git.lorenzo@kernel.org/
-This patch will automatically set/clear runtime-pm/deep-sleep adding/removi=
-ng a
-monitor vif.
+Ryder Lee (1):
+  mt76: mt7915: add Kconfig entry for MT7986
 
-Regards,
-Lorenzo
+ .../bindings/net/wireless/mediatek,mt76.yaml  |   29 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h     |    4 +-
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |    5 +
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  |    6 +-
+ .../net/wireless/mediatek/mt76/mt7915/Kconfig |   11 +
+ .../wireless/mediatek/mt76/mt7915/Makefile    |    1 +
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   |    8 +-
+ .../net/wireless/mediatek/mt76/mt7915/dma.c   |   28 +-
+ .../wireless/mediatek/mt76/mt7915/eeprom.c    |   96 +-
+ .../wireless/mediatek/mt76/mt7915/eeprom.h    |   13 +
+ .../net/wireless/mediatek/mt76/mt7915/init.c  |   54 +-
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   |  209 +--
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |   21 +-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |   81 +-
+ .../net/wireless/mediatek/mt76/mt7915/mmio.c  |  125 +-
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |   48 +
+ .../net/wireless/mediatek/mt76/mt7915/regs.h  |  276 +++-
+ .../net/wireless/mediatek/mt76/mt7915/soc.c   | 1131 +++++++++++++++++
+ .../wireless/mediatek/mt76/mt7915/testmode.c  |   35 +-
+ drivers/net/wireless/mediatek/mt76/testmode.c |    5 +-
+ 20 files changed, 1947 insertions(+), 239 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7915/soc.c
 
---jWgpeJokEZ4CKhaP
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+2.18.0
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYd1j0QAKCRA6cBh0uS2t
-rM6kAP9hz6s1QHJtutAXCkq6/VTbZpOGXDHIodyEESZicFRlIAD/WkjRu83dUNWg
-A2ZzAcHLlxpJGttwvqBE9SDQHoyfQw0=
-=Cn3t
------END PGP SIGNATURE-----
-
---jWgpeJokEZ4CKhaP--
