@@ -2,75 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58B3B48AFDC
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 15:48:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A812C48B021
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 16:01:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239755AbiAKOsA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jan 2022 09:48:00 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:43598 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238965AbiAKOr7 (ORCPT
+        id S243384AbiAKPBC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jan 2022 10:01:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35564 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243484AbiAKPA7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jan 2022 09:47:59 -0500
+        Tue, 11 Jan 2022 10:00:59 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97DEDC06173F
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 07:00:57 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FCE46167E
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 14:47:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BADC36AEB;
-        Tue, 11 Jan 2022 14:47:57 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 32545B81B35
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 15:00:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3DAC36AEB;
+        Tue, 11 Jan 2022 15:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641912478;
-        bh=JProxxHbLeb6RR/bZ7wwigyGt5oeXzxAhYMtPoVWmdo=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=EFUTng+wYtOqYRaRDIrsBj2a7K5caRMWKynQ+YUyYAT5XDAubt0kyq8JsAiNDLFr/
-         Nxa+YtDNPd/jYjkB1jAm0iTwes91PnBywsH5oku04iYPPPkfFHvcWBG1I430ViZYmU
-         so/i/4ERGiVo6rNiZE2ZH2SiF8+D/E43liJqWit1W0gzmTVpRhyzO7wuiKgGArF8rs
-         caymH9jwvDdBjGNyXDctw8hXyKnNLSyGtL+l5RoSk4cfyHIRuxZhJdy8RXx/ZrQ1h0
-         Op2a7tVB/IYeAWi2g0uBOwfObf3y6BtqZHVbwbep7oJQAuxxCN4w0AMX+EF+mG2pZq
-         3bvG3QRAZAUWg==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Reconfigure hardware rate for WCN6855 after vdev
- is
- started
+        s=k20201202; t=1641913254;
+        bh=P5vG9fHxqRv8zbrgTAGykm+5NFhHtGWyBu1F9lyR5fE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=RAKYbcpjqWOipnZQJCWSGyc5QYtMfIHh1J0KaA1yISsRZCQSPDLLbBA/Rvd2GcYfH
+         CojlNa8RDYbgBBnOwrEiUuZW/4wYQYB8s8R0+lgZAwglWVTM+xmxUPjS7DZO8L2g97
+         Ewlo6Sf5JTEElCv42VZdafYtBMijF2LfD9eEPIydhSCD7Qw5qTB/r1sUZh5SasThBZ
+         cmh86Dn5tpPUBCyRnZMqhcCkHnf50+LHrT66jTzD2iL8G9Z+UmLjAvpPcscUEoDJ2P
+         rafO8kEPgTRHO87VrgBWpJemBMsHOVnDqIe4Bs6g9nX1ZN5JqsTuxQmg2ua487uJSK
+         Wlx4QSDyzk36A==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211223103728.85022-1-quic_bqiang@quicinc.com>
-References: <20211223103728.85022-1-quic_bqiang@quicinc.com>
-To:     Baochen Qiang <quic_bqiang@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164191247608.9547.17482352957965001303.kvalo@kernel.org>
-Date:   Tue, 11 Jan 2022 14:47:57 +0000 (UTC)
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, sean.wang@mediatek.com,
+        deren.wu@mediatek.com
+Subject: Re: [PATCH 1/2] mt76: mt7921: fix a leftover race in runtime-pm
+References: <cover.1640897147.git.lorenzo@kernel.org>
+        <65e65daddbcec420392befa3b4f9a6aaaea21315.1640897147.git.lorenzo@kernel.org>
+        <87zgo2k1b2.fsf@tynnyri.adurom.net>
+        <94eb0f94-6d86-45b8-54e3-424be3395fc9@nbd.name>
+Date:   Tue, 11 Jan 2022 17:00:50 +0200
+In-Reply-To: <94eb0f94-6d86-45b8-54e3-424be3395fc9@nbd.name> (Felix Fietkau's
+        message of "Tue, 11 Jan 2022 11:54:03 +0100")
+Message-ID: <87wnj6tizh.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Baochen Qiang <quic_bqiang@quicinc.com> wrote:
+Felix Fietkau <nbd@nbd.name> writes:
 
-> There is an issue that WCN6855 tries to connect to an AP using
-> a hardware rate of 1Mb/s , even though the AP has announced
-> expected rates as [24, 36, 48, 54] in Probe Response frame.
-> 
-> The reason is that WCN6855 firmware clears hardware rate info
-> of management frames when vdev starts and uses 1Mb/s as default.
-> To solve it, reconfigure the rate after vdev is started.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-> 
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> On 2022-01-11 11:35, Kalle Valo wrote:
+>> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+>>
+>>> Fix a possible race in mt7921_pm_power_save_work() if rx/tx napi
+>>> schedules ps_work and we are currently accessing device register
+>>> on a different cpu.
+>>>
+>>> Fixes: 1d8efc741df8 ("mt76: mt7921: introduce Runtime PM support")
+>>> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>>> ---
+>>>  drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 8 ++++++++
+>>>  1 file changed, 8 insertions(+)
+>>>
+>>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+>>> index defef3496246..0744f6e42ba3 100644
+>>> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+>>> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+>>> @@ -1553,6 +1553,14 @@ void mt7921_pm_power_save_work(struct work_struct *work)
+>>>  	    dev->fw_assert)
+>>>  		goto out;
+>>>  +	if (mutex_is_locked(&dev->mt76.mutex))
+>>> +		/* if mt76 mutex is held we should not put the device
+>>> +		 * to sleep since we are currently accessing device
+>>> +		 * register map. We need to wait for the next power_save
+>>> +		 * trigger.
+>>> +		 */
+>>> +		goto out;
+>>
+>> This looks fishy to me. What protects the case when ps_work is run first
+>> and at the same time another cpu starts accessing the registers?
+>>
+>> Do note that I didn't check the code, so I might be missing something.
+> For atomic context there is a locked counter pm->wake.count which is
+> used to prevent the device from going to sleep. If the device is
+> sleeping already on irq/tx, it is woken up and the function is
+> rescheduled. The device is never put to sleep while the wake count is
+> non-zero.
+>
+> For non-atomic context, the mutex is always held. There is a wrapper
+> for acquiring and releasing the mutex, which cancels the work after
+> acquiring the mutex and reschedules the delayed work after updating
+> the last activity timestamp (which gets checked here after checking
+> the mutex).
+>
+> The corner case that needs this mutex check here is when the work was
+> scheduled again after processing some NAPI, tx or irq activity and the
+> work gets run all while another cpu is in the middle of a long running
+> non-atomic activity that holds the mutex.
+>
+> For that we really do need the simple mutex_is_locked check, since
+> actually holding the lock here would cause a deadlock with the
+> mutex_acquire wrapper.
 
-Failed to apply, please rebase.
-
-error: patch failed: drivers/net/wireless/ath/ath11k/core.h:587
-error: drivers/net/wireless/ath/ath11k/core.h: patch does not apply
-stg import: Diff does not apply cleanly
-
-Patch set to Changes Requested.
+Very good, thanks Felix and Lorenzo for explaining all this. I just
+always get wary when I see mutex_is_locked() being used.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211223103728.85022-1-quic_bqiang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
