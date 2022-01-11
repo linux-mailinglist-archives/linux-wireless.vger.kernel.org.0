@@ -2,94 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB4D148ABB8
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 11:53:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EFEB348ABBA
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jan 2022 11:54:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349341AbiAKKxR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jan 2022 05:53:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34918 "EHLO
+        id S238080AbiAKKyM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jan 2022 05:54:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237719AbiAKKxQ (ORCPT
+        with ESMTP id S238019AbiAKKyL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jan 2022 05:53:16 -0500
-Received: from dvalin.narfation.org (dvalin.narfation.org [IPv6:2a00:17d8:100::8b1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CA91C06173F
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 02:53:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1641898392;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=QTd0FTuJ1zu6nHPFav2wUHpH9/BRDgLmM7wW3sL7Nzg=;
-        b=oLaJMtpsujuEk1zQOAC161mq515hFcZJP0N4CTep3ceeV82BQPW7UOZULiv7/I3y9iqfg5
-        22iPeccgyDnpA/IhQ6rhgPJA1QUJ5aH5wJ3KFpB5obAXLZQDZx2ohrzjr4uoUFYKwQ96sE
-        eG0o/PRHkgrGQVFu3NLX9/CDwdtCac4=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     lorenzo.bianconi@redhat.com, sean.wang@mediatek.com, nbd@nbd.name,
-        jf@simonwunderlich.de, linux-wireless@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: Re: mt76: MT7921K monitor mode not working
-Date:   Tue, 11 Jan 2022 11:53:09 +0100
-Message-ID: <34944167.qDeGz8lmHr@ripper>
-In-Reply-To: <YbusBazb4GAC6YQl@lore-desk>
-References: <YapTmM3EztojTS9F@lore-desk--annotate> <12706913.cppxkphV4n@ripper> <YbusBazb4GAC6YQl@lore-desk>
+        Tue, 11 Jan 2022 05:54:11 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9993DC06173F
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jan 2022 02:54:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+        Cc:To:Subject:From:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=QfzM5wdLd0BHrMdguTSEuLuhAyxlju54ulDYhWkJ770=; b=uagkFkCBfkQq+2Cy5cPKD96xZj
+        KWbtyJrAXDyfB5t9xmSoMDF28aKw6uoKsYzEic11qu780USFMhTlnEB2t6XT1+McoNkV6wUxKPehP
+        0vM2fQjUXQCeOVZvtBfbNrrwTeXJXcAfqSkJ3g8TXgbSHa3OMbIzb4ivGUeBcyHqpLao=;
+Received: from p54ae97a7.dip0.t-ipconnect.de ([84.174.151.167] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1n7Emy-0006Yr-6Z; Tue, 11 Jan 2022 11:54:04 +0100
+Message-ID: <94eb0f94-6d86-45b8-54e3-424be3395fc9@nbd.name>
+Date:   Tue, 11 Jan 2022 11:54:03 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1995525.QtnH1V4xGb"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.4.1
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: Re: [PATCH 1/2] mt76: mt7921: fix a leftover race in runtime-pm
+To:     Kalle Valo <kvalo@kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sean.wang@mediatek.com, deren.wu@mediatek.com
+References: <cover.1640897147.git.lorenzo@kernel.org>
+ <65e65daddbcec420392befa3b4f9a6aaaea21315.1640897147.git.lorenzo@kernel.org>
+ <87zgo2k1b2.fsf@tynnyri.adurom.net>
+Content-Language: en-US
+In-Reply-To: <87zgo2k1b2.fsf@tynnyri.adurom.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart1995525.QtnH1V4xGb
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: lorenzo.bianconi@redhat.com, sean.wang@mediatek.com, nbd@nbd.name, jf@simonwunderlich.de, linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, Deren Wu <deren.wu@mediatek.com>
-Subject: Re: mt76: MT7921K monitor mode not working
-Date: Tue, 11 Jan 2022 11:53:09 +0100
-Message-ID: <34944167.qDeGz8lmHr@ripper>
-In-Reply-To: <YbusBazb4GAC6YQl@lore-desk>
-References: <YapTmM3EztojTS9F@lore-desk--annotate> <12706913.cppxkphV4n@ripper> <YbusBazb4GAC6YQl@lore-desk>
 
-Hi,
+On 2022-01-11 11:35, Kalle Valo wrote:
+> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+> 
+>> Fix a possible race in mt7921_pm_power_save_work() if rx/tx napi
+>> schedules ps_work and we are currently accessing device register
+>> on a different cpu.
+>>
+>> Fixes: 1d8efc741df8 ("mt76: mt7921: introduce Runtime PM support")
+>> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>> ---
+>>  drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 8 ++++++++
+>>  1 file changed, 8 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+>> index defef3496246..0744f6e42ba3 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+>> @@ -1553,6 +1553,14 @@ void mt7921_pm_power_save_work(struct work_struct *work)
+>>  	    dev->fw_assert)
+>>  		goto out;
+>>  
+>> +	if (mutex_is_locked(&dev->mt76.mutex))
+>> +		/* if mt76 mutex is held we should not put the device
+>> +		 * to sleep since we are currently accessing device
+>> +		 * register map. We need to wait for the next power_save
+>> +		 * trigger.
+>> +		 */
+>> +		goto out;
+> 
+> This looks fishy to me. What protects the case when ps_work is run first
+> and at the same time another cpu starts accessing the registers?
+> 
+> Do note that I didn't check the code, so I might be missing something.
+For atomic context there is a locked counter pm->wake.count which is 
+used to prevent the device from going to sleep. If the device is 
+sleeping already on irq/tx, it is woken up and the function is 
+rescheduled. The device is never put to sleep while the wake count is 
+non-zero.
 
-On Thursday, 16 December 2021 22:13:41 CET Lorenzo Bianconi wrote:
-> can you please try the patch below to see if it fixes the crash/hang in monitor
-> mode?
+For non-atomic context, the mutex is always held. There is a wrapper for 
+acquiring and releasing the mutex, which cancels the work after 
+acquiring the mutex and reschedules the delayed work after updating the 
+last activity timestamp (which gets checked here after checking the mutex).
 
-I have tested it now. But it seems like it was already applied. Otherwise I 
-would have provided my Tested-by.
+The corner case that needs this mutex check here is when the work was 
+scheduled again after processing some NAPI, tx or irq activity and the 
+work gets run all while another cpu is in the middle of a long running 
+non-atomic activity that holds the mutex.
 
-The only problem I have with the monitor mode is the missing beacons (and 
-maybe more frames which I haven't yet identified).
+For that we really do need the simple mutex_is_locked check, since 
+actually holding the lock here would cause a deadlock with the 
+mutex_acquire wrapper.
 
-Kind regards,
-	Sven
---nextPart1995525.QtnH1V4xGb
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmHdYZUACgkQXYcKB8Em
-e0bz6hAAvN8XCN4JT8UAOQ2mqUvc4un4LFdZErMfVY3E0PFPX68IdIw3xVlZZbVx
-4KHkCAO6lsfcQnYytpxljYCA+m0iT/A5WLObqwmNTevZ4pXW2IO2bK2Jpt8FaSCd
-8PZfw1YeTzHT8oryQXXpc+3T6X6i9/txs3IYxdA3aCW28bLugJzaJrV68JI73PPm
-lSsCUAlEiUtPmWmWmNuD0XIbPgVc7tCF72ghX3lMK6r39vx1EuKfzhePOh6FQBLg
-Hvjbyhs5xKU7nAYsaV5ZODmDl+lbXmxTlqfHqlNnRwnoxiD1CMwZJdWk1Sy0mfxB
-6vNCJJykja0isJwvTb0lkFP9emgPiDspzGf78dgPRSs+tHwNsVrdU2Rx7xYYGYU9
-pQVT4b1E1rot7z5u9fo9rQewVvsKC1ayLyijhjred0A2gZmtqEBp/wpxbcmAy6k+
-Ab66IjYWZF/iuuqjyCSinRJFeqQbqi96F5sX/qwutSXZPwZSMCt8R7+TenB9JrDq
-bQnsiIaDkmr5QZk+LuBKr07OX+zt4qtkygSHeHXZHsd+TrFn7WgmIJ/yanzNGauW
-Gf+AnT3uLwdfhuD7g34q+LustQrgfrjTNX+Hrs7VeV8uG1cM9Rhs4l5i19HE29JC
-fYCgmDPSX1k7xwJqKwxEszClcDjIKiIeQ42482hPsWTcT0emHso=
-=trR3
------END PGP SIGNATURE-----
-
---nextPart1995525.QtnH1V4xGb--
-
-
+- Felix
 
