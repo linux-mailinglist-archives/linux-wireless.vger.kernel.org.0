@@ -2,244 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 391BC48BF8F
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 09:13:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1FFF48BFA2
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 09:14:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351443AbiALIM6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jan 2022 03:12:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45852 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237993AbiALIMz (ORCPT
+        id S1351486AbiALIOC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jan 2022 03:14:02 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:40782 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237613AbiALIOB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jan 2022 03:12:55 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E82FC06173F
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jan 2022 00:12:55 -0800 (PST)
+        Wed, 12 Jan 2022 03:14:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 02636B81DD1
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jan 2022 08:12:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1341C36AEA;
-        Wed, 12 Jan 2022 08:12:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 269E161731;
+        Wed, 12 Jan 2022 08:14:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29354C36AEC;
+        Wed, 12 Jan 2022 08:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641975172;
-        bh=9V6RtsFUKjRrCFrKCuJtRAX6wFHlNf6qKs7wyOthQQ4=;
+        s=k20201202; t=1641975240;
+        bh=sVNfXg6usJJoEU9t5/A5dvhFxSpMOUHjwCWedxCuoVE=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=q10KBJ2my6pu0rpMxyHWJ+BqDFyocL3N6SweZNAJgw0eTf6X0pvMhegQt0VuxQQGp
-         0z+c4kWLTTAqzHXsuoi0YAQ8GHOobGpep+IgsqT1akpJShBwqUwJNXYoK/SEAEl03A
-         4LCJCHQASxacO4YAkJEdgbOQQLHlXLp3M/Sj+1GzwuSoaSA+9xkIZ2loJs6x44KM8s
-         nGAvkSoR+6lk36c5SLOLsbGUbN/qXiQ3ynW+pdGCB3hVbGCAFoiMGWg0Lfxcb/srGw
-         GnN+XBN/W9YdcxXoLdTA6KhvATXpRPRE2B0QTRFz8mwLtq1Y+7v/fnDy9v8Tj/zhRM
-         uamM9RskHuqWA==
+        b=dCMCCg6Wotk2I1eqDR1vIv9p6OqOLo4eDqR87Hgz+Qd9zUGdf6Y9+TuFBQOLT4+gh
+         HhP/aLd3SI5j2Ma/BiJWRCz2qcV7kWqFKPDd6B0EdFoxJrGqaeTvpRir0j8INXKlCp
+         2IJdJnp1Sy3Dj/0cwZXYOcG8X5R2qZuT0aPBmCVnRpeJSeYP0H91J/f0OGmPLM7ZHn
+         Kv2ToO00Gn54GXj7XuePdBs7ozKIr9bPxqU1WRftiXI5duKtSqZ3sffsch08qOA1yl
+         aI20WJGnvmgUMhMbbMcRz/noWpUPwkj1mGHNkb4X03zu6+7UG6c7kXUQLfb37z5gek
+         u8mOpyu+eHS0w==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3] ath11k: free peer for station when disconnect from AP
- for
- QCA6390/WCN6855
+Subject: Re: [PATCH] ath5k: fix OOB in ath5k_eeprom_read_pcal_info_5111
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211222070431.29595-1-quic_wgong@quicinc.com>
-References: <20211222070431.29595-1-quic_wgong@quicinc.com>
-To:     Wen Gong <quic_wgong@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <quic_wgong@quicinc.com>
+In-Reply-To: <YckvDdj3mtCkDRIt@a-10-27-26-18.dynapool.vpn.nyu.edu>
+References: <YckvDdj3mtCkDRIt@a-10-27-26-18.dynapool.vpn.nyu.edu>
+To:     Zekun Shen <bruceshenzk@gmail.com>
+Cc:     bruceshenzk@gmail.com, Jiri Slaby <jirislaby@kernel.org>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, brendandg@nyu.edu
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164197516971.14338.9522584257208946536.kvalo@kernel.org>
-Date:   Wed, 12 Jan 2022 08:12:51 +0000 (UTC)
+Message-ID: <164197523645.14338.13517394288080922684.kvalo@kernel.org>
+Date:   Wed, 12 Jan 2022 08:13:57 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <quic_wgong@quicinc.com> wrote:
+Zekun Shen <bruceshenzk@gmail.com> wrote:
 
-> Commit b4a0f54156ac ("ath11k: move peer delete after vdev stop of station
-> for QCA6390 and WCN6855") is to fix firmware crash by changing the WMI
-> command sequence, but actually skip all the peer delete operation, then
-> it lead commit 58595c9874c6 ("ath11k: Fixing dangling pointer issue upon
-> peer delete failure") not take effect, and then happened a use-after-free
-> warning from KASAN. because the peer->sta is not set to NULL and then used
-> later.
+> The bug was found during fuzzing. Stacktrace locates it in
+> ath5k_eeprom_convert_pcal_info_5111.
+> When none of the curve is selected in the loop, idx can go
+> up to AR5K_EEPROM_N_PD_CURVES. The line makes pd out of bound.
+> pd = &chinfo[pier].pd_curves[idx];
 > 
-> Change to only skip the WMI_PEER_DELETE_CMDID for QCA6390/WCN6855.
+> There are many OOB writes using pd later in the code. So I
+> added a sanity check for idx. Checks for other loops involving
+> AR5K_EEPROM_N_PD_CURVES are not needed as the loop index is not
+> used outside the loops.
 > 
-> log of user-after-free:
+> The patch is NOT tested with real device.
 > 
-> [  534.888665] BUG: KASAN: use-after-free in ath11k_dp_rx_update_peer_stats+0x912/0xc10 [ath11k]
-> [  534.888696] Read of size 8 at addr ffff8881396bb1b8 by task rtcwake/2860
+> The following is the fuzzing report
 > 
-> [  534.888705] CPU: 4 PID: 2860 Comm: rtcwake Kdump: loaded Tainted: G        W         5.15.0-wt-ath+ #523
-> [  534.888712] Hardware name: Intel(R) Client Systems NUC8i7HVK/NUC8i7HVB, BIOS HNKBLi70.86A.0067.2021.0528.1339 05/28/2021
-> [  534.888716] Call Trace:
-> [  534.888720]  <IRQ>
-> [  534.888726]  dump_stack_lvl+0x57/0x7d
-> [  534.888736]  print_address_description.constprop.0+0x1f/0x170
-> [  534.888745]  ? ath11k_dp_rx_update_peer_stats+0x912/0xc10 [ath11k]
-> [  534.888771]  kasan_report.cold+0x83/0xdf
-> [  534.888783]  ? ath11k_dp_rx_update_peer_stats+0x912/0xc10 [ath11k]
-> [  534.888810]  ath11k_dp_rx_update_peer_stats+0x912/0xc10 [ath11k]
-> [  534.888840]  ath11k_dp_rx_process_mon_status+0x529/0xa70 [ath11k]
-> [  534.888874]  ? ath11k_dp_rx_mon_status_bufs_replenish+0x3f0/0x3f0 [ath11k]
-> [  534.888897]  ? check_prev_add+0x20f0/0x20f0
-> [  534.888922]  ? __lock_acquire+0xb72/0x1870
-> [  534.888937]  ? find_held_lock+0x33/0x110
-> [  534.888954]  ath11k_dp_rx_process_mon_rings+0x297/0x520 [ath11k]
-> [  534.888981]  ? rcu_read_unlock+0x40/0x40
-> [  534.888990]  ? ath11k_dp_rx_pdev_alloc+0xd90/0xd90 [ath11k]
-> [  534.889026]  ath11k_dp_service_mon_ring+0x67/0xe0 [ath11k]
-> [  534.889053]  ? ath11k_dp_rx_process_mon_rings+0x520/0x520 [ath11k]
-> [  534.889075]  call_timer_fn+0x167/0x4a0
-> [  534.889084]  ? add_timer_on+0x3b0/0x3b0
-> [  534.889103]  ? lockdep_hardirqs_on_prepare.part.0+0x18c/0x370
-> [  534.889117]  __run_timers.part.0+0x539/0x8b0
-> [  534.889123]  ? ath11k_dp_rx_process_mon_rings+0x520/0x520 [ath11k]
-> [  534.889157]  ? call_timer_fn+0x4a0/0x4a0
-> [  534.889164]  ? mark_lock_irq+0x1c30/0x1c30
-> [  534.889173]  ? clockevents_program_event+0xdd/0x280
-> [  534.889189]  ? mark_held_locks+0xa5/0xe0
-> [  534.889203]  run_timer_softirq+0x97/0x180
-> [  534.889213]  __do_softirq+0x276/0x86a
-> [  534.889230]  __irq_exit_rcu+0x11c/0x180
-> [  534.889238]  irq_exit_rcu+0x5/0x20
-> [  534.889244]  sysvec_apic_timer_interrupt+0x8e/0xc0
-> [  534.889251]  </IRQ>
-> [  534.889254]  <TASK>
-> [  534.889259]  asm_sysvec_apic_timer_interrupt+0x12/0x20
-> [  534.889265] RIP: 0010:_raw_spin_unlock_irqrestore+0x38/0x70
-> [  534.889271] Code: 74 24 10 e8 ea c2 bf fd 48 89 ef e8 12 53 c0 fd 81 e3 00 02 00 00 75 25 9c 58 f6 c4 02 75 2d 48 85 db 74 01 fb bf 01 00 00 00 <e8> 13 a7 b5 fd 65 8b 05 cc d9 9c 5e 85 c0 74 0a 5b 5d c3 e8 a0 ee
-> [  534.889276] RSP: 0018:ffffc90002e5f880 EFLAGS: 00000206
-> [  534.889284] RAX: 0000000000000006 RBX: 0000000000000200 RCX: ffffffff9f256f10
-> [  534.889289] RDX: 0000000000000000 RSI: ffffffffa1c6e420 RDI: 0000000000000001
-> [  534.889293] RBP: ffff8881095e6200 R08: 0000000000000001 R09: ffffffffa40d2b8f
-> [  534.889298] R10: fffffbfff481a571 R11: 0000000000000001 R12: ffff8881095e6e68
-> [  534.889302] R13: ffffc90002e5f908 R14: 0000000000000246 R15: 0000000000000000
-> [  534.889316]  ? mark_lock+0xd0/0x14a0
-> [  534.889332]  klist_next+0x1d4/0x450
-> [  534.889340]  ? dpm_wait_for_subordinate+0x2d0/0x2d0
-> [  534.889350]  device_for_each_child+0xa8/0x140
-> [  534.889360]  ? device_remove_class_symlinks+0x1b0/0x1b0
-> [  534.889370]  ? __lock_release+0x4bd/0x9f0
-> [  534.889378]  ? dpm_suspend+0x26b/0x3f0
-> [  534.889390]  dpm_wait_for_subordinate+0x82/0x2d0
-> [  534.889400]  ? dpm_for_each_dev+0xa0/0xa0
-> [  534.889410]  ? dpm_suspend+0x233/0x3f0
-> [  534.889427]  __device_suspend+0xd4/0x10c0
-> [  534.889440]  ? wait_for_completion_io+0x270/0x270
-> [  534.889456]  ? async_suspend_late+0xe0/0xe0
-> [  534.889463]  ? async_schedule_node_domain+0x468/0x640
-> [  534.889482]  dpm_suspend+0x25a/0x3f0
-> [  534.889491]  ? dpm_suspend_end+0x1a0/0x1a0
-> [  534.889497]  ? ktime_get+0x214/0x2f0
-> [  534.889502]  ? lockdep_hardirqs_on+0x79/0x100
-> [  534.889509]  ? recalibrate_cpu_khz+0x10/0x10
-> [  534.889516]  ? ktime_get+0x119/0x2f0
-> [  534.889528]  dpm_suspend_start+0xab/0xc0
-> [  534.889538]  suspend_devices_and_enter+0x1ca/0x350
-> [  534.889546]  ? suspend_enter+0x850/0x850
-> [  534.889566]  enter_state+0x27c/0x3d7
-> [  534.889575]  pm_suspend.cold+0x42/0x189
-> [  534.889583]  state_store+0xab/0x160
-> [  534.889595]  ? sysfs_file_ops+0x160/0x160
-> [  534.889601]  kernfs_fop_write_iter+0x2b5/0x450
-> [  534.889615]  new_sync_write+0x36a/0x600
-> [  534.889625]  ? new_sync_read+0x600/0x600
-> [  534.889639]  ? rcu_read_unlock+0x40/0x40
-> [  534.889668]  vfs_write+0x619/0x910
-> [  534.889681]  ksys_write+0xf4/0x1d0
-> [  534.889689]  ? __ia32_sys_read+0xa0/0xa0
-> [  534.889699]  ? lockdep_hardirqs_on_prepare.part.0+0x18c/0x370
-> [  534.889707]  ? syscall_enter_from_user_mode+0x1d/0x50
-> [  534.889719]  do_syscall_64+0x3b/0x90
-> [  534.889725]  entry_SYSCALL_64_after_hwframe+0x44/0xae
-> [  534.889731] RIP: 0033:0x7f0b9bc931e7
-> [  534.889736] Code: 64 89 02 48 c7 c0 ff ff ff ff eb bb 0f 1f 80 00 00 00 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
-> [  534.889741] RSP: 002b:00007ffd9d34cc88 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-> [  534.889749] RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007f0b9bc931e7
-> [  534.889753] RDX: 0000000000000004 RSI: 0000561cd023c5f0 RDI: 0000000000000004
-> [  534.889757] RBP: 0000561cd023c5f0 R08: 0000000000000000 R09: 0000000000000004
-> [  534.889761] R10: 0000561ccef842a6 R11: 0000000000000246 R12: 0000000000000004
-> [  534.889765] R13: 0000561cd0239590 R14: 00007f0b9bd6f4a0 R15: 00007f0b9bd6e8a0
-> [  534.889789]  </TASK>
+> BUG: KASAN: slab-out-of-bounds in ath5k_eeprom_read_pcal_info_5111+0x126a/0x1390 [ath5k]
+> Write of size 1 at addr ffff8880174a4d60 by task modprobe/214
 > 
-> [  534.889796] Allocated by task 2711:
-> [  534.889800]  kasan_save_stack+0x1b/0x40
-> [  534.889805]  __kasan_kmalloc+0x7c/0x90
-> [  534.889810]  sta_info_alloc+0x98/0x1ef0 [mac80211]
-> [  534.889874]  ieee80211_prep_connection+0x30b/0x11e0 [mac80211]
-> [  534.889950]  ieee80211_mgd_auth+0x529/0xe00 [mac80211]
-> [  534.890024]  cfg80211_mlme_auth+0x332/0x6f0 [cfg80211]
-> [  534.890090]  nl80211_authenticate+0x839/0xcf0 [cfg80211]
-> [  534.890147]  genl_family_rcv_msg_doit+0x1f4/0x2f0
-> [  534.890154]  genl_rcv_msg+0x280/0x500
-> [  534.890160]  netlink_rcv_skb+0x11c/0x340
-> [  534.890165]  genl_rcv+0x1f/0x30
-> [  534.890170]  netlink_unicast+0x42b/0x700
-> [  534.890176]  netlink_sendmsg+0x71b/0xc60
-> [  534.890181]  sock_sendmsg+0xdf/0x110
-> [  534.890187]  ____sys_sendmsg+0x5c0/0x850
-> [  534.890192]  ___sys_sendmsg+0xe4/0x160
-> [  534.890197]  __sys_sendmsg+0xb2/0x140
-> [  534.890202]  do_syscall_64+0x3b/0x90
-> [  534.890207]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+> CPU: 0 PID: 214 Comm: modprobe Not tainted 5.6.0 #1
+> Call Trace:
+>  dump_stack+0x76/0xa0
+>  print_address_description.constprop.0+0x16/0x200
+>  ? ath5k_eeprom_read_pcal_info_5111+0x126a/0x1390 [ath5k]
+>  ? ath5k_eeprom_read_pcal_info_5111+0x126a/0x1390 [ath5k]
+>  __kasan_report.cold+0x37/0x7c
+>  ? ath5k_eeprom_read_pcal_info_5111+0x126a/0x1390 [ath5k]
+>  kasan_report+0xe/0x20
+>  ath5k_eeprom_read_pcal_info_5111+0x126a/0x1390 [ath5k]
+>  ? apic_timer_interrupt+0xa/0x20
+>  ? ath5k_eeprom_init_11a_pcal_freq+0xbc0/0xbc0 [ath5k]
+>  ? ath5k_pci_eeprom_read+0x228/0x3c0 [ath5k]
+>  ath5k_eeprom_init+0x2513/0x6290 [ath5k]
+>  ? ath5k_eeprom_init_11a_pcal_freq+0xbc0/0xbc0 [ath5k]
+>  ? usleep_range+0xb8/0x100
+>  ? apic_timer_interrupt+0xa/0x20
+>  ? ath5k_eeprom_read_pcal_info_2413+0x2f20/0x2f20 [ath5k]
+>  ath5k_hw_init+0xb60/0x1970 [ath5k]
+>  ath5k_init_ah+0x6fe/0x2530 [ath5k]
+>  ? kasprintf+0xa6/0xe0
+>  ? ath5k_stop+0x140/0x140 [ath5k]
+>  ? _dev_notice+0xf6/0xf6
+>  ? apic_timer_interrupt+0xa/0x20
+>  ath5k_pci_probe.cold+0x29a/0x3d6 [ath5k]
+>  ? ath5k_pci_eeprom_read+0x3c0/0x3c0 [ath5k]
+>  ? mutex_lock+0x89/0xd0
+>  ? ath5k_pci_eeprom_read+0x3c0/0x3c0 [ath5k]
+>  local_pci_probe+0xd3/0x160
+>  pci_device_probe+0x23f/0x3e0
+>  ? pci_device_remove+0x280/0x280
+>  ? pci_device_remove+0x280/0x280
+>  really_probe+0x209/0x5d0
 > 
-> [  534.890215] Freed by task 2825:
-> [  534.890218]  kasan_save_stack+0x1b/0x40
-> [  534.890223]  kasan_set_track+0x1c/0x30
-> [  534.890227]  kasan_set_free_info+0x20/0x30
-> [  534.890232]  __kasan_slab_free+0xce/0x100
-> [  534.890237]  slab_free_freelist_hook+0xf0/0x1a0
-> [  534.890242]  kfree+0xe5/0x370
-> [  534.890248]  __sta_info_flush+0x333/0x4b0 [mac80211]
-> [  534.890308]  ieee80211_set_disassoc+0x324/0xd20 [mac80211]
-> [  534.890382]  ieee80211_mgd_deauth+0x537/0xee0 [mac80211]
-> [  534.890472]  cfg80211_mlme_deauth+0x349/0x810 [cfg80211]
-> [  534.890526]  cfg80211_mlme_down+0x1ce/0x270 [cfg80211]
-> [  534.890578]  cfg80211_disconnect+0x4f5/0x7b0 [cfg80211]
-> [  534.890631]  cfg80211_leave+0x24/0x40 [cfg80211]
-> [  534.890677]  wiphy_suspend+0x23d/0x2f0 [cfg80211]
-> [  534.890723]  dpm_run_callback+0xf4/0x1b0
-> [  534.890728]  __device_suspend+0x648/0x10c0
-> [  534.890733]  async_suspend+0x16/0xe0
-> [  534.890737]  async_run_entry_fn+0x90/0x4f0
-> [  534.890741]  process_one_work+0x866/0x1490
-> [  534.890747]  worker_thread+0x596/0x1010
-> [  534.890751]  kthread+0x35d/0x420
-> [  534.890756]  ret_from_fork+0x22/0x30
-> 
-> [  534.890763] The buggy address belongs to the object at ffff8881396ba000
->                 which belongs to the cache kmalloc-8k of size 8192
-> [  534.890767] The buggy address is located 4536 bytes inside of
->                 8192-byte region [ffff8881396ba000, ffff8881396bc000)
-> [  534.890772] The buggy address belongs to the page:
-> [  534.890775] page:ffffea0004e5ae00 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1396b8
-> [  534.890780] head:ffffea0004e5ae00 order:3 compound_mapcount:0 compound_pincount:0
-> [  534.890784] flags: 0x200000000010200(slab|head|node=0|zone=2)
-> [  534.890791] raw: 0200000000010200 ffffea000562be08 ffffea0004b04c08 ffff88810004e340
-> [  534.890795] raw: 0000000000000000 0000000000010001 00000001ffffffff 0000000000000000
-> [  534.890798] page dumped because: kasan: bad access detected
-> 
-> [  534.890804] Memory state around the buggy address:
-> [  534.890807]  ffff8881396bb080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> [  534.890811]  ffff8881396bb100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> [  534.890814] >ffff8881396bb180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> [  534.890817]                                         ^
-> [  534.890821]  ffff8881396bb200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> [  534.890824]  ffff8881396bb280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> [  534.890827] ==================================================================
-> [  534.890830] Disabling lock debugging due to kernel taint
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-> 
-> Fixes: b4a0f54156ac ("ath11k: move peer delete after vdev stop of station for QCA6390 and WCN6855")
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> Reported-by: Brendan Dolan-Gavitt <brendandg@nyu.edu>
+> Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-212ad7cb7d75 ath11k: free peer for station when disconnect from AP for QCA6390/WCN6855
+564d4eceb97e ath5k: fix OOB in ath5k_eeprom_read_pcal_info_5111
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211222070431.29595-1-quic_wgong@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/YckvDdj3mtCkDRIt@a-10-27-26-18.dynapool.vpn.nyu.edu/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
