@@ -2,107 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD84748CA59
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 18:48:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37A2B48CA6E
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 18:54:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343984AbiALRs4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jan 2022 12:48:56 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:45578 "EHLO
+        id S1355824AbiALRyP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jan 2022 12:54:15 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:47570 "EHLO
         ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240668AbiALRsx (ORCPT
+        with ESMTP id S1355808AbiALRyP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jan 2022 12:48:53 -0500
+        Wed, 12 Jan 2022 12:54:15 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E36BCB81EA6;
-        Wed, 12 Jan 2022 17:48:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADA2C36AE5;
-        Wed, 12 Jan 2022 17:48:50 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3CA52B8202A;
+        Wed, 12 Jan 2022 17:54:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D3CC36AEA;
+        Wed, 12 Jan 2022 17:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642009730;
-        bh=v5HVJMOt7K5cfz9ChUmoP+h6WJ8BSd2gVzVjKi67/bs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=I5IBb8wMr1OFJJp1W4xiBKrGiLlzko0I4nZKxuwBG2kwloTU3de7Oz94htQwZBPr8
-         midFS13nAQX6Fs4UhOwPEDWTfK3m//xboWTelsPoUzvmjVnw9K46ZScJcMUUQytTur
-         7BunIoxoYHeHz3gAtPMyPmjMdrnivJ/PN5GYKIYXs6s6USAb1V/37faYc+sPS2afL5
-         CqFVDc8M5gI7eCI2dRDH7JnnKzHJTXdSGAokYiV0Zo58OAa8yhIaoDyWhDmGiNgESi
-         6OU0gIiFdHdDPRihZPjIdDbuzH9Rru5AYGe8XFWwDECAlPy1P1bWERHxc8HWk2dJEO
-         9TKEzmzEjOrAw==
-Received: by pali.im (Postfix)
-        id 2CEB5768; Wed, 12 Jan 2022 18:48:48 +0100 (CET)
-Date:   Wed, 12 Jan 2022 18:48:48 +0100
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v9 08/24] wfx: add bus_sdio.c
-Message-ID: <20220112174848.db5osolurllpc7du@pali>
-References: <20220111171424.862764-1-Jerome.Pouiller@silabs.com>
- <42104281.b1Mx7tgHyx@pc-42>
- <20220112114332.jadw527pe7r2j4vv@pali>
- <2680707.qJCEgCfB62@pc-42>
+        s=k20201202; t=1642010053;
+        bh=swqsQNuYek3FepMXDWC6pnHvlm5lcDio8s4og0woaT4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=tK7nzYOSWYMLAGjJa4S8Dab2Y2Pe8aQGAcjbqpeQVWJ1+Z3kybZcT5xX5mawcGK8U
+         KYtNn89YofUDy0rcTUBFyCAdHKrVXopzUDwIL0lsXx+qgviArh7PbCczBZi16T9umQ
+         QJyPRPEWtO+8ysHzIJfGFlhVItRmXDceneBOcwiuMayvW10xjVcriaUt0bfu3bT2Bb
+         xkZlAAMRVg4Jj3bXquop9lHqIpfk0k8+0W7eOQf6iXMupFPLVIACzYL4cwLPg64liZ
+         kSeyW3bqeN+aPc3W+YIo/QY+CnAaijLn/dgN/qJSTiXcO1Zif/EE982ZE/GHQ40zkC
+         sbxO0J/vKQY5A==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, evelyn.tsai@mediatek.com,
+        owen.peng@mediatek.com, devicetree@vger.kernel.org, robh@kernel.org
+Subject: [PATCH v2 0/6] introduce background radar support for mt7915 driver
+Date:   Wed, 12 Jan 2022 18:53:49 +0100
+Message-Id: <cover.1642009736.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2680707.qJCEgCfB62@pc-42>
-User-Agent: NeoMutt/20180716
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wednesday 12 January 2022 17:45:45 Jérôme Pouiller wrote:
-> On Wednesday 12 January 2022 12:43:32 CET Pali Rohár wrote:
-> > 
-> > On Wednesday 12 January 2022 12:18:58 Jérôme Pouiller wrote:
-> > > On Wednesday 12 January 2022 11:58:59 CET Pali Rohár wrote:
-> > > > On Tuesday 11 January 2022 18:14:08 Jerome Pouiller wrote:
-> > > > > +static const struct sdio_device_id wfx_sdio_ids[] = {
-> > > > > +     { SDIO_DEVICE(SDIO_VENDOR_ID_SILABS, SDIO_DEVICE_ID_SILABS_WF200) },
-> > > > > +     { },
-> > > > > +};
-> > > >
-> > > > Hello! Is this table still required?
-> > >
-> > > As far as I understand, if the driver does not provide an id_table, the
-> > > probe function won't be never called (see sdio_match_device()).
-> > >
-> > > Since, we rely on the device tree, we could replace SDIO_VENDOR_ID_SILABS
-> > > and SDIO_DEVICE_ID_SILABS_WF200 by SDIO_ANY_ID. However, it does not hurt
-> > > to add an extra filter here.
-> > 
-> > Now when this particular id is not required, I'm thinking if it is still
-> > required and it is a good idea to define these SDIO_VENDOR_ID_SILABS
-> > macros into kernel include files. As it would mean that other broken
-> > SDIO devices could define these bogus numbers too... And having them in
-> > common kernel includes files can cause issues... e.g. other developers
-> > could think that it is correct to use them as they are defined in common
-> > header files. But as these numbers are not reliable (other broken cards
-> > may have same ids as wf200) and their usage may cause issues in future.
-> 
-> In order to make SDIO_VENDOR_ID_SILABS less official, do you prefer to
-> define it in wfx/bus_sdio.c instead of mmc/sdio_ids.h?
-> 
-> Or even not defined at all like:
-> 
->     static const struct sdio_device_id wfx_sdio_ids[] = {
->          /* WF200 does not have official VID/PID */
->          { SDIO_DEVICE(0x0000, 0x1000) },
->          { },
->     };
+Introduce radar/CAC background detection support for mt7915 driver
+Background radar/CAC detection allows to avoid the CAC downtime
+switching on a different channel during CAC detection on the selected
+radar channel.
 
-This has advantage that it is explicitly visible that this device does
-not use any officially assigned ids.
+Changes since v1:
+- repost adding devicetree ml in cc
 
-> 
-> 
-> -- 
-> Jérôme Pouiller
-> 
-> 
+Lorenzo Bianconi (6):
+  mt76: mt7915: introduce mt7915_set_radar_background routine
+  mt76: mt7915: enable radar trigger on rdd2
+  mt76: mt7915: introduce rdd_monitor debugfs node
+  mt76: mt7915: report radar pattern if detected by rdd2
+  mt76: mt7915: enable radar background detection
+  dt-bindings:net:wireless:mediatek,mt76: add disable-radar-offchan
+
+ .../bindings/net/wireless/mediatek,mt76.yaml  |   9 ++
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |   1 +
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   |  55 +++++++++-
+ .../net/wireless/mediatek/mt76/mt7915/init.c  |  10 ++
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |  50 +++++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 100 +++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  23 ++++
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |   7 ++
+ 8 files changed, 253 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
+
