@@ -2,227 +2,186 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC27C48C106
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 10:33:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E6A648C10D
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 10:34:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352068AbiALJc6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jan 2022 04:32:58 -0500
-Received: from mail-dm6nam10on2074.outbound.protection.outlook.com ([40.107.93.74]:61545
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S238079AbiALJc5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jan 2022 04:32:57 -0500
+        id S1352077AbiALJeD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jan 2022 04:34:03 -0500
+Received: from mga07.intel.com ([134.134.136.100]:57455 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238079AbiALJeC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jan 2022 04:34:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1641980042; x=1673516042;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=goUtyr4hVPvYSr4jOvUQ3z9dc26EJbOcJI+6yVRYMCA=;
+  b=WgGu7JuLB/D6I/x2wrGssmoA28OkhiQxaT+kgrBFP4aLKncL6W/ZISgz
+   Aq/jyJWmVRS85d4XY6hrOFIezONQ9upSXzqGeLRbxPXRTZawW/k+AES7C
+   65KIDXAlFO8LCWbaEaK5XGhwszEas9CdemDsbugkG01m8c7pA1rqw2f8i
+   PFvs71cWpJ4T+aOMgd5jpOw5s/0VueQu6AYpZNkjvTBmmV8bYVgDETH3Q
+   RgcDCmOPzFFWeifgly0VltAIuE5Kf+ckz5GodD6wGwWrqEdIX3EEBXAuS
+   Hr6Uc7xO5MINTwKLCDioRSS/Rw9hXVIk729FGMJmV5LHz8mwY3pQ/+JkQ
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10224"; a="307049007"
+X-IronPort-AV: E=Sophos;i="5.88,282,1635231600"; 
+   d="scan'208";a="307049007"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2022 01:34:02 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,282,1635231600"; 
+   d="scan'208";a="529101250"
+Received: from fmsmsx606.amr.corp.intel.com ([10.18.126.86])
+  by orsmga008.jf.intel.com with ESMTP; 12 Jan 2022 01:34:01 -0800
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx606.amr.corp.intel.com (10.18.126.86) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Wed, 12 Jan 2022 01:34:01 -0800
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20 via Frontend Transport; Wed, 12 Jan 2022 01:34:01 -0800
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.43) by
+ edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2308.20; Wed, 12 Jan 2022 01:34:01 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ndgEfX4B8/h8fBqOH6vftkHxjIuuNxihHzxH4ul0YL/fHwJ3fRi3+z1jhpu/sbguBEwwuknP8G5bx2P7yi8AYhypYvtQ+BIgzWJon3udt2MgBQ8vI7ADu04ldHmWzmeucyd4uhvPnd93eDR3QZSDmKE4inmtA6zlxF2Dxu2rPPDS4Aig+DIowXXGTs0/Wg0miYr+AwbwSkYyrEJZN4Yo8pEi/4dJoauULWKMsq1MJG29lSEVrb9V3Va1fc7rtrDKqaKurGYib04+EfOMKI2D9z4o7pnc4aPBrymD5IZLEwPq3gENsArPexBPwn3KEtNY+0CXf6297Vwzf35y7BRGfQ==
+ b=UdVVjHweO8YggGU0wQIlfnlU+2G3hsOfZLkW+JgdYf+CxU0PwG3U2LIHWtxwNCFleIXX19+5ae8OgRuKMdWaEWxN7Wknqb9r7jbUcSfMFxK3L0Nxsfmgme4I7d0JPvTzmi3ETJtS6ZBt8M2lYfUFz37E8rLoqG26YXfRgmw3cgtCpLmKZR165FxgyEMiOfoTpEX7/Ci8wxJ4/kjILwgLYO0O86Fr7Z6W6h6VEPh21BQlv2PmD29mGukUYXqu1acY6bdM8f/uc+949JwWLWoMYRbf6FcoD2eSkUOffaQj6gdtSVN1KbYoxDWa27XSB26ZsBzn0YHyfXAzJCXax3Y0aA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tdYfW70J0kQKjUhVSeg+NOH7s+EzkLGichRdwoCbEUc=;
- b=FN+H5vwstqR0RJE81+06a79u+eeFlKOdQkP/QEYSoof5SgHMtZx61yQ+BEYmDwlRz6QkixDE/UYsDYWlJYAJCOQPW73CVKgLFjSuALlGFfhMPN4YaM7xV00hahYjjNDZm8mDF0eCUdmvLzcTYrmqokm/eiFFB0wM/aD+1fva9oq6E8lL/8ZxGR/UGfJz+I+by+zALlW1EsjK6dryofTuGLyq9lOzPs2jdF+Qzdl4v7nzsCGPt2DUhLUCkyRU/D58V6ARrjiMmTeOW6IuRPMfYxMMi+D2TQKoKXigZYnPPp53H5CUc33TRTo60fWKsSgUnKnC2unPdcqZjdqIS1Mqdw==
+ bh=goUtyr4hVPvYSr4jOvUQ3z9dc26EJbOcJI+6yVRYMCA=;
+ b=k62N7K2XV+ZrSoyuohXGIbRj9UO9NoZ8u2JLl7SlqiIpWRBUagHK/R9DysKiLLF67fKhPrz4UeIrpXPu0bXVYWDc3Dae0nzTu0qo1VGxKRZQNg1byaWgtvlFqJs6yaSzMnQQr/1Gw/eQ47Im1YU1Fyi+ZrVVNm64tKscBeevdTHBA3cp3RCYYLIVQm9nicS35iAgBJDpxHm6GBKVmzhSruPBIBmPHU8RWgSABdCV/r7mWV7Rw/P/1NLkvnIVnwFZDm/Yld73wcxfCLJROHiPDab0UOWojaPla7n2oV9YOjV0oEUV6I13wzbSHmpZYGt5avH9hny87JxZdwxXtTHJQQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tdYfW70J0kQKjUhVSeg+NOH7s+EzkLGichRdwoCbEUc=;
- b=ksZBOsu1hW0xxvZ9j4xzlaBdNSYYBUJOYKLdh7Be8d2+KFnlLfRa6hSkE1m0yakzeIz3Mz7FyF+NVB+Z8mk482vwTTpATi3lL3aZHpVRh4QYVMiK0nheuFMBMZAQKpQM+3mgCqCA+JxDxaFhjtmWRz9FSXqkG/LYbyVwkuqWP18=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=silabs.com;
-Received: from PH0PR11MB5657.namprd11.prod.outlook.com (2603:10b6:510:ee::19)
- by PH0PR11MB5577.namprd11.prod.outlook.com (2603:10b6:510:eb::15) with
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BYAPR11MB3207.namprd11.prod.outlook.com (2603:10b6:a03:7c::14)
+ by BYAPR11MB2981.namprd11.prod.outlook.com (2603:10b6:a03:83::33) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4867.9; Wed, 12 Jan
- 2022 09:32:52 +0000
-Received: from PH0PR11MB5657.namprd11.prod.outlook.com
- ([fe80::d031:da9e:71a:73e4]) by PH0PR11MB5657.namprd11.prod.outlook.com
- ([fe80::d031:da9e:71a:73e4%6]) with mapi id 15.20.4867.012; Wed, 12 Jan 2022
- 09:32:52 +0000
-From:   =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-mmc@vger.kernel.org,
-        Pali =?ISO-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v9 23/24] wfx: remove from the staging area
-Date:   Wed, 12 Jan 2022 10:32:41 +0100
-Message-ID: <65681266.04G08nq4u0@pc-42>
-Organization: Silicon Labs
-In-Reply-To: <874k69jsv1.fsf@tynnyri.adurom.net>
-References: <20220111171424.862764-1-Jerome.Pouiller@silabs.com> <20220111171424.862764-24-Jerome.Pouiller@silabs.com> <874k69jsv1.fsf@tynnyri.adurom.net>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-ClientProxiedBy: PR3P195CA0004.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:102:b6::9) To PH0PR11MB5657.namprd11.prod.outlook.com
- (2603:10b6:510:ee::19)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4888.10; Wed, 12 Jan
+ 2022 09:34:00 +0000
+Received: from BYAPR11MB3207.namprd11.prod.outlook.com
+ ([fe80::1459:60ef:a660:5fec]) by BYAPR11MB3207.namprd11.prod.outlook.com
+ ([fe80::1459:60ef:a660:5fec%4]) with mapi id 15.20.4867.012; Wed, 12 Jan 2022
+ 09:33:59 +0000
+From:   "Coelho, Luciano" <luciano.coelho@intel.com>
+To:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "lenb@kernel.org" <lenb@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: iwlwifi 0000:3a:00.0: Microcode SW error detected. Restarting
+ 0x2000000.
+Thread-Topic: iwlwifi 0000:3a:00.0: Microcode SW error detected. Restarting
+ 0x2000000.
+Thread-Index: AQHYB1Z1kfzr/0Efz0WQ7sMSiyR//KxfD8iAgAAIsQCAAAYOAIAAAdeA
+Date:   Wed, 12 Jan 2022 09:33:59 +0000
+Message-ID: <9644c62f580e30a2b7fc3d62b67db0b1e64872c7.camel@intel.com>
+References: <CAJvTdKm9PQrnyEG=b-8DbdnOHup8Ec6VqoKp3ZCQXwmvXU3FbA@mail.gmail.com>
+         <0bb2a3b794c19514ad30ecc0ca60d1d6e9e438b0.camel@sipsolutions.net>
+         <4c1089474bb5982aee82d58a9d300ca55e7e0c69.camel@intel.com>
+         <ab9e48ae8dad3187d206d46fc1d997245ecbc3ef.camel@sipsolutions.net>
+In-Reply-To: <ab9e48ae8dad3187d206d46fc1d997245ecbc3ef.camel@sipsolutions.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.42.2-1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 36066840-3322-4352-dc5b-08d9d5aea9d1
+x-ms-traffictypediagnostic: BYAPR11MB2981:EE_
+x-microsoft-antispam-prvs: <BYAPR11MB2981B460DDE5AA3E4FDD5E2590529@BYAPR11MB2981.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: DNRT8hhcBYaK2QtPM+c78i6h6O7S9qABByVFKlhQM2or1JcYPmUY7KV8TGn7Op3whBG9EqVx8qUpV8fVB196gTF5rQRUmeCPA/XknT/VoIM8PTJdbu98/C5AuFn5b9f4YtPMveFjNAbK7+Wws0HMw6xj96DRDY4CSIH5GkyYlVJTKVy1HOBa/JIxxRrXTjGdO86mL1mjUNhs7pUi1fjfDk+0zRRRzavirEIAFjL4DKp8fLMjxgTPuI+JBjHD7axOd1kPydZs0e7wXrZI/bP19/iMwh4tTCg3atiLgitnLVHiUwDIK5C+pn5JdPcUUbFO79XWQzhS18FRyndoI4CDuJDXNvWoRaNHxcPyxLLbY11QH8WNsjiXicdRRpATS1oyKIdclI5TH8r7Cw2im/7ZYra3ZxWXIQd2Cs/fLqrRAWZSRomEAGbmedAHztPOrr2qokfrdiS0tm21tkBl8v/EZl9zSY0ojrZrCcLK9H4Je5nd14cqtW42T++FoOgzsoBoyxp+PVH8Q2A8TVeGItw+cgyirNzgP+/tH9XWvSn+EEhLIx1llidsePtrG7R4R0gf/5TM2Nytf/7AW8GgqAFekbKRZm39jrsqABPSSjTO/nUMlOtF7Ub+2zGsPCw4q8pzK0H8yg5V1qSK3KMhH+mOs4gfeoMi3gy+fmgmRPnwC79eB6S+4cn0U4R80FpBYPHZtgJtnfxIBQ5n9C4UeJeGXQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3207.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(38070700005)(508600001)(36756003)(71200400001)(38100700002)(110136005)(83380400001)(5660300002)(122000001)(316002)(6512007)(6486002)(76116006)(91956017)(186003)(26005)(86362001)(4326008)(2616005)(66446008)(8676002)(8936002)(2906002)(66946007)(66556008)(66476007)(64756008)(6506007)(82960400001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RlU4OC9SV1VCbEpUVlBSNUtMTGxYVW1xYnhsTEx1RklaR0pBUTYwSllRLzBt?=
+ =?utf-8?B?UTZBditPMVVReXphdlJ1OWEyZjJobENOeDBMRWM4VlZEVXh2VFQ4Sm1LWkF6?=
+ =?utf-8?B?NXBPN3RGZzQzYWIrdmt4S28vcHhsMGRTaXpJME4xMzZOOVdkak1NWEpqdi9U?=
+ =?utf-8?B?NGJQVWtyeVRUV29aTStJZlVZUUdWeGc3SVNaR1NnekxQSG5meE9wZDc4b1ZG?=
+ =?utf-8?B?MlUycmVERjFSZ3hYOUcwWjhLU1ZsSzA3Qk5HWDRpMG1OWldjZi9icTBVYWhX?=
+ =?utf-8?B?c3VrMEtYL3lOa0FlUGlsUEJieXpDTlYzRk5xS1g1SDRycDRGb1N2S2J2WVV3?=
+ =?utf-8?B?ZGphZEt3UHdYUGIrNDVONkJvY1BoaU9lakxJWGJFWFZiV0Jsc2JRV2l4bkxJ?=
+ =?utf-8?B?a1k4K3Q2dW1UR0F5OFNnQ1pSUDd2aG0zd0lvZnN0MUJKbEh3S2NLTXBEUmJL?=
+ =?utf-8?B?ejVRdldjSGZrbGRaaWcrZEttcGc5a0p5Q3ZNVUxoT2ZOZ3ZEOVVnZmEySWRP?=
+ =?utf-8?B?Kzg1VmlDYUJ5dnlYVUhGRDR4YWRuRnVmTW9XeHM2TDA0b0U2WGhNNEFCTHNr?=
+ =?utf-8?B?UGcxUGM4OEdxWS8xTHNYTWZyUzRHVlZOOE5VWENEaFMzNlVqT2FYSCszaDRw?=
+ =?utf-8?B?UGZ0TmZlRDEwVXowMFZVR0hWVFE2d1dmVU04WWYvdktKWEZxbDNZMWVZMGZP?=
+ =?utf-8?B?NFlSL1FiTEYyMGxIdHR2Q0t0b09qeTluSVRrY2tLZy9XU3ZEN1N4Q3pTV3ZY?=
+ =?utf-8?B?MGpNVnZHYzZyaHF6c0wyajFKa1NmLzBtVXdPM1kyd3RRanlHSFlwMC8xZnBk?=
+ =?utf-8?B?czZTUUREVzNveEFiL0ZlenN5RnAxVWk5ZkJWajdpUWdUOUtoMkoxeGlZWmRa?=
+ =?utf-8?B?Ukg2dXV1ZE50U2NnUE03blBGTWZTQS9HS3dtd3lNc0U0TXJUc2Eyb1JEYXMz?=
+ =?utf-8?B?a0JncUYzS3NkSC8xUWxtVlNBdUlDU1FldnlEWHFrS2dKcGtma3NMdkgvZ05z?=
+ =?utf-8?B?TGpVa1YvbTI2S3U0VE1mbjVlN0NuVDJGY1ZiVVByQWZlTDMwNFFJUHhxWGVx?=
+ =?utf-8?B?Y2YrUlQwcjhydDFOVmU5dTV0dnNCdEFybWZlcG9CZWdZTjNiM0o2c1RnTkZW?=
+ =?utf-8?B?TmpWYWtiRVBaUDBJYW0yMEtBbU90RkgxRjd4aStEMkxlU3l3c2o4MVp5RU9x?=
+ =?utf-8?B?SkRrT21qL3ZmNWErd1dOVyswdUYzeFdZRmdNWGwrT0E0bkFiV1RHM3R0REsz?=
+ =?utf-8?B?UHAyMDMrN0FDZnB5RWE4ZUs1NDdtU1dzM0gzMUxleXdYZWtMMGJjTkZmUHl0?=
+ =?utf-8?B?NHp1akxyWDB0cDhURjFnOG5FcTZ3NGRNOTRnWVpXNjRBeThZZTJJRGp5TG5t?=
+ =?utf-8?B?K1pWSFVueEZQOGUvRVhFKzZtQmJ3RldoNU92M1Vza1hvbGNlUm1LcXdkbm9n?=
+ =?utf-8?B?ako2VlJCRjgzcm1PY3lxOUdrZFFJT3Fjd0VkREJwSXIrcStTTFU2Y25CbzdQ?=
+ =?utf-8?B?eGkvY09hMEpqWHpRemVZSCtBVzFiNE9JcW9SYTQ5cFN5Ulpab01OWldlVWVS?=
+ =?utf-8?B?YURKZVVnaFdlWkcwRnp0cGZ4Z1Irckk1YzNxR3NCbTgzNTlrY0RrSkwwVjFu?=
+ =?utf-8?B?QkJjSFFRc3NrSWdSK25IZS9CQXpNaGJwYUdxUXgzbDRQUmhnZWV2Ryt6QWRG?=
+ =?utf-8?B?cE1FZlcyWU9UdWZwaE5zMXZLejZrYlc2ZHBOQ1B4VzZvK3UvcG9MLzVjaGFO?=
+ =?utf-8?B?YWh5T25OSjVwZ3JtTTE3aDJxd1dGOElpWUJySTZPK3haVE9Ja2ZCZHBvUjNN?=
+ =?utf-8?B?b2pjSGlvL3R0b0ZFdzB2Y0NmcmJXMnhsTU1uZC9wNlQwTm81Q0VqOEswbjV6?=
+ =?utf-8?B?cm5rOCtOTW5hc1k4NytSVmxSL09UNHIvblU0Ky9YbGxJOWNhOGRKK3VpMWQy?=
+ =?utf-8?B?czFCVDZBSlRPajJFRXRSOTkxcEdLOUZvWjZ4VGZjTEdNQkc1S24wVGlyWDgz?=
+ =?utf-8?B?a1dEclk3ckxCSFpSMG1YMTBZU0VMTFV1T1MzNWpsMy8vVkJtazErdVhDdjA5?=
+ =?utf-8?B?RmFHWWp0dE04ZnVyWkJmVEJNMkpqWXc3dGt4d3B3OXRLNTNCMThOQnlrU1Fj?=
+ =?utf-8?B?WUFXd2RiaW12emhZODlWWGMwNnV0SHdJU2JiNVVWYTcwdjFhR0Jzd0syRkUv?=
+ =?utf-8?B?QmM2dGVFN2YvZlU5RXlmM1lWTEVERTB6ZzZkNGZEOTg1QThXaDNZbWxUUkpV?=
+ =?utf-8?Q?HfDqp+dqbVqBEpBDyuBTIrqC6zoicoZex1zjMtKgK4=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3700740373516F4CAAE39350CE71A139@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 568646f1-afa6-4286-5d6b-08d9d5ae8110
-X-MS-TrafficTypeDiagnostic: PH0PR11MB5577:EE_
-X-Microsoft-Antispam-PRVS: <PH0PR11MB557735AEC0D7454E5B3257E193529@PH0PR11MB5577.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: YJrVeRdc22Qg0Wq9u/HC0TAxjTakj+liAHSv6bbGoOWOYZj4ZCueOZFT2pzDCAUXYvCwZvDKGbWE+pMZa7kVY5xZvI47dh9Lup+Rgi0hNRYZ2whRnkQliLtThIRYYjeHnlwr3uaA4R1y0jGJlF6V6Bx0WSMfgUMCvkPTEl9/x2kQZVSwznrnNHBq8g16+weBysDRQy0THHoi3VGWnipjmAr6vvWXHAal0X5h0S0STNoGO7OROsZB/8x79fq+G9uTto+J1ATSmRQv88Uss7F52aqKrVMfdUSYOgWZH3ZYbKbfs82VS1B15bEzhBbo0KsPiigUYn2vdwvWbjVMqzUyZpPNpxeiIEghUFG4fEO8lWKCsjRRuKpTLNHAua919Oh7/6q+UKD+lk0UYtSQwtLBwNKHu7hX5HGiHyd3OlJ71/jBpZ/JjBbFQquPyBbBGc1+tbr5HvZtDEBiooelVxkFVWuXTkrsXAfoaAOQCA/vRcTiuN2uIFD4zpkBrgD2/3rWWmrSET5lsgpYK7osl1mFd5zdcpPlnqL6NnR2TYoeqvEs4N5BlhfYLlb8DWfkKZassUIJ25D7CklzXAA1e6KiayBEzX67WqLvSsFltFdR6raMYqxZUk2LKpVbPM+73NDvKDAg5fDJCpYMoUqw0QFpYBwZg8xOsCG0+gibUsAHUMjxI8XAQPBTKYc6Tf2V7X2UCLSKDkixb2CmwFgw2pPUvKhmTE7tJrvhNiURccPwJT4BdQoYGd8ksbTSTPbElfTxL6k6X7RVJVR0zoiYi1hb2vKgpqlPV1ayxTvT98npock=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5657.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(7916004)(366004)(186003)(7416002)(38100700002)(66556008)(2906002)(508600001)(9686003)(36916002)(5660300002)(8936002)(66476007)(6666004)(86362001)(54906003)(66574015)(83380400001)(33716001)(66946007)(6506007)(52116002)(8676002)(966005)(6512007)(4326008)(6916009)(316002)(6486002)(39026012);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?g88XobbKW64fWCE9AQsJ8bYt5H+c3tgi1uUbcso84jvdsHbpSSWxPe/7mT?=
- =?iso-8859-1?Q?MFxf+RJ+usFlZcGQqR2rWxALwpjz8IyKGx8BkQRbF0q7XAFDWFG5tVpVsK?=
- =?iso-8859-1?Q?JiWwpINlRGeJQVcl++fmgtmcYv+hT70Y25m27OSy+INkkARftqHKxrIzT6?=
- =?iso-8859-1?Q?NqBA3s0W3cot85z/AV8l4RMlYd8CXopVDc/TdA0xHqiqOgbytQSnDvS+GZ?=
- =?iso-8859-1?Q?gV2K6c9+mtclJIyScsuSUbxp72WV8ly4FOzl0BnV5r2yIC5cgiIHHXGdc4?=
- =?iso-8859-1?Q?eTLZZVeiyYcg1E3eyXjtx54M4GJ1AOBY2iHt0JTD05Hd3bgY9xLgBOqUFD?=
- =?iso-8859-1?Q?oghSO9UdZt7U9NsK9o6ig+7c6RXYKggk2GdRrfpD8ZtCzZl2kCenwmsdVX?=
- =?iso-8859-1?Q?GfQRRZ+QbuBgmztyqv+6HpDhtHmVpdm2rELtwydoDOxdI1vgUXsIsJ+iMA?=
- =?iso-8859-1?Q?gKeQyIXImsblHixra8Juvz2qwKoGGsJB37zE4Ft+R55FP/fg9a1c3Dohy6?=
- =?iso-8859-1?Q?FacvU2BqbehkikvMGJFkgt/HGYrAbm+Fs//uxNhGDMZmutrGhk+ZPMUWOP?=
- =?iso-8859-1?Q?dg+YHTlk43LzlJZXI5/x0gTIt5R59OTGrSOwRwAGWnipwauNgSMKWO+snA?=
- =?iso-8859-1?Q?Gute8UXEU2+ugdOdMhE2ea6EDw3X8qoxk0Wo+3UB5Cv3oQWiAOp5ofqSfF?=
- =?iso-8859-1?Q?4kDXirscoXNFrCc/Rtb2Flf1wuRc11/2pmzaAL9miwWGHuHfxmiA+1hFjH?=
- =?iso-8859-1?Q?xXbGFPTD8NZMyk4B01dI0v5TkGOiF/FePTIws607vhltXG9L4yv1BIkjjj?=
- =?iso-8859-1?Q?4QlhNjCFWk7OoNz1euY9amalu7k6yfA6bKkE25XQz6u8GanufmfZ7ouKV+?=
- =?iso-8859-1?Q?AWdMCKr1Qqhygz+yybyPxxMiasEipBsZvvUo7kAMm0K12hyGQjGJQfzrIb?=
- =?iso-8859-1?Q?W12JP1EkcOgyypl6GIw4HWyPTCLYq0jRL31EV79gngq18L9NvF0Echv3it?=
- =?iso-8859-1?Q?EnOxiknumFJFdqJ34qpEhJZq7+VNlxRh/kQL9e2b8eFCPxDIsaCvT6Q3D5?=
- =?iso-8859-1?Q?2AVZ4AQJCg19TTxBNuwon237ydlbvZG0JvbNnqtA9aIGepmEiEoZbsoN55?=
- =?iso-8859-1?Q?jQD1T11WpHcs3f7SOta3eK2DlXvF7a2hdOzGcmyPdCCDG6MjnMv1s8Fp6K?=
- =?iso-8859-1?Q?rjvJKBs1JCZV6vcSdvbXX368VpFaejbAdUOcH8H5GdTnodVuMxeySR2OdL?=
- =?iso-8859-1?Q?kGJREb396zP8K6uTJh2obKk2dZJWYtbrmk923YSNT6chUSLX0g7FxP2Kl5?=
- =?iso-8859-1?Q?+F8IXIJGrLAnNafe4rFLUHi9GMBFSE62SDnf+6Gij23gIefTpZoqFeL01A?=
- =?iso-8859-1?Q?Wtc3tc9quELA9e8JtmUPV3T5PxMa1TC1gp9YVdCbqjrBJYLdPnzM1R1QNy?=
- =?iso-8859-1?Q?KfvPWt+lHi0h7qtCJz7qEKHKmWPjpTEBQxfT6CQIWb8QcfDICgDlmH/XsC?=
- =?iso-8859-1?Q?54EyQkUn3syAr0tBrolggIkzAt/VORtCsRCxcjmOETRjtO+eQ96M1Iip2l?=
- =?iso-8859-1?Q?gKYbnVNTEh4X4bNfcUUruTDMnnXfy/PKECudGtNHM3NAfJq36dR+yUgsNr?=
- =?iso-8859-1?Q?ltTKq0l2rzYK9pWXjHTRTbObRQ9K+70RDoWkG/pgw/PBE3V1jPhpyHIjM8?=
- =?iso-8859-1?Q?kBYixo3YJUoPPJDL0r/x2pg3sVe7w5RAlZ9e3KEPKUR779M8phfdjWAy/2?=
- =?iso-8859-1?Q?184dAqMCXtYQdGhozLDYyneok=3D?=
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 568646f1-afa6-4286-5d6b-08d9d5ae8110
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5657.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2022 09:32:52.0226
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3207.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36066840-3322-4352-dc5b-08d9d5aea9d1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jan 2022 09:33:59.8202
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9ASOYozi2ldoQuKKnja+CARYpZLmgtt7iOjOQz+8KfDgoAb9a3R/IxurTr6kJO3zihHA10So6Lj24jQj3SIOMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5577
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: HNJyXw9v2YYbmdmOCOFs+Nm94GwjduUcvzKTsNWpyP9tjoVc7fsfyiNtpGL4jwk1+u0iGfiKFaGq1H2repPyLN0DIpfw/n54ddd9sDyOEqs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB2981
+X-OriginatorOrg: intel.com
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wednesday 12 January 2022 08:49:54 CET Kalle Valo wrote:
-> Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
->=20
-> > From: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
-> >
-> > Signed-off-by: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
-> > ---
-> >  .../bindings/net/wireless/silabs,wfx.yaml     | 125 ---
-> >  drivers/staging/wfx/Kconfig                   |   8 -
-> >  drivers/staging/wfx/Makefile                  |  25 -
-> >  drivers/staging/wfx/bh.c                      | 330 -------
-> >  drivers/staging/wfx/bh.h                      |  33 -
-> >  drivers/staging/wfx/bus.h                     |  38 -
-> >  drivers/staging/wfx/bus_sdio.c                | 272 ------
-> >  drivers/staging/wfx/bus_spi.c                 | 271 ------
-> >  drivers/staging/wfx/data_rx.c                 |  94 --
-> >  drivers/staging/wfx/data_rx.h                 |  18 -
-> >  drivers/staging/wfx/data_tx.c                 | 596 -------------
-> >  drivers/staging/wfx/data_tx.h                 |  68 --
-> >  drivers/staging/wfx/debug.c                   | 365 --------
-> >  drivers/staging/wfx/debug.h                   |  19 -
-> >  drivers/staging/wfx/fwio.c                    | 405 ---------
-> >  drivers/staging/wfx/fwio.h                    |  15 -
-> >  drivers/staging/wfx/hif_api_cmd.h             | 555 ------------
-> >  drivers/staging/wfx/hif_api_general.h         | 262 ------
-> >  drivers/staging/wfx/hif_api_mib.h             | 346 --------
-> >  drivers/staging/wfx/hif_rx.c                  | 416 ---------
-> >  drivers/staging/wfx/hif_rx.h                  |  17 -
-> >  drivers/staging/wfx/hif_tx.c                  | 513 -----------
-> >  drivers/staging/wfx/hif_tx.h                  |  60 --
-> >  drivers/staging/wfx/hif_tx_mib.c              | 324 -------
-> >  drivers/staging/wfx/hif_tx_mib.h              |  49 --
-> >  drivers/staging/wfx/hwio.c                    | 352 --------
-> >  drivers/staging/wfx/hwio.h                    |  75 --
-> >  drivers/staging/wfx/key.c                     | 241 -----
-> >  drivers/staging/wfx/key.h                     |  20 -
-> >  drivers/staging/wfx/main.c                    | 506 -----------
-> >  drivers/staging/wfx/main.h                    |  43 -
-> >  drivers/staging/wfx/queue.c                   | 307 -------
-> >  drivers/staging/wfx/queue.h                   |  45 -
-> >  drivers/staging/wfx/scan.c                    | 149 ----
-> >  drivers/staging/wfx/scan.h                    |  22 -
-> >  drivers/staging/wfx/sta.c                     | 833=20
-------------------
-> >  drivers/staging/wfx/sta.h                     |  73 --
-> >  drivers/staging/wfx/traces.h                  | 501 -----------
-> >  drivers/staging/wfx/wfx.h                     | 164 ----
-> >  39 files changed, 8555 deletions(-)
-> >  delete mode 100644 drivers/staging/wfx/Documentation/devicetree/
-bindings/net/wireless/silabs,wfx.yaml
-> >  delete mode 100644 drivers/staging/wfx/Kconfig
-> >  delete mode 100644 drivers/staging/wfx/Makefile
-> >  delete mode 100644 drivers/staging/wfx/bh.c
-> >  delete mode 100644 drivers/staging/wfx/bh.h
-> >  delete mode 100644 drivers/staging/wfx/bus.h
-> >  delete mode 100644 drivers/staging/wfx/bus_sdio.c
-> >  delete mode 100644 drivers/staging/wfx/bus_spi.c
-> >  delete mode 100644 drivers/staging/wfx/data_rx.c
-> >  delete mode 100644 drivers/staging/wfx/data_rx.h
-> >  delete mode 100644 drivers/staging/wfx/data_tx.c
-> >  delete mode 100644 drivers/staging/wfx/data_tx.h
-> >  delete mode 100644 drivers/staging/wfx/debug.c
-> >  delete mode 100644 drivers/staging/wfx/debug.h
-> >  delete mode 100644 drivers/staging/wfx/fwio.c
-> >  delete mode 100644 drivers/staging/wfx/fwio.h
-> >  delete mode 100644 drivers/staging/wfx/hif_api_cmd.h
-> >  delete mode 100644 drivers/staging/wfx/hif_api_general.h
-> >  delete mode 100644 drivers/staging/wfx/hif_api_mib.h
-> >  delete mode 100644 drivers/staging/wfx/hif_rx.c
-> >  delete mode 100644 drivers/staging/wfx/hif_rx.h
-> >  delete mode 100644 drivers/staging/wfx/hif_tx.c
-> >  delete mode 100644 drivers/staging/wfx/hif_tx.h
-> >  delete mode 100644 drivers/staging/wfx/hif_tx_mib.c
-> >  delete mode 100644 drivers/staging/wfx/hif_tx_mib.h
-> >  delete mode 100644 drivers/staging/wfx/hwio.c
-> >  delete mode 100644 drivers/staging/wfx/hwio.h
-> >  delete mode 100644 drivers/staging/wfx/key.c
-> >  delete mode 100644 drivers/staging/wfx/key.h
-> >  delete mode 100644 drivers/staging/wfx/main.c
-> >  delete mode 100644 drivers/staging/wfx/main.h
-> >  delete mode 100644 drivers/staging/wfx/queue.c
-> >  delete mode 100644 drivers/staging/wfx/queue.h
-> >  delete mode 100644 drivers/staging/wfx/scan.c
-> >  delete mode 100644 drivers/staging/wfx/scan.h
-> >  delete mode 100644 drivers/staging/wfx/sta.c
-> >  delete mode 100644 drivers/staging/wfx/sta.h
-> >  delete mode 100644 drivers/staging/wfx/traces.h
-> >  delete mode 100644 drivers/staging/wfx/wfx.h
->=20
-> I'm not sure what's your plan here, but with staging wireless drivers
-> there's usually a simple simple move (git mv) of the driver from
-> drivers/staging to drivers/net/wireless. An example here:
->=20
-> https://git.kernel.org/linus/5625f965d764
->=20
-> What you seem to do here is that you add a new driver to
-> drivers/net/wireless and then remove the old driver from
-> drivers/staging. And I'm guessing these two drivers are not identical
-> and have differences?
-
-Until v7, I have more or less kept in sync this PR and the staging tree.=20
-I have been a bit lazy from the v8.
-
-However, I still have the patches in my local tree. I am going to
-clean-up them and send them to staging.
-
---=20
-J=E9r=F4me Pouiller
-
-
+T24gV2VkLCAyMDIyLTAxLTEyIGF0IDEwOjI3ICswMTAwLCBKb2hhbm5lcyBCZXJnIHdyb3RlOg0K
+PiA+IA0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZp
+L212bS9mdy5jDQo+ID4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZpL212bS9m
+dy5jDQo+ID4gaW5kZXggODYzZmVjMTUwZTUzLi5mMTM4MjUxODUwOTQgMTAwNjQ0DQo+ID4gLS0t
+IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9tdm0vZncuYw0KPiA+ICsrKyBi
+L2RyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvbXZtL2Z3LmMNCj4gPiBAQCAtODM0
+LDYgKzgzNCw5IEBAIHN0YXRpYyBpbnQgaXdsX212bV9zYXJfZ2VvX2luaXQoc3RydWN0IGl3bF9t
+dm0NCj4gPiAqbXZtKQ0KPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoG9mZnNldG9mKHN0cnVjdA0KPiA+IGl3bF9nZW9fdHhfcG93ZXJfcHJvZmlsZXNfY21kX3Y0
+LCBvcHMpICE9DQo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+b2Zmc2V0b2Yoc3RydWN0DQo+ID4gaXdsX2dlb190eF9wb3dlcl9wcm9maWxlc19jbWRfdjUsIG9w
+cykpOw0KPiA+IMKgDQo+ID4gKyAgICAgICBpZiAoIWl3bF9zYXJfZ2VvX3N1cHBvcnQoJm12bS0+
+ZndydCkpDQo+ID4gKyAgICAgICAgICAgICAgIHJldHVybiAtRU9QTk9UU1VQUDsNCj4gPiArDQo+
+ID4gwqDCoMKgwqDCoMKgwqDCoC8qIHRoZSBvcHMgZmllbGQgaXMgYXQgdGhlIHNhbWUgc3BvdCBm
+b3IgYWxsIHZlcnNpb25zLCBzbw0KPiA+IHNldCBpbiB2MSAqLw0KPiA+IMKgwqDCoMKgwqDCoMKg
+wqBjbWQudjEub3BzID0gY3B1X3RvX2xlMzIoSVdMX1BFUl9DSEFJTl9PRkZTRVRfU0VUX1RBQkxF
+Uyk7DQo+IA0KPiBJIHdhcyBnb2luZyB0byBzYXkgaXQgc2hvdWxkIHByb2JhYmx5IHJldHVybiAw
+LCBidXQgdGhlIGNhbGxlciBsb29rcw0KPiBhDQo+IGJpdCBmaXNoeSB0b28/DQo+IA0KPiDCoMKg
+wqDCoMKgwqDCoMKgcmV0ID0gaXdsX212bV9zYXJfaW5pdChtdm0pOw0KPiDCoMKgwqDCoMKgwqDC
+oMKgaWYgKHJldCA9PSAwKQ0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldCA9
+IGl3bF9tdm1fc2FyX2dlb19pbml0KG12bSk7DQo+IMKgwqDCoMKgwqDCoMKgwqBlbHNlIGlmIChy
+ZXQgPCAwKQ0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGdvdG8gZXJyb3I7DQo+
+IA0KPiDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gaXdsX212bV9zZ29tX2luaXQobXZtKTsNCj4gDQo+
+IHNob3VsZCB0aGF0ICJlbHNlIiBiZSByZW1vdmVkPw0KDQpZZWFoLCBJIG5vdGljZWQgdGhlIHNh
+bWUgdGhpbmcgd2hlbiBJIGNoZWNrZWQgdGhlIHJldHVybiB2YWx1ZS4uLiBJDQpkb24ndCB0aGlu
+ayB3ZSB3YW50IHRvIGFib3J0IGV2ZXJ5dGhpbmcgaWYgU0FSIEdFTyBpbml0IGZhaWxlZCwgc28N
+Cm1heWJlIHdlIHNob3VsZCBqdXN0IHJlbW92ZSB0aGUgcmV0dXJuIHZhbHVlIGZyb20gdGhlIGZ1
+bmN0aW9uPw0KDQotLQ0KQ2hlZXJzLA0KTHVjYS4NCg==
