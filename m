@@ -2,72 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B46F48BF81
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 09:07:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A62948BF83
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 09:07:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351404AbiALIHC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jan 2022 03:07:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44512 "EHLO
+        id S1351407AbiALIHX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jan 2022 03:07:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351406AbiALIHA (ORCPT
+        with ESMTP id S1348682AbiALIHW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jan 2022 03:07:00 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90173C06173F
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jan 2022 00:07:00 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EF0BF6130D
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jan 2022 08:06:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42148C36AE9;
-        Wed, 12 Jan 2022 08:06:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641974819;
-        bh=4tO9NzgmMk/Plk8GSck3d0toWnZ2wKiRlJW3h+gPbp4=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Sb/6m0A9eixBUYaCEL7Bsn2lzkE8pDTZv5VCu8fSk0NfUz6GNzz5j5Z2n+s1kv6t8
-         vtSw/+H8sUdC0ZfnGvFqnp0GUoR+GFaVYSlCVxofaBEZ2H+cC5BT2Ahu8za0QTvhUa
-         bgtmp2ugee+MDp4zyin9Pgi+4okuc9MN7v200h4uzWs8FPZSEeqNqgBpYABsz/o8rx
-         sHI6PPM2rb+fwxml+++PHt/VnsVDP1/8PaWQtZLE0MAafIrtqVoItX9n6Ajs4quH27
-         48xjOafd6f1zhewMY8VwoEAYjKJYIX0XgTZROBgWXN1PhSmBdUG3Qsx7KDJIlzEe8l
-         liBOYfvzEbBcw==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 12 Jan 2022 03:07:22 -0500
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D1A5C06173F;
+        Wed, 12 Jan 2022 00:07:22 -0800 (PST)
+Received: by mail-qk1-x735.google.com with SMTP id 69so1661077qkd.6;
+        Wed, 12 Jan 2022 00:07:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=IE25JwKoO2q8r95KJT5gBsSFBH3hqM0jC6hp4mWm8iI=;
+        b=JHtrXXpJbeP5IbdNrgjk2aRqXhEqJQigahDy3KWYBpc37DugNsgz0vwF+PUoS/jRkE
+         kTmT0XfLlTfKGOndOZsnj6+eVhGfOVzdDyYgHK/qqJQdmDY6DGXMyXMxcPKy4xVDA8P4
+         tfa2n5texubPoyjEoTTc3DEmrY0O3xghI+TVC57bdNmRH1wk/HHSKZt329nclrN3Mjhm
+         7hh2agsKnJGLMkv7TBiGoCkuHXYQXW6tqSKHjmZrFzKdiRI+ExWiVuQFhFbh0KnZFJZG
+         xGFIO9VBMmvXaLp/YQkShTqAE3/mXo5I+IhzPaRaAuZSXkhbEJoNMLbkYdT7DTHeH/Ve
+         Bntg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=IE25JwKoO2q8r95KJT5gBsSFBH3hqM0jC6hp4mWm8iI=;
+        b=U8jM8mL8/LaIVdUrPGl9VwrIIkBq+kyqJydgSMbq5a+knBFPsYSRziN91RSKQl2yNY
+         H4JFkcOX9o/9sXpOhMi1YZdwZJDIUxwbPVn6ElQg30LCkPRfeWPNyVXhGYr6Yqmx13PP
+         67/A2VGoCC0A0oVH2Fop0F9g+HJPtihR7KToqVnZcLYZMsgEMUC7eM6bGGzQtfNttmvz
+         +JEB+CeXJzRn/t+MTJR0byz8leLa9+3mkgoYxXTn1gdwAy9sdy5MomPSMTF1E94WQpRP
+         PW/M63b6BuqXZhE32csQoPElWNr5qPJ/XPitQclTYdweVnLFsJhMNoxKEu+8CXkirl69
+         1AzA==
+X-Gm-Message-State: AOAM533VY4pNoqnc57st5gIsIPIv/qT0ZLqAd04ninLYz4e0hxvcBI2P
+        4iMT/D4O38xJ5lbTfY5KesQ=
+X-Google-Smtp-Source: ABdhPJyxuDEsBm+JSaMsCoS7OA/xuIIXyEE5InMCpN4kDB2XR3kYa+7uafF3NHnpkmvQBTZgI0p+1Q==
+X-Received: by 2002:a05:620a:a50:: with SMTP id j16mr4038851qka.337.1641974841468;
+        Wed, 12 Jan 2022 00:07:21 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id c3sm6005417qte.42.2022.01.12.00.07.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Jan 2022 00:07:21 -0800 (PST)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: chi.minghao@zte.com.cn
+To:     kvalo@kernel.org
+Cc:     davem@davemloft.net, kuba@kernel.org,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>, CGEL ZTE <cgel.zte@gmail.com>
+Subject: [PATCH] drivers/net/wireless: remove redundant ret variable
+Date:   Wed, 12 Jan 2022 08:07:15 +0000
+Message-Id: <20220112080715.667254-1-chi.minghao@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 2/2] ath11k: add LDPC FEC type in 802.11 radiotap header
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <1638294648-844-3-git-send-email-quic_ppranees@quicinc.com>
-References: <1638294648-844-3-git-send-email-quic_ppranees@quicinc.com>
-To:     P Praneesh <quic_ppranees@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>,
-        P Praneesh <quic_ppranees@quicinc.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164197478449.14338.8479462708097638703.kvalo@kernel.org>
-Date:   Wed, 12 Jan 2022 08:06:58 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-P Praneesh <quic_ppranees@quicinc.com> wrote:
+From: Minghao Chi <chi.minghao@zte.com.cn>
 
-> LDPC is one the FEC type advertised in msdu_start info2 for HT packet
-> type. Hence, add hardware specific callback for fetching LDPC
-> support from msdu start and enable RX_ENC_FLAG_LDPC flag while passing
-> rx status to mac80211.
-> 
-> Tested-on: IPQ8074 WLAN.HK.2.4.0.1-01467-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Return value directly instead of taking this in another redundant
+variable.
 
-Patch applied to ath-next branch of ath.git, thanks.
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+Signed-off-by: CGEL ZTE <cgel.zte@gmail.com>
+---
+ drivers/net/wireless/marvell/libertas/cfg.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-b3febdccde3e ath11k: add LDPC FEC type in 802.11 radiotap header
-
+diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
+index 4e3de684928b..f160c258805e 100644
+--- a/drivers/net/wireless/marvell/libertas/cfg.c
++++ b/drivers/net/wireless/marvell/libertas/cfg.c
+@@ -854,16 +854,13 @@ void lbs_send_mic_failureevent(struct lbs_private *priv, u32 event)
+ static int lbs_remove_wep_keys(struct lbs_private *priv)
+ {
+ 	struct cmd_ds_802_11_set_wep cmd;
+-	int ret;
+ 
+ 	memset(&cmd, 0, sizeof(cmd));
+ 	cmd.hdr.size = cpu_to_le16(sizeof(cmd));
+ 	cmd.keyindex = cpu_to_le16(priv->wep_tx_key);
+ 	cmd.action = cpu_to_le16(CMD_ACT_REMOVE);
+ 
+-	ret = lbs_cmd_with_response(priv, CMD_802_11_SET_WEP, &cmd);
+-
+-	return ret;
++	return lbs_cmd_with_response(priv, CMD_802_11_SET_WEP, &cmd);
+ }
+ 
+ /*
+@@ -949,9 +946,7 @@ static int lbs_enable_rsn(struct lbs_private *priv, int enable)
+ 	cmd.action = cpu_to_le16(CMD_ACT_SET);
+ 	cmd.enable = cpu_to_le16(enable);
+ 
+-	ret = lbs_cmd_with_response(priv, CMD_802_11_ENABLE_RSN, &cmd);
+-
+-	return ret;
++	return lbs_cmd_with_response(priv, CMD_802_11_ENABLE_RSN, &cmd);
+ }
+ 
+ 
+@@ -976,7 +971,6 @@ static int lbs_set_key_material(struct lbs_private *priv,
+ 				const u8 *key, u16 key_len)
+ {
+ 	struct cmd_key_material cmd;
+-	int ret;
+ 
+ 	/*
+ 	 * Example for WPA (TKIP):
+@@ -1004,9 +998,7 @@ static int lbs_set_key_material(struct lbs_private *priv,
+ 	if (key && key_len)
+ 		memcpy(cmd.param.key, key, key_len);
+ 
+-	ret = lbs_cmd_with_response(priv, CMD_802_11_KEY_MATERIAL, &cmd);
+-
+-	return ret;
++	return lbs_cmd_with_response(priv, CMD_802_11_KEY_MATERIAL, &cmd);
+ }
+ 
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1638294648-844-3-git-send-email-quic_ppranees@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.25.1
 
