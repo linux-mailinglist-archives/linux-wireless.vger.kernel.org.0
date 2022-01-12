@@ -2,66 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD08848C69F
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 15:59:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B592948C6B0
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 16:07:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354386AbiALO7Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jan 2022 09:59:16 -0500
-Received: from mail-lf1-f45.google.com ([209.85.167.45]:34321 "EHLO
-        mail-lf1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347865AbiALO7N (ORCPT
+        id S1354409AbiALPEh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jan 2022 10:04:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55544 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348028AbiALPEf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jan 2022 09:59:13 -0500
-Received: by mail-lf1-f45.google.com with SMTP id o12so9184051lfk.1
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jan 2022 06:59:12 -0800 (PST)
+        Wed, 12 Jan 2022 10:04:35 -0500
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9D07C061748
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jan 2022 07:04:34 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id k21so9345834lfu.0
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jan 2022 07:04:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=swEbmnyLSeN7aiIoLnsPgDG3gh2KSMSrPSEJTJTzFbQ=;
+        b=lvkw4cRKCOzBKAPvoz7fYi4Ww+7YlPfKoAgKVLsIgKF1EJ+8wEQe6UxECLKYwzDnLE
+         B6oDSef20ebGk9u85lnz7rEBAUMWRtwpyuCT7L5tzcrfQOz8wh7TZ2HKYlneuRS6vvZL
+         2mzMh6se/ObK3+x60YBQABVSeb3VrI4eHRc1v7BRB2NV0kOKjry5g7lgbvmVmJtVueJ9
+         KnDoZbh+45MmI7u5fj7DHOebV2iwZmI1uYwa1RpTgz0hD3M/CnW+fBXsXOOTtlYGu/16
+         A5HG6WxtCNk9V2MKJTFdEJHaI/4RRxI0j/0ly6jrKbitmexN4vjhY8socp2Bkpl/gWCl
+         FZYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bYAuM8HOGDeRUC7Hqp0NyJ455lxW9JhY9xMLbL7qB30=;
-        b=pCfbX5k7r7thvTFp62Kn3JoTZeSmwrEuNSx5P8y0XFS1Re1yuXz2lhOOZ/kUXzCAoG
-         07Lf+lNNjNuAAR7aYlO9U921CHP2imKbwJ432qK3WcYkcYo8RrZ0RXMTMbC/KX8I8jDD
-         XuOABdVDq03XiufVyyMDn0xpHiL+Bf9SUBKLRRgKaIWwmZm/xFqo24zOd3jhtJe68bsn
-         LiM9y3D1udnrLNTsMVbq9CJ8Kutt2PAFDauwdWiBN4ADWcpWgJ0ZQSWRGJ3quXtTtV0b
-         2IGrZV665iF+Bz/LlEj6rhtW3jNoT7qw8zQEo0GNgezrpXT2MLa1oWYGUQTdZl2NVyg/
-         mVAA==
-X-Gm-Message-State: AOAM533zaR1PSDSVVfOiyRLWnU5VsOIxGE/4BcOEKiFxhIpI6WMWOKZN
-        ShZLjNJECJo8sR9uEDtLhwNv2OkQXPfxxsq1jmNYMAbz3rI=
-X-Google-Smtp-Source: ABdhPJykJV73ooVRV6H4SYycYK3IL4npfyQagdaAUr9f3lKKOu8NDIcR2LjqWV/vvTocb7z8QqoiiUiU/JqXXS/e+2k=
-X-Received: by 2002:a05:6512:c0c:: with SMTP id z12mr114206lfu.48.1641999551045;
- Wed, 12 Jan 2022 06:59:11 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=swEbmnyLSeN7aiIoLnsPgDG3gh2KSMSrPSEJTJTzFbQ=;
+        b=DnZrnKv5vKV3jrcsWmuF7iNHlC1bI1w6fUFhb+QoSyrKJU9ooFBWjn6hoTJSbPw2hz
+         EQgrbzrz9VTQJ13L+ffkhD0CGrU2SNbwy/b1b9dK3TOvJCLqXE5Pa+U0c6fXqg+ZH8cv
+         xrMTDwk3GBOBSIl7YUHd5S328ttidijP27Z6zTO8Mbm+mO5pQucaL/c/uVI/qjAleKWS
+         Ftcw7WyvvkRyVgO7agC+zuU3pl55ROSXkIY7pioUsNYGKOks5Twljzs8SNVSeaaSUE/U
+         v7r/0HTdXCkxRoqJKFRC7KREUw9tcxL9/rHTku2nWFBLRpCbbiMA9Ie1fOITgmlk4sNm
+         epvQ==
+X-Gm-Message-State: AOAM533KAz3h/dvU4lnLLdTvJuA1mAk0Y9m+xGdPD6HAla6Pvt6WW/BA
+        2RvRDCAJ4TbCp0Ozcq26BMsMEqsrpU9vosYApBDTmsMS0t/3z39t
+X-Google-Smtp-Source: ABdhPJxWuTxHLQXjEWO9OANtBu36BWztuVV7d1EJLRw+gXvuvHBCzsnZLCgUQS4k1kJ8fOzX1Y3szncGvdkFuOkuwPI=
+X-Received: by 2002:a19:6748:: with SMTP id e8mr118080lfj.358.1641999873143;
+ Wed, 12 Jan 2022 07:04:33 -0800 (PST)
 MIME-Version: 1.0
-References: <CAJvTdKm9PQrnyEG=b-8DbdnOHup8Ec6VqoKp3ZCQXwmvXU3FbA@mail.gmail.com>
- <0bb2a3b794c19514ad30ecc0ca60d1d6e9e438b0.camel@sipsolutions.net> <4c1089474bb5982aee82d58a9d300ca55e7e0c69.camel@intel.com>
-In-Reply-To: <4c1089474bb5982aee82d58a9d300ca55e7e0c69.camel@intel.com>
-From:   Len Brown <lenb@kernel.org>
-Date:   Wed, 12 Jan 2022 09:58:59 -0500
-Message-ID: <CAJvTdKmXuzwhV+ExqPAAUTgOFk1dnU+CjnErgUgdfXp=vug_EQ@mail.gmail.com>
-Subject: Re: iwlwifi 0000:3a:00.0: Microcode SW error detected. Restarting 0x2000000.
-To:     "Coelho, Luciano" <luciano.coelho@intel.com>
-Cc:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20220111171424.862764-1-Jerome.Pouiller@silabs.com>
+ <20220111171424.862764-9-Jerome.Pouiller@silabs.com> <20220112105859.u4j76o7cpsr4znmb@pali>
+ <42104281.b1Mx7tgHyx@pc-42> <20220112114332.jadw527pe7r2j4vv@pali>
+In-Reply-To: <20220112114332.jadw527pe7r2j4vv@pali>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 12 Jan 2022 16:03:56 +0100
+Message-ID: <CAPDyKFoMj1r+bEh-MqOdTVzs0C=LCFPPbXj3jHwB4Yty=bA03Q@mail.gmail.com>
+Subject: Re: [PATCH v9 08/24] wfx: add bus_sdio.c
+To:     =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
+        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <Jerome.Pouiller@silabs.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-mmc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jan 12, 2022 at 4:05 AM Coelho, Luciano
-<luciano.coelho@intel.com> wrote:
+On Wed, 12 Jan 2022 at 12:43, Pali Roh=C3=A1r <pali@kernel.org> wrote:
+>
+> On Wednesday 12 January 2022 12:18:58 J=C3=A9r=C3=B4me Pouiller wrote:
+> > On Wednesday 12 January 2022 11:58:59 CET Pali Roh=C3=A1r wrote:
+> > > On Tuesday 11 January 2022 18:14:08 Jerome Pouiller wrote:
+> > > > +static const struct sdio_device_id wfx_sdio_ids[] =3D {
+> > > > +     { SDIO_DEVICE(SDIO_VENDOR_ID_SILABS, SDIO_DEVICE_ID_SILABS_WF=
+200) },
+> > > > +     { },
+> > > > +};
+> > >
+> > > Hello! Is this table still required?
+> >
+> > As far as I understand, if the driver does not provide an id_table, the
+> > probe function won't be never called (see sdio_match_device()).
+> >
+> > Since, we rely on the device tree, we could replace SDIO_VENDOR_ID_SILA=
+BS
+> > and SDIO_DEVICE_ID_SILABS_WF200 by SDIO_ANY_ID. However, it does not hu=
+rt
+> > to add an extra filter here.
+>
+> Now when this particular id is not required, I'm thinking if it is still
+> required and it is a good idea to define these SDIO_VENDOR_ID_SILABS
+> macros into kernel include files. As it would mean that other broken
+> SDIO devices could define these bogus numbers too... And having them in
+> common kernel includes files can cause issues... e.g. other developers
+> could think that it is correct to use them as they are defined in common
+> header files. But as these numbers are not reliable (other broken cards
+> may have same ids as wf200) and their usage may cause issues in future.
+>
+> Ulf, any opinion?
 
-> There was some refactoring in this area, to move the initialization to
-> the init phase, and that must be causing this.  I suspect this patch:
->
-> commit 78a19d5285d93e281b40c3b8d5a959fbbd2fe006
-> Author:     Miri Korenblit <miriam.rachel.korenblit@intel.com>
-> AuthorDate: Thu Aug 5 14:21:56 2021 +0300
-> Commit:     Luca Coelho <luciano.coelho@intel.com>
-> CommitDate: Thu Aug 26 23:36:10 2021 +0300
->
->     iwlwifi: mvm: Read the PPAG and SAR tables at INIT stage
->
-> ...which was introduced in v5.15.
+The sdio_match_device() is what is being used to match the device to
+its sdio_driver, which is being called from the sdio_bus_type's
+->match() callback.
 
-good guess!
-I have confirmed that upstream 5.14 works, and that 5.15 with the
-commit above reverted works.
+In regards to the DT compatible strings from a drivers'
+.of_match_table, that is currently left to be matched by the sdio
+driver's ->probe() function internally, by calling
+of_driver_match_device().
+
+In other words, I think what Jerome has suggested here seems
+reasonable to me. Matching on "SDIO_ANY_ID" would work too, but I
+think it's better with a poor filter like SDIO_VENDOR_ID_SILABS*,
+rather than none.
+
+An entirely different and new approach would be to extend
+sdio_match_device() to call of_driver_match_device() too. However, in
+that case we would also need to add a new corresponding ->probe()
+callback for the sdio_driver, as the current one takes a const struct
+sdio_device_id, which doesn't work when matching on DT compatibles.
+
+>
+> Btw, is there any project which maintains SDIO ids, like there is
+> pci-ids.ucw.cz for PCI or www.linux-usb.org/usb-ids.html for USB?
+>
+> > > > +MODULE_DEVICE_TABLE(sdio, wfx_sdio_ids);
+> > > > +
+> > > > +struct sdio_driver wfx_sdio_driver =3D {
+> > > > +     .name =3D "wfx-sdio",
+> > > > +     .id_table =3D wfx_sdio_ids,
+> > > > +     .probe =3D wfx_sdio_probe,
+> > > > +     .remove =3D wfx_sdio_remove,
+> > > > +     .drv =3D {
+> > > > +             .owner =3D THIS_MODULE,
+> > > > +             .of_match_table =3D wfx_sdio_of_match,
+> > > > +     }
+> > > > +};
+> > > > --
+> > > > 2.34.1
+> > > >
+> > >
+> >
+> >
+> > --
+> > J=C3=A9r=C3=B4me Pouiller
+
+Kind regards
+Uffe
