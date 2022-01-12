@@ -2,77 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA00A48C3D0
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 13:14:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F4E48C420
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 13:45:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353091AbiALMOP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jan 2022 07:14:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44364 "EHLO
+        id S1353236AbiALMpW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jan 2022 07:45:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238443AbiALMOP (ORCPT
+        with ESMTP id S240547AbiALMpV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jan 2022 07:14:15 -0500
+        Wed, 12 Jan 2022 07:45:21 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC269C06173F;
-        Wed, 12 Jan 2022 04:14:14 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B3AC06173F;
+        Wed, 12 Jan 2022 04:45:21 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CED1618C2;
-        Wed, 12 Jan 2022 12:14:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7EAC36AE9;
-        Wed, 12 Jan 2022 12:14:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BCBE618AC;
+        Wed, 12 Jan 2022 12:45:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11578C36AE9;
+        Wed, 12 Jan 2022 12:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641989653;
-        bh=QOw9mjKrUhdFLq+aqixvaYpTbivRVrm6xPbrSyuS6cA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=keT2ISvWVQwMZpjmj8yQBAFJRHOcZnLatdTj+fKDt5uyzg94gSxO72qYzoZmNrEEW
-         9oZEZZPE/L3fTX5Nma8gV5LkjA/PJXrEf0X6cC0b/kqoNS/cnx5lHjLEwoi+8PYGrW
-         ZR+nOYafp2QQomJcdhafLIvmQ+4FlHe6McKmtf1jZr/n+mlUkCWng7NN9a1EEE/Z86
-         q/Q90BZGkDtj0BmIQtyseH8MjINrWAqLEEKxr0d20n2zXLye9ubhHyNrVohDS4ucvR
-         b0K3tgfdc1AKf2Wd1O9WAyKz3nGbUQINDNQjUHwh63PGzf6W58Drz7tqCcZyma65Ac
-         Y3LA6EV6sRNZg==
-Received: by pali.im (Postfix)
-        id 3E5A1768; Wed, 12 Jan 2022 13:14:11 +0100 (CET)
-Date:   Wed, 12 Jan 2022 13:14:11 +0100
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>,
-        devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>, linux-mmc@vger.kernel.org,
+        s=k20201202; t=1641991520;
+        bh=izcITvnbn3eRk7EuxKjfXB5/A1HR1stA4bPdJSHT784=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=JdalBd1hee3fOcfK3y+gyjG7syal6TOpysOc+CCFa3gx8T5JX/ePUdW50xMAAXK2R
+         5f4imQYbL37jsl9NtNM0brHcj5P9was8N6j8PlaHQ+jtD0o3veE7MnG2+qJub6F/FM
+         rbO3uu6bWxf4IhAoA7JXU48fTl1rxDLqiVkTBGzObwuzudUX6T1UMyFCkAg2NormIs
+         5tE7n/WwYTYZ8T2q5kvgJHnAZojVGNO6auD6KJFLegPt7ntavoe3fvqZ4DP5EKXziN
+         UfN+eQ0Uv67I0uF/oKrApqVkYYsTZUVM11Yxuqjltt3l8vvKZoFQPc07bLMC2SwhCJ
+         kulZ834X1K+zQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Jerome Pouiller <Jerome.Pouiller@silabs.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "David S . Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH v9 08/24] wfx: add bus_sdio.c
-Message-ID: <20220112121411.qq2egpoujtsvswla@pali>
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-mmc@vger.kernel.org,
+        Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>
+Subject: Re: [PATCH v9 01/24] mmc: sdio: add SDIO IDs for Silabs WF200 chip
 References: <20220111171424.862764-1-Jerome.Pouiller@silabs.com>
- <20220111171424.862764-9-Jerome.Pouiller@silabs.com>
- <20220112105859.u4j76o7cpsr4znmb@pali>
- <42104281.b1Mx7tgHyx@pc-42>
- <20220112114332.jadw527pe7r2j4vv@pali>
- <Yd7EOcx/zHJFeJUv@kroah.com>
+        <20220111171424.862764-2-Jerome.Pouiller@silabs.com>
+        <CAPDyKFreu2S3Okc9pXckDjUQ2ieb-urSM0riysFnEHRhEqXBKg@mail.gmail.com>
+Date:   Wed, 12 Jan 2022 14:45:13 +0200
+In-Reply-To: <CAPDyKFreu2S3Okc9pXckDjUQ2ieb-urSM0riysFnEHRhEqXBKg@mail.gmail.com>
+        (Ulf Hansson's message of "Wed, 12 Jan 2022 11:58:27 +0100")
+Message-ID: <87k0f5t95y.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Yd7EOcx/zHJFeJUv@kroah.com>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wednesday 12 January 2022 13:06:17 Greg Kroah-Hartman wrote:
-> On Wed, Jan 12, 2022 at 12:43:32PM +0100, Pali Rohár wrote:
-> > Btw, is there any project which maintains SDIO ids, like there is
-> > pci-ids.ucw.cz for PCI or www.linux-usb.org/usb-ids.html for USB?
-> 
-> Both of those projects have nothing to do with the kernel drivers or
-> values at all, they are only for userspace tools to use.
-> 
-> So even if there was such a thing for SDIO ids, I doubt it would help
-> here.
+Ulf Hansson <ulf.hansson@linaro.org> writes:
 
-Why do you doubt? For sure if would help! Just checking comments if some
-user reported different card with this id would tell us how broken it is
-and how sane it is to define macro for particular id.
+> On Tue, 11 Jan 2022 at 18:14, Jerome Pouiller
+> <Jerome.Pouiller@silabs.com> wrote:
+>>
+>> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+>>
+>> Note that the values used by Silabs are uncommon. A driver cannot fully
+>> rely on the SDIO PnP. It should also check if the device is declared in
+>> the DT.
+>>
+>> So, to apply the quirks necessary for the Silabs WF200, we rely on the
+>> DT rather than on the SDIO VID/PID.
+>>
+>> Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+>
+> I guess the series is getting close to getting queued up?
+>
+> As an option to make sure $subject patch doesn't cause a problem for
+> that, I can queue it up and send it for the 5.17-rcs or if Kalle
+> prefer to carry this in this tree with my ack?
+>
+> Kalle?
+
+The easiest is if you can take it to your tree, tack!
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
