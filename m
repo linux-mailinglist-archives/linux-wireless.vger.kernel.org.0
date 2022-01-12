@@ -2,19 +2,19 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7510348C99D
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 18:35:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D98B048C9A5
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 18:35:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355674AbiALReT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jan 2022 12:34:19 -0500
-Received: from relay7-d.mail.gandi.net ([217.70.183.200]:37941 "EHLO
+        id S1350056AbiALRe0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jan 2022 12:34:26 -0500
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:47521 "EHLO
         relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355660AbiALRdu (ORCPT
+        with ESMTP id S1355639AbiALRdw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jan 2022 12:33:50 -0500
+        Wed, 12 Jan 2022 12:33:52 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id D19B520016;
-        Wed, 12 Jan 2022 17:33:44 +0000 (UTC)
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 1896320019;
+        Wed, 12 Jan 2022 17:33:47 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Alexander Aring <alex.aring@gmail.com>,
         Stefan Schmidt <stefan@datenfreihafen.org>,
@@ -32,9 +32,9 @@ Cc:     Michael Hennerich <michael.hennerich@analog.com>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         linux-wireless@vger.kernel.org,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [wpan-next v2 15/27] net: ieee802154: Define a beacon frame header
-Date:   Wed, 12 Jan 2022 18:33:00 +0100
-Message-Id: <20220112173312.764660-16-miquel.raynal@bootlin.com>
+Subject: [wpan-next v2 16/27] net: ieee802154: Define frame types
+Date:   Wed, 12 Jan 2022 18:33:01 +0100
+Message-Id: <20220112173312.764660-17-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20220112173312.764660-1-miquel.raynal@bootlin.com>
 References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
@@ -45,61 +45,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This definition will be used when adding support for scanning and defines
-the content of a beacon frame header as in the 802.15.4 specification.
+A 802.15.4 frame can be of different types, here is a definition
+matching the specification. This enumeration will be soon be used when
+adding scanning support.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- include/net/ieee802154_netdev.h | 36 +++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ include/net/ieee802154_netdev.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/include/net/ieee802154_netdev.h b/include/net/ieee802154_netdev.h
-index d0d188c3294b..fb6ac354a7b6 100644
+index fb6ac354a7b6..45dff5d11bc8 100644
 --- a/include/net/ieee802154_netdev.h
 +++ b/include/net/ieee802154_netdev.h
-@@ -22,6 +22,42 @@
+@@ -105,6 +105,17 @@ struct ieee802154_hdr_fc {
+ #endif
+ };
  
- #include <net/cfg802154.h>
- 
-+struct ieee802154_beacon_hdr {
-+#if defined(__LITTLE_ENDIAN_BITFIELD)
-+	u16 beacon_order:4,
-+	    superframe_order:4,
-+	    final_cap_slot:4,
-+	    battery_life_ext:1,
-+	    reserved0:1,
-+	    pan_coordinator:1,
-+	    assoc_permit:1;
-+	u8  gts_count:3,
-+	    gts_reserved:4,
-+	    gts_permit:1;
-+	u8  pend_short_addr_count:3,
-+	    reserved1:1,
-+	    pend_ext_addr_count:3,
-+	    reserved2:1;
-+#elif defined(__BIG_ENDIAN_BITFIELD)
-+	u16 assoc_permit:1,
-+	    pan_coordinator:1,
-+	    reserved0:1,
-+	    battery_life_ext:1,
-+	    final_cap_slot:4,
-+	    superframe_order:4,
-+	    beacon_order:4;
-+	u8  gts_permit:1,
-+	    gts_reserved:4,
-+	    gts_count:3;
-+	u8  reserved2:1,
-+	    pend_ext_addr_count:3,
-+	    reserved1:1,
-+	    pend_short_addr_count:3;
-+#else
-+#error	"Please fix <asm/byteorder.h>"
-+#endif
-+} __packed;
++enum ieee802154_frame_type {
++	IEEE802154_BEACON_FRAME,
++	IEEE802154_DATA_FRAME,
++	IEEE802154_ACKNOWLEDGEMENT_FRAME,
++	IEEE802154_MAC_COMMAND_FRAME,
++	IEEE802154_RESERVED_FRAME,
++	IEEE802154_MULTIPURPOSE_FRAME,
++	IEEE802154_FRAGMENT_FRAME,
++	IEEE802154_EXTENDED_FRAME,
++};
 +
- struct ieee802154_sechdr {
- #if defined(__LITTLE_ENDIAN_BITFIELD)
- 	u8 level:3,
+ struct ieee802154_hdr {
+ 	struct ieee802154_hdr_fc fc;
+ 	u8 seq;
 -- 
 2.27.0
 
