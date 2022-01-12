@@ -2,56 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DF6B48CE8D
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 23:54:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C9E948CF08
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 00:16:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234648AbiALWyL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jan 2022 17:54:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51108 "EHLO
+        id S235304AbiALXQY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jan 2022 18:16:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234627AbiALWyK (ORCPT
+        with ESMTP id S235235AbiALXQX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jan 2022 17:54:10 -0500
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A92AC06173F;
-        Wed, 12 Jan 2022 14:54:10 -0800 (PST)
-Received: by mail-wr1-x430.google.com with SMTP id l25so6820321wrb.13;
-        Wed, 12 Jan 2022 14:54:10 -0800 (PST)
+        Wed, 12 Jan 2022 18:16:23 -0500
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EA75C06173F;
+        Wed, 12 Jan 2022 15:16:23 -0800 (PST)
+Received: by mail-wm1-x32e.google.com with SMTP id p18so2652098wmg.4;
+        Wed, 12 Jan 2022 15:16:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=LTP+F/Ok0PRG+GrIl3YGT9PiDnX7zo2FYTETEB0XL/U=;
-        b=gE8XFAIa9tPLz5Ntct+FROhxffLQustae0w53TU3FmEn1We3L8Y4FisLrGYL/7hbxj
-         KTV3aYXUpbrKpbq2+OT8p7eaqYgyHlhkJSoNoOfCE8CBg2ENFHm963Ke99O/QsRuUEF2
-         s5Lj4bkR7eSvuXXFgtm6iNvcKyIgyC3dpPwWEPDoeyyfE0YrgZraOWCki7zXp3tL4qxt
-         YTg14QfaHChmoahDG3sQ/YvTZE8aymyM9FxmhN07EKGUf3dVx605s3jk3Xnl7CZQJEoB
-         02kfv3NqxrvWIPXGfUgeNlIYUhkHSRU5YtqU0UPS2nwI/bIKfRg6XMKFktkNpPk60gUy
-         hamg==
+        bh=Dv6pc+JoSrqBX2AZ4Y5u186caW5FzV8GVKLRws4BTnc=;
+        b=bUGfuIBwiXJlzr9YRA4ZdKS52M5LQrNX8k48lodePS4pqH0gEtL7y3VvEeulS6Gfru
+         oRSI/ukHI+GcqDzf+s2YafDK7XahCQeAbId1AnFL6D30km33y0d0wG3XqKSGeH9qdj8k
+         TjWEpU16LYv/zAaxmlr14XbJOVfGmEcBXcJPW0Z70yFfjYU0pQX9VME3ltcvqJjtenpV
+         IwZNumxA57CcmJRIk41uwqbESkFANMcMukfi8z2iuXyfDAhxFhnJUyzuV174swvLuRXt
+         0WPGXBnEm5jAV0vc+kZqfju+iEX49sVOB8r+wJ02TRi/v2wnMaoMancE9IY13dr549KK
+         pRJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=LTP+F/Ok0PRG+GrIl3YGT9PiDnX7zo2FYTETEB0XL/U=;
-        b=5uwzvGdpbBotzLZgHkniRJUCIRajf7jhwpooCO0PwoQgciLwTk/J6fSs4V2Whi9LaF
-         BTFmarU/FgYfsWpB7C/+2anKu6eLCx0Lj00gJBdBLkcIpe4A02cFwRn4z1QYVeb+GUA5
-         ax35SlTJUfxMGMR7MMCV1DSDygde/YoqZhAhOBRmjf6tcVrVXBfxZ5brzfFAmds1pBZ2
-         83NE+VfzKneo05qa3yf4Cm6C9YLK+uSgamFvXe1y8adb2RV2xx1xtNjg66KnjdMDf9jt
-         4tymo9Qu9aJvrE/nDGXpdyFr6gV9X1t4TylWDkP3FttlfInCttzxl0CPNbFPYYBXwil5
-         9Uxg==
-X-Gm-Message-State: AOAM533HTbne7P9ZFz2LmOiqK4XXPI+GVh7meQQEftlokUi7LuTzAkGL
-        eswpvLy0LIw103HXtraVfoYV2JiqyA/Mzm+5hy8=
-X-Google-Smtp-Source: ABdhPJxsWFLaZjsJgELI9R2LezFhnLPBYFQxdWdcf3KvT8Vk6DsGmHubgN0JImVpBT7NGyWnzA6pvCC5t+xxaPDXhf0=
-X-Received: by 2002:a05:6000:186e:: with SMTP id d14mr1596585wri.205.1642028048812;
- Wed, 12 Jan 2022 14:54:08 -0800 (PST)
+        bh=Dv6pc+JoSrqBX2AZ4Y5u186caW5FzV8GVKLRws4BTnc=;
+        b=ER60mzbFs86RuNOC5e+jPjfFTqtYKEKRpWEU07ZxBdLf0CQTyZBlBllARPzcHq6OJn
+         ns0X1Dz2gBPNF3xN+DgvxcpCYiVgPb9t2Pp+fO6DerV0/d/I7il/kiz0eSPIsCihf88g
+         xZzha1gIhSvB2D+HE3jd6jtaW7o47rbIb7DmSap+ZXVCVWSjHADwVtAeYfWpmS7Wa4xF
+         0SYRRd2gS9gV5iudZryN+xwHPuR6kDE/eZn/N/NRJfci079O36AFREqjYiJ/s9KuUpa5
+         3wQjtURakxFxb7xLeOWxkD47KvceriELTVTlM/8RWvn+5tH/hfuDQ0+KzLWK0pefLzsG
+         JabQ==
+X-Gm-Message-State: AOAM530bfe4DVWA31Z+pNKWnAeeb5GCo+of7dc55rBpxBqvqOgNZ8HDt
+        KlvKiCgZaXjQwFVB7MPeh+1tupah/KYj2lNolnM=
+X-Google-Smtp-Source: ABdhPJy/BYlvZB1v7EUFO2Aed1sLC550uY72jRNFYq4xRDcadJ52FiwpUvUQvBldtfJz5UjK4/xq75HKWvSKxjuwmW4=
+X-Received: by 2002:a1c:545b:: with SMTP id p27mr8651528wmi.178.1642029382252;
+ Wed, 12 Jan 2022 15:16:22 -0800 (PST)
 MIME-Version: 1.0
-References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
- <20220112173312.764660-2-miquel.raynal@bootlin.com> <CAB_54W7uEQ5RJZxKT2qimoT=pbu8NsUhbZWZRWg+QjXDoTPFuQ@mail.gmail.com>
-In-Reply-To: <CAB_54W7uEQ5RJZxKT2qimoT=pbu8NsUhbZWZRWg+QjXDoTPFuQ@mail.gmail.com>
+References: <20220112173312.764660-1-miquel.raynal@bootlin.com> <20220112173312.764660-24-miquel.raynal@bootlin.com>
+In-Reply-To: <20220112173312.764660-24-miquel.raynal@bootlin.com>
 From:   Alexander Aring <alex.aring@gmail.com>
-Date:   Wed, 12 Jan 2022 17:53:57 -0500
-Message-ID: <CAB_54W7OjmvF5UipMk8PYDKrYmcq-2sXBNHLRpbqM6+a0YQ_Fg@mail.gmail.com>
-Subject: Re: [wpan-next v2 01/27] net: mac802154: Split the set channel hook implementation
+Date:   Wed, 12 Jan 2022 18:16:11 -0500
+Message-ID: <CAB_54W6bJ5oV1pTX03-xWaFohdyxrjy2WSa2kxp3rBzLqSo=UA@mail.gmail.com>
+Subject: Re: [wpan-next v2 23/27] net: mac802154: Add support for active scans
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
         linux-wpan - ML <linux-wpan@vger.kernel.org>,
@@ -76,23 +75,36 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi,
 
-On Wed, 12 Jan 2022 at 17:30, Alexander Aring <alex.aring@gmail.com> wrote:
->
-> Hi,
->
-> On Wed, 12 Jan 2022 at 12:33, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> >
-> > As it is currently designed, the set_channel() cfg802154 hook
-> > implemented in the softMAC is doing a couple of checks before actually
-> > performing the channel change. However, as we enhance the support for
-> > automatically setting the symbol duration during channel changes, it
-> > will also be needed to ensure that the corresponding channel as properly
-> > be selected at probe time. In order to verify this, we will need to
->
-> no, we don't set channels at probe time. We set the
-> current_page/channel whatever the default is according to the hardware
-> datasheet. I think this channel should be dropped and all drivers set
+On Wed, 12 Jan 2022 at 12:34, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+...
+> +static int mac802154_scan_send_beacon_req_locked(struct ieee802154_local *local)
+> +{
+> +       struct sk_buff *skb;
+> +       int ret;
+> +
+> +       lockdep_assert_held(&local->scan_lock);
+> +
+> +       skb = alloc_skb(IEEE802154_BEACON_REQ_SKB_SZ, GFP_KERNEL);
+> +       if (!skb)
+> +               return -ENOBUFS;
+> +
+> +       ret = ieee802154_beacon_req_push(skb, &local->beacon_req);
+> +       if (ret) {
+> +               kfree_skb(skb);
+> +               return ret;
+> +       }
+> +
+> +       return drv_xmit_async(local, skb);
 
-s/channel/patch/
+I think you need to implement a sync transmit handling here. And what
+I mean is not using dryv_xmit_sync() (It is a long story and should
+not be used, it's just that the driver is allowed to call bus api
+functions which can sleep). We don't have such a function yet (but I
+think it can be implemented), you should wait until the transmission
+is done. If we don't wait we fill framebuffers on the hardware while
+the hardware is transmitting the framebuffer which is... bad.
+
+Please implement it so that we have a synchronous api above the
+asynchronous transmit api.
 
 - Alex
