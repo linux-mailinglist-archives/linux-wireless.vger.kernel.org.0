@@ -2,99 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A62F48BDFC
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 05:56:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A74548BF3B
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 08:50:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350792AbiALE4I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jan 2022 23:56:08 -0500
-Received: from mga14.intel.com ([192.55.52.115]:49376 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1349115AbiALE4H (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jan 2022 23:56:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1641963367; x=1673499367;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=nW3jUo8NLpvyBslE5nNKF0E093MXNMP6g3JZVvh6mMo=;
-  b=POHBMUPpZcU+61rmTeNVz5Cr96ecEXv04Dps8tYKlYDnF6GkS3GN21Wj
-   G4jvjiEpGX3NuT4CWSskpRZT4f2vwzS5Vampg/pHUuwFDb4WXVRrGe0cE
-   EBGn4u6scNh6fDSBnfPWk3T6E3nSMd4qRsiOwGOQQmr67brbC/IQFcKZ3
-   Mx2tyOcW2lVazM6mr6CVyGXCnW4/YN5Tm6mhmUreFhK7aKvS7c1vlwV/Q
-   ZUHf55mmwveKQXNyJlTxG3zeJQmNnIZUIbfNe3Lh905Vb7iF4wmRPI9T6
-   UjvROaCnF76DJco3vYnBAy8YJCX6vrcxio/qSxHcQgGy45W858Hj5wprN
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10224"; a="243859180"
-X-IronPort-AV: E=Sophos;i="5.88,282,1635231600"; 
-   d="scan'208";a="243859180"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2022 20:56:07 -0800
-X-IronPort-AV: E=Sophos;i="5.88,282,1635231600"; 
-   d="scan'208";a="558596879"
-Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.212.140.183]) ([10.212.140.183])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2022 20:56:06 -0800
-Message-ID: <2b21bfa5-4b18-d615-b6ab-09ad97d73fe4@linux.intel.com>
-Date:   Tue, 11 Jan 2022 20:55:58 -0800
+        id S237770AbiALHuD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jan 2022 02:50:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40630 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231359AbiALHuD (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jan 2022 02:50:03 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95AC1C06173F;
+        Tue, 11 Jan 2022 23:50:02 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4C87CB81E02;
+        Wed, 12 Jan 2022 07:50:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B24C36AEA;
+        Wed, 12 Jan 2022 07:49:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641973800;
+        bh=/zzr28pbn0mYUQ3C33VgJ093abXpWPwu5+XYGnZ7HOI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=gOqryZE8ISgc3MSbb89OPqbHB6lIMKLRTWkJZLRLlDZHEJA/FQtD3G2PIsejf5vyO
+         lxWl5kHtlDWx+2yc/6CJmmQfiG8ge1a5br3t/cLssV7rpwVrhnob4JaBH1U0JI8tgp
+         25eSYGvcuqTn0fJwoecvD18TO+bpXoyGmxgE6J843NfM0Dl99XRgKTfhkiHWwudeGs
+         7D+149LV6SKMnsY02KSCXxco7iYDswVneC5OEeIwsKfK+dPeBzBigILcjGp/cDqASq
+         Qk5EMf32ZCO+TMplE91xnTN6iWxt2tL1yHcc5CzTv9Khp2Z5z2siK7vZ+2n2awVCAr
+         2SY6QAcVjlhug==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-mmc@vger.kernel.org,
+        Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH v9 23/24] wfx: remove from the staging area
+References: <20220111171424.862764-1-Jerome.Pouiller@silabs.com>
+        <20220111171424.862764-24-Jerome.Pouiller@silabs.com>
+Date:   Wed, 12 Jan 2022 09:49:54 +0200
+In-Reply-To: <20220111171424.862764-24-Jerome.Pouiller@silabs.com> (Jerome
+        Pouiller's message of "Tue, 11 Jan 2022 18:14:23 +0100")
+Message-ID: <874k69jsv1.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH net-next v3 01/12] net: wwan: t7xx: Add control DMA
- interface
-Content-Language: en-US
-To:     =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        andriy.shevchenko@linux.intel.com, dinesh.sharma@intel.com,
-        eliot.lee@intel.com, mika.westerberg@linux.intel.com,
-        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
-        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
-        sreehari.kancharla@intel.com
-References: <20211207024711.2765-1-ricardo.martinez@linux.intel.com>
- <20211207024711.2765-2-ricardo.martinez@linux.intel.com>
- <a6325ef-e06e-c236-9d23-42fdb8b62747@linux.intel.com>
-From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
-In-Reply-To: <a6325ef-e06e-c236-9d23-42fdb8b62747@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
 
-On 12/16/2021 3:08 AM, Ilpo Järvinen wrote:
-> On Mon, 6 Dec 2021, Ricardo Martinez wrote:
+> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
 >
-...
->> +static struct cldma_request *t7xx_cldma_ring_step_forward(struct cldma_ring *ring,
->> +							  struct cldma_request *req)
->> +{
->> +	if (req->entry.next == &ring->gpd_ring)
->> +		return list_first_entry(&ring->gpd_ring, struct cldma_request, entry);
->> +
->> +	return list_next_entry(req, entry);
->> +}
->> +
->> +static struct cldma_request *t7xx_cldma_ring_step_backward(struct cldma_ring *ring,
->> +							   struct cldma_request *req)
->> +{
->> +	if (req->entry.prev == &ring->gpd_ring)
->> +		return list_last_entry(&ring->gpd_ring, struct cldma_request, entry);
->> +
->> +	return list_prev_entry(req, entry);
->> +}
-> Wouldn't these two seems generic enough to warrant adding something like
-> list_next/prev_entry_circular(...) to list.h?
+> Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+> ---
+>  .../bindings/net/wireless/silabs,wfx.yaml     | 125 ---
+>  drivers/staging/wfx/Kconfig                   |   8 -
+>  drivers/staging/wfx/Makefile                  |  25 -
+>  drivers/staging/wfx/bh.c                      | 330 -------
+>  drivers/staging/wfx/bh.h                      |  33 -
+>  drivers/staging/wfx/bus.h                     |  38 -
+>  drivers/staging/wfx/bus_sdio.c                | 272 ------
+>  drivers/staging/wfx/bus_spi.c                 | 271 ------
+>  drivers/staging/wfx/data_rx.c                 |  94 --
+>  drivers/staging/wfx/data_rx.h                 |  18 -
+>  drivers/staging/wfx/data_tx.c                 | 596 -------------
+>  drivers/staging/wfx/data_tx.h                 |  68 --
+>  drivers/staging/wfx/debug.c                   | 365 --------
+>  drivers/staging/wfx/debug.h                   |  19 -
+>  drivers/staging/wfx/fwio.c                    | 405 ---------
+>  drivers/staging/wfx/fwio.h                    |  15 -
+>  drivers/staging/wfx/hif_api_cmd.h             | 555 ------------
+>  drivers/staging/wfx/hif_api_general.h         | 262 ------
+>  drivers/staging/wfx/hif_api_mib.h             | 346 --------
+>  drivers/staging/wfx/hif_rx.c                  | 416 ---------
+>  drivers/staging/wfx/hif_rx.h                  |  17 -
+>  drivers/staging/wfx/hif_tx.c                  | 513 -----------
+>  drivers/staging/wfx/hif_tx.h                  |  60 --
+>  drivers/staging/wfx/hif_tx_mib.c              | 324 -------
+>  drivers/staging/wfx/hif_tx_mib.h              |  49 --
+>  drivers/staging/wfx/hwio.c                    | 352 --------
+>  drivers/staging/wfx/hwio.h                    |  75 --
+>  drivers/staging/wfx/key.c                     | 241 -----
+>  drivers/staging/wfx/key.h                     |  20 -
+>  drivers/staging/wfx/main.c                    | 506 -----------
+>  drivers/staging/wfx/main.h                    |  43 -
+>  drivers/staging/wfx/queue.c                   | 307 -------
+>  drivers/staging/wfx/queue.h                   |  45 -
+>  drivers/staging/wfx/scan.c                    | 149 ----
+>  drivers/staging/wfx/scan.h                    |  22 -
+>  drivers/staging/wfx/sta.c                     | 833 ------------------
+>  drivers/staging/wfx/sta.h                     |  73 --
+>  drivers/staging/wfx/traces.h                  | 501 -----------
+>  drivers/staging/wfx/wfx.h                     | 164 ----
+>  39 files changed, 8555 deletions(-)
+>  delete mode 100644 drivers/staging/wfx/Documentation/devicetree/bindings=
+/net/wireless/silabs,wfx.yaml
+>  delete mode 100644 drivers/staging/wfx/Kconfig
+>  delete mode 100644 drivers/staging/wfx/Makefile
+>  delete mode 100644 drivers/staging/wfx/bh.c
+>  delete mode 100644 drivers/staging/wfx/bh.h
+>  delete mode 100644 drivers/staging/wfx/bus.h
+>  delete mode 100644 drivers/staging/wfx/bus_sdio.c
+>  delete mode 100644 drivers/staging/wfx/bus_spi.c
+>  delete mode 100644 drivers/staging/wfx/data_rx.c
+>  delete mode 100644 drivers/staging/wfx/data_rx.h
+>  delete mode 100644 drivers/staging/wfx/data_tx.c
+>  delete mode 100644 drivers/staging/wfx/data_tx.h
+>  delete mode 100644 drivers/staging/wfx/debug.c
+>  delete mode 100644 drivers/staging/wfx/debug.h
+>  delete mode 100644 drivers/staging/wfx/fwio.c
+>  delete mode 100644 drivers/staging/wfx/fwio.h
+>  delete mode 100644 drivers/staging/wfx/hif_api_cmd.h
+>  delete mode 100644 drivers/staging/wfx/hif_api_general.h
+>  delete mode 100644 drivers/staging/wfx/hif_api_mib.h
+>  delete mode 100644 drivers/staging/wfx/hif_rx.c
+>  delete mode 100644 drivers/staging/wfx/hif_rx.h
+>  delete mode 100644 drivers/staging/wfx/hif_tx.c
+>  delete mode 100644 drivers/staging/wfx/hif_tx.h
+>  delete mode 100644 drivers/staging/wfx/hif_tx_mib.c
+>  delete mode 100644 drivers/staging/wfx/hif_tx_mib.h
+>  delete mode 100644 drivers/staging/wfx/hwio.c
+>  delete mode 100644 drivers/staging/wfx/hwio.h
+>  delete mode 100644 drivers/staging/wfx/key.c
+>  delete mode 100644 drivers/staging/wfx/key.h
+>  delete mode 100644 drivers/staging/wfx/main.c
+>  delete mode 100644 drivers/staging/wfx/main.h
+>  delete mode 100644 drivers/staging/wfx/queue.c
+>  delete mode 100644 drivers/staging/wfx/queue.h
+>  delete mode 100644 drivers/staging/wfx/scan.c
+>  delete mode 100644 drivers/staging/wfx/scan.h
+>  delete mode 100644 drivers/staging/wfx/sta.c
+>  delete mode 100644 drivers/staging/wfx/sta.h
+>  delete mode 100644 drivers/staging/wfx/traces.h
+>  delete mode 100644 drivers/staging/wfx/wfx.h
 
-Agree, in the upcoming version I'm planning to include something like 
-this to list.h as suggested:
+I'm not sure what's your plan here, but with staging wireless drivers
+there's usually a simple simple move (git mv) of the driver from
+drivers/staging to drivers/net/wireless. An example here:
 
-#define list_next_entry_circular(pos, ptr, member) \
-     ((pos)->member.next == (ptr) ? \
-     list_first_entry(ptr, typeof(*(pos)), member) : \
-     list_next_entry(pos, member))
+https://git.kernel.org/linus/5625f965d764
 
+What you seem to do here is that you add a new driver to
+drivers/net/wireless and then remove the old driver from
+drivers/staging. And I'm guessing these two drivers are not identical
+and have differences?
 
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
