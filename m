@@ -2,122 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C57DD48C5D2
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 15:19:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EDD548C5FB
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 15:27:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241666AbiALOTl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jan 2022 09:19:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:46456 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S241652AbiALOTk (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jan 2022 09:19:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1641997179;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=GfMIH8Picadi8RXZWF72k5bxKD+JqAXJTe9VtWcz54A=;
-        b=VY5Fl4I6utxNaQpv4iqzUxAlqVbGKnFsjRVf+8pfEycYBbApGC+nF8Bg2U4lfwuN476g9l
-        bcR4H3B+PTpNgiZJR92UFihLb0NvOD3ph4Cy3pxBRsb/Uuec9gjN8tPx+G8DEDpQ8ElEnl
-        QdAw8UWpo/q535QOqU7GgwCgtDQYWtg=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-221-ynFJrZK0PDeVHZTOmVCVdQ-1; Wed, 12 Jan 2022 09:19:37 -0500
-X-MC-Unique: ynFJrZK0PDeVHZTOmVCVdQ-1
-Received: by mail-qv1-f70.google.com with SMTP id ke27-20020a056214301b00b004178da03fd5so2539882qvb.17
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jan 2022 06:19:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=GfMIH8Picadi8RXZWF72k5bxKD+JqAXJTe9VtWcz54A=;
-        b=Iwv4FlUMT+EgHmiseLroq+wm9YifbpNhiMPnwhiK9ASq7LrFu7q3MsPhz9xyj4x4UN
-         rNdZtQi+0kx1PIc+nY1KU9R0ruFFhnCVty+VlrQKZNetGRkK7HTLmvl90m6hqRmZdjTj
-         9HJJno9lHUUrHVu138oTcgXUG47By3etV30LpfVHv72ePpLmUdwzAnCyBz25hyhsJWR6
-         /m+8Q1QV+nyo8da08t5k7zzxf2FqinpdamyiFd1ib3GJvgUoNgwqTszdXVtQWXH7oH1Q
-         5eyC2bNSbNxnkkfJVoiDcZLZK8jT1tcdfJAbCOPCgU7CL+qvhVAGn8xJrLNC6FbE3Fnv
-         BG6w==
-X-Gm-Message-State: AOAM533P617z3Pmb0s/sqsosxq3bNq15aWMBaRR3kLqnWNCIRbA0r1aC
-        oTK+yg1cHfa6Bqt5jdF8PcU4ZOY7BNEjwLx6H2r9zEExMpySEi6fo8YJUoPOs3wsBbXQAkrIQzn
-        EqCqKBAV7clA6titvvPxi3Um4X1A=
-X-Received: by 2002:ac8:7f8d:: with SMTP id z13mr7666763qtj.351.1641997177140;
-        Wed, 12 Jan 2022 06:19:37 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzjFxdoD0QrQx5DpD7pU9x1/Oyy/Nup6Z2PvrjWO0HaoIAuoWlLvV5MpPTYJEEdSMQKI2VVcg==
-X-Received: by 2002:ac8:7f8d:: with SMTP id z13mr7666741qtj.351.1641997176928;
-        Wed, 12 Jan 2022 06:19:36 -0800 (PST)
-Received: from localhost (net-93-146-37-237.cust.vodafonedsl.it. [93.146.37.237])
-        by smtp.gmail.com with ESMTPSA id t9sm4462265qtw.48.2022.01.12.06.19.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jan 2022 06:19:36 -0800 (PST)
-Date:   Wed, 12 Jan 2022 15:19:33 +0100
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     robh@kernel.org
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com, evelyn.tsai@mediatek.com,
-        owen.peng@mediatek.com, devicetree@vger.kernel.org
-Subject: Re: [PATCH 0/6] introduce background radar support for mt7915 driver
-Message-ID: <Yd7jdaKTrTFDU36g@lore-desk>
-References: <cover.1641996493.git.lorenzo@kernel.org>
+        id S1354112AbiALO1P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jan 2022 09:27:15 -0500
+Received: from mga06.intel.com ([134.134.136.31]:18005 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1354104AbiALO1O (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jan 2022 09:27:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1641997634; x=1673533634;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=70f07ZC28IPZ2habVcLvcewJJFq9+Hjoq0AtWrfBIuE=;
+  b=Z0+CnTcUEUmNb1i7cH94zQoUm6u48lEXFlKoJwYjmoT8Qb2oSsdvCgnM
+   tmjNJpz2Ns8rmFuTCINhc9yYqN4udRT7HxG2wp1/C1zvGNpfa6hR3u90W
+   gc/9BhPVLMNjEXjznVolkOzHNDGGBsF44V//6NekImIuhXEwahvxdfUpl
+   VkNJQGpDTFmpNeXaboPXZtycvOqDfv6PkhPygjNnruFv8H+IEJDR42x+h
+   3Riy5/JaBFynEfG23peJMEN4zgwrBDNdrFowt0CmYPOG9SG2LuOfp9OYe
+   HIguvy8LnfP2GNNma5VC7Y28oM23Hw0d5iZZTWx2L6ImRlVriL4I5PQh/
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10224"; a="304482649"
+X-IronPort-AV: E=Sophos;i="5.88,282,1635231600"; 
+   d="scan'208";a="304482649"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2022 06:25:03 -0800
+X-IronPort-AV: E=Sophos;i="5.88,282,1635231600"; 
+   d="scan'208";a="529192853"
+Received: from frpiroth-mobl2.ger.corp.intel.com ([10.251.217.139])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2022 06:24:56 -0800
+Date:   Wed, 12 Jan 2022 16:24:52 +0200 (EET)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+cc:     "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>,
+        Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
+        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
+        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
+        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
+        haijun.liu@mediatek.com, amir.hanania@intel.com,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        mika.westerberg@linux.intel.com, moises.veleta@intel.com,
+        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
+        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com
+Subject: Re: [PATCH net-next v3 01/12] net: wwan: t7xx: Add control DMA
+ interface
+In-Reply-To: <Yd6+GjPLP2qCCEfv@smile.fi.intel.com>
+Message-ID: <b0cb18b-dc7b-9241-b21a-850d055d86@linux.intel.com>
+References: <20211207024711.2765-1-ricardo.martinez@linux.intel.com> <20211207024711.2765-2-ricardo.martinez@linux.intel.com> <a6325ef-e06e-c236-9d23-42fdb8b62747@linux.intel.com> <2b21bfa5-4b18-d615-b6ab-09ad97d73fe4@linux.intel.com>
+ <Yd6+GjPLP2qCCEfv@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="0ykbNUhxaDqGJ7Cu"
-Content-Disposition: inline
-In-Reply-To: <cover.1641996493.git.lorenzo@kernel.org>
+Content-Type: multipart/mixed; BOUNDARY="8323329-1622803756-1641997396=:1851"
+Content-ID: <9021e3ee-e380-b093-8c62-1f68ddb1aa90@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
---0ykbNUhxaDqGJ7Cu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+--8323329-1622803756-1641997396=:1851
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: 8BIT
+Content-ID: <cb2f909c-34ed-2212-4252-3e9f2769a3b8@linux.intel.com>
 
-> Introduce radar/CAC background detection support for mt7915 driver
-> Background radar/CAC detection allows to avoid the CAC downtime
-> switching on a different channel during CAC detection on the selected
-> radar channel.
+On Wed, 12 Jan 2022, Andy Shevchenko wrote:
 
-@Rob: I forgot to add devicetree ML in cc. Do I need to repost?
+> On Tue, Jan 11, 2022 at 08:55:58PM -0800, Martinez, Ricardo wrote:
+> > On 12/16/2021 3:08 AM, Ilpo Järvinen wrote:
+> > > On Mon, 6 Dec 2021, Ricardo Martinez wrote:
+> 
+> > > > +	if (req->entry.next == &ring->gpd_ring)
+> > > > +		return list_first_entry(&ring->gpd_ring, struct cldma_request, entry);
+> > > > +
+> > > > +	return list_next_entry(req, entry);
+> 
+> ...
+> 
+> > > > +	if (req->entry.prev == &ring->gpd_ring)
+> > > > +		return list_last_entry(&ring->gpd_ring, struct cldma_request, entry);
+> > > > +
+> > > > +	return list_prev_entry(req, entry);
+> 
+> ...
+> 
+> > > Wouldn't these two seems generic enough to warrant adding something like
+> > > list_next/prev_entry_circular(...) to list.h?
+> > 
+> > Agree, in the upcoming version I'm planning to include something like this
+> > to list.h as suggested:
+> 
+> I think you mean for next and prev, i.o.w. two helpers, correct?
+> 
+> > #define list_next_entry_circular(pos, ptr, member) \
+> 
+> >     ((pos)->member.next == (ptr) ? \
+> 
+> I believe this is list_entry_is_head().
 
-Regards,
-Lorenzo
+It takes .next so it's not the same as list_entry_is_head() and 
+list_entry_is_last() doesn't exist.
 
->=20
-> Lorenzo Bianconi (6):
->   mt76: mt7915: introduce mt7915_set_radar_background routine
->   mt76: mt7915: enable radar trigger on rdd2
->   mt76: mt7915: introduce rdd_monitor debugfs node
->   mt76: mt7915: report radar pattern if detected by rdd2
->   mt76: mt7915: enable radar background detection
->   dt-bindings:net:wireless:mediatek,mt76: add disable-radar-offchan
->=20
->  .../bindings/net/wireless/mediatek,mt76.yaml  |   9 ++
->  .../wireless/mediatek/mt76/mt76_connac_mcu.h  |   1 +
->  .../wireless/mediatek/mt76/mt7915/debugfs.c   |  55 +++++++++-
->  .../net/wireless/mediatek/mt76/mt7915/init.c  |  10 ++
->  .../net/wireless/mediatek/mt76/mt7915/main.c  |  50 +++++++++
->  .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 100 +++++++++++++++++-
->  .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  23 ++++
->  .../wireless/mediatek/mt76/mt7915/mt7915.h    |   7 ++
->  8 files changed, 253 insertions(+), 2 deletions(-)
->=20
-> --=20
-> 2.34.1
->=20
+-- 
+ i.
 
---0ykbNUhxaDqGJ7Cu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYd7jdQAKCRA6cBh0uS2t
-rM62AQDhDIo5diCYIgmmy9ShCe0wcJcDvIqK9/1+TCyi/4UbbwEAxMnkHqbcLog4
-A+6150t7SdBsjWm3KZeaqFPo/0rynwA=
-=HV3V
------END PGP SIGNATURE-----
-
---0ykbNUhxaDqGJ7Cu--
-
+> >     list_first_entry(ptr, typeof(*(pos)), member) : \
+> >     list_next_entry(pos, member))
+> 
+> 
+--8323329-1622803756-1641997396=:1851--
