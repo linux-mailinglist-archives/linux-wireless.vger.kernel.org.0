@@ -2,69 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD9A848CCDC
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 21:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C523848CE22
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jan 2022 22:59:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236887AbiALUIc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jan 2022 15:08:32 -0500
-Received: from mga09.intel.com ([134.134.136.24]:59452 "EHLO mga09.intel.com"
+        id S234010AbiALV6V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jan 2022 16:58:21 -0500
+Received: from mga02.intel.com ([134.134.136.20]:16029 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236213AbiALUI0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jan 2022 15:08:26 -0500
+        id S233907AbiALV6T (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 12 Jan 2022 16:58:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1642018106; x=1673554106;
+  t=1642024699; x=1673560699;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=+s0/voOvmg41pela59I7zYrMcQzpKUR7O3Ec3C9Xifc=;
-  b=RU8JqupdUSlhyw01TGnr5GvHlMN/haAQ/CoGrIVgQlYi77OVD/Ss2J/u
-   hu+elPoSrlmzJODR8QSWIp/49GX0o4chdcA2VQIremWCsxM+JWOYn51uZ
-   6eKEUKvDynrDhteP5VSKaQwFXck2H8+Wjt8RLZmjcL8UjTE3fmRqrKK57
-   SQKjGxzQixqBvqH5PJhAeR9P6bbeCP1JtmHUCas/aYez6uEFTEXb1YePe
-   ymhJ/G6CxiE2ujeHZ2KyV4fy7T4zSZWM0LQOmd/b0ekrKA79UvoYENUhR
-   GppGraIqJZ3+p81RqkBnVoGJnjt3v0+cJZFtSGbXVv6hZV/16Qrnt/zuv
+  bh=RidheGyui6xxspY+TESWCpGNUrp3LEyv3KhaqN6VVfs=;
+  b=RvoAedcUthbtLQuDNlC6TaolAFEw62gBMEir2EROqUsocFFqGPVIxZIO
+   uLqPYHMEOi3Woi9LcCO5Lz6DtTZzbxyDuO12ClEpSDWIpa8/236+HN85+
+   YkjPUnlf7iYPVbHobmpq1uuKZ6Jl8KUq/3U+e4UVctjEszx4d83u1lSRi
+   fjTB2YuOwa8NzNSlrVoEcdraXV3HWtbM5x2OQceKG3FslTr+QDe35rVwK
+   N2nv7mTbC0F24ClrfLDpdX1fyGKPhGlTYeZ98d68Q3s3DPjwqVZzYnQYs
+   GD2lmXiQ/rPgqNLEEvj8rbSo6NcSes0cVAazso4RekqeDyxBEMEiZxHe1
    g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10225"; a="243640698"
-X-IronPort-AV: E=Sophos;i="5.88,282,1635231600"; 
-   d="scan'208";a="243640698"
+X-IronPort-AV: E=McAfee;i="6200,9189,10225"; a="231204573"
+X-IronPort-AV: E=Sophos;i="5.88,284,1635231600"; 
+   d="scan'208";a="231204573"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2022 12:08:26 -0800
-X-IronPort-AV: E=Sophos;i="5.88,282,1635231600"; 
-   d="scan'208";a="515646023"
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2022 13:58:18 -0800
+X-IronPort-AV: E=Sophos;i="5.88,284,1635231600"; 
+   d="scan'208";a="515674487"
 Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.209.104.69]) ([10.209.104.69])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2022 12:08:25 -0800
-Message-ID: <61183e27-e83a-81b2-5f86-cedb39a50382@linux.intel.com>
-Date:   Wed, 12 Jan 2022 12:08:25 -0800
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2022 13:58:18 -0800
+Message-ID: <5b15709f-cbc6-d922-1151-4543dc5ffc1d@linux.intel.com>
+Date:   Wed, 12 Jan 2022 13:58:17 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.4.0
-Subject: Re: [PATCH net-next v3 01/12] net: wwan: t7xx: Add control DMA
- interface
+Subject: Re: [PATCH net-next v3 02/12] net: wwan: t7xx: Add core components
 Content-Language: en-US
 To:     =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
         kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
         ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
         m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
         linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
         haijun.liu@mediatek.com, amir.hanania@intel.com,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        mika.westerberg@linux.intel.com, moises.veleta@intel.com,
-        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
-        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com
+        andriy.shevchenko@linux.intel.com, dinesh.sharma@intel.com,
+        eliot.lee@intel.com, mika.westerberg@linux.intel.com,
+        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
+        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
+        sreehari.kancharla@intel.com
 References: <20211207024711.2765-1-ricardo.martinez@linux.intel.com>
- <20211207024711.2765-2-ricardo.martinez@linux.intel.com>
- <a6325ef-e06e-c236-9d23-42fdb8b62747@linux.intel.com>
- <2b21bfa5-4b18-d615-b6ab-09ad97d73fe4@linux.intel.com>
- <Yd6+GjPLP2qCCEfv@smile.fi.intel.com>
- <b0cb18b-dc7b-9241-b21a-850d055d86@linux.intel.com>
- <Yd7/se+LD1c1wiBA@smile.fi.intel.com>
- <b638aa4-5a1c-e6ad-5a85-d4c3298c4daf@linux.intel.com>
- <2fd0756d-9ca1-b124-ed18-5ab0bda4c91f@linux.intel.com>
- <d9abec0-47c1-b67f-cb5a-d9e7418642c6@linux.intel.com>
+ <20211207024711.2765-3-ricardo.martinez@linux.intel.com>
+ <db45c31-5041-5853-e88a-b1f76a1fb9a0@linux.intel.com>
 From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
-In-Reply-To: <d9abec0-47c1-b67f-cb5a-d9e7418642c6@linux.intel.com>
+In-Reply-To: <db45c31-5041-5853-e88a-b1f76a1fb9a0@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -72,76 +64,99 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On 1/12/2022 11:24 AM, Ilpo Järvinen wrote:
-> On Wed, 12 Jan 2022, Martinez, Ricardo wrote:
+On 12/16/2021 3:55 AM, Ilpo Järvinen wrote:
+...
 >
->> On 1/12/2022 10:16 AM, Ilpo Järvinen wrote:
->>> On Wed, 12 Jan 2022, Andy Shevchenko wrote:
->>>
->>>> On Wed, Jan 12, 2022 at 04:24:52PM +0200, Ilpo Järvinen wrote:
->>>>> On Wed, 12 Jan 2022, Andy Shevchenko wrote:
->>>>>> On Tue, Jan 11, 2022 at 08:55:58PM -0800, Martinez, Ricardo wrote:
->>>>>>> On 12/16/2021 3:08 AM, Ilpo Järvinen wrote:
->>>>>>>> On Mon, 6 Dec 2021, Ricardo Martinez wrote:
->>>>>>>>> +	if (req->entry.next == &ring->gpd_ring)
->>>>>>>>> +		return list_first_entry(&ring->gpd_ring, struct
->>>>>>>>> cldma_request, entry);
->>>>>>>>> +
->>>>>>>>> +	return list_next_entry(req, entry);
->>>>>> ...
->>>>>>
->>>>>>>>> +	if (req->entry.prev == &ring->gpd_ring)
->>>>>>>>> +		return list_last_entry(&ring->gpd_ring, struct
->>>>>>>>> cldma_request, entry);
->>>>>>>>> +
->>>>>>>>> +	return list_prev_entry(req, entry);
->>>>>> ...
->>>>>>
->>>>>>>> Wouldn't these two seems generic enough to warrant adding
->>>>>>>> something like
->>>>>>>> list_next/prev_entry_circular(...) to list.h?
->>>>>>> Agree, in the upcoming version I'm planning to include something
->>>>>>> like this
->>>>>>> to list.h as suggested:
->>>>>> I think you mean for next and prev, i.o.w. two helpers, correct?
->>>>>>
->>>>>>> #define list_next_entry_circular(pos, ptr, member) \
->>> One thing I missed earlier, the sigrature should instead of ptr have head:
->>> #define list_next_entry_circular(pos, head, member)
->>>
->>>>>>>       ((pos)->member.next == (ptr) ? \
->>>>>> I believe this is list_entry_is_head().
->>>>> It takes .next so it's not the same as list_entry_is_head() and
->>>>> list_entry_is_last() doesn't exist.
->>>> But we have list_last_entry(). So, what about
->>>>
->>>> list_last_entry() == pos ? first : next;
->>>>
->>>> and counterpart
->>>>
->>>> list_first_entry() == pos ? last : prev;
->>>>
->>>> ?
->>> Yes, although now that I think it more, using them implies the head
->>> element has to be always accessed. It might be marginally cache friendlier
->>> to use list_entry_is_head you originally suggested but get the next entry
->>> first:
->>> ({
->>> 	typeof(pos) next__ = list_next_entry(pos, member); \
->>> 	!list_entry_is_head(next__, head, member) ? next__ :
->>> list_next_entry(next__, member);
->>> })
->>> (This was written directly to email, entirely untested).
->>>
->>> Here, the head element would only get accessed when we really need to walk
->>> through it.
->> I'm not sure if list_next_entry() will work for the last element, what about
->> using list_is_last()?
-> Why wouldn't it? E.g., list_for_each_entry() does it for the last entry
-> before terminating the for loop.
+>> +	switch (reason) {
+>> +	case EXCEPTION_HS_TIMEOUT:
+>> +		dev_err(dev, "BOOT_HS_FAIL\n");
+>> +		break;
+>> +
+>> +	case EXCEPTION_EVENT:
+>> +		t7xx_fsm_broadcast_state(ctl, MD_STATE_EXCEPTION);
+>> +		t7xx_md_exception_handshake(ctl->md);
+>> +
+>> +		cnt = 0;
+>> +		while (cnt < FSM_MD_EX_REC_OK_TIMEOUT_MS / FSM_EVENT_POLL_INTERVAL_MS) {
+>> +			if (kthread_should_stop())
+>> +				return;
+>> +
+>> +			spin_lock_irqsave(&ctl->event_lock, flags);
+>> +			event = list_first_entry_or_null(&ctl->event_queue,
+>> +							 struct t7xx_fsm_event, entry);
+>> +			if (event) {
+>> +				if (event->event_id == FSM_EVENT_MD_EX) {
+>> +					fsm_del_kf_event(event);
+>> +				} else if (event->event_id == FSM_EVENT_MD_EX_REC_OK) {
+>> +					rec_ok = true;
+>> +					fsm_del_kf_event(event);
+>> +				}
+>> +			}
+>> +
+>> +			spin_unlock_irqrestore(&ctl->event_lock, flags);
+>> +			if (rec_ok)
+>> +				break;
+>> +
+>> +			cnt++;
+>> +			/* Try again after 20ms */
+>> +			msleep(FSM_EVENT_POLL_INTERVAL_MS);
+>> +		}
+>> +
+>> +		cnt = 0;
+>> +		while (cnt < FSM_MD_EX_PASS_TIMEOUT_MS / FSM_EVENT_POLL_INTERVAL_MS) {
+>> +			if (kthread_should_stop())
+>> +				return;
+>> +
+>> +			spin_lock_irqsave(&ctl->event_lock, flags);
+>> +			event = list_first_entry_or_null(&ctl->event_queue,
+>> +							 struct t7xx_fsm_event, entry);
+>> +			if (event && event->event_id == FSM_EVENT_MD_EX_PASS) {
+>> +				pass = true;
+>> +				fsm_del_kf_event(event);
+>> +			}
+>> +
+>> +			spin_unlock_irqrestore(&ctl->event_lock, flags);
+>> +
+>> +			if (pass)
+>> +				break;
+>> +			cnt++;
+>> +			/* Try again after 20ms */
+>> +			msleep(FSM_EVENT_POLL_INTERVAL_MS);
+>> +		}
+> It hurts me a bit to see so much code duplication with only that one
+> extra if branch + if condition right-hand sides being different. It would
+> seem like something that could be solved with a helper taking those two
+> things as parameters.
+>
+> I hope the ordering of FSM_EVENT_MD_EX, FSM_EVENT_MD_EX_REC_OK, and
+> FSM_EVENT_MD_EX_PASS is guaranteed by something. Otherwise, the event
+> being waited for might not become the first entry in the event_queue and
+> the loop just keeps waiting until timeout?
+>
+Ordering is guaranteed by the modem. Removing code duplication in the 
+next iteration.
 
-I wasn't sure about using container_of() on the head of the list, but I 
-see that it is not a problem.
+>> +void t7xx_fsm_clr_event(struct t7xx_fsm_ctl *ctl, enum t7xx_fsm_event_state event_id)
+>> +{
+>> +       struct device *dev = &ctl->md->t7xx_dev->pdev->dev;
+>> +       struct t7xx_fsm_event *event, *evt_next;
+>> +       unsigned long flags;
+>> +
+>> +       spin_lock_irqsave(&ctl->event_lock, flags);
+>> +       list_for_each_entry_safe(event, evt_next, &ctl->event_queue, entry) {
+>> +               dev_err(dev, "Unhandled event %d\n", event->event_id);
+>> +
+>> +               if (event->event_id == event_id)
+>> +                       fsm_del_kf_event(event);
+>> +       }
+> It seems that only events matching to event_id are removed from the
+> event_queue. Can that dev_err print the same event over and over again
+> (I'm assuming here multiple calls to t7xx_fsm_clr_event can occur) because
+> the other events still remaining in event_queue?
+>
+The purpose of this function is just to remove an event if present, it 
+is not relevant if there
 
-Would that still be preferred over the list_is_last() approach?
+were other events in the list, so I'll remove the dev_err.
+
 
