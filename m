@@ -2,124 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFF1548D68E
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 12:16:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2816748D6EC
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 12:50:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234107AbiAMLQx convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jan 2022 06:16:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48278 "EHLO
+        id S234273AbiAMLub (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jan 2022 06:50:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbiAMLQw (ORCPT
+        with ESMTP id S231260AbiAMLua (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jan 2022 06:16:52 -0500
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DEBCC06173F;
-        Thu, 13 Jan 2022 03:16:51 -0800 (PST)
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 4C16820004;
-        Thu, 13 Jan 2022 11:16:47 +0000 (UTC)
-Date:   Thu, 13 Jan 2022 12:16:45 +0100
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Alexander Aring <alex.aring@gmail.com>
-Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
-        linux-wpan - ML <linux-wpan@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Harry Morris <h.morris@cascoda.com>,
-        Varka Bhadram <varkabhadram@gmail.com>,
-        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
-        David Girault <david.girault@qorvo.com>,
-        Romuald Despres <romuald.despres@qorvo.com>,
-        Frederic Blain <frederic.blain@qorvo.com>,
-        Nicolas Schodet <nico@ni.fr.eu.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        "linux-wireless@vger.kernel.org Wireless" 
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [wpan-next v2 08/27] net: ieee802154: Drop symbol duration
- settings when the core does it already
-Message-ID: <20220113121645.434a6ef6@xps13>
-In-Reply-To: <CAB_54W5QU5JCtQYwvTKREd6ZeQWmC19LF4mj853U0Gz-mCObVQ@mail.gmail.com>
-References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
-        <20220112173312.764660-9-miquel.raynal@bootlin.com>
-        <CAB_54W5QU5JCtQYwvTKREd6ZeQWmC19LF4mj853U0Gz-mCObVQ@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Thu, 13 Jan 2022 06:50:30 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27E28C06173F;
+        Thu, 13 Jan 2022 03:50:30 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC6DB61982;
+        Thu, 13 Jan 2022 11:50:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2D2C36AE9;
+        Thu, 13 Jan 2022 11:50:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642074629;
+        bh=5f0a/xRY41Y6k3AVP6APcWpAYz/w3ntzIrhp4l6IuEc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=eIefB+vQ9n5nU42IW8t1/J4YrhdpbXA0kvRFzSkdRmB7OiCen0U91Dj9hZJhY/bMc
+         6jQZ6d8cBx2qR3Kf4fLezo6Jotu34w7SHPKnIX5YUV/+qaxd5RN1wnp//hA7zyFM+u
+         2zEEEePvXzjegrnpy77rXhwzABsc2SL+v4ML7y7Zx01MeEuaIVxbQfa33NrG3YmyQV
+         //W8ZV43PwLYNh39Z4PPmQ4iol1FpkkhZNdlh1vQ4kUkFgQsJJvXoE1mB92JVPOAYb
+         KbKEEHC/9Gp3f4nXHm5y+pyFpc42GycXlLuhALg5Um1lOXQm55AXXtT5dV9gwgb3tt
+         BjmYnYTQM5VoQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 02/31] staging: wfx: fix HIF API license
+References: <20220113085524.1110708-1-Jerome.Pouiller@silabs.com>
+        <20220113085524.1110708-3-Jerome.Pouiller@silabs.com>
+Date:   Thu, 13 Jan 2022 13:50:23 +0200
+In-Reply-To: <20220113085524.1110708-3-Jerome.Pouiller@silabs.com> (Jerome
+        Pouiller's message of "Thu, 13 Jan 2022 09:54:55 +0100")
+Message-ID: <877db3ua68.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Alexander,
+Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
 
-alex.aring@gmail.com wrote on Wed, 12 Jan 2022 17:26:14 -0500:
+> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+>
+> Apache-2.0 is not allowed in the kernel.
+>
+> Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+> ---
+>  drivers/staging/wfx/hif_api_cmd.h     | 2 +-
+>  drivers/staging/wfx/hif_api_general.h | 2 +-
+>  drivers/staging/wfx/hif_api_mib.h     | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/staging/wfx/hif_api_cmd.h b/drivers/staging/wfx/hif_=
+api_cmd.h
+> index b0aa13b23a51..b1829d01a5d9 100644
+> --- a/drivers/staging/wfx/hif_api_cmd.h
+> +++ b/drivers/staging/wfx/hif_api_cmd.h
+> @@ -1,4 +1,4 @@
+> -/* SPDX-License-Identifier: Apache-2.0 */
+> +/* SPDX-License-Identifier: GPL-2.0-only or Apache-2.0 */
 
-> Hi,
-> 
-> On Wed, 12 Jan 2022 at 12:33, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> >
-> > The core now knows how to set the symbol duration in a few cases, when
-> > drivers correctly advertise the protocols used on each channel. For
-> > these drivers, there is no more need to bother with symbol duration, so
-> > just drop the duplicated code.
-> >
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > ---
-> >  drivers/net/ieee802154/ca8210.c | 1 -
-> >  drivers/net/ieee802154/mcr20a.c | 2 --
-> >  2 files changed, 3 deletions(-)
-> >
-> > diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-> > index 82b2a173bdbd..d3a9e4fe05f4 100644
-> > --- a/drivers/net/ieee802154/ca8210.c
-> > +++ b/drivers/net/ieee802154/ca8210.c
-> > @@ -2977,7 +2977,6 @@ static void ca8210_hw_setup(struct ieee802154_hw *ca8210_hw)
-> >         ca8210_hw->phy->cca.mode = NL802154_CCA_ENERGY_CARRIER;
-> >         ca8210_hw->phy->cca.opt = NL802154_CCA_OPT_ENERGY_CARRIER_AND;
-> >         ca8210_hw->phy->cca_ed_level = -9800;
-> > -       ca8210_hw->phy->symbol_duration = 16 * 1000;
-> >         ca8210_hw->phy->lifs_period = 40;
-> >         ca8210_hw->phy->sifs_period = 12;
-> >         ca8210_hw->flags =
-> > diff --git a/drivers/net/ieee802154/mcr20a.c b/drivers/net/ieee802154/mcr20a.c
-> > index 8aa87e9bf92e..da2ab19cb5ee 100644
-> > --- a/drivers/net/ieee802154/mcr20a.c
-> > +++ b/drivers/net/ieee802154/mcr20a.c
-> > @@ -975,7 +975,6 @@ static void mcr20a_hw_setup(struct mcr20a_local *lp)
-> >
-> >         dev_dbg(printdev(lp), "%s\n", __func__);
-> >
-> > -       phy->symbol_duration = 16 * 1000;
-> >         phy->lifs_period = 40;
-> >         phy->sifs_period = 12;
-> >
-> > @@ -1010,7 +1009,6 @@ static void mcr20a_hw_setup(struct mcr20a_local *lp)
-> >         phy->current_page = 0;
-> >         /* MCR20A default reset value */
-> >         phy->current_channel = 20;
-> > -       phy->symbol_duration = 16 * 1000;
-> >         phy->supported.tx_powers = mcr20a_powers;
-> >         phy->supported.tx_powers_size = ARRAY_SIZE(mcr20a_powers);
-> >         phy->cca_ed_level = phy->supported.cca_ed_levels[75];  
-> 
-> What's about the atrf86230 driver?
+Is the Apache-2.0 license really mandatory? LICENSES/dual/Apache-2.0 is
+not really supportive.
 
-I couldn't find reliable information about what this meant:
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-	/* SUB:0 and BPSK:0 -> BPSK-20 */
-	/* SUB:1 and BPSK:0 -> BPSK-40 */
-	/* SUB:0 and BPSK:1 -> OQPSK-100/200/400 */
-	/* SUB:1 and BPSK:1 -> OQPSK-250/500/1000 */
-
-None of these comments match the spec so I don't know what to put
-there. If you know what these protocols are, I will immediately
-provide this information into the driver and ensure the core handles
-these durations properly before dropping the symbol_durations settings
-from the code.
-
-Thanks,
-Miquèl
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
