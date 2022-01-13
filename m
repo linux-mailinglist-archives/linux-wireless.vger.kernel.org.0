@@ -2,84 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D6D248E079
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 23:41:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9184548E08B
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 23:43:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238037AbiAMWlU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jan 2022 17:41:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34930 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233645AbiAMWlU (ORCPT
+        id S235301AbiAMWnn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jan 2022 17:43:43 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:39140 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S232512AbiAMWnn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jan 2022 17:41:20 -0500
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DA70C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jan 2022 14:41:20 -0800 (PST)
-Received: by mail-pg1-x544.google.com with SMTP id t32so1167158pgm.7
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jan 2022 14:41:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
-        b=BxjCybmWNCHok5NRHFT0dn0hGwk/X82A96HqWcIDphe0qARo7VNFg+nR2GAC1k6PZe
-         GaGEwflvKKfifYMjmeKuEOlaJ/zMyHUaZpVx3Kk6cP5OMFXAYN5ik00oQjQa7uKRy8eW
-         6ryV/aeDT1ehLBCSmlLzSgTel8Qn42PDsITXt0EbZ+WKlpVs5CyLTVBLT+3U99cGGmmJ
-         fIQOviFjASgnNpxyG1cYZs6M3Mwj2NN0mYlx+I/0Kjp0xDLchCI/0XJIp/USh3Qi9otC
-         nlF22oPMDFttv1+cCf3Sh2F6LqOFu1DwjEMv2uSrTHvqf+uuvGszwtv45uuFwMQmtikF
-         UFSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
-        b=NR2O40ytE3z3/1jvwUgS8w3cCVdqI36tIoEfrHawykpfZ612bb/3xinxsB8mlnjzok
-         qFM/NDmqChl4LXa0/HDjeBg7dGC4MoFYU82iKAvJP9dfr8r5aeU0XeMnSuANN87UKp7r
-         7a1P3Bw1VYJTtBWS2OUulRH789Tv2S/F8JL/htNWgHtFj7Jesre1o6hTkTb2ep0sSbS2
-         a8PhmlNQRgEX06+W/AI4eoERvLhw5WIo1WlFOh5vei1yOmLju7AT8rLMXR3MXttlmGKO
-         ywZ3ICIrI+eDCHhapSsM8cxnO6q4R1rXaJQyk9KLFAD81prmsk5ojDt5S308bJGB9TEj
-         XcLQ==
-X-Gm-Message-State: AOAM5339CMKSbrhnRBGS6KW5WtozTONR8y6EceHf4qYgY78qzxI2QKG7
-        j0mjB0ob4E0UGlTio5F3bhQJ9SBrEQhR0kWHtA8=
-X-Google-Smtp-Source: ABdhPJwgWMGT/I6QEVhVN3da3EerEoxwghi/dPKdh7kVnnojkESUpOnSZUikfVBX9MIC/24miHvgH5eo7N++nD8jhEw=
-X-Received: by 2002:a05:6a00:b55:b0:4c1:3512:d20b with SMTP id
- p21-20020a056a000b5500b004c13512d20bmr6166211pfo.12.1642113679566; Thu, 13
- Jan 2022 14:41:19 -0800 (PST)
+        Thu, 13 Jan 2022 17:43:43 -0500
+X-UUID: ffa7af9da401431e8acef053ad6e06a4-20220114
+X-UUID: ffa7af9da401431e8acef053ad6e06a4-20220114
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 69137826; Fri, 14 Jan 2022 06:43:41 +0800
+Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Fri, 14 Jan 2022 06:43:40 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb02.mediatek.inc
+ (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 14 Jan
+ 2022 06:43:39 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 14 Jan 2022 06:43:39 +0800
+From:   <sean.wang@mediatek.com>
+To:     <lorenzo.bianconi@redhat.com>
+CC:     <nbd@nbd.name>, <sean.wang@mediatek.com>,
+        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
+        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+        <Mark-YW.Chen@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
+        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <ted.huang@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <Stella.Chang@mediatek.com>, <Tom.Chou@mediatek.com>,
+        <steve.lee@mediatek.com>, <jsiuda@google.com>,
+        <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH 2/3] mt76: sdio: honor the largest Tx buffer the hardware can support
+Date:   Fri, 14 Jan 2022 06:43:38 +0800
+Message-ID: <1642113818-9675-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <Yd/sYYP1XJ3J8RuR@lore-desk--annotate>
+References: <Yd/sYYP1XJ3J8RuR@lore-desk--annotate>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:f38c:0:0:0:0 with HTTP; Thu, 13 Jan 2022 14:41:18
- -0800 (PST)
-Reply-To: mchristophdaniel@gmail.com
-From:   Marcus Galois <marcus.galois@gmail.com>
-Date:   Thu, 13 Jan 2022 23:41:18 +0100
-Message-ID: <CANqBaXXy_A4bhGL0xg4Hcp=5ZW53yiu5Ab_mjryyaXJwUK0RWA@mail.gmail.com>
-Subject: Good News Finally.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello friend.
+From: Sean Wang <sean.wang@mediatek.com>
 
-You might find it so difficult to remember me, though it is indeed a
-very long time, I am much delighted to contact you again after a long
-period of time, I remember you despite circumstances that made things
-not worked out as we projected then. I want to inform you that the
-transaction we're doing together then finally worked out and I decided
-to contact you and to let you know because of your tremendous effort
-to make things work out then.
+<snip>
+>> @@ -299,6 +301,17 @@ int mt76s_hw_init(struct mt76_dev *dev, struct
+>> sdio_func *func, int hw_ver)  }  EXPORT_SYMBOL_GPL(mt76s_hw_init);
+>>
+>> +u32 mt76s_get_xmit_buf_sz(struct mt76_dev *dev, u32 dev_max_len) {
+>> +	struct sdio_func *func = dev->sdio.func;
+>> +	u32 host_max_len = min_t(u32, func->card->host->max_req_size,
+>> +				 func->cur_blksize *
+>> +				 func->card->host->max_blk_count);
+>> +
+>> +	return min_t(u32, host_max_len, dev_max_len); }
+>> +EXPORT_SYMBOL_GPL(mt76s_get_xmit_buf_sz);
+>
+>I think we can squash this patch with the previous one and move the code above in mt76s_init(). Agree?
 
-Meanwhile I must inform you that I'm presently in Caribbean Island for
-numerous business negotiation with some partners. with my sincere
-heart i have decided to compensate you with USD$900,000 for your
-dedication then on our transaction, you tried so much that period and
-I appreciated your effort. I wrote a cheque/check on your name, as
-soon as you receive it, you let me know.
+these comments you have in the patchset all look fine to me, I will post v2 soon.
 
-Contact my secretary now on his email: mchristophdaniel@gmail.com
-Name: Mr. Christoph Daniel
-
-You are to forward to him your Name........ Address.......,Phone
-number......for shipment/dispatch of the cheque/Check to you
-
-Regards,
-Mr. Marcus Galois
+	Sean
+>
+>Regards,
+>Lorenzo
+>
+>> +
+>>  int mt76s_alloc_rx_queue(struct mt76_dev *dev, enum mt76_rxq_id qid)
+>> {
+>>	struct mt76_queue *q = &dev->q_rx[qid]; diff --git
+>> a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+>> b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+>> index a04cd2444247..9fcf507e09bd 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+>> @@ -254,7 +254,7 @@ static int mt76s_tx_run_queue(struct mt76_dev *dev, struct mt76_queue *q)
+>>		}
+>>
+>>		pad = roundup(e->skb->len, 4) - e->skb->len;
+>> -		if (len + e->skb->len + pad + 4 > MT76S_XMIT_BUF_SZ)
+>> +		if (len + e->skb->len + pad + 4 > dev->sdio.xmit_buf_sz)
+>>			break;
+>>
+>>		if (mt76s_tx_pick_quota(sdio, mcu, e->buf_sz, &pse_sz,
+>> --
+>> 2.25.1
+>>
+>
