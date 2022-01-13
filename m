@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BD7A48D4B0
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 10:49:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AB3348D4C2
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 10:49:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231215AbiAMJDL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jan 2022 04:03:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:54274 "EHLO
+        id S233556AbiAMJJI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jan 2022 04:09:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:46928 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232728AbiAMJDK (ORCPT
+        by vger.kernel.org with ESMTP id S230094AbiAMJJI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jan 2022 04:03:10 -0500
+        Thu, 13 Jan 2022 04:09:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1642064589;
+        s=mimecast20190719; t=1642064947;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=1mqmBL+C9EoY87rSv9X6H8gKMuL/4Q06aTTAYFVKzpI=;
-        b=h2Kz7gXo0FW3sMdJfEb9lATACtY7jx5/EKWILOLbPoRtMALhB/oPe0/cMWW80r86J2BrsT
-        4HsIAGEP+D9co6roAKMcG5zvUAo4h9OAc/VAFyr4W2wVkmyyTpP0wwyO+Z54XAPlhmlNPv
-        yM+BzzfqOXIZXJCmffva+XX/2Fm5OuU=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=5i+ykEDe6nWgdV5O3/8aCcNAbW20DKh9SpDiC8ZGos8=;
+        b=JKnqsHFmkuXqN3vlktrYfWABPeIeEbKiF8d1hnF84Yji4wq1eI1OuKm7ko+P3aD1yUzSq7
+        F4wdNQucobBt8k0iUYyrr8pJQkriGxqX0EpiNoUi1L5znHBHVxgitdDdmsUJdngYKM9OVS
+        P4qIeuTjyN9UoWX8B7LddkkkI/7FYnU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-65-qWgP5MgNPcS1T8F1_iMdSA-1; Thu, 13 Jan 2022 04:03:08 -0500
-X-MC-Unique: qWgP5MgNPcS1T8F1_iMdSA-1
-Received: by mail-wm1-f70.google.com with SMTP id a3-20020a05600c348300b0034a0dfc86aaso2869131wmq.6
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jan 2022 01:03:08 -0800 (PST)
+ us-mta-663-M9NQ-9AHOOSKHPWqzLQhng-1; Thu, 13 Jan 2022 04:09:04 -0500
+X-MC-Unique: M9NQ-9AHOOSKHPWqzLQhng-1
+Received: by mail-wr1-f70.google.com with SMTP id d20-20020adfa414000000b001c9207acbe3so210039wra.1
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Jan 2022 01:09:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=1mqmBL+C9EoY87rSv9X6H8gKMuL/4Q06aTTAYFVKzpI=;
-        b=CY4TmGaczMaKv2zrpHXPysVu9xPLqXgsf4vVbfhDKpUBVp0EpjFxmPjF9GJpnAbHkm
-         UPzeXgptFhfu61eaf2bGsaPH+5gy6P5MVd2HMR82a+DDyOZcVwZi2frthd/b1CX0QW8s
-         QK/FBIfQS/Lq0yq8yraYKISWDUdJ6xOHkEXVc2pLE/C/pZLViGIztsdCQ2Wl9BQAygmb
-         5mG6zpMJDHarxf4TFoFcfds4I5eqXTrBAbAmyrbHcu8GNlvUfL2F57ah+yPVIfBBIHza
-         IgDbcqR43s+X3NbQjtdS3XWSuPUk64ZKNEvfM4iGwAxeIg3lk7lcMNi1qbiapmnJdMlI
-         Z/Tw==
-X-Gm-Message-State: AOAM531dy7Leyz/RQLTS5bXEbTy6T1WQ1Zmhu0JwMv4qKn02PFS0vwrt
-        DosWrZT31jcpup+NPOFltOmOU6ijCPK6xjBCox+sdOkP4Ol9Klf+IsOuBXO5zQL6f8hfwN3E/Jo
-        LQOzFLHQZfBfBjNiSmmqF+K2BFw4=
-X-Received: by 2002:adf:cd92:: with SMTP id q18mr3027208wrj.705.1642064586789;
-        Thu, 13 Jan 2022 01:03:06 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJynf47rm6EnbVMm/rqE81wiQKddc4pAT6+vAyNI4ydsepmMXmyoL1xxq6SktqSaVnrxGzWdGQ==
-X-Received: by 2002:adf:cd92:: with SMTP id q18mr3027180wrj.705.1642064586525;
-        Thu, 13 Jan 2022 01:03:06 -0800 (PST)
+        bh=5i+ykEDe6nWgdV5O3/8aCcNAbW20DKh9SpDiC8ZGos8=;
+        b=dCxbJ2WaH5cPpyVWwGDePyUa3FGuSzUYqhBeeuoFFetbMM4QmdDYCjx+iOzJGpqLPG
+         rlYk0QVvRvWT+R4aNA6Xbpcljo31ezMPjxzvfa3rwWqjptbEgtZWL9NwBA+hokkRXshs
+         je/8hzfzUy2SSSSfe6IUdZhlGJrDA3vk5qS3GhaKbTafmhdASMu6xI6CNwD6Z2CP3brC
+         SCSXr4d9HgoKMLWHYmg1KZKrx5mPn9UHxLsPUSAh91dHkhA6Wh4XRvkZH9lzbrbu1SuJ
+         Q5B2RVjd2WjJEnW/o2VX/4QRFq5J3W2otvkGtj08H4LFGU5EjxjI+ItNWkRwXPaws3H3
+         UuhA==
+X-Gm-Message-State: AOAM531ODMNWmqzvMOQYFbKOiqp107jsQliJbHiW3ov6dkOz9WaUW+bx
+        T9lBq27PNpMNNhvOPtCCWOX0GJTHn9LIW+0O1QiltUKN9vxSWpd/gFazgPVG8k/fKhvX6v+txnM
+        xgzJjAs9uxj/fsGk7yqflX8xXNrg=
+X-Received: by 2002:a1c:a987:: with SMTP id s129mr9818546wme.161.1642064943433;
+        Thu, 13 Jan 2022 01:09:03 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxqVilqZ5CCJ1w5sQvZLvNFtzkj3cmxk9TlmmPD+fvbSM7UH4TReOF2vZy47/tH0z0pgzXbBA==
+X-Received: by 2002:a1c:a987:: with SMTP id s129mr9818518wme.161.1642064943151;
+        Thu, 13 Jan 2022 01:09:03 -0800 (PST)
 Received: from localhost (net-93-146-37-237.cust.vodafonedsl.it. [93.146.37.237])
-        by smtp.gmail.com with ESMTPSA id f5sm2044102wri.52.2022.01.13.01.03.05
+        by smtp.gmail.com with ESMTPSA id m12sm2443526wrp.49.2022.01.13.01.09.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jan 2022 01:03:06 -0800 (PST)
-Date:   Thu, 13 Jan 2022 10:03:03 +0100
+        Thu, 13 Jan 2022 01:09:02 -0800 (PST)
+Date:   Thu, 13 Jan 2022 10:09:00 +0100
 From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
 To:     sean.wang@mediatek.com
 Cc:     nbd@nbd.name, Soul.Huang@mediatek.com, YN.Chen@mediatek.com,
@@ -65,77 +65,199 @@ Cc:     nbd@nbd.name, Soul.Huang@mediatek.com, YN.Chen@mediatek.com,
         frankgor@google.com, jemele@google.com, abhishekpandit@google.com,
         shawnku@google.com, linux-wireless@vger.kernel.org,
         linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 3/3] mt76: mt7921s: run sleep mode by default
-Message-ID: <Yd/qxxa5NRB4Nh6a@lore-desk>
+Subject: Re: [PATCH 1/3] mt76: sdio: remove those unnecessary buffers in
+ sdio.xmit_buf
+Message-ID: <Yd/sLP8spK7S5M9U@lore-desk>
 References: <651a010d8ff888909b5b8363fa4b243aadc62d45.1642061035.git.objelf@gmail.com>
- <9025e5bd5212cab4bd72fd76d35b205980499056.1642061035.git.objelf@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="mm8FNAEshZDj3JtJ"
+        protocol="application/pgp-signature"; boundary="IaqNoFyvwuQdIVzk"
 Content-Disposition: inline
-In-Reply-To: <9025e5bd5212cab4bd72fd76d35b205980499056.1642061035.git.objelf@gmail.com>
+In-Reply-To: <651a010d8ff888909b5b8363fa4b243aadc62d45.1642061035.git.objelf@gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---mm8FNAEshZDj3JtJ
+--IaqNoFyvwuQdIVzk
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 > From: Sean Wang <sean.wang@mediatek.com>
 >=20
-> Apply sleep mode by default to reduce power consumption as possible.
+> We don't have to create a separate sdio.xmit_buf buffer for each queue.
+> Instead, we just need to create one, reuse it across all queues to reduce
+> memory consumption further.
 >=20
 > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 > ---
->  drivers/net/wireless/mediatek/mt76/mt7921/init.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
+>  drivers/net/wireless/mediatek/mt76/mt76.h        |  2 +-
+>  drivers/net/wireless/mediatek/mt76/mt7615/sdio.c | 15 ++++++---------
+>  drivers/net/wireless/mediatek/mt76/mt7921/sdio.c | 15 ++++++---------
+>  drivers/net/wireless/mediatek/mt76/sdio_txrx.c   | 15 ++++++---------
+>  4 files changed, 19 insertions(+), 28 deletions(-)
 >=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7921/init.c
-> index ad59ef9839dc..0166a5503aef 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> @@ -226,12 +226,8 @@ int mt7921_register_device(struct mt7921_dev *dev)
->  	dev->pm.idle_timeout =3D MT7921_PM_TIMEOUT;
->  	dev->pm.stats.last_wake_event =3D jiffies;
->  	dev->pm.stats.last_doze_event =3D jiffies;
-> -
-> -	/* TODO: mt7921s run sleep mode on default  */
-> -	if (mt76_is_mmio(&dev->mt76)) {
-> -		dev->pm.enable =3D true;
-> -		dev->pm.ds_enable =3D true;
-> -	}
-> +	dev->pm.enable =3D true;
-> +	dev->pm.ds_enable =3D true;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wire=
+less/mediatek/mt76/mt76.h
+> index 14f60fcb6a34..4029a2217397 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -507,7 +507,7 @@ struct mt76_sdio {
+> =20
+>  	struct work_struct stat_work;
+> =20
+> -	u8 *xmit_buf[IEEE80211_NUM_ACS + 2];
+> +	u8 *xmit_buf;
+> =20
+>  	struct sdio_func *func;
+>  	void *intr_data;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7615/sdio.c
+> index 71162befdae8..554160b0ea9a 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+> @@ -101,7 +101,7 @@ static int mt7663s_probe(struct sdio_func *func,
+>  	struct ieee80211_ops *ops;
+>  	struct mt7615_dev *dev;
+>  	struct mt76_dev *mdev;
+> -	int i, ret;
+> +	int ret;
+> =20
+>  	ops =3D devm_kmemdup(&func->dev, &mt7615_ops, sizeof(mt7615_ops),
+>  			   GFP_KERNEL);
+> @@ -140,14 +140,11 @@ static int mt7663s_probe(struct sdio_func *func,
+>  		goto error;
+>  	}
+> =20
+> -	for (i =3D 0; i < ARRAY_SIZE(mdev->sdio.xmit_buf); i++) {
+> -		mdev->sdio.xmit_buf[i] =3D devm_kmalloc(mdev->dev,
+> -						      MT76S_XMIT_BUF_SZ,
+> -						      GFP_KERNEL);
+> -		if (!mdev->sdio.xmit_buf[i]) {
+> -			ret =3D -ENOMEM;
+> -			goto error;
+> -		}
+> +	mdev->sdio.xmit_buf =3D devm_kmalloc(mdev->dev, MT76S_XMIT_BUF_SZ,
+> +					   GFP_KERNEL);
+> +	if (!mdev->sdio.xmit_buf) {
+> +		ret =3D -ENOMEM;
+> +		goto error;
+>  	}
 
-cool :)
-can you please rebase this patch ontop of the following one?
-Regards,
+I guess we can move buffer allocation in mt76s_init() and remove duplicated
+code in mt7663/mt7921.
+
+Reagards,
 Lorenzo
 
-https://patchwork.kernel.org/project/linux-wireless/patch/f6ad709b1a64152b5=
-955e71b7eef9f9c4c7f127e.1641893305.git.lorenzo@kernel.org/
-
 > =20
->  	if (mt76_is_sdio(&dev->mt76))
->  		hw->extra_tx_headroom +=3D MT_SDIO_TXD_SIZE + MT_SDIO_HDR_SIZE;
+>  	ret =3D mt76s_alloc_rx_queue(mdev, MT_RXQ_MAIN);
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7921/sdio.c
+> index 743b63f66efa..c58c14e28430 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+> @@ -121,7 +121,7 @@ static int mt7921s_probe(struct sdio_func *func,
+> =20
+>  	struct mt7921_dev *dev;
+>  	struct mt76_dev *mdev;
+> -	int ret, i;
+> +	int ret;
+> =20
+>  	mdev =3D mt76_alloc_device(&func->dev, sizeof(*dev), &mt7921_ops,
+>  				 &drv_ops);
+> @@ -154,14 +154,11 @@ static int mt7921s_probe(struct sdio_func *func,
+>  		goto error;
+>  	}
+> =20
+> -	for (i =3D 0; i < ARRAY_SIZE(mdev->sdio.xmit_buf); i++) {
+> -		mdev->sdio.xmit_buf[i] =3D devm_kmalloc(mdev->dev,
+> -						      MT76S_XMIT_BUF_SZ,
+> -						      GFP_KERNEL);
+> -		if (!mdev->sdio.xmit_buf[i]) {
+> -			ret =3D -ENOMEM;
+> -			goto error;
+> -		}
+> +	mdev->sdio.xmit_buf =3D devm_kmalloc(mdev->dev, MT76S_XMIT_BUF_SZ,
+> +					   GFP_KERNEL);
+> +	if (!mdev->sdio.xmit_buf) {
+> +		ret =3D -ENOMEM;
+> +		goto error;
+>  	}
+> =20
+>  	ret =3D mt76s_alloc_rx_queue(mdev, MT_RXQ_MAIN);
+> diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c b/drivers/net=
+/wireless/mediatek/mt76/sdio_txrx.c
+> index 488ad7734d85..a04cd2444247 100644
+> --- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+> +++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+> @@ -229,12 +229,11 @@ static int __mt76s_xmit_queue(struct mt76_dev *dev,=
+ u8 *data, int len)
+> =20
+>  static int mt76s_tx_run_queue(struct mt76_dev *dev, struct mt76_queue *q)
+>  {
+> -	int qid, err, nframes =3D 0, len =3D 0, pse_sz =3D 0, ple_sz =3D 0;
+> +	int err, nframes =3D 0, len =3D 0, pse_sz =3D 0, ple_sz =3D 0;
+>  	bool mcu =3D q =3D=3D dev->q_mcu[MT_MCUQ_WM];
+>  	struct mt76_sdio *sdio =3D &dev->sdio;
+>  	u8 pad;
+> =20
+> -	qid =3D mcu ? ARRAY_SIZE(sdio->xmit_buf) - 1 : q->qid;
+>  	while (q->first !=3D q->head) {
+>  		struct mt76_queue_entry *e =3D &q->entry[q->first];
+>  		struct sk_buff *iter;
+> @@ -262,20 +261,18 @@ static int mt76s_tx_run_queue(struct mt76_dev *dev,=
+ struct mt76_queue *q)
+>  					&ple_sz))
+>  			break;
+> =20
+> -		memcpy(sdio->xmit_buf[qid] + len, e->skb->data,
+> -		       skb_headlen(e->skb));
+> +		memcpy(sdio->xmit_buf + len, e->skb->data, skb_headlen(e->skb));
+>  		len +=3D skb_headlen(e->skb);
+>  		nframes++;
+> =20
+>  		skb_walk_frags(e->skb, iter) {
+> -			memcpy(sdio->xmit_buf[qid] + len, iter->data,
+> -			       iter->len);
+> +			memcpy(sdio->xmit_buf + len, iter->data, iter->len);
+>  			len +=3D iter->len;
+>  			nframes++;
+>  		}
+> =20
+>  		if (unlikely(pad)) {
+> -			memset(sdio->xmit_buf[qid] + len, 0, pad);
+> +			memset(sdio->xmit_buf + len, 0, pad);
+>  			len +=3D pad;
+>  		}
+>  next:
+> @@ -284,8 +281,8 @@ static int mt76s_tx_run_queue(struct mt76_dev *dev, s=
+truct mt76_queue *q)
+>  	}
+> =20
+>  	if (nframes) {
+> -		memset(sdio->xmit_buf[qid] + len, 0, 4);
+> -		err =3D __mt76s_xmit_queue(dev, sdio->xmit_buf[qid], len + 4);
+> +		memset(sdio->xmit_buf + len, 0, 4);
+> +		err =3D __mt76s_xmit_queue(dev, sdio->xmit_buf, len + 4);
+>  		if (err)
+>  			return err;
+>  	}
 > --=20
 > 2.25.1
 >=20
 
---mm8FNAEshZDj3JtJ
+--IaqNoFyvwuQdIVzk
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYd/qxwAKCRA6cBh0uS2t
-rET2AQCQobzcikTcuq/BEtdjFrocGaxYJ2gcUDNGrg/jvZGC1AEAxxOQFaeI1dOl
-lNegHjX9lDFExvmumSwGF/YgAShJGgQ=
-=5lz0
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYd/sLAAKCRA6cBh0uS2t
+rIt9AQC2z+vzZfUGRj9rx+Ye6hLuKiZ/ETuJQmP9wrR0E9PSTwD/RNUl08g0o4qr
+gRb0LE+/XZoZt5cwqGlVnLf7Ln14+QM=
+=Za6C
 -----END PGP SIGNATURE-----
 
---mm8FNAEshZDj3JtJ--
+--IaqNoFyvwuQdIVzk--
 
