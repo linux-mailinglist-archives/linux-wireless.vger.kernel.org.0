@@ -2,90 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8661E48DCB2
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 18:12:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB27F48DCBE
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 18:15:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231464AbiAMRMU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jan 2022 12:12:20 -0500
-Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.52]:52938 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229943AbiAMRMU (ORCPT
+        id S237003AbiAMRPB convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jan 2022 12:15:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46204 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234010AbiAMRO5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jan 2022 12:12:20 -0500
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.128])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id B21521A0085;
-        Thu, 13 Jan 2022 17:12:18 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 7EB3B780082;
-        Thu, 13 Jan 2022 17:12:18 +0000 (UTC)
-Received: from [192.168.1.115] (unknown [98.97.67.209])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id F06C313C2B0;
-        Thu, 13 Jan 2022 09:12:17 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com F06C313C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1642093938;
-        bh=nZGDcJEZ24/j/i8GbDGMRXUvTp6XWAkn4ZU4+JS2/9c=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=q+BkB+FCBZ27RuwItewFpJMs61utGsHzIgSkN1ARUZypnZjJu87W6aS2XF85V4B6t
-         GVoFRkCcAtaN4FYm5xoI9GFgtBKyJsInkV7GqavXegjJJmm9qF/5vPz7B6gUz2gZzp
-         PVnXngCokI62N2RxQPYPl3/T7MHl+NlgOMo/jWIk=
-Subject: Re: iwlwifi: AX201 not using 2 receive streams
-To:     Brandon Nielsen <nielsenb@jetfuse.net>,
-        linux-wireless@vger.kernel.org
-References: <3cb11500-6828-6ded-bebc-cdb6e1f97bc0@jetfuse.net>
- <521b0dba-5866-ff34-da5a-479bc95cc9d9@candelatech.com>
- <60724ae6-e8e2-183d-575a-0186e45c3fae@jetfuse.net>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <679864d0-25da-b3c7-b1da-c77deb52fd3a@candelatech.com>
-Date:   Thu, 13 Jan 2022 09:12:17 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        Thu, 13 Jan 2022 12:14:57 -0500
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7283C061574;
+        Thu, 13 Jan 2022 09:14:56 -0800 (PST)
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id C5D23C0003;
+        Thu, 13 Jan 2022 17:14:52 +0000 (UTC)
+Date:   Thu, 13 Jan 2022 18:14:51 +0100
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Alexander Aring <alex.aring@gmail.com>
+Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
+        linux-wpan - ML <linux-wpan@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Harry Morris <h.morris@cascoda.com>,
+        Varka Bhadram <varkabhadram@gmail.com>,
+        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
+        David Girault <david.girault@qorvo.com>,
+        Romuald Despres <romuald.despres@qorvo.com>,
+        Frederic Blain <frederic.blain@qorvo.com>,
+        Nicolas Schodet <nico@ni.fr.eu.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        "linux-wireless@vger.kernel.org Wireless" 
+        <linux-wireless@vger.kernel.org>
+Subject: Re: [wpan-next v2 23/27] net: mac802154: Add support for active
+ scans
+Message-ID: <20220113181451.6aa5e60a@xps13>
+In-Reply-To: <CAB_54W6bJ5oV1pTX03-xWaFohdyxrjy2WSa2kxp3rBzLqSo=UA@mail.gmail.com>
+References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
+        <20220112173312.764660-24-miquel.raynal@bootlin.com>
+        <CAB_54W6bJ5oV1pTX03-xWaFohdyxrjy2WSa2kxp3rBzLqSo=UA@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <60724ae6-e8e2-183d-575a-0186e45c3fae@jetfuse.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 8bit
-X-MDID: 1642093939-slmrbq4UF753
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/11/22 11:46 AM, Brandon Nielsen wrote:
-> On 1/8/22 3:22 PM, Ben Greear wrote:
->> On 1/8/22 12:50 PM, Brandon Nielsen wrote:
->>> I have a system with Intel AX201 not using 2 spatial streams in the RX (download) direction. TX (upload) functions as expected. I'm seeing similar behavior 
->>> with an AX200 system. I'm seeing the same behavior on 5.15.12 as I am with 5.16.0-rc8 so I didn't mark it as a regression. Windows works as expected.
->>>
->>> I have opened bug 215465[0] with some more detail.
->>>
->>> [0] - https://bugzilla.kernel.org/show_bug.cgi?id=215465
->>>
->>
->> We saw something similar with ax210, but only on 6E, in kernel 5.15.7+. On 5Ghz, it worked 2x2 as expected.
->> On a 5.15.0-rc something, it worked OK for us.
->>
->> We verified same firmware is used in both cases, but have not fully bisected the problem yet but we are
->> working on it.  In case you find the problem patch before us, please let me know!
->>
->> Thanks,
->> Ben
->>
-> 
-> I'm still seeing this as far back as 5.11.12, so I'm not convinced this is a regression. At least for the 5 GHz / 802.11ac case.
-> 
+Hi Alexander,
 
-Our engineer Chuck Rekierre bisected the problem we saw to a patch that came in as part of a stable patch.
+alex.aring@gmail.com wrote on Wed, 12 Jan 2022 18:16:11 -0500:
 
-Please see his revert patch: [PATCH] Revert "iwlwifi: mvm: disable RX-diversity in powersave"
-posted yesterday, and if you get a chance to test this, please let us know the results.
+> Hi,
+> 
+> On Wed, 12 Jan 2022 at 12:34, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> ...
+> > +static int mac802154_scan_send_beacon_req_locked(struct ieee802154_local *local)
+> > +{
+> > +       struct sk_buff *skb;
+> > +       int ret;
+> > +
+> > +       lockdep_assert_held(&local->scan_lock);
+> > +
+> > +       skb = alloc_skb(IEEE802154_BEACON_REQ_SKB_SZ, GFP_KERNEL);
+> > +       if (!skb)
+> > +               return -ENOBUFS;
+> > +
+> > +       ret = ieee802154_beacon_req_push(skb, &local->beacon_req);
+> > +       if (ret) {
+> > +               kfree_skb(skb);
+> > +               return ret;
+> > +       }
+> > +
+> > +       return drv_xmit_async(local, skb);  
+> 
+> I think you need to implement a sync transmit handling here.
+
+True.
+
+> And what
+> I mean is not using dryv_xmit_sync() (It is a long story and should
+> not be used, it's just that the driver is allowed to call bus api
+> functions which can sleep).
+
+Understood.
+
+> We don't have such a function yet (but I
+> think it can be implemented), you should wait until the transmission
+> is done. If we don't wait we fill framebuffers on the hardware while
+> the hardware is transmitting the framebuffer which is... bad.
+
+Do you already have something in mind?
+
+If I focus on the scan operation, it could be that we consider the
+queue empty, then we put this transfer, wait for completion and
+continue. But this only work for places where we know we have full
+control over what is transmitted (eg. during a scan) and not for all
+transfers. Would this fit your idea?
+
+Or do you want something more generic with some kind of an
+internal queue where we have the knowledge of what has been queued and
+a token to link with every xmit_done call that is made?
+
+I'm open to suggestions.
 
 Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Miquèl
