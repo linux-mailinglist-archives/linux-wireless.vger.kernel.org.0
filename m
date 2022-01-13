@@ -2,155 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE84148D541
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 11:15:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B1648D572
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 11:15:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233537AbiAMJwp convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jan 2022 04:52:45 -0500
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:35933 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232279AbiAMJwo (ORCPT
+        id S231605AbiAMKKu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jan 2022 05:10:50 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:45256 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231590AbiAMKKu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jan 2022 04:52:44 -0500
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id D6E90240007;
-        Thu, 13 Jan 2022 09:52:32 +0000 (UTC)
-Date:   Thu, 13 Jan 2022 10:52:31 +0100
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Alexander Aring <alex.aring@gmail.com>
-Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
-        linux-wpan - ML <linux-wpan@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Harry Morris <h.morris@cascoda.com>,
-        Varka Bhadram <varkabhadram@gmail.com>,
-        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
-        David Girault <david.girault@qorvo.com>,
-        Romuald Despres <romuald.despres@qorvo.com>,
-        Frederic Blain <frederic.blain@qorvo.com>,
-        Nicolas Schodet <nico@ni.fr.eu.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        "linux-wireless@vger.kernel.org Wireless" 
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [wpan-next v2 06/27] net: mac802154: Set the symbol duration
- automatically
-Message-ID: <20220113105231.4c1728fd@xps13>
-In-Reply-To: <CAB_54W68GQmsV70w0uUWvz8-V_Yf+FHfc23k2es53REqWMBY8Q@mail.gmail.com>
-References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
-        <20220112173312.764660-7-miquel.raynal@bootlin.com>
-        <CAB_54W68GQmsV70w0uUWvz8-V_Yf+FHfc23k2es53REqWMBY8Q@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Thu, 13 Jan 2022 05:10:50 -0500
+X-UUID: 070e4b9494684a01b23a5df5068794cd-20220113
+X-UUID: 070e4b9494684a01b23a5df5068794cd-20220113
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
+        (envelope-from <chui-hao.chiu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1184831195; Thu, 13 Jan 2022 18:10:31 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Thu, 13 Jan 2022 18:10:29 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 13 Jan 2022 18:10:29 +0800
+Message-ID: <2ab2731dc44494dbfe89363638cdcaf49351afbe.camel@mediatek.com>
+Subject: Re: [PATCH v2 3/5] mt76: mt7915: add support for MT7986
+From:   Peter Chiu <chui-hao.chiu@mediatek.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+CC:     Felix Fietkau <nbd@nbd.name>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Xing Song" <xing.song@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <bo.jiao@mediatek.com>
+Date:   Thu, 13 Jan 2022 18:10:29 +0800
+In-Reply-To: <Yd7ZKb7Qsh4lGA5E@lore-desk>
+References: <cover.1641901681.git.Bo.Jiao@mediatek.com>
+         <8b2098132192c0381e41ac78a47b7318d5c28b04.1641901681.git.Bo.Jiao@mediatek.com>
+         <Yd7ZKb7Qsh4lGA5E@lore-desk>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Alexander,
-
-alex.aring@gmail.com wrote on Wed, 12 Jan 2022 17:25:01 -0500:
-
-> Hi,
+On Wed, 2022-01-12 at 14:35 +0100, Lorenzo Bianconi wrote:
+> > 
+> > @@ -302,6 +316,15 @@ struct mt7915_dev {
+> >  		u8 table_mask;
+> >  		u8 n_agrt;
+> >  	} twt;
+> > +
+> > +	struct reset_control *rstc;
+> > +	void __iomem *dcm;
+> > +	void __iomem *sku;
+> > +
+> > +	struct {
+> > +		bool is_7975;
+> > +		bool is_7976;
+> > +	} adie[MT7986_MAX_ADIE_NUM];
 > 
-> On Wed, 12 Jan 2022 at 12:33, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> >
-> > Now that we have access to all the basic information to know which
-> > symbol duration should be applied, let's set the symbol duration
-> > automatically. The two locations that must call for the symbol duration
-> > to be set are:
-> > - when manually requesting a channel change though the netlink interface
-> > - at PHY creation, ieee802154_alloc_hw() already calls
-> >   ieee802154_change_channel() which will now update the symbol duration
-> >   accordingly.
-> >
-> > If an information is missing, the symbol duration is not touched, a
-> > debug message is eventually printed. This keeps the compatibility with
-> > the unconverted drivers for which it was too complicated for me to find
-> > their precise information. If they initially provided a symbol duration,
-> > it would be kept. If they don't, the symbol duration value is left
-> > untouched.
-> >
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > ---
-> >  include/net/cfg802154.h |  2 +
-> >  net/mac802154/cfg.c     |  1 +
-> >  net/mac802154/main.c    | 93 +++++++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 96 insertions(+)
-> >
-> > diff --git a/include/net/cfg802154.h b/include/net/cfg802154.h
-> > index 286709a9dd0b..52eefc4b5b4d 100644
-> > --- a/include/net/cfg802154.h
-> > +++ b/include/net/cfg802154.h
-> > @@ -455,4 +455,6 @@ static inline const char *wpan_phy_name(struct wpan_phy *phy)
-> >         return dev_name(&phy->dev);
-> >  }
-> >
-> > +void ieee802154_set_symbol_duration(struct wpan_phy *phy);
-> > +
-> >  #endif /* __NET_CFG802154_H */
-> > diff --git a/net/mac802154/cfg.c b/net/mac802154/cfg.c
-> > index 6969f1330ccd..ba57da07c08e 100644
-> > --- a/net/mac802154/cfg.c
-> > +++ b/net/mac802154/cfg.c
-> > @@ -113,6 +113,7 @@ int ieee802154_change_channel(struct wpan_phy *wpan_phy, u8 page, u8 channel)
-> >         if (!ret) {
-> >                 wpan_phy->current_page = page;
-> >                 wpan_phy->current_channel = channel;
-> > +               ieee802154_set_symbol_duration(wpan_phy);
-> >         }
-> >
-> >         return ret;  
-> 
-> We also need to do it in ieee802154_register_hw()?
+> do we really need it? Can we just read data from chip when necessary?
+> it is not
+> access in the hot-path, right?
+> I think it is easier and more readable.
 
-As you probably saw, my idea was to call for a channel change during
-the registration but you nacked that possibility so I'll indeed have
-to set the symbol duration manually there.
+Adie registers are inaccessible after wfsys power on so we need some
+places to store chip configuration.
+We will modify it to make it more readable.
++ u32 adie;
 
-> > diff --git a/net/mac802154/main.c b/net/mac802154/main.c
-> > index 77a4943f345f..88826c5aa4ba 100644
-> > --- a/net/mac802154/main.c
-> > +++ b/net/mac802154/main.c
-> > @@ -113,6 +113,99 @@ ieee802154_alloc_hw(size_t priv_data_len, const struct ieee802154_ops *ops)
-> >  }
-> >  EXPORT_SYMBOL(ieee802154_alloc_hw);
-> >
-> > +void ieee802154_set_symbol_duration(struct wpan_phy *phy)
-> > +{
-> > +       struct phy_page *page = &phy->supported.page[phy->current_page];
-> > +       struct phy_channels *chan;
-> > +       unsigned int chunk;
-> > +       u32 duration = 0;
-> > +
-> > +       for (chunk = 0; chunk < page->nchunks; chunk++) {
-> > +               if (page->chunk[chunk].channels & phy->current_channel)
+thanks,
+Peter
 
-.channels still being a bitfield, David allegedly reported that the
-above line should use "& BIT(phy->current_channel)".
-
-> > +                       break;
-> > +       }
-> > +
-> > +       if (chunk == page->nchunks)
-> > +               goto set_duration;
-> > +
-> > +       chan = &page->chunk[chunk];
-> > +       switch (chan->protocol) {
-> > +       case IEEE802154_BPSK_PHY:
-> > +               switch (chan->band) {
-> > +               case IEEE802154_868_MHZ_BAND:
-> > +                       /* 868 MHz BPSK 802.15.4-2003: 20 ksym/s */
-> > +                       duration = 50 * 1000;  
-> 
-> * NSEC_PER_USEC?
-
-Oh right, I grepped for USEC_TO_NSEC but the macro was named the other
-way around, thanks.
-
-Thanks,
-Miquèl
