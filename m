@@ -2,153 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DBB348D000
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 02:11:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D08F948D01D
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 02:25:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbiAMBLV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jan 2022 20:11:21 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:42612 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231266AbiAMBLJ (ORCPT
+        id S231300AbiAMBZ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jan 2022 20:25:29 -0500
+Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.52]:39822 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231290AbiAMBZZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jan 2022 20:11:09 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 20D1AtMU2031956, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 20D1AtMU2031956
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 13 Jan 2022 09:10:55 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Thu, 13 Jan 2022 09:10:55 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Thu, 13 Jan
- 2022 09:10:54 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
-Subject: [PATCH 2/2] rtw89: include subband type in channel params
-Date:   Thu, 13 Jan 2022 09:10:42 +0800
-Message-ID: <20220113011042.6705-2-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220113011042.6705-1-pkshih@realtek.com>
-References: <20220113011042.6705-1-pkshih@realtek.com>
+        Wed, 12 Jan 2022 20:25:25 -0500
+X-Greylist: delayed 512 seconds by postgrey-1.27 at vger.kernel.org; Wed, 12 Jan 2022 20:25:25 EST
+Received: from dispatch1-us1.ppe-hosted.com (localhost.localdomain [127.0.0.1])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 6B101277DE
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Jan 2022 01:16:52 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.132])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 6BAF71A0068
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Jan 2022 01:16:50 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 4B22E500077
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Jan 2022 01:16:50 +0000 (UTC)
+Received: from ct524-freya.jbr.candelatech.com. (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id A24C713C2B0;
+        Wed, 12 Jan 2022 17:16:49 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com A24C713C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1642036609;
+        bh=u6BWvetPQcuyHWQ7ixuGV3LAgYOBFjh34u/bUXUVoyE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mkqM8Ym+9H/LkAEJp8RpFRD3Wae4RAUKhNJq3PpeHuIKEAWVBsg82et1Rbhwo/5WK
+         BL1hAr3rNKnTc+8+eAkSyc/BYuOCmFp9ZLgPrJBg1A5maOSnNZIvb/VTJtzYng26vJ
+         Mp4+u33R7ni0f6A/WMutTuVnBtBLzzc/D/OlmA/s=
+From:   chuck.smileyrekiere@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Chuck SmileyRekiere <chuck.smileyrekiere@candelatech.com>
+Subject: [PATCH] Revert "iwlwifi: mvm: disable RX-diversity in powersave"
+Date:   Wed, 12 Jan 2022 17:16:46 -0800
+Message-Id: <20220113011646.38569-1-chuck.smileyrekiere@candelatech.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 01/13/2022 00:56:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEvMTIgpFWkyCAxMDowMDowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+Content-Transfer-Encoding: 8bit
+X-MDID: 1642036610-7ootQilsisUU
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Chuck SmileyRekiere <chuck.smileyrekiere@candelatech.com>
 
-Make stuffs related to channel be collected in channel_params,
-and encapsulate the corresponding decision in get_channel_params().
-Then, functions that takes channel_params can also notice subband type.
+This reverts commit b94d328763785738d052d176c345d8cc9d999e9a.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+The number of rx spatial streams would not go to 2 spatial streams
+when testing on WiFi 6E AX210 radios. Reverting this commit allows
+for the WiFi 6E AX210 radios to go to 2 spatial streams. The issue
+only showed up when testing on WiFi 6E.
+
+Signed-off-by: Chuck SmileyRekiere <chuck.smileyrekiere@candelatech.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 34 +++++++++++++----------
- drivers/net/wireless/realtek/rtw89/core.h |  1 +
- 2 files changed, 20 insertions(+), 15 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/utils.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index e7ca3db4b4cf5..805c9c0e57e55 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -230,6 +230,7 @@ static void rtw89_get_channel_params(struct cfg80211_chan_def *chandef,
- 	u8 bandwidth = RTW89_CHANNEL_WIDTH_20;
- 	u8 primary_chan_idx = 0;
- 	u8 band;
-+	u8 subband;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+index 941cce77a5b2..acceb4069f54 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+@@ -446,9 +446,6 @@ bool iwl_mvm_rx_diversity_allowed(struct iwl_mvm *mvm,
  
- 	center_chan = channel->hw_value;
- 	primary_freq = channel->center_freq;
-@@ -289,11 +290,28 @@ static void rtw89_get_channel_params(struct cfg80211_chan_def *chandef,
- 		break;
- 	}
+ 	lockdep_assert_held(&mvm->mutex);
  
-+	switch (center_chan) {
-+	default:
-+	case 1 ... 14:
-+		subband = RTW89_CH_2G;
-+		break;
-+	case 36 ... 64:
-+		subband = RTW89_CH_5G_BAND_1;
-+		break;
-+	case 100 ... 144:
-+		subband = RTW89_CH_5G_BAND_3;
-+		break;
-+	case 149 ... 177:
-+		subband = RTW89_CH_5G_BAND_4;
-+		break;
-+	}
-+
- 	chan_param->center_chan = center_chan;
- 	chan_param->primary_chan = channel->hw_value;
- 	chan_param->bandwidth = bandwidth;
- 	chan_param->pri_ch_idx = primary_chan_idx;
- 	chan_param->band_type = band;
-+	chan_param->subband_type = subband;
- }
- 
- void rtw89_set_channel(struct rtw89_dev *rtwdev)
-@@ -320,21 +338,7 @@ void rtw89_set_channel(struct rtw89_dev *rtwdev)
- 	hal->prev_primary_channel = hal->current_primary_channel;
- 	hal->current_primary_channel = ch_param.primary_chan;
- 	hal->current_band_type = ch_param.band_type;
+-	if (iwlmvm_mod_params.power_scheme != IWL_POWER_SCHEME_CAM)
+-		return false;
 -
--	switch (center_chan) {
--	case 1 ... 14:
--		hal->current_subband = RTW89_CH_2G;
--		break;
--	case 36 ... 64:
--		hal->current_subband = RTW89_CH_5G_BAND_1;
--		break;
--	case 100 ... 144:
--		hal->current_subband = RTW89_CH_5G_BAND_3;
--		break;
--	case 149 ... 177:
--		hal->current_subband = RTW89_CH_5G_BAND_4;
--		break;
--	}
-+	hal->current_subband = ch_param.subband_type;
+ 	if (num_of_ant(iwl_mvm_get_valid_rx_ant(mvm)) == 1)
+ 		return false;
  
- 	rtw89_chip_set_channel_prepare(rtwdev, &bak);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index bec1e640cd71b..feffad4ffd68c 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -575,6 +575,7 @@ struct rtw89_channel_params {
- 	u8 bandwidth;
- 	u8 pri_ch_idx;
- 	u8 band_type;
-+	u8 subband_type;
- };
- 
- struct rtw89_channel_help_params {
 -- 
-2.25.1
+2.31.1
 
