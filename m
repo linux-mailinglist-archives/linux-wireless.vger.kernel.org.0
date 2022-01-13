@@ -2,75 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C9F148D5FD
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 11:47:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B92DA48D67C
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 12:12:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232218AbiAMKri (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jan 2022 05:47:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41366 "EHLO
+        id S231168AbiAMLM3 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jan 2022 06:12:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbiAMKrh (ORCPT
+        with ESMTP id S230151AbiAMLM2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jan 2022 05:47:37 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD369C06173F
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jan 2022 02:47:37 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6976AB82248
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jan 2022 10:47:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30502C36AE3;
-        Thu, 13 Jan 2022 10:47:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642070855;
-        bh=FPds3QceaWI8Z25hIqdBoVUbjVTiitOvWfTy5ub+GHc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=AcyikCFt3orVYyuHS098N2CUYWJ7im+6xHiu2a+sqCgmCd8lhhEMunL9iJuzV6qhS
-         aWGLbAdW5QEef2V3AA4+Z6Fp4MZMFQF2jX6GvxbAPiwjfWczqKdGgukxzLUzx9jRoI
-         OBOKjcRok4DKZkvZypkM7DVpCX+lbKV1zIoAHxqLGpXUKj6P2o0zPstUkuMDdNP2rA
-         AXORC675IDABLIU17KaI3SRR9IU0EkPdDmVqqsmPxfd0yt/jU9pr3+VSUQhh1kojup
-         J4O5b7vuqMIgTUVZfWjKiRuBhl+B/KIeVCEXqOawkvIMg5D69H/NPwYz3O1HMuBacD
-         4uRHhmNpgWjSA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org, lenb@kernel.org,
-        johannes@sipsolutions.net
-Subject: Re: [PATCH] iwlwifi: mvm: check if SAR GEO is supported before sending command
-References: <iwlwifi.20220113104217.0ae07c2712dc.I14e2985bfd7ddd8a8d83eb1869b800c0e7f30db4@changeid>
-Date:   Thu, 13 Jan 2022 12:47:32 +0200
-In-Reply-To: <iwlwifi.20220113104217.0ae07c2712dc.I14e2985bfd7ddd8a8d83eb1869b800c0e7f30db4@changeid>
-        (Luca Coelho's message of "Thu, 13 Jan 2022 10:42:40 +0200")
-Message-ID: <87bl0fud2z.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 13 Jan 2022 06:12:28 -0500
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF137C06173F;
+        Thu, 13 Jan 2022 03:12:27 -0800 (PST)
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 6E1D640002;
+        Thu, 13 Jan 2022 11:12:23 +0000 (UTC)
+Date:   Thu, 13 Jan 2022 12:12:22 +0100
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Alexander Aring <alex.aring@gmail.com>
+Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
+        linux-wpan - ML <linux-wpan@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Harry Morris <h.morris@cascoda.com>,
+        Varka Bhadram <varkabhadram@gmail.com>,
+        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
+        David Girault <david.girault@qorvo.com>,
+        Romuald Despres <romuald.despres@qorvo.com>,
+        Frederic Blain <frederic.blain@qorvo.com>,
+        Nicolas Schodet <nico@ni.fr.eu.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        "linux-wireless@vger.kernel.org Wireless" 
+        <linux-wireless@vger.kernel.org>
+Subject: Re: [wpan-next v2 01/27] net: mac802154: Split the set channel hook
+ implementation
+Message-ID: <20220113121222.159157ca@xps13>
+In-Reply-To: <CAB_54W7OjmvF5UipMk8PYDKrYmcq-2sXBNHLRpbqM6+a0YQ_Fg@mail.gmail.com>
+References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
+        <20220112173312.764660-2-miquel.raynal@bootlin.com>
+        <CAB_54W7uEQ5RJZxKT2qimoT=pbu8NsUhbZWZRWg+QjXDoTPFuQ@mail.gmail.com>
+        <CAB_54W7OjmvF5UipMk8PYDKrYmcq-2sXBNHLRpbqM6+a0YQ_Fg@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> writes:
+Hi Alexander,
 
-> From: Luca Coelho <luciano.coelho@intel.com>
->
-> Older hardware, for instance 3160, do not support SAR GEO offsets.  We
-> used to check for support before sending the command, but when moving
-> the command to the init phase, we lost the check.  This causes a
-> failure when initializing HW that do not support this command.
->
-> Fix that by adding a check before sending the command.  Additionally,
-> fix the caller so that it checks for the return value of the
-> iwl_mvm_sar_geo_init() function, which it was ignoring.
->
-> Fixes: db700bc35703 ("iwlwifi: mvm: check if SAR GEO is supported before sending command")
+alex.aring@gmail.com wrote on Wed, 12 Jan 2022 17:53:57 -0500:
 
-$ git show db700bc35703
-fatal: ambiguous argument 'db700bc35703': unknown revision or path not in the working tree.
+> Hi,
+> 
+> On Wed, 12 Jan 2022 at 17:30, Alexander Aring <alex.aring@gmail.com> wrote:
+> >
+> > Hi,
+> >
+> > On Wed, 12 Jan 2022 at 12:33, Miquel Raynal <miquel.raynal@bootlin.com> wrote:  
+> > >
+> > > As it is currently designed, the set_channel() cfg802154 hook
+> > > implemented in the softMAC is doing a couple of checks before actually
+> > > performing the channel change. However, as we enhance the support for
+> > > automatically setting the symbol duration during channel changes, it
+> > > will also be needed to ensure that the corresponding channel as properly
+> > > be selected at probe time. In order to verify this, we will need to  
+> >
+> > no, we don't set channels at probe time. We set the
+> > current_page/channel whatever the default is according to the hardware
+> > datasheet. I think this channel should be dropped and all drivers set  
+> 
+> s/channel/patch/
 
-No need to resend because of this, if you can provide the commit id I
-can fix the tag.
+I've dropped the patch and put an additional call to
+_set_symbol_duration() in the hw registration routine as discussed
+initially.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Thanks,
+Miquèl
