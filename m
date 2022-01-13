@@ -2,24 +2,24 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B92DA48D67C
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 12:12:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFF1548D68E
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jan 2022 12:16:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231168AbiAMLM3 convert rfc822-to-8bit (ORCPT
+        id S234107AbiAMLQx convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jan 2022 06:12:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47248 "EHLO
+        Thu, 13 Jan 2022 06:16:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230151AbiAMLM2 (ORCPT
+        with ESMTP id S229670AbiAMLQw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jan 2022 06:12:28 -0500
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF137C06173F;
-        Thu, 13 Jan 2022 03:12:27 -0800 (PST)
+        Thu, 13 Jan 2022 06:16:52 -0500
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DEBCC06173F;
+        Thu, 13 Jan 2022 03:16:51 -0800 (PST)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 6E1D640002;
-        Thu, 13 Jan 2022 11:12:23 +0000 (UTC)
-Date:   Thu, 13 Jan 2022 12:12:22 +0100
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 4C16820004;
+        Thu, 13 Jan 2022 11:16:47 +0000 (UTC)
+Date:   Thu, 13 Jan 2022 12:16:45 +0100
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Alexander Aring <alex.aring@gmail.com>
 Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
@@ -38,14 +38,13 @@ Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         "linux-wireless@vger.kernel.org Wireless" 
         <linux-wireless@vger.kernel.org>
-Subject: Re: [wpan-next v2 01/27] net: mac802154: Split the set channel hook
- implementation
-Message-ID: <20220113121222.159157ca@xps13>
-In-Reply-To: <CAB_54W7OjmvF5UipMk8PYDKrYmcq-2sXBNHLRpbqM6+a0YQ_Fg@mail.gmail.com>
+Subject: Re: [wpan-next v2 08/27] net: ieee802154: Drop symbol duration
+ settings when the core does it already
+Message-ID: <20220113121645.434a6ef6@xps13>
+In-Reply-To: <CAB_54W5QU5JCtQYwvTKREd6ZeQWmC19LF4mj853U0Gz-mCObVQ@mail.gmail.com>
 References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
-        <20220112173312.764660-2-miquel.raynal@bootlin.com>
-        <CAB_54W7uEQ5RJZxKT2qimoT=pbu8NsUhbZWZRWg+QjXDoTPFuQ@mail.gmail.com>
-        <CAB_54W7OjmvF5UipMk8PYDKrYmcq-2sXBNHLRpbqM6+a0YQ_Fg@mail.gmail.com>
+        <20220112173312.764660-9-miquel.raynal@bootlin.com>
+        <CAB_54W5QU5JCtQYwvTKREd6ZeQWmC19LF4mj853U0Gz-mCObVQ@mail.gmail.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -57,32 +56,70 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi Alexander,
 
-alex.aring@gmail.com wrote on Wed, 12 Jan 2022 17:53:57 -0500:
+alex.aring@gmail.com wrote on Wed, 12 Jan 2022 17:26:14 -0500:
 
 > Hi,
 > 
-> On Wed, 12 Jan 2022 at 17:30, Alexander Aring <alex.aring@gmail.com> wrote:
+> On Wed, 12 Jan 2022 at 12:33, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 > >
-> > Hi,
+> > The core now knows how to set the symbol duration in a few cases, when
+> > drivers correctly advertise the protocols used on each channel. For
+> > these drivers, there is no more need to bother with symbol duration, so
+> > just drop the duplicated code.
 > >
-> > On Wed, 12 Jan 2022 at 12:33, Miquel Raynal <miquel.raynal@bootlin.com> wrote:  
-> > >
-> > > As it is currently designed, the set_channel() cfg802154 hook
-> > > implemented in the softMAC is doing a couple of checks before actually
-> > > performing the channel change. However, as we enhance the support for
-> > > automatically setting the symbol duration during channel changes, it
-> > > will also be needed to ensure that the corresponding channel as properly
-> > > be selected at probe time. In order to verify this, we will need to  
+> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > ---
+> >  drivers/net/ieee802154/ca8210.c | 1 -
+> >  drivers/net/ieee802154/mcr20a.c | 2 --
+> >  2 files changed, 3 deletions(-)
 > >
-> > no, we don't set channels at probe time. We set the
-> > current_page/channel whatever the default is according to the hardware
-> > datasheet. I think this channel should be dropped and all drivers set  
+> > diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+> > index 82b2a173bdbd..d3a9e4fe05f4 100644
+> > --- a/drivers/net/ieee802154/ca8210.c
+> > +++ b/drivers/net/ieee802154/ca8210.c
+> > @@ -2977,7 +2977,6 @@ static void ca8210_hw_setup(struct ieee802154_hw *ca8210_hw)
+> >         ca8210_hw->phy->cca.mode = NL802154_CCA_ENERGY_CARRIER;
+> >         ca8210_hw->phy->cca.opt = NL802154_CCA_OPT_ENERGY_CARRIER_AND;
+> >         ca8210_hw->phy->cca_ed_level = -9800;
+> > -       ca8210_hw->phy->symbol_duration = 16 * 1000;
+> >         ca8210_hw->phy->lifs_period = 40;
+> >         ca8210_hw->phy->sifs_period = 12;
+> >         ca8210_hw->flags =
+> > diff --git a/drivers/net/ieee802154/mcr20a.c b/drivers/net/ieee802154/mcr20a.c
+> > index 8aa87e9bf92e..da2ab19cb5ee 100644
+> > --- a/drivers/net/ieee802154/mcr20a.c
+> > +++ b/drivers/net/ieee802154/mcr20a.c
+> > @@ -975,7 +975,6 @@ static void mcr20a_hw_setup(struct mcr20a_local *lp)
+> >
+> >         dev_dbg(printdev(lp), "%s\n", __func__);
+> >
+> > -       phy->symbol_duration = 16 * 1000;
+> >         phy->lifs_period = 40;
+> >         phy->sifs_period = 12;
+> >
+> > @@ -1010,7 +1009,6 @@ static void mcr20a_hw_setup(struct mcr20a_local *lp)
+> >         phy->current_page = 0;
+> >         /* MCR20A default reset value */
+> >         phy->current_channel = 20;
+> > -       phy->symbol_duration = 16 * 1000;
+> >         phy->supported.tx_powers = mcr20a_powers;
+> >         phy->supported.tx_powers_size = ARRAY_SIZE(mcr20a_powers);
+> >         phy->cca_ed_level = phy->supported.cca_ed_levels[75];  
 > 
-> s/channel/patch/
+> What's about the atrf86230 driver?
 
-I've dropped the patch and put an additional call to
-_set_symbol_duration() in the hw registration routine as discussed
-initially.
+I couldn't find reliable information about what this meant:
+
+	/* SUB:0 and BPSK:0 -> BPSK-20 */
+	/* SUB:1 and BPSK:0 -> BPSK-40 */
+	/* SUB:0 and BPSK:1 -> OQPSK-100/200/400 */
+	/* SUB:1 and BPSK:1 -> OQPSK-250/500/1000 */
+
+None of these comments match the spec so I don't know what to put
+there. If you know what these protocols are, I will immediately
+provide this information into the driver and ensure the core handles
+these durations properly before dropping the symbol_durations settings
+from the code.
 
 Thanks,
 Miquèl
