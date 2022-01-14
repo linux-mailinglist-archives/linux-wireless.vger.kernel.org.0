@@ -2,173 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B80B48E159
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jan 2022 01:02:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D1C648E166
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jan 2022 01:11:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235519AbiANACL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jan 2022 19:02:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52998 "EHLO
+        id S238384AbiANALP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jan 2022 19:11:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbiANACJ (ORCPT
+        with ESMTP id S238356AbiANALO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jan 2022 19:02:09 -0500
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE78C061574;
-        Thu, 13 Jan 2022 16:02:09 -0800 (PST)
-Received: by mail-wr1-x430.google.com with SMTP id x4so12934573wru.7;
-        Thu, 13 Jan 2022 16:02:09 -0800 (PST)
+        Thu, 13 Jan 2022 19:11:14 -0500
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 806ACC061574;
+        Thu, 13 Jan 2022 16:11:14 -0800 (PST)
+Received: by mail-pf1-x42a.google.com with SMTP id 78so1299427pfu.10;
+        Thu, 13 Jan 2022 16:11:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZqV85jqpMu5U1nKTqX4UJcEgtxfIvDGTlM48tzo5X7Y=;
-        b=EIIrabWBegwkS/JPAOLAHOYHs9RSrWWUA6evRPXmTL326ue9pEZaEodWsuaDfqjY9i
-         ONPVRBgt6yPzID5Ngq5N5D9FUdEVGl5OvtMEZqN7jcL+ufX8GT2lE54vsfJPBVqtNrJJ
-         1aXHyR0rryeGyF5udMGt5lL/7sGFnhKPAVRxtyCVR8CYrKgUh8/lVqidJG1c8YzghF3M
-         GqYrUkQ+OKnldw1ta6T8O6TArr2xS5Cr6CiZ6fhi7/MITmvgfOVqq0QypcFhnkyGYpym
-         ZWJrFmjBymh5bLvvipCbtbzQVU7ArYCFejZ8CBl903DGA0vcoroJR0mPeJdx2q1aVJ/Q
-         IsLQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Q8c93w5bjbPbNHYcCj6vw9R7FFzBe3yubr2S2ys7jow=;
+        b=biOjEtzRfto97MwOkEz/PpXG0fvyBTQ0N+cxP//GcbhQp28LT/Y5ql7bskgwNS1jgX
+         OnbLf/DPW7EkZlMTm0WDWBsu3V83gQEpScN70+042gbIfW093n5ECTDtYh4TqRf6CTAg
+         XsoZpdmvEX6/SKma12syQ8SdH9uTVqJvqq4j/EEZPS7c/S57zFICXVIc4RpcNpYJLo50
+         mWIfdEsTVSkfhukP0Egbi9kTGqqb6QGSpjMMYfknqA57Lpku/ocUPBsF1K4EYbGB7UHY
+         NmqpHEainnEhPY7m4GybLc6fR8ObbrfVq9QTMNIKeZW81P2NGkYd6QRKqERj1gi8hXYo
+         g/AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZqV85jqpMu5U1nKTqX4UJcEgtxfIvDGTlM48tzo5X7Y=;
-        b=nNnhQwjYn3DWCHigRiYE81TdoVMKwcYdEUJjT00aeuhgWplnEicG2A5y5v6oxTPrWj
-         lQQTHoCsBQMV6MebNYfFzruVWMcF5vvVSFguARpvgX2f0s+EoslQPAFqBfsXjD4+krQt
-         kV5dyUGNG3Sw6tA+AaCxPMeJZ6REGi4IIHjMpIMe/w4mytOev5Om8yxYtCW7tvwtaXKw
-         VnM4wLx3j+fhf9bqFvwJLalp+0RexFQwhC8yfLm27ULHj8p/rQ1Kx0W5ynkkL6s+C7Se
-         vs275zOrt/3ZfwUctYFFmrHpFdYgcIt4rF7NrurQkngamZyPjgnlNwpSJsuDuHj4jzon
-         vNfw==
-X-Gm-Message-State: AOAM530jZgWifgjhYkbK2z+kB2nW8oTwnvmk3OBEsn5sCRlbdTCVCzRI
-        0WHx+zlnuEj0pEKUn3pygo9OroTYXk57ZHQE35I=
-X-Google-Smtp-Source: ABdhPJzHrlUjzVq/4GeK1zeUzZMAakBxu2nvWzh3DaCwdyQ9py+KmfaYWM53+TaW8wfzHoMLCE22QtPY51FuTN+pdRE=
-X-Received: by 2002:adf:ec92:: with SMTP id z18mr217913wrn.207.1642118527999;
- Thu, 13 Jan 2022 16:02:07 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Q8c93w5bjbPbNHYcCj6vw9R7FFzBe3yubr2S2ys7jow=;
+        b=UKaigiMva/+vVoO2bYZyU1d4sQMfNuBbxdbOieHUOsMozO/6wzy4yuZ+cZWRCybQCp
+         5a3qkKWORyOAiFfniD8HJluNGfl9JzeUkDSJ6aVb/1v4jRA9fuRQg303z9RRCJuz/nVM
+         SlnzW3EuIK4CJ6rVs5UMiE8xbJ/9Jz6KiANsrW5p+TFvBC1VuF3cqcfC/48xlgzBXPf6
+         bnv7CFxApplkYa25gFbItEg/aOrIBEQf0TtHKiZuqBXz/kE9tE5n5z5/E5mHSrJe2aNJ
+         GzBJKKnJ0mBppMsMaJwuhxmLNfoC2VLkCzHtNhsx+KxQZC+dakh16bkNf+Vgfl1TGlK1
+         qFog==
+X-Gm-Message-State: AOAM532R2u0ppEQTG8JlvxwnhxOvBjbCnzUivqfRLovI3G40YNqT2Ixf
+        sxZrkOYE0H/q/5+njRz+U2E=
+X-Google-Smtp-Source: ABdhPJyPFMAh7V/OnW+Qtp4Ph8kQS2Au6c/+rRfbAH7HWNJim8E3B5vjaCiwPvdkfW2YW66czpZjWQ==
+X-Received: by 2002:a63:370b:: with SMTP id e11mr6057693pga.558.1642119073845;
+        Thu, 13 Jan 2022 16:11:13 -0800 (PST)
+Received: from localhost.localdomain (192.243.120.57.16clouds.com. [192.243.120.57])
+        by smtp.gmail.com with ESMTPSA id s21sm3966429pfg.75.2022.01.13.16.11.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Jan 2022 16:11:13 -0800 (PST)
+From:   davidcomponentone@gmail.com
+To:     m@bues.ch
+Cc:     davidcomponentone@gmail.com, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yang Guang <yang.guang5@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] ssb: fix boolreturn.cocci warning
+Date:   Fri, 14 Jan 2022 08:11:02 +0800
+Message-Id: <fa4f1fa737e715eb62a85229ac5f12bae21145cf.1642065490.git.davidcomponentone@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
- <20220112173312.764660-19-miquel.raynal@bootlin.com> <CAB_54W4PL1ty5XsqRoEKwsy-h8KL9gSGMK6N=HiWJDp6NHsb0A@mail.gmail.com>
- <20220113180709.0dade123@xps13>
-In-Reply-To: <20220113180709.0dade123@xps13>
-From:   Alexander Aring <alex.aring@gmail.com>
-Date:   Thu, 13 Jan 2022 19:01:56 -0500
-Message-ID: <CAB_54W4LdzH9=XS7-ZnxfyCMQFCTS-F5JkUmV+6HtWcCpUS-nQ@mail.gmail.com>
-Subject: Re: [wpan-next v2 18/27] net: mac802154: Handle scan requests
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
-        linux-wpan - ML <linux-wpan@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Harry Morris <h.morris@cascoda.com>,
-        Varka Bhadram <varkabhadram@gmail.com>,
-        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
-        David Girault <david.girault@qorvo.com>,
-        Romuald Despres <romuald.despres@qorvo.com>,
-        Frederic Blain <frederic.blain@qorvo.com>,
-        Nicolas Schodet <nico@ni.fr.eu.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        "linux-wireless@vger.kernel.org Wireless" 
-        <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Yang Guang <yang.guang5@zte.com.cn>
 
-On Thu, 13 Jan 2022 at 12:07, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
->
-> Hi Alexander,
->
-> alex.aring@gmail.com wrote on Wed, 12 Jan 2022 17:44:02 -0500:
->
-> > Hi,
-> >
-> > On Wed, 12 Jan 2022 at 12:33, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> > ...
-> > > +       return 0;
-> > > +}
-> > > diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
-> > > index c829e4a75325..40656728c624 100644
-> > > --- a/net/mac802154/tx.c
-> > > +++ b/net/mac802154/tx.c
-> > > @@ -54,6 +54,9 @@ ieee802154_tx(struct ieee802154_local *local, struct sk_buff *skb)
-> > >         struct net_device *dev = skb->dev;
-> > >         int ret;
-> > >
-> > > +       if (unlikely(mac802154_scan_is_ongoing(local)))
-> > > +               return NETDEV_TX_BUSY;
-> > > +
-> >
-> > Please look into the functions "ieee802154_wake_queue()" and
-> > "ieee802154_stop_queue()" which prevent this function from being
-> > called. Call stop before starting scanning and wake after scanning is
-> > done or stopped.
->
-> Mmmh all this is already done, isn't it?
-> - mac802154_trigger_scan_locked() stops the queue before setting the
->   promiscuous mode
-> - mac802154_end_of_scan() wakes the queue after resetting the
->   promiscuous mode to its original state
->
-> Should I drop the check which stands for an extra precaution?
->
+The coccinelle report
+./include/linux/ssb/ssb_driver_gige.h:98:8-9:
+WARNING: return of 0/1 in function
+'ssb_gige_must_flush_posted_writes' with return type bool
 
-no, I think then it should be a WARN_ON() more without any return
-(hopefully it will survive). This case should never happen otherwise
-we have a bug that we wake the queue when we "took control about
-transmissions" only.
-Change the name, I think it will be in future not only scan related.
-Maybe "mac802154_queue_stopped()". Everything which is queued from
-socket/upperlayer(6lowpan) goes this way.
+Return statements in functions returning bool should use true/false
+instead of 1/0.
 
->
-> But overall I think I don't understand well this part. What is
-> a bit foggy to me is why the (async) tx implementation does:
->
-> *Core*                           *Driver*
->
-> stop_queue()
-> drv_async_xmit() -------
->                         \------> do something
->                          ------- calls ieee802154_xmit_complete()
-> wakeup_queue() <--------/
->
-> So we actually disable the queue for transmitting. Why??
->
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
+Signed-off-by: David Yang <davidcomponentone@gmail.com>
+---
+ include/linux/ssb/ssb_driver_gige.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Because all transceivers have either _one_ transmit framebuffer or one
-framebuffer for transmit and receive one time. We need to report to
-stop giving us more skb's while we are busy with one to transmit.
-This all will/must be changed in future if there is hardware outside
-which is more powerful and the driver needs to control the flow here.
+diff --git a/include/linux/ssb/ssb_driver_gige.h b/include/linux/ssb/ssb_driver_gige.h
+index 15ba0df1ee0d..28c145a51e57 100644
+--- a/include/linux/ssb/ssb_driver_gige.h
++++ b/include/linux/ssb/ssb_driver_gige.h
+@@ -95,7 +95,7 @@ static inline bool ssb_gige_must_flush_posted_writes(struct pci_dev *pdev)
+ 	struct ssb_gige *dev = pdev_to_ssb_gige(pdev);
+ 	if (dev)
+ 		return (dev->dev->bus->chip_id == 0x4785);
+-	return 0;
++	return false;
+ }
+ 
+ /* Get the device MAC address */
+-- 
+2.30.2
 
-That ieee802154_xmit_complete() calls wakeup_queue need to be
-forbidden when we are in "synchronous transmit mode"/the queue is
-stopped. The synchronous transmit mode is not for any hotpath, it's
-for MLME and I think we also need a per phy lock to avoid multiple
-synchronous transmissions at one time. Please note that I don't think
-here only about scan operation, also for other possible MLME-ops.
-
-> > Also there exists a race which exists in your way and also the one
-> > mentioned above. There can still be some transmissions going on... We
-> > need to wait until "all possible" tx completions are done... to be
-> > sure there are really no transmissions going on. However we need to be
-> > sure that a wake cannot be done if a tx completion is done, we need to
-> > avoid it when the scan operation is ongoing as a workaround for this
-> > race.
-> >
-> > This race exists and should be fixed in future work?
->
-> Yep, this is true, do you have any pointers? Because I looked at the
-> code and for now it appears quite unpractical to add some kind of
-> flushing mechanism on that net queue. I believe we cannot use the netif
-> interface for that so we would have to implement our own mechanism in
-> the ieee802154 core.
-
-yes, we need some kind of "wait_for_completion()" and "complete()". We
-are currently lucky that we allow only one skb to be transmitted at
-one time. I think it is okay to put that on a per phy basis...
-
-- Alex
