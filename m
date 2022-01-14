@@ -2,94 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 736AA48F1F6
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jan 2022 22:18:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EAF348F32B
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jan 2022 00:49:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229726AbiANVSM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jan 2022 16:18:12 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76]:59435 "EHLO
-        gandalf.ozlabs.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbiANVSM (ORCPT
+        id S230301AbiANXsy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jan 2022 18:48:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37124 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229785AbiANXsy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jan 2022 16:18:12 -0500
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4JbDfn6TZnz4y4m;
-        Sat, 15 Jan 2022 08:18:09 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1642195090;
-        bh=aqd+9WcXOs53PGQiQ5d6p966oQvb4Ym651YYmVvLbjE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=YZax+LF7uTRPl6eHye+HHpO5u/NsJK5NeR25+UgQGkdIgCl8M6If5ejZ/zdbXmQ4n
-         IgiqMrXhU+GrjXWUyYdRB6/eOd27QZgEjzVri4xITP1hX1GfEYvRPqBbj7uSY6Tne8
-         X4qFW7VTTLglalr4h8qv+BwX5ppb2ocZSWFSqFHAjihuuqzPgj5FjF0wzSFm3T0KQc
-         +fMEApy1TvHY5TajYuK9E/Rl3PALgjyaEVFLglJ4LfZ1P98So95eXecCNpWxrnAfQY
-         +FESqhOf0QsDvjmEJ+m4AbjAwdXaVUMFAeYgQ1gGBwKGCPIB6r5ZY9gF8ILBtc5yhT
-         iEqP4EU5C7KJA==
-Date:   Sat, 15 Jan 2022 08:18:09 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lkp@intel.com
-Subject: Re: [PATCH wireless] MAINTAINERS: add common wireless and
- wireless-next trees
-Message-ID: <20220115081809.64c9fec5@canb.auug.org.au>
-In-Reply-To: <20220114133415.8008-1-kvalo@kernel.org>
-References: <20220114133415.8008-1-kvalo@kernel.org>
+        Fri, 14 Jan 2022 18:48:54 -0500
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C45F9C061574;
+        Fri, 14 Jan 2022 15:48:53 -0800 (PST)
+Received: by mail-wm1-x330.google.com with SMTP id q141-20020a1ca793000000b00347b48dfb53so8466959wme.0;
+        Fri, 14 Jan 2022 15:48:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ySZL7RoYaL29XosJreK0Gzamm/2aPB7hvnnCs2NFPcU=;
+        b=FUH7o3wjCqJ/PC6aR8HO4iTtGuCuMVDs3n9dhuZR5fdcly8iMQXLzhjpdo1ws2l72f
+         +e5HbaKHZBcCKj/Sf9GEx+Q8BHmM0V4LmTo0StOS7xjPI1XTSrxnH85uJ1YS+yJGHSgX
+         ToAzrdC7IljLfmujYdWh5UE4qZrCjglQvDLaH6grSSKgiFhYNTCgaKYwPp0u0bX7LX8y
+         lFAzKSmVxlEmFcDaaiCsy0G51A6j9fKF+48Ao9GxR33E1nedBx7kcA09oPH0dZeAYQNZ
+         XRREP3BsktzZsQH1FLicu3IG5V9KvVYiN7OtlRAPlAwyJ+yDltv179WRdrj0ZrlUZCyu
+         uC5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ySZL7RoYaL29XosJreK0Gzamm/2aPB7hvnnCs2NFPcU=;
+        b=4NlDKF6U970ie6DsiJ2Ztygq/spwWO4VIeNVapD96lBhka4+R+MsSqEavz/CeW5U9W
+         toQ5eP3OhptpG/otmQt+kGpI71LWZQqZcI30n7JIhIoxUkLL+nVpGG/j+dc8A7fzW0lC
+         HTlX+vF21WeM4NEOaIjAmRnmVhhsFvAdYWoeGFyJ9/SIVh6fEOc25CkGskn/lSOpAlZV
+         SW1Upbj8cAVHov76VJMcNuwXSJ1swpIxCJ6mCKguVaO5flOlBfpL+Y+YkVocnWIqPstJ
+         AR43aXPpTB6goSAC8kj8Hw0t7ejNyUBADNgPH8V7pAl3dW8uVwHkjwzS1QDeFT5JuGwC
+         AtzA==
+X-Gm-Message-State: AOAM53370B7/p8IEFYJdpnFDQG3mZu1rIAboLwta7j194DOz3WYohWgb
+        81tOosD4xM/xipcnzWBtlYD3HNtFBxg=
+X-Google-Smtp-Source: ABdhPJz0xmxj6j7iS5TecpFNyAuScZGxk31roquob9EYy8aC4AuLMydSXt38D7rgnBrPy+sBoUwatg==
+X-Received: by 2002:a7b:cb8a:: with SMTP id m10mr17641286wmi.165.1642204131880;
+        Fri, 14 Jan 2022 15:48:51 -0800 (PST)
+Received: from localhost.localdomain (dynamic-2a01-0c22-7684-7400-f22f-74ff-fe21-0725.c22.pool.telefonica.de. [2a01:c22:7684:7400:f22f:74ff:fe21:725])
+        by smtp.googlemail.com with ESMTPSA id i3sm5788533wmq.21.2022.01.14.15.48.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jan 2022 15:48:51 -0800 (PST)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     tony0620emma@gmail.com, kvalo@codeaurora.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Neo Jou <neojou@gmail.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Pkshih <pkshih@realtek.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH 0/4] rtw88: four small code-cleanups and refactorings
+Date:   Sat, 15 Jan 2022 00:48:21 +0100
+Message-Id: <20220114234825.110502-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/54f_YPH=tNa4afEtyMIegyt";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/54f_YPH=tNa4afEtyMIegyt
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hello,
 
-Hi Kalle,
+this series consists of four small patches which clean up and refactor
+existing code in preparation for SDIO support. Functionality is
+supposed to stay the same with these changes.
 
-On Fri, 14 Jan 2022 15:34:15 +0200 Kalle Valo <kvalo@kernel.org> wrote:
->
-> For easier maintenance we have decided to create common wireless and
-> wireless-next trees for all wireless patches. Old mac80211 and wireless-d=
-rivers
-> trees will not be used anymore.
->=20
-> While at it, add a wiki link to wireless drivers section and a patchwork =
-link
-> to 802.11, mac80211 and rfkill sections.
->=20
-> Acked-by: Johannes Berg <johannes@sipsolutions.net>
-> Signed-off-by: Kalle Valo <kvalo@kernel.org>
-> ---
->=20
-> Stephen, please use these new trees in linux-next from now on.
+The goal of the first two patches is to make it easier to understand
+the allowed values in the queue by using enum rtw_tx_queue_type instead
+of u8.
 
-Done from today.  I have set you and Johannes as contacts along with
-the linux-wireless mailing list.  Also, I assume you meant to mention
-that I should use the branches called "main".
+The third patch in this series moves the rtw_tx_queue_type code out of
+pci.c so it can be re-used by SDIO (and also USB) HCIs.
 
---=20
-Cheers,
-Stephen Rothwell
+The last patch is another small cleanup to improve readability of the
+code by using (already existing) macros instead of magic BIT(n).
 
---Sig_/54f_YPH=tNa4afEtyMIegyt
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+This series is built on top of v3 of my other series called "rtw88:
+prepare locking for SDIO support" [0].
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmHh6JEACgkQAVBC80lX
-0GykRwf/dF3ug/FXpM5DXFuCbr7Jxx/z5/BTp5RrYTaNiqiS8xtKDYsUUkvB+ErC
-EcFYzush/ySH743I9rH9TPJxuWn1qt7WOmfkfiWpbCF1+/e+25vD+JfF8E5xWpC1
-TE6//171OE6nX5KcksOpDjf0bg0jKaS6q8BoKByvwEg3NNvsJennJTRHHMeZSJU9
-u56jxF6Elb+WHe4rFSFeoPvBf5SOSk9Ti6nwT334Y3NHm+xKu0cbfbw6Mk8AWzRK
-vSeaOq3GdImBW1bYfUUaxR+Ohes6w/53xU9kpvCLZ1xYjamoWxWJy0OevGCBcGUp
-zoPG7pFdeNvgUwEKdw/4t3biAkDBMQ==
-=E95i
------END PGP SIGNATURE-----
+[0] https://lore.kernel.org/linux-wireless/20220108005533.947787-1-martin.blumenstingl@googlemail.com/
 
---Sig_/54f_YPH=tNa4afEtyMIegyt--
+
+Martin Blumenstingl (4):
+  rtw88: pci: Change type of rtw_hw_queue_mapping() and ac_to_hwq to
+    enum
+  rtw88: pci: Change queue datatype from u8 to enum rtw_tx_queue_type
+  rtw88: Move enum rtw_tx_queue_type mapping code to tx.{c,h}
+  rtw88: mac: Use existing interface mask macros in rtw_pwr_seq_parser()
+
+ drivers/net/wireless/realtek/rtw88/mac.c |  4 +-
+ drivers/net/wireless/realtek/rtw88/pci.c | 47 ++++++------------------
+ drivers/net/wireless/realtek/rtw88/tx.c  | 35 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/tx.h  |  3 ++
+ 4 files changed, 51 insertions(+), 38 deletions(-)
+
+-- 
+2.34.1
+
