@@ -2,76 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4655C48E204
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jan 2022 02:07:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78D2448E27D
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jan 2022 03:22:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235884AbiANBHp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jan 2022 20:07:45 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:42701 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbiANBHo (ORCPT
+        id S238784AbiANCWC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jan 2022 21:22:02 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:48258 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229863AbiANCWC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jan 2022 20:07:44 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 20E17WbG4011060, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 20E17WbG4011060
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 14 Jan 2022 09:07:32 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Fri, 14 Jan 2022 09:07:32 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Thu, 13 Jan 2022 17:07:32 -0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e]) by
- RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e%5]) with mapi id
- 15.01.2308.020; Fri, 14 Jan 2022 09:07:32 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     =?utf-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "kvalo@kernel.org" <kvalo@kernel.org>
-Subject: RE: [PATCH] rtw89: fix maybe uninitialized `qempty` variable
-Thread-Topic: [PATCH] rtw89: fix maybe uninitialized `qempty` variable
-Thread-Index: AQHYCGH6KhBne+/KM0O8iXkAMBkKl6xhtU3w
-Date:   Fri, 14 Jan 2022 01:07:32 +0000
-Message-ID: <fdee7063c0984c46bb374419fab606d2@realtek.com>
-References: <20220113094253.73370-1-ihuguet@redhat.com>
-In-Reply-To: <20220113094253.73370-1-ihuguet@redhat.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEvMTMg5LiL5Y2IIDEwOjQwOjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Thu, 13 Jan 2022 21:22:02 -0500
+X-UUID: 3b1fa1f097764781a3dae860d2592365-20220114
+X-UUID: 3b1fa1f097764781a3dae860d2592365-20220114
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+        (envelope-from <chui-hao.chiu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1390555901; Fri, 14 Jan 2022 10:21:59 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 14 Jan 2022 10:21:57 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 14 Jan 2022 10:21:58 +0800
+Message-ID: <57feb4a99c835e6a70496e8e935501bb12a393b3.camel@mediatek.com>
+Subject: Re: [PATCH v2 3/5] mt76: mt7915: add support for MT7986
+From:   Peter Chiu <chui-hao.chiu@mediatek.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+CC:     Felix Fietkau <nbd@nbd.name>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Xing Song" <xing.song@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <bo.jiao@mediatek.com>
+Date:   Fri, 14 Jan 2022 10:21:58 +0800
+In-Reply-To: <YeAvXzG6ueZWxoGa@lore-desk>
+References: <cover.1641901681.git.Bo.Jiao@mediatek.com>
+         <8b2098132192c0381e41ac78a47b7318d5c28b04.1641901681.git.Bo.Jiao@mediatek.com>
+         <Yd7ZKb7Qsh4lGA5E@lore-desk>
+         <2ab2731dc44494dbfe89363638cdcaf49351afbe.camel@mediatek.com>
+         <Yd/8mXumr25iESux@lore-desk> <YeAvXzG6ueZWxoGa@lore-desk>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+Content-Transfer-Encoding: 7bit
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IMONw7FpZ28gSHVndWV0IDxp
-aHVndWV0QHJlZGhhdC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBKYW51YXJ5IDEzLCAyMDIyIDU6
-NDMgUE0NCj4gVG86IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBDYzogUGtzaGlo
-IDxwa3NoaWhAcmVhbHRlay5jb20+OyBrdmFsb0BrZXJuZWwub3JnOyDDjcOxaWdvIEh1Z3VldCA8
-aWh1Z3VldEByZWRoYXQuY29tPg0KPiBTdWJqZWN0OiBbUEFUQ0hdIHJ0dzg5OiBmaXggbWF5YmUg
-dW5pbml0aWFsaXplZCBgcWVtcHR5YCB2YXJpYWJsZQ0KPiANCj4gQ2FsbCB0byBkbGVfZGZpX3Fl
-bXB0eSBtaWdodCBmYWlsLCBsZWF2aW5nIHFlbXB0eS5xZW1wdHkgdW50b3VjaGVkLCB3aGljaA0K
-PiBpcyBsYXR0ZXIgdXNlZCB0byBjb250cm9sIHRoZSBmb3IgbG9vcC4gSWYgdGhhdCBoYXBwZW5z
-LCBpdCdzIG5vdA0KPiBpbml0aWFsaXplZCBhbnl3aGVyZS4NCj4gDQo+IEluaXRpYWxpemUgaXQg
-c28gdGhlIGxvb3AgZG9lc24ndCBpdGVyYXRlIHVubGVzcyBpdCdzIG1vZGlmaWVkIGJ5IHRoZQ0K
-PiBjYWxsIHRvIGRsZV9kZmlfcWVtcHR5Lg0KPiANCj4gU2lnbmVkLW9mZi1ieTogw43DsWlnbyBI
-dWd1ZXQgPGlodWd1ZXRAcmVkaGF0LmNvbT4NCg0KQWNrZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtz
-aGloQHJlYWx0ZWsuY29tPg0KDQpbLi4uXQ0KDQo=
+On Thu, 2022-01-13 at 14:55 +0100, Lorenzo Bianconi wrote:
+> > > On Wed, 2022-01-12 at 14:35 +0100, Lorenzo Bianconi wrote:
+> > > > > 
+> > > > > @@ -302,6 +316,15 @@ struct mt7915_dev {
+> > > > >  		u8 table_mask;
+> > > > >  		u8 n_agrt;
+> > > > >  	} twt;
+> > > > > +
+> > > > > +	struct reset_control *rstc;
+> > > > > +	void __iomem *dcm;
+> > > > > +	void __iomem *sku;
+> > > > > +
+> > > > > +	struct {
+> > > > > +		bool is_7975;
+> > > > > +		bool is_7976;
+> > > > > +	} adie[MT7986_MAX_ADIE_NUM];
+> > > > 
+> > > > do we really need it? Can we just read data from chip when
+> > > > necessary?
+> > > > it is not
+> > > > access in the hot-path, right?
+> > > > I think it is easier and more readable.
+> > > 
+> > > Adie registers are inaccessible after wfsys power on so we need
+> > > some
+> > > places to store chip configuration.
+> > > We will modify it to make it more readable.
+> > > + u32 adie;
+> > 
+> > what I mean is just continue reading these values after the first
+> > time (that is
+> > in common for both approaches).
+> 
+> ok, sorry I misread your reply. Anyway it seems to me we need these
+> values just
+> in mt7986_wmac_enable() (or in routines called by
+> mt7986_wmac_enable). Right?
+> If so maybe we can just store them in a local struct in
+> mt7986_wmac_enable().
+> What do you think?
+> 
+OK, I will fix it in the next patch.
+
+thanks,
+Peter
+> Regards,
+> Lorenzo
+> 
+> > 
+> > Regards,
+> > Lorenzo
+> > 
+> > > 
+> > > thanks,
+> > > Peter
+> > > 
+> 
+> 
+
