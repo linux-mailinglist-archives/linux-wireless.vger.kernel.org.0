@@ -2,55 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A812948E103
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jan 2022 00:37:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B80B48E159
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jan 2022 01:02:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235630AbiAMXg2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jan 2022 18:36:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47234 "EHLO
+        id S235519AbiANACL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jan 2022 19:02:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232009AbiAMXg2 (ORCPT
+        with ESMTP id S229995AbiANACJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jan 2022 18:36:28 -0500
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0661C061574;
-        Thu, 13 Jan 2022 15:36:27 -0800 (PST)
-Received: by mail-wr1-x434.google.com with SMTP id o3so12837363wrh.10;
-        Thu, 13 Jan 2022 15:36:27 -0800 (PST)
+        Thu, 13 Jan 2022 19:02:09 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE78C061574;
+        Thu, 13 Jan 2022 16:02:09 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id x4so12934573wru.7;
+        Thu, 13 Jan 2022 16:02:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=tUo2cMqKLPbXZrnnNNPjbjaaZtZQwLD95xB0k3rASxQ=;
-        b=gMZMX9isgGpTMX8AibaOSaw54UrM35vzjEsGBke6kYbnzUmKwibcI2GzWWfAmmw/HP
-         0QD9bbdEJiexy52FxaNrH2ZCX/7Us1F6/gAT83jtEDLWkKmvfsAp6jLdLaPTOXOQPh/8
-         64N+dDalgGB3prMCjNYKl4m6PHcTpQhQgLuNKXVwuwj7SrOqrsyojk2nim2NhHduU5iY
-         7KE80Z3CMeqwmqDixWA0/34UB6L1U/VQFgFmLjENHIVi15Yb+B1wigk64pRK9/TTvoS4
-         LUXLavswuG2fRzAlWAd9+5tSGKLmNjbdtsho6QwXcIERQnBiodWNMWpFZ0Riz9R12c1K
-         VfqA==
+        bh=ZqV85jqpMu5U1nKTqX4UJcEgtxfIvDGTlM48tzo5X7Y=;
+        b=EIIrabWBegwkS/JPAOLAHOYHs9RSrWWUA6evRPXmTL326ue9pEZaEodWsuaDfqjY9i
+         ONPVRBgt6yPzID5Ngq5N5D9FUdEVGl5OvtMEZqN7jcL+ufX8GT2lE54vsfJPBVqtNrJJ
+         1aXHyR0rryeGyF5udMGt5lL/7sGFnhKPAVRxtyCVR8CYrKgUh8/lVqidJG1c8YzghF3M
+         GqYrUkQ+OKnldw1ta6T8O6TArr2xS5Cr6CiZ6fhi7/MITmvgfOVqq0QypcFhnkyGYpym
+         ZWJrFmjBymh5bLvvipCbtbzQVU7ArYCFejZ8CBl903DGA0vcoroJR0mPeJdx2q1aVJ/Q
+         IsLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=tUo2cMqKLPbXZrnnNNPjbjaaZtZQwLD95xB0k3rASxQ=;
-        b=PEjlep5t8DPKmnZd/CGsumat5YZbykvWxEAaI8NlOsM8rBSjV8Jrg54DnWLGVhRiNT
-         wxANLnQ0oT57DONUQL0zD3ZgeANT3VNHSEAmuwUTYp+HBEhEzKz66IeHob/VIN33Ul4g
-         +uGML+sd4z9jRx7y71AYHJDdFCjz6FdZwWBCfY8WuE2cqjipvv6dTlvByX/Apcml2WD4
-         +RVKzjPt8EYvmleTiYVFLYn1OUxVUVcVFw6txqFFe30kPCbT2A4kZyhYieazGA26UHf2
-         4WIyT92Ag/MZEep9wX0HI6lDd6E7FNsr7mx2i5/iEsqlBwe/QiedsWHxHIlZHr1V50aB
-         gLDg==
-X-Gm-Message-State: AOAM533IaMoIsIlWNqHxitMmZ2Me+kbqnSxWUpFwG5Vwb7L3QajRBazi
-        nnBono67RbzRpnxskana1LdXaxJmkeI3nTLLoEU=
-X-Google-Smtp-Source: ABdhPJykqZSfG79YfZBppPhjLTyecAz41qXyBbno5e2mN1phneKmbfBubz8nFgDoKll+/XFD9+9atJ0NyCbkwZo28cM=
-X-Received: by 2002:adf:d1c7:: with SMTP id b7mr866130wrd.81.1642116986593;
- Thu, 13 Jan 2022 15:36:26 -0800 (PST)
+        bh=ZqV85jqpMu5U1nKTqX4UJcEgtxfIvDGTlM48tzo5X7Y=;
+        b=nNnhQwjYn3DWCHigRiYE81TdoVMKwcYdEUJjT00aeuhgWplnEicG2A5y5v6oxTPrWj
+         lQQTHoCsBQMV6MebNYfFzruVWMcF5vvVSFguARpvgX2f0s+EoslQPAFqBfsXjD4+krQt
+         kV5dyUGNG3Sw6tA+AaCxPMeJZ6REGi4IIHjMpIMe/w4mytOev5Om8yxYtCW7tvwtaXKw
+         VnM4wLx3j+fhf9bqFvwJLalp+0RexFQwhC8yfLm27ULHj8p/rQ1Kx0W5ynkkL6s+C7Se
+         vs275zOrt/3ZfwUctYFFmrHpFdYgcIt4rF7NrurQkngamZyPjgnlNwpSJsuDuHj4jzon
+         vNfw==
+X-Gm-Message-State: AOAM530jZgWifgjhYkbK2z+kB2nW8oTwnvmk3OBEsn5sCRlbdTCVCzRI
+        0WHx+zlnuEj0pEKUn3pygo9OroTYXk57ZHQE35I=
+X-Google-Smtp-Source: ABdhPJzHrlUjzVq/4GeK1zeUzZMAakBxu2nvWzh3DaCwdyQ9py+KmfaYWM53+TaW8wfzHoMLCE22QtPY51FuTN+pdRE=
+X-Received: by 2002:adf:ec92:: with SMTP id z18mr217913wrn.207.1642118527999;
+ Thu, 13 Jan 2022 16:02:07 -0800 (PST)
 MIME-Version: 1.0
-References: <20220112173312.764660-1-miquel.raynal@bootlin.com> <20220112173312.764660-7-miquel.raynal@bootlin.com>
-In-Reply-To: <20220112173312.764660-7-miquel.raynal@bootlin.com>
+References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
+ <20220112173312.764660-19-miquel.raynal@bootlin.com> <CAB_54W4PL1ty5XsqRoEKwsy-h8KL9gSGMK6N=HiWJDp6NHsb0A@mail.gmail.com>
+ <20220113180709.0dade123@xps13>
+In-Reply-To: <20220113180709.0dade123@xps13>
 From:   Alexander Aring <alex.aring@gmail.com>
-Date:   Thu, 13 Jan 2022 18:36:15 -0500
-Message-ID: <CAB_54W79S1gtNJtq+wzCig82KqauMXXOtdZ1VaNH97xXQEmUCQ@mail.gmail.com>
-Subject: Re: [wpan-next v2 06/27] net: mac802154: Set the symbol duration automatically
+Date:   Thu, 13 Jan 2022 19:01:56 -0500
+Message-ID: <CAB_54W4LdzH9=XS7-ZnxfyCMQFCTS-F5JkUmV+6HtWcCpUS-nQ@mail.gmail.com>
+Subject: Re: [wpan-next v2 18/27] net: mac802154: Handle scan requests
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
         linux-wpan - ML <linux-wpan@vger.kernel.org>,
@@ -75,31 +77,98 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi,
 
-On Wed, 12 Jan 2022 at 12:33, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-...
-> +               case IEEE802154_4030KHZ_MEAN_PRF:
-> +                       duration = 3974;
-> +                       break;
-> +               case IEEE802154_62890KHZ_MEAN_PRF:
-> +                       duration = 1018;
-> +                       break;
-> +               default:
-> +                       break;
-> +               }
-> +               break;
-> +       default:
-> +               break;
-> +       }
-> +
-> +set_duration:
-> +       if (!duration)
-> +               pr_debug("Unknown PHY symbol duration, the driver should be fixed\n");
+On Thu, 13 Jan 2022 at 12:07, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+>
+> Hi Alexander,
+>
+> alex.aring@gmail.com wrote on Wed, 12 Jan 2022 17:44:02 -0500:
+>
+> > Hi,
+> >
+> > On Wed, 12 Jan 2022 at 12:33, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> > ...
+> > > +       return 0;
+> > > +}
+> > > diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
+> > > index c829e4a75325..40656728c624 100644
+> > > --- a/net/mac802154/tx.c
+> > > +++ b/net/mac802154/tx.c
+> > > @@ -54,6 +54,9 @@ ieee802154_tx(struct ieee802154_local *local, struct sk_buff *skb)
+> > >         struct net_device *dev = skb->dev;
+> > >         int ret;
+> > >
+> > > +       if (unlikely(mac802154_scan_is_ongoing(local)))
+> > > +               return NETDEV_TX_BUSY;
+> > > +
+> >
+> > Please look into the functions "ieee802154_wake_queue()" and
+> > "ieee802154_stop_queue()" which prevent this function from being
+> > called. Call stop before starting scanning and wake after scanning is
+> > done or stopped.
+>
+> Mmmh all this is already done, isn't it?
+> - mac802154_trigger_scan_locked() stops the queue before setting the
+>   promiscuous mode
+> - mac802154_end_of_scan() wakes the queue after resetting the
+>   promiscuous mode to its original state
+>
+> Should I drop the check which stands for an extra precaution?
+>
 
-Why should the driver be fixed? It's more this table which needs to be fixed?
+no, I think then it should be a WARN_ON() more without any return
+(hopefully it will survive). This case should never happen otherwise
+we have a bug that we wake the queue when we "took control about
+transmissions" only.
+Change the name, I think it will be in future not only scan related.
+Maybe "mac802154_queue_stopped()". Everything which is queued from
+socket/upperlayer(6lowpan) goes this way.
 
-> +       else
-> +               phy->symbol_duration = duration;
+>
+> But overall I think I don't understand well this part. What is
+> a bit foggy to me is why the (async) tx implementation does:
+>
+> *Core*                           *Driver*
+>
+> stop_queue()
+> drv_async_xmit() -------
+>                         \------> do something
+>                          ------- calls ieee802154_xmit_complete()
+> wakeup_queue() <--------/
+>
+> So we actually disable the queue for transmitting. Why??
+>
 
-Can you also set the lifs/sifs period after the duration is known?
+Because all transceivers have either _one_ transmit framebuffer or one
+framebuffer for transmit and receive one time. We need to report to
+stop giving us more skb's while we are busy with one to transmit.
+This all will/must be changed in future if there is hardware outside
+which is more powerful and the driver needs to control the flow here.
+
+That ieee802154_xmit_complete() calls wakeup_queue need to be
+forbidden when we are in "synchronous transmit mode"/the queue is
+stopped. The synchronous transmit mode is not for any hotpath, it's
+for MLME and I think we also need a per phy lock to avoid multiple
+synchronous transmissions at one time. Please note that I don't think
+here only about scan operation, also for other possible MLME-ops.
+
+> > Also there exists a race which exists in your way and also the one
+> > mentioned above. There can still be some transmissions going on... We
+> > need to wait until "all possible" tx completions are done... to be
+> > sure there are really no transmissions going on. However we need to be
+> > sure that a wake cannot be done if a tx completion is done, we need to
+> > avoid it when the scan operation is ongoing as a workaround for this
+> > race.
+> >
+> > This race exists and should be fixed in future work?
+>
+> Yep, this is true, do you have any pointers? Because I looked at the
+> code and for now it appears quite unpractical to add some kind of
+> flushing mechanism on that net queue. I believe we cannot use the netif
+> interface for that so we would have to implement our own mechanism in
+> the ieee802154 core.
+
+yes, we need some kind of "wait_for_completion()" and "complete()". We
+are currently lucky that we allow only one skb to be transmitted at
+one time. I think it is okay to put that on a per phy basis...
 
 - Alex
