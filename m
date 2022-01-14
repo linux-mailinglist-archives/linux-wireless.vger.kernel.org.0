@@ -2,171 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E66C48F0F8
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jan 2022 21:28:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0300648F179
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jan 2022 21:35:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244184AbiANU2O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jan 2022 15:28:14 -0500
-Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.183]:36834 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S244215AbiANU2O (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jan 2022 15:28:14 -0500
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.177])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 595C920061
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Jan 2022 20:28:12 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 1F55E680079
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Jan 2022 20:28:12 +0000 (UTC)
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 5DD4913C2B1;
-        Fri, 14 Jan 2022 12:28:11 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5DD4913C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1642192091;
-        bh=Dgw59BzgiLf4z04sz9gBa3wtV6UtokSCxSkGAnDsVJA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=rMsdEhTP2S0eraGTvI6ZqVd6W4UaoxP/qiMvTy4fad4rPPpjVFglhassotaRSlLs3
-         LQ1NHHVWs+pjImgSFeWUhf70p4A1qDQeEIF4lMSkDUkbSiW/U8w74WjdcIVq92zK+4
-         zKNEntUiXEM9vTH79eKbedlSuxevSekPmFKB+HF8=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] mt76: mt7921:  improve signal reporting.
-Date:   Fri, 14 Jan 2022 12:28:09 -0800
-Message-Id: <20220114202809.29249-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
+        id S240144AbiANUf1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jan 2022 15:35:27 -0500
+Received: from m43-7.mailgun.net ([69.72.43.7]:13765 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S244778AbiANUeM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Jan 2022 15:34:12 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1642192452; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=28CDXxcF4VAS96vslYOtTdFJVocsav6Ju95JUO7jCxI=;
+ b=t+yhjJPvRUKGvlRm8OX9RjHRMlF89wlx178KZAarRPTd2huWU8+A5WV77SyYg8Cd+JGqVvg7
+ O9L/ak6OS7U25Oljg61gEmftmn8lqGFAe73AdinaemrOwnqLvtdeLEYoDGLJUQotOfKxACjh
+ fHvG97QM0LfcJnOz32V+paOeVw0=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
+ 61e1de3b2b595aa3216d20c2 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 14 Jan 2022 20:34:03
+ GMT
+Sender: alokad=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 85843C43635; Fri, 14 Jan 2022 20:34:02 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6C5EFC4361C;
+        Fri, 14 Jan 2022 20:34:01 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1642192092-HB4prbY9TP-T
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 14 Jan 2022 12:34:01 -0800
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [v13 2/3] mac80211: MBSSID and EMA beacon handling in AP mode
+In-Reply-To: <ebb1ddc51e6e0eff436de50cbbddec77d61af495.camel@sipsolutions.net>
+References: <20211006040938.9531-1-alokad@codeaurora.org>
+ <20211006040938.9531-3-alokad@codeaurora.org>
+ <16a03353cee422340c8ac36240b1e088fd45802e.camel@sipsolutions.net>
+ <d2c980b72af1488282f18e8b1814b56c@codeaurora.org>
+ <ebb1ddc51e6e0eff436de50cbbddec77d61af495.camel@sipsolutions.net>
+Message-ID: <661712f782228b735ab65364932bb18e@codeaurora.org>
+X-Sender: alokad@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+On 2022-01-14 12:12, Johannes Berg wrote:
+> Hi!
+> 
+>> 
+>> > This function is called from ieee80211_beacon_get_ap(). That's called
+>> > from __ieee80211_beacon_get(), under RCU read lock.
+>> >
+>> > > +	for (i = 0; i < beacon->mbssid_ies->cnt; i++) {
+>> > > +		struct ieee80211_ema_bcns *bcn;
+>> > > +
+>> > > +		bcn = kzalloc(sizeof(*bcn), GFP_KERNEL);
+>> >
+>> > Therefore, you really cannot GFP_KERNEL allocate anything. But I really
+>> > only saw this because I went back to my comments on v12 where this was
+>> > still more obvious.
+>> >
+>> 
+>> Okay, I understand now that it is illegal because GFP_KERNEL is
+>> blocking.
+> 
+> Right.
+> 
+>> I thought of following:
+>> lock rcu -> get mbssid count first -> unlock rcu -> allocate memory.
+>> But in that case, will have again: lock -> dereference to get beacon
+>> snapshot.
+>> Beacon can change in between so new count might be wrong. In general
+>> sounds complicated and wrong.
+> 
+> Indeed. You could make it work (and count changing is highly unlikely!)
+> by going back and checking if the count was correct in the critical
+> section, and then going back if necessary (i.e. if it was wrong). But 
+> if
+> you do this, you should do something like this pseudo-code:
+> 
+> rcu_read_lock();
+> repeat:
+> calculated_size = calculate_size();
+> rcu_read_unlock();
+> 
+> alloc = kzalloc(calculated_size, GFP_KERNEL);
+> // omitting error handling
+> 
+> rcu_read_lock();
+> calculated_size = calculate_size();
+> if (ksize(alloc) < calculated_size)
+> 	goto repeat;
+> ...
+> 
+> 
+> i.e. note the ksize(), since allocations are rounded up. Even if the
+> count increased, you might not need a new allocation.
+> 
+> Also maybe anyway it'd make sense to allocate all of them together as 
+> an
+> array, rather than individual pointers for each beacon?
+> 
+> 
+>> I read that GFP_ATOMIC should be used sparingly, mainly for interrupt
+>> handlers etc.
+> 
+> I guess once every beacon is still fairly sparingly though :)
+> 
+> 
 
-Sum up individual chains to provide more accurate
-total power reporting.
+Thank you so much for the quick response, will enable the debug flags 
+henceforth.
 
-Use reported NSS to determine chains.
-
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
- drivers/net/wireless/mediatek/mt76/mt76.h     | 32 +++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 36 ++++++++++++-------
- 2 files changed, 55 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 3c0e2cda36acf..96587680b6fa4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1425,4 +1425,36 @@ mt76_packet_id_flush(struct mt76_dev *dev, struct mt76_wcid *wcid)
- 	idr_destroy(&wcid->pktid);
- }
- 
-+/* Estimated summing of dbm without resorting to log(10) business */
-+static inline int mt76_sum_sigs_2(int a, int b)
-+{
-+	int diff;
-+
-+	/* 0x80 means value-is-not-set */
-+	if (b == 0x80)
-+		return a;
-+
-+	if (a >= b) {
-+		/* a is largest value, add to it. */
-+		diff = a - b;
-+		if (diff == 0)
-+			return a + 3;
-+		else if (diff == 1)
-+			return a + 2;
-+		else if (diff == 2)
-+			return a + 1;
-+		return a;
-+	} else {
-+		/* b is largest value, add to it. */
-+		diff = b - a;
-+		if (diff == 0)
-+			return b + 3;
-+		else if (diff == 1)
-+			return b + 2;
-+		else if (diff == 2)
-+			return b + 1;
-+		return b;
-+	}
-+}
-+
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 609497a85942f..b8ce9d1e10cc9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -648,23 +648,10 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 		if (v0 & MT_PRXV_HT_AD_CODE)
- 			status->enc_flags |= RX_ENC_FLAG_LDPC;
- 
--		status->chains = mphy->antenna_mask;
- 		status->chain_signal[0] = to_rssi(MT_PRXV_RCPI0, v1);
- 		status->chain_signal[1] = to_rssi(MT_PRXV_RCPI1, v1);
- 		status->chain_signal[2] = to_rssi(MT_PRXV_RCPI2, v1);
- 		status->chain_signal[3] = to_rssi(MT_PRXV_RCPI3, v1);
--		status->signal = -128;
--		for (i = 0; i < hweight8(mphy->antenna_mask); i++) {
--			if (!(status->chains & BIT(i)) ||
--			    status->chain_signal[i] >= 0)
--				continue;
--
--			status->signal = max(status->signal,
--					     status->chain_signal[i]);
--		}
--
--		if (status->signal == -128)
--			status->flag |= RX_FLAG_NO_SIGNAL_VAL;
- 
- 		stbc = FIELD_GET(MT_PRXV_STBC, v0);
- 		gi = FIELD_GET(MT_PRXV_SGI, v0);
-@@ -679,10 +666,15 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 			fallthrough;
- 		case MT_PHY_TYPE_OFDM:
- 			i = mt76_get_rate(&dev->mt76, sband, i, cck);
-+			if (stbc)
-+				status->nss = 2;
-+			else
-+				status->nss = 1;
- 			break;
- 		case MT_PHY_TYPE_HT_GF:
- 		case MT_PHY_TYPE_HT:
- 			status->encoding = RX_ENC_HT;
-+			status->nss = i / 8 + 1;
- 			if (i > 31)
- 				return -EINVAL;
- 			break;
-@@ -745,6 +737,24 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 			if ((u8 *)rxd - skb->data >= skb->len)
- 				return -EINVAL;
- 		}
-+
-+		for (i = 0; i < status->nss; i++) {
-+			if (status->chain_signal[i] < 0)
-+				status->chains |= BIT(i);
-+		}
-+
-+		if (status->nss == 1) {
-+			status->signal = status->chain_signal[0];
-+		} else if (status->nss == 2) {
-+			status->signal = mt76_sum_sigs_2(status->chain_signal[0],
-+							 status->chain_signal[1]);
-+		} else {
-+			WARN_ON_ONCE(1); /* this driver is for only 2x2 AFAIK */
-+			status->signal = status->chain_signal[0];
-+		}
-+
-+		if (!status->chains)
-+			status->flag |= RX_FLAG_NO_SIGNAL_VAL;
- 	}
- 
- 	amsdu_info = FIELD_GET(MT_RXD4_NORMAL_PAYLOAD_FORMAT, rxd4);
--- 
-2.26.3
+With that, what would be a better way:
+(1) Making it work with pseudo code, still using GFP_KERNEL or
+(2) Changing to GFP_ATOMIC but otherwise keep the code fairly similar to 
+v13 (preferably allocating an array instead of separate pointers as you 
+suggested)?
 
