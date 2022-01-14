@@ -2,120 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDA0648EAC7
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jan 2022 14:35:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9883948EB09
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jan 2022 14:47:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241316AbiANNeW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jan 2022 08:34:22 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:44384 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241303AbiANNeV (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jan 2022 08:34:21 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D2DA860AF5;
-        Fri, 14 Jan 2022 13:34:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1017DC36AEA;
-        Fri, 14 Jan 2022 13:34:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642167260;
-        bh=UJ12ZzFrlrSkHp+B0xLmJWpX/izxJhLv+rkiI9O7fkE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=fb/sf4bQHIT4JPCHnyVyurN8idE3hOWg9RnIlAo89NhoAyXKnX/8WepKcr/5C4wu8
-         wfoqY8oZXtFTjQtuG81fgVI5lQaQxR3T1z+O+NwAPoJuudXEabqBRdioncCikv0k9Y
-         zFg0YXftB52JLkawldBhkay12p5GeuSSq4JG4dfC6CSpm1KaSywNKh5hp/d94TNALE
-         RnVvtkl9VXlwS8uR2P17+k5EKoy4KC/6Hvmgbb6cZ2x6NCIs+puQvGxgCDfH1deMcC
-         XIbu147RORUh2ciKVklvG4uw35w5ubDUcnbVnB5HpQqWnca61ur59JbQ00lNJiJ2JQ
-         CeeZqE1pPKX2w==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        sfr@canb.auug.org.au, lkp@intel.com
-Subject: [PATCH wireless] MAINTAINERS: add common wireless and wireless-next trees
-Date:   Fri, 14 Jan 2022 15:34:15 +0200
-Message-Id: <20220114133415.8008-1-kvalo@kernel.org>
-X-Mailer: git-send-email 2.20.1
+        id S241340AbiANNqg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jan 2022 08:46:36 -0500
+Received: from mga14.intel.com ([192.55.52.115]:45267 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S241428AbiANNoh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Jan 2022 08:44:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1642167877; x=1673703877;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/Kg1DuHEKRfRXUwMOMGd1Jl+AMgJ4KEURtXNTVWk4U8=;
+  b=l/FkJ0KsfPVyp3N47ar7S24Ku9YCGAeutUSyyAlIBRnbDSGu3/9onqBb
+   +rXXd1uRPWdHKs0wAhY+pJZ7MI4D1XIFUuFYxiT6XTUeHp2IuW81kxACY
+   2FKE51YvRUmXNoMaA85V1zSMY03OB5fbBGeOcGJh3M89r7wtegqpmLr+o
+   89xm49AQpo1KmcMBGWcHFZcLpJALbCZz1hZsJEpXIwy69X7Q7pQRqkpCE
+   5yPReMYRsRopDPo3Z4jBgOuwZVRmTOPB91a4zDz70gaVBjHcpPDsgoDk0
+   vmFQm1+OwysrnZx0+ZoW/d5dga6mIw/i21os7Z3BUtkTNcill3B8yon4L
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10226"; a="244447018"
+X-IronPort-AV: E=Sophos;i="5.88,288,1635231600"; 
+   d="scan'208";a="244447018"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2022 05:44:37 -0800
+X-IronPort-AV: E=Sophos;i="5.88,288,1635231600"; 
+   d="scan'208";a="614342556"
+Received: from smile.fi.intel.com ([10.237.72.61])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2022 05:44:32 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1n8Mr3-00Acul-Es;
+        Fri, 14 Jan 2022 15:42:57 +0200
+Date:   Fri, 14 Jan 2022 15:42:34 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
+        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
+        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
+        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
+        haijun.liu@mediatek.com, amir.hanania@intel.com,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        ilpo.johannes.jarvinen@intel.com, moises.veleta@intel.com,
+        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
+        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com
+Subject: Re: [PATCH net-next v4 01/13] list: Add list_next_entry_circular()
+ and list_prev_entry_circular()
+Message-ID: <YeF9yq/eZBWL6eUy@smile.fi.intel.com>
+References: <20220114010627.21104-1-ricardo.martinez@linux.intel.com>
+ <20220114010627.21104-2-ricardo.martinez@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220114010627.21104-2-ricardo.martinez@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For easier maintenance we have decided to create common wireless and
-wireless-next trees for all wireless patches. Old mac80211 and wireless-drivers
-trees will not be used anymore.
+On Thu, Jan 13, 2022 at 06:06:15PM -0700, Ricardo Martinez wrote:
+> Add macros to get the next or previous entries and wraparound if
+> needed. For example, calling list_next_entry_circular() on the last
+> element should return the first element in the list.
 
-While at it, add a wiki link to wireless drivers section and a patchwork link
-to 802.11, mac80211 and rfkill sections.
+FWIW,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Acked-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
----
+> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+> ---
+>  include/linux/list.h | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+> 
+> diff --git a/include/linux/list.h b/include/linux/list.h
+> index dd6c2041d09c..c147eeb2d39d 100644
+> --- a/include/linux/list.h
+> +++ b/include/linux/list.h
+> @@ -563,6 +563,19 @@ static inline void list_splice_tail_init(struct list_head *list,
+>  #define list_next_entry(pos, member) \
+>  	list_entry((pos)->member.next, typeof(*(pos)), member)
+>  
+> +/**
+> + * list_next_entry_circular - get the next element in list
+> + * @pos:	the type * to cursor.
+> + * @head:	the list head to take the element from.
+> + * @member:	the name of the list_head within the struct.
+> + *
+> + * Wraparound if pos is the last element (return the first element).
+> + * Note, that list is expected to be not empty.
+> + */
+> +#define list_next_entry_circular(pos, head, member) \
+> +	(list_is_last(&(pos)->member, head) ? \
+> +	list_first_entry(head, typeof(*(pos)), member) : list_next_entry(pos, member))
+> +
+>  /**
+>   * list_prev_entry - get the prev element in list
+>   * @pos:	the type * to cursor
+> @@ -571,6 +584,19 @@ static inline void list_splice_tail_init(struct list_head *list,
+>  #define list_prev_entry(pos, member) \
+>  	list_entry((pos)->member.prev, typeof(*(pos)), member)
+>  
+> +/**
+> + * list_prev_entry_circular - get the prev element in list
+> + * @pos:	the type * to cursor.
+> + * @head:	the list head to take the element from.
+> + * @member:	the name of the list_head within the struct.
+> + *
+> + * Wraparound if pos is the first element (return the last element).
+> + * Note, that list is expected to be not empty.
+> + */
+> +#define list_prev_entry_circular(pos, head, member) \
+> +	(list_is_first(&(pos)->member, head) ? \
+> +	list_last_entry(head, typeof(*(pos)), member) : list_prev_entry(pos, member))
+> +
+>  /**
+>   * list_for_each	-	iterate over a list
+>   * @pos:	the &struct list_head to use as a loop cursor.
+> -- 
+> 2.17.1
+> 
 
-Stephen, please use these new trees in linux-next from now on.
-
-Intel kernel test robot maintainers, please also update your configuration so
-that the new trees are build tested. Reports can be sent to
-linux-wireless@vger.kernel.org.
-
- MAINTAINERS | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 306de106f31b..d8db683d8b47 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -190,8 +190,9 @@ M:	Johannes Berg <johannes@sipsolutions.net>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
- W:	https://wireless.wiki.kernel.org/
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git
-+Q:	http://patchwork.kernel.org/project/linux-wireless/list/
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
- F:	Documentation/driver-api/80211/cfg80211.rst
- F:	Documentation/networking/regulatory.rst
- F:	include/linux/ieee80211.h
-@@ -11308,8 +11309,9 @@ M:	Johannes Berg <johannes@sipsolutions.net>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
- W:	https://wireless.wiki.kernel.org/
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git
-+Q:	http://patchwork.kernel.org/project/linux-wireless/list/
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
- F:	Documentation/networking/mac80211-injection.rst
- F:	Documentation/networking/mac80211_hwsim/mac80211_hwsim.rst
- F:	drivers/net/wireless/mac80211_hwsim.[ch]
-@@ -13302,9 +13304,10 @@ NETWORKING DRIVERS (WIRELESS)
- M:	Kalle Valo <kvalo@kernel.org>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
-+W:	https://wireless.wiki.kernel.org/
- Q:	http://patchwork.kernel.org/project/linux-wireless/list/
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
- F:	Documentation/devicetree/bindings/net/wireless/
- F:	drivers/net/wireless/
- 
-@@ -16391,8 +16394,9 @@ M:	Johannes Berg <johannes@sipsolutions.net>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
- W:	https://wireless.wiki.kernel.org/
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git
-+Q:	http://patchwork.kernel.org/project/linux-wireless/list/
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
- F:	Documentation/ABI/stable/sysfs-class-rfkill
- F:	Documentation/driver-api/rfkill.rst
- F:	include/linux/rfkill.h
 -- 
-2.20.1
+With Best Regards,
+Andy Shevchenko
+
 
