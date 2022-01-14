@@ -2,151 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F0C848F013
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jan 2022 19:44:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C097948F06E
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jan 2022 20:25:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243120AbiANSoc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jan 2022 13:44:32 -0500
-Received: from relay9-d.mail.gandi.net ([217.70.183.199]:50923 "EHLO
-        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236181AbiANSob (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jan 2022 13:44:31 -0500
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id E532FFF805;
-        Fri, 14 Jan 2022 18:44:26 +0000 (UTC)
-Date:   Fri, 14 Jan 2022 19:44:25 +0100
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Alexander Aring <alex.aring@gmail.com>
-Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
-        linux-wpan - ML <linux-wpan@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Harry Morris <h.morris@cascoda.com>,
-        Varka Bhadram <varkabhadram@gmail.com>,
-        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
-        David Girault <david.girault@qorvo.com>,
-        Romuald Despres <romuald.despres@qorvo.com>,
-        Frederic Blain <frederic.blain@qorvo.com>,
-        Nicolas Schodet <nico@ni.fr.eu.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        "linux-wireless@vger.kernel.org Wireless" 
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [wpan-next v2 18/27] net: mac802154: Handle scan requests
-Message-ID: <20220114194425.3df06391@xps13>
-In-Reply-To: <CAB_54W4LdzH9=XS7-ZnxfyCMQFCTS-F5JkUmV+6HtWcCpUS-nQ@mail.gmail.com>
-References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
-        <20220112173312.764660-19-miquel.raynal@bootlin.com>
-        <CAB_54W4PL1ty5XsqRoEKwsy-h8KL9gSGMK6N=HiWJDp6NHsb0A@mail.gmail.com>
-        <20220113180709.0dade123@xps13>
-        <CAB_54W4LdzH9=XS7-ZnxfyCMQFCTS-F5JkUmV+6HtWcCpUS-nQ@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S232543AbiANTX3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jan 2022 14:23:29 -0500
+Received: from m43-7.mailgun.net ([69.72.43.7]:40748 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231594AbiANTX3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Jan 2022 14:23:29 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1642188208; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=3E++mqqeSSAx6RPe4mtoLkORWSZDVafU4u4yyeEST6I=;
+ b=uxDDI1e+hB+LTSkgo9MuRytCZw1atogb+gA5Vox/BTt1AD4HduGNWQfE2iOfVag+ecOTRYdj
+ S6gqUuTMsiuG9IUhKn87nVKxNOjZHpyWPi+0B/EPikE3QSfAtmS0CyCIaZSHYPWLc83DQjdN
+ Y6HqrcphFNegbHFWE7JcTj+yF0k=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 61e1cdad69943108c58f6a6f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 14 Jan 2022 19:23:25
+ GMT
+Sender: alokad=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E1A18C4360C; Fri, 14 Jan 2022 19:23:24 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 70809C4338F;
+        Fri, 14 Jan 2022 19:23:23 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 14 Jan 2022 11:23:23 -0800
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [v13 2/3] mac80211: MBSSID and EMA beacon handling in AP mode
+In-Reply-To: <16a03353cee422340c8ac36240b1e088fd45802e.camel@sipsolutions.net>
+References: <20211006040938.9531-1-alokad@codeaurora.org>
+ <20211006040938.9531-3-alokad@codeaurora.org>
+ <16a03353cee422340c8ac36240b1e088fd45802e.camel@sipsolutions.net>
+Message-ID: <d2c980b72af1488282f18e8b1814b56c@codeaurora.org>
+X-Sender: alokad@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Alexander,
-
-alex.aring@gmail.com wrote on Thu, 13 Jan 2022 19:01:56 -0500:
-
-> Hi,
+On 2021-11-26 03:23, Johannes Berg wrote:
+> On Tue, 2021-10-05 at 21:09 -0700, Aloka Dixit wrote:
 > 
-> On Thu, 13 Jan 2022 at 12:07, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> >
-> > Hi Alexander,
-> >
-> > alex.aring@gmail.com wrote on Wed, 12 Jan 2022 17:44:02 -0500:
-> >  
-> > > Hi,
-> > >
-> > > On Wed, 12 Jan 2022 at 12:33, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> > > ...  
-> > > > +       return 0;
-> > > > +}
-> > > > diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
-> > > > index c829e4a75325..40656728c624 100644
-> > > > --- a/net/mac802154/tx.c
-> > > > +++ b/net/mac802154/tx.c
-> > > > @@ -54,6 +54,9 @@ ieee802154_tx(struct ieee802154_local *local, struct sk_buff *skb)
-> > > >         struct net_device *dev = skb->dev;
-> > > >         int ret;
-> > > >
-> > > > +       if (unlikely(mac802154_scan_is_ongoing(local)))
-> > > > +               return NETDEV_TX_BUSY;
-> > > > +  
-> > >
-> > > Please look into the functions "ieee802154_wake_queue()" and
-> > > "ieee802154_stop_queue()" which prevent this function from being
-> > > called. Call stop before starting scanning and wake after scanning is
-> > > done or stopped.  
-> >
-> > Mmmh all this is already done, isn't it?
-> > - mac802154_trigger_scan_locked() stops the queue before setting the
-> >   promiscuous mode
-> > - mac802154_end_of_scan() wakes the queue after resetting the
-> >   promiscuous mode to its original state
-> >
-> > Should I drop the check which stands for an extra precaution?
-> >  
+>> 
+>> +static struct sk_buff *
+>> +ieee80211_beacon_get_ap_mbssid(struct ieee80211_hw *hw,
+>> +			       struct ieee80211_vif *vif,
+>> +			       struct ieee80211_mutable_offsets *offs,
+>> +			       bool is_template,
+>> +			       struct beacon_data *beacon,
+>> +			       struct ieee80211_chanctx_conf *chanctx_conf,
+>> +			       int ema_index,
+>> +			       struct list_head *ema_list)
 > 
-> no, I think then it should be a WARN_ON() more without any return
-> (hopefully it will survive). This case should never happen otherwise
-> we have a bug that we wake the queue when we "took control about
-> transmissions" only.
-> Change the name, I think it will be in future not only scan related.
-> Maybe "mac802154_queue_stopped()". Everything which is queued from
-> socket/upperlayer(6lowpan) goes this way.
-
-Got it.
-
-I've changed the name of the helper, and used an atomic variable there
-to follow the count. 
-
-> > But overall I think I don't understand well this part. What is
-> > a bit foggy to me is why the (async) tx implementation does:
-> >
-> > *Core*                           *Driver*
-> >
-> > stop_queue()
-> > drv_async_xmit() -------
-> >                         \------> do something
-> >                          ------- calls ieee802154_xmit_complete()
-> > wakeup_queue() <--------/
-> >
-> > So we actually disable the queue for transmitting. Why??
-> >  
+> This function is called from ieee80211_beacon_get_ap(). That's called
+> from __ieee80211_beacon_get(), under RCU read lock.
 > 
-> Because all transceivers have either _one_ transmit framebuffer or one
-> framebuffer for transmit and receive one time. We need to report to
-> stop giving us more skb's while we are busy with one to transmit.
-> This all will/must be changed in future if there is hardware outside
-> which is more powerful and the driver needs to control the flow here.
+>> +	for (i = 0; i < beacon->mbssid_ies->cnt; i++) {
+>> +		struct ieee80211_ema_bcns *bcn;
+>> +
+>> +		bcn = kzalloc(sizeof(*bcn), GFP_KERNEL);
 > 
-> That ieee802154_xmit_complete() calls wakeup_queue need to be
-> forbidden when we are in "synchronous transmit mode"/the queue is
-> stopped. The synchronous transmit mode is not for any hotpath, it's
-> for MLME and I think we also need a per phy lock to avoid multiple
-> synchronous transmissions at one time. Please note that I don't think
-> here only about scan operation, also for other possible MLME-ops.
+> Therefore, you really cannot GFP_KERNEL allocate anything. But I really
+> only saw this because I went back to my comments on v12 where this was
+> still more obvious.
 > 
 
-First, thank you very much for all your guidance and reviews, I think I
-have a much clearer understanding now.
+Okay, I understand now that it is illegal because GFP_KERNEL is 
+blocking.
 
-I've tried to follow your advices, creating:
-- a way of tracking ongoing transmissions
-- a synchronous API for MLME transfers
+I thought of following:
+lock rcu -> get mbssid count first -> unlock rcu -> allocate memory.
+But in that case, will have again: lock -> dereference to get beacon 
+snapshot.
+Beacon can change in between so new count might be wrong. In general 
+sounds complicated and wrong.
 
-I've decided to use the wait_queue + atomic combo which looks nice.
-Everything seems to work, I just need a bit of time to clean and rework
-a bit the series before sending a v3.
+I read that GFP_ATOMIC should be used sparingly, mainly for interrupt 
+handlers etc.
+Do you think this code path warrants its use?
+Or should I look for some other function split?
 
-Thanks,
-Miquèl
+Will add hwsim test cases before the next version but I genuinely did 
+not see any issue during testing with current code.
+So can you tell me which debug flags should be enabled to make such 
+errors become obvious to someone like me who is new to these details in 
+kernel programming?
+
+Thanks!!
