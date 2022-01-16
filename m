@@ -2,58 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D42D448FF89
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Jan 2022 23:51:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA71348FF9F
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jan 2022 00:21:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233879AbiAPWvB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 16 Jan 2022 17:51:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53976 "EHLO
+        id S236434AbiAPXVa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Jan 2022 18:21:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230464AbiAPWvA (ORCPT
+        with ESMTP id S232895AbiAPXV3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 16 Jan 2022 17:51:00 -0500
+        Sun, 16 Jan 2022 18:21:29 -0500
 Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68186C061574;
-        Sun, 16 Jan 2022 14:51:00 -0800 (PST)
-Received: by mail-wm1-x334.google.com with SMTP id ay4-20020a05600c1e0400b0034a81a94607so17674756wmb.1;
-        Sun, 16 Jan 2022 14:51:00 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25CC3C061574;
+        Sun, 16 Jan 2022 15:21:29 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id n19-20020a7bc5d3000000b003466ef16375so20307645wmk.1;
+        Sun, 16 Jan 2022 15:21:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=RQNSz+9Ongl6D3vtokUiSrT++IM4wgxyZXz0eiKQvqI=;
-        b=EcBk6VegNpRDxFNgkEtPbgyUSZGljDL6dhQ+CvYbTf6MsRixS6lVP7CJlHvMPBMBog
-         ODv0rnjf1NuONh509lX8yXQMkJgTfIwNGkH5BAHkhABKV4pnw6AopApW/LdLrfoTB2vi
-         wx5zh20eLh1p061bQh+5xVOgg8PLcTlcJVfLED38TR40AP2x/52ithvARtmb75mUW34f
-         Yu4G9ZExfypcz5OLr8e7K7Comq25eGZTzYDPt/lrz2a7UXrTeytROFZfYjV0v/n8mpJf
-         HrY/TCOhn2gnFHP7UIodHgLu6kyamimnoIPsqOr1uxuW+MoCFq/2PFz4cAQYeclZNX3Q
-         oiQQ==
+        bh=EX2t9AEA4pRaVoM2Pq865EYbBUdDIs7vDiRLy8uT8m4=;
+        b=pVrVB6JWDZqi/mvFqboQcQFhZ4AR5mZxt0WTE9SdDP+RQa32PKEmIJwXCYq69N8Ebl
+         eq1/Lo8SzAdnrAhUCSfGmky4ZP5JV8juWTc9q0B6XEHbnfOgQKff/I1FpJ/hazY2UgtQ
+         TBbuLAhf6twKfZjR6eCH5ZTOLGu7nvp5MBoV49Pz8breJaQTgGT+wEdo6aUkriUGO9rt
+         5jVXJProuPgvOtT93LJh02T4JWIICFnJqE49y3HmCwQS1zGAeaJBftwsEDyqgZlwoqws
+         ASf/ollao5zINHUh+ITIpmZBdS6kTQ4D12WxGLgOk4zlJXy3F3t9aaPi0P364G28icNP
+         4bXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=RQNSz+9Ongl6D3vtokUiSrT++IM4wgxyZXz0eiKQvqI=;
-        b=d77Njyz9BccmjgZ0eluCGeVb112/43UBD9DnFmZEIENgFPHMOzFyWAd0yHoy/UtqCf
-         8VC+FWedZzZQ/pSIgiXJ59DISN8Pi/MOAS3jNgvKQZ9d0hzqFt96CbsU7h7Q7vWjoY+C
-         ecr6SOzgC53DBvV1QCvzA4Ff0fnBENpmNYJFAZNQm3UkGd3SaXmL6AHyS/oAHtgU8s7t
-         Hzbqi/tM/5ppxwBt38yYodkVwZUGRcBMBLgHd/evzfNl4PYVk4LkJM4CDTMVqA5DLWyG
-         +TCMNY0XCaFAG/u0zEJRr30Et/+DhiRut+qPAhMu4F03DbYjeEEtgA7i0Uj3OA9BMnPK
-         u/FQ==
-X-Gm-Message-State: AOAM533pkZAIppr2EFCxP9xoqU4rZbrj5BXrrDrHNCbdRAQe9H+zdYn4
-        zoU+ou8p/BovcaHXFBmmoN/2HOb7ep+B9RgQwXUJlTzpcp2G3Q==
-X-Google-Smtp-Source: ABdhPJzkDhrOYIBzWpxnpU9zBb69eGcKLV6JvL1EMQyW1NYKaHh+h0qAE7iaJJRO47lqlKu1MdBZ5R+Y/zcWqhhTrHk=
-X-Received: by 2002:a1c:ed01:: with SMTP id l1mr25168995wmh.185.1642373458627;
- Sun, 16 Jan 2022 14:50:58 -0800 (PST)
+        bh=EX2t9AEA4pRaVoM2Pq865EYbBUdDIs7vDiRLy8uT8m4=;
+        b=I43Jf70lGKYA8b+Z59Iay96eLkSGXkFBeFR819W4geb7Wzk+bPkkVDCQaAnRnMOL1b
+         hn+WtqJWGwwyTIkDyl28kae5tuoVGYiUMLKLQN6NaF5fVoxl0Dza+YWzZHrIhIK+FCnB
+         IhvmADSfVeUYK4OW4PyPJr5KaPmIgJmAR6vXD3FTX7ZI22JdCK+K0ASP5H+apgEA/+w3
+         hRkzJjoX5kZlp9J9sc3NwyAy+yc6frkZwen7G1GXMgo8ltKHmHJPu4FTX848FY/PlaQ9
+         xSIaSkn0/xb4dVCVPqzysJEIiN2dRtE1F+lki1JICOzxq99Mm1EnzjUmNrwyGUNEO7a0
+         LPzQ==
+X-Gm-Message-State: AOAM530ibm9YNuOUvNBOAV7JVqUz7JgrjamwOgJ7nk8YPLSgRnlrNqIV
+        SYPkOyoElnWAlN7VkKxdeTyNtzUMKBYW8HyMoBw=
+X-Google-Smtp-Source: ABdhPJyifs4iaqrEenTwSs+2p8jKGiMjpkHqe52A8goSkKl4QjvH2te+HZz0eJsGNy5/4+uy/t8WhobZRGP0Vmnii8s=
+X-Received: by 2002:a1c:43c5:: with SMTP id q188mr17070604wma.54.1642375287712;
+ Sun, 16 Jan 2022 15:21:27 -0800 (PST)
 MIME-Version: 1.0
 References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
- <20220112173312.764660-19-miquel.raynal@bootlin.com> <CAB_54W4PL1ty5XsqRoEKwsy-h8KL9gSGMK6N=HiWJDp6NHsb0A@mail.gmail.com>
- <20220113180709.0dade123@xps13> <CAB_54W4LdzH9=XS7-ZnxfyCMQFCTS-F5JkUmV+6HtWcCpUS-nQ@mail.gmail.com>
- <20220114194425.3df06391@xps13> <CAB_54W5xJV-3fxOUyvdxBBfUZWYx7JU=BDVhTHFcjJ7SOEdeUw@mail.gmail.com>
-In-Reply-To: <CAB_54W5xJV-3fxOUyvdxBBfUZWYx7JU=BDVhTHFcjJ7SOEdeUw@mail.gmail.com>
+ <20220112173312.764660-9-miquel.raynal@bootlin.com> <CAB_54W5QU5JCtQYwvTKREd6ZeQWmC19LF4mj853U0Gz-mCObVQ@mail.gmail.com>
+ <20220113121645.434a6ef6@xps13> <CAB_54W5_x88zVgSJep=yK5WVjPvcWMy8dmyOJWcjy=5o0jCy0w@mail.gmail.com>
+ <20220114112113.63661251@xps13>
+In-Reply-To: <20220114112113.63661251@xps13>
 From:   Alexander Aring <alex.aring@gmail.com>
-Date:   Sun, 16 Jan 2022 17:50:47 -0500
-Message-ID: <CAB_54W74Ne185-uEfC23xW6w2nSGDgxef7WxpFKM5T1s7XnYOw@mail.gmail.com>
-Subject: Re: [wpan-next v2 18/27] net: mac802154: Handle scan requests
+Date:   Sun, 16 Jan 2022 18:21:16 -0500
+Message-ID: <CAB_54W77d_PjX_ZfKJdO4D4hHsAWjw0jWgRA7L0ewNnqApQhcQ@mail.gmail.com>
+Subject: Re: [wpan-next v2 08/27] net: ieee802154: Drop symbol duration
+ settings when the core does it already
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
         linux-wpan - ML <linux-wpan@vger.kernel.org>,
@@ -78,124 +79,111 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi,
 
-On Sun, 16 Jan 2022 at 17:44, Alexander Aring <alex.aring@gmail.com> wrote:
+On Fri, 14 Jan 2022 at 05:21, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 >
-> Hi,
+> Hi Alexander,
 >
-> On Fri, 14 Jan 2022 at 13:44, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> alex.aring@gmail.com wrote on Thu, 13 Jan 2022 18:34:00 -0500:
+>
+> > Hi,
 > >
-> > Hi Alexander,
-> >
-> > alex.aring@gmail.com wrote on Thu, 13 Jan 2022 19:01:56 -0500:
-> >
-> > > Hi,
+> > On Thu, 13 Jan 2022 at 06:16, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 > > >
-> > > On Thu, 13 Jan 2022 at 12:07, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> > > Hi Alexander,
+> > >
+> > > alex.aring@gmail.com wrote on Wed, 12 Jan 2022 17:26:14 -0500:
+> > >
+> > > > Hi,
 > > > >
-> > > > Hi Alexander,
-> > > >
-> > > > alex.aring@gmail.com wrote on Wed, 12 Jan 2022 17:44:02 -0500:
-> > > >
-> > > > > Hi,
+> > > > On Wed, 12 Jan 2022 at 12:33, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 > > > > >
-> > > > > On Wed, 12 Jan 2022 at 12:33, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> > > > > ...
-> > > > > > +       return 0;
-> > > > > > +}
-> > > > > > diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
-> > > > > > index c829e4a75325..40656728c624 100644
-> > > > > > --- a/net/mac802154/tx.c
-> > > > > > +++ b/net/mac802154/tx.c
-> > > > > > @@ -54,6 +54,9 @@ ieee802154_tx(struct ieee802154_local *local, struct sk_buff *skb)
-> > > > > >         struct net_device *dev = skb->dev;
-> > > > > >         int ret;
-> > > > > >
-> > > > > > +       if (unlikely(mac802154_scan_is_ongoing(local)))
-> > > > > > +               return NETDEV_TX_BUSY;
-> > > > > > +
+> > > > > The core now knows how to set the symbol duration in a few cases, when
+> > > > > drivers correctly advertise the protocols used on each channel. For
+> > > > > these drivers, there is no more need to bother with symbol duration, so
+> > > > > just drop the duplicated code.
 > > > > >
-> > > > > Please look into the functions "ieee802154_wake_queue()" and
-> > > > > "ieee802154_stop_queue()" which prevent this function from being
-> > > > > called. Call stop before starting scanning and wake after scanning is
-> > > > > done or stopped.
+> > > > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > > > > ---
+> > > > >  drivers/net/ieee802154/ca8210.c | 1 -
+> > > > >  drivers/net/ieee802154/mcr20a.c | 2 --
+> > > > >  2 files changed, 3 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+> > > > > index 82b2a173bdbd..d3a9e4fe05f4 100644
+> > > > > --- a/drivers/net/ieee802154/ca8210.c
+> > > > > +++ b/drivers/net/ieee802154/ca8210.c
+> > > > > @@ -2977,7 +2977,6 @@ static void ca8210_hw_setup(struct ieee802154_hw *ca8210_hw)
+> > > > >         ca8210_hw->phy->cca.mode = NL802154_CCA_ENERGY_CARRIER;
+> > > > >         ca8210_hw->phy->cca.opt = NL802154_CCA_OPT_ENERGY_CARRIER_AND;
+> > > > >         ca8210_hw->phy->cca_ed_level = -9800;
+> > > > > -       ca8210_hw->phy->symbol_duration = 16 * 1000;
+> > > > >         ca8210_hw->phy->lifs_period = 40;
+> > > > >         ca8210_hw->phy->sifs_period = 12;
+> > > > >         ca8210_hw->flags =
+> > > > > diff --git a/drivers/net/ieee802154/mcr20a.c b/drivers/net/ieee802154/mcr20a.c
+> > > > > index 8aa87e9bf92e..da2ab19cb5ee 100644
+> > > > > --- a/drivers/net/ieee802154/mcr20a.c
+> > > > > +++ b/drivers/net/ieee802154/mcr20a.c
+> > > > > @@ -975,7 +975,6 @@ static void mcr20a_hw_setup(struct mcr20a_local *lp)
+> > > > >
+> > > > >         dev_dbg(printdev(lp), "%s\n", __func__);
+> > > > >
+> > > > > -       phy->symbol_duration = 16 * 1000;
+> > > > >         phy->lifs_period = 40;
+> > > > >         phy->sifs_period = 12;
+> > > > >
+> > > > > @@ -1010,7 +1009,6 @@ static void mcr20a_hw_setup(struct mcr20a_local *lp)
+> > > > >         phy->current_page = 0;
+> > > > >         /* MCR20A default reset value */
+> > > > >         phy->current_channel = 20;
+> > > > > -       phy->symbol_duration = 16 * 1000;
+> > > > >         phy->supported.tx_powers = mcr20a_powers;
+> > > > >         phy->supported.tx_powers_size = ARRAY_SIZE(mcr20a_powers);
+> > > > >         phy->cca_ed_level = phy->supported.cca_ed_levels[75];
 > > > >
-> > > > Mmmh all this is already done, isn't it?
-> > > > - mac802154_trigger_scan_locked() stops the queue before setting the
-> > > >   promiscuous mode
-> > > > - mac802154_end_of_scan() wakes the queue after resetting the
-> > > >   promiscuous mode to its original state
-> > > >
-> > > > Should I drop the check which stands for an extra precaution?
-> > > >
+> > > > What's about the atrf86230 driver?
 > > >
-> > > no, I think then it should be a WARN_ON() more without any return
-> > > (hopefully it will survive). This case should never happen otherwise
-> > > we have a bug that we wake the queue when we "took control about
-> > > transmissions" only.
-> > > Change the name, I think it will be in future not only scan related.
-> > > Maybe "mac802154_queue_stopped()". Everything which is queued from
-> > > socket/upperlayer(6lowpan) goes this way.
-> >
-> > Got it.
-> >
-> > I've changed the name of the helper, and used an atomic variable there
-> > to follow the count.
-> >
-> > > > But overall I think I don't understand well this part. What is
-> > > > a bit foggy to me is why the (async) tx implementation does:
-> > > >
-> > > > *Core*                           *Driver*
-> > > >
-> > > > stop_queue()
-> > > > drv_async_xmit() -------
-> > > >                         \------> do something
-> > > >                          ------- calls ieee802154_xmit_complete()
-> > > > wakeup_queue() <--------/
-> > > >
-> > > > So we actually disable the queue for transmitting. Why??
-> > > >
+> > > I couldn't find reliable information about what this meant:
 > > >
-> > > Because all transceivers have either _one_ transmit framebuffer or one
-> > > framebuffer for transmit and receive one time. We need to report to
-> > > stop giving us more skb's while we are busy with one to transmit.
-> > > This all will/must be changed in future if there is hardware outside
-> > > which is more powerful and the driver needs to control the flow here.
+> > >         /* SUB:0 and BPSK:0 -> BPSK-20 */
+> > >         /* SUB:1 and BPSK:0 -> BPSK-40 */
+> > >         /* SUB:0 and BPSK:1 -> OQPSK-100/200/400 */
+> > >         /* SUB:1 and BPSK:1 -> OQPSK-250/500/1000 */
 > > >
-> > > That ieee802154_xmit_complete() calls wakeup_queue need to be
-> > > forbidden when we are in "synchronous transmit mode"/the queue is
-> > > stopped. The synchronous transmit mode is not for any hotpath, it's
-> > > for MLME and I think we also need a per phy lock to avoid multiple
-> > > synchronous transmissions at one time. Please note that I don't think
-> > > here only about scan operation, also for other possible MLME-ops.
-> > >
+> > > None of these comments match the spec so I don't know what to put
+> > > there. If you know what these protocols are, I will immediately
+> > > provide this information into the driver and ensure the core handles
+> > > these durations properly before dropping the symbol_durations settings
+> > > from the code.
 > >
-> > First, thank you very much for all your guidance and reviews, I think I
-> > have a much clearer understanding now.
-> >
-> > I've tried to follow your advices, creating:
-> > - a way of tracking ongoing transmissions
-> > - a synchronous API for MLME transfers
-> >
+> > I think those are from the transceiver datasheets (which are free to
+> > access). Can you not simply merge them or is there a conflict?
 >
-> Please note that I think we cannot use netif_stop_queue() from context
-> outside of netif xmit() callback. It's because the atomic counter
-> itself is racy in xmit(), we need to be sure xmit() can't occur while
-> stopping the queue. I think maybe "netif_tx_disable()" is the right
-> call to stop from another context, because it holds the tx_lock, which
-> I believe is held while xmit().
-> Where the wake queue call should be fine to call..., maybe we can
-> remove some EXPORT_SYMBOL() then?
->
+> Actually I misread the driver, it supports several kind of chips with
+> different channel settings and this disturbed me. I downloaded the
+> datasheet and figured that the number after the protocol is the bit
+> rate. This helped me to make the connection with what I already know,
+> so both atusb and atrf86230 drivers have been converted too.
 
-I am sorry, that comment should go below.
+and what is about hwsim? I think the table gets too large then...
+that's why I was thinking of moving that somehow to the regdb, however
+this is another project as I said and this way is fine. Maybe we use a
+kind of fallback then? The hwsim phy isn't really any 802.15.4 PHY,
+it's just memcpy() but it would be nice to be able to test scan with
+it. So far I understand it is already possible to make something with
+hwsim here but what about the zero symbol rate and the "waiting
+period" is zero?
 
-> I saw that some drivers call "ieee802154_wake_queue()" in error cases,
-> may we introduce a new helper "?ieee802154_xmit_error?" for error
-> cases so you can also catch error cases in your sync tx. See `grep -r
-> "ieee802154_wake_queue" drivers/net/ieee802154`, if we have more
-> information we might add more meaning into the error cases (e.g.
-> proper errno).
+btw:
+Also for testing with hwsim and the missing features which currently
+exist. Can we implement some user space test program which replies
+(active scan) or sends periodically something out via AF_PACKET raw
+and a monitor interface that should work to test if it is working?
+Ideally we could do that very easily with scapy (not sure about their
+_upstream_ 802.15.4 support). I hope I got that right that there is
+still something missing but we could fake it in such a way (just for
+hwsim testing).
 
-maybe we can remove some EXPORT_SYMBOL() then?
+Side note: tx via monitor over AF_PACKET raw is without fcs currently.
 
 - Alex
