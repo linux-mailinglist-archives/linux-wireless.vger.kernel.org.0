@@ -2,84 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66217490A48
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jan 2022 15:29:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98952490AB7
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jan 2022 15:49:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238555AbiAQO3z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jan 2022 09:29:55 -0500
-Received: from mout.web.de ([217.72.192.78]:36709 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234449AbiAQO3y (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jan 2022 09:29:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1642429793;
-        bh=U8DCgnYeYcxryoKneOBMvXqg6aaJduWJhZvJpy2BCvo=;
-        h=X-UI-Sender-Class:From:To:Subject:Date;
-        b=f/Xoso3gI7pSW8Ebleat6NnvLUPTeX46NG2fcU2IzdooNe/vaWh7lUvgHMDBhbqi2
-         z3pxI6T7Njh+DdfXwg+zFWzQtHwiw0e4C0tPTOKNgBdrd04/Xcs3s6ufhkUhRu1ByP
-         +dSRbLvBS2mC2GSwTsaWmbmwM/vJKSQ2OER0P4oY=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [80.245.136.130] ([80.245.136.130]) by web-mail.web.de
- (3c-app-webde-bap30.server.lan [172.19.172.30]) (via HTTP); Mon, 17 Jan
- 2022 15:29:52 +0100
+        id S237171AbiAQOs4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jan 2022 09:48:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42640 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234934AbiAQOsz (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 17 Jan 2022 09:48:55 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 380C4C061574
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Jan 2022 06:48:55 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id DF23EB80E03
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Jan 2022 14:48:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE99EC36AEC;
+        Mon, 17 Jan 2022 14:48:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642430932;
+        bh=uxtZp7jFFEMwhOZNMTMWbivpAvT9tM/QEjNTQflZiDI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=qGnlxrKJDj6iLgVBpN2Vfb69Uhr+hqj5zCCamhEw0Z+FxYR1imQhL095e6sEPWtuy
+         RDbaTq4xZwuqjWQHV/HvjODpW7QLs8zh1lWM1bM0IvMJ6mHuWuho7f1EN2eG8cIVwM
+         7lIsoCy7mLtPDH2UYeIEe+rC1f105yW9rfAuQvEuDpQ5MnIzBLP5/Rqs/z+7ii2QoC
+         I9u5nRA//hQhM/XG3LyGBRH5+Ug1rhaJcbmd7rnOO295riMJWRtZpSa3QB6yN/XQKh
+         rsjiouo2b3quaGdTnRAY148tT/A8pdFN9ZNDfJzcy2fDClkG0hRScs8yFJFaR6yrIi
+         fN+2Sfbze6m9A==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     fckath@web.de
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: Re: ath11k and the 32 MSI problem
+References: <trinity-f503010b-028a-4c52-a368-56b3e6a1e645-1642429792868@3c-app-webde-bap30>
+Date:   Mon, 17 Jan 2022 16:48:49 +0200
+In-Reply-To: <trinity-f503010b-028a-4c52-a368-56b3e6a1e645-1642429792868@3c-app-webde-bap30>
+        (fckath's message of "Mon, 17 Jan 2022 15:29:52 +0100")
+Message-ID: <87zgnuifji.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Message-ID: <trinity-f503010b-028a-4c52-a368-56b3e6a1e645-1642429792868@3c-app-webde-bap30>
-From:   fckath@web.de
-To:     linux-wireless@vger.kernel.org
-Subject: ath11k and the 32 MSI problem
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 17 Jan 2022 15:29:52 +0100
-Importance: normal
-Sensitivity: Normal
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Priority: 3
-X-Provags-ID: V03:K1:O2r+MzQFrrBl36hi/xk5KVgA3AzRq20/FCY27ja9y8Z3CWhMdQ7pYFsYvYwmGfpKKBMvn
- 0tR7C+t8ofjfpYOM8/sK9/xeS8gqH9jw3Lo2HRq175tMJD5Uuo6zHY9oxbHMY+cBnAhpkeBuJKAP
- uGYWgFVGPD1+yGVTc+At64wq5oC5tgVuGlPxL0cnC6ZvqtasXShhq979RQXQXYh9QL9R0imNz1vG
- gM1uJjm3sAGuSwG4x1tkG4CJHJUsqoDnGB0rDFBb+8A1kmCfwInaN4k+2a2nsI25skTSqEcyUMYd
- dg=
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:jgFf+MShmy0=:E8rCQctoEwjNlloU5+Vgp7
- 4W6xZ879q+14Psy5CACSg98NMK6r8+eSR8m/7FIL9oaRIG1hWKusef29P8PgBCKkOwJbliUYR
- be0ghuRuP2o1JGO9Huso6XAAuRXMSG6j8TPs8JqRkwGkiewWLIk2rO6VMHSY+VHw4h57VGTt3
- aSdpkuTUY/2i3Q242ZwOlDveAx1IrjMefovA7O6yb8o35JRuWaoVgSnXMTdXdtenKS3QqQEm3
- g2u3Eu3D/FFWEWG/VsSq7XZVmzgLckE2+zD/9A6La/IpCi/J3ayuWNfJYsRUpjATv9J3+mfP+
- hD2xJ/7A5uDrqjs/p28nIlry7naJd+meEv5MeRJ+TJrf/mpG3Ze+qCkrb7WRv5hLYo1gqy3U6
- niHOC3otby93klg6iKnhqudSq+Mw2dnrgSywYPGQ7Qp6DjPcqRaf776jfeFyUbqwU11hnw0cP
- WLH2el6advCKqUfc0NrKs9IyCM9p9+1ezqSvY4pC9eKvuTanYlOfNpk73kKYkREwbC+R2sI0r
- jsB4PC3tUc2+PjhykQf5+gHk/IA0meIQzb5A8o2woTllVcVXV/KCWc1ZvHdKpMtOUxAU1AUls
- pwvzvVhdhSqLbfMGObU7SqvAI4L2+QaXH0vh7hWK3cUWCwU28KE7ggtypGKkKGHYsTNoj1xt2
- DRRxVwl0B6sxfpkX2zTKyOZG8g16YVJsAtZb8La2AwBZB7SqQ0IZSwW6dUXNrzPeFuiiqeM3U
- pMuY13cV8uyz9ArqkN/zIGDs3BJIg6ofgKFOw21p6nMN9/KY3bnLQkouIPnPRNFaQgfLrrsvL
- /5oEAEA
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello world;
-=C2=A0
-I've got a bunch of M=2E2 Type A/E Wifi 6e cards from Emwicon (WMX7205) an=
-d Sparklan (WNFQ-268AXI(BT)) wirth Qualcomm WCN6856 chips=2E
-=C2=A0
-I'd like to use them on DFI AL553 3=2E5" SBCs with ATOM E3940 processor (h=
-ttps://www=2Edfi=2Ecom/de/product/index/1409), but I was hit by the error m=
-essage "failed to get 32 MSI vectors, only -28 available"=2E Ok, it seems t=
-hat the Atom E3900 does not support VT-d=2E I managed to get these card wor=
-king on standard PCs with i7 and i5 with active VT-d=2E However, when disab=
-ling VT-d in the BIOS I get the same behaviour as on the Atom boards=2E
+(adding ath11k list)
 
-I tried the single MSI patch on https://wireless=2Ewiki=2Ekernel=2Eorg/en/=
-users/drivers/ath11k but failed to apply these patches to an 5=2E15=2E0 ker=
-nel from Debian backports=2E
+fckath@web.de writes:
 
-Are there
- - patches for 5=2E15 or 5=2E16?
- - patched drivers for 5=2E15 or 5=2E16?
- - information where to find a matching driver source on which the patches=
- will apply?
+> Hello world;
+> =C2=A0
+> I've got a bunch of M.2 Type A/E Wifi 6e cards from Emwicon (WMX7205)
+> and Sparklan (WNFQ-268AXI(BT)) wirth Qualcomm WCN6856 chips.
+> =C2=A0
+> I'd like to use them on DFI AL553 3.5" SBCs with ATOM E3940 processor
+> (https://www.dfi.com/de/product/index/1409), but I was hit by the
+> error message "failed to get 32 MSI vectors, only -28 available". Ok,
+> it seems that the Atom E3900 does not support VT-d. I managed to get
+> these card working on standard PCs with i7 and i5 with active VT-d.
+> However, when disabling VT-d in the BIOS I get the same behaviour as
+> on the Atom boards.
+>
+> I tried the single MSI patch on
+> https://wireless.wiki.kernel.org/en/users/drivers/ath11k but failed to
+> apply these patches to an 5.15.0 kernel from Debian backports.
+>
+> Are there
+>  - patches for 5.15 or 5.16?
+>  - patched drivers for 5.15 or 5.16?
+>  - information where to find a matching driver source on which the patche=
+s will apply?
 
-Best Regards
+The support for one MSI vectors will be in v5.17-rc1, which should be
+released next Sunday. The feature is already on Linus' tree.
 
-Frank-Christian Kruegel
+IIRC you need these commits, in case you want to backport them:
 
-=C2=A0
+e94b07493da3 ath11k: Set IRQ affinity to CPU0 in case of one MSI vector
+915a081ff307 ath11k: do not restore ASPM in case of single MSI vector
+ac6e73483f7b ath11k: add support one MSI vector
+c41a6700b276 ath11k: refactor multiple MSI vector implementation
+4ab4693f327a ath11k: use ATH11K_PCI_IRQ_DP_OFFSET for DP IRQ
+01279bcd01d9 ath11k: add CE and ext IRQ flag to indicate irq_handler
+87b4072d7ef8 ath11k: get msi_data again after request_irq is called
+081e2d6476e3 ath11k: add hw_param for wakeup_mhi
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
