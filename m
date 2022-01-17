@@ -2,122 +2,255 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E44349064A
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jan 2022 11:55:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FBE0490772
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jan 2022 12:54:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238779AbiAQKzg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jan 2022 05:55:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:35499 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229503AbiAQKzg (ORCPT
+        id S239262AbiAQLyp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jan 2022 06:54:45 -0500
+Received: from relay12.mail.gandi.net ([217.70.178.232]:51375 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236460AbiAQLyp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jan 2022 05:55:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1642416935;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=3d9NbS5ogfyUH4BL7U2817o4vKpaUWvQHYEUemE7cKM=;
-        b=BIqwlOw8kYbRMw+d3NnDJngtbSdG1bw8oCb6lfNoKYG6mMirBQoGb0kwG4IosSgpkzFfQs
-        o1SQnofFCwoPaA+7uS2o4D1OT8C8Z6yD55KIakpgrkVMjWO+QrdJIMsCqw2oBF3o8zy894
-        47aBW1rBdx1kPQ+UzMMQTq5cjCObwsI=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-528-s7V5RFKLP6SVJcMvY6DnxQ-1; Mon, 17 Jan 2022 05:55:33 -0500
-X-MC-Unique: s7V5RFKLP6SVJcMvY6DnxQ-1
-Received: by mail-qv1-f70.google.com with SMTP id iu14-20020ad45cce000000b0041c061c13e1so4648550qvb.1
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jan 2022 02:55:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=3d9NbS5ogfyUH4BL7U2817o4vKpaUWvQHYEUemE7cKM=;
-        b=AsX3y7a+eFvwvVezjkSikerbfO7V+2HM1umM2SBf77ukPul0jBeLfg6wIz1Q6dw9L4
-         pbn/s6qCxdCDUkeX+Gky6x+tsOmhKHHJr1UaIYcoa2rdy1Uuw0uFC4NLm5sBE0TxPh9/
-         VosPO0taTW5V/Q0LC3VhBz56BXVwh0LOtODwiod1jjsWRmvK18Za61OQHph0PemsA3uh
-         rU0lHgxQbhAK19ZIGM4uqC1GwyKdpSSC6tatmVdXo4zFwYcf1nqVdawbdLjMH9DV9jpT
-         PsZW2hesW82UR+wsMejouP39rsjZqfN+p7sYzf2u3uuKRrg6Do1nkjosJiS4imnGC/QV
-         ssKw==
-X-Gm-Message-State: AOAM531mxB6g7/e/JnJQOZ4zXTJ3yigsPbD5hO38LrPFKGjJoy0xboun
-        OcyL+JtuJZ7kysBnTkPgdvPbGRr8gkrAOymbEaKXrmNh36zgWYqzYhYD+zSTXta1c3hbPe4UzDR
-        rQvWqq/Ab1ZHzmK1cV+0eOCTsSpU=
-X-Received: by 2002:a05:620a:12b4:: with SMTP id x20mr13745318qki.700.1642416933197;
-        Mon, 17 Jan 2022 02:55:33 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJy8oY1qY9rvtso4cTOToi5Joo4atTzACn8OQSAzUYZ/+nn+snTwGRo4KsP+rOqzdYA9P/f3mg==
-X-Received: by 2002:a05:620a:12b4:: with SMTP id x20mr13745311qki.700.1642416932993;
-        Mon, 17 Jan 2022 02:55:32 -0800 (PST)
-Received: from localhost (net-93-146-37-237.cust.vodafonedsl.it. [93.146.37.237])
-        by smtp.gmail.com with ESMTPSA id v7sm8382057qkp.30.2022.01.17.02.55.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jan 2022 02:55:32 -0800 (PST)
-Date:   Mon, 17 Jan 2022 11:55:29 +0100
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        linux-wireless@vger.kernel.org, ryder.lee@mediatek.com,
-        sean.wang@mediatek.com
-Subject: Re: [PATCH 2/5] mt76: connac: move common mac defs in
- mt76_connac_mac.h
-Message-ID: <YeVLITuTeO2+0dnb@lore-desk>
-References: <cover.1642336806.git.lorenzo@kernel.org>
- <39e05054ccb5fc9123bea06f45833348c5b08d4d.1642336806.git.lorenzo@kernel.org>
- <6ba09c09-9248-99b9-f16b-1a2421e16cac@nbd.name>
+        Mon, 17 Jan 2022 06:54:45 -0500
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 5C11C200004;
+        Mon, 17 Jan 2022 11:54:41 +0000 (UTC)
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Alexander Aring <alex.aring@gmail.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        linux-wpan@vger.kernel.org
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        David Girault <david.girault@qorvo.com>,
+        Romuald Despres <romuald.despres@qorvo.com>,
+        Frederic Blain <frederic.blain@qorvo.com>,
+        Nicolas Schodet <nico@ni.fr.eu.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Varka Bhadram <varkabhadram@gmail.com>,
+        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v3 00/41] IEEE 802.15.4 scan support
+Date:   Mon, 17 Jan 2022 12:53:59 +0100
+Message-Id: <20220117115440.60296-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="3fktQ7JeGKl4fQIP"
-Content-Disposition: inline
-In-Reply-To: <6ba09c09-9248-99b9-f16b-1a2421e16cac@nbd.name>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hello,
 
---3fktQ7JeGKl4fQIP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+	*** TLDR ***
 
-> On 2022-01-16 13:43, Lorenzo Bianconi wrote:
-> > Move mac definitions shared between mt7921 and mt7915 in
-> > mt76_connac_mac.h header.
-> >=20
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> >   .../wireless/mediatek/mt76/mt76_connac_mac.h  | 292 +++++++++++++++++
-> I think this should probably be put in mt76_connac2_mac.h or something li=
-ke
-> that. The definitions are different for 7663/7615 (connac v1), and they w=
-ill
-> probably be different again for newer chipset generations.
->=20
-> Maybe we should reorganize the code to make it clear which parts are conn=
-ac2
-> specific.
->=20
-> - Felix
->=20
+Here is a series attempting to bring support for scans in the
+IEEE 802.15.4 stack. A number of improvements had to be made, including:
+* a better handling of the symbol durations
+* a few changes in Kconfig
+* a better handling of the tx queues
+* a synchronous Tx API
 
-ack. According to irc discussion with Ryder and Sean, I marked this series =
-as
-'superseded' in patchwork.
-I guess we can keep patch 1/5: "mt76: connac: move mt76_connac_lmac_mapping=
- in
-mt76-connac module".
+Active and passive scans can be locally tested only with hwsim.
 
-Regards,
-Lorenzo
+Sorry for the big series, might be split in the near future.
 
---3fktQ7JeGKl4fQIP
-Content-Type: application/pgp-signature; name="signature.asc"
+	************
 
------BEGIN PGP SIGNATURE-----
+A second series aligning the tooling with these changes is related,
+bringing support for a number of new features such as:
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYeVLIQAKCRA6cBh0uS2t
-rMByAP40HQUrj3ONC4BkyERHzKbjmZ9wwRD6mRBmb9r4jipPdwEAr2zmaUIWGZFG
-VNggM5ivK1yAmN1QJTHfn53N/9mVZg4=
-=QtAq
------END PGP SIGNATURE-----
+* Sending (or stopping) beacons. Intervals ranging from 0 to 14 are
+  valid for passively sending beacons at regular intervals. An interval
+  of 15 would request the core to answer to received BEACON_REQ.
+  # iwpan dev wpan0 beacons send interval 2 # send BEACON at a fixed rate
+  # iwpan dev wpan0 beacons send interval 15 # answer BEACON_REQ only
+  # iwpan dev wpan0 beacons stop # apply to both cases
 
---3fktQ7JeGKl4fQIP--
+* Scanning all the channels or only a subset:
+  # iwpan dev wpan1 scan type passive duration 3 # will not trigger BEACON_REQ
+  # iwpan dev wpan1 scan type active duration 3 # will trigger BEACON_REQ
+
+* If a beacon is received during a scan, the internal PAN list is
+  updated and can be dumped, flushed and configured with:
+  # iwpan dev wpan1 pans dump
+  PAN 0xffff (on wpan1)
+      coordinator 0x2efefdd4cdbf9330
+      page 0
+      channel 13
+      superframe spec. 0xcf22
+      LQI 0
+      seen 7156ms ago
+  # iwpan dev wpan1 pans flush
+  # iwpan dev wpan1 set max_pan_entries 100
+  # iwpan dev wpan1 set pans_expiration 3600
+
+* It is also possible to monitor the events with:
+  # iwpan event
+
+* As well as triggering a non blocking scan:
+  # iwpan dev wpan1 scan trigger type passive duration 3
+  # iwpan dev wpan1 scan done
+  # iwpan dev wpan1 scan abort
+
+The PAN list gets automatically updated by dropping the expired PANs
+each time the user requests access to the list.
+
+Internally, both requests (scan/beacons) are handled periodically by
+delayed workqueues when relevant.
+
+So far the only technical point that is missing in this series is the
+possibility to grab a reference over the module driving the net device
+in order to prevent module unloading during a scan or when the beacons
+work is ongoing.
+
+Finally, this series is a deep reshuffle of David Girault's original
+work, hence the fact that he is almost systematically credited, either
+by being the only author when I created the patches based on his changes
+with almost no modification, or with a Co-developped-by tag whenever the
+final code base is significantly different than his first proposal while
+still being greatly inspired from it.
+
+Cheers,
+Miquèl
+
+Changes in v3:
+* Dropped two patches:
+  net: mac802154: Split the set channel hook implementation
+  net: mac802154: Ensure proper channel selection at probe time
+* Fixed a check against the supported channels list in
+  ieee802154_set_symbol_duration().
+* Reworded a bit the above helper to print different error messages and
+  dropped the goto statement in it.
+* Used the NSEC_PER_USEC macro in the symbol conversion from us to ns.
+* Stopped calling ->set_channel() at probe time.
+* Fixed hwsim which does not internally set the right channel.
+* Used definitions instead of hardcoded values when relevant.
+* Moved two helpers out of the experimental section because they are now
+  used outside of experimental code.
+* Did a number of renames. Added a couple of comments.
+* Updated several drivers to force them to use the core xmit complete
+  callback instead of workarounding it.
+* Created a helper checking if a queue must be kept on hold.
+* Created a couple of atomic variables and wait_queue_t per phy.
+* Created a sync API for MLME transmissions.
+* Created a hot path and a slow path.
+* Put the warning in the hot path.
+* Added a flag to prevent drivers supporting only datagrams to use the
+  different scanning features.
+* Dropped ieee802154_wake/stop_queue() from the exported
+  symbols. Drivers should not use these directly, but call other helpers
+  in order to fail the tx counters.
+
+Changes in v2:
+* Create two new netlink commands to set the maximum number of PANs that
+  can be listed as well as their expiration time (in seconds).
+* Added a patch to the series to avoid ignoring bad frames in hwsim as
+  requested by Alexander.
+* Changed the symbol duration type to receive nanoseconds instead of
+  microseconds.
+* Dropped most of the hwsim patches and reworked how drivers advertise
+  their channels in order to be capable of deriving the symbol durations
+  automatically.
+* The scanning boolean gets turned into an atomic.
+* The ca8210 driver does not support scanning, implement the driver
+  hooks to reflect the situation.
+* Reworked a bit the content of each patch to ease the introduction of
+  active scans. 
+* Added active scan support.
+
+David Girault (5):
+  net: ieee802154: Move IEEE 802.15.4 Kconfig main entry
+  net: mac802154: Include the softMAC stack inside the IEEE 802.15.4
+    menu
+  net: ieee802154: Move the address structure earlier
+  net: ieee802154: Add a kernel doc header to the ieee802154_addr
+    structure
+  net: ieee802154: Trace the registration of new PANs
+
+Miquel Raynal (36):
+  MAINTAINERS: Remove Harry Morris bouncing address
+  net: ieee802154: hwsim: Ensure proper channel selection at probe time
+  net: ieee802154: hwsim: Ensure frame checksum are valid
+  net: ieee802154: Use the IEEE802154_MAX_PAGE define when relevant
+  net: ieee802154: Improve the way supported channels are declared
+  net: ieee802154: Give more details to the core about the channel
+    configurations
+  net: ieee802154: mcr20a: Fix lifs/sifs periods
+  net: mac802154: Convert the symbol duration into nanoseconds
+  net: mac802154: Set the symbol duration automatically
+  net: ieee802154: Drop duration settings when the core does it already
+  net: ieee802154: Return meaningful error codes from the netlink
+    helpers
+  net: mac802154: Explain the use of ieee802154_wake/stop_queue()
+  net: ieee802154: at86rf230: Call the complete helper when a
+    transmission is over
+  net: ieee802154: atusb: Call the complete helper when a transmission
+    is over
+  net: ieee802154: ca8210: Call the complete helper when a transmission
+    is over
+  net: mac802154: Stop exporting ieee802154_wake/stop_queue()
+  net: mac802154: Rename the synchronous xmit worker
+  net: mac802154: Rename the main tx_work struct
+  net: mac802154: Follow the count of ongoing transmissions
+  net: mac802154: Hold the transmit queue when relevant
+  net: mac802154: Create a hot tx path
+  net: mac802154: Add a warning in the hot path
+  net: mac802154: Introduce a tx queue flushing mechanism
+  net: mac802154: Introduce a synchronous API for MLME commands
+  net: ieee802154: Add support for internal PAN management
+  net: ieee802154: Define a beacon frame header
+  net: ieee802154: Define frame types
+  net: ieee802154: Add support for scanning requests
+  net: mac802154: Handle scan requests
+  net: ieee802154: Full PAN management
+  net: ieee802154: Add beacons support
+  net: mac802154: Handle beacons requests
+  net: mac802154: Add support for active scans
+  net: mac802154: Add support for processing beacon requests
+  net: ieee802154: Handle limited devices with only datagram support
+  net: ieee802154: ca8210: Flag the driver as being limited
+
+ MAINTAINERS                              |   3 +-
+ drivers/net/ieee802154/adf7242.c         |   3 +-
+ drivers/net/ieee802154/at86rf230.c       |  68 ++-
+ drivers/net/ieee802154/atusb.c           |  89 ++--
+ drivers/net/ieee802154/ca8210.c          |  17 +-
+ drivers/net/ieee802154/cc2520.c          |   3 +-
+ drivers/net/ieee802154/fakelb.c          |  43 +-
+ drivers/net/ieee802154/mac802154_hwsim.c |  88 +++-
+ drivers/net/ieee802154/mcr20a.c          |  11 +-
+ drivers/net/ieee802154/mrf24j40.c        |   3 +-
+ include/linux/ieee802154.h               |   7 +
+ include/net/cfg802154.h                  | 175 ++++++-
+ include/net/ieee802154_netdev.h          |  85 ++++
+ include/net/mac802154.h                  |  29 +-
+ include/net/nl802154.h                   |  99 ++++
+ net/Kconfig                              |   3 +-
+ net/ieee802154/Kconfig                   |   1 +
+ net/ieee802154/Makefile                  |   2 +-
+ net/ieee802154/core.c                    |   3 +
+ net/ieee802154/core.h                    |  31 ++
+ net/ieee802154/header_ops.c              |  67 +++
+ net/ieee802154/nl-phy.c                  |  13 +-
+ net/ieee802154/nl802154.c                | 556 ++++++++++++++++++++++-
+ net/ieee802154/nl802154.h                |   4 +
+ net/ieee802154/pan.c                     | 234 ++++++++++
+ net/ieee802154/rdev-ops.h                |  52 +++
+ net/ieee802154/trace.h                   |  86 ++++
+ net/mac802154/Makefile                   |   2 +-
+ net/mac802154/cfg.c                      |  82 +++-
+ net/mac802154/ieee802154_i.h             |  86 +++-
+ net/mac802154/main.c                     | 119 ++++-
+ net/mac802154/rx.c                       |  34 +-
+ net/mac802154/scan.c                     | 447 ++++++++++++++++++
+ net/mac802154/tx.c                       |  48 +-
+ net/mac802154/util.c                     |  38 +-
+ 35 files changed, 2413 insertions(+), 218 deletions(-)
+ create mode 100644 net/ieee802154/pan.c
+ create mode 100644 net/mac802154/scan.c
+
+-- 
+2.27.0
 
