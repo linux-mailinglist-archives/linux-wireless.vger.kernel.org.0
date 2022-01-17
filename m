@@ -2,84 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E223F4908F6
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jan 2022 13:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AE8749090F
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jan 2022 13:57:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230335AbiAQMp2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jan 2022 07:45:28 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:45108 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229979AbiAQMp1 (ORCPT
+        id S237058AbiAQM5M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jan 2022 07:57:12 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:34104 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231817AbiAQM5M (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jan 2022 07:45:27 -0500
+        Mon, 17 Jan 2022 07:57:12 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7132BB8104D
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jan 2022 12:45:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6063C36AEC;
-        Mon, 17 Jan 2022 12:45:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CAE63611D6;
+        Mon, 17 Jan 2022 12:57:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51487C36AE3;
+        Mon, 17 Jan 2022 12:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642423525;
-        bh=diarlsjyUeuHowtNNVWY50r6KaQgdnsyfvtUVtB0cRk=;
+        s=k20201202; t=1642424231;
+        bh=KYCJFH4TJNJVoyp6LMjBK914/TONjYQ+DoTq7OLwXTw=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=f945m6NRc/sDfkf+EqVFH+3i5UY+QfdPJEs7DNmMrT2nYK5dlHe8sNrAIHRIKDEFc
-         oGwLziwfH0szK9dYa3NBHuP/walWmjHKcL9qYhxZ+baYL2WDhxq9SVE2OfnkF+Vh42
-         a2qW5V977A+51f7b2jEnMKm8iXY88b+lXN65bjXxMohMjrwDkqol1kLnMx8j6inM+0
-         g9eCP0GAkFl1WRotqMa7DoNC+xZee7VfVHmLtUNUIQxXbFE2A97c+yPipkts34dwK+
-         dMBsSpUYrvcvbrSDVMGsRoQXzurLUqPBzNfQvKvFESmSQSbuND1txI4fHXLplYBl/V
-         ZxfG9qBiXpJVg==
+        b=gm8FXLd/Ub7vOouMlpStEqLksxhtLS+2LSnYN+drUS5x8juNuJTil1Us+nju//kFk
+         0Up/1AnWefkkLOAg6f7UdkTyZ67pq9cduaeMztpRxgZ70h6wJO9u0hRLx5H4mRjMe6
+         Jku52Zo94zFgFHRWyyASCPwUPShEOS2hZCWu03ITByb3bj+IJ8PtOtcbnlMsOCExDf
+         surKlCAXdms2bDnIW/mtALPR1i2T05oJzvbCw7cHgrCwFAxhyKcsMq8LejsTC+DThx
+         GZdtB8gJt1Q6YLoY/WeM5FWKwCFBvMTgjmvVciVmXaxRqsisIzn18RDDc/b3iYs55I
+         dLNUR0SJY0MWA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] ath10k: abstract htt_rx_desc structure
+Subject: Re: [PATCH] ath9k_htc: fix uninit value bugs
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211216151823.68878-1-franciman12@gmail.com>
-References: <20211216151823.68878-1-franciman12@gmail.com>
-To:     Francesco Magliocca <franciman12@gmail.com>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        enrico@fracta.dev, Francesco Magliocca <franciman12@gmail.com>
+In-Reply-To: <20220115122733.11160-1-paskripkin@gmail.com>
+References: <20220115122733.11160-1-paskripkin@gmail.com>
+To:     Pavel Skripkin <paskripkin@gmail.com>
+Cc:     ath9k-devel@qca.qualcomm.com, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org, linville@tuxdriver.com,
+        vasanth@atheros.com, Sujith.Manoharan@atheros.com,
+        senthilkumar@atheros.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pavel Skripkin <paskripkin@gmail.com>,
+        syzbot+f83a1df1ed4f67e8d8ad@syzkaller.appspotmail.com
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164242352076.27899.16661550947975191712.kvalo@kernel.org>
-Date:   Mon, 17 Jan 2022 12:45:23 +0000 (UTC)
+Message-ID: <164242422410.16718.5618838300043178474.kvalo@kernel.org>
+Date:   Mon, 17 Jan 2022 12:57:08 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Francesco Magliocca <franciman12@gmail.com> wrote:
+Pavel Skripkin <paskripkin@gmail.com> wrote:
 
-> QCA6174 card often hangs with the current htt_rx_desc
-> memory layout in some circumstances, because its firmware
-> fails to handle length differences.
-> Therefore we must abstract the htt_rx_desc structure
-> and operations on it, to allow different wireless cards
-> to use different, unrelated rx descriptor structures.
+> Syzbot reported 2 KMSAN bugs in ath9k. All of them are caused by missing
+> field initialization.
 > 
-> Define a base htt_rx_desc structure and htt_rx_desc_v1
-> for use with the QCA family of ath10k supported cards
-> and htt_rx_desc_v2 for use with the WCN3990 card.
+> In htc_connect_service() svc_meta_len and pad are not initialized. Based
+> on code it looks like in current skb there is no service data, so simply
+> initialize svc_meta_len to 0.
 > 
-> Define htt_rx_desc_ops which contains the abstract operations
-> to access the generic htt_rx_desc, give implementations
-> for each card and update htt_rx.c to use the defined
-> abstract interface to rx descriptors.
+> htc_issue_send() does not initialize htc_frame_hdr::control array. Based
+> on firmware code, it will initialize it by itself, so simply zero whole
+> array to make KMSAN happy
 > 
-> Fixes: e3def6f7ddf8 ("ath10k: Update rx descriptor for WCN3990 target")
+> Fail logs:
 > 
-> Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
+> BUG: KMSAN: kernel-usb-infoleak in usb_submit_urb+0x6c1/0x2aa0 drivers/usb/core/urb.c:430
+>  usb_submit_urb+0x6c1/0x2aa0 drivers/usb/core/urb.c:430
+>  hif_usb_send_regout drivers/net/wireless/ath/ath9k/hif_usb.c:127 [inline]
+>  hif_usb_send+0x5f0/0x16f0 drivers/net/wireless/ath/ath9k/hif_usb.c:479
+>  htc_issue_send drivers/net/wireless/ath/ath9k/htc_hst.c:34 [inline]
+>  htc_connect_service+0x143e/0x1960 drivers/net/wireless/ath/ath9k/htc_hst.c:275
+> ...
 > 
-> Co-developed-by: Enrico Lumetti <enrico@fracta.dev>
-> Signed-off-by: Enrico Lumetti <enrico@fracta.dev>
-> Signed-off-by: Francesco Magliocca <franciman12@gmail.com>
-> Link: https://lore.kernel.org/ath10k/CAH4F6usFu8-A6k5Z7rU9__iENcSC6Zr-NtRhh_aypR74UvN1uQ@mail.gmail.com/
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> Uninit was created at:
+>  slab_post_alloc_hook mm/slab.h:524 [inline]
+>  slab_alloc_node mm/slub.c:3251 [inline]
+>  __kmalloc_node_track_caller+0xe0c/0x1510 mm/slub.c:4974
+>  kmalloc_reserve net/core/skbuff.c:354 [inline]
+>  __alloc_skb+0x545/0xf90 net/core/skbuff.c:426
+>  alloc_skb include/linux/skbuff.h:1126 [inline]
+>  htc_connect_service+0x1029/0x1960 drivers/net/wireless/ath/ath9k/htc_hst.c:258
+> ...
+> 
+> Bytes 4-7 of 18 are uninitialized
+> Memory access of size 18 starts at ffff888027377e00
+> 
+> BUG: KMSAN: kernel-usb-infoleak in usb_submit_urb+0x6c1/0x2aa0 drivers/usb/core/urb.c:430
+>  usb_submit_urb+0x6c1/0x2aa0 drivers/usb/core/urb.c:430
+>  hif_usb_send_regout drivers/net/wireless/ath/ath9k/hif_usb.c:127 [inline]
+>  hif_usb_send+0x5f0/0x16f0 drivers/net/wireless/ath/ath9k/hif_usb.c:479
+>  htc_issue_send drivers/net/wireless/ath/ath9k/htc_hst.c:34 [inline]
+>  htc_connect_service+0x143e/0x1960 drivers/net/wireless/ath/ath9k/htc_hst.c:275
+> ...
+> 
+> Uninit was created at:
+>  slab_post_alloc_hook mm/slab.h:524 [inline]
+>  slab_alloc_node mm/slub.c:3251 [inline]
+>  __kmalloc_node_track_caller+0xe0c/0x1510 mm/slub.c:4974
+>  kmalloc_reserve net/core/skbuff.c:354 [inline]
+>  __alloc_skb+0x545/0xf90 net/core/skbuff.c:426
+>  alloc_skb include/linux/skbuff.h:1126 [inline]
+>  htc_connect_service+0x1029/0x1960 drivers/net/wireless/ath/ath9k/htc_hst.c:258
+> ...
+> 
+> Bytes 16-17 of 18 are uninitialized
+> Memory access of size 18 starts at ffff888027377e00
+> 
+> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+> Reported-by: syzbot+f83a1df1ed4f67e8d8ad@syzkaller.appspotmail.com
+> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
 
-Patch applied to ath-next branch of ath.git, thanks.
-
-6bae9de622d3 ath10k: abstract htt_rx_desc structure
+How did you test this? As syzbot is mentioned I assume you did not test this on
+a real device, it would help a lot if this is clearly mentioned in the commit
+log. My trust on syzbot fixes is close to zero due to bad past history.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211216151823.68878-1-franciman12@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220115122733.11160-1-paskripkin@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
