@@ -2,83 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C503490FDB
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jan 2022 18:48:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AACFF49102B
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jan 2022 19:20:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241263AbiAQRsn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jan 2022 12:48:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56888 "EHLO
+        id S241737AbiAQSUG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jan 2022 13:20:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237954AbiAQRsn (ORCPT
+        with ESMTP id S229657AbiAQSUF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jan 2022 12:48:43 -0500
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 644CBC061574;
-        Mon, 17 Jan 2022 09:48:42 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id b13so69022334edn.0;
-        Mon, 17 Jan 2022 09:48:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lOU3pr5yfa0z0mv7uHkVulXBdRCWTTF3cmfmVLsfcOc=;
-        b=fzqGIJMUPblqrzxjAw33Ffqrwo8GQ0sbibYBH0a9FMdyoVec4BChUAw+C6tMHqxSHt
-         WDjVDuQG8VPVYywCb4aGn3oC8ODugmgHmdihlvPamuSaZ0cokYFKVe+6NQ1/1Oeu/if4
-         Zx2nJBW8N/Ld/jZuHCbeGOj3tpYVOoBAKyDU0mLYrRA3YfEVXx5RUZn4JU7Bp+XOSPdb
-         W2L5raJUqAjo4HngBm7tBIH+onx5zJzagVys+WOAY73PQRgUOBRa0U8mAgAuW2Am2XDY
-         PpMUDw16/kbpOnyc4AiIt8yowq0pmbtqjoRMMETXIIEdu1en/M2Et+ChCSz9drU0rwXG
-         DNzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lOU3pr5yfa0z0mv7uHkVulXBdRCWTTF3cmfmVLsfcOc=;
-        b=gD5/8u58yqfGIOyLHm5AxX1kvrRlTN0SJfSlKwyoo6rdWA0ZonGftKgciDJJGpwPK0
-         7iBMmonzQSC+paufcBzJ8uCKSFBPee3QdN3ska3B+vfiOxqaZCrCVxdJ1UGxLW0yRjh7
-         LHs5yr9bIGaa8ysHDCfXT/Fj9lPY5oJCf+8B//Ac9Om60ulTShq+7PvPQGxiqP0M6h1q
-         fYKmGM+76z50LGukWJoH4L/YN6lNlgCzBm6h6vsK3V64V2PZG5UCyZDbeyoEaphx45ek
-         t7CaqjdPPHrJVzinqqmeLJFHYWUBHdpZ0tktMyxEa+iQxf3ksPbK/NS1ryOC3Vg+cDAT
-         KoBg==
-X-Gm-Message-State: AOAM5330XsOj2J7ufvzGSfxJQhFFS2EH+u70vnLHNblfcaer/porNOFU
-        2PHDevgMQBDD2NDvPv/WKHUxBTTzkV4UT5DiFAs=
-X-Google-Smtp-Source: ABdhPJxgACcFgbsJOGLEl1dGwIFoAAsPkFHuLnCSx4EtJIuHxSphQJRCkiR0qUqGim1saDLm7gX7qE/y8trHqorq7mE=
-X-Received: by 2002:a05:6402:35d3:: with SMTP id z19mr7002466edc.29.1642441720972;
- Mon, 17 Jan 2022 09:48:40 -0800 (PST)
+        Mon, 17 Jan 2022 13:20:05 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E71BC061574;
+        Mon, 17 Jan 2022 10:20:05 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C6D06100E;
+        Mon, 17 Jan 2022 18:20:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D5F9C36AE3;
+        Mon, 17 Jan 2022 18:20:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642443604;
+        bh=zLGeYHy6RxeDRs/7PXGDuFwinvTJa8TuCQCs9UarAA4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=p9zXwaAL4xy9J7O61LYb/yOVEzDGdJIEey7bSgXyAzmaNLB0VeO1+5qpqDlbGqltL
+         6TAefnD6rPJCR5kjbJP7GzyMsjchB+p4Vkf38+l8SBiuWu/gwQnm9EWiolQ+gZ446z
+         7fSIHFTLKFwru9qV7WUS3nY4Jb34g7II62HgZhfIZMKbtFfdCLg3lvvDOEUbAeItFb
+         Pxj1J7M/Cf+HKTjXB1JaHfSVTi30U90dtgliQORx7UXYuqa14t4CbHGenBCPNeWWgr
+         TBsolNtD1YzzKGmBNxVeDUaglIdd8N+JTICVTzmil99857k25aVnkeRE7iOEkjQVLI
+         fR5C5dok9rs+Q==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        sfr@canb.auug.org.au, lkp@intel.com
+Subject: [PATCH wireless v2 1/2] MAINTAINERS: add common wireless and wireless-next trees
+Date:   Mon, 17 Jan 2022 20:19:57 +0200
+Message-Id: <20220117181958.3509-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20220114234825.110502-1-martin.blumenstingl@googlemail.com>
- <20220114234825.110502-2-martin.blumenstingl@googlemail.com> <87k0eysgs9.fsf@kernel.org>
-In-Reply-To: <87k0eysgs9.fsf@kernel.org>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Mon, 17 Jan 2022 18:48:30 +0100
-Message-ID: <CAFBinCCnvO-CjjzSr0wkv6d-nin2Wa=GUbMMoUh02KD5aQWFoQ@mail.gmail.com>
-Subject: Re: [PATCH 1/4] rtw88: pci: Change type of rtw_hw_queue_mapping() and
- ac_to_hwq to enum
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, tony0620emma@gmail.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Neo Jou <neojou@gmail.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Pkshih <pkshih@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+For easier maintenance we have decided to create common wireless and
+wireless-next trees for all wireless patches. Old mac80211 and wireless-drivers
+trees will not be used anymore.
 
-On Mon, Jan 17, 2022 at 1:11 PM Kalle Valo <kvalo@kernel.org> wrote:
-[...]
-> > -static u8 ac_to_hwq[] = {
-> > +static enum rtw_tx_queue_type ac_to_hwq[] = {
-> >       [IEEE80211_AC_VO] = RTW_TX_QUEUE_VO,
-> >       [IEEE80211_AC_VI] = RTW_TX_QUEUE_VI,
-> >       [IEEE80211_AC_BE] = RTW_TX_QUEUE_BE,
->
-> Shouldn't ac_to_hwq be static const?
-Good point, thanks for this suggestion!
-I will include that in v2 of this series (which I will send in a few
-days so others can share their thoughts about these patches as well).
+While at it, add a wiki link to wireless drivers section and a patchwork link
+to 802.11, mac80211 and rfkill sections. Also use https in patchwork links.
 
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+---
 
-Best regards,
-Martin
+Intel kernel test robot maintainers, please update your configuration so
+that the new trees are build tested. Reports can be sent to
+linux-wireless@vger.kernel.org.
+
+v2:
+
+* use https on patchwork links
+
+ MAINTAINERS | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 306de106f31b..f67e7dae2c55 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -190,8 +190,9 @@ M:	Johannes Berg <johannes@sipsolutions.net>
+ L:	linux-wireless@vger.kernel.org
+ S:	Maintained
+ W:	https://wireless.wiki.kernel.org/
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git
++Q:	https://patchwork.kernel.org/project/linux-wireless/list/
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
+ F:	Documentation/driver-api/80211/cfg80211.rst
+ F:	Documentation/networking/regulatory.rst
+ F:	include/linux/ieee80211.h
+@@ -11308,8 +11309,9 @@ M:	Johannes Berg <johannes@sipsolutions.net>
+ L:	linux-wireless@vger.kernel.org
+ S:	Maintained
+ W:	https://wireless.wiki.kernel.org/
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git
++Q:	https://patchwork.kernel.org/project/linux-wireless/list/
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
+ F:	Documentation/networking/mac80211-injection.rst
+ F:	Documentation/networking/mac80211_hwsim/mac80211_hwsim.rst
+ F:	drivers/net/wireless/mac80211_hwsim.[ch]
+@@ -13302,9 +13304,10 @@ NETWORKING DRIVERS (WIRELESS)
+ M:	Kalle Valo <kvalo@kernel.org>
+ L:	linux-wireless@vger.kernel.org
+ S:	Maintained
+-Q:	http://patchwork.kernel.org/project/linux-wireless/list/
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git
++W:	https://wireless.wiki.kernel.org/
++Q:	https://patchwork.kernel.org/project/linux-wireless/list/
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
+ F:	Documentation/devicetree/bindings/net/wireless/
+ F:	drivers/net/wireless/
+ 
+@@ -16391,8 +16394,9 @@ M:	Johannes Berg <johannes@sipsolutions.net>
+ L:	linux-wireless@vger.kernel.org
+ S:	Maintained
+ W:	https://wireless.wiki.kernel.org/
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git
++Q:	https://patchwork.kernel.org/project/linux-wireless/list/
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
+ F:	Documentation/ABI/stable/sysfs-class-rfkill
+ F:	Documentation/driver-api/rfkill.rst
+ F:	include/linux/rfkill.h
+-- 
+2.20.1
+
