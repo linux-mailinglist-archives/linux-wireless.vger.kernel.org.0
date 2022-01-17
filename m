@@ -2,81 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBEC249102F
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jan 2022 19:20:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC32D491062
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jan 2022 19:35:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242411AbiAQSUJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jan 2022 13:20:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35922 "EHLO
+        id S233625AbiAQSfu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jan 2022 13:35:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229657AbiAQSUI (ORCPT
+        with ESMTP id S242721AbiAQSf2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jan 2022 13:20:08 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72279C061574;
-        Mon, 17 Jan 2022 10:20:08 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3DE83B81151;
-        Mon, 17 Jan 2022 18:20:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0C7C36AE7;
-        Mon, 17 Jan 2022 18:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642443606;
-        bh=XqlsuvsI2zGRiD3mhCiQ5ztRlavu05NdmDc6XNOtFlA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z82aMkICwVjCVqU9T+ZFcw0IScnG2g7WamSA3SO7CyTEtM/uqHFkDuAJDNLt3xvUK
-         VgfzmTM++WlEl+1iIx/+Fz5UitnafnO7L3eUWRbv15vSvibdTAei5wRB8Afcr82kdG
-         HNHUbMqaptkxlGfO4uZ6IHVK1tUp0nntQ1AFTFv6gi5mGDstLMVDw+tyQCqlkCcGan
-         eKqROs7nixGXj2Yx4XRuZWH+z4uQQ6xacw3BpUsgA/85MOhnpyMUyipxZd7rUlLL/a
-         DSXFgo21ZbYfeDsh2qvWSVWixVXDgcjAB5UF4DUfjwTiYnWaLYlHjJVY4lMny2DfVX
-         E6L392oEvjbaw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        sfr@canb.auug.org.au, lkp@intel.com
-Subject: [PATCH wireless v2 2/2] MAINTAINERS: remove extra wireless section
-Date:   Mon, 17 Jan 2022 20:19:58 +0200
-Message-Id: <20220117181958.3509-2-kvalo@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20220117181958.3509-1-kvalo@kernel.org>
-References: <20220117181958.3509-1-kvalo@kernel.org>
+        Mon, 17 Jan 2022 13:35:28 -0500
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ABC1C061747;
+        Mon, 17 Jan 2022 10:35:17 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id x11so35269422lfa.2;
+        Mon, 17 Jan 2022 10:35:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=z2LAhV4KSzEZogKZQmx+VN5D6iQExMOg1CIIQQv1a6c=;
+        b=h87/EoWOnR4jHU5VsE3cQlywU1F5aajaPPF6NBrQ7B136ytNj+vUCmFT2Ff6mEnICk
+         OZaElTNLEXhiiNqUQh2XXjICn19cekST5Z96lwa8zcLZv272+0CfD0ulWkMivlp3QOL5
+         +aBOX1Z9CMnKHcOn5lVUa9k98Ydyluw5/wLspul1yTAnJzAJ2ZGqJfRf/uy/zm7S09xC
+         265GFZFjCtzlvA6mY8PIl3JdTya3GQqM6K1Q+CB/gxRP4nC7esdQ7cW0MhXyTlWiK80u
+         GAmRqvNuiJMoBO6PpL9L1vcJrzTaqE4VACExsA0Tp2jUF8fSEEbGaB6dynLQ5kPQW0Lj
+         ONBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=z2LAhV4KSzEZogKZQmx+VN5D6iQExMOg1CIIQQv1a6c=;
+        b=znkQwNKjF07d2VP74WVOEOKUV695euIbqCyiiEBLDuXN5HiM7StAKZPm/8cHMuNU89
+         /1SiQEWvj2ZdVR6ZTxyGYwjWYmfpNNa6sJ1mK3HwTAZ0sFcq5i2aWOYOztJDWLSE/m5t
+         A1K2IEKl4Q3AyGmtfj19SWJ8RR8MqwjzTm3UAI7uNdPMMymfNrOEYPuTYbdmgLy/BYex
+         W9KR9KZ+Z/EcwFJOIuC5Jcj8/tTjBAGUg0C/9dUFDYHnBX0JDrIoQQas+S/WqX8BkrpI
+         YbYo/XtZS/7ag0mGRzYcpBAcVZ8p/MVdBan398NbTjQf3CvS/b+9oi+lFnxb8Q6UgDkb
+         2oXw==
+X-Gm-Message-State: AOAM532RaGYPwCsTWXc4cknnUYrCwEn+YqTTR9xRJdClikVMsYLAaHlx
+        sXm/wp2AJrKuRe68LH/9Bhg=
+X-Google-Smtp-Source: ABdhPJwPjWeTQQzIRDbxUo/5CKG8WBZxjXWryCjlZG50Z7qK7RwRsmt5226luHOYipkbH83k9xAeDA==
+X-Received: by 2002:a05:651c:547:: with SMTP id q7mr5630262ljp.464.1642444515624;
+        Mon, 17 Jan 2022 10:35:15 -0800 (PST)
+Received: from [192.168.1.11] ([94.103.227.208])
+        by smtp.gmail.com with ESMTPSA id k12sm1455871lfu.252.2022.01.17.10.35.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jan 2022 10:35:15 -0800 (PST)
+Message-ID: <a63d6d9b-7e95-3e88-fcd2-2fe5e623dd5b@gmail.com>
+Date:   Mon, 17 Jan 2022 21:35:13 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH] ath9k_htc: fix uninit value bugs
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     ath9k-devel@qca.qualcomm.com, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org, linville@tuxdriver.com,
+        vasanth@atheros.com, Sujith.Manoharan@atheros.com,
+        senthilkumar@atheros.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        syzbot+f83a1df1ed4f67e8d8ad@syzkaller.appspotmail.com
+References: <20220115122733.11160-1-paskripkin@gmail.com>
+ <164242422410.16718.5618838300043178474.kvalo@kernel.org>
+From:   Pavel Skripkin <paskripkin@gmail.com>
+In-Reply-To: <164242422410.16718.5618838300043178474.kvalo@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There's an unneeded and almost empty wireless section in MAINTAINERS, seems to
-be leftovers from commit 0e324cf640fb ("MAINTAINERS: changes for wireless"). I
-don't see any need for that so let's remove it.
+Hi Kalle,
 
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
----
+On 1/17/22 15:57, Kalle Valo wrote:
+>> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+>> Reported-by: syzbot+f83a1df1ed4f67e8d8ad@syzkaller.appspotmail.com
+>> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+> 
+> How did you test this? As syzbot is mentioned I assume you did not test this on
+> a real device, it would help a lot if this is clearly mentioned in the commit
+> log. My trust on syzbot fixes is close to zero due to bad past history.
+> 
 
-v2:
+You are right, I've tested only with syzbot's reproducer. I've followed 
+simple guess: if code works properly with random values in these fields 
+for 14+ years, then zeroing them won't hurt much.
 
-* new patch
+I might be missing something, but unfortunately I don't have suitable hw 
+piece to test the change.
 
- MAINTAINERS | 4 ----
- 1 file changed, 4 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f67e7dae2c55..ae00e2b5e8dc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13441,10 +13441,6 @@ F:	include/net/tls.h
- F:	include/uapi/linux/tls.h
- F:	net/tls/*
- 
--NETWORKING [WIRELESS]
--L:	linux-wireless@vger.kernel.org
--Q:	http://patchwork.kernel.org/project/linux-wireless/list/
--
- NETXEN (1/10) GbE SUPPORT
- M:	Manish Chopra <manishc@marvell.com>
- M:	Rahul Verma <rahulv@marvell.com>
--- 
-2.20.1
 
+
+With regards,
+Pavel Skripkin
