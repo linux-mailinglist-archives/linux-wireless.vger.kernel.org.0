@@ -2,48 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F4F9491D6A
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 04:36:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C2F7491DA6
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 04:41:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235748AbiARDgA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jan 2022 22:36:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44996 "EHLO
+        id S1354752AbiARDko (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jan 2022 22:40:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353473AbiARDdF (ORCPT
+        with ESMTP id S1353595AbiARDdV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jan 2022 22:33:05 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47FD7C037005;
-        Mon, 17 Jan 2022 19:08:59 -0800 (PST)
+        Mon, 17 Jan 2022 22:33:21 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DFB9C037012;
+        Mon, 17 Jan 2022 19:09:17 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DACA860BC5;
-        Tue, 18 Jan 2022 03:08:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9ABC36AEB;
-        Tue, 18 Jan 2022 03:08:56 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E3DBDB811CF;
+        Tue, 18 Jan 2022 03:09:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6108AC36AE3;
+        Tue, 18 Jan 2022 03:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642475338;
-        bh=x0GDq5/TGahdJpi0k1BZhKdPLlEVphD7FM3LYcMZxcg=;
+        s=k20201202; t=1642475354;
+        bh=wxHpRND5njXX8eY0Ajb3h03AwZttuekxSrz5d3J35nY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VO2/kE4vWzapmNvQSJEzdrvsXSFNEh90pW7IfPSvVtYK2h2BMk2fI8kiTTvogATYv
-         sCkMs+BzYSD4DvHZpfQe2x4c9b5tI/MbXBGGXzx8IhJAKltWjM1jaGuyXrfvrqvpMg
-         c9l1bezs2xxKEsgE37mdR2EJmZbDxBvJgK6p92qcn8CLR6Un2pi1HcsiiYtqWyqbQ5
-         +XR1m+/bD6PJFzxththNDoajxBMpLHaq0/ZDfsdAHR6l5zSBM9LItXJkIkqBeasVpN
-         Rd2aRIy5M9/kWobeXeHC7eszTsiSnxryWVBzYNCeh72jMK9bt4H5B0Fh1HgyuFGftD
-         d1EtUHjn6otlQ==
+        b=ZbGkU/e/VSj5zQEYrzvPLdROcPTt1rQZb4TW1luVM2c+g7jMq896+gim1vm5gfzbP
+         DyD0f9QACbC+Rb0of/8GCcyrbGVJAmq5A2bYX3oJBP9Mjx0ZkB2H3AndgdC27MSzAN
+         5l4Bgg96PGUhBqQdjwgNDzjzZtWwUE5ctd8y4jWkucPSp1/qEkHo5vJw1mmwSh1xK/
+         ffooJxBO50iV9VY8q3AVsUHWUK0MDpfQOokwIRMc9xHMcJ1ZjO+lx9IvvLBkrLFdcC
+         tavamLb0cm8jjNI5GoeZiEtR4g7L+goHKmYQnC0qPHBPSoOPA7Hbf/8mrp4PnAEJDl
+         3DjhWHn4jqDmw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Maximilian Ernestus <maximilian@ernestus.de>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        davem@davemloft.net, kuba@kernel.org,
+Cc:     Zekun Shen <bruceshenzk@gmail.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>, ath9k-devel@qca.qualcomm.com,
+        kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 12/29] iwlwifi: mvm: synchronize with FW after multicast commands
-Date:   Mon, 17 Jan 2022 22:08:05 -0500
-Message-Id: <20220118030822.1955469-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 18/29] ath9k: Fix out-of-bound memcpy in ath9k_hif_usb_rx_stream
+Date:   Mon, 17 Jan 2022 22:08:11 -0500
+Message-Id: <20220118030822.1955469-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220118030822.1955469-1-sashal@kernel.org>
 References: <20220118030822.1955469-1-sashal@kernel.org>
@@ -55,70 +53,88 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Zekun Shen <bruceshenzk@gmail.com>
 
-[ Upstream commit db66abeea3aefed481391ecc564fb7b7fb31d742 ]
+[ Upstream commit 6ce708f54cc8d73beca213cec66ede5ce100a781 ]
 
-If userspace installs a lot of multicast groups very quickly, then
-we may run out of command queue space as we send the updates in an
-asynchronous fashion (due to locking concerns), and the CPU can
-create them faster than the firmware can process them. This is true
-even when mac80211 has a work struct that gets scheduled.
+Large pkt_len can lead to out-out-bound memcpy. Current
+ath9k_hif_usb_rx_stream allows combining the content of two urb
+inputs to one pkt. The first input can indicate the size of the
+pkt. Any remaining size is saved in hif_dev->rx_remain_len.
+While processing the next input, memcpy is used with rx_remain_len.
 
-Fix this by synchronizing with the firmware after sending all those
-commands - outside of the iteration we can send a synchronous echo
-command that just has the effect of the CPU waiting for the prior
-asynchronous commands to finish. This also will cause fewer of the
-commands to be sent to the firmware overall, because the work will
-only run once when rescheduled multiple times while it's running.
+4-byte pkt_len can go up to 0xffff, while a single input is 0x4000
+maximum in size (MAX_RX_BUF_SIZE). Thus, the patch adds a check for
+pkt_len which must not exceed 2 * MAX_RX_BUG_SIZE.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=213649
-Suggested-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reported-by: Maximilian Ernestus <maximilian@ernestus.de>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20211204083238.51aea5b79ea4.I88a44798efda16e9fe480fb3e94224931d311b29@changeid
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+BUG: KASAN: slab-out-of-bounds in ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+Read of size 46393 at addr ffff888018798000 by task kworker/0:1/23
+
+CPU: 0 PID: 23 Comm: kworker/0:1 Not tainted 5.6.0 #63
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS rel-1.10.2-0-g5f4c7b1-prebuilt.qemu-project.org 04/01/2014
+Workqueue: events request_firmware_work_func
+Call Trace:
+ <IRQ>
+ dump_stack+0x76/0xa0
+ print_address_description.constprop.0+0x16/0x200
+ ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+ ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+ __kasan_report.cold+0x37/0x7c
+ ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+ kasan_report+0xe/0x20
+ check_memory_region+0x15a/0x1d0
+ memcpy+0x20/0x50
+ ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+ ? hif_usb_mgmt_cb+0x2d9/0x2d9 [ath9k_htc]
+ ? _raw_spin_lock_irqsave+0x7b/0xd0
+ ? _raw_spin_trylock_bh+0x120/0x120
+ ? __usb_unanchor_urb+0x12f/0x210
+ __usb_hcd_giveback_urb+0x1e4/0x380
+ usb_giveback_urb_bh+0x241/0x4f0
+ ? __hrtimer_run_queues+0x316/0x740
+ ? __usb_hcd_giveback_urb+0x380/0x380
+ tasklet_action_common.isra.0+0x135/0x330
+ __do_softirq+0x18c/0x634
+ irq_exit+0x114/0x140
+ smp_apic_timer_interrupt+0xde/0x380
+ apic_timer_interrupt+0xf/0x20
+
+I found the bug using a custome USBFuzz port. It's a research work
+to fuzz USB stack/drivers. I modified it to fuzz ath9k driver only,
+providing hand-crafted usb descriptors to QEMU.
+
+After fixing the value of pkt_tag to ATH_USB_RX_STREAM_MODE_TAG in QEMU
+emulation, I found the KASAN report. The bug is triggerable whenever
+pkt_len is above two MAX_RX_BUG_SIZE. I used the same input that crashes
+to test the driver works when applying the patch.
+
+Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/YXsidrRuK6zBJicZ@10-18-43-117.dynapool.wireless.nyu.edu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/iwlwifi/mvm/mac80211.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/iwlwifi/mvm/mac80211.c
-index ca498b1f1f568..6417fda88733c 100644
---- a/drivers/net/wireless/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/iwlwifi/mvm/mac80211.c
-@@ -1957,6 +1957,7 @@ static void iwl_mvm_recalc_multicast(struct iwl_mvm *mvm)
- 	struct iwl_mvm_mc_iter_data iter_data = {
- 		.mvm = mvm,
- 	};
-+	int ret;
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index 75072a8f8cf42..15fb14f818f8b 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -586,6 +586,13 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
+ 			return;
+ 		}
  
- 	lockdep_assert_held(&mvm->mutex);
- 
-@@ -1966,6 +1967,22 @@ static void iwl_mvm_recalc_multicast(struct iwl_mvm *mvm)
- 	ieee80211_iterate_active_interfaces_atomic(
- 		mvm->hw, IEEE80211_IFACE_ITER_NORMAL,
- 		iwl_mvm_mc_iface_iterator, &iter_data);
++		if (pkt_len > 2 * MAX_RX_BUF_SIZE) {
++			dev_err(&hif_dev->udev->dev,
++				"ath9k_htc: invalid pkt_len (%x)\n", pkt_len);
++			RX_STAT_INC(skb_dropped);
++			return;
++		}
 +
-+	/*
-+	 * Send a (synchronous) ech command so that we wait for the
-+	 * multiple asynchronous MCAST_FILTER_CMD commands sent by
-+	 * the interface iterator. Otherwise, we might get here over
-+	 * and over again (by userspace just sending a lot of these)
-+	 * and the CPU can send them faster than the firmware can
-+	 * process them.
-+	 * Note that the CPU is still faster - but with this we'll
-+	 * actually send fewer commands overall because the CPU will
-+	 * not schedule the work in mac80211 as frequently if it's
-+	 * still running when rescheduled (possibly multiple times).
-+	 */
-+	ret = iwl_mvm_send_cmd_pdu(mvm, ECHO_CMD, 0, 0, NULL);
-+	if (ret)
-+		IWL_ERR(mvm, "Failed to synchronize multicast groups update\n");
- }
- 
- static u64 iwl_mvm_prepare_multicast(struct ieee80211_hw *hw,
+ 		pad_len = 4 - (pkt_len & 0x3);
+ 		if (pad_len == 4)
+ 			pad_len = 0;
 -- 
 2.34.1
 
