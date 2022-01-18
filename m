@@ -2,82 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1209E491F69
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 07:33:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED5254920C1
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 08:58:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235145AbiARGdU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jan 2022 01:33:20 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:43198 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230233AbiARGdU (ORCPT
+        id S245511AbiARH6v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jan 2022 02:58:51 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:39828 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S238767AbiARH6v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jan 2022 01:33:20 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F25096122F
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Jan 2022 06:33:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D75DC00446;
-        Tue, 18 Jan 2022 06:33:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642487599;
-        bh=AuLR7KOtcoYyPTyis6hGqGcPXpIpOlMrvosPBEfyGcE=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=lz7XSH5wdHFEmpG7085rBsUL7EzhNuGDGx23AlZ2TaN8dPQT/FHtHuvwm+X4kREpc
-         /T2WlYOu/zgJWSXsfncvzaj/BVaTkfyoKas6yKnWAevm1TdcCVhfdE3J/jxcM50UfA
-         nJf6ALhiuikQKaCbDykIZqG+24cuqH43JsDmDTN3om7XLg8/jy6ZRRhxdSGPAenBJY
-         T1g8exfcQxVIQBYJ7uMwsVX712NPFhpxCj6vaFkb4I1mg3Rqmzu367TMeyRgmMgtnA
-         0qjFDOBg+q2fiEcO3Tr+iI8MpXn2Km/E0qt4FsJYLHwQ84AIVoLO79P3UobwVHog0j
-         eAUvT1j4ZUHjw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Wen Gong <quic_wgong@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] ath11k: set WMI_PEER_40MHZ while peer assoc for 6 GHz
-In-Reply-To: <6ac56fa1-b369-831f-2b1d-9a188b7cbacc@quicinc.com> (Wen Gong's
-        message of "Tue, 18 Jan 2022 10:43:15 +0800")
-References: <20220113023145.14292-1-quic_wgong@quicinc.com>
-        <164242492251.16331.2627237965817574376.kvalo@kernel.org>
-        <6ac56fa1-b369-831f-2b1d-9a188b7cbacc@quicinc.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Tue, 18 Jan 2022 08:33:14 +0200
-Message-ID: <877daximdx.fsf@kernel.org>
+        Tue, 18 Jan 2022 02:58:51 -0500
+X-UUID: e0b731c4d03743e6ae5f4cef3af10eae-20220118
+X-UUID: e0b731c4d03743e6ae5f4cef3af10eae-20220118
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1200913783; Tue, 18 Jan 2022 15:58:48 +0800
+Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 18 Jan 2022 15:58:47 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb01.mediatek.inc
+ (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 18 Jan
+ 2022 15:58:46 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 18 Jan 2022 15:58:46 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        "Ryder Lee" <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: mt7915: check band idx for bcc event
+Date:   Tue, 18 Jan 2022 15:58:45 +0800
+Message-ID: <74293a8c02d0e6ca3460aa30bd374cddec9a0a1e.1642485678.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
 Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <quic_wgong@quicinc.com> writes:
+Add missing band idx check for DBDC cases.
 
-> On 1/17/2022 9:08 PM, Kalle Valo wrote:
->> Wen Gong <quic_wgong@quicinc.com> wrote:
->>
->>> When station connect to AP of 6 GHz with 40 MHz bandwidth, the TX is
->>> always stay 20 MHz, it is because the flag WMI_PEER_40MHZ is not set
->>> while peer assoc. Add the flag if remote peer is 40 MHz bandwidth.
->>>
->>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-02892.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
->> Fixes tag
->>
->>    Fixes: 2cdf2b3cdf54 ("ath11k: add 6ghz params in peer assoc command")
->>
->> has these problem(s):
->>
->>    - Target SHA1 does not exist
->>
->> Did you mean:
->>
->> Fixes: c3a7d7eb4c98 ("ath11k: add 6 GHz params in peer assoc command")
->
-> Thanks.
->
-> yes, it is.
->
-> I see you have already changed it in master-pending.
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+This depends on https://patchwork.kernel.org/project/linux-wireless/patch/055b47746ca7756fd8ed14ff197c0c090393369d.1642128031.git.Bo.Jiao@mediatek.com/
+---
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 20 ++++++++++++++++---
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  9 +++++++++
+ 2 files changed, 26 insertions(+), 3 deletions(-)
 
-Yeah, so no need to resend because of this.
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 43c95bd15170..6c5568d6abde 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -422,6 +422,22 @@ mt7915_mcu_cca_finish(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ 	ieee80211_color_change_finish(vif);
+ }
+ 
++static void
++mt7915_mcu_rx_bcc_notify(struct mt7915_dev *dev, struct sk_buff *skb)
++{
++	struct mt76_phy *mphy = &dev->mt76.phy;
++	struct mt7915_mcu_bcc_notify *b;
++
++	b = (struct mt7915_mcu_bcc_notify *)skb->data;
++
++	if ((b->band_idx && !dev->phy.band_idx) && dev->mt76.phy2)
++		mphy = dev->mt76.phy2;
++
++	ieee80211_iterate_active_interfaces_atomic(mphy->hw,
++			IEEE80211_IFACE_ITER_RESUME_ALL,
++			mt7915_mcu_cca_finish, mphy->hw);
++}
++
+ static void
+ mt7915_mcu_rx_ext_event(struct mt7915_dev *dev, struct sk_buff *skb)
+ {
+@@ -441,9 +457,7 @@ mt7915_mcu_rx_ext_event(struct mt7915_dev *dev, struct sk_buff *skb)
+ 		mt7915_mcu_rx_log_message(dev, skb);
+ 		break;
+ 	case MCU_EXT_EVENT_BCC_NOTIFY:
+-		ieee80211_iterate_active_interfaces_atomic(dev->mt76.hw,
+-				IEEE80211_IFACE_ITER_RESUME_ALL,
+-				mt7915_mcu_cca_finish, dev);
++		mt7915_mcu_rx_bcc_notify(dev, skb);
+ 		break;
+ 	default:
+ 		break;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index aa05c6ceebb9..fb558a6945fd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -79,6 +79,15 @@ struct mt7915_mcu_csa_notify {
+ 	u8 rsv;
+ } __packed;
+ 
++struct mt7915_mcu_bcc_notify {
++	struct mt7915_mcu_rxd rxd;
++
++	u8 band_idx;
++	u8 omac_idx;
++	u8 cca_count;
++	u8 rsv;
++} __packed;
++
+ struct mt7915_mcu_rdd_report {
+ 	struct mt7915_mcu_rxd rxd;
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.29.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
