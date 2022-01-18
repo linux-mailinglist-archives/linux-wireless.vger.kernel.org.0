@@ -2,84 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A140491907
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 03:49:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8994249194D
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 03:53:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346353AbiARCtS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jan 2022 21:49:18 -0500
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:6157 "EHLO
-        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1346273AbiARCnW (ORCPT
+        id S1345362AbiARCxa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jan 2022 21:53:30 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:37602 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348347AbiARCpN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jan 2022 21:43:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1642473802; x=1674009802;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=PrVHd6y6YErrdCOb2kmQgfctxSWLBf4UHgiQ5pCMqD4=;
-  b=MP1uvhvLp6whWaFbdFUNZdZNuP/tMn9bew6wTStrO88jODgs2yfY3aXR
-   ylvlYbYAdqlObRcxnTrgcRxhHNEOqbtpQmB4A1RYCRM6SmAweMDKqVQKW
-   eCXjnKvWuMGtPrK8qZIODF7GndOr7fHz9FIb2DenSD5lZLdzLK5pIfFzq
-   w=;
-Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 17 Jan 2022 18:43:21 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2022 18:43:21 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Mon, 17 Jan 2022 18:43:20 -0800
-Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Mon, 17 Jan
- 2022 18:43:19 -0800
-Message-ID: <6ac56fa1-b369-831f-2b1d-9a188b7cbacc@quicinc.com>
-Date:   Tue, 18 Jan 2022 10:43:15 +0800
+        Mon, 17 Jan 2022 21:45:13 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 19B46612CE;
+        Tue, 18 Jan 2022 02:45:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D96C36AF3;
+        Tue, 18 Jan 2022 02:45:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642473912;
+        bh=LoTCXz3m/OT67ZXWMKudCikM2xU8jL2j7gLCbPmVYmo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=QKL7F4qwDvVqDV+I0Sh//7GXAriHC/EUV8KkZCFyToKFajJOaCd/uUaFdnYC+hJUN
+         xOLWiuk9UaSTHv4CziqKkMlZVx2748vzORr0hwX7kg6f3PyguO2Ugx+xJsQqGYNWzJ
+         panYnJPmOdew1B/rZEFc6ZDUd3iZxU6gJxy1nUmtgfPIwZ3dg3mRfI5QzfBrZhWC+t
+         k1WpUB4yiTrbv053WHsCRXYkfX8oNk628UZ1ttZ6ZXG7KMc9hHkV1wTOIduZgf0z8L
+         HALihw4FbhCy62RIBzjY+XKBwwy4YEPKjI7I7K1Hiw5Jo/Hn/ulXCwtfBzNLWgTieb
+         4ZSyExS3hMiPA==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Zekun Shen <bruceshenzk@gmail.com>,
+        Brendan Dolan-Gavitt <brendandg@nyu.edu>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>, amitkarwar@gmail.com,
+        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
+        huxinming820@gmail.com, kvalo@kernel.org, davem@davemloft.net,
+        kuba@kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 19/73] mwifiex: Fix skb_over_panic in mwifiex_usb_recv()
+Date:   Mon, 17 Jan 2022 21:43:38 -0500
+Message-Id: <20220118024432.1952028-19-sashal@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220118024432.1952028-1-sashal@kernel.org>
+References: <20220118024432.1952028-1-sashal@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.1
-Subject: Re: [PATCH] ath11k: set WMI_PEER_40MHZ while peer assoc for 6 GHz
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20220113023145.14292-1-quic_wgong@quicinc.com>
- <164242492251.16331.2627237965817574376.kvalo@kernel.org>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <164242492251.16331.2627237965817574376.kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/17/2022 9:08 PM, Kalle Valo wrote:
-> Wen Gong <quic_wgong@quicinc.com> wrote:
->
->> When station connect to AP of 6 GHz with 40 MHz bandwidth, the TX is
->> always stay 20 MHz, it is because the flag WMI_PEER_40MHZ is not set
->> while peer assoc. Add the flag if remote peer is 40 MHz bandwidth.
->>
->> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-02892.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-> Fixes tag
->
->    Fixes: 2cdf2b3cdf54 ("ath11k: add 6ghz params in peer assoc command")
->
-> has these problem(s):
->
->    - Target SHA1 does not exist
->
-> Did you mean:
->
-> Fixes: c3a7d7eb4c98 ("ath11k: add 6 GHz params in peer assoc command")
+From: Zekun Shen <bruceshenzk@gmail.com>
 
-Thanks.
+[ Upstream commit 04d80663f67ccef893061b49ec8a42ff7045ae84 ]
 
-yes, it is.
+Currently, with an unknown recv_type, mwifiex_usb_recv
+just return -1 without restoring the skb. Next time
+mwifiex_usb_rx_complete is invoked with the same skb,
+calling skb_put causes skb_over_panic.
 
-I see you have already changed it in master-pending.
+The bug is triggerable with a compromised/malfunctioning
+usb device. After applying the patch, skb_over_panic
+no longer shows up with the same input.
+
+Attached is the panic report from fuzzing.
+skbuff: skb_over_panic: text:000000003bf1b5fa
+ len:2048 put:4 head:00000000dd6a115b data:000000000a9445d8
+ tail:0x844 end:0x840 dev:<NULL>
+kernel BUG at net/core/skbuff.c:109!
+invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 PID: 198 Comm: in:imklog Not tainted 5.6.0 #60
+RIP: 0010:skb_panic+0x15f/0x161
+Call Trace:
+ <IRQ>
+ ? mwifiex_usb_rx_complete+0x26b/0xfcd [mwifiex_usb]
+ skb_put.cold+0x24/0x24
+ mwifiex_usb_rx_complete+0x26b/0xfcd [mwifiex_usb]
+ __usb_hcd_giveback_urb+0x1e4/0x380
+ usb_giveback_urb_bh+0x241/0x4f0
+ ? __hrtimer_run_queues+0x316/0x740
+ ? __usb_hcd_giveback_urb+0x380/0x380
+ tasklet_action_common.isra.0+0x135/0x330
+ __do_softirq+0x18c/0x634
+ irq_exit+0x114/0x140
+ smp_apic_timer_interrupt+0xde/0x380
+ apic_timer_interrupt+0xf/0x20
+ </IRQ>
+
+Reported-by: Brendan Dolan-Gavitt <brendandg@nyu.edu>
+Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/YX4CqjfRcTa6bVL+@Zekuns-MBP-16.fios-router.home
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/marvell/mwifiex/usb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
+index cb8a9ad40cfe9..39cf713d5054c 100644
+--- a/drivers/net/wireless/marvell/mwifiex/usb.c
++++ b/drivers/net/wireless/marvell/mwifiex/usb.c
+@@ -130,7 +130,8 @@ static int mwifiex_usb_recv(struct mwifiex_adapter *adapter,
+ 		default:
+ 			mwifiex_dbg(adapter, ERROR,
+ 				    "unknown recv_type %#x\n", recv_type);
+-			return -1;
++			ret = -1;
++			goto exit_restore_skb;
+ 		}
+ 		break;
+ 	case MWIFIEX_USB_EP_DATA:
+-- 
+2.34.1
 
