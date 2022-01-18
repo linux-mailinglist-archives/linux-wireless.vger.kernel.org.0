@@ -2,56 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF1EF49313D
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 00:13:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C084A493149
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 00:17:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350215AbiARXNC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jan 2022 18:13:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36402 "EHLO
+        id S1350244AbiARXRM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jan 2022 18:17:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236171AbiARXNB (ORCPT
+        with ESMTP id S1350210AbiARXRM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jan 2022 18:13:01 -0500
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68E3BC061574;
-        Tue, 18 Jan 2022 15:13:01 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id w26so1480247wmi.0;
-        Tue, 18 Jan 2022 15:13:01 -0800 (PST)
+        Tue, 18 Jan 2022 18:17:12 -0500
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E94BCC061574;
+        Tue, 18 Jan 2022 15:17:11 -0800 (PST)
+Received: by mail-wm1-x336.google.com with SMTP id 25-20020a05600c231900b003497473a9c4so9725748wmo.5;
+        Tue, 18 Jan 2022 15:17:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=1W+xaCDXDvAJlEN1TanaAKIlI9w1S61ZKcKIY4ZvN34=;
-        b=XwCCwZw7otuDFLbTs78kHSJj//fcLQCz8QmA6Ggz5EcxuEBuTRnhyNCQrgcZLMGmmc
-         1CZBDzxju3X5m+vzjruvsXSs/Dg41k4b7aOaWWf+MSFse/l2x2Ibf9DE272MFrJUieh5
-         p37d0YlhA1Rk2Nmg/mjry7uexHauayJ1DBYZBN0SWO+eMHqhkuMeaEtywrKLXNfrUcr/
-         E+6vFmWSsiNTMEtV6UObduWqLK8LxXvxrlsOB+pia6qkzd5y8y0Zq55KiTVSHCiVMabV
-         s0H4XK/y8DEEOFiHLLnPi2bFgkrhsJinso80O7y7IOmFVWEXlkikUJ7V3IoTOcia+Vwt
-         rWbA==
+        bh=hpNABAszGuVpxLc3lpQ79Hz8gFpkuzCxa0RSxtlG1RI=;
+        b=BRDNqNxZHOXG+8Jt349mcRICKlSguBVuby+UM69nKn+t+QlSDIi0xTcFkc+DFhzX/v
+         8roefkeaDTpQOW5qvWEkmU2uXDtfmI+lAzWztLwXi+M7elCLe4AZ/0yKTVeL+YXVnTYP
+         xv+dB6BI2Tn6eXNGOCx+eIogqGd2qgW1P9iuzulZVUOcDiMqqkDyjZu7MTJXnesLnDzH
+         sXPw0HmZC4NLlwV2gPkhSWXcwi5AbPeOoKXVIZG/6xVECU/tvJSvXkxiwumF6TzMvNSn
+         UmTPqHLxLCwcnoB4bCJTCu58hdqvdKgRZB5Eq8S01lYMG2Jdj9huNjo+6nJU+YV5yviE
+         h16Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=1W+xaCDXDvAJlEN1TanaAKIlI9w1S61ZKcKIY4ZvN34=;
-        b=TF5oWb0KVzkbeOG8Re7NjjRxnCR/081oo54g5XaVXFFfJ/0dX6LTwlPC+h2M80eHkG
-         gmAw0zifYePD9bPBPgneRWlIuD1yC31/E+mUhvHzTvf5oEMcr4xOb6gRUkamem/KRGQd
-         a1NX17axENNDgepd2Ux68P/IH6OQxUTswIAMkfU1os0KZW5hc3zF9E6pNszWdZnxnchw
-         7B9O1ePCl2jc8/KoaZzxAoZf8GLk13Od/ja4jAtr1H89aoYVGK4jH8pk5mGh12l8ECVS
-         ZrpvOJMUPlKigSla1n4JpTKvjEgPLL3bDbBcK3I2q+WIW68NV6T8YK8AcnOTVLQooNhP
-         h9Vg==
-X-Gm-Message-State: AOAM530zckULVjaBO+8x7YPhB0X0QYoXt4CmTFZhNSN4d0qow+m7AVeV
-        u6L1s/n9lAfujVHOaokW6NmVfutHldbsxF5Jr6w=
-X-Google-Smtp-Source: ABdhPJx76GKEMmb3A0Psaz/0A15zJhnun8lqD2Gi7JtDUSk9QDUyLPdN/j0By6bYROySFRFr6v0upSSiKwR8qNLIIYg=
-X-Received: by 2002:adf:d1c7:: with SMTP id b7mr20758599wrd.81.1642547580086;
- Tue, 18 Jan 2022 15:13:00 -0800 (PST)
+        bh=hpNABAszGuVpxLc3lpQ79Hz8gFpkuzCxa0RSxtlG1RI=;
+        b=xcKT1eGgmmmnRxhWelEga6zhJmmNd7apUnzPxfXzTs8sU+5EgW+9S/2+UXGZSBL/44
+         +5WTJMsQcgejeKW9nph7b3dQi4XO4ZBjl87Ux3BYStoPIL2KScU4cf2UAivHL3MSY4wL
+         bYzjq33SJi2t43s5Lql98985NdECzr3oAeeEMRDLyi8BboPwQPLdsaRIxMIOEZAYFbeF
+         sIRtTSUG7Wl63x3G+Li9urvzRt6kEBCeD/BKykEvDllziugfmhnUY3JyVrh7t0zEvD+E
+         AsYGRT4zIT0puv5In3ck464ifQp/0RTyPaJNheiWwtO4/cbPc7XdiNArOnFe1XLoLFlX
+         yC6A==
+X-Gm-Message-State: AOAM530Q2ZUuu3LafysxaubLnwtq7TBm2rEmV4wKgcfksOzJ8oxeTuro
+        vnYTQVCmm1BBaZ1eaagTk41R9cPssfbhLHk3DXc=
+X-Google-Smtp-Source: ABdhPJzlelPa9D9XssWdoFH+QStXJsK6EOXHLzDiIHOmXJ/Jy+KMDXjAe4ukSDLgVMib63OKAI8GBWzORyOrUEMo1s0=
+X-Received: by 2002:adf:d1c7:: with SMTP id b7mr20769142wrd.81.1642547830541;
+ Tue, 18 Jan 2022 15:17:10 -0800 (PST)
 MIME-Version: 1.0
 References: <20220117115440.60296-1-miquel.raynal@bootlin.com>
- <CAB_54W4q9a1MRdfK6yJHMRt+Zfapn0ggie9RbbUYi4=Biefz_A@mail.gmail.com> <20220118114023.2d2c0207@xps13>
-In-Reply-To: <20220118114023.2d2c0207@xps13>
+ <20220117115440.60296-28-miquel.raynal@bootlin.com> <CAB_54W562uzk3NzXDTgRLbQzi=hgQDntJOqmMDVZwaJ_eDZZMQ@mail.gmail.com>
+ <20220118191429.19ea3c7d@xps13>
+In-Reply-To: <20220118191429.19ea3c7d@xps13>
 From:   Alexander Aring <alex.aring@gmail.com>
-Date:   Tue, 18 Jan 2022 18:12:49 -0500
-Message-ID: <CAB_54W4jAZqSJ-7VuT0uOukHEnxAYpaGqZ6S6n9tYst26F+VWQ@mail.gmail.com>
-Subject: Re: [PATCH v3 00/41] IEEE 802.15.4 scan support
+Date:   Tue, 18 Jan 2022 18:16:59 -0500
+Message-ID: <CAB_54W4XpccNtQa1MNH8uPwsi-95dHj8SJMXRgiWOJsy7FhRyA@mail.gmail.com>
+Subject: Re: [PATCH v3 27/41] net: mac802154: Introduce a tx queue flushing mechanism
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
         linux-wpan - ML <linux-wpan@vger.kernel.org>,
@@ -74,53 +75,50 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi,
 
-On Tue, 18 Jan 2022 at 05:40, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+On Tue, 18 Jan 2022 at 13:14, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 >
 > Hi Alexander,
 >
-> > > So far the only technical point that is missing in this series is the
-> > > possibility to grab a reference over the module driving the net device
-> > > in order to prevent module unloading during a scan or when the beacons
-> > > work is ongoing.
+> alex.aring@gmail.com wrote on Mon, 17 Jan 2022 17:43:49 -0500:
 >
-> Do you have any advises regarding this issue? That is the only
-> technical point that is left unaddressed IMHO.
->
-
-module_get()/module_put() or I don't see where the problem here is.
-You can avoid module unloading with it. Which module is the problem
-here?
-
-> > > Finally, this series is a deep reshuffle of David Girault's original
-> > > work, hence the fact that he is almost systematically credited, either
-> > > by being the only author when I created the patches based on his changes
-> > > with almost no modification, or with a Co-developped-by tag whenever the
-> > > final code base is significantly different than his first proposal while
-> > > still being greatly inspired from it.
+> > Hi,
+> >
+> > On Mon, 17 Jan 2022 at 06:55, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> > ...
 > > >
+> > >         /* stop hardware - this must stop RX */
+> > > diff --git a/net/mac802154/ieee802154_i.h b/net/mac802154/ieee802154_i.h
+> > > index 0291e49058f2..37d5438fdb3f 100644
+> > > --- a/net/mac802154/ieee802154_i.h
+> > > +++ b/net/mac802154/ieee802154_i.h
+> > > @@ -122,6 +122,7 @@ extern struct ieee802154_mlme_ops mac802154_mlme_wpan;
+> > >
+> > >  void ieee802154_rx(struct ieee802154_local *local, struct sk_buff *skb);
+> > >  void ieee802154_xmit_sync_worker(struct work_struct *work);
+> > > +void ieee802154_sync_tx(struct ieee802154_local *local);
+> > >  netdev_tx_t
+> > >  ieee802154_monitor_start_xmit(struct sk_buff *skb, struct net_device *dev);
+> > >  netdev_tx_t
+> > > diff --git a/net/mac802154/tx.c b/net/mac802154/tx.c
+> > > index de5ecda80472..d1fd2cc67cbe 100644
+> > > --- a/net/mac802154/tx.c
+> > > +++ b/net/mac802154/tx.c
+> > > @@ -48,6 +48,7 @@ void ieee802154_xmit_sync_worker(struct work_struct *work)
+> > >
+> > >         kfree_skb(skb);
+> > >         atomic_dec(&local->phy->ongoing_txs);
+> > > +       wake_up(&local->phy->sync_txq);
 > >
-> > can you please split this patch series, what I see is now:
-> >
-> > 1. cleanup patches
-> > 2. sync tx handling for mlme commands
-> > 3. scan support
+> > if (atomic_dec_and_test(&hw->phy->ongoing_txs))
+> >       wake_up(&hw->phy->sync_txq);
 >
-> Works for me. I just wanted to give the big picture but I'll split the
-> series.
->
+> As we test this condition in the waiting path I assumed it was fine to
+> do it this way, but the additional check does not hurt, so I'll add it.
 
-maybe also put some "symbol duration" series into it if it's getting
-too large? It is difficult to review 40 patches... in one step.
+it's just a nitpick... to avoid scheduling and this triggers a
+checking if the condition is true in cases we know it can't....
 
-> Also sorry for forgetting the 'wpan-next' subject prefix.
->
-
-no problem.
-
-I really appreciate your work and your willingness to work on all
-outstanding issues. I am really happy to see something that we can use
-for mlme-commands and to separate it from the hotpath transmission...
-It is good to see architecture for that which I think goes in the
-right direction.
+although we can talk about this because ongoing_txs should never be
+higher than 1... so any atomic_dec() should make the condition true...
 
 - Alex
