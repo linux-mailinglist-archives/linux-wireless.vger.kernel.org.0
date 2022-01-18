@@ -2,57 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB7BF49310C
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 23:54:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF1EF49313D
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 00:13:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344120AbiARWxt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jan 2022 17:53:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60346 "EHLO
+        id S1350215AbiARXNC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jan 2022 18:13:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231467AbiARWxt (ORCPT
+        with ESMTP id S236171AbiARXNB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jan 2022 17:53:49 -0500
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5365C061574;
-        Tue, 18 Jan 2022 14:53:48 -0800 (PST)
-Received: by mail-wm1-x332.google.com with SMTP id v123so1333898wme.2;
-        Tue, 18 Jan 2022 14:53:48 -0800 (PST)
+        Tue, 18 Jan 2022 18:13:01 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68E3BC061574;
+        Tue, 18 Jan 2022 15:13:01 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id w26so1480247wmi.0;
+        Tue, 18 Jan 2022 15:13:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=GMpAyQ1dS6joIUFWVHxfy6i3hq32WzmJmn2gggy0r9E=;
-        b=Q/2YPqNlEXD0JGUE4naAPeyJkCwAhYxyhxdZxwUvjaCBhOcxpF5WmpYusaAToeeTTu
-         ++miyIIqe4fp+LIpIeWnmcJUlBwcEewUZCsqwztXsdWfW+mCZguUzvQa3DRafJPU9n3D
-         ioNc7dD43Dr9WspZcBRmZIfMxf1gy7USigT80twp2veoER4INED0pegr+/NlsbQhjbWK
-         LeON8KeJC1m64vKx3IRatXMrMtXHmtFuiGF2UkG7p7WRaR4RiCdHktcwD0J5YPqPmeOf
-         zCS7UgKvByVUjcBQ9IRD0HGkZLBCBNFf9oDmuX4KmUPkA0Gq1c7DXDR8RPaY514NY3+t
-         qarg==
+        bh=1W+xaCDXDvAJlEN1TanaAKIlI9w1S61ZKcKIY4ZvN34=;
+        b=XwCCwZw7otuDFLbTs78kHSJj//fcLQCz8QmA6Ggz5EcxuEBuTRnhyNCQrgcZLMGmmc
+         1CZBDzxju3X5m+vzjruvsXSs/Dg41k4b7aOaWWf+MSFse/l2x2Ibf9DE272MFrJUieh5
+         p37d0YlhA1Rk2Nmg/mjry7uexHauayJ1DBYZBN0SWO+eMHqhkuMeaEtywrKLXNfrUcr/
+         E+6vFmWSsiNTMEtV6UObduWqLK8LxXvxrlsOB+pia6qkzd5y8y0Zq55KiTVSHCiVMabV
+         s0H4XK/y8DEEOFiHLLnPi2bFgkrhsJinso80O7y7IOmFVWEXlkikUJ7V3IoTOcia+Vwt
+         rWbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=GMpAyQ1dS6joIUFWVHxfy6i3hq32WzmJmn2gggy0r9E=;
-        b=2ciThM5unFyEcOPTJVY5urECVcY6R+k2x7ZJRcfbV+SVJ2bq55svFQHgo1OgfXYVJN
-         A4RqDNPh3wnONAkr8EGahz/poRAoSzgnoTM6+Q9alTbVS8IWV87yOtojAWRXpk5Ue8W9
-         u3k3NKwo0U0P8EBgPVYX/G8Gg6O5KDKSMao+6CTaL8wyOZ6RmEM8JvA5zhXb4MXDs9SC
-         NYGzQMXLTcDs2uJOTplUnP+XTCWVxKID2h3KrAPmVWJjua3DqSAdZnXvDbaXPSFMyE4N
-         ywHA7drpNMkR/PbGWOXCSFvDbUFl3yPC3XMRfyNnrungo/S0f4MdWpAnwq3CVTSoSe63
-         edQg==
-X-Gm-Message-State: AOAM530AfwWH9b58tkrh2DqTDxYSArS5kYAdvuQpeUY4VjLXBB7ANLZG
-        ocVe4tLeAXv6S52Q2gOvpjtTSsPlxRTA+d0/buk=
-X-Google-Smtp-Source: ABdhPJz5yKxvT1Sw5hsgj/WHhTIRh1RICrWmevH1DYft7laXtumEzc4FFf/xLDwORyMUNZDPdbAjevhhgsQYBr1NK9g=
-X-Received: by 2002:adf:d1c7:: with SMTP id b7mr20706241wrd.81.1642546427368;
- Tue, 18 Jan 2022 14:53:47 -0800 (PST)
+        bh=1W+xaCDXDvAJlEN1TanaAKIlI9w1S61ZKcKIY4ZvN34=;
+        b=TF5oWb0KVzkbeOG8Re7NjjRxnCR/081oo54g5XaVXFFfJ/0dX6LTwlPC+h2M80eHkG
+         gmAw0zifYePD9bPBPgneRWlIuD1yC31/E+mUhvHzTvf5oEMcr4xOb6gRUkamem/KRGQd
+         a1NX17axENNDgepd2Ux68P/IH6OQxUTswIAMkfU1os0KZW5hc3zF9E6pNszWdZnxnchw
+         7B9O1ePCl2jc8/KoaZzxAoZf8GLk13Od/ja4jAtr1H89aoYVGK4jH8pk5mGh12l8ECVS
+         ZrpvOJMUPlKigSla1n4JpTKvjEgPLL3bDbBcK3I2q+WIW68NV6T8YK8AcnOTVLQooNhP
+         h9Vg==
+X-Gm-Message-State: AOAM530zckULVjaBO+8x7YPhB0X0QYoXt4CmTFZhNSN4d0qow+m7AVeV
+        u6L1s/n9lAfujVHOaokW6NmVfutHldbsxF5Jr6w=
+X-Google-Smtp-Source: ABdhPJx76GKEMmb3A0Psaz/0A15zJhnun8lqD2Gi7JtDUSk9QDUyLPdN/j0By6bYROySFRFr6v0upSSiKwR8qNLIIYg=
+X-Received: by 2002:adf:d1c7:: with SMTP id b7mr20758599wrd.81.1642547580086;
+ Tue, 18 Jan 2022 15:13:00 -0800 (PST)
 MIME-Version: 1.0
 References: <20220117115440.60296-1-miquel.raynal@bootlin.com>
- <20220117115440.60296-8-miquel.raynal@bootlin.com> <CAB_54W5_XoTk=DzMmm33csrEKe3m97KnNWnktRiyJsk7vfxO6w@mail.gmail.com>
- <20220118192013.46c42f82@xps13>
-In-Reply-To: <20220118192013.46c42f82@xps13>
+ <CAB_54W4q9a1MRdfK6yJHMRt+Zfapn0ggie9RbbUYi4=Biefz_A@mail.gmail.com> <20220118114023.2d2c0207@xps13>
+In-Reply-To: <20220118114023.2d2c0207@xps13>
 From:   Alexander Aring <alex.aring@gmail.com>
-Date:   Tue, 18 Jan 2022 17:53:36 -0500
-Message-ID: <CAB_54W4Je4-jCMFkqATfj2c2+5By2PSWOqCUudt1+sgimFKhHw@mail.gmail.com>
-Subject: Re: [PATCH v3 07/41] net: ieee802154: mcr20a: Fix lifs/sifs periods
+Date:   Tue, 18 Jan 2022 18:12:49 -0500
+Message-ID: <CAB_54W4jAZqSJ-7VuT0uOukHEnxAYpaGqZ6S6n9tYst26F+VWQ@mail.gmail.com>
+Subject: Re: [PATCH v3 00/41] IEEE 802.15.4 scan support
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
         linux-wpan - ML <linux-wpan@vger.kernel.org>,
@@ -75,58 +74,53 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi,
 
-On Tue, 18 Jan 2022 at 13:20, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+On Tue, 18 Jan 2022 at 05:40, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 >
 > Hi Alexander,
 >
-> alex.aring@gmail.com wrote on Mon, 17 Jan 2022 17:52:10 -0500:
+> > > So far the only technical point that is missing in this series is the
+> > > possibility to grab a reference over the module driving the net device
+> > > in order to prevent module unloading during a scan or when the beacons
+> > > work is ongoing.
 >
-> > Hi,
-> >
-> > On Mon, 17 Jan 2022 at 06:54, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> > >
-> > > These periods are expressed in time units (microseconds) while 40 and 12
-> > > are the number of symbol durations these periods will last. We need to
-> > > multiply them both with phy->symbol_duration in order to get these
-> > > values in microseconds.
-> > >
-> > > Fixes: 8c6ad9cc5157 ("ieee802154: Add NXP MCR20A IEEE 802.15.4 transceiver driver")
-> > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > > ---
-> > >  drivers/net/ieee802154/mcr20a.c | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/net/ieee802154/mcr20a.c b/drivers/net/ieee802154/mcr20a.c
-> > > index f0eb2d3b1c4e..e2c249aef430 100644
-> > > --- a/drivers/net/ieee802154/mcr20a.c
-> > > +++ b/drivers/net/ieee802154/mcr20a.c
-> > > @@ -976,8 +976,8 @@ static void mcr20a_hw_setup(struct mcr20a_local *lp)
-> > >         dev_dbg(printdev(lp), "%s\n", __func__);
-> > >
-> > >         phy->symbol_duration = 16;
-> > > -       phy->lifs_period = 40;
-> > > -       phy->sifs_period = 12;
-> > > +       phy->lifs_period = 40 * phy->symbol_duration;
-> > > +       phy->sifs_period = 12 * phy->symbol_duration;
-> >
-> > I thought we do that now in register_hw(). Why does this patch exist?
+> Do you have any advises regarding this issue? That is the only
+> technical point that is left unaddressed IMHO.
 >
-> The lifs and sifs period are wrong.
->
-> Fixing this silently by generalizing the calculation is simply wrong. I
-> feel we need to do this in order:
-> 1- Fix the period because it is wrong.
-> 2- Now that the period is set to a valid value and the core is able to
->    do the same operation and set the variables to an identical content,
->    we can drop these lines from the driver.
->
-> #2 being a mechanical change, doing it without #1 means that something
-> that appears harmless actually changes the behavior of the driver. We
-> generally try to avoid that, no?
 
-yes, maybe Stefan can get this patch then somehow to wpan and queue it
-for stable.
+module_get()/module_put() or I don't see where the problem here is.
+You can avoid module unloading with it. Which module is the problem
+here?
 
-Thanks for clarification.
+> > > Finally, this series is a deep reshuffle of David Girault's original
+> > > work, hence the fact that he is almost systematically credited, either
+> > > by being the only author when I created the patches based on his changes
+> > > with almost no modification, or with a Co-developped-by tag whenever the
+> > > final code base is significantly different than his first proposal while
+> > > still being greatly inspired from it.
+> > >
+> >
+> > can you please split this patch series, what I see is now:
+> >
+> > 1. cleanup patches
+> > 2. sync tx handling for mlme commands
+> > 3. scan support
+>
+> Works for me. I just wanted to give the big picture but I'll split the
+> series.
+>
+
+maybe also put some "symbol duration" series into it if it's getting
+too large? It is difficult to review 40 patches... in one step.
+
+> Also sorry for forgetting the 'wpan-next' subject prefix.
+>
+
+no problem.
+
+I really appreciate your work and your willingness to work on all
+outstanding issues. I am really happy to see something that we can use
+for mlme-commands and to separate it from the hotpath transmission...
+It is good to see architecture for that which I think goes in the
+right direction.
 
 - Alex
