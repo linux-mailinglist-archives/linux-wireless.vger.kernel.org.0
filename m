@@ -2,48 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DEAC491C8B
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 04:16:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BBB7491C93
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 04:16:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350271AbiARDQN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jan 2022 22:16:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38830 "EHLO
+        id S1350359AbiARDQO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jan 2022 22:16:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354456AbiARDGH (ORCPT
+        with ESMTP id S1354528AbiARDGg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jan 2022 22:06:07 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD7CEC01F009;
-        Mon, 17 Jan 2022 18:48:29 -0800 (PST)
+        Mon, 17 Jan 2022 22:06:36 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65544C08EE6E;
+        Mon, 17 Jan 2022 18:48:55 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BEAE61346;
-        Tue, 18 Jan 2022 02:48:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330C6C36AEF;
-        Tue, 18 Jan 2022 02:48:27 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0B5E1B811CF;
+        Tue, 18 Jan 2022 02:48:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11F2C36AE3;
+        Tue, 18 Jan 2022 02:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642474108;
-        bh=1Qg4OYv91lGRhtfStxqbwAGY3ECUEntVoppTLd+0S4o=;
+        s=k20201202; t=1642474133;
+        bh=XjqBh/T238oH1vfD/s4WhMqH03h32udr8UJJtPFrAFY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pfnuumY7C2PMl3s4Qh+sYwEXeHNm/EEk5plC1mcjI8sCJB4vMSlaHIRVU4puqxf+G
-         1YR+VaknoTBUDf3ldcvLDZwCndpe4dSjZrK/AqHMVhEsWXM8QdRtHigj/bN01/2MD0
-         aCbWGHWjKRn/Y7wKqgdeNI9FLLI7rxuwSk+vvc/KFe3N31JCzobAPL0LeblWq9mIP0
-         cSzY7rR3MK/o+JapL6hgry/AwkFED6DTBR1lhXV9ZmtrLjqnhMsTXYj8u1g34zkNSy
-         noPk3YcvpUXLASCoiyrGSEj4sxYOO0cKevB9jTskmgSlT5ERp/DT2qDrDwtV1PLHpc
-         XnfPqENBSIaQA==
+        b=CAaEsb6cro3lVIbXKOmZ3ZRo25vQ6SvIJrlq8yJwFmhRshShY7v+IYnWwF6JejkOw
+         EIaFl/9ehadVB8DbpL60iufOcz9iqr1PNJXcNuEGJcICrcksuL8/IBe9ef3g1TVgAM
+         eH5TmWxjklQYGWs1GeR/xIq3b29yEMzeV3UrEwl9xgFcxLqZjjQyVhbysfCqln6Hry
+         to4uQvubFY4OI4gHBFwFREvWytdCSShVgWLt64M/Gkk5LhB7bHwAhFpH329lD8kKxo
+         xI1EuB9pRkq+BxeTYyMQrQeU3gENy2tEiIzuJY0Gn7JcJ17L+VMmX7hdxkN1IbVB/y
+         Gku1RtaO5A5rg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ilan Peer <ilan.peer@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        davem@davemloft.net, kuba@kernel.org, johannes.berg@intel.com,
-        miriam.rachel.korenblit@intel.com, emmanuel.grumbach@intel.com,
-        dan.carpenter@oracle.com, avraham.stern@intel.com,
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        Goldwyn Rodrigues <rgoldwyn@suse.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
+        davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 39/59] iwlwifi: mvm: Fix calculation of frame length
-Date:   Mon, 17 Jan 2022 21:46:40 -0500
-Message-Id: <20220118024701.1952911-39-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 51/59] mac80211: allow non-standard VHT MCS-10/11
+Date:   Mon, 17 Jan 2022 21:46:52 -0500
+Message-Id: <20220118024701.1952911-51-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220118024701.1952911-1-sashal@kernel.org>
 References: <20220118024701.1952911-1-sashal@kernel.org>
@@ -55,70 +54,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 40a0b38d7a7f91a6027287e0df54f5f547e8d27e ]
+[ Upstream commit 04be6d337d37400ad5b3d5f27ca87645ee5a18a3 ]
 
-The RADA might include in the Rx frame the MIC and CRC bytes.
-These bytes should be removed for non monitor interfaces and
-should not be passed to mac80211.
+Some AP can possibly try non-standard VHT rate and mac80211 warns and drops
+packets, and leads low TCP throughput.
 
-Fix the Rx processing to remove the extra bytes on non monitor
-cases.
+    Rate marked as a VHT rate but data is invalid: MCS: 10, NSS: 2
+    WARNING: CPU: 1 PID: 7817 at net/mac80211/rx.c:4856 ieee80211_rx_list+0x223/0x2f0 [mac8021
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20211219121514.098be12c801e.I1d81733d8a75b84c3b20eb6e0d14ab3405ca6a86@changeid
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Since commit c27aa56a72b8 ("cfg80211: add VHT rate entries for MCS-10 and MCS-11")
+has added, mac80211 adds this support as well.
+
+After this patch, throughput is good and iw can get the bitrate:
+    rx bitrate:	975.1 MBit/s VHT-MCS 10 80MHz short GI VHT-NSS 2
+or
+    rx bitrate:	1083.3 MBit/s VHT-MCS 11 80MHz short GI VHT-NSS 2
+
+Buglink: https://bugzilla.suse.com/show_bug.cgi?id=1192891
+Reported-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://lore.kernel.org/r/20220103013623.17052-1-pkshih@realtek.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 27 +++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ net/mac80211/rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index 77e3694536421..9a4848d69e9e1 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -151,12 +151,39 @@ static int iwl_mvm_create_skb(struct iwl_mvm *mvm, struct sk_buff *skb,
- 	struct iwl_rx_mpdu_desc *desc = (void *)pkt->data;
- 	unsigned int headlen, fraglen, pad_len = 0;
- 	unsigned int hdrlen = ieee80211_hdrlen(hdr->frame_control);
-+	u8 mic_crc_len = u8_get_bits(desc->mac_flags1,
-+				     IWL_RX_MPDU_MFLG1_MIC_CRC_LEN_MASK) << 1;
- 
- 	if (desc->mac_flags2 & IWL_RX_MPDU_MFLG2_PAD) {
- 		len -= 2;
- 		pad_len = 2;
- 	}
- 
-+	/*
-+	 * For non monitor interface strip the bytes the RADA might not have
-+	 * removed. As monitor interface cannot exist with other interfaces
-+	 * this removal is safe.
-+	 */
-+	if (mic_crc_len && !ieee80211_hw_check(mvm->hw, RX_INCLUDES_FCS)) {
-+		u32 pkt_flags = le32_to_cpu(pkt->len_n_flags);
-+
-+		/*
-+		 * If RADA was not enabled then decryption was not performed so
-+		 * the MIC cannot be removed.
-+		 */
-+		if (!(pkt_flags & FH_RSCSR_RADA_EN)) {
-+			if (WARN_ON(crypt_len > mic_crc_len))
-+				return -EINVAL;
-+
-+			mic_crc_len -= crypt_len;
-+		}
-+
-+		if (WARN_ON(mic_crc_len > len))
-+			return -EINVAL;
-+
-+		len -= mic_crc_len;
-+	}
-+
- 	/* If frame is small enough to fit in skb->head, pull it completely.
- 	 * If not, only pull ieee80211_hdr (including crypto if present, and
- 	 * an additional 8 bytes for SNAP/ethertype, see below) so that
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index e0baa563a4dea..c42cc79895202 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4620,7 +4620,7 @@ void ieee80211_rx_napi(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 				goto drop;
+ 			break;
+ 		case RX_ENC_VHT:
+-			if (WARN_ONCE(status->rate_idx > 9 ||
++			if (WARN_ONCE(status->rate_idx > 11 ||
+ 				      !status->nss ||
+ 				      status->nss > 8,
+ 				      "Rate marked as a VHT rate but data is invalid: MCS: %d, NSS: %d\n",
 -- 
 2.34.1
 
