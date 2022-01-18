@@ -2,46 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40D4D4918DB
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 03:48:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FB5C4915F1
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 03:32:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345558AbiARCsh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jan 2022 21:48:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58666 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345433AbiARCbc (ORCPT
+        id S1345946AbiARCcQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jan 2022 21:32:16 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:47310 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344420AbiARC3x (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jan 2022 21:31:32 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA08CC0617A3;
-        Mon, 17 Jan 2022 18:29:12 -0800 (PST)
+        Mon, 17 Jan 2022 21:29:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A478DB8123A;
-        Tue, 18 Jan 2022 02:29:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566EBC36AF3;
-        Tue, 18 Jan 2022 02:29:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 367E06093C;
+        Tue, 18 Jan 2022 02:29:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81ED6C36AEB;
+        Tue, 18 Jan 2022 02:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642472950;
-        bh=X1Ks8FvRuAMpRB/m8dyQVbxEYAjsGrrkW6v02oHlFys=;
+        s=k20201202; t=1642472992;
+        bh=6Rc/Jh0n96J2clf1qa2snYTGrhhbmofQBPfgvlR57fg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UiCbOvrvEGOo6binK/73+Tm1KJIRrHYjB1/vt5zTmCbgQArBZlSpoAPa+UifEOt2J
-         G2fQFeqwsl4yBXdWxarQDzR0nVitFLFjcGuy3lFWKUfsQSn978N7gzQCqmqs31zR+w
-         1heiRxxrRhk5XaSBnayYCagNTChvdvr8wbHMdc0mJ/0M6ybdZUmEN76sWyTS1BZ3Oz
-         2xPc+f21At697R1dWh7PmTXy/NFIQSb8r4Z7+SIHZ4VvHWF/IrJ6PDejTqWTTrJHbm
-         pqcnJ8BzAFLtXhd6zu4Naypf4Ca0Y0LkuRkredlusDTgVQTMsgkXBS0hT6EONYYPdq
-         I/49PInSpOizQ==
+        b=GaPizREUhP+xdHbYjt0VzBVXOMZaGz5YRIgT/AKjyRX3aYTrJppPdU+XN91ShVX9q
+         Ay9YrHbdKX+55FAbB7OIz1Otak6SWsMMU3lR9Zo4601zqvnduvnpOEmmo2qbhWywDG
+         lMqcr1o+xu9GxNNVacKkWqVrRtdAs0sSWRF7bruX01UpiYhc/ydFlYNg4bK2nsoD8U
+         xnPzmCsh1OREgqKwx4vUYcoVG6ymNk+G6hvgcDstg2NpGmg8Eehj9306uFQSw+nrYR
+         YWe+60UkrFSt+gQ24KQVZdxkLN4l9WLAwK8wGWxiBNbOgQtLwaOFPuQN5L4kV1BXYo
+         4PIaSXS43je7A==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        davem@davemloft.net, kuba@kernel.org, ath11k@lists.infradead.org,
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        Goldwyn Rodrigues <rgoldwyn@suse.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
+        davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.16 172/217] ath11k: Fix napi related hang
-Date:   Mon, 17 Jan 2022 21:18:55 -0500
-Message-Id: <20220118021940.1942199-172-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.16 195/217] mac80211: allow non-standard VHT MCS-10/11
+Date:   Mon, 17 Jan 2022 21:19:18 -0500
+Message-Id: <20220118021940.1942199-195-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220118021940.1942199-1-sashal@kernel.org>
 References: <20220118021940.1942199-1-sashal@kernel.org>
@@ -53,107 +51,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit d943fdad7589653065be0e20aadc6dff37725ed4 ]
+[ Upstream commit 04be6d337d37400ad5b3d5f27ca87645ee5a18a3 ]
 
-Similar to the same bug in ath10k, a napi disable w/out it being enabled
-will hang forever.  I believe I saw this while trying rmmod after driver
-had some failure on startup.  Fix it by keeping state on whether napi is
-enabled or not.
+Some AP can possibly try non-standard VHT rate and mac80211 warns and drops
+packets, and leads low TCP throughput.
 
-And, remove un-used napi pointer in ath11k driver base struct.
+    Rate marked as a VHT rate but data is invalid: MCS: 10, NSS: 2
+    WARNING: CPU: 1 PID: 7817 at net/mac80211/rx.c:4856 ieee80211_rx_list+0x223/0x2f0 [mac8021
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20200903195254.29379-1-greearb@candelatech.com
+Since commit c27aa56a72b8 ("cfg80211: add VHT rate entries for MCS-10 and MCS-11")
+has added, mac80211 adds this support as well.
+
+After this patch, throughput is good and iw can get the bitrate:
+    rx bitrate:	975.1 MBit/s VHT-MCS 10 80MHz short GI VHT-NSS 2
+or
+    rx bitrate:	1083.3 MBit/s VHT-MCS 11 80MHz short GI VHT-NSS 2
+
+Buglink: https://bugzilla.suse.com/show_bug.cgi?id=1192891
+Reported-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://lore.kernel.org/r/20220103013623.17052-1-pkshih@realtek.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/ahb.c  | 12 +++++++++---
- drivers/net/wireless/ath/ath11k/core.h |  2 +-
- drivers/net/wireless/ath/ath11k/pci.c  | 12 +++++++++---
- 3 files changed, 19 insertions(+), 7 deletions(-)
+ net/mac80211/rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index 8c9c781afc3e5..b9939057b7baf 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -175,8 +175,11 @@ static void __ath11k_ahb_ext_irq_disable(struct ath11k_base *ab)
- 
- 		ath11k_ahb_ext_grp_disable(irq_grp);
- 
--		napi_synchronize(&irq_grp->napi);
--		napi_disable(&irq_grp->napi);
-+		if (irq_grp->napi_enabled) {
-+			napi_synchronize(&irq_grp->napi);
-+			napi_disable(&irq_grp->napi);
-+			irq_grp->napi_enabled = false;
-+		}
- 	}
- }
- 
-@@ -300,7 +303,10 @@ static void ath11k_ahb_ext_irq_enable(struct ath11k_base *ab)
- 	for (i = 0; i < ATH11K_EXT_IRQ_GRP_NUM_MAX; i++) {
- 		struct ath11k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
- 
--		napi_enable(&irq_grp->napi);
-+		if (!irq_grp->napi_enabled) {
-+			napi_enable(&irq_grp->napi);
-+			irq_grp->napi_enabled = true;
-+		}
- 		ath11k_ahb_ext_grp_enable(irq_grp);
- 	}
- }
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 31d234a51c79b..62ceee363fea0 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -136,6 +136,7 @@ struct ath11k_ext_irq_grp {
- 	u32 num_irq;
- 	u32 grp_id;
- 	u64 timestamp;
-+	bool napi_enabled;
- 	struct napi_struct napi;
- 	struct net_device napi_ndev;
- };
-@@ -713,7 +714,6 @@ struct ath11k_base {
- 	u32 wlan_init_status;
- 	int irq_num[ATH11K_IRQ_NUM_MAX];
- 	struct ath11k_ext_irq_grp ext_irq_grp[ATH11K_EXT_IRQ_GRP_NUM_MAX];
--	struct napi_struct *napi;
- 	struct ath11k_targ_cap target_caps;
- 	u32 ext_service_bitmap[WMI_SERVICE_EXT_BM_SIZE];
- 	bool pdevs_macaddr_valid;
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index 3d353e7c9d5c2..5a78a7cb65f5e 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -634,8 +634,11 @@ static void __ath11k_pci_ext_irq_disable(struct ath11k_base *sc)
- 
- 		ath11k_pci_ext_grp_disable(irq_grp);
- 
--		napi_synchronize(&irq_grp->napi);
--		napi_disable(&irq_grp->napi);
-+		if (irq_grp->napi_enabled) {
-+			napi_synchronize(&irq_grp->napi);
-+			napi_disable(&irq_grp->napi);
-+			irq_grp->napi_enabled = false;
-+		}
- 	}
- }
- 
-@@ -654,7 +657,10 @@ static void ath11k_pci_ext_irq_enable(struct ath11k_base *ab)
- 	for (i = 0; i < ATH11K_EXT_IRQ_GRP_NUM_MAX; i++) {
- 		struct ath11k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
- 
--		napi_enable(&irq_grp->napi);
-+		if (!irq_grp->napi_enabled) {
-+			napi_enable(&irq_grp->napi);
-+			irq_grp->napi_enabled = true;
-+		}
- 		ath11k_pci_ext_grp_enable(irq_grp);
- 	}
- }
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 0544563ede522..d2e8b84ed2836 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4924,7 +4924,7 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 				goto drop;
+ 			break;
+ 		case RX_ENC_VHT:
+-			if (WARN_ONCE(status->rate_idx > 9 ||
++			if (WARN_ONCE(status->rate_idx > 11 ||
+ 				      !status->nss ||
+ 				      status->nss > 8,
+ 				      "Rate marked as a VHT rate but data is invalid: MCS: %d, NSS: %d\n",
 -- 
 2.34.1
 
