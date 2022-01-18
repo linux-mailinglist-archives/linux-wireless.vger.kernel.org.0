@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D55C491C9C
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 04:16:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E547491D68
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 04:36:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347852AbiARDQi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jan 2022 22:16:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39096 "EHLO
+        id S1345962AbiARDf4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jan 2022 22:35:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346671AbiARDI7 (ORCPT
+        with ESMTP id S1376364AbiARDcS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jan 2022 22:08:59 -0500
+        Mon, 17 Jan 2022 22:32:18 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B5ECC06175B;
-        Mon, 17 Jan 2022 18:51:22 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 703FCC01F010;
+        Mon, 17 Jan 2022 19:08:30 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DCCB6118D;
-        Tue, 18 Jan 2022 02:51:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE9EC36AEB;
-        Tue, 18 Jan 2022 02:51:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E67E7601E3;
+        Tue, 18 Jan 2022 03:08:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222A0C36AE3;
+        Tue, 18 Jan 2022 03:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642474281;
-        bh=X2HMSLWSypMHKIOh7Y660kYKewFTYjIlF/6xNVgEuFs=;
+        s=k20201202; t=1642475309;
+        bh=c/VsU68PR/sAcuUNBYexTDgEwJxQ72KXGmsmTdrHLqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mJLA1n39YSC4fe+DlUgf98q5mjwESp6/kWI8Tg/G7ESBLBilaql5sBCD1fxXQ+uPO
-         Quq3npVeSq9aVXINkxqj/CcvYEuhp2a71eAl/WFoFuFuFfoWWFzts68WLHva4N1RGj
-         way/J4DLe+3zfbMGtMooQv9BeALdwxhtsoFWJKUrKYseMZeG/gULRojn5c5c6yb3J8
-         4X4DyyLegbfZT+Y7r0Jotsb8eCEGpkwv4Sr6W0Civ8sJP3vDbC07lAiOJl2Gm7vgs+
-         xQgTa4xOSOUY+tBAzqEN20bbeENSrHTlNHdxWwr7aNQJsbdalDw7I1sLFCA9AKHHoX
-         +lIaCT79FbMFA==
+        b=W34hFfEqpZIZfald03yWGv0FjLQCIld2qAA8K22uw9h8KSWdn7RjR+aZcHghhcpXJ
+         UxUi07iGX7x7iA6r+DVytExgCI+w5Hnl3aH2vzwPgLLcSoc0cthuTJWcmhUCQZEG8C
+         4eSkoUPAG35ObjS/wxAu4+a4KUVJZBshQFCPKu8kAAFS1enTzDtAWHc4fuub24fY3X
+         irMc1lSjnEcsNNXRsuKtIAu4DXfEBaOD5hqqPY8MezhXnkeQ8HearQ0oyCKgbczwwy
+         fFioek1cM/7CjeBJQtxSXRqqIbgMqucpAtQXtakIuO8oSyx/4Xt6gWbP/UR3LQ9ZZy
+         puI8LY3PoRk8g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Zekun Shen <bruceshenzk@gmail.com>,
@@ -39,12 +39,12 @@ Cc:     Zekun Shen <bruceshenzk@gmail.com>,
         Sasha Levin <sashal@kernel.org>, pontus.fuchs@gmail.com,
         kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 03/33] ar5523: Fix null-ptr-deref with unexpected WDCMSG_TARGET_START reply
-Date:   Mon, 17 Jan 2022 21:50:45 -0500
-Message-Id: <20220118025116.1954375-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 03/29] ar5523: Fix null-ptr-deref with unexpected WDCMSG_TARGET_START reply
+Date:   Mon, 17 Jan 2022 22:07:56 -0500
+Message-Id: <20220118030822.1955469-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220118025116.1954375-1-sashal@kernel.org>
-References: <20220118025116.1954375-1-sashal@kernel.org>
+In-Reply-To: <20220118030822.1955469-1-sashal@kernel.org>
+References: <20220118030822.1955469-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -94,7 +94,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
-index 9f4ee1d125b68..0c6b33c464cd9 100644
+index bc6330b437958..67c20cb92f138 100644
 --- a/drivers/net/wireless/ath/ar5523/ar5523.c
 +++ b/drivers/net/wireless/ath/ar5523/ar5523.c
 @@ -153,6 +153,10 @@ static void ar5523_cmd_rx_cb(struct urb *urb)
