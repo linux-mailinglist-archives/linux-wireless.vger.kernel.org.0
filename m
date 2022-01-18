@@ -2,208 +2,148 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2B1F49309B
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 23:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 589734930F4
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 23:43:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349875AbiARWWL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jan 2022 17:22:11 -0500
-Received: from mga09.intel.com ([134.134.136.24]:37200 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1349846AbiARWWK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jan 2022 17:22:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1642544530; x=1674080530;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=sNPUM+qRmsPiTphVYBIIBrvPwmB4t+WjPBDWdLipk24=;
-  b=PfZHNPGAjLvIt3MsBvfx0DhfmdfJZuv3Psf97mxMv6Ozk5L+oIqnnmVm
-   Xp0tMtv+uf1/lRS3m6aL+h8V90pqS581tu6DM/50APBb83kXK2bbEQCBQ
-   DRJLGwVri/6O9Ba2vI+4lT/RuB08RSQ+45QGBw3/nELyzS2ky/u5bTI4J
-   spUlRf8IghPy+AVCE8JGgNg5Mx/CUTD9oxR3+5AB0hNO0w8kMdYGlPeBK
-   S0kAt+o9Lk7g9Q4L3pKNKnmIZl38oJqqBCob1YaaS0Oo1DQZNFmeJf3Jw
-   DTz3xgYxlFVdTpwJguifWWOlk0HpaU1V8H9UdeMOQNsAYueyKztaHwBCC
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10231"; a="244721332"
-X-IronPort-AV: E=Sophos;i="5.88,298,1635231600"; 
-   d="scan'208";a="244721332"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2022 14:22:10 -0800
-X-IronPort-AV: E=Sophos;i="5.88,298,1635231600"; 
-   d="scan'208";a="517936265"
-Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.209.77.211]) ([10.209.77.211])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2022 14:22:09 -0800
-Message-ID: <4a4b2848-d665-c9ba-c66a-dd4408e94ea5@linux.intel.com>
-Date:   Tue, 18 Jan 2022 14:22:08 -0800
+        id S1346378AbiARWnO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jan 2022 17:43:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58016 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237704AbiARWnN (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 18 Jan 2022 17:43:13 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17FDFC061574;
+        Tue, 18 Jan 2022 14:43:13 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id l12-20020a7bc34c000000b003467c58cbdfso9582422wmj.2;
+        Tue, 18 Jan 2022 14:43:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=n+u7w/7GVsZ+QwFRY2Vg+1iMWsu/gCEDhvco83Mij8Y=;
+        b=AsGi5WPciR9ITbzUs5gPwDnZmLyh9vXu/blPRMwgohYeFGAL/Sr2LyZ+9UGV1eRdDh
+         C+gDOleFGWtOaz5VrwwI/2x4in5xI+vXd6HeMoD5a4j31AxRC1kJ3Ai1JhLUqvS9LRaO
+         jpH3Ha5luK5jWvYMNHVqWxA6l9kiTz8/wS85R/Omps3unvfTzlT8EOXNRuHtl8wfZ/KS
+         E5++Wz5Bdm5KuNQQt1DXXLrUCJlP68jD8blaYQR3jWwJrcpYs4qEJEopFChIjGHf82E9
+         kLT06pFbUGD9ssGnLlJ6SQVeMRcQd9Ep9f9EXrLS61oa1CYy9MgXcr5ZKpxwf5jwKmYe
+         7iSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=n+u7w/7GVsZ+QwFRY2Vg+1iMWsu/gCEDhvco83Mij8Y=;
+        b=GlcD4DnhuDcJV3EQsGGe85lLtMrHQUhcbPFK0tqJsfYteumhuiKWjsK8oqfezTo1YD
+         dHUuG9mWtTQXDr3NnCoyVayQp/HCTm1yN3R7Ja2lYCim6lGmXXw9OiM0IpblMH1PO1K6
+         K6xIHk60XoCWy/OJ2vxofJDpfdIrBexlM2Wewj9Lzyk0OK6mrTJSYedjqgtE7EXXi5BT
+         RPQjiiLyen7nEMLiZ+3WFNfmyzkq+/7yg/VFzC5sap+WcJXnzDZ2m0c+IJhAU5BRlw65
+         ++W7azTpk8L3JoLXRbVbpzL4DYclJqHhQD9ZLJctN1nxXoXlqfY2BB4niIM8zgovPGz2
+         VeuQ==
+X-Gm-Message-State: AOAM532KKOYzXzArp4xelbHxpj9nFjD1RWF9zIDKils2lIAXsGfwkaa7
+        Y73JBjKj+9259gS66fdgcFlCRhoRTNpo879pdGw=
+X-Google-Smtp-Source: ABdhPJyBVQ6zi7siC+AQnnyCU1O4yjgYsCwZgA8nAS7/FvaKV0S16T7miqtr65XwF+ghmi2aMf4tEWb8GuBlFo06WPg=
+X-Received: by 2002:a05:6000:1686:: with SMTP id y6mr15695960wrd.205.1642545791614;
+ Tue, 18 Jan 2022 14:43:11 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH net-next v4 02/13] net: wwan: t7xx: Add control DMA
- interface
-Content-Language: en-US
-To:     =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
-        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
-        sreehari.kancharla@intel.com
-References: <20220114010627.21104-1-ricardo.martinez@linux.intel.com>
- <20220114010627.21104-3-ricardo.martinez@linux.intel.com>
- <d5854453-84b-1eba-7cc7-d94f41a185d@linux.intel.com>
-From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
-In-Reply-To: <d5854453-84b-1eba-7cc7-d94f41a185d@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
+ <20220112173312.764660-9-miquel.raynal@bootlin.com> <CAB_54W5QU5JCtQYwvTKREd6ZeQWmC19LF4mj853U0Gz-mCObVQ@mail.gmail.com>
+ <20220113121645.434a6ef6@xps13> <CAB_54W5_x88zVgSJep=yK5WVjPvcWMy8dmyOJWcjy=5o0jCy0w@mail.gmail.com>
+ <20220114112113.63661251@xps13> <CAB_54W77d_PjX_ZfKJdO4D4hHsAWjw0jWgRA7L0ewNnqApQhcQ@mail.gmail.com>
+ <20220117101245.1946e474@xps13> <CAB_54W4rqXxSrTY=fqbt6o41a2SAEY_suqyqZ3hymheCgzRqTQ@mail.gmail.com>
+ <20220118113833.0185f564@xps13>
+In-Reply-To: <20220118113833.0185f564@xps13>
+From:   Alexander Aring <alex.aring@gmail.com>
+Date:   Tue, 18 Jan 2022 17:43:00 -0500
+Message-ID: <CAB_54W4Z0H5ubvOBjpnCpGOWYrNXYOJvxB4_kZsp8LqdJrTLkg@mail.gmail.com>
+Subject: Re: [wpan-next v2 08/27] net: ieee802154: Drop symbol duration
+ settings when the core does it already
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
+        linux-wpan - ML <linux-wpan@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Harry Morris <h.morris@cascoda.com>,
+        Varka Bhadram <varkabhadram@gmail.com>,
+        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
+        David Girault <david.girault@qorvo.com>,
+        Romuald Despres <romuald.despres@qorvo.com>,
+        Frederic Blain <frederic.blain@qorvo.com>,
+        Nicolas Schodet <nico@ni.fr.eu.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        "linux-wireless@vger.kernel.org Wireless" 
+        <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
 
-On 1/18/2022 6:13 AM, Ilpo Järvinen wrote:
-> On Thu, 13 Jan 2022, Ricardo Martinez wrote:
-...
->> +#define CLDMA_NUM 2
-> I tried to understand its purpose but it seems that only one of the
-> indexes is used in the arrays where this define gives the size? Related to
-> this, ID_CLDMA0 is not used anywhere?
-
-The modem HW has 2 CLDMAs, idx 0 for the app processor (SAP) and idx 1 
-for the modem (MD).
-
-CLDMA_NUM is defined as 2 to reflect the HW capabilities but mainly to 
-have a cleaner upcoming
-
-patches, which will use ID_CLDMA0.
-
-If having array's of size 1 is not a problem then we can define 
-CLDMA_NUM as 1 and
-
-play with the CLDMA indexes.
-
-...
-
-
->> +static void t7xx_cldma_enable_irq(struct cldma_ctrl *md_ctrl)
->> +{
->> +	t7xx_pcie_mac_set_int(md_ctrl->t7xx_dev, md_ctrl->hw_info.phy_interrupt_id);
->> +}
->> +
->> +static void t7xx_cldma_disable_irq(struct cldma_ctrl *md_ctrl)
->> +{
->> +	t7xx_pcie_mac_clear_int(md_ctrl->t7xx_dev, md_ctrl->hw_info.phy_interrupt_id);
->> +}
-> t7xx_pcie_mac_set_int and t7xx_pcie_mac_clear_int are only defined
-> by a later patch.
+On Tue, 18 Jan 2022 at 05:38, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 >
->> +static bool t7xx_cldma_qs_are_active(struct t7xx_cldma_hw *hw_info)
->> +{
->> +	unsigned int tx_active;
->> +	unsigned int rx_active;
->> +
->> +	tx_active = t7xx_cldma_hw_queue_status(hw_info, CLDMA_ALL_Q, MTK_TX);
->> +	rx_active = t7xx_cldma_hw_queue_status(hw_info, CLDMA_ALL_Q, MTK_RX);
->> +	if (tx_active == CLDMA_INVALID_STATUS || rx_active == CLDMA_INVALID_STATUS)
-> These cannot ever be true because of mask in t7xx_cldma_hw_queue_status().
-
-t7xx_cldma_hw_queue_status() shouldn't apply the mask for CLDMA_ALL_Q.
-
->> +static int t7xx_cldma_clear_rxq(struct cldma_ctrl *md_ctrl, int qnum)
->> +{
->> +	struct cldma_queue *rxq = &md_ctrl->rxq[qnum];
->> +	struct cldma_request *req;
->> +	struct cldma_rgpd *rgpd;
->> +	unsigned long flags;
->> +
->> +	spin_lock_irqsave(&rxq->ring_lock, flags);
->> +	t7xx_cldma_q_reset(rxq);
->> +	list_for_each_entry(req, &rxq->tr_ring->gpd_ring, entry) {
->> +		rgpd = req->gpd;
->> +		rgpd->gpd_flags = GPD_FLAGS_IOC | GPD_FLAGS_HWO;
->> +		rgpd->data_buff_len = 0;
->> +
->> +		if (req->skb) {
->> +			req->skb->len = 0;
->> +			skb_reset_tail_pointer(req->skb);
->> +		}
->> +	}
->> +
->> +	spin_unlock_irqrestore(&rxq->ring_lock, flags);
->> +	list_for_each_entry(req, &rxq->tr_ring->gpd_ring, entry) {
->> +		int ret;
-> I find this kind of newline+unlock+more code a bit odd groupingwise.
-> IMO, the newline should be after the unlock rather than just before it to
-> better indicate the critical sections visually.
-
-Agree. In general, the driver uses a newline after '}', unlock 
-operations should be an
-
-exception since it looks better to keep the critical section blocks 
-together.
-
-...
-
->> +/**
->> + * t7xx_cldma_send_skb() - Send control data to modem.
->> + * @md_ctrl: CLDMA context structure.
->> + * @qno: Queue number.
->> + * @skb: Socket buffer.
->> + * @blocking: True for blocking operation.
->> + *
->> + * Send control packet to modem using a ring buffer.
->> + * If blocking is set, it will wait for completion.
->> + *
->> + * Return:
->> + * * 0		- Success.
->> + * * -ENOMEM	- Allocation failure.
->> + * * -EINVAL	- Invalid queue request.
->> + * * -EBUSY	- Resource lock failure.
->> + */
->> +int t7xx_cldma_send_skb(struct cldma_ctrl *md_ctrl, int qno, struct sk_buff *skb, bool blocking)
->> +{
->> +	struct cldma_request *tx_req;
->> +	struct cldma_queue *queue;
->> +	unsigned long flags;
->> +	int ret;
->> +
->> +	if (qno >= CLDMA_TXQ_NUM)
->> +		return -EINVAL;
->> +
->> +	queue = &md_ctrl->txq[qno];
->> +
->> +	spin_lock_irqsave(&md_ctrl->cldma_lock, flags);
->> +	if (!(md_ctrl->txq_active & BIT(qno))) {
->> +		ret = -EBUSY;
->> +		spin_unlock_irqrestore(&md_ctrl->cldma_lock, flags);
->> +		goto allow_sleep;
->> +	}
-> ...
->> +		if (!blocking) {
->> +			ret = -EBUSY;
->> +			break;
->> +		}
->> +
->> +		ret = wait_event_interruptible_exclusive(queue->req_wq, queue->budget > 0);
->> +	} while (!ret);
->> +
->> +allow_sleep:
->> +	return ret;
->> +}
-> First of all, if I interpreted the call chains correctly, this function is
-> always called with blocking=true.
+> Hi Alexander,
 >
-> Second, the first codepath returning -EBUSY when not txq_active seems
-> twisted/reversed logic to me (not active => busy ?!?).
-
-What about -EINVAL?
-
-Other codes considered: -EPERM, -ENETDOWN.
-
+> > > > btw:
+> > > > Also for testing with hwsim and the missing features which currently
+> > > > exist. Can we implement some user space test program which replies
+> > > > (active scan) or sends periodically something out via AF_PACKET raw
+> > > > and a monitor interface that should work to test if it is working?
+> > >
+> > > We already have all this handled, no need for extra software. You can
+> > > test active and passive scans between two hwsim devices already:
+> > >
+> > > # iwpan dev wpan0 beacons send interval 15
+> > > # iwpan dev wpan1 scan type active duration 1
+> > > # iwpan dev wpan0 beacons stop
+> > >
+> > > or
+> > >
+> > > # iwpan dev wpan0 beacons send interval 1
+> > > # iwpan dev wpan1 scan type passive duration 2
+> > > # iwpan dev wpan0 beacons stop
+> > >
+> > > > Ideally we could do that very easily with scapy (not sure about their
+> > > > _upstream_ 802.15.4 support). I hope I got that right that there is
+> > > > still something missing but we could fake it in such a way (just for
+> > > > hwsim testing).
+> > >
+> > > I hope the above will match your expectations.
+> > >
+> >
+> > I need to think and read more about... in my mind is currently the
+> > following question: are not coordinators broadcasting that information
+> > only? Means, isn't that a job for a coordinator?
 >
-...
+> My understanding right now:
+> - The spec states that coordinators only can send beacons and perform
+>   scans.
 
+ok.
+
+> - I don't yet have the necessary infrastructure to give coordinators
+>   more rights than regular devices or RFDs (but 40+ patches already,
+>   don't worry this is something we have in mind)
+> - Right now this is the user to decide whether a device might answer
+>   beacon requests or not. This will soon become more limited but it
+>   greatly simplifies the logic for now.
+>
+
+There was always the idea behind it to make an "coordinator" interface
+type and there is a reason for that because things e.g. filtering
+becomes different than a non-coordinator interface type (known as node
+interface in wpan).
+At the end interface types should make a big difference in how the
+"role" inside the network should be, which you can also see in
+wireless as "station"/"access point" interface devices.
+
+A non full functional device should then also not be able to act as a
+coordinator e.g. it cannot create coordinator types.
+
+However we can still make some -EOPNOTSUPP if something in a different
+way should be done. This clearly breaks userspace and I am not sure if
+we should worry or not worry about it in the current state of
+802.15.4...
+
+- Alex
