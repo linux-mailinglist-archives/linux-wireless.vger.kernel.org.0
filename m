@@ -2,46 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4264491946
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 03:53:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D0C5491953
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 03:53:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245700AbiARCxS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jan 2022 21:53:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34802 "EHLO
+        id S1351156AbiARCxl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jan 2022 21:53:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345681AbiARCs7 (ORCPT
+        with ESMTP id S1346543AbiARCtJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jan 2022 21:48:59 -0500
+        Mon, 17 Jan 2022 21:49:09 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 389C5C061755;
-        Mon, 17 Jan 2022 18:40:21 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5FADC061762;
+        Mon, 17 Jan 2022 18:41:43 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 00114B81261;
-        Tue, 18 Jan 2022 02:40:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1191C36AEF;
-        Tue, 18 Jan 2022 02:40:17 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 96514B81261;
+        Tue, 18 Jan 2022 02:41:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5198C36AF2;
+        Tue, 18 Jan 2022 02:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642473618;
-        bh=z9Xl0iPAzJD3iaKf5VYmbyxLHCGM/Ya1QMtZ25AxyiM=;
+        s=k20201202; t=1642473701;
+        bh=mMVMuisXCIt+zCi8F5XYc+fsmSAixmNaldXMRbfRe4I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fNb9axjA7z2Vd3/y0Rlig8S3Q1ItZ1NbgmM74maATDclLg6vHtgS4smzXrxZikqCV
-         8ZPQ3rXZPG/yQ5tXTdmHlAv8/jPCsZSEC84OxrxOF4atxKICA4oNMKrzvytk/TG3ZI
-         mazveIL1otLFs+ElyjOgmKJ8CF1eC2GCd6qypopb6iFKzMQQEzTjNVxUKuq1WhNYuw
-         1TNhU0gwhEXmTxDutdPKo6CXpbGccSj/kzDnVZ4UlzVGlmcB6r3fUP/NjC0TgXDEe1
-         XlprCQN6DhCouvhGq8aTAiEqi6dPV85DHRy3KLNsF3QdpNs0DMim3aFMQ/okJwdyrP
-         KaDZPX7NPGbiA==
+        b=uNczL+gIxOZj8WvuS6EdSjeA/Q74XvQCmG1KzrJjqUFEKw1CxrEraND6zGvHbmHE/
+         S4/G78vAyUbHq3TOpigD6npzrT2j68kcWtPfr83tj6XRnjOoQNCRxQRaLSf7+Q9guu
+         IUCxlBB/NBeUk3YKC/AXun8xEqMEuAiNEU+LTf4WcBZjpPA/vcKZDSEhD6bZdcP/so
+         Ht9mZvyVzR2QDcCI0szsYz1FHCxP8P0Wfo/wB5UirH7g6zI4tX7qQBYSD3nGzj5IKR
+         Dm08pj27VTSmbuQRwz9CaPrWq5vAwmv2Gr+QmQT7AzhNzxjjN2w+m18HW152T99ieC
+         1vhbKw6e/0yZw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Zekun Shen <bruceshenzk@gmail.com>,
+        Brendan Dolan-Gavitt <brendandg@nyu.edu>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, pontus.fuchs@gmail.com,
-        kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 006/116] ar5523: Fix null-ptr-deref with unexpected WDCMSG_TARGET_START reply
-Date:   Mon, 17 Jan 2022 21:38:17 -0500
-Message-Id: <20220118024007.1950576-6-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, amitkarwar@gmail.com,
+        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
+        huxinming820@gmail.com, kvalo@kernel.org, davem@davemloft.net,
+        kuba@kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 031/116] mwifiex: Fix skb_over_panic in mwifiex_usb_recv()
+Date:   Mon, 17 Jan 2022 21:38:42 -0500
+Message-Id: <20220118024007.1950576-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220118024007.1950576-1-sashal@kernel.org>
 References: <20220118024007.1950576-1-sashal@kernel.org>
@@ -55,59 +58,64 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Zekun Shen <bruceshenzk@gmail.com>
 
-[ Upstream commit ae80b6033834342601e99f74f6a62ff5092b1cee ]
+[ Upstream commit 04d80663f67ccef893061b49ec8a42ff7045ae84 ]
 
-Unexpected WDCMSG_TARGET_START replay can lead to null-ptr-deref
-when ar->tx_cmd->odata is NULL. The patch adds a null check to
-prevent such case.
+Currently, with an unknown recv_type, mwifiex_usb_recv
+just return -1 without restoring the skb. Next time
+mwifiex_usb_rx_complete is invoked with the same skb,
+calling skb_put causes skb_over_panic.
 
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
- ar5523_cmd+0x46a/0x581 [ar5523]
- ar5523_probe.cold+0x1b7/0x18da [ar5523]
- ? ar5523_cmd_rx_cb+0x7a0/0x7a0 [ar5523]
- ? __pm_runtime_set_status+0x54a/0x8f0
- ? _raw_spin_trylock_bh+0x120/0x120
- ? pm_runtime_barrier+0x220/0x220
- ? __pm_runtime_resume+0xb1/0xf0
- usb_probe_interface+0x25b/0x710
- really_probe+0x209/0x5d0
- driver_probe_device+0xc6/0x1b0
- device_driver_attach+0xe2/0x120
+The bug is triggerable with a compromised/malfunctioning
+usb device. After applying the patch, skb_over_panic
+no longer shows up with the same input.
 
-I found the bug using a custome USBFuzz port. It's a research work
-to fuzz USB stack/drivers. I modified it to fuzz ath9k driver only,
-providing hand-crafted usb descriptors to QEMU.
+Attached is the panic report from fuzzing.
+skbuff: skb_over_panic: text:000000003bf1b5fa
+ len:2048 put:4 head:00000000dd6a115b data:000000000a9445d8
+ tail:0x844 end:0x840 dev:<NULL>
+kernel BUG at net/core/skbuff.c:109!
+invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 PID: 198 Comm: in:imklog Not tainted 5.6.0 #60
+RIP: 0010:skb_panic+0x15f/0x161
+Call Trace:
+ <IRQ>
+ ? mwifiex_usb_rx_complete+0x26b/0xfcd [mwifiex_usb]
+ skb_put.cold+0x24/0x24
+ mwifiex_usb_rx_complete+0x26b/0xfcd [mwifiex_usb]
+ __usb_hcd_giveback_urb+0x1e4/0x380
+ usb_giveback_urb_bh+0x241/0x4f0
+ ? __hrtimer_run_queues+0x316/0x740
+ ? __usb_hcd_giveback_urb+0x380/0x380
+ tasklet_action_common.isra.0+0x135/0x330
+ __do_softirq+0x18c/0x634
+ irq_exit+0x114/0x140
+ smp_apic_timer_interrupt+0xde/0x380
+ apic_timer_interrupt+0xf/0x20
+ </IRQ>
 
-After fixing the code (fourth byte in usb packet) to WDCMSG_TARGET_START,
-I got the null-ptr-deref bug. I believe the bug is triggerable whenever
-cmd->odata is NULL. After patching, I tested with the same input and no
-longer see the KASAN report.
-
-This was NOT tested on a real device.
-
+Reported-by: Brendan Dolan-Gavitt <brendandg@nyu.edu>
 Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/YXsmPQ3awHFLuAj2@10-18-43-117.dynapool.wireless.nyu.edu
+Link: https://lore.kernel.org/r/YX4CqjfRcTa6bVL+@Zekuns-MBP-16.fios-router.home
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ar5523/ar5523.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/usb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
-index 49cc4b7ed5163..1baec4b412c8d 100644
---- a/drivers/net/wireless/ath/ar5523/ar5523.c
-+++ b/drivers/net/wireless/ath/ar5523/ar5523.c
-@@ -153,6 +153,10 @@ static void ar5523_cmd_rx_cb(struct urb *urb)
- 			ar5523_err(ar, "Invalid reply to WDCMSG_TARGET_START");
- 			return;
+diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
+index 9736aa0ab7fd4..8f01fcbe93961 100644
+--- a/drivers/net/wireless/marvell/mwifiex/usb.c
++++ b/drivers/net/wireless/marvell/mwifiex/usb.c
+@@ -130,7 +130,8 @@ static int mwifiex_usb_recv(struct mwifiex_adapter *adapter,
+ 		default:
+ 			mwifiex_dbg(adapter, ERROR,
+ 				    "unknown recv_type %#x\n", recv_type);
+-			return -1;
++			ret = -1;
++			goto exit_restore_skb;
  		}
-+		if (!cmd->odata) {
-+			ar5523_err(ar, "Unexpected WDCMSG_TARGET_START reply");
-+			return;
-+		}
- 		memcpy(cmd->odata, hdr + 1, sizeof(u32));
- 		cmd->olen = sizeof(u32);
- 		cmd->res = 0;
+ 		break;
+ 	case MWIFIEX_USB_EP_DATA:
 -- 
 2.34.1
 
