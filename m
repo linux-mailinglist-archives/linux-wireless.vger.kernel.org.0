@@ -2,77 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9426249221F
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 10:07:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFAA8492234
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 10:09:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345336AbiARJHB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jan 2022 04:07:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38566 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345289AbiARJG6 (ORCPT
+        id S240445AbiARJJB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jan 2022 04:09:01 -0500
+Received: from mout.kundenserver.de ([212.227.126.135]:44317 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235107AbiARJJA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jan 2022 04:06:58 -0500
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84D16C061401
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Jan 2022 01:06:58 -0800 (PST)
-Received: by mail-yb1-xb2d.google.com with SMTP id o80so1975486yba.6
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Jan 2022 01:06:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=AIHedDQeQ2nfeFyhlIY6iBZ7Eo/kAlP72EhStgPHV1I=;
-        b=MwuXI9bo/bHhmwSiZow429zo8aSB+O2GLUej+IgcXI5RO/o3AqH4CSQ9NAWjmHtI2V
-         CWHWHodvspT0TuHM5gPO3+DsIPBfj5I7xK86tBODXNXUNaTSYWM44YSISAFFoUBCT0Gg
-         kUseC6gV2vHxvawS1hqRt36sr5ZHyfG2404GVbLMHZFIWJloN2l0uLLpE9xGpmX+gvFt
-         T/SKBR85N56dXCUtLtefGn/VyQ5YHcl7r/PL/CN8dJjeVXQr6S8XtfLgDxWiWVeFp/uz
-         rUPQ/vWjjy9uE0DFDcQNAXccnZrg9yq5ahPtbYdtOe2x2ilhAjqIuZxj1Am01Jk0eYRx
-         TdaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=AIHedDQeQ2nfeFyhlIY6iBZ7Eo/kAlP72EhStgPHV1I=;
-        b=BLeLG2WCiUZ6YpyoJIFiqhXdfLNyjptvFfpYZDOog4uGJz2EjJlsp9HzT62MXEunwC
-         Cldcype6Pu+7N3kEFcip49ntGTMCuquey+VxMofqpjR2zTw4EkM8NKg4ck7s/zTjDJKf
-         C1/nL/TjUvL7ygY1a3lyyMXm12ikaK6pL/LBYYBJ8pOPjDW0GZx0WnBnB0tNOESdheCZ
-         VDIjk4t5+PEt4WdeEIg3n7X83waWGTICO1S1WbsOcvSaDPzF4vdT5ms/TM2X6gU/h1P/
-         ZXWXYe6j/3VFtMOx+cHbkH5+5ty+Mrtg7UbDR9BZxAtFvKRbWx6GSv6ps7UtNCMZqlww
-         0tmQ==
-X-Gm-Message-State: AOAM530HCsZCZNAR/WXaIlYPHhSvV6XfFY/CyCHlH7TiSwkg2LInFRln
-        PBcjL/DmnDpuEOk1Rn1AjNfMRTe/R6bqCdByTOI=
-X-Google-Smtp-Source: ABdhPJxA0wzoWLcZT1OxNrAcI8XNQh1NLzUcYEY6tZP9fJ+XZhak2v8hM5rDGFWcpfNwqZAdykwmchO/6gc3Jodrd8o=
-X-Received: by 2002:a25:bb49:: with SMTP id b9mr31607636ybk.0.1642496817798;
- Tue, 18 Jan 2022 01:06:57 -0800 (PST)
+        Tue, 18 Jan 2022 04:09:00 -0500
+Received: from [192.168.0.175] ([151.127.53.97]) by mrelayeu.kundenserver.de
+ (mreue012 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1MVrXh-1midF80UGD-00RnjA; Tue, 18 Jan 2022 10:08:51 +0100
+Message-ID: <d7ce90d8-552a-2cab-6310-3a84584172a1@green-communications.fr>
+Date:   Tue, 18 Jan 2022 10:08:15 +0100
 MIME-Version: 1.0
-Received: by 2002:a05:7108:3655:0:0:0:0 with HTTP; Tue, 18 Jan 2022 01:06:57
- -0800 (PST)
-Reply-To: asil.ajwad@gmail.com
-From:   Asil Ajwad <graceyaogokamboule@gmail.com>
-Date:   Mon, 17 Jan 2022 21:06:57 -1200
-Message-ID: <CA+Yy_gCScGafLu0JmRT2o26eNt1J5S_DUo_G2xwuVh0p3r+Daw@mail.gmail.com>
-Subject: Greetings,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Content-Language: en-US
+From:   Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+Subject: Issues with mt7915 thermal throttling
+To:     linux-wireless@vger.kernel.org
+Cc:     Ryder Lee <ryder.lee@mediatek.com>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:Qr5CwiNn/XjY3kQ9nCKIu+ml7fqRy3rj4T8SQ0M4Mdfm8tHput4
+ PLaGaLwI0HWSQm5niKwc4yiQd6BjsXEf53sVCVOyzgj3v/86TeSW6MGQa5MIFvZb+gYGyWR
+ yh/bmEyCV1gb8xQQXXCmCCo2ch80un++nXa7KrJaX3ilK9p+loDnNzRVgGY+JRSMOXJMJTc
+ uHkOApSIT9Q9qU2/RFksQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+nAOt+982VI=:xS+utZDcbKcdqfzPOdpLHZ
+ kJZUx1YcaT0t8ECnVCBhn7jsWwfBkmgHEtXfOY1D9LfKRPEt3Qp7ZCA29E5JBnWKse9BQkkCi
+ Hii5LZgiuMyOXBzu1Fb2Ni8nVELxZ9h7d6GRwakYsFhiVQ2Nd4XsKAHaei5CpcH4AYVELG5xr
+ 3p9OxN357xlpjBwGVxjxBjnGa2h+JvewbMg3uQI6tFGSPbP1TG9igL3JouVhQ9JR2cwW2ZhF2
+ zuXO/c3jmA3F75e72mslzeAV5Dxk0auACSK29D1G0KWQZxM/FN2HvcQY+keEuU3I/VyRLJgHR
+ z6WDzYmocpwqgv2hfP2Pyv3mgcdGgBpJt9ep8+nQS5mBZ8Da0xk5yD5YquR9di4adbJCMV3jH
+ XHPh4/O2Bg5+JXE+IpixP4OeBVK8ShmgEBJjoGcPA8wv/XNYnFXeQZ3QPymITRtR4Up8jRTOY
+ K/J8hKd9v37R599LBBF9ynRx+eL3dKnbQG2ud1ViWlP+Z7R4zRJOS+DhdUQZCdRrj0C7XbOsZ
+ TTL/lO5MX/+lLffudQFRIUp3Hb/YgmsORp4Hp2ybzGg19hu5TiCgWk4YKJypWhVJtAFLyVFJW
+ pAKdCyAQq+OlXniwL9rgXRdg46caG+ncgOqdmMeQiry6OJ6zO10au1qnKGkhaNnYBtK0Z1Nc5
+ lNsrm6gGADtKXpZbv+bGJD7QLncgj/zM70/zQ8d2/Ly5cFPcnv/4oK/O37WbOY93jOyJj388T
+ Fuwo3kyXHAKf1dqWCo0WbumpbwS3UlV1zindsg==
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
-Greetings,
+I noticed some strange issues with mt7915's thermal throttling, 
+particularly the cooling_device.
 
-I am Mr.Asil Ajwad, I work with United Bank of Africa, can you use
-an ATM Visa Card to withdraw money at, ATM Cash Machine in your
-country, if yes I want to transfer abounded fund the sum of $10.5million
-US-Dollars, to you from my country, this is part of the money that was
-abounded by our late old client a politician who unfortunately lost
-his life and was forced out of power Du to his greedy act, the bank will
+First, it seems that the thermal subsystem expect that higher 
+cooling_device states provide more cooling, but mt7915e apparently does 
+the opposite and use it as a duty cycle, where state=1 does severe 
+throttling/max cooling (iperf throughput basically go down to near zero) 
+and state=100 is full power.
 
-change the account details to your name, and apply for a Visa Card
-with your details, the Visa Card will be send to you, and you can be
-withdrawing money with it always, whatever any amount you withdraw
-daily, you will send 60% to me and you will take 40%, the Visa Card
-and the bank account will be on your name, I will be waiting for your
-response for more details, thanks to you a lot for giving me your time.
+Also, state=0, from the comments, apparently disable thermal management, 
+except that in practice, it does not change the throttle state, since 
+throughput stays low when switching from state=1 to state=0, and stays 
+high when switching from 100 to 0.
 
-regards,
-Mr.Asil Ajwad.
+As a result, as soon as the default thermal zone runs a little hot, the 
+performance of mt7915e is destroyed and does not recover much when the 
+temperature drops down.
+
+I can come up with a patch to fix the first issue, but not the state=0 
+one, and i would like some pointers/confirmation.
