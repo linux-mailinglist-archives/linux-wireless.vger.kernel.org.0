@@ -2,66 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C30349238F
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 11:13:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 945784923DB
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jan 2022 11:38:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236899AbiARKNr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jan 2022 05:13:47 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:40362 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbiARKNq (ORCPT
+        id S237579AbiARKim convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jan 2022 05:38:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59824 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237302AbiARKil (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jan 2022 05:13:46 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DED8F60C95
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Jan 2022 10:13:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67080C00446;
-        Tue, 18 Jan 2022 10:13:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642500824;
-        bh=RuKrv5GqSo3CGX/bGXYWQFU3mMpH8e8zMlqpuQgzbvA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=c0utAPNLcKYlH95VfVN3kgNAg4iGGwh4LI+enApeDHIAQNOY3eKdg0JmgzC+aBTzd
-         vyPkuFIBFcmzeAJvkMc4X08LkN2sxHZ8OLmcHmSaNTUAarr/spbvQHNAU7adm9tDtt
-         VY3azUNC1qTJCSdxGlypHm9ODVhIJKvHGQ9wDNG6dzA6Pxi7RozK80l7KH8P301+VE
-         j8BrUiIULgz95aCu5/ghBe7S9P4r8pIjvCQkG7Lj5Amt+075JFpB3nisYfP+IMKvhW
-         GK9xaffkJYLk8WQWVGboXu6hVkNiuH7Z7jiwC7VyAVgXTgcydB6GqTl+951vCXMiuW
-         KRdEevmUmx5pQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7921: remove duplicated code in mt7921_mac_decode_he_radiotap
-Date:   Tue, 18 Jan 2022 11:13:32 +0100
-Message-Id: <cc4eb2c69d3bca795b6e5d8f49f55b03eebafc70.1642500762.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.34.1
+        Tue, 18 Jan 2022 05:38:41 -0500
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C77FC061574;
+        Tue, 18 Jan 2022 02:38:40 -0800 (PST)
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 2D5A0FF80C;
+        Tue, 18 Jan 2022 10:38:34 +0000 (UTC)
+Date:   Tue, 18 Jan 2022 11:38:33 +0100
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Alexander Aring <alex.aring@gmail.com>
+Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
+        linux-wpan - ML <linux-wpan@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Harry Morris <h.morris@cascoda.com>,
+        Varka Bhadram <varkabhadram@gmail.com>,
+        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
+        David Girault <david.girault@qorvo.com>,
+        Romuald Despres <romuald.despres@qorvo.com>,
+        Frederic Blain <frederic.blain@qorvo.com>,
+        Nicolas Schodet <nico@ni.fr.eu.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        "linux-wireless@vger.kernel.org Wireless" 
+        <linux-wireless@vger.kernel.org>
+Subject: Re: [wpan-next v2 08/27] net: ieee802154: Drop symbol duration
+ settings when the core does it already
+Message-ID: <20220118113833.0185f564@xps13>
+In-Reply-To: <CAB_54W4rqXxSrTY=fqbt6o41a2SAEY_suqyqZ3hymheCgzRqTQ@mail.gmail.com>
+References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
+        <20220112173312.764660-9-miquel.raynal@bootlin.com>
+        <CAB_54W5QU5JCtQYwvTKREd6ZeQWmC19LF4mj853U0Gz-mCObVQ@mail.gmail.com>
+        <20220113121645.434a6ef6@xps13>
+        <CAB_54W5_x88zVgSJep=yK5WVjPvcWMy8dmyOJWcjy=5o0jCy0w@mail.gmail.com>
+        <20220114112113.63661251@xps13>
+        <CAB_54W77d_PjX_ZfKJdO4D4hHsAWjw0jWgRA7L0ewNnqApQhcQ@mail.gmail.com>
+        <20220117101245.1946e474@xps13>
+        <CAB_54W4rqXxSrTY=fqbt6o41a2SAEY_suqyqZ3hymheCgzRqTQ@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove duplicated DATA4_SU_MU_SPTL_REUSE flag configuration in
-mt7921_mac_decode_he_radiotap routine.
+Hi Alexander,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 1 -
- 1 file changed, 1 deletion(-)
+> > > btw:
+> > > Also for testing with hwsim and the missing features which currently
+> > > exist. Can we implement some user space test program which replies
+> > > (active scan) or sends periodically something out via AF_PACKET raw
+> > > and a monitor interface that should work to test if it is working?  
+> >
+> > We already have all this handled, no need for extra software. You can
+> > test active and passive scans between two hwsim devices already:
+> >
+> > # iwpan dev wpan0 beacons send interval 15
+> > # iwpan dev wpan1 scan type active duration 1
+> > # iwpan dev wpan0 beacons stop
+> >
+> > or
+> >
+> > # iwpan dev wpan0 beacons send interval 1
+> > # iwpan dev wpan1 scan type passive duration 2
+> > # iwpan dev wpan0 beacons stop
+> >  
+> > > Ideally we could do that very easily with scapy (not sure about their
+> > > _upstream_ 802.15.4 support). I hope I got that right that there is
+> > > still something missing but we could fake it in such a way (just for
+> > > hwsim testing).  
+> >
+> > I hope the above will match your expectations.
+> >  
+> 
+> I need to think and read more about... in my mind is currently the
+> following question: are not coordinators broadcasting that information
+> only? Means, isn't that a job for a coordinator?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 7bb976b1b451..d17558349a17 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -308,7 +308,6 @@ mt7921_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u32 mode)
- 
- 		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[14]) |
- 			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
--		he->data4 |= HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[11]);
- 		break;
- 	case MT_PHY_TYPE_HE_EXT_SU:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_EXT_SU) |
--- 
-2.34.1
+My understanding right now:
+- The spec states that coordinators only can send beacons and perform
+  scans.
+- I don't yet have the necessary infrastructure to give coordinators
+  more rights than regular devices or RFDs (but 40+ patches already,
+  don't worry this is something we have in mind)
+- Right now this is the user to decide whether a device might answer
+  beacon requests or not. This will soon become more limited but it
+  greatly simplifies the logic for now.
 
+Thanks,
+Miquèl
