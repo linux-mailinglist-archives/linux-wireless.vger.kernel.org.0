@@ -2,72 +2,200 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8D4A493840
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 11:19:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80374493887
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 11:32:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236727AbiASKTJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jan 2022 05:19:09 -0500
-Received: from mout.web.de ([217.72.192.78]:54051 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229919AbiASKTI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jan 2022 05:19:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1642587547;
-        bh=9fB8RDDhanM84fmnD9XdwRsIHt6cmEMW9BgWtV5aa7c=;
-        h=X-UI-Sender-Class:From:To:Subject:Date;
-        b=XEQJ2IefLppiJtVMeLKkCxEoBiJAnYcL6ksyeQ8jGBmxUrxYWHirRjNS08KzrPY7v
-         i8lZIAeIJQjcJb+/uMtG7b08CZ/ACzkp/8y4MO6jA5ebPAyqY9BYNgUJq7hwWDvHht
-         1qjp1xEruf7BsJrfA36E78q6IsexoEwf7iq4ZaQE=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [80.245.136.130] ([80.245.136.130]) by web-mail.web.de
- (3c-app-webde-bap45.server.lan [172.19.172.45]) (via HTTP); Wed, 19 Jan
- 2022 11:19:07 +0100
+        id S1353826AbiASKcc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jan 2022 05:32:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47338 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1353785AbiASKcZ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 19 Jan 2022 05:32:25 -0500
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69ACEC061753
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Jan 2022 02:32:24 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id o15so7401667lfo.11
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Jan 2022 02:32:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Sr17yjVIJ3L6nqEXDMpIqK2xXImflLFzz6ALbEm9u68=;
+        b=Xp8s21ftcZ0WG13DDgbdH7NIUsuYX+ghvkD5zw1hiLod5qbV+yjC9/iw3BxedgypWz
+         j185xcOoN7LD6uCNH62mSJRvMAjwIi7qcbYCznd6Wd0VuvmCQ/sizMwR5aWhMScNA/rl
+         hmuEc+DbVv1NqMjk5IXcy/Hk3oFXKZ0haMWzOfivc06wvoxpEiX1vitoLqGmZuk04L2x
+         HC73i8VxJwVCI/4Mkmi2NET/E8BffuYg/4Zged81GUTCUySqRPVe2agczTV87+sP+2pN
+         pDJV7fJq03+xTsoQaVBtN6S+RGEn7oHeifzgS2DkyqcDDGnQ9aAHk1KN9hJBM2T+WaJf
+         EdtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Sr17yjVIJ3L6nqEXDMpIqK2xXImflLFzz6ALbEm9u68=;
+        b=5nmOWJVcOSI1hZGTr6DOulmd3fG+qnv5K865jTGL+/H/qaMBCnZhvybp2nT1Gm67JO
+         STTRhXgUQ7hpm2T0Q2XaD4+CBGAuMH8LUmD+jb/YzRccU9GTq7V5NUJLYxlZGMWAtsVq
+         vRhvTQPn263w/rySqY/1cYXxj5wGOulZeOCPsawmva1qfvKz/UBArB5JgRTFJz/BDbz1
+         YUGe7x4/HtCf5sb3JtwvNP1awW0FyoMCB4smt8npgWoQPyAc2rOiX3wKn6ZzKjg0ZuU/
+         eJuqpcM1rUbm0taug9UpbHPadzWJgBZaigvumBA+WcYCD+sqtL3pjDDM8xwAfKNa4tk9
+         rl8Q==
+X-Gm-Message-State: AOAM532SJyVw/5MC0iRNVBocCVRgiCX8Sn7X+Mti28H9UeEZD0whS3CG
+        +rnG2NpsYyomAO+JFVOjk04U0JU9S2QM4hwZMTgdKA==
+X-Google-Smtp-Source: ABdhPJz5t3UBuJxmMbI2E3pOLPGLQiV4ByMa0pgkUilXefnRDUK3bGbZ4bWfdB/wwOZVZ58x7DxfCbRQTc3tUAIioE8=
+X-Received: by 2002:a2e:a26d:: with SMTP id k13mr10012578ljm.300.1642588342599;
+ Wed, 19 Jan 2022 02:32:22 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <trinity-928b391a-89df-43af-8eb5-f33111bf78fc-1642587547454@3c-app-webde-bap45>
-From:   fckath@web.de
-To:     linux-wireless@vger.kernel.org
-Subject: hostapd and Wifi6 - howto?
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 19 Jan 2022 11:19:07 +0100
-Importance: normal
-Sensitivity: Normal
-Content-Transfer-Encoding: quoted-printable
-X-Priority: 3
-X-Provags-ID: V03:K1:DKVNZTuCMymzhA1BXXjoyu22kqG2BVFcNSk7eOsybtBrVm3lgrBrw0+laf5NSKoh63jAK
- fQ4iAfwiG3Uqta03aiSuHHotP/YMLJq907eOqYih8kYJXFjILfZ0vSSS7tuQSz32+jfs/+3NQV9X
- OGAJXXX71/3C5goLS+UdKmCXxz3U6QrGy3FbzTpu4bNDACwwMq2du2iCzkOrTJB8GZOKJlzxKd7s
- ntZ+/XXiILOq1DFthSVP6npc4qLtTvwkpFNZ/9cG7usCVWwMY3huluC/O3P2lu5h1T2WnSQvCBOe
- pc=
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:CYjPmyUJKco=:8GVEOdx2pRfF4Uxn7QyvQD
- qczrgjyUkWsMJG2M/080p5K1yect84gTUeynl38sbij8JTD5e1JctujSKyaz0zrBU94zr6aC+
- Kcc/9aCGgZMI2sO4q4MM0l9v/plALKdrrmpnCYqY71NpAj/hQas36LAiieXmNI0L6Jean3Xy0
- c3df5cZ23mCuAr2R4H1qeIqLcU4R4wl1OG0jqdMK7CUn3YCVyeYArAkHt/6amloyYM9rrGKck
- 5E8m7jZl6Xdvh98+qXMlmupmoMsNaR5SO6GoHeux/nVTLwp8SrC5yBrujB7FQbRSU6sGwNLm1
- 82ha689yeShSsb/5nSwEcbpZ78IpHjNUTbWdRMx+1LOukNG88MprgFVpf6CTMPI5zkmRxMMJt
- 82IAk1ThCWGa1xwOsbUyjJXXnFE0aALAlra7mPyz7d2fCjhqOZU7OQjq65O2XSnWeUqqIgciY
- GsltmlavurNc1lkuM69HtpTpfEBtVBHea5NdrZTI8Nxq6aRipjDECInc2WPGuWCJA2dmDQUN2
- AXeYINWGZqfYX4SeNFWM9A0E32wIoWXoxgxgwR39LLRDkIMVBwodKuDvQ24Vdx+t/4+ex2D9V
- K1kwWcvBGjrTMme3Qj6GaRFnqWJd5z8ts+3aXooyqRkjKqQnkfkY+AFnqpelUm+zSn5KUVJD2
- Tdx/mLiATI1RF691sZUFsngljbkRKc758aX0yR4QbkB6TbcKQWNhqmLJ1qkrgFrfE9A35YdBE
- R9JLwHYDrklhu0GEQMaNmoXsbTNHVZ0EdptlwCRBMUaPP0cGE3kLy0TDRzpj1sDKcYmn4REfW
- VA3f7wt
+References: <20220119015038.2433585-1-robh@kernel.org>
+In-Reply-To: <20220119015038.2433585-1-robh@kernel.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 19 Jan 2022 11:31:45 +0100
+Message-ID: <CAPDyKFr5uT3H8NaAvPyGajo2R6DriYC92y=RdAk=G4PMC4MxYw@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Improve phandle-array schemas
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Georgi Djakov <djakov@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, dmaengine@vger.kernel.org,
+        linux-pm@vger.kernel.org, iommu@lists.linux-foundation.org,
+        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+        netdev@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-remoteproc@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-usb@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello world;
+On Wed, 19 Jan 2022 at 02:50, Rob Herring <robh@kernel.org> wrote:
+>
+> The 'phandle-array' type is a bit ambiguous. It can be either just an
+> array of phandles or an array of phandles plus args. Many schemas for
+> phandle-array properties aren't clear in the schema which case applies
+> though the description usually describes it.
+>
+> The array of phandles case boils down to needing:
+>
+> items:
+>   maxItems: 1
+>
+> The phandle plus args cases should typically take this form:
+>
+> items:
+>   - items:
+>       - description: A phandle
+>       - description: 1st arg cell
+>       - description: 2nd arg cell
+>
+> With this change, some examples need updating so that the bracketing of
+> property values matches the schema.
+>
+> Cc: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Cc: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+> Cc: Vinod Koul <vkoul@kernel.org>
+> Cc: Georgi Djakov <djakov@kernel.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Joerg Roedel <joro@8bytes.org>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
+> Cc: Pavel Machek <pavel@ucw.cz>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Wolfgang Grandegger <wg@grandegger.com>
+> Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+> Cc: Andrew Lunn <andrew@lunn.ch>
+> Cc: Vivien Didelot <vivien.didelot@gmail.com>
+> Cc: Florian Fainelli <f.fainelli@gmail.com>
+> Cc: Vladimir Oltean <olteanv@gmail.com>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: Viresh Kumar <vireshk@kernel.org>
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: Kishon Vijay Abraham I <kishon@ti.com>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Kevin Hilman <khilman@kernel.org>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: Zhang Rui <rui.zhang@intel.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Thierry Reding <thierry.reding@gmail.com>
+> Cc: Jonathan Hunter <jonathanh@nvidia.com>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: linux-ide@vger.kernel.org
+> Cc: linux-crypto@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: dmaengine@vger.kernel.org
+> Cc: linux-pm@vger.kernel.org
+> Cc: iommu@lists.linux-foundation.org
+> Cc: linux-leds@vger.kernel.org
+> Cc: linux-media@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Cc: linux-can@vger.kernel.org
+> Cc: linux-wireless@vger.kernel.org
+> Cc: linux-phy@lists.infradead.org
+> Cc: linux-gpio@vger.kernel.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-remoteproc@vger.kernel.org
+> Cc: alsa-devel@alsa-project.org
+> Cc: linux-usb@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
 
-=C2=A0
-I'm trying to set up an access point with kernel 5=2E16=2E1, hostapd 2=2E1=
-0 (compiled with CONFIG_IEEE80211AX=3Dy) and an ath11k WCN6855 interface=2E=
- (Emwicon WMX7205)
-However I don't get high bitrates and only slow data transfer rates (6 MBi=
-t/s)=2E
-Does anybody have done this successfully and post his hostapd=2Econf and f=
-urther advices?
-=C2=A0
-Thanks
-=C2=A0
-Frank-Christian Kruegel
-=C2=A0
+For CPUs and PM domains:
+
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+Kind regards
+Uffe
