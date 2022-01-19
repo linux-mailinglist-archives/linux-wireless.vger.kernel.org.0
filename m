@@ -2,130 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4508E4942B9
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 23:02:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA67C494308
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 23:26:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357472AbiASWCP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jan 2022 17:02:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35840 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343606AbiASWCO (ORCPT
+        id S1357489AbiASW0L convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jan 2022 17:26:11 -0500
+Received: from relay9-d.mail.gandi.net ([217.70.183.199]:56099 "EHLO
+        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1357570AbiASW0G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jan 2022 17:02:14 -0500
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B57BC061574;
-        Wed, 19 Jan 2022 14:02:14 -0800 (PST)
-Received: by mail-lf1-x133.google.com with SMTP id y15so5540002lfa.9;
-        Wed, 19 Jan 2022 14:02:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=InWqTkTbnVIeg3yZeoN2TSaiVZxmiWsL7/Xay8eEKBk=;
-        b=ZcngD6Ryru4yOLrl8Smj58YokDWbrp4IaIQ2lhSfd3QstRbbDbSXfjTAO0Fez5tQ+v
-         hzeMdk4KNa/CP+n6r0bCGeFT3dCUUaCNn/T5n4G8pDMVm+b6B0WlqpDWzz7EgwK0GFyK
-         U6bxs/SEG7ps7yB+O4KhbsCKYzCpUrH/L6FHK+hbj4Sgr9ZD1aarg7JuSbtBLOb8UPQt
-         Q3Tojc2pDX5f4GxLT/L0bHqzdtdqB2eHQHPKEmwwLJhdZ7EVHAc3N0PL7caeBmCvI4Hj
-         PqM9bJMIwdM/gSzBY0vIh4Qaxow0W6mkgRCj8JXgoD4HgikRm2s8SFUZ+tiqbXES9dWC
-         +jOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=InWqTkTbnVIeg3yZeoN2TSaiVZxmiWsL7/Xay8eEKBk=;
-        b=2eGEWDFdIrVZPkN3vOdc6TDmcCxOoJtl73jeRvhHyK2JDduEqOcnMG9H34GM/7GGVT
-         h12PeTRw5tckimd1H6xMqpoZCjkIktdxnIfF5xkFb52EF5DvXtsrH4P0i5Lh35Bm3Puk
-         dveI3HG5BEvUkvCaItw/XVvFFe4NiXDrQUrPxix7cyom/FGPIzkFWCktpKvlAUGktOUA
-         PTk3MwfHj/JEMypavLuJ/HKlMfXfCo+/6N/mFHHyf80vd+Yfhkgd34FAXdpWzuDul2rl
-         9BSVWKpeIa6AuXqaAlFl6bNRuzVBdqXdbflSQrvBE31379u8Fq7DPxS6gsEZmXoJseV8
-         pMgg==
-X-Gm-Message-State: AOAM533oxEEBf8vmg3cMreMqqN16snqIp3v1YzjNRuDBziJu0ZDUMA6N
-        qV6QbKmVc7jITwGXITVnTKs=
-X-Google-Smtp-Source: ABdhPJyNXoA2WS6ShN1avPEC6d1v0hm8NZ5j/eKjxMJxBf16tCoJTMh+goTKLqVRbxz/R8aLjtg4vw==
-X-Received: by 2002:a05:6512:15aa:: with SMTP id bp42mr22245503lfb.217.1642629732614;
-        Wed, 19 Jan 2022 14:02:12 -0800 (PST)
-Received: from [192.168.2.145] (109-252-139-36.dynamic.spd-mgts.ru. [109.252.139.36])
-        by smtp.googlemail.com with ESMTPSA id s1sm87333lfs.215.2022.01.19.14.02.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jan 2022 14:02:12 -0800 (PST)
-Message-ID: <be66ea27-c98a-68d3-40b1-f79ab62460d5@gmail.com>
-Date:   Thu, 20 Jan 2022 01:02:11 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v3 3/9] brcmfmac: firmware: Do not crash on a NULL
- board_type
-Content-Language: en-US
-To:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        Wed, 19 Jan 2022 17:26:06 -0500
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 5399DFF805;
+        Wed, 19 Jan 2022 22:26:01 +0000 (UTC)
+Date:   Wed, 19 Jan 2022 23:26:00 +0100
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Alexander Aring <alex.aring@gmail.com>
+Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
+        linux-wpan - ML <linux-wpan@vger.kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220117142919.207370-1-marcan@marcan.st>
- <20220117142919.207370-4-marcan@marcan.st>
-From:   Dmitry Osipenko <digetx@gmail.com>
-In-Reply-To: <20220117142919.207370-4-marcan@marcan.st>
+        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Harry Morris <h.morris@cascoda.com>,
+        Varka Bhadram <varkabhadram@gmail.com>,
+        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
+        David Girault <david.girault@qorvo.com>,
+        Romuald Despres <romuald.despres@qorvo.com>,
+        Frederic Blain <frederic.blain@qorvo.com>,
+        Nicolas Schodet <nico@ni.fr.eu.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        "linux-wireless@vger.kernel.org Wireless" 
+        <linux-wireless@vger.kernel.org>
+Subject: Re: [wpan-next v2 08/27] net: ieee802154: Drop symbol duration
+ settings when the core does it already
+Message-ID: <20220119232600.6b8755d0@xps13>
+In-Reply-To: <CAB_54W4Z0H5ubvOBjpnCpGOWYrNXYOJvxB4_kZsp8LqdJrTLkg@mail.gmail.com>
+References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
+        <20220112173312.764660-9-miquel.raynal@bootlin.com>
+        <CAB_54W5QU5JCtQYwvTKREd6ZeQWmC19LF4mj853U0Gz-mCObVQ@mail.gmail.com>
+        <20220113121645.434a6ef6@xps13>
+        <CAB_54W5_x88zVgSJep=yK5WVjPvcWMy8dmyOJWcjy=5o0jCy0w@mail.gmail.com>
+        <20220114112113.63661251@xps13>
+        <CAB_54W77d_PjX_ZfKJdO4D4hHsAWjw0jWgRA7L0ewNnqApQhcQ@mail.gmail.com>
+        <20220117101245.1946e474@xps13>
+        <CAB_54W4rqXxSrTY=fqbt6o41a2SAEY_suqyqZ3hymheCgzRqTQ@mail.gmail.com>
+        <20220118113833.0185f564@xps13>
+        <CAB_54W4Z0H5ubvOBjpnCpGOWYrNXYOJvxB4_kZsp8LqdJrTLkg@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-17.01.2022 17:29, Hector Martin пишет:
-> This unbreaks support for USB devices, which do not have a board_type
-> to create an alt_path out of and thus were running into a NULL
-> dereference.
+Hi Alexander,
+
+alex.aring@gmail.com wrote on Tue, 18 Jan 2022 17:43:00 -0500:
+
+> Hi,
 > 
-> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-
-Technically, all patches that are intended to be included into next
-stable kernel update require the "Cc: stable@vger.kernel.org" tag.
-
-In practice such patches usually auto-picked by the patch bot, so no
-need to resend.
-
-> ---
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c | 3 +++
->  1 file changed, 3 insertions(+)
+> On Tue, 18 Jan 2022 at 05:38, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> >
+> > Hi Alexander,
+> >  
+> > > > > btw:
+> > > > > Also for testing with hwsim and the missing features which currently
+> > > > > exist. Can we implement some user space test program which replies
+> > > > > (active scan) or sends periodically something out via AF_PACKET raw
+> > > > > and a monitor interface that should work to test if it is working?  
+> > > >
+> > > > We already have all this handled, no need for extra software. You can
+> > > > test active and passive scans between two hwsim devices already:
+> > > >
+> > > > # iwpan dev wpan0 beacons send interval 15
+> > > > # iwpan dev wpan1 scan type active duration 1
+> > > > # iwpan dev wpan0 beacons stop
+> > > >
+> > > > or
+> > > >
+> > > > # iwpan dev wpan0 beacons send interval 1
+> > > > # iwpan dev wpan1 scan type passive duration 2
+> > > > # iwpan dev wpan0 beacons stop
+> > > >  
+> > > > > Ideally we could do that very easily with scapy (not sure about their
+> > > > > _upstream_ 802.15.4 support). I hope I got that right that there is
+> > > > > still something missing but we could fake it in such a way (just for
+> > > > > hwsim testing).  
+> > > >
+> > > > I hope the above will match your expectations.
+> > > >  
+> > >
+> > > I need to think and read more about... in my mind is currently the
+> > > following question: are not coordinators broadcasting that information
+> > > only? Means, isn't that a job for a coordinator?  
+> >
+> > My understanding right now:
+> > - The spec states that coordinators only can send beacons and perform
+> >   scans.  
 > 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-> index 1001c8888bfe..63821856bbe1 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-> @@ -599,6 +599,9 @@ static char *brcm_alt_fw_path(const char *path, const char *board_type)
->  	char alt_path[BRCMF_FW_NAME_LEN];
->  	char suffix[5];
->  
-> +	if (!board_type)
-> +		return NULL;
-> +
->  	strscpy(alt_path, path, BRCMF_FW_NAME_LEN);
->  	/* At least one character + suffix */
->  	if (strlen(alt_path) < 5)
+> ok.
+> 
+> > - I don't yet have the necessary infrastructure to give coordinators
+> >   more rights than regular devices or RFDs (but 40+ patches already,
+> >   don't worry this is something we have in mind)
+> > - Right now this is the user to decide whether a device might answer
+> >   beacon requests or not. This will soon become more limited but it
+> >   greatly simplifies the logic for now.
+> >  
+> 
+> There was always the idea behind it to make an "coordinator" interface
+> type and there is a reason for that because things e.g. filtering
+> becomes different than a non-coordinator interface type (known as node
+> interface in wpan).
+> At the end interface types should make a big difference in how the
+> "role" inside the network should be, which you can also see in
+> wireless as "station"/"access point" interface devices.
+> 
+> A non full functional device should then also not be able to act as a
+> coordinator e.g. it cannot create coordinator types.
 
-Good catch!
+I've added a few more parameters to be able to reflect the type of
+device (ffd, rfd, rfd_r/tx) and also eventually its coordinator state.
+I've hacked into nl802154 to give these information to the user and let
+it device wether the device (if it's an ffd) should act as a
+coordinator. This is only a first step before we create a real PAN
+creation procedure of course.
 
-Reviewed-by: Dmitry Osipenko <digetx@gmail.com>
+I've then adapted the following patches to follow check against the
+device/coordinator state to decide if an operation should be aborted or
+not.
+
+> However we can still make some -EOPNOTSUPP if something in a different
+> way should be done. This clearly breaks userspace and I am not sure if
+> we should worry or not worry about it in the current state of
+> 802.15.4...
+> 
+> - Alex
+
+
+Thanks,
+Miquèl
