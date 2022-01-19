@@ -2,111 +2,153 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15B254934EB
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 07:20:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B07824935A2
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 08:41:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351766AbiASGUE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jan 2022 01:20:04 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:52980 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350102AbiASGUD (ORCPT
+        id S1352145AbiASHlH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jan 2022 02:41:07 -0500
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:38124
+        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1352090AbiASHlF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jan 2022 01:20:03 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Wed, 19 Jan 2022 02:41:05 -0500
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com [209.85.167.71])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 483B0B811CC;
-        Wed, 19 Jan 2022 06:20:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C27C004E1;
-        Wed, 19 Jan 2022 06:19:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642573201;
-        bh=+/ZjQ3Ir+rum0nwu103J/f9YAv7hVQpz3n0F5Ixkyc4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=lesLyo+yE///z73mDnJfTRwJ6cZGH7ErAxRlnv70UeFMhPuqdlsiAkp7PM7kDzrBL
-         jZclQaLDF2MsX6gA0spNV88wxMl5y0actPxsZ8RPnSB/uXXvh+v+W2z9h4avud9XDA
-         TzhLJZznK6ZGO7Xvi7OicUR/yvZTg9uR6lLqWgY8QVhg5eWkOarn1b0IT9GC4Ly/2A
-         kddD9ozvKs0SLhrkQa0M5AhJH+vqXb6N3PT0/QdegMrx7v6HgM+KX9x8xb3/3cebl7
-         mUhVKo0OQDNB14Q6v25pLBAahX/UQxe7SXcWx2jarXEoN9iRCiT5OKTF7imBopoF75
-         XUQnHfoFCZXgA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Pkshih <pkshih@realtek.com>
-Cc:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "tony0620emma\@gmail.com" <tony0620emma@gmail.com>,
-        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Neo Jou <neojou@gmail.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: Re: [PATCH 3/4] rtw88: Move enum rtw_tx_queue_type mapping code to tx.{c,h}
-References: <20220114234825.110502-1-martin.blumenstingl@googlemail.com>
-        <20220114234825.110502-4-martin.blumenstingl@googlemail.com>
-        <b2bf2bc5f04b488487797aa21c50a130@realtek.com>
-Date:   Wed, 19 Jan 2022 08:19:55 +0200
-In-Reply-To: <b2bf2bc5f04b488487797aa21c50a130@realtek.com> (Pkshih's message
-        of "Wed, 19 Jan 2022 06:04:45 +0000")
-Message-ID: <87czkogsc4.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id AF5D440055
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Jan 2022 07:41:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1642578063;
+        bh=KOwrbfmVaaY4sfUgcL8mu/NpRfAwFGVtSAETT0kqBAg=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=bF6u0UizThWnJKp9pfXokpEjorghdPKIBCyYZVG592/0jQr6gphbDQQJQFsbgd+bq
+         XGlWkWs/0SNPm9ei8uLzJWg5pMRyNXlwewTO+ZuNLtnUA2bv8NeeZGWYJ4JHsQIejC
+         4N8z2TZLdxFXEjczxTWXhU58hEYyrKcrpxxrGk5kpzLRXdRmUeJTiPx/hP2fmMZ+Ky
+         k1ioqf0B79tAKqH/WzbiVpU9y3KqDHOTwlHBlWLt76Hp8tMv336XmOIY5xiJJbNQJH
+         W4kz/FTlebmC579eNQIULhud3PymyeOGSZU0dqvA1Ev9H+WtL726WVHjsI+hMbB0/b
+         vQIv95TBHjg9Q==
+Received: by mail-lf1-f71.google.com with SMTP id p17-20020ac246d1000000b0042fcd89952bso974968lfo.15
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Jan 2022 23:41:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=KOwrbfmVaaY4sfUgcL8mu/NpRfAwFGVtSAETT0kqBAg=;
+        b=MSClo31mGSBXzckEx6MapYYrJf/KqqNZo17JRleSdHil0ny3AjHC7BZ5zqwysC/NeJ
+         GPDMEcV4INnz5Lu4AHiKP8ta7TE/XjXie/QWTpLmYQZhzFAQKBETTozkCRR23xBr04Nc
+         /OzEcSXSxbs88IO7Beyq8u0zTdO5iBWRHTdup3QEYbH1cI6W30NbY1zINAtM8W6oWiIR
+         zcc2aIQr2J4/5cNATMSCNJltEmd9ORhZY/0YfZdqjUXSKv1psRZYoGLTvDaPjfFM40oW
+         WW4T3IElvJCsOOUGt9EyYQ2vs0IEMMBAiNUwYuUaootqIU8I3XN2UBlkIaEMC3uPjNVN
+         p6EA==
+X-Gm-Message-State: AOAM533vMHjwRlzPDkht1RZnnR/8xy8Pm7j5roFAESU77aVoWj0zwb6S
+        hNhy5NMuS6WgYSjGmCmoQCqhVEBamEuSg24vJn4oBfznPIScH1+2A3w1ZAQ7wiFxByMPvQAAXVJ
+        RXnAB6xEO1p8z4xdoUPkNZ3iO57EDimvZH4lDemWxNc27
+X-Received: by 2002:a17:907:7ea6:: with SMTP id qb38mr23673612ejc.557.1642578052334;
+        Tue, 18 Jan 2022 23:40:52 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwcC/F4TT/k1wEFa2HsX2oDgdxrLKxkyNjrLq8ReErAXQsVWpB2ePW4VmJCVcsiAdC0JWuWGg==
+X-Received: by 2002:a17:907:7ea6:: with SMTP id qb38mr23673541ejc.557.1642578052033;
+        Tue, 18 Jan 2022 23:40:52 -0800 (PST)
+Received: from [192.168.0.42] (xdsl-188-155-168-84.adslplus.ch. [188.155.168.84])
+        by smtp.gmail.com with ESMTPSA id d2sm791994edy.86.2022.01.18.23.40.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Jan 2022 23:40:51 -0800 (PST)
+Message-ID: <21b72055-e158-6586-f48a-17695128b507@canonical.com>
+Date:   Wed, 19 Jan 2022 08:40:48 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.1
+Subject: Re: [PATCH] dt-bindings: Improve phandle-array schemas
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Georgi Djakov <djakov@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, dmaengine@vger.kernel.org,
+        linux-pm@vger.kernel.org, iommu@lists.linux-foundation.org,
+        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+        netdev@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-remoteproc@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-usb@vger.kernel.org
+References: <20220119015038.2433585-1-robh@kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+In-Reply-To: <20220119015038.2433585-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pkshih <pkshih@realtek.com> writes:
+On 19/01/2022 02:50, Rob Herring wrote:
+> The 'phandle-array' type is a bit ambiguous. It can be either just an
+> array of phandles or an array of phandles plus args. Many schemas for
+> phandle-array properties aren't clear in the schema which case applies
+> though the description usually describes it.
+> 
+> The array of phandles case boils down to needing:
+> 
+> items:
+>   maxItems: 1
+> 
+> The phandle plus args cases should typically take this form:
+> 
+> items:
+>   - items:
+>       - description: A phandle
+>       - description: 1st arg cell
+>       - description: 2nd arg cell
+> 
+> With this change, some examples need updating so that the bracketing of
+> property values matches the schema.
+> 
 
->> -----Original Message-----
->> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
->> Sent: Saturday, January 15, 2022 7:48 AM
->> To: linux-wireless@vger.kernel.org
->> Cc: tony0620emma@gmail.com; kvalo@codeaurora.org;
->> netdev@vger.kernel.org; linux-kernel@vger.kernel.org;
->> Neo Jou <neojou@gmail.com>; Jernej Skrabec
->> <jernej.skrabec@gmail.com>; Pkshih <pkshih@realtek.com>; Martin
->> Blumenstingl <martin.blumenstingl@googlemail.com>
->> Subject: [PATCH 3/4] rtw88: Move enum rtw_tx_queue_type mapping code to tx.{c,h}
->> 
->> This code is not specific to the PCIe bus type but can be re-used by USB
->> and SDIO bus types. Move it to tx.{c,h} to avoid code-duplication in the
->> future.
->> 
->> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
->
-> [...]
->
->> diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
->> index efcc1b0371a8..ec6a3683c3f8 100644
->> --- a/drivers/net/wireless/realtek/rtw88/tx.c
->> +++ b/drivers/net/wireless/realtek/rtw88/tx.c
->> @@ -665,3 +665,38 @@ void rtw_txq_cleanup(struct rtw_dev *rtwdev, struct ieee80211_txq *txq)
->>  		list_del_init(&rtwtxq->list);
->>  	spin_unlock_bh(&rtwdev->txq_lock);
->>  }
->> +
->> +static enum rtw_tx_queue_type ac_to_hwq[] = {
->> +	[IEEE80211_AC_VO] = RTW_TX_QUEUE_VO,
->> +	[IEEE80211_AC_VI] = RTW_TX_QUEUE_VI,
->> +	[IEEE80211_AC_BE] = RTW_TX_QUEUE_BE,
->> +	[IEEE80211_AC_BK] = RTW_TX_QUEUE_BK,
->> +};
->> +
->> +static_assert(ARRAY_SIZE(ac_to_hwq) == IEEE80211_NUM_ACS);
->> +
->> +enum rtw_tx_queue_type rtw_tx_ac_to_hwq(enum ieee80211_ac_numbers ac)
->> +{
->> +	return ac_to_hwq[ac];
->> +}
->> +EXPORT_SYMBOL(rtw_tx_ac_to_hwq);
->> +
->
-> Could I know why we can't just export the array ac_to_hwq[]?
-> Is there a strict rule?
+Samsung and memory controller bits look good:
 
-I was about to answer that with a helper function it's easier to catch
-out of bands access, but then noticed the helper doesn't have a check
-for that. Should it have one?
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Best regards,
+Krzysztof
