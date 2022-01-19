@@ -2,146 +2,180 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD940493799
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 10:44:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D832C4937C3
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 10:53:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353178AbiASJnX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jan 2022 04:43:23 -0500
-Received: from mail-vk1-f170.google.com ([209.85.221.170]:37799 "EHLO
-        mail-vk1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353101AbiASJnH (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jan 2022 04:43:07 -0500
-Received: by mail-vk1-f170.google.com with SMTP id v192so1145095vkv.4;
-        Wed, 19 Jan 2022 01:43:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Dbd6K2EXZQ3nddK61UlQKh6WscvPVU8DNsk9wwBVt84=;
-        b=CdpmIfi33wXFvj6oI3MxXGL+FxzZpJx2O4Bh8b/I7vQz6YBlG8hQaoseqpSUd+xhyh
-         51nHp3MgcAGh4ksYKj30x2uNkAu0AllR81Jn+csdOnbVYGC5khg9AJnalqS7TRmpP1WV
-         lKhCucCe6AeWWhtzK7WP25kUyZLLHTzL7qydbVfk87NxFvCtugyPiCTVex26eICglrqP
-         j/GpB0Bij8gYXbleMIaabYXNuqyEAtZ3xdxTluPsvNp0ltL8IRuUIqE/YWbOPEAayFyZ
-         v73XzUgP2YnS6q2vlHtuK16hbq67OhkwaQK4T1is6aboUqssGVKNQty1o7yaJx4UU+Xr
-         +dvg==
-X-Gm-Message-State: AOAM532k5oVd8oHrFJ1+dbjpDdCU95yB0aP4bv7xHhDKx87u9sE/MDPq
-        JQGejnSYa0EoKItvHxK55VobS+Vv9SdsGdeh
-X-Google-Smtp-Source: ABdhPJzCPMW4zH5y1Y5cNilAV02ZCJKMDBENeXiX1EkWR3rcLe9IH033mhRn+oDaSuzTE3AAm5il8g==
-X-Received: by 2002:a1f:a6d7:: with SMTP id p206mr11805978vke.31.1642585386061;
-        Wed, 19 Jan 2022 01:43:06 -0800 (PST)
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com. [209.85.221.178])
-        by smtp.gmail.com with ESMTPSA id p142sm1584040vkp.2.2022.01.19.01.43.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jan 2022 01:43:04 -0800 (PST)
-Received: by mail-vk1-f178.google.com with SMTP id w5so1120624vke.12;
-        Wed, 19 Jan 2022 01:43:04 -0800 (PST)
-X-Received: by 2002:a1f:384b:: with SMTP id f72mr11960099vka.0.1642585384422;
- Wed, 19 Jan 2022 01:43:04 -0800 (PST)
+        id S1353267AbiASJxG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jan 2022 04:53:06 -0500
+Received: from mga17.intel.com ([192.55.52.151]:44095 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1353108AbiASJxF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 19 Jan 2022 04:53:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1642585985; x=1674121985;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=nbZxDijhz+Glybpj0vSn4exGWtl6B5PgaZnhuvzIbwY=;
+  b=QGYkRNz1iG8+vKzR9zNWlJXjH+jelFIU4cUv44DMPRr2KuOvCRfXSY5F
+   wykUvJJm2+cb7s+YbKdnd6eNvORmu5ncGFhFPW/oGtk66xWrcTEsMR33o
+   hsunN66hqZ+mB/RPKehsrAWRJWEcvbcA+NDAVE+F+6VhTYnctA2gBbDny
+   /1R9MBolZxoRk9X+ib0izgmpCSlkNTOj6CJhjUMYDqN4T9X32HTIrI1EC
+   y4lr8twoToMv+fSwcUDaW34LxD70ymARihXBzE8lvAelfczMaznS/r0Tm
+   jPGtNtr/qjrTbLe4wdD6MoZrdGC9uB2H5b+vTYcq8nH45LAqaVeZLaLCO
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10231"; a="225703924"
+X-IronPort-AV: E=Sophos;i="5.88,299,1635231600"; 
+   d="scan'208";a="225703924"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2022 01:52:59 -0800
+X-IronPort-AV: E=Sophos;i="5.88,299,1635231600"; 
+   d="scan'208";a="615652288"
+Received: from unknown (HELO ijarvine-MOBL2.mshome.net) ([10.237.66.34])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2022 01:52:47 -0800
+Date:   Wed, 19 Jan 2022 11:52:40 +0200 (EET)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
+cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
+        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
+        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
+        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
+        haijun.liu@mediatek.com, amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
+        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
+        sreehari.kancharla@intel.com
+Subject: Re: [PATCH net-next v4 02/13] net: wwan: t7xx: Add control DMA
+ interface
+In-Reply-To: <4a4b2848-d665-c9ba-c66a-dd4408e94ea5@linux.intel.com>
+Message-ID: <cb33ee41-b885-6523-199-b8a339c1a531@linux.intel.com>
+References: <20220114010627.21104-1-ricardo.martinez@linux.intel.com> <20220114010627.21104-3-ricardo.martinez@linux.intel.com> <d5854453-84b-1eba-7cc7-d94f41a185d@linux.intel.com> <4a4b2848-d665-c9ba-c66a-dd4408e94ea5@linux.intel.com>
 MIME-Version: 1.0
-References: <20220119015038.2433585-1-robh@kernel.org>
-In-Reply-To: <20220119015038.2433585-1-robh@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 19 Jan 2022 10:42:53 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVdja+XaXGP7YFfSgFCTHzOHQkuV5EF_9AFWY2tppyRWA@mail.gmail.com>
-Message-ID: <CAMuHMdVdja+XaXGP7YFfSgFCTHzOHQkuV5EF_9AFWY2tppyRWA@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Improve phandle-array schemas
-To:     Rob Herring <robh@kernel.org>
-Cc:     "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Georgi Djakov <djakov@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, dmaengine@vger.kernel.org,
-        linux-pm@vger.kernel.org, iommu@lists.linux-foundation.org,
-        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-        netdev@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-remoteproc@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-usb@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/mixed; boundary="8323329-1619414095-1642585974=:1564"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Rob,
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-On Wed, Jan 19, 2022 at 2:50 AM Rob Herring <robh@kernel.org> wrote:
+--8323329-1619414095-1642585974=:1564
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-> The 'phandle-array' type is a bit ambiguous. It can be either just an
-> array of phandles or an array of phandles plus args. Many schemas for
-> phandle-array properties aren't clear in the schema which case applies
-> though the description usually describes it.
+On Tue, 18 Jan 2022, Martinez, Ricardo wrote:
+
+> 
+> On 1/18/2022 6:13 AM, Ilpo Järvinen wrote:
+> > On Thu, 13 Jan 2022, Ricardo Martinez wrote:
+> ...
+> > > +#define CLDMA_NUM 2
+> > I tried to understand its purpose but it seems that only one of the
+> > indexes is used in the arrays where this define gives the size? Related to
+> > this, ID_CLDMA0 is not used anywhere?
+> 
+> The modem HW has 2 CLDMAs, idx 0 for the app processor (SAP) and idx 1 for the
+> modem (MD).
+> 
+> CLDMA_NUM is defined as 2 to reflect the HW capabilities but mainly to have a
+> cleaner upcoming
+> 
+> patches, which will use ID_CLDMA0.
+
+Please note this in your commit message then and I think it should be 
+fine to leave it as is (or use 1 sized array, if you prefer to).
+
+> If having array's of size 1 is not a problem then we can define CLDMA_NUM as 1
+> and
+> 
+> play with the CLDMA indexes.
+> 
+> ...
 >
-> The array of phandles case boils down to needing:
->
-> items:
->   maxItems: 1
->
-> The phandle plus args cases should typically take this form:
->
-> items:
->   - items:
->       - description: A phandle
->       - description: 1st arg cell
->       - description: 2nd arg cell
->
-> With this change, some examples need updating so that the bracketing of
-> property values matches the schema.
+> > > +static bool t7xx_cldma_qs_are_active(struct t7xx_cldma_hw *hw_info)
+> > > +{
+> > > +	unsigned int tx_active;
+> > > +	unsigned int rx_active;
+> > > +
+> > > +	tx_active = t7xx_cldma_hw_queue_status(hw_info, CLDMA_ALL_Q, MTK_TX);
+> > > +	rx_active = t7xx_cldma_hw_queue_status(hw_info, CLDMA_ALL_Q, MTK_RX);
+> > > +	if (tx_active == CLDMA_INVALID_STATUS || rx_active ==
+> > > CLDMA_INVALID_STATUS)
+> > These cannot ever be true because of mask in t7xx_cldma_hw_queue_status().
+> 
+> t7xx_cldma_hw_queue_status() shouldn't apply the mask for CLDMA_ALL_Q.
 
-> Signed-off-by: Rob Herring <robh@kernel.org>
+I guess it shouldn't but it currently does apply 0xff (CLDMA_ALL_Q) as 
+mask in that case. However, this now raises another question, if 
+0xffffffff (CLDMA_INVALID_STATUS) means status is invalid, should all 
+callers both single Q and CLDMA_ALL_Q be returned/check/handle that value?
 
-The Renesas parts look good to me.
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Why would CLDMA_ALL_Q be special in this respect that the INVALID_STATUS 
+means invalid only with it?
 
-Gr{oetje,eeting}s,
+> > > +/**
+> > > + * t7xx_cldma_send_skb() - Send control data to modem.
+> > > + * @md_ctrl: CLDMA context structure.
+> > > + * @qno: Queue number.
+> > > + * @skb: Socket buffer.
+> > > + * @blocking: True for blocking operation.
+> > > + *
+> > > + * Send control packet to modem using a ring buffer.
+> > > + * If blocking is set, it will wait for completion.
+> > > + *
+> > > + * Return:
+> > > + * * 0		- Success.
+> > > + * * -ENOMEM	- Allocation failure.
+> > > + * * -EINVAL	- Invalid queue request.
+> > > + * * -EBUSY	- Resource lock failure.
+> > > + */
+> > > +int t7xx_cldma_send_skb(struct cldma_ctrl *md_ctrl, int qno, struct
+> > > sk_buff *skb, bool blocking)
+> > > +{
+> > > +	struct cldma_request *tx_req;
+> > > +	struct cldma_queue *queue;
+> > > +	unsigned long flags;
+> > > +	int ret;
+> > > +
+> > > +	if (qno >= CLDMA_TXQ_NUM)
+> > > +		return -EINVAL;
+> > > +
+> > > +	queue = &md_ctrl->txq[qno];
+> > > +
+> > > +	spin_lock_irqsave(&md_ctrl->cldma_lock, flags);
+> > > +	if (!(md_ctrl->txq_active & BIT(qno))) {
+> > > +		ret = -EBUSY;
+> > > +		spin_unlock_irqrestore(&md_ctrl->cldma_lock, flags);
+> > > +		goto allow_sleep;
+> > > +	}
+> > ...
+> > > +		if (!blocking) {
+> > > +			ret = -EBUSY;
+> > > +			break;
+> > > +		}
+> > > +
+> > > +		ret = wait_event_interruptible_exclusive(queue->req_wq,
+> > > queue->budget > 0);
+> > > +	} while (!ret);
+> > > +
+> > > +allow_sleep:
+> > > +	return ret;
+> > > +}
+> > First of all, if I interpreted the call chains correctly, this function is
+> > always called with blocking=true.
+> > 
+> > Second, the first codepath returning -EBUSY when not txq_active seems
+> > twisted/reversed logic to me (not active => busy ?!?).
+> 
+> What about -EINVAL?
+> 
+> Other codes considered: -EPERM, -ENETDOWN.
 
-                        Geert
+How about -EIO.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+-- 
+ i.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+--8323329-1619414095-1642585974=:1564--
