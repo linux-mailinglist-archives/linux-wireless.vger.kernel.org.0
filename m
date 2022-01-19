@@ -2,77 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1714249368B
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 09:49:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18A3A4936A1
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 09:54:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237729AbiASItg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jan 2022 03:49:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51314 "EHLO
+        id S1345394AbiASIyJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jan 2022 03:54:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352571AbiASIte (ORCPT
+        with ESMTP id S1352664AbiASIxt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jan 2022 03:49:34 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 706FCC061574;
-        Wed, 19 Jan 2022 00:49:34 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 11208614B8;
-        Wed, 19 Jan 2022 08:49:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDB9C340E3;
-        Wed, 19 Jan 2022 08:49:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642582173;
-        bh=f7Mv8iRpM88XNk2LC22R7OThKjTnidsB51bEaWygpKY=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=YUS9c3e2F/VtS4CWpLVbSvlL766/2c/tYU2wPF0iUk59loi6zU8OF0m44ueNMJ1gZ
-         cWBi3Im6C6pH2OXSA9bvnOrmzwK2YABh01Xl4wFXEW+h1ngGRaAtwkGMxTbrQg8ADl
-         6+EKr8ED2bNFgFKHEwAsi+AK2s2K8/BP3lRwlxIX9Wyy1i7COffAHz3e9vY6QRwQmS
-         6fNVuxhWa0kn5jc25Cpd8iDu0h1fVjMG0KABL3vcQgChHw+y7xU6WgQ7qSFzgj3SEU
-         d7LZllKqMBfMc+dzYsdw4IwUEQtZQrDfYWqvZzIV7D6VqPDHxM159aXhrU+dM0CoQ1
-         yoGXQxZesHS0g==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 19 Jan 2022 03:53:49 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0A70C061574
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Jan 2022 00:53:48 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id e9-20020a05600c4e4900b0034d23cae3f0so4381817wmq.2
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Jan 2022 00:53:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=raspberrypi.com; s=google;
+        h=message-id:date:mime-version:user-agent:subject:to:cc:references
+         :from:in-reply-to:content-transfer-encoding;
+        bh=nysFfB7FiLhLLN3K973iPIjHDxbti2ZbLDq3A1XOYxM=;
+        b=f/CdvPHkhUjMndzz2KQrne5Y/AYAw6nOm3Fl98qG5eTCpIZtXedJAIn6SuTiVtrxsF
+         0Tg40csr0ACeUCD8mFZPOTa0BmHC4ILZ2r7TkZxhftFYoNEDcCnDitbS9dI4JbNGrB6p
+         ytkwNCCKSTlwMumANukB1FQbVnpwdTu1GaP6TRexGpVG4UnihLI72XDXTjJktF4MTcUn
+         2IvlMo5GTnpFxKYLxknXrSPDZ87nv2MUSAWG0rdvXF6G5Poj4NKn6ptRpX0Hh5yP7P1N
+         Lp2bOzGZWQyZamG9BpPvP5u0+CsLF0YJDorR3sSCe8VJnxcLIiCGViKQZBv0nvWAsX3N
+         Usrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :to:cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=nysFfB7FiLhLLN3K973iPIjHDxbti2ZbLDq3A1XOYxM=;
+        b=bLZ/7kfysWLE+WKBgGP0wraYMyYURfDsdwiNHLgM06KDCOyB9BmQZm+sGOyc/8S9uH
+         zi6HgXuv6v5LaJaS7tqr/t4JXoK4qHAYgxF0ZsgoVwH6JuN23cFWSfeGgCBw6/lzxA4K
+         acjV85Ua5gy1tlBezoARzZYOC3Hq5AUNolzuAJQ5+Qd6VjDgG6reGxuOtLqg6vr/xEH4
+         aiWdrE302FXp/29qIwfHuggPdE3xDCqiUbNuNvz9JsdyIIBtIstLy65v5qrowoKZy7LZ
+         G4q2YGIadnwfqO7Qhx9eE8w/AO/vHHRO97C9gSX98E2qRsCoEhVca6GjII9t7eAx7rir
+         RRxQ==
+X-Gm-Message-State: AOAM531EASsy+y6dO8KsQJgnNlJ+w0YaQdqrPKE4qAZPEII5+4dFfNht
+        Q4gd5MXWSMSZN1LMAr1MsMiHMpPNEUWIbg==
+X-Google-Smtp-Source: ABdhPJydQ//GA+JIB/Oi66ShkYkXAWTodMW3y06FdUJ2Yezm+WPekzsCMy3DdJXLdsbqJ0CksneMtQ==
+X-Received: by 2002:a1c:7517:: with SMTP id o23mr2407655wmc.120.1642582427301;
+        Wed, 19 Jan 2022 00:53:47 -0800 (PST)
+Received: from [192.168.187.147] ([86.12.200.143])
+        by smtp.gmail.com with ESMTPSA id r8sm2056629wrm.93.2022.01.19.00.53.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Jan 2022 00:53:47 -0800 (PST)
+Message-ID: <07dbaff1-bc12-d782-ed14-ef3f33d3c041@raspberrypi.com>
+Date:   Wed, 19 Jan 2022 08:53:46 +0000
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH] brcmfmac: firmware: Fix crash in brcm_alt_fw_path
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220118154514.3245524-1-phil@raspberrypi.com>
+ <87h7a0gt7f.fsf@kernel.org>
+From:   Phil Elwell <phil@raspberrypi.com>
+In-Reply-To: <87h7a0gt7f.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 1/4] wcn36xx: Implement get_snr()
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220115001646.3981501-2-bryan.odonoghue@linaro.org>
-References: <20220115001646.3981501-2-bryan.odonoghue@linaro.org>
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        wcn36xx@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        loic.poulain@linaro.org, benl@squareup.com,
-        bryan.odonoghue@linaro.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164258216749.21393.3097198740948062777.kvalo@kernel.org>
-Date:   Wed, 19 Jan 2022 08:49:31 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bryan O'Donoghue <bryan.odonoghue@linaro.org> wrote:
-
-> The wcn36xx BD phy descriptor returns both Received Signal Strength
-> Information (RSSI) and Signal To Noise Ratio (SNR) with each delivered BD.
+On 19/01/2022 06:01, Kalle Valo wrote:
+> Phil Elwell <phil@raspberrypi.com> writes:
 > 
-> The macro to extract this data is a simple-one liner, easily imported from
-> prima driver. This data will be useful to us when implementing
-> mac80211-ops->get_survey().
+>> The call to brcm_alt_fw_path in brcmf_fw_get_firmwares is not protected
+>> by a check to the validity of the fwctx->req->board_type pointer. This
+>> results in a crash in strlcat when, for example, the WLAN chip is found
+>> in a USB dongle.
+>>
+>> Prevent the crash by adding the necessary check.
+>>
+>> See: https://github.com/raspberrypi/linux/issues/4833
+>>
+>> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
+>> Signed-off-by: Phil Elwell <phil@raspberrypi.com>
 > 
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> I think this should go to v5.17.
 
-4 patches applied to ath-next branch of ath.git, thanks.
+Is that an Ack? Are you asking me to submit the patch in a different way?
 
-039d5d4db4bc wcn36xx: Implement get_snr()
-d6f2746691cb wcn36xx: Track the band and channel we are tuned to
-29696e0aa413 wcn36xx: Track SNR and RSSI for each RX frame
-51395cf204f2 wcn36xx: Add SNR reporting via get_survey()
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220115001646.3981501-2-bryan.odonoghue@linaro.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Phil
