@@ -2,54 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA67C494308
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 23:26:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B09E49433A
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 23:45:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357489AbiASW0L convert rfc822-to-8bit (ORCPT
+        id S1343995AbiASWpq convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jan 2022 17:26:11 -0500
-Received: from relay9-d.mail.gandi.net ([217.70.183.199]:56099 "EHLO
-        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357570AbiASW0G (ORCPT
+        Wed, 19 Jan 2022 17:45:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45586 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232112AbiASWpq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jan 2022 17:26:06 -0500
+        Wed, 19 Jan 2022 17:45:46 -0500
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 404A6C061574;
+        Wed, 19 Jan 2022 14:45:45 -0800 (PST)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 5399DFF805;
-        Wed, 19 Jan 2022 22:26:01 +0000 (UTC)
-Date:   Wed, 19 Jan 2022 23:26:00 +0100
+        by mail.gandi.net (Postfix) with ESMTPSA id DF30120002;
+        Wed, 19 Jan 2022 22:45:41 +0000 (UTC)
+Date:   Wed, 19 Jan 2022 23:45:40 +0100
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Alexander Aring <alex.aring@gmail.com>
 Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
         linux-wpan - ML <linux-wpan@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
         "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Harry Morris <h.morris@cascoda.com>,
-        Varka Bhadram <varkabhadram@gmail.com>,
-        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
+        "linux-wireless@vger.kernel.org Wireless" 
+        <linux-wireless@vger.kernel.org>,
         David Girault <david.girault@qorvo.com>,
         Romuald Despres <romuald.despres@qorvo.com>,
         Frederic Blain <frederic.blain@qorvo.com>,
         Nicolas Schodet <nico@ni.fr.eu.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        "linux-wireless@vger.kernel.org Wireless" 
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [wpan-next v2 08/27] net: ieee802154: Drop symbol duration
- settings when the core does it already
-Message-ID: <20220119232600.6b8755d0@xps13>
-In-Reply-To: <CAB_54W4Z0H5ubvOBjpnCpGOWYrNXYOJvxB4_kZsp8LqdJrTLkg@mail.gmail.com>
-References: <20220112173312.764660-1-miquel.raynal@bootlin.com>
-        <20220112173312.764660-9-miquel.raynal@bootlin.com>
-        <CAB_54W5QU5JCtQYwvTKREd6ZeQWmC19LF4mj853U0Gz-mCObVQ@mail.gmail.com>
-        <20220113121645.434a6ef6@xps13>
-        <CAB_54W5_x88zVgSJep=yK5WVjPvcWMy8dmyOJWcjy=5o0jCy0w@mail.gmail.com>
-        <20220114112113.63661251@xps13>
-        <CAB_54W77d_PjX_ZfKJdO4D4hHsAWjw0jWgRA7L0ewNnqApQhcQ@mail.gmail.com>
-        <20220117101245.1946e474@xps13>
-        <CAB_54W4rqXxSrTY=fqbt6o41a2SAEY_suqyqZ3hymheCgzRqTQ@mail.gmail.com>
-        <20220118113833.0185f564@xps13>
-        <CAB_54W4Z0H5ubvOBjpnCpGOWYrNXYOJvxB4_kZsp8LqdJrTLkg@mail.gmail.com>
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Varka Bhadram <varkabhadram@gmail.com>,
+        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 17/41] net: ieee802154: at86rf230: Call the complete
+ helper when a transmission is over
+Message-ID: <20220119234540.3374eb4e@xps13>
+In-Reply-To: <CAB_54W5Uu9_hpqmeL0MC+1ps=yfn2j0-o46cBL7BeBxKXKHa4w@mail.gmail.com>
+References: <20220117115440.60296-1-miquel.raynal@bootlin.com>
+        <20220117115440.60296-18-miquel.raynal@bootlin.com>
+        <CAB_54W76X5vhaVMUv=s3e0pbWZgHRK3W=27N9m5LgEdLgAPAcA@mail.gmail.com>
+        <CAB_54W5Uu9_hpqmeL0MC+1ps=yfn2j0-o46cBL7BeBxKXKHa4w@mail.gmail.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -61,85 +55,58 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi Alexander,
 
-alex.aring@gmail.com wrote on Tue, 18 Jan 2022 17:43:00 -0500:
+alex.aring@gmail.com wrote on Mon, 17 Jan 2022 19:36:39 -0500:
 
 > Hi,
 > 
-> On Tue, 18 Jan 2022 at 05:38, Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> On Mon, 17 Jan 2022 at 19:34, Alexander Aring <alex.aring@gmail.com> wrote:
 > >
-> > Hi Alexander,
-> >  
-> > > > > btw:
-> > > > > Also for testing with hwsim and the missing features which currently
-> > > > > exist. Can we implement some user space test program which replies
-> > > > > (active scan) or sends periodically something out via AF_PACKET raw
-> > > > > and a monitor interface that should work to test if it is working?  
-> > > >
-> > > > We already have all this handled, no need for extra software. You can
-> > > > test active and passive scans between two hwsim devices already:
-> > > >
-> > > > # iwpan dev wpan0 beacons send interval 15
-> > > > # iwpan dev wpan1 scan type active duration 1
-> > > > # iwpan dev wpan0 beacons stop
-> > > >
-> > > > or
-> > > >
-> > > > # iwpan dev wpan0 beacons send interval 1
-> > > > # iwpan dev wpan1 scan type passive duration 2
-> > > > # iwpan dev wpan0 beacons stop
-> > > >  
-> > > > > Ideally we could do that very easily with scapy (not sure about their
-> > > > > _upstream_ 802.15.4 support). I hope I got that right that there is
-> > > > > still something missing but we could fake it in such a way (just for
-> > > > > hwsim testing).  
-> > > >
-> > > > I hope the above will match your expectations.
-> > > >  
+> > Hi,
+> >
+> > On Mon, 17 Jan 2022 at 06:55, Miquel Raynal <miquel.raynal@bootlin.com> wrote:  
 > > >
-> > > I need to think and read more about... in my mind is currently the
-> > > following question: are not coordinators broadcasting that information
-> > > only? Means, isn't that a job for a coordinator?  
+> > > ieee802154_xmit_complete() is the right helper to call when a
+> > > transmission is over. The fact that it completed or not is not really a
+> > > question, but drivers must tell the core that the completion is over,
+> > > even if it was canceled. Do not call ieee802154_wake_queue() manually,
+> > > in order to let full control of this task to the core.
+> > >
+> > > By using the complete helper we also avoid leacking the skb structure.
+> > >
+> > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > > ---
+> > >  drivers/net/ieee802154/at86rf230.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/net/ieee802154/at86rf230.c b/drivers/net/ieee802154/at86rf230.c
+> > > index 583f835c317a..1941e1f3d2ef 100644
+> > > --- a/drivers/net/ieee802154/at86rf230.c
+> > > +++ b/drivers/net/ieee802154/at86rf230.c
+> > > @@ -343,7 +343,7 @@ at86rf230_async_error_recover_complete(void *context)
+> > >         if (ctx->free)
+> > >                 kfree(ctx);
+> > >
+> > > -       ieee802154_wake_queue(lp->hw);
+> > > +       ieee802154_xmit_complete(lp->hw, lp->tx_skb, false);  
 > >
-> > My understanding right now:
-> > - The spec states that coordinators only can send beacons and perform
-> >   scans.  
-> 
-> ok.
-> 
-> > - I don't yet have the necessary infrastructure to give coordinators
-> >   more rights than regular devices or RFDs (but 40+ patches already,
-> >   don't worry this is something we have in mind)
-> > - Right now this is the user to decide whether a device might answer
-> >   beacon requests or not. This will soon become more limited but it
-> >   greatly simplifies the logic for now.
-> >  
-> 
-> There was always the idea behind it to make an "coordinator" interface
-> type and there is a reason for that because things e.g. filtering
-> becomes different than a non-coordinator interface type (known as node
-> interface in wpan).
-> At the end interface types should make a big difference in how the
-> "role" inside the network should be, which you can also see in
-> wireless as "station"/"access point" interface devices.
-> 
-> A non full functional device should then also not be able to act as a
-> coordinator e.g. it cannot create coordinator types.
+> > also this lp->tx_skb can be a dangled pointer, after xmit_complete()
+> > we need to set it to NULL in a xmit_error() we can check on NULL
+> > before calling kfree_skb().
 
-I've added a few more parameters to be able to reflect the type of
-device (ffd, rfd, rfd_r/tx) and also eventually its coordinator state.
-I've hacked into nl802154 to give these information to the user and let
-it device wether the device (if it's an ffd) should act as a
-coordinator. This is only a first step before we create a real PAN
-creation procedure of course.
+I've created a xmit_error() helper as suggested, which call
+dev_kfree_skb_any() instead of *consume_skb*().
 
-I've then adapted the following patches to follow check against the
-device/coordinator state to decide if an operation should be aborted or
-not.
+> 
+> forget the NULL checking, it's already done by core.
 
-> However we can still make some -EOPNOTSUPP if something in a different
-> way should be done. This clearly breaks userspace and I am not sure if
-> we should worry or not worry about it in the current state of
-> 802.15.4...
+Indeed, it is.
+
+> However in some
+> cases this is called with a dangled pointer on lp->tx_skb.
+
+I've fixed that by setting it to NULL after the call to the xmit_error
+helper.
+
 > 
 > - Alex
 
