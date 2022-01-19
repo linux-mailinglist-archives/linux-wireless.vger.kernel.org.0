@@ -2,103 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7962E4940C6
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 20:25:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72652494275
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 22:22:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239762AbiASTZb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jan 2022 14:25:31 -0500
-Received: from mga17.intel.com ([192.55.52.151]:45691 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229593AbiASTZb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jan 2022 14:25:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1642620330; x=1674156330;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=S8PG7gZp2otKCowmiUMvM8LzYrUNIUF5vgPa0CPgwVY=;
-  b=ZjkTueiapwqwiOUrcd4OXbOxCLLSfCh/m+dQW8iVp5jz9hdcWFO1WmbJ
-   bGSqLJ7aYz5zJ9qi5LUi/EXeN9T/p9CJTVaJ+kj1o+b8kFOaPHHrosvTx
-   AOoBRqipBr5/5QQFxAFv3O1ezRkD/L6bi+s6K3WNhF2K7eNb/zixH+xSR
-   xk+78Mp6Fo4vfoVF98spqKO70s2E8cIjtIl0La/lOvyhgcr6q2MHlFdI/
-   jSpGH3/BdqLQcd0Res0L9vt+/yi7lol6iL3u7j0E3yNtWy32ERDwTC28q
-   5JaTVmTgxadGMgt2OX7DVXG6fTjIZUPn1fgsdWzEoODuhawMTpSoIwlSM
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10231"; a="225839952"
-X-IronPort-AV: E=Sophos;i="5.88,300,1635231600"; 
-   d="scan'208";a="225839952"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2022 11:04:20 -0800
-X-IronPort-AV: E=Sophos;i="5.88,300,1635231600"; 
-   d="scan'208";a="578929424"
-Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.251.31.79]) ([10.251.31.79])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2022 11:04:19 -0800
-Message-ID: <e600686e-5f63-d1df-c7ae-4bc7c7a8403c@linux.intel.com>
-Date:   Wed, 19 Jan 2022 11:04:18 -0800
+        id S1357389AbiASVWr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jan 2022 16:22:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55504 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229675AbiASVWr (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 19 Jan 2022 16:22:47 -0500
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0F79C061574;
+        Wed, 19 Jan 2022 13:22:46 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id o15so13370277lfo.11;
+        Wed, 19 Jan 2022 13:22:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=8xNKNi1LRojJeVt1Nef5G921Lvb9Zw/m0g+80h/uJSo=;
+        b=SkamCFGOsuq/rDEk6pV84f1GSUdxKbi/UN0kRg5ytrVxjwIC4oXlo8DKtUipEQtCmf
+         as4pwgaaAHm1qbd/ypGFAx0WQb0exzSaNGUtVp5IH45Sct0tUnHMH+x6w3x7lfvpMVQG
+         AgL3OtR+fxlelKv8GwmgK6mqB5CK6DVVscl6/yy7M0qpPiotY/zc2o0bygCJmGQ8s1nC
+         +/ZbvZz6Kza/T3UxsFF9/5SYdDBgxWtM9pZ9NIxSPvK0uDEk1m1k7uYablP3L0Fc9R7Y
+         qX1JMjDCkJghd8VQC+i25BZ3B32Yxht+JP9mi2fS7A17PA+9ghFn6gCloaTWmd2bVC0t
+         /XvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=8xNKNi1LRojJeVt1Nef5G921Lvb9Zw/m0g+80h/uJSo=;
+        b=ydydbfARIBgfcs8Jh7K0qjF269g9GLaubN8UNkrI3U9nKT/1nznUDLYYj9anWzunM8
+         kNyet0FB7jCTQJ88+NeEu9H6ad+DYP41xKlOpzOzFPCSjkCHikUgFXmPNwchbGlXokVH
+         RtgaGqDPW4x37ZW04TaQ2+e1YXqD/TjyhV2O/0aAYz+MAS63BvfaO+URUj3kFcbgkW+g
+         3dkUt30mqyaP6nl88Rq5z1loypwqDRgx7JRpAH7U+9QCJ52/3Q3rBHm+Wcm6yp/i2gsP
+         ptAZC/pYP12flRtqH7Xss4epQyL7Ydt6LbZcE282eV2owTbN7fResG2CkREG0qf8yLQ0
+         9xYw==
+X-Gm-Message-State: AOAM531E/Ey+f/H0UaUYkbF9x+HuR9tAWbkzceiKP8gBbnxawNfLNtHh
+        yz1Mkm9I/k/WkYFEmW5FXn0=
+X-Google-Smtp-Source: ABdhPJweVJly6NKb6ZA2lRyT41+I8V+ACkOYJ06Lwz1sNGgqOMsF0TizWnjd5oSUTYkzqgxJHcOlGg==
+X-Received: by 2002:ac2:518c:: with SMTP id u12mr30171416lfi.299.1642627365178;
+        Wed, 19 Jan 2022 13:22:45 -0800 (PST)
+Received: from [192.168.2.145] (109-252-139-36.dynamic.spd-mgts.ru. [109.252.139.36])
+        by smtp.googlemail.com with ESMTPSA id m17sm78789lfc.130.2022.01.19.13.22.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Jan 2022 13:22:44 -0800 (PST)
+Message-ID: <9a222199-6620-15b7-395f-e079b8e6e529@gmail.com>
+Date:   Thu, 20 Jan 2022 00:22:43 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH net-next v4 02/13] net: wwan: t7xx: Add control DMA
- interface
+Subject: Re: [PATCH v3 1/9] brcmfmac: pcie: Release firmwares in the
+ brcmf_pcie_setup error path
 Content-Language: en-US
-To:     =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
-        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
-        sreehari.kancharla@intel.com
-References: <20220114010627.21104-1-ricardo.martinez@linux.intel.com>
- <20220114010627.21104-3-ricardo.martinez@linux.intel.com>
- <d5854453-84b-1eba-7cc7-d94f41a185d@linux.intel.com>
- <4a4b2848-d665-c9ba-c66a-dd4408e94ea5@linux.intel.com>
- <cb33ee41-b885-6523-199-b8a339c1a531@linux.intel.com>
-From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
-In-Reply-To: <cb33ee41-b885-6523-199-b8a339c1a531@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hector Martin <marcan@marcan.st>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220117142919.207370-1-marcan@marcan.st>
+ <20220117142919.207370-2-marcan@marcan.st>
+ <CAHp75VfVuX-BG1MJcEoQrOW6jn=PSMZH0jTcwGj9PwWxocG_Gw@mail.gmail.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+In-Reply-To: <CAHp75VfVuX-BG1MJcEoQrOW6jn=PSMZH0jTcwGj9PwWxocG_Gw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+19.01.2022 20:49, Andy Shevchenko пишет:
+> On Mon, Jan 17, 2022 at 4:30 PM Hector Martin <marcan@marcan.st> wrote:
+>>
+>> This avoids leaking memory if brcmf_chip_get_raminfo fails. Note that
+>> the CLM blob is released in the device remove path.
+> 
+> ...
+> 
+>>         if (ret) {
+> 
+>>                 brcmf_err(bus, "Failed to get RAM info\n");
+>> +               release_firmware(fw);
+>> +               brcmf_fw_nvram_free(nvram);
+> 
+> Can we first undo the things and only after print a message?
 
-On 1/19/2022 1:52 AM, Ilpo Järvinen wrote:
-> On Tue, 18 Jan 2022, Martinez, Ricardo wrote:
->
->> On 1/18/2022 6:13 AM, Ilpo Järvinen wrote:
->>> On Thu, 13 Jan 2022, Ricardo Martinez wrote:
-...
->>> +static bool t7xx_cldma_qs_are_active(struct t7xx_cldma_hw *hw_info)
->>> +{
->>> +	unsigned int tx_active;
->>> +	unsigned int rx_active;
->>> +
->>> +	tx_active = t7xx_cldma_hw_queue_status(hw_info, CLDMA_ALL_Q, MTK_TX);
->>> +	rx_active = t7xx_cldma_hw_queue_status(hw_info, CLDMA_ALL_Q, MTK_RX);
->>> +	if (tx_active == CLDMA_INVALID_STATUS || rx_active ==
->>> CLDMA_INVALID_STATUS)
->>> These cannot ever be true because of mask in t7xx_cldma_hw_queue_status().
->> t7xx_cldma_hw_queue_status() shouldn't apply the mask for CLDMA_ALL_Q.
-> I guess it shouldn't but it currently does apply 0xff (CLDMA_ALL_Q) as
-> mask in that case. However, this now raises another question, if
-> 0xffffffff (CLDMA_INVALID_STATUS) means status is invalid, should all
-> callers both single Q and CLDMA_ALL_Q be returned/check/handle that value?
->
-> Why would CLDMA_ALL_Q be special in this respect that the INVALID_STATUS
-> means invalid only with it?
-
-Reading 0xffffffff is used to detect if the PCI link was disconnected,
-it is relevant in t7xx_cldma_qs_are_active() because it is a helper function
-polled by t7xx_cldma_stop() to wait until the queues are not active anymore.
-
-I think a cleaner implementation would be to use pci_device_is_present()
-instead of the CLDMA_INVALID_STATUS check inside t7xx_cldma_qs_are_active()
-and keep t7xx_cldma_hw_queue_status() free of that logic.
-
-...
-
+Having message first usually is more preferred because at minimum you'll
+get the message if "undoing the things" crashes, i.e. will be more
+obvious what happened.
