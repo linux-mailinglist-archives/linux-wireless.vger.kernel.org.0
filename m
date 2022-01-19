@@ -2,57 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B9B493A75
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 13:36:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 241B9493A89
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jan 2022 13:37:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354585AbiASMgh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jan 2022 07:36:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47286 "EHLO
+        id S1354796AbiASMhQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jan 2022 07:37:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354609AbiASMgW (ORCPT
+        with ESMTP id S1354629AbiASMgx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jan 2022 07:36:22 -0500
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9FCCC06177A
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Jan 2022 04:36:19 -0800 (PST)
-Received: by mail-pj1-x102d.google.com with SMTP id pf13so2399213pjb.0
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Jan 2022 04:36:19 -0800 (PST)
+        Wed, 19 Jan 2022 07:36:53 -0500
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EED11C06175C
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Jan 2022 04:36:52 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id h13so1493047plf.2
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Jan 2022 04:36:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=message-id:date:mime-version:user-agent:from:subject:to:cc
          :references:in-reply-to;
-        bh=h96n8ol+7uWfJuLApTfPkZf7MnWyV6QGvfn+qqFaWOo=;
-        b=cefiRFSzN9JT1a4eCpjFt7pu1w8xVykCxrd/ZG6V72PdmJvGT+IScgNH0lbJ5MLcws
-         KCSOOTFAvY6SMfbjY8oUJxitYPGeHXn3SBPmjM/m/bn5L+uERxXw2OwRto9/PwsgC3pQ
-         AW+Tmvd8owXzBKUURFMzFBjcc/WW2k7MfTyGs=
+        bh=/hywej4vYZH8Pb49Zu/4YAtMiq+PD1RdA4MFcwYMzfU=;
+        b=Y8CU3rKnDsrBjeyPVMP9sVi7UAp4IR/ASjkRkswYulpd1FB7DrosyqGwUTPA4c83vh
+         +uGU7ZA52t8qd70U22lVUL4yQRsLygHKT7kE0OnNb0/1NDpkOgnILrEHIlamnEm+fBV3
+         mafFb3gCBL1/7rqRy1H0BzOrKifY0AMfbqn6Y=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:from
          :subject:to:cc:references:in-reply-to;
-        bh=h96n8ol+7uWfJuLApTfPkZf7MnWyV6QGvfn+qqFaWOo=;
-        b=UyjA6nJg0U04sFKWNfBwnMPcibZoSKj9LaUrQaSYfMnFMgL7xbDTYiMW3SEmJnWc2k
-         m/k/Fka7fOnsn5jI6J/qf7ofLZrbqufZLJIsUiYn0s4ffrWkhJ2nkcyWBAGjnbBiWaZH
-         TOHEVCcR8cauXYR28cuuElj1a+hNooaqrsb/5/q6yJZdcsJGIJyNywAVTQihOVn4hbdQ
-         19c/tu6Pfj2gsOlC5WcF96ktd4/BMhlEKYkMYJGCnpccQD1cnOgKKQHIpLyS1o0y/RjW
-         AL4bnVY1B0fKF+P3/sAt1D/+1Ud2qkCt7y5H0+Cne4ZUAow3KXDrT+EgjaQZMHKy2tsw
-         7SrQ==
-X-Gm-Message-State: AOAM531H9cbV7ZWQU+PvifZNl7KI1Bk/BbLEVGFviabOouz2bPnFp4IO
-        6r2DN/W7L7IJZRrO4nbWnDgObA==
-X-Google-Smtp-Source: ABdhPJwzPVuViphNvWC+fElAHXXlQrlMo/Kx8MhqCJVWgXlfQGaX8xnT26ESmukbKPvR+qCUzmo3cA==
-X-Received: by 2002:a17:902:6844:b0:14a:1da5:88dc with SMTP id f4-20020a170902684400b0014a1da588dcmr32425809pln.30.1642595779260;
-        Wed, 19 Jan 2022 04:36:19 -0800 (PST)
+        bh=/hywej4vYZH8Pb49Zu/4YAtMiq+PD1RdA4MFcwYMzfU=;
+        b=N24EaJXd5tWwSQzZvXZnmzzg/1Byp+Of96rcjIBmwpEgmuu7+T1I8UJzSMHEWpMx6M
+         RiimpzYVZopmbc8uIGVzW2sao/UszGNCGPCyuvrerXl4W2ypanwDFIWCTQAjvT3tWie9
+         40FhJyyxK2qpsznZZrMGfqEVLZhaHv2QKAqK3SE6LaBhLl0mRMmWhVG/oW5hHZQA8R3S
+         qFcsETKMG57QSPWkndpuqLHHCndMNYMQzaGDC++aMy+RBzOC93o60AHqsmh+iLV+zf0k
+         4CiUSECauNmkDn11UfOcGBnnOkZJTfAWLYQ6JgoTK2paeLPqwh9sxLnDJxKmSxivy+ML
+         y8uA==
+X-Gm-Message-State: AOAM530QNhYzvAr4tGPhe1gLL8+fkVNxswYt8iICwsAauV6TA0jT7g9Q
+        QOnhDw5mzd3RPnX/pOTwSHt8Uw==
+X-Google-Smtp-Source: ABdhPJwlOCggScmG2My37irsesppJgch7yHsmTNhwjVujZbFbhM7eCQk7OaUSHuFhPCciCdjRohTaA==
+X-Received: by 2002:a17:902:d50a:b0:14a:f80d:288c with SMTP id b10-20020a170902d50a00b0014af80d288cmr1259094plg.0.1642595812350;
+        Wed, 19 Jan 2022 04:36:52 -0800 (PST)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id h8sm17612145pgs.3.2022.01.19.04.36.11
+        by smtp.gmail.com with ESMTPSA id rj1sm6405149pjb.41.2022.01.19.04.36.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jan 2022 04:36:18 -0800 (PST)
-Message-ID: <dc9c8c28-feb0-0353-d5ab-8715683e3ecc@broadcom.com>
-Date:   Wed, 19 Jan 2022 13:36:10 +0100
+        Wed, 19 Jan 2022 04:36:51 -0800 (PST)
+Message-ID: <ed387a90-586d-5071-baa6-bc66d4e7f22f@broadcom.com>
+Date:   Wed, 19 Jan 2022 13:36:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH v2 21/35] brcmfmac: chip: Only disable D11 cores; handle
- an arbitrary number
+Subject: Re: [PATCH v2 22/35] brcmfmac: chip: Handle 1024-unit sizes for TCM
+ blocks
 To:     Hector Martin <marcan@marcan.st>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -81,40 +81,84 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-22-marcan@marcan.st>
-In-Reply-To: <20220104072658.69756-22-marcan@marcan.st>
+ <20220104072658.69756-23-marcan@marcan.st>
+In-Reply-To: <20220104072658.69756-23-marcan@marcan.st>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000f3853105d5eea190"
+        boundary="000000000000ed88db05d5eea34f"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000f3853105d5eea190
+--000000000000ed88db05d5eea34f
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 1/4/2022 8:26 AM, Hector Martin wrote:
-> At least on BCM4387, the D11 cores are held in reset on cold startup and
-> firmware expects to release reset itself. Just assert reset here and let
-> firmware deassert it. Premature deassertion results in the firmware
-> failing to initialize properly some of the time, with strange AXI bus
-> errors.
-> 
-> Also, BCM4387 has 3 cores, up from 2. The logic for handling that is in
-> brcmf_chip_ai_resetcore(), but since we aren't using that any more, just
-> handle it here.
-
-Makes sense.
+> BCM4387 has trailing odd-sized blocks as part of TCM which have
+> their size described as a multiple of 1024 instead of 8192. Handle this
+> so we can compute the TCM size properly.
 
 Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 > ---
->   .../net/wireless/broadcom/brcm80211/brcmfmac/chip.c | 13 ++++++++-----
->   1 file changed, 8 insertions(+), 5 deletions(-)
+>   .../wireless/broadcom/brcm80211/brcmfmac/chip.c | 17 ++++++++++++-----
+>   1 file changed, 12 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+> index 713546cebd5a..cfa93e3ef1a1 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+> @@ -212,8 +212,8 @@ struct sbsocramregs {
+>   #define	ARMCR4_TCBANB_MASK	0xf
+>   #define	ARMCR4_TCBANB_SHIFT	0
+>   
+> -#define	ARMCR4_BSZ_MASK		0x3f
+> -#define	ARMCR4_BSZ_MULT		8192
+> +#define	ARMCR4_BSZ_MASK		0x7f
+> +#define	ARMCR4_BLK_1K_MASK	0x200
+>   
+>   struct brcmf_core_priv {
+>   	struct brcmf_core pub;
+> @@ -675,7 +675,8 @@ static u32 brcmf_chip_sysmem_ramsize(struct brcmf_core_priv *sysmem)
+>   }
+>   
+>   /** Return the TCM-RAM size of the ARMCR4 core. */
+> -static u32 brcmf_chip_tcm_ramsize(struct brcmf_core_priv *cr4)
+> +static u32 brcmf_chip_tcm_ramsize(struct brcmf_chip_priv *ci,
+> +				  struct brcmf_core_priv *cr4)
 
---000000000000f3853105d5eea190
+Not sure why you add ci parameter here. It is not used below or am I 
+overlooking something.
+
+>   {
+>   	u32 corecap;
+>   	u32 memsize = 0;
+> @@ -683,6 +684,7 @@ static u32 brcmf_chip_tcm_ramsize(struct brcmf_core_priv *cr4)
+>   	u32 nbb;
+>   	u32 totb;
+>   	u32 bxinfo;
+> +	u32 blksize;
+>   	u32 idx;
+>   
+>   	corecap = brcmf_chip_core_read32(cr4, ARMCR4_CAP);
+> @@ -694,7 +696,12 @@ static u32 brcmf_chip_tcm_ramsize(struct brcmf_core_priv *cr4)
+>   	for (idx = 0; idx < totb; idx++) {
+>   		brcmf_chip_core_write32(cr4, ARMCR4_BANKIDX, idx);
+>   		bxinfo = brcmf_chip_core_read32(cr4, ARMCR4_BANKINFO);
+> -		memsize += ((bxinfo & ARMCR4_BSZ_MASK) + 1) * ARMCR4_BSZ_MULT;
+> +		if (bxinfo & ARMCR4_BLK_1K_MASK)
+> +			blksize = 1024;
+> +		else
+> +			blksize = 8192;
+> +
+> +		memsize += ((bxinfo & ARMCR4_BSZ_MASK) + 1) * blksize;
+>   	}
+>   
+>   	return memsize;
+
+--000000000000ed88db05d5eea34f
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -185,14 +229,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBuQfpRpnfIql6hPza8
-fLk9brPzAxms7xrVzjzIBpjaAjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMTkxMjM2MTlaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBg1LzkYdjFgnElBM8Q
+O0vF8CvF1PECceAwJstHgdUuJTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMTkxMjM2NTJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAc3GurxsTG4WUIL6BegZVRpgdIxMr8bSb/INy
-Q/V/e6xI+NrSq7PfcymnCzm6Bi23VyaWEbryOw5mRiFS176fqui1wyXRj/FSE8b1e4X5nT/Z1wGu
-rBZ5GYO9NGs7C308CYSf+4ROdgGsQpGvjQ4XtTArT+5Maa2xFQXtu1808qZj7EtW9y5jTwmniz9m
-5WtviPPMOqtRVfwDY9TYERf6FmKzuyfsUo610AdO/iCgpcjrQu8Dt+ZqqwFaHZw1UoVupEgyRfL+
-KpeB31J3JpVwRfftxCSA0GMIe5qgMLp5Scma0UxxY79K+bjbsIZ6aH/GO6xcmc+6i4teFYk/viWM
-kA==
---000000000000f3853105d5eea190--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAE0oJ8IKnSQNJd5tmLPrMBzBk2KSRQtRM90+P
+q/rlosJSDqxjxbvGKzQs0/KKKeQLPc0EthM7hLMceWk/GfukG0oCJl13C/pstr1IfqAP3X/OisEL
+8Bdsk1iGYDstJQHsNct6iaY2Upm6Sdd9RkEeBgzLmuMk8ZatlfKhckvj54Iv2pqd5natGQ3CmiKm
+ofVATluaBf7pXfCGB7fY0KoZEmVWOgTO1zDTWMo3NYlsD8cXNKLQW8MHPVp7iIAqQwWu31pU1cWT
+QZEJadFCUacdO0W9jB4/A90gcwXSP2nHCOXNoPAjr+cSw+wv+SgxFTSDVUOYX8jBFU288Q3MQDGL
+5w==
+--000000000000ed88db05d5eea34f--
