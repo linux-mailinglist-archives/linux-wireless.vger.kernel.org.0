@@ -2,151 +2,213 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5492849484E
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jan 2022 08:32:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B715C494951
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jan 2022 09:22:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359021AbiATHb5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jan 2022 02:31:57 -0500
-Received: from mga17.intel.com ([192.55.52.151]:39039 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1359009AbiATHb5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jan 2022 02:31:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1642663917; x=1674199917;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7VYqLA8ntt7Lp1slrzIzKJovESqU7n1mPeZ9Fqm4IB8=;
-  b=V+cI2lBg588Kf45OyAZ/EXUzXnORV8Fl5g0IjPBpgvsTM1OFrWuYwOy6
-   YVcyqmW2knOC2BlOCZuc711ZnjXIujGH8t0YKysD7bmg6r0BgUwxaktpx
-   PXWBEH2oc/wmY2835KDBcp9RURalCprhMpHYVu/aR0rgnqOyB91CjCtbb
-   QSjpu2TXMaBdX2D/cYuhtsQhCJlOT86618yEmWdThZJ47Yz8v8urNnbBL
-   o/FDArcyUfZSICs9E/LB/29pVT4cFf7f9OYfQebF0RJpwvDycWbSMk7pk
-   KGg8cUeMEktsYEFYTBbjv1HLIOrcyEXDOXbxh9gfdNYFU46pmJNVCBvO7
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10232"; a="225963657"
-X-IronPort-AV: E=Sophos;i="5.88,301,1635231600"; 
-   d="scan'208";a="225963657"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2022 23:31:56 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,301,1635231600"; 
-   d="scan'208";a="475430889"
-Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 19 Jan 2022 23:31:53 -0800
-Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nARvE-000E73-RZ; Thu, 20 Jan 2022 07:31:52 +0000
-Date:   Thu, 20 Jan 2022 15:31:39 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Alexander Aring <alex.aring@gmail.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        linux-wpan@vger.kernel.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Xue Liu <liuxuenetmail@gmail.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Harry Morris <harrymorris12@gmail.com>,
-        David Girault <david.girault@qorvo.com>
-Subject: Re: [wpan-next 5/9] net: ieee802154: ca8210: Stop leaking skb's
-Message-ID: <202201201557.38baVRVX-lkp@intel.com>
-References: <20220120003645.308498-6-miquel.raynal@bootlin.com>
+        id S231338AbiATIW4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jan 2022 03:22:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60252 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1359145AbiATIWx (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 20 Jan 2022 03:22:53 -0500
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60269C06173F
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 00:22:53 -0800 (PST)
+Received: by mail-pj1-x102c.google.com with SMTP id q63so411120pja.1
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 00:22:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=message-id:date:mime-version:user-agent:subject:to:cc:references
+         :from:in-reply-to;
+        bh=0tguesHps3ftiCxvJRSUMNpPL3eFhLgVFS7XnePfJws=;
+        b=CEQjYhPWOweCT1YiogEJ+iQ4EsxSCdZy9LfVrs3FinvF0x+EpJyMQdBU+DYfT7YR6Z
+         q+1ewDuyiE3aBn5G8w/qvjSdWfBjKLIv17h3EBSM8fd/zIDXx0vrpbWR28cFRMcuhpW3
+         Kuh4t6THpeEGDA75a9wWD/tKWY8A+SOqApRXk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :to:cc:references:from:in-reply-to;
+        bh=0tguesHps3ftiCxvJRSUMNpPL3eFhLgVFS7XnePfJws=;
+        b=ITecoFoSVr3UYz1rMipZQtyb36qU6wV2oBCcWLOJmJRCmgb6Vl8y/h4I6UuRmIDE/9
+         df4IvjLuW406Zxge/TTqAB4RCw3ER/kOXfDlnLw3zy8u2T0e7TOHYPLot79oiiegb59B
+         0kpAq2wNQ7bMXhJv3E5SB7cT8gOvirHWVQPkQFZLs5jqXu4UcuEFrfFdWzwbcJ1f3jxq
+         TZiKEXZLN0fdxeWs47BuutmgbeYxSUzbbNCGCYln3d/foqe7Ae5zYvcOku+IErnkuuC1
+         HGo+6I7Jk5p4w5vsAz7uBZI8DduK9HXwd9TfxzehQyplKAbpDnn5QyjbtfNICGek2uHp
+         AXkQ==
+X-Gm-Message-State: AOAM531ATnOMmE3ulTSEHcSL9F2yhllL59/SLBe67XcqZ/noNZhG+5dM
+        2oD43BQWyD+/mXOYxYQ3dXQOEw==
+X-Google-Smtp-Source: ABdhPJxJsaWI43XWnBoC6nlNMFzsSFOHnqCl7JahRSw1KTa/q74HWUCdQN5HtvfG9qcjKZgEFi2v9w==
+X-Received: by 2002:a17:90b:4c87:: with SMTP id my7mr9420827pjb.154.1642666972693;
+        Thu, 20 Jan 2022 00:22:52 -0800 (PST)
+Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id k11sm2355577pfu.180.2022.01.20.00.22.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Jan 2022 00:22:51 -0800 (PST)
+Message-ID: <0616180d-24d5-627f-2961-45104d3473af@broadcom.com>
+Date:   Thu, 20 Jan 2022 09:22:42 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220120003645.308498-6-miquel.raynal@bootlin.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v3 1/9] brcmfmac: pcie: Release firmwares in the
+ brcmf_pcie_setup error path
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hector Martin <marcan@marcan.st>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220117142919.207370-1-marcan@marcan.st>
+ <20220117142919.207370-2-marcan@marcan.st>
+ <CAHp75VfVuX-BG1MJcEoQrOW6jn=PSMZH0jTcwGj9PwWxocG_Gw@mail.gmail.com>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <CAHp75VfVuX-BG1MJcEoQrOW6jn=PSMZH0jTcwGj9PwWxocG_Gw@mail.gmail.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000698fa505d5ff358b"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Miquel,
+--000000000000698fa505d5ff358b
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-I love your patch! Yet something to improve:
+On 1/19/2022 6:49 PM, Andy Shevchenko wrote:
+> On Mon, Jan 17, 2022 at 4:30 PM Hector Martin <marcan@marcan.st> wrote:
+>>
+>> This avoids leaking memory if brcmf_chip_get_raminfo fails. Note that
+>> the CLM blob is released in the device remove path.
+> 
+> ...
+> 
+>>          if (ret) {
+> 
+>>                  brcmf_err(bus, "Failed to get RAM info\n");
+>> +               release_firmware(fw);
+>> +               brcmf_fw_nvram_free(nvram);
+> 
+> Can we first undo the things and only after print a message?
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v5.16 next-20220120]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+What would be your motivation? When reading logs I am used to seeing an 
+error message followed by cleanup related messages. Following your 
+suggestion you could see cleanup related messages, the error print as 
+above, followed by more cleanup related messages. The cleanup routine 
+would preferably be silent, but I tend to flip on extra debug message 
+levels.
 
-url:    https://github.com/0day-ci/linux/commits/Miquel-Raynal/ieee802154-A-bunch-of-fixes/20220120-083906
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 1d1df41c5a33359a00e919d54eaebfb789711fdc
-config: i386-randconfig-a013 (https://download.01.org/0day-ci/archive/20220120/202201201557.38baVRVX-lkp@intel.com/config)
-compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project f7b7138a62648f4019c55e4671682af1f851f295)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/77d3026b30aff560ef269d03aecc09f8c46a9173
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Miquel-Raynal/ieee802154-A-bunch-of-fixes/20220120-083906
-        git checkout 77d3026b30aff560ef269d03aecc09f8c46a9173
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/net/ieee802154/
+Regards,
+Arend
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+>>                  goto fail;
+>>          }
+> 
+> 
 
-All errors (new ones prefixed by >>):
+--000000000000698fa505d5ff358b
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
->> drivers/net/ieee802154/ca8210.c:1775:22: error: use of undeclared identifier 'atusb'
-                           dev_kfree_skb_any(atusb->tx_skb);
-                                             ^
-   1 error generated.
-
-
-vim +/atusb +1775 drivers/net/ieee802154/ca8210.c
-
-  1737	
-  1738	/**
-  1739	 * ca8210_async_xmit_complete() - Called to announce that an asynchronous
-  1740	 *                                transmission has finished
-  1741	 * @hw:          ieee802154_hw of ca8210 that has finished exchange
-  1742	 * @msduhandle:  Identifier of transmission that has completed
-  1743	 * @status:      Returned 802.15.4 status code of the transmission
-  1744	 *
-  1745	 * Return: 0 or linux error code
-  1746	 */
-  1747	static int ca8210_async_xmit_complete(
-  1748		struct ieee802154_hw  *hw,
-  1749		u8                     msduhandle,
-  1750		u8                     status)
-  1751	{
-  1752		struct ca8210_priv *priv = hw->priv;
-  1753	
-  1754		if (priv->nextmsduhandle != msduhandle) {
-  1755			dev_err(
-  1756				&priv->spi->dev,
-  1757				"Unexpected msdu_handle on data confirm, Expected %d, got %d\n",
-  1758				priv->nextmsduhandle,
-  1759				msduhandle
-  1760			);
-  1761			return -EIO;
-  1762		}
-  1763	
-  1764		priv->async_tx_pending = false;
-  1765		priv->nextmsduhandle++;
-  1766	
-  1767		if (status) {
-  1768			dev_err(
-  1769				&priv->spi->dev,
-  1770				"Link transmission unsuccessful, status = %d\n",
-  1771				status
-  1772			);
-  1773			if (status != MAC_TRANSACTION_OVERFLOW) {
-  1774				ieee802154_wake_queue(priv->hw);
-> 1775				dev_kfree_skb_any(atusb->tx_skb);
-  1776				return 0;
-  1777			}
-  1778		}
-  1779		ieee802154_xmit_complete(priv->hw, priv->tx_skb, true);
-  1780	
-  1781		return 0;
-  1782	}
-  1783	
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+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
+XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
+yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
+0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
+NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
+FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
+aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
+OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
+UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAYDhTUZ0s8axrV7NQ9
+uxnbQUomTa1SPHwDtC7jFUseSTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMjAwODIyNTNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAgDt9i4B63Ik7bRFPSJj/OQDSL/oZOE5hLlEO
+odZ2n4DGSjsg8/q50hJ3YmoCLXqWyt6l1AVM+/ZZsxDQ4ZMNgX7I9XkD2Lpfi5DR8UBdUfloR6uE
+NIKTgt9kw7lA46lUwNVw0rgLLBkPO2fVywIgxicFAW9S3d7RanAC3OtZOx7HW8skp8NJkDDqWulj
+beRtnVeyLU09aRKQ6toPDHy+yHtc0gvdcmwLG0esTl86fY8MUXfT2MRnYDK+amuuNHAMXBWgXroB
+vukrN8lXUXNx4bvM4SmR6N05WK8ADxIMewehOvepAq2N83fhHov8y/Xo2WMc50qHFne2p9/VEFd3
+nQ==
+--000000000000698fa505d5ff358b--
