@@ -2,256 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BDF3494A07
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jan 2022 09:50:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96D20494AA6
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jan 2022 10:25:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241181AbiATIuB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jan 2022 03:50:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38392 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241068AbiATIuA (ORCPT
+        id S1358598AbiATJZQ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jan 2022 04:25:16 -0500
+Received: from relay12.mail.gandi.net ([217.70.178.232]:57829 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241888AbiATJZM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jan 2022 03:50:00 -0500
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 626C4C061748
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 00:50:00 -0800 (PST)
-Received: by mail-pg1-x532.google.com with SMTP id 188so5043348pgf.1
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 00:50:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:from:to:cc
-         :references:in-reply-to;
-        bh=VZAbPlDlytIhvZpSOS/LX9fkdhKe9fJ/j6HWmWLfPRk=;
-        b=dZlZ6YVNMAKh/N6Qc70FjCD3QxzrKVY49B63lzISVRoyja3VRT85iQNI81ImGjQFCb
-         8J+ub+I72aG3RH5sqoUVkN9hAI78bn4rSHBxjLHOoAdQXj1o/eszRMuwuuUedpKNYbJd
-         HK+lz5MSkpUkJxw/PAjale+FPZr7L0+93yczY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :from:to:cc:references:in-reply-to;
-        bh=VZAbPlDlytIhvZpSOS/LX9fkdhKe9fJ/j6HWmWLfPRk=;
-        b=q8by98+fqHmY2gRZNh0+NYsFejm1tr4NEzsJoyuOPyosZsxoEAk4WQChiP+XqTHK8x
-         acSkYK+PObn1XhWOI92aggWOEYBCmH6NFt9NfvWfKZ/fO8N8UswQP3BFsU8+JUHLzC0L
-         PXMfTnQXK4MyHoWGyaJShmLN4nO+zRBso0G/aH4tBaI5qcSyH/eLlRf8lDStcz3CcYvG
-         pgNMSUMwFcMxW+XEmKRi6tvoYnFI1CZAkuPqACQRu6S0UMa8XCxDMj7h3Oeh3THA6WRF
-         juYXd+F8Ne7WMco1vC81hHJDcpAHqxGGDeuE8mEb3fa86OAMXye1eVUwxUKCRt1STbRJ
-         35BA==
-X-Gm-Message-State: AOAM530CTELM91IxdoCLR3h5C0oMajyDuP3xsUz0kn+0KamJUk8+Td1u
-        GTkaBFlJNtiZJP3EkGXQ/Yo+xQ==
-X-Google-Smtp-Source: ABdhPJzRWJsMfvdfUAnYf4q27etILPp3I11aDeBOPRbNvvn2QQ381bSHVUPeO8o557XlWnBQ/1Tvng==
-X-Received: by 2002:a62:f90a:0:b0:4c6:7794:6f29 with SMTP id o10-20020a62f90a000000b004c677946f29mr880153pfh.1.1642668599772;
-        Thu, 20 Jan 2022 00:49:59 -0800 (PST)
-Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id d12sm2343441pfl.24.2022.01.20.00.49.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jan 2022 00:49:58 -0800 (PST)
-Message-ID: <5d949e1f-63f8-3dde-a7d0-1eab5d3030ec@broadcom.com>
-Date:   Thu, 20 Jan 2022 09:49:50 +0100
+        Thu, 20 Jan 2022 04:25:12 -0500
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 85D0320000F;
+        Thu, 20 Jan 2022 09:25:07 +0000 (UTC)
+Date:   Thu, 20 Jan 2022 10:25:06 +0100
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Alexander Aring <alex.aring@gmail.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        linux-wpan@vger.kernel.org, llvm@lists.linux.dev,
+        kbuild-all@lists.01.org, Jakub Kicinski <kuba@kernel.org>,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Xue Liu <liuxuenetmail@gmail.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Harry Morris <harrymorris12@gmail.com>,
+        David Girault <david.girault@qorvo.com>
+Subject: Re: [wpan-next 5/9] net: ieee802154: ca8210: Stop leaking skb's
+Message-ID: <20220120102506.04d5ffb7@xps13>
+In-Reply-To: <202201201557.38baVRVX-lkp@intel.com>
+References: <20220120003645.308498-6-miquel.raynal@bootlin.com>
+        <202201201557.38baVRVX-lkp@intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2 22/35] brcmfmac: chip: Handle 1024-unit sizes for TCM
- blocks
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-To:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-23-marcan@marcan.st>
- <ed387a90-586d-5071-baa6-bc66d4e7f22f@broadcom.com>
-In-Reply-To: <ed387a90-586d-5071-baa6-bc66d4e7f22f@broadcom.com>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000064ae7205d5ff96ea"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000064ae7205d5ff96ea
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 1/19/2022 1:36 PM, Arend van Spriel wrote:
-> On 1/4/2022 8:26 AM, Hector Martin wrote:
->> BCM4387 has trailing odd-sized blocks as part of TCM which have
->> their size described as a multiple of 1024 instead of 8192. Handle this
->> so we can compute the TCM size properly.
+lkp@intel.com wrote on Thu, 20 Jan 2022 15:31:39 +0800:
 
-So that is the deal. Wish someone over here told me about that :-p Gave 
-my blessing already, but do have some remarks.
-
-> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
->> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->> Signed-off-by: Hector Martin <marcan@marcan.st>
->> ---
->>   .../wireless/broadcom/brcm80211/brcmfmac/chip.c | 17 ++++++++++++-----
->>   1 file changed, 12 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c 
->> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
->> index 713546cebd5a..cfa93e3ef1a1 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
->> @@ -212,8 +212,8 @@ struct sbsocramregs {
->>   #define    ARMCR4_TCBANB_MASK    0xf
->>   #define    ARMCR4_TCBANB_SHIFT    0
->> -#define    ARMCR4_BSZ_MASK        0x3f
->> -#define    ARMCR4_BSZ_MULT        8192
-
-Instead of deleting can we leave it here and...
-
->> +#define    ARMCR4_BSZ_MASK        0x7f
->> +#define    ARMCR4_BLK_1K_MASK    0x200
->>   struct brcmf_core_priv {
->>       struct brcmf_core pub;
->> @@ -675,7 +675,8 @@ static u32 brcmf_chip_sysmem_ramsize(struct 
->> brcmf_core_priv *sysmem)
->>   }
->>   /** Return the TCM-RAM size of the ARMCR4 core. */
->> -static u32 brcmf_chip_tcm_ramsize(struct brcmf_core_priv *cr4)
->> +static u32 brcmf_chip_tcm_ramsize(struct brcmf_chip_priv *ci,
->> +                  struct brcmf_core_priv *cr4)
+> Hi Miquel,
 > 
-> Not sure why you add ci parameter here. It is not used below or am I 
-> overlooking something.
+> I love your patch! Yet something to improve:
 > 
->>   {
->>       u32 corecap;
->>       u32 memsize = 0;
->> @@ -683,6 +684,7 @@ static u32 brcmf_chip_tcm_ramsize(struct 
->> brcmf_core_priv *cr4)
->>       u32 nbb;
->>       u32 totb;
->>       u32 bxinfo;
->> +    u32 blksize;
->>       u32 idx;
->>       corecap = brcmf_chip_core_read32(cr4, ARMCR4_CAP);
->> @@ -694,7 +696,12 @@ static u32 brcmf_chip_tcm_ramsize(struct 
->> brcmf_core_priv *cr4)
->>       for (idx = 0; idx < totb; idx++) {
->>           brcmf_chip_core_write32(cr4, ARMCR4_BANKIDX, idx);
->>           bxinfo = brcmf_chip_core_read32(cr4, ARMCR4_BANKINFO);
->> -        memsize += ((bxinfo & ARMCR4_BSZ_MASK) + 1) * ARMCR4_BSZ_MULT;
->> +        if (bxinfo & ARMCR4_BLK_1K_MASK)
->> +            blksize = 1024;
->> +        else
->> +            blksize = 8192;
+> [auto build test ERROR on linus/master]
+> [also build test ERROR on v5.16 next-20220120]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Miquel-Raynal/ieee802154-A-bunch-of-fixes/20220120-083906
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 1d1df41c5a33359a00e919d54eaebfb789711fdc
+> config: i386-randconfig-a013 (https://download.01.org/0day-ci/archive/20220120/202201201557.38baVRVX-lkp@intel.com/config)
+> compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project f7b7138a62648f4019c55e4671682af1f851f295)
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # https://github.com/0day-ci/linux/commit/77d3026b30aff560ef269d03aecc09f8c46a9173
+>         git remote add linux-review https://github.com/0day-ci/linux
+>         git fetch --no-tags linux-review Miquel-Raynal/ieee802154-A-bunch-of-fixes/20220120-083906
+>         git checkout 77d3026b30aff560ef269d03aecc09f8c46a9173
+>         # save the config file to linux build tree
+>         mkdir build_dir
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/net/ieee802154/
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+> >> drivers/net/ieee802154/ca8210.c:1775:22: error: use of undeclared identifier 'atusb'  
+>                            dev_kfree_skb_any(atusb->tx_skb);
+>                                              ^
+>    1 error generated.
+> 
+> 
+> vim +/atusb +1775 drivers/net/ieee802154/ca8210.c
+> 
+>   1737	
+>   1738	/**
+>   1739	 * ca8210_async_xmit_complete() - Called to announce that an asynchronous
+>   1740	 *                                transmission has finished
+>   1741	 * @hw:          ieee802154_hw of ca8210 that has finished exchange
+>   1742	 * @msduhandle:  Identifier of transmission that has completed
+>   1743	 * @status:      Returned 802.15.4 status code of the transmission
+>   1744	 *
+>   1745	 * Return: 0 or linux error code
+>   1746	 */
+>   1747	static int ca8210_async_xmit_complete(
+>   1748		struct ieee802154_hw  *hw,
+>   1749		u8                     msduhandle,
+>   1750		u8                     status)
+>   1751	{
+>   1752		struct ca8210_priv *priv = hw->priv;
+>   1753	
+>   1754		if (priv->nextmsduhandle != msduhandle) {
+>   1755			dev_err(
+>   1756				&priv->spi->dev,
+>   1757				"Unexpected msdu_handle on data confirm, Expected %d, got %d\n",
+>   1758				priv->nextmsduhandle,
+>   1759				msduhandle
+>   1760			);
+>   1761			return -EIO;
+>   1762		}
+>   1763	
+>   1764		priv->async_tx_pending = false;
+>   1765		priv->nextmsduhandle++;
+>   1766	
+>   1767		if (status) {
+>   1768			dev_err(
+>   1769				&priv->spi->dev,
+>   1770				"Link transmission unsuccessful, status = %d\n",
+>   1771				status
+>   1772			);
+>   1773			if (status != MAC_TRANSACTION_OVERFLOW) {
+>   1774				ieee802154_wake_queue(priv->hw);
+> > 1775				dev_kfree_skb_any(atusb->tx_skb);  
 
-... do following here instead:
+Looks like I messed with the configuration and this driver was not
+compile-tested anymore. I'll fix this.
 
-		blksize = 8192;
-		if (bxinfo & ARMCR4_BLK_1K_MASK)
-			blksize >>= 3;
+>   1776				return 0;
+>   1777			}
+>   1778		}
+>   1779		ieee802154_xmit_complete(priv->hw, priv->tx_skb, true);
+>   1780	
+>   1781		return 0;
+>   1782	}
+>   1783	
+> 
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
-[not sure if mailreader is screwing with indentation or what]
 
->> +
->> +        memsize += ((bxinfo & ARMCR4_BSZ_MASK) + 1) * blksize;
->>       }
->>       return memsize;
-
---00000000000064ae7205d5ff96ea
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
-yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
-0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
-NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
-FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
-aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
-OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
-UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCB2nE0rhkk2CtfnkMV4
-c7aze/vK7ws5UFitWRLkfEYbCzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMjAwODUwMDBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEACmVSJkdKWWA5HYFhU0iRAzqDaNzfohi92kxm
-anAzxLhPgR8EC6lm27ke/z78hv9EaD4bcTuPccnHfLq4RHDlNRhQgAVUTA8nzIXdbelttXXYGe4l
-sgtffZz/KoKdnGSs22l8pTJqSSKlQLrGaCcBmO3dyXOjB6j3QDKn4IQ+zFgly8aFCsjEGHcz+iAr
-DLIdYxza4kPDE9PdK4zcbfH3zRi/fhZmUxJS3Egi/74dKApI+eBV2lPf3x6DM8aNbWcZrKFXThB+
-DSyT/u4P9uxNatLQmUYVjjaIymz34nqLY5pIDaiMWBjUVm5iLwqyyNSE0zvHkvReAHo3w6LbCXv7
-Yw==
---00000000000064ae7205d5ff96ea--
+Thanks,
+Miquèl
