@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B715C494951
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jan 2022 09:22:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B9D6494971
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jan 2022 09:29:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231338AbiATIW4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jan 2022 03:22:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60252 "EHLO
+        id S1359168AbiATI3p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jan 2022 03:29:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359145AbiATIWx (ORCPT
+        with ESMTP id S1359205AbiATI3c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jan 2022 03:22:53 -0500
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60269C06173F
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 00:22:53 -0800 (PST)
-Received: by mail-pj1-x102c.google.com with SMTP id q63so411120pja.1
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 00:22:53 -0800 (PST)
+        Thu, 20 Jan 2022 03:29:32 -0500
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98082C06173F
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 00:29:31 -0800 (PST)
+Received: by mail-pf1-x42e.google.com with SMTP id 128so4687966pfe.12
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 00:29:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=message-id:date:mime-version:user-agent:subject:to:cc:references
          :from:in-reply-to;
-        bh=0tguesHps3ftiCxvJRSUMNpPL3eFhLgVFS7XnePfJws=;
-        b=CEQjYhPWOweCT1YiogEJ+iQ4EsxSCdZy9LfVrs3FinvF0x+EpJyMQdBU+DYfT7YR6Z
-         q+1ewDuyiE3aBn5G8w/qvjSdWfBjKLIv17h3EBSM8fd/zIDXx0vrpbWR28cFRMcuhpW3
-         Kuh4t6THpeEGDA75a9wWD/tKWY8A+SOqApRXk=
+        bh=qXQPVTCTGEvJfoO2/gNN3rTA7IMTEONWbqS8CMbUJhw=;
+        b=SLbt5Q1/hD3e/Ree+7fHMzCJtR/Hk4/lvTFU4i6LWDf5WugwHOzV6py31nmazywyc1
+         EcgBjczC78It1+ghrGnGWiX3mdRfs6gUTZmaQhV8oG2KC7e1m+y+Niwl8kwPveLPrkdQ
+         06LwkIEuA68ybdUVvXsLJ1CJ7+UX6xeJNzGJE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :to:cc:references:from:in-reply-to;
-        bh=0tguesHps3ftiCxvJRSUMNpPL3eFhLgVFS7XnePfJws=;
-        b=ITecoFoSVr3UYz1rMipZQtyb36qU6wV2oBCcWLOJmJRCmgb6Vl8y/h4I6UuRmIDE/9
-         df4IvjLuW406Zxge/TTqAB4RCw3ER/kOXfDlnLw3zy8u2T0e7TOHYPLot79oiiegb59B
-         0kpAq2wNQ7bMXhJv3E5SB7cT8gOvirHWVQPkQFZLs5jqXu4UcuEFrfFdWzwbcJ1f3jxq
-         TZiKEXZLN0fdxeWs47BuutmgbeYxSUzbbNCGCYln3d/foqe7Ae5zYvcOku+IErnkuuC1
-         HGo+6I7Jk5p4w5vsAz7uBZI8DduK9HXwd9TfxzehQyplKAbpDnn5QyjbtfNICGek2uHp
-         AXkQ==
-X-Gm-Message-State: AOAM531ATnOMmE3ulTSEHcSL9F2yhllL59/SLBe67XcqZ/noNZhG+5dM
-        2oD43BQWyD+/mXOYxYQ3dXQOEw==
-X-Google-Smtp-Source: ABdhPJxJsaWI43XWnBoC6nlNMFzsSFOHnqCl7JahRSw1KTa/q74HWUCdQN5HtvfG9qcjKZgEFi2v9w==
-X-Received: by 2002:a17:90b:4c87:: with SMTP id my7mr9420827pjb.154.1642666972693;
-        Thu, 20 Jan 2022 00:22:52 -0800 (PST)
+        bh=qXQPVTCTGEvJfoO2/gNN3rTA7IMTEONWbqS8CMbUJhw=;
+        b=GutXgMl7KNPvTfi4zhbCyGoM+KgMhHTCQpdyk44Mxysg18ECRcXLi4RUu1rgs3SYwb
+         ZN4eyJbiLM10zeCoLsZKv155C2K5rqBKhEN/MpuLU5/UOMrjszfWAKzNKR2sSC9PXh8T
+         0IjL1SPFgL70k2HrPcUznm/i+SCedbrGy67jWFwNjPkWe55nEjOARvDYQlV7+6GvlnDq
+         xn694BngBSnP50iiJRzSZ+0jajKiTmOwx0JYmC1RMHk9H5NG8yx1+SQBH2yV/Hwq5vbB
+         mc1z14vZ6sldj1s/fbgOCRcvPl1L8z8ekx/LIHbneKrADVP9Jc5yhYwfNnJ2r8ISGp+z
+         /YnA==
+X-Gm-Message-State: AOAM531zJTN5tVRraCAMyc5SC/6+PlClTbX295E303rJ9Dmaw7TIlto1
+        DY4N6ASvGuwm0lXNLocLgYrg0A==
+X-Google-Smtp-Source: ABdhPJzlRQMP+xrlhuJ01dsfu5oWtmnjFXHj3Z7RoOhyWsg64pmz2NxjLzTathH/pSmYgK/U3/WrHw==
+X-Received: by 2002:a05:6a00:2186:b0:4c6:50ea:6701 with SMTP id h6-20020a056a00218600b004c650ea6701mr1623555pfi.12.1642667371020;
+        Thu, 20 Jan 2022 00:29:31 -0800 (PST)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id k11sm2355577pfu.180.2022.01.20.00.22.44
+        by smtp.gmail.com with ESMTPSA id g2sm2264068pfc.109.2022.01.20.00.29.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jan 2022 00:22:51 -0800 (PST)
-Message-ID: <0616180d-24d5-627f-2961-45104d3473af@broadcom.com>
-Date:   Thu, 20 Jan 2022 09:22:42 +0100
+        Thu, 20 Jan 2022 00:29:29 -0800 (PST)
+Message-ID: <9db96f20-38fb-46e0-5f33-e5cd36501bf0@broadcom.com>
+Date:   Thu, 20 Jan 2022 09:29:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH v3 1/9] brcmfmac: pcie: Release firmwares in the
- brcmf_pcie_setup error path
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Hector Martin <marcan@marcan.st>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
+Subject: Re: [PATCH v3 3/9] brcmfmac: firmware: Do not crash on a NULL
+ board_type
+To:     Dmitry Osipenko <digetx@gmail.com>,
+        Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -64,9 +64,8 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Sven Peter <sven@svenpeter.dev>,
+        Wright Feng <wright.feng@infineon.com>
+Cc:     Sven Peter <sven@svenpeter.dev>,
         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
         Mark Kettenis <kettenis@openbsd.org>,
         =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
@@ -75,62 +74,49 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Hans de Goede <hdegoede@redhat.com>,
         "John W. Linville" <linville@tuxdriver.com>,
         "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220117142919.207370-1-marcan@marcan.st>
- <20220117142919.207370-2-marcan@marcan.st>
- <CAHp75VfVuX-BG1MJcEoQrOW6jn=PSMZH0jTcwGj9PwWxocG_Gw@mail.gmail.com>
+ <20220117142919.207370-4-marcan@marcan.st>
+ <be66ea27-c98a-68d3-40b1-f79ab62460d5@gmail.com>
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <CAHp75VfVuX-BG1MJcEoQrOW6jn=PSMZH0jTcwGj9PwWxocG_Gw@mail.gmail.com>
+In-Reply-To: <be66ea27-c98a-68d3-40b1-f79ab62460d5@gmail.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000698fa505d5ff358b"
+        boundary="0000000000002722ac05d5ff4d01"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000698fa505d5ff358b
+--0000000000002722ac05d5ff4d01
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/19/2022 6:49 PM, Andy Shevchenko wrote:
-> On Mon, Jan 17, 2022 at 4:30 PM Hector Martin <marcan@marcan.st> wrote:
+On 1/19/2022 11:02 PM, Dmitry Osipenko wrote:
+> 17.01.2022 17:29, Hector Martin пишет:
+>> This unbreaks support for USB devices, which do not have a board_type
+>> to create an alt_path out of and thus were running into a NULL
+>> dereference.
 >>
->> This avoids leaking memory if brcmf_chip_get_raminfo fails. Note that
->> the CLM blob is released in the device remove path.
+>> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
+>> Signed-off-by: Hector Martin <marcan@marcan.st>
 > 
-> ...
-> 
->>          if (ret) {
-> 
->>                  brcmf_err(bus, "Failed to get RAM info\n");
->> +               release_firmware(fw);
->> +               brcmf_fw_nvram_free(nvram);
-> 
-> Can we first undo the things and only after print a message?
+> Technically, all patches that are intended to be included into next
+> stable kernel update require the "Cc: stable@vger.kernel.org" tag.
 
-What would be your motivation? When reading logs I am used to seeing an 
-error message followed by cleanup related messages. Following your 
-suggestion you could see cleanup related messages, the error print as 
-above, followed by more cleanup related messages. The cleanup routine 
-would preferably be silent, but I tend to flip on extra debug message 
-levels.
+Being the nit picker that I am I would say it is recommended to safe 
+yourself extra work, not required, for the reason you give below.
+
+> In practice such patches usually auto-picked by the patch bot, so no
+> need to resend.
 
 Regards,
 Arend
 
->>                  goto fail;
->>          }
-> 
-> 
-
---000000000000698fa505d5ff358b
+--0000000000002722ac05d5ff4d01
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -201,14 +187,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAYDhTUZ0s8axrV7NQ9
-uxnbQUomTa1SPHwDtC7jFUseSTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMjAwODIyNTNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDswaLyaz4RhCNyGBrs
+oaX6XrZ1Pa6p7M08uBcr98nWOTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMjAwODI5MzFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAgDt9i4B63Ik7bRFPSJj/OQDSL/oZOE5hLlEO
-odZ2n4DGSjsg8/q50hJ3YmoCLXqWyt6l1AVM+/ZZsxDQ4ZMNgX7I9XkD2Lpfi5DR8UBdUfloR6uE
-NIKTgt9kw7lA46lUwNVw0rgLLBkPO2fVywIgxicFAW9S3d7RanAC3OtZOx7HW8skp8NJkDDqWulj
-beRtnVeyLU09aRKQ6toPDHy+yHtc0gvdcmwLG0esTl86fY8MUXfT2MRnYDK+amuuNHAMXBWgXroB
-vukrN8lXUXNx4bvM4SmR6N05WK8ADxIMewehOvepAq2N83fhHov8y/Xo2WMc50qHFne2p9/VEFd3
-nQ==
---000000000000698fa505d5ff358b--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAFR32UWpILnAN8HA9e92KaAAZsIi5kE39IlXm
+n+sCMWZaqEOub4/JOD3pWt4qEaDml92H0t0S0gC2aC0Tv2WWVTnwyOLPGPc5tnCXG5CU8l2UwR/p
+QwOgcRcYX4PhODVZ3zKpUEmtsJFXVGDSL578ADLwZ3vsKePObgC6pX80h4LNQpeKT2MJFzxmXjSe
+bp9O+iu3meFbJb4t8WGM0vgzv3Vnw4/QZIRVIscg5b/xi1WMoELe0y1tGK1gz5zMpz7w1x1YrE2w
+psPq7G1EmEz8VP5iqxBn4mNxtRg30KkU2om2AIVGiQ2Q/mTEg9Ewn3Yq5Cc11+D5ahpd10J8RTgn
+kA==
+--0000000000002722ac05d5ff4d01--
