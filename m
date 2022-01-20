@@ -2,114 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E232494726
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jan 2022 07:13:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5492849484E
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jan 2022 08:32:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358672AbiATGNX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jan 2022 01:13:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59436 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbiATGNW (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jan 2022 01:13:22 -0500
-Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82BBAC061574;
-        Wed, 19 Jan 2022 22:13:22 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id E5C2F4246A;
-        Thu, 20 Jan 2022 06:13:13 +0000 (UTC)
-Subject: Re: [PATCH v3 3/9] brcmfmac: firmware: Do not crash on a NULL
- board_type
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220117142919.207370-1-marcan@marcan.st>
- <20220117142919.207370-4-marcan@marcan.st>
- <CAHp75VfZ+thU+AWeOQSC9Dqq3MO+GMb_8oPxqMEbaxYTH0PH5A@mail.gmail.com>
-From:   Hector Martin <marcan@marcan.st>
-Message-ID: <d3d46724-6e36-95d1-b614-90ac1811f672@marcan.st>
-Date:   Thu, 20 Jan 2022 15:13:11 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S1359021AbiATHb5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jan 2022 02:31:57 -0500
+Received: from mga17.intel.com ([192.55.52.151]:39039 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1359009AbiATHb5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 20 Jan 2022 02:31:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1642663917; x=1674199917;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7VYqLA8ntt7Lp1slrzIzKJovESqU7n1mPeZ9Fqm4IB8=;
+  b=V+cI2lBg588Kf45OyAZ/EXUzXnORV8Fl5g0IjPBpgvsTM1OFrWuYwOy6
+   YVcyqmW2knOC2BlOCZuc711ZnjXIujGH8t0YKysD7bmg6r0BgUwxaktpx
+   PXWBEH2oc/wmY2835KDBcp9RURalCprhMpHYVu/aR0rgnqOyB91CjCtbb
+   QSjpu2TXMaBdX2D/cYuhtsQhCJlOT86618yEmWdThZJ47Yz8v8urNnbBL
+   o/FDArcyUfZSICs9E/LB/29pVT4cFf7f9OYfQebF0RJpwvDycWbSMk7pk
+   KGg8cUeMEktsYEFYTBbjv1HLIOrcyEXDOXbxh9gfdNYFU46pmJNVCBvO7
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10232"; a="225963657"
+X-IronPort-AV: E=Sophos;i="5.88,301,1635231600"; 
+   d="scan'208";a="225963657"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2022 23:31:56 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,301,1635231600"; 
+   d="scan'208";a="475430889"
+Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 19 Jan 2022 23:31:53 -0800
+Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nARvE-000E73-RZ; Thu, 20 Jan 2022 07:31:52 +0000
+Date:   Thu, 20 Jan 2022 15:31:39 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Alexander Aring <alex.aring@gmail.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        linux-wpan@vger.kernel.org
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Xue Liu <liuxuenetmail@gmail.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Harry Morris <harrymorris12@gmail.com>,
+        David Girault <david.girault@qorvo.com>
+Subject: Re: [wpan-next 5/9] net: ieee802154: ca8210: Stop leaking skb's
+Message-ID: <202201201557.38baVRVX-lkp@intel.com>
+References: <20220120003645.308498-6-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VfZ+thU+AWeOQSC9Dqq3MO+GMb_8oPxqMEbaxYTH0PH5A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: es-ES
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220120003645.308498-6-miquel.raynal@bootlin.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 20/01/2022 06.45, Andy Shevchenko wrote:
-> On Mon, Jan 17, 2022 at 4:30 PM Hector Martin <marcan@marcan.st> wrote:
->>
->> This unbreaks support for USB devices, which do not have a board_type
->> to create an alt_path out of and thus were running into a NULL
->> dereference.
-> 
-> In v5.16 we have two call sites:
-> 
-> 1.
->   if (cur->type == BRCMF_FW_TYPE_NVRAM && fwctx->req->board_type) {
->     ...
->     alt_path = brcm_alt_fw_path(cur->path, fwctx->req->board_type);
-> 
-> 2.
->   alt_path = brcm_alt_fw_path(first->path, fwctx->req->board_type);
->   if (alt_path) {
->     ...
-> 
-> Looking at them I would rather expect to see (as a quick fix, the
-> better solution is to unify those call sites by splitting out a common
-> helper):
-> 
->   if (fwctx->req->board_type) {
->     alt_path = brcm_alt_fw_path(first->path, fwctx->req->board_type);
->   else
->     alt_path = NULL;
->    ...
-> 
+Hi Miquel,
 
-Since brcm_alt_fw_path can fail anyway, and its return value is already
-NULL-checked, it makes sense to propagate the NULL board_path there
-rather than doing it at all the callsites. That's a common pattern, e.g.
-the entire DT API is designed to accept NULL nodes. That does mean that
-the first callsite has a redundant NULL check, yes, but that doesn't hurt.
+I love your patch! Yet something to improve:
 
-This is all going to change with subsequent patches anyway; the point of
-this patch is just to fix the regression.
+[auto build test ERROR on linus/master]
+[also build test ERROR on v5.16 next-20220120]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
--- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+url:    https://github.com/0day-ci/linux/commits/Miquel-Raynal/ieee802154-A-bunch-of-fixes/20220120-083906
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 1d1df41c5a33359a00e919d54eaebfb789711fdc
+config: i386-randconfig-a013 (https://download.01.org/0day-ci/archive/20220120/202201201557.38baVRVX-lkp@intel.com/config)
+compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project f7b7138a62648f4019c55e4671682af1f851f295)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/77d3026b30aff560ef269d03aecc09f8c46a9173
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Miquel-Raynal/ieee802154-A-bunch-of-fixes/20220120-083906
+        git checkout 77d3026b30aff560ef269d03aecc09f8c46a9173
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/net/ieee802154/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+>> drivers/net/ieee802154/ca8210.c:1775:22: error: use of undeclared identifier 'atusb'
+                           dev_kfree_skb_any(atusb->tx_skb);
+                                             ^
+   1 error generated.
+
+
+vim +/atusb +1775 drivers/net/ieee802154/ca8210.c
+
+  1737	
+  1738	/**
+  1739	 * ca8210_async_xmit_complete() - Called to announce that an asynchronous
+  1740	 *                                transmission has finished
+  1741	 * @hw:          ieee802154_hw of ca8210 that has finished exchange
+  1742	 * @msduhandle:  Identifier of transmission that has completed
+  1743	 * @status:      Returned 802.15.4 status code of the transmission
+  1744	 *
+  1745	 * Return: 0 or linux error code
+  1746	 */
+  1747	static int ca8210_async_xmit_complete(
+  1748		struct ieee802154_hw  *hw,
+  1749		u8                     msduhandle,
+  1750		u8                     status)
+  1751	{
+  1752		struct ca8210_priv *priv = hw->priv;
+  1753	
+  1754		if (priv->nextmsduhandle != msduhandle) {
+  1755			dev_err(
+  1756				&priv->spi->dev,
+  1757				"Unexpected msdu_handle on data confirm, Expected %d, got %d\n",
+  1758				priv->nextmsduhandle,
+  1759				msduhandle
+  1760			);
+  1761			return -EIO;
+  1762		}
+  1763	
+  1764		priv->async_tx_pending = false;
+  1765		priv->nextmsduhandle++;
+  1766	
+  1767		if (status) {
+  1768			dev_err(
+  1769				&priv->spi->dev,
+  1770				"Link transmission unsuccessful, status = %d\n",
+  1771				status
+  1772			);
+  1773			if (status != MAC_TRANSACTION_OVERFLOW) {
+  1774				ieee802154_wake_queue(priv->hw);
+> 1775				dev_kfree_skb_any(atusb->tx_skb);
+  1776				return 0;
+  1777			}
+  1778		}
+  1779		ieee802154_xmit_complete(priv->hw, priv->tx_skb, true);
+  1780	
+  1781		return 0;
+  1782	}
+  1783	
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
