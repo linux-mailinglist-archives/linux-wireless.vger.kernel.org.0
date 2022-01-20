@@ -2,58 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B9D6494971
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jan 2022 09:29:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BDF3494A07
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jan 2022 09:50:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359168AbiATI3p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jan 2022 03:29:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33560 "EHLO
+        id S241181AbiATIuB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jan 2022 03:50:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359205AbiATI3c (ORCPT
+        with ESMTP id S241068AbiATIuA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jan 2022 03:29:32 -0500
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98082C06173F
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 00:29:31 -0800 (PST)
-Received: by mail-pf1-x42e.google.com with SMTP id 128so4687966pfe.12
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 00:29:31 -0800 (PST)
+        Thu, 20 Jan 2022 03:50:00 -0500
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 626C4C061748
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 00:50:00 -0800 (PST)
+Received: by mail-pg1-x532.google.com with SMTP id 188so5043348pgf.1
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 00:50:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:to:cc:references
-         :from:in-reply-to;
-        bh=qXQPVTCTGEvJfoO2/gNN3rTA7IMTEONWbqS8CMbUJhw=;
-        b=SLbt5Q1/hD3e/Ree+7fHMzCJtR/Hk4/lvTFU4i6LWDf5WugwHOzV6py31nmazywyc1
-         EcgBjczC78It1+ghrGnGWiX3mdRfs6gUTZmaQhV8oG2KC7e1m+y+Niwl8kwPveLPrkdQ
-         06LwkIEuA68ybdUVvXsLJ1CJ7+UX6xeJNzGJE=
+        h=message-id:date:mime-version:user-agent:subject:from:to:cc
+         :references:in-reply-to;
+        bh=VZAbPlDlytIhvZpSOS/LX9fkdhKe9fJ/j6HWmWLfPRk=;
+        b=dZlZ6YVNMAKh/N6Qc70FjCD3QxzrKVY49B63lzISVRoyja3VRT85iQNI81ImGjQFCb
+         8J+ub+I72aG3RH5sqoUVkN9hAI78bn4rSHBxjLHOoAdQXj1o/eszRMuwuuUedpKNYbJd
+         HK+lz5MSkpUkJxw/PAjale+FPZr7L0+93yczY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :to:cc:references:from:in-reply-to;
-        bh=qXQPVTCTGEvJfoO2/gNN3rTA7IMTEONWbqS8CMbUJhw=;
-        b=GutXgMl7KNPvTfi4zhbCyGoM+KgMhHTCQpdyk44Mxysg18ECRcXLi4RUu1rgs3SYwb
-         ZN4eyJbiLM10zeCoLsZKv155C2K5rqBKhEN/MpuLU5/UOMrjszfWAKzNKR2sSC9PXh8T
-         0IjL1SPFgL70k2HrPcUznm/i+SCedbrGy67jWFwNjPkWe55nEjOARvDYQlV7+6GvlnDq
-         xn694BngBSnP50iiJRzSZ+0jajKiTmOwx0JYmC1RMHk9H5NG8yx1+SQBH2yV/Hwq5vbB
-         mc1z14vZ6sldj1s/fbgOCRcvPl1L8z8ekx/LIHbneKrADVP9Jc5yhYwfNnJ2r8ISGp+z
-         /YnA==
-X-Gm-Message-State: AOAM531zJTN5tVRraCAMyc5SC/6+PlClTbX295E303rJ9Dmaw7TIlto1
-        DY4N6ASvGuwm0lXNLocLgYrg0A==
-X-Google-Smtp-Source: ABdhPJzlRQMP+xrlhuJ01dsfu5oWtmnjFXHj3Z7RoOhyWsg64pmz2NxjLzTathH/pSmYgK/U3/WrHw==
-X-Received: by 2002:a05:6a00:2186:b0:4c6:50ea:6701 with SMTP id h6-20020a056a00218600b004c650ea6701mr1623555pfi.12.1642667371020;
-        Thu, 20 Jan 2022 00:29:31 -0800 (PST)
+         :from:to:cc:references:in-reply-to;
+        bh=VZAbPlDlytIhvZpSOS/LX9fkdhKe9fJ/j6HWmWLfPRk=;
+        b=q8by98+fqHmY2gRZNh0+NYsFejm1tr4NEzsJoyuOPyosZsxoEAk4WQChiP+XqTHK8x
+         acSkYK+PObn1XhWOI92aggWOEYBCmH6NFt9NfvWfKZ/fO8N8UswQP3BFsU8+JUHLzC0L
+         PXMfTnQXK4MyHoWGyaJShmLN4nO+zRBso0G/aH4tBaI5qcSyH/eLlRf8lDStcz3CcYvG
+         pgNMSUMwFcMxW+XEmKRi6tvoYnFI1CZAkuPqACQRu6S0UMa8XCxDMj7h3Oeh3THA6WRF
+         juYXd+F8Ne7WMco1vC81hHJDcpAHqxGGDeuE8mEb3fa86OAMXye1eVUwxUKCRt1STbRJ
+         35BA==
+X-Gm-Message-State: AOAM530CTELM91IxdoCLR3h5C0oMajyDuP3xsUz0kn+0KamJUk8+Td1u
+        GTkaBFlJNtiZJP3EkGXQ/Yo+xQ==
+X-Google-Smtp-Source: ABdhPJzRWJsMfvdfUAnYf4q27etILPp3I11aDeBOPRbNvvn2QQ381bSHVUPeO8o557XlWnBQ/1Tvng==
+X-Received: by 2002:a62:f90a:0:b0:4c6:7794:6f29 with SMTP id o10-20020a62f90a000000b004c677946f29mr880153pfh.1.1642668599772;
+        Thu, 20 Jan 2022 00:49:59 -0800 (PST)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id g2sm2264068pfc.109.2022.01.20.00.29.23
+        by smtp.gmail.com with ESMTPSA id d12sm2343441pfl.24.2022.01.20.00.49.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jan 2022 00:29:29 -0800 (PST)
-Message-ID: <9db96f20-38fb-46e0-5f33-e5cd36501bf0@broadcom.com>
-Date:   Thu, 20 Jan 2022 09:29:21 +0100
+        Thu, 20 Jan 2022 00:49:58 -0800 (PST)
+Message-ID: <5d949e1f-63f8-3dde-a7d0-1eab5d3030ec@broadcom.com>
+Date:   Thu, 20 Jan 2022 09:49:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH v3 3/9] brcmfmac: firmware: Do not crash on a NULL
- board_type
-To:     Dmitry Osipenko <digetx@gmail.com>,
-        Hector Martin <marcan@marcan.st>,
+Subject: Re: [PATCH v2 22/35] brcmfmac: chip: Handle 1024-unit sizes for TCM
+ blocks
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+To:     Hector Martin <marcan@marcan.st>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -63,8 +63,8 @@ To:     Dmitry Osipenko <digetx@gmail.com>,
         Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>
 Cc:     Sven Peter <sven@svenpeter.dev>,
         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
         Mark Kettenis <kettenis@openbsd.org>,
@@ -79,44 +79,101 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
-References: <20220117142919.207370-1-marcan@marcan.st>
- <20220117142919.207370-4-marcan@marcan.st>
- <be66ea27-c98a-68d3-40b1-f79ab62460d5@gmail.com>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <be66ea27-c98a-68d3-40b1-f79ab62460d5@gmail.com>
+References: <20220104072658.69756-1-marcan@marcan.st>
+ <20220104072658.69756-23-marcan@marcan.st>
+ <ed387a90-586d-5071-baa6-bc66d4e7f22f@broadcom.com>
+In-Reply-To: <ed387a90-586d-5071-baa6-bc66d4e7f22f@broadcom.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000002722ac05d5ff4d01"
+        boundary="00000000000064ae7205d5ff96ea"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000002722ac05d5ff4d01
+--00000000000064ae7205d5ff96ea
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 1/19/2022 11:02 PM, Dmitry Osipenko wrote:
-> 17.01.2022 17:29, Hector Martin пишет:
->> This unbreaks support for USB devices, which do not have a board_type
->> to create an alt_path out of and thus were running into a NULL
->> dereference.
->>
->> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
+On 1/19/2022 1:36 PM, Arend van Spriel wrote:
+> On 1/4/2022 8:26 AM, Hector Martin wrote:
+>> BCM4387 has trailing odd-sized blocks as part of TCM which have
+>> their size described as a multiple of 1024 instead of 8192. Handle this
+>> so we can compute the TCM size properly.
+
+So that is the deal. Wish someone over here told me about that :-p Gave 
+my blessing already, but do have some remarks.
+
+> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 >> Signed-off-by: Hector Martin <marcan@marcan.st>
+>> ---
+>>   .../wireless/broadcom/brcm80211/brcmfmac/chip.c | 17 ++++++++++++-----
+>>   1 file changed, 12 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c 
+>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+>> index 713546cebd5a..cfa93e3ef1a1 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+>> @@ -212,8 +212,8 @@ struct sbsocramregs {
+>>   #define    ARMCR4_TCBANB_MASK    0xf
+>>   #define    ARMCR4_TCBANB_SHIFT    0
+>> -#define    ARMCR4_BSZ_MASK        0x3f
+>> -#define    ARMCR4_BSZ_MULT        8192
+
+Instead of deleting can we leave it here and...
+
+>> +#define    ARMCR4_BSZ_MASK        0x7f
+>> +#define    ARMCR4_BLK_1K_MASK    0x200
+>>   struct brcmf_core_priv {
+>>       struct brcmf_core pub;
+>> @@ -675,7 +675,8 @@ static u32 brcmf_chip_sysmem_ramsize(struct 
+>> brcmf_core_priv *sysmem)
+>>   }
+>>   /** Return the TCM-RAM size of the ARMCR4 core. */
+>> -static u32 brcmf_chip_tcm_ramsize(struct brcmf_core_priv *cr4)
+>> +static u32 brcmf_chip_tcm_ramsize(struct brcmf_chip_priv *ci,
+>> +                  struct brcmf_core_priv *cr4)
 > 
-> Technically, all patches that are intended to be included into next
-> stable kernel update require the "Cc: stable@vger.kernel.org" tag.
+> Not sure why you add ci parameter here. It is not used below or am I 
+> overlooking something.
+> 
+>>   {
+>>       u32 corecap;
+>>       u32 memsize = 0;
+>> @@ -683,6 +684,7 @@ static u32 brcmf_chip_tcm_ramsize(struct 
+>> brcmf_core_priv *cr4)
+>>       u32 nbb;
+>>       u32 totb;
+>>       u32 bxinfo;
+>> +    u32 blksize;
+>>       u32 idx;
+>>       corecap = brcmf_chip_core_read32(cr4, ARMCR4_CAP);
+>> @@ -694,7 +696,12 @@ static u32 brcmf_chip_tcm_ramsize(struct 
+>> brcmf_core_priv *cr4)
+>>       for (idx = 0; idx < totb; idx++) {
+>>           brcmf_chip_core_write32(cr4, ARMCR4_BANKIDX, idx);
+>>           bxinfo = brcmf_chip_core_read32(cr4, ARMCR4_BANKINFO);
+>> -        memsize += ((bxinfo & ARMCR4_BSZ_MASK) + 1) * ARMCR4_BSZ_MULT;
+>> +        if (bxinfo & ARMCR4_BLK_1K_MASK)
+>> +            blksize = 1024;
+>> +        else
+>> +            blksize = 8192;
 
-Being the nit picker that I am I would say it is recommended to safe 
-yourself extra work, not required, for the reason you give below.
+... do following here instead:
 
-> In practice such patches usually auto-picked by the patch bot, so no
-> need to resend.
+		blksize = 8192;
+		if (bxinfo & ARMCR4_BLK_1K_MASK)
+			blksize >>= 3;
 
-Regards,
-Arend
+[not sure if mailreader is screwing with indentation or what]
 
---0000000000002722ac05d5ff4d01
+>> +
+>> +        memsize += ((bxinfo & ARMCR4_BSZ_MASK) + 1) * blksize;
+>>       }
+>>       return memsize;
+
+--00000000000064ae7205d5ff96ea
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -187,14 +244,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDswaLyaz4RhCNyGBrs
-oaX6XrZ1Pa6p7M08uBcr98nWOTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMjAwODI5MzFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCB2nE0rhkk2CtfnkMV4
+c7aze/vK7ws5UFitWRLkfEYbCzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMjAwODUwMDBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAFR32UWpILnAN8HA9e92KaAAZsIi5kE39IlXm
-n+sCMWZaqEOub4/JOD3pWt4qEaDml92H0t0S0gC2aC0Tv2WWVTnwyOLPGPc5tnCXG5CU8l2UwR/p
-QwOgcRcYX4PhODVZ3zKpUEmtsJFXVGDSL578ADLwZ3vsKePObgC6pX80h4LNQpeKT2MJFzxmXjSe
-bp9O+iu3meFbJb4t8WGM0vgzv3Vnw4/QZIRVIscg5b/xi1WMoELe0y1tGK1gz5zMpz7w1x1YrE2w
-psPq7G1EmEz8VP5iqxBn4mNxtRg30KkU2om2AIVGiQ2Q/mTEg9Ewn3Yq5Cc11+D5ahpd10J8RTgn
-kA==
---0000000000002722ac05d5ff4d01--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEACmVSJkdKWWA5HYFhU0iRAzqDaNzfohi92kxm
+anAzxLhPgR8EC6lm27ke/z78hv9EaD4bcTuPccnHfLq4RHDlNRhQgAVUTA8nzIXdbelttXXYGe4l
+sgtffZz/KoKdnGSs22l8pTJqSSKlQLrGaCcBmO3dyXOjB6j3QDKn4IQ+zFgly8aFCsjEGHcz+iAr
+DLIdYxza4kPDE9PdK4zcbfH3zRi/fhZmUxJS3Egi/74dKApI+eBV2lPf3x6DM8aNbWcZrKFXThB+
+DSyT/u4P9uxNatLQmUYVjjaIymz34nqLY5pIDaiMWBjUVm5iLwqyyNSE0zvHkvReAHo3w6LbCXv7
+Yw==
+--00000000000064ae7205d5ff96ea--
