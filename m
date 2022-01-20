@@ -2,101 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D33BD494EC6
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jan 2022 14:19:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68C68494EC7
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jan 2022 14:19:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359696AbiATNTC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jan 2022 08:19:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44172 "EHLO
+        id S1359763AbiATNTG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jan 2022 08:19:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230246AbiATNTC (ORCPT
+        with ESMTP id S1359707AbiATNTF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jan 2022 08:19:02 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4619C061574;
-        Thu, 20 Jan 2022 05:19:01 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 741E8616CD;
-        Thu, 20 Jan 2022 13:19:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F91C340E0;
-        Thu, 20 Jan 2022 13:19:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642684740;
-        bh=svWuVG30BEbWofm+H5ZH2UveapXX1u96Z7k+t8gonX8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=L/cqcdMCrpDBKsk9PhsEB2TjyNuMsFnmxVWqSKRpMbzgqSjojN1QMih90Bnkwi6Ll
-         IcRv7autdVnJLFFLSHWJBlcbqGXGVPBNQdePo3ozjszq8MyEaHou96DLa/xV3DJn44
-         IYRDVvf3D6H9WFJ3Co2fKjBTS3DV2YqKomp8+Qiav2gC8u3orAy/B/2Lfg4d2bb5G7
-         Om4DqwwRjrZ2SpRrryNaNm1z7HolnR/nzYf6r0XIz3VLXjcyx8PsrCk0+V/bEBYstf
-         s+6Iami6AQqAYGEOzSM7LWcck5ZCKp+LFs9s6Gx1NszGfI2nas6bz0NpmDM7uJ4Y4z
-         CK84V/ys+KzIg==
-Date:   Thu, 20 Jan 2022 14:18:56 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
-        linux-wireless@vger.kernel.org, ryder.lee@mediatek.com,
-        evelyn.tsai@mediatek.com, owen.peng@mediatek.com,
-        devicetree@vger.kernel.org, robh@kernel.org
-Subject: Re: [PATCH v2 6/6] dt-bindings:net:wireless:mediatek,mt76: add
- disable-radar-offchan
-Message-ID: <YelhQGs6MW3W13Ni@lore-desk>
-References: <cover.1642009736.git.lorenzo@kernel.org>
- <221dab8bcc95160652e608def16d822da78717bd.1642009736.git.lorenzo@kernel.org>
- <87v8yeimqz.fsf@tynnyri.adurom.net>
+        Thu, 20 Jan 2022 08:19:05 -0500
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA419C061574
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 05:19:05 -0800 (PST)
+Received: by mail-pf1-x444.google.com with SMTP id v74so2285374pfc.1
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 05:19:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=IXqvwbQwGPRtc7mi3VIWBFM5qIiXUslFOZQRwnbJrD8=;
+        b=C5wjQoh3N7meLcNlWOuowxdcd6KV+q7wmqPyZ2EHS3gXIERe6pKL9OPsnz1lHJKvOG
+         PxqmZmkqygirfm07fpO921ghFJ5B2RLDnXfPOaxDVWc2dpMBey5azrJED8IynoZyu/6x
+         aj5QbMFKDR2IbSOT4fMjeLcHiBIoaFLBpSavwQQce0QFYecJkdplpXv2GyGGnnZpTQYs
+         bJfQHBFfue44KtsegM1AJbruEpakaO5joptZuh8Ed0rkP1OMe3CT+Vjkdt1OY7uwi94v
+         8RTjy9rDxwX02C0/UhTcHkoIPVGSYzYY+FMpGTSYfg1ulqptd0QP/kxEBfX6ZsfIkiF4
+         VevQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=IXqvwbQwGPRtc7mi3VIWBFM5qIiXUslFOZQRwnbJrD8=;
+        b=UdeCuGfP2xyGtrNBflWyZy4nT4E+hI1FIC89PaQGcCh+0Rcpj1VeePZWaEnFQTdeAV
+         5xRGe0w3uH0G5IFxHwp19kIS9cat+DrCxlyXBwNOwFOtoXSeu0zlu1MdHL08Q7CKHJZ5
+         T+29mjgYnxACV8HBhPgLPQa86d1PudTqyYR9ePdP6DmLe0JGxmLxm6oXdIEXiCrRKb7+
+         QcAJ8SJXZDCaIcp4ZGudrvgWMNcQ+DR2Op05msR0Lqh0fi9X1B96K8OIEGq9stdyX1tt
+         rKo6tMZ0HAGaMQ2NuQs327KooKfItmUuddfxz3nJg5MJaSxhuTxZsz/USUzRIoKQFAz5
+         u06A==
+X-Gm-Message-State: AOAM532i6UiUPQs/YI2jNSPDLok8kW8gLESd+3FX6WoQKCs3mx7iuvAh
+        O3x/aiTqOiXY/dVcvUyvLrD2HwahlFSBHA8c6lM=
+X-Google-Smtp-Source: ABdhPJwyGcYQarj5bfJ7HVqL/wdsfzC6ATHpuF1RJxIRlPC4O6IOJoMCiNPhQqlld6X4ie20Iy9ExyJNbDUkJrY4cl8=
+X-Received: by 2002:a63:a846:: with SMTP id i6mr31905006pgp.317.1642684745194;
+ Thu, 20 Jan 2022 05:19:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="tNMthz8N4ZRQ07eP"
-Content-Disposition: inline
-In-Reply-To: <87v8yeimqz.fsf@tynnyri.adurom.net>
+Received: by 2002:a05:6a10:8c17:0:0:0:0 with HTTP; Thu, 20 Jan 2022 05:19:04
+ -0800 (PST)
+Reply-To: wijh555@gmail.com
+From:   "Mrs. Rose Godwin" <rosegodwin1999@gmail.com>
+Date:   Thu, 20 Jan 2022 05:19:04 -0800
+Message-ID: <CAL6LAtqWpUnJvf3P=DH6vD0uv3b4=qS2GwEMz5sycfgdo3MmXA@mail.gmail.com>
+Subject: Greetings,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+-- 
+Good Day,
+I'm Mrs. Rose Godwin, how are you doing hope you are in good health,
+the Board director try to reach you on phone several times Meanwhile,
+your number was not connecting. before he ask me to send you an email
+to hear from you if you are fine. hoping to hear from you soonest.
 
---tNMthz8N4ZRQ07eP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks
+Mrs. Rose Godwin,
 
-> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->=20
-> > Add the capability to disable/enable radar/CAC detection running on
-> > a dedicated offchannel chain available on some hw.
-> > Offchannel radar/CAC detection allows to avoid CAC downtime switching
-> > on a different channel during CAC detection on the selected radar
-> > channel.
-> >
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> >  .../devicetree/bindings/net/wireless/mediatek,mt76.yaml  | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
->=20
-> Was the recommendation so that devicetree binding patches should be
-> first in the patchset?
-
-ah, ok..I was not aware of it :)
-
-Regards,
-Lorenzo
-
->=20
-> --=20
-> https://patchwork.kernel.org/project/linux-wireless/list/
->=20
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
-
---tNMthz8N4ZRQ07eP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHQEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYelhQAAKCRA6cBh0uS2t
-rE+HAPY8PMr1c2yiGJQ/bAYsMCLVRL2b/BOTqN/J3UfAi34xAQC8Ht+EVzQopKZ3
-RZHgYXhJfCVQdqxoGlTS2MCMaTFxCA==
-=wh+F
------END PGP SIGNATURE-----
-
---tNMthz8N4ZRQ07eP--
+Sincerely
+Dr. Irene Lam
