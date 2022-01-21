@@ -2,188 +2,220 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF0F3495AE9
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 08:37:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91EE8495B50
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 08:56:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379082AbiAUHhi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jan 2022 02:37:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35446 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379123AbiAUHgd (ORCPT
+        id S1379195AbiAUH4w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jan 2022 02:56:52 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:49858 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1379201AbiAUH4Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jan 2022 02:36:33 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2307CC061762
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 23:36:24 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id u18so25158650edt.6
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 23:36:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=message-id:date:mime-version:user-agent:from:subject:to:cc
-         :references:in-reply-to;
-        bh=JJ7BWKUW2StM5vVRUOCe0sheiQUB1MYb6NnSODI5sHw=;
-        b=McwWi1u5Xk1oP5Vcur78TXrzi7da/cHOF/pqAmVwWg+pkNuOuZATfo+UDqjYwKxyYH
-         WusLvPdPNGxzPUtwcl0xDweo4NbkVG5U4ZUXJFWzCBCdSUp9LMMfQasYh24Pp9d5TwcS
-         Uia9fPQWAwz/KM8x0uoixQ7JyQOO8FXL/bhcQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:from
-         :subject:to:cc:references:in-reply-to;
-        bh=JJ7BWKUW2StM5vVRUOCe0sheiQUB1MYb6NnSODI5sHw=;
-        b=Wany4nxjJHdsr5LN0rvs56c7ylX1BbYicwAWATq91zk4k5KArxyB3KdGAVEiGhQPyy
-         2acujDdPzPZywJD9u1rCcrm8bK2W2joMjka7/z5/ew6UF2rvI9zT6Ub8O91mEHKev4Um
-         gbAff0PRGiMOzw6eNJkKvQNHgYz3ZfUv3JzC4eW3Rg1zrNmwN0C6kkQE4xojSezvF2Ty
-         uNcRwYYsSRmgb0Km6z9slBKwnmIin3Rg773fY6f1vclubTh4FarRbc2Zoio9KMGaezmq
-         wNMYMH1v2jE0fM5+JaRNMCAF0Z6L8bRHYHWfUhyAKOa9CoA0Fi5QKFEG8IUngXsQgUew
-         iIrg==
-X-Gm-Message-State: AOAM531q9SJsILLt1PisxjH04cDullv23hzKI3RXkmSGc0Nxpl+hYoII
-        qCa9zJ8gg/aTNl4DCbLhGsRzvA==
-X-Google-Smtp-Source: ABdhPJyUItmsdTH/LQtJs7NyEKULw75Uy92CGnVTfKpsuCgJU+DVkECBulTfCThCeKYjyDTyNmWtLQ==
-X-Received: by 2002:a05:6402:518c:: with SMTP id q12mr3152860edd.312.1642750582647;
-        Thu, 20 Jan 2022 23:36:22 -0800 (PST)
-Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id h20sm1922056eds.9.2022.01.20.23.36.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jan 2022 23:36:21 -0800 (PST)
-Message-ID: <c1772c79-a84a-6115-61c3-f7655bfb9605@broadcom.com>
-Date:   Fri, 21 Jan 2022 08:36:20 +0100
+        Fri, 21 Jan 2022 02:56:24 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 20L7uCewD032211, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 20L7uCewD032211
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 21 Jan 2022 15:56:12 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Fri, 21 Jan 2022 15:56:12 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Fri, 21 Jan
+ 2022 15:56:11 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <timlee@realtek.com>,
+        <johnson.lin@realtek.com>
+Subject: [PATCH] rtw89: refine DIG feature to support 160M and CCK PD
+Date:   Fri, 21 Jan 2022 15:55:54 +0800
+Message-ID: <20220121075555.12457-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH v2 34/35] brcmfmac: pcie: Load and provide TxCap blobs
-To:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-35-marcan@marcan.st>
-In-Reply-To: <20220104072658.69756-35-marcan@marcan.st>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000f2b99d05d612accf"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 01/21/2022 07:30:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEvMjEgpFekyCAwNjowMDowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000f2b99d05d612accf
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Johnson Lin <johnson.lin@realtek.com>
 
-On 1/4/2022 8:26 AM, Hector Martin wrote:
-> These blobs are named .txcap_blob, and exist alongside the existing
-> .clm_blob files. Use the existing firmware machinery to provide them to
-> the core.
-> 
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-> ---
->   .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 13 +++++++++++++
->   1 file changed, 13 insertions(+)
+DIG, which is short for dynamic initial gain, is used to adjust gain to get
+good RX performance. CCK PD feature, a mechanism that adjusts 802.11b CCK
+packet detection(PD) power threshold based on environment noisy level in
+order to avoid false alarm. Also, refine related variable naming.
 
---000000000000f2b99d05d612accf
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+Signed-off-by: Johnson Lin <johnson.lin@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/core.c |  9 ++++++
+ drivers/net/wireless/realtek/rtw89/core.h |  1 +
+ drivers/net/wireless/realtek/rtw89/phy.c  | 34 ++++++++++++++++++-----
+ drivers/net/wireless/realtek/rtw89/phy.h  |  3 ++
+ drivers/net/wireless/realtek/rtw89/reg.h  |  4 +++
+ 5 files changed, 44 insertions(+), 7 deletions(-)
 
-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
-XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
-yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
-0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
-NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
-FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
-aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
-OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
-UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBp91NzsLczEjW5WU4r
-T8y5sX5ywQ0S6iDqLXmTzIXY6jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMjEwNzM2MjJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAFoYYVbbRoXpjc3Bk29oIXVwRQI0VQpoPCGJU
-LDK3BrTMKRW180n/aoqcNVG2oVgeR30Pow0pYDPTbl/JTL93eoE0R2gaZmZkPeA/f8L/+aMLdqxl
-AzXzI/GCqkQxZ7Ydm6JUkUD9kV741rwrvPEq9L19vrqA/Jv/BBST15aPK3iipGdxaP7C53EgO48V
-L4tmjWciAZwUNm0efwAj65AljYuA87LFXCs9v1ugoPlPBig7Vtt+KlLkhaNcK0NULVhAyDSrLMG1
-L67fU/cRBp7e9TJKxN3w/6rQrBW9azqFcFoSJ8Elgk+cn3HeA/oIEx61O8S7z0PPkbv1hiXA/anK
-KQ==
---000000000000f2b99d05d612accf--
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index a0737eea9f81d..6f7776c3c230a 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -2347,6 +2347,13 @@ static void rtw89_read_chip_ver(struct rtw89_dev *rtwdev)
+ 	rtwdev->hal.cv = cv;
+ }
+ 
++static void rtw89_core_setup_phycap(struct rtw89_dev *rtwdev)
++{
++	rtwdev->hal.support_cckpd =
++		!(rtwdev->chip->chip_id == RTL8852A && rtwdev->hal.cv <= CHIP_CBV) &&
++		!(rtwdev->chip->chip_id == RTL8852B && rtwdev->hal.cv <= CHIP_CAV);
++}
++
+ static int rtw89_chip_efuse_info_setup(struct rtw89_dev *rtwdev)
+ {
+ 	int ret;
+@@ -2367,6 +2374,8 @@ static int rtw89_chip_efuse_info_setup(struct rtw89_dev *rtwdev)
+ 	if (ret)
+ 		return ret;
+ 
++	rtw89_core_setup_phycap(rtwdev);
++
+ 	rtw89_mac_pwr_off(rtwdev);
+ 
+ 	return 0;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 7c84556ec4ada..ced97f2fa8527 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -2358,6 +2358,7 @@ struct rtw89_hal {
+ 	u32 antenna_rx;
+ 	u8 tx_nss;
+ 	u8 rx_nss;
++	bool support_cckpd;
+ };
+ 
+ #define RTW89_MAX_MAC_ID_NUM 128
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 147009888de04..e084eb978dbfc 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -2845,7 +2845,9 @@ static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev, u8 rssi,
+ 	enum rtw89_bandwidth cbw = rtwdev->hal.current_band_width;
+ 	struct rtw89_dig_info *dig = &rtwdev->dig;
+ 	u8 final_rssi = 0, under_region = dig->pd_low_th_ofst;
+-	u32 val = 0;
++	u8 ofdm_cca_th;
++	s8 cck_cca_th;
++	u32 pd_val = 0;
+ 
+ 	under_region += PD_TH_SB_FLTR_CMP_VAL;
+ 
+@@ -2856,6 +2858,9 @@ static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev, u8 rssi,
+ 	case RTW89_CHANNEL_WIDTH_80:
+ 		under_region += PD_TH_BW80_CMP_VAL;
+ 		break;
++	case RTW89_CHANNEL_WIDTH_160:
++		under_region += PD_TH_BW160_CMP_VAL;
++		break;
+ 	case RTW89_CHANNEL_WIDTH_20:
+ 		fallthrough;
+ 	default:
+@@ -2866,23 +2871,38 @@ static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev, u8 rssi,
+ 	dig->dyn_pd_th_max = dig->igi_rssi;
+ 
+ 	final_rssi = min_t(u8, rssi, dig->igi_rssi);
+-	final_rssi = clamp_t(u8, final_rssi, PD_TH_MIN_RSSI + under_region,
+-			     PD_TH_MAX_RSSI + under_region);
++	ofdm_cca_th = clamp_t(u8, final_rssi, PD_TH_MIN_RSSI + under_region,
++			      PD_TH_MAX_RSSI + under_region);
+ 
+ 	if (enable) {
+-		val = (final_rssi - under_region - PD_TH_MIN_RSSI) >> 1;
++		pd_val = (ofdm_cca_th - under_region - PD_TH_MIN_RSSI) >> 1;
+ 		rtw89_debug(rtwdev, RTW89_DBG_DIG,
+-			    "dyn_max=%d, final_rssi=%d, total=%d, PD_low=%d\n",
+-			    dig->igi_rssi, final_rssi, under_region, val);
++			    "igi=%d, ofdm_ccaTH=%d, backoff=%d, PD_low=%d\n",
++			    final_rssi, ofdm_cca_th, under_region, pd_val);
+ 	} else {
+ 		rtw89_debug(rtwdev, RTW89_DBG_DIG,
+ 			    "Dynamic PD th disabled, Set PD_low_bd=0\n");
+ 	}
+ 
+ 	rtw89_phy_write32_mask(rtwdev, R_SEG0R_PD, B_SEG0R_PD_LOWER_BOUND_MSK,
+-			       val);
++			       pd_val);
+ 	rtw89_phy_write32_mask(rtwdev, R_SEG0R_PD,
+ 			       B_SEG0R_PD_SPATIAL_REUSE_EN_MSK, enable);
++
++	if (!rtwdev->hal.support_cckpd)
++		return;
++
++	cck_cca_th = max_t(s8, final_rssi - under_region, CCKPD_TH_MIN_RSSI);
++	pd_val = (u32)(cck_cca_th - IGI_RSSI_MAX);
++
++	rtw89_debug(rtwdev, RTW89_DBG_DIG,
++		    "igi=%d, cck_ccaTH=%d, backoff=%d, cck_PD_low=((%d))dB\n",
++		    final_rssi, cck_cca_th, under_region, pd_val);
++
++	rtw89_phy_write32_mask(rtwdev, R_BMODE_PDTH_EN_V1,
++			       B_BMODE_PDTH_LIMIT_EN_MSK_V1, enable);
++	rtw89_phy_write32_mask(rtwdev, R_BMODE_PDTH_V1,
++			       B_BMODE_PDTH_LOWER_BOUND_MSK_V1, pd_val);
+ }
+ 
+ void rtw89_phy_dig_reset(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
+index b1f059b725a10..ab703b4000235 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.h
++++ b/drivers/net/wireless/realtek/rtw89/phy.h
+@@ -87,8 +87,11 @@
+ #define RXB_IDX_MAX 31
+ #define RXB_IDX_MIN 0
+ 
++#define IGI_RSSI_MAX 110
+ #define PD_TH_MAX_RSSI 70
+ #define PD_TH_MIN_RSSI 8
++#define CCKPD_TH_MIN_RSSI (-18)
++#define PD_TH_BW160_CMP_VAL 9
+ #define PD_TH_BW80_CMP_VAL 6
+ #define PD_TH_BW40_CMP_VAL 3
+ #define PD_TH_BW20_CMP_VAL 0
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index e0a416d37d0e8..96ba3c3a1e05e 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -1959,6 +1959,10 @@
+ #define R_CHBW_MOD 0x4978
+ #define B_CHBW_MOD_PRICH GENMASK(11, 8)
+ #define B_CHBW_MOD_SBW GENMASK(13, 12)
++#define R_BMODE_PDTH_V1 0x4B64
++#define B_BMODE_PDTH_LOWER_BOUND_MSK_V1 GENMASK(31, 24)
++#define R_BMODE_PDTH_EN_V1 0x4B74
++#define B_BMODE_PDTH_LIMIT_EN_MSK_V1 BIT(30)
+ #define R_CFO_COMP_SEG1_L 0x5384
+ #define R_CFO_COMP_SEG1_H 0x5388
+ #define R_CFO_COMP_SEG1_CTRL 0x538C
+-- 
+2.25.1
+
