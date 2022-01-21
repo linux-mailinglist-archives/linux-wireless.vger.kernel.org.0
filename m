@@ -2,38 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91EE8495B50
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 08:56:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 072F5495B4D
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 08:56:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379195AbiAUH4w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jan 2022 02:56:52 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:49858 "EHLO
+        id S1379283AbiAUH4n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jan 2022 02:56:43 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:49854 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379201AbiAUH4Y (ORCPT
+        with ESMTP id S1379298AbiAUH4W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jan 2022 02:56:24 -0500
+        Fri, 21 Jan 2022 02:56:22 -0500
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 20L7uCewD032211, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 20L7uCewD032211
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 20L7uFnbD032216, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 20L7uFnbD032216
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 21 Jan 2022 15:56:12 +0800
+        Fri, 21 Jan 2022 15:56:15 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Fri, 21 Jan 2022 15:56:12 +0800
+ 15.1.2375.17; Fri, 21 Jan 2022 15:56:14 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Fri, 21 Jan
- 2022 15:56:11 +0800
+ 2022 15:56:14 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <timlee@realtek.com>,
         <johnson.lin@realtek.com>
-Subject: [PATCH] rtw89: refine DIG feature to support 160M and CCK PD
-Date:   Fri, 21 Jan 2022 15:55:54 +0800
-Message-ID: <20220121075555.12457-1-pkshih@realtek.com>
+Subject: [PATCH] rtw89: use pci_read/write_config instead of dbi read/write
+Date:   Fri, 21 Jan 2022 15:55:55 +0800
+Message-ID: <20220121075555.12457-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220121075555.12457-1-pkshih@realtek.com>
+References: <20220121075555.12457-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -51,7 +53,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEvMjEgpFekyCAwNjowMDowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -59,163 +61,264 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johnson Lin <johnson.lin@realtek.com>
+From: Chin-Yen Lee <timlee@realtek.com>
 
-DIG, which is short for dynamic initial gain, is used to adjust gain to get
-good RX performance. CCK PD feature, a mechanism that adjusts 802.11b CCK
-packet detection(PD) power threshold based on environment noisy level in
-order to avoid false alarm. Also, refine related variable naming.
+In the past we use dbi function of wifi mac to read/write
+pci config space, but the function will be remove in new
+chip. So use kernel api pci_read/write_config_byte instead.
 
-Signed-off-by: Johnson Lin <johnson.lin@realtek.com>
+Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c |  9 ++++++
- drivers/net/wireless/realtek/rtw89/core.h |  1 +
- drivers/net/wireless/realtek/rtw89/phy.c  | 34 ++++++++++++++++++-----
- drivers/net/wireless/realtek/rtw89/phy.h  |  3 ++
- drivers/net/wireless/realtek/rtw89/reg.h  |  4 +++
- 5 files changed, 44 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtw89/pci.c | 128 ++++++++++-------------
+ 1 file changed, 53 insertions(+), 75 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index a0737eea9f81d..6f7776c3c230a 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2347,6 +2347,13 @@ static void rtw89_read_chip_ver(struct rtw89_dev *rtwdev)
- 	rtwdev->hal.cv = cv;
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 2c94762e4f930..8ca88134aa67c 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -1413,79 +1413,52 @@ static int rtw89_write16_mdio_clr(struct rtw89_dev *rtwdev, u8 addr, u16 mask, u
+ 	return 0;
  }
  
-+static void rtw89_core_setup_phycap(struct rtw89_dev *rtwdev)
-+{
-+	rtwdev->hal.support_cckpd =
-+		!(rtwdev->chip->chip_id == RTL8852A && rtwdev->hal.cv <= CHIP_CBV) &&
-+		!(rtwdev->chip->chip_id == RTL8852B && rtwdev->hal.cv <= CHIP_CAV);
-+}
-+
- static int rtw89_chip_efuse_info_setup(struct rtw89_dev *rtwdev)
+-static int rtw89_dbi_write8(struct rtw89_dev *rtwdev, u16 addr, u8 data)
++static int rtw89_pci_write_config_byte(struct rtw89_dev *rtwdev, u16 addr,
++				       u8 data)
  {
+-	u16 write_addr;
+-	u16 remainder = addr & ~(B_AX_DBI_ADDR_MSK | B_AX_DBI_WREN_MSK);
+-	u8 flag;
+-	int ret;
+-
+-	write_addr = addr & B_AX_DBI_ADDR_MSK;
+-	write_addr |= u16_encode_bits(BIT(remainder), B_AX_DBI_WREN_MSK);
+-	rtw89_write8(rtwdev, R_AX_DBI_WDATA + remainder, data);
+-	rtw89_write16(rtwdev, R_AX_DBI_FLAG, write_addr);
+-	rtw89_write8(rtwdev, R_AX_DBI_FLAG + 2, B_AX_DBI_WFLAG >> 16);
+-
+-	ret = read_poll_timeout_atomic(rtw89_read8, flag, !flag, 10,
+-				       10 * RTW89_PCI_WR_RETRY_CNT, false,
+-				       rtwdev, R_AX_DBI_FLAG + 2);
+-	if (ret)
+-		WARN(flag, "failed to write to DBI register, addr=0x%04x\n",
+-		     addr);
++	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
++	struct pci_dev *pdev = rtwpci->pdev;
+ 
+-	return ret;
++	return pci_write_config_byte(pdev, addr, data);
+ }
+ 
+-static int rtw89_dbi_read8(struct rtw89_dev *rtwdev, u16 addr, u8 *value)
++static int rtw89_pci_read_config_byte(struct rtw89_dev *rtwdev, u16 addr,
++				      u8 *value)
+ {
+-	u16 read_addr = addr & B_AX_DBI_ADDR_MSK;
+-	u8 flag;
+-	int ret;
+-
+-	rtw89_write16(rtwdev, R_AX_DBI_FLAG, read_addr);
+-	rtw89_write8(rtwdev, R_AX_DBI_FLAG + 2, B_AX_DBI_RFLAG >> 16);
+-
+-	ret = read_poll_timeout_atomic(rtw89_read8, flag, !flag, 10,
+-				       10 * RTW89_PCI_WR_RETRY_CNT, false,
+-				       rtwdev, R_AX_DBI_FLAG + 2);
+-
+-	if (!ret) {
+-		read_addr = R_AX_DBI_RDATA + (addr & 3);
+-		*value = rtw89_read8(rtwdev, read_addr);
+-	} else {
+-		WARN(1, "failed to read DBI register, addr=0x%04x\n", addr);
+-		ret = -EIO;
+-	}
++	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
++	struct pci_dev *pdev = rtwpci->pdev;
+ 
+-	return ret;
++	return pci_read_config_byte(pdev, addr, value);
+ }
+ 
+-static int rtw89_dbi_write8_set(struct rtw89_dev *rtwdev, u16 addr, u8 bit)
++static int rtw89_pci_config_byte_set(struct rtw89_dev *rtwdev, u16 addr,
++				     u8 bit)
+ {
+ 	u8 value;
  	int ret;
-@@ -2367,6 +2374,8 @@ static int rtw89_chip_efuse_info_setup(struct rtw89_dev *rtwdev)
+ 
+-	ret = rtw89_dbi_read8(rtwdev, addr, &value);
++	ret = rtw89_pci_read_config_byte(rtwdev, addr, &value);
  	if (ret)
  		return ret;
  
-+	rtw89_core_setup_phycap(rtwdev);
-+
- 	rtw89_mac_pwr_off(rtwdev);
+ 	value |= bit;
+-	ret = rtw89_dbi_write8(rtwdev, addr, value);
++	ret = rtw89_pci_write_config_byte(rtwdev, addr, value);
  
- 	return 0;
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 7c84556ec4ada..ced97f2fa8527 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2358,6 +2358,7 @@ struct rtw89_hal {
- 	u32 antenna_rx;
- 	u8 tx_nss;
- 	u8 rx_nss;
-+	bool support_cckpd;
- };
- 
- #define RTW89_MAX_MAC_ID_NUM 128
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 147009888de04..e084eb978dbfc 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -2845,7 +2845,9 @@ static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev, u8 rssi,
- 	enum rtw89_bandwidth cbw = rtwdev->hal.current_band_width;
- 	struct rtw89_dig_info *dig = &rtwdev->dig;
- 	u8 final_rssi = 0, under_region = dig->pd_low_th_ofst;
--	u32 val = 0;
-+	u8 ofdm_cca_th;
-+	s8 cck_cca_th;
-+	u32 pd_val = 0;
- 
- 	under_region += PD_TH_SB_FLTR_CMP_VAL;
- 
-@@ -2856,6 +2858,9 @@ static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev, u8 rssi,
- 	case RTW89_CHANNEL_WIDTH_80:
- 		under_region += PD_TH_BW80_CMP_VAL;
- 		break;
-+	case RTW89_CHANNEL_WIDTH_160:
-+		under_region += PD_TH_BW160_CMP_VAL;
-+		break;
- 	case RTW89_CHANNEL_WIDTH_20:
- 		fallthrough;
- 	default:
-@@ -2866,23 +2871,38 @@ static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev, u8 rssi,
- 	dig->dyn_pd_th_max = dig->igi_rssi;
- 
- 	final_rssi = min_t(u8, rssi, dig->igi_rssi);
--	final_rssi = clamp_t(u8, final_rssi, PD_TH_MIN_RSSI + under_region,
--			     PD_TH_MAX_RSSI + under_region);
-+	ofdm_cca_th = clamp_t(u8, final_rssi, PD_TH_MIN_RSSI + under_region,
-+			      PD_TH_MAX_RSSI + under_region);
- 
- 	if (enable) {
--		val = (final_rssi - under_region - PD_TH_MIN_RSSI) >> 1;
-+		pd_val = (ofdm_cca_th - under_region - PD_TH_MIN_RSSI) >> 1;
- 		rtw89_debug(rtwdev, RTW89_DBG_DIG,
--			    "dyn_max=%d, final_rssi=%d, total=%d, PD_low=%d\n",
--			    dig->igi_rssi, final_rssi, under_region, val);
-+			    "igi=%d, ofdm_ccaTH=%d, backoff=%d, PD_low=%d\n",
-+			    final_rssi, ofdm_cca_th, under_region, pd_val);
- 	} else {
- 		rtw89_debug(rtwdev, RTW89_DBG_DIG,
- 			    "Dynamic PD th disabled, Set PD_low_bd=0\n");
- 	}
- 
- 	rtw89_phy_write32_mask(rtwdev, R_SEG0R_PD, B_SEG0R_PD_LOWER_BOUND_MSK,
--			       val);
-+			       pd_val);
- 	rtw89_phy_write32_mask(rtwdev, R_SEG0R_PD,
- 			       B_SEG0R_PD_SPATIAL_REUSE_EN_MSK, enable);
-+
-+	if (!rtwdev->hal.support_cckpd)
-+		return;
-+
-+	cck_cca_th = max_t(s8, final_rssi - under_region, CCKPD_TH_MIN_RSSI);
-+	pd_val = (u32)(cck_cca_th - IGI_RSSI_MAX);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_DIG,
-+		    "igi=%d, cck_ccaTH=%d, backoff=%d, cck_PD_low=((%d))dB\n",
-+		    final_rssi, cck_cca_th, under_region, pd_val);
-+
-+	rtw89_phy_write32_mask(rtwdev, R_BMODE_PDTH_EN_V1,
-+			       B_BMODE_PDTH_LIMIT_EN_MSK_V1, enable);
-+	rtw89_phy_write32_mask(rtwdev, R_BMODE_PDTH_V1,
-+			       B_BMODE_PDTH_LOWER_BOUND_MSK_V1, pd_val);
+ 	return ret;
  }
  
- void rtw89_phy_dig_reset(struct rtw89_dev *rtwdev)
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index b1f059b725a10..ab703b4000235 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.h
-+++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -87,8 +87,11 @@
- #define RXB_IDX_MAX 31
- #define RXB_IDX_MIN 0
+-static int rtw89_dbi_write8_clr(struct rtw89_dev *rtwdev, u16 addr, u8 bit)
++static int rtw89_pci_config_byte_clr(struct rtw89_dev *rtwdev, u16 addr,
++				     u8 bit)
+ {
+ 	u8 value;
+ 	int ret;
  
-+#define IGI_RSSI_MAX 110
- #define PD_TH_MAX_RSSI 70
- #define PD_TH_MIN_RSSI 8
-+#define CCKPD_TH_MIN_RSSI (-18)
-+#define PD_TH_BW160_CMP_VAL 9
- #define PD_TH_BW80_CMP_VAL 6
- #define PD_TH_BW40_CMP_VAL 3
- #define PD_TH_BW20_CMP_VAL 0
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index e0a416d37d0e8..96ba3c3a1e05e 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -1959,6 +1959,10 @@
- #define R_CHBW_MOD 0x4978
- #define B_CHBW_MOD_PRICH GENMASK(11, 8)
- #define B_CHBW_MOD_SBW GENMASK(13, 12)
-+#define R_BMODE_PDTH_V1 0x4B64
-+#define B_BMODE_PDTH_LOWER_BOUND_MSK_V1 GENMASK(31, 24)
-+#define R_BMODE_PDTH_EN_V1 0x4B74
-+#define B_BMODE_PDTH_LIMIT_EN_MSK_V1 BIT(30)
- #define R_CFO_COMP_SEG1_L 0x5384
- #define R_CFO_COMP_SEG1_H 0x5388
- #define R_CFO_COMP_SEG1_CTRL 0x538C
+-	ret = rtw89_dbi_read8(rtwdev, addr, &value);
++	ret = rtw89_pci_read_config_byte(rtwdev, addr, &value);
+ 	if (ret)
+ 		return ret;
+ 
+ 	value &= ~bit;
+-	ret = rtw89_dbi_write8(rtwdev, addr, value);
++	ret = rtw89_pci_write_config_byte(rtwdev, addr, value);
+ 
+ 	return ret;
+ }
+@@ -1542,9 +1515,10 @@ static int rtw89_pci_auto_refclk_cal(struct rtw89_dev *rtwdev, bool autook_en)
+ 	    rtwdev->chip->chip_id == RTL8852C)
+ 		return 0;
+ 
+-	ret = rtw89_dbi_read8(rtwdev, RTW89_PCIE_PHY_RATE, &val8);
++	ret = rtw89_pci_read_config_byte(rtwdev, RTW89_PCIE_PHY_RATE, &val8);
+ 	if (ret) {
+-		rtw89_err(rtwdev, "[ERR]dbi_r8_pcie %X\n", RTW89_PCIE_PHY_RATE);
++		rtw89_err(rtwdev, "[ERR]pci config read %X\n",
++			  RTW89_PCIE_PHY_RATE);
+ 		return ret;
+ 	}
+ 
+@@ -1557,17 +1531,18 @@ static int rtw89_pci_auto_refclk_cal(struct rtw89_dev *rtwdev, bool autook_en)
+ 		return -EOPNOTSUPP;
+ 	}
+ 	/* Disable L1BD */
+-	ret = rtw89_dbi_read8(rtwdev, RTW89_PCIE_L1_CTRL, &bdr_ori);
++	ret = rtw89_pci_read_config_byte(rtwdev, RTW89_PCIE_L1_CTRL, &bdr_ori);
+ 	if (ret) {
+-		rtw89_err(rtwdev, "[ERR]dbi_r8_pcie %X\n", RTW89_PCIE_L1_CTRL);
++		rtw89_err(rtwdev, "[ERR]pci config read %X\n", RTW89_PCIE_L1_CTRL);
+ 		return ret;
+ 	}
+ 
+ 	if (bdr_ori & RTW89_PCIE_BIT_L1) {
+-		ret = rtw89_dbi_write8(rtwdev, RTW89_PCIE_L1_CTRL,
+-				       bdr_ori & ~RTW89_PCIE_BIT_L1);
++		ret = rtw89_pci_write_config_byte(rtwdev, RTW89_PCIE_L1_CTRL,
++						  bdr_ori & ~RTW89_PCIE_BIT_L1);
+ 		if (ret) {
+-			rtw89_err(rtwdev, "[ERR]dbi_w8_pcie %X\n", RTW89_PCIE_L1_CTRL);
++			rtw89_err(rtwdev, "[ERR]pci config write %X\n",
++				  RTW89_PCIE_L1_CTRL);
+ 			return ret;
+ 		}
+ 		l1_flag = true;
+@@ -1662,14 +1637,17 @@ static int rtw89_pci_auto_refclk_cal(struct rtw89_dev *rtwdev, bool autook_en)
+ 	}
+ 
+ 	/* CLK delay = 0 */
+-	ret = rtw89_dbi_write8(rtwdev, RTW89_PCIE_CLK_CTRL, PCIE_CLKDLY_HW_0);
++	ret = rtw89_pci_write_config_byte(rtwdev, RTW89_PCIE_CLK_CTRL,
++					  PCIE_CLKDLY_HW_0);
+ 
+ end:
+ 	/* Set L1BD to ori */
+ 	if (l1_flag) {
+-		ret = rtw89_dbi_write8(rtwdev, RTW89_PCIE_L1_CTRL, bdr_ori);
++		ret = rtw89_pci_write_config_byte(rtwdev, RTW89_PCIE_L1_CTRL,
++						  bdr_ori);
+ 		if (ret) {
+-			rtw89_err(rtwdev, "[ERR]dbi_w8_pcie %X\n", RTW89_PCIE_L1_CTRL);
++			rtw89_err(rtwdev, "[ERR]pci config write %X\n",
++				  RTW89_PCIE_L1_CTRL);
+ 			return ret;
+ 		}
+ 	}
+@@ -2552,17 +2530,17 @@ static void rtw89_pci_clkreq_set(struct rtw89_dev *rtwdev, bool enable)
+ 	if (rtw89_pci_disable_clkreq)
+ 		return;
+ 
+-	ret = rtw89_dbi_write8(rtwdev, RTW89_PCIE_CLK_CTRL,
+-			       PCIE_CLKDLY_HW_30US);
++	ret = rtw89_pci_write_config_byte(rtwdev, RTW89_PCIE_CLK_CTRL,
++					  PCIE_CLKDLY_HW_30US);
+ 	if (ret)
+ 		rtw89_err(rtwdev, "failed to set CLKREQ Delay\n");
+ 
+ 	if (enable)
+-		ret = rtw89_dbi_write8_set(rtwdev, RTW89_PCIE_L1_CTRL,
+-					   RTW89_PCIE_BIT_CLK);
++		ret = rtw89_pci_config_byte_set(rtwdev, RTW89_PCIE_L1_CTRL,
++						RTW89_PCIE_BIT_CLK);
+ 	else
+-		ret = rtw89_dbi_write8_clr(rtwdev, RTW89_PCIE_L1_CTRL,
+-					   RTW89_PCIE_BIT_CLK);
++		ret = rtw89_pci_config_byte_clr(rtwdev, RTW89_PCIE_L1_CTRL,
++						RTW89_PCIE_BIT_CLK);
+ 	if (ret)
+ 		rtw89_err(rtwdev, "failed to %s CLKREQ_L1, ret=%d",
+ 			  enable ? "set" : "unset", ret);
+@@ -2576,7 +2554,7 @@ static void rtw89_pci_aspm_set(struct rtw89_dev *rtwdev, bool enable)
+ 	if (rtw89_pci_disable_aspm_l1)
+ 		return;
+ 
+-	ret = rtw89_dbi_read8(rtwdev, RTW89_PCIE_ASPM_CTRL, &value);
++	ret = rtw89_pci_read_config_byte(rtwdev, RTW89_PCIE_ASPM_CTRL, &value);
+ 	if (ret)
+ 		rtw89_err(rtwdev, "failed to read ASPM Delay\n");
+ 
+@@ -2584,16 +2562,16 @@ static void rtw89_pci_aspm_set(struct rtw89_dev *rtwdev, bool enable)
+ 	value |= FIELD_PREP(RTW89_L1DLY_MASK, PCIE_L1DLY_16US) |
+ 		 FIELD_PREP(RTW89_L0DLY_MASK, PCIE_L0SDLY_4US);
+ 
+-	ret = rtw89_dbi_write8(rtwdev, RTW89_PCIE_ASPM_CTRL, value);
++	ret = rtw89_pci_write_config_byte(rtwdev, RTW89_PCIE_ASPM_CTRL, value);
+ 	if (ret)
+ 		rtw89_err(rtwdev, "failed to read ASPM Delay\n");
+ 
+ 	if (enable)
+-		ret = rtw89_dbi_write8_set(rtwdev, RTW89_PCIE_L1_CTRL,
+-					   RTW89_PCIE_BIT_L1);
++		ret = rtw89_pci_config_byte_set(rtwdev, RTW89_PCIE_L1_CTRL,
++						RTW89_PCIE_BIT_L1);
+ 	else
+-		ret = rtw89_dbi_write8_clr(rtwdev, RTW89_PCIE_L1_CTRL,
+-					   RTW89_PCIE_BIT_L1);
++		ret = rtw89_pci_config_byte_clr(rtwdev, RTW89_PCIE_L1_CTRL,
++						RTW89_PCIE_BIT_L1);
+ 	if (ret)
+ 		rtw89_err(rtwdev, "failed to %s ASPM L1, ret=%d",
+ 			  enable ? "set" : "unset", ret);
+@@ -2657,11 +2635,11 @@ static void rtw89_pci_l1ss_set(struct rtw89_dev *rtwdev, bool enable)
+ 	int ret;
+ 
+ 	if (enable)
+-		ret = rtw89_dbi_write8_set(rtwdev, RTW89_PCIE_TIMER_CTRL,
+-					   RTW89_PCIE_BIT_L1SUB);
++		ret = rtw89_pci_config_byte_set(rtwdev, RTW89_PCIE_TIMER_CTRL,
++						RTW89_PCIE_BIT_L1SUB);
+ 	else
+-		ret = rtw89_dbi_write8_clr(rtwdev, RTW89_PCIE_TIMER_CTRL,
+-					   RTW89_PCIE_BIT_L1SUB);
++		ret = rtw89_pci_config_byte_clr(rtwdev, RTW89_PCIE_TIMER_CTRL,
++						RTW89_PCIE_BIT_L1SUB);
+ 	if (ret)
+ 		rtw89_err(rtwdev, "failed to %s L1SS, ret=%d",
+ 			  enable ? "set" : "unset", ret);
+@@ -2878,10 +2856,10 @@ static void rtw89_pci_l2_hci_ldo(struct rtw89_dev *rtwdev)
+ 		return;
+ 
+ 	/* Hardware need write the reg twice to ensure the setting work */
+-	rtw89_dbi_write8_set(rtwdev, RTW89_PCIE_RST_MSTATE,
+-			     RTW89_PCIE_BIT_CFG_RST_MSTATE);
+-	rtw89_dbi_write8_set(rtwdev, RTW89_PCIE_RST_MSTATE,
+-			     RTW89_PCIE_BIT_CFG_RST_MSTATE);
++	rtw89_pci_write_config_byte(rtwdev, RTW89_PCIE_RST_MSTATE,
++				    RTW89_PCIE_BIT_CFG_RST_MSTATE);
++	rtw89_pci_write_config_byte(rtwdev, RTW89_PCIE_RST_MSTATE,
++				    RTW89_PCIE_BIT_CFG_RST_MSTATE);
+ }
+ 
+ static int __maybe_unused rtw89_pci_resume(struct device *dev)
 -- 
 2.25.1
 
