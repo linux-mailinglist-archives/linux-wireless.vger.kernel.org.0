@@ -2,114 +2,598 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 000944956FC
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 00:32:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B0924959F6
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 07:33:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348011AbiATXcN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jan 2022 18:32:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42362 "EHLO
+        id S1378706AbiAUGdt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jan 2022 01:33:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230472AbiATXcL (ORCPT
+        with ESMTP id S233954AbiAUGds (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jan 2022 18:32:11 -0500
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2177C061574;
-        Thu, 20 Jan 2022 15:32:10 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id o1-20020a1c4d01000000b0034d95625e1fso10830391wmh.4;
-        Thu, 20 Jan 2022 15:32:10 -0800 (PST)
+        Fri, 21 Jan 2022 01:33:48 -0500
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA5EDC061574
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 22:33:47 -0800 (PST)
+Received: by mail-lf1-x12e.google.com with SMTP id o12so30357112lfu.12
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 22:33:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ku131us7LM1bLPNHUn4NlF/H3MAWudsucRIvqzb+t0U=;
-        b=RCh+svdFNI+3mzm6phgDV94xNkZtas8GQAUQS0izpkY8fL+Tgar08HaGqVYio+P9Gv
-         AzTEas7Be/gqYJKM1+XsR9Ct3eJSbktM11HNo5y0o4HQWzmwzvfxQt+Mx5UNH4sRFxVI
-         rR3t5zp/anfF4cOQEqwfUmw7IZMkn6QFCht0fdp4ONetIC8kYJBTXahIkIkLRGKcUxBo
-         RcDeRTldpGY04IfE6O2tC7KvpmDxr+AD/sxmbyaKUGQ4V70s68KH7O3/suDpBYN9K7I0
-         cUKOaqXNUCezO/MOO8ptgnXGewzeDw+mfoJ5/bhDuY67W2eRXjdc5YYAhWJuqZ32Z11Z
-         oeTA==
+         :cc:content-transfer-encoding;
+        bh=apj9lP22BdJ0IafZPIW8s3bphYXxSWO2EHd6e7o/yYI=;
+        b=J6tuOHbG/RN36yY4xKdUtS3BLVRUAIJgdQK4cSbiLW+i+Mbx9YOoop2jn0Zp0bPJmM
+         hxRTXVC+TXpv3TH7NRnj4Vx6vPnzoXdQxXcK68XYXSWDF94YefcFwof0V3UxVaUJ/D61
+         w/Ae+VjM/awV2o8ZX2n1OhPidFfIyRUevL8pVqSLhni81X9k9tPhSfPgbS4vJ+qnogyF
+         TOOCVSFA8q1r+QUOEjyPgzfDvqw2rtp6fsoBtLKRhqNaQphHYAb+yZU4A31idM52e/Vj
+         LyYQlZUENdNeSPi9Opjszs5qDZDu/LkUaOBKoPOmV0svM8UqQONNaj1UyNFWsqtCtclH
+         SlCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ku131us7LM1bLPNHUn4NlF/H3MAWudsucRIvqzb+t0U=;
-        b=KRbUDWlv7SV6fWvs7o+m9NVY/MeDKgpe1dGMmkMzXVmFFIv5YC7Njqa/KLRg2jpV/N
-         9cwdLDc5u1uM42WrlQeAwld3uQ3Mk8URPhMdP5Lpeaa1gaic+i8GgEs5HrVlQyR2FLVL
-         Lwf6MFzGDtGjRJppPWOWNctIJlVHR2tdWnMnIDU74A4r9t9xYCz3zansMH7Hic68fMRH
-         vDrqq55qWiUvpXJvFx4G52B7Cz6653knodBzFtr6BfU76m3tufgPNrbI1qCNR9HdD0B2
-         kF34tIA6WgjgnXmoW6Iw5czAkPuvpoowuDhHxwk5WEUB9E5c+b3snl+FZs/DyHyzN53a
-         T1xg==
-X-Gm-Message-State: AOAM531XKSNABNMgP6p3vRD9FnYTOvIA/rv9OpDAeNg/Oh9V7QZ39pUb
-        oE1LWe2fMoZXrCTkaozf2b8m/3WLxljzkPZ/+Z0=
-X-Google-Smtp-Source: ABdhPJwNyl6HLMLMqcGIOI3yBtEuhjqlySjApZU0I3PG5Ozjv/EKC4ABOhw3y24Ao9cvt6VWjds4mEMmTV+yqDl3h5s=
-X-Received: by 2002:adf:e7c2:: with SMTP id e2mr1312302wrn.207.1642721529494;
- Thu, 20 Jan 2022 15:32:09 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=apj9lP22BdJ0IafZPIW8s3bphYXxSWO2EHd6e7o/yYI=;
+        b=mEtk76f3of+pLpoQtceRTrGRo7KNRJqDsnZLI3mnmjZ7in12BLjFuHMi1WVNFS4iGq
+         8CvZp0tZZo7+EgqwHV9be8RIhVtuwEU2lfQiVI7eNBwqksQfn7XXOlYK70/sCDRaWRuV
+         J6h3fiszTU2wYuK0NTpbsrNAYvu+108EokcbTg7T4ATw8T0fx1A4Bs2yCxUv3/oiGBo4
+         ZlJ8+6bmbA3QXxYWoHoSz6NL1k7S/scRjv/Kn/vLcy/BcO0AlPumAjUCXRqiDlNenhC3
+         3/vTb8694adMw9Q1bPooHcq9nid1g2lB+BWux16CZSykSi4ZEvd1PMNkL5TKNTgRz5eo
+         2VMg==
+X-Gm-Message-State: AOAM532c8X35iZVlKmTMwssjDIx99aujQ75t3Yq55/gURoZfju3iNU+N
+        1p/TdG7Wc1WVkFlJg6zhS77GIcQ1cnvif4uWqb4=
+X-Google-Smtp-Source: ABdhPJy+eYFJorJdVe7F5r8XVydlkBP3x/fj0S2H85mfoNTMC6EheHYNkvi1v5f3ir9Z4DuEVP7XkxGygATo36Bb5dU=
+X-Received: by 2002:ac2:5581:: with SMTP id v1mr2730396lfg.514.1642746825756;
+ Thu, 20 Jan 2022 22:33:45 -0800 (PST)
 MIME-Version: 1.0
-References: <20220120004350.308866-1-miquel.raynal@bootlin.com> <87r192imcy.fsf@tynnyri.adurom.net>
-In-Reply-To: <87r192imcy.fsf@tynnyri.adurom.net>
-From:   Alexander Aring <alex.aring@gmail.com>
-Date:   Thu, 20 Jan 2022 18:31:58 -0500
-Message-ID: <CAB_54W5ORQ7Po3k3rjZMqxf8YfrDk6E_wKGgir9G31RVSDnyqw@mail.gmail.com>
-Subject: Re: [wpan-next 0/4] ieee802154: General preparation to scan support
-To:     Kalle Valo <kvalo@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Stefan Schmidt <stefan@datenfreihafen.org>,
-        linux-wpan - ML <linux-wpan@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org Wireless" 
-        <linux-wireless@vger.kernel.org>,
-        David Girault <david.girault@qorvo.com>,
-        Romuald Despres <romuald.despres@qorvo.com>,
-        Frederic Blain <frederic.blain@qorvo.com>,
-        Nicolas Schodet <nico@ni.fr.eu.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <70e27cbc652cbdb78277b9c691a3a5ba02653afb.1641540175.git.objelf@gmail.com>
+ <d291f592-d84a-2ffe-7f75-df77890efce8@gonehiking.org>
+In-Reply-To: <d291f592-d84a-2ffe-7f75-df77890efce8@gonehiking.org>
+From:   Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Date:   Fri, 21 Jan 2022 07:33:34 +0100
+Message-ID: <CAFED-jke=w2RpZCq5y=9apg3sW9r_MmYxsKQyaDwtjPQY6=pDQ@mail.gmail.com>
+Subject: Re: [PATCH] mt76: mt7921e: fix possible probe failure after reboot
+To:     Khalid Aziz <khalid@gonehiking.org>
+Cc:     sean.wang@mediatek.com, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Soul.Huang@mediatek.com, YN.Chen@mediatek.com,
+        Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com,
+        Mark-YW.Chen@mediatek.com, Deren.Wu@mediatek.com,
+        km.lin@mediatek.com, jenhao.yang@mediatek.com,
+        robin.chiu@mediatek.com, Eddie.Chen@mediatek.com,
+        ch.yeh@mediatek.com, posh.sun@mediatek.com, ted.huang@mediatek.com,
+        Eric.Liang@mediatek.com, Stella.Chang@mediatek.com,
+        Tom.Chou@mediatek.com, steve.lee@mediatek.com, jsiuda@google.com,
+        frankgor@google.com, jemele@google.com, abhishekpandit@google.com,
+        shawnku@google.com,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle and Miquel,
-
-On Thu, 20 Jan 2022 at 08:10, Kalle Valo <kvalo@kernel.org> wrote:
+pt., 21 sty 2022 o 00:23 Khalid Aziz <khalid@gonehiking.org> napisa=C5=82(a=
+):
 >
-> Miquel Raynal <miquel.raynal@bootlin.com> writes:
->
-> > These few patches are preparation patches and light cleanups before the
-> > introduction of scan support.
+> On 1/7/22 12:30 AM, sean.wang@mediatek.com wrote:
+> > From: Sean Wang <sean.wang@mediatek.com>
 > >
-> > David Girault (4):
-> >   net: ieee802154: Move IEEE 802.15.4 Kconfig main entry
-> >   net: mac802154: Include the softMAC stack inside the IEEE 802.15.4
-> >     menu
-> >   net: ieee802154: Move the address structure earlier
-> >   net: ieee802154: Add a kernel doc header to the ieee802154_addr
-> >     structure
+> > It doesn't guarantee the mt7921e gets started with ASPM L0 after each
+> > machine reboot on every platform.
 > >
-> >  include/net/cfg802154.h | 28 +++++++++++++++++++---------
-> >  net/Kconfig             |  3 +--
-> >  net/ieee802154/Kconfig  |  1 +
-> >  3 files changed, 21 insertions(+), 11 deletions(-)
+> > If mt7921e gets started with not ASPM L0, it would be possible that the
+> > driver encounters time to time failure in mt7921_pci_probe, like a
+> > weird chip identifier is read
+> >
+> > [  215.514503] mt7921e 0000:05:00.0: ASIC revision: feed0000
+> > [  216.604741] mt7921e: probe of 0000:05:00.0 failed with error -110
+> >
+> > or failing to init hardware because the driver is not allowed to access=
+ the
+> > register until the device is in ASPM L0 state. So, we call
+> > __mt7921e_mcu_drv_pmctrl in early mt7921_pci_probe to force the device
+> > to bring back to the L0 state for we can safely access registers in any
+> > case.
+> >
+
+BTW, probably I see something similar with mt7915e (inside ramips):
+
+Have mt7915e in my mt7621 (mt7621-pci) router (pandora box/ramips).
+After fresh start (disconnect/connect power supply/cold reset) works correc=
+tly.
+After reboot seems to always fail with:
+Sat Dec 18 08:43:58 2021 kern.info kernel: [   14.552269] mt7621-pci
+1e140000.pcie: bus=3D3 slot=3D2 irq=3D25
+Sat Dec 18 08:43:58 2021 kern.info kernel: [   14.557823] pci
+0000:00:02.0: enabling device (0000 -> 0003)
+Sat Dec 18 08:43:58 2021 kern.info kernel: [   14.563499] mt7915e
+0000:03:00.0: enabling device (0000 -> 0002)
+Sat Dec 18 08:43:58 2021 kern.err kernel: [   35.094270] mt7915e
+0000:03:00.0: Message 00000010 (seq 1) timeout
+Sat Dec 18 08:43:58 2021 kern.err kernel: [   35.100457] mt7915e
+0000:03:00.0: Failed to get patch semaphore
+Sat Dec 18 08:43:58 2021 kern.err kernel: [   55.574220] mt7915e
+0000:03:00.0: Message 00000010 (seq 2) timeout
+Sat Dec 18 08:43:58 2021 kern.err kernel: [   55.580380] mt7915e
+0000:03:00.0: Failed to get patch semaphore
+Sat Dec 18 08:43:58 2021 kern.warn kernel: [   55.586529] mt7915e:
+probe of 0000:03:00.0 failed with error -11
+
+
+This is lspci output:
+02:00.0 Network controller: MEDIATEK Corp. MT7612E 802.11acbgn PCI
+Express Wireless Network Adapter
+03:00.0 Unclassified device [0002]: MEDIATEK Corp. MT7915E 802.11ax
+PCI Express Wireless Network Adapter
+
+Detection works correctly after disconnect/connect power supply (cold reboo=
+t).
+
+I don't see this issue (same HW/card) with.
+ - my laptop x86_64
+ - banana_pi aarch64
+
+Any idea this could be same/similar issue and there is possible fix for tha=
+t?
+
+BR
+Janusz
+
+
+
+> > In the patch, we move all functions from dma.c to pci.c and register mt=
+76
+> > bus operation earilier, that is the __mt7921e_mcu_drv_pmctrl depends on=
+.
+> >
+> > Fixes: bf3747ae2e25 ("mt76: mt7921: enable aspm by default")
+> > Reported-by: Kai-Chuan Hsieh <kaichuan.hsieh@canonical.com>
+> > Co-developed-by: Deren Wu <deren.wu@mediatek.com>
+> > Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+> > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 >
-> Is there a reason why you cc linux-wireless? It looks like there's a
-> separate linux-wpan list now and people who are interested about wpan
-> can join that list, right?
+>
+> Tested-by: Khalid Aziz <khalid@gonehiking.org>
+>
+> --
+> Khalid
+> > ---
+> >   .../net/wireless/mediatek/mt76/mt7921/dma.c   | 119 -----------------
+> >   .../wireless/mediatek/mt76/mt7921/mt7921.h    |   1 +
+> >   .../net/wireless/mediatek/mt76/mt7921/pci.c   | 124 +++++++++++++++++=
++
+> >   .../wireless/mediatek/mt76/mt7921/pci_mcu.c   |  18 ++-
+> >   4 files changed, 139 insertions(+), 123 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/=
+net/wireless/mediatek/mt76/mt7921/dma.c
+> > index cdff1fd52d93..39d6ce4ecddd 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+> > @@ -78,110 +78,6 @@ static void mt7921_dma_prefetch(struct mt7921_dev *=
+dev)
+> >       mt76_wr(dev, MT_WFDMA0_TX_RING17_EXT_CTRL, PREFETCH(0x380, 0x4));
+> >   }
+> >
+> > -static u32 __mt7921_reg_addr(struct mt7921_dev *dev, u32 addr)
+> > -{
+> > -     static const struct {
+> > -             u32 phys;
+> > -             u32 mapped;
+> > -             u32 size;
+> > -     } fixed_map[] =3D {
+> > -             { 0x820d0000, 0x30000, 0x10000 }, /* WF_LMAC_TOP (WF_WTBL=
+ON) */
+> > -             { 0x820ed000, 0x24800, 0x0800 }, /* WF_LMAC_TOP BN0 (WF_M=
+IB) */
+> > -             { 0x820e4000, 0x21000, 0x0400 }, /* WF_LMAC_TOP BN0 (WF_T=
+MAC) */
+> > -             { 0x820e7000, 0x21e00, 0x0200 }, /* WF_LMAC_TOP BN0 (WF_D=
+MA) */
+> > -             { 0x820eb000, 0x24200, 0x0400 }, /* WF_LMAC_TOP BN0 (WF_L=
+PON) */
+> > -             { 0x820e2000, 0x20800, 0x0400 }, /* WF_LMAC_TOP BN0 (WF_A=
+GG) */
+> > -             { 0x820e3000, 0x20c00, 0x0400 }, /* WF_LMAC_TOP BN0 (WF_A=
+RB) */
+> > -             { 0x820e5000, 0x21400, 0x0800 }, /* WF_LMAC_TOP BN0 (WF_R=
+MAC) */
+> > -             { 0x00400000, 0x80000, 0x10000 }, /* WF_MCU_SYSRAM */
+> > -             { 0x00410000, 0x90000, 0x10000 }, /* WF_MCU_SYSRAM (confi=
+gure register) */
+> > -             { 0x40000000, 0x70000, 0x10000 }, /* WF_UMAC_SYSRAM */
+> > -             { 0x54000000, 0x02000, 0x1000 }, /* WFDMA PCIE0 MCU DMA0 =
+*/
+> > -             { 0x55000000, 0x03000, 0x1000 }, /* WFDMA PCIE0 MCU DMA1 =
+*/
+> > -             { 0x58000000, 0x06000, 0x1000 }, /* WFDMA PCIE1 MCU DMA0 =
+(MEM_DMA) */
+> > -             { 0x59000000, 0x07000, 0x1000 }, /* WFDMA PCIE1 MCU DMA1 =
+*/
+> > -             { 0x7c000000, 0xf0000, 0x10000 }, /* CONN_INFRA */
+> > -             { 0x7c020000, 0xd0000, 0x10000 }, /* CONN_INFRA, WFDMA */
+> > -             { 0x7c060000, 0xe0000, 0x10000 }, /* CONN_INFRA, conn_hos=
+t_csr_top */
+> > -             { 0x80020000, 0xb0000, 0x10000 }, /* WF_TOP_MISC_OFF */
+> > -             { 0x81020000, 0xc0000, 0x10000 }, /* WF_TOP_MISC_ON */
+> > -             { 0x820c0000, 0x08000, 0x4000 }, /* WF_UMAC_TOP (PLE) */
+> > -             { 0x820c8000, 0x0c000, 0x2000 }, /* WF_UMAC_TOP (PSE) */
+> > -             { 0x820cc000, 0x0e000, 0x1000 }, /* WF_UMAC_TOP (PP) */
+> > -             { 0x820cd000, 0x0f000, 0x1000 }, /* WF_MDP_TOP */
+> > -             { 0x820ce000, 0x21c00, 0x0200 }, /* WF_LMAC_TOP (WF_SEC) =
+*/
+> > -             { 0x820cf000, 0x22000, 0x1000 }, /* WF_LMAC_TOP (WF_PF) *=
+/
+> > -             { 0x820e0000, 0x20000, 0x0400 }, /* WF_LMAC_TOP BN0 (WF_C=
+FG) */
+> > -             { 0x820e1000, 0x20400, 0x0200 }, /* WF_LMAC_TOP BN0 (WF_T=
+RB) */
+> > -             { 0x820e9000, 0x23400, 0x0200 }, /* WF_LMAC_TOP BN0 (WF_W=
+TBLOFF) */
+> > -             { 0x820ea000, 0x24000, 0x0200 }, /* WF_LMAC_TOP BN0 (WF_E=
+TBF) */
+> > -             { 0x820ec000, 0x24600, 0x0200 }, /* WF_LMAC_TOP BN0 (WF_I=
+NT) */
+> > -             { 0x820f0000, 0xa0000, 0x0400 }, /* WF_LMAC_TOP BN1 (WF_C=
+FG) */
+> > -             { 0x820f1000, 0xa0600, 0x0200 }, /* WF_LMAC_TOP BN1 (WF_T=
+RB) */
+> > -             { 0x820f2000, 0xa0800, 0x0400 }, /* WF_LMAC_TOP BN1 (WF_A=
+GG) */
+> > -             { 0x820f3000, 0xa0c00, 0x0400 }, /* WF_LMAC_TOP BN1 (WF_A=
+RB) */
+> > -             { 0x820f4000, 0xa1000, 0x0400 }, /* WF_LMAC_TOP BN1 (WF_T=
+MAC) */
+> > -             { 0x820f5000, 0xa1400, 0x0800 }, /* WF_LMAC_TOP BN1 (WF_R=
+MAC) */
+> > -             { 0x820f7000, 0xa1e00, 0x0200 }, /* WF_LMAC_TOP BN1 (WF_D=
+MA) */
+> > -             { 0x820f9000, 0xa3400, 0x0200 }, /* WF_LMAC_TOP BN1 (WF_W=
+TBLOFF) */
+> > -             { 0x820fa000, 0xa4000, 0x0200 }, /* WF_LMAC_TOP BN1 (WF_E=
+TBF) */
+> > -             { 0x820fb000, 0xa4200, 0x0400 }, /* WF_LMAC_TOP BN1 (WF_L=
+PON) */
+> > -             { 0x820fc000, 0xa4600, 0x0200 }, /* WF_LMAC_TOP BN1 (WF_I=
+NT) */
+> > -             { 0x820fd000, 0xa4800, 0x0800 }, /* WF_LMAC_TOP BN1 (WF_M=
+IB) */
+> > -     };
+> > -     int i;
+> > -
+> > -     if (addr < 0x100000)
+> > -             return addr;
+> > -
+> > -     for (i =3D 0; i < ARRAY_SIZE(fixed_map); i++) {
+> > -             u32 ofs;
+> > -
+> > -             if (addr < fixed_map[i].phys)
+> > -                     continue;
+> > -
+> > -             ofs =3D addr - fixed_map[i].phys;
+> > -             if (ofs > fixed_map[i].size)
+> > -                     continue;
+> > -
+> > -             return fixed_map[i].mapped + ofs;
+> > -     }
+> > -
+> > -     if ((addr >=3D 0x18000000 && addr < 0x18c00000) ||
+> > -         (addr >=3D 0x70000000 && addr < 0x78000000) ||
+> > -         (addr >=3D 0x7c000000 && addr < 0x7c400000))
+> > -             return mt7921_reg_map_l1(dev, addr);
+> > -
+> > -     dev_err(dev->mt76.dev, "Access currently unsupported address %08x=
+\n",
+> > -             addr);
+> > -
+> > -     return 0;
+> > -}
+> > -
+> > -static u32 mt7921_rr(struct mt76_dev *mdev, u32 offset)
+> > -{
+> > -     struct mt7921_dev *dev =3D container_of(mdev, struct mt7921_dev, =
+mt76);
+> > -     u32 addr =3D __mt7921_reg_addr(dev, offset);
+> > -
+> > -     return dev->bus_ops->rr(mdev, addr);
+> > -}
+> > -
+> > -static void mt7921_wr(struct mt76_dev *mdev, u32 offset, u32 val)
+> > -{
+> > -     struct mt7921_dev *dev =3D container_of(mdev, struct mt7921_dev, =
+mt76);
+> > -     u32 addr =3D __mt7921_reg_addr(dev, offset);
+> > -
+> > -     dev->bus_ops->wr(mdev, addr, val);
+> > -}
+> > -
+> > -static u32 mt7921_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32=
+ val)
+> > -{
+> > -     struct mt7921_dev *dev =3D container_of(mdev, struct mt7921_dev, =
+mt76);
+> > -     u32 addr =3D __mt7921_reg_addr(dev, offset);
+> > -
+> > -     return dev->bus_ops->rmw(mdev, addr, mask, val);
+> > -}
+> > -
+> >   static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
+> >   {
+> >       if (force) {
+> > @@ -341,23 +237,8 @@ int mt7921_wpdma_reinit_cond(struct mt7921_dev *de=
+v)
+> >
+> >   int mt7921_dma_init(struct mt7921_dev *dev)
+> >   {
+> > -     struct mt76_bus_ops *bus_ops;
+> >       int ret;
+> >
+> > -     dev->phy.dev =3D dev;
+> > -     dev->phy.mt76 =3D &dev->mt76.phy;
+> > -     dev->mt76.phy.priv =3D &dev->phy;
+> > -     dev->bus_ops =3D dev->mt76.bus;
+> > -     bus_ops =3D devm_kmemdup(dev->mt76.dev, dev->bus_ops, sizeof(*bus=
+_ops),
+> > -                            GFP_KERNEL);
+> > -     if (!bus_ops)
+> > -             return -ENOMEM;
+> > -
+> > -     bus_ops->rr =3D mt7921_rr;
+> > -     bus_ops->wr =3D mt7921_wr;
+> > -     bus_ops->rmw =3D mt7921_rmw;
+> > -     dev->mt76.bus =3D bus_ops;
+> > -
+> >       mt76_dma_attach(&dev->mt76);
+> >
+> >       ret =3D mt7921_dma_disable(dev, true);
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drive=
+rs/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > index 8b674e042568..63e3c7ef5e89 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > @@ -443,6 +443,7 @@ int mt7921e_mcu_init(struct mt7921_dev *dev);
+> >   int mt7921s_wfsys_reset(struct mt7921_dev *dev);
+> >   int mt7921s_mac_reset(struct mt7921_dev *dev);
+> >   int mt7921s_init_reset(struct mt7921_dev *dev);
+> > +int __mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev);
+> >   int mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev);
+> >   int mt7921e_mcu_fw_pmctrl(struct mt7921_dev *dev);
+> >
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/=
+net/wireless/mediatek/mt76/mt7921/pci.c
+> > index 1ae0d5826ca7..a0c82d19c4d9 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> > @@ -121,6 +121,110 @@ static void mt7921e_unregister_device(struct mt79=
+21_dev *dev)
+> >       mt76_free_device(&dev->mt76);
+> >   }
+> >
+> > +static u32 __mt7921_reg_addr(struct mt7921_dev *dev, u32 addr)
+> > +{
+> > +     static const struct {
+> > +             u32 phys;
+> > +             u32 mapped;
+> > +             u32 size;
+> > +     } fixed_map[] =3D {
+> > +             { 0x820d0000, 0x30000, 0x10000 }, /* WF_LMAC_TOP (WF_WTBL=
+ON) */
+> > +             { 0x820ed000, 0x24800, 0x0800 }, /* WF_LMAC_TOP BN0 (WF_M=
+IB) */
+> > +             { 0x820e4000, 0x21000, 0x0400 }, /* WF_LMAC_TOP BN0 (WF_T=
+MAC) */
+> > +             { 0x820e7000, 0x21e00, 0x0200 }, /* WF_LMAC_TOP BN0 (WF_D=
+MA) */
+> > +             { 0x820eb000, 0x24200, 0x0400 }, /* WF_LMAC_TOP BN0 (WF_L=
+PON) */
+> > +             { 0x820e2000, 0x20800, 0x0400 }, /* WF_LMAC_TOP BN0 (WF_A=
+GG) */
+> > +             { 0x820e3000, 0x20c00, 0x0400 }, /* WF_LMAC_TOP BN0 (WF_A=
+RB) */
+> > +             { 0x820e5000, 0x21400, 0x0800 }, /* WF_LMAC_TOP BN0 (WF_R=
+MAC) */
+> > +             { 0x00400000, 0x80000, 0x10000 }, /* WF_MCU_SYSRAM */
+> > +             { 0x00410000, 0x90000, 0x10000 }, /* WF_MCU_SYSRAM (confi=
+gure register) */
+> > +             { 0x40000000, 0x70000, 0x10000 }, /* WF_UMAC_SYSRAM */
+> > +             { 0x54000000, 0x02000, 0x1000 }, /* WFDMA PCIE0 MCU DMA0 =
+*/
+> > +             { 0x55000000, 0x03000, 0x1000 }, /* WFDMA PCIE0 MCU DMA1 =
+*/
+> > +             { 0x58000000, 0x06000, 0x1000 }, /* WFDMA PCIE1 MCU DMA0 =
+(MEM_DMA) */
+> > +             { 0x59000000, 0x07000, 0x1000 }, /* WFDMA PCIE1 MCU DMA1 =
+*/
+> > +             { 0x7c000000, 0xf0000, 0x10000 }, /* CONN_INFRA */
+> > +             { 0x7c020000, 0xd0000, 0x10000 }, /* CONN_INFRA, WFDMA */
+> > +             { 0x7c060000, 0xe0000, 0x10000 }, /* CONN_INFRA, conn_hos=
+t_csr_top */
+> > +             { 0x80020000, 0xb0000, 0x10000 }, /* WF_TOP_MISC_OFF */
+> > +             { 0x81020000, 0xc0000, 0x10000 }, /* WF_TOP_MISC_ON */
+> > +             { 0x820c0000, 0x08000, 0x4000 }, /* WF_UMAC_TOP (PLE) */
+> > +             { 0x820c8000, 0x0c000, 0x2000 }, /* WF_UMAC_TOP (PSE) */
+> > +             { 0x820cc000, 0x0e000, 0x1000 }, /* WF_UMAC_TOP (PP) */
+> > +             { 0x820cd000, 0x0f000, 0x1000 }, /* WF_MDP_TOP */
+> > +             { 0x820ce000, 0x21c00, 0x0200 }, /* WF_LMAC_TOP (WF_SEC) =
+*/
+> > +             { 0x820cf000, 0x22000, 0x1000 }, /* WF_LMAC_TOP (WF_PF) *=
+/
+> > +             { 0x820e0000, 0x20000, 0x0400 }, /* WF_LMAC_TOP BN0 (WF_C=
+FG) */
+> > +             { 0x820e1000, 0x20400, 0x0200 }, /* WF_LMAC_TOP BN0 (WF_T=
+RB) */
+> > +             { 0x820e9000, 0x23400, 0x0200 }, /* WF_LMAC_TOP BN0 (WF_W=
+TBLOFF) */
+> > +             { 0x820ea000, 0x24000, 0x0200 }, /* WF_LMAC_TOP BN0 (WF_E=
+TBF) */
+> > +             { 0x820ec000, 0x24600, 0x0200 }, /* WF_LMAC_TOP BN0 (WF_I=
+NT) */
+> > +             { 0x820f0000, 0xa0000, 0x0400 }, /* WF_LMAC_TOP BN1 (WF_C=
+FG) */
+> > +             { 0x820f1000, 0xa0600, 0x0200 }, /* WF_LMAC_TOP BN1 (WF_T=
+RB) */
+> > +             { 0x820f2000, 0xa0800, 0x0400 }, /* WF_LMAC_TOP BN1 (WF_A=
+GG) */
+> > +             { 0x820f3000, 0xa0c00, 0x0400 }, /* WF_LMAC_TOP BN1 (WF_A=
+RB) */
+> > +             { 0x820f4000, 0xa1000, 0x0400 }, /* WF_LMAC_TOP BN1 (WF_T=
+MAC) */
+> > +             { 0x820f5000, 0xa1400, 0x0800 }, /* WF_LMAC_TOP BN1 (WF_R=
+MAC) */
+> > +             { 0x820f7000, 0xa1e00, 0x0200 }, /* WF_LMAC_TOP BN1 (WF_D=
+MA) */
+> > +             { 0x820f9000, 0xa3400, 0x0200 }, /* WF_LMAC_TOP BN1 (WF_W=
+TBLOFF) */
+> > +             { 0x820fa000, 0xa4000, 0x0200 }, /* WF_LMAC_TOP BN1 (WF_E=
+TBF) */
+> > +             { 0x820fb000, 0xa4200, 0x0400 }, /* WF_LMAC_TOP BN1 (WF_L=
+PON) */
+> > +             { 0x820fc000, 0xa4600, 0x0200 }, /* WF_LMAC_TOP BN1 (WF_I=
+NT) */
+> > +             { 0x820fd000, 0xa4800, 0x0800 }, /* WF_LMAC_TOP BN1 (WF_M=
+IB) */
+> > +     };
+> > +     int i;
+> > +
+> > +     if (addr < 0x100000)
+> > +             return addr;
+> > +
+> > +     for (i =3D 0; i < ARRAY_SIZE(fixed_map); i++) {
+> > +             u32 ofs;
+> > +
+> > +             if (addr < fixed_map[i].phys)
+> > +                     continue;
+> > +
+> > +             ofs =3D addr - fixed_map[i].phys;
+> > +             if (ofs > fixed_map[i].size)
+> > +                     continue;
+> > +
+> > +             return fixed_map[i].mapped + ofs;
+> > +     }
+> > +
+> > +     if ((addr >=3D 0x18000000 && addr < 0x18c00000) ||
+> > +         (addr >=3D 0x70000000 && addr < 0x78000000) ||
+> > +         (addr >=3D 0x7c000000 && addr < 0x7c400000))
+> > +             return mt7921_reg_map_l1(dev, addr);
+> > +
+> > +     dev_err(dev->mt76.dev, "Access currently unsupported address %08x=
+\n",
+> > +             addr);
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static u32 mt7921_rr(struct mt76_dev *mdev, u32 offset)
+> > +{
+> > +     struct mt7921_dev *dev =3D container_of(mdev, struct mt7921_dev, =
+mt76);
+> > +     u32 addr =3D __mt7921_reg_addr(dev, offset);
+> > +
+> > +     return dev->bus_ops->rr(mdev, addr);
+> > +}
+> > +
+> > +static void mt7921_wr(struct mt76_dev *mdev, u32 offset, u32 val)
+> > +{
+> > +     struct mt7921_dev *dev =3D container_of(mdev, struct mt7921_dev, =
+mt76);
+> > +     u32 addr =3D __mt7921_reg_addr(dev, offset);
+> > +
+> > +     dev->bus_ops->wr(mdev, addr, val);
+> > +}
+> > +
+> > +static u32 mt7921_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32=
+ val)
+> > +{
+> > +     struct mt7921_dev *dev =3D container_of(mdev, struct mt7921_dev, =
+mt76);
+> > +     u32 addr =3D __mt7921_reg_addr(dev, offset);
+> > +
+> > +     return dev->bus_ops->rmw(mdev, addr, mask, val);
+> > +}
+> > +
+> >   static int mt7921_pci_probe(struct pci_dev *pdev,
+> >                           const struct pci_device_id *id)
+> >   {
+> > @@ -152,6 +256,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+> >               .fw_own =3D mt7921e_mcu_fw_pmctrl,
+> >       };
+> >
+> > +     struct mt76_bus_ops *bus_ops;
+> >       struct mt7921_dev *dev;
+> >       struct mt76_dev *mdev;
+> >       int ret;
+> > @@ -189,6 +294,25 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+> >
+> >       mt76_mmio_init(&dev->mt76, pcim_iomap_table(pdev)[0]);
+> >       tasklet_init(&dev->irq_tasklet, mt7921_irq_tasklet, (unsigned lon=
+g)dev);
+> > +
+> > +     dev->phy.dev =3D dev;
+> > +     dev->phy.mt76 =3D &dev->mt76.phy;
+> > +     dev->mt76.phy.priv =3D &dev->phy;
+> > +     dev->bus_ops =3D dev->mt76.bus;
+> > +     bus_ops =3D devm_kmemdup(dev->mt76.dev, dev->bus_ops, sizeof(*bus=
+_ops),
+> > +                            GFP_KERNEL);
+> > +     if (!bus_ops)
+> > +             return -ENOMEM;
+> > +
+> > +     bus_ops->rr =3D mt7921_rr;
+> > +     bus_ops->wr =3D mt7921_wr;
+> > +     bus_ops->rmw =3D mt7921_rmw;
+> > +     dev->mt76.bus =3D bus_ops;
+> > +
+> > +     ret =3D __mt7921e_mcu_drv_pmctrl(dev);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> >       mdev->rev =3D (mt7921_l1_rr(dev, MT_HW_CHIPID) << 16) |
+> >                   (mt7921_l1_rr(dev, MT_HW_REV) & 0xff);
+> >       dev_info(mdev->dev, "ASIC revision: %04x\n", mdev->rev);
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c b/driv=
+ers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
+> > index f9e350b67fdc..36669e5aeef3 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
+> > @@ -59,10 +59,8 @@ int mt7921e_mcu_init(struct mt7921_dev *dev)
+> >       return err;
+> >   }
+> >
+> > -int mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev)
+> > +int __mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev)
+> >   {
+> > -     struct mt76_phy *mphy =3D &dev->mt76.phy;
+> > -     struct mt76_connac_pm *pm =3D &dev->pm;
+> >       int i, err =3D 0;
+> >
+> >       for (i =3D 0; i < MT7921_DRV_OWN_RETRY_COUNT; i++) {
+> > @@ -75,9 +73,21 @@ int mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev)
+> >       if (i =3D=3D MT7921_DRV_OWN_RETRY_COUNT) {
+> >               dev_err(dev->mt76.dev, "driver own failed\n");
+> >               err =3D -EIO;
+> > -             goto out;
+> >       }
+> >
+> > +     return err;
+> > +}
+> > +
+> > +int mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev)
+> > +{
+> > +     struct mt76_phy *mphy =3D &dev->mt76.phy;
+> > +     struct mt76_connac_pm *pm =3D &dev->pm;
+> > +     int err;
+> > +
+> > +     err =3D __mt7921e_mcu_drv_pmctrl(dev);
+> > +     if (err < 0)
+> > +             goto out;
+> > +
+> >       mt7921_wpdma_reinit_cond(dev);
+> >       clear_bit(MT76_STATE_PM, &mphy->state);
+> >
+>
 >
 
-I thought it would make sense to cc wireless as they have similar
-paradigms constructs (probably due the fact both are IEEE standards?).
-As well we took some ideas from wireless as base. Moreover we were
-talking about things which wireless already solved.
-I was hoping to get some feedback if somebody knows the right do's and
-don'ts of managing a wireless subsystem and I am pretty sure some
-802.11 developers have more knowledge about it than some 802.15.4
-developers (including myself).
 
-I apologise for this. Please Miquel drop wireless for your future patch-series.
-
-Miquel please slow down the amount of patches. First sending the
-fixes, then new features in small series one by one. And with one by
-one I mean after they are applied.
-
-- Alex
+--
+Janusz Dziedzic
