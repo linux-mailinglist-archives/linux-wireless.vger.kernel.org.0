@@ -2,102 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F356495BF1
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 09:31:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FDEF495E32
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 12:09:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379581AbiAUIbR convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jan 2022 03:31:17 -0500
-Received: from relay11.mail.gandi.net ([217.70.178.231]:38615 "EHLO
-        relay11.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349730AbiAUIbO (ORCPT
+        id S1380091AbiAULJy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jan 2022 06:09:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55338 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1380113AbiAULJh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jan 2022 03:31:14 -0500
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 46B1E100008;
-        Fri, 21 Jan 2022 08:31:05 +0000 (UTC)
-Date:   Fri, 21 Jan 2022 09:31:04 +0100
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Alexander Aring <alex.aring@gmail.com>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        linux-wpan - ML <linux-wpan@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org Wireless" 
-        <linux-wireless@vger.kernel.org>,
-        David Girault <david.girault@qorvo.com>,
-        Romuald Despres <romuald.despres@qorvo.com>,
-        Frederic Blain <frederic.blain@qorvo.com>,
-        Nicolas Schodet <nico@ni.fr.eu.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [wpan-next 0/4] ieee802154: General preparation to scan support
-Message-ID: <20220121093104.73132c5d@xps13>
-In-Reply-To: <CAB_54W5ORQ7Po3k3rjZMqxf8YfrDk6E_wKGgir9G31RVSDnyqw@mail.gmail.com>
-References: <20220120004350.308866-1-miquel.raynal@bootlin.com>
-        <87r192imcy.fsf@tynnyri.adurom.net>
-        <CAB_54W5ORQ7Po3k3rjZMqxf8YfrDk6E_wKGgir9G31RVSDnyqw@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Fri, 21 Jan 2022 06:09:37 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0198EC06173F;
+        Fri, 21 Jan 2022 03:09:37 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 51804CE21AB;
+        Fri, 21 Jan 2022 11:09:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15CFAC340E1;
+        Fri, 21 Jan 2022 11:09:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642763373;
+        bh=38atemaJ6sB1gy9DysKxkvzhs+mMmeHYgaWObDWQFnA=;
+        h=From:Subject:To:Cc:Date:From;
+        b=Ecb0N4sLp+60U+Amt776+OzGb2oJA3RhHWpq72zA+izyHcxHwZDar7w/4t0sbdjVZ
+         Z5nG8lxW4VKD0Om6CuCfybHUl8FlGBgWlZOrmlXJ3GH/bQKrp2wf44v/RE3dkOL24w
+         pcJlQCudYFsqRGCQvOiaREAjlVBGrLd6MVjkfUziL8obOMcahG9IHZYPGdPOWy2Aax
+         NpDxOwVXt4QNDlJealAqG5YiwfoBJabWHsI5yAXETbk64dU3hojR4qtgzmSipUQrXN
+         fPzAEZLXmNl+v7ck7I8BsuwFFQ7erA5j73+DQLEwDBYwptgUAF4CKut9Tn9HoZyeeO
+         OJ5BHGFplZdwA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@kernel.org>
+Subject: pull-request: wireless-2022-01-21
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20220121110933.15CFAC340E1@smtp.kernel.org>
+Date:   Fri, 21 Jan 2022 11:09:32 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Alexander,
+Hi,
 
-alex.aring@gmail.com wrote on Thu, 20 Jan 2022 18:31:58 -0500:
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-> Hi Kalle and Miquel,
-> 
-> On Thu, 20 Jan 2022 at 08:10, Kalle Valo <kvalo@kernel.org> wrote:
-> >
-> > Miquel Raynal <miquel.raynal@bootlin.com> writes:
-> >  
-> > > These few patches are preparation patches and light cleanups before the
-> > > introduction of scan support.
-> > >
-> > > David Girault (4):
-> > >   net: ieee802154: Move IEEE 802.15.4 Kconfig main entry
-> > >   net: mac802154: Include the softMAC stack inside the IEEE 802.15.4
-> > >     menu
-> > >   net: ieee802154: Move the address structure earlier
-> > >   net: ieee802154: Add a kernel doc header to the ieee802154_addr
-> > >     structure
-> > >
-> > >  include/net/cfg802154.h | 28 +++++++++++++++++++---------
-> > >  net/Kconfig             |  3 +--
-> > >  net/ieee802154/Kconfig  |  1 +
-> > >  3 files changed, 21 insertions(+), 11 deletions(-)  
-> >
-> > Is there a reason why you cc linux-wireless? It looks like there's a
-> > separate linux-wpan list now and people who are interested about wpan
-> > can join that list, right?
-> >  
-> 
-> I thought it would make sense to cc wireless as they have similar
-> paradigms constructs (probably due the fact both are IEEE standards?).
-> As well we took some ideas from wireless as base. Moreover we were
-> talking about things which wireless already solved.
-> I was hoping to get some feedback if somebody knows the right do's and
-> don'ts of managing a wireless subsystem and I am pretty sure some
-> 802.11 developers have more knowledge about it than some 802.15.4
-> developers (including myself).
-> 
-> I apologise for this. Please Miquel drop wireless for your future patch-series.
+Kalle
 
-Ok, no problem!
- 
-> Miquel please slow down the amount of patches. First sending the
-> fixes, then new features in small series one by one. And with one by
-> one I mean after they are applied.
+The following changes since commit fb80445c438c78b40b547d12b8d56596ce4ccfeb:
 
-Yes no problem, I didn't want to flood you, but I was eager to share
-the new sync tx implementation that we discussed earlier this week,
-which meant I also needed to share the two 'small' series in between.
+  net_sched: restore "mpu xxx" handling (2022-01-13 11:06:42 -0800)
 
-Thanks,
-Miquèl
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-01-21
+
+for you to fetch changes up to a1222ca0681f1db3696d703aa8df61c8b41a61ac:
+
+  MAINTAINERS: remove extra wireless section (2022-01-19 10:05:07 +0200)
+
+----------------------------------------------------------------
+wireless fixes for v5.17
+
+First set of fixes for v5.17. This is the first pull request from the
+new wireless tree and only changes to MAINTAINERS file.
+
+----------------------------------------------------------------
+Kalle Valo (2):
+      MAINTAINERS: add common wireless and wireless-next trees
+      MAINTAINERS: remove extra wireless section
+
+ MAINTAINERS | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
