@@ -2,57 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95387495AE4
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 08:37:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF0F3495AE9
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 08:37:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379100AbiAUHhc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jan 2022 02:37:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35278 "EHLO
+        id S1379082AbiAUHhi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jan 2022 02:37:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379068AbiAUHgZ (ORCPT
+        with ESMTP id S1379123AbiAUHgd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jan 2022 02:36:25 -0500
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2D16C06175A
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 23:36:13 -0800 (PST)
-Received: by mail-ed1-x52d.google.com with SMTP id m4so39185546edb.10
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 23:36:13 -0800 (PST)
+        Fri, 21 Jan 2022 02:36:33 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2307CC061762
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 23:36:24 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id u18so25158650edt.6
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jan 2022 23:36:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=message-id:date:mime-version:user-agent:from:subject:to:cc
          :references:in-reply-to;
-        bh=PtbaYB5hrBQo5dGCq2CUlMDiHQHKgOh4mLlcYwH6by0=;
-        b=frhTJYOcwQxmHehkIRa6S1MHTvkoEXeIKXUWtKnq2W8ct0AiwRMU/Xr6hvxOGKvcB4
-         p2y+cZSeBj7ahoXLPq2AhRP4oKQxRpgi1P8RRUQ1HcL011c/EvY3e+V0wR74WZfe2jFO
-         1dkR2s+tcAtTUCeDouPaDm+9Acg86m3nmNBHk=
+        bh=JJ7BWKUW2StM5vVRUOCe0sheiQUB1MYb6NnSODI5sHw=;
+        b=McwWi1u5Xk1oP5Vcur78TXrzi7da/cHOF/pqAmVwWg+pkNuOuZATfo+UDqjYwKxyYH
+         WusLvPdPNGxzPUtwcl0xDweo4NbkVG5U4ZUXJFWzCBCdSUp9LMMfQasYh24Pp9d5TwcS
+         Uia9fPQWAwz/KM8x0uoixQ7JyQOO8FXL/bhcQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:from
          :subject:to:cc:references:in-reply-to;
-        bh=PtbaYB5hrBQo5dGCq2CUlMDiHQHKgOh4mLlcYwH6by0=;
-        b=FKlj9s8KnfZSyZdr7wKtWjnSSNzJjj+dNN/uIGQ0nIBt/SZeEYAK8nCbYgDwqkrlE8
-         ++aWaBykys2xaCpZlENPCoB/CfBwmnNVwGUK6gUoMH7ZBgy9EFxBLmSoLnajRNj/isSB
-         7aZOHpHIpaEpLoxPZh6wOB06MVLB+rctC8ISlf+D/csL9wL/twU3O/LErgfkny3cWjb/
-         nrdL59j/fxlKOYWjHN233D2EQSQ4IL7r7Y238RoLNrgq/iPbIhkeP72vkZvjma7pO5hX
-         awoMVNakxDH6BIec2pXJ22tgUMPE3NNwvBrVHbNvwgPMZ1eE/iA/0kTdrbgNxwVCP+ff
-         hUqw==
-X-Gm-Message-State: AOAM5325MsYoZeRJU0+sdrXixJZ44qhHCd0X2WNy+MvrqvehYTSp8aoP
-        DeyryreyyZ6WUY0NYBOdnKM5rw==
-X-Google-Smtp-Source: ABdhPJyqV80E5m5SMLeBRz3sU1WQELUsvB0JZQZBEBaItB+O6c/I1ABRIoJWFF5Z8k9AwX/XLlh9wQ==
-X-Received: by 2002:a05:6402:2692:: with SMTP id w18mr193874edd.381.1642750571967;
-        Thu, 20 Jan 2022 23:36:11 -0800 (PST)
+        bh=JJ7BWKUW2StM5vVRUOCe0sheiQUB1MYb6NnSODI5sHw=;
+        b=Wany4nxjJHdsr5LN0rvs56c7ylX1BbYicwAWATq91zk4k5KArxyB3KdGAVEiGhQPyy
+         2acujDdPzPZywJD9u1rCcrm8bK2W2joMjka7/z5/ew6UF2rvI9zT6Ub8O91mEHKev4Um
+         gbAff0PRGiMOzw6eNJkKvQNHgYz3ZfUv3JzC4eW3Rg1zrNmwN0C6kkQE4xojSezvF2Ty
+         uNcRwYYsSRmgb0Km6z9slBKwnmIin3Rg773fY6f1vclubTh4FarRbc2Zoio9KMGaezmq
+         wNMYMH1v2jE0fM5+JaRNMCAF0Z6L8bRHYHWfUhyAKOa9CoA0Fi5QKFEG8IUngXsQgUew
+         iIrg==
+X-Gm-Message-State: AOAM531q9SJsILLt1PisxjH04cDullv23hzKI3RXkmSGc0Nxpl+hYoII
+        qCa9zJ8gg/aTNl4DCbLhGsRzvA==
+X-Google-Smtp-Source: ABdhPJyUItmsdTH/LQtJs7NyEKULw75Uy92CGnVTfKpsuCgJU+DVkECBulTfCThCeKYjyDTyNmWtLQ==
+X-Received: by 2002:a05:6402:518c:: with SMTP id q12mr3152860edd.312.1642750582647;
+        Thu, 20 Jan 2022 23:36:22 -0800 (PST)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id q6sm1812866ejx.113.2022.01.20.23.36.10
+        by smtp.gmail.com with ESMTPSA id h20sm1922056eds.9.2022.01.20.23.36.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jan 2022 23:36:10 -0800 (PST)
-Message-ID: <45d5d6c1-f03f-d7ff-3d03-70bc45a36bfd@broadcom.com>
-Date:   Fri, 21 Jan 2022 08:36:10 +0100
+        Thu, 20 Jan 2022 23:36:21 -0800 (PST)
+Message-ID: <c1772c79-a84a-6115-61c3-f7655bfb9605@broadcom.com>
+Date:   Fri, 21 Jan 2022 08:36:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH v2 33/35] brcmfmac: common: Add support for downloading
- TxCap blobs
+Subject: Re: [PATCH v2 34/35] brcmfmac: pcie: Load and provide TxCap blobs
 To:     Hector Martin <marcan@marcan.st>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -81,84 +80,32 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-34-marcan@marcan.st>
-In-Reply-To: <20220104072658.69756-34-marcan@marcan.st>
+ <20220104072658.69756-35-marcan@marcan.st>
+In-Reply-To: <20220104072658.69756-35-marcan@marcan.st>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000005390c905d612ac78"
+        boundary="000000000000f2b99d05d612accf"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000005390c905d612ac78
+--000000000000f2b99d05d612accf
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 1/4/2022 8:26 AM, Hector Martin wrote:
-> The TxCap blobs are additional data blobs used on Apple devices, and
-> are uploaded analogously to CLM blobs. Add core support for doing this.
-
+> These blobs are named .txcap_blob, and exist alongside the existing
+> .clm_blob files. Use the existing firmware machinery to provide them to
+> the core.
+> 
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 > ---
->   .../broadcom/brcm80211/brcmfmac/bus.h         |  1 +
->   .../broadcom/brcm80211/brcmfmac/common.c      | 97 +++++++++++++------
->   2 files changed, 71 insertions(+), 27 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bus.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bus.h
-> index b13af8f631f3..f4bd98da9761 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bus.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bus.h
-> @@ -39,6 +39,7 @@ enum brcmf_bus_protocol_type {
->   /* Firmware blobs that may be available */
->   enum brcmf_blob_type {
->   	BRCMF_BLOB_CLM,
-> +	BRCMF_BLOB_TXCAP,
->   };
->   
->   struct brcmf_mp_device;
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> index c84c48e49fde..d65308c3f070 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+>   .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 13 +++++++++++++
+>   1 file changed, 13 insertions(+)
 
-[...]
-
-> @@ -165,20 +157,64 @@ static int brcmf_c_process_clm_blob(struct brcmf_if *ifp)
->   	} while ((datalen > 0) && (err == 0));
->   
-
-[...]
-
-> +static int brcmf_c_process_txcap_blob(struct brcmf_if *ifp)
-> +{
-> +	struct brcmf_pub *drvr = ifp->drvr;
-> +	struct brcmf_bus *bus = drvr->bus_if;
-> +	const struct firmware *fw = NULL;
-> +	s32 err;
-> +
-> +	brcmf_dbg(TRACE, "Enter\n");
-> +
-> +	err = brcmf_bus_get_blob(bus, &fw, BRCMF_BLOB_TXCAP);
-> +	if (err || !fw) {
-> +		brcmf_info("no txcap_blob available (err=%d)\n", err);
-> +		return 0;
-> +	}
-> +
-> +	brcmf_info("TxCap blob found, loading\n");
-> +	err = brcmf_c_download_blob(ifp, fw->data, fw->size,
-> +				    "txcapload", "txcapload_status");
-
-Although unlikely that we end up here with a firmware that does not 
-support this command it is not impossible. Should we handle that here or 
-introduce a feature flag for txcap loading?
-
-> +	release_firmware(fw);
->   	return err;
->   }
-
---0000000000005390c905d612ac78
+--000000000000f2b99d05d612accf
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -229,14 +176,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCB58wOePoCpSmbay6xp
-BO7jY6O3dBq8evcJmXO/G0Cp0DAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMjEwNzM2MTJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBp91NzsLczEjW5WU4r
+T8y5sX5ywQ0S6iDqLXmTzIXY6jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMjEwNzM2MjJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAHsTFDKvrwRoGtATdPxD/QNditRTrjqHkc+gi
-L4NFVxD42zjQgsSTjBjdaDU7REqlvKQ3He6CasCSl2vmBqiXixuufOzrJZ3NQwqm+I9oAjDiqwO0
-Cqo2eu6urfMHcR0tGRaC6R7NvGJXr0REoF62iiV351735qLBjxcWzEYI+6dn5jsIJN+nDh95jQlu
-HR9gypYLxoI2AnUErTZqgubPDlAkUmATejigGdyJxJWtESVEP3u21upGL+U3d9Ws7/bQU296Dhxw
-FZor9tlxpTa8Vsbezte6Nz6bxtqYeRnFOdJvn4J+8hoN/QTpJR91bDriLXXzPBChibUOJ3tg9+d3
-0w==
---0000000000005390c905d612ac78--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAFoYYVbbRoXpjc3Bk29oIXVwRQI0VQpoPCGJU
+LDK3BrTMKRW180n/aoqcNVG2oVgeR30Pow0pYDPTbl/JTL93eoE0R2gaZmZkPeA/f8L/+aMLdqxl
+AzXzI/GCqkQxZ7Ydm6JUkUD9kV741rwrvPEq9L19vrqA/Jv/BBST15aPK3iipGdxaP7C53EgO48V
+L4tmjWciAZwUNm0efwAj65AljYuA87LFXCs9v1ugoPlPBig7Vtt+KlLkhaNcK0NULVhAyDSrLMG1
+L67fU/cRBp7e9TJKxN3w/6rQrBW9azqFcFoSJ8Elgk+cn3HeA/oIEx61O8S7z0PPkbv1hiXA/anK
+KQ==
+--000000000000f2b99d05d612accf--
