@@ -2,64 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62309496360
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 17:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01062496351
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 17:57:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381936AbiAUQ5p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jan 2022 11:57:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50010 "EHLO
+        id S1381830AbiAUQ5W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jan 2022 11:57:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379623AbiAUQ4s (ORCPT
+        with ESMTP id S1380350AbiAUQ44 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jan 2022 11:56:48 -0500
-Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EF27C061747;
-        Fri, 21 Jan 2022 08:55:25 -0800 (PST)
-Received: by mail-ot1-x32a.google.com with SMTP id x31-20020a056830245f00b00599111c8b20so12504870otr.7;
-        Fri, 21 Jan 2022 08:55:25 -0800 (PST)
+        Fri, 21 Jan 2022 11:56:56 -0500
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BE6CC061775;
+        Fri, 21 Jan 2022 08:55:51 -0800 (PST)
+Received: by mail-oi1-x22a.google.com with SMTP id s9so14319296oib.11;
+        Fri, 21 Jan 2022 08:55:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=JlNCFKNGzNdKjL5cT/OHwG1B8Niqq4wld0y5z7aO8fE=;
-        b=P3ZOxoBv55viB3dAfzKSRe+1LS/DMWgFmA6bqUxm/ovvkTeWR7NZqhHJARZwrUpfYV
-         uAFpzChQtQvMYNxvF/wyh4OHPqWPfCq47VgxTMbA+mzmCT96pCpWnZBa03Ixea6CK5f7
-         g3Xcg6Y0PlXxcUVkWZi/CoU+wO7N81b5NqB7KfvZjp0AmELclzB6hax5OLTKOVulGG6Z
-         lgOqc9YMRKttH758573dUWbIihX69VAZTXTSbwZNlq57Dr6V2KTAWzbRH8q9gdyGW900
-         VR5DVtQcVujUJMM10ZSPz7SGbf3C6tr9N2vjIDMDUlBgkW3HC4bxfmNHIFxq/Bwaimgt
-         EMRg==
+        bh=JWwCA6Os6ufO2OamoDdA1VpkWXg1qWYv/gpuXYzvEa0=;
+        b=MjAl/2d7hFcNgyCHuaDhSHTjyebU3drd8M3jU8y2IQsqE6Okaz0WRef5nk97QClDqB
+         dvRMz5ydDfyCVO7XtDrt7BlmMK8yIEirVQKVXa4Ab0p+oKDAgX92r7pE+hkI77CSUetS
+         MH/DYXn1WvTkPKI+tE5gsImAWrq+f6bwAihvF9Zrbyyajq/ZWrGOG31AcvN0xvHHsQ/a
+         76Zbei7//5h/FF2ZDZo4d56PGsZXeyiJsEbzfQNDCrF7XS9IcXprwm/icw8/L0rshHl1
+         SNFx7oImgsZ6tDJvJDrHND4vFRrTq7IlAxO8d9ISxYF3yqUI1B4MhMf2hN48A52BFZM4
+         0oSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=JlNCFKNGzNdKjL5cT/OHwG1B8Niqq4wld0y5z7aO8fE=;
-        b=1qlWrfh/+87e68oCeGiBHiw22UWOyIRzE7xa3+zziEhEKbenVk7LBRFpDVQU7Ws168
-         LyivcYWSFqS3a1of0sfemCS+RwEB8FBm7JTJdWoD7ZT0bnCl8NGrOUwbSPtIU0NDElpp
-         HtWmFij8RizE7KZYBwFslGhdfG1qhlAPcG/V9YYvZ/pAN2zPPBrhc96eV8HJAVLrzFFd
-         5hvVC7y0jEvdztKTjnlvl9K0oSI7s2ysnTqtntBNav3Uz07GAJXt15C39xLuVmupr/Ui
-         gIwfFzpx80mKmpsuItwAfPMLSdSqh5JkuPrKTISE8pCkmWnJWLn47LcItAgbjLBtaQIS
-         DfSA==
-X-Gm-Message-State: AOAM530pVEnp+zYYqqSvTXSBH95dYicEpZmSVuDNFdGQ6A3mgdWZN2eq
-        EPAfCTYWSedEHMKCGRzc327432z8Q0I=
-X-Google-Smtp-Source: ABdhPJzLLejlyKQ1rc8bYS0Xd9Akuzio8gSFpnxClDl2uhTyxnM4hGeyoWTzSS5u4eKTAtH0DLZGSg==
-X-Received: by 2002:a05:6830:3152:: with SMTP id c18mr3444071ots.244.1642784125013;
-        Fri, 21 Jan 2022 08:55:25 -0800 (PST)
+        bh=JWwCA6Os6ufO2OamoDdA1VpkWXg1qWYv/gpuXYzvEa0=;
+        b=PxZNcHG/qr/KxQvSQ1Z9i/Ov/3ZWXQQV57z6Hde1O73TuAe56EUWAIHv+/D4NSLYxH
+         gF/MOXhjuzR3vrTETsC9D3rbz9FC/IG0EswFyqKE1wnVgqT8MZxbXlh5pt7kS35q46Az
+         hC/zNMnZmvNm5+zl4MBWgmZG1PfPxThqIUynx7fq31dWXf49PYxkjxsQre9tubgCmVwd
+         XWN45CZ5h7TlJdOIu8XSQYIOJtDbRuYCrSVW7BtOb/Z7hZpqocefiQCkAj1q0JVz6tBq
+         yYJwNKToy60bjwXNxee7ORLWfkAt56c1QhVd6SUTudwJ4ETv2tLm8NcBtMvEZIQChkaP
+         LnBQ==
+X-Gm-Message-State: AOAM530DTZW9qPeXPJHeZmcgvj4F48d0hh8/+HtBjC8ID8AA9Xs3bUro
+        ViGcXU20Mrstl/VKD7oQ1t0=
+X-Google-Smtp-Source: ABdhPJy/+XAmfEonekRvbRYH2yUx5daOlccr8uacmMOv+0HVuWMPQYm2UMLY4TsXH0dx9xykQjzivA==
+X-Received: by 2002:a05:6808:1442:: with SMTP id x2mr1217003oiv.166.1642784150774;
+        Fri, 21 Jan 2022 08:55:50 -0800 (PST)
 Received: from thinkpad.localdomain ([2804:14d:5cd1:5d03:cf72:4317:3105:f6e5])
-        by smtp.gmail.com with ESMTPSA id y8sm1089271oou.23.2022.01.21.08.55.21
+        by smtp.gmail.com with ESMTPSA id y8sm1089271oou.23.2022.01.21.08.55.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jan 2022 08:55:24 -0800 (PST)
+        Fri, 21 Jan 2022 08:55:50 -0800 (PST)
 From:   Luiz Sampaio <sampaio.ime@gmail.com>
-To:     Herton Ronaldo Krzesinski <herton@canonical.com>,
-        Hin-Tak Leung <htl10@users.sourceforge.net>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Kalle Valo <kvalo@kernel.org>,
+To:     Johannes Berg <johannes@sipsolutions.net>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, Luiz Sampaio <sampaio.ime@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH 19/31] net: realtek: changing LED_* from enum led_brightness to actual value
-Date:   Fri, 21 Jan 2022 13:54:24 -0300
-Message-Id: <20220121165436.30956-20-sampaio.ime@gmail.com>
+Subject: [PATCH 27/31] net: mac80211 : changing LED_* from enum led_brightness to actual value
+Date:   Fri, 21 Jan 2022 13:54:32 -0300
+Message-Id: <20220121165436.30956-28-sampaio.ime@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220121165436.30956-1-sampaio.ime@gmail.com>
 References: <20220121165436.30956-1-sampaio.ime@gmail.com>
@@ -73,31 +70,46 @@ The enum led_brightness, which contains the declaration of LED_OFF,
 LED_ON, LED_HALF and LED_FULL is obsolete, as the led class now supports
 max_brightness.
 ---
- drivers/net/wireless/realtek/rtl818x/rtl8187/leds.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/led.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/leds.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/leds.c
-index 49421d10e22b..6ddbdb5e3fa5 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/leds.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/leds.c
-@@ -109,7 +109,7 @@ static void rtl8187_led_brightness_set(struct led_classdev *led_dev,
+diff --git a/net/mac80211/led.c b/net/mac80211/led.c
+index 6de8d0ad5497..ac36579636bb 100644
+--- a/net/mac80211/led.c
++++ b/net/mac80211/led.c
+@@ -14,9 +14,9 @@ void ieee80211_led_assoc(struct ieee80211_local *local, bool associated)
+ 	if (!atomic_read(&local->assoc_led_active))
  		return;
- 	priv = hw->priv;
- 	if (led->is_radio) {
--		if (brightness == LED_FULL) {
-+		if (brightness == 255) {
- 			ieee80211_queue_delayed_work(hw, &priv->led_on, 0);
- 			radio_on = true;
- 		} else if (radio_on) {
-@@ -118,7 +118,7 @@ static void rtl8187_led_brightness_set(struct led_classdev *led_dev,
- 			ieee80211_queue_delayed_work(hw, &priv->led_off, 0);
- 		}
- 	} else if (radio_on) {
--		if (brightness == LED_OFF) {
-+		if (brightness == 0) {
- 			ieee80211_queue_delayed_work(hw, &priv->led_off, 0);
- 			/* The LED is off for 1/20 sec - it just blinks. */
- 			ieee80211_queue_delayed_work(hw, &priv->led_on,
+ 	if (associated)
+-		led_trigger_event(&local->assoc_led, LED_FULL);
++		led_trigger_event(&local->assoc_led, 255);
+ 	else
+-		led_trigger_event(&local->assoc_led, LED_OFF);
++		led_trigger_event(&local->assoc_led, 0);
+ }
+ 
+ void ieee80211_led_radio(struct ieee80211_local *local, bool enabled)
+@@ -24,9 +24,9 @@ void ieee80211_led_radio(struct ieee80211_local *local, bool enabled)
+ 	if (!atomic_read(&local->radio_led_active))
+ 		return;
+ 	if (enabled)
+-		led_trigger_event(&local->radio_led, LED_FULL);
++		led_trigger_event(&local->radio_led, 255);
+ 	else
+-		led_trigger_event(&local->radio_led, LED_OFF);
++		led_trigger_event(&local->radio_led, 0);
+ }
+ 
+ void ieee80211_alloc_led_names(struct ieee80211_local *local)
+@@ -344,7 +344,7 @@ static void ieee80211_stop_tpt_led_trig(struct ieee80211_local *local)
+ 	tpt_trig->running = false;
+ 	del_timer_sync(&tpt_trig->timer);
+ 
+-	led_trigger_event(&local->tpt_led, LED_OFF);
++	led_trigger_event(&local->tpt_led, 0);
+ }
+ 
+ void ieee80211_mod_tpt_led_trig(struct ieee80211_local *local,
 -- 
 2.34.1
 
