@@ -2,92 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68755496506
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 19:29:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66127496599
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 20:28:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382021AbiAUS3y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jan 2022 13:29:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43290 "EHLO
+        id S232342AbiAUT2v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jan 2022 14:28:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351379AbiAUS3x (ORCPT
+        with ESMTP id S232270AbiAUT2v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jan 2022 13:29:53 -0500
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FC36C06173B;
-        Fri, 21 Jan 2022 10:29:53 -0800 (PST)
-Received: by mail-oi1-x22b.google.com with SMTP id m9so285060oia.12;
-        Fri, 21 Jan 2022 10:29:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=x2Yau9KhhmJsWECpvG2VAEJBSBjdTIUlCrVpzfy1CjA=;
-        b=eOB/snb09fSjsY4aGZAHsVT29ophgRCM5gLd7P0tYngBFs3VBXCQtTNKbJg6r8+abH
-         5sbe83nJG6eTJnFSoABrzUMtKEfmbFAdGND2+f7Jdjd8iIE2N7X42gh94rLQcpfj/UuA
-         MitfKnCCFHrijEVawyEqJhOfWoIZT/o4d5yBJQX/E05J8l8Lp0RwQpH0dQJMmcejMbzO
-         6kRMxLR/x4/UoozAO7Dk+SnyHuyHtb22H2SesKA0NvEAO1A0HCSkysD3KsBQbAiszP4l
-         8XLzeD74WeIbxlj3jXxnBOp4FrIjd0KSHzLmLTLLCqmTIAX5IJ3pv65QbKT7RLkKXL5g
-         LYbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=x2Yau9KhhmJsWECpvG2VAEJBSBjdTIUlCrVpzfy1CjA=;
-        b=RsvtNGud83AFQE0bMFvu3XMRgL9oxmoVBlJcddTNVamNUIahtnvJIPn176NZo7fc9j
-         KjxBXNt+fQL3aWYmBeAB/vx4/z6arXD7oUw+CmaN+lf2B29dKVO0KbVWj512Re39/HnH
-         KMVzYKbmalVaNhKOI+x2pRRKf2l/c4AxOG9KibdwpNH232JnDvk19pv/HfUjsRk0y2Hj
-         +NJ7Ee4vrE+HoAdPH7l6IbQh4SJE0MlV461YBn3W+dBepw2yLBC9732sCqBmAqyg8l10
-         82foEO3Tale7zqMm4+vUEj8IeI2bLOcSmRMoCjWCQ1FxJKPh/yhr2GaO+RZnk/k+Al6R
-         zOQg==
-X-Gm-Message-State: AOAM530/hLOn4M9sQRQ3IYGqJuLpFX7KlBSHp/OwDupQtGy/F5g4nm9I
-        r3PhDfN6FsWiFaS1BuROG8g=
-X-Google-Smtp-Source: ABdhPJzWxll/pJbZ7sne7zBQ7BFG5Ym3Eruq9I4UxL6UEJ+NAOOgqsfPPydyFHuqHlXUKA5RhX8mTw==
-X-Received: by 2002:aca:aa05:: with SMTP id t5mr1580768oie.143.1642789792508;
-        Fri, 21 Jan 2022 10:29:52 -0800 (PST)
-Received: from [10.62.118.101] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
-        by smtp.gmail.com with ESMTPSA id bq9sm1657342oib.28.2022.01.21.10.29.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Jan 2022 10:29:51 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <d12bede2-4b76-fcdf-60c1-38616fab7ded@lwfinger.net>
-Date:   Fri, 21 Jan 2022 12:29:50 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH 19/31] net: realtek: changing LED_* from enum
+        Fri, 21 Jan 2022 14:28:51 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5310DC06173B;
+        Fri, 21 Jan 2022 11:28:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=5Rto3uScPhoQz+ANP90QDAtL8pw87Qal3oKsCCdk+fo=;
+        t=1642793331; x=1644002931; b=DwRmdrDurqFbA99uRI5rSK6ptNjgZDDZA8GvIYhxxmP2fZ+
+        or2FVZ3lftTxT5DsymLnh6JSEHDony4+opFDEpjVFt1XKf01KTG09+2BXNjGVjWbsNkvz0pbxmni2
+        vApGQ0FIpc/D0K6DwZaHP54niOKxRzrhEOyj4iUtjaUvgMEHYrac2KGRPrMyzC3UDbrQw0qiH9BB/
+        4/6vNRuWu1l7mdAi6yHzfa0oQivq1xmP6cGLqob5VFW8cepuYlBl04lyEj8OtAxPV3TPtSrOu1AM7
+        9I90OO2uERXQzGCmpjPGX18YE9f7EVAo+GGPz4daQLU2lPCBTsoVph5xXOyv+QZA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nAzaX-008ap4-5S;
+        Fri, 21 Jan 2022 20:28:45 +0100
+Message-ID: <25f2b7aad73e65a38c6203c400425c2489332dec.camel@sipsolutions.net>
+Subject: Re: [PATCH 27/31] net: mac80211 : changing LED_* from enum
  led_brightness to actual value
-Content-Language: en-US
-To:     htl10@users.sourceforge.net, Luiz Sampaio <sampaio.ime@gmail.com>,
-        Herton Ronaldo Krzesinski <herton@canonical.com>,
-        Kalle Valo <kvalo@kernel.org>,
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Luiz Sampaio <sampaio.ime@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org
-References: <1735835679.1273895.1642785160493.ref@mail.yahoo.com>
- <1735835679.1273895.1642785160493@mail.yahoo.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <1735835679.1273895.1642785160493@mail.yahoo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Date:   Fri, 21 Jan 2022 20:28:44 +0100
+In-Reply-To: <20220121165436.30956-28-sampaio.ime@gmail.com>
+References: <20220121165436.30956-1-sampaio.ime@gmail.com>
+         <20220121165436.30956-28-sampaio.ime@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.2 (3.42.2-1.fc35) 
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/21/22 11:12, Hin-Tak Leung wrote:
->> -        if (brightness == LED_FULL) {
->> +        if (brightness == 255) {
+On Fri, 2022-01-21 at 13:54 -0300, Luiz Sampaio wrote:
+> The enum led_brightness, which contains the declaration of LED_OFF,
+> LED_ON, LED_HALF and LED_FULL is obsolete, as the led class now supports
+> max_brightness.
 > 
->> -        if (brightness == LED_OFF) {
->> +        if (brightness == 0) {
-> 
-> NAKed. I haven't received the other 30 patches in this series so I don't know the full context, but I don't think replacing meaningful enum names with numerical values is an improvement. If the ENUMs are gone from a common include (and why is the ENUM removed, if drivers use them??), and the realtek driver still have such a functionality, it probably should be defined in one of the rtl818*.h as RTL818X_LED_FULL and RTL818X_LED_OFF .
-> 
-> My $0.02, based on this one only of the 31.
 
-I agree. Substituting magic numbers for enum names should not be done. NACK.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-Larry
+and particularly
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#commit_messages
+
+would be a good thing to read.
+
+Also, clearly you need to actually sign off your patches:
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html#developer-s-certificate-of-origin-1-1
+
+(but yeah read the entire page)
+
+Anyway, I'm with the other comments - what's the point in replacing
+things like "LED_FULL" with arbitrary "255". I guess your commit message
+should explain that, I don't see how it really is so obviously
+"obsolete" that this needs no more comments.
+
+johannes
