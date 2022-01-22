@@ -2,179 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A2EC496AFE
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Jan 2022 09:22:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C46A496C06
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Jan 2022 12:22:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231377AbiAVIWF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 22 Jan 2022 03:22:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56972 "EHLO
+        id S234157AbiAVLWg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 Jan 2022 06:22:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229790AbiAVIWE (ORCPT
+        with ESMTP id S229847AbiAVLWg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 22 Jan 2022 03:22:04 -0500
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6137C06173B
-        for <linux-wireless@vger.kernel.org>; Sat, 22 Jan 2022 00:22:04 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id t18so10800026plg.9
-        for <linux-wireless@vger.kernel.org>; Sat, 22 Jan 2022 00:22:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:to:cc:references
-         :from:in-reply-to;
-        bh=yx0J/9X3beM+kfr9GyadoEBYG7Fxr91VV0nRuTIm7xo=;
-        b=Auc6Gm+/I78KmB4hAm9IHti+bIiJSTMMKCBAtZ/hnKPo0XgXiox1pBrIx8ZkMfrTTV
-         hRyeDIlf62X021qJenZ8qPl5LLJufD+Upd4N8hJzip77/LctPgV68HKwPnXqCYaMC+fN
-         /88xl7jjSfoP5XN7M6xOPBL4x7x0c5Y6bJBGo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :to:cc:references:from:in-reply-to;
-        bh=yx0J/9X3beM+kfr9GyadoEBYG7Fxr91VV0nRuTIm7xo=;
-        b=0D6nyO/4CEumFuZtae2fYZYNovwojRUAFh7R1d3RxzN1isgdJ3rrEHvaKBhjphnlS/
-         TG5GUMlZcTR9TOVFw9q3e6Gc7ykBirVNgRasGmTnbJsoRl0Nd0CTu/q7P/EfZdRA9TfC
-         nlxtl35L0ByN/Sl/wm3x+7XOL2aU3XhGtBxoroh7HltzywwDs2XAPJEfO9eT7Mv+Hh9h
-         joklchClCiHbEJe46Pgpwf1WKT1rdrerJYPAX+yMlmOyXDsH7rdc5rLqMyxRPOc8o+lA
-         CM56ADdjqX5IreLNiGMx1hrOJUYpQ4eoO4/SnlbS5n6LnAPT7AgOtZNaatdH7etDCeMU
-         VDig==
-X-Gm-Message-State: AOAM533k/f5dCZnou/5g47qgDaZcIWE8XgpN4FxKoyk3UeOS4rIn617F
-        H9ZOyL+lqIC1e0nKRyj8V8eJUA==
-X-Google-Smtp-Source: ABdhPJznzhjojFLc5D1Ugb6FwmouCX4RxQEhgeYKVlf1ZwBm6t4EzxXGDF20SCeiHUNJyykDymn6og==
-X-Received: by 2002:a17:902:8ec6:b0:14a:c625:eb2d with SMTP id x6-20020a1709028ec600b0014ac625eb2dmr6917488plo.26.1642839724083;
-        Sat, 22 Jan 2022 00:22:04 -0800 (PST)
-Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id on9sm370945pjb.16.2022.01.22.00.22.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Jan 2022 00:22:03 -0800 (PST)
-Message-ID: <dd9e469a-b1ab-30d1-8f9f-946d4b323c35@broadcom.com>
-Date:   Sat, 22 Jan 2022 09:21:58 +0100
+        Sat, 22 Jan 2022 06:22:36 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEB50C06173B
+        for <linux-wireless@vger.kernel.org>; Sat, 22 Jan 2022 03:22:35 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 837C4B817A0
+        for <linux-wireless@vger.kernel.org>; Sat, 22 Jan 2022 11:22:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F59C004E1;
+        Sat, 22 Jan 2022 11:22:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642850553;
+        bh=Bs96ov4AUGG+3BWAOX5/gp8rMtv0HA80uFNRw2AcKQc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=a9sKYF0oobfs9Ve/yxGDbF9NHPyb/gv2tzAXLkLDP9+R8YtRITwv6fmYIwYCXRtp5
+         JOiywFRaT93yNLkbckduPOdYB+qB+kaas1W/AUKyXbmnrHfmuQbba4COHITmNKUSXh
+         dByQtEWhjtlYST7B8u7IXlaHzT8DtzeO31lmuq+35bVio3bbJsQyMRscJaVH7/UUOp
+         Lv1Sf+gSQ/LEbwr8h4E3iBEuGNwHsLEOGh5gnvjW9AkYC+7uI8hy0rdTYpR7L/nnlj
+         0wYRBcRMmSBDr9LYPPVC8QOw6LqQ+YuAEBUTvbVHIlzm6iB1p5ZOMoBUJLKmv4QQeQ
+         t2tYRT2Nbn45g==
+Date:   Sat, 22 Jan 2022 12:22:29 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     greearb@candelatech.com
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] mt76:  Ensure sale skb status list is processed.
+Message-ID: <Yevo9fhaPeuS+e7C@lore-desk>
+References: <20220121195548.17476-1-greearb@candelatech.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH 16/31] net: broadcom: changing LED_* from enum
- led_brightness to actual value
-To:     Luiz Sampaio <sampaio.ime@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        b43-dev@lists.infradead.org, netdev@vger.kernel.org
-References: <20220121165436.30956-1-sampaio.ime@gmail.com>
- <20220121165436.30956-17-sampaio.ime@gmail.com>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20220121165436.30956-17-sampaio.ime@gmail.com>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000330d8b05d6276ee4"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="xdtrgTUa6WyzUa/J"
+Content-Disposition: inline
+In-Reply-To: <20220121195548.17476-1-greearb@candelatech.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000330d8b05d6276ee4
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 1/21/2022 5:54 PM, Luiz Sampaio wrote:
-> The enum led_brightness, which contains the declaration of LED_OFF,
-> LED_ON, LED_HALF and LED_FULL is obsolete, as the led class now supports
-> max_brightness.
+--xdtrgTUa6WyzUa/J
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The commit message sounds a bit obscure to me. You say the 
-led_brightness enumeration is or rather will become obsolete. I don't 
-understand the reason given "led class now supports max_brightness". 
-What does that mean?
+> From: Ben Greear <greearb@candelatech.com>
+>=20
+> The old code might not ever run the stale skb status processing
+> list, so change it to ensure the stale entries are cleaned up
+> regularly.
 
-Also I do not understand the approach here. If the enum is obsolete why 
-not start with the APIs using it like the led callbacks 
-brightness_{get,set{,_blocking}}. I suspect that is your next step, but 
-it seems like unnecessary churn to me.
+I guess this work is already performed in mt76_tx_status_check() executed by
+mac work (e.g. mt7921_mac_work()) where pid is set to 0 and the first lookup
+will always fail. Have you identified an issue in the current codebase?
 
-Anyway, what triggered me to look at this is the fact that we do have a 
-led.c under drivers/net/wireless/broadcom/brcm80211/brcmsmac 
-implementing the brightness_set() callback.
+>=20
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt76.h |  1 +
+>  drivers/net/wireless/mediatek/mt76/tx.c   | 24 +++++++++++++++++------
+>  2 files changed, 19 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wire=
+less/mediatek/mt76/mt76.h
+> index 37d82d806c09..bfb68788251f 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -271,6 +271,7 @@ struct mt76_wcid {
+> =20
+>  	struct list_head list;
+>  	struct idr pktid;
+> +	unsigned long last_idr_check_at; /* in jiffies */
+>  };
+> =20
+>  struct mt76_txq {
+> diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wirele=
+ss/mediatek/mt76/tx.c
+> index 938353ac272f..b6f0d74fd563 100644
+> --- a/drivers/net/wireless/mediatek/mt76/tx.c
+> +++ b/drivers/net/wireless/mediatek/mt76/tx.c
+> @@ -157,24 +157,35 @@ mt76_tx_status_skb_get(struct mt76_dev *dev, struct=
+ mt76_wcid *wcid, int pktid,
+>  		       struct sk_buff_head *list)
+>  {
+>  	struct sk_buff *skb;
+> +	struct sk_buff *skb2;
+>  	int id;
+> +	/* Check twice as often as the timeout value so that we mitigate
+> +	 * worse-case timeout detection (where we do the check right before
+> +	 * the per skb timer would have expired and so have to wait another int=
+erval
+> +	 * to detect the skb status timeout.)
+> +	 */
+> +	static const int check_interval =3D MT_TX_STATUS_SKB_TIMEOUT / 2;
+> =20
+>  	lockdep_assert_held(&dev->status_lock);
+> =20
+>  	skb =3D idr_remove(&wcid->pktid, pktid);
+> -	if (skb)
+> +
+> +	/* If we have not checked for stale entries recently,
+> +	 * then do that check now.
+> +	 */
+> +	if (time_is_after_jiffies(wcid->last_idr_check_at + check_interval))
+>  		goto out;
+> =20
+>  	/* look for stale entries in the wcid idr queue */
+> -	idr_for_each_entry(&wcid->pktid, skb, id) {
+> -		struct mt76_tx_cb *cb =3D mt76_tx_skb_cb(skb);
+> +	idr_for_each_entry(&wcid->pktid, skb2, id) {
+> +		struct mt76_tx_cb *cb =3D mt76_tx_skb_cb(skb2);
+> =20
+>  		if (pktid >=3D 0) {
+>  			if (!(cb->flags & MT_TX_CB_DMA_DONE))
+>  				continue;
+> =20
+>  			if (time_is_after_jiffies(cb->jiffies +
+> -						   MT_TX_STATUS_SKB_TIMEOUT))
+> +						  MT_TX_STATUS_SKB_TIMEOUT))
+>  				continue;
+>  		}
+> =20
+> @@ -182,9 +193,10 @@ mt76_tx_status_skb_get(struct mt76_dev *dev, struct =
+mt76_wcid *wcid, int pktid,
+>  		 * and stop waiting for TXS callback.
+>  		 */
+>  		idr_remove(&wcid->pktid, cb->pktid);
+> -		__mt76_tx_status_skb_done(dev, skb, MT_TX_CB_TXS_FAILED |
+> -						    MT_TX_CB_TXS_DONE, list);
+
+I guess it is more readable as it was before.
 
 Regards,
-Arend
+Lorenzo
 
---000000000000330d8b05d6276ee4
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+> +		__mt76_tx_status_skb_done(dev, skb2, MT_TX_CB_TXS_FAILED |
+> +					  MT_TX_CB_TXS_DONE, list);
+>  	}
+> +	wcid->last_idr_check_at =3D jiffies;
+> =20
+>  out:
+>  	if (idr_is_empty(&wcid->pktid))
+> --=20
+> 2.20.1
+>=20
 
-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
-XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
-yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
-0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
-NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
-FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
-aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
-OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
-UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCD5zs791Q3x9NSyVjwu
-YrBYlnUWBHOlHMlc1ROkWPfQNDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMjIwODIyMDRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAlOZs+lchEfjDiJHzjpmYFDiqVsoKDCVCIFZY
-//VRg0d7W89vmQOhttYLcSJvqhqOxNeY3I/ErufAhy7NzcxYlR0S6kZXZXTj3u6GqIONVvWe7oK2
-kaKKozF1Bq2GSwlFcNcxGj5Xez8J3ahfrFQaOX8oKlIVcZ2nPzYLUKSP9X8g0X64fDBSWQmrYhOS
-tCvsy4cN1z4xBRFpOyA1pkCY4uXY3cTeKQCfU9n7OI7792xjCJMSIjk2+FCX1ylAdbMQc3eGFUhE
-P64babWZ8/HtAD4+sL9wsqQnWZSqSqhYsstOGrg/CM5pZTKdOD5kAy6x1Fm+5HGSYOn8RiDlEyK7
-ZA==
---000000000000330d8b05d6276ee4--
+--xdtrgTUa6WyzUa/J
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYevo9QAKCRA6cBh0uS2t
+rNUnAQDf/7olCCQvApzArT+9vPGdEOZoxdabiKvDgaXXh5XbdAD/YJHlx4nzw2M5
+GEdl1DitsnCZrn8W19w+1V9KSjCLNAI=
+=Nds4
+-----END PGP SIGNATURE-----
+
+--xdtrgTUa6WyzUa/J--
