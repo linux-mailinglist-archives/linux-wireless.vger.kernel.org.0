@@ -2,117 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFE224967EC
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jan 2022 23:42:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 873B4496910
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Jan 2022 02:07:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231142AbiAUWm0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jan 2022 17:42:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43232 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229568AbiAUWmZ (ORCPT
+        id S230414AbiAVBHD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jan 2022 20:07:03 -0500
+Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.164]:58268 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230371AbiAVBHD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jan 2022 17:42:25 -0500
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84988C06173B
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jan 2022 14:42:25 -0800 (PST)
-Received: by mail-io1-xd33.google.com with SMTP id z19so12513767ioj.1
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jan 2022 14:42:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=kSZGvQ/PhqOAa5UV8ZigO6yQNjGC7UfSjALFxNrTjuA=;
-        b=YzO6G0ZVqVWf3w1A5HcCIlHDpYyK+WH6nCTbJCOQv9NU71+MiUx6wuo4wXdAep8b6Q
-         EhO8NxIMn2z31HKpOqfDBW6NmyfJ8J+7OIYpy8lyAF9wsGREo/3NE40TuO2uhR17jvA4
-         jtYSliwVEhP6HDzXz7YWq/CoI5MYMOzs8fqwg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=kSZGvQ/PhqOAa5UV8ZigO6yQNjGC7UfSjALFxNrTjuA=;
-        b=Pd5/88kN3d+TKk0iUPtQwkIpB13nGei6bg2kAwaJlJnjAKw6bEmpTKLLK3hWg1AW72
-         DsQYMFptc0nN5PxCkLaRZjiRqC7Ssn1AARDOt6yUjRFkRVd+ozLdBg2oJyQrEdJhMSr7
-         oaL4A+98Ox6dTxQNdFacXnpN84qEycDiMaBDcxONUhv1amuNTlqla4/4s1u7B/bck3iH
-         KTpgdHHGd9K440dcmrwyUguIEiSh1S27sy03ZWeL9wPomJpb3bIJlH+3RKiDyXNxNSmB
-         HaOAqvAbJSoodIhG7KnPoJe+Qcc8izX0ONqgKRuu5uYnjjVSypwMaIDvWDYJTIShFe+g
-         OerA==
-X-Gm-Message-State: AOAM533eRVTN0RYrS16nOVSanR9fKbrgM/N35oG68cAeQKLeCOYm07ch
-        VbUAlAoBs8zFtuooaMrpIhxfGHbVslooaw==
-X-Google-Smtp-Source: ABdhPJztEsRYsMW7+I7gJvVSl9CdhdH99qgbuP0fzupOisBBU190ZOMqOQkoC7HjHeTzkJfiKYl5bg==
-X-Received: by 2002:a02:29c1:: with SMTP id p184mr2704882jap.301.1642804944523;
-        Fri, 21 Jan 2022 14:42:24 -0800 (PST)
-Received: from mail-il1-f174.google.com (mail-il1-f174.google.com. [209.85.166.174])
-        by smtp.gmail.com with ESMTPSA id p4sm2225187iod.37.2022.01.21.14.42.23
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Jan 2022 14:42:23 -0800 (PST)
-Received: by mail-il1-f174.google.com with SMTP id v17so8845604ilg.4
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jan 2022 14:42:23 -0800 (PST)
-X-Received: by 2002:a05:6e02:180c:: with SMTP id a12mr3372919ilv.142.1642804943188;
- Fri, 21 Jan 2022 14:42:23 -0800 (PST)
+        Fri, 21 Jan 2022 20:07:03 -0500
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.28])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id D0AC91A006F
+        for <linux-wireless@vger.kernel.org>; Sat, 22 Jan 2022 01:07:01 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 9624338007D
+        for <linux-wireless@vger.kernel.org>; Sat, 22 Jan 2022 01:07:01 +0000 (UTC)
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 0A73E13C2B0
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Jan 2022 17:07:00 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0A73E13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1642813621;
+        bh=vH+o4n4PJp6tjgn9O5Ucf8ACLJNSnbEti0nvRBD7Y50=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=dkqQptJXljC8LupiP/sj5eXyZdWoSqfeyJ8o9+XUrd9/WAcSkanKmI3wq+E59nYMo
+         wBcWoUTYv4YrjlIOFMaLr8qyH4HP5qdXrrkwvNWM4bAMSR0FOdlexVIL1CWUz7eaC9
+         zjNkeKgVEkWt4o5k+7cJViPLUG7vS/wn3u8JFFhY=
+Subject: Re: [PATCH] mt76: Ensure sale skb status list is processed.
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20220121195548.17476-1-greearb@candelatech.com>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <256db504-e4f5-21e0-b621-c086f73f88c5@candelatech.com>
+Date:   Fri, 21 Jan 2022 17:07:00 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-References: <20220121064427.32059-1-quic_youghand@quicinc.com>
-In-Reply-To: <20220121064427.32059-1-quic_youghand@quicinc.com>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Fri, 21 Jan 2022 14:42:11 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=X30mRSFcMeOav87g5qzco_J=-rag3rqyCAYOw0D_Ao0A@mail.gmail.com>
-Message-ID: <CAD=FV=X30mRSFcMeOav87g5qzco_J=-rag3rqyCAYOw0D_Ao0A@mail.gmail.com>
-Subject: Re: [RFC 0/2] ath10k:set tx credit to one and delay the unmaping
-To:     Youghandhar Chintala <quic_youghand@quicinc.com>
-Cc:     ath10k <ath10k@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, quic_pillair@quicinc.com,
-        Abhishek Kumar <kuabhs@chromium.org>,
-        Brian Norris <briannorris@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20220121195548.17476-1-greearb@candelatech.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-MDID: 1642813622-F_u6o3HoWMAa
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On 1/21/22 11:55 AM, greearb@candelatech.com wrote:
+> From: Ben Greear <greearb@candelatech.com>
+> 
+> The old code might not ever run the stale skb status processing
+> list, so change it to ensure the stale entries are cleaned up
+> regularly.
 
-On Thu, Jan 20, 2022 at 10:44 PM Youghandhar Chintala
-<quic_youghand@quicinc.com> wrote:
->
-> Currently for WCN3990, the host driver can send two wmi commands at once,
-> now it is limiting to one because if HOST wants to initiate 2 DMA transfe=
-rs,
-> it is possible when copy complete interrupt for first DMA reaches HOST,
-> CE has already updated SRRI for both DMA transfers and is in the middle
-> of 2nd DMA. HOST uses SRRI to interpret how many DMA=E2=80=99s have been =
-completed
-> and tries to unmap/free both the DMA entries, but CE is still in the midd=
-le
-> of 2nd DMA which can cause SMMU issues or corruption.
->
-> We are seeing a corner case smmu fault issue where copy engine is still a=
-ccessing
-> the memory though host unmaps it hence as work around we are delaying the
-> unmapping the memory and tx credit to one.
->
-> Youghandhar Chintala (2):
->   ath10k: Set tx credit to one for wcn3990 snoc based devices
->   ath10k: Delay the unmapping of the buffer
->
->  drivers/net/wireless/ath/ath10k/core.c | 30 ++++++++++++++++++++++++++
->  drivers/net/wireless/ath/ath10k/htc.c  | 18 +++++++++++++---
->  drivers/net/wireless/ath/ath10k/htc.h  |  1 +
->  drivers/net/wireless/ath/ath10k/hw.h   |  6 ++++++
->  4 files changed, 52 insertions(+), 3 deletions(-)
+Please ignore this, I did not understand how the mac_work logic could
+call the tx_status_skb_get such that pktid was purposefully invalid
+and thus cause the cleanup logic to happen.
 
-I don't understand the root cause here myself. I also don't have
-enough skin in the game to say whether this is the best/cleanest way
-to work around the problem. Thus I'll refrain from a Reviewed-by tag.
-That being said, I did a bunch of testing of this solution and I also
-am aware of others that have tested it. Thus I'm convinced that it at
-least works around the problem that has been observed. Hence:
+Perhaps my original issue this attempted to fix was related to
+some other problem.
 
-Tested-by: Douglas Anderson <dianders@chromium.org>
+Thanks,
+Bne
 
-In my case I was on the same (or nearly the same) hardware as
-Youghandhar, though I had a slightly older build. FWIW:
+> 
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> ---
+>   drivers/net/wireless/mediatek/mt76/mt76.h |  1 +
+>   drivers/net/wireless/mediatek/mt76/tx.c   | 24 +++++++++++++++++------
+>   2 files changed, 19 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+> index 37d82d806c09..bfb68788251f 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -271,6 +271,7 @@ struct mt76_wcid {
+>   
+>   	struct list_head list;
+>   	struct idr pktid;
+> +	unsigned long last_idr_check_at; /* in jiffies */
+>   };
+>   
+>   struct mt76_txq {
+> diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
+> index 938353ac272f..b6f0d74fd563 100644
+> --- a/drivers/net/wireless/mediatek/mt76/tx.c
+> +++ b/drivers/net/wireless/mediatek/mt76/tx.c
+> @@ -157,24 +157,35 @@ mt76_tx_status_skb_get(struct mt76_dev *dev, struct mt76_wcid *wcid, int pktid,
+>   		       struct sk_buff_head *list)
+>   {
+>   	struct sk_buff *skb;
+> +	struct sk_buff *skb2;
+>   	int id;
+> +	/* Check twice as often as the timeout value so that we mitigate
+> +	 * worse-case timeout detection (where we do the check right before
+> +	 * the per skb timer would have expired and so have to wait another interval
+> +	 * to detect the skb status timeout.)
+> +	 */
+> +	static const int check_interval = MT_TX_STATUS_SKB_TIMEOUT / 2;
+>   
+>   	lockdep_assert_held(&dev->status_lock);
+>   
+>   	skb = idr_remove(&wcid->pktid, pktid);
+> -	if (skb)
+> +
+> +	/* If we have not checked for stale entries recently,
+> +	 * then do that check now.
+> +	 */
+> +	if (time_is_after_jiffies(wcid->last_idr_check_at + check_interval))
+>   		goto out;
+>   
+>   	/* look for stale entries in the wcid idr queue */
+> -	idr_for_each_entry(&wcid->pktid, skb, id) {
+> -		struct mt76_tx_cb *cb = mt76_tx_skb_cb(skb);
+> +	idr_for_each_entry(&wcid->pktid, skb2, id) {
+> +		struct mt76_tx_cb *cb = mt76_tx_skb_cb(skb2);
+>   
+>   		if (pktid >= 0) {
+>   			if (!(cb->flags & MT_TX_CB_DMA_DONE))
+>   				continue;
+>   
+>   			if (time_is_after_jiffies(cb->jiffies +
+> -						   MT_TX_STATUS_SKB_TIMEOUT))
+> +						  MT_TX_STATUS_SKB_TIMEOUT))
+>   				continue;
+>   		}
+>   
+> @@ -182,9 +193,10 @@ mt76_tx_status_skb_get(struct mt76_dev *dev, struct mt76_wcid *wcid, int pktid,
+>   		 * and stop waiting for TXS callback.
+>   		 */
+>   		idr_remove(&wcid->pktid, cb->pktid);
+> -		__mt76_tx_status_skb_done(dev, skb, MT_TX_CB_TXS_FAILED |
+> -						    MT_TX_CB_TXS_DONE, list);
+> +		__mt76_tx_status_skb_done(dev, skb2, MT_TX_CB_TXS_FAILED |
+> +					  MT_TX_CB_TXS_DONE, list);
+>   	}
+> +	wcid->last_idr_check_at = jiffies;
+>   
+>   out:
+>   	if (idr_is_empty(&wcid->pktid))
+> 
 
-Tested-on: WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
 
--Doug
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
