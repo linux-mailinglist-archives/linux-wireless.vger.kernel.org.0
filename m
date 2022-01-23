@@ -2,92 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C848149744B
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jan 2022 19:28:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 860FF497452
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jan 2022 19:34:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239404AbiAWS2A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 23 Jan 2022 13:28:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50720 "EHLO
+        id S239502AbiAWSeh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 23 Jan 2022 13:34:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239319AbiAWS17 (ORCPT
+        with ESMTP id S239319AbiAWSee (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 23 Jan 2022 13:27:59 -0500
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD5B7C06173B;
-        Sun, 23 Jan 2022 10:27:58 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id u15so9596406wrt.3;
-        Sun, 23 Jan 2022 10:27:58 -0800 (PST)
+        Sun, 23 Jan 2022 13:34:34 -0500
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD294C06173B;
+        Sun, 23 Jan 2022 10:34:30 -0800 (PST)
+Received: by mail-ej1-x630.google.com with SMTP id ka4so15296828ejc.11;
+        Sun, 23 Jan 2022 10:34:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=zs+Ru6Mn/aNGA0jG9ohfyPTr3hgPfmsPwOklIHXUa6Q=;
-        b=JPP8ya6apK/bg8jA690kk96yiK345f1FDwfn03ffTbuNbNM6QGLZK/ociIFlsJrZRy
-         mBIdHt5wMjuRMX5IjN+hRI6RZNexxhPivjtvencHb+F6dxLC0sOi8u2qvMony70IYp4u
-         gV+9+HkqIkMPP7ndw/niullq0bB/bXIsYlLS5moFovgdnCP07S461BmstqtKltZdWwLv
-         MQuh5P/H0rxkydM6qKbqPsoeGyIHGVnP1GShX4zBLAge7ahDe1wx2QKSJQnQ5WcIJQki
-         nMZp6kEBLWT6H3/eBCvPtqD8RrncwWHuHiPvNZiJd6hWbA5V2zSqljFyS5Cdmy7ZM8qD
-         hkLg==
+        d=googlemail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hos1FHw0FfVSOnWTAZTOMeKBiPpS+1hs6X6GnfavR3I=;
+        b=VcDBWhFVFdAXo3yBT3IExhMhF6Lu6CCaaiOrI81TBUCA5w0/04xnIcTNesNv8JZqUe
+         x3Y+IPcd+SCIX0jfqh5w5dhdPM3BaCUzBBP9HC1BjczB2nV239/6vtzcD+WmPTn9ClJd
+         WnWP/6nCQMj0+ioHHZSPSQbBChh+wYzHlmbmgVZt6fD/T6tQT+JJ8bpeiYEzxQ3+ibwV
+         5bfJxVERBx8kHjFcJvy6Sp224JXO3K2XERBukRKK6ixd4oX89QCXHQqo64Vmo8gVIeId
+         6p5bLOaxgC3Nv4np5bRU4iSjrQ24DfvKKEVsnB6nSPxkd1Vg3KKNwcURDuuhBq71vtU3
+         O2qQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=zs+Ru6Mn/aNGA0jG9ohfyPTr3hgPfmsPwOklIHXUa6Q=;
-        b=mQsUgsSgYTwAK6wdZOeUfGtkXw1KQVGv2TJCnKVIHdJSY9dKvML42Bbu/EqfBpr3EM
-         hubMip06maUmmcPhT2YqfBfKP9jFF6Tt0AFItK/SmECjhmSlzp68sto1V1mNceqqcdvM
-         JoSxEEAQmvIU3dgnwuaUHUaGWTGwfV3whJCKn7jzgCPWvO06HErpHpKg6l1YehIteLFJ
-         0p200jAZq1VEfpT6YvMqhawWmGV22MaKFLQTQ9t0ABA6sb3vTrx6ysxDGCYQyceqrEEF
-         OnQ66ioNeiqNxRQqpyTIUYRN/5o/nr24UifwAgHySk6+tqMgDPPIpVZ8FQARDt/nm6D+
-         tG/Q==
-X-Gm-Message-State: AOAM532uC7gvElMcIBoIAz7K3JwGLgtkUzoc/PE+nsfyS8WOyl3L1HdP
-        z1NNs8J+PIe50zaXJWUZXMo=
-X-Google-Smtp-Source: ABdhPJy/5Y7TIcgbVGiniCcW7SKe56C6PWUYuKG2FeJLIw/Y4IepBcKHZQ19eblblmUh0G2Hd5TB8g==
-X-Received: by 2002:a5d:64e1:: with SMTP id g1mr11135108wri.22.1642962477501;
-        Sun, 23 Jan 2022 10:27:57 -0800 (PST)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id i3sm11769254wru.33.2022.01.23.10.27.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Jan 2022 10:27:56 -0800 (PST)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Christian Lamparter <chunkeey@googlemail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] carl9170: remove redundant assignment to variable tx_params
-Date:   Sun, 23 Jan 2022 18:27:55 +0000
-Message-Id: <20220123182755.112146-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.33.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hos1FHw0FfVSOnWTAZTOMeKBiPpS+1hs6X6GnfavR3I=;
+        b=wiDHIUTTn+XzLFgOuFvCOwYzmvEC7gescOfIHaKTghNpiAftG0OrXhWxJB7vpy0NT9
+         IzArzGIPiCNN6rvXsR+r25kz8r8BlmYml83Guc354JqdI24Du0w/NXx0+py8xgw80FHu
+         mGEH4u8RkX9huuJ1gOccKjx7Dt6wMdvYMyWILIEppKgRUdqJGJXkSciuXOadywuZuqky
+         TnwBFOAt6yxUlObTeYI1b8ybgoZ6IUQktEbJ7p3+RMW/Yq1jgGJx+Bo5EBFIhkUCflBa
+         fEugrSPf2HEswlIDUALdcLCigQ+0+HQHDOXzRKJMr0NG2EA0FG4OkLsA3eSxTAImWCpq
+         1o9g==
+X-Gm-Message-State: AOAM533Lr+ItYFrPJlkUuPb/HtDvfJqlar9pBaVS3SivaFRCKoNbFy5o
+        mTeun3p1GmZgL8O5tQUsjxdITJFAPiKH5UTzac8=
+X-Google-Smtp-Source: ABdhPJyXQfUUefxElP+l1ZKl79hTu4kdPoE0Kpjp2SdsI+j6n8REMdCBhH3Ring3+mUH9BD7qSoEQ/MCjtkB9S08Mc8=
+X-Received: by 2002:a17:907:6e18:: with SMTP id sd24mr10280596ejc.649.1642962869128;
+ Sun, 23 Jan 2022 10:34:29 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20220114234825.110502-1-martin.blumenstingl@googlemail.com>
+ <20220114234825.110502-4-martin.blumenstingl@googlemail.com>
+ <b2bf2bc5f04b488487797aa21c50a130@realtek.com> <87czkogsc4.fsf@kernel.org>
+In-Reply-To: <87czkogsc4.fsf@kernel.org>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Sun, 23 Jan 2022 19:34:18 +0100
+Message-ID: <CAFBinCCeCoRmqApeeAD534dKrhgbnh4wSBF88oLLXqL-TYv5+w@mail.gmail.com>
+Subject: Re: [PATCH 3/4] rtw88: Move enum rtw_tx_queue_type mapping code to tx.{c,h}
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Pkshih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Neo Jou <neojou@gmail.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Variable tx_params is being assigned a value that is never read, it
-is being re-assigned a couple of statements later with a different
-value. The assignment is redundant and can be removed.
+Hi Kalle,
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/net/wireless/ath/carl9170/main.c | 2 --
- 1 file changed, 2 deletions(-)
+On Wed, Jan 19, 2022 at 7:20 AM Kalle Valo <kvalo@kernel.org> wrote:
+[...]
+> I was about to answer that with a helper function it's easier to catch
+> out of bands access, but then noticed the helper doesn't have a check
+> for that. Should it have one?
+you mean something like:
+    if (ac >= IEEE80211_NUM_ACS)
+        return RTW_TX_QUEUE_BE;
 
-diff --git a/drivers/net/wireless/ath/carl9170/main.c b/drivers/net/wireless/ath/carl9170/main.c
-index 49f7ee1c912b..f392a2ac7e14 100644
---- a/drivers/net/wireless/ath/carl9170/main.c
-+++ b/drivers/net/wireless/ath/carl9170/main.c
-@@ -1909,8 +1909,6 @@ static int carl9170_parse_eeprom(struct ar9170 *ar)
- 	tx_streams = hweight8(ar->eeprom.tx_mask);
- 
- 	if (rx_streams != tx_streams) {
--		tx_params = IEEE80211_HT_MCS_TX_RX_DIFF;
--
- 		WARN_ON(!(tx_streams >= 1 && tx_streams <=
- 			IEEE80211_HT_MCS_TX_MAX_STREAMS));
- 
--- 
-2.33.1
+Possibly also with a WARN_ON/WARN_ON_ONCE
 
+
+Best regards,
+Martin
