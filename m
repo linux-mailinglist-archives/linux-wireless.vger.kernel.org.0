@@ -2,59 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C241C49903C
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jan 2022 21:03:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D67A7498FAA
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jan 2022 20:55:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353407AbiAXT7O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Jan 2022 14:59:14 -0500
-Received: from sv16.wpblog.netowl.jp ([157.112.191.91]:37460 "EHLO
-        sv16.wpblog.netowl.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347965AbiAXTwN (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Jan 2022 14:52:13 -0500
-X-Greylist: delayed 454 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 Jan 2022 14:52:13 EST
-Received: by sv16.wpblog.netowl.jp (Postfix, from userid 3053)
-        id 029DD42A6C422; Tue, 25 Jan 2022 04:44:35 +0900 (JST)
-To:     nyorogon2000@gmail.com, linux-wireless@vger.kernel.org
-Subject: =?us-ascii?Q?=3D=3FISO-2022-JP=3FB=3FGyRCJCpMZCQkOWckbyQ7JCI?=  =?us-ascii?Q?kaiQsJEgkJiQ0JDYkJCReJDkhQzwrTikzWD0sJHJBNE5PMX?=  =?us-ascii?Q?4xZyEqSy02Nj8iRUQ9ThsoQg=3D=3D=3F=3D?=
-Date:   Mon, 24 Jan 2022 19:44:34 +0000
-From:   =?ISO-2022-JP?B?GyRCSy02Nj8iRUQ9ThsoQg==?= 
-        <wordpress@toyohashi-ueta.com>
-Reply-To: linux-wireless@vger.kernel.org
-Message-ID: <9vKbqaylywhWCg9mjh1Wqz3OTqpneYhetK9EseL2M@toyohashi-ueta.com>
-X-Mailer: PHPMailer 6.5.0 (https://github.com/PHPMailer/PHPMailer)
-X-WPCF7-Content-Type: text/plain
+        id S1351583AbiAXTyM convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Jan 2022 14:54:12 -0500
+Received: from [103.153.79.64] ([103.153.79.64]:61021 "EHLO [103.153.79.64]"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1357111AbiAXTsO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 24 Jan 2022 14:48:14 -0500
+Reply-To: Nasser Rashid <nasserrashid.uae@gmail.com>
+From:   Nasser Rashid <anice.fronteracapitalgroup@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Subject: EXPO 2020 BUSINESS PROPOSAL
+Date:   24 Jan 2022 11:48:14 -0800
+Message-ID: <20220124114814.CF85A07052A895C9@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-2022-JP
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-69jh2q9h様の保護者様
+Greetings!
 
-この度は「自立学習を全力応援！豊橋植田塾」にお問い合わせをいただき、ありがとうございます。
-追ってこちらからご連絡をいたしますので、少々お待ちください。
-よろしくお願いいたします。
+I'm Nasser Rashid, a business financial specialist and investment 
+expert. consultant experienced in financial funding services. I 
+have a
 
----------------------------
-お問い合わせ内容
----------------------------
+I have a serious business investment opportunity to discuss with 
+you. Century Financial Dubai is the home of discerning investors.
+We
 
-保護者のお名前　： ?? You have unread messages from Juliet (2)! Click Here: https://clck.ru/aoNuT?hwo ??
+We offer independent financial advice and assist our clients in 
+making sound investment decisions from a variety of investment 
+options.
 
-生徒のお名前　： 69jh2q9h
+Opportunities are available.
 
-電話番号　： 738269350268 
+Our company is structured to provide personalized services to As 
+a result, capital security and adequate funding are ensured.
 
-メールアドレス　： linux-wireless@vger.kernel.org
+returns on investment. Our investors are ready to provide funding 
+for your business expansion, such as debt and equity.
 
-学校名　： by1xba
+financing. If you require funding, we would be able to partner 
+with you. We look forward to your response.
 
-学年　： その他
+Thank you and stay safe,
 
-お問い合わせ内容　： 2w9f2k2
+Nasser Rashid, CFA,
 
-
--- 
-このメールは 自立学習を全力応援！豊橋植田塾 (http://toyohashi-ueta.com) のお問い合わせフォームから送信されました
-
+Century Financial
