@@ -2,111 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CA3049AD34
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jan 2022 08:15:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EFFB849ACD6
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jan 2022 08:04:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1442680AbiAYHKg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jan 2022 02:10:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59326 "EHLO
+        id S1356283AbiAYHEF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jan 2022 02:04:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1325326AbiAYECY (ORCPT
+        with ESMTP id S248974AbiAYEDM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Jan 2022 23:02:24 -0500
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86CEDC0617BD
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jan 2022 16:40:51 -0800 (PST)
-Received: by mail-wr1-x42b.google.com with SMTP id k18so16746300wrg.11
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jan 2022 16:40:51 -0800 (PST)
+        Mon, 24 Jan 2022 23:03:12 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57387C0613A0;
+        Mon, 24 Jan 2022 16:44:09 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id c190-20020a1c9ac7000000b0035081bc722dso394796wme.5;
+        Mon, 24 Jan 2022 16:44:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=yaTvwS4/6MDKumF6j26FEM+C3MJi6OQIGg+81nGS/Y4=;
-        b=q6rEdrCpPsyas46bpfBf3wKDbN1TTehfOA2t81hnZkEm10OT8pQT3Fvs/sAV/uv6O+
-         RPSXQUeq6WT0L0CiKmnJfljUf5lwte/eEiZorQ++M1ELx9PWA4i9lJgDqAw1e2V2nOvm
-         K+6FClExzDfzrYPECEdUup7iJ7lTZtVBUY9hJUui2w+yuP8FlOSC1IJEBHwYihVuDBW8
-         N16RI+F9oU5SW6/JbwYW0JyAxkEI2edVHWSC/puHmXIQChmMBqhgi8r2AcxwFtkxh4Ri
-         y2Vfatljj/r7e9+ZyckF3otMHziIneEASqr9gohCfN0FcmsU1IF4jWaVk1E0Ya56GEa9
-         w2rw==
+        bh=fLRx9U/2NmB44pdLfJwKGSap2HFuUnZgoHSikvYyf1Y=;
+        b=Uri3ZygruRiJrNQhOePq8oZkEEomTzM8IcTOvseIjxw6EGnuo4ouml6ZToHiWPeeCF
+         9BF6aHgCHSxQqRmJn7Fz6eP5ybedfIMEqA0Cgiw837k6VqVPzFOqaXSTG8ETZut+juGG
+         FcayrugHrMuu0XpBzU8b8NYycxZCnABQ44ZPddny/6d9x0b/6uxVcw+9aXj4NX8cQ0V5
+         hVWo8mWoszhMdoJfvKdGHcltZVpE8s6V/XuxPFDs+BKS+JCJiGmH/twVLqtt9H/Xeujt
+         jmiCuB7fQQAvPPk92/TW/t+F3D34u1txrJ/3MjbVXFj2YwQDH2vOXwrhc5qp2s7yI1tN
+         K5eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=yaTvwS4/6MDKumF6j26FEM+C3MJi6OQIGg+81nGS/Y4=;
-        b=Ry9M+wSwsNN/ScQ4qPf2pbhBs2R85+yu+clBsBUfvsHQ2B06Y8bcx5uD63ZJVM+qOJ
-         Cup9OKM3pWS5kq3nMRHl39iQ4Y/Fx4kv3KCYjh5DEHqIdtJDzfslF03LMGDX2oP2VpEw
-         mEQAaE9DwuEuhas0yCPAC1lfrv6F+95H0kotMtu+3qTKK7MEM6qGV8fFj3jWnveppsBW
-         vXQgi04/suIfUtL7NcrSE3Ctfx2w9yfMjwNfOr6xH0ZI7nsGiGErSny4JdeYZW/Qw6sw
-         myDPhtcY2lvmwmi6MK4lK7ucBrR0rdevA0yCVqCYksQhDWevuWPnH8kLRCeWEbpwO4Dq
-         ofdQ==
-X-Gm-Message-State: AOAM531Qf1P16JRIphKmEi0J7LAkd50b8VFZHX0IP9ymC7a/5gO8PaCQ
-        VyeAjJjnpeVO0GP+Z/KLDFview==
-X-Google-Smtp-Source: ABdhPJzmdxdDuOGxRu6YgNjJI0JTdTY9ShLkZFHrXUFiM7nsFNsWNFs+BrB3LfghX8YDBfCEmwV9hA==
-X-Received: by 2002:a5d:64e7:: with SMTP id g7mr3771269wri.72.1643071250137;
-        Mon, 24 Jan 2022 16:40:50 -0800 (PST)
-Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id x4sm16364104wrp.13.2022.01.24.16.40.49
+        bh=fLRx9U/2NmB44pdLfJwKGSap2HFuUnZgoHSikvYyf1Y=;
+        b=2Lte37nn0Z6fISVIL6YG8PDsDogdoDxhvVik9jvodOJKxnughvn4p6bKfXHst8aS9y
+         /cYU0N/QquR9B5t3URzwgMmniOmevuCNxN8c3P14lvlc46n6VY2Il+zlwOYcAzAgKm1l
+         kbITloPdtEYGNQqgxWe8PYfa/6D9AZziSmn7oWnAWfW0ago1GUIGj1PeMhgMIDJ9s/7J
+         JeO72ju2sjAMAlREbBgEWcYLktM6m5me3x5JgdWLWRiuLUQOSGZOSRxNNALKLuK2nkpy
+         pWGDO2oYJjhDcBCeGK5jRwUulk6LZAoqWPaXM6tBhy5Ja6t6XABcsyaz32aYuxudWhaa
+         BnEw==
+X-Gm-Message-State: AOAM532KdzkZF344hZY2sHtFvRUTd8HScjg/KZjXsAqjckXhntagC8/+
+        aaIo58lDjDszQnjnRk1yKSI=
+X-Google-Smtp-Source: ABdhPJz5o+URFYf4JkJc3R99+zOF/mY6qpbpL6hjRWY5PsvVBvKIC7+1cAsO8rmcqD0Yawnz5WqATA==
+X-Received: by 2002:a05:600c:35d0:: with SMTP id r16mr642530wmq.195.1643071447836;
+        Mon, 24 Jan 2022 16:44:07 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id g20sm925194wmq.9.2022.01.24.16.44.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jan 2022 16:40:49 -0800 (PST)
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        wcn36xx@lists.infradead.org, linux-arm-msm@vger.kernel.org
-Cc:     loic.poulain@linaro.org, benl@squareup.com,
-        bryan.odonoghue@linaro.org, stable@vger.kernel.org
-Subject: [PATCH] wcn36xx: Differentiate wcn3660 from wcn3620
-Date:   Tue, 25 Jan 2022 00:40:46 +0000
-Message-Id: <20220125004046.4058284-1-bryan.odonoghue@linaro.org>
-X-Mailer: git-send-email 2.33.0
+        Mon, 24 Jan 2022 16:44:07 -0800 (PST)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Christian Lamparter <chunkeey@googlemail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Stable@vger.kernel.org
+Subject: [PATCH] carl9170: fix missing bit-wise or operator for tx_params
+Date:   Tue, 25 Jan 2022 00:44:06 +0000
+Message-Id: <20220125004406.344422-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The spread of capability between the three WiFi silicon parts wcn36xx
-supports is:
+Currently tx_params is being re-assigned with a new value and the
+previous setting IEEE80211_HT_MCS_TX_RX_DIFF is being overwritten.
+The assignment operator is incorrect, the original intent was to
+bit-wise or the value in. Fix this by replacing the = operator
+with |= instead.
 
-wcn3620 - 802.11 a/b/g
-wcn3660 - 802.11 a/b/g/n
-wcn3680 - 802.11 a/b/g/n/ac
+Kudos to Christian Lamparter for suggesting the correct fix.
 
-We currently treat wcn3660 as wcn3620 thus limiting it to 2GHz channels.
-Fix this regression by ensuring we differentiate between all three parts.
+Fixes: fe8ee9ad80b2 ("carl9170: mac80211 glue and command interface")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Cc: <Stable@vger.kernel.org>
 
-Fixes: 8490987bdb9a ("wcn36xx: Hook and identify RF_IRIS_WCN3680")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/wcn36xx/main.c    | 3 +++
- drivers/net/wireless/ath/wcn36xx/wcn36xx.h | 1 +
- 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index 9575d7373bf27..ac2813ed851c4 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1513,6 +1513,9 @@ static int wcn36xx_platform_get_resources(struct wcn36xx *wcn,
- 	if (iris_node) {
- 		if (of_device_is_compatible(iris_node, "qcom,wcn3620"))
- 			wcn->rf_id = RF_IRIS_WCN3620;
-+		if (of_device_is_compatible(iris_node, "qcom,wcn3660") ||
-+		    of_device_is_compatible(iris_node, "qcom,wcn3660b"))
-+			wcn->rf_id = RF_IRIS_WCN3660;
- 		if (of_device_is_compatible(iris_node, "qcom,wcn3680"))
- 			wcn->rf_id = RF_IRIS_WCN3680;
- 		of_node_put(iris_node);
-diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-index fbd0558c2c196..5d3f8f56e5681 100644
---- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-+++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-@@ -97,6 +97,7 @@ enum wcn36xx_ampdu_state {
+V2: change subject line to match the correct fix, add in the
+    missing | operator
+---
+ drivers/net/wireless/ath/carl9170/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/carl9170/main.c b/drivers/net/wireless/ath/carl9170/main.c
+index 49f7ee1c912b..2208ec800482 100644
+--- a/drivers/net/wireless/ath/carl9170/main.c
++++ b/drivers/net/wireless/ath/carl9170/main.c
+@@ -1914,7 +1914,7 @@ static int carl9170_parse_eeprom(struct ar9170 *ar)
+ 		WARN_ON(!(tx_streams >= 1 && tx_streams <=
+ 			IEEE80211_HT_MCS_TX_MAX_STREAMS));
  
- #define RF_UNKNOWN	0x0000
- #define RF_IRIS_WCN3620	0x3620
-+#define RF_IRIS_WCN3660	0x3660
- #define RF_IRIS_WCN3680	0x3680
+-		tx_params = (tx_streams - 1) <<
++		tx_params |= (tx_streams - 1) <<
+ 			    IEEE80211_HT_MCS_TX_MAX_STREAMS_SHIFT;
  
- static inline void buff_to_be(u32 *buf, size_t len)
+ 		carl9170_band_2GHz.ht_cap.mcs.tx_params |= tx_params;
 -- 
-2.33.0
+2.33.1
 
