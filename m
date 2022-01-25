@@ -2,110 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E79649BAFC
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jan 2022 19:09:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B898D49BB23
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jan 2022 19:20:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244355AbiAYSJN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jan 2022 13:09:13 -0500
-Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.49]:59302 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S244334AbiAYSJI (ORCPT
+        id S230042AbiAYSUM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jan 2022 13:20:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34686 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229994AbiAYSTn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jan 2022 13:09:08 -0500
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.121])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 0CE441C0063;
-        Tue, 25 Jan 2022 18:09:04 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id A83864C0096;
-        Tue, 25 Jan 2022 18:09:01 +0000 (UTC)
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id B057713C2B0;
-        Tue, 25 Jan 2022 10:09:00 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B057713C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1643134141;
-        bh=otoWo9j8xyBa09sRi2gr02yQo5F4EfMnx4l/bFAHyXM=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=fZIoQfo2714iVzfBd+ymI0HlF9mYQ8k/IgndPA1vfUMHQ1w1bil5aFzsn4XuOF92g
-         Zj4kZ0LEKJVlTtoYhgDfAEQIyzEKWKQqCVLFWWd9P02EMQ8ydu/c7Dr2MNfpKiKCZI
-         aTjqhpOZu+fqmY/40S+08V4hu1BrJ76YLK6CBPxM=
-Subject: Re: [PATCH] mt76: mt7921e: fix possible probe failure after reboot
-To:     Mike Lothian <mike@fireburn.co.uk>, khalid@gonehiking.org
-Cc:     Deren.Wu@mediatek.com, Eddie.Chen@mediatek.com,
-        Eric-SY.Chang@mediatek.com, Eric.Liang@mediatek.com,
-        Leon.Yen@mediatek.com, Mark-YW.Chen@mediatek.com,
-        Soul.Huang@mediatek.com, Stella.Chang@mediatek.com,
-        Tom.Chou@mediatek.com, YN.Chen@mediatek.com,
-        abhishekpandit@google.com, ch.yeh@mediatek.com,
-        frankgor@google.com, jemele@google.com, jenhao.yang@mediatek.com,
-        jsiuda@google.com, km.lin@mediatek.com,
-        linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, nbd@nbd.name, posh.sun@mediatek.com,
-        robin.chiu@mediatek.com, sean.wang@mediatek.com,
-        shawnku@google.com, steve.lee@mediatek.com, ted.huang@mediatek.com
-References: <d291f592-d84a-2ffe-7f75-df77890efce8@gonehiking.org>
- <20220120095622.1938-1-mike@fireburn.co.uk>
- <CAHbf0-HLCcgZfbKdWQ-kX+QbRGJsEHCEDnG=NZ5QF71aTeDMGg@mail.gmail.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <9d692dc9-4b24-44b0-cbe0-dfc33f3d5f03@candelatech.com>
-Date:   Tue, 25 Jan 2022 10:09:00 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Tue, 25 Jan 2022 13:19:43 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17E40C061744;
+        Tue, 25 Jan 2022 10:19:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=GIYgmGVH0pclqYjJ31drSKjl7AYrdZRKN/75y87O6wI=;
+        t=1643134783; x=1644344383; b=NxDZ+e374Sr0tVqs3O2XGu1nqugQ6n/53Buw/KIt9EwfiFv
+        oNFJBsM57zrjhB9jhfdCAA57ggToEjmCbuIsz79tTdoFed3vogisUTjxHq69C8XDlU2OGAxhs7FAJ
+        ii94tr9t1n+RdBlbsIBbbElmIMaLoZ6+XpP+8RuWvdRhTid87QKu2JrUfFpwvVfyMH7D1lEbntJSF
+        VoKLiPIU2ASvBdFvZFqJ6jVbvJRJjDZmkKAZW2kLw7QmIbWZDj8KAFpes040Z+TacwxhXBe5a/Xzt
+        vAlFfwXc3VMlqXCjNvu3f4Ujic3roITcrINu9NA9ko7qwSVW6qZQMDmcmqsAZ4DA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nCQPs-00AAoO-Bt;
+        Tue, 25 Jan 2022 19:19:40 +0100
+Message-ID: <10efb4246ce9c76403ac54fa06e8ea3d0d87785e.camel@sipsolutions.net>
+Subject: Re: [PATCH] ieee80211: cleanup double word in comment
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     trix@redhat.com
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Tue, 25 Jan 2022 19:19:39 +0100
+In-Reply-To: <20220125180735.1123792-1-trix@redhat.com>
+References: <20220125180735.1123792-1-trix@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.3 (3.42.3-1.fc35) 
 MIME-Version: 1.0
-In-Reply-To: <CAHbf0-HLCcgZfbKdWQ-kX+QbRGJsEHCEDnG=NZ5QF71aTeDMGg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-MDID: 1643134144-oz9bPHkJQZpX
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/25/22 6:16 AM, Mike Lothian wrote:
-> On Thu, 20 Jan 2022 at 09:56, Mike Lothian <mike@fireburn.co.uk> wrote:
->>
->> Hi
->>
->> I get a BUG and the kernel resuses to boot with this patch when mt76 is compiled into the kernel
->>
->> https://bugzilla.kernel.org/show_bug.cgi?id=214557
->>
->> I don't see this issue when mt76 is compiled as a module
->>
->> My .config is at https://github.com/FireBurn/KernelStuff/blob/master/dot_config_tip
->>
->> Let me know if you'd like any more info
->>
->> Cheers
->>
->> Mike
+On Tue, 2022-01-25 at 10:07 -0800, trix@redhat.com wrote:
+> From: Tom Rix <trix@redhat.com>
 > 
-> The bug I was hitting was due to a different change introduced in rc1,
-> with that reverted your patches work great
-
-What patch did you revert?
-
-Thanks,
-Ben
-
+> Remove the second 'that'.
 > 
-> Though I am seeing lots of these messages from the bluetooth device:
+> Signed-off-by: Tom Rix <trix@redhat.com>
+> ---
+>  include/linux/ieee80211.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Bluetooth: hci0: unexpected event 0xff length: 5 > 0
-> 
-> I'll bisect that next
-> 
-> Thanks
-> 
-> Mike
+> diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+> index 559b6c6449384..5475383936f8b 100644
+> --- a/include/linux/ieee80211.h
+> +++ b/include/linux/ieee80211.h
+> @@ -467,7 +467,7 @@ static inline bool ieee80211_is_data_qos(__le16 fc)
+>  static inline bool ieee80211_is_data_present(__le16 fc)
+>  {
+>  	/*
+> -	 * mask with 0x40 and test that that bit is clear to only return true
+> +	 * mask with 0x40 and test that bit is clear to only return true
+>  	 * for the data-containing substypes.
 > 
 
+I don't think it's just a duplicate?
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+... and (test that) (that bit is clear to ...)
 
+no?
+
+johannes
