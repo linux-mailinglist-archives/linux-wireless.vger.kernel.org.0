@@ -2,100 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56D7C49B606
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jan 2022 15:21:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93ADA49BAF8
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jan 2022 19:08:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1578484AbiAYOTz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jan 2022 09:19:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34880 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1578211AbiAYORF (ORCPT
+        id S239661AbiAYSIP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jan 2022 13:08:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:31829 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S241904AbiAYSHv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jan 2022 09:17:05 -0500
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E202C06173B
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jan 2022 06:17:03 -0800 (PST)
-Received: by mail-qv1-xf2b.google.com with SMTP id hu2so25271592qvb.8
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jan 2022 06:17:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hcwrY98PeaNjLrLBVr1+i4LjDqsWDo4k0IbHruqFyc0=;
-        b=CoRqXYU89a2tD0HilRDXsf3ao2j3UrxRd0eGwsVuE6RXaKI1Xl+q/WK2cfLiV2kuHJ
-         M5On0lkWIRTHuOxSHwfIlzQyTTUDB8h5BOnE59gLXAqJQHEXGGILpI1zBLroXZU43jol
-         zT0QKubLS3IPcfTGoKKFi6PYj4gKEa5KjoqNFSCwYoNrL2rXwkS2wfNPrKSrykkR8MaO
-         rdohEsrRanZUzguLIKii9g5Xkh822RTboAnQ7pcoqffIt7NY/NeFEJ5Fii4wtX6cpAsr
-         XiyvPLtI/8aA3kb9cfSWMuA7WEQQP4LzF+FaJr/lbrLa4hKaYPKQ1KMXWE96z92Q0KI6
-         hUPA==
+        Tue, 25 Jan 2022 13:07:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1643134061;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=wZ/YYJLB72Hf5p1POA1A36FlHc2x/OwYWfFRBmTnCrc=;
+        b=KlNMckap2HQ6occpw2vg+tSuhmCz3C6D7cS7V8/z2IXIgitv0pnbDztv0uPosBCpKVUbDR
+        YLxbPawlQsD0QkMJ5w/6nLu6Nalr0gj2ZtKnHkBi052xr1RYzNOqMGEwwJP/umNN05Pkwj
+        Fyr276mV0vsTKjBzKhyZS6mc/cslZyg=
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
+ [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-58-yyyuSWsXPDSLll1_84N4pg-1; Tue, 25 Jan 2022 13:07:40 -0500
+X-MC-Unique: yyyuSWsXPDSLll1_84N4pg-1
+Received: by mail-oo1-f70.google.com with SMTP id n5-20020a4ab345000000b002dc79e4a2baso6202668ooo.15
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jan 2022 10:07:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hcwrY98PeaNjLrLBVr1+i4LjDqsWDo4k0IbHruqFyc0=;
-        b=f3h2kpWMWI/0zH21XXm/JdEiI7vp4tctkPse+pLF3siWCTX+Uo5ZmShEZT/27ZpnlA
-         ouGdmx6EeJdV0ugtcBgs+N6GXHQj9/cmsouf1ahoABPwK4Xyf0PQueLIHGg3tnSeRIjd
-         U6eKnLDS31oEDIrHyRrdyXnlTMnG1lu1Z6eLXfKc4mnBeU/s2JgE468r3PnMqaeHrE4l
-         AmX9dsfVb4A9Db7xCf18UIMm7pJqjckKvEgTQ7TYzE0A/rKo2WEmKoCFZKTSp1lS4Z4v
-         8Tnr0URHtBq2jFKH2AUlpXiPk3nwbxn3SehLwZa8x6jkGq1FwxY84u2fHclAU2doNeCa
-         I2Gg==
-X-Gm-Message-State: AOAM533uZqqgGXUVE1iNj9RNT8P6SVyodjJLjgM9YQY35oFOPBTl9419
-        0xcJPlT5atnCj62my6SUal9tvuWuvIzmJ31Jy9aCpQ==
-X-Google-Smtp-Source: ABdhPJwB/Yz/dvSFqh8Csk93geedfR/oi+I8iXdNHEmIRWDzYS7BkYHepDA2DJ8o9bJmXZ0v0OIxQiawf/n1sWOfM6k=
-X-Received: by 2002:ad4:5aa2:: with SMTP id u2mr8745370qvg.42.1643120222389;
- Tue, 25 Jan 2022 06:17:02 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wZ/YYJLB72Hf5p1POA1A36FlHc2x/OwYWfFRBmTnCrc=;
+        b=Dm04hScY23nC0JnUXcjCNzy3xbY/o0VrcOgskq5L1NbC1nkUsFCs34dwsRjtQy+2WX
+         hAtE7dvytoVKgdXVqM5x4xWqpW0qgyua1fufJNEf+I7o3wK+w7pMqVJzNHFe3XplXFPi
+         r9BlhXoemTjEU3g93YztiU4aaKEtjZ+z6oYmn95MB/6MnJvVwv8K98Jl5yQspkUHUTs7
+         p4nfRDtUdqWyGOwIyr3lLaViEu2tQtrGIaO2zvOzHIUrPY5WDMkOLSY+nd+RUWcPD2bq
+         MRVv/vFLAZFFduI37tfaZ2ESaZNti8ug+xcmJQLiSULCgeWG/OsIvoCRvMgmniCZnAtB
+         DTZA==
+X-Gm-Message-State: AOAM530KPqnpIHG6dcpscf2xHDzjjimlb8k4J1wRlgq/thyUN65mehts
+        t1dV1WXHdipTaCD5/9vVF6nzC6RppSVoan6oSYH+kF9ZdBJJQOnYMePSLfi4ryXoWHdP12tAasa
+        IjFeIMAinoNG7pnAxuH+KxBOwsCQ=
+X-Received: by 2002:a4a:b24b:: with SMTP id i11mr13990791ooo.17.1643134059524;
+        Tue, 25 Jan 2022 10:07:39 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJytoZMto/EuCrZnClcVErOkFB+/iGYfaRy6xZsTw6FNztkIPZWSOmFtpqPAHITjsWBX+8FnfQ==
+X-Received: by 2002:a4a:b24b:: with SMTP id i11mr13990785ooo.17.1643134059351;
+        Tue, 25 Jan 2022 10:07:39 -0800 (PST)
+Received: from localhost.localdomain.com (024-205-208-113.res.spectrum.com. [24.205.208.113])
+        by smtp.gmail.com with ESMTPSA id a2sm8369284oiw.33.2022.01.25.10.07.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Jan 2022 10:07:38 -0800 (PST)
+From:   trix@redhat.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH] ieee80211: cleanup double word in comment
+Date:   Tue, 25 Jan 2022 10:07:35 -0800
+Message-Id: <20220125180735.1123792-1-trix@redhat.com>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
-References: <d291f592-d84a-2ffe-7f75-df77890efce8@gonehiking.org> <20220120095622.1938-1-mike@fireburn.co.uk>
-In-Reply-To: <20220120095622.1938-1-mike@fireburn.co.uk>
-From:   Mike Lothian <mike@fireburn.co.uk>
-Date:   Tue, 25 Jan 2022 14:16:51 +0000
-Message-ID: <CAHbf0-HLCcgZfbKdWQ-kX+QbRGJsEHCEDnG=NZ5QF71aTeDMGg@mail.gmail.com>
-Subject: Re: [PATCH] mt76: mt7921e: fix possible probe failure after reboot
-To:     khalid@gonehiking.org
-Cc:     Deren.Wu@mediatek.com, Eddie.Chen@mediatek.com,
-        Eric-SY.Chang@mediatek.com, Eric.Liang@mediatek.com,
-        Leon.Yen@mediatek.com, Mark-YW.Chen@mediatek.com,
-        Soul.Huang@mediatek.com, Stella.Chang@mediatek.com,
-        Tom.Chou@mediatek.com, YN.Chen@mediatek.com,
-        abhishekpandit@google.com, ch.yeh@mediatek.com,
-        frankgor@google.com, jemele@google.com, jenhao.yang@mediatek.com,
-        jsiuda@google.com, km.lin@mediatek.com,
-        linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, nbd@nbd.name, posh.sun@mediatek.com,
-        robin.chiu@mediatek.com, sean.wang@mediatek.com,
-        shawnku@google.com, steve.lee@mediatek.com, ted.huang@mediatek.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 20 Jan 2022 at 09:56, Mike Lothian <mike@fireburn.co.uk> wrote:
->
-> Hi
->
-> I get a BUG and the kernel resuses to boot with this patch when mt76 is compiled into the kernel
->
-> https://bugzilla.kernel.org/show_bug.cgi?id=214557
->
-> I don't see this issue when mt76 is compiled as a module
->
-> My .config is at https://github.com/FireBurn/KernelStuff/blob/master/dot_config_tip
->
-> Let me know if you'd like any more info
->
-> Cheers
->
-> Mike
+From: Tom Rix <trix@redhat.com>
 
-The bug I was hitting was due to a different change introduced in rc1,
-with that reverted your patches work great
+Remove the second 'that'.
 
-Though I am seeing lots of these messages from the bluetooth device:
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ include/linux/ieee80211.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Bluetooth: hci0: unexpected event 0xff length: 5 > 0
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 559b6c6449384..5475383936f8b 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -467,7 +467,7 @@ static inline bool ieee80211_is_data_qos(__le16 fc)
+ static inline bool ieee80211_is_data_present(__le16 fc)
+ {
+ 	/*
+-	 * mask with 0x40 and test that that bit is clear to only return true
++	 * mask with 0x40 and test that bit is clear to only return true
+ 	 * for the data-containing substypes.
+ 	 */
+ 	return (fc & cpu_to_le16(IEEE80211_FCTL_FTYPE | 0x40)) ==
+-- 
+2.26.3
 
-I'll bisect that next
-
-Thanks
-
-Mike
