@@ -2,190 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ABAF49CB23
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jan 2022 14:44:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C529E49D1B9
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jan 2022 19:33:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241139AbiAZNo0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jan 2022 08:44:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47940 "EHLO
+        id S237846AbiAZSdE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jan 2022 13:33:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241087AbiAZNoZ (ORCPT
+        with ESMTP id S231779AbiAZSdE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jan 2022 08:44:25 -0500
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9277FC061747
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jan 2022 05:44:25 -0800 (PST)
-Received: by mail-pj1-x1032.google.com with SMTP id g9-20020a17090a67c900b001b4f1d71e4fso6140533pjm.4
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jan 2022 05:44:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:to:cc:references
-         :from:in-reply-to;
-        bh=ybAKOghw/A61ax0pqV95u7SMa7XjZGspEP16MsPD93Q=;
-        b=K/r9RiZ7Pu9/iopUR36mVkY7+i7W9U/PHnQN7k/+4HwT5YvywFRa354GecVqiEt+l7
-         7vOA8MdXo7rPL9Axa/Xm1V7mel1FNnK1f+p+jH+fIf0idtdcnz+4L7JIt9Eh9dk35jqC
-         2zAWI9VZiQ18yWBJzPI/F9HzqTqkWLg7hASic=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :to:cc:references:from:in-reply-to;
-        bh=ybAKOghw/A61ax0pqV95u7SMa7XjZGspEP16MsPD93Q=;
-        b=wnf+yq8J1awZOWwCuH1Wo2d+Ux+/EmkmajYyvAU+bGv4UZPoChRYDn0D0xiHPjeNp9
-         QSWi7BXKc8gY2GI+aGbKjOVAA7cfe/NsIoxYwi+UMcsI1xRydljWtbQljsBwg+XyJwbA
-         CHj7PqeLTdh1I1Acd6FKSvHuQ2MGqN4bHuboRervBC7v0GqCyTBv4C/C+VF/Y1aDjkRJ
-         AuFGICu54WhZtgn/pLRPglngBmlCqXSyTUp0S1MDFFOZfmlispfD7N8YFZfmioaPNAzm
-         OP0RH2spB4/ZTIfeOphrRhWLMOuZg5jJypimALpaba7z9keiLUWYxDt6fVz6TIzmcNYq
-         d4ow==
-X-Gm-Message-State: AOAM533KXhdeeWEnoJJ2H6qRtvqpjs2PYoMnPqTPdAbC/OCtNtDp4soc
-        AeVIaaC24NFjDojPBVSmOquLBg==
-X-Google-Smtp-Source: ABdhPJxFA2gWUp0xYh2BBM3FsY0lFa66WT6+UMG1iTK4VyThaJeMhjbouT+at3HiM8WeHgaQ/AmA2g==
-X-Received: by 2002:a17:90a:8d15:: with SMTP id c21mr8746330pjo.185.1643204664967;
-        Wed, 26 Jan 2022 05:44:24 -0800 (PST)
-Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id w15sm2363991pfu.11.2022.01.26.05.44.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Jan 2022 05:44:23 -0800 (PST)
-Message-ID: <84c2e35f-ec6a-93ee-0bca-f8ed535bc3f2@broadcom.com>
-Date:   Wed, 26 Jan 2022 14:44:15 +0100
+        Wed, 26 Jan 2022 13:33:04 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC605C06161C
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jan 2022 10:33:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=7ehabZimHgEWKxObYwVygA2ZnZE3D7MlxKW8H3IzjNM=; b=a+KPlb5wBBMFX1PQIOMQC5Cwq6
+        1EuhEGaUt5riVngrOnuc+/zMfUlRPaeL92zJn1UADrNyTz0j1Fj/FWyiRiJS7XFTygEo5D/xElkTk
+        v+MD0OABR3L0DxFp5rW01/glYCyxRCEuv83gbZn60PJP0OJpQ5cSMf0S5JhVwfy4OGVNu56Yn5vvT
+        Vx2mBScxwr6AM+d+8eCF84clkf/MqtRxuR7Ibd/U6yhG8xHiDFHJkWcrVmkmgJMhTnpaT+eA3IJWw
+        o1ZCdJenau5p38AUVZ4izZ5rYTobtdbMnYHYM8nRTuROrst5cXEMcX8baNPlBPJ7YHHO3SBW4LCkL
+        +/hAbW6Q==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nCn6K-004Jpq-KO; Wed, 26 Jan 2022 18:33:01 +0000
+Message-ID: <aa666e92-6c8b-5689-1a9a-6e61d68b096d@infradead.org>
+Date:   Wed, 26 Jan 2022 10:32:56 -0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH] brcmfmac: Fix a NULL pointer dereference in
- brcmf_of_probe()
-To:     Zhou Qingyang <zhou1615@umn.edu>
-Cc:     kjlu@umn.edu, Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Len Baker <len.baker@gmx.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        Hans deGoede <hdegoede@redhat.com>,
-        Matthias Brugger <mbrugger@suse.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220124165048.54677-1-zhou1615@umn.edu>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20220124165048.54677-1-zhou1615@umn.edu>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000005f420405d67c66c6"
+Subject: Re: iwlwifi problems, maybe firmware related?
+Content-Language: en-US
+To:     "Coelho, Luciano" <luciano.coelho@intel.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        greearb <greearb@candelatech.com>
+Cc:     "Ben Ami, Golan" <golan.ben.ami@intel.com>
+References: <92b00b94-aff6-8108-06d1-932b77f9d218@infradead.org>
+ <04761964-e3b3-b2f7-78a4-bbc3507ad676@candelatech.com>
+ <0ee64c55-1326-addb-7c9c-c922373f78c0@infradead.org>
+ <cb3e4991c19659ab73cc0d9c12e8b7dbba9d652d.camel@intel.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <cb3e4991c19659ab73cc0d9c12e8b7dbba9d652d.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000005f420405d67c66c6
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi--
 
-On 1/24/2022 5:50 PM, 'Zhou Qingyang' via BRCM80211-DEV-LIST,PDL wrote:
-> In brcmf_of_probe(), the return value of devm_kzalloc() is assigned to
-> board_type and there is a dereference of it in strcpy() right after
-> that. devm_kzalloc() could return NULL on failure of allocation, which
-> could lead to NULL pointer dereference.
+On 1/25/22 23:12, Coelho, Luciano wrote:
+> Hi,
 > 
-> Fix this bug by adding a NULL check of board_type.
+> Adding Golan to the thread.
 > 
-> This bug was found by a static analyzer.
+> On Tue, 2022-01-25 at 18:20 -0800, Randy Dunlap wrote:
+>>
+>> On 1/25/22 15:58, Ben Greear wrote:
+>>> On 1/25/22 3:08 PM, Randy Dunlap wrote:
+>>>> Hi,
+>>>>
+>>>> When I boot 5.16 or 5.17-rc1, I get messages like:
+>>>>
+>>>> iwlwifi 0000:00:14.3: api flags index 2 larger than supported by driver
+>>>> iwlwifi 0000:00:14.3: TLV_FW_FSEQ_VERSION: FSEQ Version: 89.3.35.37
+>>>> iwlwifi 0000:00:14.3: loaded firmware version 67.8f59b80b.0 QuZ-a0-hr-b0-67.ucode op_mode iwlmvm
+>>>
+>>> We see nothing but crashes with the version 67 firmware.  Remove that
+>>> from your /lib/firmware/ dir (and make sure version 66 or lower is there),
+>>> and reboot and it should work again.
+>>
+>> Well. Yes, that does make things work for me.
+>>
+>> It's odd, though, that openSUSE Tumbleweed with kernel "Linux version 5.16.1-1-default"
+>> (whatever that is) also works with no problems.
+>>
+>> Thanks for your help.
 > 
-> Builds with 'make allyesconfig' show no new warnings,
-> and our static analyzer no longer warns about this code
+> This is because of broadcast filtering.  This feature hasn't been
+> supported for quite a while and now the firmware rejects the command we
+> send to it.
+> 
+> The easy fix is to compile iwlwifi without
+> CONFIG_IWLWIFI_BCAST_FILTERING (which should not be enabled by
+> default).
 
-Thanks for this suggestion. However, this has been addressed already by 
-this patch [1].
+Just confirming that kernel 5.16 without broadcast filtering works
+with firmware v67.
 
-Regards,
-Arend
+> I have removed this option from the driver now and will send the patch
+> to 5.17-rc* as a fix.
 
-[1] 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220117142919.207370-8-marcan@marcan.st/
+Yes, please.
 
---0000000000005f420405d67c66c6
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+> Golan, I think we have a bugzilla for this, do you remember?
 
-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
-XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
-yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
-0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
-NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
-FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
-aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
-OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
-UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBDc1OEEpCIxYA75rUK
-y4JHSyygCUyO7ULFqJZ9NYHgijAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMjYxMzQ0MjVaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAc2mjP4wttLin4Dejj6rDj6CWfGIZNCTJfZmf
-z7b/nFgQN9OQHgoU+txoB2lKnHgf4chiSFt/kUqRwt+dcskRQlVkDWgn1K+4awVgIk+chYeNHJ9M
-hqddlsrarS+hTzE05CqWEweNpSbzXRGLd/VEVBnBCCMEydEwTGl25UPAtrmFq7cIBVbVvWO3gEoB
-4uj/8aAVO8MHYrk09+yr0i236Ks70P/DsE/1HT/WOlYdEdfn6hvWxDh0s1EAEkT3h/2eysBb+1Vv
-VZJIDylULii9DEHN6z9I0cQrXqR4uuIKZJkcUvSjZDzSB0ykw1QeGWRRo5y8In0iOdaTdubZ7/eO
-tQ==
---0000000000005f420405d67c66c6--
+
+
+-- 
+~Randy
