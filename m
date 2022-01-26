@@ -2,142 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72F1549D245
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jan 2022 20:08:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C765E49D304
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jan 2022 21:03:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232046AbiAZTIR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jan 2022 14:08:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39834 "EHLO
+        id S229674AbiAZUDi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jan 2022 15:03:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231167AbiAZTIR (ORCPT
+        with ESMTP id S229640AbiAZUDi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jan 2022 14:08:17 -0500
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB0B9C06161C
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jan 2022 11:08:16 -0800 (PST)
-Received: by mail-ot1-x332.google.com with SMTP id 10-20020a9d030a000000b0059f164f4a86so221847otv.13
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jan 2022 11:08:16 -0800 (PST)
+        Wed, 26 Jan 2022 15:03:38 -0500
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04D5FC06161C;
+        Wed, 26 Jan 2022 12:03:38 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id o12so817405eju.13;
+        Wed, 26 Jan 2022 12:03:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:from:subject:to:cc
-         :content-language:content-transfer-encoding;
-        bh=eifJcP1vUklgqMJfWvWhbBdkSpkR36FFTgBnF5hnnB8=;
-        b=hXLFtO0VoZFTLQgyH2J1H/xuqC8zEtAomTkYNWUk3LHmO6VqdVwfc/Maz1v6vuJxvi
-         ieg/TWunkq01TuCAhz1294e/HOWm2LxtDgpsNv5xcK4Q4EJsE1dNSGRZNh4+JvQPE3MR
-         ONDAkdOcC4DJH6GGix8pzsiQqoSg64BgkWzJTz1A2/5if9z5rgjI31ylwHLDkBhMvXjc
-         meIWIIj0dm+X4+21jtLvpYKtPtny8VfR23urvm/+KZUmtC3+pndL0uZD7AxOBO8fkfjp
-         V2zrndqsoNuvck0X0cQQDDIc5jtj9GPYSJ3nV03lZb48ez7Is4C6IvbmZBu/9zTzZyjq
-         4EyA==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=9Ap44T3gzeLnBc2W93QxgqqOtTPNbnta0JPR/fRa20w=;
+        b=F9tYDnwitAXYyusHn1281wqhD3o4m47idK/gEE5H0GS819xAk7XEZINKmoB0qcTis9
+         +Fqke822U35Dy6upDbbsf+T2dDxuwHwcOM8GXVFvccPkjN5ibrGYsQca6CcuhBj4DzP4
+         LAJ5qKWzxm3EBy8vNLUSA8vhFwLt8voncYkpTfNA8TBCCZ2d4mBPUgDWutAJFDETTv6z
+         1QdxRr7aPUK99zQ2zy+F0VuZ1Dwu7ccl39cMaNhYwOjPBYuKy9Lp5/Y6cSo2+pS4iE9c
+         +eykLspJm8b9Fkz3PAy9dtaYVjSSqKKNssWL24YcIKhJo/hxrMMWkBH3H2291VIvDXGj
+         cPXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:from
-         :subject:to:cc:content-language:content-transfer-encoding;
-        bh=eifJcP1vUklgqMJfWvWhbBdkSpkR36FFTgBnF5hnnB8=;
-        b=qBbmXau12AlcOnaASLPnAOBTSmQBuq6+MQh+RJJTHZGyRZN3hJSi5zIBA0kwyE9BTJ
-         u/0IKqvSqIWl2DTU0wIWOyuF232GuvdIH99kctcaUQbykh5VHdL2jB2d9ZlPTmTeA/AT
-         OLv6uSQrSQbJBRpz09ztEp1pNdmwQVbl0Zi8DMMTq433la5YDhZevH4LZ5rF5t4riWGD
-         JhO+U0MxG+eLw4RELZDKyw5ntuqazBbXXFow/JkCAhKLUsivl9USD7nllUvZcZRWiuSP
-         JG5cfLo/yzlbp+rksz8QVi/u1bCiED1mjWlXHOpNTwGWyUQK8fwddMiZV3lL/xbOUM7+
-         3Q3Q==
-X-Gm-Message-State: AOAM532zHK6pVxiTn18cQEcUJbMOO7FYuH5y+Ap+6VLNmAh/s/Ii1+ME
-        fpLP0aK/yUHYdS/WuklDmOI=
-X-Google-Smtp-Source: ABdhPJwXK7u+4alRBS5QYxnXadJ0hjtqpBnIwj8qIxgbsFAp38lkcURh1P0BqBQe1sWBRPDIpGsJCg==
-X-Received: by 2002:a05:6830:2709:: with SMTP id j9mr155954otu.7.1643224095239;
-        Wed, 26 Jan 2022 11:08:15 -0800 (PST)
-Received: from [192.168.0.141] ([177.79.124.142])
-        by smtp.gmail.com with ESMTPSA id 127sm6270050oih.8.2022.01.26.11.08.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Jan 2022 11:08:14 -0800 (PST)
-Message-ID: <802c5ec0-dc3b-bab9-20f5-59be612a46f8@gmail.com>
-Date:   Wed, 26 Jan 2022 16:08:03 -0300
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=9Ap44T3gzeLnBc2W93QxgqqOtTPNbnta0JPR/fRa20w=;
+        b=aBP5+C8M/aIGthypAokAg3DFSeYYMSXg+gN0e7cnC2yp3ni7zw24g5TfBbL4vFAliQ
+         x8/KPssd0acag4JvqsLa3QAkfOChHwn1yF+30GANwO0u74JvZ4DPdaFicOAv/FsF5vW+
+         FkC0D+No3Vc8XOEmq5HC4FTrXxUfspOgHF/BTI5nRF0NnmDXNTurY6VyjH7ZkbUH2GBZ
+         BLZUWt4rIP7uwmYMyhVgRfBSPetQD3jaBd2RCqx8P1qOq7NKhSQ5/zJRME2pBO2BDpOm
+         7cxHjUu0DH2awhbLd97rUGYgasAzqR4FHzftTBhbAKMa8ONvbqu+Q5GEe/1V+4jrWhnc
+         aqcg==
+X-Gm-Message-State: AOAM532YfREoIZo6OxTbECt5GFiH+GsfumOrvhah48HBSbv6uMxZPpkg
+        FIIQaTVLgwx5roceRKQ8zaA=
+X-Google-Smtp-Source: ABdhPJzAjpdqPpVS5B73DZzBG2UpBYYpT+V8MEO/N+15mPlMGYSJC4z9bBQ4LxhQk4lCyHYhSvAejw==
+X-Received: by 2002:a17:907:3e1d:: with SMTP id hp29mr200487ejc.701.1643227416399;
+        Wed, 26 Jan 2022 12:03:36 -0800 (PST)
+Received: from debian64.daheim (p5b0d7d67.dip0.t-ipconnect.de. [91.13.125.103])
+        by smtp.gmail.com with ESMTPSA id i18sm7818519ejr.117.2022.01.26.12.03.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Jan 2022 12:03:34 -0800 (PST)
+Received: from localhost.daheim ([127.0.0.1])
+        by debian64.daheim with esmtp (Exim 4.95)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1nCoVx-0003v5-LR;
+        Wed, 26 Jan 2022 21:03:33 +0100
+Message-ID: <f8721c22-03f2-6845-fe08-a552069eb55d@gmail.com>
+Date:   Wed, 26 Jan 2022 21:03:33 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.1
-From:   Till Kamppeter <till.kamppeter@gmail.com>
-Subject: Google Summer of Code 2022 - Project ideas page for the Linux
- Foundation online
-To:     Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        "Luis R. Rodriguez" <mcgrof@gmail.com>,
-        Jeff Licquia <jeff@licquia.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Open Printing <printing-architecture@lists.linux-foundation.org>,
-        dl9pf@gmx.de, Mats Wichmann <mats@wichmann.us>,
-        =?UTF-8?Q?Jan-Simon_M=c3=b6ller?= <jsmoeller@linuxfoundation.org>,
-        Daniel Baluta <daniel.baluta@gmail.com>,
-        Vadim Mutilin <mutilin@ispras.ru>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Ira McDonald <blueroofmusic@gmail.com>,
-        Michael Sweet <msweet@msweet.org>,
-        Tobias Hoffmann <smilingthax@googlemail.com>,
-        Jay Berkenbilt <ejb@ql.org>,
-        Nicholas Mc Guire <der.herr@hofr.at>,
-        Matt Germonprez <germonprez@gmail.com>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Gary O'Neall <garysourceauditor@gmail.com>,
-        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-        Nicholas Mc Guire <der.herr@hofr.at>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
-        Rithvik Patibandla <rithvikp98@gmail.com>,
-        Dheeraj Yadav <dhirajyadav135@gmail.com>,
-        Deepak Patankar <patankardeepak04@gmail.com>,
-        Ian Rogers <irogers@google.com>,
-        Bhavna Kosta <bhavnakosta2020@gmail.com>
-Cc:     Aveek Basu <basu.aveek@gmail.com>
-Content-Language: en-US
+ Thunderbird/91.5.0
+Subject: Re: [PATCH] carl9170: fix missing bit-wise or operator for tx_params
+Content-Language: de-DE
+To:     Colin Ian King <colin.i.king@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Stable@vger.kernel.org
+References: <20220125004406.344422-1-colin.i.king@gmail.com>
+From:   Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <20220125004406.344422-1-colin.i.king@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On 25/01/2022 01:44, Colin Ian King wrote:
+> Currently tx_params is being re-assigned with a new value and the
+> previous setting IEEE80211_HT_MCS_TX_RX_DIFF is being overwritten.
+> The assignment operator is incorrect, the original intent was to
+> bit-wise or the value in. Fix this by replacing the = operator
+> with |= instead.
+> 
+> Kudos to Christian Lamparter for suggesting the correct fix.
+> 
+> Fixes: fe8ee9ad80b2 ("carl9170: mac80211 glue and command interface")
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> Cc: <Stable@vger.kernel.org>
+Of course:
 
-the Linux Foundation will apply again as mentoring organization in this 
-year's Google Summer of Code.
-
-Note that GSoC 2022 will be different again, code contributors do not 
-need to be students, choice between 3-month´s full-time or half-time 
-projects, more flexibility of when coding takes place.
-
-On February 7, 2022 the application period for mentoring organizations 
-for the Google Summer of Code 2022 will start.
-
-To be successful, we need a rich project idea list so that we will get 
-selected by Google.
-
-I have set up a page for project ideas for the Linux Foundation's 
-participation in the Google Summer of Code 2022:
-
-https://wiki.linuxfoundation.org/gsoc/google-summer-code-2022
-
-Please add your ideas to the sub-page of your work group. Also remove 
-project ideas which are already done in one of the previous years or not 
-needed any more and make sure that all contact info is up-to-date and 
-all links are working.
-
-Make sure to not talk about "students", but about "contributors" 
-instead. I have, at least partially, taken care of this when I have 
-copied your sub-group pages from last year.
-
-Also make sure to remove the "**Still needs to get updated!!**" phrase 
-after having updated your project ideas.
-
-If you have problems mail me with your project ideas and other editing 
-wishes.
-
-The ideas list is in the Linux Foundation Wiki. If you want to edit and 
-did not have the edit rights already from previous years, please tell me 
-and I give you edit rights. I need your Linux Foundation user name for 
-that and the e-mail address associated with this account for this.
-
-Please also take into account that the deadline for our application as 
-mentoring organization is Feb 21 and after that Google will evaluate the 
-applications. So have your ideas (at least most of them, ideas can be 
-posted up to the student application deadline) in by then to raise our 
-chances to get accepted.
-
-Please also tell us if you do not want to participate any more with your 
-workgroup, so that we can remove your sub-page.
-
-    Till
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
