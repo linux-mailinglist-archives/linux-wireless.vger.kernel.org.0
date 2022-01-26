@@ -2,118 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6639C49C068
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jan 2022 02:02:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 038BF49C106
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jan 2022 03:05:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235498AbiAZBCF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jan 2022 20:02:05 -0500
-Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:61961 "EHLO
-        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235472AbiAZBCE (ORCPT
+        id S236125AbiAZCFe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jan 2022 21:05:34 -0500
+Received: from mailgw01.mediatek.com ([60.244.123.138]:54632 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S236092AbiAZCFe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jan 2022 20:02:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1643158924; x=1674694924;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=slw7T6DrfxeJnlmauv2H+QvKpnfaacNtgIaPN0nLako=;
-  b=GPUYgcrJZpCAAs4YKUncIBUYIz+Q28x7JCJIWUikHTjBYVJ1+GcQ72+C
-   3q9trtVCDsTvFZpJKYMTzRnjnniRjvufaAMjWL/n7Nq55JIBHBoRJ0a48
-   nBastskgDEscrIO6mcqIdae5l2fVcg62AZ4kcaVpSkygaJaOFt12fXErk
-   4=;
-Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 25 Jan 2022 17:02:04 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2022 17:02:03 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 25 Jan 2022 17:02:04 -0800
-Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 25 Jan 2022 17:02:03 -0800
-From:   Baochen Qiang <quic_bqiang@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] ath11k: Fix missing rx_desc_get_ldpc_support in wcn6855_ops
-Date:   Wed, 26 Jan 2022 09:01:44 +0800
-Message-ID: <20220126010144.2090-1-quic_bqiang@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+        Tue, 25 Jan 2022 21:05:34 -0500
+X-UUID: 30ca541f88994ef5920df5de828b614e-20220126
+X-UUID: 30ca541f88994ef5920df5de828b614e-20220126
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+        (envelope-from <chui-hao.chiu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1064950323; Wed, 26 Jan 2022 10:05:31 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Wed, 26 Jan 2022 10:05:30 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 26 Jan 2022 10:05:30 +0800
+From:   Peter Chiu <chui-hao.chiu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.Lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>
+Subject: [PATCH] mt76: mt7915: fix max_mpdu_size in mt7915_mcu_sta_amsdu_tlv()
+Date:   Wed, 26 Jan 2022 10:05:28 +0800
+Message-ID: <20220126020529.12000-1-chui-hao.chiu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-rx_desc_get_ldpc_support is missing in wcn6855_ops, resulting in
-kernel crash. Fix it by implementing WCN6855's version of this
-field and adding it to wcn6855_ops.
+The maximum max_mpdu_size of mt7915 is 7991, whereas mt7916 can
+support 11454.
 
-Crash stack:
-[  184.862605] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[  184.862615] #PF: supervisor instruction fetch in kernel mode
-[  184.862620] #PF: error_code(0x0010) - not-present page
-[  184.862626] PGD 0 P4D 0
-[  184.862634] Oops: 0010 [#1] PREEMPT SMP PTI
-[  184.862642] CPU: 1 PID: 0 Comm: swapper/1 Kdump: loaded Not tainted 5.16.0-wt-ath+ #1
-[  184.862651] Hardware name: Intel(R) Client Systems NUC8i7HVK/NUC8i7HVB, BIOS HNKBLi70.86A.0059.2019.1112.1124 11/12/2019
-[  184.862656] RIP: 0010:0x0
-[  184.862669] Code: Unable to access opcode bytes at RIP 0xffffffffffffffd6.
-[  184.862673] RSP: 0018:ffff9eedc003cca8 EFLAGS: 00010202
-[  184.862680] RAX: 0000000000000000 RBX: ffff9eedc003cd30 RCX: 0000000000000002
-[  184.862686] RDX: 0000000000000002 RSI: ffffffffc1773458 RDI: ffff8eb5843de240
-[  184.862692] RBP: ffff8eb59685a0e0 R08: 0000000000000001 R09: ffff8eb6fef2b000
-[  184.862700] R10: ffff9eedc003cd70 R11: ffff8eb5880a9ff0 R12: ffff8eb5843de240
-[  184.862707] R13: 0000000000000000 R14: 0000000000000008 R15: 0000000000000003
-[  184.862714] FS:  0000000000000000(0000) GS:ffff8eb6f6c40000(0000) knlGS:0000000000000000
-[  184.862723] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  184.862733] CR2: ffffffffffffffd6 CR3: 000000002f60a001 CR4: 00000000003706e0
-[  184.862743] Call Trace:
-[  184.862751]  <IRQ>
-[  184.862759]  ath11k_dp_rx_h_ppdu+0x210/0x350 [ath11k]
-[  184.862841]  ath11k_dp_rx_process_received_packets+0x1e6/0x6b0 [ath11k]
-[  184.862891]  ath11k_dp_process_rx+0x32d/0x3e0 [ath11k]
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-
-Fixes: b3febdccde3e ("ath11k: add LDPC FEC type in 802.11 radiotap header")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Fixes: b443e55fb5b37 ("mt76: mt7915: add Tx A-MSDU offloading support")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
 ---
- drivers/net/wireless/ath/ath11k/hw.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 26 +++++++++++++++----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
-index b7e3b668a9c0..d1b0e76d9ec2 100644
---- a/drivers/net/wireless/ath/ath11k/hw.c
-+++ b/drivers/net/wireless/ath/ath11k/hw.c
-@@ -813,6 +813,12 @@ static u16 ath11k_hw_wcn6855_mpdu_info_get_peerid(u8 *tlv_data)
- 	return peer_id;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 66f8daf3168c..f218b1540c00 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -986,8 +986,8 @@ mt7915_mcu_sta_vht_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
  }
  
-+static bool ath11k_hw_wcn6855_rx_desc_get_ldpc_support(struct hal_rx_desc *desc)
-+{
-+	return FIELD_GET(RX_MSDU_START_INFO2_LDPC,
-+			 __le32_to_cpu(desc->u.wcn6855.msdu_start.info2));
-+}
+ static void
+-mt7915_mcu_sta_amsdu_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+-			 struct ieee80211_sta *sta)
++mt7915_mcu_sta_amsdu_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
++			 struct ieee80211_vif *vif, struct ieee80211_sta *sta)
+ {
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+ 	struct sta_rec_amsdu *amsdu;
+@@ -1004,9 +1004,25 @@ mt7915_mcu_sta_amsdu_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+ 	amsdu = (struct sta_rec_amsdu *)tlv;
+ 	amsdu->max_amsdu_num = 8;
+ 	amsdu->amsdu_en = true;
+-	amsdu->max_mpdu_size = sta->max_amsdu_len >=
+-			       IEEE80211_MAX_MPDU_LEN_VHT_7991;
+ 	msta->wcid.amsdu = true;
 +
- const struct ath11k_hw_ops ipq8074_ops = {
- 	.get_hw_mac_from_pdev_id = ath11k_hw_ipq8074_mac_from_pdev_id,
- 	.wmi_init_config = ath11k_init_wmi_config_ipq8074,
-@@ -983,6 +989,7 @@ const struct ath11k_hw_ops wcn6855_ops = {
- 	.rx_desc_get_encrypt_type = ath11k_hw_wcn6855_rx_desc_get_encrypt_type,
- 	.rx_desc_get_decap_type = ath11k_hw_wcn6855_rx_desc_get_decap_type,
- 	.rx_desc_get_mesh_ctl = ath11k_hw_wcn6855_rx_desc_get_mesh_ctl,
-+	.rx_desc_get_ldpc_support = ath11k_hw_wcn6855_rx_desc_get_ldpc_support,
- 	.rx_desc_get_mpdu_seq_ctl_vld = ath11k_hw_wcn6855_rx_desc_get_mpdu_seq_ctl_vld,
- 	.rx_desc_get_mpdu_fc_valid = ath11k_hw_wcn6855_rx_desc_get_mpdu_fc_valid,
- 	.rx_desc_get_mpdu_start_seq_no = ath11k_hw_wcn6855_rx_desc_get_mpdu_start_seq_no,
++	switch (sta->max_amsdu_len) {
++	case IEEE80211_MAX_MPDU_LEN_VHT_11454:
++		if (!is_mt7915(&dev->mt76)) {
++			amsdu->max_mpdu_size =
++				IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454;
++			return;
++		}
++		fallthrough;
++	case IEEE80211_MAX_MPDU_LEN_HT_7935:
++	case IEEE80211_MAX_MPDU_LEN_VHT_7991:
++		amsdu->max_mpdu_size = IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_7991;
++		return;
++	default:
++		amsdu->max_mpdu_size = IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_3895;
++		return;
++	}
++
+ }
+ 
+ static int
+@@ -1686,7 +1702,7 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 
+ 	if (sta && sta->ht_cap.ht_supported) {
+ 		/* starec amsdu */
+-		mt7915_mcu_sta_amsdu_tlv(skb, vif, sta);
++		mt7915_mcu_sta_amsdu_tlv(dev, skb, vif, sta);
+ 		/* starec he */
+ 		mt7915_mcu_sta_he_tlv(skb, sta, vif);
+ 		/* starec muru */
 -- 
-2.25.1
+2.29.2
 
