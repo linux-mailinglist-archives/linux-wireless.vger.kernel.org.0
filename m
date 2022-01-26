@@ -2,131 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4600749C107
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jan 2022 03:05:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8967949C135
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jan 2022 03:21:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236128AbiAZCFh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jan 2022 21:05:37 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:35602 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S236092AbiAZCFg (ORCPT
+        id S236265AbiAZCVF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jan 2022 21:21:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60050 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236263AbiAZCVD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jan 2022 21:05:36 -0500
-X-UUID: 648b016f2fa14e1d96dc999208f0e4d6-20220126
-X-UUID: 648b016f2fa14e1d96dc999208f0e4d6-20220126
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <chui-hao.chiu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 367398257; Wed, 26 Jan 2022 10:05:31 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 26 Jan 2022 10:05:30 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 26 Jan 2022 10:05:30 +0800
-From:   Peter Chiu <chui-hao.chiu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.Lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: [PATCH] mt76: mt7915: fix mcs_map in mt7915_mcu_set_sta_he_mcs()
-Date:   Wed, 26 Jan 2022 10:05:29 +0800
-Message-ID: <20220126020529.12000-2-chui-hao.chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20220126020529.12000-1-chui-hao.chiu@mediatek.com>
-References: <20220126020529.12000-1-chui-hao.chiu@mediatek.com>
+        Tue, 25 Jan 2022 21:21:03 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5AF3C06161C
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jan 2022 18:21:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description;
+        bh=0KbU5keQI76IYVBsTt4J8IrjTDjijrG7TN4X690BajA=; b=snMZYlz8LfglXb5eRjS9Ri53Im
+        Zh9kQVKT7bxrAs5tZtgOwT5vJ6TRVhH7BqAI/gGjvXZqMJdITajGZ/DzR7FuiWOTpDMkEh9Tpds1T
+        hirK+NHhtyckPs0P9mtEJChCd4q2yd30o8RQ2RolLITg/6MsYpWKsv4eZAvu4E6NQIlV3i2a6LEwz
+        BHvHStQPh/oknV83jWE4rcOQ7KGX7zTRgwKpPBf1hrWISkbiqpBcr947ze85gt/Zg00hgmsqIgD2+
+        RZFK8zki+IkyrWJgCADCWkDzz+qFvOZfrBiD7db974jSV+bQQELGUx2bdeaZXJSxaDQlKG6PzyyTt
+        Jls0pWiQ==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nCXve-003cEA-SY; Wed, 26 Jan 2022 02:20:59 +0000
+Message-ID: <0ee64c55-1326-addb-7c9c-c922373f78c0@infradead.org>
+Date:   Tue, 25 Jan 2022 18:20:54 -0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: iwlwifi problems, maybe firmware related?
+Content-Language: en-US
+To:     Ben Greear <greearb@candelatech.com>,
+        linux-wireless@vger.kernel.org,
+        Luca Coelho <luciano.coelho@intel.com>
+References: <92b00b94-aff6-8108-06d1-932b77f9d218@infradead.org>
+ <04761964-e3b3-b2f7-78a4-bbc3507ad676@candelatech.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <04761964-e3b3-b2f7-78a4-bbc3507ad676@candelatech.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Should use peer's bandwidth instead of chandef->width to
-get correct mcs_map.
 
-Fixes: 76be6c076c077 ("mt76: mt7915: add .set_bitrate_mask() callback")
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 29 +++++--------------
- 1 file changed, 8 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 66f8daf3168c..efcadd69ecd7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -86,24 +86,12 @@ mt7915_mcu_get_sta_nss(u16 mcs_map)
- 
- static void
- mt7915_mcu_set_sta_he_mcs(struct ieee80211_sta *sta, __le16 *he_mcs,
--			  const u16 *mask)
-+			  u16 mcs_map)
- {
- 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
--	struct cfg80211_chan_def *chandef = &msta->vif->phy->mt76->chandef;
-+	enum nl80211_band band = msta->vif->phy->mt76->chandef.chan->band;
-+	const u16 *mask = msta->vif->bitrate_mask.control[band].he_mcs;
- 	int nss, max_nss = sta->rx_nss > 3 ? 4 : sta->rx_nss;
--	u16 mcs_map;
--
--	switch (chandef->width) {
--	case NL80211_CHAN_WIDTH_80P80:
--		mcs_map = le16_to_cpu(sta->he_cap.he_mcs_nss_supp.rx_mcs_80p80);
--		break;
--	case NL80211_CHAN_WIDTH_160:
--		mcs_map = le16_to_cpu(sta->he_cap.he_mcs_nss_supp.rx_mcs_160);
--		break;
--	default:
--		mcs_map = le16_to_cpu(sta->he_cap.he_mcs_nss_supp.rx_mcs_80);
--		break;
--	}
- 
- 	for (nss = 0; nss < max_nss; nss++) {
- 		int mcs;
-@@ -760,11 +748,9 @@ static void
- mt7915_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
- 		      struct ieee80211_vif *vif)
- {
--	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
- 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
- 	struct ieee80211_he_cap_elem *elem = &sta->he_cap.he_cap_elem;
--	enum nl80211_band band = msta->vif->phy->mt76->chandef.chan->band;
--	const u16 *mcs_mask = msta->vif->bitrate_mask.control[band].he_mcs;
-+	struct ieee80211_he_mcs_nss_supp mcs_map;
- 	struct sta_rec_he *he;
- 	struct tlv *tlv;
- 	u32 cap = 0;
-@@ -854,22 +840,23 @@ mt7915_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
- 
- 	he->he_cap = cpu_to_le32(cap);
- 
-+	mcs_map = sta->he_cap.he_mcs_nss_supp;
- 	switch (sta->bandwidth) {
- 	case IEEE80211_STA_RX_BW_160:
- 		if (elem->phy_cap_info[0] &
- 		    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)
- 			mt7915_mcu_set_sta_he_mcs(sta,
- 						  &he->max_nss_mcs[CMD_HE_MCS_BW8080],
--						  mcs_mask);
-+						  le16_to_cpu(mcs_map.rx_mcs_80p80));
- 
- 		mt7915_mcu_set_sta_he_mcs(sta,
- 					  &he->max_nss_mcs[CMD_HE_MCS_BW160],
--					  mcs_mask);
-+					  le16_to_cpu(mcs_map.rx_mcs_160));
- 		fallthrough;
- 	default:
- 		mt7915_mcu_set_sta_he_mcs(sta,
- 					  &he->max_nss_mcs[CMD_HE_MCS_BW80],
--					  mcs_mask);
-+					  le16_to_cpu(mcs_map.rx_mcs_80));
- 		break;
- 	}
- 
+On 1/25/22 15:58, Ben Greear wrote:
+> On 1/25/22 3:08 PM, Randy Dunlap wrote:
+>> Hi,
+>>
+>> When I boot 5.16 or 5.17-rc1, I get messages like:
+>>
+>> iwlwifi 0000:00:14.3: api flags index 2 larger than supported by driver
+>> iwlwifi 0000:00:14.3: TLV_FW_FSEQ_VERSION: FSEQ Version: 89.3.35.37
+>> iwlwifi 0000:00:14.3: loaded firmware version 67.8f59b80b.0 QuZ-a0-hr-b0-67.ucode op_mode iwlmvm
+> 
+> We see nothing but crashes with the version 67 firmware.  Remove that
+> from your /lib/firmware/ dir (and make sure version 66 or lower is there),
+> and reboot and it should work again.
+
+Well. Yes, that does make things work for me.
+
+It's odd, though, that openSUSE Tumbleweed with kernel "Linux version 5.16.1-1-default"
+(whatever that is) also works with no problems.
+
+Thanks for your help.
+
 -- 
-2.29.2
-
+~Randy
