@@ -2,112 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63F5149C2D2
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jan 2022 05:50:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9160449C2E9
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jan 2022 06:05:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233218AbiAZEuz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jan 2022 23:50:55 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:34900 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S235383AbiAZEux (ORCPT
+        id S231659AbiAZFFV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jan 2022 00:05:21 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:57388 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231555AbiAZFFT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jan 2022 23:50:53 -0500
-X-UUID: 3696be57b7984cd0ac608b2dbc8fc246-20220126
-X-UUID: 3696be57b7984cd0ac608b2dbc8fc246-20220126
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
-        (envelope-from <chui-hao.chiu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1300246445; Wed, 26 Jan 2022 12:50:45 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Wed, 26 Jan 2022 12:50:44 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 26 Jan 2022 12:50:44 +0800
-From:   Peter Chiu <chui-hao.chiu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.Lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: [PATCH v2] mt76: mt7915: update max_mpdu_size in mt7915_mcu_sta_amsdu_tlv()
-Date:   Wed, 26 Jan 2022 12:50:34 +0800
-Message-ID: <20220126045034.13400-1-chui-hao.chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Wed, 26 Jan 2022 00:05:19 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A89C617C4
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jan 2022 05:05:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBFFC340E3;
+        Wed, 26 Jan 2022 05:05:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643173518;
+        bh=VYoezu2J2YP3nqOXvi05h2P4iBQgTGVeolBPBK/z7BE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=SPhguLPWOPyKLmQstPMd6FWcqp43vAMsM9HyrHNjedNCJG0SUyLrkg4m5/8jlWlL1
+         ylUhJh3ylH7jZPPrXnG3OH7HdVhVAqbe1VB6bOduf00Jw6m3AJ7mxadGUbI5q7bsee
+         zAdiljSuLmQ8lZXVes1hcjJAYtTppRtROVNes9pcLbci0H3gvIb4fknRFXkT/Y9lc3
+         lBhOPVau6UfeMvMIcdzvn0cH1FZ9mY8A8QjL8DMGW96g5AwPBmoN2xoRu3x2o3M28h
+         sdrumWDm1GMObZqd+EJ+mvXUsmP70VUlj0lFxaHDJCjFEFXY3POXShu91/l9E5TK1d
+         xasjEAmgwstRQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Zzy Wysm <zzy@zzywysm.com>
+Cc:     linux-wireless@vger.kernel.org, dvyukov@google.com,
+        hdanton@sina.com
+Subject: Re: Fix fell on the floor for rcu violation in net/wireless/scan.c
+References: <A7E1204B-E1CD-48AF-AA80-ECCF3E4F7049@zzywysm.com>
+Date:   Wed, 26 Jan 2022 07:05:14 +0200
+In-Reply-To: <A7E1204B-E1CD-48AF-AA80-ECCF3E4F7049@zzywysm.com> (Zzy Wysm's
+        message of "Tue, 25 Jan 2022 17:47:34 -0500")
+Message-ID: <87tudrdr3p.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The maximum max_mpdu_size of mt7915 is 7991, whereas mt7916 can
-support 11454.
+Zzy Wysm <zzy@zzywysm.com> writes:
 
-Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
----
-v2:
-update commit message
----
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 25 +++++++++++++++----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+> On 2021-07-30 syzbot reported the following bug in net/wireless/scan.c:
+>
+> https://lore.kernel.org/all/000000000000f66d1605c8542ca8@google.com/
+>
+> Hillf Danton proposed a patch, which I can=E2=80=99t find on lore but is =
+available here:
+>
+> https://groups.google.com/g/syzkaller-bugs/c/fhfh_VqZQkI
+>
+> As you can see at the end of that thread, syzkaller has automatically
+> closed this bug because it hasn=E2=80=99t seen it in a while. However, the
+> proposed patch appears to be a valid bug fix. Can you re-evaluate it
+> for consideration?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 66f8daf3168c..8086af34a701 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -986,8 +986,8 @@ mt7915_mcu_sta_vht_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
- }
- 
- static void
--mt7915_mcu_sta_amsdu_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
--			 struct ieee80211_sta *sta)
-+mt7915_mcu_sta_amsdu_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
-+			 struct ieee80211_vif *vif, struct ieee80211_sta *sta)
- {
- 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
- 	struct sta_rec_amsdu *amsdu;
-@@ -1004,9 +1004,24 @@ mt7915_mcu_sta_amsdu_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
- 	amsdu = (struct sta_rec_amsdu *)tlv;
- 	amsdu->max_amsdu_num = 8;
- 	amsdu->amsdu_en = true;
--	amsdu->max_mpdu_size = sta->max_amsdu_len >=
--			       IEEE80211_MAX_MPDU_LEN_VHT_7991;
- 	msta->wcid.amsdu = true;
-+
-+	switch (sta->max_amsdu_len) {
-+	case IEEE80211_MAX_MPDU_LEN_VHT_11454:
-+		if (!is_mt7915(&dev->mt76)) {
-+			amsdu->max_mpdu_size =
-+				IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454;
-+			return;
-+		}
-+		fallthrough;
-+	case IEEE80211_MAX_MPDU_LEN_HT_7935:
-+	case IEEE80211_MAX_MPDU_LEN_VHT_7991:
-+		amsdu->max_mpdu_size = IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_7991;
-+		return;
-+	default:
-+		amsdu->max_mpdu_size = IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_3895;
-+		return;
-+	}
- }
- 
- static int
-@@ -1686,7 +1701,7 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
- 
- 	if (sta && sta->ht_cap.ht_supported) {
- 		/* starec amsdu */
--		mt7915_mcu_sta_amsdu_tlv(skb, vif, sta);
-+		mt7915_mcu_sta_amsdu_tlv(dev, skb, vif, sta);
- 		/* starec he */
- 		mt7915_mcu_sta_he_tlv(skb, sta, vif);
- 		/* starec muru */
--- 
-2.29.2
+That's not a proper way to submit patches, see the wiki link below how
+to submit wireless patches.
 
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
