@@ -2,91 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D234B49E1CD
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jan 2022 13:01:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7828649E1FE
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jan 2022 13:08:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233540AbiA0MBB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jan 2022 07:01:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42954 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232965AbiA0MBA (ORCPT
+        id S233574AbiA0MIQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jan 2022 07:08:16 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:42940 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229776AbiA0MIP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jan 2022 07:01:00 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78AE4C061714
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jan 2022 04:01:00 -0800 (PST)
+        Thu, 27 Jan 2022 07:08:15 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F43E61901
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jan 2022 12:01:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB68C340E4;
-        Thu, 27 Jan 2022 12:00:58 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6C5BAB821C0
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jan 2022 12:08:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB44C340E6;
+        Thu, 27 Jan 2022 12:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643284859;
-        bh=dd+xXm3UT0mpdcu8rlNM8L5WI43eb/TbiPVXFNI+sxE=;
+        s=k20201202; t=1643285293;
+        bh=ljSbvHeJmF3ZuifdYikk1Qo28pM/YkC0/0ar/NPr0vM=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=suK5/g4HApyuDvtSK2A5txMZ6yql5TmiuYZz29/CUetJz6LxsMNeRts5fqDoN9XCr
-         a/wIRkuKf3TVni4/uzECtKysQZAXWX9IWE2o5fpfCWVIssJAkUZ63dfxUeINGrmbD+
-         JaUnmL0ktM03CU/BxmodUzr/GhZfMPR6a5Louv+GGKAnwl7Odwjr5W8piXEMhSVLWi
-         NTHcwEgrXfuh7vjtXvfoM6+1MxSIxOXSjAuEgYJIRbVB8UEaPqDhTGUGKZ1gXsPy5t
-         G0RWnhK1c3Ts/oL6z5dvCAwXtF/lzZ1fZIKI/2I59+0qXG8U878ngov7Jx+KIJG2cM
-         76wg7n43xRrEg==
+        b=rxO0XkjalEneDOA6O9oczCx+HZYUyFhjKJURER1CsByO5jwKZCMa/aFJXE7vvqAsW
+         27wXEsTJVPl82kw8CzAV7TffTUT88nVpcAw82ixXYBwJuGRNCWBlcx6PPlTqaoVDyF
+         1jMl19wCKx14X+5NA0o3KFLp3/2okaltuXnh7EUvAXQHXeGL/30Pil6A4vrrl/EjPQ
+         AKc25YmAn8Z0ltyWmqfJCIwZhuKeRu6YRfyibsVf6XjuMSn33yJNuYgOfwfD/GbJDr
+         xgz2tk1JdaisGEo0PsnGABIDqC5RCPZYAge8RyIRgxJkC0+hbpPJbujIjU46ID6rR8
+         Fjg2b6lRZ2pNw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc:     linux-wireless@vger.kernel.org, loic.poulain@linaro.org
-Subject: Re: [PATCH 3/4] MAINTAINERS: hand over ath9k maintainership to Toke
-References: <20220127092709.5203-1-kvalo@kernel.org>
-        <20220127092709.5203-3-kvalo@kernel.org> <87sft91mh9.fsf@toke.dk>
-Date:   Thu, 27 Jan 2022 14:00:55 +0200
-In-Reply-To: <87sft91mh9.fsf@toke.dk> ("Toke \=\?utf-8\?Q\?H\=C3\=B8iland-J\?\=
- \=\?utf-8\?Q\?\=C3\=B8rgensen\=22's\?\= message of
-        "Thu, 27 Jan 2022 11:50:26 +0100")
-Message-ID: <87v8y5jslk.fsf@kernel.org>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Phil Elwell <phil@raspberrypi.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: Re: [PATCH] brcmfmac: firmware: Fix crash in brcm_alt_fw_path
+References: <20220118154514.3245524-1-phil@raspberrypi.com>
+        <87h7a0gt7f.fsf@kernel.org>
+        <07dbaff1-bc12-d782-ed14-ef3f33d3c041@raspberrypi.com>
+        <ebe36c68-cdf9-b005-6d02-f72c3917d292@broadcom.com>
+Date:   Thu, 27 Jan 2022 14:08:07 +0200
+In-Reply-To: <ebe36c68-cdf9-b005-6d02-f72c3917d292@broadcom.com> (Arend van
+        Spriel's message of "Wed, 19 Jan 2022 16:48:44 +0100")
+Message-ID: <87r18tjs9k.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
+Arend van Spriel <arend.vanspriel@broadcom.com> writes:
 
-> Kalle Valo <kvalo@kernel.org> writes:
->
->> In practise I have been the only maintainer for ath9k for some time now =
-but I
->> don't really have time for it. Luckily Toke is willing to look after so =
-mark
->> him as maintainer. Thanks Toke!
+> On 1/19/2022 9:53 AM, Phil Elwell wrote:
+>> On 19/01/2022 06:01, Kalle Valo wrote:
+>>> Phil Elwell <phil@raspberrypi.com> writes:
+>>>
+>>>> The call to brcm_alt_fw_path in brcmf_fw_get_firmwares is not protected
+>>>> by a check to the validity of the fwctx->req->board_type pointer. This
+>>>> results in a crash in strlcat when, for example, the WLAN chip is found
+>>>> in a USB dongle.
+>>>>
+>>>> Prevent the crash by adding the necessary check.
+>>>>
+>>>> See: https://github.com/raspberrypi/linux/issues/4833
+>>>>
+>>>> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware
+>>>> binaries")
+>>>> Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+>>>
+>>> I think this should go to v5.17.
 >>
->> Signed-off-by: Kalle Valo <kvalo@kernel.org>
->> ---
->>  MAINTAINERS | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 2bf3b1f7442e..b1251fc9a71d 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -15899,9 +15899,9 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel=
-/git/kvalo/ath.git
->>  F:	drivers/net/wireless/ath/ath11k/
->>=20=20
->>  QUALCOMM ATHEROS ATH9K WIRELESS DRIVER
->> -M:	ath9k-devel@qca.qualcomm.com
->> +M:	toke@toke.dk
+>> Is that an Ack? Are you asking me to submit the patch in a different way?
 >
-> Could I get my full name in there, please? :)
+> Similar/same patch was submitted by Hector Martin [1].
 >
-> I know it has weird unicode characters, but you can copy-paste it from
-> my other entry in MAINTAINERS
+> Regards,
+> Arend
+>
+> [1]
+> https://patchwork.kernel.org/project/linux-wireless/patch/20220117142919.207370-4-marcan@marcan.st/
 
-Oh, sorry about that! I'll submit v2.
+I would prefer to take this patch to wireless tree and drop Hector's
+version. Is that ok?
 
---=20
+-- 
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
