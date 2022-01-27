@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7828649E1FE
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jan 2022 13:08:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA8C949E21A
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jan 2022 13:11:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233574AbiA0MIQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jan 2022 07:08:16 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:42940 "EHLO
+        id S240218AbiA0MLX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jan 2022 07:11:23 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:43750 "EHLO
         ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229776AbiA0MIP (ORCPT
+        with ESMTP id S234481AbiA0MLW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jan 2022 07:08:15 -0500
+        Thu, 27 Jan 2022 07:11:22 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6C5BAB821C0
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jan 2022 12:08:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB44C340E6;
-        Thu, 27 Jan 2022 12:08:10 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3F1F2B82227;
+        Thu, 27 Jan 2022 12:11:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40EA1C340E4;
+        Thu, 27 Jan 2022 12:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643285293;
-        bh=ljSbvHeJmF3ZuifdYikk1Qo28pM/YkC0/0ar/NPr0vM=;
+        s=k20201202; t=1643285480;
+        bh=l6TRy4jFk0Trxh8+yK9kI1v0jsEYunfLcp1/XiEleh8=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=rxO0XkjalEneDOA6O9oczCx+HZYUyFhjKJURER1CsByO5jwKZCMa/aFJXE7vvqAsW
-         27wXEsTJVPl82kw8CzAV7TffTUT88nVpcAw82ixXYBwJuGRNCWBlcx6PPlTqaoVDyF
-         1jMl19wCKx14X+5NA0o3KFLp3/2okaltuXnh7EUvAXQHXeGL/30Pil6A4vrrl/EjPQ
-         AKc25YmAn8Z0ltyWmqfJCIwZhuKeRu6YRfyibsVf6XjuMSn33yJNuYgOfwfD/GbJDr
-         xgz2tk1JdaisGEo0PsnGABIDqC5RCPZYAge8RyIRgxJkC0+hbpPJbujIjU46ID6rR8
-         Fjg2b6lRZ2pNw==
+        b=kda1foNqREMz9pKhLX9F6Jrq8C1fgqA/P2pVwJzWbJ3rXX1MHuzhq7EJ9q99Hbw+C
+         u0UEB9YScQdiQCy7e3OEya4I2PtqJjc/SlGo2b2waVmgiWikvqtNhzHhcs80GmiwLi
+         ebxiH0PbRkD7Hbudc3X3p9J8y9nsWElkTjn9o6DTAD0XoJQI6fluSqukZV3BWjWrU8
+         d+XK8lyWxKDxtMXRTbjZS/aKVQvTGPDIVMT8qHW581O/fImoxhv18Q4kBvPQfAFhkS
+         xC6ByS0UQmJf4MdxkNM1HZXnRQgjhYr+GVa6wASYHeU9XlizjPUUZzumAZpLjSXt8z
+         ohCI2MilfYfLw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Phil Elwell <phil@raspberrypi.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Subject: Re: [PATCH] brcmfmac: firmware: Fix crash in brcm_alt_fw_path
-References: <20220118154514.3245524-1-phil@raspberrypi.com>
-        <87h7a0gt7f.fsf@kernel.org>
-        <07dbaff1-bc12-d782-ed14-ef3f33d3c041@raspberrypi.com>
-        <ebe36c68-cdf9-b005-6d02-f72c3917d292@broadcom.com>
-Date:   Thu, 27 Jan 2022 14:08:07 +0200
-In-Reply-To: <ebe36c68-cdf9-b005-6d02-f72c3917d292@broadcom.com> (Arend van
-        Spriel's message of "Wed, 19 Jan 2022 16:48:44 +0100")
-Message-ID: <87r18tjs9k.fsf@kernel.org>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     Pkshih <pkshih@realtek.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "tony0620emma\@gmail.com" <tony0620emma@gmail.com>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Neo Jou <neojou@gmail.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>
+Subject: Re: [PATCH 3/4] rtw88: Move enum rtw_tx_queue_type mapping code to tx.{c,h}
+References: <20220114234825.110502-1-martin.blumenstingl@googlemail.com>
+        <20220114234825.110502-4-martin.blumenstingl@googlemail.com>
+        <b2bf2bc5f04b488487797aa21c50a130@realtek.com>
+        <87czkogsc4.fsf@kernel.org>
+        <CAFBinCCeCoRmqApeeAD534dKrhgbnh4wSBF88oLLXqL-TYv5+w@mail.gmail.com>
+Date:   Thu, 27 Jan 2022 14:11:14 +0200
+In-Reply-To: <CAFBinCCeCoRmqApeeAD534dKrhgbnh4wSBF88oLLXqL-TYv5+w@mail.gmail.com>
+        (Martin Blumenstingl's message of "Sun, 23 Jan 2022 19:34:18 +0100")
+Message-ID: <87mtjhjs4d.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -55,39 +55,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arend van Spriel <arend.vanspriel@broadcom.com> writes:
+Martin Blumenstingl <martin.blumenstingl@googlemail.com> writes:
 
-> On 1/19/2022 9:53 AM, Phil Elwell wrote:
->> On 19/01/2022 06:01, Kalle Valo wrote:
->>> Phil Elwell <phil@raspberrypi.com> writes:
->>>
->>>> The call to brcm_alt_fw_path in brcmf_fw_get_firmwares is not protected
->>>> by a check to the validity of the fwctx->req->board_type pointer. This
->>>> results in a crash in strlcat when, for example, the WLAN chip is found
->>>> in a USB dongle.
->>>>
->>>> Prevent the crash by adding the necessary check.
->>>>
->>>> See: https://github.com/raspberrypi/linux/issues/4833
->>>>
->>>> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware
->>>> binaries")
->>>> Signed-off-by: Phil Elwell <phil@raspberrypi.com>
->>>
->>> I think this should go to v5.17.
->>
->> Is that an Ack? Are you asking me to submit the patch in a different way?
+> Hi Kalle,
 >
-> Similar/same patch was submitted by Hector Martin [1].
+> On Wed, Jan 19, 2022 at 7:20 AM Kalle Valo <kvalo@kernel.org> wrote:
+> [...]
+>> I was about to answer that with a helper function it's easier to catch
+>> out of bands access, but then noticed the helper doesn't have a check
+>> for that. Should it have one?
 >
-> Regards,
-> Arend
+> you mean something like:
+>     if (ac >= IEEE80211_NUM_ACS)
+>         return RTW_TX_QUEUE_BE;
 >
-> [1]
-> https://patchwork.kernel.org/project/linux-wireless/patch/20220117142919.207370-4-marcan@marcan.st/
+> Possibly also with a WARN_ON/WARN_ON_ONCE
 
-I would prefer to take this patch to wireless tree and drop Hector's
-version. Is that ok?
+Yeah, something like that would be good.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
