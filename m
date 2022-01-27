@@ -2,79 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A10C049E633
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jan 2022 16:37:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCCBA49E701
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jan 2022 17:04:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238861AbiA0Ph4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jan 2022 10:37:56 -0500
-Received: from mail.toke.dk ([45.145.95.12]:45897 "EHLO mail.toke.dk"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229758AbiA0Ph4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jan 2022 10:37:56 -0500
-X-Greylist: delayed 17247 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Jan 2022 10:37:56 EST
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1643297875; bh=2v+Sdt2P4fyJ2JOOJ+IrAZ0xSSOEk7jQrz0daLRnZk8=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=gtWUak93C8998RXhSZmisY54RPBWPhj0ckR6MKxJwtP2ouvMs7IALtMgGA7X07Xg1
-         sD/OjaAy3PDu4CQ2QhpwbDeOUHkZlzJgHERhAx2BcNOltXntp64lDaM0dnrLN46S/1
-         G8RyhrX4aeRmavZA0MA7dPHX7LoEIkrIe6I7eaywHyrLJetCHFPZDCFHyQEXPo9SKk
-         4T+RW9iN6RsRroqWV3muUJqXO4owFZifSdISrjJ8fAtN/u8MTth3+Tfe09jVtyQWug
-         JD9tdIQWprMe4seN1KZP2VwLd/5jkHcqEiUrWcx3hOewMdTJxIlAed9qq+JrsJ9C+Y
-         sBzimGVYJ1jfQ==
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, loic.poulain@linaro.org
-Subject: Re: [PATCH 3/4] MAINTAINERS: hand over ath9k maintainership to Toke
-In-Reply-To: <87v8y5jslk.fsf@kernel.org>
-References: <20220127092709.5203-1-kvalo@kernel.org>
- <20220127092709.5203-3-kvalo@kernel.org> <87sft91mh9.fsf@toke.dk>
- <87v8y5jslk.fsf@kernel.org>
-Date:   Thu, 27 Jan 2022 16:37:54 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87mtjh1965.fsf@toke.dk>
+        id S243419AbiA0QEr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jan 2022 11:04:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43928 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243422AbiA0QEq (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 27 Jan 2022 11:04:46 -0500
+Received: from proxima.lasnet.de (proxima.lasnet.de [IPv6:2a01:4f8:121:31eb:3::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A7EBC061747
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jan 2022 08:04:46 -0800 (PST)
+Received: from [IPV6:2003:e9:d724:a665:d7b5:f965:3476:16f8] (p200300e9d724a665d7b5f965347616f8.dip0.t-ipconnect.de [IPv6:2003:e9:d724:a665:d7b5:f965:3476:16f8])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: stefan@datenfreihafen.org)
+        by proxima.lasnet.de (Postfix) with ESMTPSA id C943EC0AA9;
+        Thu, 27 Jan 2022 17:04:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=datenfreihafen.org;
+        s=2021; t=1643299482;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=r6l64ysRMSB2kc26/F2X0Sizt9cvfxhS8L7sLJlrudQ=;
+        b=rJYOMeLahuLQvn6llhHtJrBhqKksXGZCT07Q0ldEKwEs5c9Hu700oF63waDwYhVLtWbXC6
+        sD9Etqzz/4L3AOM8euoLnkCdGpscu5UnugtYcV3XPKbLx6sONpu1X52nn0tjIPXUBnEEAj
+        VhhCIjk1u8edjni2ch0BDNzo4O5E28c3zgk1MX84suJ2rTCGFqK+bVhgWvkKywCpztHG61
+        HM26hmTL0gE9kkmcBC99NAxdud1wb8QUOfnw8A+wuAfs15r9kSTcbQgAgIA+iFpd9WBYzw
+        PNER+ypJCnbRaL1/qdNzntgMSL7Gi7PJvlcUH6a66LcockbHNaFONyv41YU3pg==
+Message-ID: <53c2d017-a7a5-3ed0-a68c-6b67c96b5b54@datenfreihafen.org>
+Date:   Thu, 27 Jan 2022 17:04:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [wpan-next 2/4] net: mac802154: Include the softMAC stack inside
+ the IEEE 802.15.4 menu
+Content-Language: en-US
+To:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Alexander Aring <alex.aring@gmail.com>,
+        linux-wpan@vger.kernel.org
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        David Girault <david.girault@qorvo.com>,
+        Romuald Despres <romuald.despres@qorvo.com>,
+        Frederic Blain <frederic.blain@qorvo.com>,
+        Nicolas Schodet <nico@ni.fr.eu.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20220120004350.308866-1-miquel.raynal@bootlin.com>
+ <20220120004350.308866-3-miquel.raynal@bootlin.com>
+From:   Stefan Schmidt <stefan@datenfreihafen.org>
+In-Reply-To: <20220120004350.308866-3-miquel.raynal@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
 
-> Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
->
->> Kalle Valo <kvalo@kernel.org> writes:
->>
->>> In practise I have been the only maintainer for ath9k for some time now=
- but I
->>> don't really have time for it. Luckily Toke is willing to look after so=
- mark
->>> him as maintainer. Thanks Toke!
->>>
->>> Signed-off-by: Kalle Valo <kvalo@kernel.org>
->>> ---
->>>  MAINTAINERS | 4 ++--
->>>  1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/MAINTAINERS b/MAINTAINERS
->>> index 2bf3b1f7442e..b1251fc9a71d 100644
->>> --- a/MAINTAINERS
->>> +++ b/MAINTAINERS
->>> @@ -15899,9 +15899,9 @@ T:	git git://git.kernel.org/pub/scm/linux/kerne=
-l/git/kvalo/ath.git
->>>  F:	drivers/net/wireless/ath/ath11k/
->>>=20=20
->>>  QUALCOMM ATHEROS ATH9K WIRELESS DRIVER
->>> -M:	ath9k-devel@qca.qualcomm.com
->>> +M:	toke@toke.dk
->>
->> Could I get my full name in there, please? :)
->>
->> I know it has weird unicode characters, but you can copy-paste it from
->> my other entry in MAINTAINERS
->
-> Oh, sorry about that! I'll submit v2.
+Hello.
 
-Great, thanks!
+On 20.01.22 01:43, Miquel Raynal wrote:
+> From: David Girault <david.girault@qorvo.com>
+> 
+> The softMAC stack has no meaning outside of the IEEE 802.15.4 stack and
+> cannot be used without it.
+> 
+> Signed-off-by: David Girault <david.girault@qorvo.com>
+> [miquel.raynal@bootlin.com: Isolate this change from a bigger commit]
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> ---
+>   net/Kconfig            | 1 -
+>   net/ieee802154/Kconfig | 1 +
+>   2 files changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/Kconfig b/net/Kconfig
+> index 0da89d09ffa6..a5e31078fd14 100644
+> --- a/net/Kconfig
+> +++ b/net/Kconfig
+> @@ -228,7 +228,6 @@ source "net/x25/Kconfig"
+>   source "net/lapb/Kconfig"
+>   source "net/phonet/Kconfig"
+>   source "net/6lowpan/Kconfig"
+> -source "net/mac802154/Kconfig"
+>   source "net/sched/Kconfig"
+>   source "net/dcb/Kconfig"
+>   source "net/dns_resolver/Kconfig"
+> diff --git a/net/ieee802154/Kconfig b/net/ieee802154/Kconfig
+> index 31aed75fe62d..7e4b1d49d445 100644
+> --- a/net/ieee802154/Kconfig
+> +++ b/net/ieee802154/Kconfig
+> @@ -36,6 +36,7 @@ config IEEE802154_SOCKET
+>   	  for 802.15.4 dataframes. Also RAW socket interface to build MAC
+>   	  header from userspace.
+>   
+> +source "net/mac802154/Kconfig"
+>   source "net/ieee802154/6lowpan/Kconfig"
+>   
+>   endif
+> 
 
--Toke
+Please fold this patch into the previous one moving the Kconfig option 
+around. This can be done in one go.
+
+regards
+Stefan Schmidt
