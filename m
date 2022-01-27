@@ -2,117 +2,243 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8008A49E81A
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jan 2022 17:54:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B74F49E8B2
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jan 2022 18:18:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244139AbiA0QyQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jan 2022 11:54:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55558 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237397AbiA0QyP (ORCPT
+        id S244442AbiA0RSO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jan 2022 12:18:14 -0500
+Received: from 2.mo583.mail-out.ovh.net ([178.33.109.111]:43889 "EHLO
+        2.mo583.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244449AbiA0RSN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jan 2022 11:54:15 -0500
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88965C061714;
-        Thu, 27 Jan 2022 08:54:14 -0800 (PST)
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 1BCD7C0003;
-        Thu, 27 Jan 2022 16:54:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1643302452;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=IvtKV4Bh1kWEO/WKcmj7NfRZ2FJ3K2bDH9xAeH8VGHA=;
-        b=Xbh8gJr78/4fIFuTILF1vW84ncRpl1Hyg1RDrGOrCjaoSnfTbymyJ+NdYn/dzhiiydD8Im
-        NALYRTg4YmboqZ0vG2GFARgZfVzeBOMN8WwtnwbQXEY+uQw7DNbXPMdM69HuByAZtFK8fw
-        SHSGZMEWGxusxbtSNj5x8d4NRdXGw4eG2MpPeUZio+OeupGWpBrw46dl2bDMSQD9BojVoz
-        /n9FysPX6j6D6xa4X6X7OMIoE29Np0Sj9O405uEsFslG5Zc7GoLGxhru93MjBfy1DEz0tV
-        BfBU5XNOGrGlOKUMVVJSnTC/NfZgkEAQTEMxksHqyqGk2brYkxwSNNmXCdE5cw==
-Date:   Thu, 27 Jan 2022 17:54:09 +0100
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Stefan Schmidt <stefan@datenfreihafen.org>
-Cc:     Alexander Aring <alex.aring@gmail.com>, linux-wpan@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        David Girault <david.girault@qorvo.com>,
-        Romuald Despres <romuald.despres@qorvo.com>,
-        Frederic Blain <frederic.blain@qorvo.com>,
-        Nicolas Schodet <nico@ni.fr.eu.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [wpan-next 2/4] net: mac802154: Include the softMAC stack
- inside the IEEE 802.15.4 menu
-Message-ID: <20220127175409.777b9dff@xps13>
-In-Reply-To: <53c2d017-a7a5-3ed0-a68c-6b67c96b5b54@datenfreihafen.org>
-References: <20220120004350.308866-1-miquel.raynal@bootlin.com>
-        <20220120004350.308866-3-miquel.raynal@bootlin.com>
-        <53c2d017-a7a5-3ed0-a68c-6b67c96b5b54@datenfreihafen.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Thu, 27 Jan 2022 12:18:13 -0500
+X-Greylist: delayed 4193 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Jan 2022 12:18:12 EST
+Received: from player774.ha.ovh.net (unknown [10.108.1.146])
+        by mo583.mail-out.ovh.net (Postfix) with ESMTP id 1215F23E0D
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jan 2022 14:50:49 +0000 (UTC)
+Received: from gk2.net (82-65-221-177.subs.proxad.net [82.65.221.177])
+        (Authenticated sender: gerald@gk2.net)
+        by player774.ha.ovh.net (Postfix) with ESMTPSA id 7F7A726DDBEBD;
+        Thu, 27 Jan 2022 14:50:38 +0000 (UTC)
+Authentication-Results: garm.ovh; auth=pass (GARM-95G001d88b8f7b-42a2-4739-b5ea-8b5cfa3f3c0f,
+                    7BBB4ECDC12A14F10EAF31C2B2D8AAE1BDE7D8CD) smtp.auth=gerald@gk2.net
+X-OVh-ClientIp: 82.65.221.177
+Message-ID: <849ea3f2-a6c1-8814-3713-4d8b14db5029@gk2.net>
+Date:   Thu, 27 Jan 2022 15:50:36 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: mwifiex 1.0 (16.68.10.p159) - PCIEUSB-8997 firmware is buggy
+Content-Language: fr
+To:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        James Cao <james.cao@nxp.com>
+Cc:     Prashanth Ranganathan <prashanthkrishnan.ranganathan@nxp.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Rakesh Parmar <rakesh.parmar@nxp.com>,
+        Cathy Luo <xiaohua.luo@nxp.com>,
+        Linux Firmware <linux-firmware@kernel.org>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        Josh Boyer <jwboyer@kernel.org>
+References: <edeb34bc-7c85-7f1d-79e4-e3e21df86334@gk2.net>
+ <fe75e8f2-6f12-052a-81ed-38122b87f1f6@gk2.net>
+ <20210926104306.xocctztsuspx6oji@pali>
+ <CA+5PVA4AGa09+X2A4zPU2MKWburCtiddb3cpSJh9H-JTO=fJKg@mail.gmail.com>
+ <20220114170051.sx2p6m2ihrv3ojzt@pali>
+ <AS8PR04MB9192076DB3CB59EC049B7B9CFB549@AS8PR04MB9192.eurprd04.prod.outlook.com>
+ <20220120193041.fmmmd77ingjvyqe4@pali>
+ <AS8PR04MB8419C8377C9458ADA340AC24E0209@AS8PR04MB8419.eurprd04.prod.outlook.com>
+ <20220127121514.daptjsxkgrt5zlov@pali>
+From:   =?UTF-8?Q?G=c3=a9rald_Kerma?= <gandalf@gk2.net>
+In-Reply-To: <20220127121514.daptjsxkgrt5zlov@pali>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 12774460345581886293
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvvddrfeefgdejtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfgjtgfgsehtkeertddtfeejnecuhfhrohhmpefirohrrghluggpmfgvrhhmrgcuoehgrghnuggrlhhfsehgkhdvrdhnvghtqeenucggtffrrghtthgvrhhnpefgkeehtddvfeetjeevveegffettefhkeeiffdufeelffduvdeftdeuleekhedttdenucffohhmrghinhepohhuthhlohhokhdrtghomhdpghhithhhuhgsrdgtohhmpdhkvghrnhgvlhdrohhrghenucfkpheptddrtddrtddrtddpkedvrdeihedrvddvuddrudejjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepphhlrgihvghrjeejgedrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehgrghnuggrlhhfsehgkhdvrdhnvghtpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugidqfihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrdhorhhg
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Stefan,
+Héllo James,
 
-stefan@datenfreihafen.org wrote on Thu, 27 Jan 2022 17:04:41 +0100:
+As Pali wrote, if fimrware requires signing NDA, I can propose my own 
+collaboration to NXP !
 
-> Hello.
->=20
-> On 20.01.22 01:43, Miquel Raynal wrote:
-> > From: David Girault <david.girault@qorvo.com>
-> >=20
-> > The softMAC stack has no meaning outside of the IEEE 802.15.4 stack and
-> > cannot be used without it.
-> >=20
-> > Signed-off-by: David Girault <david.girault@qorvo.com>
-> > [miquel.raynal@bootlin.com: Isolate this change from a bigger commit]
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > ---
-> >   net/Kconfig            | 1 -
-> >   net/ieee802154/Kconfig | 1 +
-> >   2 files changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/net/Kconfig b/net/Kconfig
-> > index 0da89d09ffa6..a5e31078fd14 100644
-> > --- a/net/Kconfig
-> > +++ b/net/Kconfig
-> > @@ -228,7 +228,6 @@ source "net/x25/Kconfig"
-> >   source "net/lapb/Kconfig"
-> >   source "net/phonet/Kconfig"
-> >   source "net/6lowpan/Kconfig"
-> > -source "net/mac802154/Kconfig"
-> >   source "net/sched/Kconfig"
-> >   source "net/dcb/Kconfig"
-> >   source "net/dns_resolver/Kconfig"
-> > diff --git a/net/ieee802154/Kconfig b/net/ieee802154/Kconfig
-> > index 31aed75fe62d..7e4b1d49d445 100644
-> > --- a/net/ieee802154/Kconfig
-> > +++ b/net/ieee802154/Kconfig
-> > @@ -36,6 +36,7 @@ config IEEE802154_SOCKET
-> >   	  for 802.15.4 dataframes. Also RAW socket interface to build MAC
-> >   	  header from userspace. =20
-> >   > +source "net/mac802154/Kconfig" =20
-> >   source "net/ieee802154/6lowpan/Kconfig" =20
-> >   >   endif =20
-> >  =20
->=20
-> Please fold this patch into the previous one moving the Kconfig option ar=
-ound. This can be done in one go.
+I am still okay to help, in anyway, with testing or more...
+Please, feel free to contact me.
 
-Sure.
+Gérald Kerma
+CyberMind.FR
+gandalf(at)gk2(dot)net
+00.33.651.27.66.88
 
-By the way, I was questioning myself: why is the mac802154 folder
-outside of ieee802154? I don't really understand the organization but
-as it would massively prevent any of the future changes that I already
-prepared to apply correctly, I haven't proposed such a move -yet. But
-I would like to know what's the idea behind the current folder
-hierarchy?
+PS: I add my answer which was lost for some of the CC... (sorry)...
 
-Thanks,
-Miqu=C3=A8l
+
+Le 27/01/2022 à 13:15, Pali Rohár a écrit :
+> Hello James!
+>
+> Thank you for reply, but this is something which we did not want to hear :-(
+>
+> There is an issue in the latest pcieuart8997_combo_v4.bin firmware file
+> which NXP sent to linux-firmware repository and it is really needed to
+> fix this issue. It was sent by NXP, so it is expected that NXP do it.
+> And because it is binary-only file, people outside of NXP cannot do it.
+>
+> Would you be able to look at this firmware issue as the last thing?
+>
+> Or as Gérald wrote, could NXP provide source code of that firmware? So
+> people outside of NXP could look at it? If firmware requires signing NDA
+> (either individually or via company), then some professional skilled
+> kernel developers can do it.
+Le 27/01/2022 à 02:13, Gérald Kerma a écrit :
+ > Héllo James,
+ >
+ > Was it only ever supported ?
+ >
+ > May be NXP can free and share the firmware source to the community, 
+and let anyone who care try to debug it ?
+ >
+ > As far as my tests shown, the mwifiex driver never has work 
+correctly, and none version is sufficiently stable to be state as working.
+ >
+ > Please, NXP, take cares of your end clients !
+ > Be simple, be smart, be respectuous, give us the source…
+ >
+ > Thanks in advance,
+ > Gérald Kerma
+ >
+ > [%]<\@~{
+> On Wednesday 26 January 2022 23:28:48 James Cao wrote:
+>> Hi Pali,
+>>
+>> NXP doesn't have a plan to support mwifiex driver anymore. How should we handle this kind of retired project in upstream?
+>>
+>> Thanks,
+>> James
+>>
+>> ________________________________
+>> From: Pali Rohár <pali@kernel.org>
+>> Sent: Thursday, January 20, 2022 11:30 AM
+>> To: Prashanth Ranganathan <prashanthkrishnan.ranganathan@nxp.com>
+>> Cc: Sharvari Harisangam <sharvari.harisangam@nxp.com>; Rakesh Parmar <rakesh.parmar@nxp.com>; Cathy Luo <xiaohua.luo@nxp.com>; James Cao <james.cao@nxp.com>; Linux Firmware <linux-firmware@kernel.org>; Linux Wireless <linux-wireless@vger.kernel.org>; Gérald Kerma <gandalf@gk2.net>; Ganapathi Bhat <ganapathi017@gmail.com>; Josh Boyer <jwboyer@kernel.org>
+>> Subject: [EXT] Re: mwifiex 1.0 (16.68.10.p159) - PCIEUSB-8997 firmware is buggy
+>>
+>> Caution: EXT Email
+>>
+>> Hello Prashanth!
+>>
+>> Thank you for reply. Did you have a time to check this issue?
+>>
+>> Gérald did a great testing which shows that version W16.68.1.p195 and
+>> higher of pcieuart8997_combo_v4.bin firmware does not work.
+>>
+>> On Friday 14 January 2022 17:11:18 Prashanth Ranganathan wrote:
+>>> Hi Pali,
+>>> Please allow me to check this and respond ASAP.
+>>> Best,
+>>> Prashanth
+>>> ________________________________
+>>> From: Pali Rohár <pali@kernel.org>
+>>> Sent: Friday, January 14, 2022 9:00 AM
+>>> To: Sharvari Harisangam <sharvari.harisangam@nxp.com>; Rakesh Parmar <rakesh.parmar@nxp.com>; Cathy Luo <xiaohua.luo@nxp.com>; Prashanth Ranganathan <prashanthkrishnan.ranganathan@nxp.com>; James Cao <james.cao@nxp.com>
+>>> Cc: Linux Firmware <linux-firmware@kernel.org>; Linux Wireless <linux-wireless@vger.kernel.org>; Gérald Kerma <gandalf@gk2.net>; Ganapathi Bhat <ganapathi017@gmail.com>; Josh Boyer <jwboyer@kernel.org>
+>>> Subject: [EXT] Re: mwifiex 1.0 (16.68.10.p159) - PCIEUSB-8997 firmware is buggy
+>>>
+>>> Caution: EXT Email
+>>>
+>>> NXP people: Sharvari, Rakesh, Cathy, Zheng: could you please look at
+>>> this issue? It is really serous!
+>>>
+>>> On Monday 27 September 2021 09:47:23 Josh Boyer wrote:
+>>>> On Sun, Sep 26, 2021 at 6:43 AM Pali Rohár <pali@kernel.org> wrote:
+>>>>> Hello Josh, Sharvari and other from NXP!
+>>>>>
+>>>>> On Saturday 25 September 2021 19:23:48 Gérald Kerma wrote:
+>>>>>> Correcting old marvell address to new nxp...
+>>>>>>
+>>>>>> Le 25/09/2021 à 19:19, Gérald Kerma a écrit :
+>>>>>>> Héllo All,
+>>>>>>>
+>>>>>>> I made some few tests on EspressoBin-Ultra from GlobalScaleTechnologies,
+>>>>>>> because of problem with the WiFi.
+>>>>>>>
+>>>>>>> I have done some quick tests on all the firmware of PCIEUSB-8997 using
+>>>>>>> the pcieuart8997_combo_v4.bin on OpenWrt 21.02.x
+>>>>>>>
+>>>>>>> Here is a summary of the tests :
+>>>>>>> - W16.68.10.p159 = KO
+>>>>>>> - W16.68.1.p195 = KO
+>>>>>>> - V16.68.1.p145 = OK
+>>>>>>> - 16.68.1.p140 = OK
+>>>>>>> - 16.68.1.p133 = OK
+>>>>>>> - 16.68.1.p97 = OK
+>>>>>>> - 16.68.1.p70 = KO
+>>>>>  From this user test result can be seen that last two versions of
+>>>>> pcieusb8997_combo_v4.bin firmware file for 8997 wifi+bt card with
+>>>>> official mainline linux kernel driver mwifiex were not properly tested
+>>>>> internally in NXP and are causing serious issues which make 8997 card
+>>>>> basically unusable.
+>>>>>
+>>>>> Sharvari and other NXP developers: Do you have some internal testing of
+>>>>> this pcieusb8997_combo_v4.bin firmware for PCIe+USB variant of 8997
+>>>>> wifi chips? Or are you aware of this issue and do you have in NXP some
+>>>>> workaround for it (e.g. at driver level)? Could you please look at this
+>>>>> serious issue and try to debug firmware and release a new version, as
+>>>>> this is obvious fatal error in firmware itself?
+>>>>>
+>>>>> Josh, how you in linux-firmware repository handle such, I must say,
+>>>>> "fatal issues"? Wait for vendor fixes or revert problematic commits? Or
+>>>>> something else?
+>>>> We can revert if we need to, but I think it's not quite that simple.
+>>>>
+>>>>> Because when users starts upgrading linux-firmware packages in their
+>>>>> downstream distributions then basically wifi cards on this 8997 chips
+>>>>> with official mwifiex driver stops working.
+>>>> The first broken version was committed in Feb of 2019.  That's
+>>>> approaching 3 years ago.  Given that this is binary firmware, I have
+>>>> no idea what else may or may not be included in the updates in the
+>>>> meantime.
+>>>>
+>>>> josh
+>>> Josh, as Gérald wrote, current binary in linux-firmware repository is
+>>> unusable. And there is no reply from NXP for 3 months.
+>>>
+>>> You are right that nobody knows what is in firmware binary, but working
+>>> binary is at least usable than non-working binary.
+>>>
+>>> So I would really suggest to start reverting non-working firmware files
+>>> if NXP does not respond in few days.
+>>>
+>>> Gérald, what is your opinion? Do you see other way how to make mainline
+>>> linux driver work (again)?
+>>>
+>>>>>>> REF (and all details of tests) :
+>>>>>>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2FNXP%2Fmwifiex-firmware%2Fissues%2F1&amp;data=04%7C01%7Cjames.cao%40nxp.com%7C09714bf302224e66a34c08d9dc4b5bb5%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C637783038495772224%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=3Y6a7lP%2B%2FXwPWGZARx3c99qV3ZFundY0QtfjmC1mYn4%3D&amp;reserved=0
+>>>>>>>
+>>>>>>>
+>>>>>>> Broken firmware :
+>>>>>>>
+>>>>>>> Version |W16.68.1.p195| of |pcieusb8997_combo_v4.bin| was included into
+>>>>>>> linux-firmware repository by this pull request:
+>>>>>>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fall%2FCA%2B5PVA5yQbjg3vaT7F8120B6ngLn7%2BsZC0OWt0KoUiQR9hS4FA%40mail.gmail.com%2F&amp;data=04%7C01%7Cjames.cao%40nxp.com%7C09714bf302224e66a34c08d9dc4b5bb5%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C637783038495772224%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=nbzs6YB%2Fyjdp9zJR1PQyZ2prUtPOjthVewIhBCwcqdg%3D&amp;reserved=0
+>>>>>>> <https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fall%2FCA%2B5PVA5yQbjg3vaT7F8120B6ngLn7%2BsZC0OWt0KoUiQR9hS4FA%40mail.gmail.com%2F&amp;data=04%7C01%7Cjames.cao%40nxp.com%7C09714bf302224e66a34c08d9dc4b5bb5%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C637783038495772224%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=nbzs6YB%2Fyjdp9zJR1PQyZ2prUtPOjthVewIhBCwcqdg%3D&amp;reserved=0>
+>>>>>>>
+>>>>>>> And latest version |W16.68.10.p159| of |pcieusb8997_combo_v4.bin| by
+>>>>>>> this pull request:
+>>>>>>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flinux-firmware%2FCA%2B5PVA5on7%2BCRtEV7tThPxgucwt3W9i-tEXm4cgH-AmMB-Jrtg%40mail.gmail.com%2F&amp;data=04%7C01%7Cjames.cao%40nxp.com%7C09714bf302224e66a34c08d9dc4b5bb5%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C637783038495772224%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=6wktlFLItFxzOdYcgTI2Rs9x3PamVJyfWtaNJU0o0bw%3D&amp;reserved=0
+>>>>>>> <https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flinux-firmware%2FCA%2B5PVA5on7%2BCRtEV7tThPxgucwt3W9i-tEXm4cgH-AmMB-Jrtg%40mail.gmail.com%2F&amp;data=04%7C01%7Cjames.cao%40nxp.com%7C09714bf302224e66a34c08d9dc4b5bb5%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C637783038495772224%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=6wktlFLItFxzOdYcgTI2Rs9x3PamVJyfWtaNJU0o0bw%3D&amp;reserved=0>
+>>>>>>>
+>>>>>>> Olders looks to works better.
+>>>>>>>
+>>>>>>> In quick tests, they allow more than 1 clients at a time !
+>>>>>>>
+>>>>>>> I am still testing the V16.68.1.p145 and report the results after some
+>>>>>>> longer use...
+>>>>>>>
+>>>>>>> Hopes it will help...
+>>>>>>> Regards,
+>>>>>>> Gérald Kerma
+>>>>>>> gandalf(at)gk2(dot)net
+
