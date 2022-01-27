@@ -2,204 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED21249E4A0
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jan 2022 15:30:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD87B49E53E
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jan 2022 15:54:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242364AbiA0Oaj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jan 2022 09:30:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49778 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237777AbiA0Oai (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jan 2022 09:30:38 -0500
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A035C061714
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jan 2022 06:30:38 -0800 (PST)
-Received: by mail-pg1-x535.google.com with SMTP id g2so2394408pgo.9
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jan 2022 06:30:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:to:cc:references
-         :from:in-reply-to;
-        bh=nPZAdUkKfTr4gRZ2FZA8l/bPxHgzRrXOPmCSAKuMYQ8=;
-        b=AwVJmjWMrTsJIcevd/ErVQXgCTQaG4OAC21iKt7AJc1Cfa48rhCSENOxFNBGoAf7zD
-         WuEumaVNOLMAyjyggiWG7Fk/mN1vA5Q08/WEfEFiLAzbAxBveSqh/fP9GbrAz53Y8FcT
-         4wBF7e81sTFx7KVmjEjU0lLT4pcn7uq0bhRzg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :to:cc:references:from:in-reply-to;
-        bh=nPZAdUkKfTr4gRZ2FZA8l/bPxHgzRrXOPmCSAKuMYQ8=;
-        b=dVsiKuK4rkrW7VSSJa0fHENpvU6d7Zxh4Ygi+Ndm48Rll5ydDET6IlXhPQlvZ2AFqE
-         adw1tcyhy5zH1rhaWk0oThazcShUF3oZoeRSidYM18P5v3xcMuz3sl63ImkN+q6pW3nh
-         imz8upoJYwK3+t8AQ/mpmucCLSpBU6cvuo+NfZQH1jn46FVBgUhSStFPhRARuP2fdzBT
-         nT8zi1NVC2EXeC2HEHV20RbSR6X/We43vNVfP+Mm33VWY4Xcfk0PgSGCdeeNoXqNC0D2
-         qTKF27vdHl2/fqAiGuPBRsCiRnET2QvB4iFW76Hjx5yF41wG+xaCfbrP+KShoLvg7q/l
-         snzg==
-X-Gm-Message-State: AOAM533pcBoABZxCVqkbgQX8o/FbgC7ZEzZokKO9YsL14jShF6TO1WhD
-        IVymc8yiH/xkhQ+Di6r1RaUd6w==
-X-Google-Smtp-Source: ABdhPJwqBEgTQoCEesP8wzW6CP/x5RjEvDAxgW5iwhmixvcXo9IyHB4WyWC5RZ2oUzlhxrz8Fmw30g==
-X-Received: by 2002:a65:58cc:: with SMTP id e12mr2963502pgu.126.1643293837541;
-        Thu, 27 Jan 2022 06:30:37 -0800 (PST)
-Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id k16sm6392805pfu.140.2022.01.27.06.30.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Jan 2022 06:30:36 -0800 (PST)
-Message-ID: <82bf9633-ccd4-106f-89f5-921dd0534214@broadcom.com>
-Date:   Thu, 27 Jan 2022 15:30:30 +0100
+        id S238308AbiA0Oyg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jan 2022 09:54:36 -0500
+Received: from mga03.intel.com ([134.134.136.65]:59109 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236862AbiA0Oyg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 27 Jan 2022 09:54:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643295276; x=1674831276;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=HU0r6hwaF27wWadQVn1JhJsILiBLP7WU7Pf4tcjIsig=;
+  b=jNxgscSmloMACfnvaWhfH5xyIcIVkGJGjUo8jHHQLuqhNnRVnCsdGNvp
+   J6trvcWh7+F2s0PIeTcdJY4L9h7l4HdbI9Kh+QWQ96x2Buw8Yy66ALuvJ
+   ld/pJRex1GaxNhNkwFtuwFdPEUA4aJZuLUIvOw3TNzhG5swpLhr167pBr
+   tHXfdiJHwwBweGqvzA4Q+TQyYklMBwm7ktkqN1UdzDmeJ4PUSvbHbFRsd
+   2NlLBtIcMnKqMYNki6GMMSTxiWaOgG+gPADVwYM/HE2iWsPR8tiRmpe1Y
+   VFOIR+HEohDWDW7wTEA2TfqCDUSImfGc94+mDa+wNh7Xsh7xOMLdgi5CZ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10239"; a="246819953"
+X-IronPort-AV: E=Sophos;i="5.88,320,1635231600"; 
+   d="scan'208";a="246819953"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2022 06:54:35 -0800
+X-IronPort-AV: E=Sophos;i="5.88,320,1635231600"; 
+   d="scan'208";a="625245301"
+Received: from smile.fi.intel.com ([10.237.72.61])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2022 06:54:30 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nD69M-00F0yG-G4;
+        Thu, 27 Jan 2022 16:53:24 +0200
+Date:   Thu, 27 Jan 2022 16:53:24 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc:     Ricardo Martinez <ricardo.martinez@linux.intel.com>,
+        Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
+        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
+        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
+        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
+        haijun.liu@mediatek.com, amir.hanania@intel.com,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
+        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
+        sreehari.kancharla@intel.com
+Subject: Re: [PATCH net-next v4 05/13] net: wwan: t7xx: Add control port
+Message-ID: <YfKx5B2R12lYW9GZ@smile.fi.intel.com>
+References: <20220114010627.21104-1-ricardo.martinez@linux.intel.com>
+ <20220114010627.21104-6-ricardo.martinez@linux.intel.com>
+ <7c1f1fe-fb19-fa95-10e3-776b81f5128@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH] brcmfmac: firmware: Fix crash in brcm_alt_fw_path
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Phil Elwell <phil@raspberrypi.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220118154514.3245524-1-phil@raspberrypi.com>
- <87h7a0gt7f.fsf@kernel.org>
- <07dbaff1-bc12-d782-ed14-ef3f33d3c041@raspberrypi.com>
- <ebe36c68-cdf9-b005-6d02-f72c3917d292@broadcom.com>
- <87r18tjs9k.fsf@kernel.org>
- <a0179a36-0daa-06ca-6d54-ace6b6eceeb8@broadcom.com>
- <87ee4tjp24.fsf@kernel.org>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <87ee4tjp24.fsf@kernel.org>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000077b59a05d6912962"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7c1f1fe-fb19-fa95-10e3-776b81f5128@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000077b59a05d6912962
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On Thu, Jan 27, 2022 at 12:40:42PM +0200, Ilpo Järvinen wrote:
+> On Thu, 13 Jan 2022, Ricardo Martinez wrote:
 
-On 1/27/2022 2:17 PM, Kalle Valo wrote:
-> Arend van Spriel <arend.vanspriel@broadcom.com> writes:
+...
+
+> > +		default:
+> > +			break;
 > 
->> On 1/27/2022 1:08 PM, Kalle Valo wrote:
->>> Arend van Spriel <arend.vanspriel@broadcom.com> writes:
->>>
->>>> On 1/19/2022 9:53 AM, Phil Elwell wrote:
->>>>> On 19/01/2022 06:01, Kalle Valo wrote:
->>>>>> Phil Elwell <phil@raspberrypi.com> writes:
->>>>>>
->>>>>>> The call to brcm_alt_fw_path in brcmf_fw_get_firmwares is not protected
->>>>>>> by a check to the validity of the fwctx->req->board_type pointer. This
->>>>>>> results in a crash in strlcat when, for example, the WLAN chip is found
->>>>>>> in a USB dongle.
->>>>>>>
->>>>>>> Prevent the crash by adding the necessary check.
->>>>>>>
->>>>>>> See: https://github.com/raspberrypi/linux/issues/4833
->>>>>>>
->>>>>>> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware
->>>>>>> binaries")
->>>>>>> Signed-off-by: Phil Elwell <phil@raspberrypi.com>
->>>>>>
->>>>>> I think this should go to v5.17.
->>>>>
->>>>> Is that an Ack? Are you asking me to submit the patch in a different way?
->>>>
->>>> Similar/same patch was submitted by Hector Martin [1].
->>
->> Fine by me. Hector's subset series (fixes) is ready to be taken as
->> well, right?
-> 
-> I have not looked at Hector's patches yet, my plan is to take them to
-> wireless-next.
+> Please remove empty default blocks from all patches.
 
-Some of them are improvements so wireless-next is where those belong, 
-but a few (patches #1-3, and #6) are actual bug fixes.
+Some (presumably old or with some warnings enabled, consider `make W=1`
+or `make W=2`) compilers would not be happy of a such decision.
 
-Regards,
-Arend
+-- 
+With Best Regards,
+Andy Shevchenko
 
---00000000000077b59a05d6912962
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
 
-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
-XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
-yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
-0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
-NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
-FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
-aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
-OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
-UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBVsEtGYipCqLuPu6x2
-BVLiNirpMKtcrjV0oUe/cm/UdTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMjcxNDMwMzdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAcwOflFZmFdfAIkFPEBW1kuMPyeD9o6FpA3Cn
-rIpXqTiUtrC4qMz/0HsybD8xx+yvxZICsR6w+/rAftD9QqKtx5iEP0c0lDA7okxd8sV1+YLyjNo1
-QJZrzDwOLBUd7QQxl/dz/QElbVjOnQN2U4XgFJdgsWjmAHY0ftGKJ94ompU1npCgI8ptmXHGJsrM
-j2SiTkHjZP7zg+sUTApvqqtaM4P5klgxE5l7CH21RSY6f5mRLh5Z5LjxpA1AllehHsI9Z3B2KHQo
-PIlBLyTALfV+Fr9FFB+gRCGLkvea2WK3FDiOHSHi27vLvYZ/YuZn0J1aJ67YzNptfYVJtTUv3hvB
-sw==
---00000000000077b59a05d6912962--
