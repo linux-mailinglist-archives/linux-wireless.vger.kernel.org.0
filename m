@@ -2,80 +2,204 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 346B749E379
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jan 2022 14:33:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED21249E4A0
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jan 2022 15:30:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241825AbiA0NdA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jan 2022 08:33:00 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:52994 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S241952AbiA0Nce (ORCPT
+        id S242364AbiA0Oaj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jan 2022 09:30:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49778 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237777AbiA0Oai (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jan 2022 08:32:34 -0500
-X-UUID: 7a27baa13c7d444f81263719fbb8e84d-20220127
-X-UUID: 7a27baa13c7d444f81263719fbb8e84d-20220127
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-        (envelope-from <meichia.chiu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1472596911; Thu, 27 Jan 2022 21:32:30 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Thu, 27 Jan 2022 21:32:28 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 27 Jan 2022 21:32:28 +0800
-From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        MeiChia Chiu <meichia.chiu@mediatek.com>
-Subject: [PATCH] mt76: mt7915: fix the nss setting in bitrates
-Date:   Thu, 27 Jan 2022 21:32:26 +0800
-Message-ID: <20220127133226.14299-1-MeiChia.Chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Thu, 27 Jan 2022 09:30:38 -0500
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A035C061714
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jan 2022 06:30:38 -0800 (PST)
+Received: by mail-pg1-x535.google.com with SMTP id g2so2394408pgo.9
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jan 2022 06:30:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=message-id:date:mime-version:user-agent:subject:to:cc:references
+         :from:in-reply-to;
+        bh=nPZAdUkKfTr4gRZ2FZA8l/bPxHgzRrXOPmCSAKuMYQ8=;
+        b=AwVJmjWMrTsJIcevd/ErVQXgCTQaG4OAC21iKt7AJc1Cfa48rhCSENOxFNBGoAf7zD
+         WuEumaVNOLMAyjyggiWG7Fk/mN1vA5Q08/WEfEFiLAzbAxBveSqh/fP9GbrAz53Y8FcT
+         4wBF7e81sTFx7KVmjEjU0lLT4pcn7uq0bhRzg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :to:cc:references:from:in-reply-to;
+        bh=nPZAdUkKfTr4gRZ2FZA8l/bPxHgzRrXOPmCSAKuMYQ8=;
+        b=dVsiKuK4rkrW7VSSJa0fHENpvU6d7Zxh4Ygi+Ndm48Rll5ydDET6IlXhPQlvZ2AFqE
+         adw1tcyhy5zH1rhaWk0oThazcShUF3oZoeRSidYM18P5v3xcMuz3sl63ImkN+q6pW3nh
+         imz8upoJYwK3+t8AQ/mpmucCLSpBU6cvuo+NfZQH1jn46FVBgUhSStFPhRARuP2fdzBT
+         nT8zi1NVC2EXeC2HEHV20RbSR6X/We43vNVfP+Mm33VWY4Xcfk0PgSGCdeeNoXqNC0D2
+         qTKF27vdHl2/fqAiGuPBRsCiRnET2QvB4iFW76Hjx5yF41wG+xaCfbrP+KShoLvg7q/l
+         snzg==
+X-Gm-Message-State: AOAM533pcBoABZxCVqkbgQX8o/FbgC7ZEzZokKO9YsL14jShF6TO1WhD
+        IVymc8yiH/xkhQ+Di6r1RaUd6w==
+X-Google-Smtp-Source: ABdhPJwqBEgTQoCEesP8wzW6CP/x5RjEvDAxgW5iwhmixvcXo9IyHB4WyWC5RZ2oUzlhxrz8Fmw30g==
+X-Received: by 2002:a65:58cc:: with SMTP id e12mr2963502pgu.126.1643293837541;
+        Thu, 27 Jan 2022 06:30:37 -0800 (PST)
+Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id k16sm6392805pfu.140.2022.01.27.06.30.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Jan 2022 06:30:36 -0800 (PST)
+Message-ID: <82bf9633-ccd4-106f-89f5-921dd0534214@broadcom.com>
+Date:   Thu, 27 Jan 2022 15:30:30 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH] brcmfmac: firmware: Fix crash in brcm_alt_fw_path
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Phil Elwell <phil@raspberrypi.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220118154514.3245524-1-phil@raspberrypi.com>
+ <87h7a0gt7f.fsf@kernel.org>
+ <07dbaff1-bc12-d782-ed14-ef3f33d3c041@raspberrypi.com>
+ <ebe36c68-cdf9-b005-6d02-f72c3917d292@broadcom.com>
+ <87r18tjs9k.fsf@kernel.org>
+ <a0179a36-0daa-06ca-6d54-ace6b6eceeb8@broadcom.com>
+ <87ee4tjp24.fsf@kernel.org>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <87ee4tjp24.fsf@kernel.org>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="00000000000077b59a05d6912962"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: MeiChia Chiu <meichia.chiu@mediatek.com>
+--00000000000077b59a05d6912962
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-without this change, the fixed MCS only supports 1 Nss.
+On 1/27/2022 2:17 PM, Kalle Valo wrote:
+> Arend van Spriel <arend.vanspriel@broadcom.com> writes:
+> 
+>> On 1/27/2022 1:08 PM, Kalle Valo wrote:
+>>> Arend van Spriel <arend.vanspriel@broadcom.com> writes:
+>>>
+>>>> On 1/19/2022 9:53 AM, Phil Elwell wrote:
+>>>>> On 19/01/2022 06:01, Kalle Valo wrote:
+>>>>>> Phil Elwell <phil@raspberrypi.com> writes:
+>>>>>>
+>>>>>>> The call to brcm_alt_fw_path in brcmf_fw_get_firmwares is not protected
+>>>>>>> by a check to the validity of the fwctx->req->board_type pointer. This
+>>>>>>> results in a crash in strlcat when, for example, the WLAN chip is found
+>>>>>>> in a USB dongle.
+>>>>>>>
+>>>>>>> Prevent the crash by adding the necessary check.
+>>>>>>>
+>>>>>>> See: https://github.com/raspberrypi/linux/issues/4833
+>>>>>>>
+>>>>>>> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware
+>>>>>>> binaries")
+>>>>>>> Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+>>>>>>
+>>>>>> I think this should go to v5.17.
+>>>>>
+>>>>> Is that an Ack? Are you asking me to submit the patch in a different way?
+>>>>
+>>>> Similar/same patch was submitted by Hector Martin [1].
+>>
+>> Fine by me. Hector's subset series (fixes) is ready to be taken as
+>> well, right?
+> 
+> I have not looked at Hector's patches yet, my plan is to take them to
+> wireless-next.
 
-Fixes: 70fd1333cd32f ("mt76: mt7915: rework .set_bitrate_mask() to support more options")
-Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+Some of them are improvements so wireless-next is where those belong, 
+but a few (patches #1-3, and #6) are actual bug fixes.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 66f8daf3168c..69c5ac10e114 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -1420,9 +1420,12 @@ mt7915_mcu_add_rate_ctrl_fixed(struct mt7915_dev *dev,
- 			phy.sgi |= gi << (i << (_he));				\
- 			phy.he_ltf |= mask->control[band].he_ltf << (i << (_he));\
- 		}								\
--		for (i = 0; i < ARRAY_SIZE(mask->control[band]._mcs); i++) 	\
--			nrates += hweight16(mask->control[band]._mcs[i]);  	\
--		phy.mcs = ffs(mask->control[band]._mcs[0]) - 1;			\
-+		for (i = 0; i < ARRAY_SIZE(mask->control[band]._mcs); i++) {	\
-+			if (!mask->control[band]._mcs[i])			\
-+				continue;					\
-+			nrates += hweight16(mask->control[band]._mcs[i]);	\
-+			phy.mcs = ffs(mask->control[band]._mcs[i]) - 1;		\
-+		}								\
- 	} while (0)
- 
- 	if (sta->he_cap.has_he) {
--- 
-2.29.2
+Regards,
+Arend
 
+--00000000000077b59a05d6912962
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
+yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
+0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
+NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
+FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
+aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
+OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
+UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBVsEtGYipCqLuPu6x2
+BVLiNirpMKtcrjV0oUe/cm/UdTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMjcxNDMwMzdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAcwOflFZmFdfAIkFPEBW1kuMPyeD9o6FpA3Cn
+rIpXqTiUtrC4qMz/0HsybD8xx+yvxZICsR6w+/rAftD9QqKtx5iEP0c0lDA7okxd8sV1+YLyjNo1
+QJZrzDwOLBUd7QQxl/dz/QElbVjOnQN2U4XgFJdgsWjmAHY0ftGKJ94ompU1npCgI8ptmXHGJsrM
+j2SiTkHjZP7zg+sUTApvqqtaM4P5klgxE5l7CH21RSY6f5mRLh5Z5LjxpA1AllehHsI9Z3B2KHQo
+PIlBLyTALfV+Fr9FFB+gRCGLkvea2WK3FDiOHSHi27vLvYZ/YuZn0J1aJ67YzNptfYVJtTUv3hvB
+sw==
+--00000000000077b59a05d6912962--
