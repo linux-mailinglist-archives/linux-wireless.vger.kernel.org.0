@@ -2,188 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A614C49F869
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 12:39:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFD0749F901
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 13:14:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237984AbiA1LjV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jan 2022 06:39:21 -0500
-Received: from mga02.intel.com ([134.134.136.20]:45251 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237846AbiA1LjU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jan 2022 06:39:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643369960; x=1674905960;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PN5o/kpKeDNPdKUsT9CVJhrOgWqfA5kU/QW51qp+kdw=;
-  b=CZ0TIM75DbYWSY9ioAr8AZHn0yYr0aWO/o21f+4ViL33qojOcPWtWpkF
-   43GSv+Cre9vmro+TFbisnPvr4gJb3bGuV0eARghf+TE5oqRKQ58vO+Mhw
-   2x4yYacqMGnPx1GjUvS26rmJuBhx0dREumgsYdfC6zkUkfv1jVZRfSgIZ
-   mkA7EGS0yCPST4qwTh7zHePE9zGvi5PJNHhG7poSD9TzRGuoO9yTbYusz
-   OC8CmGFxcldnakL9oBAJqUWYbGFR+hczFMoR2AoRda/+Z1+wJ/rAd6q2W
-   ps7u+uKro0MQxFgycKWvvPcf1lsXk2fGzjkiTMKTzpTJogud1y2CxhBbz
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10240"; a="234481919"
-X-IronPort-AV: E=Sophos;i="5.88,323,1635231600"; 
-   d="scan'208";a="234481919"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2022 03:39:18 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,323,1635231600"; 
-   d="scan'208";a="564171994"
-Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 28 Jan 2022 03:39:15 -0800
-Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nDPb0-000Nmz-O7; Fri, 28 Jan 2022 11:39:14 +0000
-Date:   Fri, 28 Jan 2022 19:38:30 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     cgel.zte@gmail.com, kvalo@kernel.org
-Cc:     kbuild-all@lists.01.org, davem@davemloft.net, kuba@kernel.org,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: Re: [PATCH] wcn36xx: use struct_size over open coded arithmetic
-Message-ID: <202201281936.Qhf4hXej-lkp@intel.com>
-References: <20220128080430.1211593-1-chi.minghao@zte.com.cn>
+        id S1348360AbiA1MOD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jan 2022 07:14:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38998 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234483AbiA1MOC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 28 Jan 2022 07:14:02 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74767C061714;
+        Fri, 28 Jan 2022 04:14:02 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FA97618CC;
+        Fri, 28 Jan 2022 12:14:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B94C340E6;
+        Fri, 28 Jan 2022 12:13:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643372041;
+        bh=Gl0idB2Sk6mpsfiD/yCwRa26c7O/F/PjGnyjeYSw0QY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=k1tDv3aQd6V7ZaOzFVGTMG6poo5NV4P38Pe4gM67NZsrgBTY6umJx87MdVxTJZJ+m
+         UK1Nfb8nBBpNkb2w1ku9n+hNjOngR1doVyedmxQmrkv2c4mg+mVg0rd0/JRPUSuiO4
+         ICaf0bm6alsaJIcMVoyhljDn+iCFHcZcQxnKQXNnQb4OW9Kzbs5lgWiX7LKR3+YmdQ
+         j1nNYlXE8nKHAswzLcGIeKfkLJ57qN3yez5zjGjpqnDVLx+fGkxQLFycemeIykyCZi
+         e+sMnlQ4ajYif0BjUQJR+XJKDS9FmVa5K6xX+bGm+RNgyJQFW5FOw2lPqw4qhAd3aJ
+         HBUoFo3ugWAhQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh@kernel.org>
+Subject: Re: [PATCH v2 02/19] ath11k: Refactor PCI code to support hybrid bus devices
+References: <1642337235-8618-1-git-send-email-quic_mpubbise@quicinc.com>
+        <1642337235-8618-3-git-send-email-quic_mpubbise@quicinc.com>
+Date:   Fri, 28 Jan 2022 14:13:55 +0200
+In-Reply-To: <1642337235-8618-3-git-send-email-quic_mpubbise@quicinc.com>
+        (Manikanta Pubbisetty's message of "Sun, 16 Jan 2022 18:16:58 +0530")
+Message-ID: <87h79of470.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220128080430.1211593-1-chi.minghao@zte.com.cn>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 
-Thank you for the patch! Yet something to improve:
+> Unlike other ATH11K PCIe devices which are enumerated by APSS
+> processor (Application Processor SubSystem), WCN6750 gets
+> enumerated by the WPSS Q6 processor (Wireless Processor SubSystem);
+> In simple terms, though WCN6750 is PCIe device, it is not attached
+> to the APSS processor, APSS will not know of such a device being
+> present in the system and therefore WCN6750 will be registered as
+> a platform device to the kernel core like other supported AHB
+> devices.
+>
+> WCN6750 uses both AHB and PCI APIs for it's operation, it uses
+> AHB APIs for device probe/boot and PCI APIs for device setup
+> and register accesses; Because of this nature, it is referred
+> as a hybrid bus device.
+>
+> Refactor PCI code to support hybrid bus devices like WCN6750.
+>
+> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00573-QCAMSLSWPLZ-1
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 
-[auto build test ERROR on kvalo-wireless-drivers-next/master]
-[also build test ERROR on kvalo-wireless-drivers/master v5.17-rc1 next-20220128]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+[...]
 
-url:    https://github.com/0day-ci/linux/commits/cgel-zte-gmail-com/wcn36xx-use-struct_size-over-open-coded-arithmetic/20220128-160610
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-config: arm-randconfig-c002-20220124 (https://download.01.org/0day-ci/archive/20220128/202201281936.Qhf4hXej-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/b6c0d24562c28f1e9a037c1aa7818c76854559e4
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review cgel-zte-gmail-com/wcn36xx-use-struct_size-over-open-coded-arithmetic/20220128-160610
-        git checkout b6c0d24562c28f1e9a037c1aa7818c76854559e4
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=arm SHELL=/bin/bash drivers/firewire/ drivers/net/wireless/ath/wcn36xx/
+> --- /dev/null
+> +++ b/drivers/net/wireless/ath/ath11k/pci_cmn.c
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+[...]
 
-All errors (new ones prefixed by >>):
+> +static inline void ath11k_pci_select_window(struct ath11k_pci *ab_pci, u32 offset)
+> +{
+> +	struct ath11k_base *ab = ab_pci->ab;
+> +
+> +	u32 window = FIELD_GET(ATH11K_PCI_WINDOW_VALUE_MASK, offset);
+> +
+> +	lockdep_assert_held(&ab_pci->window_lock);
+> +
+> +	if (window != ab_pci->register_window) {
+> +		iowrite32(ATH11K_PCI_WINDOW_ENABLE_BIT | window,
+> +			  ab->mem + ATH11K_PCI_WINDOW_REG_ADDRESS);
+> +		ioread32(ab->mem + ATH11K_PCI_WINDOW_REG_ADDRESS);
+> +		ab_pci->register_window = window;
+> +	}
+> +}
 
-   In file included from include/linux/mm.h:30,
-                    from arch/arm/include/asm/cacheflush.h:10,
-                    from include/linux/cacheflush.h:5,
-                    from include/linux/highmem.h:8,
-                    from include/linux/bvec.h:10,
-                    from include/linux/skbuff.h:17,
-                    from include/linux/if_ether.h:19,
-                    from include/linux/etherdevice.h:20,
-                    from drivers/net/wireless/ath/wcn36xx/smd.c:20:
-   drivers/net/wireless/ath/wcn36xx/smd.c: In function 'wcn36xx_smd_rsp_process':
->> include/linux/overflow.h:194:32: error: invalid type argument of '->' (have 'struct wcn36xx_hal_ind_msg')
-     194 |                     sizeof(*(p)->member) + __must_be_array((p)->member),\
-         |                                ^~
-   drivers/net/wireless/ath/wcn36xx/smd.c:3350:35: note: in expansion of macro 'struct_size'
-    3350 |                 msg_ind = kmalloc(struct_size(*msg_ind, msg, len), GFP_ATOMIC);
-         |                                   ^~~~~~~~~~~
-   In file included from include/linux/bitfield.h:10,
-                    from drivers/net/wireless/ath/wcn36xx/smd.c:19:
-   include/linux/overflow.h:194:63: error: invalid type argument of '->' (have 'struct wcn36xx_hal_ind_msg')
-     194 |                     sizeof(*(p)->member) + __must_be_array((p)->member),\
-         |                                                               ^~
-   include/linux/build_bug.h:16:62: note: in definition of macro 'BUILD_BUG_ON_ZERO'
-      16 | #define BUILD_BUG_ON_ZERO(e) ((int)(sizeof(struct { int:(-!!(e)); })))
-         |                                                              ^
-   include/linux/compiler.h:258:51: note: in expansion of macro '__same_type'
-     258 | #define __must_be_array(a)      BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
-         |                                                   ^~~~~~~~~~~
-   include/linux/overflow.h:194:44: note: in expansion of macro '__must_be_array'
-     194 |                     sizeof(*(p)->member) + __must_be_array((p)->member),\
-         |                                            ^~~~~~~~~~~~~~~
-   drivers/net/wireless/ath/wcn36xx/smd.c:3350:35: note: in expansion of macro 'struct_size'
-    3350 |                 msg_ind = kmalloc(struct_size(*msg_ind, msg, len), GFP_ATOMIC);
-         |                                   ^~~~~~~~~~~
-   include/linux/overflow.h:194:63: error: invalid type argument of '->' (have 'struct wcn36xx_hal_ind_msg')
-     194 |                     sizeof(*(p)->member) + __must_be_array((p)->member),\
-         |                                                               ^~
-   include/linux/build_bug.h:16:62: note: in definition of macro 'BUILD_BUG_ON_ZERO'
-      16 | #define BUILD_BUG_ON_ZERO(e) ((int)(sizeof(struct { int:(-!!(e)); })))
-         |                                                              ^
-   include/linux/compiler.h:258:51: note: in expansion of macro '__same_type'
-     258 | #define __must_be_array(a)      BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
-         |                                                   ^~~~~~~~~~~
-   include/linux/overflow.h:194:44: note: in expansion of macro '__must_be_array'
-     194 |                     sizeof(*(p)->member) + __must_be_array((p)->member),\
-         |                                            ^~~~~~~~~~~~~~~
-   drivers/net/wireless/ath/wcn36xx/smd.c:3350:35: note: in expansion of macro 'struct_size'
-    3350 |                 msg_ind = kmalloc(struct_size(*msg_ind, msg, len), GFP_ATOMIC);
-         |                                   ^~~~~~~~~~~
-   include/linux/build_bug.h:16:51: error: bit-field '<anonymous>' width not an integer constant
-      16 | #define BUILD_BUG_ON_ZERO(e) ((int)(sizeof(struct { int:(-!!(e)); })))
-         |                                                   ^
-   include/linux/compiler.h:258:33: note: in expansion of macro 'BUILD_BUG_ON_ZERO'
-     258 | #define __must_be_array(a)      BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
-         |                                 ^~~~~~~~~~~~~~~~~
-   include/linux/overflow.h:194:44: note: in expansion of macro '__must_be_array'
-     194 |                     sizeof(*(p)->member) + __must_be_array((p)->member),\
-         |                                            ^~~~~~~~~~~~~~~
-   drivers/net/wireless/ath/wcn36xx/smd.c:3350:35: note: in expansion of macro 'struct_size'
-    3350 |                 msg_ind = kmalloc(struct_size(*msg_ind, msg, len), GFP_ATOMIC);
-         |                                   ^~~~~~~~~~~
-   In file included from include/linux/mm.h:30,
-                    from arch/arm/include/asm/cacheflush.h:10,
-                    from include/linux/cacheflush.h:5,
-                    from include/linux/highmem.h:8,
-                    from include/linux/bvec.h:10,
-                    from include/linux/skbuff.h:17,
-                    from include/linux/if_ether.h:19,
-                    from include/linux/etherdevice.h:20,
-                    from drivers/net/wireless/ath/wcn36xx/smd.c:20:
->> include/linux/overflow.h:195:28: error: invalid type argument of unary '*' (have 'struct wcn36xx_hal_ind_msg')
-     195 |                     sizeof(*(p)))
-         |                            ^~~~
-   drivers/net/wireless/ath/wcn36xx/smd.c:3350:35: note: in expansion of macro 'struct_size'
-    3350 |                 msg_ind = kmalloc(struct_size(*msg_ind, msg, len), GFP_ATOMIC);
-         |                                   ^~~~~~~~~~~
+So the style used in ath11k is ath11k_<filename>_foo, so that a function
+ath11k_pci_foo() should be in pci.c. This patch is now breaking that
+style. Maybe pci_cmn.c should renamed to cpci.c, pcic.c or something
+like that? Then the function prefix could be ath11k_cpci_, ath11k_pcic_
+or similar.
 
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-vim +194 include/linux/overflow.h
-
-610b15c50e86eb Kees Cook           2018-05-07  180  
-610b15c50e86eb Kees Cook           2018-05-07  181  /**
-610b15c50e86eb Kees Cook           2018-05-07  182   * struct_size() - Calculate size of structure with trailing array.
-610b15c50e86eb Kees Cook           2018-05-07  183   * @p: Pointer to the structure.
-610b15c50e86eb Kees Cook           2018-05-07  184   * @member: Name of the array member.
-b19d57d0f3cc6f Gustavo A. R. Silva 2020-06-08  185   * @count: Number of elements in the array.
-610b15c50e86eb Kees Cook           2018-05-07  186   *
-610b15c50e86eb Kees Cook           2018-05-07  187   * Calculates size of memory needed for structure @p followed by an
-b19d57d0f3cc6f Gustavo A. R. Silva 2020-06-08  188   * array of @count number of @member elements.
-610b15c50e86eb Kees Cook           2018-05-07  189   *
-610b15c50e86eb Kees Cook           2018-05-07  190   * Return: number of bytes needed or SIZE_MAX on overflow.
-610b15c50e86eb Kees Cook           2018-05-07  191   */
-b19d57d0f3cc6f Gustavo A. R. Silva 2020-06-08  192  #define struct_size(p, member, count)					\
-b19d57d0f3cc6f Gustavo A. R. Silva 2020-06-08  193  	__ab_c_size(count,						\
-610b15c50e86eb Kees Cook           2018-05-07 @194  		    sizeof(*(p)->member) + __must_be_array((p)->member),\
-610b15c50e86eb Kees Cook           2018-05-07 @195  		    sizeof(*(p)))
-610b15c50e86eb Kees Cook           2018-05-07  196  
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
