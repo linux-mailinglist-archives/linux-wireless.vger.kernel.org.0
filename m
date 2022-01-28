@@ -2,66 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E58549F0F4
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 03:28:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F56349F4D2
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 09:02:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345341AbiA1C24 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jan 2022 21:28:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46628 "EHLO
+        id S1347145AbiA1ICV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jan 2022 03:02:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240068AbiA1C24 (ORCPT
+        with ESMTP id S1347134AbiA1ICU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jan 2022 21:28:56 -0500
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4BB7C06173B
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jan 2022 18:28:55 -0800 (PST)
-Received: by mail-ej1-x62a.google.com with SMTP id p15so10959633ejc.7
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jan 2022 18:28:55 -0800 (PST)
+        Fri, 28 Jan 2022 03:02:20 -0500
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD5D1C061714;
+        Fri, 28 Jan 2022 00:02:20 -0800 (PST)
+Received: by mail-qv1-xf31.google.com with SMTP id k4so5142363qvt.6;
+        Fri, 28 Jan 2022 00:02:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=16SejWaddN5elghTmeHnExoVbYnHRduusQDg4zcIJJA=;
-        b=OLWD5Vhsy9y8d+PdzXpwCYwPUmq7igKT9WLvrQJKlJcc9ssXjEyuQ76gf/6DHoyqmg
-         jb894QG7ehD+4wfVW+XSVQ0ZsO5aw3USNe356jA9FVC1IVlWcAAvLGXvrggsig1FdZrr
-         oO7vqae72G9McaMGToTDhalsrVgVbwXlySZQHPYvsFXfpAAKpI0tYybbGvhal+qbj4RX
-         Z1JyTlJzNgjP0DJHLw05TIUyEm/+PLtQ02V0VZE3DSymjIYWj43dF4LFX3JzrQfGKQyw
-         OAbaUDqWo3e4k2t7IPfHXbzQC0+H5LncuennzcCVrxkomyzDuRSyemyNGOD1F3T7016X
-         WPpg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yW5QG4rrD+/B7qft18hixZxkbtsm5e7Opd0+mp8n/tQ=;
+        b=ZQ5KH9rsnCvPqVlpfKt2Dl+27bHWqwXcMC9s80qKI8UZvoetp+9Vs47sQ6feBKXhZ5
+         zgO0IGj6dcDES6niuOwQbvlqFzlS1ljzVFK6kblwxoLCLNzqrzcmgs6Pkd26u1opzEnd
+         6eloov3mwrLv3gMcZqhGfAJvLuGaiqG7QU/oOppaICT6x+Yt3VUOoiRH07vVsC0x4bWt
+         Fp2SoGIs5TBUF/EKe7Q3IqTAiTX63mhzha9Fk3dmOLKNqLjHLY8KmgSGGsbYT/wqcRF5
+         w2D8bYnhp8Z8Ja36ykln6g/ni6m1aKi1h1P2ca5lZEEmq1mvloKkJ+l+ovLCDGPBbmyd
+         ZDLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=16SejWaddN5elghTmeHnExoVbYnHRduusQDg4zcIJJA=;
-        b=UnEmOgUWUd3mfhrOohhszROZ2FCiYU9PpqExtZJKgv0TarFFm49WU6Vpnk+2LpWfnY
-         wxb5NUr1Q7rkh8ieGjtdPnaQmK6lozwj1H2Qs9b3p8XHy87NaZSii/hfT/VWGsiv7mLh
-         YvXyXv7YNAYxql62nJiWb1i+nVNZB7ZFVbDyDnekZcJeKBBmossoJ/6ub0TZ1mprMeip
-         rcrH8JXuCcJELyNwcm5jcFJnUfbqFRSJc49vUj2rxuAJdlILWo+yjP087svoMZB2w/3G
-         p9FF9d89PTi2iNHfopIa28n/NA2dr9dgbattdnYK4VzhXImRdBq7ajc5dIBYbUsy6tCY
-         elZw==
-X-Gm-Message-State: AOAM533mhs+yd44mtIGGCpO+4gsGq4jZasMF2+vqhk43PnmiUBTbxxga
-        coZ0SiUvyTerUKjksBeqLjb2Iaueab27j6PnJCo=
-X-Google-Smtp-Source: ABdhPJyTyCMuOfvTAiDO/girHh4u21WSCbuJhMVIdc+IQy6KLPZCW/ziB4NCNYac0prJTwdsgMKnMA2/Ou192b8yxHo=
-X-Received: by 2002:a17:906:6a26:: with SMTP id qw38mr5521048ejc.560.1643336934171;
- Thu, 27 Jan 2022 18:28:54 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yW5QG4rrD+/B7qft18hixZxkbtsm5e7Opd0+mp8n/tQ=;
+        b=YMn95Pw1x1zhjY66CYLpciGRWIWtSo6QIoGbDM3QBelv/yku72du5fAxJ3HE58lii3
+         C0EZIkm+g0x53vjxiKZ6emylxdrqo5nBcnn5XzCkC2g1dyuSH6w4OH8L0n2Mou5FW7uM
+         byCYqRdk0ci5Ewd0wO2TkbXgKOtQVuYjkiMPWRt4eoJBmLr7OvFAn6qDRRBXlloYMGEb
+         1lDrQhSph3cKnorm2Sgng5NpHLGTXOae3onZ+09yOVrXPcM0grkLS8eR447kA6Yy7YZ1
+         H97ZoGNT06BDyW0fPdf7xIUc8s0U2+pl8cXgRGYpGBpskWqj1QsvZJlWdNc1SpcyQVO0
+         999A==
+X-Gm-Message-State: AOAM530u+saTFRkJMUFIVTCUpoFl8Al+YpUQ5oxLGTw1OGD/6xS5GuRD
+        1Z9kfdma19zvtM8n6YKwFSs=
+X-Google-Smtp-Source: ABdhPJzbPCyORNv0otx9NukxaXsWEZhHv/AeIerNzf5LU2/lH/Ffr/tPr0UsC5suG5HSgJY0a6cU2A==
+X-Received: by 2002:a05:6214:300c:: with SMTP id ke12mr6236897qvb.56.1643356939934;
+        Fri, 28 Jan 2022 00:02:19 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id c4sm2814908qkp.0.2022.01.28.00.02.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Jan 2022 00:02:19 -0800 (PST)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: chi.minghao@zte.com.cn
+To:     luciano.coelho@intel.com
+Cc:     kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
+        trix@redhat.com, johannes.berg@intel.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Minghao Chi <chi.minghao@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] dvm: use struct_size over open coded arithmetic
+Date:   Fri, 28 Jan 2022 08:02:06 +0000
+Message-Id: <20220128080206.1211452-1-chi.minghao@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a54:3186:0:0:0:0:0 with HTTP; Thu, 27 Jan 2022 18:28:53
- -0800 (PST)
-Reply-To: michellederoma422@gmail.com
-From:   Info Firm <infofirm449@gmail.com>
-Date:   Fri, 28 Jan 2022 04:28:53 +0200
-Message-ID: <CAD_YcxshgvZ8p5uBAP+KQ1VC=43=z90xdOtMkDFAjJ6rAmB4AA@mail.gmail.com>
-Subject: URGENT REPLY FROM YOU
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greetings compliments of the season, How are you doing. I have emailed
-you earlier on without any response from you. I want you to make use
-of this $640,000 donation o restore hope to families and individuals
-that the pandemic wrecked in your area. offer from me to you. Kindly
-get back to me to my official email. for more details:
-michellederoma422@gmail.com
+From: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
 
-Sincerely,
+Replace zero-length array with flexible-array member and make use
+of the struct_size() helper in kmalloc(). For example:
+
+struct iwl_wipan_noa_data {
+	...
+	u8 data[];
+};
+
+Make use of the struct_size() helper instead of an open-coded version
+in order to avoid any potential type mistakes.
+
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
+---
+ drivers/net/wireless/intel/iwlwifi/dvm/rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rx.c b/drivers/net/wireless/intel/iwlwifi/dvm/rx.c
+index db0c41bbeb0e..d0d842b25b86 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/rx.c
+@@ -915,7 +915,7 @@ static void iwlagn_rx_noa_notification(struct iwl_priv *priv,
+ 		len += 1 + 2;
+ 		copylen += 1 + 2;
+ 
+-		new_data = kmalloc(sizeof(*new_data) + len, GFP_ATOMIC);
++		new_data = kmalloc(struct_size(*new_data, data, len), GFP_ATOMIC);
+ 		if (new_data) {
+ 			new_data->length = len;
+ 			new_data->data[0] = WLAN_EID_VENDOR_SPECIFIC;
+-- 
+2.25.1
+
+
