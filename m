@@ -2,77 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A04AC49FA54
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 14:07:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A062B49FAC7
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 14:34:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241474AbiA1NHJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jan 2022 08:07:09 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:46476 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241382AbiA1NHH (ORCPT
+        id S1348871AbiA1Neh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jan 2022 08:34:37 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:37840 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1348882AbiA1Neg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jan 2022 08:07:07 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id EEF61B825A7
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Jan 2022 13:07:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B2CC340E0;
-        Fri, 28 Jan 2022 13:07:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643375225;
-        bh=pxWu6qGV4gPnmvtpbxKwT+R4/3dtwDdsnq6gyj8JVeA=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=aIQdxCp0tTVwfsAxFSL4puD8RwkqOZeU+SolJzQofux2NuXOSDO2BFOP9qpdRfsOH
-         Li/6S04GdcDdxx7Afzh6xAy5f081xFXRXsGRpFYPBAlBM+Lu0T5cg+OxHEFz4Egn1q
-         wu3SQScX72OvlgIPKzxM9O+/hQimbmCk7M2nDbBob2Enhh7smi7x3iyxapfh6U6R8t
-         hrG04lMFOMiB0v8XRt+TtBk+ax4E985Wg63BKaKjetIF07C2uSVYOk/5byeyEkImzj
-         Vy64AlyYhcCaAG+QW3tjG/cv8McmHenCk4vX1CZM9CuzC10BOmCZUMfV7zz5vb61oK
-         eRn5YjBca8Daw==
-Content-Type: text/plain; charset="utf-8"
+        Fri, 28 Jan 2022 08:34:36 -0500
+Received: from 91-155-254-253.elisa-laajakaista.fi ([91.155.254.253] helo=kveik.lan)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <luca@coelho.fi>)
+        id 1nDROc-0002DK-09;
+        Fri, 28 Jan 2022 15:34:35 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@kernel.org
+Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
+Date:   Fri, 28 Jan 2022 15:34:20 +0200
+Message-Id: <20220128133433.591765-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [V7 1/2] ath11k: add WMI calls to manually add/del/pause/resume
- TWT
- dialogs
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220112180026.5554-1-alokad@codeaurora.org>
-References: <20220112180026.5554-1-alokad@codeaurora.org>
-To:     Aloka Dixit <alokad@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        John Crispin <john@phrozen.org>,
-        Aloka Dixit <alokad@codeaurora.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164337522291.4850.3161282562927795317.kvalo@kernel.org>
-Date:   Fri, 28 Jan 2022 13:07:04 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
+Subject: [PATCH 00/13]  iwlwifi: updates intended for v5.18 2022-01-28
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Aloka Dixit <alokad@codeaurora.org> wrote:
+From: Luca Coelho <luciano.coelho@intel.com>
 
-> From: John Crispin <john@phrozen.org>
-> 
-> These calls are used for debugging and will be required for WFA
-> certification tests.
-> 
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01179-QCAHKSWPL_SILICONZ-1
-> Signed-off-by: John Crispin <john@phrozen.org>
-> Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
+Hi,
 
-Fails to apply, please rebase.
+Here's the first set of patches intended for v5.18.  It's the usual
+development, new features, cleanups and bugfixes.
 
-error: patch failed: drivers/net/wireless/ath/ath11k/core.h:603
-error: drivers/net/wireless/ath/ath11k/core.h: patch does not apply
-stg import: Diff does not apply cleanly
+The changes are:
 
-2 patches set to Changes Requested.
+* Support UHB TAS enablement via BIOS;
+* Remove a bunch of W=1 warnings;
+* Add support for channel switch offload;
+* Support a new FW API command version;
+* Support 32 Rx AMPDU sessions in newer devices;
+* Some other small fixes, clean-ups and improvements.
 
-12711826 [V7,1/2] ath11k: add WMI calls to manually add/del/pause/resume TWT dialogs
-12711825 [V7,2/2] ath11k: add debugfs for TWT debug calls
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Ayala Barazani (1):
+  iwlwifi: mvm: allow enabling UHB TAS in the USA via ACPI setting
+
+Bjoern A. Zeeb (2):
+  iwlwifi: de-const properly where needed
+  iwlwifi: propagate (const) type qualifier
+
+Emmanuel Grumbach (1):
+  iwlwifi: mvm: starting from 22000 we have 32 Rx AMPDU sessions
+
+Johannes Berg (7):
+  iwlwifi: prefer WIDE_ID() over iwl_cmd_id()
+  iwlwifi: mvm: fw: clean up hcmd struct creation
+  iwlwifi: make iwl_fw_lookup_cmd_ver() take a cmd_id
+  iwlwifi: fix various more -Wcast-qual warnings
+  iwlwifi: avoid void pointer arithmetic
+  iwlwifi: mvm: refactor iwl_mvm_sta_rx_agg()
+  iwlwifi: mvm: support new BAID allocation command
+
+Mordechay Goodstein (1):
+  iwlwifi: cfg: add support for 1K BA queue
+
+Nathan Errera (1):
+  iwlwifi: mvm: offload channel switch timing to FW
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |   5 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/rx.c   |   5 +-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  18 +-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |   6 +-
+ .../wireless/intel/iwlwifi/fw/api/datapath.h  |  77 +++++++
+ .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   |  34 +++
+ .../wireless/intel/iwlwifi/fw/api/nvm-reg.h   |  24 ++
+ .../net/wireless/intel/iwlwifi/fw/api/txq.h   |   4 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |   2 +-
+ .../net/wireless/intel/iwlwifi/fw/debugfs.c   |   4 +-
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |   1 +
+ drivers/net/wireless/intel/iwlwifi/fw/img.c   |   7 +-
+ drivers/net/wireless/intel/iwlwifi/fw/img.h   |   2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/init.c  |   5 +-
+ .../net/wireless/intel/iwlwifi/fw/paging.c    |   4 +-
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.c  |  22 +-
+ drivers/net/wireless/intel/iwlwifi/fw/smem.c  |   4 +-
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c  |  12 +-
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |   6 +-
+ .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  |   4 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  | 114 ++++-----
+ drivers/net/wireless/intel/iwlwifi/iwl-fh.h   |  11 +-
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  24 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.c    |  12 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |  25 +-
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |  15 +-
+ .../intel/iwlwifi/mvm/ftm-initiator.c         |  25 +-
+ .../intel/iwlwifi/mvm/ftm-responder.c         |  24 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  93 ++++----
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  50 +++-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  49 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   6 +-
+ .../wireless/intel/iwlwifi/mvm/offloading.c   |   3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   6 +-
+ .../net/wireless/intel/iwlwifi/mvm/phy-ctxt.c |  12 +-
+ .../net/wireless/intel/iwlwifi/mvm/quota.c    |   2 +-
+ .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    |  13 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c |  33 +--
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  | 217 +++++++++++++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |   3 +
+ .../wireless/intel/iwlwifi/mvm/time-event.c   |  20 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |   6 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  13 +-
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    |   6 +-
+ .../wireless/intel/iwlwifi/pcie/internal.h    |   2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |   6 +-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |   4 +-
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |   4 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |  14 +-
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c |  10 +-
+ drivers/net/wireless/intel/iwlwifi/queue/tx.h |   2 +-
+ 53 files changed, 684 insertions(+), 394 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220112180026.5554-1-alokad@codeaurora.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.34.1
 
