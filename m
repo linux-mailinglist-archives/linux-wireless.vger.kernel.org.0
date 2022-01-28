@@ -2,78 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E87249FD26
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 16:53:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3C1649FD2D
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 16:55:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349703AbiA1Pxb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jan 2022 10:53:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34304 "EHLO
+        id S239442AbiA1PzS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jan 2022 10:55:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349686AbiA1Pxa (ORCPT
+        with ESMTP id S239060AbiA1PzR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jan 2022 10:53:30 -0500
+        Fri, 28 Jan 2022 10:55:17 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50CE2C061714
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Jan 2022 07:53:30 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A359C061714
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Jan 2022 07:55:17 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1D16AB803F5
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Jan 2022 15:53:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F944C340E0;
-        Fri, 28 Jan 2022 15:53:27 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4A833B80D30
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Jan 2022 15:55:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422D8C340E0;
+        Fri, 28 Jan 2022 15:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643385207;
-        bh=/+326vQaypxsL4nvOY6Jje1FjbPxvBr+GuPuX3Z7n60=;
+        s=k20201202; t=1643385315;
+        bh=otQjcyi3RDhTait56NDK5grzYEqPeRoJRP464R2NrLY=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=NdPf0hV1TwsRHlTwRpTU4cTlLFVEOWNhp2+AcZ19Z9Tf42heuYyJoCMXcT62ol/cT
-         596Ni3l2F3J276edI4JixN7AEMlRNpuXoB4asmy9sRb96EZJ2LablD3VFZYR5z3cGt
-         xl1BRX12sVN7SqHGg0XKzQo0ETGtjtKB+2J1Gm00eYSauWlBh/7v+v2sGq4phuKKUb
-         eTz4bAYv8ze9D9MZGvL/gqyf/UKfdgDfiAIH3VETNE9csNMLWXzdj3yPUp8aaqy3u+
-         flXMI/4OxXVjR/aQ8Uc+oszVz97WWBXZqpIFkDXsh2Y4k8TSPeQJkQs0Ilw0FY60Hv
-         SGwDPLh3/2+tA==
+        b=DFt4au/ZOQlo8AFrr5cB/fze7Ik7b9OlbyQIwB9kUPa31jA22Yzg+7mUMeHI62pww
+         joc5sQoLHGLdkijt1tLaMgjuWbyjGCUnffv/J71LcDqIyoBsg+6IUWgOGKTVyj4Xht
+         XzjYjijfQBygn149RCOhHFvwOoW2pCoi+kWB3hU31kuPnKyHyHokUwrR6HceJuyjlf
+         oyyjoMgeZcgJwM6ZkztEXdpBco0NfjxSwuxYYe4wZUAaF1StSz306vU4AeokArC8Xd
+         K7kwHElHnj+ljmf8CSdTyNey8P25gSof/f5gc2QD/VRKe80/qpnmLjGnvJmxjRl9DR
+         aVW/gOiqSCNjw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 13/19] rtw89: extend role_maintain to support AP mode
+Subject: Re: [PATCH] rtw89: extract modules by chipset
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220107034239.22002-14-pkshih@realtek.com>
-References: <20220107034239.22002-14-pkshih@realtek.com>
+In-Reply-To: <20211221025828.25092-1-pkshih@realtek.com>
+References: <20211221025828.25092-1-pkshih@realtek.com>
 To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
+Cc:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164338520563.19531.17617789676100442869.kvalo@kernel.org>
-Date:   Fri, 28 Jan 2022 15:53:27 +0000 (UTC)
+Message-ID: <164338531025.19531.12488012409376026093.kvalo@kernel.org>
+Date:   Fri, 28 Jan 2022 15:55:14 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> Fill mac_id and self_role depends on the operation mode.
+> From: Zong-Zhe Yang <kevin_yang@realtek.com>
 > 
-> In AP mode, echo connected station has an unique mac_id, and each vif also
-> has one mac_id to represent itself.
+> We are planning to support more chipsets, e.g. 8852C. Before that, we
+> consider architecutre to handle multiple kinds of chipsets. Obviosuly,
+> based on original design, rtw89_core module will have large size even
+> if there is only one chipset under running. It is because all chipset
+> related things are put in rtw89_core now. To reduce such overhead, we
+> extract modules of rtw89 and adjust dependencies between modules.
 > 
-> The self_role is assigned to vif if the operation mode is decided, and
-> RTW89_SELF_ROLE_AP_CLIENT is assigned to the connected STA in AP mode,
+> The following assumes that 8852AE, 8852AU, and 8852CE are all supported,
+> we describe the difference before and after extraction.
 > 
+> [Before extraction]
+>                                              -------------
+>        |------------------------------------ | rtw89_usb |
+>        V                                     -------------
+> ---------------------------------------      -------------
+> | rtw89_core (including 8852A, 8852C) | <--- | rtw89_pci |
+> ---------------------------------------      -------------
+> The data of 8852A and 8852C are built in rtw89_core.
+> And rtw89_pci is the entry of 8852AE and 8852CE.
+> And rtw89_usb is the entry of 8852AU.
+> 
+> [After extraction]
+>                     -------------           ----------------
+>        |----------- | rtw89_usb | <-------- | rtw89_8852au |
+>        |            -------------           ----------------
+>        V            ---------------                |
+> --------------      |             | <---------------
+> | rtw89_core | <--- | rtw89_8852a |
+> --------------      |             | <---------------
+>    ^   ^            ---------------                |
+>    |   |            -------------           ----------------
+>    |   |            |           | <-------- | rtw89_8852ae |
+>    |   |----------- | rtw89_pci |           ----------------
+>    |                |           | <-----------------
+>    |                -------------                  |
+>    |                ---------------         ----------------
+>    |--------------- | rtw89_8852c | <------ | rtw89_8852ce |
+>                     ---------------         ----------------
+> The data of 8852A/8852C is extracted to rtw89_8852a/rtw89_8852c.
+> And rtw89_pci/rtw89_usb handles only common flow of pci/usb bus.
+> Finally, 8852AE, 8852AU, and 8852CE have individual entry modules,
+> i.e. rtw89_8852ae, rtw89_8852au, and rtw89_8852ce correspondingly.
+> 
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Dropping rest of the patches due to my comment.
+Patch applied to wireless-next.git, thanks.
 
-7 patches set to Changes Requested.
-
-12706170 [13/19] rtw89: extend role_maintain to support AP mode
-12706171 [14/19] rtw89: add addr_cam field to sta to support AP mode
-12706172 [15/19] rtw89: only STA mode change vif_type mapping dynamically
-12706173 [16/19] rtw89: maintain assoc/disassoc STA states of firmware and hardware
-12706174 [17/19] rtw89: implement ieee80211_ops::start_ap and stop_ap
-12706175 [18/19] rtw89: debug: add stations entry to show ID assignment
-12706176 [19/19] rtw89: declare AP mode support
+861e58c8fc6b rtw89: extract modules by chipset
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220107034239.22002-14-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211221025828.25092-1-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
