@@ -2,59 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C70ED49F74E
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 11:31:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 175A849F765
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 11:37:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347820AbiA1Kby (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jan 2022 05:31:54 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:36166 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347786AbiA1Kbx (ORCPT
+        id S233666AbiA1Khy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jan 2022 05:37:54 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:47504 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229462AbiA1Khx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jan 2022 05:31:53 -0500
+        Fri, 28 Jan 2022 05:37:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2EE9261E77;
-        Fri, 28 Jan 2022 10:31:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A61CC340E0;
-        Fri, 28 Jan 2022 10:31:48 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7C4DDB824E4;
+        Fri, 28 Jan 2022 10:37:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21457C340E0;
+        Fri, 28 Jan 2022 10:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643365912;
-        bh=b1IQLqEH35fsJSCepE7PYeU2mEVrFIiNAs9jucIWrKI=;
+        s=k20201202; t=1643366271;
+        bh=ysNEYwSdpCi6tFVlLx1/q5nHXNJqjoxSYhq3w+gi2so=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=L6IkNO/COHAk7E/ogEwzsJUT/qW0NEFAQDMzPMnnHYMPROIbBY0U1trcnaXM0d55h
-         ZY25Qu6JuPojgoefg7pWAwUOsJh9VY7aHRb9unxtmvR3o00g+u1zrosyKiesXuCI19
-         GswBWQ5zpQqUBJiFjZP5jwjuEZE13Ochrj+bKCoQHXJysGugpRsTijHwyYG3QPSti6
-         VIKECjVKC3HorDRxFlXYJfRAsD6esd3qchMM28uVX8hkVo7zm4pQn7QoitCeTBdDoZ
-         f4oYV9Kt88sWyYK3Mt1NWXppWxPzrfzWKLXoik1JN3fOEgw86ne0Dbj1yU3k7eMPln
-         6mxMaQQS+RsVQ==
+        b=etzYMrTucld4zPDlWJofz0p4FikaxGA2VAIKXeGLTq9Ir6bz488LmszQB7jUb3vWc
+         V43tgZ/j/QLiRBY9JkJi7JDrEnmAPzgeUIsABFzU/EnxG+JmwuGsoDmZkJQH6nSkkB
+         oGRWWk/t10Yw7cv5Y9lwUBCrEJJ1OlLAAvvMdzTf1PI29biiRhieulgM2cpvVpHqoh
+         B/wx7248+5fjXUo1QKvqNTZ1U5BsnUORRu21MTuIG4LmMA0nBFY4kZBvmuxBAd+rtK
+         8merRipkzLoMLIgXvNcAmxgo22yHhfm7cXSjag2H63qFLvm0mpoxgFwApPBRVU8Hyy
+         zU5UWdhqK+6gQ==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Greg KH <greg@kroah.com>
-Cc:     Zhou Qingyang <zhou1615@umn.edu>, kjlu@umn.edu,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Angus Ainslie <angus@akkea.ca>,
-        "Daniel \(Deognyoun\) Kim" <dekim@broadcom.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] brcmfmac: Fix a wild pointer dereference bug in brcmf_chip_recognition()
-References: <20220124164847.54002-1-zhou1615@umn.edu>
-        <YfPCahElneup1DJS@kroah.com>
-Date:   Fri, 28 Jan 2022 12:31:44 +0200
-In-Reply-To: <YfPCahElneup1DJS@kroah.com> (Greg KH's message of "Fri, 28 Jan
-        2022 11:16:10 +0100")
-Message-ID: <875yq4gnhr.fsf@kernel.org>
+To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh@kernel.org>
+Subject: Re: [PATCH v2 05/19] ath11k: Remove core PCI references from PCI common code
+References: <1642337235-8618-1-git-send-email-quic_mpubbise@quicinc.com>
+        <1642337235-8618-6-git-send-email-quic_mpubbise@quicinc.com>
+        <87a6fggo0h.fsf@kernel.org>
+Date:   Fri, 28 Jan 2022 12:37:48 +0200
+In-Reply-To: <87a6fggo0h.fsf@kernel.org> (Kalle Valo's message of "Fri, 28 Jan
+        2022 12:20:30 +0200")
+Message-ID: <871r0sgn7n.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -62,42 +48,53 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greg KH <greg@kroah.com> writes:
+Kalle Valo <kvalo@kernel.org> writes:
 
-> On Tue, Jan 25, 2022 at 12:48:45AM +0800, Zhou Qingyang wrote:
->> In brcmf_chip_recognition(), the return value of brcmf_chip_add_core()
->> is assigned to core and is passed to brcmf_chip_sb_corerev(). In
->> brcmf_chip_sb_corerev(), there exists dereference of core without check.
->> the return value of brcmf_chip_add_core() could be ERR_PTR on failure of
->> allocation, which could lead to a NULL pointer dereference bug.
->> 
->> Fix this bug by adding IS_ERR check for every variable core.
->> 
->> This bug was found by a static analyzer.
->> 
->> Builds with 'make allyesconfig' show no new warnings,
->> and our static analyzer no longer warns about this code
->> 
->> Fixes: cb7cf7be9eba ("brcmfmac: make chip related functions host
->> interface independent")
->> Signed-off-by: Zhou Qingyang <zhou1615@umn.edu>
->> ---
->> The analysis employs differential checking to identify inconsistent 
->> security operations (e.g., checks or kfrees) between two code paths 
->> and confirms that the inconsistent operations are not recovered in the
->> current function or the callers, so they constitute bugs. 
->> 
->> Note that, as a bug found by static analysis, it can be a false
->> positive or hard to trigger. Multiple researchers have cross-reviewed
->> the bug.
+> Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 >
-> As stated before, umn.edu is still not allowed to contribute to the
-> Linux kernel.  Please work with your administration to resolve this
-> issue.
+>> Remove core PCI and ath11k PCI references(struct ath11k_pci)
+>> from PCI common code. Since, PCI common code will be used
+>> by hybrid bus devices, this code should be independent
+>> from ATH11K PCI references and Linux core PCI references
+>> like struct pci_dev.
+>>
+>> Since this change introduces function callbacks for bus wakeup
+>> and bus release operations, wakeup_mhi HW param is no longer
+>> needed and hence it is removed completely. Alternatively, bus
+>> wakeup/release ops for QCA9074 are initialized to NULL as
+>> QCA9704 does not need bus wakeup/release for register accesses.
+>>
+>> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00573-QCAMSLSWPLZ-1
+>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+>> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
+>> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
+>>
+>> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+>
+> [...]
+>
+>> @@ -651,6 +653,13 @@ struct ath11k_bus_params {
+>>  	bool fixed_bdf_addr;
+>>  	bool fixed_mem_region;
+>>  	bool static_window_map;
+>> +	struct {
+>> +		void (*wakeup)(struct ath11k_base *ab);
+>> +		void (*release)(struct ath11k_base *ab);
+>> +		int (*get_msi_irq)(struct ath11k_base *ab, unsigned int vector);
+>> +		void (*window_write32)(struct ath11k_base *ab, u32 offset, u32 value);
+>> +		u32 (*window_read32)(struct ath11k_base *ab, u32 offset);
+>> +	} ops;
+>>  };
+>
+> Please don't use bus_params for this, I'm starting to suspect that we
+> actually need to remove struct ath11k_bus_params altogether. It would be
+> cleaner to have separate 'struct ath11k_pci_ops' or something like that.
 
-Thanks Greg, I didn't notice that this is from umn.edu. After seeing
-what kind of "research" umn.edu does I will not even look at umn.edu
-patches, they all will be automatically rejected without comments.
+And after looking at this more it seems .get_msi_irq is the only
+function which actually has two different implementations. The other
+four are either run or not run, there's no difference in the
+implementation. So would it be cleaner to have a some sort check within
+the function for these other four, instead using function pointers?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
