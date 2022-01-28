@@ -2,59 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA4C049EDD2
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jan 2022 22:53:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFDE349EFF3
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 01:51:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240968AbiA0VxD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jan 2022 16:53:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40912 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234469AbiA0VxC (ORCPT
+        id S1344643AbiA1Avh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jan 2022 19:51:37 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:49293 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344612AbiA1Avh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jan 2022 16:53:02 -0500
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59EC9C061714;
-        Thu, 27 Jan 2022 13:53:02 -0800 (PST)
-Received: by mail-ed1-x529.google.com with SMTP id c24so5668582edy.4;
-        Thu, 27 Jan 2022 13:53:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=d5LRRB0uqm/WR5U/+eN4GjzzHTNXrtcy+Y+FfjmNOg8=;
-        b=MCqfRrjSHkuK7W6k74FWNoXR16maAPl8kP2eOeRYCZ6qOuOm0Gg64dYj471IEp8QPN
-         J5zMO0GKccZY6MfQ+mxBTG9rK1+8HBnz2daAqonONnN4R+uzHYY//fwzjxB+cWjNzLyN
-         OP9zpuSvLXq6nnzxMqVow4bhR9Tv544ZkQKBqyEs9Zke7PQYPnuxdu8D0rqmFaJX+JvQ
-         0UaOsh2Bp/CT5Vwzcpnz2ecpwFaPmD1TPqfDAFuTo2zlTA2l8IaRZ05Oh3LydUiozvAz
-         obrM43ZGdBza30K8kVNpiLt8Fj9GSQIwCldizBURlN4UYHBYp+HDun1sLm3UYDHcENo2
-         FM2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=d5LRRB0uqm/WR5U/+eN4GjzzHTNXrtcy+Y+FfjmNOg8=;
-        b=7XRQMsOC/gXPUdCC54dikbmBci0+jZeH2uN3kGdyFNxN4spOPqv28Dg13ZxR5U5cR5
-         TPqrKFIyBouQzMUlK8nozhGJQzfc+uxe8kFhe0jWUVb4/joaQWHJdPa31OeJzqaVUxKn
-         cYpvZdMg5/WfXg8GHe/89TlwiRI4+pbx8B/AUF7tDvox6/5bUrJda1EzyMO0ubJOcu6d
-         rh23SgTO7EtBCsa92KpbvtPyEaLG79QMZn//nsVkm9AYwyLqruSScDMvby/y1K4c7gjg
-         UMCz7CEYUXxrBZE9akZ0/7/BnbGTf5NFnPhN4Gjxzjr7u/OcnzeM5E5m0X+FnY7VqYUW
-         Th2A==
-X-Gm-Message-State: AOAM533lgPTVVTn8BnefNnwwLM73d0CxWdKjo3uuMx4QyOfpU9GU00w+
-        9TfzBMMZeGXUpCvEf81j5GLUH8i3tvvTROgekHS2cdBgIWk=
-X-Google-Smtp-Source: ABdhPJzc2dhIVgVmPkviLDO7e/v7aguAYMhH6I/AnZjWb6ofb0HEACO5XoaOdWIFSiDLVLEy7t3jP4Hk+rLeNCv4ahU=
-X-Received: by 2002:a05:6402:510b:: with SMTP id m11mr5413186edd.290.1643320380653;
- Thu, 27 Jan 2022 13:53:00 -0800 (PST)
-MIME-Version: 1.0
-References: <20220108005533.947787-1-martin.blumenstingl@googlemail.com>
- <423f474e15c948eda4db5bc9a50fd391@realtek.com> <CAFBinCBVEndU0t-6d5atE31OFYHzPyk7pOe78v0XrrFWcBec9w@mail.gmail.com>
- <5ef8ab4f78e448df9f823385d0daed88@realtek.com>
-In-Reply-To: <5ef8ab4f78e448df9f823385d0daed88@realtek.com>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Thu, 27 Jan 2022 22:52:49 +0100
-Message-ID: <CAFBinCDjfKK3+WOXP2xbcAK-KToWof+kSzoxYztqRcc=7T1eyg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/8] rtw88: prepare locking for SDIO support
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Thu, 27 Jan 2022 19:51:37 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 20S0pCjT5017875, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 20S0pCjT5017875
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 28 Jan 2022 08:51:12 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Fri, 28 Jan 2022 08:51:11 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Thu, 27 Jan 2022 16:51:11 -0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e]) by
+ RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e%5]) with mapi id
+ 15.01.2308.020; Fri, 28 Jan 2022 08:51:11 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
         "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
         "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
@@ -63,104 +40,81 @@ Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         Neo Jou <neojou@gmail.com>,
         Jernej Skrabec <jernej.skrabec@gmail.com>,
         Ed Swierk <eswierk@gh.st>
-Content-Type: text/plain; charset="UTF-8"
+Subject: RE: [PATCH v3 0/8] rtw88: prepare locking for SDIO support
+Thread-Topic: [PATCH v3 0/8] rtw88: prepare locking for SDIO support
+Thread-Index: AQHYBCp/WStseF16x0uJ7VAbWo+1y6xqJTFAgAMM/BCAA1dIAIAA+BTwgAWAeYCAALM9AA==
+Date:   Fri, 28 Jan 2022 00:51:11 +0000
+Message-ID: <53bea965043548539b995514d36f48e5@realtek.com>
+References: <20220108005533.947787-1-martin.blumenstingl@googlemail.com>
+ <423f474e15c948eda4db5bc9a50fd391@realtek.com>
+ <CAFBinCBVEndU0t-6d5atE31OFYHzPyk7pOe78v0XrrFWcBec9w@mail.gmail.com>
+ <5ef8ab4f78e448df9f823385d0daed88@realtek.com>
+ <CAFBinCDjfKK3+WOXP2xbcAK-KToWof+kSzoxYztqRcc=7T1eyg@mail.gmail.com>
+In-Reply-To: <CAFBinCDjfKK3+WOXP2xbcAK-KToWof+kSzoxYztqRcc=7T1eyg@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEvMjcg5LiL5Y2IIDEwOjU1OjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Ping-Ke,
-
-On Mon, Jan 24, 2022 at 3:59 AM Pkshih <pkshih@realtek.com> wrote:
-[...]
-> > It seems to me that we should avoid using the mutex version of
-> > ieee80211_iterate_*() because it can lead to more of these issues. So
-> > from my point of view the general idea of the code from your attached
-> > patch looks good. That said, I'm still very new to mac80211/cfg80211
-> > so I'm also interested in other's opinions.
-> >
->
-> The attached patch can work "mostly", because both callers of iterate() and
-> ::remove_interface hold rtwdev->mutex. Theoretically, the exception is a caller
-> forks another work to iterate() between leaving ::remove_interface and mac80211
-> doesn't yet free the vif, but the work executes after mac80211 free the vif.
-> This will lead use-after-free, but I'm not sure if this scenario will happen.
-> I need time to dig this, or you can help to do this.
->
-> To avoid this, we can add a flag to struct rtw_vif, and set this flag
-> when ::remove_interface. Then, only collect vif without this flag into list
-> when we use iterate_actiom().
->
-> As well as ieee80211_sta can do similar fix.
->
-> > > So, I add wrappers to iterate rtw_iterate_stas() and rtw_iterate_vifs() that
-> > > use _atomic version to collect sta and vif, and use list_for_each() to iterate.
-> > > Reference code is attached, and I'm still thinking if we can have better method.
-> > With "better method" do you mean something like in patch #2 from this
-> > series (using unsigned int num_si and struct rtw_sta_info
-> > *si[RTW_MAX_MAC_ID_NUM] inside the iter_data) are you thinking of a
-> > better way in general?
-> >
->
-> I would like a straight method, for example, we can have another version of
-> ieee80211_iterate_xxx() and do things in iterator, like original, so we just
-> need to change the code slightly.
->
-> Initially, I have an idea we can hold driver lock, like rtwdev->mutex, in both
-> places where we use ieee80211_iterate_() and remove sta or vif. Hopefully,
-> this can ensure it's safe to run iterator without other locks. Then, we can
-> define another ieee80211_iterate_() version with a drv_lock argument, like
->
-> #define ieee80211_iterate_active_interfaces_drv_lock(hw, iter_flags, iterator, data, drv_lock) \
-> while (0) {     \
->         lockdep_assert_wiphy(drv_lock); \
->         ieee80211_iterate_active_interfaces_no_lock(hw, iter_flags, iterator, data); \
-> }
->
-> The driv_lock argument can avoid user forgetting to hold a lock, and we need
-> a helper of no_lock version:
->
-> void ieee80211_iterate_active_interfaces_no_lock(
->         struct ieee80211_hw *hw, u32 iter_flags,
->         void (*iterator)(void *data, u8 *mac,
->                          struct ieee80211_vif *vif),
->         void *data)
-> {
->         struct ieee80211_local *local = hw_to_local(hw);
->
->         __iterate_interfaces(local, iter_flags | IEEE80211_IFACE_ITER_ACTIVE,
->                              iterator, data);
-> }
->
-> However, as I mentioned theoretically it is not safe entirely.
->
-> So, I think the easiest way is to maintains the vif/sta lists in driver when
-> ::{add,remove }_interface/::sta_{add,remove}, and hold rtwdev->mutex lock to
-> access these lists. But, Johannes pointed out this is not a good idea [1].
-Thank you for this detailed explanation! I appreciate that you took
-the time to clearly explain this.
-
-For the sta use-case I thought about adding a dedicated rwlock
-(include/linux/rwlock.h) for rtw_dev->mac_id_map.
-rtw_sta_{add,remove} would take a write-lock.
-rtw_iterate_stas() takes the read-lock (the lock would be acquired
-before calling into ieee80211_iterate_...). Additionally
-rtw_iterate_stas() needs to check if the station is still valid
-according to mac_id_map - if not: skip/ignore it for that iteration.
-This could be combined with your
-0001-rtw88-use-atomic-to-collect-stas-and-does-iterators.patch.
-
-For the interface use-case it's not clear to me how this works at all.
-rtw_ops_add_interface() has (in a simplified view):
-    u8 port = 0;
-    // the port variable is never changed
-    rtwvif->port = port;
-    rtwvif->conf = &rtw_vif_port[port];
-    rtw_info(rtwdev, "start vif %pM on port %d\n", vif->addr, rtwvif->port);
-How do multiple interfaces (vifs) work in rtw88 if the port is always
-zero? Is some kind of tracking of the used ports missing (similar to
-how we track the used station IDs - also called mac_id - in
-rtw_dev->mac_id_map)?
-
-
-Thank you again and best regards,
-Martin
+SGksDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWFydGluIEJsdW1l
+bnN0aW5nbCA8bWFydGluLmJsdW1lbnN0aW5nbEBnb29nbGVtYWlsLmNvbT4NCj4gU2VudDogRnJp
+ZGF5LCBKYW51YXJ5IDI4LCAyMDIyIDU6NTMgQU0NCj4gVG86IFBrc2hpaCA8cGtzaGloQHJlYWx0
+ZWsuY29tPg0KPiBDYzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnOyB0b255MDYyMGVt
+bWFAZ21haWwuY29tOyBrdmFsb0Bjb2RlYXVyb3JhLm9yZzsNCj4gam9oYW5uZXNAc2lwc29sdXRp
+b25zLm5ldDsgbmV0ZGV2QHZnZXIua2VybmVsLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVs
+Lm9yZzsgTmVvIEpvdQ0KPiA8bmVvam91QGdtYWlsLmNvbT47IEplcm5laiBTa3JhYmVjIDxqZXJu
+ZWouc2tyYWJlY0BnbWFpbC5jb20+OyBFZCBTd2llcmsgPGVzd2llcmtAZ2guc3Q+DQo+IFN1Ympl
+Y3Q6IFJlOiBbUEFUQ0ggdjMgMC84XSBydHc4ODogcHJlcGFyZSBsb2NraW5nIGZvciBTRElPIHN1
+cHBvcnQNCj4gDQo+IEhpIFBpbmctS2UsDQo+IA0KPiBPbiBNb24sIEphbiAyNCwgMjAyMiBhdCAz
+OjU5IEFNIFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPiB3cm90ZToNCg0KWy4uLl0NCg0KPiA+
+DQo+ID4gVG8gYXZvaWQgdGhpcywgd2UgY2FuIGFkZCBhIGZsYWcgdG8gc3RydWN0IHJ0d192aWYs
+IGFuZCBzZXQgdGhpcyBmbGFnDQo+ID4gd2hlbiA6OnJlbW92ZV9pbnRlcmZhY2UuIFRoZW4sIG9u
+bHkgY29sbGVjdCB2aWYgd2l0aG91dCB0aGlzIGZsYWcgaW50byBsaXN0DQo+ID4gd2hlbiB3ZSB1
+c2UgaXRlcmF0ZV9hY3Rpb20oKS4NCj4gPg0KPiA+IEFzIHdlbGwgYXMgaWVlZTgwMjExX3N0YSBj
+YW4gZG8gc2ltaWxhciBmaXguDQo+ID4NCg0KSSB3b3VsZCBwcmVmZXIgbXkgbWV0aG9kIHRoYXQg
+YWRkcyBhICdib29sIGRpc2FibGVkJyBmbGFnIHRvIHN0cnVjdCBydHdfdmlmL3J0d19zdGENCmFu
+ZCBzZXQgaXQgd2hlbiA6OnJlbW92ZV9pbnRlcmZhY2UvOjpzdGFfcmVtb3ZlLiBUaGVuIHJ0d19p
+dGVyYXRlX3N0YXMoKSBjYW4NCmNoZWNrIHRoaXMgZmxhZyB0byBkZWNpZGUgd2hldGhlciBkb2Vz
+IHRoaW5nIG9yIG5vdC4NCg0KWy4uLl0NCg0KPiANCj4gRm9yIHRoZSBzdGEgdXNlLWNhc2UgSSB0
+aG91Z2h0IGFib3V0IGFkZGluZyBhIGRlZGljYXRlZCByd2xvY2sNCj4gKGluY2x1ZGUvbGludXgv
+cndsb2NrLmgpIGZvciBydHdfZGV2LT5tYWNfaWRfbWFwLg0KPiBydHdfc3RhX3thZGQscmVtb3Zl
+fSB3b3VsZCB0YWtlIGEgd3JpdGUtbG9jay4NCj4gcnR3X2l0ZXJhdGVfc3RhcygpIHRha2VzIHRo
+ZSByZWFkLWxvY2sgKHRoZSBsb2NrIHdvdWxkIGJlIGFjcXVpcmVkDQo+IGJlZm9yZSBjYWxsaW5n
+IGludG8gaWVlZTgwMjExX2l0ZXJhdGVfLi4uKS4gQWRkaXRpb25hbGx5DQo+IHJ0d19pdGVyYXRl
+X3N0YXMoKSBuZWVkcyB0byBjaGVjayBpZiB0aGUgc3RhdGlvbiBpcyBzdGlsbCB2YWxpZA0KPiBh
+Y2NvcmRpbmcgdG8gbWFjX2lkX21hcCAtIGlmIG5vdDogc2tpcC9pZ25vcmUgaXQgZm9yIHRoYXQg
+aXRlcmF0aW9uLg0KPiBUaGlzIGNvdWxkIGJlIGNvbWJpbmVkIHdpdGggeW91cg0KPiAwMDAxLXJ0
+dzg4LXVzZS1hdG9taWMtdG8tY29sbGVjdC1zdGFzLWFuZC1kb2VzLWl0ZXJhdG9ycy5wYXRjaC4N
+Cg0KVXNpbmcgYSAnZGlzYWJsZWQnIGZsYWcgd2l0aGluIHJ0d192aWYvcnR3X3N0YSB3aWxsIGJl
+IGludHVpdGl2ZSBhbmQNCmJldHRlciB0aGFuIGJpdG1hcCBvZiBtYWNfaWRfbWFwLiBQbGVhc2Ug
+cmVmZXJlbmNlIG15IG1lbnRpb24gYWJvdmUuDQoNCj4gDQo+IEZvciB0aGUgaW50ZXJmYWNlIHVz
+ZS1jYXNlIGl0J3Mgbm90IGNsZWFyIHRvIG1lIGhvdyB0aGlzIHdvcmtzIGF0IGFsbC4NCj4gcnR3
+X29wc19hZGRfaW50ZXJmYWNlKCkgaGFzIChpbiBhIHNpbXBsaWZpZWQgdmlldyk6DQo+ICAgICB1
+OCBwb3J0ID0gMDsNCj4gICAgIC8vIHRoZSBwb3J0IHZhcmlhYmxlIGlzIG5ldmVyIGNoYW5nZWQN
+Cj4gICAgIHJ0d3ZpZi0+cG9ydCA9IHBvcnQ7DQo+ICAgICBydHd2aWYtPmNvbmYgPSAmcnR3X3Zp
+Zl9wb3J0W3BvcnRdOw0KPiAgICAgcnR3X2luZm8ocnR3ZGV2LCAic3RhcnQgdmlmICVwTSBvbiBw
+b3J0ICVkXG4iLCB2aWYtPmFkZHIsIHJ0d3ZpZi0+cG9ydCk7DQo+IEhvdyBkbyBtdWx0aXBsZSBp
+bnRlcmZhY2VzICh2aWZzKSB3b3JrIGluIHJ0dzg4IGlmIHRoZSBwb3J0IGlzIGFsd2F5cw0KPiB6
+ZXJvPyBJcyBzb21lIGtpbmQgb2YgdHJhY2tpbmcgb2YgdGhlIHVzZWQgcG9ydHMgbWlzc2luZyAo
+c2ltaWxhciB0bw0KPiBob3cgd2UgdHJhY2sgdGhlIHVzZWQgc3RhdGlvbiBJRHMgLSBhbHNvIGNh
+bGxlZCBtYWNfaWQgLSBpbg0KPiBydHdfZGV2LT5tYWNfaWRfbWFwKT8NCg0KVGhlIHBvcnQgc2hv
+dWxkIGJlIGFsbG9jYXRlZCBkeW5hbWljYWxseSBpZiB3ZSBzdXBwb3J0IHR3byBvciBtb3JlIHZp
+ZnMuDQpXZSBoYXZlIGludGVybmFsIHRyZWUgdGhhdCBpcyBnb2luZyB0byBzdXBwb3J0IHAycCBi
+eSBzZWNvbmQgdmlmLg0KDQoNClBpbmctS2UNCg0K
