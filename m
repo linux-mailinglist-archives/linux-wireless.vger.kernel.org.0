@@ -2,27 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89F0749FAD1
+	by mail.lfdr.de (Postfix) with ESMTP id D432349FAD2
 	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 14:34:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348956AbiA1Neu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jan 2022 08:34:50 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:37860 "EHLO
+        id S1348939AbiA1Nev (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jan 2022 08:34:51 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:37862 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1348934AbiA1Net (ORCPT
+        with ESMTP id S1348937AbiA1Neu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jan 2022 08:34:49 -0500
+        Fri, 28 Jan 2022 08:34:50 -0500
 Received: from 91-155-254-253.elisa-laajakaista.fi ([91.155.254.253] helo=kveik.lan)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.95)
         (envelope-from <luca@coelho.fi>)
-        id 1nDROo-0002DK-OW;
-        Fri, 28 Jan 2022 15:34:47 +0200
+        id 1nDROp-0002DK-Me;
+        Fri, 28 Jan 2022 15:34:48 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@kernel.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Fri, 28 Jan 2022 15:34:30 +0200
-Message-Id: <iwlwifi.20220128153014.16b43fe3e92f.I853c57648feee4b69ccb01ef4c75354377d60be2@changeid>
+Date:   Fri, 28 Jan 2022 15:34:31 +0200
+Message-Id: <iwlwifi.20220128153014.8ec17e282b24.I37c008a9141a2868ee4560e6de303e8bfbb93502@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220128133433.591765-1-luca@coelho.fi>
 References: <20220128133433.591765-1-luca@coelho.fi>
@@ -32,250 +32,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 10/13] iwlwifi: cfg: add support for 1K BA queue
+Subject: [PATCH 11/13] iwlwifi: mvm: refactor iwl_mvm_sta_rx_agg()
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-In order to support 1K aggregations start ba queue with at least double
-the size, also allocate based on the connecting type to save memory
-usage.
+Refactor the firmware call in iwl_mvm_sta_rx_agg() out into
+its own function to be able to change it more easily in the
+next patch.
 
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/cfg/22000.c    |  5 ++--
- .../net/wireless/intel/iwlwifi/fw/api/txq.h   |  4 ++-
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  6 ++---
- drivers/net/wireless/intel/iwlwifi/iwl-fh.h   | 11 ++++----
- .../net/wireless/intel/iwlwifi/iwl-trans.c    |  8 ++++--
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c  | 26 +++++++++++++++++--
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |  4 +--
- drivers/net/wireless/intel/iwlwifi/queue/tx.c |  4 +--
- 8 files changed, 49 insertions(+), 19 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 99 ++++++++++----------
+ 1 file changed, 51 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index 330ef04ca51a..7fb209ec442d 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -7,6 +7,7 @@
- #include <linux/stringify.h>
- #include "iwl-config.h"
- #include "iwl-prph.h"
-+#include "fw/api/txq.h"
- 
- /* Highest firmware API version supported */
- #define IWL_22000_UCODE_API_MAX	69
-@@ -224,7 +225,7 @@ static const struct iwl_ht_params iwl_22000_ht_params = {
- 	.trans.base_params = &iwl_ax210_base_params,			\
- 	.min_txq_size = 128,						\
- 	.gp2_reg_addr = 0xd02c68,					\
--	.min_256_ba_txq_size = 1024,					\
-+	.min_ba_txq_size = IWL_DEFAULT_QUEUE_SIZE_HE,		\
- 	.mon_dram_regs = {						\
- 		.write_ptr = {						\
- 			.addr = DBGC_CUR_DBGBUF_STATUS,			\
-@@ -285,7 +286,7 @@ static const struct iwl_ht_params iwl_22000_ht_params = {
- 	.trans.base_params = &iwl_ax210_base_params,			\
- 	.min_txq_size = 128,						\
- 	.gp2_reg_addr = 0xd02c68,					\
--	.min_256_ba_txq_size = 1024,					\
-+	.min_ba_txq_size = IWL_DEFAULT_QUEUE_SIZE_EHT,		\
- 	.mon_dram_regs = {						\
- 		.write_ptr = {						\
- 			.addr = DBGC_CUR_DBGBUF_STATUS,			\
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/txq.h b/drivers/net/wireless/intel/iwlwifi/fw/api/txq.h
-index 8b3a00df41da..e018946310d1 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/txq.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/txq.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2005-2014, 2019-2020 Intel Corporation
-+ * Copyright (C) 2005-2014, 2019-2021 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -76,6 +76,8 @@ enum iwl_tx_queue_cfg_actions {
- 	TX_QUEUE_CFG_TFD_SHORT_FORMAT		= BIT(1),
- };
- 
-+#define IWL_DEFAULT_QUEUE_SIZE_EHT (1024 * 4)
-+#define IWL_DEFAULT_QUEUE_SIZE_HE 1024
- #define IWL_DEFAULT_QUEUE_SIZE 256
- #define IWL_MGMT_QUEUE_SIZE 16
- #define IWL_CMD_QUEUE_SIZE 32
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index e122b8b4e1fc..f46ec44da1eb 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -343,8 +343,8 @@ struct iwl_fw_mon_regs {
-  * @bisr_workaround: BISR hardware workaround (for 22260 series devices)
-  * @min_txq_size: minimum number of slots required in a TX queue
-  * @uhb_supported: ultra high band channels supported
-- * @min_256_ba_txq_size: minimum number of slots required in a TX queue which
-- *	supports 256 BA aggregation
-+ * @min_ba_txq_size: minimum number of slots required in a TX queue which
-+ *	based on hardware support (HE - 256, EHT - 1K).
-  * @num_rbds: number of receive buffer descriptors to use
-  *	(only used for multi-queue capable devices)
-  * @mac_addr_csr_base: CSR base register for MAC address access, if not set
-@@ -405,7 +405,7 @@ struct iwl_cfg {
- 	u32 d3_debug_data_length;
- 	u32 min_txq_size;
- 	u32 gp2_reg_addr;
--	u32 min_256_ba_txq_size;
-+	u32 min_ba_txq_size;
- 	const struct iwl_fw_mon_regs mon_dram_regs;
- 	const struct iwl_fw_mon_regs mon_smem_regs;
- };
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-fh.h b/drivers/net/wireless/intel/iwlwifi/iwl-fh.h
-index e6fd4941a4cb..5558f9925e11 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-fh.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-fh.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2005-2014, 2018-2020 Intel Corporation
-+ * Copyright (C) 2005-2014, 2018-2021 Intel Corporation
-  * Copyright (C) 2015-2017 Intel Deutschland GmbH
-  */
- #ifndef __iwl_fh_h__
-@@ -590,7 +590,8 @@ struct iwl_rb_status {
- #define TFD_QUEUE_CB_SIZE(x)	(ilog2(x) - 3)
- #define TFD_QUEUE_SIZE_BC_DUP	(64)
- #define TFD_QUEUE_BC_SIZE	(TFD_QUEUE_SIZE_MAX + TFD_QUEUE_SIZE_BC_DUP)
--#define TFD_QUEUE_BC_SIZE_GEN3	1024
-+#define TFD_QUEUE_BC_SIZE_GEN3_AX210	1024
-+#define TFD_QUEUE_BC_SIZE_GEN3_BZ	(1024 * 4)
- #define IWL_TX_DMA_MASK        DMA_BIT_MASK(36)
- #define IWL_NUM_OF_TBS		20
- #define IWL_TFH_NUM_TBS		25
-@@ -707,14 +708,14 @@ struct iwlagn_scd_bc_tbl {
- } __packed;
- 
- /**
-- * struct iwl_gen3_bc_tbl scheduler byte count table gen3
-+ * struct iwl_gen3_bc_tbl_entry scheduler byte count table entry gen3
-  * For AX210 and on:
-  * @tfd_offset: 0-12 - tx command byte count
-  *		12-13 - number of 64 byte chunks
-  *		14-16 - reserved
-  */
--struct iwl_gen3_bc_tbl {
--	__le16 tfd_offset[TFD_QUEUE_BC_SIZE_GEN3];
-+struct iwl_gen3_bc_tbl_entry {
-+	__le16 tfd_offset;
- } __packed;
- 
- #endif /* !__iwl_fh_h__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-index a522bd97bc04..b1af9359cea5 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-@@ -78,8 +78,12 @@ int iwl_trans_init(struct iwl_trans *trans)
- 	if (WARN_ON(trans->trans_cfg->gen2 && txcmd_size >= txcmd_align))
- 		return -EINVAL;
- 
--	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210)
--		trans->txqs.bc_tbl_size = sizeof(struct iwl_gen3_bc_tbl);
-+	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ)
-+		trans->txqs.bc_tbl_size =
-+			sizeof(struct iwl_gen3_bc_tbl_entry) * TFD_QUEUE_BC_SIZE_GEN3_BZ;
-+	else if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210)
-+		trans->txqs.bc_tbl_size =
-+			sizeof(struct iwl_gen3_bc_tbl_entry) * TFD_QUEUE_BC_SIZE_GEN3_AX210;
- 	else
- 		trans->txqs.bc_tbl_size = sizeof(struct iwlagn_scd_bc_tbl);
- 	/*
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 1e08b7ffb79a..ea3be00d5d1e 100644
+index ea3be00d5d1e..23e5b377f723 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -716,15 +716,37 @@ static int iwl_mvm_find_free_queue(struct iwl_mvm *mvm, u8 sta_id,
- static int iwl_mvm_tvqm_enable_txq(struct iwl_mvm *mvm,
- 				   u8 sta_id, u8 tid, unsigned int timeout)
- {
--	int queue, size = max_t(u32, IWL_DEFAULT_QUEUE_SIZE,
--				mvm->trans->cfg->min_256_ba_txq_size);
-+	int queue, size;
+@@ -2547,14 +2547,58 @@ static void iwl_mvm_init_reorder_buffer(struct iwl_mvm *mvm,
+ 	}
+ }
  
- 	if (tid == IWL_MAX_TID_COUNT) {
- 		tid = IWL_MGMT_TID;
- 		size = max_t(u32, IWL_MGMT_QUEUE_SIZE,
- 			     mvm->trans->cfg->min_txq_size);
++static int iwl_mvm_fw_baid_op(struct iwl_mvm *mvm, struct iwl_mvm_sta *mvm_sta,
++			      bool start, int tid, u16 ssn, u16 buf_size)
++{
++	struct iwl_mvm_add_sta_cmd cmd = {
++		.mac_id_n_color = cpu_to_le32(mvm_sta->mac_id_n_color),
++		.sta_id = mvm_sta->sta_id,
++		.add_modify = STA_MODE_MODIFY,
++	};
++	u32 status;
++	int ret;
++
++	if (start) {
++		cmd.add_immediate_ba_tid = tid;
++		cmd.add_immediate_ba_ssn = cpu_to_le16(ssn);
++		cmd.rx_ba_window = cpu_to_le16(buf_size);
++		cmd.modify_mask = STA_MODIFY_ADD_BA_TID;
 +	} else {
-+		struct ieee80211_sta *sta;
++		cmd.remove_immediate_ba_tid = tid;
++		cmd.modify_mask = STA_MODIFY_REMOVE_BA_TID;
++	}
 +
-+		rcu_read_lock();
-+		sta = rcu_dereference(mvm->fw_id_to_mac_id[sta_id]);
++	status = ADD_STA_SUCCESS;
++	ret = iwl_mvm_send_cmd_pdu_status(mvm, ADD_STA,
++					  iwl_mvm_add_sta_cmd_size(mvm),
++					  &cmd, &status);
++	if (ret)
++		return ret;
 +
-+		/* this queue isn't used for traffic (cab_queue) */
-+		if (IS_ERR_OR_NULL(sta)) {
-+			size = IWL_MGMT_QUEUE_SIZE;
-+		} else if (sta->he_cap.has_he) {
-+			/* support for 256 ba size */
-+			size = IWL_DEFAULT_QUEUE_SIZE_HE;
-+		} else {
-+			size = IWL_DEFAULT_QUEUE_SIZE;
-+		}
++	switch (status & IWL_ADD_STA_STATUS_MASK) {
++	case ADD_STA_SUCCESS:
++		IWL_DEBUG_HT(mvm, "RX BA Session %sed in fw\n",
++			     start ? "start" : "stopp");
++		if (WARN_ON(start && iwl_mvm_has_new_rx_api(mvm) &&
++			    !(status & IWL_ADD_STA_BAID_VALID_MASK)))
++			return -EINVAL;
++		return u32_get_bits(status, IWL_ADD_STA_BAID_MASK);
++	case ADD_STA_IMMEDIATE_BA_FAILURE:
++		IWL_WARN(mvm, "RX BA Session refused by fw\n");
++		return -ENOSPC;
++	default:
++		IWL_ERR(mvm, "RX BA Session failed %sing, status 0x%x\n",
++			start ? "start" : "stopp", status);
++		return -EIO;
++	}
++}
 +
-+		rcu_read_unlock();
+ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 		       int tid, u16 ssn, bool start, u16 buf_size, u16 timeout)
+ {
+ 	struct iwl_mvm_sta *mvm_sta = iwl_mvm_sta_from_mac80211(sta);
+-	struct iwl_mvm_add_sta_cmd cmd = {};
+ 	struct iwl_mvm_baid_data *baid_data = NULL;
+-	int ret;
+-	u32 status;
++	int ret, baid;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+ 
+@@ -2604,59 +2648,18 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 			reorder_buf_size / sizeof(baid_data->entries[0]);
  	}
  
-+	/* take the min with bc tbl entries allowed */
-+	size = min_t(u32, size, mvm->trans->txqs.bc_tbl_size / sizeof(u16));
-+
-+	/* size needs to be power of 2 values for calculating read/write pointers */
-+	size = rounddown_pow_of_two(size);
-+
- 	do {
- 		__le16 enable = cpu_to_le16(TX_QUEUE_CFG_ENABLE_QUEUE);
+-	cmd.mac_id_n_color = cpu_to_le32(mvm_sta->mac_id_n_color);
+-	cmd.sta_id = mvm_sta->sta_id;
+-	cmd.add_modify = STA_MODE_MODIFY;
+-	if (start) {
+-		cmd.add_immediate_ba_tid = (u8) tid;
+-		cmd.add_immediate_ba_ssn = cpu_to_le16(ssn);
+-		cmd.rx_ba_window = cpu_to_le16(buf_size);
+-	} else {
+-		cmd.remove_immediate_ba_tid = (u8) tid;
+-	}
+-	cmd.modify_mask = start ? STA_MODIFY_ADD_BA_TID :
+-				  STA_MODIFY_REMOVE_BA_TID;
+-
+-	status = ADD_STA_SUCCESS;
+-	ret = iwl_mvm_send_cmd_pdu_status(mvm, ADD_STA,
+-					  iwl_mvm_add_sta_cmd_size(mvm),
+-					  &cmd, &status);
+-	if (ret)
++	baid = iwl_mvm_fw_baid_op(mvm, mvm_sta, start, tid, ssn, buf_size);
++	if (baid < 0) {
++		ret = baid;
+ 		goto out_free;
+-
+-	switch (status & IWL_ADD_STA_STATUS_MASK) {
+-	case ADD_STA_SUCCESS:
+-		IWL_DEBUG_HT(mvm, "RX BA Session %sed in fw\n",
+-			     start ? "start" : "stopp");
+-		break;
+-	case ADD_STA_IMMEDIATE_BA_FAILURE:
+-		IWL_WARN(mvm, "RX BA Session refused by fw\n");
+-		ret = -ENOSPC;
+-		break;
+-	default:
+-		ret = -EIO;
+-		IWL_ERR(mvm, "RX BA Session failed %sing, status 0x%x\n",
+-			start ? "start" : "stopp", status);
+-		break;
+ 	}
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-index e3b69476f515..3546c5269c3b 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-@@ -540,7 +540,7 @@ static int iwl_pcie_tx_alloc(struct iwl_trans *trans)
- 					  trans->cfg->min_txq_size);
- 		else
- 			slots_num = max_t(u32, IWL_DEFAULT_QUEUE_SIZE,
--					  trans->cfg->min_256_ba_txq_size);
-+					  trans->cfg->min_ba_txq_size);
- 		trans->txqs.txq[txq_id] = &trans_pcie->txq_memory[txq_id];
- 		ret = iwl_txq_alloc(trans, trans->txqs.txq[txq_id], slots_num,
- 				    cmd_queue);
-@@ -594,7 +594,7 @@ int iwl_pcie_tx_init(struct iwl_trans *trans)
- 					  trans->cfg->min_txq_size);
- 		else
- 			slots_num = max_t(u32, IWL_DEFAULT_QUEUE_SIZE,
--					  trans->cfg->min_256_ba_txq_size);
-+					  trans->cfg->min_ba_txq_size);
- 		ret = iwl_txq_init(trans, trans->txqs.txq[txq_id], slots_num,
- 				   cmd_queue);
- 		if (ret) {
-diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-index e31ae5d0e26a..e12d36a25652 100644
---- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-@@ -41,13 +41,13 @@ static void iwl_pcie_gen2_update_byte_tbl(struct iwl_trans *trans,
- 	num_fetch_chunks = DIV_ROUND_UP(filled_tfd_size, 64) - 1;
+-	if (ret)
+-		goto out_free;
+-
+ 	if (start) {
+-		u8 baid;
+-
+ 		mvm->rx_ba_sessions++;
  
- 	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210) {
--		struct iwl_gen3_bc_tbl *scd_bc_tbl_gen3 = txq->bc_tbl.addr;
-+		struct iwl_gen3_bc_tbl_entry *scd_bc_tbl_gen3 = txq->bc_tbl.addr;
+ 		if (!iwl_mvm_has_new_rx_api(mvm))
+ 			return 0;
  
- 		/* Starting from AX210, the HW expects bytes */
- 		WARN_ON(trans->txqs.bc_table_dword);
- 		WARN_ON(len > 0x3FFF);
- 		bc_ent = cpu_to_le16(len | (num_fetch_chunks << 14));
--		scd_bc_tbl_gen3->tfd_offset[idx] = bc_ent;
-+		scd_bc_tbl_gen3[idx].tfd_offset = bc_ent;
- 	} else {
- 		struct iwlagn_scd_bc_tbl *scd_bc_tbl = txq->bc_tbl.addr;
+-		if (WARN_ON(!(status & IWL_ADD_STA_BAID_VALID_MASK))) {
+-			ret = -EINVAL;
+-			goto out_free;
+-		}
+-		baid = (u8)((status & IWL_ADD_STA_BAID_MASK) >>
+-			    IWL_ADD_STA_BAID_SHIFT);
+ 		baid_data->baid = baid;
+ 		baid_data->timeout = timeout;
+ 		baid_data->last_rx = jiffies;
+@@ -2684,7 +2687,7 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 		WARN_ON(rcu_access_pointer(mvm->baid_map[baid]));
+ 		rcu_assign_pointer(mvm->baid_map[baid], baid_data);
+ 	} else  {
+-		u8 baid = mvm_sta->tid_to_baid[tid];
++		baid = mvm_sta->tid_to_baid[tid];
  
+ 		if (mvm->rx_ba_sessions > 0)
+ 			/* check that restart flow didn't zero the counter */
 -- 
 2.34.1
 
