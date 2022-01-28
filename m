@@ -2,112 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 558EF49F726
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 11:19:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 219A449F738
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 11:20:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347746AbiA1KT0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jan 2022 05:19:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40766 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347545AbiA1KTV (ORCPT
+        id S1347823AbiA1KUh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jan 2022 05:20:37 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:58390 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229864AbiA1KUh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jan 2022 05:19:21 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3919AC061714;
-        Fri, 28 Jan 2022 02:19:21 -0800 (PST)
+        Fri, 28 Jan 2022 05:20:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6BC461E4E;
-        Fri, 28 Jan 2022 10:19:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B361C340E0;
-        Fri, 28 Jan 2022 10:19:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1643365160;
-        bh=RuOMg8k6pYNpeFvgZ9DyHZq7KGCMg0MQfJg8JkE1Jvc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=C//4/ML1QzHsrwK90xdf1z9iQJGCmbDg+NP2/O8nSW59muLI9DBLturaBo1uldLb+
-         9YjKRAjLzJIexvJ1kwi6eLBLtd3QQKF30D77is+rLQANTei7mlrNCDxpe4Qb/enaFA
-         dbxxPgr3dJ4APIU4tp2PF5rFMkcfZaPU66vBKcJc=
-Date:   Fri, 28 Jan 2022 11:19:17 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Zhou Qingyang <zhou1615@umn.edu>
-Cc:     kjlu@umn.edu, Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Len Baker <len.baker@gmx.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        Hans deGoede <hdegoede@redhat.com>,
-        Matthias Brugger <mbrugger@suse.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] brcmfmac: Fix a NULL pointer dereference in
- brcmf_of_probe()
-Message-ID: <YfPDJaPJ89vTuBXA@kroah.com>
-References: <20220124165048.54677-1-zhou1615@umn.edu>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EEC5961BD2;
+        Fri, 28 Jan 2022 10:20:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301A6C340E0;
+        Fri, 28 Jan 2022 10:20:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643365236;
+        bh=+NvwaWbFVh8DxNHiYmA/3O9hguNLHMqOSOQUJp5/o8g=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=gavaV0kAHwO2h+hBKiEEnHCvZZcqj+W6+gTMiPEd9pEAX6aBbhITzHt5VZYo//DIA
+         5zcIu79tLcucFkRYle07Ac/l+KyaIfzG3e2OVrS5aXOLdL67RIqFxMJaHZE+gde5Vq
+         pgsI973dyiUE7XWsWi06Cg2aQhM1JNJC0baaGKIoxMzyBHR6k1FqSEHVzdPrVvsBgs
+         UFF9tST6S4ZZRlwWFkk4dCzAYdD6JWK3zTgZbnif7TeOMDIumnUCCsyALh+mng5U02
+         wrAhATB+IfIcg/RnHtFHKkPCqTsuJ1OumnX56k8a/K2zOsFYGDtT0CbYt1WnNGl2bS
+         sxCizoTFw26uA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh@kernel.org>
+Subject: Re: [PATCH v2 05/19] ath11k: Remove core PCI references from PCI common code
+References: <1642337235-8618-1-git-send-email-quic_mpubbise@quicinc.com>
+        <1642337235-8618-6-git-send-email-quic_mpubbise@quicinc.com>
+Date:   Fri, 28 Jan 2022 12:20:30 +0200
+In-Reply-To: <1642337235-8618-6-git-send-email-quic_mpubbise@quicinc.com>
+        (Manikanta Pubbisetty's message of "Sun, 16 Jan 2022 18:17:01 +0530")
+Message-ID: <87a6fggo0h.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220124165048.54677-1-zhou1615@umn.edu>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jan 25, 2022 at 12:50:46AM +0800, Zhou Qingyang wrote:
-> In brcmf_of_probe(), the return value of devm_kzalloc() is assigned to
-> board_type and there is a dereference of it in strcpy() right after
-> that. devm_kzalloc() could return NULL on failure of allocation, which
-> could lead to NULL pointer dereference.
-> 
-> Fix this bug by adding a NULL check of board_type.
-> 
-> This bug was found by a static analyzer.
-> 
-> Builds with 'make allyesconfig' show no new warnings,
-> and our static analyzer no longer warns about this code
-> 
-> Fixes: 29e354ebeeec ("brcmfmac: Transform compatible string for FW loading")
-> Signed-off-by: Zhou Qingyang <zhou1615@umn.edu>
-> ---
-> The analysis employs differential checking to identify inconsistent 
-> security operations (e.g., checks or kfrees) between two code paths 
-> and confirms that the inconsistent operations are not recovered in the
-> current function or the callers, so they constitute bugs. 
-> 
-> Note that, as a bug found by static analysis, it can be a false
-> positive or hard to trigger. Multiple researchers have cross-reviewed
-> the bug.
-> 
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> index 513c7e6421b2..535e8ddeab8d 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> @@ -80,6 +80,8 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
->  		/* get rid of '/' in the compatible string to be able to find the FW */
->  		len = strlen(tmp) + 1;
->  		board_type = devm_kzalloc(dev, len, GFP_KERNEL);
-> +		if (!board_type)
-> +			return;
->  		strscpy(board_type, tmp, len);
->  		for (i = 0; i < board_type[i]; i++) {
->  			if (board_type[i] == '/')
-> -- 
-> 2.25.1
-> 
+Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 
-As stated before, umn.edu is still not allowed to contribute to the
-Linux kernel.  Please work with your administration to resolve this
-issue.
+> Remove core PCI and ath11k PCI references(struct ath11k_pci)
+> from PCI common code. Since, PCI common code will be used
+> by hybrid bus devices, this code should be independent
+> from ATH11K PCI references and Linux core PCI references
+> like struct pci_dev.
+>
+> Since this change introduces function callbacks for bus wakeup
+> and bus release operations, wakeup_mhi HW param is no longer
+> needed and hence it is removed completely. Alternatively, bus
+> wakeup/release ops for QCA9074 are initialized to NULL as
+> QCA9704 does not need bus wakeup/release for register accesses.
+>
+> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00573-QCAMSLSWPLZ-1
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 
+[...]
+
+> @@ -651,6 +653,13 @@ struct ath11k_bus_params {
+>  	bool fixed_bdf_addr;
+>  	bool fixed_mem_region;
+>  	bool static_window_map;
+> +	struct {
+> +		void (*wakeup)(struct ath11k_base *ab);
+> +		void (*release)(struct ath11k_base *ab);
+> +		int (*get_msi_irq)(struct ath11k_base *ab, unsigned int vector);
+> +		void (*window_write32)(struct ath11k_base *ab, u32 offset, u32 value);
+> +		u32 (*window_read32)(struct ath11k_base *ab, u32 offset);
+> +	} ops;
+>  };
+
+Please don't use bus_params for this, I'm starting to suspect that we
+actually need to remove struct ath11k_bus_params altogether. It would be
+cleaner to have separate 'struct ath11k_pci_ops' or something like that.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
