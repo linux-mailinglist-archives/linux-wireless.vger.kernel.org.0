@@ -2,109 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFD0749F901
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 13:14:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61EF149F960
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 13:31:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348360AbiA1MOD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jan 2022 07:14:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38998 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234483AbiA1MOC (ORCPT
+        id S1348409AbiA1MbO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jan 2022 07:31:14 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:37816 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1348416AbiA1MbN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jan 2022 07:14:02 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74767C061714;
-        Fri, 28 Jan 2022 04:14:02 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FA97618CC;
-        Fri, 28 Jan 2022 12:14:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B94C340E6;
-        Fri, 28 Jan 2022 12:13:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643372041;
-        bh=Gl0idB2Sk6mpsfiD/yCwRa26c7O/F/PjGnyjeYSw0QY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=k1tDv3aQd6V7ZaOzFVGTMG6poo5NV4P38Pe4gM67NZsrgBTY6umJx87MdVxTJZJ+m
-         UK1Nfb8nBBpNkb2w1ku9n+hNjOngR1doVyedmxQmrkv2c4mg+mVg0rd0/JRPUSuiO4
-         ICaf0bm6alsaJIcMVoyhljDn+iCFHcZcQxnKQXNnQb4OW9Kzbs5lgWiX7LKR3+YmdQ
-         j1nNYlXE8nKHAswzLcGIeKfkLJ57qN3yez5zjGjpqnDVLx+fGkxQLFycemeIykyCZi
-         e+sMnlQ4ajYif0BjUQJR+XJKDS9FmVa5K6xX+bGm+RNgyJQFW5FOw2lPqw4qhAd3aJ
-         HBUoFo3ugWAhQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh@kernel.org>
-Subject: Re: [PATCH v2 02/19] ath11k: Refactor PCI code to support hybrid bus devices
-References: <1642337235-8618-1-git-send-email-quic_mpubbise@quicinc.com>
-        <1642337235-8618-3-git-send-email-quic_mpubbise@quicinc.com>
-Date:   Fri, 28 Jan 2022 14:13:55 +0200
-In-Reply-To: <1642337235-8618-3-git-send-email-quic_mpubbise@quicinc.com>
-        (Manikanta Pubbisetty's message of "Sun, 16 Jan 2022 18:16:58 +0530")
-Message-ID: <87h79of470.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 28 Jan 2022 07:31:13 -0500
+Received: from 91-155-254-253.elisa-laajakaista.fi ([91.155.254.253] helo=kveik.lan)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <luca@coelho.fi>)
+        id 1nDQP7-0002A0-DA;
+        Fri, 28 Jan 2022 14:31:10 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@kernel.org
+Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
+Date:   Fri, 28 Jan 2022 14:30:49 +0200
+Message-Id: <20220128123057.524038-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
+Subject: [PATCH for v5.17 0/8] iwlwifi: fixes intended for v5.17 2022-01-28
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
+From: Luca Coelho <luciano.coelho@intel.com>
 
-> Unlike other ATH11K PCIe devices which are enumerated by APSS
-> processor (Application Processor SubSystem), WCN6750 gets
-> enumerated by the WPSS Q6 processor (Wireless Processor SubSystem);
-> In simple terms, though WCN6750 is PCIe device, it is not attached
-> to the APSS processor, APSS will not know of such a device being
-> present in the system and therefore WCN6750 will be registered as
-> a platform device to the kernel core like other supported AHB
-> devices.
->
-> WCN6750 uses both AHB and PCI APIs for it's operation, it uses
-> AHB APIs for device probe/boot and PCI APIs for device setup
-> and register accesses; Because of this nature, it is referred
-> as a hybrid bus device.
->
-> Refactor PCI code to support hybrid bus devices like WCN6750.
->
-> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00573-QCAMSLSWPLZ-1
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
->
-> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Hi,
 
-[...]
+This is the first patchset with fixes for v5.17.
 
-> --- /dev/null
-> +++ b/drivers/net/wireless/ath/ath11k/pci_cmn.c
+The changes are:
 
-[...]
+* A few fixes for iwlmei;
+* A couple of fixes in an error path during init that renders the
+  device unusable;
+* Two fixes for the newly introduced rate_n_flags FW API;
 
-> +static inline void ath11k_pci_select_window(struct ath11k_pci *ab_pci, u32 offset)
-> +{
-> +	struct ath11k_base *ab = ab_pci->ab;
-> +
-> +	u32 window = FIELD_GET(ATH11K_PCI_WINDOW_VALUE_MASK, offset);
-> +
-> +	lockdep_assert_held(&ab_pci->window_lock);
-> +
-> +	if (window != ab_pci->register_window) {
-> +		iowrite32(ATH11K_PCI_WINDOW_ENABLE_BIT | window,
-> +			  ab->mem + ATH11K_PCI_WINDOW_REG_ADDRESS);
-> +		ioread32(ab->mem + ATH11K_PCI_WINDOW_REG_ADDRESS);
-> +		ab_pci->register_window = window;
-> +	}
-> +}
+As usual, I'm pushing this to a pending branch, for kbuild bot.  And
+since these are fixes for the rc series, please take them directly to
+wireless-drivers.git, as we agreed.  I'll assign them to you.
 
-So the style used in ath11k is ath11k_<filename>_foo, so that a function
-ath11k_pci_foo() should be in pci.c. This patch is now breaking that
-style. Maybe pci_cmn.c should renamed to cpci.c, pcic.c or something
-like that? Then the function prefix could be ath11k_cpci_, ath11k_pcic_
-or similar.
+Cheers,
+Luca.
+
+
+Emmanuel Grumbach (4):
+  iwlwifi: mei: fix the pskb_may_pull check in ipv4
+  iwlwifi: mei: retry mapping the shared area
+  iwlwifi: mvm: don't feed the hardware RFKILL into iwlmei
+  iwlwifi: mei: report RFKILL upon register when needed
+
+Johannes Berg (2):
+  iwlwifi: pcie: fix locking when "HW not ready"
+  iwlwifi: pcie: gen2: fix locking when "HW not ready"
+
+Miri Korenblit (2):
+  iwlwifi: mvm: fix condition which checks the version of rate_n_flags
+  iwlwifi: fix iwl_legacy_rate_to_fw_idx
+
+ .../net/wireless/intel/iwlwifi/fw/api/rs.h    |  1 -
+ drivers/net/wireless/intel/iwlwifi/fw/rs.c    | 33 +++++++-------
+ drivers/net/wireless/intel/iwlwifi/mei/main.c | 45 ++++++++++++++-----
+ drivers/net/wireless/intel/iwlwifi/mei/net.c  |  3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  2 +-
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |  3 +-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  3 +-
+ 8 files changed, 57 insertions(+), 35 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
