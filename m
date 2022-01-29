@@ -2,191 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14E964A027F
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jan 2022 22:04:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 953FE4A2B76
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Jan 2022 04:36:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349566AbiA1VEM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jan 2022 16:04:12 -0500
-Received: from mga09.intel.com ([134.134.136.24]:39330 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1344421AbiA1VEG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jan 2022 16:04:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643403846; x=1674939846;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rRQi5U4fNXjd7il7SklJ7fYxH9Jsm7zneoJJFyQiclk=;
-  b=E7JtnfaPJN3dIl7ZnWGHHKLGz/ZokWP3w3O9pj5392Es6rMxe2xngtZJ
-   YdDleVJW9F5Gqg3HFvq1tSjxsaN01lMlSVuqagns3sdLvP0xch/VuYEtw
-   1y4SybVcflw5Woh7k+qyxBNFN4R7FpwHLqKJwl6OovEInUkaS9ircgR9E
-   p+oOToc6XsC4AewjnOMkHh3uq8my1yfqBVr7tn87XIc9PjXfEfJHwG2IW
-   vF29wJRKu4gUr2o2jCq4c3425M3s6hHRjN7rINjGbkRDeZyVNA2NG6ICw
-   XjjBK7mXfuwZyjcsFQdjfu0Z6cvZlTrHR1s4sue5IFYSABUuK2fgqqaTq
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10241"; a="246969200"
-X-IronPort-AV: E=Sophos;i="5.88,324,1635231600"; 
-   d="scan'208";a="246969200"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2022 13:04:05 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,324,1635231600"; 
-   d="scan'208";a="629247635"
-Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 28 Jan 2022 13:04:02 -0800
-Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nDYPZ-000OJP-OP; Fri, 28 Jan 2022 21:04:01 +0000
-Date:   Sat, 29 Jan 2022 05:03:21 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     cgel.zte@gmail.com, luciano.coelho@intel.com
-Cc:     kbuild-all@lists.01.org, kvalo@kernel.org, davem@davemloft.net,
-        kuba@kernel.org, trix@redhat.com, johannes.berg@intel.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Minghao Chi <chi.minghao@zte.com.cn>
-Subject: Re: [PATCH] dvm: use struct_size over open coded arithmetic
-Message-ID: <202201290256.JxMfdzDu-lkp@intel.com>
-References: <20220128080206.1211452-1-chi.minghao@zte.com.cn>
+        id S1345180AbiA2DgY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jan 2022 22:36:24 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:44247 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237102AbiA2DgX (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 28 Jan 2022 22:36:23 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 20T3aFxR5019637, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 20T3aFxR5019637
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Sat, 29 Jan 2022 11:36:15 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Sat, 29 Jan 2022 11:36:15 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Sat, 29 Jan 2022 11:36:15 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e]) by
+ RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e%5]) with mapi id
+ 15.01.2308.020; Sat, 29 Jan 2022 11:36:15 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "kvalo@kernel.org" <kvalo@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 13/19] rtw89: extend role_maintain to support AP mode
+Thread-Topic: [PATCH 13/19] rtw89: extend role_maintain to support AP mode
+Thread-Index: AQHYA3i7Zng9D27u60C+yxZ+ujbTSKx4tvl4gAA+sgA=
+Date:   Sat, 29 Jan 2022 03:36:14 +0000
+Message-ID: <97e80d86f5b925a0b2337d15c56e88d3808b6efe.camel@realtek.com>
+References: <20220107034239.22002-1-pkshih@realtek.com>
+         <20220107034239.22002-14-pkshih@realtek.com> <874k5ng8oq.fsf@kernel.org>
+In-Reply-To: <874k5ng8oq.fsf@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [125.224.93.154]
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEvMjgg5LiL5Y2IIDEwOjU1OjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <0BC8F67E932D6444B4A48C3673839E61@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220128080206.1211452-1-chi.minghao@zte.com.cn>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-
-Thank you for the patch! Yet something to improve:
-
-[auto build test ERROR on linus/master]
-[also build test ERROR on v5.17-rc1 next-20220128]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/0day-ci/linux/commits/cgel-zte-gmail-com/dvm-use-struct_size-over-open-coded-arithmetic/20220128-160349
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 23a46422c56144939c091c76cf389aa863ce9c18
-config: arm-allyesconfig (https://download.01.org/0day-ci/archive/20220129/202201290256.JxMfdzDu-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/6ce283968f032a338616dbe570097f1639a66b75
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review cgel-zte-gmail-com/dvm-use-struct_size-over-open-coded-arithmetic/20220128-160349
-        git checkout 6ce283968f032a338616dbe570097f1639a66b75
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=arm SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-   In file included from include/linux/mm.h:30,
-                    from arch/arm/include/asm/cacheflush.h:10,
-                    from include/linux/cacheflush.h:5,
-                    from include/linux/highmem.h:8,
-                    from include/linux/bvec.h:10,
-                    from include/linux/skbuff.h:17,
-                    from include/linux/if_ether.h:19,
-                    from include/linux/etherdevice.h:20,
-                    from drivers/net/wireless/intel/iwlwifi/dvm/rx.c:12:
-   drivers/net/wireless/intel/iwlwifi/dvm/rx.c: In function 'iwlagn_rx_noa_notification':
->> include/linux/overflow.h:194:32: error: invalid type argument of '->' (have 'struct iwl_wipan_noa_data')
-     194 |                     sizeof(*(p)->member) + __must_be_array((p)->member),\
-         |                                ^~
-   drivers/net/wireless/intel/iwlwifi/dvm/rx.c:918:36: note: in expansion of macro 'struct_size'
-     918 |                 new_data = kmalloc(struct_size(*new_data, data, len), GFP_ATOMIC);
-         |                                    ^~~~~~~~~~~
-   In file included from include/linux/container_of.h:5,
-                    from include/linux/kernel.h:21,
-                    from include/linux/skbuff.h:13,
-                    from include/linux/if_ether.h:19,
-                    from include/linux/etherdevice.h:20,
-                    from drivers/net/wireless/intel/iwlwifi/dvm/rx.c:12:
-   include/linux/overflow.h:194:63: error: invalid type argument of '->' (have 'struct iwl_wipan_noa_data')
-     194 |                     sizeof(*(p)->member) + __must_be_array((p)->member),\
-         |                                                               ^~
-   include/linux/build_bug.h:16:62: note: in definition of macro 'BUILD_BUG_ON_ZERO'
-      16 | #define BUILD_BUG_ON_ZERO(e) ((int)(sizeof(struct { int:(-!!(e)); })))
-         |                                                              ^
-   include/linux/compiler.h:258:51: note: in expansion of macro '__same_type'
-     258 | #define __must_be_array(a)      BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
-         |                                                   ^~~~~~~~~~~
-   include/linux/overflow.h:194:44: note: in expansion of macro '__must_be_array'
-     194 |                     sizeof(*(p)->member) + __must_be_array((p)->member),\
-         |                                            ^~~~~~~~~~~~~~~
-   drivers/net/wireless/intel/iwlwifi/dvm/rx.c:918:36: note: in expansion of macro 'struct_size'
-     918 |                 new_data = kmalloc(struct_size(*new_data, data, len), GFP_ATOMIC);
-         |                                    ^~~~~~~~~~~
-   include/linux/overflow.h:194:63: error: invalid type argument of '->' (have 'struct iwl_wipan_noa_data')
-     194 |                     sizeof(*(p)->member) + __must_be_array((p)->member),\
-         |                                                               ^~
-   include/linux/build_bug.h:16:62: note: in definition of macro 'BUILD_BUG_ON_ZERO'
-      16 | #define BUILD_BUG_ON_ZERO(e) ((int)(sizeof(struct { int:(-!!(e)); })))
-         |                                                              ^
-   include/linux/compiler.h:258:51: note: in expansion of macro '__same_type'
-     258 | #define __must_be_array(a)      BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
-         |                                                   ^~~~~~~~~~~
-   include/linux/overflow.h:194:44: note: in expansion of macro '__must_be_array'
-     194 |                     sizeof(*(p)->member) + __must_be_array((p)->member),\
-         |                                            ^~~~~~~~~~~~~~~
-   drivers/net/wireless/intel/iwlwifi/dvm/rx.c:918:36: note: in expansion of macro 'struct_size'
-     918 |                 new_data = kmalloc(struct_size(*new_data, data, len), GFP_ATOMIC);
-         |                                    ^~~~~~~~~~~
-   include/linux/build_bug.h:16:51: error: bit-field '<anonymous>' width not an integer constant
-      16 | #define BUILD_BUG_ON_ZERO(e) ((int)(sizeof(struct { int:(-!!(e)); })))
-         |                                                   ^
-   include/linux/compiler.h:258:33: note: in expansion of macro 'BUILD_BUG_ON_ZERO'
-     258 | #define __must_be_array(a)      BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
-         |                                 ^~~~~~~~~~~~~~~~~
-   include/linux/overflow.h:194:44: note: in expansion of macro '__must_be_array'
-     194 |                     sizeof(*(p)->member) + __must_be_array((p)->member),\
-         |                                            ^~~~~~~~~~~~~~~
-   drivers/net/wireless/intel/iwlwifi/dvm/rx.c:918:36: note: in expansion of macro 'struct_size'
-     918 |                 new_data = kmalloc(struct_size(*new_data, data, len), GFP_ATOMIC);
-         |                                    ^~~~~~~~~~~
-   In file included from include/linux/mm.h:30,
-                    from arch/arm/include/asm/cacheflush.h:10,
-                    from include/linux/cacheflush.h:5,
-                    from include/linux/highmem.h:8,
-                    from include/linux/bvec.h:10,
-                    from include/linux/skbuff.h:17,
-                    from include/linux/if_ether.h:19,
-                    from include/linux/etherdevice.h:20,
-                    from drivers/net/wireless/intel/iwlwifi/dvm/rx.c:12:
->> include/linux/overflow.h:195:28: error: invalid type argument of unary '*' (have 'struct iwl_wipan_noa_data')
-     195 |                     sizeof(*(p)))
-         |                            ^~~~
-   drivers/net/wireless/intel/iwlwifi/dvm/rx.c:918:36: note: in expansion of macro 'struct_size'
-     918 |                 new_data = kmalloc(struct_size(*new_data, data, len), GFP_ATOMIC);
-         |                                    ^~~~~~~~~~~
-
-
-vim +194 include/linux/overflow.h
-
-610b15c50e86eb Kees Cook           2018-05-07  180  
-610b15c50e86eb Kees Cook           2018-05-07  181  /**
-610b15c50e86eb Kees Cook           2018-05-07  182   * struct_size() - Calculate size of structure with trailing array.
-610b15c50e86eb Kees Cook           2018-05-07  183   * @p: Pointer to the structure.
-610b15c50e86eb Kees Cook           2018-05-07  184   * @member: Name of the array member.
-b19d57d0f3cc6f Gustavo A. R. Silva 2020-06-08  185   * @count: Number of elements in the array.
-610b15c50e86eb Kees Cook           2018-05-07  186   *
-610b15c50e86eb Kees Cook           2018-05-07  187   * Calculates size of memory needed for structure @p followed by an
-b19d57d0f3cc6f Gustavo A. R. Silva 2020-06-08  188   * array of @count number of @member elements.
-610b15c50e86eb Kees Cook           2018-05-07  189   *
-610b15c50e86eb Kees Cook           2018-05-07  190   * Return: number of bytes needed or SIZE_MAX on overflow.
-610b15c50e86eb Kees Cook           2018-05-07  191   */
-b19d57d0f3cc6f Gustavo A. R. Silva 2020-06-08  192  #define struct_size(p, member, count)					\
-b19d57d0f3cc6f Gustavo A. R. Silva 2020-06-08  193  	__ab_c_size(count,						\
-610b15c50e86eb Kees Cook           2018-05-07 @194  		    sizeof(*(p)->member) + __must_be_array((p)->member),\
-610b15c50e86eb Kees Cook           2018-05-07 @195  		    sizeof(*(p)))
-610b15c50e86eb Kees Cook           2018-05-07  196  
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+T24gRnJpLCAyMDIyLTAxLTI4IGF0IDE3OjUxICswMjAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiBQ
+aW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3JpdGVzOg0KPiANCj4gPiBGaWxsIG1h
+Y19pZCBhbmQgc2VsZl9yb2xlIGRlcGVuZHMgb24gdGhlIG9wZXJhdGlvbiBtb2RlLg0KPiA+IA0K
+PiA+IEluIEFQIG1vZGUsIGVjaG8gY29ubmVjdGVkIHN0YXRpb24gaGFzIGFuIHVuaXF1ZSBtYWNf
+aWQsIGFuZCBlYWNoIHZpZiBhbHNvDQo+ID4gaGFzIG9uZSBtYWNfaWQgdG8gcmVwcmVzZW50IGl0
+c2VsZi4NCj4gPiANCj4gPiBUaGUgc2VsZl9yb2xlIGlzIGFzc2lnbmVkIHRvIHZpZiBpZiB0aGUg
+b3BlcmF0aW9uIG1vZGUgaXMgZGVjaWRlZCwgYW5kDQo+ID4gUlRXODlfU0VMRl9ST0xFX0FQX0NM
+SUVOVCBpcyBhc3NpZ25lZCB0byB0aGUgY29ubmVjdGVkIFNUQSBpbiBBUCBtb2RlLA0KPiA+IA0K
+PiA+IFNpZ25lZC1vZmYtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiA+
+IC0tLQ0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2Z3LmMgIHwgOCAr
+KysrKystLQ0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2Z3LmggIHwg
+MSArDQo+ID4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvbWFjLmMgfCA0ICsr
+LS0NCj4gPiAgMyBmaWxlcyBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0p
+DQo+ID4gDQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3
+ODkvZncuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvZncuYw0KPiA+IGlu
+ZGV4IDUyMDk4MTMyNzU2NzYuLjQ2NDFhYWRlYTAzODYgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVy
+cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9mdy5jDQo+ID4gKysrIGIvZHJpdmVycy9uZXQv
+d2lyZWxlc3MvcmVhbHRlay9ydHc4OS9mdy5jDQo+ID4gQEAgLTk5Myw5ICs5OTMsMTMgQEAgaW50
+IHJ0dzg5X2Z3X2gyY191cGRhdGVfYmVhY29uKHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwNCj4g
+PiAgI2RlZmluZSBIMkNfUk9MRV9NQUlOVEFJTl9MRU4gNA0KPiA+ICBpbnQgcnR3ODlfZndfaDJj
+X3JvbGVfbWFpbnRhaW4oc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2LA0KPiA+ICAJCQkgICAgICAg
+c3RydWN0IHJ0dzg5X3ZpZiAqcnR3dmlmLA0KPiA+ICsJCQkgICAgICAgc3RydWN0IHJ0dzg5X3N0
+YSAqcnR3c3RhLA0KPiA+ICAJCQkgICAgICAgZW51bSBydHc4OV91cGRfbW9kZSB1cGRfbW9kZSkN
+Cj4gPiAgew0KPiA+ICAJc3RydWN0IHNrX2J1ZmYgKnNrYjsNCj4gPiArCXU4IG1hY19pZCA9IHJ0
+d3N0YSA/IHJ0d3N0YS0+bWFjX2lkIDogcnR3dmlmLT5tYWNfaWQ7DQo+ID4gKwl1OCBzZWxmX3Jv
+bGUgPSBydHd2aWYtPm5ldF90eXBlID09IFJUVzg5X05FVF9UWVBFX0FQX01PREUgJiYgcnR3c3Rh
+ID8NCj4gPiArCQkgICAgICAgUlRXODlfU0VMRl9ST0xFX0FQX0NMSUVOVCA6IHJ0d3ZpZi0+c2Vs
+Zl9yb2xlOw0KPiANCj4gSXQgc2VlbXMgeW91IGxpa2UgJz8nIG9wZXJhdG9yIG1vcmUgdGhhbiBJ
+IGRvLCBhbmQgaXQncyBvayB0byB1c2UgaW4NCj4gc2ltcGxlIGNhc2VzLiBCdXQgdGhlIGxhdHRl
+ciBzdGF0ZW1lbnQgaXMgbm90IHJlYWxseSByZWFkYWJsZSwgc29tZXRoaW5nDQo+IGxpa2UgdGhp
+cyBpcyBzbyBtdWNoIGVhc2llciB0byByZWFkOg0KPiANCj4gaWYgKHJ0d3ZpZi0+bmV0X3R5cGUg
+PT0gUlRXODlfTkVUX1RZUEVfQVBfTU9ERSAmJiBydHdzdGEpDQo+ICAgICBzZWxmX3JvbGUgPSBS
+VFc4OV9TRUxGX1JPTEVfQVBfQ0xJRU5UDQo+IGVsc2UNCj4gICAgIHNlbGZfcm9sZSA9IHJ0d3Zp
+Zi0+c2VsZl9yb2xlOw0KPiANCg0KSSB1c2UgJz8nIHRvIG1ha2UgY29kZSBzaG9ydGVyLCBidXQg
+eW91ciBzdWdlZXN0aW9uIHdvdWxkIGJlIGVhaXNlciB0byByZXZpZXdlci4NCkkgd2lsbCBzZW5k
+IHYyIGFmdGVyIHRoZSBMdW5hciBOZXcgWWVhci4gDQoNCg0KPiBCdXQgc2hvdWxkIHRoZXJlIGEg
+cGFyZW50aGVzaXMgYXJvdW5kIHRoZSA9PSBvcGVyYXRvcj8gSSBjYW5ub3Qgbm93DQo+IHJlY2Fs
+bCB3aGF0J3MgdGhlIHByZWZlcmVuY2UgaW4gdGhlIGtlcm5lbCwgY2FuIHNvbWVvbmUgaGVscCBv
+biB0aGF0Pw0KDQpUaGUgY2hlY2twYXRjaCB3aWxsIHdhcm4gdGhpcyBpZiB3ZSBhZGQgcGFyZW50
+aGVzaXMsIHNvIHByZWVuY2UgaXMgbm90IHRvDQp1c2UgcGFyZW50aGVzaXMuDQoNCkNIRUNLOlVO
+TkVDRVNTQVJZX1BBUkVOVEhFU0VTOiBVbm5lY2Vzc2FyeSBwYXJlbnRoZXNlcyBhcm91bmQgJ3J0
+d3ZpZi0+bmV0X3R5cGUgPT0NClJUVzg5X05FVF9UWVBFX0FQX01PREUnDQojOTogRklMRTogZncu
+YzoxMDA0Og0KKwlpZiAoKHJ0d3ZpZi0+bmV0X3R5cGUgPT0gUlRXODlfTkVUX1RZUEVfQVBfTU9E
+RSkgJiYgcnR3c3RhKQ0KDQo+IA0KPiBNYXliZSBJIGFsc28gbW92ZSBjaGVjayBmb3IgcnR3c3Rh
+IGZpcnN0Pw0KPiANCg0KVGhlIGZ1bGwgbG9naWMgaXMgDQoNCmlmIChydHd2aWYtPm5ldF90eXBl
+ID09IFJUVzg5X05FVF9UWVBFX0FQX01PREUpIHsNCiAgICBpZiAocnR3c3RhKQ0KICAgICAgICBz
+ZWxmX3JvbGUgPSBSVFc4OV9TRUxGX1JPTEVfQVBfQ0xJRU5UDQogICAgZWxzZQ0KICAgICAgICBz
+ZWxmX3JvbGUgPSBydHd2aWYtPnNlbGZfcm9sZTsNCn0gZWxzZSB7DQogICAgc2VsZl9yb2xlID0g
+cnR3dmlmLT5zZWxmX3JvbGU7DQp9DQoNCkFuZCwgdGhlIG1lYW5pbmcgb2YgJ3J0d3N0YScgaGVy
+ZSBpcyB0byBpbmRpY2F0ZSB3ZSBhcmUgZ29pbmcgdG8gc2V0dXAgDQphIGNvbm5lY3RlZCBzdGF0
+aW9uIHRoYXQgY29ubmVjdHMgdG8gdGhpcyBBUCwgYnV0IG5vdCBjaGVjayBpZiB0aGUNCnBvaW50
+ZXIgaXMgTlVMTC4gVG8gZW1waGFzaXMgdGhlIGNhc2UgaXMgb25seSBleGlzdGluZyBpbiBBUF9N
+T0RFLA0KSSBwcmVmZXIgdG8gY2hlY2sgbmV0X3R5cGUgYWhlYWQuIE9yLCB0aGlzIGZ1bGwgbG9n
+aWMgaXMgcHJlZmVycmVkPw0KDQoNClBpbmctS2UNCg0K
