@@ -2,113 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3647E4A363E
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jan 2022 13:28:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11CF24A365D
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jan 2022 13:49:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354791AbiA3M2h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 Jan 2022 07:28:37 -0500
-Received: from out5-smtp.messagingengine.com ([66.111.4.29]:42067 "EHLO
-        out5-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1354778AbiA3M2h (ORCPT
+        id S1347052AbiA3Mtl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 Jan 2022 07:49:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33616 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1354807AbiA3Mti (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 Jan 2022 07:28:37 -0500
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 4DF925C00D3;
-        Sun, 30 Jan 2022 07:28:36 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Sun, 30 Jan 2022 07:28:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm3; bh=CqNgAQVZzOtSZopuwwTwr1nRliYIINiQLlJfuP
-        6jJh4=; b=n3Tu2W7tZChUun+B1RLi9dStLLdAsEIelsKGUjkPFT2qHmhP6vu0/g
-        Oy/t6JMyeRnNUNRzsWtsM//DgRF+A6/4U4D+zNBako8eAS+yhM/LVjqtH/XsJ637
-        KYpCwa3derEfqo7cIenPnxxiy7XNmGvWuzZsDm9NJR/HRBTNTO1DCmL2v7eg2/mp
-        LtKYH+HfG4tUOEI0r49r4SS0UunG0MUqmz7O5oU4MdkFxM3a8GN012+3tyxEalF7
-        VmFjfpJGz/yjqpHFe76D+s6gw/O8K7pXorh3/v+9BW0JzT78QdW2lhAFzXLhEn9R
-        UcLFXGJd9psfikI5qpHbH7tR0i0sDzOA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=CqNgAQVZzOtSZopuw
-        wTwr1nRliYIINiQLlJfuP6jJh4=; b=MVKeUz4aBFTFwEvZuSauHMreHRnKHH+Sz
-        lK2s2BYgsAGmKvap1dL20k2zEA8+q6gPLiXGuc7bkM7+ATkkERvEfay18EH4n5nR
-        RC33V6r7cZdo4FjWurFEADhRK2o8OdbZm9JwbbGgfReOEbzfQmbn7B6G2HctiKVj
-        JtQzsrsLyhVRknqQTBEjErTidplCCxwDpFeRaJfJsB4oqnWafUN/QZ0jLhKBf1Pe
-        bzSy3Bh/j4hPHk1a9mOXB/qrguSOwQJr4EmvNUX+DFqNd8bAtcHh6nFwZ3LcFy57
-        AwlsIaan11j4XQif18/JpQC1Ri6IbczvbHUwLJOYCp2OZai9mZeyQ==
-X-ME-Sender: <xms:dIT2YYTEuvPaqXIatpE12hLfsmY0qlYuFGuV4iP0k9kSq7HBfdbS4w>
-    <xme:dIT2YVxgunxULaGyAuO3R2bHXQ2H-A9SP6qPADRto4f7xvlJDJgALH6ctgk8ShDhU
-    LXeD1_K7k4dtg>
-X-ME-Received: <xmr:dIT2YV0HHiIL1H_g8RGUsn0B7saxQpsxiXoeGg6bZuyvzicwX7SAHbHpBpNk2az3BO_d4JSeh1YwSr87RdFM66UzR4CdkiX->
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrfeelgdegudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepveeuheejgf
-    ffgfeivddukedvkedtleelleeghfeljeeiueeggeevueduudekvdetnecuvehluhhsthgv
-    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
-    gtohhm
-X-ME-Proxy: <xmx:dIT2YcAcBjZ7jy3Q_aJm0i5SpEZQPMBhokwAoMiATcTz0XolVYKcaw>
-    <xmx:dIT2YRiCsrsO7jsT_CfofukA6R9P5bXhOcqvRd3jdysdaJMgDwaGuw>
-    <xmx:dIT2YYqQ6YqRCFRCpAmaNARo5INhN05fxsTtLEgoam8I4wXYmm5AIQ>
-    <xmx:dIT2YRdoFboBnpsp6nJa3EokIgMLhqd--1JfkzwV5sLXMKqtO7GSfQ>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 30 Jan 2022 07:28:35 -0500 (EST)
-Date:   Sun, 30 Jan 2022 13:28:33 +0100
-From:   Greg KH <greg@kroah.com>
-To:     Felipe Contreras <felipe.contreras@gmail.com>
-Cc:     Linux stable <stable@vger.kernel.org>,
-        Linux wireless <linux-wireless@vger.kernel.org>
-Subject: Re: Regression in 5.16.3 with mt7921e
-Message-ID: <YfaEcWXg2lGYBSR5@kroah.com>
-References: <CAMP44s2vAmfHU+h5bSp5FJvks7T+b_tpdU1U4pBvK9jFF6C=eQ@mail.gmail.com>
- <YfY+C9hiX2V7LnT6@kroah.com>
- <CAMP44s0b93nO9uVYB3_p_c=cq8BR3WCtnQA=7jJxyAxYC6rxNQ@mail.gmail.com>
+        Sun, 30 Jan 2022 07:49:38 -0500
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050::465:201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BA4BC061714
+        for <linux-wireless@vger.kernel.org>; Sun, 30 Jan 2022 04:49:37 -0800 (PST)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:105:465:1:4:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4Jmrcb4Hy0z9sTN;
+        Sun, 30 Jan 2022 13:49:35 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gorani.run; s=MBO0001;
+        t=1643546973;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yzXzlkaoOK5xu02ZaK3t0lcbzHgPPZLbGSEovmpiwXY=;
+        b=cXQWQk6Hk095p56KH57f13GTjgX4JKaYDsbSKAea0jI+oGZzCo/Dz6CSadW02Tzr0tOQOB
+        mj1RAMiVAMgFdb7Ii4f3yjiOZubiIJbvVg45jRaiIwUubPmNJHZ2O1LJn9XcxwMhP9XADV
+        nDECR9c2CCZm0qt46+Wtkl9BbWWtW1MgijwodVIqJRIX8DoHNuM9+2UAWVWlEwkaqLkKqO
+        g9AMRskUzuXHAa2SXEOwKdt8sSVWXFkIkO7KTamODNHnldeBNqKm0UflT9fUVyK02lKrAk
+        7iCrsYlony76HeR420oiMKnYpvz2d/x1MqgIkZECdPi8iQVxEj3sZxWAkzDZxA==
+From:   Sungbo Eo <mans0n@gorani.run>
+To:     sforshee@kernel.org
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Sungbo Eo <mans0n@gorani.run>
+Subject: [PATCH v4] wireless-regdb: Update regulatory rules for South Korea (KR)
+Date:   Sun, 30 Jan 2022 21:49:07 +0900
+Message-Id: <20220130124907.39224-1-mans0n@gorani.run>
+In-Reply-To: <20211212152050.25962-1-mans0n@gorani.run>
+References: <20211212152050.25962-1-mans0n@gorani.run>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMP44s0b93nO9uVYB3_p_c=cq8BR3WCtnQA=7jJxyAxYC6rxNQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jan 30, 2022 at 02:07:32AM -0600, Felipe Contreras wrote:
-> On Sun, Jan 30, 2022 at 1:28 AM Greg KH <greg@kroah.com> wrote:
-> >
-> > On Sat, Jan 29, 2022 at 01:05:50PM -0600, Felipe Contreras wrote:
-> > > Hello,
-> > >
-> > > I've always had trouble with this driver in my Asus Zephyrus laptop,
-> > > but I was able to use it eventually, that's until 5.16.3 landed.
-> > >
-> > > This version completely broke it. I'm unable to bring the interface
-> > > up, no matter what I try.
-> > >
-> > > Before, sometimes I was able to make the chip work by suspending the
-> > > laptop, but in 5.16.3 the machine doesn't wake up (which is probably
-> > > another issue).
-> > >
-> > > Reverting back to 5.16.2 makes it work.
-> > >
-> > > Let me know if you need more information, or if you would like me to
-> > > bisect the issue.
-> >
-> > Using 'git bisect' would be best, so we know what commit exactly causes
-> > the problems.
-> 
-> I know, but it has been a while since I've created a decent config
-> file to build a kernel.
-> 
-> Either way, I pushed forward and the commit is a38b94c43943.
-> 
-> Upstream commit 547224024579 introduced a regression that was fixed by
-> the next commit 680a2ead741a, but the second commit was never merged
-> to stable.
-> 
-> I've sent the second commit to fix the regression.
+This patch is based on MSIT Public Notification 2021-86 ("Unlicensed Radio
+Equipment Established Without Notice"), officially announced on 2021-11-29.
 
-Wonderful, thanks for figuring this out and sending the fix.
+The PSD must not exceed 2.5 mW/MHz if the frequency range includes all or
+part of 5230-5250 MHz and the bandwidth is equal to or less than 40 MHz.
+This leads to the following:
+* 5230-5250 @ 20 -> 17 dBm
+* 5210-5250 @ 40 -> 20 dBm
+Here the power limit for >20 MHz bandwidth is also lowered to 17 dBm, as
+it's not possible to set different power limits for different bandwidths
+at the moment.
 
-greg k-h
+Extend the last 5 GHz frequency range to 5850 MHz.
+
+Wi-Fi 6E is now allowed with the following restrictions:
+* Indoor: the full 1.2 GHz range, up to 160 MHz bandwidth and 2 dBm/MHz PSD
+* Outdoor: the lower 500 MHz range, up to 160 MHz bandwidth and 25 mW EIRP
+Here only the former entry is added.
+
+And also update the regulatory source links.
+
+Signed-off-by: Sungbo Eo <mans0n@gorani.run>
+---
+v4:
+* merge 5210-5230 MHz band rule
+* revert back to "indoor only" 6E rule as its power limit is higher
+
+v3:
+* update regulatory source to newer revision
+* replace "indoor only" 6E rule with "both indoor and outdoor" rule
+  as "indoor only" rule limits PSD instead of EIRP
+
+v2:
+* split 5150-5250 MHz band rule to accommodate the PSD limit
+* remove AUTO-BW flag from 6 GHz band rule
+---
+ db.txt | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/db.txt b/db.txt
+index b898799..9b02a2c 100644
+--- a/db.txt
++++ b/db.txt
+@@ -862,15 +862,21 @@ country KP: DFS-JP
+ 	(5490 - 5630 @ 20), (30), DFS
+ 	(5735 - 5815 @ 20), (30)
+ 
++# Source:
++# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000205195
++# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000205187
++# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000206568
+ country KR: DFS-JP
+-	# ref: https://www.rra.go.kr
+ 	(2400 - 2483.5 @ 40), (23)
+-	(5150 - 5250 @ 80), (23), AUTO-BW
++	(5150 - 5230 @ 40), (23), AUTO-BW
++	# max. PSD 2.5 mW/MHz in 5230-5250 MHz frequency range
++	(5230 - 5250 @ 20), (17), AUTO-BW
+ 	(5250 - 5350 @ 80), (20), DFS, AUTO-BW
+ 	(5470 - 5725 @ 160), (20), DFS
+-	(5725 - 5835 @ 80), (23)
+-	# 60 GHz band channels 1-4,
+-	# ref: http://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/%EB%AC%B4%EC%84%A0%EC%84%A4%EB%B9%84%EA%B7%9C%EC%B9%99
++	(5725 - 5850 @ 80), (23)
++	# 6 GHz band
++	(5925 - 7125 @ 160), (15), NO-OUTDOOR
++	# 60 GHz band channels 1-4
+ 	(57000 - 66000 @ 2160), (43)
+ 
+ country KW: DFS-ETSI
+-- 
+2.35.0
+
