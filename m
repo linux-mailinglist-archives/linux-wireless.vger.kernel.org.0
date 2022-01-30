@@ -2,319 +2,523 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4876C4A35F8
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jan 2022 12:35:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B205E4A361F
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jan 2022 13:09:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354660AbiA3Lfr convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 Jan 2022 06:35:47 -0500
-Received: from mout.kundenserver.de ([212.227.126.131]:56631 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354655AbiA3Lfr (ORCPT
+        id S1347020AbiA3MJJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 Jan 2022 07:09:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53124 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1347001AbiA3MJJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 Jan 2022 06:35:47 -0500
-Received: from [192.168.1.107] ([37.4.249.169]) by mrelayeu.kundenserver.de
- (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MekrN-1meFyY03lN-00anHH; Sun, 30 Jan 2022 12:35:31 +0100
-Subject: Re: [PATCH RFC 1/4] brcmfmac: use separate firmware for 43430
- revision 4
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        Phil Elwell <phil@raspberrypi.com>, devicetree@vger.kernel.org,
-        soc@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        linux-rpi-kernel@lists.infradead.org
-References: <1641068812-5851-1-git-send-email-stefan.wahren@i2se.com>
- <1641068812-5851-2-git-send-email-stefan.wahren@i2se.com>
- <8ed4450d-85d9-c69b-761a-7695b3f1bbb3@i2se.com>
- <dff5f86f-d6a5-f197-3c90-3b77d06991ce@broadcom.com>
-From:   Stefan Wahren <stefan.wahren@i2se.com>
-Autocrypt: addr=stefan.wahren@i2se.com; keydata=
- LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tClZlcnNpb246IEdudVBHIHYy
- CgptUUlOQkZ0NmdCTUJFQUN1Yi9wQmV2SHhidkplZnlaRzMySklObW4yYnNFUFgyNVY2ZmVq
- bXlZd21DR0tqRnRMCi9Eb1VNRVZIRHhDSjQ3Qk1YbzM0NGZIVjFDM0FudWRnTjFCZWhMb0J0
- TEh4bW5lQ3pnSDNLY1B0V1c3cHRqNEcKdEp2OUNRRFp5MjdTS29FUHh5YUk4Q0YweWdSeEpj
- NzJNOUk5d21zUFo1YlVIc0x1WVdNcVE3SmNSbVBzNkQ4ZwpCa2srOC95bmdFeU5FeHd4SnBS
- MXlsajVianhXREh5WVF2dUo1THpaS3VPOUxCM2xYVnNjNGJxWEVqYzZWRnVaCkZDQ2svc3lp
- by9ZaHNlOE4rUXN4N01RYWd6NHdLVWtRUWJmWGcxVnFrVG5BaXZYczQyVm5Ja211NWd6SXcv
- MHQKUkp2NTBGUmhIaHhweUtBSThCOG5oTjhRdng3TVZrUGM1dkRmZDN1R1lXNDdKUGhWUUJj
- VXdKd05rLzQ5RjllQQp2ZzJtdE1QRm5GT1JrV1VSdlArRzZGSmZtNitDdk92N1lmUDF1ZXdB
- aTRsbitKTzFnK2dqVklXbC9XSnB5MG5UCmlwZGZlSDlkSGtnU2lmUXVuWWN1Y2lzTXlvUmJG
- OTU1dENna0VZOUVNRWRZMXQ4aUdEaUNnWDZzNTBMSGJpM2sKNDUzdWFjcHhmUVhTYUF3UGtz
- bDhNa0NPc3YyZUVyNElOQ0hZUUR5WmljbEJ1dUNnOEVOYlI2QUdWdFpTUGNRYgplbnpTektS
- Wm9POUNhcUlEK2ZhdkxpQi9kaHptSEErOWJnSWhtWGZ2WFJMRFp6ZThwbzFkeXQzRTFzaFhp
- ZGRaClBBOE51SlZ6RUl0MmxtSTZWOHBaRHBuMjIxcmZLaml2UlFpYW9zNTRUZ1pqak1ZSTdu
- bko3ZTZ4endBUkFRQUIKdENCVGRHVm1ZVzRnVjJGb2NtVnVJRHgzWVdoeVpXNXpkRUJuYlhn
- dWJtVjBQb2tDTndRVEFRZ0FJUVVDWElkYwo0Z0liQXdVTENRZ0hBZ1lWQ0FrS0N3SUVGZ0lE
- QVFJZUFRSVhnQUFLQ1JDVWdld1BFWkR5MjFPVEQvOUdpWkxkCnRSWWNteVJKZ2x0aVFRekFp
- UWRjSUQ3OGxHb1dwL3grci92Y1U2YjZqdVl1ZVR3Z1Iwclc3djdsMklSQnlEN24KSEp4YSt0
- SVNvUVpCZ2hvbE1JZmI5TXRoR09KTENZNzdrL1FoQWhuMzJOR1prZWp3OXR6a3MvNDBtclpT
- VVQ4NApaeWJzUVhyTE0vSFI2VElJL0RlUEIwbktEM0ppcHBzMlVIUUQ5cUQySWpFd1NRUGxI
- akNPckVaaDQ1UFo3bTkrClo5M0x6aVRlc1dabFlRdUxpSndzNHJLcHRIVzFkL3dSZWxzaG1t
- NlFxY0wybDRDL2U0MGVEQjlncTRkU1poOVgKUEVZbGxpeU5RaDdhMkxTZHVtRTFyK2NTd0lq
- RS91ZHRSdmRPOWFLb0psT2JVSzVkTmpTUEg3d0tUYndkWGRZRApHUHdEaFhkNThOQXdyK1BY
- QmxQajB0STFMQ3ErTEJ4ZUt6aFdYK0dWcTlEb2pWanlVREV4Rk5Ga1h1b0M3ZzhtClY5VDB0
- ZUJpdVpSbm91WEt3VjJGcHRaT0hIN0JVRVd0a0t0aGgxZXRmT1dwaWdCemtVN2JQc2ZJWVQr
- cnk5dGIKMW9KK3Y0MVBOYXFaRW1QVXBKeHZmek5UN3Ayd01lRDdaajlmMHJ1YlJQdExBSjJR
- R2pyRkhzdVh3QU9xcHl6ZQoxOEVidHNZazBOMHp1SEVoY2orUEJJQmZoMFlJWWQ1MW9mNkdJ
- aU95UjlxMFhYdHBsVUo3VDIvSDF1UXFrWGxwCitnVzRWa2lmc2NJckl1eWZueFpXMTJlSXZq
- NnlicVdMN2FZS0dZbVQ2aUxDUGJIWXlZY2F5bDRFa0ZjckNGN0UKZTBXVC9zY1ZNaE8vNVgv
- SGFOQTVIQngvcjUycGdMY3Y0aTlNeExRbVUzUmxabUZ1SUZkaGFISmxiaUE4YzNSbApabUZ1
- TG5kaGFISmxia0JwTW5ObExtTnZiVDZKQWpnRUV3RUNBQ0lGQWx0NmdCTUNHd01HQ3drSUJ3
- TUNCaFVJCkFna0tDd1FXQWdNQkFoNEJBaGVBQUFvSkVKU0I3QThSa1BMYmpic1AvamdqYVNz
- NUh0bGtBSXZXUytGcm15N2MKaG5jT0F4TFRWL0Q2UkV3SU95R0poRkt3d29pck55UTJnOXZV
- YTNZQ1lDZjFmSjh3RWhhS09COWQwTHBNUm5MNApkRVQ4ZDgyMzhFL3BLK0hxTktpSXNKaHM2
- SnNLOFpnalZRR3JtbWZua0dyWisxdjBIQnV4ZGljZ0duUC9XdHVBClVsOGw2Mi9BTGJheXlq
- KzYxQ2xyc0V0UklhcU82N0xJWXdQaVBEUkkrWGlNek5pR3pIRi8xUTZHUjAyUkg2YTMKRjg5
- ejhhUHhjSGkxWnZDdDJ5a3o2VUVjaHpQMHI1Z3FGSisvTC9VcHU4ME1YaVk0djVlSWFCNTJn
- VlBnaXlNQQpsTDJkRHMxbUladm5yUkxSWTJ0YjNtQVlOa1Y1QjVJRFQzcGtXeTZrS281T0Nn
- SytZZFlPUjhGTloyb04ydDhPCnJLK1ZudGFLN01NU0tIbG1ZL3NPd3RSbEVoMU9CbXJjQ3dH
- d21wLzA1R2tSNDZmL0lzaFJWZUZPUmF3K0dBcXQKUDIrQ0ZhMkNOQS9JSG5aTm95aWtsRHpQ
- UUhVVUdzck5wcERyaFg5Sm1oQm1nMXYyeXdIMU5YdTFpRGZQMUJBdwpLZ29rdDVmNVVhUkY5
- c0FBNTN2V0V2YlVVTjllZXNGR0x6UFdkSkdRNWhwZC9WSDVJUXk5U0JyaC93SWNla3E1Cm4w
- a042cGJUSHhHRTUyU2kvTVZJa05UdURaM2FwbjJqbERaNHBPdHBCWEkydlAzYlBPK05pcUJa
- anNVM3R4TGkKV2R2MkZqeXp6NlhMUndlV1JZVkw1SGE2TER0eG9yMnZ1NlVQMDdwOXh6MXhS
- WmFPRFczb1lsSEZ6WXBhNFc1ZwpMSGIybEVrSXVVZlNjaWNHYmpqQXRDbFRkR1ZtWVc0Z1Yy
- Rm9jbVZ1SUR4emRHVm1ZVzR1ZDJGb2NtVnVRR2x1CkxYUmxZMmd1WTI5dFBva0NOd1FUQVFn
- QUlRVUNYSWRlaHdJYkF3VUxDUWdIQWdZVkNBa0tDd0lFRmdJREFRSWUKQVFJWGdBQUtDUkNV
- Z2V3UEVaRHkyeUhURC85VUY3UWxEa0d4elE3QWFDSTZOOTVpUWY4LzFvU1VhRE51Mlk2SQpL
- K0R6UXBiMVRiVE9yM1ZKd3dZOGEzT1d6NU5MU09MTVdlVnh0K29zTW1sUUlHdWJEM09EWko4
- aXpQbEcvSnJOCnQ1elNkbU41SUE1ZjNlc1dXUVZLdmdoWkFnVERxZHB2K1pIVzJFbXhuQUox
- dUxGWFhlUWQzVVpjQzVyMy9nL3YKU2FNbzl4ZWszSjVtTnVEbTcxbEVXc0FzL0JBY0ZjK3lu
- TGh4d0JXQld3c3Z3UjhiSHRKNURPTVd2YUt1RHNrcApJR0ZVZS9LYjJCK2pyYXZRM1RuNnMv
- SHFKTTBjZXhTSHo1cGUrMHNHdlArdDlKNzIzNEJGUXdlRkV4cmlleThVCkl4T3I0WEFiYWFi
- U3J5WW5VL3pWSDlVMWkyQUlRWk1XSkFldkN2VmdRL1UrTmVSaFh1ZGU5WVVtRE1EbzJzQjIK
- VkFGRUFxaUYyUVVIUEEybThhN0VPM3lmTDRyTWswaUh6TElLdmg2L3JIOFFDWThpM1h4VE5M
- OWlDTHpCV3UvTgpPbkNBYlMremx2TFphaVNNaDVFZnV4VHR2NFBsVmRFamY2MlArWkhJRDE2
- Z1VEd0VtYXpMQU1yeDY2NmpINWt1ClVDVFZ5bWJMMFR2Qis2TDZBUmw4QU55TTRBRG1rV2tw
- eU0yMmtDdUlTWUFFZlFSM3VXWFo5WWd4YVBNcWJWK3cKQnJoSmc0SGFONkM2eFRxR3YzcjRC
- MmFxYjc3L0NWb1JKMVo5Y3BIQ3dpT3pJYUFtdnl6UFU2TXhDRFhaOEZnWQpsVDR2MjNHNWlt
- SlAyemdYNXMrRjZBQ1VKOVVRUEQwdVRmK0o5RGEycitza2gvc1dPbloreWNvSE5CUXZvY1pF
- Ck5BSFFmN2tDRFFSYmVvQVRBUkFBMkhkMGZzRFZLNzJSTFNESGJ5ME9oZ0RjRGxWQk0yTSto
- WVlwTzNmWDFyKysKc2hpcVBLQ0hWQXNRNWJ4ZTdIbUppbUhhNEtLWXMya3YvbWx0L0NhdUNK
- Ly9wbWN5Y0JNN0d2d25Lem11WHp1QQpHbVZUWkM2V1I1TGtha0ZydEhPelZtc0VHcE52NVJj
- OWw2SFlGcExrYlNrVmk1U1BRWkp5K0VNZ01DRmdqclpmClZGNnlvdHdFMWFmN0hOdE1oTlBh
- TEROMW9VS0Y1aitSeVJnNWl3SnVDRGtuSGp3QlFWNHBndzIvNXZTOEE3WlEKdjJNYlcvVExF
- eXBLWGlmNzhJaGdBelh0RTJYck0xbi9vNlpINzFvUkZGS096NDJsRmR6ZHJTWDBZc3FYZ0hD
- WAo1Z0l0TGZxemoxcHNNYTlvMWVpTlRFbTFkVlFyVHFueXMwbDE4b2FsUk5zd1lsUW1uWUJ3
- cHdDa2FUSExNSHdLCmZHQmJvNWRMUEVzaHRWb3dJNm5zZ3FMVHlRSG1xSFlxVVpZSXBpZ21t
- QzNTd0JXWTFWNmZmVUVta3FwQUFDRW4KTDQvZ1Vnbjd5US81ZDBzZXFuQXEycFNCSE1VVW9D
- Y1R6RVFVV1ZraUR2M1JrN2hURm1oVHNNcTc4eHYyWFJzWApNUjZ5UWhTVFBGWkNZRFVFeEVs
- RXNTbzlGV0hXcjZ6SHlZY2M4cURMRnZHOUZQaG1RdVQyczlCbHg2Z0kzMjNHCm5FcTFsd1dQ
- SlZ6UDRqUWtKS0lBWHdGcHYrVzhDV0xxekRXT3ZkbHJEYVRhVk1zY0ZUZUg1VzZVcHJsNjVq
- cUYKUUdNcGNSR0NzOEdDVVcxM0gwSXlPdFF0d1dYQTRueStTTDgxcHZpQW1hU1hVOGxhS2FS
- dTkxVk9WYUY5ZjRzQQpFUUVBQVlrQ0h3UVlBUUlBQ1FVQ1czcUFFd0liREFBS0NSQ1VnZXdQ
- RVpEeTIrb1hELzljSEhSa0JaT2ZrbVNxCjE0U3Z4MDYyUHRVMEtWNDcwVFNucC9qV29ZSm5L
- SXczRzBtWElSZ3J0SDJkUHdwSWdWanNZeVJTVk1LbVNwdDUKWnJEZjlOdFRiTldnazhWb0xl
- WnpZRW8rSjNvUHFGclRNczNhWVl2N2U0K0pLNjk1WW5tUSttT0Q5bmlhOTE1dApyNUFaajk1
- VWZTVGx5VW15aWMxZDhvdnNmMWZQN1hDVVZSRmNSamZOZkRGMW9ML3BEZ01QNUdaMk93YVRl
- am15CkN1SGpNOElSMUNpYXZCcFlEbUJuVFlrN1B0aHk2YXRXdllsMGZ5L0NxYWpUS3N4Nytw
- OXh6aXU4WmZWWCtpS0IKQ2MrSGUrRURFZEdJRGh2TlovSVFIZk9CMlBVWFdHUytzOUZOVHhy
- L0E2bkxHWG5BOVk2dzkzaVBkWUl3eFM3SwpYTG9LSmVlMTBEamx6c1lzUmZsRk9XMFpPaVNp
- aElDWGlRVjF1cU02dHpGRzlndFJjaXVzNVVBdGhXYU8xT3dVClNDUW1mQ09tNGZ2TUlKSUE5
- cnh0b1M2T3FSUWNpRjNjcm1vMHJKQ3ROMmF3WmZnaThYRWlmN2Q2aGp2MEVLTTkKWFpvaUFa
- WVpEKy9pTG01VGFLV042b0dJdGkwVmpKdjhaWk9aT2ZDYjZ2cUZJa0pXK2FPdTRvclRMRk16
- MjhhbwpVM1F5V3BOQzhGRm1kWXNWdWE4czZnTjFOSWE2eTNxYS9aQjhiQS9pa3k1OUFFejRp
- RElScmdVek1FZzhBazdUCmZtMUtpWWVpVHRCRENvMjVCdlhqYnFzeXhrUUQxbmtSbTZGQVZ6
- RXVPUEllOEp1cVcyeEQ5aXhHWXZqVTVoa1IKZ0pwM2dQNWIrY25HM0xQcXF1UTJFNmdvS1VN
- TEFia0NEUVJiZmw5REFSQUFzRExjYStMbFAydm5mdEVHaHBjQQpCR1ZOUUVGbkdQckNhdVU2
- SGhOODA1V3RQVHRtc1JPdUp6cWdVVDBtcHFXSWZacTZzTXd5dkhLOVRzL0tIM0paClVWYlJD
- M3oyaDNLZmhIL0RhZjk1cGQ2bVBjL2g5dkYvT3kzK2VUV2hnR25QNmNBNWtsUitmTzFXaEc4
- VnJpWHYKck5lUkcyMHN6emplSG9jblNJY1Q1WHVaUjB1REhPaUd4T2l6MXNNUkZUR3h6R095
- MTlSOXJ2dTYzdGlJM2Q3dgpnYzc1T0NBZGtlQi9TZUNFbGFSdzBUZjdMWmJQampzRjI2M0JZ
- bk1mNGtrTkVLdnFXY1UyaWNNcCtxZXpqeW5CCnB2ZXVlMHJDVFFCWUFRbG9GQ1ZUR0hyV1dB
- NkQ0VzVPMkFmSWRJYzF1MUpDWnAyZjVMV1ZvVUZUVklyUW5RUVUKU0hDaWZyOU1aeExUdFBK
- ZFU1Mm9TUHczZGs0aExQOGlKSUx1dnYvYXZhakNzUVlIRXR3WXNiZUZaeGl1TGdscApBN1lj
- Sk5ObXBnQ3BNRDR3VWh2bEN0QUtOQlFXeXIyOTc2OThFUVRuNDZlQmVVNkttMkNpaFhrZ3dD
- eWY4ZXlLCkxFM3NYZXdhcTVrZ1pXdk5xNml1NXFZSVJCOXl3K2NYYzYwZE9aRE9scTkzWDVT
- QVJZemFvZXBrSHo0cmtMa1AKUG8rdENIeUhRUHNHblBYYzlXVDgwREM5Tm5KR2R2VWx5NXJk
- TUk0eHBaeWdlb2tqd293VlFsUFV1Y1M2TXluNwpmOHc4Y2dmQjdDMklBSWNEeDJwUC9IendY
- dmtDT1FOQTdtVjFsTTA4bitnVmtUcnpweGlwNURicTRDSW9ZeDJNCkpaVDhiR1JINlhqY1VE
- S2EwOVFoeVpzQUVRRUFBWWtFUkFRWUFRZ0FEd1VDVzM1ZlF3SWJBZ1VKQThKbkFBSXAKQ1JD
- VWdld1BFWkR5MjhGZElBUVpBUWdBQmdVQ1czNWZRd0FLQ1JCVnhETFBjVk1NamNkc0QvMFJo
- QXN1UVlPeQpyMTNCbDNOaFhrWUFaR3AyWkZER3VrZTdPU2tWOG9qT09UZFR5ei9jT1JHQ2J5
- ZEQrRGd2cUZ5VmRuT1hLZ08wCmxKbUd3ckdlTGRnZ0F2aDBpaHJwNU8wWVVKOWJCU1htR01t
- UVRZSC9BbUxUR2FkYnVqQ1dqNWZGVWtDeXd4aW0KSHV5MFBiMjRwelR2UzUwR1k1WStxSDBG
- SE5haWdka2tpV04zcnVnN0haRXUvQ3lsUFpqT1h6K0QxUVBNckV4dwo3ZC9NS2FiVis5YU5i
- UVlabGRJajk4UXd2VUYxS1N6YThqbFVJdnBoUnEyN0FUOGZER1lHUGZERU1nMmNCT2FlCkty
- N29uUXM0YjdhV082aWZEbHhRVHB6c3pvK0FuODA3Tk1TdFZFRmYrczNBaFZEM2U3bmY4SkJh
- dmJWckFlMGsKb20yNm96elBubnh6K2xxVlZ0dzZVazRYTUl6dGl4L0h3SFl3dUNuY1VYWndL
- MEkzeUFKd2pZd29vck9DaEozUwpFVWJKUVB0R3NneFJERXhWQkZlNk5MUC82MnhQOU82dGFj
- d09kYjBNbVAxYjM5cFJBVEM3YmdkMWxkVUxpNzVaCmxKckowL1NpVkVyb3FOWXk3OXRmbWdB
- WjJVeFptczlTckV5Nm85UVNmc24xYVh2K01QTDlKYUNHbWtQNnpiTFEKTm5kajBKY2FRbmtD
- MHZneWRPMUJtNk11OTZQOXVmbEtaY0FTNndtTE01SWRIT3lqTDg4d0h3anVjakFPQnRjdwpw
- MG9HVG5WT25Sc05ZU084VzhZWi9LZGJ1Nzg1ZGF6TXFKMmlOakFEdUJiZG02TjRqNUVkTW5r
- TG4wQklmUEpwCmRnbTR2bDJVcExqd1JHci9NM3dtbTVwdnMrNnVCN2hrL0ZKaUQvNGxsRU5Q
- NGVNMWg3U200aitWcTZOMSt6VEIKSVhKQWViSXFhc0RwNXlaUzdYcnk0STM2bjg1WEVZZkcw
- MWx0QXlob05WMkRPOFNJUlFwdWkydHErOVJQM1JLMQpKREJ4eEVKWTJFTzVKWjhNeGFQSFEw
- RFQwNWxSRmpLMkFsaGRFSXRqTGpwSjNmVW05c3FMeE1XeHpQNlV6M2lpCjJ1YTR1bnJ0Nk9D
- VHFRd2lqRi8zYlRXaXd2VkFBSG5NRlVpb1hzaEhhb2hWRGNWZm5lSU1mVjBiUUNYWWkzTnAK
- WTB2MFp3Y2lGSCtnU0M3cUQ2WE51aHBWR1NMNElpbGlGeS9TemNhSkV6QUhlTERTaFpQMkNX
- ZG5DNHZnbDM3dApocHg4aDU1WWhKbjZIU3VVelBnaGFLdFZCMmsrajdaZXlaK1NGeHA3SXVi
- SEN3TEhsUWhUNzVSd1EzaUF4S242CjBxajUxY1lUbnF4ZFpYVzZmSDNQa3VNellVNUdwcVIv
- MU9sNWMvd2ZJNmc2QW04eUtXLzBFVUx0K0tuNExGc1MKbTdZM201SDV2MTJVNkpCWXZWK3Ix
- M2paaW9zNEVFREU5M0Q1c05IMk1JeVJ6Q0RxMXpkZHQ0WHV5S0ZqUEtXMQo5aWJaRGZGVjdL
- dUNzdnVMMjNzQmMxc0NNb3ArRTFtVC9ReE9JQTZvRFQxTVFzdHdPVnVReURDdi9PdktTZ2Z6
- CjhGWEdMNkFQY2xqQ3FqOEFKaHhReXN4ZG9pUVA4bS92dStialdHR3Z4dzVzMWxncGlSRFRS
- VVBnY0pKTmFHWTIKVklEclpRaTROU2lOUTBOSWkrZGp1NGZOTW1DcFFxZzh0YkMzY0FhNnl3
- bTZvUUIxU0JobURYMmUxMWdSbGx1SQpPblRHUEUwSFRvM2w3MmxoYmc9PQo9cVpNVgotLS0t
- LUVORCBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCg==
-Message-ID: <aa3c8cfc-39bf-22e4-cb98-c19c14e7d8bc@i2se.com>
-Date:   Sun, 30 Jan 2022 12:35:29 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Sun, 30 Jan 2022 07:09:09 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E464FC061714;
+        Sun, 30 Jan 2022 04:09:08 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 1B692CE0E88;
+        Sun, 30 Jan 2022 12:09:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A8FC340E4;
+        Sun, 30 Jan 2022 12:09:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643544544;
+        bh=Xt7rHWLP+Pg5zgGJ4Mjmq2j9/RO/6rcjJgV5H99Wv1U=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=sZEoQPZHth0+6CWntqQtLgeo/242RR0LSmW7RjmjnRzheTH95mk4lrQw0aIgmfCNo
+         73bVH/LttqZy7aD9ifweJtAK+ZU3UNLduX2y2wqf2U0oOVO9WxDf0S1A2O5ovDW7cl
+         859wkZXhRYH4ZVuNGdWXkja8s9ISMh1QVtN5ZoNytesRhCA23yqxqEFu5LZZE4DY5Z
+         XYzfKPNPft++slzBIR86RI3ioUFse3/9BAWOgwX2LevCEk6tu8jBLl7+96UNZgpSRO
+         XT74bzX8Cx0LR7kGThCoqPGWRSnHVK5BqOylvI8faNeDoL9hQz3QYsjYt1v5Ajbgj3
+         XLMJ4qfOTBzzA==
+Date:   Sun, 30 Jan 2022 13:08:59 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Felipe Contreras <felipe.contreras@gmail.com>
+Cc:     stable@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Sasha Levin <sashal@kernel.org>, Felix Fietkau <nbd@nbd.name>
+Subject: Re: [PATCH] mt76: connac: introduce MCU_CE_CMD macro
+Message-ID: <YfZ/25gQVWsMNfSR@lore-desk>
+References: <20220130075837.5270-1-felipe.contreras@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <dff5f86f-d6a5-f197-3c90-3b77d06991ce@broadcom.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Content-Language: en-US
-X-Provags-ID: V03:K1:6+Z44BygcltFYCjB9aiddCwuTCobdUbQkkkMNJgGOHffd/eHLsf
- zICfXsEkYlqiC7/lAQTwAk8NiJmgfafe+C6PgrI9fi/fVezqdWUyyV5GNJWzbX2fTuU84TF
- VtG6AKGAMeHrpDN4QhzHpN8ABII99BJ/VAFcszPVG9sKLPnvVzXMARYkLNiPBaz9g4e8Jky
- 9XH60a5qx0upm3sVLdDpA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:IPbZ+/MEq8g=:EXvWm1UVFXFtrYmEawM58s
- jjjcybwrQlcNGVUwsuOwi28RlCtxEsTymXcQkLqjejvZaT/vwZb5vM9RhbEGBJZXFPjaFOBSA
- pSSHwgHduTNYIoI4KWPuU0qkzhXWdxlTSMs1TIJm/aObUreUo4m7AadKZBiUTDbRzGIIP6KDC
- yOSceQTBPruJfpJbhCwlRZk0G+sPKNhc5W+unHNjxq2luDj5DRdMJLxCRBzxQSlg95Ge52RJO
- DNvueSr6a7GDWnP1iWN5juCdgJHKao1D1ugv5SjkD9HqhPWXLcyUQhOezQGEZ5iODbZ337mLx
- NxtJyDvyaSELW9A7NfIl2dWZSzm+sdXgo3Nz1RMbabGLkE9P0s9L67gGX+EQAstVkKgkwvGAE
- iAcFVJbvqO3NwQWAlGeY8RqWzXTnbF80QlNgazLr+ju+dusbqG+SDaxhd6TzrKanRFbSJUwo5
- NeZ6Xf0004bPHxCcKWKDXAE6RgbF1qLEmd2kD9U95zFaRvZmnDl7Pdtt6y6M1IXnAdskcAQ+o
- JlLcBCgBIDlBCGMpgW6UKz5ipiOSABQNKn4DZhOHyJyY7HRlg0MQca5S13Mt3bnYHtQb7cCy2
- 9vnBUI24xnXtv2T3izcRGUyyVRIml2qezFjdp+heZFjG+q3W7JIG5XweIcn/4owWgeR0XW+Db
- ++NwLseCQ5YxxNcPzGknGvMkTso6SmRV9NsvoS9y0bR7jzDFLPfaq7OvuSq6MztCSTK1Y0MHe
- lY1bPlaLOnmWE92K
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="UA9aW8DzF72q943g"
+Content-Disposition: inline
+In-Reply-To: <20220130075837.5270-1-felipe.contreras@gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Arend,
 
-Am 24.01.22 um 10:43 schrieb Arend van Spriel:
-> On 1/22/2022 1:35 PM, Stefan Wahren wrote:
->> Am 01.01.22 um 21:26 schrieb Stefan Wahren:
->>> A separate firmware is needed, for Broadcom 43430 revision 4. This
->>> chip can be found on e.g. certain revisions of Raspberry Pi Zero 2 W.
->>> Original firmware file from IC vendor is named
->>> 'brcmfmac43436-sdio.bin',
->>> but brcmfmac and also btbcm drivers report chip id 43430, so requested
->>> firmware file name is 'brcmfmac43430c0-sdio.bin' in line with other
->>> 43430 revisions.
->>>
->>> Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
->>> ---
->>>
->>> Hi,
->>> i'm not sure about all these mappings. All i can say is that the wifi
->>> interface of the RPi Zero 2 cames up with this patch.
->> gentle ping (yes, i'm aware of the merge window)
->
-> Sorry, Stefan
->
-> Should have seen this earlier, but here it is....
->
->>>
->>>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 4 +++-
->>>   1 file changed, 3 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->>> index 8effeb7..c79bd47 100644
->>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->>> @@ -618,6 +618,7 @@ BRCMF_FW_DEF(43430A0, "brcmfmac43430a0-sdio");
->>>   /* Note the names are not postfixed with a1 for backward
->>> compatibility */
->>>   BRCMF_FW_CLM_DEF(43430A1, "brcmfmac43430-sdio");
->>>   BRCMF_FW_DEF(43430B0, "brcmfmac43430b0-sdio");
->>> +BRCMF_FW_CLM_DEF(43430C0, "brcmfmac43430c0-sdio");
->>>   BRCMF_FW_CLM_DEF(43455, "brcmfmac43455-sdio");
->>>   BRCMF_FW_DEF(43456, "brcmfmac43456-sdio");
->>>   BRCMF_FW_CLM_DEF(4354, "brcmfmac4354-sdio");
->>> @@ -649,7 +650,8 @@ static const struct brcmf_firmware_mapping
->>> brcmf_sdio_fwnames[] = {
->>>       BRCMF_FW_ENTRY(BRCM_CC_4339_CHIP_ID, 0xFFFFFFFF, 4339),
->>>       BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000001, 43430A0),
->>>       BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000002, 43430A1),
->>> -    BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0xFFFFFFFC, 43430B0),
->>> +    BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000004, 43430C0),
->
-> According to the revision mask your firmware seems to be for numerical
-> revision 2 of this chip...
->
->>> +    BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0xFFFFFFF8, 43430B0),
->
-> and for the b0 the chip revision is 3 (or higher). So the alphanumeric
-> revision of your chip would be 'a2' instead of 'c0'.
+--UA9aW8DzF72q943g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-i changed this to a2 for the next version of this series. But before i
-send them out, please doublecheck the kernel log 5.17-rc1 of my RPi Zero
-2 W. I confuses me that the bluetooth part tells about BCM43430B0:
+> From: Lorenzo Bianconi <lorenzo@kernel.org>
+>=20
+> [ Upstream commit 680a2ead741ad9b479a53adf154ed5eee74d2b9a ]
+>=20
+> Similar to MCU_EXT_CMD, introduce MCU_CE_CMD for CE commands.
+>=20
+> Upstream commit 547224024579 (mt76: connac: introduce MCU_UNI_CMD macro,
+> 2021-12-09) introduced a bug by removing MCU_UNI_PREFIX, but not
+> updating MCU_CMD_MASK accordingly, so when commands are compared in
+> mt7921_mcu_parse_response() one has the extra bit __MCU_CMD_FIELD_UNI
+> set and the comparison fails:
+>=20
+>   if (mcu_cmd !=3D event->cid)
+>   if (20001 !=3D 1)
+>=20
+> The fix was sneaked by in the next commit 680a2ead741a (mt76: connac:
+> introduce MCU_CE_CMD macro, 2021-12-09):
+>=20
+> -	int mcu_cmd =3D cmd & MCU_CMD_MASK;
+> +	int mcu_cmd =3D FIELD_GET(__MCU_CMD_FIELD_ID, cmd);
+>=20
+> But it was never merged into linux-stable.
+>=20
+> We need either both commits, or none.
 
-[    9.653199] Bluetooth: hci0: BCM: chip id 115
-[    9.653749] Bluetooth: hci0: BCM: features 0x0e
-[    9.655466] Bluetooth: hci0: BCM43430B0
-[    9.655502] Bluetooth: hci0: BCM43430B0 (002.001.012) build 0000
-[    9.659512] vc4-drm soc:gpu: bound 3f400000.hvs (ops
-vc4_drm_unregister [vc4])
-[    9.667047] Bluetooth: hci0: BCM43430B0 'brcm/BCM43430B0.hcd' Patch
-[    9.668052] brcmfmac: brcmf_fw_alloc_request: using
-brcm/brcmfmac43430a2-sdio for chip BCM43430/2
-[    9.668567] brcmfmac mmc1:0001:1: Direct firmware load for
-brcm/brcmfmac43430a2-sdio.raspberrypi,model-zero-2-w.bin failed with
-error -2
-[    9.673724] vc4-drm soc:gpu: bound 3f400000.hvs (ops
-vc4_drm_unregister [vc4])
-[    9.697996] brcmfmac mmc1:0001:1: Direct firmware load for
-brcm/brcmfmac43430a2-sdio.raspberrypi,model-zero-2-w.txt failed with
-error -2
-[    9.816030] brcmfmac: brcmf_fw_alloc_request: using
-brcm/brcmfmac43430a2-sdio for chip BCM43430/2
-[    9.840128] brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM43430/2
-wl0: Oct  9 2020 14:44:32 version 9.88.4.65 (test) (f149b32@shgit) 
-(r679549) FWID 01-f40f3270
-[    9.919182] random: crng init done
-[    9.919200] random: 7 urandom warning(s) missed due to ratelimiting
-[   10.105524] vc4-drm soc:gpu: bound 3f400000.hvs (ops
-vc4_drm_unregister [vc4])
-[   10.118011] vc4-drm soc:gpu: bound 3f902000.hdmi (ops
-vc4_drm_unregister [vc4])
-[   10.118190] vc4-drm soc:gpu: bound 3f806000.vec (ops
-vc4_drm_unregister [vc4])
-[   10.118364] vc4-drm soc:gpu: bound 3f004000.txp (ops
-vc4_drm_unregister [vc4])
-[   10.118503] vc4-drm soc:gpu: bound 3f206000.pixelvalve (ops
-vc4_drm_unregister [vc4])
-[   10.118625] vc4-drm soc:gpu: bound 3f207000.pixelvalve (ops
-vc4_drm_unregister [vc4])
-[   10.118747] vc4-drm soc:gpu: bound 3f807000.pixelvalve (ops
-vc4_drm_unregister [vc4])
-[   10.118847] vc4-drm soc:gpu: bound 3fc00000.v3d (ops
-vc4_drm_unregister [vc4])
-[   10.119331] checking generic (1e330000 8ca000) vs hw (0 ffffffff)
-[   10.119339] fb0: switching to vc4 from simple
-[   10.122443] Console: switching to colour dummy device 80x30
-[   10.125147] [drm] Initialized vc4 0.0.0 20140616 for soc:gpu on minor 0
-[   10.203822] Console: switching to colour frame buffer device 240x75
-[   10.241067] vc4-drm soc:gpu: [drm] fb0: vc4drmfb frame buffer device
-[   10.414793] Bluetooth: hci0: BCM4343B0 37.4MHz wlbga_iLNA_iTR
-[Baseline: 0092]
-[   10.414822] Bluetooth: hci0: BCM43430B0 (002.001.012) build 0092
+Ack, I agree, we need to backport 680a2ead741a too. I did not notice I upda=
+ted
+mcu_cmd in mt7921_mcu_parse_response() in a different patch, thx for bisect=
+ing
+this.
 
-Thanks
+Regards,
+Lorenzo
 
+>=20
+> Cc: Sasha Levin <sashal@kernel.org>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> Signed-off-by: Felipe Contreras <felipe.contreras@gmail.com>
+> ---
+>  .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 16 +++----
+>  .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 47 ++++++++++--------
+>  .../wireless/mediatek/mt76/mt76_connac_mcu.h  | 48 ++++++++++---------
+>  .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 24 +++++-----
+>  .../wireless/mediatek/mt76/mt7921/testmode.c  |  4 +-
+>  5 files changed, 73 insertions(+), 66 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7615/mcu.c
+> index fcbcfc9f5a04..58be537adb1f 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+> @@ -145,7 +145,7 @@ void mt7615_mcu_fill_msg(struct mt7615_dev *dev, stru=
+ct sk_buff *skb,
+>  	mcu_txd->cid =3D mcu_cmd;
+>  	mcu_txd->ext_cid =3D FIELD_GET(__MCU_CMD_FIELD_EXT_ID, cmd);
+> =20
+> -	if (mcu_txd->ext_cid || (cmd & MCU_CE_PREFIX)) {
+> +	if (mcu_txd->ext_cid || (cmd & __MCU_CMD_FIELD_CE)) {
+>  		if (cmd & __MCU_CMD_FIELD_QUERY)
+>  			mcu_txd->set_query =3D MCU_Q_QUERY;
+>  		else
+> @@ -193,7 +193,7 @@ int mt7615_mcu_parse_response(struct mt76_dev *mdev, =
+int cmd,
+>  		skb_pull(skb, sizeof(*rxd));
+>  		event =3D (struct mt7615_mcu_uni_event *)skb->data;
+>  		ret =3D le32_to_cpu(event->status);
+> -	} else if (cmd =3D=3D MCU_CMD_REG_READ) {
+> +	} else if (cmd =3D=3D MCU_CE_QUERY(REG_READ)) {
+>  		struct mt7615_mcu_reg_event *event;
+> =20
+>  		skb_pull(skb, sizeof(*rxd));
+> @@ -2737,13 +2737,13 @@ int mt7615_mcu_set_bss_pm(struct mt7615_dev *dev,=
+ struct ieee80211_vif *vif,
+>  	if (vif->type !=3D NL80211_IFTYPE_STATION)
+>  		return 0;
+> =20
+> -	err =3D mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_BSS_ABORT, &req_hdr,
+> -				sizeof(req_hdr), false);
+> +	err =3D mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_BSS_ABORT),
+> +				&req_hdr, sizeof(req_hdr), false);
+>  	if (err < 0 || !enable)
+>  		return err;
+> =20
+> -	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_BSS_CONNECTED, &req,
+> -				 sizeof(req), false);
+> +	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_BSS_CONNECTED),
+> +				 &req, sizeof(req), false);
+>  }
+> =20
+>  int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+> @@ -2762,6 +2762,6 @@ int mt7615_mcu_set_roc(struct mt7615_phy *phy, stru=
+ct ieee80211_vif *vif,
+> =20
+>  	phy->roc_grant =3D false;
+> =20
+> -	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_ROC, &req,
+> -				 sizeof(req), false);
+> +	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_ROC),
+> +				 &req, sizeof(req), false);
+>  }
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drive=
+rs/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> index 7733c8fad241..1fb8432aa27c 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> @@ -160,7 +160,8 @@ int mt76_connac_mcu_set_channel_domain(struct mt76_ph=
+y *phy)
+> =20
+>  	memcpy(__skb_push(skb, sizeof(hdr)), &hdr, sizeof(hdr));
+> =20
+> -	return mt76_mcu_skb_send_msg(dev, skb, MCU_CMD_SET_CHAN_DOMAIN, false);
+> +	return mt76_mcu_skb_send_msg(dev, skb, MCU_CE_CMD(SET_CHAN_DOMAIN),
+> +				     false);
+>  }
+>  EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_channel_domain);
+> =20
+> @@ -198,8 +199,8 @@ int mt76_connac_mcu_set_vif_ps(struct mt76_dev *dev, =
+struct ieee80211_vif *vif)
+>  	if (vif->type !=3D NL80211_IFTYPE_STATION)
+>  		return -EOPNOTSUPP;
+> =20
+> -	return mt76_mcu_send_msg(dev, MCU_CMD_SET_PS_PROFILE, &req,
+> -				 sizeof(req), false);
+> +	return mt76_mcu_send_msg(dev, MCU_CE_CMD(SET_PS_PROFILE),
+> +				 &req, sizeof(req), false);
+>  }
+>  EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_vif_ps);
+> =20
+> @@ -1523,7 +1524,8 @@ int mt76_connac_mcu_hw_scan(struct mt76_phy *phy, s=
+truct ieee80211_vif *vif,
+>  		req->scan_func |=3D SCAN_FUNC_RANDOM_MAC;
+>  	}
+> =20
+> -	err =3D mt76_mcu_skb_send_msg(mdev, skb, MCU_CMD_START_HW_SCAN, false);
+> +	err =3D mt76_mcu_skb_send_msg(mdev, skb, MCU_CE_CMD(START_HW_SCAN),
+> +				    false);
+>  	if (err < 0)
+>  		clear_bit(MT76_HW_SCANNING, &phy->state);
+> =20
+> @@ -1551,8 +1553,8 @@ int mt76_connac_mcu_cancel_hw_scan(struct mt76_phy =
+*phy,
+>  		ieee80211_scan_completed(phy->hw, &info);
+>  	}
+> =20
+> -	return mt76_mcu_send_msg(phy->dev, MCU_CMD_CANCEL_HW_SCAN, &req,
+> -				 sizeof(req), false);
+> +	return mt76_mcu_send_msg(phy->dev, MCU_CE_CMD(CANCEL_HW_SCAN),
+> +				 &req, sizeof(req), false);
+>  }
+>  EXPORT_SYMBOL_GPL(mt76_connac_mcu_cancel_hw_scan);
+> =20
+> @@ -1638,7 +1640,8 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_phy =
+*phy,
+>  		memcpy(skb_put(skb, sreq->ie_len), sreq->ie, sreq->ie_len);
+>  	}
+> =20
+> -	return mt76_mcu_skb_send_msg(mdev, skb, MCU_CMD_SCHED_SCAN_REQ, false);
+> +	return mt76_mcu_skb_send_msg(mdev, skb, MCU_CE_CMD(SCHED_SCAN_REQ),
+> +				     false);
+>  }
+>  EXPORT_SYMBOL_GPL(mt76_connac_mcu_sched_scan_req);
+> =20
+> @@ -1658,8 +1661,8 @@ int mt76_connac_mcu_sched_scan_enable(struct mt76_p=
+hy *phy,
+>  	else
+>  		clear_bit(MT76_HW_SCHED_SCANNING, &phy->state);
+> =20
+> -	return mt76_mcu_send_msg(phy->dev, MCU_CMD_SCHED_SCAN_ENABLE, &req,
+> -				 sizeof(req), false);
+> +	return mt76_mcu_send_msg(phy->dev, MCU_CE_CMD(SCHED_SCAN_ENABLE),
+> +				 &req, sizeof(req), false);
+>  }
+>  EXPORT_SYMBOL_GPL(mt76_connac_mcu_sched_scan_enable);
+> =20
+> @@ -1671,8 +1674,8 @@ int mt76_connac_mcu_chip_config(struct mt76_dev *de=
+v)
+> =20
+>  	memcpy(req.data, "assert", 7);
+> =20
+> -	return mt76_mcu_send_msg(dev, MCU_CMD_CHIP_CONFIG, &req, sizeof(req),
+> -				 false);
+> +	return mt76_mcu_send_msg(dev, MCU_CE_CMD(CHIP_CONFIG),
+> +				 &req, sizeof(req), false);
+>  }
+>  EXPORT_SYMBOL_GPL(mt76_connac_mcu_chip_config);
+> =20
+> @@ -1684,8 +1687,8 @@ int mt76_connac_mcu_set_deep_sleep(struct mt76_dev =
+*dev, bool enable)
+> =20
+>  	snprintf(req.data, sizeof(req.data), "KeepFullPwr %d", !enable);
+> =20
+> -	return mt76_mcu_send_msg(dev, MCU_CMD_CHIP_CONFIG, &req, sizeof(req),
+> -				 false);
+> +	return mt76_mcu_send_msg(dev, MCU_CE_CMD(CHIP_CONFIG),
+> +				 &req, sizeof(req), false);
+>  }
+>  EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_deep_sleep);
+> =20
+> @@ -1787,8 +1790,8 @@ int mt76_connac_mcu_get_nic_capability(struct mt76_=
+phy *phy)
+>  	struct sk_buff *skb;
+>  	int ret, i;
+> =20
+> -	ret =3D mt76_mcu_send_and_get_msg(phy->dev, MCU_CMD_GET_NIC_CAPAB, NULL,
+> -					0, true, &skb);
+> +	ret =3D mt76_mcu_send_and_get_msg(phy->dev, MCU_CE_CMD(GET_NIC_CAPAB),
+> +					NULL, 0, true, &skb);
+>  	if (ret)
+>  		return ret;
+> =20
+> @@ -2071,7 +2074,8 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *=
+phy,
+>  		memcpy(skb->data, &tx_power_tlv, sizeof(tx_power_tlv));
+> =20
+>  		err =3D mt76_mcu_skb_send_msg(dev, skb,
+> -					    MCU_CMD_SET_RATE_TX_POWER, false);
+> +					    MCU_CE_CMD(SET_RATE_TX_POWER),
+> +					    false);
+>  		if (err < 0)
+>  			return err;
+>  	}
+> @@ -2163,8 +2167,8 @@ int mt76_connac_mcu_set_p2p_oppps(struct ieee80211_=
+hw *hw,
+>  		.bss_idx =3D mvif->idx,
+>  	};
+> =20
+> -	return mt76_mcu_send_msg(phy->dev, MCU_CMD_SET_P2P_OPPPS, &req,
+> -				 sizeof(req), false);
+> +	return mt76_mcu_send_msg(phy->dev, MCU_CE_CMD(SET_P2P_OPPPS),
+> +				 &req, sizeof(req), false);
+>  }
+>  EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_p2p_oppps);
+> =20
+> @@ -2490,8 +2494,8 @@ u32 mt76_connac_mcu_reg_rr(struct mt76_dev *dev, u3=
+2 offset)
+>  		.addr =3D cpu_to_le32(offset),
+>  	};
+> =20
+> -	return mt76_mcu_send_msg(dev, MCU_CMD_REG_READ, &req, sizeof(req),
+> -				 true);
+> +	return mt76_mcu_send_msg(dev, MCU_CE_QUERY(REG_READ), &req,
+> +				 sizeof(req), true);
+>  }
+>  EXPORT_SYMBOL_GPL(mt76_connac_mcu_reg_rr);
+> =20
+> @@ -2505,7 +2509,8 @@ void mt76_connac_mcu_reg_wr(struct mt76_dev *dev, u=
+32 offset, u32 val)
+>  		.val =3D cpu_to_le32(val),
+>  	};
+> =20
+> -	mt76_mcu_send_msg(dev, MCU_CMD_REG_WRITE, &req, sizeof(req), false);
+> +	mt76_mcu_send_msg(dev, MCU_CE_CMD(REG_WRITE), &req,
+> +			  sizeof(req), false);
+>  }
+>  EXPORT_SYMBOL_GPL(mt76_connac_mcu_reg_wr);
+> =20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drive=
+rs/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> index 5c5fab9154e5..acb9a286d354 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> @@ -496,13 +496,11 @@ enum {
+>  #define MCU_CMD_UNI_EXT_ACK			(MCU_CMD_ACK | MCU_CMD_UNI | \
+>  						 MCU_CMD_QUERY)
+> =20
+> -#define MCU_CE_PREFIX				BIT(29)
+> -#define MCU_CMD_MASK				~(MCU_CE_PREFIX)
+> -
+>  #define __MCU_CMD_FIELD_ID			GENMASK(7, 0)
+>  #define __MCU_CMD_FIELD_EXT_ID			GENMASK(15, 8)
+>  #define __MCU_CMD_FIELD_QUERY			BIT(16)
+>  #define __MCU_CMD_FIELD_UNI			BIT(17)
+> +#define __MCU_CMD_FIELD_CE			BIT(18)
+> =20
+>  #define MCU_CMD(_t)				FIELD_PREP(__MCU_CMD_FIELD_ID,		\
+>  							   MCU_CMD_##_t)
+> @@ -513,6 +511,10 @@ enum {
+>  #define MCU_UNI_CMD(_t)				(__MCU_CMD_FIELD_UNI |			\
+>  						 FIELD_PREP(__MCU_CMD_FIELD_ID,		\
+>  							    MCU_UNI_CMD_##_t))
+> +#define MCU_CE_CMD(_t)				(__MCU_CMD_FIELD_CE |			\
+> +						 FIELD_PREP(__MCU_CMD_FIELD_ID,		\
+> +							   MCU_CE_CMD_##_t))
+> +#define MCU_CE_QUERY(_t)			(MCU_CE_CMD(_t) | __MCU_CMD_FIELD_QUERY)
+> =20
+>  enum {
+>  	MCU_EXT_CMD_EFUSE_ACCESS =3D 0x01,
+> @@ -589,26 +591,26 @@ enum {
+> =20
+>  /* offload mcu commands */
+>  enum {
+> -	MCU_CMD_TEST_CTRL =3D MCU_CE_PREFIX | 0x01,
+> -	MCU_CMD_START_HW_SCAN =3D MCU_CE_PREFIX | 0x03,
+> -	MCU_CMD_SET_PS_PROFILE =3D MCU_CE_PREFIX | 0x05,
+> -	MCU_CMD_SET_CHAN_DOMAIN =3D MCU_CE_PREFIX | 0x0f,
+> -	MCU_CMD_SET_BSS_CONNECTED =3D MCU_CE_PREFIX | 0x16,
+> -	MCU_CMD_SET_BSS_ABORT =3D MCU_CE_PREFIX | 0x17,
+> -	MCU_CMD_CANCEL_HW_SCAN =3D MCU_CE_PREFIX | 0x1b,
+> -	MCU_CMD_SET_ROC =3D MCU_CE_PREFIX | 0x1d,
+> -	MCU_CMD_SET_P2P_OPPPS =3D MCU_CE_PREFIX | 0x33,
+> -	MCU_CMD_SET_RATE_TX_POWER =3D MCU_CE_PREFIX | 0x5d,
+> -	MCU_CMD_SCHED_SCAN_ENABLE =3D MCU_CE_PREFIX | 0x61,
+> -	MCU_CMD_SCHED_SCAN_REQ =3D MCU_CE_PREFIX | 0x62,
+> -	MCU_CMD_GET_NIC_CAPAB =3D MCU_CE_PREFIX | 0x8a,
+> -	MCU_CMD_SET_MU_EDCA_PARMS =3D MCU_CE_PREFIX | 0xb0,
+> -	MCU_CMD_REG_WRITE =3D MCU_CE_PREFIX | 0xc0,
+> -	MCU_CMD_REG_READ =3D MCU_CE_PREFIX | __MCU_CMD_FIELD_QUERY | 0xc0,
+> -	MCU_CMD_CHIP_CONFIG =3D MCU_CE_PREFIX | 0xca,
+> -	MCU_CMD_FWLOG_2_HOST =3D MCU_CE_PREFIX | 0xc5,
+> -	MCU_CMD_GET_WTBL =3D MCU_CE_PREFIX | 0xcd,
+> -	MCU_CMD_GET_TXPWR =3D MCU_CE_PREFIX | 0xd0,
+> +	MCU_CE_CMD_TEST_CTRL =3D 0x01,
+> +	MCU_CE_CMD_START_HW_SCAN =3D 0x03,
+> +	MCU_CE_CMD_SET_PS_PROFILE =3D 0x05,
+> +	MCU_CE_CMD_SET_CHAN_DOMAIN =3D 0x0f,
+> +	MCU_CE_CMD_SET_BSS_CONNECTED =3D 0x16,
+> +	MCU_CE_CMD_SET_BSS_ABORT =3D 0x17,
+> +	MCU_CE_CMD_CANCEL_HW_SCAN =3D 0x1b,
+> +	MCU_CE_CMD_SET_ROC =3D 0x1d,
+> +	MCU_CE_CMD_SET_P2P_OPPPS =3D 0x33,
+> +	MCU_CE_CMD_SET_RATE_TX_POWER =3D 0x5d,
+> +	MCU_CE_CMD_SCHED_SCAN_ENABLE =3D 0x61,
+> +	MCU_CE_CMD_SCHED_SCAN_REQ =3D 0x62,
+> +	MCU_CE_CMD_GET_NIC_CAPAB =3D 0x8a,
+> +	MCU_CE_CMD_SET_MU_EDCA_PARMS =3D 0xb0,
+> +	MCU_CE_CMD_REG_WRITE =3D 0xc0,
+> +	MCU_CE_CMD_REG_READ =3D 0xc0,
+> +	MCU_CE_CMD_CHIP_CONFIG =3D 0xca,
+> +	MCU_CE_CMD_FWLOG_2_HOST =3D 0xc5,
+> +	MCU_CE_CMD_GET_WTBL =3D 0xcd,
+> +	MCU_CE_CMD_GET_TXPWR =3D 0xd0,
+>  };
+> =20
+>  enum {
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7921/mcu.c
+> index 484a8c57b862..4c6adbb96955 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+> @@ -163,8 +163,8 @@ mt7921_mcu_parse_eeprom(struct mt76_dev *dev, struct =
+sk_buff *skb)
+>  int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
+>  			      struct sk_buff *skb, int seq)
+>  {
+> +	int mcu_cmd =3D FIELD_GET(__MCU_CMD_FIELD_ID, cmd);
+>  	struct mt7921_mcu_rxd *rxd;
+> -	int mcu_cmd =3D cmd & MCU_CMD_MASK;
+>  	int ret =3D 0;
+> =20
+>  	if (!skb) {
+> @@ -201,7 +201,7 @@ int mt7921_mcu_parse_response(struct mt76_dev *mdev, =
+int cmd,
+>  		/* skip invalid event */
+>  		if (mcu_cmd !=3D event->cid)
+>  			ret =3D -EAGAIN;
+> -	} else if (cmd =3D=3D MCU_CMD_REG_READ) {
+> +	} else if (cmd =3D=3D MCU_CE_QUERY(REG_READ)) {
+>  		struct mt7921_mcu_reg_event *event;
+> =20
+>  		skb_pull(skb, sizeof(*rxd));
+> @@ -274,7 +274,7 @@ int mt7921_mcu_fill_message(struct mt76_dev *mdev, st=
+ruct sk_buff *skb,
+>  	mcu_txd->s2d_index =3D MCU_S2D_H2N;
+>  	mcu_txd->ext_cid =3D FIELD_GET(__MCU_CMD_FIELD_EXT_ID, cmd);
+> =20
+> -	if (mcu_txd->ext_cid || (cmd & MCU_CE_PREFIX)) {
+> +	if (mcu_txd->ext_cid || (cmd & __MCU_CMD_FIELD_CE)) {
+>  		if (cmd & __MCU_CMD_FIELD_QUERY)
+>  			mcu_txd->set_query =3D MCU_Q_QUERY;
+>  		else
+> @@ -883,8 +883,8 @@ int mt7921_mcu_fw_log_2_host(struct mt7921_dev *dev, =
+u8 ctrl)
+>  		.ctrl_val =3D ctrl
+>  	};
+> =20
+> -	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_FWLOG_2_HOST, &data,
+> -				 sizeof(data), false);
+> +	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(FWLOG_2_HOST),
+> +				 &data, sizeof(data), false);
+>  }
+> =20
+>  int mt7921_run_firmware(struct mt7921_dev *dev)
+> @@ -1009,8 +1009,8 @@ int mt7921_mcu_set_tx(struct mt7921_dev *dev, struc=
+t ieee80211_vif *vif)
+>  		e->timer =3D q->mu_edca_timer;
+>  	}
+> =20
+> -	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_MU_EDCA_PARMS, &req_mu,
+> -				 sizeof(req_mu), false);
+> +	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_MU_EDCA_PARMS),
+> +				 &req_mu, sizeof(req_mu), false);
+>  }
+> =20
+>  int mt7921_mcu_set_chan_info(struct mt7921_phy *phy, int cmd)
+> @@ -1214,13 +1214,13 @@ mt7921_mcu_set_bss_pm(struct mt7921_dev *dev, str=
+uct ieee80211_vif *vif,
+>  	if (vif->type !=3D NL80211_IFTYPE_STATION)
+>  		return 0;
+> =20
+> -	err =3D mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_BSS_ABORT, &req_hdr,
+> -				sizeof(req_hdr), false);
+> +	err =3D mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_BSS_ABORT),
+> +				&req_hdr, sizeof(req_hdr), false);
+>  	if (err < 0 || !enable)
+>  		return err;
+> =20
+> -	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_BSS_CONNECTED, &req,
+> -				 sizeof(req), false);
+> +	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_BSS_CONNECTED),
+> +				 &req, sizeof(req), false);
+>  }
+> =20
+>  int mt7921_mcu_sta_update(struct mt7921_dev *dev, struct ieee80211_sta *=
+sta,
+> @@ -1330,7 +1330,7 @@ int mt7921_get_txpwr_info(struct mt7921_dev *dev, s=
+truct mt7921_txpwr *txpwr)
+>  	struct sk_buff *skb;
+>  	int ret;
+> =20
+> -	ret =3D mt76_mcu_send_and_get_msg(&dev->mt76, MCU_CMD_GET_TXPWR,
+> +	ret =3D mt76_mcu_send_and_get_msg(&dev->mt76, MCU_CE_CMD(GET_TXPWR),
+>  					&req, sizeof(req), true, &skb);
+>  	if (ret)
+>  		return ret;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c b/drive=
+rs/net/wireless/mediatek/mt76/mt7921/testmode.c
+> index 8bd43879dd6f..bdec8684ce94 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
+> @@ -66,7 +66,7 @@ mt7921_tm_set(struct mt7921_dev *dev, struct mt7921_tm_=
+cmd *req)
+>  	if (!mt76_testmode_enabled(phy))
+>  		goto out;
+> =20
+> -	ret =3D mt76_mcu_send_msg(&dev->mt76, MCU_CMD_TEST_CTRL, &cmd,
+> +	ret =3D mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(TEST_CTRL), &cmd,
+>  				sizeof(cmd), false);
+>  	if (ret)
+>  		goto out;
+> @@ -95,7 +95,7 @@ mt7921_tm_query(struct mt7921_dev *dev, struct mt7921_t=
+m_cmd *req,
+>  	struct sk_buff *skb;
+>  	int ret;
+> =20
+> -	ret =3D mt76_mcu_send_and_get_msg(&dev->mt76, MCU_CMD_TEST_CTRL,
+> +	ret =3D mt76_mcu_send_and_get_msg(&dev->mt76, MCU_CE_CMD(TEST_CTRL),
+>  					&cmd, sizeof(cmd), true, &skb);
+>  	if (ret)
+>  		goto out;
+> --=20
+> 2.35.1
+>=20
 
+--UA9aW8DzF72q943g
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYfZ/2wAKCRA6cBh0uS2t
+rHt6AP9iVrxj60Pu2InwLbA9MbUv3oUztjAJnAuoJ89qdDmWDgEA6uyfFGhLPLb9
+m2jrgsWuyh3xzuh4jAVt+OkySzCVPQo=
+=65/V
+-----END PGP SIGNATURE-----
+
+--UA9aW8DzF72q943g--
