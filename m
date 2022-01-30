@@ -2,97 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 050784A350E
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jan 2022 09:07:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C45394A357B
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jan 2022 10:53:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242848AbiA3IHq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 Jan 2022 03:07:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56960 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238784AbiA3IHp (ORCPT
+        id S1346817AbiA3JxL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 Jan 2022 04:53:11 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:37894 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229782AbiA3JxK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 Jan 2022 03:07:45 -0500
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40201C061714;
-        Sun, 30 Jan 2022 00:07:45 -0800 (PST)
-Received: by mail-wr1-x434.google.com with SMTP id u15so19383380wrt.3;
-        Sun, 30 Jan 2022 00:07:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xWLXnegr6qNbt4MHDjyTJqZDV0X5yrkaKELa5TFQ/S8=;
-        b=JB58ifro8/DGyF80lrbVTuv7Y6pS8yUyIWxx997a6P6YBs62LG6+BptHfS5mg0l5K6
-         lB8X3usilq1yuW9Np94UOjb+HDFQFMgGpgi4ItKNyzkzBKYfO258Xze0kfbKcyGGM1Vf
-         mu00o7XD+zWK62diBSzohPu2fFExQGan1usf7iNk1VPr09iqCdybKOwDH+nloKm8enX5
-         rfDs7+2CVWziWQMLk/541jgCCkiUknPQBJ41ce+gwG3a+RDzKf1tMRyX88hyfIDp2h0Q
-         +e9RqyAH2rU1C5z3lvYMSfgRzsVJfNq94dHYbonMCsdrMsEgn3/5EfEQIwM1mP8VHN2s
-         1iXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xWLXnegr6qNbt4MHDjyTJqZDV0X5yrkaKELa5TFQ/S8=;
-        b=LufBMrXDQo6V7dZccfCfQyKQJop310pSqPcrGF/jv9FwtnMaCG83yGOE1LbZBhK5S3
-         HOwTSp1YwJxveOMk8rkJMWwjn8OUFgLiqRYZNK4J29h7zWIzNdTRIQBvyln4qZgUZ9Mn
-         yL0/s7Xlxb2X98IZwG+t9aw5UZrtnldCUB7GJ1YTwGZ9vvkW9GyxY2FKc0YhFs19CAvR
-         Ztv1HS9D4Ds3pXK4/CC8CJjBMS3f4Xi0mmPBaGvWuKoqtnnUGPrr0raP17BjAs1KXn16
-         qeWhfuLfbYriWxP2GXeurHxI49zse7gphpvXadStYGQVTvMM7eRchE6B3+PJclN+XH2b
-         SKmQ==
-X-Gm-Message-State: AOAM531KPxZcxK3dGXZOrTuU8hQH7Z1/CyQE1xEvXqt8RxYeUhBNxy2q
-        kMhng3/ehApgSloAUf/fIjGFv4uFk32YIm5uvuDxiSZa/6A=
-X-Google-Smtp-Source: ABdhPJyT/L19+SeWYIdoW01PcDx2TDReWbLH0WJhUU6ZnT/IxK/MP1vq6D0L77jgtY8yT4L4stlUAoR1ismnyRB0seM=
-X-Received: by 2002:a5d:4e81:: with SMTP id e1mr13024621wru.513.1643530063688;
- Sun, 30 Jan 2022 00:07:43 -0800 (PST)
+        Sun, 30 Jan 2022 04:53:10 -0500
+Received: from 91-156-4-210.elisa-laajakaista.fi ([91.156.4.210] helo=kveik.lan)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <luca@coelho.fi>)
+        id 1nE6tP-0003JO-Ly;
+        Sun, 30 Jan 2022 11:53:08 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@kernel.org
+Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
+Date:   Sun, 30 Jan 2022 11:52:54 +0200
+Message-Id: <20220130095306.790573-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <CAMP44s2vAmfHU+h5bSp5FJvks7T+b_tpdU1U4pBvK9jFF6C=eQ@mail.gmail.com>
- <YfY+C9hiX2V7LnT6@kroah.com>
-In-Reply-To: <YfY+C9hiX2V7LnT6@kroah.com>
-From:   Felipe Contreras <felipe.contreras@gmail.com>
-Date:   Sun, 30 Jan 2022 02:07:32 -0600
-Message-ID: <CAMP44s0b93nO9uVYB3_p_c=cq8BR3WCtnQA=7jJxyAxYC6rxNQ@mail.gmail.com>
-Subject: Re: Regression in 5.16.3 with mt7921e
-To:     Greg KH <greg@kroah.com>
-Cc:     Linux stable <stable@vger.kernel.org>,
-        Linux wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
+Subject: [PATCH 00/12] iwlwifi: updates intended for v5.18 2022-01-30
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jan 30, 2022 at 1:28 AM Greg KH <greg@kroah.com> wrote:
->
-> On Sat, Jan 29, 2022 at 01:05:50PM -0600, Felipe Contreras wrote:
-> > Hello,
-> >
-> > I've always had trouble with this driver in my Asus Zephyrus laptop,
-> > but I was able to use it eventually, that's until 5.16.3 landed.
-> >
-> > This version completely broke it. I'm unable to bring the interface
-> > up, no matter what I try.
-> >
-> > Before, sometimes I was able to make the chip work by suspending the
-> > laptop, but in 5.16.3 the machine doesn't wake up (which is probably
-> > another issue).
-> >
-> > Reverting back to 5.16.2 makes it work.
-> >
-> > Let me know if you need more information, or if you would like me to
-> > bisect the issue.
->
-> Using 'git bisect' would be best, so we know what commit exactly causes
-> the problems.
+From: Luca Coelho <luciano.coelho@intel.com>
 
-I know, but it has been a while since I've created a decent config
-file to build a kernel.
+Hi,
 
-Either way, I pushed forward and the commit is a38b94c43943.
+Here's the third set of patches intended for v5.18.  It's the usual
+development, new features, cleanups and bugfixes.
 
-Upstream commit 547224024579 introduced a regression that was fixed by
-the next commit 680a2ead741a, but the second commit was never merged
-to stable.
+The changes are:
 
-I've sent the second commit to fix the regression.
+* A bunch of fixes for W=1 and W=3 warnings;
+* Add support for a couple of new devices;
+* Fix a potential buffer underflow;
+* Some other small fixes, clean-ups and improvements.
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Abhishek Naik (1):
+  iwlwifi: nvm: Correct HE capability
+
+Andrei Otcheretianski (1):
+  iwlwifi: pcie: make sure iwl_rx_packet_payload_len() will not
+    underflow
+
+Johannes Berg (6):
+  iwlwifi: fw: make dump_start callback void
+  iwlwifi: move symbols into a separate namespace
+  iwlwifi: dbg-tlv: clean up iwl_dbg_tlv_update_drams()
+  iwlwifi: avoid variable shadowing
+  iwlwifi: make some functions friendly to sparse
+  iwlwifi: mei: avoid -Wpointer-arith and -Wcast-qual warnings
+
+Luca Coelho (2):
+  iwlwifi: read and print OTP minor version
+  iwlwifi: remove unused DC2DC_CONFIG_CMD definitions
+
+Mike Golant (1):
+  iwlwifi: add support for BZ-U and BZ-L HW
+
+Miri Korenblit (1):
+  iwlwifi: mvm: use debug print instead of WARN_ON()
+
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c |  1 +
+ .../wireless/intel/iwlwifi/fw/api/commands.h  |  8 -----
+ .../wireless/intel/iwlwifi/fw/api/config.h    | 33 -------------------
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |  5 ++-
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |  2 --
+ .../net/wireless/intel/iwlwifi/fw/runtime.h   |  2 +-
+ .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  | 33 +++++++++++--------
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.h  |  2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-io.c   | 18 +++++-----
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 11 +++++--
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  2 ++
+ drivers/net/wireless/intel/iwlwifi/mei/main.c |  4 +--
+ drivers/net/wireless/intel/iwlwifi/mei/net.c  |  4 +--
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  6 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  6 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  2 --
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  2 ++
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |  2 +-
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c |  6 ++--
+ drivers/net/wireless/intel/iwlwifi/queue/tx.h | 10 +++---
+ 20 files changed, 66 insertions(+), 93 deletions(-)
 
 -- 
-Felipe Contreras
+2.34.1
+
