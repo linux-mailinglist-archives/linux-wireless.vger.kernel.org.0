@@ -2,27 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9B394A3582
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jan 2022 10:53:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 432BA4A3583
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jan 2022 10:53:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354546AbiA3JxQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1354550AbiA3JxQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Sun, 30 Jan 2022 04:53:16 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:37908 "EHLO
+Received: from paleale.coelho.fi ([176.9.41.70]:37910 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1354538AbiA3JxP (ORCPT
+        with ESMTP id S1354542AbiA3JxP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 30 Jan 2022 04:53:15 -0500
 Received: from 91-156-4-210.elisa-laajakaista.fi ([91.156.4.210] helo=kveik.lan)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.95)
         (envelope-from <luca@coelho.fi>)
-        id 1nE6tU-0003JO-Nb;
-        Sun, 30 Jan 2022 11:53:13 +0200
+        id 1nE6tV-0003JO-Ep;
+        Sun, 30 Jan 2022 11:53:14 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@kernel.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Sun, 30 Jan 2022 11:53:01 +0200
-Message-Id: <iwlwifi.20220130115024.9f2c282a3104.If6b868c96c0d089579ca72fd270387de81359d5b@changeid>
+Date:   Sun, 30 Jan 2022 11:53:02 +0200
+Message-Id: <iwlwifi.20220130115024.26c0044110cc.Ie0d215a22618e7a3ecc39eca349914981b608b4d@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220130095306.790573-1-luca@coelho.fi>
 References: <20220130095306.790573-1-luca@coelho.fi>
@@ -32,79 +32,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 07/12] iwlwifi: dbg-tlv: clean up iwl_dbg_tlv_update_drams()
+Subject: [PATCH 08/12] iwlwifi: remove unused DC2DC_CONFIG_CMD definitions
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Luca Coelho <luciano.coelho@intel.com>
 
-This function puts a fairly large structure unnecessarily
-on the stack, and also has a few other very strange things,
-clean it up a bit.
+We haven't used this command for a long time, if ever, so we can
+remove all related definitions.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  | 29 ++++++++++++-------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+ .../wireless/intel/iwlwifi/fw/api/commands.h  |  8 -----
+ .../wireless/intel/iwlwifi/fw/api/config.h    | 33 -------------------
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |  2 --
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  1 -
+ 4 files changed, 44 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-index 9346cf92322e..5a60aab662d6 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -769,33 +769,40 @@ static int iwl_dbg_tlv_update_dram(struct iwl_fw_runtime *fwrt,
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
+index 0703e41403a6..dded6e8a074a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
+@@ -322,14 +322,6 @@ enum iwl_legacy_cmds {
+ 	 */
+ 	REPLY_THERMAL_MNG_BACKOFF = 0x7e,
  
- static void iwl_dbg_tlv_update_drams(struct iwl_fw_runtime *fwrt)
- {
--	int ret, i, dram_alloc = 0;
--	struct iwl_dram_info dram_info;
-+	int ret, i;
-+	bool dram_alloc = false;
- 	struct iwl_dram_data *frags =
- 		&fwrt->trans->dbg.fw_mon_ini[IWL_FW_INI_ALLOCATION_ID_DBGC1].frags[0];
-+	struct iwl_dram_info *dram_info;
-+
-+	if (!frags || !frags->block)
-+		return;
-+
-+	dram_info = frags->block;
+-	/**
+-	 * @DC2DC_CONFIG_CMD:
+-	 * Set/Get DC2DC frequency tune
+-	 * Command is &struct iwl_dc2dc_config_cmd,
+-	 * response is &struct iwl_dc2dc_config_resp
+-	 */
+-	DC2DC_CONFIG_CMD = 0x83,
+-
+ 	/**
+ 	 * @NVM_ACCESS_CMD: using &struct iwl_nvm_access_cmd
+ 	 */
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/config.h b/drivers/net/wireless/intel/iwlwifi/fw/api/config.h
+index 1ab92f62c414..087354b3c308 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/config.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/config.h
+@@ -114,37 +114,4 @@ enum iwl_dc2dc_config_id {
+ 	DCDC_FREQ_TUNE_SET = 0x2,
+ }; /* MARKER_ID_API_E_VER_1 */
  
- 	if (!fw_has_capa(&fwrt->fw->ucode_capa,
- 			 IWL_UCODE_TLV_CAPA_DRAM_FRAG_SUPPORT))
- 		return;
- 
--	dram_info.first_word = cpu_to_le32(DRAM_INFO_FIRST_MAGIC_WORD);
--	dram_info.second_word = cpu_to_le32(DRAM_INFO_SECOND_MAGIC_WORD);
-+	dram_info->first_word = cpu_to_le32(DRAM_INFO_FIRST_MAGIC_WORD);
-+	dram_info->second_word = cpu_to_le32(DRAM_INFO_SECOND_MAGIC_WORD);
- 
- 	for (i = IWL_FW_INI_ALLOCATION_ID_DBGC1;
- 	     i <= IWL_FW_INI_ALLOCATION_ID_DBGC3; i++) {
--		ret = iwl_dbg_tlv_update_dram(fwrt, i, &dram_info);
-+		ret = iwl_dbg_tlv_update_dram(fwrt, i, dram_info);
- 		if (!ret)
--			dram_alloc++;
-+			dram_alloc = true;
- 		else
- 			IWL_WARN(fwrt,
- 				 "WRT: Failed to set DRAM buffer for alloc id %d, ret=%d\n",
- 				 i, ret);
- 	}
--	if (dram_alloc) {
--		memcpy(frags->block, &dram_info, sizeof(dram_info));
--		IWL_DEBUG_FW(fwrt, "block data after  %016x\n",
--			     *((int *)fwrt->trans->dbg.fw_mon_ini[1].frags[0].block));
--	}
-+
-+	if (dram_alloc)
-+		IWL_DEBUG_FW(fwrt, "block data after  %08x\n",
-+			     dram_info->first_word);
-+	else
-+		memset(frags->block, 0, sizeof(*dram_info));
- }
- 
- static void iwl_dbg_tlv_send_hcmds(struct iwl_fw_runtime *fwrt,
+-/**
+- * struct iwl_dc2dc_config_cmd - configure dc2dc values
+- *
+- * (DC2DC_CONFIG_CMD = 0x83)
+- *
+- * Set/Get & configure dc2dc values.
+- * The command always returns the current dc2dc values.
+- *
+- * @flags: set/get dc2dc
+- * @enable_low_power_mode: not used.
+- * @dc2dc_freq_tune0: frequency divider - digital domain
+- * @dc2dc_freq_tune1: frequency divider - analog domain
+- */
+-struct iwl_dc2dc_config_cmd {
+-	__le32 flags;
+-	__le32 enable_low_power_mode; /* not used */
+-	__le32 dc2dc_freq_tune0;
+-	__le32 dc2dc_freq_tune1;
+-} __packed; /* DC2DC_CONFIG_CMD_API_S_VER_1 */
+-
+-/**
+- * struct iwl_dc2dc_config_resp - response for iwl_dc2dc_config_cmd
+- *
+- * Current dc2dc values returned by the FW.
+- *
+- * @dc2dc_freq_tune0: frequency divider - digital domain
+- * @dc2dc_freq_tune1: frequency divider - analog domain
+- */
+-struct iwl_dc2dc_config_resp {
+-	__le32 dc2dc_freq_tune0;
+-	__le32 dc2dc_freq_tune1;
+-} __packed; /* DC2DC_CONFIG_RESP_API_S_VER_1 */
+-
+ #endif /* __iwl_fw_api_config_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+index e7d3032cd3f9..5b30136983c3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+@@ -312,7 +312,6 @@ typedef unsigned int __bitwise iwl_ucode_tlv_capa_t;
+  * @IWL_UCODE_TLV_CAPA_TDLS_CHANNEL_SWITCH: supports TDLS channel switching
+  * @IWL_UCODE_TLV_CAPA_CNSLDTD_D3_D0_IMG: Consolidated D3-D0 image
+  * @IWL_UCODE_TLV_CAPA_HOTSPOT_SUPPORT: supports Hot Spot Command
+- * @IWL_UCODE_TLV_CAPA_DC2DC_SUPPORT: supports DC2DC Command
+  * @IWL_UCODE_TLV_CAPA_CSUM_SUPPORT: supports TCP Checksum Offload
+  * @IWL_UCODE_TLV_CAPA_RADIO_BEACON_STATS: support radio and beacon statistics
+  * @IWL_UCODE_TLV_CAPA_P2P_SCM_UAPSD: supports U-APSD on p2p interface when it
+@@ -388,7 +387,6 @@ enum iwl_ucode_tlv_capa {
+ 	IWL_UCODE_TLV_CAPA_TDLS_CHANNEL_SWITCH		= (__force iwl_ucode_tlv_capa_t)13,
+ 	IWL_UCODE_TLV_CAPA_CNSLDTD_D3_D0_IMG		= (__force iwl_ucode_tlv_capa_t)17,
+ 	IWL_UCODE_TLV_CAPA_HOTSPOT_SUPPORT		= (__force iwl_ucode_tlv_capa_t)18,
+-	IWL_UCODE_TLV_CAPA_DC2DC_CONFIG_SUPPORT		= (__force iwl_ucode_tlv_capa_t)19,
+ 	IWL_UCODE_TLV_CAPA_CSUM_SUPPORT			= (__force iwl_ucode_tlv_capa_t)21,
+ 	IWL_UCODE_TLV_CAPA_RADIO_BEACON_STATS		= (__force iwl_ucode_tlv_capa_t)22,
+ 	IWL_UCODE_TLV_CAPA_P2P_SCM_UAPSD		= (__force iwl_ucode_tlv_capa_t)26,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index fd866ab38e18..5626eb091943 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -449,7 +449,6 @@ static const struct iwl_hcmd_names iwl_mvm_legacy_names[] = {
+ 	HCMD_NAME(POWER_TABLE_CMD),
+ 	HCMD_NAME(PSM_UAPSD_AP_MISBEHAVING_NOTIFICATION),
+ 	HCMD_NAME(REPLY_THERMAL_MNG_BACKOFF),
+-	HCMD_NAME(DC2DC_CONFIG_CMD),
+ 	HCMD_NAME(NVM_ACCESS_CMD),
+ 	HCMD_NAME(BEACON_NOTIFICATION),
+ 	HCMD_NAME(BEACON_TEMPLATE_CMD),
 -- 
 2.34.1
 
