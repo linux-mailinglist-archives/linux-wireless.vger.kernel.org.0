@@ -2,91 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31C1C4A3AB9
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jan 2022 23:37:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4867C4A3CA0
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jan 2022 03:54:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356653AbiA3WhT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 Jan 2022 17:37:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49406 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233616AbiA3WhS (ORCPT
+        id S1357436AbiAaCyM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 Jan 2022 21:54:12 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:43845 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1357428AbiAaCyH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 Jan 2022 17:37:18 -0500
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBFBFC061714;
-        Sun, 30 Jan 2022 14:37:17 -0800 (PST)
-Received: by mail-wm1-x336.google.com with SMTP id l12-20020a7bc34c000000b003467c58cbdfso12416367wmj.2;
-        Sun, 30 Jan 2022 14:37:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=LiwpBu4M08AZnkMwgpYj1EoWqXR0OVGxhENJRrnFA6A=;
-        b=FoEuO3+a0JfsU4DDr4PRQHApw0lvIXm+BoXe2F9lzcHY/eHsSYCYu+SRhOiTLeD6Sm
-         T5azkNJuUMmP4yPuUIRHINMDKjAuUHdMXz468ydpTeOEfjVLjeykwBtK5oo73aUNrfIV
-         xqZ2Ysqpy34MlhLH97C35dlNwky+y96Un9uMekx59oDPOTVjo3euL4vEnWAGLjZd3YHa
-         vf5ZkQ0Q2mfZ/DVZ4zcBbvddWWkEpmC8/129arGxufifDSNfp754OwYcKBRdLMnmHtLq
-         XosU4Rg5Fht+HhkxUnqMWsTZ7no8y0KVKHyjilmYpu7Mnl+Ig1mTpjoomf9jFnHgKxrj
-         729w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=LiwpBu4M08AZnkMwgpYj1EoWqXR0OVGxhENJRrnFA6A=;
-        b=2f3EzMRzkD12HmlWEz4d8X9G1tcE4ZKmsf6tpqxgE0+MDdkDyTuD6p722E+W2mZ22R
-         8jDelzAQGvNA10usMDnuGjF4ElFsxnk4N7YaGYTWgoZuC0dKsOv83LBc81dXj+Q69X6W
-         2Of+stZCHC2SJmeWVSqjUAUEUYnxuFK7lUQ4Kzrg5g77OgR3+3o3iTlxvg7UnreLtKsU
-         9kY0MwM0aPFYS1b10PyaMNGTjNEDwJ7cf3gN40wPg30KN/NBEA8qb8TRybZmaS50h4+3
-         QXKk4RCymOBXTEVbnrDTruG1qz0qM7XkaYkt45JM0z3eXXDAvAgM/mD4FmverMa7HXu7
-         OYLQ==
-X-Gm-Message-State: AOAM533StdTLHzn5IdcEaXBrg8a+s/vw1/jWzZ6UBcaJpDmnV50Z/jAV
-        4QX7w5TQXmvKodZBfUbZ1aI=
-X-Google-Smtp-Source: ABdhPJwc51UUcKSTBqdxRNwwWogSb6LyzW3Y+WwT70s6utiqC4KvLngvlItXv9qrp8UziP34m+Ep1Q==
-X-Received: by 2002:a05:600c:3d0c:: with SMTP id bh12mr25432131wmb.179.1643582235624;
-        Sun, 30 Jan 2022 14:37:15 -0800 (PST)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id e9sm3576034wrg.60.2022.01.30.14.37.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Jan 2022 14:37:15 -0800 (PST)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] rtlwifi: remove redundant initialization of variable ul_encalgo
-Date:   Sun, 30 Jan 2022 22:37:14 +0000
-Message-Id: <20220130223714.6999-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
+        Sun, 30 Jan 2022 21:54:07 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 20V2rf6V3003389, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 20V2rf6V3003389
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 31 Jan 2022 10:53:41 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17; Mon, 31 Jan 2022 10:53:41 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Mon, 31 Jan 2022 10:53:41 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e]) by
+ RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e%5]) with mapi id
+ 15.01.2308.020; Mon, 31 Jan 2022 10:53:41 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "colin.i.king@gmail.com" <colin.i.king@gmail.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rtlwifi: remove redundant initialization of variable ul_encalgo
+Thread-Topic: [PATCH] rtlwifi: remove redundant initialization of variable
+ ul_encalgo
+Thread-Index: AQHYFinyAYEbu+NX9kauX8snRBxGHqx76QqA
+Date:   Mon, 31 Jan 2022 02:53:40 +0000
+Message-ID: <55f8c7f2c75b18cd628d02a25ed96fae676eace2.camel@realtek.com>
+References: <20220130223714.6999-1-colin.i.king@gmail.com>
+In-Reply-To: <20220130223714.6999-1-colin.i.king@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [111.252.224.243]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzEvMzAg5LiL5Y2IIDEwOjIxOjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-ID: <AF69B66F0AB8C44397B963849C6B24DA@realtek.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Variable ul_encalgo is initialized with a value that is never read,
-it is being re-assigned a new value in every case in the following
-switch statement. The initialization is redundant and can be removed.
-
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/net/wireless/realtek/rtlwifi/cam.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/cam.c b/drivers/net/wireless/realtek/rtlwifi/cam.c
-index 7a0355dc6bab..32970ea4b4e7 100644
---- a/drivers/net/wireless/realtek/rtlwifi/cam.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/cam.c
-@@ -208,7 +208,7 @@ void rtl_cam_empty_entry(struct ieee80211_hw *hw, u8 uc_index)
- 
- 	u32 ul_command;
- 	u32 ul_content;
--	u32 ul_encalgo = rtlpriv->cfg->maps[SEC_CAM_AES];
-+	u32 ul_encalgo;
- 	u8 entry_i;
- 
- 	switch (rtlpriv->sec.pairwise_enc_algorithm) {
--- 
-2.34.1
-
+T24gU3VuLCAyMDIyLTAxLTMwIGF0IDIyOjM3ICswMDAwLCBDb2xpbiBJYW4gS2luZyB3cm90ZToN
+Cj4gVmFyaWFibGUgdWxfZW5jYWxnbyBpcyBpbml0aWFsaXplZCB3aXRoIGEgdmFsdWUgdGhhdCBp
+cyBuZXZlciByZWFkLA0KPiBpdCBpcyBiZWluZyByZS1hc3NpZ25lZCBhIG5ldyB2YWx1ZSBpbiBl
+dmVyeSBjYXNlIGluIHRoZSBmb2xsb3dpbmcNCj4gc3dpdGNoIHN0YXRlbWVudC4gVGhlIGluaXRp
+YWxpemF0aW9uIGlzIHJlZHVuZGFudCBhbmQgY2FuIGJlIHJlbW92ZWQuDQo+IA0KPiBTaWduZWQt
+b2ZmLWJ5OiBDb2xpbiBJYW4gS2luZyA8Y29saW4uaS5raW5nQGdtYWlsLmNvbT4NCg0KQWNrZWQt
+Ynk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KDQo+IC0tLQ0KPiAgZHJpdmVy
+cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL2NhbS5jIHwgMiArLQ0KPiAgMSBmaWxlIGNo
+YW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL2NhbS5jDQo+IGIvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL2NhbS5jDQo+IGluZGV4IDdhMDM1NWRjNmJhYi4u
+MzI5NzBlYTRiNGU3IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVr
+L3J0bHdpZmkvY2FtLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3
+aWZpL2NhbS5jDQo+IEBAIC0yMDgsNyArMjA4LDcgQEAgdm9pZCBydGxfY2FtX2VtcHR5X2VudHJ5
+KHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LCB1OCB1Y19pbmRleCkNCj4gIA0KPiAgCXUzMiB1bF9j
+b21tYW5kOw0KPiAgCXUzMiB1bF9jb250ZW50Ow0KPiAtCXUzMiB1bF9lbmNhbGdvID0gcnRscHJp
+di0+Y2ZnLT5tYXBzW1NFQ19DQU1fQUVTXTsNCj4gKwl1MzIgdWxfZW5jYWxnbzsNCj4gIAl1OCBl
+bnRyeV9pOw0KPiAgDQo+ICAJc3dpdGNoIChydGxwcml2LT5zZWMucGFpcndpc2VfZW5jX2FsZ29y
+aXRobSkgew0KPiAtLSANCg0KV2hlbiBJIGNoZWNrIHRoaXMgcGF0Y2gsIEkgZmluZCB0aGVyZSBp
+cyBubyAnYnJlYWsnIGZvciBkZWZhdWx0IGNhc2UuDQpEbyB3ZSBuZWVkIG9uZT8gbGlrZQ0KDQpA
+QCAtMjI2LDYgKzIyNiw3IEBAIHZvaWQgcnRsX2NhbV9lbXB0eV9lbnRyeShzdHJ1Y3QgaWVlZTgw
+MjExX2h3ICpodywgdTggdWNfaW5kZXgpDQogICAgICAgICAgICAgICAgYnJlYWs7DQogICAgICAg
+IGRlZmF1bHQ6DQogICAgICAgICAgICAgICAgdWxfZW5jYWxnbyA9IHJ0bHByaXYtPmNmZy0+bWFw
+c1tTRUNfQ0FNX0FFU107DQorICAgICAgICAgICAgICAgYnJlYWs7DQogICAgICAgIH0NCiANCiAg
+ICAgICAgZm9yIChlbnRyeV9pID0gMDsgZW50cnlfaSA8IENBTV9DT05URU5UX0NPVU5UOyBlbnRy
+eV9pKyspIHsNCg0KLS0NClBpbmctS2UNCg0KDQo=
