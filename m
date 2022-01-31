@@ -2,77 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E0454A5296
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jan 2022 23:48:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 535DE4A52AA
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jan 2022 23:53:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234806AbiAaWsy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Jan 2022 17:48:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39484 "EHLO
+        id S235261AbiAaWxv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Jan 2022 17:53:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229890AbiAaWsx (ORCPT
+        with ESMTP id S235325AbiAaWxr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Jan 2022 17:48:53 -0500
-X-Greylist: delayed 485 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 31 Jan 2022 14:48:53 PST
-Received: from mail.maslowski.xyz (maslowski.xyz [IPv6:2001:19f0:5:5b98:5400:3ff:fe59:951d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A7D4C061714;
-        Mon, 31 Jan 2022 14:48:53 -0800 (PST)
-Received: from [127.0.0.1] (public-gprs393678.centertel.pl [37.47.169.15])
-        by mail.maslowski.xyz (Postfix) with ESMTPSA id 5337580D85;
-        Mon, 31 Jan 2022 22:40:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=maslowski.xyz;
-        s=mail; t=1643668846;
-        bh=TVxdwUFTFyZUGl5grFYYrubbq4iOCQK2FORp//gZCWQ=;
-        h=Date:From:To:CC:Subject:In-Reply-To:From;
-        b=ZHN9iu0VBNRr4GAmTWjz1PzN+9N5/KhB2v75W9esIAXrtOE3mLJf9LcSyjbd9W402
-         j9TufTpzHeFhr1C5JWNIwuwhGvp7FCiDQ1NJMA4Ojqh2OvIzfpF2ZGhAuX/SuRzgGc
-         BuaUrvUABoxKRvIDZrlfl+vDiPdPLixB1j7PK2JCQ0NUV0TU0zCUijnLLsPNNE7cO6
-         joiQE+SnKdJwHDxzyo5tZI0+/ggte9qpOL2uWAfps04OBo3hjuBw6nY9OMi4ExKpnl
-         0J4d49RUVHTpq0JmYo1m6yzAlqxbSw1rvuurnBo5FTrPESszvzFlX4IxF2lpvlxp/e
-         aB0TwWroU9nqA==
-Date:   Mon, 31 Jan 2022 23:33:49 +0100
-From:   =?UTF-8?Q?Piotr_Mas=C5=82owski?= <piotr@maslowski.xyz>
-To:     marcan@marcan.st
-CC:     SHA-cyfmac-dev-list@infineon.com, alyssa@rosenzweig.io,
-        andy.shevchenko@gmail.com, arend.vanspriel@broadcom.com,
-        aspriel@gmail.com, brcm80211-dev-list.pdl@broadcom.com,
-        davem@davemloft.net, devicetree@vger.kernel.org, digetx@gmail.com,
-        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
-        hdegoede@redhat.com, kettenis@openbsd.org, kuba@kernel.org,
-        kvalo@codeaurora.org, lenb@kernel.org, linus.walleij@linaro.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linville@tuxdriver.com,
-        netdev@vger.kernel.org, pieter-paul.giesberts@broadcom.com,
-        rafael@kernel.org, robh+dt@kernel.org,
-        sandals@crustytoothpaste.net, sven@svenpeter.dev,
-        wright.feng@infineon.com, zajec5@gmail.com
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4_7/9=5D_brcmfmac=3A_of=3A_Use_devm?= =?US-ASCII?Q?=5Fkstrdup_for_board=5Ftype_=26_check_for_errors?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20220131160713.245637-8-marcan@marcan.st>
-Message-ID: <5E81748D-C6A8-4904-9A03-F61512AF22E5@maslowski.xyz>
+        Mon, 31 Jan 2022 17:53:47 -0500
+Received: from mail-oo1-xc2a.google.com (mail-oo1-xc2a.google.com [IPv6:2607:f8b0:4864:20::c2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5172BC06173D
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 14:53:47 -0800 (PST)
+Received: by mail-oo1-xc2a.google.com with SMTP id p4-20020a4a8e84000000b002e598a51d60so3605264ook.2
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 14:53:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:message-id:date:mime-version:user-agent:from:subject:to
+         :content-language:cc:content-transfer-encoding;
+        bh=9zBApbkHMV/ng5boFN0AS4AxEVOvxdPwEfB+Zhf3A+w=;
+        b=GtTiRABsXmhQsI5nLAIafs8HGm74/Rpzhg/8mW7Z8tnG4Af5i7FXbq9psgx81Junm6
+         TCY7xeEzkQZdUJTCgFOltuFYJDPmNq7YPSElm1z5q0jFQHL4XZNlDejWYEl5eQwWaQ28
+         mSZKpGYp95DnPtZEADh0dqi4867xZ9c6h2s59X5knRmKCJwZYs6rK1y6qlDKRwXnVP8E
+         iwS575/apf/HIsKL3u00OicU3t53VvaHDiGoU7OO7hkAjFG7qDvTxjapNOaRIADgDJsw
+         Kx1HH6pbYLT5B1lLenR/PHXEqiW7p2cmXBMDTU2EjPlaQAev8C138Zu8wPjqHci3+OEp
+         AtXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :from:subject:to:content-language:cc:content-transfer-encoding;
+        bh=9zBApbkHMV/ng5boFN0AS4AxEVOvxdPwEfB+Zhf3A+w=;
+        b=anq44rnYdjEWTyU6VSTauDHaHOuLGGuNu32HKvQ0lrvx71w5Wd8vnMo0vHyASxh/li
+         ErCgZI88oC5idtzv6NKp69UIqyVY41qRVUJ6Rw0veDKxhK4DdTgvbLOeEFowdOAYRaBt
+         +Kaee+46VWKlVQ5VaB/yftTZ/adqlWIWztBtKI+HTZvHivSwAG6+QVQcg/w4V5CH+Y+/
+         WGYLOYHauTpJ7z/KL8e2+Ml7wXfeTc4qdrQS0/LXD8JcnI4CpHlHJByCBSLvu8zOSD8o
+         ZHlLHpFaVBv/slFgDsLIFXwY8sG6wFW0r8uPtdPTGX+EmgxaL5FJo/LRpzHiQ/AWZUWa
+         Zwvw==
+X-Gm-Message-State: AOAM531SGwfGNQi7A2+35VXRuRFb0+YgkOBjDGgdoIE81vbUFwwpM+R+
+        Q/y3MJKa2r8aQiRArXW2CrJQa8VqkU8=
+X-Google-Smtp-Source: ABdhPJymTPWGHpL4rMfVSxSHw+mAvkM6HRhz46YSER0d1eZm1MNzDlOxCefuCFGwx1Ik4wfZ035J6A==
+X-Received: by 2002:a05:6830:1194:: with SMTP id u20mr12984724otq.148.1643669626617;
+        Mon, 31 Jan 2022 14:53:46 -0800 (PST)
+Received: from [192.168.1.103] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
+        by smtp.gmail.com with ESMTPSA id e5sm14448926oti.59.2022.01.31.14.53.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Jan 2022 14:53:46 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <c356d5ae-a7b3-3065-1121-64c446e70333@lwfinger.net>
+Date:   Mon, 31 Jan 2022 16:53:44 -0600
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Subject: Funny log entries for rtw88_8821ce
+To:     Pkshih <pkshih@realtek.com>
+Content-Language: en-US
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jan 31, 2022 at 5:07 PM Hector Martin <marcan@marcan=2Est> wrote:
->
->This was missing a NULL check, and we can collapse the strlen/alloc/copy
->into a devm_kstrdup()=2E
+Ping-Ke and list,
 
-=2E=2E=2E
-=20
-> 		/* get rid of '/' in the compatible string to be able to find the FW *=
-/
-> 		len =3D strlen(tmp) + 1;
->-		board_type =3D devm_kzalloc(dev, len, >GFP_KERNEL);
->-		strscpy(board_type, tmp, len);
->+		board_type =3D devm_kstrdup(dev, tmp, GFP_KERNEL);
+Within the last couple of days, I was testing rtw88 with an rtl8821ce card. I 
+noticed that whenever the device is not connected to an AP, the log is flooded 
+with messages like the following:
+[130462.603539] rtw_8821ce 0000:02:00.0: stop vif ee:a4:95:4e:53:8b on port 0
+[130463.116843] rtw_8821ce 0000:02:00.0: start vif aa:fc:19:66:5e:e2 on port 0
+[130874.613430] rtw_8821ce 0000:02:00.0: stop vif aa:fc:19:66:5e:e2 on port 0
+[130875.122641] rtw_8821ce 0000:02:00.0: start vif d2:e6:23:ba:98:76 on port 0
+[131286.677828] rtw_8821ce 0000:02:00.0: stop vif d2:e6:23:ba:98:76 on port 0
+[131287.192108] rtw_8821ce 0000:02:00.0: start vif 82:c4:33:96:2e:c6 on port 0\
 
-Also `len` can be dropped, since it is now unused=2E
+After ~411 secs, the callback routine for remove_interface() in struct 
+ieee80211_ops is called. After <1 sec, the add_interface() callback is called to 
+restart the vif. Is this normal behavior and I see it in the logs because this 
+driver is the only one that logs the start/stop calls, or is something else 
+going on? It would be easy to disable those log entries, but I would like to 
+know if there is some other condition?
 
---
-Best regards,
-Piotr Mas=C5=82owski
+On my kernel, HZ is 250, thus the interval is roughly 103,000 jiffies.
+
+Thanks,
+
+Larry
+
