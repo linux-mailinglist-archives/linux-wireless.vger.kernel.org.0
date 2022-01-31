@@ -2,77 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D261B4A4AE8
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jan 2022 16:48:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 538904A4AEA
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jan 2022 16:48:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379864AbiAaPsr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Jan 2022 10:48:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54704 "EHLO
+        id S1379824AbiAaPsz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Jan 2022 10:48:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379948AbiAaPr4 (ORCPT
+        with ESMTP id S1379829AbiAaPsa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Jan 2022 10:47:56 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C471EC061741
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 07:47:55 -0800 (PST)
+        Mon, 31 Jan 2022 10:48:30 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61024C061714;
+        Mon, 31 Jan 2022 07:48:30 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A0D56145B
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 15:47:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA83C340E8;
-        Mon, 31 Jan 2022 15:47:53 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 35430B82B69;
+        Mon, 31 Jan 2022 15:48:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC967C340E8;
+        Mon, 31 Jan 2022 15:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643644074;
-        bh=g+8b69fzydaQnNs/8zPvnD6F04sILmfvEs2g+oOnZ/4=;
+        s=k20201202; t=1643644108;
+        bh=UEyOLWVv7sUa8s8Vg4pqOex28F3C6UYc40hvcG9wAMQ=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=E2JlxgdQC+643EddsoSSs6yj/AGruU8v4+g5dCF7U4gGaaqOxBF1sLBbyxzexWLfM
-         HQehuIVSh+rrjyX96Kvos54eR5iHjE75tfyowaaFNlSdTABB6TA0GqJ4g2Q41vMpFR
-         HaIbo1HS20l/WfShXmyGBN9dA5d0EIvOY7dgu/mYbOn150b8ZuooUABm80ztdELMjW
-         plC4z4MzfrjJowCdVoGDBFWScYOGeCJAr2LbZUCjd0iwgCQ9E47ed93wgcxL5r2fht
-         qOnKBrZhS7pKJdO1T1Nqfo8adcaXUo2/qxcuy4EC4N1+QGFHKk7SMulD8IudWLnlZJ
-         6cV0BF8jLZ0Gw==
+        b=QsRFTm8EkxymwJR7M8Iejww7nhnrsu1rZuWCQ69ACtTsYZF9B7Ca4Md/2/bwKLPUF
+         zGSkwyKFXuCb/YhQgShh3/Rae7NuCAIt0mTVsk0F6GQ74RZ3NjmwoUx+Akjk9CkvD/
+         A8b2ligKCmrJQNvNMUjFO2bfWboAeVMgsrVy9rXjMjE3P7zGZ79KE/rIPSXZ9KfcJY
+         RnFLtRludons5KQwGrTNHUdO+sJcBtFp8E/hVlfL/FUVQ2bot25kiH7PvCDioTc0wM
+         Hlmrz+EVi8hoLsmg6pZ1tmzqNe8wmvNbr6OrvGGXf14C52uDW9EJ3ZJtzmwfypAX1v
+         vTRPcDc/2OLiw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: rtw88: rtw8821c: enable rfe 6 devices
+Subject: Re: [PATCH v2] wilc1000: use min_t() to make code cleaner
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220107024739.20967-1-Larry.Finger@lwfinger.net>
-References: <20220107024739.20967-1-Larry.Finger@lwfinger.net>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
-        masterzorag <masterzorag@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <20211222070815.483009-1-deng.changcheng@zte.com.cn>
+References: <20211222070815.483009-1-deng.changcheng@zte.com.cn>
+To:     cgel.zte@gmail.com
+Cc:     ajay.kathat@microchip.com, cgel.zte@gmail.com,
+        claudiu.beznea@microchip.com, davem@davemloft.net,
+        deng.changcheng@zte.com.cn, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, zealci@zte.com.cn
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164364407205.21641.13263478436415544062.kvalo@kernel.org>
-Date:   Mon, 31 Jan 2022 15:47:53 +0000 (UTC)
+Message-ID: <164364410401.21641.11538427900323663636.kvalo@kernel.org>
+Date:   Mon, 31 Jan 2022 15:48:25 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Larry Finger <Larry.Finger@lwfinger.net> wrote:
+cgel.zte@gmail.com wrote:
 
-> From: Ping-Ke Shih <pkshih@realtek.com>
+> From: Changcheng Deng <deng.changcheng@zte.com.cn>
 > 
-> Ping-Ke Shih answered[1] a question for a user about an rtl8821ce device that
-> reported RFE 6, which the driver did not support. Ping-Ke suggested a possible
-> fix, but the user never reported back.
+> Use min_t() in order to make code cleaner.
 > 
-> A second user discovered the above thread and tested the proposed fix.
-> Accordingly, I am pushing this change, even though I am not the author.
-> 
-> [1] https://lore.kernel.org/linux-wireless/3f5e2f6eac344316b5dd518ebfea2f95@realtek.com/
-> 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> Reported-and-tested-by: masterzorag <masterzorag@gmail.com>
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Changcheng Deng <deng.changcheng@zte.com.cn>
 
 Patch applied to wireless-next.git, thanks.
 
-e109e3617e5d rtw88: rtw8821c: enable rfe 6 devices
+708db268459f wilc1000: use min_t() to make code cleaner
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220107024739.20967-1-Larry.Finger@lwfinger.net/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211222070815.483009-1-deng.changcheng@zte.com.cn/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
