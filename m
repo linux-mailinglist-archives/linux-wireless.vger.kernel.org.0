@@ -2,80 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D71814A40DF
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jan 2022 12:01:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 576C24A4370
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jan 2022 12:21:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358701AbiAaLBA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Jan 2022 06:01:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42764 "EHLO
+        id S1359560AbiAaLVb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Jan 2022 06:21:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348421AbiAaLAR (ORCPT
+        with ESMTP id S1378396AbiAaLUH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Jan 2022 06:00:17 -0500
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C0BAC06176C
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 02:59:31 -0800 (PST)
-Received: by mail-io1-xd44.google.com with SMTP id e79so16282040iof.13
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 02:59:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
-        b=Hy4QzdJnSxdg5GIgw0nCwmi0gjML3n5cny2gld+5/rI5196yLd12xvP6N7LBmx65/n
-         qILZMxYOlb+VBzjZrCg896+CVlR2SLc6f+WpN6lyRLTkfyWxlYA63cI2QUMsEgTIYq1c
-         VRL4HNNC2kIyU16xAe6VyoHlNhIHv9mczE1zssIxdDBygn6D2BPwo/XAWJNqRMASZ2Dq
-         yZxWrv8DUbv+uMJverpu1MhsgcV4b3vRNoXa2uyn5bo25Pb/5p2hQlMsoWmYebCBDCJD
-         GjDhDoBcmmXgZL74zftZAkr0Rw6FLwL0/jzp5kj/UR37sO8Js0t8mGwGyrpI2mLOPNpu
-         0GuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
-        b=0sKFUg3XhdEo9lgT282pxkm+5w4gDKmThT1LMEdLhrfcjW6zvgDqzajVkHNIrvd+BI
-         OUqK054U1DuslPgTP0FPHhlDoFdw5sMcy0Ca5SeTCnEpv5izuIZa2u/ZsZiEvU2ZYpfB
-         +KgHi4vFNHUXNc0xnwJyQmKuMdQnXSz1+GpaO8iT5VtOlD5Wci9cwyF5jOzWsipDZYJ2
-         8LVhYni7DU/hgsTO4Eq2kaOSzCuc3IXaOJUqZULdxCEKAdywlBxP4P5fN1byXLCarWG4
-         wvq6HVpzlKO8/H/ORyovRbQ1Z3TwDmTLaf7Tf+wIsPuNDBMhRW8sCuGRScuLLobLee4l
-         1IJg==
-X-Gm-Message-State: AOAM533h/qF1lSinZ4lN3JHIxcynvd/6hyeQv4FXBDanRRQqWGlmT6hC
-        hszK7jG8KRMl4vsfnW1bZwIXrb+Jzk8HjlSZOOA=
-X-Google-Smtp-Source: ABdhPJyia9VIjicXafubC2VjGdU01tny+88l0Ycxe3DKaKeOyUTFlA4LLKTxDKWWNigVvRhiFi9kYx5K7cHHm0s8/hs=
-X-Received: by 2002:a02:aa09:: with SMTP id r9mr10286804jam.199.1643626771044;
- Mon, 31 Jan 2022 02:59:31 -0800 (PST)
+        Mon, 31 Jan 2022 06:20:07 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 830A8C061BB1
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 03:12:26 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2279961163
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 11:12:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C25D1C340F0;
+        Mon, 31 Jan 2022 11:12:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643627545;
+        bh=28XhqNZ4h8E2oF0vewrAUlz2+wb1r1CBdxyN+U4Zyj4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=MPxvQKJgdGXH/R3hH0M84IJyAENhAU1ukbPLutpuDAQWxFsfXyUUXAuyltPE6ikj5
+         O/patSfFcW+JszhA45Mw2dv6sjfPeVnzOJI3a54LJldtQM4xyvEb2cqsAF8VmelFCK
+         PcEDo9cYn2EsbslVwtG1ctx9Hk4Ex7K/C6NAZEuRMC0GP33CBVy/0fDoKBovbphh7c
+         VWlWbUEgtTB7jA8XdBGnV9o0ftIZSw8DffPOEVy88pwkd8TwlR1bz9iOW/TjoDRhOx
+         +aAZRuMXBOihkDH8pGMZWvu3HcW54L+Od+ZCa2v5B6rV75isqueQe7/YIcWId25V83
+         R2nziK6irCkrg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Thorsten Leemhuis <regressions@leemhuis.info>
+Cc:     Luca Coelho <luca@coelho.fi>, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH for v5.17 1/2] iwlwifi: remove deprecated broadcast filtering feature
+References: <20220128124851.538580-1-luca@coelho.fi>
+        <iwlwifi.20220128144623.9241e049f13e.Ia4f282813ca2ddd24c13427823519113f2bbebf2@changeid>
+        <b784b942-6346-7005-b71a-5682cf0452b1@leemhuis.info>
+Date:   Mon, 31 Jan 2022 13:12:20 +0200
+In-Reply-To: <b784b942-6346-7005-b71a-5682cf0452b1@leemhuis.info> (Thorsten
+        Leemhuis's message of "Mon, 31 Jan 2022 09:08:00 +0100")
+Message-ID: <87a6fccg6j.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Reply-To: daniellakyle60@gmail.com
-Sender: drdanielmorris11111@gmail.com
-Received: by 2002:a05:6638:1248:0:0:0:0 with HTTP; Mon, 31 Jan 2022 02:59:30
- -0800 (PST)
-From:   Mrs daniell akyle <daniellakyle60@gmail.com>
-Date:   Mon, 31 Jan 2022 11:59:30 +0100
-X-Google-Sender-Auth: 5pmMZCS9vXWmOwBoU1Dt2uIUmsw
-Message-ID: <CAKFcj-MtTareGvTX3Yo749sS2d4H56Fxx0cF0uKGPGQc=0xqUA@mail.gmail.com>
-Subject: Ahoj
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pozdravy
-Jmenuji se pan=C3=AD Daniella Kyleov=C3=A1, je mi 58 let
-Filip=C3=ADny. V sou=C4=8Dasn=C3=A9 dob=C4=9B jsem hospitalizov=C3=A1n na F=
-ilip=C3=ADn=C3=A1ch, kde jsem
-podstupuje l=C3=A9=C4=8Dbu akutn=C3=ADho karcinomu j=C3=ADcnu. jsem um=C3=
-=ADraj=C3=ADc=C3=AD,
-vdova, kter=C3=A1 se rozhodla darovat =C4=8D=C3=A1st sv=C3=A9ho majetku spo=
-lehliv=C3=A9 osob=C4=9B
-kter=C3=A1 tyto pen=C3=ADze pou=C5=BEije na pomoc chud=C3=BDm a m=C3=A9n=C4=
-=9B privilegovan=C3=BDm. Chci
-poskytnout dar ve v=C3=BD=C5=A1i 3 700 000 =C2=A3 na sirotky nebo charitati=
-vn=C3=AD organizace
-ve va=C5=A1=C3=AD oblasti. Zvl=C3=A1dne=C5=A1 to? Pokud jste ochotni tuto n=
-ab=C3=ADdku p=C5=99ijmout
-a ud=C4=9Blejte p=C5=99esn=C4=9B tak, jak v=C3=A1m =C5=99=C3=ADk=C3=A1m, pa=
-k se mi vra=C5=A5te pro dal=C5=A1=C3=AD vysv=C4=9Btlen=C3=AD.
-pozdravy
-Pan=C3=AD Daniella Kyleov=C3=A1
+Thorsten Leemhuis <regressions@leemhuis.info> writes:
+
+> Hi, this is your Linux kernel regression tracker speaking.
+>
+> On 28.01.22 13:48, Luca Coelho wrote:
+>> From: Luca Coelho <luciano.coelho@intel.com>
+>> 
+>> This feature has been deprecated and should not be used anymore.  With
+>> newer firmwares, namely *-67.ucode and above, trying to use it causes an
+>> assertion failure in the FW, similar to this:
+>> 
+>> [Tue Jan 11 20:05:24 2022] iwlwifi 0000:04:00.0: 0x00001062 | ADVANCED_SYSASSERT
+>> 
+>> In order to prevent this feature from being used, remove it entirely
+>> and get rid of the Kconfig option that
+>> enables it (IWLWIFI_BCAST_FILTERING).
+>> 
+>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=215488
+>
+> FWIW there was another report about it afaics:
+>
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=215550
+
+If it's the same issue, it should be marked as a duplicate.
+
+> That makes me hope that this is reviewed and merged to mainline relative
+> quickly, otherwise more users will be bothered by this.
+>
+>> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+>> Fixes: cbaa6aeedee5 ("iwlwifi: bump FW API to 67 for AX devices")
+>> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+>
+> Shouldn't this also have:
+>
+> Cc: stable@vger.kernel.org # 5.16.x
+
+I can add that.
+
+BTW, please trim your quotes. You left a really long (and unnecessary)
+quote, which makes use of patchwork much harder for us maintainers.
+Unfortunately patchwork is not able to trim them automatically:
+
+https://patchwork.kernel.org/project/linux-wireless/patch/iwlwifi.20220128144623.9241e049f13e.Ia4f282813ca2ddd24c13427823519113f2bbebf2@changeid/
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
