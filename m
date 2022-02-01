@@ -2,91 +2,195 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 535DE4A52AA
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jan 2022 23:53:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 455054A54A5
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Feb 2022 02:27:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235261AbiAaWxv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Jan 2022 17:53:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40644 "EHLO
+        id S229994AbiBAB1D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Jan 2022 20:27:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235325AbiAaWxr (ORCPT
+        with ESMTP id S229898AbiBAB1D (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Jan 2022 17:53:47 -0500
-Received: from mail-oo1-xc2a.google.com (mail-oo1-xc2a.google.com [IPv6:2607:f8b0:4864:20::c2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5172BC06173D
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 14:53:47 -0800 (PST)
-Received: by mail-oo1-xc2a.google.com with SMTP id p4-20020a4a8e84000000b002e598a51d60so3605264ook.2
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 14:53:47 -0800 (PST)
+        Mon, 31 Jan 2022 20:27:03 -0500
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECA66C061714
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 17:27:02 -0800 (PST)
+Received: by mail-qk1-x732.google.com with SMTP id 71so13843215qkf.4
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 17:27:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:from:subject:to
-         :content-language:cc:content-transfer-encoding;
-        bh=9zBApbkHMV/ng5boFN0AS4AxEVOvxdPwEfB+Zhf3A+w=;
-        b=GtTiRABsXmhQsI5nLAIafs8HGm74/Rpzhg/8mW7Z8tnG4Af5i7FXbq9psgx81Junm6
-         TCY7xeEzkQZdUJTCgFOltuFYJDPmNq7YPSElm1z5q0jFQHL4XZNlDejWYEl5eQwWaQ28
-         mSZKpGYp95DnPtZEADh0dqi4867xZ9c6h2s59X5knRmKCJwZYs6rK1y6qlDKRwXnVP8E
-         iwS575/apf/HIsKL3u00OicU3t53VvaHDiGoU7OO7hkAjFG7qDvTxjapNOaRIADgDJsw
-         Kx1HH6pbYLT5B1lLenR/PHXEqiW7p2cmXBMDTU2EjPlaQAev8C138Zu8wPjqHci3+OEp
-         AtXw==
+        d=flyzipline.com; s=google;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=vL0XcPRigAc+yHA08yppVaXgPXVaHTYxuzbzyfp623U=;
+        b=HCmSjc2ktt36PJL06od/jbuSDqpKbeVxa5IjXcQJ6wRo5BIaqK5H9a8bOCqwtTe+U4
+         Crb/nGMF5Uv5WVfNc+ZQ2YnuWWCBWwZtA2WonS0PJt6pDHUoZ4E7I3r+1UDGvXN9+Rai
+         y3BoxDm6eABLeUhZgl4YGKxU25MXSvWdQ7rvk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :from:subject:to:content-language:cc:content-transfer-encoding;
-        bh=9zBApbkHMV/ng5boFN0AS4AxEVOvxdPwEfB+Zhf3A+w=;
-        b=anq44rnYdjEWTyU6VSTauDHaHOuLGGuNu32HKvQ0lrvx71w5Wd8vnMo0vHyASxh/li
-         ErCgZI88oC5idtzv6NKp69UIqyVY41qRVUJ6Rw0veDKxhK4DdTgvbLOeEFowdOAYRaBt
-         +Kaee+46VWKlVQ5VaB/yftTZ/adqlWIWztBtKI+HTZvHivSwAG6+QVQcg/w4V5CH+Y+/
-         WGYLOYHauTpJ7z/KL8e2+Ml7wXfeTc4qdrQS0/LXD8JcnI4CpHlHJByCBSLvu8zOSD8o
-         ZHlLHpFaVBv/slFgDsLIFXwY8sG6wFW0r8uPtdPTGX+EmgxaL5FJo/LRpzHiQ/AWZUWa
-         Zwvw==
-X-Gm-Message-State: AOAM531SGwfGNQi7A2+35VXRuRFb0+YgkOBjDGgdoIE81vbUFwwpM+R+
-        Q/y3MJKa2r8aQiRArXW2CrJQa8VqkU8=
-X-Google-Smtp-Source: ABdhPJymTPWGHpL4rMfVSxSHw+mAvkM6HRhz46YSER0d1eZm1MNzDlOxCefuCFGwx1Ik4wfZ035J6A==
-X-Received: by 2002:a05:6830:1194:: with SMTP id u20mr12984724otq.148.1643669626617;
-        Mon, 31 Jan 2022 14:53:46 -0800 (PST)
-Received: from [192.168.1.103] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
-        by smtp.gmail.com with ESMTPSA id e5sm14448926oti.59.2022.01.31.14.53.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Jan 2022 14:53:46 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <c356d5ae-a7b3-3065-1121-64c446e70333@lwfinger.net>
-Date:   Mon, 31 Jan 2022 16:53:44 -0600
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=vL0XcPRigAc+yHA08yppVaXgPXVaHTYxuzbzyfp623U=;
+        b=6o8z5KecdziVHilTl8aq7eX0Q8TEB6dyxlVMM12nvId5o7zCxihSFo3XjEy+QpSrHL
+         o4qw3+FPijJGoSrDTlKVdvSonT8Nt3BJUpRA82PSPMmcYbvpJpSCp20Lf8ibpmw2LB1C
+         U2P9TwkCgoKehNQ0adHBD3HIiPzDwoi6E6Q8eK45j5/FuzvXNC56aGDTWNlSVALUbSq4
+         b3TtpSsK/0EOaGw+TTwKC3EZ+N16yN9P1G/5w1cIXFdeDfUWAs6ukAYHDhjxon40HnRV
+         ehRuA+ki9G2Diwa1A5xHOw4N1YZ9FOclz3lO1dUmmGmaGFO/ie52tSu3MMXDpFqSzbSz
+         kWSg==
+X-Gm-Message-State: AOAM531GUhUItdBCGIS6M9SDlSrGtQturOC3xc3JcDR3HiTAJ6+HER1W
+        4F+zlvzwM4XEmbg1FRFjoOO+FOCFEfO95qLYy1E2zahn3cSwq1TtQKQ=
+X-Google-Smtp-Source: ABdhPJwM8i735GKnKxZlYvir2UnlgKf7RfXj9Uufaa51HuxHiZ/XZOMm3+fCnEjo+LAjiEYS9iGYfgOliONGZ8C8YR8=
+X-Received: by 2002:a05:620a:4495:: with SMTP id x21mr10898476qkp.701.1643678821880;
+ Mon, 31 Jan 2022 17:27:01 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Subject: Funny log entries for rtw88_8821ce
-To:     Pkshih <pkshih@realtek.com>
-Content-Language: en-US
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From:   Kevin Kellar <kevin.kellar@flyzipline.com>
+Date:   Mon, 31 Jan 2022 17:26:51 -0800
+Message-ID: <CAJyMcLWcoCAHOmoNUT2=oVUWj7Lj5R1O-57KNX_5VXHfBr91OQ@mail.gmail.com>
+Subject: iwlwifi: Beacon frame injection at higher modulation in kernel 5.13+?
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke and list,
+I have been experimenting with injecting 802.11 beacon frames using
+the Intel ax201 and the iwlwifi driver on Ubuntu 20.04 with linux
+kernel versions 5.11 and 5.13. My use case involves measuring receive
+performance for frames injected at 802.11b, g and n modulations.
 
-Within the last couple of days, I was testing rtw88 with an rtl8821ce card. I 
-noticed that whenever the device is not connected to an AP, the log is flooded 
-with messages like the following:
-[130462.603539] rtw_8821ce 0000:02:00.0: stop vif ee:a4:95:4e:53:8b on port 0
-[130463.116843] rtw_8821ce 0000:02:00.0: start vif aa:fc:19:66:5e:e2 on port 0
-[130874.613430] rtw_8821ce 0000:02:00.0: stop vif aa:fc:19:66:5e:e2 on port 0
-[130875.122641] rtw_8821ce 0000:02:00.0: start vif d2:e6:23:ba:98:76 on port 0
-[131286.677828] rtw_8821ce 0000:02:00.0: stop vif d2:e6:23:ba:98:76 on port 0
-[131287.192108] rtw_8821ce 0000:02:00.0: start vif 82:c4:33:96:2e:c6 on port 0\
+When running linux kernel version 5.11, it seemed the driver would
+allow beacon frame injection for 802.11b and g datarates, but
+submitting a frame with an 802.11n MCS (using RADIOTAP) for frame
+injection would print a warning message on the host machine=E2=80=99s dmesg
+(see end of message). Running pcap on a separate interface showed the
+frame was sent using 802.11g rates, rather than 802.11n.
 
-After ~411 secs, the callback routine for remove_interface() in struct 
-ieee80211_ops is called. After <1 sec, the add_interface() callback is called to 
-restart the vif. Is this normal behavior and I see it in the logs because this 
-driver is the only one that logs the start/stop calls, or is something else 
-going on? It would be easy to disable those log entries, but I would like to 
-know if there is some other condition?
+Now that my kernel is updated to 5.13, I observe frames are always
+transmitted using 802.11b 1Mb/s=E2=80=93regardless of whether attempting to
+send at an 802.11b or g datarate or an 802.11n  MCS. Strangely, I
+observed that the warning message in dmesg is now absent.
 
-On my kernel, HZ is 250, thus the interval is roughly 103,000 jiffies.
+My investigation suggests this commit
+[https://github.com/torvalds/linux/commit/6761a718263a0cff8b31c30b61c92acc1=
+4db853f]
+changed the behavior of the warning message for the iwlwifi driver.
+This may be related to the different behavior I observed between
+kernel versions 5.11 and 5.13, yet it is not apparent to me how this
+commit could further restrict supported frame injection rates from
+802.11g to 802.11b 1Mb/s exclusively.
 
-Thanks,
+Would anyone here be able to weigh in on:
+If frame injection while the interface is in monitor mode is supported
+by the iwlwifi driver
+Whether the iwlwifi team intentionally limits supported
+modulations/datarates for injected frames to be 802.11b 1Mb/s
+Whether injection at 802.11n MCSs is supported by Intel wireless
+device firmware, and if we could use this feature through the iwlwifi
+driver.
 
-Larry
 
+[  +0.036404] ------------[ cut here ]------------
+[  +0.000005] Got an HT rate (flags:0x8/mcs:2) for a non data frame
+[  +0.000028] WARNING: CPU: 7 PID: 23060 at
+drivers/net/wireless/intel/iwlwifi/mvm/tx.c:273
+iwl_mvm_get_tx_rate.isra.0+0xd0/0xe0 [iwlmvm]
+[  +0.000031] Modules linked in: iwlmvm iwlwifi hid_logitech_hidpp
+hid_logitech_dj hid_generic usbhid ath9k_htc hid ath9k_common ath9k_hw
+ath rt2800usb rt2x00usb rt2800lib rt2x00lib ip6table_filter ip6_tables
+xt_tcpudp xt_owner iptable_filter bpfilter rfcomm ccm cmac algif_hash
+algif_skcipher af_alg bnep binfmt_misc snd_soc_skl_hda_dsp
+snd_soc_intel_hda_dsp_common snd_soc_hdac_hdmi snd_hda_codec_hdmi
+snd_hda_codec_realtek nls_iso8859_1 snd_hda_codec_generic snd_soc_dmic
+snd_sof_pci snd_sof_intel_hda_common snd_sof_intel_hda
+snd_sof_intel_byt snd_sof_intel_ipc snd_sof snd_sof_xtensa_dsp
+snd_soc_hdac_hda snd_hda_ext_core snd_soc_acpi_intel_match
+snd_soc_acpi snd_hda_intel snd_intel_dspcfg mei_hdcp soundwire_intel
+soundwire_generic_allocation soundwire_cadence intel_rapl_msr mac80211
+snd_hda_codec libarc4 snd_seq_midi snd_seq_midi_event
+x86_pkg_temp_thermal intel_powerclamp coretemp uvcvideo snd_hda_core
+videobuf2_vmalloc kvm_intel videobuf2_memops snd_hwdep snd_rawmidi
+btusb videobuf2_v4l2
+[  +0.000074]  joydev input_leds btrtl kvm soundwire_bus
+videobuf2_common snd_soc_core btbcm serio_raw videodev btintel
+intel_cstate snd_compress efi_pstore snd_seq ac97_bus bluetooth
+wmi_bmof snd_pcm_dmaengine mc processor_thermal_device cfg80211 ee1004
+snd_pcm processor_thermal_rfim thinkpad_acpi processor_thermal_mbox
+mei_me processor_thermal_rapl ecdh_generic intel_rapl_common nvram ecc
+mei intel_soc_dts_iosf ledtrig_audio ucsi_acpi snd_seq_device
+typec_ucsi snd_timer typec snd soundcore int3403_thermal
+int340x_thermal_zone mac_hid acpi_pad int3400_thermal intel_hid
+acpi_tad acpi_thermal_rel sparse_keymap sch_fq_codel msr parport_pc
+ppdev lp parport ip_tables x_tables autofs4 dm_crypt mmc_block i915
+crct10dif_pclmul i2c_algo_bit crc32_pclmul ghash_clmulni_intel
+drm_kms_helper aesni_intel syscopyarea sysfillrect crypto_simd
+sysimgblt fb_sys_fops i2c_i801 psmouse e1000e cryptd i2c_smbus
+glue_helper cec sdhci_pci rc_core cqhci sdhci thunderbolt nvme drm
+xhci_pci nvme_core
+[  +0.000084]  xhci_pci_renesas wmi video pinctrl_tigerlake [last
+unloaded: iwlwifi]
+[  +0.000007] CPU: 7 PID: 23060 Comm: python3 Not tainted
+5.11.0-41-generic #45~20.04.1-Ubuntu
+[  +0.000004] Hardware name: LENOVO 20W6001NUS/20W6001NUS, BIOS
+N34ET40W (1.40 ) 06/25/2021
+[  +0.000002] RIP: 0010:iwl_mvm_get_tx_rate.isra.0+0xd0/0xe0 [iwlmvm]
+[  +0.000016] Code: c3 0f 0b 31 db eb d2 80 3d 8d f3 03 00 00 0f 85 76
+ff ff ff 0f b7 f1 48 c7 c7 98 6e 3e c1 c6 05 76 f3 03 00 01 e8 76 98
+fe c9 <0f> 0b 41 0f be 54 24 08 89 d3 e9 51 ff ff ff 90 0f 1f 44 00 00
+40
+[  +0.000003] RSP: 0018:ffffa2ce44a7f940 EFLAGS: 00010286
+[  +0.000004] RAX: 0000000000000000 RBX: 0000000000000002 RCX: 000000000000=
+0027
+[  +0.000002] RDX: 0000000000000027 RSI: 00000000ffffdfff RDI: ffff965e3f7d=
+8ac8
+[  +0.000002] RBP: ffffa2ce44a7f960 R08: ffff965e3f7d8ac0 R09: ffffa2ce44a7=
+f700
+[  +0.000002] R10: 0000000000000001 R11: 0000000000000001 R12: ffffa2ce44a7=
+f9f0
+[  +0.000002] R13: 0000000000000000 R14: ffff965702f7acd8 R15: ffff96570526=
+9b00
+[  +0.000001] FS:  00007f79d3533740(0000) GS:ffff965e3f7c0000(0000)
+knlGS:0000000000000000
+[  +0.000003] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  +0.000002] CR2: 00007f79d3551018 CR3: 00000001a4814004 CR4: 000000000077=
+0ee0
+[  +0.000003] PKRU: 55555554
+[  +0.000001] Call Trace:
+[  +0.000005]  iwl_mvm_set_tx_params+0x1f3/0x4d0 [iwlmvm]
+[  +0.000017]  iwl_mvm_tx_skb_non_sta+0x182/0x3a0 [iwlmvm]
+[  +0.000015]  iwl_mvm_tx_skb+0x2a/0x40 [iwlmvm]
+[  +0.000013]  iwl_mvm_mac_tx+0xca/0x130 [iwlmvm]
+[  +0.000013]  ieee80211_tx_frags+0x16b/0x240 [mac80211]
+[  +0.000052]  __ieee80211_tx+0x7f/0x140 [mac80211]
+[  +0.000040]  ieee80211_tx+0x112/0x140 [mac80211]
+[  +0.000041]  ieee80211_xmit+0xc0/0xf0 [mac80211]
+[  +0.000038]  ieee80211_monitor_start_xmit+0x1f9/0x2c0 [mac80211]
+[  +0.000036]  dev_hard_start_xmit+0xcf/0x1f0
+[  +0.000006]  __dev_queue_xmit+0x798/0x9d0
+[  +0.000002]  ? packet_parse_headers.isra.0+0xd2/0x110
+[  +0.000006]  dev_queue_xmit+0x10/0x20
+[  +0.000002]  packet_snd+0x47e/0xb70
+[  +0.000004]  packet_sendmsg+0x26/0x30
+[  +0.000004]  sock_sendmsg+0x65/0x70
+[  +0.000003]  __sys_sendto+0x113/0x190
+[  +0.000004]  ? handle_mm_fault+0xd7/0x2b0
+[  +0.000005]  __x64_sys_sendto+0x29/0x30
+[  +0.000003]  do_syscall_64+0x38/0x90
+[  +0.000003]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+[  +0.000005] RIP: 0033:0x7f79d38226dc
+[  +0.000008] Code: 89 4c 24 1c e8 a5 40 f7 ff 44 8b 54 24 1c 8b 3c 24
+45 31 c9 89 c5 48 8b 54 24 10 48 8b 74 24 08 45 31 c0 b8 2c 00 00 00
+0f 05 <48> 3d 00 f0 ff ff 77 30 89 ef 48 89 04 24 e8 d1 40 f7 ff 48 8b
+04
+[  +0.000002] RSP: 002b:00007ffde32051e0 EFLAGS: 00000246 ORIG_RAX:
+000000000000002c
+[  +0.000004] RAX: ffffffffffffffda RBX: 00007ffde32052a0 RCX: 00007f79d382=
+26dc
+[  +0.000002] RDX: 0000000000000033 RSI: 00007f79b71a06b0 RDI: 000000000000=
+0003
+[  +0.000002] RBP: 0000000000000000 R08: 0000000000000000 R09: 000000000000=
+0000
+[  +0.000001] R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000=
+0000
+[  +0.000002] R13: 0000000000000000 R14: 00007ffde32052a0 R15: 000000000062=
+3d60
+[  +0.000005] ---[ end trace 857a738ee9d8d01c ]---
