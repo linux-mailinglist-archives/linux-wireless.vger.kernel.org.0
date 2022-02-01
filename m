@@ -2,67 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2A7C4A5C29
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Feb 2022 13:24:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53DD44A5C2E
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Feb 2022 13:26:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237657AbiBAMY6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Feb 2022 07:24:58 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:57698 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231359AbiBAMY4 (ORCPT
+        id S237977AbiBAM0L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Feb 2022 07:26:11 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:53252 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229532AbiBAM0K (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Feb 2022 07:24:56 -0500
+        Tue, 1 Feb 2022 07:26:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 08177614F1;
-        Tue,  1 Feb 2022 12:24:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3C7C340EB;
-        Tue,  1 Feb 2022 12:24:51 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id E6962CE184A;
+        Tue,  1 Feb 2022 12:26:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9657C340EB;
+        Tue,  1 Feb 2022 12:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643718293;
-        bh=ooC0NvRuprHdmJZFzg4LMCCX2H+CyKZoohO2KL8HGD4=;
+        s=k20201202; t=1643718367;
+        bh=eHjoFrZQtYh4JUgQ+/QAfZhk5M1/GQ1oH1oKZQM2zZM=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=VRz6QowMJZkaY7Dy9wn0nzAhOqiptpxHv/1QEcA9ff+rglRHtOftfgG9P7vxGSld+
-         Os2H7/cGbci9v6Gl0ZmP0lPElPXP+XQhN9DbTyJAwfM5UbQOkDoDcGODOgK3Cl1Lqb
-         h4ZVHBVK4PRGEGJgtVUSaSuMmkNzi5sXulh81z3XVMWxy0mBQUX85skMxs/jVVaq9e
-         T3pnJ8gckBW4KpXnNGX7L5SZnfnFDy/QgeLpExU0ly1A5+HIiGdnSD+F4JQYhS7R/M
-         yZug1YGuoCrcNfzs/6F9b4bXelx0J7rD446DWxWY2tAWINP3TjTx60uPBNFYiA9RFO
-         ytI6ClQD/znbA==
+        b=Gt+6x/fhkdpHwoPmwOWxK7T9R7P6AUWo1XgeORHP8vGIMyPkz+CKO2UMm0zl5HLyq
+         7+0L2hXkE7INZVJEYcX2wgMMwpqw6JcYvSzT/k4M28fFVp7p/XlZ/RXiJmX3AABdT3
+         Fffstnl+9JA8grCjJwQ6ZQjiXN6xuhdDaM9ENj7cshWQXQitMqjtufUHM2OT3fu1Ly
+         cPe+zruTmlOaz8xU05fdp0INRF7VWQ7b1V+/LtDIZ3Imz4sn3NEm9uYMLxaPoCW4Uz
+         k9TnbT/xcdKSN1yc3xeAN6ZX9d9ppUD7YHxOr/ByvddLCEvfd2za1uacXlRp7ZS8bb
+         c2G6ol1jNj1EA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: ray_cs: Check ioremap return value
+Subject: Re: [PATCH] ssb: fix boolreturn.cocci warning
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211230022926.1846757-1-jiasheng@iscas.ac.cn>
-References: <20211230022926.1846757-1-jiasheng@iscas.ac.cn>
-To:     Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jiasheng Jiang <jiasheng@iscas.ac.cn>
+In-Reply-To: <fa4f1fa737e715eb62a85229ac5f12bae21145cf.1642065490.git.davidcomponentone@gmail.com>
+References: <fa4f1fa737e715eb62a85229ac5f12bae21145cf.1642065490.git.davidcomponentone@gmail.com>
+To:     davidcomponentone@gmail.com
+Cc:     m@bues.ch, davidcomponentone@gmail.com,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Yang Guang <yang.guang5@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164371828600.16633.15192450644077513815.kvalo@kernel.org>
-Date:   Tue,  1 Feb 2022 12:24:51 +0000 (UTC)
+Message-ID: <164371836390.16633.773589948034456813.kvalo@kernel.org>
+Date:   Tue,  1 Feb 2022 12:26:05 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jiasheng Jiang <jiasheng@iscas.ac.cn> wrote:
+davidcomponentone@gmail.com wrote:
 
-> As the possible failure of the ioremap(), the 'local->sram' and other
-> two could be NULL.
-> Therefore it should be better to check it in order to avoid the later
-> dev_dbg.
+> From: Yang Guang <yang.guang5@zte.com.cn>
 > 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+> The coccinelle report
+> ./include/linux/ssb/ssb_driver_gige.h:98:8-9:
+> WARNING: return of 0/1 in function
+> 'ssb_gige_must_flush_posted_writes' with return type bool
+> 
+> Return statements in functions returning bool should use true/false
+> instead of 1/0.
+> 
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
+> Signed-off-by: David Yang <davidcomponentone@gmail.com>
 
 Patch applied to wireless-next.git, thanks.
 
-7e4760713391 ray_cs: Check ioremap return value
+6d3ac94bae21 ssb: fix boolreturn.cocci warning
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211230022926.1846757-1-jiasheng@iscas.ac.cn/
+https://patchwork.kernel.org/project/linux-wireless/patch/fa4f1fa737e715eb62a85229ac5f12bae21145cf.1642065490.git.davidcomponentone@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
