@@ -2,122 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2BED4A5D42
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Feb 2022 14:10:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0DA84A5DB6
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Feb 2022 14:53:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238330AbiBANKR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Feb 2022 08:10:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35222 "EHLO
+        id S238927AbiBANw7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Feb 2022 08:52:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238679AbiBANJ6 (ORCPT
+        with ESMTP id S230073AbiBANw6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Feb 2022 08:09:58 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E427C061401
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Feb 2022 05:09:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=+SlkoWw0BmhIg3WbmN3O6/YE3W/CkOj7xS82vKGNooI=; t=1643720998; x=1644930598; 
-        b=ivjnUEdqXz0TgiOi0AvPdpXFHwcF9r9OXPi3JcsHE3fJ3uPTDMd5VHTvjtsIFJe7J9mhpiRlGdY
-        pJX1aEFdGdnkb2P/f8GzY2hJuKJK1mH2E6sHPpirIv2il3opzyUOmv0SzTbr2y4sqVJNBvw8V84Ba
-        Nh6/G2puo09oImtRPickERVYgtrVfGt9WMByyqRZNmzKu/JHuCJ305NYAojUudKAkTY1VOXjw0cgw
-        0Ih+duX8lt5lEON5X1rhcNRjRZTbDJQMEj3QW6l8r8zMoGsjYdgVI41wy2mmxtBONA/1O9KpYigzF
-        2As1sDvyIcT+uifZ274uMitSuK2qPiAiHq6Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nEsux-00D7QT-DT;
-        Tue, 01 Feb 2022 14:09:55 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Subject: [PATCH] cfg80211: fix race in netlink owner interface destruction
-Date:   Tue,  1 Feb 2022 14:09:51 +0100
-Message-Id: <20220201130951.22093-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.34.1
+        Tue, 1 Feb 2022 08:52:58 -0500
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2CC6C061714;
+        Tue,  1 Feb 2022 05:52:58 -0800 (PST)
+Received: by mail-qt1-x82e.google.com with SMTP id y8so14410624qtn.8;
+        Tue, 01 Feb 2022 05:52:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=pkH+RswlSIyZFjtv0Mro5CDt277HOkp7LMJ90iXn1wU=;
+        b=d2XckV5LjzZSDAsLvl9yGRmggAR0CRNlsdqRbYzPDMVgaHv7N63o147fv0hE2qh4/s
+         zw/TI5e0gVjazGEckbyyin8CLhEQejbBfO9OD0RK/G9Aa4Q0+DTYI4O/TMWJkv/yHH4v
+         XbN+gzGb/fEVjvekjKITtTKpojKkq2DEGkb6BOMrJieDhoE4UyKGDKwJITJiU+mVaGCI
+         AJoifbOsH1WBhIGjLC8yJTu1Wi6Tg4SQ4zAfH0uSNHs9yQnNmBYWMe2Duqh2TcfzQqGI
+         732lqYSLTsA36kQ2Fmre3LUjzYYCjpAbdAjQSKRIPWEwrSEn2slKYPWBJAA0w4G1KjNy
+         mTMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=pkH+RswlSIyZFjtv0Mro5CDt277HOkp7LMJ90iXn1wU=;
+        b=cyeXgTVSltJoIHZqxCticAzW6gYjsAljk9UCb+jKVb+WQr0d4918zn8tBXvh2KVT1n
+         gxrliFh5ieLH7rg+3VKCyEXXRukNgFDgY51gRnZHSwtgHvrJrxZbHiZM9sLDEXVRNiIT
+         Fy0T/VJf/zhXHJMxn4+ZyKaZ9M7g/jet8QNJhFtnvq4ryohU8X2DvGXCVFGbbrTOBSH9
+         fEfssexgdmqe5qWBTQ/DDMTl4sIek8JkoHikcqGhH/P0ZbFnWfF62AAbDLSPhG7d9YJf
+         HeE7KviAQklLXZIJtIsBdrbqtENSgmF7r0Z3xc3cuAhzJMrvqUkSY9rm33mLniTUJ9QW
+         XdoA==
+X-Gm-Message-State: AOAM531Vx+eDonakcQGjBhekWmTza6GvglIYtfeXpcKXb1AxVrXxjE/L
+        gk75O1zLdATaBotbF3wMtV4=
+X-Google-Smtp-Source: ABdhPJxN8n52vA9LcHKw0qHFFvqFn0lzXyntuIYuyVZRFK583t6IVU4lsQ5eKMA5PDjZ/lxTtC3RHw==
+X-Received: by 2002:a05:622a:156:: with SMTP id v22mr18593903qtw.596.1643723577901;
+        Tue, 01 Feb 2022 05:52:57 -0800 (PST)
+Received: from a-10-27-1-133.dynapool.vpn.nyu.edu (vpnrasa-wwh-pat-01.natpool.nyu.edu. [216.165.95.84])
+        by smtp.gmail.com with ESMTPSA id a141sm10300049qkc.73.2022.02.01.05.52.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Feb 2022 05:52:57 -0800 (PST)
+Date:   Tue, 1 Feb 2022 08:52:54 -0500
+From:   Zekun Shen <bruceshenzk@gmail.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, brendandg@nyu.edu
+Subject: Re: [PATCH] rsi: fix oob in rsi_prepare_skb
+Message-ID: <Yfk7Niu74yv3OCm7@a-10-27-1-133.dynapool.vpn.nyu.edu>
+References: <YcnFiGzk67p0PSgd@b-10-27-92-143.dynapool.vpn.nyu.edu>
+ <87y22udbyg.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87y22udbyg.fsf@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+The maximum length allowed (and without overflow) depends on
+the queueno in the switch statement. I don't know the exact format
+of the inputs, but there could be a universal and stricter length
+restriction in the protocol
 
-My previous fix here to fix the deadlock left a race where
-the exact same deadlock (see the original commit referenced
-below) can still happen if cfg80211_destroy_ifaces() already
-runs while nl80211_netlink_notify() is still marking some
-interfaces as nl_owner_dead.
+It is possible to fix the problem at the previous check you propose,
+we just need to add input parsing for length and queueno there.
 
-The race happens because we have two loops here - first we
-dev_close() all the netdevs, and then we destroy them. If we
-also have two netdevs (first one need only be a wdev though)
-then we can find one during the first iteration, close it,
-and go to the second iteration -- but then find two, and try
-to destroy also the one we didn't close yet.
+The code here seems prone to overflow, since function arguments
+only include a single buffer pointer without a remaining byte count.
+Moreover, some of the lengths are dynamic and encoded in the
+buffer.
 
-Fix this by only iterating once.
-
-Change-Id: Ie56cd0ef3f0d2108bb8a25c8bb5efced15e6a909
-Reported-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Fixes: ea6b2098dd02 ("cfg80211: fix locking in netlink owner interface destruction")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/core.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
-
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index ff74549b1022..d151a433388c 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -5,7 +5,7 @@
-  * Copyright 2006-2010		Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright 2015-2017	Intel Deutschland GmbH
-- * Copyright (C) 2018-2021 Intel Corporation
-+ * Copyright (C) 2018-2022 Intel Corporation
-  */
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-@@ -332,29 +332,20 @@ static void cfg80211_event_work(struct work_struct *work)
- void cfg80211_destroy_ifaces(struct cfg80211_registered_device *rdev)
- {
- 	struct wireless_dev *wdev, *tmp;
--	bool found = false;
- 
- 	ASSERT_RTNL();
- 
--	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
-+	list_for_each_entry_safe(wdev, tmp, &rdev->wiphy.wdev_list, list) {
- 		if (wdev->nl_owner_dead) {
- 			if (wdev->netdev)
- 				dev_close(wdev->netdev);
--			found = true;
--		}
--	}
--
--	if (!found)
--		return;
- 
--	wiphy_lock(&rdev->wiphy);
--	list_for_each_entry_safe(wdev, tmp, &rdev->wiphy.wdev_list, list) {
--		if (wdev->nl_owner_dead) {
-+			wiphy_lock(&rdev->wiphy);
- 			cfg80211_leave(rdev, wdev);
- 			rdev_del_virtual_intf(rdev, wdev);
-+			wiphy_unlock(&rdev->wiphy);
- 		}
- 	}
--	wiphy_unlock(&rdev->wiphy);
- }
- 
- static void cfg80211_destroy_iface_wk(struct work_struct *work)
--- 
-2.34.1
-
+For this reason, I think it's easier and more maintainable to add the
+check after existing parsing code and before read/write the buffer.
