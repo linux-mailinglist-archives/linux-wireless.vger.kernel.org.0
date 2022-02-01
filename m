@@ -2,199 +2,292 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5BD54A5734
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Feb 2022 07:29:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D411E4A58F3
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Feb 2022 10:08:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233883AbiBAG3s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Feb 2022 01:29:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57594 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233824AbiBAG3q (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Feb 2022 01:29:46 -0500
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42C15C061714
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 22:29:46 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id d10so50796005eje.10
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jan 2022 22:29:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=from:to:cc:date:message-id:in-reply-to:references:user-agent
-         :subject:mime-version;
-        bh=VpGNhnvS91d48a3lKoiUAPWZV8+gK+JupOf+SPRyhuI=;
-        b=L6BQKI0zcUKrRq33hXz03zXpK1NesR4718mD687KakADCtqeQHEm1TNLTkr/+AZkLs
-         Y8M6gyWHwhuCZHMNsNpp0BOGXKlujf7VHgxcIOcXoLgtudfqPyu0wXbX19gGcfrXgZCl
-         jfcjy3wl4YEu+UODibR4AhgJiDH9YncDM5TB0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
-         :references:user-agent:subject:mime-version;
-        bh=VpGNhnvS91d48a3lKoiUAPWZV8+gK+JupOf+SPRyhuI=;
-        b=YdVAOwmOvqI5xzuS7bypXExYXlBfAkBg+0rIG+5bpPS70GBg6jtmu2PLAcFnBkmuo5
-         KDPS+CcxVq3MG5G2hqF/g0GYEwWfjn4bcKipFg56sm2welUci5AyzPPdPYt2WXmEzYYc
-         C2sLEfxntvXCkbgMI4WA2DJ72ODv72G9ITg3wNBFok39HUcrEzct3e8QYhBnQPpHXWkW
-         Z8lbs72CtNjLQmleegB9ahjTYE64G97hLFSy0+kiMfyAf2Kcc9fNZYG8elkv8WBv30xe
-         NufCBlv6WX/htuPooDgtVRFqB+ShcTjui/OjnAdxtGAafpVCkg5Hg4nsSdUUKTOkJoRF
-         7MQg==
-X-Gm-Message-State: AOAM533JPFzUnw5qgbuA7nvdudo3gYZ1Q2W1m985vA/2lRVd+R84rmpk
-        gf6JJC5ygfRh/tQSWd5vqmNqeg==
-X-Google-Smtp-Source: ABdhPJzgwc2UmKALcy/UHP7oGry3AmaQJKTcTV+7n01pHbSMPHYpxTH7IaKfKbYgXI75bVYGc0KvQA==
-X-Received: by 2002:a17:906:b049:: with SMTP id bj9mr20010526ejb.718.1643696984701;
-        Mon, 31 Jan 2022 22:29:44 -0800 (PST)
-Received: from [192.168.178.38] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id s20sm14137854ejc.189.2022.01.31.22.29.42
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 31 Jan 2022 22:29:42 -0800 (PST)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Wright Feng <wright.feng@infineon.com>
-CC:     <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>
-Date:   Tue, 01 Feb 2022 07:29:42 +0100
-Message-ID: <17eb3f987f0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <87czk8djtl.fsf@kernel.org>
-References: <20211228061315.11126-1-wright.feng@infineon.com>
- <87czk8djtl.fsf@kernel.org>
-User-Agent: AquaMail/1.33.0 (build: 103300102)
-Subject: Re: [PATCH] MAINTAINERS: update maintainer list for Infineon
+        id S235735AbiBAJIx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Feb 2022 04:08:53 -0500
+Received: from mga14.intel.com ([192.55.52.115]:22361 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230333AbiBAJIw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 1 Feb 2022 04:08:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643706532; x=1675242532;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=za9uKb8xXejv/WmhsHKZ4f8ehj9UGiFHOBKePoS1dC0=;
+  b=bBaYRwn+fJ192iJ34xNAenkQuovX+9Xn1v/b2ExjlR8ledDmR3A+Bm/a
+   HC6Pf8TjLOv0iu7+/CcRDi4/GZeO6T3NogfP1M3SLpsGDI2ZhtE5aRxLP
+   OV957nP6Iu0G+1J/8fC5kNndyPR0SCseB+CiicmlDnAHZ3dilAWR38dpz
+   R4qapjJGMB/Yc7gOwEoCcB5jJJFCrDG8oFg/U3UWSetFCKveG8Z+osyO7
+   yiidJilZmWYfdRz84/rrgxnOB1QV0aXN+QekyDk2QXv3gU6Cw/BzPpJqv
+   DtD1xeMzgfbewKrNaksBCtUC4z76Kgo9k4NVJrxdlYLZV8J0IL4p/BNUT
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10244"; a="247867486"
+X-IronPort-AV: E=Sophos;i="5.88,333,1635231600"; 
+   d="scan'208";a="247867486"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2022 01:08:52 -0800
+X-IronPort-AV: E=Sophos;i="5.88,333,1635231600"; 
+   d="scan'208";a="537726495"
+Received: from mbechagg-mobl.ger.corp.intel.com ([10.249.44.42])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2022 01:08:46 -0800
+Date:   Tue, 1 Feb 2022 11:08:39 +0200 (EET)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
+cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
+        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
+        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
+        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
+        haijun.liu@mediatek.com, amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
+        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
+        sreehari.kancharla@intel.com
+Subject: Re: [PATCH net-next v4 07/13] net: wwan: t7xx: Data path HW layer
+In-Reply-To: <20220114010627.21104-8-ricardo.martinez@linux.intel.com>
+Message-ID: <8593f871-6737-7f85-5035-b1b2d5d312e@linux.intel.com>
+References: <20220114010627.21104-1-ricardo.martinez@linux.intel.com> <20220114010627.21104-8-ricardo.martinez@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000e82fee05d6ef0698"
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000e82fee05d6ef0698
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+On Thu, 13 Jan 2022, Ricardo Martinez wrote:
 
-On January 31, 2022 4:08:29 PM Kalle Valo <kvalo@kernel.org> wrote:
-
-> Wright Feng <wright.feng@infineon.com> writes:
->
->> From: Chi-Hsien Lin <chi-hsien.lin@infineon.com>
->>
->> Add new maintainer and remove old maintainers.
->>
->> Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@infineon.com>
->> Signed-off-by: Wright Feng <wright.feng@infineon.com>
->> ---
->> MAINTAINERS | 4 ++--
->> 1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 5ebfc9de0caf..845058803f95 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -3759,9 +3759,9 @@ BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER
->> M: Arend van Spriel <aspriel@gmail.com>
->> M: Franky Lin <franky.lin@broadcom.com>
->> M: Hante Meuleman <hante.meuleman@broadcom.com>
->> -M: Chi-hsien Lin <chi-hsien.lin@infineon.com>
->> M: Wright Feng <wright.feng@infineon.com>
->> -M: Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
->> +M: Double Lo <double.lo@infineon.com>
->> +M: Kurt Lee <kurt.lee@infineon.com>
->
-> I'm not really a fan of having too many maintainers, I would say max is
-> 3 and even that needs good justification. And most importantly, is
-> anyone else than Arend even doing any maintainer work for brcmfmac and
-> brcmsmac?
-
-Guess it should be clear what falls under the term "maintainer work". 
-Infineon does a better job these days when it comes to contributions adding 
-features and new chip support, but that doesn't fall under the category 
-although maintainers do submit their own patches. It's good to have a go-to 
-guy at Infineon as they independently work on firmware and it's APIs. On 
-our side I can probably remove Hante from the list.
-
-Regards,
-Arend
+> From: Haijun Liu <haijun.liu@mediatek.com>
+> 
+> Data Path Modem AP Interface (DPMAIF) HW layer provides HW abstraction
+> for the upper layer (DPMAIF HIF). It implements functions to do the HW
+> configuration, TX/RX control and interrupt handling.
+> 
+> Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
+> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+> ---
 
 
+> +static int t7xx_dpmaif_init_intr(struct dpmaif_hw_info *hw_info)
+> +{
+> +	struct dpmaif_isr_en_mask *isr_en_msk = &hw_info->isr_en_mask;
 
---000000000000e82fee05d6ef0698
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+dpmaif_isr_en_mask is not defined until patch 08.
 
-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
-XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
-yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
-0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
-NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
-FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
-aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
-OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
-UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBH87is1aeNC50dECkg
-n7w3b+UEiBQbfC2qzUSrslgCVTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAyMDEwNjI5NDRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEABL9n/NRBVsJoQHuHVwoz7TMAMktT3vVmbYYl
-BlnvEOMyzYECVTBuNaCQqDgSvoYtjax9OEdGxpFf2+XXaFhSKpJ5RX+L3KtlpJJIJRlu47qmoWby
-ZHgRrbGPydS3QKE+WJ5q4vJSMOpY/V92y42WQp4srZRSwoybqd8NmU5qNjISnaZPHtxuPJ+bUmZd
-3I+4Ebg8QtChj/dj01omzh2L5cvyXOyuI13dWL0WgJvzC0mh+zZ9OCCu5J7gLzQuK4iTWT2TupSp
-cO83xfw8syLtxMYbPuM1xsozIhNYwOsW3p61KKD346h/NGbOz0O9quFkQay4rWuVHlp7qpaqgvgu
-Ng==
---000000000000e82fee05d6ef0698--
+
+> +/* The para->intr_cnt counter is set to zero before this function is called.
+> + * It does not check for overflow as there is no risk of overflowing intr_types or intr_queues.
+> + */
+> +static void t7xx_dpmaif_hw_check_rx_intr(struct dpmaif_ctrl *dpmaif_ctrl,
+> +					 unsigned int *pl2_rxisar0,
+> +					 struct dpmaif_hw_intr_st_para *para, int qno)
+> +{
+> +	struct dpmaif_hw_info *hw_info = &dpmaif_ctrl->hif_hw_info;
+> +	unsigned int l2_rxisar0 = *pl2_rxisar0;
+> +	unsigned int value;
+> +
+> +	if (qno == DPF_RX_QNO_DFT) {
+> +		value = l2_rxisar0 & DP_DL_INT_SKB_LEN_ERR;
+> +		if (value)
+
+In this function, value variable doesn't seem that useful compared with 
+checking the condition directly on if line. And the value is never used 
+after that.
+
+> +			t7xx_dpmaif_set_intr_para(para, DPF_INTR_DL_SKB_LEN_ERR, DPF_RX_QNO_DFT);
+> +
+> +		value = l2_rxisar0 & DP_DL_INT_BATCNT_LEN_ERR;
+> +		if (value) {
+> +			t7xx_dpmaif_set_intr_para(para, DPF_INTR_DL_BATCNT_LEN_ERR, DPF_RX_QNO_DFT);
+> +			hw_info->isr_en_mask.ap_dl_l2intr_en_msk &= ~DP_DL_INT_BATCNT_LEN_ERR;
+> +			iowrite32(DP_DL_INT_BATCNT_LEN_ERR,
+> +				  hw_info->pcie_base + DPMAIF_AO_UL_APDL_L2TIMSR0);
+> +		}
+> +
+> +		value = l2_rxisar0 & DP_DL_INT_PITCNT_LEN_ERR;
+> +		if (value) {
+> +			t7xx_dpmaif_set_intr_para(para, DPF_INTR_DL_PITCNT_LEN_ERR, DPF_RX_QNO_DFT);
+> +			hw_info->isr_en_mask.ap_dl_l2intr_en_msk &= ~DP_DL_INT_PITCNT_LEN_ERR;
+> +			iowrite32(DP_DL_INT_PITCNT_LEN_ERR,
+> +				  hw_info->pcie_base + DPMAIF_AO_UL_APDL_L2TIMSR0);
+> +		}
+> +
+> +		value = l2_rxisar0 & DP_DL_INT_PKT_EMPTY_MSK;
+> +		if (value)
+> +			t7xx_dpmaif_set_intr_para(para, DPF_INTR_DL_PKT_EMPTY_SET, DPF_RX_QNO_DFT);
+> +
+> +		value = l2_rxisar0 & DP_DL_INT_FRG_EMPTY_MSK;
+> +		if (value)
+> +			t7xx_dpmaif_set_intr_para(para, DPF_INTR_DL_FRG_EMPTY_SET, DPF_RX_QNO_DFT);
+> +
+> +		value = l2_rxisar0 & DP_DL_INT_MTU_ERR_MSK;
+> +		if (value)
+> +			t7xx_dpmaif_set_intr_para(para, DPF_INTR_DL_MTU_ERR, DPF_RX_QNO_DFT);
+> +
+> +		value = l2_rxisar0 & DP_DL_INT_FRG_LENERR_MSK;
+> +		if (value)
+> +			t7xx_dpmaif_set_intr_para(para, DPF_INTR_DL_FRGCNT_LEN_ERR, DPF_RX_QNO_DFT);
+> +
+> +		value = l2_rxisar0 & DP_DL_INT_Q0_PITCNT_LEN_ERR;
+> +		if (value) {
+> +			t7xx_dpmaif_set_intr_para(para, DPF_INTR_DL_Q0_PITCNT_LEN_ERR, BIT(qno));
+> +			t7xx_dpmaif_dlq_mask_rx_pitcnt_len_err_intr(hw_info, qno);
+> +		}
+> +
+> +		value = l2_rxisar0 & DP_DL_INT_HPC_ENT_TYPE_ERR;
+> +		if (value)
+> +			t7xx_dpmaif_set_intr_para(para, DPF_INTR_DL_HPC_ENT_TYPE_ERR,
+> +						  DPF_RX_QNO_DFT);
+> +
+> +		value = l2_rxisar0 & DP_DL_INT_Q0_DONE;
+> +		if (value) {
+> +			/* Mask RX done interrupt immediately after it occurs */
+> +			if (!t7xx_mask_dlq_intr(dpmaif_ctrl, qno)) {
+> +				t7xx_dpmaif_set_intr_para(para, DPF_INTR_DL_Q0_DONE, BIT(qno));
+> +			} else {
+> +				/* Unable to clear the interrupt, try again on the next one
+> +				 * device entered low power mode or suffer exception
+> +				 */
+
+It's not obvious what "on the next one" means. I assume you're 
+also missing period from end of the first line.
+
+> +				*pl2_rxisar0 = l2_rxisar0 & ~DP_DL_INT_Q0_DONE;
+> +			}
+> +		}
+> +	} else {
+> +		value = l2_rxisar0 & DP_DL_INT_Q1_PITCNT_LEN_ERR;
+> +		if (value) {
+> +			t7xx_dpmaif_set_intr_para(para, DPF_INTR_DL_Q1_PITCNT_LEN_ERR, BIT(qno));
+> +			t7xx_dpmaif_dlq_mask_rx_pitcnt_len_err_intr(hw_info, qno);
+> +		}
+> +
+> +		value = l2_rxisar0 & DP_DL_INT_Q1_DONE;
+> +		if (value) {
+> +			if (!t7xx_mask_dlq_intr(dpmaif_ctrl, qno))
+> +				t7xx_dpmaif_set_intr_para(para, DPF_INTR_DL_Q1_DONE, BIT(qno));
+> +			else
+> +				*pl2_rxisar0 = l2_rxisar0 & ~DP_DL_INT_Q1_DONE;
+> +		}
+> +	}
+> +}
+
+
+> +static void t7xx_dpmaif_dl_dlq_pit_en(struct dpmaif_hw_info *hw_info, unsigned char q_num,
+> +				      bool enable)
+> +{
+> +	unsigned int value;
+> +
+> +	value = ioread32(hw_info->pcie_base + DPMAIF_DL_DLQPIT_INIT_CON3);
+> +
+> +	if (enable)
+> +		value |= DPMAIF_DLQPIT_EN_MSK;
+> +	else
+> +		value &= ~DPMAIF_DLQPIT_EN_MSK;
+> +
+> +	iowrite32(value, hw_info->pcie_base + DPMAIF_DL_DLQPIT_INIT_CON3);
+> +}
+
+Only called with enabled = true
+
+
+> +static int t7xx_dpmaif_config_dlq_hw(struct dpmaif_ctrl *dpmaif_ctrl)
+> +{
+> +	struct dpmaif_hw_info *hw_info = &dpmaif_ctrl->hif_hw_info;
+> +	struct dpmaif_dl_hwq *dl_hw;
+
+Only defined in 08. I might have not noticed all missing defs
+so please compile test yourself to find the rest if any.
+
+In general, it would be useful to use, e.g., a shell for loop to compile
+test every change incrementally in the patchset before sending them out.
+
+Another thing is that the values inside struct dpmaif_dl_hwq are
+just set from constants and never changed anywhere. Why not use 
+the constants directly?
+
+
+> +static void t7xx_dpmaif_ul_all_q_en(struct dpmaif_hw_info *hw_info, bool enable)
+> +{
+> +	u32 ul_arb_en = ioread32(hw_info->pcie_base + DPMAIF_AO_UL_CHNL_ARB0);
+> +
+> +	if (enable)
+> +		ul_arb_en |= DPMAIF_UL_ALL_QUE_ARB_EN;
+> +	else
+> +		ul_arb_en &= ~DPMAIF_UL_ALL_QUE_ARB_EN;
+> +
+> +	iowrite32(ul_arb_en, hw_info->pcie_base + DPMAIF_AO_UL_CHNL_ARB0);
+> +}
+> +
+> +static bool t7xx_dpmaif_ul_idle_check(struct dpmaif_hw_info *hw_info)
+> +{
+> +	u32 dpmaif_ul_is_busy = ioread32(hw_info->pcie_base + DPMAIF_UL_CHK_BUSY);
+> +
+> +	return !(dpmaif_ul_is_busy & DPMAIF_UL_IDLE_STS);
+> +}
+> +
+> + /* DPMAIF UL Part HW setting */
+
+While not extremely useful to begin with, isn't this comment too late as
+it is after two UL related functions?
+
+> +unsigned int t7xx_dpmaif_dl_get_frg_rd_idx(struct dpmaif_hw_info *hw_info, unsigned char q_num)
+> +{
+> +	u32 value;
+> +
+> +	value = ioread32(hw_info->pcie_base + DPMAIF_AO_DL_FRGBAT_WRIDX);
+> +	return value & DPMAIF_DL_FRG_WRIDX_MSK;
+> +}
+
+Function name has rd_idx but defines used are WRIDX. Is it intentional?
+
+
+> +enum dpmaif_hw_intr_type {
+> +	DPF_INTR_INVALID_MIN,
+> +	DPF_INTR_UL_DONE,
+> +	DPF_INTR_UL_DRB_EMPTY,
+> +	DPF_INTR_UL_MD_NOTREADY,
+> +	DPF_INTR_UL_MD_PWR_NOTREADY,
+> +	DPF_INTR_UL_LEN_ERR,
+> +	DPF_INTR_DL_DONE,
+> +	DPF_INTR_DL_SKB_LEN_ERR,
+> +	DPF_INTR_DL_BATCNT_LEN_ERR,
+> +	DPF_INTR_DL_PITCNT_LEN_ERR,
+> +	DPF_INTR_DL_PKT_EMPTY_SET,
+> +	DPF_INTR_DL_FRG_EMPTY_SET,
+> +	DPF_INTR_DL_MTU_ERR,
+> +	DPF_INTR_DL_FRGCNT_LEN_ERR,
+> +	DPF_INTR_DL_Q0_PITCNT_LEN_ERR,
+> +	DPF_INTR_DL_Q1_PITCNT_LEN_ERR,
+> +	DPF_INTR_DL_HPC_ENT_TYPE_ERR,
+> +	DPF_INTR_DL_Q0_DONE,
+> +	DPF_INTR_DL_Q1_DONE,
+> +	DPF_INTR_INVALID_MAX
+> +};
+> +
+> +#define DPF_RX_QNO0			0
+> +#define DPF_RX_QNO1			1
+> +#define DPF_RX_QNO_DFT			DPF_RX_QNO0
+> +
+> +struct dpmaif_hw_intr_st_para {
+> +	unsigned int intr_cnt;
+> +	enum dpmaif_hw_intr_type intr_types[DPF_INTR_INVALID_MAX - 1];
+> +	unsigned int intr_queues[DPF_INTR_INVALID_MAX - 1];
+
+Off-by-one errors?
+
+In addition, I think there's some other problem related to these as
+there are 20 values in enum (of which two are named "INVALID") but
+t7xx_dpmaif_set_intr_para seems to be called only with 17 of them
+(DPF_INTR_DL_DONE not among the calls). This implies intr_cnt will
+likely be too small to cover the last entry when it is being used
+in 08/13 for a for loop termination condition.
+
+
+-- 
+ i.
+
