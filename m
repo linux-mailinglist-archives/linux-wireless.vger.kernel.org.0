@@ -2,45 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A5814A808D
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Feb 2022 09:43:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CE9B4A80D5
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Feb 2022 10:02:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243946AbiBCInG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Feb 2022 03:43:06 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:51398 "EHLO
+        id S1348022AbiBCJCo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Feb 2022 04:02:44 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:58294 "EHLO
         ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229696AbiBCInF (ORCPT
+        with ESMTP id S234747AbiBCJCn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Feb 2022 03:43:05 -0500
+        Thu, 3 Feb 2022 04:02:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 72F55B832B7
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Feb 2022 08:43:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7ABC340E4;
-        Thu,  3 Feb 2022 08:43:02 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BA1A8B83378
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Feb 2022 09:02:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2DFC340E4;
+        Thu,  3 Feb 2022 09:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643877783;
-        bh=raJ5v7BVcPmMDwmIa7nhFcmWNNb+U3YYIVTVBEqfUvU=;
+        s=k20201202; t=1643878961;
+        bh=kzBER/Tgbpr+0JCksoS6L1WIVDL9M9EAARVDtTGTv0U=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Ml2GzfT6d9KcwwptFpEy5SoKAt6gv+NaQ8nFKrHTCWSMmyL2LNOTHRUCCjpmSzfXx
-         /I9MTuRL+UcWZiOm/ByRmBekotNC36jbX5x9IktrOqPwJz2jCGJzmWhNZMC1Nqkw7f
-         FgFDVPvn3gVElWLUN/npg1l+2ljHw05ROG106aw+Cw3PX0FNYa7Uo79WuFHvgxlH6Z
-         Jxd2lGO0KJW3me0A+/Jj1LRh17h+DsB9csuXebvH3dGGJXN3ByEVGIuGUPBriybSF1
-         C3JwKYWeemgPgf4PwQxeQq1xSjgRz3xenyGcXBAUXY2wU4aUmUxPcRJMJ4vjiNLwhc
-         XiAq1jPq2jAOQ==
+        b=kmow2QmWuqH3U88U1w5ypDqz0MXxUak4V12RFxJ7UDrHdHcoQs4C7cBN3WkthNbx/
+         ZZ/btksCBkbL7tm3Rb1R2RAgFF+Riex8LTiLW/TzzvTxp8J7kHLUviXKVJLKIHBCtX
+         QzWSRYc6/txApeZO6oQY+Hm8Yx08sI2c00nw5Tj8ipUsZMO0EBBl34DRtCmxWhXlY7
+         TUCkrTvrVPlJ9TZV7eo5I/iwBfZYUiNFX2mifYH3M+qAt1O9CAGzkqDd2Yr7W2RqWm
+         Eeq2m5VK2ppNIhQqT2AAv7BsPpwDryOQIM1hJ4D7NofuusS8wZL5AHZZlHT41UqakL
+         hrS9qWBmAbHxw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 13/19] rtw89: extend role_maintain to support AP mode
-References: <20220107034239.22002-1-pkshih@realtek.com>
-        <20220107034239.22002-14-pkshih@realtek.com>
-        <874k5ng8oq.fsf@kernel.org>
-        <97e80d86f5b925a0b2337d15c56e88d3808b6efe.camel@realtek.com>
-Date:   Thu, 03 Feb 2022 10:42:59 +0200
-In-Reply-To: <97e80d86f5b925a0b2337d15c56e88d3808b6efe.camel@realtek.com>
-        (Pkshih's message of "Sat, 29 Jan 2022 03:36:14 +0000")
-Message-ID: <877daccpd8.fsf@kernel.org>
+To:     Thorsten Leemhuis <regressions@leemhuis.info>
+Cc:     Luca Coelho <luca@coelho.fi>, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH for v5.17 1/2] iwlwifi: remove deprecated broadcast filtering feature
+References: <20220128124851.538580-1-luca@coelho.fi>
+        <iwlwifi.20220128144623.9241e049f13e.Ia4f282813ca2ddd24c13427823519113f2bbebf2@changeid>
+        <b784b942-6346-7005-b71a-5682cf0452b1@leemhuis.info>
+        <87a6fccg6j.fsf@tynnyri.adurom.net>
+        <260df94d-8cc4-35eb-775c-d42ba57d6f88@leemhuis.info>
+Date:   Thu, 03 Feb 2022 11:02:36 +0200
+In-Reply-To: <260df94d-8cc4-35eb-775c-d42ba57d6f88@leemhuis.info> (Thorsten
+        Leemhuis's message of "Mon, 31 Jan 2022 13:45:40 +0100")
+Message-ID: <8735l0cogj.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -48,91 +49,92 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pkshih <pkshih@realtek.com> writes:
+Thorsten Leemhuis <regressions@leemhuis.info> writes:
 
-> On Fri, 2022-01-28 at 17:51 +0200, Kalle Valo wrote:
->> Ping-Ke Shih <pkshih@realtek.com> writes:
+> On 31.01.22 12:12, Kalle Valo wrote:
+>> Thorsten Leemhuis <regressions@leemhuis.info> writes:
+>>> On 28.01.22 13:48, Luca Coelho wrote:
+>>>> From: Luca Coelho <luciano.coelho@intel.com>
+>>>>
+>>>> This feature has been deprecated and should not be used anymore.  With
+>>>> newer firmwares, namely *-67.ucode and above, trying to use it causes an
+>>>> assertion failure in the FW, similar to this:
+>>>>
+>>>> [Tue Jan 11 20:05:24 2022] iwlwifi 0000:04:00.0: 0x00001062 | ADVANCED_SYSASSERT
+>>>>
+>>>> In order to prevent this feature from being used, remove it entirely
+>>>> and get rid of the Kconfig option that
+>>>> enables it (IWLWIFI_BCAST_FILTERING).
+>>>>
+>>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=215488
+>>>
+>>> FWIW there was another report about it afaics:
+>>>
+>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=215550
 >> 
->> > Fill mac_id and self_role depends on the operation mode.
->> > 
->> > In AP mode, echo connected station has an unique mac_id, and each vif also
->> > has one mac_id to represent itself.
->> > 
->> > The self_role is assigned to vif if the operation mode is decided, and
->> > RTW89_SELF_ROLE_AP_CLIENT is assigned to the connected STA in AP mode,
->> > 
->> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
->> > ---
->> >  drivers/net/wireless/realtek/rtw89/fw.c  | 8 ++++++--
->> >  drivers/net/wireless/realtek/rtw89/fw.h  | 1 +
->> >  drivers/net/wireless/realtek/rtw89/mac.c | 4 ++--
->> >  3 files changed, 9 insertions(+), 4 deletions(-)
->> > 
->> > diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
->> > index 5209813275676..4641aadea0386 100644
->> > --- a/drivers/net/wireless/realtek/rtw89/fw.c
->> > +++ b/drivers/net/wireless/realtek/rtw89/fw.c
->> > @@ -993,9 +993,13 @@ int rtw89_fw_h2c_update_beacon(struct rtw89_dev *rtwdev,
->> >  #define H2C_ROLE_MAINTAIN_LEN 4
->> >  int rtw89_fw_h2c_role_maintain(struct rtw89_dev *rtwdev,
->> >  			       struct rtw89_vif *rtwvif,
->> > +			       struct rtw89_sta *rtwsta,
->> >  			       enum rtw89_upd_mode upd_mode)
->> >  {
->> >  	struct sk_buff *skb;
->> > +	u8 mac_id = rtwsta ? rtwsta->mac_id : rtwvif->mac_id;
->> > +	u8 self_role = rtwvif->net_type == RTW89_NET_TYPE_AP_MODE && rtwsta ?
->> > +		       RTW89_SELF_ROLE_AP_CLIENT : rtwvif->self_role;
+>> If it's the same issue, it should be marked as a duplicate.
+>
+> Understandable request, but sorry, for now I decided to not do that in
+> such situations for two reasons:
+>
+>  * it can easily go wrong, as I encounter all sorts of kernel bugs and
+> thus often lack detailed knowledge about the areas the bug is about
+>
+>  * I'm doing regression tacking in my spare time, which is hard enough
+> already; taking care of bugs would make it a lot harder -- especially as
+> some maintainers/subsystems seem to (mostly) ignore bugzilla, so I would
+> be starting to do their job. Hence I only look at bugzilla to make sure
+> no regressions reported there falls through the cracks. See also:
+> https://lore.kernel.org/regressions/3ee8c6c9-52d1-9570-f3bf-490365c9f6fe@leemhuis.info/
+
+I share your pain, I'm also overwhelmed by mail and patches :) To be
+exact, I didn't mean that you Thorsten should mark the bug duplicate and
+I was hoping that someone from Intel would do it. And Golan thankfully
+did that:
+
+https://bugzilla.kernel.org/show_bug.cgi?id=215550#c1
+
+And I also agree about challenges with Bugzilla. I personally have time
+to only follow ath11k bugzilla reports, everything else I'm forced to
+ignore. This is a big disconnect between users and developers which
+worries me as well.
+
+>>> That makes me hope that this is reviewed and merged to mainline relative
+>>> quickly, otherwise more users will be bothered by this.
+>>>
+>>>> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+>>>> Fixes: cbaa6aeedee5 ("iwlwifi: bump FW API to 67 for AX devices")
+>>>> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+>>>
+>>> Shouldn't this also have:
+>>>
+>>> Cc: stable@vger.kernel.org # 5.16.x
 >> 
->> It seems you like '?' operator more than I do, and it's ok to use in
->> simple cases. But the latter statement is not really readable, something
->> like this is so much easier to read:
->> 
->> if (rtwvif->net_type == RTW89_NET_TYPE_AP_MODE && rtwsta)
->>     self_role = RTW89_SELF_ROLE_AP_CLIENT
->> else
->>     self_role = rtwvif->self_role;
->> 
+>> I can add that.
 >
-> I use '?' to make code shorter, but your sugeestion would be eaiser to reviewer.
-> I will send v2 after the Lunar New Year.
+> thx.
+>
+>> BTW, please trim your quotes. You left a really long (and unnecessary)
+>> quote, which makes use of patchwork much harder for us maintainers.
+>> Unfortunately patchwork is not able to trim them automatically:
+>
+> Argh, sorry, of course, will do that. I normally trim a lot more, but
+> when I'm in "regression tracker mode" I work differently and quote more,
+> as I often have to poke discussions that got stalled -- and there the
+> context might be helpful. But you are obviously right, for patches and
+> quite a few other situations that's obviously unneeded and harmful.
 
-Happy New Year :)
+Yeah, understandable that quoting more is helpful for regression
+reports. I wish patchwork would have a feature to automatically trim
+unnecessary quotes, that would be really helpful for us maintainers.
 
->> But should there a parenthesis around the == operator? I cannot now
->> recall what's the preference in the kernel, can someone help on that?
->
-> The checkpatch will warn this if we add parenthesis, so preence is not to
-> use parenthesis.
->
-> CHECK:UNNECESSARY_PARENTHESES: Unnecessary parentheses around 'rtwvif->net_type ==
-> RTW89_NET_TYPE_AP_MODE'
-> #9: FILE: fw.c:1004:
-> +	if ((rtwvif->net_type == RTW89_NET_TYPE_AP_MODE) && rtwsta)
-
-Ok, I need to remember that :)
-
->> Maybe I also move check for rtwsta first?
->> 
->
-> The full logic is 
->
-> if (rtwvif->net_type == RTW89_NET_TYPE_AP_MODE) {
->     if (rtwsta)
->         self_role = RTW89_SELF_ROLE_AP_CLIENT
->     else
->         self_role = rtwvif->self_role;
-> } else {
->     self_role = rtwvif->self_role;
-> }
->
-> And, the meaning of 'rtwsta' here is to indicate we are going to setup 
-> a connected station that connects to this AP, but not check if the
-> pointer is NULL. To emphasis the case is only existing in AP_MODE,
-> I prefer to check net_type ahead. Or, this full logic is preferred?
-
-I don't know what others think, but I find this full logic style most
-readable.
+BTW, I also have a feature request for regzbot :) I try to follow
+regression emails very carefully, but I find the emails quite hard to
+read as it's not easy to see what part of text is written by a bot and
+which is from a human. I get so much email that I try to skim the emails
+quickly and ignore all the boilerplate text, but with regzbot emails
+that's difficult. One way to solve this might be to add all boilerplate
+code between "-----[cut]------" lines or something like that.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
