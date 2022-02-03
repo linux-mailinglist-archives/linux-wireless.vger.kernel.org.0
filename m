@@ -2,180 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 094A24A8624
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Feb 2022 15:24:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D48C54A86C8
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Feb 2022 15:44:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351133AbiBCOYF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Feb 2022 09:24:05 -0500
-Received: from mga09.intel.com ([134.134.136.24]:31771 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240146AbiBCOYD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Feb 2022 09:24:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643898243; x=1675434243;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=mZITRt8XHZzpLCxK3Nbh5HG0CKWyna47vd4e3NgzEP4=;
-  b=EkyY9IP+GMf4QF0dJ+tXpGmNLH5rWSMX2otQ+r48aKz1RV+tEVqu9p4L
-   AaQayXDvho8fnoa7qe7wWG17uhELQPE+2CitOgGE5QuWTCXSgcM5vGRSz
-   at3UEPRmjsru/EEejthkQQuPYW/qK7g24csSaOukjEsdcq3m5lGEgjTV3
-   kduIKEId9fUB+NxWqyZbIXD9MlC6ppG64sPyJ/v9AoWXgN96NRq6jO49f
-   4714O6dEEqKbIRSjTywz8CMJp1ynwAaWwxUKUkuivCIoO7fcc/omBdO/Z
-   9KLYnkR2bBSfk4phW+/GY56MdzPDlqBRH13M59nU0jUMSQpDarAcFN6wm
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10246"; a="247917409"
-X-IronPort-AV: E=Sophos;i="5.88,340,1635231600"; 
-   d="scan'208";a="247917409"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2022 06:24:03 -0800
-X-IronPort-AV: E=Sophos;i="5.88,340,1635231600"; 
-   d="scan'208";a="699326249"
-Received: from unknown (HELO ijarvine-MOBL2.mshome.net) ([10.237.66.34])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2022 06:23:55 -0800
-Date:   Thu, 3 Feb 2022 16:23:49 +0200 (EET)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
-cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
-        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
-        sreehari.kancharla@intel.com
-Subject: Re: [PATCH net-next v4 08/13] net: wwan: t7xx: Add data path
- interface
-In-Reply-To: <20220114010627.21104-9-ricardo.martinez@linux.intel.com>
-Message-ID: <1fd3d71c-d10-9feb-64c0-206a308b51d5@linux.intel.com>
-References: <20220114010627.21104-1-ricardo.martinez@linux.intel.com> <20220114010627.21104-9-ricardo.martinez@linux.intel.com>
+        id S1346041AbiBCOoh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Feb 2022 09:44:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60992 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242202AbiBCOod (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 3 Feb 2022 09:44:33 -0500
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ACAAC06173B
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Feb 2022 06:44:33 -0800 (PST)
+Received: by mail-il1-x131.google.com with SMTP id d3so2273594ilr.10
+        for <linux-wireless@vger.kernel.org>; Thu, 03 Feb 2022 06:44:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tbhWRIOFYjgUC3Vb98+hQGA2AlTDbAX5g/E/ZuVec74=;
+        b=E27QQ6wJuL3UmwpE9CQ6NCKwnrzvDVkIRvP3x9Jl3bZ48yhcJ5NgrprOkYYGCFF2dj
+         sU7eOgR6FVApzEGit7UGjFPEK98K9huPKdypWNhgcRz72QgkP8NMMaPtSaQG8Y/DZFcw
+         jV9Er86XWBIaAYokQXo3xujUImU9yG4PKbqDE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tbhWRIOFYjgUC3Vb98+hQGA2AlTDbAX5g/E/ZuVec74=;
+        b=W+EkXFcBzOJqKhjihlVb9UzCEZGbLYw7oBRg9igluE0bBy/TdbemKVLQGVZFlWiGW9
+         Psr9AdBuQ/69K7iQhpzKS98XXZtNdZYpHDBjDHTrMl06I3kdFm6XEfusT0H3/1v1n9zp
+         O538lBpq/R/Xb15SdgYi0BUUcKmKZSV5T7qoa3jM+wZQDHd7M8P/wJBEbvGVVBX1t/c9
+         /iseb/bwtRztorlZ0+W4eIJS/fophjKTDFI/nzGDinnY0Lt35P7vuGI0CjEaSDAuIGx+
+         HlTbe8wxmHkm7iZSFpjrtpLtKr5oVBlQkJNnydpHw+Fp2b6tlno0b8l9Vg0LyuFR8cDT
+         UxhQ==
+X-Gm-Message-State: AOAM531nrqU7dUspg0IekQx73urO3744wRAzzlkdP6xOIEC8Qf/Xd6kp
+        3ftogOrZS//8ZfNTokznh/pLWGwV8qepUQ==
+X-Google-Smtp-Source: ABdhPJzgbklfD/xSxd/E44mVCiBw2lneBkB9UghTpkZeeE74YoVwF+t2QvKGgR8GUfa50cydmeTjZA==
+X-Received: by 2002:a92:ca0f:: with SMTP id j15mr12698589ils.189.1643899472383;
+        Thu, 03 Feb 2022 06:44:32 -0800 (PST)
+Received: from mail-io1-f45.google.com (mail-io1-f45.google.com. [209.85.166.45])
+        by smtp.gmail.com with ESMTPSA id c9sm22255873ile.38.2022.02.03.06.44.31
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Feb 2022 06:44:31 -0800 (PST)
+Received: by mail-io1-f45.google.com with SMTP id y84so3572287iof.0
+        for <linux-wireless@vger.kernel.org>; Thu, 03 Feb 2022 06:44:31 -0800 (PST)
+X-Received: by 2002:a02:3b67:: with SMTP id i39mr17234458jaf.50.1643899470709;
+ Thu, 03 Feb 2022 06:44:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20220121064427.32059-1-quic_youghand@quicinc.com> <20220121064427.32059-2-quic_youghand@quicinc.com>
+In-Reply-To: <20220121064427.32059-2-quic_youghand@quicinc.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Thu, 3 Feb 2022 06:44:18 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=W-kPfnL2jB7bw4SSC=8hBfZg4kq7=rsHHCxDRj6yaSeQ@mail.gmail.com>
+Message-ID: <CAD=FV=W-kPfnL2jB7bw4SSC=8hBfZg4kq7=rsHHCxDRj6yaSeQ@mail.gmail.com>
+Subject: Re: [RFC 1/2] ath10k: Set tx credit to one for wcn3990 snoc based devices
+To:     Youghandhar Chintala <quic_youghand@quicinc.com>
+Cc:     ath10k <ath10k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, quic_pillair@quicinc.com,
+        Abhishek Kumar <kuabhs@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 13 Jan 2022, Ricardo Martinez wrote:
+Hi,
 
-> From: Haijun Liu <haijun.liu@mediatek.com>
-> 
-> Data Path Modem AP Interface (DPMAIF) HIF layer provides methods
-> for initialization, ISR, control and event handling of TX/RX flows.
-> 
-> DPMAIF TX
-> Exposes the `dmpaif_tx_send_skb` function which can be used by the
-> network device to transmit packets.
-> The uplink data management uses a Descriptor Ring Buffer (DRB).
-> First DRB entry is a message type that will be followed by 1 or more
-> normal DRB entries. Message type DRB will hold the skb information
-> and each normal DRB entry holds a pointer to the skb payload.
-> 
-> DPMAIF RX
-> The downlink buffer management uses Buffer Address Table (BAT) and
-> Packet Information Table (PIT) rings.
-> The BAT ring holds the address of skb data buffer for the HW to use,
-> while the PIT contains metadata about a whole network packet including
-> a reference to the BAT entry holding the data buffer address.
-> The driver reads the PIT and BAT entries written by the modem, when
-> reaching a threshold, the driver will reload the PIT and BAT rings.
-> 
-> Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
-> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
-> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
-> ---
+On Thu, Jan 20, 2022 at 10:44 PM Youghandhar Chintala
+<quic_youghand@quicinc.com> wrote:
+>
+> -       htc->total_transmit_credits = __le16_to_cpu(msg->ready.credit_count);
+> +       if (ar->hw_params.tx_credit_limit)
+> +               htc->total_transmit_credits =
+> +                       __le16_to_cpu(HTC_HOST_MAX_CREDIT_COUNT);
+> +       else
+> +               htc->total_transmit_credits =
+> +                       __le16_to_cpu(msg->ready.credit_count);
 
-> +	unsigned short		last_ch_id;
-Values is never used.
+Apparently 0-day had a bit of a problem with the syntax above. See
+<https://crrev.com/c/3435607>. Basically you don't need the
+__le16_to_cpu() around the constant HTC_HOST_MAX_CREDIT_COUNT.
 
-> +	if (old_rl_idx > old_wr_idx && new_wr_idx >= old_rl_idx) {
-> +		dev_err(dpmaif_ctrl->dev, "RX BAT flow check fail\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (new_wr_idx >= bat_req->bat_size_cnt) {
-> +		new_wr_idx -= bat_req->bat_size_cnt;
-> +		if (new_wr_idx >= old_rl_idx) {
-> +			dev_err(dpmaif_ctrl->dev, "RX BAT flow check fail\n");
-> +			return -EINVAL;
-> +		}
-
-Make a label for the identical block and goto there.
-
-> +static void t7xx_unmap_bat_skb(struct device *dev, struct dpmaif_bat_skb *bat_skb_base,
-> +			       unsigned int index)
-> +{
-> +	struct dpmaif_bat_skb *bat_skb = bat_skb_base + index;
-> +
-> +	if (bat_skb->skb) {
-> +		dma_unmap_single(dev, bat_skb->data_bus_addr, bat_skb->data_len, DMA_FROM_DEVICE);
-> +		kfree_skb(bat_skb->skb);
-
-For consistency, dev_kfree_skb?
-
-> + * @initial: Indicates if the ring is being populated for the first time.
-> + *
-> + * Allocate skb and store the start address of the data buffer into the BAT ring.
-> + * If this is not the initial call, notify the HW about the new entries.
-> + *
-> + * Return:
-> + * * 0		- Success.
-> + * * -ERROR	- Error code from failure sub-initializations.
-> + */
-> +int t7xx_dpmaif_rx_buf_alloc(struct dpmaif_ctrl *dpmaif_ctrl,
-> +			     const struct dpmaif_bat_request *bat_req,
-> +			     const unsigned char q_num, const unsigned int buf_cnt,
-> +			     const bool initial)
-
-vs its prototype:
-
-+int t7xx_dpmaif_rx_buf_alloc(struct dpmaif_ctrl *dpmaif_ctrl,
-+                            const struct dpmaif_bat_request *bat_req, const unsigned char q_num,
-+                            const unsigned int buf_cnt, const bool first_time);
-
-> +int t7xx_dpmaif_rx_frag_alloc(struct dpmaif_ctrl *dpmaif_ctrl, struct dpmaif_bat_request *bat_req,
-> +			      const unsigned int buf_cnt, const bool initial)
-> +{
-> +	struct dpmaif_bat_page *bat_skb = bat_req->bat_skb;
-> +	unsigned short cur_bat_idx = bat_req->bat_wr_idx;
-> +	unsigned int buf_space;
-> +	int ret, i;
-...
-> +	ret = i < buf_cnt ? -ENOMEM : 0;
-> +	if (ret && initial) {
-
-int ret = 0, i;
-...
-if (i < buf_cnt) {
-	ret = -ENOMEM;
-	if (initial) {
-		...
-	}
-}
-
-> +	if (!tx_drb_available || txq->tx_submit_skb_cnt >= txq->tx_list_max_len) {
-> +		cb = dpmaif_ctrl->callbacks;
-> +		cb->state_notify(dpmaif_ctrl->t7xx_dev, DMPAIF_TXQ_STATE_FULL, txqt);
-> +		return -EBUSY;
-> +	}
-> +
-> +	skb->cb[TX_CB_QTYPE] = txqt;
-> +	skb->cb[TX_CB_DRB_CNT] = send_drb_cnt;
-> +
-> +	spin_lock_irqsave(&txq->tx_skb_lock, flags);
-> +	list_add_tail(&skb->list, &txq->tx_skb_queue);
-> +	txq->tx_submit_skb_cnt++;
-> +	spin_unlock_irqrestore(&txq->tx_skb_lock, flags);
-
-Perhaps the critical section needs to start earlier to enforce that 
-tx_list_max_len check?
-
-
-(I'm yet to read half of this patch...)
-
--- 
- i.
-
+-Doug
