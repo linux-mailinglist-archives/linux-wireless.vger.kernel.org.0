@@ -2,76 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 748D34A806D
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Feb 2022 09:26:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DBAD4A8082
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Feb 2022 09:39:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239717AbiBCI04 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Feb 2022 03:26:56 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:46428 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345671AbiBCI0v (ORCPT
+        id S1349540AbiBCIjU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Feb 2022 03:39:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34558 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234502AbiBCIjT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Feb 2022 03:26:51 -0500
+        Thu, 3 Feb 2022 03:39:19 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A14DEC061714;
+        Thu,  3 Feb 2022 00:39:19 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3FE4DB83369
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Feb 2022 08:26:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A8BC340E4;
-        Thu,  3 Feb 2022 08:26:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 33FBA61880;
+        Thu,  3 Feb 2022 08:39:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72027C340E4;
+        Thu,  3 Feb 2022 08:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643876809;
-        bh=5rDIi4DllC9I+53pKYv4b9HludfV+rlezW8nhtn9ETk=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ZfrfwCVi+VobBdFzk4pQjL66cx2mBGThxoGPPa1uSJFQV7S0oxMI/EJOb8l8WirzW
-         eENjcVf2sEFVxPGMeg7neVdUiRYkbV/yRSgNbYYvEMwaU9b88aidRg1M8HE1zhYgY1
-         Vm4kVWkITgrihkP0Y3/KSw7lmbs4fk83qi/n02qIwXWLU/pRLo7i3qQKP6tVKmom7t
-         dn37R3/YdqZbNPQFx2ytJF27QPrfVu6ZMREkq42tPvPDhJaCWOetjlTceZ6Z+lAnv/
-         2jDRmcCgVcIzRPV2fnM9srtBaOQDhMS3ZN7lzwIX05xKPBIOGcLNyOjy0UuyeB3rc4
-         ahS4l47I4eIPQ==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [for,v5.17,1/2] iwlwifi: remove deprecated broadcast filtering
- feature
+        s=k20201202; t=1643877558;
+        bh=dmXgElrMno1Xr2jj1GEThEmeTJWLr2oYSbpQdJvmLr0=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=JpWTzQNdYa+zt7AH2clRJzr4UMp9QWSxeBKREX6IphMd5jkvjXxWEV70ecWtIXIvT
+         VLkljM5SnAIsQfhz5Pit3M374azaKue4qGeqCrL+hrJQJm4WIN7UrMDLI+DZjxfGD3
+         3U6o0bYNGRrMg5DaR37YtT4wxloGnbUsIqlBSYtYB18gdlHgiYHMyau+7XOdKHoaNr
+         pv3lKnStEJEEYC1PcVgHPaL8kEkYiFUL8JA5HA2MQVyHGFu/H6lRxQcaRA/CCY2igo
+         mkU2JOpEaHhtUt9Ua4WovGVFnULL5gtEIp6cZOfN2ak9u32z6HNBsk0+Z1EZu+IUCr
+         hhiys5MgLfdDw==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <iwlwifi.20220128144623.9241e049f13e.Ia4f282813ca2ddd24c13427823519113f2bbebf2@changeid>
-References: <iwlwifi.20220128144623.9241e049f13e.Ia4f282813ca2ddd24c13427823519113f2bbebf2@changeid>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164387680508.14378.16869781709152119153.kvalo@kernel.org>
-Date:   Thu,  3 Feb 2022 08:26:48 +0000 (UTC)
+To:     Pavel Skripkin <paskripkin@gmail.com>
+Cc:     ath9k-devel@qca.qualcomm.com, davem@davemloft.net, kuba@kernel.org,
+        linville@tuxdriver.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        syzbot+f83a1df1ed4f67e8d8ad@syzkaller.appspotmail.com,
+        =?utf-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Subject: Re: [PATCH] ath9k_htc: fix uninit value bugs
+References: <20220115122733.11160-1-paskripkin@gmail.com>
+        <164337315159.4876.15861801637015517784.kvalo@kernel.org>
+        <0647fd91-f0a7-4cf7-4f80-cd5dc3f2f6a2@gmail.com>
+Date:   Thu, 03 Feb 2022 10:39:12 +0200
+In-Reply-To: <0647fd91-f0a7-4cf7-4f80-cd5dc3f2f6a2@gmail.com> (Pavel
+        Skripkin's message of "Fri, 28 Jan 2022 23:52:42 +0300")
+Message-ID: <87bkzocpjj.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> wrote:
+Pavel Skripkin <paskripkin@gmail.com> writes:
 
-> From: Luca Coelho <luciano.coelho@intel.com>
-> 
-> This feature has been deprecated and should not be used anymore.  With
-> newer firmwares, namely *-67.ucode and above, trying to use it causes an
-> assertion failure in the FW, similar to this:
-> 
-> [Tue Jan 11 20:05:24 2022] iwlwifi 0000:04:00.0: 0x00001062 | ADVANCED_SYSASSERT
-> 
-> In order to prevent this feature from being used, remove it entirely
-> and get rid of the Kconfig option that
-> enables it (IWLWIFI_BCAST_FILTERING).
-> 
-> Fixes: cbaa6aeedee5 ("iwlwifi: bump FW API to 67 for AX devices")
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=215488
-> Cc: stable@vger.kernel.org # 5.16.x
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> Hi Kalle,
+>
+> On 1/28/22 15:32, Kalle Valo wrote:
+>>> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+>>> Reported-by: syzbot+f83a1df1ed4f67e8d8ad@syzkaller.appspotmail.com
+>>> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+>>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+>>
+>> Patch applied to ath-next branch of ath.git, thanks.
+>>
+>> d1e0df1c57bd ath9k_htc: fix uninit value bugs
+>>
+>
+> Thanks, Kalle! Can you also, please, check out this one too :)
+> Quite old, but syzbot is getting mad with this bug (like 20k hits). Thanks!
+>
+>
+> https://lore.kernel.org/all/20210922164204.32680-1-paskripkin@gmail.com/
 
-2 patches applied to wireless.git, thanks.
+I already provided feedback on August 6th:
 
-92883a524ae9 iwlwifi: remove deprecated broadcast filtering feature
-5f06f6bf8d81 iwlwifi: mvm: don't send SAR GEO command for 3160 devices
+"Separate patch for cleanups, please."
+
+https://patchwork.kernel.org/project/linux-wireless/patch/20210804194841.14544-1-paskripkin@gmail.com/
+
+Please submit v2. And Toke is the new ath9k maintainer, so please CC him
+as well.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/iwlwifi.20220128144623.9241e049f13e.Ia4f282813ca2ddd24c13427823519113f2bbebf2@changeid/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
