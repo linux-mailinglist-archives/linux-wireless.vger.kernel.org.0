@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FCD44AA2BD
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 23:03:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C01D24AA2C0
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 23:03:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344785AbiBDWDL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Feb 2022 17:03:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47160 "EHLO
+        id S1343832AbiBDWDO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Feb 2022 17:03:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343564AbiBDWDH (ORCPT
+        with ESMTP id S1343746AbiBDWDI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Feb 2022 17:03:07 -0500
+        Fri, 4 Feb 2022 17:03:08 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0617C061714
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3413C06173D
         for <linux-wireless@vger.kernel.org>; Fri,  4 Feb 2022 14:03:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=FZDQwcmkGiA649ctpqvw3WhQ9DyyFCsnyFLB5WPQWcc=;
-        t=1644012186; x=1645221786; b=TZBzlm+Q5Xpg1BIr1KxepGPpL/U3hd7bcehY6jS0hDOg8Bj
-        x3Mt8LV8A1wTvCEvS6uIvGtSCCOSpINmuASCGuoNhBvftSTjAhxKxvbHQJrhFk+qHlQxQQ5ytCKLU
-        ZNY9bkX0sofrpQMWjo5AapwIu5TWAT7cEmvewqMeCBPDhsAjqFIOry2j7qtJKZUV5Y+FiWqi6J4iX
-        7RFTmkAr64VoxM/rkGu0N1viGAIr4y9CBn5rWTlosxLd9bEqYzWjIQZH2d5bpM0ox5OWADwPWI3pF
-        7EsVmfWl+h1yO4SIPpD1AbC2aRo8CG/cwBHkTOI5N0k4JHBGE5O5S49sx5xyl52A==;
+        Resent-Cc:Resent-Message-ID; bh=vvwsYpVXO5Wp3fmsF5BZRRq/bhZePQHPri82f0DRUTM=;
+        t=1644012186; x=1645221786; b=FzUm55eGrLhppFOmNxqGdaH+zm7jNK9XV/YaDeoeE55pAJN
+        YMJk+3qhkr9oS2AVMtp+Uis8Vgcx0jTlDHrZHoP16OepKLYYWHIS0Jqdcs/YUV0/llzczOLa9rx6n
+        QW+mS9zA7bRpx4RAPdCm6x46pAxHLHtSf6PPcr/DSPZuCBBN6PjcPSkvnujPbwwYxKSGc6Zg+/CrA
+        KHH45X8Wa96B2gL8AM76K7L4VVwI/k32SRouW6/CZ6RCnNwtVCS4ZqR+6o/H29aQXwm6/PZMZD++2
+        XKeu2c9g6XDv5OD9sfFBs2dXPPzC+olMiqr0UibacnJwg9Tp8JvHaW3IMPtoiu9w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nG6fY-00EeJL-SX;
-        Fri, 04 Feb 2022 23:03:04 +0100
+        id 1nG6fZ-00EeJL-7p;
+        Fri, 04 Feb 2022 23:03:05 +0100
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Veerendranath Jakkam <quic_vjakkam@quicinc.com>,
@@ -37,9 +37,9 @@ Cc:     Veerendranath Jakkam <quic_vjakkam@quicinc.com>,
         Jia Ding <quic_jiad@quicinc.com>,
         Mordechay Goodstein <mordechay.goodstein@intel.com>,
         Sriram R <quic_srirrama@quicinc.com>
-Subject: [PATCH 14/19] mac80211: Add EHT capabilities to association/probe request
-Date:   Fri,  4 Feb 2022 23:02:50 +0100
-Message-Id: <20220204230119.eead869a197f.I40d2ef06099cb091e9c2c01f8ef521b993a3d559@changeid>
+Subject: [PATCH 15/19] mac80211: Handle station association response with EHT
+Date:   Fri,  4 Feb 2022 23:02:51 +0100
+Message-Id: <20220204230119.007bf6c70a1c.I21182234c5303d9423eabd5eb997e7cf75f8e0c8@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220204220255.448224-1-johannes@sipsolutions.net>
 References: <20220204220255.448224-1-johannes@sipsolutions.net>
@@ -56,279 +56,250 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ilan Peer <ilan.peer@intel.com>
 
-Add the EHT capabilities element to both probe request and
-association request frames, if advertised by the driver.
+When the association is an EHT association, parse the EHT
+element from the association response and update the
+station's EHT capabilities accordingly.
 
 Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/ieee80211_i.h |   5 ++
- net/mac80211/main.c        |  14 ++++-
- net/mac80211/mlme.c        |  48 ++++++++++++++++-
- net/mac80211/util.c        | 104 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 169 insertions(+), 2 deletions(-)
+ include/net/mac80211.h     |  4 ++
+ net/mac80211/Makefile      |  3 +-
+ net/mac80211/eht.c         | 92 ++++++++++++++++++++++++++++++++++++++
+ net/mac80211/ieee80211_i.h |  7 +++
+ net/mac80211/mlme.c        | 15 +++++++
+ net/mac80211/vht.c         | 16 ++++++-
+ 6 files changed, 134 insertions(+), 3 deletions(-)
+ create mode 100644 net/mac80211/eht.c
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 6a93dfcaad21..39844267f09e 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2520,4 +2520,9 @@ u32 ieee80211_calc_expected_tx_airtime(struct ieee80211_hw *hw,
- void ieee80211_init_frag_cache(struct ieee80211_fragment_cache *cache);
- void ieee80211_destroy_frag_cache(struct ieee80211_fragment_cache *cache);
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 586d3c26c8ac..f118b8fe667a 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -636,6 +636,7 @@ struct ieee80211_fils_discovery {
+  * @tx_pwr_env: transmit power envelope array of BSS.
+  * @tx_pwr_env_num: number of @tx_pwr_env.
+  * @pwr_reduction: power constraint of BSS.
++ * @eht_support: does this BSS support EHT
+  */
+ struct ieee80211_bss_conf {
+ 	const u8 *bssid;
+@@ -710,6 +711,7 @@ struct ieee80211_bss_conf {
+ 	struct ieee80211_tx_pwr_env tx_pwr_env[IEEE80211_TPE_MAX_IE_COUNT];
+ 	u8 tx_pwr_env_num;
+ 	u8 pwr_reduction;
++	bool eht_support;
+ };
  
-+u8 ieee80211_ie_len_eht_cap(struct ieee80211_sub_if_data *sdata, u8 iftype);
-+u8 *ieee80211_ie_build_eht_cap(u8 *pos,
-+			       const struct ieee80211_sta_he_cap *he_cap,
-+			       const struct ieee80211_sta_eht_cap *eht_cap,
-+			       u8 *end);
- #endif /* IEEE80211_I_H */
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 5311c3cd3050..a48a32f87897 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -909,7 +909,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 	int result, i;
- 	enum nl80211_band band;
- 	int channels, max_bitrates;
--	bool supp_ht, supp_vht, supp_he;
-+	bool supp_ht, supp_vht, supp_he, supp_eht;
- 	struct cfg80211_chan_def dflt_chandef = {};
+ /**
+@@ -2071,6 +2073,7 @@ struct ieee80211_sta_txpwr {
+  * @vht_cap: VHT capabilities of this STA; restricted to our own capabilities
+  * @he_cap: HE capabilities of this STA
+  * @he_6ghz_capa: on 6 GHz, holds the HE 6 GHz band capabilities
++ * @eht_cap: EHT capabilities of this STA
+  * @max_rx_aggregation_subframes: maximal amount of frames in a single AMPDU
+  *	that this station is allowed to transmit to us.
+  *	Can be modified by driver.
+@@ -2111,6 +2114,7 @@ struct ieee80211_sta {
+ 	struct ieee80211_sta_vht_cap vht_cap;
+ 	struct ieee80211_sta_he_cap he_cap;
+ 	struct ieee80211_he_6ghz_capa he_6ghz_capa;
++	struct ieee80211_sta_eht_cap eht_cap;
+ 	u16 max_rx_aggregation_subframes;
+ 	bool wme;
+ 	u8 uapsd_queues;
+diff --git a/net/mac80211/Makefile b/net/mac80211/Makefile
+index 23d25e8b2358..af1df3a6bd55 100644
+--- a/net/mac80211/Makefile
++++ b/net/mac80211/Makefile
+@@ -34,7 +34,8 @@ mac80211-y := \
+ 	trace.o mlme.o \
+ 	tdls.o \
+ 	ocb.o \
+-	airtime.o
++	airtime.o \
++	eht.o
  
- 	if (ieee80211_hw_check(hw, QUEUE_CONTROL) &&
-@@ -978,6 +978,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 	supp_ht = false;
- 	supp_vht = false;
- 	supp_he = false;
-+	supp_eht = false;
- 	for (band = 0; band < NUM_NL80211_BANDS; band++) {
- 		struct ieee80211_supported_band *sband;
- 
-@@ -1021,6 +1022,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 			iftd = &sband->iftype_data[i];
- 
- 			supp_he = supp_he || iftd->he_cap.has_he;
-+			supp_eht = supp_eht || iftd->eht_cap.has_eht;
- 		}
- 
- 		/* HT, VHT, HE require QoS, thus >= 4 queues */
-@@ -1028,6 +1030,10 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 			    (supp_ht || supp_vht || supp_he)))
- 			return -EINVAL;
- 
-+		/* EHT requires HE support */
-+		if (WARN_ON(supp_eht && !supp_he))
-+			return -EINVAL;
+ mac80211-$(CONFIG_MAC80211_LEDS) += led.o
+ mac80211-$(CONFIG_MAC80211_DEBUGFS) += \
+diff --git a/net/mac80211/eht.c b/net/mac80211/eht.c
+new file mode 100644
+index 000000000000..e030ef477ca9
+--- /dev/null
++++ b/net/mac80211/eht.c
+@@ -0,0 +1,92 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * EHT handling
++ *
++ * Copyright(c) 2021 Intel Corporation
++ */
 +
- 		if (!sband->ht_cap.ht_supported)
- 			continue;
- 
-@@ -1138,6 +1144,12 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 			3 + sizeof(struct ieee80211_he_cap_elem) +
- 			sizeof(struct ieee80211_he_mcs_nss_supp) +
- 			IEEE80211_HE_PPE_THRES_MAX_LEN;
++#include "ieee80211_i.h"
 +
-+		if (supp_eht)
-+			local->scan_ies_len +=
-+				3 + sizeof(struct ieee80211_eht_cap_elem) +
-+				sizeof(struct ieee80211_eht_mcs_nss_supp) +
-+				IEEE80211_EHT_PPE_THRES_MAX_LEN;
- 	}
- 
- 	if (!local->ops->hw_scan) {
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index dac0b495ae76..752aa8734af6 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -692,6 +692,48 @@ static void ieee80211_add_he_ie(struct ieee80211_sub_if_data *sdata,
- 	ieee80211_ie_build_he_6ghz_cap(sdata, skb);
- }
- 
-+static void ieee80211_add_eht_ie(struct ieee80211_sub_if_data *sdata,
-+				 struct sk_buff *skb,
-+				 struct ieee80211_supported_band *sband)
++void
++ieee80211_eht_cap_ie_to_sta_eht_cap(struct ieee80211_sub_if_data *sdata,
++				    struct ieee80211_supported_band *sband,
++				    const u8 *he_cap_ie, u8 he_cap_len,
++				    const struct ieee80211_eht_cap_elem *eht_cap_ie_elem,
++				    u8 eht_cap_len, struct sta_info *sta)
 +{
-+	u8 *pos;
-+	const struct ieee80211_sta_he_cap *he_cap;
-+	const struct ieee80211_sta_eht_cap *eht_cap;
-+	struct ieee80211_chanctx_conf *chanctx_conf;
-+	u8 eht_cap_size;
-+	bool reg_cap = false;
++	struct ieee80211_sta_eht_cap *eht_cap = &sta->sta.eht_cap;
++	struct ieee80211_he_cap_elem *he_cap_ie_elem = (void *)he_cap_ie;
++	u8 eht_ppe_size = 0;
++	u8 mcs_nss_size;
++	u8 eht_total_size = sizeof(eht_cap->eht_cap_elem);
++	u8 *pos = (u8 *)eht_cap_ie_elem;
 +
-+	rcu_read_lock();
-+	chanctx_conf = rcu_dereference(sdata->vif.chanctx_conf);
-+	if (!WARN_ON_ONCE(!chanctx_conf))
-+		reg_cap = cfg80211_chandef_usable(sdata->wdev.wiphy,
-+						  &chanctx_conf->def,
-+						  IEEE80211_CHAN_NO_HE |
-+						  IEEE80211_CHAN_NO_EHT);
-+	rcu_read_unlock();
++	memset(eht_cap, 0, sizeof(*eht_cap));
 +
-+	he_cap = ieee80211_get_he_iftype_cap(sband,
-+					     ieee80211_vif_type_p2p(&sdata->vif));
-+	eht_cap = ieee80211_get_eht_iftype_cap(sband,
-+					       ieee80211_vif_type_p2p(&sdata->vif));
-+
-+	/*
-+	 * EHT capabilities element is only added if the HE capabilities element
-+	 * was added so assume that 'he_cap' is valid and don't check it.
-+	 */
-+	if (WARN_ON(!he_cap || !eht_cap || !reg_cap))
++	if (!eht_cap_ie_elem ||
++	    !ieee80211_get_eht_iftype_cap(sband,
++					 ieee80211_vif_type_p2p(&sdata->vif)))
 +		return;
 +
-+	eht_cap_size =
-+		2 + 1 + sizeof(eht_cap->eht_cap_elem) +
-+		ieee80211_eht_mcs_nss_size(&he_cap->he_cap_elem,
-+					   &eht_cap->eht_cap_elem) +
-+		ieee80211_eht_ppe_size(eht_cap->eht_ppe_thres[0],
-+				       eht_cap->eht_cap_elem.phy_cap_info);
-+	pos = skb_put(skb, eht_cap_size);
-+	ieee80211_ie_build_eht_cap(pos, he_cap, eht_cap, pos + eht_cap_size);
-+}
++	mcs_nss_size = ieee80211_eht_mcs_nss_size(he_cap_ie_elem,
++						  &eht_cap_ie_elem->fixed);
 +
- static void ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
- {
- 	struct ieee80211_local *local = sdata->local;
-@@ -1020,9 +1062,13 @@ static void ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
- 		ifmgd->flags |= IEEE80211_STA_DISABLE_HE |
- 			        IEEE80211_STA_DISABLE_EHT;
- 
--	if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HE))
-+	if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HE)) {
- 		ieee80211_add_he_ie(sdata, skb, sband);
- 
-+		if (!(ifmgd->flags & IEEE80211_STA_DISABLE_EHT))
-+			ieee80211_add_eht_ie(sdata, skb, sband);
-+	}
++	eht_total_size += mcs_nss_size;
 +
- 	/* if present, add any custom non-vendor IEs that go after HE */
- 	if (assoc_data->ie_len) {
- 		noffset = ieee80211_ie_split_vendor(assoc_data->ie,
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 7f780551dfa7..812b70845fb8 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -1809,6 +1809,7 @@ static int ieee80211_build_preq_ies_band(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_supported_band *sband;
- 	const struct ieee80211_sta_he_cap *he_cap;
-+	const struct ieee80211_sta_eht_cap *eht_cap;
- 	u8 *pos = buffer, *end = buffer + buffer_len;
- 	size_t noffset;
- 	int supp_rates_len, i;
-@@ -1989,6 +1990,18 @@ static int ieee80211_build_preq_ies_band(struct ieee80211_sub_if_data *sdata,
- 			goto out_err;
- 	}
- 
-+	eht_cap = ieee80211_get_eht_iftype_cap(sband,
-+					       ieee80211_vif_type_p2p(&sdata->vif));
++	/* Calculate the PPE thresholds length only if the header is present */
++	if (eht_total_size + sizeof(u16) < eht_cap_len)
++		eht_ppe_size =
++			ieee80211_eht_ppe_size(eht_cap_ie_elem->optional[mcs_nss_size],
++					       eht_cap_ie_elem->fixed.phy_cap_info);
++	else if ((eht_cap_ie_elem->fixed.phy_cap_info[5] &
++		  IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT))
++		return;
 +
-+	if (eht_cap &&
-+	    cfg80211_any_usable_channels(local->hw.wiphy, BIT(sband->band),
-+					 IEEE80211_CHAN_NO_HE |
-+					 IEEE80211_CHAN_NO_EHT)) {
-+		pos = ieee80211_ie_build_eht_cap(pos, he_cap, eht_cap, end);
-+		if (!pos)
-+			goto out_err;
-+	}
++	eht_total_size += eht_ppe_size;
++	if (eht_cap_len < eht_total_size)
++		return;
 +
- 	if (cfg80211_any_usable_channels(local->hw.wiphy,
- 					 BIT(NL80211_BAND_6GHZ),
- 					 IEEE80211_CHAN_NO_HE)) {
-@@ -4737,3 +4750,94 @@ u16 ieee80211_encode_usf(int listen_interval)
- 
- 	return (u16) listen_interval;
- }
-+
-+u8 ieee80211_ie_len_eht_cap(struct ieee80211_sub_if_data *sdata, u8 iftype)
-+{
-+	const struct ieee80211_sta_he_cap *he_cap;
-+	const struct ieee80211_sta_eht_cap *eht_cap;
-+	struct ieee80211_supported_band *sband;
-+	u8 n;
-+
-+	sband = ieee80211_get_sband(sdata);
-+	if (!sband)
-+		return 0;
-+
-+	he_cap = ieee80211_get_he_iftype_cap(sband, iftype);
-+	eht_cap = ieee80211_get_eht_iftype_cap(sband, iftype);
-+	if (!he_cap || !eht_cap)
-+		return 0;
-+
-+	n = ieee80211_eht_mcs_nss_size(&he_cap->he_cap_elem,
-+				       &eht_cap->eht_cap_elem);
-+	return 2 + 1 +
-+	       sizeof(he_cap->he_cap_elem) + n +
-+	       ieee80211_eht_ppe_size(eht_cap->eht_ppe_thres[0],
-+				      eht_cap->eht_cap_elem.phy_cap_info);
-+	return 0;
-+}
-+
-+u8 *ieee80211_ie_build_eht_cap(u8 *pos,
-+			       const struct ieee80211_sta_he_cap *he_cap,
-+			       const struct ieee80211_sta_eht_cap *eht_cap,
-+			       u8 *end)
-+{
-+	u8 mcs_nss_len, ppet_len;
-+	u8 ie_len;
-+	u8 *orig_pos = pos;
-+
-+	/* Make sure we have place for the IE */
-+	if (!he_cap || !eht_cap)
-+		return orig_pos;
-+
-+	mcs_nss_len = ieee80211_eht_mcs_nss_size(&he_cap->he_cap_elem,
-+						 &eht_cap->eht_cap_elem);
-+	ppet_len = ieee80211_eht_ppe_size(eht_cap->eht_ppe_thres[0],
-+					  eht_cap->eht_cap_elem.phy_cap_info);
-+
-+	ie_len = 2 + 1 + sizeof(eht_cap->eht_cap_elem) + mcs_nss_len + ppet_len;
-+	if ((end - pos) < ie_len)
-+		return orig_pos;
-+
-+	*pos++ = WLAN_EID_EXTENSION;
-+	*pos++ = ie_len - 2;
-+	*pos++ = WLAN_EID_EXT_EHT_CAPABILITY;
-+
-+	/* Fixed data */
-+	memcpy(pos, &eht_cap->eht_cap_elem, sizeof(eht_cap->eht_cap_elem));
++	/* Copy the static portion of the EHT capabilities */
++	memcpy(&eht_cap->eht_cap_elem, pos, sizeof(eht_cap->eht_cap_elem));
 +	pos += sizeof(eht_cap->eht_cap_elem);
 +
-+	if (!(he_cap->he_cap_elem.phy_cap_info[0] &
++	/* Copy MCS/NSS which depends on the peer capabilities */
++	if (!(he_cap_ie_elem->phy_cap_info[0] &
 +	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_MASK_ALL)) {
-+		memcpy(pos, &eht_cap->eht_mcs_nss_supp.only_20mhz,
++		memcpy(&eht_cap->eht_mcs_nss_supp.only_20mhz, pos,
 +		       sizeof(eht_cap->eht_mcs_nss_supp.only_20mhz));
-+		pos += sizeof(eht_cap->eht_mcs_nss_supp.only_20mhz);
++		pos += 4;
 +	} else {
-+		if (he_cap->he_cap_elem.phy_cap_info[0] &
++		if (he_cap_ie_elem->phy_cap_info[0] &
 +		    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G) {
-+			memcpy(pos, &eht_cap->eht_mcs_nss_supp.bw_80,
++			memcpy(&eht_cap->eht_mcs_nss_supp.bw_80, pos,
 +			       sizeof(eht_cap->eht_mcs_nss_supp.bw_80));
-+			pos += sizeof(eht_cap->eht_mcs_nss_supp.bw_80);
++			pos += 3;
 +		}
 +
-+		if (he_cap->he_cap_elem.phy_cap_info[0] &
++		if (he_cap_ie_elem->phy_cap_info[0] &
 +		    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G) {
-+			memcpy(pos, &eht_cap->eht_mcs_nss_supp.bw_160,
++			memcpy(&eht_cap->eht_mcs_nss_supp.bw_160, pos,
 +			       sizeof(eht_cap->eht_mcs_nss_supp.bw_160));
-+			pos += sizeof(eht_cap->eht_mcs_nss_supp.bw_160);
++			pos += 3;
 +		}
 +
-+		if (eht_cap->eht_cap_elem.phy_cap_info[0] &
++		if (eht_cap_ie_elem->fixed.phy_cap_info[0] &
 +		    IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ) {
-+			memcpy(pos, &eht_cap->eht_mcs_nss_supp.bw_320,
++			memcpy(&eht_cap->eht_mcs_nss_supp.bw_320, pos,
 +			       sizeof(eht_cap->eht_mcs_nss_supp.bw_320));
-+			pos += sizeof(eht_cap->eht_mcs_nss_supp.bw_320);
++			pos += 3;
 +		}
 +	}
 +
-+	if (ppet_len) {
-+		memcpy(pos, &eht_cap->eht_ppe_thres, ppet_len);
-+		pos += ppet_len;
-+	}
++	if (eht_cap->eht_cap_elem.phy_cap_info[5] &
++	    IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT)
++		memcpy(eht_cap->eht_ppe_thres,
++		       &eht_cap_ie_elem->optional[mcs_nss_size],
++		       eht_ppe_size);
 +
-+	return pos;
++	eht_cap->has_eht = true;
++
++	sta->cur_max_bandwidth = ieee80211_sta_cap_rx_bw(sta);
++	sta->sta.bandwidth = ieee80211_sta_cur_vht_bw(sta);
 +}
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 39844267f09e..6a2421a066fb 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -2525,4 +2525,11 @@ u8 *ieee80211_ie_build_eht_cap(u8 *pos,
+ 			       const struct ieee80211_sta_he_cap *he_cap,
+ 			       const struct ieee80211_sta_eht_cap *eht_cap,
+ 			       u8 *end);
++
++void
++ieee80211_eht_cap_ie_to_sta_eht_cap(struct ieee80211_sub_if_data *sdata,
++				    struct ieee80211_supported_band *sband,
++				    const u8 *he_cap_ie, u8 he_cap_len,
++				    const struct ieee80211_eht_cap_elem *eht_cap_ie_elem,
++				    u8 eht_cap_len, struct sta_info *sta);
+ #endif /* IEEE80211_I_H */
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 752aa8734af6..197cad4a2768 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -3579,10 +3579,25 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 			bss_conf->twt_protected = false;
+ 
+ 		changed |= ieee80211_recalc_twt_req(sdata, sta, elems);
++
++		if (elems->eht_operation && elems->eht_cap &&
++		    !(ifmgd->flags & IEEE80211_STA_DISABLE_EHT)) {
++			ieee80211_eht_cap_ie_to_sta_eht_cap(sdata, sband,
++							    elems->he_cap,
++							    elems->he_cap_len,
++							    elems->eht_cap,
++							    elems->eht_cap_len,
++							    sta);
++
++			bss_conf->eht_support = sta->sta.eht_cap.has_eht;
++		} else {
++			bss_conf->eht_support = false;
++		}
+ 	} else {
+ 		bss_conf->he_support = false;
+ 		bss_conf->twt_requester = false;
+ 		bss_conf->twt_protected = false;
++		bss_conf->eht_support = false;
+ 	}
+ 
+ 	bss_conf->twt_broadcast =
+diff --git a/net/mac80211/vht.c b/net/mac80211/vht.c
+index 904611d681cb..409d2fde83bf 100644
+--- a/net/mac80211/vht.c
++++ b/net/mac80211/vht.c
+@@ -329,15 +329,27 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
+ 	}
+ }
+ 
+-/* FIXME: move this to some better location - parses HE now */
++/* FIXME: move this to some better location - parses HE/EHT now */
+ enum ieee80211_sta_rx_bandwidth ieee80211_sta_cap_rx_bw(struct sta_info *sta)
+ {
+ 	struct ieee80211_sta_vht_cap *vht_cap = &sta->sta.vht_cap;
+ 	struct ieee80211_sta_he_cap *he_cap = &sta->sta.he_cap;
++	struct ieee80211_sta_eht_cap *eht_cap = &sta->sta.eht_cap;
+ 	u32 cap_width;
+ 
+ 	if (he_cap->has_he) {
+-		u8 info = he_cap->he_cap_elem.phy_cap_info[0];
++		u8 info;
++
++		if (eht_cap->has_eht &&
++		    sta->sdata->vif.bss_conf.chandef.chan->band ==
++		    NL80211_BAND_6GHZ) {
++			info = eht_cap->eht_cap_elem.phy_cap_info[0];
++
++			if (info & IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ)
++				return IEEE80211_STA_RX_BW_320;
++		}
++
++		info = he_cap->he_cap_elem.phy_cap_info[0];
+ 
+ 		if (sta->sdata->vif.bss_conf.chandef.chan->band ==
+ 				NL80211_BAND_2GHZ) {
 -- 
 2.34.1
 
