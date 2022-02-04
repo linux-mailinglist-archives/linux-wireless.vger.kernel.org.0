@@ -2,91 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19CB14A944A
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 08:12:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 184304A9466
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 08:17:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348137AbiBDHMW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Feb 2022 02:12:22 -0500
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:63911 "EHLO
-        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237837AbiBDHMV (ORCPT
+        id S1349234AbiBDHRy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Feb 2022 02:17:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60830 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238723AbiBDHRx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Feb 2022 02:12:21 -0500
+        Fri, 4 Feb 2022 02:17:53 -0500
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4FE3C061714
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Feb 2022 23:17:52 -0800 (PST)
+Received: by mail-lj1-x230.google.com with SMTP id t7so7247829ljc.10
+        for <linux-wireless@vger.kernel.org>; Thu, 03 Feb 2022 23:17:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1643958741; x=1675494741;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=XZwQJXS9L8X4LWr3d0+vWQOIuaJQw6IHSKV/yPtlNEE=;
-  b=Aizah2fuafRyKCkB6JNl1u7jKo0BYX5CyGLMXNEOyadoJX9he/Bwiufv
-   fP7st4ZTkv5g+EU6n0lHYuI338FFB1uz5vezgNby0yZuJDzKNTSyXClsM
-   OlxU3QtLbFuR9jsy0JstUwXcECnQqjm01cN5PNLk79yFTvKvxMYQ+w3x/
-   E=;
-Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 03 Feb 2022 23:12:20 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2022 23:12:19 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Thu, 3 Feb 2022 23:12:19 -0800
-Received: from [10.213.109.137] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Thu, 3 Feb 2022
- 23:12:16 -0800
-Subject: Re: [PATCH 3/6] nl80211: add support to send EHT capabilities from
- userspace
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>, <quic_vikram@quicinc.com>,
-        <quic_alokad@quicinc.com>, <quic_jiad@quicinc.com>,
-        <quic_periyasa@quicinc.com>, <quic_msinada@quicinc.com>,
-        <quic_srirrama@quicinc.com>
-References: <1640163883-12696-1-git-send-email-quic_vjakkam@quicinc.com>
- <1640163883-12696-4-git-send-email-quic_vjakkam@quicinc.com>
- <5ede1e1ad04b6359eafb658e827abf6a8343355f.camel@sipsolutions.net>
-From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-Message-ID: <0644274d-7a9f-642c-eef2-02c662a5adcc@quicinc.com>
-Date:   Fri, 4 Feb 2022 12:42:13 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=QBhPBgEherimIGZgK6u1u1J4jQoQqrfPzu4TsRicrdU=;
+        b=Klx+cha5El9xIZx9Yw6vj3tiH96+Ne0Kb0LdgK0yv7tpzBMDMuM3u1rlDgJ+O2TxU2
+         bVUDS3Hi/aILxDws83bWnyF38+id8SupMuPd5JD4ri58GztW5jQ+MD9636HW2a1GXAGw
+         RUTjsq+NgujTcyC8kuBal3uIh1QCrkbOm6GazCDg9SqsS48itz5RqL4HP2DIAdLQShhk
+         EMy5eZ4D9vIxpvX3sJ8GBHaxpSOJwHZzDMhtDZmaLhNA9TQkh3SXhKU4zDReyESyhM47
+         AcmnDsxZZMe2dZKL0wWYk2eBvxHA7w8UJg6djm1YKM8CU4TQDQqDX8L4jbi7pr+QdiZj
+         fAbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to:content-transfer-encoding;
+        bh=QBhPBgEherimIGZgK6u1u1J4jQoQqrfPzu4TsRicrdU=;
+        b=k1xY1i/p+hHGNNkd2lWdaL3fLlDcQ4YI+JRiDC/F7XtikPuD5n+HzvZw6S590nNc2z
+         4zXNWtVAwibLc0InhszP8Eymzh0MgavekFqQuwRw/lFFOUbkrJBdYiHiZOhKp5ukm5xR
+         lHXZe1XokBGpazyf2OPDoO+W8ARnZl2tnR7FcONh2YyO82YaRDFLfm+uYyEXIabYqhBI
+         HlEmffbRjmk+SE5balnnLoXkxVwb53AInPYqkmWXFdWD0agFWE2PHStmVfSP5gxQhJV7
+         hvNjlWcrGbHMaGJqv7MYi3NEKaZ4gF9XPdyvsfLctANHliLmSP4RUpaqLBv5FjBvFCuE
+         mW/A==
+X-Gm-Message-State: AOAM530KxAm87hYz4WGECxDmtTQA7ePa/7JtvDIZoVTa+rVGapbATNzo
+        4G21wkjfJHpIlGOTMQs1fHV76zScvA5wYaIb33U=
+X-Google-Smtp-Source: ABdhPJwaXngbVu6x2BzBFKiVTGd3tmZO3HesUYpMaCzlRBqZXX3heOrKDLlirBGr8PvHBab7QsK9+SnfX2OeceUtOlg=
+X-Received: by 2002:a2e:2a04:: with SMTP id q4mr1003226ljq.428.1643959070954;
+ Thu, 03 Feb 2022 23:17:50 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <5ede1e1ad04b6359eafb658e827abf6a8343355f.camel@sipsolutions.net>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+Sender: smithwilson780@gmail.com
+Received: by 2002:a2e:8756:0:0:0:0:0 with HTTP; Thu, 3 Feb 2022 23:17:49 -0800 (PST)
+From:   DINA MCKENNA <dinamckennahowley@gmail.com>
+Date:   Fri, 4 Feb 2022 07:17:49 +0000
+X-Google-Sender-Auth: hHwHJBX6OXKMnivP_ecO7PjrpcE
+Message-ID: <CADh0mysoGOw9QB8J21v9EyM-Tk7DUJ1s+fGnW-Bxg_eFGyj-mQ@mail.gmail.com>
+Subject: Calvary greetings.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/3/22 6:15 PM, Johannes Berg wrote:
-> On Wed, 2021-12-22 at 14:34 +0530, Veerendranath Jakkam wrote:
->>   
->> +#define NL80211_EHT_MIN_CAPABILITY_LEN           10
->> +#define NL80211_EHT_MAX_CAPABILITY_LEN           81
->>
-> How did you get to 81?
->
-> I calculate only 51, based on the assumption that we can only have
-> NSS==8. Even if you think NSS==16 (which I doubt), I get to 80 only?
->
-> johannes
+Hello My Dear,
 
-I considered max values for NSS and RU Index Bitmask sub-fields in PPE 
-threshold field.
+Please do not feel disturbed for contacting =C2=A0you in this regards, It
+was based on the critical health condition I found myself. =C2=A0My names
+are Mrs. Dina Mckenna Howley A widow and am suffering from brain tumor
+disease and this illness has gotten to a very bad stage, I
+ married my husband for Ten years without any child. =C2=A0My husband died
+after a brief illness that lasted for few  days.
+Since the death of my husband, I decided not to remarry again, When my
+late husband was alive he deposited the sum of =C2=A0($ 11,000,000.00,
+Eleven Million Dollars) with the Bank. Presently this money is still
+in bank. And My  Doctor told me that I don't have much time to live
+because my illness has gotten to a very bad stage, Having known my
+condition I  decided to entrust over the deposited fund under your
+custody to take care of the less-privileged ones therein your country
+or position,
+which i believe that you will utilize this money the way I am going to
+instruct herein.
 
-i.e. NSS=16, RU Index Bitmask = 0x11111 with this max PPE threshold info 
-sub-field length is 60 bytes
-
-
-Max PPE thresholds field length = 4 bits (for NSS) + 5 bits (for RU 
-Index Bitmask) +  480 bits (PPE info) + 7 bits (PPE pad)= 62 bytes
-
-EHT fixed fields length = 10 bytes
-
-Max MCS-NSS Set field length = 9 bytes
-
-So total max length would be 81 bytes
+However all I need and required from you is your sincerity and ability
+to carry out the transaction successfully and fulfill my final wish in
+implementing the charitable project as it requires absolute trust and
+devotion without any failure and I will be glad to see that the bank
+finally release and transfer the fund into your bank account in your
+country even before I die here in the hospital, because my present
+health condition is very critical at the moment everything needs to be
+process rapidly as soon as possible.
+It will be my pleasure to compensate you as my Investment
+Manager/Partner with 35 % percent of the total fund for your effort in
+ handling the transaction, 5 % percent for any expenses or processing
+charges fee that will involve during this process while 60% of the
+fund will be Invested into the charity project there in your country
+for the mutual benefit of the orphans and the less privileges ones.
+Meanwhile I am waiting for your prompt respond, if only you are
+interested for further details of the transaction and execution of
+this  humanitarian project for the glory and honor of God the merciful
+compassionate.
+May God bless you and your family..
+Regards,
+Mrs. Dina Mckenna Howley.
+written from Hospital.
