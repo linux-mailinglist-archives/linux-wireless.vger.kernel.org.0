@@ -2,94 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E17794A9EFB
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 19:28:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF5394A9F13
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 19:33:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377489AbiBDS2z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Feb 2022 13:28:55 -0500
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:1404 "EHLO
-        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232631AbiBDS2y (ORCPT
+        id S1377560AbiBDSd5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Feb 2022 13:33:57 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:51016 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1377518AbiBDSd4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Feb 2022 13:28:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1643999335; x=1675535335;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=gGXxcn/I4FDA8zQ8eDbbx2gjnQfNH5E+2CDrGurTGI8=;
-  b=MjO4OOKWFYAIE/m4Wv5QdtonDalDkgwpoX0P+6xQJ+2WTprsH8D5o50u
-   bkkvCPlmLIF9M0d2PUBtJ7VkzZsuSNX0Ldu7ry7T08XTs/LNEXkU//AcF
-   ZutReesh4sCM1amHDIt7+g3zET17bb0Ec4+28WQXUm6XwnD8GaD6mBQO2
-   E=;
-Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
-  by alexa-out.qualcomm.com with ESMTP; 04 Feb 2022 10:28:55 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2022 10:28:54 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Fri, 4 Feb 2022 10:28:54 -0800
-Received: from [10.213.109.137] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Fri, 4 Feb 2022
- 10:28:51 -0800
-Subject: Re: [PATCH 3/6] nl80211: add support to send EHT capabilities from
- userspace
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>, <quic_vikram@quicinc.com>,
-        <quic_alokad@quicinc.com>, <quic_jiad@quicinc.com>,
-        <quic_periyasa@quicinc.com>, <quic_msinada@quicinc.com>,
-        <quic_srirrama@quicinc.com>
-References: <1640163883-12696-1-git-send-email-quic_vjakkam@quicinc.com>
- <1640163883-12696-4-git-send-email-quic_vjakkam@quicinc.com>
- <5ede1e1ad04b6359eafb658e827abf6a8343355f.camel@sipsolutions.net>
- <0644274d-7a9f-642c-eef2-02c662a5adcc@quicinc.com>
- <0c0ba8cebb877384172b5bd314cbbbb035d1f348.camel@sipsolutions.net>
- <382a29fe-dea3-7d32-2aeb-16ba18e9da28@quicinc.com>
- <91d3b826accb22194c9fa3134cd1f3137950e863.camel@sipsolutions.net>
- <9bd12810-19a7-ad74-6577-d43c4b2ab9e5@quicinc.com>
- <6f175b75991159fe99abb9efbcb105eefb3734db.camel@sipsolutions.net>
-From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-Message-ID: <9eb5ee07-204e-5e7e-6996-502bd7a19329@quicinc.com>
-Date:   Fri, 4 Feb 2022 23:58:48 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Fri, 4 Feb 2022 13:33:56 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 90CC461BB3
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Feb 2022 18:33:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DB3C004E1;
+        Fri,  4 Feb 2022 18:33:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643999636;
+        bh=HmP3WSjGDWqlAwznGSKh8/I0PYGUPdMSwJ+AKyq1uE0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=SMGAwqmlIaD9w72WljA9jBHiEC21vclDT0fckbbvGq5870wvma/SIAiPb4yhtCn2M
+         RT325NVLlDtg1ZJppOTy9yWOsz7BXs04IyCYDdaAucLURRdzmhP0Od9Kg5Svyztwnw
+         23NFb8wChWeLKqar9X4F6X4P+c2Gl5N6mObrIoZgdC1mRQVniR/hhrAHOMo6Wfeeli
+         unmRX7SrVooKMubytlfZsgm1TZqR/fsfbE9vsNOG6Zc1KhVouwzslVJa7+EHSLOEfz
+         j6g4UOIWP69s0mQ0Ehy9O5PM5n2YmiFblf+xLrVjkfAtSq47hRdcj5e4jlMe+SAGVC
+         TBvFYDvSPSvgA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        ryder.lee@mediatek.com, sean.wang@mediatek.com
+Subject: [PATCH] mt76: mt7615: introduce SAR support
+Date:   Fri,  4 Feb 2022 19:33:39 +0100
+Message-Id: <56f00506762466bdbee1229a3a629c55788d5fc7.1643999485.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-In-Reply-To: <6f175b75991159fe99abb9efbcb105eefb3734db.camel@sipsolutions.net>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/4/22 11:15 PM, Johannes Berg wrote:
-> On Fri, 2022-02-04 at 23:13 +0530, Veerendranath Jakkam wrote:
->>
->>> Also in your later nl80211 patch I'm thinking we should combine the
->>> HE/EHT GI settings etc., there's no point duplicating all the enums,
->>> though we might want to do some renaming.
-> I actually just decided against that ... it gets messy because we still
-> need the attributes, and the GI is the only one that's entirely the
-> same, so I think probably duplicating that is more understandable (all
-> the EHT stuff belongs together)...
->
->> meanwhile I will upload new patch set with the suggested changes in last
->> patch.
-> No need. I'm doing rework on this, and we also have mac80211 assoc
-> patches, STA capabilities, etc. I'll send it all out soon.
->
-> johannes
+Add SAR spec support to mt7615 driver to allow configuring SAR power
+limitations on the frequency ranges from the userland.
 
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../net/wireless/mediatek/mt76/mt7615/main.c  | 24 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  7 +++---
+ 2 files changed, 27 insertions(+), 4 deletions(-)
 
-Thank a lot for your assistance. Looking forward to see your patches.. :)
-
-
-veeru
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 7dcf1fb97eca..d79cbdbd5a05 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -431,6 +431,29 @@ static int mt7615_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	return err;
+ }
+ 
++static int mt7615_set_sar_specs(struct ieee80211_hw *hw,
++				const struct cfg80211_sar_specs *sar)
++{
++	struct mt7615_phy *phy = mt7615_hw_phy(hw);
++	int err;
++
++	if (!cfg80211_chandef_valid(&phy->mt76->chandef))
++		return -EINVAL;
++
++	err = mt76_init_sar_power(hw, sar);
++	if (err)
++		return err;
++
++	if (mt7615_firmware_offload(phy->dev))
++		return mt76_connac_mcu_set_rate_txpower(phy->mt76);
++
++	ieee80211_stop_queues(hw);
++	err = mt7615_set_channel(phy);
++	ieee80211_wake_queues(hw);
++
++	return err;
++}
++
+ static int mt7615_config(struct ieee80211_hw *hw, u32 changed)
+ {
+ 	struct mt7615_dev *dev = mt7615_hw_dev(hw);
+@@ -1333,6 +1356,7 @@ const struct ieee80211_ops mt7615_ops = {
+ 	.set_wakeup = mt7615_set_wakeup,
+ 	.set_rekey_data = mt7615_set_rekey_data,
+ #endif /* CONFIG_PM */
++	.set_sar_specs = mt7615_set_sar_specs,
+ };
+ EXPORT_SYMBOL_GPL(mt7615_ops);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index f992e1285eaa..120760ea1c89 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -2020,7 +2020,7 @@ static void mt7615_mcu_set_txpower_sku(struct mt7615_phy *phy, u8 *sku)
+ 	struct mt76_power_limits limits;
+ 	s8 *limits_array = (s8 *)&limits;
+ 	int n_chains = hweight8(mphy->antenna_mask);
+-	int tx_power;
++	int tx_power = hw->conf.power_level * 2;
+ 	int i;
+ 	static const u8 sku_mapping[] = {
+ #define SKU_FIELD(_type, _field) \
+@@ -2077,9 +2077,8 @@ static void mt7615_mcu_set_txpower_sku(struct mt7615_phy *phy, u8 *sku)
+ #undef SKU_FIELD
+ 	};
+ 
+-	tx_power = hw->conf.power_level * 2 -
+-		   mt76_tx_power_nss_delta(n_chains);
+-
++	tx_power = mt76_get_sar_power(mphy, mphy->chandef.chan, tx_power);
++	tx_power -= mt76_tx_power_nss_delta(n_chains);
+ 	tx_power = mt76_get_rate_power_limits(mphy, mphy->chandef.chan,
+ 					      &limits, tx_power);
+ 	mphy->txpower_cur = tx_power;
+-- 
+2.34.1
 
