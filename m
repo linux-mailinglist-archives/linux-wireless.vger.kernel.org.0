@@ -2,261 +2,229 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1350F4A9991
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 13:57:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D88AA4A9ABA
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 15:11:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243402AbiBDM5U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Feb 2022 07:57:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53864 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236192AbiBDM5T (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Feb 2022 07:57:19 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E758C061714
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Feb 2022 04:57:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
-        MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=bNFvuCP+/z41zkoCpDlmbS+Gp9fE3c3M7koN7sp5jug=; b=kWYmR8oZGKpgGJ5S0QVYK9++8T
-        ZrjHYKPuyIajeWS/BFbsDl1F+p3LLy+S0Bi1KbwmoksVfCWTKoxoQTNaNZiX8cxbxRTPr9khbcwvH
-        S35TNZcUqWWtz6ki+SfMTvEtXuFk6qurp6893P1CGUzP6YF3LyjaYgKRs0KYfMcaVJqE=;
-Received: from p200300daa71e0b00adf7d32f3eb78dba.dip0.t-ipconnect.de ([2003:da:a71e:b00:adf7:d32f:3eb7:8dba] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1nFy9N-0006Ju-F8; Fri, 04 Feb 2022 13:57:17 +0100
-Message-ID: <9dc9c187-c86d-1a43-655f-00d1c4d10205@nbd.name>
-Date:   Fri, 4 Feb 2022 13:57:16 +0100
+        id S238442AbiBDOLG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Feb 2022 09:11:06 -0500
+Received: from bluehome.net ([96.66.250.149]:44556 "EHLO bluehome.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232803AbiBDOLG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 4 Feb 2022 09:11:06 -0500
+Received: from valencia (valencia.lan [10.0.0.17])
+        by bluehome.net (Postfix) with ESMTPSA id 9FC214B40B91;
+        Fri,  4 Feb 2022 06:11:05 -0800 (PST)
+Date:   Fri, 4 Feb 2022 06:11:04 -0800
+From:   Jason Self <jason@bluehome.net>
+To:     johannes.berg@intel.com, linux-wireless@vger.kernel.org
+Subject: Fw: Regression/boot failure on 5.16.3
+Message-ID: <20220204061104.5851831a@valencia>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.5.1
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: pull request: mt76 2022-02-04
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ boundary="Sig_/O_XmO2iBIWJqYgdNKyHe=CN"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+--Sig_/O_XmO2iBIWJqYgdNKyHe=CN
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-here's my first pull request for 5.18
+Forwarding as requested.
 
-- Felix
+Begin forwarded message:
 
-The following changes since commit b4bb8469e90ec75c0ce81fcf6a9c3abd2f18e005:
+On Fri, 4 Feb 2022 08:00:17 +0100
+Greg KH <gregkh@linuxfoundation.org> wrote:
 
-   brcmfmac: pcie: Read the console on init and shutdown (2022-02-01 14:27:08 +0200)
+> Please cc: the authors of this commit, and the upstream wireless
+> developers so they can help you out here as I think the same issue
+> shows up in 5.17-rc2, right?
+>=20
+> thanks,
+>=20
+> greg k-h
 
-are available in the Git repository at:
+Date: Thu, 3 Feb 2022 16:19:59 -0800
+From: Jason Self <jason@bluehome.net>
+To: stable@vger.kernel.org
+Subject: Regression/boot failure on 5.16.3
 
-   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2022-02-04
 
-for you to fetch changes up to b3ad9d6a1d66712fb08cd59ae3e03cbdb9f80e7b:
+The computer (amd64) fails to boot. The init was stuck at the
+synchronization of the time through the network. This began between
+5.16.2 (good) and 5.16.3 (bad.) This continues on 5.16.4 and 5.16.5.
+Git bisect revealed the following. In this case the nonfree firmwre is
+not present on the system. Blacklisting the iwflwifi module works as a
+workaround for now.
 
-   mt76: redefine mt76_for_each_q_rx to adapt mt7986 changes (2022-02-04 11:28:36 +0100)
+6b5ad4bd0d78fef6bbe0ecdf96e09237c9c52cc1 is the first bad commit
+commit 6b5ad4bd0d78fef6bbe0ecdf96e09237c9c52cc1
+Author: Johannes Berg <johannes.berg@intel.com>
+Date:   Fri Dec 10 11:12:42 2021 +0200
 
-----------------------------------------------------------------
-mt76 patches for 5.18
+    iwlwifi: fix leaks/bad data after failed firmware load
+   =20
+    [ Upstream commit ab07506b0454bea606095951e19e72c282bfbb42 ]
+   =20
+    If firmware load fails after having loaded some parts of the
+    firmware, e.g. the IML image, then this would leak. For the
+    host command list we'd end up running into a WARN on the next
+    attempt to load another firmware image.
+   =20
+    Fix this by calling iwl_dealloc_ucode() on failures, and make
+    that also clear the data so we start fresh on the next round.
+   =20
+    Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+    Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+    Link:
+    https://lore.kernel.org/r/iwlwifi.20211210110539.1f742f0eb58a.I1315f22f=
+6aa632d94ae2069f85e1bca5e734dce0@changeid
+    Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+    Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-- mt7915 mcu code cleanup
-- mt7916 support
-- fixes for SDIO support
-- fixes for DFS
-- power management fixes
-- stability improvements
-- background radar detection support
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-----------------------------------------------------------------
-Ben Greear (1):
-       mt76: mt7921: fix crash when startup fails.
 
-Bo Jiao (14):
-       mt76: mt7915: add mt7915_mmio_probe() as a common probing function
-       mt76: mt7915: refine register definition
-       mt76: add MT_RXQ_MAIN_WA for mt7916
-       mt76: mt7915: rework dma.c to adapt mt7916 changes
-       mt76: mt7915: add firmware support for mt7916
-       mt76: mt7915: rework eeprom.c to adapt mt7916 changes
-       mt76: mt7915: enlarge wcid size to 544
-       mt76: mt7915: add txfree event v3
-       mt76: mt7915: update rx rate reporting for mt7916
-       mt76: mt7915: update mt7915_chan_mib_offs for mt7916
-       mt76: mt7915: add mt7916 calibrated data support
-       mt76: set wlan_idx_hi on mt7916
-       mt76: mt7915: add device id for mt7916
-       mt76: redefine mt76_for_each_q_rx to adapt mt7986 changes
 
-Felix Fietkau (11):
-       mt76: mt7915: fix polling firmware-own status
-       mt76: mt7915: move pci specific code back to pci.c
-       mt76: connac: add support for passing the cipher field in bss_info
-       mt76: mt7615: update bss_info with cipher after setting the group key
-       mt76: mt7915: update bss_info with cipher after setting the group key
-       mt76: mt7915: add support for passing chip/firmware debug data to user space
-       mt76x02: improve mac error check/reset reliability
-       mt76: mt76x02: improve tx hang detection
-       mt76: mt7915: fix/rewrite the dfs state handling logic
-       mt76: mt7615: fix/rewrite the dfs state handling logic
-       mt76: mt76x02: use mt76_phy_dfs_state to determine radar detector state
 
-Leon Yen (1):
-       mt76: mt7921s: fix mt7921s_mcu_[fw|drv]_pmctrl
+On Fri, 4 Feb 2022 09:48:24 +0100
+Thorsten Leemhuis <linux@leemhuis.info> wrote:
 
-Lorenzo Bianconi (59):
-       mt76: connac: fix sta_rec_wtbl tag len
-       mt76: mt7915: rely on mt76_connac_mcu_alloc_sta_req
-       mt76: mt7915: rely on mt76_connac_mcu_alloc_wtbl_req
-       mt76: mt7915: rely on mt76_connac_mcu_add_tlv routine
-       mt76: connac: move mt76_connac_mcu_get_cipher in common code
-       mt76: connac: move mt76_connac_chan_bw in common code
-       mt76: mt7915: rely on mt76_connac_get_phy utilities
-       mt76: connac: move mt76_connac_mcu_add_key in connac module
-       mt76: make mt76_sar_capa static
-       mt76: mt7915: use proper aid value in mt7915_mcu_wtbl_generic_tlv in sta mode
-       mt76: mt7915: use proper aid value in mt7915_mcu_sta_basic_tlv
-       mt76: mt7915: remove duplicated defs in mcu.h
-       mt76: connac: move mt76_connac_mcu_bss_omac_tlv in connac module
-       mt76: connac: move mt76_connac_mcu_bss_ext_tlv in connac module
-       mt76: connac: move mt76_connac_mcu_bss_basic_tlv in connac module
-       mt76: mt7915: rely on mt76_connac_mcu_sta_ba_tlv
-       mt76: mt7915: rely on mt76_connac_mcu_wtbl_ba_tlv
-       mt76: mt7915: rely on mt76_connac_mcu_sta_ba
-       mt76: mt7915: rely on mt76_connac_mcu_wtbl_generic_tlv
-       mt76: mt7915: rely on mt76_connac_mcu_sta_basic_tlv
-       mt76: mt7915: rely on mt76_connac_mcu_sta_uapsd
-       mt76: mt7915: rely on mt76_connac_mcu_wtbl_smps_tlv
-       mt76: mt7915: rely on mt76_connac_mcu_wtbl_ht_tlv
-       mt76: mt7915: rely on mt76_connac_mcu_wtbl_hdr_trans_tlv
-       mt76: connac: move mt76_connac_mcu_wtbl_update_hdr_trans in connac module
-       mt76: connac: introduce is_connac_v1 utility routine
-       mt76: connac: move mt76_connac_mcu_set_pm in connac module
-       mt76: mt7921: get rid of mt7921_mcu_get_eeprom
-       mt76: mt7915: rely on mt76_connac_mcu_start_firmware
-       mt76: connac: move mt76_connac_mcu_restart in common module
-       mt76: mt7915: rely on mt76_connac_mcu_patch_sem_ctrl/mt76_connac_mcu_start_patch
-       mt76: mt7915: rely on mt76_connac_mcu_init_download
-       mt76: connac: move mt76_connac_mcu_gen_dl_mode in mt76-connac module
-       mt76: mt7915: rely on mt76_connac_mcu_set_rts_thresh
-       mt76: connac: move mt76_connac_mcu_rdd_cmd in mt76-connac module
-       mt76: mt7615: fix a possible race enabling/disabling runtime-pm
-       mt76: mt7921e: process txfree and txstatus without allocating skbs
-       mt76: mt7615e: process txfree and txstatus without allocating skbs
-       mt76: mt7921: do not always disable fw runtime-pm
-       mt76: mt7921: fix a leftover race in runtime-pm
-       mt76: mt7615: fix a leftover race in runtime-pm
-       mt76: mt7921: fix endianness issues in mt7921_mcu_set_tx()
-       mt76: mt7921: toggle runtime-pm adding a monitor vif
-       mt76: mt7915: introduce mt7915_set_radar_background routine
-       mt76: mt7915: enable radar trigger on rdd2
-       mt76: mt7915: introduce rdd_monitor debugfs node
-       mt76: mt7915: report radar pattern if detected by rdd2
-       mt76: mt7915: enable radar background detection
-       dt-bindings:net:wireless:mediatek,mt76: add disable-radar-offchan
-       mt76: connac: move mt76_connac_lmac_mapping in mt76-connac module
-       mt76: mt7915: add missing DATA4_TB_SPTL_REUSE1 to mt7915_mac_decode_he_radiotap
-       mt76: mt7921: remove duplicated code in mt7921_mac_decode_he_radiotap
-       mt76: mt7663s: flush runtime-pm queue after waking up the device
-       mt76: mt7603: check sta_rates pointer in mt7603_sta_rate_tbl_update
-       mt76: mt7615: check sta_rates pointer in mt7615_sta_rate_tbl_update
-       mt76: mt7915: fix possible memory leak in mt7915_mcu_add_sta
-       mt76: mt7921s: fix a possible memory leak in mt7921_load_patch
-       mt76: do not always copy ethhdr in reverse_frag0_hdr_trans
-       mt76: dma: initialize skip_unmap in mt76_dma_rx_fill
+> [TLDR: I'm adding this regression to regzbot, the Linux kernel
+> regression tracking bot; most text you find below is compiled from a
+> few templates paragraphs some of you might have seen already.]
+>=20
+> Hi, this is your Linux kernel regression tracker speaking.
+>=20
+> Adding the regression mailing list to the list of recipients, as it
+> should be in the loop for all regressions, as explained here:
+> https://www.kernel.org/doc/html/latest/admin-guide/reporting-issues.html
+>=20
+> On 04.02.22 01:19, Jason Self wrote:
+> > The computer (amd64) fails to boot. The init was stuck at the
+> > synchronization of the time through the network. This began between
+> > 5.16.2 (good) and 5.16.3 (bad.) This continues on 5.16.4 and 5.16.5.
+> > Git bisect revealed the following. In this case the nonfree firmwre
+> > is not present on the system. Blacklisting the iwflwifi module
+> > works as a workaround for now.
+> >=20
+> > 6b5ad4bd0d78fef6bbe0ecdf96e09237c9c52cc1 is the first bad commit
+> > commit 6b5ad4bd0d78fef6bbe0ecdf96e09237c9c52cc1
+> > Author: Johannes Berg <johannes.berg@intel.com>
+> > Date:   Fri Dec 10 11:12:42 2021 +0200 =20
+>=20
+> To be sure this issue doesn't fall through the cracks unnoticed, I'm
+> adding it to regzbot, my Linux kernel regression tracking bot:
+>=20
+> #regzbot ^introduced 6b5ad4bd0d78fef6bbe0ecdf96e09237c9c52cc1
+> #regzbot title net: iwlwifi: system fails to boot since 5.16.3
+> #regzbot ignore-activity
+>=20
+> Reminder: when fixing the issue, please add a 'Link:' tag with the URL
+> to the report (the parent of this mail) using the kernel.org
+> redirector, as explained in
+> 'Documentation/process/submitting-patches.rst'. Regzbot then will
+> automatically mark the regression as resolved once the fix lands in
+> the appropriate tree. For more details about regzbot see footer.
+>=20
+> Sending this to everyone that got the initial report, to make all
+> aware of the tracking. I also hope that messages like this motivate
+> people to directly get at least the regression mailing list and
+> ideally even regzbot involved when dealing with regressions, as
+> messages like this wouldn't be needed then.
+>=20
+> Don't worry, I'll send further messages wrt to this regression just to
+> the lists (with a tag in the subject so people can filter them away),
+> as long as they are intended just for regzbot. With a bit of luck no
+> such messages will be needed anyway.
+>=20
+> Ciao, Thorsten (wearing his 'Linux kernel regression tracker' hat)
+>=20
+> P.S.: As a Linux kernel regression tracker I'm getting a lot of
+> reports on my table. I can only look briefly into most of them.
+> Unfortunately therefore I sometimes will get things wrong or miss
+> something important. I hope that's not the case here; if you think it
+> is, don't hesitate to tell me about it in a public reply, that's in
+> everyone's interest.
+>=20
+> BTW, I have no personal interest in this issue, which is tracked using
+> regzbot, my Linux kernel regression tracking bot
+> (https://linux-regtracking.leemhuis.info/regzbot/). I'm only posting
+> this mail to get things rolling again and hence don't need to be CC on
+> all further activities wrt to this regression.
+>=20
+>=20
+> >     iwlwifi: fix leaks/bad data after failed firmware load
+> >    =20
+> >     [ Upstream commit ab07506b0454bea606095951e19e72c282bfbb42 ]
+> >    =20
+> >     If firmware load fails after having loaded some parts of the
+> >     firmware, e.g. the IML image, then this would leak. For the
+> >     host command list we'd end up running into a WARN on the next
+> >     attempt to load another firmware image.
+> >    =20
+> >     Fix this by calling iwl_dealloc_ucode() on failures, and make
+> >     that also clear the data so we start fresh on the next round.
+> >    =20
+> >     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> >     Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> >     Link:
+> >     https://lore.kernel.org/r/iwlwifi.20211210110539.1f742f0eb58a.I1315=
+f22f6aa632d94ae2069f85e1bca5e734dce0@changeid
+> >     Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> >     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> >=20
+> >  drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+) =20
+>=20
+> ---
+> Additional information about regzbot:
+>=20
+> If you want to know more about regzbot, check out its web-interface,
+> the getting start guide, and/or the references documentation:
+>=20
+> https://linux-regtracking.leemhuis.info/regzbot/
+> https://gitlab.com/knurd42/regzbot/-/blob/main/docs/getting_started.md
+> https://gitlab.com/knurd42/regzbot/-/blob/main/docs/reference.md
+>=20
+> The last two documents will explain how you can interact with regzbot
+> yourself if your want to.
+>=20
+> Hint for reporters: when reporting a regression it's in your interest
+> to tell #regzbot about it in the report, as that will ensure the
+> regression gets on the radar of regzbot and the regression tracker.
+> That's in your interest, as they will make sure the report won't fall
+> through the cracks unnoticed.
+>=20
+> Hint for developers: you normally don't need to care about regzbot
+> once it's involved. Fix the issue as you normally would, just
+> remember to include a 'Link:' tag to the report in the commit
+> message, as explained in Documentation/process/submitting-patches.rst
+> That aspect was recently was made more explicit in commit
+> 1f57bd42b77c: https://git.kernel.org/linus/1f57bd42b77c
+>=20
 
-MeiChia Chiu (1):
-       mt76: mt7915: fix the nss setting in bitrates
+--Sig_/O_XmO2iBIWJqYgdNKyHe=CN
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-Peter Chiu (4):
-       mt76: mt7915: fix ht mcs in mt7915_mac_add_txs_skb()
-       mt76: mt7921: fix ht mcs in mt7921_mac_add_txs_skb()
-       mt76: mt7915: fix mcs_map in mt7915_mcu_set_sta_he_mcs()
-       mt76: mt7915: update max_mpdu_size in mt7915_mcu_sta_amsdu_tlv()
+-----BEGIN PGP SIGNATURE-----
 
-Piotr Dymacz (1):
-       mt76: mt7615: add support for LG LGSBWAC02 (MT7663BUN)
+iQIzBAEBCgAdFiEE9hGpCP+hZcaZWE7UnQ2zG1RaMZgFAmH9M/gACgkQnQ2zG1Ra
+MZjr4g//XCLub1aASfPkhmYHXb+5z0LccxJdgv3pXF7/UaZ9zZ+aevgRwMOels2+
+sAgr1EyvR3lvxC3K9myqRcy5QhB86sNUJf+iEeiz0NtbfdGPwYCUmbT7F1UY/AMk
+IYmzIjNlWkmEQOj/2EPpE0S08JgoY7xUZS0NjOR7mjefxKYG/pM4Mq4yRIfcOrW4
+EJTu5Fp0oxywtCNMmNRQQXvvPdBqLjpitDhGoR07OsEk99JZrmb4J+iQcTHhdzq8
+PXqnEYFpzLfYJyWUM9IvMQ9hUCed0x/9uUfvbJpYauEibE45ZmXLCUix5lSNL/jn
+g9eYtjuQRz1tqA8fYVI9jSBWrd0gKOHTTT12HdfAnmeJTtRIfOMW53Oyq0vWurfM
+XZMtCy8gC2HXFDbmnlXPcXNpo6KYixsw7JhP0SqXYvH7/vGuPFf1FhnDKQmaAOK/
+M8sg5CR0vNU/zheVFpQI6TNMkc4qmXIMiT05eqLCmselyqTDJ2TNvqiaIMPjhu1Z
+wOmSvkZBxjbDkTwXVcpPyTTMY/My7KE4WKNyxdxqEdkwz1rOLNqCGDtqBGLV0PVA
+hDl+srTDrcI9ndLi3eldYpLAo8kNR/Q2GhWLc/ZkC5REWy/ig+VVIYw/pyHlY6Ep
+I7NF5mon+LDf7u7C247YRtN7HcUUVWlsTgBVJwHfhK7Bu4lfVoY=
+=cUiZ
+-----END PGP SIGNATURE-----
 
-Sean Wang (9):
-       mt76: sdio: lock sdio when it is needed
-       mt76: mt7921s: clear MT76_STATE_MCU_RUNNING immediately after reset
-       mt76: mt7921e: make dev->fw_assert usage consistent
-       mt76: mt76_connac: fix MCU_CE_CMD_SET_ROC definition error
-       mt76: mt7921: set EDCA parameters with the MCU CE command
-       mt76: mt7921e: fix possible probe failure after reboot
-       mt76: sdio: disable interrupt in mt76s_sdio_irq
-       mt76: sdio: honor the largest Tx buffer the hardware can support
-       mt76: mt7921s: run sleep mode by default
-
-Shayne Chen (1):
-       mt76: mt7915: set bssinfo/starec command when adding interface
-
-Xing Song (1):
-       mt76: stop the radar detector after leaving dfs channel
-
-YN Chen (2):
-       mt76: mt7921s: update mt7921s_wfsys_reset sequence
-       mt76: mt7921: forbid the doze mode when coredump is in progress
-
-  Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml |    9 +
-  drivers/net/wireless/mediatek/mt76/dma.c                          |   14 +-
-  drivers/net/wireless/mediatek/mt76/mac80211.c                     |   30 +++-
-  drivers/net/wireless/mediatek/mt76/mt76.h                         |   22 ++-
-  drivers/net/wireless/mediatek/mt76/mt7603/main.c                  |    3 +
-  drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c               |   15 +-
-  drivers/net/wireless/mediatek/mt76/mt7615/init.c                  |    1 -
-  drivers/net/wireless/mediatek/mt76/mt7615/mac.c                   |  136 +++++++++-----
-  drivers/net/wireless/mediatek/mt76/mt7615/main.c                  |   12 +-
-  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c                   |  220 ++---------------------
-  drivers/net/wireless/mediatek/mt76/mt7615/mmio.c                  |    1 +
-  drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h                |   22 +--
-  drivers/net/wireless/mediatek/mt76/mt7615/sdio.c                  |   15 +-
-  drivers/net/wireless/mediatek/mt76/mt7615/usb.c                   |    1 +
-  drivers/net/wireless/mediatek/mt76/mt76_connac.h                  |   71 +++++++-
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c              |  378 +++++++++++++++++++++++++++++++++++----
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h              |  117 +++++++++++-
-  drivers/net/wireless/mediatek/mt76/mt76x02.h                      |    3 +-
-  drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c                  |    5 +-
-  drivers/net/wireless/mediatek/mt76/mt76x02_mac.c                  |   25 ++-
-  drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c                 |   30 ++--
-  drivers/net/wireless/mediatek/mt76/mt76x02_regs.h                 |    2 +
-  drivers/net/wireless/mediatek/mt76/mt7915/Kconfig                 |    3 +-
-  drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c               |  217 +++++++++++++++++++++--
-  drivers/net/wireless/mediatek/mt76/mt7915/dma.c                   |  454 +++++++++++++++++++++++++++++++++--------------
-  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c                |   87 ++++++---
-  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h                |    9 +-
-  drivers/net/wireless/mediatek/mt76/mt7915/init.c                  |  156 ++++++++++------
-  drivers/net/wireless/mediatek/mt76/mt7915/mac.c                   |  437 ++++++++++++++++++++++++++++-----------------
-  drivers/net/wireless/mediatek/mt76/mt7915/mac.h                   |   15 +-
-  drivers/net/wireless/mediatek/mt76/mt7915/main.c                  |  131 ++++++++++----
-  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c                   | 1323 ++++++++++++++++++++++++++++++++--------------------------------------------------------------------------------------------------------
-  drivers/net/wireless/mediatek/mt76/mt7915/mcu.h                   |   54 +++---
-  drivers/net/wireless/mediatek/mt76/mt7915/mmio.c                  |  577 ++++++++++++++++++++++++++++++++++++++++++++++++++++-------
-  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h                |   87 ++++++---
-  drivers/net/wireless/mediatek/mt76/mt7915/pci.c                   |  259 ++++++---------------------
-  drivers/net/wireless/mediatek/mt76/mt7915/regs.h                  |  586 ++++++++++++++++++++++++++++++++++++++----------------------
-  drivers/net/wireless/mediatek/mt76/mt7915/testmode.c              |   61 ++++---
-  drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c               |   37 ++--
-  drivers/net/wireless/mediatek/mt76/mt7921/dma.c                   |  119 -------------
-  drivers/net/wireless/mediatek/mt76/mt7921/init.c                  |   10 +-
-  drivers/net/wireless/mediatek/mt76/mt7921/mac.c                   |   37 ++--
-  drivers/net/wireless/mediatek/mt76/mt7921/main.c                  |   36 +++-
-  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c                   |  274 +++-------------------------
-  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h                |   21 +--
-  drivers/net/wireless/mediatek/mt76/mt7921/pci.c                   |  125 +++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c               |   37 +++-
-  drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c               |   20 ++-
-  drivers/net/wireless/mediatek/mt76/mt7921/regs.h                  |    3 +
-  drivers/net/wireless/mediatek/mt76/mt7921/sdio.c                  |   15 +-
-  drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c              |    6 +-
-  drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c              |   38 ++++
-  drivers/net/wireless/mediatek/mt76/sdio.c                         |   14 +-
-  drivers/net/wireless/mediatek/mt76/sdio.h                         |    2 +
-  drivers/net/wireless/mediatek/mt76/sdio_txrx.c                    |   26 +--
-  55 files changed, 3570 insertions(+), 2838 deletions(-)
+--Sig_/O_XmO2iBIWJqYgdNKyHe=CN--
