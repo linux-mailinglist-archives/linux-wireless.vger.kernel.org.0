@@ -2,171 +2,261 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66C0D4A97B7
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 11:25:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1350F4A9991
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 13:57:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358273AbiBDKZa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Feb 2022 05:25:30 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:37976 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1358315AbiBDKZ1 (ORCPT
+        id S243402AbiBDM5U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Feb 2022 07:57:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53864 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236192AbiBDM5T (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Feb 2022 05:25:27 -0500
-Received: from 91-156-4-210.elisa-laajakaista.fi ([91.156.4.210] helo=kveik.lan)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.95)
-        (envelope-from <luca@coelho.fi>)
-        id 1nFvmP-0005zM-5S;
-        Fri, 04 Feb 2022 12:25:26 +0200
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@kernel.org
-Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Fri,  4 Feb 2022 12:25:11 +0200
-Message-Id: <iwlwifi.20220204122220.940e45167283.I99ddfeda3d4a50d21cb18b826ccf84b21a76c487@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220204102511.606112-1-luca@coelho.fi>
-References: <20220204102511.606112-1-luca@coelho.fi>
+        Fri, 4 Feb 2022 07:57:19 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E758C061714
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Feb 2022 04:57:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
+        MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=bNFvuCP+/z41zkoCpDlmbS+Gp9fE3c3M7koN7sp5jug=; b=kWYmR8oZGKpgGJ5S0QVYK9++8T
+        ZrjHYKPuyIajeWS/BFbsDl1F+p3LLy+S0Bi1KbwmoksVfCWTKoxoQTNaNZiX8cxbxRTPr9khbcwvH
+        S35TNZcUqWWtz6ki+SfMTvEtXuFk6qurp6893P1CGUzP6YF3LyjaYgKRs0KYfMcaVJqE=;
+Received: from p200300daa71e0b00adf7d32f3eb78dba.dip0.t-ipconnect.de ([2003:da:a71e:b00:adf7:d32f:3eb7:8dba] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1nFy9N-0006Ju-F8; Fri, 04 Feb 2022 13:57:17 +0100
+Message-ID: <9dc9c187-c86d-1a43-655f-00d1c4d10205@nbd.name>
+Date:   Fri, 4 Feb 2022 13:57:16 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 12/12] iwlwifi: mvm: Unify the scan iteration functions
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.5.1
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: pull request: mt76 2022-02-04
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+Hi Kalle,
 
-As there is not real need to iterate the active interfaces
-twice.
+here's my first pull request for 5.18
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 74 ++++++++-----------
- 1 file changed, 32 insertions(+), 42 deletions(-)
+- Felix
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 9377549b1af5..76c38645fbd7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -168,17 +168,6 @@ iwl_mvm_scan_rate_n_flags(struct iwl_mvm *mvm, enum nl80211_band band,
- 		return cpu_to_le32(IWL_RATE_6M_PLCP | tx_ant);
- }
- 
--static void iwl_mvm_scan_condition_iterator(void *data, u8 *mac,
--					    struct ieee80211_vif *vif)
--{
--	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
--	int *global_cnt = data;
--
--	if (vif->type != NL80211_IFTYPE_P2P_DEVICE && mvmvif->phy_ctxt &&
--	    mvmvif->phy_ctxt->id < NUM_PHY_CTX)
--		*global_cnt += 1;
--}
--
- static enum iwl_mvm_traffic_load iwl_mvm_get_traffic_load(struct iwl_mvm *mvm)
- {
- 	return mvm->tcm.result.global_load;
-@@ -190,26 +179,31 @@ iwl_mvm_get_traffic_load_band(struct iwl_mvm *mvm, enum nl80211_band band)
- 	return mvm->tcm.result.band_load[band];
- }
- 
--struct iwl_is_dcm_with_go_iterator_data {
-+struct iwl_mvm_scan_iter_data {
-+	u32 global_cnt;
- 	struct ieee80211_vif *current_vif;
- 	bool is_dcm_with_p2p_go;
- };
- 
--static void iwl_mvm_is_dcm_with_go_iterator(void *_data, u8 *mac,
--					    struct ieee80211_vif *vif)
-+static void iwl_mvm_scan_iterator(void *_data, u8 *mac,
-+				  struct ieee80211_vif *vif)
- {
--	struct iwl_is_dcm_with_go_iterator_data *data = _data;
--	struct iwl_mvm_vif *other_mvmvif = iwl_mvm_vif_from_mac80211(vif);
--	struct iwl_mvm_vif *curr_mvmvif =
--		iwl_mvm_vif_from_mac80211(data->current_vif);
-+	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
-+	struct iwl_mvm_scan_iter_data *data = _data;
-+	struct iwl_mvm_vif *curr_mvmvif;
- 
--	/* exclude the given vif */
--	if (vif == data->current_vif)
-+	if (vif->type != NL80211_IFTYPE_P2P_DEVICE && mvmvif->phy_ctxt &&
-+	    mvmvif->phy_ctxt->id < NUM_PHY_CTX)
-+		data->global_cnt += 1;
-+
-+	if (!data->current_vif || vif == data->current_vif)
- 		return;
- 
-+	curr_mvmvif = iwl_mvm_vif_from_mac80211(data->current_vif);
-+
- 	if (vif->type == NL80211_IFTYPE_AP && vif->p2p &&
--	    other_mvmvif->phy_ctxt && curr_mvmvif->phy_ctxt &&
--	    other_mvmvif->phy_ctxt->id != curr_mvmvif->phy_ctxt->id)
-+	    mvmvif->phy_ctxt && curr_mvmvif->phy_ctxt &&
-+	    mvmvif->phy_ctxt->id != curr_mvmvif->phy_ctxt->id)
- 		data->is_dcm_with_p2p_go = true;
- }
- 
-@@ -219,13 +213,18 @@ iwl_mvm_scan_type _iwl_mvm_get_scan_type(struct iwl_mvm *mvm,
- 					 enum iwl_mvm_traffic_load load,
- 					 bool low_latency)
- {
--	int global_cnt = 0;
-+	struct iwl_mvm_scan_iter_data data = {
-+		.current_vif = vif,
-+		.is_dcm_with_p2p_go = false,
-+		.global_cnt = 0,
-+	};
- 
- 	ieee80211_iterate_active_interfaces_atomic(mvm->hw,
--					    IEEE80211_IFACE_ITER_NORMAL,
--					    iwl_mvm_scan_condition_iterator,
--					    &global_cnt);
--	if (!global_cnt)
-+						   IEEE80211_IFACE_ITER_NORMAL,
-+						   iwl_mvm_scan_iterator,
-+						   &data);
-+
-+	if (!data.global_cnt)
- 		return IWL_SCAN_TYPE_UNASSOC;
- 
- 	if (fw_has_api(&mvm->fw->ucode_capa,
-@@ -234,23 +233,14 @@ iwl_mvm_scan_type _iwl_mvm_get_scan_type(struct iwl_mvm *mvm,
- 		    (!vif || vif->type != NL80211_IFTYPE_P2P_DEVICE))
- 			return IWL_SCAN_TYPE_FRAGMENTED;
- 
--		/* in case of DCM with GO where BSS DTIM interval < 220msec
-+		/*
-+		 * in case of DCM with GO where BSS DTIM interval < 220msec
- 		 * set all scan requests as fast-balance scan
--		 * */
-+		 */
- 		if (vif && vif->type == NL80211_IFTYPE_STATION &&
--		    vif->bss_conf.dtim_period < 220) {
--			struct iwl_is_dcm_with_go_iterator_data data = {
--				.current_vif = vif,
--				.is_dcm_with_p2p_go = false,
--			};
--
--			ieee80211_iterate_active_interfaces_atomic(mvm->hw,
--						IEEE80211_IFACE_ITER_NORMAL,
--						iwl_mvm_is_dcm_with_go_iterator,
--						&data);
--			if (data.is_dcm_with_p2p_go)
--				return IWL_SCAN_TYPE_FAST_BALANCE;
--		}
-+		    vif->bss_conf.dtim_period < 220 &&
-+		    data.is_dcm_with_p2p_go)
-+			return IWL_SCAN_TYPE_FAST_BALANCE;
- 	}
- 
- 	if (load >= IWL_MVM_TRAFFIC_MEDIUM || low_latency)
--- 
-2.34.1
+The following changes since commit b4bb8469e90ec75c0ce81fcf6a9c3abd2f18e005:
 
+   brcmfmac: pcie: Read the console on init and shutdown (2022-02-01 14:27:08 +0200)
+
+are available in the Git repository at:
+
+   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2022-02-04
+
+for you to fetch changes up to b3ad9d6a1d66712fb08cd59ae3e03cbdb9f80e7b:
+
+   mt76: redefine mt76_for_each_q_rx to adapt mt7986 changes (2022-02-04 11:28:36 +0100)
+
+----------------------------------------------------------------
+mt76 patches for 5.18
+
+- mt7915 mcu code cleanup
+- mt7916 support
+- fixes for SDIO support
+- fixes for DFS
+- power management fixes
+- stability improvements
+- background radar detection support
+
+----------------------------------------------------------------
+Ben Greear (1):
+       mt76: mt7921: fix crash when startup fails.
+
+Bo Jiao (14):
+       mt76: mt7915: add mt7915_mmio_probe() as a common probing function
+       mt76: mt7915: refine register definition
+       mt76: add MT_RXQ_MAIN_WA for mt7916
+       mt76: mt7915: rework dma.c to adapt mt7916 changes
+       mt76: mt7915: add firmware support for mt7916
+       mt76: mt7915: rework eeprom.c to adapt mt7916 changes
+       mt76: mt7915: enlarge wcid size to 544
+       mt76: mt7915: add txfree event v3
+       mt76: mt7915: update rx rate reporting for mt7916
+       mt76: mt7915: update mt7915_chan_mib_offs for mt7916
+       mt76: mt7915: add mt7916 calibrated data support
+       mt76: set wlan_idx_hi on mt7916
+       mt76: mt7915: add device id for mt7916
+       mt76: redefine mt76_for_each_q_rx to adapt mt7986 changes
+
+Felix Fietkau (11):
+       mt76: mt7915: fix polling firmware-own status
+       mt76: mt7915: move pci specific code back to pci.c
+       mt76: connac: add support for passing the cipher field in bss_info
+       mt76: mt7615: update bss_info with cipher after setting the group key
+       mt76: mt7915: update bss_info with cipher after setting the group key
+       mt76: mt7915: add support for passing chip/firmware debug data to user space
+       mt76x02: improve mac error check/reset reliability
+       mt76: mt76x02: improve tx hang detection
+       mt76: mt7915: fix/rewrite the dfs state handling logic
+       mt76: mt7615: fix/rewrite the dfs state handling logic
+       mt76: mt76x02: use mt76_phy_dfs_state to determine radar detector state
+
+Leon Yen (1):
+       mt76: mt7921s: fix mt7921s_mcu_[fw|drv]_pmctrl
+
+Lorenzo Bianconi (59):
+       mt76: connac: fix sta_rec_wtbl tag len
+       mt76: mt7915: rely on mt76_connac_mcu_alloc_sta_req
+       mt76: mt7915: rely on mt76_connac_mcu_alloc_wtbl_req
+       mt76: mt7915: rely on mt76_connac_mcu_add_tlv routine
+       mt76: connac: move mt76_connac_mcu_get_cipher in common code
+       mt76: connac: move mt76_connac_chan_bw in common code
+       mt76: mt7915: rely on mt76_connac_get_phy utilities
+       mt76: connac: move mt76_connac_mcu_add_key in connac module
+       mt76: make mt76_sar_capa static
+       mt76: mt7915: use proper aid value in mt7915_mcu_wtbl_generic_tlv in sta mode
+       mt76: mt7915: use proper aid value in mt7915_mcu_sta_basic_tlv
+       mt76: mt7915: remove duplicated defs in mcu.h
+       mt76: connac: move mt76_connac_mcu_bss_omac_tlv in connac module
+       mt76: connac: move mt76_connac_mcu_bss_ext_tlv in connac module
+       mt76: connac: move mt76_connac_mcu_bss_basic_tlv in connac module
+       mt76: mt7915: rely on mt76_connac_mcu_sta_ba_tlv
+       mt76: mt7915: rely on mt76_connac_mcu_wtbl_ba_tlv
+       mt76: mt7915: rely on mt76_connac_mcu_sta_ba
+       mt76: mt7915: rely on mt76_connac_mcu_wtbl_generic_tlv
+       mt76: mt7915: rely on mt76_connac_mcu_sta_basic_tlv
+       mt76: mt7915: rely on mt76_connac_mcu_sta_uapsd
+       mt76: mt7915: rely on mt76_connac_mcu_wtbl_smps_tlv
+       mt76: mt7915: rely on mt76_connac_mcu_wtbl_ht_tlv
+       mt76: mt7915: rely on mt76_connac_mcu_wtbl_hdr_trans_tlv
+       mt76: connac: move mt76_connac_mcu_wtbl_update_hdr_trans in connac module
+       mt76: connac: introduce is_connac_v1 utility routine
+       mt76: connac: move mt76_connac_mcu_set_pm in connac module
+       mt76: mt7921: get rid of mt7921_mcu_get_eeprom
+       mt76: mt7915: rely on mt76_connac_mcu_start_firmware
+       mt76: connac: move mt76_connac_mcu_restart in common module
+       mt76: mt7915: rely on mt76_connac_mcu_patch_sem_ctrl/mt76_connac_mcu_start_patch
+       mt76: mt7915: rely on mt76_connac_mcu_init_download
+       mt76: connac: move mt76_connac_mcu_gen_dl_mode in mt76-connac module
+       mt76: mt7915: rely on mt76_connac_mcu_set_rts_thresh
+       mt76: connac: move mt76_connac_mcu_rdd_cmd in mt76-connac module
+       mt76: mt7615: fix a possible race enabling/disabling runtime-pm
+       mt76: mt7921e: process txfree and txstatus without allocating skbs
+       mt76: mt7615e: process txfree and txstatus without allocating skbs
+       mt76: mt7921: do not always disable fw runtime-pm
+       mt76: mt7921: fix a leftover race in runtime-pm
+       mt76: mt7615: fix a leftover race in runtime-pm
+       mt76: mt7921: fix endianness issues in mt7921_mcu_set_tx()
+       mt76: mt7921: toggle runtime-pm adding a monitor vif
+       mt76: mt7915: introduce mt7915_set_radar_background routine
+       mt76: mt7915: enable radar trigger on rdd2
+       mt76: mt7915: introduce rdd_monitor debugfs node
+       mt76: mt7915: report radar pattern if detected by rdd2
+       mt76: mt7915: enable radar background detection
+       dt-bindings:net:wireless:mediatek,mt76: add disable-radar-offchan
+       mt76: connac: move mt76_connac_lmac_mapping in mt76-connac module
+       mt76: mt7915: add missing DATA4_TB_SPTL_REUSE1 to mt7915_mac_decode_he_radiotap
+       mt76: mt7921: remove duplicated code in mt7921_mac_decode_he_radiotap
+       mt76: mt7663s: flush runtime-pm queue after waking up the device
+       mt76: mt7603: check sta_rates pointer in mt7603_sta_rate_tbl_update
+       mt76: mt7615: check sta_rates pointer in mt7615_sta_rate_tbl_update
+       mt76: mt7915: fix possible memory leak in mt7915_mcu_add_sta
+       mt76: mt7921s: fix a possible memory leak in mt7921_load_patch
+       mt76: do not always copy ethhdr in reverse_frag0_hdr_trans
+       mt76: dma: initialize skip_unmap in mt76_dma_rx_fill
+
+MeiChia Chiu (1):
+       mt76: mt7915: fix the nss setting in bitrates
+
+Peter Chiu (4):
+       mt76: mt7915: fix ht mcs in mt7915_mac_add_txs_skb()
+       mt76: mt7921: fix ht mcs in mt7921_mac_add_txs_skb()
+       mt76: mt7915: fix mcs_map in mt7915_mcu_set_sta_he_mcs()
+       mt76: mt7915: update max_mpdu_size in mt7915_mcu_sta_amsdu_tlv()
+
+Piotr Dymacz (1):
+       mt76: mt7615: add support for LG LGSBWAC02 (MT7663BUN)
+
+Sean Wang (9):
+       mt76: sdio: lock sdio when it is needed
+       mt76: mt7921s: clear MT76_STATE_MCU_RUNNING immediately after reset
+       mt76: mt7921e: make dev->fw_assert usage consistent
+       mt76: mt76_connac: fix MCU_CE_CMD_SET_ROC definition error
+       mt76: mt7921: set EDCA parameters with the MCU CE command
+       mt76: mt7921e: fix possible probe failure after reboot
+       mt76: sdio: disable interrupt in mt76s_sdio_irq
+       mt76: sdio: honor the largest Tx buffer the hardware can support
+       mt76: mt7921s: run sleep mode by default
+
+Shayne Chen (1):
+       mt76: mt7915: set bssinfo/starec command when adding interface
+
+Xing Song (1):
+       mt76: stop the radar detector after leaving dfs channel
+
+YN Chen (2):
+       mt76: mt7921s: update mt7921s_wfsys_reset sequence
+       mt76: mt7921: forbid the doze mode when coredump is in progress
+
+  Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml |    9 +
+  drivers/net/wireless/mediatek/mt76/dma.c                          |   14 +-
+  drivers/net/wireless/mediatek/mt76/mac80211.c                     |   30 +++-
+  drivers/net/wireless/mediatek/mt76/mt76.h                         |   22 ++-
+  drivers/net/wireless/mediatek/mt76/mt7603/main.c                  |    3 +
+  drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c               |   15 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/init.c                  |    1 -
+  drivers/net/wireless/mediatek/mt76/mt7615/mac.c                   |  136 +++++++++-----
+  drivers/net/wireless/mediatek/mt76/mt7615/main.c                  |   12 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c                   |  220 ++---------------------
+  drivers/net/wireless/mediatek/mt76/mt7615/mmio.c                  |    1 +
+  drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h                |   22 +--
+  drivers/net/wireless/mediatek/mt76/mt7615/sdio.c                  |   15 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/usb.c                   |    1 +
+  drivers/net/wireless/mediatek/mt76/mt76_connac.h                  |   71 +++++++-
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c              |  378 +++++++++++++++++++++++++++++++++++----
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h              |  117 +++++++++++-
+  drivers/net/wireless/mediatek/mt76/mt76x02.h                      |    3 +-
+  drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c                  |    5 +-
+  drivers/net/wireless/mediatek/mt76/mt76x02_mac.c                  |   25 ++-
+  drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c                 |   30 ++--
+  drivers/net/wireless/mediatek/mt76/mt76x02_regs.h                 |    2 +
+  drivers/net/wireless/mediatek/mt76/mt7915/Kconfig                 |    3 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c               |  217 +++++++++++++++++++++--
+  drivers/net/wireless/mediatek/mt76/mt7915/dma.c                   |  454 +++++++++++++++++++++++++++++++++--------------
+  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c                |   87 ++++++---
+  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h                |    9 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/init.c                  |  156 ++++++++++------
+  drivers/net/wireless/mediatek/mt76/mt7915/mac.c                   |  437 ++++++++++++++++++++++++++++-----------------
+  drivers/net/wireless/mediatek/mt76/mt7915/mac.h                   |   15 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/main.c                  |  131 ++++++++++----
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c                   | 1323 ++++++++++++++++++++++++++++++++--------------------------------------------------------------------------------------------------------
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.h                   |   54 +++---
+  drivers/net/wireless/mediatek/mt76/mt7915/mmio.c                  |  577 ++++++++++++++++++++++++++++++++++++++++++++++++++++-------
+  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h                |   87 ++++++---
+  drivers/net/wireless/mediatek/mt76/mt7915/pci.c                   |  259 ++++++---------------------
+  drivers/net/wireless/mediatek/mt76/mt7915/regs.h                  |  586 ++++++++++++++++++++++++++++++++++++++----------------------
+  drivers/net/wireless/mediatek/mt76/mt7915/testmode.c              |   61 ++++---
+  drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c               |   37 ++--
+  drivers/net/wireless/mediatek/mt76/mt7921/dma.c                   |  119 -------------
+  drivers/net/wireless/mediatek/mt76/mt7921/init.c                  |   10 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/mac.c                   |   37 ++--
+  drivers/net/wireless/mediatek/mt76/mt7921/main.c                  |   36 +++-
+  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c                   |  274 +++-------------------------
+  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h                |   21 +--
+  drivers/net/wireless/mediatek/mt76/mt7921/pci.c                   |  125 +++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c               |   37 +++-
+  drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c               |   20 ++-
+  drivers/net/wireless/mediatek/mt76/mt7921/regs.h                  |    3 +
+  drivers/net/wireless/mediatek/mt76/mt7921/sdio.c                  |   15 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c              |    6 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c              |   38 ++++
+  drivers/net/wireless/mediatek/mt76/sdio.c                         |   14 +-
+  drivers/net/wireless/mediatek/mt76/sdio.h                         |    2 +
+  drivers/net/wireless/mediatek/mt76/sdio_txrx.c                    |   26 +--
+  55 files changed, 3570 insertions(+), 2838 deletions(-)
