@@ -2,123 +2,218 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF5394A9F13
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 19:33:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 579DF4A9F4F
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 19:39:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377560AbiBDSd5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Feb 2022 13:33:57 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:51016 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377518AbiBDSd4 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Feb 2022 13:33:56 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 90CC461BB3
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Feb 2022 18:33:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DB3C004E1;
-        Fri,  4 Feb 2022 18:33:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643999636;
-        bh=HmP3WSjGDWqlAwznGSKh8/I0PYGUPdMSwJ+AKyq1uE0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=SMGAwqmlIaD9w72WljA9jBHiEC21vclDT0fckbbvGq5870wvma/SIAiPb4yhtCn2M
-         RT325NVLlDtg1ZJppOTy9yWOsz7BXs04IyCYDdaAucLURRdzmhP0Od9Kg5Svyztwnw
-         23NFb8wChWeLKqar9X4F6X4P+c2Gl5N6mObrIoZgdC1mRQVniR/hhrAHOMo6Wfeeli
-         unmRX7SrVooKMubytlfZsgm1TZqR/fsfbE9vsNOG6Zc1KhVouwzslVJa7+EHSLOEfz
-         j6g4UOIWP69s0mQ0Ehy9O5PM5n2YmiFblf+xLrVjkfAtSq47hRdcj5e4jlMe+SAGVC
-         TBvFYDvSPSvgA==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        ryder.lee@mediatek.com, sean.wang@mediatek.com
-Subject: [PATCH] mt76: mt7615: introduce SAR support
-Date:   Fri,  4 Feb 2022 19:33:39 +0100
-Message-Id: <56f00506762466bdbee1229a3a629c55788d5fc7.1643999485.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.34.1
+        id S235987AbiBDSjm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Feb 2022 13:39:42 -0500
+Received: from mga01.intel.com ([192.55.52.88]:52156 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229906AbiBDSjm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 4 Feb 2022 13:39:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643999982; x=1675535982;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3Tv0B13hySPdwQ1CuxBFbGs8b0nfQ0e6Aczc1CClGWc=;
+  b=QwJrSARMZe/o6o7VPJgP/+gmN5Bz7elSeihHBLdv0F2/9bdRh+uHW24K
+   r+LUv3ggvdjr/MeEG0hGrrl73523YlFvMXorVjZCsQJyhwk0aC/wxzddi
+   xV6Nwa61uEOuEFl3ITqiXymBEt8AMhJrexPqB64NQilD3qSXBQ5uKTpiB
+   TzK77zhQUPxLekv1EmCRwWniZKCelDsA4ua6flw2F0WpN//+h72gnIe2X
+   ySFiizF38SOfMrrOFK5WXyKpnA/j9Shnswz8HodXkiROMWewtz1MVvzvr
+   qPnNM16XOzhJp4KyspS2/B8TD3u+PlvM8hU2O9lKLiFeXO3JMOUgc46Yc
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10248"; a="272923226"
+X-IronPort-AV: E=Sophos;i="5.88,343,1635231600"; 
+   d="scan'208";a="272923226"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2022 10:39:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,343,1635231600"; 
+   d="scan'208";a="699760208"
+Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 04 Feb 2022 10:39:40 -0800
+Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nG3Uh-000Y0r-KI; Fri, 04 Feb 2022 18:39:39 +0000
+Date:   Sat, 5 Feb 2022 02:39:29 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     kbuild-all@lists.01.org, Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH] mac80211_hwsim: check TX and STA bandwidth
+Message-ID: <202202050254.pz3jVGvO-lkp@intel.com>
+References: <20220204174105.5026d3892bf6.Ia0cd152357a373149bab017d479ab7d5ded289c0@changeid>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220204174105.5026d3892bf6.Ia0cd152357a373149bab017d479ab7d5ded289c0@changeid>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add SAR spec support to mt7615 driver to allow configuring SAR power
-limitations on the frequency ranges from the userland.
+Hi Johannes,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+I love your patch! Perhaps something to improve:
+
+[auto build test WARNING on linus/master]
+[also build test WARNING on v5.17-rc2 next-20220204]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/0day-ci/linux/commits/Johannes-Berg/mac80211_hwsim-check-TX-and-STA-bandwidth/20220205-004233
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git dcb85f85fa6f142aae1fe86f399d4503d49f2b60
+config: mips-allyesconfig (https://download.01.org/0day-ci/archive/20220205/202202050254.pz3jVGvO-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/99f1c0b151e550eed22429c2eb48876108bf3de7
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Johannes-Berg/mac80211_hwsim-check-TX-and-STA-bandwidth/20220205-004233
+        git checkout 99f1c0b151e550eed22429c2eb48876108bf3de7
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=mips SHELL=/bin/bash drivers/net/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   drivers/net/wireless/mac80211_hwsim.c: In function 'mac80211_hwsim_tx':
+>> drivers/net/wireless/mac80211_hwsim.c:1631:33: warning: variable 'confbw' set but not used [-Wunused-but-set-variable]
+    1631 |         enum nl80211_chan_width confbw = NL80211_CHAN_WIDTH_20_NOHT;
+         |                                 ^~~~~~
+
+
+vim +/confbw +1631 drivers/net/wireless/mac80211_hwsim.c
+
+  1620	
+  1621	static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
+  1622				      struct ieee80211_tx_control *control,
+  1623				      struct sk_buff *skb)
+  1624	{
+  1625		struct mac80211_hwsim_data *data = hw->priv;
+  1626		struct ieee80211_tx_info *txi = IEEE80211_SKB_CB(skb);
+  1627		struct ieee80211_hdr *hdr = (void *)skb->data;
+  1628		struct ieee80211_chanctx_conf *chanctx_conf;
+  1629		struct ieee80211_channel *channel;
+  1630		bool ack;
+> 1631		enum nl80211_chan_width confbw = NL80211_CHAN_WIDTH_20_NOHT;
+  1632		u32 _portid, i;
+  1633	
+  1634		if (WARN_ON(skb->len < 10)) {
+  1635			/* Should not happen; just a sanity check for addr1 use */
+  1636			ieee80211_free_txskb(hw, skb);
+  1637			return;
+  1638		}
+  1639	
+  1640		if (!data->use_chanctx) {
+  1641			channel = data->channel;
+  1642			confbw = data->bw;
+  1643		} else if (txi->hw_queue == 4) {
+  1644			channel = data->tmp_chan;
+  1645		} else {
+  1646			chanctx_conf = rcu_dereference(txi->control.vif->chanctx_conf);
+  1647			if (chanctx_conf) {
+  1648				channel = chanctx_conf->def.chan;
+  1649				confbw = chanctx_conf->def.width;
+  1650			} else {
+  1651				channel = NULL;
+  1652			}
+  1653		}
+  1654	
+  1655		if (WARN(!channel, "TX w/o channel - queue = %d\n", txi->hw_queue)) {
+  1656			ieee80211_free_txskb(hw, skb);
+  1657			return;
+  1658		}
+  1659	
+  1660		if (data->idle && !data->tmp_chan) {
+  1661			wiphy_dbg(hw->wiphy, "Trying to TX when idle - reject\n");
+  1662			ieee80211_free_txskb(hw, skb);
+  1663			return;
+  1664		}
+  1665	
+  1666		if (txi->control.vif)
+  1667			hwsim_check_magic(txi->control.vif);
+  1668		if (control->sta)
+  1669			hwsim_check_sta_magic(control->sta);
+  1670	
+  1671		if (ieee80211_hw_check(hw, SUPPORTS_RC_TABLE))
+  1672			ieee80211_get_tx_rates(txi->control.vif, control->sta, skb,
+  1673					       txi->control.rates,
+  1674					       ARRAY_SIZE(txi->control.rates));
+  1675	
+  1676		for (i = 0; i < ARRAY_SIZE(txi->control.rates); i++) {
+  1677			u16 rflags = txi->control.rates[i].flags;
+  1678			/* initialize to data->bw for 5/10 MHz handling */
+  1679			enum nl80211_chan_width bw = data->bw;
+  1680	
+  1681			if (txi->control.rates[i].idx == -1)
+  1682				break;
+  1683	
+  1684			if (rflags & IEEE80211_TX_RC_40_MHZ_WIDTH)
+  1685				bw = NL80211_CHAN_WIDTH_40;
+  1686			else if (rflags & IEEE80211_TX_RC_80_MHZ_WIDTH)
+  1687				bw = NL80211_CHAN_WIDTH_80;
+  1688			else if (rflags & IEEE80211_TX_RC_160_MHZ_WIDTH)
+  1689				bw = NL80211_CHAN_WIDTH_160;
+  1690	
+  1691			if (WARN_ON(hwsim_get_chanwidth(bw) > hwsim_get_chanwidth(data->bw)))
+  1692				return;
+  1693		}
+  1694	
+  1695		if (skb->len >= 24 + 8 &&
+  1696		    ieee80211_is_probe_resp(hdr->frame_control)) {
+  1697			/* fake header transmission time */
+  1698			struct ieee80211_mgmt *mgmt;
+  1699			struct ieee80211_rate *txrate;
+  1700			/* TODO: get MCS */
+  1701			int bitrate = 100;
+  1702			u64 ts;
+  1703	
+  1704			mgmt = (struct ieee80211_mgmt *)skb->data;
+  1705			txrate = ieee80211_get_tx_rate(hw, txi);
+  1706			if (txrate)
+  1707				bitrate = txrate->bitrate;
+  1708			ts = mac80211_hwsim_get_tsf_raw();
+  1709			mgmt->u.probe_resp.timestamp =
+  1710				cpu_to_le64(ts + data->tsf_offset +
+  1711					    24 * 8 * 10 / bitrate);
+  1712		}
+  1713	
+  1714		mac80211_hwsim_monitor_rx(hw, skb, channel);
+  1715	
+  1716		/* wmediumd mode check */
+  1717		_portid = READ_ONCE(data->wmediumd);
+  1718	
+  1719		if (_portid || hwsim_virtio_enabled)
+  1720			return mac80211_hwsim_tx_frame_nl(hw, skb, _portid, channel);
+  1721	
+  1722		/* NO wmediumd detected, perfect medium simulation */
+  1723		data->tx_pkts++;
+  1724		data->tx_bytes += skb->len;
+  1725		ack = mac80211_hwsim_tx_frame_no_nl(hw, skb, channel);
+  1726	
+  1727		if (ack && skb->len >= 16)
+  1728			mac80211_hwsim_monitor_ack(channel, hdr->addr2);
+  1729	
+  1730		ieee80211_tx_info_clear_status(txi);
+  1731	
+  1732		/* frame was transmitted at most favorable rate at first attempt */
+  1733		txi->control.rates[0].count = 1;
+  1734		txi->control.rates[1].idx = -1;
+  1735	
+  1736		if (!(txi->flags & IEEE80211_TX_CTL_NO_ACK) && ack)
+  1737			txi->flags |= IEEE80211_TX_STAT_ACK;
+  1738		ieee80211_tx_status_irqsafe(hw, skb);
+  1739	}
+  1740	
+
 ---
- .../net/wireless/mediatek/mt76/mt7615/main.c  | 24 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  7 +++---
- 2 files changed, 27 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 7dcf1fb97eca..d79cbdbd5a05 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -431,6 +431,29 @@ static int mt7615_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	return err;
- }
- 
-+static int mt7615_set_sar_specs(struct ieee80211_hw *hw,
-+				const struct cfg80211_sar_specs *sar)
-+{
-+	struct mt7615_phy *phy = mt7615_hw_phy(hw);
-+	int err;
-+
-+	if (!cfg80211_chandef_valid(&phy->mt76->chandef))
-+		return -EINVAL;
-+
-+	err = mt76_init_sar_power(hw, sar);
-+	if (err)
-+		return err;
-+
-+	if (mt7615_firmware_offload(phy->dev))
-+		return mt76_connac_mcu_set_rate_txpower(phy->mt76);
-+
-+	ieee80211_stop_queues(hw);
-+	err = mt7615_set_channel(phy);
-+	ieee80211_wake_queues(hw);
-+
-+	return err;
-+}
-+
- static int mt7615_config(struct ieee80211_hw *hw, u32 changed)
- {
- 	struct mt7615_dev *dev = mt7615_hw_dev(hw);
-@@ -1333,6 +1356,7 @@ const struct ieee80211_ops mt7615_ops = {
- 	.set_wakeup = mt7615_set_wakeup,
- 	.set_rekey_data = mt7615_set_rekey_data,
- #endif /* CONFIG_PM */
-+	.set_sar_specs = mt7615_set_sar_specs,
- };
- EXPORT_SYMBOL_GPL(mt7615_ops);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index f992e1285eaa..120760ea1c89 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -2020,7 +2020,7 @@ static void mt7615_mcu_set_txpower_sku(struct mt7615_phy *phy, u8 *sku)
- 	struct mt76_power_limits limits;
- 	s8 *limits_array = (s8 *)&limits;
- 	int n_chains = hweight8(mphy->antenna_mask);
--	int tx_power;
-+	int tx_power = hw->conf.power_level * 2;
- 	int i;
- 	static const u8 sku_mapping[] = {
- #define SKU_FIELD(_type, _field) \
-@@ -2077,9 +2077,8 @@ static void mt7615_mcu_set_txpower_sku(struct mt7615_phy *phy, u8 *sku)
- #undef SKU_FIELD
- 	};
- 
--	tx_power = hw->conf.power_level * 2 -
--		   mt76_tx_power_nss_delta(n_chains);
--
-+	tx_power = mt76_get_sar_power(mphy, mphy->chandef.chan, tx_power);
-+	tx_power -= mt76_tx_power_nss_delta(n_chains);
- 	tx_power = mt76_get_rate_power_limits(mphy, mphy->chandef.chan,
- 					      &limits, tx_power);
- 	mphy->txpower_cur = tx_power;
--- 
-2.34.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
