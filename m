@@ -2,42 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61E904AA0E9
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 21:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A5D84AA0EC
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 21:08:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236974AbiBDUHG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Feb 2022 15:07:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40210 "EHLO
+        id S229446AbiBDUIK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Feb 2022 15:08:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237470AbiBDUGd (ORCPT
+        with ESMTP id S235966AbiBDUIF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Feb 2022 15:06:33 -0500
+        Fri, 4 Feb 2022 15:08:05 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28CDDC061769
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Feb 2022 12:06:23 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA4FBC061401
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Feb 2022 12:08:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
         Resent-Message-ID:In-Reply-To:References;
-        bh=YDnmsWQZOS62iLY0GPDtQY8UaQ6zoLPtMfOyeoRQXlM=; t=1644005183; x=1645214783; 
-        b=kKotV4ZhwmG6DayGCyeftk+gAPI1MNxmggqQD1SenxgGBKHjVDsI7mrNun3GVSGFI/Xo00N3yHk
-        /p1crO/wDbn4+YFjIeqQlodywDYvA2hjr82EAR+gHTZIVJz+DotsmLL6k0MRVAOPOIFVFmdNUCT4C
-        6cJIOUIa2YTVXtdRqwP5SaxWfPc4UPd5+yt0LNGBzapMhb4K2VVTKuErBy4PLkisT8p77AI10ed0w
-        aEgVJ6ha8eaFvbEI9MlhtiyKtW7qApDGftJ8eGztaWmUlDSZxUApv8uSCYd3PnXcoO34DOEu4ORJY
-        WGztb9gnykOksIl5YxBKur8Q48C2lcYLwSJw==;
+        bh=1+YAeqRRw6LUO/Ua4Hv2+yJMf6buZwDhlxBjYrGnoes=; t=1644005284; x=1645214884; 
+        b=c17CcTvJjEiFclesOAPwQ2zh6pT0li2ECkY+W4MYJrP+p1fNRECxag7mNk+luEMsS9CA4tSEaAX
+        7YmWuQORfkXqtmpzUKOt4IX2eoK5CSbcWQhC/NVGEVWZmlVinvw0MggxHAJ/Gko6OazYzTy7QdRDL
+        eSPh9Mt8LafkyEW+4dUuYdeZUzT9NjwEiSoo1pk7kF4pbdXwbjOP0fVHHYABlD/oYp0C05gHuc5W4
+        e8yWbC2dIo6nyPkecZAeMsrP54ccQR0euXqxC2CO/Hgnd0nYn6Lq+Hq+oURJp4Bi0yitGcw0BBVcP
+        4pWW1Zgpq8GtrvEUY7kH9uU+nyQVi6VApSjg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nG4qa-00Ebe3-B1;
-        Fri, 04 Feb 2022 21:06:20 +0100
+        id 1nG4sE-00Ebg4-65;
+        Fri, 04 Feb 2022 21:08:02 +0100
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        ec ger unix iil jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
-Subject: [PATCH] mac80211_hwsim: don't shadow a global variable
-Date:   Fri,  4 Feb 2022 21:06:17 +0100
-Message-Id: <20220204210616.918edc67b94f.I3e878e42bf2feecbb0a6ca38a68c236c23a8c9e6@changeid>
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH v2] mac80211_hwsim: don't shadow a global variable
+Date:   Fri,  4 Feb 2022 21:08:00 +0100
+Message-Id: <20220204210759.27aad9ab95db.I3e878e42bf2feecbb0a6ca38a68c236c23a8c9e6@changeid>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -55,13 +54,7 @@ From: Johannes Berg <johannes.berg@intel.com>
 The argument to hwsim_init_s1g_channels() shadows a global,
 change that to be clearer.
 
-type=cleanup
-ticket=none
-
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-on: https://git-amr-3.devtools.intel.com/gerrit/333108
-automatic-review: ec ger unix iil jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
-Tested-by: ec ger unix iil jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
 ---
  drivers/net/wireless/mac80211_hwsim.c | 10 +++++-----
  1 file changed, 5 insertions(+), 5 deletions(-)
