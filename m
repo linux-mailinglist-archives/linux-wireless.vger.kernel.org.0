@@ -2,218 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 579DF4A9F4F
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 19:39:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61E904AA0E9
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 21:07:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235987AbiBDSjm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Feb 2022 13:39:42 -0500
-Received: from mga01.intel.com ([192.55.52.88]:52156 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229906AbiBDSjm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Feb 2022 13:39:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643999982; x=1675535982;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3Tv0B13hySPdwQ1CuxBFbGs8b0nfQ0e6Aczc1CClGWc=;
-  b=QwJrSARMZe/o6o7VPJgP/+gmN5Bz7elSeihHBLdv0F2/9bdRh+uHW24K
-   r+LUv3ggvdjr/MeEG0hGrrl73523YlFvMXorVjZCsQJyhwk0aC/wxzddi
-   xV6Nwa61uEOuEFl3ITqiXymBEt8AMhJrexPqB64NQilD3qSXBQ5uKTpiB
-   TzK77zhQUPxLekv1EmCRwWniZKCelDsA4ua6flw2F0WpN//+h72gnIe2X
-   ySFiizF38SOfMrrOFK5WXyKpnA/j9Shnswz8HodXkiROMWewtz1MVvzvr
-   qPnNM16XOzhJp4KyspS2/B8TD3u+PlvM8hU2O9lKLiFeXO3JMOUgc46Yc
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10248"; a="272923226"
-X-IronPort-AV: E=Sophos;i="5.88,343,1635231600"; 
-   d="scan'208";a="272923226"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2022 10:39:42 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,343,1635231600"; 
-   d="scan'208";a="699760208"
-Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 04 Feb 2022 10:39:40 -0800
-Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nG3Uh-000Y0r-KI; Fri, 04 Feb 2022 18:39:39 +0000
-Date:   Sat, 5 Feb 2022 02:39:29 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH] mac80211_hwsim: check TX and STA bandwidth
-Message-ID: <202202050254.pz3jVGvO-lkp@intel.com>
-References: <20220204174105.5026d3892bf6.Ia0cd152357a373149bab017d479ab7d5ded289c0@changeid>
+        id S236974AbiBDUHG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Feb 2022 15:07:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40210 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237470AbiBDUGd (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 4 Feb 2022 15:06:33 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28CDDC061769
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Feb 2022 12:06:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=YDnmsWQZOS62iLY0GPDtQY8UaQ6zoLPtMfOyeoRQXlM=; t=1644005183; x=1645214783; 
+        b=kKotV4ZhwmG6DayGCyeftk+gAPI1MNxmggqQD1SenxgGBKHjVDsI7mrNun3GVSGFI/Xo00N3yHk
+        /p1crO/wDbn4+YFjIeqQlodywDYvA2hjr82EAR+gHTZIVJz+DotsmLL6k0MRVAOPOIFVFmdNUCT4C
+        6cJIOUIa2YTVXtdRqwP5SaxWfPc4UPd5+yt0LNGBzapMhb4K2VVTKuErBy4PLkisT8p77AI10ed0w
+        aEgVJ6ha8eaFvbEI9MlhtiyKtW7qApDGftJ8eGztaWmUlDSZxUApv8uSCYd3PnXcoO34DOEu4ORJY
+        WGztb9gnykOksIl5YxBKur8Q48C2lcYLwSJw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nG4qa-00Ebe3-B1;
+        Fri, 04 Feb 2022 21:06:20 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        ec ger unix iil jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
+Subject: [PATCH] mac80211_hwsim: don't shadow a global variable
+Date:   Fri,  4 Feb 2022 21:06:17 +0100
+Message-Id: <20220204210616.918edc67b94f.I3e878e42bf2feecbb0a6ca38a68c236c23a8c9e6@changeid>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220204174105.5026d3892bf6.Ia0cd152357a373149bab017d479ab7d5ded289c0@changeid>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+From: Johannes Berg <johannes.berg@intel.com>
 
-I love your patch! Perhaps something to improve:
+The argument to hwsim_init_s1g_channels() shadows a global,
+change that to be clearer.
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v5.17-rc2 next-20220204]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+type=cleanup
+ticket=none
 
-url:    https://github.com/0day-ci/linux/commits/Johannes-Berg/mac80211_hwsim-check-TX-and-STA-bandwidth/20220205-004233
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git dcb85f85fa6f142aae1fe86f399d4503d49f2b60
-config: mips-allyesconfig (https://download.01.org/0day-ci/archive/20220205/202202050254.pz3jVGvO-lkp@intel.com/config)
-compiler: mips-linux-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/99f1c0b151e550eed22429c2eb48876108bf3de7
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Johannes-Berg/mac80211_hwsim-check-TX-and-STA-bandwidth/20220205-004233
-        git checkout 99f1c0b151e550eed22429c2eb48876108bf3de7
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=mips SHELL=/bin/bash drivers/net/
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
-   drivers/net/wireless/mac80211_hwsim.c: In function 'mac80211_hwsim_tx':
->> drivers/net/wireless/mac80211_hwsim.c:1631:33: warning: variable 'confbw' set but not used [-Wunused-but-set-variable]
-    1631 |         enum nl80211_chan_width confbw = NL80211_CHAN_WIDTH_20_NOHT;
-         |                                 ^~~~~~
-
-
-vim +/confbw +1631 drivers/net/wireless/mac80211_hwsim.c
-
-  1620	
-  1621	static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
-  1622				      struct ieee80211_tx_control *control,
-  1623				      struct sk_buff *skb)
-  1624	{
-  1625		struct mac80211_hwsim_data *data = hw->priv;
-  1626		struct ieee80211_tx_info *txi = IEEE80211_SKB_CB(skb);
-  1627		struct ieee80211_hdr *hdr = (void *)skb->data;
-  1628		struct ieee80211_chanctx_conf *chanctx_conf;
-  1629		struct ieee80211_channel *channel;
-  1630		bool ack;
-> 1631		enum nl80211_chan_width confbw = NL80211_CHAN_WIDTH_20_NOHT;
-  1632		u32 _portid, i;
-  1633	
-  1634		if (WARN_ON(skb->len < 10)) {
-  1635			/* Should not happen; just a sanity check for addr1 use */
-  1636			ieee80211_free_txskb(hw, skb);
-  1637			return;
-  1638		}
-  1639	
-  1640		if (!data->use_chanctx) {
-  1641			channel = data->channel;
-  1642			confbw = data->bw;
-  1643		} else if (txi->hw_queue == 4) {
-  1644			channel = data->tmp_chan;
-  1645		} else {
-  1646			chanctx_conf = rcu_dereference(txi->control.vif->chanctx_conf);
-  1647			if (chanctx_conf) {
-  1648				channel = chanctx_conf->def.chan;
-  1649				confbw = chanctx_conf->def.width;
-  1650			} else {
-  1651				channel = NULL;
-  1652			}
-  1653		}
-  1654	
-  1655		if (WARN(!channel, "TX w/o channel - queue = %d\n", txi->hw_queue)) {
-  1656			ieee80211_free_txskb(hw, skb);
-  1657			return;
-  1658		}
-  1659	
-  1660		if (data->idle && !data->tmp_chan) {
-  1661			wiphy_dbg(hw->wiphy, "Trying to TX when idle - reject\n");
-  1662			ieee80211_free_txskb(hw, skb);
-  1663			return;
-  1664		}
-  1665	
-  1666		if (txi->control.vif)
-  1667			hwsim_check_magic(txi->control.vif);
-  1668		if (control->sta)
-  1669			hwsim_check_sta_magic(control->sta);
-  1670	
-  1671		if (ieee80211_hw_check(hw, SUPPORTS_RC_TABLE))
-  1672			ieee80211_get_tx_rates(txi->control.vif, control->sta, skb,
-  1673					       txi->control.rates,
-  1674					       ARRAY_SIZE(txi->control.rates));
-  1675	
-  1676		for (i = 0; i < ARRAY_SIZE(txi->control.rates); i++) {
-  1677			u16 rflags = txi->control.rates[i].flags;
-  1678			/* initialize to data->bw for 5/10 MHz handling */
-  1679			enum nl80211_chan_width bw = data->bw;
-  1680	
-  1681			if (txi->control.rates[i].idx == -1)
-  1682				break;
-  1683	
-  1684			if (rflags & IEEE80211_TX_RC_40_MHZ_WIDTH)
-  1685				bw = NL80211_CHAN_WIDTH_40;
-  1686			else if (rflags & IEEE80211_TX_RC_80_MHZ_WIDTH)
-  1687				bw = NL80211_CHAN_WIDTH_80;
-  1688			else if (rflags & IEEE80211_TX_RC_160_MHZ_WIDTH)
-  1689				bw = NL80211_CHAN_WIDTH_160;
-  1690	
-  1691			if (WARN_ON(hwsim_get_chanwidth(bw) > hwsim_get_chanwidth(data->bw)))
-  1692				return;
-  1693		}
-  1694	
-  1695		if (skb->len >= 24 + 8 &&
-  1696		    ieee80211_is_probe_resp(hdr->frame_control)) {
-  1697			/* fake header transmission time */
-  1698			struct ieee80211_mgmt *mgmt;
-  1699			struct ieee80211_rate *txrate;
-  1700			/* TODO: get MCS */
-  1701			int bitrate = 100;
-  1702			u64 ts;
-  1703	
-  1704			mgmt = (struct ieee80211_mgmt *)skb->data;
-  1705			txrate = ieee80211_get_tx_rate(hw, txi);
-  1706			if (txrate)
-  1707				bitrate = txrate->bitrate;
-  1708			ts = mac80211_hwsim_get_tsf_raw();
-  1709			mgmt->u.probe_resp.timestamp =
-  1710				cpu_to_le64(ts + data->tsf_offset +
-  1711					    24 * 8 * 10 / bitrate);
-  1712		}
-  1713	
-  1714		mac80211_hwsim_monitor_rx(hw, skb, channel);
-  1715	
-  1716		/* wmediumd mode check */
-  1717		_portid = READ_ONCE(data->wmediumd);
-  1718	
-  1719		if (_portid || hwsim_virtio_enabled)
-  1720			return mac80211_hwsim_tx_frame_nl(hw, skb, _portid, channel);
-  1721	
-  1722		/* NO wmediumd detected, perfect medium simulation */
-  1723		data->tx_pkts++;
-  1724		data->tx_bytes += skb->len;
-  1725		ack = mac80211_hwsim_tx_frame_no_nl(hw, skb, channel);
-  1726	
-  1727		if (ack && skb->len >= 16)
-  1728			mac80211_hwsim_monitor_ack(channel, hdr->addr2);
-  1729	
-  1730		ieee80211_tx_info_clear_status(txi);
-  1731	
-  1732		/* frame was transmitted at most favorable rate at first attempt */
-  1733		txi->control.rates[0].count = 1;
-  1734		txi->control.rates[1].idx = -1;
-  1735	
-  1736		if (!(txi->flags & IEEE80211_TX_CTL_NO_ACK) && ack)
-  1737			txi->flags |= IEEE80211_TX_STAT_ACK;
-  1738		ieee80211_tx_status_irqsafe(hw, skb);
-  1739	}
-  1740	
-
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-on: https://git-amr-3.devtools.intel.com/gerrit/333108
+automatic-review: ec ger unix iil jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
+Tested-by: ec ger unix iil jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/net/wireless/mac80211_hwsim.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index f54f250f20c8..ac940767522e 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -489,16 +489,16 @@ static const struct ieee80211_sta_s1g_cap hwsim_s1g_cap = {
+ 		     0 },
+ };
+ 
+-static void hwsim_init_s1g_channels(struct ieee80211_channel *channels)
++static void hwsim_init_s1g_channels(struct ieee80211_channel *chans)
+ {
+ 	int ch, freq;
+ 
+ 	for (ch = 0; ch < NUM_S1G_CHANS_US; ch++) {
+ 		freq = 902000 + (ch + 1) * 500;
+-		channels[ch].band = NL80211_BAND_S1GHZ;
+-		channels[ch].center_freq = KHZ_TO_MHZ(freq);
+-		channels[ch].freq_offset = freq % 1000;
+-		channels[ch].hw_value = ch + 1;
++		chans[ch].band = NL80211_BAND_S1GHZ;
++		chans[ch].center_freq = KHZ_TO_MHZ(freq);
++		chans[ch].freq_offset = freq % 1000;
++		chans[ch].hw_value = ch + 1;
+ 	}
+ }
+ 
+-- 
+2.34.1
+
