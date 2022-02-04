@@ -2,228 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89C094A9D15
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 17:41:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 971BD4A9DEC
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 18:43:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376615AbiBDQlO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Feb 2022 11:41:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49334 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233928AbiBDQlO (ORCPT
+        id S1377040AbiBDRnr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Feb 2022 12:43:47 -0500
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:17062 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1377078AbiBDRnq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Feb 2022 11:41:14 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7393C061714
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Feb 2022 08:41:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=8RtYWFv8A5tN+eYb99CcKI31oeiu6BO+pgCwheViDUc=; t=1643992873; x=1645202473; 
-        b=MAAhu74CCFN8WJ2U2dqaXK6Si8XX22voKzMO0iDCRHTqtQbDkAlDXkDzIKWReynlJtPHQOZy2T6
-        E7acAwtum90PIbqONQLATVOvI4nskieQciLwYBg5nCKQUW4ueLSuc9V8HG2gNlvwJhlapm6osijpY
-        Yau040UQWXz4E7ne8rK7vz0cB7IYhDB2K5ARBsOcVWh4azV0sE8aOhBd6/xNsYV58wKd0D8D7cMxw
-        sRFkUkkLHdqXky+7GsofLfCw8FLkyDIn5d7FEP+6UyIUdSiDNjDmd7wPQ7urL/Io4mrN6KM4zPEWN
-        pi283L2Qd33LH8dZt0W3fB+Mt3goLBIBOy/w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nG1e2-00EXvr-LY;
-        Fri, 04 Feb 2022 17:41:10 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] mac80211_hwsim: check TX and STA bandwidth
-Date:   Fri,  4 Feb 2022 17:41:06 +0100
-Message-Id: <20220204174105.5026d3892bf6.Ia0cd152357a373149bab017d479ab7d5ded289c0@changeid>
-X-Mailer: git-send-email 2.34.1
+        Fri, 4 Feb 2022 12:43:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1643996626; x=1675532626;
+  h=subject:to:cc:references:from:message-id:date:
+   mime-version:in-reply-to:content-transfer-encoding;
+  bh=jOgeMI/q0s8ZpC74gONTo8NGB0DW6o/6tpNdHhxYJRg=;
+  b=sYDYzddvqRL8Izn6p6GBm/c2omMmd+kf15KwW2QkX1vdLUxOEdnPExaO
+   Yb9Ppyw6VtBZgTJ/PooBypuwmhC1PhZhDxU8abh6R9DcLQxc/g6WURaxS
+   75E+9i02nQkRWPo9rTYLrjhHEuznu5HQy3/hMMliYnztOfEr7zLaOpMjG
+   c=;
+Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
+  by alexa-out.qualcomm.com with ESMTP; 04 Feb 2022 09:43:46 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2022 09:43:46 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Fri, 4 Feb 2022 09:43:45 -0800
+Received: from [10.213.109.137] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Fri, 4 Feb 2022
+ 09:43:42 -0800
+Subject: Re: [PATCH 3/6] nl80211: add support to send EHT capabilities from
+ userspace
+To:     Johannes Berg <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>, <quic_vikram@quicinc.com>,
+        <quic_alokad@quicinc.com>, <quic_jiad@quicinc.com>,
+        <quic_periyasa@quicinc.com>, <quic_msinada@quicinc.com>,
+        <quic_srirrama@quicinc.com>
+References: <1640163883-12696-1-git-send-email-quic_vjakkam@quicinc.com>
+ <1640163883-12696-4-git-send-email-quic_vjakkam@quicinc.com>
+ <5ede1e1ad04b6359eafb658e827abf6a8343355f.camel@sipsolutions.net>
+ <0644274d-7a9f-642c-eef2-02c662a5adcc@quicinc.com>
+ <0c0ba8cebb877384172b5bd314cbbbb035d1f348.camel@sipsolutions.net>
+ <382a29fe-dea3-7d32-2aeb-16ba18e9da28@quicinc.com>
+ <91d3b826accb22194c9fa3134cd1f3137950e863.camel@sipsolutions.net>
+From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+Message-ID: <9bd12810-19a7-ad74-6577-d43c4b2ab9e5@quicinc.com>
+Date:   Fri, 4 Feb 2022 23:13:39 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <91d3b826accb22194c9fa3134cd1f3137950e863.camel@sipsolutions.net>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On 2/4/22 8:13 PM, Johannes Berg wrote:
+> On Fri, 2022-02-04 at 20:07 +0530, Veerendranath Jakkam wrote:
+>> There are some references for NSS > 8, ex: Table 9-33a, P802.11be_D1.3
+>> hence I used 81.
+> Right, the spec confuses me. In a lot of places it reserves enough space
+> for 8 < NSS <= 16, but then it has e.g. Table 36-40 with 4 bits, but
+> saying "for up to 8 spatial streams" (MU-MIMO). And even for OFDMA it
+> states in a lot of places that the maximum is only 8.
+>
+>> Please let me know if you would like this to be changed to 51
+>>
+> Nah, don't worry. I think it probably doesn't even really *matter*, we
+> can safely leave it at 81 anyway (I had evidently miscalculated as 80
+> before, so I was confused).
+>
+> We also already had some patches in this area, and I'm just working on a
+> combination - e.g. in your first patch I don't like the use of FIELD_GET
+> so much, preferring uXX_get_bits(), but Ilan already had patches here
+> that deal with that.
+>
+> For many of the other patches, Ilan and you arrived at a literally bit-
+> identical version of things!
+>
+> So I think I'm going to pick a couple of things from him and a couple of
+> things from you, and send out a combined series. Perhaps later today, if
+> I manage to get it done.
 
-Add checks to hwsim to validate that neither TX nor any
-station's configured bandwidth can exceed the channel
-(context) configuration previously requested.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- drivers/net/wireless/mac80211_hwsim.c | 90 ++++++++++++++++++++++++++-
- 1 file changed, 87 insertions(+), 3 deletions(-)
+Sure, Thanks for the update.
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index 8d54f9face2f..1fcc2000950b 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -652,6 +652,7 @@ struct mac80211_hwsim_data {
- 		      ARRAY_SIZE(hwsim_channels_6ghz)];
- 
- 	struct ieee80211_channel *channel;
-+	enum nl80211_chan_width bw;
- 	u64 beacon_int	/* beacon interval in us */;
- 	unsigned int rx_filter;
- 	bool started, idle, scanning;
-@@ -803,6 +804,38 @@ extern int hwsim_tx_virtio(struct mac80211_hwsim_data *data,
- #define hwsim_virtio_enabled false
- #endif
- 
-+static int hwsim_get_chanwidth(enum nl80211_chan_width bw)
-+{
-+	switch (bw) {
-+	case NL80211_CHAN_WIDTH_20_NOHT:
-+	case NL80211_CHAN_WIDTH_20:
-+		return 20;
-+	case NL80211_CHAN_WIDTH_40:
-+		return 40;
-+	case NL80211_CHAN_WIDTH_80:
-+		return 80;
-+	case NL80211_CHAN_WIDTH_80P80:
-+	case NL80211_CHAN_WIDTH_160:
-+		return 160;
-+	case NL80211_CHAN_WIDTH_5:
-+		return 5;
-+	case NL80211_CHAN_WIDTH_10:
-+		return 10;
-+	case NL80211_CHAN_WIDTH_1:
-+		return 1;
-+	case NL80211_CHAN_WIDTH_2:
-+		return 2;
-+	case NL80211_CHAN_WIDTH_4:
-+		return 4;
-+	case NL80211_CHAN_WIDTH_8:
-+		return 8;
-+	case NL80211_CHAN_WIDTH_16:
-+		return 16;
-+	}
-+
-+	return INT_MAX;
-+}
-+
- static void mac80211_hwsim_tx_frame(struct ieee80211_hw *hw,
- 				    struct sk_buff *skb,
- 				    struct ieee80211_channel *chan);
-@@ -1595,7 +1628,8 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
- 	struct ieee80211_chanctx_conf *chanctx_conf;
- 	struct ieee80211_channel *channel;
- 	bool ack;
--	u32 _portid;
-+	enum nl80211_chan_width confbw = NL80211_CHAN_WIDTH_20_NOHT;
-+	u32 _portid, i;
- 
- 	if (WARN_ON(skb->len < 10)) {
- 		/* Should not happen; just a sanity check for addr1 use */
-@@ -1605,14 +1639,17 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
- 
- 	if (!data->use_chanctx) {
- 		channel = data->channel;
-+		confbw = data->bw;
- 	} else if (txi->hw_queue == 4) {
- 		channel = data->tmp_chan;
- 	} else {
- 		chanctx_conf = rcu_dereference(txi->control.vif->chanctx_conf);
--		if (chanctx_conf)
-+		if (chanctx_conf) {
- 			channel = chanctx_conf->def.chan;
--		else
-+			confbw = chanctx_conf->def.width;
-+		} else {
- 			channel = NULL;
-+		}
- 	}
- 
- 	if (WARN(!channel, "TX w/o channel - queue = %d\n", txi->hw_queue)) {
-@@ -1636,6 +1673,25 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
- 				       txi->control.rates,
- 				       ARRAY_SIZE(txi->control.rates));
- 
-+	for (i = 0; i < ARRAY_SIZE(txi->control.rates); i++) {
-+		u16 rflags = txi->control.rates[i].flags;
-+		/* initialize to data->bw for 5/10 MHz handling */
-+		enum nl80211_chan_width bw = data->bw;
-+
-+		if (txi->control.rates[i].idx == -1)
-+			break;
-+
-+		if (rflags & IEEE80211_TX_RC_40_MHZ_WIDTH)
-+			bw = NL80211_CHAN_WIDTH_40;
-+		else if (rflags & IEEE80211_TX_RC_80_MHZ_WIDTH)
-+			bw = NL80211_CHAN_WIDTH_80;
-+		else if (rflags & IEEE80211_TX_RC_160_MHZ_WIDTH)
-+			bw = NL80211_CHAN_WIDTH_160;
-+
-+		if (WARN_ON(hwsim_get_chanwidth(bw) > hwsim_get_chanwidth(data->bw)))
-+			return;
-+	}
-+
- 	if (skb->len >= 24 + 8 &&
- 	    ieee80211_is_probe_resp(hdr->frame_control)) {
- 		/* fake header transmission time */
-@@ -1935,6 +1991,7 @@ static int mac80211_hwsim_config(struct ieee80211_hw *hw, u32 changed)
- 		}
- 
- 		data->channel = conf->chandef.chan;
-+		data->bw = conf->chandef.width;
- 
- 		for (idx = 0; idx < ARRAY_SIZE(data->survey_data); idx++) {
- 			if (data->survey_data[idx].channel &&
-@@ -1946,6 +2003,7 @@ static int mac80211_hwsim_config(struct ieee80211_hw *hw, u32 changed)
- 		}
- 	} else {
- 		data->channel = conf->chandef.chan;
-+		data->bw = conf->chandef.width;
- 	}
- 	mutex_unlock(&data->mutex);
- 
-@@ -2077,12 +2135,37 @@ static void mac80211_hwsim_bss_info_changed(struct ieee80211_hw *hw,
- 		wiphy_dbg(hw->wiphy, "  TX Power: %d dBm\n", info->txpower);
- }
- 
-+static void
-+mac80211_hwsim_sta_rc_update(struct ieee80211_hw *hw,
-+			     struct ieee80211_vif *vif,
-+			     struct ieee80211_sta *sta,
-+			     u32 changed)
-+{
-+	struct mac80211_hwsim_data *data = hw->priv;
-+	u32 bw = U32_MAX;
-+
-+	switch (sta->bandwidth) {
-+#define C(_bw) case IEEE80211_STA_RX_BW_##_bw: bw = _bw; break
-+	C(20);
-+	C(40);
-+	C(80);
-+	C(160);
-+#undef C
-+	}
-+
-+	WARN(bw > hwsim_get_chanwidth(data->bw),
-+	     "intf %pM: bad STA %pM bandwidth %d MHz (%d) > channel config %d MHz (%d)\n",
-+	     vif->addr, sta->addr, bw, sta->bandwidth,
-+	     hwsim_get_chanwidth(data->bw), data->bw);
-+}
-+
- static int mac80211_hwsim_sta_add(struct ieee80211_hw *hw,
- 				  struct ieee80211_vif *vif,
- 				  struct ieee80211_sta *sta)
- {
- 	hwsim_check_magic(vif);
- 	hwsim_set_sta_magic(sta);
-+	mac80211_hwsim_sta_rc_update(hw, vif, sta, 0);
- 
- 	return 0;
- }
-@@ -2649,6 +2732,7 @@ static int mac80211_hwsim_tx_last_beacon(struct ieee80211_hw *hw)
- 	.sta_add = mac80211_hwsim_sta_add,			\
- 	.sta_remove = mac80211_hwsim_sta_remove,		\
- 	.sta_notify = mac80211_hwsim_sta_notify,		\
-+	.sta_rc_update = mac80211_hwsim_sta_rc_update,		\
- 	.set_tim = mac80211_hwsim_set_tim,			\
- 	.conf_tx = mac80211_hwsim_conf_tx,			\
- 	.get_survey = mac80211_hwsim_get_survey,		\
--- 
-2.34.1
+> Also in your later nl80211 patch I'm thinking we should combine the
+> HE/EHT GI settings etc., there's no point duplicating all the enums,
+> though we might want to do some renaming.
+>
+> Sounds OK?
+>
+> johannes
+
+
+Yeah, This looks fine for me.
+
+meanwhile I will upload new patch set with the suggested changes in last 
+patch.
 
