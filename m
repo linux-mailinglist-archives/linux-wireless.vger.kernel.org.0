@@ -2,51 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6248C4AA2C3
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 23:03:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 782D84AA327
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 23:33:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344850AbiBDWDQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Feb 2022 17:03:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47192 "EHLO
+        id S1350243AbiBDWdr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Feb 2022 17:33:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344161AbiBDWDJ (ORCPT
+        with ESMTP id S241600AbiBDWdr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Feb 2022 17:03:09 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1EEFC06173D
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Feb 2022 14:03:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=bU5GzrihpO4nN8Z+HPgf07Ke+cVS3pXzD4o5O8jSyhs=;
-        t=1644012188; x=1645221788; b=Xoev+L4cYlpaHseLaiSU8cYnxLUgyjN8MKlEBVjJxeCbm05
-        Z+/4t/69M8K+U7/UmRnci6mGSRf7tQLhZ+fBuemP0vSCniX2g46TAVFdThFVotouMBh5XQ4bd9iUD
-        ypZXtvKaKiGy0+HsXn9AoWNoKyCv8SRNpcWoqySoDHh5Po6uzJkZGQAFQL8YQwFQbC8mqb3BjolS5
-        5Aq+VZTl7sXFcqedZ5Uo7vZEahsbkykp+Su3+ou/CCnOvBDNsg5bO/Zfj6RBW4jmAFcsgyBBvS5j9
-        c0AHoTNp4tHAzR/XgnE++WVfYVFPrbn4tg4SyEQPdzup8tsvZDEmDNF4MuC97Mig==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nG6fa-00EeJL-RL;
-        Fri, 04 Feb 2022 23:03:07 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Veerendranath Jakkam <quic_vjakkam@quicinc.com>,
-        Ilan Peer <ilan.peer@intel.com>,
-        Jia Ding <quic_jiad@quicinc.com>,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        Sriram R <quic_srirrama@quicinc.com>
-Subject: [PATCH 19/19] mac80211_hwsim: Advertise support for EHT capabilities
-Date:   Fri,  4 Feb 2022 23:02:55 +0100
-Message-Id: <20220204230119.853fe2c626af.I11d6911dafc01deb8ceb7828e363e8554701790a@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220204220255.448224-1-johannes@sipsolutions.net>
-References: <20220204220255.448224-1-johannes@sipsolutions.net>
+        Fri, 4 Feb 2022 17:33:47 -0500
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CB52D210536
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Feb 2022 14:33:46 -0800 (PST)
+Received: by mail-yb1-xb2a.google.com with SMTP id g26so8435371ybj.7
+        for <linux-wireless@vger.kernel.org>; Fri, 04 Feb 2022 14:33:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=anyfinetworks-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gcpkDjIJKrv82Leuo4xExF9LLjomqrJZLM+XhnZ0Cok=;
+        b=J9LZf1u6Zp7ID4dVpPe0BwV1Iei94dHbaRbqGT9XDgAVKwB5N+pbAPg3RAhNESrE8r
+         q2blg/zpqsNzm30eMzaZWxAwSAlDsZlqYW7TmdHCjrcpOoOnQ0T+LOBKcdZ1SGglkVQb
+         eG2V851SiYzFoyVITQ9L4YJ39SmtFoJpqTeV4oX3yk1tuWBnQgkDrZcNnr+4CUvVBC+D
+         D/2ZIhDLcxoSvkgL5RMm9OpVBDGRPUQZ0g2XkXL9v2NiQuEe7AfYVRgWfm6byXljY/2C
+         N+49ZxkUqT0yG5JyT6Oc1w42mSSMWUAOIiM3UzjDq5nAlcjEFGqzu+2KcTB/ooX5DOG1
+         Qs8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gcpkDjIJKrv82Leuo4xExF9LLjomqrJZLM+XhnZ0Cok=;
+        b=4X2D6aiB66BmYsMtpuLTeAILvSfsX9R5MRULj7EObofXU0kJLD4xsTCPashG2R07mI
+         SL7cxU0/9yFFR66fxSqojrnB/buey8OjWyxUpGPiFJLEyhv5jyGZQYd+0T+rCcvqdXn7
+         CX6laK7pHX081pWMCl5YNjSjftuNdu/5ktDonskq8zmArWr9jltACjbYy+coiYci76n/
+         dXfcIFgLq1etL7una225JO26u7V6CykJ/rCJwhDhnd7kCPTuOw8fy1XYs4sGymt4u2wu
+         klwvZm2hf7XFv4q7DNTLwYtTzFYcg0x6/65GIIZovXQ+Ry983NfHVtfwLckmbjtVuilt
+         YEDg==
+X-Gm-Message-State: AOAM5311Igj+iSXF18sK0TBeHAFlEdWlJzS3fIVAyKvW5fnehqhLxASS
+        uL22HMAHTg4pB5crGFnc1PwHQzf6B2zzgXtGbj8Px0qpUXh3GFccM4z6Uw==
+X-Google-Smtp-Source: ABdhPJz6w7VSmcEF07HyZQVgRd/z2Y9RhAQYbPkyuJ1uYCyX0Vmpdgr6puZ7Q28gkRf4/TNZ16AhRoD0HAGhI+LJNuY=
+X-Received: by 2002:a81:42:: with SMTP id 63mr1192592ywa.267.1644014025243;
+ Fri, 04 Feb 2022 14:33:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+References: <20220204154730.166194-1-johan.almbladh@anyfinetworks.com> <d7494a948df4fddd6a5ae783558d31bce115f0ff.camel@sipsolutions.net>
+In-Reply-To: <d7494a948df4fddd6a5ae783558d31bce115f0ff.camel@sipsolutions.net>
+From:   Johan Almbladh <johan.almbladh@anyfinetworks.com>
+Date:   Fri, 4 Feb 2022 23:33:34 +0100
+Message-ID: <CAM1=_QQL2D9WtC41NdRYYDeoWC_FRVr3xY_Yi6GdDR=6Bks4zg@mail.gmail.com>
+Subject: Re: [PATCH] mt76: mt7915: fix injected MPDU transmission to not use
+ HW A-MSDU
+To:     Johannes Berg <johannes@sipsolutions.net>, nbd@nbd.name
+Cc:     lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,350 +65,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+On Fri, Feb 4, 2022 at 10:46 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> On Fri, 2022-02-04 at 16:47 +0100, Johan Almbladh wrote:
+> >
+> > diff --git a/mt7915/mac.c b/mt7915/mac.c
+> > index 08ee78f6..1848fa16 100644
+> > --- a/mt7915/mac.c
+>
+> You should probably resend that with a full path.
 
-Add EHT capabilities to bands.
+Will do.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- drivers/net/wireless/mac80211_hwsim.c | 261 ++++++++++++++++++++++++--
- 1 file changed, 249 insertions(+), 12 deletions(-)
+May I ask what tree is expected for mt76 patches? The kernel
+MAINTAINERS file says nothing about it.
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index f761620408e1..a6a739148004 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -4,7 +4,7 @@
-  * Copyright (c) 2008, Jouni Malinen <j@w1.fi>
-  * Copyright (c) 2011, Javier Lopez <jlopex@gmail.com>
-  * Copyright (c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2020 Intel Corporation
-+ * Copyright (C) 2018 - 2022 Intel Corporation
-  */
- 
- /*
-@@ -2901,7 +2901,7 @@ static void hwsim_mcast_new_radio(int id, struct genl_info *info,
- 	nlmsg_free(mcast_skb);
- }
- 
--static const struct ieee80211_sband_iftype_data he_capa_2ghz[] = {
-+static const struct ieee80211_sband_iftype_data sband_capa_2ghz[] = {
- 	{
- 		.types_mask = BIT(NL80211_IFTYPE_STATION) |
- 			      BIT(NL80211_IFTYPE_AP),
-@@ -2947,6 +2947,67 @@ static const struct ieee80211_sband_iftype_data he_capa_2ghz[] = {
- 				.tx_mcs_80p80 = cpu_to_le16(0xffff),
- 			},
- 		},
-+		.eht_cap = {
-+			.has_eht = true,
-+			.eht_cap_elem = {
-+				.mac_cap_info[0] =
-+					IEEE80211_EHT_MAC_CAP0_NSEP_PRIO_ACCESS_SUPP  |
-+					IEEE80211_EHT_MAC_CAP0_OM_CONTROL_SUPP |
-+					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_SUPP |
-+					IEEE80211_EHT_MAC_CAP0_ARR_CONTROL_SUPP,
-+				.phy_cap_info[0] =
-+					IEEE80211_EHT_PHY_CAP0_242_TONE_RU            |
-+					IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI    |
-+					IEEE80211_EHT_PHY_CAP0_PARTIAL_BW_UL_MU_MIMO  |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMER          |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE,
-+				.phy_cap_info[3] =
-+					IEEE80211_EHT_PHY_CAP3_NG_16_SU_FEEDBACK           |
-+					IEEE80211_EHT_PHY_CAP3_NG_16_MU_FEEDBACK           |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_4_2_SU_FEEDBACK    |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FEEDBACK    |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_SU_BF_FEEDBACK         |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_CQI_FEEDBACK,
-+				.phy_cap_info[4] =
-+					IEEE80211_EHT_PHY_CAP4_PART_BW_DL_MU_MIMO          |
-+					IEEE80211_EHT_PHY_CAP4_PSR_SR_SUPP                 |
-+					IEEE80211_EHT_PHY_CAP4_POWER_BOOST_FACT_SUPP       |
-+					IEEE80211_EHT_PHY_CAP4_EHT_MU_PPDU_4_EHT_LTF_08_GI |
-+					IEEE80211_EHT_PHY_CAP4_MAX_NC,
-+				.phy_cap_info[5] =
-+					IEEE80211_EHT_PHY_CAP5_NON_TRIG_CQI_FEEDBACK    |
-+					IEEE80211_EHT_PHY_CAP5_TX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_RX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT    |
-+					IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL           |
-+					IEEE80211_EHT_PHY_CAP5_MAX_NUM_SUPP_EHT_LTF,
-+				.phy_cap_info[6] =
-+					IEEE80211_EHT_PHY_CAP6_MAX_NUM_SUPP_EHT_LTF |
-+					IEEE80211_EHT_PHY_CAP6_MCS15_SUPP,
-+				.phy_cap_info[7] =
-+					IEEE80211_EHT_PHY_CAP7_20MHZ_STA_RX_NDP_WIDER_BW,
-+			},
-+
-+			/* For all MCS and bandwidth, set 8 NSS for both Tx and
-+			 * Rx
-+			 */
-+			.eht_mcs_nss_supp = {
-+				/*
-+				 * Since B0, B1, B2 and B3 are not set in
-+				 * the supported channel width set field in the
-+				 * HE PHY capabilities information field the
-+				 * device is a 20MHz only device on 2.4GHz band.
-+				 */
-+				.only_20mhz = {
-+					.rx_tx_mcs7_max_nss = 0x88,
-+					.rx_tx_mcs9_max_nss = 0x88,
-+					.rx_tx_mcs11_max_nss = 0x88,
-+					.rx_tx_mcs13_max_nss = 0x88,
-+				},
-+			},
-+			/* PPE threshold information is not supported */
-+		},
- 	},
- #ifdef CONFIG_MAC80211_MESH
- 	{
-@@ -2989,7 +3050,7 @@ static const struct ieee80211_sband_iftype_data he_capa_2ghz[] = {
- #endif
- };
- 
--static const struct ieee80211_sband_iftype_data he_capa_5ghz[] = {
-+static const struct ieee80211_sband_iftype_data sband_capa_5ghz[] = {
- 	{
- 		/* TODO: should we support other types, e.g., P2P?*/
- 		.types_mask = BIT(NL80211_IFTYPE_STATION) |
-@@ -3087,7 +3148,7 @@ static const struct ieee80211_sband_iftype_data he_capa_5ghz[] = {
- #endif
- };
- 
--static const struct ieee80211_sband_iftype_data he_capa_6ghz[] = {
-+static const struct ieee80211_sband_iftype_data sband_capa_6ghz[] = {
- 	{
- 		/* TODO: should we support other types, e.g., P2P?*/
- 		.types_mask = BIT(NL80211_IFTYPE_STATION) |
-@@ -3147,6 +3208,94 @@ static const struct ieee80211_sband_iftype_data he_capa_6ghz[] = {
- 				.tx_mcs_80p80 = cpu_to_le16(0xfffa),
- 			},
- 		},
-+		.eht_cap = {
-+			.has_eht = true,
-+			.eht_cap_elem = {
-+				.mac_cap_info[0] =
-+					IEEE80211_EHT_MAC_CAP0_NSEP_PRIO_ACCESS_SUPP  |
-+					IEEE80211_EHT_MAC_CAP0_OM_CONTROL_SUPP |
-+					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_SUPP |
-+					IEEE80211_EHT_MAC_CAP0_ARR_CONTROL_SUPP,
-+				.phy_cap_info[0] =
-+					IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ         |
-+					IEEE80211_EHT_PHY_CAP0_242_TONE_RU            |
-+					IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI    |
-+					IEEE80211_EHT_PHY_CAP0_PARTIAL_BW_UL_MU_MIMO  |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMER          |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE          |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE_SS_80MHZ,
-+				.phy_cap_info[1] =
-+					IEEE80211_EHT_PHY_CAP1_SU_BEAMFORMEE_SS_80MHZ   |
-+					IEEE80211_EHT_PHY_CAP1_SU_BEAMFORMEE_SS_160MHZ  |
-+					IEEE80211_EHT_PHY_CAP1_SU_BEAMFORMEE_SS_320MHZ,
-+				.phy_cap_info[2] =
-+					IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_80MHZ       |
-+					IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_160MHZ      |
-+					IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_320MHZ,
-+				.phy_cap_info[3] =
-+					IEEE80211_EHT_PHY_CAP3_NG_16_SU_FEEDBACK           |
-+					IEEE80211_EHT_PHY_CAP3_NG_16_MU_FEEDBACK           |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_4_2_SU_FEEDBACK    |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FEEDBACK    |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_SU_BF_FEEDBACK         |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_CQI_FEEDBACK,
-+				.phy_cap_info[4] =
-+					IEEE80211_EHT_PHY_CAP4_PART_BW_DL_MU_MIMO          |
-+					IEEE80211_EHT_PHY_CAP4_PSR_SR_SUPP                 |
-+					IEEE80211_EHT_PHY_CAP4_POWER_BOOST_FACT_SUPP       |
-+					IEEE80211_EHT_PHY_CAP4_EHT_MU_PPDU_4_EHT_LTF_08_GI |
-+					IEEE80211_EHT_PHY_CAP4_MAX_NC,
-+				.phy_cap_info[5] =
-+					IEEE80211_EHT_PHY_CAP5_NON_TRIG_CQI_FEEDBACK    |
-+					IEEE80211_EHT_PHY_CAP5_TX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_RX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT    |
-+					IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL           |
-+					IEEE80211_EHT_PHY_CAP5_MAX_NUM_SUPP_EHT_LTF,
-+				.phy_cap_info[6] =
-+					IEEE80211_EHT_PHY_CAP6_MAX_NUM_SUPP_EHT_LTF |
-+					IEEE80211_EHT_PHY_CAP6_MCS15_SUPP           |
-+					IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP,
-+				.phy_cap_info[7] =
-+					IEEE80211_EHT_PHY_CAP7_20MHZ_STA_RX_NDP_WIDER_BW    |
-+					IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_80MHZ   |
-+					IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_160MHZ  |
-+					IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_320MHZ  |
-+					IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_80MHZ          |
-+					IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_160MHZ         |
-+					IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ,
-+			},
-+
-+			/* For all MCS and bandwidth, set 8 NSS for both Tx and
-+			 * Rx
-+			 */
-+			.eht_mcs_nss_supp = {
-+				/*
-+				 * As B1 and B2 are set in the supported
-+				 * channel width set field in the HE PHY
-+				 * capabilities information field and 320MHz in
-+				 * 6GHz is supported include all the following
-+				 * MCS/NSS.
-+				 */
-+				.bw_80 = {
-+					.rx_tx_mcs9_max_nss = 0x88,
-+					.rx_tx_mcs11_max_nss = 0x88,
-+					.rx_tx_mcs13_max_nss = 0x88,
-+				},
-+				.bw_160 = {
-+					.rx_tx_mcs9_max_nss = 0x88,
-+					.rx_tx_mcs11_max_nss = 0x88,
-+					.rx_tx_mcs13_max_nss = 0x88,
-+				},
-+				.bw_320 = {
-+					.rx_tx_mcs9_max_nss = 0x88,
-+					.rx_tx_mcs11_max_nss = 0x88,
-+					.rx_tx_mcs13_max_nss = 0x88,
-+				},
-+			},
-+			/* PPE threshold information is not supported */
-+		},
- 	},
- #ifdef CONFIG_MAC80211_MESH
- 	{
-@@ -3199,26 +3348,114 @@ static const struct ieee80211_sband_iftype_data he_capa_6ghz[] = {
- 				.tx_mcs_80p80 = cpu_to_le16(0xfffa),
- 			},
- 		},
-+		.eht_cap = {
-+			.has_eht = true,
-+			.eht_cap_elem = {
-+				.mac_cap_info[0] =
-+					IEEE80211_EHT_MAC_CAP0_NSEP_PRIO_ACCESS_SUPP  |
-+					IEEE80211_EHT_MAC_CAP0_OM_CONTROL_SUPP |
-+					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_SUPP |
-+					IEEE80211_EHT_MAC_CAP0_ARR_CONTROL_SUPP,
-+				.phy_cap_info[0] =
-+					IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ         |
-+					IEEE80211_EHT_PHY_CAP0_242_TONE_RU            |
-+					IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI    |
-+					IEEE80211_EHT_PHY_CAP0_PARTIAL_BW_UL_MU_MIMO  |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMER          |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE          |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE_SS_80MHZ,
-+				.phy_cap_info[1] =
-+					IEEE80211_EHT_PHY_CAP1_SU_BEAMFORMEE_SS_80MHZ   |
-+					IEEE80211_EHT_PHY_CAP1_SU_BEAMFORMEE_SS_160MHZ  |
-+					IEEE80211_EHT_PHY_CAP1_SU_BEAMFORMEE_SS_320MHZ,
-+				.phy_cap_info[2] =
-+					IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_80MHZ       |
-+					IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_160MHZ      |
-+					IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_320MHZ,
-+				.phy_cap_info[3] =
-+					IEEE80211_EHT_PHY_CAP3_NG_16_SU_FEEDBACK           |
-+					IEEE80211_EHT_PHY_CAP3_NG_16_MU_FEEDBACK           |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_4_2_SU_FEEDBACK    |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FEEDBACK    |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_SU_BF_FEEDBACK         |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_CQI_FEEDBACK,
-+				.phy_cap_info[4] =
-+					IEEE80211_EHT_PHY_CAP4_PART_BW_DL_MU_MIMO          |
-+					IEEE80211_EHT_PHY_CAP4_PSR_SR_SUPP                 |
-+					IEEE80211_EHT_PHY_CAP4_POWER_BOOST_FACT_SUPP       |
-+					IEEE80211_EHT_PHY_CAP4_EHT_MU_PPDU_4_EHT_LTF_08_GI |
-+					IEEE80211_EHT_PHY_CAP4_MAX_NC,
-+				.phy_cap_info[5] =
-+					IEEE80211_EHT_PHY_CAP5_NON_TRIG_CQI_FEEDBACK    |
-+					IEEE80211_EHT_PHY_CAP5_TX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_RX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT    |
-+					IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL           |
-+					IEEE80211_EHT_PHY_CAP5_MAX_NUM_SUPP_EHT_LTF,
-+				.phy_cap_info[6] =
-+					IEEE80211_EHT_PHY_CAP6_MAX_NUM_SUPP_EHT_LTF |
-+					IEEE80211_EHT_PHY_CAP6_MCS15_SUPP           |
-+					IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP,
-+				.phy_cap_info[7] =
-+					IEEE80211_EHT_PHY_CAP7_20MHZ_STA_RX_NDP_WIDER_BW    |
-+					IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_80MHZ   |
-+					IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_160MHZ  |
-+					IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_320MHZ  |
-+					IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_80MHZ          |
-+					IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_160MHZ         |
-+					IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ,
-+			},
-+
-+			/* For all MCS and bandwidth, set 8 NSS for both Tx and
-+			 * Rx
-+			 */
-+			.eht_mcs_nss_supp = {
-+				/*
-+				 * As B1 and B2 are set in the supported
-+				 * channel width set field in the HE PHY
-+				 * capabilities information field and 320MHz in
-+				 * 6GHz is supported include all the following
-+				 * MCS/NSS.
-+				 */
-+				.bw_80 = {
-+					.rx_tx_mcs9_max_nss = 0x88,
-+					.rx_tx_mcs11_max_nss = 0x88,
-+					.rx_tx_mcs13_max_nss = 0x88,
-+				},
-+				.bw_160 = {
-+					.rx_tx_mcs9_max_nss = 0x88,
-+					.rx_tx_mcs11_max_nss = 0x88,
-+					.rx_tx_mcs13_max_nss = 0x88,
-+				},
-+				.bw_320 = {
-+					.rx_tx_mcs9_max_nss = 0x88,
-+					.rx_tx_mcs11_max_nss = 0x88,
-+					.rx_tx_mcs13_max_nss = 0x88,
-+				},
-+			},
-+			/* PPE threshold information is not supported */
-+		},
- 	},
- #endif
- };
- 
--static void mac80211_hwsim_he_capab(struct ieee80211_supported_band *sband)
-+static void mac80211_hwsim_sband_capab(struct ieee80211_supported_band *sband)
- {
- 	u16 n_iftype_data;
- 
- 	if (sband->band == NL80211_BAND_2GHZ) {
--		n_iftype_data = ARRAY_SIZE(he_capa_2ghz);
-+		n_iftype_data = ARRAY_SIZE(sband_capa_2ghz);
- 		sband->iftype_data =
--			(struct ieee80211_sband_iftype_data *)he_capa_2ghz;
-+			(struct ieee80211_sband_iftype_data *)sband_capa_2ghz;
- 	} else if (sband->band == NL80211_BAND_5GHZ) {
--		n_iftype_data = ARRAY_SIZE(he_capa_5ghz);
-+		n_iftype_data = ARRAY_SIZE(sband_capa_5ghz);
- 		sband->iftype_data =
--			(struct ieee80211_sband_iftype_data *)he_capa_5ghz;
-+			(struct ieee80211_sband_iftype_data *)sband_capa_5ghz;
- 	} else if (sband->band == NL80211_BAND_6GHZ) {
--		n_iftype_data = ARRAY_SIZE(he_capa_6ghz);
-+		n_iftype_data = ARRAY_SIZE(sband_capa_6ghz);
- 		sband->iftype_data =
--			(struct ieee80211_sband_iftype_data *)he_capa_6ghz;
-+			(struct ieee80211_sband_iftype_data *)sband_capa_6ghz;
- 	} else {
- 		return;
- 	}
-@@ -3541,7 +3778,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 			sband->ht_cap.mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
- 		}
- 
--		mac80211_hwsim_he_capab(sband);
-+		mac80211_hwsim_sband_capab(sband);
- 
- 		hw->wiphy->bands[band] = sband;
- 	}
--- 
-2.34.1
-
+Johan
