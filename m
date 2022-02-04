@@ -2,77 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A74F4A91D7
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 02:04:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19CB14A944A
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Feb 2022 08:12:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236937AbiBDBER (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Feb 2022 20:04:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35374 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238913AbiBDBEK (ORCPT
+        id S1348137AbiBDHMW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Feb 2022 02:12:22 -0500
+Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:63911 "EHLO
+        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237837AbiBDHMV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Feb 2022 20:04:10 -0500
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F375FC061714
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Feb 2022 17:04:09 -0800 (PST)
-Received: by mail-il1-x12b.google.com with SMTP id s1so3596773ilj.7
-        for <linux-wireless@vger.kernel.org>; Thu, 03 Feb 2022 17:04:09 -0800 (PST)
+        Fri, 4 Feb 2022 02:12:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sladewatkins.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vsYnyVvYFGHo7pOeom7DUE8A4xMG+flUzg/LtgljbN4=;
-        b=IJ5u1uWSq0s7u7LuVWfv07ojvWBmS+JM/hf6zVjeQjLvT6bLj6520JMwiGvCnp7U2f
-         aYiFVIM9p+g0FT8Jc7uzOhgkgWE1q7TtEkhHkAy1TX3n/SMbp7+pGazO1sHZAcr04y+V
-         wywSLBdItMbYTgz39aVXqPFRwgu2xMP3mX1jVG/APi7Ctjb2QVwkjP22Y5Ot7xoeUAmC
-         Kl0cuxOaSdV9fjXSDo1Bqsubu3lffU51xG9OMCHkGid296K9HJvHRJ4TqnzaDxsZVIlc
-         vuMxOYpvYhvh97dc6hrFav6tnjSlRfwhVPv7XOg4TOAOoX9LEwlaR0rbFjKJAlA6yXfN
-         8+qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vsYnyVvYFGHo7pOeom7DUE8A4xMG+flUzg/LtgljbN4=;
-        b=RyUaJxuKFhZp9jepCJGpGoGytakQ4kL67zfHvvaD1Y/7yFKBMceRapI9Z/nO5zSORh
-         OaK4E7C1m2X59RxxBsV2qh37BacFiV9Tc3LE9yZZFrrzitn24JBV7VpqFHutWvhFbDQx
-         gGy/uOx5ouvjj4TWog+dXcHjACL1Z3TkkjqDtn4OSSPriY4GVg1KH+yv4TJckNpgjPuN
-         eFNeTHDZ7Johgwx+oodp8IWeXuYf6EQGYwh+3QmasZcKxR0HRwabrEkGaXpqE8NflWsz
-         3c2CTpnOseu8kRCz8EYfryXKCYNvmMYNgsdrhmulKJTIs6c9F0kmz3IfA4uOjxbDLpp5
-         V2oQ==
-X-Gm-Message-State: AOAM532pmtbonwhv5dMMW1XFz6+EmP8+xQqagVuj2merW7HJjT7zYmzD
-        qacfW5j+Ae0qSbjwrG/xq1Ts9rbRzSdsAzpCnNLm8ZJ9WVeQ+yJR
-X-Google-Smtp-Source: ABdhPJy/+UXHdodcb+v5q944XnHDzMcp7XY0yDek/JB6f+X5QgxJxzsMorNaDpU8whRqd5y+cFQLaw0sEeHqEDlgN4g=
-X-Received: by 2002:a92:c566:: with SMTP id b6mr315541ilj.79.1643936649279;
- Thu, 03 Feb 2022 17:04:09 -0800 (PST)
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1643958741; x=1675494741;
+  h=subject:to:cc:references:from:message-id:date:
+   mime-version:in-reply-to:content-transfer-encoding;
+  bh=XZwQJXS9L8X4LWr3d0+vWQOIuaJQw6IHSKV/yPtlNEE=;
+  b=Aizah2fuafRyKCkB6JNl1u7jKo0BYX5CyGLMXNEOyadoJX9he/Bwiufv
+   fP7st4ZTkv5g+EU6n0lHYuI338FFB1uz5vezgNby0yZuJDzKNTSyXClsM
+   OlxU3QtLbFuR9jsy0JstUwXcECnQqjm01cN5PNLk79yFTvKvxMYQ+w3x/
+   E=;
+Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 03 Feb 2022 23:12:20 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2022 23:12:19 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Thu, 3 Feb 2022 23:12:19 -0800
+Received: from [10.213.109.137] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Thu, 3 Feb 2022
+ 23:12:16 -0800
+Subject: Re: [PATCH 3/6] nl80211: add support to send EHT capabilities from
+ userspace
+To:     Johannes Berg <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>, <quic_vikram@quicinc.com>,
+        <quic_alokad@quicinc.com>, <quic_jiad@quicinc.com>,
+        <quic_periyasa@quicinc.com>, <quic_msinada@quicinc.com>,
+        <quic_srirrama@quicinc.com>
+References: <1640163883-12696-1-git-send-email-quic_vjakkam@quicinc.com>
+ <1640163883-12696-4-git-send-email-quic_vjakkam@quicinc.com>
+ <5ede1e1ad04b6359eafb658e827abf6a8343355f.camel@sipsolutions.net>
+From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+Message-ID: <0644274d-7a9f-642c-eef2-02c662a5adcc@quicinc.com>
+Date:   Fri, 4 Feb 2022 12:42:13 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <CA+pv=HNuxZXTxu2S5vcz=zF81wWxykQe2im6oKgKiaDPujVjiw@mail.gmail.com>
- <3721475a-a154-7a1a-ad23-b8a77873f951@lwfinger.net>
-In-Reply-To: <3721475a-a154-7a1a-ad23-b8a77873f951@lwfinger.net>
-From:   Slade Watkins <slade@sladewatkins.com>
-Date:   Thu, 3 Feb 2022 20:03:58 -0500
-Message-ID: <CA+pv=HMyUOF2Nfdx4GW-+5W=fw5P_ha9jpubntaR1v-Buyb1gQ@mail.gmail.com>
-Subject: Re: rtw89 driver
-To:     Larry Finger <larry.finger@lwfinger.net>
-Cc:     Wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <5ede1e1ad04b6359eafb658e827abf6a8343355f.camel@sipsolutions.net>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Feb 3, 2022 at 7:57 PM Larry Finger <Larry.Finger@lwfinger.net> wrote:
+On 2/3/22 6:15 PM, Johannes Berg wrote:
+> On Wed, 2021-12-22 at 14:34 +0530, Veerendranath Jakkam wrote:
+>>   
+>> +#define NL80211_EHT_MIN_CAPABILITY_LEN           10
+>> +#define NL80211_EHT_MAX_CAPABILITY_LEN           81
+>>
+> How did you get to 81?
 >
-> If for some reason, you do not like my version of the kernel code in the GitHub
-> repo that you reference, then you could use the Backports Project.
+> I calculate only 51, based on the assumption that we can only have
+> NSS==8. Even if you think NSS==16 (which I doubt), I get to 80 only?
 >
-> Backporting a driver into one of the stable trees is not a sanctioned activity.
-> Stable kernels only get fixes for bugs, not new features such as a complete driver.
->
-> At least one distro packages rtw89 as kernel modules the same as my GitHub repo.
-> That distro is openSUSE, which gets its source from that very repo. There may be
-> others that provide similar packages.
+> johannes
 
-Alright thanks for the info, Larry! I really appreciate it :-)
+I considered max values for NSS and RU Index Bitmask sub-fields in PPE 
+threshold field.
 
-All the best,
-Slade
+i.e. NSS=16, RU Index Bitmask = 0x11111 with this max PPE threshold info 
+sub-field length is 60 bytes
+
+
+Max PPE thresholds field length = 4 bits (for NSS) + 5 bits (for RU 
+Index Bitmask) +  480 bits (PPE info) + 7 bits (PPE pad)= 62 bytes
+
+EHT fixed fields length = 10 bytes
+
+Max MCS-NSS Set field length = 9 bytes
+
+So total max length would be 81 bytes
