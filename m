@@ -2,140 +2,154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43E954AA416
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Feb 2022 00:15:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9568E4AA58E
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Feb 2022 03:09:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377807AbiBDXPX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Feb 2022 18:15:23 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:44250 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378011AbiBDXPV (ORCPT
+        id S1378943AbiBECJR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Feb 2022 21:09:17 -0500
+Received: from mail-oi1-f171.google.com ([209.85.167.171]:33447 "EHLO
+        mail-oi1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1356172AbiBECJR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Feb 2022 18:15:21 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id A8B56CE24B9;
-        Fri,  4 Feb 2022 23:15:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A97C004E1;
-        Fri,  4 Feb 2022 23:15:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644016518;
-        bh=pLxkcGPvu1HilxtYZWiOuXKZ4HHdXlhZYggbeedegY8=;
-        h=Date:From:To:Cc:Subject:From;
-        b=gxVDSfcEzhnIk3vlbJV6q3zukKT+CBf31XqdUYm9lHJZE8Uv66HCVT1c5uPHD1nIE
-         Kc/X6SAKguuQLHJ1spTq67w3U+EkYYcU/pIcxa/j79rIZXzO52DytDv+FaoGz0aK9i
-         pFHqYEVvzuQgA19AT/kScPKNPlNbZmAiS9NvX9NwxY4XWy/VZfZuPVpH7v2ZFdcnxs
-         2m9nN7cEqRsQohBij47o49WCKqyDaMLfprHyIsuKT6KXZPzCF/GDHSfwupS2AgvieB
-         BOljl7nuKUoiJ69RxVY7F3+EuJ01QzrE1OVXDdIxYil/rZOHeifr403+hpzEsGqJto
-         GC0k6I4LC3p8Q==
-Date:   Fri, 4 Feb 2022 17:22:28 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH][next] brcmfmac: p2p: Replace one-element arrays with
- flexible-array members
-Message-ID: <20220204232228.GA442895@embeddedor>
+        Fri, 4 Feb 2022 21:09:17 -0500
+Received: by mail-oi1-f171.google.com with SMTP id x193so10759206oix.0;
+        Fri, 04 Feb 2022 18:09:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=nlm/DoIWX/vryslRDMyLqsOKh1vDr7UP4z3/6RoNcP0=;
+        b=DeU+AXNHm1G/NZH9dMrcOTcUumvtZd4sjT8dGOTc6MJ60GiBk4e8K0vCvP29F+mz8k
+         BPA0MjTBzgZLLNhKmjRjVE/2uOZlanYDvRgtcXlS2zYkB3aBatNlYecg/m/jCOzvcys4
+         R76Npx0q4+GqQ5hzNWoLDtnIgYvB++y9tphOdC2WzBZbTSqCXDG7pDgwJrCO4Z3Cr/BT
+         uC7wpT3MHeEL31jCvTyk+2HGl6NRytv/EfUx5i2rlDhZ7uJaLNHx83QSBkIin1SR6Q3T
+         pVcMnI2L46lpMtGa66AmTc+k7GcXH4bfO4TceeIJ+IXq/QVfqVwEt7AeivskaqBGmQJF
+         L8iQ==
+X-Gm-Message-State: AOAM530Yxn8gHUrIpD4OEseOPX6sfvgrHFHd71MS1NtbKn9WRTRObPCX
+        CbD2EOSJGUtUCRidIhLyDcoy4f8vFg==
+X-Google-Smtp-Source: ABdhPJyVS0PG5yTiDBcZK/QCZ0tOeDl6uPjDN421zx47NmuJYe9hhhMoFBleBbSxq0pBVid0d/dinw==
+X-Received: by 2002:a05:6808:14c1:: with SMTP id f1mr865934oiw.12.1644026956758;
+        Fri, 04 Feb 2022 18:09:16 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id g4sm1365784otl.1.2022.02.04.18.09.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Feb 2022 18:09:16 -0800 (PST)
+Received: (nullmailer pid 3610125 invoked by uid 1000);
+        Sat, 05 Feb 2022 02:09:15 -0000
+Date:   Fri, 4 Feb 2022 20:09:15 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Bo Jiao <bo.jiao@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Xing Song <xing.song@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 1/4] dt-bindings: net: wireless: mt76: document
+ bindings for MT7986
+Message-ID: <Yf3cSyKJz9ymj+Fq@robh.at.kernel.org>
+References: <cover.1642128031.git.Bo.Jiao@mediatek.com>
+ <c6a6ddd797269ea92698f612d6b7c66c9ec03765.1642128031.git.Bo.Jiao@mediatek.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <c6a6ddd797269ea92698f612d6b7c66c9ec03765.1642128031.git.Bo.Jiao@mediatek.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is a regular need in the kernel to provide a way to declare having
-a dynamically sized set of trailing elements in a structure. Kernel code
-should always use “flexible array members”[1] for these cases. The older
-style of one-element or zero-length arrays should no longer be used[2].
+On Fri, Jan 14, 2022 at 10:53:20AM +0800, Bo Jiao wrote:
+> From: Peter Chiu <chui-hao.chiu@mediatek.com>
+> 
+> Add an entry for MT7986 SoC.
+> 
+> Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+> Cc: devicetree@vger.kernel.org
+> ---
+> v3:
+>  - fix yamllint warnings and errors
+>  - add 'minItems: 1' to keep 1 reg entry being valid
+> ---
+>  .../bindings/net/wireless/mediatek,mt76.yaml  | 31 +++++++++++++++++--
+>  1 file changed, 28 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+> index 1489d3c..d630a7e 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+> @@ -18,7 +18,7 @@ description: |
+>    wireless device. The node is expected to be specified as a child
+>    node of the PCI controller to which the wireless chip is connected.
+>    Alternatively, it can specify the wireless part of the MT7628/MT7688
+> -  or MT7622 SoC.
+> +  or MT7622/MT7986 SoC.
+>  
+>  allOf:
+>    - $ref: ieee80211.yaml#
+> @@ -29,9 +29,11 @@ properties:
+>        - mediatek,mt76
+>        - mediatek,mt7628-wmac
+>        - mediatek,mt7622-wmac
+> +      - mediatek,mt7986-wmac
+>  
+>    reg:
+> -    maxItems: 1
+> +    minItems: 1
+> +    maxItems: 3
 
-This helps with the ongoing efforts to globally enable -Warray-bounds
-and get us closer to being able to tighten the FORTIFY_SOURCE routines
-on memcpy().
+With more than 1, you need to define what each one is.
 
-This issue was found with the help of Coccinelle and audited and fixed,
-manually.
-
-[1] https://en.wikipedia.org/wiki/Flexible_array_member
-[2] https://www.kernel.org/doc/html/v5.16/process/deprecated.html#zero-length-and-one-element-arrays
-
-Link: https://github.com/KSPP/linux/issues/79
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- .../net/wireless/broadcom/brcm80211/brcmfmac/p2p.c   | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-index 4735063e4c03..d3f08d4f380b 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-@@ -158,7 +158,7 @@ struct brcmf_p2p_pub_act_frame {
- 	u8	oui_type;
- 	u8	subtype;
- 	u8	dialog_token;
--	u8	elts[1];
-+	u8	elts[];
- };
- 
- /**
-@@ -177,7 +177,7 @@ struct brcmf_p2p_action_frame {
- 	u8	type;
- 	u8	subtype;
- 	u8	dialog_token;
--	u8	elts[1];
-+	u8	elts[];
- };
- 
- /**
-@@ -192,7 +192,7 @@ struct brcmf_p2psd_gas_pub_act_frame {
- 	u8	category;
- 	u8	action;
- 	u8	dialog_token;
--	u8	query_data[1];
-+	u8	query_data[];
- };
- 
- /**
-@@ -225,7 +225,7 @@ static bool brcmf_p2p_is_pub_action(void *frame, u32 frame_len)
- 		return false;
- 
- 	pact_frm = (struct brcmf_p2p_pub_act_frame *)frame;
--	if (frame_len < sizeof(struct brcmf_p2p_pub_act_frame) - 1)
-+	if (frame_len < sizeof(*pact_frm))
- 		return false;
- 
- 	if (pact_frm->category == P2P_PUB_AF_CATEGORY &&
-@@ -253,7 +253,7 @@ static bool brcmf_p2p_is_p2p_action(void *frame, u32 frame_len)
- 		return false;
- 
- 	act_frm = (struct brcmf_p2p_action_frame *)frame;
--	if (frame_len < sizeof(struct brcmf_p2p_action_frame) - 1)
-+	if (frame_len < sizeof(*act_frm))
- 		return false;
- 
- 	if (act_frm->category == P2P_AF_CATEGORY &&
-@@ -280,7 +280,7 @@ static bool brcmf_p2p_is_gas_action(void *frame, u32 frame_len)
- 		return false;
- 
- 	sd_act_frm = (struct brcmf_p2psd_gas_pub_act_frame *)frame;
--	if (frame_len < sizeof(struct brcmf_p2psd_gas_pub_act_frame) - 1)
-+	if (frame_len < sizeof(*sd_act_frm))
- 		return false;
- 
- 	if (sd_act_frm->category != P2PSD_ACTION_CATEGORY)
--- 
-2.27.0
-
+>  
+>    interrupts:
+>      maxItems: 1
+> @@ -39,6 +41,17 @@ properties:
+>    power-domains:
+>      maxItems: 1
+>  
+> +  memory-region:
+> +    maxItems: 1
+> +
+> +  resets:
+> +    maxItems: 1
+> +    description:
+> +      Specify the consys reset for mt7986.
+> +
+> +  reset-name:
+> +    const: consys
+> +
+>    mediatek,infracfg:
+>      $ref: /schemas/types.yaml#/definitions/phandle
+>      description:
+> @@ -165,7 +178,7 @@ required:
+>    - compatible
+>    - reg
+>  
+> -additionalProperties: false
+> +unevaluatedProperties: false
+>  
+>  examples:
+>    - |
+> @@ -231,3 +244,15 @@ examples:
+>  
+>        power-domains = <&scpsys 3>;
+>      };
+> +
+> +  - |
+> +    wifi@18000000 {
+> +        compatible = "mediatek,mt7986-wmac";
+> +        resets = <&watchdog 23>;
+> +        reset-names = "consys";
+> +        reg = <0x18000000 0x1000000>,
+> +              <0x10003000 0x1000>,
+> +              <0x11d10000 0x1000>;
+> +        interrupts = <GIC_SPI 213 IRQ_TYPE_LEVEL_HIGH>;
+> +        memory-region = <&wmcpu_emi>;
+> +    };
+> -- 
+> 2.18.0
+> 
+> 
