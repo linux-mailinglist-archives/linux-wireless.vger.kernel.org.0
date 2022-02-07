@@ -2,93 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D64774AB580
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Feb 2022 08:04:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06B804AB5AE
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Feb 2022 08:24:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238186AbiBGHDl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Feb 2022 02:03:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40468 "EHLO
+        id S233777AbiBGHWt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Feb 2022 02:22:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357040AbiBGGnC (ORCPT
+        with ESMTP id S233369AbiBGHJd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Feb 2022 01:43:02 -0500
-X-Greylist: delayed 205 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 06 Feb 2022 22:43:01 PST
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B9DDC043184
-        for <linux-wireless@vger.kernel.org>; Sun,  6 Feb 2022 22:43:00 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2176eCO21024727, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2176eCO21024727
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 7 Feb 2022 14:40:12 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Mon, 7 Feb 2022 14:40:11 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Mon, 7 Feb
- 2022 14:40:11 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 7/7] rtw89: declare AP mode support
-Date:   Mon, 7 Feb 2022 14:39:00 +0800
-Message-ID: <20220207063900.43643-8-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220207063900.43643-1-pkshih@realtek.com>
-References: <20220207063900.43643-1-pkshih@realtek.com>
+        Mon, 7 Feb 2022 02:09:33 -0500
+X-Greylist: delayed 122 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 06 Feb 2022 23:09:32 PST
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3BA4C043181
+        for <linux-wireless@vger.kernel.org>; Sun,  6 Feb 2022 23:09:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1644217772; x=1675753772;
+  h=subject:to:cc:references:from:message-id:date:
+   mime-version:in-reply-to:content-transfer-encoding;
+  bh=aLQS6pqkqY/7fpUhMk0+paN4l81OGctsnF5bmn1ri+w=;
+  b=us1CNJ+hXw7tCDyODY5rtjfnmUH8aGjz1EBMM64WZOfNOwISTeiBmK2a
+   LbeqnyDZ8uVTKaTNTHYJnmvCVql10C/LPhhBC+Kzw1gsvdrhAW4MYnZD6
+   qciw+7bjVxqs5ztF5hbwXihGc0BckffR/V4lCvchmJFwU56swI3UFnYuV
+   4=;
+Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 06 Feb 2022 23:07:30 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2022 23:07:30 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Sun, 6 Feb 2022 23:07:29 -0800
+Received: from [10.213.109.137] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Sun, 6 Feb 2022
+ 23:07:27 -0800
+Subject: Re: [PATCH 04/19] ieee80211: Add EHT (802.11be) definitions
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+CC:     Ilan Peer <ilan.peer@intel.com>, Jia Ding <quic_jiad@quicinc.com>,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
+        Sriram R <quic_srirrama@quicinc.com>
+References: <20220204220255.448224-1-johannes@sipsolutions.net>
+ <20220204230119.1ee92202ac30.Id30a3ef2844b296efbd5486fe1da9ca36a95c5cf@changeid>
+From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+Message-ID: <d51984f5-a035-36a5-75f6-3bff67d60b12@quicinc.com>
+Date:   Mon, 7 Feb 2022 12:37:24 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 02/07/2022 06:18:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzIvNyCkV6TIIDAzOjUyOjAw?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20220204230119.1ee92202ac30.Id30a3ef2844b296efbd5486fe1da9ca36a95c5cf@changeid>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Things are ready for AP mode, so declare this driver can support it.
+On 2/5/22 3:32 AM, Johannes Berg wrote:
+> From: Ilan Peer <ilan.peer@intel.com>
+>
+> Based on Draft P802.11be_D1.3.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 413bb391c21e3..a9544b006f0b4 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2696,7 +2696,8 @@ static int rtw89_core_register_hw(struct rtw89_dev *rtwdev)
- 	ieee80211_hw_set(hw, SUPPORTS_PS);
- 	ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
- 
--	hw->wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION);
-+	hw->wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
-+				     BIT(NL80211_IFTYPE_AP);
- 	hw->wiphy->available_antennas_tx = BIT(rtwdev->chip->rf_path_num) - 1;
- 	hw->wiphy->available_antennas_rx = BIT(rtwdev->chip->rf_path_num) - 1;
- 
--- 
-2.25.1
+"Based on Draft P802.11be_D1.0".
+
+based on documentation and MACRO definitions, These changes are aligned 
+with P802.11be_D1.0
+
+> +
+> +/**
+> + * struct ieee80211_eht_mcs_nss_supp_bw - EHT max supported NSS per MCS (except
+> + * 20MHz only stations).
+> + *
+> + * For each field below, bits 0 - 3 indicate the maximal number of spatial
+> + * streams for Rx, and bits 4 - 7 indicate the maximal number of spatial streams
+> + * for Tx.
+> + *
+> + * @rx_tx_mcs9_max_nss: indicates the maximum number of spatial streams
+> + *     supported for reception and the maximum number of spatial streams
+> + *     supported for transmission for MCS 8 - 9.
+
+
+@rx_tx_mcs9_max_nss supported for transmission for MCS 0 - 9.
+
+> +/**
+> + * struct ieee80211_eht_mcs_nss_supp - EHT max supported NSS per MCS
+> + *
+> + * @only_20mhz: For a 20 MHz-only STA, indicates the maximum number of spatial
+> + *     streams supported for reception and the maximum number of spatial streams
+> + *     supported for transmission, for each MCS value. Optionally present in
+> + *     &struct ieee80211_eht_cap_elem.
+> + * @bw_80: If the operating channel width of the STA is greater than or equal to
+> + *     80 MHz, indicates the maximum number of spatial streams supported fo
+
+@bw_80 applicable for 20 and 40 MHz operating band widths also for non 20 MHz-only STA
+
+> +/* EHT beamformee SU number of spatial streams <= 80MHz is split between octet 0
+> + * and octet 1
+> + */
+> +#define IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE_SS_80MHZ  0x80
+> +
+> +#define IEEE80211_EHT_PHY_CAP1_SU_BEAMFORMEE_SS_80MHZ  0x03
+> +#define IEEE80211_EHT_PHY_CAP1_SU_BEAMFORMEE_SS_160MHZ 0x1c
+> +#define IEEE80211_EHT_PHY_CAP1_SU_BEAMFORMEE_SS_320MHZ 0xe0
+> +
+
+
+Append _MASK for the macros representing multi bit fields like above?
+
+Or we can use GENMASK() to represent values
+
+
+- veeru
 
