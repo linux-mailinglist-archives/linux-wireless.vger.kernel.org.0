@@ -2,92 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96E2C4AC860
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Feb 2022 19:16:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25BDD4ACA6E
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Feb 2022 21:28:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232556AbiBGSQl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Feb 2022 13:16:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44336 "EHLO
+        id S232627AbiBGU2T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Feb 2022 15:28:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343813AbiBGSJX (ORCPT
+        with ESMTP id S232919AbiBGUY0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Feb 2022 13:09:23 -0500
-X-Greylist: delayed 466 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Feb 2022 10:09:22 PST
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EACCC0401E0
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Feb 2022 10:09:22 -0800 (PST)
-Received: from [192.168.0.175] ([151.127.53.97]) by mrelayeu.kundenserver.de
- (mreue109 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1Mnac7-1o07aC2DAL-00jYjW; Mon, 07 Feb 2022 18:56:21 +0100
-Message-ID: <bea2f2a7-85f0-1768-4625-9dc1da94f604@green-communications.fr>
-Date:   Mon, 7 Feb 2022 18:56:08 +0100
+        Mon, 7 Feb 2022 15:24:26 -0500
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E81EC0401DA;
+        Mon,  7 Feb 2022 12:24:25 -0800 (PST)
+Received: by mail-lj1-x233.google.com with SMTP id c15so21337953ljf.11;
+        Mon, 07 Feb 2022 12:24:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=0QZUBGn5Vf3a75LS52BCKhCqw6Mtv6YRAewQwFkN9YU=;
+        b=HhaDozkIYW6SQNj1SQEVEcn2tye5SwdgIeieSdv/hIXRvmL1r923vLwDCNEEGwxBgy
+         ejLv9/tQuSRFUF6C7yjnA3fjs9L1IZyReulArI7kR7mayrLqFa+Pu+f1s6gYvelTFBt4
+         hKPqwWco2L3GIx8GWLseYf5rrUEGQKsJFMY0Jhq9deKERJj8heycEDGAXc6H2Mlq8GUJ
+         KWLysWMrukYAbLX/0qbqPZ3ZcmXbbq6Pt85S7Edf48M0a1LqXGXmv5gXzx4AHPW06Sb2
+         Tfogob6yzAnGUGavRbX4E61OEUFN9jaWmhYiqYCD3J2RRxJeibyNkh7HBXNBFzbTkg65
+         raiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=0QZUBGn5Vf3a75LS52BCKhCqw6Mtv6YRAewQwFkN9YU=;
+        b=Xrqxxh0nU7e/xPggz6YBaLVbFHCaTbKhA+9J275ZHIqGcCKjL3jZxntApVSNz5NjgC
+         21WPRwAVDnZgsw7Y74uGrwUllrtBogWHQGEWuLHAJ7qFvtBVr2XfzND6X0300NaQlSeD
+         n6eTzsGgY2iR4zykNjWRY3OSfgllVfaVj/ErKvMlUzdNUquDmsijYtIgBhHcM0ZoP7jM
+         pqxBMN0JeI4KuJKe6+bjBxdSC1IPAkMYxmsD01jLZ3OF5Uf9zacjm+fIXaWraa6RdcHS
+         NF8pgT/pjVJEivAJv4pLGl536KV3BlqfFQNE4K8uW7EH8l2A3rfoUCJWicxZR+vc6k7e
+         BCXw==
+X-Gm-Message-State: AOAM531Y7GuYkyLrSM+MC9p0uAhECLXt1iZLj2sSYcIayRP+j5l7NaFz
+        A6Gz0MT2e8T25VVi8MDInRo=
+X-Google-Smtp-Source: ABdhPJz4tTPcQksNjB3XhXBM2BhaAlFbe5VIPLCf72OHyrbnaTGpDRyfcnx/8nTl/uDcOydHOb1FUw==
+X-Received: by 2002:a2e:8447:: with SMTP id u7mr734250ljh.516.1644265463369;
+        Mon, 07 Feb 2022 12:24:23 -0800 (PST)
+Received: from localhost.localdomain ([94.103.224.201])
+        by smtp.gmail.com with ESMTPSA id n16sm1625618lfq.113.2022.02.07.12.24.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Feb 2022 12:24:22 -0800 (PST)
+From:   Pavel Skripkin <paskripkin@gmail.com>
+To:     ath9k-devel@qca.qualcomm.com, kvalo@kernel.org,
+        davem@davemloft.net, kuba@kernel.org, toke@toke.dk,
+        linville@tuxdriver.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Pavel Skripkin <paskripkin@gmail.com>,
+        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
+        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+Subject: [PATCH v3 1/2] ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
+Date:   Mon,  7 Feb 2022 23:24:18 +0300
+Message-Id: <80962aae265995d1cdb724f5362c556d494c7566.1644265120.git.paskripkin@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Subject: Re: [PATCH 09/13] cfg80211: Save the regulatory domain when setting
- custom regulatory
-Content-Language: fr
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgens?= =?UTF-8?Q?en?= 
-        <toke@redhat.com>
-Cc:     linux-wireless@vger.kernel.org
-References: <20201129153055.1971298-1-luca@coelho.fi>
- <iwlwifi.20201129172929.290fa5c5568a.Ic5732aa64de6ee97ae3578bd5779fc723ba489d1@changeid>
- <e8e6afa6-275e-2cc5-6351-e1ed5eb0e0af@green-communications.fr>
- <87ily325t4.fsf@tynnyri.adurom.net>
- <cedc93ef-496f-a403-0089-b2a82477fe0f@green-communications.fr>
- <0848f5eba90a2125425da52b6b5f6f47ba9d6630.camel@sipsolutions.net>
-From:   Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-In-Reply-To: <0848f5eba90a2125425da52b6b5f6f47ba9d6630.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:OuwS8Fss+UEi3QYRXx5qu6BbDmQjhjz9K6o9mixT64bOoAwGohu
- mS3dGu6CjYVVPZbWm8oi/B1NwoOAH4Dg530br0TkTFgfT39VeMTgMZ59dJwVTT3N0qgcwjT
- qS1RqygKEED7QgDpkJcpU45yqMQaFihJ/NTpKzqHp0eoNO1gqxl1xSx407l9dGCsam3iqeF
- 7L83dSMjqegVfnpd9s4bA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:UZWY2v8Sr84=:R/pbfgUpGlOpU3TXhrCOhK
- h3otz/CUgjIBSGag/tu+EmzKcxOOktfWQXNt2VpmwEdGsHDN7g5SQRUUBA0P1cSyc0z2ehlIG
- UV93W6rFXl16wo/ajZ6tOEehPoJ2piI3LW56eF7fwoyrp39Us/iDJBNNlZblRC8L5ZZqUtJOE
- cCgTUmORmmk0Zp02Ul/SrY0HHOhmx3cHcFDJNdRICG7GbJRmt73foIwGMy6Mzb587q199DJ+v
- aNicG09b6ga/J4CswP2Df4e8tUfyR5hv6f/pTb4NVLvCZq5hwiHMpy2FbvRCB1mAm37gzpteM
- hF4qTqV03/bQd9mahq8XYoFoXOzVI9acLWD07PFDrHbFXsomRE+azQw8DCaNF2MDcHQw3vWTX
- bcyD8W+tnFiB7hR4w6+KN/kkn+S6+dDktnGujz+2NRsySLnGOmTqhSSvgmKFGRNQ580HTyirH
- q/XntZssbo5dGkZCUYVPIdZO1JWJN2y9zb/17gfbrOAoF5RXaXff1EgdNKL/0NbMMaUUVyQhN
- +5zolnn/thbIRZwlMIEEJBquKsTFwsnWO7PrjQ2S1feig4M4BZVitTyQJtbGkuUsvNwPee9jd
- gvcF3JPhtTLCBYAGjZQLlFMduxj6Lur0qsLx4EzmdSV7FljUT8QOUdrjPSXk2qitXThs5JCSK
- QRQDBBgPuqU0oTRzpjwdRkqODX2l5ii7HDHY1ynvpptuu3xtazj1UKitYqHiwm7dgcTcfEzqy
- hTGQsjfUQtyRJB3SJqm5RsiP608IZ8JeMxL3eA==
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 03/02/2022 23:30, Johannes Berg wrote:
-> On Tue, 2021-10-12 at 12:24 +0200, Nicolas Cavallari wrote:
->>>>
->>>> This patch somehow appears to break ath9k's eeprom hints and restrict
->>>> it to the world regulatory domain on v5.12.10.
->>>>
->>>> ath9k calls wiphy_apply_custom_regulatory() with its own kind of world
->>>> regulatory domain, before it decodes hints from the eeprom and uses
->>>> regulatory_hint() to request a specific alpha2.
->>>>
->>>> With this patch, applying the hint fails because wiphy->regd is already set.
->>>> If i revert this patch, ath9k works again.
->>>
-> 
-> Hm. It stands to reason that perhaps ath9k should call
-> wiphy_apply_custom_regulatory(NULL) (if that's possible) to reset the
-> knowledge of having a custom regulatory domain, before requesting the
-> correct one be applied by cfg80211 (and possibly even crda userspace).
+Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb(). The
+problem was in incorrect htc_handle->drv_priv initialization.
 
-wiphy_apply_custom_regulatory(NULL) is apparently not possible.
-The regulatory code is still a black box to me...
+Probable call trace which can trigger use-after-free:
 
+ath9k_htc_probe_device()
+  /* htc_handle->drv_priv = priv; */
+  ath9k_htc_wait_for_target()      <--- Failed
+  ieee80211_free_hw()		   <--- priv pointer is freed
+
+<IRQ>
+...
+ath9k_hif_usb_rx_cb()
+  ath9k_hif_usb_rx_stream()
+   RX_STAT_INC()		<--- htc_handle->drv_priv access
+
+In order to not add fancy protection for drv_priv we can move
+htc_handle->drv_priv initialization at the end of the
+ath9k_htc_probe_device() and add helper macro to make
+all *_STAT_* macros NULL save.
+
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Reported-and-tested-by: syzbot+03110230a11411024147@syzkaller.appspotmail.com
+Reported-and-tested-by: syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+---
+
+Changes since v2:
+	- My send-email script forgot, that mailing lists exist.
+	  Added back all related lists
+
+Changes since v1:
+	- Removed clean-ups and moved them to 2/2
+
+---
+ drivers/net/wireless/ath/ath9k/htc.h          | 10 +++++-----
+ drivers/net/wireless/ath/ath9k/htc_drv_init.c |  3 ++-
+ 2 files changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/htc.h b/drivers/net/wireless/ath/ath9k/htc.h
+index 6b45e63fae4b..141642e5e00d 100644
+--- a/drivers/net/wireless/ath/ath9k/htc.h
++++ b/drivers/net/wireless/ath/ath9k/htc.h
+@@ -327,11 +327,11 @@ static inline struct ath9k_htc_tx_ctl *HTC_SKB_CB(struct sk_buff *skb)
+ }
+ 
+ #ifdef CONFIG_ATH9K_HTC_DEBUGFS
+-
+-#define TX_STAT_INC(c) (hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
+-#define TX_STAT_ADD(c, a) (hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
+-#define RX_STAT_INC(c) (hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
+-#define RX_STAT_ADD(c, a) (hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
++#define __STAT_SAVE(expr) (hif_dev->htc_handle->drv_priv ? (expr) : 0)
++#define TX_STAT_INC(c) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
++#define TX_STAT_ADD(c, a) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
++#define RX_STAT_INC(c) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
++#define RX_STAT_ADD(c, a) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
+ #define CAB_STAT_INC   priv->debug.tx_stats.cab_queued++
+ 
+ #define TX_QSTAT_INC(q) (priv->debug.tx_stats.queue_stats[q]++)
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_init.c b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
+index ff61ae34ecdf..07ac88fb1c57 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_init.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
+@@ -944,7 +944,6 @@ int ath9k_htc_probe_device(struct htc_target *htc_handle, struct device *dev,
+ 	priv->hw = hw;
+ 	priv->htc = htc_handle;
+ 	priv->dev = dev;
+-	htc_handle->drv_priv = priv;
+ 	SET_IEEE80211_DEV(hw, priv->dev);
+ 
+ 	ret = ath9k_htc_wait_for_target(priv);
+@@ -965,6 +964,8 @@ int ath9k_htc_probe_device(struct htc_target *htc_handle, struct device *dev,
+ 	if (ret)
+ 		goto err_init;
+ 
++	htc_handle->drv_priv = priv;
++
+ 	return 0;
+ 
+ err_init:
+-- 
+2.34.1
 
