@@ -2,69 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3846C4AC540
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Feb 2022 17:17:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 241E44AC7F7
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Feb 2022 18:54:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235736AbiBGQQc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Feb 2022 11:16:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40946 "EHLO
+        id S235334AbiBGRwN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Feb 2022 12:52:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1386922AbiBGQCR (ORCPT
+        with ESMTP id S238203AbiBGRn1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Feb 2022 11:02:17 -0500
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDCC5C0401CE;
-        Mon,  7 Feb 2022 08:02:16 -0800 (PST)
-Received: by mail-pf1-x429.google.com with SMTP id d187so13693608pfa.10;
-        Mon, 07 Feb 2022 08:02:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:content-language:to:cc:from
-         :subject:content-transfer-encoding;
-        bh=IDP7xcaBu/BjbI3M/dHvzrRQkC76UiHakyHIGFZDn0w=;
-        b=f5mnubI/HXS3OW7L+u1hGknGy03vHcdyrktKYxn4h3XZdEvkISPsdzwnab+lZjRONE
-         J3sSmU6SH5rGMI4xurcPCRmp+1DqaOpM4XPgfpti04/12ZSMmVpTlYUhEBZUl+UUf7M9
-         Lfy1W/vlTmA+e12dl3/zpxIfNo/GOsGXCv5lOkKImX34px3bv5uaJ2iqGcPVsaSip69R
-         HjzRUS9ytP1b2LqE2kBBo+RtFGAzJWqCshtGk6gdXWgZmUP7TmgirpHA2Of5yOBaGfqe
-         GsHRxtj5b2XsWXJVpUkYbWOWoFGlUozSeidhRjqGEH3Z7wTZzP34goYJDkCqaxJqiZnD
-         c+dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent
-         :content-language:to:cc:from:subject:content-transfer-encoding;
-        bh=IDP7xcaBu/BjbI3M/dHvzrRQkC76UiHakyHIGFZDn0w=;
-        b=HiIefofHCBNr2lWITjjxPvcod7mk/V0YAq3Xq9B01n8GnuLLbqD7OqLHNHj1FOe5Mk
-         rxhlIlnk/P3X30eqt9JfPz6MGCZHCgKMcC5e5plGx7TLilv2IZZvXAjCHTXUj+dwLZVm
-         Lw65sdRU2M+hCM78jIdmQDlQ++RdkjWF5R8Yqb+FPbWxyknizmj+3IpfeUh23da23R1L
-         LCfykfOEVgtqhI0k+0rD9fx0Yl+izk6pI7TFETjyXOq7Hhn4XxFI4duJN0SGlMGoYOpu
-         yUj2Lt4Kni/B8cUHH7RIY+dbTMLVPJ6V/npjy4rOPPA5R0CzIv3ZVNSLzbHoDXSJVr3K
-         VXSA==
-X-Gm-Message-State: AOAM530yZpkFO78Xw3UcHAtp5BpG1euVZ3Cj1S7EBC9iF/jl6I329anQ
-        22Rx6WdNs8ExK2NijBhPj/HphGZSHeb0LQ==
-X-Google-Smtp-Source: ABdhPJwt9sCEmVWex/KrxVf6HDJS+EckYkCgKOO6id3rD2Q2rqB1kPGQSF8ejjauek6IViTtbD8uPw==
-X-Received: by 2002:a05:6a00:1a16:: with SMTP id g22mr53263pfv.81.1644249736462;
-        Mon, 07 Feb 2022 08:02:16 -0800 (PST)
-Received: from [10.59.0.6] ([85.203.23.80])
-        by smtp.gmail.com with ESMTPSA id a3sm12221624pfk.73.2022.02.07.08.02.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Feb 2022 08:02:15 -0800 (PST)
-Message-ID: <cf81c699-77ef-651d-18d0-7d8182452ff4@gmail.com>
-Date:   Tue, 8 Feb 2022 00:02:05 +0800
+        Mon, 7 Feb 2022 12:43:27 -0500
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C313C0401DA
+        for <linux-wireless@vger.kernel.org>; Mon,  7 Feb 2022 09:43:26 -0800 (PST)
+Received: from evilbit.green-communications.fr ([92.154.77.116]) by
+ mrelayeu.kundenserver.de (mreue009 [213.165.67.103]) with ESMTPSA (Nemesis)
+ id 1MKsaz-1nbg9L1Ran-00LEoH; Mon, 07 Feb 2022 18:38:06 +0100
+From:   Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [PATCH RFC 1/3] mt76: mt7915e: Fix degraded performance after temporary overheat
+Date:   Mon,  7 Feb 2022 18:37:45 +0100
+Message-Id: <20220207173747.7997-1-nicolas.cavallari@green-communications.fr>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <d7ce90d8-552a-2cab-6310-3a84584172a1@green-communications.fr>
+References: <d7ce90d8-552a-2cab-6310-3a84584172a1@green-communications.fr>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Content-Language: en-US
-To:     pizza@shaftnet.org, kvalo@kernel.org, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-From:   Jia-Ju Bai <baijiaju1990@gmail.com>
-Subject: [BUG] cw1200: possible deadlock involving three functions
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+X-Provags-ID: V03:K1:Y8+taFohQYdEKpCEm8w7Bui8N7fbtuwdis6JaWIRccn3+CZ6t+O
+ +U9vcEemMppB9nlNwxVB6gwVlO9mevqNU5UJagbjaWW8o7YJUMaTmYEj+5F+j4twHgDvTWu
+ vUzl3UKLzCBZJVbxsK83HwJG+kJUsW6jShgpG9ob+f5Z2/kxrie3leHHNix27W8l6KdAyR6
+ 4cVaqanNmroTHei9tzMkA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:YJShyVz0SVc=:EVh7+qJZm2R8PnBHO1gXKg
+ eOFP/URom1LjUa0CKFW1pIS1ut+9txZff+93aznwOqAmUeWJCeAw6WQjYxMMhHAGDhlr2oGQv
+ jpZsGPuGOqLHi7ztFFY1bXi5SdGgKvhcyI4YHkGwssKXKVEPQJVjDru7dywxmgbgKk64ZqLFJ
+ ns2aTw1gn7aRfmJx/tNj6UwGs20HwNjlBcXsBfO8MaGT2FXk/Q02Ub5/ue9c2GojI5PS0ABNv
+ qEiz0E/7qAc8QnY2o8PGq97lqvOR6qjv2zPH8+9s6ZQopIdrwzstXQXBKBPNKVEPFVOKOFsbo
+ OFUhcMjRjTp/pcqwZDy7Jn9on6HNFugnDjl3rlMlQcDLjCT6ikH78p8oAeBw0LHBAqVZkYBPv
+ gIy5kxMIoUqMBOf9HxW0Mp2jb0/+YckvEmDKty56ggASw4Pkv5rRahkVkNRHmaaJOBupsvRO0
+ Qb9BmmUkbC7I/hlI9wWSuWPpyUOfE5OOlQRUHqboBft/1hr5JXElnHDaQCdbmo8IgtePdnV4Q
+ gvQSV+uovk30/fz1M70tAyq5/l16thjhPk1wRlcmgNysPkWlDPmor+UDY5ivd1ADUa8KEN4TW
+ 1sbGf21cDq7WPGsxV81G94muvrd5Oxso8mHepIZMYSZNeRpwZVnKM9wNjRvAjVejcz6jOr/MS
+ J0SMCQ4ohjNYIjUfRUX8xTXlsqEeFtruttoVolI77zsxPm4ooIN3BuCBzfM100lRsuLTbLhRe
+ FurrU259q2ca6cDUduh9KDTm+XoG+376KEKMoQ==
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,38 +58,115 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+mt7915e registers a cooling_device with wrong semantics:
 
-My static analysis tool reports a possible deadlock in the cw1200 driver 
-in Linux 5.16:
+1. cooling_device expect that higher states values should cool more, but
+   mt7915e did the opposite...  with the exception of state == 0, which
+   should "disable thermal management", but does not seem to have any
+   effect since the previous state is kept.
 
-cw1200_probe_work()
-   mutex_lock(&priv->conf_mutex); --> Line 384 (Lock A)
-   wsm_flush_tx()
-     wait_event_timeout(priv->bh_evt_wq, ...) --> Line 1208 (Wait X)
+The result is that when the thermal zone heats up a bit and bumps the
+cooling_device state from 0 to 1 to cool a bit, the performance is
+destroyed, and when going back from 1 to 0, the performance stays bad.
 
-cw1200_bh()
-   wait_event_interruptible(priv->bh_wq, ...) --> Line 524 (Wait Y)
-   wake_up(&priv->bh_evt_wq); --> Line 534 (Wake X)
+2. Reading the cooling_device state does not always return the last
+   written state, but can return the actual hardware throttle state,
+   which is different.
 
-cw1200_do_join()
-   mutex_lock(&priv->conf_mutex); --> Line 1238 (Lock A)
-   wsm_unlock_tx()
-     cw1200_bh_wakeup()
-       wake_up(&priv->bh_wq); --> Line 119 (Wake Y)
+This is a problem because the mt7915 firmware actually implement the
+equivalent of a thermal zone with trip points.  Setting the cooling
+device state actually changes the throttles at each trip point, so the
+following could occur if the first issue is fixed:
 
-When cw1200_probe_work() is executed, "Wait X" is performed by holding 
-"Lock A". If cw1200_bh() is executed at this time, because "Wait Y" is 
-performed, "Wake X" cannot be performed to wake up "Wait X". If 
-cw1200_do_join() is executed at this time, because "Lock A" has already 
-been hold, "Wake Y" cannot be performed to wake up "Wait Y".
-I find that "Wait X" is performed with a timeout, to relieve the 
-possible deadlock; but I think this timeout can cause inefficient execution.
+- thermal subsystem set state to 100% power (state=0)
+- mt7915e driver set trip throttles to [100%, 50%, 25%, 12%]
+- hardware heats up and decides to switch to 50% power
+- thermal subsystem see that power is 50% (state=50), decide to increase
+  it to 60% (state=40) because the rest of the system is cool.
+- mt7915e driver set trip throttle to [60%, 30%, 15%, 7%]
+- hardware thus switches to 30% power
+[race to the bottom continues...]
 
-I am not quite sure whether this possible problem is real and how to fix 
-it if it is real.
-Any feedback would be appreciated, thanks :)
+This patch corrects the semantics of the cooling_device to the one that
+the thermal subsystem expect it.
 
-Best wishes,
-Jia-Ju Bai
+Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 16 ++++++++++------
+ .../net/wireless/mediatek/mt76/mt7915/mt7915.h   |  2 ++
+ 2 files changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 2bc9097c5214..d6efbf1a2724 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -97,7 +97,7 @@ static int
+ mt7915_thermal_get_max_throttle_state(struct thermal_cooling_device *cdev,
+ 				      unsigned long *state)
+ {
+-	*state = MT7915_THERMAL_THROTTLE_MAX;
++	*state = MT7915_CDEV_THROTTLE_MAX;
+ 
+ 	return 0;
+ }
+@@ -108,7 +108,7 @@ mt7915_thermal_get_cur_throttle_state(struct thermal_cooling_device *cdev,
+ {
+ 	struct mt7915_phy *phy = cdev->devdata;
+ 
+-	*state = phy->throttle_state;
++	*state = phy->cdev_state;
+ 
+ 	return 0;
+ }
+@@ -120,20 +120,24 @@ mt7915_thermal_set_cur_throttle_state(struct thermal_cooling_device *cdev,
+ 	struct mt7915_phy *phy = cdev->devdata;
+ 	int ret;
+ 
+-	if (state > MT7915_THERMAL_THROTTLE_MAX)
++	if (state > MT7915_CDEV_THROTTLE_MAX)
+ 		return -EINVAL;
+ 
+ 	if (phy->throttle_temp[0] > phy->throttle_temp[1])
+ 		return 0;
+ 
+-	if (state == phy->throttle_state)
++	if (state == phy->cdev_state)
+ 		return 0;
+ 
+-	ret = mt7915_mcu_set_thermal_throttling(phy, state);
++	// cooling_device convention: 0 = no cooling, more = more cooling
++	// mcu convention: 1 = max cooling, more = less cooling
++	ret = mt7915_mcu_set_thermal_throttling(phy,
++						MT7915_THERMAL_THROTTLE_MAX
++						- state);
+ 	if (ret)
+ 		return ret;
+ 
+-	phy->throttle_state = state;
++	phy->cdev_state = state;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 0403912a521d..cf4c8d2dcc60 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -49,6 +49,7 @@
+ #define MT7915_CFEND_RATE_11B		0x03	/* 11B LP, 11M */
+ 
+ #define MT7915_THERMAL_THROTTLE_MAX	100
++#define MT7915_CDEV_THROTTLE_MAX	99
+ 
+ #define MT7915_SKU_RATE_NUM		161
+ 
+@@ -218,6 +219,7 @@ struct mt7915_phy {
+ 	struct ieee80211_vif *monitor_vif;
+ 
+ 	struct thermal_cooling_device *cdev;
++	u8 cdev_state;
+ 	u8 throttle_state;
+ 	u32 throttle_temp[2]; /* 0: critical high, 1: maximum */
+ 
+-- 
+2.34.1
 
