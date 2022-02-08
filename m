@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE7934AD33B
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 09:25:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE9C94AD33F
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 09:25:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349341AbiBHIZB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1349339AbiBHIZB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Tue, 8 Feb 2022 03:25:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57278 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349335AbiBHIY7 (ORCPT
+        with ESMTP id S1349332AbiBHIY7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 8 Feb 2022 03:24:59 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4593C03FEC0
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B46AEC03FEC1
         for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 00:24:57 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2188OoB02020537, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2188OoB02020537
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2188OpVhA020542, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2188OpVhA020542
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 8 Feb 2022 16:24:50 +0800
+        Tue, 8 Feb 2022 16:24:51 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Tue, 8 Feb 2022 16:24:49 +0800
+ 15.1.2375.17; Tue, 8 Feb 2022 16:24:51 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Tue, 8 Feb
- 2022 16:24:49 +0800
+ 2022 16:24:50 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <ben.liao@realtek.com>,
         <damon.chen@realtek.com>
-Subject: [PATCH 1/2] rtw88: recover rates of rate adaptive mechanism
-Date:   Tue, 8 Feb 2022 16:24:26 +0800
-Message-ID: <20220208082427.42433-2-pkshih@realtek.com>
+Subject: [PATCH 2/2] rtw89: recover rates of rate adaptive mechanism
+Date:   Tue, 8 Feb 2022 16:24:27 +0800
+Message-ID: <20220208082427.42433-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220208082427.42433-1-pkshih@realtek.com>
 References: <20220208082427.42433-1-pkshih@realtek.com>
@@ -56,7 +56,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzIvOCCkV6TIIDA2OjAwOjAw?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -72,57 +72,41 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 From: Chien-Hsun Liao <ben.liao@realtek.com>
 
 Some APs like CMW270 only support one phyrate and the function
-rtw_update_rate_mask could disable that rate. To fix such problem, we
+rtw89_phy_ra_mask_rssi could disable that rate. To fix such problem, we
 restore the rate mask if we find that the rate_mask is empty.
+Also, apply missed legacy rates from sta->supp_rates[].
 
 Signed-off-by: Chien-Hsun Liao <ben.liao@realtek.com>
 Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 67 +++++++++++++++--------
- 1 file changed, 44 insertions(+), 23 deletions(-)
+ drivers/net/wireless/realtek/rtw89/phy.c | 47 +++++++++++++++---------
+ 1 file changed, 30 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 39c223a2e3e2d..2757aa0dc586b 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1020,37 +1020,52 @@ static u8 get_rate_id(u8 wireless_set, enum rtw_bandwidth bw_mode, u8 tx_num)
- #define RA_MASK_VHT_RATES	(RA_MASK_VHT_RATES_1SS | \
- 				 RA_MASK_VHT_RATES_2SS | \
- 				 RA_MASK_VHT_RATES_3SS)
-+#define RA_MASK_CCK_IN_BG	0x00005
- #define RA_MASK_CCK_IN_HT	0x00005
- #define RA_MASK_CCK_IN_VHT	0x00005
- #define RA_MASK_OFDM_IN_VHT	0x00010
- #define RA_MASK_OFDM_IN_HT_2G	0x00010
- #define RA_MASK_OFDM_IN_HT_5G	0x00030
- 
--static u64 rtw_update_rate_mask(struct rtw_dev *rtwdev,
--				struct rtw_sta_info *si,
--				u64 ra_mask, bool is_vht_enable,
--				u8 wireless_set)
-+static u64 rtw_rate_mask_rssi(struct rtw_sta_info *si, u8 wireless_set)
-+{
-+	u8 rssi_level = si->rssi_level;
-+
-+	if (wireless_set == WIRELESS_CCK)
-+		return 0xffffffffffffffffULL;
-+
-+	if (rssi_level == 0)
-+		return 0xffffffffffffffffULL;
-+	else if (rssi_level == 1)
-+		return 0xfffffffffffffff0ULL;
-+	else if (rssi_level == 2)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 18581261af447..130db2f46f49e 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -117,17 +117,28 @@ static u64 rtw89_phy_ra_mask_rssi(struct rtw89_dev *rtwdev, u8 rssi,
+ 	else if (rssi_lv == 1)
+ 		return 0xfffffffffffffff0ULL;
+ 	else if (rssi_lv == 2)
+-		return 0xffffffffffffffe0ULL;
 +		return 0xffffffffffffefe0ULL;
-+	else if (rssi_level == 3)
+ 	else if (rssi_lv == 3)
+-		return 0xffffffffffffffc0ULL;
 +		return 0xffffffffffffcfc0ULL;
-+	else if (rssi_level == 4)
+ 	else if (rssi_lv == 4)
+-		return 0xffffffffffffff80ULL;
 +		return 0xffffffffffff8f80ULL;
-+	else
+ 	else if (rssi_lv >= 5)
+-		return 0xffffffffffffff00ULL;
 +		return 0xffffffffffff0f00ULL;
-+}
-+
-+static u64 rtw_rate_mask_recover(u64 ra_mask, u64 ra_mask_bak)
+ 
+ 	return 0xffffffffffffffffULL;
+ }
+ 
++static u64 rtw89_phy_ra_mask_recover(u64 ra_mask, u64 ra_mask_bak)
 +{
 +	if ((ra_mask & ~(RA_MASK_CCK_RATES | RA_MASK_OFDM_RATES)) == 0)
 +		ra_mask |= (ra_mask_bak & ~(RA_MASK_CCK_RATES | RA_MASK_OFDM_RATES));
@@ -133,83 +117,68 @@ index 39c223a2e3e2d..2757aa0dc586b 100644
 +	return ra_mask;
 +}
 +
-+static u64 rtw_rate_mask_cfg(struct rtw_dev *rtwdev, struct rtw_sta_info *si,
-+			     u64 ra_mask, bool is_vht_enable)
+ static u64 rtw89_phy_ra_mask_cfg(struct rtw89_dev *rtwdev, struct rtw89_sta *rtwsta)
  {
- 	struct rtw_hal *hal = &rtwdev->hal;
- 	const struct cfg80211_bitrate_mask *mask = si->mask;
- 	u64 cfg_mask = GENMASK_ULL(63, 0);
--	u8 rssi_level, band;
--
--	if (wireless_set != WIRELESS_CCK) {
--		rssi_level = si->rssi_level;
--		if (rssi_level == 0)
--			ra_mask &= 0xffffffffffffffffULL;
--		else if (rssi_level == 1)
--			ra_mask &= 0xfffffffffffffff0ULL;
--		else if (rssi_level == 2)
--			ra_mask &= 0xffffffffffffefe0ULL;
--		else if (rssi_level == 3)
--			ra_mask &= 0xffffffffffffcfc0ULL;
--		else if (rssi_level == 4)
--			ra_mask &= 0xffffffffffff8f80ULL;
--		else if (rssi_level >= 5)
--			ra_mask &= 0xffffffffffff0f00ULL;
--	}
-+	u8 band;
- 
- 	if (!si->use_cfg_mask)
- 		return ra_mask;
-@@ -1100,6 +1115,7 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si)
- 	u8 ldpc_en = 0;
- 	u8 tx_num = 1;
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+@@ -194,8 +205,8 @@ static void rtw89_phy_ra_sta_update(struct rtw89_dev *rtwdev,
+ 	struct rtw89_ra_info *ra = &rtwsta->ra;
+ 	const u64 *high_rate_masks = rtw89_ra_mask_ht_rates;
+ 	u8 rssi = ewma_rssi_read(&rtwsta->avg_rssi);
+-	u64 high_rate_mask = 0;
  	u64 ra_mask = 0;
-+	u64 ra_mask_bak = 0;
- 	bool is_vht_enable = false;
- 	bool is_support_sgi = false;
- 
-@@ -1124,6 +1140,7 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si)
- 
- 	if (hal->current_band_type == RTW_BAND_5G) {
- 		ra_mask |= (u64)sta->supp_rates[NL80211_BAND_5GHZ] << 4;
-+		ra_mask_bak = ra_mask;
- 		if (sta->vht_cap.vht_supported) {
- 			ra_mask &= RA_MASK_VHT_RATES | RA_MASK_OFDM_IN_VHT;
- 			wireless_set = WIRELESS_OFDM | WIRELESS_VHT;
-@@ -1136,6 +1153,7 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si)
- 		dm_info->rrsr_val_init = RRSR_INIT_5G;
- 	} else if (hal->current_band_type == RTW_BAND_2G) {
- 		ra_mask |= sta->supp_rates[NL80211_BAND_2GHZ];
-+		ra_mask_bak = ra_mask;
- 		if (sta->vht_cap.vht_supported) {
- 			ra_mask &= RA_MASK_VHT_RATES | RA_MASK_CCK_IN_VHT |
- 				   RA_MASK_OFDM_IN_VHT;
-@@ -1149,11 +1167,13 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si)
- 		} else if (sta->supp_rates[0] <= 0xf) {
- 			wireless_set = WIRELESS_CCK;
- 		} else {
-+			ra_mask &= RA_MASK_OFDM_RATES | RA_MASK_CCK_IN_BG;
- 			wireless_set = WIRELESS_CCK | WIRELESS_OFDM;
- 		}
- 		dm_info->rrsr_val_init = RRSR_INIT_2G;
- 	} else {
- 		rtw_err(rtwdev, "Unknown band type\n");
-+		ra_mask_bak = ra_mask;
- 		wireless_set = 0;
++	u64 ra_mask_bak;
+ 	u8 mode = 0;
+ 	u8 csi_mode = RTW89_RA_RPT_MODE_LEGACY;
+ 	u8 bw_mode = 0;
+@@ -244,34 +255,36 @@ static void rtw89_phy_ra_sta_update(struct rtw89_dev *rtwdev,
  	}
  
-@@ -1185,8 +1205,9 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si)
+ 	if (rtwdev->hal.current_band_type == RTW89_BAND_2G) {
++		ra_mask |= sta->supp_rates[NL80211_BAND_2GHZ];
+ 		if (sta->supp_rates[NL80211_BAND_2GHZ] <= 0xf)
+ 			mode |= RTW89_RA_MODE_CCK;
+ 		else
+ 			mode |= RTW89_RA_MODE_CCK | RTW89_RA_MODE_OFDM;
+ 	} else {
++		ra_mask |= (u64)sta->supp_rates[NL80211_BAND_5GHZ] << 4;
+ 		mode |= RTW89_RA_MODE_OFDM;
+ 	}
  
- 	rate_id = get_rate_id(wireless_set, bw_mode, tx_num);
++	ra_mask_bak = ra_mask;
++
+ 	if (mode >= RTW89_RA_MODE_HT) {
++		u64 mask = 0;
+ 		for (i = 0; i < rtwdev->hal.tx_nss; i++)
+-			high_rate_mask |= high_rate_masks[i];
+-		ra_mask &= high_rate_mask;
++			mask |= high_rate_masks[i];
+ 		if (mode & RTW89_RA_MODE_OFDM)
+-			ra_mask |= RA_MASK_SUBOFDM_RATES;
++			mask |= RA_MASK_SUBOFDM_RATES;
+ 		if (mode & RTW89_RA_MODE_CCK)
+-			ra_mask |= RA_MASK_SUBCCK_RATES;
++			mask |= RA_MASK_SUBCCK_RATES;
++		ra_mask &= mask;
+ 	} else if (mode & RTW89_RA_MODE_OFDM) {
+-		if (mode & RTW89_RA_MODE_CCK)
+-			ra_mask |= RA_MASK_SUBCCK_RATES;
+-		ra_mask |= RA_MASK_OFDM_RATES;
+-	} else {
+-		ra_mask = RA_MASK_CCK_RATES;
++		ra_mask &= (RA_MASK_OFDM_RATES | RA_MASK_SUBCCK_RATES);
+ 	}
  
--	ra_mask = rtw_update_rate_mask(rtwdev, si, ra_mask, is_vht_enable,
--				       wireless_set);
-+	ra_mask &= rtw_rate_mask_rssi(si, wireless_set);
-+	ra_mask = rtw_rate_mask_recover(ra_mask, ra_mask_bak);
-+	ra_mask = rtw_rate_mask_cfg(rtwdev, si, ra_mask, is_vht_enable);
+-	if (mode != RTW89_RA_MODE_CCK) {
++	if (mode != RTW89_RA_MODE_CCK)
+ 		ra_mask &= rtw89_phy_ra_mask_rssi(rtwdev, rssi, 0);
+-		ra_mask &= rtw89_phy_ra_mask_cfg(rtwdev, rtwsta);
+-	}
++
++	ra_mask = rtw89_phy_ra_mask_recover(ra_mask, ra_mask_bak);
++	ra_mask &= rtw89_phy_ra_mask_cfg(rtwdev, rtwsta);
  
- 	si->bw_mode = bw_mode;
- 	si->stbc_en = stbc_en;
+ 	switch (sta->bandwidth) {
+ 	case IEEE80211_STA_RX_BW_80:
 -- 
 2.25.1
 
