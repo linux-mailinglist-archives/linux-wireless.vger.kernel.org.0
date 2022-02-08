@@ -2,74 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 654B74ACE1E
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 02:48:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 576E54ACE7B
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 02:56:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240328AbiBHBsC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Feb 2022 20:48:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59898 "EHLO
+        id S1343977AbiBHB4V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Feb 2022 20:56:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343611AbiBHBbL (ORCPT
+        with ESMTP id S1345806AbiBHB4R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Feb 2022 20:31:11 -0500
-Received: from web.adapt-ip.com (mail.adapt-ip.com [107.194.246.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59BA4C061A73
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Feb 2022 17:31:10 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by web.adapt-ip.com (Postfix) with ESMTP id 218316A457B;
-        Tue,  8 Feb 2022 01:24:54 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
-Received: from web.adapt-ip.com ([127.0.0.1])
-        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
-        with LMTP id vQzK_EAtJTdF; Tue,  8 Feb 2022 01:24:51 +0000 (UTC)
-Received: from atlas.campbell.adapt-ip.com (c-67-188-101-182.hsd1.ca.comcast.net [67.188.101.182])
-        (Authenticated sender: thomas@adapt-ip.com)
-        by web.adapt-ip.com (Postfix) with ESMTPSA id 81BC96A4543;
-        Tue,  8 Feb 2022 01:24:51 +0000 (UTC)
-From:   Thomas Pedersen <thomas@adapt-ip.com>
-To:     sforshee@kernel.org
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Thomas Pedersen <thomas@adapt-ip.com>
-Subject: [PATCH 2/2] wireless-regdb: add 802.11ah bands to world regulatory domain
-Date:   Mon,  7 Feb 2022 17:24:50 -0800
-Message-Id: <20220208012450.190982-2-thomas@adapt-ip.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220208012450.190982-1-thomas@adapt-ip.com>
-References: <20220208012450.190982-1-thomas@adapt-ip.com>
+        Mon, 7 Feb 2022 20:56:17 -0500
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D50B4C061355;
+        Mon,  7 Feb 2022 17:56:15 -0800 (PST)
+Received: by mail-qk1-x730.google.com with SMTP id m25so12606713qka.9;
+        Mon, 07 Feb 2022 17:56:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5iD3JAv2NJY5TryKV7Dj3UeZLdxf5ObNApLJn3kqghU=;
+        b=pI2HVe8/S4Y+G8xDNV/doYes7BMdmEzKOwMNl7CDEObwsbuznhLtxXks2G0+fmmtqk
+         OSyX7Z8b5Cw098Dal46LDTktIPK7mkbN9+/iqg0/oz2SC6OyjrfsxvjIG+1eI+S2pRLe
+         LN0MuicP9WdOvLvvxpWVtJeHt5nsFOgC5KiRzkgPHe1Glk4rl5+NVOc0ErrapRH1RLxm
+         N/4eiaijhDREgdPR3442hjLOZ88Y0dRiXhbXqLf4LY1CNZGO0AB6qIwhcUzflIGsP4Xs
+         lq9LKc7x/Jmuec8Rn6XmyylUnXgWfFD65WnYLKkObMGsrzSTnIkVpB+mdvGGkjz9lEgt
+         +pdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5iD3JAv2NJY5TryKV7Dj3UeZLdxf5ObNApLJn3kqghU=;
+        b=cv4hckLoF2iUh7WP44PHeoc7PHVd1XtJtjMgbT0MPMRmJEIDR2WmhADKtF9TvBtDAm
+         MC/d0O4TDj/t6+3kzV57DERzJ90MjBCRjNjB85MAgyri9CsMFRuo/ebldCjPwyJ1Kbgl
+         joSdZkKO8qr3lYJ+bqJUzG/SGeUBitgO26vAJBj05tANzZLBUTlay9DmydlZYWUJOiwN
+         IyVP18aqzLCjMhC/ncQuGx6gli3UlAAfUxYqDEzgIZn7JmlZQPw8np9CwZ/QaV+2FWav
+         MWEe2oYSGutIIaJjOY0/NC8a0gfNhoo5Ti2cGrVO9j8HFM9eahqGmIhcDzkL4A9aH56h
+         CdDA==
+X-Gm-Message-State: AOAM531KcDTU4Q52aU1SkkQud2XqbpAS9l1DmG0KKxd5NkogwDR+HyYb
+        kFXWs76XtmOybi9R5uiA3SGy3JvDpic=
+X-Google-Smtp-Source: ABdhPJxFhOahqPUMM3z6x7O2UdmmKk2bvzsAtCng2yMFFMl9tpErPaNvbD7C4dAkwpclDF1KH6PNaQ==
+X-Received: by 2002:a37:a707:: with SMTP id q7mr1512997qke.229.1644285374971;
+        Mon, 07 Feb 2022 17:56:14 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id f14sm6395153qko.117.2022.02.07.17.56.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Feb 2022 17:56:14 -0800 (PST)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: chi.minghao@zte.com.cn
+To:     kvalo@kernel.org
+Cc:     davem@davemloft.net, kuba@kernel.org, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Minghao Chi (CGEL ZTE)" <chi.minghao@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH V2] wcn36xx: use struct_size over open coded arithmetic
+Date:   Tue,  8 Feb 2022 01:56:06 +0000
+Message-Id: <20220208015606.1514022-1-chi.minghao@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-802.11ah does not have a band which intersects global
-regulatory domains, so just add the possible range as
-NO-IR to at least allow passive scan.
+From: "Minghao Chi (CGEL ZTE)" <chi.minghao@zte.com.cn>
 
-Signed-off-by: Thomas Pedersen <thomas@adapt-ip.com>
+Replace zero-length array with flexible-array member and make use
+of the struct_size() helper in kmalloc(). For example:
+
+struct wcn36xx_hal_ind_msg {
+    struct list_head list;
+    size_t msg_len;
+    u8 msg[];
+};
+
+Make use of the struct_size() helper instead of an open-coded version
+in order to avoid any potential type mistakes.
+
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
 ---
- db.txt | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/wcn36xx/smd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/db.txt b/db.txt
-index b6732070f6d7..228b9bacb9ec 100644
---- a/db.txt
-+++ b/db.txt
-@@ -10,6 +10,9 @@ wmmrule ETSI:
- 
- # This is the world regulatory domain
- country 00:
-+	# There is no global intersection for 802.11ah, so just mark the entire
-+	# possible band as NO-IR
-+	(755 - 928 @ 2), (20), NO-IR
- 	(2402 - 2472 @ 40), (20)
- 	# Channel 12 - 13.
- 	(2457 - 2482 @ 20), (20), NO-IR, AUTO-BW
+diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
+index caeb68901326..59ad332156ae 100644
+--- a/drivers/net/wireless/ath/wcn36xx/smd.c
++++ b/drivers/net/wireless/ath/wcn36xx/smd.c
+@@ -3347,7 +3347,7 @@ int wcn36xx_smd_rsp_process(struct rpmsg_device *rpdev,
+ 	case WCN36XX_HAL_DELETE_STA_CONTEXT_IND:
+ 	case WCN36XX_HAL_PRINT_REG_INFO_IND:
+ 	case WCN36XX_HAL_SCAN_OFFLOAD_IND:
+-		msg_ind = kmalloc(sizeof(*msg_ind) + len, GFP_ATOMIC);
++		msg_ind = kmalloc(struct_size(msg_ind, msg, len), GFP_ATOMIC);
+ 		if (!msg_ind) {
+ 			wcn36xx_err("Run out of memory while handling SMD_EVENT (%d)\n",
+ 				    msg_header->msg_type);
 -- 
-2.30.2
+2.25.1
 
