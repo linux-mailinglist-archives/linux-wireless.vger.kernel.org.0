@@ -2,124 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F08D4ADCC2
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 16:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3857D4ADD68
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 16:48:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380486AbiBHPeo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Feb 2022 10:34:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46582 "EHLO
+        id S1381940AbiBHPsg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Feb 2022 10:48:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357075AbiBHPeo (ORCPT
+        with ESMTP id S1382007AbiBHPsf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Feb 2022 10:34:44 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49EFFC0613CB
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 07:34:39 -0800 (PST)
-X-UUID: 7cadfdc8148043b29c8b8020f1d6a982-20220208
-X-UUID: 7cadfdc8148043b29c8b8020f1d6a982-20220208
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1156196781; Tue, 08 Feb 2022 23:34:36 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 8 Feb 2022 23:34:34 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 8 Feb 2022 23:34:34 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] mt76: mt7921s: fix missing fc type/sub-type for 802.11 pkts
-Date:   Tue, 8 Feb 2022 23:34:23 +0800
-Message-ID: <33dd8e4b7f7f72d191e8eca88b33b32dbf2595d2.1644313224.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Tue, 8 Feb 2022 10:48:35 -0500
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50654C0612BC;
+        Tue,  8 Feb 2022 07:48:31 -0800 (PST)
+Received: by mail-lj1-x22b.google.com with SMTP id j14so25095270lja.3;
+        Tue, 08 Feb 2022 07:48:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=KxYSiqV12Dhm8YIIbxVVPZPZ8DeDZ9T4ZM/yFNlt0P4=;
+        b=RCJH/+Jlb0WLMRrQOaeKkLw2zcgYhGFGq9EIE5cCcIrXrMKxY0eYUJydZobET1700n
+         iOG+u9NHqzmAPh5tqUFIHuf5qBlqkQYWCsIU0LmPKZ6NZW05XvolNBchVjmMwmpJ34rV
+         wdwdBwyiQ3TetWfh553Uj1uIMs2eVv8Vyn1DMzTO+S5FLW4PNHxvCqfTovmyxSl02VEy
+         P9Ec+IOUIER0y6542iKSfRvbjyEs3rOQJpQqDJ8auotuYdI79eqMZrxDUUlXLl+RCG0l
+         bzIPx3IJSNxUt+N5zYGmBgnbIAGPi5K8thj689pSZm2WW3t34iPIvuwGJYRcTcpgTW3t
+         RVSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=KxYSiqV12Dhm8YIIbxVVPZPZ8DeDZ9T4ZM/yFNlt0P4=;
+        b=t8FDkNtA5Bhs3X4UfYOEEALPtfSLnyESVk7hlVK8/MhA/UkemDDaFpu3xpBWh+tbcM
+         hn7Yckh6A8C/J/lIiB2ql15Hkj5tvwdih69vOoEWI1RV1LPuEfVBwYfrZCrqZq3xMiXe
+         l1K+WDXS1s9PG65yq/ip/l8VP4Wp7J5sLscz7Xcu2iWJylLDVaTsIhZ04qD5PTpye+qB
+         skW/01aemjtzH6v9NQrc00oulv6JOoaP+4srqFaNHy+DZ/hnTQf5Bg6jrWevscOQUuuK
+         6RORWj4Ka8QbGZA/WbNbexY1FW5GJaSDMJbAan+QrLFfXNZEdQskDP3NHlIWGFOD/0I3
+         Ajkw==
+X-Gm-Message-State: AOAM5300dt8zDxoWD4aWkSv80kXqDst0qGb/YiC/o5SipktrH8X1qxXB
+        5nRQEfNMsvncBeSp4BX0FrEEpNKI/Z7WCA==
+X-Google-Smtp-Source: ABdhPJySi/pdYPq6mdP6NmTInKPyJ648iKNTgmsWmxL8LMLykGhXyqhkOIbLNTmw+0/eXkf1WgB04A==
+X-Received: by 2002:a05:651c:3c7:: with SMTP id f7mr3269342ljp.62.1644335309629;
+        Tue, 08 Feb 2022 07:48:29 -0800 (PST)
+Received: from [192.168.1.11] ([94.103.224.201])
+        by smtp.gmail.com with ESMTPSA id w6sm2025770ljm.109.2022.02.08.07.48.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Feb 2022 07:48:29 -0800 (PST)
+Message-ID: <6f0615da-aa0b-df8e-589c-f5caf09d3449@gmail.com>
+Date:   Tue, 8 Feb 2022 18:48:24 +0300
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v3 1/2] ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
+Content-Language: en-US
+To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
+        ath9k-devel@qca.qualcomm.com, kvalo@kernel.org,
+        davem@davemloft.net, kuba@kernel.org, linville@tuxdriver.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
+        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+References: <80962aae265995d1cdb724f5362c556d494c7566.1644265120.git.paskripkin@gmail.com>
+ <87h799a007.fsf@toke.dk>
+From:   Pavel Skripkin <paskripkin@gmail.com>
+In-Reply-To: <87h799a007.fsf@toke.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+Hi Toke,
 
-For non-mmio devices, should set fc values to proper txwi config
+On 2/8/22 17:47, Toke Høiland-Jørgensen wrote:
+> Pavel Skripkin <paskripkin@gmail.com> writes:
+> 
+>> Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb(). The
+>> problem was in incorrect htc_handle->drv_priv initialization.
+>>
+>> Probable call trace which can trigger use-after-free:
+>>
+>> ath9k_htc_probe_device()
+>>   /* htc_handle->drv_priv = priv; */
+>>   ath9k_htc_wait_for_target()      <--- Failed
+>>   ieee80211_free_hw()		   <--- priv pointer is freed
+>>
+>> <IRQ>
+>> ...
+>> ath9k_hif_usb_rx_cb()
+>>   ath9k_hif_usb_rx_stream()
+>>    RX_STAT_INC()		<--- htc_handle->drv_priv access
+>>
+>> In order to not add fancy protection for drv_priv we can move
+>> htc_handle->drv_priv initialization at the end of the
+>> ath9k_htc_probe_device() and add helper macro to make
+>> all *_STAT_* macros NULL save.
+> 
+> I'm not too familiar with how the initialisation flow of an ath9k_htc
+> device works. Looking at htc_handle->drv_priv there seems to
+> be three other functions apart from the stat counters that dereference
+> it:
+> 
+> ath9k_htc_suspend()
+> ath9k_htc_resume()
+> ath9k_hif_usb_disconnect()
+> 
+> What guarantees that none of these will be called midway through
+> ath9k_htc_probe_device() (which would lead to a NULL deref after this
+> change)?
+> 
 
-Fixes: 48fab5bbef40 ("mt76: mt7921: introduce mt7921s support")
-Co-developed-by: Leon Yen <Leon.Yen@mediatek.com>
-Signed-off-by: Leon Yen <Leon.Yen@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 13 ++++++++++---
- drivers/net/wireless/mediatek/mt76/mt7921/mac.h |  3 +++
- 2 files changed, 13 insertions(+), 3 deletions(-)
+IIUC, situation you are talking about may happen even without my change.
+I was thinking, that ath9k_htc_probe_device() is the real ->probe() 
+function, but things look a bit more tricky.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index d17558349a17..e403f0225b77 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -852,6 +852,7 @@ mt7921_mac_write_txwi_80211(struct mt7921_dev *dev, __le32 *txwi,
- 	__le16 fc = hdr->frame_control;
- 	u8 fc_type, fc_stype;
- 	u32 val;
-+	bool is_mmio = mt76_is_mmio(&dev->mt76);
- 
- 	if (ieee80211_is_action(fc) &&
- 	    mgmt->u.action.category == WLAN_CATEGORY_BACK &&
-@@ -912,9 +913,15 @@ mt7921_mac_write_txwi_80211(struct mt7921_dev *dev, __le32 *txwi,
- 		txwi[3] |= cpu_to_le32(val);
- 	}
- 
--	val = FIELD_PREP(MT_TXD7_TYPE, fc_type) |
--	      FIELD_PREP(MT_TXD7_SUB_TYPE, fc_stype);
--	txwi[7] |= cpu_to_le32(val);
-+	if (is_mmio) {
-+		val = FIELD_PREP(MT_TXD7_TYPE, fc_type) |
-+		      FIELD_PREP(MT_TXD7_SUB_TYPE, fc_stype);
-+		txwi[7] |= cpu_to_le32(val);
-+	} else {
-+		val = FIELD_PREP(MT_TXD8_L_TYPE, fc_type) |
-+		      FIELD_PREP(MT_TXD8_L_SUB_TYPE, fc_stype);
-+		txwi[8] |= cpu_to_le32(val);
-+	}
- }
- 
- void mt7921_mac_write_txwi(struct mt7921_dev *dev, __le32 *txwi,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
-index 544a1c33126a..12e1cf8abe6e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
-@@ -284,6 +284,9 @@ enum tx_mcu_port_q_idx {
- #define MT_TXD7_HW_AMSDU		BIT(10)
- #define MT_TXD7_TX_TIME			GENMASK(9, 0)
- 
-+#define MT_TXD8_L_TYPE			GENMASK(5, 4)
-+#define MT_TXD8_L_SUB_TYPE		GENMASK(3, 0)
-+
- #define MT_TX_RATE_STBC			BIT(13)
- #define MT_TX_RATE_NSS			GENMASK(12, 10)
- #define MT_TX_RATE_MODE			GENMASK(9, 6)
--- 
-2.18.0
 
+So, the ->probe() function may be completed before 
+ath9k_htc_probe_device() is called, because it's called from fw loader 
+callback function. If ->probe() is completed, than we can call 
+->suspend(), ->resume() and others usb callbacks, right? And we can meet 
+NULL defer even if we leave drv_priv = priv initialization on it's place.
+
+Please, correct me if I am wrong somewhere :)
+
+
+
+
+With regards,
+Pavel Skripkin
