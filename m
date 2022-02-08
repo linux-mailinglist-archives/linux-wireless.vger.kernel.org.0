@@ -2,128 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B1224ADCB0
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 16:32:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F08D4ADCC2
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 16:34:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380451AbiBHPcR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Feb 2022 10:32:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45212 "EHLO
+        id S1380486AbiBHPeo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Feb 2022 10:34:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235109AbiBHPcQ (ORCPT
+        with ESMTP id S1357075AbiBHPeo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Feb 2022 10:32:16 -0500
-Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2002::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B917C061576;
-        Tue,  8 Feb 2022 07:32:15 -0800 (PST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1644334333; bh=wgBzt5vK3cFN8FMnyCpL9e4AgZNfJRkAyZy5pNQF5Y8=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=SDtmhTSuRrLIi0rBu2TtRfajchoprAs5Y921ThZLf60QXQWj6C62Z5d3CntC9fB8Y
-         ez/6QuDAttYFRjncVb18h5leoNYSIKF36l4hIHnk0J88KgCvWwFD6tjAuTSGcS67fq
-         KgxpwbYrlF0bYZJyz4sRLqrY0/AWc5OOOR41hFO7tBxRgfaBOG50spbTS16HvvZISB
-         OfOpaj5w6vLOhL2ndpQwatDM2xZvXdeHDQAL4mzNzU7krdAzhVE8HgMv+kAuZNBseT
-         btlWIBr5CH4FAUjEDGuNNOxcV4COjwF9Y3PB43j2h8/q5b8xTUiyCSq23x7nMrHLK1
-         O5SZLzArGhTxw==
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Pavel Skripkin <paskripkin@gmail.com>,
-        ath9k-devel@qca.qualcomm.com, kvalo@kernel.org,
-        davem@davemloft.net, kuba@kernel.org, linville@tuxdriver.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] ath9k: htc: clean up *STAT_* macros
-In-Reply-To: <258ac12b-9ca3-9b24-30df-148f9df51582@quicinc.com>
-References: <80962aae265995d1cdb724f5362c556d494c7566.1644265120.git.paskripkin@gmail.com>
- <28c83b99b8fea0115ad7fbda7cc93a86468ec50d.1644265120.git.paskripkin@gmail.com>
- <258ac12b-9ca3-9b24-30df-148f9df51582@quicinc.com>
-Date:   Tue, 08 Feb 2022 16:32:13 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87ee4d9xxe.fsf@toke.dk>
+        Tue, 8 Feb 2022 10:34:44 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49EFFC0613CB
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 07:34:39 -0800 (PST)
+X-UUID: 7cadfdc8148043b29c8b8020f1d6a982-20220208
+X-UUID: 7cadfdc8148043b29c8b8020f1d6a982-20220208
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1156196781; Tue, 08 Feb 2022 23:34:36 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 8 Feb 2022 23:34:34 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 8 Feb 2022 23:34:34 +0800
+From:   Deren Wu <Deren.Wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH] mt76: mt7921s: fix missing fc type/sub-type for 802.11 pkts
+Date:   Tue, 8 Feb 2022 23:34:23 +0800
+Message-ID: <33dd8e4b7f7f72d191e8eca88b33b32dbf2595d2.1644313224.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+From: Deren Wu <deren.wu@mediatek.com>
 
-> On 2/7/2022 12:24 PM, Pavel Skripkin wrote:
->> I've changed *STAT_* macros a bit in previous patch and I seems like
->> they become really unreadable. Align these macros definitions to make
->> code cleaner.
->> 
->> Also fixed following checkpatch warning
->> 
->> ERROR: Macros with complex values should be enclosed in parentheses
->> 
->> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
->> ---
->> 
->> Changes since v2:
->> 	- My send-email script forgot, that mailing lists exist.
->> 	  Added back all related lists
->> 	- Fixed checkpatch warning
->> 
->> Changes since v1:
->> 	- Added this patch
->> 
->> ---
->>   drivers/net/wireless/ath/ath9k/htc.h | 16 ++++++++--------
->>   1 file changed, 8 insertions(+), 8 deletions(-)
->> 
->> diff --git a/drivers/net/wireless/ath/ath9k/htc.h b/drivers/net/wireless/ath/ath9k/htc.h
->> index 141642e5e00d..b4755e21a501 100644
->> --- a/drivers/net/wireless/ath/ath9k/htc.h
->> +++ b/drivers/net/wireless/ath/ath9k/htc.h
->> @@ -327,14 +327,14 @@ static inline struct ath9k_htc_tx_ctl *HTC_SKB_CB(struct sk_buff *skb)
->>   }
->>   
->>   #ifdef CONFIG_ATH9K_HTC_DEBUGFS
->> -#define __STAT_SAVE(expr) (hif_dev->htc_handle->drv_priv ? (expr) : 0)
->> -#define TX_STAT_INC(c) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
->> -#define TX_STAT_ADD(c, a) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
->> -#define RX_STAT_INC(c) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
->> -#define RX_STAT_ADD(c, a) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
->> -#define CAB_STAT_INC   priv->debug.tx_stats.cab_queued++
->> -
->> -#define TX_QSTAT_INC(q) (priv->debug.tx_stats.queue_stats[q]++)
->> +#define __STAT_SAVE(expr)	(hif_dev->htc_handle->drv_priv ? (expr) : 0)
->> +#define TX_STAT_INC(c)		__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
->> +#define TX_STAT_ADD(c, a)	__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
->> +#define RX_STAT_INC(c)		__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
->> +#define RX_STAT_ADD(c, a)	__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
->> +#define CAB_STAT_INC		(priv->debug.tx_stats.cab_queued++)
->> +
->> +#define TX_QSTAT_INC(q)		(priv->debug.tx_stats.queue_stats[q]++)
->>   
->>   void ath9k_htc_err_stat_rx(struct ath9k_htc_priv *priv,
->>   			   struct ath_rx_status *rs);
->
-> It seems that these macros (both the original and the new) aren't 
-> following the guidance from the Coding Style which tells us under 
-> "Things to avoid when using macros" that we should avoid "macros that 
-> depend on having a local variable with a magic name". Wouldn't these 
-> macros be "better" is they included the hif_dev/priv as arguments rather 
-> than being "magic"?
+For non-mmio devices, should set fc values to proper txwi config
 
-Hmm, yeah, that's a good point; looks like the non-HTC ath9k stats
-macros have already been converted to take the container as a parameter,
-so taking this opportunity to fix these macros is not a bad idea. While
-we're at it, let's switch to the do{} while(0) syntax the other macros
-are using instead of that weird usage of ?:. And there's not really any
-reason for the duplication between ADD/INC either. So I'm thinking
-something like:
+Fixes: 48fab5bbef40 ("mt76: mt7921: introduce mt7921s support")
+Co-developed-by: Leon Yen <Leon.Yen@mediatek.com>
+Signed-off-by: Leon Yen <Leon.Yen@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 13 ++++++++++---
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.h |  3 +++
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
-#define __STAT_SAVE(_priv, _member, _n) do { if (_priv) (_priv)->_member += (_n); } while(0)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index d17558349a17..e403f0225b77 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -852,6 +852,7 @@ mt7921_mac_write_txwi_80211(struct mt7921_dev *dev, __le32 *txwi,
+ 	__le16 fc = hdr->frame_control;
+ 	u8 fc_type, fc_stype;
+ 	u32 val;
++	bool is_mmio = mt76_is_mmio(&dev->mt76);
+ 
+ 	if (ieee80211_is_action(fc) &&
+ 	    mgmt->u.action.category == WLAN_CATEGORY_BACK &&
+@@ -912,9 +913,15 @@ mt7921_mac_write_txwi_80211(struct mt7921_dev *dev, __le32 *txwi,
+ 		txwi[3] |= cpu_to_le32(val);
+ 	}
+ 
+-	val = FIELD_PREP(MT_TXD7_TYPE, fc_type) |
+-	      FIELD_PREP(MT_TXD7_SUB_TYPE, fc_stype);
+-	txwi[7] |= cpu_to_le32(val);
++	if (is_mmio) {
++		val = FIELD_PREP(MT_TXD7_TYPE, fc_type) |
++		      FIELD_PREP(MT_TXD7_SUB_TYPE, fc_stype);
++		txwi[7] |= cpu_to_le32(val);
++	} else {
++		val = FIELD_PREP(MT_TXD8_L_TYPE, fc_type) |
++		      FIELD_PREP(MT_TXD8_L_SUB_TYPE, fc_stype);
++		txwi[8] |= cpu_to_le32(val);
++	}
+ }
+ 
+ void mt7921_mac_write_txwi(struct mt7921_dev *dev, __le32 *txwi,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
+index 544a1c33126a..12e1cf8abe6e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
+@@ -284,6 +284,9 @@ enum tx_mcu_port_q_idx {
+ #define MT_TXD7_HW_AMSDU		BIT(10)
+ #define MT_TXD7_TX_TIME			GENMASK(9, 0)
+ 
++#define MT_TXD8_L_TYPE			GENMASK(5, 4)
++#define MT_TXD8_L_SUB_TYPE		GENMASK(3, 0)
++
+ #define MT_TX_RATE_STBC			BIT(13)
+ #define MT_TX_RATE_NSS			GENMASK(12, 10)
+ #define MT_TX_RATE_MODE			GENMASK(9, 6)
+-- 
+2.18.0
 
-#define TX_STAT_ADD(_priv, _c, _a) __STAT_SAVE(_priv, debug.tx_stats._c, _a)
-#define TX_STAT_INC(_priv, _c) TX_STAT_ADD(_priv, _c, 1)
-
-[... etc ...]
-
--Toke
