@@ -2,98 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C42834AD71F
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 12:32:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD7754AD72F
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 12:32:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357033AbiBHLbu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Feb 2022 06:31:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60158 "EHLO
+        id S239283AbiBHLcF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Feb 2022 06:32:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356448AbiBHKrq (ORCPT
+        with ESMTP id S1356586AbiBHKwG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Feb 2022 05:47:46 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EEB2C03FEC0;
-        Tue,  8 Feb 2022 02:47:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=0dqhvmwEdAX++oVGM1+TtEeGArLVwX6xnXfCDjA3GJM=; t=1644317265; x=1645526865; 
-        b=NVmqo931x3XdFrXgpgK7H3FPtlP5HPHCIwMOAOHsjYQZtiK8cS8eOSJ5WFOEYnulDw724wQn91f
-        f/2e+UvQR+sbSsEpKPsaz2ABY1FyAZVmEO75npOgrd9dEhoXBH7lA2hI4ap+nuoGEjt3mdLlGgoyH
-        XfcWVNmlBkaEfJUKEhm1tAfnzpHrs1sqpVmOigof1PlZRafr4DPm8CJrX/eyhneS9B9vmolBfbUFk
-        ix7/FnJcw9v7eBulIn1t7bz8ee924YFlpfl+fY3OMo1B53TctPH+ZfBvyy+HoEtL2wkxdSOng+CWj
-        T4t8ZVgmW+jMlHzv7mDRJ5hbmVRXDYuE51bQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nHO26-00G00u-Hv;
-        Tue, 08 Feb 2022 11:47:38 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org,
-        Stefan Agner <stefan@agner.ch>,
-        Wolfgang Walter <linux@stwm.de>,
-        Jason Self <jason@bluehome.net>,
-        Dominik Behr <dominik@dominikbehr.com>,
-        =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
-Subject: [PATCH] iwlwifi: fix use-after-free
-Date:   Tue,  8 Feb 2022 11:47:30 +0100
-Message-Id: <20220208114728.e6b514cf4c85.Iffb575ca2a623d7859b542c33b2a507d01554251@changeid>
-X-Mailer: git-send-email 2.34.1
+        Tue, 8 Feb 2022 05:52:06 -0500
+X-Greylist: delayed 122 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 08 Feb 2022 02:52:05 PST
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F32BAC03FEC3
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 02:52:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1644317526; x=1675853526;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=H1M7GiEBG1472fgEdXp4cPGZllRAqGb5pgJL+uEjrjU=;
+  b=Q/fs7dV6FyUH5Yw09tEI0MfylcdUyj5tRAmYMeg6tQWOEuXkl+rweeQc
+   ASt++OQ7eBPKq0naNN1N/4W+aphPDsNUDyqeolQkukYNFsF1+Nm3Wjt2G
+   oSwIMYlG8ZUSv88QBGOu35n0+HWVoPkXj2Iu9Sq12krNigX0wInpBX5U5
+   s=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 08 Feb 2022 02:50:03 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2022 02:50:03 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Tue, 8 Feb 2022 02:50:02 -0800
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Tue, 8 Feb 2022 02:50:01 -0800
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH v5 0/5] ath11k: add feature for device recovery
+Date:   Tue, 8 Feb 2022 05:49:42 -0500
+Message-ID: <20220208104947.25791-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Currently recovery is work success for QCA6390/WCN6855 without the RDDM dump feature,
+because patch "ath11k: configure RDDM size to mhi for recovery by firmware"
+added in v5.
 
-If no firmware was present at all (or, presumably, all of the
-firmware files failed to parse), we end up unbinding by calling
-device_release_driver(), which calls remove(), which then in
-iwlwifi calls iwl_drv_stop(), freeing the 'drv' struct. However
-the new code I added will still erroneously access it after it
-was freed.
+v5:
+    1. rebased to ath.git ath-202202030905
+    2. change a few commit message
+    3. fix count set sequence of ath11k_core_reset in "ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base"
+    4. add patch "ath11k: configure RDDM size to mhi for recovery by firmware" to support RDDM
+    5. move destroy_workqueue(ab->workqueue_aux) from ath11k_pci_remove() to ath11k_core_free()
 
-Set 'failure=false' in this case to avoid the access, all data
-was already freed anyway.
+v4: add patch "ath11k: fix invalid m3 buffer address"
+    recovery will fail when download firmware without this patch
 
-Cc: stable@vger.kernel.org
-Reported-by: Stefan Agner <stefan@agner.ch>
-Reported-by: Wolfgang Walter <linux@stwm.de>
-Reported-by: Jason Self <jason@bluehome.net>
-Reported-by: Dominik Behr <dominik@dominikbehr.com>
-Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Fixes: ab07506b0454 ("iwlwifi: fix leaks/bad data after failed firmware load")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+v3: remove time_left set but not used in
+    "ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base"
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index 83e3b731ad29..6651e78b39ec 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1707,6 +1707,8 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
-  out_unbind:
- 	complete(&drv->request_firmware_complete);
- 	device_release_driver(drv->trans->dev);
-+	/* drv has just been freed by the release */
-+	failure = false;
-  free:
- 	if (failure)
- 		iwl_dealloc_ucode(drv);
+v2: s/initilized/initialized in commit log of patch
+    "ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base"
+
+Add support for device recovery.
+
+Carl Huang (1):
+  ath11k: fix invalid m3 buffer address
+
+Wen Gong (4):
+  ath11k: add ath11k_qmi_free_resource() for recovery
+  ath11k: configure RDDM size to mhi for recovery by firmware
+  ath11k: add support for device recovery for QCA6390/WCN6855
+  ath11k: add synchronization operation between reconfigure of mac80211
+    and ath11k_base
+
+ drivers/net/wireless/ath/ath11k/core.c | 121 +++++++++++++++++++++++--
+ drivers/net/wireless/ath/ath11k/core.h |  18 ++++
+ drivers/net/wireless/ath/ath11k/mac.c  |  40 ++++++++
+ drivers/net/wireless/ath/ath11k/mhi.c  |  35 +++++++
+ drivers/net/wireless/ath/ath11k/qmi.c  |   6 ++
+ drivers/net/wireless/ath/ath11k/qmi.h  |   1 +
+ 6 files changed, 213 insertions(+), 8 deletions(-)
+
+
+base-commit: 76680d49b5e0e661bc4abcdaf13fb7e124b4ca08
 -- 
-2.34.1
+2.31.1
 
