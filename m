@@ -2,154 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8405B4AD203
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 08:16:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 671794AD2E8
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 09:16:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347959AbiBHHQc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Feb 2022 02:16:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52670 "EHLO
+        id S1346563AbiBHIP6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Feb 2022 03:15:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235298AbiBHHQb (ORCPT
+        with ESMTP id S1348997AbiBHIPk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Feb 2022 02:16:31 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28D63C0401EF
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Feb 2022 23:16:30 -0800 (PST)
-X-UUID: 29509e581f8c4e67a53b4cd68c94f363-20220208
-X-UUID: 29509e581f8c4e67a53b4cd68c94f363-20220208
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <bo.jiao@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1092626711; Tue, 08 Feb 2022 15:16:27 +0800
-Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Tue, 8 Feb 2022 15:16:25 +0800
-Received: from MTKCAS36.mediatek.inc (172.27.4.186) by MTKMBS34N1.mediatek.inc
- (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 8 Feb
- 2022 15:16:23 +0800
-Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
- MTKCAS36.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
- 15.0.1497.2 via Frontend Transport; Tue, 8 Feb 2022 15:16:22 +0800
-From:   Bo Jiao <bo.jiao@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Xing Song <xing.song@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Bo Jiao <Bo.Jiao@mediatek.com>
-Subject: [PATCH] mt76: mt7915: Fix channel state update error issue
-Date:   Tue, 8 Feb 2022 15:16:15 +0800
-Message-ID: <41371866a1ad861988303f043ff21016a4ef0a01.1644304381.git.Bo.Jiao@mediatek.com>
-X-Mailer: git-send-email 2.17.0
+        Tue, 8 Feb 2022 03:15:40 -0500
+X-Greylist: delayed 122 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 08 Feb 2022 00:15:39 PST
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A39A8C03FEC4
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 00:15:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1644308139; x=1675844139;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=LU5HkVROhz+hS+wWIm1coOpMnpPIr2928HaLE6l4DQs=;
+  b=allncCcgJRGr3vVJcc699eUKhIFPqjMulyrV4MsYcMBMWMPSu7M0G49X
+   BeA+H1RLV0myN39B8GA8ttlh2mQoTlQtjSyKYdE/lM4Mn4+bYmM2iA3h1
+   QFOQ2f3a4dX8WQrAAsU0ib7TCWqJxVmnuLLTNUf1PXESa5VwApEss2nMZ
+   s=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 08 Feb 2022 00:13:37 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2022 00:13:37 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Tue, 8 Feb 2022 00:13:37 -0800
+Received: from cjhuang2-gv.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Tue, 8 Feb 2022 00:13:36 -0800
+From:   Carl Huang <quic_cjhuang@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH v3 0/6] ath11k: support WoW functionalities
+Date:   Tue, 8 Feb 2022 16:13:20 +0800
+Message-ID: <1644308006-22784-1-git-send-email-quic_cjhuang@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
 Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Bo Jiao <Bo.Jiao@mediatek.com>
+Ath11k WoW basic funtionalities are merged from ath10k such
+as magic-pattern, PNO, disconnect and patterns.
 
-Fix channel state update error issue due to wrong
-register access for mt7916.
+Hw data filter and pktlog purge are required for ath11k.
 
-Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c  | 15 +++++++++++----
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c  |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/regs.h | 11 ++++++++---
- 3 files changed, 20 insertions(+), 8 deletions(-)
+ARP and NS offload, GTK rekey offload are new WoW features
+implemented on ath11k.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 3c38031..b693868 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1845,12 +1845,17 @@ void mt7915_mac_set_timing(struct mt7915_phy *phy)
+v3:
+	- rebased to 76680d49b5e0e661bc4abcdaf13fb7e124b4ca08
+          (tag ath-202202030905)
+
+v2:
+        - fixed minor style issues commented by Kalle
+        - fixed endianness
+        - rebased to ath-202112161538
  
- void mt7915_mac_enable_nf(struct mt7915_dev *dev, bool ext_phy)
- {
--	mt76_set(dev, MT_WF_PHY_RXTD12(ext_phy),
-+	u32 reg;
-+
-+	reg = is_mt7915(&dev->mt76) ? MT_WF_PHY_RXTD12(ext_phy) :
-+		MT_WF_PHY_RXTD12_MT7916(ext_phy);
-+	mt76_set(dev, reg,
- 		 MT_WF_PHY_RXTD12_IRPI_SW_CLR_ONLY |
- 		 MT_WF_PHY_RXTD12_IRPI_SW_CLR);
- 
--	mt76_set(dev, MT_WF_PHY_RX_CTRL1(ext_phy),
--		 FIELD_PREP(MT_WF_PHY_RX_CTRL1_IPI_EN, 0x5));
-+	reg = is_mt7915(&dev->mt76) ? MT_WF_PHY_RX_CTRL1(ext_phy) :
-+		MT_WF_PHY_RX_CTRL1_MT7916(ext_phy);
-+	mt76_set(dev, reg, FIELD_PREP(MT_WF_PHY_RX_CTRL1_IPI_EN, 0x5));
- }
- 
- static u8
-@@ -1862,7 +1867,9 @@ mt7915_phy_get_nf(struct mt7915_phy *phy, int idx)
- 	int nss, i;
- 
- 	for (nss = 0; nss < hweight8(phy->mt76->chainmask); nss++) {
--		u32 reg = MT_WF_IRPI(nss + (idx << dev->dbdc_support));
-+		u32 reg = is_mt7915(&dev->mt76) ?
-+			MT_WF_IRPI_NSS(0, nss + (idx << dev->dbdc_support)) :
-+			MT_WF_IRPI_NSS_MT7916(idx, nss);
- 
- 		for (i = 0; i < ARRAY_SIZE(nf_power); i++, reg += 4) {
- 			val = mt76_rr(dev, reg);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 94837ed..94f9ac9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3079,7 +3079,7 @@ int mt7915_mcu_get_chan_mib_info(struct mt7915_phy *phy, bool chan_switch)
- 	if (ret)
- 		return ret;
- 
--	res = (struct mt7915_mcu_mib *)(skb->data + 20);
-+	res = (struct mt7915_mcu_mib *)(skb->data);
- 
- 	if (chan_switch)
- 		goto out;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index 6a0f681..e380fd9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -761,18 +761,23 @@ enum offs_rev {
- #define MT_WF_PP_TOP_RXQ_WFDMA_CF_5	MT_WF_PP_TOP(0x0e8)
- #define MT_WF_PP_TOP_RXQ_QID6_WFDMA_HIF_SEL_MASK	BIT(6)
- 
--#define MT_WF_IRPI_BASE			0x83006000
--#define MT_WF_IRPI(ofs)			(MT_WF_IRPI_BASE + ((ofs) << 16))
-+#define MT_WF_IRPI_BASE			0x83000000
-+#define MT_WF_IRPI(ofs)			(MT_WF_IRPI_BASE + (ofs))
- 
--/* PHY: band 0(0x83080000), band 1(0x83090000) */
-+#define MT_WF_IRPI_NSS(phy, nss)	MT_WF_IRPI(0x6000 + ((phy) << 20) + ((nss) << 16))
-+#define MT_WF_IRPI_NSS_MT7916(phy, nss)	MT_WF_IRPI(0x1000 + ((phy) << 20) + ((nss) << 16))
-+
-+/* PHY */
- #define MT_WF_PHY_BASE			0x83080000
- #define MT_WF_PHY(ofs)			(MT_WF_PHY_BASE + (ofs))
- 
- #define MT_WF_PHY_RX_CTRL1(_phy)	MT_WF_PHY(0x2004 + ((_phy) << 16))
-+#define MT_WF_PHY_RX_CTRL1_MT7916(_phy)	MT_WF_PHY(0x2004 + ((_phy) << 20))
- #define MT_WF_PHY_RX_CTRL1_IPI_EN	GENMASK(2, 0)
- #define MT_WF_PHY_RX_CTRL1_STSCNT_EN	GENMASK(11, 9)
- 
- #define MT_WF_PHY_RXTD12(_phy)		MT_WF_PHY(0x8230 + ((_phy) << 16))
-+#define MT_WF_PHY_RXTD12_MT7916(_phy)	MT_WF_PHY(0x8230 + ((_phy) << 20))
- #define MT_WF_PHY_RXTD12_IRPI_SW_CLR_ONLY	BIT(18)
- #define MT_WF_PHY_RXTD12_IRPI_SW_CLR		BIT(29)
- 
+Carl Huang (6):
+  ath11k: Add basic WoW functionalities
+  ath11k: Add WoW net-detect functionality
+  ath11k: implement hardware data filter
+  ath11k: purge rx pktlog when entering WoW
+  ath11k: support ARP and NS offload
+  ath11k: support GTK rekey offload
+
+ drivers/net/wireless/ath/ath11k/core.c  |  36 +-
+ drivers/net/wireless/ath/ath11k/core.h  |  31 +
+ drivers/net/wireless/ath/ath11k/dp_rx.c |   1 -
+ drivers/net/wireless/ath/ath11k/htc.c   |   6 +
+ drivers/net/wireless/ath/ath11k/htc.h   |   1 +
+ drivers/net/wireless/ath/ath11k/mac.c   | 217 ++++++-
+ drivers/net/wireless/ath/ath11k/mac.h   |   1 +
+ drivers/net/wireless/ath/ath11k/wmi.c   | 612 +++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/wmi.h   | 353 ++++++++++-
+ drivers/net/wireless/ath/ath11k/wow.c   | 759 ++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/wow.h   |  36 ++
+ 11 files changed, 2034 insertions(+), 19 deletions(-)
+
+
+base-commit: 76680d49b5e0e661bc4abcdaf13fb7e124b4ca08
 -- 
-2.18.0
+2.32.0
 
