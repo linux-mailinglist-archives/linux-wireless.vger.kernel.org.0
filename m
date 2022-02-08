@@ -2,123 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DF4D4AE21C
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 20:19:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AB2D4AE42B
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 23:27:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1385911AbiBHTTG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Feb 2022 14:19:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32788 "EHLO
+        id S1386173AbiBHW0i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Feb 2022 17:26:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353717AbiBHTTF (ORCPT
+        with ESMTP id S1386963AbiBHVfQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Feb 2022 14:19:05 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BC28C0612C0
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 11:19:01 -0800 (PST)
-X-UUID: 4cc068cecd114a8aa1ef598b28bb9f87-20220209
-X-UUID: 4cc068cecd114a8aa1ef598b28bb9f87-20220209
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1214468679; Wed, 09 Feb 2022 03:18:58 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Wed, 9 Feb 2022 03:18:57 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 9 Feb 2022 03:18:56 +0800
-From:   <sean.wang@mediatek.com>
-To:     <deren.wu@mediatek.com>
-CC:     <lorenzo.bianconi@redhat.com>, <nbd@nbd.name>,
-        <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <evelyn.tsai@mediatek.com>, <Ryder.Lee@mediatek.com>,
-        <Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] mt76: mt7921s: fix missing fc type/sub-type for 802.11 pkts
-Date:   Wed, 9 Feb 2022 03:18:55 +0800
-Message-ID: <1644347935-20006-1-git-send-email-sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <33dd8e4b7f7f72d191e8eca88b33b32dbf2595d2.1644313224.git.deren.wu@mediatek.comk--annotate>
-References: <33dd8e4b7f7f72d191e8eca88b33b32dbf2595d2.1644313224.git.deren.wu@mediatek.comk--annotate>
+        Tue, 8 Feb 2022 16:35:16 -0500
+X-Greylist: delayed 3607 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 08 Feb 2022 13:35:11 PST
+Received: from hms05.com (hms05.com [153.122.154.232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A88AC0612B8
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 13:35:11 -0800 (PST)
+Received: from hms05.com (localhost.localdomain [127.0.0.1])
+        by hms05.com (8.14.5/8.14.5) with ESMTP id 218KYqXt016514;
+        Wed, 9 Feb 2022 05:34:52 +0900
+Received: (from apache@localhost)
+        by hms05.com (8.14.5/8.14.5/Submit) id 218KYqEf016513;
+        Wed, 9 Feb 2022 05:34:52 +0900
+To:     linux-wireless@vger.kernel.org
+Subject: =?ISO-2022-JP?B?GyRCJTklJCU9JUslIiRYJCpMZCQkOWckbyQ7JCIkaiQsJEgkJiQ0JDYkJCReJDckPyEjGyhC?=
+X-PHP-Script: suisonia.net/wordpress/index.php for 185.220.100.255
+X-PHP-Originating-Script: 520:class-phpmailer.php
+Date:   Tue, 8 Feb 2022 20:34:52 +0000
+From:   "?? Lillian liked you! Click Here: http://inx.lv/6TCK?639 ??" 
+        <linux-wireless@vger.kernel.org>
+Message-ID: <4e6fb5d7e09c560450087e18d3d740db@suisonia.net>
+X-Priority: 3
+X-Mailer: PHPMailer 5.2.4 (http://code.google.com/a/apache-extras.org/p/phpmailer/)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ISO-2022-JP
+X-Spam-Status: No, score=3.5 required=5.0 tests=BAYES_50,
+        HEADER_FROM_DIFFERENT_DOMAINS,LOTS_OF_MONEY,PHP_ORIG_SCRIPT,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+?? Lillian liked you! Click Here: http://inx.lv/6TCK?639 ??　様
 
->from: Deren Wu <deren.wu@mediatek.com>
->
->For non-mmio devices, should set fc values to proper txwi config
->
->Fixes: 48fab5bbef40 ("mt76: mt7921: introduce mt7921s support")
->Co-developed-by: Leon Yen <Leon.Yen@mediatek.com>
->Signed-off-by: Leon Yen <Leon.Yen@mediatek.com>
->Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+この度はスイソニアホームページ（ http://suisonia.net ）よりお問い合わせありがとうございました。
 
-Tested-by: Sean Wang <sean.wang@mediatek.com>
+弊社担当者より3営業日以内にご連絡いたしますので、今しばらくお待ちくださいませ。
 
->---
-> drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 13 ++++++++++---  drivers/net/wireless/mediatek/mt76/mt7921/mac.h |  3 +++
-> 2 files changed, 13 insertions(+), 3 deletions(-)
->
->diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->index d17558349a17..e403f0225b77 100644
->--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->@@ -852,6 +852,7 @@ mt7921_mac_write_txwi_80211(struct mt7921_dev *dev, __le32 *txwi,
->	__le16 fc = hdr->frame_control;
->	u8 fc_type, fc_stype;
->	u32 val;
->+	bool is_mmio = mt76_is_mmio(&dev->mt76);
->
->	if (ieee80211_is_action(fc) &&
->	    mgmt->u.action.category == WLAN_CATEGORY_BACK && @@ -912,9 +913,15 @@ mt7921_mac_write_txwi_80211(struct mt7921_dev *dev, __le32 *txwi,
->		txwi[3] |= cpu_to_le32(val);
->	}
->
->-	val = FIELD_PREP(MT_TXD7_TYPE, fc_type) |
->-	      FIELD_PREP(MT_TXD7_SUB_TYPE, fc_stype);
->-	txwi[7] |= cpu_to_le32(val);
->+	if (is_mmio) {
->+		val = FIELD_PREP(MT_TXD7_TYPE, fc_type) |
->+		      FIELD_PREP(MT_TXD7_SUB_TYPE, fc_stype);
->+		txwi[7] |= cpu_to_le32(val);
->+	} else {
->+		val = FIELD_PREP(MT_TXD8_L_TYPE, fc_type) |
->+		      FIELD_PREP(MT_TXD8_L_SUB_TYPE, fc_stype);
->+		txwi[8] |= cpu_to_le32(val);
->+	}
-> }
->
-> void mt7921_mac_write_txwi(struct mt7921_dev *dev, __le32 *txwi, diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
->index 544a1c33126a..12e1cf8abe6e 100644
->--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
->+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
->@@ -284,6 +284,9 @@ enum tx_mcu_port_q_idx {
-> #define MT_TXD7_HW_AMSDU		BIT(10)
-> #define MT_TXD7_TX_TIME			GENMASK(9, 0)
->
->+#define MT_TXD8_L_TYPE			GENMASK(5, 4)
->+#define MT_TXD8_L_SUB_TYPE		GENMASK(3, 0)
->+
-> #define MT_TX_RATE_STBC			BIT(13)
-> #define MT_TX_RATE_NSS			GENMASK(12, 10)
-> #define MT_TX_RATE_MODE			GENMASK(9, 6)
->--
->2.18.0
->
->
+以下、お問い合せ内容の控えです。
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+お問い合わせの種類：スイソニア無料体験のご予約
+お名前：?? Lillian liked you! Click Here: http://inx.lv/6TCK?639 ??
+電話番号：179128213451
+メールアドレス：linux-wireless@vger.kernel.org
+予約希望日：2022-02-08
+メッセージ本文:
+qwih6r
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
+--
+このメールは スイソニア ( http://suisonia.net ) のお問い合わせフォームから送信されました。
+
