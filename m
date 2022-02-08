@@ -2,109 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0168A4ADD74
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 16:49:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F33B14ADE67
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 17:34:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381971AbiBHPth (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Feb 2022 10:49:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59046 "EHLO
+        id S1382831AbiBHQeV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Feb 2022 11:34:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239907AbiBHPtg (ORCPT
+        with ESMTP id S1343746AbiBHQeU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Feb 2022 10:49:36 -0500
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 779A9C061578;
-        Tue,  8 Feb 2022 07:49:35 -0800 (PST)
-Received: by mail-lj1-x235.google.com with SMTP id z20so25077365ljo.6;
-        Tue, 08 Feb 2022 07:49:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=jKPmnUC6L/CUlDp8szM1YCCjQLDW+YvcV/DqXbymrLg=;
-        b=f2WRHXLNfJOh7sW/V4/7apwC9vEcqbQDCu5ThTHxAjbf0FymsK82Q4rw6gMCGa01gN
-         4xx/vbgf9yXx/k8BdfUkiUmlj5xJNFXdxj5q88rAbeuogtTBS346YPJA3qm+bMj+10+Z
-         f6SKGWmzAP5T1w/mDDMDJF1DmH/TQWBkMUZPesR9oqq7pjT0N8jmBvNpKe1UYmdPL1o7
-         XActh5t9D1lYngjG3RUaGgnbEtOaerM7QqSxam3phY2cZA0ndAI+5kV7lK376CJrYFCi
-         vQH9B2H88FpNZ4/GcRQBFqk5uzlxoBl1lXY1CzwkB62EdAMCqO0Xy/gSYDWFgWTcBj6+
-         uIcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=jKPmnUC6L/CUlDp8szM1YCCjQLDW+YvcV/DqXbymrLg=;
-        b=6FY9TNnMU+bUADO5mDVXJ9vAlmdCPhlO0Ho+UewK4hL8vuArb6vYyF1uSSmwOBD0cA
-         2ltCVF0HxK0HbC8COHEjp6xFaSKWMFU9C0cMObpVjXt6E0MQMfxHa3AxC42sYfGRhFAd
-         ig0TpfT2uUSSVgdNGOAcpqke6mRw2jORSXMi+s7bcywUKC0odfu0j4N8qK5A6jTy50lG
-         JZbWQ3JkrQZPKwK/THVBgiSsC1SYEBAiAufo9gfeeMnm+SJcjLAlZl91p6q35q3OAaO9
-         etbcdgQn3aLrA6KYNR+p7Zf8Xzvi76COu+q62+206pUkzW6QrBTmSYYBrB/Vev3XVZ5V
-         baBg==
-X-Gm-Message-State: AOAM532XioYVTJvmsJp2agnrZtVClhAhTauqy4UIfVD4TayIqxC1mBp9
-        vy5vMXcsYYFM3takcyRDWFY=
-X-Google-Smtp-Source: ABdhPJw9LiyrQQ/0AXcRsE2Qr2EzS8Azw2M1dHgg7XpBuggCxJhcctze5CShZpEVzzzPswRmRv3TDg==
-X-Received: by 2002:a2e:8495:: with SMTP id b21mr3126317ljh.89.1644335373825;
-        Tue, 08 Feb 2022 07:49:33 -0800 (PST)
-Received: from [192.168.1.11] ([94.103.224.201])
-        by smtp.gmail.com with ESMTPSA id v7sm2018844ljv.68.2022.02.08.07.49.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Feb 2022 07:49:33 -0800 (PST)
-Message-ID: <61f00e3c-06ea-20a6-4b76-2bddf986f074@gmail.com>
-Date:   Tue, 8 Feb 2022 18:49:28 +0300
+        Tue, 8 Feb 2022 11:34:20 -0500
+X-Greylist: delayed 444 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 08 Feb 2022 08:34:17 PST
+Received: from mx4.securetransport.de (mx4.securetransport.de [178.254.6.145])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CEEC5C061576
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 08:34:17 -0800 (PST)
+Received: from mail.dh-electronics.com (business-24-134-97-169.pool2.vodafone-ip.de [24.134.97.169])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx4.securetransport.de (Postfix) with ESMTPSA id 8725C72030B;
+        Tue,  8 Feb 2022 17:26:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
+        s=dhelectronicscom; t=1644337594;
+        bh=Jgt7DJJcti2J7ijVBBTXfSxyUJJnJXpSzrQGfK2Wy84=;
+        h=From:To:CC:Subject:Date:From;
+        b=dinHwezZfwAx/HaEBe71M0iHp4XvOAFfkjfy4HPyo4MRu4mOQ6gdEmYOaZuGQwv4z
+         AgY/vzKEugZo9JlcZ57kIgqByD//rMphqmbQhuX7LR+wGTG0phm8RvdJ+M5m7KaITd
+         ObCFQn2xZkRkwIAQchBpYtzUyjGzi9s0XSxRpWU+/8gOu6/le8U2aMOkpW+BSvdPtC
+         ok1N62idduVsazLz+gD9PSWsE8LV50O24/XAFmugDX9ewVdZaAbZ2tzz2vJZC9PSr2
+         83mfElFK11G+aY+6WMEDdmJV6AQ/RCudUgikdSNJA1dHEFWKwiRW9G57SkkM05o2/L
+         KcRQEDUevjQLg==
+Received: from DHPWEX01.DH-ELECTRONICS.ORG (10.64.2.30) by
+ DHPWEX01.DH-ELECTRONICS.ORG (10.64.2.30) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.15; Tue, 8 Feb 2022 17:26:07 +0100
+Received: from DHPWEX01.DH-ELECTRONICS.ORG ([fe80::6ced:fa7f:9a9c:e579]) by
+ DHPWEX01.DH-ELECTRONICS.ORG ([fe80::6ced:fa7f:9a9c:e579%6]) with mapi id
+ 15.02.0986.015; Tue, 8 Feb 2022 17:26:07 +0100
+From:   Christoph Niedermaier <cniedermaier@dh-electronics.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     "ajay.kathat@microchip.com" <ajay.kathat@microchip.com>,
+        "claudiu.beznea@microchip.com" <claudiu.beznea@microchip.com>,
+        "tudor.ambarus@microchip.com" <tudor.ambarus@microchip.com>,
+        "Andreas Geisreiter" <ageisreiter@dh-electronics.com>,
+        "Marek MV. Vasut" <marex@denx.de>
+Subject: Possible bug on wilc1000 [Klartext]
+Thread-Topic: Possible bug on wilc1000 [Klartext]
+Thread-Index: AdgdBYpowDRGmRhhS4ylc9cEzwODUw==
+Date:   Tue, 8 Feb 2022 16:26:07 +0000
+Message-ID: <3994a34bb0d84e9d8181ec490a3f71d2@dh-electronics.com>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.51.18]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v3 2/2] ath9k: htc: clean up *STAT_* macros
-Content-Language: en-US
-To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        ath9k-devel@qca.qualcomm.com, kvalo@kernel.org,
-        davem@davemloft.net, kuba@kernel.org, linville@tuxdriver.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <80962aae265995d1cdb724f5362c556d494c7566.1644265120.git.paskripkin@gmail.com>
- <28c83b99b8fea0115ad7fbda7cc93a86468ec50d.1644265120.git.paskripkin@gmail.com>
- <258ac12b-9ca3-9b24-30df-148f9df51582@quicinc.com> <87ee4d9xxe.fsf@toke.dk>
-From:   Pavel Skripkin <paskripkin@gmail.com>
-In-Reply-To: <87ee4d9xxe.fsf@toke.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Toke,
+Hello,
 
-On 2/8/22 18:32, Toke Høiland-Jørgensen wrote:
->> It seems that these macros (both the original and the new) aren't 
->> following the guidance from the Coding Style which tells us under 
->> "Things to avoid when using macros" that we should avoid "macros that 
->> depend on having a local variable with a magic name". Wouldn't these 
->> macros be "better" is they included the hif_dev/priv as arguments rather 
->> than being "magic"?
-> 
-> Hmm, yeah, that's a good point; looks like the non-HTC ath9k stats
-> macros have already been converted to take the container as a parameter,
-> so taking this opportunity to fix these macros is not a bad idea. While
-> we're at it, let's switch to the do{} while(0) syntax the other macros
-> are using instead of that weird usage of ?:. And there's not really any
-> reason for the duplication between ADD/INC either. So I'm thinking
-> something like:
-> 
-> #define __STAT_SAVE(_priv, _member, _n) do { if (_priv) (_priv)->_member += (_n); } while(0)
-> 
-> #define TX_STAT_ADD(_priv, _c, _a) __STAT_SAVE(_priv, debug.tx_stats._c, _a)
-> #define TX_STAT_INC(_priv, _c) TX_STAT_ADD(_priv, _c, 1)
-> 
+I tested the wireless chip wilc1000 with the 5.16.5 Kernel and the firmware=
+ v15.4.1
+(https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.gi=
+t/tree/atmel/wilc1000_wifi_firmware-1.bin)
+on an i.MX6 QUAD with iperf3:
 
-Good point, thank you. Will redo these macros in v4
+# iperf3 -c IP_ADDR -P 16 -t 0=20
+
+After a while the test gets stuck and I got the following kernel messages:
+mmc0: Timeout waiting for hardware interrupt.
+mmc0: sdhci: =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D SDHCI REGISTER DUMP =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+mmc0: sdhci: Sys addr:  0x138f0200 | Version:  0x00000002
+mmc0: sdhci: Blk size:  0x00000158 | Blk cnt:  0x00000001
+mmc0: sdhci: Argument:  0x14000158 | Trn mode: 0x00000013
+mmc0: sdhci: Present:   0x01d88a0a | Host ctl: 0x00000013
+mmc0: sdhci: Power:     0x00000002 | Blk gap:  0x00000080
+mmc0: sdhci: Wake-up:   0x00000008 | Clock:    0x0000009f
+mmc0: sdhci: Timeout:   0x0000008f | Int stat: 0x00000000
+mmc0: sdhci: Int enab:  0x107f100b | Sig enab: 0x107f100b
+mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000003
+mmc0: sdhci: Caps:      0x07eb0000 | Caps_1:   0x0000a000
+mmc0: sdhci: Cmd:       0x0000353a | Max curr: 0x00ffffff
+mmc0: sdhci: Resp[0]:   0x00001000 | Resp[1]:  0x00000000
+mmc0: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
+mmc0: sdhci: Host ctl2: 0x00000000
+mmc0: sdhci: ADMA Err:  0x00000007 | ADMA Ptr: 0x4c041200
+mmc0: sdhci-esdhc-imx: =3D=3D=3D=3D=3D=3D=3D=3D=3D ESDHC IMX DEBUG STATUS D=
+UMP =3D=3D=3D=3D=3D=3D=3D=3D=3D
+mmc0: sdhci-esdhc-imx: cmd debug status:  0x2100
+mmc0: sdhci-esdhc-imx: data debug status:  0x2200
+mmc0: sdhci-esdhc-imx: trans debug status:  0x2300
+mmc0: sdhci-esdhc-imx: dma debug status:  0x2402
+mmc0: sdhci-esdhc-imx: adma debug status:  0x25b4
+mmc0: sdhci-esdhc-imx: fifo debug status:  0x2610
+mmc0: sdhci-esdhc-imx: async fifo debug status:  0x2751
+mmc0: sdhci: =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+wilc1000_sdio mmc0:0001:1: wilc_sdio_cmd53..failed, err(-110)
+wilc1000_sdio mmc0:0001:1: Failed cmd53 [0], bytes read...
+
+I tried to reduce the clock speed to 20MHz in the devicetree with
+max-frequency =3D <20000000>;
+but the problem then also occurs.
+
+Is this a possible bug?
 
 
-With regards,
-Pavel Skripkin
+Thanks in advance and best regards
+Christoph
