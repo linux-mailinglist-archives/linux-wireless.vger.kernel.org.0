@@ -2,447 +2,389 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E9774AD2E4
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 09:16:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CFED4AD324
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 09:22:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349019AbiBHIQC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Feb 2022 03:16:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51296 "EHLO
+        id S1349434AbiBHIV4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Feb 2022 03:21:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349140AbiBHIPs (ORCPT
+        with ESMTP id S1349429AbiBHIVi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Feb 2022 03:15:48 -0500
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89C81C03FEC0
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 00:15:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1644308146; x=1675844146;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
+        Tue, 8 Feb 2022 03:21:38 -0500
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB920C03FED4;
+        Tue,  8 Feb 2022 00:20:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1644308455; x=1675844455;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
    references:mime-version;
-  bh=MjsClt5qbvH9wL2OjFDC59rox4SWMJ1Y6bx3F7fBCFA=;
-  b=FMJr9A+MZxBxjn9VH+eX87DSnoLTK0JAvTKNmUv8SS/f66oI1c78jh/+
-   MEmggvVgANCu0ZwyjgFQQSaPJRoP/qGQ0vUJqxiskJnTvsbTL3bkW8S2O
-   j/kYq58bSWCp7Oy0wbLUUvxtB9QBhc/U8zLxDAnk1rNipxGRDhFoOBbI3
-   o=;
-Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 08 Feb 2022 00:13:45 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2022 00:13:45 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 8 Feb 2022 00:13:44 -0800
-Received: from cjhuang2-gv.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 8 Feb 2022 00:13:43 -0800
-From:   Carl Huang <quic_cjhuang@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v3 6/6] ath11k: support GTK rekey offload
-Date:   Tue, 8 Feb 2022 16:13:26 +0800
-Message-ID: <1644308006-22784-7-git-send-email-quic_cjhuang@quicinc.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1644308006-22784-1-git-send-email-quic_cjhuang@quicinc.com>
-References: <1644308006-22784-1-git-send-email-quic_cjhuang@quicinc.com>
+  bh=cWnjNS2T/J7AT4tEtPiiLipRQKwXs7zYxhjkP9k1ShA=;
+  b=cLDG5ySIWPZTBIUWOXGcCZb73Lp+QH3WcQSDDjaHhsZVDrTB37YdWE/A
+   ZqX+hPy+7bWNl9OQyhhE+vcVXAlo8p6e6Udb4tGT+oo2NXIosCYvy5u2t
+   vjpZyq6QqEbDJNAPOuyzYymdjeFzi2wF5pgXTTD19BQNcmJvX/a3t5qNA
+   vYox14nznWcyugl6NEJLNAkoaI37JnZvQ278vni69WliES32xQAvIZHrD
+   LyvuPj8+7CLqibeu0OVmE/GDxPnxzZEk9qGJhh8g8Tt+dFPgyLB5kq1Un
+   2rTGQSRJKMmaOewRoWYvmbsNpmWMr+T7OMF5oiOaz7vWNxqxYDt+pSklW
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10251"; a="232466438"
+X-IronPort-AV: E=Sophos;i="5.88,352,1635231600"; 
+   d="scan'208";a="232466438"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2022 00:20:55 -0800
+X-IronPort-AV: E=Sophos;i="5.88,352,1635231600"; 
+   d="scan'208";a="525460805"
+Received: from aanghelu-mobl.ger.corp.intel.com ([10.251.209.174])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2022 00:20:48 -0800
+Date:   Tue, 8 Feb 2022 10:19:14 +0200 (EET)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
+cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
+        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
+        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
+        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
+        haijun.liu@mediatek.com, amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
+        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
+        sreehari.kancharla@intel.com
+Subject: Re: [PATCH net-next v4 08/13] net: wwan: t7xx: Add data path
+ interface
+In-Reply-To: <20220114010627.21104-9-ricardo.martinez@linux.intel.com>
+Message-ID: <ca592f64-c581-56a8-8d90-5341ebd8932d@linux.intel.com>
+References: <20220114010627.21104-1-ricardo.martinez@linux.intel.com> <20220114010627.21104-9-ricardo.martinez@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Host sets GTK related info to firmware before WoW is enabled, and
-gets rekey replay_count and then disables GTK rekey when WoW quits.
+On Thu, 13 Jan 2022, Ricardo Martinez wrote:
 
-Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+> From: Haijun Liu <haijun.liu@mediatek.com>
+> 
+> Data Path Modem AP Interface (DPMAIF) HIF layer provides methods
+> for initialization, ISR, control and event handling of TX/RX flows.
+> 
+> DPMAIF TX
+> Exposes the `dmpaif_tx_send_skb` function which can be used by the
+> network device to transmit packets.
+> The uplink data management uses a Descriptor Ring Buffer (DRB).
+> First DRB entry is a message type that will be followed by 1 or more
+> normal DRB entries. Message type DRB will hold the skb information
+> and each normal DRB entry holds a pointer to the skb payload.
+> 
+> DPMAIF RX
+> The downlink buffer management uses Buffer Address Table (BAT) and
+> Packet Information Table (PIT) rings.
+> The BAT ring holds the address of skb data buffer for the HW to use,
+> while the PIT contains metadata about a whole network packet including
+> a reference to the BAT entry holding the data buffer address.
+> The driver reads the PIT and BAT entries written by the modem, when
+> reaching a threshold, the driver will reload the PIT and BAT rings.
+> 
+> Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
+> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+> ---
 
-Signed-off-by: Carl Huang <quic_cjhuang@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/core.h |   8 ++
- drivers/net/wireless/ath/ath11k/mac.c  |  32 +++++++
- drivers/net/wireless/ath/ath11k/wmi.c  | 119 +++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/wmi.h  |  49 ++++++++++
- drivers/net/wireless/ath/ath11k/wow.c  |  46 +++++++++-
- 5 files changed, 253 insertions(+), 1 deletion(-)
+> +	bat_req->bat_mask[idx] = 1;
+...
+> +		if (!bat_req->bat_mask[index])
+...
+> +		bat->bat_mask[index] = 0;
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 3a3fd3f87f84..3447330ef28e 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -230,6 +230,13 @@ struct ath11k_arp_ns_offload {
- 	u8  mac_addr[ETH_ALEN];
- };
- 
-+struct ath11k_rekey_data {
-+	u8 kck[NL80211_KCK_LEN];
-+	u8 kek[NL80211_KCK_LEN];
-+	u64 replay_ctr;
-+	bool enable_offload;
-+};
-+
- struct ath11k_vif {
- 	u32 vdev_id;
- 	enum wmi_vdev_type vdev_type;
-@@ -285,6 +292,7 @@ struct ath11k_vif {
- 	struct dentry *debugfs_twt;
- #endif /* CONFIG_ATH11K_DEBUGFS */
- 	struct ath11k_arp_ns_offload arp_ns_offload;
-+	struct ath11k_rekey_data rekey_data;
- };
- 
- struct ath11k_vif_iter {
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 609b4975efea..8af265de9f0d 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -2757,6 +2757,7 @@ static void ath11k_bss_assoc(struct ieee80211_hw *hw,
- 	}
- 
- 	arvif->is_up = true;
-+	arvif->rekey_data.enable_offload = false;
- 
- 	ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
- 		   "mac vdev %d up (associated) bssid %pM aid %d\n",
-@@ -2814,6 +2815,8 @@ static void ath11k_bss_disassoc(struct ieee80211_hw *hw,
- 
- 	arvif->is_up = false;
- 
-+	memset(&arvif->rekey_data, 0, sizeof(arvif->rekey_data));
-+
- 	cancel_delayed_work_sync(&arvif->connection_loss_work);
- }
- 
-@@ -8175,6 +8178,34 @@ static void ath11k_mac_op_ipv6_changed(struct ieee80211_hw *hw,
- 	ath11k_generate_ns_mc_addr(ar, offload);
- }
- 
-+static void ath11k_mac_op_set_rekey_data(struct ieee80211_hw *hw,
-+					 struct ieee80211_vif *vif,
-+					 struct cfg80211_gtk_rekey_data *data)
-+{
-+	struct ath11k *ar = hw->priv;
-+	struct ath11k_vif *arvif = ath11k_vif_to_arvif(vif);
-+	struct ath11k_rekey_data *rekey_data = &arvif->rekey_data;
-+
-+	ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "Set rekey data vdev_id %d\n",
-+		   arvif->vdev_id);
-+	mutex_lock(&ar->conf_mutex);
-+
-+	memcpy(rekey_data->kck, data->kck, NL80211_KCK_LEN);
-+	memcpy(rekey_data->kek, data->kek, NL80211_KEK_LEN);
-+
-+	/* supplicant works on big-endian, converts to cpu-endian */
-+	rekey_data->replay_ctr = be64_to_cpu(get_unaligned((u64 *)data->replay_ctr));
-+	arvif->rekey_data.enable_offload = true;
-+
-+	ath11k_dbg_dump(ar->ab, ATH11K_DBG_MAC, "KCK", NULL,
-+			rekey_data->kck, NL80211_KCK_LEN);
-+	ath11k_dbg_dump(ar->ab, ATH11K_DBG_MAC, "KEK", NULL,
-+			rekey_data->kck, NL80211_KEK_LEN);
-+	ath11k_dbg_dump(ar->ab, ATH11K_DBG_MAC, "replay ctr", NULL,
-+			&rekey_data->replay_ctr, sizeof(rekey_data->replay_ctr));
-+	mutex_unlock(&ar->conf_mutex);
-+}
-+
- static const struct ieee80211_ops ath11k_ops = {
- 	.tx				= ath11k_mac_op_tx,
- 	.start                          = ath11k_mac_op_start,
-@@ -8189,6 +8220,7 @@ static const struct ieee80211_ops ath11k_ops = {
- 	.hw_scan                        = ath11k_mac_op_hw_scan,
- 	.cancel_hw_scan                 = ath11k_mac_op_cancel_hw_scan,
- 	.set_key                        = ath11k_mac_op_set_key,
-+	.set_rekey_data	                = ath11k_mac_op_set_rekey_data,
- 	.sta_state                      = ath11k_mac_op_sta_state,
- 	.sta_set_4addr                  = ath11k_mac_op_sta_set_4addr,
- 	.sta_set_txpwr			= ath11k_mac_op_sta_set_txpwr,
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 094308d568d7..2185da7abb69 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -7765,6 +7765,56 @@ static void ath11k_wmi_twt_add_dialog_event(struct ath11k_base *ab,
- 	kfree(tb);
- }
- 
-+static void
-+ath11k_wmi_gtk_offload_status_event(struct ath11k_base *ab,
-+				    struct sk_buff *skb)
-+{
-+	const void **tb;
-+	const struct wmi_gtk_offload_status_event *ev;
-+	struct ath11k_vif *arvif;
-+	__be64 replay_ctr_be;
-+	u64    replay_ctr;
-+	int ret;
-+
-+	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
-+	if (IS_ERR(tb)) {
-+		ret = PTR_ERR(tb);
-+		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
-+		return;
-+	}
-+
-+	ev = tb[WMI_TAG_GTK_OFFLOAD_STATUS_EVENT];
-+	if (!ev) {
-+		ath11k_warn(ab, "failed to fetch gtk offload status ev");
-+		kfree(tb);
-+		return;
-+	}
-+
-+	arvif = ath11k_mac_get_arvif_by_vdev_id(ab, ev->vdev_id);
-+	if (!arvif) {
-+		ath11k_warn(ab, "failed to get arvif for vdev_id:%d\n",
-+			    ev->vdev_id);
-+		kfree(tb);
-+		return;
-+	}
-+
-+	ath11k_dbg(ab, ATH11K_DBG_WMI, "gtk offload event refresh_cnt:%d\n",
-+		   ev->refresh_cnt);
-+	ath11k_dbg_dump(ab, ATH11K_DBG_WMI, "gtk offload event replay_cnt",
-+			NULL, ev->replay_ctr.counter, GTK_REPLAY_COUNTER_BYTES);
-+
-+	replay_ctr =  ev->replay_ctr.word1;
-+	replay_ctr = (replay_ctr << 32) | ev->replay_ctr.word0;
-+	arvif->rekey_data.replay_ctr = replay_ctr;
-+	/* supplicant expects big-endian replay counter */
-+	replay_ctr_be = cpu_to_be64(replay_ctr);
-+
-+	ieee80211_gtk_rekey_notify(arvif->vif, arvif->bssid,
-+				   (void *)&replay_ctr_be, GFP_KERNEL);
-+
-+	kfree(tb);
-+}
-+
- static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- {
- 	struct wmi_cmd_hdr *cmd_hdr;
-@@ -7896,6 +7946,9 @@ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- 	case WMI_DIAG_EVENTID:
- 		ath11k_wmi_diag_event(ab, skb);
- 		break;
-+	case WMI_GTK_OFFLOAD_STATUS_EVENTID:
-+		ath11k_wmi_gtk_offload_status_event(ab, skb);
-+		break;
- 	/* TODO: Add remaining events */
- 	default:
- 		ath11k_dbg(ab, ATH11K_DBG_WMI, "Unknown eventid: 0x%x\n", id);
-@@ -8728,3 +8781,69 @@ int ath11k_wmi_arp_ns_offload(struct ath11k *ar,
- 
- 	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_SET_ARP_NS_OFFLOAD_CMDID);
- }
-+
-+int ath11k_wmi_gtk_rekey_offload(struct ath11k *ar,
-+				 struct ath11k_vif *arvif, bool enable)
-+{
-+	struct wmi_gtk_rekey_offload_cmd *cmd;
-+	struct ath11k_rekey_data *rekey_data = &arvif->rekey_data;
-+	int len;
-+	struct sk_buff *skb;
-+	__le64 replay_ctr;
-+
-+	len = sizeof(*cmd);
-+	skb =  ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	cmd = (struct wmi_gtk_rekey_offload_cmd *)skb->data;
-+	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_GTK_OFFLOAD_CMD) |
-+			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
-+
-+	cmd->vdev_id = arvif->vdev_id;
-+
-+	if (enable) {
-+		cmd->flags = GTK_OFFLOAD_ENABLE_OPCODE;
-+
-+		/* the length in rekey_data and cmd is equal */
-+		memcpy(cmd->kck, rekey_data->kck, sizeof(cmd->kck));
-+		ath11k_ce_byte_swap(cmd->kck, GTK_OFFLOAD_KEK_BYTES);
-+		memcpy(cmd->kek, rekey_data->kek, sizeof(cmd->kek));
-+		ath11k_ce_byte_swap(cmd->kek, GTK_OFFLOAD_KEK_BYTES);
-+
-+		replay_ctr = cpu_to_le64(rekey_data->replay_ctr);
-+		memcpy(cmd->replay_ctr, &replay_ctr,
-+		       sizeof(replay_ctr));
-+		ath11k_ce_byte_swap(cmd->replay_ctr, GTK_REPLAY_COUNTER_BYTES);
-+	} else {
-+		cmd->flags = GTK_OFFLOAD_DISABLE_OPCODE;
-+	}
-+
-+	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "offload gtk rekey vdev: %d %d\n",
-+		   arvif->vdev_id, enable);
-+	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_GTK_OFFLOAD_CMDID);
-+}
-+
-+int ath11k_wmi_gtk_rekey_getinfo(struct ath11k *ar,
-+				 struct ath11k_vif *arvif)
-+{
-+	struct wmi_gtk_rekey_offload_cmd *cmd;
-+	int len;
-+	struct sk_buff *skb;
-+
-+	len = sizeof(*cmd);
-+	skb =  ath11k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	cmd = (struct wmi_gtk_rekey_offload_cmd *)skb->data;
-+	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_GTK_OFFLOAD_CMD) |
-+			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
-+
-+	cmd->vdev_id = arvif->vdev_id;
-+	cmd->flags = GTK_OFFLOAD_REQUEST_STATUS_OPCODE;
-+
-+	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "get gtk rekey vdev_id: %d\n",
-+		   arvif->vdev_id);
-+	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_GTK_OFFLOAD_CMDID);
-+}
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index b3b547c20375..6073233973cb 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -5840,6 +5840,51 @@ struct wmi_set_arp_ns_offload_cmd {
- 	 */
- } __packed;
- 
-+#define GTK_OFFLOAD_OPCODE_MASK             0xFF000000
-+#define GTK_OFFLOAD_ENABLE_OPCODE           0x01000000
-+#define GTK_OFFLOAD_DISABLE_OPCODE          0x02000000
-+#define GTK_OFFLOAD_REQUEST_STATUS_OPCODE   0x04000000
-+
-+#define GTK_OFFLOAD_KEK_BYTES       16
-+#define GTK_OFFLOAD_KCK_BYTES       16
-+#define GTK_REPLAY_COUNTER_BYTES    8
-+#define WMI_MAX_KEY_LEN             32
-+#define IGTK_PN_SIZE                6
-+
-+struct wmi_replayc_cnt {
-+	union {
-+		u8 counter[GTK_REPLAY_COUNTER_BYTES];
-+		struct {
-+			u32 word0;
-+			u32 word1;
-+		} __packed;
-+	} __packed;
-+} __packed;
-+
-+struct wmi_gtk_offload_status_event {
-+	u32 vdev_id;
-+	u32 flags;
-+	u32 refresh_cnt;
-+	struct wmi_replayc_cnt replay_ctr;
-+	u8 igtk_key_index;
-+	u8 igtk_key_length;
-+	u8 igtk_key_rsc[IGTK_PN_SIZE];
-+	u8 igtk_key[WMI_MAX_KEY_LEN];
-+	u8 gtk_key_index;
-+	u8 gtk_key_length;
-+	u8 gtk_key_rsc[GTK_REPLAY_COUNTER_BYTES];
-+	u8 gtk_key[WMI_MAX_KEY_LEN];
-+} __packed;
-+
-+struct wmi_gtk_rekey_offload_cmd {
-+	u32 tlv_header;
-+	u32 vdev_id;
-+	u32 flags;
-+	u8 kek[GTK_OFFLOAD_KEK_BYTES];
-+	u8 kck[GTK_OFFLOAD_KCK_BYTES];
-+	u8 replay_ctr[GTK_REPLAY_COUNTER_BYTES];
-+} __packed;
-+
- int ath11k_wmi_cmd_send(struct ath11k_pdev_wmi *wmi, struct sk_buff *skb,
- 			u32 cmd_id);
- struct sk_buff *ath11k_wmi_alloc_skb(struct ath11k_wmi_base *wmi_sc, u32 len);
-@@ -6014,4 +6059,8 @@ int ath11k_wmi_send_hw_data_filter_cmd(struct ath11k *ar, u32 vdev_id,
- 				       u32 filter_bitmap, bool enable);
- int ath11k_wmi_arp_ns_offload(struct ath11k *ar,
- 			      struct ath11k_vif *arvif, bool enable);
-+int ath11k_wmi_gtk_rekey_offload(struct ath11k *ar,
-+				 struct ath11k_vif *arvif, bool enable);
-+int ath11k_wmi_gtk_rekey_getinfo(struct ath11k *ar,
-+				 struct ath11k_vif *arvif);
- #endif
-diff --git a/drivers/net/wireless/ath/ath11k/wow.c b/drivers/net/wireless/ath/ath11k/wow.c
-index a57f2ff9196d..cdb154fd9367 100644
---- a/drivers/net/wireless/ath/ath11k/wow.c
-+++ b/drivers/net/wireless/ath/ath11k/wow.c
-@@ -17,7 +17,9 @@
- 
- static const struct wiphy_wowlan_support ath11k_wowlan_support = {
- 	.flags = WIPHY_WOWLAN_DISCONNECT |
--		 WIPHY_WOWLAN_MAGIC_PKT,
-+		 WIPHY_WOWLAN_MAGIC_PKT |
-+		 WIPHY_WOWLAN_SUPPORTS_GTK_REKEY |
-+		 WIPHY_WOWLAN_GTK_REKEY_FAILURE,
- 	.pattern_min_len = WOW_MIN_PATTERN_SIZE,
- 	.pattern_max_len = WOW_MAX_PATTERN_SIZE,
- 	.max_pkt_offset = WOW_MAX_PKT_OFFSET,
-@@ -578,6 +580,41 @@ static int ath11k_wow_arp_ns_offload(struct ath11k *ar, bool enable)
- 	return 0;
- }
- 
-+static int ath11k_gtk_rekey_offload(struct ath11k *ar, bool enable)
-+{
-+	struct ath11k_vif *arvif;
-+	int ret;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	list_for_each_entry(arvif, &ar->arvifs, list) {
-+		if (arvif->vdev_type != WMI_VDEV_TYPE_STA ||
-+		    !arvif->is_up ||
-+		    !arvif->rekey_data.enable_offload)
-+			continue;
-+
-+		/* get rekey info before disable rekey offload */
-+		if (!enable) {
-+			ret = ath11k_wmi_gtk_rekey_getinfo(ar, arvif);
-+			if (ret) {
-+				ath11k_warn(ar->ab, "failed to request rekey info vdev %i, ret %d\n",
-+					    arvif->vdev_id, ret);
-+				return ret;
-+			}
-+		}
-+
-+		ret = ath11k_wmi_gtk_rekey_offload(ar, arvif, enable);
-+
-+		if (ret) {
-+			ath11k_warn(ar->ab, "failed to offload gtk reky vdev %i: enable %d, ret %d\n",
-+				    arvif->vdev_id, enable, ret);
-+			return ret;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static int ath11k_wow_protocol_offload(struct ath11k *ar, bool enable)
- {
- 	int ret;
-@@ -589,6 +626,13 @@ static int ath11k_wow_protocol_offload(struct ath11k *ar, bool enable)
- 		return ret;
- 	}
- 
-+	ret = ath11k_gtk_rekey_offload(ar, enable);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to offload gtk rekey %d %d\n",
-+			    enable, ret);
-+		return ret;
-+	}
-+
- 	return 0;
- }
- 
+Seem to be linux/bitmap.h
+
+I wonder though if the loop in t7xx_dpmaif_avail_pkt_bat_cnt()
+could be replaced with arithmetic calculation based on
+bat_release_rd_idx and some other idx? It would make the bitmap
+unnecessary.
+
+> +static int t7xx_dpmaif_rx_start(struct dpmaif_rx_queue *rxq, const unsigned short pit_cnt,
+> +				const unsigned long timeout)
+> +{
+> +	struct device *dev = rxq->dpmaif_ctrl->dev;
+> +	struct dpmaif_cur_rx_skb_info *skb_info;
+> +	unsigned short rx_cnt, recv_skb_cnt = 0;
+
+unsigned int
+
+I'd also use unsigned int for all those local variables dealing
+with the indexes instead of unsigned short.
+
+> +static int t7xx_dpmaif_rx_data_collect(struct dpmaif_ctrl *dpmaif_ctrl,
+> +				       const unsigned char q_num, const int budget)
+> +{
+> +	struct dpmaif_rx_queue *rxq = &dpmaif_ctrl->rxq[q_num];
+> +	unsigned long time_limit;
+> +	unsigned int cnt;
+> +
+> +	time_limit = jiffies + msecs_to_jiffies(DPMAIF_WQ_TIME_LIMIT_MS);
+> +
+> +	do {
+> +		unsigned int rd_cnt;
+> +		int real_cnt;
+> +
+> +		cnt = t7xx_dpmaifq_poll_pit(rxq);
+> +		if (!cnt)
+> +			break;
+> +
+> +		if (!rxq->pit_base)
+> +			return -EAGAIN;
+> +
+> +		rd_cnt = cnt > budget ? budget : cnt;
+
+min_t or min (after making budget const unsigned int).
+
+> +		real_cnt = t7xx_dpmaif_rx_start(rxq, rd_cnt, time_limit);
+> +		if (real_cnt < 0)
+> +			return real_cnt;
+> +
+> +		if (real_cnt < cnt)
+> +			return -EAGAIN;
+> +
+> +	} while (cnt);
+
+With the break already inside the loop for the same condition,
+this check is dead-code.
+
+> +	hw_read_idx = t7xx_dpmaif_ul_get_rd_idx(&dpmaif_ctrl->hif_hw_info, q_num);
+> +
+> +	new_hw_rd_idx = hw_read_idx / DPMAIF_UL_DRB_ENTRY_WORD;
+
+Is DPMAIF_UL_DRB_ENTRY_WORD size of an entry? In that case it
+would probably make sense put it inside t7xx_dpmaif_ul_get_rd_idx?
+
+> +	if (new_hw_rd_idx >= DPMAIF_DRB_ENTRY_SIZE) {
+
+Is DPMAIF_DRB_ENTRY_SIZE telling the number of entries rather than
+an "ENTRY_SIZE"? I think these both constant could likely be named 
+better.
+
+> +	drb->header_dw1 = cpu_to_le32(FIELD_PREP(DRB_MSG_DTYP, DES_DTYP_MSG));
+> +	drb->header_dw1 |= cpu_to_le32(FIELD_PREP(DRB_MSG_CONT, 1));
+> +	drb->header_dw1 |= cpu_to_le32(FIELD_PREP(DRB_MSG_PACKET_LEN, pkt_len));
+> +
+> +	drb->header_dw2 = cpu_to_le32(FIELD_PREP(DRB_MSG_COUNT_L, count_l));
+> +	drb->header_dw2 |= cpu_to_le32(FIELD_PREP(DRB_MSG_CHANNEL_ID, channel_id));
+> +	drb->header_dw2 |= cpu_to_le32(FIELD_PREP(DRB_MSG_L4_CHK, 1));
+
+I'd do:
+drb->header_dw1 = cpu_to_le32(FIELD_PREP(DRB_MSG_DTYP, DES_DTYP_MSG) |
+                              FIELD_PREP(DRB_MSG_CONT, 1) |
+                              FIELD_PREP(DRB_MSG_PACKET_LEN, pkt_len));
+
+
+> +static void t7xx_setup_payload_drb(struct dpmaif_ctrl *dpmaif_ctrl, unsigned char q_num,
+> +				   unsigned short cur_idx, dma_addr_t data_addr,
+> +				   unsigned int pkt_size, char last_one)
+
+bool last_one
+
+> +	struct skb_shared_info *info;
+
+Variable usually called shinfo.
+
+> +	spin_lock_irqsave(&txq->tx_lock, flags);
+> +	cur_idx = txq->drb_wr_idx;
+> +	drb_wr_idx_backup = cur_idx;
+> +
+> +	txq->drb_wr_idx += send_cnt;
+> +	if (txq->drb_wr_idx >= txq->drb_size_cnt)
+> +		txq->drb_wr_idx -= txq->drb_size_cnt;
+> +
+> +	t7xx_setup_msg_drb(dpmaif_ctrl, txq->index, cur_idx, skb->len, 0, skb->cb[TX_CB_NETIF_IDX]);
+> +	t7xx_record_drb_skb(dpmaif_ctrl, txq->index, cur_idx, skb, 1, 0, 0, 0, 0);
+> +	spin_unlock_irqrestore(&txq->tx_lock, flags);
+> +
+> +	cur_idx = t7xx_ring_buf_get_next_wr_idx(txq->drb_size_cnt, cur_idx);
+> +
+> +	for (wr_cnt = 0; wr_cnt < payload_cnt; wr_cnt++) {
+> +		if (!wr_cnt) {
+> +			data_len = skb_headlen(skb);
+> +			data_addr = skb->data;
+> +			is_frag = false;
+> +		} else {
+> +			skb_frag_t *frag = info->frags + wr_cnt - 1;
+> +
+> +			data_len = skb_frag_size(frag);
+> +			data_addr = skb_frag_address(frag);
+> +			is_frag = true;
+> +		}
+> +
+> +		if (wr_cnt == payload_cnt - 1)
+> +			is_last_one = true;
+> +
+> +		/* TX mapping */
+> +		bus_addr = dma_map_single(dpmaif_ctrl->dev, data_addr, data_len, DMA_TO_DEVICE);
+> +		if (dma_mapping_error(dpmaif_ctrl->dev, bus_addr)) {
+> +			dev_err(dpmaif_ctrl->dev, "DMA mapping fail\n");
+> +			atomic_set(&txq->tx_processing, 0);
+> +
+> +			spin_lock_irqsave(&txq->tx_lock, flags);
+> +			txq->drb_wr_idx = drb_wr_idx_backup;
+> +			spin_unlock_irqrestore(&txq->tx_lock, flags);
+
+Hmm, can txq's drb_wr_idx get updated (or cleared) by something else
+in between these critical sections?
+
+That "TX mapping" comment seems to just state the obvious.
+
+> +static int t7xx_txq_burst_send_skb(struct dpmaif_tx_queue *txq)
+> +{
+> +	int drb_remain_cnt, i;
+> +	unsigned long flags;
+> +	int drb_cnt = 0;
+> +	int ret = 0;
+> +
+> +	spin_lock_irqsave(&txq->tx_lock, flags);
+> +	drb_remain_cnt = t7xx_ring_buf_rd_wr_count(txq->drb_size_cnt, txq->drb_release_rd_idx,
+> +						   txq->drb_wr_idx, DPMAIF_WRITE);
+> +	spin_unlock_irqrestore(&txq->tx_lock, flags);
+> +
+> +	for (i = 0; i < DPMAIF_SKB_TX_BURST_CNT; i++) {
+> +		struct sk_buff *skb;
+> +
+> +		spin_lock_irqsave(&txq->tx_skb_lock, flags);
+> +		skb = list_first_entry_or_null(&txq->tx_skb_queue, struct sk_buff, list);
+> +		spin_unlock_irqrestore(&txq->tx_skb_lock, flags);
+> +
+> +		if (!skb)
+> +			break;
+> +
+> +		if (drb_remain_cnt < skb->cb[TX_CB_DRB_CNT]) {
+> +			spin_lock_irqsave(&txq->tx_lock, flags);
+> +			drb_remain_cnt = t7xx_ring_buf_rd_wr_count(txq->drb_size_cnt,
+> +								   txq->drb_release_rd_idx,
+> +								   txq->drb_wr_idx, DPMAIF_WRITE);
+> +			spin_unlock_irqrestore(&txq->tx_lock, flags);
+> +			continue;
+> +		}
+...
+> +	if (drb_cnt > 0) {
+> +		txq->drb_lack = false;
+> +		ret = drb_cnt;
+> +	} else if (ret == -ENOMEM) {
+> +		txq->drb_lack = true;
+
+Based on the variable name, I'd expect drb_lack be set true when
+drb_remain_cnt < skb->cb[TX_CB_DRB_CNT] occurred but that doesn't
+happen. Maybe that if branch within loop should set ret = -ENOMEM;
+before continue?
+
+It would be nice if the drb check here and in
+t7xx_check_tx_queue_drb_available could be consolidated into
+a single place. That requires small refactoring (adding __
+variant of that function which does just the check).
+
+Please also check the other comments on skb->cb below.
+
+> +		txq_id = t7xx_select_tx_queue(dpmaif_ctrl);
+> +		if (txq_id >= 0) {
+
+t7xx_select_tx_queue used to do que_started check (in v2) but it
+doesn't anymore so this if is always true these days. I'm left to
+wonder though if it was ok to drop that que_started check?
+
+> +static unsigned char t7xx_get_drb_cnt_per_skb(struct sk_buff *skb)
+> +{
+> +	/* Normal DRB (frags data + skb linear data) + msg DRB */
+> +	return skb_shinfo(skb)->nr_frags + 2;
+> +}
+
+I'd rename this to t7xx_skb_drb_cnt().
+
+> +int t7xx_dpmaif_tx_send_skb(struct dpmaif_ctrl *dpmaif_ctrl, unsigned int txqt, struct sk_buff *skb)
+> +{
+> +	bool tx_drb_available = true;
+...
+> +	send_drb_cnt = t7xx_get_drb_cnt_per_skb(skb);
+> +
+> +	txq = &dpmaif_ctrl->txq[txqt];
+> +	if (!(txq->tx_skb_stat++ % DPMAIF_SKB_TX_BURST_CNT))
+> +		tx_drb_available = t7xx_check_tx_queue_drb_available(txq, send_drb_cnt);
+> +
+> +	if (!tx_drb_available || txq->tx_submit_skb_cnt >= txq->tx_list_max_len) {
+
+Because of the modulo if, drbs might not be available despite
+variable claims them to be. Is it intentional?
+
+> +		if (FIELD_GET(DRB_SKB_IS_LAST, drb_skb->config)) {
+> +			kfree_skb(drb_skb->skb);
+
+dev_kfree_...?
+
+
+> +void t7xx_dpmaif_tx_stop(struct dpmaif_ctrl *dpmaif_ctrl)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < DPMAIF_TXQ_NUM; i++) {
+> +		struct dpmaif_tx_queue *txq;
+> +		int count;
+> +
+> +		txq = &dpmaif_ctrl->txq[i];
+> +		txq->que_started = false;
+> +		/* Ensure tx_processing is changed to 1 before actually begin TX flow */
+> +		smp_mb();
+> +
+> +		/* Confirm that SW will not transmit */
+> +		count = 0;
+> +
+> +		while (atomic_read(&txq->tx_processing)) {
+
+That "Ensure ..." comment should be reworded as it makes little
+sense as is for 2 reasons:
+- We're in _stop, not begin tx func
+- tx_processing isn't changed to 1 here
+
+> +/* SKB control buffer indexed values */
+> +#define TX_CB_NETIF_IDX		0
+> +#define TX_CB_QTYPE		1
+> +#define TX_CB_DRB_CNT		2
+
+The normal way of storing a struct to skb->cb area is:
+
+struct t7xx_skb_cb {
+	u8	netif_idx;
+	u8	qtype;
+	u8	drb_cnt;
+};
+
+#define T7XX_SKB_CB(__skb)	((struct t7xx_skb_cb *)&((__skb)->cb[0]))
+
+However, there's only a single txqt/qtype (TXQ_TYPE_DEFAULT) in the 
+patchset? And it seems to me that drb_cnt is a value that could be always
+derived using t7xx_get_drb_cnt_per_skb() from the skb rather than
+stored?
+
+> +#define DRB_PD_DATA_LEN		((u32)GENMASK(31, 16))
+Drop the cast?
+
+> +struct dpmaif_drb_skb {
+...
+> +	u16			config;
+> +};
+> +
+> +#define DRB_SKB_IS_LAST		BIT(15)
+> +#define DRB_SKB_IS_FRAG		BIT(14)
+> +#define DRB_SKB_IS_MSG		BIT(13)
+> +#define DRB_SKB_DRB_IDX		GENMASK(12, 0)
+
+These are not HW related (don't care about endianess)? I guess
+C bitfield could be used for them.
+
+
 -- 
-2.32.0
+ i.
 
