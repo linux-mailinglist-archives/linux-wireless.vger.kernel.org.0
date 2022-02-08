@@ -2,43 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 115D84ADB7C
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 15:47:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B1224ADCB0
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 16:32:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378393AbiBHOrb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Feb 2022 09:47:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43876 "EHLO
+        id S1380451AbiBHPcR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Feb 2022 10:32:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378387AbiBHOr2 (ORCPT
+        with ESMTP id S235109AbiBHPcQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Feb 2022 09:47:28 -0500
+        Tue, 8 Feb 2022 10:32:16 -0500
 Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2002::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3B58C061576
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 06:47:25 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B917C061576;
+        Tue,  8 Feb 2022 07:32:15 -0800 (PST)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1644331641; bh=8Tibnb0HPy/7mdHJBFIbL6WT6EKCaNnLV6FVMpD0DPA=;
+        t=1644334333; bh=wgBzt5vK3cFN8FMnyCpL9e4AgZNfJRkAyZy5pNQF5Y8=;
         h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=BJLE3F6jy5fODGAPjKKNfRmbANEnR0XP6yo9kopb13WZwtQ7LkA/HEwCKjuhQxOiP
-         34wnF4UNA82IshvjpJdHQppx0uo0fse3Rhbw8WbcJLUc/yqgUcGRxSZ0NAXzKO8VvM
-         0A+rSOtOjaxssX9WCa+brWeYpX8Jvj440lVirFIl1YAkIFtn+HgoUSwtPUMnvOUz+n
-         2TzqSm1arCnaB8rqqq7c2rcihL9rympSVmx/zKSGZ/6ekb6kihrjd9Np8ne0uvcypc
-         gewk13AhxBMeHTnsiQxnEzsuG5HZWnL6WN+kyvvZVVAAT2/SYgQSPKAvoU4no4cps5
-         C3OnaIk2snLDw==
-To:     Pavel Skripkin <paskripkin@gmail.com>,
+        b=SDtmhTSuRrLIi0rBu2TtRfajchoprAs5Y921ThZLf60QXQWj6C62Z5d3CntC9fB8Y
+         ez/6QuDAttYFRjncVb18h5leoNYSIKF36l4hIHnk0J88KgCvWwFD6tjAuTSGcS67fq
+         KgxpwbYrlF0bYZJyz4sRLqrY0/AWc5OOOR41hFO7tBxRgfaBOG50spbTS16HvvZISB
+         OfOpaj5w6vLOhL2ndpQwatDM2xZvXdeHDQAL4mzNzU7krdAzhVE8HgMv+kAuZNBseT
+         btlWIBr5CH4FAUjEDGuNNOxcV4COjwF9Y3PB43j2h8/q5b8xTUiyCSq23x7nMrHLK1
+         O5SZLzArGhTxw==
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Pavel Skripkin <paskripkin@gmail.com>,
         ath9k-devel@qca.qualcomm.com, kvalo@kernel.org,
         davem@davemloft.net, kuba@kernel.org, linville@tuxdriver.com
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Pavel Skripkin <paskripkin@gmail.com>,
-        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
-        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
-Subject: Re: [PATCH v3 1/2] ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
-In-Reply-To: <80962aae265995d1cdb724f5362c556d494c7566.1644265120.git.paskripkin@gmail.com>
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] ath9k: htc: clean up *STAT_* macros
+In-Reply-To: <258ac12b-9ca3-9b24-30df-148f9df51582@quicinc.com>
 References: <80962aae265995d1cdb724f5362c556d494c7566.1644265120.git.paskripkin@gmail.com>
-Date:   Tue, 08 Feb 2022 15:47:20 +0100
+ <28c83b99b8fea0115ad7fbda7cc93a86468ec50d.1644265120.git.paskripkin@gmail.com>
+ <258ac12b-9ca3-9b24-30df-148f9df51582@quicinc.com>
+Date:   Tue, 08 Feb 2022 16:32:13 +0100
 X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87h799a007.fsf@toke.dk>
+Message-ID: <87ee4d9xxe.fsf@toke.dk>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -50,40 +50,80 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pavel Skripkin <paskripkin@gmail.com> writes:
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb(). The
-> problem was in incorrect htc_handle->drv_priv initialization.
+> On 2/7/2022 12:24 PM, Pavel Skripkin wrote:
+>> I've changed *STAT_* macros a bit in previous patch and I seems like
+>> they become really unreadable. Align these macros definitions to make
+>> code cleaner.
+>> 
+>> Also fixed following checkpatch warning
+>> 
+>> ERROR: Macros with complex values should be enclosed in parentheses
+>> 
+>> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+>> ---
+>> 
+>> Changes since v2:
+>> 	- My send-email script forgot, that mailing lists exist.
+>> 	  Added back all related lists
+>> 	- Fixed checkpatch warning
+>> 
+>> Changes since v1:
+>> 	- Added this patch
+>> 
+>> ---
+>>   drivers/net/wireless/ath/ath9k/htc.h | 16 ++++++++--------
+>>   1 file changed, 8 insertions(+), 8 deletions(-)
+>> 
+>> diff --git a/drivers/net/wireless/ath/ath9k/htc.h b/drivers/net/wireless/ath/ath9k/htc.h
+>> index 141642e5e00d..b4755e21a501 100644
+>> --- a/drivers/net/wireless/ath/ath9k/htc.h
+>> +++ b/drivers/net/wireless/ath/ath9k/htc.h
+>> @@ -327,14 +327,14 @@ static inline struct ath9k_htc_tx_ctl *HTC_SKB_CB(struct sk_buff *skb)
+>>   }
+>>   
+>>   #ifdef CONFIG_ATH9K_HTC_DEBUGFS
+>> -#define __STAT_SAVE(expr) (hif_dev->htc_handle->drv_priv ? (expr) : 0)
+>> -#define TX_STAT_INC(c) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
+>> -#define TX_STAT_ADD(c, a) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
+>> -#define RX_STAT_INC(c) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
+>> -#define RX_STAT_ADD(c, a) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
+>> -#define CAB_STAT_INC   priv->debug.tx_stats.cab_queued++
+>> -
+>> -#define TX_QSTAT_INC(q) (priv->debug.tx_stats.queue_stats[q]++)
+>> +#define __STAT_SAVE(expr)	(hif_dev->htc_handle->drv_priv ? (expr) : 0)
+>> +#define TX_STAT_INC(c)		__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
+>> +#define TX_STAT_ADD(c, a)	__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
+>> +#define RX_STAT_INC(c)		__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
+>> +#define RX_STAT_ADD(c, a)	__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
+>> +#define CAB_STAT_INC		(priv->debug.tx_stats.cab_queued++)
+>> +
+>> +#define TX_QSTAT_INC(q)		(priv->debug.tx_stats.queue_stats[q]++)
+>>   
+>>   void ath9k_htc_err_stat_rx(struct ath9k_htc_priv *priv,
+>>   			   struct ath_rx_status *rs);
 >
-> Probable call trace which can trigger use-after-free:
->
-> ath9k_htc_probe_device()
->   /* htc_handle->drv_priv = priv; */
->   ath9k_htc_wait_for_target()      <--- Failed
->   ieee80211_free_hw()		   <--- priv pointer is freed
->
-> <IRQ>
-> ...
-> ath9k_hif_usb_rx_cb()
->   ath9k_hif_usb_rx_stream()
->    RX_STAT_INC()		<--- htc_handle->drv_priv access
->
-> In order to not add fancy protection for drv_priv we can move
-> htc_handle->drv_priv initialization at the end of the
-> ath9k_htc_probe_device() and add helper macro to make
-> all *_STAT_* macros NULL save.
+> It seems that these macros (both the original and the new) aren't 
+> following the guidance from the Coding Style which tells us under 
+> "Things to avoid when using macros" that we should avoid "macros that 
+> depend on having a local variable with a magic name". Wouldn't these 
+> macros be "better" is they included the hif_dev/priv as arguments rather 
+> than being "magic"?
 
-I'm not too familiar with how the initialisation flow of an ath9k_htc
-device works. Looking at htc_handle->drv_priv there seems to
-be three other functions apart from the stat counters that dereference
-it:
+Hmm, yeah, that's a good point; looks like the non-HTC ath9k stats
+macros have already been converted to take the container as a parameter,
+so taking this opportunity to fix these macros is not a bad idea. While
+we're at it, let's switch to the do{} while(0) syntax the other macros
+are using instead of that weird usage of ?:. And there's not really any
+reason for the duplication between ADD/INC either. So I'm thinking
+something like:
 
-ath9k_htc_suspend()
-ath9k_htc_resume()
-ath9k_hif_usb_disconnect()
+#define __STAT_SAVE(_priv, _member, _n) do { if (_priv) (_priv)->_member += (_n); } while(0)
 
-What guarantees that none of these will be called midway through
-ath9k_htc_probe_device() (which would lead to a NULL deref after this
-change)?
+#define TX_STAT_ADD(_priv, _c, _a) __STAT_SAVE(_priv, debug.tx_stats._c, _a)
+#define TX_STAT_INC(_priv, _c) TX_STAT_ADD(_priv, _c, 1)
+
+[... etc ...]
 
 -Toke
