@@ -2,165 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D249B4AD71B
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 12:32:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 177504AD816
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Feb 2022 13:03:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359792AbiBHLbr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Feb 2022 06:31:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40312 "EHLO
+        id S244303AbiBHMCz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Feb 2022 07:02:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357033AbiBHLU5 (ORCPT
+        with ESMTP id S242819AbiBHMCy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Feb 2022 06:20:57 -0500
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 999FCC03FEC0
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 03:20:55 -0800 (PST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 214925C00E0;
-        Tue,  8 Feb 2022 06:20:53 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Tue, 08 Feb 2022 06:20:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=d7RS28//0ruM0Q55s
-        H7s2j4TekvjwqskaG8l3o1lxzo=; b=ihW/Y8snH6aDQ9BEd8pFdh5V5racXFvxv
-        LLSdjantrGQeeHNhUnLZ1VaY45d013rqG6NURq3jKKusrvdovx4pwX7Z9S/vzDMJ
-        cVE/zHApa+dwp/LS0yK3ygXV2L68f0jJzyYC5rWj8zL5cSx9D5NRZ56W1kZpPIEe
-        WeGWjhiWU03HYYLGXJ/D/epUEsfUweNOsiAPLAhmQjUPGmk6Uhg1pIcbzTZS0slp
-        3pcdWpHmWaoe/I4Xx5RN6atybY3fwiUxl/zV4IGPLSSLrsu2VF7qa5C+gWyTRSBF
-        iE0RzMhOXiJg7R8BAuhy5KphTCoH7KwTPudCdXdkPpJFHT0A1Grig==
-X-ME-Sender: <xms:FFICYvjrOqevvMb7mvta7jppA9r9DwJWZC8F0XyqrsZi-uF3uWZRAw>
-    <xme:FFICYsBkrQTiNKHYWRurBmFJV1ztsnl3kYd6Z5klAMtMoUMKCqs2lWFsLnijij9tI
-    9iTLTUft4xgZw>
-X-ME-Received: <xmr:FFICYvG9uB60agCtb2lcPiBucfcz4b97pFmOtHOWzAIK0gc-tcAgj-I>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrheejgddvfecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgvkhcu
-    ofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinhhvih
-    hsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepteevffei
-    gffhkefhgfegfeffhfegveeikeettdfhheevieehieeitddugeefteffnecuvehluhhsth
-    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghksehi
-    nhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
-X-ME-Proxy: <xmx:FFICYsTRXmzaNzrNfuLMz5YhFILZ-E6jeF-b8ZF5HmrGTY4fYMIeAA>
-    <xmx:FFICYswsyel-9aFcCMeTtu8xbLYiaE42jpdb7pD4Hv4fTtVmxYiijA>
-    <xmx:FFICYi733f0mi-dNzbxaPqeThMmIgw1Z6vNXw5RR8sFvolwXBq5rPw>
-    <xmx:FVICYrrXDIXkX699tU2uujjfdlX72GZ-QvZE7gFZ0XeCsjngcpZbTw>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Feb 2022 06:20:51 -0500 (EST)
-Date:   Tue, 8 Feb 2022 12:20:46 +0100
-From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        stable@vger.kernel.org, Stefan Agner <stefan@agner.ch>,
-        Wolfgang Walter <linux@stwm.de>,
-        Jason Self <jason@bluehome.net>,
-        Dominik Behr <dominik@dominikbehr.com>
-Subject: Re: [PATCH] iwlwifi: fix use-after-free
-Message-ID: <YgJSEEmRDKKG+3lT@mail-itl>
-References: <20220208114728.e6b514cf4c85.Iffb575ca2a623d7859b542c33b2a507d01554251@changeid>
+        Tue, 8 Feb 2022 07:02:54 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BC78C03FECA
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 04:02:51 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 218C2YasC002372, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 218C2YasC002372
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 8 Feb 2022 20:02:34 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Tue, 8 Feb 2022 20:02:33 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Tue, 8 Feb 2022 20:02:33 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e]) by
+ RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e%5]) with mapi id
+ 15.01.2308.020; Tue, 8 Feb 2022 20:02:33 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: Funny log entries for rtw88_8821ce
+Thread-Topic: Funny log entries for rtw88_8821ce
+Thread-Index: AQHYFvVq2DWVmxZS7E2VYxG/u8dgWqx9tPKAgAQJ/QCAB6gl/f//rFuA
+Date:   Tue, 8 Feb 2022 12:02:33 +0000
+Message-ID: <6baf4ae2f36c89269f74f0905ce81f38adc3a284.camel@realtek.com>
+References: <c356d5ae-a7b3-3065-1121-64c446e70333@lwfinger.net>
+         <32f2ece8acdb67f74757cb705e5467847d6bcae0.camel@realtek.com>
+         <ef7361eb-17ce-5ecf-a46a-a9f0c5aab35b@lwfinger.net>
+         <87czjxbukz.fsf@tynnyri.adurom.net>
+In-Reply-To: <87czjxbukz.fsf@tynnyri.adurom.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [114.26.213.92]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzIvOCDkuIrljYggMTE6MDA6MDA=?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6BB323B4FAE814439A7D68466E2D0B63@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Rj3/8RxUIYFHdmTV"
-Content-Disposition: inline
-In-Reply-To: <20220208114728.e6b514cf4c85.Iffb575ca2a623d7859b542c33b2a507d01554251@changeid>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
---Rj3/8RxUIYFHdmTV
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 8 Feb 2022 12:20:46 +0100
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
-	stable@vger.kernel.org, Stefan Agner <stefan@agner.ch>,
-	Wolfgang Walter <linux@stwm.de>, Jason Self <jason@bluehome.net>,
-	Dominik Behr <dominik@dominikbehr.com>
-Subject: Re: [PATCH] iwlwifi: fix use-after-free
-
-On Tue, Feb 08, 2022 at 11:47:30AM +0100, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
->=20
-> If no firmware was present at all (or, presumably, all of the
-> firmware files failed to parse), we end up unbinding by calling
-> device_release_driver(), which calls remove(), which then in
-> iwlwifi calls iwl_drv_stop(), freeing the 'drv' struct. However
-> the new code I added will still erroneously access it after it
-> was freed.
->=20
-> Set 'failure=3Dfalse' in this case to avoid the access, all data
-> was already freed anyway.
->=20
-> Cc: stable@vger.kernel.org
-> Reported-by: Stefan Agner <stefan@agner.ch>
-> Reported-by: Wolfgang Walter <linux@stwm.de>
-> Reported-by: Jason Self <jason@bluehome.net>
-> Reported-by: Dominik Behr <dominik@dominikbehr.com>
-> Reported-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab=
-=2Ecom>
-> Fixes: ab07506b0454 ("iwlwifi: fix leaks/bad data after failed firmware l=
-oad")
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-
-Tested-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab.com>
-
-Thanks!
-
-> ---
->  drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/w=
-ireless/intel/iwlwifi/iwl-drv.c
-> index 83e3b731ad29..6651e78b39ec 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-> @@ -1707,6 +1707,8 @@ static void iwl_req_fw_callback(const struct firmwa=
-re *ucode_raw, void *context)
->   out_unbind:
->  	complete(&drv->request_firmware_complete);
->  	device_release_driver(drv->trans->dev);
-> +	/* drv has just been freed by the release */
-> +	failure =3D false;
->   free:
->  	if (failure)
->  		iwl_dealloc_ucode(drv);
-> --=20
-> 2.34.1
->=20
-
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
-
---Rj3/8RxUIYFHdmTV
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmICUhAACgkQ24/THMrX
-1ywGRgf/YiqF+79qOU1oFpLynQ3coyrojc0nCj9bFdMf0PVwfbSDXggH7a3gHzaC
-oq5FTdMGbeWysH7dmO/Hea9ppxwMfaVhcopzWmeCpvbPTTse1fpjbYlCwjA8KNHN
-mLa5Yz1koLxDLnynovAj9+UiJ4ILFnPJ4/IiVC77Fc862TsEooM/cpnmxoJaVCSD
-9HGmlxdoGBq/o5h1t49C4dsJwMoW7gyCHi2KkfHfjZixUaNv26Ta/sDvUvBnoh8R
-j+HKSIkGdsJOZn3Z7gU84x6RCcZKRUmBZc6Z/9NSSoN0KZHr3JavIMOjoVl1z2Ca
-PIBGTs7aBARQTSJg2ATt08jXXqOG9g==
-=HjcN
------END PGP SIGNATURE-----
-
---Rj3/8RxUIYFHdmTV--
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBLYWxsZSBWYWxvIDxrdmFsb0Br
+ZXJuZWwub3JnPg0KPiBTZW50OiBUdWVzZGF5LCBGZWJydWFyeSA4LCAyMDIyIDU6MDIgUE0NCj4g
+VG86IExhcnJ5IEZpbmdlciA8TGFycnkuRmluZ2VyQGx3ZmluZ2VyLm5ldD4NCj4gQ2M6IFBrc2hp
+aCA8cGtzaGloQHJlYWx0ZWsuY29tPjsgbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+
+IFN1YmplY3Q6IFJlOiBGdW5ueSBsb2cgZW50cmllcyBmb3IgcnR3ODhfODgyMWNlDQo+IA0KPiBM
+YXJyeSBGaW5nZXIgPExhcnJ5LkZpbmdlckBsd2Zpbmdlci5uZXQ+IHdyaXRlczoNCj4gDQo+ID4g
+RnJvbSB0aGVzZSBsb2cgZW50cmllcywgSSBzZWUgbm8gcmVhc29uIHdoeSB0aGVyZSBzaG91bGQg
+YmUgYSBzdG9wLXZpZg0KPiA+IDQxMiBzZWNvbmRzIGFmdGVyIHRoZSBpbnRlcmZhY2UgaXMgc2V0
+IGZyb20gZGlzYWJsZWQgdG8gZGlzY29ubmVjdGVkLg0KPiA+IFRoaXMgY3ljbGluZyBkb2VzIG5v
+dCBjYXVzZSBhbnkgcHJvYmxlbXMuIFBlcmhhcHMgdGhlIHN0YXRlbWVudHMgdGhhdA0KPiA+IGRv
+IHRoZSBsb2dnaW5nIHNob3VsZCBiZSByZW1vdmVkLg0KPiANCj4gSSBkaWQgYSBxdWljayBjaGVj
+ayBvbiBob3cgcnR3ODggdXNlcyBydHdfaW5mbygpIGFuZCBpbmRlZWQgdGhhdCBzaG91bGQNCj4g
+YmUgY2xlYW5lZCB1cC4NCj4gDQo+IFRoZXNlIHNob3VsZCBiZSB3YXJuaW5nIG9yIGVycm9yIG1l
+c3NhZ2VzOg0KPiANCj4gcnR3X2luZm8ocnR3ZGV2LCAiaW52YWxpZCBIMkMgY29tbWFuZCBmb3Jt
+YXQgZm9yIGRlYnVnXG4iKTsNCj4gcnR3X2luZm8ocnR3ZGV2LCAiaW5jb3JyZWN0IGxuYSBpbmRl
+eCAoJWQpXG4iLCBsbmFfaWR4KTsNCj4gcnR3X2luZm8ocnR3ZGV2LCAidW5zdXBwb3J0ZWQgdHgg
+cGF0aCAweCV4XG4iLCBhbnRlbm5hX3R4KTsNCj4gcnR3X2luZm8ocnR3ZGV2LCAidW5zdXBwb3J0
+ZWQgcnggcGF0aCAweCV4XG4iLCBhbnRlbm5hX3J4KTsNCj4gcnR3X2luZm8ocnR3ZGV2LCAidW5z
+dXBwb3J0ZWQgdHggcGF0aCAweCV4XG4iLCBhbnRlbm5hX3R4KTsNCj4gcnR3X2luZm8ocnR3ZGV2
+LCAidW5zdXBwb3J0ZWQgcnggcGF0aCAweCV4XG4iLCBhbnRlbm5hX3J4KTsNCj4gDQo+IE5vdCBz
+dXJlIGlmIHdhcm4gb3IgZGVidWcsIG1vc3QgbGlrZWx5IGRlYnVnOg0KPiANCj4gcnR3X2luZm8o
+cnR3ZGV2LCAiSFcgc2NhbiBhYm9ydGVkIHdpdGggY29kZTogJWRcbiIsIHJjKTsNCj4gDQo+IFRo
+ZXNlIHNob3VsZCBiZSBkZWJ1ZyBtZXNzYWdlcyB0byBhdm9pZCBzcGFtbWluZyB0aGUgbG9nczoN
+Cj4gDQo+IHJ0d19pbmZvKHJ0d2RldiwgInN0YXJ0IHZpZiAlcE0gb24gcG9ydCAlZFxuIiwgdmlm
+LT5hZGRyLCBydHd2aWYtPnBvcnQpOw0KPiBydHdfaW5mbyhydHdkZXYsICJzdG9wIHZpZiAlcE0g
+b24gcG9ydCAlZFxuIiwgdmlmLT5hZGRyLCBydHd2aWYtPnBvcnQpOw0KPiBydHdfaW5mbyhydHdk
+ZXYsICJjaGFuZ2UgdmlmICVwTSAoJWQpLT4oJWQpLCBwMnAgKCVkKS0+KCVkKVxuIiwNCj4gcnR3
+X2luZm8ocnR3ZGV2LCAic3RhICVwTSBqb2luZWQgd2l0aCBtYWNpZCAlZFxuIiwNCj4gcnR3X2lu
+Zm8ocnR3ZGV2LCAic3RhICVwTSB3aXRoIG1hY2lkICVkIGxlZnRcbiIsDQo+IHJ0d19pbmZvKHJ0
+d2RldiwgIk9uIGZyZXEgJXUgdG8gJXUsIHNldCBTQVIgJWQgaW4gMS8lbHUgZEJtXG4iDQo+IA0K
+PiBUaGlzIGlzIG9rOg0KPiANCj4gcnR3X2luZm8ocnR3ZGV2LCAiRmlybXdhcmUgdmVyc2lvbiAl
+dS4ldS4ldSwgSDJDIHZlcnNpb24gJXVcbiIsDQo+IA0KDQpJIHdpbGwgZml4IHRoZW0gYXMgd2Vs
+bCBhcyBydHc4OS4gVG8gYXZvaWQgbWlzdGFrZXMsIEkgZG8gZ29vZ2xlIHNlYXJjaCBmb3INCktF
+Uk5fSU5GTywgYW5kIGZpbmQgWzFdDQoJS0VSTl9JTkZPOiB0aGlzIGlzIHRoZSBsb2cgbGV2ZWwg
+dXNlZCBmb3IgaW5mb3JtYXRpb25hbCBtZXNzYWdlcw0KCQkgICBhYm91dCB0aGUgYWN0aW9uIHBl
+cmZvcm1lZCBieSB0aGUga2VybmVsLg0KDQpUaGVuLCBJIGhhdmUgYSBxdWVzdGlvbiBhYm91dCB0
+aGUgbWVzc2FnZSBvZiBzZXR0aW5nIFNBUjoNCglydHdfaW5mbyhydHdkZXYsICJPbiBmcmVxICV1
+IHRvICV1LCBzZXQgU0FSICVkIGluIDEvJWx1IGRCbVxuIg0KDQpXaGVuIGEgdXNlciBzZXRzIFNB
+UiB2aWEgaXcsIHRoaXMgbWVzc2FnZSBjYW4gcmVmbGVjdCB0aGUgYWN0aW9uIHBlcmZvcm1lZA0K
+YnkgZHJpdmVyLiBJcyB0aGlzIHJ0d19pbmZvIGFjY2VwdGFibGU/DQoNCg0KWzFdIGh0dHBzOi8v
+bGludXhjb25maWcub3JnL2ludHJvZHVjdGlvbi10by10aGUtbGludXgta2VybmVsLWxvZy1sZXZl
+bHMNCg0KLS0NClBpbmctS2UNCg0K
