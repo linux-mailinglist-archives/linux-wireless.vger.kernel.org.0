@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03EC44AEA2C
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Feb 2022 07:18:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 110134AEA21
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Feb 2022 07:16:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233241AbiBIGQf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Feb 2022 01:16:35 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:35734 "EHLO
+        id S229464AbiBIGQR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Feb 2022 01:16:17 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:35658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243494AbiBIGME (ORCPT
+        with ESMTP id S243519AbiBIGME (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 9 Feb 2022 01:12:04 -0500
 Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A730BC08EDC7
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 22:12:06 -0800 (PST)
-X-UUID: da93700e5ee143a794b88f1d5ab52253-20220209
-X-UUID: da93700e5ee143a794b88f1d5ab52253-20220209
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF79AC033243;
+        Tue,  8 Feb 2022 22:12:06 -0800 (PST)
+X-UUID: 93c623bc4ab04ee29b8da383a6df6a6e-20220209
+X-UUID: 93c623bc4ab04ee29b8da383a6df6a6e-20220209
 Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
         (envelope-from <bo.jiao@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1216009190; Wed, 09 Feb 2022 14:12:03 +0800
+        with ESMTP id 1810760848; Wed, 09 Feb 2022 14:12:03 +0800
 Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
  mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 9 Feb 2022 14:12:01 +0800
+ 15.0.1497.2; Wed, 9 Feb 2022 14:12:02 +0800
 Received: from MTKCAS36.mediatek.inc (172.27.4.186) by MTKMBS34N1.mediatek.inc
  (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 9 Feb
- 2022 14:11:59 +0800
+ 2022 14:12:00 +0800
 Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
  MTKCAS36.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
  15.0.1497.2 via Frontend Transport; Wed, 9 Feb 2022 14:11:59 +0800
@@ -39,11 +39,14 @@ CC:     linux-wireless <linux-wireless@vger.kernel.org>,
         Shayne Chen <shayne.chen@mediatek.com>,
         "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
         linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Bo Jiao <Bo.Jiao@mediatek.com>
-Subject: [PATCH v4 0/3] add mt7986 support
-Date:   Wed, 9 Feb 2022 14:11:54 +0800
-Message-ID: <cover.1644386694.git.Bo.Jiao@mediatek.com>
+        Peter Chiu <chui-hao.chiu@mediatek.com>,
+        <devicetree@vger.kernel.org>
+Subject: [PATCH v4 1/3] dt-bindings: net: wireless: mt76: document bindings for MT7986
+Date:   Wed, 9 Feb 2022 14:11:55 +0800
+Message-ID: <08ef978845036560bb08b72e948e42f858e087d3.1644386694.git.Bo.Jiao@mediatek.com>
 X-Mailer: git-send-email 2.17.0
+In-Reply-To: <cover.1644386694.git.Bo.Jiao@mediatek.com>
+References: <cover.1644386694.git.Bo.Jiao@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
@@ -56,41 +59,93 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Bo Jiao <Bo.Jiao@mediatek.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-This adds support for MT7986 SoC which integrated multi-band
-4x4 WiFi 6/6E.
-Detailed link: https://www.mediatek.com/products/mediatek-filogic-830
+Add an entry for MT7986 SoC.
 
-Bo Jiao (2):
-  mt76: mt7915: add support for MT7986
-  mt76: mt7915: introduce band_idx in mt7915_phy
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Cc: devicetree@vger.kernel.org
+---
+v3:
+ - fix yamllint warnings and errors
+ - add 'minItems: 1' to keep 1 reg entry being valid
+v4:
+ - add description for property reg items
+---
+ .../bindings/net/wireless/mediatek,mt76.yaml  | 33 +++++++++++++++++--
+ 1 file changed, 30 insertions(+), 3 deletions(-)
 
-Peter Chiu (1):
-  dt-bindings: net: wireless: mt76: document bindings for MT7986
-
- .../bindings/net/wireless/mediatek,mt76.yaml  |   33 +-
- .../net/wireless/mediatek/mt76/mt76_connac.h  |    5 +
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  |    6 +-
- .../net/wireless/mediatek/mt76/mt7915/Kconfig |   10 +
- .../wireless/mediatek/mt76/mt7915/Makefile    |    1 +
- .../wireless/mediatek/mt76/mt7915/debugfs.c   |    8 +-
- .../net/wireless/mediatek/mt76/mt7915/dma.c   |   28 +-
- .../wireless/mediatek/mt76/mt7915/eeprom.c    |   85 +-
- .../wireless/mediatek/mt76/mt7915/eeprom.h    |   13 +
- .../net/wireless/mediatek/mt76/mt7915/init.c  |   54 +-
- .../net/wireless/mediatek/mt76/mt7915/mac.c   |  209 +--
- .../net/wireless/mediatek/mt76/mt7915/main.c  |   21 +-
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   |   81 +-
- .../net/wireless/mediatek/mt76/mt7915/mmio.c  |  125 +-
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |   44 +
- .../net/wireless/mediatek/mt76/mt7915/regs.h  |  277 +++-
- .../net/wireless/mediatek/mt76/mt7915/soc.c   | 1201 +++++++++++++++++
- .../wireless/mediatek/mt76/mt7915/testmode.c  |   35 +-
- drivers/net/wireless/mediatek/mt76/testmode.c |    5 +-
- 19 files changed, 2003 insertions(+), 238 deletions(-)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7915/soc.c
-
+diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+index 1489d3c..a76e5f7 100644
+--- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+@@ -18,7 +18,7 @@ description: |
+   wireless device. The node is expected to be specified as a child
+   node of the PCI controller to which the wireless chip is connected.
+   Alternatively, it can specify the wireless part of the MT7628/MT7688
+-  or MT7622 SoC.
++  or MT7622/MT7986 SoC.
+ 
+ allOf:
+   - $ref: ieee80211.yaml#
+@@ -29,9 +29,13 @@ properties:
+       - mediatek,mt76
+       - mediatek,mt7628-wmac
+       - mediatek,mt7622-wmac
++      - mediatek,mt7986-wmac
+ 
+   reg:
+-    maxItems: 1
++    minItems: 1
++    maxItems: 3
++    description:
++      MT7986 should contain 3 regions consys, dcm, and sku, in this order.
+ 
+   interrupts:
+     maxItems: 1
+@@ -39,6 +43,17 @@ properties:
+   power-domains:
+     maxItems: 1
+ 
++  memory-region:
++    maxItems: 1
++
++  resets:
++    maxItems: 1
++    description:
++      Specify the consys reset for mt7986.
++
++  reset-name:
++    const: consys
++
+   mediatek,infracfg:
+     $ref: /schemas/types.yaml#/definitions/phandle
+     description:
+@@ -165,7 +180,7 @@ required:
+   - compatible
+   - reg
+ 
+-additionalProperties: false
++unevaluatedProperties: false
+ 
+ examples:
+   - |
+@@ -231,3 +246,15 @@ examples:
+ 
+       power-domains = <&scpsys 3>;
+     };
++
++  - |
++    wifi@18000000 {
++        compatible = "mediatek,mt7986-wmac";
++        resets = <&watchdog 23>;
++        reset-names = "consys";
++        reg = <0x18000000 0x1000000>,
++              <0x10003000 0x1000>,
++              <0x11d10000 0x1000>;
++        interrupts = <GIC_SPI 213 IRQ_TYPE_LEVEL_HIGH>;
++        memory-region = <&wmcpu_emi>;
++    };
 -- 
 2.18.0
 
