@@ -1,120 +1,82 @@
 Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC0104AE6E8
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Feb 2022 03:41:45 +0100 (CET)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id 2B13A4AE83D
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Feb 2022 05:08:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237043AbiBIClB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Feb 2022 21:41:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57244 "EHLO
+        id S1345904AbiBIEH6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Feb 2022 23:07:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243358AbiBIBko (ORCPT
+        with ESMTP id S1347164AbiBIDjM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Feb 2022 20:40:44 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6125AC06157B
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Feb 2022 17:40:43 -0800 (PST)
-X-UUID: 42f5692a1d4948be985f8b58b6679f14-20220209
-X-UUID: 42f5692a1d4948be985f8b58b6679f14-20220209
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1110972891; Wed, 09 Feb 2022 09:40:38 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 9 Feb 2022 09:40:37 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 9 Feb 2022 09:40:37 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH v2] mt76: mt7921s: fix missing fc type/sub-type for 802.11 pkts
-Date:   Wed, 9 Feb 2022 09:40:27 +0800
-Message-ID: <41839f21510756e08919ae7930212817e37f40f0.1644370695.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Tue, 8 Feb 2022 22:39:12 -0500
+X-Greylist: delayed 353 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 08 Feb 2022 19:29:47 PST
+Received: from out0.migadu.com (out0.migadu.com [94.23.1.103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7079FC0613C9;
+        Tue,  8 Feb 2022 19:29:47 -0800 (PST)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1644377032;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Kdr8dNn4iICRISRtuisg+/4TjCNRd8kV1b7gGhU6794=;
+        b=jNWyA+20XpR9BiQpgr2sdbar754HhKFYaY3yP93kBGgYVNQJ6BgA4lLdv3IrzL9PkngtV5
+        OxrNpq6Fro54w0asFlDnSOTHmEcQ91XE9qV5O3i8qbn9ckZxmlIM8VJyS9L1cnSEPO+8Y9
+        vj0DqXFYuumPPHcw1McTSeMjpJKu8Pc=
+From:   Cai Huoqing <cai.huoqing@linux.dev>
+To:     cai.huoqing@linux.dev
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+        Matti Gottlieb <matti.gottlieb@intel.com>,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
+        Abhishek Naik <abhishek.naik@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] iwlwifi: Make use of the helper macro LIST_HEAD()
+Date:   Wed,  9 Feb 2022 11:23:20 +0800
+Message-Id: <20220209032322.37472-1-cai.huoqing@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Migadu-Auth-User: linux.dev
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,TO_EQ_FM_DIRECT_MX,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+Replace "struct list_head head = LIST_HEAD_INIT(head)" with
+"LIST_HEAD(head)" to simplify the code.
 
-For non-mmio devices, should set fc values to proper txwi config
-
-Fixes: 48fab5bbef40 ("mt76: mt7921: introduce mt7921s support")
-Tested-by: Sean Wang <sean.wang@mediatek.com>
-Co-developed-by: Leon Yen <Leon.Yen@mediatek.com>
-Signed-off-by: Leon Yen <Leon.Yen@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Cai Huoqing <cai.huoqing@linux.dev>
 ---
-v2: remove is_mmio which is just used once
----
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 12 +++++++++---
- drivers/net/wireless/mediatek/mt76/mt7921/mac.h |  3 +++
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index d17558349a17..f0ebee670131 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -912,9 +912,15 @@ mt7921_mac_write_txwi_80211(struct mt7921_dev *dev, __le32 *txwi,
- 		txwi[3] |= cpu_to_le32(val);
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 7ad9cee925da..4e1fb02bd51e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -2444,7 +2444,7 @@ static void iwl_fw_error_dump_data_free(struct iwl_fwrt_dump_data *dump_data)
+ static void iwl_fw_error_ini_dump(struct iwl_fw_runtime *fwrt,
+ 				  struct iwl_fwrt_dump_data *dump_data)
+ {
+-	struct list_head dump_list = LIST_HEAD_INIT(dump_list);
++	LIST_HEAD(dump_list);
+ 	struct scatterlist *sg_dump_data;
+ 	u32 file_len = iwl_dump_ini_file_gen(fwrt, dump_data, &dump_list);
  
--	val = FIELD_PREP(MT_TXD7_TYPE, fc_type) |
--	      FIELD_PREP(MT_TXD7_SUB_TYPE, fc_stype);
--	txwi[7] |= cpu_to_le32(val);
-+	if (mt76_is_mmio(&dev->mt76)) {
-+		val = FIELD_PREP(MT_TXD7_TYPE, fc_type) |
-+		      FIELD_PREP(MT_TXD7_SUB_TYPE, fc_stype);
-+		txwi[7] |= cpu_to_le32(val);
-+	} else {
-+		val = FIELD_PREP(MT_TXD8_L_TYPE, fc_type) |
-+		      FIELD_PREP(MT_TXD8_L_SUB_TYPE, fc_stype);
-+		txwi[8] |= cpu_to_le32(val);
-+	}
- }
- 
- void mt7921_mac_write_txwi(struct mt7921_dev *dev, __le32 *txwi,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
-index 544a1c33126a..12e1cf8abe6e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
-@@ -284,6 +284,9 @@ enum tx_mcu_port_q_idx {
- #define MT_TXD7_HW_AMSDU		BIT(10)
- #define MT_TXD7_TX_TIME			GENMASK(9, 0)
- 
-+#define MT_TXD8_L_TYPE			GENMASK(5, 4)
-+#define MT_TXD8_L_SUB_TYPE		GENMASK(3, 0)
-+
- #define MT_TX_RATE_STBC			BIT(13)
- #define MT_TX_RATE_NSS			GENMASK(12, 10)
- #define MT_TX_RATE_MODE			GENMASK(9, 6)
 -- 
-2.18.0
+2.25.1
 
