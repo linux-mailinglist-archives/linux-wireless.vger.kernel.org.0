@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FD834B160F
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 20:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 011F94B160E
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 20:16:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343828AbiBJTQa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Feb 2022 14:16:30 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51082 "EHLO
+        id S1343827AbiBJTQ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Feb 2022 14:16:29 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239426AbiBJTQ3 (ORCPT
+        with ESMTP id S1343826AbiBJTQ3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 10 Feb 2022 14:16:29 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33A2810BA
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 11:16:30 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F400F110C
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 11:16:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=c5plFfXSJGJvXMuakN5YQNG7N6i55QikVaWkGFkmYFQ=;
-        t=1644520590; x=1645730190; b=Ny7L5S2PgfnDM72bVxWZVw/LQlkeR1y0roOrO7ZOVgQYo5q
-        TRcWFiFZ8ielGjwn8QJ92UN5dabkfkhFoCYgnTT5NVgRH4kabOscDn92sjD1jg4oD75yDq4DvAVT6
-        HqLJZvt0IV7WxPt/Xq8lOFQZaaXZMeswGIMB1QULcSm3/sN9kvWngDYnC1CzioPz2Y5IeFYd9KToG
-        OoK6oCOXcGK2iXUXNL33H1t6fC0qbPkAK2/InuOHqH3zFRtPtMQI83MFmay6sEJ4UUO5V7VeaBe6s
-        TKZ2AzhFw6rcZAcD30qtEmhXHkqRe8MqE23DXy/40kPtIKh1FAt1LT1rt5zFwM5A==;
+        Resent-Cc:Resent-Message-ID; bh=mggAmGFZLWmvhUdf69OytcV2qfVXAIr7jQA86Z4BZbQ=;
+        t=1644520590; x=1645730190; b=nB7Cnf2ER7gsDXHLfrDtme+gt0hWfQntpZcSQUuavzRf6Wv
+        pOd/RpRhGiTKwgVi8hACtbtPkEMCdzGz38NSpGlOIOjHNPi8TORHmH8NDPb5o984s13ZNKTRBi7y8
+        DqNZpFx0P+cTEQvPhlZxD3k5NHPKhOk4b5+aRAfVnH/Z/llmuaGgcmyTnWvyyt5pkH6D35BRS7zPd
+        bVpmTgoXDEISvWnvCRHwOWq5yW+OOsgF2PAJFktojUxj+V5fuR5xNOim8iKsT0jXs7UtO1RwX+rce
+        7TCfm2OS1BXIAUfSOAGd3EQtYl5AbaBkyzYkKK86PlMs0+4Ea/Ds9UdmUMY+zvww==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nIEva-00HBut-IP;
+        id 1nIEva-00HBut-QT;
         Thu, 10 Feb 2022 20:16:26 +0100
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 2/3] mac80211: parse only HE capability elements with valid size
-Date:   Thu, 10 Feb 2022 20:16:22 +0100
-Message-Id: <20220210201537.852e802ffb22.I645ac1e2dc0ace223ef3e551cd5a71c88bd55e04@changeid>
+Subject: [PATCH 3/3] nl80211: accept only HE capability elements with valid size
+Date:   Thu, 10 Feb 2022 20:16:23 +0100
+Message-Id: <20220210201537.222c999d7585.Id57ce32f9538a40e36c620fabedbd2c73346ef56@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220210191623.187684-1-johannes@sipsolutions.net>
 References: <20220210191623.187684-1-johannes@sipsolutions.net>
@@ -52,32 +52,30 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-The code validates the HE capability element size later,
-but slightly wrong, so use the new helper to do it right
-and only accept it if it has a good size.
+The kernel (driver code) should be able to assume that a station's
+HE capabilities are not badly sized, so reject them if they are.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/util.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/wireless/nl80211.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index abc29df6834c..1a8e18794387 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -973,8 +973,10 @@ static void ieee80211_parse_extension_element(u32 *crc,
- 		}
- 		break;
- 	case WLAN_EID_EXT_HE_CAPABILITY:
--		elems->he_cap = data;
--		elems->he_cap_len = len;
-+		if (ieee80211_he_capa_size_ok(data, len)) {
-+			elems->he_cap = data;
-+			elems->he_cap_len = len;
-+		}
- 		break;
- 	case WLAN_EID_EXT_HE_OPERATION:
- 		if (len >= sizeof(*elems->he_operation) &&
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 578bff9c378b..19b74a5ca300 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -6308,6 +6308,11 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
+ 	    statype != CFG80211_STA_AP_CLIENT_UNASSOC)
+ 		return -EINVAL;
+ 
++	if (params->he_capa &&
++	    !ieee80211_he_capa_size_ok((const void *)params->he_capa,
++				       params->he_capa_len))
++		return -EINVAL;
++
+ 	/* When you run into this, adjust the code below for the new flag */
+ 	BUILD_BUG_ON(NL80211_STA_FLAG_MAX != 7);
+ 
 -- 
 2.34.1
 
