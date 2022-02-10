@@ -2,49 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22B134B067A
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 07:41:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E1134B0681
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 07:43:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235318AbiBJGlB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Feb 2022 01:41:01 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49566 "EHLO
+        id S230226AbiBJGnw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Feb 2022 01:43:52 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229901AbiBJGlA (ORCPT
+        with ESMTP id S235420AbiBJGnu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Feb 2022 01:41:00 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A870310A6;
-        Wed,  9 Feb 2022 22:41:02 -0800 (PST)
+        Thu, 10 Feb 2022 01:43:50 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE447D6D
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Feb 2022 22:43:52 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 442CA61CD5;
-        Thu, 10 Feb 2022 06:41:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65F5C004E1;
-        Thu, 10 Feb 2022 06:40:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C81761CD8
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 06:43:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD109C004E1;
+        Thu, 10 Feb 2022 06:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644475261;
-        bh=DWpM8xJA6dWr+X2mNlbIvh0RMS3ic7OpO5Z6YUdDSMc=;
+        s=k20201202; t=1644475431;
+        bh=pXQiyMaauFh8Bj8MjlVGhSxfr8jsid80WwPF8tabY/Y=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=V4f0GHlvTfJ9tdWBvSMOcPE4nktTKUJ3KnLHLk+SV4iRA6gi3FxvP8jQg7uRDje9J
-         z5GFJoeqJTMWBrK1+pN7Dkqvdq8LUmbMA1+5HcN0Vr5Q1Jwly2xq+s3642MSNyBJ5J
-         dGUHtTT+nPZczKsRWFsF1tYF1m/pV9ZEYjJPpNE+9vpxmzrcam18JEmN4fPWd9Hqaz
-         CJjLrOrhw6GGWrn38LTsTvRI/oNhJXO5u8VzQOuBDTdhfPSeNUevub/dLgL0ndQ/P0
-         ME1zcePWMUg3CfOT9Ies24BVu69Lrcl+ysuvZ1qtUS1xb+qxy9oW0vpc6d6ExbbApr
-         Qz7eAaPUOFldw==
+        b=qM7Rz7GcSXowP0Z0iHfglJSlwIZfWr7W5yJdLHYKdhJKAtqKoZKUFve6jiKBT2nLK
+         UpOtKzk+irJB6EJpGs6Ih3odeYb88VFf/PFGtosGM84xtxHx/hj+mKwqNLazu1yrcL
+         c/bVSdKctHmhhpWCfuSoHCHMiJcPWawNsN2pS6YpKFaIDQ88QdlNOF//eWIdGhiIPf
+         iPS5RdIurLcpRrxIqcOSqi7g8hJZP7x/eYDxYS7C8Didj/zQsP+uRYwlJ64r0PJp/U
+         /daOKNzoB4O9FhRiTc1o1htCS0sqcMLlBzgniQUUBixnmhl5Wy3AM5tJ/gEYptZ2HV
+         GLkc8qoRjS+0Q==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Qing Wang <wangqing@vivo.com>
-Cc:     Maya Erez <merez@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: wireless: ath: use div64_u64() instead of do_div()
-References: <1644395972-4303-1-git-send-email-wangqing@vivo.com>
-Date:   Thu, 10 Feb 2022 08:40:56 +0200
-In-Reply-To: <1644395972-4303-1-git-send-email-wangqing@vivo.com> (Qing Wang's
-        message of "Wed, 9 Feb 2022 00:39:32 -0800")
-Message-ID: <87v8xnrzpj.fsf@kernel.org>
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     Carl Huang <quic_cjhuang@quicinc.com>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v3 1/6] ath11k: Add basic WoW functionalities
+References: <1644308006-22784-1-git-send-email-quic_cjhuang@quicinc.com>
+        <1644308006-22784-2-git-send-email-quic_cjhuang@quicinc.com>
+        <23784b65-745a-b269-74c9-172d414ed752@quicinc.com>
+Date:   Thu, 10 Feb 2022 08:43:49 +0200
+In-Reply-To: <23784b65-745a-b269-74c9-172d414ed752@quicinc.com> (Jeff
+        Johnson's message of "Tue, 8 Feb 2022 12:55:10 -0800")
+Message-ID: <87r18brzkq.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -58,23 +57,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Qing Wang <wangqing@vivo.com> writes:
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> From: Wang Qing <wangqing@vivo.com>
+> On 2/8/2022 12:13 AM, Carl Huang wrote:
+>> Implement basic WoW functionalities such as magic-packet, disconnect
+>> and pattern. The logic is very similar to ath10k.
+>>
+>> When WoW is configured, ath11k_core_suspend and ath11k_core_resume
+>> are skipped as WoW configuration and hif suspend/resume are done in
+>> ath11k_wow_op_suspend() and ath11k_wow_op_resume().
+>>
+>> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+>>
+>> Signed-off-by: Carl Huang <quic_cjhuang@quicinc.com>
+>> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+>> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 >
-> do_div() does a 64-by-32 division.
-> When the divisor is u64, do_div() truncates it to 32 bits, this means it
-> can test non-zero and be truncated to zero for division.
->
-> fix do_div.cocci warning:
-> do_div() does a 64-by-32 division, please consider using div64_u64 instead.
->
-> Signed-off-by: Wang Qing <wangqing@vivo.com>
-> ---
->  drivers/net/wireless/ath/wil6210/debugfs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Carl your S-O-B should be last since you are submitting the change
 
-The subject prefix should be "wil6210:", but I can fix that.
+I can fix that. Should I also add Co-developed-by tags for Baochen and
+Wen?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
