@@ -2,61 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C54224B12A4
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 17:25:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30CC04B12A7
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 17:26:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244155AbiBJQZN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Feb 2022 11:25:13 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40910 "EHLO
+        id S244158AbiBJQZf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Feb 2022 11:25:35 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239459AbiBJQZM (ORCPT
+        with ESMTP id S239459AbiBJQZe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Feb 2022 11:25:12 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84DA8C24;
-        Thu, 10 Feb 2022 08:25:13 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Thu, 10 Feb 2022 11:25:34 -0500
+Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 212D7C26
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 08:25:35 -0800 (PST)
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 239E961D45;
-        Thu, 10 Feb 2022 16:25:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC470C004E1;
-        Thu, 10 Feb 2022 16:25:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644510312;
-        bh=IFxBT2jDyEPai4ZZFQxaTM2IF26+Q3DtIrCvz2/aIaw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=WFoy6ph4jj2asioFVCnfptkcZoeZVEwREMIetSpPnnSfxQms6+XAU+MlkkjsXrp0l
-         WcJsNoBb0gkyheSV+LzkR7PNqzugiaQMQ/B/UQvp+LbAczFTcurXEuXrCWiCXdj5QK
-         8Yhit0lsF9bgbhv0EYlbhkYgWid+j1mCFiHAw81qSa7R0Vyxi13jdIPn1maIPfLbNm
-         Em+t58PD0ZONwlnPdJHsARd5uvmip3lgo3NWLj8mVi+ammO3kvTVlFytFGflRrqImT
-         Jx/3tg2fopGf34Dt6UPyVNfD42/G4eGYzzdbLvMrd00BIZA6QTwK2LzJzEw/uPB3Xp
-         TNk/Xnneg3ZoA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-mmc@vger.kernel.org,
-        Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v9 05/24] wfx: add main.c/main.h
-References: <20220111171424.862764-1-Jerome.Pouiller@silabs.com>
-        <4055223.VTxhiZFAix@pc-42> <87ee4a3hd4.fsf@kernel.org>
-        <39159625.OdyKsPGY69@pc-42>
-Date:   Thu, 10 Feb 2022 18:25:05 +0200
-In-Reply-To: <39159625.OdyKsPGY69@pc-42> (=?utf-8?B?IkrDqXLDtG1l?=
- Pouiller"'s message of "Thu,
-        10 Feb 2022 16:13:16 +0100")
-Message-ID: <87a6ey3d0e.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id EE214811BB;
+        Thu, 10 Feb 2022 17:25:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1644510330;
+        bh=gF4mmpXNke8QdC4vxtrWXw2FNcuMOE5UsS9FMhOjFjk=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=AHKBLziF6z0wHs91cwsYMzUjuo3b7YdHqKSir5ouVRO+peF9bJL91DHHJTPtuTECb
+         s55/9VBu+gSfr8V8ax7zA6ByEATCPkkYPL/4VcPc0C8SPfkGFbv92dj97h/TtUnsPO
+         /ZvNfaCnd7VRSyCxXGiPMMHZlRuJ2Sohob7o7vlZ/ap/C1JRpWGmo65oshcLNMBKZz
+         3/DNQy0r+rrbcjvdTdPQFQYLPgmy1yICZJ79mjF/vgK54+ztrP1IXcSuWqvGo3AG4X
+         GmwA42VY2qpXlcA5GQMyDQbSPDBKRW8NZYG8mRng+6B7KYmfPdKtKtgJ6RzVlFB4W5
+         c4SBNSs+4ZB0w==
+Message-ID: <786b6ca3-1377-fc3d-8c74-d6625a9b4ee4@denx.de>
+Date:   Thu, 10 Feb 2022 17:25:29 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Subject: Re: Possible bug on wilc1000 [Klartext]
+Content-Language: en-US
+To:     Ajay.Kathat@microchip.com, cniedermaier@dh-electronics.com,
+        linux-wireless@vger.kernel.org
+Cc:     Claudiu.Beznea@microchip.com, Tudor.Ambarus@microchip.com,
+        ageisreiter@dh-electronics.com
+References: <3994a34bb0d84e9d8181ec490a3f71d2@dh-electronics.com>
+ <97d9da81-f15b-33dd-a66e-9f6dbe2c3b0c@microchip.com>
+ <14d8dbd0f9de4bcdb50bd1983b2e4f31@dh-electronics.com>
+ <74d9191d-7bf6-2beb-2d3b-700b6a355f68@microchip.com>
+From:   Marek Vasut <marex@denx.de>
+In-Reply-To: <74d9191d-7bf6-2beb-2d3b-700b6a355f68@microchip.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.5 at phobos.denx.de
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,68 +62,81 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com> writes:
+On 2/10/22 17:19, Ajay.Kathat@microchip.com wrote:
 
-> On Thursday 10 February 2022 15:51:03 CET Kalle Valo wrote:
->> J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com> writes:
->> > On Thursday 10 February 2022 15:20:56 CET Kalle Valo wrote:
->> >> J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com> writes:
->> >>
->> >> > Kalle, is this function what you expected? If it is right for you, =
-I am
->> >> > going to send it to the staging tree.
->> >>
->> >> Looks better, but I don't get why '{' and '}' are still needed. Ah, d=
-oes
->> >> the firmware require to have them?
->> >
->> > Indeed. If '{' and '}' are not present, I guarantee the firmware will =
-return
->> > an error (or assert). However, I am more confident in the driver than =
-in the
->> > firmware to report errors to the user.
->>=20
->> Agreed.
->>=20
->> > If there is no other comment, I am going to:
->> >   - submit this change to the staging tree
->>=20
->> Good, it's important that you get all your changes to the staging tree
->> before the next merge window.
->>=20
->> >   - publish the tool that generate this new format
->> >   - submit the PDS files referenced in bus_{sdio,spi}.c to linux-firmw=
-are
->> >   - send the v10 of this PR
->>=20
->> I'm not sure if there's a need to send a full patchset anymore? We are
->> so close now anyway and the full driver is available from the staging
->> tree, at least that's what I will use from now on when reviewing wfx.
->>=20
->> What about the Device Tree bindings? That needs to be acked by the DT
->> maintainers, so that's good to submit as a separate patch for review.
->
-> There is also the patch 01/24 about the SDIO IDs.
->
-> I think the v10 could contain only 3 patches:
->
->     1. mmc: sdio: add SDIO IDs for Silabs WF200 chip
->     2. dt-bindings: introduce silabs,wfx.yaml
->     3. [all the patches 3 to 24 squashed]
->
-> Would it be right for you?
+Hi,
 
-TBH I don't see the point of patch 3 at this moment, we have had so many
-iterations with the full driver already. If people want to look at the
-driver, they can check it from the staging tree. So in the next round I
-recommend submitting only patches 1 and 2 and focus on getting all the
-pending patches to staging tree.
+> On 10/02/22 14:10, Christoph Niedermaier wrote:
+>> From: Ajay.Kathat@microchip.com [mailto:Ajay.Kathat@microchip.com]
+>> Sent: Wednesday, February 9, 2022 3:37 PM
+>>> On 08/02/22 21:56, Christoph Niedermaier wrote:
+>>>> Hello,
+>>>>
+>>>> I tested the wireless chip wilc1000 with the 5.16.5 Kernel and the firmware v15.4.1
+>>>> (https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/atmel/wilc1000_wifi_firmware-1.bin)
+>>>> on an i.MX6 QUAD with iperf3:
+>>>>
+>>>> # iperf3 -c IP_ADDR -P 16 -t 0
+>>>>
+>>>> After a while the test gets stuck and I got the following kernel messages:
+>>>> mmc0: Timeout waiting for hardware interrupt.
+>>>> mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
+>>>> mmc0: sdhci: Sys addr:  0x138f0200 | Version:  0x00000002
+>>>> mmc0: sdhci: Blk size:  0x00000158 | Blk cnt:  0x00000001
+>>>> mmc0: sdhci: Argument:  0x14000158 | Trn mode: 0x00000013
+>>>> mmc0: sdhci: Present:   0x01d88a0a | Host ctl: 0x00000013
+>>>> mmc0: sdhci: Power:     0x00000002 | Blk gap:  0x00000080
+>>>> mmc0: sdhci: Wake-up:   0x00000008 | Clock:    0x0000009f
+>>>> mmc0: sdhci: Timeout:   0x0000008f | Int stat: 0x00000000
+>>>> mmc0: sdhci: Int enab:  0x107f100b | Sig enab: 0x107f100b
+>>>> mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000003
+>>>> mmc0: sdhci: Caps:      0x07eb0000 | Caps_1:   0x0000a000
+>>>> mmc0: sdhci: Cmd:       0x0000353a | Max curr: 0x00ffffff
+>>>> mmc0: sdhci: Resp[0]:   0x00001000 | Resp[1]:  0x00000000
+>>>> mmc0: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
+>>>> mmc0: sdhci: Host ctl2: 0x00000000
+>>>> mmc0: sdhci: ADMA Err:  0x00000007 | ADMA Ptr: 0x4c041200
+>>>> mmc0: sdhci-esdhc-imx: ========= ESDHC IMX DEBUG STATUS DUMP =========
+>>>> mmc0: sdhci-esdhc-imx: cmd debug status:  0x2100
+>>>> mmc0: sdhci-esdhc-imx: data debug status:  0x2200
+>>>> mmc0: sdhci-esdhc-imx: trans debug status:  0x2300
+>>>> mmc0: sdhci-esdhc-imx: dma debug status:  0x2402
+>>>> mmc0: sdhci-esdhc-imx: adma debug status:  0x25b4
+>>>> mmc0: sdhci-esdhc-imx: fifo debug status:  0x2610
+>>>> mmc0: sdhci-esdhc-imx: async fifo debug status:  0x2751
+>>>> mmc0: sdhci: ============================================
+>>>> wilc1000_sdio mmc0:0001:1: wilc_sdio_cmd53..failed, err(-110)
+>>>> wilc1000_sdio mmc0:0001:1: Failed cmd53 [0], bytes read...
+>>>>
+>>>> I tried to reduce the clock speed to 20MHz in the devicetree with
+>>>> max-frequency = <20000000>;
+>>>> but the problem then also occurs.
+>>>>
+>>>> Is this a possible bug?
+>>>>
+>>>>
+>> Hi Ajay,
+>> Thanks for the answer.
+>>
+>>> The bus error seems to be specific to the host during the SDIO transfer.
+>>> How long does it take to reproduce it? Does the issue also happen
+>>> without "-P 16" iPerf3 option?
+>> It takes about 10s (something a bit longer) till I got this kernel error
+>> messages and it doesn't matter if I use it with "-P 16" or without.
+> 
+> 
+> I did not observe the issue with my setup(SAMA5D4 XPLAINED + WILC1000
+> SDIO) when tested iPerf for a longer duration(~1000sec). I suspect the
+> issue could be related to the SDHCI host controller.
+> Try to debug the host controller side for the possible cause of timeout.
 
-And the chances are that a big patch like that would be filtered by the
-mailing lists anyway.
+It seems the timeout happens because the card fails to respond to SDIO 
+command 53, right ?
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+Is there some error logging/tracing functionality in the WILC1000 
+firmware which can provide further information why the card did not 
+respond ?
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+Could it be the card suffered some sort of FIFO overflow ? The MX6Q is a 
+bit more performant than the CA7 (I think?) SAMA5D4, so maybe that plays 
+some role ?
