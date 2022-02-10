@@ -2,48 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96EAB4B0C84
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 12:39:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD6DF4B0D3C
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 13:11:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241063AbiBJLjV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Feb 2022 06:39:21 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41310 "EHLO
+        id S241443AbiBJMLX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Feb 2022 07:11:23 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241058AbiBJLjU (ORCPT
+        with ESMTP id S232947AbiBJMLW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Feb 2022 06:39:20 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B9911019
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 03:39:22 -0800 (PST)
+        Thu, 10 Feb 2022 07:11:22 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802A31098;
+        Thu, 10 Feb 2022 04:11:23 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0035561D02
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 11:39:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75CCC004E1;
-        Thu, 10 Feb 2022 11:39:20 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 34C01B82427;
+        Thu, 10 Feb 2022 12:11:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA75CC004E1;
+        Thu, 10 Feb 2022 12:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644493161;
-        bh=EeIa8X3/BEq9686ub9eq26xWgWXw4Ny1RcXApBLAiHE=;
+        s=k20201202; t=1644495080;
+        bh=m9xsRSfcgzaB9d1+P3z4hWiz8XuCiyXDg3LvpoZGVYE=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=PiFnVzQtpdt9/FNq5RtABJiN+4VdbE6ZJBGMNo9AOxZyxeweHjWoX9R0/i2S0GHq/
-         AbJvHjkAtPmkSTHdX9svLV1qkESEZaL66e/GuB0ab2SNBYweSXp55Y/WYm9cyfnmVW
-         3+NETiSEgdgtFLW61lboblgzCSHzJACZtOr3CUkV1aU7sKwsuYi1LVOSx5YjZOidWZ
-         nO6i/Y82UU1lWJwbkm8BpLGcBDB/OvKVKPR5CMWDMNRhh2VL+K2fY/TSY5vyrIzNiu
-         ytmKKGWtawwTg4tNi+aXidF14rHDXBx8XarfySJLptFsij71CErG+x/b9NPckDgnbR
-         NA4Q8zk2LTmzw==
+        b=AvHiWF2o1W2Tmfgjz0t98jT7zhVN49BIVgpu3JVEguUcZyPuh85LU+xIwZ7cDlMZD
+         oJi+jbbPfaiTTyFndUkZ8fD5FJPV9YgLcKCFhIblT43IA8OqwPcsb6e2W9uUR367vr
+         nVVfiQrxQhyXP/JRgNFegnDvE8OWNoiMuFpdWm0JCPg83/Na0JRNOnhg/l4JOOhWTN
+         FkzEQwL3YBCwCmiVo+X4i4lQpZbTbNsLI7GomosobracP53NERhjMpkUuIq8cTHb1b
+         rKIUaGcHzGBAFeDj0e4CldB0n17/TW4oYDwE6o9hwbEwuhHothcBHvKqGcFQOE4GTv
+         Wl7NYCX3SXEeQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 1/6] ath11k: Add basic WoW functionalities
+Subject: Re: [PATCH V2] wcn36xx: use struct_size over open coded arithmetic
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <1644308006-22784-2-git-send-email-quic_cjhuang@quicinc.com>
-References: <1644308006-22784-2-git-send-email-quic_cjhuang@quicinc.com>
-To:     Carl Huang <quic_cjhuang@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+In-Reply-To: <20220208015606.1514022-1-chi.minghao@zte.com.cn>
+References: <20220208015606.1514022-1-chi.minghao@zte.com.cn>
+To:     cgel.zte@gmail.com
+Cc:     davem@davemloft.net, kuba@kernel.org, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Minghao Chi (CGEL ZTE)" <chi.minghao@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164449315590.9031.11345020274622525440.kvalo@kernel.org>
-Date:   Thu, 10 Feb 2022 11:39:20 +0000 (UTC)
+Message-ID: <164449505175.11894.18378600637942439052.kvalo@kernel.org>
+Date:   Thu, 10 Feb 2022 12:11:18 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -54,30 +58,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Carl Huang <quic_cjhuang@quicinc.com> wrote:
+cgel.zte@gmail.com wrote:
 
-> Implement basic WoW functionalities such as magic-packet, disconnect
-> and pattern. The logic is very similar to ath10k.
+> From: "Minghao Chi (CGEL ZTE)" <chi.minghao@zte.com.cn>
 > 
-> When WoW is configured, ath11k_core_suspend and ath11k_core_resume
-> are skipped as WoW configuration and hif suspend/resume are done in
-> ath11k_wow_op_suspend() and ath11k_wow_op_resume().
+> Replace zero-length array with flexible-array member and make use
+> of the struct_size() helper in kmalloc(). For example:
 > 
-> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+> struct wcn36xx_hal_ind_msg {
+>     struct list_head list;
+>     size_t msg_len;
+>     u8 msg[];
+> };
 > 
-> Signed-off-by: Carl Huang <quic_cjhuang@quicinc.com>
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> Make use of the struct_size() helper instead of an open-coded version
+> in order to avoid any potential type mistakes.
+> 
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
 
-This patch failed to compile:
-
-drivers/net/wireless/ath/ath11k/mac.c:7242:5: error: no previous prototype for 'ath11k_mac_flush_tx_complete' [-Werror=missing-prototypes]
-
-Fixed in the pending branch.
+What are the changes from v1?
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1644308006-22784-2-git-send-email-quic_cjhuang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220208015606.1514022-1-chi.minghao@zte.com.cn/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
