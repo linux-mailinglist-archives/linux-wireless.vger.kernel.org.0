@@ -2,55 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 167854B0FCF
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 15:11:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5B514B103A
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 15:21:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242667AbiBJOKw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Feb 2022 09:10:52 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60782 "EHLO
+        id S242787AbiBJOVD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Feb 2022 09:21:03 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239028AbiBJOKv (ORCPT
+        with ESMTP id S238798AbiBJOVC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Feb 2022 09:10:51 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50DE7C1
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 06:10:52 -0800 (PST)
+        Thu, 10 Feb 2022 09:21:02 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96354F5;
+        Thu, 10 Feb 2022 06:21:03 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 00B47B82542
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 14:10:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 198BAC340E5;
-        Thu, 10 Feb 2022 14:10:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC08C618FA;
+        Thu, 10 Feb 2022 14:21:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B627C004E1;
+        Thu, 10 Feb 2022 14:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644502249;
-        bh=57h6WjSvQDH7N/EXvBi+p1F8GSrZ+sQ8yCam1Jz4vG0=;
+        s=k20201202; t=1644502862;
+        bh=OPamVJysT9X+tCU5hCEJCZxcXEaQ2x6awutvO1oiFc0=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=oVRssXTSjitddYghYBWuLvjDSRBHy4nU48t7QLn9CSvhhGU2BNQSaW5n6h4RJR35i
-         4jTszpR/PxO124NIxwFsokNiz90Fu6VjeCxbC7Gk5EkPVYjYC+hQ3kzxugV0uCWB4C
-         +gf++H8dP2FoCgpwk/LVU+iYglxOuvHzp+4Y/bUfxqTVB/mSQkFhZ6pcvscWgrmeLs
-         EIBzDMvGQi7cZuvkVxDiHmmn7jfPJUyKkOMGUEehf1GUD2/vCKiiGSGrJPKbfG2kuZ
-         mfSYQki4w1XkMdDvZpLJWSepGUGbbdvKQmVz10tigcD49BhfxMqiHedycm2MY6iTPU
-         P5pi5DDz6nK5g==
+        b=EtaQxZJqyN2b4cGyGEWmjEPZuXiBpcBqNw+tfobaM4s25xnsh1uVkaz8b/0QVQHN/
+         6ppuT2sr3SCNunBk0hGU75PyTWD2a3gLyIQM9rX6MEmu19FCOpdSw9jKU8kp/Xo7Pn
+         RsRA6XKSx7QPdMKqfx9i4wuLu72nEtlgalFk7lcW76lv5L2H6Y7kA9O+itqk8zlDMq
+         MGtINmZnk9nW900s6SVWuh89+uvvrXED/we4bdwIkDzxt7BENd03ASECMYpH+RTC7o
+         i8v3p1EJr9q4RuFt+B8u7MptkfKJm0NketNO01xy9VG6mq52J/rWE2UL/uGg04vsU4
+         R2C1BJC/A7R6g==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Wright Feng <wright.feng@infineon.com>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>
-Subject: Re: [PATCH] MAINTAINERS: update maintainer list for Infineon
-References: <20211228061315.11126-1-wright.feng@infineon.com>
-        <87czk8djtl.fsf@kernel.org>
-        <17eb3f987f0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-Date:   Thu, 10 Feb 2022 16:10:42 +0200
-In-Reply-To: <17eb3f987f0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-        (Arend Van Spriel's message of "Tue, 01 Feb 2022 07:29:42 +0100")
-Message-ID: <87v8xm3j8d.fsf@kernel.org>
+To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-mmc@vger.kernel.org,
+        Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH v9 05/24] wfx: add main.c/main.h
+References: <20220111171424.862764-1-Jerome.Pouiller@silabs.com>
+        <20220111171424.862764-6-Jerome.Pouiller@silabs.com>
+        <2898137.rlL8Y2EFai@pc-42>
+Date:   Thu, 10 Feb 2022 16:20:56 +0200
+In-Reply-To: <2898137.rlL8Y2EFai@pc-42> (=?utf-8?B?IkrDqXLDtG1l?=
+ Pouiller"'s message of "Wed,
+        26 Jan 2022 09:20:05 +0100")
+Message-ID: <87r18a3irb.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -61,66 +65,91 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
+J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com> writes:
 
-> On January 31, 2022 4:08:29 PM Kalle Valo <kvalo@kernel.org> wrote:
+> Hi Kalle,
 >
->> Wright Feng <wright.feng@infineon.com> writes:
->>
->>> From: Chi-Hsien Lin <chi-hsien.lin@infineon.com>
->>>
->>> Add new maintainer and remove old maintainers.
->>>
->>> Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@infineon.com>
->>> Signed-off-by: Wright Feng <wright.feng@infineon.com>
->>> ---
->>> MAINTAINERS | 4 ++--
->>> 1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/MAINTAINERS b/MAINTAINERS
->>> index 5ebfc9de0caf..845058803f95 100644
->>> --- a/MAINTAINERS
->>> +++ b/MAINTAINERS
->>> @@ -3759,9 +3759,9 @@ BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER
->>> M: Arend van Spriel <aspriel@gmail.com>
->>> M: Franky Lin <franky.lin@broadcom.com>
->>> M: Hante Meuleman <hante.meuleman@broadcom.com>
->>> -M: Chi-hsien Lin <chi-hsien.lin@infineon.com>
->>> M: Wright Feng <wright.feng@infineon.com>
->>> -M: Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
->>> +M: Double Lo <double.lo@infineon.com>
->>> +M: Kurt Lee <kurt.lee@infineon.com>
->>
->> I'm not really a fan of having too many maintainers, I would say max is
->> 3 and even that needs good justification. And most importantly, is
->> anyone else than Arend even doing any maintainer work for brcmfmac and
->> brcmsmac?
+> On Tuesday 11 January 2022 18:14:05 CET Jerome Pouiller wrote:
+>> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+>>=20
+>> Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+>> ---
+>>  drivers/net/wireless/silabs/wfx/main.c | 485 +++++++++++++++++++++++++
+>>  drivers/net/wireless/silabs/wfx/main.h |  42 +++
+>>  2 files changed, 527 insertions(+)
+>>  create mode 100644 drivers/net/wireless/silabs/wfx/main.c
+>>  create mode 100644 drivers/net/wireless/silabs/wfx/main.h
+>>=20
+> [...]
+>> +/* The device needs data about the antenna configuration. This informat=
+ion in
+>> + * provided by PDS (Platform Data Set, this is the wording used in WF200
+>> + * documentation) files. For hardware integrators, the full process to =
+create
+>> + * PDS files is described here:
+>> + *   https:github.com/SiliconLabs/wfx-firmware/blob/master/PDS/README.md
+>> + *
+>> + * The PDS file is an array of Time-Length-Value structs.
+>> + */
+>> + int wfx_send_pds(struct wfx_dev *wdev, u8 *buf, size_t len)
+>> +{
+>> +	int ret, chunk_type, chunk_len, chunk_num =3D 0;
+>> +
+>> +	if (*buf =3D=3D '{') {
+>> +		dev_err(wdev->dev, "PDS: malformed file (legacy format?)\n");
+>> +		return -EINVAL;
+>> +	}
+>> +	while (len > 0) {
+>> +		chunk_type =3D get_unaligned_le16(buf + 0);
+>> +		chunk_len =3D get_unaligned_le16(buf + 2);
+>> +		if (chunk_len > len) {
+>> +			dev_err(wdev->dev, "PDS:%d: corrupted file\n", chunk_num);
+>> +			return -EINVAL;
+>> +		}
+>> +		if (chunk_type !=3D WFX_PDS_TLV_TYPE) {
+>> +			dev_info(wdev->dev, "PDS:%d: skip unknown data\n", chunk_num);
+>> +			goto next;
+>> +		}
+>> +		if (chunk_len > WFX_PDS_MAX_CHUNK_SIZE)
+>> + dev_warn(wdev->dev, "PDS:%d: unexpectly large chunk\n",
+>> chunk_num);
+>> +		if (buf[4] !=3D '{' || buf[chunk_len - 1] !=3D '}')
+>> + dev_warn(wdev->dev, "PDS:%d: unexpected content\n", chunk_num);
+>> +
+>> +		ret =3D wfx_hif_configuration(wdev, buf + 4, chunk_len - 4);
+>> +		if (ret > 0) {
+>> + dev_err(wdev->dev, "PDS:%d: invalid data (unsupported
+>> options?)\n",
+>> +				chunk_num);
+>> +			return -EINVAL;
+>> +		}
+>> +		if (ret =3D=3D -ETIMEDOUT) {
+>> + dev_err(wdev->dev, "PDS:%d: chip didn't reply (corrupted
+>> file?)\n",
+>> +				chunk_num);
+>> +			return ret;
+>> +		}
+>> +		if (ret) {
+>> + dev_err(wdev->dev, "PDS:%d: chip returned an unknown error\n",
+>> chunk_num);
+>> +			return -EIO;
+>> +		}
+>> +next:
+>> +		chunk_num++;
+>> +		len -=3D chunk_len;
+>> +		buf +=3D chunk_len;
+>> +	}
+>> +	return 0;
+>> +}
 >
-> Guess it should be clear what falls under the term "maintainer work".
+> Kalle, is this function what you expected? If it is right for you, I am
+> going to send it to the staging tree.
 
-From my point of view most important tasks of a maintainer are reviewing
-patches and addressessing regressions (both runtime and build issues).
-Of course there are others tasks as well, but these I consider crucial.
+Looks better, but I don't get why '{' and '}' are still needed. Ah, does
+the firmware require to have them?
 
-> Infineon does a better job these days when it comes to contributions
-> adding features and new chip support, but that doesn't fall under the
-> category although maintainers do submit their own patches. It's good
-> to have a go-to guy at Infineon as they independently work on firmware
-> and it's APIs. On our side I can probably remove Hante from the list.
-
-Anyone can submit patches, and there can be a contact person from a
-company even if it's not mentioned in MAINTAINERS.
-
-I want to see that a maintainer really cares about upstream and works
-with the community, like you Arend do. I do not want to add persons to
-MAINTAINERS file and never hear from them again, that's just wasting
-everyone's time.
-
-To give a positive example, Ping does a great job maintaining Realtek's
-rtw88 and rtw89 drivers. So if a company wants to learn how to become a
-good maintainer, follow what Ping does :)
-
--- 
+--=20
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
