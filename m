@@ -2,43 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 011F94B160E
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 20:16:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96A4F4B1611
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 20:17:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343827AbiBJTQ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Feb 2022 14:16:29 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51080 "EHLO
+        id S1343831AbiBJTQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Feb 2022 14:16:55 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343826AbiBJTQ3 (ORCPT
+        with ESMTP id S1343829AbiBJTQy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Feb 2022 14:16:29 -0500
+        Thu, 10 Feb 2022 14:16:54 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F400F110C
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 11:16:29 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6915310BA
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 11:16:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=mggAmGFZLWmvhUdf69OytcV2qfVXAIr7jQA86Z4BZbQ=;
-        t=1644520590; x=1645730190; b=nB7Cnf2ER7gsDXHLfrDtme+gt0hWfQntpZcSQUuavzRf6Wv
-        pOd/RpRhGiTKwgVi8hACtbtPkEMCdzGz38NSpGlOIOjHNPi8TORHmH8NDPb5o984s13ZNKTRBi7y8
-        DqNZpFx0P+cTEQvPhlZxD3k5NHPKhOk4b5+aRAfVnH/Z/llmuaGgcmyTnWvyyt5pkH6D35BRS7zPd
-        bVpmTgoXDEISvWnvCRHwOWq5yW+OOsgF2PAJFktojUxj+V5fuR5xNOim8iKsT0jXs7UtO1RwX+rce
-        7TCfm2OS1BXIAUfSOAGd3EQtYl5AbaBkyzYkKK86PlMs0+4Ea/Ds9UdmUMY+zvww==;
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=6zyPbu0mpzpCbSPZOzjaLI7jXViF1SG+MAU/UvWTaPY=; t=1644520615; x=1645730215; 
+        b=Dha+3ZbFerS14dJ+BwYRIQ8tQnSgjNjNxTKn0uh7cQLUMFReZSIRMPHlzoYW+O4/adlG5jPF1da
+        /pKQV+gxOA7eddt8tY+l34wgCTgA3sWFwekCox2za6sdXLfQl5AcGEPWHsoJdgAfbTOxyQrIHO1tG
+        5GHFufsZc6Obp+6GTuU5DzlEt0EyF2wgUWF5AQDsnPMjKeism3LsN5xqMdACBOHrMD+JpTjGOsuiY
+        amua2O4PmrIOdJqgJ4hklZkKcQIks9QcBxhetBy/QoEv4QbHhAyAzJhoukWaGCe9GJ/BuJlqx0JJz
+        JsQcGlxWDvUftB1y1VwhYAcfqJgLWpZdneWg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nIEva-00HBut-QT;
-        Thu, 10 Feb 2022 20:16:26 +0100
+        id 1nIEw0-00HBx2-TF;
+        Thu, 10 Feb 2022 20:16:53 +0100
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 3/3] nl80211: accept only HE capability elements with valid size
-Date:   Thu, 10 Feb 2022 20:16:23 +0100
-Message-Id: <20220210201537.222c999d7585.Id57ce32f9538a40e36c620fabedbd2c73346ef56@changeid>
+Cc:     Beni Lev <beni.lev@intel.com>
+Subject: [PATCH] mac80211_hwsim: Add command to control rx status RSSI
+Date:   Thu, 10 Feb 2022 20:16:50 +0100
+Message-Id: <20220210201649.dddebbb55a7f.I6c0607694587b577070339078829fcc20dfcfe2c@changeid>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220210191623.187684-1-johannes@sipsolutions.net>
-References: <20220210191623.187684-1-johannes@sipsolutions.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -50,32 +49,99 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Beni Lev <beni.lev@intel.com>
 
-The kernel (driver code) should be able to assume that a station's
-HE capabilities are not badly sized, so reject them if they are.
+Set the base RSSI of a TX frame. The final RSSI of the frame will be
+the base RSSI + the radio's TX power
 
+Signed-off-by: Beni Lev <beni.lev@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/wireless/nl80211.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/mac80211_hwsim.c | 36 +++++++++++++++++++++++++--
+ 1 file changed, 34 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 578bff9c378b..19b74a5ca300 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -6308,6 +6308,11 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
- 	    statype != CFG80211_STA_AP_CLIENT_UNASSOC)
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 8d54f9face2f..ac1caf659e0b 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -503,6 +503,8 @@ static const struct ieee80211_rate hwsim_rates[] = {
+ 	{ .bitrate = 540 }
+ };
  
-+	if (params->he_capa &&
-+	    !ieee80211_he_capa_size_ok((const void *)params->he_capa,
-+				       params->he_capa_len))
++#define DEFAULT_RX_RSSI -50
++
+ static const u32 hwsim_ciphers[] = {
+ 	WLAN_CIPHER_SUITE_WEP40,
+ 	WLAN_CIPHER_SUITE_WEP104,
+@@ -690,6 +692,9 @@ struct mac80211_hwsim_data {
+ 	u64 rx_bytes;
+ 	u64 tx_dropped;
+ 	u64 tx_failed;
++
++	/* RSSI in rx status of the receiver */
++	int rx_rssi;
+ };
+ 
+ static const struct rhashtable_params hwsim_rht_params = {
+@@ -964,6 +969,29 @@ DEFINE_DEBUGFS_ATTRIBUTE(hwsim_fops_group,
+ 			 hwsim_fops_group_read, hwsim_fops_group_write,
+ 			 "%llx\n");
+ 
++static int hwsim_fops_rx_rssi_read(void *dat, u64 *val)
++{
++	struct mac80211_hwsim_data *data = dat;
++	*val = data->rx_rssi;
++	return 0;
++}
++
++static int hwsim_fops_rx_rssi_write(void *dat, u64 val)
++{
++	struct mac80211_hwsim_data *data = dat;
++	int rssi = (int)val;
++
++	if (rssi >= 0 || rssi < -100)
 +		return -EINVAL;
 +
- 	/* When you run into this, adjust the code below for the new flag */
- 	BUILD_BUG_ON(NL80211_STA_FLAG_MAX != 7);
++	data->rx_rssi = rssi;
++	return 0;
++}
++
++DEFINE_SIMPLE_ATTRIBUTE(hwsim_fops_rx_rssi,
++			hwsim_fops_rx_rssi_read, hwsim_fops_rx_rssi_write,
++			"%lld\n");
++
+ static netdev_tx_t hwsim_mon_xmit(struct sk_buff *skb,
+ 					struct net_device *dev)
+ {
+@@ -1482,8 +1510,8 @@ static bool mac80211_hwsim_tx_frame_no_nl(struct ieee80211_hw *hw,
+ 		rx_status.bw = RATE_INFO_BW_20;
+ 	if (info->control.rates[0].flags & IEEE80211_TX_RC_SHORT_GI)
+ 		rx_status.enc_flags |= RX_ENC_FLAG_SHORT_GI;
+-	/* TODO: simulate real signal strength (and optional packet loss) */
+-	rx_status.signal = -50;
++	/* TODO: simulate optional packet loss */
++	rx_status.signal = data->rx_rssi;
+ 	if (info->control.vif)
+ 		rx_status.signal += info->control.vif->bss_conf.txpower;
  
+@@ -3309,6 +3337,8 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 		hw->wiphy->n_cipher_suites = param->n_ciphers;
+ 	}
+ 
++	data->rx_rssi = DEFAULT_RX_RSSI;
++
+ 	INIT_DELAYED_WORK(&data->roc_start, hw_roc_start);
+ 	INIT_DELAYED_WORK(&data->roc_done, hw_roc_done);
+ 	INIT_DELAYED_WORK(&data->hw_scan, hw_scan_work);
+@@ -3500,6 +3530,8 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 	debugfs_create_file("ps", 0666, data->debugfs, data, &hwsim_fops_ps);
+ 	debugfs_create_file("group", 0666, data->debugfs, data,
+ 			    &hwsim_fops_group);
++	debugfs_create_file("rx_rssi", 0666, data->debugfs, data,
++			    &hwsim_fops_rx_rssi);
+ 	if (!data->use_chanctx)
+ 		debugfs_create_file("dfs_simulate_radar", 0222,
+ 				    data->debugfs,
 -- 
 2.34.1
 
