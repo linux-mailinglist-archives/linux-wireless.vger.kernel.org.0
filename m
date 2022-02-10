@@ -2,86 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 945804B0C1A
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 12:17:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96EAB4B0C84
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 12:39:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240728AbiBJLRL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Feb 2022 06:17:11 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49868 "EHLO
+        id S241063AbiBJLjV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Feb 2022 06:39:21 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240722AbiBJLRI (ORCPT
+        with ESMTP id S241058AbiBJLjU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Feb 2022 06:17:08 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88DBDFE5
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 03:17:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=D25bj31y0a/n8jRLLLVFFPPQadJDst9Lss6NCfSOze0=;
-        t=1644491829; x=1645701429; b=Z1TIQlN0AVQ4E9vzyAV55MY7qgE0HbyMR7GmneRZujbv9bT
-        nCpl6XqQZxRCT9sXeYqanOq/vOPkeQTegT8SpKPyzCWrU2wKc1T+5XMVoB2JicPaicZuHiBEZkbZD
-        +dCpz8Y4durja1ICMFvDMQQOuiRoxyDzXJdi43EtWW+hAE5z0uFW+h3seh/TMRhKzg+GXglhmkPOA
-        hKaJ/TB2o8f/7kWQuolHBP97QzwCKk1uuECuwxqp4XUAkorQ8MH/IZS1cze74cFdnmf0XEkzfjNSi
-        mVccsC1PEU/2A31jPB3DFDf7fYtmQTOcvvwTuH70YdHNi0r3F9XoPpCGof8BtCEg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nI7Rj-00H1EO-5R;
-        Thu, 10 Feb 2022 12:17:07 +0100
-Message-ID: <bdc46437131fc41a1e3217099ca9395ca3c63b41.camel@sipsolutions.net>
-Subject: Re: [PATCH 2/6] nl80211: add support to advertise driver's EHT
- capabilities
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     "Aloka Dixit (QUIC)" <quic_alokad@quicinc.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Vikram Kandukuri (QUIC)" <quic_vikram@quicinc.com>,
-        "Jia Ding (QUIC)" <quic_jiad@quicinc.com>,
-        "Karthikeyan Periyasamy (QUIC)" <quic_periyasa@quicinc.com>,
-        "Muna Sinada (QUIC)" <quic_msinada@quicinc.com>,
-        "Sriram R (QUIC)" <quic_srirrama@quicinc.com>,
-        "Veerendranath Jakkam (QUIC)" <quic_vjakkam@quicinc.com>,
-        Aloka Dixit <alokad@qti.qualcomm.com>
-Date:   Thu, 10 Feb 2022 12:17:06 +0100
-In-Reply-To: <793a595932ea0adf7a72eeafb6ababdae8e21fc2.camel@sipsolutions.net>
-References: <1640163883-12696-1-git-send-email-quic_vjakkam@quicinc.com>
-         <1640163883-12696-3-git-send-email-quic_vjakkam@quicinc.com>
-         <DM8PR02MB795853BB4B1C71B20857D2D3FE2F9@DM8PR02MB7958.namprd02.prod.outlook.com>
-         <793a595932ea0adf7a72eeafb6ababdae8e21fc2.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.3 (3.42.3-1.fc35) 
+        Thu, 10 Feb 2022 06:39:20 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B9911019
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 03:39:22 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0035561D02
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 11:39:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75CCC004E1;
+        Thu, 10 Feb 2022 11:39:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644493161;
+        bh=EeIa8X3/BEq9686ub9eq26xWgWXw4Ny1RcXApBLAiHE=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=PiFnVzQtpdt9/FNq5RtABJiN+4VdbE6ZJBGMNo9AOxZyxeweHjWoX9R0/i2S0GHq/
+         AbJvHjkAtPmkSTHdX9svLV1qkESEZaL66e/GuB0ab2SNBYweSXp55Y/WYm9cyfnmVW
+         3+NETiSEgdgtFLW61lboblgzCSHzJACZtOr3CUkV1aU7sKwsuYi1LVOSx5YjZOidWZ
+         nO6i/Y82UU1lWJwbkm8BpLGcBDB/OvKVKPR5CMWDMNRhh2VL+K2fY/TSY5vyrIzNiu
+         ytmKKGWtawwTg4tNi+aXidF14rHDXBx8XarfySJLptFsij71CErG+x/b9NPckDgnbR
+         NA4Q8zk2LTmzw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v3 1/6] ath11k: Add basic WoW functionalities
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <1644308006-22784-2-git-send-email-quic_cjhuang@quicinc.com>
+References: <1644308006-22784-2-git-send-email-quic_cjhuang@quicinc.com>
+To:     Carl Huang <quic_cjhuang@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <164449315590.9031.11345020274622525440.kvalo@kernel.org>
+Date:   Thu, 10 Feb 2022 11:39:20 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2022-02-10 at 09:26 +0100, Johannes Berg wrote:
-> > 
-> > Considering that 20MHz-only STA and one that supports other bandwidths will not occur at the same time,
-> > instead of a separate field for struct ieee80211_eht_mcs_nss_supp_20mhz_only inside struct ieee80211_eht_mcs_nss_supp, we can use a byte array as we added in here:
-> > https://patchwork.kernel.org/project/linux-wireless/patch/1640163883-12696-3-git-send-email-quic_vjakkam@quicinc.com/
-> > Instead of length field with dynamic allocation we can have an array of size 9 bytes.
-> > 
-> 
-> We did something like that in our patches:
-> 
-> https://patchwork.kernel.org/project/linux-wireless/patch/20220204230119.b0eeb527d761.I2413a37c8f7d2d6d638038a3d95360a3fce0114d@changeid/
-> https://patchwork.kernel.org/project/linux-wireless/patch/20220204230119.1ee92202ac30.Id30a3ef2844b296efbd5486fe1da9ca36a95c5cf@changeid/
-> 
-> Not overlapping wastes like 4 bytes of memory, I think I can live with
-> that, vs. the extra complexity? If you overlap you need another bit to
-> indicate which one you're using ...
-> 
+Carl Huang <quic_cjhuang@quicinc.com> wrote:
 
-OTOH, that means we need to unwrap it in userspace, which is also
-strange ... So yeah I'm changing it to a union.
+> Implement basic WoW functionalities such as magic-packet, disconnect
+> and pattern. The logic is very similar to ath10k.
+> 
+> When WoW is configured, ath11k_core_suspend and ath11k_core_resume
+> are skipped as WoW configuration and hif suspend/resume are done in
+> ath11k_wow_op_suspend() and ath11k_wow_op_resume().
+> 
+> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+> 
+> Signed-off-by: Carl Huang <quic_cjhuang@quicinc.com>
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-johannes
+This patch failed to compile:
+
+drivers/net/wireless/ath/ath11k/mac.c:7242:5: error: no previous prototype for 'ath11k_mac_flush_tx_complete' [-Werror=missing-prototypes]
+
+Fixed in the pending branch.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/1644308006-22784-2-git-send-email-quic_cjhuang@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
