@@ -2,106 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 930EC4B1596
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 19:54:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 277754B1602
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 20:13:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243255AbiBJSyy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Feb 2022 13:54:54 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39674 "EHLO
+        id S245120AbiBJTM4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Feb 2022 14:12:56 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343577AbiBJSyx (ORCPT
+        with ESMTP id S245101AbiBJTMz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Feb 2022 13:54:53 -0500
-Received: from mail-oo1-xc2f.google.com (mail-oo1-xc2f.google.com [IPv6:2607:f8b0:4864:20::c2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E02101C
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 10:54:53 -0800 (PST)
-Received: by mail-oo1-xc2f.google.com with SMTP id c7-20020a4ad207000000b002e7ab4185d2so7488817oos.6
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 10:54:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=yMao6UkzoPZa4OKRcl+oKZYBvLwCm7QOnag32j5HVEY=;
-        b=EdKZGjoPIrYFOOsb+zaQHZlJ3w10kBbU2rZSwCahJmAV3wcMMWqMoyHJmfAb4x7Zj3
-         cMVjr4dZBDWoCr0MewplkAHP8A9zhAd8wbn08phyjQsJClBRJGVV039o8atGw1kTbcpZ
-         1pjaWdB2Gw08Xri6/Tw2p236TzSMHV32zmtKtVcrdBWbPDp7j/01wU9BXT73uNvQrZvl
-         +8WhjyuqhOhy7rXYo4MefaXlxszN+7a2xEbtdxRRk91yttS5TdZ68vd1+PnGbgzOcwnO
-         vkf5rIYvA7F+lOUcX2HqSIP51Xsw87PqxiSmW3te2jeFyhq4s6tudIaSreU0l7xVu15G
-         5a2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=yMao6UkzoPZa4OKRcl+oKZYBvLwCm7QOnag32j5HVEY=;
-        b=f+ak/rv8M6GXv0eXayH2o4JVfwEAdWWBtz4pvgiDjUXeTAEHYMR5Pn8I1Aob91iNRU
-         OptPHeeRBV8tig8Z8/opKRILCCPzGnA6edM9+TlkP/Amn9ElLJkUrhpDST8svPKC/CLR
-         EQWzl69KtPLfgsl+icpz2am3vo81a6VgqaGy61pxAMyhmuVmjl8HjY1zs2Qq+16nC4Dq
-         XDormvtRmHac5POszmuG/RBvH1XNEkbBMqU2qO2AeI3Lkkg9UlQ9p3mygVFj3VqeYIxj
-         MIuEMO6USDE44NCe7SPWx7lJzY7gSLGp5SnSXjF9wsnfND/8msJ5wivbDloIiK85Sgng
-         +H2g==
-X-Gm-Message-State: AOAM532apKPtDuiSDxfbmjJo6OePtA/0daP22XOzVOT60ZkUuhhLrKt8
-        /LeTlotw+o/7rWvsWJMT1E8=
-X-Google-Smtp-Source: ABdhPJzQ5RvTmE01HTtNLHFD9BXPL29NOqeZUKmtVd9qMDvbQMn7XMyJ/2Rn2AN6tgGvrSpZQWBrEA==
-X-Received: by 2002:a05:6870:1059:: with SMTP id 25mr1261477oaj.172.1644519293062;
-        Thu, 10 Feb 2022 10:54:53 -0800 (PST)
-Received: from [192.168.1.103] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
-        by smtp.gmail.com with ESMTPSA id p5sm8352016oou.39.2022.02.10.10.54.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Feb 2022 10:54:52 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <ba50e373-59d8-d544-e7f9-3fe2a3336056@lwfinger.net>
-Date:   Thu, 10 Feb 2022 12:54:50 -0600
+        Thu, 10 Feb 2022 14:12:55 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6CCB1167
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 11:12:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=BPfuNrLrkTB+MLaVJ7tJheRjY8CABVwaIaS07Wk7tLk=; t=1644520370; x=1645729970; 
+        b=JniEhyh5w1/LDMBoE06aVmecxiy2fzq0ZUSBNKW9UjllMiOLay7HVPOXArcq2QdKs2QD6yviFE6
+        urcEUAZfpxi3/IRYg8dMUPmT7MPlr+V2bVoqejhR5QRP2gUs0HlCGBsGQY2cdFpHzna/rV4fxSxAP
+        SUxOAsrwo5JygaZ+GM7+6nM6ZFQAIG6KrJGUT0Fl/Tbd/89hgBjwXnEwOP9jBcYy8cNZ6Zwhhk4IS
+        h2v1SqTRnlksN1leDOz7/oEOE6mQzp5NTPQ3Sr64wXsLjXfv73jjA1jSM2TbKjd2rQB0PPUE9g8DU
+        +i/N3pp3Ysu/MJQkpx6VMyHqnneRwOqd3xWQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nIEs2-00HBq2-Jv;
+        Thu, 10 Feb 2022 20:12:46 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] ieee80211: use tab to indent struct ieee80211_neighbor_ap_info
+Date:   Thu, 10 Feb 2022 20:12:43 +0100
+Message-Id: <20220210201242.da8fa2e5ae8d.Ia452db01876e52e815f6337fef437049df0d8bd9@changeid>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Subject: Re: Possible bug in cfg80211
-Content-Language: en-US
-To:     Maxim Klimenko Sergievich <klimenkomaximsergievich@gmail.com>,
-        linux-wireless@vger.kernel.org
-References: <CAEqd1ZZucLqJMEktzmnCKzwXXkswzqJNf_yr2HZV20LcWtiR6A@mail.gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <CAEqd1ZZucLqJMEktzmnCKzwXXkswzqJNf_yr2HZV20LcWtiR6A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/10/22 07:25, Maxim Klimenko Sergievich wrote:
-> Modules settings:
-> blacklist pcspkr
-> blacklist bluetooth
-> blacklist kvm
-> blacklist kvm_amd
-> 
-> # options amdgpu reset_method=5
-> options snd_hda_intel power_save=1
-> options rtw88_core support_bf=0
-> options cfg80211 cfg80211_disable_40mhz_24ghz=1 bss_entries_limit=1
-> options mac80211 minstrel_vht_only=1 ieee80211_default_rc_algo=minstrel_ht
+From: Johannes Berg <johannes.berg@intel.com>
 
-Maxim,
+Somehow spaces were used here, use tab instead.
 
-What kernel are you running?
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ include/linux/ieee80211.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Why are you setting option cfg80211_disable_40mhz_24ghz=1 for cfg80211. Is is 
-because the 2.4 GHz band is really crowded, or do you wish to throttle rtw88?
-
-I am most concerned about that bss_entries_limit=1 option for cfg80211. Do you 
-still get the warnings logged if you eliminate that one?
-
-I also have a question for Johannes, et al. Should the "if (WARN_ON(!oldest))" 
-in net/wireless/scan.c be a WARN_ON_ONCE()? It does not seem worthwhile to spam 
-the logs. It is clear that once this happens, it will happen again and again.
-
-Larry
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index ec1a43834611..72bd76a768e0 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -4330,10 +4330,10 @@ static inline bool for_each_element_completed(const struct element *element,
+ #define IEEE80211_RNR_TBTT_PARAMS_COLOC_AP			0x40
+ 
+ struct ieee80211_neighbor_ap_info {
+-       u8 tbtt_info_hdr;
+-       u8 tbtt_info_len;
+-       u8 op_class;
+-       u8 channel;
++	u8 tbtt_info_hdr;
++	u8 tbtt_info_len;
++	u8 op_class;
++	u8 channel;
+ } __packed;
+ 
+ enum ieee80211_range_params_max_total_ltf {
+-- 
+2.34.1
 
