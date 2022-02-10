@@ -2,72 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBC074B182C
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 23:29:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 955F04B18FC
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Feb 2022 00:04:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343576AbiBJW3Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Feb 2022 17:29:25 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53514 "EHLO
+        id S1345085AbiBJXEF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Feb 2022 18:04:05 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242917AbiBJW3Z (ORCPT
+        with ESMTP id S244406AbiBJXEE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Feb 2022 17:29:25 -0500
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8659F10AA
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 14:29:25 -0800 (PST)
-Received: by mail-ot1-x333.google.com with SMTP id d18-20020a9d51d2000000b005a09728a8c2so4799383oth.3
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 14:29:25 -0800 (PST)
+        Thu, 10 Feb 2022 18:04:04 -0500
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE98D55BB
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 15:04:04 -0800 (PST)
+Received: by mail-oi1-x232.google.com with SMTP id 4so7657907oil.11
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 15:04:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=/DB+7B0RJdPFWjNfIQMbWHz/JZyg5dCXeBYTpbBq6LU=;
-        b=ES+GM8PmSq3apGXHTXfAZoqBRDptgkv81xnT1xGOHrlDmeUAmvGari1/J2DSNJBcYd
-         K8pMXtvOttxwY7nObj7/YMP+OFsuFZWEp6bpj4CsKK4AHYXrN47rnk1413YKWNVe5fct
-         2VTCyC0AflOJGgtzRhxA/5tCTblXv5ooNwwtx6U7ReJJzGUSE43fPABKsHTadn+AWwrY
-         OHy+3q7abhqhEpBoBZJaWCQHS93TU3CH8ySvl6fjCfDz7lp5G9KveLsu4b23kKOQPelc
-         J0CXDE16b8JblAqAgRedJmbOz7PBHXl0BCrpWD2WLhWZPHENrdtVicXd2pMjju7eNMAf
-         bKjg==
+         :content-language:to:references:cc:from:in-reply-to;
+        bh=vB0sKaiCA4GfUJCy/+YDgbNa43ZkKqgitArgf10NsQU=;
+        b=LhpKljVvZLojzjDM3K2LHGTYwxa0umgd6I2amnjw4PMaKVh6qsWNkl71yC5xrdjf6K
+         aOq8f1tgY3oUCVBkcP3m5ZTbHNNh7aE8DNz50rckOjTZKcLytsHqw5UhhbBT78GL+CHD
+         4UyxQJL0Ray5pou9xzJahEEZYnZ8kuZu0sblr0lN9cxoUut+RNXbgmd81jtu1VpvVjmX
+         ZEtzp3DGziF5tYCH1lEJHPwABaax2Vyq8v1PjrdnEQau+0n1T+RGjU6iDFvURjEWDVf1
+         7rUH99Ceiw5C5rFc8yRW4VVNQ0XeWOCwQk0Qgc3lXJpQRynHvKptPONgFTs2+iJ/VYDk
+         3d4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=/DB+7B0RJdPFWjNfIQMbWHz/JZyg5dCXeBYTpbBq6LU=;
-        b=IHA70Xvm2I0mQHPuTvcOXz2OVBqVAWIcBfkxsOnDFUlWo872nFiBFiIWDuwax37ujr
-         ho1sjJrxNorSdxBg7/DmWj4pgRelQYwnoPjNC03gZezmtr6ljsRPcS2oZmPS51aMVpVD
-         Piu3DMTeWve7LOkRWfUJZ5n4ijDAGlV0RiySLogxtGodCCwe7TgyudNXVnSWm5yzLWpj
-         1dHzc3KVq8ZP50OrwvGLrVdVnF5U8SaSLg4E5spIAVsx3I5OnpltsNb1SHziVK11Nog9
-         Vw0WssiNcHJzmkQZS5KkcFwWrDH/KtNHMO/L+M1nLfrfM/2iYSGTm+IlbqpblMTsnXX4
-         CSwQ==
-X-Gm-Message-State: AOAM533Vnm55vyGU0ZimLOKnTKUzCKMfEx+1dy+7CPnhcn0bGvY3qrcR
-        LVlH9J9M+zvKWgkX2MNI1ZdXkhDKVcI=
-X-Google-Smtp-Source: ABdhPJy5zh1TH9pD+AD8FBi1KyYeYGvF4AKSaWIaIk7ykfGEJwPlKYjw4SRiNO1CyY9cOxQ7Yl0Q4w==
-X-Received: by 2002:a9d:4f0a:: with SMTP id d10mr3585369otl.292.1644532164906;
-        Thu, 10 Feb 2022 14:29:24 -0800 (PST)
-Received: from [192.168.1.104] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
-        by smtp.gmail.com with ESMTPSA id a15sm8743667oil.13.2022.02.10.14.29.23
+         :subject:content-language:to:references:cc:from:in-reply-to;
+        bh=vB0sKaiCA4GfUJCy/+YDgbNa43ZkKqgitArgf10NsQU=;
+        b=jzBKrP9+CJqQK3Xh55yb3gR0rLyDgfIP6ahAw65C8fnPt6QamrxUwYDWUFShUZxT6z
+         G4wftxN5TjkPWpNhF46r/aaAZXTBoe9uZ1H8oh9hDEfjA6+53jw1115oOomXcYHjCX6y
+         22m5TFLUajvmgI8+HLcodU06gjJLSEe5geSftY/4HwgPQ+/fBTQxx9BINAIv9YutFjcw
+         zpCmHXwzvawtfZynkz87NoSv+U+twAXUIagOjtMYY3oIg03iD0rBux1Oo8HG6nwRNhqa
+         LD78Hj6+Cyooj3xM12fjPPwJuJy33Oj4AicBW3vMI6eTsYWWcos2TP3tMTnJ/045KSa+
+         l7GQ==
+X-Gm-Message-State: AOAM532SswpdA3sHqc0L99zEriEfuF3LOuejdDplaXhEj/gFHQ8IiYp+
+        6dyluVlgYJBMzw9zFH+2qjoix5NjjTs=
+X-Google-Smtp-Source: ABdhPJwwC9epBcXFCgC2C4WJYz5xBmox3Ew3/3HhSpGR761pHhmHWk/lFdj5SBulJKFvWnbdFrg+pA==
+X-Received: by 2002:aca:dfd5:: with SMTP id w204mr2129761oig.264.1644534244186;
+        Thu, 10 Feb 2022 15:04:04 -0800 (PST)
+Received: from [10.62.118.101] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
+        by smtp.gmail.com with ESMTPSA id eq37sm10333200oab.19.2022.02.10.15.04.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Feb 2022 14:29:24 -0800 (PST)
+        Thu, 10 Feb 2022 15:04:03 -0800 (PST)
 Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <f2985911-19ae-dd3b-6c23-93de0c188c0e@lwfinger.net>
-Date:   Thu, 10 Feb 2022 16:29:21 -0600
+Content-Type: multipart/mixed; boundary="------------NWR6P18wOlnzDpPPzdkmTpdC"
+Message-ID: <9fdc6313-46df-e5ab-30a4-7fcbdffe69f7@lwfinger.net>
+Date:   Thu, 10 Feb 2022 17:04:01 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.1
 Subject: Re: Possible bug in cfg80211
 Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Maxim Klimenko Sergievich <klimenkomaximsergievich@gmail.com>,
-        linux-wireless@vger.kernel.org
+To:     Maxim Klimenko Sergievich <klimenkomaximsergievich@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>
 References: <CAEqd1ZZucLqJMEktzmnCKzwXXkswzqJNf_yr2HZV20LcWtiR6A@mail.gmail.com>
  <ba50e373-59d8-d544-e7f9-3fe2a3336056@lwfinger.net>
- <bcbeaeb1c331a5570e6ab6e03a6ce2875b43f750.camel@sipsolutions.net>
+ <CAEqd1ZZkSDMkKm-TJz69iihWDd0Afu54nerc0gTqZfAV35mv9w@mail.gmail.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
 From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <bcbeaeb1c331a5570e6ab6e03a6ce2875b43f750.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <CAEqd1ZZkSDMkKm-TJz69iihWDd0Afu54nerc0gTqZfAV35mv9w@mail.gmail.com>
 X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
         HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
@@ -79,25 +76,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/10/22 14:10, Johannes Berg wrote:
-> On Thu, 2022-02-10 at 12:54 -0600, Larry Finger wrote:
->>
->> I am most concerned about that bss_entries_limit=1 option for cfg80211. Do you
->> still get the warnings logged if you eliminate that one?
-> 
-> Yeah that's probably the reason ...
-> 
-> I guess we should ignore it if it's too low to make any sense.
-> 
->> I also have a question for Johannes, et al. Should the "if (WARN_ON(!oldest))"
->> in net/wireless/scan.c be a WARN_ON_ONCE()? It does not seem worthwhile to spam
->> the logs. It is clear that once this happens, it will happen again and again.
->>
-> 
-> Indeed, that seems reasonable. Want to send a patch?
+This is a multi-part message in MIME format.
+--------------NWR6P18wOlnzDpPPzdkmTpdC
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Yes, I will send a patch. I was able to duplicate the OP's warning with 
-"bss_entries_limit=1 and I will be able to test for that warning.
+On 2/10/22 15:29, Maxim Klimenko Sergievich wrote:
+
+Maxim,
+
+I was able to duplicate your logged warnings by loading cfg80211 with the option 
+"bss_entries_limit=1". The attached patch fixes the problem for me. Could you 
+please test on your system?
+
+If it is OK for you, I will submit it to wireless-drivers-next with you noted as 
+the reporter and tester.
+
+Thanks,
 
 Larry
+--------------NWR6P18wOlnzDpPPzdkmTpdC
+Content-Type: text/x-patch; charset=UTF-8; name="patch_scan.patch"
+Content-Disposition: attachment; filename="patch_scan.patch"
+Content-Transfer-Encoding: base64
 
+ZGlmZiAtLWdpdCBhL25ldC93aXJlbGVzcy9zY2FuLmMgYi9uZXQvd2lyZWxlc3Mvc2Nhbi5j
+CmluZGV4IGI4ODg1MjJmMTMzYi4uZDVmNmZiNWUxMDdjIDEwMDY0NAotLS0gYS9uZXQvd2ly
+ZWxlc3Mvc2Nhbi5jCisrKyBiL25ldC93aXJlbGVzcy9zY2FuLmMKQEAgLTQ3NCw3ICs0NzQs
+OSBAQCBzdGF0aWMgYm9vbCBjZmc4MDIxMV9ic3NfZXhwaXJlX29sZGVzdChzdHJ1Y3QgY2Zn
+ODAyMTFfcmVnaXN0ZXJlZF9kZXZpY2UgKnJkZXYpCiAJCW9sZGVzdCA9IGJzczsKIAl9CiAK
+LQlpZiAoV0FSTl9PTighb2xkZXN0KSkKKwlpZiAocmRldi0+YnNzX2VudHJpZXMgPT0gMSkK
+KwkJcmV0dXJuIGZhbHNlOworCWlmIChXQVJOX09OX09OQ0UoIW9sZGVzdCkpCiAJCXJldHVy
+biBmYWxzZTsKIAogCS8qCg==
+
+--------------NWR6P18wOlnzDpPPzdkmTpdC--
