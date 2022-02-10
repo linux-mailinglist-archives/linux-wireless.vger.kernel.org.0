@@ -2,82 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ABD64B081A
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 09:27:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C3284B087B
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Feb 2022 09:35:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237267AbiBJI0o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Feb 2022 03:26:44 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:57946 "EHLO
+        id S237552AbiBJIdQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Feb 2022 03:33:16 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:35190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237337AbiBJI0o (ORCPT
+        with ESMTP id S237572AbiBJIdO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Feb 2022 03:26:44 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5C8810AC
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 00:26:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=BWdBKr0BMEvyDGpuDAjvI9zYj+udQb6KNu2HHHuDpIc=;
-        t=1644481605; x=1645691205; b=yOKdiPwdgBcjWZRFFoYxKPhmQSpBxUK9CeFbQxIGDw7cwQc
-        UWBd/CThHQJuLV9UxPkDs+4vC2UeJkpr6kv8IocZbPMKcw4kutMPyI/gmlmesly3XGgFIzHwdjR2q
-        Y6uwfi//2KmxdLm5uuEb6tbCdyLj0v0kHv1wlCUuy4AcT7loSwLCPEvYaSgwbviv3DW6nUjIw4Dge
-        uCXuOpgsHpCvNs/uW0LL1pD3mZ5WL/FnRfH7pjGVFrEHlsJ67tm7QnH8jvAq3gYGWx2vyEPWAVm6/
-        ih1bHfHDR4Xt3APBS5e8QxDnVWY5U3TO56KzgCVzI/ZG7gFgfq4Sqd4pGmPbfuWA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nI4mq-00GxlX-4O;
-        Thu, 10 Feb 2022 09:26:44 +0100
-Message-ID: <793a595932ea0adf7a72eeafb6ababdae8e21fc2.camel@sipsolutions.net>
-Subject: Re: [PATCH 2/6] nl80211: add support to advertise driver's EHT
- capabilities
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     "Aloka Dixit (QUIC)" <quic_alokad@quicinc.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Vikram Kandukuri (QUIC)" <quic_vikram@quicinc.com>,
-        "Jia Ding (QUIC)" <quic_jiad@quicinc.com>,
-        "Karthikeyan Periyasamy (QUIC)" <quic_periyasa@quicinc.com>,
-        "Muna Sinada (QUIC)" <quic_msinada@quicinc.com>,
-        "Sriram R (QUIC)" <quic_srirrama@quicinc.com>,
-        "Veerendranath Jakkam (QUIC)" <quic_vjakkam@quicinc.com>,
-        Aloka Dixit <alokad@qti.qualcomm.com>
-Date:   Thu, 10 Feb 2022 09:26:42 +0100
-In-Reply-To: <DM8PR02MB795853BB4B1C71B20857D2D3FE2F9@DM8PR02MB7958.namprd02.prod.outlook.com>
-References: <1640163883-12696-1-git-send-email-quic_vjakkam@quicinc.com>
-         <1640163883-12696-3-git-send-email-quic_vjakkam@quicinc.com>
-         <DM8PR02MB795853BB4B1C71B20857D2D3FE2F9@DM8PR02MB7958.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.3 (3.42.3-1.fc35) 
+        Thu, 10 Feb 2022 03:33:14 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E12D8204;
+        Thu, 10 Feb 2022 00:33:15 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88DBF616D6;
+        Thu, 10 Feb 2022 08:33:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94ABEC004E1;
+        Thu, 10 Feb 2022 08:33:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644481994;
+        bh=h5BAK9NL0LC0OjjGKnkej1s8XID/CDQC0NW9XJnwKa8=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=tLWE9ZoM7S6iOyF5P/mAPIaareQqJT6nPKu6EvgUzKaik4prlQ6FCFNfbsAKrysAA
+         ePRLsVz1Qq4+JmgeAKxJWcxy7sO/CtNiLJb3Salm/n+ucJxGFE6Mba84WW8q8libEV
+         ySorjJVhOB5xQpKsaetGkyeqN+rBDfHf74EVi11cbphMTpDlK7bGqlwQO+W6r6zjRP
+         e6ZRilAIAZVTugTn0vyBeKKAF+xOiDXM3n5ChUn0MF3NRByMF3sPL9n9D0w9ClUDFl
+         yuCEA8W8nC8oRSo8/jvqE/tY4CIX4m7tUZgm/2+Al9Gv3hv2/qzAGZUrYKMxGtDS+F
+         7BOnfScbx2W3A==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v2] rtw88: fix use after free in
+ rtw_hw_scan_update_probe_req()
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20220203082532.GA25151@kili>
+References: <20220203082532.GA25151@kili>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Po-Hao Huang <phhuang@realtek.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <164448199009.15541.16431602582392525909.kvalo@kernel.org>
+Date:   Thu, 10 Feb 2022 08:33:13 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2022-02-10 at 05:14 +0000, Aloka Dixit (QUIC) wrote:
-> Hi Johannes,
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
+
+> This code needs to use skb_queue_walk_safe() instead of skb_queue_walk()
+> because it frees the list iterator.
 > 
-> Considering that 20MHz-only STA and one that supports other bandwidths will not occur at the same time,
-> instead of a separate field for struct ieee80211_eht_mcs_nss_supp_20mhz_only inside struct ieee80211_eht_mcs_nss_supp, we can use a byte array as we added in here:
-> https://patchwork.kernel.org/project/linux-wireless/patch/1640163883-12696-3-git-send-email-quic_vjakkam@quicinc.com/
-> Instead of length field with dynamic allocation we can have an array of size 9 bytes.
-> 
+> Fixes: d95984b5580d ("rtw88: fix memory overrun and memory leak during hw_scan")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-We did something like that in our patches:
+Patch applied to wireless-next.git, thanks.
 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220204230119.b0eeb527d761.I2413a37c8f7d2d6d638038a3d95360a3fce0114d@changeid/
-https://patchwork.kernel.org/project/linux-wireless/patch/20220204230119.1ee92202ac30.Id30a3ef2844b296efbd5486fe1da9ca36a95c5cf@changeid/
+a954f29aea5d rtw88: fix use after free in rtw_hw_scan_update_probe_req()
 
-Not overlapping wastes like 4 bytes of memory, I think I can live with
-that, vs. the extra complexity? If you overlap you need another bit to
-indicate which one you're using ...
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20220203082532.GA25151@kili/
 
-johannes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
