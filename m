@@ -2,111 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 955F04B18FC
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Feb 2022 00:04:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED59A4B1A61
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Feb 2022 01:25:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345085AbiBJXEF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Feb 2022 18:04:05 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55844 "EHLO
+        id S1346318AbiBKAZp convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Feb 2022 19:25:45 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244406AbiBJXEE (ORCPT
+        with ESMTP id S1345707AbiBKAZo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Feb 2022 18:04:04 -0500
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE98D55BB
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 15:04:04 -0800 (PST)
-Received: by mail-oi1-x232.google.com with SMTP id 4so7657907oil.11
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 15:04:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:references:cc:from:in-reply-to;
-        bh=vB0sKaiCA4GfUJCy/+YDgbNa43ZkKqgitArgf10NsQU=;
-        b=LhpKljVvZLojzjDM3K2LHGTYwxa0umgd6I2amnjw4PMaKVh6qsWNkl71yC5xrdjf6K
-         aOq8f1tgY3oUCVBkcP3m5ZTbHNNh7aE8DNz50rckOjTZKcLytsHqw5UhhbBT78GL+CHD
-         4UyxQJL0Ray5pou9xzJahEEZYnZ8kuZu0sblr0lN9cxoUut+RNXbgmd81jtu1VpvVjmX
-         ZEtzp3DGziF5tYCH1lEJHPwABaax2Vyq8v1PjrdnEQau+0n1T+RGjU6iDFvURjEWDVf1
-         7rUH99Ceiw5C5rFc8yRW4VVNQ0XeWOCwQk0Qgc3lXJpQRynHvKptPONgFTs2+iJ/VYDk
-         3d4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:references:cc:from:in-reply-to;
-        bh=vB0sKaiCA4GfUJCy/+YDgbNa43ZkKqgitArgf10NsQU=;
-        b=jzBKrP9+CJqQK3Xh55yb3gR0rLyDgfIP6ahAw65C8fnPt6QamrxUwYDWUFShUZxT6z
-         G4wftxN5TjkPWpNhF46r/aaAZXTBoe9uZ1H8oh9hDEfjA6+53jw1115oOomXcYHjCX6y
-         22m5TFLUajvmgI8+HLcodU06gjJLSEe5geSftY/4HwgPQ+/fBTQxx9BINAIv9YutFjcw
-         zpCmHXwzvawtfZynkz87NoSv+U+twAXUIagOjtMYY3oIg03iD0rBux1Oo8HG6nwRNhqa
-         LD78Hj6+Cyooj3xM12fjPPwJuJy33Oj4AicBW3vMI6eTsYWWcos2TP3tMTnJ/045KSa+
-         l7GQ==
-X-Gm-Message-State: AOAM532SswpdA3sHqc0L99zEriEfuF3LOuejdDplaXhEj/gFHQ8IiYp+
-        6dyluVlgYJBMzw9zFH+2qjoix5NjjTs=
-X-Google-Smtp-Source: ABdhPJwwC9epBcXFCgC2C4WJYz5xBmox3Ew3/3HhSpGR761pHhmHWk/lFdj5SBulJKFvWnbdFrg+pA==
-X-Received: by 2002:aca:dfd5:: with SMTP id w204mr2129761oig.264.1644534244186;
-        Thu, 10 Feb 2022 15:04:04 -0800 (PST)
-Received: from [10.62.118.101] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
-        by smtp.gmail.com with ESMTPSA id eq37sm10333200oab.19.2022.02.10.15.04.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Feb 2022 15:04:03 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Content-Type: multipart/mixed; boundary="------------NWR6P18wOlnzDpPPzdkmTpdC"
-Message-ID: <9fdc6313-46df-e5ab-30a4-7fcbdffe69f7@lwfinger.net>
-Date:   Thu, 10 Feb 2022 17:04:01 -0600
+        Thu, 10 Feb 2022 19:25:44 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 355125F6C
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 16:25:42 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 21B0PSPs8001800, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 21B0PSPs8001800
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 11 Feb 2022 08:25:28 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Fri, 11 Feb 2022 08:25:28 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Fri, 11 Feb 2022 08:25:27 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e]) by
+ RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e%5]) with mapi id
+ 15.01.2308.020; Fri, 11 Feb 2022 08:25:27 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: Funny log entries for rtw88_8821ce
+Thread-Topic: Funny log entries for rtw88_8821ce
+Thread-Index: AQHYFvVq2DWVmxZS7E2VYxG/u8dgWqx9tPKAgAQJ/QCAB6gl/f//rFuAgAPTOxKAAKLmIA==
+Date:   Fri, 11 Feb 2022 00:25:27 +0000
+Message-ID: <ef1b6cf1c82c49faab84610ad960f72a@realtek.com>
+References: <c356d5ae-a7b3-3065-1121-64c446e70333@lwfinger.net>
+        <32f2ece8acdb67f74757cb705e5467847d6bcae0.camel@realtek.com>
+        <ef7361eb-17ce-5ecf-a46a-a9f0c5aab35b@lwfinger.net>
+        <87czjxbukz.fsf@tynnyri.adurom.net>
+        <6baf4ae2f36c89269f74f0905ce81f38adc3a284.camel@realtek.com>
+ <87mtiy3iha.fsf@kernel.org>
+In-Reply-To: <87mtiy3iha.fsf@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/2/10_=3F=3F_10:33:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Subject: Re: Possible bug in cfg80211
-Content-Language: en-US
-To:     Maxim Klimenko Sergievich <klimenkomaximsergievich@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>
-References: <CAEqd1ZZucLqJMEktzmnCKzwXXkswzqJNf_yr2HZV20LcWtiR6A@mail.gmail.com>
- <ba50e373-59d8-d544-e7f9-3fe2a3336056@lwfinger.net>
- <CAEqd1ZZkSDMkKm-TJz69iihWDd0Afu54nerc0gTqZfAV35mv9w@mail.gmail.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <CAEqd1ZZkSDMkKm-TJz69iihWDd0Afu54nerc0gTqZfAV35mv9w@mail.gmail.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------NWR6P18wOlnzDpPPzdkmTpdC
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 2/10/22 15:29, Maxim Klimenko Sergievich wrote:
+> -----Original Message-----
+> From: Kalle Valo <kvalo@kernel.org>
+> Sent: Thursday, February 10, 2022 10:27 PM
+> To: Pkshih <pkshih@realtek.com>
+> Cc: Larry.Finger@lwfinger.net; linux-wireless@vger.kernel.org
+> Subject: Re: Funny log entries for rtw88_8821ce
+> 
+> Pkshih <pkshih@realtek.com> writes:
+> 
+> > Then, I have a question about the message of setting SAR:
+> > 	rtw_info(rtwdev, "On freq %u to %u, set SAR %d in 1/%lu dBm\n"
+> >
+> > When a user sets SAR via iw, this message can reflect the action performed
+> > by driver. Is this rtw_info acceptable?
+> 
+> In general the preference for user space commands is not to print
+> anything to the log when debug messages are disabled, but of course
+> there can be exceptions if the reasons are good. Why do you want to
+> print this always? What benefit does it bring for the user?
+> 
 
-Maxim,
+Understand. My original thinking still focus on debug purpose.
 
-I was able to duplicate your logged warnings by loading cfg80211 with the option 
-"bss_entries_limit=1". The attached patch fixes the problem for me. Could you 
-please test on your system?
+Because the SAR doesn't have a 'get' method to check status, and it affects
+TX power but a user can't be aware that clearly. If someone told me his
+laptop has low wifi performance, this message can be a good clue to address
+the problem.
 
-If it is OK for you, I will submit it to wireless-drivers-next with you noted as 
-the reporter and tester.
+Fortunately, I still can use debugfs to debug this case, so I will change
+this message to debug level.
 
-Thanks,
+--
+Ping-Ke
 
-Larry
---------------NWR6P18wOlnzDpPPzdkmTpdC
-Content-Type: text/x-patch; charset=UTF-8; name="patch_scan.patch"
-Content-Disposition: attachment; filename="patch_scan.patch"
-Content-Transfer-Encoding: base64
-
-ZGlmZiAtLWdpdCBhL25ldC93aXJlbGVzcy9zY2FuLmMgYi9uZXQvd2lyZWxlc3Mvc2Nhbi5j
-CmluZGV4IGI4ODg1MjJmMTMzYi4uZDVmNmZiNWUxMDdjIDEwMDY0NAotLS0gYS9uZXQvd2ly
-ZWxlc3Mvc2Nhbi5jCisrKyBiL25ldC93aXJlbGVzcy9zY2FuLmMKQEAgLTQ3NCw3ICs0NzQs
-OSBAQCBzdGF0aWMgYm9vbCBjZmc4MDIxMV9ic3NfZXhwaXJlX29sZGVzdChzdHJ1Y3QgY2Zn
-ODAyMTFfcmVnaXN0ZXJlZF9kZXZpY2UgKnJkZXYpCiAJCW9sZGVzdCA9IGJzczsKIAl9CiAK
-LQlpZiAoV0FSTl9PTighb2xkZXN0KSkKKwlpZiAocmRldi0+YnNzX2VudHJpZXMgPT0gMSkK
-KwkJcmV0dXJuIGZhbHNlOworCWlmIChXQVJOX09OX09OQ0UoIW9sZGVzdCkpCiAJCXJldHVy
-biBmYWxzZTsKIAogCS8qCg==
-
---------------NWR6P18wOlnzDpPPzdkmTpdC--
