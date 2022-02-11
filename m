@@ -2,81 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2E524B1B45
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Feb 2022 02:30:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51A504B1CBD
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Feb 2022 03:56:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346875AbiBKBaD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Feb 2022 20:30:03 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41934 "EHLO
+        id S1344026AbiBKCzM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Feb 2022 21:55:12 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243303AbiBKBaC (ORCPT
+        with ESMTP id S244263AbiBKCzL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Feb 2022 20:30:02 -0500
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACBCC270E;
-        Thu, 10 Feb 2022 17:30:01 -0800 (PST)
-Received: by mail-qt1-x833.google.com with SMTP id b5so7478836qtq.11;
-        Thu, 10 Feb 2022 17:30:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Agn9nWvOVKSlYopW6GlbBUhQXIsnfExAgumi8G4eFTI=;
-        b=Oh7sp26UOvTWr/KLgtKlclcfG0wVdc5O8pe/M15xAnnxL6POaBe6FsHyQMsxM0Dk0o
-         L/IN4NTDy4HuUOhsjHF822y69aVfYTkts9Yihz7wsLgfNlJS0iauSwkIuwwptqcP6jhv
-         36BmzRcofOR+mroskXXiIyrfi1HCXDShmknELWCLmZbYPgOIaLxmum9q/Af4S9O315vP
-         CbdGItpX6O/Z9pIEVz2jIC+5h885yVzst4UIoN1nLBz6upFG/GZzEGS5mRIepx0/wv9X
-         WzhiCDZDVEe3Bl0CTOlONwRI6nF9hQGxZ16Ee/4L1mk2qJzZVbnPSqNa5QConazyeD/W
-         nZ0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Agn9nWvOVKSlYopW6GlbBUhQXIsnfExAgumi8G4eFTI=;
-        b=KrpwmBgGC14XUrTLwj9giCovp+vJKVuk5B1JWL+q1van3jXOrLM0m+BwhW6lTPwuw0
-         eDXuUEeGMaEypAOmdEaLt6khLHOioMIAxBboy4onv8SKUfLaP1LyICvp++U5vHCrXrYD
-         oGA7JO/hGCduPfizUQd7kZGbPu9Y3UhK9Y8MyrzelTC4sebxjyofYN7V3gdz5b+EwKUf
-         EU8u5rE9fLD+2F2fO0DQCs3BBqmj8M4W53kw9AgOK8Ci/G8w97KRny1AXqe3a8VbctNI
-         HierJAa84JMiQa/PEaOGeMm3dKX3EU59i3WemcsDLKxpnNdeU9AsAPxOMAcp00Hiul4Y
-         t1YQ==
-X-Gm-Message-State: AOAM532SuQ9r+BZITrfK3LP2TRwJ4OhwJc4IG9fewzBU0o8iUfM5Y8Cz
-        QZIj1PhHXLKMi/jtV3Zy9IE=
-X-Google-Smtp-Source: ABdhPJxuv9EpNP7UGy8548s4WvOHS/6phRk0lxUHHM85fP03AA3hW9YbxAAjwgTQxXtCoP2wOWUv6g==
-X-Received: by 2002:a05:622a:1049:: with SMTP id f9mr6919482qte.348.1644543000905;
-        Thu, 10 Feb 2022 17:30:00 -0800 (PST)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id h5sm11429608qti.95.2022.02.10.17.29.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Feb 2022 17:30:00 -0800 (PST)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: chi.minghao@zte.com.cn
-To:     kvalo@kernel.org
-Cc:     cgel.zte@gmail.com, chi.minghao@zte.com.cn, davem@davemloft.net,
-        kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        wcn36xx@lists.infradead.org, zealci@zte.com.cn
-Subject: Re: [PATCH V2] wcn36xx: use struct_size over open coded arithmetic
-Date:   Fri, 11 Feb 2022 01:29:54 +0000
-Message-Id: <20220211012954.1650997-1-chi.minghao@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <164449505175.11894.18378600637942439052.kvalo@kernel.org>
-References: <164449505175.11894.18378600637942439052.kvalo@kernel.org>
+        Thu, 10 Feb 2022 21:55:11 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AF135F4F
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 18:55:07 -0800 (PST)
+X-UUID: 2be48035695e4f7c89990aa0179393f4-20220211
+X-UUID: 2be48035695e4f7c89990aa0179393f4-20220211
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 211369550; Fri, 11 Feb 2022 10:55:03 +0800
+Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Fri, 11 Feb 2022 10:55:02 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb02.mediatek.inc
+ (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 11 Feb
+ 2022 10:55:01 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 11 Feb 2022 10:55:01 +0800
+From:   Deren Wu <Deren.Wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Shayne Chen" <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH] mt76: mt7615: fix compiler warning on frame size
+Date:   Fri, 11 Feb 2022 10:54:55 +0800
+Message-ID: <c7c87a448a159a9836b6ac848eb92f6a367daf1a.1644547407.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-change log:
+From: Deren Wu <deren.wu@mediatek.com>
 
-v1: msg_ind = kmalloc(struct_size(*msg_ind, msg, len), GFP_ATOMIC);
-v2: msg_ind = kmalloc(struct_size(msg_ind, msg, len), GFP_ATOMIC);
+The following error is see from the compiler:
 
-thanks
-Minghao
+  mt7615/debugfs.c: In function ‘mt7615_ext_mac_addr_read’:
+  mt7615/debugfs.c:465:1: warning: the frame size of 1072 bytes is
+    larger than 1024 bytes [-Wframe-larger-than=]
+
+The issue is due to allocating a buffer as string storage.
+
+Fix by converting to a dynamical allocation of the buffer.
+
+Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7615/debugfs.c    | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+index ca7efca1543f..250faa870db2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+@@ -443,11 +443,16 @@ mt7615_ext_mac_addr_read(struct file *file, char __user *userbuf,
+ 			 size_t count, loff_t *ppos)
+ {
+ 	struct mt7615_dev *dev = file->private_data;
+-	char buf[32 * ((ETH_ALEN * 3) + 4) + 1];
++	char *buf;
++	static u32 len = 32 * ((ETH_ALEN * 3) + 4) + 1;
+ 	u8 addr[ETH_ALEN];
+ 	int ofs = 0;
+ 	int i;
+ 
++	buf = kzalloc(len, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
++
+ 	for (i = 0; i < 32; i++) {
+ 		if (!(dev->muar_mask & BIT(i)))
+ 			continue;
+@@ -458,10 +463,13 @@ mt7615_ext_mac_addr_read(struct file *file, char __user *userbuf,
+ 		put_unaligned_le32(mt76_rr(dev, MT_WF_RMAC_MAR0), addr);
+ 		put_unaligned_le16((mt76_rr(dev, MT_WF_RMAC_MAR1) &
+ 				    MT_WF_RMAC_MAR1_ADDR), addr + 4);
+-		ofs += snprintf(buf + ofs, sizeof(buf) - ofs, "%d=%pM\n", i, addr);
++		ofs += snprintf(buf + ofs, len - ofs, "%d=%pM\n", i, addr);
+ 	}
+ 
+-	return simple_read_from_buffer(userbuf, count, ppos, buf, ofs);
++	ofs = simple_read_from_buffer(userbuf, count, ppos, buf, ofs);
++
++	kfree(buf);
++	return ofs;
+ }
+ 
+ static ssize_t
+-- 
+2.18.0
+
