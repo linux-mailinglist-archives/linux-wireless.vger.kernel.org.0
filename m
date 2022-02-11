@@ -2,43 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E156F4B1F2F
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Feb 2022 08:16:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CF1C4B1FC7
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Feb 2022 09:00:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347643AbiBKHQ2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Feb 2022 02:16:28 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38446 "EHLO
+        id S1347874AbiBKIAb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Feb 2022 03:00:31 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347638AbiBKHQ1 (ORCPT
+        with ESMTP id S232799AbiBKIAa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Feb 2022 02:16:27 -0500
+        Fri, 11 Feb 2022 03:00:30 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3278D1111
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Feb 2022 23:16:25 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4DC2BBF
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Feb 2022 00:00:28 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 21B7GIqsC011321, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 21B80H4x8023899, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 21B7GIqsC011321
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 21B80H4x8023899
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 11 Feb 2022 15:16:19 +0800
+        Fri, 11 Feb 2022 16:00:17 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Fri, 11 Feb 2022 15:16:18 +0800
+ 15.1.2308.20; Fri, 11 Feb 2022 16:00:16 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Fri, 11 Feb
- 2022 15:16:18 +0800
+ 2022 16:00:14 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <timlee@realtek.com>,
-        <ku920601@realtek.com>
-Subject: [PATCH 6/6] rtw88: coex: Update rtl8822c COEX version to 22020720
-Date:   Fri, 11 Feb 2022 15:15:33 +0800
-Message-ID: <20220211071533.34716-7-pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
+Subject: [PATCH 0/6] rtw89: preparation of RFK helpers, 6G and 160M changes to support new chip
+Date:   Fri, 11 Feb 2022 15:59:47 +0800
+Message-ID: <20220211075953.40421-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220211071533.34716-1-pkshih@realtek.com>
-References: <20220211071533.34716-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -50,7 +47,7 @@ X-KSE-AntiSpam-Interceptor-Info: trusted connection
 X-KSE-Antiphishing-Info: Clean
 X-KSE-Antiphishing-ScanningType: Deterministic
 X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 02/11/2022 07:03:00
+X-KSE-Antiphishing-Bases: 02/11/2022 07:45:00
 X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
  rules found
 X-KSE-Antivirus-Interceptor-Info: scan successful
@@ -69,36 +66,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ching-Te Ku <ku920601@realtek.com>
+The RFK helpers will be reused by all chips, so make it as common functions.
+Add 6G and 160M supports on some components like rate adaptive mechanism.
 
-Enable Wi-Fi/BT mailbox 0x45 handshake and Wi-Fi MIMO power save
-mechanism for Bluetooth gaming controller.
+Ping-Ke Shih (3):
+  rtw89: add 6G support to rate adaptive mechanism
+  rtw89: declare if chip support 160M bandwidth
+  rtw89: handle TX/RX 160M bandwidth
 
-BTCOEX Version: 22020720-2020
-Desired_BT_Coex_Ver: 0x20
-Desired_WL_FW_Ver: 9.9.11
+Zong-Zhe Yang (3):
+  rtw89: make rfk helpers common across chips
+  rtw89: refine naming of rfk helpers with prefix
+  rtw89: extend subband for 6G band
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c     |   93 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |   22 +
+ drivers/net/wireless/realtek/rtw89/phy.c      |   84 +-
+ drivers/net/wireless/realtek/rtw89/phy.h      |   59 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |    1 +
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.c |   62 +-
+ .../realtek/rtw89/rtw8852a_rfk_table.c        | 2744 ++++++++---------
+ .../realtek/rtw89/rtw8852a_rfk_table.h        |   49 +-
+ 8 files changed, 1601 insertions(+), 1513 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index 39daca4405935..87ff1cf4ad7ec 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -5374,8 +5374,8 @@ struct rtw_chip_info rtw8822c_hw_spec = {
- 	.wowlan_stub = &rtw_wowlan_stub_8822c,
- 	.max_sched_scan_ssids = 4,
- #endif
--	.coex_para_ver = 0x2103181c,
--	.bt_desired_ver = 0x1c,
-+	.coex_para_ver = 0x22020720,
-+	.bt_desired_ver = 0x20,
- 	.scbd_support = true,
- 	.new_scbd10_def = true,
- 	.ble_hid_profile_support = true,
 -- 
 2.25.1
 
