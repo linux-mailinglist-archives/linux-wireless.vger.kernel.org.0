@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 843F24B1FC5
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Feb 2022 09:00:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 685924B1FC8
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Feb 2022 09:00:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347885AbiBKIAg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Feb 2022 03:00:36 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59304 "EHLO
+        id S1347883AbiBKIAh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Feb 2022 03:00:37 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347875AbiBKIAc (ORCPT
+        with ESMTP id S1347876AbiBKIAd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Feb 2022 03:00:32 -0500
+        Fri, 11 Feb 2022 03:00:33 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44B7DBBF
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A0BBD9
         for <linux-wireless@vger.kernel.org>; Fri, 11 Feb 2022 00:00:31 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 21B80OAt8023923, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 21B80OAt8023923
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 21B80PS40023927, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 21B80PS40023927
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 11 Feb 2022 16:00:24 +0800
+        Fri, 11 Feb 2022 16:00:25 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Fri, 11 Feb 2022 16:00:24 +0800
+ 15.1.2308.20; Fri, 11 Feb 2022 16:00:25 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Fri, 11 Feb
- 2022 16:00:23 +0800
+ 2022 16:00:24 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
-Subject: [PATCH 5/6] rtw89: declare if chip support 160M bandwidth
-Date:   Fri, 11 Feb 2022 15:59:52 +0800
-Message-ID: <20220211075953.40421-6-pkshih@realtek.com>
+Subject: [PATCH 6/6] rtw89: handle TX/RX 160M bandwidth
+Date:   Fri, 11 Feb 2022 15:59:53 +0800
+Message-ID: <20220211075953.40421-7-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220211075953.40421-1-pkshih@realtek.com>
 References: <20220211075953.40421-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzIvMTEgpFekyCAwNjowMDowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -68,100 +68,104 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The new chip can support 160M, so add a chip attribute to indicate the
-chip support it.
+Apply 160M bandwidth to RA (rate adaptive) mechanism, so it can transmit
+packets with this bandwidth. On the other hand, convert 160M bandwidth
+from RX desc to rx_info_bw.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c     | 19 ++++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/core.h     |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
- 3 files changed, 20 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 15 ++-------------
+ drivers/net/wireless/realtek/rtw89/core.h | 12 ++++++++++++
+ drivers/net/wireless/realtek/rtw89/phy.c  | 13 ++++++-------
+ 3 files changed, 20 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 116c5cb65fe46..bf5b7589906d8 100644
+index bf5b7589906d8..63828dbfef4ef 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.c
 +++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2236,9 +2236,14 @@ static void rtw89_init_ht_cap(struct rtw89_dev *rtwdev,
- static void rtw89_init_vht_cap(struct rtw89_dev *rtwdev,
- 			       struct ieee80211_sta_vht_cap *vht_cap)
- {
--	static const __le16 highest[RF_PATH_MAX] = {
-+	static const __le16 highest_bw80[RF_PATH_MAX] = {
- 		cpu_to_le16(433), cpu_to_le16(867), cpu_to_le16(1300), cpu_to_le16(1733),
- 	};
-+	static const __le16 highest_bw160[RF_PATH_MAX] = {
-+		cpu_to_le16(867), cpu_to_le16(1733), cpu_to_le16(2600), cpu_to_le16(3467),
-+	};
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	const __le16 *highest = chip->support_bw160 ? highest_bw160 : highest_bw80;
- 	struct rtw89_hal *hal = &rtwdev->hal;
- 	u16 tx_mcs_map = 0, rx_mcs_map = 0;
- 	u8 sts_cap = 3;
-@@ -2267,6 +2272,9 @@ static void rtw89_init_vht_cap(struct rtw89_dev *rtwdev,
- 	vht_cap->cap |= IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE |
- 			IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE;
- 	vht_cap->cap |= sts_cap << IEEE80211_VHT_CAP_BEAMFORMEE_STS_SHIFT;
-+	if (chip->support_bw160)
-+		vht_cap->cap |= IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
-+				IEEE80211_VHT_CAP_SHORT_GI_160;
- 	vht_cap->vht_mcs.rx_mcs_map = cpu_to_le16(rx_mcs_map);
- 	vht_cap->vht_mcs.tx_mcs_map = cpu_to_le16(tx_mcs_map);
- 	vht_cap->vht_mcs.rx_highest = highest[hal->rx_nss - 1];
-@@ -2339,6 +2347,8 @@ static void rtw89_init_he_cap(struct rtw89_dev *rtwdev,
- 			mac_cap_info[5] = IEEE80211_HE_MAC_CAP5_HT_VHT_TRIG_FRAME_RX;
- 		phy_cap_info[0] = IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G |
- 				  IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G;
-+		if (chip->support_bw160)
-+			phy_cap_info[0] |= IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G;
- 		phy_cap_info[1] = IEEE80211_HE_PHY_CAP1_DEVICE_CLASS_A |
- 				  IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD |
- 				  IEEE80211_HE_PHY_CAP1_HE_LTF_AND_GI_FOR_HE_PPDUS_0_8US;
-@@ -2367,6 +2377,9 @@ static void rtw89_init_he_cap(struct rtw89_dev *rtwdev,
- 		phy_cap_info[8] = IEEE80211_HE_PHY_CAP8_HE_ER_SU_PPDU_4XLTF_AND_08_US_GI |
- 				  IEEE80211_HE_PHY_CAP8_HE_ER_SU_1XLTF_AND_08_US_GI |
- 				  IEEE80211_HE_PHY_CAP8_DCM_MAX_RU_996;
-+		if (chip->support_bw160)
-+			phy_cap_info[8] |= IEEE80211_HE_PHY_CAP8_20MHZ_IN_160MHZ_HE_PPDU |
-+					   IEEE80211_HE_PHY_CAP8_80MHZ_IN_160MHZ_HE_PPDU;
- 		phy_cap_info[9] = IEEE80211_HE_PHY_CAP9_LONGER_THAN_16_SIGB_OFDM_SYM |
- 				  IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU |
- 				  IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_COMP_SIGB |
-@@ -2377,6 +2390,10 @@ static void rtw89_init_he_cap(struct rtw89_dev *rtwdev,
- 			phy_cap_info[9] |= IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU;
- 		he_cap->he_mcs_nss_supp.rx_mcs_80 = cpu_to_le16(mcs_map);
- 		he_cap->he_mcs_nss_supp.tx_mcs_80 = cpu_to_le16(mcs_map);
-+		if (chip->support_bw160) {
-+			he_cap->he_mcs_nss_supp.rx_mcs_160 = cpu_to_le16(mcs_map);
-+			he_cap->he_mcs_nss_supp.tx_mcs_160 = cpu_to_le16(mcs_map);
-+		}
- 
- 		idx++;
+@@ -1165,13 +1165,7 @@ static bool rtw89_core_rx_ppdu_match(struct rtw89_dev *rtwdev,
+ 		rtw89_warn(rtwdev, "invalid RX rate mode %d\n", data_rate_mode);
  	}
+ 
+-	if (desc_info->bw == RTW89_CHANNEL_WIDTH_80)
+-		bw = RATE_INFO_BW_80;
+-	else if (desc_info->bw == RTW89_CHANNEL_WIDTH_40)
+-		bw = RATE_INFO_BW_40;
+-	else
+-		bw = RATE_INFO_BW_20;
+-
++	bw = rtw89_hw_to_rate_info_bw(desc_info->bw);
+ 	gi_ltf = rtw89_rxdesc_to_nl_he_gi(rtwdev, desc_info, false);
+ 	ret = rtwdev->ppdu_sts.curr_rx_ppdu_cnt[band] == desc_info->ppdu_cnt &&
+ 	      status->rate_idx == rate_idx &&
+@@ -1442,12 +1436,7 @@ static void rtw89_core_update_rx_status(struct rtw89_dev *rtwdev,
+ 	    !(desc_info->sw_dec || desc_info->icv_err))
+ 		rx_status->flag |= RX_FLAG_DECRYPTED;
+ 
+-	if (desc_info->bw == RTW89_CHANNEL_WIDTH_80)
+-		rx_status->bw = RATE_INFO_BW_80;
+-	else if (desc_info->bw == RTW89_CHANNEL_WIDTH_40)
+-		rx_status->bw = RATE_INFO_BW_40;
+-	else
+-		rx_status->bw = RATE_INFO_BW_20;
++	rx_status->bw = rtw89_hw_to_rate_info_bw(desc_info->bw);
+ 
+ 	data_rate = desc_info->data_rate;
+ 	data_rate_mode = GET_DATA_RATE_MODE(data_rate);
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index c5d40777558ec..0e55778b83ece 100644
+index 0e55778b83ece..3254be670bd67 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2218,6 +2218,7 @@ struct rtw89_chip_info {
- 	const struct rtw89_dle_mem *dle_mem;
- 	u32 rf_base_addr[2];
- 	u8 support_bands;
-+	bool support_bw160;
- 	u8 rf_path_num;
- 	u8 tx_nss;
- 	u8 rx_nss;
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index c39635a273994..a222e11de6acf 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2024,6 +2024,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
- 	.dig_table		= &rtw89_8852a_phy_dig_table,
- 	.support_bands		= BIT(NL80211_BAND_2GHZ) |
- 				  BIT(NL80211_BAND_5GHZ),
-+	.support_bw160		= false,
- 	.rf_path_num		= 2,
- 	.tx_nss			= 2,
- 	.rx_nss			= 2,
+@@ -3160,6 +3160,18 @@ static inline struct rtw89_sta *sta_to_rtwsta_safe(struct ieee80211_sta *sta)
+ 	return sta ? (struct rtw89_sta *)sta->drv_priv : NULL;
+ }
+ 
++static inline u8 rtw89_hw_to_rate_info_bw(enum rtw89_bandwidth hw_bw)
++{
++	if (hw_bw == RTW89_CHANNEL_WIDTH_160)
++		return RATE_INFO_BW_160;
++	else if (hw_bw == RTW89_CHANNEL_WIDTH_80)
++		return RATE_INFO_BW_80;
++	else if (hw_bw == RTW89_CHANNEL_WIDTH_40)
++		return RATE_INFO_BW_40;
++	else
++		return RATE_INFO_BW_20;
++}
++
+ static inline
+ struct rtw89_addr_cam_entry *rtw89_get_addr_cam_of(struct rtw89_vif *rtwvif,
+ 						   struct rtw89_sta *rtwsta)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 69668108e19f3..d1d3ebb5e2264 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -302,6 +302,11 @@ static void rtw89_phy_ra_sta_update(struct rtw89_dev *rtwdev,
+ 	ra_mask &= rtw89_phy_ra_mask_cfg(rtwdev, rtwsta);
+ 
+ 	switch (sta->bandwidth) {
++	case IEEE80211_STA_RX_BW_160:
++		bw_mode = RTW89_CHANNEL_WIDTH_160;
++		sgi = sta->vht_cap.vht_supported &&
++		      (sta->vht_cap.cap & IEEE80211_VHT_CAP_SHORT_GI_160);
++		break;
+ 	case IEEE80211_STA_RX_BW_80:
+ 		bw_mode = RTW89_CHANNEL_WIDTH_80;
+ 		sgi = sta->vht_cap.vht_supported &&
+@@ -1439,13 +1444,7 @@ static void rtw89_phy_c2h_ra_rpt_iter(void *data, struct ieee80211_sta *sta)
+ 		break;
+ 	}
+ 
+-	if (bw == RTW89_CHANNEL_WIDTH_80)
+-		ra_report->txrate.bw = RATE_INFO_BW_80;
+-	else if (bw == RTW89_CHANNEL_WIDTH_40)
+-		ra_report->txrate.bw = RATE_INFO_BW_40;
+-	else
+-		ra_report->txrate.bw = RATE_INFO_BW_20;
+-
++	ra_report->txrate.bw = rtw89_hw_to_rate_info_bw(bw);
+ 	ra_report->bit_rate = cfg80211_calculate_bitrate(&ra_report->txrate);
+ 	ra_report->hw_rate = FIELD_PREP(RTW89_HW_RATE_MASK_MOD, mode) |
+ 			     FIELD_PREP(RTW89_HW_RATE_MASK_VAL, rate);
 -- 
 2.25.1
 
