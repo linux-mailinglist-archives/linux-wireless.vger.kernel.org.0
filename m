@@ -2,77 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35B124B3C7E
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Feb 2022 18:22:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F61A4B3D15
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Feb 2022 20:15:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237397AbiBMRWJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 13 Feb 2022 12:22:09 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41466 "EHLO
+        id S237979AbiBMTNp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Feb 2022 14:13:45 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231301AbiBMRWJ (ORCPT
+        with ESMTP id S237969AbiBMTNn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 13 Feb 2022 12:22:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9A7DB59395
-        for <linux-wireless@vger.kernel.org>; Sun, 13 Feb 2022 09:22:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1644772922;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=UEbNs2LWwc8c6HkSKwc+PmwK7oT5oIHIc4Lc+WeqQ8g=;
-        b=DZ5mN7h99ZIKAxpzhvV+3nk/dzkGnxmYgvfIyXCA8ZTOttK3AXpU+acROY02PLqjsLVlwi
-        x2XUU8I9hauN0M+VDCB2IJ55MVlWe0+wb+pVN5V7y5MbbSYzRaxGTlmebaoNy0k5hLnAMU
-        7yGZj9eZ26XGkHQWFGLXpFw1PZZnqcM=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-670-xkjlLXtaPI67J0NTVtv8zA-1; Sun, 13 Feb 2022 12:22:01 -0500
-X-MC-Unique: xkjlLXtaPI67J0NTVtv8zA-1
-Received: by mail-ed1-f69.google.com with SMTP id en7-20020a056402528700b00404aba0a6ffso8798948edb.5
-        for <linux-wireless@vger.kernel.org>; Sun, 13 Feb 2022 09:22:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=UEbNs2LWwc8c6HkSKwc+PmwK7oT5oIHIc4Lc+WeqQ8g=;
-        b=ev+5BUFWY2vyV3x0ZqeK3LH+jwVFX/3Og3QZepWAQ2GlK3XNWoR1b3EmtbnfOeaK0a
-         84JeY6f2lGVfr/RzfTmnpPaSNWJRkBJ3U9+ZudmK3+Bt75tKaDCbJcw6TFZfR+tTnTVX
-         qEtyUrRF91cCtEYQSMi37yZriY2ogwMu9WR8K9ZR4nHX5AC1Uxrd6+njR1alDxa+iukp
-         oioJxm5PVTudYhJYQ1+3DJC8TTS/es3WKHQ5MaBhD5TWRAnX7U86eFaMo42T2x6BG9xu
-         ai4ZMWd/fYFOg5RWWeGVvrDnunKUKt2ngq0JImL6k2gLCG9Prz30cGyzBBblpxuPTr1h
-         smOw==
-X-Gm-Message-State: AOAM533ej6ra4kVcYXvrSAy3qHc0TuaGzuldBcbQiI5Z69VCJYEQ8oBd
-        9g9ONiJLRgolu1fb86Ya/6dRg/zhOhexjo66l44XYkkqHqVqUWYsDYVc6EhM2Rnpp12+yUzORN3
-        bJ45hGFdql6i9Cwsjb0k9w8zna54=
-X-Received: by 2002:a50:9ea6:: with SMTP id a35mr11157700edf.299.1644772919996;
-        Sun, 13 Feb 2022 09:21:59 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyzm2+oPdfL9M99wCEDq6LEFXqQwRvwvCmvp8h/JKCBasrO95D3J7apVIuCBZkDobUhp79bgA==
-X-Received: by 2002:a50:9ea6:: with SMTP id a35mr11157688edf.299.1644772919773;
-        Sun, 13 Feb 2022 09:21:59 -0800 (PST)
-Received: from localhost (net-37-182-17-113.cust.vodafonedsl.it. [37.182.17.113])
-        by smtp.gmail.com with ESMTPSA id 5sm1116256ejr.144.2022.02.13.09.21.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Feb 2022 09:21:59 -0800 (PST)
-Date:   Sun, 13 Feb 2022 18:21:57 +0100
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Chad Monroe <chad.monroe@smartrg.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] mt76: connac: adjust wlan_idx size from u8 to u16
-Message-ID: <Ygk+NbOPnIzphMSd@lore-desk>
-References: <a0644f7da6ba09195ee247a5affa562179328207.1644688718.git.chad.monroe@smartrg.com>
+        Sun, 13 Feb 2022 14:13:43 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ACEF5F8DA;
+        Sun, 13 Feb 2022 11:13:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=eUPuZhGrIC+7mQR6M8wT4w7vMWwnwvrJ/Ap6Tdqeifw=; b=WrOvp7aBK+9C7NfEzGSeNlAOyv
+        EtbqagYvn5vG40EmwdyXknjAo6UeyS/tHpcFDmBGAX1IzMGr/C89bZ0CGYhGOQD9ohbUqVqbQn8to
+        72EPupBvgj9rtS2UgkUkrUmAqlO+ugWfu5z+uoRcR/vnQ9FjbmgWKVC8H1JYjMX88mHdnzR6pm13V
+        qBXugwTLCCI15fcKAIUur3Lrb155D+XHW8YMdMMfMdZiLVwcV14QDicOfA3D7FZo/FsuRnKiYnKLG
+        lzbYvolWfjBh7GYnG+uQ6+fhuUe7mAVbk6XTpnA/zd7OHXqcL52NIwtv9xx5SYs3WJZ6G3V22TSrI
+        y4tk/dsA==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nJKJP-00CDc1-9e; Sun, 13 Feb 2022 19:13:31 +0000
+Message-ID: <41a2b113-116c-f181-29a4-32735d5809b0@infradead.org>
+Date:   Sun, 13 Feb 2022 11:13:27 -0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="hPEQp+DxvyZdzxkr"
-Content-Disposition: inline
-In-Reply-To: <a0644f7da6ba09195ee247a5affa562179328207.1644688718.git.chad.monroe@smartrg.com>
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [PATCH] bcma: cleanup comments
+Content-Language: en-US
+To:     trix@redhat.com, zajec5@gmail.com
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220213172023.2786642-1-trix@redhat.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20220213172023.2786642-1-trix@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -81,74 +52,95 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi--
 
---hPEQp+DxvyZdzxkr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2/13/22 09:20, trix@redhat.com wrote:
+> From: Tom Rix <trix@redhat.com>
+> 
+> Remove the second 'info'.
+ack
 
-Thx for fixing it.
-I guess we can add the following Fixes tag:
+> Replacements
+> 'adventages' with 'advantages'
+ack
 
-Fixes: 49126ac1f8d26 ("mt76: connac: move mt76_connac_mcu_bss_basic_tlv in =
-connac module")
+> 'strenth' with 'strength'
+ack
 
-Anyway:
+> 'atleast' with 'at least'
+ack
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> 'thr'u'' with 'through'
+ack, or even "thru" is acceptable.
 
-> Newer chips such as MT7915 require up to 16-bits for this field.
->=20
-> Signed-off-by: Chad Monroe <chad.monroe@smartrg.com>
+> 'capabilty' with 'capability'
+ack
+
+> 'controll' with 'control'
+ack
+
+> 'ourself' with 'our self'
+I don't think so.
+
+> 'noone' with 'no one'
+ack
+
+More below:
+
+> 
+> Signed-off-by: Tom Rix <trix@redhat.com>
 > ---
->  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 2 +-
->  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drive=
-rs/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> index cdd82a62eeb1..f3fdd755a3bb 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> @@ -2656,7 +2656,7 @@ EXPORT_SYMBOL_GPL(mt76_connac_mcu_bss_ext_tlv);
->  int mt76_connac_mcu_bss_basic_tlv(struct sk_buff *skb,
->  				  struct ieee80211_vif *vif,
->  				  struct ieee80211_sta *sta,
-> -				  struct mt76_phy *phy, u8 wlan_idx,
-> +				  struct mt76_phy *phy, u16 wlan_idx,
->  				  bool enable)
->  {
->  	struct mt76_vif *mvif =3D (struct mt76_vif *)vif->drv_priv;
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drive=
-rs/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> index 7b9d82dd3f9d..384c3eab1c8a 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> @@ -1642,7 +1642,7 @@ void mt76_connac_mcu_bss_omac_tlv(struct sk_buff *s=
-kb,
->  int mt76_connac_mcu_bss_basic_tlv(struct sk_buff *skb,
->  				  struct ieee80211_vif *vif,
->  				  struct ieee80211_sta *sta,
-> -				  struct mt76_phy *phy, u8 wlan_idx,
-> +				  struct mt76_phy *phy, u16 wlan_idx,
->  				  bool enable);
->  void mt76_connac_mcu_sta_uapsd(struct sk_buff *skb, struct ieee80211_vif=
- *vif,
->  			       struct ieee80211_sta *sta);
-> --=20
-> 2.32.0 (Apple Git-132)
->=20
+>  drivers/bcma/driver_chipcommon.c     | 2 +-
+>  drivers/bcma/driver_chipcommon_pmu.c | 6 +++---
+>  drivers/bcma/driver_pci_host.c       | 6 +++---
+>  drivers/bcma/main.c                  | 4 ++--
+>  drivers/bcma/sprom.c                 | 4 ++--
+>  5 files changed, 11 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/bcma/driver_chipcommon.c b/drivers/bcma/driver_chipcommon.c
+> index 62f5bfa5065d..fd91a39f02c7 100644
+> --- a/drivers/bcma/driver_chipcommon.c
+> +++ b/drivers/bcma/driver_chipcommon.c
 
---hPEQp+DxvyZdzxkr
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYgk+NQAKCRA6cBh0uS2t
-rMpAAQDwkrw5UKBqElKj8k80s9mWHyVwxadFBsfy8U6ooKJmBQEAuSFOvB0uw5sh
-zVa82nYMLMqqBE86wcSD5HIMM/cgrwA=
-=A9mv
------END PGP SIGNATURE-----
+> diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
+> index 8e7ca3e4c8c4..bf6efe3caf68 100644
+> --- a/drivers/bcma/main.c
+> +++ b/drivers/bcma/main.c
+> @@ -293,7 +293,7 @@ static int bcma_register_devices(struct bcma_bus *bus)
+>  	int err;
+>  
+>  	list_for_each_entry(core, &bus->cores, list) {
+> -		/* We support that cores ourself */
+> +		/* We support that cores our self */
 
---hPEQp+DxvyZdzxkr--
+I would s/cores/core/.
 
+From my $search_engine doodling, it looks like "ourself"
+or "ourselves" would be OK.
+
+>  		switch (core->id.id) {
+>  		case BCMA_CORE_4706_CHIPCOMMON:
+>  		case BCMA_CORE_CHIPCOMMON:
+
+> diff --git a/drivers/bcma/sprom.c b/drivers/bcma/sprom.c
+> index bd2c923a6586..fb2789827e83 100644
+> --- a/drivers/bcma/sprom.c
+> +++ b/drivers/bcma/sprom.c
+
+> @@ -281,7 +281,7 @@ static void bcma_sprom_extract_r8(struct bcma_bus *bus, const u16 *sprom)
+>  	SPEX(alpha2[0], SSB_SPROM8_CCODE, 0xff00, 8);
+>  	SPEX(alpha2[1], SSB_SPROM8_CCODE, 0x00ff, 0);
+>  
+> -	/* Extract cores power info info */
+> +	/* Extract cores power info */
+
+or	           each core's power info */
+
+>  	for (i = 0; i < ARRAY_SIZE(pwr_info_offset); i++) {
+>  		o = pwr_info_offset[i];
+>  		SPEX(core_pwr_info[i].itssi_2g, o + SSB_SROM8_2G_MAXP_ITSSI,
+
+-- 
+~Randy
