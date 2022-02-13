@@ -2,49 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AD834B3DFA
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Feb 2022 23:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 663B04B3DFB
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Feb 2022 23:26:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237315AbiBMWYq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 13 Feb 2022 17:24:46 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48924 "EHLO
+        id S238567AbiBMWZ0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Feb 2022 17:25:26 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233686AbiBMWYp (ORCPT
+        with ESMTP id S233686AbiBMWZ0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 13 Feb 2022 17:24:45 -0500
+        Sun, 13 Feb 2022 17:25:26 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 106215468F
-        for <linux-wireless@vger.kernel.org>; Sun, 13 Feb 2022 14:24:39 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25BED5468C
+        for <linux-wireless@vger.kernel.org>; Sun, 13 Feb 2022 14:25:20 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B2760B80B9B
-        for <linux-wireless@vger.kernel.org>; Sun, 13 Feb 2022 22:24:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DC7C004E1;
-        Sun, 13 Feb 2022 22:24:36 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CB3CFB80BED
+        for <linux-wireless@vger.kernel.org>; Sun, 13 Feb 2022 22:25:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473CEC004E1;
+        Sun, 13 Feb 2022 22:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644791076;
-        bh=rD6gVRjTus8UCiZIuVKbJoQ0i+qpSAAMv7dNa3mNSxg=;
+        s=k20201202; t=1644791117;
+        bh=6TiCAtkOA30O6+IrGW5hZ1QCXVrdhWmQ6yyS+woEdo8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NK0ggFltQo9R710DUZ4PMXjRto5pxSBB3H+Q3IZR3zgSXbnqhaw5oBHsPSQ8Lch8c
-         XBrXC4GZds/vdYPAB3qEFGSl0r0WTu1VtolafQFwbC6m1bNKdEAQv6jkp2f01w54hy
-         za4+trtM9P6v98kOJbLpQTGMAeIqyo14CZ0TdgHEd1BPippUSF2Um803HIjJoFNLnT
-         ogKf4RcnPUwesGacAFzLGixPoRIwis5+xteTiSxU+a3HVUZ+ANNv5nu26TqwcngaGC
-         TvC0TSEDGU+omtBZSwjde3RkfUW36XFu3zNmSYwn22pbJc/B+zPTNsaejxcPuJreDP
-         RN20mOLf4mIag==
-Date:   Sun, 13 Feb 2022 16:24:35 -0600
+        b=vLQvjlMicWaEMpplc6gU/WgrnRBbUybf9A2IG3yGnLWe6fMrlXmSX0MGTooK7Puu3
+         th0spt/ZFWzIjtB/J/1Uxtae/joslMZ+pUKhhcW7csyyIWcpR7idrXL9rxMYQYavnG
+         /Zjmy1nGQzg2hzbLqO5OhlA1HfxjYjIcTq/sqFg4L+BukuPsDDjWq5tW2e2gSVT3gM
+         K2NZ04MKkT30PABQCIoVlolanm2Tm7yL3zf1Bg8Kamtd5N2F/+JhZ3RWGielMciDFp
+         BFb/N0mPK/aNqgpWkwHIbgbCDBffP4qJE0l9luWMJUOLg7JdoLFDJNcYPPSAaEt7YS
+         2VG+lLFr/L61g==
+Date:   Sun, 13 Feb 2022 16:25:16 -0600
 From:   Seth Forshee <sforshee@kernel.org>
-To:     Sungbo Eo <mans0n@gorani.run>
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
 Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v4] wireless-regdb: Update regulatory rules for South
- Korea (KR)
-Message-ID: <YgmFI3MrtZl3jSa9@ubuntu-x1>
-References: <20211212152050.25962-1-mans0n@gorani.run>
- <20220130124907.39224-1-mans0n@gorani.run>
+Subject: Re: [PATCH v2] wireless-regdb: Update regulatory rules for China (CN)
+Message-ID: <YgmFTLBiMD+cEjvX@ubuntu-x1>
+References: <ae43589a-6ca4-4856-8f7f-b631ce44993b@www.fastmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220130124907.39224-1-mans0n@gorani.run>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ae43589a-6ca4-4856-8f7f-b631ce44993b@www.fastmail.com>
 X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,28 +54,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jan 30, 2022 at 09:49:07PM +0900, Sungbo Eo wrote:
-> This patch is based on MSIT Public Notification 2021-86 ("Unlicensed Radio
-> Equipment Established Without Notice"), officially announced on 2021-11-29.
+On Sat, Feb 12, 2022 at 04:29:50PM +0000, Jiaxun Yang wrote:
+> China had updated regulations on ISM frequencies by
+> "工信部无〔2021〕129号".
 > 
-> The PSD must not exceed 2.5 mW/MHz if the frequency range includes all or
-> part of 5230-5250 MHz and the bandwidth is equal to or less than 40 MHz.
-> This leads to the following:
-> * 5230-5250 @ 20 -> 17 dBm
-> * 5210-5250 @ 40 -> 20 dBm
-> Here the power limit for >20 MHz bandwidth is also lowered to 17 dBm, as
-> it's not possible to set different power limits for different bandwidths
-> at the moment.
+> The new regulation effectives from Jan 1 2022.
 > 
-> Extend the last 5 GHz frequency range to 5850 MHz.
+> Update regdb accroading to it's attachment "2400MHz、5100MHz
+> 和 5800MHz 频段无线电发射设备射频技术要求".
 > 
-> Wi-Fi 6E is now allowed with the following restrictions:
-> * Indoor: the full 1.2 GHz range, up to 160 MHz bandwidth and 2 dBm/MHz PSD
-> * Outdoor: the lower 500 MHz range, up to 160 MHz bandwidth and 25 mW EIRP
-> Here only the former entry is added.
+> Announcement: https://wap.miit.gov.cn/zwgk/zcwj/wjfb/tz/art/2021/art_e4ae71252eab42928daf0ea620976e4e.html
+> Attachment: https://wap.miit.gov.cn/cms_files/filemanager/1226211233/attach/20219/d125301b13454551b698ff5afa49ca28.pdf
 > 
-> And also update the regulatory source links.
+> Those documents are only available in Chinese.
 > 
-> Signed-off-by: Sungbo Eo <mans0n@gorani.run>
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+> v2: Reduce 3dBm for 5150-5350 MHz due to TPC restriction
+> ---
 
 Applied, thanks!
