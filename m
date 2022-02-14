@@ -2,386 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 330014B5633
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Feb 2022 17:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52CD04B5889
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Feb 2022 18:32:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356404AbiBNQac (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Feb 2022 11:30:32 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38576 "EHLO
+        id S244874AbiBNRc4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Feb 2022 12:32:56 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356380AbiBNQaX (ORCPT
+        with ESMTP id S238624AbiBNRcz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Feb 2022 11:30:23 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1337860D86
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Feb 2022 08:30:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=NR5xY+PZv85IeXlGZwiTnVsDD7basSd3uui4Jrw1hW4=;
-        t=1644856215; x=1646065815; b=B+sGN6WdzD7+ttaM5C4iQ9Dcz2fnPdjLv12Rhq1faqLnn2s
-        zdBZtntw5SCechEEmgiHuXLSJ0k/ZbiM0PyVrBA6FYfwqN7Bgd8sdZNgABJAgqlTWWYKCsRvg/C5G
-        AyaLQGD2FZIGRsQ0lo1k3XthXdCA/pswjQ/VDFVTprSWCbhxOdKFrmvEo/wT0xAoE2DrnXDboCiy1
-        Pg3Y68A7LkyyHXhfuXBGIqPbNATXmlUWiBQxoTqsEBbswyQaTkkaB2ANH7ifFZExhJL6UcvAqyHwa
-        ByZ+0V24giUlkP3M8zej/moiHkHqWirPOY9FCI8wzzEatAGmOp7sTKRjykwSNlDg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nJeEv-0011mw-9w;
-        Mon, 14 Feb 2022 17:30:13 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
+        Mon, 14 Feb 2022 12:32:55 -0500
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4445065406;
+        Mon, 14 Feb 2022 09:32:46 -0800 (PST)
+Received: by mail-wr1-x433.google.com with SMTP id v12so28125573wrv.2;
+        Mon, 14 Feb 2022 09:32:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hptSBMKt9IKU4INC+fVfwFIMnoNyAn21o8ZVMp5gKAY=;
+        b=iNRKLvIPYB87xGwXyPBV7ueJX2pIL+OQ+ad9WyTyI/i5DIs57p08UIKXvEhmqchtIk
+         HKgQ3CfxJnZyDP5D58rvmkWv+KpTxtXkFY8Drr+BuVz0WeW9A0zi7zYAwA+VkiMhMn9l
+         XtT7Mx0O5ZcqOTEW5gP43UWzfsb47DgDLg/+3E/OLi09JeptW8FEMUC9hD00DR4uyE9g
+         +cotBCIY1iJh2Vijh6PMPzG3iNurpTGVLVrNakPUiV7l9+YMn3nDPPRRn5eYQWRynom7
+         pS/2kWv8e3864DAS3NAapts5WG3VqWFvaMO0Du76Cq7uwgSmTmvcfFJGhOuKSMreBRYG
+         6XIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hptSBMKt9IKU4INC+fVfwFIMnoNyAn21o8ZVMp5gKAY=;
+        b=2fBMMHPnpXaGkCwCPfD9iGcK8EEYQmMKCV3M7uLM2B1GSwLH40e4xiU9hQqcwfM9wG
+         QX2/FW2nmQMGuDARz69ojnqby4yOphaaPW4FW/bUMHebhVYJkBxOgXihQn88D6MvEGWt
+         W4sLfjrVLCGfOBm73YHMdaxTTHCYKhA49yklkLh/TXHELY+CC1f8rFNGqHlngytEtzOI
+         kjinWm6VLnlf3ZCMhp8Rix993Nja4CWGE0QC26LAE1UGC9Qrte2NwcUYsJsGK5aR0siz
+         lDYHq+HVGZm4RkmwO+Odba0l659y2zk6XRNgI9ythYMdwQhEQvVIipeebRlFDg/20Doe
+         siJg==
+X-Gm-Message-State: AOAM530yttr/3a8I3A5kwRoih8VHKbSnwmGNVKqD4PuMD/S68WgvY7B1
+        VlJf/O9rGyWAQMGXfOI+bMNfY+nh2fmgMQ==
+X-Google-Smtp-Source: ABdhPJy0+4MMhFyDRD81SLmmOEANHZ/y98v/g3IHCQ7+IXmwjkyG8WbdFOV12AKcRWQ0BRgLP6n32g==
+X-Received: by 2002:adf:e68a:: with SMTP id r10mr72416wrm.498.1644859964823;
+        Mon, 14 Feb 2022 09:32:44 -0800 (PST)
+Received: from syracuse.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id p4sm7039125wmq.40.2022.02.14.09.32.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Feb 2022 09:32:44 -0800 (PST)
+From:   Nicolas Escande <nico.escande@gmail.com>
 To:     linux-wireless@vger.kernel.org
-Cc:     Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH v3 19/19] mac80211_hwsim: Advertise support for EHT capabilities
-Date:   Mon, 14 Feb 2022 17:30:06 +0100
-Message-Id: <20220214173004.1b710f8e04ce.I11d6911dafc01deb8ceb7828e363e8554701790a@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220214173004.9fd154d2c3c2.Ia0cd152357a373149bab017d479ab7d5ded289c0@changeid>
-References: <20220214173004.9fd154d2c3c2.Ia0cd152357a373149bab017d479ab7d5ded289c0@changeid>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Michal Kazior <michal.kazior@tieto.com>,
+        Thomas Pedersen <thomas@cozybit.com>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Nicolas Escande <nico.escande@gmail.com>,
+        Remi Pommarel <repk@triplefau.lt>
+Subject: [PATCH] mac80211: fix forwarded mesh frames AC & queue selection
+Date:   Mon, 14 Feb 2022 18:32:14 +0100
+Message-Id: <20220214173214.368862-1-nico.escande@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+There are two problems with the current code that have been highlighted
+with the AQL feature that is now enbaled by default.
 
-Add EHT capabilities to bands.
+First problem is in ieee80211_rx_h_mesh_fwding(),
+ieee80211_select_queue_80211() is used on received packets to choose
+the sending AC queue of the forwarding packet although this function
+should only be called on TX packet (it uses ieee80211_tx_info).
+This ends with forwarded mesh packets been sent on unrelated random AC
+queue. To fix that, AC queue can directly be infered from skb->priority
+which has been extracted from QOS info (see ieee80211_parse_qos()).
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Second problem is the value of queue_mapping set on forwarded mesh
+frames via skb_set_queue_mapping() is not the AC of the packet but a
+hardware queue index. This may or may not work depending on AC to HW
+queue mapping which is driver specific.
+
+Both of these issues lead to improper AC selection while forwarding
+mesh packets but more importantly due to improper airtime accounting
+(which is done on a per STA, per AC basis) caused traffic stall with
+the introduction of AQL.
+
+Fixes: cf44012810cc ("mac80211: fix unnecessary frame drops in mesh fwding")
+Fixes: d3c1597b8d1b ("mac80211: fix forwarded mesh frame queue mapping")
+Co-developed-by: Remi Pommarel <repk@triplefau.lt>
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
 ---
- drivers/net/wireless/mac80211_hwsim.c | 246 ++++++++++++++++++++++++--
- 1 file changed, 234 insertions(+), 12 deletions(-)
+ net/mac80211/rx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index fdf781548e3f..b23c6deaa486 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -4,7 +4,7 @@
-  * Copyright (c) 2008, Jouni Malinen <j@w1.fi>
-  * Copyright (c) 2011, Javier Lopez <jlopex@gmail.com>
-  * Copyright (c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2020 Intel Corporation
-+ * Copyright (C) 2018 - 2022 Intel Corporation
-  */
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 8885d3923bed..ca7e1f99a8c0 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -2923,13 +2923,13 @@ ieee80211_rx_h_mesh_fwding(struct ieee80211_rx_data *rx)
+ 	    ether_addr_equal(sdata->vif.addr, hdr->addr3))
+ 		return RX_CONTINUE;
  
- /*
-@@ -2940,7 +2940,7 @@ static void hwsim_mcast_new_radio(int id, struct genl_info *info,
- 	nlmsg_free(mcast_skb);
- }
- 
--static const struct ieee80211_sband_iftype_data he_capa_2ghz[] = {
-+static const struct ieee80211_sband_iftype_data sband_capa_2ghz[] = {
- 	{
- 		.types_mask = BIT(NL80211_IFTYPE_STATION) |
- 			      BIT(NL80211_IFTYPE_AP),
-@@ -2986,6 +2986,66 @@ static const struct ieee80211_sband_iftype_data he_capa_2ghz[] = {
- 				.tx_mcs_80p80 = cpu_to_le16(0xffff),
- 			},
- 		},
-+		.eht_cap = {
-+			.has_eht = true,
-+			.eht_cap_elem = {
-+				.mac_cap_info[0] =
-+					IEEE80211_EHT_MAC_CAP0_NSEP_PRIO_ACCESS |
-+					IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
-+					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1,
-+				.phy_cap_info[0] =
-+					IEEE80211_EHT_PHY_CAP0_242_TONE_RU_GT20MHZ |
-+					IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI |
-+					IEEE80211_EHT_PHY_CAP0_PARTIAL_BW_UL_MU_MIMO |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMER |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE,
-+				.phy_cap_info[3] =
-+					IEEE80211_EHT_PHY_CAP3_NG_16_SU_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP3_NG_16_MU_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_4_2_SU_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_SU_BF_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_CQI_FDBK,
-+				.phy_cap_info[4] =
-+					IEEE80211_EHT_PHY_CAP4_PART_BW_DL_MU_MIMO |
-+					IEEE80211_EHT_PHY_CAP4_PSR_SR_SUPP |
-+					IEEE80211_EHT_PHY_CAP4_POWER_BOOST_FACT_SUPP |
-+					IEEE80211_EHT_PHY_CAP4_EHT_MU_PPDU_4_EHT_LTF_08_GI |
-+					IEEE80211_EHT_PHY_CAP4_MAX_NC_MASK,
-+				.phy_cap_info[5] =
-+					IEEE80211_EHT_PHY_CAP5_NON_TRIG_CQI_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP5_TX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_RX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT |
-+					IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_MASK |
-+					IEEE80211_EHT_PHY_CAP5_MAX_NUM_SUPP_EHT_LTF_MASK,
-+				.phy_cap_info[6] =
-+					IEEE80211_EHT_PHY_CAP6_MAX_NUM_SUPP_EHT_LTF_MASK |
-+					IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK,
-+				.phy_cap_info[7] =
-+					IEEE80211_EHT_PHY_CAP7_20MHZ_STA_RX_NDP_WIDER_BW,
-+			},
-+
-+			/* For all MCS and bandwidth, set 8 NSS for both Tx and
-+			 * Rx
-+			 */
-+			.eht_mcs_nss_supp = {
-+				/*
-+				 * Since B0, B1, B2 and B3 are not set in
-+				 * the supported channel width set field in the
-+				 * HE PHY capabilities information field the
-+				 * device is a 20MHz only device on 2.4GHz band.
-+				 */
-+				.only_20mhz = {
-+					.rx_tx_mcs7_max_nss = 0x88,
-+					.rx_tx_mcs9_max_nss = 0x88,
-+					.rx_tx_mcs11_max_nss = 0x88,
-+					.rx_tx_mcs13_max_nss = 0x88,
-+				},
-+			},
-+			/* PPE threshold information is not supported */
-+		},
- 	},
- #ifdef CONFIG_MAC80211_MESH
- 	{
-@@ -3028,7 +3088,7 @@ static const struct ieee80211_sband_iftype_data he_capa_2ghz[] = {
- #endif
- };
- 
--static const struct ieee80211_sband_iftype_data he_capa_5ghz[] = {
-+static const struct ieee80211_sband_iftype_data sband_capa_5ghz[] = {
- 	{
- 		/* TODO: should we support other types, e.g., P2P?*/
- 		.types_mask = BIT(NL80211_IFTYPE_STATION) |
-@@ -3079,6 +3139,81 @@ static const struct ieee80211_sband_iftype_data he_capa_5ghz[] = {
- 				.tx_mcs_80p80 = cpu_to_le16(0xfffa),
- 			},
- 		},
-+		.eht_cap = {
-+			.has_eht = true,
-+			.eht_cap_elem = {
-+				.mac_cap_info[0] =
-+					IEEE80211_EHT_MAC_CAP0_NSEP_PRIO_ACCESS |
-+					IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
-+					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1,
-+				.phy_cap_info[0] =
-+					IEEE80211_EHT_PHY_CAP0_242_TONE_RU_GT20MHZ |
-+					IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI |
-+					IEEE80211_EHT_PHY_CAP0_PARTIAL_BW_UL_MU_MIMO |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMER |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE |
-+					IEEE80211_EHT_PHY_CAP0_BEAMFORMEE_SS_80MHZ_MASK,
-+				.phy_cap_info[1] =
-+					IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_80MHZ_MASK |
-+					IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_160MHZ_MASK,
-+				.phy_cap_info[2] =
-+					IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_80MHZ_MASK |
-+					IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_160MHZ_MASK,
-+				.phy_cap_info[3] =
-+					IEEE80211_EHT_PHY_CAP3_NG_16_SU_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP3_NG_16_MU_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_4_2_SU_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_SU_BF_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_CQI_FDBK,
-+				.phy_cap_info[4] =
-+					IEEE80211_EHT_PHY_CAP4_PART_BW_DL_MU_MIMO |
-+					IEEE80211_EHT_PHY_CAP4_PSR_SR_SUPP |
-+					IEEE80211_EHT_PHY_CAP4_POWER_BOOST_FACT_SUPP |
-+					IEEE80211_EHT_PHY_CAP4_EHT_MU_PPDU_4_EHT_LTF_08_GI |
-+					IEEE80211_EHT_PHY_CAP4_MAX_NC_MASK,
-+				.phy_cap_info[5] =
-+					IEEE80211_EHT_PHY_CAP5_NON_TRIG_CQI_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP5_TX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_RX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT |
-+					IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_MASK |
-+					IEEE80211_EHT_PHY_CAP5_MAX_NUM_SUPP_EHT_LTF_MASK,
-+				.phy_cap_info[6] =
-+					IEEE80211_EHT_PHY_CAP6_MAX_NUM_SUPP_EHT_LTF_MASK |
-+					IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK,
-+				.phy_cap_info[7] =
-+					IEEE80211_EHT_PHY_CAP7_20MHZ_STA_RX_NDP_WIDER_BW |
-+					IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_80MHZ |
-+					IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_160MHZ |
-+					IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_80MHZ |
-+					IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_160MHZ,
-+			},
-+
-+			/* For all MCS and bandwidth, set 8 NSS for both Tx and
-+			 * Rx
-+			 */
-+			.eht_mcs_nss_supp = {
-+				/*
-+				 * As B1 and B2 are set in the supported
-+				 * channel width set field in the HE PHY
-+				 * capabilities information field include all
-+				 * the following MCS/NSS.
-+				 */
-+				.bw._80 = {
-+					.rx_tx_mcs9_max_nss = 0x88,
-+					.rx_tx_mcs11_max_nss = 0x88,
-+					.rx_tx_mcs13_max_nss = 0x88,
-+				},
-+				.bw._160 = {
-+					.rx_tx_mcs9_max_nss = 0x88,
-+					.rx_tx_mcs11_max_nss = 0x88,
-+					.rx_tx_mcs13_max_nss = 0x88,
-+				},
-+			},
-+			/* PPE threshold information is not supported */
-+		},
- 	},
- #ifdef CONFIG_MAC80211_MESH
- 	{
-@@ -3126,7 +3261,7 @@ static const struct ieee80211_sband_iftype_data he_capa_5ghz[] = {
- #endif
- };
- 
--static const struct ieee80211_sband_iftype_data he_capa_6ghz[] = {
-+static const struct ieee80211_sband_iftype_data sband_capa_6ghz[] = {
- 	{
- 		/* TODO: should we support other types, e.g., P2P?*/
- 		.types_mask = BIT(NL80211_IFTYPE_STATION) |
-@@ -3186,6 +3321,93 @@ static const struct ieee80211_sband_iftype_data he_capa_6ghz[] = {
- 				.tx_mcs_80p80 = cpu_to_le16(0xfffa),
- 			},
- 		},
-+		.eht_cap = {
-+			.has_eht = true,
-+			.eht_cap_elem = {
-+				.mac_cap_info[0] =
-+					IEEE80211_EHT_MAC_CAP0_NSEP_PRIO_ACCESS |
-+					IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
-+					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1,
-+				.phy_cap_info[0] =
-+					IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ |
-+					IEEE80211_EHT_PHY_CAP0_242_TONE_RU_GT20MHZ |
-+					IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI |
-+					IEEE80211_EHT_PHY_CAP0_PARTIAL_BW_UL_MU_MIMO |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMER |
-+					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE |
-+					IEEE80211_EHT_PHY_CAP0_BEAMFORMEE_SS_80MHZ_MASK,
-+				.phy_cap_info[1] =
-+					IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_80MHZ_MASK |
-+					IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_160MHZ_MASK |
-+					IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_320MHZ_MASK,
-+				.phy_cap_info[2] =
-+					IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_80MHZ_MASK |
-+					IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_160MHZ_MASK |
-+					IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_320MHZ_MASK,
-+				.phy_cap_info[3] =
-+					IEEE80211_EHT_PHY_CAP3_NG_16_SU_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP3_NG_16_MU_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_4_2_SU_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_SU_BF_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FDBK |
-+					IEEE80211_EHT_PHY_CAP3_TRIG_CQI_FDBK,
-+				.phy_cap_info[4] =
-+					IEEE80211_EHT_PHY_CAP4_PART_BW_DL_MU_MIMO |
-+					IEEE80211_EHT_PHY_CAP4_PSR_SR_SUPP |
-+					IEEE80211_EHT_PHY_CAP4_POWER_BOOST_FACT_SUPP |
-+					IEEE80211_EHT_PHY_CAP4_EHT_MU_PPDU_4_EHT_LTF_08_GI |
-+					IEEE80211_EHT_PHY_CAP4_MAX_NC_MASK,
-+				.phy_cap_info[5] =
-+					IEEE80211_EHT_PHY_CAP5_NON_TRIG_CQI_FEEDBACK |
-+					IEEE80211_EHT_PHY_CAP5_TX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_RX_LESS_242_TONE_RU_SUPP |
-+					IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT |
-+					IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_MASK |
-+					IEEE80211_EHT_PHY_CAP5_MAX_NUM_SUPP_EHT_LTF_MASK,
-+				.phy_cap_info[6] =
-+					IEEE80211_EHT_PHY_CAP6_MAX_NUM_SUPP_EHT_LTF_MASK |
-+					IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK |
-+					IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP,
-+				.phy_cap_info[7] =
-+					IEEE80211_EHT_PHY_CAP7_20MHZ_STA_RX_NDP_WIDER_BW |
-+					IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_80MHZ |
-+					IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_160MHZ |
-+					IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_320MHZ |
-+					IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_80MHZ |
-+					IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_160MHZ |
-+					IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ,
-+			},
-+
-+			/* For all MCS and bandwidth, set 8 NSS for both Tx and
-+			 * Rx
-+			 */
-+			.eht_mcs_nss_supp = {
-+				/*
-+				 * As B1 and B2 are set in the supported
-+				 * channel width set field in the HE PHY
-+				 * capabilities information field and 320MHz in
-+				 * 6GHz is supported include all the following
-+				 * MCS/NSS.
-+				 */
-+				.bw._80 = {
-+					.rx_tx_mcs9_max_nss = 0x88,
-+					.rx_tx_mcs11_max_nss = 0x88,
-+					.rx_tx_mcs13_max_nss = 0x88,
-+				},
-+				.bw._160 = {
-+					.rx_tx_mcs9_max_nss = 0x88,
-+					.rx_tx_mcs11_max_nss = 0x88,
-+					.rx_tx_mcs13_max_nss = 0x88,
-+				},
-+				.bw._320 = {
-+					.rx_tx_mcs9_max_nss = 0x88,
-+					.rx_tx_mcs11_max_nss = 0x88,
-+					.rx_tx_mcs13_max_nss = 0x88,
-+				},
-+			},
-+			/* PPE threshold information is not supported */
-+		},
- 	},
- #ifdef CONFIG_MAC80211_MESH
- 	{
-@@ -3242,22 +3464,22 @@ static const struct ieee80211_sband_iftype_data he_capa_6ghz[] = {
- #endif
- };
- 
--static void mac80211_hwsim_he_capab(struct ieee80211_supported_band *sband)
-+static void mac80211_hwsim_sband_capab(struct ieee80211_supported_band *sband)
- {
- 	u16 n_iftype_data;
- 
- 	if (sband->band == NL80211_BAND_2GHZ) {
--		n_iftype_data = ARRAY_SIZE(he_capa_2ghz);
-+		n_iftype_data = ARRAY_SIZE(sband_capa_2ghz);
- 		sband->iftype_data =
--			(struct ieee80211_sband_iftype_data *)he_capa_2ghz;
-+			(struct ieee80211_sband_iftype_data *)sband_capa_2ghz;
- 	} else if (sband->band == NL80211_BAND_5GHZ) {
--		n_iftype_data = ARRAY_SIZE(he_capa_5ghz);
-+		n_iftype_data = ARRAY_SIZE(sband_capa_5ghz);
- 		sband->iftype_data =
--			(struct ieee80211_sband_iftype_data *)he_capa_5ghz;
-+			(struct ieee80211_sband_iftype_data *)sband_capa_5ghz;
- 	} else if (sband->band == NL80211_BAND_6GHZ) {
--		n_iftype_data = ARRAY_SIZE(he_capa_6ghz);
-+		n_iftype_data = ARRAY_SIZE(sband_capa_6ghz);
- 		sband->iftype_data =
--			(struct ieee80211_sband_iftype_data *)he_capa_6ghz;
-+			(struct ieee80211_sband_iftype_data *)sband_capa_6ghz;
- 	} else {
- 		return;
+-	ac = ieee80211_select_queue_80211(sdata, skb, hdr);
++	ac = ieee802_1d_to_ac[skb->priority];
+ 	q = sdata->vif.hw_queue[ac];
+ 	if (ieee80211_queue_stopped(&local->hw, q)) {
+ 		IEEE80211_IFSTA_MESH_CTR_INC(ifmsh, dropped_frames_congestion);
+ 		return RX_DROP_MONITOR;
  	}
-@@ -3582,7 +3804,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 			sband->ht_cap.mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
- 		}
+-	skb_set_queue_mapping(skb, q);
++	skb_set_queue_mapping(skb, ac);
  
--		mac80211_hwsim_he_capab(sband);
-+		mac80211_hwsim_sband_capab(sband);
- 
- 		hw->wiphy->bands[band] = sband;
- 	}
+ 	if (!--mesh_hdr->ttl) {
+ 		if (!is_multicast_ether_addr(hdr->addr1))
 -- 
-2.34.1
+2.35.1
 
