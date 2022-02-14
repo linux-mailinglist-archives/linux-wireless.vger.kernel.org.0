@@ -2,89 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34CEE4B3E67
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Feb 2022 00:29:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A59A4B3F1D
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Feb 2022 02:58:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238788AbiBMX3Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 13 Feb 2022 18:29:24 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51954 "EHLO
+        id S239174AbiBNB6i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Feb 2022 20:58:38 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233807AbiBMX3X (ORCPT
+        with ESMTP id S239173AbiBNB6g (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 13 Feb 2022 18:29:23 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3C035133B;
-        Sun, 13 Feb 2022 15:29:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=3FoNdbZVjJP5lcX0q3ReMO6GWYXBCpciynOb6Vt0iBY=; b=f8lqDkdQkzlpC0nUVHl0bN2acH
-        EDZP0K5RnsHOB/wOVjGfhtmGV+ApMCZU05RlKRhXaxC139VkkmVB96Kgs7a7UDauXZEb7b9Qzs9au
-        d9iQSl6vIWgMxRjCzy979NgLS9Sn/3dcl1XH31dmV4NqXT3azbXficfSVryH3BltQQ6qQlysvXM+6
-        TClC+B4uswcwmZi15p4drH+r+PZn7N1ezxGfmggPSYVXhOL8nxIZflzBzOEskoI6F+sc1mQPcEXEi
-        13lEQ7jJWzxeishwV7DDKnr7LRoWGRHHlrzgarnegV+FvKrCinZhU+71rTykeKoiXv95zv6/xt8Q/
-        Fu5Fb/iQ==;
-Received: from [2601:1c0:6280:3f0::aa0b]
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nJOIr-00CM1o-8i; Sun, 13 Feb 2022 23:29:13 +0000
-Message-ID: <89df0da1-c867-43ad-096c-a1fdd1588a99@infradead.org>
-Date:   Sun, 13 Feb 2022 15:29:09 -0800
+        Sun, 13 Feb 2022 20:58:36 -0500
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B33154F9C;
+        Sun, 13 Feb 2022 17:58:28 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0V4JWI8D_1644803902;
+Received: from localhost(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0V4JWI8D_1644803902)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 14 Feb 2022 09:58:23 +0800
+From:   Yang Li <yang.lee@linux.alibaba.com>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        shayne.chen@mediatek.com, sean.wang@mediatek.com, kvalo@kernel.org,
+        davem@davemloft.net, kuba@kernel.org, matthias.bgg@gmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Abaci Robot <abaci@linux.alibaba.com>
+Subject: [PATCH -next] mt76: mt7615: Fix assigning negative values to unsigned variable
+Date:   Mon, 14 Feb 2022 09:58:21 +0800
+Message-Id: <20220214015821.60674-1-yang.lee@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH v2] bcma: cleanup comments
-Content-Language: en-US
-To:     trix@redhat.com, zajec5@gmail.com
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220213213121.2806376-1-trix@redhat.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20220213213121.2806376-1-trix@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Smatch reports the following:
+drivers/net/wireless/mediatek/mt76/mt7615/mac.c:1865
+mt7615_mac_adjust_sensitivity() warn: assigning (-110) to unsigned
+variable 'def_th'
+drivers/net/wireless/mediatek/mt76/mt7615/mac.c:1865
+mt7615_mac_adjust_sensitivity() warn: assigning (-98) to unsigned
+variable 'def_th'
 
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 2/13/22 13:31, trix@redhat.com wrote:
-> From: Tom Rix <trix@redhat.com>
-> 
-> Remove the second 'info'.
-> Replacements
-> 'adventages' with 'advantages'
-> 'strenth' with 'strength'
-> 'atleast' with 'at least'
-> 'thr'u'' with 'through'
-> 'capabilty' with 'capability'
-> 'controll' with 'control'
-> 'ourself' with 'ourselves'
-> 'noone' with 'no one'
-> 'cores' to 'core's' and 'core'
-> 
-> Signed-off-by: Tom Rix <trix@redhat.com>
-
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-
-thanks.
-
-> ---
-> v2: change per Randy's suggestions
-> 
->  drivers/bcma/driver_chipcommon.c     | 2 +-
->  drivers/bcma/driver_chipcommon_pmu.c | 6 +++---
->  drivers/bcma/driver_pci_host.c       | 6 +++---
->  drivers/bcma/main.c                  | 4 ++--
->  drivers/bcma/sprom.c                 | 4 ++--
->  5 files changed, 11 insertions(+), 11 deletions(-)
-
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index f035cd880696..283a86052b4f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1862,7 +1862,7 @@ mt7615_mac_adjust_sensitivity(struct mt7615_phy *phy,
+ 	struct mt7615_dev *dev = phy->dev;
+ 	int false_cca = ofdm ? phy->false_cca_ofdm : phy->false_cca_cck;
+ 	bool ext_phy = phy != &dev->phy;
+-	u16 def_th = ofdm ? -98 : -110;
++	s16 def_th = ofdm ? -98 : -110;
+ 	bool update = false;
+ 	s8 *sensitivity;
+ 	int signal;
 -- 
-~Randy
+2.20.1.7.g153144c
+
