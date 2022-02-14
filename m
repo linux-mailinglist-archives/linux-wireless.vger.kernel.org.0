@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2645A4B5DA3
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Feb 2022 23:31:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2113B4B5DA6
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Feb 2022 23:31:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231868AbiBNWbQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Feb 2022 17:31:16 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41674 "EHLO
+        id S231880AbiBNWbU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Feb 2022 17:31:20 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230102AbiBNWbP (ORCPT
+        with ESMTP id S231874AbiBNWbR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Feb 2022 17:31:15 -0500
+        Mon, 14 Feb 2022 17:31:17 -0500
 Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45D24F70DB
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Feb 2022 14:31:07 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AFB8F70DB
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Feb 2022 14:31:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1644877867; x=1676413867;
+  t=1644877869; x=1676413869;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=oZ4e+rxFSKbTGOS677+bymtqwSgK8yFYiuoUsTbZQVQ=;
-  b=SaC3AyaqcuIYpkvgqpFmeqbASLk3yZf6aaQYyGCcsRKPWps3qRtDWgyO
-   rvn58h7vGXD/ER1D0aXlKuK5EOO3zbilEZ8hVEoWr7vW9a7PDFAmw9Q86
-   ZnnSCbjsh+/YSS/P5dSk7cPkJFviQen+0fClLyym6V96ZeGPH7cph62Tp
-   0=;
+  bh=HiapnwOFBt/dZtzTSGiVoojDoOVJahSpERDOiy5mTBo=;
+  b=CQHFDpRZRb0EbQwQ1wAAaSyvguR2qHkFGdHlo3sQxmtWvRfN/nl7Tj1W
+   LkGgX/wGEImkdHpXwqRygrBJzwIZJuuDdlse5AJ2GfL69/B0Tr4Xx3q1L
+   HhhPJvz1i4ATcDClAf8gRqydGzVSFMoGqONNp+ghLbpmVH9GtSVxZhX8v
+   w=;
 Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
   by alexa-out-sd-01.qualcomm.com with ESMTP; 14 Feb 2022 14:31:07 -0800
 X-QCInternal: smtphost
@@ -33,7 +33,7 @@ Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Mon, 14 Feb 2022 14:31:04 -0800
+ 15.2.986.15; Mon, 14 Feb 2022 14:31:05 -0800
 Received: from alokad-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -41,9 +41,9 @@ Received: from alokad-linux.qualcomm.com (10.80.80.8) by
 From:   Aloka Dixit <quic_alokad@quicinc.com>
 To:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
 CC:     Aloka Dixit <quic_alokad@quicinc.com>
-Subject: [PATCH 2/3] cfg80211: validate RU puncturing bitmap
-Date:   Mon, 14 Feb 2022 14:30:50 -0800
-Message-ID: <20220214223051.3610-3-quic_alokad@quicinc.com>
+Subject: [PATCH 3/3] nl80211: validate RU puncturing bitmap
+Date:   Mon, 14 Feb 2022 14:30:51 -0800
+Message-ID: <20220214223051.3610-4-quic_alokad@quicinc.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20220214223051.3610-1-quic_alokad@quicinc.com>
 References: <20220214223051.3610-1-quic_alokad@quicinc.com>
@@ -63,185 +63,131 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RU puncturing bitmap consists of 16 bits, each bit corresponding to
-a 20 MHz channel in the operating bandwidth. Lowest bit corresponds to
-the lowest frequency. Bit set to 1 indicates that the channel is
-punctured otherwise it is active.
-
-Validate the bitmap against following rules:
-- Primary 20 MHz channel cannot be punctured
-- As per IEEE P802.11be/D1.3, December 2021, 36.3.12.11.3 Preamble
-  puncturing for PPDUs in a non-OFDMA transmission
-- As per IEEE P802.11be/D1.3, December 2021, 36.3.12.11.2 Preamble
-  puncturing for PPDUs in an OFDMA transmission.
+Add new attributes NL80211_ATTR_RU_PUNCT_BITMAP and
+NL80211_ATTR_RU_PUNCT_SUPP_HE to receive RU puncturing information
+from the userspace.
+- Bitmap consists of 16 bits, each bit corresponding to a 20 MHz
+channel in the operating bandwidth. Lowest bit corresponds to
+the lowest frequency. Validate the bitmap against the minimum
+bandwidth support advertised by the driver.
+- HE support flag indicates whether OFDMA puncturing patterns
+should be considered during validation.
 
 Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
 ---
- include/net/cfg80211.h | 12 ++++-
- net/wireless/chan.c    | 99 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 110 insertions(+), 1 deletion(-)
+ include/uapi/linux/nl80211.h | 10 ++++++++
+ net/wireless/nl80211.c       | 49 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 59 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 5605cf6d247b..c3246e989828 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -742,6 +742,11 @@ struct key_params {
-  *	chan will define the primary channel and all other
-  *	parameters are ignored.
-  * @freq1_offset: offset from @center_freq1, in KHz
-+ * @ru_punct_bitmap: RU puncturing bitmap. Each bit represents a 20 MHz channel
-+ *	with lowest bit corresponding to the smallest frequency. Bit set to 1
-+ *	indicates that the channel is punctured, otherwise the channel is active
-+ * @ru_punct_bitmap_supp_he: Indicates whether RU puncturing bitmap validation
-+ *	should include OFDMA bitmaps.
-  */
- struct cfg80211_chan_def {
- 	struct ieee80211_channel *chan;
-@@ -750,6 +755,8 @@ struct cfg80211_chan_def {
- 	u32 center_freq2;
- 	struct ieee80211_edmg edmg;
- 	u16 freq1_offset;
-+	u16 ru_punct_bitmap;
-+	bool ru_punct_bitmap_supp_he;
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index b4849afede98..1cccc1e8dc29 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -2667,6 +2667,14 @@ enum nl80211_commands {
+  *	the driver supports preamble puncturing, value should be of type
+  *	&enum nl80211_ru_punct_supp_bw
+  *
++ * @NL80211_ATTR_RU_PUNCT_SUPP_HE: flag attribute, used to indicate that RU
++ *	puncturing bitmap validation should include OFDMA bitmaps.
++ *
++ * @NL80211_ATTR_RU_PUNCT_BITMAP: (u16) RU puncturing bitmap where the lowest
++ *	bit corresponds to the lowest 20 MHz channel. Each bit set to 1
++ *	indicates that the sub-channel is punctured, set 0 indicates that the
++ *	channel is active.
++ *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -3180,6 +3188,8 @@ enum nl80211_attrs {
+ 	NL80211_ATTR_EHT_CAPABILITY,
+ 
+ 	NL80211_ATTR_RU_PUNCT_SUPP_BW,
++	NL80211_ATTR_RU_PUNCT_SUPP_HE,
++	NL80211_ATTR_RU_PUNCT_BITMAP,
+ 
+ 	/* add attributes here, update the policy in nl80211.c */
+ 
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 3b244b96d15f..720e53917013 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -784,6 +784,8 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 				 NL80211_EHT_MAX_CAPABILITY_LEN),
+ 	[NL80211_ATTR_RU_PUNCT_SUPP_BW] =
+ 		NLA_POLICY_MAX(NLA_U8, NL80211_RU_PUNCT_SUPP_BW_320),
++	[NL80211_ATTR_RU_PUNCT_SUPP_HE] = { .type = NLA_FLAG },
++	[NL80211_ATTR_RU_PUNCT_BITMAP] = { .type = NLA_U16 },
  };
  
- /*
-@@ -878,7 +885,10 @@ cfg80211_chandef_identical(const struct cfg80211_chan_def *chandef1,
- 		chandef1->width == chandef2->width &&
- 		chandef1->center_freq1 == chandef2->center_freq1 &&
- 		chandef1->freq1_offset == chandef2->freq1_offset &&
--		chandef1->center_freq2 == chandef2->center_freq2);
-+		chandef1->center_freq2 == chandef2->center_freq2 &&
-+		chandef1->ru_punct_bitmap == chandef2->ru_punct_bitmap &&
-+		chandef1->ru_punct_bitmap_supp_he ==
-+					chandef2->ru_punct_bitmap_supp_he);
+ /* policy for the key attributes */
+@@ -3117,6 +3119,46 @@ static bool nl80211_can_set_dev_channel(struct wireless_dev *wdev)
+ 		wdev->iftype == NL80211_IFTYPE_P2P_GO;
  }
  
- /**
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index 8b7fb4a9e07b..4390e9297222 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -32,6 +32,7 @@ void cfg80211_chandef_create(struct cfg80211_chan_def *chandef,
- 	chandef->center_freq2 = 0;
- 	chandef->edmg.bw_config = 0;
- 	chandef->edmg.channels = 0;
-+	chandef->ru_punct_bitmap = 0;
- 
- 	switch (chan_type) {
- 	case NL80211_CHAN_NO_HT:
-@@ -196,6 +197,101 @@ static int cfg80211_chandef_get_width(const struct cfg80211_chan_def *c)
- 	return nl80211_chan_width_to_mhz(c->width);
- }
- 
-+/* IEEE P802.11be/D1.31, December 2021, Table 36-30 5-bit punctured channel
-+ * indication for the non-OFDMA case in an EHT MU PPDU
-+ */
-+static const u16 ru_punct_bitmap_80[] = {0xF, 0xE, 0xD, 0xB, 0x7};
-+static const u16 ru_punct_bitmap_160[] = {0xFF, 0xFE, 0xFD, 0xFB, 0xF7, 0xEF,
-+					  0xDF, 0xBF, 0x7F, 0xFC, 0xF3, 0xCF,
-+					  0x3F};
-+static const u16 ru_punct_bitmap_320[] = {0xFFFF, 0xFFFC, 0xFFF3, 0xFFCF,
-+					  0xFF3F, 0xFCFF, 0xF3FF, 0xCFFF,
-+					  0x3FFF, 0xFFF0, 0xFF0F, 0xF0FF,
-+					  0x0FFF, 0xFFC0, 0xFF30, 0xFCF0,
-+					  0xF3F0, 0xCFF0, 0x3FF0, 0x0FFC,
-+					  0x0FF3, 0x0FCF, 0x0F3F, 0x0CFF,
-+					  0x03FF};
-+
-+bool cfg80211_ru_punct_bitmap_valid(const struct cfg80211_chan_def *chandef)
++static int nl80211_parse_ru_punct_bitmap(struct cfg80211_registered_device *rdev,
++					 struct genl_info *info,
++					 struct cfg80211_chan_def *chandef)
 +{
-+	u8 i, non_ofdma_bitmap_count, ofdma_block_count = 1;
-+	u16 bitmap, pri_ch_bit_pos;
-+	const u16 *non_ofdma_bitmap;
-+	u32 start_freq;
++	chandef->ru_punct_bitmap_supp_he =
++		nla_get_flag(info->attrs[NL80211_ATTR_RU_PUNCT_SUPP_HE]);
 +
-+	if (!chandef->ru_punct_bitmap) /* All channels active */
-+		return true;
++	chandef->ru_punct_bitmap =
++		nla_get_u16(info->attrs[NL80211_ATTR_RU_PUNCT_BITMAP]);
 +
-+	bitmap = ~chandef->ru_punct_bitmap;
-+	WARN_ON_ONCE(sizeof(bitmap) != sizeof(chandef->ru_punct_bitmap));
++	if (!chandef->ru_punct_bitmap)
++		return 0;
++
++	if (!rdev->wiphy.ru_punct_supp_bw &&
++	    (chandef->ru_punct_bitmap || chandef->ru_punct_bitmap_supp_he))
++		return -EOPNOTSUPP;
 +
 +	switch (chandef->width) {
 +	case NL80211_CHAN_WIDTH_80:
-+		bitmap &= 0xF;
-+		non_ofdma_bitmap = &ru_punct_bitmap_80[0];
-+		non_ofdma_bitmap_count = ARRAY_SIZE(ru_punct_bitmap_80);
-+		start_freq = chandef->center_freq1 - 40;
++		if (rdev->wiphy.ru_punct_supp_bw >=
++		    NL80211_RU_PUNCT_SUPP_BW_160)
++			return -EOPNOTSUPP;
 +		break;
 +
 +	case NL80211_CHAN_WIDTH_160:
-+		bitmap &= 0xFF;
-+		non_ofdma_bitmap = &ru_punct_bitmap_160[0];
-+		non_ofdma_bitmap_count = ARRAY_SIZE(ru_punct_bitmap_160);
-+		ofdma_block_count = 2;
-+		start_freq = chandef->center_freq1 - 80;
++		if (rdev->wiphy.ru_punct_supp_bw >=
++		    NL80211_RU_PUNCT_SUPP_BW_320)
++			return -EOPNOTSUPP;
 +		break;
 +
 +	case NL80211_CHAN_WIDTH_320:
-+		bitmap &= 0xFFFF;
-+		non_ofdma_bitmap = &ru_punct_bitmap_320[0];
-+		non_ofdma_bitmap_count = ARRAY_SIZE(ru_punct_bitmap_320);
-+		ofdma_block_count = 4;
-+		start_freq = chandef->center_freq1 - 160;
 +		break;
 +
 +	default:
-+		return false;
++		return -EOPNOTSUPP;
 +	}
 +
-+	if (!bitmap) /* No channel active */
-+		return false;
-+
-+	pri_ch_bit_pos = ((chandef->chan->center_freq - start_freq) / 20);
-+	if (!(bitmap & BIT(pri_ch_bit_pos)))
-+		return false;
-+
-+	/* Check for non-OFDMA puncturing patterns */
-+	for (i = 0; i < non_ofdma_bitmap_count; i++)
-+		if (non_ofdma_bitmap[i] == bitmap)
-+			return true;
-+
-+	if (!chandef->ru_punct_bitmap_supp_he)
-+		return false;
-+
-+	/* Check for OFDMA puncturing patterns */
-+	for (i = 0; i < ofdma_block_count; i++) {
-+		switch ((bitmap >> (i * 4)) & 0xF) {
-+		/* IEEE P802.11be/D1.31, December 2021, 36.3.12.11.2 Preamble
-+		 * puncturing for PPDUs in an OFDMA transmission
-+		 */
-+		case 0xF:
-+		case 0x7:
-+		case 0xB:
-+		case 0xD:
-+		case 0xE:
-+		case 0x3:
-+		case 0xC:
-+		case 0x9:
-+		case 0x0:
-+			break;
-+		default:
-+			return false;
-+		}
-+	}
-+
-+	return true;
++	return 0;
 +}
 +
- bool cfg80211_chandef_valid(const struct cfg80211_chan_def *chandef)
- {
- 	u32 control_freq, oper_freq;
-@@ -316,6 +412,9 @@ bool cfg80211_chandef_valid(const struct cfg80211_chan_def *chandef)
- 	    !cfg80211_edmg_chandef_valid(chandef))
- 		return false;
+ int nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+ 			  struct genl_info *info,
+ 			  struct cfg80211_chan_def *chandef)
+@@ -3124,6 +3166,7 @@ int nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+ 	struct netlink_ext_ack *extack = info->extack;
+ 	struct nlattr **attrs = info->attrs;
+ 	u32 control_freq;
++	int err;
  
-+	if (!cfg80211_ru_punct_bitmap_valid(chandef))
-+		return false;
+ 	if (!attrs[NL80211_ATTR_WIPHY_FREQ])
+ 		return -EINVAL;
+@@ -3230,6 +3273,12 @@ int nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+ 		return -EINVAL;
+ 	}
+ 
++	if (info->attrs[NL80211_ATTR_RU_PUNCT_BITMAP]) {
++		err = nl80211_parse_ru_punct_bitmap(rdev, info, chandef);
++		if (err)
++			return err;
++	}
 +
- 	return true;
+ 	return 0;
  }
- EXPORT_SYMBOL(cfg80211_chandef_valid);
+ 
 -- 
 2.31.1
 
