@@ -2,42 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B78E34B563D
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Feb 2022 17:30:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5B714B5640
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Feb 2022 17:30:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356392AbiBNQaY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Feb 2022 11:30:24 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38486 "EHLO
+        id S1356400AbiBNQaZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Feb 2022 11:30:25 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356379AbiBNQaU (ORCPT
+        with ESMTP id S1356373AbiBNQaU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 14 Feb 2022 11:30:20 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5531A5FF0B
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB05460ABF
         for <linux-wireless@vger.kernel.org>; Mon, 14 Feb 2022 08:30:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=JQbWoeHkDtU5aZsfHFuzPJEUGVEdij07ZY6s35FSn68=;
-        t=1644856212; x=1646065812; b=XRgOcSy5aZAr+vEdAqxdmmN7VQoxDYHX0cAMggMX9QPNaAH
-        J+hNatnR5jGDfV+UaDFWHn5O/BYgM8ioUm7xLUVf45i2zEwkOtPEQLWxEny9wtZNgmtoRL4N+ZcoD
-        Ij5/LGH0eUdBD/BwT6Aneo9LIuuycyz2T94mugFHjqoPEWCsvr0rNPF6qEb0kcv3PUhQDKxKY/CDm
-        1sLYSuU3FCTx3r2c4+mbjZFcjeu7lMlGSdMUo0F1vQQirN4eBBZ5dLYyscvTv39m4GCb5WhgEvj9u
-        JcqXwdytND+f7X+kr3ncB5I19+nAsFQ4+qF/ThdrB5cxnCKrrOoJa2RavXI6IFVQ==;
+        Resent-Cc:Resent-Message-ID; bh=qlk2XamAFeVEpiTxUhieQ3SzKtPaDs37WpH1035IzgQ=;
+        t=1644856212; x=1646065812; b=xk/yBcPRVRnYG14Et/5C+tLM7L92AHUN8bs3tOScUUXgudH
+        eBSM/KRpe6xjB5kxeTpfzc54xbBD/mrCgzwVcoJh9y2fGjG3A6TqcP/bK5htkZfBDKPwRSBycqPh2
+        d0J1ixLX+ykUtzRQxX9Fkua85TMluq1rxtJCcnpJ0oWgbL6v9PLowEjhCs7dFv+B3l8ZhEEvf662l
+        EK1nD5EDdBO8Vt0Bd2t0s5YxT9q2wateyaIFpn7Oa28J8JAKUsJXmy7lozpxZq9+YE2klg7noHoH/
+        gsx1RRtpU+8+UbLJyIFJLaKbNZX9objBiFsfcS+lUgWaGHU6ufbGagR3mey+9uEw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nJeEs-0011mw-LM;
+        id 1nJeEs-0011mw-TS;
         Mon, 14 Feb 2022 17:30:10 +0100
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
-Cc:     Sriram R <quic_srirrama@quicinc.com>,
-        Karthikeyan Periyasamy <quic_periyasia@quicinc.com>,
-        Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-Subject: [PATCH v3 09/19] nl80211: add support for 320MHz channel limitation
-Date:   Mon, 14 Feb 2022 17:29:56 +0100
-Message-Id: <20220214163009.175289-3-johannes@sipsolutions.net>
+Cc:     Ilan Peer <ilan.peer@intel.com>
+Subject: [PATCH v3 10/19] cfg80211: add NO-EHT flag to regulatory
+Date:   Mon, 14 Feb 2022 17:29:57 +0100
+Message-Id: <20220214173004.dbb85a7b86bb.Ifc1e2daac51c1cc5f895ccfb79faf5eaec3950ec@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220214173004.9fd154d2c3c2.Ia0cd152357a373149bab017d479ab7d5ded289c0@changeid>
 References: <20220214173004.9fd154d2c3c2.Ia0cd152357a373149bab017d479ab7d5ded289c0@changeid>
@@ -52,106 +50,75 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sriram R <quic_srirrama@quicinc.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-Add support to advertise drivers or regulatory limitations on 320 MHz
-channels to userspace.
+This may be necessary in some cases, add a flag and propagate
+it, just like the NO-HE that already exists.
 
-Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-Co-authored-by: Karthikeyan Periyasamy <quic_periyasia@quicinc.com>
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasia@quicinc.com>
-Co-authored-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-Signed-off-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-Link: https://lore.kernel.org/r/1640163883-12696-6-git-send-email-quic_vjakkam@quicinc.com
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+[split off from a combined 320/no-EHT patch]
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/uapi/linux/nl80211.h | 5 +++++
+ include/net/cfg80211.h       | 2 ++
+ include/uapi/linux/nl80211.h | 3 +++
  net/wireless/nl80211.c       | 3 +++
- net/wireless/reg.c           | 6 ++++++
- 3 files changed, 14 insertions(+)
+ 3 files changed, 8 insertions(+)
 
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index f35ffd81d213..5cfc483dece1 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -114,6 +114,7 @@ struct wiphy;
+  *	channel as the control or any of the secondary channels.
+  *	This may be due to the driver or due to regulatory bandwidth
+  *	restrictions.
++ * @IEEE80211_CHAN_NO_EHT: EHT operation is not permitted on this channel.
+  */
+ enum ieee80211_channel_flags {
+ 	IEEE80211_CHAN_DISABLED		= 1<<0,
+@@ -136,6 +137,7 @@ enum ieee80211_channel_flags {
+ 	IEEE80211_CHAN_8MHZ		= 1<<17,
+ 	IEEE80211_CHAN_16MHZ		= 1<<18,
+ 	IEEE80211_CHAN_NO_320MHZ	= 1<<19,
++	IEEE80211_CHAN_NO_EHT		= 1<<20,
+ };
+ 
+ #define IEEE80211_CHAN_NO_HT40 \
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index d0ba70ea5d04..6a338dafcd07 100644
+index 6a338dafcd07..baf6433c0119 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -3997,6 +3997,8 @@ enum nl80211_wmm_rule {
+@@ -3999,6 +3999,8 @@ enum nl80211_wmm_rule {
   *	on this channel in current regulatory domain.
-  * @NL80211_FREQUENCY_ATTR_16MHZ: 16 MHz operation is allowed
-  *	on this channel in current regulatory domain.
-+ * @NL80211_FREQUENCY_ATTR_NO_320MHZ: any 320 MHz channel using this channel
-+ *	as the primary or any of the secondary channels isn't possible
+  * @NL80211_FREQUENCY_ATTR_NO_320MHZ: any 320 MHz channel using this channel
+  *	as the primary or any of the secondary channels isn't possible
++ * @NL80211_FREQUENCY_ATTR_NO_EHT: EHT operation is not allowed on this channel
++ *	in current regulatory domain.
   * @NL80211_FREQUENCY_ATTR_MAX: highest frequency attribute number
   *	currently defined
   * @__NL80211_FREQUENCY_ATTR_AFTER_LAST: internal use
-@@ -4033,6 +4035,7 @@ enum nl80211_frequency_attr {
- 	NL80211_FREQUENCY_ATTR_4MHZ,
+@@ -4036,6 +4038,7 @@ enum nl80211_frequency_attr {
  	NL80211_FREQUENCY_ATTR_8MHZ,
  	NL80211_FREQUENCY_ATTR_16MHZ,
-+	NL80211_FREQUENCY_ATTR_NO_320MHZ,
+ 	NL80211_FREQUENCY_ATTR_NO_320MHZ,
++	NL80211_FREQUENCY_ATTR_NO_EHT,
  
  	/* keep last */
  	__NL80211_FREQUENCY_ATTR_AFTER_LAST,
-@@ -4231,6 +4234,7 @@ enum nl80211_sched_scan_match_attr {
-  * @NL80211_RRF_NO_80MHZ: 80MHz operation not allowed
-  * @NL80211_RRF_NO_160MHZ: 160MHz operation not allowed
-  * @NL80211_RRF_NO_HE: HE operation not allowed
-+ * @NL80211_RRF_NO_320MHZ: 320MHz operation not allowed
-  */
- enum nl80211_reg_rule_flags {
- 	NL80211_RRF_NO_OFDM		= 1<<0,
-@@ -4249,6 +4253,7 @@ enum nl80211_reg_rule_flags {
- 	NL80211_RRF_NO_80MHZ		= 1<<15,
- 	NL80211_RRF_NO_160MHZ		= 1<<16,
- 	NL80211_RRF_NO_HE		= 1<<17,
-+	NL80211_RRF_NO_320MHZ		= 1<<18,
- };
- 
- #define NL80211_RRF_PASSIVE_SCAN	NL80211_RRF_NO_IR
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 288602c22bde..3a36ac3c4ad6 100644
+index 3a36ac3c4ad6..4067e41ca288 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -1159,6 +1159,9 @@ static int nl80211_msg_put_channel(struct sk_buff *msg, struct wiphy *wiphy,
- 		if ((chan->flags & IEEE80211_CHAN_16MHZ) &&
- 		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_16MHZ))
+@@ -1162,6 +1162,9 @@ static int nl80211_msg_put_channel(struct sk_buff *msg, struct wiphy *wiphy,
+ 		if ((chan->flags & IEEE80211_CHAN_NO_320MHZ) &&
+ 		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_320MHZ))
  			goto nla_put_failure;
-+		if ((chan->flags & IEEE80211_CHAN_NO_320MHZ) &&
-+		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_320MHZ))
++		if ((chan->flags & IEEE80211_CHAN_NO_EHT) &&
++		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_EHT))
 +			goto nla_put_failure;
  	}
  
  	if (nla_put_u32(msg, NL80211_FREQUENCY_ATTR_MAX_TX_POWER,
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index ec25924a1c26..c76cd973f06e 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -1238,6 +1238,8 @@ unsigned int reg_get_max_bandwidth(const struct ieee80211_regdomain *rd,
- {
- 	unsigned int bw = reg_get_max_bandwidth_from_range(rd, rule);
- 
-+	if (rule->flags & NL80211_RRF_NO_320MHZ)
-+		bw = min_t(unsigned int, bw, MHZ_TO_KHZ(160));
- 	if (rule->flags & NL80211_RRF_NO_160MHZ)
- 		bw = min_t(unsigned int, bw, MHZ_TO_KHZ(80));
- 	if (rule->flags & NL80211_RRF_NO_80MHZ)
-@@ -1611,6 +1613,8 @@ static u32 map_regdom_flags(u32 rd_flags)
- 		channel_flags |= IEEE80211_CHAN_NO_160MHZ;
- 	if (rd_flags & NL80211_RRF_NO_HE)
- 		channel_flags |= IEEE80211_CHAN_NO_HE;
-+	if (rd_flags & NL80211_RRF_NO_320MHZ)
-+		channel_flags |= IEEE80211_CHAN_NO_320MHZ;
- 	return channel_flags;
- }
- 
-@@ -1773,6 +1777,8 @@ static uint32_t reg_rule_to_chan_bw_flags(const struct ieee80211_regdomain *regd
- 			bw_flags |= IEEE80211_CHAN_NO_80MHZ;
- 		if (max_bandwidth_khz < MHZ_TO_KHZ(160))
- 			bw_flags |= IEEE80211_CHAN_NO_160MHZ;
-+		if (max_bandwidth_khz < MHZ_TO_KHZ(320))
-+			bw_flags |= IEEE80211_CHAN_NO_320MHZ;
- 	}
- 	return bw_flags;
- }
 -- 
 2.34.1
 
