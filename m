@@ -2,113 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ED4D4B76F8
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 21:50:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1194C4B7878
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 21:52:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242504AbiBOR17 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Feb 2022 12:27:59 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40138 "EHLO
+        id S243069AbiBOS3I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Feb 2022 13:29:08 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:45722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239101AbiBOR17 (ORCPT
+        with ESMTP id S233594AbiBOS3H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Feb 2022 12:27:59 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58BF1193DB;
-        Tue, 15 Feb 2022 09:27:48 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Tue, 15 Feb 2022 13:29:07 -0500
+X-Greylist: delayed 386 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 15 Feb 2022 10:28:57 PST
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7A3E0D1
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 10:28:57 -0800 (PST)
+Received: from dispatch1-us1.ppe-hosted.com (localhost.localdomain [127.0.0.1])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 594C522E11E
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 18:22:31 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.168])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 9888CA0075;
+        Tue, 15 Feb 2022 18:22:29 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 5DEFD880077;
+        Tue, 15 Feb 2022 18:22:29 +0000 (UTC)
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DE64B61575;
-        Tue, 15 Feb 2022 17:27:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3753EC340EB;
-        Tue, 15 Feb 2022 17:27:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644946067;
-        bh=9osc3hzFuzOFX+241F/uqhFA2Bcn170aOY5xY1mkJfo=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=KvR4ZiaujsDq4e2XP9eqbgzrBToKp9+wwyEvaGsI0+Xr0dxTvNBYNhMxJqUSfnQUl
-         WpQ4+sugZbxYSpkmVQJXwYP8fI8xTrBeHoKWfdzaS7rkAkJAfdAteIY8XB3XqN6/2i
-         B9iyNyen0StFaMh+6mhziG8RbCb+Z49B0LpdObDxyO3mabfX8hZJ4kT/a5rmzYJZA7
-         RP3jMwzQ3XAVw6lU15mv5ilHRziUwwL28QGIFeh/gbnbzUbmEm0afvvl0UFD2OpXCr
-         cIZ2O1Gl5oIR/STu48rwBDF5xfwBxzEK7i7JiV+2C1ZQUOvDZOAcEcYJeLaheDogYz
-         rs5UcIhAwdMKw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jiri Kosina <jikos@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: [PATCH] rtw89: fix RCU usage in rtw89_core_txq_push() (was Re: [PATCH] mac80211: fix RCU usage in ieee80211_tx_h_select_key())
-References: <nycvar.YFH.7.76.2202151643220.11721@cbobk.fhfr.pm>
-        <af6abf72593074c007fe42205e941dabfd08bf3a.camel@sipsolutions.net>
-        <nycvar.YFH.7.76.2202151700540.11721@cbobk.fhfr.pm>
-Date:   Tue, 15 Feb 2022 19:27:43 +0200
-In-Reply-To: <nycvar.YFH.7.76.2202151700540.11721@cbobk.fhfr.pm> (Jiri
-        Kosina's message of "Tue, 15 Feb 2022 17:11:11 +0100 (CET)")
-Message-ID: <87r1849h0w.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id CF92913C2B1;
+        Tue, 15 Feb 2022 10:22:28 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com CF92913C2B1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1644949348;
+        bh=xukAeKiIiy7xKmN5tSmEFO3RjasO7/qn5qu3f1W8b98=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=ZjDtXOveuZxCFFpBsOeJtcMMEh7X9GVXqc69mrBClGSV5pR0rB0ClR+k/FVIHrCcu
+         70ZiIgEm0/lM9Zd4NAMIiCvwqYhujBPsHFK0wRzuP9j5UTV77+vT1WcHg0RQVU9TmY
+         dD6SLjo1W/ikfr/VO80pzVyHXYgXHt18VtVvyO9I=
+Subject: Re: [PATCH] mt76: improve signal strength reporting
+To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+References: <20220215125808.72378-1-nbd@nbd.name>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <9bb8329d-b2c7-139a-9f0d-a10bba3f4d8b@candelatech.com>
+Date:   Tue, 15 Feb 2022 10:22:28 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220215125808.72378-1-nbd@nbd.name>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-MDID: 1644949350-FfkK2nRImbKK
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jiri Kosina <jikos@kernel.org> writes:
+On 2/15/22 4:58 AM, Felix Fietkau wrote:
+> Instead of just taking the maximum per-chain signal strength values,
+> add an approximation for the sum of the combined signal.
+> This should more accurately reflect the real signal strength, especially
+> if the per-chain signal strength values are close to each other
 
-> On Tue, 15 Feb 2022, Johannes Berg wrote:
->
->> > 
->> > ieee80211_tx_h_select_key() is performing a series of RCU dereferences, 
->> > but none of the callers seems to be taking RCU read-side lock; let's 
->> > acquire the lock in ieee80211_tx_h_select_key() itself.
->> > 
->> but but ...
->> 
->> >   ieee80211_tx_dequeue+0x1a7/0x1260 [mac80211 911c23e2351c0ae60b597a67b1204a5ea955e365]
->> >   rtw89_core_txq_work+0x1a6/0x420 [rtw89_core b39ba493f2e517ad75e0f8187ecc24edf58bbbea]
->> 
->> /**
->>  * ieee80211_tx_dequeue - dequeue a packet from a software tx queue
->>  *
->>  * @hw: pointer as obtained from ieee80211_alloc_hw()
->>  * @txq: pointer obtained from station or virtual interface, or from
->>  *      ieee80211_next_txq()
->>  *
->>  * Returns the skb if successful, %NULL if no frame was available.
->>  *
->>  * Note that this must be called in an rcu_read_lock() critical section,
->>  * which can only be released after the SKB was handled. Some pointers in
->> [...]
->> 
->> -> driver bug?
->
-> Right you are, thanks.
->
-> CCing Ping-Ke Shih; find updated fix below.
->
->
->
->
-> From: Jiri Kosina <jkosina@suse.cz>
-> Subject: [PATCH] rtw89: fix RCU usage in rtw89_core_txq_push()
->
-> ieee80211_tx_h_select_key() is performing a series of RCU dereferences,
-> but rtw89_core_txq_push() is calling it (via ieee80211_tx_dequeue_ni())
-> without RCU read-side lock held; fix that.
+My concern with this patch is that many of the mtk radios do not provide enough
+info to know how many RX chains are used when receiving a frame.  I think we should not
+be summing more chains than the number of spatial streams received.
 
-I think we have discussed this before, but patchwork can't handle
-patches the way you embed them in email discussions:
+That said, this code may still be a closer estimate than existing code, and some
+radios, like 7921 appear to report enough info by default to properly determine
+the NSS count on a per frame basis.
 
-https://patchwork.kernel.org/project/linux-wireless/patch/nycvar.YFH.7.76.2202151700540.11721@cbobk.fhfr.pm/
-
-Please resubmit.
+Thanks,
+Ben
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
