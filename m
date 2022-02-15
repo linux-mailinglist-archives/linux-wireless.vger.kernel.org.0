@@ -2,71 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B39B4B644A
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 08:25:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7003B4B6453
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 08:28:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234778AbiBOHZ6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Feb 2022 02:25:58 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48860 "EHLO
+        id S234791AbiBOH2s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Feb 2022 02:28:48 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233551AbiBOHZ5 (ORCPT
+        with ESMTP id S233392AbiBOH2q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Feb 2022 02:25:57 -0500
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77C2FF1EBD;
-        Mon, 14 Feb 2022 23:25:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=1na6bMT5LjyKnWmZxmOKshc4Jv/0ipnOPh9rGFlZkyg=; b=3tqerZdTtWW2MvD6HJpNoRfif2
-        yJXqbzFsDJ+40nrKHhdoJ2lhAMiU5rV5BdDAA+80v/UV9TiyYPtDQSderkyxyh3WvTY9IYZ/A+UqP
-        i0t6imr3fYxwDGKscBvV9QwO7B/kiY4tFhKi0WxSsqMnuEEL7W2SUIl2JKQLNs3RcQZT6pC0mSfv6
-        R38w5gS+xTYBTQKuD7P7kJdk++hnXQRyXaXrhjcUIl0D6kvPrGkcPfoNbViaLHAPIcbgiBe4GKloU
-        cnvmXS86fZ9Pi+vQ79tf/r102nd3C1fTuXqH7VdwA5KYnfeOaK5Tkx0v+k/5zLjY5e0dgepETgN6h
-        9lK9HAqw==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nJsDZ-001AnB-JN; Tue, 15 Feb 2022 07:25:45 +0000
-Date:   Mon, 14 Feb 2022 23:25:45 -0800
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     davidcomponentone@gmail.com
-Cc:     jirislaby@kernel.org, mickflemm@gmail.com, kvalo@kernel.org,
-        davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yang Guang <yang.guang5@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: Re: [PATCH v2] ath5k: use swap() to make code cleaner
-Message-ID: <YgtVeWr2stdv01Gh@bombadil.infradead.org>
-References: <b6931732c22b074413e63151b93cfcf3f70fcaa5.1644891799.git.yang.guang5@zte.com.cn>
+        Tue, 15 Feb 2022 02:28:46 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A8A3F1AEF
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Feb 2022 23:28:37 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 11142B817FA
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 07:28:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039C0C340F0;
+        Tue, 15 Feb 2022 07:28:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644910114;
+        bh=RTVvjz/1iCiphGZ0p/8x+4clbKPTZXr7PfwN7/acL40=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=YJqsFeWYPPkWPMw+SSVYR2kX7ZBf/4cvXS4GhdicOP0NqImatm9iBJNxaO6O4mlPT
+         PLdfXDWkhQgihCTbHm0MEOpObPwenjMBtkDj52/Remmo2k9hXsQrAceJvf4Jb7Bala
+         4PFdPVonykDmRlS7qoQ5Ta9YS4Aa8BcWVd9+RAr/HPzZCbtwD7m/7SPZ+Wk0phIECP
+         of4Yt6LYAZXU8eHgkfUNW7tz18A8qxBq8El96xg630SaEABjPsGEU37JGG7jVBo3II
+         rVRqFdEnuPipJgMgluXdR6ARtKnXW2hVtUZI4Y/5Nk3Ngpsl2pjOhm26CnmAevJs4t
+         ecjewuiPjX+0g==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     "Aloka Dixit \(QUIC\)" <quic_alokad@quicinc.com>
+Cc:     'Johannes Berg' <johannes@sipsolutions.net>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Vikram Kandukuri \(QUIC\)" <quic_vikram@quicinc.com>,
+        "Jia Ding \(QUIC\)" <quic_jiad@quicinc.com>,
+        "Karthikeyan Periyasamy \(QUIC\)" <quic_periyasa@quicinc.com>,
+        "Muna Sinada \(QUIC\)" <quic_msinada@quicinc.com>,
+        "Sriram R \(QUIC\)" <quic_srirrama@quicinc.com>,
+        "ilan.peer\@intel.com" <ilan.peer@intel.com>
+Subject: Re: [PATCH v2 06/19] cfg80211: Add data structures to capture EHT capabilities
+References: <20220210192008.188166-1-johannes@sipsolutions.net>
+        <20220210201853.c40044dc90e9.I2413a37c8f7d2d6d638038a3d95360a3fce0114d@changeid>
+        <DM8PR02MB7958C66988E52F40F0ED8A6AFE309@DM8PR02MB7958.namprd02.prod.outlook.com>
+        <13d897bae6ac5bfd25c7b2e2c80fdaac392334ce.camel@sipsolutions.net>
+        <DM8PR02MB7958BEAFECDCC17097F4A731FE339@DM8PR02MB7958.namprd02.prod.outlook.com>
+Date:   Tue, 15 Feb 2022 09:28:27 +0200
+In-Reply-To: <DM8PR02MB7958BEAFECDCC17097F4A731FE339@DM8PR02MB7958.namprd02.prod.outlook.com>
+        (Aloka Dixit's message of "Mon, 14 Feb 2022 15:55:52 +0000")
+Message-ID: <87wnhwa8ro.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b6931732c22b074413e63151b93cfcf3f70fcaa5.1644891799.git.yang.guang5@zte.com.cn>
-Sender: Luis Chamberlain <mcgrof@infradead.org>
-X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Feb 15, 2022 at 10:31:34AM +0800, davidcomponentone@gmail.com wrote:
-> From: Yang Guang <yang.guang5@zte.com.cn>
-> 
-> Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
-> opencoding it.
-> 
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
-> Signed-off-by: David Yang <davidcomponentone@gmail.com>
-> ---
+"Aloka Dixit (QUIC)" <quic_alokad@quicinc.com> writes:
 
-Sorry I don't trust your code as you submitted an incorrect patch last
-time. So unless we get a Tested-by that there is no regression I can't
-say this is correct. Please fix Zeal Robot, or better yet, open source
-it for peer review.
+> (something weird happened with your quoting?)
+> Yeah =E2=98=B9 need to check.
+>
+> AP mode, especially non-mac80211, wasn't really high on our list ...
+>
+> I'm also not sure it really belongs to this patch, since this patch was
+> just meant to capture the EHT capabilities of the device, not support AP
+> mode :-)
+>
+> I think I'd prefer to have a separate patch, later, and we can discuss
+> whether I should submit that or you want to (I cannot really test it).
+> Any objections?
+>
+> Sure, that sounds good!
+> Thanks.
 
-  Luis
+Aloka, your quotes are still wrong. It's impossible to see which is
+Johannes' text and which is yours.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
