@@ -2,47 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15EB94B6688
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 09:49:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB1624B66FD
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 10:08:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234142AbiBOItP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Feb 2022 03:49:15 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60668 "EHLO
+        id S235634AbiBOJIc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Feb 2022 04:08:32 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232387AbiBOItP (ORCPT
+        with ESMTP id S233369AbiBOJIa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Feb 2022 03:49:15 -0500
+        Tue, 15 Feb 2022 04:08:30 -0500
 Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF4941133E9
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 00:49:04 -0800 (PST)
-X-UUID: 33e2aec6abad43c08e0a579f6d4923f3-20220215
-X-UUID: 33e2aec6abad43c08e0a579f6d4923f3-20220215
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
-        (envelope-from <meichia.chiu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 125842322; Tue, 15 Feb 2022 16:49:02 +0800
-Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 15 Feb 2022 16:49:00 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb02.mediatek.inc
- (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 15 Feb
- 2022 16:49:00 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 15 Feb 2022 16:49:00 +0800
-From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B544013DCA
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 01:08:20 -0800 (PST)
+X-UUID: 6f0e7ae0277f4b48bc3ed7f59007ace1-20220215
+X-UUID: 6f0e7ae0277f4b48bc3ed7f59007ace1-20220215
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+        (envelope-from <bo.jiao@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1896501588; Tue, 15 Feb 2022 17:08:16 +0800
+Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Tue, 15 Feb 2022 17:08:15 +0800
+Received: from MTKCAS36.mediatek.inc (172.27.4.186) by MTKMBS34N1.mediatek.inc
+ (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 15 Feb
+ 2022 17:08:14 +0800
+Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
+ MTKCAS36.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
+ 15.0.1497.2 via Frontend Transport; Tue, 15 Feb 2022 17:08:13 +0800
+From:   Bo Jiao <bo.jiao@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
         Ryder Lee <ryder.lee@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        MeiChia Chiu <meichia.chiu@mediatek.com>
-Subject: [PATCH] mt76: mt7915: fix the muru tlv issue
-Date:   Tue, 15 Feb 2022 16:48:58 +0800
-Message-ID: <20220215084858.3429-1-MeiChia.Chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Xing Song <xing.song@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Subject: [PATCH] mt76: mt7915: fix compiler warning
+Date:   Tue, 15 Feb 2022 17:08:12 +0800
+Message-ID: <4b7ba947d90fc12bba5da59cd448372e89438b82.1644915710.git.Bo.Jiao@mediatek.com>
+X-Mailer: git-send-email 2.17.0
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
@@ -55,63 +57,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: MeiChia Chiu <meichia.chiu@mediatek.com>
+From: Bo Jiao <Bo.Jiao@mediatek.com>
 
-The muru enable/disable are only set after the first station connection.
-Without this patch, the firmware couldn't enable muru
-if the first connected station is non-HE type.
+fix warning: variable 'temp' set but not used and
+cast from pointer to integer of different size
 
-Fixes: 16bff457dd33a ("mt76: mt7915: rework mt7915_mcu_sta_muru_tlv()")
-
-Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
+Fixes: 91eeaef2523f ("mt76: mt7915: add support for MT7986")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ - please fold this into previous commit.
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/soc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 02f93189370e..0addb5a112d9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -924,9 +924,6 @@ mt7915_mcu_sta_muru_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
- 	    vif->type != NL80211_IFTYPE_AP)
- 		return;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
+index fb72ab4..decf288 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
+@@ -125,7 +125,7 @@ mt7986_wmac_adie_efuse_read(struct mt7915_dev *dev, u8 adie,
+ 		return ret;
  
--	if (!sta->vht_cap.vht_supported)
--		return;
--
- 	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_MURU, sizeof(*muru));
+ 	ret = read_poll_timeout(mt76_wmac_spi_read, temp,
+-				!FIELD_GET(MT_ADIE_EFUSE_KICK_MASK, val),
++				!temp && !FIELD_GET(MT_ADIE_EFUSE_KICK_MASK, val),
+ 				USEC_PER_MSEC, 50 * USEC_PER_MSEC, false,
+ 				dev, adie, MT_ADIE_EFUSE2_CTRL, &val);
+ 	if (ret)
+@@ -1126,9 +1126,9 @@ static int mt7986_wmac_probe(struct platform_device *pdev)
+ 	struct mt7915_dev *dev;
+ 	struct mt76_dev *mdev;
+ 	int irq, ret;
+-	u64 chip_id;
++	u32 chip_id;
  
- 	muru = (struct sta_rec_muru *)tlv;
-@@ -934,9 +931,12 @@ mt7915_mcu_sta_muru_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
- 	muru->cfg.mimo_dl_en = mvif->cap.he_mu_ebfer ||
- 			       mvif->cap.vht_mu_ebfer ||
- 			       mvif->cap.vht_mu_ebfee;
-+	muru->cfg.mimo_ul_en = true;
-+	muru->cfg.ofdma_dl_en = true;
+-	chip_id = (u64)of_device_get_match_data(&pdev->dev);
++	chip_id = (uintptr_t)of_device_get_match_data(&pdev->dev);
  
--	muru->mimo_dl.vht_mu_bfee =
--		!!(sta->vht_cap.cap & IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE);
-+	if (sta->vht_cap.vht_supported)
-+		muru->mimo_dl.vht_mu_bfee =
-+			!!(sta->vht_cap.cap & IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE);
- 
- 	if (!sta->he_cap.has_he)
- 		return;
-@@ -944,13 +944,11 @@ mt7915_mcu_sta_muru_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
- 	muru->mimo_dl.partial_bw_dl_mimo =
- 		HE_PHY(CAP6_PARTIAL_BANDWIDTH_DL_MUMIMO, elem->phy_cap_info[6]);
- 
--	muru->cfg.mimo_ul_en = true;
- 	muru->mimo_ul.full_ul_mimo =
- 		HE_PHY(CAP2_UL_MU_FULL_MU_MIMO, elem->phy_cap_info[2]);
- 	muru->mimo_ul.partial_ul_mimo =
- 		HE_PHY(CAP2_UL_MU_PARTIAL_MU_MIMO, elem->phy_cap_info[2]);
- 
--	muru->cfg.ofdma_dl_en = true;
- 	muru->ofdma_dl.punc_pream_rx =
- 		HE_PHY(CAP1_PREAMBLE_PUNC_RX_MASK, elem->phy_cap_info[1]);
- 	muru->ofdma_dl.he_20m_in_40m_2g =
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
 -- 
-2.29.2
+2.18.0
 
