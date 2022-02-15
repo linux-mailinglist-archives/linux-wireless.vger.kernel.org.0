@@ -2,145 +2,209 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA4FA4B6A96
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 12:21:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D51A4B6CCF
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 13:58:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237041AbiBOLV7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Feb 2022 06:21:59 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41390 "EHLO
+        id S235480AbiBOM6V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Feb 2022 07:58:21 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:47268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234197AbiBOLV6 (ORCPT
+        with ESMTP id S233460AbiBOM6U (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Feb 2022 06:21:58 -0500
-Received: from CHE01-GV0-obe.outbound.protection.outlook.com (mail-gv0che01on2128.outbound.protection.outlook.com [40.107.23.128])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CDDFAB443
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 03:21:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RvRqX0dOeajE4XANHufKXMtwbvGDuasgdf8IZjMli1VvO4ViWiIMubpt/calFVTIdaxwvpKrNQiCNiB2mt0rGmcQJDIgp3d5ce7ehzce/7aGs69kVEyo3HFbtAI9evAs8d1hMNf4ak8zakLqVfb/JydMKmtxKVOlh0iClyGZLAFE8htNP+GMxsAUcbyRbTFfa0Mo1mFe7GL1REGtfhsTjcVeNPIV4bZYT36IIKcn99XkG6wqWZb/9IQ+728Lfs069TqVy+JwG1xIcPTd2bnSrjaIQbLgf15wmYACTQm7G13CbEJaoGSoeRGFOSlxTLyUokMwo+k+9zlwFEzz7GIxqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gNQN3P2H/lMfj3sKyk4nOH+wZqgcktVavfUvoGnoQY0=;
- b=mv1QHJ1gdpgssO92i2f1LZm/AnmwCfSEJ5S9sJG0TZNzvPjiWAqWKOK9n9Zxm0LvV4lif/XVB7TiFxpBz6PI1AM3IESLm8sv47sCAl1yxHgP+ydc8lPurYQ6a3B+S2dZaqgxDesArNSgWG84pYM/bLssLjguJO0bzFBXJn33r38Cl6ZZT4qiQlhJOFCEYNJLCQiJvlKaSMbFRJXNaj6rV6ytublmrjauoH4cLJpM9RMb96EHZIWf2599e0DJ4ubHBwLL6NVWFrJZZgfyalXMhpZU1Rh5Dksp0ieGWHKpgc2ge5XZBEQ3PEfWA1JSUsCtkV4vC96boOchSZm5BYCFEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=toradex.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gNQN3P2H/lMfj3sKyk4nOH+wZqgcktVavfUvoGnoQY0=;
- b=D/ORdMor6Eje6/Vl5IRfuRzEaq1RcV0B7xYOyI9dCHwK1mXBGx6XpYBCZGaFhPGMsf5iZ+ySGQhRocxRnnEO7b+qag+kniYRTMWXBke2FqoGEMtCdLDYCeo4ED8z6tgsKVJJFSUHHo0MMgBS6poIWE/zlRQLe2dmpcwf+YXnJek=
-Received: from ZR0P278MB0683.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:3b::9) by
- ZRAP278MB0319.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:1f::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4975.15; Tue, 15 Feb 2022 11:21:46 +0000
-Received: from ZR0P278MB0683.CHEP278.PROD.OUTLOOK.COM
- ([fe80::fd38:a4c:c1e:4fe6]) by ZR0P278MB0683.CHEP278.PROD.OUTLOOK.COM
- ([fe80::fd38:a4c:c1e:4fe6%7]) with mapi id 15.20.4995.014; Tue, 15 Feb 2022
- 11:21:46 +0000
-From:   Marcel Ziswiler <marcel.ziswiler@toradex.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "amitkarwar@gmail.com" <amitkarwar@gmail.com>,
-        "ganapathi017@gmail.com" <ganapathi017@gmail.com>,
-        "sharvari.harisangam@nxp.com" <sharvari.harisangam@nxp.com>,
-        "huxinming820@gmail.com" <huxinming820@gmail.com>
-Subject: mwifiex_sdio_sd8997 and sdiouart8997 firmware
-Thread-Topic: mwifiex_sdio_sd8997 and sdiouart8997 firmware
-Thread-Index: AQHYIl43S5UHXeCEDUaYYj+bOze0HA==
-Date:   Tue, 15 Feb 2022 11:21:46 +0000
-Message-ID: <29ae891b8d244abe4f3681d040a068db83587697.camel@toradex.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=toradex.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 6adb8f3b-0ecb-4352-c42f-08d9f0755a73
-x-ms-traffictypediagnostic: ZRAP278MB0319:EE_
-x-microsoft-antispam-prvs: <ZRAP278MB03190A20ADACB1660F312ABCFB349@ZRAP278MB0319.CHEP278.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: fC243FZf07p2eS97NIha4g0SywbFw2UZhEMiSANpp9jjPxaYP3i7V2HB8m6h9vS4rDKLw7qxE34ntNtfPZ0sRi2m4IaL3Cj2b6ajjZ4Wu2MciieyQo+YnSAiBeeUVX1wULM4GSycmnZlaUnAZJ1u8q2/ZmB9Y9jOnP9KgBOdXRpti259MMwUfR+mFjUhQUd8lTXQx9fqERjJv7G6hgpoG7XU6d4MPZUaDl9SzbrQwNqMNJD5/Da/VNdZLTA//pqOZTs65oHdwPpLGZpDUIGlCI4Z1V9C5jBQoER/kopg2MGQcLh2rIOo07JQTQomyJOGuGRFnACrbAp5il5sWKV1aq2/fjqjFuYTRIuktjJvGMhn8EiPvvBQfckhonAZcp5UBuKoL+YGhjl5FxnlDLysM6Iw/Oz+L99rd5aYqdDQsy7RpIlQAB7p8reobkS+hHOdToH5HxX8eMUV70XaLRohna+zCodkvHRZQr2TRSQfXSBYkzfPiuinCHb4AIBh4NA3FV4p3O4z7yIZUzHaupD+BnI0gX/w/EIWP9dUihThTL+zFdYR4l+SWBSZwM1n+HTvTqjoeQUjVu7U7kLXk60pZGTzzwrCPeY4LubIpXs/hvhGVjRRf18dgXpzpubv9NTeE4RHEX13GCl5qs1vUb1CHCsmjnfQhu43QwVJaZjOMYG/CZ1FRoriKHxwzKQxfsefoQpc+dLOlLeamEpRDN07paG56LxGOhdZ+nAeNR/wcsc6JAkjILUDBR/bQeDhe75JA8QQDsEl1BE/NdNn/oyad4+N2ld9rcP0TmANP00SU30=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZR0P278MB0683.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(66946007)(86362001)(8936002)(66556008)(83380400001)(8676002)(64756008)(66446008)(76116006)(5660300002)(4326008)(44832011)(4744005)(66476007)(2906002)(36756003)(6486002)(6916009)(38100700002)(6512007)(6506007)(508600001)(186003)(316002)(26005)(54906003)(38070700005)(2616005)(122000001)(71200400001)(966005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?c1VaQzNuMmhoMkpJRnlWeGtYUStFTHdTeFhYRTEwV1h2SkdjY0UrTEg3QkVp?=
- =?utf-8?B?N3RtOGhRTkFRM3hGVGdiVjZ1eERYaFByZjFURDRKN25Xcm04Z3VmNnlQOG5t?=
- =?utf-8?B?Z2pBT1k0cHJwTVlHVEtNRHN0bjAvYlFSdmU4bC9SLzVzY1p2ZzNxM0ZNejVN?=
- =?utf-8?B?WE5aald1eS9MSkVHN2ZJaWVDMndxUE14QmhVaXlUV0dZUm16N2t6Nmoyc3ZZ?=
- =?utf-8?B?ZXMwaGxDeGUveFpPVTViK3oxSHhnMjlya3hRSXNiZzZkSGVFdTJVcEgrbEdo?=
- =?utf-8?B?amsyQW9hZUk3S3IwTkVEUUlXM1BIZ0UzMkkzMUpPN0g4V0xGTXd4R1FjZlpw?=
- =?utf-8?B?QmxsZFZ4V092azZ2VWZCNlNZYVJhVnBTbzVROGpyTE5DMGxReExiczc5eGY3?=
- =?utf-8?B?alAyZGZaSTVNejdzU0tDRVhZRHpjSFR2aWRkdms2ZjhSSHpBbGNUdmF2czBj?=
- =?utf-8?B?QnVtU2hUWnZUcmcrZU1pM0tNY3czc2pZYWJYdkVaVnV5TTUwK1BkQkMzNkVE?=
- =?utf-8?B?dk82OU9wSEVRM3hreUlycnFSamRTTXczUmFtNGlIb2k2SzZMb2dnNUFFMUsx?=
- =?utf-8?B?cFc1cnFaUjdXTzV3OHFPMUZVQ1EzbjFSTWxnOStHVldvZnZ4SWRUWURESUhK?=
- =?utf-8?B?enRtakJLb1lPY2E4b282N2crMXc0VmpQVzR3ZkVYaFI3dWt1L0xReHQ3RlJp?=
- =?utf-8?B?YzhiRForaEFrN1R4d0JSRGJLRTlia1hPQmRCUFRCVERDQ1d4amxwaXgybzQ3?=
- =?utf-8?B?ZHk4TldxQUlQYXFCRUozckNRUEp3TjUwMks2UWdCOGJpem93L2VmMzgwQTg5?=
- =?utf-8?B?eExSeGFYcCtYNXhoK2pNSDBTZHBRNVpiYzk1UmhVbTdNWHBnSDJNU041cGhN?=
- =?utf-8?B?dEZtalE2MVNGem5UOVlNUkVLQlhzeFp3SU81VjlYeE1MU052bVZnbWdFcTl4?=
- =?utf-8?B?SytRYUc1OEhOaWxGZFR0MmRLQ0N6Ykh0YTRYYitvWG5iaU5YTDNCWlJaWWl0?=
- =?utf-8?B?RnkzVVpmcmp3K2lNb0xjekdXVmJCeGpiZzBhYzZtYVpLTnZFNjNEODBpV0U2?=
- =?utf-8?B?MGVVUW1PQXl2QzhkVktJd3dtYVRWOEdOMTRFaGE1NkM1ZGJBRGptQ2RDWjBD?=
- =?utf-8?B?cWhzdnJWb25VNmZDZ044WDgvZDUrMFNkR2h2NlE3WmpGK3hYK1BJM1V0Skc3?=
- =?utf-8?B?Q0I3bGhMMlZGb3NIQXJqY3pNRVZMc2VZMnczQ3l5S2hiUGx2NFJQSFVRNURF?=
- =?utf-8?B?aXZhQllHT0txb2pLR0prQ1ZqZk5BNVdwZU1aZHF5QThOdUdYU1VsNFQrWi9U?=
- =?utf-8?B?aitMcUFFV0wvaW41SnozY0VJV1pIT01kMC83TTNTeFl6MTFBeHFLTTJ1V2wr?=
- =?utf-8?B?SFR4bkxnU3Q0Nzl6ZGRNeFFlY1ZCQ2xNcUo4QktRUzA0dzM4dlQ0akFiSXJC?=
- =?utf-8?B?Ly9BdjBvYllCa2MrQlFCMklEa2RsWEE0eE1ZYkFRN2kzSUFLb0IvUHhwTEJL?=
- =?utf-8?B?aCtnRjJoc1ozQk5JeHdDQVQrOGZzcEFGMnh0L2VzdzdYcTRpNVlWY21SZDVu?=
- =?utf-8?B?TDlvcmRzdzVIUjJCOTkxSGdnNUJwcm9IMEZFL2lOU0ROVzEwRW83c1VIeVU1?=
- =?utf-8?B?L1BKZzFuMlRCYUpNT1RQNklWd1pGK2NBNnR3N2VGVW85di9RRmsvK211RjQx?=
- =?utf-8?B?eGFRNlBXbW9jUGg2ejFQMFRlaDBhWUt4ZGkwdFNqcklKMTdSQ0ROb0FMNmJZ?=
- =?utf-8?B?MGhrN0hiT0Z4a0lPMXpvYWE1Wm9jbXdURHpMbStmYTZZdGJlc3F4VzFNRUZD?=
- =?utf-8?B?VnhvNkdxV2NEQ20vcHRzb2J4cGFBUEE1eFFtZjVmK0F3Q1E4SWxWbXZtaHNM?=
- =?utf-8?B?ZUNwbmhxNXU2bEp2L3ZySnFOY2xEeXlibHFNZ0lKenVGNUJOMjVKWkRqU05x?=
- =?utf-8?B?MGs3c2h6VVgxR251eDBnN0RaMWdrS21WUkdEZjcycFVSQjRzVHFTa085OXdy?=
- =?utf-8?B?SG1DWXNDWjFqTml5dGxsTCs2Z2U0U1NIYTdGcGFRdTMyWFBzajBDc2xuUTNM?=
- =?utf-8?B?TXh0WHdlWllMNFl0eXR6bTZnQ1d2dlhVU2NkMEE3ZjdZenNmaEtNLzJnb1Z1?=
- =?utf-8?B?bzQxaElpTnJZbFpVcmZaWUtWdkZmcHhPM3JYWkRJUEdpbGVxU1VYM25PY2R1?=
- =?utf-8?B?dkVudW9KdnNtNTVBb1FmMlJRNFZCNysxbVZ6QnUyU210TTE3SDlRcEtoTGo0?=
- =?utf-8?Q?r07uYuGJn9Xs2nRv9HPQ4M5J/1JKEGz+EGFrfY3B3w=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F898BB85B4AD9A488C213FC634C64455@CHEP278.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+        Tue, 15 Feb 2022 07:58:20 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 951976D84E
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 04:58:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=7LvKglReSTh4y7oDa0HipqMwhaVfqLHknTKkCB4eOz0=; b=I/380slJmM2gtX4P2l9ApuK4fn
+        OL0uIAkQHNXUfGb6TDL1ttNQK8hB8blWt1nM+m7Nrq1AWI0XgHLQoLShufKjnORnq9ZshdUmycOcY
+        SMOhV2/6zwS+22ed+XRFTnRuYqgh4U/YinfN87QPfWDuPleqpEPC1KcNa2QVs8a/4/YQ=;
+Received: from p200300daa7140c00dd8883896a7868c3.dip0.t-ipconnect.de ([2003:da:a714:c00:dd88:8389:6a78:68c3] helo=Maecks.lan)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1nJxPE-0004E9-Nc
+        for linux-wireless@vger.kernel.org; Tue, 15 Feb 2022 13:58:08 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: improve signal strength reporting
+Date:   Tue, 15 Feb 2022 13:58:08 +0100
+Message-Id: <20220215125808.72378-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.32.0 (Apple Git-132)
 MIME-Version: 1.0
-X-OriginatorOrg: toradex.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: ZR0P278MB0683.CHEP278.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6adb8f3b-0ecb-4352-c42f-08d9f0755a73
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Feb 2022 11:21:46.8699
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d9995866-0d9b-4251-8315-093f062abab4
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: S2kY8eO/rqft3TLAg3QqGDUhrLY0VAlm41IZ8r+aWfxQyP+boSBDHbsh8HVEWIa0zBNN8TolaD0FrGIoPrSwOycvoF0+adeY3mc7IiVKtb8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZRAP278MB0319
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGkgdGhlcmUNCg0KSSBoYXZlIGEgcXVlc3Rpb24gY29uY2VybmluZyBmaXJtd2FyZSBsb2FkaW5n
-IGZvciBtd2lmaWV4X3NkaW9fc2Q4OTk3LiBTbyBmYXIgdGhlIGRyaXZlciBoYXJkLWNvZGVzIGxv
-YWRpbmcNCm1ydmwvc2RzZDg5OTdfY29tYm9fdjQuYmluLiBIb3dldmVyLCBvdXIgbGF0ZXN0IGhh
-cmR3YXJlIGhhcyB0aGUgU0Q4OTk3IHN0cmFwcGVkIGZvciBzZGlvdWFydCBha2EgV2ktRmkgdXNp
-bmcNClNESU8gYW5kIEJsdWV0b290aCB1c2luZyBzZXJpYWwgVUFSVC4gVGhlcmVmb3JlLCBpdCBh
-bHNvIHJlcXVpcmVzIGEgZGlmZmVyZW50IGZpcm13YXJlDQpzZGlvdWFydDg5OTdfY29tYm9fdjQu
-YmluIFsxXSBpbnN0ZWFkLiBXaGlsZSBJIHN1Y2Nlc3NmdWxseSB0ZXN0ZWQgZXZlcnl0aGluZyBv
-biB0b3Agb2YgbGF0ZXN0IC1uZXh0IGJ5DQptYW51YWxseSByZS1uYW1pbmcgdGhhdCBmaXJtd2Fy
-ZSBmaWxlIEkgd2FzIHdvbmRlcmluZyBob3cgZXhhY3RseSB0aGlzIGlzIHN1cHBvc2VkIHRvIHdv
-cmsgd2l0aCBtd2lmaWV4LsKgDQoNCldvdWxkbid0IGl0IGJlIHBvc3NpYmxlIHRvIGRldGVjdCB0
-aGUgc3RyYXBwaW5nIGFuZCBhdXRvbWF0aWNhbGx5IGxvYWQgdGhlIGNvcnJlY3QgZmlybXdhcmU/
-DQoNCk9yIGhvdyBleGFjdGx5IGNvdWxkIHRoaXMgYmUgbWFkZSB0byB3b3JrPw0KDQpBbnkgc3Vn
-Z2VzdGlvbnMgYXJlIGdyZWF0bHkgYXBwcmVjaWF0ZWQuIFRoYW5rcyENCg0KWzFdIGh0dHBzOi8v
-Z2l0aHViLmNvbS9OWFAvaW14LWZpcm13YXJlL2Jsb2IvbGYtNS4xMC41Ml8yLjEuMC9ueHAvRndJ
-bWFnZV84OTk3X1NEL3NkaW91YXJ0ODk5N19jb21ib192NC5iaW4NCg0KQ2hlZXJzDQoNCk1hcmNl
-bA0K
+Instead of just taking the maximum per-chain signal strength values,
+add an approximation for the sum of the combined signal.
+This should more accurately reflect the real signal strength, especially
+if the per-chain signal strength values are close to each other
+
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 32 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7603/mac.c   |  5 ---
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   |  9 ------
+ .../net/wireless/mediatek/mt76/mt76x02_mac.c  |  2 --
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 11 +------
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   |  3 --
+ 6 files changed, 33 insertions(+), 29 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index a4bb281a74e6..9796419c99e1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -932,6 +932,35 @@ void mt76_wcid_key_setup(struct mt76_dev *dev, struct mt76_wcid *wcid,
+ }
+ EXPORT_SYMBOL(mt76_wcid_key_setup);
+ 
++static int
++mt76_rx_signal(struct mt76_rx_status *status)
++{
++	s8 *chain_signal = status->chain_signal;
++	int signal = -128;
++	u8 chains;
++
++	for (chains = status->chains; chains; chains >>= 1, chain_signal++) {
++		int cur, diff;
++
++		if (!(chains & BIT(0)))
++			continue;
++
++		cur = *chain_signal;
++		if (cur > signal)
++			swap(cur, signal);
++
++		diff = signal - cur;
++		if (diff == 0)
++			signal += 3;
++		else if (diff <= 2)
++			signal += 2;
++		else if (diff <= 6)
++			signal += 1;
++	}
++
++	return signal;
++}
++
+ static void
+ mt76_rx_convert(struct mt76_dev *dev, struct sk_buff *skb,
+ 		struct ieee80211_hw **hw,
+@@ -960,6 +989,9 @@ mt76_rx_convert(struct mt76_dev *dev, struct sk_buff *skb,
+ 	status->ampdu_reference = mstat.ampdu_ref;
+ 	status->device_timestamp = mstat.timestamp;
+ 	status->mactime = mstat.timestamp;
++	status->signal = mt76_rx_signal(&mstat);
++	if (status->signal <= -128)
++		status->flag |= RX_FLAG_NO_SIGNAL_VAL;
+ 
+ 	if (ieee80211_is_beacon(hdr->frame_control) ||
+ 	    ieee80211_is_probe_resp(hdr->frame_control))
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index a272d64808c3..2e5d26616bc2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -643,11 +643,6 @@ mt7603_mac_fill_rx(struct mt7603_dev *dev, struct sk_buff *skb)
+ 		status->chain_signal[1] = FIELD_GET(MT_RXV4_IB_RSSI1, rxdg3) +
+ 					  dev->rssi_offset[1];
+ 
+-		status->signal = status->chain_signal[0];
+-		if (status->chains & BIT(1))
+-			status->signal = max(status->signal,
+-					     status->chain_signal[1]);
+-
+ 		if (FIELD_GET(MT_RXV1_FRAME_MODE, rxdg0) == 1)
+ 			status->bw = RATE_INFO_BW_40;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 13109864b6d6..d1d87240f24f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -576,15 +576,6 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
+ 		status->chain_signal[1] = to_rssi(MT_RXV4_RCPI1, rxdg3);
+ 		status->chain_signal[2] = to_rssi(MT_RXV4_RCPI2, rxdg3);
+ 		status->chain_signal[3] = to_rssi(MT_RXV4_RCPI3, rxdg3);
+-		status->signal = status->chain_signal[0];
+-
+-		for (i = 1; i < hweight8(mphy->antenna_mask); i++) {
+-			if (!(status->chains & BIT(i)))
+-				continue;
+-
+-			status->signal = max(status->signal,
+-					     status->chain_signal[i]);
+-		}
+ 
+ 		mt7615_mac_fill_tm_rx(mphy->priv, rxd);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+index dc2aeaab72ec..2afad8c76ca6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+@@ -860,9 +860,7 @@ int mt76x02_mac_process_rx(struct mt76x02_dev *dev, struct sk_buff *skb,
+ 		status->chain_signal[1] = mt76x02_mac_get_rssi(dev,
+ 							       rxwi->rssi[1],
+ 							       1);
+-		signal = max_t(s8, signal, status->chain_signal[1]);
+ 	}
+-	status->signal = signal;
+ 	status->freq = dev->mphy.chandef.chan->center_freq;
+ 	status->band = dev->mphy.chandef.chan->band;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index e64afa2f181d..06186c034d93 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -593,7 +593,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 	u16 seq_ctrl = 0;
+ 	u8 qos_ctl = 0;
+ 	__le16 fc = 0;
+-	int i, idx;
++	int idx;
+ 
+ 	memset(status, 0, sizeof(*status));
+ 
+@@ -753,15 +753,6 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 		status->chain_signal[1] = to_rssi(MT_PRXV_RCPI1, v1);
+ 		status->chain_signal[2] = to_rssi(MT_PRXV_RCPI2, v1);
+ 		status->chain_signal[3] = to_rssi(MT_PRXV_RCPI3, v1);
+-		status->signal = status->chain_signal[0];
+-
+-		for (i = 1; i < hweight8(mphy->antenna_mask); i++) {
+-			if (!(status->chains & BIT(i)))
+-				continue;
+-
+-			status->signal = max(status->signal,
+-					     status->chain_signal[i]);
+-		}
+ 
+ 		/* RXD Group 5 - C-RXV */
+ 		if (rxd1 & MT_RXD1_NORMAL_GROUP_5) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 8e88445102ab..0a6c269a2fb6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -670,9 +670,6 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
+ 					     status->chain_signal[i]);
+ 		}
+ 
+-		if (status->signal == -128)
+-			status->flag |= RX_FLAG_NO_SIGNAL_VAL;
+-
+ 		stbc = FIELD_GET(MT_PRXV_STBC, v0);
+ 		gi = FIELD_GET(MT_PRXV_SGI, v0);
+ 		cck = false;
+-- 
+2.32.0 (Apple Git-132)
+
