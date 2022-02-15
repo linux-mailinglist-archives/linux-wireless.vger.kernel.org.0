@@ -2,110 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE5494B6113
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 03:34:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6D0D4B62FB
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 06:39:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233646AbiBOCeR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Feb 2022 21:34:17 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:45232 "EHLO
+        id S234133AbiBOFkF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Feb 2022 00:40:05 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230039AbiBOCeQ (ORCPT
+        with ESMTP id S231965AbiBOFkD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Feb 2022 21:34:16 -0500
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80BC8C7D44;
-        Mon, 14 Feb 2022 18:34:07 -0800 (PST)
-Received: by mail-qv1-xf2e.google.com with SMTP id f19so5912653qvb.6;
-        Mon, 14 Feb 2022 18:34:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=06Kfv1DXtnVDrheRxya2snTjYCwD2TQR57hbpR3zm0s=;
-        b=OJUTaC8m4FlgAFC/uh7uJBfFqqP/RkqnhJTE59PCuIH76NWYuimLf/S2LQejeyi662
-         bFda6a/SPjSJoKXe3yWCje0n+Q7l+ikqo8j32lVc2XsHc+bQOjG/sm1PqP9+sY1HOAjd
-         0P3Z00beuW1C64qL8bVTHg7+XTkp2++lLg9XgBKZcs8PU/jOoFFZgEY9PfSk5k2QjTsd
-         fZVQx0j0E/RbeOCEDPeRkOxyBIbyxVKnYOBJIVleOCox0eXHYItVAUeq/JL4Ahc2mUcb
-         cmYPtxBdWHYwsGxkhaPXC0+vjH0cSXY0cMfLHzEWiLX09nsWGZH4VI0hPTDwT3BKJNvv
-         B0kw==
+        Tue, 15 Feb 2022 00:40:03 -0500
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 787F01EC49;
+        Mon, 14 Feb 2022 21:39:54 -0800 (PST)
+Received: by mail-ej1-f43.google.com with SMTP id hw13so13312456ejc.9;
+        Mon, 14 Feb 2022 21:39:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=06Kfv1DXtnVDrheRxya2snTjYCwD2TQR57hbpR3zm0s=;
-        b=KPmVJ579qtgiT6pXYd5Bu7m4U4xWvYrESs5H9uaHG6kBZLaOpnty8iDv+/Bg/K2noB
-         UFHZSZbfZqTD4G5SfH9frWXDG+pXITYIznyiTeORlg1+ReOoN04/LvcncIhx93+sOj4k
-         MXbL5vaCHolxymxa1Ow1bpxcG47gQsit7nEhTpffyeW8WEj1SJ9+Fu4q5NsoA3G+iPmQ
-         3x2t7OZLbFeCpxwImAgGWkcm0RjsJot6I5YKtMk/DMIlcr520sVQ4KfEaPvfquE0o4gQ
-         Fdv+kyiUQEbBItVyAvZOeg0uB4Kn4ANMwFwWOpxN5fKHm+/tSb7IicDsySPl5CSUdK6V
-         DLeg==
-X-Gm-Message-State: AOAM5322acEtVe9UaU93TdDeIpc67i4VUy/eIZsmgK1akWfPL0waeRxg
-        VgHjZ+vyqUFDmOUL7Ipvgxw=
-X-Google-Smtp-Source: ABdhPJysV3vOFxo9MY9xSnNFS0irUrGngNCaqUIS5vyTJGLJ3J7HfDrRw4++7et3pzr7mwdIB3xOgg==
-X-Received: by 2002:a05:6214:1c07:: with SMTP id u7mr1073836qvc.129.1644892446726;
-        Mon, 14 Feb 2022 18:34:06 -0800 (PST)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id s1sm18976509qta.0.2022.02.14.18.34.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Feb 2022 18:34:06 -0800 (PST)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: deng.changcheng@zte.com.cn
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        shayne.chen@mediatek.com, sean.wang@mediatek.com, kvalo@kernel.org,
-        davem@davemloft.net, kuba@kernel.org, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@foss.st.com, matthias.bgg@gmail.com,
-        arnd@arndb.de, Bo.Jiao@mediatek.com, deng.changcheng@zte.com.cn,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] mt76: mt7915: use min_t() to make code cleaner
-Date:   Tue, 15 Feb 2022 02:33:55 +0000
-Message-Id: <20220215023355.1750720-1-deng.changcheng@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        bh=pI6mPl00vTpK3f3tU+nkJRNXfeeLji7DsRrYZoMuL28=;
+        b=Kv5LdrPOFmUw/QKyTtxx6FoHTcx9Z9M5zGa//2Y7YAVpUNeW8+5Maqi65blco/AwVw
+         DIMj/+qgub+EXHaUIwULGu/pWLSBynaho6zEw8zoRjtgKxrgP02D4RvTEiolPngj+PFy
+         hHIDOjgnTIqDnfldYD+spkXMcmptdoiVbhtxUb/xM3cWmQ92RCZwCs3/Y7MEEq33++u0
+         FYmqk08pbIaGAfPpMcEze5gTnS3lhCaTtpGkfxp/5epN/wkghb6upW4erB/EHNcJZlea
+         qAOpBfxxVfqIgykEmu45pvsqEDnGpjZuTpRXL1YcB1pxBPeXTWZZQZ563EhUWM+GqdXQ
+         P/gg==
+X-Gm-Message-State: AOAM530Icc+7qGF+s5pZkvW+DETLnc1vGFyHVFjyiRoxJSo5/mrMJnF5
+        mRfdQdNHk9xGcOssHkGCpOt5KuTmBWI=
+X-Google-Smtp-Source: ABdhPJx1KEd7M47Poe3O/pL9pzDuNmZlAy/SCFA0I3siR4oFEJd2wxHArF4Kzxysk/JhZbhn2GyGmQ==
+X-Received: by 2002:a17:906:2c9:: with SMTP id 9mr1687729ejk.32.1644903592957;
+        Mon, 14 Feb 2022 21:39:52 -0800 (PST)
+Received: from ?IPV6:2a0b:e7c0:0:107::49? ([2a0b:e7c0:0:107::49])
+        by smtp.gmail.com with ESMTPSA id bv2sm11353540ejb.154.2022.02.14.21.39.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Feb 2022 21:39:52 -0800 (PST)
+Message-ID: <f757acf0-63cc-ee03-a865-92fe43833190@kernel.org>
+Date:   Tue, 15 Feb 2022 06:39:51 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Subject: Re: [PATCH] ath5k: use swap() to make code cleaner
+Content-Language: en-US
+To:     davidcomponentone@gmail.com
+Cc:     mickflemm@gmail.com, mcgrof@kernel.org, kvalo@kernel.org,
+        davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yang Guang <yang.guang5@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+References: <2f993da5cb5d9fee93cedef852ca6eb2f9683ef0.1644839011.git.yang.guang5@zte.com.cn>
+From:   Jiri Slaby <jirislaby@kernel.org>
+In-Reply-To: <2f993da5cb5d9fee93cedef852ca6eb2f9683ef0.1644839011.git.yang.guang5@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Changcheng Deng <deng.changcheng@zte.com.cn>
+On 15. 02. 22, 1:51, davidcomponentone@gmail.com wrote:
+> From: Yang Guang <yang.guang5@zte.com.cn>
+> 
+> Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
+> opencoding it.
 
-Use min_t() in order to make code cleaner.
+Why don't you include that file then?
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Changcheng Deng <deng.changcheng@zte.com.cn>
----
- drivers/net/wireless/mediatek/mt76/mt7915/testmode.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
+> Signed-off-by: David Yang <davidcomponentone@gmail.com>
+> ---
+>   drivers/net/wireless/ath/ath5k/phy.c | 5 +----
+>   1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath5k/phy.c b/drivers/net/wireless/ath/ath5k/phy.c
+> index 00f9e347d414..7fa7ba4952db 100644
+> --- a/drivers/net/wireless/ath/ath5k/phy.c
+> +++ b/drivers/net/wireless/ath/ath5k/phy.c
+> @@ -1562,16 +1562,13 @@ static s16
+>   ath5k_hw_get_median_noise_floor(struct ath5k_hw *ah)
+>   {
+>   	s16 sort[ATH5K_NF_CAL_HIST_MAX];
+> -	s16 tmp;
+>   	int i, j;
+>   
+>   	memcpy(sort, ah->ah_nfcal_hist.nfval, sizeof(sort));
+>   	for (i = 0; i < ATH5K_NF_CAL_HIST_MAX - 1; i++) {
+>   		for (j = 1; j < ATH5K_NF_CAL_HIST_MAX - i; j++) {
+>   			if (sort[j] > sort[j - 1]) {
+> -				tmp = sort[j];
+> -				sort[j] = sort[j - 1];
+> -				sort[j - 1] = tmp;
+> +				sort(sort[j], sort[j - 1]);
+>   			}
+>   		}
+>   	}
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-index 83da21d15ddd..61f255166a7f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-@@ -228,12 +228,8 @@ mt7915_tm_set_ipg_params(struct mt7915_phy *phy, u32 ipg, u8 mode)
- 
- 		ipg -= aifsn * slot_time;
- 
--		if (ipg > TM_DEFAULT_SIFS) {
--			if (ipg < TM_MAX_SIFS)
--				sifs = ipg;
--			else
--				sifs = TM_MAX_SIFS;
--		}
-+		if (ipg > TM_DEFAULT_SIFS)
-+			sifs = min_t(u32, ipg, TM_MAX_SIFS);
- 	}
- done:
- 	txv_time = mt76_get_field(dev, MT_TMAC_ATCR(ext_phy),
+
 -- 
-2.25.1
-
+js
+suse labs
