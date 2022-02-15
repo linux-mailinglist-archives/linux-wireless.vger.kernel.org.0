@@ -2,200 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7D994B7348
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 17:43:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ED4D4B76F8
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 21:50:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239940AbiBOQ26 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Feb 2022 11:28:58 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41584 "EHLO
+        id S242504AbiBOR17 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Feb 2022 12:27:59 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231887AbiBOQ26 (ORCPT
+        with ESMTP id S239101AbiBOR17 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Feb 2022 11:28:58 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51F677090D;
-        Tue, 15 Feb 2022 08:28:47 -0800 (PST)
+        Tue, 15 Feb 2022 12:27:59 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58BF1193DB;
+        Tue, 15 Feb 2022 09:27:48 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC3776181D;
-        Tue, 15 Feb 2022 16:28:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B90BC340EB;
-        Tue, 15 Feb 2022 16:28:45 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Jbh1/sC3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1644942523;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=o3Ex2y2ELI7nEV0J59rjOlWmWPabW9O5Loaxgl/Yv3E=;
-        b=Jbh1/sC3FCtx0yDMtWLi5jsXL/5ERvlGM1sDJ1QrgCv+1RqkqedRZ7ySMvfJZ8JbKS5xFk
-        BUxirU90d/HSwivk+QPU2dcYF240boXb9SZwBzjGhid0uSRf0WeHcKvDY5qCGEQ4uIpL/X
-        FpxxfEEnUaJvO2QcB1dsgvYPHjRK37M=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id fd01509d (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Tue, 15 Feb 2022 16:28:42 +0000 (UTC)
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     miaoqing@codeaurora.org, "Jason Cooper" <jason@lakedaemon.net>,
-        "Sepehrdad, Pouyan" <pouyans@qti.qualcomm.com>,
-        ath9k-devel <ath9k-devel@qca.qualcomm.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Kalle Valo" <kvalo@kernel.org>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: [PATCH] ath9k: use hw_random API instead of directly dumping into random.c
-Date:   Tue, 15 Feb 2022 17:28:12 +0100
-Message-Id: <20220215162812.195716-1-Jason@zx2c4.com>
-In-Reply-To: <CAHmME9r4+ENUhZ6u26rAbq0iCWoKqTPYA7=_LWbGG98KvaCE6g@mail.gmail.com>
-References: <CAHmME9r4+ENUhZ6u26rAbq0iCWoKqTPYA7=_LWbGG98KvaCE6g@mail.gmail.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE64B61575;
+        Tue, 15 Feb 2022 17:27:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3753EC340EB;
+        Tue, 15 Feb 2022 17:27:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644946067;
+        bh=9osc3hzFuzOFX+241F/uqhFA2Bcn170aOY5xY1mkJfo=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=KvR4ZiaujsDq4e2XP9eqbgzrBToKp9+wwyEvaGsI0+Xr0dxTvNBYNhMxJqUSfnQUl
+         WpQ4+sugZbxYSpkmVQJXwYP8fI8xTrBeHoKWfdzaS7rkAkJAfdAteIY8XB3XqN6/2i
+         B9iyNyen0StFaMh+6mhziG8RbCb+Z49B0LpdObDxyO3mabfX8hZJ4kT/a5rmzYJZA7
+         RP3jMwzQ3XAVw6lU15mv5ilHRziUwwL28QGIFeh/gbnbzUbmEm0afvvl0UFD2OpXCr
+         cIZ2O1Gl5oIR/STu48rwBDF5xfwBxzEK7i7JiV+2C1ZQUOvDZOAcEcYJeLaheDogYz
+         rs5UcIhAwdMKw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Jiri Kosina <jikos@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ping-Ke Shih <pkshih@realtek.com>
+Subject: Re: [PATCH] rtw89: fix RCU usage in rtw89_core_txq_push() (was Re: [PATCH] mac80211: fix RCU usage in ieee80211_tx_h_select_key())
+References: <nycvar.YFH.7.76.2202151643220.11721@cbobk.fhfr.pm>
+        <af6abf72593074c007fe42205e941dabfd08bf3a.camel@sipsolutions.net>
+        <nycvar.YFH.7.76.2202151700540.11721@cbobk.fhfr.pm>
+Date:   Tue, 15 Feb 2022 19:27:43 +0200
+In-Reply-To: <nycvar.YFH.7.76.2202151700540.11721@cbobk.fhfr.pm> (Jiri
+        Kosina's message of "Tue, 15 Feb 2022 17:11:11 +0100 (CET)")
+Message-ID: <87r1849h0w.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hardware random number generators are supposed to use the hw_random
-framework. This commit turns ath9k's kthread-based design into a proper
-hw_random driver.
+Jiri Kosina <jikos@kernel.org> writes:
 
-This compiles, but I have no hardware or other ability to determine
-whether it works. I'll leave further development up to the ath9k
-and hw_random maintainers.
+> On Tue, 15 Feb 2022, Johannes Berg wrote:
+>
+>> > 
+>> > ieee80211_tx_h_select_key() is performing a series of RCU dereferences, 
+>> > but none of the callers seems to be taking RCU read-side lock; let's 
+>> > acquire the lock in ieee80211_tx_h_select_key() itself.
+>> > 
+>> but but ...
+>> 
+>> >   ieee80211_tx_dequeue+0x1a7/0x1260 [mac80211 911c23e2351c0ae60b597a67b1204a5ea955e365]
+>> >   rtw89_core_txq_work+0x1a6/0x420 [rtw89_core b39ba493f2e517ad75e0f8187ecc24edf58bbbea]
+>> 
+>> /**
+>>  * ieee80211_tx_dequeue - dequeue a packet from a software tx queue
+>>  *
+>>  * @hw: pointer as obtained from ieee80211_alloc_hw()
+>>  * @txq: pointer obtained from station or virtual interface, or from
+>>  *      ieee80211_next_txq()
+>>  *
+>>  * Returns the skb if successful, %NULL if no frame was available.
+>>  *
+>>  * Note that this must be called in an rcu_read_lock() critical section,
+>>  * which can only be released after the SKB was handled. Some pointers in
+>> [...]
+>> 
+>> -> driver bug?
+>
+> Right you are, thanks.
+>
+> CCing Ping-Ke Shih; find updated fix below.
+>
+>
+>
+>
+> From: Jiri Kosina <jkosina@suse.cz>
+> Subject: [PATCH] rtw89: fix RCU usage in rtw89_core_txq_push()
+>
+> ieee80211_tx_h_select_key() is performing a series of RCU dereferences,
+> but rtw89_core_txq_push() is calling it (via ieee80211_tx_dequeue_ni())
+> without RCU read-side lock held; fix that.
 
-Cc: Toke Høiland-Jørgensen <toke@redhat.com>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Dominik Brodowski <linux@dominikbrodowski.net>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
- drivers/net/wireless/ath/ath9k/ath9k.h |  2 +-
- drivers/net/wireless/ath/ath9k/rng.c   | 62 +++++++++-----------------
- 2 files changed, 23 insertions(+), 41 deletions(-)
+I think we have discussed this before, but patchwork can't handle
+patches the way you embed them in email discussions:
 
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
-index ef6f5ea06c1f..142f472903dc 100644
---- a/drivers/net/wireless/ath/ath9k/ath9k.h
-+++ b/drivers/net/wireless/ath/ath9k/ath9k.h
-@@ -1072,7 +1072,7 @@ struct ath_softc {
- 
- #ifdef CONFIG_ATH9K_HWRNG
- 	u32 rng_last;
--	struct task_struct *rng_task;
-+	struct hwrng rng_ops;
- #endif
- };
- 
-diff --git a/drivers/net/wireless/ath/ath9k/rng.c b/drivers/net/wireless/ath/ath9k/rng.c
-index aae2bd3cac69..369b222908ba 100644
---- a/drivers/net/wireless/ath/ath9k/rng.c
-+++ b/drivers/net/wireless/ath/ath9k/rng.c
-@@ -22,9 +22,6 @@
- #include "hw.h"
- #include "ar9003_phy.h"
- 
--#define ATH9K_RNG_BUF_SIZE	320
--#define ATH9K_RNG_ENTROPY(x)	(((x) * 8 * 10) >> 5) /* quality: 10/32 */
--
- static DECLARE_WAIT_QUEUE_HEAD(rng_queue);
- 
- static int ath9k_rng_data_read(struct ath_softc *sc, u32 *buf, u32 buf_size)
-@@ -72,61 +69,46 @@ static u32 ath9k_rng_delay_get(u32 fail_stats)
- 	return delay;
- }
- 
--static int ath9k_rng_kthread(void *data)
-+static int ath9k_rng_read(struct hwrng *rng, void *buf, size_t max, bool wait)
- {
-+	struct ath_softc *sc = container_of(rng, struct ath_softc, rng_ops);
- 	int bytes_read;
--	struct ath_softc *sc = data;
--	u32 *rng_buf;
--	u32 delay, fail_stats = 0;
--
--	rng_buf = kmalloc_array(ATH9K_RNG_BUF_SIZE, sizeof(u32), GFP_KERNEL);
--	if (!rng_buf)
--		goto out;
--
--	while (!kthread_should_stop()) {
--		bytes_read = ath9k_rng_data_read(sc, rng_buf,
--						 ATH9K_RNG_BUF_SIZE);
--		if (unlikely(!bytes_read)) {
--			delay = ath9k_rng_delay_get(++fail_stats);
--			wait_event_interruptible_timeout(rng_queue,
--							 kthread_should_stop(),
--							 msecs_to_jiffies(delay));
--			continue;
--		}
--
--		fail_stats = 0;
--
--		/* sleep until entropy bits under write_wakeup_threshold */
--		add_hwgenerator_randomness((void *)rng_buf, bytes_read,
--					   ATH9K_RNG_ENTROPY(bytes_read));
--	}
-+	u32 fail_stats = 0;
- 
--	kfree(rng_buf);
--out:
--	sc->rng_task = NULL;
-+retry:
-+	bytes_read = ath9k_rng_data_read(sc, buf, max);
-+	if (unlikely(!bytes_read) && wait) {
-+		msleep(ath9k_rng_delay_get(++fail_stats));
-+		goto retry;
-+	}
- 
--	return 0;
-+	return bytes_read;
- }
- 
- void ath9k_rng_start(struct ath_softc *sc)
- {
- 	struct ath_hw *ah = sc->sc_ah;
-+	int ret;
- 
--	if (sc->rng_task)
-+	if (sc->rng_ops.read)
- 		return;
- 
- 	if (!AR_SREV_9300_20_OR_LATER(ah))
- 		return;
- 
--	sc->rng_task = kthread_run(ath9k_rng_kthread, sc, "ath9k-hwrng");
--	if (IS_ERR(sc->rng_task))
--		sc->rng_task = NULL;
-+	sc->rng_ops.name = "ath9k";
-+	sc->rng_ops.read = ath9k_rng_read;
-+	sc->rng_ops.quality = 320;
-+
-+	ret = devm_hwrng_register(sc->dev, &sc->rng_ops);
-+	if (ret)
-+		sc->rng_ops.read = NULL;
- }
- 
- void ath9k_rng_stop(struct ath_softc *sc)
- {
--	if (sc->rng_task) {
--		kthread_stop(sc->rng_task);
--		sc->rng_task = NULL;
-+	if (sc->rng_ops.read) {
-+		devm_hwrng_unregister(sc->dev, &sc->rng_ops);
-+		sc->rng_ops.read = NULL;
- 	}
- }
+https://patchwork.kernel.org/project/linux-wireless/patch/nycvar.YFH.7.76.2202151700540.11721@cbobk.fhfr.pm/
+
+Please resubmit.
+
 -- 
-2.35.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
