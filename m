@@ -2,100 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2FF94B6DCB
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 14:41:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 601EB4B7043
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 17:38:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238388AbiBONlM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Feb 2022 08:41:12 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:35956 "EHLO
+        id S241020AbiBOPo6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Feb 2022 10:44:58 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232202AbiBONlM (ORCPT
+        with ESMTP id S240323AbiBOPov (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Feb 2022 08:41:12 -0500
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79CED6E8F6
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 05:41:02 -0800 (PST)
-Received: by mail-oi1-x22c.google.com with SMTP id ay7so20727527oib.8
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 05:41:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=5g4e3FoDZ04w3yN9r9/DrAhXMgzBOA3m1TJsZRCqpfs=;
-        b=iwKWjwBv8UenF/T4JA+RKc+eHrfU+G65tx/isWRmIK1+OkRGf0xrLlW8LNgkeIoYgM
-         1yg8NyPboJUda08AioEj5OgGSUvDL7Ahi3v4BDkLsKGlCyQHmk1qkLfdSXSIX4qZTV+T
-         aUli6KIoce8WkyXnXhbyIcvdxuF57RYpOdLKA1p50Gfh8glVKOKV+qTmXsvp2F6MvxCZ
-         06cfYud4PkxQNkJ0I+6PqaRTi1fh8erwAYSP3rW6fyPP92lwQvi2nVwTxJFTPFKA3Lpr
-         hmzpA1zOWNJZn0GGnsiztq1vVlyMyW7xciFpjYlyHlN55E9z/d7lkqZ72KF/ScJbDMX8
-         s/RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=5g4e3FoDZ04w3yN9r9/DrAhXMgzBOA3m1TJsZRCqpfs=;
-        b=NI95eEO7lO9Jpmawg9Xc+9iu3/SD/9gkcZD01bvkLgyHK9hJYYzJiboXW89Iu4fkrQ
-         bTB8WZH1d9LvSzRoIwuQXXQdzZjMftbw6T5JnidGsLZ8Fw33iV93YYbD7TEvZSif3HHj
-         +aUXJJf4JvGr5XQTQ3k2MKd0m9RlSpZCXdiJ5RzJDIcNqM6olraMNqkFgotWPkak+4Rd
-         4fjD0miIirarCutDBPIfLWzPBNW2m1F8p3b5KrcyA2bdOnBGPdm1JBZqVMzMaK+Lp0xP
-         JliCyX1jmAnCdsyK5jMWdLXLFSbDJam2nIcO2/f3qcXjjqSKPTKCUqMW6q/GRZeXX4sQ
-         3WPA==
-X-Gm-Message-State: AOAM530mA0y/bcaLa0Nv1ZeH6lX+yYaeuwLxmDfntcIrAYeZFNb975Zq
-        f4897DA2uNBsiDTIEMNJnT8NdwXkoDjeDj9dZfw=
-X-Google-Smtp-Source: ABdhPJyWRUchNnETanlceUFVSM+//3CoNYVUQV5e3K2b35V74eO5WfWCdu96Wx315BSvRwGVYKw6Suc13S/h6bYLXSA=
-X-Received: by 2002:a05:6808:238f:b0:2ce:df34:1812 with SMTP id
- bp15-20020a056808238f00b002cedf341812mr1570727oib.147.1644932461841; Tue, 15
- Feb 2022 05:41:01 -0800 (PST)
+        Tue, 15 Feb 2022 10:44:51 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04374108BF1;
+        Tue, 15 Feb 2022 07:39:10 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FCF461719;
+        Tue, 15 Feb 2022 15:39:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC15C340ED;
+        Tue, 15 Feb 2022 15:39:09 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="fKlwMQmG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1644939546;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=MR8uETDJg9Xeaqk+LtV2lrW0K+3vcdxP9bkf45PeWiI=;
+        b=fKlwMQmGGl+XsuXaJRJANlEQmKW31rbgKKnwOwuHDVYuAgsiz75OzV6KyNYigUqakpATd+
+        lrKV0EL0geEgSp2Iq13ZZFv3iyCO+axNLOZtKL6VfJRlHJOthZNR0OUCsth1F82w/glyFa
+        VGZJ6UBhjWAcHfat12nc6HCCT987kgg=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 840e6152 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Tue, 15 Feb 2022 15:39:06 +0000 (UTC)
+Received: by mail-yb1-f171.google.com with SMTP id c6so57273205ybk.3;
+        Tue, 15 Feb 2022 07:39:05 -0800 (PST)
+X-Gm-Message-State: AOAM53206orcEkIrcBafJxYIYkg6F8QbOvOpOjloJcQjqERCVqQsFlvL
+        qUCJJc3dnR6GcGnJDiNlLvQI2yX7a1G5iKiBab4=
+X-Google-Smtp-Source: ABdhPJx6EkevGOE04tDjGHfHD2+6REo3QOFWHcWoX1VRu7eS0/CeK2AEid1T7UKuH9ZZD7sSfy+PGSjfiEvFPJW00fQ=
+X-Received: by 2002:a25:ba49:: with SMTP id z9mr4233199ybj.32.1644939544595;
+ Tue, 15 Feb 2022 07:39:04 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:6838:588b:0:0:0:0 with HTTP; Tue, 15 Feb 2022 05:41:01
- -0800 (PST)
-Reply-To: michellegoodman035@gmail.com
-From:   Shayma <shaymamarwan07@gmail.com>
-Date:   Tue, 15 Feb 2022 13:41:01 +0000
-Message-ID: <CAAgEbkmeqteQNdTczE_=srqm5raRDbsL0XoyinNdJLQk6zHdPQ@mail.gmail.com>
-Subject: Halllo
-To:     undisclosed-recipients:;
+References: <CAHmME9rkTP7bJBDvnejQ6BGPu13qpHKbtnjt3h33NEaTnYLirg@mail.gmail.com>
+In-Reply-To: <CAHmME9rkTP7bJBDvnejQ6BGPu13qpHKbtnjt3h33NEaTnYLirg@mail.gmail.com>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Tue, 15 Feb 2022 16:38:53 +0100
+X-Gmail-Original-Message-ID: <CAHmME9r4+ENUhZ6u26rAbq0iCWoKqTPYA7=_LWbGG98KvaCE6g@mail.gmail.com>
+Message-ID: <CAHmME9r4+ENUhZ6u26rAbq0iCWoKqTPYA7=_LWbGG98KvaCE6g@mail.gmail.com>
+Subject: ath9k should perhaps use hw_random api?
+To:     miaoqing@codeaurora.org, Jason Cooper <jason@lakedaemon.net>,
+        "Sepehrdad, Pouyan" <pouyans@qti.qualcomm.com>,
+        ath9k-devel <ath9k-devel@qca.qualcomm.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
+Cc:     Dominik Brodowski <linux@dominikbrodowski.net>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:22c listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [michellegoodman035[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [shaymamarwan07[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [shaymamarwan07[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hallo, ich hoffe du hast meine Nachricht erhalten.
-Ich brauche schnelle Antworten
+Hi Ath9k Maintainers,
 
-Danke.
-Michelle
+I'm emailing you because I've noticed that ath9k's rng.c is the *only*
+driver in the whole of the tree that calls
+add_hwgenerator_randomness() directly, rather than going through
+Herbert's hw_random API, as every single other hardware RNG does.
+
+I'm wondering if you'd consider converting your driver into something
+suitable for the hw_random API (in drivers/char/hw_random/), rather
+than adhoc rolling your own ath9k rng kthread. Is this something
+you're actively maintaining and would be interested in doing?
+
+Regards,
+Jason
