@@ -2,84 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E43AF4B7AC3
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 23:55:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8F8B4B7B3D
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 00:31:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244656AbiBOWzm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Feb 2022 17:55:42 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60830 "EHLO
+        id S244813AbiBOXb4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Feb 2022 18:31:56 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235253AbiBOWzk (ORCPT
+        with ESMTP id S231760AbiBOXby (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Feb 2022 17:55:40 -0500
-Received: from mail-vs1-xe31.google.com (mail-vs1-xe31.google.com [IPv6:2607:f8b0:4864:20::e31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 010B890FCD;
-        Tue, 15 Feb 2022 14:55:29 -0800 (PST)
-Received: by mail-vs1-xe31.google.com with SMTP id g21so495235vsp.6;
-        Tue, 15 Feb 2022 14:55:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=KljjfGaV0qNt4Ev1SWfuB6ILy2vnkwj3ke0c4tgXkDM=;
-        b=mbMo0Q4i+HlaNWhZT8LNGMSW0FdRYfBAJLjE0PFzMRGRJMdjKbxitQn7gU/vWHJ/q6
-         HvfVRRq974rn1gScL5uXeVg/cZA9VLS+gVSXcEH0MufIw0Edw6MfBbmocdtGf2FvyPle
-         N/6zSvrIUlLSlwNS7sU88ZX/JG4K5rprCbAiRuPxIc2qihmi0LQa747PkghiL+Eb1NG/
-         SP4m16K9wANZQuk62vp0PkOGuM1K6tR4vMO91QNWtyKgZwU/muop4jzJdRV+MWFEoOMk
-         ZPWSwpqYhPQeJNb7zIdWdQkZ17dnVC6cCBQI8AT0qOznenonzJgv90icdxeFDlwA4+Ip
-         FkeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=KljjfGaV0qNt4Ev1SWfuB6ILy2vnkwj3ke0c4tgXkDM=;
-        b=4jKXNTQX2/WEIKj8PYo6CPY9lxpHwqWenuN3XdNnyOoC8ptSMuKMv21q72AmfYpUC0
-         6IeXP+ynmP5dmQ3JxI2CS0vndMLjJXK92on3jjk9p0QzumkmhZsI3l5Psn2VDxuqPrK3
-         8OhSj7jJW4mzsk5Gmgt/nVVlwQSxiv7NxkBIS7G05Cm1bm+6mMpxyJjtPMe0wPyUswma
-         bQbSbEwbZ9c10Oul6e0hBupnp0JI7vbwhBjqMAyaT14zMEQWqG7z4qgbYFvsZRhpIGJn
-         OxQ4wgO/D2v/wOceBqrbcxVfv43D6aFKOUfW7ad1wZbTn+Mk1bidLaQ8RK9YCT6NKTto
-         ellg==
-X-Gm-Message-State: AOAM532CRUcS6xuPB3I3AM1K5IYy8B5ryD/Hd/ior/wWjBdeagFVlu5b
-        s2sIF49PU9h+Nf5cMOxwYQFyZxHIqod1LQYNOUIIbvCMiJFV
-X-Google-Smtp-Source: ABdhPJybrisSKT22sdMBiVzA1X9BxupYuQBcoJrjdciqXqEyZPvh8/tXEC6HfbTugPH1cYBwKz7hnpp4xQ4CAhBglSY=
-X-Received: by 2002:a05:6102:c11:: with SMTP id x17mr452025vss.4.1644965729117;
- Tue, 15 Feb 2022 14:55:29 -0800 (PST)
-MIME-Version: 1.0
-References: <CAHmME9r4+ENUhZ6u26rAbq0iCWoKqTPYA7=_LWbGG98KvaCE6g@mail.gmail.com>
- <20220215162812.195716-1-Jason@zx2c4.com>
-In-Reply-To: <20220215162812.195716-1-Jason@zx2c4.com>
-From:   Rui Salvaterra <rsalvaterra@gmail.com>
-Date:   Tue, 15 Feb 2022 22:55:18 +0000
-Message-ID: <CALjTZvZb9oFLT5zOvxgt3ZrsOc+id8o3KXGFJobO6ks6UZtgWg@mail.gmail.com>
-Subject: Re: [PATCH] ath9k: use hw_random API instead of directly dumping into random.c
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc:     miaoqing@codeaurora.org, Jason Cooper <jason@lakedaemon.net>,
+        Tue, 15 Feb 2022 18:31:54 -0500
+X-Greylist: delayed 574 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 15 Feb 2022 15:31:41 PST
+Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8559B65433;
+        Tue, 15 Feb 2022 15:31:40 -0800 (PST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1644967321; bh=oxkQ8fDff2RyUMjp4s/XquWC9mjWFRhyAC3CN7OibR0=;
+        h=From:To:Subject:In-Reply-To:References:Date:From;
+        b=BHhGm1ivKzDXxW39urxXsDcW9o58WBEd2ZtYXSLxYBzqTWqWg/o0qAcjzaBsESXCA
+         ORStYpUObPZCcUZQnn9becjxPhyYz50ZfF0IpmjyxxV0a3iq61jj8bSUMIMwKrIrfK
+         Zfe3GXZuihe4NZTcFvf1bplfqLMhebGQDqWpovo5X4Dx0MoL0KL4UbEkn4x2hcv0PG
+         BIB0Hy644SZUin9TgUF8p0HLDYki6ts+APQJ0diYsbAr9CPvoCM6TAyjdx182OtatO
+         htMO9mBpeiT8zNtYe8lHHSBE7bvn7GSWXMtt5hDdgLQRI83NuLPhviSslMfvGGGYKj
+         jzyWMuD+cGIkw==
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>, miaoqing@codeaurora.org,
+        Jason Cooper <jason@lakedaemon.net>,
         "Sepehrdad, Pouyan" <pouyans@qti.qualcomm.com>,
         ath9k-devel <ath9k-devel@qca.qualcomm.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         Kalle Valo <kvalo@kernel.org>,
-        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
         Dominik Brodowski <linux@dominikbrodowski.net>,
         Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         LKML <linux-kernel@vger.kernel.org>,
         Netdev <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] ath9k: use hw_random API instead of directly dumping
+ into random.c
+In-Reply-To: <20220215162812.195716-1-Jason@zx2c4.com>
+References: <CAHmME9r4+ENUhZ6u26rAbq0iCWoKqTPYA7=_LWbGG98KvaCE6g@mail.gmail.com>
+ <20220215162812.195716-1-Jason@zx2c4.com>
+Date:   Wed, 16 Feb 2022 00:22:00 +0100
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87o8374sx3.fsf@toke.dk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, Jason,
+"Jason A. Donenfeld" <Jason@zx2c4.com> writes:
 
-On Tue, 15 Feb 2022 at 22:44, Jason A. Donenfeld <Jason@zx2c4.com> wrote:
->
 > Hardware random number generators are supposed to use the hw_random
 > framework. This commit turns ath9k's kthread-based design into a proper
 > hw_random driver.
@@ -93,28 +73,92 @@ On Tue, 15 Feb 2022 at 22:44, Jason A. Donenfeld <Jason@zx2c4.com> wrote:
 > Cc: Dominik Brodowski <linux@dominikbrodowski.net>
 > Cc: Herbert Xu <herbert@gondor.apana.org.au>
 > Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+> ---
+>  drivers/net/wireless/ath/ath9k/ath9k.h |  2 +-
+>  drivers/net/wireless/ath/ath9k/rng.c   | 62 +++++++++-----------------
+>  2 files changed, 23 insertions(+), 41 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireles=
+s/ath/ath9k/ath9k.h
+> index ef6f5ea06c1f..142f472903dc 100644
+> --- a/drivers/net/wireless/ath/ath9k/ath9k.h
+> +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
+> @@ -1072,7 +1072,7 @@ struct ath_softc {
+>=20=20
+>  #ifdef CONFIG_ATH9K_HWRNG
+>  	u32 rng_last;
+> -	struct task_struct *rng_task;
+> +	struct hwrng rng_ops;
+>  #endif
+>  };
+>=20=20
+> diff --git a/drivers/net/wireless/ath/ath9k/rng.c b/drivers/net/wireless/=
+ath/ath9k/rng.c
+> index aae2bd3cac69..369b222908ba 100644
+> --- a/drivers/net/wireless/ath/ath9k/rng.c
+> +++ b/drivers/net/wireless/ath/ath9k/rng.c
+> @@ -22,9 +22,6 @@
+>  #include "hw.h"
+>  #include "ar9003_phy.h"
+>=20=20
+> -#define ATH9K_RNG_BUF_SIZE	320
+> -#define ATH9K_RNG_ENTROPY(x)	(((x) * 8 * 10) >> 5) /* quality: 10/32 */
 
-[patch snipped]
+So this comment says "quality: 10/32" but below you're setting "quality"
+as 320. No idea what the units are supposed to be, but is this right?
 
-On my laptop, with a=E2=80=A6
+>  static DECLARE_WAIT_QUEUE_HEAD(rng_queue);
+>=20=20
+>  static int ath9k_rng_data_read(struct ath_softc *sc, u32 *buf, u32 buf_s=
+ize)
 
-02:00.0 Network controller: Qualcomm Atheros AR9462 Wireless Network
-Adapter (rev 01)
+This function takes buf as a *u32, and interprets buf_size as a number
+of u32s...
 
-=E2=80=A6 I have the following=E2=80=A6
+> @@ -72,61 +69,46 @@ static u32 ath9k_rng_delay_get(u32 fail_stats)
+>  	return delay;
+>  }
+>=20=20
+> -static int ath9k_rng_kthread(void *data)
+> +static int ath9k_rng_read(struct hwrng *rng, void *buf, size_t max, bool=
+ wait)
+>  {
+> +	struct ath_softc *sc =3D container_of(rng, struct ath_softc, rng_ops);
+>  	int bytes_read;
+> -	struct ath_softc *sc =3D data;
+> -	u32 *rng_buf;
+> -	u32 delay, fail_stats =3D 0;
+> -
+> -	rng_buf =3D kmalloc_array(ATH9K_RNG_BUF_SIZE, sizeof(u32), GFP_KERNEL);
+> -	if (!rng_buf)
+> -		goto out;
+> -
+> -	while (!kthread_should_stop()) {
+> -		bytes_read =3D ath9k_rng_data_read(sc, rng_buf,
+> -						 ATH9K_RNG_BUF_SIZE);
+> -		if (unlikely(!bytes_read)) {
+> -			delay =3D ath9k_rng_delay_get(++fail_stats);
+> -			wait_event_interruptible_timeout(rng_queue,
+> -							 kthread_should_stop(),
+> -							 msecs_to_jiffies(delay));
+> -			continue;
+> -		}
+> -
+> -		fail_stats =3D 0;
+> -
+> -		/* sleep until entropy bits under write_wakeup_threshold */
+> -		add_hwgenerator_randomness((void *)rng_buf, bytes_read,
+> -					   ATH9K_RNG_ENTROPY(bytes_read));
+> -	}
+> +	u32 fail_stats =3D 0;
+>=20=20
+> -	kfree(rng_buf);
+> -out:
+> -	sc->rng_task =3D NULL;
+> +retry:
+> +	bytes_read =3D ath9k_rng_data_read(sc, buf, max);
 
-rui@arrandale:~$ cat /sys/devices/virtual/misc/hw_random/rng_available
-ath9k
-rui@arrandale:~$ cat /sys/devices/virtual/misc/hw_random/rng_current
-ath9k
-rui@arrandale:~$
+... but AFAICT here you're calling it with a buffer size from hw_random
+that's in bytes?
 
-=E2=80=A6 and sure enough, /dev/hwrng is created and outputs a stream of
-random data, as expected. I haven't done any serious randomness
-quality testing, but it should be the same as the one produced by the
-original code. I consider this patch thus
-
-Tested-by: Rui Salvaterra <rsalvaterra@gmail.com>
-
-Thanks,
-Rui
+-Toke
