@@ -2,118 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EFBD4B64E1
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 08:59:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E5D64B65DC
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 09:19:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234986AbiBOH7m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Feb 2022 02:59:42 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49332 "EHLO
+        id S233202AbiBOIT6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Feb 2022 03:19:58 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229850AbiBOH7l (ORCPT
+        with ESMTP id S235364AbiBOITy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Feb 2022 02:59:41 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B27C13D30
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Feb 2022 23:59:28 -0800 (PST)
-X-UUID: 8ae727c3003546eea07df65e8020476c-20220215
-X-UUID: 8ae727c3003546eea07df65e8020476c-20220215
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <bo.jiao@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 347430706; Tue, 15 Feb 2022 15:59:16 +0800
-Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 15 Feb 2022 15:59:14 +0800
-Received: from MTKCAS36.mediatek.inc (172.27.4.186) by MTKMBS34N1.mediatek.inc
- (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 15 Feb
- 2022 15:59:11 +0800
-Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
- MTKCAS36.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
- 15.0.1497.2 via Frontend Transport; Tue, 15 Feb 2022 15:59:10 +0800
-From:   Bo Jiao <bo.jiao@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Xing Song <xing.song@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Bo Jiao <Bo.Jiao@mediatek.com>
-Subject: [PATCH] mt76: mt7915: fix warning: variable 'temp' set but not used
-Date:   Tue, 15 Feb 2022 15:59:08 +0800
-Message-ID: <ffe6426240bbac484c31fb1489a994ca7bfda4fb.1644911758.git.Bo.Jiao@mediatek.com>
-X-Mailer: git-send-email 2.17.0
+        Tue, 15 Feb 2022 03:19:54 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C75799BBA9
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 00:19:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=Tt8am4XY104W3qvqzm4aJUvijcFeemboxKr7E4QB4fI=;
+        t=1644913182; x=1646122782; b=ZmTddYHUNTbyGqSWuy2ob20VGkNG7JtbqmxSdteEDXBPPYj
+        y6xkKpkLAbQXE8ihLs+bF/1z5GrZUJNARsJWh5vciHj8cax1UbexMA64rGlmMhervXjg9rdWufmZW
+        d/oP+eGDAwIOhNg003xPuG78AxZOAXu/SsNUeFCgUC6HXsqxLPtOTP1eQdayo+1GQ/naN8Ou4eeZb
+        8dHgZkHHoHvTi1WgsjaOGZUrO5drXVTm+MhwL/qdROOxmT78sUVAdonVGeL9FxvWOO3GUrsRBb/Ef
+        VcRIgfUYVJyvNdYZsgpstdPWUSS7faSEfgpztnjnwdNz4QHtzoYZlRSm3EOeOcCQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nJt3k-001LZP-IU;
+        Tue, 15 Feb 2022 09:19:40 +0100
+Message-ID: <a9813545a25cd63f71cc31476230514a80350802.camel@sipsolutions.net>
+Subject: Re: [PATCH 2/3] cfg80211: validate RU puncturing bitmap
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Aloka Dixit <quic_alokad@quicinc.com>,
+        linux-wireless@vger.kernel.org
+Date:   Tue, 15 Feb 2022 09:19:39 +0100
+In-Reply-To: <20220214223051.3610-3-quic_alokad@quicinc.com>
+References: <20220214223051.3610-1-quic_alokad@quicinc.com>
+         <20220214223051.3610-3-quic_alokad@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.3 (3.42.3-1.fc35) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Bo Jiao <Bo.Jiao@mediatek.com>
+On Mon, 2022-02-14 at 14:30 -0800, Aloka Dixit wrote:
+> 
+> +/* IEEE P802.11be/D1.31, December 2021, Table 36-30 5-bit punctured channel
+> + * indication for the non-OFDMA case in an EHT MU PPDU
+> + */
+> +static const u16 ru_punct_bitmap_80[] = {0xF, 0xE, 0xD, 0xB, 0x7};
+> +static const u16 ru_punct_bitmap_160[] = {0xFF, 0xFE, 0xFD, 0xFB, 0xF7, 0xEF,
+> +					  0xDF, 0xBF, 0x7F, 0xFC, 0xF3, 0xCF,
+> +					  0x3F};
+> +static const u16 ru_punct_bitmap_320[] = {0xFFFF, 0xFFFC, 0xFFF3, 0xFFCF,
+> +					  0xFF3F, 0xFCFF, 0xF3FF, 0xCFFF,
+> +					  0x3FFF, 0xFFF0, 0xFF0F, 0xF0FF,
+> +					  0x0FFF, 0xFFC0, 0xFF30, 0xFCF0,
+> +					  0xF3F0, 0xCFF0, 0x3FF0, 0x0FFC,
+> +					  0x0FF3, 0x0FCF, 0x0F3F, 0x0CFF,
+> +					  0x03FF};
+> +
+> +bool cfg80211_ru_punct_bitmap_valid(const struct cfg80211_chan_def *chandef)
+> 
 
-fix warning: variable 'temp' set but not used,
-please fold this into previous commit
+Heh. We wrote basically the same code just the other day (except I think
+inverting the bitmasks or something?) in mac80211 for the client side,
+i.e. when receiving puncturing from the AP ...
 
-Fixes: 91eeaef2523f ("mt76: mt7915: add support for MT7986")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/init.c   | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h | 3 ---
- drivers/net/wireless/mediatek/mt76/mt7915/soc.c    | 2 +-
- 3 files changed, 3 insertions(+), 6 deletions(-)
+Can we export this function maybe so mac80211 can use it?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 6a4fb4c..6b3749b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -589,10 +589,10 @@ static void mt7915_wfsys_reset(struct mt7915_dev *dev)
- 
- 		msleep(100);
- 	} else if (is_mt7986(&dev->mt76)) {
--		mt7986_wmac_enable(dev);
-+		mt7986_wmac_disable(dev);
- 		msleep(20);
- 
--		mt7986_wmac_disable(dev);
-+		mt7986_wmac_enable(dev);
- 		msleep(20);
- 	} else {
- 		mt76_set(dev, MT_WF_SUBSYS_RST, 0x1);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 3ffee35..6db0db1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -322,9 +322,6 @@ struct mt7915_dev {
- 	struct reset_control *rstc;
- 	void __iomem *dcm;
- 	void __iomem *sku;
--
--	/* adie is inaccessible after wfsys poweron */
--	u32 adie;
- };
- 
- enum {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
-index fb72ab4..4394a51 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
-@@ -125,7 +125,7 @@ mt7986_wmac_adie_efuse_read(struct mt7915_dev *dev, u8 adie,
- 		return ret;
- 
- 	ret = read_poll_timeout(mt76_wmac_spi_read, temp,
--				!FIELD_GET(MT_ADIE_EFUSE_KICK_MASK, val),
-+				!temp && !FIELD_GET(MT_ADIE_EFUSE_KICK_MASK, val),
- 				USEC_PER_MSEC, 50 * USEC_PER_MSEC, false,
- 				dev, adie, MT_ADIE_EFUSE2_CTRL, &val);
- 	if (ret)
--- 
-2.18.0
 
+Conceptually, I'm wondering if it really belongs into the chandef? Can
+you explain why it's part of the channel configuration? If you've got
+two chandefs with the same control channel, CCFS and bandwidth, but
+different puncturing, does it really make sense to treat them as two
+separate channel contexts, e.g. in mac80211? It seems strange to do
+that.
+
+johannes
