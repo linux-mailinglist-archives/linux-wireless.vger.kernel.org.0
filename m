@@ -2,206 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AC224B798C
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 22:49:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E43AF4B7AC3
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Feb 2022 23:55:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244278AbiBOVHh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Feb 2022 16:07:37 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51166 "EHLO
+        id S244656AbiBOWzm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Feb 2022 17:55:42 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237465AbiBOVHg (ORCPT
+        with ESMTP id S235253AbiBOWzk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Feb 2022 16:07:36 -0500
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 995A22FFE3;
-        Tue, 15 Feb 2022 13:07:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1644959245; x=1676495245;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=L7n8zm9Mv7CaXAqF7R96N+XLVC5Z7D6HaUCIWDsaT9c=;
-  b=TWuvog1t8s5ueB0PqsAzEMXqwyKyYyAgmiFGYQ141yZsoaBoHMKBMJ29
-   zzuhVZ8UZHSw/YxCjNsNMPXSObD5XN2oWaGs2FoioRofmo7mLhgf/BCAb
-   B0LUgeIuaolXeMIzNmU4grcuOZEJV9PEO8lMQHWBoEQl+GkhJw4oygaaz
-   pLspu/kBqO8Kz/JzGAhE5umHP4OhdBYyYfYK6ruL7ptM2jFo90mSVXkjs
-   8BZi7RIJedYK3QmrZLCRuQgI99FeaBDJrRRog0v3JoN7XQTS+pUFzIOBU
-   /JQ22X3ACyAALqjjU7ruVH0yIFEG5bufr3/V5xRxwIHOB48/nzIjvZGoV
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10259"; a="275031597"
-X-IronPort-AV: E=Sophos;i="5.88,371,1635231600"; 
-   d="scan'208";a="275031597"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2022 13:07:08 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,371,1635231600"; 
-   d="scan'208";a="681201331"
-Received: from lkp-server01.sh.intel.com (HELO d95dc2dabeb1) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 15 Feb 2022 13:07:06 -0800
-Received: from kbuild by d95dc2dabeb1 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nK52Q-000A2J-5y; Tue, 15 Feb 2022 21:07:06 +0000
-Date:   Wed, 16 Feb 2022 05:06:13 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jiri Kosina <jikos@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     kbuild-all@lists.01.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mac80211: fix RCU usage in ieee80211_tx_h_select_key()
-Message-ID: <202202160406.p1c7XduC-lkp@intel.com>
-References: <nycvar.YFH.7.76.2202151643220.11721@cbobk.fhfr.pm>
+        Tue, 15 Feb 2022 17:55:40 -0500
+Received: from mail-vs1-xe31.google.com (mail-vs1-xe31.google.com [IPv6:2607:f8b0:4864:20::e31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 010B890FCD;
+        Tue, 15 Feb 2022 14:55:29 -0800 (PST)
+Received: by mail-vs1-xe31.google.com with SMTP id g21so495235vsp.6;
+        Tue, 15 Feb 2022 14:55:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=KljjfGaV0qNt4Ev1SWfuB6ILy2vnkwj3ke0c4tgXkDM=;
+        b=mbMo0Q4i+HlaNWhZT8LNGMSW0FdRYfBAJLjE0PFzMRGRJMdjKbxitQn7gU/vWHJ/q6
+         HvfVRRq974rn1gScL5uXeVg/cZA9VLS+gVSXcEH0MufIw0Edw6MfBbmocdtGf2FvyPle
+         N/6zSvrIUlLSlwNS7sU88ZX/JG4K5rprCbAiRuPxIc2qihmi0LQa747PkghiL+Eb1NG/
+         SP4m16K9wANZQuk62vp0PkOGuM1K6tR4vMO91QNWtyKgZwU/muop4jzJdRV+MWFEoOMk
+         ZPWSwpqYhPQeJNb7zIdWdQkZ17dnVC6cCBQI8AT0qOznenonzJgv90icdxeFDlwA4+Ip
+         FkeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=KljjfGaV0qNt4Ev1SWfuB6ILy2vnkwj3ke0c4tgXkDM=;
+        b=4jKXNTQX2/WEIKj8PYo6CPY9lxpHwqWenuN3XdNnyOoC8ptSMuKMv21q72AmfYpUC0
+         6IeXP+ynmP5dmQ3JxI2CS0vndMLjJXK92on3jjk9p0QzumkmhZsI3l5Psn2VDxuqPrK3
+         8OhSj7jJW4mzsk5Gmgt/nVVlwQSxiv7NxkBIS7G05Cm1bm+6mMpxyJjtPMe0wPyUswma
+         bQbSbEwbZ9c10Oul6e0hBupnp0JI7vbwhBjqMAyaT14zMEQWqG7z4qgbYFvsZRhpIGJn
+         OxQ4wgO/D2v/wOceBqrbcxVfv43D6aFKOUfW7ad1wZbTn+Mk1bidLaQ8RK9YCT6NKTto
+         ellg==
+X-Gm-Message-State: AOAM532CRUcS6xuPB3I3AM1K5IYy8B5ryD/Hd/ior/wWjBdeagFVlu5b
+        s2sIF49PU9h+Nf5cMOxwYQFyZxHIqod1LQYNOUIIbvCMiJFV
+X-Google-Smtp-Source: ABdhPJybrisSKT22sdMBiVzA1X9BxupYuQBcoJrjdciqXqEyZPvh8/tXEC6HfbTugPH1cYBwKz7hnpp4xQ4CAhBglSY=
+X-Received: by 2002:a05:6102:c11:: with SMTP id x17mr452025vss.4.1644965729117;
+ Tue, 15 Feb 2022 14:55:29 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <nycvar.YFH.7.76.2202151643220.11721@cbobk.fhfr.pm>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <CAHmME9r4+ENUhZ6u26rAbq0iCWoKqTPYA7=_LWbGG98KvaCE6g@mail.gmail.com>
+ <20220215162812.195716-1-Jason@zx2c4.com>
+In-Reply-To: <20220215162812.195716-1-Jason@zx2c4.com>
+From:   Rui Salvaterra <rsalvaterra@gmail.com>
+Date:   Tue, 15 Feb 2022 22:55:18 +0000
+Message-ID: <CALjTZvZb9oFLT5zOvxgt3ZrsOc+id8o3KXGFJobO6ks6UZtgWg@mail.gmail.com>
+Subject: Re: [PATCH] ath9k: use hw_random API instead of directly dumping into random.c
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     miaoqing@codeaurora.org, Jason Cooper <jason@lakedaemon.net>,
+        "Sepehrdad, Pouyan" <pouyans@qti.qualcomm.com>,
+        ath9k-devel <ath9k-devel@qca.qualcomm.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jiri,
+Hi, Jason,
 
-I love your patch! Perhaps something to improve:
+On Tue, 15 Feb 2022 at 22:44, Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+>
+> Hardware random number generators are supposed to use the hw_random
+> framework. This commit turns ath9k's kthread-based design into a proper
+> hw_random driver.
+>
+> This compiles, but I have no hardware or other ability to determine
+> whether it works. I'll leave further development up to the ath9k
+> and hw_random maintainers.
+>
+> Cc: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: Dominik Brodowski <linux@dominikbrodowski.net>
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on wireless/main jberg-mac80211-next/master jberg-mac80211/master v5.17-rc4 next-20220215]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+[patch snipped]
 
-url:    https://github.com/0day-ci/linux/commits/Jiri-Kosina/mac80211-fix-RCU-usage-in-ieee80211_tx_h_select_key/20220215-234935
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-config: i386-randconfig-s002-20220214 (https://download.01.org/0day-ci/archive/20220216/202202160406.p1c7XduC-lkp@intel.com/config)
-compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
-reproduce:
-        # apt-get install sparse
-        # sparse version: v0.6.4-dirty
-        # https://github.com/0day-ci/linux/commit/cdfe17d7fc283e125686bdd9a6bbc6fd60909bd7
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Jiri-Kosina/mac80211-fix-RCU-usage-in-ieee80211_tx_h_select_key/20220215-234935
-        git checkout cdfe17d7fc283e125686bdd9a6bbc6fd60909bd7
-        # save the config file to linux build tree
-        mkdir build_dir
-        make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=i386 SHELL=/bin/bash net/mac80211/
+On my laptop, with a=E2=80=A6
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+02:00.0 Network controller: Qualcomm Atheros AR9462 Wireless Network
+Adapter (rev 01)
 
+=E2=80=A6 I have the following=E2=80=A6
 
-sparse warnings: (new ones prefixed by >>)
->> net/mac80211/tx.c:652:29: sparse: sparse: incorrect type in assignment (different base types) @@     expected int ret @@     got restricted ieee80211_tx_result [usertype] @@
-   net/mac80211/tx.c:652:29: sparse:     expected int ret
-   net/mac80211/tx.c:652:29: sparse:     got restricted ieee80211_tx_result [usertype]
-   net/mac80211/tx.c:661:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected int ret @@     got restricted ieee80211_tx_result [usertype] @@
-   net/mac80211/tx.c:661:21: sparse:     expected int ret
-   net/mac80211/tx.c:661:21: sparse:     got restricted ieee80211_tx_result [usertype]
-   net/mac80211/tx.c:664:13: sparse: sparse: incorrect type in assignment (different base types) @@     expected int ret @@     got restricted ieee80211_tx_result [usertype] @@
-   net/mac80211/tx.c:664:13: sparse:     expected int ret
-   net/mac80211/tx.c:664:13: sparse:     got restricted ieee80211_tx_result [usertype]
->> net/mac80211/tx.c:667:16: sparse: sparse: incorrect type in return expression (different base types) @@     expected restricted ieee80211_tx_result @@     got int ret @@
-   net/mac80211/tx.c:667:16: sparse:     expected restricted ieee80211_tx_result
-   net/mac80211/tx.c:667:16: sparse:     got int ret
+rui@arrandale:~$ cat /sys/devices/virtual/misc/hw_random/rng_available
+ath9k
+rui@arrandale:~$ cat /sys/devices/virtual/misc/hw_random/rng_current
+ath9k
+rui@arrandale:~$
 
-vim +652 net/mac80211/tx.c
+=E2=80=A6 and sure enough, /dev/hwrng is created and outputs a stream of
+random data, as expected. I haven't done any serious randomness
+quality testing, but it should be the same as the one produced by the
+original code. I consider this patch thus
 
-   579	
-   580	static ieee80211_tx_result debug_noinline
-   581	ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
-   582	{
-   583		int ret;
-   584		struct ieee80211_key *key;
-   585		struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx->skb);
-   586		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)tx->skb->data;
-   587	
-   588		if (unlikely(info->flags & IEEE80211_TX_INTFL_DONT_ENCRYPT)) {
-   589			tx->key = NULL;
-   590			return TX_CONTINUE;
-   591		}
-   592	
-   593		rcu_read_lock();
-   594	
-   595		if (tx->sta &&
-   596		    (key = rcu_dereference(tx->sta->ptk[tx->sta->ptk_idx])))
-   597			tx->key = key;
-   598		else if (ieee80211_is_group_privacy_action(tx->skb) &&
-   599			(key = rcu_dereference(tx->sdata->default_multicast_key)))
-   600			tx->key = key;
-   601		else if (ieee80211_is_mgmt(hdr->frame_control) &&
-   602			 is_multicast_ether_addr(hdr->addr1) &&
-   603			 ieee80211_is_robust_mgmt_frame(tx->skb) &&
-   604			 (key = rcu_dereference(tx->sdata->default_mgmt_key)))
-   605			tx->key = key;
-   606		else if (is_multicast_ether_addr(hdr->addr1) &&
-   607			 (key = rcu_dereference(tx->sdata->default_multicast_key)))
-   608			tx->key = key;
-   609		else if (!is_multicast_ether_addr(hdr->addr1) &&
-   610			 (key = rcu_dereference(tx->sdata->default_unicast_key)))
-   611			tx->key = key;
-   612		else
-   613			tx->key = NULL;
-   614	
-   615		if (tx->key) {
-   616			bool skip_hw = false;
-   617	
-   618			/* TODO: add threshold stuff again */
-   619	
-   620			switch (tx->key->conf.cipher) {
-   621			case WLAN_CIPHER_SUITE_WEP40:
-   622			case WLAN_CIPHER_SUITE_WEP104:
-   623			case WLAN_CIPHER_SUITE_TKIP:
-   624				if (!ieee80211_is_data_present(hdr->frame_control))
-   625					tx->key = NULL;
-   626				break;
-   627			case WLAN_CIPHER_SUITE_CCMP:
-   628			case WLAN_CIPHER_SUITE_CCMP_256:
-   629			case WLAN_CIPHER_SUITE_GCMP:
-   630			case WLAN_CIPHER_SUITE_GCMP_256:
-   631				if (!ieee80211_is_data_present(hdr->frame_control) &&
-   632				    !ieee80211_use_mfp(hdr->frame_control, tx->sta,
-   633						       tx->skb) &&
-   634				    !ieee80211_is_group_privacy_action(tx->skb))
-   635					tx->key = NULL;
-   636				else
-   637					skip_hw = (tx->key->conf.flags &
-   638						   IEEE80211_KEY_FLAG_SW_MGMT_TX) &&
-   639						ieee80211_is_mgmt(hdr->frame_control);
-   640				break;
-   641			case WLAN_CIPHER_SUITE_AES_CMAC:
-   642			case WLAN_CIPHER_SUITE_BIP_CMAC_256:
-   643			case WLAN_CIPHER_SUITE_BIP_GMAC_128:
-   644			case WLAN_CIPHER_SUITE_BIP_GMAC_256:
-   645				if (!ieee80211_is_mgmt(hdr->frame_control))
-   646					tx->key = NULL;
-   647				break;
-   648			}
-   649	
-   650			if (unlikely(tx->key && tx->key->flags & KEY_FLAG_TAINTED &&
-   651				     !ieee80211_is_deauth(hdr->frame_control))) {
- > 652				ret = TX_DROP;
-   653				goto out;
-   654			}
-   655	
-   656			if (!skip_hw && tx->key &&
-   657			    tx->key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE)
-   658				info->control.hw_key = &tx->key->conf;
-   659		} else if (ieee80211_is_data_present(hdr->frame_control) && tx->sta &&
-   660			   test_sta_flag(tx->sta, WLAN_STA_USES_ENCRYPTION)) {
-   661			ret = TX_DROP;
-   662			goto out;
-   663		}
-   664		ret = TX_CONTINUE;
-   665	out:
-   666		rcu_read_unlock();
- > 667		return ret;
-   668	}
-   669	
+Tested-by: Rui Salvaterra <rsalvaterra@gmail.com>
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Thanks,
+Rui
