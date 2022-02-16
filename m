@@ -2,49 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6C114B8533
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 11:06:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C6214B852D
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 11:06:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232704AbiBPKFs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Feb 2022 05:05:48 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:38828 "EHLO
+        id S232499AbiBPKFx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Feb 2022 05:05:53 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:38992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232682AbiBPKFq (ORCPT
+        with ESMTP id S232688AbiBPKFt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Feb 2022 05:05:46 -0500
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCDE679C65
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Feb 2022 02:05:34 -0800 (PST)
+        Wed, 16 Feb 2022 05:05:49 -0500
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BC8D21EF
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Feb 2022 02:05:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1645005934; x=1676541934;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=T55G1p5GH/mqW/hkJ+YbiFZ3Mg8vvPgF6gUJT8RnjjA=;
-  b=LMda2kdCGTQ1KWVst478yzUdyupg81eJt6TOHCjJUSpup7A/mMW8M9bY
-   YD9bZ126P/O88eSMVzZWhaho6LQYZbBnBCwr1f68nu+3sMajkg0bIy2FQ
-   9o/i0w6/HzPFpunJ4X1bogMRMcvpnjLtiH2TOGhQ/tknIbaOLYEYN+9qy
-   U=;
-Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 16 Feb 2022 02:05:34 -0800
+  t=1645005936; x=1676541936;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version;
+  bh=DJX/LaLZNUDvkUpAYHV7glmD4bH6GDqkcPbhy+MNNlk=;
+  b=g50nEr10EXjwPzb0YyVeoS0D2jQujKdYjEnS/uz/L31/rbtduObJfjZb
+   RpqyjehEIitZkjj5hQbisWcJDxafXU/DsPybgEQH7hPoZUZb5gAlUJRl7
+   8qXtPj4WbiFQFaDVXgFE03Ph7IDLug2mAk5dcTYtE4Zj/TTfHgY5pQE8G
+   s=;
+Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
+  by alexa-out.qualcomm.com with ESMTP; 16 Feb 2022 02:05:36 -0800
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2022 02:05:34 -0800
+  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2022 02:05:37 -0800
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Wed, 16 Feb 2022 02:05:33 -0800
+ 15.2.986.15; Wed, 16 Feb 2022 02:05:35 -0800
 Received: from vnaralas-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Wed, 16 Feb 2022 02:05:32 -0800
+ 15.2.922.19; Wed, 16 Feb 2022 02:05:34 -0800
 From:   Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
 To:     <ath11k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>,
         Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
-Subject: [PATCHv2 0/6] ath11k: add single shot/periodic CFR capture support for IPQ8074
-Date:   Wed, 16 Feb 2022 15:35:16 +0530
-Message-ID: <1645005922-7252-1-git-send-email-quic_vnaralas@quicinc.com>
+Subject: [PATCHv2 1/6] nl80211: vendor-cmd: qca: add command for CFR configuration
+Date:   Wed, 16 Feb 2022 15:35:17 +0530
+Message-ID: <1645005922-7252-2-git-send-email-quic_vnaralas@quicinc.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1645005922-7252-1-git-send-email-quic_vnaralas@quicinc.com>
+References: <1645005922-7252-1-git-send-email-quic_vnaralas@quicinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.80.80.8]
@@ -67,99 +70,152 @@ and send the CSI data to user space.
 CSI data is further processed in user space which can be used to
 identify the motion of the objects.
 
-CFR dumps will be collected from the received ACK's for the
-transmited QOS NULL frames for the associated stations. For
-unassociated stations CFR dumps will be collected from the
-probe response ACK.
+Add vendor command support to configure per peer CFR parameters.
 
-CFR format to user space:
- ___________________________________________
-| CFR header | CFR payload | CFR tail data |
-|____________|_____________|_______________|
+An example of usage:
+iw dev wlanx vendor send 0x1374 0xad cfr-en <val> bw <bw> method <method>
+periodicity <period> addr <mac_addr>
 
-CFR header contains the following fields,
+0x1374: vendor id
+0xad: : vendor subcmd id
+val: 0 to disable CFR capture
+     1 to enable CFR capture
 
-* Start magic number 0xDEADBEAF - 4bytes
-* vendor id - 4bytes
-* cfr metadata version - 1byte
-* cfr data version - 1byte
-* chip type - 1byte
-* platform type - 1byte
-* CFR metadata length - 4bytes
-* metadata - 92bytes
-        peer mac - 6bytes
-        capture status - 1byte (1 for success 0 for failure)
-        capture_bw - 1byte
-        channel_bw - 1byte
-        phy_mode - 1byte
-        prim20_chan - 2bytes
-        center_freq1 - 2bytes
-        center_freq2 - 2bytes
-        capture_mode - 1byte
-        capture_type - 1byte
-        sts_count - 1byte
-        num_rx_chain - 1byte
-        timestamp - 4bytes
-        length - 4bytes
-        chain_rssi - 32bytes (4bytes for each chain)
-        chain_phase - 16bytes (2bytes for each chain)
-        cfo_measurement - 4bytes
-        agc_gain - 8bytes (1 bytes for each chain)
-        rx_start_ts - 4bytes
+bw: CFR capture bandwidth(use the values in enum nl80211_chan_width)
+	1 - 20MHZ
+	2 - 40MHZ
+	3 - 80MHZ
 
-CFR payload:
+method: Method used by hardware to collect the CFR dump
+	0 - from the ACKs of QOS NULL packets
+	1 - from the ACKs of QOS NULL packets with phase
+	2 - from the ACK of probe response packet
 
-CFR payload contains 8bytes of ucode header followed by the
-tone information. Tone order is  positive tones, followed by
-PHY memory garbage, followed by negative tones. Dummy tones
-are uploaded to make number of tones always integer number
-of 64. Number of tones is not preamble type dependent.
+periodicity: Periodicity in ms at which CFR dump need to be collect
+	0 - single shot capture
+	non zero - for Periodic captures
 
-Each CFR tone has 14-bit I component and 14-bit Q component
-and is sign extended to 16-bit I/Q. Two tones are packed
-into one 64-bit unit as:
+mac_addr: mac address of the peer for which CFR capture is requested.
 
-[63:0] = [Tone1_Q(63:48) Tone1_I(47:32) Tone0_Q(31:16) Tone0_I(15:0)]
-
-CFR tail: end magic number 0xBEAFDEAD
-
-Tested-on: IPQ8074 WLAN.HK.2.5.0.1-00991-QCAHKSWPL_SILICONZ-1
-
-Venkateswara Naralasetty (6):
-  nl80211: vendor-cmd: qca: add command for CFR configuration
-  ath11k: CFR module initialization and deinitialization for IPQ8074
-  ath11k: register relayfs entries for CFR dump
-  ath11k: register vendor sub command for CFR configuration
-  ath11k: Register DBR event handler for CFR data
-  ath11k: Register handler for CFR capture event
-
+Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+---
 v2:
- * Fixed warnings reported by kernel test robot.
+ * Updated the commit log.
 
- drivers/net/wireless/ath/ath11k/Kconfig  |   9 +
- drivers/net/wireless/ath/ath11k/Makefile |   4 +-
- drivers/net/wireless/ath/ath11k/cfr.c    | 817 +++++++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/cfr.h    | 304 ++++++++++++
- drivers/net/wireless/ath/ath11k/core.c   |  35 ++
- drivers/net/wireless/ath/ath11k/core.h   |  17 +
- drivers/net/wireless/ath/ath11k/dbring.c |  33 +-
- drivers/net/wireless/ath/ath11k/dbring.h |   7 +
- drivers/net/wireless/ath/ath11k/debug.h  |   2 +
- drivers/net/wireless/ath/ath11k/hal.c    |   3 +-
- drivers/net/wireless/ath/ath11k/hw.h     |   5 +
- drivers/net/wireless/ath/ath11k/mac.c    |  18 +-
- drivers/net/wireless/ath/ath11k/vendor.c | 192 ++++++++
- drivers/net/wireless/ath/ath11k/vendor.h |  13 +
- drivers/net/wireless/ath/ath11k/wmi.c    | 148 +++++-
- drivers/net/wireless/ath/ath11k/wmi.h    |  97 +++-
- include/uapi/linux/nl80211-vnd-qca.h     | 104 ++++
- 17 files changed, 1792 insertions(+), 16 deletions(-)
- create mode 100644 drivers/net/wireless/ath/ath11k/cfr.c
- create mode 100644 drivers/net/wireless/ath/ath11k/cfr.h
- create mode 100644 drivers/net/wireless/ath/ath11k/vendor.c
- create mode 100644 drivers/net/wireless/ath/ath11k/vendor.h
+ include/uapi/linux/nl80211-vnd-qca.h | 104 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
  create mode 100644 include/uapi/linux/nl80211-vnd-qca.h
 
+diff --git a/include/uapi/linux/nl80211-vnd-qca.h b/include/uapi/linux/nl80211-vnd-qca.h
+new file mode 100644
+index 0000000..3c1158d
+--- /dev/null
++++ b/include/uapi/linux/nl80211-vnd-qca.h
+@@ -0,0 +1,104 @@
++/* SPDX-License-Identifier: ISC */
++/*
++ * Qualcomm Atheros OUI and vendor specific assignments
++ * Copyright (c) 2014-2017, Qualcomm Atheros, Inc.
++ * Copyright (c) 2018-2020, The Linux Foundation
++ * Copyright (c) 2021 Qualcomm Innovation Center, Inc. All rights
++ */
++
++#ifndef _UAPI_NL80211_VND_QCA_H
++#define _UAPI_NL80211_VND_QCA_H
++
++
++/* Vendor id to be used in vendor specific command and events to user space
++ * NOTE: The authoritative place for definition of QCA_NL80211_VENDOR_ID,
++ * vendor subcmd definitions prefixed with QCA_NL80211_VENDOR_SUBCMD, and
++ * qca_wlan_vendor_attr is open source file src/common/qca-vendor.h in
++ * git://w1.fi/srv/git/hostap.git; the values here are just a copy of that
++ */
++#define OUI_QCA 0x001374
++
++/**
++ * enum qca_nl80211_vendor_subcmds - QCA nl80211 vendor command identifiers
++ * @QCA_NL80211_VENDOR_SUBCMD_PEER_CFR_CAPTURE_CFG: This command is used to
++ * configure parameters per peer to capture Channel Frequency Response
++ * (CFR) and enable Periodic CFR capture. The attributes for this command
++ * are defined in enum qca_wlan_vendor_peer_cfr_capture_attr. This command
++ * can also be used to send CFR data from the driver to userspace when
++ * netlink events are used to send CFR data.
++ *
++ */
++enum qca_nl80211_vendor_subcmds {
++	QCA_NL80211_VENDOR_SUBCMD_PEER_CFR_CAPTURE_CFG = 173,
++};
++
++/**
++ * enum qca_wlan_vendor_cfr_method - QCA vendor CFR methods used by
++ * attribute QCA_WLAN_VENDOR_ATTR_PEER_CFR_METHOD as part of vendor
++ * command QCA_NL80211_VENDOR_SUBCMD_PEER_CFR_CAPTURE_CFG.
++ * @QCA_WLAN_VENDOR_CFR_METHOD_QOS_NULL: CFR method using QoS Null frame
++ * @QCA_WLAN_VENDOR_CFR_QOS_NULL_WITH_PHASE: CFR method using QoS Null frame
++ * with phase
++ * @QCA_WLAN_VENDOR_CFR_PROBE_RESPONSE: CFR method using Probe Response frame
++ */
++enum qca_wlan_vendor_cfr_method {
++	QCA_WLAN_VENDOR_CFR_METHOD_QOS_NULL = 0,
++	QCA_WLAN_VENDOR_CFR_QOS_NULL_WITH_PHASE = 1,
++	QCA_WLAN_VENDOR_CFR_PROBE_RESPONSE = 2,
++};
++
++/**
++ * enum qca_wlan_vendor_peer_cfr_capture_attr - Used by the vendor command
++ * QCA_NL80211_VENDOR_SUBCMD_PEER_CFR_CAPTURE_CFG to configure peer
++ * Channel Frequency Response capture parameters and enable periodic CFR
++ * capture.
++ *
++ * @QCA_WLAN_VENDOR_ATTR_CFR_PEER_MAC_ADDR: Optional (6-byte MAC address)
++ * MAC address of peer. This is for CFR version 1 only.
++ *
++ * @QCA_WLAN_VENDOR_ATTR_PEER_CFR_ENABLE: Required (flag)
++ * Enable peer CFR capture. This attribute is mandatory to enable peer CFR
++ * capture. If this attribute is not present, peer CFR capture is disabled.
++ *
++ * @QCA_WLAN_VENDOR_ATTR_PEER_CFR_BANDWIDTH: Optional (u8)
++ * BW of measurement, attribute uses the values in enum nl80211_chan_width
++ * Supported values: 20, 40, 80, 80+80, 160.
++ * Note that all targets may not support all bandwidths.
++ * This attribute is mandatory for version 1 if attribute
++ * QCA_WLAN_VENDOR_ATTR_PEER_CFR_ENABLE is used.
++ *
++ * @QCA_WLAN_VENDOR_ATTR_PEER_CFR_PERIODICITY: Optional (u32)
++ * Periodicity of CFR measurement in milliseconds.
++ * Periodicity should be a multiple of Base timer.
++ * Current Base timer value supported is 10 milliseconds (default).
++ * 0 for one shot capture.
++ * This attribute is mandatory for version 1 if attribute
++ * QCA_WLAN_VENDOR_ATTR_PEER_CFR_ENABLE is used.
++ *
++ * @QCA_WLAN_VENDOR_ATTR_PEER_CFR_METHOD: Optional (u8)
++ * Method used to capture Channel Frequency Response.
++ * Attribute uses the values defined in enum qca_wlan_vendor_cfr_method.
++ * This attribute is mandatory for version 1 if attribute
++ * QCA_WLAN_VENDOR_ATTR_PEER_CFR_ENABLE is used.
++ *
++ * @QCA_WLAN_VENDOR_ATTR_PERIODIC_CFR_CAPTURE_ENABLE: Optional (flag)
++ * Enable periodic CFR capture.
++ * This attribute is mandatory for version 1 to enable Periodic CFR capture.
++ * If this attribute is not present, periodic CFR capture is disabled.
++ */
++enum qca_wlan_vendor_peer_cfr_capture_attr {
++	QCA_WLAN_VENDOR_ATTR_PEER_CFR_CAPTURE_INVALID = 0,
++	QCA_WLAN_VENDOR_ATTR_CFR_PEER_MAC_ADDR = 1,
++	QCA_WLAN_VENDOR_ATTR_PEER_CFR_ENABLE = 2,
++	QCA_WLAN_VENDOR_ATTR_PEER_CFR_BANDWIDTH = 3,
++	QCA_WLAN_VENDOR_ATTR_PEER_CFR_PERIODICITY = 4,
++	QCA_WLAN_VENDOR_ATTR_PEER_CFR_METHOD = 5,
++	QCA_WLAN_VENDOR_ATTR_PERIODIC_CFR_CAPTURE_ENABLE = 6,
++
++	/* Keep last */
++	QCA_WLAN_VENDOR_ATTR_PEER_CFR_AFTER_LAST,
++	QCA_WLAN_VENDOR_ATTR_PEER_CFR_MAX =
++		QCA_WLAN_VENDOR_ATTR_PEER_CFR_AFTER_LAST - 1,
++};
++
++#endif /* QCA_VENDOR_H */
 -- 
 2.7.4
 
