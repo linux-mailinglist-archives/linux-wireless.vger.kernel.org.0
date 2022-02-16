@@ -2,50 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 806CD4B8C62
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 16:27:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2C5A4B9170
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 20:40:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234063AbiBPP1s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Feb 2022 10:27:48 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55192 "EHLO
+        id S237105AbiBPTkn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Feb 2022 14:40:43 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234028AbiBPP1s (ORCPT
+        with ESMTP id S238113AbiBPTkl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Feb 2022 10:27:48 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BE861A2767;
-        Wed, 16 Feb 2022 07:27:36 -0800 (PST)
+        Wed, 16 Feb 2022 14:40:41 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E52F128B636;
+        Wed, 16 Feb 2022 11:40:28 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 949F3B81F1D;
-        Wed, 16 Feb 2022 15:27:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329E5C004E1;
-        Wed, 16 Feb 2022 15:27:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FAE66185F;
+        Wed, 16 Feb 2022 19:40:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25AC4C004E1;
+        Wed, 16 Feb 2022 19:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645025253;
-        bh=VcAdSWqdU/WSmMty8G3/WlfT7f658+1Q8omlAuQMkC0=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=m67A9rtEOpND/7uAPUgyMOibcmovBWl2dpobopl/r/naQM0fQv6fLAFqGrsBysszo
-         eyNn7INS6bld5PsL/jmoiCqhQWYGdpcCiXpozx720F7YWx4P7BGUhakG+BCBH9Siul
-         F8drJlLGC61BPH30w7vu8jnzgGI03TiKmfDQCpNhFO8FynO82Ze1NOGvq1O4stE+ol
-         ubqcUTac4l9WD5D9mnKzFieinbyvdLdM6JT4MlJRR2Fawm7XeFr4Pqz9CFLeRg4rYf
-         kk8VopIHvln52n1mDhnr+Y/PXN9/tOUKpfHRNc8r3u56n3et86kygCojjKOY2yti2L
-         OOje6bm9Mp1bQ==
-Date:   Wed, 16 Feb 2022 16:27:30 +0100 (CET)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: [PATCH] rtw89: fix RCU usage in rtw89_core_txq_push() (was Re:
- [PATCH] mac80211: fix RCU usage in ieee80211_tx_h_select_key())
-In-Reply-To: <87r1849h0w.fsf@tynnyri.adurom.net>
-Message-ID: <nycvar.YFH.7.76.2202161626550.11721@cbobk.fhfr.pm>
-References: <nycvar.YFH.7.76.2202151643220.11721@cbobk.fhfr.pm> <af6abf72593074c007fe42205e941dabfd08bf3a.camel@sipsolutions.net> <nycvar.YFH.7.76.2202151700540.11721@cbobk.fhfr.pm> <87r1849h0w.fsf@tynnyri.adurom.net>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        s=k20201202; t=1645040427;
+        bh=AujISKMm3XyoLDMIk3p5HcFU3+0xU5+dA8Sed0Hwfw4=;
+        h=Date:From:To:Cc:Subject:From;
+        b=DpvHL5oep/tbOSM43uv3wRPdV5n/OJQ1B54+iJliGGdBY8yE/VMr6HdLqbb07ao0c
+         bdLaAtj6s4O5Yxc936mJ8AnfBV3ZXbCfsuto2JVwSO+lhuPTeNZrSh3OdChv+vzknM
+         nQDxWR9ZljvdQ0SGs8Oru2UUxZmJ0MtpavUPPTr7NIeOnIJCgLJ0KUWeLvy3XXeZyw
+         L4h2s+bEO239hNdhpjjniVbl3f+4gbfToAwaIx3Q/GutKHZULCrOYSxVncGnfvul3r
+         ECJtOkpiYUSxN+u8WRALtHetDwxfX0CJTOE5ZHxJBR+zemFB2mTNfKnbxTojURbeVg
+         9up2hYvs90PNQ==
+Date:   Wed, 16 Feb 2022 13:48:07 -0600
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
+Subject: [PATCH][next] ath10k: Replace zero-length array with flexible-array
+ member
+Message-ID: <20220216194807.GA904008@embeddedor>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -56,22 +58,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 15 Feb 2022, Kalle Valo wrote:
+There is a regular need in the kernel to provide a way to declare
+having a dynamically sized set of trailing elements in a structure.
+Kernel code should always use “flexible array members”[1] for these
+cases. The older style of one-element or zero-length arrays should
+no longer be used[2].
 
-> I think we have discussed this before, but patchwork can't handle
-> patches the way you embed them in email discussions:
-> 
-> https://patchwork.kernel.org/project/linux-wireless/patch/nycvar.YFH.7.76.2202151700540.11721@cbobk.fhfr.pm/
-> 
-> Please resubmit.
+[1] https://en.wikipedia.org/wiki/Flexible_array_member
+[2] https://www.kernel.org/doc/html/v5.16/process/deprecated.html#zero-length-and-one-element-arrays
 
-Ok, I've resubmitted in a separate thread
+Link: https://github.com/KSPP/linux/issues/78
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ drivers/net/wireless/ath/ath10k/swap.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	https://lore.kernel.org/r/nycvar.YFH.7.76.2202152037000.11721@cbobk.fhfr.pm
-
-Thanks,
-
+diff --git a/drivers/net/wireless/ath/ath10k/swap.h b/drivers/net/wireless/ath/ath10k/swap.h
+index 25e0ad36ddb1..b4733b5ded34 100644
+--- a/drivers/net/wireless/ath/ath10k/swap.h
++++ b/drivers/net/wireless/ath/ath10k/swap.h
+@@ -17,7 +17,7 @@ struct ath10k_fw_file;
+ struct ath10k_swap_code_seg_tlv {
+ 	__le32 address;
+ 	__le32 length;
+-	u8 data[0];
++	u8 data[];
+ } __packed;
+ 
+ struct ath10k_swap_code_seg_tail {
 -- 
-Jiri Kosina
-SUSE Labs
+2.27.0
 
