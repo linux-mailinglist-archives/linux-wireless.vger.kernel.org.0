@@ -2,123 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BAA64B7E57
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 04:15:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2A7B4B8038
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 06:32:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243930AbiBPDNz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Feb 2022 22:13:55 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52924 "EHLO
+        id S233990AbiBPFcL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Feb 2022 00:32:11 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236446AbiBPDNy (ORCPT
+        with ESMTP id S230002AbiBPFcL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Feb 2022 22:13:54 -0500
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2042CA32A;
-        Tue, 15 Feb 2022 19:13:42 -0800 (PST)
-Received: by mail-pf1-x431.google.com with SMTP id l19so1031005pfu.2;
-        Tue, 15 Feb 2022 19:13:42 -0800 (PST)
+        Wed, 16 Feb 2022 00:32:11 -0500
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03DD974629
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 21:31:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=9cauhw4HdG0CAFmvrug/PoHbP3oDfg44byQLiUdi3IA=;
-        b=II7Li7EiHZML6ng8myu8Bn6vcSrX67bfF2vBk4wc4WvdJCbvrDVmPafa/rE+dMpd9s
-         UT6KFEh00LL0Vn6ihtvb85AJGagbTC6gp7Tuea0cYMCLscO17k8CsiYWYKAJ1+rOeuRz
-         xrP+hvI/K4eJqK5l5BV2+8RgjziyT26Gm/OEYsPsjreP3p7glL/aKGeytGw8GwDL99Yy
-         PC1OQRt+McPVtc2uJk8yxNNJe3AGTld9MANGhA6/hCUn6e+HXE4aqzcONepyNfN0SeUh
-         XdivCaljb9W4d3r85HJVDStLRrFu4Dmt9uoAR6iYbnLYspU9V25/Qz764MWdw65LC9vz
-         5r3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=9cauhw4HdG0CAFmvrug/PoHbP3oDfg44byQLiUdi3IA=;
-        b=IjMA9HGNhkMqHd6OGg0oSyT1jHGa8JAoD3aBg2UoEQyGJ+skYhAoInGNBnCjo2sUtH
-         k5ZpiwkASkv7ouj/zbz9lUXT2i3rEq7vY0pFD0HGhdlAA8IdmYZ4W0755iwdkXd+BEL4
-         dGSX3KcTv3EcZ3baK6NH3nN92aHPXPgm3HDXLvH3wbMLe8OTIcfzh9tsnLNgteip7sA3
-         NBZHMSaqPxG+qtQjgThcbf+WNUfZbr39gV0h5dIasYfkC+nzPWVWH2rE3QGjCwwd5nDe
-         LIvrC709iWYPIlLngfjO2vhQrq0loruFN1r4qIvjUgJx94RvWS2p9kEjFupouBUnNyFp
-         U6dg==
-X-Gm-Message-State: AOAM533N2C+dcXyu600xYri6mLfLRVTiLR71RCEU/5zGhF8bKRH3BJTE
-        CsMx29C6fUTRU38HoOGshro=
-X-Google-Smtp-Source: ABdhPJzgIwpx5SOWmR9b7r+xKKnrCRG7ayfwffy+WjYebdbNErLoxcZUZue1e4sqwqQDwmYWQ6wWmw==
-X-Received: by 2002:a63:5c22:0:b0:34e:1a4:3bc with SMTP id q34-20020a635c22000000b0034e01a403bcmr584463pgb.487.1644981222318;
-        Tue, 15 Feb 2022 19:13:42 -0800 (PST)
-Received: from ?IPV6:2600:8802:b00:4a48:fd58:13e6:31bf:9336? ([2600:8802:b00:4a48:fd58:13e6:31bf:9336])
-        by smtp.gmail.com with ESMTPSA id s1sm18462315pjr.56.2022.02.15.19.13.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Feb 2022 19:13:41 -0800 (PST)
-Message-ID: <5c23585b-7865-54fb-3835-12e58a7aee46@gmail.com>
-Date:   Tue, 15 Feb 2022 19:13:39 -0800
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1644989516; x=1676525516;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OsZxbmtuZ0hIT8EUvgiP9BjuG52mFcYwJTKkOqTjpME=;
+  b=F6/MyQViZBk2Ts4xNNWw19Zeh91NoCTQDZUAk/puGurJ9MepS3gkRU5L
+   yh7/68NVDCzuO30vWDJDEKX4JWUX2hVEZhn6j6gJ40+eG3ryQfG37kR5j
+   3rEyIZzVRRCXZanGlVvge+MARf6+HOHpIS0yFsgj9koQzQAxnbdZXunmf
+   0=;
+Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 15 Feb 2022 21:31:56 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2022 21:31:56 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.15; Tue, 15 Feb 2022 21:31:56 -0800
+Received: from alokad-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Tue, 15 Feb 2022 21:31:55 -0800
+From:   Aloka Dixit <quic_alokad@quicinc.com>
+To:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
+CC:     Aloka Dixit <quic_alokad@quicinc.com>
+Subject: [PATCH 0/3] Support for EHT elements in AP mode
+Date:   Tue, 15 Feb 2022 21:31:42 -0800
+Message-ID: <20220216053145.20898-1-quic_alokad@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH v2] ath9k: use hw_random API instead of directly dumping
- into random.c
-Content-Language: en-US
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>, miaoqing@codeaurora.org,
-        rsalvaterra@gmail.com,
-        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
-        "Sepehrdad, Pouyan" <pouyans@qti.qualcomm.com>,
-        ath9k-devel <ath9k-devel@qca.qualcomm.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>
-Cc:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>
-References: <CAHmME9pZaYW-p=zU4v96TjeSijm-g03cNpvUJcNvhOqh5v+Lwg@mail.gmail.com>
- <20220216000230.22625-1-Jason@zx2c4.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20220216000230.22625-1-Jason@zx2c4.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Add support to store pointers to EHT capabilities and operation
+elements received in the beacon template for AP mode.
+
+This patch-set is based on top of following patch-set for the
+definition of WLAN_EID_EXT_EHT_CAPABILITY:
+https://patchwork.kernel.org/project/linux-wireless/list/?series=613209&state=%2A&archive=both
+
+Patch 1/3 is taken from
+https://patchwork.kernel.org/project/linux-wireless/patch/1640163883-12696-4-git-send-email-quic_vjakkam@quicinc.com/
+
+Aloka Dixit (2):
+  nl80211: retrieve EHT operation element in AP mode
+  mac80211: EHT operation element support in AP mode
+
+Vikram Kandukuri (1):
+  nl80211: retrieve EHT capabilities in AP mode
+
+ include/net/cfg80211.h     |  4 ++++
+ include/net/mac80211.h     |  7 +++++++
+ net/mac80211/cfg.c         |  8 ++++++++
+ net/mac80211/eht.c         | 11 +++++++++++
+ net/mac80211/ieee80211_i.h |  2 ++
+ net/wireless/nl80211.c     |  6 ++++++
+ 6 files changed, 38 insertions(+)
 
 
-On 2/15/2022 4:02 PM, Jason A. Donenfeld wrote:
-> Hardware random number generators are supposed to use the hw_random
-> framework. This commit turns ath9k's kthread-based design into a proper
-> hw_random driver.
-> 
-> This compiles, but I have no hardware or other ability to determine
-> whether it works. I'll leave further development up to the ath9k
-> and hw_random maintainers.
-> 
-> Cc: Toke Høiland-Jørgensen <toke@redhat.com>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: Dominik Brodowski <linux@dominikbrodowski.net>
-> Cc: Herbert Xu <herbert@gondor.apana.org.au>
-> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> ---
-
-[snip]
-
->   	if (!AR_SREV_9300_20_OR_LATER(ah))
->   		return;
->   
-> -	sc->rng_task = kthread_run(ath9k_rng_kthread, sc, "ath9k-hwrng");
-> -	if (IS_ERR(sc->rng_task))
-> -		sc->rng_task = NULL;
-> +	sc->rng_ops.name = "ath9k";
-
-You will have to give this instance an unique name because there can be 
-multiple ath9k adapters registered in a given system (like Wi-Fi 
-routers), and one of the first thing hwrng_register() does is ensure 
-that there is not an existing rng with the same name.
-
-Maybe using a combination of ath9k + dev_name() ought to be unique enough?
+base-commit: 8aaaf2f3af2ae212428f4db1af34214225f5cec3
+prerequisite-patch-id: 328a8dc53fc4ed611094648f8354ea51a220a469
+prerequisite-patch-id: 9f6778fe7023b0f4d103e206ed80cb3074c4e4f9
+prerequisite-patch-id: 40aa2131e1529282c8099c4e270155292802f4ff
+prerequisite-patch-id: c9db940e5649f3586357ee608d24f518a7fadb00
+prerequisite-patch-id: edb4a64395858a174dd6ad739cf065f4092f2da1
+prerequisite-patch-id: eeacae90f17719f5546e53cd04082849491dcfc2
+prerequisite-patch-id: b5c0bb8119aa46b6aba653fa60c173c6546556e0
+prerequisite-patch-id: 4a58f779c257d9191efe94a7283c59eff683f7c3
+prerequisite-patch-id: fd4e44527c2965ae943c68c7c96bde33777bde59
+prerequisite-patch-id: 6c8a84b6e8e3a5c317ec3410d9f99b06a779304d
+prerequisite-patch-id: f7e51eb9ee4da52a5f79248f0314ef23db3333bc
+prerequisite-patch-id: eb4c3cfd53903f093f233af6bf00b88acab86595
+prerequisite-patch-id: 7d85d1f530c496da1ad6769c59f8524f58edfca9
+prerequisite-patch-id: ff5183a0e028a1041700c32992eb18a13dc2de8b
+prerequisite-patch-id: 159188202e4afc341f8a566d45cdf2e2afcb2d2e
+prerequisite-patch-id: e69273ed8e6c0cebb8288230fc781f345663035d
+prerequisite-patch-id: 06cfb4718beb6d69f078744feef1b6b897fad0aa
+prerequisite-patch-id: d17f643739d565fca4d8f9139da0083d522647ed
+prerequisite-patch-id: bb5917bb77a3de7b6804d25b56043ff26184d49d
 -- 
-Florian
+2.31.1
+
