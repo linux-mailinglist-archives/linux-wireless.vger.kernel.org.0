@@ -2,152 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96CD64B8037
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 06:32:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C25934B804D
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 06:49:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344596AbiBPFcN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Feb 2022 00:32:13 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:47006 "EHLO
+        id S1344625AbiBPFig (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Feb 2022 00:38:36 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230002AbiBPFcM (ORCPT
+        with ESMTP id S230002AbiBPFif (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Feb 2022 00:32:12 -0500
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B89FE7B54B
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 21:32:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1644989520; x=1676525520;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gwmYX1eeWslYyE2ZWz0TtBsoBANU3fW2bwAIzs4igpA=;
-  b=nDN0YvuS4bb01PPP2x2Brh2kcKtviUC2ISR7agP7fVhW+1VXj2/A7q8n
-   3yctSpMV44209nIISRFwPWCHkcYVstmE+UqSb3Is2bXQI0GygxqcvaQtO
-   BCDy73sNgh7CKAybRpJ5pH/Wftc2OE4vGPUnRTPl9OnlZP/0/r0CFHGdx
-   M=;
-Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 15 Feb 2022 21:31:58 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2022 21:31:58 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Tue, 15 Feb 2022 21:31:57 -0800
-Received: from alokad-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 15 Feb 2022 21:31:56 -0800
-From:   Aloka Dixit <quic_alokad@quicinc.com>
-To:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
-CC:     Aloka Dixit <quic_alokad@quicinc.com>
-Subject: [PATCH 3/3] mac80211: EHT operation element support in AP mode
-Date:   Tue, 15 Feb 2022 21:31:45 -0800
-Message-ID: <20220216053145.20898-4-quic_alokad@quicinc.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220216053145.20898-1-quic_alokad@quicinc.com>
-References: <20220216053145.20898-1-quic_alokad@quicinc.com>
+        Wed, 16 Feb 2022 00:38:35 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A9A7B8236;
+        Tue, 15 Feb 2022 21:38:23 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F829619FC;
+        Wed, 16 Feb 2022 05:38:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5EEC340E8;
+        Wed, 16 Feb 2022 05:38:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644989902;
+        bh=P7No01mWTKTK8n7XDrHDJxfmk9w1GcNv6CSOAUyAhM8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=cJ7R+z9PZat/2UJpKAXS/9gITtDX2by/uEFgAoBc8g/SB1OnjJ1uNI1qHGadq8LRX
+         N0u/xHxg1x+aG2v+u2LtlSFP+FMEidRMdgjtPYcOwjDMKr6xOz9aKxBqc/eJZsc2HS
+         b1nYfY/JZhz1+TZMTJczVQVvjTSEysQiwXlnqVRmQbR6qNwC29RKXYq0FBGi+M369I
+         q8nkO6ZfQahcclabOmzoWFL9upUirIkNjhpmNZQWQ83nlsL6P2Qs77oWpBOK4IcWtR
+         Cjx0UNmbZcBwasm1dsIBd8Kxhwm9WDuOVURK9kq0I7jFrsbm3UGRFrvhHZOx36NaNR
+         7TSEzEZfU/ouQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     miaoqing@codeaurora.org, rsalvaterra@gmail.com,
+        Toke =?utf-8?Q?H?= =?utf-8?Q?=C3=B8iland-J=C3=B8rgensen?= 
+        <toke@toke.dk>, "Sepehrdad\, Pouyan" <pouyans@qti.qualcomm.com>,
+        ath9k-devel <ath9k-devel@qca.qualcomm.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Subject: Re: [PATCH v2] ath9k: use hw_random API instead of directly dumping into random.c
+References: <CAHmME9pZaYW-p=zU4v96TjeSijm-g03cNpvUJcNvhOqh5v+Lwg@mail.gmail.com>
+        <20220216000230.22625-1-Jason@zx2c4.com>
+Date:   Wed, 16 Feb 2022 07:38:17 +0200
+In-Reply-To: <20220216000230.22625-1-Jason@zx2c4.com> (Jason A. Donenfeld's
+        message of "Wed, 16 Feb 2022 01:02:30 +0100")
+Message-ID: <87mtir9xrq.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add new parameters to struct ieee80211_bss_conf for EHT operation
-element data in AP mode.
+"Jason A. Donenfeld" <Jason@zx2c4.com> writes:
 
-Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
----
- include/net/mac80211.h     |  7 +++++++
- net/mac80211/cfg.c         |  8 ++++++++
- net/mac80211/eht.c         | 11 +++++++++++
- net/mac80211/ieee80211_i.h |  2 ++
- 4 files changed, 28 insertions(+)
+> Hardware random number generators are supposed to use the hw_random
+> framework. This commit turns ath9k's kthread-based design into a proper
+> hw_random driver.
+>
+> This compiles, but I have no hardware or other ability to determine
+> whether it works. I'll leave further development up to the ath9k
+> and hw_random maintainers.
+>
+> Cc: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: Dominik Brodowski <linux@dominikbrodowski.net>
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index e584a3998d2c..e7e3b31a4c75 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -637,6 +637,8 @@ struct ieee80211_fils_discovery {
-  * @tx_pwr_env_num: number of @tx_pwr_env.
-  * @pwr_reduction: power constraint of BSS.
-  * @eht_support: does this BSS support EHT
-+ * @eht_oper: EHT operation information of the BSS (AP/Mesh) or of the AP we
-+ *	are connected to (STA).
-  */
- struct ieee80211_bss_conf {
- 	const u8 *bssid;
-@@ -712,6 +714,11 @@ struct ieee80211_bss_conf {
- 	u8 tx_pwr_env_num;
- 	u8 pwr_reduction;
- 	bool eht_support;
-+	struct {
-+		u8 chan_width;
-+		u8 ccfs;
-+		u8 present_bm;
-+	} eht_oper;
- };
- 
- /**
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index aa45627a4208..4227236dd5ba 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1137,6 +1137,14 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 			changed |= BSS_CHANGED_HE_BSS_COLOR;
- 	}
- 
-+	if (params->eht_cap && params->eht_oper) {
-+		if (!sdata->vif.bss_conf.he_support)
-+			return -EOPNOTSUPP;
-+
-+		sdata->vif.bss_conf.eht_support = true;
-+		ieee80211_eht_op_ie_to_bss_conf(&sdata->vif, params->eht_oper);
-+	}
-+
- 	if (sdata->vif.type == NL80211_IFTYPE_AP &&
- 	    params->mbssid_config.tx_wdev) {
- 		err = ieee80211_set_ap_mbssid_options(sdata,
-diff --git a/net/mac80211/eht.c b/net/mac80211/eht.c
-index 364ad0ef7692..243dfcfaf7b2 100644
---- a/net/mac80211/eht.c
-+++ b/net/mac80211/eht.c
-@@ -74,3 +74,14 @@ ieee80211_eht_cap_ie_to_sta_eht_cap(struct ieee80211_sub_if_data *sdata,
- 	sta->cur_max_bandwidth = ieee80211_sta_cap_rx_bw(sta);
- 	sta->sta.bandwidth = ieee80211_sta_cur_vht_bw(sta);
- }
-+
-+void ieee80211_eht_op_ie_to_bss_conf(struct ieee80211_vif *vif,
-+				     const struct ieee80211_eht_operation *op_ie)
-+{
-+	if (!op_ie)
-+		return;
-+
-+	vif->bss_conf.eht_oper.chan_width = op_ie->chan_width;
-+	vif->bss_conf.eht_oper.ccfs = op_ie->ccfs;
-+	vif->bss_conf.eht_oper.present_bm = op_ie->present_bm;
-+}
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 00d5bd6013c2..2f1261ebe94d 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2532,4 +2532,6 @@ ieee80211_eht_cap_ie_to_sta_eht_cap(struct ieee80211_sub_if_data *sdata,
- 				    const u8 *he_cap_ie, u8 he_cap_len,
- 				    const struct ieee80211_eht_cap_elem *eht_cap_ie_elem,
- 				    u8 eht_cap_len, struct sta_info *sta);
-+void ieee80211_eht_op_ie_to_bss_conf(struct ieee80211_vif *vif,
-+				     const struct ieee80211_eht_operation *eht_op);
- #endif /* IEEE80211_I_H */
--- 
-2.31.1
+[...]
 
+> +retry:
+> +	if (max & ~3UL)
+> +		bytes_read =3D ath9k_rng_data_read(sc, buf, max >> 2);
+> +	if ((max & 3UL) && ath9k_rng_data_read(sc, &word, 1)) {
+> +		memcpy(buf + bytes_read, &word, max & 3);
+> +		bytes_read +=3D max & 3;
+> +		memzero_explicit(&word, sizeof(word));
+> +	}
+> +	if (max && unlikely(!bytes_read) && wait) {
+> +		msleep(ath9k_rng_delay_get(++fail_stats));
+> +		goto retry;
+>  	}
+
+Wouldn't a while loop be cleaner? With a some kind limit for the number
+of loops, to avoid a neverending loop.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
