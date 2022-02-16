@@ -2,68 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 911544B7E3F
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 04:15:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BAA64B7E57
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 04:15:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344049AbiBPDJD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Feb 2022 22:09:03 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:37628 "EHLO
+        id S243930AbiBPDNz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Feb 2022 22:13:55 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244275AbiBPDJA (ORCPT
+        with ESMTP id S236446AbiBPDNy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Feb 2022 22:09:00 -0500
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91B339A995;
-        Tue, 15 Feb 2022 19:08:49 -0800 (PST)
-Received: by mail-qt1-x82f.google.com with SMTP id z1so902444qto.3;
-        Tue, 15 Feb 2022 19:08:49 -0800 (PST)
+        Tue, 15 Feb 2022 22:13:54 -0500
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2042CA32A;
+        Tue, 15 Feb 2022 19:13:42 -0800 (PST)
+Received: by mail-pf1-x431.google.com with SMTP id l19so1031005pfu.2;
+        Tue, 15 Feb 2022 19:13:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=qOLF11S1JYYqI6U+47HSETo9eTx5Je60O4tiRPf5gE0=;
-        b=F1Qs45oCqOfVCG1pK8MitXaZcjoqD/I6qi0sZUEHm1CZfNhGlgexPj5QTdHh6k/9+c
-         bhDFvT3XKe9ChamSboywP4z1kmqwSZrC9jr8JYkBbk2xPmKLDFrMOljIw5TdbPCgnGbk
-         7mOvOpmGzsuPW9Q71I9lFNsrS6noWeBCv9ibA5+hmDSsF40UMnTJE/n893BpBtSjOMx4
-         vCwH4KWhSx0azYtR3qZXyDr+g0Yi3pLa894QT82fsFrlUatytcwaKAkV58vRyfG4sfmu
-         CtXU/DXTIJa7WMwOQBZdCLlT0IfladoT4jeh4DzCW4wamMFcTghQ3kDCScmjRQGOgWIg
-         wE/A==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=9cauhw4HdG0CAFmvrug/PoHbP3oDfg44byQLiUdi3IA=;
+        b=II7Li7EiHZML6ng8myu8Bn6vcSrX67bfF2vBk4wc4WvdJCbvrDVmPafa/rE+dMpd9s
+         UT6KFEh00LL0Vn6ihtvb85AJGagbTC6gp7Tuea0cYMCLscO17k8CsiYWYKAJ1+rOeuRz
+         xrP+hvI/K4eJqK5l5BV2+8RgjziyT26Gm/OEYsPsjreP3p7glL/aKGeytGw8GwDL99Yy
+         PC1OQRt+McPVtc2uJk8yxNNJe3AGTld9MANGhA6/hCUn6e+HXE4aqzcONepyNfN0SeUh
+         XdivCaljb9W4d3r85HJVDStLRrFu4Dmt9uoAR6iYbnLYspU9V25/Qz764MWdw65LC9vz
+         5r3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=qOLF11S1JYYqI6U+47HSETo9eTx5Je60O4tiRPf5gE0=;
-        b=kpursKgneL6lpAp+PTCZ4L6OgUnCd/+ZmT9MgHzueAJ4w3Rinq5gzve3fB8Sp153uU
-         dcY+ppPmZ0NYK79LEoJutrkl79UYmHGl7wWp0MHcbaA53IBAYrU6zryFzI3hYTsEoHM7
-         p+r4ZxIn8vYMi1nvLjI3ODa9zWymHyGSG9qO5W0U9SP6yz1FkiNq1095mO8PwX9m12DM
-         O053S3zJFsqwEoeen1Jha/Bo7Bo7vVL9zj/ZiOgnEkO6mlkJfqvKUvoFK5xTHDA91VSP
-         Dl3q51x8uqK2oSHVU4WVuull+0wPyXW8rKq7ZfQ8XTQsgBxDu5bmLatugPDbgnuDYBZF
-         n2nQ==
-X-Gm-Message-State: AOAM530/2i1veHrlHgS1lH6wPVUl0lLq4byrR0YdruSBar6WQ3SwumAg
-        dYs9tyw2DDc9kgZlbFGSah9z7UjmB2A=
-X-Google-Smtp-Source: ABdhPJzCuayH5llcDXbdAsMnv3WZRFRU1DK5ovyk41ujPwvMo8cfEYp4qQAb0nunIgHHtQzRz7KlfQ==
-X-Received: by 2002:ac8:7f50:0:b0:2da:74a3:c548 with SMTP id g16-20020ac87f50000000b002da74a3c548mr733829qtk.622.1644980928790;
-        Tue, 15 Feb 2022 19:08:48 -0800 (PST)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id h23sm838898qto.36.2022.02.15.19.08.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Feb 2022 19:08:48 -0800 (PST)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: chi.minghao@zte.com.cn
-To:     kvalo@kernel.org
-Cc:     luciano.coelho@intel.com, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Minghao Chi (CGEL ZTE)" <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] iwlwifi/fw: use struct_size over open coded arithmetic
-Date:   Wed, 16 Feb 2022 03:08:41 +0000
-Message-Id: <20220216030841.1839666-1-chi.minghao@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        bh=9cauhw4HdG0CAFmvrug/PoHbP3oDfg44byQLiUdi3IA=;
+        b=IjMA9HGNhkMqHd6OGg0oSyT1jHGa8JAoD3aBg2UoEQyGJ+skYhAoInGNBnCjo2sUtH
+         k5ZpiwkASkv7ouj/zbz9lUXT2i3rEq7vY0pFD0HGhdlAA8IdmYZ4W0755iwdkXd+BEL4
+         dGSX3KcTv3EcZ3baK6NH3nN92aHPXPgm3HDXLvH3wbMLe8OTIcfzh9tsnLNgteip7sA3
+         NBZHMSaqPxG+qtQjgThcbf+WNUfZbr39gV0h5dIasYfkC+nzPWVWH2rE3QGjCwwd5nDe
+         LIvrC709iWYPIlLngfjO2vhQrq0loruFN1r4qIvjUgJx94RvWS2p9kEjFupouBUnNyFp
+         U6dg==
+X-Gm-Message-State: AOAM533N2C+dcXyu600xYri6mLfLRVTiLR71RCEU/5zGhF8bKRH3BJTE
+        CsMx29C6fUTRU38HoOGshro=
+X-Google-Smtp-Source: ABdhPJzgIwpx5SOWmR9b7r+xKKnrCRG7ayfwffy+WjYebdbNErLoxcZUZue1e4sqwqQDwmYWQ6wWmw==
+X-Received: by 2002:a63:5c22:0:b0:34e:1a4:3bc with SMTP id q34-20020a635c22000000b0034e01a403bcmr584463pgb.487.1644981222318;
+        Tue, 15 Feb 2022 19:13:42 -0800 (PST)
+Received: from ?IPV6:2600:8802:b00:4a48:fd58:13e6:31bf:9336? ([2600:8802:b00:4a48:fd58:13e6:31bf:9336])
+        by smtp.gmail.com with ESMTPSA id s1sm18462315pjr.56.2022.02.15.19.13.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Feb 2022 19:13:41 -0800 (PST)
+Message-ID: <5c23585b-7865-54fb-3835-12e58a7aee46@gmail.com>
+Date:   Tue, 15 Feb 2022 19:13:39 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [PATCH v2] ath9k: use hw_random API instead of directly dumping
+ into random.c
+Content-Language: en-US
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>, miaoqing@codeaurora.org,
+        rsalvaterra@gmail.com,
+        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
+        "Sepehrdad, Pouyan" <pouyans@qti.qualcomm.com>,
+        ath9k-devel <ath9k-devel@qca.qualcomm.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>
+Cc:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>
+References: <CAHmME9pZaYW-p=zU4v96TjeSijm-g03cNpvUJcNvhOqh5v+Lwg@mail.gmail.com>
+ <20220216000230.22625-1-Jason@zx2c4.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20220216000230.22625-1-Jason@zx2c4.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -72,30 +86,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: "Minghao Chi (CGEL ZTE)" <chi.minghao@zte.com.cn>
 
-Replace zero-length array with flexible-array member and make use
-of the struct_size() helper in kzalloc().
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
----
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 2/15/2022 4:02 PM, Jason A. Donenfeld wrote:
+> Hardware random number generators are supposed to use the hw_random
+> framework. This commit turns ath9k's kthread-based design into a proper
+> hw_random driver.
+> 
+> This compiles, but I have no hardware or other ability to determine
+> whether it works. I'll leave further development up to the ath9k
+> and hw_random maintainers.
+> 
+> Cc: Toke Høiland-Jørgensen <toke@redhat.com>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: Dominik Brodowski <linux@dominikbrodowski.net>
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+> ---
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 7ad9cee925da..b147d38033d8 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -2589,7 +2589,7 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
- 		delay = le32_to_cpu(trigger->stop_delay) * USEC_PER_MSEC;
- 	}
- 
--	desc = kzalloc(sizeof(*desc) + len, GFP_ATOMIC);
-+	desc = kzalloc(struct_size(desc, trig_desc.data, len), GFP_ATOMIC);
- 	if (!desc)
- 		return -ENOMEM;
- 
+[snip]
+
+>   	if (!AR_SREV_9300_20_OR_LATER(ah))
+>   		return;
+>   
+> -	sc->rng_task = kthread_run(ath9k_rng_kthread, sc, "ath9k-hwrng");
+> -	if (IS_ERR(sc->rng_task))
+> -		sc->rng_task = NULL;
+> +	sc->rng_ops.name = "ath9k";
+
+You will have to give this instance an unique name because there can be 
+multiple ath9k adapters registered in a given system (like Wi-Fi 
+routers), and one of the first thing hwrng_register() does is ensure 
+that there is not an existing rng with the same name.
+
+Maybe using a combination of ath9k + dev_name() ought to be unique enough?
 -- 
-2.25.1
-
+Florian
