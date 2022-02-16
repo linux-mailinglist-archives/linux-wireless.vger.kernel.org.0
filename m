@@ -2,201 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4D414B7BE2
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 01:27:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5AA64B7BFE
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 01:38:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240744AbiBPA1s convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Feb 2022 19:27:48 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:47940 "EHLO
+        id S240231AbiBPAiM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Feb 2022 19:38:12 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:45246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232793AbiBPA1s (ORCPT
+        with ESMTP id S235223AbiBPAiL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Feb 2022 19:27:48 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A4D019C28
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 16:27:35 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 21G0R7mzC019869, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 21G0R7mzC019869
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 16 Feb 2022 08:27:07 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Wed, 16 Feb 2022 08:27:07 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Wed, 16 Feb 2022 08:27:06 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e]) by
- RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e%5]) with mapi id
- 15.01.2308.020; Wed, 16 Feb 2022 08:27:06 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Jiri Kosina <jkosina@suse.cz>, Kalle Valo <kvalo@kernel.org>
-CC:     Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] rtw89: fix RCU usage in rtw89_core_txq_push()
-Thread-Topic: [PATCH] rtw89: fix RCU usage in rtw89_core_txq_push()
-Thread-Index: AQHYIqOb6vwbbBNtV0K4EdeAWNx0VKyVUlUQ
-Date:   Wed, 16 Feb 2022 00:27:06 +0000
-Message-ID: <58fa5d4b7d794228ad45485ec5b979df@realtek.com>
-References: <nycvar.YFH.7.76.2202152037000.11721@cbobk.fhfr.pm>
-In-Reply-To: <nycvar.YFH.7.76.2202152037000.11721@cbobk.fhfr.pm>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/2/15_=3F=3F_02:07:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Tue, 15 Feb 2022 19:38:11 -0500
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81A0F2B263
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 16:38:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1644971880; x=1676507880;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=Arrbd2Ykpy56L/skI75TlgsKaz3/6MKmznLIvckiGgU=;
+  b=FR2gRfHhzm+ZK+Zu+jYh1qPTZydhEmCRkEKgKufWDIYZhOP4fXipT5B4
+   MS/IVcIRrcPVL98kxYoNdZH9F4jfO5FBVYMkeFDiBf5lhaJ7hFY2Bb+4J
+   INgK6lVzf3uuSZPyii61DzADxIHWJppMfWePm7ZuXl5bbEHf8L9kRuihb
+   8=;
+Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
+  by alexa-out.qualcomm.com with ESMTP; 15 Feb 2022 16:38:00 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2022 16:38:01 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.15; Tue, 15 Feb 2022 16:37:59 -0800
+Received: from [10.110.76.85] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Tue, 15 Feb
+ 2022 16:37:59 -0800
+Message-ID: <6cf56be5-16d6-2bcd-150f-bf29f98b7f1b@quicinc.com>
+Date:   Tue, 15 Feb 2022 16:37:58 -0800
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [PATCH 2/3] cfg80211: validate RU puncturing bitmap
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+References: <20220214223051.3610-1-quic_alokad@quicinc.com>
+ <20220214223051.3610-3-quic_alokad@quicinc.com>
+ <a9813545a25cd63f71cc31476230514a80350802.camel@sipsolutions.net>
+From:   Aloka Dixit <quic_alokad@quicinc.com>
+In-Reply-To: <a9813545a25cd63f71cc31476230514a80350802.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 2/15/2022 12:19 AM, Johannes Berg wrote:
+> On Mon, 2022-02-14 at 14:30 -0800, Aloka Dixit wrote:
+>>
+>> +
+>> +bool cfg80211_ru_punct_bitmap_valid(const struct cfg80211_chan_def *chandef)
+>>
+> 
+> Heh. We wrote basically the same code just the other day (except I think
+> inverting the bitmasks or something?) in mac80211 for the client side,
+> i.e. when receiving puncturing from the AP ...
+>
 
-> -----Original Message-----
-> From: Jiri Kosina <jkosina@suse.cz>
-> Sent: Wednesday, February 16, 2022 3:38 AM
-> To: Kalle Valo <kvalo@kernel.org>
-> Cc: Johannes Berg <johannes@sipsolutions.net>; linux-wireless@vger.kernel.org;
-> linux-kernel@vger.kernel.org; Pkshih <pkshih@realtek.com>
-> Subject: [PATCH] rtw89: fix RCU usage in rtw89_core_txq_push()
-> 
-> From: Jiri Kosina <jkosina@suse.cz>
-> Subject: [PATCH] rtw89: fix RCU usage in rtw89_core_txq_push()
-> 
-> ieee80211_tx_h_select_key() is performing a series of RCU dereferences,
-> but rtw89_core_txq_push() is calling it (via ieee80211_tx_dequeue_ni())
-> without RCU read-side lock held; fix that.
-> 
-> This addresses the splat below.
-> 
->  =============================
->  WARNING: suspicious RCU usage
->  5.17.0-rc4-00003-gccad664b7f14 #3 Tainted: G            E
->  -----------------------------
->  net/mac80211/tx.c:593 suspicious rcu_dereference_check() usage!
-> 
->  other info that might help us debug this:
-> 
->  rcu_scheduler_active = 2, debug_locks = 1
->  2 locks held by kworker/u33:0/184:
->   #0: ffff9c0b14811d38 ((wq_completion)rtw89_tx_wq){+.+.}-{0:0}, at: process_one_work+0x258/0x660
->   #1: ffffb97380cf3e78 ((work_completion)(&rtwdev->txq_work)){+.+.}-{0:0}, at:
-> process_one_work+0x258/0x660
-> 
->  stack backtrace:
->  CPU: 8 PID: 184 Comm: kworker/u33:0 Tainted: G            E     5.17.0-rc4-00003-gccad664b7f14 #3
-> 473b49ab0e7c2d6af2900c756bfd04efd7a9de13
->  Hardware name: LENOVO 20UJS2B905/20UJS2B905, BIOS R1CET63W(1.32 ) 04/09/2021
->  Workqueue: rtw89_tx_wq rtw89_core_txq_work [rtw89_core]
->  Call Trace:
->   <TASK>
->   dump_stack_lvl+0x58/0x71
->   ieee80211_tx_h_select_key+0x2c0/0x530 [mac80211 911c23e2351c0ae60b597a67b1204a5ea955e365]
->   ieee80211_tx_dequeue+0x1a7/0x1260 [mac80211 911c23e2351c0ae60b597a67b1204a5ea955e365]
->   rtw89_core_txq_work+0x1a6/0x420 [rtw89_core b39ba493f2e517ad75e0f8187ecc24edf58bbbea]
->   process_one_work+0x2d8/0x660
->   worker_thread+0x39/0x3e0
->   ? process_one_work+0x660/0x660
->   kthread+0xe5/0x110
->   ? kthread_complete_and_exit+0x20/0x20
->   ret_from_fork+0x22/0x30
->   </TASK>
-> 
->  =============================
->  WARNING: suspicious RCU usage
->  5.17.0-rc4-00003-gccad664b7f14 #3 Tainted: G            E
->  -----------------------------
->  net/mac80211/tx.c:607 suspicious rcu_dereference_check() usage!
-> 
->  other info that might help us debug this:
-> 
->  rcu_scheduler_active = 2, debug_locks = 1
->  2 locks held by kworker/u33:0/184:
->   #0: ffff9c0b14811d38 ((wq_completion)rtw89_tx_wq){+.+.}-{0:0}, at: process_one_work+0x258/0x660
->   #1: ffffb97380cf3e78 ((work_completion)(&rtwdev->txq_work)){+.+.}-{0:0}, at:
-> process_one_work+0x258/0x660
-> 
->  stack backtrace:
->  CPU: 8 PID: 184 Comm: kworker/u33:0 Tainted: G            E     5.17.0-rc4-00003-gccad664b7f14 #3
-> 473b49ab0e7c2d6af2900c756bfd04efd7a9de13
->  Hardware name: LENOVO 20UJS2B905/20UJS2B905, BIOS R1CET63W(1.32 ) 04/09/2021
->  Workqueue: rtw89_tx_wq rtw89_core_txq_work [rtw89_core]
->  Call Trace:
->   <TASK>
->   dump_stack_lvl+0x58/0x71
->   ieee80211_tx_h_select_key+0x464/0x530 [mac80211 911c23e2351c0ae60b597a67b1204a5ea955e365]
->   ieee80211_tx_dequeue+0x1a7/0x1260 [mac80211 911c23e2351c0ae60b597a67b1204a5ea955e365]
->   rtw89_core_txq_work+0x1a6/0x420 [rtw89_core b39ba493f2e517ad75e0f8187ecc24edf58bbbea]
->   process_one_work+0x2d8/0x660
->   worker_thread+0x39/0x3e0
->   ? process_one_work+0x660/0x660
->   kthread+0xe5/0x110
->   ? kthread_complete_and_exit+0x20/0x20
->   ret_from_fork+0x22/0x30
->   </TASK>
-> 
-> Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+I instead reverted the passed bitmap inside the function because that 
+way if the map is not provided at all, it will be all 0's by default and 
+will be considered as all channels active.
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> Can we export this function maybe so mac80211 can use it?
+> 
+Sure, will add in the next version.
 
-Thanks for your finding.
+> 
+> Conceptually, I'm wondering if it really belongs into the chandef? Can
+> you explain why it's part of the channel configuration? If you've got
+> two chandefs with the same control channel, CCFS and bandwidth, but
+> different puncturing, does it really make sense to treat them as two
+> separate channel contexts, e.g. in mac80211? It seems strange to do
+> that.
+> 
+> johannes
 
-> ---
->  drivers/net/wireless/realtek/rtw89/core.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-> index a0737eea9f81..9632e7f218dd 100644
-> --- a/drivers/net/wireless/realtek/rtw89/core.c
-> +++ b/drivers/net/wireless/realtek/rtw89/core.c
-> @@ -1509,11 +1509,12 @@ static void rtw89_core_txq_push(struct rtw89_dev *rtwdev,
->  	unsigned long i;
->  	int ret;
-> 
-> +	rcu_read_lock();
->  	for (i = 0; i < frame_cnt; i++) {
->  		skb = ieee80211_tx_dequeue_ni(rtwdev->hw, txq);
->  		if (!skb) {
->  			rtw89_debug(rtwdev, RTW89_DBG_TXRX, "dequeue a NULL skb\n");
-> -			return;
-> +			goto out;
->  		}
->  		rtw89_core_txq_check_agg(rtwdev, rtwtxq, skb);
->  		ret = rtw89_core_tx_write(rtwdev, vif, sta, skb, NULL);
-> @@ -1523,6 +1524,8 @@ static void rtw89_core_txq_push(struct rtw89_dev *rtwdev,
->  			break;
->  		}
->  	}
-> +out:
-> +	rcu_read_unlock();
->  }
-> 
->  static u32 rtw89_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev, u8 tid)
-> 
-> --
-> Jiri Kosina
-> SUSE Labs
-> 
-> 
-> ------Please consider the environment before printing this e-mail.
+Added it here so that any command working with chandef will be updated 
+without any other change.
+Example: During channel switch, user can provide a puncturing bitmap 
+with a new option I added in userspace, and because it is part of 
+chandef, the same code path validates it for that command automatically.
+
+Regarding if different puncturing pattern should be considered as a new 
+context - yes, depending on if it is HE or non-HE mode, the new bitmap 
+may be invalid and the operation should fail.
+
+Thanks,
+Aloka
