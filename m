@@ -2,43 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B97F44B86B8
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 12:33:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 902594B89D9
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 14:28:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231764AbiBPLd4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Feb 2022 06:33:56 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48276 "EHLO
+        id S234223AbiBPN2H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Feb 2022 08:28:07 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbiBPLdz (ORCPT
+        with ESMTP id S234152AbiBPN2G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Feb 2022 06:33:55 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C92322B24;
-        Wed, 16 Feb 2022 03:33:43 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D9614B81E99;
-        Wed, 16 Feb 2022 11:33:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C708C004E1;
-        Wed, 16 Feb 2022 11:33:39 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="DIxpza7y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1645011217;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=esDVBJG6N16MKK8NeeRA41EIO93bGk1xkxH0HcIomqg=;
-        b=DIxpza7yGjQIWPpdUlT5lC+osTM+1SniCEQYp/cJFXcrkiAEWSj0hSZrw4/T3AbPfk3IEx
-        jXU8w7ZpbfuwKJuXYG24c+dqbZFZtn3Kqtj/aNQlTgKoJF4fCOvw8qYq7OWfvVwVcAcXuO
-        KAAAfcN+y03Bi5G4x+xQXOfzXdxCDnQ=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 3cd753ef (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Wed, 16 Feb 2022 11:33:37 +0000 (UTC)
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     miaoqing@codeaurora.org, Rui Salvaterra <rsalvaterra@gmail.com>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Wed, 16 Feb 2022 08:28:06 -0500
+Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA6F7151D3E;
+        Wed, 16 Feb 2022 05:27:54 -0800 (PST)
+Received: by mail-vs1-xe36.google.com with SMTP id p7so2451142vsg.2;
+        Wed, 16 Feb 2022 05:27:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=W4NWQ4O/W36pB+bOALZ9wlT2YlOr6PG7OHv6tykJwH0=;
+        b=lAHHTLBXwuKLLUHWaLseZjIP5cTvJsu69Q9thecmcZ3q0ffGHTCcOfDZJgQ+BsaU7X
+         VJaGthSGbyLDnlUhzTNOirmBB5F7Qt2EEk+RrmOT7+T5WuR8cdDnJMknl0tWouNlGuVh
+         9mhATRhNi19QIAqUZHBI9t2YXVYTD5EUoVudmzAEgZdEoVQTZuF+8xlDPDcIFRRwOn8g
+         aUi/maLv8i6RYOy6i+1AX3tkKmgBfUDfKVKAYtOhjVYzCjYnN86wGxGPqUL7SqtqgDe1
+         SUnNRDnQa+P+Bx++qp0oDSbhsRilT2mpDr7NtF0lcnwKAsJa1C4D94jqqd9Cy1g/0u0G
+         Sy+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=W4NWQ4O/W36pB+bOALZ9wlT2YlOr6PG7OHv6tykJwH0=;
+        b=V2sejGUzsw+owRORLV0RcJtv+W8tZmQP0luzIB7ny4catcJ5jZgLqKjNXO0zosbK8Z
+         K9hz4BZsoreztivnSTFi4YhG/x4c1v8caRdZnfqhVjsGDhWhAzmlCd6yyNrJBnIDbwkR
+         Imoty/50X/c4hwfA0K1O9H/kMDCFCOkpV9DE0dik+zrT34d6Y2NGlsf6KtyW+E6F+uPW
+         W6GF/AWvtnDxYgwOQmpdLhXuskmifoOEz29o+M0tO/nYXBSp7v9hFsIRKmR1d4QK9VGk
+         L566R+wTVlfyXGayKgf7PDWb5WS99xR2sxWPmB7kYoFr5AuO1ZSdiCDwTntwzCYPw+Sm
+         Q3Rw==
+X-Gm-Message-State: AOAM533xgAr5V0CWj2R4dQOnW2i3tVFTg4nRvA+kG13wwux6+KwMFHJj
+        qQytLTX6qLDlU+GCoyVOcQPzAZ2QFLAj8YMy6A==
+X-Google-Smtp-Source: ABdhPJzJi19YNpCvzYwvosnnahkfB/aXCpYLA6aGj448BMw2ojTugtbCg0yk1f4Aj5s3nazDJ7Aob0vZmEcsqQKZVb8=
+X-Received: by 2002:a05:6102:2912:b0:31a:5ab3:f44b with SMTP id
+ cz18-20020a056102291200b0031a5ab3f44bmr1066907vsb.53.1645018073916; Wed, 16
+ Feb 2022 05:27:53 -0800 (PST)
+MIME-Version: 1.0
+References: <CAHmME9rkDXbeNbe1uehoVONioy=pa8oBtJEW22Afbp=86A9SUQ@mail.gmail.com>
+ <20220216113323.53332-1-Jason@zx2c4.com>
+In-Reply-To: <20220216113323.53332-1-Jason@zx2c4.com>
+From:   Rui Salvaterra <rsalvaterra@gmail.com>
+Date:   Wed, 16 Feb 2022 13:27:42 +0000
+Message-ID: <CALjTZvbS8OuDkAZ+3M9dwTzRd6Rd77dnd4nUdMhUA9BJgYWYEA@mail.gmail.com>
+Subject: Re: [PATCH v3] ath9k: use hw_random API instead of directly dumping
+ into random.c
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     miaoqing@codeaurora.org,
+        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>,
         "Sepehrdad, Pouyan" <pouyans@qti.qualcomm.com>,
         ath9k-devel <ath9k-devel@qca.qualcomm.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
@@ -48,20 +66,12 @@ To:     miaoqing@codeaurora.org, Rui Salvaterra <rsalvaterra@gmail.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         LKML <linux-kernel@vger.kernel.org>,
         Netdev <netdev@vger.kernel.org>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
         Florian Fainelli <f.fainelli@gmail.com>
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: [PATCH v3] ath9k: use hw_random API instead of directly dumping into random.c
-Date:   Wed, 16 Feb 2022 12:33:23 +0100
-Message-Id: <20220216113323.53332-1-Jason@zx2c4.com>
-In-Reply-To: <CAHmME9rkDXbeNbe1uehoVONioy=pa8oBtJEW22Afbp=86A9SUQ@mail.gmail.com>
-References: <CAHmME9rkDXbeNbe1uehoVONioy=pa8oBtJEW22Afbp=86A9SUQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,155 +79,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hardware random number generators are supposed to use the hw_random
-framework. This commit turns ath9k's kthread-based design into a proper
-hw_random driver.
+Hi again, Jason,
 
-Cc: Toke Høiland-Jørgensen <toke@redhat.com>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Rui Salvaterra <rsalvaterra@gmail.com>
-Cc: Dominik Brodowski <linux@dominikbrodowski.net>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
-Changes v2->v3:
-- Use msleep_interruptable like other hwrng drivers.
-- Give up after 110 tries.
-- Return -EIO after giving up like other hwrng drivers.
-- Use for loop for style nits.
-- Append serial number for driver in case of multiple cards.
+On Wed, 16 Feb 2022 at 11:33, Jason A. Donenfeld <Jason@zx2c4.com> wrote:
 
-Changes v1->v2:
-- Count in words rather than bytes.
+[snipped]
 
- drivers/net/wireless/ath/ath9k/ath9k.h |  3 +-
- drivers/net/wireless/ath/ath9k/rng.c   | 72 +++++++++++---------------
- 2 files changed, 33 insertions(+), 42 deletions(-)
+> Changes v2->v3:
+> - Use msleep_interruptable like other hwrng drivers.
+> - Give up after 110 tries.
+> - Return -EIO after giving up like other hwrng drivers.
+> - Use for loop for style nits.
+> - Append serial number for driver in case of multiple cards.
 
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
-index ef6f5ea06c1f..3ccf8cfc6b63 100644
---- a/drivers/net/wireless/ath/ath9k/ath9k.h
-+++ b/drivers/net/wireless/ath/ath9k/ath9k.h
-@@ -1071,8 +1071,9 @@ struct ath_softc {
- #endif
- 
- #ifdef CONFIG_ATH9K_HWRNG
-+	struct hwrng rng_ops;
- 	u32 rng_last;
--	struct task_struct *rng_task;
-+	char rng_name[sizeof("ath9k_65535")];
- #endif
- };
- 
-diff --git a/drivers/net/wireless/ath/ath9k/rng.c b/drivers/net/wireless/ath/ath9k/rng.c
-index f9d3d6eedd3c..cb5414265a9b 100644
---- a/drivers/net/wireless/ath/ath9k/rng.c
-+++ b/drivers/net/wireless/ath/ath9k/rng.c
-@@ -21,11 +21,6 @@
- #include "hw.h"
- #include "ar9003_phy.h"
- 
--#define ATH9K_RNG_BUF_SIZE	320
--#define ATH9K_RNG_ENTROPY(x)	(((x) * 8 * 10) >> 5) /* quality: 10/32 */
--
--static DECLARE_WAIT_QUEUE_HEAD(rng_queue);
--
- static int ath9k_rng_data_read(struct ath_softc *sc, u32 *buf, u32 buf_size)
- {
- 	int i, j;
-@@ -71,61 +66,56 @@ static u32 ath9k_rng_delay_get(u32 fail_stats)
- 	return delay;
- }
- 
--static int ath9k_rng_kthread(void *data)
-+static int ath9k_rng_read(struct hwrng *rng, void *buf, size_t max, bool wait)
- {
--	int bytes_read;
--	struct ath_softc *sc = data;
--	u32 *rng_buf;
--	u32 delay, fail_stats = 0;
--
--	rng_buf = kmalloc_array(ATH9K_RNG_BUF_SIZE, sizeof(u32), GFP_KERNEL);
--	if (!rng_buf)
--		goto out;
--
--	while (!kthread_should_stop()) {
--		bytes_read = ath9k_rng_data_read(sc, rng_buf,
--						 ATH9K_RNG_BUF_SIZE);
--		if (unlikely(!bytes_read)) {
--			delay = ath9k_rng_delay_get(++fail_stats);
--			wait_event_interruptible_timeout(rng_queue,
--							 kthread_should_stop(),
--							 msecs_to_jiffies(delay));
--			continue;
-+	struct ath_softc *sc = container_of(rng, struct ath_softc, rng_ops);
-+	u32 fail_stats = 0, word;
-+	int bytes_read = 0;
-+
-+	for (;;) {
-+		if (max & ~3UL)
-+			bytes_read = ath9k_rng_data_read(sc, buf, max >> 2);
-+		if ((max & 3UL) && ath9k_rng_data_read(sc, &word, 1)) {
-+			memcpy(buf + bytes_read, &word, max & 3UL);
-+			bytes_read += max & 3UL;
-+			memzero_explicit(&word, sizeof(word));
- 		}
-+		if (!wait || !max || likely(bytes_read) || fail_stats > 110)
-+			break;
- 
--		fail_stats = 0;
--
--		/* sleep until entropy bits under write_wakeup_threshold */
--		add_hwgenerator_randomness((void *)rng_buf, bytes_read,
--					   ATH9K_RNG_ENTROPY(bytes_read));
-+		msleep_interruptible(ath9k_rng_delay_get(++fail_stats));
- 	}
- 
--	kfree(rng_buf);
--out:
--	sc->rng_task = NULL;
--
--	return 0;
-+	if (wait && !bytes_read && max)
-+		bytes_read = -EIO;
-+	return bytes_read;
- }
- 
- void ath9k_rng_start(struct ath_softc *sc)
- {
-+	static atomic_t serial = ATOMIC_INIT(0);
- 	struct ath_hw *ah = sc->sc_ah;
- 
--	if (sc->rng_task)
-+	if (sc->rng_ops.read)
- 		return;
- 
- 	if (!AR_SREV_9300_20_OR_LATER(ah))
- 		return;
- 
--	sc->rng_task = kthread_run(ath9k_rng_kthread, sc, "ath9k-hwrng");
--	if (IS_ERR(sc->rng_task))
--		sc->rng_task = NULL;
-+	snprintf(sc->rng_name, sizeof(sc->rng_name), "ath9k_%u",
-+		 (atomic_inc_return(&serial) - 1) & U16_MAX);
-+	sc->rng_ops.name = sc->rng_name;
-+	sc->rng_ops.read = ath9k_rng_read;
-+	sc->rng_ops.quality = 320;
-+
-+	if (devm_hwrng_register(sc->dev, &sc->rng_ops))
-+		sc->rng_ops.read = NULL;
- }
- 
- void ath9k_rng_stop(struct ath_softc *sc)
- {
--	if (sc->rng_task) {
--		kthread_stop(sc->rng_task);
--		sc->rng_task = NULL;
-+	if (sc->rng_ops.read) {
-+		devm_hwrng_unregister(sc->dev, &sc->rng_ops);
-+		sc->rng_ops.read = NULL;
- 	}
- }
--- 
-2.35.0
+[snipped]
 
+Everything working as expected here, so this patch (v3) is also
+
+Tested-by: Rui Salvaterra <rsalvaterra@gmail.com>
+
+Thanks,
+Rui
