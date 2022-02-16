@@ -2,106 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C25934B804D
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 06:49:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D1324B81A2
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 08:35:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344625AbiBPFig (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Feb 2022 00:38:36 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39216 "EHLO
+        id S230075AbiBPHcf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Feb 2022 02:32:35 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:52306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230002AbiBPFif (ORCPT
+        with ESMTP id S229959AbiBPHce (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Feb 2022 00:38:35 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A9A7B8236;
-        Tue, 15 Feb 2022 21:38:23 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F829619FC;
-        Wed, 16 Feb 2022 05:38:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5EEC340E8;
-        Wed, 16 Feb 2022 05:38:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644989902;
-        bh=P7No01mWTKTK8n7XDrHDJxfmk9w1GcNv6CSOAUyAhM8=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=cJ7R+z9PZat/2UJpKAXS/9gITtDX2by/uEFgAoBc8g/SB1OnjJ1uNI1qHGadq8LRX
-         N0u/xHxg1x+aG2v+u2LtlSFP+FMEidRMdgjtPYcOwjDMKr6xOz9aKxBqc/eJZsc2HS
-         b1nYfY/JZhz1+TZMTJczVQVvjTSEysQiwXlnqVRmQbR6qNwC29RKXYq0FBGi+M369I
-         q8nkO6ZfQahcclabOmzoWFL9upUirIkNjhpmNZQWQ83nlsL6P2Qs77oWpBOK4IcWtR
-         Cjx0UNmbZcBwasm1dsIBd8Kxhwm9WDuOVURK9kq0I7jFrsbm3UGRFrvhHZOx36NaNR
-         7TSEzEZfU/ouQ==
-From:   Kalle Valo <kvalo@kernel.org>
+        Wed, 16 Feb 2022 02:32:34 -0500
+X-Greylist: delayed 596 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 15 Feb 2022 23:32:21 PST
+Received: from isilmar-4.linta.de (isilmar-4.linta.de [136.243.71.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9B1012D907;
+        Tue, 15 Feb 2022 23:32:20 -0800 (PST)
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+X-isilmar-external: YES
+Received: from owl.dominikbrodowski.net (owl.brodo.linta [10.2.0.111])
+        by isilmar-4.linta.de (Postfix) with ESMTPSA id E0BC5201402;
+        Wed, 16 Feb 2022 07:15:43 +0000 (UTC)
+Received: by owl.dominikbrodowski.net (Postfix, from userid 1000)
+        id 6786F806D0; Wed, 16 Feb 2022 08:11:05 +0100 (CET)
+Date:   Wed, 16 Feb 2022 08:11:05 +0100
+From:   Dominik Brodowski <linux@dominikbrodowski.net>
 To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc:     miaoqing@codeaurora.org, rsalvaterra@gmail.com,
-        Toke =?utf-8?Q?H?= =?utf-8?Q?=C3=B8iland-J=C3=B8rgensen?= 
-        <toke@toke.dk>, "Sepehrdad\, Pouyan" <pouyans@qti.qualcomm.com>,
+Cc:     Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+        miaoqing@codeaurora.org, rsalvaterra@gmail.com,
+        Jason Cooper <jason@lakedaemon.net>,
+        "Sepehrdad, Pouyan" <pouyans@qti.qualcomm.com>,
         ath9k-devel <ath9k-devel@qca.qualcomm.com>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
         Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         LKML <linux-kernel@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Subject: Re: [PATCH v2] ath9k: use hw_random API instead of directly dumping into random.c
-References: <CAHmME9pZaYW-p=zU4v96TjeSijm-g03cNpvUJcNvhOqh5v+Lwg@mail.gmail.com>
-        <20220216000230.22625-1-Jason@zx2c4.com>
-Date:   Wed, 16 Feb 2022 07:38:17 +0200
-In-Reply-To: <20220216000230.22625-1-Jason@zx2c4.com> (Jason A. Donenfeld's
-        message of "Wed, 16 Feb 2022 01:02:30 +0100")
-Message-ID: <87mtir9xrq.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Netdev <netdev@vger.kernel.org>
+Subject: Re: [PATCH] ath9k: use hw_random API instead of directly dumping
+ into random.c
+Message-ID: <Ygyjib2FKY87S7/H@owl.dominikbrodowski.net>
+References: <CAHmME9r4+ENUhZ6u26rAbq0iCWoKqTPYA7=_LWbGG98KvaCE6g@mail.gmail.com>
+ <20220215162812.195716-1-Jason@zx2c4.com>
+ <87o8374sx3.fsf@toke.dk>
+ <CAHmME9pZaYW-p=zU4v96TjeSijm-g03cNpvUJcNvhOqh5v+Lwg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHmME9pZaYW-p=zU4v96TjeSijm-g03cNpvUJcNvhOqh5v+Lwg@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Jason A. Donenfeld" <Jason@zx2c4.com> writes:
+Am Wed, Feb 16, 2022 at 12:52:15AM +0100 schrieb Jason A. Donenfeld:
+> On 2/16/22, Toke Høiland-Jørgensen <toke@toke.dk> wrote:
+> >> @@ -22,9 +22,6 @@
+> >>  #include "hw.h"
+> >>  #include "ar9003_phy.h"
+> >>
+> >> -#define ATH9K_RNG_BUF_SIZE	320
+> >> -#define ATH9K_RNG_ENTROPY(x)	(((x) * 8 * 10) >> 5) /* quality: 10/32 */
+> >
+> > So this comment says "quality: 10/32" but below you're setting "quality"
+> > as 320. No idea what the units are supposed to be, but is this right?
+> 
+> I think the unit is supposed to be how many entropic bits there are
+> out of 1024 bits? These types of estimates are always BS, so keeping
+> it on the lower end as before seemed right. Herbert can jump in here
+> if he has a better idea; that's his jig.
 
-> Hardware random number generators are supposed to use the hw_random
-> framework. This commit turns ath9k's kthread-based design into a proper
-> hw_random driver.
->
-> This compiles, but I have no hardware or other ability to determine
-> whether it works. I'll leave further development up to the ath9k
-> and hw_random maintainers.
->
-> Cc: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: Dominik Brodowski <linux@dominikbrodowski.net>
-> Cc: Herbert Xu <herbert@gondor.apana.org.au>
-> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+10/32 = 320/1024, so that change is correct.
 
-[...]
-
-> +retry:
-> +	if (max & ~3UL)
-> +		bytes_read =3D ath9k_rng_data_read(sc, buf, max >> 2);
-> +	if ((max & 3UL) && ath9k_rng_data_read(sc, &word, 1)) {
-> +		memcpy(buf + bytes_read, &word, max & 3);
-> +		bytes_read +=3D max & 3;
-> +		memzero_explicit(&word, sizeof(word));
-> +	}
-> +	if (max && unlikely(!bytes_read) && wait) {
-> +		msleep(ath9k_rng_delay_get(++fail_stats));
-> +		goto retry;
->  	}
-
-Wouldn't a while loop be cleaner? With a some kind limit for the number
-of loops, to avoid a neverending loop.
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+	Dominik
