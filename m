@@ -2,73 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 902594B89D9
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 14:28:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D8CB4B8A70
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 14:39:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234223AbiBPN2H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Feb 2022 08:28:07 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40098 "EHLO
+        id S234616AbiBPNjP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Feb 2022 08:39:15 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234152AbiBPN2G (ORCPT
+        with ESMTP id S234222AbiBPNjO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Feb 2022 08:28:06 -0500
-Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA6F7151D3E;
-        Wed, 16 Feb 2022 05:27:54 -0800 (PST)
-Received: by mail-vs1-xe36.google.com with SMTP id p7so2451142vsg.2;
-        Wed, 16 Feb 2022 05:27:54 -0800 (PST)
+        Wed, 16 Feb 2022 08:39:14 -0500
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 073172A39F3;
+        Wed, 16 Feb 2022 05:39:01 -0800 (PST)
+Received: by mail-qt1-x82d.google.com with SMTP id z1so2063757qto.3;
+        Wed, 16 Feb 2022 05:39:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=W4NWQ4O/W36pB+bOALZ9wlT2YlOr6PG7OHv6tykJwH0=;
-        b=lAHHTLBXwuKLLUHWaLseZjIP5cTvJsu69Q9thecmcZ3q0ffGHTCcOfDZJgQ+BsaU7X
-         VJaGthSGbyLDnlUhzTNOirmBB5F7Qt2EEk+RrmOT7+T5WuR8cdDnJMknl0tWouNlGuVh
-         9mhATRhNi19QIAqUZHBI9t2YXVYTD5EUoVudmzAEgZdEoVQTZuF+8xlDPDcIFRRwOn8g
-         aUi/maLv8i6RYOy6i+1AX3tkKmgBfUDfKVKAYtOhjVYzCjYnN86wGxGPqUL7SqtqgDe1
-         SUnNRDnQa+P+Bx++qp0oDSbhsRilT2mpDr7NtF0lcnwKAsJa1C4D94jqqd9Cy1g/0u0G
-         Sy+g==
+         :cc:content-transfer-encoding;
+        bh=21ndo1beMI8yP0ftAH82Ak+ucIbbctFR1VliNX6f60o=;
+        b=Pm6qW+nuN1Uscn8S8rNAsFZPUQCquHw2f7nLd8iiWgi1VBSYRM2MCpojTcqJd6JGWP
+         Qn6+Mhh+yJ7QYCvD2cL85h2KQWAIDAgPdl+C/PJm7TrM1mGRrGIkcK55unvVnEXXSvCp
+         5L+l0XMcRAy+qoA9kFlvsTxMjOuHlP6V9vim/UxLN4CQQnPQtDbtyV6YogCzj9aoGue1
+         O3a798PeDhuFGsJigaZ1H89jQur/b6F2mMy8mb6e29f4zzeSj4ALIEnXeqzuX13TJzgc
+         J/MI5xXKQktWxXNgOsATslG7t/632uO8wyQ6HGRZL7EoFWNwMB7KyFUFU9+ojzqzEYUz
+         LHRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=W4NWQ4O/W36pB+bOALZ9wlT2YlOr6PG7OHv6tykJwH0=;
-        b=V2sejGUzsw+owRORLV0RcJtv+W8tZmQP0luzIB7ny4catcJ5jZgLqKjNXO0zosbK8Z
-         K9hz4BZsoreztivnSTFi4YhG/x4c1v8caRdZnfqhVjsGDhWhAzmlCd6yyNrJBnIDbwkR
-         Imoty/50X/c4hwfA0K1O9H/kMDCFCOkpV9DE0dik+zrT34d6Y2NGlsf6KtyW+E6F+uPW
-         W6GF/AWvtnDxYgwOQmpdLhXuskmifoOEz29o+M0tO/nYXBSp7v9hFsIRKmR1d4QK9VGk
-         L566R+wTVlfyXGayKgf7PDWb5WS99xR2sxWPmB7kYoFr5AuO1ZSdiCDwTntwzCYPw+Sm
-         Q3Rw==
-X-Gm-Message-State: AOAM533xgAr5V0CWj2R4dQOnW2i3tVFTg4nRvA+kG13wwux6+KwMFHJj
-        qQytLTX6qLDlU+GCoyVOcQPzAZ2QFLAj8YMy6A==
-X-Google-Smtp-Source: ABdhPJzJi19YNpCvzYwvosnnahkfB/aXCpYLA6aGj448BMw2ojTugtbCg0yk1f4Aj5s3nazDJ7Aob0vZmEcsqQKZVb8=
-X-Received: by 2002:a05:6102:2912:b0:31a:5ab3:f44b with SMTP id
- cz18-20020a056102291200b0031a5ab3f44bmr1066907vsb.53.1645018073916; Wed, 16
- Feb 2022 05:27:53 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=21ndo1beMI8yP0ftAH82Ak+ucIbbctFR1VliNX6f60o=;
+        b=PSobMhaqH4dei023O+4wejUHGXPENk+WHqfVVg2b7u2t207htSo2NGvTXEr05o8HDA
+         oIgVI/stOHsC264Jra3tAuGqJh+aLCuP3M70ZNP++sgfb6lNOMbKMQtD+PZ9NUXJfJXg
+         Ha0LjjMN2cfW/Z+tz0KDd3lrbpXJ3qV1x3pM0ETUdTJYqdJw7izqnpCR6zYsAWHcXMEX
+         wtWXYT9ajWIsltov1M1uFd6hFR0rJIAhIVoJLS1LOd7yxIRJ+9n7SNdFBofT/QA21zyj
+         Ru9ddixrswFfNk+Fc0npFKxheuPhVdJxK3WJs6AFDJ2q+ObIn3Wdi67or8v9Hh39kVrQ
+         uIAg==
+X-Gm-Message-State: AOAM532Fc+7vpfpli4JorFvoWHOc1dmhIXUagXvNv8U0PHGjVUS0cwFo
+        BKW8bNPCdsMtI9iaE6Mff9GBtgPCwKwjBIdH9Go=
+X-Google-Smtp-Source: ABdhPJyFM58ntAw5nr1wH2+4e/Yx3d3h4s3txaYAHeouEPQwV8TP0rj6/pEZ9BuQyKT3p261yqWE5gmV5yn5L4GB6N0=
+X-Received: by 2002:a05:622a:d0:b0:2d5:50c1:67a6 with SMTP id
+ p16-20020a05622a00d000b002d550c167a6mr1898200qtw.297.1645018740038; Wed, 16
+ Feb 2022 05:39:00 -0800 (PST)
 MIME-Version: 1.0
-References: <CAHmME9rkDXbeNbe1uehoVONioy=pa8oBtJEW22Afbp=86A9SUQ@mail.gmail.com>
- <20220216113323.53332-1-Jason@zx2c4.com>
-In-Reply-To: <20220216113323.53332-1-Jason@zx2c4.com>
-From:   Rui Salvaterra <rsalvaterra@gmail.com>
-Date:   Wed, 16 Feb 2022 13:27:42 +0000
-Message-ID: <CALjTZvbS8OuDkAZ+3M9dwTzRd6Rd77dnd4nUdMhUA9BJgYWYEA@mail.gmail.com>
-Subject: Re: [PATCH v3] ath9k: use hw_random API instead of directly dumping
- into random.c
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc:     miaoqing@codeaurora.org,
-        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>,
-        "Sepehrdad, Pouyan" <pouyans@qti.qualcomm.com>,
-        ath9k-devel <ath9k-devel@qca.qualcomm.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
-        Florian Fainelli <f.fainelli@gmail.com>
+References: <20211009221711.2315352-1-robimarko@gmail.com> <163890036783.24891.8718291787865192280.kvalo@kernel.org>
+ <CAOX2RU5mqUfPRDsQNSpVPdiz6sE_68KN5Ae+2bC_t1cQzdzgTA@mail.gmail.com>
+ <09a27912-9ea4-fe75-df72-41ba0fa5fd4e@gmail.com> <CAOX2RU6qaZ7NkeRe1bukgH6OxXOPvJS=z9PRp=UYAxMfzwD2oQ@mail.gmail.com>
+ <EC2778B3-B957-4F3F-B299-CC18805F8381@slashdirt.org> <CAOX2RU7FOdSuo2Jgo0i=8e-4bJwq7ahvQxLzQv_zNCz2HCTBwA@mail.gmail.com>
+In-Reply-To: <CAOX2RU7FOdSuo2Jgo0i=8e-4bJwq7ahvQxLzQv_zNCz2HCTBwA@mail.gmail.com>
+From:   Robert Marko <robimarko@gmail.com>
+Date:   Wed, 16 Feb 2022 14:38:48 +0100
+Message-ID: <CAOX2RU7d9amMseczgp-PRzdOvrgBO4ZFM_+hTRSevCU85qT=kA@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: support bus and device specific API 1 BDF selection
+To:     Thibaut <hacks@slashdirt.org>
+Cc:     Christian Lamparter <chunkeey@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -79,24 +73,62 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi again, Jason,
+Silent ping,
 
-On Wed, 16 Feb 2022 at 11:33, Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+Does anybody have an opinion on this?
 
-[snipped]
+Regards,
+Robert
 
-> Changes v2->v3:
-> - Use msleep_interruptable like other hwrng drivers.
-> - Give up after 110 tries.
-> - Return -EIO after giving up like other hwrng drivers.
-> - Use for loop for style nits.
-> - Append serial number for driver in case of multiple cards.
-
-[snipped]
-
-Everything working as expected here, so this patch (v3) is also
-
-Tested-by: Rui Salvaterra <rsalvaterra@gmail.com>
-
-Thanks,
-Rui
+On Wed, 2 Feb 2022 at 19:49, Robert Marko <robimarko@gmail.com> wrote:
+>
+> Kalle,
+>
+> What is your opinion on this?
+> I would really love to see this get merged as we are having more and
+> more devices that are impacted without it.
+>
+> Regards,
+> Robert
+>
+> On Fri, 17 Dec 2021 at 13:25, Thibaut <hacks@slashdirt.org> wrote:
+> >
+> >
+> >
+> > > Le 17 d=C3=A9c. 2021 =C3=A0 13:06, Robert Marko <robimarko@gmail.com>=
+ a =C3=A9crit :
+> > >
+> > > On Wed, 8 Dec 2021 at 15:07, Christian Lamparter <chunkeey@gmail.com>=
+ wrote:
+> > >>
+> > >> Isn't the only user of this the non-upstreamable rb_hardconfig
+> > >> mikrotik platform driver?
+> >
+> > The driver could be upstreamed if desirable.
+> > Yet I think it=E2=80=99s quite orthogonal to having the possibility to =
+dynamically load a different BDF via API 1 for each available radio, which =
+before this patch couldn=E2=80=99t be done and is necessary for this partic=
+ular hardware.
+> >
+> > >> So, in your case the devices in question
+> > >> needs to setup a detour through the userspace firmware (helper+scrip=
+ts)
+> > >> to pull on the sysfs of that mikrotik platform driver? Wouldn't it
+> > >> be possible to do this more directly?
+> > >
+> > > Yes, its the sole current user as its the only vendor shipping the BD=
+F
+> > > as part of the
+> > > factory data and not like a userspace blob.
+> > >
+> > > I don't see how can it be more direct, its the same setup as when
+> > > getting pre-cal
+> > > data for most devices currently.
+> >
+> > Indeed, not sure how it could be more direct than it already is. I=E2=
+=80=99m open to suggestions though.
+> >
+> > > I am adding Thibaut who is the author of the platform driver.
+> >
+> > Best,
+> > Thibaut
