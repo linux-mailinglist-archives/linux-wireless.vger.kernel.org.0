@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED1804B7B88
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 01:02:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B0DB4B7B89
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 01:02:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244946AbiBPACH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Feb 2022 19:02:07 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46690 "EHLO
+        id S244735AbiBPACG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Feb 2022 19:02:06 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244954AbiBPACD (ORCPT
+        with ESMTP id S244956AbiBPACE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Feb 2022 19:02:03 -0500
+        Tue, 15 Feb 2022 19:02:04 -0500
 Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D305652D4
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBBE870071
         for <linux-wireless@vger.kernel.org>; Tue, 15 Feb 2022 16:01:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
   t=1644969710; x=1676505710;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=skKRoAFTuzBYIA+I6jfhNWNrl50xIa0zgNkmH/kNUY0=;
-  b=rl2AaVPTASC9an2o5uSUfU/Ei6+mEUJaz4AzPyoDNfiU7i21X3xvmyJm
-   UuBQ5ufGmSz+HR8arsdVT4tDroxgnE3QdUc7fTXc5vTX90f469RARripv
-   /4dd3kOIIW5a5B1xA6UmGW8/wi+DgwHtxCnFytvAiSHnfJmPeMv/IyQPX
-   c=;
-Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=wNz6d+C+/h0KzZGtxbnCBhklaE8pA+w0bK3uye1D6ZA=;
+  b=OvPhzMzopwaNwaEbPmmMDDLELrB/1n0Bgpd5ypJectiwUVJLLHEUfzyV
+   aQ8Ci9RMdq1ChX3AJIb9vD0SU/zjMAHHdkvD/VK+pvTGdBog+R9hnOu2k
+   l/Db0hCwAOJ9OozeAXWj4DhmcHjSqo95vurEDbmkT7qJQLIBLLUEGLoQ7
+   s=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
   by alexa-out-sd-01.qualcomm.com with ESMTP; 15 Feb 2022 16:01:50 -0800
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2022 16:01:49 -0800
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2022 16:01:50 -0800
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -37,14 +37,17 @@ Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
 Received: from alokad-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 15 Feb 2022 16:01:48 -0800
+ 15.2.922.19; Tue, 15 Feb 2022 16:01:49 -0800
 From:   Aloka Dixit <quic_alokad@quicinc.com>
 To:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
-CC:     Aloka Dixit <quic_alokad@quicinc.com>
-Subject: [PATCH 0/2] support disabling EHT mode
-Date:   Tue, 15 Feb 2022 16:01:35 -0800
-Message-ID: <20220216000137.29276-1-quic_alokad@quicinc.com>
+CC:     Muna Sinada <quic_msinada@quicinc.com>,
+        Aloka Dixit <quic_alokad@quicinc.com>
+Subject: [PATCH 1/2] cfg80211: support disabling EHT mode
+Date:   Tue, 15 Feb 2022 16:01:36 -0800
+Message-ID: <20220216000137.29276-2-quic_alokad@quicinc.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20220216000137.29276-1-quic_alokad@quicinc.com>
+References: <20220216000137.29276-1-quic_alokad@quicinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -61,42 +64,83 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support to disable EHT mode.
-This patch-set depends on following patch-set for the definition
-of IEEE80211_STA_DISABLE_EHT.
-https://patchwork.kernel.org/project/linux-wireless/list/?series=613209&state=%2A&archive=both
+From: Muna Sinada <quic_msinada@quicinc.com>
 
-Muna Sinada (2):
-  cfg80211: support disabling EHT mode
-  mac80211: support disabling EHT mode
+Allow userspace to disable EHT mode.
+This forces EHT capable interfaces to disable during association.
 
+Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
+Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+---
  include/net/cfg80211.h       | 2 ++
  include/uapi/linux/nl80211.h | 1 +
- net/mac80211/mlme.c          | 5 ++++-
  net/wireless/nl80211.c       | 7 +++++++
- 4 files changed, 14 insertions(+), 1 deletion(-)
+ 3 files changed, 10 insertions(+)
 
-
-base-commit: 8aaaf2f3af2ae212428f4db1af34214225f5cec3
-prerequisite-patch-id: 328a8dc53fc4ed611094648f8354ea51a220a469
-prerequisite-patch-id: 9f6778fe7023b0f4d103e206ed80cb3074c4e4f9
-prerequisite-patch-id: 40aa2131e1529282c8099c4e270155292802f4ff
-prerequisite-patch-id: c9db940e5649f3586357ee608d24f518a7fadb00
-prerequisite-patch-id: edb4a64395858a174dd6ad739cf065f4092f2da1
-prerequisite-patch-id: eeacae90f17719f5546e53cd04082849491dcfc2
-prerequisite-patch-id: b5c0bb8119aa46b6aba653fa60c173c6546556e0
-prerequisite-patch-id: 4a58f779c257d9191efe94a7283c59eff683f7c3
-prerequisite-patch-id: fd4e44527c2965ae943c68c7c96bde33777bde59
-prerequisite-patch-id: 6c8a84b6e8e3a5c317ec3410d9f99b06a779304d
-prerequisite-patch-id: f7e51eb9ee4da52a5f79248f0314ef23db3333bc
-prerequisite-patch-id: eb4c3cfd53903f093f233af6bf00b88acab86595
-prerequisite-patch-id: 7d85d1f530c496da1ad6769c59f8524f58edfca9
-prerequisite-patch-id: ff5183a0e028a1041700c32992eb18a13dc2de8b
-prerequisite-patch-id: 159188202e4afc341f8a566d45cdf2e2afcb2d2e
-prerequisite-patch-id: e69273ed8e6c0cebb8288230fc781f345663035d
-prerequisite-patch-id: 06cfb4718beb6d69f078744feef1b6b897fad0aa
-prerequisite-patch-id: d17f643739d565fca4d8f9139da0083d522647ed
-prerequisite-patch-id: bb5917bb77a3de7b6804d25b56043ff26184d49d
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 136c0c537334..27359f74dd01 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -2735,6 +2735,7 @@ struct cfg80211_auth_request {
+  *	userspace if this flag is set. Only applicable for cfg80211_connect()
+  *	request (connect callback).
+  * @ASSOC_REQ_DISABLE_HE:  Disable HE
++ * @ASSOC_REQ_DISABLE_EHT:  Disable EHT
+  */
+ enum cfg80211_assoc_req_flags {
+ 	ASSOC_REQ_DISABLE_HT			= BIT(0),
+@@ -2742,6 +2743,7 @@ enum cfg80211_assoc_req_flags {
+ 	ASSOC_REQ_USE_RRM			= BIT(2),
+ 	CONNECT_REQ_EXTERNAL_AUTH_SUPPORT	= BIT(3),
+ 	ASSOC_REQ_DISABLE_HE			= BIT(4),
++	ASSOC_REQ_DISABLE_EHT			= BIT(5),
+ };
+ 
+ /**
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 98ed52663d6b..cdc9087ccbb8 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -3175,6 +3175,7 @@ enum nl80211_attrs {
+ 
+ 	NL80211_ATTR_EHT_CAPABILITY,
+ 
++	NL80211_ATTR_DISABLE_EHT,
+ 	/* add attributes here, update the policy in nl80211.c */
+ 
+ 	__NL80211_ATTR_AFTER_LAST,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 1595e14fd678..be1f7463b8a8 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -782,6 +782,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 		NLA_POLICY_RANGE(NLA_BINARY,
+ 				 NL80211_EHT_MIN_CAPABILITY_LEN,
+ 				 NL80211_EHT_MAX_CAPABILITY_LEN),
++	[NL80211_ATTR_DISABLE_EHT] = { .type = NLA_FLAG },
+ };
+ 
+ /* policy for the key attributes */
+@@ -10362,6 +10363,9 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
+ 	if (nla_get_flag(info->attrs[NL80211_ATTR_DISABLE_HE]))
+ 		req.flags |= ASSOC_REQ_DISABLE_HE;
+ 
++	if (nla_get_flag(info->attrs[NL80211_ATTR_DISABLE_EHT]))
++		req.flags |= ASSOC_REQ_DISABLE_EHT;
++
+ 	if (info->attrs[NL80211_ATTR_VHT_CAPABILITY_MASK])
+ 		memcpy(&req.vht_capa_mask,
+ 		       nla_data(info->attrs[NL80211_ATTR_VHT_CAPABILITY_MASK]),
+@@ -11150,6 +11154,9 @@ static int nl80211_connect(struct sk_buff *skb, struct genl_info *info)
+ 	if (nla_get_flag(info->attrs[NL80211_ATTR_DISABLE_HE]))
+ 		connect.flags |= ASSOC_REQ_DISABLE_HE;
+ 
++	if (nla_get_flag(info->attrs[NL80211_ATTR_DISABLE_EHT]))
++		connect.flags |= ASSOC_REQ_DISABLE_EHT;
++
+ 	if (info->attrs[NL80211_ATTR_VHT_CAPABILITY_MASK])
+ 		memcpy(&connect.vht_capa_mask,
+ 		       nla_data(info->attrs[NL80211_ATTR_VHT_CAPABILITY_MASK]),
 -- 
 2.31.1
 
