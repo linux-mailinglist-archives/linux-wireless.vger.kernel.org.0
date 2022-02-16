@@ -2,133 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D8CB4B8A70
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 14:39:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64FED4B8B8C
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Feb 2022 15:36:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234616AbiBPNjP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Feb 2022 08:39:15 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41480 "EHLO
+        id S235092AbiBPOgk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Feb 2022 09:36:40 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234222AbiBPNjO (ORCPT
+        with ESMTP id S234052AbiBPOgj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Feb 2022 08:39:14 -0500
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 073172A39F3;
-        Wed, 16 Feb 2022 05:39:01 -0800 (PST)
-Received: by mail-qt1-x82d.google.com with SMTP id z1so2063757qto.3;
-        Wed, 16 Feb 2022 05:39:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=21ndo1beMI8yP0ftAH82Ak+ucIbbctFR1VliNX6f60o=;
-        b=Pm6qW+nuN1Uscn8S8rNAsFZPUQCquHw2f7nLd8iiWgi1VBSYRM2MCpojTcqJd6JGWP
-         Qn6+Mhh+yJ7QYCvD2cL85h2KQWAIDAgPdl+C/PJm7TrM1mGRrGIkcK55unvVnEXXSvCp
-         5L+l0XMcRAy+qoA9kFlvsTxMjOuHlP6V9vim/UxLN4CQQnPQtDbtyV6YogCzj9aoGue1
-         O3a798PeDhuFGsJigaZ1H89jQur/b6F2mMy8mb6e29f4zzeSj4ALIEnXeqzuX13TJzgc
-         J/MI5xXKQktWxXNgOsATslG7t/632uO8wyQ6HGRZL7EoFWNwMB7KyFUFU9+ojzqzEYUz
-         LHRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=21ndo1beMI8yP0ftAH82Ak+ucIbbctFR1VliNX6f60o=;
-        b=PSobMhaqH4dei023O+4wejUHGXPENk+WHqfVVg2b7u2t207htSo2NGvTXEr05o8HDA
-         oIgVI/stOHsC264Jra3tAuGqJh+aLCuP3M70ZNP++sgfb6lNOMbKMQtD+PZ9NUXJfJXg
-         Ha0LjjMN2cfW/Z+tz0KDd3lrbpXJ3qV1x3pM0ETUdTJYqdJw7izqnpCR6zYsAWHcXMEX
-         wtWXYT9ajWIsltov1M1uFd6hFR0rJIAhIVoJLS1LOd7yxIRJ+9n7SNdFBofT/QA21zyj
-         Ru9ddixrswFfNk+Fc0npFKxheuPhVdJxK3WJs6AFDJ2q+ObIn3Wdi67or8v9Hh39kVrQ
-         uIAg==
-X-Gm-Message-State: AOAM532Fc+7vpfpli4JorFvoWHOc1dmhIXUagXvNv8U0PHGjVUS0cwFo
-        BKW8bNPCdsMtI9iaE6Mff9GBtgPCwKwjBIdH9Go=
-X-Google-Smtp-Source: ABdhPJyFM58ntAw5nr1wH2+4e/Yx3d3h4s3txaYAHeouEPQwV8TP0rj6/pEZ9BuQyKT3p261yqWE5gmV5yn5L4GB6N0=
-X-Received: by 2002:a05:622a:d0:b0:2d5:50c1:67a6 with SMTP id
- p16-20020a05622a00d000b002d550c167a6mr1898200qtw.297.1645018740038; Wed, 16
- Feb 2022 05:39:00 -0800 (PST)
+        Wed, 16 Feb 2022 09:36:39 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 045001C904;
+        Wed, 16 Feb 2022 06:36:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1645022186; x=1676558186;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=XsD6zFAgvHDR4DIwMCXse6I94/Rx7zSk8Y2P++rWtak=;
+  b=GA+kTl3j9Yrm8LAEscI9GvIBSKqRBIg66uVfBNOyT/pZdfALMRcDS9vz
+   qLvD8o93oajpjeSWZD6deakEJhpXk2JOhndWQvyIXIpSfkfi3dhrU43Tx
+   chzwWikhc8a/0JQcFWwm0Q0ryB0bvc6Z245GA4ygNeugZl0z8NTDTOgec
+   u6wNMROEe/EZEPcylCzTDHz3S5rM/9SN5eCDYFPQCIJDahLsEnX/CU3IE
+   WCYvlJoXlzUBf410iDMtv+FKFkzAC4CsWq936t7BGW/ZqCsb8qPMOlpyx
+   8dzkFfSg9NeEv7aM/AeF33X87Z1/EnFIcuWVL6SAZzOYgnurXKePjj7G8
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10259"; a="249445136"
+X-IronPort-AV: E=Sophos;i="5.88,374,1635231600"; 
+   d="scan'208";a="249445136"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2022 06:36:25 -0800
+X-IronPort-AV: E=Sophos;i="5.88,374,1635231600"; 
+   d="scan'208";a="529488930"
+Received: from unknown (HELO ijarvine-MOBL2.mshome.net) ([10.237.66.33])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2022 06:36:19 -0800
+Date:   Wed, 16 Feb 2022 16:36:16 +0200 (EET)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
+cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
+        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
+        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
+        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
+        haijun.liu@mediatek.com, amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
+        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
+        sreehari.kancharla@intel.com
+Subject: Re: [PATCH net-next v4 08/13] net: wwan: t7xx: Add data path
+ interface
+In-Reply-To: <05b6a2dd-f485-ce4a-d508-e90f9304d016@linux.intel.com>
+Message-ID: <92a244ef-eaf8-6e27-aa9-77e8f941b86@linux.intel.com>
+References: <20220114010627.21104-1-ricardo.martinez@linux.intel.com> <20220114010627.21104-9-ricardo.martinez@linux.intel.com> <ca592f64-c581-56a8-8d90-5341ebd8932d@linux.intel.com> <05b6a2dd-f485-ce4a-d508-e90f9304d016@linux.intel.com>
 MIME-Version: 1.0
-References: <20211009221711.2315352-1-robimarko@gmail.com> <163890036783.24891.8718291787865192280.kvalo@kernel.org>
- <CAOX2RU5mqUfPRDsQNSpVPdiz6sE_68KN5Ae+2bC_t1cQzdzgTA@mail.gmail.com>
- <09a27912-9ea4-fe75-df72-41ba0fa5fd4e@gmail.com> <CAOX2RU6qaZ7NkeRe1bukgH6OxXOPvJS=z9PRp=UYAxMfzwD2oQ@mail.gmail.com>
- <EC2778B3-B957-4F3F-B299-CC18805F8381@slashdirt.org> <CAOX2RU7FOdSuo2Jgo0i=8e-4bJwq7ahvQxLzQv_zNCz2HCTBwA@mail.gmail.com>
-In-Reply-To: <CAOX2RU7FOdSuo2Jgo0i=8e-4bJwq7ahvQxLzQv_zNCz2HCTBwA@mail.gmail.com>
-From:   Robert Marko <robimarko@gmail.com>
-Date:   Wed, 16 Feb 2022 14:38:48 +0100
-Message-ID: <CAOX2RU7d9amMseczgp-PRzdOvrgBO4ZFM_+hTRSevCU85qT=kA@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: support bus and device specific API 1 BDF selection
-To:     Thibaut <hacks@slashdirt.org>
-Cc:     Christian Lamparter <chunkeey@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/mixed; boundary="8323329-1525069745-1645022185=:9418"
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Silent ping,
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Does anybody have an opinion on this?
+--8323329-1525069745-1645022185=:9418
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-Regards,
-Robert
+On Tue, 15 Feb 2022, Martinez, Ricardo wrote:
+> On 2/8/2022 12:19 AM, Ilpo Järvinen wrote:
+> > On Thu, 13 Jan 2022, Ricardo Martinez wrote:
+> > 
+> > > +/* SKB control buffer indexed values */
+> > > +#define TX_CB_NETIF_IDX		0
+> > > +#define TX_CB_QTYPE		1
+> > > +#define TX_CB_DRB_CNT		2
+> > The normal way of storing a struct to skb->cb area is:
+> > 
+> > struct t7xx_skb_cb {
+> > 	u8	netif_idx;
+> > 	u8	qtype;
+> > 	u8	drb_cnt;
+> > };
+> > 
+> > #define T7XX_SKB_CB(__skb)	((struct t7xx_skb_cb *)&((__skb)->cb[0]))
+> > 
+> > However, there's only a single txqt/qtype (TXQ_TYPE_DEFAULT) in the
+> > patchset? And it seems to me that drb_cnt is a value that could be always
+> > derived using t7xx_get_drb_cnt_per_skb() from the skb rather than
+> > stored?
+> 
+> The next iteration will contain t7xx_tx_skb_cb and t7xx_rx_skb_cb structures.
 
-On Wed, 2 Feb 2022 at 19:49, Robert Marko <robimarko@gmail.com> wrote:
->
-> Kalle,
->
-> What is your opinion on this?
-> I would really love to see this get merged as we are having more and
-> more devices that are impacted without it.
->
-> Regards,
-> Robert
->
-> On Fri, 17 Dec 2021 at 13:25, Thibaut <hacks@slashdirt.org> wrote:
-> >
-> >
-> >
-> > > Le 17 d=C3=A9c. 2021 =C3=A0 13:06, Robert Marko <robimarko@gmail.com>=
- a =C3=A9crit :
-> > >
-> > > On Wed, 8 Dec 2021 at 15:07, Christian Lamparter <chunkeey@gmail.com>=
- wrote:
-> > >>
-> > >> Isn't the only user of this the non-upstreamable rb_hardconfig
-> > >> mikrotik platform driver?
-> >
-> > The driver could be upstreamed if desirable.
-> > Yet I think it=E2=80=99s quite orthogonal to having the possibility to =
-dynamically load a different BDF via API 1 for each available radio, which =
-before this patch couldn=E2=80=99t be done and is necessary for this partic=
-ular hardware.
-> >
-> > >> So, in your case the devices in question
-> > >> needs to setup a detour through the userspace firmware (helper+scrip=
-ts)
-> > >> to pull on the sysfs of that mikrotik platform driver? Wouldn't it
-> > >> be possible to do this more directly?
-> > >
-> > > Yes, its the sole current user as its the only vendor shipping the BD=
-F
-> > > as part of the
-> > > factory data and not like a userspace blob.
-> > >
-> > > I don't see how can it be more direct, its the same setup as when
-> > > getting pre-cal
-> > > data for most devices currently.
-> >
-> > Indeed, not sure how it could be more direct than it already is. I=E2=
-=80=99m open to suggestions though.
-> >
-> > > I am adding Thibaut who is the author of the platform driver.
-> >
-> > Best,
-> > Thibaut
+Ah, I didn't even notice the other one. Why differentiate them? There's 
+enough space in cb area and netif_idx is in both anyway. (union inside 
+struct could be used if short on space and tx/rx differ but it is not 
+needed here now.)
+
+> Also, q_number is going to be used instead of qtype.
+> 
+> Only one queue is used but I think we can keep this code generic as it is
+> straight forward (not like the drb_lack case), any thoughts?
+
+I don't mind if you find it useful.
+
+
+-- 
+ i.
+
+--8323329-1525069745-1645022185=:9418--
