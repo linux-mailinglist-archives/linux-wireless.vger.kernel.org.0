@@ -2,93 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A7274BA549
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Feb 2022 16:59:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5668C4BA66E
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Feb 2022 17:52:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242880AbiBQP7D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Feb 2022 10:59:03 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41602 "EHLO
+        id S243442AbiBQQwS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Feb 2022 11:52:18 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:45994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242851AbiBQP7C (ORCPT
+        with ESMTP id S233980AbiBQQwS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Feb 2022 10:59:02 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ABC1166A7E;
-        Thu, 17 Feb 2022 07:58:48 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B8189B821FC;
-        Thu, 17 Feb 2022 15:58:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1FBC340E8;
-        Thu, 17 Feb 2022 15:58:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1645113525;
-        bh=7xZ83u8iDo18S5QTR71wMPT5q3d56ibzjE9KfTJtmwI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EKdcSlgtu62AhJylD9QXGdp0i48vq0MMSevZuMBJG/jcEPbLP1JSeyZ9ufKr4reuq
-         pkzQUvZ7K2fqeZQXA358lJNja50Lp/hhvuk+RPUwKXtMYpIdXYfDNOHcxYjz/pqQPI
-         ULYM4K2ScoMQbZrCnp2cjwNEEI2/SO8p/a4Uq0Mw=
-Date:   Thu, 17 Feb 2022 16:58:42 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@kernel.org>, devel@driverdev.osuosl.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 2/2] staging: wfx: apply the necessary SDIO quirks for
- the Silabs WF200
-Message-ID: <Yg5wsmsPQaFOANwv@kroah.com>
-References: <20220216093112.92469-1-Jerome.Pouiller@silabs.com>
- <CAPDyKFqm3tGa+dtAGPn803rLnfY=tdcoX5DySnG-spFFqM=CrA@mail.gmail.com>
- <87ley9zg8c.fsf@kernel.org>
- <2063576.g1lFC2ckuq@pc-42>
+        Thu, 17 Feb 2022 11:52:18 -0500
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE8F512AAF;
+        Thu, 17 Feb 2022 08:52:02 -0800 (PST)
+Received: by mail-ej1-x629.google.com with SMTP id a8so8712312ejc.8;
+        Thu, 17 Feb 2022 08:52:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=QW98ZAnaTyeOi8FPTz8x8h5/4COyBHutpkvvD0kXcq4=;
+        b=PzaFH60CnXlgEaw+MxGzPZX3CggnAQDxzzLHy3lf+PPzdG8ixNd3wuulyE14lhShvP
+         zAg4AhZSNQ7FFdr9xKrlMSUuUCCa4alb8k3z6K1W3CbhHAHMLcq53cO5kiLMFlzm4eA2
+         0vv2C0dX9OIWTk8uo7ZE01T5ih1gofBVyaD3eiFyahEQqsT3WoOhiu/wI3hUjoF1xQSs
+         RPpBon5nT2d9OhQTzE+u9ZyVIDAbOUUfNnSilnLC410GVksT4kThujYO4D11TsQZrkxM
+         re1o8jZr/nqZgGHITpKH94voCsERAtRlOxr7uLk7wZTipXP/D53s1kzZKk1HyutE2lqs
+         kAGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=QW98ZAnaTyeOi8FPTz8x8h5/4COyBHutpkvvD0kXcq4=;
+        b=B7vIZF6SNdKETdiFVsCQVIFVrm6TdHdKqSOSY45MHfYZM10vEJA2r8qcyf++/2/EUu
+         0PPTHgot4RK13XuelP/yBbBQPiI/vMNDzVzpamAEDMsp595ebrprnnGTABbVof8BIl+i
+         xpjbtCmWE3A631RZrC61v52di1M9nIQeCf82FefIGrRd4YIZLq+yD5G3nXv+xzMDWxe0
+         5Sw4dsHBebCoYxwhH0KX6Q+jSJpqPJ24GdBpgQ0sszYHu7gWFKNlUlH4JDcBoFvTaLh2
+         FGW9TyKjgQTIi/kauA4pI1wrrZE28uROEWJIjEP0j/qfsVSVOEGlVU808ZkslXyVd6ap
+         y/vw==
+X-Gm-Message-State: AOAM530OvmftMTzJApWQJrRrZWH9z+9e56/tjhBcv+61m2RtYp/oypyK
+        nA3LF+S26iByNkCK3h8VlAo=
+X-Google-Smtp-Source: ABdhPJwtEn3D5+cKd8hP6JIr/8eyP8k8OBrxb52ozeiZGn6A/SKZI9bw35zidvnok2uRY4Rfp+w7nA==
+X-Received: by 2002:a17:906:1e0c:b0:6cf:d014:e454 with SMTP id g12-20020a1709061e0c00b006cfd014e454mr3080164ejj.583.1645116721507;
+        Thu, 17 Feb 2022 08:52:01 -0800 (PST)
+Received: from debian64.daheim (pd9e29561.dip0.t-ipconnect.de. [217.226.149.97])
+        by smtp.gmail.com with ESMTPSA id eg42sm1594303edb.79.2022.02.17.08.52.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Feb 2022 08:52:01 -0800 (PST)
+Received: from localhost.daheim ([127.0.0.1])
+        by debian64.daheim with esmtp (Exim 4.95)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1nKj3j-001iGV-5S;
+        Thu, 17 Feb 2022 17:52:00 +0100
+Message-ID: <c9bb90ef-86fd-609a-0b55-896350602996@gmail.com>
+Date:   Thu, 17 Feb 2022 17:52:00 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [PATCH][next] carl9170: Replace zero-length arrays with
+ flexible-array members
+Content-Language: de-DE
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Christian Lamparter <chunkeey@googlemail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <20220216194955.GA904126@embeddedor>
+From:   Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <20220216194955.GA904126@embeddedor>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2063576.g1lFC2ckuq@pc-42>
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Feb 17, 2022 at 04:41:38PM +0100, Jérôme Pouiller wrote:
-> On Thursday 17 February 2022 16:04:51 CET Kalle Valo wrote:
-> > Ulf Hansson <ulf.hansson@linaro.org> writes:
-> > > On Thu, 17 Feb 2022 at 10:59, Kalle Valo <kvalo@kernel.org> wrote:
-> > >> Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
-> > >> > From: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> > >> >
-> > >> > Until now, the SDIO quirks are applied directly from the driver.
-> > >> > However, it is better to apply the quirks before driver probing. So,
-> > >> > this patch relocate the quirks in the MMC framework.
-> > >>
-> > >> It would be good to know how this is better, what's the concrete
-> > >> advantage?
-> > >
-> > > The mmc core has a quirk interface for all types of cards
-> > > (eMMC/SD/SDIO), which thus keeps these things from sprinkling to
-> > > drivers. In some cases, the quirk needs to be applied already during
-> > > card initialization, which is earlier than when probing an SDIO func
-> > > driver or the MMC block device driver.
-> > >
-> > > Perhaps it's a good idea to explain a bit about this in the commit message.
-> > 
-> > I would add the whole paragraph to the commit log :)
+On 16/02/2022 20:49, Gustavo A. R. Silva wrote:
+> There is a regular need in the kernel to provide a way to declare
+> having a dynamically sized set of trailing elements in a structure.
+> Kernel code should always use â€œflexible array membersâ€[1] for these
+> cases. The older style of one-element or zero-length arrays should
+> no longer be used[2].
 > 
-> Arf, Greg has just pulled this patch into staging-testing. I assume it is
-> too late to change the commit message.
+> [1] https://en.wikipedia.org/wiki/Flexible_array_member
+> [2] https://www.kernel.org/doc/html/v5.16/process/deprecated.html#zero-length-and-one-element-arrays
+> 
+> Link: https://github.com/KSPP/linux/issues/78
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-I can drop it, but really, it's fine as-is.
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
 
-thanks,
+(I've also applied it to the firmware source)
 
-greg k-h
