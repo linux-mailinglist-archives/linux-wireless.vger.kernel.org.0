@@ -2,144 +2,363 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A10214BB2CB
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Feb 2022 08:02:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 048574BB56B
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Feb 2022 10:22:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231466AbiBRHDF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Feb 2022 02:03:05 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53308 "EHLO
+        id S233473AbiBRJW2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Feb 2022 04:22:28 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230123AbiBRHDD (ORCPT
+        with ESMTP id S233462AbiBRJWZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Feb 2022 02:03:03 -0500
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2129.outbound.protection.outlook.com [40.107.215.129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98ECD17AB3;
-        Thu, 17 Feb 2022 23:02:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SOXKkHAAVray7Nt0qJCCdFj4b1oPpVZR+HS4imuxP8QJj97HltgW4vFJjBe4+CGa8FF/xdnQR8uBZbpkt9cEUtI1qJyIaTE1TYUiAGsSZ4Bwhy//GEDufMrhmJKvlYYVqG8PjS5UU16GBH9Z9Ym2hQGvLlwYSUdf8Grq9n21L0+IvFOwKgzEDfcErIDgRkEvI+Nd/He0uCDvpVtR2nENF4H6qML3sy7BoZcFNQY/POi6WLrK7QnJPcpYphR51IzpKminutZz2XtSRMzvtEHDDH6kr0IQblm1v2GRIpCDT2z4pxN6d6B6Ro4Hv6eNyy5hO2gKsZPgpAlAYAjCL+NlfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ghv73p1V9L+WcDGzE/iZmVuCzDu2pr4vF6QkCbkV2pU=;
- b=f9GDGAhG5RurUPeODabeMPkl2HzeAxaaktd3npHQoxfSavH2CTw86icjTTEj06LdrtvHyMhfYSLZRRWFxrxl+HSdHu/BYwUXzOiN7ymxNY9IhdMxSlKJ5Ta4xRyp1rOKa1kZLCC9lqKQYH6KKyTwoRrFrzkdDq2Et14+ClAzgkxXDvybXlWZNEqcDYKpFo4eJWmyw4p8+RBwPDOJFjefqvXG3GYUaJdn8DuqSJRWXmke2adzLmYARldtWn5sDUodxifWAEC1CLHjrHzrfOUadURVACc9OPBB/N9y68yOI2bH3qCoPo6/VwjsfOqeCv+PdhhGE6MmQ+K5KrSrjIVdxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com;
- s=selector2-vivo0-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ghv73p1V9L+WcDGzE/iZmVuCzDu2pr4vF6QkCbkV2pU=;
- b=lyeJcdifa5zVbYavxjt1VjDCKLGE3Jn7yrCEyEskGfLBA/UNddlCzydrgSg9GCb2H5/L0WftIzD4PlFH8iPCo8aS/sk5atI0+6tsxchmI4ndFOrDPyHnri9FptIGxLw62/lqR6ydnRtt/Ex51r/10sSuLc12q28NA3046NeVemY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from TYZPR06MB4173.apcprd06.prod.outlook.com (2603:1096:400:26::14)
- by SG2PR06MB3321.apcprd06.prod.outlook.com (2603:1096:4:93::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.16; Fri, 18 Feb
- 2022 07:02:41 +0000
-Received: from TYZPR06MB4173.apcprd06.prod.outlook.com
- ([fe80::30ce:609e:c8e8:8a06]) by TYZPR06MB4173.apcprd06.prod.outlook.com
- ([fe80::30ce:609e:c8e8:8a06%4]) with mapi id 15.20.4995.016; Fri, 18 Feb 2022
- 07:02:41 +0000
-From:   Yihao Han <hanyihao@vivo.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     kernel@vivo.com, Yihao Han <hanyihao@vivo.com>
-Subject: [PATCH] mac80211: replace DEFINE_SIMPLE_ATTRIBUTE with DEFINE_DEBUGFS_ATTRIBUTE
-Date:   Thu, 17 Feb 2022 23:02:28 -0800
-Message-Id: <20220218070228.6210-1-hanyihao@vivo.com>
-X-Mailer: git-send-email 2.17.1
-Content-Type: text/plain
-X-ClientProxiedBy: HK2PR06CA0015.apcprd06.prod.outlook.com
- (2603:1096:202:2e::27) To TYZPR06MB4173.apcprd06.prod.outlook.com
- (2603:1096:400:26::14)
+        Fri, 18 Feb 2022 04:22:25 -0500
+Received: from farmhouse.coelho.fi (paleale.coelho.fi [176.9.41.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4B2A1EEE3
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Feb 2022 01:22:07 -0800 (PST)
+Received: from 91-156-4-210.elisa-laajakaista.fi ([91.156.4.210] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <luca@coelho.fi>)
+        id 1nKzSk-000GcY-S2;
+        Fri, 18 Feb 2022 11:22:05 +0200
+Message-ID: <d19d9ad6a7ddab0c8345e5922e58e4a28a593c45.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, luca@coelho.fi
+Date:   Fri, 18 Feb 2022 11:22:02 +0200
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-Eeusvrnr/6XHm5ZNAsct"
+User-Agent: Evolution 3.42.4-1 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 67a0b150-cec0-49d3-42dd-08d9f2aca7d7
-X-MS-TrafficTypeDiagnostic: SG2PR06MB3321:EE_
-X-Microsoft-Antispam-PRVS: <SG2PR06MB33217937D26B7D2D16E93BEAA2379@SG2PR06MB3321.apcprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:813;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: zXyaDFEIxIms6vm/WBr35fb1r44yV9DrBImVFe73VQCQDz5yW/P5bY4hpOcHSvkSeha0aYz0V6QyLagm+EtvlrE5ZCqGffLE7vpFVEcVYzlG3o0Sk12yM8vSCr77acN9vzvlp6xClYODiDeSDiKRlo60tv6fvpBCEVYEwJQmZGVratvHI8j8xOpRsz+YZD/qMmeU12QeC3/+8/n45z1x60tZdCuJdscFf7jiv8keY+wXgS6JSXCrql/eUYQZJuY5lDqdt28A+vRcmzxaGNyF7ueygHtG8VK88bqINZwGWuLcdUgVUVCOF+BH2YGw/oWk87v3RBRHmrbKDwYpflb5hD2pdXvHfm7F9Gvq+ClylrbMGSVxjQVMqqPYDKgdAmduiQU64aeASFYmge+hXvu8px4fr6UeihVYoUUYCbC0r/TnAwnNdF8U0pDeoZQkXVj1nB3gfP8qFvdBZTSOKkamGtWUp6gfQaWdW6kDN/D01SkFMA/Zph7qdB3amtoIQVn3IWbzxZ8oLxjINFQ03d3RpR+li/t+7HPv+tCIVps9j/iT1tcbnb4WJv2OcdQZnBUxHczRXbPfD8q4UVNA3Yyetsn2UXd672R405bSlV+/JhQvvzZAca0FKrZwx8nXp0dv1sF0JdZPElGM4UadgtY0b9osvjo2gzSBVp/PRkmHDivTPpVZSDxM0ZQ47KOELAzZvPTIOqhB7J/JssrekEbSsQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR06MB4173.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(52116002)(4744005)(38350700002)(508600001)(6506007)(6666004)(6512007)(316002)(8936002)(110136005)(83380400001)(5660300002)(36756003)(1076003)(26005)(186003)(6486002)(38100700002)(8676002)(86362001)(2616005)(107886003)(2906002)(66946007)(66476007)(4326008)(66556008);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?jmymBMmg/tmLnsrhEiRwhpNhWEa8o17sNYFlQdMnV7/ZG/9CBpBApem8t6Pe?=
- =?us-ascii?Q?KXEp8nbG2pQ2zUkUSxUQSBRonZL0L8sSLMm7Da6zIFdRF+i782KM4XzTyOO5?=
- =?us-ascii?Q?NeiqiaOsFOhsIjgnNjFlfCTn49edsdip1MXK0FQU8hwvtdI74LtLO/vfoY4Q?=
- =?us-ascii?Q?B+ccg26L2zae2c/+bFhWflca8kBflVLNaBCeBPaIm+XdL22/l6DZ6foIkNXd?=
- =?us-ascii?Q?euGXKOtxcSZwjpUCdzb80SBClTV0VIXtXxB914ZbW/ooEuYv4YSFHHeplQPz?=
- =?us-ascii?Q?/JU7w6U0okvUHeyE72Kb/TwS9q472pwlKSesqxOgj2KpNg+13To/vy6fOgKU?=
- =?us-ascii?Q?jXj4Y7Xmp/KQLHu1sDmB8yC0c7BIwP/U+4WBWwFIWDVeGyKtEzy4o1Jhddm7?=
- =?us-ascii?Q?/cyBlfcYxv+7JzapquBvwZmRwp4Olxitvm1akGoTMTOojfhiaeXO0dMKTi3y?=
- =?us-ascii?Q?8fdp3ha0JexzIWk4uAN0DvmBlbn117Lul3rN5nPKvOP74ejQFAoW/vu2qtq7?=
- =?us-ascii?Q?BcknKBjSAjeeHBq++ZpLJ1CDEL88UcAHj8hj3hWBOxr65TnzEd7f1RALlZEg?=
- =?us-ascii?Q?THX3sP2hxMGpkfV4+CxQbIRx0KOObLUUC9eOyGS3PuCQTXbQ79IkeuZRMD0n?=
- =?us-ascii?Q?+QsvmFszl97UEUMtxk0WRfI15eFG2IkpesJK59NZBwji4Xsd8qhJqQr9guRg?=
- =?us-ascii?Q?0sPrrSm/wgshyTA4AXO/anghihfgUdheqVAHQQsFPswbc8C9kQyNG7GsiTeW?=
- =?us-ascii?Q?Wi5PpFGTOeHmxXGh9L/qjUV6mQZx9s8cNY0ZNAdj1cNdWNq8QCUH4g/bxjy/?=
- =?us-ascii?Q?jLp5iD2tNRA/aIhnfvoIHOI8u4PCqIiayMXTKTWxdceqmGykhSNy03s17XrH?=
- =?us-ascii?Q?w9HHMx78P34aRW28qoZ69Tn+xjkLpFijdOVO4SaXDUyb2VGotynafq9muL47?=
- =?us-ascii?Q?OhaDGPojp1bJHeU4W5wkp1gzrITn38TipX6/6duFf4wTcVuqaE5S9grhv/vV?=
- =?us-ascii?Q?X4boDaj1VJF/58ATNxsbbJKmwFEA0P5hpedNa51UQGNnR0pkQG749eVBUbF1?=
- =?us-ascii?Q?mVaDjbrY83e9OD6Jqex2YDzMc7WtpqWIJyCjB+DbbkVVE3nk1hbU0Dl16SeF?=
- =?us-ascii?Q?JMASYJA9amFxpRlwRptCs6r1bPBt0fBQg81dB00y9AJ5ST+5OnhzZztnrHiM?=
- =?us-ascii?Q?P0klzF3eQm6aaTrxT2Mpyxw9FlW64ZBEA1D97xUazQJiNzsPiHDqb/2XaFpv?=
- =?us-ascii?Q?TDaoDK368eCpjy/UW/ejvvcXrSy3QYdNMPdDKb5IBUtERpTc0JsQ98yL16Gx?=
- =?us-ascii?Q?9hXLFEl6yILCGMF+8woCTYm953+/IaRX38mGFsZ1IB6WLvrUjljNInuX8hUR?=
- =?us-ascii?Q?KsenHP8ze7e7ydWi+J3V7WbNufpAE54ip7Lt9WcgVX13FkAHyfQm/KvT4EKZ?=
- =?us-ascii?Q?ewPBXiy+Qnqjn5MWh3O412is9f85+E5jLZVon98XwbV0Ky/VIS9r3Yuy45ua?=
- =?us-ascii?Q?5cctfM6cPR4uYOYwTIzljkf40B8/ybssTXEk/3WJ5PV+RvONkTjww/fcXdaL?=
- =?us-ascii?Q?FHMtZnaa/7zRVxFClsIcm8414nr2T0nvgCP9FQTifnIArGyV9PD2fmubGokE?=
- =?us-ascii?Q?05aE+wbvs6L0QMQd2+iZi3I=3D?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 67a0b150-cec0-49d3-42dd-08d9f2aca7d7
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR06MB4173.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2022 07:02:41.5709
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hkE4q96/O8bqQAc7aH9Drppdqq0gJmLepAwie34yBGnHLPVChFrDnBXRkpX5YHWbH1LGpHe2t8vgtZaCvOv7jg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SG2PR06MB3321
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+Subject: pull-request: iwlwifi-next 2022-02-18
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following coccicheck warning:
-./drivers/net/wireless/mac80211_hwsim.c:1040:0-23: WARNING:
-hwsim_fops_rx_rssi should be defined with
-DEFINE_DEBUGFS_ATTRIBUTE
 
-Signed-off-by: Yihao Han <hanyihao@vivo.com>
----
- drivers/net/wireless/mac80211_hwsim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--=-Eeusvrnr/6XHm5ZNAsct
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index 18a578495c37..a4ec165d4793 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -1037,7 +1037,7 @@ static int hwsim_fops_rx_rssi_write(void *dat, u64 val)
- 	return 0;
- }
- 
--DEFINE_SIMPLE_ATTRIBUTE(hwsim_fops_rx_rssi,
-+DEFINE_DEBUGFS_ATTRIBUTE(hwsim_fops_rx_rssi,
- 			hwsim_fops_rx_rssi_read, hwsim_fops_rx_rssi_write,
- 			"%lld\n");
- 
--- 
-2.17.1
+Hi Kalle,
 
+Here's my first pull request for v5.18 with the six patchsets I sent
+earlier, plus about 10 patches sent by the community.
+
+This is all normal development, new features, bugfixes and  cleanups.=20
+More details about the contents in the tag description.
+
+Please let me know if there are any issues.
+
+Cheers,
+Luca.
+
+
+The following changes since commit ea0de861374b06f97620eb508d442161b56cfa62=
+:
+
+  mac80211_hwsim: Advertise support for EHT capabilities (2022-02-16 15:44:=
+45 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git ta=
+gs/iwlwifi-next-for-kalle-2022-02-18
+
+for you to fetch changes up to cb0a1fb7fd86b0062692b5056ca8552906509512:
+
+  iwlwifi: dbg_ini: Split memcpy() to avoid multi-field write (2022-02-18 1=
+0:40:56 +0200)
+
+----------------------------------------------------------------
+iwlwifi patches for v5.18
+
+* Support UHB TAS enablement via BIOS;
+* Remove a bunch of W=3D1 warnings;
+* Add support for channel switch offload;
+* Support a new FW API command version;
+* Support 32 Rx AMPDU sessions in newer devices;
+* Support a few new FW API command versions;
+* Some debugging infra fixes;
+* A few fixes in the HE functionality;
+* Add a few new devices;
+* A bunch of fixes for W=3D1 and W=3D3 warnings;
+* Add support for a couple of new devices;
+* Fix a potential buffer underflow;
+* W=3D1 warnings clean up continues;
+* Some improvements and fixes in scanning;
+* More work on the Bz family of devices;
+* Add support for band disablement via BIOS;
+* Bump FW API version;
+* Fix config structure for one device;
+* Support a new FW API command version;
+* Support new queue allocation command;
+* Some more debugging improvements;
+* Some other small fixes, clean-ups and improvements.
+
+----------------------------------------------------------------
+Abhishek Naik (2):
+      iwlwifi: nvm: Correct HE capability
+      iwlwifi: tlc: Add logs in rs_fw_rate_init func to print TLC configura=
+tion
+
+Andrei Otcheretianski (1):
+      iwlwifi: pcie: make sure iwl_rx_packet_payload_len() will not underfl=
+ow
+
+Ayala Barazani (2):
+      iwlwifi: mvm: allow enabling UHB TAS in the USA via ACPI setting
+      iwlwifi: mvm: Disable WiFi bands selectively with BIOS
+
+Bixuan Cui (1):
+      iwlwifi: mvm: rfi: use kmemdup() to replace kzalloc + memcpy
+
+Bjoern A. Zeeb (2):
+      iwlwifi: de-const properly where needed
+      iwlwifi: propagate (const) type qualifier
+
+Cai Huoqing (1):
+      iwlwifi: Make use of the helper macro LIST_HEAD()
+
+Colin Ian King (1):
+      iwlwifi: Fix -EIO error code that is never returned
+
+Dan Carpenter (2):
+      iwlwifi: mvm: fix off by one in iwl_mvm_stat_iterator_all_macs()
+      iwlwifi: mvm: Fix an error code in iwl_mvm_up()
+
+Emmanuel Grumbach (3):
+      iwlwifi: mvm: starting from 22000 we have 32 Rx AMPDU sessions
+      iwlwifi: don't dump_stack() when we get an unexpected interrupt
+      iwlwifi: mvm: always remove the session protection after association
+
+Golan Ben Ami (1):
+      iwlwifi: bump FW API to 70 for AX devices
+
+Gregory Greenman (1):
+      iwlwifi: mvm: rfi: handle deactivation notification
+
+Ilan Peer (5):
+      iwlwifi: mvm: Correctly set fragmented EBS
+      iwlwifi: scan: Modify return value of a function
+      iwlwifi: mvm: Passively scan non PSC channels only when requested so
+      iwlwifi: mvm: Unify the scan iteration functions
+      iwlwifi: mvm: Consider P2P GO operation during scan
+
+Johannes Berg (28):
+      iwlwifi: prefer WIDE_ID() over iwl_cmd_id()
+      iwlwifi: mvm: fw: clean up hcmd struct creation
+      iwlwifi: make iwl_fw_lookup_cmd_ver() take a cmd_id
+      iwlwifi: fix various more -Wcast-qual warnings
+      iwlwifi: avoid void pointer arithmetic
+      iwlwifi: mvm: refactor iwl_mvm_sta_rx_agg()
+      iwlwifi: mvm: support new BAID allocation command
+      iwlwifi: mvm: align locking in D3 test debugfs
+      iwlwifi: mvm: support v3 of station HE context command
+      iwlwifi: fw: make dump_start callback void
+      iwlwifi: move symbols into a separate namespace
+      iwlwifi: dbg-tlv: clean up iwl_dbg_tlv_update_drams()
+      iwlwifi: avoid variable shadowing
+      iwlwifi: make some functions friendly to sparse
+      iwlwifi: mei: avoid -Wpointer-arith and -Wcast-qual warnings
+      iwlwifi: pcie: adjust to Bz completion descriptor
+      iwlwifi: drv: load tlv debug data earlier
+      iwlwifi: eeprom: clean up macros
+      iwlwifi: remove unused macros
+      iwlwifi: debugfs: remove useless double condition
+      iwlwifi: mei: use C99 initializer for device IDs
+      iwlwifi: mvm: make iwl_mvm_reconfig_scd() static
+      iwlwifi: make iwl_txq_dyn_alloc_dma() return the txq
+      iwlwifi: remove command ID argument from queue allocation
+      iwlwifi: mvm: remove iwl_mvm_disable_txq() flags argument
+      iwlwifi: support new queue allocation command
+      iwlwifi: api: remove ttl field from TX command
+      iwlwifi: mvm: update BAID allocation command again
+
+Kees Cook (1):
+      iwlwifi: dbg_ini: Split memcpy() to avoid multi-field write
+
+Luca Coelho (5):
+      iwlwifi: mvm: don't iterate unadded vifs when handling FW SMPS req
+      iwlwifi: read and print OTP minor version
+      iwlwifi: remove unused DC2DC_CONFIG_CMD definitions
+      iwlwifi: mvm: don't send BAID removal to the FW during hw_restart
+      iwlwifi: fix small doc mistake for iwl_fw_ini_addr_val
+
+Matti Gottlieb (1):
+      iwlwifi: pcie: Adapt rx queue write pointer for Bz family
+
+Mike Golant (1):
+      iwlwifi: add support for BZ-U and BZ-L HW
+
+Minghao Chi (CGEL ZTE) (2):
+      iwlwifi/fw: use struct_size over open coded arithmetic
+      iwlwifi: dvm: use struct_size over open coded arithmetic
+
+Miri Korenblit (4):
+      iwlwifi: mvm: add support for CT-KILL notification version 2
+      iwlwifi: mvm: use debug print instead of WARN_ON()
+      iwlwifi: mvm: refactor setting PPE thresholds in STA_HE_CTXT_CMD
+      iwlwifi: mvm: move only to an enabled channel
+
+Mordechay Goodstein (6):
+      iwlwifi: cfg: add support for 1K BA queue
+      iwlwifi: dbg: add infra for tracking free buffer size
+      iwlwifi: mvm: only enable HE DCM if we also support TX
+      iwlwifi: advertise support for HE - DCM BPSK RX/TX
+      iwlwifi: mvm: add additional info for boot info failures
+      iwlwifi: mvm: add additional info for boot info failures
+
+Mukesh Sisodiya (4):
+      iwlwifi: yoyo: add IMR DRAM dump support
+      iwlwifi: yoyo: Avoid using dram data if allocation failed
+      iwlwifi: yoyo: support dump policy for the dump size
+      iwlwifi: yoyo: send hcmd to fw after dump collection completes.
+
+Nathan Errera (1):
+      iwlwifi: mvm: offload channel switch timing to FW
+
+Rotem Saado (3):
+      iwlwifi: yoyo: fix DBGI_SRAM ini dump header.
+      iwlwifi: yoyo: fix DBGC allocation flow
+      iwlwifi: yoyo: remove DBGI_SRAM address reset writing
+
+Takashi Iwai (1):
+      iwlwifi: mvm: Don't call iwl_mvm_sta_from_mac80211() with NULL sta
+
+Xiang wangx (1):
+      iwlwifi: Fix syntax errors in comments
+
+Yaara Baruch (2):
+      iwlwifi: pcie: add support for MS devices
+      iwlwifi: pcie: iwlwifi: fix device id 7F70 struct
+
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c         |  38 +++++++++--
+ drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c      |   2 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c          |   1 +
+ drivers/net/wireless/intel/iwlwifi/dvm/rx.c            |   7 +-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c           |  18 ++++--
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h           |  11 ++--
+ drivers/net/wireless/intel/iwlwifi/fw/api/commands.h   |  13 ++--
+ drivers/net/wireless/intel/iwlwifi/fw/api/config.h     |  33 ----------
+ drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h   | 148 +++++++++++++=
+++++++++++++++++++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h    |  37 +++++++++--
+ drivers/net/wireless/intel/iwlwifi/fw/api/debug.h      |  19 +++++-
+ drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h    |  34 ++++++++++
+ drivers/net/wireless/intel/iwlwifi/fw/api/mac.h        | 127 +++++++++++++=
++++++++++++++++++++++---
+ drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h    |  52 +++++++++++++=
++-
+ drivers/net/wireless/intel/iwlwifi/fw/api/phy.h        |  16 ++++-
+ drivers/net/wireless/intel/iwlwifi/fw/api/rfi.h        |  10 ++-
+ drivers/net/wireless/intel/iwlwifi/fw/api/rs.h         |   6 +-
+ drivers/net/wireless/intel/iwlwifi/fw/api/tx.h         |   7 +-
+ drivers/net/wireless/intel/iwlwifi/fw/api/txq.h        |   4 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c            | 297 +++++++++++++=
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.h            |   5 +-
+ drivers/net/wireless/intel/iwlwifi/fw/debugfs.c        |   4 +-
+ drivers/net/wireless/intel/iwlwifi/fw/file.h           |   8 ++-
+ drivers/net/wireless/intel/iwlwifi/fw/img.c            |   7 +-
+ drivers/net/wireless/intel/iwlwifi/fw/img.h            |   2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/init.c           |   5 +-
+ drivers/net/wireless/intel/iwlwifi/fw/paging.c         |   4 +-
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.c           |  22 +++----
+ drivers/net/wireless/intel/iwlwifi/fw/runtime.h        |   2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/smem.c           |   4 +-
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c           |  12 ++--
+ drivers/net/wireless/intel/iwlwifi/iwl-config.h        |  12 +++-
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h           |   3 +
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c       |  72 +++++++++++++=
+--------
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c           | 118 +++++++++++++=
+++++-----------------
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.h           |   2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-eeprom-read.c   |  12 ++--
+ drivers/net/wireless/intel/iwlwifi/iwl-fh.h            |  30 +++++++--
+ drivers/net/wireless/intel/iwlwifi/iwl-io.c            |  18 +++---
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c     |  43 +++++++------
+ drivers/net/wireless/intel/iwlwifi/iwl-phy-db.c        |   4 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h          |  13 +++-
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.c         |  12 ++--
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h         |  59 +++++++++++++=
++---
+ drivers/net/wireless/intel/iwlwifi/mei/main.c          |  10 ++-
+ drivers/net/wireless/intel/iwlwifi/mei/net.c           |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c            |  29 ++++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c       |  18 +++---
+ drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c |  25 ++++----
+ drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c |  24 ++++---
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c            | 189 +++++++++++++=
++++++++++++++++++++++--------------------
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c      |  50 ++++++++++++-=
+--
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c      | 328 +++++++++++++=
++++++++++++++++++++++++++++++++++++++++++++++++++--------------------------=
+------
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h           |  16 ++---
+ drivers/net/wireless/intel/iwlwifi/mvm/offloading.c    |   3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c           |  30 +++++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c      |  43 ++++++++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/quota.c         |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c           |  13 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c         |  32 ++++++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c            |   2 -
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c            |   6 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c          |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c          | 294 +++++++++++++=
++++++++++++++++++++++++++++++++++++++++++++++++------------------------
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c           | 312 +++++++++++++=
+++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------=
+-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h           |   3 +
+ drivers/net/wireless/intel/iwlwifi/mvm/time-event.c    |  20 +++---
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c            |  11 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c            |  20 +++---
+ drivers/net/wireless/intel/iwlwifi/mvm/utils.c         |  40 +-----------
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c          |  35 ++++++++--
+ drivers/net/wireless/intel/iwlwifi/pcie/internal.h     |  46 +++++++++++--=
+-
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c           | 112 +++++++++++++=
++++++++++----------
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c        |  49 ++++++++++++-=
+-
+ drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c      |   4 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c           |  14 ++--
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c          |  97 +++++++++++++=
++++++----------
+ drivers/net/wireless/intel/iwlwifi/queue/tx.h          |  21 +++---
+ include/linux/ieee80211.h                              |   1 +
+ 79 files changed, 2315 insertions(+), 945 deletions(-)
+
+
+--=-Eeusvrnr/6XHm5ZNAsct
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAmIPZToACgkQoUecoho8
+xfolcBAAkSY9libPUDjoKWWJ8PBm72vuA43hibD7KnM4BxdV2U0odrc8hqQcbEj4
+Eonfkz56O2f2N39a0VccrL361caxqUqiIFusMbiiN6Iol/4E9tnatBVoDtTL0+Z9
+XCwMocfAd6QaalEzeBGo7TDk3wNmPzznK7x+XyaTlCbSmEyXas3aZU7IYnPDHORS
+gbMHRkvslFl+y+/WU3uG19AjsJF2tPxRO5QxMDuNt26D3fGWQIMGs7JmA1uiOai0
+Vaqoa4L4vfbrzdpia2KVvDlw8dquesCVRfSsmKH2QYI04m8cOPdAnX39fb5xF7pK
+8wotnhqaAp992HiLN0JjTGdE8Q1S2V2syPiiX7wh2VgK6PD9gJSgP1RskbAKJaIY
+LewsSMRdNeQvBbEtBcPE5gw3YuEbgMI+XcS7x7Vis3f7UJkgWvIBxUHaURu1mYNl
+e4meD6vPgBp34WvO4+GGqyIR1c5gSFbX08BUAXsag90VlICUIVQRBRpaDznKEqUP
+5kEbOkmR5PVJOE8QKeEyLA4MPx7FbA1RDFbXMSaMGqEICV5Qt1fUDJR7dYEFVjUl
+J0QzASxZbleX/gNsFgsy4YXOdf3umzbhWY311kmGbgrDtnKKjNe1JDAXoPN0XEhH
+03PUaegw1lYAGInPrGBiYUmi8BHU1DwXm4Qo7mYijIyGmL5fQUY=
+=fdbh
+-----END PGP SIGNATURE-----
+
+--=-Eeusvrnr/6XHm5ZNAsct--
