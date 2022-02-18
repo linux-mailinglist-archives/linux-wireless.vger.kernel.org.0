@@ -2,39 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BDAE4BB04B
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Feb 2022 04:41:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CE3F4BB05C
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Feb 2022 04:46:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229510AbiBRDlZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Feb 2022 22:41:25 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41792 "EHLO
+        id S229575AbiBRDqU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Feb 2022 22:46:20 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:34258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbiBRDlY (ORCPT
+        with ESMTP id S229515AbiBRDqT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Feb 2022 22:41:24 -0500
+        Thu, 17 Feb 2022 22:46:19 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F53DF86
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Feb 2022 19:41:07 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CF2A1B7B6
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Feb 2022 19:46:03 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 21I3f2bI5023591, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 21I3f2bI5023591
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 21I3jvhF7024413, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 21I3jvhF7024413
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 18 Feb 2022 11:41:02 +0800
+        Fri, 18 Feb 2022 11:45:57 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Fri, 18 Feb 2022 11:41:02 +0800
+ 15.1.2308.20; Fri, 18 Feb 2022 11:45:57 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Fri, 18 Feb
- 2022 11:41:01 +0800
+ 2022 11:45:56 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
-Subject: [PATCH 2/2] rtw89: phy: handle txpwr lmt/lmt_ru of 160M bandwidth
-Date:   Fri, 18 Feb 2022 11:40:42 +0800
-Message-ID: <20220218034042.9218-1-pkshih@realtek.com>
+CC:     <linux-wireless@vger.kernel.org>, <chiuyitang@realtek.com>,
+        <yuanhan1020@realtek.com>
+Subject: [PATCH] rtw89: Limit the CFO boundaries of x'tal value
+Date:   Fri, 18 Feb 2022 11:45:37 +0800
+Message-ID: <20220218034537.9338-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -53,7 +54,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzIvMTggpFekyCAwMTo1MDowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -66,222 +67,88 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Yi-Tang Chiu <chiuyitang@realtek.com>
 
-Add handling to fill struct rtw89_txpwr_limit and rtw89_txpwr_limit_ru
-for 160Mhz bandwidth case. And enlarge RTW89_5G_BW_NUM because the chip
-under planning can support 160Mhz bandwidth on 5G band.
+Set the boundaries of x'tal value to avoid extremely adjusted results,
+causing severely unexpected CFO.
 
-Moreover, refine the filling of OFDM entry of struct rtw89_txpwr_limit
-by using the value corresponding to primary channel.
-
-E.g. center channel 38 (40Mhz bandwidth case)
-Originally OFDM entry was filled by value corresponding to 'ch - 2' (36)
-Now, we consider that it could be 36 or 40.
-
-E.g. cneter channel 42 (80Mhz bandwidth case)
-Originally OFDM entry was filled by value corresponding to 'ch - 6' (36)
-Now, we consider that it could be 36, 40, 44, or 48.
-
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Yi-Tang Chiu <chiuyitang@realtek.com>
+Signed-off-by: Yuan-Han Zhang <yuanhan1020@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h |   2 +-
- drivers/net/wireless/realtek/rtw89/phy.c  | 115 ++++++++++++++++++++--
- 2 files changed, 110 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h |  4 ++++
+ drivers/net/wireless/realtek/rtw89/phy.c  | 21 +++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/phy.h  |  1 +
+ 3 files changed, 26 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index b70570934e595..2c81e19d4b51c 100644
+index 2c81e19d4b51c..6a88578898e01 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -572,7 +572,7 @@ enum rtw89_ps_mode {
+@@ -2613,6 +2613,10 @@ struct rtw89_cfo_tracking_info {
+ 	s32 residual_cfo_acc;
+ 	u8 phy_cfotrk_state;
+ 	u8 phy_cfotrk_cnt;
++	bool divergence_lock_en;
++	u8 x_cap_lb;
++	u8 x_cap_ub;
++	u8 lock_cnt;
  };
  
- #define RTW89_2G_BW_NUM (RTW89_CHANNEL_WIDTH_40 + 1)
--#define RTW89_5G_BW_NUM (RTW89_CHANNEL_WIDTH_80 + 1)
-+#define RTW89_5G_BW_NUM (RTW89_CHANNEL_WIDTH_160 + 1)
- #define RTW89_6G_BW_NUM (RTW89_CHANNEL_WIDTH_160 + 1)
- #define RTW89_PPE_BW_NUM (RTW89_CHANNEL_WIDTH_80 + 1)
- 
+ /* 2GL, 2GH, 5GL1, 5GH1, 5GM1, 5GM2, 5GH1, 5GH2 */
 diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 7cc6155aa188d..719a2d6be0be9 100644
+index 719a2d6be0be9..c6953a78658ae 100644
 --- a/drivers/net/wireless/realtek/rtw89/phy.c
 +++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -1226,14 +1226,14 @@ static void rtw89_phy_fill_txpwr_limit_20m(struct rtw89_dev *rtwdev,
- 
- static void rtw89_phy_fill_txpwr_limit_40m(struct rtw89_dev *rtwdev,
- 					   struct rtw89_txpwr_limit *lmt,
--					   u8 ntx, u8 ch)
-+					   u8 ntx, u8 ch, u8 pri_ch)
- {
- 	__fill_txpwr_limit_nonbf_bf(lmt->cck_20m, RTW89_CHANNEL_WIDTH_20,
- 				    ntx, RTW89_RS_CCK, ch - 2);
- 	__fill_txpwr_limit_nonbf_bf(lmt->cck_40m, RTW89_CHANNEL_WIDTH_40,
- 				    ntx, RTW89_RS_CCK, ch);
- 	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, RTW89_CHANNEL_WIDTH_20,
--				    ntx, RTW89_RS_OFDM, ch - 2);
-+				    ntx, RTW89_RS_OFDM, pri_ch);
- 	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], RTW89_CHANNEL_WIDTH_20,
- 				    ntx, RTW89_RS_MCS, ch - 2);
- 	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[1], RTW89_CHANNEL_WIDTH_20,
-@@ -1244,14 +1244,14 @@ static void rtw89_phy_fill_txpwr_limit_40m(struct rtw89_dev *rtwdev,
- 
- static void rtw89_phy_fill_txpwr_limit_80m(struct rtw89_dev *rtwdev,
- 					   struct rtw89_txpwr_limit *lmt,
--					   u8 ntx, u8 ch)
-+					   u8 ntx, u8 ch, u8 pri_ch)
- {
- 	s8 val_0p5_n[RTW89_BF_NUM];
- 	s8 val_0p5_p[RTW89_BF_NUM];
- 	u8 i;
- 
- 	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, RTW89_CHANNEL_WIDTH_20,
--				    ntx, RTW89_RS_OFDM, ch - 6);
-+				    ntx, RTW89_RS_OFDM, pri_ch);
- 	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], RTW89_CHANNEL_WIDTH_20,
- 				    ntx, RTW89_RS_MCS, ch - 6);
- 	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[1], RTW89_CHANNEL_WIDTH_20,
-@@ -1276,10 +1276,82 @@ static void rtw89_phy_fill_txpwr_limit_80m(struct rtw89_dev *rtwdev,
- 		lmt->mcs_40m_0p5[i] = min_t(s8, val_0p5_n[i], val_0p5_p[i]);
- }
- 
-+static void rtw89_phy_fill_txpwr_limit_160m(struct rtw89_dev *rtwdev,
-+					    struct rtw89_txpwr_limit *lmt,
-+					    u8 ntx, u8 ch, u8 pri_ch)
-+{
-+	s8 val_0p5_n[RTW89_BF_NUM];
-+	s8 val_0p5_p[RTW89_BF_NUM];
-+	s8 val_2p5_n[RTW89_BF_NUM];
-+	s8 val_2p5_p[RTW89_BF_NUM];
-+	u8 i;
-+
-+	/* fill ofdm section */
-+	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, RTW89_CHANNEL_WIDTH_20,
-+				    ntx, RTW89_RS_OFDM, pri_ch);
-+
-+	/* fill mcs 20m section */
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], RTW89_CHANNEL_WIDTH_20,
-+				    ntx, RTW89_RS_MCS, ch - 14);
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[1], RTW89_CHANNEL_WIDTH_20,
-+				    ntx, RTW89_RS_MCS, ch - 10);
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[2], RTW89_CHANNEL_WIDTH_20,
-+				    ntx, RTW89_RS_MCS, ch - 6);
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[3], RTW89_CHANNEL_WIDTH_20,
-+				    ntx, RTW89_RS_MCS, ch - 2);
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[4], RTW89_CHANNEL_WIDTH_20,
-+				    ntx, RTW89_RS_MCS, ch + 2);
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[5], RTW89_CHANNEL_WIDTH_20,
-+				    ntx, RTW89_RS_MCS, ch + 6);
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[6], RTW89_CHANNEL_WIDTH_20,
-+				    ntx, RTW89_RS_MCS, ch + 10);
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[7], RTW89_CHANNEL_WIDTH_20,
-+				    ntx, RTW89_RS_MCS, ch + 14);
-+
-+	/* fill mcs 40m section */
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[0], RTW89_CHANNEL_WIDTH_40,
-+				    ntx, RTW89_RS_MCS, ch - 12);
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[1], RTW89_CHANNEL_WIDTH_40,
-+				    ntx, RTW89_RS_MCS, ch - 4);
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[2], RTW89_CHANNEL_WIDTH_40,
-+				    ntx, RTW89_RS_MCS, ch + 4);
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[3], RTW89_CHANNEL_WIDTH_40,
-+				    ntx, RTW89_RS_MCS, ch + 12);
-+
-+	/* fill mcs 80m section */
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_80m[0], RTW89_CHANNEL_WIDTH_80,
-+				    ntx, RTW89_RS_MCS, ch - 8);
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_80m[1], RTW89_CHANNEL_WIDTH_80,
-+				    ntx, RTW89_RS_MCS, ch + 8);
-+
-+	/* fill mcs 160m section */
-+	__fill_txpwr_limit_nonbf_bf(lmt->mcs_160m, RTW89_CHANNEL_WIDTH_160,
-+				    ntx, RTW89_RS_MCS, ch);
-+
-+	/* fill mcs 40m 0p5 section */
-+	__fill_txpwr_limit_nonbf_bf(val_0p5_n, RTW89_CHANNEL_WIDTH_40,
-+				    ntx, RTW89_RS_MCS, ch - 4);
-+	__fill_txpwr_limit_nonbf_bf(val_0p5_p, RTW89_CHANNEL_WIDTH_40,
-+				    ntx, RTW89_RS_MCS, ch + 4);
-+
-+	for (i = 0; i < RTW89_BF_NUM; i++)
-+		lmt->mcs_40m_0p5[i] = min_t(s8, val_0p5_n[i], val_0p5_p[i]);
-+
-+	/* fill mcs 40m 2p5 section */
-+	__fill_txpwr_limit_nonbf_bf(val_2p5_n, RTW89_CHANNEL_WIDTH_40,
-+				    ntx, RTW89_RS_MCS, ch - 8);
-+	__fill_txpwr_limit_nonbf_bf(val_2p5_p, RTW89_CHANNEL_WIDTH_40,
-+				    ntx, RTW89_RS_MCS, ch + 8);
-+
-+	for (i = 0; i < RTW89_BF_NUM; i++)
-+		lmt->mcs_40m_2p5[i] = min_t(s8, val_2p5_n[i], val_2p5_p[i]);
-+}
-+
- void rtw89_phy_fill_txpwr_limit(struct rtw89_dev *rtwdev,
- 				struct rtw89_txpwr_limit *lmt,
- 				u8 ntx)
- {
-+	u8 pri_ch = rtwdev->hal.current_primary_channel;
- 	u8 ch = rtwdev->hal.current_channel;
- 	u8 bw = rtwdev->hal.current_band_width;
- 
-@@ -1290,10 +1362,13 @@ void rtw89_phy_fill_txpwr_limit(struct rtw89_dev *rtwdev,
- 		rtw89_phy_fill_txpwr_limit_20m(rtwdev, lmt, ntx, ch);
- 		break;
- 	case RTW89_CHANNEL_WIDTH_40:
--		rtw89_phy_fill_txpwr_limit_40m(rtwdev, lmt, ntx, ch);
-+		rtw89_phy_fill_txpwr_limit_40m(rtwdev, lmt, ntx, ch, pri_ch);
- 		break;
- 	case RTW89_CHANNEL_WIDTH_80:
--		rtw89_phy_fill_txpwr_limit_80m(rtwdev, lmt, ntx, ch);
-+		rtw89_phy_fill_txpwr_limit_80m(rtwdev, lmt, ntx, ch, pri_ch);
-+		break;
-+	case RTW89_CHANNEL_WIDTH_160:
-+		rtw89_phy_fill_txpwr_limit_160m(rtwdev, lmt, ntx, ch, pri_ch);
- 		break;
+@@ -1743,8 +1743,12 @@ static void rtw89_phy_cfo_init(struct rtw89_dev *rtwdev)
+ 	cfo->crystal_cap_default = efuse->xtal_cap & B_AX_XTAL_SC_MASK;
+ 	cfo->crystal_cap = cfo->crystal_cap_default;
+ 	cfo->def_x_cap = cfo->crystal_cap;
++	cfo->x_cap_ub = min_t(int, cfo->def_x_cap + CFO_BOUND, 0x7f);
++	cfo->x_cap_lb = max_t(int, cfo->def_x_cap - CFO_BOUND, 0x1);
+ 	cfo->is_adjust = false;
++	cfo->divergence_lock_en = false;
+ 	cfo->x_cap_ofst = 0;
++	cfo->lock_cnt = 0;
+ 	cfo->rtw89_multi_cfo_mode = RTW89_TP_BASED_AVG_MODE;
+ 	cfo->apply_compensation = false;
+ 	cfo->residual_cfo_acc = 0;
+@@ -1962,6 +1966,23 @@ static void rtw89_phy_cfo_dm(struct rtw89_dev *rtwdev)
+ 		rtw89_debug(rtwdev, RTW89_DBG_CFO, "curr_cfo=0\n");
+ 		return;
  	}
- }
-@@ -1401,6 +1476,31 @@ rtw89_phy_fill_txpwr_limit_ru_80m(struct rtw89_dev *rtwdev,
- 							 ntx, ch + 6);
- }
- 
-+static void
-+rtw89_phy_fill_txpwr_limit_ru_160m(struct rtw89_dev *rtwdev,
-+				   struct rtw89_txpwr_limit_ru *lmt_ru,
-+				   u8 ntx, u8 ch)
-+{
-+	static const int ofst[] = { -14, -10, -6, -2, 2, 6, 10, 14 };
-+	int i;
-+
-+	static_assert(ARRAY_SIZE(ofst) == RTW89_RU_SEC_NUM);
-+	for (i = 0; i < RTW89_RU_SEC_NUM; i++) {
-+		lmt_ru->ru26[i] = rtw89_phy_read_txpwr_limit_ru(rtwdev,
-+								RTW89_RU26,
-+								ntx,
-+								ch + ofst[i]);
-+		lmt_ru->ru52[i] = rtw89_phy_read_txpwr_limit_ru(rtwdev,
-+								RTW89_RU52,
-+								ntx,
-+								ch + ofst[i]);
-+		lmt_ru->ru106[i] = rtw89_phy_read_txpwr_limit_ru(rtwdev,
-+								 RTW89_RU106,
-+								 ntx,
-+								 ch + ofst[i]);
++	if (cfo->divergence_lock_en) {
++		cfo->lock_cnt++;
++		if (cfo->lock_cnt > CFO_PERIOD_CNT) {
++			cfo->divergence_lock_en = false;
++			cfo->lock_cnt = 0;
++		} else {
++			rtw89_phy_cfo_reset(rtwdev);
++		}
++		return;
 +	}
-+}
++	if (cfo->crystal_cap >= cfo->x_cap_ub ||
++	    cfo->crystal_cap <= cfo->x_cap_lb) {
++		cfo->divergence_lock_en = true;
++		rtw89_phy_cfo_reset(rtwdev);
++		return;
++	}
 +
- void rtw89_phy_fill_txpwr_limit_ru(struct rtw89_dev *rtwdev,
- 				   struct rtw89_txpwr_limit_ru *lmt_ru,
- 				   u8 ntx)
-@@ -1420,6 +1520,9 @@ void rtw89_phy_fill_txpwr_limit_ru(struct rtw89_dev *rtwdev,
- 	case RTW89_CHANNEL_WIDTH_80:
- 		rtw89_phy_fill_txpwr_limit_ru_80m(rtwdev, lmt_ru, ntx, ch);
- 		break;
-+	case RTW89_CHANNEL_WIDTH_160:
-+		rtw89_phy_fill_txpwr_limit_ru_160m(rtwdev, lmt_ru, ntx, ch);
-+		break;
- 	}
- }
- EXPORT_SYMBOL(rtw89_phy_fill_txpwr_limit_ru);
+ 	rtw89_phy_cfo_crystal_cap_adjust(rtwdev, new_cfo);
+ 	cfo->cfo_avg_pre = new_cfo;
+ 	x_cap_update =  cfo->crystal_cap != pre_x_cap;
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
+index 1fb2d96fbca31..d6bc84ae6cd71 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.h
++++ b/drivers/net/wireless/realtek/rtw89/phy.h
+@@ -55,6 +55,7 @@
+ #define CFO_TRK_STOP_TH (2 << 2)
+ #define CFO_SW_COMP_FINE_TUNE (2 << 2)
+ #define CFO_PERIOD_CNT 15
++#define CFO_BOUND 32
+ #define CFO_TP_UPPER 100
+ #define CFO_TP_LOWER 50
+ #define CFO_COMP_PERIOD 250
 -- 
 2.25.1
 
