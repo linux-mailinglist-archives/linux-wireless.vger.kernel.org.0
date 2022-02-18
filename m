@@ -2,42 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC3774BB048
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Feb 2022 04:41:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BDAE4BB04B
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Feb 2022 04:41:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229543AbiBRDlJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Feb 2022 22:41:09 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41378 "EHLO
+        id S229510AbiBRDlZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Feb 2022 22:41:25 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbiBRDlI (ORCPT
+        with ESMTP id S229487AbiBRDlY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Feb 2022 22:41:08 -0500
+        Thu, 17 Feb 2022 22:41:24 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93D4F38BDC
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Feb 2022 19:40:51 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F53DF86
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Feb 2022 19:41:07 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 21I3edFyB023549, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 21I3f2bI5023591, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 21I3edFyB023549
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 21I3f2bI5023591
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 18 Feb 2022 11:40:39 +0800
+        Fri, 18 Feb 2022 11:41:02 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Fri, 18 Feb 2022 11:40:39 +0800
+ 15.1.2375.17; Fri, 18 Feb 2022 11:41:02 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Fri, 18 Feb
- 2022 11:40:39 +0800
+ 2022 11:41:01 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
-Subject: [PATCH 1/2] rtw89: phy: handle txpwr lmt/lmt_ru of 6G band
-Date:   Fri, 18 Feb 2022 11:40:16 +0800
-Message-ID: <20220218034017.9160-2-pkshih@realtek.com>
+Subject: [PATCH 2/2] rtw89: phy: handle txpwr lmt/lmt_ru of 160M bandwidth
+Date:   Fri, 18 Feb 2022 11:40:42 +0800
+Message-ID: <20220218034042.9218-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220218034017.9160-1-pkshih@realtek.com>
-References: <20220218034017.9160-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -70,164 +68,220 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Add declarations of 6G stuff and extend rtw89_channel_to_idx() to
-map 6G's channels to 6G channel indexes. While 6G, correspondingly
-read 6G's entry for tx power limit and limit_ru.
+Add handling to fill struct rtw89_txpwr_limit and rtw89_txpwr_limit_ru
+for 160Mhz bandwidth case. And enlarge RTW89_5G_BW_NUM because the chip
+under planning can support 160Mhz bandwidth on 5G band.
 
-After this, we should pay attention to chip_info::support_bands.
-If a chip declares 6G support, it must configure txpwr_lmt_6g and
-txpwr_lmt_ru_6g in case accessing NULL pointer while setting tx power
-limit/limit_ru on 6G band.
+Moreover, refine the filling of OFDM entry of struct rtw89_txpwr_limit
+by using the value corresponding to primary channel.
+
+E.g. center channel 38 (40Mhz bandwidth case)
+Originally OFDM entry was filled by value corresponding to 'ch - 2' (36)
+Now, we consider that it could be 36 or 40.
+
+E.g. cneter channel 42 (80Mhz bandwidth case)
+Originally OFDM entry was filled by value corresponding to 'ch - 6' (36)
+Now, we consider that it could be 36, 40, 44, or 48.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h | 25 ++++++++++++
- drivers/net/wireless/realtek/rtw89/phy.c  | 46 +++++++++++++++++++++--
- 2 files changed, 68 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h |   2 +-
+ drivers/net/wireless/realtek/rtw89/phy.c  | 115 ++++++++++++++++++++--
+ 2 files changed, 110 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 3254be670bd67..b70570934e595 100644
+index b70570934e595..2c81e19d4b51c 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -371,6 +371,25 @@ enum rtw89_hw_rate {
-  */
- #define RTW89_5G_CH_NUM 53
- 
-+/* 6G channels,
-+ * 1, 3, 5, 7, 9, 11, 13, 15,
-+ * 17, 19, 21, 23, 25, 27, 29, 33,
-+ * 35, 37, 39, 41, 43, 45, 47, 49,
-+ * 51, 53, 55, 57, 59, 61, 65, 67,
-+ * 69, 71, 73, 75, 77, 79, 81, 83,
-+ * 85, 87, 89, 91, 93, 97, 99, 101,
-+ * 103, 105, 107, 109, 111, 113, 115, 117,
-+ * 119, 121, 123, 125, 129, 131, 133, 135,
-+ * 137, 139, 141, 143, 145, 147, 149, 151,
-+ * 153, 155, 157, 161, 163, 165, 167, 169,
-+ * 171, 173, 175, 177, 179, 181, 183, 185,
-+ * 187, 189, 193, 195, 197, 199, 201, 203,
-+ * 205, 207, 209, 211, 213, 215, 217, 219,
-+ * 221, 225, 227, 229, 231, 233, 235, 237,
-+ * 239, 241, 243, 245, 247, 249, 251, 253,
-+ */
-+#define RTW89_6G_CH_NUM 120
-+
- enum rtw89_rate_section {
- 	RTW89_RS_CCK,
- 	RTW89_RS_OFDM,
-@@ -554,6 +573,7 @@ enum rtw89_ps_mode {
+@@ -572,7 +572,7 @@ enum rtw89_ps_mode {
+ };
  
  #define RTW89_2G_BW_NUM (RTW89_CHANNEL_WIDTH_40 + 1)
- #define RTW89_5G_BW_NUM (RTW89_CHANNEL_WIDTH_80 + 1)
-+#define RTW89_6G_BW_NUM (RTW89_CHANNEL_WIDTH_160 + 1)
+-#define RTW89_5G_BW_NUM (RTW89_CHANNEL_WIDTH_80 + 1)
++#define RTW89_5G_BW_NUM (RTW89_CHANNEL_WIDTH_160 + 1)
+ #define RTW89_6G_BW_NUM (RTW89_CHANNEL_WIDTH_160 + 1)
  #define RTW89_PPE_BW_NUM (RTW89_CHANNEL_WIDTH_80 + 1)
  
- enum rtw89_ru_bandwidth {
-@@ -2246,10 +2266,15 @@ struct rtw89_chip_info {
- 	const s8 (*txpwr_lmt_5g)[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 				[RTW89_RS_LMT_NUM][RTW89_BF_NUM]
- 				[RTW89_REGD_NUM][RTW89_5G_CH_NUM];
-+	const s8 (*txpwr_lmt_6g)[RTW89_6G_BW_NUM][RTW89_NTX_NUM]
-+				[RTW89_RS_LMT_NUM][RTW89_BF_NUM]
-+				[RTW89_REGD_NUM][RTW89_6G_CH_NUM];
- 	const s8 (*txpwr_lmt_ru_2g)[RTW89_RU_NUM][RTW89_NTX_NUM]
- 				   [RTW89_REGD_NUM][RTW89_2G_CH_NUM];
- 	const s8 (*txpwr_lmt_ru_5g)[RTW89_RU_NUM][RTW89_NTX_NUM]
- 				   [RTW89_REGD_NUM][RTW89_5G_CH_NUM];
-+	const s8 (*txpwr_lmt_ru_6g)[RTW89_RU_NUM][RTW89_NTX_NUM]
-+				   [RTW89_REGD_NUM][RTW89_6G_CH_NUM];
- 
- 	u8 txpwr_factor_rf;
- 	u8 txpwr_factor_mac;
 diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index d1d3ebb5e2264..7cc6155aa188d 100644
+index 7cc6155aa188d..719a2d6be0be9 100644
 --- a/drivers/net/wireless/realtek/rtw89/phy.c
 +++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -1115,8 +1115,36 @@ s8 rtw89_phy_read_txpwr_byrate(struct rtw89_dev *rtwdev,
- }
- EXPORT_SYMBOL(rtw89_phy_read_txpwr_byrate);
+@@ -1226,14 +1226,14 @@ static void rtw89_phy_fill_txpwr_limit_20m(struct rtw89_dev *rtwdev,
  
--static u8 rtw89_channel_to_idx(struct rtw89_dev *rtwdev, u8 channel)
-+static u8 rtw89_channel_6g_to_idx(struct rtw89_dev *rtwdev, u8 channel_6g)
+ static void rtw89_phy_fill_txpwr_limit_40m(struct rtw89_dev *rtwdev,
+ 					   struct rtw89_txpwr_limit *lmt,
+-					   u8 ntx, u8 ch)
++					   u8 ntx, u8 ch, u8 pri_ch)
+ {
+ 	__fill_txpwr_limit_nonbf_bf(lmt->cck_20m, RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_CCK, ch - 2);
+ 	__fill_txpwr_limit_nonbf_bf(lmt->cck_40m, RTW89_CHANNEL_WIDTH_40,
+ 				    ntx, RTW89_RS_CCK, ch);
+ 	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, RTW89_CHANNEL_WIDTH_20,
+-				    ntx, RTW89_RS_OFDM, ch - 2);
++				    ntx, RTW89_RS_OFDM, pri_ch);
+ 	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch - 2);
+ 	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[1], RTW89_CHANNEL_WIDTH_20,
+@@ -1244,14 +1244,14 @@ static void rtw89_phy_fill_txpwr_limit_40m(struct rtw89_dev *rtwdev,
+ 
+ static void rtw89_phy_fill_txpwr_limit_80m(struct rtw89_dev *rtwdev,
+ 					   struct rtw89_txpwr_limit *lmt,
+-					   u8 ntx, u8 ch)
++					   u8 ntx, u8 ch, u8 pri_ch)
+ {
+ 	s8 val_0p5_n[RTW89_BF_NUM];
+ 	s8 val_0p5_p[RTW89_BF_NUM];
+ 	u8 i;
+ 
+ 	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, RTW89_CHANNEL_WIDTH_20,
+-				    ntx, RTW89_RS_OFDM, ch - 6);
++				    ntx, RTW89_RS_OFDM, pri_ch);
+ 	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], RTW89_CHANNEL_WIDTH_20,
+ 				    ntx, RTW89_RS_MCS, ch - 6);
+ 	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[1], RTW89_CHANNEL_WIDTH_20,
+@@ -1276,10 +1276,82 @@ static void rtw89_phy_fill_txpwr_limit_80m(struct rtw89_dev *rtwdev,
+ 		lmt->mcs_40m_0p5[i] = min_t(s8, val_0p5_n[i], val_0p5_p[i]);
+ }
+ 
++static void rtw89_phy_fill_txpwr_limit_160m(struct rtw89_dev *rtwdev,
++					    struct rtw89_txpwr_limit *lmt,
++					    u8 ntx, u8 ch, u8 pri_ch)
 +{
-+	switch (channel_6g) {
-+	case 1 ... 29:
-+		return (channel_6g - 1) / 2;
-+	case 33 ... 61:
-+		return (channel_6g - 3) / 2;
-+	case 65 ... 93:
-+		return (channel_6g - 5) / 2;
-+	case 97 ... 125:
-+		return (channel_6g - 7) / 2;
-+	case 129 ... 157:
-+		return (channel_6g - 9) / 2;
-+	case 161 ... 189:
-+		return (channel_6g - 11) / 2;
-+	case 193 ... 221:
-+		return (channel_6g - 13) / 2;
-+	case 225 ... 253:
-+		return (channel_6g - 15) / 2;
-+	default:
-+		rtw89_warn(rtwdev, "unknown 6g channel: %d\n", channel_6g);
-+		return 0;
++	s8 val_0p5_n[RTW89_BF_NUM];
++	s8 val_0p5_p[RTW89_BF_NUM];
++	s8 val_2p5_n[RTW89_BF_NUM];
++	s8 val_2p5_p[RTW89_BF_NUM];
++	u8 i;
++
++	/* fill ofdm section */
++	__fill_txpwr_limit_nonbf_bf(lmt->ofdm, RTW89_CHANNEL_WIDTH_20,
++				    ntx, RTW89_RS_OFDM, pri_ch);
++
++	/* fill mcs 20m section */
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[0], RTW89_CHANNEL_WIDTH_20,
++				    ntx, RTW89_RS_MCS, ch - 14);
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[1], RTW89_CHANNEL_WIDTH_20,
++				    ntx, RTW89_RS_MCS, ch - 10);
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[2], RTW89_CHANNEL_WIDTH_20,
++				    ntx, RTW89_RS_MCS, ch - 6);
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[3], RTW89_CHANNEL_WIDTH_20,
++				    ntx, RTW89_RS_MCS, ch - 2);
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[4], RTW89_CHANNEL_WIDTH_20,
++				    ntx, RTW89_RS_MCS, ch + 2);
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[5], RTW89_CHANNEL_WIDTH_20,
++				    ntx, RTW89_RS_MCS, ch + 6);
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[6], RTW89_CHANNEL_WIDTH_20,
++				    ntx, RTW89_RS_MCS, ch + 10);
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_20m[7], RTW89_CHANNEL_WIDTH_20,
++				    ntx, RTW89_RS_MCS, ch + 14);
++
++	/* fill mcs 40m section */
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[0], RTW89_CHANNEL_WIDTH_40,
++				    ntx, RTW89_RS_MCS, ch - 12);
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[1], RTW89_CHANNEL_WIDTH_40,
++				    ntx, RTW89_RS_MCS, ch - 4);
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[2], RTW89_CHANNEL_WIDTH_40,
++				    ntx, RTW89_RS_MCS, ch + 4);
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_40m[3], RTW89_CHANNEL_WIDTH_40,
++				    ntx, RTW89_RS_MCS, ch + 12);
++
++	/* fill mcs 80m section */
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_80m[0], RTW89_CHANNEL_WIDTH_80,
++				    ntx, RTW89_RS_MCS, ch - 8);
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_80m[1], RTW89_CHANNEL_WIDTH_80,
++				    ntx, RTW89_RS_MCS, ch + 8);
++
++	/* fill mcs 160m section */
++	__fill_txpwr_limit_nonbf_bf(lmt->mcs_160m, RTW89_CHANNEL_WIDTH_160,
++				    ntx, RTW89_RS_MCS, ch);
++
++	/* fill mcs 40m 0p5 section */
++	__fill_txpwr_limit_nonbf_bf(val_0p5_n, RTW89_CHANNEL_WIDTH_40,
++				    ntx, RTW89_RS_MCS, ch - 4);
++	__fill_txpwr_limit_nonbf_bf(val_0p5_p, RTW89_CHANNEL_WIDTH_40,
++				    ntx, RTW89_RS_MCS, ch + 4);
++
++	for (i = 0; i < RTW89_BF_NUM; i++)
++		lmt->mcs_40m_0p5[i] = min_t(s8, val_0p5_n[i], val_0p5_p[i]);
++
++	/* fill mcs 40m 2p5 section */
++	__fill_txpwr_limit_nonbf_bf(val_2p5_n, RTW89_CHANNEL_WIDTH_40,
++				    ntx, RTW89_RS_MCS, ch - 8);
++	__fill_txpwr_limit_nonbf_bf(val_2p5_p, RTW89_CHANNEL_WIDTH_40,
++				    ntx, RTW89_RS_MCS, ch + 8);
++
++	for (i = 0; i < RTW89_BF_NUM; i++)
++		lmt->mcs_40m_2p5[i] = min_t(s8, val_2p5_n[i], val_2p5_p[i]);
++}
++
+ void rtw89_phy_fill_txpwr_limit(struct rtw89_dev *rtwdev,
+ 				struct rtw89_txpwr_limit *lmt,
+ 				u8 ntx)
+ {
++	u8 pri_ch = rtwdev->hal.current_primary_channel;
+ 	u8 ch = rtwdev->hal.current_channel;
+ 	u8 bw = rtwdev->hal.current_band_width;
+ 
+@@ -1290,10 +1362,13 @@ void rtw89_phy_fill_txpwr_limit(struct rtw89_dev *rtwdev,
+ 		rtw89_phy_fill_txpwr_limit_20m(rtwdev, lmt, ntx, ch);
+ 		break;
+ 	case RTW89_CHANNEL_WIDTH_40:
+-		rtw89_phy_fill_txpwr_limit_40m(rtwdev, lmt, ntx, ch);
++		rtw89_phy_fill_txpwr_limit_40m(rtwdev, lmt, ntx, ch, pri_ch);
+ 		break;
+ 	case RTW89_CHANNEL_WIDTH_80:
+-		rtw89_phy_fill_txpwr_limit_80m(rtwdev, lmt, ntx, ch);
++		rtw89_phy_fill_txpwr_limit_80m(rtwdev, lmt, ntx, ch, pri_ch);
++		break;
++	case RTW89_CHANNEL_WIDTH_160:
++		rtw89_phy_fill_txpwr_limit_160m(rtwdev, lmt, ntx, ch, pri_ch);
+ 		break;
+ 	}
+ }
+@@ -1401,6 +1476,31 @@ rtw89_phy_fill_txpwr_limit_ru_80m(struct rtw89_dev *rtwdev,
+ 							 ntx, ch + 6);
+ }
+ 
++static void
++rtw89_phy_fill_txpwr_limit_ru_160m(struct rtw89_dev *rtwdev,
++				   struct rtw89_txpwr_limit_ru *lmt_ru,
++				   u8 ntx, u8 ch)
++{
++	static const int ofst[] = { -14, -10, -6, -2, 2, 6, 10, 14 };
++	int i;
++
++	static_assert(ARRAY_SIZE(ofst) == RTW89_RU_SEC_NUM);
++	for (i = 0; i < RTW89_RU_SEC_NUM; i++) {
++		lmt_ru->ru26[i] = rtw89_phy_read_txpwr_limit_ru(rtwdev,
++								RTW89_RU26,
++								ntx,
++								ch + ofst[i]);
++		lmt_ru->ru52[i] = rtw89_phy_read_txpwr_limit_ru(rtwdev,
++								RTW89_RU52,
++								ntx,
++								ch + ofst[i]);
++		lmt_ru->ru106[i] = rtw89_phy_read_txpwr_limit_ru(rtwdev,
++								 RTW89_RU106,
++								 ntx,
++								 ch + ofst[i]);
 +	}
 +}
 +
-+static u8 rtw89_channel_to_idx(struct rtw89_dev *rtwdev, u8 band, u8 channel)
- {
-+	if (band == RTW89_BAND_6G)
-+		return rtw89_channel_6g_to_idx(rtwdev, channel);
-+
- 	switch (channel) {
- 	case 1 ... 14:
- 		return channel - 1;
-@@ -1136,8 +1164,8 @@ s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev,
- 			      u8 bw, u8 ntx, u8 rs, u8 bf, u8 ch)
- {
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
--	u8 ch_idx = rtw89_channel_to_idx(rtwdev, ch);
- 	u8 band = rtwdev->hal.current_band_type;
-+	u8 ch_idx = rtw89_channel_to_idx(rtwdev, band, ch);
- 	u8 regd = rtw89_regd_get(rtwdev, band);
- 	s8 lmt = 0, sar;
- 
-@@ -1154,6 +1182,12 @@ s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev,
- 			lmt = (*chip->txpwr_lmt_5g)[bw][ntx][rs][bf]
- 						   [RTW89_WW][ch_idx];
+ void rtw89_phy_fill_txpwr_limit_ru(struct rtw89_dev *rtwdev,
+ 				   struct rtw89_txpwr_limit_ru *lmt_ru,
+ 				   u8 ntx)
+@@ -1420,6 +1520,9 @@ void rtw89_phy_fill_txpwr_limit_ru(struct rtw89_dev *rtwdev,
+ 	case RTW89_CHANNEL_WIDTH_80:
+ 		rtw89_phy_fill_txpwr_limit_ru_80m(rtwdev, lmt_ru, ntx, ch);
  		break;
-+	case RTW89_BAND_6G:
-+		lmt = (*chip->txpwr_lmt_6g)[bw][ntx][rs][bf][regd][ch_idx];
-+		if (!lmt)
-+			lmt = (*chip->txpwr_lmt_6g)[bw][ntx][rs][bf]
-+						   [RTW89_WW][ch_idx];
++	case RTW89_CHANNEL_WIDTH_160:
++		rtw89_phy_fill_txpwr_limit_ru_160m(rtwdev, lmt_ru, ntx, ch);
 +		break;
- 	default:
- 		rtw89_warn(rtwdev, "unknown band type: %d\n", band);
- 		return 0;
-@@ -1269,8 +1303,8 @@ static s8 rtw89_phy_read_txpwr_limit_ru(struct rtw89_dev *rtwdev,
- 					u8 ru, u8 ntx, u8 ch)
- {
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
--	u8 ch_idx = rtw89_channel_to_idx(rtwdev, ch);
- 	u8 band = rtwdev->hal.current_band_type;
-+	u8 ch_idx = rtw89_channel_to_idx(rtwdev, band, ch);
- 	u8 regd = rtw89_regd_get(rtwdev, band);
- 	s8 lmt_ru = 0, sar;
- 
-@@ -1287,6 +1321,12 @@ static s8 rtw89_phy_read_txpwr_limit_ru(struct rtw89_dev *rtwdev,
- 			lmt_ru = (*chip->txpwr_lmt_ru_5g)[ru][ntx]
- 							 [RTW89_WW][ch_idx];
- 		break;
-+	case RTW89_BAND_6G:
-+		lmt_ru = (*chip->txpwr_lmt_ru_6g)[ru][ntx][regd][ch_idx];
-+		if (!lmt_ru)
-+			lmt_ru = (*chip->txpwr_lmt_ru_6g)[ru][ntx]
-+							 [RTW89_WW][ch_idx];
-+		break;
- 	default:
- 		rtw89_warn(rtwdev, "unknown band type: %d\n", band);
- 		return 0;
+ 	}
+ }
+ EXPORT_SYMBOL(rtw89_phy_fill_txpwr_limit_ru);
 -- 
 2.25.1
 
