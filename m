@@ -2,162 +2,316 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55DBA4BB7D9
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Feb 2022 12:12:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E416F4BB956
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Feb 2022 13:38:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232902AbiBRLMT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Feb 2022 06:12:19 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39102 "EHLO
+        id S235317AbiBRMin (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Feb 2022 07:38:43 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229946AbiBRLMQ (ORCPT
+        with ESMTP id S234830AbiBRMij (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Feb 2022 06:12:16 -0500
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2052.outbound.protection.outlook.com [40.107.93.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 651BD2C67F;
-        Fri, 18 Feb 2022 03:11:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GvFjw5AFOQ9t9oUSNpOGgglNXgi1gte5Y7goNUu1w4fVnTeZqhxNW+iT3qfvw3KETSv6hTFpBxKmvdbZS+feDq6Uz7s6ZU/MXuxRlNuLyClZhFy5zTtgUsLL1PodToPa70w4BLz1vAfbnIlNK+nWLapaEg8NuBwO1e+MiU8Tis1zhm+cEpXpAXua1klxdtu1uIqmuuV193849MCOnnOzeWUFP9ggAPw1S+k0s717d278tagvyN3iNm/cw7GynsF/O5Po8AXO//imaVS/6Et+pP+nangt5976i4CNGMoQGxlPlJfUaV1qE4mmPJUjCpMNRphjR7EDQIfCN4NU8PoqVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xic7duHbOsHEMOZbtVahfJtVUUbg1kj+BSLbOnRGfkw=;
- b=ThCppT6DEW85bq/HGrV+SaqkPkxcyonN3cIhpcSMgMzraSXPUqUuRrlmj9RIBV0W5GbOdYsYLH/ZNTB85eCzpqk+P1HtW2xNmYJMr9gYlOoZ3fZB3s2/nyTBtxrSgoOq4d78KIaBzIeGgN+4XJrF6dAHMWIQmp7IA5Of5i0a+RaLmlHpoAbYySU/anzBqc67fp71d8SQteQPV99XbqRclxPB7UW1+lYYdD7uhFUqkG7HUj8m2v2oyikEyHdWXYmetfa/pvi41Wfre7La2qd7KvuBqd2w9n1+ud8as63EIQKpUlhstRFmVZYuL6gpbTpIrxcTIcnnS6dOj8kx85ZgVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xic7duHbOsHEMOZbtVahfJtVUUbg1kj+BSLbOnRGfkw=;
- b=So2voWS3ONi6jrAykdWTlh4/pFbCIc54cye9vVbgE7zbpEaoS2iJ/+5rsAKWXdVd+lt8QQMj9qJDBPFiZC6giWhigWA6BP/0Gmd05o7QIS9es1aeAsfnn2iDm0QMb+fxXehe4iZMz6HbS+IhwdgCv0fVSJo9j8Zk837mAJumeBE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=silabs.com;
-Received: from PH0PR11MB5657.namprd11.prod.outlook.com (2603:10b6:510:ee::19)
- by MWHPR1101MB2317.namprd11.prod.outlook.com (2603:10b6:301:5b::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.15; Fri, 18 Feb
- 2022 11:11:56 +0000
-Received: from PH0PR11MB5657.namprd11.prod.outlook.com
- ([fe80::1b3:e483:7396:1f98]) by PH0PR11MB5657.namprd11.prod.outlook.com
- ([fe80::1b3:e483:7396:1f98%3]) with mapi id 15.20.4995.024; Fri, 18 Feb 2022
- 11:11:55 +0000
-From:   =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>, devel@driverdev.osuosl.org,
-        Riccardo Ferrazzo <rferrazzo@came.com>,
-        linux-kernel@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH] staging: wfx: fix scan with WFM200 and WW regulation
-Date:   Fri, 18 Feb 2022 12:11:48 +0100
-Message-ID: <3527203.aO2mCyqpp7@pc-42>
-Organization: Silicon Labs
-In-Reply-To: <Yg98Zjikg0ncQv8b@kroah.com>
-References: <20220218105358.283769-1-Jerome.Pouiller@silabs.com> <2535719.D4RZWD7AcY@pc-42> <Yg98Zjikg0ncQv8b@kroah.com>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-ClientProxiedBy: PAZP264CA0216.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:237::11) To PH0PR11MB5657.namprd11.prod.outlook.com
- (2603:10b6:510:ee::19)
+        Fri, 18 Feb 2022 07:38:39 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E49441738F2;
+        Fri, 18 Feb 2022 04:38:21 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6D27EB8261C;
+        Fri, 18 Feb 2022 12:38:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38114C340E9;
+        Fri, 18 Feb 2022 12:37:52 +0000 (UTC)
+Message-ID: <c70113dc-d017-b5bc-1466-02530f4707e2@xs4all.nl>
+Date:   Fri, 18 Feb 2022 13:37:50 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 232d2249-c0f3-4e91-ba2e-08d9f2cf7939
-X-MS-TrafficTypeDiagnostic: MWHPR1101MB2317:EE_
-X-Microsoft-Antispam-PRVS: <MWHPR1101MB23178C066B06C04D15A4CF9693379@MWHPR1101MB2317.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2331;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: f7K0eXaXJVutBVtIIl9nwQv+CrMLqhDzQrUAr3KNArOgmLqwxCZOz81liSpRTVunCB1c8cauoSxZGYpdxQxy+6QOIuTpxknKYErt4jhzgnNXtOskMwH3sDlXGQocirMdTBoVGzxtmR1Bzo8cNbpCaZkrQyN9a/jrGc0Mb2/lV5CGA2+iz2xRAb677BUytHmPwpxMhtbbhcQhNQxqV6gKhlB2C9exTzNHT7QYxURVSBUKUmsKLaHlpXdkbPb9f+l13N0J0ZGof/sh3KN8NCDA8YE2pGaUeiwJQMv3lXvfU0aodopHUzj2QuHYdJGfM/oZGRXXB2WTdqrLTGcfylKnRcECRyVnxnOqSb6m4PzVkCcjNXsvLNdVOl6T6wLISAVNl4H/2mKA+iWNgAk4XMHlALn9NCRS5Zo5SaeTj1oFk72UO/QOTMnF4oEybv6HTUkPkM28rHRH1WqaO1soDhNv54kkOx6iaK9XnN2DeeNyTzH1uwDHoO/r3hWVnGXjX8QMiqAMW0CxQZJeFxmbTYDpB5MQ01r2eIy1dXNSHPQUwjcz0pk/1KFKS1p1mBfpf/8a2l2Yel5uvw5ZVDUgH03S7t+HGJY4yv7Ktv9DBpwq2M6kiUWFoo2ezLJ8o3+50Cdowvbj648VWrqTMYfmvP0kSAjC/7Zw7tZBBqWdXwMPorUP2KiZYc9IhjzCRlDqW+W7JOPlAoYLPGRkrpTiZrj6vpdyvTJcE89/plZmmCU0btmaoVFkC51/ZHgoNq/GiF5cYR1AaIc5ik17OR2ILcsepdWyYlduPsQOwHIsXiyiyb6cee4WkAQkOd3etQd8Ie/p
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5657.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(7916004)(366004)(86362001)(8936002)(2906002)(38350700002)(6486002)(38100700002)(6916009)(186003)(54906003)(9686003)(52116002)(6512007)(508600001)(316002)(26005)(33716001)(8676002)(66556008)(6666004)(5660300002)(6506007)(36916002)(66946007)(4326008)(66476007)(966005)(39026012);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?0HP+zZO1ej0yXMuybV3/EJU2+4BQchatTfr3edCErCFF1YbpralJ1ln50Y?=
- =?iso-8859-1?Q?kbPIZBHgJlVscELBDRwE7f4cMimAnrVxF45/Nut0DXznwAQMqiwKgFQZRx?=
- =?iso-8859-1?Q?TZqQbxB1Yx7QAeQE+pstouAyf440eL40c5U+u50DBADlwy8ZhYSpy9PqeV?=
- =?iso-8859-1?Q?WQFCE2lCquwTg4LMhvdcx313sd7d0vlJy72X4pq0yt2OFkSuiTV675KKfY?=
- =?iso-8859-1?Q?Oy6aR4J+8str4nuWevg7X+LSgVt+cY9vDI4zc5oJpbPZjxG+EvSfZ/6SJR?=
- =?iso-8859-1?Q?ZGV4BAyX8IA40weTECDjor2SNNooQfBnU6qJv1knN35lv+tq48Ec+roWJi?=
- =?iso-8859-1?Q?gmoyFL5fPscrZF0ka2IlGMYGxnsbuuVT/Uu/2+MWUOvgmbQowriDtiWlwd?=
- =?iso-8859-1?Q?S+b/9x069KVxuj8eiRNsjaYDQPqgFqoN8mHPyBFurbG0H75LzuJIm9TtkA?=
- =?iso-8859-1?Q?JSJ2cCEo04NgE+TOFEAwkSTl8FQqh9ZeAurG0etmNEXug/v+fAsVl9aT5g?=
- =?iso-8859-1?Q?1EPVP5P29OHS7O9VJXEkFsl0K++FAhn8CuKYanZv8RmBUIuqYZmNrtXxr8?=
- =?iso-8859-1?Q?1voHCMG/H34wshOadz6PV2KRR48EcwdLWXc1DwOY7vYUUNp3Ne4p8flQkg?=
- =?iso-8859-1?Q?s9w1qVoIvbT6tdElL8t9k70c2zg4I0WgTuVe/mecOJ2c2kYLw0Q96h9euu?=
- =?iso-8859-1?Q?XcMd+tzw1Qkvi0kX/kYnz56YmBayt0LZkAJZm+ghF1M19fC6G1CC6nLaf8?=
- =?iso-8859-1?Q?13xh6R727exYoyHBmg1Xrmj0DlaSGy+CFpPhJHSWbcu1Eu8Ah8nLFjTERM?=
- =?iso-8859-1?Q?+rFqWuHHL0qlNDGi92Ln/sNc9a9UvwQZbtvkfBlJV0H1hQeo9SSsYp42lg?=
- =?iso-8859-1?Q?BjvLNHHpml3/12r1K2I1tfO+/AhgfT4A2nPSc0x2W6gIFweKX8zxKL74FI?=
- =?iso-8859-1?Q?zLd9qwzlX1KJOw0V6TO96d7Qyu3w2HXhTUgIbFAaDAwaMBEz69rk2K1Q17?=
- =?iso-8859-1?Q?e0g4XMTcd15w976nUFbryzu9SGmI1mexFBtHQJ44E9lPhSxoo3ZgsQ817T?=
- =?iso-8859-1?Q?KaUlPhO7EAnOEUP1wyCLj8k9KxuZjcIq5Uk7z/1PHo4Nrji3q7nt5qki8N?=
- =?iso-8859-1?Q?2frBxc1I3DU3OBsZ5JKT0XTpSRdTUALVXx5umysU+1/OwDFasFLaWcjG6t?=
- =?iso-8859-1?Q?o4HJwVn/SH30MnGPGU4WL3Ao1jAtbWVW7toSy1IKyHXKj7qlKa2KKW5F5v?=
- =?iso-8859-1?Q?BAwrykbfW5+GMignMjJiQusfy5D4h781u1wDmdfhUWXjm+zzsOnrjRJuJY?=
- =?iso-8859-1?Q?q1TwNRSv4zWCgpgFthYbQoKpHKQ9b5i0s5UbQW232qV4n/0uYn3HDCg3iH?=
- =?iso-8859-1?Q?3QDAz0AXgzA1Q+fOlOOokYbsO2rb17FeNZYUzm2WoJeuXeou1DhsFUZ/Dr?=
- =?iso-8859-1?Q?twJJsT15QnqmAV67KSyrXmglwwbnlEJ3s44rdxRceuun1QVPYMhpL/cJuU?=
- =?iso-8859-1?Q?wzH7fda/KFmba7pz6x4gjfkBovvgYpCM1eNlzIGgj2TyytmDcwZuiBMmNL?=
- =?iso-8859-1?Q?uEaJBNAyxD8WaT5+PR6TgqHPYH6EOTO30N/2ZzC9qEgE7n8MVl4WOF50R1?=
- =?iso-8859-1?Q?qS7krf69El+/8kznitDENC8l852XVgEcViCYk9+vMDjzdToxkFV+96o7QK?=
- =?iso-8859-1?Q?6kspl8Bnk0e+4np6wxE=3D?=
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 232d2249-c0f3-4e91-ba2e-08d9f2cf7939
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5657.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2022 11:11:55.6864
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: myFbQenMCOM+cc9L0CxivolJfR4OJ3tW7bagiBYH+rA4kgfzP3j4pDQJ/SNQxbRtDi9g9A167uIa4ocoNRYpjw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR1101MB2317
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Subject: Re: [PATCH 5/5] spi: make remove callback a void function
+Content-Language: en-US
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Mark Brown <broonie@kernel.org>
+Cc:     =?UTF-8?Q?Marek_Beh=c3=ban?= <kabel@kernel.org>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Emma Anholt <emma@anholt.net>,
+        David Lechner <david@lechnology.com>,
+        Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>,
+        =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dan Robertson <dan@dlrobertson.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        Yasunari Takiguchi <Yasunari.Takiguchi@sony.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Charles-Antoine Couret <charles-antoine.couret@nexvision.fr>,
+        Antti Palosaari <crope@iki.fi>,
+        Lee Jones <lee.jones@linaro.org>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Eric Piel <eric.piel@tremplin-utc.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Thomas Kopp <thomas.kopp@microchip.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Woojung Huh <woojung.huh@microchip.com>,
+        UNGLinuxDriver@microchip.com,
+        =?UTF-8?Q?=c5=81ukasz_Stelmach?= <l.stelmach@samsung.com>,
+        Alexander Aring <alex.aring@gmail.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        Harry Morris <h.morris@cascoda.com>,
+        Varka Bhadram <varkabhadram@gmail.com>,
+        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Christian Lamparter <chunkeey@googlemail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Solomon Peachy <pizza@shaftnet.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Mark Greer <mgreer@animalcreek.com>,
+        Benson Leung <bleung@chromium.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Felipe Balbi <balbi@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        James Schulman <james.schulman@cirrus.com>,
+        David Rhodes <david.rhodes@cirrus.com>,
+        Lucas Tanure <tanureal@opensource.cirrus.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Maxime Ripard <mripard@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Cai Huoqing <caihuoqing@baidu.com>,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Julia Lawall <Julia.Lawall@inria.fr>,
+        =?UTF-8?Q?Ronald_Tschal=c3=a4r?= <ronald@innovation.ch>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
+        Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Heiko Schocher <hs@denx.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Colin Ian King <colin.king@intel.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Matt Kline <matt@bitbashing.io>,
+        Torin Cooper-Bennun <torin@maxiluxsystems.com>,
+        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+        =?UTF-8?Q?Stefan_M=c3=a4tje?= <stefan.maetje@esd.eu>,
+        Frieder Schrempf <frieder.schrempf@kontron.de>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Nanyong Sun <sunnanyong@huawei.com>,
+        Yang Shen <shenyang39@huawei.com>,
+        dingsenjie <dingsenjie@yulong.com>,
+        Aditya Srivastava <yashsri421@gmail.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michael Walle <michael@walle.cc>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        wengjianfeng <wengjianfeng@yulong.com>,
+        Sidong Yang <realwakka@gmail.com>,
+        Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>,
+        Zhang Qilong <zhangqilong3@huawei.com>,
+        Will Deacon <will@kernel.org>,
+        Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>,
+        Davidlohr Bueso <dbueso@suse.de>, Claudius Heine <ch@denx.de>,
+        Jiri Prchal <jiri.prchal@aksignal.cz>,
+        linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+        patches@opensource.cirrus.com, alsa-devel@alsa-project.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-can@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
+        linux-wireless@vger.kernel.org, libertas-dev@lists.infradead.org,
+        platform-driver-x86@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        kernel@pengutronix.de
+References: <20220123175201.34839-1-u.kleine-koenig@pengutronix.de>
+ <20220123175201.34839-6-u.kleine-koenig@pengutronix.de>
+From:   Hans Verkuil <hverkuil@xs4all.nl>
+In-Reply-To: <20220123175201.34839-6-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Friday 18 February 2022 12:00:54 CET Greg Kroah-Hartman wrote:
-> On Fri, Feb 18, 2022 at 11:57:47AM +0100, J=E9r=F4me Pouiller wrote:
-> > On Friday 18 February 2022 11:53:58 CET Jerome Pouiller wrote:
-> > > From: Riccardo Ferrazzo <rferrazzo@came.com>
-> > >
-> > > Some variants of the WF200 disallow active scan on channel 12 and 13.
-> > > For these parts, the channels 12 and 13 are marked IEEE80211_CHAN_NO_=
-IR.
-> > >
-> > > However, the beacon hint procedure was removing the flag
-> > > IEEE80211_CHAN_NO_IR from channels where a BSS is discovered. This wa=
-s
-> > > making subsequent scans to fail because the driver was trying active
-> > > scans on prohibited channels.
-> > >
-> > > Signed-off-by: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
-> >
-> > I forgot to mention I have reviewed on this patch:
-> >
-> > Reviewed-by: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
->=20
-> Reviwed-by is implied with signed-off-by.
->=20
-> But what happened to the signed-off-by from the author of this change?
+On 23/01/2022 18:52, Uwe Kleine-König wrote:
+> The value returned by an spi driver's remove function is mostly ignored.
+> (Only an error message is printed if the value is non-zero that the
+> error is ignored.)
+> 
+> So change the prototype of the remove function to return no value. This
+> way driver authors are not tempted to assume that passing an error to
+> the upper layer is a good idea. All drivers are adapted accordingly.
+> There is no intended change of behaviour, all callbacks were prepared to
+> return 0 before.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/bus/moxtet.c                                  |  4 +---
+>  drivers/char/tpm/st33zp24/spi.c                       |  4 +---
+>  drivers/char/tpm/tpm_tis_spi_main.c                   |  3 +--
+>  drivers/clk/clk-lmk04832.c                            |  4 +---
+>  drivers/gpio/gpio-74x164.c                            |  4 +---
+>  drivers/gpio/gpio-max3191x.c                          |  4 +---
+>  drivers/gpio/gpio-max7301.c                           |  4 +---
+>  drivers/gpio/gpio-mc33880.c                           |  4 +---
+>  drivers/gpio/gpio-pisosr.c                            |  4 +---
+>  drivers/gpu/drm/panel/panel-abt-y030xx067a.c          |  4 +---
+>  drivers/gpu/drm/panel/panel-ilitek-ili9322.c          |  4 +---
+>  drivers/gpu/drm/panel/panel-ilitek-ili9341.c          |  3 +--
+>  drivers/gpu/drm/panel/panel-innolux-ej030na.c         |  4 +---
+>  drivers/gpu/drm/panel/panel-lg-lb035q02.c             |  4 +---
+>  drivers/gpu/drm/panel/panel-lg-lg4573.c               |  4 +---
+>  drivers/gpu/drm/panel/panel-nec-nl8048hl11.c          |  4 +---
+>  drivers/gpu/drm/panel/panel-novatek-nt39016.c         |  4 +---
+>  drivers/gpu/drm/panel/panel-samsung-db7430.c          |  3 +--
+>  drivers/gpu/drm/panel/panel-samsung-ld9040.c          |  4 +---
+>  drivers/gpu/drm/panel/panel-samsung-s6d27a1.c         |  3 +--
+>  drivers/gpu/drm/panel/panel-samsung-s6e63m0-spi.c     |  3 +--
+>  drivers/gpu/drm/panel/panel-sitronix-st7789v.c        |  4 +---
+>  drivers/gpu/drm/panel/panel-sony-acx565akm.c          |  4 +---
+>  drivers/gpu/drm/panel/panel-tpo-td028ttec1.c          |  4 +---
+>  drivers/gpu/drm/panel/panel-tpo-td043mtea1.c          |  4 +---
+>  drivers/gpu/drm/panel/panel-tpo-tpg110.c              |  3 +--
+>  drivers/gpu/drm/panel/panel-widechips-ws2401.c        |  3 +--
+>  drivers/gpu/drm/tiny/hx8357d.c                        |  4 +---
+>  drivers/gpu/drm/tiny/ili9163.c                        |  4 +---
+>  drivers/gpu/drm/tiny/ili9225.c                        |  4 +---
+>  drivers/gpu/drm/tiny/ili9341.c                        |  4 +---
+>  drivers/gpu/drm/tiny/ili9486.c                        |  4 +---
+>  drivers/gpu/drm/tiny/mi0283qt.c                       |  4 +---
+>  drivers/gpu/drm/tiny/repaper.c                        |  4 +---
+>  drivers/gpu/drm/tiny/st7586.c                         |  4 +---
+>  drivers/gpu/drm/tiny/st7735r.c                        |  4 +---
+>  drivers/hwmon/adcxx.c                                 |  4 +---
+>  drivers/hwmon/adt7310.c                               |  3 +--
+>  drivers/hwmon/max1111.c                               |  3 +--
+>  drivers/hwmon/max31722.c                              |  4 +---
+>  drivers/iio/accel/bma400_spi.c                        |  4 +---
+>  drivers/iio/accel/bmc150-accel-spi.c                  |  4 +---
+>  drivers/iio/accel/bmi088-accel-spi.c                  |  4 +---
+>  drivers/iio/accel/kxsd9-spi.c                         |  4 +---
+>  drivers/iio/accel/mma7455_spi.c                       |  4 +---
+>  drivers/iio/accel/sca3000.c                           |  4 +---
+>  drivers/iio/adc/ad7266.c                              |  4 +---
+>  drivers/iio/adc/ltc2496.c                             |  4 +---
+>  drivers/iio/adc/mcp320x.c                             |  4 +---
+>  drivers/iio/adc/mcp3911.c                             |  4 +---
+>  drivers/iio/adc/ti-adc12138.c                         |  4 +---
+>  drivers/iio/adc/ti-ads7950.c                          |  4 +---
+>  drivers/iio/adc/ti-ads8688.c                          |  4 +---
+>  drivers/iio/adc/ti-tlc4541.c                          |  4 +---
+>  drivers/iio/amplifiers/ad8366.c                       |  4 +---
+>  drivers/iio/common/ssp_sensors/ssp_dev.c              |  4 +---
+>  drivers/iio/dac/ad5360.c                              |  4 +---
+>  drivers/iio/dac/ad5380.c                              |  4 +---
+>  drivers/iio/dac/ad5446.c                              |  4 +---
+>  drivers/iio/dac/ad5449.c                              |  4 +---
+>  drivers/iio/dac/ad5504.c                              |  4 +---
+>  drivers/iio/dac/ad5592r.c                             |  4 +---
+>  drivers/iio/dac/ad5624r_spi.c                         |  4 +---
+>  drivers/iio/dac/ad5686-spi.c                          |  4 +---
+>  drivers/iio/dac/ad5761.c                              |  4 +---
+>  drivers/iio/dac/ad5764.c                              |  4 +---
+>  drivers/iio/dac/ad5791.c                              |  4 +---
+>  drivers/iio/dac/ad8801.c                              |  4 +---
+>  drivers/iio/dac/ltc1660.c                             |  4 +---
+>  drivers/iio/dac/ltc2632.c                             |  4 +---
+>  drivers/iio/dac/mcp4922.c                             |  4 +---
+>  drivers/iio/dac/ti-dac082s085.c                       |  4 +---
+>  drivers/iio/dac/ti-dac7311.c                          |  3 +--
+>  drivers/iio/frequency/adf4350.c                       |  4 +---
+>  drivers/iio/gyro/bmg160_spi.c                         |  4 +---
+>  drivers/iio/gyro/fxas21002c_spi.c                     |  4 +---
+>  drivers/iio/health/afe4403.c                          |  4 +---
+>  drivers/iio/magnetometer/bmc150_magn_spi.c            |  4 +---
+>  drivers/iio/magnetometer/hmc5843_spi.c                |  4 +---
+>  drivers/iio/potentiometer/max5487.c                   |  4 +---
+>  drivers/iio/pressure/ms5611_spi.c                     |  4 +---
+>  drivers/iio/pressure/zpa2326_spi.c                    |  4 +---
+>  drivers/input/keyboard/applespi.c                     |  4 +---
+>  drivers/input/misc/adxl34x-spi.c                      |  4 +---
+>  drivers/input/touchscreen/ads7846.c                   |  4 +---
+>  drivers/input/touchscreen/cyttsp4_spi.c               |  4 +---
+>  drivers/input/touchscreen/tsc2005.c                   |  4 +---
+>  drivers/leds/leds-cr0014114.c                         |  4 +---
+>  drivers/leds/leds-dac124s085.c                        |  4 +---
+>  drivers/leds/leds-el15203000.c                        |  4 +---
+>  drivers/leds/leds-spi-byte.c                          |  4 +---
+>  drivers/media/spi/cxd2880-spi.c                       |  4 +---
+>  drivers/media/spi/gs1662.c                            |  4 +---
+>  drivers/media/tuners/msi001.c                         |  3 +--
 
-The author hasn't used format-patch to transmit this patch.
+A bit late, but for drivers/media:
 
-Riccardo, can you reply to this mail with the mention "Signed-off-by:
-Your name <your-mail@dom.com>"? It certifies that you wrote it or
-otherwise have the right to pass it on as an open-source patch[1].
+Acked-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
+Thanks!
 
-[1] https://www.kernel.org/doc/html/v4.17/process/submitting-patches.html#s=
-ign-your-work-the-developer-s-certificate-of-origin
-
-Thank you,
-
---=20
-J=E9r=F4me Pouiller
-
-
+	Hans
