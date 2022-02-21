@@ -2,64 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C77824BE72D
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Feb 2022 19:03:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3FB34BE170
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Feb 2022 18:53:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345478AbiBUKsC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Feb 2022 05:48:02 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44558 "EHLO
+        id S1355409AbiBUKxs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Feb 2022 05:53:48 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355320AbiBUKrm (ORCPT
+        with ESMTP id S1349849AbiBUKx2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Feb 2022 05:47:42 -0500
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFC6054BFD;
-        Mon, 21 Feb 2022 02:08:42 -0800 (PST)
+        Mon, 21 Feb 2022 05:53:28 -0500
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0267A11A07;
+        Mon, 21 Feb 2022 02:19:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1645438123; x=1676974123;
+  t=1645438781; x=1676974781;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=IllAWlnl/SYaMR8rAmC0CK5PLIeHha4xbUrs57x67pE=;
-  b=MmfPgWfg1PIAGJleVVv56onNwHgKUFWrL/0AuQ7hsRmbkw58pEN5f4/W
-   brOGmLW0BlZYVixllUaEkrweINX4DceYr8IGFKiRRQYsv95vzWqBQDCJc
-   vGVFu5t795fdF6rM9T60w1PsuK6HBWr2BPYAEjPyxPxitaVZ/LEuRDmah
-   g=;
-Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 21 Feb 2022 02:08:42 -0800
+  bh=9Lvkdrfwn4Se5WxxxQS9bol5uM0W7Ns0n6IHIzV9UPU=;
+  b=wXf6gsuLsiOJeP1egHcN8aaoaDXLkEjtArzBazna+Nvp5F5y7loH/gWt
+   SLNAAq+NAVsQDlrt+/KFqZwc8NgEAfkb3ekb8OLT+3VPt/nHOHIB/3/tq
+   4iX6sEAGedzPe4u4J8SjCWJg1lnqTVYVJn0OzlJYF7TGx53aDTKxm1t85
+   A=;
+Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 21 Feb 2022 02:19:41 -0800
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2022 02:08:41 -0800
+  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2022 02:19:41 -0800
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Mon, 21 Feb 2022 02:08:41 -0800
+ 15.2.986.15; Mon, 21 Feb 2022 02:19:40 -0800
 Received: from [10.216.7.34] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.15; Mon, 21 Feb
- 2022 02:08:37 -0800
-Message-ID: <04138c2c-7dff-3378-ffd7-cfb0c146a763@quicinc.com>
-Date:   Mon, 21 Feb 2022 15:38:31 +0530
+ 2022 02:19:38 -0800
+Message-ID: <b33be970-73ec-51c1-7552-677c71c53fd6@quicinc.com>
+Date:   Mon, 21 Feb 2022 15:49:19 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.6.1
-Subject: Re: [PATCH v2 05/19] ath11k: Remove core PCI references from PCI
- common code
+Subject: Re: [PATCH v2 02/19] ath11k: Refactor PCI code to support hybrid bus
+ devices
 Content-Language: en-US
 To:     Kalle Valo <kvalo@kernel.org>
 CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <robh@kernel.org>
 References: <1642337235-8618-1-git-send-email-quic_mpubbise@quicinc.com>
- <1642337235-8618-6-git-send-email-quic_mpubbise@quicinc.com>
- <87a6fggo0h.fsf@kernel.org>
- <df81787b-3ad4-62b7-7a39-fdca6775bae1@quicinc.com>
- <875yp8zihm.fsf@kernel.org>
+ <1642337235-8618-3-git-send-email-quic_mpubbise@quicinc.com>
+ <87h79of470.fsf@kernel.org>
+ <9acca69c-3d5d-b6b9-b5ca-c2411e206908@quicinc.com>
+ <871qzwzidr.fsf@kernel.org>
 From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-In-Reply-To: <875yp8zihm.fsf@kernel.org>
+In-Reply-To: <871qzwzidr.fsf@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
@@ -71,25 +71,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 2/21/2022 2:47 PM, Kalle Valo wrote:
+On 2/21/2022 2:49 PM, Kalle Valo wrote:
 > Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 > 
->> On 1/28/2022 3:50 PM, Kalle Valo wrote:
+>> On 1/28/2022 5:43 PM, Kalle Valo wrote:
 >>> Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 >>>
->>>> Remove core PCI and ath11k PCI references(struct ath11k_pci)
->>>> from PCI common code. Since, PCI common code will be used
->>>> by hybrid bus devices, this code should be independent
->>>> from ATH11K PCI references and Linux core PCI references
->>>> like struct pci_dev.
+>>>> Unlike other ATH11K PCIe devices which are enumerated by APSS
+>>>> processor (Application Processor SubSystem), WCN6750 gets
+>>>> enumerated by the WPSS Q6 processor (Wireless Processor SubSystem);
+>>>> In simple terms, though WCN6750 is PCIe device, it is not attached
+>>>> to the APSS processor, APSS will not know of such a device being
+>>>> present in the system and therefore WCN6750 will be registered as
+>>>> a platform device to the kernel core like other supported AHB
+>>>> devices.
 >>>>
->>>> Since this change introduces function callbacks for bus wakeup
->>>> and bus release operations, wakeup_mhi HW param is no longer
->>>> needed and hence it is removed completely. Alternatively, bus
->>>> wakeup/release ops for QCA9074 are initialized to NULL as
->>>> QCA9704 does not need bus wakeup/release for register accesses.
+>>>> WCN6750 uses both AHB and PCI APIs for it's operation, it uses
+>>>> AHB APIs for device probe/boot and PCI APIs for device setup
+>>>> and register accesses; Because of this nature, it is referred
+>>>> as a hybrid bus device.
+>>>>
+>>>> Refactor PCI code to support hybrid bus devices like WCN6750.
 >>>>
 >>>> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00573-QCAMSLSWPLZ-1
 >>>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
@@ -100,34 +102,43 @@ On 2/21/2022 2:47 PM, Kalle Valo wrote:
 >>>
 >>> [...]
 >>>
->>>> @@ -651,6 +653,13 @@ struct ath11k_bus_params {
->>>>    	bool fixed_bdf_addr;
->>>>    	bool fixed_mem_region;
->>>>    	bool static_window_map;
->>>> +	struct {
->>>> +		void (*wakeup)(struct ath11k_base *ab);
->>>> +		void (*release)(struct ath11k_base *ab);
->>>> +		int (*get_msi_irq)(struct ath11k_base *ab, unsigned int vector);
->>>> +		void (*window_write32)(struct ath11k_base *ab, u32 offset, u32 value);
->>>> +		u32 (*window_read32)(struct ath11k_base *ab, u32 offset);
->>>> +	} ops;
->>>>    };
+>>>> --- /dev/null
+>>>> +++ b/drivers/net/wireless/ath/ath11k/pci_cmn.c
 >>>
->>> Please don't use bus_params for this, I'm starting to suspect that we
->>> actually need to remove struct ath11k_bus_params altogether. It would be
->>> cleaner to have separate 'struct ath11k_pci_ops' or something like that.
+>>> [...]
+>>>
+>>>> +static inline void ath11k_pci_select_window(struct ath11k_pci *ab_pci, u32 offset)
+>>>> +{
+>>>> +	struct ath11k_base *ab = ab_pci->ab;
+>>>> +
+>>>> +	u32 window = FIELD_GET(ATH11K_PCI_WINDOW_VALUE_MASK, offset);
+>>>> +
+>>>> +	lockdep_assert_held(&ab_pci->window_lock);
+>>>> +
+>>>> +	if (window != ab_pci->register_window) {
+>>>> +		iowrite32(ATH11K_PCI_WINDOW_ENABLE_BIT | window,
+>>>> +			  ab->mem + ATH11K_PCI_WINDOW_REG_ADDRESS);
+>>>> +		ioread32(ab->mem + ATH11K_PCI_WINDOW_REG_ADDRESS);
+>>>> +		ab_pci->register_window = window;
+>>>> +	}
+>>>> +}
+>>>
+>>> So the style used in ath11k is ath11k_<filename>_foo, so that a function
+>>> ath11k_pci_foo() should be in pci.c. This patch is now breaking that
+>>> style. Maybe pci_cmn.c should renamed to cpci.c, pcic.c or something
+>>> like that? Then the function prefix could be ath11k_cpci_, ath11k_pcic_
+>>> or similar.
 >>>
 >>
->> Sure, something like 'struct ath11k_bus_ops' in ath11k_base struct
->> would be appropriate.
+>> Makes sense, pcic.c and ath11k_pcic_* looks better, I'll make these changes.
 > 
-> But we have 'struct ath11k_hif_ops' already, and that's basically
-> ath11k_bus_ops with a confusing name :) (IIRC HIF means Host InterFace,
-> or something like that.) So having both ath11k_bus_ops and
-> ath11k_hif_ops would become even more confusing.
-> 
-> You are basically abstracting out PCI functionality, that's why I
-> suggested ath11k_pci_ops. But yeah, naming is hard :)
+> Of course another possiblity, which I forgot to mention in my previous
+> email, is to keep pci_cmn.c filename but rename the functions to
+> ath11k_pci_cmn_foo(). Though don't know which one is better.
 > 
 
-Hmmm, makes sense :)
+I was contemplating on having ath11k_pci_cmn_* for a very long time; In 
+fact, in the patches which I worked on had the pci_cmn prefix for all 
+the APIs, I felt the prefix is long and dropped the idea :)
+
+At least to me, pcic.c and ath11k_pcic* looked good.
