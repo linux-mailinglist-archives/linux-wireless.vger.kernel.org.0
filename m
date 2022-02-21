@@ -2,138 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE7F04BE107
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Feb 2022 18:52:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2999B4BE386
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Feb 2022 18:57:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355453AbiBULRD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Feb 2022 06:17:03 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:47442 "EHLO
+        id S1357928AbiBUM0x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Feb 2022 07:26:53 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:37214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355832AbiBULPP (ORCPT
+        with ESMTP id S1357897AbiBUM0w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Feb 2022 06:15:15 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4963D13D
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Feb 2022 02:52:58 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB5D261140
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Feb 2022 10:52:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D59DC340E9;
-        Mon, 21 Feb 2022 10:52:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645440777;
-        bh=HIwMS/QNmvIMrz2nkQTGWNzTOiKAHN4AXscIkZ5Atok=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=T5Zf17Dz54lD0Rf+lQjYJQI+6ZQ2+2KyoGb/fBLlV+Ed+qifsoexD3HImjmet6S1N
-         aGrvk0LE52G2zPN6Hck0OFR8ewBnJRdFOEzpPXmzM+J7LEbMeXMGrxd96uW9oWUT3i
-         IOY1C0oBK/JGPq7/EuS3kZeGbUAMzh3+1TSxUh65ksmLHnd1jcJcI0CRhjEXthnsC8
-         i/Fw5BNRQ0H9ajSiZNcPOH0drAjDvttuvyKaNvBrwm4UmdXsCLOhrPz4ha93Ow5gfp
-         Cognp3cQ4Q3zIhFA99zHBS80z68YUj9kAn7f96KtLxmjmUKydUwoALndFuwb5tuZWO
-         lVRMDNt2/BSfw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Miles Hu <milehu@codeaurora.org>,
-        John Crispin <john@phrozen.org>
-Subject: Re: [PATCH v10 1/3] ath11k: switch to using ieee80211_tx_status_ext()
-References: <20220217012112.31211-1-pradeepc@codeaurora.org>
-        <20220217012112.31211-2-pradeepc@codeaurora.org>
-Date:   Mon, 21 Feb 2022 12:52:50 +0200
-In-Reply-To: <20220217012112.31211-2-pradeepc@codeaurora.org> (Pradeep Kumar
-        Chitrapu's message of "Wed, 16 Feb 2022 17:21:10 -0800")
-Message-ID: <87ley4wkxp.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 21 Feb 2022 07:26:52 -0500
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B9313E22
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Feb 2022 04:26:29 -0800 (PST)
+Received: by mail-ed1-x535.google.com with SMTP id c6so26215892edk.12
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Feb 2022 04:26:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mXtFK9XIWdkXWHWTAWeRWZH7ZkcOfy+R1WHS0XSQvFY=;
+        b=qdtUwIxZq6krEOxRrY6aH4UnuIHbE0uKsTU6XOt67NwnQBohbqH53jUZZjGy4f4C7L
+         TwU7r0jtKyeyOfHt0sN8wyCC8GeqjE5OEaPsLha6H/z1SqIwYMSObdoekdCxeJL+zRuQ
+         h3Hej11KDvauh8xp4WVh9zlpJauClSPAjFS/ZNJC+D8CwluPPftHqbIa+cFhrcUpw5ET
+         duzKoGUfqGKEaxHDvg1UgRF4AQ6WfP7hIX8pM8o2hg/u8KMedoOwIV2svzHFwp4KGU9o
+         v9UNBfgHssuW5SE6q95ZhNZNrtck108hU3OL/I21ue6lX9/rKo0fdgRpBFoY3eP11iPY
+         v9PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mXtFK9XIWdkXWHWTAWeRWZH7ZkcOfy+R1WHS0XSQvFY=;
+        b=c+QgF6R9q0b2cvJdsLVqeA0/IxSbSDnXTwRVLo8Q2pb7gUr0es5KIYMcjNefmmL4LS
+         54e1zhEs9ud6ZnPSStneuc4muGhGj6YCL++gfZysK8+rJA7dcI8+s64TyYyTWu2C7/HU
+         njOLa05y1Q79P4UkuXwWhzNiPDwKvLLZjXiy8uYLFgKn6TIkBL6rPj1igpxHJee5FDrZ
+         dkg44krsushue3yaROh75R04BEorVqJXnH28ZjsE29IGPOkuh7BD/80tczMLAnyII4Nn
+         Y/s9ORPqE7u67Y9j//ypE5e1gtvhAyDTFIDCJTU2HVcaOA/G4ygyrsj6Xq8Tgu/DoGSd
+         +7pA==
+X-Gm-Message-State: AOAM532xBG9gPBdYnzI1cUXluPFNbPQ492XZCPTCheSBymdrDZqXQ848
+        DI6Pg4w+GXyzwW8BwR+L9Ec=
+X-Google-Smtp-Source: ABdhPJyS1HuFg/g1gO0muNEi+yK1UaqwaM4CiNTxSlM1/FdKMzuVfJMST5j7OdXRaWrM71VppzevGQ==
+X-Received: by 2002:a05:6402:270a:b0:410:63d:a66d with SMTP id y10-20020a056402270a00b00410063da66dmr21293487edd.48.1645446387711;
+        Mon, 21 Feb 2022 04:26:27 -0800 (PST)
+Received: from picci.homenet.telecomitalia.it (host-87-17-90-61.retail.telecomitalia.it. [87.17.90.61])
+        by smtp.gmail.com with ESMTPSA id d18sm5115236ejd.95.2022.02.21.04.26.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Feb 2022 04:26:27 -0800 (PST)
+From:   Francesco Magliocca <franciman12@gmail.com>
+To:     ath10k@lists.infradead.org
+Cc:     dan.carpenter@oracle.com, rmanohar@qti.qualcomm.com,
+        linux-wireless@vger.kernel.org,
+        Francesco Magliocca <franciman12@gmail.com>
+Subject: [PATCH v2] ath10k: fix pointer arithmetic error in trace call
+Date:   Mon, 21 Feb 2022 13:26:38 +0100
+Message-Id: <20220221122638.7971-1-franciman12@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pradeep Kumar Chitrapu <pradeepc@codeaurora.org> writes:
+Reading through the commit history, it looks like
+there is no special need why we must skip the first 4 bytes
+in this trace call:
 
-> This allows us to pass HE rates down into the stack.
->
-> Co-developed-by: Miles Hu <milehu@codeaurora.org>
-> Signed-off-by: Miles Hu <milehu@codeaurora.org>
-> Signed-off-by: John Crispin <john@phrozen.org>
-> Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-> ---
->  drivers/net/wireless/ath/ath11k/dp_tx.c | 32 +++++++++++++++++++++----
->  1 file changed, 27 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-> index c7d7631efa5a..6f553a870e70 100644
-> --- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-> +++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-> @@ -519,9 +519,13 @@ static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
->  				       struct sk_buff *msdu,
->  				       struct hal_tx_status *ts)
->  {
-> +	struct ieee80211_tx_status status = { 0 };
->  	struct ath11k_base *ab = ar->ab;
->  	struct ieee80211_tx_info *info;
->  	struct ath11k_skb_cb *skb_cb;
-> +	struct ath11k_peer *peer;
-> +	struct ath11k_sta *arsta;
-> +	struct rate_info rate;
->  
->  	if (WARN_ON_ONCE(ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_TQM)) {
->  		/* Must not happen */
-> @@ -584,12 +588,30 @@ static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
->  		ath11k_dp_tx_cache_peer_stats(ar, msdu, ts);
->  	}
->  
-> -	/* NOTE: Tx rate status reporting. Tx completion status does not have
-> -	 * necessary information (for example nss) to build the tx rate.
-> -	 * Might end up reporting it out-of-band from HTT stats.
-> -	 */
-> +	spin_lock_bh(&ab->base_lock);
-> +	peer = ath11k_peer_find_by_id(ab, ts->peer_id);
-> +	if (!peer || !peer->sta) {
-> +		ath11k_dbg(ab, ATH11K_DBG_DATA,
-> +			   "dp_tx: failed to find the peer with peer_id %d\n",
-> +			    ts->peer_id);
-> +		spin_unlock_bh(&ab->base_lock);
-> +		dev_kfree_skb_any(msdu);
-> +		goto exit;
-> +	}
-> +	arsta = (struct ath11k_sta *)peer->sta->drv_priv;
-> +	status.sta = peer->sta;
-> +	status.skb = msdu;
-> +	status.info = info;
-> +	rate = arsta->last_txrate;
-> +	status.rate = &rate;
->  
-> -	ieee80211_tx_status(ar->hw, msdu);
-> +	spin_unlock_bh(&ab->base_lock);
-> +	rcu_read_unlock();
-> +
-> +	ieee80211_tx_status_ext(ar->hw, &status);
-> +	return;
-> +exit:
-> +	rcu_read_unlock();
->  }
+trace_ath10k_htt_rx_desc(ar, (void*)rx_desc + sizeof(u32),
+			 hw->rx_desc_ops->rx_desc_size - sizeof(u32));
 
-This patch gives a warning:
+found in the function ath10k_htt_rx_amsdu_pop in the file htt_rx.c
 
-drivers/net/wireless/ath/ath11k/dp_tx.c:600:9: warning: context imbalance in 'ath11k_dp_tx_complete_msdu' - unexpected unlock
+i think the original author
+(who is also the one who added rx_desc tracing capabilities
+in a0883cf7e75a) just wanted to trace the rx_desc contents,
+ignoring the fw_rx_desc_base info field
+(which is the part being skipped over).
+But the trace_ath10k_htt_rx_desc later added
+don't care about skipping it, so it may be good
+to uniform this call to the others in the file.
+But this would change the output of the trace and
+thus it may be a problem for tools that rely on it.
+Therefore I propose until further discussion
+to just keep it as it is and just fix the pointer arithmetic bug.
 
-I don't understand why there's rcu_read_unlock() so in the pending
-branch I removed both of the calls and also the exit label.
+Add missing void* cast to rx descriptor pointer in order to
+properly skip the initial 4 bytes of the rx descriptor
+when passing it to trace_ath10k_htt_rx_desc trace function.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=cb63b88dca170d9de9ff30a546e08917e91c6f05
+This fixes the pointer arithmetic error detected
+by Dan Carpenter's static analysis tool.
 
-Please check my changes.
+Fixes: 6bae9de622d3 ("ath10k: abstract htt_rx_desc structure")
 
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
+
+Signed-off-by: Francesco Magliocca <franciman12@gmail.com>
+Link: https://lore.kernel.org/ath10k/20220201130900.GD22458@kili/
+---
+ drivers/net/wireless/ath/ath10k/htt_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index 9ad64ca84beb..e01efcd2ce06 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -429,7 +429,7 @@ static int ath10k_htt_rx_amsdu_pop(struct ath10k_htt *htt,
+ 				RX_MSDU_END_INFO0_LAST_MSDU;
+ 
+ 		/* FIXME: why are we skipping the first part of the rx_desc? */
+-		trace_ath10k_htt_rx_desc(ar, rx_desc + sizeof(u32),
++		trace_ath10k_htt_rx_desc(ar, (void*)rx_desc + sizeof(u32),
+ 					 hw->rx_desc_ops->rx_desc_size - sizeof(u32));
+ 
+ 		if (last_msdu)
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.35.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
