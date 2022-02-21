@@ -2,49 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 859FD4BE650
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Feb 2022 19:02:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5D1F4BDD14
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Feb 2022 18:43:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344869AbiBUIvL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Feb 2022 03:51:11 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41198 "EHLO
+        id S1347762AbiBUJJB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Feb 2022 04:09:01 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344867AbiBUIvK (ORCPT
+        with ESMTP id S1347742AbiBUJIz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Feb 2022 03:51:10 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A67722BC6
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Feb 2022 00:50:47 -0800 (PST)
+        Mon, 21 Feb 2022 04:08:55 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9A6124BD8;
+        Mon, 21 Feb 2022 01:00:34 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 40DE161138
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Feb 2022 08:50:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B155C340E9;
-        Mon, 21 Feb 2022 08:50:45 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5D8C0B80EB3;
+        Mon, 21 Feb 2022 08:55:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0544FC340EB;
+        Mon, 21 Feb 2022 08:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645433446;
-        bh=q2oI/GDWoXii6cw01B3OcEAudm2Lu9j7EZLQQhRvTmQ=;
+        s=k20201202; t=1645433731;
+        bh=ZeTaPKMLPKsdndEyUbjYbsfZtwlYxTtcQ162SzMk4h4=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=fu+tAHwVIw/c8G5cqqttOqa8Sz79XWPRjm6D51hlHzXSDF729k/wL2RDkp3uq1BDq
-         a61jPJgO69Oyy1yEnHrwgthehJYtLP8BpJBnKMwuL+w7CaltcR3jJVKHsC4Th5PAxf
-         ZrkPyZpf8J1sdqC/gZ9wM7lgAfkO2JH4bXDQX6YgmR59Tzb4X8KM4JXpWuWfoewuAh
-         OPxmwgp3rMfBkIBqninkJJvVZ+1+yYYqXKQG3NDIejUGI7MFXvwAAle+3AxWAcBXxE
-         +1kJfQyIhpBEPAHvYtiblpDm21q3IbP7qg/bjnVIONPtp3kvEV2P/w5Lni2tugY7vo
-         sFBdJ76JNU58A==
+        b=SEspquUeJCV1HXWS77krJRrrQ7FNeGSw31dq0pgdER7ww2DJKNg6sNcBQXzr3L9Ns
+         gTX1hhdPA5jGYm/gtKPxQImFuqH6XRuuDosMGuVqTaRbMWrA+pK7wQvEL3ww+Vs3wH
+         /o/jzjC+LBI+tIwHASBNM6/eV8g29Omca28xxW2qzTRweLQbMLKJXYrjWTYh/oFlyI
+         +DIvjm+SwMELei4HJmMLyfQXufXl+DNyzx+2EzaJrmcPUUma6wGGbtES/COlf+9+18
+         b802kSRgJ/x+UIHKOc8Bsb+1YCPhWT5beIZLfvxxwPlHygUU2EPKdZCTmx5VA4ysop
+         +6Xo7fLkD4bLw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/6] rtw88: 8822ce: add support for TX/RX 1ss mode
+Subject: Re: [PATCH] rtw89: fix RCU usage in rtw89_core_txq_push()
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220215004855.4098-2-pkshih@realtek.com>
-References: <20220215004855.4098-2-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
-        <timlee@realtek.com>, <ku920601@realtek.com>
+In-Reply-To: <nycvar.YFH.7.76.2202152037000.11721@cbobk.fhfr.pm>
+References: <nycvar.YFH.7.76.2202152037000.11721@cbobk.fhfr.pm>
+To:     Jiri Kosina <jkosina@suse.cz>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ping-Ke Shih <pkshih@realtek.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164543342900.995.5302058503879391290.kvalo@kernel.org>
-Date:   Mon, 21 Feb 2022 08:50:45 +0000 (UTC)
+Message-ID: <164543372747.995.16579003811495784285.kvalo@kernel.org>
+Date:   Mon, 21 Feb 2022 08:55:29 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,28 +56,88 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Jiri Kosina <jkosina@suse.cz> wrote:
 
-> From: Chin-Yen Lee <timlee@realtek.com>
+> From: Jiri Kosina <jkosina@suse.cz>
+> Subject: [PATCH] rtw89: fix RCU usage in rtw89_core_txq_push()
 > 
-> In some case, wifi chip need to be configed to be TX/RX 1ss mode.
-> For this mode, wifi components, such as MAC/BB/RF, need to be
-> specially set, and driver need to send SMPS action frame to inform AP.
+> ieee80211_tx_h_select_key() is performing a series of RCU dereferences,
+> but rtw89_core_txq_push() is calling it (via ieee80211_tx_dequeue_ni())
+> without RCU read-side lock held; fix that.
 > 
-> Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> This addresses the splat below.
+> 
+>  =============================
+>  WARNING: suspicious RCU usage
+>  5.17.0-rc4-00003-gccad664b7f14 #3 Tainted: G            E
+>  -----------------------------
+>  net/mac80211/tx.c:593 suspicious rcu_dereference_check() usage!
+> 
+>  other info that might help us debug this:
+> 
+>  rcu_scheduler_active = 2, debug_locks = 1
+>  2 locks held by kworker/u33:0/184:
+>   #0: ffff9c0b14811d38 ((wq_completion)rtw89_tx_wq){+.+.}-{0:0}, at: process_one_work+0x258/0x660
+>   #1: ffffb97380cf3e78 ((work_completion)(&rtwdev->txq_work)){+.+.}-{0:0}, at: process_one_work+0x258/0x660
+> 
+>  stack backtrace:
+>  CPU: 8 PID: 184 Comm: kworker/u33:0 Tainted: G            E     5.17.0-rc4-00003-gccad664b7f14 #3 473b49ab0e7c2d6af2900c756bfd04efd7a9de13
+>  Hardware name: LENOVO 20UJS2B905/20UJS2B905, BIOS R1CET63W(1.32 ) 04/09/2021
+>  Workqueue: rtw89_tx_wq rtw89_core_txq_work [rtw89_core]
+>  Call Trace:
+>   <TASK>
+>   dump_stack_lvl+0x58/0x71
+>   ieee80211_tx_h_select_key+0x2c0/0x530 [mac80211 911c23e2351c0ae60b597a67b1204a5ea955e365]
+>   ieee80211_tx_dequeue+0x1a7/0x1260 [mac80211 911c23e2351c0ae60b597a67b1204a5ea955e365]
+>   rtw89_core_txq_work+0x1a6/0x420 [rtw89_core b39ba493f2e517ad75e0f8187ecc24edf58bbbea]
+>   process_one_work+0x2d8/0x660
+>   worker_thread+0x39/0x3e0
+>   ? process_one_work+0x660/0x660
+>   kthread+0xe5/0x110
+>   ? kthread_complete_and_exit+0x20/0x20
+>   ret_from_fork+0x22/0x30
+>   </TASK>
+> 
+>  =============================
+>  WARNING: suspicious RCU usage
+>  5.17.0-rc4-00003-gccad664b7f14 #3 Tainted: G            E
+>  -----------------------------
+>  net/mac80211/tx.c:607 suspicious rcu_dereference_check() usage!
+> 
+>  other info that might help us debug this:
+> 
+>  rcu_scheduler_active = 2, debug_locks = 1
+>  2 locks held by kworker/u33:0/184:
+>   #0: ffff9c0b14811d38 ((wq_completion)rtw89_tx_wq){+.+.}-{0:0}, at: process_one_work+0x258/0x660
+>   #1: ffffb97380cf3e78 ((work_completion)(&rtwdev->txq_work)){+.+.}-{0:0}, at: process_one_work+0x258/0x660
+> 
+>  stack backtrace:
+>  CPU: 8 PID: 184 Comm: kworker/u33:0 Tainted: G            E     5.17.0-rc4-00003-gccad664b7f14 #3 473b49ab0e7c2d6af2900c756bfd04efd7a9de13
+>  Hardware name: LENOVO 20UJS2B905/20UJS2B905, BIOS R1CET63W(1.32 ) 04/09/2021
+>  Workqueue: rtw89_tx_wq rtw89_core_txq_work [rtw89_core]
+>  Call Trace:
+>   <TASK>
+>   dump_stack_lvl+0x58/0x71
+>   ieee80211_tx_h_select_key+0x464/0x530 [mac80211 911c23e2351c0ae60b597a67b1204a5ea955e365]
+>   ieee80211_tx_dequeue+0x1a7/0x1260 [mac80211 911c23e2351c0ae60b597a67b1204a5ea955e365]
+>   rtw89_core_txq_work+0x1a6/0x420 [rtw89_core b39ba493f2e517ad75e0f8187ecc24edf58bbbea]
+>   process_one_work+0x2d8/0x660
+>   worker_thread+0x39/0x3e0
+>   ? process_one_work+0x660/0x660
+>   kthread+0xe5/0x110
+>   ? kthread_complete_and_exit+0x20/0x20
+>   ret_from_fork+0x22/0x30
+>   </TASK>
+> 
+> Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-6 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-04e00ac94f6c rtw88: 8822ce: add support for TX/RX 1ss mode
-176989b412b6 rtw88: coex: Improve WLAN throughput when HFP COEX
-349d858ba7b1 rtw88: coex: update BT PTA counter regularly
-0c496a7d6f6a rtw88: coex: Add WLAN MIMO power saving for Bluetooth gaming controller
-fc3c66d324fd rtw88: coex: Add C2H/H2C handshake with BT mailbox for asking HID Info
-052e4a9d87eb rtw88: coex: Update rtl8822c COEX version to 22020720
+f3d825a35920 rtw89: fix RCU usage in rtw89_core_txq_push()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220215004855.4098-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/nycvar.YFH.7.76.2202152037000.11721@cbobk.fhfr.pm/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
