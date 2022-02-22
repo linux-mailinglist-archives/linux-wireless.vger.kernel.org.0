@@ -2,48 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 975724BF861
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Feb 2022 13:54:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45FC64BF9ED
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Feb 2022 14:55:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231461AbiBVMyf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Feb 2022 07:54:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54660 "EHLO
+        id S232596AbiBVNzd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Feb 2022 08:55:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbiBVMye (ORCPT
+        with ESMTP id S232591AbiBVNzc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Feb 2022 07:54:34 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E188A12866D
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Feb 2022 04:54:08 -0800 (PST)
+        Tue, 22 Feb 2022 08:55:32 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87456117C9B
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Feb 2022 05:55:06 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DC5660EF5
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Feb 2022 12:54:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D136C340E8;
-        Tue, 22 Feb 2022 12:54:06 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 49D98B819D9
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Feb 2022 13:55:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444DBC340E8;
+        Tue, 22 Feb 2022 13:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645534447;
-        bh=dXqjlHx6NRP390GNabsxU/VYrxNeR5w2ee/4YEFhFXg=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=X524N/88RQi3c52hfEdysK4op/XXXW091N4iSZvD/2Opjp5f7J+lFwZm+dJesTHxt
-         GKhH+cbAlirv07Thaj/ZSXxTHuG2V332Io1FG/KscLO5IIfJ+6HTZ40HHAMHysTyh7
-         bUf0iiLN3qqX+xkYvCXk4OyWL63RH7H3rassHQSuWwCFU35wxfE2cL8SuR0XLpNUHo
-         1Zg6Mu7nhEiOzy0t+w4dSnSSHqiitNHyBDDxQzSBVBs+xlSagFktW1JXh9tpjxFylF
-         WHttAhiC3aqn97h740D14jZSgSAjc1SD2Xgi3qV4NPrbhb+4X/GHL7Ixjvbit6SjTT
-         Y4qhhHpLBzxbw==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 1/6] ath11k: Add basic WoW functionalities
+        s=k20201202; t=1645538104;
+        bh=d3Ixbs5zOqFFSUn/uSyDBoc0z2LozIOdrEAz6XPaqJQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=I3phl1BsGuQNzKVyFNNxi+hQFpQq8SNjhbNR9jlnNFx357273Nsi1Nk9u/+Wb38k/
+         OaNHRJBQAq4J89dfTGFEwS+ZCcMw8nUry6IqC6cSAEenXqUlnW/ypDXwoxUpIx5Epq
+         TLrNyrm3UfUMbS2W76cd0eDDFFnbQNclsCmfK1uQA9hnJiSOQe/UBxoNxSfT0TpX5t
+         7keMRoG9PAgE2cE0u5p3xqIk/6riqthQvVrWZWTUnYapy2FyRSe7lpJ9VH1cCRxx5c
+         mSDzixJQb2/eogZONsR8UTjh4We3C+xktXf+fwsNt+i59VB1IpOQFcqhv5X+A9v2Fy
+         pMVAh2/KVNX5g==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <1644308006-22784-2-git-send-email-quic_cjhuang@quicinc.com>
-References: <1644308006-22784-2-git-send-email-quic_cjhuang@quicinc.com>
 To:     Carl Huang <quic_cjhuang@quicinc.com>
 Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164553444424.23898.1586617399462118980.kvalo@kernel.org>
-Date:   Tue, 22 Feb 2022 12:54:06 +0000 (UTC)
+Subject: Re: [PATCH v3 6/6] ath11k: support GTK rekey offload
+References: <1644308006-22784-1-git-send-email-quic_cjhuang@quicinc.com>
+        <1644308006-22784-7-git-send-email-quic_cjhuang@quicinc.com>
+Date:   Tue, 22 Feb 2022 15:54:59 +0200
+In-Reply-To: <1644308006-22784-7-git-send-email-quic_cjhuang@quicinc.com>
+        (Carl Huang's message of "Tue, 8 Feb 2022 16:13:26 +0800")
+Message-ID: <875yp7vwek.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -54,35 +55,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Carl Huang <quic_cjhuang@quicinc.com> wrote:
+Carl Huang <quic_cjhuang@quicinc.com> writes:
 
-> Implement basic WoW functionalities such as magic-packet, disconnect
-> and pattern. The logic is very similar to ath10k.
-> 
-> When WoW is configured, ath11k_core_suspend and ath11k_core_resume
-> are skipped as WoW configuration and hif suspend/resume are done in
-> ath11k_wow_op_suspend() and ath11k_wow_op_resume().
-> 
+> Host sets GTK related info to firmware before WoW is enabled, and
+> gets rekey replay_count and then disables GTK rekey when WoW quits.
+>
 > Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
-> 
+>
 > Signed-off-by: Carl Huang <quic_cjhuang@quicinc.com>
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 
-This patchset adds new warnings:
+[...]
 
-drivers/net/wireless/ath/ath11k/mac.c:7284:5: warning: no previous prototype for 'ath11k_mac_flush_tx_complete' [-Wmissing-prototypes]
-drivers/net/wireless/ath/ath11k/mac.c:7284:5: warning: symbol 'ath11k_mac_flush_tx_complete' was not declared. Should it be static?
-drivers/net/wireless/ath/ath11k/mac.c:8218:34: warning: cast to restricted __be64
-drivers/net/wireless/ath/ath11k/wow.c:409: line length of 98 exceeds 90 columns
-drivers/net/wireless/ath/ath11k/wow.c:527: line length of 96 exceeds 90 columns
-drivers/net/wireless/ath/ath11k/wow.c:528: line length of 92 exceeds 90 columns
-drivers/net/wireless/ath/ath11k/mac.c:8111: line length of 96 exceeds 90 columns
-drivers/net/wireless/ath/ath11k/mac.c:8168: line length of 92 exceeds 90 columns
-drivers/net/wireless/ath/ath11k/mac.c:8188: line length of 92 exceeds 90 columns
+> +static void ath11k_mac_op_set_rekey_data(struct ieee80211_hw *hw,
+> +					 struct ieee80211_vif *vif,
+> +					 struct cfg80211_gtk_rekey_data *data)
+> +{
+> +	struct ath11k *ar = hw->priv;
+> +	struct ath11k_vif *arvif = ath11k_vif_to_arvif(vif);
+> +	struct ath11k_rekey_data *rekey_data = &arvif->rekey_data;
+> +
+> +	ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "Set rekey data vdev_id %d\n",
+> +		   arvif->vdev_id);
+> +	mutex_lock(&ar->conf_mutex);
+> +
+> +	memcpy(rekey_data->kck, data->kck, NL80211_KCK_LEN);
+> +	memcpy(rekey_data->kek, data->kek, NL80211_KEK_LEN);
+> +
+> +	/* supplicant works on big-endian, converts to cpu-endian */
+> +	rekey_data->replay_ctr = be64_to_cpu(get_unaligned((u64 *)data->replay_ctr));
+
+This has a warning:
+
+drivers/net/wireless/ath/ath11k/mac.c:8219:34: warning: cast to restricted __be64
+
+In the pending branch I changed this to:
+
+	/* The supplicant works on big-endian, the firmware expects it on
+	 * little endian.
+	 */
+	rekey_data->replay_ctr = get_unaligned_be64(data->replay_ctr);
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1644308006-22784-2-git-send-email-quic_cjhuang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
