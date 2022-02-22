@@ -2,184 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C858F4C0184
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Feb 2022 19:40:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74F934C01B7
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Feb 2022 19:55:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234515AbiBVSlF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Feb 2022 13:41:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60220 "EHLO
+        id S235145AbiBVS4A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Feb 2022 13:56:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234178AbiBVSlE (ORCPT
+        with ESMTP id S234888AbiBVSz7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Feb 2022 13:41:04 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5470BF50;
-        Tue, 22 Feb 2022 10:40:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1645555238; x=1677091238;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=xLzY/JVcPeA2ZyBqUlgD1y5GcKLYipcldZvcW7Rqn6Q=;
-  b=ik5Q0JL+yyPDPeecmNQP+H+9JiKJV9wYtRu7Z/8GbuWRkOtaNFAVrAYu
-   V+N6lPciaXKrPH4CdqtnOuBCwUgMP06oBigQuCQIusWC7dfetnCYF7r0P
-   CI56b+7yXJw9TuaM5pU00Go1IsCerz/T64UI/hO1jwgZnRmwwmEppkzMB
-   82wlfhAv99ayFU3mCxETl6kqdl+dPexFTRYaPb+/1WNgYbU7f9x00BxFf
-   VT6/vXeqcjpnTIZwMtKux1kAQUI5Y7HKSTvqI9PWTeDnJo7OZ2jiVO1Zw
-   6ZoRisBIXU7qUcssQDQZFpZcppqIY3i5DDzZ7GH6Idnck213uunVSn9Zt
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10266"; a="251971717"
-X-IronPort-AV: E=Sophos;i="5.88,387,1635231600"; 
-   d="scan'208";a="251971717"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2022 10:40:26 -0800
-X-IronPort-AV: E=Sophos;i="5.88,387,1635231600"; 
-   d="scan'208";a="637115999"
-Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.209.28.65]) ([10.209.28.65])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2022 10:40:25 -0800
-Message-ID: <947eb9a4-683e-7d10-d15c-28e2f18d192d@linux.intel.com>
-Date:   Tue, 22 Feb 2022 10:40:24 -0800
+        Tue, 22 Feb 2022 13:55:59 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54AA71375A3
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Feb 2022 10:55:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=cz7oTX+tNcSrxjxfR8ibQf1myutfFkfLCok18Ju3vuU=; t=1645556133; x=1646765733; 
+        b=jhMUItTZDcQl633GyAWENhmmZPY8v6MU1XVxZCAc7xjC95H2brhS0Z2T/posM1TiuiDA6W18AeH
+        eUxHxHcM7HWUZR2j/7rCELVp7yunQXPoZ86oI29RafahBIRG99BzC6/kLLUKmGZ16U8cOQAsWNpxX
+        pUejN+Y5VRwnp6dbB5rEGXUOS+w/ZKGiBp7CvuZEtTgINam71dLp8TqIRvv06JAK1iZ/xbE4MjcEi
+        lW2oXVZ+9G28h2EyGlXspU7NLCf7FgAB9tx+4l9hFf2dPgfgaf26AnCZQAi2LChIOLjAjwwIDcBg0
+        tThFhTp82CmqrfLvaE6eyLEPeuFDbWbZELYw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nMaJs-004MQL-IQ;
+        Tue, 22 Feb 2022 19:55:28 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] rtw89: fix HE PHY bandwidth capability
+Date:   Tue, 22 Feb 2022 19:55:25 +0100
+Message-Id: <20220222195524.1e3cc6f7e4c3.I72ea8a9cad5eff93bcb3a0912727d03605ddb6e6@changeid>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH net-next v4 08/13] net: wwan: t7xx: Add data path
- interface
-Content-Language: en-US
-To:     =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
-        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
-        sreehari.kancharla@intel.com
-References: <20220114010627.21104-1-ricardo.martinez@linux.intel.com>
- <20220114010627.21104-9-ricardo.martinez@linux.intel.com>
- <ca592f64-c581-56a8-8d90-5341ebd8932d@linux.intel.com>
-From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
-In-Reply-To: <ca592f64-c581-56a8-8d90-5341ebd8932d@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Johannes Berg <johannes.berg@intel.com>
 
-On 2/8/2022 12:19 AM, Ilpo Järvinen wrote:
-> On Thu, 13 Jan 2022, Ricardo Martinez wrote:
->
->> From: Haijun Liu <haijun.liu@mediatek.com>
->>
->> Data Path Modem AP Interface (DPMAIF) HIF layer provides methods
->> for initialization, ISR, control and event handling of TX/RX flows.
-...
->> +	bat_req->bat_mask[idx] = 1;
-> ...
->> +		if (!bat_req->bat_mask[index])
-> ...
->> +		bat->bat_mask[index] = 0;
-> Seem to be linux/bitmap.h
->
-> I wonder though if the loop in t7xx_dpmaif_avail_pkt_bat_cnt()
-> could be replaced with arithmetic calculation based on
-> bat_release_rd_idx and some other idx? It would make the bitmap
-> unnecessary.
+Bit 0 is reserved on 5/6 GHz and bit 1 is reserved on 2.4 GHz,
+so the driver should only set the non-reserved bits according
+to band.
 
-A bitmap is needed since entries could be returned out of order.
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ drivers/net/wireless/realtek/rtw89/core.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-...
-
->> +	hw_read_idx = t7xx_dpmaif_ul_get_rd_idx(&dpmaif_ctrl->hif_hw_info, q_num);
->> +
->> +	new_hw_rd_idx = hw_read_idx / DPMAIF_UL_DRB_ENTRY_WORD;
-> Is DPMAIF_UL_DRB_ENTRY_WORD size of an entry? In that case it
-> would probably make sense put it inside t7xx_dpmaif_ul_get_rd_idx?
-Yes, moving this into t7xx_dpmaif_ul_get_rd_idx()
->> +	if (new_hw_rd_idx >= DPMAIF_DRB_ENTRY_SIZE) {
-> Is DPMAIF_DRB_ENTRY_SIZE telling the number of entries rather than
-> an "ENTRY_SIZE"? I think these both constant could likely be named
-> better.
-...
->> +static int t7xx_txq_burst_send_skb(struct dpmaif_tx_queue *txq)
->> +{
->> +	int drb_remain_cnt, i;
->> +	unsigned long flags;
->> +	int drb_cnt = 0;
->> +	int ret = 0;
->> +
->> +	spin_lock_irqsave(&txq->tx_lock, flags);
->> +	drb_remain_cnt = t7xx_ring_buf_rd_wr_count(txq->drb_size_cnt, txq->drb_release_rd_idx,
->> +						   txq->drb_wr_idx, DPMAIF_WRITE);
->> +	spin_unlock_irqrestore(&txq->tx_lock, flags);
->> +
->> +	for (i = 0; i < DPMAIF_SKB_TX_BURST_CNT; i++) {
->> +		struct sk_buff *skb;
->> +
->> +		spin_lock_irqsave(&txq->tx_skb_lock, flags);
->> +		skb = list_first_entry_or_null(&txq->tx_skb_queue, struct sk_buff, list);
->> +		spin_unlock_irqrestore(&txq->tx_skb_lock, flags);
->> +
->> +		if (!skb)
->> +			break;
->> +
->> +		if (drb_remain_cnt < skb->cb[TX_CB_DRB_CNT]) {
->> +			spin_lock_irqsave(&txq->tx_lock, flags);
->> +			drb_remain_cnt = t7xx_ring_buf_rd_wr_count(txq->drb_size_cnt,
->> +								   txq->drb_release_rd_idx,
->> +								   txq->drb_wr_idx, DPMAIF_WRITE);
->> +			spin_unlock_irqrestore(&txq->tx_lock, flags);
->> +			continue;
->> +		}
-> ...
->> +	if (drb_cnt > 0) {
->> +		txq->drb_lack = false;
->> +		ret = drb_cnt;
->> +	} else if (ret == -ENOMEM) {
->> +		txq->drb_lack = true;
-> Based on the variable name, I'd expect drb_lack be set true when
-> drb_remain_cnt < skb->cb[TX_CB_DRB_CNT] occurred but that doesn't
-> happen. Maybe that if branch within loop should set ret = -ENOMEM;
-> before continue?
-
-This drb_lack logic is going to be dropped since it was intended for
-
-multiple Tx queues but currently only one is used.
-
-> It would be nice if the drb check here and in
-> t7xx_check_tx_queue_drb_available could be consolidated into
-> a single place. That requires small refactoring (adding __
-> variant of that function which does just the check).
->
-> Please also check the other comments on skb->cb below.
-...
->
->> +int t7xx_dpmaif_tx_send_skb(struct dpmaif_ctrl *dpmaif_ctrl, unsigned int txqt, struct sk_buff *skb)
->> +{
->> +	bool tx_drb_available = true;
-> ...
->> +	send_drb_cnt = t7xx_get_drb_cnt_per_skb(skb);
->> +
->> +	txq = &dpmaif_ctrl->txq[txqt];
->> +	if (!(txq->tx_skb_stat++ % DPMAIF_SKB_TX_BURST_CNT))
->> +		tx_drb_available = t7xx_check_tx_queue_drb_available(txq, send_drb_cnt);
->> +
->> +	if (!tx_drb_available || txq->tx_submit_skb_cnt >= txq->tx_list_max_len) {
-> Because of the modulo if, drbs might not be available despite
-> variable claims them to be. Is it intentional?
-
-It is intentional, I'll refactor this to do the  DRB and tx_list_max_len 
-checks independently for clarity.
-
-...
-
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index a0737eea9f81..1f0bea9a148c 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -2087,8 +2087,12 @@ static void rtw89_init_he_cap(struct rtw89_dev *rtwdev,
+ 				  IEEE80211_HE_MAC_CAP4_AMSDU_IN_AMPDU;
+ 		if (i == NL80211_IFTYPE_STATION)
+ 			mac_cap_info[5] = IEEE80211_HE_MAC_CAP5_HT_VHT_TRIG_FRAME_RX;
+-		phy_cap_info[0] = IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G |
+-				  IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G;
++		if (band == NL80211_BAND_2GHZ)
++			phy_cap_info[0] =
++				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G;
++		else
++			phy_cap_info[0] =
++				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G;
+ 		phy_cap_info[1] = IEEE80211_HE_PHY_CAP1_DEVICE_CLASS_A |
+ 				  IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD |
+ 				  IEEE80211_HE_PHY_CAP1_HE_LTF_AND_GI_FOR_HE_PPDUS_0_8US;
+-- 
+2.35.1
 
