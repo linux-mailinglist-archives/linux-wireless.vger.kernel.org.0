@@ -2,48 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFD6C4BFC6A
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Feb 2022 16:23:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26A3E4BFC6B
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Feb 2022 16:23:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233441AbiBVPYH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Feb 2022 10:24:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34958 "EHLO
+        id S233450AbiBVPYJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Feb 2022 10:24:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233445AbiBVPYE (ORCPT
+        with ESMTP id S233445AbiBVPYI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Feb 2022 10:24:04 -0500
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C56E114766
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Feb 2022 07:23:37 -0800 (PST)
+        Tue, 22 Feb 2022 10:24:08 -0500
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AC4A11476C
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Feb 2022 07:23:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1645543417; x=1677079417;
+  t=1645543419; x=1677079419;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version;
-  bh=9kQl2686FHeVrITngDth8n4jVDA8XxxfjrLVwk3IYX4=;
-  b=Dw87wy6pZI3+ZkA78P2ziPDBOVQi1ViU6gTRBkqRx93W/D5kcAEVE4P4
-   mN7GpViZMwMQUUzt2RG4ceLT9HqsS5gxSETQ5OIUM228X8fOX7mE8UXqz
-   n+FdQS+36vE0VDNnI9oVi/EzPLbcLqFxjvdt3W0jKZi2A6kpFniDtBn5U
-   I=;
-Received: from unknown (HELO ironmsg03-sd.qualcomm.com) ([10.53.140.143])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 22 Feb 2022 07:23:37 -0800
+  bh=KuVekwchW/XdNbhPiBdwVtt3bX9OV2jWcYLMMgDYh1A=;
+  b=vr7tswjAgwjwZ2Iceiue6x7kOhTavKmx+C6VEgLa0dmUhgw4MiljFYms
+   ggs29RWTPP0rvXa4+pkiIpbEXsHkYzDJRp6kD0P8Eq+B3NIszJtIxwnBl
+   eGUcXJGtGbgFEot01nQd45RWT3Wch2LOrSvYgJyWOu4iZVYP5kvIH9XGr
+   8=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 22 Feb 2022 07:23:39 -0800
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg03-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2022 07:23:36 -0800
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2022 07:23:38 -0800
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Tue, 22 Feb 2022 07:23:36 -0800
+ 15.2.986.15; Tue, 22 Feb 2022 07:23:38 -0800
 Received: from hu-vjakkam-hyd.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Tue, 22 Feb 2022 07:23:34 -0800
+ 15.2.986.15; Tue, 22 Feb 2022 07:23:36 -0800
 From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
 To:     <johannes@sipsolutions.net>
 CC:     <linux-wireless@vger.kernel.org>, <quic_usdutt@quicinc.com>
-Subject: [PATCH 2/3] cfg80211: Indicate MLO links info in connect/roam events
-Date:   Tue, 22 Feb 2022 20:53:12 +0530
-Message-ID: <1645543393-22448-3-git-send-email-quic_vjakkam@quicinc.com>
+Subject: [PATCH 3/3] cfg80211: Add support for key operations on NL80211_IFTYPE_MLO_LINK
+Date:   Tue, 22 Feb 2022 20:53:13 +0530
+Message-ID: <1645543393-22448-4-git-send-email-quic_vjakkam@quicinc.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1645543393-22448-1-git-send-email-quic_vjakkam@quicinc.com>
 References: <1645543393-22448-1-git-send-email-quic_vjakkam@quicinc.com>
@@ -62,609 +62,1769 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sunil Dutt <quic_usdutt@quicinc.com>
+Allow key operations on NL80211_IFTYPE_MLO_LINK to support configuring
+per MLO link keys such as GTK/IGTK/BIGTK.
 
-Add support for drivers to send MLO links info associated in current
-connection in connect and roam cfg80211 callbacks on MLD STA wdev and
-send the info to the userspace through corresponding netlink events
-from cfg80211.
+Add necessary changes in mac80211 and drivers to conform to updated
+function signatures
 
-Signed-off-by: Sunil Dutt <quic_usdutt@quicinc.com>
-Co-developed-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
 Signed-off-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
 ---
- include/net/cfg80211.h       | 32 +++++++++++++++++
- include/uapi/linux/nl80211.h | 14 ++++++++
- net/wireless/chan.c          | 20 ++++++++++-
- net/wireless/core.c          |  1 +
- net/wireless/core.h          |  4 +++
- net/wireless/nl80211.c       | 83 ++++++++++++++++++++++++++++++++++++++++----
- net/wireless/scan.c          | 25 +++++++++++++
- net/wireless/sme.c           | 79 +++++++++++++++++++++++++++++++++++++++--
- 8 files changed, 248 insertions(+), 10 deletions(-)
+ drivers/net/wireless/ath/ath6kl/cfg80211.c         |  52 +++++++---
+ drivers/net/wireless/ath/wil6210/cfg80211.c        |  38 +++++---
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c         |  58 ++++++++---
+ drivers/net/wireless/marvell/libertas/cfg.c        |  14 ++-
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c    |  30 ++++--
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c |  48 ++++++---
+ drivers/net/wireless/quantenna/qtnfmac/cfg80211.c  |  40 ++++++--
+ drivers/net/wireless/rndis_wlan.c                  |  24 +++--
+ drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c  |  40 ++++++--
+ drivers/staging/wlan-ng/cfg80211.c                 |  41 ++++++--
+ include/net/cfg80211.h                             |  12 +--
+ net/mac80211/cfg.c                                 |  58 ++++++++---
+ net/wireless/core.h                                |   8 ++
+ net/wireless/ibss.c                                |   2 +-
+ net/wireless/nl80211.c                             | 107 ++++++++++++++-------
+ net/wireless/rdev-ops.h                            |  36 +++----
+ net/wireless/sme.c                                 |   2 +-
+ net/wireless/trace.h                               |  68 ++++++-------
+ net/wireless/util.c                                |   9 +-
+ net/wireless/wext-compat.c                         |  10 +-
+ 20 files changed, 486 insertions(+), 211 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath6kl/cfg80211.c b/drivers/net/wireless/ath/ath6kl/cfg80211.c
+index bd11838..8eb0dd7 100644
+--- a/drivers/net/wireless/ath/ath6kl/cfg80211.c
++++ b/drivers/net/wireless/ath/ath6kl/cfg80211.c
+@@ -1123,17 +1123,25 @@ void ath6kl_cfg80211_ch_switch_notify(struct ath6kl_vif *vif, int freq,
+ 	mutex_unlock(&vif->wdev.mtx);
+ }
+ 
+-static int ath6kl_cfg80211_add_key(struct wiphy *wiphy, struct net_device *ndev,
++static int ath6kl_cfg80211_add_key(struct wiphy *wiphy,
++				   struct wireless_dev *wdev,
+ 				   u8 key_index, bool pairwise,
+ 				   const u8 *mac_addr,
+ 				   struct key_params *params)
+ {
+-	struct ath6kl *ar = ath6kl_priv(ndev);
+-	struct ath6kl_vif *vif = netdev_priv(ndev);
++	struct ath6kl *ar;
++	struct ath6kl_vif *vif;
+ 	struct ath6kl_key *key = NULL;
+ 	int seq_len;
+ 	u8 key_usage;
+ 	u8 key_type;
++	struct net_device *ndev = wdev->netdev;
++
++	if (!ndev)
++		return -EOPNOTSUPP;
++
++	ar = ath6kl_priv(ndev);
++	vif = netdev_priv(ndev);
+ 
+ 	if (!ath6kl_cfg80211_ready(vif))
+ 		return -EIO;
+@@ -1248,12 +1256,20 @@ static int ath6kl_cfg80211_add_key(struct wiphy *wiphy, struct net_device *ndev,
+ 				     (u8 *) mac_addr, SYNC_BOTH_WMIFLAG);
+ }
+ 
+-static int ath6kl_cfg80211_del_key(struct wiphy *wiphy, struct net_device *ndev,
++static int ath6kl_cfg80211_del_key(struct wiphy *wiphy,
++				   struct wireless_dev *wdev,
+ 				   u8 key_index, bool pairwise,
+ 				   const u8 *mac_addr)
+ {
+-	struct ath6kl *ar = ath6kl_priv(ndev);
+-	struct ath6kl_vif *vif = netdev_priv(ndev);
++	struct ath6kl *ar;
++	struct ath6kl_vif *vif;
++	struct net_device *ndev = wdev->netdev;
++
++	if (!ndev)
++		return -EOPNOTSUPP;
++
++	ar = ath6kl_priv(ndev);
++	vif = netdev_priv(ndev);
+ 
+ 	ath6kl_dbg(ATH6KL_DBG_WLAN_CFG, "%s: index %d\n", __func__, key_index);
+ 
+@@ -1278,15 +1294,22 @@ static int ath6kl_cfg80211_del_key(struct wiphy *wiphy, struct net_device *ndev,
+ 	return ath6kl_wmi_deletekey_cmd(ar->wmi, vif->fw_vif_idx, key_index);
+ }
+ 
+-static int ath6kl_cfg80211_get_key(struct wiphy *wiphy, struct net_device *ndev,
++static int ath6kl_cfg80211_get_key(struct wiphy *wiphy,
++				   struct wireless_dev *wdev,
+ 				   u8 key_index, bool pairwise,
+ 				   const u8 *mac_addr, void *cookie,
+ 				   void (*callback) (void *cookie,
+ 						     struct key_params *))
+ {
+-	struct ath6kl_vif *vif = netdev_priv(ndev);
++	struct ath6kl_vif *vif;
+ 	struct ath6kl_key *key = NULL;
+ 	struct key_params params;
++	struct net_device *ndev = wdev->netdev;
++
++	if (!ndev)
++		return -EOPNOTSUPP;
++
++	vif = netdev_priv(ndev);
+ 
+ 	ath6kl_dbg(ATH6KL_DBG_WLAN_CFG, "%s: index %d\n", __func__, key_index);
+ 
+@@ -1314,15 +1337,22 @@ static int ath6kl_cfg80211_get_key(struct wiphy *wiphy, struct net_device *ndev,
+ }
+ 
+ static int ath6kl_cfg80211_set_default_key(struct wiphy *wiphy,
+-					   struct net_device *ndev,
++					   struct wireless_dev *wdev,
+ 					   u8 key_index, bool unicast,
+ 					   bool multicast)
+ {
+-	struct ath6kl *ar = ath6kl_priv(ndev);
+-	struct ath6kl_vif *vif = netdev_priv(ndev);
++	struct ath6kl *ar;
++	struct ath6kl_vif *vif;
+ 	struct ath6kl_key *key = NULL;
+ 	u8 key_usage;
+ 	enum ath6kl_crypto_type key_type = NONE_CRYPT;
++	struct net_device *ndev = wdev->netdev;
++
++	if (!ndev)
++		return -EOPNOTSUPP;
++
++	ar = ath6kl_priv(ndev);
++	vif = netdev_priv(ndev);
+ 
+ 	ath6kl_dbg(ATH6KL_DBG_WLAN_CFG, "%s: index %d\n", __func__, key_index);
+ 
+diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
+index 764d1d1..685ac3a 100644
+--- a/drivers/net/wireless/ath/wil6210/cfg80211.c
++++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
+@@ -1620,19 +1620,23 @@ static void wil_del_rx_key(u8 key_index, enum wmi_key_usage key_usage,
+ }
+ 
+ static int wil_cfg80211_add_key(struct wiphy *wiphy,
+-				struct net_device *ndev,
++				struct wireless_dev *wdev,
+ 				u8 key_index, bool pairwise,
+ 				const u8 *mac_addr,
+ 				struct key_params *params)
+ {
+ 	int rc;
+-	struct wil6210_vif *vif = ndev_to_vif(ndev);
++	struct wil6210_vif *vif;
+ 	struct wil6210_priv *wil = wiphy_to_wil(wiphy);
+-	struct wireless_dev *wdev = vif_to_wdev(vif);
+ 	enum wmi_key_usage key_usage = wil_detect_key_usage(wdev, pairwise);
+-	struct wil_sta_info *cs = wil_find_sta_by_key_usage(wil, vif->mid,
+-							    key_usage,
+-							    mac_addr);
++	struct wil_sta_info *cs;
++	struct net_device *ndev = wdev->netdev;
++
++	if (!ndev)
++		return -EOPNOTSUPP;
++
++	vif = ndev_to_vif(ndev);
++	cs = wil_find_sta_by_key_usage(wil, vif->mid, key_usage, mac_addr);
+ 
+ 	if (!params) {
+ 		wil_err(wil, "NULL params\n");
+@@ -1697,17 +1701,21 @@ static int wil_cfg80211_add_key(struct wiphy *wiphy,
+ }
+ 
+ static int wil_cfg80211_del_key(struct wiphy *wiphy,
+-				struct net_device *ndev,
++				struct wireless_dev *wdev,
+ 				u8 key_index, bool pairwise,
+ 				const u8 *mac_addr)
+ {
+-	struct wil6210_vif *vif = ndev_to_vif(ndev);
++	struct wil6210_vif *vif;
+ 	struct wil6210_priv *wil = wiphy_to_wil(wiphy);
+-	struct wireless_dev *wdev = vif_to_wdev(vif);
+ 	enum wmi_key_usage key_usage = wil_detect_key_usage(wdev, pairwise);
+-	struct wil_sta_info *cs = wil_find_sta_by_key_usage(wil, vif->mid,
+-							    key_usage,
+-							    mac_addr);
++	struct wil_sta_info *cs;
++	struct net_device *ndev = wdev->netdev;
++
++	if (!ndev)
++		return -EOPNOTSUPP;
++
++	vif = ndev_to_vif(ndev);
++	cs = wil_find_sta_by_key_usage(wil, vif->mid, key_usage, mac_addr);
+ 
+ 	wil_dbg_misc(wil, "del_key: %pM %s[%d]\n", mac_addr,
+ 		     key_usage_str[key_usage], key_index);
+@@ -1724,7 +1732,7 @@ static int wil_cfg80211_del_key(struct wiphy *wiphy,
+ 
+ /* Need to be present or wiphy_new() will WARN */
+ static int wil_cfg80211_set_default_key(struct wiphy *wiphy,
+-					struct net_device *ndev,
++					struct wireless_dev *wdev,
+ 					u8 key_index, bool unicast,
+ 					bool multicast)
+ {
+@@ -2038,11 +2046,13 @@ void wil_cfg80211_ap_recovery(struct wil6210_priv *wil)
+ 		struct net_device *ndev;
+ 		struct cfg80211_beacon_data bcon = {};
+ 		struct key_params key_params = {};
++		struct wireless_dev *wdev;
+ 
+ 		if (!vif || vif->ssid_len == 0)
+ 			continue;
+ 
+ 		ndev = vif_to_ndev(vif);
++		wdev = ndev->ieee80211_ptr;
+ 		bcon.proberesp_ies = vif->proberesp_ies;
+ 		bcon.assocresp_ies = vif->assocresp_ies;
+ 		bcon.probe_resp = vif->proberesp;
+@@ -2073,7 +2083,7 @@ void wil_cfg80211_ap_recovery(struct wil6210_priv *wil)
+ 		key_params.key = vif->gtk;
+ 		key_params.key_len = vif->gtk_len;
+ 		key_params.seq_len = IEEE80211_GCMP_PN_LEN;
+-		rc = wil_cfg80211_add_key(wiphy, ndev, vif->gtk_index, false,
++		rc = wil_cfg80211_add_key(wiphy, wdev, vif->gtk_index, false,
+ 					  NULL, &key_params);
+ 		if (rc)
+ 			wil_err(wil, "vif %d recovery add key failed (%d)\n",
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index b2fb9fc..cf568a2 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -2360,14 +2360,22 @@ brcmf_cfg80211_get_tx_power(struct wiphy *wiphy, struct wireless_dev *wdev,
+ }
+ 
+ static s32
+-brcmf_cfg80211_config_default_key(struct wiphy *wiphy, struct net_device *ndev,
++brcmf_cfg80211_config_default_key(struct wiphy *wiphy,
++				  struct wireless_dev *wdev,
+ 				  u8 key_idx, bool unicast, bool multicast)
+ {
+-	struct brcmf_if *ifp = netdev_priv(ndev);
+-	struct brcmf_pub *drvr = ifp->drvr;
++	struct brcmf_if *ifp;
++	struct brcmf_pub *drvr;
+ 	u32 index;
+ 	u32 wsec;
+ 	s32 err = 0;
++	struct net_device *ndev = wdev->netdev;
++
++	if (!ndev)
++		return -EOPNOTSUPP;
++
++	ifp = netdev_priv(ndev);
++	drvr = ifp->drvr;
+ 
+ 	brcmf_dbg(TRACE, "Enter\n");
+ 	brcmf_dbg(CONN, "key index (%d)\n", key_idx);
+@@ -2394,13 +2402,18 @@ brcmf_cfg80211_config_default_key(struct wiphy *wiphy, struct net_device *ndev,
+ }
+ 
+ static s32
+-brcmf_cfg80211_del_key(struct wiphy *wiphy, struct net_device *ndev,
++brcmf_cfg80211_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		       u8 key_idx, bool pairwise, const u8 *mac_addr)
+ {
+-	struct brcmf_if *ifp = netdev_priv(ndev);
++	struct brcmf_if *ifp;
+ 	struct brcmf_wsec_key *key;
+ 	s32 err;
++	struct net_device *ndev = wdev->netdev;
+ 
++	if (!ndev)
++		return -EOPNOTSUPP;
++
++	ifp = netdev_priv(ndev);
+ 	brcmf_dbg(TRACE, "Enter\n");
+ 	brcmf_dbg(CONN, "key index (%d)\n", key_idx);
+ 
+@@ -2431,12 +2444,12 @@ brcmf_cfg80211_del_key(struct wiphy *wiphy, struct net_device *ndev,
+ }
+ 
+ static s32
+-brcmf_cfg80211_add_key(struct wiphy *wiphy, struct net_device *ndev,
++brcmf_cfg80211_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		       u8 key_idx, bool pairwise, const u8 *mac_addr,
+ 		       struct key_params *params)
+ {
+ 	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
+-	struct brcmf_if *ifp = netdev_priv(ndev);
++	struct brcmf_if *ifp;
+ 	struct brcmf_pub *drvr = cfg->pub;
+ 	struct brcmf_wsec_key *key;
+ 	s32 val;
+@@ -2444,7 +2457,12 @@ brcmf_cfg80211_add_key(struct wiphy *wiphy, struct net_device *ndev,
+ 	s32 err;
+ 	u8 keybuf[8];
+ 	bool ext_key;
++	struct net_device *ndev = wdev->netdev;
++
++	if (!ndev)
++		return -EOPNOTSUPP;
+ 
++	ifp = netdev_priv(ndev);
+ 	brcmf_dbg(TRACE, "Enter\n");
+ 	brcmf_dbg(CONN, "key index (%d)\n", key_idx);
+ 	if (!check_vif_up(ifp->vif))
+@@ -2457,7 +2475,7 @@ brcmf_cfg80211_add_key(struct wiphy *wiphy, struct net_device *ndev,
+ 	}
+ 
+ 	if (params->key_len == 0)
+-		return brcmf_cfg80211_del_key(wiphy, ndev, key_idx, pairwise,
++		return brcmf_cfg80211_del_key(wiphy, wdev, key_idx, pairwise,
+ 					      mac_addr);
+ 
+ 	if (params->key_len > sizeof(key->data)) {
+@@ -2553,20 +2571,27 @@ brcmf_cfg80211_add_key(struct wiphy *wiphy, struct net_device *ndev,
+ }
+ 
+ static s32
+-brcmf_cfg80211_get_key(struct wiphy *wiphy, struct net_device *ndev, u8 key_idx,
+-		       bool pairwise, const u8 *mac_addr, void *cookie,
++brcmf_cfg80211_get_key(struct wiphy *wiphy, struct wireless_dev *wdev,
++		       u8 key_idx, bool pairwise, const u8 *mac_addr,
++		       void *cookie,
+ 		       void (*callback)(void *cookie,
+ 					struct key_params *params))
+ {
+ 	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
+ 	struct key_params params;
+-	struct brcmf_if *ifp = netdev_priv(ndev);
+-	struct brcmf_cfg80211_profile *profile = &ifp->vif->profile;
++	struct brcmf_if *ifp;
++	struct brcmf_cfg80211_profile *profile;
+ 	struct brcmf_pub *drvr = cfg->pub;
+ 	struct brcmf_cfg80211_security *sec;
+ 	s32 wsec;
+ 	s32 err = 0;
++	struct net_device *ndev = wdev->netdev;
+ 
++	if (!ndev)
++		return -EOPNOTSUPP;
++
++	ifp = netdev_priv(ndev);
++	profile = &ifp->vif->profile;
+ 	brcmf_dbg(TRACE, "Enter\n");
+ 	brcmf_dbg(CONN, "key index (%d)\n", key_idx);
+ 	if (!check_vif_up(ifp->vif))
+@@ -2610,10 +2635,15 @@ brcmf_cfg80211_get_key(struct wiphy *wiphy, struct net_device *ndev, u8 key_idx,
+ 
+ static s32
+ brcmf_cfg80211_config_default_mgmt_key(struct wiphy *wiphy,
+-				       struct net_device *ndev, u8 key_idx)
++				       struct wireless_dev *wdev, u8 key_idx)
+ {
+-	struct brcmf_if *ifp = netdev_priv(ndev);
++	struct brcmf_if *ifp;
++	struct net_device *ndev = wdev->netdev;
++
++	if (!ndev)
++		return -EOPNOTSUPP;
+ 
++	ifp = netdev_priv(ndev);
+ 	brcmf_dbg(TRACE, "Enter key_idx %d\n", key_idx);
+ 
+ 	if (brcmf_feat_is_enabled(ifp, BRCMF_FEAT_MFP))
+diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
+index 4e3de68..cc8a98d 100644
+--- a/drivers/net/wireless/marvell/libertas/cfg.c
++++ b/drivers/net/wireless/marvell/libertas/cfg.c
+@@ -1437,11 +1437,15 @@ static int lbs_cfg_disconnect(struct wiphy *wiphy, struct net_device *dev,
+ }
+ 
+ static int lbs_cfg_set_default_key(struct wiphy *wiphy,
+-				   struct net_device *netdev,
++				   struct wireless_dev *wdev,
+ 				   u8 key_index, bool unicast,
+ 				   bool multicast)
+ {
+ 	struct lbs_private *priv = wiphy_priv(wiphy);
++	struct net_device *netdev = wdev->netdev;
++
++	if (!netdev)
++		return -EOPNOTSUPP;
+ 
+ 	if (netdev == priv->mesh_dev)
+ 		return -EOPNOTSUPP;
+@@ -1456,7 +1460,7 @@ static int lbs_cfg_set_default_key(struct wiphy *wiphy,
+ }
+ 
+ 
+-static int lbs_cfg_add_key(struct wiphy *wiphy, struct net_device *netdev,
++static int lbs_cfg_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			   u8 idx, bool pairwise, const u8 *mac_addr,
+ 			   struct key_params *params)
+ {
+@@ -1464,6 +1468,10 @@ static int lbs_cfg_add_key(struct wiphy *wiphy, struct net_device *netdev,
+ 	u16 key_info;
+ 	u16 key_type;
+ 	int ret = 0;
++	struct net_device *netdev = wdev->netdev;
++
++	if (!netdev)
++		return -EOPNOTSUPP;
+ 
+ 	if (netdev == priv->mesh_dev)
+ 		return -EOPNOTSUPP;
+@@ -1517,7 +1525,7 @@ static int lbs_cfg_add_key(struct wiphy *wiphy, struct net_device *netdev,
+ }
+ 
+ 
+-static int lbs_cfg_del_key(struct wiphy *wiphy, struct net_device *netdev,
++static int lbs_cfg_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			   u8 key_index, bool pairwise, const u8 *mac_addr)
+ {
+ 
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index 6f23ec3..f1b4b4d 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -153,12 +153,18 @@ static void *mwifiex_cfg80211_get_adapter(struct wiphy *wiphy)
+  * CFG802.11 operation handler to delete a network key.
+  */
+ static int
+-mwifiex_cfg80211_del_key(struct wiphy *wiphy, struct net_device *netdev,
++mwifiex_cfg80211_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			 u8 key_index, bool pairwise, const u8 *mac_addr)
+ {
+-	struct mwifiex_private *priv = mwifiex_netdev_get_priv(netdev);
++	struct mwifiex_private *priv;
+ 	static const u8 bc_mac[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+ 	const u8 *peer_mac = pairwise ? mac_addr : bc_mac;
++	struct net_device *netdev = wdev->netdev;
++
++	if (!netdev)
++		return -EOPNOTSUPP;
++
++	priv = mwifiex_netdev_get_priv(netdev);
+ 
+ 	if (mwifiex_set_encode(priv, NULL, NULL, 0, key_index, peer_mac, 1)) {
+ 		mwifiex_dbg(priv->adapter, ERROR, "deleting the crypto keys\n");
+@@ -467,14 +473,20 @@ mwifiex_cfg80211_set_default_key(struct wiphy *wiphy, struct net_device *netdev,
+  * CFG802.11 operation handler to add a network key.
+  */
+ static int
+-mwifiex_cfg80211_add_key(struct wiphy *wiphy, struct net_device *netdev,
++mwifiex_cfg80211_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			 u8 key_index, bool pairwise, const u8 *mac_addr,
+ 			 struct key_params *params)
+ {
+-	struct mwifiex_private *priv = mwifiex_netdev_get_priv(netdev);
++	struct mwifiex_private *priv;
+ 	struct mwifiex_wep_key *wep_key;
+ 	static const u8 bc_mac[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+ 	const u8 *peer_mac = pairwise ? mac_addr : bc_mac;
++	struct net_device *netdev = wdev->netdev;
++
++	if (!netdev)
++		return -EOPNOTSUPP;
++
++	priv = mwifiex_netdev_get_priv(netdev);
+ 
+ 	if (GET_BSS_ROLE(priv) == MWIFIEX_BSS_ROLE_UAP &&
+ 	    (params->cipher == WLAN_CIPHER_SUITE_WEP40 ||
+@@ -505,11 +517,17 @@ mwifiex_cfg80211_add_key(struct wiphy *wiphy, struct net_device *netdev,
+  */
+ static int
+ mwifiex_cfg80211_set_default_mgmt_key(struct wiphy *wiphy,
+-				      struct net_device *netdev,
++				      struct wireless_dev *wdev,
+ 				      u8 key_index)
+ {
+-	struct mwifiex_private *priv = mwifiex_netdev_get_priv(netdev);
++	struct mwifiex_private *priv;
+ 	struct mwifiex_ds_encrypt_key encrypt_key;
++	struct net_device *netdev = wdev->netdev;
++
++	if (!netdev)
++		return -EOPNOTSUPP;
++
++	priv = mwifiex_netdev_get_priv(netdev);
+ 
+ 	wiphy_dbg(wiphy, "set default mgmt key, key index=%d\n", key_index);
+ 
+diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+index 8d8378b..0186650 100644
+--- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
++++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+@@ -539,7 +539,7 @@ static int wilc_wfi_cfg_copy_wpa_info(struct wilc_wfi_key *key_info,
+ 	return 0;
+ }
+ 
+-static int add_key(struct wiphy *wiphy, struct net_device *netdev, u8 key_index,
++static int add_key(struct wiphy *wiphy, struct wireless_dev *wdev, u8 key_index,
+ 		   bool pairwise, const u8 *mac_addr, struct key_params *params)
+ 
+ {
+@@ -548,8 +548,15 @@ static int add_key(struct wiphy *wiphy, struct net_device *netdev, u8 key_index,
+ 	const u8 *tx_mic = NULL;
+ 	u8 mode = WILC_FW_SEC_NO;
+ 	u8 op_mode;
+-	struct wilc_vif *vif = netdev_priv(netdev);
+-	struct wilc_priv *priv = &vif->priv;
++	struct wilc_vif *vif;
++	struct wilc_priv *priv;
++	struct net_device *netdev = wdev->netdev;
++
++	if (!netdev)
++		return -EOPNOTSUPP;
++
++	vif = netdev_priv(netdev);
++	priv = &vif->priv;
+ 
+ 	switch (params->cipher) {
+ 	case WLAN_CIPHER_SUITE_WEP40:
+@@ -649,13 +656,20 @@ static int add_key(struct wiphy *wiphy, struct net_device *netdev, u8 key_index,
+ 	return ret;
+ }
+ 
+-static int del_key(struct wiphy *wiphy, struct net_device *netdev,
++static int del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		   u8 key_index,
+ 		   bool pairwise,
+ 		   const u8 *mac_addr)
+ {
+-	struct wilc_vif *vif = netdev_priv(netdev);
+-	struct wilc_priv *priv = &vif->priv;
++	struct wilc_vif *vif;
++	struct wilc_priv *priv;
++	struct net_device *netdev = wdev->netdev;
++
++	if (!netdev)
++		return -EOPNOTSUPP;
++
++	vif = netdev_priv(netdev);
++	priv = &vif->priv;
+ 
+ 	if (priv->wilc_gtk[key_index]) {
+ 		kfree(priv->wilc_gtk[key_index]->key);
+@@ -686,13 +700,20 @@ static int del_key(struct wiphy *wiphy, struct net_device *netdev,
+ 	return 0;
+ }
+ 
+-static int get_key(struct wiphy *wiphy, struct net_device *netdev, u8 key_index,
++static int get_key(struct wiphy *wiphy, struct wireless_dev *wdev, u8 key_index,
+ 		   bool pairwise, const u8 *mac_addr, void *cookie,
+ 		   void (*callback)(void *cookie, struct key_params *))
+ {
+-	struct wilc_vif *vif = netdev_priv(netdev);
+-	struct wilc_priv *priv = &vif->priv;
++	struct wilc_vif *vif;
++	struct wilc_priv *priv;
+ 	struct  key_params key_params;
++	struct net_device *netdev = wdev->netdev;
++
++	if (!netdev)
++		return -EOPNOTSUPP;
++
++	vif = netdev_priv(netdev);
++	priv = &vif->priv;
+ 
+ 	if (!pairwise) {
+ 		key_params.key = priv->wilc_gtk[key_index]->key;
+@@ -713,11 +734,16 @@ static int get_key(struct wiphy *wiphy, struct net_device *netdev, u8 key_index,
+ 	return 0;
+ }
+ 
+-static int set_default_key(struct wiphy *wiphy, struct net_device *netdev,
++static int set_default_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			   u8 key_index, bool unicast, bool multicast)
+ {
+-	struct wilc_vif *vif = netdev_priv(netdev);
++	struct wilc_vif *vif;
++	struct net_device *netdev = wdev->netdev;
++
++	if (!netdev)
++		return -EOPNOTSUPP;
+ 
++	vif = netdev_priv(netdev);
+ 	wilc_set_wep_default_keyid(vif, key_index);
+ 
+ 	return 0;
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c b/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
+index 84b15a6..1aab9bb 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
+@@ -530,12 +530,18 @@ qtnf_dump_station(struct wiphy *wiphy, struct net_device *dev,
+ 	return ret;
+ }
+ 
+-static int qtnf_add_key(struct wiphy *wiphy, struct net_device *dev,
++static int qtnf_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			u8 key_index, bool pairwise, const u8 *mac_addr,
+ 			struct key_params *params)
+ {
+-	struct qtnf_vif *vif = qtnf_netdev_get_priv(dev);
++	struct qtnf_vif *vif;
+ 	int ret;
++	struct net_device *dev = wdev->netdev;
++
++	if (!dev)
++		return -EOPNOTSUPP;
++
++	vif = qtnf_netdev_get_priv(dev);
+ 
+ 	ret = qtnf_cmd_send_add_key(vif, key_index, pairwise, mac_addr, params);
+ 	if (ret)
+@@ -546,11 +552,17 @@ static int qtnf_add_key(struct wiphy *wiphy, struct net_device *dev,
+ 	return ret;
+ }
+ 
+-static int qtnf_del_key(struct wiphy *wiphy, struct net_device *dev,
++static int qtnf_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			u8 key_index, bool pairwise, const u8 *mac_addr)
+ {
+-	struct qtnf_vif *vif = qtnf_netdev_get_priv(dev);
++	struct qtnf_vif *vif;
+ 	int ret;
++	struct net_device *dev = wdev->netdev;
++
++	if (!dev)
++		return -EOPNOTSUPP;
++
++	vif = qtnf_netdev_get_priv(dev);
+ 
+ 	ret = qtnf_cmd_send_del_key(vif, key_index, pairwise, mac_addr);
+ 	if (ret) {
+@@ -567,11 +579,17 @@ static int qtnf_del_key(struct wiphy *wiphy, struct net_device *dev,
+ 	return ret;
+ }
+ 
+-static int qtnf_set_default_key(struct wiphy *wiphy, struct net_device *dev,
++static int qtnf_set_default_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 				u8 key_index, bool unicast, bool multicast)
+ {
+-	struct qtnf_vif *vif = qtnf_netdev_get_priv(dev);
++	struct qtnf_vif *vif;
+ 	int ret;
++	struct net_device *dev = wdev->netdev;
++
++	if (!dev)
++		return -EOPNOTSUPP;
++
++	vif = qtnf_netdev_get_priv(dev);
+ 
+ 	ret = qtnf_cmd_send_set_default_key(vif, key_index, unicast, multicast);
+ 	if (ret)
+@@ -583,11 +601,17 @@ static int qtnf_set_default_key(struct wiphy *wiphy, struct net_device *dev,
+ }
+ 
+ static int
+-qtnf_set_default_mgmt_key(struct wiphy *wiphy, struct net_device *dev,
++qtnf_set_default_mgmt_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			  u8 key_index)
+ {
+-	struct qtnf_vif *vif = qtnf_netdev_get_priv(dev);
++	struct qtnf_vif *vif;
+ 	int ret;
++	struct net_device *dev = wdev->netdev;
++
++	if (!dev)
++		return -EOPNOTSUPP;
++
++	vif = qtnf_netdev_get_priv(dev);
+ 
+ 	ret = qtnf_cmd_send_set_default_mgmt_key(vif, key_index);
+ 	if (ret)
+diff --git a/drivers/net/wireless/rndis_wlan.c b/drivers/net/wireless/rndis_wlan.c
+index ff24483..b62fbc6 100644
+--- a/drivers/net/wireless/rndis_wlan.c
++++ b/drivers/net/wireless/rndis_wlan.c
+@@ -488,14 +488,14 @@ static int rndis_join_ibss(struct wiphy *wiphy, struct net_device *dev,
+ 
+ static int rndis_leave_ibss(struct wiphy *wiphy, struct net_device *dev);
+ 
+-static int rndis_add_key(struct wiphy *wiphy, struct net_device *netdev,
++static int rndis_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			 u8 key_index, bool pairwise, const u8 *mac_addr,
+ 			 struct key_params *params);
+ 
+-static int rndis_del_key(struct wiphy *wiphy, struct net_device *netdev,
++static int rndis_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			 u8 key_index, bool pairwise, const u8 *mac_addr);
+ 
+-static int rndis_set_default_key(struct wiphy *wiphy, struct net_device *netdev,
++static int rndis_set_default_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 				 u8 key_index, bool unicast, bool multicast);
+ 
+ static int rndis_get_station(struct wiphy *wiphy, struct net_device *dev,
+@@ -2376,13 +2376,17 @@ static int rndis_leave_ibss(struct wiphy *wiphy, struct net_device *dev)
+ 	return deauthenticate(usbdev);
+ }
+ 
+-static int rndis_add_key(struct wiphy *wiphy, struct net_device *netdev,
++static int rndis_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			 u8 key_index, bool pairwise, const u8 *mac_addr,
+ 			 struct key_params *params)
+ {
+ 	struct rndis_wlan_private *priv = wiphy_priv(wiphy);
+ 	struct usbnet *usbdev = priv->usbdev;
+ 	__le32 flags;
++	struct net_device *netdev = wdev->netdev;
++
++	if (!netdev)
++		return -EOPNOTSUPP;
+ 
+ 	netdev_dbg(usbdev->net, "%s(%i, %pM, %08x)\n",
+ 		   __func__, key_index, mac_addr, params->cipher);
+@@ -2412,23 +2416,31 @@ static int rndis_add_key(struct wiphy *wiphy, struct net_device *netdev,
+ 	}
+ }
+ 
+-static int rndis_del_key(struct wiphy *wiphy, struct net_device *netdev,
++static int rndis_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			 u8 key_index, bool pairwise, const u8 *mac_addr)
+ {
+ 	struct rndis_wlan_private *priv = wiphy_priv(wiphy);
+ 	struct usbnet *usbdev = priv->usbdev;
++	struct net_device *netdev = wdev->netdev;
++
++	if (!netdev)
++		return -EOPNOTSUPP;
+ 
+ 	netdev_dbg(usbdev->net, "%s(%i, %pM)\n", __func__, key_index, mac_addr);
+ 
+ 	return remove_key(usbdev, key_index, mac_addr);
+ }
+ 
+-static int rndis_set_default_key(struct wiphy *wiphy, struct net_device *netdev,
++static int rndis_set_default_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 				 u8 key_index, bool unicast, bool multicast)
+ {
+ 	struct rndis_wlan_private *priv = wiphy_priv(wiphy);
+ 	struct usbnet *usbdev = priv->usbdev;
+ 	struct rndis_wlan_encr_key key;
++	struct net_device *netdev = wdev->netdev;
++
++	if (!netdev)
++		return -EOPNOTSUPP;
+ 
+ 	netdev_dbg(usbdev->net, "%s(%i)\n", __func__, key_index);
+ 
+diff --git a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
+index 5157b5b..7217d60 100644
+--- a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
++++ b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
+@@ -934,7 +934,7 @@ static int rtw_cfg80211_set_encryption(struct net_device *dev, struct ieee_param
+ 	return ret;
+ }
+ 
+-static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
++static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 				u8 key_index, bool pairwise, const u8 *mac_addr,
+ 				struct key_params *params)
+ {
+@@ -942,9 +942,15 @@ static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
+ 	u32 param_len;
+ 	struct ieee_param *param = NULL;
+ 	int ret = 0;
+-	struct adapter *padapter = rtw_netdev_priv(ndev);
+-	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
++	struct adapter *padapter;
++	struct mlme_priv *pmlmepriv;
++	struct net_device *ndev = wdev->netdev;
++
++	if (!ndev)
++		return -EOPNOTSUPP;
+ 
++	padapter = rtw_netdev_priv(ndev);
++	pmlmepriv = &padapter->mlmepriv;
+ 	param_len = sizeof(struct ieee_param) + params->key_len;
+ 	param = rtw_malloc(param_len);
+ 	if (!param)
+@@ -1026,7 +1032,7 @@ static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
+ 
+ }
+ 
+-static int cfg80211_rtw_get_key(struct wiphy *wiphy, struct net_device *ndev,
++static int cfg80211_rtw_get_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 				u8 key_index, bool pairwise, const u8 *mac_addr,
+ 				void *cookie,
+ 				void (*callback)(void *cookie,
+@@ -1035,11 +1041,18 @@ static int cfg80211_rtw_get_key(struct wiphy *wiphy, struct net_device *ndev,
+ 	return 0;
+ }
+ 
+-static int cfg80211_rtw_del_key(struct wiphy *wiphy, struct net_device *ndev,
++static int cfg80211_rtw_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 				u8 key_index, bool pairwise, const u8 *mac_addr)
+ {
+-	struct adapter *padapter = rtw_netdev_priv(ndev);
+-	struct security_priv *psecuritypriv = &padapter->securitypriv;
++	struct adapter *padapter;
++	struct security_priv *psecuritypriv;
++	struct net_device *ndev = wdev->netdev;
++
++	if (!ndev)
++		return -EOPNOTSUPP;
++
++	padapter = rtw_netdev_priv(ndev);
++	psecuritypriv = &padapter->securitypriv;
+ 
+ 	if (key_index == psecuritypriv->dot11PrivacyKeyIndex)
+ 	{
+@@ -1051,12 +1064,19 @@ static int cfg80211_rtw_del_key(struct wiphy *wiphy, struct net_device *ndev,
+ }
+ 
+ static int cfg80211_rtw_set_default_key(struct wiphy *wiphy,
+-	struct net_device *ndev, u8 key_index
++	struct wireless_dev *wdev, u8 key_index
+ 	, bool unicast, bool multicast
+ 	)
+ {
+-	struct adapter *padapter = rtw_netdev_priv(ndev);
+-	struct security_priv *psecuritypriv = &padapter->securitypriv;
++	struct adapter *padapter;
++	struct security_priv *psecuritypriv;
++	struct net_device *ndev = wdev->netdev;
++
++	if (!ndev)
++		return -EOPNOTSUPP;
++
++	padapter = rtw_netdev_priv(ndev);
++	psecuritypriv = &padapter->securitypriv;
+ 
+ 	if ((key_index < WEP_KEYS) && ((psecuritypriv->dot11PrivacyAlgrthm == _WEP40_) || (psecuritypriv->dot11PrivacyAlgrthm == _WEP104_))) /* set wep default key */
+ 	{
+diff --git a/drivers/staging/wlan-ng/cfg80211.c b/drivers/staging/wlan-ng/cfg80211.c
+index 7951bd6..5e5e7d0 100644
+--- a/drivers/staging/wlan-ng/cfg80211.c
++++ b/drivers/staging/wlan-ng/cfg80211.c
+@@ -142,12 +142,18 @@ static int prism2_change_virtual_intf(struct wiphy *wiphy,
+ 	return err;
+ }
+ 
+-static int prism2_add_key(struct wiphy *wiphy, struct net_device *dev,
++static int prism2_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			  u8 key_index, bool pairwise, const u8 *mac_addr,
+ 			  struct key_params *params)
+ {
+-	struct wlandevice *wlandev = dev->ml_priv;
++	struct wlandevice *wlandev;
+ 	u32 did;
++	struct net_device *dev = wdev->netdev;
++
++	if (!dev)
++		return -EOPNOTSUPP;
++
++	wlandev = dev->ml_priv;
+ 
+ 	if (key_index >= NUM_WEPKEYS)
+ 		return -EINVAL;
+@@ -171,14 +177,20 @@ static int prism2_add_key(struct wiphy *wiphy, struct net_device *dev,
+ 	return 0;
+ }
+ 
+-static int prism2_get_key(struct wiphy *wiphy, struct net_device *dev,
++static int prism2_get_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			  u8 key_index, bool pairwise,
+ 			  const u8 *mac_addr, void *cookie,
+ 			  void (*callback)(void *cookie, struct key_params*))
+ {
+-	struct wlandevice *wlandev = dev->ml_priv;
++	struct wlandevice *wlandev;
+ 	struct key_params params;
+ 	int len;
++	struct net_device *dev = wdev->netdev;
++
++	if (!dev)
++		return -EOPNOTSUPP;
++
++	wlandev = dev->ml_priv;
+ 
+ 	if (key_index >= NUM_WEPKEYS)
+ 		return -EINVAL;
+@@ -201,13 +213,19 @@ static int prism2_get_key(struct wiphy *wiphy, struct net_device *dev,
+ 	return 0;
+ }
+ 
+-static int prism2_del_key(struct wiphy *wiphy, struct net_device *dev,
++static int prism2_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			  u8 key_index, bool pairwise, const u8 *mac_addr)
+ {
+-	struct wlandevice *wlandev = dev->ml_priv;
++	struct wlandevice *wlandev;
+ 	u32 did;
+ 	int err = 0;
+ 	int result = 0;
++	struct net_device *dev = wdev->netdev;
++
++	if (!dev)
++		return -EOPNOTSUPP;
++
++	wlandev = dev->ml_priv;
+ 
+ 	/* There is no direct way in the hardware (AFAIK) of removing
+ 	 * a key, so we will cheat by setting the key to a bogus value
+@@ -226,10 +244,17 @@ static int prism2_del_key(struct wiphy *wiphy, struct net_device *dev,
+ 	return err;
+ }
+ 
+-static int prism2_set_default_key(struct wiphy *wiphy, struct net_device *dev,
++static int prism2_set_default_key(struct wiphy *wiphy,
++				  struct wireless_dev *wdev,
+ 				  u8 key_index, bool unicast, bool multicast)
+ {
+-	struct wlandevice *wlandev = dev->ml_priv;
++	struct wlandevice *wlandev;
++	struct net_device *dev = wdev->netdev;
++
++	if (!dev)
++		return -EOPNOTSUPP;
++
++	wlandev = dev->ml_priv;
+ 
+ 	return  prism2_domibset_uint32(wlandev,
+ 				       DIDMIB_DOT11SMT_PRIVACYTABLE_WEPDEFAULTKEYID,
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 8298bec..f000e87 100644
+index f000e87..c3e43e8 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -2735,6 +2735,9 @@ struct cfg80211_auth_request {
-  *	userspace if this flag is set. Only applicable for cfg80211_connect()
-  *	request (connect callback).
-  * @ASSOC_REQ_DISABLE_HE:  Disable HE
-+ * @ASSOC_MLO_SUPPORT: Userspace indicates support for handling MLO links.
-+ *	Drivers shall disable MLO features for the current association if this
-+ *	flag is not set.
-  */
- enum cfg80211_assoc_req_flags {
- 	ASSOC_REQ_DISABLE_HT			= BIT(0),
-@@ -2742,6 +2745,7 @@ enum cfg80211_assoc_req_flags {
- 	ASSOC_REQ_USE_RRM			= BIT(2),
- 	CONNECT_REQ_EXTERNAL_AUTH_SUPPORT	= BIT(3),
- 	ASSOC_REQ_DISABLE_HE			= BIT(4),
-+	ASSOC_MLO_SUPPORT			= BIT(5),
- };
+@@ -4177,23 +4177,23 @@ struct cfg80211_ops {
+ 				       enum nl80211_iftype type,
+ 				       struct vif_params *params);
  
- /**
-@@ -5564,6 +5568,12 @@ static inline void wiphy_unlock(struct wiphy *wiphy)
-  * @mld_wdev: points to MLD wdev of type %NL80211_IFTYPE_STATION to which this
-  *	MLO link wdev is affiliated to. Valid for iftype
-  *	%NL80211_IFTYPE_MLO_LINK only.
-+ * @link_bssid: BSSID of the AP associated with the MLO link wdev. Valid for
-+ *	iftype %NL80211_IFTYPE_MLO_LINK. Scan result of the BSS associated with
-+ *	the MLO link may not be available in rdev->bss_list so we can't use
-+ *	@current_bss.
-+ * @link_id: AP's MLO link ID to which this non-AP station's MLO link wdev is
-+ *	associated. Valid only if iftype is %NL80211_IFTYPE_MLO_LINK.
-  */
- struct wireless_dev {
- 	struct wiphy *wiphy;
-@@ -5644,6 +5654,8 @@ struct wireless_dev {
- 	unsigned long unprot_beacon_reported;
+-	int	(*add_key)(struct wiphy *wiphy, struct net_device *netdev,
++	int	(*add_key)(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			   u8 key_index, bool pairwise, const u8 *mac_addr,
+ 			   struct key_params *params);
+-	int	(*get_key)(struct wiphy *wiphy, struct net_device *netdev,
++	int	(*get_key)(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			   u8 key_index, bool pairwise, const u8 *mac_addr,
+ 			   void *cookie,
+ 			   void (*callback)(void *cookie, struct key_params*));
+-	int	(*del_key)(struct wiphy *wiphy, struct net_device *netdev,
++	int	(*del_key)(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			   u8 key_index, bool pairwise, const u8 *mac_addr);
+ 	int	(*set_default_key)(struct wiphy *wiphy,
+-				   struct net_device *netdev,
++				   struct wireless_dev *wdev,
+ 				   u8 key_index, bool unicast, bool multicast);
+ 	int	(*set_default_mgmt_key)(struct wiphy *wiphy,
+-					struct net_device *netdev,
++					struct wireless_dev *wdev,
+ 					u8 key_index);
+ 	int	(*set_default_beacon_key)(struct wiphy *wiphy,
+-					  struct net_device *netdev,
++					  struct wireless_dev *wdev,
+ 					  u8 key_index);
  
- 	struct wireless_dev *mld_wdev;
-+	u8 link_bssid[ETH_ALEN];
-+	u8 link_id;
- };
- 
- static inline const u8 *wdev_address(struct wireless_dev *wdev)
-@@ -7172,6 +7184,18 @@ struct cfg80211_fils_resp_params {
- };
- 
- /**
-+ * struct cfg80211_mlo_link_params - MLO link device params.
-+ * @wdev: the wireless device associated with the MLO link device.
-+ * @bssid: BSSID of the MLO link to which this MLO link is connected to.
-+ * @link_id: Link ID of the AP's MLO link to which this @wdev is connected to.
-+ */
-+struct cfg80211_mlo_link_params {
-+	struct wireless_dev *wdev;
-+	u8 bssid[ETH_ALEN];
-+	u8 link_id;
-+};
-+
-+/**
-  * struct cfg80211_connect_resp_params - Connection response params
-  * @status: Status code, %WLAN_STATUS_SUCCESS for successful connection, use
-  *	%WLAN_STATUS_UNSPECIFIED_FAILURE if your device cannot give you
-@@ -7199,6 +7223,8 @@ struct cfg80211_fils_resp_params {
-  *	not known. This value is used only if @status < 0 to indicate that the
-  *	failure is due to a timeout and not due to explicit rejection by the AP.
-  *	This value is ignored in other cases (@status >= 0).
-+ * @mlo_links: Array of each MLO link's connection parameters.
-+ * @n_mlo_links: Number of valid links that are indicated in @mlo_links.
-  */
- struct cfg80211_connect_resp_params {
- 	int status;
-@@ -7210,6 +7236,8 @@ struct cfg80211_connect_resp_params {
- 	size_t resp_ie_len;
- 	struct cfg80211_fils_resp_params fils;
- 	enum nl80211_timeout_reason timeout_reason;
-+	const struct cfg80211_mlo_link_params *mlo_links;
-+	int n_mlo_links;
- };
- 
- /**
-@@ -7359,6 +7387,8 @@ cfg80211_connect_timeout(struct net_device *dev, const u8 *bssid,
-  * @resp_ie: association response IEs (may be %NULL)
-  * @resp_ie_len: assoc response IEs length
-  * @fils: FILS related roaming information.
-+ * @mlo_links: Array of each MLO link's connection parameters.
-+ * @n_mlo_links: Number of valid links that are indicated in @mlo_links.
-  */
- struct cfg80211_roam_info {
- 	struct ieee80211_channel *channel;
-@@ -7369,6 +7399,8 @@ struct cfg80211_roam_info {
- 	const u8 *resp_ie;
- 	size_t resp_ie_len;
- 	struct cfg80211_fils_resp_params fils;
-+	const struct cfg80211_mlo_link_params *mlo_links;
-+	int n_mlo_links;
- };
- 
- /**
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 4f3e15a..191bc80 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -2667,7 +2667,15 @@ enum nl80211_commands {
-  *	%NL80211_IFTYPE_STA interface. This is used in
-  *	%NL80211_CMD_GET/SET/NEW_INTERFACE response to indicate information of
-  *	all the MLO links affiliated to %NL80211_IFTYPE_STATION interface.
-+ *	This is also used with %NL80211_CMD_CONNECT and %NL80211_CMD_ROAM events
-+ *	to indicate associated MLO links information for current connection.
-  *	See &enum nl80211_mlo_link_info_attributes for details.
-+ * @NL80211_ATTR_MLO_SUPPORT: Flag attribute to indicate that the user space
-+ *	supports MLO connection. This is used with %NL80211_CMD_CONNECT or
-+ *	%NL80211_CMD_ASSOCIATE. The driver shall use MLO link wdevs in
-+ *	connection only when userpsace indicates support for MLO connection.
-+ *	Using MLO links without userspace support may lead to disconnection
-+ *	since RSN connection in MLO needs supplicant support.
-  *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-@@ -3182,6 +3190,7 @@ enum nl80211_attrs {
- 	NL80211_ATTR_EHT_CAPABILITY,
- 
- 	NL80211_ATTR_MLO_LINK_INFO,
-+	NL80211_ATTR_MLO_SUPPORT,
- 
- 	/* add attributes here, update the policy in nl80211.c */
- 
-@@ -7622,6 +7631,9 @@ enum nl80211_ap_settings_flags {
-  *
-  * @NL80211_MLO_LINK_INFO_ATTR_WDEV: wireless device identifier for MLO link
-  *	(u64)
-+ * @NL80211_MLO_LINK_INFO_ATTR_BSSID: BSSID associated with this MLO link
-+ *	(6 octets).
-+ * @NL80211_MLO_LINK_INFO_ATTR_LINK_ID: link id of associated BSSID (u8)
-  *
-  * @__NL80211_MLO_LINK_INFO_ATTR_LAST: Internal
-  * @NL80211_MLO_LINK_INFO_ATTR_MAX: highest attribute
-@@ -7630,6 +7642,8 @@ enum nl80211_mlo_link_info_attributes {
- 	__NL80211_MLO_LINK_INFO_ATTR_INVALID,
- 
- 	NL80211_MLO_LINK_INFO_ATTR_WDEV,
-+	NL80211_MLO_LINK_INFO_ATTR_BSSID,
-+	NL80211_MLO_LINK_INFO_ATTR_LINK_ID,
- 
- 	/* keep last */
- 	__NL80211_MLO_LINK_INFO_ATTR_LAST,
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index c9495cd..941b892 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -1386,6 +1386,25 @@ cfg80211_get_chan_state(struct wireless_dev *wdev,
- 			return;
- 		}
- 		break;
-+	case NL80211_IFTYPE_MLO_LINK:
-+		if (!is_zero_ether_addr(wdev->link_bssid)) {
-+			if (!memcmp(wdev->link_bssid,
-+				    wdev->mld_wdev->current_bss->pub.bssid,
-+				    ETH_ALEN))
-+				*chan = wdev->current_bss->pub.channel;
-+			else
-+				*chan = cfg80211_get_colocated_ap_chan(
-+						wiphy_to_rdev(wdev->wiphy),
-+						wdev->mld_wdev->current_bss,
-+						wdev->link_bssid);
-+
-+			if (WARN_ON(!*chan))
-+				return;
-+
-+			*chanmode = CHAN_MODE_SHARED;
-+			return;
-+		}
-+		break;
- 	case NL80211_IFTYPE_AP:
- 	case NL80211_IFTYPE_P2P_GO:
- 		if (wdev->cac_started) {
-@@ -1432,7 +1451,6 @@ cfg80211_get_chan_state(struct wireless_dev *wdev,
- 		return;
- 	case NL80211_IFTYPE_UNSPECIFIED:
- 	case NL80211_IFTYPE_WDS:
--	case NL80211_IFTYPE_MLO_LINK:
- 	case NUM_NL80211_IFTYPES:
- 		WARN_ON(1);
- 	}
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index a036e60..68e3ae1 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1360,6 +1360,7 @@ void cfg80211_init_wdev(struct wireless_dev *wdev)
- 
- 	INIT_WORK(&wdev->disconnect_wk, cfg80211_autodisconnect_wk);
- 	wdev->mld_wdev = NULL;
-+	eth_zero_addr(wdev->link_bssid);
+ 	int	(*start_ap)(struct wiphy *wiphy, struct net_device *dev,
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 67a1602..522d3ad 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -431,17 +431,23 @@ static int ieee80211_set_tx(struct ieee80211_sub_if_data *sdata,
+ 	return ret;
  }
  
- void cfg80211_register_wdev(struct cfg80211_registered_device *rdev,
+-static int ieee80211_add_key(struct wiphy *wiphy, struct net_device *dev,
++static int ieee80211_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			     u8 key_idx, bool pairwise, const u8 *mac_addr,
+ 			     struct key_params *params)
+ {
+-	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+-	struct ieee80211_local *local = sdata->local;
++	struct ieee80211_sub_if_data *sdata;
++	struct ieee80211_local *local;
+ 	struct sta_info *sta = NULL;
+ 	const struct ieee80211_cipher_scheme *cs = NULL;
+ 	struct ieee80211_key *key;
+ 	int err;
+ 
++	if (!wdev->netdev)
++		return -EOPNOTSUPP;
++
++	sdata = IEEE80211_DEV_TO_SUB_IF(wdev->netdev);
++	local = sdata->local;
++
+ 	if (!ieee80211_sdata_running(sdata))
+ 		return -ENETDOWN;
+ 
+@@ -549,15 +555,21 @@ static int ieee80211_add_key(struct wiphy *wiphy, struct net_device *dev,
+ 	return err;
+ }
+ 
+-static int ieee80211_del_key(struct wiphy *wiphy, struct net_device *dev,
++static int ieee80211_del_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			     u8 key_idx, bool pairwise, const u8 *mac_addr)
+ {
+-	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+-	struct ieee80211_local *local = sdata->local;
++	struct ieee80211_sub_if_data *sdata;
++	struct ieee80211_local *local;
+ 	struct sta_info *sta;
+ 	struct ieee80211_key *key = NULL;
+ 	int ret;
+ 
++	if (!wdev->netdev)
++		return -EOPNOTSUPP;
++
++	sdata = IEEE80211_DEV_TO_SUB_IF(wdev->netdev);
++	local = sdata->local;
++
+ 	mutex_lock(&local->sta_mtx);
+ 	mutex_lock(&local->key_mtx);
+ 
+@@ -590,7 +602,7 @@ static int ieee80211_del_key(struct wiphy *wiphy, struct net_device *dev,
+ 	return ret;
+ }
+ 
+-static int ieee80211_get_key(struct wiphy *wiphy, struct net_device *dev,
++static int ieee80211_get_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			     u8 key_idx, bool pairwise, const u8 *mac_addr,
+ 			     void *cookie,
+ 			     void (*callback)(void *cookie,
+@@ -607,7 +619,10 @@ static int ieee80211_get_key(struct wiphy *wiphy, struct net_device *dev,
+ 	int err = -ENOENT;
+ 	struct ieee80211_key_seq kseq = {};
+ 
+-	sdata = IEEE80211_DEV_TO_SUB_IF(dev);
++	if (!wdev->netdev)
++		return -EOPNOTSUPP;
++
++	sdata = IEEE80211_DEV_TO_SUB_IF(wdev->netdev);
+ 
+ 	rcu_read_lock();
+ 
+@@ -710,11 +725,16 @@ static int ieee80211_get_key(struct wiphy *wiphy, struct net_device *dev,
+ }
+ 
+ static int ieee80211_config_default_key(struct wiphy *wiphy,
+-					struct net_device *dev,
++					struct wireless_dev *wdev,
+ 					u8 key_idx, bool uni,
+ 					bool multi)
+ {
+-	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
++	struct ieee80211_sub_if_data *sdata;
++
++	if (!wdev->netdev)
++		return -EOPNOTSUPP;
++
++	sdata = IEEE80211_DEV_TO_SUB_IF(wdev->netdev);
+ 
+ 	ieee80211_set_default_key(sdata, key_idx, uni, multi);
+ 
+@@ -722,10 +742,15 @@ static int ieee80211_config_default_key(struct wiphy *wiphy,
+ }
+ 
+ static int ieee80211_config_default_mgmt_key(struct wiphy *wiphy,
+-					     struct net_device *dev,
++					     struct wireless_dev *wdev,
+ 					     u8 key_idx)
+ {
+-	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
++	struct ieee80211_sub_if_data *sdata;
++
++	if (!wdev->netdev)
++		return -EOPNOTSUPP;
++
++	sdata = IEEE80211_DEV_TO_SUB_IF(wdev->netdev);
+ 
+ 	ieee80211_set_default_mgmt_key(sdata, key_idx);
+ 
+@@ -733,10 +758,15 @@ static int ieee80211_config_default_mgmt_key(struct wiphy *wiphy,
+ }
+ 
+ static int ieee80211_config_default_beacon_key(struct wiphy *wiphy,
+-					       struct net_device *dev,
++					       struct wireless_dev *wdev,
+ 					       u8 key_idx)
+ {
+-	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
++	struct ieee80211_sub_if_data *sdata;
++
++	if (!wdev->netdev)
++		return -EOPNOTSUPP;
++
++	sdata = IEEE80211_DEV_TO_SUB_IF(wdev->netdev);
+ 
+ 	ieee80211_set_default_beacon_key(sdata, key_idx);
+ 
 diff --git a/net/wireless/core.h b/net/wireless/core.h
-index 2258df9..f3a5d7a 100644
+index f3a5d7a..da55f76 100644
 --- a/net/wireless/core.h
 +++ b/net/wireless/core.h
-@@ -579,5 +579,9 @@ void cfg80211_start_mlo_link(struct cfg80211_registered_device *rdev,
- 			     struct wireless_dev *wdev);
- void cfg80211_stop_mlo_link(struct cfg80211_registered_device *rdev,
- 			    struct wireless_dev *wdev);
-+struct ieee80211_channel *
-+cfg80211_get_colocated_ap_chan(struct cfg80211_registered_device *rdev,
-+			       struct cfg80211_internal_bss *intbss,
-+			       const u8 *colocated_bssid);
+@@ -584,4 +584,12 @@ cfg80211_get_colocated_ap_chan(struct cfg80211_registered_device *rdev,
+ 			       struct cfg80211_internal_bss *intbss,
+ 			       const u8 *colocated_bssid);
  
++#define wdev_err(wdev, fmt, ...)					\
++	do {								\
++		if ((wdev)->netdev)					\
++			netdev_err((wdev)->netdev, fmt, ##__VA_ARGS__);	\
++		else							\
++			pr_err(fmt, ##__VA_ARGS__);			\
++	} while (0)
++
  #endif /* __NET_WIRELESS_CORE_H */
+diff --git a/net/wireless/ibss.c b/net/wireless/ibss.c
+index 8f98e54..63c3537 100644
+--- a/net/wireless/ibss.c
++++ b/net/wireless/ibss.c
+@@ -173,7 +173,7 @@ static void __cfg80211_clear_ibss(struct net_device *dev, bool nowext)
+ 	 */
+ 	if (rdev->ops->del_key)
+ 		for (i = 0; i < 6; i++)
+-			rdev_del_key(rdev, dev, i, false, NULL);
++			rdev_del_key(rdev, wdev, i, false, NULL);
+ 
+ 	if (wdev->current_bss) {
+ 		cfg80211_unhold_bss(wdev->current_bss);
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 81e5959..37f483f 100644
+index 37f483f..0c1fd11 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -790,6 +790,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 		NLA_POLICY_RANGE(NLA_BINARY,
- 				 NL80211_EHT_MIN_CAPABILITY_LEN,
- 				 NL80211_EHT_MAX_CAPABILITY_LEN),
-+	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
- };
+@@ -4307,7 +4307,7 @@ static int nl80211_get_key(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+ 	int err;
+-	struct net_device *dev = info->user_ptr[1];
++	struct wireless_dev *wdev = info->user_ptr[1];
+ 	u8 key_idx = 0;
+ 	const u8 *mac_addr = NULL;
+ 	bool pairwise;
+@@ -4318,12 +4318,20 @@ static int nl80211_get_key(struct sk_buff *skb, struct genl_info *info)
+ 	struct sk_buff *msg;
+ 	bool bigtk_support = false;
  
- /* policy for the key attributes */
-@@ -1499,13 +1500,16 @@ static int nl80211_key_allowed(struct wireless_dev *wdev)
- 		if (!wdev->current_bss)
- 			return -ENOLINK;
- 		break;
-+	case NL80211_IFTYPE_MLO_LINK:
-+		if (is_zero_ether_addr(wdev->link_bssid))
-+			return -ENOLINK;
-+		break;
- 	case NL80211_IFTYPE_UNSPECIFIED:
- 	case NL80211_IFTYPE_OCB:
- 	case NL80211_IFTYPE_MONITOR:
- 	case NL80211_IFTYPE_NAN:
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 	case NL80211_IFTYPE_WDS:
--	case NL80211_IFTYPE_MLO_LINK:
- 	case NUM_NL80211_IFTYPES:
++	if (!wdev->netdev) {
++		if (wdev->iftype != NL80211_IFTYPE_MLO_LINK)
++			return -EINVAL;
++		if (!(rdev->wiphy.interface_modes &
++		      BIT(NL80211_IFTYPE_MLO_LINK)))
++			return -EOPNOTSUPP;
++	}
++
+ 	if (wiphy_ext_feature_isset(&rdev->wiphy,
+ 				    NL80211_EXT_FEATURE_BEACON_PROTECTION))
+ 		bigtk_support = true;
+ 
+-	if ((dev->ieee80211_ptr->iftype == NL80211_IFTYPE_STATION ||
+-	     dev->ieee80211_ptr->iftype == NL80211_IFTYPE_P2P_CLIENT) &&
++	if ((wdev->iftype == NL80211_IFTYPE_STATION ||
++	     wdev->iftype == NL80211_IFTYPE_P2P_CLIENT) &&
+ 	    wiphy_ext_feature_isset(&rdev->wiphy,
+ 				    NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT))
+ 		bigtk_support = true;
+@@ -4368,14 +4376,17 @@ static int nl80211_get_key(struct sk_buff *skb, struct genl_info *info)
+ 	cookie.msg = msg;
+ 	cookie.idx = key_idx;
+ 
+-	if (nla_put_u32(msg, NL80211_ATTR_IFINDEX, dev->ifindex) ||
++	if ((wdev->netdev &&
++	     nla_put_u32(msg, NL80211_ATTR_IFINDEX, wdev->netdev->ifindex)) ||
++	    nla_put_u64_64bit(msg, NL80211_ATTR_WDEV, wdev_id(wdev),
++			      NL80211_ATTR_PAD) ||
+ 	    nla_put_u8(msg, NL80211_ATTR_KEY_IDX, key_idx))
+ 		goto nla_put_failure;
+ 	if (mac_addr &&
+ 	    nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, mac_addr))
+ 		goto nla_put_failure;
+ 
+-	err = rdev_get_key(rdev, dev, key_idx, pairwise, mac_addr, &cookie,
++	err = rdev_get_key(rdev, wdev, key_idx, pairwise, mac_addr, &cookie,
+ 			   get_key_callback);
+ 
+ 	if (err)
+@@ -4399,7 +4410,15 @@ static int nl80211_set_key(struct sk_buff *skb, struct genl_info *info)
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+ 	struct key_parse key;
+ 	int err;
+-	struct net_device *dev = info->user_ptr[1];
++	struct wireless_dev *wdev = info->user_ptr[1];
++
++	if (!wdev->netdev) {
++		if (wdev->iftype != NL80211_IFTYPE_MLO_LINK)
++			return -EINVAL;
++		if (!(rdev->wiphy.interface_modes &
++		      BIT(NL80211_IFTYPE_MLO_LINK)))
++			return -EOPNOTSUPP;
++	}
+ 
+ 	err = nl80211_parse_key(info, &key);
+ 	if (err)
+@@ -4415,7 +4434,7 @@ static int nl80211_set_key(struct sk_buff *skb, struct genl_info *info)
+ 	    !(key.p.mode == NL80211_KEY_SET_TX))
+ 		return -EINVAL;
+ 
+-	wdev_lock(dev->ieee80211_ptr);
++	wdev_lock(wdev);
+ 
+ 	if (key.def) {
+ 		if (!rdev->ops->set_default_key) {
+@@ -4423,18 +4442,18 @@ static int nl80211_set_key(struct sk_buff *skb, struct genl_info *info)
+ 			goto out;
+ 		}
+ 
+-		err = nl80211_key_allowed(dev->ieee80211_ptr);
++		err = nl80211_key_allowed(wdev);
+ 		if (err)
+ 			goto out;
+ 
+-		err = rdev_set_default_key(rdev, dev, key.idx,
+-						 key.def_uni, key.def_multi);
++		err = rdev_set_default_key(rdev, wdev, key.idx,
++					   key.def_uni, key.def_multi);
+ 
+ 		if (err)
+ 			goto out;
+ 
+ #ifdef CONFIG_CFG80211_WEXT
+-		dev->ieee80211_ptr->wext.default_key = key.idx;
++		wdev->wext.default_key = key.idx;
+ #endif
+ 	} else if (key.defmgmt) {
+ 		if (key.def_uni || !key.def_multi) {
+@@ -4447,16 +4466,16 @@ static int nl80211_set_key(struct sk_buff *skb, struct genl_info *info)
+ 			goto out;
+ 		}
+ 
+-		err = nl80211_key_allowed(dev->ieee80211_ptr);
++		err = nl80211_key_allowed(wdev);
+ 		if (err)
+ 			goto out;
+ 
+-		err = rdev_set_default_mgmt_key(rdev, dev, key.idx);
++		err = rdev_set_default_mgmt_key(rdev, wdev, key.idx);
+ 		if (err)
+ 			goto out;
+ 
+ #ifdef CONFIG_CFG80211_WEXT
+-		dev->ieee80211_ptr->wext.default_mgmt_key = key.idx;
++		wdev->wext.default_mgmt_key = key.idx;
+ #endif
+ 	} else if (key.defbeacon) {
+ 		if (key.def_uni || !key.def_multi) {
+@@ -4469,11 +4488,11 @@ static int nl80211_set_key(struct sk_buff *skb, struct genl_info *info)
+ 			goto out;
+ 		}
+ 
+-		err = nl80211_key_allowed(dev->ieee80211_ptr);
++		err = nl80211_key_allowed(wdev);
+ 		if (err)
+ 			goto out;
+ 
+-		err = rdev_set_default_beacon_key(rdev, dev, key.idx);
++		err = rdev_set_default_beacon_key(rdev, wdev, key.idx);
+ 		if (err)
+ 			goto out;
+ 	} else if (key.p.mode == NL80211_KEY_SET_TX &&
+@@ -4489,14 +4508,14 @@ static int nl80211_set_key(struct sk_buff *skb, struct genl_info *info)
+ 			goto out;
+ 		}
+ 
+-		err = rdev_add_key(rdev, dev, key.idx,
++		err = rdev_add_key(rdev, wdev, key.idx,
+ 				   NL80211_KEYTYPE_PAIRWISE,
+ 				   mac_addr, &key.p);
+ 	} else {
+ 		err = -EINVAL;
+ 	}
+  out:
+-	wdev_unlock(dev->ieee80211_ptr);
++	wdev_unlock(wdev);
+ 
+ 	return err;
+ }
+@@ -4505,10 +4524,18 @@ static int nl80211_new_key(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+ 	int err;
+-	struct net_device *dev = info->user_ptr[1];
++	struct wireless_dev *wdev = info->user_ptr[1];
+ 	struct key_parse key;
+ 	const u8 *mac_addr = NULL;
+ 
++	if (!wdev->netdev) {
++		if (wdev->iftype != NL80211_IFTYPE_MLO_LINK)
++			return -EINVAL;
++		if (!(rdev->wiphy.interface_modes &
++		      BIT(NL80211_IFTYPE_MLO_LINK)))
++			return -EOPNOTSUPP;
++	}
++
+ 	err = nl80211_parse_key(info, &key);
+ 	if (err)
+ 		return err;
+@@ -4549,18 +4576,18 @@ static int nl80211_new_key(struct sk_buff *skb, struct genl_info *info)
  		return -EINVAL;
  	}
-@@ -3757,6 +3761,13 @@ static int nl80211_send_iface(struct sk_buff *msg, u32 portid, u32 seq, int flag
- 				      wdev_id(link_wdev), NL80211_ATTR_PAD))
- 			goto nla_put_failure_locked;
  
-+		if (!is_zero_ether_addr(link_wdev->link_bssid) &&
-+		    (nla_put(msg, NL80211_MLO_LINK_INFO_ATTR_BSSID, ETH_ALEN,
-+			     link_wdev->link_bssid) ||
-+		     nla_put_u8(msg, NL80211_MLO_LINK_INFO_ATTR_LINK_ID,
-+				link_wdev->link_id)))
-+			goto nla_put_failure_locked;
-+
- 		nla_nest_end(msg, nested_mlo_links);
- 		i++;
+-	wdev_lock(dev->ieee80211_ptr);
+-	err = nl80211_key_allowed(dev->ieee80211_ptr);
++	wdev_lock(wdev);
++	err = nl80211_key_allowed(wdev);
+ 	if (err)
+ 		GENL_SET_ERR_MSG(info, "key not allowed");
+ 	if (!err) {
+-		err = rdev_add_key(rdev, dev, key.idx,
++		err = rdev_add_key(rdev, wdev, key.idx,
+ 				   key.type == NL80211_KEYTYPE_PAIRWISE,
+ 				    mac_addr, &key.p);
+ 		if (err)
+ 			GENL_SET_ERR_MSG(info, "key addition failed");
  	}
-@@ -10439,6 +10450,9 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
- 		req.flags |= ASSOC_REQ_USE_RRM;
- 	}
+-	wdev_unlock(dev->ieee80211_ptr);
++	wdev_unlock(wdev);
  
-+	if (nla_get_flag(info->attrs[NL80211_ATTR_MLO_SUPPORT]))
-+		req.flags |= ASSOC_MLO_SUPPORT;
-+
- 	if (info->attrs[NL80211_ATTR_FILS_KEK]) {
- 		req.fils_kek = nla_data(info->attrs[NL80211_ATTR_FILS_KEK]);
- 		req.fils_kek_len = nla_len(info->attrs[NL80211_ATTR_FILS_KEK]);
-@@ -11291,6 +11305,9 @@ static int nl80211_connect(struct sk_buff *skb, struct genl_info *info)
- 		connect.flags |= CONNECT_REQ_EXTERNAL_AUTH_SUPPORT;
- 	}
- 
-+	if (nla_get_flag(info->attrs[NL80211_ATTR_MLO_SUPPORT]))
-+		connect.flags |= ASSOC_MLO_SUPPORT;
-+
- 	wdev_lock(dev->ieee80211_ptr);
- 
- 	err = cfg80211_connect(rdev, dev, &connect, connkeys,
-@@ -16813,6 +16830,42 @@ void nl80211_send_assoc_timeout(struct cfg80211_registered_device *rdev,
- 				  addr, gfp);
+ 	return err;
  }
- 
-+static int
-+nl80211_put_mlo_link_params(struct sk_buff *msg,
-+			    const struct cfg80211_mlo_link_params *mlo_links,
-+			    int n_mlo_links)
-+{
-+	struct nlattr *nested, *nested_mlo_links;
-+	int i;
-+
-+	if (n_mlo_links) {
-+		nested = nla_nest_start(msg, NL80211_ATTR_MLO_LINK_INFO);
-+		if (!nested)
-+			return -ENOBUFS;
-+
-+		for (i = 0; i < n_mlo_links; i++) {
-+			nested_mlo_links = nla_nest_start(msg, i + 1);
-+			if (!nested_mlo_links)
-+				return -ENOBUFS;
-+
-+			if (nla_put_u64_64bit(msg,
-+					      NL80211_MLO_LINK_INFO_ATTR_WDEV,
-+					      wdev_id(mlo_links[i].wdev),
-+					      NL80211_ATTR_PAD) ||
-+			    nla_put(msg, NL80211_MLO_LINK_INFO_ATTR_BSSID,
-+				    ETH_ALEN, mlo_links[i].bssid) ||
-+			    nla_put_u8(msg, NL80211_MLO_LINK_INFO_ATTR_LINK_ID,
-+				       mlo_links[i].link_id))
-+				return -ENOBUFS;
-+
-+			nla_nest_end(msg, nested_mlo_links);
-+		}
-+		nla_nest_end(msg, nested);
-+	}
-+
-+	return 0;
-+}
-+
- void nl80211_send_connect_result(struct cfg80211_registered_device *rdev,
- 				 struct net_device *netdev,
- 				 struct cfg80211_connect_resp_params *cr,
-@@ -16820,10 +16873,15 @@ void nl80211_send_connect_result(struct cfg80211_registered_device *rdev,
+@@ -4569,10 +4596,18 @@ static int nl80211_del_key(struct sk_buff *skb, struct genl_info *info)
  {
- 	struct sk_buff *msg;
- 	void *hdr;
-+	int mlo_link_info_size = cr->n_mlo_links *
-+				 (nla_total_size_64bit(sizeof(u64)) +
-+				  nla_total_size(ETH_ALEN) +
-+				  nla_total_size(sizeof(u8)));
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+ 	int err;
+-	struct net_device *dev = info->user_ptr[1];
++	struct wireless_dev *wdev = info->user_ptr[1];
+ 	u8 *mac_addr = NULL;
+ 	struct key_parse key;
  
- 	msg = nlmsg_new(100 + cr->req_ie_len + cr->resp_ie_len +
- 			cr->fils.kek_len + cr->fils.pmk_len +
--			(cr->fils.pmkid ? WLAN_PMKID_LEN : 0), gfp);
-+			(cr->fils.pmkid ? WLAN_PMKID_LEN : 0) +
-+			mlo_link_info_size, gfp);
- 	if (!msg)
- 		return;
- 
-@@ -16862,6 +16920,9 @@ void nl80211_send_connect_result(struct cfg80211_registered_device *rdev,
- 	       nla_put(msg, NL80211_ATTR_PMKID, WLAN_PMKID_LEN, cr->fils.pmkid)))))
- 		goto nla_put_failure;
- 
-+	if (nl80211_put_mlo_link_params(msg, cr->mlo_links, cr->n_mlo_links))
-+		goto nla_put_failure;
-+
- 	genlmsg_end(msg, hdr);
- 
- 	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
-@@ -16879,10 +16940,16 @@ void nl80211_send_roamed(struct cfg80211_registered_device *rdev,
- 	struct sk_buff *msg;
- 	void *hdr;
- 	const u8 *bssid = info->bss ? info->bss->bssid : info->bssid;
--
--	msg = nlmsg_new(100 + info->req_ie_len + info->resp_ie_len +
--			info->fils.kek_len + info->fils.pmk_len +
--			(info->fils.pmkid ? WLAN_PMKID_LEN : 0), gfp);
-+	int mlo_link_info_size = info->n_mlo_links *
-+				 (nla_total_size_64bit(sizeof(u64)) +
-+				  nla_total_size(ETH_ALEN) +
-+				  nla_total_size(sizeof(u8)));
-+
-+	msg = nlmsg_new(100 + info->req_ie_len +
-+			info->resp_ie_len + info->fils.kek_len +
-+			info->fils.pmk_len +
-+			(info->fils.pmkid ? WLAN_PMKID_LEN : 0) +
-+			mlo_link_info_size, gfp);
- 	if (!msg)
- 		return;
- 
-@@ -16913,6 +16980,10 @@ void nl80211_send_roamed(struct cfg80211_registered_device *rdev,
- 	     nla_put(msg, NL80211_ATTR_PMKID, WLAN_PMKID_LEN, info->fils.pmkid)))
- 		goto nla_put_failure;
- 
-+	if (nl80211_put_mlo_link_params(msg, info->mlo_links,
-+					info->n_mlo_links))
-+		goto nla_put_failure;
-+
- 	genlmsg_end(msg, hdr);
- 
- 	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index b2fdac9..9ec8434 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -2706,6 +2706,31 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
- 	spin_unlock_bh(&rdev->bss_lock);
- }
- 
-+struct ieee80211_channel *
-+cfg80211_get_colocated_ap_chan(struct cfg80211_registered_device *rdev,
-+			       struct cfg80211_internal_bss *intbss,
-+			       const u8 *colocated_bssid)
-+{
-+	struct cfg80211_colocated_ap *ap;
-+	LIST_HEAD(coloc_ap_list);
-+	struct cfg80211_bss *res = &intbss->pub;
-+	const struct cfg80211_bss_ies *ies = rcu_access_pointer(res->ies);
-+	struct ieee80211_channel *chan = NULL;
-+
-+	cfg80211_parse_colocated_ap(ies, &coloc_ap_list);
-+
-+	list_for_each_entry(ap, &coloc_ap_list, list) {
-+		if (memcmp(colocated_bssid, ap->bssid, ETH_ALEN))
-+			continue;
-+
-+		chan = ieee80211_get_channel(&rdev->wiphy, ap->center_freq);
-+		break;
++	if (!wdev->netdev) {
++		if (wdev->iftype != NL80211_IFTYPE_MLO_LINK)
++			return -EINVAL;
++		if (!(rdev->wiphy.interface_modes &
++		      BIT(NL80211_IFTYPE_MLO_LINK)))
++			return -EOPNOTSUPP;
 +	}
 +
-+	cfg80211_free_coloc_ap_list(&coloc_ap_list);
-+	return chan;
-+}
-+
+ 	err = nl80211_parse_key(info, &key);
+ 	if (err)
+ 		return err;
+@@ -4599,27 +4634,27 @@ static int nl80211_del_key(struct sk_buff *skb, struct genl_info *info)
+ 	if (!rdev->ops->del_key)
+ 		return -EOPNOTSUPP;
+ 
+-	wdev_lock(dev->ieee80211_ptr);
+-	err = nl80211_key_allowed(dev->ieee80211_ptr);
++	wdev_lock(wdev);
++	err = nl80211_key_allowed(wdev);
+ 
+ 	if (key.type == NL80211_KEYTYPE_GROUP && mac_addr &&
+ 	    !(rdev->wiphy.flags & WIPHY_FLAG_IBSS_RSN))
+ 		err = -ENOENT;
+ 
+ 	if (!err)
+-		err = rdev_del_key(rdev, dev, key.idx,
++		err = rdev_del_key(rdev, wdev, key.idx,
+ 				   key.type == NL80211_KEYTYPE_PAIRWISE,
+ 				   mac_addr);
+ 
  #ifdef CONFIG_CFG80211_WEXT
- static struct cfg80211_registered_device *
- cfg80211_get_dev_from_ifindex(struct net *net, int ifindex)
+ 	if (!err) {
+-		if (key.idx == dev->ieee80211_ptr->wext.default_key)
+-			dev->ieee80211_ptr->wext.default_key = -1;
+-		else if (key.idx == dev->ieee80211_ptr->wext.default_mgmt_key)
+-			dev->ieee80211_ptr->wext.default_mgmt_key = -1;
++		if (key.idx == wdev->wext.default_key)
++			wdev->wext.default_key = -1;
++		else if (key.idx == wdev->wext.default_mgmt_key)
++			wdev->wext.default_mgmt_key = -1;
+ 	}
+ #endif
+-	wdev_unlock(dev->ieee80211_ptr);
++	wdev_unlock(wdev);
+ 
+ 	return err;
+ }
+@@ -15590,14 +15625,14 @@ static const struct genl_small_ops nl80211_small_ops[] = {
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = nl80211_get_key,
+ 		.flags = GENL_UNS_ADMIN_PERM,
+-		.internal_flags = NL80211_FLAG_NEED_NETDEV_UP,
++		.internal_flags = NL80211_FLAG_NEED_WDEV_UP,
+ 	},
+ 	{
+ 		.cmd = NL80211_CMD_SET_KEY,
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = nl80211_set_key,
+ 		.flags = GENL_UNS_ADMIN_PERM,
+-		.internal_flags = NL80211_FLAG_NEED_NETDEV_UP |
++		.internal_flags = NL80211_FLAG_NEED_WDEV_UP |
+ 				  NL80211_FLAG_CLEAR_SKB,
+ 	},
+ 	{
+@@ -15605,7 +15640,7 @@ static const struct genl_small_ops nl80211_small_ops[] = {
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = nl80211_new_key,
+ 		.flags = GENL_UNS_ADMIN_PERM,
+-		.internal_flags = NL80211_FLAG_NEED_NETDEV_UP |
++		.internal_flags = NL80211_FLAG_NEED_WDEV_UP |
+ 				  NL80211_FLAG_CLEAR_SKB,
+ 	},
+ 	{
+@@ -15613,7 +15648,7 @@ static const struct genl_small_ops nl80211_small_ops[] = {
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = nl80211_del_key,
+ 		.flags = GENL_UNS_ADMIN_PERM,
+-		.internal_flags = NL80211_FLAG_NEED_NETDEV_UP,
++		.internal_flags = NL80211_FLAG_NEED_WDEV_UP,
+ 	},
+ 	{
+ 		.cmd = NL80211_CMD_SET_BEACON,
+diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
+index 439bcf5..e12c621 100644
+--- a/net/wireless/rdev-ops.h
++++ b/net/wireless/rdev-ops.h
+@@ -72,39 +72,39 @@ rdev_change_virtual_intf(struct cfg80211_registered_device *rdev,
+ }
+ 
+ static inline int rdev_add_key(struct cfg80211_registered_device *rdev,
+-			       struct net_device *netdev, u8 key_index,
++			       struct wireless_dev *wdev, u8 key_index,
+ 			       bool pairwise, const u8 *mac_addr,
+ 			       struct key_params *params)
+ {
+ 	int ret;
+-	trace_rdev_add_key(&rdev->wiphy, netdev, key_index, pairwise,
++	trace_rdev_add_key(&rdev->wiphy, wdev, key_index, pairwise,
+ 			   mac_addr, params->mode);
+-	ret = rdev->ops->add_key(&rdev->wiphy, netdev, key_index, pairwise,
++	ret = rdev->ops->add_key(&rdev->wiphy, wdev, key_index, pairwise,
+ 				  mac_addr, params);
+ 	trace_rdev_return_int(&rdev->wiphy, ret);
+ 	return ret;
+ }
+ 
+ static inline int
+-rdev_get_key(struct cfg80211_registered_device *rdev, struct net_device *netdev,
++rdev_get_key(struct cfg80211_registered_device *rdev, struct wireless_dev *wdev,
+ 	     u8 key_index, bool pairwise, const u8 *mac_addr, void *cookie,
+ 	     void (*callback)(void *cookie, struct key_params*))
+ {
+ 	int ret;
+-	trace_rdev_get_key(&rdev->wiphy, netdev, key_index, pairwise, mac_addr);
+-	ret = rdev->ops->get_key(&rdev->wiphy, netdev, key_index, pairwise,
++	trace_rdev_get_key(&rdev->wiphy, wdev, key_index, pairwise, mac_addr);
++	ret = rdev->ops->get_key(&rdev->wiphy, wdev, key_index, pairwise,
+ 				  mac_addr, cookie, callback);
+ 	trace_rdev_return_int(&rdev->wiphy, ret);
+ 	return ret;
+ }
+ 
+ static inline int rdev_del_key(struct cfg80211_registered_device *rdev,
+-			       struct net_device *netdev, u8 key_index,
++			       struct wireless_dev *wdev, u8 key_index,
+ 			       bool pairwise, const u8 *mac_addr)
+ {
+ 	int ret;
+-	trace_rdev_del_key(&rdev->wiphy, netdev, key_index, pairwise, mac_addr);
+-	ret = rdev->ops->del_key(&rdev->wiphy, netdev, key_index, pairwise,
++	trace_rdev_del_key(&rdev->wiphy, wdev, key_index, pairwise, mac_addr);
++	ret = rdev->ops->del_key(&rdev->wiphy, wdev, key_index, pairwise,
+ 				  mac_addr);
+ 	trace_rdev_return_int(&rdev->wiphy, ret);
+ 	return ret;
+@@ -112,13 +112,13 @@ static inline int rdev_del_key(struct cfg80211_registered_device *rdev,
+ 
+ static inline int
+ rdev_set_default_key(struct cfg80211_registered_device *rdev,
+-		     struct net_device *netdev, u8 key_index, bool unicast,
++		     struct wireless_dev *wdev, u8 key_index, bool unicast,
+ 		     bool multicast)
+ {
+ 	int ret;
+-	trace_rdev_set_default_key(&rdev->wiphy, netdev, key_index,
++	trace_rdev_set_default_key(&rdev->wiphy, wdev, key_index,
+ 				   unicast, multicast);
+-	ret = rdev->ops->set_default_key(&rdev->wiphy, netdev, key_index,
++	ret = rdev->ops->set_default_key(&rdev->wiphy, wdev, key_index,
+ 					  unicast, multicast);
+ 	trace_rdev_return_int(&rdev->wiphy, ret);
+ 	return ret;
+@@ -126,11 +126,11 @@ rdev_set_default_key(struct cfg80211_registered_device *rdev,
+ 
+ static inline int
+ rdev_set_default_mgmt_key(struct cfg80211_registered_device *rdev,
+-			  struct net_device *netdev, u8 key_index)
++			  struct wireless_dev *wdev, u8 key_index)
+ {
+ 	int ret;
+-	trace_rdev_set_default_mgmt_key(&rdev->wiphy, netdev, key_index);
+-	ret = rdev->ops->set_default_mgmt_key(&rdev->wiphy, netdev,
++	trace_rdev_set_default_mgmt_key(&rdev->wiphy, wdev, key_index);
++	ret = rdev->ops->set_default_mgmt_key(&rdev->wiphy, wdev,
+ 					       key_index);
+ 	trace_rdev_return_int(&rdev->wiphy, ret);
+ 	return ret;
+@@ -138,12 +138,12 @@ rdev_set_default_mgmt_key(struct cfg80211_registered_device *rdev,
+ 
+ static inline int
+ rdev_set_default_beacon_key(struct cfg80211_registered_device *rdev,
+-			    struct net_device *netdev, u8 key_index)
++			    struct wireless_dev *wdev, u8 key_index)
+ {
+ 	int ret;
+ 
+-	trace_rdev_set_default_beacon_key(&rdev->wiphy, netdev, key_index);
+-	ret = rdev->ops->set_default_beacon_key(&rdev->wiphy, netdev,
++	trace_rdev_set_default_beacon_key(&rdev->wiphy, wdev, key_index);
++	ret = rdev->ops->set_default_beacon_key(&rdev->wiphy, wdev,
+ 						key_index);
+ 	trace_rdev_return_int(&rdev->wiphy, ret);
+ 	return ret;
 diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index ff4d48fc..5d76e52 100644
+index 5d76e52..e287eb0 100644
 --- a/net/wireless/sme.c
 +++ b/net/wireless/sme.c
-@@ -680,9 +680,12 @@ void __cfg80211_connect_result(struct net_device *dev,
- 			       bool wextev)
- {
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
-+	struct wireless_dev *link_wdev;
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
- 	const struct element *country_elem;
- 	const u8 *country_data;
- 	u8 country_datalen;
-+	int i;
- #ifdef CONFIG_CFG80211_WEXT
- 	union iwreq_data wrqu;
- #endif
-@@ -763,6 +766,25 @@ void __cfg80211_connect_result(struct net_device *dev,
- 	if (!(wdev->wiphy->flags & WIPHY_FLAG_HAS_STATIC_WEP))
- 		cfg80211_upload_connect_keys(wdev);
- 
-+	list_for_each_entry(link_wdev, &rdev->wiphy.wdev_list, list) {
-+		if (link_wdev->mld_wdev != wdev)
-+			continue;
-+
-+		eth_zero_addr(link_wdev->link_bssid);
-+	}
-+
-+	for (i = 0; i < cr->n_mlo_links; i++) {
-+		list_for_each_entry(link_wdev, &rdev->wiphy.wdev_list, list) {
-+			if (link_wdev != cr->mlo_links[i].wdev)
-+				continue;
-+
-+			link_wdev->link_id = cr->mlo_links[i].link_id;
-+			memcpy(link_wdev->link_bssid, cr->mlo_links[i].bssid,
-+			       ETH_ALEN);
-+			break;
-+		}
-+	}
-+
- 	rcu_read_lock();
- 	country_elem = ieee80211_bss_get_elem(cr->bss, WLAN_EID_COUNTRY);
- 	if (!country_elem) {
-@@ -792,6 +814,8 @@ void cfg80211_connect_done(struct net_device *dev,
- 	struct cfg80211_event *ev;
- 	unsigned long flags;
- 	u8 *next;
-+	int mlo_link_params_size =
-+		params->n_mlo_links * sizeof(struct cfg80211_mlo_link_params);
- 
- 	if (params->bss) {
- 		struct cfg80211_internal_bss *ibss = bss_from_pub(params->bss);
-@@ -830,7 +854,8 @@ void cfg80211_connect_done(struct net_device *dev,
- 	ev = kzalloc(sizeof(*ev) + (params->bssid ? ETH_ALEN : 0) +
- 		     params->req_ie_len + params->resp_ie_len +
- 		     params->fils.kek_len + params->fils.pmk_len +
--		     (params->fils.pmkid ? WLAN_PMKID_LEN : 0), gfp);
-+		     (params->fils.pmkid ? WLAN_PMKID_LEN : 0) +
-+		     mlo_link_params_size, gfp);
- 	if (!ev) {
- 		cfg80211_put_bss(wdev->wiphy, params->bss);
- 		return;
-@@ -877,6 +902,13 @@ void cfg80211_connect_done(struct net_device *dev,
- 		       WLAN_PMKID_LEN);
- 		next += WLAN_PMKID_LEN;
+@@ -1187,7 +1187,7 @@ void __cfg80211_disconnected(struct net_device *dev, const u8 *ie,
+ 			    NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT))
+ 			max_key_idx = 7;
+ 		for (i = 0; i <= max_key_idx; i++)
+-			rdev_del_key(rdev, dev, i, false, NULL);
++			rdev_del_key(rdev, wdev, i, false, NULL);
  	}
-+	if (params->n_mlo_links) {
-+		ev->cr.n_mlo_links = params->n_mlo_links;
-+		ev->cr.mlo_links = (struct cfg80211_mlo_link_params *)next;
-+		memcpy((void *)ev->cr.mlo_links, params->mlo_links,
-+		       mlo_link_params_size);
-+		next += mlo_link_params_size;
-+	}
- 	ev->cr.fils.update_erp_next_seq_num = params->fils.update_erp_next_seq_num;
- 	if (params->fils.update_erp_next_seq_num)
- 		ev->cr.fils.erp_next_seq_num = params->fils.erp_next_seq_num;
-@@ -900,6 +932,10 @@ void __cfg80211_roamed(struct wireless_dev *wdev,
- #ifdef CONFIG_CFG80211_WEXT
- 	union iwreq_data wrqu;
- #endif
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
-+	struct wireless_dev *link_wdev;
-+	int i;
-+
- 	ASSERT_WDEV_LOCK(wdev);
  
- 	if (WARN_ON(wdev->iftype != NL80211_IFTYPE_STATION &&
-@@ -923,6 +959,26 @@ void __cfg80211_roamed(struct wireless_dev *wdev,
- 	nl80211_send_roamed(wiphy_to_rdev(wdev->wiphy),
- 			    wdev->netdev, info, GFP_KERNEL);
+ 	rdev_set_qos_map(rdev, dev, NULL);
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index 228079d..a848b05 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -434,47 +434,47 @@ TRACE_EVENT(rdev_change_virtual_intf,
+ );
  
-+	list_for_each_entry(link_wdev, &rdev->wiphy.wdev_list, list) {
-+		if (link_wdev->mld_wdev != wdev)
-+			continue;
-+
-+		eth_zero_addr(link_wdev->link_bssid);
-+	}
-+
-+	for (i = 0; i < info->n_mlo_links; i++) {
-+		list_for_each_entry(link_wdev, &rdev->wiphy.wdev_list, list) {
-+			if (link_wdev != info->mlo_links[i].wdev)
-+				continue;
-+
-+			link_wdev->link_id = info->mlo_links[i].link_id;
-+			memcpy((void *)link_wdev->link_bssid,
-+			       info->mlo_links[i].bssid,
-+			       ETH_ALEN);
-+			break;
-+		}
-+	}
-+
- #ifdef CONFIG_CFG80211_WEXT
- 	if (info->req_ie) {
- 		memset(&wrqu, 0, sizeof(wrqu));
-@@ -960,6 +1016,8 @@ void cfg80211_roamed(struct net_device *dev, struct cfg80211_roam_info *info,
- 	struct cfg80211_event *ev;
- 	unsigned long flags;
- 	u8 *next;
-+	int mlo_link_params_size =
-+		info->n_mlo_links * sizeof(struct cfg80211_mlo_link_params);
+ DECLARE_EVENT_CLASS(key_handle,
+-	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, u8 key_index,
++	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, u8 key_index,
+ 		 bool pairwise, const u8 *mac_addr),
+-	TP_ARGS(wiphy, netdev, key_index, pairwise, mac_addr),
++	TP_ARGS(wiphy, wdev, key_index, pairwise, mac_addr),
+ 	TP_STRUCT__entry(
+ 		WIPHY_ENTRY
+-		NETDEV_ENTRY
++		WDEV_ENTRY
+ 		MAC_ENTRY(mac_addr)
+ 		__field(u8, key_index)
+ 		__field(bool, pairwise)
+ 	),
+ 	TP_fast_assign(
+ 		WIPHY_ASSIGN;
+-		NETDEV_ASSIGN;
++		WDEV_ASSIGN;
+ 		MAC_ASSIGN(mac_addr, mac_addr);
+ 		__entry->key_index = key_index;
+ 		__entry->pairwise = pairwise;
+ 	),
+-	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", key_index: %u, pairwise: %s, mac addr: " MAC_PR_FMT,
+-		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->key_index,
++	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", key_index: %u, pairwise: %s, mac addr: " MAC_PR_FMT,
++		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->key_index,
+ 		  BOOL_TO_STR(__entry->pairwise), MAC_PR_ARG(mac_addr))
+ );
  
- 	if (!info->bss) {
- 		info->bss = cfg80211_get_bss(wdev->wiphy, info->channel,
-@@ -974,7 +1032,8 @@ void cfg80211_roamed(struct net_device *dev, struct cfg80211_roam_info *info,
+ DEFINE_EVENT(key_handle, rdev_get_key,
+-	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, u8 key_index,
++	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, u8 key_index,
+ 		 bool pairwise, const u8 *mac_addr),
+-	TP_ARGS(wiphy, netdev, key_index, pairwise, mac_addr)
++	TP_ARGS(wiphy, wdev, key_index, pairwise, mac_addr)
+ );
  
- 	ev = kzalloc(sizeof(*ev) + info->req_ie_len + info->resp_ie_len +
- 		     info->fils.kek_len + info->fils.pmk_len +
--		     (info->fils.pmkid ? WLAN_PMKID_LEN : 0), gfp);
-+		     (info->fils.pmkid ? WLAN_PMKID_LEN : 0) +
-+		     mlo_link_params_size, gfp);
- 	if (!ev) {
- 		cfg80211_put_bss(wdev->wiphy, info->bss);
- 		return;
-@@ -1015,6 +1074,13 @@ void cfg80211_roamed(struct net_device *dev, struct cfg80211_roam_info *info,
- 		       WLAN_PMKID_LEN);
- 		next += WLAN_PMKID_LEN;
- 	}
-+	if (info->n_mlo_links) {
-+		ev->rm.n_mlo_links = info->n_mlo_links;
-+		ev->rm.mlo_links = (struct cfg80211_mlo_link_params *)next;
-+		memcpy((void *)ev->rm.mlo_links, info->mlo_links,
-+		       mlo_link_params_size);
-+		next += mlo_link_params_size;
-+	}
- 	ev->rm.fils.update_erp_next_seq_num = info->fils.update_erp_next_seq_num;
- 	if (info->fils.update_erp_next_seq_num)
- 		ev->rm.fils.erp_next_seq_num = info->fils.erp_next_seq_num;
-@@ -1074,7 +1140,7 @@ EXPORT_SYMBOL(cfg80211_port_authorized);
- void __cfg80211_disconnected(struct net_device *dev, const u8 *ie,
- 			     size_t ie_len, u16 reason, bool from_ap)
+ DEFINE_EVENT(key_handle, rdev_del_key,
+-	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, u8 key_index,
++	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, u8 key_index,
+ 		 bool pairwise, const u8 *mac_addr),
+-	TP_ARGS(wiphy, netdev, key_index, pairwise, mac_addr)
++	TP_ARGS(wiphy, wdev, key_index, pairwise, mac_addr)
+ );
+ 
+ TRACE_EVENT(rdev_add_key,
+-	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, u8 key_index,
++	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, u8 key_index,
+ 		 bool pairwise, const u8 *mac_addr, u8 mode),
+-	TP_ARGS(wiphy, netdev, key_index, pairwise, mac_addr, mode),
++	TP_ARGS(wiphy, wdev, key_index, pairwise, mac_addr, mode),
+ 	TP_STRUCT__entry(
+ 		WIPHY_ENTRY
+-		NETDEV_ENTRY
++		WDEV_ENTRY
+ 		MAC_ENTRY(mac_addr)
+ 		__field(u8, key_index)
+ 		__field(bool, pairwise)
+@@ -482,75 +482,75 @@ TRACE_EVENT(rdev_add_key,
+ 	),
+ 	TP_fast_assign(
+ 		WIPHY_ASSIGN;
+-		NETDEV_ASSIGN;
++		WDEV_ASSIGN;
+ 		MAC_ASSIGN(mac_addr, mac_addr);
+ 		__entry->key_index = key_index;
+ 		__entry->pairwise = pairwise;
+ 		__entry->mode = mode;
+ 	),
+-	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", key_index: %u, "
++	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", key_index: %u, "
+ 		  "mode: %u, pairwise: %s, mac addr: " MAC_PR_FMT,
+-		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->key_index,
++		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->key_index,
+ 		  __entry->mode, BOOL_TO_STR(__entry->pairwise),
+ 		  MAC_PR_ARG(mac_addr))
+ );
+ 
+ TRACE_EVENT(rdev_set_default_key,
+-	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, u8 key_index,
++	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, u8 key_index,
+ 		 bool unicast, bool multicast),
+-	TP_ARGS(wiphy, netdev, key_index, unicast, multicast),
++	TP_ARGS(wiphy, wdev, key_index, unicast, multicast),
+ 	TP_STRUCT__entry(
+ 		WIPHY_ENTRY
+-		NETDEV_ENTRY
++		WDEV_ENTRY
+ 		__field(u8, key_index)
+ 		__field(bool, unicast)
+ 		__field(bool, multicast)
+ 	),
+ 	TP_fast_assign(
+ 		WIPHY_ASSIGN;
+-		NETDEV_ASSIGN;
++		WDEV_ASSIGN;
+ 		__entry->key_index = key_index;
+ 		__entry->unicast = unicast;
+ 		__entry->multicast = multicast;
+ 	),
+-	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", key index: %u, unicast: %s, multicast: %s",
+-		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->key_index,
++	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", key index: %u, unicast: %s, multicast: %s",
++		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->key_index,
+ 		  BOOL_TO_STR(__entry->unicast),
+ 		  BOOL_TO_STR(__entry->multicast))
+ );
+ 
+ TRACE_EVENT(rdev_set_default_mgmt_key,
+-	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, u8 key_index),
+-	TP_ARGS(wiphy, netdev, key_index),
++	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, u8 key_index),
++	TP_ARGS(wiphy, wdev, key_index),
+ 	TP_STRUCT__entry(
+ 		WIPHY_ENTRY
+-		NETDEV_ENTRY
++		WDEV_ENTRY
+ 		__field(u8, key_index)
+ 	),
+ 	TP_fast_assign(
+ 		WIPHY_ASSIGN;
+-		NETDEV_ASSIGN;
++		WDEV_ASSIGN;
+ 		__entry->key_index = key_index;
+ 	),
+-	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", key index: %u",
+-		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->key_index)
++	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", key index: %u",
++		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->key_index)
+ );
+ 
+ TRACE_EVENT(rdev_set_default_beacon_key,
+-	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, u8 key_index),
+-	TP_ARGS(wiphy, netdev, key_index),
++	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev, u8 key_index),
++	TP_ARGS(wiphy, wdev, key_index),
+ 	TP_STRUCT__entry(
+ 		WIPHY_ENTRY
+-		NETDEV_ENTRY
++		WDEV_ENTRY
+ 		__field(u8, key_index)
+ 	),
+ 	TP_fast_assign(
+ 		WIPHY_ASSIGN;
+-		NETDEV_ASSIGN;
++		WDEV_ASSIGN;
+ 		__entry->key_index = key_index;
+ 	),
+-	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", key index: %u",
+-		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->key_index)
++	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", key index: %u",
++		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->key_index)
+ );
+ 
+ TRACE_EVENT(rdev_start_ap,
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index e692a17..3dc83bb 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -926,7 +926,6 @@ EXPORT_SYMBOL(ieee80211_bss_get_elem);
+ void cfg80211_upload_connect_keys(struct wireless_dev *wdev)
  {
--	struct wireless_dev *wdev = dev->ieee80211_ptr;
-+	struct wireless_dev *wdev = dev->ieee80211_ptr, *link_wdev;
  	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
+-	struct net_device *dev = wdev->netdev;
  	int i;
- #ifdef CONFIG_CFG80211_WEXT
-@@ -1133,6 +1199,13 @@ void __cfg80211_disconnected(struct net_device *dev, const u8 *ie,
- 	wdev->wext.connect.ssid_len = 0;
- #endif
  
-+	list_for_each_entry(link_wdev, &rdev->wiphy.wdev_list, list) {
-+		if (link_wdev->mld_wdev != wdev)
-+			continue;
-+
-+		eth_zero_addr(wdev->link_bssid);
-+	}
-+
- 	schedule_work(&cfg80211_disconnect_work);
- }
+ 	if (!wdev->connect_keys)
+@@ -935,14 +934,14 @@ void cfg80211_upload_connect_keys(struct wireless_dev *wdev)
+ 	for (i = 0; i < CFG80211_MAX_WEP_KEYS; i++) {
+ 		if (!wdev->connect_keys->params[i].cipher)
+ 			continue;
+-		if (rdev_add_key(rdev, dev, i, false, NULL,
++		if (rdev_add_key(rdev, wdev, i, false, NULL,
+ 				 &wdev->connect_keys->params[i])) {
+-			netdev_err(dev, "failed to set key %d\n", i);
++			wdev_err(wdev, "failed to set key %d\n", i);
+ 			continue;
+ 		}
+ 		if (wdev->connect_keys->def == i &&
+-		    rdev_set_default_key(rdev, dev, i, true, true)) {
+-			netdev_err(dev, "failed to set defkey %d\n", i);
++		    rdev_set_default_key(rdev, wdev, i, true, true)) {
++			wdev_err(wdev, "failed to set defkey %d\n", i);
+ 			continue;
+ 		}
+ 	}
+diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
+index a32065d..08fcd20 100644
+--- a/net/wireless/wext-compat.c
++++ b/net/wireless/wext-compat.c
+@@ -465,7 +465,7 @@ static int __cfg80211_set_encryption(struct cfg80211_registered_device *rdev,
+ 			    !(rdev->wiphy.flags & WIPHY_FLAG_IBSS_RSN))
+ 				err = -ENOENT;
+ 			else
+-				err = rdev_del_key(rdev, dev, idx, pairwise,
++				err = rdev_del_key(rdev, wdev, idx, pairwise,
+ 						   addr);
+ 		}
+ 		wdev->wext.connect.privacy = false;
+@@ -502,7 +502,7 @@ static int __cfg80211_set_encryption(struct cfg80211_registered_device *rdev,
  
+ 	err = 0;
+ 	if (wdev->current_bss)
+-		err = rdev_add_key(rdev, dev, idx, pairwise, addr, params);
++		err = rdev_add_key(rdev, wdev, idx, pairwise, addr, params);
+ 	else if (params->cipher != WLAN_CIPHER_SUITE_WEP40 &&
+ 		 params->cipher != WLAN_CIPHER_SUITE_WEP104)
+ 		return -EINVAL;
+@@ -537,7 +537,7 @@ static int __cfg80211_set_encryption(struct cfg80211_registered_device *rdev,
+ 				__cfg80211_leave_ibss(rdev, wdev->netdev, true);
+ 				rejoin = true;
+ 			}
+-			err = rdev_set_default_key(rdev, dev, idx, true, true);
++			err = rdev_set_default_key(rdev, wdev, idx, true, true);
+ 		}
+ 		if (!err) {
+ 			wdev->wext.default_key = idx;
+@@ -550,7 +550,7 @@ static int __cfg80211_set_encryption(struct cfg80211_registered_device *rdev,
+ 	if (params->cipher == WLAN_CIPHER_SUITE_AES_CMAC &&
+ 	    (tx_key || (!addr && wdev->wext.default_mgmt_key == -1))) {
+ 		if (wdev->current_bss)
+-			err = rdev_set_default_mgmt_key(rdev, dev, idx);
++			err = rdev_set_default_mgmt_key(rdev, wdev, idx);
+ 		if (!err)
+ 			wdev->wext.default_mgmt_key = idx;
+ 		return err;
+@@ -614,7 +614,7 @@ static int cfg80211_wext_siwencode(struct net_device *dev,
+ 		err = 0;
+ 		wdev_lock(wdev);
+ 		if (wdev->current_bss)
+-			err = rdev_set_default_key(rdev, dev, idx, true,
++			err = rdev_set_default_key(rdev, wdev, idx, true,
+ 						   true);
+ 		if (!err)
+ 			wdev->wext.default_key = idx;
 -- 
 2.7.4
 
