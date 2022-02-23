@@ -2,207 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF4E64C1017
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Feb 2022 11:17:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AF9F4C1036
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Feb 2022 11:21:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239608AbiBWKSF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Feb 2022 05:18:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48758 "EHLO
+        id S233905AbiBWKWY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Feb 2022 05:22:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239578AbiBWKSE (ORCPT
+        with ESMTP id S230447AbiBWKWX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Feb 2022 05:18:04 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 680898BE36
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Feb 2022 02:17:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1645611450; x=1677147450;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=HnyHaLoZKBQRkZk+qQt3PnvpBViULNC6cm3fetRyRS8=;
-  b=JHBS9Jm4ltGnNtXcqwuS3B6Zuz4pxSpTdaRDoLcoVFrQJs17buan2SK3
-   DRmdUh0LIkWitsUjhxpqEopMjfBSbTzjheqjlkZ2Cl8cwKpz3QqNDGQZx
-   sEBv/pBeknQ/eoNngQMu/UBIUu7A4RzzKt+nGSRDtiO01/59Y9BlTZQkI
-   1BKBU0YEoB3XWI76I2/Q7mmB6bQAW3k9BLqnfb6yb7KSK+5XU6gZVW3Kq
-   MTSofuddy/cg1x1aDfsQEi8ePjobGINbIegoR3Wy8sVSjqFlRh59I29DK
-   agmR92oJaB4oy4hHHkfTJMnyGU8L/G6DVzxfge5D2vk0mOpTzwHoujWPa
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10266"; a="231904597"
-X-IronPort-AV: E=Sophos;i="5.88,390,1635231600"; 
-   d="scan'208";a="231904597"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2022 02:17:30 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,390,1635231600"; 
-   d="scan'208";a="706976945"
-Received: from lkp-server01.sh.intel.com (HELO 788b1cd46f0d) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 23 Feb 2022 02:17:25 -0800
-Received: from kbuild by 788b1cd46f0d with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nMoi5-0001Gm-3K; Wed, 23 Feb 2022 10:17:25 +0000
-Date:   Wed, 23 Feb 2022 18:17:06 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:main] BUILD SUCCESS
- a0061be4e54b52e5e4ff179c3f817107ddbb2830
-Message-ID: <621609a2.GRPc6ujCa423Iqkj%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Wed, 23 Feb 2022 05:22:23 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B734430F69
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Feb 2022 02:21:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=wtx5LDHSOtjZTd/A+HmWVa0n/Ma4VA53FegcM57Q5kk=; t=1645611715; x=1646821315; 
+        b=pWeh2kiSUtXV2r6UQoplJRDOw5idtx+0mkgepNSMnTHl4AbUkzalkeYOkYuG62DEEZrKdOlG0Ga
+        x00ve0MO1wwMTK22is//e9RDr87sI6Xuxa2KtbuFsF6BUX1pfjiKjs9Vu2XwMurkB+bEdIuh5brxa
+        owNKb0oXduCYP/jrUknwTBqKUlsC0kB6hg1b3P/59QABbA2MdkIV7wnVJh926qA/CFk7s+qD+nERU
+        vOurg6SuWhDmASpYGH7yE33S68CnC1/t9O7vf3kb3aI3YK7MAihnIzbhDefKvlUZhjZIU2GoOkl/N
+        8dK6kJpXzPcKo6j1amXBNWAYqrpkzY19JVdg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nMomN-004cTv-FZ;
+        Wed, 23 Feb 2022 11:21:51 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>, Jouni Malinen <j@w1.fi>
+Subject: [PATCH] mac80211: treat some SAE auth steps as final
+Date:   Wed, 23 Feb 2022 11:21:47 +0100
+Message-Id: <20220223112146.008533287568.I273035bd1d8eebebb59bfadd7f43aef81431bd3a@changeid>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: a0061be4e54b52e5e4ff179c3f817107ddbb2830  rtw88: change rtw_info() to proper message level
+From: Johannes Berg <johannes.berg@intel.com>
 
-elapsed time: 1085m
+When we get anti-clogging token required (added by the commit
+mentioned below), or the other status codes added by the later
+commit 4e56cde15f7d ("mac80211: Handle special status codes in
+SAE commit") we currently just pretend (towards the internal
+state machine of authentication) that we didn't receive anything.
 
-configs tested: 124
-configs skipped: 3
+This has the undesirable consequence of retransmitting the prior
+frame, which is not expected, because the timer is still armed.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+If we just disarm the timer at that point, it would result in
+the undesirable side effect of being in this state indefinitely
+if userspace crashes, or so.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                          randconfig-c001
-m68k                            q40_defconfig
-powerpc                     sequoia_defconfig
-m68k                        m5307c3_defconfig
-sparc                               defconfig
-mips                         db1xxx_defconfig
-arm                          pxa910_defconfig
-powerpc                         ps3_defconfig
-alpha                            alldefconfig
-mips                            gpr_defconfig
-sh                            shmin_defconfig
-arc                     haps_hs_smp_defconfig
-arm                           stm32_defconfig
-um                                  defconfig
-arm                           sunxi_defconfig
-powerpc                 mpc837x_rdb_defconfig
-powerpc                     redwood_defconfig
-alpha                               defconfig
-powerpc                      makalu_defconfig
-m68k                             alldefconfig
-powerpc                      ppc6xx_defconfig
-arm                  randconfig-c002-20220221
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-nds32                             allnoconfig
-nios2                               defconfig
-arc                              allyesconfig
-csky                                defconfig
-nds32                               defconfig
-nios2                            allyesconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64               randconfig-a003-20220221
-x86_64               randconfig-a002-20220221
-x86_64               randconfig-a005-20220221
-x86_64               randconfig-a006-20220221
-x86_64               randconfig-a001-20220221
-x86_64               randconfig-a004-20220221
-i386                 randconfig-a002-20220221
-i386                 randconfig-a001-20220221
-i386                 randconfig-a005-20220221
-i386                 randconfig-a003-20220221
-i386                 randconfig-a006-20220221
-i386                 randconfig-a004-20220221
-arc                  randconfig-r043-20220221
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                                  kexec
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-x86_64                          rhel-8.3-func
+So to fix this, reset the timer and actually set auth_data->done
+in order to have no more retransmission, but to have the data
+destroyed when the timer actually fires, which will only happen
+if userspace didn't continue (i.e. crashed or abandoned it.)
 
-clang tested configs:
-powerpc              randconfig-c003-20220222
-x86_64                        randconfig-c007
-arm                  randconfig-c002-20220222
-mips                 randconfig-c004-20220222
-i386                          randconfig-c001
-riscv                randconfig-c006-20220222
-powerpc                  mpc866_ads_defconfig
-arm                            dove_defconfig
-mips                          ath25_defconfig
-mips                          ath79_defconfig
-mips                       lemote2f_defconfig
-arm                         s5pv210_defconfig
-mips                     cu1000-neo_defconfig
-powerpc                     mpc5200_defconfig
-mips                           ip27_defconfig
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-x86_64               randconfig-a011-20220221
-x86_64               randconfig-a012-20220221
-x86_64               randconfig-a014-20220221
-x86_64               randconfig-a013-20220221
-x86_64               randconfig-a015-20220221
-x86_64               randconfig-a016-20220221
-i386                 randconfig-a012-20220221
-i386                 randconfig-a011-20220221
-i386                 randconfig-a014-20220221
-i386                 randconfig-a015-20220221
-i386                 randconfig-a016-20220221
-i386                 randconfig-a013-20220221
-hexagon              randconfig-r045-20220221
-hexagon              randconfig-r041-20220221
-riscv                randconfig-r042-20220221
-s390                 randconfig-r044-20220221
-
+Fixes: a4055e74a2ff ("mac80211: Don't destroy auth data in case of anti-clogging")
+Reported-by: Jouni Malinen <j@w1.fi>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ net/mac80211/mlme.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index e5ccf17618ab..0216c22a5287 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -37,6 +37,7 @@
+ #define IEEE80211_AUTH_TIMEOUT_SAE	(HZ * 2)
+ #define IEEE80211_AUTH_MAX_TRIES	3
+ #define IEEE80211_AUTH_WAIT_ASSOC	(HZ * 5)
++#define IEEE80211_AUTH_WAIT_SAE_RETRY	(HZ * 2)
+ #define IEEE80211_ASSOC_TIMEOUT		(HZ / 5)
+ #define IEEE80211_ASSOC_TIMEOUT_LONG	(HZ / 2)
+ #define IEEE80211_ASSOC_TIMEOUT_SHORT	(HZ / 10)
+@@ -3011,8 +3012,15 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 		    (status_code == WLAN_STATUS_ANTI_CLOG_REQUIRED ||
+ 		     (auth_transaction == 1 &&
+ 		      (status_code == WLAN_STATUS_SAE_HASH_TO_ELEMENT ||
+-		       status_code == WLAN_STATUS_SAE_PK))))
++		       status_code == WLAN_STATUS_SAE_PK)))) {
++			/* treat it as done so that timeout will remove it */
++			ifmgd->auth_data->done = true;
++			ifmgd->auth_data->timeout =
++				jiffies + IEEE80211_AUTH_WAIT_SAE_RETRY;
++			ifmgd->auth_data->timeout_started = true;
++			run_again(sdata, ifmgd->auth_data->timeout);
+ 			goto notify_driver;
++		}
+ 
+ 		sdata_info(sdata, "%pM denied authentication (status %d)\n",
+ 			   mgmt->sa, status_code);
+-- 
+2.35.1
+
