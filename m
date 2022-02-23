@@ -2,244 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83D3C4C1EA9
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Feb 2022 23:36:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48DBE4C1E88
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Feb 2022 23:34:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244462AbiBWWfx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Feb 2022 17:35:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42332 "EHLO
+        id S234327AbiBWWfA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Feb 2022 17:35:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244263AbiBWWfr (ORCPT
+        with ESMTP id S232616AbiBWWe7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Feb 2022 17:35:47 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B099450E2B;
-        Wed, 23 Feb 2022 14:35:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1645655716; x=1677191716;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references;
-  bh=HUMa9CK90NomsFE/q+eM+dfjfV8q5J7Xof3xZuAIz6c=;
-  b=WqTE0M4gLSq9TEOPgYS6MPGTJqKa9028fclNhOmI32tgRtC372uUCKJh
-   0VkxMQVu9KQ7uzX/8ZBntXo4vhrRJdnKigUvGpqMyfs5boHuusDtM73ID
-   +WcAyFhLPgGJsd9nSs52EoFSFxU0UhWwSEQshP+0s3+VCEtf+AITSNyL4
-   2r59vjDpxjj7TajUjUG/tNgkYVOdsx4s3vf4tEEXF0yTc4rPQ9mOr6Mct
-   s1gS/BKed5gtoBHuc47VhgzN3Whb5G+NgKehZ7OthQQDdrxj5KQIJlrw9
-   zVDFreHeoA+X5FNgRbmKWiSgZ8ritRNRyq0XmcX52O/PqM6HxaSY9yy/e
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10267"; a="232718030"
-X-IronPort-AV: E=Sophos;i="5.88,392,1635231600"; 
-   d="scan'208";a="232718030"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2022 14:35:15 -0800
-X-IronPort-AV: E=Sophos;i="5.88,392,1635231600"; 
-   d="scan'208";a="628252296"
-Received: from rmarti10-desk.jf.intel.com ([134.134.150.146])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2022 14:35:15 -0800
-From:   Ricardo Martinez <ricardo.martinez@linux.intel.com>
-To:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Cc:     kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        andriy.shevchenko@linux.intel.com, dinesh.sharma@intel.com,
-        eliot.lee@intel.com, ilpo.johannes.jarvinen@intel.com,
-        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
-        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
-        sreehari.kancharla@intel.com, madhusmita.sahu@intel.com,
-        Ricardo Martinez <ricardo.martinez@linux.intel.com>
-Subject: [PATCH net-next v5 13/13] net: wwan: t7xx: Add maintainers and documentation
-Date:   Wed, 23 Feb 2022 15:33:26 -0700
-Message-Id: <20220223223326.28021-14-ricardo.martinez@linux.intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220223223326.28021-1-ricardo.martinez@linux.intel.com>
-References: <20220223223326.28021-1-ricardo.martinez@linux.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Wed, 23 Feb 2022 17:34:59 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C46FD1B7B8
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Feb 2022 14:34:26 -0800 (PST)
+X-UUID: 9dbd636b79f146ebaefdb5e064f17f2a-20220224
+X-UUID: 9dbd636b79f146ebaefdb5e064f17f2a-20220224
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 745270586; Thu, 24 Feb 2022 06:34:21 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 24 Feb 2022 06:34:19 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 24 Feb 2022 06:34:19 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Mark-YW.Chen@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
+        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
+        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH 1/2] mt76: mt7921: fix up the monitor mode
+Date:   Thu, 24 Feb 2022 06:34:17 +0800
+Message-ID: <7dcfc62d67f1f51e6627cc24000393844aa2b649.1645655280.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
+MIME-Version: 1.0
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Adds maintainers and documentation for MediaTek t7xx 5G WWAN modem
-device driver.
+From: Sean Wang <sean.wang@mediatek.com>
 
-Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+Properly set up the monitor mode the firmware can support to fix up
+RTS/CTS and beacon frames cannot be captured and forwarded to the host.
 
-From a WWAN framework perspective:
-Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- .../networking/device_drivers/wwan/index.rst  |   1 +
- .../networking/device_drivers/wwan/t7xx.rst   | 120 ++++++++++++++++++
- MAINTAINERS                                   |  11 ++
- 3 files changed, 132 insertions(+)
- create mode 100644 Documentation/networking/device_drivers/wwan/t7xx.rst
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 31 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  3 ++
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 23 ++++++++------
+ 3 files changed, 47 insertions(+), 10 deletions(-)
 
-diff --git a/Documentation/networking/device_drivers/wwan/index.rst b/Documentation/networking/device_drivers/wwan/index.rst
-index 1cb8c7371401..370d8264d5dc 100644
---- a/Documentation/networking/device_drivers/wwan/index.rst
-+++ b/Documentation/networking/device_drivers/wwan/index.rst
-@@ -9,6 +9,7 @@ Contents:
-    :maxdepth: 2
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 0a646ae51c8d..dded8a7d3efc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -2784,5 +2784,36 @@ int mt76_connac_mcu_rdd_cmd(struct mt76_dev *dev, int cmd, u8 index,
+ }
+ EXPORT_SYMBOL_GPL(mt76_connac_mcu_rdd_cmd);
  
-    iosm
-+   t7xx
++int mt76_connac_mcu_set_sniffer(struct mt76_dev *dev, struct ieee80211_vif *vif,
++				bool enable)
++{
++	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
++	struct {
++		struct {
++			u8 band_idx;
++			u8 pad[3];
++		} __packed hdr;
++		struct sniffer_enable_tlv {
++			__le16 tag;
++			__le16 len;
++			u8 enable;
++			u8 pad[3];
++		} __packed enable;
++		} req = {
++		.hdr = {
++			.band_idx = mvif->band_idx,
++		},
++		.enable = {
++			.tag = cpu_to_le16(0),
++			.len = cpu_to_le16(sizeof(struct sniffer_enable_tlv)),
++			.enable = enable,
++		},
++	};
++
++	return mt76_mcu_send_msg(dev, MCU_UNI_CMD(SNIFFER), &req, sizeof(req),
++				 true);
++}
++EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_sniffer);
++
+ MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
+ MODULE_LICENSE("Dual BSD/GPL");
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index 384c3eab1c8a..96ab1a55af17 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -993,6 +993,7 @@ enum {
+ 	MCU_UNI_CMD_SUSPEND = 0x05,
+ 	MCU_UNI_CMD_OFFLOAD = 0x06,
+ 	MCU_UNI_CMD_HIF_CTRL = 0x07,
++	MCU_UNI_CMD_SNIFFER = 0x24,
+ };
  
- .. only::  subproject and html
+ enum {
+@@ -1653,4 +1654,6 @@ int mt76_connac_mcu_set_pm(struct mt76_dev *dev, int band, int enter);
+ int mt76_connac_mcu_restart(struct mt76_dev *dev);
+ int mt76_connac_mcu_rdd_cmd(struct mt76_dev *dev, int cmd, u8 index,
+ 			    u8 rx_sel, u8 val);
++int mt76_connac_mcu_set_sniffer(struct mt76_dev *dev, struct ieee80211_vif *vif,
++				bool enable);
+ #endif /* __MT76_CONNAC_MCU_H */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index b6e836a4fad7..051a573141f4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -479,6 +479,16 @@ mt7921_pm_interface_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ 	mt7921_mcu_set_beacon_filter(dev, vif, dev->pm.enable);
+ }
  
-diff --git a/Documentation/networking/device_drivers/wwan/t7xx.rst b/Documentation/networking/device_drivers/wwan/t7xx.rst
-new file mode 100644
-index 000000000000..dd5b731957ca
---- /dev/null
-+++ b/Documentation/networking/device_drivers/wwan/t7xx.rst
-@@ -0,0 +1,120 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
++static void
++mt7921_sniffer_interface_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
++{
++	struct mt7921_dev *dev = priv;
++	struct ieee80211_hw *hw = mt76_hw(dev);
++	bool enabled = !!(hw->conf.flags & IEEE80211_CONF_MONITOR);
 +
-+.. Copyright (C) 2020-21 Intel Corporation
++	mt76_connac_mcu_set_sniffer(&dev->mt76, vif, enabled);
++}
 +
-+.. _t7xx_driver_doc:
-+
-+============================================
-+t7xx driver for MTK PCIe based T700 5G modem
-+============================================
-+The t7xx driver is a WWAN PCIe host driver developed for linux or Chrome OS platforms
-+for data exchange over PCIe interface between Host platform & MediaTek's T700 5G modem.
-+The driver exposes an interface conforming to the MBIM protocol [1]. Any front end
-+application (e.g. Modem Manager) could easily manage the MBIM interface to enable
-+data communication towards WWAN. The driver also provides an interface to interact
-+with the MediaTek's modem via AT commands.
-+
-+Basic usage
-+===========
-+MBIM & AT functions are inactive when unmanaged. The t7xx driver provides
-+WWAN port userspace interfaces representing MBIM & AT control channels and does
-+not play any role in managing their functionality. It is the job of a userspace
-+application to detect port enumeration and enable MBIM & AT functionalities.
-+
-+Examples of few such userspace applications are:
-+
-+- mbimcli (included with the libmbim [2] library), and
-+- Modem Manager [3]
-+
-+Management Applications to carry out below required actions for establishing
-+MBIM IP session:
-+
-+- open the MBIM control channel
-+- configure network connection settings
-+- connect to network
-+- configure IP network interface
-+
-+Management Applications to carry out below required actions for send an AT
-+command and receive response:
-+
-+- open the AT control channel using a UART tool or a special user tool
-+
-+Management application development
-+==================================
-+The driver and userspace interfaces are described below. The MBIM protocol is
-+described in [1] Mobile Broadband Interface Model v1.0 Errata-1.
-+
-+MBIM control channel userspace ABI
-+----------------------------------
-+
-+/dev/wwan0mbim0 character device
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+The driver exposes an MBIM interface to the MBIM function by implementing
-+MBIM WWAN Port. The userspace end of the control channel pipe is a
-+/dev/wwan0mbim0 character device. Application shall use this interface for
-+MBIM protocol communication.
-+
-+Fragmentation
-+~~~~~~~~~~~~~
-+The userspace application is responsible for all control message fragmentation
-+and defragmentation as per MBIM specification.
-+
-+/dev/wwan0mbim0 write()
-+~~~~~~~~~~~~~~~~~~~~~~~
-+The MBIM control messages from the management application must not exceed the
-+negotiated control message size.
-+
-+/dev/wwan0mbim0 read()
-+~~~~~~~~~~~~~~~~~~~~~~
-+The management application must accept control messages of up the negotiated
-+control message size.
-+
-+MBIM data channel userspace ABI
-+-------------------------------
-+
-+wwan0-X network device
-+~~~~~~~~~~~~~~~~~~~~~~
-+The t7xx driver exposes IP link interface "wwan0-X" of type "wwan" for IP
-+traffic. Iproute network utility is used for creating "wwan0-X" network
-+interface and for associating it with MBIM IP session.
-+
-+The userspace management application is responsible for creating new IP link
-+prior to establishing MBIM IP session where the SessionId is greater than 0.
-+
-+For example, creating new IP link for a MBIM IP session with SessionId 1:
-+
-+  ip link add dev wwan0-1 parentdev wwan0 type wwan linkid 1
-+
-+The driver will automatically map the "wwan0-1" network device to MBIM IP
-+session 1.
-+
-+AT port userspace ABI
-+----------------------------------
-+
-+/dev/wwan0at0 character device
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+The driver exposes an AT port by implementing AT WWAN Port.
-+The userspace end of the control port is a /dev/wwan0at0 character
-+device. Application shall use this interface to issue AT commands.
-+
-+The MediaTek's T700 modem supports the 3GPP TS 27.007 [4] specification.
-+
-+References
-+==========
-+[1] *MBIM (Mobile Broadband Interface Model) Errata-1*
-+
-+- https://www.usb.org/document-library/
-+
-+[2] *libmbim "a glib-based library for talking to WWAN modems and devices which
-+speak the Mobile Interface Broadband Model (MBIM) protocol"*
-+
-+- http://www.freedesktop.org/wiki/Software/libmbim/
-+
-+[3] *Modem Manager "a DBus-activated daemon which controls mobile broadband
-+(2G/3G/4G/5G) devices and connections"*
-+
-+- http://www.freedesktop.org/wiki/Software/ModemManager/
-+
-+[4] *Specification # 27.007 - 3GPP*
-+
-+- https://www.3gpp.org/DynaReport/27007.htm
-diff --git a/MAINTAINERS b/MAINTAINERS
-index aa0f6cbb634e..1f8c2b26de2b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12338,6 +12338,17 @@ S:	Maintained
- F:	drivers/net/dsa/mt7530.*
- F:	net/dsa/tag_mtk.c
+ void mt7921_set_runtime_pm(struct mt7921_dev *dev)
+ {
+ 	struct ieee80211_hw *hw = dev->mphy.hw;
+@@ -516,16 +526,9 @@ static int mt7921_config(struct ieee80211_hw *hw, u32 changed)
+ 	}
  
-+MEDIATEK T7XX 5G WWAN MODEM DRIVER
-+M:	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-+M:	Intel Corporation <linuxwwan@intel.com>
-+R:	Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>
-+R:	Liu Haijun <haijun.liu@mediatek.com>
-+R:	M Chetan Kumar <m.chetan.kumar@linux.intel.com>
-+R:	Ricardo Martinez <ricardo.martinez@linux.intel.com>
-+L:	netdev@vger.kernel.org
-+S:	Supported
-+F:	drivers/net/wwan/t7xx/
-+
- MEDIATEK USB3 DRD IP DRIVER
- M:	Chunfeng Yun <chunfeng.yun@mediatek.com>
- L:	linux-usb@vger.kernel.org
+ 	if (changed & IEEE80211_CONF_CHANGE_MONITOR) {
+-		bool enabled = !!(hw->conf.flags & IEEE80211_CONF_MONITOR);
+-
+-		if (!enabled)
+-			phy->rxfilter |= MT_WF_RFCR_DROP_OTHER_UC;
+-		else
+-			phy->rxfilter &= ~MT_WF_RFCR_DROP_OTHER_UC;
+-
+-		mt76_rmw_field(dev, MT_DMA_DCR0(0), MT_DMA_DCR0_RXD_G5_EN,
+-			       enabled);
+-		mt76_wr(dev, MT_WF_RFCR(0), phy->rxfilter);
++		ieee80211_iterate_active_interfaces(hw,
++						    IEEE80211_IFACE_ITER_RESUME_ALL,
++						    mt7921_sniffer_interface_iter, dev);
+ 		mt7921_set_runtime_pm(dev);
+ 	}
+ 
 -- 
-2.17.1
+2.25.1
 
