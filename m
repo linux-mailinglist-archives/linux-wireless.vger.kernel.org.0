@@ -2,52 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0E1E4C0960
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Feb 2022 03:39:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 549854C0897
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Feb 2022 03:37:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237639AbiBWCjN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Feb 2022 21:39:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58290 "EHLO
+        id S237040AbiBWCcm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Feb 2022 21:32:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237807AbiBWCiE (ORCPT
+        with ESMTP id S237056AbiBWCcd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Feb 2022 21:38:04 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD91D5C67A;
-        Tue, 22 Feb 2022 18:33:06 -0800 (PST)
+        Tue, 22 Feb 2022 21:32:33 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E999659A53;
+        Tue, 22 Feb 2022 18:30:30 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B926F615C4;
-        Wed, 23 Feb 2022 02:33:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06709C340F4;
-        Wed, 23 Feb 2022 02:33:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1164614FF;
+        Wed, 23 Feb 2022 02:30:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D40C340EB;
+        Wed, 23 Feb 2022 02:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645583585;
-        bh=ajqEBc+WHQgS/A0sHKtldUjwemPzGFKvKtzhAy1csHE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J8d7MPk3Y453pKxrl6qhfrzHYY9fVBg6DkJ0qwx2FsR5+amz++RbXjkf1826wFEAs
-         juZMB+3f5ZrMMZJkyKOWDii3mlSsXYxK85yg19MszLD7GQagZKuwhfBYWWYcf6Q9Gm
-         8j09XL//+n5LfvWKeCEbUhKI/fQpwa0Bz1o91TCVOk3p2+o+KXZ6UTdgk11AuXBWf/
-         NlwbOtUIJEjQFj/kga9i/dovqf9+7dqW57S1ksQDRq1m3mJW866IyHR5HY1uLs4WRW
-         aBJzIKBUvrA//geK1C/eQ059hO29xVMPn8pR+DrBTOg1QfpEAjbqGPiZ+Fy2v0QZWy
-         PCz1954Bwy5pw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     JaeMan Park <jaeman@google.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
-        kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 2/9] mac80211_hwsim: initialize ieee80211_tx_info at hw_scan_work
-Date:   Tue, 22 Feb 2022 21:32:53 -0500
-Message-Id: <20220223023300.242616-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220223023300.242616-1-sashal@kernel.org>
-References: <20220223023300.242616-1-sashal@kernel.org>
+        s=k20201202; t=1645583422;
+        bh=h5iW1xnxYLihq1VYREsa+idqlKZAATRY4MQrqNiQGKE=;
+        h=Date:From:To:Cc:Subject:From;
+        b=VptbQJ50VYO1ckFXPf8UodRCgCOzAMPRTDKvgvQIJjjzb+v/B2kF1GqwlAPWtZGYc
+         dvNJDnM3NdMT/GIuYs6FunvztufU4tigXz+lfis3BUsMza8vP9YZgKD10NfEZWJ1Co
+         wTAKq5xm/pSdUELV2jMJy0hjLMc22YsyEHT1pkvPSJ6hc/BI/FnoHZWuyhIOl00C6z
+         ULBARob9XDxoGzMj+sS0YwujjTRwBL/v+thrOq8TH3bXvG2owLvFXM1DS/z5xzX4MX
+         v3sWaAyBFRCMlHEj2jVFVzBccD7rtFiX1TD6MObPsgiA3OUEtzjez+HTIPZGZa71mn
+         w7Ez5L1Scaw4w==
+Date:   Tue, 22 Feb 2022 20:38:16 -0600
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        linux-hardening@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Subject: [PATCH 0/6][next] ath6kl: wmi: Replace one-element arrays with
+ flexible-array members
+Message-ID: <cover.1645583264.git.gustavoars@kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -59,49 +57,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: JaeMan Park <jaeman@google.com>
+This series aims to replace one-element arrays with flexible-array
+members in multiple structures in drivers/net/wireless/ath/ath6kl/wmi.h
 
-[ Upstream commit cacfddf82baf1470e5741edeecb187260868f195 ]
+There is a regular need in the kernel to provide a way to declare having
+a dynamically sized set of trailing elements in a structure. Kernel code
+should always use “flexible array members”[1] for these cases. The older
+style of one-element or zero-length arrays should no longer be used[2].
 
-In mac80211_hwsim, the probe_req frame is created and sent while
-scanning. It is sent with ieee80211_tx_info which is not initialized.
-Uninitialized ieee80211_tx_info can cause problems when using
-mac80211_hwsim with wmediumd. wmediumd checks the tx_rates field of
-ieee80211_tx_info and doesn't relay probe_req frame to other clients
-even if it is a broadcasting message.
+This helps with the ongoing efforts to globally enable -Warray-bounds
+and get us closer to being able to tighten the FORTIFY_SOURCE routines
+on memcpy().
 
-Call ieee80211_tx_prepare_skb() to initialize ieee80211_tx_info for
-the probe_req that is created by hw_scan_work in mac80211_hwsim.
+These issues were found with the help of Coccinelle and audited and fixed,
+manually.
 
-Signed-off-by: JaeMan Park <jaeman@google.com>
-Link: https://lore.kernel.org/r/20220113060235.546107-1-jaeman@google.com
-[fix memory leak]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/mac80211_hwsim.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+[1] https://en.wikipedia.org/wiki/Flexible_array_member
+[2] https://www.kernel.org/doc/html/v5.16/process/deprecated.html#zero-length-and-one-element-arrays
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index a965ce9261d3a..a34647efb5ea5 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -1987,6 +1987,15 @@ static void hw_scan_work(struct work_struct *work)
- 				memcpy(skb_put(probe, req->ie_len), req->ie,
- 				       req->ie_len);
- 
-+			if (!ieee80211_tx_prepare_skb(hwsim->hw,
-+						      hwsim->hw_scan_vif,
-+						      probe,
-+						      hwsim->tmp_chan->band,
-+						      NULL)) {
-+				kfree_skb(probe);
-+				continue;
-+			}
-+
- 			local_bh_disable();
- 			mac80211_hwsim_tx_frame(hwsim->hw, probe,
- 						hwsim->tmp_chan);
+Link: https://github.com/KSPP/linux/issues/79
+
+Gustavo A. R. Silva (6):
+  ath6kl: wmi: Replace one-element array with flexible-array member in
+    struct wmi_begin_scan_cmd
+  ath6kl: wmi: Replace one-element array with flexible-array member in
+    struct wmi_start_scan_cmd
+  ath6kl: wmi: Replace one-element array with flexible-array  member in
+    struct wmi_channel_list_reply
+  ath6kl: wmi: Replace one-element array with flexible-array  member in
+    struct wmi_connect_event
+  ath6kl: wmi: Replace one-element array with flexible-array  member in
+    struct wmi_disconnect_event
+  ath6kl: wmi: Replace one-element array with flexible-array  member in
+    struct wmi_aplist_event
+
+ drivers/net/wireless/ath/ath6kl/wmi.c | 30 +++++++--------------------
+ drivers/net/wireless/ath/ath6kl/wmi.h | 12 +++++------
+ 2 files changed, 14 insertions(+), 28 deletions(-)
+
 -- 
-2.34.1
+2.27.0
 
