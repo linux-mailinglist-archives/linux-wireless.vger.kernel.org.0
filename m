@@ -2,153 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8878D4C09DF
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Feb 2022 04:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7135A4C09EE
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Feb 2022 04:06:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237798AbiBWDEm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Feb 2022 22:04:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43510 "EHLO
+        id S237815AbiBWDHA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Feb 2022 22:07:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235946AbiBWDEl (ORCPT
+        with ESMTP id S229533AbiBWDG7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Feb 2022 22:04:41 -0500
-Received: from APC01-PSA-obe.outbound.protection.outlook.com (mail-psaapc01on20722.outbound.protection.outlook.com [IPv6:2a01:111:f400:feae::722])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34F7850446;
-        Tue, 22 Feb 2022 19:04:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h0a9tz4fo8nl+7oqaB6izDiA2yITNNtHjpLAEC8Z8uT26dEhwoNEeas1b/nOrc5qOM3u5+OSYJSVcyoIzrscDLq7ShadVwbrWufutT0g7dgph5lqYaC6O+3fqHDdO7ylk1+C9UZrW3OFtbQ/QihcAGpXKMy1z8NXYdrShdPjlhkHyQivuV9feUNWBnH3yTOeoMwe3If2WNLGI0EuLCDR6u3rDXJRfK7CS2QkUpb192UhGHpM11mITuYhrZDD4BIUhFrNPLjJWySe2mHblWtJVM4qt8ApEW4Ye7LWUjofKIg8okeTaECo2+Vuod9HEu24tA/HbQeLOJIWGulQTQlqSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wrmjD0JWFnaqzD9VnmlIZx5v3Ii9nglD1gVnstI0P24=;
- b=JclI3d0RRnmhwvImwv0VZrM6zFa+v3203k72uQfp3Bfad+MaBqjugWQPnRnlW5oLjH1uPRg6OpkgnB4RCS+XjWFIY+QuVlDxYlLTUVnJaNlTzyESFyWVGfHuKRAYLCLEERL8rHMzxrV60+/Wlp2NmOk3jj76Ge/w7AAM2QP/ohy+WGOYa3uCZX+hD3x+4pA5A4OOPGpFmsBM49G0OL1L2ejUJnM575thn9b7bz4iK3RD5lhvgkAcqpaVKRNrHLVDcsZtdcyI554lBWKZure7w0zhp4up7P1PapYqXnPHPp7zGGJ86OYe7Xlvvxhiy2Gks0P/5HUlhXhkvGj+a9cb6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com;
- s=selector2-vivo0-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wrmjD0JWFnaqzD9VnmlIZx5v3Ii9nglD1gVnstI0P24=;
- b=Di7GsQTSnhHUoX9C5KDM2GQWeYWeO7fCFHDs8NWEBQ4iZy835DVkq2kWNMmlf3qLIJRWle8d5WYKI6FjXSFlTkvSa4fHujjgQSAbGIkMjmz5ttkw1/mYxQrBWneiXj5geb9In4+79pi2eiZWdBO5gT1q5GGl1ZwS1hXVN0c1/BE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SG2PR06MB3367.apcprd06.prod.outlook.com (2603:1096:4:78::19) by
- KL1PR0601MB4225.apcprd06.prod.outlook.com (2603:1096:820:78::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.22; Wed, 23 Feb
- 2022 03:04:05 +0000
-Received: from SG2PR06MB3367.apcprd06.prod.outlook.com
- ([fe80::9d3f:ff3b:1948:d732]) by SG2PR06MB3367.apcprd06.prod.outlook.com
- ([fe80::9d3f:ff3b:1948:d732%4]) with mapi id 15.20.4995.027; Wed, 23 Feb 2022
- 03:04:05 +0000
-From:   Wan Jiabing <wanjiabing@vivo.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        Bo Jiao <Bo.Jiao@mediatek.com>,
-        Ben Greear <greearb@candelatech.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc:     jiabing.wan@qq.com, Wan Jiabing <wanjiabing@vivo.com>
-Subject: [PATCH] mt76: mt7915: simplify conditional
-Date:   Wed, 23 Feb 2022 11:03:44 +0800
-Message-Id: <20220223030346.403418-1-wanjiabing@vivo.com>
-X-Mailer: git-send-email 2.35.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: HK2PR0401CA0008.apcprd04.prod.outlook.com
- (2603:1096:202:2::18) To SG2PR06MB3367.apcprd06.prod.outlook.com
- (2603:1096:4:78::19)
+        Tue, 22 Feb 2022 22:06:59 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5633D1FC;
+        Tue, 22 Feb 2022 19:06:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=H64+p90AReZbnTaydJlHtUoqcTSvW/vbbb3GPSrmwdY=; b=jmJ1ti3JoillL3hlsGZigz0zSd
+        gVn/lvavlZHHenw5PgrhFvreJ28qYjmw5pakjI/JodtwcyCpNxwR8JYJqtRzCVWdOyuLGYHZT5HQm
+        8g84n8uvALyZiwJ/epvhYkCbk4BumHuwOgNhHYl4u6wt72/wvp8Pa4hn/kr06mpzNHgKmp+fd/LXT
+        as20cGYctQ3/BmQI0XpZqqIvfmVErFNVrIKi3/p2vPBtbWL34VrowTzuK6mNMsCWEB69RL8k/+vgU
+        BLRPu24TcO06+eQC0lbJCcG5RG9jHP10bVcbJzvmR58muhRl3hmUOi50eCyH3FajltoVARplLz+Ao
+        Nn1IBY6w==;
+Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nMhz5-00CUQv-EO; Wed, 23 Feb 2022 03:06:31 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     netdev@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH] iwlwifi/mvm: check debugfs_dir ptr before use
+Date:   Tue, 22 Feb 2022 19:06:30 -0800
+Message-Id: <20220223030630.23241-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 51c1eee3-8b6c-4d49-6190-08d9f6792690
-X-MS-TrafficTypeDiagnostic: KL1PR0601MB4225:EE_
-X-Microsoft-Antispam-PRVS: <KL1PR0601MB4225A89BF4C6D448CAA11C36AB3C9@KL1PR0601MB4225.apcprd06.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: NDzwVXa8SBW2xU2D5cVIwsYKYVFXMnVwp+2dkG3Us/n5pa6XRLStijg4o8QvOrd8LvWHg+Wx7S8FxREb1dD0th+IxGh4TvCqA76r/6NiYcMVdckZLU2THd8kVJ30I9Gephs/r4M6jp1tE164FSCKgAK+b7Vni5yw7ODPQnEQ9EYpY9cPv2u6u7mgLRhm8vq812SWZHtA4SIaNhoqdvBzJZy7XQh+L4ajLEF8h0j9CHzpRZJrQc3chaUgcll4iUmYTI+4B0kTomjIgvUyIYYs1oK9mDm8V8G8ytH7IYqh2GmTmW50XAGwF/3ZL8/1Lkn8AkBO031QGUU1v+GRc2lQrQ412A4OI7eNOOatSDbHKbO4CREP1MafvXMKiT9xnEFCvu5iZ/Ut0VhvSh+BqkOp1jeQTgZfriMnYmOZ3DiLKu/VVurazJBKtHVK1OYmdQckR5zGBMqb/WnkrsxLAgOOu7pDt3GYBoU+z5KyOMWKje9Q8erb8YBapV4BLtWawRr4EpYrh7hU/Th8fb+YWA/q3XEQiyy3ykw90erB74SN5l0oufV834Ok5PttzGOzidByrTRAzuxjCB9RXlyyfnSOGDELnieMUjAiFsYdLXU18d3kCNTDuqozXZE/lPgT0HsnvIoFa+jLBJKTOwJKW7YyOWql1/Y4BojTMizcBOsJL8OAujloPGW4u/eEgE6H3NRHQ5POaK+pkSPFAUb/bpvSSQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SG2PR06MB3367.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(316002)(83380400001)(110136005)(921005)(52116002)(38100700002)(38350700002)(66476007)(66946007)(66556008)(8676002)(86362001)(5660300002)(6486002)(4326008)(6506007)(6512007)(6666004)(8936002)(7416002)(26005)(1076003)(2906002)(186003)(107886003)(508600001)(36756003)(2616005)(4744005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?V1xCdSm5DYgUoimeq/O0i985ytIs5CFhkPHRrm5xFO1G5aBcDprWgUDwyU6t?=
- =?us-ascii?Q?/G8TmSMaIsomI4GoATV2zJ0lZZKcEEGSGWSFdfmz7lFsraRNNwQZei0XZKtb?=
- =?us-ascii?Q?0uiikInzkJU1TaIMGP5Lc3Z4LiEqaH9jocnNekOjdBrKrc1AjNeOriTaBT/o?=
- =?us-ascii?Q?MJKNkojKSLj042NJaSAd9rb5WZFYLZevjn4nvjPAqn7x/2caHKWjtaivEZwv?=
- =?us-ascii?Q?ThBEXIvDrF5W2MHzmqs2drGA2IIm8327E0ujkEuNL5au6xZPQlhDCztRb/NT?=
- =?us-ascii?Q?s1ukBF1TxyDKthGQ/KU0oFwMcHChgLAXzktXPZkEUEe5sJriCNW2D3dN432D?=
- =?us-ascii?Q?jY0Z0Kkmj5enbK97MiGd2at9KHjXwfLRMHvzJJBDJM2Q0PbDDjTGEi2uJUCu?=
- =?us-ascii?Q?cSj2EjZ1Kz5cJ87zo1jClUV6PvUwINPILh56k74s+7I+vJa6wqttbaeueTAI?=
- =?us-ascii?Q?vwmHjQE97yLJXegPWp7Q6IUXMLIXrWJLqwFkQK9+imvBPr5l2KGwjzPey7Lw?=
- =?us-ascii?Q?07PQSMTTfqv96aZ7t5YyiO/qUYdsY4ZC3yoqrB11flL88VdFB+IhqjawGypz?=
- =?us-ascii?Q?oIJtCnN4Ql6eaGK2kQIGh7Ke1XKnmmEPN92VkJB/yB+Cv4WuVA/MqqtgNID2?=
- =?us-ascii?Q?557IopRIUOpySzYns6dfL4YawPuUkfc4ZDNZMc/+71aJQTyBRbfJwILggyGB?=
- =?us-ascii?Q?sMlmAj5JnMQHnUQi0L9WVkgWgpobXx8/fdUje5eNC6YJmLPJKTSmknM5FyjO?=
- =?us-ascii?Q?XcEdPN3ZzbY8tZsRy01NqN6NmAY6btBFrgB9Z0MJXzH+yjM2D4q38SeQmMz/?=
- =?us-ascii?Q?q7UL9+1or9IGTtNScXJGSblDixyL3TX1XYSrTvGWeA3eOPkhE6wWl2w/fEOU?=
- =?us-ascii?Q?647+tSUQeTY5niWWrMZ8RJVb0TEtWgqD6oQKNsw0a/APTmuUwFlucNoe3HZZ?=
- =?us-ascii?Q?w6YADOBMwaOTabhmAzHa1LnOSjyQ5U4QvJ6oad9tJdUkUM7/KzbgQGh+VHZl?=
- =?us-ascii?Q?xqOKr5Gv97m6yokYXOmHX3ZQtLG21GGWyDFHJuDZyLM3XNXU4biHdsMTWZ0r?=
- =?us-ascii?Q?PRqas8+f3m1wmTfbiVXY0vWw35+RyJEI6aTfW6z7Ad4MFMJnRrWhUq+Dzgjf?=
- =?us-ascii?Q?CRUQhpo/pnJ1Uz3YP+Pk1UzKXGEQj51XwIPjLlAYPTF1BGDSRrnCXX7du5h8?=
- =?us-ascii?Q?uZUEpoDsSq1kAHHF26JaIPs1qF7VO5vqLOeBU5i+1ayLEURu4mhIzhwDn09L?=
- =?us-ascii?Q?/EZ3SjlsfRBgl0RgJiV3TtP6olPzXwHu+L28OkV1pZ0h9YBOX/cnPlzIfvpj?=
- =?us-ascii?Q?C/I4Bp+ftadNnshgZES8pUvcB8hp38Gh9KnB2BvmB7VkL3ipu3zK5I26ZxIj?=
- =?us-ascii?Q?S2vAuvb3JP2nJgAu6lk6EvpdZG5CZeHw+ll2L8xkTwcPnTg+6QTdyxI+GI68?=
- =?us-ascii?Q?CK5TKOGzzbTS4hPj+yh2TbwsJAit7GmOucDzIeXGJDQtMtPjZMtLREe8lrjn?=
- =?us-ascii?Q?MOTa3E17JVTApUa+uxejneUtWgvV5GZ+AOnwu9q4L/JKZGXVBPxfKQ8kXzi3?=
- =?us-ascii?Q?kgW54X9J2ccOWvtd/13ME20kG5z/NlOoHMF8xZCrAbazF7TZzxc+C/GgPak8?=
- =?us-ascii?Q?8GvfVcmEQ/8R4G9MrPDkTg4=3D?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51c1eee3-8b6c-4d49-6190-08d9f6792690
-X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB3367.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2022 03:04:05.2951
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2xpC5lHj7fYwlYPRd5Ap9GuDQMri/Aog1HBvkpMksefKjV41C+ooAg9SBnsJP8iEjki7iePXaP1NOvOLqNWnPQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR0601MB4225
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix following coccicheck warning:
-./drivers/net/wireless/mediatek/mt76/mt7915/mac.c:768:29-31:
-WARNING !A || A && B is equivalent to !A || B
+When "debugfs=off" is used on the kernel command line, iwiwifi's
+mvm module uses an invalid/unchecked debugfs_dir pointer and causes
+a BUG:
 
-Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+ BUG: kernel NULL pointer dereference, address: 000000000000004f
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0 
+ Oops: 0000 [#1] PREEMPT SMP
+ CPU: 1 PID: 503 Comm: modprobe Tainted: G        W         5.17.0-rc5 #7
+ Hardware name: Dell Inc. Inspiron 15 5510/076F7Y, BIOS 2.4.1 11/05/2021
+ RIP: 0010:iwl_mvm_dbgfs_register+0x692/0x700 [iwlmvm]
+ Code: 69 a0 be 80 01 00 00 48 c7 c7 50 73 6a a0 e8 95 cf ee e0 48 8b 83 b0 1e 00 00 48 c7 c2 54 73 6a a0 be 64 00 00 00 48 8d 7d 8c <48> 8b 48 50 e8 15 22 07 e1 48 8b 43 28 48 8d 55 8c 48 c7 c7 5f 73
+ RSP: 0018:ffffc90000a0ba68 EFLAGS: 00010246
+ RAX: ffffffffffffffff RBX: ffff88817d6e3328 RCX: ffff88817d6e3328
+ RDX: ffffffffa06a7354 RSI: 0000000000000064 RDI: ffffc90000a0ba6c
+ RBP: ffffc90000a0bae0 R08: ffffffff824e4880 R09: ffffffffa069d620
+ R10: ffffc90000a0ba00 R11: ffffffffffffffff R12: 0000000000000000
+ R13: ffffc90000a0bb28 R14: ffff88817d6e3328 R15: ffff88817d6e3320
+ FS:  00007f64dd92d740(0000) GS:ffff88847f640000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000000000000004f CR3: 000000016fc79001 CR4: 0000000000770ee0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  ? iwl_mvm_mac_setup_register+0xbdc/0xda0 [iwlmvm]
+  iwl_mvm_start_post_nvm+0x71/0x100 [iwlmvm]
+  iwl_op_mode_mvm_start+0xab8/0xb30 [iwlmvm]
+  _iwl_op_mode_start+0x6f/0xd0 [iwlwifi]
+  iwl_opmode_register+0x6a/0xe0 [iwlwifi]
+  ? 0xffffffffa0231000
+  iwl_mvm_init+0x35/0x1000 [iwlmvm]
+  ? 0xffffffffa0231000
+  do_one_initcall+0x5a/0x1b0
+  ? kmem_cache_alloc+0x1e5/0x2f0
+  ? do_init_module+0x1e/0x220
+  do_init_module+0x48/0x220
+  load_module+0x2602/0x2bc0
+  ? __kernel_read+0x145/0x2e0
+  ? kernel_read_file+0x229/0x290
+  __do_sys_finit_module+0xc5/0x130
+  ? __do_sys_finit_module+0xc5/0x130
+  __x64_sys_finit_module+0x13/0x20
+  do_syscall_64+0x38/0x90
+  entry_SYSCALL_64_after_hwframe+0x44/0xae
+ RIP: 0033:0x7f64dda564dd
+ Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 1b 29 0f 00 f7 d8 64 89 01 48
+ RSP: 002b:00007ffdba393f88 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+ RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f64dda564dd
+ RDX: 0000000000000000 RSI: 00005575399e2ab2 RDI: 0000000000000001
+ RBP: 000055753a91c5e0 R08: 0000000000000000 R09: 0000000000000002
+ R10: 0000000000000001 R11: 0000000000000246 R12: 00005575399e2ab2
+ R13: 000055753a91ceb0 R14: 0000000000000000 R15: 000055753a923018
+  </TASK>
+ Modules linked in: btintel(+) btmtk bluetooth vfat snd_hda_codec_hdmi fat snd_hda_codec_realtek snd_hda_codec_generic iwlmvm(+) snd_sof_pci_intel_tgl mac80211 snd_sof_intel_hda_common soundwire_intel soundwire_generic_allocation soundwire_cadence soundwire_bus snd_sof_intel_hda snd_sof_pci snd_sof snd_sof_xtensa_dsp snd_soc_hdac_hda snd_hda_ext_core snd_soc_acpi_intel_match snd_soc_acpi snd_soc_core btrfs snd_compress snd_hda_intel snd_intel_dspcfg snd_intel_sdw_acpi snd_hda_codec raid6_pq iwlwifi snd_hda_core snd_pcm snd_timer snd soundcore cfg80211 intel_ish_ipc(+) thunderbolt rfkill intel_ishtp ucsi_acpi wmi i2c_hid_acpi i2c_hid evdev
+ CR2: 000000000000004f
+ ---[ end trace 0000000000000000 ]---
+
+
+Check the debugfs_dir pointer for an error before using it.
+
+Fixes: 8c082a99edb9 ("iwlwifi: mvm: simplify iwl_mvm_dbgfs_register")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Luca Coelho <luciano.coelho@intel.com>
+Cc: linux-wireless@vger.kernel.org
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 08ee78f6309b..7417b03b27a1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -765,8 +765,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 		}
+--- lnx-517-rc5.orig/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ lnx-517-rc5/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -5,6 +5,7 @@
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+ #include <linux/vmalloc.h>
++#include <linux/err.h>
+ #include <linux/ieee80211.h>
+ #include <linux/netdevice.h>
  
- 		if (!is_mt7915(&dev->mt76) ||
--		    (is_mt7915(&dev->mt76) &&
--		     (rxd1 & MT_RXD1_NORMAL_GROUP_5))) {
-+		    (rxd1 & MT_RXD1_NORMAL_GROUP_5)) {
- 			ret = mt7915_mac_fill_rx_rate(dev, status, sband, rxv);
- 			if (ret < 0)
- 				return ret;
--- 
-2.35.1
-
+@@ -1857,7 +1858,7 @@ void iwl_mvm_sta_add_debugfs(struct ieee
+ void iwl_mvm_dbgfs_register(struct iwl_mvm *mvm)
+ {
+ 	struct dentry *bcast_dir __maybe_unused;
+-	char buf[100];
++	char buf[100] = "symlink";
+ 
+ 	spin_lock_init(&mvm->drv_stats_lock);
+ 
+@@ -1939,6 +1940,7 @@ void iwl_mvm_dbgfs_register(struct iwl_m
+ 	 * Create a symlink with mac80211. It will be removed when mac80211
+ 	 * exists (before the opmode exists which removes the target.)
+ 	 */
+-	snprintf(buf, 100, "../../%pd2", mvm->debugfs_dir->d_parent);
++	if (!IS_ERR(mvm->debugfs_dir))
++		snprintf(buf, 100, "../../%pd2", mvm->debugfs_dir->d_parent);
+ 	debugfs_create_symlink("iwlwifi", mvm->hw->wiphy->debugfsdir, buf);
+ }
