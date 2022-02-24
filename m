@@ -2,132 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98E9C4C3248
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Feb 2022 17:55:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BC034C33F3
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Feb 2022 18:45:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbiBXQzg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Feb 2022 11:55:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39070 "EHLO
+        id S232287AbiBXRp5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Feb 2022 12:45:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbiBXQzf (ORCPT
+        with ESMTP id S229708AbiBXRpz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Feb 2022 11:55:35 -0500
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CD4817060
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Feb 2022 08:55:03 -0800 (PST)
-Received: by mail-qv1-xf2a.google.com with SMTP id d3so4657239qvb.5
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Feb 2022 08:55:03 -0800 (PST)
+        Thu, 24 Feb 2022 12:45:55 -0500
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24080279469
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Feb 2022 09:45:25 -0800 (PST)
+Received: by mail-lj1-x236.google.com with SMTP id u11so3990335lju.4
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Feb 2022 09:45:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20210112.gappssmtp.com; s=20210112;
+        d=linuxfoundation.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=DXPNnlAjhOiDJLg5gbjFBgF6ssyzfnV2Q6Fjv6GQF4I=;
-        b=FFhunHPCX/w1efnWA6Xn0Ym4Wu8MZm/FdB0T6fyxQsqryu1NePmOzHoskTl3v6uk+W
-         aFkytUzNkY3JeUWoU/U3nU9QO7aXc4qQjQVYcpqegPqwmXmog8HLQJirw4EizcKofdsv
-         nVS1Do9o4jArL5QzyfeEbipscmSr2/ed/lzw+qes90qLHLO7FJirTTCNAOybRsJSTc6M
-         NajOSu7gBx5D3FIpbs0AOdlBSgPZpRFXK3EZw/YPxEDcbqnaYNbx6YexBS3wJktZEF9a
-         QHcc5xpmr6fGwlSlrCEd9LCTaRUUQv0d0moX04Qme5asZkMGGrqOagEcZtqTUwzJvcXd
-         za/A==
+        bh=pOBmVUTfu7dJw7T0At09LeWpqEdb7Gx94oz8UfcdCXs=;
+        b=AILmembZ985YYL0f4wZ5s11RyKgR5u6qiQrV7RZNkT9G5n/SUdL4Vhrq9B5bX8IAIQ
+         Y6nGnLQuOzkqFVDrilbDkVYSx1GL7mMY7i0oqQFQ167eDMte/SkF8KYTQPuW8ZBUYD0I
+         S+wsm+vFqKevBhVyTZaq6iuYgrlCFfQmfxWN4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=DXPNnlAjhOiDJLg5gbjFBgF6ssyzfnV2Q6Fjv6GQF4I=;
-        b=p2qop+Ti9Q2MvZpbW+Papi48Gb2xJvY615aRD4yoH2rkI/OfiXEThihTGaYS8dUkjr
-         Op95nOHBxsSzWjh+OW0V3/c+OtN87R7t4RAeA6Hz0PkuY1/3mvVo0hqwvZx5HoC7rwpK
-         JzktAtIvGrTbvJGe2ublCD6JB+LadTSgMoXEuMYOMODg1V9GwyhYDaOBMEcXMKrd44sR
-         fZS++u6Ph/WWul2wnAfHjFZGJhg9tSMhVVSs0cqd5zneplvz97RENyBUcUgWXTUPcFNt
-         8VdE1iUEUV1cxCeBynHeBNfQambq6Y+PpGQSNyDxiNmSk+lx2AON+GBqHjhS1h5mvCb8
-         CTOw==
-X-Gm-Message-State: AOAM532h5ECBE7SuXavKffftuEhMrm9jdUg2aYYjLhl75ikLUhbUBsB6
-        L4w7gIEf8HE2fowH3DPt6WGyylPoZO5Q8ZzucgHqKg==
-X-Google-Smtp-Source: ABdhPJxJQqF2+HRYwSLNa/lBytL/zXGwgoRRaxkZ7CaYqfS5JtatQ3Woh9tqksMdrNZCkLQl2GTJBf4gfdp9YQvzxho=
-X-Received: by 2002:a0c:a994:0:b0:432:9b1b:f815 with SMTP id
- a20-20020a0ca994000000b004329b1bf815mr2135081qvb.42.1645721702203; Thu, 24
- Feb 2022 08:55:02 -0800 (PST)
+        bh=pOBmVUTfu7dJw7T0At09LeWpqEdb7Gx94oz8UfcdCXs=;
+        b=SYambQJ+XiYk1DujfzdZlrADTNhDKD/M8LPPpKmM0ZtBDXqQ6cjOGiGrvyQ7Pwp07K
+         Om/+g6/QR0WiX10SoKnqoV0RUcpdkqP/3HSE5UnsynQAPOhFtp6JwTFdK4Sqx9i/yw1L
+         zNaLxbRxwhspd3WfXqeOBFNGimENghoxfegEb7OPbxv8x1dXPilcMXP9w8V/IM/ab0IJ
+         MDQ4iD2q1qgo89jgvTsdxIvILHwPTrSAN2QV54KhBRibY5guWDFlYcBjrTRWxKwLMS8k
+         L/fuJ/SApqaKZ8vkjQoXjzMHWlYaO0HV0KfcvaT7ytyILGXYh0lwYzb67usxlH8LSK2o
+         /dIw==
+X-Gm-Message-State: AOAM531HMBlQqHpf7W26putt8Le50XsW26z8c6ElmstAwVPJWko2NrQg
+        c25p3R27gMyA5pKzsGE30PXriDiEtiakOJK2AFI=
+X-Google-Smtp-Source: ABdhPJyWVVep6vQKxRqIiWSU7KALjH2nhXdAK+4LtpjMAk2yeXrNDyEpLeGEgTWggxI/vUNsZh78hw==
+X-Received: by 2002:a2e:9c82:0:b0:23a:eea8:cd0f with SMTP id x2-20020a2e9c82000000b0023aeea8cd0fmr2773149lji.218.1645724722809;
+        Thu, 24 Feb 2022 09:45:22 -0800 (PST)
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com. [209.85.208.169])
+        by smtp.gmail.com with ESMTPSA id k5-20020a2e6f05000000b00245de81bb0esm28987ljc.13.2022.02.24.09.45.22
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Feb 2022 09:45:22 -0800 (PST)
+Received: by mail-lj1-f169.google.com with SMTP id o6so3992204ljp.3
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Feb 2022 09:45:22 -0800 (PST)
+X-Received: by 2002:a2e:80c6:0:b0:246:3334:9778 with SMTP id
+ r6-20020a2e80c6000000b0024633349778mr2640059ljg.443.1645724721879; Thu, 24
+ Feb 2022 09:45:21 -0800 (PST)
 MIME-Version: 1.0
-References: <d291f592-d84a-2ffe-7f75-df77890efce8@gonehiking.org>
- <20220120095622.1938-1-mike@fireburn.co.uk> <CAHbf0-HLCcgZfbKdWQ-kX+QbRGJsEHCEDnG=NZ5QF71aTeDMGg@mail.gmail.com>
- <9d692dc9-4b24-44b0-cbe0-dfc33f3d5f03@candelatech.com> <CAHbf0-FwH-ftCFeqrNusu4DBPrKe0SeTAQnAZngpsn+At-fJsQ@mail.gmail.com>
-In-Reply-To: <CAHbf0-FwH-ftCFeqrNusu4DBPrKe0SeTAQnAZngpsn+At-fJsQ@mail.gmail.com>
-From:   Mike Lothian <mike@fireburn.co.uk>
-Date:   Thu, 24 Feb 2022 16:54:51 +0000
-Message-ID: <CAHbf0-E6TOfwNOVWDxgaU4D4D1dFPwHK8h_k5AfuxJkaQvDcVg@mail.gmail.com>
-Subject: Re: [PATCH] mt76: mt7921e: fix possible probe failure after reboot
-To:     Ben Greear <greearb@candelatech.com>
-Cc:     khalid@gonehiking.org, Deren.Wu@mediatek.com,
-        Eddie.Chen@mediatek.com, Eric-SY.Chang@mediatek.com,
-        Eric.Liang@mediatek.com, Leon.Yen@mediatek.com,
-        Mark-YW.Chen@mediatek.com, Soul.Huang@mediatek.com,
-        Stella.Chang@mediatek.com, Tom.Chou@mediatek.com,
-        YN.Chen@mediatek.com, abhishekpandit@google.com,
-        ch.yeh@mediatek.com, frankgor@google.com, jemele@google.com,
-        jenhao.yang@mediatek.com, jsiuda@google.com, km.lin@mediatek.com,
-        linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, nbd@nbd.name, posh.sun@mediatek.com,
-        robin.chiu@mediatek.com, sean.wang@mediatek.com,
-        shawnku@google.com, steve.lee@mediatek.com, ted.huang@mediatek.com
+References: <20220221122638.7971-1-franciman12@gmail.com> <e32de43c-e00a-5766-e988-fe192d36d719@quicinc.com>
+ <CAH4F6utmtAM3CzX2_Fbn94Sb-X8m0patPh8yWwbuBB0t1VYH=g@mail.gmail.com>
+ <87o82wvhtk.fsf@kernel.org> <20220224075346.GL3943@kadam> <87fso8vb3w.fsf_-_@kernel.org>
+In-Reply-To: <87fso8vb3w.fsf_-_@kernel.org>
+From:   Linus Torvalds <torvalds@linuxfoundation.org>
+Date:   Thu, 24 Feb 2022 09:45:05 -0800
+X-Gmail-Original-Message-ID: <CAHk-=whFKYMrF6euVvziW+drw7-yi1pYdf=uccnzJ8k09DoTXA@mail.gmail.com>
+Message-ID: <CAHk-=whFKYMrF6euVvziW+drw7-yi1pYdf=uccnzJ8k09DoTXA@mail.gmail.com>
+Subject: Re: Use of void pointer arithmetic?
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Francesco Magliocca <franciman12@gmail.com>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        ath10k@lists.infradead.org, rmanohar@qti.qualcomm.com,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
+On Thu, Feb 24, 2022 at 1:59 AM Kalle Valo <kvalo@kernel.org> wrote:
+>
+> > What does -Wpointer-arith buy us?
+>
+> A good question. I have always just thought we should avoid void pointer
+> arithmetic due to the C standard, but now that you mention it void
+> pointers can indeed simplify the code. So I'm not so sure anymore.
+>
+> Any opinions? Is there a kernel wide recommendation for this?
 
-Has this patch made it into any upstream trees and is it likely to be
-backported?
+We consciously use arithmetic on 'void *' in some places, although
+it's not exactly _hugely_ common.
 
-Cheers
+It's much more common to turn a pointer into an 'unsigned long' and
+then doing basic operations on that.
 
-Mike
+The advantage of 'void *' is that it does avoid the need to cast the
+pointer back.
 
-On Tue, 25 Jan 2022 at 22:56, Mike Lothian <mike@fireburn.co.uk> wrote:
->
-> On Tue, 25 Jan 2022 at 18:09, Ben Greear <greearb@candelatech.com> wrote:
-> >
-> > On 1/25/22 6:16 AM, Mike Lothian wrote:
-> > > On Thu, 20 Jan 2022 at 09:56, Mike Lothian <mike@fireburn.co.uk> wrote:
-> > >>
-> > >> Hi
-> > >>
-> > >> I get a BUG and the kernel resuses to boot with this patch when mt76 is compiled into the kernel
-> > >>
-> > >> https://bugzilla.kernel.org/show_bug.cgi?id=214557
-> > >>
-> > >> I don't see this issue when mt76 is compiled as a module
-> > >>
-> > >> My .config is at https://github.com/FireBurn/KernelStuff/blob/master/dot_config_tip
-> > >>
-> > >> Let me know if you'd like any more info
-> > >>
-> > >> Cheers
-> > >>
-> > >> Mike
-> > >
-> > > The bug I was hitting was due to a different change introduced in rc1,
-> > > with that reverted your patches work great
-> >
-> > What patch did you revert?
-> >
-> > Thanks,
-> > Ben
-> >
->
-> Hi
->
-> I reverted both 730b49aac426e1e8016d3c2dd6b407e500423821 and
-> 510a0bdb2bfcff8d7be822c72adc3add7a97d559
->
-> But there's a fix now,
-> https://patchwork.kernel.org/project/linux-usb/patch/20220124090228.41396-2-heikki.krogerus@linux.intel.com/
->
-> I'm able to load mt76 as a module or built in
->
-> Cheers
->
-> Mike
+But at the same time it will never replace the 'cast to an actual
+integer type', because the 'void *' arithmetic only does simple
+addition and subtraction, and many pointer operations need more (ie
+alignment needs to do the bitops).
+
+So I think it's mostly a personal preference. I *do* think that doing
+arithmetic on 'void *' is generally superior to doing it the
+old-fashioned C way on 'char *' - unless, of course, 'char *' is
+simply the native type in question.
+
+So if 'char *' casts (and casting back) is the alternative, then by
+all means use 'void *' as a kind of generic and type-independent "byte
+pointer". That is how it is meant to be used in the gcc extension.
+
+And no, nobody should ever use -Wpointer-arith on the kernel in
+general. Our use of it is not _hugely_ common, but it's does exist,
+and it's not really frowned upon.
+
+                    Linus
