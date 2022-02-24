@@ -2,112 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0ADA4C292D
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Feb 2022 11:20:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8453D4C2985
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Feb 2022 11:33:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233166AbiBXKUF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Feb 2022 05:20:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48584 "EHLO
+        id S233478AbiBXKcK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Feb 2022 05:32:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232322AbiBXKUE (ORCPT
+        with ESMTP id S230323AbiBXKcA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Feb 2022 05:20:04 -0500
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F06B328A11F
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Feb 2022 02:19:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1645697969;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=vYJqqUocECM9Hk86yzStCi+K6tyGJI/Kwj8g34mbC7c=;
-        b=1CcefIP/19K2U25MWS84ALRWHITWEcFCwScTOeLamFknK9+VsywGbrrdFXY1Ez/5iSU+eN
-        jZU7sBALnY4jp3bLE1eLeu4qGricv9FdFUdpKrdUJDQvwEiLL0HXKc8+xgIh3irME63puX
-        0RZ0iNlLavkwq/cCnV9JhGJatQd/wJA=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     nbd@nbd.name, lorenzo.bianconi@redhat.com, sean.wang@mediatek.com
-Cc:     sean.wang@mediatek.com, Soul.Huang@mediatek.com,
-        YN.Chen@mediatek.com, Leon.Yen@mediatek.com,
-        Eric-SY.Chang@mediatek.com, Mark-YW.Chen@mediatek.com,
-        Deren.Wu@mediatek.com, km.lin@mediatek.com,
-        jenhao.yang@mediatek.com, robin.chiu@mediatek.com,
-        Eddie.Chen@mediatek.com, ch.yeh@mediatek.com,
-        posh.sun@mediatek.com, ted.huang@mediatek.com,
-        Eric.Liang@mediatek.com, Stella.Chang@mediatek.com,
-        Tom.Chou@mediatek.com, steve.lee@mediatek.com, jsiuda@google.com,
-        frankgor@google.com, jemele@google.com, abhishekpandit@google.com,
-        shawnku@google.com, linux-wireless@vger.kernel.org,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 1/2] mt76: mt7921: fix up the monitor mode
-Date:   Thu, 24 Feb 2022 11:19:25 +0100
-Message-ID: <3314617.b7RZopmeeF@ripper>
-In-Reply-To: <7dcfc62d67f1f51e6627cc24000393844aa2b649.1645655280.git.objelf@gmail.com>
-References: <7dcfc62d67f1f51e6627cc24000393844aa2b649.1645655280.git.objelf@gmail.com>
+        Thu, 24 Feb 2022 05:32:00 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 663F028DDCC;
+        Thu, 24 Feb 2022 02:31:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=QJ61GVuJyclCnz18nFi5Rw74fGs3hl5irEBRqG/1OMo=;
+        t=1645698689; x=1646908289; b=md/HCKvYP8ZIxW3TNZBOQdjTNvjQAgjgiAkWpDaZz06/f7H
+        2yl16ZEme/I0Pvs6SbkXnu0dhA1JKT9ur8CqVFXZj4CB/pzDO7mqwDA4lMxTQWFzUcbRZnKCn16Bk
+        srFqehyjWkpycWV+Avw+HgsgZQSec7bdP/UXqe5PztPnUFTN2U9JdAeGLB+d0X6TD6Zw3rBamFzuG
+        OEmbs0JyiMVsuCMRvaunnJNnzK/oWODICSHiEtAZGgY7F6knqV31Chnn9H68NW1Jhpe4l5K/mhawX
+        Ij1gt7xuRLTVukOFxC3iJ0lLvRDx15975vXbe5jFdREirCU2J+EdUEu/3XdeV6/w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nNBOz-0057ZC-Uj;
+        Thu, 24 Feb 2022 11:31:14 +0100
+Message-ID: <2fd265ec46a8b582b7c5dea9524185b6fe1b0322.camel@sipsolutions.net>
+Subject: Re: Use of void pointer arithmetic?
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Kalle Valo <kvalo@kernel.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Francesco Magliocca <franciman12@gmail.com>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        ath10k@lists.infradead.org, rmanohar@qti.qualcomm.com,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linuxfoundation.org>
+Date:   Thu, 24 Feb 2022 11:31:12 +0100
+In-Reply-To: <87fso8vb3w.fsf_-_@kernel.org>
+References: <20220221122638.7971-1-franciman12@gmail.com>
+         <e32de43c-e00a-5766-e988-fe192d36d719@quicinc.com>
+         <CAH4F6utmtAM3CzX2_Fbn94Sb-X8m0patPh8yWwbuBB0t1VYH=g@mail.gmail.com>
+         <87o82wvhtk.fsf@kernel.org> <20220224075346.GL3943@kadam>
+         <87fso8vb3w.fsf_-_@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1809828.CJMapn5LVL"; micalg="pgp-sha512"; protocol="application/pgp-signature"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart1809828.CJMapn5LVL
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: nbd@nbd.name, lorenzo.bianconi@redhat.com, sean.wang@mediatek.com
-Cc: sean.wang@mediatek.com, Soul.Huang@mediatek.com, YN.Chen@mediatek.com, Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com, Mark-YW.Chen@mediatek.com, Deren.Wu@mediatek.com, km.lin@mediatek.com, jenhao.yang@mediatek.com, robin.chiu@mediatek.com, Eddie.Chen@mediatek.com, ch.yeh@mediatek.com, posh.sun@mediatek.com, ted.huang@mediatek.com, Eric.Liang@mediatek.com, Stella.Chang@mediatek.com, Tom.Chou@mediatek.com, steve.lee@mediatek.com, jsiuda@google.com, frankgor@google.com, jemele@google.com, abhishekpandit@google.com, shawnku@google.com, linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 1/2] mt76: mt7921: fix up the monitor mode
-Date: Thu, 24 Feb 2022 11:19:25 +0100
-Message-ID: <3314617.b7RZopmeeF@ripper>
-In-Reply-To: <7dcfc62d67f1f51e6627cc24000393844aa2b649.1645655280.git.objelf@gmail.com>
-References: <7dcfc62d67f1f51e6627cc24000393844aa2b649.1645655280.git.objelf@gmail.com>
-
-On Wednesday, 23 February 2022 23:34:17 CET sean.wang@mediatek.com wrote:
-> From: Sean Wang <sean.wang@mediatek.com>
+On Thu, 2022-02-24 at 11:59 +0200, Kalle Valo wrote:
 > 
-> Properly set up the monitor mode the firmware can support to fix up
-> RTS/CTS and beacon frames cannot be captured and forwarded to the host.
+> A good question. I have always just thought we should avoid void pointer
+> arithmetic due to the C standard, but now that you mention it void
+> pointers can indeed simplify the code. So I'm not so sure anymore.
 > 
-> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> Any opinions? Is there a kernel wide recommendation for this?
 
-Tested-by: Sven Eckelmann <sven@narfation.org>
+The kernel only enables it with W=3, which I guess nobody uses anyway
+... Originally it came from commit 4a5838ad9d2d ("kbuild: Add extra gcc
+checks") with a pointer to
 
-Tests were performed on
+http://marc.info/?l=kernel-janitors&m=129802065918147&w=2
 
-    mt7921e 0000:05:00.0: ASIC revision: 79610010
-    mt7921e 0000:05:00.0: HW/SW Version: 0x8a108a10, Build Time: 20220110230855a
-    mt7921e 0000:05:00.0: WM Firmware Version: ____010000, Build Time: 20220110230951
+(which is offline right now due to an expired certificate ...)
 
-Thanks,
-	Sven
---nextPart1809828.CJMapn5LVL
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+but setting back my clock it seems to point to
 
------BEGIN PGP SIGNATURE-----
+https://lore.kernel.org/all/20110218091716.GA4384@bicker/
 
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmIXW60ACgkQXYcKB8Em
-e0YjQw/9EnPdFv2OwQvh6Bwr68rYnACaXHR4tJ9VLvQ6Mwynr9B0mnvxIkWb0V0F
-lp6aZQyij1m8MKvwqvya66gYo51JK6CU5Wcdb9XCZuBBUgllfWYQ8eDe4uykzcpF
-Z5KGfqLlIIwL52KQhkqOkMt0R6i+Rou326wCgjAKKFbpkC41Z/i7LucK+sI6hHfo
-WGFW2N/uIUpvQLYz8vGYwzsUZ9Oy6ZbCmzsT06C326lAu2VqHLWmpcMXlqHVmrwN
-dava2zNWxK9x2U2AJLzb/qb427X4h3DrS6jDuYK+Tj6PV5yOQevfIPEY00/BANUV
-DFVz4avbBThxMnqiX7sUMGGz9UJVsyGC3+QyMGUuTO9m7xcPW/2Ab6wi4Z05WJrp
-u0ZRt9HBR57Ocpgr5RUH/x1jvqn2iZmQ6AmxI5BSEf0nliv9q0jSRCigQthmVDC7
-KvLma5AxQPNPjbKVA/OzkqpJHAX1Ao3wtnH6Rt/32+prxShJR+APP5mfBDVICGEx
-ZDTa4kTdi0tGTFybWs+sSvBx56rPkU85SODPjvkGjw2Z4OUKPqMFxA+FCfP5wqW2
-Sh3gq5I606pDAjCAh0zd15gcX76KcDvv3Wy345/ibttpsk80sRq9pEucC98mFJ7Z
-iQ6GbaO16M1IBlc/N1JXsvyf4PazJsBzSZEVOPHxW7ZRlL3AfO0=
-=mWVG
------END PGP SIGNATURE-----
-
---nextPart1809828.CJMapn5LVL--
+but the thread kind of revolves around -Wconversion.
 
 
+FreeBSD does enable -Wpointer-arith which is why we've been trying to
+keep iwlwifi clean as a courtesy to them, but for really Linux-only code
+I dunno if there's much point. Although of course that applies also to
+FreeBSD ...
+
+johannes
 
