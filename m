@@ -2,97 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E60CB4C28BE
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Feb 2022 11:00:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B6794C28C2
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Feb 2022 11:03:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233113AbiBXKAL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Feb 2022 05:00:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32768 "EHLO
+        id S233186AbiBXKDE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Feb 2022 05:03:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230108AbiBXKAK (ORCPT
+        with ESMTP id S233178AbiBXKDE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Feb 2022 05:00:10 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A0381451E7;
-        Thu, 24 Feb 2022 01:59:41 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 40FA0B8234E;
-        Thu, 24 Feb 2022 09:59:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C47C340E9;
-        Thu, 24 Feb 2022 09:59:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645696778;
-        bh=7eguQjJYyrMKQoojwbWhxFNmQYcJas6sOvBXxv+Jklw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=IEWfxImdwfWYbTxagwFfgsHz0DBVEBVKvth39hjXUrwzMBB3Gt6yPT/liUcTHl4/i
-         BfpyuzPrG+2qBVnMcWSPcpDsKPKYfnE+3/6NhjAIMpKRcFaRHsSQGQHf1OFav/9bRD
-         8PRGNQOABS1w/lGulhLDct8DR6no5SC8+AjE/y/B+8GAQFSJJtEBtOcJqGPVk/l9Qa
-         +Z0/dxDtuX7RGPMUJfSH/a8P8XacaYsquR6//0AikC9f7YNNVdegSmITqNNcaYi9eF
-         om3hQQa/ItOuuzpxAnHMFq1irbUUPhxbNQqX1Nbc9WgWoLjfauregYUnV16A+3Eduk
-         d63R4yr5wwzXQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Francesco Magliocca <franciman12@gmail.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        ath10k@lists.infradead.org, rmanohar@qti.qualcomm.com,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linuxfoundation.org>
-Subject: Use of void pointer arithmetic?
-References: <20220221122638.7971-1-franciman12@gmail.com>
-        <e32de43c-e00a-5766-e988-fe192d36d719@quicinc.com>
-        <CAH4F6utmtAM3CzX2_Fbn94Sb-X8m0patPh8yWwbuBB0t1VYH=g@mail.gmail.com>
-        <87o82wvhtk.fsf@kernel.org> <20220224075346.GL3943@kadam>
-Date:   Thu, 24 Feb 2022 11:59:31 +0200
-In-Reply-To: <20220224075346.GL3943@kadam> (Dan Carpenter's message of "Thu,
-        24 Feb 2022 10:53:46 +0300")
-Message-ID: <87fso8vb3w.fsf_-_@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 24 Feb 2022 05:03:04 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC89E124C04;
+        Thu, 24 Feb 2022 02:02:33 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id l1-20020a7bcf01000000b0037f881182a8so3152108wmg.2;
+        Thu, 24 Feb 2022 02:02:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5V+8zESMqAOqhShcImxsVrwQqPApUYX212lfufDlzI4=;
+        b=Ui8ORAybraPWfJ8gLXWOt/yX+8Py8ltRXxrn45enLFbpjw/LCz7AKbW8MzA10RJPbi
+         YrAx7DSi0AgAQp/ljOGkALIDi1XQCHV2JQkOTAUhAQxz+CJ9esBhyBcJguiS/EmC3V4a
+         QS0PMWFVyxrjTwO4BqERrXSqHUREj/aEeZX6/fzxW2zgHfYDmZvtbHjcC9zQo45IUVUz
+         3ZeR6WblZoouXvrA8KeDWJ3oOiZ5moxicPpukuueD8W81j6QQu/H+jk374ub79a54Bi+
+         nmf9BRfNAsDPlTsQ4MX5u4mbQ7fsS66X/UyK9BXJMZhn3FcZYMKHD7zn+5NIj0qw9R2J
+         zgVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5V+8zESMqAOqhShcImxsVrwQqPApUYX212lfufDlzI4=;
+        b=xfxe8Nq2dTUE+BIy+kAG+0B3NsDrUevAwmK8leqQDfu5Q9TaKgfFtq1AADLOh7PrqK
+         QLKq/8q53TYe0/NTxXzMScAp+yc7c5qiTUUU93HRDUDn1TNdgCuHCWsgg+tAbRnO87yC
+         ST4ZPKTGH4G+/r8HDD1see1zV35e8GrbejcP4cb+41xx9uaL65duCgcKkOAZNP2vzfbq
+         2MdBhMvGWXfkEBmDvB60URTe7TPn+SVltsKxJE35erxLzEmGL7mWLZc8dr7KBt8eyY7V
+         tbKckocN3SnxAIU/wpGb731cJn2TBWwa0ZVDUF0USoxnelMVOKJ6CRe2xZMQntN5lbLI
+         Mf1g==
+X-Gm-Message-State: AOAM532novlchXV98zaOU+zQVRyWZeD/aN9OiOBCATwj267tB8CPm7iV
+        mv2HSHwWFXixgozLyb+5Q80=
+X-Google-Smtp-Source: ABdhPJy3/oMg8ezNts7IDco/sL6COqLtAQmsk9VxvFN0rkACOsiHb7wusxREALjt38DRAk7F/e2hhQ==
+X-Received: by 2002:a7b:c383:0:b0:381:1b50:a9d with SMTP id s3-20020a7bc383000000b003811b500a9dmr611336wmj.90.1645696952299;
+        Thu, 24 Feb 2022 02:02:32 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id v2sm2132595wro.58.2022.02.24.02.02.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Feb 2022 02:02:31 -0800 (PST)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Ilan Peer <ilan.peer@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] iwlwifi: mvm: Fix spelling mistake "Gerenal" -> "General"
+Date:   Thu, 24 Feb 2022 10:02:31 +0000
+Message-Id: <20220224100231.80152-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(Changing subject, adding Linus and linux-kernel)
+There is a spelling mistake in a IWL_DEBUG_SCAN debug message. Fix it.
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> On Thu, Feb 24, 2022 at 09:34:31AM +0200, Kalle Valo wrote:
->> Francesco Magliocca <franciman12@gmail.com> writes:
->> 
->> > Hi, I picked (void*) to be conformant with the other examples in htt_rx.c
->> > For example at line 1431:
->> >>    rxd = HTT_RX_BUF_TO_RX_DESC(hw,
->> >>                    (void *)msdu->data - hw->rx_desc_ops->rx_desc_size);
->> >
->> > But for me it is ok. Maybe we should fix all the occurrences of this kind.
->> 
->> Yeah, it would be good to fix the void pointer arithmetic in a separate
->> patch. I have planning to enable -Wpointer-arith in my ath10k-check and
->> ath11k-check scripts, so patches are very welcome.
->
-> Void * casts simplify a lot of code.  Less noise.  More readable.
-> They're more accurate in a sense because it's not a u8 at all.  The
-> kernel can't compile with other compilers besides GCC and Clang so why
-> care about that the C standard hasn't caught up?
->
-> What does -Wpointer-arith buy us?
-
-A good question. I have always just thought we should avoid void pointer
-arithmetic due to the C standard, but now that you mention it void
-pointers can indeed simplify the code. So I'm not so sure anymore.
-
-Any opinions? Is there a kernel wide recommendation for this?
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index a4077053e374..493a62071d8e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -2291,7 +2291,7 @@ iwl_mvm_scan_umac_fill_general_p_v11(struct iwl_mvm *mvm,
+ 
+ 	iwl_mvm_scan_umac_dwell_v11(mvm, gp, params);
+ 
+-	IWL_DEBUG_SCAN(mvm, "Gerenal: flags=0x%x, flags2=0x%x\n",
++	IWL_DEBUG_SCAN(mvm, "General: flags=0x%x, flags2=0x%x\n",
+ 		       gen_flags, gen_flags2);
+ 
+ 	gp->flags = cpu_to_le16(gen_flags);
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
