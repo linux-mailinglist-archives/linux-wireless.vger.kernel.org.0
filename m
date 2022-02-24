@@ -2,49 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FC174C2775
+	by mail.lfdr.de (Postfix) with ESMTP id AAB0E4C2776
 	for <lists+linux-wireless@lfdr.de>; Thu, 24 Feb 2022 10:09:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232488AbiBXJDw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Feb 2022 04:03:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35552 "EHLO
+        id S232445AbiBXJEq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Feb 2022 04:04:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232531AbiBXJDv (ORCPT
+        with ESMTP id S231736AbiBXJEp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Feb 2022 04:03:51 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAEB4187E39
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Feb 2022 01:03:21 -0800 (PST)
+        Thu, 24 Feb 2022 04:04:45 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398601A58CC;
+        Thu, 24 Feb 2022 01:04:15 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D6EF9B81C4A
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Feb 2022 09:03:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D0DC340E9;
-        Thu, 24 Feb 2022 09:03:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCFDA60A2B;
+        Thu, 24 Feb 2022 09:04:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F3EC340E9;
+        Thu, 24 Feb 2022 09:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645693398;
-        bh=Ye/kOTRU54AFDLMzyPkcnEa1MMb05KmMsi0JsDv28tw=;
+        s=k20201202; t=1645693454;
+        bh=jgxNAFbFo5i1lWEOpOUAVFaQaooKHchqspipaHhzRwA=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=WJDrokWBfK0VHDtZfRMZXxCu3t7xyDI0biy+DT9SlP729C1BT0NxDxWaoU/Lkqkj8
-         zzodrd13KSyffZxo4IuImFscoiM2s7FXCP3CYsEa0FQ47lHIvaKIXkYOU+6quYmaRL
-         EXuf24GBifNbJKQ96tbCSAdaKxLbXSXBpTqmaJYN4KjTK6FWPGcLsxXAHA0DPt7kzc
-         pTlXq2UdxLn2KvCtZiDHn3+nx/aKsDPrVHlsTMe99NxZ2YYanylkFTxOdvj8coTKSr
-         qsWkODcff+/ePB1WaB1Q5B4m4EscmqERFDAeQzL6WkFxjpgzmojnO/SaIWnbMs1jli
-         UqMQEkB24CvyA==
+        b=ax/l6HCoZXj8aB2eKuyynYgXe0D8c08z4twnpLIX6i+h4h5aXIcMUo4g3p53tN0LI
+         2wdhgKjJN4W8SnPJt7iebQvR0OCFzkUcwW/Yc+OjUbYRxnuULiV+zftlIvO4HfVKPd
+         JBrxgPavHj3DhDZaWitkwrChtGW6EQh02zQjmqDLV4z4IwkxWHOuI0wM7L9Eq1/VFq
+         p+hVbj95dgq5QRtfvaCidK9O1EE/dbUN/2zd2aNuDqMJ/VtB4r3KPV1oH0IS/AIAu/
+         ix7nErT30AI4Rm/lBS42hef5Dwdo3OAjB3gM4/UwUogTgVgZBmWf77MVod74eKQxH+
+         q7NHsxmMRGihQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCHv3] ath11k: add dbring debug support
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH][next] carl9170: Replace zero-length arrays with
+ flexible-array members
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <1645366059-11798-1-git-send-email-quic_vnaralas@quicinc.com>
-References: <1645366059-11798-1-git-send-email-quic_vnaralas@quicinc.com>
-To:     Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+In-Reply-To: <20220216194955.GA904126@embeddedor>
+References: <20220216194955.GA904126@embeddedor>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Christian Lamparter <chunkeey@googlemail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164569339560.30378.9204871614230045974.kvalo@kernel.org>
-Date:   Thu, 24 Feb 2022 09:03:17 +0000 (UTC)
+Message-ID: <164569345046.30378.3865257122515016490.kvalo@kernel.org>
+Date:   Thu, 24 Feb 2022 09:04:12 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,42 +61,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Venkateswara Naralasetty <quic_vnaralas@quicinc.com> wrote:
+"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
 
-> Target copies spectral report and CFR report through dbring to
-> host for further processing. This mechanism involves ring and
-> buffer management in the Host, FW, and uCode, where improper
-> tail pointer update issues are seen.
+> There is a regular need in the kernel to provide a way to declare
+> having a dynamically sized set of trailing elements in a structure.
+> Kernel code should always use “flexible array members”[1] for these
+> cases. The older style of one-element or zero-length arrays should
+> no longer be used[2].
 > 
-> This dbring debug support help to debug such issues by tracking
-> head and tail pointer movement along with the timestamp at which
-> each buffer is received and replenished.
+> [1] https://en.wikipedia.org/wiki/Flexible_array_member
+> [2] https://www.kernel.org/doc/html/v5.16/process/deprecated.html#zero-length-and-one-element-arrays
 > 
-> Provide a debugfs interface to enalbe/disable dbring debug
-> support and dump the dbring debug entries.
-> 
-> Also introduced a new hardware param to add dbring debugfs support
-> for few hardwares which are using dbings.
-> 
-> Usage:
-> 
-> echo <dbr_id> <val> > /sys/kernel/debug/ath11k/ipq8074_2/
-> mac0/enable_dbr_debug
-> 
-> dbr_id: 0 for spectral and 1 for CFR
-> val: 0 - disable, 1 - enable.
-> 
-> Tested-on: IPQ8074 WLAN.HK.2.4.0.1-01467-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+> Link: https://github.com/KSPP/linux/issues/78
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Acked-by: Christian Lamparter <chunkeey@gmail.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-691425b4a41f ath11k: add dbring debug support
+152094dd8c8d carl9170: Replace zero-length arrays with flexible-array members
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1645366059-11798-1-git-send-email-quic_vnaralas@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220216194955.GA904126@embeddedor/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
