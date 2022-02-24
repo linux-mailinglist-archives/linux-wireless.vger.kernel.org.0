@@ -2,111 +2,227 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E66984C2339
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Feb 2022 06:10:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5F604C243E
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Feb 2022 07:54:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229939AbiBXFKs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Feb 2022 00:10:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38102 "EHLO
+        id S231416AbiBXGyz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Feb 2022 01:54:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229612AbiBXFKs (ORCPT
+        with ESMTP id S230425AbiBXGyz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Feb 2022 00:10:48 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F13E3165C26
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Feb 2022 21:10:18 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id d3so1187865wrf.1
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Feb 2022 21:10:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:mime-version:content-transfer-encoding
-         :content-description:subject:to:from:date:reply-to;
-        bh=RJ68TeqInk+TVbxgDvO8h5StnFiK/1aAUXR3+oOBLqU=;
-        b=CDUuRmXnMQi0b0JYlr4wyNGjVbaFyOunF9n/PuGtfrFmY/mmjwuxv+8alXI2YJ+a6D
-         +nid6s5RolNI1Y+L26+IRSpwzo2F44htNGdg/bi4UppyinvcgUKamTqmebG82LbYSsYh
-         semsVrVIGq0oTZXUI6BF5lLTw9yTOz3g4EzPoiJGynvCcJRjE+e9s4CATdNzrdbMC6DS
-         aO4D/tbAWewLfyIAmS7tG5l8YhlTtDhkOmYPa27VDiCopyvygdRmYMrNxbau8qXmKDrg
-         VX1PVWf8t/eVyQGK9k3aabsdK8bUJqn/+eIKS5c1otiOaS7QznughyVFtaVUswJO/GAm
-         m5MQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:mime-version
-         :content-transfer-encoding:content-description:subject:to:from:date
-         :reply-to;
-        bh=RJ68TeqInk+TVbxgDvO8h5StnFiK/1aAUXR3+oOBLqU=;
-        b=rfVDggajouT34gWMDR3az6ToRW/kYSSxWYq8KPYorJjBgt1uiOXng+2xSlLCvkKvlw
-         p5C8y0Dn1CypE72jOc6vX1gmnXlckub5LB6Fyw9qSWOKOcacN2GR/hR5HzmYeYUCjeOU
-         /BuWpNmgTVzt0cnh5esgQ7iU86ZINpzV2eKui6X0+l9PhG081AgqyC85WiOfc2BSLjLO
-         GGocRSGicxPWos5aRjz4t8cUHTqV95VNU0MLQ0C+sojb+yHdSzYRTu9IRdCGftYSiqUw
-         jD02WJVxQuhaEpNXpZrHQly7ajUQaZ3MyQe1crYBXgc87/yRMJbSqv3K4nJJ4XjcHHlv
-         rFGw==
-X-Gm-Message-State: AOAM533rJChtWHsZZjScVBGEfiHOZB1MNlzlrE1eZKiijtugpEraQrWg
-        /xT4Pxc+ADjJdXX6jgkH8j8=
-X-Google-Smtp-Source: ABdhPJyhcoihujZKUp1YR+Ilw8dWUnPSUfWpooMVJ8R6ffZ3W3QYtpPlJGegOoqaV3RyisAcLSb9Xg==
-X-Received: by 2002:a05:6000:8f:b0:1ed:bb0e:6cbe with SMTP id m15-20020a056000008f00b001edbb0e6cbemr730199wrx.209.1645679417544;
-        Wed, 23 Feb 2022 21:10:17 -0800 (PST)
-Received: from [192.168.0.18] ([47.62.107.23])
-        by smtp.gmail.com with ESMTPSA id ay30-20020a05600c1e1e00b0037fa9762d50sm1669151wmb.12.2022.02.23.21.10.16
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Wed, 23 Feb 2022 21:10:17 -0800 (PST)
-Message-ID: <62171339.1c69fb81.e312e.6218@mx.google.com>
-Content-Type: text/plain; charset="iso-8859-1"
+        Thu, 24 Feb 2022 01:54:55 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6338526A3B5
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Feb 2022 22:54:22 -0800 (PST)
+X-UUID: c9545d35e70f4c109cf641107a998587-20220224
+X-UUID: c9545d35e70f4c109cf641107a998587-20220224
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1523701613; Thu, 24 Feb 2022 14:54:16 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 24 Feb 2022 14:54:15 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 24 Feb 2022 14:54:15 +0800
+Message-ID: <a6028f182af4df4e99f522bcc148cc872a1a8adf.camel@mediatek.com>
+Subject: Re: [PATCH 1/2] mt76: mt7921: fix up the monitor mode
+From:   Deren Wu <deren.wu@mediatek.com>
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        <sean.wang@mediatek.com>
+CC:     <nbd@nbd.name>, <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
+        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+        <Mark-YW.Chen@mediatek.com>, <km.lin@mediatek.com>,
+        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
+        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
+        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Date:   Thu, 24 Feb 2022 14:54:15 +0800
+In-Reply-To: <Yha9dZyAg8UE1UTb@lore-desk>
+References: <7dcfc62d67f1f51e6627cc24000393844aa2b649.1645655280.git.objelf@gmail.com>
+         <Yha9dZyAg8UE1UTb@lore-desk>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: UNCLAIMED PAYMENT
-To:     Recipients <michaelandrnic@gmail.com>
-From:   michaelandrnic@gmail.com
-Date:   Thu, 24 Feb 2022 06:10:15 +0100
-Reply-To: masayohara21@aol.com
-X-Antivirus: AVG (VPS 220223-4, 23/2/2022), Outbound message
-X-Antivirus-Status: Clean
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,REPTO_419_FRAUD_AOL,
-        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE,
-        UNCLAIMED_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:431 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4992]
-        *  1.0 REPTO_419_FRAUD_AOL Reply-To is known advance fee fraud
-        *      collector mailbox
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [masayohara21[at]aol.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [michaelandrnic[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  2.4 UNCLAIMED_MONEY BODY: People just leave money laying around
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: 7bit
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-UNCLAIMED PAYMENT
-You have pending funds on your SURENAME. kindly connect with masayohara001@=
-gmail.com
- for details
+On Thu, 2022-02-24 at 00:04 +0100, Lorenzo Bianconi wrote:
+> > From: Sean Wang <sean.wang@mediatek.com>
+> > 
+> > Properly set up the monitor mode the firmware can support to fix up
+> > RTS/CTS and beacon frames cannot be captured and forwarded to the
+> > host.
 
--- 
-This email has been checked for viruses by AVG.
-https://www.avg.com
+With this patch, RTS/CTS and beacon can show up in host capture.
+
+Tested-by: Deren Wu <deren.wu@mediatek.com>
+
+
+Regards,
+Deren
+
+> > 
+> > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> > ---
+> >  .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 31
+> > +++++++++++++++++++
+> >  .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  3 ++
+> >  .../net/wireless/mediatek/mt76/mt7921/main.c  | 23 ++++++++------
+> >  3 files changed, 47 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> > b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> > index 0a646ae51c8d..dded8a7d3efc 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> > @@ -2784,5 +2784,36 @@ int mt76_connac_mcu_rdd_cmd(struct mt76_dev
+> > *dev, int cmd, u8 index,
+> >  }
+> >  EXPORT_SYMBOL_GPL(mt76_connac_mcu_rdd_cmd);
+> >  
+> > +int mt76_connac_mcu_set_sniffer(struct mt76_dev *dev, struct
+> > ieee80211_vif *vif,
+> > +				bool enable)
+> 
+> Hi Sean,
+> 
+> can this fw mcu be used with mt7663 fw? If not I guess we should move
+> it in
+> mt7921/mcu.c
+> 
+> > +{
+> > +	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
+> > +	struct {
+> > +		struct {
+> > +			u8 band_idx;
+> > +			u8 pad[3];
+> > +		} __packed hdr;
+> > +		struct sniffer_enable_tlv {
+> > +			__le16 tag;
+> > +			__le16 len;
+> > +			u8 enable;
+> > +			u8 pad[3];
+> > +		} __packed enable;
+> > +		} req = {
+> 
+> nit: alignment.
+> 
+> Regards,
+> Lorenzo
+> 
+> > +		.hdr = {
+> > +			.band_idx = mvif->band_idx,
+> > +		},
+> > +		.enable = {
+> > +			.tag = cpu_to_le16(0),
+> > +			.len = cpu_to_le16(sizeof(struct
+> > sniffer_enable_tlv)),
+> > +			.enable = enable,
+> > +		},
+> > +	};
+> > +
+> > +	return mt76_mcu_send_msg(dev, MCU_UNI_CMD(SNIFFER), &req,
+> > sizeof(req),
+> > +				 true);
+> > +}
+> > +EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_sniffer);
+> > +
+> >  MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
+> >  MODULE_LICENSE("Dual BSD/GPL");
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> > b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> > index 384c3eab1c8a..96ab1a55af17 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> > @@ -993,6 +993,7 @@ enum {
+> >  	MCU_UNI_CMD_SUSPEND = 0x05,
+> >  	MCU_UNI_CMD_OFFLOAD = 0x06,
+> >  	MCU_UNI_CMD_HIF_CTRL = 0x07,
+> > +	MCU_UNI_CMD_SNIFFER = 0x24,
+> >  };
+> >  
+> >  enum {
+> > @@ -1653,4 +1654,6 @@ int mt76_connac_mcu_set_pm(struct mt76_dev
+> > *dev, int band, int enter);
+> >  int mt76_connac_mcu_restart(struct mt76_dev *dev);
+> >  int mt76_connac_mcu_rdd_cmd(struct mt76_dev *dev, int cmd, u8
+> > index,
+> >  			    u8 rx_sel, u8 val);
+> > +int mt76_connac_mcu_set_sniffer(struct mt76_dev *dev, struct
+> > ieee80211_vif *vif,
+> > +				bool enable);
+> >  #endif /* __MT76_CONNAC_MCU_H */
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > index b6e836a4fad7..051a573141f4 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > @@ -479,6 +479,16 @@ mt7921_pm_interface_iter(void *priv, u8 *mac,
+> > struct ieee80211_vif *vif)
+> >  	mt7921_mcu_set_beacon_filter(dev, vif, dev->pm.enable);
+> >  }
+> >  
+> > +static void
+> > +mt7921_sniffer_interface_iter(void *priv, u8 *mac, struct
+> > ieee80211_vif *vif)
+> > +{
+> > +	struct mt7921_dev *dev = priv;
+> > +	struct ieee80211_hw *hw = mt76_hw(dev);
+> > +	bool enabled = !!(hw->conf.flags & IEEE80211_CONF_MONITOR);
+> > +
+> > +	mt76_connac_mcu_set_sniffer(&dev->mt76, vif, enabled);
+> > +}
+> > +
+> >  void mt7921_set_runtime_pm(struct mt7921_dev *dev)
+> >  {
+> >  	struct ieee80211_hw *hw = dev->mphy.hw;
+> > @@ -516,16 +526,9 @@ static int mt7921_config(struct ieee80211_hw
+> > *hw, u32 changed)
+> >  	}
+> >  
+> >  	if (changed & IEEE80211_CONF_CHANGE_MONITOR) {
+> > -		bool enabled = !!(hw->conf.flags &
+> > IEEE80211_CONF_MONITOR);
+> > -
+> > -		if (!enabled)
+> > -			phy->rxfilter |= MT_WF_RFCR_DROP_OTHER_UC;
+> > -		else
+> > -			phy->rxfilter &= ~MT_WF_RFCR_DROP_OTHER_UC;
+> > -
+> > -		mt76_rmw_field(dev, MT_DMA_DCR0(0),
+> > MT_DMA_DCR0_RXD_G5_EN,
+> > -			       enabled);
+> > -		mt76_wr(dev, MT_WF_RFCR(0), phy->rxfilter);
+> > +		ieee80211_iterate_active_interfaces(hw,
+> > +						    IEEE80211_IFACE_ITE
+> > R_RESUME_ALL,
+> > +						    mt7921_sniffer_inte
+> > rface_iter, dev);
+> >  		mt7921_set_runtime_pm(dev);
+> >  	}
+> >  
+> > -- 
+> > 2.25.1
+> > 
+> 
+> _______________________________________________
+> Linux-mediatek mailing list
+> Linux-mediatek@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-mediatek
 
