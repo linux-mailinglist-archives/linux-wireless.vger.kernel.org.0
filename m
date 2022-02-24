@@ -2,55 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAB0E4C2776
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Feb 2022 10:09:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 888394C2799
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Feb 2022 10:09:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232445AbiBXJEq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Feb 2022 04:04:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40034 "EHLO
+        id S232478AbiBXJGW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Feb 2022 04:06:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231736AbiBXJEp (ORCPT
+        with ESMTP id S231327AbiBXJGV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Feb 2022 04:04:45 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398601A58CC;
-        Thu, 24 Feb 2022 01:04:15 -0800 (PST)
+        Thu, 24 Feb 2022 04:06:21 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3BD189AA6
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Feb 2022 01:05:52 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CCFDA60A2B;
-        Thu, 24 Feb 2022 09:04:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F3EC340E9;
-        Thu, 24 Feb 2022 09:04:12 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C7113B81C4A
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Feb 2022 09:05:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2947CC340E9;
+        Thu, 24 Feb 2022 09:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645693454;
-        bh=jgxNAFbFo5i1lWEOpOUAVFaQaooKHchqspipaHhzRwA=;
+        s=k20201202; t=1645693549;
+        bh=CC5AEFMLTxhckHWBk6hNVR6HRUe2MZlQmHha6NARgFs=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ax/l6HCoZXj8aB2eKuyynYgXe0D8c08z4twnpLIX6i+h4h5aXIcMUo4g3p53tN0LI
-         2wdhgKjJN4W8SnPJt7iebQvR0OCFzkUcwW/Yc+OjUbYRxnuULiV+zftlIvO4HfVKPd
-         JBrxgPavHj3DhDZaWitkwrChtGW6EQh02zQjmqDLV4z4IwkxWHOuI0wM7L9Eq1/VFq
-         p+hVbj95dgq5QRtfvaCidK9O1EE/dbUN/2zd2aNuDqMJ/VtB4r3KPV1oH0IS/AIAu/
-         ix7nErT30AI4Rm/lBS42hef5Dwdo3OAjB3gM4/UwUogTgVgZBmWf77MVod74eKQxH+
-         q7NHsxmMRGihQ==
+        b=n9q/7wze2pqaRf1hOdY60Lg8OnOyrKuLq5mrIedNfqWb/6u5LwEAkaJAXD69lOQql
+         1tYb9pNAuNMBh1FqdZYbiyLHbdtRRRjECR0Z5v1YvHSLEkoCAK/CzMejUdeVm746Dg
+         Ft7WrfvXB8v88kDsCN8pJIXTKt+WDNcq6+X+3tahC/dLXmIT3IjA94O6xOJKZprECY
+         NzB1bucdudP44mGrqs51OifgUhfZYU5X6aoWITxpNQOMErzUxVwMd0YUKWRctfwh6W
+         qQDCIDOpjnMzQPNXpDQKP9/f4/CytMEdxBIcYu6EhiDmuWH9/f3DjrATXfyGyu9u46
+         EAj4GyFnCZK2g==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH][next] carl9170: Replace zero-length arrays with
- flexible-array members
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] ath10k: fix pointer arithmetic error in trace call
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220216194955.GA904126@embeddedor>
-References: <20220216194955.GA904126@embeddedor>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Christian Lamparter <chunkeey@googlemail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
+In-Reply-To: <20220221122638.7971-1-franciman12@gmail.com>
+References: <20220221122638.7971-1-franciman12@gmail.com>
+To:     Francesco Magliocca <franciman12@gmail.com>
+Cc:     ath10k@lists.infradead.org, dan.carpenter@oracle.com,
+        rmanohar@qti.qualcomm.com, linux-wireless@vger.kernel.org,
+        Francesco Magliocca <franciman12@gmail.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164569345046.30378.3865257122515016490.kvalo@kernel.org>
-Date:   Thu, 24 Feb 2022 09:04:12 +0000 (UTC)
+Message-ID: <164569354432.30378.1243222511176407812.kvalo@kernel.org>
+Date:   Thu, 24 Feb 2022 09:05:47 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -61,29 +56,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+Francesco Magliocca <franciman12@gmail.com> wrote:
 
-> There is a regular need in the kernel to provide a way to declare
-> having a dynamically sized set of trailing elements in a structure.
-> Kernel code should always use “flexible array members”[1] for these
-> cases. The older style of one-element or zero-length arrays should
-> no longer be used[2].
+> Reading through the commit history, it looks like
+> there is no special need why we must skip the first 4 bytes
+> in this trace call:
 > 
-> [1] https://en.wikipedia.org/wiki/Flexible_array_member
-> [2] https://www.kernel.org/doc/html/v5.16/process/deprecated.html#zero-length-and-one-element-arrays
+> trace_ath10k_htt_rx_desc(ar, (void*)rx_desc + sizeof(u32),
+>                          hw->rx_desc_ops->rx_desc_size - sizeof(u32));
 > 
-> Link: https://github.com/KSPP/linux/issues/78
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> Acked-by: Christian Lamparter <chunkeey@gmail.com>
+> found in the function ath10k_htt_rx_amsdu_pop in the file htt_rx.c
+> 
+> i think the original author
+> (who is also the one who added rx_desc tracing capabilities
+> in a0883cf7e75a) just wanted to trace the rx_desc contents,
+> ignoring the fw_rx_desc_base info field
+> (which is the part being skipped over).
+> But the trace_ath10k_htt_rx_desc later added
+> don't care about skipping it, so it may be good
+> to uniform this call to the others in the file.
+> But this would change the output of the trace and
+> thus it may be a problem for tools that rely on it.
+> Therefore I propose until further discussion
+> to just keep it as it is and just fix the pointer arithmetic bug.
+> 
+> Add missing void* cast to rx descriptor pointer in order to
+> properly skip the initial 4 bytes of the rx descriptor
+> when passing it to trace_ath10k_htt_rx_desc trace function.
+> 
+> This fixes the pointer arithmetic error detected
+> by Dan Carpenter's static analysis tool.
+> 
+> Fixes: 6bae9de622d3 ("ath10k: abstract htt_rx_desc structure")
+> 
+> Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
+> 
+> Signed-off-by: Francesco Magliocca <franciman12@gmail.com>
+> Link: https://lore.kernel.org/ath10k/20220201130900.GD22458@kili/
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-152094dd8c8d carl9170: Replace zero-length arrays with flexible-array members
+49ffac5907a8 ath10k: fix pointer arithmetic error in trace call
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220216194955.GA904126@embeddedor/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220221122638.7971-1-franciman12@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
