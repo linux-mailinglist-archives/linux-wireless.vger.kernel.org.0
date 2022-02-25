@@ -2,185 +2,229 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83D044C4066
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Feb 2022 09:46:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B48954C40DB
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Feb 2022 10:02:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238606AbiBYIqp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Feb 2022 03:46:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34558 "EHLO
+        id S238855AbiBYJCp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Feb 2022 04:02:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238603AbiBYIqn (ORCPT
+        with ESMTP id S238882AbiBYJCm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Feb 2022 03:46:43 -0500
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C02234027
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Feb 2022 00:46:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1645778772; x=1677314772;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=phngvTnaxifJzlhzmmF1rO3OdpLOMsIIKjL0g+CQaAE=;
-  b=ux9MSwMn7qxwIaW/2lRJWQ+0soQrmu6ZtR2BXOEZThyccGpPNIXwjxwh
-   FxBeYQjoxXW4C3ynpw0RCqkNnjxKg5E8icsA+faindDCEGLyMK+k/nIDu
-   CsAXFUk2qomU8nhKTRJNp7u8lmKfyYuozYHOLvpP+RgicWFOPmcc8ofns
-   Y=;
-Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
-  by alexa-out.qualcomm.com with ESMTP; 25 Feb 2022 00:46:12 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2022 00:46:12 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 25 Feb 2022 00:46:11 -0800
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 25 Feb 2022 00:46:10 -0800
-From:   Wen Gong <quic_wgong@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
-Subject: [PATCH v7 4/4] ath11k: fix the warning of dev_wake in mhi_pm_disable_transition()
-Date:   Fri, 25 Feb 2022 03:45:48 -0500
-Message-ID: <20220225084548.19534-5-quic_wgong@quicinc.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220225084548.19534-1-quic_wgong@quicinc.com>
-References: <20220225084548.19534-1-quic_wgong@quicinc.com>
+        Fri, 25 Feb 2022 04:02:42 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47BB838BE6
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Feb 2022 01:02:03 -0800 (PST)
+X-UUID: f0efc5a2d85b4711a7163bd6f61d4e2a-20220225
+X-UUID: f0efc5a2d85b4711a7163bd6f61d4e2a-20220225
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+        (envelope-from <meichia.chiu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 2125585178; Fri, 25 Feb 2022 17:01:57 +0800
+Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 25 Feb 2022 17:01:55 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb01.mediatek.inc
+ (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 25 Feb
+ 2022 17:01:55 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 25 Feb 2022 17:01:55 +0800
+From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Money Wang <Money.Wang@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+Subject: [PATCH] mt76: split single ldpc cap bit into bits
+Date:   Fri, 25 Feb 2022 17:01:41 +0800
+Message-ID: <20220225090141.10201-1-MeiChia.Chiu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When test device recovery with below command, it has warning in message
-as below.
-echo assert > /sys/kernel/debug/ath11k/wcn6855\ hw2.0/simulate_fw_crash
-echo assert > /sys/kernel/debug/ath11k/qca6390\ hw2.0/simulate_fw_crash
+The original single LDPC cap bit cannot be used to
+differentiate LDPC cap in each PHY mode.
+This modification split the single bit into 3 bits,
+ht_ldpc, vht_ldpc, and he_ldpc.
 
-warning message:
-[ 1965.642121] ath11k_pci 0000:06:00.0: simulating firmware assert crash
-[ 1968.471364] ieee80211 phy0: Hardware restart was requested
-[ 1968.511305] ------------[ cut here ]------------
-[ 1968.511368] WARNING: CPU: 3 PID: 1546 at drivers/bus/mhi/core/pm.c:505 mhi_pm_disable_transition+0xb37/0xda0 [mhi]
-[ 1968.511443] Modules linked in: ath11k_pci ath11k mac80211 libarc4 cfg80211 qmi_helpers qrtr_mhi mhi qrtr nvme nvme_core
-[ 1968.511563] CPU: 3 PID: 1546 Comm: kworker/u17:0 Kdump: loaded Tainted: G        W         5.17.0-rc3-wt-ath+ #579
-[ 1968.511629] Hardware name: Intel(R) Client Systems NUC8i7HVK/NUC8i7HVB, BIOS HNKBLi70.86A.0067.2021.0528.1339 05/28/2021
-[ 1968.511704] Workqueue: mhi_hiprio_wq mhi_pm_st_worker [mhi]
-[ 1968.511787] RIP: 0010:mhi_pm_disable_transition+0xb37/0xda0 [mhi]
-[ 1968.511870] Code: a9 fe ff ff 4c 89 ff 44 89 04 24 e8 03 46 f6 e5 44 8b 04 24 41 83 f8 01 0f 84 21 fe ff ff e9 4c fd ff ff 0f 0b e9 af f8 ff ff <0f> 0b e9 5c f8 ff ff 48 89 df e8 da 9e ee e3 e9 12 fd ff ff 4c 89
-[ 1968.511923] RSP: 0018:ffffc900024efbf0 EFLAGS: 00010286
-[ 1968.511969] RAX: 00000000ffffffff RBX: ffff88811d241250 RCX: ffffffffc0176922
-[ 1968.512014] RDX: 0000000000000000 RSI: 0000000000000004 RDI: ffff888118a90a24
-[ 1968.512059] RBP: ffff888118a90800 R08: 0000000000000000 R09: ffff888118a90a27
-[ 1968.512102] R10: ffffed1023152144 R11: 0000000000000001 R12: ffff888118a908ac
-[ 1968.512229] R13: ffff888118a90928 R14: dffffc0000000000 R15: ffff888118a90a24
-[ 1968.512310] FS:  0000000000000000(0000) GS:ffff888234200000(0000) knlGS:0000000000000000
-[ 1968.512405] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 1968.512493] CR2: 00007f5538f443a8 CR3: 000000016dc28001 CR4: 00000000003706e0
-[ 1968.512587] Call Trace:
-[ 1968.512672]  <TASK>
-[ 1968.512751]  ? _raw_spin_unlock_irq+0x1f/0x40
-[ 1968.512859]  mhi_pm_st_worker+0x3ac/0x790 [mhi]
-[ 1968.512959]  ? mhi_pm_mission_mode_transition.isra.0+0x7d0/0x7d0 [mhi]
-[ 1968.513063]  process_one_work+0x86a/0x1400
-[ 1968.513184]  ? pwq_dec_nr_in_flight+0x230/0x230
-[ 1968.513312]  ? move_linked_works+0x125/0x290
-[ 1968.513416]  worker_thread+0x6db/0xf60
-[ 1968.513536]  ? process_one_work+0x1400/0x1400
-[ 1968.513627]  kthread+0x241/0x2d0
-[ 1968.513733]  ? kthread_complete_and_exit+0x20/0x20
-[ 1968.513821]  ret_from_fork+0x22/0x30
-[ 1968.513924]  </TASK>
-
-Reason is mhi_deassert_dev_wake() from mhi_device_put() is called
-but mhi_assert_dev_wake() from __mhi_device_get_sync() is not called
-in progress of recovery. Commit 8e0559921f9a ("bus: mhi: core:
-Skip device wake in error or shutdown state") add check for the
-pm_state of mhi in __mhi_device_get_sync(), and the pm_state is not
-the normal state untill recovery is completed, so it leads the
-dev_wake is not 0 and above warning print in mhi_pm_disable_transition()
-while checking mhi_cntrl->dev_wake.
-
-Add check in ath11k_pci_write32()/ath11k_pci_read32() to skip call
-mhi_device_put() if mhi_device_get_sync() does not really do wake,
-then the warning gone.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03003-QCAHSPSWPL_V1_V2_SILICONZ_LITE-2
-
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+Suggested-by: Money Wang <Money.Wang@mediatek.com>
+Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
 ---
- drivers/net/wireless/ath/ath11k/pci.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c    |  2 +-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c   |  9 +++++----
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c    | 18 +++++++++++-------
+ .../net/wireless/mediatek/mt76/mt7915/mt7915.h |  4 +++-
+ 5 files changed, 21 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index 903758751c99..8a3ff12057e8 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -191,6 +191,7 @@ void ath11k_pci_write32(struct ath11k_base *ab, u32 offset, u32 value)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index e98c6076a633..390add3144c2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -880,7 +880,7 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 						 NULL, wtbl_hdr);
+ 		if (sta)
+ 			mt76_connac_mcu_wtbl_ht_tlv(&dev->mt76, wskb, sta,
+-						    NULL, wtbl_hdr, true);
++						    NULL, wtbl_hdr, true, true);
+ 		mt76_connac_mcu_wtbl_hdr_trans_tlv(wskb, vif, &msta->wcid,
+ 						   NULL, wtbl_hdr);
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 0a646ae51c8d..6c762fbf9aaa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -899,7 +899,7 @@ EXPORT_SYMBOL_GPL(mt76_connac_mcu_wtbl_smps_tlv);
+ 
+ void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 				 struct ieee80211_sta *sta, void *sta_wtbl,
+-				 void *wtbl_tlv, bool ldpc)
++				 void *wtbl_tlv, bool ht_ldpc, bool vht_ldpc)
  {
- 	struct ath11k_pci *ab_pci = ath11k_pci_priv(ab);
- 	u32 window_start;
-+	int ret = 0;
+ 	struct wtbl_ht *ht = NULL;
+ 	struct tlv *tlv;
+@@ -909,7 +909,7 @@ void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 		tlv = mt76_connac_mcu_add_nested_tlv(skb, WTBL_HT, sizeof(*ht),
+ 						     wtbl_tlv, sta_wtbl);
+ 		ht = (struct wtbl_ht *)tlv;
+-		ht->ldpc = ldpc &&
++		ht->ldpc = ht_ldpc &&
+ 			   !!(sta->ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING);
+ 		ht->af = sta->ht_cap.ampdu_factor;
+ 		ht->mm = sta->ht_cap.ampdu_density;
+@@ -924,7 +924,7 @@ void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 						     sizeof(*vht), wtbl_tlv,
+ 						     sta_wtbl);
+ 		vht = (struct wtbl_vht *)tlv;
+-		vht->ldpc = ldpc &&
++		vht->ldpc = vht_ldpc &&
+ 			    !!(sta->vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC);
+ 		vht->vht = true;
  
- 	/* for offset beyond BAR + 4K - 32, may
- 	 * need to wakeup MHI to access.
-@@ -198,7 +199,7 @@ void ath11k_pci_write32(struct ath11k_base *ab, u32 offset, u32 value)
- 	if (ab->hw_params.wakeup_mhi &&
- 	    test_bit(ATH11K_PCI_FLAG_INIT_DONE, &ab_pci->flags) &&
- 	    offset >= ACCESS_ALWAYS_OFF)
--		mhi_device_get_sync(ab_pci->mhi_ctrl->mhi_dev);
-+		ret = mhi_device_get_sync(ab_pci->mhi_ctrl->mhi_dev);
+@@ -1004,7 +1004,8 @@ int mt76_connac_mcu_sta_cmd(struct mt76_phy *phy,
+ 						   sta_wtbl, wtbl_hdr);
+ 		if (info->sta)
+ 			mt76_connac_mcu_wtbl_ht_tlv(dev, skb, info->sta,
+-						    sta_wtbl, wtbl_hdr, true);
++						    sta_wtbl, wtbl_hdr,
++						    true, true);
+ 	}
  
- 	if (offset < WINDOW_START) {
- 		iowrite32(value, ab->mem  + offset);
-@@ -222,7 +223,8 @@ void ath11k_pci_write32(struct ath11k_base *ab, u32 offset, u32 value)
+ 	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index 384c3eab1c8a..146186f5109b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -1561,7 +1561,7 @@ void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
+ 			     u8 rcpi, u8 state);
+ void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 				 struct ieee80211_sta *sta, void *sta_wtbl,
+-				 void *wtbl_tlv, bool ldpc);
++				 void *wtbl_tlv, bool ht_ldpc, bool vht_ldpc);
+ void mt76_connac_mcu_wtbl_ba_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 				 struct ieee80211_ampdu_params *params,
+ 				 bool enable, bool tx, void *sta_wtbl,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 119f9358162f..77bf3d94782b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -821,8 +821,9 @@ mt7915_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ 	     IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_RU_MAPPING_IN_5G))
+ 		cap |= STA_REC_HE_CAP_BW20_RU242_SUPPORT;
  
- 	if (ab->hw_params.wakeup_mhi &&
- 	    test_bit(ATH11K_PCI_FLAG_INIT_DONE, &ab_pci->flags) &&
--	    offset >= ACCESS_ALWAYS_OFF)
-+	    offset >= ACCESS_ALWAYS_OFF &&
-+	    !ret)
- 		mhi_device_put(ab_pci->mhi_ctrl->mhi_dev);
+-	if (mvif->cap.ldpc && (elem->phy_cap_info[1] &
+-			       IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD))
++	if (mvif->cap.he_ldpc &&
++	    (elem->phy_cap_info[1] &
++	     IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD))
+ 		cap |= STA_REC_HE_CAP_LDPC;
+ 
+ 	if (elem->phy_cap_info[1] &
+@@ -1073,7 +1074,8 @@ mt7915_mcu_sta_wtbl_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
+ 	mt76_connac_mcu_wtbl_hdr_trans_tlv(skb, vif, wcid, tlv, wtbl_hdr);
+ 	if (sta)
+ 		mt76_connac_mcu_wtbl_ht_tlv(&dev->mt76, skb, sta, tlv,
+-					    wtbl_hdr, mvif->cap.ldpc);
++					    wtbl_hdr, mvif->cap.ht_ldpc,
++					    mvif->cap.vht_ldpc);
+ 
+ 	return 0;
  }
+@@ -1582,7 +1584,7 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 			cap |= STA_CAP_TX_STBC;
+ 		if (sta->ht_cap.cap & IEEE80211_HT_CAP_RX_STBC)
+ 			cap |= STA_CAP_RX_STBC;
+-		if (mvif->cap.ldpc &&
++		if (mvif->cap.ht_ldpc &&
+ 		    (sta->ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING))
+ 			cap |= STA_CAP_LDPC;
  
-@@ -230,6 +232,7 @@ u32 ath11k_pci_read32(struct ath11k_base *ab, u32 offset)
- {
- 	struct ath11k_pci *ab_pci = ath11k_pci_priv(ab);
- 	u32 val, window_start;
-+	int ret = 0;
+@@ -1608,7 +1610,7 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 			cap |= STA_CAP_VHT_TX_STBC;
+ 		if (sta->vht_cap.cap & IEEE80211_VHT_CAP_RXSTBC_1)
+ 			cap |= STA_CAP_VHT_RX_STBC;
+-		if (mvif->cap.ldpc &&
++		if (mvif->cap.vht_ldpc &&
+ 		    (sta->vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC))
+ 			cap |= STA_CAP_VHT_LDPC;
  
- 	/* for offset beyond BAR + 4K - 32, may
- 	 * need to wakeup MHI to access.
-@@ -237,7 +240,7 @@ u32 ath11k_pci_read32(struct ath11k_base *ab, u32 offset)
- 	if (ab->hw_params.wakeup_mhi &&
- 	    test_bit(ATH11K_PCI_FLAG_INIT_DONE, &ab_pci->flags) &&
- 	    offset >= ACCESS_ALWAYS_OFF)
--		mhi_device_get_sync(ab_pci->mhi_ctrl->mhi_dev);
-+		ret = mhi_device_get_sync(ab_pci->mhi_ctrl->mhi_dev);
+@@ -1872,7 +1874,7 @@ mt7915_mcu_beacon_check_caps(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 			      len);
+ 	if (ie && ie[1] >= sizeof(*ht)) {
+ 		ht = (void *)(ie + 2);
+-		vc->ldpc |= !!(le16_to_cpu(ht->cap_info) &
++		vc->ht_ldpc = !!(le16_to_cpu(ht->cap_info) &
+ 			       IEEE80211_HT_CAP_LDPC_CODING);
+ 	}
  
- 	if (offset < WINDOW_START) {
- 		val = ioread32(ab->mem + offset);
-@@ -261,7 +264,8 @@ u32 ath11k_pci_read32(struct ath11k_base *ab, u32 offset)
+@@ -1884,7 +1886,7 @@ mt7915_mcu_beacon_check_caps(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 		vht = (void *)(ie + 2);
+ 		bc = le32_to_cpu(vht->vht_cap_info);
  
- 	if (ab->hw_params.wakeup_mhi &&
- 	    test_bit(ATH11K_PCI_FLAG_INIT_DONE, &ab_pci->flags) &&
--	    offset >= ACCESS_ALWAYS_OFF)
-+	    offset >= ACCESS_ALWAYS_OFF &&
-+	    !ret)
- 		mhi_device_put(ab_pci->mhi_ctrl->mhi_dev);
+-		vc->ldpc |= !!(bc & IEEE80211_VHT_CAP_RXLDPC);
++		vc->vht_ldpc = !!(bc & IEEE80211_VHT_CAP_RXLDPC);
+ 		vc->vht_su_ebfer =
+ 			(bc & IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE) &&
+ 			(pc & IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE);
+@@ -1908,6 +1910,8 @@ mt7915_mcu_beacon_check_caps(struct mt7915_phy *phy, struct ieee80211_vif *vif,
  
- 	return val;
+ 		he = (void *)(ie + 3);
+ 
++		vc->he_ldpc =
++			HE_PHY(CAP1_LDPC_CODING_IN_PAYLOAD, pe->phy_cap_info[1]);
+ 		vc->he_su_ebfer =
+ 			HE_PHY(CAP3_SU_BEAMFORMER, he->phy_cap_info[3]) &&
+ 			HE_PHY(CAP3_SU_BEAMFORMER, pe->phy_cap_info[3]);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 52b848dd4b66..2fe737f2f844 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -138,7 +138,9 @@ struct mt7915_sta {
+ };
+ 
+ struct mt7915_vif_cap {
+-	bool ldpc:1;
++	bool ht_ldpc:1;
++	bool vht_ldpc:1;
++	bool he_ldpc:1;
+ 	bool vht_su_ebfer:1;
+ 	bool vht_su_ebfee:1;
+ 	bool vht_mu_ebfer:1;
 -- 
-2.31.1
+2.18.0
 
