@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D52D14C43DD
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Feb 2022 12:47:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E6114C443F
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Feb 2022 13:06:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235505AbiBYLru (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Feb 2022 06:47:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53382 "EHLO
+        id S240191AbiBYMGk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Feb 2022 07:06:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234885AbiBYLru (ORCPT
+        with ESMTP id S229531AbiBYMGj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Feb 2022 06:47:50 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14BF480206;
-        Fri, 25 Feb 2022 03:47:18 -0800 (PST)
+        Fri, 25 Feb 2022 07:06:39 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ADBA75219;
+        Fri, 25 Feb 2022 04:06:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1645789638; x=1677325638;
+  t=1645790765; x=1677326765;
   h=date:from:to:cc:subject:in-reply-to:message-id:
    references:mime-version;
-  bh=/6U9OUaFd25ZGXX0FwzC82VbYuWnUZhaMfeCaqdQJ+k=;
-  b=Mbui8b++2hyTDMkkj4cy2kgt++Mm52wKwQlF5SIPiATqFPBUhP0P10Om
-   +DDxhg87Suw8TaAyievQVtyuA6tRT/0B75T5V4HHDv7eR6RAyf5EtYYiQ
-   2l06XZGlYlwhyc064qQSpWZgl9NOv5emRpJp3yj21WKpoQFFO82PicpCd
-   oqhz4ZGLiO1tA57KThvlVNB1KWCSGfKgl6BN9mc8a8hPiD/XpDTLRmXOe
-   8+1dldXsSDNoP2gcP8YHCxDY5yEreqfg74Ks9Hg0IBqHSzqefld6NwUhu
-   os+NkqnotESN2WuGB49LMpwbxgQTzBSLikIAhKOcbHJdQ5OrvTlOVjcq2
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10268"; a="232454148"
+  bh=ObLS9kfOGZVIFMNgWuztsjFtRrNrQBhB48oXlLwHkwc=;
+  b=e4uO08I03y6Bv9/Y6lTLLgq70APSXsSicJ621kKMN2PtxZwXG3JW5qwO
+   pG6jw627b27pwgaNZ11TUI2t2sh6WQCOOcmQkc1CBueVD0eJmw6rypjtl
+   TQqPUCUTy03yx2i6IzY2b053028HiSAlxHnAuvwKTTADf7Z75JPpa/0aF
+   gyJmqCY+Tod/6JSY0qT5qObWJDqo4MBJotqAhLbzImbf5c2ymxi1by3ks
+   uMKF5SunPBbBl02SEOKsjyz9MNVbSRDE4LeJw3wv06qa2W74lmqJHqkFg
+   WxQtG15KoPN6OemSd0MSlJGZ3PZ2EcOg4FM/SBl+PFsUyrS4mh7JFECx6
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10268"; a="251312578"
 X-IronPort-AV: E=Sophos;i="5.90,136,1643702400"; 
-   d="scan'208";a="232454148"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2022 03:47:17 -0800
+   d="scan'208";a="251312578"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2022 04:06:03 -0800
 X-IronPort-AV: E=Sophos;i="5.90,136,1643702400"; 
-   d="scan'208";a="509248610"
+   d="scan'208";a="549236149"
 Received: from grossi-mobl.ger.corp.intel.com ([10.252.47.60])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2022 03:47:11 -0800
-Date:   Fri, 25 Feb 2022 13:47:09 +0200 (EET)
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2022 04:05:57 -0800
+Date:   Fri, 25 Feb 2022 14:05:56 +0200 (EET)
 From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
 cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
@@ -51,15 +51,14 @@ cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
         moises.veleta@intel.com, pierre-louis.bossart@intel.com,
         muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
         sreehari.kancharla@intel.com, madhusmita.sahu@intel.com
-Subject: Re: [PATCH net-next v5 04/13] net: wwan: t7xx: Add port proxy
- infrastructure
-In-Reply-To: <20220223223326.28021-5-ricardo.martinez@linux.intel.com>
-Message-ID: <b7b7c5d1-e6c8-4c74-d5aa-b12443d5aee@linux.intel.com>
-References: <20220223223326.28021-1-ricardo.martinez@linux.intel.com> <20220223223326.28021-5-ricardo.martinez@linux.intel.com>
+Subject: Re: [PATCH net-next v5 05/13] net: wwan: t7xx: Add control port
+In-Reply-To: <20220223223326.28021-6-ricardo.martinez@linux.intel.com>
+Message-ID: <8b203e9-d7f5-cea8-db97-f5506c9f16e@linux.intel.com>
+References: <20220223223326.28021-1-ricardo.martinez@linux.intel.com> <20220223223326.28021-6-ricardo.martinez@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/mixed; boundary="8323329-1991548370-1645790763=:1607"
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -68,16 +67,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323329-1991548370-1645790763=:1607
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: 8BIT
+
 On Wed, 23 Feb 2022, Ricardo Martinez wrote:
 
 > From: Haijun Liu <haijun.liu@mediatek.com>
 > 
-> Port-proxy provides a common interface to interact with different types
-> of ports. Ports export their configuration via `struct t7xx_port` and
-> operate as defined by `struct port_ops`.
+> Control Port implements driver control messages such as modem-host
+> handshaking, controls port enumeration, and handles exception messages.
+> 
+> The handshaking process between the driver and the modem happens during
+> the init sequence. The process involves the exchange of a list of
+> supported runtime features to make sure that modem and host are ready
+> to provide proper feature lists including port enumeration. Further
+> features can be enabled and controlled in this handshaking process.
 > 
 > Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
-> Co-developed-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
 > Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
 > Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
 > Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
@@ -86,71 +96,17 @@ On Wed, 23 Feb 2022, Ricardo Martinez wrote:
 > Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
 > ---
 
+> @@ -412,6 +651,7 @@ static struct t7xx_modem *t7xx_md_alloc(struct t7xx_pci_dev *t7xx_dev)
+...
+>  	md->core_md.ready = false;
+> +	md->core_md.handshake_ongoing = false;
 
-> +static u16 t7xx_port_next_rx_seq_num(struct t7xx_port *port, struct ccci_header *ccci_h)
-> +{
-> +	u16 seq_num, next_seq_num, assert_bit;
+These assignments are not needed with mem from kzalloc.
 
-assert_bit could be bool.
-
-> +
-> +	seq_num = FIELD_GET(CCCI_H_SEQ_FLD, le32_to_cpu(ccci_h->status));
-> +	next_seq_num = (seq_num + 1) & FIELD_MAX(CCCI_H_SEQ_FLD);
-> +	assert_bit = !!(le32_to_cpu(ccci_h->status) & CCCI_H_AST_BIT);
-> +	if (!assert_bit || port->seq_nums[MTK_RX] > FIELD_MAX(CCCI_H_SEQ_FLD))
-
-Is this an obfuscated way to say:
-	... || port->seq_nums[MTK_RX] == INVALID_SEQ_NUM
-?
-
-> +int t7xx_port_proxy_node_control(struct t7xx_modem *md, struct port_msg *port_msg)
-> +{
-> +	u32 *port_info_base = (void *)port_msg + sizeof(*port_msg);
-
-__le32 *port_info_base = (void *)port_msg + sizeof(*port_msg);
-
-As port_msg has __le32 fields, the endianess likely should disappear in 
-this casting?
-
-> +	struct device *dev = &md->t7xx_dev->pdev->dev;
-> +	unsigned int version, ports, i;
-> +
-> +	version = FIELD_GET(PORT_MSG_VERSION, le32_to_cpu(port_msg->info));
-> +	if (version != PORT_ENUM_VER ||
-> +	    le32_to_cpu(port_msg->head_pattern) != PORT_ENUM_HEAD_PATTERN ||
-> +	    le32_to_cpu(port_msg->tail_pattern) != PORT_ENUM_TAIL_PATTERN) {
-> +		dev_err(dev, "Invalid port control message %x:%x:%x\n",
-> +			version, le32_to_cpu(port_msg->head_pattern),
-> +			le32_to_cpu(port_msg->tail_pattern));
-> +		return -EFAULT;
-> +	}
-> +
-> +	ports = FIELD_GET(PORT_MSG_PRT_CNT, le32_to_cpu(port_msg->info));
-> +	for (i = 0; i < ports; i++) {
-> +		struct t7xx_port_static *port_static;
-> +		u32 *port_info = port_info_base + i;
-
-__le32 *port_info = port_info_base + i;
-
-> +		struct t7xx_port *port;
-> +		unsigned int ch_id;
-> +		bool en_flag;
-> +
-> +		ch_id = FIELD_GET(PORT_INFO_CH_ID, *port_info);
-
-ch_id = FIELD_GET(PORT_INFO_CH_ID, le32_to_cpu(*port_info));
-
-> +		port = t7xx_proxy_get_port_by_ch(md->port_prox, ch_id);
-> +		if (!port) {
-> +			dev_dbg(dev, "Port:%x not found\n", ch_id);
-> +			continue;
-> +		}
-> +
-> +		en_flag = !!(PORT_INFO_ENFLG & *port_info);
-
-*port_info & PORT_INFO_ENFLG
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
 
 -- 
  i.
 
+--8323329-1991548370-1645790763=:1607--
