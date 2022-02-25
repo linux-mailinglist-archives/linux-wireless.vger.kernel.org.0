@@ -2,97 +2,162 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 893614C460F
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Feb 2022 14:23:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E828E4C4858
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Feb 2022 16:11:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241160AbiBYNWb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Feb 2022 08:22:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59378 "EHLO
+        id S239724AbiBYPLe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Feb 2022 10:11:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235630AbiBYNW3 (ORCPT
+        with ESMTP id S233681AbiBYPLc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Feb 2022 08:22:29 -0500
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF3083B2AF;
-        Fri, 25 Feb 2022 05:21:57 -0800 (PST)
-Received: by mail-wr1-x42b.google.com with SMTP id j22so4450257wrb.13;
-        Fri, 25 Feb 2022 05:21:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id;
-        bh=xxLQvH7l9/0cKevN7857HHaPU2QEO0vmmvdQp+hIn0M=;
-        b=lxpFQr/yL6LhCuD1oWiTdQMRDrZCimHRh6Lz+Og91CzD8pbg8dvp5IZms56qzhY7rj
-         WqpScDjLfH0St0tAGZLaWroGxSJuyRz6ltraESaNG7LNPTKz/nPdhbjgL5nS0UyJSH8s
-         qNFcXZDL/FE8n6rYYqjJs8++mgTz13MmLLg97EeED/pmUZKLKpbN8BM306go2TWFp8kq
-         THUCTz8DEMctZ+WiXZ22rVb1t7yVBnF+rTBq2S6S5xAGegJWsCuXtUICNvBorcuLrVZv
-         DoBOj/F/8iQnmFVebMCFaFUIU4h/TNrJkCj0ZcE4rUePWqHaftbnlxx0Jy/MU7ftzs2c
-         tzUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=xxLQvH7l9/0cKevN7857HHaPU2QEO0vmmvdQp+hIn0M=;
-        b=llyIc4QMXKkT/dyW0B2ohs6GRmI7mv23tqKCR6nEoUwC8eDod68Ugz5MKllgonfTEx
-         g3V6yrfNOa9DGVjVt5IdAhDFlp9sGOgy5zz4Zypvu7+QYXY2rrzYJ88uZRIdYYijyJFq
-         paLe21Vd21Yq08KiMsZAKbeD6E6gnHyWY5IqJ+rMlLMFrHLTITQo4l50YPmEGSL+IkPj
-         qyXXLygS8cfe2S3+GBZ5TedxJGQjP5LtXbfZD8f4XhWiJCyepWspnVU6HFKthyxbJ0IE
-         9yHk2tvJozBCvbUNyByKp9GNoHGHu4DLqx7lqyxoE920Icdr8NU061a6r7F57Aa1k22T
-         ElAg==
-X-Gm-Message-State: AOAM530YTOTtqlmg2/BqkbBizGofSMrZfcIy0vyK2md2A2p8qmMN7/T5
-        DglCP73AkNYh+BKN1dwp71U=
-X-Google-Smtp-Source: ABdhPJxuFRFEkt9oa8I0BpqmlhLWobFn8UrM+o3nK0tidXODXRPT9ZJy8lVFXW/vqXykToLpoXfvNg==
-X-Received: by 2002:a05:6000:1547:b0:1ea:7d56:83e8 with SMTP id 7-20020a056000154700b001ea7d5683e8mr6343712wry.404.1645795316353;
-        Fri, 25 Feb 2022 05:21:56 -0800 (PST)
-Received: from localhost.localdomain ([64.64.123.58])
-        by smtp.gmail.com with ESMTPSA id o15-20020adf8b8f000000b001ea9c18b793sm2272715wra.114.2022.02.25.05.21.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Feb 2022 05:21:55 -0800 (PST)
-From:   Jia-Ju Bai <baijiaju1990@gmail.com>
-To:     aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, chi-hsien.lin@infineon.com,
-        wright.feng@infineon.com, chung-hsien.hsu@infineon.com,
-        kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
-        shawn.guo@linaro.org, gustavoars@kernel.org, len.baker@gmx.com
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>
-Subject: [PATCH] brcmfmac: check the return value of devm_kzalloc() in brcmf_of_probe()
-Date:   Fri, 25 Feb 2022 05:21:38 -0800
-Message-Id: <20220225132138.27722-1-baijiaju1990@gmail.com>
-X-Mailer: git-send-email 2.17.1
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Fri, 25 Feb 2022 10:11:32 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D356725EB2
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Feb 2022 07:10:59 -0800 (PST)
+Received: from ip4d144895.dynamic.kabel-deutschland.de ([77.20.72.149] helo=[192.168.66.200]); authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1nNcFE-0001dZ-2P; Fri, 25 Feb 2022 16:10:56 +0100
+Message-ID: <4da43e43-c2f3-1f5a-a00f-f1be65668e60@leemhuis.info>
+Date:   Fri, 25 Feb 2022 16:10:55 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: Bug 215523 - Firmware crash with 66.f1c864e0.0 (cc-a0-66.ucode)
+ and 68.01d30b0c (cc-a0-68.ucode)
+Content-Language: en-BS
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+To:     Luca Coelho <luciano.coelho@intel.com>
+References: <adf5ac57-cd60-a004-a05d-6d7c3ad7efa7@leemhuis.info>
+Cc:     "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        golan.ben.ami@intel.com
+In-Reply-To: <adf5ac57-cd60-a004-a05d-6d7c3ad7efa7@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1645801859;55d822dc;
+X-HE-SMSGID: 1nNcFE-0001dZ-2P
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The function devm_kzalloc() in brcmf_of_probe() can fail, so its return
-value should be checked.
+Hi, this is your Linux kernel regression tracker. Top-posting for once,
+to make this easy accessible to everyone.
 
-Fixes: 29e354ebeeec ("brcmfmac: Transform compatible string for FW loading")
-Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 2 ++
- 1 file changed, 2 insertions(+)
+Luca, can you help me out please? Below regression was reported a while
+ago in https://bugzilla.kernel.org/show_bug.cgi?id=215523
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-index 513c7e6421b2..535e8ddeab8d 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-@@ -80,6 +80,8 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 		/* get rid of '/' in the compatible string to be able to find the FW */
- 		len = strlen(tmp) + 1;
- 		board_type = devm_kzalloc(dev, len, GFP_KERNEL);
-+		if (!board_type)
-+			return;
- 		strscpy(board_type, tmp, len);
- 		for (i = 0; i < board_type[i]; i++) {
- 			if (board_type[i] == '/')
--- 
-2.17.1
+Goan about two weeks ago came up with a rough patch that helped:
+https://bugzilla.kernel.org/show_bug.cgi?id=215523#c13
 
+What the status of that fix? I couldn't find a similar fix in the
+archives and no commit that linked to the ticket. I already asked Goan
+for a update in the ticket about a week ago, but I didn't get an answer.
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+
+P.S.: As the Linux kernel's regression tracker I'm getting a lot of
+reports on my table. I can only look briefly into most of them and lack
+knowledge about most of the areas they concern. I thus unfortunately
+will sometimes get things wrong or miss something important. I hope
+that's not the case here; if you think it is, don't hesitate to tell me
+in a public reply, it's in everyone's interest to set the public record
+straight.
+
+#regzbot poke
+
+On 10.02.22 10:56, Thorsten Leemhuis wrote:
+> Hi, this is your Linux kernel regression tracker speaking.
+> 
+> There is a regression in bugzilla.kernel.org I'd like to add to the
+> tracking:
+> 
+> #regzbot introduced: v5.16..v5.17-rc1
+> #regzbot from: Udo Steinberg <udo@hypervisor.org>
+> #regzbot title: iwlwifi: Firmware crash with 66.f1c864e0.0
+> (cc-a0-66.ucode) and 68.01d30b0c (cc-a0-68.ucode)
+> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=215523
+> 
+> Quote:
+> 
+>> Seeing the following firmware crash frequently with
+>> firmware-version: 66.f1c864e0.0 cc-a0-66.ucode
+>>
+>> [14699.974055] iwlwifi 0000:03:00.0: Microcode SW error detected. Restarting 0x0.
+>> [14699.974484] iwlwifi 0000:03:00.0: Start IWL Error Log Dump:
+>> [14699.974496] iwlwifi 0000:03:00.0: Transport status: 0x0000004A, valid: 6
+>> [14699.974509] iwlwifi 0000:03:00.0: Loaded firmware version: 66.f1c864e0.0 cc-a0-66.ucode
+>> [14699.974521] iwlwifi 0000:03:00.0: 0x00000071 | NMI_INTERRUPT_UMAC_FATAL    
+>> [14699.974532] iwlwifi 0000:03:00.0: 0x000022F0 | trm_hw_status0
+>> [14699.974541] iwlwifi 0000:03:00.0: 0x00000000 | trm_hw_status1
+>> [14699.974549] iwlwifi 0000:03:00.0: 0x004FAA46 | branchlink2
+>> [14699.974557] iwlwifi 0000:03:00.0: 0x004F13DE | interruptlink1
+>> [14699.974565] iwlwifi 0000:03:00.0: 0x004F13DE | interruptlink2
+>> [14699.974573] iwlwifi 0000:03:00.0: 0x00005D04 | data1
+>> [14699.974581] iwlwifi 0000:03:00.0: 0x00001000 | data2
+>> [14699.974588] iwlwifi 0000:03:00.0: 0x00000000 | data3
+>> [14699.974596] iwlwifi 0000:03:00.0: 0x5F80B98E | beacon time
+>> [14699.974604] iwlwifi 0000:03:00.0: 0xDA80E7BE | tsf low
+>> [14699.974612] iwlwifi 0000:03:00.0: 0x000001D9 | tsf hi
+>> [14699.974621] iwlwifi 0000:03:00.0: 0x00000000 | time gp1
+>> [14699.974629] iwlwifi 0000:03:00.0: 0x1622E64D | time gp2
+>> [14699.974636] iwlwifi 0000:03:00.0: 0x00000001 | uCode revision type
+>> [14699.974645] iwlwifi 0000:03:00.0: 0x00000042 | uCode version major
+>> [14699.974652] iwlwifi 0000:03:00.0: 0xF1C864E0 | uCode version minor
+>> [14699.974662] iwlwifi 0000:03:00.0: 0x00000340 | hw version
+>> [14699.974668] iwlwifi 0000:03:00.0: 0x00C89000 | board version
+>> [14699.974675] iwlwifi 0000:03:00.0: 0x800EFC03 | hcmd
+>> [14699.974682] iwlwifi 0000:03:00.0: 0x00020000 | isr0
+>> [14699.974689] iwlwifi 0000:03:00.0: 0x00400000 | isr1
+>> [14699.974695] iwlwifi 0000:03:00.0: 0x08F04802 | isr2
+>> [14699.974702] iwlwifi 0000:03:00.0: 0x00C3780C | isr3
+>> [14699.974710] iwlwifi 0000:03:00.0: 0x00000000 | isr4
+>> [14699.974718] iwlwifi 0000:03:00.0: 0x0510001C | last cmd Id
+>> [14699.974725] iwlwifi 0000:03:00.0: 0x00005D04 | wait_event
+>> [14699.974733] iwlwifi 0000:03:00.0: 0x00000054 | l2p_control
+>> [14699.974740] iwlwifi 0000:03:00.0: 0x00000000 | l2p_duration
+>> [14699.974746] iwlwifi 0000:03:00.0: 0x0000000F | l2p_mhvalid
+>> [14699.974754] iwlwifi 0000:03:00.0: 0x000000C7 | l2p_addr_match
+>> [14699.974761] iwlwifi 0000:03:00.0: 0x00000008 | lmpm_pmg_sel
+>> [14699.974768] iwlwifi 0000:03:00.0: 0x00000000 | timestamp
+>> [14699.974776] iwlwifi 0000:03:00.0: 0x00004890 | flow_handler
+>> [14699.974923] iwlwifi 0000:03:00.0: Start IWL Error Log Dump:
+>> [14699.974933] iwlwifi 0000:03:00.0: Transport status: 0x0000004A, valid: 7
+>> [14699.974945] iwlwifi 0000:03:00.0: 0x20003463 | ADVANCED_SYSASSERT
+>> [14699.974953] iwlwifi 0000:03:00.0: 0x00000000 | umac branchlink1
+>> [14699.974961] iwlwifi 0000:03:00.0: 0x80455A96 | umac branchlink2
+>> [14699.974969] iwlwifi 0000:03:00.0: 0xC00811A4 | umac interruptlink1
+>> [14699.974976] iwlwifi 0000:03:00.0: 0x00000000 | umac interruptlink2
+>> [14699.974983] iwlwifi 0000:03:00.0: 0xDA80E7B1 | umac data1
+>> [14699.974992] iwlwifi 0000:03:00.0: 0x1622E63F | umac data2
+>> [14699.974999] iwlwifi 0000:03:00.0: 0xC5490101 | umac data3
+>> [14699.975006] iwlwifi 0000:03:00.0: 0x00000042 | umac major
+>> [14699.975013] iwlwifi 0000:03:00.0: 0xF1C864E0 | umac minor
+>> [14699.975020] iwlwifi 0000:03:00.0: 0x1622E647 | frame pointer
+>> [14699.975027] iwlwifi 0000:03:00.0: 0xC0885E08 | stack pointer
+>> [14699.975035] iwlwifi 0000:03:00.0: 0x00AB010C | last host cmd
+>> [14699.975042] iwlwifi 0000:03:00.0: 0x00000000 | isr status reg
+>> [14699.975089] iwlwifi 0000:03:00.0: IML/ROM dump:
+>> [14699.975096] iwlwifi 0000:03:00.0: 0x00000003 | IML/ROM error/state
+>> [14699.975135] iwlwifi 0000:03:00.0: 0x00005A9A | IML/ROM data1
+>> [14699.975170] iwlwifi 0000:03:00.0: 0x00000080 | IML/ROM WFPM_AUTH_KEY_0
+>> [14699.975249] iwlwifi 0000:03:00.0: Fseq Registers:
+>> [14699.975269] iwlwifi 0000:03:00.0: 0x60000000 | FSEQ_ERROR_CODE
+>> [14699.975288] iwlwifi 0000:03:00.0: 0x80290021 | FSEQ_TOP_INIT_VERSION
+>> [14699.975308] iwlwifi 0000:03:00.0: 0x00050008 | FSEQ_CNVIO_INIT_VERSION
+>> [14699.975328] iwlwifi 0000:03:00.0: 0x0000A503 | FSEQ_OTP_VERSION
+>> [14699.975348] iwlwifi 0000:03:00.0: 0x80000003 | FSEQ_TOP_CONTENT_VERSION
+>> [14699.975368] iwlwifi 0000:03:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+>> [14699.975388] iwlwifi 0000:03:00.0: 0x00100530 | FSEQ_CNVI_ID
+>> [14699.975407] iwlwifi 0000:03:00.0: 0x00000532 | FSEQ_CNVR_ID
+>> [14699.975428] iwlwifi 0000:03:00.0: 0x00100530 | CNVI_AUX_MISC_CHIP
+>> [14699.975450] iwlwifi 0000:03:00.0: 0x00000532 | CNVR_AUX_MISC_CHIP
+>> [14699.975472] iwlwifi 0000:03:00.0: 0x05B0905B | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+>> [14699.975494] iwlwifi 0000:03:00.0: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+>> [14699.975970] iwlwifi 0000:03:00.0: WRT: Collecting data: ini trigger 4 fired (delay=0ms).
+> 
