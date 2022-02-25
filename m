@@ -2,62 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D60C4C3F85
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Feb 2022 08:53:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25C8E4C4062
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Feb 2022 09:46:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238293AbiBYHx7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Feb 2022 02:53:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39036 "EHLO
+        id S238173AbiBYIqj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Feb 2022 03:46:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233958AbiBYHx6 (ORCPT
+        with ESMTP id S238395AbiBYIqj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Feb 2022 02:53:58 -0500
-X-Greylist: delayed 412 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 24 Feb 2022 23:53:25 PST
-Received: from mail.powerangels.com.pl (mail.powerangels.com.pl [45.86.209.159])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC0BA7DAB9
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Feb 2022 23:53:25 -0800 (PST)
-Received: by mail.powerangels.com.pl (Postfix, from userid 1001)
-        id DB5918337A; Fri, 25 Feb 2022 02:45:42 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=powerangels.com.pl;
-        s=mail; t=1645775192;
-        bh=07NAgW1e0WiNB9zqagiM2BnwZfWBCpNa2E4+ccxBPgw=;
-        h=Date:From:To:Subject:From;
-        b=vDv+1rUoZ6jCloh+JG+Ba1HmE8x/4cGQc2eXaiKOWPxqB6Sre3NqU+FTlbAUqZ17I
-         G+lE3ZaHZiMYr6wyNvoaalfsKNwULWX/WkccOVn87tHKBnF6fSOOUOKL1c+7b52vH9
-         iY3XaMXDYv8Tp2fdY1YWEer8NfsYSvH2KzGMua2OYUOg3d656I/lEJGQRjn2gKQngX
-         MjOT8xcD+q/uOvhdyCEGFE+/uquo3R79DuzaIP+0rBf6TpIkJO+d/PDAUWdVN4q71H
-         OwesqrMUe2ZSw4ijBhBiMIwqvs8sLn8/RfaChk89KubLOzsxzwBYOAYkZQXSTSA8lG
-         cHhrfaqEoDbFA==
-Received: by mail.powerangels.com.pl for <linux-wireless@vger.kernel.org>; Fri, 25 Feb 2022 07:45:40 GMT
-Message-ID: <20220225024500-0.1.j.218k.0.ihafer9n16@powerangels.com.pl>
-Date:   Fri, 25 Feb 2022 07:45:40 GMT
-From:   "Jakub Daroch" <jakub.daroch@powerangels.com.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.powerangels.com.pl
+        Fri, 25 Feb 2022 03:46:39 -0500
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF7FC235318
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Feb 2022 00:46:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1645778766; x=1677314766;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=8IMlfcAq27Ka0YnMzbwPQW1L2g8qqQgVqD9u0cyrUGk=;
+  b=UGYkl7+DLAjAvmhxgcXNfmhcI0Uji4bA9sw043/vlh1gxD8UytHgHBi5
+   L2+3riyGtcdBiTkayMUtXckcEnk+9ulK7Gkhre6+RobbNesrUTR20NSm/
+   yckf7/k490Dj2VG+6i+vvJ/a8kUOEK1xJbKQ+7+4CkZEF/cFJA9AWQVON
+   g=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 25 Feb 2022 00:46:06 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2022 00:46:06 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.15; Fri, 25 Feb 2022 00:46:05 -0800
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.15; Fri, 25 Feb 2022 00:46:04 -0800
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH v7 0/4] ath11k: add feature for device recovery
+Date:   Fri, 25 Feb 2022 03:45:44 -0500
+Message-ID: <20220225084548.19534-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_20,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
+v7: 
+    1. rebased to ath.git ath-202202211030
+    2. add patch "ath11k: fix the warning of dev_wake in mhi_pm_disable_transition()"
+    3. remove below 3 patch which has upstream.
+       ath11k: add ath11k_qmi_free_resource() for recovery
+       ath11k: configure RDDM size to mhi for recovery by firmware
+       ath11k: add support for device recovery for QCA6390/WCN6855
+ 
+v6: add patch "ath11k: Add hw-restart option to simulate_fw_crash"
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+v5:
+    1. rebased to ath.git ath-202202030905
+    2. change a few commit message
+    3. fix count set sequence of ath11k_core_reset in "ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base"
+    4. add patch "ath11k: configure RDDM size to mhi for recovery by firmware" to support RDDM
+    5. move destroy_workqueue(ab->workqueue_aux) from ath11k_pci_remove() to ath11k_core_free()
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+v4: add patch "ath11k: fix invalid m3 buffer address"
+    recovery will fail when download firmware without this patch
 
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
+v3: remove time_left set but not used in
+    "ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base"
+
+v2: s/initilized/initialized in commit log of patch
+    "ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base"
+
+Add support for device recovery.
+
+Wen Gong (4):
+  ath11k: add support for device recovery for QCA6390/WCN6855
+  ath11k: add synchronization operation between reconfigure of mac80211
+    and ath11k_base
+  ath11k: Add hw-restart option to simulate_fw_crash
+  ath11k: fix the warning of dev_wake in mhi_pm_disable_transition()
+
+ drivers/net/wireless/ath/ath11k/core.c    | 121 ++++++++++++++++++++--
+ drivers/net/wireless/ath/ath11k/core.h    |  18 ++++
+ drivers/net/wireless/ath/ath11k/debugfs.c |   4 +
+ drivers/net/wireless/ath/ath11k/mac.c     |  40 +++++++
+ drivers/net/wireless/ath/ath11k/mhi.c     |  33 ++++++
+ drivers/net/wireless/ath/ath11k/pci.c     |  12 ++-
+ 6 files changed, 216 insertions(+), 12 deletions(-)
 
 
-Pozdrawiam,
-Jakub Daroch
+base-commit: 193dc0446985372a9b06b7572e1b98e1963c23a9
+-- 
+2.31.1
+
