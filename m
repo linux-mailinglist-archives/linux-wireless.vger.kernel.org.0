@@ -2,229 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B48954C40DB
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Feb 2022 10:02:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B37044C4175
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Feb 2022 10:30:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238855AbiBYJCp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Feb 2022 04:02:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42782 "EHLO
+        id S239096AbiBYJ37 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Feb 2022 04:29:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238882AbiBYJCm (ORCPT
+        with ESMTP id S238185AbiBYJ36 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Feb 2022 04:02:42 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47BB838BE6
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Feb 2022 01:02:03 -0800 (PST)
-X-UUID: f0efc5a2d85b4711a7163bd6f61d4e2a-20220225
-X-UUID: f0efc5a2d85b4711a7163bd6f61d4e2a-20220225
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
-        (envelope-from <meichia.chiu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 2125585178; Fri, 25 Feb 2022 17:01:57 +0800
-Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 25 Feb 2022 17:01:55 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb01.mediatek.inc
- (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 25 Feb
- 2022 17:01:55 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 25 Feb 2022 17:01:55 +0800
-From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+        Fri, 25 Feb 2022 04:29:58 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C1EB18CC4D
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Feb 2022 01:29:27 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B58F5B82A89
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Feb 2022 09:29:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCEE9C340EF;
+        Fri, 25 Feb 2022 09:29:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1645781364;
+        bh=fFmwYiQA9Ze3GRlC81umDN9MBSnEvIX59FSyWJ7HclQ=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=Jy78vQ0VFHm97fEBzezbGistgI3HWem4u3xcijZY2DEyjNGON7s0+5+gQs+YsaE3Z
+         vF9DfLbYnoAVAF2WH85kzAVI5SB3C55nWkkBKhAtr16Xn9UZ+9MT0hcsuTQ5d0x1OI
+         c3Ir90+yxyKrIxYox364Pv+csWMmjtB/5f9NKd74hzvS48iFFeGPx/enJGimnVWvCP
+         k5oZ4wvZ2vQwMZRgVowvBuBoF5eMzgi+WXK1l71p4sH6UV36DuFY7NIaB3Jy7kwPMa
+         Id6R0sj8nL9oV5Weq6HI/OGv9cmA8GIOyt7bX/RQOVqnwK+8Q1BVjvhVLdv64ArCWd
+         Q6+12oT1tQyAQ==
+From:   Kalle Valo <kvalo@kernel.org>
 To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Money Wang <Money.Wang@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-Subject: [PATCH] mt76: split single ldpc cap bit into bits
-Date:   Fri, 25 Feb 2022 17:01:41 +0800
-Message-ID: <20220225090141.10201-1-MeiChia.Chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: pull request: mt76 2022-02-24
+In-Reply-To: <cb7c44ba-3a49-a0fa-b203-e23a8761a3bf@nbd.name> (Felix Fietkau's
+        message of "Thu, 24 Feb 2022 14:42:57 +0100")
+References: <cb7c44ba-3a49-a0fa-b203-e23a8761a3bf@nbd.name>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Fri, 25 Feb 2022 11:29:19 +0200
+Message-ID: <87ee3rthu8.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The original single LDPC cap bit cannot be used to
-differentiate LDPC cap in each PHY mode.
-This modification split the single bit into 3 bits,
-ht_ldpc, vht_ldpc, and he_ldpc.
+Felix Fietkau <nbd@nbd.name> writes:
 
-Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
-Suggested-by: Money Wang <Money.Wang@mediatek.com>
-Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7615/mcu.c    |  2 +-
- .../wireless/mediatek/mt76/mt76_connac_mcu.c   |  9 +++++----
- .../wireless/mediatek/mt76/mt76_connac_mcu.h   |  2 +-
- .../net/wireless/mediatek/mt76/mt7915/mcu.c    | 18 +++++++++++-------
- .../net/wireless/mediatek/mt76/mt7915/mt7915.h |  4 +++-
- 5 files changed, 21 insertions(+), 14 deletions(-)
+> Hi Kalle,
+>
+> here's a replacement for my second pull request for 5.18.
+> It fixes the MT7986 include issue and adds a DFS fix
+>
+> - Felix
+>
+> The following changes since commit a0061be4e54b52e5e4ff179c3f817107ddbb2830:
+>
+>    rtw88: change rtw_info() to proper message level (2022-02-22 17:31:13 +0200)
+>
+> are available in the Git repository at:
+>
+>    https://github.com/nbd168/wireless tags/mt76-for-kvalo-2022-02-24
+>
+> for you to fetch changes up to 00a883e6806e394638d344ba281c2727d6ffcbd4:
+>
+>    mt76: fix dfs state issue with 160 MHz channels (2022-02-24 14:40:23 +0100)
+>
+> ----------------------------------------------------------------
+> mt76 patches for 5.18
+>
+> - bugfixes
+> - mt7915 thermal management improvements
+> - SAR support for more mt76 drivers
+> - mt7986 wmac support on mt7915
+>
+> ----------------------------------------------------------------
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index e98c6076a633..390add3144c2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -880,7 +880,7 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 						 NULL, wtbl_hdr);
- 		if (sta)
- 			mt76_connac_mcu_wtbl_ht_tlv(&dev->mt76, wskb, sta,
--						    NULL, wtbl_hdr, true);
-+						    NULL, wtbl_hdr, true, true);
- 		mt76_connac_mcu_wtbl_hdr_trans_tlv(wskb, vif, &msta->wcid,
- 						   NULL, wtbl_hdr);
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 0a646ae51c8d..6c762fbf9aaa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -899,7 +899,7 @@ EXPORT_SYMBOL_GPL(mt76_connac_mcu_wtbl_smps_tlv);
- 
- void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 				 struct ieee80211_sta *sta, void *sta_wtbl,
--				 void *wtbl_tlv, bool ldpc)
-+				 void *wtbl_tlv, bool ht_ldpc, bool vht_ldpc)
- {
- 	struct wtbl_ht *ht = NULL;
- 	struct tlv *tlv;
-@@ -909,7 +909,7 @@ void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 		tlv = mt76_connac_mcu_add_nested_tlv(skb, WTBL_HT, sizeof(*ht),
- 						     wtbl_tlv, sta_wtbl);
- 		ht = (struct wtbl_ht *)tlv;
--		ht->ldpc = ldpc &&
-+		ht->ldpc = ht_ldpc &&
- 			   !!(sta->ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING);
- 		ht->af = sta->ht_cap.ampdu_factor;
- 		ht->mm = sta->ht_cap.ampdu_density;
-@@ -924,7 +924,7 @@ void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 						     sizeof(*vht), wtbl_tlv,
- 						     sta_wtbl);
- 		vht = (struct wtbl_vht *)tlv;
--		vht->ldpc = ldpc &&
-+		vht->ldpc = vht_ldpc &&
- 			    !!(sta->vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC);
- 		vht->vht = true;
- 
-@@ -1004,7 +1004,8 @@ int mt76_connac_mcu_sta_cmd(struct mt76_phy *phy,
- 						   sta_wtbl, wtbl_hdr);
- 		if (info->sta)
- 			mt76_connac_mcu_wtbl_ht_tlv(dev, skb, info->sta,
--						    sta_wtbl, wtbl_hdr, true);
-+						    sta_wtbl, wtbl_hdr,
-+						    true, true);
- 	}
- 
- 	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 384c3eab1c8a..146186f5109b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1561,7 +1561,7 @@ void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
- 			     u8 rcpi, u8 state);
- void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 				 struct ieee80211_sta *sta, void *sta_wtbl,
--				 void *wtbl_tlv, bool ldpc);
-+				 void *wtbl_tlv, bool ht_ldpc, bool vht_ldpc);
- void mt76_connac_mcu_wtbl_ba_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 				 struct ieee80211_ampdu_params *params,
- 				 bool enable, bool tx, void *sta_wtbl,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 119f9358162f..77bf3d94782b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -821,8 +821,9 @@ mt7915_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
- 	     IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_RU_MAPPING_IN_5G))
- 		cap |= STA_REC_HE_CAP_BW20_RU242_SUPPORT;
- 
--	if (mvif->cap.ldpc && (elem->phy_cap_info[1] &
--			       IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD))
-+	if (mvif->cap.he_ldpc &&
-+	    (elem->phy_cap_info[1] &
-+	     IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD))
- 		cap |= STA_REC_HE_CAP_LDPC;
- 
- 	if (elem->phy_cap_info[1] &
-@@ -1073,7 +1074,8 @@ mt7915_mcu_sta_wtbl_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
- 	mt76_connac_mcu_wtbl_hdr_trans_tlv(skb, vif, wcid, tlv, wtbl_hdr);
- 	if (sta)
- 		mt76_connac_mcu_wtbl_ht_tlv(&dev->mt76, skb, sta, tlv,
--					    wtbl_hdr, mvif->cap.ldpc);
-+					    wtbl_hdr, mvif->cap.ht_ldpc,
-+					    mvif->cap.vht_ldpc);
- 
- 	return 0;
- }
-@@ -1582,7 +1584,7 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
- 			cap |= STA_CAP_TX_STBC;
- 		if (sta->ht_cap.cap & IEEE80211_HT_CAP_RX_STBC)
- 			cap |= STA_CAP_RX_STBC;
--		if (mvif->cap.ldpc &&
-+		if (mvif->cap.ht_ldpc &&
- 		    (sta->ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING))
- 			cap |= STA_CAP_LDPC;
- 
-@@ -1608,7 +1610,7 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
- 			cap |= STA_CAP_VHT_TX_STBC;
- 		if (sta->vht_cap.cap & IEEE80211_VHT_CAP_RXSTBC_1)
- 			cap |= STA_CAP_VHT_RX_STBC;
--		if (mvif->cap.ldpc &&
-+		if (mvif->cap.vht_ldpc &&
- 		    (sta->vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC))
- 			cap |= STA_CAP_VHT_LDPC;
- 
-@@ -1872,7 +1874,7 @@ mt7915_mcu_beacon_check_caps(struct mt7915_phy *phy, struct ieee80211_vif *vif,
- 			      len);
- 	if (ie && ie[1] >= sizeof(*ht)) {
- 		ht = (void *)(ie + 2);
--		vc->ldpc |= !!(le16_to_cpu(ht->cap_info) &
-+		vc->ht_ldpc = !!(le16_to_cpu(ht->cap_info) &
- 			       IEEE80211_HT_CAP_LDPC_CODING);
- 	}
- 
-@@ -1884,7 +1886,7 @@ mt7915_mcu_beacon_check_caps(struct mt7915_phy *phy, struct ieee80211_vif *vif,
- 		vht = (void *)(ie + 2);
- 		bc = le32_to_cpu(vht->vht_cap_info);
- 
--		vc->ldpc |= !!(bc & IEEE80211_VHT_CAP_RXLDPC);
-+		vc->vht_ldpc = !!(bc & IEEE80211_VHT_CAP_RXLDPC);
- 		vc->vht_su_ebfer =
- 			(bc & IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE) &&
- 			(pc & IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE);
-@@ -1908,6 +1910,8 @@ mt7915_mcu_beacon_check_caps(struct mt7915_phy *phy, struct ieee80211_vif *vif,
- 
- 		he = (void *)(ie + 3);
- 
-+		vc->he_ldpc =
-+			HE_PHY(CAP1_LDPC_CODING_IN_PAYLOAD, pe->phy_cap_info[1]);
- 		vc->he_su_ebfer =
- 			HE_PHY(CAP3_SU_BEAMFORMER, he->phy_cap_info[3]) &&
- 			HE_PHY(CAP3_SU_BEAMFORMER, pe->phy_cap_info[3]);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 52b848dd4b66..2fe737f2f844 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -138,7 +138,9 @@ struct mt7915_sta {
- };
- 
- struct mt7915_vif_cap {
--	bool ldpc:1;
-+	bool ht_ldpc:1;
-+	bool vht_ldpc:1;
-+	bool he_ldpc:1;
- 	bool vht_su_ebfer:1;
- 	bool vht_su_ebfee:1;
- 	bool vht_mu_ebfer:1;
+Pulled, thanks Felix.
+
 -- 
-2.18.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
