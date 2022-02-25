@@ -2,146 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A15A24C5201
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Feb 2022 00:22:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BC064C5211
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Feb 2022 00:28:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239273AbiBYXXG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Feb 2022 18:23:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39364 "EHLO
+        id S239258AbiBYX3W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Feb 2022 18:29:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230190AbiBYXXE (ORCPT
+        with ESMTP id S230190AbiBYX3V (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Feb 2022 18:23:04 -0500
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EBBBE000
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Feb 2022 15:22:29 -0800 (PST)
-Received: by mail-pl1-x633.google.com with SMTP id l9so5582689pls.6
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Feb 2022 15:22:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=iJJAVDBQSh6AOfhds2yTYrWXIpidmhb39ntfqx9tLPQ=;
-        b=K0zjraaLtgW4iX5Re7oZNzBz5b/KZfPxMdR88sL9xFfWe3rvkitIQxw37HmzTwuWe1
-         RK0y57/UsY7izrFp7Y8f364lPyCnbzGfSAfVOwPwjeFUo9pg92s9QIOfHOt0PjX7JBjA
-         0N8xkgi6PHqypjUWBL0q8UPorOvIP161Rsh85vCBbh2oR6Zyd6bTuPPCAZSjaGbe906b
-         U/gn3chND7a7GVUonsNRqOuRiGTp7nBt+cILnTxYAEEu0DwQUmo4952BjqVMQ/mQjsnw
-         219nv3nnZzP15A0RI065WxCYwplvWtao7GT7iIf8aJhKgxoQsxU+vgGI/k2DudZL0JUS
-         djKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=iJJAVDBQSh6AOfhds2yTYrWXIpidmhb39ntfqx9tLPQ=;
-        b=us9IpHlBADVe8oEKXepOwlQgNdxzNLNZsVf2o4078kKA2xDnZ/QG35f1fBsgpcXFDS
-         RN0QKutIvzc1/wff3cnaPRSlywHFnCzYLmLa2EQiXuTvPn3TviyhF/mRufaHSPp3sgQs
-         rgcW9sx5plkE3Tb1yewG/LUeIwxtiXyYTURuvoyqvkd158buo+0X9VSwrJ6XrxV8y53Q
-         jC6zBdgymUQ9vTMlTDCU8iRfnrxYRE9ET0hiG9DW7JnoH4l8+AaKrtq6xUA2PU3z5WFQ
-         B1dy1AYm9YPcPp8ss+krBy54Q2saeEIyIkYU4lsBJ8IHtgejyqr9c/9UWru064ygNUsH
-         I5RA==
-X-Gm-Message-State: AOAM5327nKBqGwiVz4d3JzZD+LQABt89ux7z0fG4LxNcDGKSlBzkPlYf
-        up7T4wXU50O5mJWRXfLA6H4S9HtWdL0=
-X-Google-Smtp-Source: ABdhPJxgjKUdwOTdVubn7G1dpxbokrJ6q+Rh61z7Y4ulaNJJdYXMtd6Hm9CW/j5WX6Nwmg0YiQZ8Uw==
-X-Received: by 2002:a17:902:ce09:b0:14f:dec2:9849 with SMTP id k9-20020a170902ce0900b0014fdec29849mr9806939plg.74.1645831348421;
-        Fri, 25 Feb 2022 15:22:28 -0800 (PST)
-Received: from [192.168.254.15] ([50.45.187.22])
-        by smtp.gmail.com with ESMTPSA id u12-20020a17090ae00c00b001bc46eae696sm10207224pjy.32.2022.02.25.15.22.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Feb 2022 15:22:28 -0800 (PST)
-Message-ID: <a6fc2d3b3fbd4ed2149fd85a21f7aae8f7fdc926.camel@gmail.com>
-Subject: Re: [PATCH] brcmfmac: include missing AP scan feature
-From:   James Prestwood <prestwoj@gmail.com>
-To:     Alvin =?UTF-8?Q?=C5=A0ipraga?= <ALSI@bang-olufsen.dk>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Fri, 25 Feb 2022 15:22:27 -0800
-In-Reply-To: <87o82ud09z.fsf@bang-olufsen.dk>
-References: <20220224181809.2808754-1-prestwoj@gmail.com>
-         <87o82ud09z.fsf@bang-olufsen.dk>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4 (3.40.4-2.fc34) 
+        Fri, 25 Feb 2022 18:29:21 -0500
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E08F912341F
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Feb 2022 15:28:47 -0800 (PST)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.164])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 6C023A0074
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Feb 2022 23:28:46 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 3F9B7B00072
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Feb 2022 23:28:46 +0000 (UTC)
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id A8D8113C2B0;
+        Fri, 25 Feb 2022 15:28:45 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com A8D8113C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1645831725;
+        bh=0KnkVM0jE2CErxS79Sa2/Q5kulSfZbpWM9FmwF87zAg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=fDScoqeJMKumnjj60tfORh/pWEzPcqBrUNKQym7yGzl6fHy7onVkfDuoimqAQEtQs
+         JAnFfmgosJmi94cL4x0XAatb3nJYnJEpETryMT52rr2aGPgsR+nVFB+hWngkeBGuDJ
+         3qtecPYb6k1Lc+r5VD0CDSZJmvTADCUG29zAaImM=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH 1/2] mac80211:  Allow drivers to report avg chain signal.
+Date:   Fri, 25 Feb 2022 15:28:41 -0800
+Message-Id: <20220225232842.32028-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MDID: 1645831726-m_09h8JzGjcz
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Alvin,
+From: Ben Greear <greearb@candelatech.com>
 
-On Fri, 2022-02-25 at 22:55 +0000, Alvin Šipraga wrote:
-> Hi James,
-> 
-> James Prestwood <prestwoj@gmail.com> writes:
-> 
-> > This driver does not advertise this feature yet scanning with on an
-> > AP interface appears to work just fine.
-> > ---
-> >  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > I've submitted this patch mainly to start a discussion about it. I
-> > find it hard to believe that ALL brcmfmac devices support AP
-> > scanning
-> > in which case this feature needs to be limited to those devices
-> > only. Trouble is there is no FW feature for AP scanning AFAIK.
-> > 
-> > In any case I think this driver needs to sort out if it supports
-> > this
-> > feature or not, and advertise as such rather than leaving userspace
-> > in the dark.
-> 
-> By the way, what are the typical use-cases for AP scanning?
-> 
-> I know that hostapd does a passive scan on the AP interface on the
-> assumption that the driver/firmware will gather channel survey data,
-> but
-> that's not a universally applicable assumption. Not all
-> implementations
-> will do that.
+Drivers that use RSS cannot get the avg signal from mac80211.
+So allow drivers to report the avg chain signal while letting
+mac80211 take care of the last chain signal.
 
-We have someone wanting it for onboarding/configuring a new headless
-device. Where on boot, if it is unconfigured, it starts an AP and waits
-for a client to configure it.
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+ net/mac80211/sta_info.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-A client would connect, have the device scan and present available
-networks. The client then selects a network and provides credentials.
-The new device can then switch back to station mode and connect.
-
-This is a relatively common practice I've seen with IoT devices.
-
-Other than this I cant see much else of a use case besides, like you
-mentioned, gathering survey data to choose a low load channel (ACS its
-called I think?)
-
-Sadly this onboarding use case is quite perfect for DPP, but since
-Apple came up with their own protocol DPP won't work for any products
-that want cross compatibility...
-
-> 
-> Kind regards,
-> Alvin
-> 
-> > 
-> > diff --git
-> > a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> > b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> > index fb727778312c..b6a50e65dbf6 100644
-> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> > @@ -7729,6 +7729,8 @@ struct brcmf_cfg80211_info
-> > *brcmf_cfg80211_attach(struct brcmf_pub *drvr,
-> >  #endif
-> >         }
-> >  
-> > +       wiphy->features |= NL80211_FEATURE_AP_SCAN;
-> > +
-> >         return cfg;
-> >  
-> >  detach:
-
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 43a58b30c6a4..00836f587b6d 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -2543,6 +2543,7 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
+ 	if (last_rxstats->chains &&
+ 	    !(sinfo->filled & (BIT_ULL(NL80211_STA_INFO_CHAIN_SIGNAL) |
+ 			       BIT_ULL(NL80211_STA_INFO_CHAIN_SIGNAL_AVG)))) {
++		/* Neither chain signal nor chain signal avg is filled */
+ 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_CHAIN_SIGNAL);
+ 		if (!sta->pcpu_rx_stats)
+ 			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_CHAIN_SIGNAL_AVG);
+@@ -2557,6 +2558,21 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
+ 		}
+ 	}
+ 
++	/* Check if chain signal is not filled, for cases avg was filled by
++	 * driver bug last chain signal was not.
++	 */
++	if (last_rxstats->chains &&
++		 !(sinfo->filled & (BIT_ULL(NL80211_STA_INFO_CHAIN_SIGNAL)))) {
++		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_CHAIN_SIGNAL);
++
++		sinfo->chains = last_rxstats->chains;
++
++		for (i = 0; i < ARRAY_SIZE(sinfo->chain_signal); i++) {
++			sinfo->chain_signal[i] =
++				last_rxstats->chain_signal_last[i];
++		}
++	}
++
+ 	if (!(sinfo->filled & BIT_ULL(NL80211_STA_INFO_TX_BITRATE))) {
+ 		sta_set_rate_info_tx(sta, &sta->tx_stats.last_rate,
+ 				     &sinfo->txrate);
+-- 
+2.20.1
 
