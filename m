@@ -2,46 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A17CE4C5836
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Feb 2022 22:02:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8343F4C58A7
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Feb 2022 00:05:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229683AbiBZVCX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Feb 2022 16:02:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35188 "EHLO
+        id S229934AbiBZXDH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Feb 2022 18:03:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229642AbiBZVCW (ORCPT
+        with ESMTP id S229893AbiBZXDG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Feb 2022 16:02:22 -0500
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D73C84D274;
-        Sat, 26 Feb 2022 13:01:45 -0800 (PST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1645909303; bh=PW8DryT1j0RzgBStJT0xURBoVehaZ5ACsqd1Obshzb4=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=tnfMQzdaAbFrK/sYeR7opT9i50S6djct2PY1a2sGRuK9NzCh3A7Co2H3LxSyoDhLR
-         a8hExqDlWfNwN8MErkoZzVNN10jVfkjkzSei3A2PYLDz1UqM+ayatBcmC+IIEmkoft
-         zhGwt01bgj/jOBgTsTfKC65uBSNdgMW8gCTszPQMO3Uf8XFAqr5ZInij1cM8L1vBsb
-         AWVCYhZC8i6dhuLeMy/9dHhqDFKTwVhBueA4UXIf3AuUixl5ojtQf97YaCVGhEu8gz
-         by/52VZ08W3PnpJLs0Vs33SflZKBS8prsv7MGQuOtmkAglYPeKoHgP1s3e8CJKR1kC
-         Ae4U/Y/PJmHHg==
-To:     Colin Ian King <colin.i.king@gmail.com>,
+        Sat, 26 Feb 2022 18:03:06 -0500
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15EE322B31;
+        Sat, 26 Feb 2022 15:02:31 -0800 (PST)
+Received: by mail-ot1-x32f.google.com with SMTP id k22-20020a9d4b96000000b005ad5211bd5aso6519228otf.8;
+        Sat, 26 Feb 2022 15:02:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=TCmj61XXqml999fOdO7ZMvBWtcj+BnqQt8dDb4EFymQ=;
+        b=Bql9JCAVSVOwMVN/qbly7HBkx7/4M4l6ZfuPvOgG5blyuFV1+Kp7ALapqIObnPGHPJ
+         6Kgr35JfBZSv8QRoioWOvei6ewmZG/CJH3YuDJ64YfHsH0ay9yp3Zti1QKJ0fXjAOTFR
+         5lcOtBT5mL6kx1RDmLpo4sTTgCuG1vv84+CU77qc9v1L88A7/rr9ieR9WhwG0xj/jYP8
+         CWaMzjLVFrhpuAWHHrJHq4LsUhu/o9k+dXFEDahy+dX0vCL+c3Zx5tQXz3MQk/0X2rGg
+         sxXXK+Xg2ME6EYoGpcnyESO34enXEFcruoDgpN+IwMllXEuEctj/DXqN/INi4qjjyvj0
+         N3BA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=TCmj61XXqml999fOdO7ZMvBWtcj+BnqQt8dDb4EFymQ=;
+        b=fkWvB67M1HUk5zSQgSQYXf0bVtzk06JXBiInoMaSVp3D0lIvLu5GMmqN5CtfrG3Czw
+         ABnDiIashqawrrfoxSBNXFYbHULrDA4HnND9a1d5AiujYEx5JTYRq58a7z0fd7YGm8k7
+         W3+zl2flGYQiqtmv+dv86Hy6TfTj8NUPl5LgSk7xYUnjtSm9INJAGVHb5Zb2DDhO3Au3
+         nhyz30jahkjUZPXHzhaRPJBGjbk0vXd17d1bfab078bDaAKcOr44ssodWO0CW75C71Ty
+         6hIak8a5Zgjf1SCFgZjav9b7AEwYnrBJGvB7RjLHhfLqm3guV4CBh5owZmgK8oAIDImD
+         5ZUA==
+X-Gm-Message-State: AOAM530TT2cluOuUsslrzRDaXKJ3zBUhEjQLDIwNYRGzD0djtE2CqKXv
+        XNwXF4x9Ck77Ha9Pm3Wso0IjncgxYVEdVyLc
+X-Google-Smtp-Source: ABdhPJw0OwQ3n3/Hh6ame3GTxvLoLg+0x4RpcNhR9UjVe+CdmyAUSWnq2AABrKZz+p/z919w9RNKFw==
+X-Received: by 2002:a9d:22ea:0:b0:59f:e225:f5bd with SMTP id y97-20020a9d22ea000000b0059fe225f5bdmr5692775ota.378.1645916550235;
+        Sat, 26 Feb 2022 15:02:30 -0800 (PST)
+Received: from tong-desktop.local ([2600:1700:3ec7:421f:ad81:d746:9fbb:b1f1])
+        by smtp.googlemail.com with ESMTPSA id i3-20020a056820138300b0031c0d227905sm2821606oow.19.2022.02.26.15.02.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Feb 2022 15:02:29 -0800 (PST)
+From:   Tong Zhang <ztong0001@gmail.com>
+To:     Luca Coelho <luciano.coelho@intel.com>,
         Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
+        "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ath9k: make array voice_priority static const
-In-Reply-To: <20220222121749.87513-1-colin.i.king@gmail.com>
-References: <20220222121749.87513-1-colin.i.king@gmail.com>
-Date:   Sat, 26 Feb 2022 22:01:41 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87czj9uytm.fsf@toke.dk>
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Tong Zhang <ztong0001@gmail.com>
+Subject: [PATCH] iwlwifi: iwlmvm: add rfkill dependency
+Date:   Sat, 26 Feb 2022 15:02:19 -0800
+Message-Id: <20220226230219.1869205-1-ztong0001@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,12 +73,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Colin Ian King <colin.i.king@gmail.com> writes:
+IWLMVM uses symbol rfkill_soft_blocked, thus RFKILL should be a
+dependency
 
-> Don't populate the read-only array voice_priority on the stack but
-> instead make it static const. Also makes the object code a little
-> smaller.
->
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+In file included from drivers/net/wireless/intel/iwlwifi/mvm/fw.c:19:
+drivers/net/wireless/intel/iwlwifi/mvm/mvm.h: In function ‘iwl_mvm_mei_set_sw_rfkill_state’:
+drivers/net/wireless/intel/iwlwifi/mvm/mvm.h:2215:24: error: implicit declaration of function ‘rfkill_soft_blocked’; did you mean ‘rfkill_blocked’? [-Werror=implicit-function-declaration]
+ 2215 |   mvm->hw_registered ? rfkill_soft_blocked(mvm->hw->wiphy->rfkill) : false;
+      |                        ^~~~~~~~~~~~~~~~~~~
+      |                        rfkill_blocked
+cc1: some warnings being treated as errors
 
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+Signed-off-by: Tong Zhang <ztong0001@gmail.com>
+---
+ drivers/net/wireless/intel/iwlwifi/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
+index 85e704283755..64eaf8f943c4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/Kconfig
++++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
+@@ -65,6 +65,7 @@ config IWLDVM
+ config IWLMVM
+ 	tristate "Intel Wireless WiFi MVM Firmware support"
+ 	select WANT_DEV_COREDUMP
++	depends on RFKILL
+ 	depends on MAC80211
+ 	help
+ 	  This is the driver that supports the MVM firmware. The list
+-- 
+2.25.1
+
