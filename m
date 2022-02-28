@@ -2,97 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E5E54C782D
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Feb 2022 19:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CE734C7934
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Feb 2022 20:59:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240925AbiB1Sma (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Feb 2022 13:42:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43080 "EHLO
+        id S229668AbiB1Tws (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Feb 2022 14:52:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240699AbiB1SmV (ORCPT
+        with ESMTP id S229765AbiB1Twi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Feb 2022 13:42:21 -0500
-X-Greylist: delayed 599 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 28 Feb 2022 10:36:57 PST
-Received: from relay4.hostedemail.com (relay4.hostedemail.com [64.99.140.36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745EFD95;
-        Mon, 28 Feb 2022 10:36:57 -0800 (PST)
-Received: from omf09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-        by unirelay11.hostedemail.com (Postfix) with ESMTP id 8480C81766;
-        Mon, 28 Feb 2022 18:20:49 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf09.hostedemail.com (Postfix) with ESMTPA id 5C4272002A;
-        Mon, 28 Feb 2022 18:20:29 +0000 (UTC)
-Message-ID: <0be9de3920442df490f01b6fb1c42521c3de6190.camel@perches.com>
-Subject: Re: [PATCH 1/6] drivers: usb: remove usage of list iterator past
- the loop body
-From:   Joe Perches <joe@perches.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Jakob Koschel <jakobkoschel@gmail.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergman <arnd@arndb.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
-        Cristiano Giuffrida <c.giuffrida@vu.nl>,
-        "Bos, H.J." <h.j.bos@vu.nl>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Nathan Chancellor <nathan@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sgx@vger.kernel.org,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-crypto@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
-        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-usb@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-        bcm-kernel-feedback-list@broadcom.com, linux-tegra@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, kvm@vger.kernel.org,
-        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
-        linux-f2fs-devel@lists.sourceforge.net,
-        linux-fsdevel@vger.kernel.org,
-        kgdb-bugreport@lists.sourceforge.net,
-        v9fs-developer@lists.sourceforge.net,
-        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org
-Date:   Mon, 28 Feb 2022 10:20:28 -0800
-In-Reply-To: <20220228112413.GA2812@kadam>
-References: <20220228110822.491923-1-jakobkoschel@gmail.com>
-         <20220228110822.491923-2-jakobkoschel@gmail.com>
-         <20220228112413.GA2812@kadam>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.40.4-1ubuntu2 
+        Mon, 28 Feb 2022 14:52:38 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0DAA113DB5
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Feb 2022 11:51:39 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E020615A8
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Feb 2022 19:39:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD737C340F2;
+        Mon, 28 Feb 2022 19:39:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1646077177;
+        bh=/noxoNFKxCG1m6vrumaA850hbRpf1X8dMT8IzctwXLk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=SgqIBJ2V3K0HEfKGmCjKsE1LPX4AfBLdZsBjjD41FXwstv4V7gJrcPsOgJ7C2MiOt
+         fslHmSZdLU1awU9R2eruTBeg0EPthBipCFlxhqUvC+ZMfcxrSc5ySg9IDz39CkKs18
+         AP4XlVLP6iX9RUgA4Y/lRgf4mzKrQWBw2OTPmhvCSzCy3xjjaFtfARtTlUULd89Zyg
+         P0VaxDuusIDmapAm7s50W7yZ74CLhZz/9cgI6bub806kSZ6zFSfGKe255cpFJDoctX
+         AY8gfCoqS7J4N7tbdts9vJtE71KKB7GRCXzS+yl7upVM9Zb508/oOHWN/ckvP3IKxU
+         /KNSy74yV3O2Q==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] mt76: mt7615: honor ret from mt7615_mcu_restart in mt7663u_mcu_init
+Date:   Mon, 28 Feb 2022 20:39:28 +0100
+Message-Id: <3fb7d913cb65ac268bad120b696c143e9364a146.1646077040.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1e1i8ombnsc3cdkptu3anccezjc89zox
-X-Rspamd-Server: rspamout07
-X-Rspamd-Queue-Id: 5C4272002A
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        UNPARSEABLE_RELAY autolearn=unavailable autolearn_force=no
-        version=3.4.6
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1+i6vY6IDwHpNq++UEo/5hqvP4PvgQNb4E=
-X-HE-Tag: 1646072429-12569
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2022-02-28 at 14:24 +0300, Dan Carpenter wrote:
+Check return value of mt7615_mcu_restart routine in mt7663u_mcu_init().
 
-> a multi-line indent gets curly braces for readability even though
-> it's not required by C.  And then both sides would get curly braces.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-That's more your personal preference than a coding style guideline.
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
+index 0ebb4c3c336a..b560d0db6a92 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
+@@ -57,7 +57,10 @@ int mt7663u_mcu_init(struct mt7615_dev *dev)
+ 
+ 	mt76_set(dev, MT_UDMA_TX_QSEL, MT_FW_DL_EN);
+ 	if (test_and_clear_bit(MT76_STATE_POWER_OFF, &dev->mphy.state)) {
+-		mt7615_mcu_restart(&dev->mt76);
++		ret = mt7615_mcu_restart(&dev->mt76);
++		if (ret)
++			return ret;
++
+ 		if (!mt76_poll_msec(dev, MT_CONN_ON_MISC,
+ 				    MT_TOP_MISC2_FW_PWR_ON, 0, 500))
+ 			return -EIO;
+-- 
+2.35.1
 
