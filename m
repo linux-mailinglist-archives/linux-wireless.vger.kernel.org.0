@@ -2,50 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0CB94C6244
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Feb 2022 05:54:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EA7E4C6351
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Feb 2022 07:46:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233041AbiB1Ezb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Feb 2022 23:55:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46650 "EHLO
+        id S233328AbiB1GrB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Feb 2022 01:47:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230203AbiB1Eza (ORCPT
+        with ESMTP id S232514AbiB1GrA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Feb 2022 23:55:30 -0500
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F8B33A1AA
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Feb 2022 20:54:51 -0800 (PST)
+        Mon, 28 Feb 2022 01:47:00 -0500
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50E5366C8F
+        for <linux-wireless@vger.kernel.org>; Sun, 27 Feb 2022 22:46:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1646024092; x=1677560092;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=CVVSFNNDEqLT4e1N5mE8Dw8bH2o3G0bbZNsm9kyaZSU=;
-  b=P9pEFjZMBEneYEF/xHYZxio0bEe41JxwXQ9XP6pvmbWwt2JiwVWSaZFf
-   E39llwPqGlZL3mXgx8Nb2YLaVxDwx4A53vLjVzp8hjrQj4GcogTDiH5dE
-   GFPcu4Wh277ecQ+LUM552dX8qnu1Y2Hp8RzyvGIx6X7Z8VrL8xpp96y57
-   Y=;
-Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 27 Feb 2022 20:54:51 -0800
+  t=1646030782; x=1677566782;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2Sw8CmSZ7521fZPjWcYMdpdXPX1uK062hnXZMz3LxsI=;
+  b=kO25/o8OTrRBAf8vJ/WU11rBkRag15yQq6kPlSPpcf4N3FOAgv8r4oau
+   sOPoun/PnbwMGsobQQBptesIguSRxBKx9ZCifsZHFLydoa/dDxjZ1v+aL
+   rHBlmKvQikekVUQLzWg+mwNAlQ6UIj0uRcWNik/Ga8alpytMSw5jJ/YiM
+   E=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 27 Feb 2022 22:46:22 -0800
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2022 20:54:51 -0800
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2022 22:46:21 -0800
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Sun, 27 Feb 2022 20:54:50 -0800
-Received: from periyasa-linux.qualcomm.com (10.80.80.8) by
+ 15.2.986.15; Sun, 27 Feb 2022 22:46:21 -0800
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Sun, 27 Feb 2022 20:54:49 -0800
-From:   Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+ 15.2.986.15; Sun, 27 Feb 2022 22:46:19 -0800
+From:   Wen Gong <quic_wgong@quicinc.com>
 To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Subject: [PATCH] ath11k: Refactor the peer delete
-Date:   Mon, 28 Feb 2022 10:24:39 +0530
-Message-ID: <1646024079-26391-1-git-send-email-quic_periyasa@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH v8 0/4] ath11k: add feature for device recovery
+Date:   Mon, 28 Feb 2022 01:46:02 -0500
+Message-ID: <20220228064606.8981-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.80.80.8]
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
@@ -60,106 +61,54 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce new helper function for peer delete to reuse this logic
-in all peer cleanup procedures. Found this in code review.
-Also this change is applicable for all the platform.
+v8: change "fail_cont_count = atomic_inc_return(&ab->fail_cont_count)" to "atomic_inc(&ab->fail_cont_count)" in
+    "ath11k: add support for device recovery for QCA6390/WCN6855"
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01067-QCAHKSWPL_SILICONZ-1
+v7:
+    1. rebased to ath.git ath-202202211030
+    2. add patch "ath11k: fix the warning of dev_wake in mhi_pm_disable_transition()"
+    3. remove below 3 patch which has upstream.
+       ath11k: add ath11k_qmi_free_resource() for recovery
+       ath11k: configure RDDM size to mhi for recovery by firmware
+       ath11k: add support for device recovery for QCA6390/WCN6855
 
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/mac.c  | 16 +++-------------
- drivers/net/wireless/ath/ath11k/peer.c | 31 ++++++++++++++++---------------
- 2 files changed, 19 insertions(+), 28 deletions(-)
+v6: add patch "ath11k: Add hw-restart option to simulate_fw_crash"
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index d5b83f9..9e71eda 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -6364,22 +6364,12 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
- 
- err_peer_del:
- 	if (arvif->vdev_type == WMI_VDEV_TYPE_AP) {
--		reinit_completion(&ar->peer_delete_done);
--
--		fbret = ath11k_wmi_send_peer_delete_cmd(ar, vif->addr,
--							arvif->vdev_id);
-+		fbret = ath11k_peer_delete(ar, arvif->vdev_id, vif->addr);
- 		if (fbret) {
--			ath11k_warn(ar->ab, "failed to delete peer vdev_id %d addr %pM\n",
--				    arvif->vdev_id, vif->addr);
-+			ath11k_warn(ar->ab, "fallback fail to delete peer addr %pM vdev_id %d ret %d\n",
-+				    vif->addr, arvif->vdev_id, fbret);
- 			goto err;
- 		}
--
--		fbret = ath11k_wait_for_peer_delete_done(ar, arvif->vdev_id,
--							 vif->addr);
--		if (fbret)
--			goto err;
--
--		ar->num_peers--;
- 	}
- 
- err_vdev_del:
-diff --git a/drivers/net/wireless/ath/ath11k/peer.c b/drivers/net/wireless/ath/ath11k/peer.c
-index 332886b..392985b 100644
---- a/drivers/net/wireless/ath/ath11k/peer.c
-+++ b/drivers/net/wireless/ath/ath11k/peer.c
-@@ -217,7 +217,7 @@ int ath11k_wait_for_peer_delete_done(struct ath11k *ar, u32 vdev_id,
- 	return 0;
- }
- 
--int ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, u8 *addr)
-+static int __ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, const u8 *addr)
- {
- 	int ret;
- 
-@@ -237,6 +237,19 @@ int ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, u8 *addr)
- 	if (ret)
- 		return ret;
- 
-+	return 0;
-+}
-+
-+int ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, u8 *addr)
-+{
-+	int ret;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	ret = __ath11k_peer_delete(ar, vdev_id, addr);
-+	if (ret)
-+		return ret;
-+
- 	ar->num_peers--;
- 
- 	return 0;
-@@ -323,22 +336,10 @@ int ath11k_peer_create(struct ath11k *ar, struct ath11k_vif *arvif,
- 	return 0;
- 
- cleanup:
--	reinit_completion(&ar->peer_delete_done);
--
--	fbret = ath11k_wmi_send_peer_delete_cmd(ar, param->peer_addr,
--						param->vdev_id);
--	if (fbret) {
--		ath11k_warn(ar->ab, "failed to delete peer vdev_id %d addr %pM\n",
--			    param->vdev_id, param->peer_addr);
--		goto exit;
--	}
--
--	fbret = ath11k_wait_for_peer_delete_done(ar, param->vdev_id,
--						 param->peer_addr);
-+	fbret = __ath11k_peer_delete(ar, param->vdev_id, param->peer_addr);
- 	if (fbret)
--		ath11k_warn(ar->ab, "failed wait for peer %pM delete done id %d fallback ret %d\n",
-+		ath11k_warn(ar->ab, "failed peer %pM delete vdev_id %d fallback ret %d\n",
- 			    param->peer_addr, param->vdev_id, fbret);
- 
--exit:
- 	return ret;
- }
+v5:
+    1. rebased to ath.git ath-202202030905
+    2. change a few commit message
+    3. fix count set sequence of ath11k_core_reset in "ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base"
+    4. add patch "ath11k: configure RDDM size to mhi for recovery by firmware" to support RDDM
+    5. move destroy_workqueue(ab->workqueue_aux) from ath11k_pci_remove() to ath11k_core_free()
+
+v4: add patch "ath11k: fix invalid m3 buffer address"
+    recovery will fail when download firmware without this patch
+
+v3: remove time_left set but not used in
+    "ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base"
+
+v2: s/initilized/initialized in commit log of patch
+    "ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base"
+
+Add support for device recovery.
+
+Wen Gong (4):
+  ath11k: add support for device recovery for QCA6390/WCN6855
+  ath11k: add synchronization operation between reconfigure of mac80211
+    and ath11k_base
+  ath11k: Add hw-restart option to simulate_fw_crash
+  ath11k: fix the warning of dev_wake in mhi_pm_disable_transition()
+
+ drivers/net/wireless/ath/ath11k/core.c    | 121 ++++++++++++++++++++--
+ drivers/net/wireless/ath/ath11k/core.h    |  18 ++++
+ drivers/net/wireless/ath/ath11k/debugfs.c |   4 +
+ drivers/net/wireless/ath/ath11k/mac.c     |  40 +++++++
+ drivers/net/wireless/ath/ath11k/mhi.c     |  33 ++++++
+ drivers/net/wireless/ath/ath11k/pci.c     |  12 ++-
+ 6 files changed, 216 insertions(+), 12 deletions(-)
+
+
+base-commit: 193dc0446985372a9b06b7572e1b98e1963c23a9
 -- 
-2.7.4
+2.31.1
 
