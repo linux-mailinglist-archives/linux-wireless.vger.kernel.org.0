@@ -2,96 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D6AE4C7F87
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Mar 2022 01:45:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CAE64C7FED
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Mar 2022 02:02:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231876AbiCAAqX convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Feb 2022 19:46:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38898 "EHLO
+        id S229906AbiCABDN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Feb 2022 20:03:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231851AbiCAAqW (ORCPT
+        with ESMTP id S229793AbiCABDL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Feb 2022 19:46:22 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D2442DEE
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Feb 2022 16:45:41 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2210jSQ91027020, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2210jSQ91027020
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 1 Mar 2022 08:45:28 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Tue, 1 Mar 2022 08:45:28 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Tue, 1 Mar 2022 08:45:28 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e]) by
- RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e%5]) with mapi id
- 15.01.2308.020; Tue, 1 Mar 2022 08:45:28 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Pkshih <pkshih@realtek.com>, "kvalo@kernel.org" <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "johannes.berg@intel.com" <johannes.berg@intel.com>
-Subject: RE: [PATCH v2] rtw89: fix HE PHY bandwidth capability
-Thread-Topic: [PATCH v2] rtw89: fix HE PHY bandwidth capability
-Thread-Index: AQHYLQPJkizO5VeoI0KRd8bSFqHzdqypsQIA
-Date:   Tue, 1 Mar 2022 00:45:28 +0000
-Message-ID: <50552bfa6ee149dcb5865ba72f7275ac@realtek.com>
-References: <20220301003104.5829-1-pkshih@realtek.com>
-In-Reply-To: <20220301003104.5829-1-pkshih@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/2/28_=3F=3F_11:21:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Mon, 28 Feb 2022 20:03:11 -0500
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3DF4C24A5
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Feb 2022 17:02:30 -0800 (PST)
+Received: by mail-lj1-x235.google.com with SMTP id s25so19788986lji.5
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Feb 2022 17:02:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ud5/y/EBwvp8QN7vw5ZxaiWuDsWQaCGba2UHh4N4mec=;
+        b=QDNLH8KOj2N5elfQIiFc9ZMVPG667ughU6MItd4VPmNt6fV069Cvzy3GNDu1LboIOU
+         /ukem7qn980/nnuqsEKTwz+sJAAGQSBr/OuNtNkm7jqBwkXZFdDq4KuXeUYSVdjS5Ygf
+         UbLkNglYiw3uAvK1jhMlolPsp6Bm5sW2kE0eY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ud5/y/EBwvp8QN7vw5ZxaiWuDsWQaCGba2UHh4N4mec=;
+        b=RaxUs0vyX7YjXYw+Yh1wGejLWzqScR0WmeynECISpbGp7Q4qiuTymodk4krop1t2LQ
+         ktKQY0bjxKdzkVY5AqgAiqvMV5ethfVPIXt2mdS/UFh7J3mrK29GSKLtzY3+JL3no7zK
+         TSW/z/nwy8cjPCqeAI2PKpcE8Ti3uYSLLdHuCMTeJe5eQjLPk4FF/9+bL+O1XfMTZDeq
+         yIhXN7sLRBKivBIiWsZ19ada7FNZZPB99W5L0NAuszLdHAUhu6cb02rIdhHgUV4Z37vu
+         y9ZzBEpgwBtZu+SZqeW587njYTvNrIldVe6//7p2UaTsoCjyFKr8bIHeI2LCASAgJrNv
+         /fvA==
+X-Gm-Message-State: AOAM531tMylCylRcP70SlbUX0ZtIzhYLlDZ3DDsxgSSEKQmEge+PJoHt
+        3DzvBUEFTCNvQTRUlz2L1OcvhMRztwCPe2dijJA=
+X-Google-Smtp-Source: ABdhPJzEuKAWCL8t6qtCbIruCFBuzYHZZXFKyj5iILyEi7mkv56mm3iLRH6dkPEiWvMdfURDj2QrxA==
+X-Received: by 2002:a2e:aa18:0:b0:244:bb00:db39 with SMTP id bf24-20020a2eaa18000000b00244bb00db39mr15251618ljb.341.1646096548802;
+        Mon, 28 Feb 2022 17:02:28 -0800 (PST)
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com. [209.85.208.177])
+        by smtp.gmail.com with ESMTPSA id p41-20020a05651213a900b00443fac7d6ffsm1218972lfa.108.2022.02.28.17.02.28
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Feb 2022 17:02:28 -0800 (PST)
+Received: by mail-lj1-f177.google.com with SMTP id l12so7909641ljh.12
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Feb 2022 17:02:28 -0800 (PST)
+X-Received: by 2002:a2e:aaa2:0:b0:244:bf42:3e6e with SMTP id
+ bj34-20020a2eaaa2000000b00244bf423e6emr16240083ljb.176.1646096101617; Mon, 28
+ Feb 2022 16:55:01 -0800 (PST)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220228110822.491923-1-jakobkoschel@gmail.com>
+ <20220228110822.491923-3-jakobkoschel@gmail.com> <2e4e95d6-f6c9-a188-e1cd-b1eae465562a@amd.com>
+ <CAHk-=wgQps58DPEOe4y5cTh5oE9EdNTWRLXzgMiETc+mFX7jzw@mail.gmail.com>
+ <282f0f8d-f491-26fc-6ae0-604b367a5a1a@amd.com> <b2d20961dbb7533f380827a7fcc313ff849875c1.camel@HansenPartnership.com>
+ <7D0C2A5D-500E-4F38-AD0C-A76E132A390E@kernel.org> <73fa82a20910c06784be2352a655acc59e9942ea.camel@HansenPartnership.com>
+ <20220301003059.GE614@gate.crashing.org>
+In-Reply-To: <20220301003059.GE614@gate.crashing.org>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon, 28 Feb 2022 16:54:45 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wgLYqYcw0xv65xrLSR7KDpS_6M+S9737m6NQorHGWsXYQ@mail.gmail.com>
+Message-ID: <CAHk-=wgLYqYcw0xv65xrLSR7KDpS_6M+S9737m6NQorHGWsXYQ@mail.gmail.com>
+Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
+ as a ptr
+To:     Segher Boessenkool <segher@kernel.crashing.org>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        alsa-devel@alsa-project.org, KVM list <kvm@vger.kernel.org>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-iio@vger.kernel.org, nouveau@lists.freedesktop.org,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Cristiano Giuffrida <c.giuffrida@vu.nl>,
+        "Bos, H.J." <h.j.bos@vu.nl>, linux1394-devel@lists.sourceforge.net,
+        drbd-dev@lists.linbit.com, linux-arch <linux-arch@vger.kernel.org>,
+        CIFS <linux-cifs@vger.kernel.org>, linux-aspeed@lists.ozlabs.org,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        linux-rdma <linux-rdma@vger.kernel.org>,
+        linux-staging@lists.linux.dev,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        intel-wired-lan@lists.osuosl.org,
+        kgdb-bugreport@lists.sourceforge.net,
+        bcm-kernel-feedback-list@broadcom.com,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Arnd Bergman <arnd@arndb.de>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        dma <dmaengine@vger.kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Jakob Koschel <jakobkoschel@gmail.com>,
+        v9fs-developer@lists.sourceforge.net,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-sgx@vger.kernel.org,
+        linux-block <linux-block@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>, linux-usb@vger.kernel.org,
+        samba-technical@lists.samba.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux F2FS Dev Mailing List 
+        <linux-f2fs-devel@lists.sourceforge.net>,
+        tipc-discussion@lists.sourceforge.net,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-mediatek@lists.infradead.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Mon, Feb 28, 2022 at 4:38 PM Segher Boessenkool
+<segher@kernel.crashing.org> wrote:
+>
+> In C its scope is the rest of the declaration and the entire loop, not
+> anything after it.  This was the same in C++98 already, btw (but in
+> pre-standard versions of C++ things were like you remember, yes, and it
+> was painful).
 
-> -----Original Message-----
-> From: Ping-Ke Shih <pkshih@realtek.com>
-> Sent: Tuesday, March 1, 2022 8:31 AM
-> To: kvalo@kernel.org
-> Cc: linux-wireless@vger.kernel.org; johannes.berg@intel.com
-> Subject: [PATCH v2] rtw89: fix HE PHY bandwidth capability
-> 
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> Bit 0 is reserved on 5/6 GHz and bit 1 is reserved on 2.4 GHz,
-> so the driver should only set the non-reserved bits according
-> to band.
-> 
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
-> v2: do rebase onto the latest tree
+Yeah, the original C++ model was just unadulterated garbage, with no
+excuse for it, and the scope was not the loop, but the block the loop
+existed in.
 
-I have sent v3. Please ignore v2.
+That would never have been acceptable for the kernel - it's basically
+just an even uglier version of "put variable declarations in the
+middle of code" (and we use "-Wdeclaration-after-statement" to
+disallow that for kernel code, although apparently some of our user
+space tooling code doesn't enforce or follow that rule).
 
---
-Ping-Ke
+The actual C99 version is the sane one which actually makes it easier
+and clearer to have loop iterators that are clearly just in loop
+scope.
 
+That's a good idea in general, and I have wanted to start using that
+in the kernel even aside from some of the loop construct macros.
+Because putting variables in natural minimal scope is a GoodThing(tm).
+
+Of course, we shouldn't go crazy with it. Even after we do that
+-std=gnu11 thing, we'll have backports to worry about. And it's not
+clear that we necessarily want to backport that gnu11 thing - since
+people who run old stable kernels also may be still using those really
+old compilers...
+
+            Linus
