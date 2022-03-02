@@ -2,230 +2,254 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD7C94C9E76
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Mar 2022 08:30:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 971FE4CA099
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Mar 2022 10:24:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239895AbiCBHbH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Mar 2022 02:31:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36214 "EHLO
+        id S240426AbiCBJYw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Mar 2022 04:24:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231681AbiCBHbD (ORCPT
+        with ESMTP id S238686AbiCBJYu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Mar 2022 02:31:03 -0500
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7EE51E51;
-        Tue,  1 Mar 2022 23:30:21 -0800 (PST)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id B8E6F1C0B81; Wed,  2 Mar 2022 08:30:18 +0100 (CET)
-Date:   Wed, 2 Mar 2022 08:30:16 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Mark Brown <broonie@kernel.org>,
-        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Emma Anholt <emma@anholt.net>,
-        David Lechner <david@lechnology.com>,
-        Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>,
-        Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dan Robertson <dan@dlrobertson.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Yasunari Takiguchi <Yasunari.Takiguchi@sony.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Charles-Antoine Couret <charles-antoine.couret@nexvision.fr>,
-        Antti Palosaari <crope@iki.fi>,
-        Lee Jones <lee.jones@linaro.org>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Eric Piel <eric.piel@tremplin-utc.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Thomas Kopp <thomas.kopp@microchip.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Woojung Huh <woojung.huh@microchip.com>,
-        UNGLinuxDriver@microchip.com,
-        =?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
-        Alexander Aring <alex.aring@gmail.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Harry Morris <h.morris@cascoda.com>,
-        Varka Bhadram <varkabhadram@gmail.com>,
-        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Solomon Peachy <pizza@shaftnet.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Mark Greer <mgreer@animalcreek.com>,
-        Benson Leung <bleung@chromium.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Felipe Balbi <balbi@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Helge Deller <deller@gmx.de>,
-        James Schulman <james.schulman@cirrus.com>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        Lucas Tanure <tanureal@opensource.cirrus.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Maxime Ripard <mripard@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Cai Huoqing <caihuoqing@baidu.com>,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        Ronald =?iso-8859-1?Q?Tschal=E4r?= <ronald@innovation.ch>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
-        Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Heiko Schocher <hs@denx.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Colin Ian King <colin.king@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Matt Kline <matt@bitbashing.io>,
-        Torin Cooper-Bennun <torin@maxiluxsystems.com>,
-        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-        Stefan =?iso-8859-1?Q?M=E4tje?= <stefan.maetje@esd.eu>,
-        Frieder Schrempf <frieder.schrempf@kontron.de>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Nanyong Sun <sunnanyong@huawei.com>,
-        Yang Shen <shenyang39@huawei.com>,
-        dingsenjie <dingsenjie@yulong.com>,
-        Aditya Srivastava <yashsri421@gmail.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michael Walle <michael@walle.cc>,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        wengjianfeng <wengjianfeng@yulong.com>,
-        Sidong Yang <realwakka@gmail.com>,
-        Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>,
-        Zhang Qilong <zhangqilong3@huawei.com>,
-        Will Deacon <will@kernel.org>,
-        Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>,
-        Davidlohr Bueso <dbueso@suse.de>, Claudius Heine <ch@denx.de>,
-        Jiri Prchal <jiri.prchal@aksignal.cz>,
-        linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-        patches@opensource.cirrus.com, alsa-devel@alsa-project.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-can@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
-        linux-wireless@vger.kernel.org, libertas-dev@lists.infradead.org,
-        platform-driver-x86@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        kernel@pengutronix.de
-Subject: Re: [PATCH 5/5] spi: make remove callback a void function
-Message-ID: <20220302073016.GB32222@amd>
-References: <20220123175201.34839-1-u.kleine-koenig@pengutronix.de>
- <20220123175201.34839-6-u.kleine-koenig@pengutronix.de>
+        Wed, 2 Mar 2022 04:24:50 -0500
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14AD43FDBB
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Mar 2022 01:24:06 -0800 (PST)
+Received: by mail-pj1-x1032.google.com with SMTP id z12-20020a17090ad78c00b001bf022b69d6so131085pju.2
+        for <linux-wireless@vger.kernel.org>; Wed, 02 Mar 2022 01:24:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=message-id:date:mime-version:user-agent:subject:to:cc:references
+         :from:in-reply-to;
+        bh=jvz8O9VPCfiXM2t7VUGmE7NjrVFbUPb7U1TCIe6oVBY=;
+        b=ZHo/uk7S+tyl+nk2Pjo0zezePPssF1FocGuyXsxkv3xjg1y7cKUFEVtsc+KsR9t1yk
+         p1z7rwAebdSxE1bMbBJBY/zzlcoAT6sZ4WKF39p/uvV+/qGVa1Ia2F/K7UmvxamByUPO
+         rg/A1j5AxQJ1dHkPsfteTiejt6eJWjdaoMQ/U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :to:cc:references:from:in-reply-to;
+        bh=jvz8O9VPCfiXM2t7VUGmE7NjrVFbUPb7U1TCIe6oVBY=;
+        b=RtprMHyOsvx9bSmEohmxzb+QDgI76AUEfci+zLntyZJvjtL6FbjozuYxxEhaSgz0U6
+         oEXyjhPNly6E+rjC6wu6g+j1+tGwQEb5kNBUB6BEO9uv/m0UK+aeiKE+M9T7Fx/iokeP
+         XuiFiqL83xI2lCI/p3j9XQERzRU6A/Saya8rVbgW5qY7D6fUgAkDOTz7nViQK0eKsumn
+         vvMYrdNiA7QXQyhra3WxK5rTzkLkGzU8t5lQG2uuG11zZPRFDUKjJcEVknN5CkizU5aD
+         u9aVPSi451CIyuiOgpL9heXvBzKbQsBBuqmPwnBgn8Npm9H3bmK0CKES6Vw0GJkBbJJA
+         rOCg==
+X-Gm-Message-State: AOAM531lYT6Zf7y0hl0tu60do63KzqWa6pq081mNsglLI7EwZeibhwMy
+        PdpQiwSpyrIyjMVFKqRCFIFdQFw6hhSg/6fF4rs=
+X-Google-Smtp-Source: ABdhPJw4CLyQhYt5FwsB3xEWca13mqaVoGXftX4Of0zDgFQji8r/uuc+y/du1QJD76y9o7NrK2Osew==
+X-Received: by 2002:a17:90a:7f8a:b0:1be:d017:2df4 with SMTP id m10-20020a17090a7f8a00b001bed0172df4mr9120584pjl.98.1646213046390;
+        Wed, 02 Mar 2022 01:24:06 -0800 (PST)
+Received: from [10.176.68.61] ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id v10-20020a056a00148a00b004e0f420dd90sm20350901pfu.40.2022.03.02.01.24.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Mar 2022 01:24:05 -0800 (PST)
+Message-ID: <89b87db4-1751-21b2-3e22-94d71e46c8d2@broadcom.com>
+Date:   Wed, 2 Mar 2022 10:24:03 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="xXmbgvnjoT4axfJE"
-Content-Disposition: inline
-In-Reply-To: <20220123175201.34839-6-u.kleine-koenig@pengutronix.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH] brcmfmac: include missing AP scan feature
+To:     James Prestwood <prestwoj@gmail.com>,
+        =?UTF-8?Q?Alvin_=c5=a0ipraga?= <ALSI@bang-olufsen.dk>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20220224181809.2808754-1-prestwoj@gmail.com>
+ <87o82ud09z.fsf@bang-olufsen.dk>
+ <a6fc2d3b3fbd4ed2149fd85a21f7aae8f7fdc926.camel@gmail.com>
+ <87k0dhdg0d.fsf@bang-olufsen.dk>
+ <50df7d732efb392a6669d89e0893b17f8cec4204.camel@gmail.com>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <50df7d732efb392a6669d89e0893b17f8cec4204.camel@gmail.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000dfc53105d938d7d6"
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+--000000000000dfc53105d938d7d6
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
---xXmbgvnjoT4axfJE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2/28/2022 6:17 PM, James Prestwood wrote:
+> Hi Alvin,
+> 
+> On Sat, 2022-02-26 at 11:27 +0000, Alvin Šipraga wrote:
+>> Hi James,
+>>
+>> James Prestwood <prestwoj@gmail.com> writes:
+>>
+>>> Hi Alvin,
+>>>
+>>> On Fri, 2022-02-25 at 22:55 +0000, Alvin Šipraga wrote:
+>>>> Hi James,
+>>>>
+>>>> James Prestwood <prestwoj@gmail.com> writes:
+>>>>
+>>>>> This driver does not advertise this feature yet scanning with
+>>>>> on an
+>>>>> AP interface appears to work just fine.
+>>>>> ---
+>>>>>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c |
+>>>>> 2 ++
+>>>>>   1 file changed, 2 insertions(+)
+>>>>>
+>>>>> I've submitted this patch mainly to start a discussion about
+>>>>> it. I
+>>>>> find it hard to believe that ALL brcmfmac devices support AP
+>>>>> scanning
+>>>>> in which case this feature needs to be limited to those devices
+>>>>> only. Trouble is there is no FW feature for AP scanning AFAIK.
+>>>>>
+>>>>> In any case I think this driver needs to sort out if it
+>>>>> supports
+>>>>> this
+>>>>> feature or not, and advertise as such rather than leaving
+>>>>> userspace
+>>>>> in the dark.
+>>>>
+>>>> By the way, what are the typical use-cases for AP scanning?
+>>>>
+>>>> I know that hostapd does a passive scan on the AP interface on
+>>>> the
+>>>> assumption that the driver/firmware will gather channel survey
+>>>> data,
+>>>> but
+>>>> that's not a universally applicable assumption. Not all
+>>>> implementations
+>>>> will do that.
+>>>
+>>> We have someone wanting it for onboarding/configuring a new
+>>> headless
+>>> device. Where on boot, if it is unconfigured, it starts an AP and
+>>> waits
+>>> for a client to configure it.
+>>>
+>>> A client would connect, have the device scan and present available
+>>> networks. The client then selects a network and provides
+>>> credentials.
+>>> The new device can then switch back to station mode and connect.
+>>>
+>>> This is a relatively common practice I've seen with IoT devices.
+>>
+>> Ah OK! Actually we do pretty much the same here at B&O with
+>> brcmfmac. But rather than starting the AP on the primary interface
+>> (the
+>> one default created by the driver), we add a separate AP interface
+>> with
+>> the equivalent of the following command:
+>>
+>> # iw dev wlan0 add uap0 type __ap
+>>
+>> Here wlan0 is the primary interface, and uap0 is what I call my AP.
+>>
+>> In that case you can start the AP on uap0, but still do scanning on
+>> wlan0 (which remains in station mode). Don't quote me on it, but I
+>> think
+>> this is the canonical approach with this driver. Is it something you
+>> have considered?
+> 
+> Thanks, this does seem to work on brcmfmac. I had tried this on other
+> hardware without any luck. I mentioned this to the user but since the
+> AP scanning feature has been implemented they may want to still use
+> that, but who knows. I think finding out if brcmfmac is intended to
+> scan on the AP interface would still be good to know.
 
-Hi!
+There is no easy answer to that. It really depends on the 
+device/firmware. To be honest I don't know if the older chips can 
+support it. Need to check that.
 
-> The value returned by an spi driver's remove function is mostly ignored.
-> (Only an error message is printed if the value is non-zero that the
-> error is ignored.)
->=20
-> So change the prototype of the remove function to return no value. This
-> way driver authors are not tempted to assume that passing an error to
-> the upper layer is a good idea. All drivers are adapted accordingly.
-> There is no intended change of behaviour, all callbacks were prepared to
-> return 0 before.
+What device are you specifically looking at?
 
-Acked-by: Pavel Machek <pavel@ucw.cz>
-									Pavel
---=20
-http://www.livejournal.com/~pavelmachek
+Regards,
+Arend
 
---xXmbgvnjoT4axfJE
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+--000000000000dfc53105d938d7d6
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAmIfHQgACgkQMOfwapXb+vLxcgCghFIMSLkgbmU4bCcL4+4sOBXY
-b1QAoKETSRxn6hbtUUF5RsaX43sun2ct
-=6C0C
------END PGP SIGNATURE-----
-
---xXmbgvnjoT4axfJE--
+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
+XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
+yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
+0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
+NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
+FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
+aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
+OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
+UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAuyzBNn3AS/eM+RI5y
+p6SOijESRefoCgY9MjvTYW6qazAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAzMDIwOTI0MDZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAdqkcREShGSpyrcvbaqtx/05EUJkZhIMNw2aO
+R2x5av28uF4DyyavveUHxDMXXBtaDWwgXtDvkvu3VEa61WvAxXoFCBDeef/noWb+SY6Ov5mIIm9s
+JEqbzJ83jy4Sm641+ew6Um0hpTdd4KUCH3OUsaFxhI0ALW1wCz6TQATbP0+7SPp4/ILNp9kYmuVV
+QVxH9lJVfMrefBTZPY7mW1XTF7XiEsksLPouojiC0V2hqADn3PW/H7BH9eHs56izCckzsMX2RXFX
+pHit+rRJUjym3GK7jbERSXsydIzk8Y6iIQu4HBqlq+qa6r2u4Tdcc8VsRoqo6BIdBCJJyQD4X2Mo
+vw==
+--000000000000dfc53105d938d7d6--
