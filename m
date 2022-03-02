@@ -2,42 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 762214CA964
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Mar 2022 16:46:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 369364CA97D
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Mar 2022 16:48:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240146AbiCBPrH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Mar 2022 10:47:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48318 "EHLO
+        id S240962AbiCBPtU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Mar 2022 10:49:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240315AbiCBPrB (ORCPT
+        with ESMTP id S240701AbiCBPtS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Mar 2022 10:47:01 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB02DC6262
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Mar 2022 07:46:15 -0800 (PST)
+        Wed, 2 Mar 2022 10:49:18 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E9ED28981
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Mar 2022 07:48:26 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2908261723
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Mar 2022 15:46:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A570AC004E1;
-        Wed,  2 Mar 2022 15:46:13 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id ED304CE21D7
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Mar 2022 15:48:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F38C340F5;
+        Wed,  2 Mar 2022 15:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646235974;
-        bh=obZbTOYADNC1/h/Uq3Xi7lkk1yhBQj13ywBHgEqhCWc=;
+        s=k20201202; t=1646236103;
+        bh=bk491uNw6Qku/SW8n0xK17WRvkzi4HfmcwBQ9zlYy7w=;
         h=From:To:Cc:Subject:Date:From;
-        b=gzcy0mCQKQw3tcW2sKaJxjzgoGjiIhz3AlpVH+kKrgNIaiXCBiYAtWtcA7rtUrZ8m
-         +t19DiQugDjsOPH+rGiceFzS1Ocgu+mkJPTAvvq+pTXTYhycMhg6Uc/6JaWBKagfMD
-         1t3ttfJGWbP3Jueiu32xUfIFcWFKmEcarNMkssJJGqLOHi84SSKy/EcZpUMK0NVYmb
-         +XvkFh0Ne3Be/mcI5Mlr4RCa3MOiz6HeegsYL1WcK/JEk1ENWL06vFuYJ+fx+dcGJq
-         MiAXhLt+/f0+Ms7x0p6tzKvNn+TfXOpXFgENgRLA4R8T5lzaoOUQSSoAp/yKnrupbo
-         EmvdsNZ4H/5HA==
+        b=q32lpFBFvS4l/igvOMcurf8Dw7MMiw0HfRS0yFWp25YcPyLHPzCWqUV8xOvBn1A5k
+         AixujlnpQR6lBC1Z1K5nlDEwRy3vypao2g0ICvAHrxLfWdsLR891cTerF5yvgmvjy2
+         q65y9lvv/EonTJlhPqmND+rlHfOGdrLtnTe7NE9CIQsJCPQoBbgaccPU7eNip2S2+8
+         HiC6FXY+bTotgI/yky8jU0trMMo5ndxcGdqbEmDWGvWutCpc56HsHZZJYgyjy7OQCZ
+         fszUcPMAAZAxeTets20NM7kYYYVMQIKeOExtZGp9W/cuXtrAwtMZLOcmQSIp0L2qII
+         wmh3g/b5A4Ciw==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH] mt76: mt7921: fix xmit-queue dump for usb and sdio
-Date:   Wed,  2 Mar 2022 16:46:06 +0100
-Message-Id: <4dec3e0aea1ae34f7bc8547f0ed7465f7b639840.1646235228.git.lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com, deren.wu@mediatek.com,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH 0/9] introduce mt7921u driver
+Date:   Wed,  2 Mar 2022 16:48:04 +0100
+Message-Id: <cover.1646235785.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -51,33 +53,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use proper xmit queue handler to dump queue stats.
+Introduce support for MT7921U 802.11ax 2x2:2SS wireless devices.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Lorenzo Bianconi (9):
+  mt76: usb: add req_type to ___mt76u_rr signature
+  mt76: usb: add req_type to ___mt76u_wr signature
+  mt76: usb: introduce __mt76u_init utility routine
+  mt76: mt7921: disable runtime pm for usb
+  mt76: mt7921: update mt7921_skb_add_usb_sdio_hdr to support usb
+  mt76: mt7921: move mt7921_usb_sdio_tx_prepare_skb in common mac code
+  mt76: mt7921: move mt7921_usb_sdio_tx_complete_skb in common mac code.
+  mt76: mt7921: move mt7921_usb_sdio_tx_status_data in mac common code.
+  mt76: mt7921: add mt7921u driver
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-index dd04909d980a..1bb388ecc334 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-@@ -429,8 +429,13 @@ int mt7921_init_debugfs(struct mt7921_dev *dev)
- 	if (!dir)
- 		return -ENOMEM;
- 
--	debugfs_create_devm_seqfile(dev->mt76.dev, "queues", dir,
--				    mt7921_queues_read);
-+	if (mt76_is_mmio(&dev->mt76))
-+		debugfs_create_devm_seqfile(dev->mt76.dev, "xmit-queues",
-+					    dir, mt7921_queues_read);
-+	else
-+		debugfs_create_devm_seqfile(dev->mt76.dev, "xmit-queues",
-+					    dir, mt76_queues_read);
-+
- 	debugfs_create_devm_seqfile(dev->mt76.dev, "acq", dir,
- 				    mt7921_queues_acq);
- 	debugfs_create_devm_seqfile(dev->mt76.dev, "txpower_sku", dir,
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  12 +-
+ .../net/wireless/mediatek/mt76/mt7615/usb.c   |  68 ++-
+ .../net/wireless/mediatek/mt76/mt76x0/usb.c   |   2 +-
+ .../net/wireless/mediatek/mt76/mt76x2/usb.c   |   2 +-
+ .../net/wireless/mediatek/mt76/mt7921/Kconfig |  11 +
+ .../wireless/mediatek/mt76/mt7921/Makefile    |   2 +
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   |   6 +
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |  12 +-
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   |  91 ++++
+ .../net/wireless/mediatek/mt76/mt7921/mac.h   |   1 +
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |   3 +-
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  25 +-
+ .../net/wireless/mediatek/mt76/mt7921/regs.h  |  36 +-
+ .../net/wireless/mediatek/mt76/mt7921/sdio.c  |   6 +-
+ .../wireless/mediatek/mt76/mt7921/sdio_mac.c  |  83 ----
+ .../wireless/mediatek/mt76/mt7921/sdio_mcu.c  |   2 +-
+ .../net/wireless/mediatek/mt76/mt7921/usb.c   | 397 ++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/usb.c      | 125 ++----
+ 18 files changed, 689 insertions(+), 195 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+
 -- 
 2.35.1
 
