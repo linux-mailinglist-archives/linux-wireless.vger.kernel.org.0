@@ -2,196 +2,230 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 151954C999E
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Mar 2022 01:02:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 360C54C9B73
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Mar 2022 03:50:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238727AbiCBACo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Mar 2022 19:02:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52178 "EHLO
+        id S235652AbiCBCv3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Mar 2022 21:51:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232206AbiCBACn (ORCPT
+        with ESMTP id S239167AbiCBCv0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Mar 2022 19:02:43 -0500
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57A918EB46
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Mar 2022 16:02:01 -0800 (PST)
-Received: by mail-lj1-x22b.google.com with SMTP id o6so42508ljp.3
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Mar 2022 16:02:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4H0hy1V+vsSL/J4iRHU98fs6Ghx9E/bawvPg5OjXQmQ=;
-        b=A1xSV6w+mnGI8KddmZFT+SVp47UhRqZlj7dZE7Ue1BgWjGw2+QCc51Zb6PIPvKiXuh
-         /TGd1P3o63R0kiFyLwVU+kzDBf6Kt9wFSZwwJYnrWAqavu9szp3nfmKm0Qe68N3l8Mdl
-         bWvesgtwBf4BWRSm4aUiCmj0pmAaHYwmzAjUs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4H0hy1V+vsSL/J4iRHU98fs6Ghx9E/bawvPg5OjXQmQ=;
-        b=i9DorklIlsbqbjilHtqnJECFRBkLrhwnBhQCrU+yz6on/ZWc1+RidndIsdGYwoyG7p
-         IGjxxuq32RYi/wJ5SLHSPHWOlvNkCjtte1lu0aym0A5h3vw91pLbyamWNCLXxLPCxLvO
-         YpwKVtvnEU50f1ZoxNpJ8qHSp5JXU8FGhgHv0rVyWhK5+mO3IZED7pPU6XHXuUH0yWXA
-         f3YHRK5r85nvFWRIP4pPVDB59FLRQB1Z+x7Vt+TrIqnKG0VBfZD0Z5dsPOcJXQNYCMSh
-         kTe6iUve/5CUwatL7cG9CrWVTVjC/IsSRo7ubjc4CXaFEk0cqGw8ZhAk3SCIKvX8LDU0
-         wUQA==
-X-Gm-Message-State: AOAM530pLy+aHxrf1WEM0T5UyMDgHLKsOl0bwFSOU99zVn3CuifMkGQ3
-        m1uEAwwXtf43NPa2ns0XsbHZjMQc44LSjQrhePw=
-X-Google-Smtp-Source: ABdhPJy4/oX8d4b9p9oOqIdZ1KbKOx4CMwp0tM39h5dkQ4aLy4KXVjTT3t/0e8fIniUjNEVZ0WCUwQ==
-X-Received: by 2002:a2e:904c:0:b0:23e:d7ad:3fdd with SMTP id n12-20020a2e904c000000b0023ed7ad3fddmr18919464ljg.239.1646179318230;
-        Tue, 01 Mar 2022 16:01:58 -0800 (PST)
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com. [209.85.208.179])
-        by smtp.gmail.com with ESMTPSA id g4-20020a19ac04000000b00443d980bbaasm1731818lfc.96.2022.03.01.16.01.57
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Mar 2022 16:01:58 -0800 (PST)
-Received: by mail-lj1-f179.google.com with SMTP id v28so14787ljv.9
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Mar 2022 16:01:57 -0800 (PST)
-X-Received: by 2002:a05:6512:3042:b0:437:96f5:e68a with SMTP id
- b2-20020a056512304200b0043796f5e68amr17643498lfb.449.1646178958685; Tue, 01
- Mar 2022 15:55:58 -0800 (PST)
+        Tue, 1 Mar 2022 21:51:26 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48B65AB473
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Mar 2022 18:50:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646189444; x=1677725444;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=KQka5WhCgDBhIHey/B8wermvm1DG8eXv9jTxfWg2z7I=;
+  b=c+ZcwEwOf+NWQ2LyDHq11tu8V66b//44MKs1DtSr2XdA92n6a/f7d4M3
+   Z9uSD+hljiCYqxtPTESQeYLpybEvoTtPAnAX8Ksno/h+U0zjXJceq1xfB
+   JSDvYGZfVtVm96Fhxb+0CqGMsiryF1iXJpvq7lq5ZQZe0mmXb6l5okuBC
+   iOi1woW2zSpWWQjdu8OWB5ZXqnFM5V4xpyf5+eFQsE5xJ8/kKBXndbW7B
+   Nql1gR4VzMaesl8ER0LF43F59bk1GKFBO7kIFyNst+MjadSe4lFOpaY5b
+   XsKDmw0GKnpXm8+bmmCZUmeP62/Jty2TyqMHsc2Oz/Mkw9aM7ddeiHXrp
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10273"; a="339725585"
+X-IronPort-AV: E=Sophos;i="5.90,146,1643702400"; 
+   d="scan'208";a="339725585"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2022 18:50:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,146,1643702400"; 
+   d="scan'208";a="709335767"
+Received: from lkp-server02.sh.intel.com (HELO e9605edfa585) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 01 Mar 2022 18:50:31 -0800
+Received: from kbuild by e9605edfa585 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nPF4Q-0000g8-Fg; Wed, 02 Mar 2022 02:50:30 +0000
+Date:   Wed, 02 Mar 2022 09:56:43 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: [wireless:main] BUILD SUCCESS
+ a12f76345e026f1b300a0d17c56f020b6949b093
+Message-ID: <621ecedb.QiEksGxQ4/69YNxI%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20220228110822.491923-1-jakobkoschel@gmail.com>
- <20220228110822.491923-3-jakobkoschel@gmail.com> <2e4e95d6-f6c9-a188-e1cd-b1eae465562a@amd.com>
- <CAHk-=wgQps58DPEOe4y5cTh5oE9EdNTWRLXzgMiETc+mFX7jzw@mail.gmail.com>
- <282f0f8d-f491-26fc-6ae0-604b367a5a1a@amd.com> <b2d20961dbb7533f380827a7fcc313ff849875c1.camel@HansenPartnership.com>
- <7D0C2A5D-500E-4F38-AD0C-A76E132A390E@kernel.org> <73fa82a20910c06784be2352a655acc59e9942ea.camel@HansenPartnership.com>
- <CAHk-=wiT5HX6Kp0Qv4ZYK_rkq9t5fZ5zZ7vzvi6pub9kgp=72g@mail.gmail.com>
- <7dc860874d434d2288f36730d8ea3312@AcuMS.aculab.com> <CAHk-=whKqg89zu4T95+ctY-hocR6kDArpo2qO14-kV40Ga7ufw@mail.gmail.com>
- <0ced2b155b984882b39e895f0211037c@AcuMS.aculab.com>
-In-Reply-To: <0ced2b155b984882b39e895f0211037c@AcuMS.aculab.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Tue, 1 Mar 2022 15:55:42 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wix0HLCBs5sxAeW3uckg0YncXbTjMsE-Tv8WzmkOgLAXQ@mail.gmail.com>
-Message-ID: <CAHk-=wix0HLCBs5sxAeW3uckg0YncXbTjMsE-Tv8WzmkOgLAXQ@mail.gmail.com>
-Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-To:     David Laight <David.Laight@aculab.com>
-Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        KVM list <kvm@vger.kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Cristiano Giuffrida <c.giuffrida@vu.nl>,
-        "Bos, H.J." <h.j.bos@vu.nl>,
-        "linux1394-devel@lists.sourceforge.net" 
-        <linux1394-devel@lists.sourceforge.net>,
-        "drbd-dev@lists.linbit.com" <drbd-dev@lists.linbit.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        CIFS <linux-cifs@vger.kernel.org>,
-        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        linux-rdma <linux-rdma@vger.kernel.org>,
-        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-        "kgdb-bugreport@lists.sourceforge.net" 
-        <kgdb-bugreport@lists.sourceforge.net>,
-        "bcm-kernel-feedback-list@broadcom.com" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Arnd Bergman <arnd@arndb.de>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        dma <dmaengine@vger.kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jakob Koschel <jakobkoschel@gmail.com>,
-        "v9fs-developer@lists.sourceforge.net" 
-        <v9fs-developer@lists.sourceforge.net>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
-        linux-block <linux-block@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "samba-technical@lists.samba.org" <samba-technical@lists.samba.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux F2FS Dev Mailing List 
-        <linux-f2fs-devel@lists.sourceforge.net>,
-        "tipc-discussion@lists.sourceforge.net" 
-        <tipc-discussion@lists.sourceforge.net>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        Mike Rapoport <rppt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Mar 1, 2022 at 3:19 PM David Laight <David.Laight@aculab.com> wrote:
->
-> Having said that there are so few users of list_entry_is_head()
-> it is reasonable to generate two new names.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git main
+branch HEAD: a12f76345e026f1b300a0d17c56f020b6949b093  cfg80211: fix CONFIG_CFG80211_EXTRA_REGDB_KEYDIR typo
 
-Well, the problem is that the users of list_entry_is_head() may be few
-- but there are a number of _other_ ways to check "was that the HEAD
-pointer", and not all of them are necessarily correct.
+elapsed time: 725m
 
-IOW, different places do different random tests for "did we walk the
-whole loop without breaking out". And many of them happen to work. In
-fact, in practice, pretty much *all* of them happen to work, and you
-have to have the right struct layout and really really bad luck to hit
-a case of "type confusion ended up causing the test to not work".
+configs tested: 145
+configs skipped: 3
 
-And *THAT* is the problem here. It's not the "there are 25ish places
-that current use list_entry_is_head()".
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-It's the "there are ~480 places that use the type-confused HEAD entry
-that has been cast to the wrong type".
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                          randconfig-c001
+sh                          kfr2r09_defconfig
+mips                     loongson1b_defconfig
+powerpc                 mpc837x_mds_defconfig
+sh                     magicpanelr2_defconfig
+h8300                       h8s-sim_defconfig
+nios2                         10m50_defconfig
+mips                           jazz_defconfig
+openrisc                  or1klitex_defconfig
+csky                             alldefconfig
+arm                        mvebu_v7_defconfig
+sh                             shx3_defconfig
+powerpc                         ps3_defconfig
+arm                       multi_v4t_defconfig
+arc                                 defconfig
+ia64                            zx1_defconfig
+arm                          iop32x_defconfig
+arm                     eseries_pxa_defconfig
+powerpc                      mgcoge_defconfig
+arc                    vdk_hs38_smp_defconfig
+mips                        vocore2_defconfig
+powerpc                      tqm8xx_defconfig
+arm                         nhk8815_defconfig
+sh                           se7722_defconfig
+sh                               alldefconfig
+powerpc                     ep8248e_defconfig
+powerpc                mpc7448_hpc2_defconfig
+xtensa                              defconfig
+arm                        oxnas_v6_defconfig
+arc                           tb10x_defconfig
+arm                           h5000_defconfig
+xtensa                       common_defconfig
+mips                         db1xxx_defconfig
+xtensa                  audio_kc705_defconfig
+powerpc                        cell_defconfig
+arm                        trizeps4_defconfig
+sh                          polaris_defconfig
+sh                          urquell_defconfig
+arm                          gemini_defconfig
+sh                        sh7757lcr_defconfig
+mips                            ar7_defconfig
+powerpc                      arches_defconfig
+powerpc                        warp_defconfig
+mips                           ip32_defconfig
+sh                            hp6xx_defconfig
+arm                            zeus_defconfig
+arm                         assabet_defconfig
+sh                           se7343_defconfig
+mips                  decstation_64_defconfig
+sh                            migor_defconfig
+m68k                        stmark2_defconfig
+arm                       imx_v6_v7_defconfig
+microblaze                          defconfig
+m68k                          multi_defconfig
+riscv                    nommu_k210_defconfig
+ia64                        generic_defconfig
+sh                          lboxre2_defconfig
+arm                         axm55xx_defconfig
+sh                         ecovec24_defconfig
+sh                           se7780_defconfig
+arm                  randconfig-c002-20220301
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+arc                  randconfig-r043-20220301
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                                  kexec
 
-And THAT is why I think we'd be better off with that bigger change
-that simply means that you can't use the iterator variable at all
-outside the loop, and try to make it something where the compiler can
-help catch mis-uses.
+clang tested configs:
+x86_64                        randconfig-c007
+powerpc              randconfig-c003-20220301
+riscv                randconfig-c006-20220301
+i386                          randconfig-c001
+arm                  randconfig-c002-20220301
+mips                 randconfig-c004-20220301
+powerpc                     mpc5200_defconfig
+arm                                 defconfig
+powerpc                  mpc866_ads_defconfig
+arm                          imote2_defconfig
+powerpc                      walnut_defconfig
+riscv                    nommu_virt_defconfig
+arm                         bcm2835_defconfig
+arm                         palmz72_defconfig
+arm                         orion5x_defconfig
+powerpc                        fsp2_defconfig
+arm                        spear3xx_defconfig
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+hexagon              randconfig-r045-20220301
+hexagon              randconfig-r041-20220301
+riscv                randconfig-r042-20220301
+s390                 randconfig-r044-20220301
 
-Now, making the list_for_each_entry() thing force the iterator to NULL
-at the end of the loop does fix the problem. The issue I have with it
-is really just that you end up getting no warning at all from the
-compiler if you mix old-style and new-style semantics. Now, you *will*
-get an oops (if using a new-style iterator with an old-style check),
-but many of these things will be in odd driver code and may happen
-only for error cases.
-
-And if you use a new-style check with an old-style iterator (ie some
-backport problem), you will probably end up getting random memory
-corruption, because you'll decide "it's not a HEAD entry", and then
-you'll actually *use* the HEAD that has the wrong type cast associated
-with it.
-
-See what my worry is?
-
-With the "don't use iterator outside the loop" approach, the exact
-same code works in both the old world order and the new world order,
-and you don't have the semantic confusion. And *if* you try to use the
-iterator outside the loop, you'll _mostly_ (*) get a compiler warning
-about it not being initialized.
-
-             Linus
-
-(*) Unless somebody initializes the iterator pointer pointlessly.
-Which clearly does happen. Thus the "mostly". It's not perfect, and
-that's most definitely not nice - but it should at least hopefully
-make it that much harder to mess up.
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
