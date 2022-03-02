@@ -2,651 +2,267 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7F724CA98F
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Mar 2022 16:49:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 241044CAB51
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Mar 2022 18:15:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241831AbiCBPuR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Mar 2022 10:50:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57600 "EHLO
+        id S243712AbiCBRPz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Mar 2022 12:15:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241784AbiCBPuI (ORCPT
+        with ESMTP id S237817AbiCBRPu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Mar 2022 10:50:08 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68D403D497
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Mar 2022 07:48:55 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DECA56173E
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Mar 2022 15:48:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D88C340ED;
-        Wed,  2 Mar 2022 15:48:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646236134;
-        bh=wzm5/EJqwrsNvtMQf8G4XVmrEJlm07/3XnHivp7Ap1Q=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=es1fR7ubU9eqpxPVMKFfT2QTOZzpWItqfHLfe03XtojHGeHyLxPSSxfnEylQ0rn5a
-         dAvDdakIBNXl7nua/zOYhPoaDBZ2qJ4a79YIHwhxkecCLqzsHh8Q3je2pYnwZqJaSj
-         /oJeunWeT5fl1bQG1Y5wCb3E2Fcbz1ZM78fXEvE9MFX+gicbf68RI+/XtbrQ/0W2yD
-         DwC/CpRAjoqQGCExI+pDvREpU2wA97Ar07kcLQWc0JwIYC2kC9kOKl2ZYt+jk6A3Dg
-         Vr8iVAc2VBRpA/h2hfovZCve44A/Hbo0e/Qf0ez9VWA1ydxyog7XSNsDi7LorFSj1R
-         gORpWYaVmFEMA==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, deren.wu@mediatek.com,
-        linux-mediatek@lists.infradead.org
-Subject: [PATCH 9/9] mt76: mt7921: add mt7921u driver
-Date:   Wed,  2 Mar 2022 16:48:13 +0100
-Message-Id: <6df14f076220c0cbc1d32939cd8be8cb33d7b498.1646235785.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <cover.1646235785.git.lorenzo@kernel.org>
-References: <cover.1646235785.git.lorenzo@kernel.org>
+        Wed, 2 Mar 2022 12:15:50 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A19AA58E45;
+        Wed,  2 Mar 2022 09:15:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646241306; x=1677777306;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=quZJORXDoBJnmtXWeY1UEG0LMErZNbKWG4uR8GxuM8A=;
+  b=EgFtrQTE2RuXhvw9sRIr3IT+pA0Ncb8f9tiCc0SC60P5NxN5IIJ1lIbG
+   qRXhfI2wJDlspyrIGC0iL/9/1vb/Lqq8nOVou0CScelNSeM2zFz5ZYwQd
+   vRCxbYiuOYMHLgn2p868GOLIzIRhmd1d7Ftp+C+uIAO1rF5yphwxH1nTK
+   BZo8QGgTZGobcAwOhtAkimiecLreyGJPEymFRGwK29ytkPQQTUw1YAXwn
+   7s74MTXIjfdUqEKiu1QGwymv12Ru01fVqM/H0rIJHbiNJzFQB0n0mysA7
+   4izUGN7Nj88HSoNqykEmQlZt68TbXwAcpy2jJWkt8gcliob3VHMqMtNgg
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10274"; a="339886271"
+X-IronPort-AV: E=Sophos;i="5.90,149,1643702400"; 
+   d="scan'208";a="339886271"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2022 09:15:05 -0800
+X-IronPort-AV: E=Sophos;i="5.90,149,1643702400"; 
+   d="scan'208";a="551343768"
+Received: from jbuller-mobl1.ger.corp.intel.com (HELO [10.213.194.231]) ([10.213.194.231])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2022 09:14:53 -0800
+Message-ID: <ed52ce3c-0f4a-a1e8-4176-543657d6228d@linux.intel.com>
+Date:   Wed, 2 Mar 2022 17:14:50 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [Intel-gfx] [PATCH 6/6] treewide: remove check of list iterator
+ against head past the loop body
+Content-Language: en-US
+To:     Jakob Koschel <jakobkoschel@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     alsa-devel@alsa-project.org, linux-aspeed@lists.ozlabs.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-iio@vger.kernel.org, nouveau@lists.freedesktop.org,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        dri-devel@lists.freedesktop.org,
+        Cristiano Giuffrida <c.giuffrida@vu.nl>,
+        amd-gfx@lists.freedesktop.org, samba-technical@lists.samba.org,
+        linux1394-devel@lists.sourceforge.net, drbd-dev@lists.linbit.com,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-cifs@vger.kernel.org, kvm@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-staging@lists.linux.dev, "Bos, H.J." <h.j.bos@vu.nl>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        intel-wired-lan@lists.osuosl.org,
+        kgdb-bugreport@lists.sourceforge.net,
+        bcm-kernel-feedback-list@broadcom.com,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-media@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        Arnd Bergman <arnd@arndb.de>, linux-pm@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org,
+        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        linux-fsdevel@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        v9fs-developer@lists.sourceforge.net, linux-tegra@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org, linux-sgx@vger.kernel.org,
+        linux-block@vger.kernel.org, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        tipc-discussion@lists.sourceforge.net,
+        linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+References: <20220228110822.491923-1-jakobkoschel@gmail.com>
+ <20220228110822.491923-7-jakobkoschel@gmail.com>
+From:   Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Organization: Intel Corporation UK Plc
+In-Reply-To: <20220228110822.491923-7-jakobkoschel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,
+        NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce support for MT7921U 802.11ax 2x2:2SS wireless devices.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt7921/Kconfig |  11 +
- .../wireless/mediatek/mt76/mt7921/Makefile    |   2 +
- .../net/wireless/mediatek/mt76/mt7921/init.c  |   2 +-
- .../net/wireless/mediatek/mt76/mt7921/mac.h   |   1 +
- .../net/wireless/mediatek/mt76/mt7921/main.c  |   3 +-
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |   1 +
- .../net/wireless/mediatek/mt76/mt7921/regs.h  |  36 +-
- .../net/wireless/mediatek/mt76/mt7921/usb.c   | 397 ++++++++++++++++++
- 8 files changed, 450 insertions(+), 3 deletions(-)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+On 28/02/2022 11:08, Jakob Koschel wrote:
+> When list_for_each_entry() completes the iteration over the whole list
+> without breaking the loop, the iterator value will be a bogus pointer
+> computed based on the head element.
+> 
+> While it is safe to use the pointer to determine if it was computed
+> based on the head element, either with list_entry_is_head() or
+> &pos->member == head, using the iterator variable after the loop should
+> be avoided.
+> 
+> In preparation to limiting the scope of a list iterator to the list
+> traversal loop, use a dedicated pointer to point to the found element.
+> 
+> Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
-index 71154fc2a87c..adff2d7350b5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
-@@ -24,3 +24,14 @@ config MT7921S
- 	  This adds support for MT7921S 802.11ax 2x2:2SS wireless devices.
- 
- 	  To compile this driver as a module, choose M here.
-+
-+config MT7921U
-+	tristate "MediaTek MT7921U (USB) support"
-+	select MT76_USB
-+	select MT7921_COMMON
-+	depends on MAC80211
-+	depends on USB
-+	help
-+	  This adds support for MT7921U 802.11ax 2x2:2SS wireless devices.
-+
-+	  To compile this driver as a module, choose M here.
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-index 1187acedfeda..ca7b9e45b6bd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-@@ -3,6 +3,7 @@
- obj-$(CONFIG_MT7921_COMMON) += mt7921-common.o
- obj-$(CONFIG_MT7921E) += mt7921e.o
- obj-$(CONFIG_MT7921S) += mt7921s.o
-+obj-$(CONFIG_MT7921U) += mt7921u.o
- 
- CFLAGS_trace.o := -I$(src)
- 
-@@ -10,3 +11,4 @@ mt7921-common-y := mac.o mcu.o main.o init.o debugfs.o trace.o
- mt7921-common-$(CONFIG_NL80211_TESTMODE) += testmode.o
- mt7921e-y := pci.o pci_mac.o pci_mcu.o dma.o
- mt7921s-y := sdio.o sdio_mac.o sdio_mcu.o
-+mt7921u-y := usb.o
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 54f51e7b48a0..ceb22653e4bb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -233,7 +233,7 @@ int mt7921_register_device(struct mt7921_dev *dev)
- 		dev->pm.ds_enable = true;
- 	}
- 
--	if (mt76_is_sdio(&dev->mt76))
-+	if (!mt76_is_mmio(&dev->mt76))
- 		hw->extra_tx_headroom += MT_SDIO_TXD_SIZE + MT_SDIO_HDR_SIZE;
- 
- 	ret = mt7921_init_hardware(dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
-index 12e1cf8abe6e..79447e2d0143 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
-@@ -202,6 +202,7 @@ enum tx_mcu_port_q_idx {
- #define MT_SDIO_TXD_SIZE		(MT_TXD_SIZE + 8 * 4)
- #define MT_SDIO_TAIL_SIZE		8
- #define MT_SDIO_HDR_SIZE		4
-+#define MT_USB_TAIL_SIZE		4
- 
- #define MT_TXD0_Q_IDX			GENMASK(31, 25)
- #define MT_TXD0_PKT_FMT			GENMASK(24, 23)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index b6e836a4fad7..4fe181bb111b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -264,7 +264,7 @@ static int mt7921_start(struct ieee80211_hw *hw)
- 	return err;
- }
- 
--static void mt7921_stop(struct ieee80211_hw *hw)
-+void mt7921_stop(struct ieee80211_hw *hw)
- {
- 	struct mt7921_dev *dev = mt7921_hw_dev(hw);
- 	struct mt7921_phy *phy = mt7921_hw_phy(hw);
-@@ -281,6 +281,7 @@ static void mt7921_stop(struct ieee80211_hw *hw)
- 	mt76_connac_mcu_set_mac_enable(&dev->mt76, 0, false, false);
- 	mt7921_mutex_release(dev);
- }
-+EXPORT_SYMBOL_GPL(mt7921_stop);
- 
- static int mt7921_add_interface(struct ieee80211_hw *hw,
- 				struct ieee80211_vif *vif)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index b952372c5565..67e3f5ca79d4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -365,6 +365,7 @@ mt7921_skb_add_usb_sdio_hdr(struct mt7921_dev *dev, struct sk_buff *skb,
- 	put_unaligned_le32(hdr, skb_push(skb, sizeof(hdr)));
- }
- 
-+void mt7921_stop(struct ieee80211_hw *hw);
- int mt7921_mac_init(struct mt7921_dev *dev);
- bool mt7921_mac_wtbl_update(struct mt7921_dev *dev, int idx, u32 mask);
- void mt7921_mac_reset_counters(struct mt7921_phy *phy);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-index 411695f273cd..cb8989633ba7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-@@ -354,6 +354,7 @@
- #define MT_WFDMA0_GLO_CFG_RX_DMA_EN	BIT(2)
- #define MT_WFDMA0_GLO_CFG_RX_DMA_BUSY	BIT(3)
- #define MT_WFDMA0_GLO_CFG_TX_WB_DDONE	BIT(6)
-+#define MT_WFDMA0_GLO_CFG_FW_DWLD_BYPASS_DMASHDL BIT(9)
- #define MT_WFDMA0_GLO_CFG_FIFO_LITTLE_ENDIAN	BIT(12)
- #define MT_WFDMA0_GLO_CFG_CSR_DISP_BASE_PTR_CHAIN_EN BIT(15)
- #define MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2	BIT(21)
-@@ -378,6 +379,9 @@
- #define MT_WFDMA0_TX_RING16_EXT_CTRL	MT_WFDMA0(0x640)
- #define MT_WFDMA0_TX_RING17_EXT_CTRL	MT_WFDMA0(0x644)
- 
-+#define MT_WPDMA0_MAX_CNT_MASK		GENMASK(7, 0)
-+#define MT_WPDMA0_BASE_PTR_MASK		GENMASK(31, 16)
-+
- #define MT_WFDMA0_RX_RING0_EXT_CTRL	MT_WFDMA0(0x680)
- #define MT_WFDMA0_RX_RING1_EXT_CTRL	MT_WFDMA0(0x684)
- #define MT_WFDMA0_RX_RING2_EXT_CTRL	MT_WFDMA0(0x688)
-@@ -434,12 +438,14 @@
- #define MT_PCIE_MAC(ofs)		(MT_PCIE_MAC_BASE + (ofs))
- #define MT_PCIE_MAC_INT_ENABLE		MT_PCIE_MAC(0x188)
- 
--#define MT_DMA_SHDL(ofs)		(0xd6000 + (ofs))
-+#define MT_DMA_SHDL(ofs)		(0x7c026000 + (ofs))
- #define MT_DMASHDL_SW_CONTROL		MT_DMA_SHDL(0x004)
- #define MT_DMASHDL_DMASHDL_BYPASS	BIT(28)
- #define MT_DMASHDL_OPTIONAL		MT_DMA_SHDL(0x008)
- #define MT_DMASHDL_PAGE			MT_DMA_SHDL(0x00c)
-+#define MT_DMASHDL_GROUP_SEQ_ORDER	BIT(16)
- #define MT_DMASHDL_REFILL		MT_DMA_SHDL(0x010)
-+#define MT_DMASHDL_REFILL_MASK		GENMASK(31, 16)
- #define MT_DMASHDL_PKT_MAX_SIZE		MT_DMA_SHDL(0x01c)
- #define MT_DMASHDL_PKT_MAX_SIZE_PLE	GENMASK(11, 0)
- #define MT_DMASHDL_PKT_MAX_SIZE_PSE	GENMASK(27, 16)
-@@ -454,6 +460,33 @@
- 
- #define MT_DMASHDL_SCHED_SET(_n)	MT_DMA_SHDL(0x070 + ((_n) << 2))
- 
-+#define MT_UMAC(ofs)			(0x74000000 + (ofs))
-+#define MT_UDMA_TX_QSEL			MT_UMAC(0x008)
-+#define MT_FW_DL_EN			BIT(3)
-+
-+#define MT_UDMA_WLCFG_1			MT_UMAC(0x00c)
-+#define MT_WL_RX_AGG_PKT_LMT		GENMASK(7, 0)
-+#define MT_WL_TX_TMOUT_LMT		GENMASK(27, 8)
-+
-+#define MT_UDMA_WLCFG_0			MT_UMAC(0x18)
-+#define MT_WL_RX_AGG_TO			GENMASK(7, 0)
-+#define MT_WL_RX_AGG_LMT		GENMASK(15, 8)
-+#define MT_WL_TX_TMOUT_FUNC_EN		BIT(16)
-+#define MT_WL_TX_DPH_CHK_EN		BIT(17)
-+#define MT_WL_RX_MPSZ_PAD0		BIT(18)
-+#define MT_WL_RX_FLUSH			BIT(19)
-+#define MT_TICK_1US_EN			BIT(20)
-+#define MT_WL_RX_AGG_EN			BIT(21)
-+#define MT_WL_RX_EN			BIT(22)
-+#define MT_WL_TX_EN			BIT(23)
-+#define MT_WL_RX_BUSY			BIT(30)
-+#define MT_WL_TX_BUSY			BIT(31)
-+
-+#define MT_UWFDMA0(ofs)			(0x7c024000 + (ofs))
-+#define MT_UWFDMA0_GLO_CFG		MT_UWFDMA0(0x208)
-+#define MT_UWFDMA0_GLO_CFG_EXT0		MT_UWFDMA0(0x2b0)
-+#define MT_UWFDMA0_TX_RING_EXT_CTRL(_n)	MT_UWFDMA0(0x600 + ((_n) << 2))
-+
- #define MT_CONN_STATUS			0x7c053c10
- #define MT_WIFI_PATCH_DL_STATE		BIT(0)
- 
-@@ -467,6 +500,7 @@
- #define WFSYS_SW_INIT_DONE		BIT(4)
- 
- #define MT_CONN_ON_MISC			0x7c0600f0
-+#define MT_TOP_MISC2_FW_PWR_ON		BIT(0)
- #define MT_TOP_MISC2_FW_N9_RDY		GENMASK(1, 0)
- 
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-new file mode 100644
-index 000000000000..c4fc29f8aefa
---- /dev/null
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-@@ -0,0 +1,397 @@
-+// SPDX-License-Identifier: ISC
-+/* Copyright (C) 2022 MediaTek Inc.
-+ *
-+ * Author: Lorenzo Bianconi <lorenzo@kernel.org>
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/usb.h>
-+
-+#include "mt7921.h"
-+#include "mcu.h"
-+#include "mac.h"
-+
-+#define MT_USB_TYPE_VENDOR	(USB_TYPE_VENDOR | 0x1f)
-+
-+static const struct usb_device_id mt7921u_device_table[] = {
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0e8d, 0x7961, 0xff, 0xff, 0xff) },
-+	{ },
-+};
-+
-+static u32 mt7921u_rr(struct mt76_dev *dev, u32 addr)
-+{
-+	u32 ret;
-+
-+	mutex_lock(&dev->usb.usb_ctrl_mtx);
-+	ret = ___mt76u_rr(dev, MT_VEND_READ_EXT,
-+			  USB_DIR_IN | MT_USB_TYPE_VENDOR, addr);
-+	mutex_unlock(&dev->usb.usb_ctrl_mtx);
-+
-+	return ret;
-+}
-+
-+static void mt7921u_wr(struct mt76_dev *dev, u32 addr, u32 val)
-+{
-+	mutex_lock(&dev->usb.usb_ctrl_mtx);
-+	___mt76u_wr(dev, MT_VEND_WRITE_EXT,
-+		    USB_DIR_OUT | MT_USB_TYPE_VENDOR, addr, val);
-+	mutex_unlock(&dev->usb.usb_ctrl_mtx);
-+}
-+
-+static u32 mt7921u_rmw(struct mt76_dev *dev, u32 addr,
-+		       u32 mask, u32 val)
-+{
-+	mutex_lock(&dev->usb.usb_ctrl_mtx);
-+	val |= ___mt76u_rr(dev, MT_VEND_READ_EXT,
-+			   USB_DIR_IN | MT_USB_TYPE_VENDOR, addr) & ~mask;
-+	___mt76u_wr(dev, MT_VEND_WRITE_EXT,
-+		    USB_DIR_OUT | MT_USB_TYPE_VENDOR, addr, val);
-+	mutex_unlock(&dev->usb.usb_ctrl_mtx);
-+
-+	return val;
-+}
-+
-+static void mt7921u_copy(struct mt76_dev *dev, u32 offset,
-+			 const void *data, int len)
-+{
-+	struct mt76_usb *usb = &dev->usb;
-+	int ret, i = 0, batch_len;
-+	const u8 *val = data;
-+
-+	len = round_up(len, 4);
-+
-+	mutex_lock(&usb->usb_ctrl_mtx);
-+	while (i < len) {
-+		batch_len = min_t(int, usb->data_len, len - i);
-+		memcpy(usb->data, val + i, batch_len);
-+		ret = __mt76u_vendor_request(dev, MT_VEND_WRITE_EXT,
-+					     USB_DIR_OUT | MT_USB_TYPE_VENDOR,
-+					     (offset + i) >> 16, offset + i,
-+					     usb->data, batch_len);
-+		if (ret < 0)
-+			break;
-+
-+		i += batch_len;
-+	}
-+	mutex_unlock(&usb->usb_ctrl_mtx);
-+}
-+
-+static int mt7921u_mcu_power_on(struct mt7921_dev *dev)
-+{
-+	int ret;
-+
-+	ret = mt76u_vendor_request(&dev->mt76, MT_VEND_POWER_ON,
-+				   USB_DIR_OUT | MT_USB_TYPE_VENDOR,
-+				   0x0, 0x1, NULL, 0);
-+	if (ret)
-+		return ret;
-+
-+	if (!mt76_poll_msec(dev, MT_CONN_ON_MISC, MT_TOP_MISC2_FW_PWR_ON,
-+			    MT_TOP_MISC2_FW_PWR_ON, 500)) {
-+		dev_err(dev->mt76.dev, "Timeout for power on\n");
-+		ret = -EIO;
-+	}
-+
-+	return ret;
-+}
-+
-+static int
-+mt7921u_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
-+			 int cmd, int *seq)
-+{
-+	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
-+	u32 pad, ep;
-+	int ret;
-+
-+	ret = mt7921_mcu_fill_message(mdev, skb, cmd, seq);
-+	if (ret)
-+		return ret;
-+
-+	if (cmd != MCU_CMD(FW_SCATTER))
-+		ep = MT_EP_OUT_INBAND_CMD;
-+	else
-+		ep = MT_EP_OUT_AC_BE;
-+
-+	mt7921_skb_add_usb_sdio_hdr(dev, skb, 0);
-+	pad = round_up(skb->len, 4) + 4 - skb->len;
-+	__skb_put_zero(skb, pad);
-+
-+	ret = mt76u_bulk_msg(&dev->mt76, skb->data, skb->len, NULL,
-+			     1000, ep);
-+	dev_kfree_skb(skb);
-+
-+	return ret;
-+}
-+
-+static int mt7921u_mcu_init(struct mt7921_dev *dev)
-+{
-+	static const struct mt76_mcu_ops mcu_ops = {
-+		.headroom = MT_SDIO_HDR_SIZE + sizeof(struct mt7921_mcu_txd),
-+		.tailroom = MT_USB_TAIL_SIZE,
-+		.mcu_skb_send_msg = mt7921u_mcu_send_message,
-+		.mcu_parse_response = mt7921_mcu_parse_response,
-+		.mcu_restart = mt76_connac_mcu_restart,
-+	};
-+	int ret;
-+
-+	dev->mt76.mcu_ops = &mcu_ops;
-+
-+	mt76_set(dev, MT_UDMA_TX_QSEL, MT_FW_DL_EN);
-+	if (test_and_clear_bit(MT76_STATE_POWER_OFF, &dev->mphy.state)) {
-+		ret = mt76_connac_mcu_restart(&dev->mt76);
-+		if (ret)
-+			return ret;
-+
-+		if (!mt76_poll_msec(dev, MT_CONN_ON_MISC,
-+				    MT_TOP_MISC2_FW_PWR_ON, 0, 500))
-+			return -EIO;
-+
-+		ret = mt7921u_mcu_power_on(dev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = mt7921_run_firmware(dev);
-+	if (ret)
-+		return ret;
-+
-+	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
-+	mt76_clear(dev, MT_UDMA_TX_QSEL, MT_FW_DL_EN);
-+
-+	return 0;
-+}
-+
-+static void mt7921u_dma_prefetch(struct mt7921_dev *dev)
-+{
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(0),
-+		 MT_WPDMA0_MAX_CNT_MASK, 4);
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(0),
-+		 MT_WPDMA0_BASE_PTR_MASK, 0x80);
-+
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(1),
-+		 MT_WPDMA0_MAX_CNT_MASK, 4);
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(1),
-+		 MT_WPDMA0_BASE_PTR_MASK, 0xc0);
-+
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(2),
-+		 MT_WPDMA0_MAX_CNT_MASK, 4);
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(2),
-+		 MT_WPDMA0_BASE_PTR_MASK, 0x100);
-+
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(3),
-+		 MT_WPDMA0_MAX_CNT_MASK, 4);
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(3),
-+		 MT_WPDMA0_BASE_PTR_MASK, 0x140);
-+
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(4),
-+		 MT_WPDMA0_MAX_CNT_MASK, 4);
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(4),
-+		 MT_WPDMA0_BASE_PTR_MASK, 0x180);
-+
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(16),
-+		 MT_WPDMA0_MAX_CNT_MASK, 4);
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(16),
-+		 MT_WPDMA0_BASE_PTR_MASK, 0x280);
-+
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(17),
-+		 MT_WPDMA0_MAX_CNT_MASK, 4);
-+	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(17),
-+		 MT_WPDMA0_BASE_PTR_MASK,  0x2c0);
-+}
-+
-+static void mt7921u_wfdma_init(struct mt7921_dev *dev)
-+{
-+	mt7921u_dma_prefetch(dev);
-+
-+	mt76_clear(dev, MT_UWFDMA0_GLO_CFG, MT_WFDMA0_GLO_CFG_OMIT_RX_INFO);
-+	mt76_set(dev, MT_UWFDMA0_GLO_CFG,
-+		 MT_WFDMA0_GLO_CFG_OMIT_TX_INFO |
-+		 MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2 |
-+		 MT_WFDMA0_GLO_CFG_FW_DWLD_BYPASS_DMASHDL |
-+		 MT_WFDMA0_GLO_CFG_TX_DMA_EN |
-+		 MT_WFDMA0_GLO_CFG_RX_DMA_EN);
-+
-+	/* disable dmashdl */
-+	mt76_clear(dev, MT_UWFDMA0_GLO_CFG_EXT0,
-+		   MT_WFDMA0_CSR_TX_DMASHDL_ENABLE);
-+	mt76_set(dev, MT_DMASHDL_SW_CONTROL, MT_DMASHDL_DMASHDL_BYPASS);
-+
-+	mt76_set(dev, MT_WFDMA_DUMMY_CR, MT_WFDMA_NEED_REINIT);
-+}
-+
-+static int mt7921u_dma_init(struct mt7921_dev *dev)
-+{
-+	mt7921u_wfdma_init(dev);
-+
-+	mt76_clear(dev, MT_UDMA_WLCFG_0, MT_WL_RX_FLUSH);
-+
-+	mt76_set(dev, MT_UDMA_WLCFG_0,
-+		 MT_WL_RX_EN | MT_WL_TX_EN |
-+		 MT_WL_RX_MPSZ_PAD0 | MT_TICK_1US_EN);
-+	mt76_clear(dev, MT_UDMA_WLCFG_0,
-+		   MT_WL_RX_AGG_TO | MT_WL_RX_AGG_LMT);
-+	mt76_clear(dev, MT_UDMA_WLCFG_1, MT_WL_RX_AGG_PKT_LMT);
-+
-+	return 0;
-+}
-+
-+static int mt7921u_init_reset(struct mt7921_dev *dev)
-+{
-+	return 0;
-+}
-+
-+static void mt7921u_stop(struct ieee80211_hw *hw)
-+{
-+	struct mt7921_dev *dev = mt7921_hw_dev(hw);
-+
-+	mt76u_stop_tx(&dev->mt76);
-+	mt7921_stop(hw);
-+}
-+
-+static void mt7921u_cleanup(struct mt7921_dev *dev)
-+{
-+	clear_bit(MT76_STATE_INITIALIZED, &dev->mphy.state);
-+	mt7921_mcu_exit(dev);
-+	mt76u_queues_deinit(&dev->mt76);
-+}
-+
-+static int mt7921u_probe(struct usb_interface *usb_intf,
-+			 const struct usb_device_id *id)
-+{
-+	static const struct mt76_driver_ops drv_ops = {
-+		.txwi_size = MT_SDIO_TXD_SIZE,
-+		.drv_flags = MT_DRV_RX_DMA_HDR | MT_DRV_HW_MGMT_TXQ,
-+		.survey_flags = SURVEY_INFO_TIME_TX |
-+				SURVEY_INFO_TIME_RX |
-+				SURVEY_INFO_TIME_BSS_RX,
-+		.tx_prepare_skb = mt7921_usb_sdio_tx_prepare_skb,
-+		.tx_complete_skb = mt7921_usb_sdio_tx_complete_skb,
-+		.tx_status_data = mt7921_usb_sdio_tx_status_data,
-+		.rx_skb = mt7921_queue_rx_skb,
-+		.sta_ps = mt7921_sta_ps,
-+		.sta_add = mt7921_mac_sta_add,
-+		.sta_assoc = mt7921_mac_sta_assoc,
-+		.sta_remove = mt7921_mac_sta_remove,
-+		.update_survey = mt7921_update_channel,
-+	};
-+	static const struct mt7921_hif_ops hif_ops = {
-+		.mcu_init = mt7921u_mcu_init,
-+		.init_reset = mt7921u_init_reset,
-+	};
-+	static struct mt76_bus_ops bus_ops = {
-+		.rr = mt7921u_rr,
-+		.wr = mt7921u_wr,
-+		.rmw = mt7921u_rmw,
-+		.read_copy = mt76u_read_copy,
-+		.write_copy = mt7921u_copy,
-+		.type = MT76_BUS_USB,
-+	};
-+	struct usb_device *udev = interface_to_usbdev(usb_intf);
-+	struct ieee80211_ops *ops;
-+	struct ieee80211_hw *hw;
-+	struct mt7921_dev *dev;
-+	struct mt76_dev *mdev;
-+	int ret;
-+
-+	ops = devm_kmemdup(&usb_intf->dev, &mt7921_ops, sizeof(mt7921_ops),
-+			   GFP_KERNEL);
-+	if (!ops)
-+		return -ENOMEM;
-+
-+	ops->stop = mt7921u_stop;
-+
-+	mdev = mt76_alloc_device(&usb_intf->dev, sizeof(*dev), ops, &drv_ops);
-+	if (!mdev)
-+		return -ENOMEM;
-+
-+	dev = container_of(mdev, struct mt7921_dev, mt76);
-+	dev->hif_ops = &hif_ops;
-+
-+	udev = usb_get_dev(udev);
-+	usb_reset_device(udev);
-+
-+	usb_set_intfdata(usb_intf, dev);
-+
-+	ret = __mt76u_init(mdev, usb_intf, &bus_ops);
-+	if (ret < 0)
-+		goto error;
-+
-+	mdev->rev = (mt76_rr(dev, MT_HW_CHIPID) << 16) |
-+		    (mt76_rr(dev, MT_HW_REV) & 0xff);
-+	dev_dbg(mdev->dev, "ASIC revision: %04x\n", mdev->rev);
-+
-+	if (!mt76_poll_msec(dev, MT_CONN_ON_MISC, MT_TOP_MISC2_FW_PWR_ON,
-+			    MT_TOP_MISC2_FW_PWR_ON, 500)) {
-+		ret = mt7921u_mcu_power_on(dev);
-+		if (ret)
-+			goto error;
-+	} else {
-+		set_bit(MT76_STATE_POWER_OFF, &dev->mphy.state);
-+	}
-+
-+	ret = mt76u_alloc_mcu_queue(&dev->mt76);
-+	if (ret)
-+		goto error;
-+
-+	ret = mt76u_alloc_queues(&dev->mt76);
-+	if (ret)
-+		goto error;
-+
-+	ret = mt7921u_dma_init(dev);
-+	if (ret)
-+		return ret;
-+
-+	hw = mt76_hw(dev);
-+	/* check hw sg support in order to enable AMSDU */
-+	hw->max_tx_fragments = mdev->usb.sg_en ? MT_HW_TXP_MAX_BUF_NUM : 1;
-+
-+	ret = mt7921_register_device(dev);
-+	if (ret)
-+		goto error;
-+
-+	return 0;
-+
-+error:
-+	mt76u_queues_deinit(&dev->mt76);
-+
-+	usb_set_intfdata(usb_intf, NULL);
-+	usb_put_dev(interface_to_usbdev(usb_intf));
-+
-+	mt76_free_device(&dev->mt76);
-+
-+	return ret;
-+}
-+
-+static void mt7921u_disconnect(struct usb_interface *usb_intf)
-+{
-+	struct mt7921_dev *dev = usb_get_intfdata(usb_intf);
-+
-+	if (!test_bit(MT76_STATE_INITIALIZED, &dev->mphy.state))
-+		return;
-+
-+	mt76_unregister_device(&dev->mt76);
-+	mt7921u_cleanup(dev);
-+
-+	usb_set_intfdata(usb_intf, NULL);
-+	usb_put_dev(interface_to_usbdev(usb_intf));
-+
-+	mt76_free_device(&dev->mt76);
-+}
-+
-+MODULE_DEVICE_TABLE(usb, mt7921u_device_table);
-+MODULE_FIRMWARE(MT7921_FIRMWARE_WM);
-+MODULE_FIRMWARE(MT7921_ROM_PATCH);
-+
-+static struct usb_driver mt7921u_driver = {
-+	.name		= KBUILD_MODNAME,
-+	.id_table	= mt7921u_device_table,
-+	.probe		= mt7921u_probe,
-+	.disconnect	= mt7921u_disconnect,
-+	.soft_unbind	= 1,
-+	.disable_hub_initiated_lpm = 1,
-+};
-+module_usb_driver(mt7921u_driver);
-+
-+MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
-+MODULE_LICENSE("Dual BSD/GPL");
--- 
-2.35.1
+[snip until i915 parts]
 
+>   drivers/gpu/drm/i915/gem/i915_gem_context.c   | 14 +++---
+>   .../gpu/drm/i915/gem/i915_gem_execbuffer.c    | 15 ++++---
+>   drivers/gpu/drm/i915/gt/intel_ring.c          | 15 ++++---
+
+[snip]
+
+> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_context.c b/drivers/gpu/drm/i915/gem/i915_gem_context.c
+> index 00327b750fbb..80c79028901a 100644
+> --- a/drivers/gpu/drm/i915/gem/i915_gem_context.c
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_context.c
+> @@ -107,25 +107,27 @@ static void lut_close(struct i915_gem_context *ctx)
+>   	radix_tree_for_each_slot(slot, &ctx->handles_vma, &iter, 0) {
+>   		struct i915_vma *vma = rcu_dereference_raw(*slot);
+>   		struct drm_i915_gem_object *obj = vma->obj;
+> -		struct i915_lut_handle *lut;
+> +		struct i915_lut_handle *lut = NULL;
+> +		struct i915_lut_handle *tmp;
+> 
+>   		if (!kref_get_unless_zero(&obj->base.refcount))
+>   			continue;
+> 
+>   		spin_lock(&obj->lut_lock);
+> -		list_for_each_entry(lut, &obj->lut_list, obj_link) {
+> -			if (lut->ctx != ctx)
+> +		list_for_each_entry(tmp, &obj->lut_list, obj_link) {
+> +			if (tmp->ctx != ctx)
+>   				continue;
+> 
+> -			if (lut->handle != iter.index)
+> +			if (tmp->handle != iter.index)
+>   				continue;
+> 
+> -			list_del(&lut->obj_link);
+> +			list_del(&tmp->obj_link);
+> +			lut = tmp;
+>   			break;
+>   		}
+>   		spin_unlock(&obj->lut_lock);
+> 
+> -		if (&lut->obj_link != &obj->lut_list) {
+> +		if (lut) {
+>   			i915_lut_handle_free(lut);
+>   			radix_tree_iter_delete(&ctx->handles_vma, &iter, slot);
+
+Looks okay although personally I would have left lut as is for a smaller 
+diff and introduced a new local like 'found' or 'unlinked'.
+
+>   			i915_vma_close(vma);
+> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+> index 1736efa43339..fda9e3685ad2 100644
+> --- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+> @@ -2444,7 +2444,8 @@ static struct i915_request *eb_throttle(struct i915_execbuffer *eb, struct intel
+>   {
+>   	struct intel_ring *ring = ce->ring;
+>   	struct intel_timeline *tl = ce->timeline;
+> -	struct i915_request *rq;
+> +	struct i915_request *rq = NULL;
+> +	struct i915_request *tmp;
+> 
+>   	/*
+>   	 * Completely unscientific finger-in-the-air estimates for suitable
+> @@ -2460,15 +2461,17 @@ static struct i915_request *eb_throttle(struct i915_execbuffer *eb, struct intel
+>   	 * claiming our resources, but not so long that the ring completely
+>   	 * drains before we can submit our next request.
+>   	 */
+> -	list_for_each_entry(rq, &tl->requests, link) {
+> -		if (rq->ring != ring)
+> +	list_for_each_entry(tmp, &tl->requests, link) {
+> +		if (tmp->ring != ring)
+>   			continue;
+> 
+> -		if (__intel_ring_space(rq->postfix,
+> -				       ring->emit, ring->size) > ring->size / 2)
+> +		if (__intel_ring_space(tmp->postfix,
+> +				       ring->emit, ring->size) > ring->size / 2) {
+> +			rq = tmp;
+>   			break;
+> +		}
+>   	}
+> -	if (&rq->link == &tl->requests)
+> +	if (!rq)
+>   		return NULL; /* weird, we will check again later for real */
+
+Alternatively, instead of break could simply do "return 
+i915_request_get(rq);" and replace the end of the function after the 
+loop with "return NULL;". A bit smaller diff, or at least less "spread 
+out" over the function, so might be easier to backport stuff touching 
+this area in the future. But looks correct as is.
+
+> 
+>   	return i915_request_get(rq);
+> diff --git a/drivers/gpu/drm/i915/gt/intel_ring.c b/drivers/gpu/drm/i915/gt/intel_ring.c
+> index 2fdd52b62092..4881c4e0c407 100644
+> --- a/drivers/gpu/drm/i915/gt/intel_ring.c
+> +++ b/drivers/gpu/drm/i915/gt/intel_ring.c
+> @@ -191,24 +191,27 @@ wait_for_space(struct intel_ring *ring,
+>   	       struct intel_timeline *tl,
+>   	       unsigned int bytes)
+>   {
+> -	struct i915_request *target;
+> +	struct i915_request *target = NULL;
+> +	struct i915_request *tmp;
+>   	long timeout;
+> 
+>   	if (intel_ring_update_space(ring) >= bytes)
+>   		return 0;
+> 
+>   	GEM_BUG_ON(list_empty(&tl->requests));
+> -	list_for_each_entry(target, &tl->requests, link) {
+> -		if (target->ring != ring)
+> +	list_for_each_entry(tmp, &tl->requests, link) {
+> +		if (tmp->ring != ring)
+>   			continue;
+> 
+>   		/* Would completion of this request free enough space? */
+> -		if (bytes <= __intel_ring_space(target->postfix,
+> -						ring->emit, ring->size))
+> +		if (bytes <= __intel_ring_space(tmp->postfix,
+> +						ring->emit, ring->size)) {
+> +			target = tmp;
+>   			break;
+> +		}
+>   	}
+> 
+> -	if (GEM_WARN_ON(&target->link == &tl->requests))
+> +	if (GEM_WARN_ON(!target))
+>   		return -ENOSPC;
+> 
+>   	timeout = i915_request_wait(target,
+
+Looks okay as well. Less clear here if there is a clean solution to make 
+the diff smaller so no suggestions. I mean do I dare mention "goto 
+found;" from inside the loop, where the break is, instead of the 
+variable renames.. risky.. :) (And ofc "return -ENOSPC" immediately 
+after the loop.)
+
+As a summary changes looks okay, up to you if you want to try to make 
+the diffs smaller or not. It doesn't matter hugely really, all I have is 
+a vague and uncertain "maybe it makes backporting of something, someday 
+easier". So for i915 it is good either way.
+
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com> # i915 bits only
+
+Regards,
+
+Tvrtko
