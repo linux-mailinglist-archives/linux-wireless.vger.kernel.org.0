@@ -2,97 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A27E4CB9B0
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Mar 2022 09:58:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE91C4CB9E1
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Mar 2022 10:13:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231736AbiCCI73 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Mar 2022 03:59:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53936 "EHLO
+        id S230513AbiCCJNy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Mar 2022 04:13:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229609AbiCCI73 (ORCPT
+        with ESMTP id S229930AbiCCJNw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Mar 2022 03:59:29 -0500
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C81B916AA6F;
-        Thu,  3 Mar 2022 00:58:43 -0800 (PST)
-Received: by mail-wr1-x435.google.com with SMTP id u10so5044244wra.9;
-        Thu, 03 Mar 2022 00:58:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MQJEo4upM9dSdfpug7K8DnThChzSPXUmNu2eyU+dF0c=;
-        b=Gha4Rawl9ZluKz5YWzXzEN2XIGAG+bVjt3e5SJt0uA2BR89mC8aU3Iy5NQ0VfXKh9g
-         kfesiK9eGEfxcURrhDHf+jBVKvIURS1woL7ItJJqTQpi7zfbvtnuZ+UJArukyBbTTNtP
-         aIc0ztOnpbZiug1qIO2nGgYq/TJfq+qxOqt251Jlyr4OwBP6nfRoXfe0UST1t6JmBJWj
-         YpJZFNoCPP3IrxoF6BFrZ+calNPV0ruIjn8FRqHh+FyAP2YF/Rx4oq9m7q2syd6CHXEE
-         D7z9oxSI2sVBUCUEFZ0kgsYuhBmd2+RQxr4vILUwWJiNP1VRV2dUTEIDR08MTR8nabiL
-         cX/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MQJEo4upM9dSdfpug7K8DnThChzSPXUmNu2eyU+dF0c=;
-        b=UpK8YtPwqNDUcoKTZg7x6rghz1FYeyLZAlR3rG7Lb5LOrm2KRKRS15h+U2cwoB7kQG
-         lnmoyBuov7j3ZG5YJkfR2i8dMaU3FQD9zxpB+URSARofofWPEVe+TZJauryQXtU7f7AX
-         Q4MrPthruPFe+CaS1UAQeBypfdW/LxSaj+kUroRD2x2MFOZczi+p2V4IRgvffI03Dl6+
-         yd8oFjr50Olm81f3zil2i/uu5Zpa4bBh4Zrsi6u7POF/TilMXy7hBD8tO285i9zGVwi+
-         tI5xQmtZfnlmEqtkiXrkklXURNfQPXpxLAIHeOqtY0ht22B/x/xUQVjx6qA2H4AfemOE
-         9ghQ==
-X-Gm-Message-State: AOAM531tnBr0V8nwrAFLB/8RBcuozfZskXl7Yf9/TS1OZsmJQ+Y5M008
-        OjvvwM5s3YyvmwbzBJ5BTkiExi40Nsg8/A==
-X-Google-Smtp-Source: ABdhPJzb79AfvihErqIaACg4s+qnD0+s9McBGRubFqnZIJTZQBGBFrhdjoEUdNRjlwKSfBwdcpzncQ==
-X-Received: by 2002:a05:6000:1e0c:b0:1f0:95f:42e7 with SMTP id bj12-20020a0560001e0c00b001f0095f42e7mr8929437wrb.239.1646297922269;
-        Thu, 03 Mar 2022 00:58:42 -0800 (PST)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id f4-20020a5d4dc4000000b001d8e67e5214sm1418022wru.48.2022.03.03.00.58.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Mar 2022 00:58:41 -0800 (PST)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-        linux-wireless@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] bcma: gpio: remove redundant re-assignment of chip->owner
-Date:   Thu,  3 Mar 2022 08:58:41 +0000
-Message-Id: <20220303085841.1124766-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Thu, 3 Mar 2022 04:13:52 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6323AF1F9
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Mar 2022 01:13:06 -0800 (PST)
+X-UUID: 1822a6e0036444c5a0c459f5b93ea0b3-20220303
+X-UUID: 1822a6e0036444c5a0c459f5b93ea0b3-20220303
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 421609529; Thu, 03 Mar 2022 17:12:59 +0800
+Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Thu, 3 Mar 2022 17:12:58 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb02.mediatek.inc
+ (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 3 Mar
+ 2022 17:12:58 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 3 Mar 2022 17:12:58 +0800
+Message-ID: <60fd581a57945efc1c6a2a8d58a88301a79e51ec.camel@mediatek.com>
+Subject: Re: [PATCH] mt76: fix monitor mode crash with sdio driver
+From:   Deren Wu <deren.wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        "Ryder Lee" <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+Date:   Thu, 3 Mar 2022 17:12:58 +0800
+In-Reply-To: <d065e4492a9e995d6ebe95c7ad8a1ec6183f56ef.1646277169.git.deren.wu@mediatek.com>
+References: <d065e4492a9e995d6ebe95c7ad8a1ec6183f56ef.1646277169.git.deren.wu@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There are two identical assignments of chip->owner to the same value,
-the second assignment is redundant and can be removed.
+Hi Felix,
 
-Cleans up cppcheck warning:
-drivers/bcma/driver_gpio.c:184:15: style: Variable 'chip->owner' is
-reassigned a value before the old one has been used. [redundantAssignment]
+I need to submit v2 patch. Please drop this one.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/bcma/driver_gpio.c | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/bcma/driver_gpio.c b/drivers/bcma/driver_gpio.c
-index 8a1e4705bc87..1e74ec1c7f23 100644
---- a/drivers/bcma/driver_gpio.c
-+++ b/drivers/bcma/driver_gpio.c
-@@ -181,7 +181,6 @@ int bcma_gpio_init(struct bcma_drv_cc *cc)
- 	chip->set		= bcma_gpio_set_value;
- 	chip->direction_input	= bcma_gpio_direction_input;
- 	chip->direction_output	= bcma_gpio_direction_output;
--	chip->owner		= THIS_MODULE;
- 	chip->parent		= bus->dev;
- #if IS_BUILTIN(CONFIG_OF)
- 	chip->of_node		= cc->core->dev.of_node;
--- 
-2.34.1
+Thanks,
+Deren
+
+
+On Thu, 2022-03-03 at 11:28 +0800, Deren Wu wrote:
+> From: Deren Wu <deren.wu@mediatek.com>
+> 
+> mt7921s driver may receive frames with fragment buffers. If there is
+> a
+> CTS packet received in monitor mode, the payload is 10 bytes only and
+> need 6 bytes header padding after RXD buffer. However, only RXD in
+> the
+> first linear buffer, if we pull buffer size RXD-size+6 bytes with
+> skb_pull(), that would trigger "BUG_ON(skb->len < skb->data_len)" in
+> __skb_pull().
+> 
+> To avoid the nonlinear buffer issue, enlarge the RXD size from 128 to
+> 136 to make sure all MCU operation in linear buffer.
+> 
+> 136 = 128 + 8
+>   128 : RXD size
+>   8   : max header padding length
+> 
+> [   52.007562] kernel BUG at include/linux/skbuff.h:2313!
+> [   52.007578] Internal error: Oops - BUG: 0 [#1] PREEMPT SMP
+> [   52.007987] pc : skb_pull+0x48/0x4c
+> [   52.008015] lr : mt7921_queue_rx_skb+0x494/0x890 [mt7921_common]
+> [   52.008361] Call trace:
+> [   52.008377]  skb_pull+0x48/0x4c
+> [   52.008400]  mt76s_net_worker+0x134/0x1b0 [mt76_sdio
+> 35339a92c6eb7d4bbcc806a1d22f56365565135c]
+> [   52.008431]  __mt76_worker_fn+0xe8/0x170 [mt76
+> ef716597d11a77150bc07e3fdd68eeb0f9b56917]
+> [   52.008449]  kthread+0x148/0x3ac
+> [   52.008466]  ret_from_fork+0x10/0x30
+> 
+> Co-developed-by: Sean Wang <sean.wang@mediatek.com>
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt76.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h
+> b/drivers/net/wireless/mediatek/mt76/mt76.h
+> index 5e10fe156926..4f4ce3b3df54 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -19,7 +19,8 @@
+>  
+>  #define MT_MCU_RING_SIZE	32
+>  #define MT_RX_BUF_SIZE		2048
+> -#define MT_SKB_HEAD_LEN		128
+> +/* 136 = 128+8. 128: RXD, 8:max header padding*/
+> +#define MT_SKB_HEAD_LEN		136
+>  
+>  #define MT_MAX_NON_AQL_PKT	16
+>  #define MT_TXQ_FREE_THR		32
 
