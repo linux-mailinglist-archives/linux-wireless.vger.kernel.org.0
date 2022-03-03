@@ -2,119 +2,193 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E8214CB572
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Mar 2022 04:31:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F6204CB60F
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Mar 2022 05:58:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229473AbiCCD3j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Mar 2022 22:29:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58560 "EHLO
+        id S229709AbiCCE70 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Mar 2022 23:59:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbiCCD3i (ORCPT
+        with ESMTP id S229677AbiCCE7R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Mar 2022 22:29:38 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CAB833B
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Mar 2022 19:28:53 -0800 (PST)
-X-UUID: 3ce70156f4284a01b6bed69a66598b55-20220303
-X-UUID: 3ce70156f4284a01b6bed69a66598b55-20220303
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 613262838; Thu, 03 Mar 2022 11:28:45 +0800
-Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Thu, 3 Mar 2022 11:28:43 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb01.mediatek.inc
- (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 3 Mar
- 2022 11:28:43 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 3 Mar 2022 11:28:43 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        "Ryder Lee" <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] mt76: fix monitor mode crash with sdio driver
-Date:   Thu, 3 Mar 2022 11:28:40 +0800
-Message-ID: <d065e4492a9e995d6ebe95c7ad8a1ec6183f56ef.1646277169.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Wed, 2 Mar 2022 23:59:17 -0500
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1598B13DE21
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Mar 2022 20:58:28 -0800 (PST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mtapsc-5-c9saVIHFMHux_Sno3vxg6w-1; Thu, 03 Mar 2022 04:58:25 +0000
+X-MC-Unique: c9saVIHFMHux_Sno3vxg6w-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.28; Thu, 3 Mar 2022 04:58:23 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.028; Thu, 3 Mar 2022 04:58:23 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Xiaomeng Tong' <xiam0nd.tong@gmail.com>
+CC:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "bcm-kernel-feedback-list@broadcom.com" 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        "bjohannesmeyer@gmail.com" <bjohannesmeyer@gmail.com>,
+        "c.giuffrida@vu.nl" <c.giuffrida@vu.nl>,
+        "christian.koenig@amd.com" <christian.koenig@amd.com>,
+        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
+        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        "drbd-dev@lists.linbit.com" <drbd-dev@lists.linbit.com>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "gustavo@embeddedor.com" <gustavo@embeddedor.com>,
+        "h.j.bos@vu.nl" <h.j.bos@vu.nl>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+        "jakobkoschel@gmail.com" <jakobkoschel@gmail.com>,
+        "jgg@ziepe.ca" <jgg@ziepe.ca>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "kgdb-bugreport@lists.sourceforge.net" 
+        <kgdb-bugreport@lists.sourceforge.net>,
+        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-f2fs-devel@lists.sourceforge.net" 
+        <linux-f2fs-devel@lists.sourceforge.net>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+        "linux-mediatek@lists.infradead.org" 
+        <linux-mediatek@lists.infradead.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
+        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux1394-devel@lists.sourceforge.net" 
+        <linux1394-devel@lists.sourceforge.net>,
+        "linux@rasmusvillemoes.dk" <linux@rasmusvillemoes.dk>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "nathan@kernel.org" <nathan@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+        "rppt@kernel.org" <rppt@kernel.org>,
+        "samba-technical@lists.samba.org" <samba-technical@lists.samba.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "tipc-discussion@lists.sourceforge.net" 
+        <tipc-discussion@lists.sourceforge.net>,
+        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
+        "v9fs-developer@lists.sourceforge.net" 
+        <v9fs-developer@lists.sourceforge.net>
+Subject: RE: [PATCH 2/6] treewide: remove using list iterator after loop body
+ as a ptr
+Thread-Topic: [PATCH 2/6] treewide: remove using list iterator after loop body
+ as a ptr
+Thread-Index: AQHYLhg9+DU/OogLf0+tiSFmjztyUKysHu+QgADRVYCAACVtoA==
+Date:   Thu, 3 Mar 2022 04:58:23 +0000
+Message-ID: <39404befad5b44b385698ff65465abe5@AcuMS.aculab.com>
+References: <1077f17e50d34dc2bbfdf4e52a1cb2fd@AcuMS.aculab.com>
+ <20220303022729.9321-1-xiam0nd.tong@gmail.com>
+In-Reply-To: <20220303022729.9321-1-xiam0nd.tong@gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+From: Xiaomeng Tong
+> Sent: 03 March 2022 02:27
+> 
+> On Wed, 2 Mar 2022 14:04:06 +0000, David Laight
+> <David.Laight@ACULAB.COM> wrote:
+> > I think that it would be better to make any alternate loop macro
+> > just set the variable to NULL on the loop exit.
+> > That is easier to code for and the compiler might be persuaded to
+> > not redo the test.
+> 
+> No, that would lead to a NULL dereference.
 
-mt7921s driver may receive frames with fragment buffers. If there is a
-CTS packet received in monitor mode, the payload is 10 bytes only and
-need 6 bytes header padding after RXD buffer. However, only RXD in the
-first linear buffer, if we pull buffer size RXD-size+6 bytes with
-skb_pull(), that would trigger "BUG_ON(skb->len < skb->data_len)" in
-__skb_pull().
-
-To avoid the nonlinear buffer issue, enlarge the RXD size from 128 to
-136 to make sure all MCU operation in linear buffer.
-
-136 = 128 + 8
-  128 : RXD size
-  8   : max header padding length
-
-[   52.007562] kernel BUG at include/linux/skbuff.h:2313!
-[   52.007578] Internal error: Oops - BUG: 0 [#1] PREEMPT SMP
-[   52.007987] pc : skb_pull+0x48/0x4c
-[   52.008015] lr : mt7921_queue_rx_skb+0x494/0x890 [mt7921_common]
-[   52.008361] Call trace:
-[   52.008377]  skb_pull+0x48/0x4c
-[   52.008400]  mt76s_net_worker+0x134/0x1b0 [mt76_sdio 35339a92c6eb7d4bbcc806a1d22f56365565135c]
-[   52.008431]  __mt76_worker_fn+0xe8/0x170 [mt76 ef716597d11a77150bc07e3fdd68eeb0f9b56917]
-[   52.008449]  kthread+0x148/0x3ac
-[   52.008466]  ret_from_fork+0x10/0x30
-
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt76.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 5e10fe156926..4f4ce3b3df54 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -19,7 +19,8 @@
+Why, it would make it b ethe same as the 'easy to use':
+	for (item = head; item; item = item->next) {
+		...
+		if (...)
+			break;
+		...
+	}
+	if (!item)
+		return;
  
- #define MT_MCU_RING_SIZE	32
- #define MT_RX_BUF_SIZE		2048
--#define MT_SKB_HEAD_LEN		128
-+/* 136 = 128+8. 128: RXD, 8:max header padding*/
-+#define MT_SKB_HEAD_LEN		136
- 
- #define MT_MAX_NON_AQL_PKT	16
- #define MT_TXQ_FREE_THR		32
--- 
-2.18.0
+> The problem is the mis-use of iterator outside the loop on exit, and
+> the iterator will be the HEAD's container_of pointer which pointers
+> to a type-confused struct. Sidenote: The *mis-use* here refers to
+> mistakely access to other members of the struct, instead of the
+> list_head member which acutally is the valid HEAD.
+
+The problem is that the HEAD's container_of pointer should never
+be calculated at all.
+This is what is fundamentally broken about the current definition.
+
+> IOW, you would dereference a (NULL + offset_of_member) address here.
+
+Where?
+
+> Please remind me if i missed something, thanks.
+>
+> Can you share your "alternative definitions" details? thanks!
+
+The loop should probably use as extra variable that points
+to the 'list node' in the next structure.
+Something like:
+	for (xxx *iter = head->next;
+		iter == &head ? ((item = NULL),0) : ((item = list_item(iter),1));
+		iter = item->member->next) {
+	   ...
+With a bit of casting you can use 'item' to hold 'iter'.
+
+> 
+> > OTOH there may be alternative definitions that can be used to get
+> > the compiler (or other compiler-like tools) to detect broken code.
+> > Even if the definition can't possibly generate a working kerrnel.
+> 
+> The "list_for_each_entry_inside(pos, type, head, member)" way makes
+> the iterator invisiable outside the loop, and would be catched by
+> compiler if use-after-loop things happened.
+
+It is also a compete PITA for anything doing a search.
+
+	David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
