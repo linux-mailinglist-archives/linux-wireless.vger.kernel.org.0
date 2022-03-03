@@ -2,122 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2C984CB972
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Mar 2022 09:46:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A27E4CB9B0
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Mar 2022 09:58:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231523AbiCCIrj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Mar 2022 03:47:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50712 "EHLO
+        id S231736AbiCCI73 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Mar 2022 03:59:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229741AbiCCIri (ORCPT
+        with ESMTP id S229609AbiCCI73 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Mar 2022 03:47:38 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08D9E1680A8
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Mar 2022 00:46:54 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 986BD61B8E
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Mar 2022 08:46:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A6AC004E1;
-        Thu,  3 Mar 2022 08:46:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646297213;
-        bh=VIPW62CjOcLNrtRMUwbzbb4BX0IfM9wVvddCFS9duxo=;
-        h=From:To:Cc:Subject:Date:From;
-        b=SceXbge0DPCWxf5v71/rBdfCEFs3d/Y2GfsLdsWIsopVAeTlXWJwMXgK9+Z7/KL5x
-         eXbXdjDVb8padmMrcszQvDJ9gR1GwGgNOpOIvgSHO/ycyU63G4UTzPus2jSNIG6mBI
-         wUhTuhgN/dOwJdUKniJM0bMwubmnXSkm9i+14StIChrVxiV0LbA2dqWFrdcpi+FfTQ
-         ChT+jIhKlqAL6RwZG2IaAs8k5ghAf7nc8GOwIOa0FWpc0YU7vG6NqVCw8iG/u6w/2J
-         A5mTo0BZv1hr6Ml3mbQhajeMAzyCYONW5cDNbwgGN0evJwhkaw8vTWsu6vO66PWEms
-         uFygEgz37YMEQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, deren.wu@mediatek.com
-Subject: [PATCH] mt76: mt7921: fix  mt7921_queues_acq implementation
-Date:   Thu,  3 Mar 2022 09:46:41 +0100
-Message-Id: <f8fb37a6e29c1e7d59c557ffc336df86b98f01b9.1646297035.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.35.1
+        Thu, 3 Mar 2022 03:59:29 -0500
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C81B916AA6F;
+        Thu,  3 Mar 2022 00:58:43 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id u10so5044244wra.9;
+        Thu, 03 Mar 2022 00:58:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MQJEo4upM9dSdfpug7K8DnThChzSPXUmNu2eyU+dF0c=;
+        b=Gha4Rawl9ZluKz5YWzXzEN2XIGAG+bVjt3e5SJt0uA2BR89mC8aU3Iy5NQ0VfXKh9g
+         kfesiK9eGEfxcURrhDHf+jBVKvIURS1woL7ItJJqTQpi7zfbvtnuZ+UJArukyBbTTNtP
+         aIc0ztOnpbZiug1qIO2nGgYq/TJfq+qxOqt251Jlyr4OwBP6nfRoXfe0UST1t6JmBJWj
+         YpJZFNoCPP3IrxoF6BFrZ+calNPV0ruIjn8FRqHh+FyAP2YF/Rx4oq9m7q2syd6CHXEE
+         D7z9oxSI2sVBUCUEFZ0kgsYuhBmd2+RQxr4vILUwWJiNP1VRV2dUTEIDR08MTR8nabiL
+         cX/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MQJEo4upM9dSdfpug7K8DnThChzSPXUmNu2eyU+dF0c=;
+        b=UpK8YtPwqNDUcoKTZg7x6rghz1FYeyLZAlR3rG7Lb5LOrm2KRKRS15h+U2cwoB7kQG
+         lnmoyBuov7j3ZG5YJkfR2i8dMaU3FQD9zxpB+URSARofofWPEVe+TZJauryQXtU7f7AX
+         Q4MrPthruPFe+CaS1UAQeBypfdW/LxSaj+kUroRD2x2MFOZczi+p2V4IRgvffI03Dl6+
+         yd8oFjr50Olm81f3zil2i/uu5Zpa4bBh4Zrsi6u7POF/TilMXy7hBD8tO285i9zGVwi+
+         tI5xQmtZfnlmEqtkiXrkklXURNfQPXpxLAIHeOqtY0ht22B/x/xUQVjx6qA2H4AfemOE
+         9ghQ==
+X-Gm-Message-State: AOAM531tnBr0V8nwrAFLB/8RBcuozfZskXl7Yf9/TS1OZsmJQ+Y5M008
+        OjvvwM5s3YyvmwbzBJ5BTkiExi40Nsg8/A==
+X-Google-Smtp-Source: ABdhPJzb79AfvihErqIaACg4s+qnD0+s9McBGRubFqnZIJTZQBGBFrhdjoEUdNRjlwKSfBwdcpzncQ==
+X-Received: by 2002:a05:6000:1e0c:b0:1f0:95f:42e7 with SMTP id bj12-20020a0560001e0c00b001f0095f42e7mr8929437wrb.239.1646297922269;
+        Thu, 03 Mar 2022 00:58:42 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id f4-20020a5d4dc4000000b001d8e67e5214sm1418022wru.48.2022.03.03.00.58.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Mar 2022 00:58:41 -0800 (PST)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        linux-wireless@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] bcma: gpio: remove redundant re-assignment of chip->owner
+Date:   Thu,  3 Mar 2022 08:58:41 +0000
+Message-Id: <20220303085841.1124766-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix mt7921_queues_acq implementation according to the vendor sdk.
+There are two identical assignments of chip->owner to the same value,
+the second assignment is redundant and can be removed.
 
-Fixes: 474a9f21e2e20 ("mt76: mt7921: add debugfs support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Cleans up cppcheck warning:
+drivers/bcma/driver_gpio.c:184:15: style: Variable 'chip->owner' is
+reassigned a value before the old one has been used. [redundantAssignment]
+
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c | 13 ++++++-------
- drivers/net/wireless/mediatek/mt76/mt7921/regs.h    | 11 +++++------
- 2 files changed, 11 insertions(+), 13 deletions(-)
+ drivers/bcma/driver_gpio.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-index 1bb388ecc334..32004b55a360 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-@@ -129,23 +129,22 @@ mt7921_queues_acq(struct seq_file *s, void *data)
- 
- 	mt7921_mutex_acquire(dev);
- 
--	for (i = 0; i < 16; i++) {
--		int j, acs = i / 4, index = i % 4;
-+	for (i = 0; i < 4; i++) {
- 		u32 ctrl, val, qlen = 0;
-+		int j;
- 
--		val = mt76_rr(dev, MT_PLE_AC_QEMPTY(acs, index));
--		ctrl = BIT(31) | BIT(15) | (acs << 8);
-+		val = mt76_rr(dev, MT_PLE_AC_QEMPTY(i));
-+		ctrl = BIT(31) | BIT(11) | (i << 24);
- 
- 		for (j = 0; j < 32; j++) {
- 			if (val & BIT(j))
- 				continue;
- 
--			mt76_wr(dev, MT_PLE_FL_Q0_CTRL,
--				ctrl | (j + (index << 5)));
-+			mt76_wr(dev, MT_PLE_FL_Q0_CTRL, ctrl | j);
- 			qlen += mt76_get_field(dev, MT_PLE_FL_Q3_CTRL,
- 					       GENMASK(11, 0));
- 		}
--		seq_printf(s, "AC%d%d: queued=%d\n", acs, index, qlen);
-+		seq_printf(s, "AC%d: queued=%d\n", i, qlen);
- 	}
- 
- 	mt7921_mutex_release(dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-index 411695f273cd..33578e0dfde3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-@@ -17,13 +17,12 @@
- #define MT_PLE_BASE			0x820c0000
- #define MT_PLE(ofs)			(MT_PLE_BASE + (ofs))
- 
--#define MT_PLE_FL_Q0_CTRL		MT_PLE(0x1b0)
--#define MT_PLE_FL_Q1_CTRL		MT_PLE(0x1b4)
--#define MT_PLE_FL_Q2_CTRL		MT_PLE(0x1b8)
--#define MT_PLE_FL_Q3_CTRL		MT_PLE(0x1bc)
-+#define MT_PLE_FL_Q0_CTRL		MT_PLE(0x3e0)
-+#define MT_PLE_FL_Q1_CTRL		MT_PLE(0x3e4)
-+#define MT_PLE_FL_Q2_CTRL		MT_PLE(0x3e8)
-+#define MT_PLE_FL_Q3_CTRL		MT_PLE(0x3ec)
- 
--#define MT_PLE_AC_QEMPTY(ac, n)		MT_PLE(0x300 + 0x10 * (ac) + \
--					       ((n) << 2))
-+#define MT_PLE_AC_QEMPTY(_n)		MT_PLE(0x500 + 0x40 * (_n))
- #define MT_PLE_AMSDU_PACK_MSDU_CNT(n)	MT_PLE(0x10e0 + ((n) << 2))
- 
- #define MT_MDP_BASE			0x820cd000
+diff --git a/drivers/bcma/driver_gpio.c b/drivers/bcma/driver_gpio.c
+index 8a1e4705bc87..1e74ec1c7f23 100644
+--- a/drivers/bcma/driver_gpio.c
++++ b/drivers/bcma/driver_gpio.c
+@@ -181,7 +181,6 @@ int bcma_gpio_init(struct bcma_drv_cc *cc)
+ 	chip->set		= bcma_gpio_set_value;
+ 	chip->direction_input	= bcma_gpio_direction_input;
+ 	chip->direction_output	= bcma_gpio_direction_output;
+-	chip->owner		= THIS_MODULE;
+ 	chip->parent		= bus->dev;
+ #if IS_BUILTIN(CONFIG_OF)
+ 	chip->of_node		= cc->core->dev.of_node;
 -- 
-2.35.1
+2.34.1
 
