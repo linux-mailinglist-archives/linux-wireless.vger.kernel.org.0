@@ -2,49 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AD5E4CC31D
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Mar 2022 17:44:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 619714CC34A
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Mar 2022 17:56:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231869AbiCCQpk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Mar 2022 11:45:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49338 "EHLO
+        id S234258AbiCCQ4y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Mar 2022 11:56:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230442AbiCCQpj (ORCPT
+        with ESMTP id S230385AbiCCQ4y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Mar 2022 11:45:39 -0500
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B41EC144F54;
-        Thu,  3 Mar 2022 08:44:53 -0800 (PST)
+        Thu, 3 Mar 2022 11:56:54 -0500
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3216211A27;
+        Thu,  3 Mar 2022 08:56:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1646325894; x=1677861894;
+  t=1646326568; x=1677862568;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=+iDGKFAulchRj34sfVomUgUNOfHoOIb3JB/8WAHfFTs=;
-  b=ujoppl2nu8/UyuXESWxwBH4/5C3BHnrW2Lfu+iEqZSl9663N7JWgei5j
-   WZaUpaSnyiWy0g9OOhcsD7W+LIOxTmACAFj6N738VolimkTJADvZyX7it
-   9atShLyM10aP8o1hU3/hFeqlg11dOzIdhDLTJIxJk3FLHAFQetaCsOvGi
+  bh=bpbupuvflW2mYTtFIn8/n9Er471Zt98fuB/GwJ5lR+g=;
+  b=pJXTzA4NPFnAR+0X0p7bIsqyVrWMbt6qYRggJm5PZquubEpTvJwRy37u
+   tGuLOMgfxZuWDHPVq5kyp8BDu8NAPUHb72bHz/qRdqljeP2kdl0A5RTp7
+   oBWLLZVk6Hp5zBgCVOL2byfstTfk2dAoGrNFf6ZTVpCWe3z5jvgd2PcjJ
    I=;
-Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
-  by alexa-out.qualcomm.com with ESMTP; 03 Mar 2022 08:44:53 -0800
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 03 Mar 2022 08:56:07 -0800
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2022 08:44:53 -0800
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2022 08:56:05 -0800
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Thu, 3 Mar 2022 08:44:52 -0800
+ 15.2.986.15; Thu, 3 Mar 2022 08:56:05 -0800
 Received: from [10.111.177.132] (10.49.16.6) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.15; Thu, 3 Mar 2022
- 08:44:52 -0800
-Message-ID: <7ac0be6d-35f1-cab3-0ab3-c06367a28ed1@quicinc.com>
-Date:   Thu, 3 Mar 2022 08:44:51 -0800
+ 08:56:04 -0800
+Message-ID: <8dbfcb31-2ed0-77bd-eb3a-8d8edd141406@quicinc.com>
+Date:   Thu, 3 Mar 2022 08:56:04 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.1
-Subject: Re: [PATCH v4 1/2] mac80211: Add support to trigger sta disconnect on
- hardware restart
+Subject: Re: [PATCH v4 2/2] ath10k:trigger sta disconnect on hardware restart
 Content-Language: en-US
 To:     Youghandhar Chintala <youghand@codeaurora.org>,
         <ath10k@lists.infradead.org>
@@ -53,9 +52,9 @@ CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <kuabhs@chromium.org>, <briannorris@chromium.org>,
         <mpubbise@codeaurora.org>
 References: <20220303115541.15892-1-youghand@codeaurora.org>
- <20220303115541.15892-2-youghand@codeaurora.org>
+ <20220303115541.15892-3-youghand@codeaurora.org>
 From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20220303115541.15892-2-youghand@codeaurora.org>
+In-Reply-To: <20220303115541.15892-3-youghand@codeaurora.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.49.16.6]
@@ -72,57 +71,212 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 On 3/3/2022 3:55 AM, Youghandhar Chintala wrote:
-> Currently in case of target hardware restart, we just reconfig and
-> re-enable the security keys and enable the network queues to start
-> data traffic back from where it was interrupted.
+
+nit: in subject add space after ath10k:
+
+> Currently after the hardware restart triggered from the driver,
+> the station interface connection remains intact, since a disconnect
+> trigger is not sent to userspace. This can lead to a problem in
+> targets where the wifi mac sequence is added by the firmware.
 > 
-> Many ath10k wifi chipsets have sequence numbers for the data
-> packets assigned by firmware and the mac sequence number will
-> restart from zero after target hardware restart leading to mismatch
-> in the sequence number expected by the remote peer vs the sequence
-> number of the frame sent by the target firmware.
+> After the target restart, during subsytem recovery, the target
+
+nit: s/subsytem/subsystem/
+
+> restarts its wifi mac sequence number. Hence AP to which our device
+> is connected will receive frames with a  wifi mac sequence number jump
+> to the past, thereby resulting in the AP dropping all these frames,
+> until the frame arrives with a wifi mac sequence number which AP was
+> expecting.
 > 
-> This mismatch in sequence number will cause out-of-order packets
-> on the remote peer and all the frames sent by the device are dropped
-> until we reach the sequence number which was sent before we restarted
-> the target hardware
+> To avoid such frame drops, its better to trigger a station disconnect
+> upon target hardware restart which can be done with API
+> ieee80211_reconfig_disconnect exposed to mac80211.
 > 
-> In order to fix this, we trigger a sta disconnect, in case of target
-> hw restart. After this there will be a fresh connection and thereby
-> avoiding the dropping of frames by remote peer.
+> The other targets are not affected by this change, since the hardware
+> params flag is not set.
 > 
-> The right fix would be to pull the entire data path into the host
-> which is not feasible or would need lots of complex changes and
-> will still be inefficient.
-> 
-> Tested on ath10k using WCN3990, QCA6174
+> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
+>             QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00110-QCARMSWP-1
+>     	   QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00048
+
+<https://wireless.wiki.kernel.org/en/users/drivers/ath10k/submittingpatches#tested-on_tag>
+
+there should be a Tested-on: tag for each line/target
+
 > 
 > Signed-off-by: Youghandhar Chintala <youghand@codeaurora.org>
 > ---
->   include/net/mac80211.h     | 11 +++++++++++
->   net/mac80211/ieee80211_i.h |  3 +++
->   net/mac80211/mlme.c        | 12 ++++++++++++
->   net/mac80211/util.c        | 33 ++++++++++++++++++++++++++++++---
->   4 files changed, 56 insertions(+), 3 deletions(-)
+>   drivers/net/wireless/ath/ath10k/core.c | 25 +++++++++++++++++++++++++
+>   drivers/net/wireless/ath/ath10k/hw.h   |  2 ++
+>   2 files changed, 27 insertions(+)
 > 
-> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-> index bd6912d0292b..0773c50fa182 100644
-> --- a/include/net/mac80211.h
-> +++ b/include/net/mac80211.h
-> @@ -6064,6 +6064,17 @@ void ieee80211_disconnect(struct ieee80211_vif *vif, bool reconnect);
->    */
->   void ieee80211_resume_disconnect(struct ieee80211_vif *vif);
+> diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+> index 9e1f483e1362..2092bfd02cd1 100644
+> --- a/drivers/net/wireless/ath/ath10k/core.c
+> +++ b/drivers/net/wireless/ath/ath10k/core.c
+> @@ -94,6 +94,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.credit_size_workaround = false,
+>   		.tx_stats_over_pktlog = true,
+>   		.dynamic_sar_support = false,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA988X_HW_2_0_VERSION,
+> @@ -131,6 +132,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.credit_size_workaround = false,
+>   		.tx_stats_over_pktlog = true,
+>   		.dynamic_sar_support = false,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA9887_HW_1_0_VERSION,
+> @@ -169,6 +171,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.credit_size_workaround = false,
+>   		.tx_stats_over_pktlog = false,
+>   		.dynamic_sar_support = false,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA6174_HW_3_2_VERSION,
+> @@ -202,6 +205,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.bmi_large_size_download = true,
+>   		.supports_peer_stats_info = true,
+>   		.dynamic_sar_support = true,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA6174_HW_2_1_VERSION,
+> @@ -239,6 +243,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.credit_size_workaround = false,
+>   		.tx_stats_over_pktlog = false,
+>   		.dynamic_sar_support = false,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA6174_HW_2_1_VERSION,
+> @@ -276,6 +281,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.credit_size_workaround = false,
+>   		.tx_stats_over_pktlog = false,
+>   		.dynamic_sar_support = false,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA6174_HW_3_0_VERSION,
+> @@ -313,6 +319,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.credit_size_workaround = false,
+>   		.tx_stats_over_pktlog = false,
+>   		.dynamic_sar_support = false,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA6174_HW_3_2_VERSION,
+> @@ -354,6 +361,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.tx_stats_over_pktlog = false,
+>   		.supports_peer_stats_info = true,
+>   		.dynamic_sar_support = true,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA99X0_HW_2_0_DEV_VERSION,
+> @@ -397,6 +405,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.credit_size_workaround = false,
+>   		.tx_stats_over_pktlog = false,
+>   		.dynamic_sar_support = false,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA9984_HW_1_0_DEV_VERSION,
+> @@ -447,6 +456,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.credit_size_workaround = false,
+>   		.tx_stats_over_pktlog = false,
+>   		.dynamic_sar_support = false,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA9888_HW_2_0_DEV_VERSION,
+> @@ -494,6 +504,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.credit_size_workaround = false,
+>   		.tx_stats_over_pktlog = false,
+>   		.dynamic_sar_support = false,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA9377_HW_1_0_DEV_VERSION,
+> @@ -531,6 +542,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.credit_size_workaround = false,
+>   		.tx_stats_over_pktlog = false,
+>   		.dynamic_sar_support = false,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA9377_HW_1_1_DEV_VERSION,
+> @@ -570,6 +582,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.credit_size_workaround = false,
+>   		.tx_stats_over_pktlog = false,
+>   		.dynamic_sar_support = false,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA9377_HW_1_1_DEV_VERSION,
+> @@ -600,6 +613,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.uart_pin_workaround = true,
+>   		.credit_size_workaround = true,
+>   		.dynamic_sar_support = false,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = QCA4019_HW_1_0_DEV_VERSION,
+> @@ -644,6 +658,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.credit_size_workaround = false,
+>   		.tx_stats_over_pktlog = false,
+>   		.dynamic_sar_support = false,
+> +		.hw_restart_disconnect = false,
+>   	},
+>   	{
+>   		.id = WCN3990_HW_1_0_DEV_VERSION,
+> @@ -674,6 +689,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>   		.credit_size_workaround = false,
+>   		.tx_stats_over_pktlog = false,
+>   		.dynamic_sar_support = true,
+> +		.hw_restart_disconnect = true,
+>   	},
+>   };
 >   
-> +/**
-> + * ieee80211_hw_restart_disconnect - disconnect from AP after
-> + * hardware  restart
+> @@ -2442,6 +2458,7 @@ EXPORT_SYMBOL(ath10k_core_napi_sync_disable);
+>   static void ath10k_core_restart(struct work_struct *work)
+>   {
+>   	struct ath10k *ar = container_of(work, struct ath10k, restart_work);
+> +	struct ath10k_vif *arvif;
+>   	int ret;
+>   
+>   	set_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags);
+> @@ -2480,6 +2497,14 @@ static void ath10k_core_restart(struct work_struct *work)
+>   		ar->state = ATH10K_STATE_RESTARTING;
+>   		ath10k_halt(ar);
+>   		ath10k_scan_finish(ar);
+> +		if (ar->hw_params.hw_restart_disconnect) {
+> +			list_for_each_entry(arvif, &ar->arvifs, list) {
+> +				if (arvif->is_up &&
+> +				    arvif->vdev_type == WMI_VDEV_TYPE_STA)
+> +					ieee80211_hw_restart_disconnect(arvif->vif);
+> +			}
+> +		}
+> +
+>   		ieee80211_restart_hw(ar->hw);
+>   		break;
+>   	case ATH10K_STATE_OFF:
+> diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
+> index 5215a6816d71..93acf0dd580a 100644
+> --- a/drivers/net/wireless/ath/ath10k/hw.h
+> +++ b/drivers/net/wireless/ath/ath10k/hw.h
+> @@ -633,6 +633,8 @@ struct ath10k_hw_params {
+>   	bool supports_peer_stats_info;
+>   
+>   	bool dynamic_sar_support;
+> +
+> +	bool hw_restart_disconnect;
+>   };
+>   
+>   struct htt_resp;
 
-nits:
-remove excess space in "hardware  restart"
-
-"Do not leave a blank line between the function description and the 
-arguments" per 
-<https://www.kernel.org/doc/html/latest/doc-guide/kernel-doc.html#function-documentation>
-
-(I see that there is quite a mixture of compliant and non-compliant 
-kernel-doc in this file)
