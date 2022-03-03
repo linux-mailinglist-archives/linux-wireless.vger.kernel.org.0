@@ -2,249 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 165794CBD31
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Mar 2022 12:56:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A5D94CBD8C
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Mar 2022 13:18:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233067AbiCCL4y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Mar 2022 06:56:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34636 "EHLO
+        id S233170AbiCCMTV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Mar 2022 07:19:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233035AbiCCL4p (ORCPT
+        with ESMTP id S233157AbiCCMTT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Mar 2022 06:56:45 -0500
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F39741160F8;
-        Thu,  3 Mar 2022 03:55:59 -0800 (PST)
-Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
-  by alexa-out.qualcomm.com with ESMTP; 03 Mar 2022 03:56:00 -0800
-X-QCInternal: smtphost
-Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
-  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/AES256-SHA; 03 Mar 2022 03:55:59 -0800
-X-QCInternal: smtphost
-Received: from unknown (HELO youghand-linux.qualcomm.com) ([10.206.66.115])
-  by ironmsg01-blr.qualcomm.com with ESMTP; 03 Mar 2022 17:25:51 +0530
-Received: by youghand-linux.qualcomm.com (Postfix, from userid 2370257)
-        id 0EFAE22770; Thu,  3 Mar 2022 17:25:50 +0530 (IST)
-From:   Youghandhar Chintala <youghand@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        pillair@codeaurora.org, dianders@chromium.org, kuabhs@chromium.org,
-        briannorris@chromium.org, mpubbise@codeaurora.org,
-        Youghandhar Chintala <youghand@codeaurora.org>
-Subject: [PATCH v4 2/2] ath10k:trigger sta disconnect on hardware restart
-Date:   Thu,  3 Mar 2022 17:25:41 +0530
-Message-Id: <20220303115541.15892-3-youghand@codeaurora.org>
-X-Mailer: git-send-email 2.29.0
-In-Reply-To: <20220303115541.15892-1-youghand@codeaurora.org>
-References: <20220303115541.15892-1-youghand@codeaurora.org>
+        Thu, 3 Mar 2022 07:19:19 -0500
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F8A4DF4A0
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Mar 2022 04:18:30 -0800 (PST)
+Received: by mail-wr1-x434.google.com with SMTP id d3so7568984wrf.1
+        for <linux-wireless@vger.kernel.org>; Thu, 03 Mar 2022 04:18:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=W95klwG+EWnuJlXqfneyIPG4bMJIpYFCGfgCPBAo/s4=;
+        b=BVoUYAMy6igzOx7YCxgmD2obGVeA4FBbFy39UaDXpcyotfQj1WSs4cD2dBmZ3jehpH
+         Xv0H27JfD7LtNc3KTOYt5JsPQaESLbVZdrRIjVdCS/EqEN+LtHV3OI92ZhbhaxnOPsMB
+         zwIbvmQMtvcWtqQz/AOpNYfJzkMTFsv4hojr0PuJEFUbZHgxYNi3BKpDV1mgkUzm+fR0
+         4lMaaRE5yh5PGutSdpreHiYAqhMDl6KUHTvi2q6aV5S93rhbYz2wGWOzwPq3hB3YVbYG
+         uAhL64o8wkOM/gpLUr2Hb7oB/DraMZLkoBj2jGHmKGFPjyxdoWyrLbd/6WyXGtmMO48w
+         vp2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=W95klwG+EWnuJlXqfneyIPG4bMJIpYFCGfgCPBAo/s4=;
+        b=hPlgeN7hxh2ulhzqMhULZpFw5Kmdi1Sd8NugrT72zeDdWazNasguFS1OYUBckEUx0m
+         75TRXqodvMosq7enW8+2HoTYMRwYT4TdOb/+Hktdny/mN8JEnw4H+OKb7E1/c7Rsh4wS
+         0SEOowMUso/y4GohdgXP3PZ28sVG3NQBza8D50AgTL/XI+Z+kup4UBuTIa5r/L9zKYFf
+         tOahI7Cvp0akYk0R/JevCRmAd4QgLGfpSwyicUa1xSOQUcu8RX9QEBtYDLvhWIe549zw
+         wK+IcMvcxpPWsOl2VtCZ9sNXIxHvR4/4bSAreXNhtGdu8T7Ht6a/mrNOtack0SOu0f2F
+         Vjuw==
+X-Gm-Message-State: AOAM533b34P95oaTayBvG89ruJOUfFaG6cmw0s80/Vs1OJJMt2xHvXi9
+        9EJNkpijIKU3gJp+aDPjpV2ZF7Spkqe0jfHr3wg=
+X-Google-Smtp-Source: ABdhPJwgYeUN7RS9hQRShRziePljKQd/1cMutSSEkk4MeQ2QRRtTjZSLz5QSndDd2pML49XlqkHAqw==
+X-Received: by 2002:a5d:6d0d:0:b0:1e8:7b6a:38e7 with SMTP id e13-20020a5d6d0d000000b001e87b6a38e7mr26568054wrq.625.1646309908722;
+        Thu, 03 Mar 2022 04:18:28 -0800 (PST)
+Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
+        by smtp.gmail.com with ESMTPSA id p6-20020a5d4586000000b001f0436cb325sm1774600wrq.52.2022.03.03.04.18.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Mar 2022 04:18:28 -0800 (PST)
+Date:   Thu, 3 Mar 2022 12:18:24 +0000
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Xiaomeng Tong <xiam0nd.tong@gmail.com>
+Cc:     david.laight@aculab.com, alsa-devel@alsa-project.org,
+        kvm@vger.kernel.org, gustavo@embeddedor.com,
+        linux-iio@vger.kernel.org, kgdb-bugreport@lists.sourceforge.net,
+        linux@rasmusvillemoes.dk, dri-devel@lists.freedesktop.org,
+        c.giuffrida@vu.nl, amd-gfx@lists.freedesktop.org,
+        torvalds@linux-foundation.org, samba-technical@lists.samba.org,
+        linux1394-devel@lists.sourceforge.net, drbd-dev@lists.linbit.com,
+        linux-arch@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-aspeed@lists.ozlabs.org, linux-scsi@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-staging@lists.linux.dev,
+        h.j.bos@vu.nl, jgg@ziepe.ca, intel-wired-lan@lists.osuosl.org,
+        nouveau@lists.freedesktop.org,
+        bcm-kernel-feedback-list@broadcom.com, dan.carpenter@oracle.com,
+        linux-media@vger.kernel.org, keescook@chromium.org, arnd@arndb.de,
+        linux-pm@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+        bjohannesmeyer@gmail.com, linux-block@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, christophe.jaillet@wanadoo.fr,
+        jakobkoschel@gmail.com, v9fs-developer@lists.sourceforge.net,
+        linux-tegra@vger.kernel.org, tglx@linutronix.de,
+        andriy.shevchenko@linux.intel.com,
+        linux-arm-kernel@lists.infradead.org, linux-sgx@vger.kernel.org,
+        nathan@kernel.org, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        tipc-discussion@lists.sourceforge.net,
+        linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, akpm@linux-foundation.org,
+        linuxppc-dev@lists.ozlabs.org, christian.koenig@amd.com,
+        rppt@kernel.org
+Subject: Re: [Kgdb-bugreport] [PATCH 2/6] treewide: remove using list
+ iterator after loop body as a ptr
+Message-ID: <20220303121824.qdyrognluik74iph@maple.lan>
+References: <39404befad5b44b385698ff65465abe5@AcuMS.aculab.com>
+ <20220303072657.11124-1-xiam0nd.tong@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220303072657.11124-1-xiam0nd.tong@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently after the hardware restart triggered from the driver,
-the station interface connection remains intact, since a disconnect
-trigger is not sent to userspace. This can lead to a problem in
-targets where the wifi mac sequence is added by the firmware.
+On Thu, Mar 03, 2022 at 03:26:57PM +0800, Xiaomeng Tong wrote:
+> On Thu, 3 Mar 2022 04:58:23 +0000, David Laight wrote:
+> > on 3 Mar 2022 10:27:29 +0800, Xiaomeng Tong wrote:
+> > > The problem is the mis-use of iterator outside the loop on exit, and
+> > > the iterator will be the HEAD's container_of pointer which pointers
+> > > to a type-confused struct. Sidenote: The *mis-use* here refers to
+> > > mistakely access to other members of the struct, instead of the
+> > > list_head member which acutally is the valid HEAD.
+> >
+> > The problem is that the HEAD's container_of pointer should never
+> > be calculated at all.
+> > This is what is fundamentally broken about the current definition.
+> 
+> Yes, the rule is "the HEAD's container_of pointer should never be
+> calculated at all outside the loop", but how do you make sure everyone
+> follows this rule?
 
-After the target restart, during subsytem recovery, the target
-restarts its wifi mac sequence number. Hence AP to which our device
-is connected will receive frames with a  wifi mac sequence number jump
-to the past, thereby resulting in the AP dropping all these frames,
-until the frame arrives with a wifi mac sequence number which AP was
-expecting.
+Your formulation of the rule is correct: never run container_of() on HEAD
+pointer.
 
-To avoid such frame drops, its better to trigger a station disconnect
-upon target hardware restart which can be done with API
-ieee80211_reconfig_disconnect exposed to mac80211.
+However the rule that is introduced by list_for_each_entry_inside() is
+*not* this rule. The rule it introduces is: never access the iterator
+variable outside the loop.
 
-The other targets are not affected by this change, since the hardware
-params flag is not set.
+Making the iterator NULL on loop exit does follow the rule you proposed
+but using a different technique: do not allow HEAD to be stored in the
+iterator variable after loop exit. This also makes it impossible to run
+container_of() on the HEAD pointer.
 
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
-           QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00110-QCARMSWP-1
-   	   QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00048
 
-Signed-off-by: Youghandhar Chintala <youghand@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/core.c | 25 +++++++++++++++++++++++++
- drivers/net/wireless/ath/ath10k/hw.h   |  2 ++
- 2 files changed, 27 insertions(+)
+> Everyone makes mistakes, but we can eliminate them all from the beginning
+> with the help of compiler which can catch such use-after-loop things.
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 9e1f483e1362..2092bfd02cd1 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -94,6 +94,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.credit_size_workaround = false,
- 		.tx_stats_over_pktlog = true,
- 		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA988X_HW_2_0_VERSION,
-@@ -131,6 +132,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.credit_size_workaround = false,
- 		.tx_stats_over_pktlog = true,
- 		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA9887_HW_1_0_VERSION,
-@@ -169,6 +171,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.credit_size_workaround = false,
- 		.tx_stats_over_pktlog = false,
- 		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA6174_HW_3_2_VERSION,
-@@ -202,6 +205,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.bmi_large_size_download = true,
- 		.supports_peer_stats_info = true,
- 		.dynamic_sar_support = true,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA6174_HW_2_1_VERSION,
-@@ -239,6 +243,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.credit_size_workaround = false,
- 		.tx_stats_over_pktlog = false,
- 		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA6174_HW_2_1_VERSION,
-@@ -276,6 +281,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.credit_size_workaround = false,
- 		.tx_stats_over_pktlog = false,
- 		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA6174_HW_3_0_VERSION,
-@@ -313,6 +319,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.credit_size_workaround = false,
- 		.tx_stats_over_pktlog = false,
- 		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA6174_HW_3_2_VERSION,
-@@ -354,6 +361,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.tx_stats_over_pktlog = false,
- 		.supports_peer_stats_info = true,
- 		.dynamic_sar_support = true,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA99X0_HW_2_0_DEV_VERSION,
-@@ -397,6 +405,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.credit_size_workaround = false,
- 		.tx_stats_over_pktlog = false,
- 		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA9984_HW_1_0_DEV_VERSION,
-@@ -447,6 +456,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.credit_size_workaround = false,
- 		.tx_stats_over_pktlog = false,
- 		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA9888_HW_2_0_DEV_VERSION,
-@@ -494,6 +504,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.credit_size_workaround = false,
- 		.tx_stats_over_pktlog = false,
- 		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA9377_HW_1_0_DEV_VERSION,
-@@ -531,6 +542,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.credit_size_workaround = false,
- 		.tx_stats_over_pktlog = false,
- 		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA9377_HW_1_1_DEV_VERSION,
-@@ -570,6 +582,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.credit_size_workaround = false,
- 		.tx_stats_over_pktlog = false,
- 		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA9377_HW_1_1_DEV_VERSION,
-@@ -600,6 +613,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.uart_pin_workaround = true,
- 		.credit_size_workaround = true,
- 		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = QCA4019_HW_1_0_DEV_VERSION,
-@@ -644,6 +658,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.credit_size_workaround = false,
- 		.tx_stats_over_pktlog = false,
- 		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
- 	},
- 	{
- 		.id = WCN3990_HW_1_0_DEV_VERSION,
-@@ -674,6 +689,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.credit_size_workaround = false,
- 		.tx_stats_over_pktlog = false,
- 		.dynamic_sar_support = true,
-+		.hw_restart_disconnect = true,
- 	},
- };
- 
-@@ -2442,6 +2458,7 @@ EXPORT_SYMBOL(ath10k_core_napi_sync_disable);
- static void ath10k_core_restart(struct work_struct *work)
- {
- 	struct ath10k *ar = container_of(work, struct ath10k, restart_work);
-+	struct ath10k_vif *arvif;
- 	int ret;
- 
- 	set_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags);
-@@ -2480,6 +2497,14 @@ static void ath10k_core_restart(struct work_struct *work)
- 		ar->state = ATH10K_STATE_RESTARTING;
- 		ath10k_halt(ar);
- 		ath10k_scan_finish(ar);
-+		if (ar->hw_params.hw_restart_disconnect) {
-+			list_for_each_entry(arvif, &ar->arvifs, list) {
-+				if (arvif->is_up &&
-+				    arvif->vdev_type == WMI_VDEV_TYPE_STA)
-+					ieee80211_hw_restart_disconnect(arvif->vif);
-+			}
-+		}
-+
- 		ieee80211_restart_hw(ar->hw);
- 		break;
- 	case ATH10K_STATE_OFF:
-diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
-index 5215a6816d71..93acf0dd580a 100644
---- a/drivers/net/wireless/ath/ath10k/hw.h
-+++ b/drivers/net/wireless/ath/ath10k/hw.h
-@@ -633,6 +633,8 @@ struct ath10k_hw_params {
- 	bool supports_peer_stats_info;
- 
- 	bool dynamic_sar_support;
-+
-+	bool hw_restart_disconnect;
- };
- 
- struct htt_resp;
--- 
-2.29.0
+Indeed but if we introduce new interfaces then we don't have to worry
+about existing usages and silent regressions. Code will have been
+written knowing the loop can exit with the iterator set to NULL.
 
+Sure it is still possible for programmers to make mistakes and
+dereference the NULL pointer but C programmers are well training w.r.t.
+NULL pointer checking so such mistakes are much less likely than with
+the current list_for_each_entry() macro. This risk must be offset
+against the way a NULLify approach can lead to more elegant code when we
+are doing a list search.
+
+
+Daniel.
