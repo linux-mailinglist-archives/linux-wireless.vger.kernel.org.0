@@ -2,75 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 817A94CD3CB
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 12:52:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 121794CD569
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 14:46:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238075AbiCDLxJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Mar 2022 06:53:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47446 "EHLO
+        id S232660AbiCDNrc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Mar 2022 08:47:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238135AbiCDLxG (ORCPT
+        with ESMTP id S230415AbiCDNrb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Mar 2022 06:53:06 -0500
+        Fri, 4 Mar 2022 08:47:31 -0500
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D4F261B2ADC
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Mar 2022 03:52:18 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DB5981B84FF
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Mar 2022 05:46:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1646394737;
+        s=mimecast20190719; t=1646401603;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=KLnWEYd6B06miUP9ShhZfHrbLwgIbs7ar/gGymY4dxI=;
-        b=D3VgW/entYFf1AGD/U8knjwGYymgq6M2L0+paFy5IthTJSQPIBwhzxl43q4y7+H+Hh9WXv
-        pOS62QWBXNakP/FeZep5cFpmTI381uO401nhCxwuR1sz6yH5apcPulssPlSgRzew0QbQuF
-        SKtzT/T9xhtlptVWNuVrsMvc2MLU8bw=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=Wz6z65dkHPdQyQ0pWYfJjraXVAkrYsdmyBNYDdC7B3o=;
+        b=QdYyHR0U21N23UpJGoKKqyOwA2n2vWh3s8Azg8zO5E9YZHcy9hufT9B+evb3EeH5+0tL/Y
+        J7eKvgxbYIZp96xkT2+RQmaixTUshPSybI8EGlnxtnYDw4Fpi97eT47DBgwAO4OU3Y1DGg
+        RfxJrVnaDVLbNbW6Jjpt6pRdTIzuZtQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-516-23eR-W3tMvSrwxbuOlupEA-1; Fri, 04 Mar 2022 06:52:16 -0500
-X-MC-Unique: 23eR-W3tMvSrwxbuOlupEA-1
-Received: by mail-qk1-f199.google.com with SMTP id k23-20020a05620a139700b0062cda5c6cecso5317573qki.6
-        for <linux-wireless@vger.kernel.org>; Fri, 04 Mar 2022 03:52:16 -0800 (PST)
+ us-mta-380-2IXCLo0fMt-yenot6_QCfg-1; Fri, 04 Mar 2022 08:46:39 -0500
+X-MC-Unique: 2IXCLo0fMt-yenot6_QCfg-1
+Received: by mail-wm1-f71.google.com with SMTP id 14-20020a05600c104e00b003897a167353so567057wmx.8
+        for <linux-wireless@vger.kernel.org>; Fri, 04 Mar 2022 05:46:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=KLnWEYd6B06miUP9ShhZfHrbLwgIbs7ar/gGymY4dxI=;
-        b=lFzcLzZ3L8VlTmHb4Or/tLUhZ2eH5v+PmDj4Z4m0eoIhgvM/KLQNvi+sdLJMl4/QuY
-         HGXGxX129Us+mgesn6mGJoMVVePMODJgSOMOkco9GetApl5/EDITJrLQSi7gqo/BJjGh
-         Ah7T5b/pl06Yja+dGzgzEKfpjandunmYA+Jn7sOBzLHP6xlOZ4Ly5AJ1kNn7ato0wOzR
-         e3hzuZ5nE0QYSR0JU9hSjskhdNi9Cs23GN56gFB+sBRxu5tj1UwZ9GEwbHGLbGb++a5N
-         gSs6nquL3beKNTtXyFDmxrZg7VDYm6om3DgsKDxmTMWL718cqKnx6HU9cOAkHC82grbt
-         D8Qw==
-X-Gm-Message-State: AOAM5337hY6lP9lc2jC/Qyo+mqKniEfpAYAqhhgj/o17ciOTTsLNiW3k
-        9vPOjxIsf25smb2CyXEQ3FTNomTc1je9NqrAGJrwBPBGYwi6lYZD+B9CuMlIKIHuDy3cHsdK7Sp
-        lMkK5YGVfLXOcWg1JxMxFgG8b5rA=
-X-Received: by 2002:a05:6214:21cf:b0:42d:cc:4121 with SMTP id d15-20020a05621421cf00b0042d00cc4121mr27678098qvh.70.1646394735833;
-        Fri, 04 Mar 2022 03:52:15 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzKGo10k7Zf7yvB+XVqKyScwHsjhdmSrBYvygYeFSkgVSHlmygv6gKyiyXSvXsDLcAFOjRXMg==
-X-Received: by 2002:a05:6214:21cf:b0:42d:cc:4121 with SMTP id d15-20020a05621421cf00b0042d00cc4121mr27678084qvh.70.1646394735487;
-        Fri, 04 Mar 2022 03:52:15 -0800 (PST)
+        bh=Wz6z65dkHPdQyQ0pWYfJjraXVAkrYsdmyBNYDdC7B3o=;
+        b=I/A7NUZxHpm5xfWa3tzO2rWmX0Mf7/87TRbJXdb5kr/H88/FsTRjTlZQ1KJ8tXwlFh
+         5N6io0fk578+inTw7vyztdw/VvlxNbn45ajOE2XNcEWnugesWnjB6XQDrhIGhw4rlQDA
+         zWQZcW0s4SPoVziJna/UoHZolB+ASe3YWjXUwZhEMRnPYkSRwcBRjEgdAkgg3pqg30II
+         jRl/vlwM+psItXGDTdAw/YA/JqZzlq31LFOTgMKs5CsOEghFncXVBugmQf1NkuBJ1uLU
+         1NdXjWwiSUf/oIjrL38KWMThpB5fs8KWhmsQ+PD//2EyDjS19AKUf2sUdHfF0gJsofEv
+         9IRg==
+X-Gm-Message-State: AOAM530GGuKtnvH8Ovt1JOZQK0NhGGRAJxMSXe8sDX0nePSDNe4pC4/P
+        ddda9ugPgdbZDkOcXJetOb8BWbyBfE4egWkTgV+5866ibgwCmtnOYB9QR2BkonV9xZvHyUu9pZK
+        rAosqu7H4ENINnGs5m0d/08NjiJQ=
+X-Received: by 2002:a1c:730e:0:b0:381:103f:d6d9 with SMTP id d14-20020a1c730e000000b00381103fd6d9mr7678756wmb.46.1646401598464;
+        Fri, 04 Mar 2022 05:46:38 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJztzn670jFCGVKJcrKHdY7hzQCt9wDoFTJ9g8ihoRQEE+zs2gw/11hBOYRc/bYkBgotquxzXw==
+X-Received: by 2002:a1c:730e:0:b0:381:103f:d6d9 with SMTP id d14-20020a1c730e000000b00381103fd6d9mr7678747wmb.46.1646401598217;
+        Fri, 04 Mar 2022 05:46:38 -0800 (PST)
 Received: from localhost ([37.183.9.66])
-        by smtp.gmail.com with ESMTPSA id e9-20020ac85989000000b002de2bfc8f94sm3200576qte.88.2022.03.04.03.52.14
+        by smtp.gmail.com with ESMTPSA id e15-20020a5d6d0f000000b001ef7dca67fasm5365891wrq.114.2022.03.04.05.46.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Mar 2022 03:52:15 -0800 (PST)
-Date:   Fri, 4 Mar 2022 12:52:12 +0100
+        Fri, 04 Mar 2022 05:46:37 -0800 (PST)
+Date:   Fri, 4 Mar 2022 14:46:35 +0100
 From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
 To:     Jouni Malinen <j@w1.fi>
 Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, hostap@lists.infradead.org,
         linux-wireless@vger.kernel.org, nbd@nbd.name,
         ryder.lee@mediatek.com, evelyn.tsai@mediatek.com
-Subject: Re: [PATCH 6/9] DFS: introduce hostapd_dfs_request_channel_switch
- routine
-Message-ID: <YiH9bM9ay6/yXZiq@lore-desk>
+Subject: Re: [PATCH 8/9] DFS: switch to background radar channel if available
+Message-ID: <YiIYOzben74/wF/d@lore-desk>
 References: <cover.1640014128.git.lorenzo@kernel.org>
- <c1bf7dc195281330e7108c533da5770adf479d84.1640014128.git.lorenzo@kernel.org>
- <20220303225439.GD33342@w1.fi>
+ <ec706e090d7e44bcc9afd2f9789802f8c07e3c3f.1640014128.git.lorenzo@kernel.org>
+ <20220303222009.GC33342@w1.fi>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="8rV6nLJGDvQGW+d0"
+        protocol="application/pgp-signature"; boundary="0kc95zljO+Fjl9/s"
 Content-Disposition: inline
-In-Reply-To: <20220303225439.GD33342@w1.fi>
+In-Reply-To: <20220303222009.GC33342@w1.fi>
 X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
@@ -82,81 +81,57 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---8rV6nLJGDvQGW+d0
+--0kc95zljO+Fjl9/s
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-> On Mon, Dec 20, 2021 at 04:48:21PM +0100, Lorenzo Bianconi wrote:
-> > This is a preliminary patch to add Channel Switch Announcement for
-> > background radar detection.
+> On Mon, Dec 20, 2021 at 04:48:23PM +0100, Lorenzo Bianconi wrote:
+> > On radar detection on the main chain switch to the channel monitored
+> > by the background chain if we have already performed the CAC there.
 >=20
-> > diff --git a/src/ap/dfs.c b/src/ap/dfs.c
-> > @@ -940,6 +940,85 @@ int hostapd_is_dfs_chan_available(struct hostapd_i=
-face *iface)
-> > =20
-> > +static int hostapd_dfs_request_channel_switch(struct hostapd_iface *if=
-ace,
->=20
-> > +	struct hostapd_hw_modes *cmode =3D iface->current_mode;
-> > +	int ieee80211_mode =3D IEEE80211_MODE_AP, err, i;
->=20
-> That i needs to be unsigned int (like it was in the function from which
-> it was moved to here) to avoid a compiler warning.
+> Is it clear that the channel on the background chain, if one is
+> available with CAC performed, comply with the ETSI uniform spreading
+> requirements? The comment below feels a bit misleading, but the way
+> patch 5/9 picks the channel for background CAC might be sufficient for
+> this. If so, it would be good to note that in the comment here:
 
-ack, I will fix it
-
->=20
-> > +	u8 new_vht_oper_chwidth;
->=20
-> > +	new_vht_oper_chwidth =3D hostapd_get_oper_chwidth(iface->conf);
-> > +	hostapd_set_oper_chwidth(iface->conf,
-> > +				 hostapd_get_oper_chwidth(iface->conf));
->=20
-> This looks quite strange.. hostapd_dfs_start_channel_switch() used
-> current_vht_oper_chwidth to store the current value from beginning of
-> the function and restored it at this location. The new version in this
-> helper function seems to something strange, or well, nothing. That does
-> not feel correct.
->=20
-> >  static int hostapd_dfs_start_channel_switch(struct hostapd_iface *ifac=
-e)
-> >  {
-> > -	unsigned int i;
->=20
-> That's where i was unsigned..
->=20
-> > -	u8 current_vht_oper_chwidth =3D hostapd_get_oper_chwidth(iface->conf);
->=20
-> And that's where the current value is picked at the beginning of
-> hostapd_dfs_start_channel_switch().
->=20
-> > -	new_vht_oper_chwidth =3D hostapd_get_oper_chwidth(iface->conf);
-> > -	hostapd_set_oper_chwidth(iface->conf, current_vht_oper_chwidth);
->=20
-> And this looks quite different compared to what was in the new helper
-> function.
-
-ack, I will fix it.
+ack, got your point here. We should force channel_type to DFS_ANY_CHANNEL
+for ETSI regdmain in hostpad_dfs_update_background_chain() and not just
+DFS_NO_CAC_YET. I will fix it in next revision. Thanks.
 
 Regards,
 Lorenzo
 
 >=20
+> > diff --git a/src/ap/dfs.c b/src/ap/dfs.c
+> > +hostapd_dfs_background_start_channel_switch(struct hostapd_iface *ifac=
+e,
+>=20
+> > +	/*
+> > +	 * If background radar detection is supported and radar channel
+> > +	 * monitored by background chain is available switch to it without
+> > +	 * waiting for the CAC otherwise let's keep a random channel.
+>=20
+> That first part leaves it a bit open whether the random channel part from
+> the end of the sentence applies in practice for the new operating
+> channel. It is important to make this clearly describe the functionality
+> needed to meet uniform spreading requirement.
+>=20
 > --=20
 > Jouni Malinen                                            PGP id EFC895FA
 >=20
 
---8rV6nLJGDvQGW+d0
+--0kc95zljO+Fjl9/s
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYiH9bAAKCRA6cBh0uS2t
-rLTdAQCBT/cUfb21tMJy6CNewKG4i81ro6tuFQJUVaWGDdhXYAEA7k8hGiojtj3o
-6nCNz03wREKbwaUf9bkLHDsIDA5nxgg=
-=1PQr
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYiIYOwAKCRA6cBh0uS2t
+rMAtAQC74SmxQqvKrUhntSYvQS7xZI7Pal1eDgmxft1dG45NVQD/Yf0bqfb6g8Ug
+u6QcANGr+2IzTV/KuLVZgQAySVF4Ngc=
+=Bs87
 -----END PGP SIGNATURE-----
 
---8rV6nLJGDvQGW+d0--
+--0kc95zljO+Fjl9/s--
 
