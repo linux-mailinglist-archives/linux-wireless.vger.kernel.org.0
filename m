@@ -2,88 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E4DC4CDF08
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 22:00:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 244FE4CDF7A
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 22:01:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229676AbiCDUtl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Mar 2022 15:49:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49284 "EHLO
+        id S229757AbiCDVCH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Mar 2022 16:02:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229595AbiCDUtk (ORCPT
+        with ESMTP id S229692AbiCDVCG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Mar 2022 15:49:40 -0500
-Received: from mail-oo1-xc36.google.com (mail-oo1-xc36.google.com [IPv6:2607:f8b0:4864:20::c36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 059DF71ED9
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Mar 2022 12:48:51 -0800 (PST)
-Received: by mail-oo1-xc36.google.com with SMTP id 189-20020a4a03c6000000b003179d7b30d8so10797037ooi.2
-        for <linux-wireless@vger.kernel.org>; Fri, 04 Mar 2022 12:48:51 -0800 (PST)
+        Fri, 4 Mar 2022 16:02:06 -0500
+Received: from mail-oo1-xc2b.google.com (mail-oo1-xc2b.google.com [IPv6:2607:f8b0:4864:20::c2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E41DF6586
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Mar 2022 13:01:17 -0800 (PST)
+Received: by mail-oo1-xc2b.google.com with SMTP id o7-20020a056820040700b003205d5eae6eso10288910oou.5
+        for <linux-wireless@vger.kernel.org>; Fri, 04 Mar 2022 13:01:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=V/M6MCOb48PFDNP0AQPS3Wgzf+qc5vzssiZeXZKntfA=;
-        b=AfWuNGxD3pYE7q8tW+MhgAU3IuUJ2He0VwZGSxkMTSmZhi1jNHY9o7vOshOkAintH+
-         reMYun9FhDdXSwA2Ps8Xd0oS99GQQRUPsm+G85bgWFfAzBLbLZawt24p7wUlpPWsWuQ+
-         5z0ycy8ssqDJHOxk3pSBLeXuoXk2nVKXpd7XXh9+SbHyKhsEelRjVfipnufTKoSAjZom
-         X6hgbbD8XwEA9toMGV+oq60lmqTTZS/++5wzDVX6gWnAQySy0BuZRCyfyGXvOWqHIjLC
-         hdkMWEu1NBsnaXzWDbV0FndfXihJRQb/zDa+XhZJs5PF2W7EdLNGHUYwIMJqHBhPOGD7
-         ufGA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DUXX7IWto3u/1R7Tb5iNdIbM2+de9iHuZnlflZ/eQTk=;
+        b=KJuDznvkwBKdf0etWcgmy7amQKVF7rCMFWFCeXGuT3enR92BziHGa1fGvZf+cLbDRU
+         tfusQVqwy/E2PDP1CjvfDeijrQ2fxXlOyL4tfW3BvR532/H8lWthIknYHzCOTHMNPpBo
+         nOSZqJYzJx6/gqABJxzIAFfR6OHvJ99EHavx3NAOCFqaF7sP2R6yp3GKzM2zPyPEO08T
+         TzaYsroEodhZSqbwAweiFpf2E9TExQBAgT9B3ocGRWZqMvJDmEBdBBFen8qiNE+AhCdM
+         8Qe0BRX8CbmYz73FxZy1OCCpGjtAYagRMoVjS0IVMbQLfKBbzPtJE/qykfEmWk0guneE
+         0/8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=V/M6MCOb48PFDNP0AQPS3Wgzf+qc5vzssiZeXZKntfA=;
-        b=4FjOyNTUaY4eD/+HnG0iFjt0fPXpU9AvOSYtGBPE0B4iUMmRHewM/w+7UmK9jBnLhy
-         tstO90IivAzoB4vL8skXVNQjlq3YPai33bPLlScTLxq8ketxV/apT6Vs/7H+TNcwbGCp
-         7xJUwDpqmzwZeLX2lKgHlixyM+GgQdGAZCg1oba0j3OJDxM5KyfWFth0rL3MBh1kPQ2j
-         nxY1q3z0lCc5uSC9I8IVWZXrXsgJugFSb+DcyI20TuLD+oykOtpa/bG0ZQSIYwFYPJRL
-         tuJHsBWxr11D7wH5/NRAvqgje3GvyUNtkQXPiCSqli6FCheAbOZO9JwKjWBKXL5c6pr8
-         ccEw==
-X-Gm-Message-State: AOAM531USGSwluhZLO1yNuXzufwynZwXwTT4jtkERrpvLpEosKuP+yhX
-        QUzvTATdsgQ19ZWuOSnyXjLS4CpkBjc=
-X-Google-Smtp-Source: ABdhPJyeE0LTY9eY8+oLTF9EbZ/epJOG2gg2y6owtpZwJiLrC+JpATsqHg2qV9togMZPPMF0228rvg==
-X-Received: by 2002:a05:6870:d20d:b0:da:b3f:2b6d with SMTP id g13-20020a056870d20d00b000da0b3f2b6dmr573561oac.268.1646426931144;
-        Fri, 04 Mar 2022 12:48:51 -0800 (PST)
-Received: from ?IPV6:2603:8090:2005:39b3::1064? (2603-8090-2005-39b3-0000-0000-0000-1064.res6.spectrum.com. [2603:8090:2005:39b3::1064])
-        by smtp.gmail.com with ESMTPSA id b7-20020a056870918700b000d16208b7c4sm2744634oaf.15.2022.03.04.12.48.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Mar 2022 12:48:50 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <8ed18133-4441-101e-d5a8-40a1e2e70bf4@lwfinger.net>
-Date:   Fri, 4 Mar 2022 14:48:49 -0600
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DUXX7IWto3u/1R7Tb5iNdIbM2+de9iHuZnlflZ/eQTk=;
+        b=2vLBlKa0Tk8AqlovUywQZ8WY3/0+63DaJxfpi1ubeYGH+b8CL5qse56kKlib3bBp6S
+         hBBehhQHysssf6gxt6bd6WwesFBXGtwCzbmrmW5BxIVWrurqY/dcbA0lQixFh6WSgMuN
+         xuh7FUxvxJy/uaGjc2ZEm9LlBpuwNw2WbZYOYXpfMizj7KoB4PMlZOSLjhx7AYQ71Lcs
+         3EUJ/1sJ5MASoWoO/OAtyKz0GBpM4d8Cs7Rzf8+sSyeZ78wwPD4U94VqjWGDBf30HbyD
+         7FF6iL/i/2gj3HLC6iQN9kotC7HbX59U0lmZ9lqSudD8NILpeS1Iu+KPNXgz8k73JjK4
+         YFlA==
+X-Gm-Message-State: AOAM531WzEIA3KXyD0qSO+K3FozTnYVwBunNY1hkA6tL4iwFZNyURPaQ
+        bFjo6WNYhdVv9wj4PEfGkwy94JWkGrlBTh+PEG8y7VaS
+X-Google-Smtp-Source: ABdhPJyNyzH6KRK3g06Al4eRe2QhrFtpht97PF1WKXFz6u2RGWSeZAgIyGK9CjfpSnIBjeKUmtwsj+hP28c67Wtt7sE=
+X-Received: by 2002:a05:6870:d250:b0:da:b3f:2b29 with SMTP id
+ h16-20020a056870d25000b000da0b3f2b29mr582242oac.200.1646427677304; Fri, 04
+ Mar 2022 13:01:17 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: Way to enumerate wireless adapters in kernel
-Content-Language: en-US
-To:     Alex Deucher <alexdeucher@gmail.com>,
-        Linux Wireless List <linux-wireless@vger.kernel.org>
 References: <CADnq5_MM8w=U6WqRDbwHrjP4Jpco0bUKEsE5QiTYiYAEK1xtBg@mail.gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <CADnq5_MM8w=U6WqRDbwHrjP4Jpco0bUKEsE5QiTYiYAEK1xtBg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+ <8ed18133-4441-101e-d5a8-40a1e2e70bf4@lwfinger.net>
+In-Reply-To: <8ed18133-4441-101e-d5a8-40a1e2e70bf4@lwfinger.net>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Fri, 4 Mar 2022 16:01:06 -0500
+Message-ID: <CADnq5_OUDMiyB3+H-Y-TkY16t_mHa+-uN5gv8rNyCT7XNwYZCw@mail.gmail.com>
+Subject: Re: Way to enumerate wireless adapters in kernel
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     Linux Wireless List <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/4/22 13:59, Alex Deucher wrote:
-> Hi, is there a way to enumerate wireless adapters in the kernel and
-> determine what their channel and frequency is?  I'm looking for a way
-> to determine this from another component in the kernel so as to avoid
-> any potential frequency interface from another device in the kernel.
+On Fri, Mar 4, 2022 at 3:48 PM Larry Finger <Larry.Finger@lwfinger.net> wrote:
+>
+> On 3/4/22 13:59, Alex Deucher wrote:
+> > Hi, is there a way to enumerate wireless adapters in the kernel and
+> > determine what their channel and frequency is?  I'm looking for a way
+> > to determine this from another component in the kernel so as to avoid
+> > any potential frequency interface from another device in the kernel.
+>
+> The command 'iw dev' will list the device name and frequency if the device is
+> connected. There is a bit of extraneous output, but it is not difficult to sort
+> it outwith something like iw dev | egrep "Interface|channel"
 
-The command 'iw dev' will list the device name and frequency if the device is 
-connected. There is a bit of extraneous output, but it is not difficult to sort 
-it outwith something like iw dev | egrep "Interface|channel"
+What about within the kernel itself?  E.g., from another kernel driver?
 
-Larry
+Alex
