@@ -2,175 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59DDF4CCF79
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 09:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9B154CD0ED
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 10:19:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231129AbiCDIDB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Mar 2022 03:03:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47554 "EHLO
+        id S235446AbiCDJUm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Mar 2022 04:20:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230412AbiCDICu (ORCPT
+        with ESMTP id S231883AbiCDJUm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Mar 2022 03:02:50 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 594EC19533D
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Mar 2022 00:02:03 -0800 (PST)
-X-UUID: 42438338abbc4984bac5fe1f56c4ef39-20220304
-X-UUID: 42438338abbc4984bac5fe1f56c4ef39-20220304
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
-        (envelope-from <meichia.chiu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1374161258; Fri, 04 Mar 2022 16:02:00 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Fri, 4 Mar 2022 16:01:59 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 4 Mar 2022 16:01:59 +0800
-From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-Subject: [PATCH 4/4] mt76: mt7915: add txpower init for 6GHz
-Date:   Fri, 4 Mar 2022 16:01:20 +0800
-Message-ID: <20220304080120.3907-4-MeiChia.Chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20220304080120.3907-1-MeiChia.Chiu@mediatek.com>
-References: <20220304080120.3907-1-MeiChia.Chiu@mediatek.com>
+        Fri, 4 Mar 2022 04:20:42 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5802D8C7EE
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Mar 2022 01:19:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=kNrH53gU7VQVK0nXjsgwFpzT6QzCrp9xqzuMZHNv1kw=;
+        t=1646385593; x=1647595193; b=HBuZGtOzO9O0iYBlftyAQ4W2c27j4TX7eomz4EL0le0TuAf
+        +Ubxb9Rzb2MBUrjIchVdXygJaPI/AF7u1KxHxxinJrRufLOoyKmi3d4f0/JLYyqRH0H1Rm+rJ7Ki9
+        061qOvq/JarnX0E5mJGBm5fsUxS9jhMMAJx1TifrMw1bKTYuv6XLkG/zR71x+nUD4jTWOr+vEr89H
+        CPaAKuBfH+hPGO8XCFazKUhkfSboDisCrKlPCzNo2k2pReuNZWoxOWn5A9OmzCt7sPbv/FHMizIhk
+        slTpU1LLrLlFNQcJx0csLORh78dl8ux8QZ/nys2//7zXP/TuMoATW6omojggaX6A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nQ469-008dd9-M1;
+        Fri, 04 Mar 2022 10:19:41 +0100
+Message-ID: <050529f958bb628ee6e2819c944b42951b621893.camel@sipsolutions.net>
+Subject: Re: [PATCH] rtw89: declare HE capabilities in 6G band
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ping-Ke Shih <pkshih@realtek.com>, kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 04 Mar 2022 10:19:40 +0100
+In-Reply-To: <20220304073443.27730-1-pkshih@realtek.com>
+References: <20220304073443.27730-1-pkshih@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+On Fri, 2022-03-04 at 15:34 +0800, Ping-Ke Shih wrote:
+> To work properly in 6G band, declare HE 6G capabilities. Without this fix,
+> it can only TX/RX with OFDM rates.
+> 
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> ---
+>  drivers/net/wireless/realtek/rtw89/core.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+> index a0086b14550a8..81c1c28e6e92c 100644
+> --- a/drivers/net/wireless/realtek/rtw89/core.c
+> +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> @@ -2383,6 +2383,15 @@ static void rtw89_init_he_cap(struct rtw89_dev *rtwdev,
+>  			he_cap->he_mcs_nss_supp.tx_mcs_160 = cpu_to_le16(mcs_map);
+>  		}
+>  
+> +		if (band == NL80211_BAND_6GHZ) {
+> +			__le16 capa;
+> +
+> +			capa = u16_encode_bits(0, IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START) |
+> 
 
-Add support to init txpower values of 6GHz band.
+le16_encode_bits()? I guess sparse would tell.
 
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/eeprom.c    | 15 +++++++++++----
- .../net/wireless/mediatek/mt76/mt7915/eeprom.h    | 13 ++++++++++++-
- drivers/net/wireless/mediatek/mt76/mt7915/init.c  |  2 ++
- 3 files changed, 25 insertions(+), 5 deletions(-)
+But it looks weird with the constants, I guess you mean
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-index 317c3bc2db44..5b133bcdab17 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-@@ -282,8 +282,8 @@ int mt7915_eeprom_get_target_power(struct mt7915_dev *dev,
- 			if (!tssi_on)
- 				target_power += eeprom[index + 1];
- 		}
--	} else {
--		int group = mt7915_get_channel_group(chan->hw_value, is_7976);
-+	} else if (chan->band == NL80211_BAND_5GHZ) {
-+		int group = mt7915_get_channel_group_5g(chan->hw_value, is_7976);
- 
- 		if (is_7976) {
- 			index = MT_EE_TX0_POWER_5G_V2 + chain_idx * 5;
-@@ -295,6 +295,11 @@ int mt7915_eeprom_get_target_power(struct mt7915_dev *dev,
- 			if (!tssi_on)
- 				target_power += eeprom[index + 8];
- 		}
-+	} else {
-+		int group = mt7915_get_channel_group_6g(chan->hw_value);
-+
-+		index = MT_EE_TX0_POWER_6G_V2 + chain_idx * 8;
-+		target_power = is_7976 ? eeprom[index + group] : 0;
- 	}
- 
- 	return target_power;
-@@ -309,12 +314,14 @@ s8 mt7915_eeprom_get_power_delta(struct mt7915_dev *dev, int band)
- 
- 	if (band == NL80211_BAND_2GHZ)
- 		offs = is_7976 ? MT_EE_RATE_DELTA_2G_V2 : MT_EE_RATE_DELTA_2G;
--	else
-+	else if (band == NL80211_BAND_5GHZ)
- 		offs = is_7976 ? MT_EE_RATE_DELTA_5G_V2 : MT_EE_RATE_DELTA_5G;
-+	else
-+		offs = is_7976 ? MT_EE_RATE_DELTA_6G_V2 : 0;
- 
- 	val = eeprom[offs];
- 
--	if (!(val & MT_EE_RATE_DELTA_EN))
-+	if (!offs || !(val & MT_EE_RATE_DELTA_EN))
- 		return 0;
- 
- 	delta = FIELD_GET(MT_EE_RATE_DELTA_MASK, val);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-index 45760917c54d..7578ac6d0be6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-@@ -25,8 +25,10 @@ enum mt7915_eeprom_field {
- 	MT_EE_TX0_POWER_5G =	0x34b,
- 	MT_EE_RATE_DELTA_2G_V2 = 0x7d3,
- 	MT_EE_RATE_DELTA_5G_V2 = 0x81e,
-+	MT_EE_RATE_DELTA_6G_V2 = 0x884, /* 6g fields only appear in eeprom v2 */
- 	MT_EE_TX0_POWER_2G_V2 =	0x441,
- 	MT_EE_TX0_POWER_5G_V2 =	0x445,
-+	MT_EE_TX0_POWER_6G_V2 =	0x465,
- 	MT_EE_ADIE_FT_VERSION =	0x9a0,
- 
- 	__MT_EE_MAX =		0xe00,
-@@ -103,7 +105,7 @@ enum mt7915_sku_rate_group {
- };
- 
- static inline int
--mt7915_get_channel_group(int channel, bool is_7976)
-+mt7915_get_channel_group_5g(int channel, bool is_7976)
- {
- 	if (is_7976) {
- 		if (channel <= 64)
-@@ -134,6 +136,15 @@ mt7915_get_channel_group(int channel, bool is_7976)
- 	return 7;
- }
- 
-+static inline int
-+mt7915_get_channel_group_6g(int channel)
-+{
-+	if (channel <= 29)
-+		return 0;
-+
-+	return DIV_ROUND_UP(channel - 29, 32);
-+}
-+
- static inline bool
- mt7915_tssi_enabled(struct mt7915_dev *dev, enum nl80211_band band)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 3f3ddde0415d..03739f019e76 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -312,6 +312,7 @@ mt7915_regd_notifier(struct wiphy *wiphy,
- 
- 	mt7915_init_txpower(dev, &mphy->sband_2g.sband);
- 	mt7915_init_txpower(dev, &mphy->sband_5g.sband);
-+	mt7915_init_txpower(dev, &mphy->sband_6g.sband);
- 
- 	mphy->dfs_state = MT_DFS_STATE_UNKNOWN;
- 	mt7915_dfs_init_radar_detector(phy);
-@@ -558,6 +559,7 @@ static void mt7915_init_work(struct work_struct *work)
- 	mt7915_mac_init(dev);
- 	mt7915_init_txpower(dev, &dev->mphy.sband_2g.sband);
- 	mt7915_init_txpower(dev, &dev->mphy.sband_5g.sband);
-+	mt7915_init_txpower(dev, &dev->mphy.sband_6g.sband);
- 	mt7915_txbf_init(dev);
- }
- 
--- 
-2.18.0
+le16_encode_bits(IEEE80211_HT_MPDU_DENSITY_NONE,
+		 IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START) |
+le16_encode_bits(IEEE80211_VHT_MAX_AMPDU_1024K, ...) |
+...
 
+(there's documentation in ieee80211.h which value enums should be used)
+
+johannes
