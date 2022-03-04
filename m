@@ -2,83 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCBBF4CC9FA
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 00:20:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5300C4CCCB9
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 06:00:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236705AbiCCXUQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Mar 2022 18:20:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56632 "EHLO
+        id S229522AbiCDFBA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Mar 2022 00:01:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236377AbiCCXUP (ORCPT
+        with ESMTP id S229459AbiCDFA7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Mar 2022 18:20:15 -0500
-Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53081617D3
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Mar 2022 15:19:27 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.w1.fi (Postfix) with ESMTP id 7BEC910FB7;
-        Thu,  3 Mar 2022 23:19:26 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at w1.fi
-Received: from mail.w1.fi ([127.0.0.1])
-        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id lIsd1hGJ8t21; Thu,  3 Mar 2022 23:19:24 +0000 (UTC)
-Received: by jm (sSMTP sendmail emulation); Fri, 04 Mar 2022 01:19:22 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
-        t=1646349564; bh=mQvSJ6iX5J4KdPAB9kq8frispN/EAqUsO3xhvhWxqc4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VAkz3yOHJ5WwXOIwSBez3W4NWb0xanCK1+zK5Ors8mmE6nhnHMKqd3x5EORTzcd5S
-         lW5DgvujH2wUwKDGlav1weVCG8YKbJeNydAaY9JOxfwoKFz9daf0quqPOjXNW9Gm7W
-         mitVKZb9+c5HIFm2uHGV/vu0V0j4+hAIcGbSuPQqOG4X4bJoI53VnWQwEeaK0O6WI9
-         14FOfT67Xy5iyvWD9ZQaZyj0nNNRF2Eiy0k6BwqjW3BF6q/YRlQsBg9Kz0YabYgkTv
-         avvJWEQO0vfQAmpdY9fUXZCwVnDvXKVoe41DWS4sioAK58YLP4DcU3DYT/lcOCGLtJ
-         TIwHGGlTCVczw==
-Date:   Fri, 4 Mar 2022 01:19:22 +0200
-From:   Jouni Malinen <j@w1.fi>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     hostap@lists.infradead.org, linux-wireless@vger.kernel.org,
-        nbd@nbd.name, ryder.lee@mediatek.com, evelyn.tsai@mediatek.com,
-        lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH 0/9] introduce background radar detection support
-Message-ID: <20220303231922.GA481387@w1.fi>
-References: <cover.1640014128.git.lorenzo@kernel.org>
+        Fri, 4 Mar 2022 00:00:59 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0598810A7C6
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Mar 2022 21:00:06 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2244xfXA3031539, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2244xfXA3031539
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 4 Mar 2022 12:59:41 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Fri, 4 Mar 2022 12:59:41 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Thu, 3 Mar 2022 20:59:40 -0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e]) by
+ RTEXMBS04.realtek.com.tw ([fe80::35e4:d9d1:102d:605e%5]) with mapi id
+ 15.01.2308.020; Fri, 4 Mar 2022 12:59:40 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Kevin Yang" <kevin_yang@realtek.com>
+Subject: pull request: rtw89: 8852a: update fw to v0.13.36.0
+Thread-Topic: pull request: rtw89: 8852a: update fw to v0.13.36.0
+Thread-Index: AdgvhJKVLNsz8wrESaCjQiDabAWV3Q==
+Date:   Fri, 4 Mar 2022 04:59:40 +0000
+Message-ID: <da10ed115e1a4cfa82a6ace518cb3c57@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/3/3_=3F=3F_08:25:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1640014128.git.lorenzo@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Dec 20, 2021 at 04:48:15PM +0100, Lorenzo Bianconi wrote:
-> Introduce background radar/CAC detection through a dedicated off-channel
-> chain available on some hw (e.g. mt7915).
-> Background radar/CAC detection allows to avoid the CAC downtime
-> switching on a different channel during CAC detection on the selected
-> radar channel.
-> 
-> Lorenzo Bianconi (9):
->   Sync include/uapi/linux/nl80211.h with mac80211-next.git
->   DFS: introduce dfs_set_valid_channel utility routine
->   DFS: add capability select radar-only channels
->   nl80211: report background radar/cac detection capability
+Hi,
 
-Thanks, applied patches 2-4 with some cleanup (mainly, replaced the
-int flags parameter in 3/9 with an enum to make the code more readable.
-Patch 1 changes are covered by another commit.
+Update firmware of rtw89 driver to v0.13.36.0
 
->   DFS: configure background radar/cac detection.
->   DFS: introduce hostapd_dfs_request_channel_switch routine
->   DFS: enable CSA for background radar detection
->   DFS: switch to background radar channel if available
->   DFS: introduce radar_background parameter to config file
+Thank you
+Ping-Ke
 
-These have open questions or dependencies on patches with open
-questions.
- 
--- 
-Jouni Malinen                                            PGP id EFC895FA
+---
+The following changes since commit 7f866a1f1da1de427fe2e2875d2c380460080b2f:
+
+  rtw89: 8852a: update fw to v0.13.36.0 (2022-03-04 11:49:01 +0800)
+
+are available in the Git repository at:
+
+  https://github.com/pkshih/linux-firmware.git
+
+for you to fetch changes up to 7f866a1f1da1de427fe2e2875d2c380460080b2f:
+
+  rtw89: 8852a: update fw to v0.13.36.0 (2022-03-04 11:49:01 +0800)
+
+----------------------------------------------------------------
+
