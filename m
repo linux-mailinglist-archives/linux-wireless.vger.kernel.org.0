@@ -2,98 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6D364CCF1D
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 08:35:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 706164CCF77
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 09:01:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238803AbiCDHgL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Mar 2022 02:36:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45234 "EHLO
+        id S230190AbiCDICf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Mar 2022 03:02:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234347AbiCDHgK (ORCPT
+        with ESMTP id S230046AbiCDICe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Mar 2022 02:36:10 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0ED8192C8F
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Mar 2022 23:35:21 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2247ZEn14028991, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2247ZEn14028991
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 4 Mar 2022 15:35:15 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Fri, 4 Mar 2022 15:35:14 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Fri, 4 Mar
- 2022 15:35:14 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] rtw89: declare HE capabilities in 6G band
-Date:   Fri, 4 Mar 2022 15:34:43 +0800
-Message-ID: <20220304073443.27730-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 4 Mar 2022 03:02:34 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A06EF195308
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Mar 2022 00:01:46 -0800 (PST)
+X-UUID: 20993306942745768252eca18f762986-20220304
+X-UUID: 20993306942745768252eca18f762986-20220304
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <meichia.chiu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 315467018; Fri, 04 Mar 2022 16:01:43 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Fri, 4 Mar 2022 16:01:41 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 4 Mar 2022 16:01:41 +0800
+From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        MeiChia Chiu <MeiChia.Chiu@mediatek.com>,
+        Money Wang <Money.Wang@mediatek.com>
+Subject: [PATCH 1/4] mt76: connac: add 6 GHz support for wtbl and starec configuration
+Date:   Fri, 4 Mar 2022 16:01:17 +0800
+Message-ID: <20220304080120.3907-1-MeiChia.Chiu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 03/04/2022 07:21:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvNCCkV6TIIDA2OjAwOjAw?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+Content-Type: text/plain
+X-MTK:  N
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-To work properly in 6G band, declare HE 6G capabilities. Without this fix,
-it can only TX/RX with OFDM rates.
+Since there are no HT & VHT IEs being sent in 6ghz,
+some capabilities judgement and parsing for wtbl &
+starec configuration should be modified to reflect such changes.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Money Wang <Money.Wang@mediatek.com>
+Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+The series is based on https://patchwork.kernel.org/project/linux-wireless/patch/20220302061406.24797-1-MeiChia.Chiu@mediatek.com/
+---
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 24 ++++++++++++++-----
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index a0086b14550a8..81c1c28e6e92c 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2383,6 +2383,15 @@ static void rtw89_init_he_cap(struct rtw89_dev *rtwdev,
- 			he_cap->he_mcs_nss_supp.tx_mcs_160 = cpu_to_le16(mcs_map);
- 		}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 6c762fbf9aaa..9f83fa379396 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -905,18 +905,27 @@ void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 	struct tlv *tlv;
+ 	u32 flags = 0;
  
-+		if (band == NL80211_BAND_6GHZ) {
-+			__le16 capa;
+-	if (sta->ht_cap.ht_supported) {
++	if (sta->ht_cap.ht_supported || sta->he_6ghz_capa.capa) {
+ 		tlv = mt76_connac_mcu_add_nested_tlv(skb, WTBL_HT, sizeof(*ht),
+ 						     wtbl_tlv, sta_wtbl);
+ 		ht = (struct wtbl_ht *)tlv;
+ 		ht->ldpc = ht_ldpc &&
+ 			   !!(sta->ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING);
+-		ht->af = sta->ht_cap.ampdu_factor;
+-		ht->mm = sta->ht_cap.ampdu_density;
 +
-+			capa = u16_encode_bits(0, IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START) |
-+			       u16_encode_bits(7, IEEE80211_HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP) |
-+			       u16_encode_bits(1, IEEE80211_HE_6GHZ_CAP_MAX_MPDU_LEN);
-+			iftype_data[idx].he_6ghz_capa.capa = capa;
++		if (sta->ht_cap.ht_supported) {
++			ht->af = sta->ht_cap.ampdu_factor;
++			ht->mm = sta->ht_cap.ampdu_density;
++		} else {
++			ht->af = FIELD_GET(IEEE80211_HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP,
++					   sta->he_6ghz_capa.capa);
++			ht->mm = FIELD_GET(IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START,
++					   sta->he_6ghz_capa.capa);
 +		}
 +
- 		idx++;
+ 		ht->ht = true;
  	}
  
+-	if (sta->vht_cap.vht_supported) {
++	if (sta->vht_cap.vht_supported || sta->he_6ghz_capa.capa) {
+ 		struct wtbl_vht *vht;
+ 		u8 af;
+ 
+@@ -1242,7 +1251,7 @@ u8 mt76_connac_get_phy_mode(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 
+ 		if (he_cap && he_cap->has_he)
+ 			mode |= PHY_MODE_AX_24G;
+-	} else if (band == NL80211_BAND_5GHZ || band == NL80211_BAND_6GHZ) {
++	} else if (band == NL80211_BAND_5GHZ) {
+ 		mode |= PHY_MODE_A;
+ 
+ 		if (ht_cap->ht_supported)
+@@ -1251,8 +1260,11 @@ u8 mt76_connac_get_phy_mode(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		if (vht_cap->vht_supported)
+ 			mode |= PHY_MODE_AC;
+ 
+-		if (he_cap && he_cap->has_he && band == NL80211_BAND_5GHZ)
++		if (he_cap && he_cap->has_he)
+ 			mode |= PHY_MODE_AX_5G;
++	} else if (band == NL80211_BAND_6GHZ) {
++		mode |= PHY_MODE_A | PHY_MODE_AN |
++			PHY_MODE_AC | PHY_MODE_AX_5G;
+ 	}
+ 
+ 	return mode;
 -- 
-2.25.1
+2.18.0
 
