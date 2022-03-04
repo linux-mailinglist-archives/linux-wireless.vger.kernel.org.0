@@ -2,49 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9B154CD0ED
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 10:19:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 051764CD19D
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 10:49:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235446AbiCDJUm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Mar 2022 04:20:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40936 "EHLO
+        id S236645AbiCDJtr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Mar 2022 04:49:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231883AbiCDJUm (ORCPT
+        with ESMTP id S234317AbiCDJtp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Mar 2022 04:20:42 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5802D8C7EE
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Mar 2022 01:19:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=kNrH53gU7VQVK0nXjsgwFpzT6QzCrp9xqzuMZHNv1kw=;
-        t=1646385593; x=1647595193; b=HBuZGtOzO9O0iYBlftyAQ4W2c27j4TX7eomz4EL0le0TuAf
-        +Ubxb9Rzb2MBUrjIchVdXygJaPI/AF7u1KxHxxinJrRufLOoyKmi3d4f0/JLYyqRH0H1Rm+rJ7Ki9
-        061qOvq/JarnX0E5mJGBm5fsUxS9jhMMAJx1TifrMw1bKTYuv6XLkG/zR71x+nUD4jTWOr+vEr89H
-        CPaAKuBfH+hPGO8XCFazKUhkfSboDisCrKlPCzNo2k2pReuNZWoxOWn5A9OmzCt7sPbv/FHMizIhk
-        slTpU1LLrLlFNQcJx0csLORh78dl8ux8QZ/nys2//7zXP/TuMoATW6omojggaX6A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nQ469-008dd9-M1;
-        Fri, 04 Mar 2022 10:19:41 +0100
-Message-ID: <050529f958bb628ee6e2819c944b42951b621893.camel@sipsolutions.net>
-Subject: Re: [PATCH] rtw89: declare HE capabilities in 6G band
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ping-Ke Shih <pkshih@realtek.com>, kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 04 Mar 2022 10:19:40 +0100
-In-Reply-To: <20220304073443.27730-1-pkshih@realtek.com>
-References: <20220304073443.27730-1-pkshih@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
+        Fri, 4 Mar 2022 04:49:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DA5256D979
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Mar 2022 01:48:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1646387337;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=DA88YDp1aXlIRjKxKvvKL1bH7OFx/TLYJqYHpJjge+A=;
+        b=A9bwSSKN/vlQgZWACwdatdtxw1E28+Q8DxgN0lzddQb67HN2PpWz+b0MGkyT8FGEh6SxHL
+        v1PsDRS1eia5IPXzx+RGJh47U3wNkbdf5FQfJxJnVtfZ0Xvtre6KJh5yKlAfgAcC09GQ9P
+        SHXUm9QUFmoF+xcpLUTTx9XBQSCFyUs=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-443-wupi7PeTMemaQXN2unzP8w-1; Fri, 04 Mar 2022 04:48:55 -0500
+X-MC-Unique: wupi7PeTMemaQXN2unzP8w-1
+Received: by mail-wm1-f71.google.com with SMTP id 3-20020a05600c230300b00384e15ceae4so2531913wmo.7
+        for <linux-wireless@vger.kernel.org>; Fri, 04 Mar 2022 01:48:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=DA88YDp1aXlIRjKxKvvKL1bH7OFx/TLYJqYHpJjge+A=;
+        b=DwRFMUJRufNOFzKLdqh/OTs1dBWBkvFpzUvDwYlQtuOnvoCTQGGSquuA2I+qVzaxkm
+         BeXzYvjGb5+JPFVjHZWV0bLNNQ7mGYl04jzfZpMPjIdBLdrO3GpSd1uPK2UZUo1Qn5TF
+         WX2/Nrb0Jmu+HF6mIxmdyuQsnYTXvMUw186DsObn5dhiCudb2yXlHL5uFCbzHKQQxWEj
+         +nmoTw21vRUuCc8dlGWhc2wwrWAfXybqiScPrLlGyACbI41fyNLTRvM8SiPaV7szHm2Y
+         qAI4fYzDzxXA6EsRhK4N4n8VHEGmXRutlfu7TGYNS6EmPNTRtYgy31qEfWPKqti8XBr6
+         8W9A==
+X-Gm-Message-State: AOAM532QGhWFlZjygv7fEqgsr3vCE0UJqCabao5UOiK3n1+oUvVc4Ob0
+        c9U+7+nojgDWnhcga0rAYwAMr34JTyBJhn7YQzYsTHwlJtIS0wUGRKjFGkxta8lQTF4JEkSLAuW
+        cF/gON3GZ/3fHOs155m9VV0z1ygo=
+X-Received: by 2002:a1c:f315:0:b0:381:1f6d:6ca6 with SMTP id q21-20020a1cf315000000b003811f6d6ca6mr7013385wmq.25.1646387334530;
+        Fri, 04 Mar 2022 01:48:54 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJywT7HggAPGIm4CVmNq1XdeJdSX7YfwBafBFRZvhAbD7vIBNKz9T7Jiy5Y+fpBismtVH3vfOA==
+X-Received: by 2002:a1c:f315:0:b0:381:1f6d:6ca6 with SMTP id q21-20020a1cf315000000b003811f6d6ca6mr7013366wmq.25.1646387334304;
+        Fri, 04 Mar 2022 01:48:54 -0800 (PST)
+Received: from localhost ([37.183.9.66])
+        by smtp.gmail.com with ESMTPSA id o22-20020a05600c4fd600b0038133076dcesm4939622wmq.16.2022.03.04.01.48.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Mar 2022 01:48:53 -0800 (PST)
+Date:   Fri, 4 Mar 2022 10:48:51 +0100
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Jouni Malinen <j@w1.fi>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, hostap@lists.infradead.org,
+        linux-wireless@vger.kernel.org, nbd@nbd.name,
+        ryder.lee@mediatek.com, evelyn.tsai@mediatek.com
+Subject: Re: [PATCH 0/9] introduce background radar detection support
+Message-ID: <YiHggy0NLUwHVMXR@lore-desk>
+References: <cover.1640014128.git.lorenzo@kernel.org>
+ <20220303231922.GA481387@w1.fi>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="qdwdfWUnNTaLKKWa"
+Content-Disposition: inline
+In-Reply-To: <20220303231922.GA481387@w1.fi>
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,38 +79,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2022-03-04 at 15:34 +0800, Ping-Ke Shih wrote:
-> To work properly in 6G band, declare HE 6G capabilities. Without this fix,
-> it can only TX/RX with OFDM rates.
-> 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
->  drivers/net/wireless/realtek/rtw89/core.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-> index a0086b14550a8..81c1c28e6e92c 100644
-> --- a/drivers/net/wireless/realtek/rtw89/core.c
-> +++ b/drivers/net/wireless/realtek/rtw89/core.c
-> @@ -2383,6 +2383,15 @@ static void rtw89_init_he_cap(struct rtw89_dev *rtwdev,
->  			he_cap->he_mcs_nss_supp.tx_mcs_160 = cpu_to_le16(mcs_map);
->  		}
->  
-> +		if (band == NL80211_BAND_6GHZ) {
-> +			__le16 capa;
-> +
-> +			capa = u16_encode_bits(0, IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START) |
-> 
 
-le16_encode_bits()? I guess sparse would tell.
+--qdwdfWUnNTaLKKWa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-But it looks weird with the constants, I guess you mean
+> On Mon, Dec 20, 2021 at 04:48:15PM +0100, Lorenzo Bianconi wrote:
+> > Introduce background radar/CAC detection through a dedicated off-channel
+> > chain available on some hw (e.g. mt7915).
+> > Background radar/CAC detection allows to avoid the CAC downtime
+> > switching on a different channel during CAC detection on the selected
+> > radar channel.
+> >=20
+> > Lorenzo Bianconi (9):
+> >   Sync include/uapi/linux/nl80211.h with mac80211-next.git
+> >   DFS: introduce dfs_set_valid_channel utility routine
+> >   DFS: add capability select radar-only channels
+> >   nl80211: report background radar/cac detection capability
+>=20
+> Thanks, applied patches 2-4 with some cleanup (mainly, replaced the
+> int flags parameter in 3/9 with an enum to make the code more readable.
+> Patch 1 changes are covered by another commit.
+>=20
+> >   DFS: configure background radar/cac detection.
+> >   DFS: introduce hostapd_dfs_request_channel_switch routine
+> >   DFS: enable CSA for background radar detection
+> >   DFS: switch to background radar channel if available
+> >   DFS: introduce radar_background parameter to config file
+>=20
+> These have open questions or dependencies on patches with open
+> questions.
 
-le16_encode_bits(IEEE80211_HT_MPDU_DENSITY_NONE,
-		 IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START) |
-le16_encode_bits(IEEE80211_VHT_MAX_AMPDU_1024K, ...) |
-...
+Hi Jouni,
 
-(there's documentation in ieee80211.h which value enums should be used)
+Thx for the review, I will address comments in the pending patches.
 
-johannes
+Regards,
+Lorenzo
+
+> =20
+> --=20
+> Jouni Malinen                                            PGP id EFC895FA
+>=20
+
+--qdwdfWUnNTaLKKWa
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYiHggwAKCRA6cBh0uS2t
+rMzsAQDP6Q4wRk5zHo8qJORTTvhdCWj6VPBYqWcsF5mYUoYomgD8CQkam7uVzK//
+VPnjoRjgtR6Jgjwvs8JNndSgmDrStAw=
+=MWih
+-----END PGP SIGNATURE-----
+
+--qdwdfWUnNTaLKKWa--
+
