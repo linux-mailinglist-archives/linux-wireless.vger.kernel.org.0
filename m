@@ -2,238 +2,192 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80AE44CCE12
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 07:48:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC48C4CCE3B
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 08:00:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238504AbiCDGsa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Mar 2022 01:48:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41778 "EHLO
+        id S238630AbiCDHBQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Mar 2022 02:01:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238552AbiCDGsW (ORCPT
+        with ESMTP id S238446AbiCDHBM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Mar 2022 01:48:22 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6231FF54
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Mar 2022 22:47:27 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2246lMavD011712, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2246lMavD011712
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 4 Mar 2022 14:47:22 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Fri, 4 Mar 2022 14:47:22 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Fri, 4 Mar
- 2022 14:47:22 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 13/13] rtw89: 8852c: process logic efuse map
-Date:   Fri, 4 Mar 2022 14:46:19 +0800
-Message-ID: <20220304064619.23662-14-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220304064619.23662-1-pkshih@realtek.com>
-References: <20220304064619.23662-1-pkshih@realtek.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 03/04/2022 06:29:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvNCCkV6TIIDA0OjM0OjAw?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Fri, 4 Mar 2022 02:01:12 -0500
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8AF318E3DF;
+        Thu,  3 Mar 2022 23:00:21 -0800 (PST)
+Received: by mail-pg1-x534.google.com with SMTP id t187so2483135pgb.1;
+        Thu, 03 Mar 2022 23:00:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=0a+oQu3LYTAbOOyoILb+F/zkApGIum0yjd+xPCLEHo4=;
+        b=UcHSzcmMAevEFsqxc8gimvoSIew96LrW3UYvjfgkcaeLb/Edql9668oTELTgMdhcyh
+         uwTLYgNgPfuwuQfZCbkLtuIX59UkP2xXrD0mK6eOfNdOu/KSihdjQUFHL7gwAFzgpb4Z
+         PeSQfhLMwS3uLkuXfSSL1QQyblGTA4kTyWBkcty1viz6EkWmIbbGn99xu95lY6jAsJ0c
+         CbisDo/RPFGn8gAJnKluj00ht4OQ80XaXmCEvGalnXTnvAWrV5UWFfWh6kgUBnLZJvSQ
+         W0PYU136vUwP4grvjJEIhDxHc0WM1lPQ2cysIXPjh+breTQ07tU9AM0RgZ3Jr4UsSFjT
+         NaGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=0a+oQu3LYTAbOOyoILb+F/zkApGIum0yjd+xPCLEHo4=;
+        b=wb2esMQoam0yRdU1iiWooJMh4JC1GjnRkNWIV6OwsjoezbD+7+ifd1PhuzPjaxCPmO
+         u1fcrH6eLHtxqL4KDTLuseNeth97iCChifcBxeofjvT0Byq082mjxQBMfKUbi4/3XunZ
+         7O1vtdoC6GJQEe1jCXtEwSzf90DWRIWVtkfFAhBCXU/4JQ9/KiwbJufulDJ2q3IPax49
+         jtXkkkenH5kmYciK/w/TThMkCF+OMj+Sm8kubeVraTrTJ9SBcdzW0IJc/7q7VtLNcYPK
+         tCqru2KpLGaD7gEtqsW5aTHIjrKYId6o+E8n1FslfMQUFX2avWIb0/I/Jx8Qwp0u0z7d
+         d27Q==
+X-Gm-Message-State: AOAM532aXFpfPfPgP0BGzvfNmwbT3nDlpYgI2HlLyy0AbUqKoKxKSL90
+        x6bmOo7yTyt/Z10hh54ZEPQ=
+X-Google-Smtp-Source: ABdhPJxBFOb3A6C/RlDh1uHGrWM51HjSkR68cXfNAhNGErUbSC2hd/FilwMHkJmidt1eEHAWD7GVrA==
+X-Received: by 2002:a05:6a00:cc7:b0:4ec:c6f3:ad29 with SMTP id b7-20020a056a000cc700b004ecc6f3ad29mr41958698pfv.66.1646377221067;
+        Thu, 03 Mar 2022 23:00:21 -0800 (PST)
+Received: from ubuntu.huawei.com ([119.3.119.19])
+        by smtp.googlemail.com with ESMTPSA id f6-20020a654006000000b00346193b405fsm3665134pgp.44.2022.03.03.23.00.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Mar 2022 23:00:20 -0800 (PST)
+From:   Xiaomeng Tong <xiam0nd.tong@gmail.com>
+To:     daniel.thompson@linaro.org
+Cc:     akpm@linux-foundation.org, alsa-devel@alsa-project.org,
+        amd-gfx@lists.freedesktop.org, andriy.shevchenko@linux.intel.com,
+        arnd@arndb.de, bcm-kernel-feedback-list@broadcom.com,
+        bjohannesmeyer@gmail.com, c.giuffrida@vu.nl,
+        christian.koenig@amd.com, christophe.jaillet@wanadoo.fr,
+        dan.carpenter@oracle.com, david.laight@aculab.com,
+        dmaengine@vger.kernel.org, drbd-dev@lists.linbit.com,
+        dri-devel@lists.freedesktop.org, gustavo@embeddedor.com,
+        h.j.bos@vu.nl, intel-gfx@lists.freedesktop.org,
+        intel-wired-lan@lists.osuosl.org, jakobkoschel@gmail.com,
+        jgg@ziepe.ca, keescook@chromium.org,
+        kgdb-bugreport@lists.sourceforge.net, kvm@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-block@vger.kernel.org,
+        linux-cifs@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-fsdevel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-pm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-sgx@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-tegra@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net, linux@rasmusvillemoes.dk,
+        linuxppc-dev@lists.ozlabs.org, nathan@kernel.org,
+        netdev@vger.kernel.org, nouveau@lists.freedesktop.org,
+        rppt@kernel.org, samba-technical@lists.samba.org,
+        tglx@linutronix.de, tipc-discussion@lists.sourceforge.net,
+        torvalds@linux-foundation.org,
+        v9fs-developer@lists.sourceforge.net, xiam0nd.tong@gmail.com
+Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body as a ptr
+Date:   Fri,  4 Mar 2022 14:59:57 +0800
+Message-Id: <20220304065957.16799-1-xiam0nd.tong@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20220303121824.qdyrognluik74iph@maple.lan>
+References: <20220303121824.qdyrognluik74iph@maple.lan>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add a struct to access logic efuse map, and fill data according to the map.
+On Thu, 3 Mar 2022 12:18:24 +0000, Daniel Thompson wrote:
+> On Thu, Mar 03, 2022 at 03:26:57PM +0800, Xiaomeng Tong wrote:
+> > On Thu, 3 Mar 2022 04:58:23 +0000, David Laight wrote:
+> > > on 3 Mar 2022 10:27:29 +0800, Xiaomeng Tong wrote:
+> > > > The problem is the mis-use of iterator outside the loop on exit, and
+> > > > the iterator will be the HEAD's container_of pointer which pointers
+> > > > to a type-confused struct. Sidenote: The *mis-use* here refers to
+> > > > mistakely access to other members of the struct, instead of the
+> > > > list_head member which acutally is the valid HEAD.
+> > >
+> > > The problem is that the HEAD's container_of pointer should never
+> > > be calculated at all.
+> > > This is what is fundamentally broken about the current definition.
+> > 
+> > Yes, the rule is "the HEAD's container_of pointer should never be
+> > calculated at all outside the loop", but how do you make sure everyone
+> > follows this rule?
+> 
+> Your formulation of the rule is correct: never run container_of() on HEAD
+> pointer.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/rtw8852c.c | 67 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/rtw8852c.h | 62 +++++++++++++++++
- 2 files changed, 129 insertions(+)
+Actually, it is not my rule. My rule is that never access other members
+of the struct except for the list_head member after the loop, because
+this is a invalid member after loop exit, but valid for the list_head
+member which just is HEAD and the lately caculation (&pos->head) seems
+harmless.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index bed5368869977..f27716d20d7fa 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -213,6 +213,72 @@ static int rtw8852c_pwr_off_func(struct rtw89_dev *rtwdev)
- 	return 0;
- }
- 
-+static void rtw8852c_e_efuse_parsing(struct rtw89_efuse *efuse,
-+				     struct rtw8852c_efuse *map)
-+{
-+	ether_addr_copy(efuse->addr, map->e.mac_addr);
-+	efuse->rfe_type = map->rfe_type;
-+	efuse->xtal_cap = map->xtal_k;
-+}
-+
-+static void rtw8852c_efuse_parsing_tssi(struct rtw89_dev *rtwdev,
-+					struct rtw8852c_efuse *map)
-+{
-+	struct rtw89_tssi_info *tssi = &rtwdev->tssi;
-+	struct rtw8852c_tssi_offset *ofst[] = {&map->path_a_tssi, &map->path_b_tssi};
-+	u8 *bw40_1s_tssi_6g_ofst[] = {map->bw40_1s_tssi_6g_a, map->bw40_1s_tssi_6g_b};
-+	u8 i, j;
-+
-+	tssi->thermal[RF_PATH_A] = map->path_a_therm;
-+	tssi->thermal[RF_PATH_B] = map->path_b_therm;
-+
-+	for (i = 0; i < RF_PATH_NUM_8852C; i++) {
-+		memcpy(tssi->tssi_cck[i], ofst[i]->cck_tssi,
-+		       sizeof(ofst[i]->cck_tssi));
-+
-+		for (j = 0; j < TSSI_CCK_CH_GROUP_NUM; j++)
-+			rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+				    "[TSSI][EFUSE] path=%d cck[%d]=0x%x\n",
-+				    i, j, tssi->tssi_cck[i][j]);
-+
-+		memcpy(tssi->tssi_mcs[i], ofst[i]->bw40_tssi,
-+		       sizeof(ofst[i]->bw40_tssi));
-+		memcpy(tssi->tssi_mcs[i] + TSSI_MCS_2G_CH_GROUP_NUM,
-+		       ofst[i]->bw40_1s_tssi_5g, sizeof(ofst[i]->bw40_1s_tssi_5g));
-+		memcpy(tssi->tssi_6g_mcs[i], bw40_1s_tssi_6g_ofst[i],
-+		       sizeof(tssi->tssi_6g_mcs[i]));
-+
-+		for (j = 0; j < TSSI_MCS_CH_GROUP_NUM; j++)
-+			rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+				    "[TSSI][EFUSE] path=%d mcs[%d]=0x%x\n",
-+				    i, j, tssi->tssi_mcs[i][j]);
-+	}
-+}
-+
-+static int rtw8852c_read_efuse(struct rtw89_dev *rtwdev, u8 *log_map)
-+{
-+	struct rtw89_efuse *efuse = &rtwdev->efuse;
-+	struct rtw8852c_efuse *map;
-+
-+	map = (struct rtw8852c_efuse *)log_map;
-+
-+	efuse->country_code[0] = map->country_code[0];
-+	efuse->country_code[1] = map->country_code[1];
-+	rtw8852c_efuse_parsing_tssi(rtwdev, map);
-+
-+	switch (rtwdev->hci.type) {
-+	case RTW89_HCI_TYPE_PCIE:
-+		rtw8852c_e_efuse_parsing(efuse, map);
-+		break;
-+	default:
-+		return -ENOTSUPP;
-+	}
-+
-+	rtw89_info(rtwdev, "chip rfe_type is %d\n", efuse->rfe_type);
-+
-+	return 0;
-+}
-+
- static void rtw8852c_phycap_parsing_tssi(struct rtw89_dev *rtwdev, u8 *phycap_map)
- {
- 	struct rtw89_tssi_info *tssi = &rtwdev->tssi;
-@@ -368,6 +434,7 @@ static void rtw8852c_power_trim(struct rtw89_dev *rtwdev)
- }
- 
- static const struct rtw89_chip_ops rtw8852c_chip_ops = {
-+	.read_efuse		= rtw8852c_read_efuse,
- 	.read_phycap		= rtw8852c_read_phycap,
- 	.power_trim		= rtw8852c_power_trim,
- 	.pwr_on_func		= rtw8852c_pwr_on_func,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.h b/drivers/net/wireless/realtek/rtw89/rtw8852c.h
-index 8abca49e6c84b..d0594716040bc 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.h
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.h
-@@ -9,6 +9,68 @@
- 
- #define RF_PATH_NUM_8852C 2
- 
-+struct rtw8852c_u_efuse {
-+	u8 rsvd[0x38];
-+	u8 mac_addr[ETH_ALEN];
-+};
-+
-+struct rtw8852c_e_efuse {
-+	u8 mac_addr[ETH_ALEN];
-+};
-+
-+struct rtw8852c_tssi_offset {
-+	u8 cck_tssi[TSSI_CCK_CH_GROUP_NUM];
-+	u8 bw40_tssi[TSSI_MCS_2G_CH_GROUP_NUM];
-+	u8 rsvd[7];
-+	u8 bw40_1s_tssi_5g[TSSI_MCS_5G_CH_GROUP_NUM];
-+} __packed;
-+
-+struct rtw8852c_efuse {
-+	u8 rsvd[0x210];
-+	struct rtw8852c_tssi_offset path_a_tssi;
-+	u8 rsvd1[10];
-+	struct rtw8852c_tssi_offset path_b_tssi;
-+	u8 rsvd2[94];
-+	u8 channel_plan;
-+	u8 xtal_k;
-+	u8 rsvd3;
-+	u8 iqk_lck;
-+	u8 rsvd4[5];
-+	u8 reg_setting:2;
-+	u8 tx_diversity:1;
-+	u8 rx_diversity:2;
-+	u8 ac_mode:1;
-+	u8 module_type:2;
-+	u8 rsvd5;
-+	u8 shared_ant:1;
-+	u8 coex_type:3;
-+	u8 ant_iso:1;
-+	u8 radio_on_off:1;
-+	u8 rsvd6:2;
-+	u8 eeprom_version;
-+	u8 customer_id;
-+	u8 tx_bb_swing_2g;
-+	u8 tx_bb_swing_5g;
-+	u8 tx_cali_pwr_trk_mode;
-+	u8 trx_path_selection;
-+	u8 rfe_type;
-+	u8 country_code[2];
-+	u8 rsvd7[3];
-+	u8 path_a_therm;
-+	u8 path_b_therm;
-+	u8 rsvd8[46];
-+	u8 bw40_1s_tssi_6g_a[TSSI_MCS_6G_CH_GROUP_NUM];
-+	u8 rsvd9[10];
-+	u8 bw40_1s_tssi_6g_b[TSSI_MCS_6G_CH_GROUP_NUM];
-+	u8 rsvd10[110];
-+	u8 channel_plan_6g;
-+	u8 rsvd11[71];
-+	union {
-+		struct rtw8852c_u_efuse u;
-+		struct rtw8852c_e_efuse e;
-+	};
-+} __packed;
-+
- extern const struct rtw89_chip_info rtw8852c_chip_info;
- 
- #endif
--- 
-2.25.1
+I have considered the case that the HEAD's container "pos" is layouted
+across the max and the min address boundary, which means the address of
+HEAD is likely 0x60, and the address of pos is likely 0xffffffe0.
+It seems ok to caculate pos with:
+((type *)(__mptr - offsetof(type, member)));
+and it seems ok to caculate head outside the loop with:
+if (&pos->head == &HEAD)
+    return NULL;
 
+The only case I can think of with the rule "never run container_of()
+on HEAD" must be followed is when the first argument (which is &HEAD)
+passing to container_of() is NULL + some offset, it may lead to the
+resulting "pos->member" access being a NULL dereference. But maybe
+the caller can take the responsibility to check if it is NULL, not
+container_of() itself.
+
+Please remind me if i missed somthing, thanks.
+
+> 
+> However the rule that is introduced by list_for_each_entry_inside() is
+> *not* this rule. The rule it introduces is: never access the iterator
+> variable outside the loop.
+
+Sorry for the confusion, indeed, that is two *different* rule.
+
+> 
+> Making the iterator NULL on loop exit does follow the rule you proposed
+> but using a different technique: do not allow HEAD to be stored in the
+> iterator variable after loop exit. This also makes it impossible to run
+> container_of() on the HEAD pointer.
+> 
+
+It does not. My rule is: never access the iterator variable outside the loop.
+The "Making the iterator NULL on loop exit" way still leak the pos with NULL
+outside the loop, may lead to a NULL deference.
+
+> 
+> > Everyone makes mistakes, but we can eliminate them all from the beginning
+> > with the help of compiler which can catch such use-after-loop things.
+> 
+> Indeed but if we introduce new interfaces then we don't have to worry
+> about existing usages and silent regressions. Code will have been
+> written knowing the loop can exit with the iterator set to NULL.
+
+Yes, it is more simple and compatible with existing interfaces. Howerver,
+you should make every developers to remember that "pos will be set NULL on
+loop exit", which is unreasonable and impossible for *every* single person.
+Otherwise the mis-use-after-loop will lead to a NULL dereference.
+But we can kill this problem by declaring iterator inside the loop and the
+complier will catch it if somebody mis-use-after-loop.
+
+> 
+> Sure it is still possible for programmers to make mistakes and
+> dereference the NULL pointer but C programmers are well training w.r.t.
+> NULL pointer checking so such mistakes are much less likely than with
+> the current list_for_each_entry() macro. This risk must be offset
+> against the way a NULLify approach can lead to more elegant code when we
+> are doing a list search.
+> 
+
+Yes, the NULLify approach is better than the current list_for_each_entry()
+macro, but i stick with that the list_for_each_entry_inside() way is best
+and perfect _technically_.
+
+Thus, my idea is *better a finger off than always aching*, let's settle this
+damn problem once and for all, with list_for_each_entry_inside().
+
+--
+Xiaomeng Tong
