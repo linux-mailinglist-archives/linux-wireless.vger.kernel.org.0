@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 918C44CCE0F
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 07:48:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80AE44CCE12
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Mar 2022 07:48:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238557AbiCDGsc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Mar 2022 01:48:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41784 "EHLO
+        id S238504AbiCDGsa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Mar 2022 01:48:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238561AbiCDGsW (ORCPT
+        with ESMTP id S238552AbiCDGsW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 4 Mar 2022 01:48:22 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6672E88
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Mar 2022 22:47:26 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6231FF54
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Mar 2022 22:47:27 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2246lLQ01011708, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2246lLQ01011708
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2246lMavD011712, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2246lMavD011712
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 4 Mar 2022 14:47:21 +0800
+        Fri, 4 Mar 2022 14:47:22 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Fri, 4 Mar 2022 14:47:21 +0800
+ 15.1.2308.20; Fri, 4 Mar 2022 14:47:22 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Fri, 4 Mar
- 2022 14:47:20 +0800
+ 2022 14:47:22 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 12/13] rtw89: 8852c: process efuse of phycap
-Date:   Fri, 4 Mar 2022 14:46:18 +0800
-Message-ID: <20220304064619.23662-13-pkshih@realtek.com>
+Subject: [PATCH 13/13] rtw89: 8852c: process logic efuse map
+Date:   Fri, 4 Mar 2022 14:46:19 +0800
+Message-ID: <20220304064619.23662-14-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220304064619.23662-1-pkshih@realtek.com>
 References: <20220304064619.23662-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvNCCkV6TIIDA0OjM0OjAw?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -68,236 +68,168 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Read phycap data programmed in efuse, and store them into array.
+Add a struct to access logic efuse map, and fill data according to the map.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h     |   4 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c | 159 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/rtw8852c.h |   2 +
- 3 files changed, 165 insertions(+)
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 67 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/rtw8852c.h | 62 +++++++++++++++++
+ 2 files changed, 129 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 3582e352c4a66..a769fccc8c016 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2637,18 +2637,22 @@ struct rtw89_cfo_tracking_info {
- 
- /* 2GL, 2GH, 5GL1, 5GH1, 5GM1, 5GM2, 5GH1, 5GH2 */
- #define TSSI_TRIM_CH_GROUP_NUM 8
-+#define TSSI_TRIM_CH_GROUP_NUM_6G 16
- 
- #define TSSI_CCK_CH_GROUP_NUM 6
- #define TSSI_MCS_2G_CH_GROUP_NUM 5
- #define TSSI_MCS_5G_CH_GROUP_NUM 14
-+#define TSSI_MCS_6G_CH_GROUP_NUM 32
- #define TSSI_MCS_CH_GROUP_NUM \
- 	(TSSI_MCS_2G_CH_GROUP_NUM + TSSI_MCS_5G_CH_GROUP_NUM)
- 
- struct rtw89_tssi_info {
- 	u8 thermal[RF_PATH_MAX];
- 	s8 tssi_trim[RF_PATH_MAX][TSSI_TRIM_CH_GROUP_NUM];
-+	s8 tssi_trim_6g[RF_PATH_MAX][TSSI_TRIM_CH_GROUP_NUM_6G];
- 	s8 tssi_cck[RF_PATH_MAX][TSSI_CCK_CH_GROUP_NUM];
- 	s8 tssi_mcs[RF_PATH_MAX][TSSI_MCS_CH_GROUP_NUM];
-+	s8 tssi_6g_mcs[RF_PATH_MAX][TSSI_MCS_6G_CH_GROUP_NUM];
- 	s8 extra_ofst[RF_PATH_MAX];
- 	bool tssi_tracking_check[RF_PATH_MAX];
- 	u8 default_txagc_offset[RF_PATH_MAX];
 diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index d7a5a6362f256..bed5368869977 100644
+index bed5368869977..f27716d20d7fa 100644
 --- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
 +++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -2,6 +2,7 @@
- /* Copyright(c) 2019-2022  Realtek Corporation
-  */
- 
-+#include "debug.h"
- #include "fw.h"
- #include "mac.h"
- #include "reg.h"
-@@ -212,7 +213,163 @@ static int rtw8852c_pwr_off_func(struct rtw89_dev *rtwdev)
+@@ -213,6 +213,72 @@ static int rtw8852c_pwr_off_func(struct rtw89_dev *rtwdev)
  	return 0;
  }
  
-+static void rtw8852c_phycap_parsing_tssi(struct rtw89_dev *rtwdev, u8 *phycap_map)
++static void rtw8852c_e_efuse_parsing(struct rtw89_efuse *efuse,
++				     struct rtw8852c_efuse *map)
++{
++	ether_addr_copy(efuse->addr, map->e.mac_addr);
++	efuse->rfe_type = map->rfe_type;
++	efuse->xtal_cap = map->xtal_k;
++}
++
++static void rtw8852c_efuse_parsing_tssi(struct rtw89_dev *rtwdev,
++					struct rtw8852c_efuse *map)
 +{
 +	struct rtw89_tssi_info *tssi = &rtwdev->tssi;
-+	static const u32 tssi_trim_addr[RF_PATH_NUM_8852C] = {0x5D6, 0x5AB};
-+	static const u32 tssi_trim_addr_6g[RF_PATH_NUM_8852C] = {0x5CE, 0x5A3};
-+	u32 addr = rtwdev->chip->phycap_addr;
-+	bool pg = false;
-+	u32 ofst;
++	struct rtw8852c_tssi_offset *ofst[] = {&map->path_a_tssi, &map->path_b_tssi};
++	u8 *bw40_1s_tssi_6g_ofst[] = {map->bw40_1s_tssi_6g_a, map->bw40_1s_tssi_6g_b};
 +	u8 i, j;
 +
++	tssi->thermal[RF_PATH_A] = map->path_a_therm;
++	tssi->thermal[RF_PATH_B] = map->path_b_therm;
++
 +	for (i = 0; i < RF_PATH_NUM_8852C; i++) {
-+		for (j = 0; j < TSSI_TRIM_CH_GROUP_NUM; j++) {
-+			/* addrs are in decreasing order */
-+			ofst = tssi_trim_addr[i] - addr - j;
-+			tssi->tssi_trim[i][j] = phycap_map[ofst];
++		memcpy(tssi->tssi_cck[i], ofst[i]->cck_tssi,
++		       sizeof(ofst[i]->cck_tssi));
 +
-+			if (phycap_map[ofst] != 0xff)
-+				pg = true;
-+		}
-+
-+		for (j = 0; j < TSSI_TRIM_CH_GROUP_NUM_6G; j++) {
-+			/* addrs are in decreasing order */
-+			ofst = tssi_trim_addr_6g[i] - addr - j;
-+			tssi->tssi_trim_6g[i][j] = phycap_map[ofst];
-+
-+			if (phycap_map[ofst] != 0xff)
-+				pg = true;
-+		}
-+	}
-+
-+	if (!pg) {
-+		memset(tssi->tssi_trim, 0, sizeof(tssi->tssi_trim));
-+		memset(tssi->tssi_trim_6g, 0, sizeof(tssi->tssi_trim_6g));
-+		rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+			    "[TSSI][TRIM] no PG, set all trim info to 0\n");
-+	}
-+
-+	for (i = 0; i < RF_PATH_NUM_8852C; i++)
-+		for (j = 0; j < TSSI_TRIM_CH_GROUP_NUM; j++)
++		for (j = 0; j < TSSI_CCK_CH_GROUP_NUM; j++)
 +			rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+				    "[TSSI] path=%d idx=%d trim=0x%x addr=0x%x\n",
-+				    i, j, tssi->tssi_trim[i][j],
-+				    tssi_trim_addr[i] - j);
-+}
++				    "[TSSI][EFUSE] path=%d cck[%d]=0x%x\n",
++				    i, j, tssi->tssi_cck[i][j]);
 +
-+static void rtw8852c_phycap_parsing_thermal_trim(struct rtw89_dev *rtwdev,
-+						 u8 *phycap_map)
-+{
-+	struct rtw89_power_trim_info *info = &rtwdev->pwr_trim;
-+	static const u32 thm_trim_addr[RF_PATH_NUM_8852C] = {0x5DF, 0x5DC};
-+	u32 addr = rtwdev->chip->phycap_addr;
-+	u8 i;
++		memcpy(tssi->tssi_mcs[i], ofst[i]->bw40_tssi,
++		       sizeof(ofst[i]->bw40_tssi));
++		memcpy(tssi->tssi_mcs[i] + TSSI_MCS_2G_CH_GROUP_NUM,
++		       ofst[i]->bw40_1s_tssi_5g, sizeof(ofst[i]->bw40_1s_tssi_5g));
++		memcpy(tssi->tssi_6g_mcs[i], bw40_1s_tssi_6g_ofst[i],
++		       sizeof(tssi->tssi_6g_mcs[i]));
 +
-+	for (i = 0; i < RF_PATH_NUM_8852C; i++) {
-+		info->thermal_trim[i] = phycap_map[thm_trim_addr[i] - addr];
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+			    "[THERMAL][TRIM] path=%d thermal_trim=0x%x\n",
-+			    i, info->thermal_trim[i]);
-+
-+		if (info->thermal_trim[i] != 0xff)
-+			info->pg_thermal_trim = true;
++		for (j = 0; j < TSSI_MCS_CH_GROUP_NUM; j++)
++			rtw89_debug(rtwdev, RTW89_DBG_TSSI,
++				    "[TSSI][EFUSE] path=%d mcs[%d]=0x%x\n",
++				    i, j, tssi->tssi_mcs[i][j]);
 +	}
 +}
 +
-+static void rtw8852c_thermal_trim(struct rtw89_dev *rtwdev)
++static int rtw8852c_read_efuse(struct rtw89_dev *rtwdev, u8 *log_map)
 +{
-+#define __thm_setting(raw)				\
-+({							\
-+	u8 __v = (raw);					\
-+	((__v & 0x1) << 3) | ((__v & 0x1f) >> 1);	\
-+})
-+	struct rtw89_power_trim_info *info = &rtwdev->pwr_trim;
-+	u8 i, val;
++	struct rtw89_efuse *efuse = &rtwdev->efuse;
++	struct rtw8852c_efuse *map;
 +
-+	if (!info->pg_thermal_trim) {
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+			    "[THERMAL][TRIM] no PG, do nothing\n");
++	map = (struct rtw8852c_efuse *)log_map;
 +
-+		return;
++	efuse->country_code[0] = map->country_code[0];
++	efuse->country_code[1] = map->country_code[1];
++	rtw8852c_efuse_parsing_tssi(rtwdev, map);
++
++	switch (rtwdev->hci.type) {
++	case RTW89_HCI_TYPE_PCIE:
++		rtw8852c_e_efuse_parsing(efuse, map);
++		break;
++	default:
++		return -ENOTSUPP;
 +	}
 +
-+	for (i = 0; i < RF_PATH_NUM_8852C; i++) {
-+		val = __thm_setting(info->thermal_trim[i]);
-+		rtw89_write_rf(rtwdev, i, RR_TM2, RR_TM2_OFF, val);
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+			    "[THERMAL][TRIM] path=%d thermal_setting=0x%x\n",
-+			    i, val);
-+	}
-+#undef __thm_setting
-+}
-+
-+static void rtw8852c_phycap_parsing_pa_bias_trim(struct rtw89_dev *rtwdev,
-+						 u8 *phycap_map)
-+{
-+	struct rtw89_power_trim_info *info = &rtwdev->pwr_trim;
-+	static const u32 pabias_trim_addr[RF_PATH_NUM_8852C] = {0x5DE, 0x5DB};
-+	u32 addr = rtwdev->chip->phycap_addr;
-+	u8 i;
-+
-+	for (i = 0; i < RF_PATH_NUM_8852C; i++) {
-+		info->pa_bias_trim[i] = phycap_map[pabias_trim_addr[i] - addr];
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+			    "[PA_BIAS][TRIM] path=%d pa_bias_trim=0x%x\n",
-+			    i, info->pa_bias_trim[i]);
-+
-+		if (info->pa_bias_trim[i] != 0xff)
-+			info->pg_pa_bias_trim = true;
-+	}
-+}
-+
-+static void rtw8852c_pa_bias_trim(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_power_trim_info *info = &rtwdev->pwr_trim;
-+	u8 pabias_2g, pabias_5g;
-+	u8 i;
-+
-+	if (!info->pg_pa_bias_trim) {
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+			    "[PA_BIAS][TRIM] no PG, do nothing\n");
-+
-+		return;
-+	}
-+
-+	for (i = 0; i < RF_PATH_NUM_8852C; i++) {
-+		pabias_2g = FIELD_GET(GENMASK(3, 0), info->pa_bias_trim[i]);
-+		pabias_5g = FIELD_GET(GENMASK(7, 4), info->pa_bias_trim[i]);
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+			    "[PA_BIAS][TRIM] path=%d 2G=0x%x 5G=0x%x\n",
-+			    i, pabias_2g, pabias_5g);
-+
-+		rtw89_write_rf(rtwdev, i, RR_BIASA, RR_BIASA_TXG, pabias_2g);
-+		rtw89_write_rf(rtwdev, i, RR_BIASA, RR_BIASA_TXA, pabias_5g);
-+	}
-+}
-+
-+static int rtw8852c_read_phycap(struct rtw89_dev *rtwdev, u8 *phycap_map)
-+{
-+	rtw8852c_phycap_parsing_tssi(rtwdev, phycap_map);
-+	rtw8852c_phycap_parsing_thermal_trim(rtwdev, phycap_map);
-+	rtw8852c_phycap_parsing_pa_bias_trim(rtwdev, phycap_map);
++	rtw89_info(rtwdev, "chip rfe_type is %d\n", efuse->rfe_type);
 +
 +	return 0;
 +}
 +
-+static void rtw8852c_power_trim(struct rtw89_dev *rtwdev)
-+{
-+	rtw8852c_thermal_trim(rtwdev);
-+	rtw8852c_pa_bias_trim(rtwdev);
-+}
-+
+ static void rtw8852c_phycap_parsing_tssi(struct rtw89_dev *rtwdev, u8 *phycap_map)
+ {
+ 	struct rtw89_tssi_info *tssi = &rtwdev->tssi;
+@@ -368,6 +434,7 @@ static void rtw8852c_power_trim(struct rtw89_dev *rtwdev)
+ }
+ 
  static const struct rtw89_chip_ops rtw8852c_chip_ops = {
-+	.read_phycap		= rtw8852c_read_phycap,
-+	.power_trim		= rtw8852c_power_trim,
++	.read_efuse		= rtw8852c_read_efuse,
+ 	.read_phycap		= rtw8852c_read_phycap,
+ 	.power_trim		= rtw8852c_power_trim,
  	.pwr_on_func		= rtw8852c_pwr_on_func,
- 	.pwr_off_func		= rtw8852c_pwr_off_func,
- };
-@@ -230,6 +387,8 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
- 	.limit_efuse_size	= 1280,
- 	.dav_phy_efuse_size	= 96,
- 	.dav_log_efuse_size	= 16,
-+	.phycap_addr		= 0x590,
-+	.phycap_size		= 0x60,
- 	.hci_func_en_addr	= R_AX_HCI_FUNC_EN_V1,
- 	.h2c_ctrl_reg		= R_AX_H2CREG_CTRL_V1,
- 	.h2c_regs		= rtw8852c_h2c_regs,
 diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.h b/drivers/net/wireless/realtek/rtw89/rtw8852c.h
-index 68a397223a814..8abca49e6c84b 100644
+index 8abca49e6c84b..d0594716040bc 100644
 --- a/drivers/net/wireless/realtek/rtw89/rtw8852c.h
 +++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.h
-@@ -7,6 +7,8 @@
+@@ -9,6 +9,68 @@
  
- #include "core.h"
+ #define RF_PATH_NUM_8852C 2
  
-+#define RF_PATH_NUM_8852C 2
++struct rtw8852c_u_efuse {
++	u8 rsvd[0x38];
++	u8 mac_addr[ETH_ALEN];
++};
++
++struct rtw8852c_e_efuse {
++	u8 mac_addr[ETH_ALEN];
++};
++
++struct rtw8852c_tssi_offset {
++	u8 cck_tssi[TSSI_CCK_CH_GROUP_NUM];
++	u8 bw40_tssi[TSSI_MCS_2G_CH_GROUP_NUM];
++	u8 rsvd[7];
++	u8 bw40_1s_tssi_5g[TSSI_MCS_5G_CH_GROUP_NUM];
++} __packed;
++
++struct rtw8852c_efuse {
++	u8 rsvd[0x210];
++	struct rtw8852c_tssi_offset path_a_tssi;
++	u8 rsvd1[10];
++	struct rtw8852c_tssi_offset path_b_tssi;
++	u8 rsvd2[94];
++	u8 channel_plan;
++	u8 xtal_k;
++	u8 rsvd3;
++	u8 iqk_lck;
++	u8 rsvd4[5];
++	u8 reg_setting:2;
++	u8 tx_diversity:1;
++	u8 rx_diversity:2;
++	u8 ac_mode:1;
++	u8 module_type:2;
++	u8 rsvd5;
++	u8 shared_ant:1;
++	u8 coex_type:3;
++	u8 ant_iso:1;
++	u8 radio_on_off:1;
++	u8 rsvd6:2;
++	u8 eeprom_version;
++	u8 customer_id;
++	u8 tx_bb_swing_2g;
++	u8 tx_bb_swing_5g;
++	u8 tx_cali_pwr_trk_mode;
++	u8 trx_path_selection;
++	u8 rfe_type;
++	u8 country_code[2];
++	u8 rsvd7[3];
++	u8 path_a_therm;
++	u8 path_b_therm;
++	u8 rsvd8[46];
++	u8 bw40_1s_tssi_6g_a[TSSI_MCS_6G_CH_GROUP_NUM];
++	u8 rsvd9[10];
++	u8 bw40_1s_tssi_6g_b[TSSI_MCS_6G_CH_GROUP_NUM];
++	u8 rsvd10[110];
++	u8 channel_plan_6g;
++	u8 rsvd11[71];
++	union {
++		struct rtw8852c_u_efuse u;
++		struct rtw8852c_e_efuse e;
++	};
++} __packed;
 +
  extern const struct rtw89_chip_info rtw8852c_chip_info;
  
