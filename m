@@ -2,43 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F6094CE118
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Mar 2022 00:42:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EA024CE340
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Mar 2022 07:20:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbiCDXn1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Mar 2022 18:43:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46130 "EHLO
+        id S230520AbiCEGSJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 5 Mar 2022 01:18:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbiCDXn0 (ORCPT
+        with ESMTP id S229456AbiCEGSI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Mar 2022 18:43:26 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73B61BBB
-        for <linux-wireless@vger.kernel.org>; Fri,  4 Mar 2022 15:42:33 -0800 (PST)
-X-UUID: bb59bc860c4f460ab9d547d55e5cffd1-20220305
-X-UUID: bb59bc860c4f460ab9d547d55e5cffd1-20220305
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 555538357; Sat, 05 Mar 2022 07:42:26 +0800
+        Sat, 5 Mar 2022 01:18:08 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91C64182DAD
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Mar 2022 22:17:15 -0800 (PST)
+X-UUID: ca4879053cb9453bb3fde6236149be35-20220305
+X-UUID: ca4879053cb9453bb3fde6236149be35-20220305
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1602392950; Sat, 05 Mar 2022 14:17:09 +0800
 Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sat, 5 Mar 2022 07:42:25 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 5 Mar 2022 14:17:08 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 5 Mar 2022 07:42:25 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
+ Transport; Sat, 5 Mar 2022 14:17:08 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <Deren.Wu@mediatek.com>, <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7915: allow beaconing on all chains
-Date:   Sat, 5 Mar 2022 07:42:24 +0800
-Message-ID: <7dcbe1ef9dd396883ae6caf98b138c5a30429b94.1646437090.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Sean Wang <sean.wang@mediatek.com>
+Subject: Re: [PATCH 0/9] introduce mt7921u driver
+Date:   Sat, 5 Mar 2022 14:17:07 +0800
+Message-ID: <1646461027-5374-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <cover.1646235785.git.lorenzo@kernel.org>
+References: <cover.1646235785.git.lorenzo@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
@@ -51,25 +50,49 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This improves rate reach performance on units with polarized antennas.
+From: Sean Wang <sean.wang@mediatek.com>
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 1 +
- 1 file changed, 1 insertion(+)
+>Introduce support for MT7921U 802.11ax 2x2:2SS wireless devices.
+>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 1da551f0b389..71e889b56581 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1101,6 +1101,7 @@ mt7915_mac_write_txwi_80211(struct mt7915_dev *dev, __le32 *txwi,
- 	if (ieee80211_is_beacon(fc)) {
- 		txwi[3] &= ~cpu_to_le32(MT_TXD3_SW_POWER_MGMT);
- 		txwi[3] |= cpu_to_le32(MT_TXD3_REM_TX_COUNT);
-+		txwi[7] |= cpu_to_le32(FIELD_PREP(MT_TXD7_SPE_IDX, 0x18));
- 	}
- 
- 	if (info->flags & IEEE80211_TX_CTL_INJECTED) {
--- 
-2.29.2
+Tested the whole series with sta and monitor mode and it is working well.
+
+Tested-by: Sean Wang <sean.wang@mediatek.com>
+
+>Lorenzo Bianconi (9):
+>  mt76: usb: add req_type to ___mt76u_rr signature
+>  mt76: usb: add req_type to ___mt76u_wr signature
+>  mt76: usb: introduce __mt76u_init utility routine
+>  mt76: mt7921: disable runtime pm for usb
+>  mt76: mt7921: update mt7921_skb_add_usb_sdio_hdr to support usb
+>  mt76: mt7921: move mt7921_usb_sdio_tx_prepare_skb in common mac code
+>  mt76: mt7921: move mt7921_usb_sdio_tx_complete_skb in common mac code.
+>  mt76: mt7921: move mt7921_usb_sdio_tx_status_data in mac common code.
+>  mt76: mt7921: add mt7921u driver
+>
+> drivers/net/wireless/mediatek/mt76/mt76.h     |  12 +-
+> .../net/wireless/mediatek/mt76/mt7615/usb.c   |  68 ++-
+> .../net/wireless/mediatek/mt76/mt76x0/usb.c   |   2 +-
+> .../net/wireless/mediatek/mt76/mt76x2/usb.c   |   2 +-
+> .../net/wireless/mediatek/mt76/mt7921/Kconfig |  11 +
+> .../wireless/mediatek/mt76/mt7921/Makefile    |   2 +
+> .../wireless/mediatek/mt76/mt7921/debugfs.c   |   6 +
+> .../net/wireless/mediatek/mt76/mt7921/init.c  |  12 +-
+> .../net/wireless/mediatek/mt76/mt7921/mac.c   |  91 ++++
+> .../net/wireless/mediatek/mt76/mt7921/mac.h   |   1 +
+> .../net/wireless/mediatek/mt76/mt7921/main.c  |   3 +-
+> .../wireless/mediatek/mt76/mt7921/mt7921.h    |  25 +-
+> .../net/wireless/mediatek/mt76/mt7921/regs.h  |  36 +-
+> .../net/wireless/mediatek/mt76/mt7921/sdio.c  |   6 +-
+> .../wireless/mediatek/mt76/mt7921/sdio_mac.c  |  83 ----
+> .../wireless/mediatek/mt76/mt7921/sdio_mcu.c  |   2 +-
+> .../net/wireless/mediatek/mt76/mt7921/usb.c   | 397 ++++++++++++++++++
+> drivers/net/wireless/mediatek/mt76/usb.c      | 125 ++----
+> 18 files changed, 689 insertions(+), 195 deletions(-)  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+>
+>--
+>2.35.1
+>
+>
+
 
