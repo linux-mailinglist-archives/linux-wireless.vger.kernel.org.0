@@ -2,44 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E860B4CE58D
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Mar 2022 16:38:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F4C14CE58E
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Mar 2022 16:38:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231939AbiCEPjk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 5 Mar 2022 10:39:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38958 "EHLO
+        id S231942AbiCEPjm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 5 Mar 2022 10:39:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229885AbiCEPjk (ORCPT
+        with ESMTP id S229885AbiCEPjm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 5 Mar 2022 10:39:40 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A50F23BEF
-        for <linux-wireless@vger.kernel.org>; Sat,  5 Mar 2022 07:38:49 -0800 (PST)
+        Sat, 5 Mar 2022 10:39:42 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FCA223BEF
+        for <linux-wireless@vger.kernel.org>; Sat,  5 Mar 2022 07:38:51 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4D883B80C8B
-        for <linux-wireless@vger.kernel.org>; Sat,  5 Mar 2022 15:38:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605FDC340EE;
-        Sat,  5 Mar 2022 15:38:45 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0BF4FB80C8D
+        for <linux-wireless@vger.kernel.org>; Sat,  5 Mar 2022 15:38:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D2EC004E1;
+        Sat,  5 Mar 2022 15:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646494726;
-        bh=kiAGpf+4zwJ+zHiQl7xLk7QVnsQZlXGbdf0DELrdgHY=;
+        s=k20201202; t=1646494728;
+        bh=7ghIDG7930tgRqC4mgjloK/gSp+YSv4hNVjtC4qVZ9Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XCHRhXbSe5MVNe5VeBA54DAnj0wfSBBnpLaOAHehYStFgSm+PkE5YjPaRHRt+PBnD
-         MHPmNM1rjvUxbRLHzZsPOvj62rhSIT7rSM0/UPZhQdoEpwG7yD32U9RFehAl8uV54a
-         RHSZZfwd+SBYQHm2Qk0cQTFdyIZ32OQXrIYseXjcUzNTVvdHtwVMWy9iOizQmOfTFv
-         ZxCHKCXHcdF6l1SoD9/xqN2DWTOYg1+nCPFb4bh4nrc3+zj5+qQ960OkjRoWw0ea+s
-         1ScX+5dtZRzqOuQPGLzALvLHhA4bhmZoyswhr6012JUxt+Nhze6VgaID459XyxFzFU
-         6ohY/AetIH4EQ==
+        b=NNnG/gc0YH6gmEnlPgEgijojtim8ciwYZVSnRZ6oC7c2eiDgHHKxVqxxlgTFMQ5k7
+         MvqMZJt+Lq+Ao1utthjPyrfV0Ghue62ojU2qWPgjCeP635LsaO+r3a6ClozSGwCeV2
+         Z5l5nHihgCJKm79WHB2ouaR3g191g1VN+AT/ORycqX+p9rvxXzPnPZ4YysN5X8bCMr
+         AG+51AcIHxGVytuJgKdwFw2D8TzhHUsTrmdmzebWTyVJCbCCmAisK4iPAjJ0E2pVTP
+         Jban404sJDAHDjM+JQJ2/aDyqL3OYIbFGL+mHZo7y7yQ5raGDj+0tzwj3skh4OVdoQ
+         Pj4wQep2Ln/YQ==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com, deren.wu@mediatek.com,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH v2 1/9] mt76: usb: add req_type to ___mt76u_rr signature
-Date:   Sat,  5 Mar 2022 16:38:11 +0100
-Message-Id: <0f0e5852ee9b8cc7b8c99eb31ccec2d015ce9f81.1646494452.git.lorenzo@kernel.org>
+Subject: [PATCH v2 2/9] mt76: usb: add req_type to ___mt76u_wr signature
+Date:   Sat,  5 Mar 2022 16:38:12 +0100
+Message-Id: <8e36680d6f280108d264a0166957f3f12b2c731f.1646494452.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <cover.1646494452.git.lorenzo@kernel.org>
 References: <cover.1646494452.git.lorenzo@kernel.org>
@@ -60,64 +60,63 @@ This is a preliminary patch to add usb support to mt7921 driver.
 Tested-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/usb.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/net/wireless/mediatek/mt76/usb.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index 0a7006c8959b..1b0435e0ea33 100644
+index 1b0435e0ea33..4b7a816f1b93 100644
 --- a/drivers/net/wireless/mediatek/mt76/usb.c
 +++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -62,16 +62,15 @@ int mt76u_vendor_request(struct mt76_dev *dev, u8 req,
+@@ -121,16 +121,14 @@ static u32 mt76u_rr_ext(struct mt76_dev *dev, u32 addr)
+ 	return ret;
  }
- EXPORT_SYMBOL_GPL(mt76u_vendor_request);
  
--static u32 ___mt76u_rr(struct mt76_dev *dev, u8 req, u32 addr)
-+static u32 ___mt76u_rr(struct mt76_dev *dev, u8 req, u8 req_type,
-+		       u32 addr)
+-static void ___mt76u_wr(struct mt76_dev *dev, u8 req,
++static void ___mt76u_wr(struct mt76_dev *dev, u8 req, u8 req_type,
+ 			u32 addr, u32 val)
  {
  	struct mt76_usb *usb = &dev->usb;
- 	u32 data = ~0;
- 	int ret;
  
--	ret = __mt76u_vendor_request(dev, req,
--				     USB_DIR_IN | USB_TYPE_VENDOR,
--				     addr >> 16, addr, usb->data,
--				     sizeof(__le32));
-+	ret = __mt76u_vendor_request(dev, req, req_type, addr >> 16,
-+				     addr, usb->data, sizeof(__le32));
- 	if (ret == sizeof(__le32))
- 		data = get_unaligned_le32(usb->data);
- 	trace_usb_reg_rr(dev, addr, data);
-@@ -95,7 +94,8 @@ static u32 __mt76u_rr(struct mt76_dev *dev, u32 addr)
- 		break;
- 	}
- 
--	return ___mt76u_rr(dev, req, addr & ~MT_VEND_TYPE_MASK);
-+	return ___mt76u_rr(dev, req, USB_DIR_IN | USB_TYPE_VENDOR,
-+			   addr & ~MT_VEND_TYPE_MASK);
+ 	put_unaligned_le32(val, usb->data);
+-	__mt76u_vendor_request(dev, req,
+-			       USB_DIR_OUT | USB_TYPE_VENDOR,
+-			       addr >> 16, addr, usb->data,
+-			       sizeof(__le32));
++	__mt76u_vendor_request(dev, req, req_type, addr >> 16,
++			       addr, usb->data, sizeof(__le32));
+ 	trace_usb_reg_wr(dev, addr, val);
  }
  
- static u32 mt76u_rr(struct mt76_dev *dev, u32 addr)
-@@ -114,7 +114,8 @@ static u32 mt76u_rr_ext(struct mt76_dev *dev, u32 addr)
- 	u32 ret;
+@@ -146,7 +144,8 @@ static void __mt76u_wr(struct mt76_dev *dev, u32 addr, u32 val)
+ 		req = MT_VEND_MULTI_WRITE;
+ 		break;
+ 	}
+-	___mt76u_wr(dev, req, addr & ~MT_VEND_TYPE_MASK, val);
++	___mt76u_wr(dev, req, USB_DIR_OUT | USB_TYPE_VENDOR,
++		    addr & ~MT_VEND_TYPE_MASK, val);
+ }
  
- 	mutex_lock(&dev->usb.usb_ctrl_mtx);
--	ret = ___mt76u_rr(dev, MT_VEND_READ_EXT, addr);
-+	ret = ___mt76u_rr(dev, MT_VEND_READ_EXT,
-+			  USB_DIR_IN | USB_TYPE_VENDOR, addr);
- 	mutex_unlock(&dev->usb.usb_ctrl_mtx);
- 
- 	return ret;
-@@ -177,7 +178,8 @@ static u32 mt76u_rmw_ext(struct mt76_dev *dev, u32 addr,
- 			 u32 mask, u32 val)
+ static void mt76u_wr(struct mt76_dev *dev, u32 addr, u32 val)
+@@ -159,7 +158,8 @@ static void mt76u_wr(struct mt76_dev *dev, u32 addr, u32 val)
+ static void mt76u_wr_ext(struct mt76_dev *dev, u32 addr, u32 val)
  {
  	mutex_lock(&dev->usb.usb_ctrl_mtx);
--	val |= ___mt76u_rr(dev, MT_VEND_READ_EXT, addr) & ~mask;
-+	val |= ___mt76u_rr(dev, MT_VEND_READ_EXT,
-+			   USB_DIR_IN | USB_TYPE_VENDOR, addr) & ~mask;
- 	___mt76u_wr(dev, MT_VEND_WRITE_EXT, addr, val);
+-	___mt76u_wr(dev, MT_VEND_WRITE_EXT, addr, val);
++	___mt76u_wr(dev, MT_VEND_WRITE_EXT,
++		    USB_DIR_OUT | USB_TYPE_VENDOR, addr, val);
+ 	mutex_unlock(&dev->usb.usb_ctrl_mtx);
+ }
+ 
+@@ -180,7 +180,8 @@ static u32 mt76u_rmw_ext(struct mt76_dev *dev, u32 addr,
+ 	mutex_lock(&dev->usb.usb_ctrl_mtx);
+ 	val |= ___mt76u_rr(dev, MT_VEND_READ_EXT,
+ 			   USB_DIR_IN | USB_TYPE_VENDOR, addr) & ~mask;
+-	___mt76u_wr(dev, MT_VEND_WRITE_EXT, addr, val);
++	___mt76u_wr(dev, MT_VEND_WRITE_EXT,
++		    USB_DIR_OUT | USB_TYPE_VENDOR, addr, val);
  	mutex_unlock(&dev->usb.usb_ctrl_mtx);
  
+ 	return val;
 -- 
 2.35.1
 
