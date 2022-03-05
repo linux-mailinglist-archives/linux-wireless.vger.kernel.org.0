@@ -2,73 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D6E94CE762
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Mar 2022 23:13:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F416D4CE75F
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Mar 2022 23:13:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232715AbiCEWOL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 5 Mar 2022 17:14:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50922 "EHLO
+        id S232728AbiCEWOO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 5 Mar 2022 17:14:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232707AbiCEWOJ (ORCPT
+        with ESMTP id S229480AbiCEWOL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 5 Mar 2022 17:14:09 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA0B651E72;
-        Sat,  5 Mar 2022 14:13:18 -0800 (PST)
+        Sat, 5 Mar 2022 17:14:11 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED73B546B3;
+        Sat,  5 Mar 2022 14:13:20 -0800 (PST)
 From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1646518395;
+        s=2020; t=1646518397;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=K6RsnwD/BCzH5WC8kzG/RcEEnIxeuBZkPWilYKAkaIA=;
-        b=19SAR6XmxUBramFZyCy1np5zMmBB3Gw5a/tfCzzKpkbCigHriL+nnH5cgsgk/pe2IMWmO3
-        QU8pqgK5jlQ34nP8ofDcByl3d0bNcmOl9fl5Pkay3kaMDBsaZdNGLGlMwnBH73D2hgJeSj
-        s86UAJXgvzBCpKie+0oPVJf/h51lSPBKf4BjdQfXL4OCwIICEoDhb6tO9M/Eq/KUADzQaw
-        x06b2X+fKTPlromrFZLilV573RI6/2PHFYy9x8Tr1yi7VyrpKUVs1RXomYc92DD2pkNhRP
-        jrhXMQGSqpTSuihSBS3fLupM0XWwEelKOl6kWmzJL+BRWN74HzCG96iXwBfAxA==
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=fWJ4eL0KoZxJYMwAyKWO1nG6ZN9tjd/6bd/n5PNPxCY=;
+        b=HoBZTDICpvaPF0tfqo+4orcMSAM+lfs8ANaemljwkjEoLlpvJ7uiDGNmkcOnVuRipVj0LK
+        pVkBKzlCwXkSm1l8nt50jeixKyrrJZBTe2NT4D4ZIu8HUuf6+5F2QRxBR+NjEOgmVhKSF/
+        Lq4WgCkLO5s3c2pmTpzu3nzEOUs477vcR3/E6NS/MkMlT3PqSYhnPyfgTyOQBupykFiBGq
+        vUhP6P9hGMWsFvpisaqhWos5bHQ+N+R2GoXm5LhUAVWsdPUR8jS1eWtzIOt75HtVz1IYis
+        oI8O7fxDeVcvPU+AnkmZKvhygcxKI6bwoxh8tFpyyZPM+rCpFUpW6lwiCou1hA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1646518395;
+        s=2020e; t=1646518397;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=K6RsnwD/BCzH5WC8kzG/RcEEnIxeuBZkPWilYKAkaIA=;
-        b=0b628Q7I/sf6Ay3zX05/3px2i3BWkvu3PAZfEOkGogLsjLNBGytZf+tzG5fkg4GDbuAc+1
-        Ahs7B8uSJWPVcVAQ==
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=fWJ4eL0KoZxJYMwAyKWO1nG6ZN9tjd/6bd/n5PNPxCY=;
+        b=Sh8e8MO/7R2jHY088bl8kw2CFaByJjfY6Z8AwgYn9wEoBVnY0QechawADDT4wSNAVPWtmD
+        wF/0l0MC1qfGa2CA==
 To:     netdev@vger.kernel.org
 Cc:     "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Arend van Spriel <aspriel@gmail.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jeremy Kerr <jk@codeconstruct.com.au>,
-        Johannes Berg <johannes@sipsolutions.net>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Kalle Valo <kvalo@kernel.org>,
-        libertas-dev@lists.infradead.org, linux-can@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Matt Johnston <matt@codeconstruct.com.au>,
         Maya Erez <merez@codeaurora.org>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Radu Pirea <radu-nicolae.pirea@oss.nxp.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        SHA-cyfmac-dev-list@infineon.com,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        wil6210@qti.qualcomm.com, Wolfgang Grandegger <wg@grandegger.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Xinming Hu <huxinming820@gmail.com>
-Subject: [PATCH net-next 0/8] net: Convert user to netif_rx(), part 2.
-Date:   Sat,  5 Mar 2022 23:12:44 +0100
-Message-Id: <20220305221252.3063812-1-bigeasy@linutronix.de>
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
+Subject: [PATCH net-next 5/8] wireless: Atheros: Use netif_rx().
+Date:   Sat,  5 Mar 2022 23:12:49 +0100
+Message-Id: <20220305221252.3063812-6-bigeasy@linutronix.de>
+In-Reply-To: <20220305221252.3063812-1-bigeasy@linutronix.de>
+References: <20220305221252.3063812-1-bigeasy@linutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -81,44 +62,71 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is the second batch of converting netif_rx_ni() caller to
-netif_rx(). The change making this possible is net-next and
-netif_rx_ni() is a wrapper around netif_rx(). This is a clean up in
-order to remove netif_rx_ni().
+Since commit
+   baebdf48c3600 ("net: dev: Makes sure netif_rx() can be invoked in any co=
+ntext.")
 
-The brcmfmac changes are slilghtly larger because the inirq parameter
-can be removed.
+the function netif_rx() can be used in preemptible/thread context as
+well as in interrupt context.
 
-Cc: Amitkumar Karwar <amitkarwar@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>
-Cc: Arend van Spriel <aspriel@gmail.com>
-Cc: brcm80211-dev-list.pdl@broadcom.com
-Cc: Chi-hsien Lin <chi-hsien.lin@infineon.com>
-Cc: Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
-Cc: Franky Lin <franky.lin@broadcom.com>
-Cc: Ganapathi Bhat <ganapathi017@gmail.com>
-Cc: Hante Meuleman <hante.meuleman@broadcom.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Jeremy Kerr <jk@codeconstruct.com.au>
-Cc: Johannes Berg <johannes@sipsolutions.net>
+Use netif_rx().
+
 Cc: Kalle Valo <kvalo@kernel.org>
-Cc: libertas-dev@lists.infradead.org
-Cc: linux-can@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Matt Johnston <matt@codeconstruct.com.au>
 Cc: Maya Erez <merez@codeaurora.org>
-Cc: Oliver Hartkopp <socketcan@hartkopp.net>
-Cc: Radu Pirea <radu-nicolae.pirea@oss.nxp.com>
-Cc: Richard Cochran <richardcochran@gmail.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: SHA-cyfmac-dev-list@infineon.com
-Cc: Sharvari Harisangam <sharvari.harisangam@nxp.com>
+Cc: linux-wireless@vger.kernel.org
 Cc: wil6210@qti.qualcomm.com
-Cc: Wolfgang Grandegger <wg@grandegger.com>
-Cc: Wright Feng <wright.feng@infineon.com>
-Cc: Xinming Hu <huxinming820@gmail.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ drivers/net/wireless/ath/ath6kl/txrx.c  | 2 +-
+ drivers/net/wireless/ath/wil6210/txrx.c | 2 +-
+ drivers/net/wireless/ath/wil6210/wmi.c  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-
-Sebastian
+diff --git a/drivers/net/wireless/ath/ath6kl/txrx.c b/drivers/net/wireless/=
+ath/ath6kl/txrx.c
+index b22ed499f7ba7..a56fab6232a9b 100644
+--- a/drivers/net/wireless/ath/ath6kl/txrx.c
++++ b/drivers/net/wireless/ath/ath6kl/txrx.c
+@@ -839,7 +839,7 @@ static void ath6kl_deliver_frames_to_nw_stack(struct ne=
+t_device *dev,
+=20
+ 	skb->protocol =3D eth_type_trans(skb, skb->dev);
+=20
+-	netif_rx_ni(skb);
++	netif_rx(skb);
+ }
+=20
+ static void ath6kl_alloc_netbufs(struct sk_buff_head *q, u16 num)
+diff --git a/drivers/net/wireless/ath/wil6210/txrx.c b/drivers/net/wireless=
+/ath/wil6210/txrx.c
+index cc830c795b33c..5704defd7be1b 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx.c
++++ b/drivers/net/wireless/ath/wil6210/txrx.c
+@@ -958,7 +958,7 @@ void wil_netif_rx(struct sk_buff *skb, struct net_devic=
+e *ndev, int cid,
+ 		if (gro)
+ 			napi_gro_receive(&wil->napi_rx, skb);
+ 		else
+-			netif_rx_ni(skb);
++			netif_rx(skb);
+ 	}
+ 	ndev->stats.rx_packets++;
+ 	stats->rx_packets++;
+diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/=
+ath/wil6210/wmi.c
+index dd8abbb288497..98b4c189eeccb 100644
+--- a/drivers/net/wireless/ath/wil6210/wmi.c
++++ b/drivers/net/wireless/ath/wil6210/wmi.c
+@@ -1199,7 +1199,7 @@ static void wmi_evt_eapol_rx(struct wil6210_vif *vif,=
+ int id, void *d, int len)
+ 	eth->h_proto =3D cpu_to_be16(ETH_P_PAE);
+ 	skb_put_data(skb, evt->eapol, eapol_len);
+ 	skb->protocol =3D eth_type_trans(skb, ndev);
+-	if (likely(netif_rx_ni(skb) =3D=3D NET_RX_SUCCESS)) {
++	if (likely(netif_rx(skb) =3D=3D NET_RX_SUCCESS)) {
+ 		ndev->stats.rx_packets++;
+ 		ndev->stats.rx_bytes +=3D sz;
+ 		if (stats) {
+--=20
+2.35.1
 
