@@ -2,107 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D15A4CEBA3
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Mar 2022 14:10:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41E264CEF1C
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Mar 2022 02:28:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233618AbiCFNKp convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 6 Mar 2022 08:10:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60798 "EHLO
+        id S234593AbiCGB33 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Mar 2022 20:29:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229588AbiCFNKo (ORCPT
+        with ESMTP id S233960AbiCGB32 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 6 Mar 2022 08:10:44 -0500
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9BB5424A8;
-        Sun,  6 Mar 2022 05:09:50 -0800 (PST)
-Received: from relay12.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::232])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id B1D8CC9CAD;
-        Sun,  6 Mar 2022 13:00:15 +0000 (UTC)
-Received: (Authenticated sender: pbl@bestov.io)
-        by mail.gandi.net (Postfix) with ESMTPSA id AC7DF200007;
-        Sun,  6 Mar 2022 13:00:09 +0000 (UTC)
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Type: text/plain; charset=UTF-8
-Date:   Sun, 06 Mar 2022 14:00:08 +0100
-Message-Id: <CICSX6EXTZ6U.MYGFTUDU5ZKW@enhorning>
-From:   "Riccardo Paolo Bestetti" <pbl@bestov.io>
-To:     <pbl@bestov.io>
-Cc:     <nbd@nbd.name>, <lorenzo.bianconi83@gmail.com>,
-        <ryder.lee@mediatek.com>, <shayne.chen@mediatek.com>,
-        <sean.wang@mediatek.com>, <kvalo@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: MK7921K de-auths from AP every 5 minutes
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Sun, 6 Mar 2022 20:29:28 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AD0E1DA67
+        for <linux-wireless@vger.kernel.org>; Sun,  6 Mar 2022 17:28:33 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2271SFM90023817, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2271SFM90023817
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 7 Mar 2022 09:28:15 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17; Mon, 7 Mar 2022 09:28:15 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Mon, 7 Mar
+ 2022 09:28:14 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2] rtw89: declare HE capabilities in 6G band
+Date:   Mon, 7 Mar 2022 09:27:41 +0800
+Message-ID: <20220307012741.6371-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 03/07/2022 01:07:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvNiCkVaTIIDEwOjAwOjAw?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+To work properly in 6G band, declare HE 6G capabilities. Without this fix,
+it can only TX/RX with OFDM rates.
 
-I have recently installed an AMD RZ608 Wi-Fi card in my laptop. The card
-uses the MT7921K chipset from MediaTek. I'm running Arch Linux, using
-kernel 5.16.12-arch1-1. I'm using iwd 1.25-1 as my wireless daemon.
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+v2: use correct le16_encode_bits() and enums.
+---
+ drivers/net/wireless/realtek/rtw89/core.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-I'm experiencing de-auths every 5 minutes from my AP, which is a MikroTik
-RB962UiGS-5HacT2HnT running the latest firmware. This has a AR9888 wireless
-chip. It is indeed configured to update group keys every 5 minutes.
-
-All the de-auths happen with excellent signal and SNR (consistently 50dB
-or better as reported by the router, which is only a few meters apart
-form the laptop). My router is set up on a fixed channel, with fixed
-channel width 20MHz. The almost perfect periodicity also suggests that
-bad signal is not an issue at play.
-
-The kernel log does not report any messages from the driver. Only:
-
-Mar 06 12:19:21 enhorning kernel: wlan0: deauthenticated from 08:55:31:cc:23:c3 (Reason: 16=GROUP_KEY_HANDSHAKE_TIMEOUT)
-Mar 06 12:19:23 enhorning kernel: wlan0: authenticate with 08:55:31:cc:23:c3
-Mar 06 12:19:23 enhorning kernel: wlan0: send auth to 08:55:31:cc:23:c3 (try 1/3)
-Mar 06 12:19:23 enhorning kernel: wlan0: authenticated
-Mar 06 12:19:23 enhorning kernel: wlan0: associate with 08:55:31:cc:23:c3 (try 1/3)
-Mar 06 12:19:23 enhorning kernel: wlan0: RX AssocResp from 08:55:31:cc:23:c3 (capab=0x431 status=0 aid=2)
-Mar 06 12:19:24 enhorning kernel: wlan0: associated
-Mar 06 12:24:21 enhorning kernel: wlan0: deauthenticated from 08:55:31:cc:23:c3 (Reason: 16=GROUP_KEY_HANDSHAKE_TIMEOUT)
-Mar 06 12:24:23 enhorning kernel: wlan0: authenticate with 08:55:31:cc:23:c3
-Mar 06 12:24:23 enhorning kernel: wlan0: send auth to 08:55:31:cc:23:c3 (try 1/3)
-Mar 06 12:24:23 enhorning kernel: wlan0: authenticated
-Mar 06 12:24:23 enhorning kernel: wlan0: associate with 08:55:31:cc:23:c3 (try 1/3)
-Mar 06 12:24:23 enhorning kernel: wlan0: RX AssocResp from 08:55:31:cc:23:c3 (capab=0x431 status=0 aid=2)
-Mar 06 12:24:24 enhorning kernel: wlan0: associated
-Mar 06 12:29:21 enhorning kernel: wlan0: deauthenticated from 08:55:31:cc:23:c3 (Reason: 6=CLASS2_FRAME_FROM_NONAUTH_STA)
-Mar 06 12:29:28 enhorning kernel: wlan0: authenticate with 08:55:31:cc:23:c3
-Mar 06 12:29:28 enhorning kernel: wlan0: send auth to 08:55:31:cc:23:c3 (try 1/3)
-Mar 06 12:29:28 enhorning kernel: wlan0: authenticated
-Mar 06 12:29:28 enhorning kernel: wlan0: associate with 08:55:31:cc:23:c3 (try 1/3)
-Mar 06 12:29:28 enhorning kernel: wlan0: RX AssocResp from 08:55:31:cc:23:c3 (capab=0x431 status=0 aid=2)
-Mar 06 12:29:28 enhorning kernel: wlan0: associated
-
-Pretty much the same from the router:
-
-12:19:21:
-BE:1A:C2:58:95:F0@wlan2: disconnected, group key exchange timeout, signal strength -42
-
-12:24:21:
-BE:1A:C2:58:95:F0@wlan2: disconnected, group key exchange timeout, signal strength -42
-
-12:29:21:
-BE:1A:C2:58:95:F0@wlan2: disconnected, group key exchange timeout, signal strength -42
-
-
-I have other devices connected to the same access point without issue,
-and I can connect to other access points without issue. So I'm figuring
-this is an issue specific to the combination of this chip and the
-particular access point.
-
-I am not able to say whether the issue is in this driver, or with the
-access point. How might I go about finding out?
-
-Best regards,
-Riccardo P. Bestetti
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index a0086b14550a8..2a16e38e36151 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -2383,6 +2383,18 @@ static void rtw89_init_he_cap(struct rtw89_dev *rtwdev,
+ 			he_cap->he_mcs_nss_supp.tx_mcs_160 = cpu_to_le16(mcs_map);
+ 		}
+ 
++		if (band == NL80211_BAND_6GHZ) {
++			__le16 capa;
++
++			capa = le16_encode_bits(IEEE80211_HT_MPDU_DENSITY_NONE,
++						IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START) |
++			       le16_encode_bits(IEEE80211_VHT_MAX_AMPDU_1024K,
++						IEEE80211_HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP) |
++			       le16_encode_bits(IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454,
++						IEEE80211_HE_6GHZ_CAP_MAX_MPDU_LEN);
++			iftype_data[idx].he_6ghz_capa.capa = capa;
++		}
++
+ 		idx++;
+ 	}
+ 
+-- 
+2.25.1
 
