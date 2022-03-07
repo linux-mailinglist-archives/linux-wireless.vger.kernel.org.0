@@ -2,175 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A41A54CF00D
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Mar 2022 04:12:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E50024CF18C
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Mar 2022 07:06:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234945AbiCGDM6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 6 Mar 2022 22:12:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50432 "EHLO
+        id S235455AbiCGGGw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Mar 2022 01:06:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234944AbiCGDM6 (ORCPT
+        with ESMTP id S233203AbiCGGGv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 6 Mar 2022 22:12:58 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B2EC5E173
-        for <linux-wireless@vger.kernel.org>; Sun,  6 Mar 2022 19:12:04 -0800 (PST)
-X-UUID: 69cb0757943744a89ea43b6cc82b87b5-20220307
-X-UUID: 69cb0757943744a89ea43b6cc82b87b5-20220307
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-        (envelope-from <meichia.chiu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1220075755; Mon, 07 Mar 2022 11:11:59 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Mon, 7 Mar 2022 11:11:58 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 7 Mar 2022 11:11:58 +0800
-From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-Subject: [PATCH v2 4/4] mt76: mt7915: add txpower init for 6GHz
-Date:   Mon, 7 Mar 2022 11:11:25 +0800
-Message-ID: <20220307031125.2585-4-MeiChia.Chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20220307031125.2585-1-MeiChia.Chiu@mediatek.com>
-References: <20220307031125.2585-1-MeiChia.Chiu@mediatek.com>
+        Mon, 7 Mar 2022 01:06:51 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8EDD5E140
+        for <linux-wireless@vger.kernel.org>; Sun,  6 Mar 2022 22:05:55 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22765goN6022517, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22765goN6022517
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 7 Mar 2022 14:05:43 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Mon, 7 Mar 2022 14:05:42 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Mon, 7 Mar
+ 2022 14:05:42 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2 00/13] rtw89: generalize functions shared with 8852CE
+Date:   Mon, 7 Mar 2022 14:04:44 +0800
+Message-ID: <20220307060457.56789-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 03/07/2022 05:48:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvNyCkV6TIIDAzOjQ5OjAw?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+The existing common flow can share with 8852CE, so I add chip_info and
+chip_ops to share the functions that doesn't change the behavior of
+existing chip 8852AE.
 
-Add support to init txpower values of 6GHz band.
+In this patchset, I add 8852c files and add chip_info/chip_ops along with
+the process to generalize functions. But, I don't build the files, because
+it doesn't work unless I have all necessary chip information and functions.
 
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/eeprom.c    | 15 +++++++++++----
- .../net/wireless/mediatek/mt76/mt7915/eeprom.h    | 13 ++++++++++++-
- drivers/net/wireless/mediatek/mt76/mt7915/init.c  |  2 ++
- 3 files changed, 25 insertions(+), 5 deletions(-)
+No function dependency, but this patchset is based on another patchset
+"rtw89: support hw_scan and tx_wake firmware features".
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-index 317c3bc2db44..5b133bcdab17 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-@@ -282,8 +282,8 @@ int mt7915_eeprom_get_target_power(struct mt7915_dev *dev,
- 			if (!tssi_on)
- 				target_power += eeprom[index + 1];
- 		}
--	} else {
--		int group = mt7915_get_channel_group(chan->hw_value, is_7976);
-+	} else if (chan->band == NL80211_BAND_5GHZ) {
-+		int group = mt7915_get_channel_group_5g(chan->hw_value, is_7976);
- 
- 		if (is_7976) {
- 			index = MT_EE_TX0_POWER_5G_V2 + chain_idx * 5;
-@@ -295,6 +295,11 @@ int mt7915_eeprom_get_target_power(struct mt7915_dev *dev,
- 			if (!tssi_on)
- 				target_power += eeprom[index + 8];
- 		}
-+	} else {
-+		int group = mt7915_get_channel_group_6g(chan->hw_value);
-+
-+		index = MT_EE_TX0_POWER_6G_V2 + chain_idx * 8;
-+		target_power = is_7976 ? eeprom[index + group] : 0;
- 	}
- 
- 	return target_power;
-@@ -309,12 +314,14 @@ s8 mt7915_eeprom_get_power_delta(struct mt7915_dev *dev, int band)
- 
- 	if (band == NL80211_BAND_2GHZ)
- 		offs = is_7976 ? MT_EE_RATE_DELTA_2G_V2 : MT_EE_RATE_DELTA_2G;
--	else
-+	else if (band == NL80211_BAND_5GHZ)
- 		offs = is_7976 ? MT_EE_RATE_DELTA_5G_V2 : MT_EE_RATE_DELTA_5G;
-+	else
-+		offs = is_7976 ? MT_EE_RATE_DELTA_6G_V2 : 0;
- 
- 	val = eeprom[offs];
- 
--	if (!(val & MT_EE_RATE_DELTA_EN))
-+	if (!offs || !(val & MT_EE_RATE_DELTA_EN))
- 		return 0;
- 
- 	delta = FIELD_GET(MT_EE_RATE_DELTA_MASK, val);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-index 45760917c54d..7578ac6d0be6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-@@ -25,8 +25,10 @@ enum mt7915_eeprom_field {
- 	MT_EE_TX0_POWER_5G =	0x34b,
- 	MT_EE_RATE_DELTA_2G_V2 = 0x7d3,
- 	MT_EE_RATE_DELTA_5G_V2 = 0x81e,
-+	MT_EE_RATE_DELTA_6G_V2 = 0x884, /* 6g fields only appear in eeprom v2 */
- 	MT_EE_TX0_POWER_2G_V2 =	0x441,
- 	MT_EE_TX0_POWER_5G_V2 =	0x445,
-+	MT_EE_TX0_POWER_6G_V2 =	0x465,
- 	MT_EE_ADIE_FT_VERSION =	0x9a0,
- 
- 	__MT_EE_MAX =		0xe00,
-@@ -103,7 +105,7 @@ enum mt7915_sku_rate_group {
- };
- 
- static inline int
--mt7915_get_channel_group(int channel, bool is_7976)
-+mt7915_get_channel_group_5g(int channel, bool is_7976)
- {
- 	if (is_7976) {
- 		if (channel <= 64)
-@@ -134,6 +136,15 @@ mt7915_get_channel_group(int channel, bool is_7976)
- 	return 7;
- }
- 
-+static inline int
-+mt7915_get_channel_group_6g(int channel)
-+{
-+	if (channel <= 29)
-+		return 0;
-+
-+	return DIV_ROUND_UP(channel - 29, 32);
-+}
-+
- static inline bool
- mt7915_tssi_enabled(struct mt7915_dev *dev, enum nl80211_band band)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 9a696687d61c..668244e0d11e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -312,6 +312,7 @@ mt7915_regd_notifier(struct wiphy *wiphy,
- 
- 	mt7915_init_txpower(dev, &mphy->sband_2g.sband);
- 	mt7915_init_txpower(dev, &mphy->sband_5g.sband);
-+	mt7915_init_txpower(dev, &mphy->sband_6g.sband);
- 
- 	mphy->dfs_state = MT_DFS_STATE_UNKNOWN;
- 	mt7915_dfs_init_radar_detector(phy);
-@@ -558,6 +559,7 @@ static void mt7915_init_work(struct work_struct *work)
- 	mt7915_mac_init(dev);
- 	mt7915_init_txpower(dev, &dev->mphy.sband_2g.sband);
- 	mt7915_init_txpower(dev, &dev->mphy.sband_5g.sband);
-+	mt7915_init_txpower(dev, &dev->mphy.sband_6g.sband);
- 	mt7915_txbf_init(dev);
- }
- 
+v2: only patch 6/13 is changed -- define descriptive names to replace some
+    magic numbers.
+
+Ping-Ke Shih (13):
+  rtw89: 8852c: add 8852c empty files
+  rtw89: pci: add struct rtw89_pci_info
+  rtw89: pci: add V1 of PCI channel address
+  rtw89: pci: use a struct to describe all registers address related to
+    DMA channel
+  rtw89: read chip version depends on chip ID
+  rtw89: add power_{on/off}_func
+  rtw89: add hci_func_en_addr to support variant generation
+  rtw89: add chip_info::{h2c,c2h}_reg to support more chips
+  rtw89: add page_regs to handle v1 chips
+  rtw89: 8852c: add chip::dle_mem
+  rtw89: support DAV efuse reading operation
+  rtw89: 8852c: process efuse of phycap
+  rtw89: 8852c: process logic efuse map
+
+ drivers/net/wireless/realtek/rtw89/core.c     |   3 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |  38 ++
+ drivers/net/wireless/realtek/rtw89/efuse.c    | 160 +++++-
+ drivers/net/wireless/realtek/rtw89/fw.c       |  20 +-
+ drivers/net/wireless/realtek/rtw89/mac.c      | 184 ++++++-
+ drivers/net/wireless/realtek/rtw89/mac.h      |  48 ++
+ drivers/net/wireless/realtek/rtw89/pci.c      | 200 ++++----
+ drivers/net/wireless/realtek/rtw89/pci.h      |  76 ++-
+ drivers/net/wireless/realtek/rtw89/reg.h      | 121 +++++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  36 ++
+ .../net/wireless/realtek/rtw89/rtw8852ae.c    |   7 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 479 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/rtw8852c.h |  76 +++
+ .../net/wireless/realtek/rtw89/rtw8852ce.c    |  43 ++
+ 14 files changed, 1349 insertions(+), 142 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852c.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852c.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852ce.c
+
 -- 
-2.18.0
+2.25.1
 
