@@ -2,69 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70F954D0B03
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Mar 2022 23:24:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 311034D0B1A
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Mar 2022 23:32:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243039AbiCGWZ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Mar 2022 17:25:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51164 "EHLO
+        id S1343757AbiCGWd2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Mar 2022 17:33:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241302AbiCGWZ1 (ORCPT
+        with ESMTP id S232516AbiCGWd0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Mar 2022 17:25:27 -0500
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1A7B6FA00;
-        Mon,  7 Mar 2022 14:24:31 -0800 (PST)
-Received: by mail-wr1-x42f.google.com with SMTP id j26so15201077wrb.1;
-        Mon, 07 Mar 2022 14:24:31 -0800 (PST)
+        Mon, 7 Mar 2022 17:33:26 -0500
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1CE4DEA9;
+        Mon,  7 Mar 2022 14:32:29 -0800 (PST)
+Received: by mail-wr1-x432.google.com with SMTP id j17so25675010wrc.0;
+        Mon, 07 Mar 2022 14:32:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=zbMZsIhYJ+77vvsPZqt2FUvbmhqeDxMePb3nZB4cAlI=;
-        b=qk/46LPOyKRdvec+MKolVbUYO/E7hTEJpciHXRhBVUmmNAyo2C/8d97ZqVaKPsuFQR
-         g28XiQxVe2sCZP1J4om1F2VAvaHjlN/A2tbJdm+zmnUPpCGWKbq/BnCGY54cDizS2sXh
-         DLljZlhxEuuZ5m1bXGEl69acOJ4W+UjX66CaqOXniK4WwpzQvxJ1hcO7bd5TxzkBfT+h
-         xYU0X44s5t62Q1FwkakwfyYhu3oOR2xcNYRsAVzer1zydacqroMozijJcMVywovCq/tF
-         g7gYlW0Hi5PIkn+Cq66Jbm3y7aHTCF7jCpU0NH0egwL9p84eecVwb01d9H0Fj+dRhmP1
-         aCOg==
+        bh=DwDl1ku4FUR5Ozi9oblunGojtzeBv0vdXYXme8GlGQY=;
+        b=IUNi9+FI52U0cv+PUG+qweTy8nwwW48D9CMfQGeCE47bUPz2LBvDbUVxBiZIrEeLAz
+         Y7sR06LdemXXT5m4g8hKzaOmFxiEUXwB8mkmWjomvZzIB5RuCLTX5yLhDZQMGeoSXCin
+         qJB0nfLdQ3d1uj7JiN5obuaX9OQ1qVHZbtgdqnQVUiC7yIBS5VZSnVjpuDh4gtkSQFH5
+         wX2ZM8E5srFPFwF+lcgJabZ3d7dspb7oltIkZ0ljVyFShpj4vm+IGO/KrfaLGkXZiTQO
+         SZ4mWbwAP0XXMQ5KLIqe0izjLvsNdT1Jb3g0pZH8nxYtsfj1ISua+a+kyK4tgcubjtt7
+         6PmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=zbMZsIhYJ+77vvsPZqt2FUvbmhqeDxMePb3nZB4cAlI=;
-        b=FoBUoTOCx7kWbyazQOEyVGyQJPuz3JXkXLtJPZgjltZhdHDSE2bBCx6ngUdqqBUcdk
-         IQBb3s0c1vcZNGgf3cfo8gG6wAsfhZq2nWgSwxDjJFWLe31D08Pus/CwFYEm7ToHAi2S
-         1qtOluoGOH9HzS8qFzAuL1btX6djFSufhiAQr8PBVIkInjTtpTNmOoWhwvr8QYMlukEL
-         1MJjVkk9FTp0VvFzY4Pab++i2w3QCxw1NwfejuLKribGXmoeLx9ygnqtfbG3QJZoLN5f
-         eVpjqcdyyKYnNOYYlm7FbHr/kwSGDiLDaQCLK8K4fKcVjW+QrbeGJOFw7d5D5xWzKzhK
-         2bhQ==
-X-Gm-Message-State: AOAM530sHMDTOGgrSUN3Z4bh0Vi8xroETEIXrYP9+QEIDoM+4jm1Gv56
-        I7YqkxzVyov6mYJrBsRKU08=
-X-Google-Smtp-Source: ABdhPJwqSNvyS4GjI+QGP/a7FIEfmDb8n8qMgSIZbujBF1i1aTX14o3KbErC3DQHg6WB2p2+k3Yong==
-X-Received: by 2002:adf:e98d:0:b0:1f1:5d2b:eee6 with SMTP id h13-20020adfe98d000000b001f15d2beee6mr9674551wrm.143.1646691870231;
-        Mon, 07 Mar 2022 14:24:30 -0800 (PST)
+        bh=DwDl1ku4FUR5Ozi9oblunGojtzeBv0vdXYXme8GlGQY=;
+        b=B3oaGj/E1F0kzWUQ/0AHW8cxfWz8/pzzMfdQhsjbz2Ea5+haR20O0e+9KV1joG/KjO
+         ByqzLLVvIrmii12lhQWDC4mKMn0qgsrDk+YLaHDsNjaroqqNfHTooQq4n2L5qRX6/Iz5
+         3fikP+EN3MkIXX0RdRibk1+40ACYufERAPuXX2lcfb8rsgNtKQUqN+3/xPL7Df5iX2LT
+         ZpmD4cMb97jz5BEHIduy2gWmgAi91buPJPYkE4uPOBRTgCSNXdoEepJM1Luxa78tPLDk
+         hRDlgwpsEAVciN9spBeFKBQG4672voNlBsLX+ke5q+LHZ1cuY0hhhKQ8sJZxZPviCOwB
+         +K7A==
+X-Gm-Message-State: AOAM533bN/dxD8dh1sZiTnsJp+jH+m5ypXBOZ0WGqXU7fKSC0QO0Aplc
+        /JGiJXnh2PLP5iLaVICvzlw=
+X-Google-Smtp-Source: ABdhPJxNaqxuh9UAePJwBUcDhV11+dIihM3RKCeeagx9+lhDMIFNlTBCNlLdHLPx6C1jU9UeY9Qe+Q==
+X-Received: by 2002:a05:6000:2c5:b0:1f0:6657:5601 with SMTP id o5-20020a05600002c500b001f066575601mr10178060wry.629.1646692348638;
+        Mon, 07 Mar 2022 14:32:28 -0800 (PST)
 Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id u10-20020a05600c19ca00b00389860c6d3asm543321wmq.23.2022.03.07.14.24.29
+        by smtp.gmail.com with ESMTPSA id p12-20020a056000018c00b001f079518150sm9132760wrx.93.2022.03.07.14.32.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Mar 2022 14:24:29 -0800 (PST)
+        Mon, 07 Mar 2022 14:32:28 -0800 (PST)
 From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
         Kalle Valo <kvalo@kernel.org>,
         "David S . Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mt76: connac: make read-only array ba_range static const
-Date:   Mon,  7 Mar 2022 22:24:29 +0000
-Message-Id: <20220307222429.165336-1-colin.i.king@gmail.com>
+Subject: [PATCH] brcmfmac: make the read-only array pktflags static const
+Date:   Mon,  7 Mar 2022 22:32:27 +0000
+Message-Id: <20220307223227.165963-1-colin.i.king@gmail.com>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -79,28 +79,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Don't populate the read-only array ba_range on the stack but
+Don't populate the read-only array pktflags on the stack but
 instead make it static const. Also makes the object code a little
 smaller.
 
 Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 2 +-
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 0a646ae51c8d..fb44fc6c78f3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1044,7 +1044,7 @@ void mt76_connac_mcu_wtbl_ba_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 	}
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index b2fb9fcacdc9..f0ad1e23f3c8 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -4623,7 +4623,7 @@ s32 brcmf_vif_set_mgmt_ie(struct brcmf_cfg80211_vif *vif, s32 pktflag,
  
- 	if (enable && tx) {
--		u8 ba_range[] = { 4, 8, 12, 24, 36, 48, 54, 64 };
-+		static const u8 ba_range[] = { 4, 8, 12, 24, 36, 48, 54, 64 };
- 		int i;
- 
- 		for (i = 7; i > 0; i--) {
+ s32 brcmf_vif_clear_mgmt_ies(struct brcmf_cfg80211_vif *vif)
+ {
+-	s32 pktflags[] = {
++	static const s32 pktflags[] = {
+ 		BRCMF_VNDR_IE_PRBREQ_FLAG,
+ 		BRCMF_VNDR_IE_PRBRSP_FLAG,
+ 		BRCMF_VNDR_IE_BEACON_FLAG
 -- 
 2.35.1
 
