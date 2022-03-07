@@ -2,111 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C67C54CF19F
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Mar 2022 07:07:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB27B4CF26A
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Mar 2022 08:10:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232301AbiCGGIC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Mar 2022 01:08:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50980 "EHLO
+        id S235588AbiCGHLa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Mar 2022 02:11:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235506AbiCGGH4 (ORCPT
+        with ESMTP id S234490AbiCGHL2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Mar 2022 01:07:56 -0500
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CC895F268
-        for <linux-wireless@vger.kernel.org>; Sun,  6 Mar 2022 22:07:02 -0800 (PST)
-Received: by mail-yb1-xb34.google.com with SMTP id x200so28825167ybe.6
-        for <linux-wireless@vger.kernel.org>; Sun, 06 Mar 2022 22:07:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7Im1JG6q3q15hqSa7NWQHVGGERLfnPf1iBbuaSTqgJQ=;
-        b=iGE+czjVEDLwDaXqyAMyQbTH4V3AuDBw1aS+YOCk9+wj/EA2P6VJonuqQd8mQkvXeg
-         8/Pahn2vJGAgPzbKSV6i8kwMUkZBTvlLzxWMkP2U53DE79zDA4HR95BHw/I64qH/vLUM
-         Yqq7d0l0nFtKaIe6JaJqOy0HP7u3QfsSV8Z2Tw22y6DJ1loolTkL68hJEMuhTaPh0PUU
-         uBT4F0VzRaEviubJ+j7o5PkavmgVl4Souf4fT0zGOJ6Y+eSKhDnO3tk19VeLaIvRXs+l
-         MKNllI+GXBxNNWc/kmyf/0v6XW6qmqNpPVue11mVQHThfymq3YaAXLvcuYJzWivrcfWF
-         INlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7Im1JG6q3q15hqSa7NWQHVGGERLfnPf1iBbuaSTqgJQ=;
-        b=t2h0/R75mv2uDJGrXjx91Ax2UlERog4K2N0cjy/0FFlzlB2OmrZe++h48Uh0H9ufRU
-         nUhf6nJCyAgUX1f3KZk57Nq8Y4nQ++L1DT99a0KV1jw6kWfRDmVQlRut96Xih/dayXp7
-         sjiZgjz2r6Z24EgJEhqWlH9RIccgRvJOc8aYMUgM7NInEf7+c/IvsgOgMVJX2zjHgEAs
-         QSDYIfgHA/tNJv+rl+LL7Jd0K8jMUiAqvESfWdNu7BwjrcyLgL/x4p+jNGqktOkZquFb
-         +hp8qYQkqkO2U/Dm5OaYDB0kE7lPUra91+8CgzV7LDg6niDxOJs3vKfG8HF5SqRp0CWm
-         UcHw==
-X-Gm-Message-State: AOAM530tA40OZax+iGvb3z+xP6uk4k8EI2vBmYm9y0lqOlxx17TUyKZt
-        QmWmwNSrZOl9unIS7sc4EWVCCspV4EUjdwjK6CI=
-X-Google-Smtp-Source: ABdhPJxuhR2pwqUaSnOJpTPOqcbnt7kUl22w5/g5PdeS8bEodwWjKeDNXFp4dPQjjWph/1M/PpUq86RZBV42jZSgV6k=
-X-Received: by 2002:a25:8911:0:b0:61e:1c66:17b0 with SMTP id
- e17-20020a258911000000b0061e1c6617b0mr7148766ybl.354.1646633220141; Sun, 06
- Mar 2022 22:07:00 -0800 (PST)
+        Mon, 7 Mar 2022 02:11:28 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46D585DE6F
+        for <linux-wireless@vger.kernel.org>; Sun,  6 Mar 2022 23:10:35 -0800 (PST)
+X-UUID: 4cac3f0f763e424eacbd2ae57a0354a1-20220307
+X-UUID: 4cac3f0f763e424eacbd2ae57a0354a1-20220307
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+        (envelope-from <meichia.chiu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 342730796; Mon, 07 Mar 2022 15:10:31 +0800
+Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 7 Mar 2022 15:10:30 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb01.mediatek.inc
+ (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 7 Mar
+ 2022 15:10:30 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 7 Mar 2022 15:10:30 +0800
+From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        MeiChia Chiu <MeiChia.Chiu@mediatek.com>,
+        Money Wang <Money.Wang@mediatek.com>
+Subject: [PATCH v3 1/4] mt76: connac: add 6 GHz support for wtbl and starec configuration
+Date:   Mon, 7 Mar 2022 15:10:25 +0800
+Message-ID: <20220307071028.5711-1-MeiChia.Chiu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Received: by 2002:a05:6918:b986:b0:a4:b698:78d9 with HTTP; Sun, 6 Mar 2022
- 22:06:59 -0800 (PST)
-Reply-To: markwillima00@gmail.com
-From:   Mark <markpeterdavid@gmail.com>
-Date:   Sun, 6 Mar 2022 22:06:59 -0800
-Message-ID: <CAC_St29qRteuBbog0XtWwNmktrR6tpp6ag4vhqoHjB-vuzvPhA@mail.gmail.com>
-Subject: Re: Greetings!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:b34 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [markwillima00[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [markpeterdavid[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
-Good day,
+Since there are no HT & VHT IEs being sent in 6ghz,
+some capabilities judgement and parsing for wtbl &
+starec configuration should be modified to reflect such changes.
 
-The HSBC Bank is a financial institution in United Kingdom. We
-promotes long-term,sustainable and broad-based economic growth in
-developing and emerging countries by providing financial support like
-loans and investment to large, small and
-medium-sized companies (SMEs) as well as fast-growing enterprises
-which in turn helps to create secure and permanent jobs and reduce
-poverty.
+Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Money Wang <Money.Wang@mediatek.com>
+Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+---
+The series is based on https://patchwork.kernel.org/project/linux-wireless/patch/20220302061406.24797-1-MeiChia.Chiu@mediatek.com/
+v3: use le16_get_bits instead of FIELD_GET
+---
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 24 ++++++++++++++-----
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-If you need fund to promotes your business, project(Project Funding),
-Loan, planning, budgeting and expansion of your business(s) , do not
-hesitate to indicate your interest as we are here to serve you better
-by granting your request.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 6c762fbf9aaa..5e65fa3f3cba 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -905,18 +905,27 @@ void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 	struct tlv *tlv;
+ 	u32 flags = 0;
+ 
+-	if (sta->ht_cap.ht_supported) {
++	if (sta->ht_cap.ht_supported || sta->he_6ghz_capa.capa) {
+ 		tlv = mt76_connac_mcu_add_nested_tlv(skb, WTBL_HT, sizeof(*ht),
+ 						     wtbl_tlv, sta_wtbl);
+ 		ht = (struct wtbl_ht *)tlv;
+ 		ht->ldpc = ht_ldpc &&
+ 			   !!(sta->ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING);
+-		ht->af = sta->ht_cap.ampdu_factor;
+-		ht->mm = sta->ht_cap.ampdu_density;
++
++		if (sta->ht_cap.ht_supported) {
++			ht->af = sta->ht_cap.ampdu_factor;
++			ht->mm = sta->ht_cap.ampdu_density;
++		} else {
++			ht->af = le16_get_bits(sta->he_6ghz_capa.capa,
++					       IEEE80211_HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP);
++			ht->mm = le16_get_bits(sta->he_6ghz_capa.capa,
++					       IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START);
++		}
++
+ 		ht->ht = true;
+ 	}
+ 
+-	if (sta->vht_cap.vht_supported) {
++	if (sta->vht_cap.vht_supported || sta->he_6ghz_capa.capa) {
+ 		struct wtbl_vht *vht;
+ 		u8 af;
+ 
+@@ -1242,7 +1251,7 @@ u8 mt76_connac_get_phy_mode(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 
+ 		if (he_cap && he_cap->has_he)
+ 			mode |= PHY_MODE_AX_24G;
+-	} else if (band == NL80211_BAND_5GHZ || band == NL80211_BAND_6GHZ) {
++	} else if (band == NL80211_BAND_5GHZ) {
+ 		mode |= PHY_MODE_A;
+ 
+ 		if (ht_cap->ht_supported)
+@@ -1251,8 +1260,11 @@ u8 mt76_connac_get_phy_mode(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		if (vht_cap->vht_supported)
+ 			mode |= PHY_MODE_AC;
+ 
+-		if (he_cap && he_cap->has_he && band == NL80211_BAND_5GHZ)
++		if (he_cap && he_cap->has_he)
+ 			mode |= PHY_MODE_AX_5G;
++	} else if (band == NL80211_BAND_6GHZ) {
++		mode |= PHY_MODE_A | PHY_MODE_AN |
++			PHY_MODE_AC | PHY_MODE_AX_5G;
+ 	}
+ 
+ 	return mode;
+-- 
+2.18.0
 
-
-Thank you
-Mr:Mark
