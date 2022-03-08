@@ -2,168 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B50414D0FD8
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Mar 2022 07:15:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ECA54D1064
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Mar 2022 07:41:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344131AbiCHGQB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Mar 2022 01:16:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44582 "EHLO
+        id S242831AbiCHGmj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Mar 2022 01:42:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233516AbiCHGQA (ORCPT
+        with ESMTP id S242147AbiCHGmh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Mar 2022 01:16:00 -0500
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E921829837;
-        Mon,  7 Mar 2022 22:15:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1646720105; x=1678256105;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=1XOqnXLpeVJlC4KyK0YuUmJ4jg+OeQyDZQ+E0RW+bRE=;
-  b=UPBfvD/LRXpOymuspj6M0c+Ty8CJtlwurqbbaC2qaNy4Oa9/27Ex6OES
-   yTwkMkdBXqlGC3cqEcKhqPR4xqOpSJggDmKYvUJBggt8JGvUV8cPq62BO
-   4/YyaHvNbg95eGfXDX1oZsgDU4r+XoiM4FEHR1sXderav5wpFm2MS8cc2
-   U=;
-Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 07 Mar 2022 22:01:02 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2022 22:01:01 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Mon, 7 Mar 2022 22:01:01 -0800
-Received: from [10.216.19.10] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.15; Mon, 7 Mar 2022
- 22:00:56 -0800
-Message-ID: <d7884804-6bc2-058b-c373-8b2005fd2811@quicinc.com>
-Date:   Tue, 8 Mar 2022 11:30:51 +0530
+        Tue, 8 Mar 2022 01:42:37 -0500
+Received: from farmhouse.coelho.fi (paleale.coelho.fi [176.9.41.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 392DA3B578
+        for <linux-wireless@vger.kernel.org>; Mon,  7 Mar 2022 22:41:40 -0800 (PST)
+Received: from 91-156-4-241.elisa-laajakaista.fi ([91.156.4.241] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <luca@coelho.fi>)
+        id 1nRTXH-000SqZ-Hb;
+        Tue, 08 Mar 2022 08:41:33 +0200
+Message-ID: <61671ef674ed41b326ec39c62676fdd237875a86.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Josh Boyer <jwboyer@kernel.org>
+Cc:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kyle@infradead.org" <kyle@infradead.org>,
+        "ben@decadent.org.uk" <ben@decadent.org.uk>,
+        golan.ben.ami@intel.com, You-Sheng Yang <vicamo.yang@canonical.com>
+Date:   Tue, 08 Mar 2022 08:41:30 +0200
+In-Reply-To: <CA+5PVA4BbLaze8-c4R-8LESA9UhsDAJu3_FK4GZKUpVUkPKDrQ@mail.gmail.com>
+References: <af43569b2247f7aff44b1ea3680d88dbe083d78d.camel@coelho.fi>
+         <CA+5PVA4BbLaze8-c4R-8LESA9UhsDAJu3_FK4GZKUpVUkPKDrQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.43.2-2 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH v2 02/19] ath11k: Refactor PCI code to support hybrid bus
- devices
-Content-Language: en-US
-From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh@kernel.org>
-References: <1642337235-8618-1-git-send-email-quic_mpubbise@quicinc.com>
- <1642337235-8618-3-git-send-email-quic_mpubbise@quicinc.com>
- <87ee4sgo7l.fsf@kernel.org>
- <41f8fd92-70e4-def6-0bd1-c764b1445d68@quicinc.com>
-In-Reply-To: <41f8fd92-70e4-def6-0bd1-c764b1445d68@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+Subject: Re: pull request: iwlwifi firmware updates 2022-03-03
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/25/2022 11:20 AM, Manikanta Pubbisetty wrote:
-> On 1/28/2022 3:46 PM, Kalle Valo wrote:
->> Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
->>
->>> Unlike other ATH11K PCIe devices which are enumerated by APSS
->>> processor (Application Processor SubSystem), WCN6750 gets
->>> enumerated by the WPSS Q6 processor (Wireless Processor SubSystem);
->>> In simple terms, though WCN6750 is PCIe device, it is not attached
->>> to the APSS processor, APSS will not know of such a device being
->>> present in the system and therefore WCN6750 will be registered as
->>> a platform device to the kernel core like other supported AHB
->>> devices.
->>>
->>> WCN6750 uses both AHB and PCI APIs for it's operation, it uses
->>> AHB APIs for device probe/boot and PCI APIs for device setup
->>> and register accesses; Because of this nature, it is referred
->>> as a hybrid bus device.
->>>
->>> Refactor PCI code to support hybrid bus devices like WCN6750.
->>>
->>> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00573-QCAMSLSWPLZ-1
->>> Tested-on: WCN6855 hw2.0 PCI 
->>> WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
->>> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
->>> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
->>>
->>> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
->>
->> [...]
->>
->>> --- a/drivers/net/wireless/ath/ath11k/Makefile
->>> +++ b/drivers/net/wireless/ath/ath11k/Makefile
->>> @@ -29,7 +29,7 @@ obj-$(CONFIG_ATH11K_AHB) += ath11k_ahb.o
->>>   ath11k_ahb-y += ahb.o
->>>   obj-$(CONFIG_ATH11K_PCI) += ath11k_pci.o
->>> -ath11k_pci-y += mhi.o pci.o
->>> +ath11k_pci-y += mhi.o pci.o pci_cmn.o
->>
->> So the end result looks like this:
->>
->> obj-$(CONFIG_ATH11K_AHB) += ath11k_ahb.o
->> ath11k_ahb-y += ahb.o pci_cmn.o
->>
->> obj-$(CONFIG_ATH11K_PCI) += ath11k_pci.o
->> ath11k_pci-y += mhi.o pci.o pci_cmn.o
->>
->> Linking pci_cmn.o to both ath11k_pci.ko and ath11k_ahb.ko looks wrong.
->> Does that even compile if ath11k is linked to the kernel, eg. with
->> allyesconfig?
->>
-> 
-> I did try compiling the kernel with allyesconfig after your comment, 
-> compilation went through without any hiccups.
-> 
->> One way to solve is to link pci_cmn.o to ath11k.ko. But for another
->> approach, for a long time I have been thinking about what's the point to
->> have separate ath11k_pci.ko and ath11k_ahb.ko modules?,They are very
->> small anyway compared to ath11k.ko. So my ideais that should we have
->> just one ath11k.ko module, it contains all AHB and PCI code as well, and
->> ath11k_pci.ko and ath11k_ahb.ko would not be created anymore. It would
->> simplify things a bit, especially here.
->>
->> Thoughts?
->>
-> 
-> I see some concerns going with single module combining both AHB and PCI 
-> modules into ath11k.ko
-> 
-> 1) AHB and PCI drivers make use of completely different kernel 
-> frameworks, for example AHB driver needs remoteproc APIs for booting and 
-> require CONFIG_REMOTEPROC to be compiled in to the kernel. Similarly, 
-> PCI driver needs MHI APIs and also dependent on CONFIG_PCI. Both MHI and 
-> PCI bus frameworks need to be compiled for PCI to work. If we club all 
-> of this into single module, I see that unnecessarily additional modules 
-> will be compiled into the kernel which IMO is not so good idea.
+On Fri, 2022-03-04 at 08:46 -0500, Josh Boyer wrote:
+> On Thu, Mar 3, 2022 at 6:11 AM Luca Coelho <luca@coelho.fi> wrote:
+> > 
+> > Hi,
+> > 
+> > This contains some new and updated firmwares for all our currently
+> > maintained FW binaries.
+> > 
+> > Please pull or let me know if there are any issues.
 > 
 > 
-> 2) Secondly, there is high chance of writing bad code all over the 
-> driver. For example, there are chances that developers put AHB/PCI 
-> specific code all over the driver creating a big mess.
-> Though this can be avoided with stringent code review, but why to
-> give the chance.
-> 
-> Though AHB and PCI drivers are smaller in size, IMHO let AHB and PCI be 
-> independent drivers, code looks cleaner and properly segregated by 
-> keeping them as it is today.
-> 
-> Regarding the compilation of PCI common code, shall we move it into 
-> ath11k.ko? What is your opinion on this.
-> 
+> [jwboyer@vader linux-firmware]$ ./check_whence.py
+> E: iwlwifi-QuZ-a0-jf-b0-71.ucode listed in WHENCE does not exist
+> E: iwlwifi-so-a0-hr-b0-71.ucode listed in WHENCE does not exist
+> E: iwlwifi-so-a0-jf-b0-71.ucode listed in WHENCE does not exist
+> [jwboyer@vader linux-firmware]$
 
-Hi Kalle,
+Oops, apparently I forgot to commit those new binaries...
 
-Any thoughts about the idea proposed?
 
-Thanks,
-Manikanta
+> Can you fix that up please?
+
+v2 coming in a sec.
+
+--
+Cheers,
+Luca.
