@@ -2,71 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26BDC4D0D0F
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Mar 2022 01:54:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3F084D0DEC
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Mar 2022 03:17:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344134AbiCHAzN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Mar 2022 19:55:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51916 "EHLO
+        id S240612AbiCHCSG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Mar 2022 21:18:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344135AbiCHAzM (ORCPT
+        with ESMTP id S237280AbiCHCSF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Mar 2022 19:55:12 -0500
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDDC7B7F6;
-        Mon,  7 Mar 2022 16:54:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1646700856; x=1678236856;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Mhvsr/RBR324xqUw2EB4HFdbuxkQrAyfM/cXZOm+Kf0=;
-  b=LnDjjRH+Vyh1UCaUNvb/gu9YKQyyA1uEBTlD8moAftAe99DXv63w0heq
-   XPqO7ZS2KiC8xP+nqZ3a44RsDocPEyswDSAGtLL/yTtdCdJdWfK+qrmcL
-   qECy7s5z7HvNbh4kWBsPt4iOerruF/Y2l/L8LJYGcNQHl5joacB8nxTZi
-   CsG2MphSJw9/BlOHNLqfn5dRuS1lVnDxHvX7wOyMNqFWT1/Nt58TvZDvs
-   lmXj7h1qEDWYcU32zI1FihIrZg2+6WMq/RhPhwSURykj8hqiIoZ6NllhF
-   pdqzXnhJGa97xSRcLPmgXvJ7XC9pAR+HI1Qa6uRmcyHWINAxTfPp5Dv39
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10279"; a="253378867"
-X-IronPort-AV: E=Sophos;i="5.90,163,1643702400"; 
-   d="scan'208";a="253378867"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2022 16:54:16 -0800
-X-IronPort-AV: E=Sophos;i="5.90,163,1643702400"; 
-   d="scan'208";a="512902157"
-Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.251.10.64]) ([10.251.10.64])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2022 16:54:14 -0800
-Message-ID: <2493227c-4489-22ac-0561-f52d1de27fec@linux.intel.com>
-Date:   Mon, 7 Mar 2022 16:54:13 -0800
+        Mon, 7 Mar 2022 21:18:05 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F64BB7EF
+        for <linux-wireless@vger.kernel.org>; Mon,  7 Mar 2022 18:17:10 -0800 (PST)
+X-UUID: 8f080972773848b4a9f790e683cd4bb9-20220308
+X-UUID: 8f080972773848b4a9f790e683cd4bb9-20220308
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+        (envelope-from <meichia.chiu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 36811383; Tue, 08 Mar 2022 10:16:48 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Tue, 8 Mar 2022 10:16:47 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 8 Mar 2022 10:16:47 +0800
+From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+CC:     Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+Subject: [PATCH] mac80211: correct legacy rates check in ieee80211_calc_rx_airtime
+Date:   Tue, 8 Mar 2022 10:16:45 +0800
+Message-ID: <20220308021645.16272-1-MeiChia.Chiu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: [PATCH net-next v5 10/13] net: wwan: t7xx: Introduce power
- management
-Content-Language: en-US
-To:     =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
-        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
-        sreehari.kancharla@intel.com, madhusmita.sahu@intel.com
-References: <20220223223326.28021-1-ricardo.martinez@linux.intel.com>
- <20220223223326.28021-11-ricardo.martinez@linux.intel.com>
- <3fe7f932-57b7-14c7-4966-7484df7f8250@linux.intel.com>
-From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
-In-Reply-To: <3fe7f932-57b7-14c7-4966-7484df7f8250@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,51 +52,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+There are no legacy rates on 60GHz or sub-1Ghz band, so modify the check.
 
-On 3/1/2022 5:26 AM, Ilpo Järvinen wrote:
-> On Wed, 23 Feb 2022, Ricardo Martinez wrote:
->
->> From: Haijun Liu <haijun.liu@mediatek.com>
->>
->> Implements suspend, resumes, freeze, thaw, poweroff, and restore
->> `dev_pm_ops` callbacks.
->>
->> >From the host point of view, the t7xx driver is one entity. But, the
->> device has several modules that need to be addressed in different ways
->> during power management (PM) flows.
->> The driver uses the term 'PM entities' to refer to the 2 DPMA and
->> 2 CLDMA HW blocks that need to be managed during PM flows.
->> When a dev_pm_ops function is called, the PM entities list is iterated
->> and the matching function is called for each entry in the list.
->>
->> Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
->> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
->> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
->> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
->> ---
->> +static int __t7xx_pci_pm_suspend(struct pci_dev *pdev)
->> +{
-> ...
->> +	iowrite32(L1_DISABLE_BIT(0), IREG_BASE(t7xx_dev) + DIS_ASPM_LOWPWR_CLR_0);
->> +	return 0;
-> The success path does this same iowrite32 to DIS_ASPM_LOWPWR_CLR_0
-> as the failure paths. Is that intended?
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+---
+ net/mac80211/airtime.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Yes, that's intended.
+diff --git a/net/mac80211/airtime.c b/net/mac80211/airtime.c
+index 26d2f8ba7029..c0e58eb7c7fb 100644
+--- a/net/mac80211/airtime.c
++++ b/net/mac80211/airtime.c
+@@ -477,7 +477,9 @@ u32 ieee80211_calc_rx_airtime(struct ieee80211_hw *hw,
+ 		bool sp = status->enc_flags & RX_ENC_FLAG_SHORTPRE;
+ 		bool cck;
+ 
+-		if (WARN_ON_ONCE(status->band > NL80211_BAND_5GHZ))
++		/* on 60GHz or sub-1Ghz band, there are no legacy rates */
++		if (WARN_ON_ONCE(status->band == NL80211_BAND_60GHZ ||
++				 status->band == NL80211_BAND_S1GHZ))
+ 			return 0;
+ 
+ 		sband = hw->wiphy->bands[status->band];
+-- 
+2.18.0
 
-This function disables low power mode at the beginning and it has to 
-re-enable it before
-
-returning, regardless of the success or failure path.
-
-The next iteration will contain some naming changes to avoid double 
-negatives :
-
-- iowrite32(L1_DISABLE_BIT(0), IREG_BASE(t7xx_dev) + DIS_ASPM_LOWPWR_CLR_0);
-
-+ iowrite32(T7XX_L1_BIT(0), IREG_BASE(t7xx_dev) + DISABLE_ASPM_LOWPWR);
-
-
-> The function looks much better now!
->
->
