@@ -2,144 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22E114D106F
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Mar 2022 07:43:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB0BD4D10A6
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Mar 2022 08:02:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245031AbiCHGoZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Mar 2022 01:44:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36482 "EHLO
+        id S1344426AbiCHHDl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Mar 2022 02:03:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245049AbiCHGoX (ORCPT
+        with ESMTP id S232755AbiCHHDk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Mar 2022 01:44:23 -0500
-Received: from farmhouse.coelho.fi (paleale.coelho.fi [176.9.41.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 634671DA7D
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Mar 2022 22:43:26 -0800 (PST)
-Received: from 91-156-4-241.elisa-laajakaista.fi ([91.156.4.241] helo=[192.168.100.150])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.95)
-        (envelope-from <luca@coelho.fi>)
-        id 1nRTZ4-000Sqr-1x;
-        Tue, 08 Mar 2022 08:43:23 +0200
-Message-ID: <45c8a31b79f538425f9524b0d65c002e1e24fc16.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kyle@infradead.org" <kyle@infradead.org>,
-        "jwboyer@kernel.org" <jwboyer@kernel.org>,
-        "ben@decadent.org.uk" <ben@decadent.org.uk>,
-        golan.ben.ami@intel.com,
-        You-Sheng Yang <vicamo.yang@canonical.com>, luca@coelho.fi
-Date:   Tue, 08 Mar 2022 08:43:21 +0200
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-na8/cI+Rd8DeUMS0vFJ5"
-User-Agent: Evolution 3.43.2-2 
-MIME-Version: 1.0
+        Tue, 8 Mar 2022 02:03:40 -0500
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1995062DA;
+        Mon,  7 Mar 2022 23:02:44 -0800 (PST)
+Received: by mail-pl1-x634.google.com with SMTP id e13so16249069plh.3;
+        Mon, 07 Mar 2022 23:02:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id;
+        bh=A8EZjLfRCVLiqLB95fXPDgz0vTM6xfddeH/ZPy1XLa8=;
+        b=e9VqiE0WD1f3eFyJbCKD5qtmN1MWAWvdxaMntfWIthz3hSCIyboXWObl6FvkQJhf/p
+         AMHsv2ZHs4U5r2D+C+PngLux5lPfMiMXA5GFXSC9kibXFbQMfp8qjQAc0KbHrUFMfJyD
+         kL8YtGRmo+LKsr8gfFWwLI8F8juVwgFSSzZeZyPFr5Rg5tmjkAQxtEG59rEoHHUCbdoy
+         MEjTTtOVWk93reFJ51LPGpCEpazYQPKO7JR8HNOPpWFq+8C2nYUIvxWKxZz/qhf7wFez
+         cW67Wa2SXlWnyjkJSf0N9tT+NynaAhfozGbWF5MM5tjZ5wjIaF6nya0mPuYpFKAtEJ8O
+         Tmgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=A8EZjLfRCVLiqLB95fXPDgz0vTM6xfddeH/ZPy1XLa8=;
+        b=tXgKxgIE9RIgsgdXRCGiSR0ibxYFchK/Wzw5YrtpXI+l2nyAyQ+O/bIfrfSFqcQa1Q
+         bpzEoQ4AigMMijqAs64ee+xfJt9WXSxIOwO4wtSkdJ52cP2ufG54+oYxFBm2lBYJ2v7X
+         Hbfb6u1MzuwkqtbaHAXkRi5zCU8Z375CpSSi+Qub5pdYqvA95gmTyoc2uZ5zrp7WVCmF
+         ujtXdFS8aFvg4iL/WzyVr4MLMaLe/5JPNR4maIishsN5ZcQ8V6XKFveXQtCDWBja5goB
+         V0x7TDx3EAmfegV7tffYXvBbhuVCVdJOMTe4n7IFTYGYl6/QQ6/dHqT6LCFmYpOoaC0x
+         ifOw==
+X-Gm-Message-State: AOAM53207v9hJ2wtmB7/brd2MIOiCLXo/J3dN50xilSVZXoSbsA8I9i/
+        e1UABwmD0XslBjuxpqyh2DE=
+X-Google-Smtp-Source: ABdhPJxGjxKfzDA2Y6r5ZxA67siNwEq9+SHU4CNGHkyYjf7dSP1TEsEhH8CTFj+l7OWKdjvW2BMCRA==
+X-Received: by 2002:a17:902:bd88:b0:14f:8ddf:e373 with SMTP id q8-20020a170902bd8800b0014f8ddfe373mr15762890pls.89.1646722963584;
+        Mon, 07 Mar 2022 23:02:43 -0800 (PST)
+Received: from localhost.localdomain ([159.226.95.43])
+        by smtp.googlemail.com with ESMTPSA id d11-20020a056a00198b00b004dfc6b023b2sm18072135pfl.41.2022.03.07.23.02.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Mar 2022 23:02:43 -0800 (PST)
+From:   Miaoqian Lin <linmq006@gmail.com>
+To:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rakesh Pillai <pillair@codeaurora.org>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     linmq006@gmail.com
+Subject: [PATCH] ath10k: Fix error handling in ath10k_setup_msa_resources
+Date:   Tue,  8 Mar 2022 07:02:38 +0000
+Message-Id: <20220308070238.19295-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
-Subject: pull request: iwlwifi firmware updates 2022-03-03-v2
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+The device_node pointer is returned by of_parse_phandle()  with refcount
+incremented. We should use of_node_put() on it when done.
 
---=-na8/cI+Rd8DeUMS0vFJ5
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This function only calls of_node_put() in the regular path.
+And it will cause refcount leak in error path.
 
-Hi,
+Fixes: 727fec790ead ("ath10k: Setup the msa resources before qmi init")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/net/wireless/ath/ath10k/snoc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This contains some new and updated firmwares for all our currently
-maintained FW binaries.
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 9513ab696fff..f79dd9a71690 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -1556,11 +1556,11 @@ static int ath10k_setup_msa_resources(struct ath10k *ar, u32 msa_size)
+ 	node = of_parse_phandle(dev->of_node, "memory-region", 0);
+ 	if (node) {
+ 		ret = of_address_to_resource(node, 0, &r);
++		of_node_put(node);
+ 		if (ret) {
+ 			dev_err(dev, "failed to resolve msa fixed region\n");
+ 			return ret;
+ 		}
+-		of_node_put(node);
+ 
+ 		ar->msa.paddr = r.start;
+ 		ar->msa.mem_size = resource_size(&r);
+-- 
+2.17.1
 
-In v2 I added three missing binaries that I had forgotten to commit.
-
-Please pull or let me know if there are any issues.
-
---
-Cheers,
-Luca.
-
-
-The following changes since commit ee0667aa201e7d725ec87b1e4cf08de1d748d64f=
-:
-
-  amdgpu: update raven2 VCN firmware (2022-02-28 09:44:17 -0500)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git =
-tags/iwlwifi-fw-2022-03-03-v2
-
-for you to fetch changes up to 8f9285cca830cb709439ee2cf14d0519d155983b:
-
-  iwlwifi: add new FWs from core68-60 release (2022-03-08 08:39:39 +0200)
-
-----------------------------------------------------------------
-Update and add iwlwifi firmware binaries for release Core68-60
-
-----------------------------------------------------------------
-Luca Coelho (2):
-      iwlwifi: update 9000-family firmwares to core68-60
-      iwlwifi: add new FWs from core68-60 release
-
- WHENCE                            |  40 ++++++++++++++++++++++++++++++++++=
-++++--
- iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 1519544 -> 1520208 bytes
- iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 1490376 -> 1491056 bytes
- iwlwifi-Qu-b0-hr-b0-71.ucode      | Bin 0 -> 1364312 bytes
- iwlwifi-Qu-b0-jf-b0-71.ucode      | Bin 0 -> 1285192 bytes
- iwlwifi-Qu-c0-hr-b0-71.ucode      | Bin 0 -> 1364328 bytes
- iwlwifi-Qu-c0-jf-b0-71.ucode      | Bin 0 -> 1285208 bytes
- iwlwifi-QuZ-a0-hr-b0-71.ucode     | Bin 0 -> 1364308 bytes
- iwlwifi-QuZ-a0-jf-b0-71.ucode     | Bin 0 -> 1285188 bytes
- iwlwifi-cc-a0-71.ucode            | Bin 0 -> 1322288 bytes
- iwlwifi-so-a0-gf-a0-71.ucode      | Bin 0 -> 1550124 bytes
- iwlwifi-so-a0-gf-a0.pnvm          | Bin 41808 -> 41808 bytes
- iwlwifi-so-a0-gf4-a0-71.ucode     | Bin 0 -> 1566352 bytes
- iwlwifi-so-a0-gf4-a0.pnvm         | Bin 21576 -> 28064 bytes
- iwlwifi-so-a0-hr-b0-71.ucode      | Bin 0 -> 1456960 bytes
- iwlwifi-so-a0-jf-b0-71.ucode      | Bin 0 -> 1400056 bytes
- iwlwifi-ty-a0-gf-a0-71.ucode      | Bin 0 -> 1494024 bytes
- iwlwifi-ty-a0-gf-a0.pnvm          | Bin 41588 -> 41588 bytes
- 18 files changed, 38 insertions(+), 2 deletions(-)
- create mode 100644 iwlwifi-Qu-b0-hr-b0-71.ucode
- create mode 100644 iwlwifi-Qu-b0-jf-b0-71.ucode
- create mode 100644 iwlwifi-Qu-c0-hr-b0-71.ucode
- create mode 100644 iwlwifi-Qu-c0-jf-b0-71.ucode
- create mode 100644 iwlwifi-QuZ-a0-hr-b0-71.ucode
- create mode 100644 iwlwifi-QuZ-a0-jf-b0-71.ucode
- create mode 100644 iwlwifi-cc-a0-71.ucode
- create mode 100644 iwlwifi-so-a0-gf-a0-71.ucode
- create mode 100644 iwlwifi-so-a0-gf4-a0-71.ucode
- create mode 100644 iwlwifi-so-a0-hr-b0-71.ucode
- create mode 100644 iwlwifi-so-a0-jf-b0-71.ucode
- create mode 100644 iwlwifi-ty-a0-gf-a0-71.ucode
-
-
---=-na8/cI+Rd8DeUMS0vFJ5
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAmIm+wkACgkQoUecoho8
-xfplmBAArPJM6ePM1BFMib4oA/2cWyP8HSoQwlv8l2qKJW8q4rbA+wjCrr6cD1C0
-+ox1qMZZK6L1rLNMuL+xqRUSSUmIv+4AFKTkW5hjtu2a61GhHnLrSv4fSlhxtKe4
-GaEOYgmJ8sKyoNx9sB6qm3yDNSo9cd2MZAMYKZYT7TKxzBAr+lUxcfaFC831aeDt
-bsBnkRSHd9h9OeKrVvL3eZxyfbPQw8yNW9kx3ERiF63CM06Ga0jdaWDrg8EYRt/b
-4DyT4aL4yL8WHyhD+vz2tWR1DUOrmGBL0byTcn9Nxg4bUJ4EaZ3CGdNV0YVA+zpL
-4dERjm5vP3awEsw+pC+W1Hk8AkU60tsdAomt79VItp8JgqHvmQu6FehFaagN9TNd
-LuGkXLoan2g76DWqW2wdr1KnP41z9yFdWam9Q78XL+w21YDyIZtIhdB2KpCcWKaT
-yXX/ltwJeu/zDkdT8f1Cw3VeaS+CphtaQEyp4ob9+krfFvnWq5LB6llnKwC9PuoF
-QhL03pXJcmawQkYkI4oS8vFfd6ySltAp3TBwIR7a2PsX5lywN1Q0/o1hN+/sJn+F
-uxNDseQ4tdzU4YNox96kxPvzpBd9p6KtNlhvV1vr5tlI16mTDAZgouN88YntHnIb
-1sHOTLtql/ZtqLtB/TY6bkffutdPIiq75ZNKIs60HBrbfCL8qxM=
-=Fg0s
------END PGP SIGNATURE-----
-
---=-na8/cI+Rd8DeUMS0vFJ5--
