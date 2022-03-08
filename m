@@ -2,51 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5975F4D0E05
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Mar 2022 03:30:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B50414D0FD8
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Mar 2022 07:15:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240869AbiCHCbn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Mar 2022 21:31:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60116 "EHLO
+        id S1344131AbiCHGQB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Mar 2022 01:16:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233411AbiCHCbm (ORCPT
+        with ESMTP id S233516AbiCHGQA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Mar 2022 21:31:42 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D63A35DD2
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Mar 2022 18:30:42 -0800 (PST)
-X-UUID: cb9edd54926e4d1c8fba4d59fcd75dd8-20220308
-X-UUID: cb9edd54926e4d1c8fba4d59fcd75dd8-20220308
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 2085284391; Tue, 08 Mar 2022 10:30:33 +0800
-Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Tue, 8 Mar 2022 10:30:32 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb02.mediatek.inc
- (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 8 Mar
- 2022 10:30:32 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 8 Mar 2022 10:30:31 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <Deren.Wu@mediatek.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Sean Wang <sean.wang@mediatek.com>
-Subject: Re: [PATCH] mt76: mt7921: move mt7921_init_hw in a dedicated work
-Date:   Tue, 8 Mar 2022 10:27:54 +0800
-Message-ID: <1646706474-30066-1-git-send-email-sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <YiaLl++oijKrByBA@lore-desk>
-References: <YiaLl++oijKrByBA@lore-desk>
+        Tue, 8 Mar 2022 01:16:00 -0500
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E921829837;
+        Mon,  7 Mar 2022 22:15:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1646720105; x=1678256105;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=1XOqnXLpeVJlC4KyK0YuUmJ4jg+OeQyDZQ+E0RW+bRE=;
+  b=UPBfvD/LRXpOymuspj6M0c+Ty8CJtlwurqbbaC2qaNy4Oa9/27Ex6OES
+   yTwkMkdBXqlGC3cqEcKhqPR4xqOpSJggDmKYvUJBggt8JGvUV8cPq62BO
+   4/YyaHvNbg95eGfXDX1oZsgDU4r+XoiM4FEHR1sXderav5wpFm2MS8cc2
+   U=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 07 Mar 2022 22:01:02 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2022 22:01:01 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.15; Mon, 7 Mar 2022 22:01:01 -0800
+Received: from [10.216.19.10] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.15; Mon, 7 Mar 2022
+ 22:00:56 -0800
+Message-ID: <d7884804-6bc2-058b-c373-8b2005fd2811@quicinc.com>
+Date:   Tue, 8 Mar 2022 11:30:51 +0530
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH v2 02/19] ath11k: Refactor PCI code to support hybrid bus
+ devices
+Content-Language: en-US
+From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh@kernel.org>
+References: <1642337235-8618-1-git-send-email-quic_mpubbise@quicinc.com>
+ <1642337235-8618-3-git-send-email-quic_mpubbise@quicinc.com>
+ <87ee4sgo7l.fsf@kernel.org>
+ <41f8fd92-70e4-def6-0bd1-c764b1445d68@quicinc.com>
+In-Reply-To: <41f8fd92-70e4-def6-0bd1-c764b1445d68@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,187 +70,100 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+On 2/25/2022 11:20 AM, Manikanta Pubbisetty wrote:
+> On 1/28/2022 3:46 PM, Kalle Valo wrote:
+>> Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
+>>
+>>> Unlike other ATH11K PCIe devices which are enumerated by APSS
+>>> processor (Application Processor SubSystem), WCN6750 gets
+>>> enumerated by the WPSS Q6 processor (Wireless Processor SubSystem);
+>>> In simple terms, though WCN6750 is PCIe device, it is not attached
+>>> to the APSS processor, APSS will not know of such a device being
+>>> present in the system and therefore WCN6750 will be registered as
+>>> a platform device to the kernel core like other supported AHB
+>>> devices.
+>>>
+>>> WCN6750 uses both AHB and PCI APIs for it's operation, it uses
+>>> AHB APIs for device probe/boot and PCI APIs for device setup
+>>> and register accesses; Because of this nature, it is referred
+>>> as a hybrid bus device.
+>>>
+>>> Refactor PCI code to support hybrid bus devices like WCN6750.
+>>>
+>>> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00573-QCAMSLSWPLZ-1
+>>> Tested-on: WCN6855 hw2.0 PCI 
+>>> WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+>>> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
+>>> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
+>>>
+>>> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+>>
+>> [...]
+>>
+>>> --- a/drivers/net/wireless/ath/ath11k/Makefile
+>>> +++ b/drivers/net/wireless/ath/ath11k/Makefile
+>>> @@ -29,7 +29,7 @@ obj-$(CONFIG_ATH11K_AHB) += ath11k_ahb.o
+>>>   ath11k_ahb-y += ahb.o
+>>>   obj-$(CONFIG_ATH11K_PCI) += ath11k_pci.o
+>>> -ath11k_pci-y += mhi.o pci.o
+>>> +ath11k_pci-y += mhi.o pci.o pci_cmn.o
+>>
+>> So the end result looks like this:
+>>
+>> obj-$(CONFIG_ATH11K_AHB) += ath11k_ahb.o
+>> ath11k_ahb-y += ahb.o pci_cmn.o
+>>
+>> obj-$(CONFIG_ATH11K_PCI) += ath11k_pci.o
+>> ath11k_pci-y += mhi.o pci.o pci_cmn.o
+>>
+>> Linking pci_cmn.o to both ath11k_pci.ko and ath11k_ahb.ko looks wrong.
+>> Does that even compile if ath11k is linked to the kernel, eg. with
+>> allyesconfig?
+>>
+> 
+> I did try compiling the kernel with allyesconfig after your comment, 
+> compilation went through without any hiccups.
+> 
+>> One way to solve is to link pci_cmn.o to ath11k.ko. But for another
+>> approach, for a long time I have been thinking about what's the point to
+>> have separate ath11k_pci.ko and ath11k_ahb.ko modules?,They are very
+>> small anyway compared to ath11k.ko. So my ideais that should we have
+>> just one ath11k.ko module, it contains all AHB and PCI code as well, and
+>> ath11k_pci.ko and ath11k_ahb.ko would not be created anymore. It would
+>> simplify things a bit, especially here.
+>>
+>> Thoughts?
+>>
+> 
+> I see some concerns going with single module combining both AHB and PCI 
+> modules into ath11k.ko
+> 
+> 1) AHB and PCI drivers make use of completely different kernel 
+> frameworks, for example AHB driver needs remoteproc APIs for booting and 
+> require CONFIG_REMOTEPROC to be compiled in to the kernel. Similarly, 
+> PCI driver needs MHI APIs and also dependent on CONFIG_PCI. Both MHI and 
+> PCI bus frameworks need to be compiled for PCI to work. If we club all 
+> of this into single module, I see that unnecessarily additional modules 
+> will be compiled into the kernel which IMO is not so good idea.
+> 
+> 
+> 2) Secondly, there is high chance of writing bad code all over the 
+> driver. For example, there are chances that developers put AHB/PCI 
+> specific code all over the driver creating a big mess.
+> Though this can be avoided with stringent code review, but why to
+> give the chance.
+> 
+> Though AHB and PCI drivers are smaller in size, IMHO let AHB and PCI be 
+> independent drivers, code looks cleaner and properly segregated by 
+> keeping them as it is today.
+> 
+> Regarding the compilation of PCI common code, shall we move it into 
+> ath11k.ko? What is your opinion on this.
+> 
 
->> From: Sean Wang <sean.wang@mediatek.com>
->>
->> >Firmware initialization can take a while. Move mt7921_init_hw routine in a dedicated work in order to not slow down bootstrap process.
->>
->> Hi, Lore
->
->Hi Sean,
->
->>
->> I don't think the patch is really needed and it creates the different
->> state of the driver after mt7921_*_probe between without and with the patch we should be careful to handle it.
->>
->> For example.
->>
->> 1) It is possible that ieee80211_ops mt7921_ops is working while
->> mt7921_init_work is not completed, so that creates the race issue
->> between ieee80211_ops mt7921_ops and mt7921_init_work still in
->> progress
->
->Can you please elaborate on this? The device will not be "visible" to mac80211 till init_work completes since we run mt76_register_device() in mt7921_init_work().
+Hi Kalle,
 
-No, It is just my guess. I was not fully sure if there is definitely no racing issue after init work is created. If that never happens, it would be good news to me
+Any thoughts about the idea proposed?
 
->
->>
->> 2) mt7921[k,s,e].ko are always successful probed ( the .ko are always
->> shown in `lsmod` ) that would confuse the users even when we actually
->> got the failure of hardware initialization in mt7921_init_work
->
->If mt7921_init_work fails, we will remove the wiphy, so it will not be visible to the user.
->
-
-Another question I had is Is there any problem with rmmod the module with mt7921_init_work failure? It seemed to me that mt76_unregister_device might be called twice in the condition.
-
->>
->> so I would prefer to wait a while in mt7921_*_proble until the hardware is ready to be working to get rid of the extra synchronization to be added as well as keep the driver much simple.
->
->In the current codebase the time needed for device probing is quite visible on usb (afaiu this time is needed for fw initialization).
-
-It is good to see we can shorten the time in the module probe. I was just worried whether we have good handling in any case.
-
->Regards,
->Lorenzo
->
->>
->>         Sean
->>
->> >
->> >Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->> >---
->> > .../net/wireless/mediatek/mt76/mt7921/init.c  | 66 +++++++++++++------
->> > .../wireless/mediatek/mt76/mt7921/mt7921.h    |  2 +
->> > 2 files changed, 49 insertions(+), 19 deletions(-)
->> >
->> >diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
->> >b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
->> >index fa6af85bba7b..332af886b95a 100644
->> >--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
->> >+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
->> >@@ -165,7 +165,7 @@ static int __mt7921_init_hardware(struct
->> >mt7921_dev *dev)
->> >
->> > static int mt7921_init_hardware(struct mt7921_dev *dev)  {
->> >-	int ret, idx, i;
->> >+	int ret, i;
->> >
->> >	set_bit(MT76_STATE_INITIALIZED, &dev->mphy.state);
->> >
->> >@@ -182,6 +182,13 @@ static int mt7921_init_hardware(struct mt7921_dev *dev)
->> >		return ret;
->> >	}
->> >
->> >+	return 0;
->> >+}
->> >+
->> >+static int mt7921_init_wcid(struct mt7921_dev *dev) {
->> >+	int idx;
->> >+
->> >	/* Beacon and mgmt frames should occupy wcid 0 */
->> >	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7921_WTBL_STA - 1);
->> >	if (idx)
->> >@@ -195,6 +202,42 @@ static int mt7921_init_hardware(struct mt7921_dev *dev)
->> >	return 0;
->> > }
->> >
->> >+static void mt7921_init_work(struct work_struct *work) {
->> >+	struct mt7921_dev *dev = container_of(work, struct mt7921_dev,
->> >+					      init_work);
->> >+	int ret;
->> >+
->> >+	ret = mt7921_init_hardware(dev);
->> >+	if (ret)
->> >+		return;
->> >+
->> >+	mt76_set_stream_caps(&dev->mphy, true);
->> >+	mt7921_set_stream_he_caps(&dev->phy);
->> >+
->> >+	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
->> >+				   ARRAY_SIZE(mt76_rates));
->> >+	if (ret) {
->> >+		dev_err(dev->mt76.dev, "register device failed\n");
->> >+		return;
->> >+	}
->> >+
->> >+	ret = mt7921_init_debugfs(dev);
->> >+	if (ret) {
->> >+		dev_err(dev->mt76.dev, "debugfs register failed\n");
->> >+		goto error;
->> >+	}
->> >+
->> >+	ret = mt76_connac_mcu_set_deep_sleep(&dev->mt76, dev->pm.ds_enable);
->> >+	if (ret)
->> >+		goto error;
->> >+
->> >+	dev->hw_init_done = true;
->> >+	return;
->> >+error:
->> >+	mt76_unregister_device(&dev->mt76);
->> >+}
->> >+
->> > int mt7921_register_device(struct mt7921_dev *dev)  {
->> >	struct ieee80211_hw *hw = mt76_hw(dev); @@ -222,6 +265,7 @@ int mt7921_register_device(struct mt7921_dev *dev)
->> >	spin_lock_init(&dev->sta_poll_lock);
->> >
->> >	INIT_WORK(&dev->reset_work, mt7921_mac_reset_work);
->> >+	INIT_WORK(&dev->init_work, mt7921_init_work);
->> >
->> >	dev->pm.idle_timeout = MT7921_PM_TIMEOUT;
->> >	dev->pm.stats.last_wake_event = jiffies; @@ -234,7 +278,7 @@ int mt7921_register_device(struct mt7921_dev *dev)
->> >	if (mt76_is_sdio(&dev->mt76))
->> >		hw->extra_tx_headroom += MT_SDIO_TXD_SIZE + MT_SDIO_HDR_SIZE;
->> >
->> >-	ret = mt7921_init_hardware(dev);
->> >+	ret = mt7921_init_wcid(dev);
->> >	if (ret)
->> >		return ret;
->> >
->> >@@ -262,23 +306,7 @@ int mt7921_register_device(struct mt7921_dev *dev)
->> >	dev->mphy.hw->wiphy->available_antennas_rx = dev->mphy.chainmask;
->> >	dev->mphy.hw->wiphy->available_antennas_tx = dev->mphy.chainmask;
->> >
->> >-	mt76_set_stream_caps(&dev->mphy, true);
->> >-	mt7921_set_stream_he_caps(&dev->phy);
->> >-
->> >-	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
->> >-				   ARRAY_SIZE(mt76_rates));
->> >-	if (ret)
->> >-		return ret;
->> >-
->> >-	ret = mt7921_init_debugfs(dev);
->> >-	if (ret)
->> >-		return ret;
->> >-
->> >-	ret = mt76_connac_mcu_set_deep_sleep(&dev->mt76, dev->pm.ds_enable);
->> >-	if (ret)
->> >-		return ret;
->> >-
->> >-	dev->hw_init_done = true;
->> >+	queue_work(system_wq, &dev->init_work);
->> >
->> >	return 0;
->> > }
->> >diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
->> >b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
->> >index 394a677140da..b6c8f84acb64 100644
->> >--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
->> >+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
->> >@@ -204,6 +204,8 @@ struct mt7921_dev {
->> >	struct list_head sta_poll_list;
->> >	spinlock_t sta_poll_lock;
->> >
->> >+	struct work_struct init_work;
->> >+
->> >	u8 fw_debug;
->> >
->> >	struct mt76_connac_pm pm;
->> >--
->> >2.35.1
->> >
->> >
->> >
->>
+Thanks,
+Manikanta
