@@ -2,70 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C919A4D2DED
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Mar 2022 12:25:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 656E74D2E24
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Mar 2022 12:34:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232114AbiCIL0x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Mar 2022 06:26:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53780 "EHLO
+        id S232291AbiCILeZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Mar 2022 06:34:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231896AbiCIL0x (ORCPT
+        with ESMTP id S232229AbiCILeZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Mar 2022 06:26:53 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDD2C16A58F;
-        Wed,  9 Mar 2022 03:25:53 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C1CA5B820BC;
-        Wed,  9 Mar 2022 11:25:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D35C340E8;
-        Wed,  9 Mar 2022 11:25:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646825150;
-        bh=pi/I+f8oAdMPiZ00hqEd4Ori4d69XCBM0oR4J3iG4Uc=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=FK/dDSqoq8Xsvhj4ooyEUYZckolVVsXt1KFHMDZRO0jeurQVkMc18XT8/6tf3quko
-         6bYURW33hASZHe0qn+7POw4VgmH1DRATQv+G+IL+o6W5BORIQF3jhlxd66EIOjUf6D
-         KzSIR+ovdHwhWcf7Qymn22pbw66FPBpXIqzLjLUbK/23htI62XMkOfH3sFF4jYRVSf
-         jHxQpkETsyUUP6OOuzHjO8Uy7O0HY2JqLjyfrFwCNXZIxiMDulJ0f2oZDj3wAYVTz+
-         IAyQp3VOp2KbvkbUc/8iekTNtV9IONimHaB6xkptGMXLp+Y1zErHm1c83ZDhvalZq0
-         au90zhS7i64bw==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 9 Mar 2022 06:34:25 -0500
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF2544B1D2;
+        Wed,  9 Mar 2022 03:33:23 -0800 (PST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1646825602; bh=uhNr4TnutaVzv7hPR3sNvY7ptu+XNXJq03aDr0UTAEg=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=Sm/0YRBjqegVVoYdpertNJC6D92VOE7N88kkkSppqinLU4+uFwkmJkyLPqaou9EQ5
+         OcM2bU7M4dd0K+ryIULBsfP4504OQlMvjJlslQTHmVM0MwTrQD29KlclflbE9a6MKl
+         CN0h9bitj0+SKBoqG3e/22NZ+MVVwsU8j7yc3Ma46f56vpG5PlVPQYSqISw268oZtU
+         J6t/NyuDutjmOFhic0X1TROn940G14I4S23bdR+qz+O2M37ltyC26cDDWj5y7Nycsm
+         l3WVC3WXUSoIWJFQ9U+7kCxnQFOn/mO5NkNfXWS9Uj+62NxMY7sOcKPUjhFFqKqyPG
+         NDTPeIitPeWeg==
+To:     cgel.zte@gmail.com
+Cc:     kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Minghao Chi <chi.minghao@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: Re: [PATCH] ath9k: Use platform_get_irq() to get the interrupt
+In-Reply-To: <20220309053521.2081129-1-chi.minghao@zte.com.cn>
+References: <20220309053521.2081129-1-chi.minghao@zte.com.cn>
+Date:   Wed, 09 Mar 2022 12:33:21 +0100
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <874k47webi.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] MAINTAINERS: add devicetree bindings entry for mt76
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <8cbfeceef642ede408b4922c363953cb243cd87f.1646766851.git.lorenzo@kernel.org>
-References: <8cbfeceef642ede408b4922c363953cb243cd87f.1646766851.git.lorenzo@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, devicetree@vger.kernel.org,
-        robh@kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164682514615.8809.15088883190596586692.kvalo@kernel.org>
-Date:   Wed,  9 Mar 2022 11:25:48 +0000 (UTC)
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+cgel.zte@gmail.com writes:
 
-> Specify devicetree bindings entry for mt76 driver.
-> 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> From: Minghao Chi <chi.minghao@zte.com.cn>
+>
+> It is not recommened to use platform_get_resource(pdev, IORESOURCE_IRQ)
+> for requesting IRQ's resources any more, as they can be not ready yet in
+> case of DT-booting.
+>
+> platform_get_irq() instead is a recommended way for getting IRQ even if
+> it was not retrieved earlier.
+>
+> It also makes code simpler because we're getting "int" value right away
+> and no conversion from resource to int is required.
+>
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+> ---
+>  drivers/net/wireless/ath/ath9k/ahb.c | 10 +++-------
+>  1 file changed, 3 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
+> index cdefb8e2daf1..9cd12b20b18d 100644
+> --- a/drivers/net/wireless/ath/ath9k/ahb.c
+> +++ b/drivers/net/wireless/ath/ath9k/ahb.c
+> @@ -98,13 +98,9 @@ static int ath_ahb_probe(struct platform_device *pdev)
+>  		return -ENOMEM;
+>  	}
+>  
+> -	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+> -	if (res == NULL) {
+> -		dev_err(&pdev->dev, "no IRQ resource found\n");
 
-Felix, I would like to apply this directly to wireless-next. Ok?
+Hmm, I think we should retain this dev_err() call on failure...
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/8cbfeceef642ede408b4922c363953cb243cd87f.1646766851.git.lorenzo@kernel.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+-Toke
