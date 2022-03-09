@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC98F4D35B6
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Mar 2022 18:42:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E9294D37F3
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Mar 2022 18:45:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236406AbiCIQfB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Mar 2022 11:35:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48812 "EHLO
+        id S236427AbiCIQfK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Mar 2022 11:35:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235395AbiCIQcy (ORCPT
+        with ESMTP id S236247AbiCIQc4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Mar 2022 11:32:54 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3385757B26;
-        Wed,  9 Mar 2022 08:28:18 -0800 (PST)
+        Wed, 9 Mar 2022 11:32:56 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CADA1AC2A6;
+        Wed,  9 Mar 2022 08:28:25 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 167B5B82251;
-        Wed,  9 Mar 2022 16:27:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2119C340E8;
-        Wed,  9 Mar 2022 16:26:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C9EF261984;
+        Wed,  9 Mar 2022 16:27:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59580C340EC;
+        Wed,  9 Mar 2022 16:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646843219;
-        bh=K3FO2TWXO6pAN8KGOhYItbIUmKhC+J+Tj77X8skAVOI=;
+        s=k20201202; t=1646843274;
+        bh=KnxeRE+Le/zxu/bcAkRRacwhz4IT1ZtXf1iBhjipU6c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EBADp+5GJnF4hXl7S5RDZSAYJfamXZWyd7TtT/tYZpVI4ucEOafmOgTovh3w9fqfc
-         bacJDNIUIw/I2d/haThEwFII21/JDTMfT30/TetlcasAXfmdDmLML8I9vssi/qlUAX
-         rzg0eL9GUGcLOVeoPMaB215pLgCsJygbVXmYqbHJNR30X5lz6XIrMS6mnX3uQ+xRmv
-         spJT/xocjTOJZmWmG8sQlYXuOJ91i3k+gopwAKpaegsP033YOaurNkRGjOeCIn6n3b
-         Y6beXTCbxGKrIywJHCP+zcxx5yyIeca+fFAwltkQFL3d+hFUYbtsI7+DymIJwt6iLa
-         B8WTFha8/gbUA==
+        b=bBjDNK1oE19uqRmVE24iSI8oVCr/6kP++ARbQsDQToQNTC9hK4PgVce3MFRHDd0nw
+         yccqJwLkrNCgL3BSXw00+nzmziZ9ZIFjNUuLI2DQ1bYFSCaunX2QWda+Q4FQmzKge5
+         Xkqnq/r6BILGQHVlNAWSO+nto2p9+dq2kwIP5TbltoTIZi7PfPoGHJ6nY7CHxagJKv
+         OBubK0B8IpuEuJiKYl4ZStd+XO0gaxlP5Y3d7IgmapvLmVtAsJJDTK1XxLyCUrY11G
+         MH8fi83BzGmFtEdHwvOltIrVOvRpw8sBAlCeFsl32klIIOnAWVmSEIdT/EX5USigfs
+         UsIiD7yTMyV5g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Sreeramya Soratkal <quic_ssramya@quicinc.com>,
@@ -39,12 +39,12 @@ Cc:     Sreeramya Soratkal <quic_ssramya@quicinc.com>,
         Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
         davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 08/12] nl80211: Update bss channel on channel switch for P2P_CLIENT
-Date:   Wed,  9 Mar 2022 11:26:13 -0500
-Message-Id: <20220309162618.137226-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 07/11] nl80211: Update bss channel on channel switch for P2P_CLIENT
+Date:   Wed,  9 Mar 2022 11:27:12 -0500
+Message-Id: <20220309162716.137399-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220309162618.137226-1-sashal@kernel.org>
-References: <20220309162618.137226-1-sashal@kernel.org>
+In-Reply-To: <20220309162716.137399-1-sashal@kernel.org>
+References: <20220309162716.137399-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -80,10 +80,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index bbc3c876a5d8..7085c54e6e50 100644
+index ab8bca39afa3..562e138deba2 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -14777,7 +14777,8 @@ void cfg80211_ch_switch_notify(struct net_device *dev,
+@@ -14068,7 +14068,8 @@ void cfg80211_ch_switch_notify(struct net_device *dev,
  	wdev->chandef = *chandef;
  	wdev->preset_chandef = *chandef;
  
