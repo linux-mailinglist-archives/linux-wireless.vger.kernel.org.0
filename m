@@ -2,163 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC8904D42C6
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Mar 2022 09:42:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E44C74D4438
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Mar 2022 11:06:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237405AbiCJIne (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Mar 2022 03:43:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54396 "EHLO
+        id S241047AbiCJKHH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Mar 2022 05:07:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240469AbiCJInd (ORCPT
+        with ESMTP id S236145AbiCJKHG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Mar 2022 03:43:33 -0500
-Received: from farmhouse.coelho.fi (paleale.coelho.fi [176.9.41.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F20329
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Mar 2022 00:42:29 -0800 (PST)
-Received: from 91-156-4-241.elisa-laajakaista.fi ([91.156.4.241] helo=[192.168.100.150])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.95)
-        (envelope-from <luca@coelho.fi>)
-        id 1nSENK-000U2k-3D;
-        Thu, 10 Mar 2022 10:42:24 +0200
-Message-ID: <d4c71b078097ae236fc20131ea59cd5c436554bb.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, luca@coelho.fi
-Date:   Thu, 10 Mar 2022 10:42:21 +0200
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-RLiXsD2G9mE9EmHgyP1l"
-User-Agent: Evolution 3.43.3-1 
+        Thu, 10 Mar 2022 05:07:06 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62F2513C244;
+        Thu, 10 Mar 2022 02:06:01 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 26A1DB8257B;
+        Thu, 10 Mar 2022 10:06:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5059C340EC;
+        Thu, 10 Mar 2022 10:05:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1646906758;
+        bh=ZB0Y7Z+2Ou6Nqam8tSjvOtOle2fii9Lnw44DFOuOFmI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=HnELMryBkJ8+AIisKOhSdaaVLncNsWXxhw3J+DhyTsSNEiQ1yy0/+RpFM5l4+P7/a
+         PPiWCiaTwYgpXJx+jmFXCCcVj5oC+G4RjfLYLafQyiQ9+r8abgRodfhPTgrcLj3Ymm
+         P/qr/gzGdfDM8aC+kHGBxArHyDQRVQVZ7lL/oXsUEOtZlkeTFyAHxxkJ1YL5nQtZey
+         VCas8KDqrCADG/vTYi+IO3pk/7+rOKX6HTPVqf7r2seSeBjixNujpAzEAAJlJpMVUm
+         9wP8ASjId5xU2f059mmUH+iEOw+GJyfFg1611Y29uHgtKHKIdc0IIEWEe4xTi4P1BF
+         MC+dY9HYG0ecw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Abhishek Kumar <kuabhs@chromium.org>,
+        Rakesh Pillai <pillair@codeaurora.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        ath10k <ath10k@lists.infradead.org>,
+        netdev <netdev@vger.kernel.org>
+Subject: Re: [PATCH 1/2] ath10k: search for default BDF name provided in DT
+References: <20220107200417.1.Ie4dcc45b0bf365077303c596891d460d716bb4c5@changeid>
+        <CAD=FV=W5fHP8K-PcoYWxYHiDWnPUVQQzOzw=REbuJSSqGeVVfg@mail.gmail.com>
+Date:   Thu, 10 Mar 2022 12:05:53 +0200
+In-Reply-To: <CAD=FV=W5fHP8K-PcoYWxYHiDWnPUVQQzOzw=REbuJSSqGeVVfg@mail.gmail.com>
+        (Doug Anderson's message of "Fri, 7 Jan 2022 13:22:45 -0800")
+Message-ID: <87sfrqqfzy.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
-Subject: pull-request: iwlwifi-next 2022-03-10
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Doug Anderson <dianders@chromium.org> writes:
 
---=-RLiXsD2G9mE9EmHgyP1l
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> Hi,
+>
+> On Fri, Jan 7, 2022 at 12:05 PM Abhishek Kumar <kuabhs@chromium.org> wrote:
+>>
+>> There can be cases where the board-2.bin does not contain
+>> any BDF matching the chip-id+board-id+variant combination.
+>> This causes the wlan probe to fail and renders wifi unusable.
+>> For e.g. if the board-2.bin has default BDF as:
+>> bus=snoc,qmi-board-id=67 but for some reason the board-id
+>> on the wlan chip is not programmed and read 0xff as the
+>> default value. In such cases there won't be any matching BDF
+>> because the board-2.bin will be searched with following:
+>> bus=snoc,qmi-board-id=ff
 
-Hi Kalle,
+I just checked, in ath10k-firmware WCN3990/hw1.0/board-2.bin we have
+that entry:
 
-Here's my second pull request for v5.18 with the last patchset I sent.
+BoardNames[1]: 'bus=snoc,qmi-board-id=ff'
 
-This is all normal development, new features, bugfixes and  cleanups.=20
-More details about the contents in the tag description.
+>> To address these scenarios, there can be an option to provide
+>> fallback default BDF name in the device tree. If none of the
+>> BDF names match then the board-2.bin file can be searched with
+>> default BDF names assigned in the device tree.
+>>
+>> The default BDF name can be set as:
+>> wifi@a000000 {
+>>         status = "okay";
+>>         qcom,ath10k-default-bdf = "bus=snoc,qmi-board-id=67";
+>
+> Rather than add a new device tree property, wouldn't it be good enough
+> to leverage the existing variant?
 
-Please let me know if there are any issues.
+I'm not thrilled either adding this to Device Tree, we should keep the
+bindings as simple as possible.
 
-Cheers,
-Luca.
+> Right now I think that the board file contains:
+>
+> 'bus=snoc,qmi-board-id=67.bin'
+> 'bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_LAZOR.bin'
+> 'bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_POMPOM.bin'
+> 'bus=snoc,qmi-board-id=67,qmi-chip-id=4320,variant=GO_LAZOR.bin'
+> 'bus=snoc,qmi-board-id=67,qmi-chip-id=4320,variant=GO_POMPOM.bin'
+>
+> ...and, on lazor for instance, we have:
+>
+> qcom,ath10k-calibration-variant = "GO_LAZOR";
+>
+> The problem you're trying to solve is that on some early lazor
+> prototype hardware we didn't have the "board-id" programmed we could
+> get back 0xff from the hardware. As I understand it 0xff always means
+> "unprogrammed".
+>
+> It feels like you could just have a special case such that if the
+> hardware reports board ID of 0xff and you don't get a "match" that you
+> could just treat 0xff as a wildcard. That means that you'd see the
+> "variant" in the device tree and pick one of the "GO_LAZOR" entries.
+>
+> Anyway, I guess it's up to the people who spend more time in this file
+> which they'd prefer, but that seems like it'd be simple and wouldn't
+> require a bindings addition...
 
+In ath11k we need something similar for that I have been thinking like
+this:
 
-The following changes since commit 12b604d4ba693a3aa254cf7f9d0b4835770e9e97=
-:
+'bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_LAZOR'
 
-  rtw89: declare HE capabilities in 6G band (2022-03-09 13:39:53 +0200)
+'bus=snoc,qmi-board-id=67,qmi-chip-id=320'
 
-are available in the Git repository at:
+'bus=snoc,qmi-board-id=67'
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git ta=
-gs/iwlwifi-next-for-kalle-2022-03-10
+'bus=snoc'
 
-for you to fetch changes up to 8594ab868799ce78c770498b74fe55ded30def9e:
+Ie. we drop one attribute at a time and try to find a suitable board
+file. Though I'm not sure if it's possible to find a board file which
+works with many different hardware, but the principle would be at least
+that. Would something like that work in your case?
 
-  iwlwifi: bump FW API to 72 for AX devices (2022-03-10 09:23:29 +0200)
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-----------------------------------------------------------------
-iwlwifi patches for v5.18
-
-* Mostly debugging infra changes;
-* Some more work on the Bz family of devices;
-* Bump the FW API twice;
-* Some other small fixes, clean-ups and improvements.
-
-----------------------------------------------------------------
-Ayala Barazani (2):
-      iwlwifi: mvm: add a flag to reduce power command.
-      iwlwifi: Configure FW debug preset via module param.
-
-Johannes Berg (3):
-      iwlwifi: mvm: remove cipher scheme support
-      iwlwifi: pcie: fix SW error MSI-X mapping
-      iwlwifi: use 4k queue size for Bz A-step
-
-Luca Coelho (2):
-      iwlwifi: bump FW API to 71 for AX devices
-      iwlwifi: bump FW API to 72 for AX devices
-
-Matt Chen (1):
-      iwlwifi: acpi: move ppag code from mvm to fw/acpi
-
-Mordechay Goodstein (2):
-      iwlwifi: dbg: in sync mode don't call schedule
-      iwlwifi: dbg: check trigger data before access
-
-Mukesh Sisodiya (3):
-      iwlwifi: yoyo: disable IMR DRAM region if IMR is disabled
-      iwlwifi: mvm: add support for IMR based on platform
-      iwlwifi: yoyo: dump IMR DRAM only for HW and FW error
-
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c             |  19 +++++++-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c               | 211 +++++++++=
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-=
--
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h               |  28 +++++++++=
-+++
- drivers/net/wireless/intel/iwlwifi/fw/api/power.h          |  27 +++++++++=
-+-
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c                |  34 +++++++++=
-++++-
- drivers/net/wireless/intel/iwlwifi/fw/file.h               |  28 ---------=
----
- drivers/net/wireless/intel/iwlwifi/fw/img.h                |  12 -----
- drivers/net/wireless/intel/iwlwifi/fw/runtime.h            |   3 +-
- drivers/net/wireless/intel/iwlwifi/iwl-config.h            |   5 ++-
- drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h |   4 +-
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h           |   4 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c               |  69 +++++++++=
-++++++-------------
- drivers/net/wireless/intel/iwlwifi/iwl-modparams.h         |   5 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c                | 221 +++++++++=
-++++++---------------------------------------------------------------------=
-------
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c          |  33 ++-------=
------
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h               |   1 -
- drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c   |   5 ++-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c              |   3 +-
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c            |   2 +-
- drivers/net/wireless/intel/iwlwifi/queue/tx.c              |   4 ++
- 20 files changed, 412 insertions(+), 306 deletions(-)
-
-
---=-RLiXsD2G9mE9EmHgyP1l
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAmIpue0ACgkQoUecoho8
-xfokOQ/8Ch0OrzsnfkxYkR/zTNK4BZoifdUs3GEy8s3FjUu89PE3cm4017NJ/COJ
-+lXPJo0qCN5TiTZbxIoHKujniASJkqRbkyc4RbZc7NJHgzU1hHO2/mOImqxdKuXb
-Z9FY7Uo45jkRMLfbRaGMUCsFlhx3TBZYcJZqnSaFFQHZIE02+z9amCiUbChlGPOU
-95GkR2GCpi0RHlO7ZjjIfP1qbO+FzUT1wuwyMzgNxXOkNVXwgKYJtxBWQDxPx+Fl
-xaIlTAkxzbTE6C2lrmVdqPN778C7a2fFQckwzqZ11VM9MqJKs+muX5LJcJZt4yR0
-8YKpe3NymLHyLz29A4mEIhl6EWXe2MSbbjr367AwgFQv56bpd1N6/RNQ1msPq3lB
-PRkASPPG79qV+Dy42KO6dPU1/YyC1iTv2quhgP5Q4+45UBfnwTJ/DDlH9xINiWgx
-BbY5s684mUzAhpsllDirx2emtauO+Lc15Yzdi+GLyL59Z1gcv1yfxnmTZvuoypqi
-ysbIZnMBKZIpNqTZ5vuYXbjZmrBWZlDIp5QWUCSxNnaGqrO4KsNnHbeLEDlwttx4
-dJ2rUXfzp8mo9l384eGAwJH4MpdQ4PJwfJPuRNZT5ad5BHpYSK32SwpdLyVdSgSi
-BXU/OyRzbBlxuwQ32eu2AGDnOJjoZ6D30HiqNwPkIXMsjx26LPw=
-=gHHV
------END PGP SIGNATURE-----
-
---=-RLiXsD2G9mE9EmHgyP1l--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
