@@ -2,107 +2,228 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E3C34D3D84
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Mar 2022 00:24:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0674F4D3DEC
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Mar 2022 01:13:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237605AbiCIXZN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Mar 2022 18:25:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34208 "EHLO
+        id S236978AbiCJAOx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Mar 2022 19:14:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229618AbiCIXZN (ORCPT
+        with ESMTP id S234684AbiCJAOv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Mar 2022 18:25:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id ED361527D1
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Mar 2022 15:24:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1646868252;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=x7ymHsgqFEN86o8611pDZsoSVDfvMkyfUVRqrMffFAo=;
-        b=fOf6Gt301jLcm+cwF+fH94VjW1sSWkBe2qmd15FkLrMSK1HOHUHhHwecKQ8QQSzTTdIuYu
-        r+y8XcKhXOq8438w8L7dLyyYT1FOg+OSiuNg5xNig5YxYDn5mzuprUq6S+1lz9VFlWglxT
-        xbT8PswHvu2QMl4peVOhhPWrp4Nfo+M=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-155-FDW6LY1kMVWxpgBuw2GU_Q-1; Wed, 09 Mar 2022 18:24:11 -0500
-X-MC-Unique: FDW6LY1kMVWxpgBuw2GU_Q-1
-Received: by mail-ej1-f71.google.com with SMTP id r18-20020a17090609d200b006a6e943d09eso2088734eje.20
-        for <linux-wireless@vger.kernel.org>; Wed, 09 Mar 2022 15:24:11 -0800 (PST)
+        Wed, 9 Mar 2022 19:14:51 -0500
+Received: from mail-vk1-xa2c.google.com (mail-vk1-xa2c.google.com [IPv6:2607:f8b0:4864:20::a2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 578595BD32;
+        Wed,  9 Mar 2022 16:13:51 -0800 (PST)
+Received: by mail-vk1-xa2c.google.com with SMTP id i18so2142113vkr.13;
+        Wed, 09 Mar 2022 16:13:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=4hJmFhM88IZ+dfQepZO8uH6DD9gUdFnEB+hz6SedP+4=;
+        b=CKEl89vJadtt17Npn5H8NJmrgnK8fyZNwKibXP9BpwRPr11NXt4jtMrvJLofvOidQw
+         M7AX4xdrWksfffU9MQhthfVbt70ec752LzrA4GXUZQc9zXr0DPMYi3/gFpd1QzUSV2F8
+         0R/fnWN6bT+B30PkySXzHjsQ+EwcBpRPkJwvlRKABIAA4jpYgbgoXCXK1oUwgQq8mDWf
+         4lYSekEwWiXGOwdPAamgVKPNNnAiCQki9IdaGB6FkTkn6F4HgmjoLVp2Nv5J90OSR11v
+         nDiYFrCXeS2Ja+UhTIFlNZE0evb5pTd0cvRjTJwmiMbfXUneS8GjDIdY96SHMHedW3jE
+         k7rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=x7ymHsgqFEN86o8611pDZsoSVDfvMkyfUVRqrMffFAo=;
-        b=O89SXbJXteTp0Shzisdc+YenSWlC2WjKlrNMGwyCh6RDYKt1jRm71AHzxnQRSmSVGx
-         yo+xIRFXzxCJf+hMObYA+ygEPd37NnDL4MrchVo5V1jevryH2EWx7Ap5Bh1hqsV9BzTK
-         15neVfV8jpdEcI3kUJCiFe+Ao9faIxxLfS9SdANaartgGhhKJtEiU3AoCY2H0DPyod2x
-         sGwoSX7F00XNWbltp/qEVO2Lua1yKwIBFx5N2cVRqWnAQ0xzbGEOPmqpajm4FCbzmd5m
-         n6V1tKd5AVbhUMY7CxszU/J9RICoy4p50B6t/4y7k3NeThwnxym/9EQ6onQtZhW0MxnF
-         3oEA==
-X-Gm-Message-State: AOAM53171RX50fIZohVbAVfwqmubIS+g6jISn5m16q4+y6hw83NzdBwT
-        CKn3XS9PAGonOz0zZ+8SgAWtfrEWGs57AXYQzis9e2zQW3WuLXIMT8rcIdMl0LMHw5/c3Vcd8JA
-        DwBOPvnN1Ze/1wM14qrqhjYQEl6g=
-X-Received: by 2002:a17:906:c151:b0:6db:2b7f:302f with SMTP id dp17-20020a170906c15100b006db2b7f302fmr1957020ejc.4.1646868250009;
-        Wed, 09 Mar 2022 15:24:10 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJw0EfvtomTcLzFKRD3f4im90mBpn+xhTpucpI09xBp8ExS1+NKJWAQ4aiF4uahPh9EZViolUw==
-X-Received: by 2002:a17:906:c151:b0:6db:2b7f:302f with SMTP id dp17-20020a170906c15100b006db2b7f302fmr1957005ejc.4.1646868249579;
-        Wed, 09 Mar 2022 15:24:09 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id y6-20020a056402358600b004166413d27bsm1339194edc.97.2022.03.09.15.24.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Mar 2022 15:24:08 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 22F5D192B84; Thu, 10 Mar 2022 00:24:08 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Wenli Looi <wlooi@ucalgary.ca>, Kalle Valo <kvalo@kernel.org>
-Cc:     ath9k-devel@qca.qualcomm.com,
-        Miaoqing Pan <miaoqing@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-Subject: Re: QCN5502 support in ath9k
-In-Reply-To: <CAKe_nd3Hc+5u9O0Bd31oFF_mTOJU9bx5hmcS1TkSy0FMtQamBA@mail.gmail.com>
-References: <CAKe_nd1jthFhJhojQLXMeU741AoTks74K+J1v5FqS6ABB6gW-Q@mail.gmail.com>
- <87r18d1upk.fsf@kernel.org>
- <CAKe_nd3Hc+5u9O0Bd31oFF_mTOJU9bx5hmcS1TkSy0FMtQamBA@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Thu, 10 Mar 2022 00:24:08 +0100
-Message-ID: <87mthyvhev.fsf@toke.dk>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=4hJmFhM88IZ+dfQepZO8uH6DD9gUdFnEB+hz6SedP+4=;
+        b=Hpz0WbPHkJP9U/9+Q5oYBWHKdcSE9CWftI83Qbj57SYRRLRju4s3lgpoakFozCkXW2
+         OyhsRYeXP+vxFmfOi5c6Xk5nAmFVFXzTeax+J0Q+ABmFolpRXqaR5ou5UhXKIZSPbZz6
+         zrZRisIwZhvzhnhK5b+MNRWH1VMSq61xbgeJG3oN0n2nx0BflxokDN0u8Hg6qLgLhT24
+         4/cHqlFzq0QGAURViMqGdVPHRxJ2Usfr7w09Vnm0d/iGV54QkWOHqd6ZXiaij2gtbshq
+         4qGOspAItLjdBUiuSqkZ0K04NW4akXus8Uhtlb8GYKmjDr/fpgR82G5LuNO4xmF/hbnU
+         JN+g==
+X-Gm-Message-State: AOAM530UAsYK/FAM43GYqrtFP39v4X89afo3xso/hcO+eMLIcXRHYPhi
+        DwrfnXn0w5vepKt0zhji58Mdw3LokC0EU6yKhC0=
+X-Google-Smtp-Source: ABdhPJyptdgvj8ett73F9nvvYiUqg+AxIF/iWvCFyBgWjG8+E6Ns3O9znnHnhLgZd7vGT5fUEASvY4iuM0IVyMSzkQQ=
+X-Received: by 2002:ac5:c8bc:0:b0:337:b6b6:7607 with SMTP id
+ o28-20020ac5c8bc000000b00337b6b67607mr1333908vkl.1.1646871230374; Wed, 09 Mar
+ 2022 16:13:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220223223326.28021-1-ricardo.martinez@linux.intel.com>
+ <20220223223326.28021-7-ricardo.martinez@linux.intel.com> <CAHNKnsSZ_2DAPQRsa45VZZ1UYD6mga_T0jfX_J+sb1HNCwpOPA@mail.gmail.com>
+ <5cf76041-77be-2651-f421-ad2521966570@linux.intel.com>
+In-Reply-To: <5cf76041-77be-2651-f421-ad2521966570@linux.intel.com>
+From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Date:   Thu, 10 Mar 2022 03:13:39 +0300
+Message-ID: <CAHNKnsQ2mKzVNyH+cyw4k+U1PXNz-dB8a0YfqSYqtBAROAwAmg@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 06/13] net: wwan: t7xx: Add AT and MBIM WWAN ports
+To:     "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        chandrashekar.devegowda@intel.com,
+        Intel Corporation <linuxwwan@intel.com>,
+        chiranjeevi.rapolu@linux.intel.com,
+        =?UTF-8?B?SGFpanVuIExpdSAo5YiY5rW35YabKQ==?= 
+        <haijun.liu@mediatek.com>, amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        ilpo.johannes.jarvinen@intel.com, moises.veleta@intel.com,
+        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
+        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
+        madhusmita.sahu@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wenli Looi <wlooi@ucalgary.ca> writes:
-
-> I've managed to get QCN5502 working in ath9k in a very hacky way, by
-> mainly treating it as QCA956x, including the initvals:
+On Wed, Mar 9, 2022 at 3:02 AM Martinez, Ricardo
+<ricardo.martinez@linux.intel.com> wrote:
+> On 3/6/2022 6:56 PM, Sergey Ryazanov wrote:
+>> On Thu, Feb 24, 2022 at 1:35 AM Ricardo Martinez
+>> <ricardo.martinez@linux.intel.com> wrote:
+>>> From: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+>>>
+>>> Adds AT and MBIM ports to the port proxy infrastructure.
+>>> The initialization method is responsible for creating the corresponding
+>>> ports using the WWAN framework infrastructure. The implemented WWAN por=
+t
+>>> operations are start, stop, and TX.
+>> [skipped]
+>>
+>>> +static int t7xx_port_ctrl_tx(struct wwan_port *port, struct sk_buff *s=
+kb)
+>>> +{
+>>> +       struct t7xx_port *port_private =3D wwan_port_get_drvdata(port);
+>>> +       size_t actual_len, alloc_size, txq_mtu =3D CLDMA_MTU;
+>>> +       struct t7xx_port_static *port_static;
+>>> +       unsigned int len, i, packets;
+>>> +       struct t7xx_fsm_ctl *ctl;
+>>> +       enum md_state md_state;
+>>> +
+>>> +       len =3D skb->len;
+>>> +       if (!len || !port_private->rx_length_th || !port_private->chan_=
+enable)
+>>> +               return -EINVAL;
+>>> +
+>>> +       port_static =3D port_private->port_static;
+>>> +       ctl =3D port_private->t7xx_dev->md->fsm_ctl;
+>>> +       md_state =3D t7xx_fsm_get_md_state(ctl);
+>>> +       if (md_state =3D=3D MD_STATE_WAITING_FOR_HS1 || md_state =3D=3D=
+ MD_STATE_WAITING_FOR_HS2) {
+>>> +               dev_warn(port_private->dev, "Cannot write to %s port wh=
+en md_state=3D%d\n",
+>>> +                        port_static->name, md_state);
+>>> +               return -ENODEV;
+>>> +       }
+>>> +
+>>> +       alloc_size =3D min_t(size_t, txq_mtu, len + CCCI_HEADROOM);
+>>> +       actual_len =3D alloc_size - CCCI_HEADROOM;
+>>> +       packets =3D DIV_ROUND_UP(len, txq_mtu - CCCI_HEADROOM);
+>>> +
+>>> +       for (i =3D 0; i < packets; i++) {
+>>> +               struct ccci_header *ccci_h;
+>>> +               struct sk_buff *skb_ccci;
+>>> +               int ret;
+>>> +
+>>> +               if (packets > 1 && packets =3D=3D i + 1) {
+>>> +                       actual_len =3D len % (txq_mtu - CCCI_HEADROOM);
+>>> +                       alloc_size =3D actual_len + CCCI_HEADROOM;
+>>> +               }
+>>
+>> Why do you track the packet number? Why not track the offset in the
+>> passed data? E.g.:
+>>
+>> for (off =3D 0; off < len; off +=3D chunklen) {
+>>      chunklen =3D min(len - off, CLDMA_MTU - sizeof(struct ccci_header);
+>>      skb_ccci =3D alloc_skb(chunklen + sizeof(struct ccci_header), ...);
+>>      skb_put_data(skb_ccci, skb->data + off, chunklen);
+>>      /* Send skb_ccci */
+>> }
 >
-> https://github.com/openwrt/openwrt/pull/9389
+> Sure, I'll make that change.
 >
-> It would be great if anyone could provide comments on the code, as
-> well as the ideas for incorporating this cleanly into ath9k (and
-> whether there would be interest in doing so).
+>>> +               skb_ccci =3D __dev_alloc_skb(alloc_size, GFP_KERNEL);
+>>> +               if (!skb_ccci)
+>>> +                       return -ENOMEM;
+>>> +
+>>> +               ccci_h =3D skb_put(skb_ccci, sizeof(*ccci_h));
+>>> +               t7xx_ccci_header_init(ccci_h, 0, actual_len + sizeof(*c=
+cci_h),
+>>> +                                     port_static->tx_ch, 0);
+>>> +               skb_put_data(skb_ccci, skb->data + i * (txq_mtu - CCCI_=
+HEADROOM), actual_len);
+>>> +               t7xx_port_proxy_set_tx_seq_num(port_private, ccci_h);
+>>> +
+>>> +               ret =3D t7xx_port_send_skb_to_md(port_private, skb_ccci=
+);
+>>> +               if (ret) {
+>>> +                       dev_kfree_skb_any(skb_ccci);
+>>> +                       dev_err(port_private->dev, "Write error on %s p=
+ort, %d\n",
+>>> +                               port_static->name, ret);
+>>> +                       return ret;
+>>> +               }
+>>> +
+>>> +               port_private->seq_nums[MTK_TX]++;
+>>
+>> Sequence number tracking as well as CCCI header construction are
+>> common operations, so why not move them to t7xx_port_send_skb_to_md()?
+>
+> Sequence number should be set as part of CCCI header construction.
+>
+> I think it's a bit more readable to initialize the CCCI header right
+> after the corresponding skb_put(). Not a big deal, any thoughts?
 
-I certainly wouldn't mind merging this support if it can be implemented
-in a clean way; we'd have to be sure it doesn't break anything on
-existing devices, of course.
+I do not _think_ creating the CCCI header in the WWAN or CTRL port
+functions is any good idea. In case of stacked protocols, each layer
+should create its own header, pass the packet down the stack, and then
+a next layer will create a next header.
 
-You'll have to split out the code to co-exist with the ar9003. My
-immediate thought would be that it would be a mistake to employ too
-clever tricks to maximise code reuse. By all means, try to reuse as much
-code as possible, but I'd rather take a bit of code duplication than end
-up with something that works in non-obvious ways :)
+In case of the CTRL port, this means that the control port code should
+take an opaque data block from an upper layer (e.g. features request),
+prepend it with a control msg header, and pass it down the stack to
+the port proxy layer, where the CCCI header will be prepended.
 
-Hope that helps!
+In case a WWAN port, all headers are passed from user space, so there
+=D1=88=D1=8B nothing to prepend. And the only remaining function is to frag=
+ment
+a user input, and then pass all  the fragments to the port proxy
+layer, where the CCCI header will be prepended.
 
--Toke
+This way, you do not overload the CTRL/WWAN port with code of other
+protocols (i.e. CCCI), reduce code duplication. Which in itself
+improves the code maintainability and future development. Creating a
+CCCI header at the WWAN port layer is like forcing a user to manually
+create IP and UDP headers before writing a data block into a network
+socket :)
 
+Anyway, it is up to you to decide exactly how to create headers and
+assign sequence numbers. I just wanted to point out the code
+inconsistency. It does not make the code wrong, it just makes the code
+look stranger.
+
+> Note that the upcoming fw update feature doesn't require a CCCI header,
+> so we could rename the TX function as t7xx_port_send_ccci_skb_to_md(),
+> this would give a hint that it is taking care of the CCCI header.
+
+Does this mean the firmware upgrade does not utilize the channel id,
+and just pushes data directly to a specific CLDMA queue? In that case
+it looks like the firmware upgrade code needs to entirely bypass the
+port proxy layer and communicate directly with CLDMA. Isn't it?
+
+>>> +       }
+>>> +
+>>> +       dev_kfree_skb(skb);
+>>> +       return 0;
+>>> +}
+
+--=20
+Sergey
