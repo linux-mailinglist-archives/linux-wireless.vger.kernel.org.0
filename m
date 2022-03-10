@@ -2,52 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DD3F4D4243
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Mar 2022 09:12:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB4854D42B1
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Mar 2022 09:37:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240229AbiCJINt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Mar 2022 03:13:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33020 "EHLO
+        id S236970AbiCJIhr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Mar 2022 03:37:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232935AbiCJINr (ORCPT
+        with ESMTP id S235496AbiCJIhq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Mar 2022 03:13:47 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AFFF6384
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Mar 2022 00:12:46 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1324F61B2D
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Mar 2022 08:12:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7B2C340E8;
-        Thu, 10 Mar 2022 08:12:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646899965;
-        bh=Y1ctv1TnCkh7mgHyERO8uAQvrjaWCyFyRyDdJXsAbRI=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=JOwXy1tr7NDiHU3Pj6C4UHx4eDwO5B6qGIP45oBluySYP5Pg8XzVsvJzX3EVZ/C79
-         dXHMJNiDlXvq4EjErKJDerDNd7zV9CprHk3vEUr0DgVL+Bmb9z3fMyW7UL0PV5/0zC
-         zVq80LF89glOuc4jRNLk0FCa6C6Bj5iCS02XDAQcmCcIRsXjBN/Q7nEjKls9omOqip
-         EK4i+vErLLnwGF807grYiCmpXucmEC2eXKyuCfuRhBUlLhCv0eSaUQaJrAN6aoPwzF
-         Ga4Oy2wELTBqzuRpFTV9nTKmhkiGhq/96QcKsqhpr/3uEEw0U9UGFGqpMzIA6I+xa2
-         veDQDmcI1ctTw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Wen Gong <quic_wgong@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v5 2/2] ath11k: add read variant from SMBIOS for download board data
-References: <20211220064829.17557-1-quic_wgong@quicinc.com>
-        <20211220064829.17557-3-quic_wgong@quicinc.com>
-Date:   Thu, 10 Mar 2022 10:12:40 +0200
-In-Reply-To: <20211220064829.17557-3-quic_wgong@quicinc.com> (Wen Gong's
-        message of "Mon, 20 Dec 2021 01:48:29 -0500")
-Message-ID: <87wnh2ql8n.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 10 Mar 2022 03:37:46 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 552F9136ECC
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Mar 2022 00:36:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646901406; x=1678437406;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=bJbrYKDgAObOAeAsaBDVuySAOoD7K5WsIVDXlK2+v+0=;
+  b=U4FZl4iMYUGn/2RkUfM1NaOqgEsYEXwF5YMZ+m0Sy102m6L/cRALGBhN
+   bwwTu3VeKOUhxKII6q5yBf6DINDiDfvSb0fIQ8STjTErGzw+6rkFAsW01
+   EG/ioV/5kEt/eWzoNRXw0d8Ed65V2EVUwN2bY1kQsqbP5HLxeUb57YbQ5
+   dXmaVDKuON1TEo89uq4WJbFnbZLNUEQKdVFugc6QFxZXUT9pugS4agzNy
+   ttjsCQf4P1mWhb9CPpHQnHVFn8wedsDs1crH7eTnErS2L2DQX3GbW4LfW
+   w7UEGRFAWSDRX5hp9UihMcU6mB9n2/xd1V0CbIq5bXjO97FOfh+m2S2E/
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10281"; a="235144731"
+X-IronPort-AV: E=Sophos;i="5.90,169,1643702400"; 
+   d="scan'208";a="235144731"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2022 00:36:45 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,169,1643702400"; 
+   d="scan'208";a="644360855"
+Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 10 Mar 2022 00:36:44 -0800
+Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nSEHr-0004ek-Nb; Thu, 10 Mar 2022 08:36:43 +0000
+Date:   Thu, 10 Mar 2022 16:35:45 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ 12b604d4ba693a3aa254cf7f9d0b4835770e9e97
+Message-ID: <6229b861.Xo4qcgiwSLjmopDp%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,100 +63,128 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <quic_wgong@quicinc.com> writes:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 12b604d4ba693a3aa254cf7f9d0b4835770e9e97  rtw89: declare HE capabilities in 6G band
 
-> This is to read variant from SMBIOS such as read from DT, the variant
-> string will be used to one part of string which used to search board
-> data from board-2.bin.
->
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
->
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+elapsed time: 1202m
 
-[...]
+configs tested: 106
+configs skipped: 3
 
-> +static void ath11k_core_check_bdfext(const struct dmi_header *hdr, void *data)
-> +{
-> +	struct ath11k_base *ab = data;
-> +	const char *bdf_ext;
-> +	const char *magic = ATH11K_SMBIOS_BDF_EXT_MAGIC;
-> +	u8 bdf_enabled;
-> +	int i;
-> +	size_t len;
-> +
-> +	if (ab->qmi.target.bdf_ext[0] != '\0')
-> +		return;
-> +
-> +	if (hdr->type != ATH11K_SMBIOS_BDF_EXT_TYPE)
-> +		return;
-> +
-> +	if (hdr->length != ATH11K_SMBIOS_BDF_EXT_LENGTH) {
-> +		ath11k_dbg(ab, ATH11K_DBG_BOOT,
-> +			   "wrong smbios bdf ext type length (%d).\n",
-> +			   hdr->length);
-> +		return;
-> +	}
-> +
-> +	bdf_enabled = *((u8 *)hdr + ATH11K_SMBIOS_BDF_EXT_OFFSET);
-> +	if (!bdf_enabled) {
-> +		ath11k_dbg(ab, ATH11K_DBG_BOOT, "bdf variant name not found.\n");
-> +		return;
-> +	}
-> +
-> +	/* Only one string exists (per spec) */
-> +	bdf_ext = (char *)hdr + hdr->length;
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-A proper struct is preferred over pointer arithmetic. For example
-something like this:
+gcc tested configs:
+arm64                               defconfig
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+arm                              allyesconfig
+i386                          randconfig-c001
+powerpc                      tqm8xx_defconfig
+powerpc                         wii_defconfig
+powerpc                  iss476-smp_defconfig
+h8300                     edosk2674_defconfig
+arm                           corgi_defconfig
+arm                        spear6xx_defconfig
+sh                           se7206_defconfig
+h8300                       h8s-sim_defconfig
+mips                 decstation_r4k_defconfig
+mips                            gpr_defconfig
+sh                          urquell_defconfig
+arm                  randconfig-c002-20220309
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+nds32                             allnoconfig
+nios2                               defconfig
+arc                              allyesconfig
+csky                                defconfig
+alpha                               defconfig
+nds32                               defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+parisc                              defconfig
+parisc64                            defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                                defconfig
+sparc                               defconfig
+i386                   debian-10.3-kselftests
+sparc                            allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+i386                          randconfig-a001
+i386                          randconfig-a005
+i386                          randconfig-a003
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+x86_64                        randconfig-a002
+x86_64                        randconfig-a004
+x86_64                        randconfig-a006
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+arc                  randconfig-r043-20220309
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                         rhel-8.3-kunit
+x86_64                              defconfig
+x86_64                          rhel-8.3-func
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                                  kexec
 
-struct ath11k_smbios_bdf {
-        struct dmi_header hdr;
-        u32 padding;
-        u8 bdf_enabled;
-        u8 bdf_ext[ATH11K_SMBIOS_BDF_EXT_MAX_LEN];
-}
+clang tested configs:
+powerpc                          allyesconfig
+mips                      malta_kvm_defconfig
+mips                   sb1250_swarm_defconfig
+powerpc                     tqm5200_defconfig
+mips                     loongson2k_defconfig
+powerpc                     akebono_defconfig
+arm                       mainstone_defconfig
+arm                      pxa255-idp_defconfig
+powerpc                 mpc8315_rdb_defconfig
+powerpc                     kilauea_defconfig
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+hexagon              randconfig-r041-20220309
+hexagon              randconfig-r045-20220309
+s390                 randconfig-r044-20220309
+riscv                randconfig-r042-20220309
 
-I'm not sure if I got the offsets right, but I hope you get the idea
-anyway.
-
-> +
-> +	if (memcmp(bdf_ext, magic, strlen(magic)) != 0) {
-> +		ath11k_dbg(ab, ATH11K_DBG_BOOT,
-> +			   "bdf variant magic does not match.\n");
-> +		return;
-> +	}
-> +
-> +	len = strlen(bdf_ext);
-
-What if bdf_ext is not null terminated? Wouldn't strnlen() with
-ATH11K_SMBIOS_BDF_EXT_MAX_LEN would be safer?
-
-> --- a/drivers/net/wireless/ath/ath11k/core.h
-> +++ b/drivers/net/wireless/ath/ath11k/core.h
-> @@ -971,7 +971,18 @@ int ath11k_core_fetch_bdf(struct ath11k_base *ath11k,
->  			  struct ath11k_board_data *bd);
->  void ath11k_core_free_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd);
->  int ath11k_core_check_dt(struct ath11k_base *ath11k);
-> +/* SMBIOS type containing Board Data File Name Extension */
-> +#define ATH11K_SMBIOS_BDF_EXT_TYPE 0xF8
->  
-> +/* SMBIOS type structure length (excluding strings-set) */
-> +#define ATH11K_SMBIOS_BDF_EXT_LENGTH 0x9
-> +
-> +/* Offset pointing to Board Data File Name Extension */
-> +#define ATH11K_SMBIOS_BDF_EXT_OFFSET 0x8
-> +
-> +/* The magic used by QCA spec */
-> +#define ATH11K_SMBIOS_BDF_EXT_MAGIC "BDF_"
-> +int ath11k_core_check_smbios(struct ath11k_base *ab);
->  void ath11k_core_halt(struct ath11k *ar);
->  int ath11k_core_resume(struct ath11k_base *ab);
->  int ath11k_core_suspend(struct ath11k_base *ab);
-
-Please don't mix defines and function declarations, so move defines up
-in the file.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
