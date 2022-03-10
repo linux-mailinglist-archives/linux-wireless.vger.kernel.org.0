@@ -2,49 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ED804D4D9D
+	by mail.lfdr.de (Postfix) with ESMTP id F137B4D4DA0
 	for <lists+linux-wireless@lfdr.de>; Thu, 10 Mar 2022 16:52:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237247AbiCJPvq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Mar 2022 10:51:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41104 "EHLO
+        id S239197AbiCJPw4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Mar 2022 10:52:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232704AbiCJPvo (ORCPT
+        with ESMTP id S238811AbiCJPwu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Mar 2022 10:51:44 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D1D7107D37;
-        Thu, 10 Mar 2022 07:50:44 -0800 (PST)
+        Thu, 10 Mar 2022 10:52:50 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0EA5184624;
+        Thu, 10 Mar 2022 07:51:49 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CD96EB81EE7;
-        Thu, 10 Mar 2022 15:50:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B66C340EB;
-        Thu, 10 Mar 2022 15:50:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C248619BD;
+        Thu, 10 Mar 2022 15:51:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2D8C340E8;
+        Thu, 10 Mar 2022 15:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646927441;
-        bh=0BDDvEDbFbApm1Y0BEW+KCJ7iit4OuBwIkrV0n3PGiA=;
+        s=k20201202; t=1646927508;
+        bh=fDncGPJcRJVwshm603ffeV/SxF9a2whRf+pP4u1JBl8=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ViaR3J2lwGr14uZz2A6/4ychYpFRPbF2hAigrJMKjwynpmlI6SeNRPmzCoE+syWTq
-         qYxWf0dbh997lvlLncUchmVaNKJ4MPukUE4pHyLZMs1vrcPUEc0yoQohub4svf8yu6
-         dEmYVuEtJTxiexHUIEPHdzXi+K96iDy3BAgrybUaUSIL/3MdepqA9z8DD348SVdAZk
-         sqGEoJq83Xa9DR+6wU4+WqlA4tp2tJ9u/BhKTlkmC8bsL8VbEil7IkhTYacFuJaOm0
-         ao+yXe11hw35maVULBbbC54o6KGDhxyQ02083SWZwQ+ooOEdCgY0AC0ZJ8cnroQrof
-         zqitzJjpxwuLQ==
+        b=WzmMnWO86JdzfXeSUkY5GL6hMokbLHjoyDE7uSZHEOjDqMorJp0bB7BVh3fTBp/da
+         8tNLjbHKVKWjur1yEYB8zi1I9woRT1LUrSb26jTo6aa5n3gmF1wxzgIxG4x4BUDF0g
+         g/Y5SSWQPpGDQ9Hjq2kqRJfncbJPHzXuT908OqGSDs6Nz2ha+YHrrvgb+kBuAKpoL9
+         mDnuh7vD6ihJ3hxSQh9BvJjCAjGNdjCzj+ykT0V0EJT0VyNwO+WBOd19DOZSnIQYZ9
+         so7nCNmhBaFeqrwGuP/x5PtV1aQM+x5z9STl0Wwz3RN4evV0htjAQDTGzXuldxulew
+         0Wd1aqtmispkg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] ath6kl: add device ID for WLU5150-D81
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath11k: remove unneeded flush_workqueue
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220302211436.8746-1-git@apitzsch.eu>
-References: <20220302211436.8746-1-git@apitzsch.eu>
-To:     =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+In-Reply-To: <20220301013246.2052570-1-lv.ruyi@zte.com.cn>
+References: <20220301013246.2052570-1-lv.ruyi@zte.com.cn>
+To:     cgel.zte@gmail.com
+Cc:     davem@davemloft.net, kuba@kernel.org, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Lv Ruyi (CGEL ZTE)" <lv.ruyi@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164692743682.18489.9723411063219672687.kvalo@kernel.org>
-Date:   Thu, 10 Mar 2022 15:50:40 +0000 (UTC)
+Message-ID: <164692750437.18489.17708219137652842417.kvalo@kernel.org>
+Date:   Thu, 10 Mar 2022 15:51:46 +0000 (UTC)
 X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,19 +58,21 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-André Apitzsch <git@apitzsch.eu> wrote:
+cgel.zte@gmail.com wrote:
 
-> This device with a male Mini-B USB connector is part of Panasonic TVs.
+> All work currently pending will be done first by calling destroy_workqueue,
+> so there is no need to flush it explicitly.
 > 
-> Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Lv Ruyi (CGEL ZTE) <lv.ruyi@zte.com.cn>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-0ac121b86321 ath6kl: add device ID for WLU5150-D81
+57fe207f752a ath11k: remove unneeded flush_workqueue
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220302211436.8746-1-git@apitzsch.eu/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220301013246.2052570-1-lv.ruyi@zte.com.cn/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
