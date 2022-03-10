@@ -2,90 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8517D4D4448
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Mar 2022 11:08:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57D594D4468
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Mar 2022 11:21:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241136AbiCJKJD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Mar 2022 05:09:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51924 "EHLO
+        id S241174AbiCJKWm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Mar 2022 05:22:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232268AbiCJKI6 (ORCPT
+        with ESMTP id S241177AbiCJKWl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Mar 2022 05:08:58 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 862A91C93C;
-        Thu, 10 Mar 2022 02:07:56 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3C9E2B8258D;
-        Thu, 10 Mar 2022 10:07:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A2DC340F3;
-        Thu, 10 Mar 2022 10:07:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646906873;
-        bh=DAXaxPhIHmB2MF8XpLLIhDWnZYiL+Px39F37xpKSkgA=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=e2gkrtlvGZxaRZ7LaGobNndXWLZbv48jZ6KFQEHajqwDhIoBY1Wj8DYgHjzbRRZLs
-         qCzvxa5/5teYQnQmSNwOjIC/3tIQGtIWxJ3RFIcnZc4Y+RJn0kvDLAq2mHnPiM8qMA
-         6s/afH0bF3XJNqCtnucZSZDOZR8grHZ5yVrOjbkchuC+5J2AaIqPffWiVUb6VNSYxu
-         Rk0n4m3G9SOiyoHmEfQl9PqAG6pSU1WXcYT3SPGyPFLRFUN+6oUCnEm8B6PPXuVHZS
-         d6BbrsCe604OvSj/mfLb6vjy3DnUNOUfVF/BRaZs5jhLt8NiD6tr9HATBikGX0yeMh
-         oULJ4ZtLjDqmg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Abhishek Kumar <kuabhs@chromium.org>,
-        kernel test robot <lkp@intel.com>,
-        ath10k <ath10k@lists.infradead.org>, kbuild-all@lists.01.org,
-        Rakesh Pillai <pillair@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        netdev <netdev@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] ath10k: search for default BDF name provided in DT
-References: <20220110231255.v2.1.Ie4dcc45b0bf365077303c596891d460d716bb4c5@changeid>
-        <202201110851.5qAxfQJj-lkp@intel.com>
-        <CACTWRwtCjXbpxkixAyRrmK5gRjWW7fMv5==9j=YcsdN-mnYhJw@mail.gmail.com>
-        <87y23is7cp.fsf@kernel.org>
-        <CAD=FV=W-kJQwBPStsGpNu09dN+QHTEZOgb5sZwZYzWnn_Zhv4A@mail.gmail.com>
-Date:   Thu, 10 Mar 2022 12:07:49 +0200
-In-Reply-To: <CAD=FV=W-kJQwBPStsGpNu09dN+QHTEZOgb5sZwZYzWnn_Zhv4A@mail.gmail.com>
-        (Doug Anderson's message of "Mon, 7 Mar 2022 16:50:05 -0800")
-Message-ID: <87o82eqfwq.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 10 Mar 2022 05:22:41 -0500
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B63513DE3C;
+        Thu, 10 Mar 2022 02:21:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646907700; x=1678443700;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=sEdEVTS+mm9I/4yqFHkcIpZLo+BMD4jhu7Q5AQwgU7E=;
+  b=MbTcZxtWHkeh592o5TR00uZTTmY0fvV47T3DY8i4LBqs7uzufJDPyofN
+   1/7LW59+0kZ8rlFLW0LK4DW+9QxvnpmR6USjsw+2LE5onr6sXkK5IxEck
+   pgvpzfIcBqgQw2LbmYdzrWPx4xQe9tbslB1ihYL7QjTXUNDohErSXfy9b
+   kfWulddOZT0YjECiXIEnV7If2Yks/55u28x1rXcUWWLsAelnH0kZZHER0
+   xpp1FtNOzwJyNXcs6DXEsBDc7aK23TXoH1ml+nuyfNddsft2IjYlHgWFr
+   jUwgi4xzRsIMuD7CahR5u+UhU5gKQBhsUxxp/5igQHdaNDegDFrkDkqkV
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10281"; a="254951561"
+X-IronPort-AV: E=Sophos;i="5.90,170,1643702400"; 
+   d="scan'208";a="254951561"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2022 02:21:39 -0800
+X-IronPort-AV: E=Sophos;i="5.90,170,1643702400"; 
+   d="scan'208";a="554581194"
+Received: from mborg-mobl.ger.corp.intel.com ([10.252.33.144])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2022 02:21:34 -0800
+Date:   Thu, 10 Mar 2022 12:21:31 +0200 (EET)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
+cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
+        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
+        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
+        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
+        haijun.liu@mediatek.com, amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
+        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
+        sreehari.kancharla@intel.com, madhusmita.sahu@intel.com
+Subject: Re: [PATCH net-next v5 12/13] net: wwan: t7xx: Device deep sleep
+ lock/unlock
+In-Reply-To: <20220223223326.28021-13-ricardo.martinez@linux.intel.com>
+Message-ID: <1aca9e1f-8b6b-d3e2-d3ff-1bf37abe63f5@linux.intel.com>
+References: <20220223223326.28021-1-ricardo.martinez@linux.intel.com> <20220223223326.28021-13-ricardo.martinez@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Doug Anderson <dianders@chromium.org> writes:
+On Wed, 23 Feb 2022, Ricardo Martinez wrote:
 
-> On Fri, Jan 14, 2022 at 6:46 AM Kalle Valo <kvalo@kernel.org> wrote:
->>
->> Abhishek Kumar <kuabhs@chromium.org> writes:
->>
->> > On this patch I have a kernel bot warning, which I intend to fix along
->> > with all the comments and discussion and push out V3. So, any
->> > comments/next steps are appreciated.
->>
->> Please wait my comments before sending v3, I think this is something
->> which is also needed in ath11k and I need to look at it in detail.
->
-> I'm wondering if you have a timeframe for when you might post your
-> comments. We've landed this patch locally in the Chrome OS kernel
-> tree, but we are always also interested in it landing upstream. If you
-> have ideas for a path forward that'd be keen!
+> From: Haijun Liu <haijun.liu@mediatek.com>
+> 
+> Introduce the mechanism to lock/unlock the device 'deep sleep' mode.
+> When the PCIe link state is L1.2 or L2, the host side still can keep
+> the device is in D0 state from the host side point of view. At the same
+> time, if the device's 'deep sleep' mode is unlocked, the device will
+> go to 'deep sleep' while it is still in D0 state on the host side.
+> 
+> Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
+> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+> ---
 
-You had a good comment on v1 so I replied to that one.
+
+
+> +int t7xx_pci_sleep_disable_complete(struct t7xx_pci_dev *t7xx_dev)
+> +{
+> +	struct device *dev = &t7xx_dev->pdev->dev;
+> +	int ret;
+> +
+> +	ret = wait_for_completion_timeout(&t7xx_dev->sleep_lock_acquire,
+> +					  msecs_to_jiffies(PM_SLEEP_DIS_TIMEOUT_MS));
+> +	if (!ret)
+> +		dev_err_ratelimited(dev, "Resource wait complete timed out\n");
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * t7xx_pci_disable_sleep() - Disable deep sleep capability.
+> + * @t7xx_dev: MTK device.
+> + *
+> + * Lock the deep sleep capability, note that the device can still go into deep sleep
+> + * state while device is in D0 state, from the host's point-of-view.
+> + *
+> + * If device is in deep sleep state, wake up the device and disable deep sleep capability.
+> + */
+> +void t7xx_pci_disable_sleep(struct t7xx_pci_dev *t7xx_dev)
+> +{
+> +	unsigned long flags;
+> +
+> +	if (atomic_read(&t7xx_dev->md_pm_state) < MTK_PM_RESUMED) {
+> +		atomic_inc(&t7xx_dev->sleep_disable_count);
+> +		complete_all(&t7xx_dev->sleep_lock_acquire);
+> +		return;
+> +	}
+> +
+> +	spin_lock_irqsave(&t7xx_dev->md_pm_lock, flags);
+> +	if (atomic_inc_return(&t7xx_dev->sleep_disable_count) == 1) {
+> +		u32 deep_sleep_enabled;
+> +
+> +		reinit_completion(&t7xx_dev->sleep_lock_acquire);
+
+You might want to check that there's a mechanism that prevents this 
+racing with wait_for_completion_timeout() in t7xx_pci_sleep_disable_complete().
+
+I couldn't prove it myself but there are probably aspect in the PM side of 
+things I wasn't able to take fully into account (that is, which call 
+paths are not possible to occur).
+
+> +		t7xx_dev_set_sleep_capability(t7xx_dev, false);
+> +
+> +		deep_sleep_enabled = ioread32(IREG_BASE(t7xx_dev) + T7XX_PCIE_RESOURCE_STATUS);
+> +		deep_sleep_enabled &= T7XX_PCIE_RESOURCE_STS_MSK;
+> +		if (deep_sleep_enabled) {
+> +			spin_unlock_irqrestore(&t7xx_dev->md_pm_lock, flags);
+> +			complete_all(&t7xx_dev->sleep_lock_acquire);
+> +			return;
+> +		}
+> +
+> +		t7xx_mhccif_h2d_swint_trigger(t7xx_dev, H2D_CH_DS_LOCK);
+> +	}
+> +	spin_unlock_irqrestore(&t7xx_dev->md_pm_lock, flags);
+> +}
+
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+ i.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
