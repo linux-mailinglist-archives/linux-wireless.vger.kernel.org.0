@@ -2,45 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAA624D605D
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Mar 2022 12:04:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 702454D6165
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Mar 2022 13:17:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348026AbiCKLFh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Mar 2022 06:05:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51806 "EHLO
+        id S1348570AbiCKMSr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Mar 2022 07:18:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238868AbiCKLFh (ORCPT
+        with ESMTP id S1348567AbiCKMSq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Mar 2022 06:05:37 -0500
+        Fri, 11 Mar 2022 07:18:46 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 294CE186B9B
-        for <linux-wireless@vger.kernel.org>; Fri, 11 Mar 2022 03:04:34 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB00E17AAF
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Mar 2022 04:17:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=tT3PmHXOIm03ht15TW/b67NPUC59dtYRiHXV8ks50d8=;
-        t=1646996674; x=1648206274; b=lnhafSVRpYeIIuACKvu49wSQjtI8BRJ+XEdbfAv9JJ9VB3g
-        U22fxEyKogJuC/so2EpE0ofkuYc6U1ltTRYCuIO1GtRmWiFJEyXNIjsMzuxgLeyv/H6Z25ypxgLSr
-        yHGQ9sZ6bUrtcrYqFTmB6+gpO2+ZEG5SpcVp9jTNE3Vs2D8ph0Te3nrzEjRWeKwSfR7XoST06nr6q
-        nrhG1BLJsxK0B7hj43HMo3Axw+xkodzyllDSAoLUujhOTl0NZ5LXmZwm0tW1RjBgJH+fR+ROjBUnC
-        4o1qqUp2V0j+n/IB0ejwyFizUzp0ihbhevgc3fDkoPbOTw+8qVmVpg0SuWzONB7g==;
+        Resent-Cc:Resent-Message-ID; bh=KZF3U/8IONLrjk9Ql0t9pVjfOwEslOcqBZThMf9oqro=;
+        t=1647001062; x=1648210662; b=w20T+bQXp1Ed6n6HNCxXHoBXnxD6fhbxsK5nJJQSU0Bt1k+
+        5UCzD5KMiph96r1ndXALtFU1CzarPaCtPe7iRDoO/qB+Io19EfdGPR/PkvsOFk7BRpM6Bfk+TUMKh
+        lXfhUxTQi/XzH5HEwg5OPZb+uKLVUM/VmcOazMwO95I9zI88WtQP1x5U/G303oPj4XKPaYWWOzrGm
+        zkz9CgDqj4YaZUGrmRDeP4ByQvzyKq0o1kHbnIdGg4w8xxuXmVxKyIHPmqoWyysZ6StkR1H8WIE3K
+        67UZWoMXeK89j5uxobSlP6vM6g35BCTuxliQIITF+EfWMvh69EfpUF+7jjC+PIrA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nSd4P-00BsdQ-Qo;
-        Fri, 11 Mar 2022 12:04:29 +0100
-Message-ID: <623add710d06dfd90291cb788756d37046ea2c74.camel@sipsolutions.net>
-Subject: Re: [PATCHv2 1/6] nl80211: vendor-cmd: qca: add command for CFR
- configuration
+        id 1nSeDE-00Bto6-2K;
+        Fri, 11 Mar 2022 13:17:40 +0100
+Message-ID: <af96eba158c83a63cb9465b04373e909971d7676.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 1/3] cfg80211: Add NL80211_IFTYPE_MLO_LINK type for
+ MLO links on MLD STA
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Venkateswara Naralasetty <quic_vnaralas@quicinc.com>,
-        ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 11 Mar 2022 12:04:28 +0100
-In-Reply-To: <1645005922-7252-2-git-send-email-quic_vnaralas@quicinc.com>
-References: <1645005922-7252-1-git-send-email-quic_vnaralas@quicinc.com>
-         <1645005922-7252-2-git-send-email-quic_vnaralas@quicinc.com>
+To:     Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+Cc:     linux-wireless@vger.kernel.org, quic_usdutt@quicinc.com,
+        Aaron Komisar <akomisar@maxlinear.com>
+Date:   Fri, 11 Mar 2022 13:17:39 +0100
+In-Reply-To: <1645613200-30221-2-git-send-email-quic_vjakkam@quicinc.com>
+References: <1645613200-30221-1-git-send-email-quic_vjakkam@quicinc.com>
+         <1645613200-30221-2-git-send-email-quic_vjakkam@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
 MIME-Version: 1.0
@@ -55,53 +55,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2022-02-16 at 15:35 +0530, Venkateswara Naralasetty wrote:
-> Channel Frequency Response feature is to get the channel state
-> information from the hardware based on the user configurations
-> and send the CSI data to user space.
+On Wed, 2022-02-23 at 16:16 +0530, Veerendranath Jakkam wrote:
 > 
-> CSI data is further processed in user space which can be used to
-> identify the motion of the objects.
+> Two link non-AP MLD representation:
 > 
-> Add vendor command support to configure per peer CFR parameters.
+>                  wlan0 (non-AP MLD)
+>                IFTYPE_STATION (netdev + wdev)
+>                  /               \
+>                 /                 \
+>               link0             link1
+>       IFTYPE_MLO_LINK (wdev)  IFTYPE_MLO_LINK (wdev)
+>               |                   |
+>               |                   |
+>             radio(2G)           radio(5G)
 > 
-> An example of usage:
-> iw dev wlanx vendor send 0x1374 0xad cfr-en <val> bw <bw> method <method>
-> periodicity <period> addr <mac_addr>
+> In contrast, NL80211_IFTYPE_MLO_LINK can't be used to represent AP MLO
+> link since an MLD AP must support pre-11be and 11be clients
+> simultaneously so each AP MLO link affiliated with AP MLD must also act
+> as independent AP for pre-11be clients so each AP MLO link must be
+> represented by NL80211_IFTYPE_AP associated with a separate netdev.
 > 
-> 0x1374: vendor id
-> 0xad: : vendor subcmd id
-> val: 0 to disable CFR capture
->      1 to enable CFR capture
+> Two link AP MLD representation:
 > 
-> bw: CFR capture bandwidth(use the values in enum nl80211_chan_width)
-> 	1 - 20MHZ
-> 	2 - 40MHZ
-> 	3 - 80MHZ
-> 
-> method: Method used by hardware to collect the CFR dump
-> 	0 - from the ACKs of QOS NULL packets
-> 	1 - from the ACKs of QOS NULL packets with phase
-> 	2 - from the ACK of probe response packet
-> 
-> periodicity: Periodicity in ms at which CFR dump need to be collect
-> 	0 - single shot capture
-> 	non zero - for Periodic captures
-> 
-> mac_addr: mac address of the peer for which CFR capture is requested.
-> 
-> Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
-> ---
-> v2:
->  * Updated the commit log.
-> 
+>                  AP MLD
+>              (netdev + wdev)
+>                 /      \
+>                /        \
+>           wlan0          wlan1
+>       IFTYPE_AP       IFTYPE_AP
+>    (netdev + wdev)  (netdev + wdev)
+>            |             |
+>            |             |
+>         radio(2G)      radio(5G)
 
-That's a bit better, thanks.
+So just for posterity's sake - we had more discussions on this out of
+band, and decided that the "netdev + wdev" on the wlan0/wlan1 will not
+actually happen - they both should be just "wdev" like in the non-AP
+MLD.
 
-However, it still doesn't address the question of why it needs to be
-vendor specific API.
+This solves the issue of broadcast (otherwise you'd need AP MLD + wlan0
++ wlan1 in a bridge and drop all multicast at wlan0 and wlan1), at the
+expense of a small amount of flexibility - you cannot consider legacy
+and MLD clients to be in different networks.
 
-Is this something fundamentally tied to the hardware? Fundamentally
-vendor specific? I'm not sure I see why it would be?
+However, given the complexities around multicast, you probably cannot
+consider them to be in different networks _anyway_ because then you'd
+have to _not_ drop all the multicast on wlan0/wlan1, and then you send
+multicast twice to the MLD clients, which would be wrong too...
+
+So the more reasonable thing to do is to treat this the same way as non-
+AP MLD with only a single netdev, and effectively behave as if there was
+an internal kind of bridge inside the AP MLD for the legacy clients.
+
+As a consequence, of course this patch will change too.
 
 johannes
