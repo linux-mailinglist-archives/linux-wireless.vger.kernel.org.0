@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B30E94D58A3
+	by mail.lfdr.de (Postfix) with ESMTP id 67BB84D58A2
 	for <lists+linux-wireless@lfdr.de>; Fri, 11 Mar 2022 04:04:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345901AbiCKDE7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Mar 2022 22:04:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42996 "EHLO
+        id S1345903AbiCKDFA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Mar 2022 22:05:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345900AbiCKDE7 (ORCPT
+        with ESMTP id S1345900AbiCKDFA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Mar 2022 22:04:59 -0500
+        Thu, 10 Mar 2022 22:05:00 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BF21162028
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Mar 2022 19:03:56 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 929F319BE53
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Mar 2022 19:03:57 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22B33nuF6021470, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22B33nuF6021470
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22B33oObA021475, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22B33oObA021475
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 11 Mar 2022 11:03:49 +0800
+        Fri, 11 Mar 2022 11:03:50 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Fri, 11 Mar 2022 11:03:49 +0800
+ 15.1.2375.17; Fri, 11 Mar 2022 11:03:50 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 11 Mar
- 2022 11:03:48 +0800
+ 2022 11:03:50 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>,
         <hsuan8331@realtek.com>, <yuanhan1020@realtek.com>
-Subject: [PATCH 02/11] rtw89: 8852c: add write/read crystal function in CFO tracking
-Date:   Fri, 11 Mar 2022 11:02:52 +0800
-Message-ID: <20220311030301.33921-3-pkshih@realtek.com>
+Subject: [PATCH 03/11] rtw89: 8852c: add setting of TB UL TX power offset
+Date:   Fri, 11 Mar 2022 11:02:53 +0800
+Message-ID: <20220311030301.33921-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220311030301.33921-1-pkshih@realtek.com>
 References: <20220311030301.33921-1-pkshih@realtek.com>
@@ -56,7 +56,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMTEgpFekyCAwMTowNjowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -71,72 +71,125 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Yuan-Han Zhang <yuanhan1020@realtek.com>
 
-The CFO tracking algorithm is the same, but control methods are different.
-Set parameters via xtal serial interfaces (SI).
+Configure this TX power to indicate TX power offset that uses to transmit
+TB (trigger base) uplink frames.
+Also, shrink the unit of TX power offset changes to suitable type s8.
 
 Signed-off-by: Yuan-Han Zhang <yuanhan1020@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/mac.h |  2 ++
- drivers/net/wireless/realtek/rtw89/phy.c | 19 +++++++++++++++----
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h     |  2 +-
+ drivers/net/wireless/realtek/rtw89/reg.h      |  2 ++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  8 ++---
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 36 +++++++++++++++++++
+ 4 files changed, 43 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 2f707c817fa79..680b0eea31746 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -884,7 +884,9 @@ int rtw89_mac_get_tx_retry_limit(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 51c99e50b0ed9..af73347c40b16 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -2065,7 +2065,7 @@ struct rtw89_chip_ops {
+ 			   struct ieee80211_rx_status *status);
+ 	void (*bb_ctrl_btc_preagc)(struct rtw89_dev *rtwdev, bool bt_en);
+ 	void (*set_txpwr_ul_tb_offset)(struct rtw89_dev *rtwdev,
+-				       s16 pw_ofst, enum rtw89_mac_idx mac_idx);
++				       s8 pw_ofst, enum rtw89_mac_idx mac_idx);
+ 	int (*pwr_on_func)(struct rtw89_dev *rtwdev);
+ 	int (*pwr_off_func)(struct rtw89_dev *rtwdev);
  
- enum rtw89_mac_xtal_si_offset {
- 	XTAL_SI_XTAL_SC_XI = 0x04,
-+#define XTAL_SC_XI_MASK		GENMASK(7, 0)
- 	XTAL_SI_XTAL_SC_XO = 0x05,
-+#define XTAL_SC_XO_MASK		GENMASK(7, 0)
- 	XTAL_SI_PWR_CUT = 0x10,
- #define XTAL_SI_SMALL_PWR_CUT	BIT(0)
- #define XTAL_SI_BIG_PWR_CUT	BIT(1)
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 6a7e08bdd00e7..b75d08697a224 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -4,6 +4,7 @@
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index a239bf017ac76..09bf3afd6d9f5 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -1525,8 +1525,10 @@
+ #define B_AX_PWR_UL_TB_CTRL_EN BIT(31)
+ #define R_AX_PWR_UL_TB_1T 0xD28C
+ #define B_AX_PWR_UL_TB_1T_MASK GENMASK(4, 0)
++#define B_AX_PWR_UL_TB_1T_V1_MASK GENMASK(7, 0)
+ #define R_AX_PWR_UL_TB_2T 0xD290
+ #define B_AX_PWR_UL_TB_2T_MASK GENMASK(4, 0)
++#define B_AX_PWR_UL_TB_2T_V1_MASK GENMASK(7, 0)
+ #define R_AX_PWR_BY_RATE_TABLE0 0xD2C0
+ #define R_AX_PWR_BY_RATE_TABLE10 0xD2E8
+ #define R_AX_PWR_BY_RATE R_AX_PWR_BY_RATE_TABLE0
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index 392f6e6e0a132..c6986c6498138 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -1275,10 +1275,10 @@ static u32 rtw8852a_bb_cal_txpwr_ref(struct rtw89_dev *rtwdev,
  
- #include "debug.h"
- #include "fw.h"
-+#include "mac.h"
- #include "phy.h"
- #include "ps.h"
- #include "reg.h"
-@@ -1667,15 +1668,25 @@ static void rtw89_phy_cfo_set_crystal_cap(struct rtw89_dev *rtwdev,
- 					  u8 crystal_cap, bool force)
+ static
+ void rtw8852a_set_txpwr_ul_tb_offset(struct rtw89_dev *rtwdev,
+-				     s16 pw_ofst, enum rtw89_mac_idx mac_idx)
++				     s8 pw_ofst, enum rtw89_mac_idx mac_idx)
  {
- 	struct rtw89_cfo_tracking_info *cfo = &rtwdev->cfo_tracking;
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	u8 sc_xi_val, sc_xo_val;
+-	s32 val_1t = 0;
+-	s32 val_2t = 0;
++	s8 val_1t = 0;
++	s8 val_2t = 0;
+ 	u32 reg;
  
- 	if (!force && cfo->crystal_cap == crystal_cap)
- 		return;
- 	crystal_cap = clamp_t(u8, crystal_cap, 0, 127);
--	rtw89_phy_cfo_set_xcap_reg(rtwdev, true, crystal_cap);
--	rtw89_phy_cfo_set_xcap_reg(rtwdev, false, crystal_cap);
--	sc_xo_val = rtw89_phy_cfo_get_xcap_reg(rtwdev, true);
--	sc_xi_val = rtw89_phy_cfo_get_xcap_reg(rtwdev, false);
-+	if (chip->chip_id == RTL8852A) {
-+		rtw89_phy_cfo_set_xcap_reg(rtwdev, true, crystal_cap);
-+		rtw89_phy_cfo_set_xcap_reg(rtwdev, false, crystal_cap);
-+		sc_xo_val = rtw89_phy_cfo_get_xcap_reg(rtwdev, true);
-+		sc_xi_val = rtw89_phy_cfo_get_xcap_reg(rtwdev, false);
-+	} else {
-+		rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_XTAL_SC_XO,
-+					crystal_cap, XTAL_SC_XO_MASK);
-+		rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_XTAL_SC_XI,
-+					crystal_cap, XTAL_SC_XI_MASK);
-+		rtw89_mac_read_xtal_si(rtwdev, XTAL_SI_XTAL_SC_XO, &sc_xo_val);
-+		rtw89_mac_read_xtal_si(rtwdev, XTAL_SI_XTAL_SC_XI, &sc_xi_val);
+ 	if (pw_ofst < -16 || pw_ofst > 15) {
+@@ -1288,7 +1288,7 @@ void rtw8852a_set_txpwr_ul_tb_offset(struct rtw89_dev *rtwdev,
+ 	}
+ 	reg = rtw89_mac_reg_by_idx(R_AX_PWR_UL_TB_CTRL, mac_idx);
+ 	rtw89_write32_set(rtwdev, reg, B_AX_PWR_UL_TB_CTRL_EN);
+-	val_1t = (s32)pw_ofst;
++	val_1t = pw_ofst;
+ 	reg = rtw89_mac_reg_by_idx(R_AX_PWR_UL_TB_1T, mac_idx);
+ 	rtw89_write32_mask(rtwdev, reg, B_AX_PWR_UL_TB_1T_MASK, val_1t);
+ 	val_2t = max(val_1t - 3, -16);
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index f37acfe7679e1..c74dedea511a4 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -445,10 +445,46 @@ static void rtw8852c_power_trim(struct rtw89_dev *rtwdev)
+ 	rtw8852c_pa_bias_trim(rtwdev);
+ }
+ 
++static
++void rtw8852c_set_txpwr_ul_tb_offset(struct rtw89_dev *rtwdev,
++				     s8 pw_ofst, enum rtw89_mac_idx mac_idx)
++{
++	s8 pw_ofst_2tx;
++	s8 val_1t;
++	s8 val_2t;
++	u32 reg;
++	u8 i;
++
++	if (pw_ofst < -32 || pw_ofst > 31) {
++		rtw89_warn(rtwdev, "[ULTB] Err pwr_offset=%d\n", pw_ofst);
++		return;
 +	}
- 	cfo->crystal_cap = sc_xi_val;
- 	cfo->x_cap_ofst = (s8)((int)cfo->crystal_cap - cfo->def_x_cap);
- 
++	val_1t = pw_ofst << 2;
++	pw_ofst_2tx = max(pw_ofst - 3, -32);
++	val_2t = pw_ofst_2tx << 2;
++
++	rtw89_debug(rtwdev, RTW89_DBG_TXPWR, "[ULTB] val_1tx=0x%x\n", val_1t);
++	rtw89_debug(rtwdev, RTW89_DBG_TXPWR, "[ULTB] val_2tx=0x%x\n", val_2t);
++
++	for (i = 0; i < 4; i++) {
++		/* 1TX */
++		reg = rtw89_mac_reg_by_idx(R_AX_PWR_UL_TB_1T, mac_idx);
++		rtw89_write32_mask(rtwdev, reg,
++				   B_AX_PWR_UL_TB_1T_V1_MASK << (8 * i),
++				   val_1t);
++		/* 2TX */
++		reg = rtw89_mac_reg_by_idx(R_AX_PWR_UL_TB_2T, mac_idx);
++		rtw89_write32_mask(rtwdev, reg,
++				   B_AX_PWR_UL_TB_2T_V1_MASK << (8 * i),
++				   val_2t);
++	}
++}
++
+ static const struct rtw89_chip_ops rtw8852c_chip_ops = {
+ 	.read_efuse		= rtw8852c_read_efuse,
+ 	.read_phycap		= rtw8852c_read_phycap,
+ 	.power_trim		= rtw8852c_power_trim,
++	.set_txpwr_ul_tb_offset	= rtw8852c_set_txpwr_ul_tb_offset,
+ 	.pwr_on_func		= rtw8852c_pwr_on_func,
+ 	.pwr_off_func		= rtw8852c_pwr_off_func,
+ };
 -- 
 2.25.1
 
