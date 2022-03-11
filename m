@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C59C94D58A0
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Mar 2022 04:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B30E94D58A3
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Mar 2022 04:04:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345832AbiCKDE6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Mar 2022 22:04:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42874 "EHLO
+        id S1345901AbiCKDE7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Mar 2022 22:04:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241167AbiCKDE5 (ORCPT
+        with ESMTP id S1345900AbiCKDE7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Mar 2022 22:04:57 -0500
+        Thu, 10 Mar 2022 22:04:59 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88DE518885B
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Mar 2022 19:03:54 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BF21162028
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Mar 2022 19:03:56 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22B33l1R2021466, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22B33l1R2021466
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22B33nuF6021470, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22B33nuF6021470
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 11 Mar 2022 11:03:47 +0800
+        Fri, 11 Mar 2022 11:03:49 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Fri, 11 Mar 2022 11:03:47 +0800
+ 15.1.2308.20; Fri, 11 Mar 2022 11:03:49 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 11 Mar
- 2022 11:03:46 +0800
+ 2022 11:03:48 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>,
         <hsuan8331@realtek.com>, <yuanhan1020@realtek.com>
-Subject: [PATCH 01/11] rtw89: modify dcfo_comp to share with chips
-Date:   Fri, 11 Mar 2022 11:02:51 +0800
-Message-ID: <20220311030301.33921-2-pkshih@realtek.com>
+Subject: [PATCH 02/11] rtw89: 8852c: add write/read crystal function in CFO tracking
+Date:   Fri, 11 Mar 2022 11:02:52 +0800
+Message-ID: <20220311030301.33921-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220311030301.33921-1-pkshih@realtek.com>
 References: <20220311030301.33921-1-pkshih@realtek.com>
@@ -56,7 +56,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMTEgpFekyCAwMTowNjowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -71,127 +71,71 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Yuan-Han Zhang <yuanhan1020@realtek.com>
 
-The dcfo_comp is digital CFO (central frequency offset) compensation.
-Since the flow can be shared with all chips, add chip parameters to support
-variant register address and format.
+The CFO tracking algorithm is the same, but control methods are different.
+Set parameters via xtal serial interfaces (SI).
 
 Signed-off-by: Yuan-Han Zhang <yuanhan1020@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h     |  2 ++
- drivers/net/wireless/realtek/rtw89/phy.c      | 10 ++++++----
- drivers/net/wireless/realtek/rtw89/reg.h      |  2 ++
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |  6 ++++++
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  6 ++++++
- 5 files changed, 22 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac.h |  2 ++
+ drivers/net/wireless/realtek/rtw89/phy.c | 19 +++++++++++++++----
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 483cf45fbcc99..51c99e50b0ed9 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2332,6 +2332,8 @@ struct rtw89_chip_info {
- 	u32 c2h_ctrl_reg;
- 	const u32 *c2h_regs;
- 	const struct rtw89_page_regs *page_regs;
-+	const struct rtw89_reg_def *dcfo_comp;
-+	u8 dcfo_comp_sft;
- };
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index 2f707c817fa79..680b0eea31746 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -884,7 +884,9 @@ int rtw89_mac_get_tx_retry_limit(struct rtw89_dev *rtwdev,
  
- union rtw89_bus_info {
+ enum rtw89_mac_xtal_si_offset {
+ 	XTAL_SI_XTAL_SC_XI = 0x04,
++#define XTAL_SC_XI_MASK		GENMASK(7, 0)
+ 	XTAL_SI_XTAL_SC_XO = 0x05,
++#define XTAL_SC_XO_MASK		GENMASK(7, 0)
+ 	XTAL_SI_PWR_CUT = 0x10,
+ #define XTAL_SI_SMALL_PWR_CUT	BIT(0)
+ #define XTAL_SI_BIG_PWR_CUT	BIT(1)
 diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index c6953a78658ae..6a7e08bdd00e7 100644
+index 6a7e08bdd00e7..b75d08697a224 100644
 --- a/drivers/net/wireless/realtek/rtw89/phy.c
 +++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -1705,9 +1705,11 @@ static void rtw89_phy_cfo_reset(struct rtw89_dev *rtwdev)
+@@ -4,6 +4,7 @@
  
- static void rtw89_dcfo_comp(struct rtw89_dev *rtwdev, s32 curr_cfo)
+ #include "debug.h"
+ #include "fw.h"
++#include "mac.h"
+ #include "phy.h"
+ #include "ps.h"
+ #include "reg.h"
+@@ -1667,15 +1668,25 @@ static void rtw89_phy_cfo_set_crystal_cap(struct rtw89_dev *rtwdev,
+ 					  u8 crystal_cap, bool force)
  {
-+	const struct rtw89_reg_def *dcfo_comp = rtwdev->chip->dcfo_comp;
- 	bool is_linked = rtwdev->total_sta_assoc > 0;
- 	s32 cfo_avg_312;
--	s32 dcfo_comp;
-+	s32 dcfo_comp_val;
-+	u8 dcfo_comp_sft = rtwdev->chip->dcfo_comp_sft;
- 	int sign;
+ 	struct rtw89_cfo_tracking_info *cfo = &rtwdev->cfo_tracking;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	u8 sc_xi_val, sc_xo_val;
  
- 	if (!is_linked) {
-@@ -1718,13 +1720,13 @@ static void rtw89_dcfo_comp(struct rtw89_dev *rtwdev, s32 curr_cfo)
- 	rtw89_debug(rtwdev, RTW89_DBG_CFO, "DCFO: curr_cfo=%d\n", curr_cfo);
- 	if (curr_cfo == 0)
+ 	if (!force && cfo->crystal_cap == crystal_cap)
  		return;
--	dcfo_comp = rtw89_phy_read32_mask(rtwdev, R_DCFO, B_DCFO);
-+	dcfo_comp_val = rtw89_phy_read32_mask(rtwdev, R_DCFO, B_DCFO);
- 	sign = curr_cfo > 0 ? 1 : -1;
--	cfo_avg_312 = (curr_cfo << 3) / 5 + sign * dcfo_comp;
-+	cfo_avg_312 = (curr_cfo << dcfo_comp_sft) / 5 + sign * dcfo_comp_val;
- 	rtw89_debug(rtwdev, RTW89_DBG_CFO, "DCFO: avg_cfo=%d\n", cfo_avg_312);
- 	if (rtwdev->chip->chip_id == RTL8852A && rtwdev->hal.cv == CHIP_CBV)
- 		cfo_avg_312 = -cfo_avg_312;
--	rtw89_phy_set_phy_regs(rtwdev, R_DCFO_COMP_S0, B_DCFO_COMP_S0_MSK,
-+	rtw89_phy_set_phy_regs(rtwdev, dcfo_comp->addr, dcfo_comp->mask,
- 			       cfo_avg_312);
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index ec5e70b866009..a239bf017ac76 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -2093,6 +2093,8 @@
- #define R_CHBW_MOD 0x4978
- #define B_CHBW_MOD_PRICH GENMASK(11, 8)
- #define B_CHBW_MOD_SBW GENMASK(13, 12)
-+#define R_DCFO_COMP_S0_V1 0x4A40
-+#define B_DCFO_COMP_S0_V1_MSK GENMASK(13, 0)
- #define R_BMODE_PDTH_V1 0x4B64
- #define B_BMODE_PDTH_LOWER_BOUND_MSK_V1 GENMASK(31, 24)
- #define R_BMODE_PDTH_EN_V1 0x4B74
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index c429eeae1b567..392f6e6e0a132 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -402,6 +402,10 @@ static const struct rtw89_page_regs rtw8852a_page_regs = {
- 	.wp_page_info1	= R_AX_WP_PAGE_INFO1,
- };
- 
-+static const struct rtw89_reg_def rtw8852a_dcfo_comp = {
-+	R_DCFO_COMP_S0, B_DCFO_COMP_S0_MSK
-+};
-+
- static void rtw8852ae_efuse_parsing(struct rtw89_efuse *efuse,
- 				    struct rtw8852a_efuse *map)
- {
-@@ -2091,6 +2095,8 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
- 	.c2h_ctrl_reg		= R_AX_C2HREG_CTRL,
- 	.c2h_regs		= rtw8852a_c2h_regs,
- 	.page_regs		= &rtw8852a_page_regs,
-+	.dcfo_comp		= &rtw8852a_dcfo_comp,
-+	.dcfo_comp_sft		= 3,
- };
- EXPORT_SYMBOL(rtw8852a_chip_info);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 35a9f40af3c99..f37acfe7679e1 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -44,6 +44,10 @@ static const struct rtw89_page_regs rtw8852c_page_regs = {
- 	.wp_page_info1	= R_AX_WP_PAGE_INFO1_V1,
- };
- 
-+static const struct rtw89_reg_def rtw8852c_dcfo_comp = {
-+	R_DCFO_COMP_S0_V1, B_DCFO_COMP_S0_V1_MSK
-+};
-+
- static int rtw8852c_pwr_on_func(struct rtw89_dev *rtwdev)
- {
- 	u32 val32;
-@@ -470,6 +474,8 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
- 	.c2h_ctrl_reg		= R_AX_C2HREG_CTRL_V1,
- 	.c2h_regs		= rtw8852c_c2h_regs,
- 	.page_regs		= &rtw8852c_page_regs,
-+	.dcfo_comp		= &rtw8852c_dcfo_comp,
-+	.dcfo_comp_sft		= 5,
- };
- EXPORT_SYMBOL(rtw8852c_chip_info);
+ 	crystal_cap = clamp_t(u8, crystal_cap, 0, 127);
+-	rtw89_phy_cfo_set_xcap_reg(rtwdev, true, crystal_cap);
+-	rtw89_phy_cfo_set_xcap_reg(rtwdev, false, crystal_cap);
+-	sc_xo_val = rtw89_phy_cfo_get_xcap_reg(rtwdev, true);
+-	sc_xi_val = rtw89_phy_cfo_get_xcap_reg(rtwdev, false);
++	if (chip->chip_id == RTL8852A) {
++		rtw89_phy_cfo_set_xcap_reg(rtwdev, true, crystal_cap);
++		rtw89_phy_cfo_set_xcap_reg(rtwdev, false, crystal_cap);
++		sc_xo_val = rtw89_phy_cfo_get_xcap_reg(rtwdev, true);
++		sc_xi_val = rtw89_phy_cfo_get_xcap_reg(rtwdev, false);
++	} else {
++		rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_XTAL_SC_XO,
++					crystal_cap, XTAL_SC_XO_MASK);
++		rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_XTAL_SC_XI,
++					crystal_cap, XTAL_SC_XI_MASK);
++		rtw89_mac_read_xtal_si(rtwdev, XTAL_SI_XTAL_SC_XO, &sc_xo_val);
++		rtw89_mac_read_xtal_si(rtwdev, XTAL_SI_XTAL_SC_XI, &sc_xi_val);
++	}
+ 	cfo->crystal_cap = sc_xi_val;
+ 	cfo->x_cap_ofst = (s8)((int)cfo->crystal_cap - cfo->def_x_cap);
  
 -- 
 2.25.1
