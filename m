@@ -2,44 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE2694D7551
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Mar 2022 13:49:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15B8D4D7555
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Mar 2022 13:49:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233839AbiCMMul (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 13 Mar 2022 08:50:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44422 "EHLO
+        id S233756AbiCMMup (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Mar 2022 08:50:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233756AbiCMMui (ORCPT
+        with ESMTP id S233856AbiCMMup (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 13 Mar 2022 08:50:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A20870F6F
-        for <linux-wireless@vger.kernel.org>; Sun, 13 Mar 2022 05:49:31 -0700 (PDT)
+        Sun, 13 Mar 2022 08:50:45 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0202774636
+        for <linux-wireless@vger.kernel.org>; Sun, 13 Mar 2022 05:49:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E638660F3D
-        for <linux-wireless@vger.kernel.org>; Sun, 13 Mar 2022 12:49:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9922C340EC;
-        Sun, 13 Mar 2022 12:49:28 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 88AC9B80BA9
+        for <linux-wireless@vger.kernel.org>; Sun, 13 Mar 2022 12:49:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EDFC340E8;
+        Sun, 13 Mar 2022 12:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647175770;
-        bh=DVaBtUDkkMcB4eyNDjBZeuwCK+da3683tL6OZe4IULQ=;
+        s=k20201202; t=1647175772;
+        bh=GGylIeuNzaaH6zKb6fOu/cdrLidG16ul2VGW43tRogE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iDnOFiQ4D1dcfneNNYAx8GsoxYtnsLw+2oBx5hAx9/wku5Qus+jEHY0xzwEI9woA/
-         OIHTS5j9131/OlrpEB+B4nuaIFBxqeonHiocTn2WJ17epXiU7svgrw8h5lnr2vyhkp
-         xpR297btSWbMIakja/QsEkf7yIMf2CO1t3Yt7JUgTESE2kziFDguSxP5Trn0cbXGfq
-         dbxXAOYncNK1q9O5W703aUMdJ3kAlxyGa0Pbr+i3CcuXntJQXsxFMhMwSBVv56LfwZ
-         /3yJ09Umoc0Og8UOH7CXwweDEynjl0A3fmNyMGs+9GbwvYgjREdeKvCu3rwu23GSyz
-         E6/uKvZ9t9msg==
+        b=JM6Js66ImZx4DDltUL3Sk+ctdZgRD7sxOk6necS99zvU8heDFNoZaedghgjvNrqHF
+         oQKsBvI/NnvLEdbQKcONysj2K9KNDMIUpQcbWt/zmky37giyI8VEHwhZUNKAGgbfim
+         BkLR2+WfrufQD68Xj8vBb8GfLVS5GKj4mh+kp9G6xsMGi/k1x0xGXTpU0hgvVwuK23
+         s/aX8FfpcxpHJ14t9lfkxFPYOW+bOVjiVS3uC0NPsDxtl0WJN0Tbq6UFmm142tnr6K
+         74vDHkHe9rtMPjCFGdn9MFuaXFjrlfx7qY8Nzs5+lut6jA9LN3A4DjTiBuIImcSEPz
+         nfDT7gEBR7N4w==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com, deren.wu@mediatek.com,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH v3 5/9] mt76: mt7921: update mt7921_skb_add_usb_sdio_hdr to support usb
-Date:   Sun, 13 Mar 2022 13:48:55 +0100
-Message-Id: <4ced0548dc8f60266cca3e1800b42f962d29a156.1647175554.git.lorenzo@kernel.org>
+Subject: [PATCH v3 6/9] mt76: mt7921: move mt7921_usb_sdio_tx_prepare_skb in common mac code
+Date:   Sun, 13 Mar 2022 13:48:56 +0100
+Message-Id: <e50c88855bcdf5e485e62610c87515c1a4197d3b.1647175554.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <cover.1647175554.git.lorenzo@kernel.org>
 References: <cover.1647175554.git.lorenzo@kernel.org>
@@ -60,60 +60,177 @@ This is a preliminary patch to add mt7921u driver support.
 Tested-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h   | 10 ++++++----
- drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c |  2 +-
- 3 files changed, 8 insertions(+), 6 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 58 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  9 +--
+ .../net/wireless/mediatek/mt76/mt7921/sdio.c  |  2 +-
+ .../wireless/mediatek/mt76/mt7921/sdio_mac.c  | 53 -----------------
+ 4 files changed, 64 insertions(+), 58 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index ea2a655acc6a..cceb0338528c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -1627,3 +1627,61 @@ void mt7921_coredump_work(struct work_struct *work)
+ 
+ 	mt7921_reset(&dev->mt76);
+ }
++
++/* usb_sdio */
++static void
++mt7921_usb_sdio_write_txwi(struct mt7921_dev *dev, struct mt76_wcid *wcid,
++			   enum mt76_txq_id qid, struct ieee80211_sta *sta,
++			   struct ieee80211_key_conf *key, int pid,
++			   struct sk_buff *skb)
++{
++	__le32 *txwi = (__le32 *)(skb->data - MT_SDIO_TXD_SIZE);
++
++	memset(txwi, 0, MT_SDIO_TXD_SIZE);
++	mt7921_mac_write_txwi(dev, txwi, skb, wcid, key, pid, false);
++	skb_push(skb, MT_SDIO_TXD_SIZE);
++}
++
++int mt7921_usb_sdio_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
++				   enum mt76_txq_id qid, struct mt76_wcid *wcid,
++				   struct ieee80211_sta *sta,
++				   struct mt76_tx_info *tx_info)
++{
++	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_info->skb);
++	struct ieee80211_key_conf *key = info->control.hw_key;
++	struct sk_buff *skb = tx_info->skb;
++	int err, pad, pktid, type;
++
++	if (unlikely(tx_info->skb->len <= ETH_HLEN))
++		return -EINVAL;
++
++	if (!wcid)
++		wcid = &dev->mt76.global_wcid;
++
++	if (sta) {
++		struct mt7921_sta *msta = (struct mt7921_sta *)sta->drv_priv;
++
++		if (time_after(jiffies, msta->last_txs + HZ / 4)) {
++			info->flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
++			msta->last_txs = jiffies;
++		}
++	}
++
++	pktid = mt76_tx_status_skb_add(&dev->mt76, wcid, skb);
++	mt7921_usb_sdio_write_txwi(dev, wcid, qid, sta, key, pktid, skb);
++
++	type = mt76_is_sdio(mdev) ? MT7921_SDIO_DATA : 0;
++	mt7921_skb_add_usb_sdio_hdr(dev, skb, type);
++	pad = round_up(skb->len, 4) - skb->len;
++	if (mt76_is_usb(mdev))
++		pad += 4;
++
++	err = mt76_skb_adjust_pad(skb, pad);
++	if (err)
++		/* Release pktid in case of error. */
++		idr_remove(&wcid->pktid, pktid);
++
++	return err;
++}
++EXPORT_SYMBOL_GPL(mt7921_usb_sdio_tx_prepare_skb);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 394a677140da..66b331d003b4 100644
+index 66b331d003b4..14378e149149 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -352,12 +352,14 @@ static inline void mt7921_mcu_tx_cleanup(struct mt7921_dev *dev)
- 	mt76_queue_tx_cleanup(dev, dev->mt76.q_mcu[MT_MCUQ_WA], false);
- }
- 
--static inline void mt7921_skb_add_sdio_hdr(struct sk_buff *skb,
--					   enum mt7921_sdio_pkt_type type)
-+static inline void
-+mt7921_skb_add_usb_sdio_hdr(struct mt7921_dev *dev, struct sk_buff *skb,
-+			    int type)
- {
--	u32 hdr;
-+	u32 hdr, len;
- 
--	hdr = FIELD_PREP(MT7921_SDIO_HDR_TX_BYTES, skb->len + sizeof(hdr)) |
-+	len = mt76_is_usb(&dev->mt76) ? skb->len : skb->len + sizeof(hdr);
-+	hdr = FIELD_PREP(MT7921_SDIO_HDR_TX_BYTES, len) |
- 	      FIELD_PREP(MT7921_SDIO_HDR_PKT_TYPE, type);
- 
- 	put_unaligned_le32(hdr, skb_push(skb, sizeof(hdr)));
+@@ -444,12 +444,13 @@ int mt7921e_mcu_fw_pmctrl(struct mt7921_dev *dev);
+ int mt7921s_mcu_init(struct mt7921_dev *dev);
+ int mt7921s_mcu_drv_pmctrl(struct mt7921_dev *dev);
+ int mt7921s_mcu_fw_pmctrl(struct mt7921_dev *dev);
+-int mt7921s_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+-			   enum mt76_txq_id qid, struct mt76_wcid *wcid,
+-			   struct ieee80211_sta *sta,
+-			   struct mt76_tx_info *tx_info);
+ void mt7921s_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_entry *e);
+ bool mt7921s_tx_status_data(struct mt76_dev *mdev, u8 *update);
+ void mt7921_mac_add_txs(struct mt7921_dev *dev, void *data);
+ void mt7921_set_runtime_pm(struct mt7921_dev *dev);
++
++int mt7921_usb_sdio_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
++				   enum mt76_txq_id qid, struct mt76_wcid *wcid,
++				   struct ieee80211_sta *sta,
++				   struct mt76_tx_info *tx_info);
+ #endif
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+index a6ae29c97e0e..fc6499640a1c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+@@ -91,7 +91,7 @@ static int mt7921s_probe(struct sdio_func *func,
+ 		.survey_flags = SURVEY_INFO_TIME_TX |
+ 				SURVEY_INFO_TIME_RX |
+ 				SURVEY_INFO_TIME_BSS_RX,
+-		.tx_prepare_skb = mt7921s_tx_prepare_skb,
++		.tx_prepare_skb = mt7921_usb_sdio_tx_prepare_skb,
+ 		.tx_complete_skb = mt7921s_tx_complete_skb,
+ 		.tx_status_data = mt7921s_tx_status_data,
+ 		.rx_skb = mt7921_queue_rx_skb,
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-index 4fd1d4765b04..5462ab05fb13 100644
+index 5462ab05fb13..e039b1bd16a4 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-@@ -183,7 +183,7 @@ int mt7921s_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	pktid = mt76_tx_status_skb_add(&dev->mt76, wcid, skb);
- 	mt7921s_write_txwi(dev, wcid, qid, sta, key, pktid, skb);
+@@ -141,59 +141,6 @@ int mt7921s_mac_reset(struct mt7921_dev *dev)
+ 	return err;
+ }
  
--	mt7921_skb_add_sdio_hdr(skb, MT7921_SDIO_DATA);
-+	mt7921_skb_add_usb_sdio_hdr(dev, skb, MT7921_SDIO_DATA);
- 	pad = round_up(skb->len, 4) - skb->len;
- 
- 	err = mt76_skb_adjust_pad(skb, pad);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
-index 5d8af18c7026..54a5c712a3c3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
-@@ -36,7 +36,7 @@ mt7921s_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
- 	if (cmd == MCU_CMD(FW_SCATTER))
- 		type = MT7921_SDIO_FWDL;
- 
--	mt7921_skb_add_sdio_hdr(skb, type);
-+	mt7921_skb_add_usb_sdio_hdr(dev, skb, type);
- 	pad = round_up(skb->len, 4) - skb->len;
- 	__skb_put_zero(skb, pad);
- 
+-static void
+-mt7921s_write_txwi(struct mt7921_dev *dev, struct mt76_wcid *wcid,
+-		   enum mt76_txq_id qid, struct ieee80211_sta *sta,
+-		   struct ieee80211_key_conf *key, int pid,
+-		   struct sk_buff *skb)
+-{
+-	__le32 *txwi = (__le32 *)(skb->data - MT_SDIO_TXD_SIZE);
+-
+-	memset(txwi, 0, MT_SDIO_TXD_SIZE);
+-	mt7921_mac_write_txwi(dev, txwi, skb, wcid, key, pid, false);
+-	skb_push(skb, MT_SDIO_TXD_SIZE);
+-}
+-
+-int mt7921s_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+-			   enum mt76_txq_id qid, struct mt76_wcid *wcid,
+-			   struct ieee80211_sta *sta,
+-			   struct mt76_tx_info *tx_info)
+-{
+-	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
+-	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_info->skb);
+-	struct ieee80211_key_conf *key = info->control.hw_key;
+-	struct sk_buff *skb = tx_info->skb;
+-	int err, pad, pktid;
+-
+-	if (unlikely(tx_info->skb->len <= ETH_HLEN))
+-		return -EINVAL;
+-
+-	if (!wcid)
+-		wcid = &dev->mt76.global_wcid;
+-
+-	if (sta) {
+-		struct mt7921_sta *msta = (struct mt7921_sta *)sta->drv_priv;
+-
+-		if (time_after(jiffies, msta->last_txs + HZ / 4)) {
+-			info->flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
+-			msta->last_txs = jiffies;
+-		}
+-	}
+-
+-	pktid = mt76_tx_status_skb_add(&dev->mt76, wcid, skb);
+-	mt7921s_write_txwi(dev, wcid, qid, sta, key, pktid, skb);
+-
+-	mt7921_skb_add_usb_sdio_hdr(dev, skb, MT7921_SDIO_DATA);
+-	pad = round_up(skb->len, 4) - skb->len;
+-
+-	err = mt76_skb_adjust_pad(skb, pad);
+-	if (err)
+-		/* Release pktid in case of error. */
+-		idr_remove(&wcid->pktid, pktid);
+-
+-	return err;
+-}
+-
+ void mt7921s_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_entry *e)
+ {
+ 	__le32 *txwi = (__le32 *)(e->skb->data + MT_SDIO_HDR_SIZE);
 -- 
 2.35.1
 
