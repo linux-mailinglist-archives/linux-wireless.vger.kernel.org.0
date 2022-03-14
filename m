@@ -2,128 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D69C14D876D
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 15:53:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B83D4D87D0
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 16:11:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233575AbiCNOyI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Mar 2022 10:54:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45042 "EHLO
+        id S242456AbiCNPMF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Mar 2022 11:12:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233567AbiCNOyH (ORCPT
+        with ESMTP id S242377AbiCNPME (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Mar 2022 10:54:07 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B43179FC8
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 07:52:57 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id y22so20312259eds.2
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 07:52:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=+G+dOa5d8t9TVnKXBrmGWkOu0SsmIWEAH8q9HzbCF5I=;
-        b=jHye9LKXzuiHyZ6iOU0/aaMezVHq2v4+zTl6F/rIxcxlSRlF54/Nodt4s4+YPXjkbm
-         t2eE4Bvy4Jzv94htslyoEtk6UYEY9M/7lpykNzK5xfvAxUUvh2r4if8fc4oi1EZMMRwN
-         vsefbsdUE425fOv3335d7jCR/FFEoay29kgoNoeslcq+d77k/mNA2nAef9BefVNEvEWe
-         yh0+eAB3smPCwdezLTmOJioIo0AYVNB50mbt1JSoZyxtgXnlhnBV1kEO+B9yLmq/EuzP
-         AspTpa6SzkrrEfFghKCmG4iwKdFgAA+APZg7v8VvKCAm8sD9ATzUi2vOT7eJy1x+BEJZ
-         3/Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=+G+dOa5d8t9TVnKXBrmGWkOu0SsmIWEAH8q9HzbCF5I=;
-        b=AgKcXIXxZl41PhbkYXKKXfRTtNMHKI8YhZdmD2+SZyE3hoPb2hcLWYFJmgvqfXxAbN
-         guMSLNBMueloHYGnPy/8AeGcmvQKniIO9/HniEEiuKpenFPDHBUT7u9i2CqPZoCXAKin
-         +rqX8U3hAy9EurxfONe9NCpohGz3qpoQS7GOH62jiT2LjznE7uVw54mEyUgXjWn07QK1
-         UXq8rCRUCpUkmxfJefMwEOuodzasKotfKu3bCz1fHn8UiCYWdBLjC3Ow8zQtXMS0Qi0G
-         HzRI4ksvJRw8gI52U50BcLLXSg6S1cE5OxzLY4bBRp3gZOVpUmuMdrJ5bFnLHxn5t0xz
-         xW+g==
-X-Gm-Message-State: AOAM5311Cu9yT+dXMumy0KGEK6A6DWxU13+Qmm/9lLlMO5y4wFde6Qv7
-        +bXZhyILwSbpYaaRqAIEWqKKLYGuo/hxEuowsE8=
-X-Google-Smtp-Source: ABdhPJy82igLOrHQUo87zd4BkpRrpUaIxi2nH8bG9zfbwR3BDe5r0pKPkRJsitG7CYxpkXgDxLvNoc/GDIh8nIg5uFU=
-X-Received: by 2002:a05:6402:2744:b0:416:4878:879 with SMTP id
- z4-20020a056402274400b0041648780879mr20625157edd.151.1647269576331; Mon, 14
- Mar 2022 07:52:56 -0700 (PDT)
+        Mon, 14 Mar 2022 11:12:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63B4943EF5
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 08:10:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0600161277
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 15:10:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD82C340E9;
+        Mon, 14 Mar 2022 15:10:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1647270651;
+        bh=7R/zaik3KG886DXjov4eTtkyArdUyZgzK5qTyMuQdpw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=pxfBs0HyFTH5YJpaQoY/LZJPWeOh2XZuO8aluzNK/+JUeVvViRICehWVeusf/IY9B
+         g7pZqupK2ZSeK4h4Bai7WHFF/iMhnRk9NUVYHumYKJ35qzMi3BN9DqmtJ+x2vDrunB
+         ks41daNRpxko28AojdCCAyIyMFl8GLfgSk0sxGJNrhZ8khVQgRkZrLkCWzrdiKoawl
+         SYd29BCFHZ0mTwNUPMaEVQcFzT9b68t6viZUkhVL5EHsDzmW4VTr9vTTUZH15l4mU5
+         iOvFb3yXWbbZoT8rl4j2Sd20nLqCyiig16eFcYB/isZlnPjOqNn91AY5XR25nT4iSx
+         SqZry4bhGK2pQ==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com, deren.wu@mediatek.com,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH v5 0/9] introduce mt7921u driver
+Date:   Mon, 14 Mar 2022 16:10:22 +0100
+Message-Id: <cover.1647270525.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Received: by 2002:a05:6400:1cc:0:0:0:0 with HTTP; Mon, 14 Mar 2022 07:52:55
- -0700 (PDT)
-Reply-To: bell.bellcanada@gmail.com
-From:   BELL CANADA <laetitiamaura002@gmail.com>
-Date:   Mon, 14 Mar 2022 22:52:55 +0800
-Message-ID: <CAK4Np7Ry0=5TRDY877_-PNVXeCep_sXoB4R0L7adTNFa1CpZ_A@mail.gmail.com>
-Subject: IMMIGRER AU CANADA POUR Y VIVRE ET TRAVAILLER
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:542 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [laetitiamaura002[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [laetitiamaura002[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SUPERBE OPPORTUNITE !!!
-IMMIGRER AU CANADA POUR Y VIVRE ET TRAVAILLER.
-CADRES ET JEUNES DIPLOMES BIENVENU !!!
-La Compagnie BELL-CANADA en Collaboration avec le Service de
-Citoyennet=C3=A9 et Immigration au Canada lance une grande session de
-Recrutement 2022. En effet nous recherchons avant tout des personnes
-capables sans
-distinction de sexe qui pourront s'adapter =C3=A0 notre environnement de tr=
-avail.
-CONDITIONS A REMPLIR POUR TOUTE PERSONNE INT=C3=89RESS=C3=89E
+Introduce support for MT7921U 802.11ax 2x2:2SS wireless devices.
 
-1- =C3=8Atre =C3=A2g=C3=A9(e) entre 18 et 65 ans
-2- =C3=8Atre titulaire au moins du BEPC BAC ou autres Dipl=C3=B4mes Profess=
-ionnels
-3- Savoir parler le fran=C3=A7ais ou l'anglais
-4- Avoir de bonnes qualit=C3=A9s relationnelles
-5- Avoir une bonne moralit=C3=A9
+Changes since v4:
+- Rebase on top of mt76 master
 
-PS: Pour plus d'informations et le retrait du formulaire, veuillez
-nous envoyer vos coordonn=C3=A9es Si vous =C3=AAtes int=C3=A9ress=C3=A9s. v=
-euillez nous
-envoyer: NOM; PR=C3=89NOMS; =C3=82GE; PAYS;NATIONALIT=C3=89,PROFESSION,SEXE=
-,NUM=C3=89RO
-T=C3=89L=C3=89PHONE,ADRESSE: =C3=A0 l'adresse de la direction par =C3=89mai=
-l qui est la
-suivante : bell.bellcanada@gmail.com
+Changes since v3:
+- Fix compilation error
 
-pour confirmation de votre inscription et pour plus d'informations sur
-les conditions =C3=A0 remplir et les pi=C3=A8ces =C3=A0 fournir pour votre =
-dossier de
-candidature.
+Changes since v2:
+- implemented full reset support in mt7921u_mac_reset routine
 
-Le charg=C3=A9 de l'information
+Changes since v1:
+- implement wfsys reset support
+- fixed power on procedure
+- fixed module unload
+
+Lorenzo Bianconi (9):
+  mt76: usb: add req_type to ___mt76u_rr signature
+  mt76: usb: add req_type to ___mt76u_wr signature
+  mt76: usb: introduce __mt76u_init utility routine
+  mt76: mt7921: disable runtime pm for usb
+  mt76: mt7921: update mt7921_skb_add_usb_sdio_hdr to support usb
+  mt76: mt7921: move mt7921_usb_sdio_tx_prepare_skb in common mac code
+  mt76: mt7921: move mt7921_usb_sdio_tx_complete_skb in common mac code.
+  mt76: mt7921: move mt7921_usb_sdio_tx_status_data in mac common code.
+  mt76: mt7921: add mt7921u driver
+
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  12 +-
+ .../net/wireless/mediatek/mt76/mt7615/usb.c   |  68 +++-
+ .../net/wireless/mediatek/mt76/mt76x0/usb.c   |   2 +-
+ .../net/wireless/mediatek/mt76/mt76x2/usb.c   |   2 +-
+ .../net/wireless/mediatek/mt76/mt7921/Kconfig |  11 +
+ .../wireless/mediatek/mt76/mt7921/Makefile    |   2 +
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   |   6 +
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |  12 +-
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   |  91 ++++++
+ .../net/wireless/mediatek/mt76/mt7921/mac.h   |   1 +
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |   3 +-
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  36 ++-
+ .../net/wireless/mediatek/mt76/mt7921/regs.h  |  50 ++-
+ .../net/wireless/mediatek/mt76/mt7921/sdio.c  |   6 +-
+ .../wireless/mediatek/mt76/mt7921/sdio_mac.c  |  83 -----
+ .../wireless/mediatek/mt76/mt7921/sdio_mcu.c  |   2 +-
+ .../net/wireless/mediatek/mt76/mt7921/usb.c   | 305 ++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7921/usb_mac.c   | 252 +++++++++++++++
+ drivers/net/wireless/mediatek/mt76/usb.c      | 125 +++----
+ 19 files changed, 874 insertions(+), 195 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
+
+-- 
+2.35.1
+
