@@ -2,41 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24C284D8196
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 12:47:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D264A4D81AD
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 12:52:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234400AbiCNLqb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Mar 2022 07:46:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38338 "EHLO
+        id S239722AbiCNLxL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Mar 2022 07:53:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239655AbiCNLqR (ORCPT
+        with ESMTP id S239708AbiCNLwu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Mar 2022 07:46:17 -0400
+        Mon, 14 Mar 2022 07:52:50 -0400
 Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC54313D06;
-        Mon, 14 Mar 2022 04:45:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41C0B4248A
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 04:51:41 -0700 (PDT)
 Received: from ip4d144895.dynamic.kabel-deutschland.de ([77.20.72.149] helo=[192.168.66.200]); authenticated
         by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1nTj8D-0006gm-A0; Mon, 14 Mar 2022 12:44:57 +0100
-Message-ID: <9e4ea11e-7d00-d2c4-7f80-862f0cbe96db@leemhuis.info>
-Date:   Mon, 14 Mar 2022 12:44:56 +0100
+        id 1nTjEh-0007qV-8Z; Mon, 14 Mar 2022 12:51:39 +0100
+Message-ID: <915d6d66-4e42-8cbf-76bc-0f2f72d5e7d6@leemhuis.info>
+Date:   Mon, 14 Mar 2022 12:51:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
 Content-Language: en-US
-To:     Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Cc:     "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+To:     golan.ben.ami@intel.com, Luca Coelho <luciano.coelho@intel.com>
+Cc:     Udo Steinberg <udo@hypervisor.org>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Stephane Poignant <stephane.poignant@proton.ch>
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
 From:   Thorsten Leemhuis <regressions@leemhuis.info>
-Subject: Regression in 5.10.67: "iwlwifi: pcie: free RBs during configure"
- causes rx lockups with BAR_FRAME_RELEASE on AX200/AX201 when using 802.11ax
+Subject: Bug 215635 - iwlwifi: Firmware crash with firmware 36.ca7b901d.0
+ (8265-36.ucode)
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1647258300;dc212ae5;
-X-HE-SMSGID: 1nTj8D-0006gm-A0
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1647258701;498cc002;
+X-HE-SMSGID: 1nTjEh-0007qV-8Z
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -48,105 +46,36 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi, this is your Linux kernel regression tracker.
 
-I noticed a regression report in bugzilla.kernel.org that afaics nobody
-acted upon since it was reported more than ten days ago (it afaifcs only
-later became clear this is a regression), that's why I decided to
-forward it to the lists and a few relevant people to the CC. To quote
-from https://bugzilla.kernel.org/show_bug.cgi?id=215660:
+I noticed a regression report in bugzilla.kernel.org that afaics isn't
+properly handled, that's why I decided to forward it to the lists and a
+few relevant people to the CC. To quote from
+https://bugzilla.kernel.org/show_bug.cgi?id=215635 :
 
->  Stephane Poignant 2022-03-04 17:24:49 UTC
+> Seeing the following firmware crash frequently with
+> firmware-version: 36.ca7b901d.0 8265-36.ucode
 > 
-> Created attachment 300529 [details]
-> lspci and ethtool outputs on reproducing systems
-> 
-> Context:
-> - dense enterprise deployment, 10 lightweight aps (Aruba) on one office floor, up to 125 concurrent users total, up to 25 user per AP
-> - the wireless network supports 802.11n, 802.11ac and 802.11ax in 5 GHz band
-> - authentication is wpa2-psk
-> - client devices consists in a variety of endpoints (laptops, cell phones, tablets, smart devices), running various versions of Mac OSX, Linux, Windows, Android or IOS.
-> - certain clients supports only 20Mhz, HT protection kicks in and turns off on APs as those clients are moving around. Consequently ht_operation_mode fluctuates between 4 and 6 even when staying on the same AP.
-> - the issue affects various laptops with Intel AX200 or AX201 chipsets, running Debian or Ubuntu with a recent kernel >= 5.10
-> - see attached file devices.txt for detailed information on the different laptops we have reproduced the issue on
-> 
-> 
-> Steps to reproduce:
-> - appears sometimes, but not always, after the iwlwifi STA roams from one AP to another
-> - seen more often when ht_operation_mode changes between 4 and 6 (but not sufficient to trigger the issue)
-> - STA deassociates from current AP and associates to the new one successfully
-> - connectivity works on the new AP for a short period of time, usually between 30s and 1 minute
-> - then suddenly, the Rx path breaks. No more received frame visible on the STA wireless interface. AP reports that frames are retransmitted and not acknowledged by STA.
-> - the Tx path keeps working. Frames sent by STA to AP are received and visible on the network
-> - in this state each inbound frame appears to trigger iwl_pcie_rx_handle_rb with cmd BAR_FRAME_RELEASE (seqnum is always the same):
-> 
-> Mar  4 12:44:32 debian kernel: [15884.715812] iwlwifi 0000:00:14.3: iwl_pcie_rx_handle Q 0: HW = 338, SW = 337
-> Mar  4 12:44:32 debian kernel: [15884.715819] iwlwifi 0000:00:14.3: iwl_pcie_get_rxb Got virtual RB ID 1348
-> Mar  4 12:44:32 debian kernel: [15884.715831] iwlwifi 0000:00:14.3: iwl_pcie_rx_handle_rb Q 0: cmd at offset 0: BAR_FRAME_RELEASE (00.c2, seq 0xbfff)
-> Mar  4 12:44:32 debian kernel: [15884.715838] iwlwifi 0000:00:14.3: iwl_mvm_release_frames_from_notif Frame release notification for BAID 14, NSSN 169
-> Mar  4 12:44:32 debian kernel: [15884.715843] iwlwifi 0000:00:14.3: iwl_pcie_rx_handle_rb Q 0: RB end marker at offset 64
-> Mar  4 12:44:32 debian kernel: [15884.715852] iwlwifi 0000:00:14.3: iwl_pcie_restock_bd Assigned virtual RB ID 1348 to queue 0 index 334
-> 
-> - those events do not appear during normal operation (or very rarely)
-> 
-> 
-> Temporary resolution:
-> - in most cases, the STA remains in this state until Wifi is restarted or until it roams to another AP
-> - while in that state, it may happens (rarely) that a few frame are received with very high latency, then the next ones are lost, for instance:
-> 
-> [1646398334.114200] From 10.200.2.67 icmp_seq=148 Destination Host Unreachable
-> [1646398334.114242] From 10.200.2.67 icmp_seq=149 Destination Host Unreachable
-> [1646398334.114251] From 10.200.2.67 icmp_seq=150 Destination Host Unreachable
-> [1646398336.365181] 64 bytes from 10.200.2.1: icmp_seq=151 ttl=64 time=2251 ms
-> [1646398336.365237] 64 bytes from 10.200.2.1: icmp_seq=152 ttl=64 time=1227 ms
-> [1646398336.365250] 64 bytes from 10.200.2.1: icmp_seq=153 ttl=64 time=203 ms
-> [1646398375.042236] From 10.200.2.67 icmp_seq=188 Destination Host Unreachable
-> [1646398375.042291] From 10.200.2.67 icmp_seq=189 Destination Host Unreachable
-> [1646398375.042303] From 10.200.2.67 icmp_seq=190 Destination Host Unreachable
-> 
-> 
-> Workaround:
-> - disable_11ax=1 prevents the problem from happening
 > [...]
+> 
+> Afterwards iwlwifi is entirely unusable, i.e. the hardware does not recover.
 
->  Stephane Poignant 2022-03-10 14:48:39 UTC
+> I have not been able to observe the problem with 5.15.x so far.
 > 
-> Did some further testing with vanilla kernel.
-> 5.10.66 and older DO NOT reproduce the issue.
-> 5.10.67 and newer DO reproduce.
+> The problem manifests either by Wi-Fi becoming entirely unresponsive (not even ping to gateway works anymore) or by producing a firmware crash.
 > 
-> I see the following changes according to changelog:
-> iwlwifi: mvm: Fix scan channel flags settings
-> iwlwifi: fw: correctly limit to monitor dump
-> iwlwifi: mvm: fix access to BSS elements
-> iwlwifi: mvm: avoid static queue number aliasing
-> iwlwifi: mvm: fix a memory leak in iwl_mvm_mac_ctxt_beacon_changed
-> iwlwifi: pcie: free RBs during configure
+> In response to #3, the problem was most recently observed as a firmware crash on Linux 5.16.13. HW is Intel Corporation Wireless 8265 / 8275 (rev 78) (Windstorm Peak) and firmware version 36.ca7b901d.0 8265-36.ucode.
 > 
-> Suspecting the one related with queues but no strong opinion atm.
-> 
-> [reply] [−] Comment 6 Stephane Poignant 2022-03-11 10:18:29 UTC
-> 
-> Ok so after some further testing, turned out that after commenting the following lines in file drivers/net/wireless/intel/iwlwifi/pcie/trans.c:
-> 
-> 	/* free all first - we might be reconfigured for a different size */
-> 	iwl_pcie_free_rbs_pool(trans);
-> 
-> Which were introduced by the following commit:
-> iwlwifi: pcie: free RBs during configure
-> https://lore.kernel.org/all/iwlwifi.20210802170640.42d7c93279c4.I07f74e65aab0e3d965a81206fcb289dc92d74878@changeid/
-> 
-> Then i'm no longer able to reproduce. Tested in vanilla 5.10.67, vanilla 5.10.88 and 5.10.92 with Debian patches.
-> 
+> I'm attaching the dmesg output from 5.16.13 (with the TWT patch mentioned above applied) which includes a firmware crash.
 
 Could somebody take a look into this? Or was this discussed somewhere
 else already? Or even fixed?
 
 Anyway, to get this tracked:
 
-#regzbot introduced: 608c8359c567b4a04dedbe
-#regzbot from: Stephane Poignant <stephane.poignant@proton.ch>
-#regzbot title: wireless: iwlwifi: regression in 5.10.67 due to
-"iwlwifi: pcie: free RBs during configure"
-#regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=215660
+#regzbot introduced: v5.15..v5.16
+#regzbot from: Udo Steinberg <udo@hypervisor.org>
+#regzbot title: wireless: iwlwifi: Firmware crash frequently with
+firmware 36.ca7b901d.0 (8265-36.ucode)
+#regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=215635
 
 Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
 
@@ -184,3 +113,5 @@ about the issue. This has been expected from developers even before
 regzbot showed up for reasons explained in
 'Documentation/process/submitting-patches.rst' and
 'Documentation/process/5.Posting.rst'.
+
+
