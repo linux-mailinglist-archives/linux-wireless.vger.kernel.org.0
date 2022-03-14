@@ -2,118 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0BF04D7AEB
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 07:45:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CC0D4D7B5E
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 08:13:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236443AbiCNGqW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Mar 2022 02:46:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45582 "EHLO
+        id S236553AbiCNHOz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Mar 2022 03:14:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229724AbiCNGqU (ORCPT
+        with ESMTP id S229943AbiCNHOx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Mar 2022 02:46:20 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE8373CFF3;
-        Sun, 13 Mar 2022 23:45:11 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id n2so12722241plf.4;
-        Sun, 13 Mar 2022 23:45:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=HwGDi1sVfgM6vEwjYmQWuo614yIWTc+TjSIxyxAMlAA=;
-        b=OFglV4YNTV4B9RvfWrcOyp9Ky6jz7gYFN7V7XkdY05sSHo7bTVSZDN3d19BzcABKaH
-         YRxwvKCbXXsxHsJshYEh8PshhCQ7REiQ1N7UUe1p/YJphK3FRhTOiEqS4hXeNTjlVQfa
-         K4fIgWVNKaSRMM/FxdX4Thgz1rjs/StrkDfB3M3GOKCcRnMY5GgvkBLOA+Qrrs5kaoRP
-         8a4JmdyOpGlPlpUGr/TpkhYUfJK4DuWGRkE5q8J0U7DwzKDAR7mCySxnMbM031pn2sMz
-         g6l1r3u0LizvyiBt0JBJ0vtCkl8p4QxbuelD5GNKSaNSq6KzSlMj78Wm8VZunw78bYux
-         AfHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=HwGDi1sVfgM6vEwjYmQWuo614yIWTc+TjSIxyxAMlAA=;
-        b=178e+uDxVbCOZCQP/vgakmLnZqbTgxLz/jpHi6xDfJg+VbGLtVFfSKHXt98Ej2o4Dt
-         qMzeRMJBOLyqNDZZgkiTx+s8E1dZLmAlGFfZxya3jl0YDEjCosgxhPfbEt5PMK1Cmnpy
-         QbHg6zJiI/L1aSebmDWOtQ3WDHT4DnTo45NW5+MVd0d7ZGhAaFfoi9E5OJUBXQsF6bnC
-         R211d8HnMjkIVjA+gLOEfPwv2x7DHkXFUWdtu3oJj+WK6nv1DtnqWM5uyhmvoL+MVlgc
-         lxSiS5L3NZ6yxldpTjlCBv9GyzbPcTeJUEuhUTsI3toTBDUDeeKVxF+Rxdm9p+zvJrxn
-         6D4g==
-X-Gm-Message-State: AOAM532NIBFZWmebqqz7mUE5vmujEv8Rly9TEtzu700y/Dv7ZKjr+Ov7
-        G+96Ca0fspI1yyLOKOwDPHs=
-X-Google-Smtp-Source: ABdhPJx/JtpuTG5tp1CzzSrpghu2Tp9YzGYf8rw4hriJbh8ezMW/YgFFEn7thGrGtrX7buLcrYgEDA==
-X-Received: by 2002:a17:902:6903:b0:151:6781:9397 with SMTP id j3-20020a170902690300b0015167819397mr22502299plk.137.1647240311126;
-        Sun, 13 Mar 2022 23:45:11 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id u18-20020a056a00099200b004f737cdd046sm20342127pfg.145.2022.03.13.23.45.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Mar 2022 23:45:10 -0700 (PDT)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: chi.minghao@zte.com.cn
-To:     toke@toke.dk
-Cc:     kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH V2] ath9k: Use platform_get_irq() to get the interrupt
-Date:   Mon, 14 Mar 2022 06:45:01 +0000
-Message-Id: <20220314064501.2114002-1-chi.minghao@zte.com.cn>
+        Mon, 14 Mar 2022 03:14:53 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77803E09C
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 00:13:44 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22E7DaWvA003272, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22E7DaWvA003272
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 14 Mar 2022 15:13:36 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Mon, 14 Mar 2022 15:13:35 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Mon, 14 Mar
+ 2022 15:13:35 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
+Subject: [PATCH 0/8] rtw89: add firmware reset and dump firmware memory and backtrace
+Date:   Mon, 14 Mar 2022 15:12:42 +0800
+Message-ID: <20220314071250.40292-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 03/14/2022 06:57:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMTQgpFekyCAwNjowMDowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Minghao Chi <chi.minghao@zte.com.cn>
+Add a debugfs entry to trigger firmware reset manually, and then SER
+(System Error Recovery) will catch the error and dump memory and backtrace
+before calling ieee80211_restart_hw().
 
-It is not recommened to use platform_get_resource(pdev, IORESOURCE_IRQ)
-for requesting IRQ's resources any more, as they can be not ready yet in
-case of DT-booting.
+During development of this feature, we found some issues related to SER,
+so fix them in this patchset as well.
 
-platform_get_irq() instead is a recommended way for getting IRQ even if
-it was not retrieved earlier.
+Zong-Zhe Yang (8):
+  rtw89: ser: fix CAM leaks occurring in L2 reset
+  rtw89: mac: move table of mem base addr to common
+  rtw89: mac: correct decision on error status by scenario
+  rtw89: ser: control hci interrupts on/off by state
+  rtw89: ser: dump memory for fw payload engine while L2 reset
+  rtw89: ser: dump fw backtrace while L2 reset
+  rtw89: reconstruct fw feature
+  rtw89: support FW crash simulation
 
-It also makes code simpler because we're getting "int" value right away
-and no conversion from resource to int is required.
+ drivers/net/wireless/realtek/rtw89/cam.c      |  14 +-
+ drivers/net/wireless/realtek/rtw89/core.c     |   5 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |  38 ++-
+ drivers/net/wireless/realtek/rtw89/debug.c    |  70 +++--
+ drivers/net/wireless/realtek/rtw89/fw.c       |  89 ++++++-
+ drivers/net/wireless/realtek/rtw89/fw.h       |  23 ++
+ drivers/net/wireless/realtek/rtw89/mac.c      |  32 ++-
+ drivers/net/wireless/realtek/rtw89/mac.h      |  10 +
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   4 +-
+ drivers/net/wireless/realtek/rtw89/pci.c      |  29 +++
+ drivers/net/wireless/realtek/rtw89/pci.h      |   1 +
+ drivers/net/wireless/realtek/rtw89/phy.c      |   2 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   1 +
+ drivers/net/wireless/realtek/rtw89/ser.c      | 245 +++++++++++++++++-
+ 14 files changed, 516 insertions(+), 47 deletions(-)
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
----
-v1->v2:
-  - Retain dev_err() call on failure
-
- drivers/net/wireless/ath/ath9k/ahb.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
-index cdefb8e2daf1..c9b853af41d1 100644
---- a/drivers/net/wireless/ath/ath9k/ahb.c
-+++ b/drivers/net/wireless/ath/ath9k/ahb.c
-@@ -98,14 +98,12 @@ static int ath_ahb_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	}
- 
--	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
--	if (res == NULL) {
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
- 		dev_err(&pdev->dev, "no IRQ resource found\n");
--		return -ENXIO;
-+		return irq;
- 	}
- 
--	irq = res->start;
--
- 	ath9k_fill_chanctx_ops();
- 	hw = ieee80211_alloc_hw(sizeof(struct ath_softc), &ath9k_ops);
- 	if (hw == NULL) {
 -- 
 2.25.1
 
