@@ -2,40 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CC0D4D7B5E
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 08:13:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0795E4D7B5F
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 08:13:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236553AbiCNHOz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Mar 2022 03:14:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39370 "EHLO
+        id S236555AbiCNHO4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Mar 2022 03:14:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229943AbiCNHOx (ORCPT
+        with ESMTP id S236540AbiCNHOz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Mar 2022 03:14:53 -0400
+        Mon, 14 Mar 2022 03:14:55 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77803E09C
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 00:13:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40A68E092
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 00:13:45 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22E7DaWvA003272, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22E7Dcj06003281, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22E7DaWvA003272
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22E7Dcj06003281
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 14 Mar 2022 15:13:36 +0800
+        Mon, 14 Mar 2022 15:13:38 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Mon, 14 Mar 2022 15:13:35 +0800
+ 15.1.2308.27; Mon, 14 Mar 2022 15:13:38 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Mon, 14 Mar
- 2022 15:13:35 +0800
+ 2022 15:13:37 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
-Subject: [PATCH 0/8] rtw89: add firmware reset and dump firmware memory and backtrace
-Date:   Mon, 14 Mar 2022 15:12:42 +0800
-Message-ID: <20220314071250.40292-1-pkshih@realtek.com>
+Subject: [PATCH 1/8] rtw89: ser: fix CAM leaks occurring in L2 reset
+Date:   Mon, 14 Mar 2022 15:12:43 +0800
+Message-ID: <20220314071250.40292-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220314071250.40292-1-pkshih@realtek.com>
+References: <20220314071250.40292-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -66,39 +68,116 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add a debugfs entry to trigger firmware reset manually, and then SER
-(System Error Recovery) will catch the error and dump memory and backtrace
-before calling ieee80211_restart_hw().
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-During development of this feature, we found some issues related to SER,
-so fix them in this patchset as well.
+The CAM, meaning address CAM and bssid CAM here, will get leaks during
+SER (system error recover) L2 reset process and ieee80211_restart_hw()
+which is called by L2 reset process eventually.
 
-Zong-Zhe Yang (8):
-  rtw89: ser: fix CAM leaks occurring in L2 reset
-  rtw89: mac: move table of mem base addr to common
-  rtw89: mac: correct decision on error status by scenario
-  rtw89: ser: control hci interrupts on/off by state
-  rtw89: ser: dump memory for fw payload engine while L2 reset
-  rtw89: ser: dump fw backtrace while L2 reset
-  rtw89: reconstruct fw feature
-  rtw89: support FW crash simulation
+The normal flow would be like
+-> add interface (acquire 1)
+-> enter ips (release 1)
+-> leave ips (acquire 1)
+-> connection (occupy 1) <(A) 1 leak after L2 reset if non-sec connection>
 
- drivers/net/wireless/realtek/rtw89/cam.c      |  14 +-
- drivers/net/wireless/realtek/rtw89/core.c     |   5 +-
- drivers/net/wireless/realtek/rtw89/core.h     |  38 ++-
- drivers/net/wireless/realtek/rtw89/debug.c    |  70 +++--
- drivers/net/wireless/realtek/rtw89/fw.c       |  89 ++++++-
- drivers/net/wireless/realtek/rtw89/fw.h       |  23 ++
- drivers/net/wireless/realtek/rtw89/mac.c      |  32 ++-
- drivers/net/wireless/realtek/rtw89/mac.h      |  10 +
- drivers/net/wireless/realtek/rtw89/mac80211.c |   4 +-
- drivers/net/wireless/realtek/rtw89/pci.c      |  29 +++
- drivers/net/wireless/realtek/rtw89/pci.h      |   1 +
- drivers/net/wireless/realtek/rtw89/phy.c      |   2 +-
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |   1 +
- drivers/net/wireless/realtek/rtw89/ser.c      | 245 +++++++++++++++++-
- 14 files changed, 516 insertions(+), 47 deletions(-)
+The ieee80211_restart_hw() flow (under connection)
+-> ieee80211 reconfig
+-> add interface (acquire 1)
+-> leave ips (acquire 1)
+-> connection (occupy (A) + 2) <(B) 1 more leak>
 
+Originally, CAM is released before HW restart only if connection is under
+security. Now, release CAM whatever connection it is to fix leak in (A).
+OTOH, check if CAM is already valid to avoid acquiring multiple times to
+fix (B).
+
+Besides, if AP mode, release address CAM of all stations before HW restart.
+
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/cam.c | 14 ++++++++++++--
+ drivers/net/wireless/realtek/rtw89/ser.c | 21 +++++++++++++++++++++
+ 2 files changed, 33 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
+index 305dbbebff6bb..26bef9fdd2053 100644
+--- a/drivers/net/wireless/realtek/rtw89/cam.c
++++ b/drivers/net/wireless/realtek/rtw89/cam.c
+@@ -421,10 +421,8 @@ static void rtw89_cam_reset_key_iter(struct ieee80211_hw *hw,
+ 				     void *data)
+ {
+ 	struct rtw89_dev *rtwdev = (struct rtw89_dev *)data;
+-	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
+ 
+ 	rtw89_cam_sec_key_del(rtwdev, vif, sta, key, false);
+-	rtw89_cam_deinit(rtwdev, rtwvif);
+ }
+ 
+ void rtw89_cam_deinit_addr_cam(struct rtw89_dev *rtwdev,
+@@ -480,6 +478,12 @@ int rtw89_cam_init_addr_cam(struct rtw89_dev *rtwdev,
+ 	int i;
+ 	int ret;
+ 
++	if (unlikely(addr_cam->valid)) {
++		rtw89_debug(rtwdev, RTW89_DBG_FW,
++			    "addr cam is already valid; skip init\n");
++		return 0;
++	}
++
+ 	ret = rtw89_cam_get_avail_addr_cam(rtwdev, &addr_cam_idx);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to get available addr cam\n");
+@@ -531,6 +535,12 @@ static int rtw89_cam_init_bssid_cam(struct rtw89_dev *rtwdev,
+ 	u8 bssid_cam_idx;
+ 	int ret;
+ 
++	if (unlikely(bssid_cam->valid)) {
++		rtw89_debug(rtwdev, RTW89_DBG_FW,
++			    "bssid cam is already valid; skip init\n");
++		return 0;
++	}
++
+ 	ret = rtw89_cam_get_avail_bssid_cam(rtwdev, &bssid_cam_idx);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to get available bssid cam\n");
+diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
+index 837cdc366a61a..e86f3d89ef1bf 100644
+--- a/drivers/net/wireless/realtek/rtw89/ser.c
++++ b/drivers/net/wireless/realtek/rtw89/ser.c
+@@ -220,11 +220,32 @@ static void ser_reset_vif(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
+ 	rtwvif->trigger = false;
+ }
+ 
++static void ser_sta_deinit_addr_cam_iter(void *data, struct ieee80211_sta *sta)
++{
++	struct rtw89_dev *rtwdev = (struct rtw89_dev *)data;
++	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
++
++	rtw89_cam_deinit_addr_cam(rtwdev, &rtwsta->addr_cam);
++}
++
++static void ser_deinit_cam(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
++{
++	if (rtwvif->net_type == RTW89_NET_TYPE_AP_MODE)
++		ieee80211_iterate_stations_atomic(rtwdev->hw,
++						  ser_sta_deinit_addr_cam_iter,
++						  rtwdev);
++
++	rtw89_cam_deinit(rtwdev, rtwvif);
++}
++
+ static void ser_reset_mac_binding(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_vif *rtwvif;
+ 
+ 	rtw89_cam_reset_keys(rtwdev);
++	rtw89_for_each_rtwvif(rtwdev, rtwvif)
++		ser_deinit_cam(rtwdev, rtwvif);
++
+ 	rtw89_core_release_all_bits_map(rtwdev->mac_id_map, RTW89_MAX_MAC_ID_NUM);
+ 	rtw89_for_each_rtwvif(rtwdev, rtwvif)
+ 		ser_reset_vif(rtwdev, rtwvif);
 -- 
 2.25.1
 
