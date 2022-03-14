@@ -2,67 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76AE94D85D2
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 14:18:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA7FE4D870C
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 15:37:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241722AbiCNNTZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Mar 2022 09:19:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46298 "EHLO
+        id S238911AbiCNOin (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Mar 2022 10:38:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241724AbiCNNTW (ORCPT
+        with ESMTP id S229925AbiCNOim (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Mar 2022 09:19:22 -0400
-X-Greylist: delayed 328 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 14 Mar 2022 06:18:10 PDT
-Received: from h20.artdeelight.com (unknown [145.239.12.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16F2B65CB
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 06:18:08 -0700 (PDT)
-Received: by h20.artdeelight.com (Postfix, from userid 10005)
-        id F3AE150AA8; Mon, 14 Mar 2022 14:12:38 +0100 (CET)
-To:     linux-wireless@vger.kernel.org
-Subject: www.d-prod.com - Nouveau message
-Date:   Mon, 14 Mar 2022 13:12:38 +0000
-From:   WordPress <wordpress@d-prod.com>
-Message-ID: <wVLrQ6aEXVkMWLYmiv0fyvgIb5C1fzobL7himBT9Jc@www.d-prod.com>
-X-Mailer: PHPMailer 6.5.0 (https://github.com/PHPMailer/PHPMailer)
-De:     =?UTF-8?Q?=F0=9F=94=A5_You_won_Apple_iPhone_13_Pro!_More_inf?=
- =?UTF-8?Q?o:_http://inx.lv/0mgv=3Ffqeiw_=F0=9F=94=A5_<linux-?=
- =?UTF-8?Q?wireless@vger.kernel.org>?=
-X-Spam-Status: Yes, score=6.6 required=5.0 tests=BAYES_50,
-        PP_MIME_FAKE_ASCII_TEXT,RCVD_IN_VALIDITY_RPBL,RDNS_NONE,SHORT_SHORTNER,
-        SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [145.239.12.75 listed in bl.score.senderscore.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
-        *  1.0 PP_MIME_FAKE_ASCII_TEXT BODY: MIME text/plain claims to be
-        *      ASCII but isn't
-        *  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.0 SHORT_SHORTNER Short body with little more than a link to a
-        *      shortener
-X-Spam-Level: ******
+        Mon, 14 Mar 2022 10:38:42 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA5FC3D48B
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 07:37:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=xNq6R8CjDCXlgfqdVyRSKbiUrrTEQsCB2SHbde1EVIo=; b=ueQzZMLY6sv7oib52NnvNSbThC
+        eWn9zwDVUwopsUyoFCrk2MfooDF2l9LxG1hn4u5BGLF+pgFtlgTj1v+hsDBQ8csOQSgLv221ErlgG
+        5334gc72PuVvJ6lajzxB/rsgYtXdXt+TBsef4wHnYfrOF4knT1ryeOlelAfIQQF9yQTQ=;
+Received: from p200300daa7204f006c015a90d6b6c4d6.dip0.t-ipconnect.de ([2003:da:a720:4f00:6c01:5a90:d6b6:c4d6] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1nTlp9-00006D-9L; Mon, 14 Mar 2022 15:37:27 +0100
+Message-ID: <f105dff0-f78e-72c5-5558-ab532e95f87e@nbd.name>
+Date:   Mon, 14 Mar 2022 15:37:26 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.7.0
+Subject: Re: [PATCH] mt76: mt7915: fix MBSS index condition in DBDC mode
+Content-Language: en-US
+To:     Evelyn Tsai <evelyn.tsai@mediatek.com>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.Lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        Bo Jiao <bo.jiao@mediatek.com>
+References: <20220309140249.10285-1-evelyn.tsai@mediatek.com>
+From:   Felix Fietkau <nbd@nbd.name>
+In-Reply-To: <20220309140249.10285-1-evelyn.tsai@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Répondre à: linux-wireless@vger.kernel.org
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+On 09.03.22 15:02, Evelyn Tsai wrote:
+> MT7915_MAX_INTERFACES is per-band declartion.
+> 
+> Signed-off-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
+> Signed-off-by: Bo Jiao <bo.jiao@mediatek.com>
+> ---
+>   drivers/net/wireless/mediatek/mt76/mt76.h        | 2 +-
+>   drivers/net/wireless/mediatek/mt76/mt7915/main.c | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+> index 5e10fe156926..c60af144f611 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -727,7 +727,7 @@ struct mt76_dev {
+>   	u32 wcid_mask[DIV_ROUND_UP(MT76_N_WCIDS, 32)];
+>   	u32 wcid_phy_mask[DIV_ROUND_UP(MT76_N_WCIDS, 32)];
+>   
+> -	u32 vif_mask;
+> +	u64 vif_mask;
+>   
+>   	struct mt76_wcid global_wcid;
+>   	struct mt76_wcid __rcu *wcid[MT76_N_WCIDS];
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+> index c3f44d801e7f..9eefc132d77a 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+> @@ -205,7 +205,7 @@ static int mt7915_add_interface(struct ieee80211_hw *hw,
+>   		phy->monitor_vif = vif;
+>   
+>   	mvif->mt76.idx = ffs(~dev->mt76.vif_mask) - 1;
+> -	if (mvif->mt76.idx >= MT7915_MAX_INTERFACES) {
+> +	if (mvif->mt76.idx >= (MT7915_MAX_INTERFACES << dev->dbdc_support)) {
+This patch is incomplete. There are several other places in the code 
+that are not prepared for vif_mask being 64 bits wide, including the ffs 
+line above.
 
-
-
-
-Name: 🔥 You won Apple iPhone 13 Pro! More info: http://inx.lv/0mgv?fqeiw 🔥
-
-Email: linux-wireless@vger.kernel.org
-
-Message: lhbunt
-
-
+- Felix
