@@ -2,82 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6053F4D8E04
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 21:17:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AC1E4D8E3E
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 21:30:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238087AbiCNUSp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Mar 2022 16:18:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36598 "EHLO
+        id S245084AbiCNUbd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Mar 2022 16:31:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236244AbiCNUSp (ORCPT
+        with ESMTP id S245034AbiCNUbZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Mar 2022 16:18:45 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8483533EB0;
-        Mon, 14 Mar 2022 13:17:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=cVkMS+Fa/xX+53DYlYjjDSiEa2X0IZrbhmQUrlvfDEQ=;
-        t=1647289053; x=1648498653; b=KtVidyiYVztZ3NXubBweyD1NC0Fn+O7jZDRixv4xg9ZhcaS
-        u9YhCMjF1oLxKSTkeugbFT63Q0mqCPHv5kboBQcmwxZ/PxfmJkp/E62It2fQe5zLoJKblSUUDv7qb
-        gbM9pOHnLU1SoFhIjZcYmDpOSL5Zt5EcQD5YO9Nu663Ml8kesOvTSZcp1642BVfXkapI5udE32555
-        paaz/Dk0W3/R8TzenT0xS8HetwEgm+2vdAniAiltRmOw3/jlFkQ2D1rsRrfsF2FwTiDURi7UBOE/W
-        +5HPpM796hTknuJOzl+Wtn2V0gAY4DT24fwEhVZSG1h2SMUeRtSG4FQAptyX16tg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nTr8E-00DD64-TF;
-        Mon, 14 Mar 2022 21:17:31 +0100
-Message-ID: <6d37b8c3415b88ff6da1b88f0c6dfb649824311c.camel@sipsolutions.net>
-Subject: Re: pull-request: wireless-next-2022-03-11
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Date:   Mon, 14 Mar 2022 21:17:30 +0100
-In-Reply-To: <20220314113738.640ea10b@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-References: <20220311124029.213470-1-johannes@sipsolutions.net>
-         <164703362988.31502.5602906395973712308.git-patchwork-notify@kernel.org>
-         <20220311170625.4a3a626b@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <20220311170833.34d44c24@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <87sfrkwg1q.fsf@tynnyri.adurom.net>
-         <20220314113738.640ea10b@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
+        Mon, 14 Mar 2022 16:31:25 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B595E39827;
+        Mon, 14 Mar 2022 13:30:14 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 94B1CB81026;
+        Mon, 14 Mar 2022 20:30:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4C4DEC36AE9;
+        Mon, 14 Mar 2022 20:30:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1647289811;
+        bh=uLLNEo2KuqE/YxBYqDJGt2C9i0qNEgY7SPcUzgiznVk=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=KSdJV0Nr6PH56dRvpyreK8Yv2TzppJmvm4v2HhSDZlhKT0LSad1hfJvJSpzZVcO9d
+         zHJi6VvKrJAmS0T3joCqvHRXlFdKQlox2FOL5o22ch62xkW78NUj9CTUmjOfKaAzvY
+         9wa3Li6Hhcj84nqdq5Zqw+FFIZAxg1ebLJNn+THcBi2aSLdI7JbUIrcFov90+OwV0Q
+         zv85rGj50dgH9jUKb2sZlceYR38o+H9QNFXEhxQyuN0GgSQQXFG5YXFUz2YNqo6r/R
+         WJCLtYJ2RD4vSP5TpCum1H/05+0bSavkIZaGcTXiNBVaTe+d3Tmg61eQY08Sc3iO2L
+         gGS1F0tzOonqw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 2832EEAC095;
+        Mon, 14 Mar 2022 20:30:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 0/6] use kzalloc
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <164728981116.21494.4613160192240776648.git-patchwork-notify@kernel.org>
+Date:   Mon, 14 Mar 2022 20:30:11 +0000
+References: <20220312102705.71413-1-Julia.Lawall@inria.fr>
+In-Reply-To: <20220312102705.71413-1-Julia.Lawall@inria.fr>
+To:     Julia Lawall <julia.lawall@inria.fr>
+Cc:     linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        alsa-devel@alsa-project.org, samba-technical@lists.samba.org,
+        linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-scsi@vger.kernel.org, andreyknvl@gmail.com,
+        linux-usb@vger.kernel.org
+X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2022-03-14 at 11:37 -0700, Jakub Kicinski wrote:
-> On Mon, 14 Mar 2022 20:21:53 +0200 Kalle Valo wrote:
-> > Jakub Kicinski <kuba@kernel.org> writes:
-> > 
-> > > On Fri, 11 Mar 2022 17:06:25 -0800 Jakub Kicinski wrote:  
-> > > > Seems to break clang build.  
-> > > 
-> > > No, sorry just some new warnings with W=1, I think.  
-> > 
-> > I have not installed clang yet. You don't happen to have the warnings
-> > stored someplace? I checked the patchwork tests and didn't see anything
-> > there.
+Hello:
+
+This series was applied to netdev/net-next.git (master)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sat, 12 Mar 2022 11:26:59 +0100 you wrote:
+> Use kzalloc instead of kmalloc + memset.
 > 
-> Yeah.. patchwork build thing can't resolve conflicts. I wish there was
-> a way to attach a resolution to the PR so that the bot can use it :S
+> ---
 > 
+>  drivers/net/ethernet/mellanox/mlx4/en_rx.c |    3 +--
+>  drivers/net/wireless/zydas/zd1201.c        |    3 +--
+>  drivers/scsi/lpfc/lpfc_debugfs.c           |    9 ++-------
+>  drivers/usb/gadget/legacy/raw_gadget.c     |    3 +--
+>  fs/cifs/transport.c                        |    3 +--
+>  sound/core/seq/oss/seq_oss_init.c          |    3 +--
+>  6 files changed, 7 insertions(+), 17 deletions(-)
 
-That'd be on thing - but OTOH ... maybe you/we could somehow attach the
-bot that processes things on the netdev patchwork also to the wireless
-one? It's on the same patchwork instance already, so ...
+Here is the summary with links:
+  - [2/6] net/mlx4_en: use kzalloc
+    https://git.kernel.org/netdev/net-next/c/3c2dfb735b4a
+  - [5/6] zd1201: use kzalloc
+    (no matching commit)
 
-But I do't know who runs it, how it runs, who's paying for it, etc.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-johannes
+
