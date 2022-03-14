@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0795E4D7B5F
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 08:13:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1B664D7B60
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 08:13:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236555AbiCNHO4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Mar 2022 03:14:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39426 "EHLO
+        id S236545AbiCNHO6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Mar 2022 03:14:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236540AbiCNHOz (ORCPT
+        with ESMTP id S236556AbiCNHO4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Mar 2022 03:14:55 -0400
+        Mon, 14 Mar 2022 03:14:56 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40A68E092
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 00:13:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D73A11176
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 00:13:46 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22E7Dcj06003281, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22E7Dcj06003281
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22E7DejoE003291, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22E7DejoE003291
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 14 Mar 2022 15:13:38 +0800
+        Mon, 14 Mar 2022 15:13:40 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Mon, 14 Mar 2022 15:13:38 +0800
+ 15.1.2375.24; Mon, 14 Mar 2022 15:13:40 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Mon, 14 Mar
- 2022 15:13:37 +0800
+ 2022 15:13:39 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
-Subject: [PATCH 1/8] rtw89: ser: fix CAM leaks occurring in L2 reset
-Date:   Mon, 14 Mar 2022 15:12:43 +0800
-Message-ID: <20220314071250.40292-2-pkshih@realtek.com>
+Subject: [PATCH 2/8] rtw89: mac: move table of mem base addr to common
+Date:   Mon, 14 Mar 2022 15:12:44 +0800
+Message-ID: <20220314071250.40292-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220314071250.40292-1-pkshih@realtek.com>
 References: <20220314071250.40292-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMTQgpFekyCAwNjowMDowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -70,114 +70,107 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-The CAM, meaning address CAM and bssid CAM here, will get leaks during
-SER (system error recover) L2 reset process and ieee80211_restart_hw()
-which is called by L2 reset process eventually.
+Previously, mac_mem_base_addr_table was declared in debug.c locally
+because it's only used via debugfs to dump mac memory. Now, we plan to
+refine SER (system error recover) flow which will also need to dump mac
+memory to somewhere as information for error which is catched. So, we
+move mac_mem_base_addr_table to mac.c rtw89_mac_mem_base_addrs earlier
+as common code.
 
-The normal flow would be like
--> add interface (acquire 1)
--> enter ips (release 1)
--> leave ips (acquire 1)
--> connection (occupy 1) <(A) 1 leak after L2 reset if non-sec connection>
-
-The ieee80211_restart_hw() flow (under connection)
--> ieee80211 reconfig
--> add interface (acquire 1)
--> leave ips (acquire 1)
--> connection (occupy (A) + 2) <(B) 1 more leak>
-
-Originally, CAM is released before HW restart only if connection is under
-security. Now, release CAM whatever connection it is to fix leak in (A).
-OTOH, check if CAM is already valid to avoid acquiring multiple times to
-fix (B).
-
-Besides, if AP mode, release address CAM of all stations before HW restart.
+(no logic is changed)
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/cam.c | 14 ++++++++++++--
- drivers/net/wireless/realtek/rtw89/ser.c | 21 +++++++++++++++++++++
- 2 files changed, 33 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/debug.c | 22 +---------------------
+ drivers/net/wireless/realtek/rtw89/mac.c   | 20 ++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/mac.h   |  2 ++
+ 3 files changed, 23 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
-index 305dbbebff6bb..26bef9fdd2053 100644
---- a/drivers/net/wireless/realtek/rtw89/cam.c
-+++ b/drivers/net/wireless/realtek/rtw89/cam.c
-@@ -421,10 +421,8 @@ static void rtw89_cam_reset_key_iter(struct ieee80211_hw *hw,
- 				     void *data)
- {
- 	struct rtw89_dev *rtwdev = (struct rtw89_dev *)data;
--	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
- 
- 	rtw89_cam_sec_key_del(rtwdev, vif, sta, key, false);
--	rtw89_cam_deinit(rtwdev, rtwvif);
+diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
+index b73cc03cecfd7..09c545497ec5c 100644
+--- a/drivers/net/wireless/realtek/rtw89/debug.c
++++ b/drivers/net/wireless/realtek/rtw89/debug.c
+@@ -724,26 +724,6 @@ rtw89_debug_priv_mac_mem_dump_select(struct file *filp,
+ 	return count;
  }
  
- void rtw89_cam_deinit_addr_cam(struct rtw89_dev *rtwdev,
-@@ -480,6 +478,12 @@ int rtw89_cam_init_addr_cam(struct rtw89_dev *rtwdev,
- 	int i;
- 	int ret;
+-static const u32 mac_mem_base_addr_table[RTW89_MAC_MEM_MAX] = {
+-	[RTW89_MAC_MEM_AXIDMA]	        = AXIDMA_BASE_ADDR,
+-	[RTW89_MAC_MEM_SHARED_BUF]	= SHARED_BUF_BASE_ADDR,
+-	[RTW89_MAC_MEM_DMAC_TBL]	= DMAC_TBL_BASE_ADDR,
+-	[RTW89_MAC_MEM_SHCUT_MACHDR]	= SHCUT_MACHDR_BASE_ADDR,
+-	[RTW89_MAC_MEM_STA_SCHED]	= STA_SCHED_BASE_ADDR,
+-	[RTW89_MAC_MEM_RXPLD_FLTR_CAM]	= RXPLD_FLTR_CAM_BASE_ADDR,
+-	[RTW89_MAC_MEM_SECURITY_CAM]	= SECURITY_CAM_BASE_ADDR,
+-	[RTW89_MAC_MEM_WOW_CAM]		= WOW_CAM_BASE_ADDR,
+-	[RTW89_MAC_MEM_CMAC_TBL]	= CMAC_TBL_BASE_ADDR,
+-	[RTW89_MAC_MEM_ADDR_CAM]	= ADDR_CAM_BASE_ADDR,
+-	[RTW89_MAC_MEM_BA_CAM]		= BA_CAM_BASE_ADDR,
+-	[RTW89_MAC_MEM_BCN_IE_CAM0]	= BCN_IE_CAM0_BASE_ADDR,
+-	[RTW89_MAC_MEM_BCN_IE_CAM1]	= BCN_IE_CAM1_BASE_ADDR,
+-	[RTW89_MAC_MEM_TXD_FIFO_0]	= TXD_FIFO_0_BASE_ADDR,
+-	[RTW89_MAC_MEM_TXD_FIFO_1]	= TXD_FIFO_1_BASE_ADDR,
+-	[RTW89_MAC_MEM_TXDATA_FIFO_0]	= TXDATA_FIFO_0_BASE_ADDR,
+-	[RTW89_MAC_MEM_TXDATA_FIFO_1]	= TXDATA_FIFO_1_BASE_ADDR,
+-};
+-
+ static void rtw89_debug_dump_mac_mem(struct seq_file *m,
+ 				     struct rtw89_dev *rtwdev,
+ 				     u8 sel, u32 start_addr, u32 len)
+@@ -757,7 +737,7 @@ static void rtw89_debug_dump_mac_mem(struct seq_file *m,
+ 	pages = len / MAC_MEM_DUMP_PAGE_SIZE + 1;
+ 	start_page = start_addr / MAC_MEM_DUMP_PAGE_SIZE;
+ 	residue = start_addr % MAC_MEM_DUMP_PAGE_SIZE;
+-	base_addr = mac_mem_base_addr_table[sel];
++	base_addr = rtw89_mac_mem_base_addrs[sel];
+ 	base_addr += start_page * MAC_MEM_DUMP_PAGE_SIZE;
  
-+	if (unlikely(addr_cam->valid)) {
-+		rtw89_debug(rtwdev, RTW89_DBG_FW,
-+			    "addr cam is already valid; skip init\n");
-+		return 0;
-+	}
-+
- 	ret = rtw89_cam_get_avail_addr_cam(rtwdev, &addr_cam_idx);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to get available addr cam\n");
-@@ -531,6 +535,12 @@ static int rtw89_cam_init_bssid_cam(struct rtw89_dev *rtwdev,
- 	u8 bssid_cam_idx;
- 	int ret;
+ 	for (p = 0; p < pages; p++) {
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 8fbdfd983cc53..942c56c3dce09 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -10,6 +10,26 @@
+ #include "reg.h"
+ #include "util.h"
  
-+	if (unlikely(bssid_cam->valid)) {
-+		rtw89_debug(rtwdev, RTW89_DBG_FW,
-+			    "bssid cam is already valid; skip init\n");
-+		return 0;
-+	}
++const u32 rtw89_mac_mem_base_addrs[RTW89_MAC_MEM_MAX] = {
++	[RTW89_MAC_MEM_AXIDMA]	        = AXIDMA_BASE_ADDR,
++	[RTW89_MAC_MEM_SHARED_BUF]	= SHARED_BUF_BASE_ADDR,
++	[RTW89_MAC_MEM_DMAC_TBL]	= DMAC_TBL_BASE_ADDR,
++	[RTW89_MAC_MEM_SHCUT_MACHDR]	= SHCUT_MACHDR_BASE_ADDR,
++	[RTW89_MAC_MEM_STA_SCHED]	= STA_SCHED_BASE_ADDR,
++	[RTW89_MAC_MEM_RXPLD_FLTR_CAM]	= RXPLD_FLTR_CAM_BASE_ADDR,
++	[RTW89_MAC_MEM_SECURITY_CAM]	= SECURITY_CAM_BASE_ADDR,
++	[RTW89_MAC_MEM_WOW_CAM]		= WOW_CAM_BASE_ADDR,
++	[RTW89_MAC_MEM_CMAC_TBL]	= CMAC_TBL_BASE_ADDR,
++	[RTW89_MAC_MEM_ADDR_CAM]	= ADDR_CAM_BASE_ADDR,
++	[RTW89_MAC_MEM_BA_CAM]		= BA_CAM_BASE_ADDR,
++	[RTW89_MAC_MEM_BCN_IE_CAM0]	= BCN_IE_CAM0_BASE_ADDR,
++	[RTW89_MAC_MEM_BCN_IE_CAM1]	= BCN_IE_CAM1_BASE_ADDR,
++	[RTW89_MAC_MEM_TXD_FIFO_0]	= TXD_FIFO_0_BASE_ADDR,
++	[RTW89_MAC_MEM_TXD_FIFO_1]	= TXD_FIFO_1_BASE_ADDR,
++	[RTW89_MAC_MEM_TXDATA_FIFO_0]	= TXDATA_FIFO_0_BASE_ADDR,
++	[RTW89_MAC_MEM_TXDATA_FIFO_1]	= TXDATA_FIFO_1_BASE_ADDR,
++};
 +
- 	ret = rtw89_cam_get_avail_bssid_cam(rtwdev, &bssid_cam_idx);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to get available bssid cam\n");
-diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
-index 837cdc366a61a..e86f3d89ef1bf 100644
---- a/drivers/net/wireless/realtek/rtw89/ser.c
-+++ b/drivers/net/wireless/realtek/rtw89/ser.c
-@@ -220,11 +220,32 @@ static void ser_reset_vif(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
- 	rtwvif->trigger = false;
- }
- 
-+static void ser_sta_deinit_addr_cam_iter(void *data, struct ieee80211_sta *sta)
-+{
-+	struct rtw89_dev *rtwdev = (struct rtw89_dev *)data;
-+	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
-+
-+	rtw89_cam_deinit_addr_cam(rtwdev, &rtwsta->addr_cam);
-+}
-+
-+static void ser_deinit_cam(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
-+{
-+	if (rtwvif->net_type == RTW89_NET_TYPE_AP_MODE)
-+		ieee80211_iterate_stations_atomic(rtwdev->hw,
-+						  ser_sta_deinit_addr_cam_iter,
-+						  rtwdev);
-+
-+	rtw89_cam_deinit(rtwdev, rtwvif);
-+}
-+
- static void ser_reset_mac_binding(struct rtw89_dev *rtwdev)
+ int rtw89_mac_check_mac_en(struct rtw89_dev *rtwdev, u8 mac_idx,
+ 			   enum rtw89_mac_hwmod_sel sel)
  {
- 	struct rtw89_vif *rtwvif;
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index 2f707c817fa79..8aed3596bc145 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -273,6 +273,8 @@ enum rtw89_mac_mem_sel {
+ 	RTW89_MAC_MEM_INVALID = RTW89_MAC_MEM_LAST,
+ };
  
- 	rtw89_cam_reset_keys(rtwdev);
-+	rtw89_for_each_rtwvif(rtwdev, rtwvif)
-+		ser_deinit_cam(rtwdev, rtwvif);
++extern const u32 rtw89_mac_mem_base_addrs[];
 +
- 	rtw89_core_release_all_bits_map(rtwdev->mac_id_map, RTW89_MAX_MAC_ID_NUM);
- 	rtw89_for_each_rtwvif(rtwdev, rtwvif)
- 		ser_reset_vif(rtwdev, rtwvif);
+ enum rtw89_rpwm_req_pwr_state {
+ 	RTW89_MAC_RPWM_REQ_PWR_STATE_ACTIVE = 0,
+ 	RTW89_MAC_RPWM_REQ_PWR_STATE_BAND0_RFON = 1,
 -- 
 2.25.1
 
