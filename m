@@ -2,48 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C39A4D8BB3
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 19:20:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 156754D8BC0
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 19:22:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243819AbiCNSVf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Mar 2022 14:21:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50300 "EHLO
+        id S243826AbiCNSXN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Mar 2022 14:23:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243764AbiCNSV3 (ORCPT
+        with ESMTP id S244012AbiCNSXI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Mar 2022 14:21:29 -0400
+        Mon, 14 Mar 2022 14:23:08 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D35335241;
-        Mon, 14 Mar 2022 11:20:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB2A13525C;
+        Mon, 14 Mar 2022 11:21:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BDF24B80EDD;
-        Mon, 14 Mar 2022 18:20:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADB1C340F5;
-        Mon, 14 Mar 2022 18:20:15 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6B2B7B80E56;
+        Mon, 14 Mar 2022 18:21:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1371BC340E9;
+        Mon, 14 Mar 2022 18:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647282016;
-        bh=aVhb63UNW3shumzhWS/giLitMgkS3X7L319NqunTbdg=;
+        s=k20201202; t=1647282116;
+        bh=d48bJCF5BlMDijxkXKjgOv1DZ45/ZWXjK0Q4hywRQ0Q=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=tWhjKLFZ9WkZV7v07USE02UKOmm67zfl2QTaJuw7liaX61TvJiuTQc2qXkaDQQncW
-         iDrTMCoZ+dssPoPaL2/ggoF2v4OycHp7rwju2nbTBWHNQQNP15cjg++cMbwzThlLEj
-         UdpqhNNGEsrZRqQE+I0IajoOOPzKWjNaynlxf5RhqCFOZNGX10FOwALM0/TDw1s0t0
-         KV/HbVWfbcXE2gghUcmhK10KauF5JNyX2Ouqk/8x1UHjJYdWMLEB5Eee5GdnKA45TH
-         1Uu1AjJPsHxBbw1ixapZuN4xsCuhprMkpNTKmOcS9tnZv5RZbgxaELW3spNQN1vUjb
-         Aj02mb0G2o6yg==
+        b=KC5QFqIXwZMb8/pIMaLUj7bk75m9SbEb/l39DzXcuGQwfKE8J1q5Tm5Z/3R56ddkO
+         eYPVuPVvxDykaPWRU3r5LafoMdOORKHKLhihpzChv9qTHc0SmeX146qJUjscxmbyCc
+         bTYju44th59Ip1LQ/OZj/LbIzkVbksHX6Xt71u5Vw2zSplH941BeYWg4lIqzCE5dpB
+         51WGBcPfIjVX51soieLrooZBb5oCODiSydzhvA991m41AhvszYDdLVYVF4lf+0zF/U
+         o/nvhThIdsvYjBtHEIfdfTkbzZ9RxvesX9VZVW/e8vYrYb+cdwtbjZWoCZRobUtflF
+         QdlggpX+xgEjA==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>,
-        Luca Coelho <luciano.coelho@intel.com>
+To:     Jakub Kicinski <kuba@kernel.org>
 Cc:     Johannes Berg <johannes@sipsolutions.net>, netdev@vger.kernel.org,
         linux-wireless@vger.kernel.org
 Subject: Re: pull-request: wireless-next-2022-03-11
 References: <20220311124029.213470-1-johannes@sipsolutions.net>
-        <20220311130530.70d9faa6@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Date:   Mon, 14 Mar 2022 20:20:13 +0200
-In-Reply-To: <20220311130530.70d9faa6@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        (Jakub Kicinski's message of "Fri, 11 Mar 2022 13:05:30 -0800")
-Message-ID: <87wngwwg4i.fsf@tynnyri.adurom.net>
+        <164703362988.31502.5602906395973712308.git-patchwork-notify@kernel.org>
+        <20220311170625.4a3a626b@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        <20220311170833.34d44c24@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Date:   Mon, 14 Mar 2022 20:21:53 +0200
+In-Reply-To: <20220311170833.34d44c24@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        (Jakub Kicinski's message of "Fri, 11 Mar 2022 17:08:33 -0800")
+Message-ID: <87sfrkwg1q.fsf@tynnyri.adurom.net>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -59,26 +60,14 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Jakub Kicinski <kuba@kernel.org> writes:
 
-> On Fri, 11 Mar 2022 13:40:28 +0100 Johannes Berg wrote:
->> Hi,
->> 
->> Here's another (almost certainly final for 5.8) set of
->> patches for net-next.
+> On Fri, 11 Mar 2022 17:06:25 -0800 Jakub Kicinski wrote:
+>> Seems to break clang build.
 >
-> 5.18 ;)
->
->> Note that there's a minor merge conflict - Stephen already
->> noticed it and resolved it here:
->> https://lore.kernel.org/linux-wireless/20220217110903.7f58acae@canb.auug.org.au/
->> 
->> I didn't resolve it explicitly by merging back since it's
->> such a simple conflict, but let me know if you want me to
->> do that (now or in the future).
->
-> Looks like commit e8e10a37c51c ("iwlwifi: acpi: move ppag code from mvm
-> to fw/acpi") uses spaces for indentation?
+> No, sorry just some new warnings with W=1, I think.
 
-Luca, can you check that, please?
+I have not installed clang yet. You don't happen to have the warnings
+stored someplace? I checked the patchwork tests and didn't see anything
+there.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
