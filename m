@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 604BE4D7B65
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 08:14:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDFC24D7B63
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 08:13:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236566AbiCNHPE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Mar 2022 03:15:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40144 "EHLO
+        id S236568AbiCNHPG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Mar 2022 03:15:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236540AbiCNHPC (ORCPT
+        with ESMTP id S236567AbiCNHPE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Mar 2022 03:15:02 -0400
+        Mon, 14 Mar 2022 03:15:04 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B433810FCE
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 00:13:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6998711176
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Mar 2022 00:13:53 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22E7DkDaA003319, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22E7DkDaA003319
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22E7DlTqA003324, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22E7DlTqA003324
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 14 Mar 2022 15:13:46 +0800
+        Mon, 14 Mar 2022 15:13:47 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 14 Mar 2022 15:13:46 +0800
+ 15.1.2308.27; Mon, 14 Mar 2022 15:13:47 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Mon, 14 Mar
- 2022 15:13:45 +0800
+ 2022 15:13:47 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
-Subject: [PATCH 6/8] rtw89: ser: dump fw backtrace while L2 reset
-Date:   Mon, 14 Mar 2022 15:12:48 +0800
-Message-ID: <20220314071250.40292-7-pkshih@realtek.com>
+Subject: [PATCH 7/8] rtw89: reconstruct fw feature
+Date:   Mon, 14 Mar 2022 15:12:49 +0800
+Message-ID: <20220314071250.40292-8-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220314071250.40292-1-pkshih@realtek.com>
 References: <20220314071250.40292-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMTQgpFekyCAwNjowMDowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -70,191 +70,188 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Read FW backtrace entry through FW reserved payload engine, and then
-add FW backtrace dump during SER (system error recover) L2 reset process.
-It contains a list of RA (return address) and SP (stack pointer) which
-gives us a chance to trace back the call stack of FW.
+As the fw features gradually increase, it would be better that
+we have a set of methods to maintain fw features instead of using
+scattered bool variables.
 
-Moreover, if core dump might have wrong content due to error during
-dumping, we won't invoke device core dump framework. For this case,
-rtw89_ser_cd_free() is added to free buffer by ourselves.
+We reconstruct the way fw recognize features, and introduce
+RTW89_CHK_FW_FEATURE() / RTW89_SET_FW_FEATURE() to check / set
+fw features for uses.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/fw.h  |  9 +++
- drivers/net/wireless/realtek/rtw89/ser.c | 97 +++++++++++++++++++++++-
- 2 files changed, 105 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/core.c     |  5 +-
+ drivers/net/wireless/realtek/rtw89/core.h     | 16 ++++--
+ drivers/net/wireless/realtek/rtw89/fw.c       | 53 +++++++++++++++----
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  4 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      |  2 +-
+ 5 files changed, 62 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index d0b93a0b406df..1aaec26722377 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -2196,6 +2196,15 @@ struct rtw89_fw_h2c_rf_reg_info {
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index bcefc968576e0..c61061358980b 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -759,7 +759,7 @@ static void
+ rtw89_core_tx_wake(struct rtw89_dev *rtwdev,
+ 		   struct rtw89_core_tx_request *tx_req)
+ {
+-	if (!rtwdev->fw.tx_wake)
++	if (!RTW89_CHK_FW_FEATURE(TX_WAKE, &rtwdev->fw))
+ 		return;
  
- #define RTW89_FW_RSVD_PLE_SIZE 0x800
+ 	if (!test_bit(RTW89_FLAG_LOW_POWER_MODE, rtwdev->flags))
+@@ -1454,7 +1454,8 @@ static void rtw89_core_update_rx_status(struct rtw89_dev *rtwdev,
+ 	rx_status->freq = hw->conf.chandef.chan->center_freq;
+ 	rx_status->band = hw->conf.chandef.chan->band;
  
-+#define RTW89_WCPU_BASE_ADDR 0xA0000000
-+
-+#define RTW89_FW_BACKTRACE_INFO_SIZE 8
-+#define RTW89_VALID_FW_BACKTRACE_SIZE(_size) \
-+	((_size) % RTW89_FW_BACKTRACE_INFO_SIZE == 0)
-+
-+#define RTW89_FW_BACKTRACE_MAX_SIZE 512 /* 8 * 64 (entries) */
-+#define RTW89_FW_BACKTRACE_KEY 0xBACEBACE
-+
- int rtw89_fw_check_rdy(struct rtw89_dev *rtwdev);
- int rtw89_fw_recognize(struct rtw89_dev *rtwdev);
- int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type);
-diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
-index bf2f97a146ece..f28cd0645ad92 100644
---- a/drivers/net/wireless/realtek/rtw89/ser.c
-+++ b/drivers/net/wireless/realtek/rtw89/ser.c
-@@ -87,14 +87,20 @@ static void ser_cd_ ## _name ## _init(struct ser_cd_ ## _name *p) \
- 
- enum rtw89_ser_cd_type {
- 	RTW89_SER_CD_FW_RSVD_PLE	= 0,
-+	RTW89_SER_CD_FW_BACKTRACE	= 1,
+-	if (rtwdev->scanning && rtwdev->fw.scan_offload) {
++	if (rtwdev->scanning &&
++	    RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw)) {
+ 		rx_status->freq =
+ 			ieee80211_channel_to_frequency(hal->current_channel,
+ 						       hal->current_band_type);
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index c95cd1a3ee9e0..93acc872f2beb 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -2386,6 +2386,12 @@ enum rtw89_fw_type {
+ 	RTW89_FW_WOWLAN = 3,
  };
  
- RTW89_DEF_SER_CD_TYPE(fw_rsvd_ple,
- 		      RTW89_SER_CD_FW_RSVD_PLE,
- 		      RTW89_FW_RSVD_PLE_SIZE);
- 
-+RTW89_DEF_SER_CD_TYPE(fw_backtrace,
-+		      RTW89_SER_CD_FW_BACKTRACE,
-+		      RTW89_FW_BACKTRACE_MAX_SIZE);
++enum rtw89_fw_feature {
++	RTW89_FW_FEATURE_OLD_HT_RA_FORMAT,
++	RTW89_FW_FEATURE_SCAN_OFFLOAD,
++	RTW89_FW_FEATURE_TX_WAKE,
++};
 +
- struct rtw89_ser_cd_buffer {
- 	struct ser_cd_fw_rsvd_ple fwple;
-+	struct ser_cd_fw_backtrace fwbt;
- } __packed;
+ struct rtw89_fw_suit {
+ 	const u8 *data;
+ 	u32 size;
+@@ -2415,11 +2421,15 @@ struct rtw89_fw_info {
+ 	struct rtw89_fw_suit normal;
+ 	struct rtw89_fw_suit wowlan;
+ 	bool fw_log_enable;
+-	bool old_ht_ra_format;
+-	bool scan_offload;
+-	bool tx_wake;
++	u32 feature_map;
+ };
  
- static struct rtw89_ser_cd_buffer *rtw89_ser_cd_prep(struct rtw89_dev *rtwdev)
-@@ -106,6 +112,7 @@ static struct rtw89_ser_cd_buffer *rtw89_ser_cd_prep(struct rtw89_dev *rtwdev)
- 		return NULL;
- 
- 	ser_cd_fw_rsvd_ple_init(&buf->fwple);
-+	ser_cd_fw_backtrace_init(&buf->fwbt);
- 
- 	return buf;
++#define RTW89_CHK_FW_FEATURE(_feat, _fw) \
++	(!!((_fw)->feature_map & BIT(RTW89_FW_FEATURE_ ## _feat)))
++
++#define RTW89_SET_FW_FEATURE(_fw_feature, _fw) \
++	((_fw)->feature_map |= BIT(_fw_feature))
++
+ struct rtw89_cam_info {
+ 	DECLARE_BITMAP(addr_cam_map, RTW89_MAX_ADDR_CAM_NUM);
+ 	DECLARE_BITMAP(bssid_cam_map, RTW89_MAX_BSSID_CAM_NUM);
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 2fe091cc12c0e..e4d94981cd32b 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -193,22 +193,55 @@ int __rtw89_fw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type)
+ 	return 0;
  }
-@@ -123,6 +130,21 @@ static void rtw89_ser_cd_send(struct rtw89_dev *rtwdev,
- 	dev_coredumpv(rtwdev->dev, buf, sizeof(*buf), GFP_KERNEL);
- }
  
-+static void rtw89_ser_cd_free(struct rtw89_dev *rtwdev,
-+			      struct rtw89_ser_cd_buffer *buf, bool free_self)
-+{
-+	if (!free_self)
-+		return;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_SER, "SER frees core dump by self\n");
-+
-+	/* When some problems happen during filling data of core dump,
-+	 * we won't send it to device coredump framework. Instead, we
-+	 * free buf by ourselves.
-+	 */
-+	vfree(buf);
++#define __DEF_FW_FEAT_COND(__cond, __op) \
++static bool __fw_feat_cond_ ## __cond(u32 suit_ver_code, u32 comp_ver_code) \
++{ \
++	return suit_ver_code __op comp_ver_code; \
 +}
 +
- static void ser_state_run(struct rtw89_ser *ser, u8 evt)
++__DEF_FW_FEAT_COND(ge, >=); /* greater or equal */
++__DEF_FW_FEAT_COND(le, <=); /* less or equal */
++
++struct __fw_feat_cfg {
++	enum rtw89_core_chip_id chip_id;
++	enum rtw89_fw_feature feature;
++	u32 ver_code;
++	bool (*cond)(u32 suit_ver_code, u32 comp_ver_code);
++};
++
++#define __CFG_FW_FEAT(_chip, _cond, _maj, _min, _sub, _idx, _feat) \
++	{ \
++		.chip_id = _chip, \
++		.feature = RTW89_FW_FEATURE_ ## _feat, \
++		.ver_code = RTW89_FW_VER_CODE(_maj, _min, _sub, _idx), \
++		.cond = __fw_feat_cond_ ## _cond, \
++	}
++
++static const struct __fw_feat_cfg fw_feat_tbl[] = {
++	__CFG_FW_FEAT(RTL8852A, le, 0, 13, 29, 0, OLD_HT_RA_FORMAT),
++	__CFG_FW_FEAT(RTL8852A, ge, 0, 13, 35, 0, SCAN_OFFLOAD),
++	__CFG_FW_FEAT(RTL8852A, ge, 0, 13, 35, 0, TX_WAKE),
++};
++
+ static void rtw89_fw_recognize_features(struct rtw89_dev *rtwdev)
  {
- 	struct rtw89_dev *rtwdev = container_of(ser, struct rtw89_dev, ser);
-@@ -487,19 +509,92 @@ static void rtw89_ser_fw_rsvd_ple_dump(struct rtw89_dev *rtwdev, u8 *buf)
- 			 RTW89_FW_RSVD_PLE_SIZE);
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+-	struct rtw89_fw_suit *fw_suit = rtw89_fw_suit_get(rtwdev, RTW89_FW_NORMAL);
++	const struct __fw_feat_cfg *ent;
++	const struct rtw89_fw_suit *fw_suit;
++	u32 suit_ver_code;
++	int i;
+ 
+-	if (chip->chip_id == RTL8852A &&
+-	    RTW89_FW_SUIT_VER_CODE(fw_suit) <= RTW89_FW_VER_CODE(0, 13, 29, 0))
+-		rtwdev->fw.old_ht_ra_format = true;
++	fw_suit = rtw89_fw_suit_get(rtwdev, RTW89_FW_NORMAL);
++	suit_ver_code = RTW89_FW_SUIT_VER_CODE(fw_suit);
+ 
+-	if (chip->chip_id == RTL8852A &&
+-	    RTW89_FW_SUIT_VER_CODE(fw_suit) >= RTW89_FW_VER_CODE(0, 13, 35, 0))
+-		rtwdev->fw.scan_offload = true;
++	for (i = 0; i < ARRAY_SIZE(fw_feat_tbl); i++) {
++		ent = &fw_feat_tbl[i];
++		if (chip->chip_id != ent->chip_id)
++			continue;
+ 
+-	if (chip->chip_id == RTL8852A &&
+-	    RTW89_FW_SUIT_VER_CODE(fw_suit) >= RTW89_FW_VER_CODE(0, 13, 35, 0))
+-		rtwdev->fw.tx_wake = true;
++		if (ent->cond(suit_ver_code, ent->ver_code))
++			RTW89_SET_FW_FEATURE(ent->feature, &rtwdev->fw);
++	}
  }
  
-+struct __fw_backtrace_entry {
-+	u32 wcpu_addr;
-+	u32 size;
-+	u32 key;
-+} __packed;
-+
-+struct __fw_backtrace_info {
-+	u32 ra;
-+	u32 sp;
-+} __packed;
-+
-+static_assert(RTW89_FW_BACKTRACE_INFO_SIZE ==
-+	      sizeof(struct __fw_backtrace_info));
-+
-+static int rtw89_ser_fw_backtrace_dump(struct rtw89_dev *rtwdev, u8 *buf,
-+				       const struct __fw_backtrace_entry *ent)
-+{
-+	struct __fw_backtrace_info *ptr = (struct __fw_backtrace_info *)buf;
-+	u32 fwbt_addr = ent->wcpu_addr - RTW89_WCPU_BASE_ADDR;
-+	u32 fwbt_size = ent->size;
-+	u32 fwbt_key = ent->key;
-+	u32 i;
-+
-+	if (fwbt_addr == 0) {
-+		rtw89_warn(rtwdev, "FW backtrace invalid address: 0x%x\n",
-+			   fwbt_addr);
-+		return -EINVAL;
-+	}
-+
-+	if (fwbt_key != RTW89_FW_BACKTRACE_KEY) {
-+		rtw89_warn(rtwdev, "FW backtrace invalid key: 0x%x\n",
-+			   fwbt_key);
-+		return -EINVAL;
-+	}
-+
-+	if (fwbt_size == 0 || !RTW89_VALID_FW_BACKTRACE_SIZE(fwbt_size) ||
-+	    fwbt_size > RTW89_FW_BACKTRACE_MAX_SIZE) {
-+		rtw89_warn(rtwdev, "FW backtrace invalid size: 0x%x\n",
-+			   fwbt_size);
-+		return -EINVAL;
-+	}
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_SER, "dump fw backtrace start\n");
-+	rtw89_write32(rtwdev, R_AX_FILTER_MODEL_ADDR, fwbt_addr);
-+
-+	for (i = R_AX_INDIR_ACCESS_ENTRY;
-+	     i < R_AX_INDIR_ACCESS_ENTRY + fwbt_size;
-+	     i += RTW89_FW_BACKTRACE_INFO_SIZE, ptr++) {
-+		*ptr = (struct __fw_backtrace_info){
-+			.ra = rtw89_read32(rtwdev, i),
-+			.sp = rtw89_read32(rtwdev, i + 4),
-+		};
-+		rtw89_debug(rtwdev, RTW89_DBG_SER,
-+			    "next sp: 0x%x, next ra: 0x%x\n",
-+			    ptr->sp, ptr->ra);
-+	}
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_SER, "dump fw backtrace end\n");
-+	return 0;
-+}
-+
- static void ser_l2_reset_st_pre_hdl(struct rtw89_ser *ser)
+ int rtw89_fw_recognize(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index fca9f82bb462f..8da3e117ad382 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -725,7 +725,7 @@ static int rtw89_ops_hw_scan(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	struct rtw89_dev *rtwdev = hw->priv;
+ 	int ret = 0;
+ 
+-	if (!rtwdev->fw.scan_offload)
++	if (!RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw))
+ 		return 1;
+ 
+ 	if (rtwdev->scanning)
+@@ -748,7 +748,7 @@ static void rtw89_ops_cancel_hw_scan(struct ieee80211_hw *hw,
  {
- 	struct rtw89_dev *rtwdev = container_of(ser, struct rtw89_dev, ser);
- 	struct rtw89_ser_cd_buffer *buf;
-+	struct __fw_backtrace_entry fwbt_ent;
-+	int ret = 0;
+ 	struct rtw89_dev *rtwdev = hw->priv;
  
- 	buf = rtw89_ser_cd_prep(rtwdev);
--	if (!buf)
-+	if (!buf) {
-+		ret = -ENOMEM;
- 		goto bottom;
-+	}
+-	if (!rtwdev->fw.scan_offload)
++	if (!RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw))
+ 		return;
  
- 	rtw89_ser_fw_rsvd_ple_dump(rtwdev, buf->fwple.data);
-+
-+	fwbt_ent = *(struct __fw_backtrace_entry *)buf->fwple.data;
-+	ret = rtw89_ser_fw_backtrace_dump(rtwdev, buf->fwbt.data, &fwbt_ent);
-+	if (ret)
-+		goto bottom;
-+
- 	rtw89_ser_cd_send(rtwdev, buf);
- 
- bottom:
-+	rtw89_ser_cd_free(rtwdev, buf, !!ret);
-+
- 	ser_reset_mac_binding(rtwdev);
- 	rtw89_core_stop(rtwdev);
- 	INIT_LIST_HEAD(&rtwdev->rtwvifs_list);
+ 	if (!rtwdev->scanning)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index c6953a78658ae..24f9c11d15cce 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -1558,7 +1558,7 @@ static void rtw89_phy_c2h_ra_rpt_iter(void *data, struct ieee80211_sta *sta)
+ 		break;
+ 	case RTW89_RA_RPT_MODE_HT:
+ 		ra_report->txrate.flags |= RATE_INFO_FLAGS_MCS;
+-		if (rtwdev->fw.old_ht_ra_format)
++		if (RTW89_CHK_FW_FEATURE(OLD_HT_RA_FORMAT, &rtwdev->fw))
+ 			rate = RTW89_MK_HT_RATE(FIELD_GET(RTW89_RA_RATE_MASK_NSS, rate),
+ 						FIELD_GET(RTW89_RA_RATE_MASK_MCS, rate));
+ 		else
 -- 
 2.25.1
 
