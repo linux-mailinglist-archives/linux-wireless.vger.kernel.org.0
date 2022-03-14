@@ -2,50 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB6FF4D81C0
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 12:54:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 713704D854E
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Mar 2022 13:48:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239772AbiCNLz1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Mar 2022 07:55:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58856 "EHLO
+        id S235933AbiCNMtB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Mar 2022 08:49:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239731AbiCNLzY (ORCPT
+        with ESMTP id S239275AbiCNMr6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Mar 2022 07:55:24 -0400
+        Mon, 14 Mar 2022 08:47:58 -0400
 Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D4F565D7;
-        Mon, 14 Mar 2022 04:54:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 955BD3A1A2;
+        Mon, 14 Mar 2022 05:41:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=inria.fr; s=dc;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=P+KrW1jXCt0PEEPOuaK3dp4Clrh1+zr07rorixakTGM=;
-  b=veo7lxbt84IQANJeh6++L+J1SNK/v2rb1WrNVPKQqVjIF7dobpnEsPkk
-   SblhHr4E2Tvwk/XlO5EVssiBQCP2EWHgINi3R7m28eyEEqxORO0ETjHMk
-   VN64AU0c0oBRoJIfPOtDdQ8ITtCOHaranOSHqr6Q29XBUYHOKGDW1oUc7
-   I=;
+  bh=+hYUu2G/bq68s9f2SGkYZi4xlcaxcWwYD94UHu9GgRY=;
+  b=p9GC6OpXJFvaT9UgALjpX+KCc0W9t9BgRzlCd4QoDwR4er5TD0eMzJXf
+   DzriE/66opaOKETRTPjE9OG0m7KC1tMUXl7LiKztQkRo8CQrgGKYtj8jC
+   QkOqFsWa0Hcrkc3qfiXAVUjObxEM1YZHFPRQ9Qi9fLqe470ItuvysdJfW
+   k=;
 Authentication-Results: mail2-relais-roc.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
 X-IronPort-AV: E=Sophos;i="5.90,180,1643670000"; 
-   d="scan'208";a="25997343"
+   d="scan'208";a="25997352"
 Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2022 12:53:59 +0100
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2022 12:54:00 +0100
 From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     kernel-janitors@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     kernel-janitors@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 10/30] mt76: mt7915: fix typos in comments
-Date:   Mon, 14 Mar 2022 12:53:34 +0100
-Message-Id: <20220314115354.144023-11-Julia.Lawall@inria.fr>
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 19/30] rtlwifi: rtl8821ae: fix typos in comments
+Date:   Mon, 14 Mar 2022 12:53:43 +0100
+Message-Id: <20220314115354.144023-20-Julia.Lawall@inria.fr>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20220314115354.144023-1-Julia.Lawall@inria.fr>
 References: <20220314115354.144023-1-Julia.Lawall@inria.fr>
@@ -67,20 +60,38 @@ Detected with the help of Coccinelle.
 Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index fd16d777f2e4..ab2a1a5f7811 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -579,7 +579,7 @@ static void mt7915_wfsys_reset(struct mt7915_dev *dev)
- 		val &= ~MT_TOP_PWR_SW_RST;
- 		mt76_wr(dev, MT_TOP_PWR_CTRL, val);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+index f6bff0ebd6b0..f3fe16798c59 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+@@ -872,7 +872,7 @@ static void rtl8821ae_dm_false_alarm_counter_statistics(struct ieee80211_hw *hw)
+ 	else
+ 		falsealm_cnt->cnt_all = falsealm_cnt->cnt_ofdm_fail;
  
--		/* release wfsys then mcu re-excutes romcode */
-+		/* release wfsys then mcu re-executes romcode */
- 		val |= MT_TOP_PWR_SW_RST;
- 		mt76_wr(dev, MT_TOP_PWR_CTRL, val);
+-	/*reset OFDM FA coutner*/
++	/*reset OFDM FA counter*/
+ 	rtl_set_bbreg(hw, ODM_REG_OFDM_FA_RST_11AC, BIT(17), 1);
+ 	rtl_set_bbreg(hw, ODM_REG_OFDM_FA_RST_11AC, BIT(17), 0);
+ 	/* reset CCK FA counter*/
+@@ -1464,7 +1464,7 @@ void rtl8812ae_dm_txpower_tracking_callback_thermalmeter(
+ 	const u8 *delta_swing_table_idx_tup_b;
+ 	const u8 *delta_swing_table_idx_tdown_b;
  
+-	/*2. Initilization ( 7 steps in total )*/
++	/*2. Initialization ( 7 steps in total )*/
+ 	rtl8812ae_get_delta_swing_table(hw,
+ 		&delta_swing_table_idx_tup_a,
+ 		&delta_swing_table_idx_tdown_a,
+@@ -2502,7 +2502,7 @@ static void rtl8821ae_dm_check_edca_turbo(struct ieee80211_hw *hw)
+ 	rtlpriv->dm.dbginfo.num_non_be_pkt = 0;
+ 
+ 	/*===============================
+-	 * list paramter for different platform
++	 * list parameter for different platform
+ 	 *===============================
+ 	 */
+ 	pb_is_cur_rdl_state = &rtlpriv->dm.is_cur_rdlstate;
 
