@@ -2,127 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFAD74D9FF0
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Mar 2022 17:24:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2A1E4DA0F2
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Mar 2022 18:14:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240588AbiCOQ0G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Mar 2022 12:26:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34848 "EHLO
+        id S1350495AbiCORP2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Mar 2022 13:15:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241014AbiCOQ0F (ORCPT
+        with ESMTP id S1350489AbiCORPZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Mar 2022 12:26:05 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E69D13DD7
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Mar 2022 09:24:49 -0700 (PDT)
-X-UUID: 78424a69308a42e7a705aa145da0534a-20220316
-X-UUID: 78424a69308a42e7a705aa145da0534a-20220316
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 182069125; Wed, 16 Mar 2022 00:24:47 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Wed, 16 Mar 2022 00:24:45 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 16 Mar 2022 00:24:45 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        "Shayne Chen" <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] mt76: fix wrong HE data rate in sniffer tool
-Date:   Wed, 16 Mar 2022 00:24:34 +0800
-Message-ID: <0c9519fe98d40970017a01e40c6d35885937fde2.1647360139.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Tue, 15 Mar 2022 13:15:25 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 778841EAEC
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Mar 2022 10:14:13 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id w4so25076870edc.7
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Mar 2022 10:14:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=89AapUKE/1pFpkNlzVSvl0gcg/r2kqLZ2/9LmCBzmGw=;
+        b=eIytPWVlHZG2c+3ssVjE3ER93sxCwkcHLBBjPEF/CN2OkYiJ1qyEanUT5e2Fng/dvQ
+         cTz2EqvgfhPaL6KT/YJ1aKcd5EWDAWbwCu0qrNrZPRj+zxQ4mZzMCdTXGsGsPQfjic5y
+         /a8HTCfZuBmRijJeDeSHHPfXo3cwN72mlQj5Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=89AapUKE/1pFpkNlzVSvl0gcg/r2kqLZ2/9LmCBzmGw=;
+        b=A/ug4nLi6Ubh+12k+1ixC4MLspKwoAHrGQT3VVF0Ws6W7bc6WOqBNHSyaZWENhq1oO
+         SrcP2ph2SyMcWoPEg8NZjhjauiZsjeQbfQAna9VGp1Qr2DaRsPVkT0xX32J22KOqceLL
+         CjwooG0/3DNDk2bi9L+VhtUhnefd/uznXGdTRQkephZNXgjTOtk3rRUbFpV4rPUDNJMH
+         wNwYcgGXbTw18h7jzu3azk3x7iRM/TOzZc3f3+gMf049NIsuNJVNLwljxNpgLkgLL9eM
+         WuattP2uJcu6RcajUF6OGbEnXi5lTWxnDRz1Q8AR353NoPkh3OJBrz9jvk1c/TjUlP/o
+         Wq5A==
+X-Gm-Message-State: AOAM533hJPoiDW2FSDW+q4agER8t6IBa7lIJS8EDXnVeguJD3j6yMG0l
+        9VnTV78HA4wpv1XQq4XuS7pNhel2O/d9CL8gJm4=
+X-Google-Smtp-Source: ABdhPJz1s1hFF3aoy5vki5xBzIwTjZi0qFZDqv4g6nDb3rv9iHm+wc1Kz6N03jCw2Q8rFkvTSY4xIQ==
+X-Received: by 2002:a05:6402:4248:b0:416:9c69:4f80 with SMTP id g8-20020a056402424800b004169c694f80mr26230385edb.83.1647364451725;
+        Tue, 15 Mar 2022 10:14:11 -0700 (PDT)
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com. [209.85.218.47])
+        by smtp.gmail.com with ESMTPSA id w14-20020a170906d20e00b006cee22553f7sm8398678ejz.213.2022.03.15.10.14.11
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Mar 2022 10:14:11 -0700 (PDT)
+Received: by mail-ej1-f47.google.com with SMTP id p15so42964054ejc.7
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Mar 2022 10:14:11 -0700 (PDT)
+X-Received: by 2002:ac2:4203:0:b0:448:8053:d402 with SMTP id
+ y3-20020ac24203000000b004488053d402mr10011514lfh.687.1647364132924; Tue, 15
+ Mar 2022 10:08:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+References: <0000000000009e7a1905b8295829@google.com> <00000000000003887a05da3e872c@google.com>
+In-Reply-To: <00000000000003887a05da3e872c@google.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue, 15 Mar 2022 10:08:36 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wj4HBk7o8_dbpk=YiTOFxvE9LTiH8Gk=1kgVxOq1jaH7g@mail.gmail.com>
+Message-ID: <CAHk-=wj4HBk7o8_dbpk=YiTOFxvE9LTiH8Gk=1kgVxOq1jaH7g@mail.gmail.com>
+Subject: Re: [syzbot] KASAN: out-of-bounds Read in ath9k_hif_usb_rx_cb (3)
+To:     syzbot <syzbot+3f1ca6a6fec34d601788@syzkaller.appspotmail.com>
+Cc:     Andrey Konovalov <andreyknvl@google.com>,
+        ath9k-devel@qca.qualcomm.com, chouhan.shreyansh630@gmail.com,
+        David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:USB GADGET/PERIPHERAL SUBSYSTEM" 
+        <linux-usb@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Netdev <netdev@vger.kernel.org>,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+On Tue, Mar 15, 2022 at 2:36 AM syzbot
+<syzbot+3f1ca6a6fec34d601788@syzkaller.appspotmail.com> wrote:
+>
+> syzbot suspects this issue was fixed by commit
+> 09688c0166e7 ("Linux 5.17-rc8")
 
-Due to the missing IEEE80211_RADIOTAP_HE_DATA1_BW_RU_ALLOC_KNOWN in
-status report, the HE rate in wirehsark/tcpdump always shows wrong value.
-Applications will refer to IEEE80211_RADIOTAP_HE_DATA5_DATA_BW_RU_ALLOC
-when the flag is set and shows the correct data rate.
+No, I'm afraid that means that the bisection is broken:
 
-Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 6 ++++--
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 6 ++++--
- 2 files changed, 8 insertions(+), 4 deletions(-)
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=140283ad700000
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 47d5a993c9c7..e9e7efbf350d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -349,14 +349,16 @@ mt7915_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u32 mode)
- 	case MT_PHY_TYPE_HE_SU:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_SU) |
- 			     HE_BITS(DATA1_UL_DL_KNOWN) |
--			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN);
-+			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN) |
-+			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
- 
- 		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[14]) |
- 			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
- 		break;
- 	case MT_PHY_TYPE_HE_EXT_SU:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_EXT_SU) |
--			     HE_BITS(DATA1_UL_DL_KNOWN);
-+			     HE_BITS(DATA1_UL_DL_KNOWN) |
-+			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
- 
- 		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
- 		break;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 8bd8b4fe1047..3ff2a4c428ce 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -304,14 +304,16 @@ mt7921_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u32 mode)
- 	case MT_PHY_TYPE_HE_SU:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_SU) |
- 			     HE_BITS(DATA1_UL_DL_KNOWN) |
--			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN);
-+			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN) |
-+			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
- 
- 		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[14]) |
- 			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
- 		break;
- 	case MT_PHY_TYPE_HE_EXT_SU:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_EXT_SU) |
--			     HE_BITS(DATA1_UL_DL_KNOWN);
-+			     HE_BITS(DATA1_UL_DL_KNOWN) |
-+			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
- 
- 		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
- 		break;
--- 
-2.18.0
+and yeah, looking at that log it looks like every single run has
 
+  testing commit [...]
+  run #0: crashed: KASAN: use-after-free Read in ath9k_hif_usb_rx_cb
+  ...
+  # git bisect good [...]
+
+and you never saw a "bad" commit that didn't have the issue, so the
+top-of-tree gets marked "good" (and I suspect you intentionally mark
+the broken case "good" in order to find where it got fixed, so you're
+using "git bisect" in a reverse way).
+
+I didn't look closer, but it does seem to not reproduce very reliably,
+maybe that is what confused the bot originally.
+
+                   Linus
