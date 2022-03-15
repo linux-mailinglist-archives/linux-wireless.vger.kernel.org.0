@@ -2,206 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D52E94DA649
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 00:29:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C50C44DA672
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 00:50:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352592AbiCOXae (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Mar 2022 19:30:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55882 "EHLO
+        id S1352648AbiCOXu7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Mar 2022 19:50:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352580AbiCOXae (ORCPT
+        with ESMTP id S1352645AbiCOXu7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Mar 2022 19:30:34 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1C325DA54
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Mar 2022 16:29:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1647386960; x=1678922960;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pLU3fgQDOl761oyzZOf4a58KHnznTKBPdCDbFIat1J8=;
-  b=ndD97YEJcmMDzUvELgXU788SQIZi7VDek63/zONNqgg4GEg6pvbvz0W5
-   spliwtBoYeZZE3DCpYZF4Ilmf6Wc5+wl2f6cH1LBE6BjgScSiSuGfot1C
-   h1NbrbuBkhQmNcru3cwnHPJNRcFhyZxnq84WDMef/dLKviWZhX/2hS2/o
-   sq3UyDrnrR2wM+PcmaDdVoLkD2rOGSV3XoqLr2/gBvEt6Tw9SGFP123WD
-   XnNoa5q74y15IfPixCgNySO57qYPhvwnv6zIjfX06McfCGmUUTqVLHeya
-   6t8m2khPhqtGlmtywZtkoD4RkETmRSCiPGkF1wXVhB+BWwXJgoWOmsl4L
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10286"; a="319663015"
-X-IronPort-AV: E=Sophos;i="5.90,185,1643702400"; 
-   d="scan'208";a="319663015"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2022 16:29:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,185,1643702400"; 
-   d="scan'208";a="580697060"
-Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 15 Mar 2022 16:29:18 -0700
-Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nUGbN-000BdT-Hl; Tue, 15 Mar 2022 23:29:17 +0000
-Date:   Wed, 16 Mar 2022 07:28:45 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name
-Cc:     kbuild-all@lists.01.org, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com,
-        money.wang@mediatek.com, evelyn.tsai@mediatek.com
-Subject: Re: [PATCH v2] mt76: mt7915: introduce 802.11ax multi-bss support
-Message-ID: <202203160706.VipMbRpV-lkp@intel.com>
-References: <de8955efb254ae54ed9e1b7883ad2b067ae34d0f.1647346612.git.lorenzo@kernel.org>
+        Tue, 15 Mar 2022 19:50:59 -0400
+Received: from titan58.planetwebservers.net (titan58.planetwebservers.net [51.79.1.102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 577C61C10F
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Mar 2022 16:49:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lockie.ca;
+        s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=D3PNH76kBeoMuk8yfiXL1QzoPfPeI/KjqTIqsMjX3yM=; b=ur/uKQ0j/mh0UCt7o21aLrTya7
+        sfDRFs6ydEUCV3z3FF3GJ5K5iPOMKoig7d8+f/5wWyIt22aEiqQ/35XuDcQuu0ROnIpSvtPzB0Ii3
+        QccimeJIqHupxew3tX+H8vxFtyuEv045raPrPDsKKq6nabi/UNprVTNC46eSZb6/9dVYXICmsUvC+
+        Z3CzO3jdb1FgLaO5kl4epxweza4iDuvLTg0J/+AiRE5uwlYq7QZP6nriybdb53sfJTpS6v4c+Rolv
+        fo/6oCZKus4/oONJ7N4japgXZ3FBkEmPKheD5h9oNXp1Dl/eMLcjSxn3a2HObYBQn5zRQLCgvIFWn
+        Vp9KVTHQ==;
+Received: from [216.168.124.37] (port=34102 helo=[192.168.68.65])
+        by titan.planetwebservers.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <bjlockie@lockie.ca>)
+        id 1nUGvB-0001JJ-Ud; Wed, 16 Mar 2022 10:49:44 +1100
+Message-ID: <afd90d3a-4c39-b609-18f2-9505600e7ef1@lockie.ca>
+Date:   Tue, 15 Mar 2022 19:49:44 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de8955efb254ae54ed9e1b7883ad2b067ae34d0f.1647346612.git.lorenzo@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: WiFi 6 certified location service
+Content-Language: en-US
+To:     Philip Prindeville <philipp_subx@redfish-solutions.com>,
+        linux-wireless@vger.kernel.org
+References: <764F6734-F6E0-45F1-A4A7-6372F108573C@redfish-solutions.com>
+From:   James <bjlockie@lockie.ca>
+In-Reply-To: <764F6734-F6E0-45F1-A4A7-6372F108573C@redfish-solutions.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - titan.planetwebservers.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lockie.ca
+X-Get-Message-Sender-Via: titan.planetwebservers.net: authenticated_id: bjlockie@lockie.ca
+X-Authenticated-Sender: titan.planetwebservers.net: bjlockie@lockie.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-From-Rewrite: unmodified, already matched
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Lorenzo,
 
-I love your patch! Yet something to improve:
+What is that?
+Searching wasn't clear.
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on next-20220315]
-[cannot apply to wireless/main v5.17-rc8]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+On 2022-03-14 12:36, Philip Prindeville wrote:
+> Hi,
+>
+> I was wondering what's involved in getting Linux to support WiFi-6 certified location service?
+>
+> Does that require timestamping in the drivers?  Or is the service provided in user-space like hostapd?
+>
+> Is anyone working on it?
+>
+> Thanks,
+>
+> -Philip
+>
 
-url:    https://github.com/0day-ci/linux/commits/Lorenzo-Bianconi/mt76-mt7915-introduce-802-11ax-multi-bss-support/20220315-202139
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20220316/202203160706.VipMbRpV-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/4887429a54676d58b10bf3d73377cd24b4a455bb
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Lorenzo-Bianconi/mt76-mt7915-introduce-802-11ax-multi-bss-support/20220315-202139
-        git checkout 4887429a54676d58b10bf3d73377cd24b4a455bb
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=alpha SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-   In file included from include/net/mac80211.h:20,
-                    from drivers/net/wireless/mediatek/mt76/mt7915/../mt76.h:16,
-                    from drivers/net/wireless/mediatek/mt76/mt7915/../mt76_connac.h:7,
-                    from drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h:9,
-                    from drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:6:
-   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c: In function 'mt7915_mcu_beacon_mbss':
->> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:1834:44: error: 'struct ieee80211_mutable_offsets' has no member named 'mbssid_off'
-    1834 |                             &skb->data[offs->mbssid_off],
-         |                                            ^~
-   include/linux/ieee80211.h:4263:47: note: in definition of macro 'for_each_element'
-    4263 |         for (_elem = (const struct element *)(_data);                   \
-         |                                               ^~~~~
-   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:1833:9: note: in expansion of macro 'for_each_element_id'
-    1833 |         for_each_element_id(elem, WLAN_EID_MULTIPLE_BSSID,
-         |         ^~~~~~~~~~~~~~~~~~~
->> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:1834:44: error: 'struct ieee80211_mutable_offsets' has no member named 'mbssid_off'
-    1834 |                             &skb->data[offs->mbssid_off],
-         |                                            ^~
-   include/linux/ieee80211.h:4264:27: note: in definition of macro 'for_each_element'
-    4264 |              (const u8 *)(_data) + (_datalen) - (const u8 *)_elem >=    \
-         |                           ^~~~~
-   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:1833:9: note: in expansion of macro 'for_each_element_id'
-    1833 |         for_each_element_id(elem, WLAN_EID_MULTIPLE_BSSID,
-         |         ^~~~~~~~~~~~~~~~~~~
-   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:1835:44: error: 'struct ieee80211_mutable_offsets' has no member named 'mbssid_off'
-    1835 |                             skb->len - offs->mbssid_off) {
-         |                                            ^~
-   include/linux/ieee80211.h:4264:37: note: in definition of macro 'for_each_element'
-    4264 |              (const u8 *)(_data) + (_datalen) - (const u8 *)_elem >=    \
-         |                                     ^~~~~~~~
-   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:1833:9: note: in expansion of macro 'for_each_element_id'
-    1833 |         for_each_element_id(elem, WLAN_EID_MULTIPLE_BSSID,
-         |         ^~~~~~~~~~~~~~~~~~~
->> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:1834:44: error: 'struct ieee80211_mutable_offsets' has no member named 'mbssid_off'
-    1834 |                             &skb->data[offs->mbssid_off],
-         |                                            ^~
-   include/linux/ieee80211.h:4266:27: note: in definition of macro 'for_each_element'
-    4266 |              (const u8 *)(_data) + (_datalen) - (const u8 *)_elem >=    \
-         |                           ^~~~~
-   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:1833:9: note: in expansion of macro 'for_each_element_id'
-    1833 |         for_each_element_id(elem, WLAN_EID_MULTIPLE_BSSID,
-         |         ^~~~~~~~~~~~~~~~~~~
-   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:1835:44: error: 'struct ieee80211_mutable_offsets' has no member named 'mbssid_off'
-    1835 |                             skb->len - offs->mbssid_off) {
-         |                                            ^~
-   include/linux/ieee80211.h:4266:37: note: in definition of macro 'for_each_element'
-    4266 |              (const u8 *)(_data) + (_datalen) - (const u8 *)_elem >=    \
-         |                                     ^~~~~~~~
-   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:1833:9: note: in expansion of macro 'for_each_element_id'
-    1833 |         for_each_element_id(elem, WLAN_EID_MULTIPLE_BSSID,
-         |         ^~~~~~~~~~~~~~~~~~~
-
-
-vim +1834 drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-
-  1812	
-  1813	static void
-  1814	mt7915_mcu_beacon_mbss(struct sk_buff *rskb, struct sk_buff *skb,
-  1815			       struct ieee80211_vif *vif, struct bss_info_bcn *bcn,
-  1816			       struct ieee80211_mutable_offsets *offs)
-  1817	{
-  1818		struct bss_info_bcn_mbss *mbss;
-  1819		const struct element *elem;
-  1820		struct tlv *tlv;
-  1821	
-  1822		if (!vif->bss_conf.bssid_indicator)
-  1823			return;
-  1824	
-  1825		tlv = mt7915_mcu_add_nested_subtlv(rskb, BSS_INFO_BCN_MBSSID,
-  1826						   sizeof(*mbss), &bcn->sub_ntlv,
-  1827						   &bcn->len);
-  1828	
-  1829		mbss = (struct bss_info_bcn_mbss *)tlv;
-  1830		mbss->offset[0] = cpu_to_le16(offs->tim_offset);
-  1831		mbss->bitmap = cpu_to_le32(1);
-  1832	
-  1833		for_each_element_id(elem, WLAN_EID_MULTIPLE_BSSID,
-> 1834				    &skb->data[offs->mbssid_off],
-  1835				    skb->len - offs->mbssid_off) {
-  1836			const struct element *sub_elem;
-  1837	
-  1838			if (elem->datalen < 2)
-  1839				continue;
-  1840	
-  1841			for_each_element(sub_elem, elem->data + 1, elem->datalen - 1) {
-  1842				const u8 *data;
-  1843	
-  1844				if (sub_elem->id || sub_elem->datalen < 4)
-  1845					continue; /* not a valid BSS profile */
-  1846	
-  1847				/* Find WLAN_EID_MULTI_BSSID_IDX
-  1848				 * in the merged nontransmitted profile
-  1849				 */
-  1850				data = cfg80211_find_ie(WLAN_EID_MULTI_BSSID_IDX,
-  1851							sub_elem->data,
-  1852							sub_elem->datalen);
-  1853				if (!data || data[1] < 1 || !data[2])
-  1854					continue;
-  1855	
-  1856				mbss->offset[data[2]] = cpu_to_le16(data - skb->data);
-  1857				mbss->bitmap |= cpu_to_le32(BIT(data[2]));
-  1858			}
-  1859		}
-  1860	}
-  1861	
-
----
-0-DAY CI Kernel Test Service
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
