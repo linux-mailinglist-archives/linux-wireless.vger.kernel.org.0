@@ -2,83 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDCA74D97C3
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Mar 2022 10:36:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AF5C4D98B3
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Mar 2022 11:26:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346679AbiCOJhY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Mar 2022 05:37:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58310 "EHLO
+        id S240662AbiCOK2D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Mar 2022 06:28:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244827AbiCOJhX (ORCPT
+        with ESMTP id S234042AbiCOK2B (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Mar 2022 05:37:23 -0400
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28D0E4E3A4
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Mar 2022 02:36:12 -0700 (PDT)
-Received: by mail-io1-f71.google.com with SMTP id e27-20020a056602045b00b00645bd576184so14164681iov.3
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Mar 2022 02:36:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=scxpqyv1QCaqaidKXli17C6qUPYI7CzIakzRF5Ou8Kg=;
-        b=wCoQCkOU1w+BoLAr7zfRNkPIllBjrCWPonPXnld1u3WI+pK4Xjgu6/r/4fHykKriEU
-         EebT0zoMWog1HSbKmebI6V03OBUyFxdifHMjnXXoiMGz/CTsZcWEaEP8xc4zYHfLYTGV
-         jooTrKLt2L2grm3smtUPksZpHuekQLeETT12H3bvCBfkcogtRqDEmuud56hwIvzzE72a
-         sRPax5THXcc0b2tzg1X+zBc4zxiSVu+nK50EK+OnjKpsBYnuluZ2jV+BYYR1yRngratt
-         CsL+0OhSseUSG4BpPGphKhUG8O2td7ESPCUOSzmzguZOk7QXr431ndSll4qSC/nEjOHS
-         /YPw==
-X-Gm-Message-State: AOAM533dkqsro5WBgbCSxp+PaO4MsZ8/kyBwp8lFjbYtoOJ+Mb6cUo+Y
-        OGk/QoAgrbxqfR8jKE6+onJLZ8ESQxkcfu+wC6XFh0lcl3UQ
-X-Google-Smtp-Source: ABdhPJxuGoffg/pqrbkgpJV8mQBOrM3W+1KUP7ru6GCbSnpEcm7RSNXialOrf39P4ZLfattjVwZw+j4AThI3Al+cbuX6d+5XO7C/
+        Tue, 15 Mar 2022 06:28:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A3B3046154
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Mar 2022 03:26:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1647340008;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=ALPj10b6PIXURNLcBHdsa5ADOQx31RG0i9g5xTk8F/g=;
+        b=YG6/dB2sKEMM1bXh7bdShh0V9TmQbs4TY8c6VJ9YJR0I2DMEHGFqJUP/3mlm6EhiO3zDGy
+        0Gmy6U2vEeyAh6FXB0fT8mj0RU4NMrwQ0Ck4PDz7PJVqmoQb1UGp4/3FutmATiyoCJZZTY
+        LRkmI4C6f4cWSjbIToovp2bXId7VXRA=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-82-dzuw5pmnNt6eRSAK8rCZsQ-1; Tue, 15 Mar 2022 06:26:47 -0400
+X-MC-Unique: dzuw5pmnNt6eRSAK8rCZsQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5A4302999B44;
+        Tue, 15 Mar 2022 10:26:47 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.192.181])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 63F6F145B961;
+        Tue, 15 Mar 2022 10:26:46 +0000 (UTC)
+From:   Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Cc:     Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Subject: [PATCH] rfkill: keep rfkill event compatibility with old userspace applications
+Date:   Tue, 15 Mar 2022 11:26:41 +0100
+Message-Id: <20220315102641.233703-1-jtornosm@redhat.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:3415:b0:648:b4f6:6e4d with SMTP id
- n21-20020a056602341500b00648b4f66e4dmr18825594ioz.98.1647336971535; Tue, 15
- Mar 2022 02:36:11 -0700 (PDT)
-Date:   Tue, 15 Mar 2022 02:36:11 -0700
-In-Reply-To: <0000000000009e7a1905b8295829@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000003887a05da3e872c@google.com>
-Subject: Re: [syzbot] KASAN: out-of-bounds Read in ath9k_hif_usb_rx_cb (3)
-From:   syzbot <syzbot+3f1ca6a6fec34d601788@syzkaller.appspotmail.com>
-To:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
-        chouhan.shreyansh630@gmail.com, davem@davemloft.net,
-        kuba@kernel.org, kvalo@codeaurora.org,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        masahiroy@kernel.org, michal.lkml@markovi.net,
-        ndesaulniers@google.com, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com, torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.7
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot suspects this issue was fixed by commit:
+Old userspace applications (for example bluez version before c939747f543a),
+that still use the original format for rfkill events (with 8 bytes size /
+RFKILL_EVENT_SIZE_V1) and are not requesting any specific size but a large
+one, are broken because they are checking the received size.
 
-commit 09688c0166e76ce2fb85e86b9d99be8b0084cdf9
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Sun Mar 13 20:23:37 2022 +0000
+The reason is the new extended rfkill event format that is used by kernel, if
+requested size is big enough.
+Detailed operation of commented bluez versions, by means of strace output:
+read(11, "\0\0\0\0\2\2\1\0\0", 32)      = 9
+That is, as the new rfkill event size is 9, it will be rejected by commented
+bluez versions (expected size 8).
 
-    Linux 5.17-rc8
+In order to avoid this compatibility issue, we can try to adapt by checking
+specific unusual requested sizes:
+- bluez: 32
+- gnome-settings-daemon: 1024
+If this is the case, we will consider that we have to use the original size
+(RFKILL_EVENT_SIZE_V1) and old applications will be able to work as ever.
+For other values, we will follow the new behavior with extended events.
+No other applications have been identified that behave in this way, so
+reserved event sizes are defined.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=140283ad700000
-start commit:   f5b6eb1e0182 Merge branch 'i2c/for-current' of git://git.k..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=8a9e9956ca52a5f6
-dashboard link: https://syzkaller.appspot.com/bug?extid=3f1ca6a6fec34d601788
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=158914ebd00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17720670300000
+Fixes: 71826654ce40 ("rfkill: revert back to old userspace API by default")
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+---
+ include/uapi/linux/rfkill.h | 6 ++++++
+ net/rfkill/core.c           | 8 +++++++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-If the result looks correct, please mark the issue as fixed by replying with:
+diff --git a/include/uapi/linux/rfkill.h b/include/uapi/linux/rfkill.h
+index 9b77cfc42efa..821e304a1d8e 100644
+--- a/include/uapi/linux/rfkill.h
++++ b/include/uapi/linux/rfkill.h
+@@ -168,8 +168,14 @@ struct rfkill_event_ext {
+  *    older kernel;
+  * 3. treat reads that are as long as requested as acceptable, not
+  *    checking against RFKILL_EVENT_SIZE_V1 or such.
++ * 4. in order to avoid compatibilities issues with older application
++ *    versions specifying unusual event size requests, those unusual
++ *    request event sizes will be considered reserved. If requested size
++ *    is reserved, the event size will be RFKILL_EVENT_SIZE_V1.
+  */
+ #define RFKILL_EVENT_SIZE_V1	sizeof(struct rfkill_event)
++#define RESERVED_RFKILL_EVENT_SIZE_1	32
++#define RESERVED_RFKILL_EVENT_SIZE_2	1024
+ 
+ /* ioctl for turning off rfkill-input (if present) */
+ #define RFKILL_IOC_MAGIC	'R'
+diff --git a/net/rfkill/core.c b/net/rfkill/core.c
+index b73a741a7923..494335d4f5f7 100644
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -1231,7 +1231,13 @@ static ssize_t rfkill_fop_read(struct file *file, char __user *buf,
+ 	ev = list_first_entry(&data->events, struct rfkill_int_event,
+ 				list);
+ 
+-	sz = min_t(unsigned long, sizeof(ev->ev), count);
++	BUILD_BUG_ON(sizeof(ev->ev) == RESERVED_RFKILL_EVENT_SIZE_1 ||
++		sizeof(ev->ev) == RESERVED_RFKILL_EVENT_SIZE_2);
++	if (count == RESERVED_RFKILL_EVENT_SIZE_1 ||
++		count == RESERVED_RFKILL_EVENT_SIZE_2)
++		sz = RFKILL_EVENT_SIZE_V1;
++	else
++		sz = min_t(unsigned long, sizeof(ev->ev), count);
+ 	ret = sz;
+ 	if (copy_to_user(buf, &ev->ev, sz))
+ 		ret = -EFAULT;
+-- 
+2.27.0
 
-#syz fix: Linux 5.17-rc8
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
