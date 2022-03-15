@@ -2,110 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5AD34D9C79
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Mar 2022 14:41:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D5944D9F67
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Mar 2022 16:55:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348790AbiCONmU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Mar 2022 09:42:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44524 "EHLO
+        id S237978AbiCOP4O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Mar 2022 11:56:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348757AbiCONmS (ORCPT
+        with ESMTP id S230484AbiCOP4N (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Mar 2022 09:42:18 -0400
+        Tue, 15 Mar 2022 11:56:13 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45DA152E66;
-        Tue, 15 Mar 2022 06:41:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22B4765AE
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Mar 2022 08:55:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AD8FFB81677;
-        Tue, 15 Mar 2022 13:41:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A13C340E8;
-        Tue, 15 Mar 2022 13:40:54 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D3523B81754
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Mar 2022 15:54:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C2BC340E8;
+        Tue, 15 Mar 2022 15:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647351662;
-        bh=gvl9SFrDd+2JfY4XpOU21w5Fgp3RnrxgO3xzRNMW3ig=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=FpIzPAInqwcWVe7lVXyZMo10uysAvQH5/+0FSS06nOQud/sjKtVu2eXUrgVVwDtnS
-         K9saXWWZ1hCdhU07mL3gP1lbyLMM5ncodj0hAGG1sCe8guzPWwUCxCvCMd4UnYk0ij
-         MiKnX5ElR8cklFLsknUpJxfH63KChYC/OCTeoHADKe2d7sJJxnj+KlqJSXMWCfA0RW
-         7IMl8VYJBtsy0LvBdpwYawlVvfm1y/uovTsdBOXZktA8NvrkBJg6F9XHpbVdi97yvv
-         ktn0TMEJDT+qVku5scquwwLC4arp4ujY52Gxd5XtzcUD53EHdZUC9sEswg4SOYFru/
-         p422dM8tR7ngQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     Julia Lawall <Julia.Lawall@inria.fr>, linux-can@vger.kernel.org
-Cc:     netdev@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-media@vger.kernel.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        linux-perf-users@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        Sean Wang <sean.wang@mediatek.com>,
-        linux-arm-msm@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        platform-driver-x86@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        target-devel@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-s390@vger.kernel.org,
-        Jonas Karlman <jonas@kwiboo.se>, linux-sunxi@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-power@fi.rohmeurope.com,
-        linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-leds@vger.kernel.org, linux-spi@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, linux-clk@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-scsi@vger.kernel.org,
-        Namhyung Kim <namhyung@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-wireless@vger.kernel.org
-In-Reply-To: <20220314115354.144023-1-Julia.Lawall@inria.fr>
-References: <20220314115354.144023-1-Julia.Lawall@inria.fr>
-Subject: Re: (subset) [PATCH 00/30] fix typos in comments
-Message-Id: <164735165474.3687547.1964402001196947729.b4-ty@kernel.org>
-Date:   Tue, 15 Mar 2022 13:40:54 +0000
+        s=k20201202; t=1647359698;
+        bh=H3Iw5/Cg0bzJmoFidn/e7FTnqwyY28fUPOy9FOkimFQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LK+RgA5mbDMic1HtoNJvgug5sX3qdo+inR9ceVfyYjence1kZvB0R/DV1Ku5YTKRt
+         aCUno2qSuAL3kLL8LRKGWZX6rCKYNrK6tq7qLNaWTBXQcPZl3ycCqZK80FMSNtYQH5
+         Ee5A5b/g2XH1Qxq8Km0Rd0QWmT93kpRASc3/433uy810h5JthFjkFa++VLEzqFsAet
+         uAPxWVaDknZpanff+xAs0+L+Ic3NL2I2ArJYPVse1IQRo808+nAgEfbb6IAnhXWKl8
+         VGQnVMmsmQ55ykRP8F+zac5379+iQLKtkY4keLNCoB8oeZ7T++54e7Dzlf2gh4vl5R
+         TbGk7yl4hBlTw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] Revert "ath10k: drop beacon and probe response which leak from other channel"
+Date:   Tue, 15 Mar 2022 17:54:55 +0200
+Message-Id: <20220315155455.20446-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 14 Mar 2022 12:53:24 +0100, Julia Lawall wrote:
-> Various spelling mistakes in comments.
-> Detected with the help of Coccinelle.
-> 
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-Applied to
+This reverts commit 3bf2537ec2e33310b431b53fd84be8833736c256.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+I was reported privately that this commit breaks AP and mesh mode on QCA9984
+(firmware 10.4-3.9.0.2-00156). So revert the commit to fix the regression.
 
-Thanks!
+There was a conflict due to cfg80211 API changes but that was easy to fix.
 
-[21/30] spi: sun4i: fix typos in comments
-        commit: 2002c13243d595e211c0dad6b8e2e87f906f474b
+Fixes: 3bf2537ec2e3 ("ath10k: drop beacon and probe response which leak from other channel")
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+---
+ drivers/net/wireless/ath/ath10k/wmi.c | 33 +--------------------------
+ 1 file changed, 1 insertion(+), 32 deletions(-)
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index 62c453a21e49..7c1c2658cb5f 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -2611,36 +2611,9 @@ int ath10k_wmi_event_mgmt_rx(struct ath10k *ar, struct sk_buff *skb)
+ 		ath10k_mac_handle_beacon(ar, skb);
+ 
+ 	if (ieee80211_is_beacon(hdr->frame_control) ||
+-	    ieee80211_is_probe_resp(hdr->frame_control)) {
+-		struct ieee80211_mgmt *mgmt = (void *)skb->data;
+-		enum cfg80211_bss_frame_type ftype;
+-		u8 *ies;
+-		int ies_ch;
+-
++	    ieee80211_is_probe_resp(hdr->frame_control))
+ 		status->boottime_ns = ktime_get_boottime_ns();
+ 
+-		if (!ar->scan_channel)
+-			goto drop;
+-
+-		ies = mgmt->u.beacon.variable;
+-
+-		if (ieee80211_is_beacon(mgmt->frame_control))
+-			ftype = CFG80211_BSS_FTYPE_BEACON;
+-		else
+-			ftype = CFG80211_BSS_FTYPE_PRESP;
+-
+-		ies_ch = cfg80211_get_ies_channel_number(mgmt->u.beacon.variable,
+-							 skb_tail_pointer(skb) - ies,
+-							 sband->band, ftype);
+-
+-		if (ies_ch > 0 && ies_ch != channel) {
+-			ath10k_dbg(ar, ATH10K_DBG_MGMT,
+-				   "channel mismatched ds channel %d scan channel %d\n",
+-				   ies_ch, channel);
+-			goto drop;
+-		}
+-	}
+-
+ 	ath10k_dbg(ar, ATH10K_DBG_MGMT,
+ 		   "event mgmt rx skb %pK len %d ftype %02x stype %02x\n",
+ 		   skb, skb->len,
+@@ -2654,10 +2627,6 @@ int ath10k_wmi_event_mgmt_rx(struct ath10k *ar, struct sk_buff *skb)
+ 	ieee80211_rx_ni(ar->hw, skb);
+ 
+ 	return 0;
+-
+-drop:
+-	dev_kfree_skb(skb);
+-	return 0;
+ }
+ 
+ static int freq_to_idx(struct ath10k *ar, int freq)
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+base-commit: e6e91ec966db5af4f059cfbac1af06560404b317
+-- 
+2.30.2
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
