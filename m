@@ -2,186 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7F8F4DB6ED
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 18:11:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AC6E4DB798
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 18:50:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241110AbiCPRMW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Mar 2022 13:12:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56172 "EHLO
+        id S1353546AbiCPRvl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Mar 2022 13:51:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237728AbiCPRMV (ORCPT
+        with ESMTP id S1348597AbiCPRvk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Mar 2022 13:12:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AF6E412AEF
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 10:11:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1647450665;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=XlihbDg7cQ33/RZefEfKPqV6TU+bN7s1DmA66a15ROQ=;
-        b=XeT4F1QRja/M4SRMgILUwxajtxyi/3DiWxlDmHNPPEZvHZeEfRHxncNgUrlN9KoJttj+zx
-        qHJaT1UMplBlf4sm3/tUwprlXWxCldg2rY9kLEcbnIqij7Ow0RQ+SzvtR880K4tcPcUfmX
-        H3pM6oH9Q9LDVCHyT5o+nL+lvGtRaAI=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-451-7WIT5sbLPUyBotF5Ysj5nA-1; Wed, 16 Mar 2022 13:11:04 -0400
-X-MC-Unique: 7WIT5sbLPUyBotF5Ysj5nA-1
-Received: by mail-ed1-f70.google.com with SMTP id o20-20020aa7dd54000000b00413bc19ad08so1693335edw.7
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 10:11:03 -0700 (PDT)
+        Wed, 16 Mar 2022 13:51:40 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B54F16C948
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 10:50:25 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id n15so2427207plh.2
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 10:50:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xhoEzT3FlgwmaLIUhwD7E5Tjj9F3HD6xs6kiQuTOyxI=;
+        b=VdaWQ97wKhDRAr32HE6STpT7x+Kmn+zgb7z1Kd1cOR+dUBiIl4NsUEyLw5riU0/X3H
+         o5vAbrUvgLf0LeaPd55/gtq1fGZIvpE5lKRqLAo/oY8yep4tJA39pQbuS8XDj1eVuPsK
+         fC/GH7osPv9CXxDqLz8IbxFMVzkkh816m8clyi+F1j8T6sTPX9ZmooGyvVK/TIANpxjl
+         WZLUzQaHZsCDy32PXCqzFCMU0mZRzDnUr+E1VUHiLrJJoWBnCoqHlCbir8SNUBOlVoPH
+         gEU8Ubav4vum/1vWDWaswkPfKw6tRkSdeKyH3pBKpnvKAlCMzob1CnQXsFYsXfTu1nXH
+         8IHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=XlihbDg7cQ33/RZefEfKPqV6TU+bN7s1DmA66a15ROQ=;
-        b=1D14duGFWLHgZWLeqVNAYNhRaG5NsSQmdIZYPBAKdKUnMTxxxzI4PQME/xrRU8RPkC
-         OIFhTm6ogucpnH+3hiSLYVeBUfCjtXIj6WCnMtXlUih+08Hby3BHQniSX98axHHvU83e
-         sZdBJTuT2R6a6ove5gd+QFoE/BQkTzURfaA0gDz0KqnNzLiGueT+oIW7wKPK2hke0ka4
-         yvIt2KgNwKHzABUaa81vspa0lB+TRmJUabGlMblMosAQYVUGaSeA3e0IchjYOw4cpfs4
-         NduWlk7hjTfStueD+sOX/Fnwkat+1UWlyyTQ7xS2vm5FUNwzltrHKorwMeflgacYDnYz
-         3kLA==
-X-Gm-Message-State: AOAM530dqiqIRi7+Gl3bRuDvlH5RjsFummXFtTBGtgHuJSCi9YQ+wga/
-        DS5mexsGY54QTtETOz7KnFDDQoBmHOkFwyROUOP37roYU0IqHepI4NfI3HLGgiMT2/daXFmWo66
-        T24ruHEASVhQk4h7FyRVYD2dhgTI=
-X-Received: by 2002:a17:906:b157:b0:6d0:9f3b:a6aa with SMTP id bt23-20020a170906b15700b006d09f3ba6aamr768774ejb.365.1647450662572;
-        Wed, 16 Mar 2022 10:11:02 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJysl79FB4NHENPw2CZv5ieSfCIyiyw42T7IAMHdtSiDaQ+TpF1nG90KDDu4PzrUVmXRwdp87A==
-X-Received: by 2002:a17:906:b157:b0:6d0:9f3b:a6aa with SMTP id bt23-20020a170906b15700b006d09f3ba6aamr768755ejb.365.1647450662360;
-        Wed, 16 Mar 2022 10:11:02 -0700 (PDT)
-Received: from localhost (mob-31-159-59-198.net.vodafone.it. [31.159.59.198])
-        by smtp.gmail.com with ESMTPSA id u4-20020aa7db84000000b004136c2c357csm1295682edt.70.2022.03.16.10.11.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Mar 2022 10:11:01 -0700 (PDT)
-Date:   Wed, 16 Mar 2022 16:15:36 +0100
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Deren Wu <Deren.Wu@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] mt76: fix monitor rx FCS error in DFS channel
-Message-ID: <YjH/GCCfQoZ5OPPM@localhost.localdomain>
-References: <7243650f3d51b1919bd4fd0017ff8b0186149e54.1647421054.git.deren.wu@mediatek.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xhoEzT3FlgwmaLIUhwD7E5Tjj9F3HD6xs6kiQuTOyxI=;
+        b=q9ofQfG7EOshsy1vVUmikEHCCX3m7kSqyuF+4ZHDDoDL7HKQrLBRgB98HXKBE2wf6C
+         3uYVhQ+UnTdT8FvcFBgtRcc5NOJN9LL3Gta3mJEsN3eTpJQBgGyIJcA3gAebOyxzAWlH
+         aVLtS38GR3zId2lzJXAVVZQNJUzO+qZJcCcDlLSpn9obfUKgpzHabrk6dG9dtJWg7+Jy
+         /1dYs9WDg2kuX54JTNYSc+GidqfDtmDpS6PAIYQjCEW3SviIMIyE4kaowG2Q+8zyIB7V
+         uDVwAoc7mSAib/XGjlV0Xpao4cY1ZNck4337lEvKJA7jVR0+SBEwWb/KtpwwTOkpemAx
+         w0IA==
+X-Gm-Message-State: AOAM530flQbyCE0SICZrs4Lgn+sAJx1+IXXpSUSjMLWAdjrifjJcoq9t
+        KT4pVPeDKdHnMecZIz8jNeQnbcKjZtzK9+CfHEE=
+X-Google-Smtp-Source: ABdhPJyGyueFKDTCggNOCf4JrRL0Ele7BjHEaC5N4esbX2kSMluKBbc/+V9CSX1WfU7i4DxdwPwEIjE2Rbaun/s03jY=
+X-Received: by 2002:a17:902:ea0b:b0:153:c2c9:71b4 with SMTP id
+ s11-20020a170902ea0b00b00153c2c971b4mr1118774plg.110.1647453025144; Wed, 16
+ Mar 2022 10:50:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qGeKCzL1sC2OXSsX"
-Content-Disposition: inline
-In-Reply-To: <7243650f3d51b1919bd4fd0017ff8b0186149e54.1647421054.git.deren.wu@mediatek.com>
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <CAO_iuKEL8tHnovpGiQGUxg7JUpZFxHpxhOHbqAMgbt5R4Eftgg@mail.gmail.com>
+ <2d1c129b-d473-39e3-69b7-6f36dc1682a6@leemhuis.info> <9312eb18-840f-9a1f-bcb0-8e3a43e45239@leemhuis.info>
+ <236d45a6-8b88-c02e-a61d-ce1773fdb0ef@lwfinger.net> <02ef7552-67f5-dbcf-ece6-87b5b49e1bb5@leemhuis.info>
+ <CAO_iuKHQ2DdLvSegcoezCzRVHqNFg+HM8qk1fr1n=s9cMz8QFA@mail.gmail.com>
+ <877d96xlbk.fsf@tynnyri.adurom.net> <023e90a9-01bf-4334-a69a-259705ffa55f@leemhuis.info>
+In-Reply-To: <023e90a9-01bf-4334-a69a-259705ffa55f@leemhuis.info>
+From:   Nico Sneck <snecknico@gmail.com>
+Date:   Wed, 16 Mar 2022 19:50:13 +0200
+Message-ID: <CAO_iuKG0gE=5fEKMF2A+iWUhsxtnPOQtTQTkBRo2vH5CmKu7iA@mail.gmail.com>
+Subject: Re: rtw_8822ce wifi regression after kernel update from 5.15 to 5.16
+To:     Thorsten Leemhuis <regressions@leemhuis.info>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi all,
 
---qGeKCzL1sC2OXSsX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Wed, Mar 16, 2022 at 12:14 PM Thorsten Leemhuis
+<regressions@leemhuis.info> wrote:
+> FWIW, in the initial report Nico mentioned he tried to bisect the issue
+> and there mentioned a few git commit id's which are from mainline, so it
+> seems he tried mainline. But maybe there is some DKMS or akmod package
+> that is interfering.
 
-> From: Deren Wu <deren.wu@mediatek.com>
->=20
-> When setup monitor mode in DFS channel, mt76 send CH_SWITCH_DFS to
-> fw for channel config. This would cause rx performance bad while
-> monitoring frames. Settings CH_SWITCH_NORMAL in monitor mode would
-> get the same performance as normal channels.
+Indeed, I've reproduced this issue on mainline kernels, and also bisected
+using the mainline kernel.
+No DKMS or anything like that.
 
-Hi Deren,
+> Nico, it would help a lot if you could clarify the situation and maybe
+> try another shot at a bisection.
 
->=20
-> Reviewed-by: Shayne Chen <shayne.chen@mediatek.com>
-> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 3 ++-
->  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 ++-
->  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 3 ++-
->  3 files changed, 6 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7615/mcu.c
-> index 390add3144c2..97e2a85cb728 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> @@ -2151,7 +2151,8 @@ int mt7615_mcu_set_chan_info(struct mt7615_phy *phy=
-, int cmd)
->  		.center_chan2 =3D ieee80211_frequency_to_channel(freq2),
->  	};
-> =20
-> -	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH))
-> +	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH) ||
-> +	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
+Yeah, sorry for being slow to respond. These days I tend to run my personal
+computer just on the weekends, thus this is a bit slow. Also, this issue is
+hard to reproduce, usually it happens within a couple minutes after booting,
+but I've actually now been running a vanilla 5.17-rc7 (commit: ea4424be1688)
+for a day, and the issue just popped up.
 
-is this patch compliant with 802.11h DFS standard?
+So I can confirm, this issue is still present as of ea4424be1688
+(soon-to-be 5.18).
 
-Regards,
-Lorenzo
+This is how it appears when pinging my routers gateway address:
+> 64 bytes from 192.168.10.1: icmp_seq=20846 ttl=64 time=29780 ms
+> 64 bytes from 192.168.10.1: icmp_seq=20847 ttl=64 time=28771 ms
+> 64 bytes from 192.168.10.1: icmp_seq=20848 ttl=64 time=27768 ms
+> 64 bytes from 192.168.10.1: icmp_seq=20849 ttl=64 time=26763 ms
+> 64 bytes from 192.168.10.1: icmp_seq=20850 ttl=64 time=25757 ms
+> 64 bytes from 192.168.10.1: icmp_seq=20851 ttl=64 time=24752 ms
+> 64 bytes from 192.168.10.1: icmp_seq=20852 ttl=64 time=23747 ms
+> 64 bytes from 192.168.10.1: icmp_seq=20853 ttl=64 time=22742 ms
+> 64 bytes from 192.168.10.1: icmp_seq=20854 ttl=64 time=21737 ms
+> 64 bytes from 192.168.10.1: icmp_seq=20855 ttl=64 time=20734 ms
+> 64 bytes from 192.168.10.1: icmp_seq=20874 ttl=64 time=1298 ms
+> 64 bytes from 192.168.10.1: icmp_seq=20875 ttl=64 time=455 ms
+> 64 bytes from 192.168.10.1: icmp_seq=20876 ttl=64 time=3128 ms
+[...]
+> From 192.168.10.107 icmp_seq=20925 Destination Host Unreachable
+> From 192.168.10.107 icmp_seq=20926 Destination Host Unreachable
+[...]
+> ping: sendmsg: No buffer space available
+> ping: sendmsg: No buffer space available
+> ping: sendmsg: No buffer space available
 
->  		req.switch_reason =3D CH_SWITCH_NORMAL;
->  	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
->  		req.switch_reason =3D CH_SWITCH_SCAN_BYPASS_DPD;
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7915/mcu.c
-> index 10dc4bf5adec..c56d48342aaf 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> @@ -2833,7 +2833,8 @@ int mt7915_mcu_set_chan_info(struct mt7915_phy *phy=
-, int cmd)
->  	}
->  #endif
-> =20
-> -	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH))
-> +	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH) ||
-> +	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
->  		req.switch_reason =3D CH_SWITCH_NORMAL;
->  	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
->  		req.switch_reason =3D CH_SWITCH_SCAN_BYPASS_DPD;
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7921/mcu.c
-> index 5ef8b24f0ab3..da2be050ed7c 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-> @@ -863,7 +863,8 @@ int mt7921_mcu_set_chan_info(struct mt7921_phy *phy, =
-int cmd)
->  	else
->  		req.channel_band =3D chandef->chan->band;
-> =20
-> -	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH))
-> +	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH) ||
-> +	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
->  		req.switch_reason =3D CH_SWITCH_NORMAL;
->  	else if (dev->mt76.hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
->  		req.switch_reason =3D CH_SWITCH_SCAN_BYPASS_DPD;
-> --=20
-> 2.18.0
->=20
+At the same time dmesg is flooded with "timed out to flush queue"
+and "failed to get tx report from firmware".
 
---qGeKCzL1sC2OXSsX
-Content-Type: application/pgp-signature; name="signature.asc"
+And just to reiterate; this does not happen on 5.15. Only 5.16 and up.
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYjH/DwAKCRA6cBh0uS2t
-rF9YAP9Ox9jPWfxbiA2T4XjcII2rxrXGYiAg+x0hhromc9pEBgD/R4XK+Ueyo2R0
-7wp0X4yKB541uW2Kv6Kia5CQkbKOqwg=
-=dB/z
------END PGP SIGNATURE-----
-
---qGeKCzL1sC2OXSsX--
-
+I'll kick off another round of bisecting now. Will probably take me at
+least a week to follow up though. A lot depends on how fast this
+issue pops up with each round of bisecting.
