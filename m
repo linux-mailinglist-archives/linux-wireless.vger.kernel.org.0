@@ -2,49 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9B964DAEF2
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 12:35:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BD524DB047
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 14:02:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355356AbiCPLhC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Mar 2022 07:37:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56672 "EHLO
+        id S1355794AbiCPNEI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Mar 2022 09:04:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233748AbiCPLhB (ORCPT
+        with ESMTP id S232366AbiCPNEH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Mar 2022 07:37:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03E64275CE
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 04:35:47 -0700 (PDT)
+        Wed, 16 Mar 2022 09:04:07 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3604E26DA;
+        Wed, 16 Mar 2022 06:02:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9176E61671
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 11:35:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CEFC340EC;
-        Wed, 16 Mar 2022 11:35:44 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A9F25B81B08;
+        Wed, 16 Mar 2022 13:02:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5225C340EC;
+        Wed, 16 Mar 2022 13:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647430546;
-        bh=R26zP40G4bx4aXQtrRtqCtRbPpetQ1qRyleLrW/uvrM=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Tqd8Deszp7XPWTUnYnECJD9HbiYs9uJB/pp0Ns5El9oEG84MioDt+m+vRvVX9pX7T
-         EXX5Kd0WwsA4HW9rF01nzrU7Yocu+DzTarS9bIprAaKYklMhnkjTtmwbA4fKgRzafy
-         sKghMjd1lBEHUtJWoULutD2aJPC9yesYk3JC3QAdUL/Ph6XcubsG+KKNnFVu2f1Q6J
-         MqG4Qjsud1wtc2vlyRebGOOLY0bX6JQ2Ctp0KQb6x8LiJfD0Wi3MVcluMKOdsKQ3BP
-         ORUGNYm1PfxkYDHF0pg8Zia949AJp6FwkyYlvlJQjSH3CCNjrD/PdhlSRRrHkDD8z/
-         zMujCXpvNr0DQ==
+        s=k20201202; t=1647435770;
+        bh=ZixeMbzxdzsZE9YpFw4GHmxKpWmfB1BaLSHZ+JRI9Lk=;
+        h=From:Subject:To:Cc:Date:From;
+        b=cpal63IHdeVkyRGUajQquzp2W/dzddvbVOsc17ncpxAu9+IA13cWczS86NDooOrt+
+         sxENFimA47WLqC05i36Qj1DjpuP3lqY+MnDf4LX1GyZZ8Lx0Ao98VoSqWwcTBFLv5a
+         pQ+ly5rWY2Lc9kblTb7nB+VSo9VcPQMIy2I6SsRCyImQMNt21Dco8thDrRCMBtVofq
+         IyLYlhGcAHpYof8bEmjqd8bgt6PNJFm+2/5JGFKjBn9/MYHQ2S9JazkcdRG625y3RF
+         ezinT6B/k7BiGe489nvaIk7478jZ41AJCtq1J7s2Jzei3hHqviMyBPjQwX0WWmP3Pg
+         GpBzyUeMpbanw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] Revert "ath10k: drop beacon and probe response which leak
- from other channel"
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220315155455.20446-1-kvalo@kernel.org>
-References: <20220315155455.20446-1-kvalo@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164743054137.26015.17991500615716853281.kvalo@kernel.org>
-Date:   Wed, 16 Mar 2022 11:35:44 +0000 (UTC)
+Subject: pull-request: wireless-2022-03-16
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20220316130249.B5225C340EC@smtp.kernel.org>
+Date:   Wed, 16 Mar 2022 13:02:49 +0000 (UTC)
 X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,24 +51,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> wrote:
+Hi,
 
-> This reverts commit 3bf2537ec2e33310b431b53fd84be8833736c256.
-> 
-> I was reported privately that this commit breaks AP and mesh mode on QCA9984
-> (firmware 10.4-3.9.0.2-00156). So revert the commit to fix the regression.
-> 
-> There was a conflict due to cfg80211 API changes but that was easy to fix.
-> 
-> Fixes: 3bf2537ec2e3 ("ath10k: drop beacon and probe response which leak from other channel")
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-Patch applied to ath-current branch of ath.git, thanks.
+Kalle
 
-45b4eb7ee6aa Revert "ath10k: drop beacon and probe response which leak from other channel"
+The following changes since commit e6e91ec966db5af4f059cfbac1af06560404b317:
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220315155455.20446-1-kvalo@kernel.org/
+  iwlwifi: mvm: return value for request_ownership (2022-03-02 22:37:25 +0100)
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+are available in the Git repository at:
 
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-03-16
+
+for you to fetch changes up to 45b4eb7ee6aa1a55a50831b328aa5f46ac3a7187:
+
+  Revert "ath10k: drop beacon and probe response which leak from other channel" (2022-03-16 13:34:52 +0200)
+
+----------------------------------------------------------------
+wireless fixes for v5.17
+
+Third set of fixes for v5.17. We have only one revert to fix an ath10k
+regression.
+
+----------------------------------------------------------------
+Kalle Valo (1):
+      Revert "ath10k: drop beacon and probe response which leak from other channel"
+
+ drivers/net/wireless/ath/ath10k/wmi.c | 33 +--------------------------------
+ 1 file changed, 1 insertion(+), 32 deletions(-)
