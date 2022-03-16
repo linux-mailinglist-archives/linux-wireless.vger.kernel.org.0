@@ -2,52 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DC9C4DB4EB
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 16:32:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74B374DB4F6
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 16:33:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242005AbiCPPck (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Mar 2022 11:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48266 "EHLO
+        id S240127AbiCPPer (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Mar 2022 11:34:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347783AbiCPPcj (ORCPT
+        with ESMTP id S235248AbiCPPep (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Mar 2022 11:32:39 -0400
+        Wed, 16 Mar 2022 11:34:45 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02CEC6D189;
-        Wed, 16 Mar 2022 08:31:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 699B027CF5;
+        Wed, 16 Mar 2022 08:33:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 93132B81C15;
-        Wed, 16 Mar 2022 15:31:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BACC340EC;
-        Wed, 16 Mar 2022 15:31:19 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 19C31B81C13;
+        Wed, 16 Mar 2022 15:33:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60621C340E9;
+        Wed, 16 Mar 2022 15:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647444681;
-        bh=R7sCQbSzVl5A3Wy1tLt63Lz64KpJQdnHDuySp8qFbnQ=;
+        s=k20201202; t=1647444808;
+        bh=ErcNptfdS+iULWkDCthzkd1Qlz8XmSgG7d9SHtOVd6w=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=JEzDy27aijMEEj2tEznLcFFWRsvBrqN65lC/OXehQ2vE+Ia2EyQ6597kJo7h9yFUH
-         JYyvZ3jsHVaur5C5uflUG0pQEYjjNSDfOHt1AJ+b9UxmxCTwe6gzPh7M1K5+7j4xop
-         e2tCTGtdrdvSwUsaQ9Vn2xMAMZPl7h7Z9WVcWA/j20Dz7QcO5Ew/J+BEHInfSto4+M
-         7Vx8EoTSC65oCjzMK6MFPJLyuXvdMprFUkPwXlnw1emb62TcWyrxAvQ0ZmhAZ8rPfR
-         +43HR312LX2nBZjIz24XZoHt5mZ+/2P8/QziCQmFQxY7P8hylwoS55Tu74bqCAzZuU
-         DXQrZPOzSrcag==
+        b=r/2kQFJvaZjB7AWFCs8Q52daB1EaPRTWtGum0gkBvfbiNec39Pc9qIC8IAJHvXAxf
+         z500tjRlXwl3m5mhyjj12lJFItWBC+6vnYT+di/0gMA/ldgwVAeDQ7QJIxN9z2If37
+         KALcW4WG5W/tauDlpQmJgoBsEhkHgNe6E+U4dPsfKidozFEi+m2durbnr6pyry5NC0
+         XwSoIjFdAjD0UNZJdLit7d6XCaNMzWC1HPc4lEVFeKGTOJnQuOer3Rb/oX4OCJWSHV
+         6A+TxwpXC/fJrQ+ui279dWTFNKXj/vyvyBMUNvrSvnnmO9Y94Ij043kjGE6YEf7Zyl
+         gOCG1H1ch9RAw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 19/30] rtlwifi: rtl8821ae: fix typos in comments
+Subject: Re: [v2] MAINTAINERS: fix ath11k DT bindings location
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220314115354.144023-20-Julia.Lawall@inria.fr>
-References: <20220314115354.144023-20-Julia.Lawall@inria.fr>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, kernel-janitors@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+In-Reply-To: <20220308085503.537-1-lukas.bulwahn@gmail.com>
+References: <20220308085503.537-1-lukas.bulwahn@gmail.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164744467499.16413.6184144924989556392.kvalo@kernel.org>
-Date:   Wed, 16 Mar 2022 15:31:19 +0000 (UTC)
+Message-ID: <164744480556.16413.9130060448491474487.kvalo@kernel.org>
+Date:   Wed, 16 Mar 2022 15:33:27 +0000 (UTC)
 X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -58,21 +56,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Julia Lawall <Julia.Lawall@inria.fr> wrote:
+Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 
-> Various spelling mistakes in comments.
-> Detected with the help of Coccinelle.
+> Commit dae0978d4174 ("dt: bindings: net: add qcom,ath11k.yaml") obviously
+> adds qcom,ath11k.yaml, but the file entry in MAINTAINERS, added with
+> commit fcda1cb81663 ("MAINTAINERS: add DT bindings files for ath10k and
+> ath11k") then refers to qcom,ath11k.txt.
 > 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains about a
+> broken reference.
+> 
+> Repair this file reference in QUALCOMM ATHEROS ATH11K WIRELESS DRIVER, and
+> put it in alphabetic order while at it.
+> 
+> Fixes: fcda1cb81663 ("MAINTAINERS: add DT bindings files for ath10k and ath11k")
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-2 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-31f8bef8acab rtlwifi: rtl8821ae: fix typos in comments
-bfbd78cfdd62 airo: fix typos in comments
+5df2dc0087e9 MAINTAINERS: fix ath11k DT bindings location
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220314115354.144023-20-Julia.Lawall@inria.fr/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220308085503.537-1-lukas.bulwahn@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
