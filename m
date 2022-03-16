@@ -2,108 +2,186 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3813E4DB58C
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 17:02:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7F8F4DB6ED
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 18:11:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357501AbiCPQDS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Mar 2022 12:03:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56120 "EHLO
+        id S241110AbiCPRMW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Mar 2022 13:12:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357443AbiCPQDC (ORCPT
+        with ESMTP id S237728AbiCPRMV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Mar 2022 12:03:02 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04EF63E5F6
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 09:01:48 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id s25so3753828lji.5
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 09:01:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sfyn51iMEtZOW1VvGz9/zKro/mJL/U+AGtoyS/q05lk=;
-        b=IxJzMGVBQ3dqOjwnT0kNvGBM1q4ToNrQ8MnPmSDiP9yfNiOStXUVcBRVnxaULD6+qQ
-         iDehTRiYAMHSCxlwKAHGVWuwY43EtSG7VmF2E+DrfhETaC+kwkg1Zw7nn0Mt77iaYVPS
-         eI5jjYFFkS7OLX94NFKpBzVwOSR3Cj742b3BY=
+        Wed, 16 Mar 2022 13:12:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AF6E412AEF
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 10:11:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1647450665;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=XlihbDg7cQ33/RZefEfKPqV6TU+bN7s1DmA66a15ROQ=;
+        b=XeT4F1QRja/M4SRMgILUwxajtxyi/3DiWxlDmHNPPEZvHZeEfRHxncNgUrlN9KoJttj+zx
+        qHJaT1UMplBlf4sm3/tUwprlXWxCldg2rY9kLEcbnIqij7Ow0RQ+SzvtR880K4tcPcUfmX
+        H3pM6oH9Q9LDVCHyT5o+nL+lvGtRaAI=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-451-7WIT5sbLPUyBotF5Ysj5nA-1; Wed, 16 Mar 2022 13:11:04 -0400
+X-MC-Unique: 7WIT5sbLPUyBotF5Ysj5nA-1
+Received: by mail-ed1-f70.google.com with SMTP id o20-20020aa7dd54000000b00413bc19ad08so1693335edw.7
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 10:11:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sfyn51iMEtZOW1VvGz9/zKro/mJL/U+AGtoyS/q05lk=;
-        b=pYzVrsW2GnWaUwnJ/e/XXy7CUM6Pj9OunpfGa6+i9lvIjUxkyrLsh9fFuvibzIj87x
-         JoKAyzagIfzTWTIjE7mqmdHZrjFKhCBKpoSuSkc0JIvArm3jM1OdQKh/9zAPG+Wboy+W
-         hXUZmMVvAGIdXUyFYX82e/Q5DrmXniaIf1t7BXcjgP89LOywoLjk/0CrQHjFhhTGHk6Z
-         oUk3qalrNyIepJvo5IlrKtdCJei3JSyiFWDiGUYYJiv+3Syo7Q2Xg2Acp50tc+ehP2Oi
-         Ybv90NgWRxENtMHco5socraneiXML+mbmDjzSA1X9hgf7YFEou7doYHGgb6ddu4mjf/t
-         GMmA==
-X-Gm-Message-State: AOAM532vRQ2lt3s+VwGAxPfCNT8tzu4oKJ0A8nxjIBQy0ORpMuweDD7I
-        Ng65I5iVTi37W07r73ZNtMSmG1dQfErIhwDXngY=
-X-Google-Smtp-Source: ABdhPJzmtdtDlnfBhKPr7o/N7HBWZ4YO6sGrMHXuNYWlj7D0LS5k8WyvFKM/E5qbS7OfztgEGhJI0Q==
-X-Received: by 2002:a2e:88d6:0:b0:245:f22e:5125 with SMTP id a22-20020a2e88d6000000b00245f22e5125mr152025ljk.529.1647446505991;
-        Wed, 16 Mar 2022 09:01:45 -0700 (PDT)
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com. [209.85.167.53])
-        by smtp.gmail.com with ESMTPSA id m5-20020a2eb6c5000000b002480545ebfesm206863ljo.138.2022.03.16.09.01.36
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Mar 2022 09:01:37 -0700 (PDT)
-Received: by mail-lf1-f53.google.com with SMTP id s29so4457231lfb.13
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 09:01:36 -0700 (PDT)
-X-Received: by 2002:ac2:4f92:0:b0:448:7eab:c004 with SMTP id
- z18-20020ac24f92000000b004487eabc004mr184326lfs.27.1647446495212; Wed, 16 Mar
- 2022 09:01:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <0000000000009e7a1905b8295829@google.com> <00000000000003887a05da3e872c@google.com>
- <CAHk-=wj4HBk7o8_dbpk=YiTOFxvE9LTiH8Gk=1kgVxOq1jaH7g@mail.gmail.com> <CACT4Y+atgbwmYmiYqhFQT9_oHw5cD5oyp5bNyCJNz34wSaMgmg@mail.gmail.com>
-In-Reply-To: <CACT4Y+atgbwmYmiYqhFQT9_oHw5cD5oyp5bNyCJNz34wSaMgmg@mail.gmail.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 16 Mar 2022 09:01:18 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wj270g1sHyvvMz99d5x5A_2BXJExzKGNhF1Ch8Y2Mi0pA@mail.gmail.com>
-Message-ID: <CAHk-=wj270g1sHyvvMz99d5x5A_2BXJExzKGNhF1Ch8Y2Mi0pA@mail.gmail.com>
-Subject: Re: [syzbot] KASAN: out-of-bounds Read in ath9k_hif_usb_rx_cb (3)
-To:     Dmitry Vyukov <dvyukov@google.com>
-Cc:     syzbot <syzbot+3f1ca6a6fec34d601788@syzkaller.appspotmail.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        ath9k-devel@qca.qualcomm.com, chouhan.shreyansh630@gmail.com,
-        David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:USB GADGET/PERIPHERAL SUBSYSTEM" 
-        <linux-usb@vger.kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=XlihbDg7cQ33/RZefEfKPqV6TU+bN7s1DmA66a15ROQ=;
+        b=1D14duGFWLHgZWLeqVNAYNhRaG5NsSQmdIZYPBAKdKUnMTxxxzI4PQME/xrRU8RPkC
+         OIFhTm6ogucpnH+3hiSLYVeBUfCjtXIj6WCnMtXlUih+08Hby3BHQniSX98axHHvU83e
+         sZdBJTuT2R6a6ove5gd+QFoE/BQkTzURfaA0gDz0KqnNzLiGueT+oIW7wKPK2hke0ka4
+         yvIt2KgNwKHzABUaa81vspa0lB+TRmJUabGlMblMosAQYVUGaSeA3e0IchjYOw4cpfs4
+         NduWlk7hjTfStueD+sOX/Fnwkat+1UWlyyTQ7xS2vm5FUNwzltrHKorwMeflgacYDnYz
+         3kLA==
+X-Gm-Message-State: AOAM530dqiqIRi7+Gl3bRuDvlH5RjsFummXFtTBGtgHuJSCi9YQ+wga/
+        DS5mexsGY54QTtETOz7KnFDDQoBmHOkFwyROUOP37roYU0IqHepI4NfI3HLGgiMT2/daXFmWo66
+        T24ruHEASVhQk4h7FyRVYD2dhgTI=
+X-Received: by 2002:a17:906:b157:b0:6d0:9f3b:a6aa with SMTP id bt23-20020a170906b15700b006d09f3ba6aamr768774ejb.365.1647450662572;
+        Wed, 16 Mar 2022 10:11:02 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJysl79FB4NHENPw2CZv5ieSfCIyiyw42T7IAMHdtSiDaQ+TpF1nG90KDDu4PzrUVmXRwdp87A==
+X-Received: by 2002:a17:906:b157:b0:6d0:9f3b:a6aa with SMTP id bt23-20020a170906b15700b006d09f3ba6aamr768755ejb.365.1647450662360;
+        Wed, 16 Mar 2022 10:11:02 -0700 (PDT)
+Received: from localhost (mob-31-159-59-198.net.vodafone.it. [31.159.59.198])
+        by smtp.gmail.com with ESMTPSA id u4-20020aa7db84000000b004136c2c357csm1295682edt.70.2022.03.16.10.11.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Mar 2022 10:11:01 -0700 (PDT)
+Date:   Wed, 16 Mar 2022 16:15:36 +0100
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Deren Wu <Deren.Wu@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Netdev <netdev@vger.kernel.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
-        Zekun Shen <bruceshenzk@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH] mt76: fix monitor rx FCS error in DFS channel
+Message-ID: <YjH/GCCfQoZ5OPPM@localhost.localdomain>
+References: <7243650f3d51b1919bd4fd0017ff8b0186149e54.1647421054.git.deren.wu@mediatek.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="qGeKCzL1sC2OXSsX"
+Content-Disposition: inline
+In-Reply-To: <7243650f3d51b1919bd4fd0017ff8b0186149e54.1647421054.git.deren.wu@mediatek.com>
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Mar 16, 2022 at 12:45 AM Dmitry Vyukov <dvyukov@google.com> wrote:
->
-> But the bug looks to be fixed by something anyway. git log on the file
-> pretty clearly points to:
->
-> #syz fix: ath9k: Fix out-of-bound memcpy in ath9k_hif_usb_rx_stream
 
-Yeah, that commit 6ce708f54cc8 looks a lot more likely to have any
-effect on this than my version bump that the syzbot bisection pointed
-to.
+--qGeKCzL1sC2OXSsX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-But kernels containing that commit still have that
+> From: Deren Wu <deren.wu@mediatek.com>
+>=20
+> When setup monitor mode in DFS channel, mt76 send CH_SWITCH_DFS to
+> fw for channel config. This would cause rx performance bad while
+> monitoring frames. Settings CH_SWITCH_NORMAL in monitor mode would
+> get the same performance as normal channels.
 
-  run #0: crashed: KASAN: use-after-free Read in ath9k_hif_usb_rx_cb
+Hi Deren,
 
-so apparently it isn't actually fully fixed. ;(
+>=20
+> Reviewed-by: Shayne Chen <shayne.chen@mediatek.com>
+> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 3 ++-
+>  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 ++-
+>  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 3 ++-
+>  3 files changed, 6 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7615/mcu.c
+> index 390add3144c2..97e2a85cb728 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+> @@ -2151,7 +2151,8 @@ int mt7615_mcu_set_chan_info(struct mt7615_phy *phy=
+, int cmd)
+>  		.center_chan2 =3D ieee80211_frequency_to_channel(freq2),
+>  	};
+> =20
+> -	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH))
+> +	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH) ||
+> +	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
 
-                 Linus
+is this patch compliant with 802.11h DFS standard?
+
+Regards,
+Lorenzo
+
+>  		req.switch_reason =3D CH_SWITCH_NORMAL;
+>  	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
+>  		req.switch_reason =3D CH_SWITCH_SCAN_BYPASS_DPD;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7915/mcu.c
+> index 10dc4bf5adec..c56d48342aaf 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> @@ -2833,7 +2833,8 @@ int mt7915_mcu_set_chan_info(struct mt7915_phy *phy=
+, int cmd)
+>  	}
+>  #endif
+> =20
+> -	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH))
+> +	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH) ||
+> +	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
+>  		req.switch_reason =3D CH_SWITCH_NORMAL;
+>  	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
+>  		req.switch_reason =3D CH_SWITCH_SCAN_BYPASS_DPD;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7921/mcu.c
+> index 5ef8b24f0ab3..da2be050ed7c 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+> @@ -863,7 +863,8 @@ int mt7921_mcu_set_chan_info(struct mt7921_phy *phy, =
+int cmd)
+>  	else
+>  		req.channel_band =3D chandef->chan->band;
+> =20
+> -	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH))
+> +	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH) ||
+> +	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
+>  		req.switch_reason =3D CH_SWITCH_NORMAL;
+>  	else if (dev->mt76.hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
+>  		req.switch_reason =3D CH_SWITCH_SCAN_BYPASS_DPD;
+> --=20
+> 2.18.0
+>=20
+
+--qGeKCzL1sC2OXSsX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYjH/DwAKCRA6cBh0uS2t
+rF9YAP9Ox9jPWfxbiA2T4XjcII2rxrXGYiAg+x0hhromc9pEBgD/R4XK+Ueyo2R0
+7wp0X4yKB541uW2Kv6Kia5CQkbKOqwg=
+=dB/z
+-----END PGP SIGNATURE-----
+
+--qGeKCzL1sC2OXSsX--
+
