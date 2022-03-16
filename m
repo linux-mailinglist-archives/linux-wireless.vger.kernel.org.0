@@ -2,59 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6E044DB992
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 21:39:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C69B4DBB2E
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 00:39:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243789AbiCPUko (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Mar 2022 16:40:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60524 "EHLO
+        id S1348546AbiCPXk6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Mar 2022 19:40:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237873AbiCPUkn (ORCPT
+        with ESMTP id S242323AbiCPXk5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Mar 2022 16:40:43 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A3A85F8EB
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 13:39:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-        Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=JydAo182gyjRHLyhjTxacxOJy7fSg0FYIifCLaWntUc=; b=lLzWufLH76b48Q57rCl1NbQcZp
-        KjHPZ3Mw0eUTD0N2aay1UVbPFyQTyqZ7PxJAupTxiiZM3pqaBposOzCuzVm2mtOp6gDAF6E0AUqvb
-        BIi0u1zvgEW0k+luzXehoU7hV6yqJFSMDQcjt2lI3zmoi74Z3eHkSwtUdZjgOmkgJ1a0=;
-Received: from p200300daa7204f00592052c3a684cf4a.dip0.t-ipconnect.de ([2003:da:a720:4f00:5920:52c3:a684:cf4a] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1nUaQX-00021G-Iu; Wed, 16 Mar 2022 21:39:25 +0100
-Message-ID: <51ee5b67-b4d9-5f78-2729-9af6c7368df3@nbd.name>
-Date:   Wed, 16 Mar 2022 21:39:25 +0100
+        Wed, 16 Mar 2022 19:40:57 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D4D19C2D;
+        Wed, 16 Mar 2022 16:39:41 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id x15so5048123wru.13;
+        Wed, 16 Mar 2022 16:39:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mjSEl7HojYtgNDKj+uOkVCMlpQD09Tv32k+7XUaokl8=;
+        b=Gw5/xgTuCklheDRPRa4qe+QjLlluOQH5o0yQ+fxGyl4Jjk2w5SDX8N8wvr3GoS2vQQ
+         SaXD/K2bOcqOv6zGk/3Y0tjHXeN59TDrd7CrCslYXNZ37iQjPfuxLfSQYOkmzVjpA9jx
+         ZCG2q/uNyJRkjmxCmRDL4ZTdCOIZxFPE490HHZX+ZNreNX7GPRPwYX3v2sCgE9RJmNez
+         d6Ylrn4JIFbSXsh7wCsJkKagVXACrCpbTmhTEWCyAb+7d95ajiAnzE1lQYAFCr2IZQ1o
+         5gyikE0HPOXd20zn+tqdQY0FYoMUv8LWa6A/LXQOXoiX7dhIlont6hRvG0gJUj1C/p+t
+         I4IA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mjSEl7HojYtgNDKj+uOkVCMlpQD09Tv32k+7XUaokl8=;
+        b=hjeEAt4veTJZtpDX4tZTirpEhbjFwWdBUFfwXCEnxnf79S/J94MOdkAR6V9l0PxzRU
+         T3YOr7Dpho7ewEBTpfX3T2el7FiNnVJbZ00IR7UCAbcHNB969iiERF+FvMilKa6BK80n
+         Im4SZc6g0cKBn/QAplbAxYEkyvu0LegCcpVC29dOpjI8xRw1E/CGXiHBpK0n8qMwSJQ7
+         I0cjHUMI9jvvxnfgFtl9MLOd5G7alu5sGQ5mxIFurRnpYTuIXuwvYcyORYkzBDtsZAB4
+         47i8YmoWKK6QukcMt6bX1CL+wzJV0esX8aaI7piV1j65Thhb+8h7Pa20HuzMeUlXeW1N
+         4nig==
+X-Gm-Message-State: AOAM531oODGr1+7GdI1SojKCNOiKxTXacjSvWhk7jHfqN52oiSwIZ+vS
+        EO7iR1cYedx4UqEB2U3gCTQ=
+X-Google-Smtp-Source: ABdhPJx3if0VkRG5NVIO6As67D7R3M/XZ29FQ1ERAzN54brcCJ2IpK+TOAwFekQOiQ0LIu/Wt0IAYQ==
+X-Received: by 2002:a05:6000:1849:b0:203:d6ae:b4b8 with SMTP id c9-20020a056000184900b00203d6aeb4b8mr1841549wri.542.1647473980070;
+        Wed, 16 Mar 2022 16:39:40 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id m3-20020a5d6243000000b001e33760776fsm2649525wrv.10.2022.03.16.16.39.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Mar 2022 16:39:39 -0700 (PDT)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] brcmfmac: p2p: Fix spelling mistake "Comback" -> "Comeback"
+Date:   Wed, 16 Mar 2022 23:39:38 +0000
+Message-Id: <20220316233938.55135-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.7.0
-Subject: Re: pull request: mt76 2022-03-18
-Content-Language: en-US
-From:   Felix Fietkau <nbd@nbd.name>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-References: <de917732-79c6-4ced-2761-f372ff5dea71@nbd.name>
-In-Reply-To: <de917732-79c6-4ced-2761-f372ff5dea71@nbd.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 16.03.22 21:25, Felix Fietkau wrote:
-> Hi Kalle,
-> 
-> here's a new last-minute pull request for 3.18
-Heh, funny typo. 5.18 of course :)
+There are some spelling mistakes in comments and brcmf_dbg messages.
+Fix these.
+
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+index d3f08d4f380b..479041f070f9 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+@@ -90,8 +90,8 @@
+ #define P2PSD_ACTION_CATEGORY		0x04	/* Public action frame */
+ #define P2PSD_ACTION_ID_GAS_IREQ	0x0a	/* GAS Initial Request AF */
+ #define P2PSD_ACTION_ID_GAS_IRESP	0x0b	/* GAS Initial Response AF */
+-#define P2PSD_ACTION_ID_GAS_CREQ	0x0c	/* GAS Comback Request AF */
+-#define P2PSD_ACTION_ID_GAS_CRESP	0x0d	/* GAS Comback Response AF */
++#define P2PSD_ACTION_ID_GAS_CREQ	0x0c	/* GAS Comeback Request AF */
++#define P2PSD_ACTION_ID_GAS_CRESP	0x0d	/* GAS Comeback Response AF */
+ 
+ #define BRCMF_P2P_DISABLE_TIMEOUT	msecs_to_jiffies(500)
+ 
+@@ -396,11 +396,11 @@ static void brcmf_p2p_print_actframe(bool tx, void *frame, u32 frame_len)
+ 				  (tx) ? "TX" : "RX");
+ 			break;
+ 		case P2PSD_ACTION_ID_GAS_CREQ:
+-			brcmf_dbg(TRACE, "%s P2P GAS Comback Request\n",
++			brcmf_dbg(TRACE, "%s P2P GAS Comeback Request\n",
+ 				  (tx) ? "TX" : "RX");
+ 			break;
+ 		case P2PSD_ACTION_ID_GAS_CRESP:
+-			brcmf_dbg(TRACE, "%s P2P GAS Comback Response\n",
++			brcmf_dbg(TRACE, "%s P2P GAS Comeback Response\n",
+ 				  (tx) ? "TX" : "RX");
+ 			break;
+ 		default:
+-- 
+2.35.1
+
