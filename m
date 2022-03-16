@@ -2,47 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2ABE4DB94C
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 21:25:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8175C4DB962
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 21:28:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348168AbiCPU0b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Mar 2022 16:26:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60138 "EHLO
+        id S1348061AbiCPU3S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Mar 2022 16:29:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239396AbiCPU0a (ORCPT
+        with ESMTP id S1347769AbiCPU3R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Mar 2022 16:26:30 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E5E49C81
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 13:25:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
-        MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=J5Xk979R1V7aV3gxdWbYSenTQ1306KuGCwxIVdWaVHY=; b=EwrjkmkE5gXsskHSnJ8kTr/kOn
-        vMxCTm3uHu7pAQbPu4xxTL/D/rrtCZjPcyf+rFeedKKfycgBUGpixCg6eU+20/VTeozk8OYbGGJGm
-        ghgYnWsGKRhEU1sOi+hDIV89/aL+PaFJZEGhQSim2byju04P/km+/DUkxOuVaFCh3MAU=;
-Received: from p200300daa7204f00592052c3a684cf4a.dip0.t-ipconnect.de ([2003:da:a720:4f00:5920:52c3:a684:cf4a] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1nUaCm-0001VD-Gn; Wed, 16 Mar 2022 21:25:12 +0100
-Message-ID: <de917732-79c6-4ced-2761-f372ff5dea71@nbd.name>
-Date:   Wed, 16 Mar 2022 21:25:12 +0100
+        Wed, 16 Mar 2022 16:29:17 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01C0014083
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 13:28:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=BTvuYP7lWMUglAyMweZ6DAdhmDztY7P55m2ENQVSjw8=; t=1647462481; x=1648672081; 
+        b=NV9oZ2VxIekVh7Eg+lhw/Ki/eI9p7hc4PVaO7q/kz5GYbVIPJeCfso3OFDDedpkUfPH++26cGlB
+        uZpq3RyCGjwzSH2kjoSQH95NMvJaM/Hc5xn/UcZud/Qh4Bkn7r9G1UF/myxZU8wdIXl5wmGtEg6Vq
+        lWrDxtCtABn1GfmvqiGxvgSSaK0YMHJaoMrcCCSYKcviSZzvKZqOEWa94aIhP02UBXwrxXGsBLEMZ
+        JSz725od1tha9s6yL/G+xxcG1+dcX+S3F30BeZjxe7Wit8UBN0taUROIJMB5ORKo0C1efTdFuzmAG
+        Hncj6KPN6BpFNVIlFrN9EuRJgLDQpjeCZxPg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nUaFP-00E8yk-9B;
+        Wed, 16 Mar 2022 21:27:55 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Benjamin Berg <benjamin@sipsolutions.net>,
+        Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] rfkill: make new event layout opt-in
+Date:   Wed, 16 Mar 2022 21:27:51 +0100
+Message-Id: <20220316212749.16491491b270.Ifcb1950998330a596f29a2a162e00b7546a1d6d0@changeid>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.7.0
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: pull request: mt76 2022-03-18
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,137 +52,180 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+From: Johannes Berg <johannes.berg@intel.com>
 
-here's a new last-minute pull request for 3.18
+Again new complaints surfaced that we had broken the ABI here,
+although previously all the userspace tools had agreed that it
+was their mistake and fixed it. Yet now there are cases (e.g.
+RHEL) that want to run old userspace with newer kernels, and
+thus are broken.
 
-- Felix
+Since this is a bit of a whack-a-mole thing, change the whole
+extensibility scheme of rfkill to no longer just rely on the
+message lengths, but instead require userspace to opt in via a
+new ioctl to a given maximum event size that it is willing to
+understand.
 
-The following changes since commit d179c1f1c3703d1a6f7a6f2ad08383220673240c:
+By default, set that to RFKILL_EVENT_SIZE_V1 (8), so that the
+behaviour for userspace not calling the ioctl will look as if
+it's just running on an older kernel.
 
-    rtw89: fix uninitialized variable of rtw89_append_probe_req_ie() (2022-03-16 17:49:04 +0200)
+Fixes: 14486c82612a ("rfkill: add a reason to the HW rfkill state")
+Cc: stable@vger.kernel.org # 5.11+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ include/uapi/linux/rfkill.h | 14 +++++++++--
+ net/rfkill/core.c           | 48 ++++++++++++++++++++++++++-----------
+ 2 files changed, 46 insertions(+), 16 deletions(-)
 
-are available in the Git repository at:
-
-    https://github.com/nbd168/wireless tags/mt76-for-kvalo-2022-03-16
-
-for you to fetch changes up to 24e69f6bc3ca4a1696158b68a6fbf14252a8bd28:
-
-    mt76: fix monitor rx FCS error in DFS channel (2022-03-16 21:18:06 +0100)
-
-----------------------------------------------------------------
-mt76 patches for 5.18
-
-- bugfixes
-- mbssid support for mt7915
-- 6 GHz support for mt7915
-- mt7921u driver
-
-----------------------------------------------------------------
-Colin Ian King (1):
-        mt76: connac: make read-only array ba_range static const
-
-Dan Carpenter (1):
-        mt76: mt7915: check for devm_pinctrl_get() failure
-
-Deren Wu (4):
-        mt76: fix monitor mode crash with sdio driver
-        mt76: fix invalid rssi report
-        mt76: fix wrong HE data rate in sniffer tool
-        mt76: fix monitor rx FCS error in DFS channel
-
-Evelyn Tsai (1):
-        mt76: mt7915: fix DFS no radar detection event
-
-Julia Lawall (1):
-        mt76: mt7915: fix typos in comments
-
-Lorenzo Bianconi (17):
-        mt76: mt7615: honor ret from mt7615_mcu_restart in mt7663u_mcu_init
-        mt76: mt7663u: introduce mt7663u_mcu_power_on routine
-        mt76: mt7921: make mt7921_init_tx_queues static
-        mt76: mt7921: fix xmit-queue dump for usb and sdio
-        mt76: mt7921: fix mt7921_queues_acq implementation
-        mt76: mt7921: get rid of mt7921_wait_for_mcu_init declaration
-        mt76: usb: add req_type to ___mt76u_rr signature
-        mt76: usb: add req_type to ___mt76u_wr signature
-        mt76: usb: introduce __mt76u_init utility routine
-        mt76: mt7921: disable runtime pm for usb
-        mt76: mt7921: update mt7921_skb_add_usb_sdio_hdr to support usb
-        mt76: mt7921: move mt7921_usb_sdio_tx_prepare_skb in common mac code
-        mt76: mt7921: move mt7921_usb_sdio_tx_complete_skb in common mac code.
-        mt76: mt7921: move mt7921_usb_sdio_tx_status_data in mac common code.
-        mt76: mt7921: add mt7921u driver
-        mt76: mt7921: move mt7921_init_hw in a dedicated work
-        mt76: mt7915: introduce 802.11ax multi-bss support
-
-MeiChia Chiu (3):
-        mt76: split single ldpc cap bit into bits
-        mt76: connac: add 6 GHz support for wtbl and starec configuration
-        mt76: mt7915: add 6 GHz support
-
-Peter Chiu (1):
-        mt76: mt7915: fix phy cap in mt7915_set_stream_he_txbf_caps()
-
-Ryder Lee (2):
-        mt76: mt7915: allow beaconing on all chains
-        mt76: use le32/16_get_bits() whenever possible
-
-Sean Wang (3):
-        mt76: mt7921: fix up the monitor mode
-        mt76: mt7921: use mt76_hw instead of open coding it
-        mt76: mt7921: don't enable beacon filter when IEEE80211_CONF_CHANGE_MONITOR is set
-
-Shayne Chen (4):
-        mt76: mt7915: fix eeprom fields of txpower init values
-        mt76: mt7915: add txpower init for 6GHz
-        mt76: mt7915: set band1 TGID field in tx descriptor
-        mt76: mt7915: fix beamforming mib stats
-
-   drivers/net/wireless/mediatek/mt76/mac80211.c        |   5 ++-
-   drivers/net/wireless/mediatek/mt76/mt76.h            |  14 +++++--
-   drivers/net/wireless/mediatek/mt76/mt7603/dma.c      |   2 +-
-   drivers/net/wireless/mediatek/mt76/mt7603/mac.c      |   9 ++---
-   drivers/net/wireless/mediatek/mt76/mt7615/mac.c      |  20 +++++-----
-   drivers/net/wireless/mediatek/mt76/mt7615/mcu.c      |   5 ++-
-   drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h   |   1 +
-   drivers/net/wireless/mediatek/mt76/mt7615/usb.c      |  90 +++++++++++++++++++++++++++++++++++---------
-   drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c  |  36 ++++++++++++------
-   drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |  54 +++++++++++++++++++--------
-   drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h |   3 +-
-   drivers/net/wireless/mediatek/mt76/mt76x0/usb.c      |   2 +-
-   drivers/net/wireless/mediatek/mt76/mt76x2/usb.c      |   2 +-
-   drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c   |  82 +++++++++++++++++++++++++---------------
-   drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h   |  32 +++++++++++++++-
-   drivers/net/wireless/mediatek/mt76/mt7915/init.c     |  59 +++++++++++++++++++++++++----
-   drivers/net/wireless/mediatek/mt76/mt7915/mac.c      | 147 +++++++++++++++++++++++++++++++++++++++++++-----------------------------
-   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      | 105 +++++++++++++++++++++++++++++++++++++++++++++-------
-   drivers/net/wireless/mediatek/mt76/mt7915/mmio.c     |   2 +
-   drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h   |   6 ++-
-   drivers/net/wireless/mediatek/mt76/mt7915/regs.h     |  28 ++++++++++----
-   drivers/net/wireless/mediatek/mt76/mt7915/soc.c      |   2 +
-   drivers/net/wireless/mediatek/mt76/mt7915/testmode.c |   4 ++
-   drivers/net/wireless/mediatek/mt76/mt7921/Kconfig    |  11 ++++++
-   drivers/net/wireless/mediatek/mt76/mt7921/Makefile   |   2 +
-   drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c  |  28 +++++++++-----
-   drivers/net/wireless/mediatek/mt76/mt7921/dma.c      |   2 +-
-   drivers/net/wireless/mediatek/mt76/mt7921/init.c     |  74 +++++++++++++++++++++++++------------
-   drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 128 +++++++++++++++++++++++++++++++++++++++++++++++++++++----------
-   drivers/net/wireless/mediatek/mt76/mt7921/mac.h      |   1 +
-   drivers/net/wireless/mediatek/mt76/mt7921/main.c     |  38 ++++++++++++-------
-   drivers/net/wireless/mediatek/mt76/mt7921/mcu.c      |  33 ++++++++++++++++-
-   drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h   |  42 +++++++++++++++------
-   drivers/net/wireless/mediatek/mt76/mt7921/pci.c      |   1 +
-   drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c  |  13 +++----
-   drivers/net/wireless/mediatek/mt76/mt7921/regs.h     |  61 ++++++++++++++++++++++++++----
-   drivers/net/wireless/mediatek/mt76/mt7921/sdio.c     |   7 ++--
-   drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c |  83 -----------------------------------------
-   drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c |   2 +-
-   drivers/net/wireless/mediatek/mt76/mt7921/usb.c      | 306 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-   drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c  | 252 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-   drivers/net/wireless/mediatek/mt76/sdio_txrx.c       |   2 +-
-   drivers/net/wireless/mediatek/mt76/usb.c             | 125 +++++++++++++++++++------------------------------------------
-   43 files changed, 1460 insertions(+), 461 deletions(-)
-   create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-   create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
+diff --git a/include/uapi/linux/rfkill.h b/include/uapi/linux/rfkill.h
+index 9b77cfc42efa..283c5a7b3f2c 100644
+--- a/include/uapi/linux/rfkill.h
++++ b/include/uapi/linux/rfkill.h
+@@ -159,8 +159,16 @@ struct rfkill_event_ext {
+  * old behaviour for all userspace, unless it explicitly opts in to the
+  * rules outlined here by using the new &struct rfkill_event_ext.
+  *
+- * Userspace using &struct rfkill_event_ext must adhere to the following
+- * rules
++ * Additionally, some other userspace (bluez, g-s-d) was reading with a
++ * large size but as streaming reads rather than message-based, or with
++ * too strict checks for the returned size. So eventually, we completely
++ * reverted this, and extended messages need to be opted in to by using
++ * an ioctl:
++ *
++ *  ioctl(fd, RFKILL_IOCTL_MAX_SIZE, sizeof(struct rfkill_event_ext));
++ *
++ * Userspace using &struct rfkill_event_ext and the ioctl must adhere to
++ * the following rules:
+  *
+  * 1. accept short writes, optionally using them to detect that it's
+  *    running on an older kernel;
+@@ -175,6 +183,8 @@ struct rfkill_event_ext {
+ #define RFKILL_IOC_MAGIC	'R'
+ #define RFKILL_IOC_NOINPUT	1
+ #define RFKILL_IOCTL_NOINPUT	_IO(RFKILL_IOC_MAGIC, RFKILL_IOC_NOINPUT)
++#define RFKILL_IOC_MAX_SIZE	2
++#define RFKILL_IOCTL_MAX_SIZE	_IOW(RFKILL_IOC_MAGIC, RFKILL_IOC_EXT_SIZE, __u32)
+ 
+ /* and that's all userspace gets */
+ 
+diff --git a/net/rfkill/core.c b/net/rfkill/core.c
+index 5b1927d66f0d..dac4fdc7488a 100644
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -78,6 +78,7 @@ struct rfkill_data {
+ 	struct mutex		mtx;
+ 	wait_queue_head_t	read_wait;
+ 	bool			input_handler;
++	u8			max_size;
+ };
+ 
+ 
+@@ -1153,6 +1154,8 @@ static int rfkill_fop_open(struct inode *inode, struct file *file)
+ 	if (!data)
+ 		return -ENOMEM;
+ 
++	data->max_size = RFKILL_EVENT_SIZE_V1;
++
+ 	INIT_LIST_HEAD(&data->events);
+ 	mutex_init(&data->mtx);
+ 	init_waitqueue_head(&data->read_wait);
+@@ -1235,6 +1238,7 @@ static ssize_t rfkill_fop_read(struct file *file, char __user *buf,
+ 				list);
+ 
+ 	sz = min_t(unsigned long, sizeof(ev->ev), count);
++	sz = min_t(unsigned long, sz, data->max_size);
+ 	ret = sz;
+ 	if (copy_to_user(buf, &ev->ev, sz))
+ 		ret = -EFAULT;
+@@ -1249,6 +1253,7 @@ static ssize_t rfkill_fop_read(struct file *file, char __user *buf,
+ static ssize_t rfkill_fop_write(struct file *file, const char __user *buf,
+ 				size_t count, loff_t *pos)
+ {
++	struct rfkill_data *data = file->private_data;
+ 	struct rfkill *rfkill;
+ 	struct rfkill_event_ext ev;
+ 	int ret;
+@@ -1263,6 +1268,7 @@ static ssize_t rfkill_fop_write(struct file *file, const char __user *buf,
+ 	 * our API version even in a write() call, if it cares.
+ 	 */
+ 	count = min(count, sizeof(ev));
++	count = min_t(size_t, count, data->max_size);
+ 	if (copy_from_user(&ev, buf, count))
+ 		return -EFAULT;
+ 
+@@ -1322,31 +1328,47 @@ static int rfkill_fop_release(struct inode *inode, struct file *file)
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_RFKILL_INPUT
+ static long rfkill_fop_ioctl(struct file *file, unsigned int cmd,
+ 			     unsigned long arg)
+ {
+ 	struct rfkill_data *data = file->private_data;
++	int ret = -ENOSYS;
++	u32 size;
+ 
+ 	if (_IOC_TYPE(cmd) != RFKILL_IOC_MAGIC)
+ 		return -ENOSYS;
+ 
+-	if (_IOC_NR(cmd) != RFKILL_IOC_NOINPUT)
+-		return -ENOSYS;
+-
+ 	mutex_lock(&data->mtx);
+-
+-	if (!data->input_handler) {
+-		if (atomic_inc_return(&rfkill_input_disabled) == 1)
+-			printk(KERN_DEBUG "rfkill: input handler disabled\n");
+-		data->input_handler = true;
++	switch (_IOC_NR(cmd)) {
++#ifdef CONFIG_RFKILL_INPUT
++	case RFKILL_IOC_NOINPUT:
++		if (!data->input_handler) {
++			if (atomic_inc_return(&rfkill_input_disabled) == 1)
++				printk(KERN_DEBUG "rfkill: input handler disabled\n");
++			data->input_handler = true;
++		}
++		ret = 0;
++		break;
++#endif
++	case RFKILL_IOC_MAX_SIZE:
++		if (get_user(size, (__u32 __user *)arg)) {
++			ret = -EFAULT;
++			break;
++		}
++		if (size < RFKILL_EVENT_SIZE_V1 || size > U8_MAX) {
++			ret = -EINVAL;
++			break;
++		}
++		data->max_size = size;
++		ret = 0;
++		break;
++	default:
++		break;
+ 	}
+-
+ 	mutex_unlock(&data->mtx);
+ 
+-	return 0;
++	return ret;
+ }
+-#endif
+ 
+ static const struct file_operations rfkill_fops = {
+ 	.owner		= THIS_MODULE,
+@@ -1355,10 +1377,8 @@ static const struct file_operations rfkill_fops = {
+ 	.write		= rfkill_fop_write,
+ 	.poll		= rfkill_fop_poll,
+ 	.release	= rfkill_fop_release,
+-#ifdef CONFIG_RFKILL_INPUT
+ 	.unlocked_ioctl	= rfkill_fop_ioctl,
+ 	.compat_ioctl	= compat_ptr_ioctl,
+-#endif
+ 	.llseek		= no_llseek,
+ };
+ 
+-- 
+2.35.1
 
