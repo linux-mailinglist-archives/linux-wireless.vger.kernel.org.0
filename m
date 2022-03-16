@@ -2,230 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8175C4DB962
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 21:28:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6E044DB992
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 21:39:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348061AbiCPU3S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Mar 2022 16:29:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34782 "EHLO
+        id S243789AbiCPUko (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Mar 2022 16:40:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347769AbiCPU3R (ORCPT
+        with ESMTP id S237873AbiCPUkn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Mar 2022 16:29:17 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01C0014083
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 13:28:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=BTvuYP7lWMUglAyMweZ6DAdhmDztY7P55m2ENQVSjw8=; t=1647462481; x=1648672081; 
-        b=NV9oZ2VxIekVh7Eg+lhw/Ki/eI9p7hc4PVaO7q/kz5GYbVIPJeCfso3OFDDedpkUfPH++26cGlB
-        uZpq3RyCGjwzSH2kjoSQH95NMvJaM/Hc5xn/UcZud/Qh4Bkn7r9G1UF/myxZU8wdIXl5wmGtEg6Vq
-        lWrDxtCtABn1GfmvqiGxvgSSaK0YMHJaoMrcCCSYKcviSZzvKZqOEWa94aIhP02UBXwrxXGsBLEMZ
-        JSz725od1tha9s6yL/G+xxcG1+dcX+S3F30BeZjxe7Wit8UBN0taUROIJMB5ORKo0C1efTdFuzmAG
-        Hncj6KPN6BpFNVIlFrN9EuRJgLDQpjeCZxPg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nUaFP-00E8yk-9B;
-        Wed, 16 Mar 2022 21:27:55 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Benjamin Berg <benjamin@sipsolutions.net>,
-        Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] rfkill: make new event layout opt-in
-Date:   Wed, 16 Mar 2022 21:27:51 +0100
-Message-Id: <20220316212749.16491491b270.Ifcb1950998330a596f29a2a162e00b7546a1d6d0@changeid>
-X-Mailer: git-send-email 2.35.1
+        Wed, 16 Mar 2022 16:40:43 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A3A85F8EB
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 13:39:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+        Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=JydAo182gyjRHLyhjTxacxOJy7fSg0FYIifCLaWntUc=; b=lLzWufLH76b48Q57rCl1NbQcZp
+        KjHPZ3Mw0eUTD0N2aay1UVbPFyQTyqZ7PxJAupTxiiZM3pqaBposOzCuzVm2mtOp6gDAF6E0AUqvb
+        BIi0u1zvgEW0k+luzXehoU7hV6yqJFSMDQcjt2lI3zmoi74Z3eHkSwtUdZjgOmkgJ1a0=;
+Received: from p200300daa7204f00592052c3a684cf4a.dip0.t-ipconnect.de ([2003:da:a720:4f00:5920:52c3:a684:cf4a] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1nUaQX-00021G-Iu; Wed, 16 Mar 2022 21:39:25 +0100
+Message-ID: <51ee5b67-b4d9-5f78-2729-9af6c7368df3@nbd.name>
+Date:   Wed, 16 Mar 2022 21:39:25 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.7.0
+Subject: Re: pull request: mt76 2022-03-18
+Content-Language: en-US
+From:   Felix Fietkau <nbd@nbd.name>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <de917732-79c6-4ced-2761-f372ff5dea71@nbd.name>
+In-Reply-To: <de917732-79c6-4ced-2761-f372ff5dea71@nbd.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
-
-Again new complaints surfaced that we had broken the ABI here,
-although previously all the userspace tools had agreed that it
-was their mistake and fixed it. Yet now there are cases (e.g.
-RHEL) that want to run old userspace with newer kernels, and
-thus are broken.
-
-Since this is a bit of a whack-a-mole thing, change the whole
-extensibility scheme of rfkill to no longer just rely on the
-message lengths, but instead require userspace to opt in via a
-new ioctl to a given maximum event size that it is willing to
-understand.
-
-By default, set that to RFKILL_EVENT_SIZE_V1 (8), so that the
-behaviour for userspace not calling the ioctl will look as if
-it's just running on an older kernel.
-
-Fixes: 14486c82612a ("rfkill: add a reason to the HW rfkill state")
-Cc: stable@vger.kernel.org # 5.11+
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- include/uapi/linux/rfkill.h | 14 +++++++++--
- net/rfkill/core.c           | 48 ++++++++++++++++++++++++++-----------
- 2 files changed, 46 insertions(+), 16 deletions(-)
-
-diff --git a/include/uapi/linux/rfkill.h b/include/uapi/linux/rfkill.h
-index 9b77cfc42efa..283c5a7b3f2c 100644
---- a/include/uapi/linux/rfkill.h
-+++ b/include/uapi/linux/rfkill.h
-@@ -159,8 +159,16 @@ struct rfkill_event_ext {
-  * old behaviour for all userspace, unless it explicitly opts in to the
-  * rules outlined here by using the new &struct rfkill_event_ext.
-  *
-- * Userspace using &struct rfkill_event_ext must adhere to the following
-- * rules
-+ * Additionally, some other userspace (bluez, g-s-d) was reading with a
-+ * large size but as streaming reads rather than message-based, or with
-+ * too strict checks for the returned size. So eventually, we completely
-+ * reverted this, and extended messages need to be opted in to by using
-+ * an ioctl:
-+ *
-+ *  ioctl(fd, RFKILL_IOCTL_MAX_SIZE, sizeof(struct rfkill_event_ext));
-+ *
-+ * Userspace using &struct rfkill_event_ext and the ioctl must adhere to
-+ * the following rules:
-  *
-  * 1. accept short writes, optionally using them to detect that it's
-  *    running on an older kernel;
-@@ -175,6 +183,8 @@ struct rfkill_event_ext {
- #define RFKILL_IOC_MAGIC	'R'
- #define RFKILL_IOC_NOINPUT	1
- #define RFKILL_IOCTL_NOINPUT	_IO(RFKILL_IOC_MAGIC, RFKILL_IOC_NOINPUT)
-+#define RFKILL_IOC_MAX_SIZE	2
-+#define RFKILL_IOCTL_MAX_SIZE	_IOW(RFKILL_IOC_MAGIC, RFKILL_IOC_EXT_SIZE, __u32)
- 
- /* and that's all userspace gets */
- 
-diff --git a/net/rfkill/core.c b/net/rfkill/core.c
-index 5b1927d66f0d..dac4fdc7488a 100644
---- a/net/rfkill/core.c
-+++ b/net/rfkill/core.c
-@@ -78,6 +78,7 @@ struct rfkill_data {
- 	struct mutex		mtx;
- 	wait_queue_head_t	read_wait;
- 	bool			input_handler;
-+	u8			max_size;
- };
- 
- 
-@@ -1153,6 +1154,8 @@ static int rfkill_fop_open(struct inode *inode, struct file *file)
- 	if (!data)
- 		return -ENOMEM;
- 
-+	data->max_size = RFKILL_EVENT_SIZE_V1;
-+
- 	INIT_LIST_HEAD(&data->events);
- 	mutex_init(&data->mtx);
- 	init_waitqueue_head(&data->read_wait);
-@@ -1235,6 +1238,7 @@ static ssize_t rfkill_fop_read(struct file *file, char __user *buf,
- 				list);
- 
- 	sz = min_t(unsigned long, sizeof(ev->ev), count);
-+	sz = min_t(unsigned long, sz, data->max_size);
- 	ret = sz;
- 	if (copy_to_user(buf, &ev->ev, sz))
- 		ret = -EFAULT;
-@@ -1249,6 +1253,7 @@ static ssize_t rfkill_fop_read(struct file *file, char __user *buf,
- static ssize_t rfkill_fop_write(struct file *file, const char __user *buf,
- 				size_t count, loff_t *pos)
- {
-+	struct rfkill_data *data = file->private_data;
- 	struct rfkill *rfkill;
- 	struct rfkill_event_ext ev;
- 	int ret;
-@@ -1263,6 +1268,7 @@ static ssize_t rfkill_fop_write(struct file *file, const char __user *buf,
- 	 * our API version even in a write() call, if it cares.
- 	 */
- 	count = min(count, sizeof(ev));
-+	count = min_t(size_t, count, data->max_size);
- 	if (copy_from_user(&ev, buf, count))
- 		return -EFAULT;
- 
-@@ -1322,31 +1328,47 @@ static int rfkill_fop_release(struct inode *inode, struct file *file)
- 	return 0;
- }
- 
--#ifdef CONFIG_RFKILL_INPUT
- static long rfkill_fop_ioctl(struct file *file, unsigned int cmd,
- 			     unsigned long arg)
- {
- 	struct rfkill_data *data = file->private_data;
-+	int ret = -ENOSYS;
-+	u32 size;
- 
- 	if (_IOC_TYPE(cmd) != RFKILL_IOC_MAGIC)
- 		return -ENOSYS;
- 
--	if (_IOC_NR(cmd) != RFKILL_IOC_NOINPUT)
--		return -ENOSYS;
--
- 	mutex_lock(&data->mtx);
--
--	if (!data->input_handler) {
--		if (atomic_inc_return(&rfkill_input_disabled) == 1)
--			printk(KERN_DEBUG "rfkill: input handler disabled\n");
--		data->input_handler = true;
-+	switch (_IOC_NR(cmd)) {
-+#ifdef CONFIG_RFKILL_INPUT
-+	case RFKILL_IOC_NOINPUT:
-+		if (!data->input_handler) {
-+			if (atomic_inc_return(&rfkill_input_disabled) == 1)
-+				printk(KERN_DEBUG "rfkill: input handler disabled\n");
-+			data->input_handler = true;
-+		}
-+		ret = 0;
-+		break;
-+#endif
-+	case RFKILL_IOC_MAX_SIZE:
-+		if (get_user(size, (__u32 __user *)arg)) {
-+			ret = -EFAULT;
-+			break;
-+		}
-+		if (size < RFKILL_EVENT_SIZE_V1 || size > U8_MAX) {
-+			ret = -EINVAL;
-+			break;
-+		}
-+		data->max_size = size;
-+		ret = 0;
-+		break;
-+	default:
-+		break;
- 	}
--
- 	mutex_unlock(&data->mtx);
- 
--	return 0;
-+	return ret;
- }
--#endif
- 
- static const struct file_operations rfkill_fops = {
- 	.owner		= THIS_MODULE,
-@@ -1355,10 +1377,8 @@ static const struct file_operations rfkill_fops = {
- 	.write		= rfkill_fop_write,
- 	.poll		= rfkill_fop_poll,
- 	.release	= rfkill_fop_release,
--#ifdef CONFIG_RFKILL_INPUT
- 	.unlocked_ioctl	= rfkill_fop_ioctl,
- 	.compat_ioctl	= compat_ptr_ioctl,
--#endif
- 	.llseek		= no_llseek,
- };
- 
--- 
-2.35.1
-
+On 16.03.22 21:25, Felix Fietkau wrote:
+> Hi Kalle,
+> 
+> here's a new last-minute pull request for 3.18
+Heh, funny typo. 5.18 of course :)
