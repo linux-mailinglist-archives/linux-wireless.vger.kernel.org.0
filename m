@@ -2,50 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4072C4DB7ED
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 19:30:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF1234DB7FC
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Mar 2022 19:36:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230022AbiCPSba (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Mar 2022 14:31:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33760 "EHLO
+        id S1355173AbiCPShl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Mar 2022 14:37:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354613AbiCPSb2 (ORCPT
+        with ESMTP id S239413AbiCPShi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Mar 2022 14:31:28 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53056D95D;
-        Wed, 16 Mar 2022 11:30:13 -0700 (PDT)
+        Wed, 16 Mar 2022 14:37:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BA125F4CB;
+        Wed, 16 Mar 2022 11:36:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5E407B81A71;
-        Wed, 16 Mar 2022 18:30:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 022D0C340F2;
-        Wed, 16 Mar 2022 18:30:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CC8BD618D3;
+        Wed, 16 Mar 2022 18:36:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA04BC340EC;
+        Wed, 16 Mar 2022 18:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647455411;
-        bh=LO/RUu00sqiUYvB9f0a9zQ1Khjj7+kdyjKMfrelj+MI=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=kCw1NNsxhVnPoy2xHJH6HUCGpcQWYlxo0ojzc5zU5EJ5ef97syNoGbnSkC5/Luxml
-         3an0gax9UViaRDB7vAqPM/98ROwoO2XOz6Q/caR//ki0KaCzsUeiD6ZtiuSReixYCl
-         NuphHrDmJzJXNdO2OrKny3h3uwbJv48lIxbabgfRwyhFntRwFFTGu0AQb6dKKsyloC
-         ARvNQ6w7zoBhZp3u/MjHhOSyzhe3gUwKIZqpB5UVuv7Fkkho3RNSiCcML7V2Ucq+iJ
-         TPggqF7v5JYxn4OJXGrPZyM/YzJTjD26VFEVKIOzRQhkuKDMncnv5dPeJjaKB6QelA
-         VOJu99aav0Jzg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id CEB61F0383F;
-        Wed, 16 Mar 2022 18:30:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1647455783;
+        bh=5kfVOxiNs9Lfjb/f3WQydUgKBkkYnRcyc4hj7F3zqys=;
+        h=From:To:Cc:Subject:Date:From;
+        b=RUJz0qKmBWGiMdYQNI3NyveSUlZnvQbnK9DfdZE1KuSKzA0cuE8OOCJNiiysq8G5F
+         Ph71rzGyePcrhyHuHT77TMAk6oaRa/yyskiEXsvfK2cumn9zpTfJVVgE4xqJVGh8gk
+         iBNnVYYxl5elULDvrXuLkXQ8Z4FEonsPFjb9hrsZv7LccPrmqBw2srG1NQK7PiLW4I
+         TKkvxGGjwZWzF1c6oV0AXmLACydvQ/P7nL8X4phF0KdhrGAyljxLFa/ss8JcTQHO6V
+         xzOW7CjDcmIM1hlWVlBM4byVVHJo4mgG5QnM+kL+NAxFrPYwicuXU8oBoffGmdzsKJ
+         /HMU5JA5ZbzmA==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Ayala Beker <ayala.beker@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] iwlwifi: mei: fix building iwlmei
+Date:   Wed, 16 Mar 2022 19:36:03 +0100
+Message-Id: <20220316183617.1470631-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-2022-03-16
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <164745541084.25916.10068737564049624683.git-patchwork-notify@kernel.org>
-Date:   Wed, 16 Mar 2022 18:30:10 +0000
-References: <20220316130249.B5225C340EC@smtp.kernel.org>
-In-Reply-To: <20220316130249.B5225C340EC@smtp.kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -56,28 +58,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+From: Arnd Bergmann <arnd@arndb.de>
 
-This pull request was applied to netdev/net.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+Building iwlmei without CONFIG_CFG80211 causes a link-time warning:
 
-On Wed, 16 Mar 2022 13:02:49 +0000 (UTC) you wrote:
-> Hi,
-> 
-> here's a pull request to net tree, more info below. Please let me know if there
-> are any problems.
-> 
-> Kalle
-> 
-> [...]
+ld.lld: error: undefined symbol: ieee80211_hdrlen
+>>> referenced by net.c
+>>>               net/wireless/intel/iwlwifi/mei/net.o:(iwl_mei_tx_copy_to_csme) in archive drivers/built-in.a
 
-Here is the summary with links:
-  - pull-request: wireless-2022-03-16
-    https://git.kernel.org/netdev/net/c/1bbdcbaeda44
+Add an explicit dependency to avoid this. In theory it should not
+be needed here, but it also seems pointless to allow IWLMEI
+for configurations without CFG80211.
 
-You are awesome, thank you!
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/wireless/intel/iwlwifi/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+I see this warning on 5.17-rc8, but did not test it on linux-next,
+which may already have a fix.
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
+index 85e704283755..a647a406b87b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/Kconfig
++++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
+@@ -139,6 +139,7 @@ config IWLMEI
+ 	tristate "Intel Management Engine communication over WLAN"
+ 	depends on INTEL_MEI
+ 	depends on PM
++	depends on CFG80211
+ 	help
+ 	  Enables the iwlmei kernel module.
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.29.2
 
