@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 303604DBF20
+	by mail.lfdr.de (Postfix) with ESMTP id 7B5534DBF21
 	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 07:16:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229590AbiCQGSL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Mar 2022 02:18:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60092 "EHLO
+        id S229841AbiCQGSM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Mar 2022 02:18:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229925AbiCQGRw (ORCPT
+        with ESMTP id S229776AbiCQGRr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Mar 2022 02:17:52 -0400
+        Thu, 17 Mar 2022 02:17:47 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3CF42C77AB
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 22:56:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293CC2C8B49
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 22:57:02 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22H5urwG7009836, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22H5urwG7009836
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22H5utL93009841, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22H5utL93009841
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 17 Mar 2022 13:56:53 +0800
+        Thu, 17 Mar 2022 13:56:55 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Thu, 17 Mar 2022 13:56:53 +0800
+ 15.1.2375.24; Thu, 17 Mar 2022 13:56:55 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 17 Mar
- 2022 13:56:53 +0800
+ 2022 13:56:54 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>,
         <hsuan8331@realtek.com>, <yuanhan1020@realtek.com>
-Subject: [PATCH v2 11/12] rtw89: extend mac tx_en bits from 16 to 32
-Date:   Thu, 17 Mar 2022 13:55:42 +0800
-Message-ID: <20220317055543.40514-12-pkshih@realtek.com>
+Subject: [PATCH v2 12/12] rtw89: implement stop and resume channels transmission v1
+Date:   Thu, 17 Mar 2022 13:55:43 +0800
+Message-ID: <20220317055543.40514-13-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220317055543.40514-1-pkshih@realtek.com>
 References: <20220317055543.40514-1-pkshih@realtek.com>
@@ -56,7 +56,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMTcgpFekyCAwMzoyNjowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -69,118 +69,357 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In order to support 8852C that uses 32 bits to control TX types.
-
-This patch doesn't really use 32 bits tx_en yet, but next patch will
-use it.
+These function is used to stop transmitting when we are going to switch
+channels or do some RF calibration. Before these operations, we need to
+stop channel transmission and backup setting into parameter tx_en. After
+operations are done, resume transmitting by backup parameter tx_en.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h         | 2 +-
- drivers/net/wireless/realtek/rtw89/mac.c          | 6 +++---
- drivers/net/wireless/realtek/rtw89/mac.h          | 4 ++--
- drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c | 8 ++++----
- 4 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h     | 20 +++++
+ drivers/net/wireless/realtek/rtw89/mac.c      | 84 +++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/mac.h      |  3 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |  7 ++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  6 +-
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.c | 16 ++--
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  2 +
+ 7 files changed, 123 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 08416f005b508..0ffb163c23f0f 100644
+index 0ffb163c23f0f..771722132c53b 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -609,7 +609,7 @@ struct rtw89_channel_params {
- };
+@@ -2071,6 +2071,9 @@ struct rtw89_chip_ops {
+ 	int (*cfg_ctrl_path)(struct rtw89_dev *rtwdev, bool wl);
+ 	int (*mac_cfg_gnt)(struct rtw89_dev *rtwdev,
+ 			   const struct rtw89_mac_ax_coex_gnt *gnt_cfg);
++	int (*stop_sch_tx)(struct rtw89_dev *rtwdev, u8 mac_idx,
++			   u32 *tx_en, enum rtw89_sch_tx_sel sel);
++	int (*resume_sch_tx)(struct rtw89_dev *rtwdev, u8 mac_idx, u32 tx_en);
  
- struct rtw89_channel_help_params {
--	u16 tx_en;
-+	u32 tx_en;
- };
- 
- struct rtw89_port_reg {
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index dd538411a3c2e..2b507279f4e43 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -2247,7 +2247,7 @@ static int rtw89_set_hw_sch_tx_en(struct rtw89_dev *rtwdev, u8 mac_idx,
+ 	void (*btc_set_rfe)(struct rtw89_dev *rtwdev);
+ 	void (*btc_init_cfg)(struct rtw89_dev *rtwdev);
+@@ -3486,6 +3489,23 @@ static inline void rtw89_chip_cfg_ctrl_path(struct rtw89_dev *rtwdev, bool wl)
+ 	chip->ops->cfg_ctrl_path(rtwdev, wl);
  }
  
- int rtw89_mac_stop_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx,
--			  u16 *tx_en, enum rtw89_sch_tx_sel sel)
-+			  u32 *tx_en, enum rtw89_sch_tx_sel sel)
++static inline
++int rtw89_chip_stop_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx,
++			   u32 *tx_en, enum rtw89_sch_tx_sel sel)
++{
++	const struct rtw89_chip_info *chip = rtwdev->chip;
++
++	return chip->ops->stop_sch_tx(rtwdev, mac_idx, tx_en, sel);
++}
++
++static inline
++int rtw89_chip_resume_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx, u32 tx_en)
++{
++	const struct rtw89_chip_info *chip = rtwdev->chip;
++
++	return chip->ops->resume_sch_tx(rtwdev, mac_idx, tx_en);
++}
++
+ static inline u8 *get_hdr_bssid(struct ieee80211_hdr *hdr)
  {
- 	int ret;
+ 	__le16 fc = hdr->frame_control;
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 2b507279f4e43..5e554bd9f0368 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -2246,6 +2246,24 @@ static int rtw89_set_hw_sch_tx_en(struct rtw89_dev *rtwdev, u8 mac_idx,
+ 	return 0;
+ }
  
-@@ -2285,7 +2285,7 @@ int rtw89_mac_stop_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx,
++static int rtw89_set_hw_sch_tx_en_v1(struct rtw89_dev *rtwdev, u8 mac_idx,
++				     u32 tx_en, u32 tx_en_mask)
++{
++	u32 reg = rtw89_mac_reg_by_idx(R_AX_CTN_DRV_TXEN, mac_idx);
++	u32 val;
++	int ret;
++
++	ret = rtw89_mac_check_mac_en(rtwdev, mac_idx, RTW89_CMAC_SEL);
++	if (ret)
++		return ret;
++
++	val = rtw89_read32(rtwdev, reg);
++	val = (val & ~tx_en_mask) | (tx_en & tx_en_mask);
++	rtw89_write32(rtwdev, reg, val);
++
++	return 0;
++}
++
+ int rtw89_mac_stop_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx,
+ 			  u32 *tx_en, enum rtw89_sch_tx_sel sel)
+ {
+@@ -2256,7 +2274,8 @@ int rtw89_mac_stop_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx,
+ 
+ 	switch (sel) {
+ 	case RTW89_SCH_TX_SEL_ALL:
+-		ret = rtw89_set_hw_sch_tx_en(rtwdev, mac_idx, 0, 0xffff);
++		ret = rtw89_set_hw_sch_tx_en(rtwdev, mac_idx, 0,
++					     B_AX_CTN_TXEN_ALL_MASK);
+ 		if (ret)
+ 			return ret;
+ 		break;
+@@ -2273,7 +2292,8 @@ int rtw89_mac_stop_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx,
+ 			return ret;
+ 		break;
+ 	case RTW89_SCH_TX_SEL_MACID:
+-		ret = rtw89_set_hw_sch_tx_en(rtwdev, mac_idx, 0, 0xffff);
++		ret = rtw89_set_hw_sch_tx_en(rtwdev, mac_idx, 0,
++					     B_AX_CTN_TXEN_ALL_MASK);
+ 		if (ret)
+ 			return ret;
+ 		break;
+@@ -2285,11 +2305,52 @@ int rtw89_mac_stop_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx,
  }
  EXPORT_SYMBOL(rtw89_mac_stop_sch_tx);
  
--int rtw89_mac_resume_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx, u16 tx_en)
-+int rtw89_mac_resume_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx, u32 tx_en)
++int rtw89_mac_stop_sch_tx_v1(struct rtw89_dev *rtwdev, u8 mac_idx,
++			     u32 *tx_en, enum rtw89_sch_tx_sel sel)
++{
++	int ret;
++
++	*tx_en = rtw89_read32(rtwdev,
++			      rtw89_mac_reg_by_idx(R_AX_CTN_DRV_TXEN, mac_idx));
++
++	switch (sel) {
++	case RTW89_SCH_TX_SEL_ALL:
++		ret = rtw89_set_hw_sch_tx_en_v1(rtwdev, mac_idx, 0,
++						B_AX_CTN_TXEN_ALL_MASK_V1);
++		if (ret)
++			return ret;
++		break;
++	case RTW89_SCH_TX_SEL_HIQ:
++		ret = rtw89_set_hw_sch_tx_en_v1(rtwdev, mac_idx,
++						0, B_AX_CTN_TXEN_HGQ);
++		if (ret)
++			return ret;
++		break;
++	case RTW89_SCH_TX_SEL_MG0:
++		ret = rtw89_set_hw_sch_tx_en_v1(rtwdev, mac_idx,
++						0, B_AX_CTN_TXEN_MGQ);
++		if (ret)
++			return ret;
++		break;
++	case RTW89_SCH_TX_SEL_MACID:
++		ret = rtw89_set_hw_sch_tx_en_v1(rtwdev, mac_idx, 0,
++						B_AX_CTN_TXEN_ALL_MASK_V1);
++		if (ret)
++			return ret;
++		break;
++	default:
++		return 0;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL(rtw89_mac_stop_sch_tx_v1);
++
+ int rtw89_mac_resume_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx, u32 tx_en)
  {
  	int ret;
  
-@@ -2459,7 +2459,7 @@ static int band1_enable(struct rtw89_dev *rtwdev)
- 	int ret, i;
- 	u32 sleep_bak[4] = {0};
- 	u32 pause_bak[4] = {0};
--	u16 tx_en;
-+	u32 tx_en;
+-	ret = rtw89_set_hw_sch_tx_en(rtwdev, mac_idx, tx_en, 0xffff);
++	ret = rtw89_set_hw_sch_tx_en(rtwdev, mac_idx, tx_en, B_AX_CTN_TXEN_ALL_MASK);
+ 	if (ret)
+ 		return ret;
  
- 	ret = rtw89_mac_stop_sch_tx(rtwdev, 0, &tx_en, RTW89_SCH_TX_SEL_ALL);
+@@ -2297,6 +2358,19 @@ int rtw89_mac_resume_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx, u32 tx_en)
+ }
+ EXPORT_SYMBOL(rtw89_mac_resume_sch_tx);
+ 
++int rtw89_mac_resume_sch_tx_v1(struct rtw89_dev *rtwdev, u8 mac_idx, u32 tx_en)
++{
++	int ret;
++
++	ret = rtw89_set_hw_sch_tx_en_v1(rtwdev, mac_idx, tx_en,
++					B_AX_CTN_TXEN_ALL_MASK_V1);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++EXPORT_SYMBOL(rtw89_mac_resume_sch_tx_v1);
++
+ static u16 rtw89_mac_dle_buf_req(struct rtw89_dev *rtwdev, u16 buf_len,
+ 				 bool wd)
+ {
+@@ -2461,7 +2535,7 @@ static int band1_enable(struct rtw89_dev *rtwdev)
+ 	u32 pause_bak[4] = {0};
+ 	u32 tx_en;
+ 
+-	ret = rtw89_mac_stop_sch_tx(rtwdev, 0, &tx_en, RTW89_SCH_TX_SEL_ALL);
++	ret = rtw89_chip_stop_sch_tx(rtwdev, 0, &tx_en, RTW89_SCH_TX_SEL_ALL);
  	if (ret) {
+ 		rtw89_err(rtwdev, "[ERR]stop sch tx %d\n", ret);
+ 		return ret;
+@@ -2491,7 +2565,7 @@ static int band1_enable(struct rtw89_dev *rtwdev)
+ 		rtw89_write32(rtwdev, R_AX_SS_MACID_PAUSE_0 + i * 4, pause_bak[i]);
+ 	}
+ 
+-	ret = rtw89_mac_resume_sch_tx(rtwdev, 0, tx_en);
++	ret = rtw89_chip_resume_sch_tx(rtwdev, 0, tx_en);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "[ERR]CMAC1 resume sch tx %d\n", ret);
+ 		return ret;
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 0fb09d6e176d1..07a8c7c816a35 100644
+index 07a8c7c816a35..b797667c78c6f 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.h
 +++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -791,8 +791,8 @@ void rtw89_mac_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 			  u32 len, u8 class, u8 func);
+@@ -792,7 +792,10 @@ void rtw89_mac_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
  int rtw89_mac_setup_phycap(struct rtw89_dev *rtwdev);
  int rtw89_mac_stop_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx,
--			  u16 *tx_en, enum rtw89_sch_tx_sel sel);
--int rtw89_mac_resume_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx, u16 tx_en);
-+			  u32 *tx_en, enum rtw89_sch_tx_sel sel);
-+int rtw89_mac_resume_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx, u32 tx_en);
+ 			  u32 *tx_en, enum rtw89_sch_tx_sel sel);
++int rtw89_mac_stop_sch_tx_v1(struct rtw89_dev *rtwdev, u8 mac_idx,
++			     u32 *tx_en, enum rtw89_sch_tx_sel sel);
+ int rtw89_mac_resume_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx, u32 tx_en);
++int rtw89_mac_resume_sch_tx_v1(struct rtw89_dev *rtwdev, u8 mac_idx, u32 tx_en);
  int rtw89_mac_cfg_ppdu_status(struct rtw89_dev *rtwdev, u8 mac_ids, bool enable);
  void rtw89_mac_update_rts_threshold(struct rtw89_dev *rtwdev, u8 mac_idx);
  void rtw89_mac_flush_txq(struct rtw89_dev *rtwdev, u32 queues, bool drop);
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index b37270e213649..25b1067881188 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -893,6 +893,7 @@
+ #define B_AX_CTN_TXEN_VI_0 BIT(2)
+ #define B_AX_CTN_TXEN_BK_0 BIT(1)
+ #define B_AX_CTN_TXEN_BE_0 BIT(0)
++#define B_AX_CTN_TXEN_ALL_MASK GENMASK(15, 0)
+ 
+ #define R_AX_MUEDCA_BE_PARAM_0 0xC350
+ #define R_AX_MUEDCA_BE_PARAM_0_C1 0xE350
+@@ -939,6 +940,12 @@
+ #define B_AX_CTN_CHK_CCA_S20 BIT(1)
+ #define B_AX_CTN_CHK_CCA_P20 BIT(0)
+ 
++#define R_AX_CTN_DRV_TXEN 0xC398
++#define R_AX_CTN_DRV_TXEN_C1 0xE398
++#define B_AX_CTN_TXEN_TWT_3 BIT(17)
++#define B_AX_CTN_TXEN_TWT_2 BIT(16)
++#define B_AX_CTN_TXEN_ALL_MASK_V1 GENMASK(17, 0)
++
+ #define R_AX_SCHEDULE_ERR_IMR 0xC3E8
+ #define R_AX_SCHEDULE_ERR_IMR_C1 0xE3E8
+ #define B_AX_SORT_NON_IDLE_ERR_INT_EN BIT(1)
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index 51e904ef85253..41fc8db311ecf 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -1167,7 +1167,7 @@ static void rtw8852a_set_channel_help(struct rtw89_dev *rtwdev, bool enter,
+ 	u8 phy_idx = RTW89_PHY_0;
+ 
+ 	if (enter) {
+-		rtw89_mac_stop_sch_tx(rtwdev, RTW89_MAC_0, &p->tx_en, RTW89_SCH_TX_SEL_ALL);
++		rtw89_chip_stop_sch_tx(rtwdev, RTW89_MAC_0, &p->tx_en, RTW89_SCH_TX_SEL_ALL);
+ 		rtw89_mac_cfg_ppdu_status(rtwdev, RTW89_MAC_0, false);
+ 		rtw8852a_dfs_en(rtwdev, false);
+ 		rtw8852a_tssi_cont_en_phyidx(rtwdev, false, RTW89_PHY_0);
+@@ -1180,7 +1180,7 @@ static void rtw8852a_set_channel_help(struct rtw89_dev *rtwdev, bool enter,
+ 		rtw8852a_dfs_en(rtwdev, true);
+ 		rtw8852a_tssi_cont_en_phyidx(rtwdev, true, RTW89_PHY_0);
+ 		rtw8852a_bb_reset_en(rtwdev, phy_idx, true);
+-		rtw89_mac_resume_sch_tx(rtwdev, RTW89_MAC_0, p->tx_en);
++		rtw89_chip_resume_sch_tx(rtwdev, RTW89_MAC_0, p->tx_en);
+ 	}
+ }
+ 
+@@ -2021,6 +2021,8 @@ static const struct rtw89_chip_ops rtw8852a_chip_ops = {
+ 	.pwr_off_func		= NULL,
+ 	.cfg_ctrl_path		= rtw89_mac_cfg_ctrl_path,
+ 	.mac_cfg_gnt		= rtw89_mac_cfg_gnt,
++	.stop_sch_tx		= rtw89_mac_stop_sch_tx,
++	.resume_sch_tx		= rtw89_mac_resume_sch_tx,
+ 
+ 	.btc_set_rfe		= rtw8852a_btc_set_rfe,
+ 	.btc_init_cfg		= rtw8852a_btc_init_cfg,
 diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
-index acdad5a300ddb..4b29dc9a5c078 100644
+index 4b29dc9a5c078..ad272854c442f 100644
 --- a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
 +++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
-@@ -3526,7 +3526,7 @@ static void _tssi_pre_tx(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy)
- 	const struct rtw89_chip_info *mac_reg = rtwdev->chip;
- 	u8 ch = rtwdev->hal.current_channel, ch_tmp;
- 	u8 bw = rtwdev->hal.current_band_width;
--	u16 tx_en;
-+	u32 tx_en;
- 	u8 phy_map = rtw89_btc_phymap(rtwdev, phy, 0);
- 	s8 power;
- 	s16 xdbm;
-@@ -3623,7 +3623,7 @@ void rtw8852a_dack(struct rtw89_dev *rtwdev)
+@@ -3554,7 +3554,7 @@ static void _tssi_pre_tx(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy)
+ 		    __func__, phy, power, xdbm);
  
- void rtw8852a_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
--	u16 tx_en;
-+	u32 tx_en;
+ 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DPK, BTC_WRFK_START);
+-	rtw89_mac_stop_sch_tx(rtwdev, phy, &tx_en, RTW89_SCH_TX_SEL_ALL);
++	rtw89_chip_stop_sch_tx(rtwdev, phy, &tx_en, RTW89_SCH_TX_SEL_ALL);
+ 	_wait_rx_mode(rtwdev, _kpath(rtwdev, phy));
+ 	tx_counter = rtw89_phy_read32_mask(rtwdev, R_TX_COUNTER, MASKLWORD);
+ 
+@@ -3600,7 +3600,7 @@ static void _tssi_pre_tx(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy)
+ 
+ 	rtw8852a_bb_tx_mode_switch(rtwdev, phy, 0);
+ 
+-	rtw89_mac_resume_sch_tx(rtwdev, phy, tx_en);
++	rtw89_chip_resume_sch_tx(rtwdev, phy, tx_en);
+ 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DPK, BTC_WRFK_STOP);
+ }
+ 
+@@ -3627,7 +3627,7 @@ void rtw8852a_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
  	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
  
  	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_START);
-@@ -3648,7 +3648,7 @@ void rtw8852a_iqk_track(struct rtw89_dev *rtwdev)
- void rtw8852a_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
- 		     bool is_afe)
- {
--	u16 tx_en;
-+	u32 tx_en;
+-	rtw89_mac_stop_sch_tx(rtwdev, phy_idx, &tx_en, RTW89_SCH_TX_SEL_ALL);
++	rtw89_chip_stop_sch_tx(rtwdev, phy_idx, &tx_en, RTW89_SCH_TX_SEL_ALL);
+ 	_wait_rx_mode(rtwdev, _kpath(rtwdev, phy_idx));
+ 
+ 	_iqk_init(rtwdev);
+@@ -3636,7 +3636,7 @@ void rtw8852a_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
+ 	else
+ 		_iqk(rtwdev, phy_idx, false);
+ 
+-	rtw89_mac_resume_sch_tx(rtwdev, phy_idx, tx_en);
++	rtw89_chip_resume_sch_tx(rtwdev, phy_idx, tx_en);
+ 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_STOP);
+ }
+ 
+@@ -3652,12 +3652,12 @@ void rtw8852a_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
  	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
  
  	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_RXDCK, BTC_WRFK_START);
-@@ -3663,7 +3663,7 @@ void rtw8852a_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
+-	rtw89_mac_stop_sch_tx(rtwdev, phy_idx, &tx_en, RTW89_SCH_TX_SEL_ALL);
++	rtw89_chip_stop_sch_tx(rtwdev, phy_idx, &tx_en, RTW89_SCH_TX_SEL_ALL);
+ 	_wait_rx_mode(rtwdev, _kpath(rtwdev, phy_idx));
  
- void rtw8852a_dpk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
--	u16 tx_en;
-+	u32 tx_en;
+ 	_rx_dck(rtwdev, phy_idx, is_afe);
+ 
+-	rtw89_mac_resume_sch_tx(rtwdev, phy_idx, tx_en);
++	rtw89_chip_resume_sch_tx(rtwdev, phy_idx, tx_en);
+ 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_RXDCK, BTC_WRFK_STOP);
+ }
+ 
+@@ -3667,14 +3667,14 @@ void rtw8852a_dpk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
  	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
  
  	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DPK, BTC_WRFK_START);
+-	rtw89_mac_stop_sch_tx(rtwdev, phy_idx, &tx_en, RTW89_SCH_TX_SEL_ALL);
++	rtw89_chip_stop_sch_tx(rtwdev, phy_idx, &tx_en, RTW89_SCH_TX_SEL_ALL);
+ 	_wait_rx_mode(rtwdev, _kpath(rtwdev, phy_idx));
+ 
+ 	rtwdev->dpk.is_dpk_enable = true;
+ 	rtwdev->dpk.is_dpk_reload_en = false;
+ 	_dpk(rtwdev, phy_idx, false);
+ 
+-	rtw89_mac_resume_sch_tx(rtwdev, phy_idx, tx_en);
++	rtw89_chip_resume_sch_tx(rtwdev, phy_idx, tx_en);
+ 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DPK, BTC_WRFK_STOP);
+ }
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 2ea9d5422ed76..58920e91765e8 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -492,6 +492,8 @@ static const struct rtw89_chip_ops rtw8852c_chip_ops = {
+ 	.pwr_off_func		= rtw8852c_pwr_off_func,
+ 	.cfg_ctrl_path		= rtw89_mac_cfg_ctrl_path_v1,
+ 	.mac_cfg_gnt		= rtw89_mac_cfg_gnt_v1,
++	.stop_sch_tx		= rtw89_mac_stop_sch_tx_v1,
++	.resume_sch_tx		= rtw89_mac_resume_sch_tx_v1,
+ };
+ 
+ const struct rtw89_chip_info rtw8852c_chip_info = {
 -- 
 2.25.1
 
