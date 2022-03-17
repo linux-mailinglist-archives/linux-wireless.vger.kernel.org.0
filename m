@@ -2,82 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0DBC4DC9F1
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 16:28:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 360884DC9F9
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 16:29:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235865AbiCQP3g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Mar 2022 11:29:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51994 "EHLO
+        id S235828AbiCQPaS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Mar 2022 11:30:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235887AbiCQP3d (ORCPT
+        with ESMTP id S235730AbiCQPaR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Mar 2022 11:29:33 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0626D166651
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 08:28:15 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id m67so10892437ybm.4
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 08:28:14 -0700 (PDT)
+        Thu, 17 Mar 2022 11:30:17 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80B0616F6CD
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 08:29:00 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id g17so9650068lfh.2
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 08:29:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:mime-version:date:message-id:subject:to;
-        bh=9YV+XxfN9qvqRlfP0nyAbGHXEabT3Ft7uOsdiJpOEbM=;
-        b=EQx2kDRytm2uN60xkvPrnLReXdD+STj2x8uR7VC1e8gmNOR0JsPuGS4J2JvBOwTVqB
-         Y5+/UWmislsgjUqLX9Y8mm1Qx2lJKyLueGLVO6CivGMLRB4slTLpuhoMXTJcVRoDWzcD
-         5jFzFUhqnaidzN+MmXxUjABIs3SdTPwkRAYzfclmCpHakssLf45jt2TCc6z6cz6Yyfsz
-         yoiptsBbOtFj69eFJNxbBF65lPoLZPEpsOqwBq7z9kCNmIHAOo3DdN/YAcACBZ3BHI45
-         fR6f1pnnqjGjEHEgU05MkydtmP+eE4AKaYbnM2qu4JZFoKvljvZjlnMVq+aIU7RKJmyh
-         xpVQ==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=73OoSacSDvFhxxRgzZaXeE59BqLPs6obhzhzNPkozSw=;
+        b=QUREg4kHWnnp6zurzo6oI5HEMeBnr61/oZMWQty1m0hGnaSy6HHU+Pfz50LUnG6gNd
+         Jlu+274qPi6Az/jM03t9VrxgM7tpCFw83n6A31VPmmfesDnbJaQvy9j0DuaaQFPv7/fW
+         J4pbig/s1jI787oVJzsc3ZG992IfU2uLezW9/Bm3sTdMqIu7n/SsAq1ZBSTlPCcbwQp0
+         467sz6nDtQeedGX0wdjypIN4iy8ZKHc0QJOnV1voStHTwJEAUXaPBrh1XVvTi31wv6Z/
+         W8nRkm7wEamzAiiPu3qqVmHiEhTq1PcRspyNw+r+JJ0UM85EfKr+NBgKqwMek6EntNKl
+         7URg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:mime-version:date:message-id:subject:to;
-        bh=9YV+XxfN9qvqRlfP0nyAbGHXEabT3Ft7uOsdiJpOEbM=;
-        b=4hgeq0TErevZl+ogtakIxg1W5bW77raYgKpnqeWx9xZEBRvefsPp/3D07o0/F99UTc
-         ohGOUNrYVv6D8PyKoZ3x6sdHTIVW/+AbGfEHMyo7yGaYvn/Aasj1Uefk6WEwArekonHK
-         vri2kPijuU8xfDUo3mBXP+zfSBnFUjc1JGY9mK0GSmuo7gfejUoUQ8BLw4KziK+X+jkT
-         1O1MqLa6wJfbgrq/VQzDQmK1Ff0A75vU1AHlG1UAGizX5LlVmkmbzplFI1KB7nAnOX5K
-         XuuEoZj14ULcU9uzs4SNFBZjkvwwbIDsLetYzO0pAcL9PLAsyzSZufPfis04utY+9mku
-         ZtOw==
-X-Gm-Message-State: AOAM533A5rNZhESHmPoj+ffEGqqie5JgvTUdfrQXYwfGq/u5+1CPSnbE
-        OWwwOp6V1+Hbk6S81w6JH0icKbIUyRF0S7acQfjHRpY0BTs=
-X-Google-Smtp-Source: ABdhPJw4u0Jch0vKXuMsQKGQJIOqKDNiWGVevC9lSjZk9h/AcanfdgI/vMKolq0tyGM/SNZG4xv0zpll0ZxHD6EpKMQ=
-X-Received: by 2002:a25:8e88:0:b0:628:bc08:7aa with SMTP id
- q8-20020a258e88000000b00628bc0807aamr5454899ybl.303.1647530894051; Thu, 17
- Mar 2022 08:28:14 -0700 (PDT)
-Received: from 332509754669 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 17 Mar 2022 08:28:13 -0700
-From:   Scott Anderson <karban002@gmail.com>
-Mime-Version: 1.0
-Date:   Thu, 17 Mar 2022 08:28:13 -0700
-Message-ID: <CAGcbcMBcqFGsXCYxq2E86KehdTziENc-QX=pxmLSkxJq3WsPrQ@mail.gmail.com>
-Subject: Banners Order
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=73OoSacSDvFhxxRgzZaXeE59BqLPs6obhzhzNPkozSw=;
+        b=J8pAr5pCl7BxWYLm+AHguphAaPRtUQIDDE3oQ3nYr+KRllWOZXKcs/nuVS1BTBgPZZ
+         lzZp/vtZeyXDrHEDgOpHH7s23t43lOyW4U5VwgxZtF1DeZ4kkbeqGknU9ZsqU97RaBtm
+         pM6XMQApgcsJQV9qA+p9vSDK1OlYwnAWw+KtDHzbdoRXZ5P1DEHHqandlI8+ca/xjnWr
+         4ztgvGJac5DUkIX8BiPlularxjDGge5vK6ckbv7rsdX0JVEExgusVFWOxH7fknF2W1em
+         Pr/97jDQZZWt10EkLT7A8sq2hTkN6VQku2dZ0dlk+X9MXqiq2Oug9lO3YPsE4kTR0THg
+         7EkA==
+X-Gm-Message-State: AOAM5318wukNa/FGCAtwyopA3LXc7iDdKJFpUKFcWqaowH8GOVaxc3Qf
+        OLMEtbE/A8M7XoSgEjW3ABYr5w==
+X-Google-Smtp-Source: ABdhPJzLmU0zY5O6Hkp9EoPU07swOYLlw9GI/BmLO8proJ4mupQjGZDCZFz2uFy/Qopw0Y92YU405A==
+X-Received: by 2002:a05:6512:2037:b0:448:92de:21de with SMTP id s23-20020a056512203700b0044892de21demr3216056lfs.52.1647530938721;
+        Thu, 17 Mar 2022 08:28:58 -0700 (PDT)
+Received: from localhost.localdomain (h-155-4-129-34.NA.cust.bahnhof.se. [155.4.129.34])
+        by smtp.gmail.com with ESMTPSA id m15-20020a2eb6cf000000b00247e82c1c32sm466565ljo.89.2022.03.17.08.28.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Mar 2022 08:28:57 -0700 (PDT)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Cc:     Yann Gautier <yann.gautier@foss.st.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Gustavo Padovan <gustavo.padovan@collabora.com>,
+        Adrian Ratiu <adrian.ratiu@collabora.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org
+Subject: [PATCH] brcmfmac: Avoid keeping power to SDIO card unless WOWL is used
+Date:   Thu, 17 Mar 2022 16:28:46 +0100
+Message-Id: <20220317152846.246281-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Good Day,
-     My name is Scott Anderson and i am sending this email to your
-business in regards to the order for some Banners and the sizes that i
-am looking for are :
+Keeping the power to the SDIO card during system wide suspend, consumes
+energy. Especially on battery driven embedded systems, this can be a
+problem. Therefore, let's change the behaviour into allowing the SDIO card
+to be powered off, unless WOWL is supported and enabled.
 
-1. Measures 30 x 60 inches
-2. One sided on Vinyl
-3. Full copies Black Ink on White vinyl
-4. I want you to write on the Banner ( DON'T MISS YOUR SHOT TO STOP
-COVID-19 ) For the Artwork.
-5. Hemmed With 4 grommet for outdoor use
+Note that, the downside from this change, is that at system resume the SDIO
+card needs to be re-initialized and the FW must re-programmed. Even it that
+may take some time to complete, it should we worth it, rather than draining
+a battery.
 
-I would like you to email me back with the total pick up price plus
-tax on the quantity of 150 copies , excluding shipping. Is there a
-surcharge on the use of Visa or MasterCard for payment ?Kindly respond
-to me as soon as possible for us to proceed further with the order..
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+---
 
-Urgently Waiting to hear from you soon.
-Scott
+Please note that, I have only compile-tested this patch, so I am relying on help
+from Yann and others to run tests on real HW.
+
+Kind regards
+Ulf Hansson
+
+---
+ .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 33 +++++++++++--------
+ 1 file changed, 20 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+index ac02244a6fdf..351886c9d68e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+@@ -1119,9 +1119,21 @@ void brcmf_sdio_wowl_config(struct device *dev, bool enabled)
+ {
+ 	struct brcmf_bus *bus_if = dev_get_drvdata(dev);
+ 	struct brcmf_sdio_dev *sdiodev = bus_if->bus_priv.sdio;
++	mmc_pm_flag_t pm_caps = sdio_get_host_pm_caps(sdiodev->func1);
+ 
+-	brcmf_dbg(SDIO, "Configuring WOWL, enabled=%d\n", enabled);
+-	sdiodev->wowl_enabled = enabled;
++	/* Power must be preserved to be able to support WOWL. */
++	if (!(pm_caps & MMC_PM_KEEP_POWER))
++		goto notsup;
++
++	if (sdiodev->settings->bus.sdio.oob_irq_supported ||
++	    pm_caps & MMC_PM_WAKE_SDIO_IRQ) {
++		sdiodev->wowl_enabled = enabled;
++		brcmf_dbg(SDIO, "Configuring WOWL, enabled=%d\n", enabled);
++		return;
++	}
++
++notsup:
++	brcmf_dbg(SDIO, "WOWL not supported\n");
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
+@@ -1130,7 +1142,7 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
+ 	struct sdio_func *func;
+ 	struct brcmf_bus *bus_if;
+ 	struct brcmf_sdio_dev *sdiodev;
+-	mmc_pm_flag_t pm_caps, sdio_flags;
++	mmc_pm_flag_t sdio_flags;
+ 	int ret = 0;
+ 
+ 	func = container_of(dev, struct sdio_func, dev);
+@@ -1142,20 +1154,15 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
+ 	bus_if = dev_get_drvdata(dev);
+ 	sdiodev = bus_if->bus_priv.sdio;
+ 
+-	pm_caps = sdio_get_host_pm_caps(func);
+-
+-	if (pm_caps & MMC_PM_KEEP_POWER) {
+-		/* preserve card power during suspend */
++	if (sdiodev->wowl_enabled) {
+ 		brcmf_sdiod_freezer_on(sdiodev);
+ 		brcmf_sdio_wd_timer(sdiodev->bus, 0);
+ 
+ 		sdio_flags = MMC_PM_KEEP_POWER;
+-		if (sdiodev->wowl_enabled) {
+-			if (sdiodev->settings->bus.sdio.oob_irq_supported)
+-				enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
+-			else
+-				sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
+-		}
++		if (sdiodev->settings->bus.sdio.oob_irq_supported)
++			enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
++		else
++			sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
+ 
+ 		if (sdio_set_host_pm_flags(sdiodev->func1, sdio_flags))
+ 			brcmf_err("Failed to set pm_flags %x\n", sdio_flags);
+-- 
+2.25.1
+
