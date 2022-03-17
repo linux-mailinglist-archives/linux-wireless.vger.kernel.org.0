@@ -2,61 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70D754DBEA7
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 06:47:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F16D4DBF1E
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 07:16:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229515AbiCQFs1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Mar 2022 01:48:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57574 "EHLO
+        id S229706AbiCQGSI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Mar 2022 02:18:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbiCQFs0 (ORCPT
+        with ESMTP id S230001AbiCQGR6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Mar 2022 01:48:26 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A93B4265E92
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 22:18:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1647494318; x=1679030318;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=v1KTNNbRslWYFq/D/UOArzs5E5HTOmMjPNugkDvbu9o=;
-  b=Y7Qe5gM2GGNy6mI1rGcfeVzBpXapwoGldJf4FVq8lC+dBcibOAX1sTWd
-   v4vYM3BZipc1aY8On7v/ouNZEUXjxEvrqtIoMFVXt/k5wr4Z3jD6ZnMxq
-   DKZx9GmZrMrWD09si1k4sMiQIIkkrhk2ERakvpQxSZ2/Gu8uAyt5oR8LW
-   wLGz0oWscGOCazD10c+ij9RAEwJfZKu6ZxTFgF0ueUvs5aLbYsTPodBMn
-   1kf5S6mb0IYbZdMVT3ks9im7SL4xa5TsZd26LEvaeSXncAiDXVnSw0r8s
-   IiTDzVDOD2cIPGfw9BkM/f5Y6sGrnPtRTm0zNWAAupbayQc7uI16oFZWK
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10288"; a="281572697"
-X-IronPort-AV: E=Sophos;i="5.90,188,1643702400"; 
-   d="scan'208";a="281572697"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2022 22:18:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,188,1643702400"; 
-   d="scan'208";a="516626137"
-Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
-  by orsmga006.jf.intel.com with ESMTP; 16 Mar 2022 22:18:36 -0700
-Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nUiWx-000DJQ-MY; Thu, 17 Mar 2022 05:18:35 +0000
-Date:   Thu, 17 Mar 2022 13:18:12 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <quic_kvalo@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless:main] BUILD SUCCESS
- 45b4eb7ee6aa1a55a50831b328aa5f46ac3a7187
-Message-ID: <6232c494.aRU6aiBTnAsq3jwL%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Thu, 17 Mar 2022 02:17:58 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D13C1D788D
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Mar 2022 22:56:42 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22H5uYnH5009622, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22H5uYnH5009622
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 17 Mar 2022 13:56:34 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 17 Mar 2022 13:56:33 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 17 Mar
+ 2022 13:56:33 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>,
+        <hsuan8331@realtek.com>, <yuanhan1020@realtek.com>
+Subject: [PATCH v2 00/12] rtw89: prepare more shared code to work with 8852c
+Date:   Thu, 17 Mar 2022 13:55:31 +0800
+Message-ID: <20220317055543.40514-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_HI,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 03/17/2022 05:41:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMTcgpFekyCAwMzoyNjowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,214 +67,49 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git main
-branch HEAD: 45b4eb7ee6aa1a55a50831b328aa5f46ac3a7187  Revert "ath10k: drop beacon and probe response which leak from other channel"
+This patchset contains MAC, BB and RF functions. The BB part changes
+CFO (central frequency offset) tracking functions to be general. The MAC
+part makes the function work on 8852c. Propose new V1 method to access new
+design of RF register. 
 
-elapsed time: 725m
+As usual, this doesn't affect existing chip, and 8852C is built internally.
 
-configs tested: 191
-configs skipped: 4
+v2: patch 9/12: assign data in 'if' branch instead of '? :' style.
+    patch 10/12: add this patch because of the same reason of patch 9/12.
+    others don't change
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Chia-Yuan Li (3):
+  rtw89: modify MAC enable functions
+  rtw89: disable FW and H2C function if CPU disabled
+  rtw89: 8852c: add mac_ctrl_path and mac_cfg_gnt APIs
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                          randconfig-c001
-i386                 randconfig-c001-20220314
-powerpc                      tqm8xx_defconfig
-m68k                         apollo_defconfig
-sh                        edosk7760_defconfig
-mips                       bmips_be_defconfig
-sh                         ecovec24_defconfig
-arm                        oxnas_v6_defconfig
-mips                           ci20_defconfig
-sh                           sh2007_defconfig
-powerpc                  storcenter_defconfig
-alpha                            alldefconfig
-ia64                            zx1_defconfig
-arc                     nsimosci_hs_defconfig
-h8300                       h8s-sim_defconfig
-sh                               alldefconfig
-powerpc                      arches_defconfig
-sh                           se7343_defconfig
-powerpc                     stx_gp3_defconfig
-sh                         ap325rxa_defconfig
-arm                           h3600_defconfig
-arm                            lart_defconfig
-powerpc                         wii_defconfig
-h8300                            alldefconfig
-arm                         nhk8815_defconfig
-powerpc                     pq2fads_defconfig
-sh                          rsk7264_defconfig
-sh                             sh03_defconfig
-powerpc                       eiger_defconfig
-ia64                         bigsur_defconfig
-h8300                            allyesconfig
-um                           x86_64_defconfig
-powerpc                     rainier_defconfig
-powerpc                     ep8248e_defconfig
-parisc                generic-64bit_defconfig
-xtensa                           alldefconfig
-sh                              ul2_defconfig
-arm                           sama5_defconfig
-m68k                          atari_defconfig
-powerpc                     tqm8548_defconfig
-xtensa                    xip_kc705_defconfig
-sh                ecovec24-romimage_defconfig
-sh                          sdk7786_defconfig
-arc                    vdk_hs38_smp_defconfig
-xtensa                          iss_defconfig
-arc                      axs103_smp_defconfig
-m68k                       bvme6000_defconfig
-arm                           sunxi_defconfig
-arm                        trizeps4_defconfig
-arm                        multi_v7_defconfig
-parisc64                            defconfig
-mips                           jazz_defconfig
-arc                              alldefconfig
-sh                          urquell_defconfig
-sh                          sdk7780_defconfig
-powerpc                      ppc40x_defconfig
-sh                   secureedge5410_defconfig
-arm                         lubbock_defconfig
-sh                             shx3_defconfig
-arm                            xcep_defconfig
-mips                           ip32_defconfig
-sh                        edosk7705_defconfig
-arm                           stm32_defconfig
-arm                        cerfcube_defconfig
-sh                        dreamcast_defconfig
-arm                      jornada720_defconfig
-powerpc                    adder875_defconfig
-m68k                       m5208evb_defconfig
-sh                         apsh4a3a_defconfig
-arm                           tegra_defconfig
-mips                         cobalt_defconfig
-arm                  randconfig-c002-20220317
-arm                  randconfig-c002-20220313
-arm                  randconfig-c002-20220314
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                 randconfig-a003-20220314
-i386                 randconfig-a004-20220314
-i386                 randconfig-a001-20220314
-i386                 randconfig-a006-20220314
-i386                 randconfig-a002-20220314
-i386                 randconfig-a005-20220314
-x86_64               randconfig-a004-20220314
-x86_64               randconfig-a005-20220314
-x86_64               randconfig-a003-20220314
-x86_64               randconfig-a002-20220314
-x86_64               randconfig-a006-20220314
-x86_64               randconfig-a001-20220314
-arc                  randconfig-r043-20220313
-arc                  randconfig-r043-20220314
-riscv                randconfig-r042-20220313
-s390                 randconfig-r044-20220313
-arc                  randconfig-r043-20220317
-riscv                randconfig-r042-20220317
-s390                 randconfig-r044-20220317
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                                  kexec
+Chung-Hsuan Hung (1):
+  rtw89: 8852c: add read/write rf register function
 
-clang tested configs:
-arm                  randconfig-c002-20220313
-x86_64                        randconfig-c007
-powerpc              randconfig-c003-20220313
-riscv                randconfig-c006-20220313
-mips                 randconfig-c004-20220313
-i386                          randconfig-c001
-mips                       rbtx49xx_defconfig
-arm                       mainstone_defconfig
-mips                            e55_defconfig
-arm                          ep93xx_defconfig
-powerpc                      pmac32_defconfig
-powerpc                     kilauea_defconfig
-mips                           mtx1_defconfig
-mips                        maltaup_defconfig
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64               randconfig-a014-20220314
-x86_64               randconfig-a015-20220314
-x86_64               randconfig-a016-20220314
-x86_64               randconfig-a012-20220314
-x86_64               randconfig-a013-20220314
-x86_64               randconfig-a011-20220314
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                 randconfig-a013-20220314
-i386                 randconfig-a015-20220314
-i386                 randconfig-a014-20220314
-i386                 randconfig-a011-20220314
-i386                 randconfig-a016-20220314
-i386                 randconfig-a012-20220314
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-hexagon              randconfig-r045-20220313
-hexagon              randconfig-r041-20220313
-hexagon              randconfig-r041-20220314
-riscv                randconfig-r042-20220314
-hexagon              randconfig-r045-20220314
-s390                 randconfig-r044-20220314
+Ping-Ke Shih (5):
+  rtw89: add config_rf_reg_v1 to configure RF parameter tables
+  rtw89: initialize preload window of D-MAC
+  rtw89: change value assignment style of rtw89_mac_cfg_gnt()
+  rtw89: extend mac tx_en bits from 16 to 32
+  rtw89: implement stop and resume channels transmission v1
 
----
-0-DAY CI Kernel Test Service
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Yuan-Han Zhang (3):
+  rtw89: modify dcfo_comp to share with chips
+  rtw89: 8852c: add write/read crystal function in CFO tracking
+  rtw89: 8852c: add setting of TB UL TX power offset
+
+ drivers/net/wireless/realtek/rtw89/coex.c     |  24 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |  47 ++-
+ drivers/net/wireless/realtek/rtw89/mac.c      | 283 +++++++++++++++---
+ drivers/net/wireless/realtek/rtw89/mac.h      |  12 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      | 164 +++++++++-
+ drivers/net/wireless/realtek/rtw89/phy.h      |   9 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |  77 +++++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  22 +-
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.c |  24 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  50 ++++
+ 10 files changed, 630 insertions(+), 82 deletions(-)
+
+-- 
+2.25.1
+
