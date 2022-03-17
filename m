@@ -2,49 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 913404DC8B3
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 15:24:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68EFB4DC8CF
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 15:32:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235064AbiCQOZm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Mar 2022 10:25:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57914 "EHLO
+        id S233919AbiCQOdp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Mar 2022 10:33:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230189AbiCQOZl (ORCPT
+        with ESMTP id S230443AbiCQOdo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Mar 2022 10:25:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0EC318546E
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 07:24:24 -0700 (PDT)
+        Thu, 17 Mar 2022 10:33:44 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CCC116CE77
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 07:32:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 00CDD61731
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 14:24:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31676C340E9;
-        Thu, 17 Mar 2022 14:24:21 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 57ED5B81E90
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 14:32:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0D5C340E9;
+        Thu, 17 Mar 2022 14:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647527063;
-        bh=K1Ik0h5GqpyFksiSichAv/us8jpIOL4zUZfLhGHASg8=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=MkTMUeTetR30q+SJjgLlmuG41WvyafA5WRXkWDYz89NM896Q4O35ab8Vw+Rf4Zh8T
-         7vuj1ieyZTy1TuaS7Mo57tq9mRrGeY/7VgGxldZz0DfzKfvMKPaNqpxsD/rOdjIYXr
-         WSRi0g6hDeJ6nN+VWE9B4iZibFNLF9kST22VOFUMBzZ7o9V6wVNBPveUwuIxHbe33Q
-         gijTdc9GARfe3gomzFVl0clSmxfgDoJ9XHM6mVuYkxnSHDTdz5ApjlujkCmEn/NLoV
-         CrvABvGr9VgSXIIyF75Ly7MCJHlmfFdrlCf6vYRA6mpCFDT8j9A/j34Jf+CDdRW4w4
-         GiiVtp2QnU/wg==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 01/12] rtw89: modify dcfo_comp to share with chips
+        s=k20201202; t=1647527546;
+        bh=8TgAue8mdjKkQNfphFS3ILUs38qv8S40AivNDDGb3RE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=HTeWQrDPEwtNRV5iK7Pwf9CQCC5qEHNmTyrt8qpEfHDyUm2Ax8GvfMgnqr5HnYeDj
+         tiiC0FnrjNKo8A58WwARTAnL6zjsXvwCCbRvkBBeiGodm4tOwtHxsWs8ybfVEMub3Q
+         wKrG4IDDY+VAa7/BvyCxxohRM4a2RWBENEx1/zwTYIvkaxzEA7J3wCgwGGZIWc6IA4
+         guHdwK20hDeVhqSFgvYrJPHoa4rVaQMoriMGmxftEdpxFsyx7U3KmQlccTc03SgiAm
+         xLIrroRTMB/rWy43DCMm4X8d+IPFoQf85LjG4wYPqIPXvPEiw2ALEOUrqOgcSLbCTz
+         yOc6eyUvH8mdg==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220317055543.40514-2-pkshih@realtek.com>
-References: <20220317055543.40514-2-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>,
-        <hsuan8331@realtek.com>, <yuanhan1020@realtek.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164752705616.16149.15748435534814952311.kvalo@kernel.org>
-Date:   Thu, 17 Mar 2022 14:24:21 +0000 (UTC)
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: pull request: mt76 2022-03-18
+References: <de917732-79c6-4ced-2761-f372ff5dea71@nbd.name>
+Date:   Thu, 17 Mar 2022 16:32:21 +0200
+In-Reply-To: <de917732-79c6-4ced-2761-f372ff5dea71@nbd.name> (Felix Fietkau's
+        message of "Wed, 16 Mar 2022 21:25:12 +0100")
+Message-ID: <878rt8ps3u.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,34 +54,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Felix Fietkau <nbd@nbd.name> writes:
 
-> From: Yuan-Han Zhang <yuanhan1020@realtek.com>
-> 
-> The dcfo_comp is digital CFO (central frequency offset) compensation.
-> Since the flow can be shared with all chips, add chip parameters to support
-> variant register address and format.
-> 
-> Signed-off-by: Yuan-Han Zhang <yuanhan1020@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Hi Kalle,
+>
+> here's a new last-minute pull request for 3.18
+>
+> - Felix
+>
+> The following changes since commit d179c1f1c3703d1a6f7a6f2ad08383220673240c:
+>
+>    rtw89: fix uninitialized variable of rtw89_append_probe_req_ie() (2022-03-16 17:49:04 +0200)
+>
+> are available in the Git repository at:
+>
+>    https://github.com/nbd168/wireless tags/mt76-for-kvalo-2022-03-16
+>
+> for you to fetch changes up to 24e69f6bc3ca4a1696158b68a6fbf14252a8bd28:
+>
+>    mt76: fix monitor rx FCS error in DFS channel (2022-03-16 21:18:06 +0100)
+>
+> ----------------------------------------------------------------
+> mt76 patches for 5.18
+>
+> - bugfixes
+> - mbssid support for mt7915
+> - 6 GHz support for mt7915
+> - mt7921u driver
+>
+> ----------------------------------------------------------------
 
-12 patches applied to wireless-next.git, thanks.
-
-b7379148f598 rtw89: modify dcfo_comp to share with chips
-8379fa611536 rtw89: 8852c: add write/read crystal function in CFO tracking
-a9ffae8d3f9d rtw89: 8852c: add setting of TB UL TX power offset
-84d0e33e51df rtw89: 8852c: add read/write rf register function
-2a5f2b32639a rtw89: add config_rf_reg_v1 to configure RF parameter tables
-828a4396e52a rtw89: modify MAC enable functions
-e07a99682972 rtw89: initialize preload window of D-MAC
-de78869d1f48 rtw89: disable FW and H2C function if CPU disabled
-feed65417847 rtw89: 8852c: add mac_ctrl_path and mac_cfg_gnt APIs
-8001c741e351 rtw89: change value assignment style of rtw89_mac_cfg_gnt()
-d780f926d633 rtw89: extend mac tx_en bits from 16 to 32
-de7ba639e6c5 rtw89: implement stop and resume channels transmission v1
+Pulled, thanks Felix.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220317055543.40514-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
