@@ -2,94 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C231A4DCF68
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 21:34:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90AC44DD058
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 22:43:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229746AbiCQUgI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Mar 2022 16:36:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37448 "EHLO
+        id S230354AbiCQVoR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Mar 2022 17:44:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229691AbiCQUgI (ORCPT
+        with ESMTP id S230349AbiCQVoQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Mar 2022 16:36:08 -0400
-X-Greylist: delayed 181 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 17 Mar 2022 13:34:50 PDT
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 844D019533C;
-        Thu, 17 Mar 2022 13:34:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1647549104;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=vmB+2SRk3Htme+rG0jB2LuwRdxUS0RVqP+fg2c3MCQI=;
-    b=Ik1yp8nrcm+dCrkMzM9Xu8PXK5kVWX4jIjYLpJ6gHiYWExOVGT/ZQRaoDnYXrv8Jml
-    M24z/j7zZyyuPmfBgZGIRwcZQHNzQMLbYSJ0J3SyohW2yfK0bTzxAdgzXL89INUosuvE
-    VINfV/jKRcSG/DYqjKUvd/vD0J2VjKDKhwhPrrPTbcHPU0gofQwswVz//9lkhlnd7KU4
-    /oph4psn/mIIKiQ2SpiA5NKVhGJ2q7DmgI6DJeGfu7231biCTRBgC00l/gJHEgOeo12P
-    B5MPHhy6abpf5U6RaBXHKbgU7ZMu58FaQf5z3UHw7X8grcJTHkgoRs4biBliFqGGq9tD
-    9Ogg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjG14FZxedJy6qgO1qCHSa1GLptZHusx3hdd0DIgVuBOfXW6v7w=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPV6:2a00:6020:1cfa:f900::b82]
-    by smtp.strato.de (RZmta 47.41.1 AUTH)
-    with ESMTPSA id cc2803y2HKVi3iV
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Thu, 17 Mar 2022 21:31:44 +0100 (CET)
-Message-ID: <1c0a5946-a67d-ae40-dcba-66cd064b53cf@hartkopp.net>
-Date:   Thu, 17 Mar 2022 21:31:38 +0100
+        Thu, 17 Mar 2022 17:44:16 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED8D02BD1
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 14:42:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1647553376; x=1679089376;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/rZii18wA2voVc1N7quKjXAD7rAKgafDEn5607kcsOU=;
+  b=hSUzHYIiJiuGaRMcGeF4qqNE78I/3IfbhA2YAxgTNOAAwbFAMRePzmtG
+   L5aOkL2IbCs7ZRZcsfily0cSdV8j/u0OUuikHZBkXsytmJkrg7dHX5yhL
+   nmv9Q4q2zPnrE+pb8tXQUc/mOJr29djM62aY7GU8eSVxl/KlI6OphcHOK
+   8=;
+Received: from unknown (HELO ironmsg03-sd.qualcomm.com) ([10.53.140.143])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 17 Mar 2022 14:42:56 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg03-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2022 14:42:56 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Thu, 17 Mar 2022 14:42:56 -0700
+Received: from [10.48.244.84] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Thu, 17 Mar
+ 2022 14:42:55 -0700
+Message-ID: <aaf86305-3b6e-aa8d-fa9f-b4b4ba9cb3c1@quicinc.com>
+Date:   Thu, 17 Mar 2022 14:42:55 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: net-next: regression: patch "iwlwifi: acpi: move ppag code from
- mvm to fw/acpi" (e8e10a37c51c) breaks wifi
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Subject: Re: [PATCH v2 1/3] cfg80211: Add NL80211_IFTYPE_MLO_LINK type for MLO
+ links on MLD STA
 Content-Language: en-US
 To:     Johannes Berg <johannes@sipsolutions.net>,
-        Matt Chen <matt.chen@intel.com>
-Cc:     netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org
-References: <18e04a04-2aed-13de-b2fc-dbf5df864359@hartkopp.net>
- <af8ea77765cc30ff448256c278b69b2402f018f6.camel@sipsolutions.net>
-From:   Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <af8ea77765cc30ff448256c278b69b2402f018f6.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+CC:     <linux-wireless@vger.kernel.org>, <quic_usdutt@quicinc.com>,
+        Aaron Komisar <akomisar@maxlinear.com>
+References: <1645613200-30221-1-git-send-email-quic_vjakkam@quicinc.com>
+ <1645613200-30221-2-git-send-email-quic_vjakkam@quicinc.com>
+ <af96eba158c83a63cb9465b04373e909971d7676.camel@sipsolutions.net>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <af96eba158c83a63cb9465b04373e909971d7676.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
-
-On 17.03.22 20:58, Johannes Berg wrote:
-> On Thu, 2022-03-17 at 20:56 +0100, Oliver Hartkopp wrote:
->> Hi all,
+On 3/11/2022 4:17 AM, Johannes Berg wrote:
+> On Wed, 2022-02-23 at 16:16 +0530, Veerendranath Jakkam wrote:
 >>
->> the patch "iwlwifi: acpi: move ppag code from mvm to fw/acpi" (net-next
->> commit e8e10a37c51c) breaks the wifi on my HP Elitebook 840 G5.
+>> Two link non-AP MLD representation:
 >>
->> I detected the problem when working on the latest net-next tree and the
->> wifi was fine until this patch.
+>>                   wlan0 (non-AP MLD)
+>>                 IFTYPE_STATION (netdev + wdev)
+>>                   /               \
+>>                  /                 \
+>>                link0             link1
+>>        IFTYPE_MLO_LINK (wdev)  IFTYPE_MLO_LINK (wdev)
+>>                |                   |
+>>                |                   |
+>>              radio(2G)           radio(5G)
 >>
+>> In contrast, NL80211_IFTYPE_MLO_LINK can't be used to represent AP MLO
+>> link since an MLD AP must support pre-11be and 11be clients
+>> simultaneously so each AP MLO link affiliated with AP MLD must also act
+>> as independent AP for pre-11be clients so each AP MLO link must be
+>> represented by NL80211_IFTYPE_AP associated with a separate netdev.
+>>
+>> Two link AP MLD representation:
+>>
+>>                   AP MLD
+>>               (netdev + wdev)
+>>                  /      \
+>>                 /        \
+>>            wlan0          wlan1
+>>        IFTYPE_AP       IFTYPE_AP
+>>     (netdev + wdev)  (netdev + wdev)
+>>             |             |
+>>             |             |
+>>          radio(2G)      radio(5G)
+> 
+> So just for posterity's sake - we had more discussions on this out of
+> band, and decided that the "netdev + wdev" on the wlan0/wlan1 will not
+> actually happen - they both should be just "wdev" like in the non-AP
+> MLD.
+> 
+> This solves the issue of broadcast (otherwise you'd need AP MLD + wlan0
+> + wlan1 in a bridge and drop all multicast at wlan0 and wlan1), at the
+> expense of a small amount of flexibility - you cannot consider legacy
+> and MLD clients to be in different networks.
+> 
+> However, given the complexities around multicast, you probably cannot
+> consider them to be in different networks _anyway_ because then you'd
+> have to _not_ drop all the multicast on wlan0/wlan1, and then you send
+> multicast twice to the MLD clients, which would be wrong too...
+> 
+> So the more reasonable thing to do is to treat this the same way as non-
+> AP MLD with only a single netdev, and effectively behave as if there was
+> an internal kind of bridge inside the AP MLD for the legacy clients.
+> 
+> As a consequence, of course this patch will change too.
 
-Thanks for the fast reply!
+Although this patch series is specific to non-AP MLD support I advocated 
+during internal review to add this AP MLD description to initiate 
+discussion about the differences between the two, and I'm glad to see 
+that is happening.
 
-> Something like this should get submitted soon:
-> https://p.sipsolutions.net/3b84353278ed68c6.txt
+Should we just omit the AP MLD representation in v2, and add that with 
+the AP MLD support?
 
-I applied this patch on the latest net-next tree:
+Did you have any other comments on the series other than your proposal 
+to add a MLD wiphy flag, and as a result, not require driver to NULL 
+check the wdev->netdev?
 
-patching file drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-Hunk #1 succeeded at 1015 (offset -114 lines).
+Thanks!
+/jeff
 
-And it fixed the wifi issue with my system! \o/
-
-Tested-by: Oliver Hartkopp <socketcan@hartkopp.net>
-
-Thanks & best regards,
-Oliver
