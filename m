@@ -2,70 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 360884DC9F9
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 16:29:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82F3C4DCBDA
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 17:56:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235828AbiCQPaS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Mar 2022 11:30:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55276 "EHLO
+        id S236689AbiCQQ5e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Mar 2022 12:57:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235730AbiCQPaR (ORCPT
+        with ESMTP id S236210AbiCQQ5d (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Mar 2022 11:30:17 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80B0616F6CD
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 08:29:00 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id g17so9650068lfh.2
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 08:29:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=73OoSacSDvFhxxRgzZaXeE59BqLPs6obhzhzNPkozSw=;
-        b=QUREg4kHWnnp6zurzo6oI5HEMeBnr61/oZMWQty1m0hGnaSy6HHU+Pfz50LUnG6gNd
-         Jlu+274qPi6Az/jM03t9VrxgM7tpCFw83n6A31VPmmfesDnbJaQvy9j0DuaaQFPv7/fW
-         J4pbig/s1jI787oVJzsc3ZG992IfU2uLezW9/Bm3sTdMqIu7n/SsAq1ZBSTlPCcbwQp0
-         467sz6nDtQeedGX0wdjypIN4iy8ZKHc0QJOnV1voStHTwJEAUXaPBrh1XVvTi31wv6Z/
-         W8nRkm7wEamzAiiPu3qqVmHiEhTq1PcRspyNw+r+JJ0UM85EfKr+NBgKqwMek6EntNKl
-         7URg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=73OoSacSDvFhxxRgzZaXeE59BqLPs6obhzhzNPkozSw=;
-        b=J8pAr5pCl7BxWYLm+AHguphAaPRtUQIDDE3oQ3nYr+KRllWOZXKcs/nuVS1BTBgPZZ
-         lzZp/vtZeyXDrHEDgOpHH7s23t43lOyW4U5VwgxZtF1DeZ4kkbeqGknU9ZsqU97RaBtm
-         pM6XMQApgcsJQV9qA+p9vSDK1OlYwnAWw+KtDHzbdoRXZ5P1DEHHqandlI8+ca/xjnWr
-         4ztgvGJac5DUkIX8BiPlularxjDGge5vK6ckbv7rsdX0JVEExgusVFWOxH7fknF2W1em
-         Pr/97jDQZZWt10EkLT7A8sq2hTkN6VQku2dZ0dlk+X9MXqiq2Oug9lO3YPsE4kTR0THg
-         7EkA==
-X-Gm-Message-State: AOAM5318wukNa/FGCAtwyopA3LXc7iDdKJFpUKFcWqaowH8GOVaxc3Qf
-        OLMEtbE/A8M7XoSgEjW3ABYr5w==
-X-Google-Smtp-Source: ABdhPJzLmU0zY5O6Hkp9EoPU07swOYLlw9GI/BmLO8proJ4mupQjGZDCZFz2uFy/Qopw0Y92YU405A==
-X-Received: by 2002:a05:6512:2037:b0:448:92de:21de with SMTP id s23-20020a056512203700b0044892de21demr3216056lfs.52.1647530938721;
-        Thu, 17 Mar 2022 08:28:58 -0700 (PDT)
-Received: from localhost.localdomain (h-155-4-129-34.NA.cust.bahnhof.se. [155.4.129.34])
-        by smtp.gmail.com with ESMTPSA id m15-20020a2eb6cf000000b00247e82c1c32sm466565ljo.89.2022.03.17.08.28.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Mar 2022 08:28:57 -0700 (PDT)
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-To:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Cc:     Yann Gautier <yann.gautier@foss.st.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Gustavo Padovan <gustavo.padovan@collabora.com>,
-        Adrian Ratiu <adrian.ratiu@collabora.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org
-Subject: [PATCH] brcmfmac: Avoid keeping power to SDIO card unless WOWL is used
-Date:   Thu, 17 Mar 2022 16:28:46 +0100
-Message-Id: <20220317152846.246281-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.25.1
+        Thu, 17 Mar 2022 12:57:33 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 934DE19EC5D
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 09:56:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 414DCB81F3B
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 16:56:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B03C340E9;
+        Thu, 17 Mar 2022 16:56:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1647536173;
+        bh=kBBByNMLrkjCMdd2lU+nQrX8EsLYhXWFLHlmHOqlLXE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Ikx0ixPQ6BUL6//q62UnWjAKTULspF9Jis1U6V0fxRm33YNrjCMRwBRyE98Enklbg
+         YEwloDoSsa8qQMdjt5mYGeG5In5hlWguokg5IM7O5TFXmhzcUvtVwDk1Yenahh2h/N
+         Lvpye6K7HwTid96b6qDVJaH7+UNhc1yDXdAVIvjqfGoHFOedB+uJlczFioRCrw9U20
+         1RdFXR3Vr37/AJSEnkzx8rPzfbLhbKantkbu7cVRBqli8mKAk2j4oGaTEpZsUG6y1A
+         CqiGFPTxDmtO2n+ve5WeUFDhke14ieCRud2QDdmR4ogSsYR7vF0W/4iFytka4G4+7K
+         NeCiynVn2QYPQ==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com, deren.wu@mediatek.com,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH] mt76: mt7921u: add suspend/resume support
+Date:   Thu, 17 Mar 2022 17:55:59 +0100
+Message-Id: <f07e7ab403b3b72e6c1f72046a90026b398c179f.1647536048.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -74,92 +53,163 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Keeping the power to the SDIO card during system wide suspend, consumes
-energy. Especially on battery driven embedded systems, this can be a
-problem. Therefore, let's change the behaviour into allowing the SDIO card
-to be powered off, unless WOWL is supported and enabled.
+Introduce suspend/resume callbacks for mt7921u driver.
 
-Note that, the downside from this change, is that at system resume the SDIO
-card needs to be re-initialized and the FW must re-programmed. Even it that
-may take some time to complete, it should we worth it, rather than draining
-a battery.
-
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Tested-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  2 +-
+ .../net/wireless/mediatek/mt76/mt7921/regs.h  |  5 ++
+ .../net/wireless/mediatek/mt76/mt7921/usb.c   | 62 ++++++++++++++++++-
+ .../wireless/mediatek/mt76/mt7921/usb_mac.c   |  7 ++-
+ 4 files changed, 72 insertions(+), 4 deletions(-)
 
-Please note that, I have only compile-tested this patch, so I am relying on help
-from Yann and others to run tests on real HW.
-
-Kind regards
-Ulf Hansson
-
----
- .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 33 +++++++++++--------
- 1 file changed, 20 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index ac02244a6fdf..351886c9d68e 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -1119,9 +1119,21 @@ void brcmf_sdio_wowl_config(struct device *dev, bool enabled)
- {
- 	struct brcmf_bus *bus_if = dev_get_drvdata(dev);
- 	struct brcmf_sdio_dev *sdiodev = bus_if->bus_priv.sdio;
-+	mmc_pm_flag_t pm_caps = sdio_get_host_pm_caps(sdiodev->func1);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index 7690364bc079..459226c5bb11 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -467,7 +467,7 @@ bool mt7921_usb_sdio_tx_status_data(struct mt76_dev *mdev, u8 *update);
  
--	brcmf_dbg(SDIO, "Configuring WOWL, enabled=%d\n", enabled);
--	sdiodev->wowl_enabled = enabled;
-+	/* Power must be preserved to be able to support WOWL. */
-+	if (!(pm_caps & MMC_PM_KEEP_POWER))
-+		goto notsup;
+ int mt7921u_mcu_power_on(struct mt7921_dev *dev);
+ int mt7921u_wfsys_reset(struct mt7921_dev *dev);
+-int mt7921u_dma_init(struct mt7921_dev *dev);
++int mt7921u_dma_init(struct mt7921_dev *dev, bool resume);
+ int mt7921u_init_reset(struct mt7921_dev *dev);
+ int mt7921u_mac_reset(struct mt7921_dev *dev);
+ #endif
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
+index 6712ff60c722..ea643260ceb6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
+@@ -516,4 +516,9 @@
+ #define MT_TOP_MISC2_FW_PWR_ON		BIT(0)
+ #define MT_TOP_MISC2_FW_N9_RDY		GENMASK(1, 0)
+ 
++#define MT_WF_SW_DEF_CR(ofs)		(0x401a00 + (ofs))
++#define MT_WF_SW_DEF_CR_USB_MCU_EVENT	MT_WF_SW_DEF_CR(0x028)
++#define MT_WF_SW_SER_TRIGGER_SUSPEND	BIT(6)
++#define MT_WF_SW_SER_DONE_SUSPEND	BIT(7)
 +
-+	if (sdiodev->settings->bus.sdio.oob_irq_supported ||
-+	    pm_caps & MMC_PM_WAKE_SDIO_IRQ) {
-+		sdiodev->wowl_enabled = enabled;
-+		brcmf_dbg(SDIO, "Configuring WOWL, enabled=%d\n", enabled);
-+		return;
-+	}
-+
-+notsup:
-+	brcmf_dbg(SDIO, "WOWL not supported\n");
+ #endif
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+index b7771e9f1fcd..dc38baef273a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+@@ -246,7 +246,7 @@ static int mt7921u_probe(struct usb_interface *usb_intf,
+ 	if (ret)
+ 		goto error;
+ 
+-	ret = mt7921u_dma_init(dev);
++	ret = mt7921u_dma_init(dev, false);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -288,6 +288,61 @@ static void mt7921u_disconnect(struct usb_interface *usb_intf)
+ 	mt76_free_device(&dev->mt76);
  }
  
- #ifdef CONFIG_PM_SLEEP
-@@ -1130,7 +1142,7 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
- 	struct sdio_func *func;
- 	struct brcmf_bus *bus_if;
- 	struct brcmf_sdio_dev *sdiodev;
--	mmc_pm_flag_t pm_caps, sdio_flags;
-+	mmc_pm_flag_t sdio_flags;
- 	int ret = 0;
++#ifdef CONFIG_PM
++static int mt7921u_suspend(struct usb_interface *intf, pm_message_t state)
++{
++	struct mt7921_dev *dev = usb_get_intfdata(intf);
++	int err;
++
++	err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, true);
++	if (err)
++		return err;
++
++	mt76u_stop_rx(&dev->mt76);
++	mt76u_stop_tx(&dev->mt76);
++
++	set_bit(MT76_STATE_SUSPEND, &dev->mphy.state);
++
++	return 0;
++}
++
++static int mt7921u_resume(struct usb_interface *intf)
++{
++	struct mt7921_dev *dev = usb_get_intfdata(intf);
++	bool reinit = true;
++	int err, i;
++
++	for (i = 0; i < 10; i++) {
++		u32 val = mt76_rr(dev, MT_WF_SW_DEF_CR_USB_MCU_EVENT);
++
++		if (!(val & MT_WF_SW_SER_TRIGGER_SUSPEND)) {
++			reinit = false;
++			break;
++		}
++		if (val & MT_WF_SW_SER_DONE_SUSPEND) {
++			mt76_wr(dev, MT_WF_SW_DEF_CR_USB_MCU_EVENT, 0);
++			break;
++		}
++
++		msleep(20);
++	}
++
++	if (reinit || mt7921_dma_need_reinit(dev)) {
++		err = mt7921u_dma_init(dev, true);
++		if (err)
++			return err;
++	}
++
++	clear_bit(MT76_STATE_SUSPEND, &dev->mphy.state);
++
++	err = mt76u_resume_rx(&dev->mt76);
++	if (err < 0)
++		return err;
++
++	return mt76_connac_mcu_set_hif_suspend(&dev->mt76, false);
++}
++#endif /* CONFIG_PM */
++
+ MODULE_DEVICE_TABLE(usb, mt7921u_device_table);
+ MODULE_FIRMWARE(MT7921_FIRMWARE_WM);
+ MODULE_FIRMWARE(MT7921_ROM_PATCH);
+@@ -297,6 +352,11 @@ static struct usb_driver mt7921u_driver = {
+ 	.id_table	= mt7921u_device_table,
+ 	.probe		= mt7921u_probe,
+ 	.disconnect	= mt7921u_disconnect,
++#ifdef CONFIG_PM
++	.suspend	= mt7921u_suspend,
++	.resume		= mt7921u_resume,
++	.reset_resume	= mt7921u_resume,
++#endif /* CONFIG_PM */
+ 	.soft_unbind	= 1,
+ 	.disable_hub_initiated_lpm = 1,
+ };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
+index 99bcbd858b65..cd2f09743d2f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
+@@ -121,7 +121,7 @@ static void mt7921u_epctl_rst_opt(struct mt7921_dev *dev, bool reset)
+ 	mt7921u_uhw_wr(&dev->mt76, MT_SSUSB_EPCTL_CSR_EP_RST_OPT, val);
+ }
  
- 	func = container_of(dev, struct sdio_func, dev);
-@@ -1142,20 +1154,15 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
- 	bus_if = dev_get_drvdata(dev);
- 	sdiodev = bus_if->bus_priv.sdio;
+-int mt7921u_dma_init(struct mt7921_dev *dev)
++int mt7921u_dma_init(struct mt7921_dev *dev, bool resume)
+ {
+ 	int err;
  
--	pm_caps = sdio_get_host_pm_caps(func);
--
--	if (pm_caps & MMC_PM_KEEP_POWER) {
--		/* preserve card power during suspend */
-+	if (sdiodev->wowl_enabled) {
- 		brcmf_sdiod_freezer_on(sdiodev);
- 		brcmf_sdio_wd_timer(sdiodev->bus, 0);
+@@ -136,6 +136,9 @@ int mt7921u_dma_init(struct mt7921_dev *dev)
+ 		   MT_WL_RX_AGG_TO | MT_WL_RX_AGG_LMT);
+ 	mt76_clear(dev, MT_UDMA_WLCFG_1, MT_WL_RX_AGG_PKT_LMT);
  
- 		sdio_flags = MMC_PM_KEEP_POWER;
--		if (sdiodev->wowl_enabled) {
--			if (sdiodev->settings->bus.sdio.oob_irq_supported)
--				enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
--			else
--				sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
--		}
-+		if (sdiodev->settings->bus.sdio.oob_irq_supported)
-+			enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
-+		else
-+			sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
++	if (resume)
++		return 0;
++
+ 	err = mt7921u_dma_rx_evt_ep4(dev);
+ 	if (err)
+ 		return err;
+@@ -221,7 +224,7 @@ int mt7921u_mac_reset(struct mt7921_dev *dev)
+ 	if (err)
+ 		goto out;
  
- 		if (sdio_set_host_pm_flags(sdiodev->func1, sdio_flags))
- 			brcmf_err("Failed to set pm_flags %x\n", sdio_flags);
+-	err = mt7921u_dma_init(dev);
++	err = mt7921u_dma_init(dev, false);
+ 	if (err)
+ 		goto out;
+ 
 -- 
-2.25.1
+2.35.1
 
