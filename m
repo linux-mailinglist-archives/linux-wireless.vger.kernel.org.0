@@ -2,212 +2,195 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15E5B4DC247
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 10:04:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAE784DC473
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Mar 2022 12:07:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231707AbiCQJFS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Mar 2022 05:05:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41166 "EHLO
+        id S232842AbiCQLIT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Mar 2022 07:08:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231635AbiCQJFQ (ORCPT
+        with ESMTP id S230330AbiCQLIR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Mar 2022 05:05:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4AD45DAFC9
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 02:04:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1647507839;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=R9qqzVKD4bzKL/JelFivaINl/L/KOQW4w8HcJ8yqItI=;
-        b=MSUbstpfRQOQ4pa4vqd0FP4MFOO2o8XORr/OJ7R6j/46f5YsDxUNdd36eIJRoYomaSOgdf
-        7SAKDC/qBCC6aBrYN8MY+ThwmCTPSqdHDEE4+1zKCw+Om70LR5QQBbIXdT00imBF0KPyTl
-        EuPTN0r8blEs47Ud79CLTXwEdfuSS8A=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-471-q6XJjr7vP0Oj_tFgIdabiA-1; Thu, 17 Mar 2022 05:03:57 -0400
-X-MC-Unique: q6XJjr7vP0Oj_tFgIdabiA-1
-Received: by mail-wr1-f70.google.com with SMTP id k20-20020adfc714000000b001e305cd1597so1320513wrg.19
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 02:03:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=R9qqzVKD4bzKL/JelFivaINl/L/KOQW4w8HcJ8yqItI=;
-        b=K98JzhyJtueINVMU9ugIiwSd4JcRcoxsBRNqzVtVJhwY59+hMrPGv+hwNUPzm09/Fb
-         2Ob8veI4Hf2VMYqu3B2sYrswS7J9TR30x8+lFNBVQHsjKF2zw2Wv92/L4nc6MxQNcsrz
-         3KMUBJ4wo+lZPmUtnvZPCEJIJKSHiL+vr0pO/6VySkJwSmKIx6LjvB13fpkGtbNHCSW/
-         49on+m3MLpggQ4hrbehpMelRxGNsL6oevJuPYwfH5z4CgT8V/8fgl6h0MwipWZlWUvG+
-         Hb5X9/YwLoch5oCrDVUyGtINjCOHLueLR7TJ5kvzwriCsbL7VOovUjQuyFde//V72lln
-         NXHQ==
-X-Gm-Message-State: AOAM532cSI5RDvxZ6n/yCCfcTDyjDuVz6jDgwrb/O8zhfzg6eqR+hcXp
-        1l5cIt01ODpIetfPi6HV1YNmAF8rtd5KP/yZkUBtAgGzdyCSKbgr03O3FSovoYK+lnGIQO5nrHy
-        qnhwOAkkEn0/Le/vyI75muEIIaVA=
-X-Received: by 2002:adf:816b:0:b0:203:7fae:a245 with SMTP id 98-20020adf816b000000b002037faea245mr3072224wrm.619.1647507836530;
-        Thu, 17 Mar 2022 02:03:56 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzExt6iMQxlvIY5XabLDtCiG/Czc36a1klsSly4lwbam9nCGD9/JSLvaBuOG236YqudHLFxyg==
-X-Received: by 2002:adf:816b:0:b0:203:7fae:a245 with SMTP id 98-20020adf816b000000b002037faea245mr3072197wrm.619.1647507836205;
-        Thu, 17 Mar 2022 02:03:56 -0700 (PDT)
-Received: from localhost (net-93-144-71-136.cust.vodafonedsl.it. [93.144.71.136])
-        by smtp.gmail.com with ESMTPSA id o41-20020a05600c512900b00389d8c3e2b9sm3850893wms.15.2022.03.17.02.03.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Mar 2022 02:03:55 -0700 (PDT)
-Date:   Thu, 17 Mar 2022 10:03:53 +0100
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Deren Wu <deren.wu@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] mt76: fix monitor rx FCS error in DFS channel
-Message-ID: <YjL5ecm51SUyxxpb@lore-desk>
-References: <7243650f3d51b1919bd4fd0017ff8b0186149e54.1647421054.git.deren.wu@mediatek.com>
- <YjH/GCCfQoZ5OPPM@localhost.localdomain>
- <ef6a0d876587e3efaa228f9d28f5a6f7b97e4aef.camel@mediatek.com>
+        Thu, 17 Mar 2022 07:08:17 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0C291D7D9E;
+        Thu, 17 Mar 2022 04:07:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1647515221; x=1679051221;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=1MLk0nGN5yRG+EPQEQB+T1pUQpNRL4odves+GjpHiv4=;
+  b=aO38hJXKhaG9mLI7MXFnW5o8RMqovZL8zRJ3dADBAWzsEezNMrvCtS1f
+   /yfHxX36E3vv790axFKScgEqn0oFZZXWbikUNbtqD8GWvJARcNXKwJBjN
+   l0RzAQOnNT8d7O1se8lX4/+JWWWq3zNVIUg61mxFLyXU/koZrGsvgNufH
+   n990WAEWSvYiJSH20tusK/8SXpxtxpXGi+HJruSr8Rud3xW6FEj1fGSwk
+   aIStTxMbNXO9K7CkI2K4tkHC0v44YDXUCUmZgjKJbnpn9DhcxdaS7TiCf
+   AHoiYUjQwoKTV9NLZwYHeESDoyLUVMbUpd1HvNH7kpH0F39V8yl/NJlxJ
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10288"; a="256790109"
+X-IronPort-AV: E=Sophos;i="5.90,188,1643702400"; 
+   d="scan'208";a="256790109"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2022 04:07:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,188,1643702400"; 
+   d="scan'208";a="613964486"
+Received: from orsmsx606.amr.corp.intel.com ([10.22.229.19])
+  by fmsmga004.fm.intel.com with ESMTP; 17 Mar 2022 04:07:00 -0700
+Received: from orsmsx607.amr.corp.intel.com (10.22.229.20) by
+ ORSMSX606.amr.corp.intel.com (10.22.229.19) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Thu, 17 Mar 2022 04:07:00 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx607.amr.corp.intel.com (10.22.229.20) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21 via Frontend Transport; Thu, 17 Mar 2022 04:07:00 -0700
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.42) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2308.21; Thu, 17 Mar 2022 04:07:00 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WESA2iuDc2NxeGJrFbFONJ2k9224fCoKJKpuI6OOShIj08/EVJcE1NwyaS3myl1uxVUsPc5DS+oU8SkOkyOOj2UAIJjBKlNzFKLPLWprXmMx0Ks2KBKqXqwasedlHa51q0yoLubm6uPkpcy9P2Dqa4KvwQrSRO2ArDN9WIgFLtRL+rhrzevpvbs6D9zLs0Uh/duFceUF/uLbvm1275ij1wRMeBswqdPhxdTkXE3MfOtXU9LSzZeHC4VPR2Q5E9oGjOw3Rnr8iKVlij+Gh99LssutcIuqnSankYB3Al9DPT3aYLkxP1BS3IN5B36rLaEpTsMcdjdlTlk+8TzKIV0w3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1MLk0nGN5yRG+EPQEQB+T1pUQpNRL4odves+GjpHiv4=;
+ b=dsY2Fsr0qtK7NhQF4U6lOx0UuGCWbn59Ifgr8/fohhyVhu0w3qfONT0WJtqxVinxvYdzO652LgU6T2jAn7FCJ8HCF9tKPp2JW2y8ZxgbDlv3SH4yJpA/am61gSrr3ocFjooldiABosah518pbueL7VMWSAS67lUfAuTe88YAt19rtQwOQGtuWzaCWVGol/wvGX9WeIHqjH9ldNvk7ygDcbGIaFgeqG9Wb0Mv1SkGegGKWFtILSP+xpXkeUmHUzW+Xakl7i6XhwQXSg1SfTcqJ+1Btg0ZGp6awy5lBoJWBSb5SX8K5ZkoOlE4YGchjITOgkvkZFkAhH5T03UMFirJhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BYAPR11MB3207.namprd11.prod.outlook.com (2603:10b6:a03:7c::14)
+ by PH0PR11MB5189.namprd11.prod.outlook.com (2603:10b6:510:3d::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5081.17; Thu, 17 Mar
+ 2022 11:06:58 +0000
+Received: from BYAPR11MB3207.namprd11.prod.outlook.com
+ ([fe80::a428:75b3:6530:4167]) by BYAPR11MB3207.namprd11.prod.outlook.com
+ ([fe80::a428:75b3:6530:4167%7]) with mapi id 15.20.5081.015; Thu, 17 Mar 2022
+ 11:06:58 +0000
+From:   "Coelho, Luciano" <luciano.coelho@intel.com>
+To:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
+        "arnd@kernel.org" <arnd@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Beker, Ayala" <ayala.beker@intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH] iwlwifi: mei: fix building iwlmei
+Thread-Topic: [PATCH] iwlwifi: mei: fix building iwlmei
+Thread-Index: AQHYOWTHPLmml5yFXU6hM90mCcYWnqzCXBOAgAEPX4A=
+Date:   Thu, 17 Mar 2022 11:06:58 +0000
+Message-ID: <3554c5cb403df472eca607e036a1f48a7699d490.camel@intel.com>
+References: <20220316183617.1470631-1-arnd@kernel.org>
+         <SA1PR11MB5825D9DDC4F622A9B8FA77B9F2119@SA1PR11MB5825.namprd11.prod.outlook.com>
+In-Reply-To: <SA1PR11MB5825D9DDC4F622A9B8FA77B9F2119@SA1PR11MB5825.namprd11.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.43.3-1+b1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 10808e6d-066d-4c17-4aeb-08da0806417e
+x-ms-traffictypediagnostic: PH0PR11MB5189:EE_
+x-microsoft-antispam-prvs: <PH0PR11MB5189B3D30BEAAEA2630E7C8C90129@PH0PR11MB5189.namprd11.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: GIxulMXdKCzgY+KbB6OuPiHxIyHk2dKLycPzT7In6tiIRExdZZxmyTqYKsDhARuWHTGXrIxlZblsMGlzj5Vx+CgaTD2h9QKtE4ZCUy2ZHthWgJbPwOw4KGohw+4bdynCzr+/cisdb2jl9Cbc/uJHkYueBrklnUAR7h2x/D2hVTlewf8vecT1x9RBHFuZI8xjHPv/Tnq63tueYj3BcoxVvVCNzC8DjFea9TdkJEMkUUEdqdJHpmZpIKew83RLPnqjnhurFlFln3y2hIr/a5S8BNHp2NjV//YXiT4MbAebXKiBQjpApc53IU+WStRpwlJmH1K3O/gJYclHQ1zZaCY/I6giUDm+a6ZqxZGSMKGFJZVOBnWOPRxz+Zp1uNmNjxujPWFkXWONsSBD7MlyH/GOxHdL5ous9GLcgRx5JrAQiQwN/DW173sT5KFF6fsmN+yhxcKKYr7SWQ7Fh1g/rPVZk+2/W1McL36Bmk5kx1N8+SMgMLAjDTLLx0ZJ/RC9sPsNW3z8Q3ZeFikHjHRPA9wZdFUhvDjuumnFgwBJHb6JpWTe0BxDgzPJre/kOmGt/UjgHMS1JCRkQ4Vlt/dHDcDFYt/inrOfTCsA/42ZF0zpjmPGLEBXDIommi4HU/OBgg4zj2XDG0hWj/jP+V842z7ycHGzNnf4uFHsx70I1MGzgNzY/2j2Ps6EvcnNjTVn6ND2m52wbS7bpJibwrK2Bjjnvg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3207.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(38070700005)(83380400001)(186003)(26005)(38100700002)(82960400001)(122000001)(8936002)(5660300002)(66946007)(66556008)(66476007)(8676002)(64756008)(66446008)(4326008)(2906002)(76116006)(508600001)(6506007)(2616005)(6512007)(316002)(91956017)(54906003)(71200400001)(6486002)(110136005)(36756003)(86362001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WFdneFMwaXFyT3pOdXFUTEN4Q01CbzZqcXRBV1ZGQU1nZXVpNitndFZKc2tj?=
+ =?utf-8?B?RUlmZ2ZKWEtIR0VhTGp1RjIrSEtBWCtrRmVsUk94N2dJVlV0STU4cFEwK2lB?=
+ =?utf-8?B?RjZwb1pRakUyejlhM1hTSExoRUJvOElUMEVvejl6RTc4SmVxbE5LQXhIVFdv?=
+ =?utf-8?B?V3hPK1lVeTFYZXRTZmZPZUFoNTVmWUdYdkk3NjZUZi92R0gxeFNaQTllMyt4?=
+ =?utf-8?B?MFgwZGVxTVZmdkQzcmp1b2xieEZBaXVZNHZPZ2JWWWczNitMTythdWtrRHJC?=
+ =?utf-8?B?TG13eEVrYjQ0TmlJMFZreU9HQkhhMlJVbGx6Y2lDVjNTb2FIbEdidmdRQllz?=
+ =?utf-8?B?VnAwLzFqSG9CRFJSL3pJSmFPNk9CaTcrSmtvUUFHeDhoeXc1eXJVZWgyd25B?=
+ =?utf-8?B?cFlrcHFpWUZKMkxodEQ0Nm9od2J3NU51MEM5OTMxSjJkQzRJRXBDNWZFbEFJ?=
+ =?utf-8?B?aEx0Z3JIbE5kZWNzVUtjQzh6VldSdTNHTXZIOGVRR3pZQXREQk9ZRUxiM1dV?=
+ =?utf-8?B?NHl4OWl2VGRML0x0SDdhc0grbmpOd1h5VjBBNDBjcE0vZElwaHhoNWRhcGhp?=
+ =?utf-8?B?WE1WbnVtNjUwRkFDazRVRnRBWDFHUlNHR1lOYVBSUTJyYTNzdnNzVGxLWStC?=
+ =?utf-8?B?ZE9vZjdFMnhoU3NwaDhGOHU2VC9nSjQxektUYzNJSXNsRDgrS2lvcG1RR2sx?=
+ =?utf-8?B?cjdpVm80WHo1bUlOd3BJVjJsSDlJajJ2UGljaXhaM3E5eVM1MVU4UTVEUFJT?=
+ =?utf-8?B?dXMvcG9GaERRMm9ERHJ1OXNSMkZMZmMvSnYxMXEzVmllNGVDTTRQN0xvRjRi?=
+ =?utf-8?B?ak5jOXJycWVmZWRLaHVnbUkwdkR2Q0w0elF4K1ZMVjJpM25PejFZcXdrV1VO?=
+ =?utf-8?B?ZVV5Zmc0cmVzbHB2OFVQOVUvcGNsMEVaM1JHYXVLenNsNTArSkt5R3FGRStD?=
+ =?utf-8?B?NzZEK1BTcHVUWWxBUk1odEtaNmIxLzBEd1kwaE5JejMxczF3WTh3R2U3RGhi?=
+ =?utf-8?B?dldLQjZXdEtNYytaZGc1akcwVjJTeU9oeVhjZ1BUamxhZUcydlUxOEhzNmpX?=
+ =?utf-8?B?czl4OUhGTHIwOGlLK2sza3UraHRMOFdSTTllNXhjZnBSRk1RdnRKT3FmWDgv?=
+ =?utf-8?B?QXNmY2JjYi82SkRoS0x0R0ZnRnZub0dFMjNQWXZZNEJhbUxTNDBNWE5WRDlV?=
+ =?utf-8?B?TXZ0QWdtMUlqSHNQajl0bFZZTG1RTUtFYXdmVkJSdUIwUFZWQ2F4ZFN1VXFh?=
+ =?utf-8?B?eWgzYUNISTdUWHU4YkRmZWN2RVRQRENEUkVyNTZRa3p3WmM5akZLS3BSeUF5?=
+ =?utf-8?B?bkZrS3BzNW1SSUFRZUJ4dGNLdHYwM1J5ZHJGSkFnQ3NPQjNUY3c5aDdyUjJx?=
+ =?utf-8?B?QzhOZERxUFVvaUtreTJkUVE4UVhEUmwxdkZoY2xxSFhhbHRJdENYNWxkOGNm?=
+ =?utf-8?B?K29lM2VJUFI2c0w4Mzc2Vms4bWYrMmRRRVZDSWZYTzBJdXR0OGdObzR1bDZ6?=
+ =?utf-8?B?UTRVUCt5bWhkQldiT25ISithWDRBQUtrdVEyTHBhSXpjRitjZ0ladm1ZWlVB?=
+ =?utf-8?B?NnlFZ3VoN0FBRTAvVXQ4R0NFVC9jcW8vZzhGSDR3MVpGc2ZST2hqMERRVnVs?=
+ =?utf-8?B?RWRuU3hrSERsOXZDMXMrLzBLWWlmWEZ4YzBoZUdLSkNNUWxiYUlWT0JJTmxU?=
+ =?utf-8?B?NXYxQTE5YnNCTXdaUjFXRUk5ZEtNNmlzc3ZyNXN6YmZUZzRSMTJnancwZ2g0?=
+ =?utf-8?B?MTNPb3FBeHRaYmhnK1J4TnZJb1NFOE4zSWx1YzFIam5HTkpaa2w1WGI3N0xw?=
+ =?utf-8?B?OW5aSFlGdzl6Y2xOdDNFUnRXSnhmb0VZNXUzOGE0SGd1Smp1dkwwTXRHU3lJ?=
+ =?utf-8?B?cWRobEFoSWxPTTZLbXFFSERpMnRVYzJXejZvMmNrcE54bnNXZXZKY3pPQkx3?=
+ =?utf-8?B?UURzUFNyVEd1aldzNWVieHlkUzE5Qlk4ejY5R2ZueUxmdFEweCtxclZIN3Jv?=
+ =?utf-8?B?WXZJYXRWMllBPT0=?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <EB5933034B3CD541BA9F97511A09EAD7@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="AuwHAuPZagE1dC5E"
-Content-Disposition: inline
-In-Reply-To: <ef6a0d876587e3efaa228f9d28f5a6f7b97e4aef.camel@mediatek.com>
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3207.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10808e6d-066d-4c17-4aeb-08da0806417e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Mar 2022 11:06:58.7030
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: NbZTHcW0bo4vMls2iyrHngRC45k+C+wdS4iYVaM8LVMuynk4X0R5iB1hK/UjBi6k7vFq950VOvrrylpuJL4VkCDMjEGVG6ljEKZmDZP5Des=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5189
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
---AuwHAuPZagE1dC5E
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> Hi Lore,
->=20
-> On Wed, 2022-03-16 at 16:15 +0100, Lorenzo Bianconi wrote:
-> > > From: Deren Wu <deren.wu@mediatek.com>
-> > >=20
-> > > When setup monitor mode in DFS channel, mt76 send CH_SWITCH_DFS to
-> > > fw for channel config. This would cause rx performance bad while
-> > > monitoring frames. Settings CH_SWITCH_NORMAL in monitor mode would
-> > > get the same performance as normal channels.
-> >=20
-> > Hi Deren,
-> >=20
-> > >=20
-> > > Reviewed-by: Shayne Chen <shayne.chen@mediatek.com>
-> > > Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> > > ---
-> > >  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 3 ++-
-> > >  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 ++-
-> > >  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 3 ++-
-> > >  3 files changed, 6 insertions(+), 3 deletions(-)
-> > >=20
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> > > b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> > > index 390add3144c2..97e2a85cb728 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> > > @@ -2151,7 +2151,8 @@ int mt7615_mcu_set_chan_info(struct
-> > > mt7615_phy *phy, int cmd)
-> > >  		.center_chan2 =3D ieee80211_frequency_to_channel(freq2),
-> > >  	};
-> > > =20
-> > > -	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH))
-> > > +	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH) ||
-> > > +	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
-> >=20
-> > is this patch compliant with 802.11h DFS standard?
->=20
-> Monitor mode would not tx packets and still follow standard. We will
-> keep tracking this point to avoid violations.
-
-Hi Deren,
-
-this IEEE80211_CONF_MONITOR flags indicates there is a monitor interface,
-not it is the only one so we can have multiple vifs on the device
-(e.g. AP + monitor). I was wondering if CH_SWITCH_SCAN_BYPASS_DPD is used
-to avoid transmitting packets during chip calibration on DFS channels.
-
-Regards,
-Lorenzo
-
->=20
->=20
-> Regards,
-> Deren
->=20
->=20
-> >=20
-> > Regards,
-> > Lorenzo
-> >=20
-> > >  		req.switch_reason =3D CH_SWITCH_NORMAL;
-> > >  	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
-> > >  		req.switch_reason =3D CH_SWITCH_SCAN_BYPASS_DPD;
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> > > b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> > > index 10dc4bf5adec..c56d48342aaf 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> > > @@ -2833,7 +2833,8 @@ int mt7915_mcu_set_chan_info(struct
-> > > mt7915_phy *phy, int cmd)
-> > >  	}
-> > >  #endif
-> > > =20
-> > > -	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH))
-> > > +	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH) ||
-> > > +	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
-> > >  		req.switch_reason =3D CH_SWITCH_NORMAL;
-> > >  	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
-> > >  		req.switch_reason =3D CH_SWITCH_SCAN_BYPASS_DPD;
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-> > > b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-> > > index 5ef8b24f0ab3..da2be050ed7c 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-> > > @@ -863,7 +863,8 @@ int mt7921_mcu_set_chan_info(struct mt7921_phy
-> > > *phy, int cmd)
-> > >  	else
-> > >  		req.channel_band =3D chandef->chan->band;
-> > > =20
-> > > -	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH))
-> > > +	if (cmd =3D=3D MCU_EXT_CMD(SET_RX_PATH) ||
-> > > +	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
-> > >  		req.switch_reason =3D CH_SWITCH_NORMAL;
-> > >  	else if (dev->mt76.hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
-> > >  		req.switch_reason =3D CH_SWITCH_SCAN_BYPASS_DPD;
-> > > --=20
-> > > 2.18.0
-> > >=20
->=20
-
---AuwHAuPZagE1dC5E
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYjL5eQAKCRA6cBh0uS2t
-rHeaAP9rpvWFTEXCqoSqp2KBbPfjlbHUhLkVwIYctyl72HZEXAD/TlpNfsswC5Of
-65WCUQJGGY7nSTVIzV2Msoim8lT3RwY=
-=e04/
------END PGP SIGNATURE-----
-
---AuwHAuPZagE1dC5E--
-
+T24gV2VkLCAyMDIyLTAzLTE2IGF0IDE4OjU1ICswMDAwLCBHcnVtYmFjaCwgRW1tYW51ZWwgd3Jv
+dGU6DQo+ID4gDQo+ID4gRnJvbTogQXJuZCBCZXJnbWFubiA8YXJuZEBhcm5kYi5kZT4NCj4gPiAN
+Cj4gPiBCdWlsZGluZyBpd2xtZWkgd2l0aG91dCBDT05GSUdfQ0ZHODAyMTEgY2F1c2VzIGEgbGlu
+ay10aW1lIHdhcm5pbmc6DQo+ID4gDQo+ID4gbGQubGxkOiBlcnJvcjogdW5kZWZpbmVkIHN5bWJv
+bDogaWVlZTgwMjExX2hkcmxlbg0KPiA+ID4gPiA+IHJlZmVyZW5jZWQgYnkgbmV0LmMNCj4gPiA+
+ID4gPiANCj4gPiA+ID4gPiBuZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9tZWkvbmV0Lm86KGl3
+bF9tZWlfdHhfY29weV90b19jc21lDQo+ID4gPiA+ID4gKSBpbg0KPiA+ID4gPiA+IGFyY2hpdmUg
+ZHJpdmVycy9idWlsdC1pbi5hDQo+ID4gDQo+ID4gQWRkIGFuIGV4cGxpY2l0IGRlcGVuZGVuY3kg
+dG8gYXZvaWQgdGhpcy4gSW4gdGhlb3J5IGl0IHNob3VsZCBub3QNCj4gPiBiZSBuZWVkZWQNCj4g
+PiBoZXJlLCBidXQgaXQgYWxzbyBzZWVtcyBwb2ludGxlc3MgdG8gYWxsb3cgSVdMTUVJIGZvcg0K
+PiA+IGNvbmZpZ3VyYXRpb25zIHdpdGhvdXQNCj4gPiBDRkc4MDIxMS4NCj4gPiANCj4gPiBTaWdu
+ZWQtb2ZmLWJ5OiBBcm5kIEJlcmdtYW5uIDxhcm5kQGFybmRiLmRlPg0KPiA+IC0tLQ0KPiA+IMKg
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9LY29uZmlnIHwgMSArDQo+ID4gwqAx
+IGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykNCj4gPiANCj4gPiBJIHNlZSB0aGlzIHdhcm5p
+bmcgb24gNS4xNy1yYzgsIGJ1dCBkaWQgbm90IHRlc3QgaXQgb24gbGludXgtbmV4dCwNCj4gPiB3
+aGljaCBtYXkNCj4gPiBhbHJlYWR5IGhhdmUgYSBmaXguDQo+ID4gDQo+ID4gZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvS2NvbmZpZw0KPiA+IGIvZHJpdmVy
+cy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9LY29uZmlnDQo+ID4gaW5kZXggODVlNzA0Mjgz
+NzU1Li5hNjQ3YTQwNmI4N2IgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+aW50ZWwvaXdsd2lmaS9LY29uZmlnDQo+ID4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvaW50
+ZWwvaXdsd2lmaS9LY29uZmlnDQo+ID4gQEAgLTEzOSw2ICsxMzksNyBAQCBjb25maWcgSVdMTUVJ
+DQo+ID4gwqAJdHJpc3RhdGUgIkludGVsIE1hbmFnZW1lbnQgRW5naW5lIGNvbW11bmljYXRpb24g
+b3ZlciBXTEFOIg0KPiA+IMKgCWRlcGVuZHMgb24gSU5URUxfTUVJDQo+ID4gwqAJZGVwZW5kcyBv
+biBQTQ0KPiA+ICsJZGVwZW5kcyBvbiBDRkc4MDIxMQ0KPiA+IMKgCWhlbHANCj4gPiDCoAkgIEVu
+YWJsZXMgdGhlIGl3bG1laSBrZXJuZWwgbW9kdWxlLg0KPiA+IA0KPiANCj4gRldJVzogTHVjYSBq
+dXN0IG1lcmdlZCB0aGUgZXhhY3Qgc2FtZSBwYXRjaCBpbnRlcm5hbGx5LiBTbw0KPiBBY2tlZC1i
+eTogRW1tYW51ZWwgR3J1bWJhY2ggPEVtbWFudWVsLmdydW1iYWNoQGludGVsLmNvbT4NCg0KWWVh
+aCwgcGxlYXNlIHRha2UgdGhpcy4NCg0KQWNrZWQtYnk6IEx1Y2EgQ29lbGhvIDxsdWNpYW5vLmNv
+ZWxob0BpbnRlbC5jb20+DQoNCi0tDQpDaGVlcnMsDQpMdWNhLg0K
