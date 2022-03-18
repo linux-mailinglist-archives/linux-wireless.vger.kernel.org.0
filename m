@@ -2,77 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 388A74DD367
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Mar 2022 04:02:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B25E4DD3B1
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Mar 2022 04:44:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232117AbiCRDD0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Mar 2022 23:03:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51152 "EHLO
+        id S232272AbiCRDpe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Mar 2022 23:45:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229924AbiCRDDY (ORCPT
+        with ESMTP id S232291AbiCRDp2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Mar 2022 23:03:24 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1838F1FDFD7;
-        Thu, 17 Mar 2022 20:02:07 -0700 (PDT)
-Received: from canpemm500007.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4KKTKJ3hV9zfYpG;
-        Fri, 18 Mar 2022 11:00:36 +0800 (CST)
-Received: from localhost (10.174.179.215) by canpemm500007.china.huawei.com
- (7.192.104.62) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 17 Mar 2022 23:45:28 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0246E197F83
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 20:44:07 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22I3hxwcF006510, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22I3hxwcF006510
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 18 Mar 2022 11:43:59 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Fri, 18 Mar 2022 11:43:59 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 18 Mar
- 2022 11:02:05 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <luciano.coelho@intel.com>, <kvalo@kernel.org>,
-        <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <ayala.beker@intel.com>, <emmanuel.grumbach@intel.com>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next] wlwifi: mei: Fix build error without CFG80211
-Date:   Fri, 18 Mar 2022 11:01:49 +0800
-Message-ID: <20220318030149.1328-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+ 2022 11:43:58 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>
+Subject: [PATCH] rtw88: change idle mode condition during hw_scan
+Date:   Fri, 18 Mar 2022 11:43:16 +0800
+Message-ID: <20220318034316.40720-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.174.179.215]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- canpemm500007.china.huawei.com (7.192.104.62)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 03/18/2022 03:28:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMTggpFekyCAwMjowMDowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If CFG80211 is n and IWLMEI is y,  building fails:
+From: Po-Hao Huang <phhuang@realtek.com>
 
-drivers/net/wireless/intel/iwlwifi/mei/net.o: In function `iwl_mei_tx_copy_to_csme':
-net.c:(.text+0xd0): undefined reference to `ieee80211_hdrlen'
+Previously we only consider single interface's status, idle mode
+behavior could be unexpected when multiple interfaces is active.
+Change to enter/leave idle mode by mac80211's configuration state.
 
-Make IWLMEI depends on CFG80211 to fix this.
-
-Fixes: 2da4366f9e2c ("iwlwifi: mei: add the driver to allow cooperation with CSME")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/intel/iwlwifi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
-index 85e704283755..8c003cd29ab7 100644
---- a/drivers/net/wireless/intel/iwlwifi/Kconfig
-+++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
-@@ -137,7 +137,7 @@ endif
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 8b9899e41b0bb..b57f9262f5909 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -280,7 +280,8 @@ static void rtw_ips_work(struct work_struct *work)
+ 	struct rtw_dev *rtwdev = container_of(work, struct rtw_dev, ips_work);
  
- config IWLMEI
- 	tristate "Intel Management Engine communication over WLAN"
--	depends on INTEL_MEI
-+	depends on INTEL_MEI && CFG80211
- 	depends on PM
- 	help
- 	  Enables the iwlmei kernel module.
+ 	mutex_lock(&rtwdev->mutex);
+-	rtw_enter_ips(rtwdev);
++	if (rtwdev->hw->conf.flags & IEEE80211_CONF_IDLE)
++		rtw_enter_ips(rtwdev);
+ 	mutex_unlock(&rtwdev->mutex);
+ }
+ 
+@@ -1353,7 +1354,7 @@ void rtw_core_scan_start(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif,
+ 
+ 	rtw_leave_lps(rtwdev);
+ 
+-	if (hw_scan && rtwvif->net_type == RTW_NET_NO_LINK) {
++	if (hw_scan && (rtwdev->hw->conf.flags & IEEE80211_CONF_IDLE)) {
+ 		ret = rtw_leave_ips(rtwdev);
+ 		if (ret) {
+ 			rtw_err(rtwdev, "failed to leave idle state\n");
+@@ -1389,7 +1390,7 @@ void rtw_core_scan_complete(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
+ 
+ 	rtw_coex_scan_notify(rtwdev, COEX_SCAN_FINISH);
+ 
+-	if (rtwvif->net_type == RTW_NET_NO_LINK && hw_scan)
++	if (hw_scan && (rtwdev->hw->conf.flags & IEEE80211_CONF_IDLE))
+ 		ieee80211_queue_work(rtwdev->hw, &rtwdev->ips_work);
+ }
+ 
 -- 
-2.17.1
+2.25.1
 
