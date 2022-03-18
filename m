@@ -2,109 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 828504DD359
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Mar 2022 03:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 76B944DD3A2
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Mar 2022 04:39:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232046AbiCRC7m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Mar 2022 22:59:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35326 "EHLO
+        id S232155AbiCRDki (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Mar 2022 23:40:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232041AbiCRC7j (ORCPT
+        with ESMTP id S229555AbiCRDkh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Mar 2022 22:59:39 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F759D048
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 19:58:21 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22I2w2n35025337, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22I2w2n35025337
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 18 Mar 2022 10:58:02 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Fri, 18 Mar 2022 10:58:02 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 18 Mar
- 2022 10:58:01 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>
-Subject: [PATCH 2/2] rtw89: packet offload handler to avoid warning
-Date:   Fri, 18 Mar 2022 10:57:10 +0800
-Message-ID: <20220318025710.35328-3-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220318025710.35328-1-pkshih@realtek.com>
-References: <20220318025710.35328-1-pkshih@realtek.com>
+        Thu, 17 Mar 2022 23:40:37 -0400
+X-Greylist: delayed 2317 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 17 Mar 2022 20:39:18 PDT
+Received: from tmailer.gwdg.de (tmailer.gwdg.de [134.76.10.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12E4418FAFD
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 20:39:17 -0700 (PDT)
+Received: from excmbx-17.um.gwdg.de ([134.76.9.228] helo=email.gwdg.de)
+        by mailer.gwdg.de with esmtp (GWDG Mailer)
+        (envelope-from <alexander.vorwerk@stud.uni-goettingen.de>)
+        id 1nV2r0-000Eop-2n; Fri, 18 Mar 2022 04:00:38 +0100
+Received: from notebook.fritz.box (10.250.9.199) by excmbx-17.um.gwdg.de
+ (134.76.9.228) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P521) id 15.1.2375.24; Fri, 18
+ Mar 2022 04:00:37 +0100
+From:   Alexander Vorwerk <alexander.vorwerk@stud.uni-goettingen.de>
+To:     <kvalo@kernel.org>, <davem@davemloft.net>, <stf_xl@wp.pl>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Alexander Vorwerk <alexander.vorwerk@stud.uni-goettingen.de>
+Subject: [PATCH] iwlegacy: 4965-rs: remove three unused variables
+Date:   Fri, 18 Mar 2022 04:00:25 +0100
+Message-ID: <20220318030025.12890-1-alexander.vorwerk@stud.uni-goettingen.de>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 03/18/2022 02:32:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMTggpFekyCAxMjo0MDowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.250.9.199]
+X-ClientProxiedBy: excmbx-11.um.gwdg.de (134.76.9.220) To excmbx-17.um.gwdg.de
+ (134.76.9.228)
+X-Virus-Scanned: (clean) by clamav
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po Hao Huang <phhuang@realtek.com>
+The following warnings showed up when compiling with W=1.
 
-Add a dummy function for packet offload to eliminate warning message
-"c2h class 1 func 2 not support". This c2h is for debug purpose and
-its presence itself can do the work, so further parsing won't be
-required for now.
+drivers/net/wireless/intel/iwlegacy/4965-rs.c: In function ‘il4965_rs_stay_in_table’:
+drivers/net/wireless/intel/iwlegacy/4965-rs.c:1636:18: warning: variable ‘il’ set but not used [-Wunused-but-set-variable]
+  struct il_priv *il;
+                  ^~
+drivers/net/wireless/intel/iwlegacy/4965-rs.c: In function ‘il4965_rs_alloc_sta’:
+drivers/net/wireless/intel/iwlegacy/4965-rs.c:2257:18: warning: variable ‘il’ set but not used [-Wunused-but-set-variable]
+  struct il_priv *il;
+                  ^~
+drivers/net/wireless/intel/iwlegacy/4965-rs.c: In function ‘il4965_rs_sta_dbgfs_scale_table_write’:
+drivers/net/wireless/intel/iwlegacy/4965-rs.c:2535:18: warning: variable ‘il’ set but not used [-Wunused-but-set-variable]
+  struct il_priv *il;
+                  ^~
 
-Signed-off-by: Po Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Fixing by removing the variables.
+
+Signed-off-by: Alexander Vorwerk <alexander.vorwerk@stud.uni-goettingen.de>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlegacy/4965-rs.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 5e554bd9f0368..9afd9ffcd1763 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -3451,12 +3451,18 @@ rtw89_mac_c2h_bcn_cnt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
- {
- }
+diff --git a/drivers/net/wireless/intel/iwlegacy/4965-rs.c b/drivers/net/wireless/intel/iwlegacy/4965-rs.c
+index 9a491e5db75b..5e4110a1e644 100644
+--- a/drivers/net/wireless/intel/iwlegacy/4965-rs.c
++++ b/drivers/net/wireless/intel/iwlegacy/4965-rs.c
+@@ -1633,9 +1633,7 @@ il4965_rs_stay_in_table(struct il_lq_sta *lq_sta, bool force_search)
+ 	int i;
+ 	int active_tbl;
+ 	int flush_interval_passed = 0;
+-	struct il_priv *il;
  
-+static void
-+rtw89_mac_c2h_pkt_ofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
-+			   u32 len)
-+{
-+}
-+
- static
- void (* const rtw89_mac_c2h_ofld_handler[])(struct rtw89_dev *rtwdev,
- 					    struct sk_buff *c2h, u32 len) = {
- 	[RTW89_MAC_C2H_FUNC_EFUSE_DUMP] = NULL,
- 	[RTW89_MAC_C2H_FUNC_READ_RSP] = NULL,
--	[RTW89_MAC_C2H_FUNC_PKT_OFLD_RSP] = NULL,
-+	[RTW89_MAC_C2H_FUNC_PKT_OFLD_RSP] = rtw89_mac_c2h_pkt_ofld_rsp,
- 	[RTW89_MAC_C2H_FUNC_BCN_RESEND] = NULL,
- 	[RTW89_MAC_C2H_FUNC_MACID_PAUSE] = rtw89_mac_c2h_macid_pause,
- 	[RTW89_MAC_C2H_FUNC_SCANOFLD_RSP] = rtw89_mac_c2h_scanofld_rsp,
+-	il = lq_sta->drv;
+ 	active_tbl = lq_sta->active_tbl;
+ 
+ 	tbl = &(lq_sta->lq_info[active_tbl]);
+@@ -2254,9 +2252,7 @@ il4965_rs_alloc_sta(void *il_rate, struct ieee80211_sta *sta, gfp_t gfp)
+ {
+ 	struct il_station_priv *sta_priv =
+ 	    (struct il_station_priv *)sta->drv_priv;
+-	struct il_priv *il;
+ 
+-	il = (struct il_priv *)il_rate;
+ 	D_RATE("create station rate scale win\n");
+ 
+ 	return &sta_priv->lq_sta;
+@@ -2532,12 +2528,10 @@ il4965_rs_sta_dbgfs_scale_table_write(struct file *file,
+ 				      size_t count, loff_t *ppos)
+ {
+ 	struct il_lq_sta *lq_sta = file->private_data;
+-	struct il_priv *il;
+ 	char buf[64];
+ 	size_t buf_size;
+ 	u32 parsed_rate;
+ 
+-	il = lq_sta->drv;
+ 	memset(buf, 0, sizeof(buf));
+ 	buf_size = min(count, sizeof(buf) - 1);
+ 	if (copy_from_user(buf, user_buf, buf_size))
 -- 
-2.25.1
+2.17.1
 
