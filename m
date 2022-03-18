@@ -2,62 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D3694DD3C4
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Mar 2022 04:53:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 613654DD3D3
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Mar 2022 05:03:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230433AbiCRDyf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Mar 2022 23:54:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39618 "EHLO
+        id S232331AbiCREEu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Mar 2022 00:04:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230156AbiCRDyd (ORCPT
+        with ESMTP id S229503AbiCREEs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Mar 2022 23:54:33 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C23C21760D8
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 20:53:14 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22I3qjOF3008518, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22I3qjOF3008518
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 18 Mar 2022 11:52:45 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+        Fri, 18 Mar 2022 00:04:48 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9BFC63DE;
+        Thu, 17 Mar 2022 21:03:28 -0700 (PDT)
+Received: from canpemm500007.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4KKVgS4JNQzCqkR;
+        Fri, 18 Mar 2022 12:01:24 +0800 (CST)
+Received: from [10.174.179.215] (10.174.179.215) by
+ canpemm500007.china.huawei.com (7.192.104.62) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Fri, 18 Mar 2022 11:52:45 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 18 Mar
- 2022 11:52:45 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] rtw89: handle potential uninitialized variable
-Date:   Fri, 18 Mar 2022 11:52:02 +0800
-Message-ID: <20220318035202.42437-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+ 15.1.2308.21; Fri, 18 Mar 2022 12:03:26 +0800
+Subject: Re: [PATCH -next] wlwifi: mei: Fix build error without CFG80211
+To:     <luciano.coelho@intel.com>, <kvalo@kernel.org>,
+        <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <ayala.beker@intel.com>, <emmanuel.grumbach@intel.com>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20220318030149.1328-1-yuehaibing@huawei.com>
+From:   YueHaibing <yuehaibing@huawei.com>
+Message-ID: <ee4cc974-1cfc-f9ba-5e23-f429eb5d311d@huawei.com>
+Date:   Fri, 18 Mar 2022 12:03:26 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 03/18/2022 03:40:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMTggpFekyCAwMjowMDowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+In-Reply-To: <20220318030149.1328-1-yuehaibing@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.179.215]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ canpemm500007.china.huawei.com (7.192.104.62)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -66,33 +53,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The smatch reports:
- rtw8852a.c:1857 rtw8852a_btc_set_wl_txpwr_ctrl() error: uninitialized symbol '_cur'.
- rtw8852a.c:1858 rtw8852a_btc_set_wl_txpwr_ctrl() error: uninitialized symbol '_cur'.
+On 2022/3/18 11:01, YueHaibing wrote:
+> If CFG80211 is n and IWLMEI is y,  building fails:
+> 
+> drivers/net/wireless/intel/iwlwifi/mei/net.o: In function `iwl_mei_tx_copy_to_csme':
+> net.c:(.text+0xd0): undefined reference to `ieee80211_hdrlen'
+> 
+> Make IWLMEI depends on CFG80211 to fix this.
+> 
 
-This is because rtw89_mac_txpwr_read32() can possibly return before setting
-argument _cur, and the caller will use the uninitialized value. To fix this
-problem, check the return value of rtw89_mac_txpwr_read32().
+It seems has been fixed, Pls igbore this.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/rtw8852a.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 41fc8db311ecf..b6887325a27b3 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -1841,7 +1841,8 @@ rtw8852a_btc_set_wl_txpwr_ctrl(struct rtw89_dev *rtwdev, u32 txpwr_val)
- 		u32 _cur, _wrt;						\
- 		rtw89_debug(rtwdev, RTW89_DBG_TXPWR,			\
- 			    "btc ctrl %s: 0x%x\n", #_case, _val);	\
--		rtw89_mac_txpwr_read32(rtwdev, RTW89_PHY_0, _reg, &_cur);\
-+		if (rtw89_mac_txpwr_read32(rtwdev, RTW89_PHY_0, _reg, &_cur))\
-+			break;						\
- 		rtw89_debug(rtwdev, RTW89_DBG_TXPWR,			\
- 			    "btc ctrl ori 0x%x: 0x%x\n", _reg, _cur);	\
- 		_wrt = __do_clr(_val) ?					\
--- 
-2.25.1
-
+> Fixes: 2da4366f9e2c ("iwlwifi: mei: add the driver to allow cooperation with CSME")
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
+> index 85e704283755..8c003cd29ab7 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/Kconfig
+> +++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
+> @@ -137,7 +137,7 @@ endif
+>  
+>  config IWLMEI
+>  	tristate "Intel Management Engine communication over WLAN"
+> -	depends on INTEL_MEI
+> +	depends on INTEL_MEI && CFG80211
+>  	depends on PM
+>  	help
+>  	  Enables the iwlmei kernel module.
+> 
