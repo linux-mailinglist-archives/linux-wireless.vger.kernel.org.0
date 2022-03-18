@@ -2,120 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88DE54DD31F
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Mar 2022 03:33:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB00D4DD330
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Mar 2022 03:43:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231849AbiCRCez (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Mar 2022 22:34:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60628 "EHLO
+        id S231894AbiCRCoY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Mar 2022 22:44:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231816AbiCRCeq (ORCPT
+        with ESMTP id S231875AbiCRCoV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Mar 2022 22:34:46 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D033A199E1B
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 19:33:28 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22I2XMyD4017687, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22I2XMyD4017687
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 18 Mar 2022 10:33:23 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Fri, 18 Mar 2022 10:33:22 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 18 Mar
- 2022 10:33:22 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <johnson.lin@realtek.com>,
-        <kevin_yang@realtek.com>
-Subject: [PATCH 11/11] rtw89: read RX bandwidth from v1 type RX descriptor
-Date:   Fri, 18 Mar 2022 10:32:14 +0800
-Message-ID: <20220318023214.32411-12-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220318023214.32411-1-pkshih@realtek.com>
-References: <20220318023214.32411-1-pkshih@realtek.com>
+        Thu, 17 Mar 2022 22:44:21 -0400
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A0F0DAFEB
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 19:43:00 -0700 (PDT)
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 7C2E23F192
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Mar 2022 02:42:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1647571373;
+        bh=Bt5u+dqRXX5TG4kpL4NYCF0+7EST57EITnb/tm+FvLo=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=h56FVk6aH8OtASMxrhjclBmbs4lUdOEsd2E0+0zqKo4YBgxJlL9+UGeIH95nH6ODK
+         Fj8p7sNtXOxnncs6MaY3rPhJqlDIhs1J+PqxleYSPecKYRBvWd5asRdgP7jP6Wz9rE
+         QGqpGRaAz4HcGDGR2H5RqPleTyEdurBBYly//m+oCPdW+TeyP77SE1jDkUi0wH6KZX
+         7HKFGV/fbmo+rKaTzUKIoOoZvP4rutwZuqd635HH00tSq4ZyqPixwBTlQxwNABdmsY
+         Mwcmi/tvnkG89Hw2wR32r4NuIsTD7nny4WEKxPZv4AQscHlc/wn83UQK1dtaneOTgw
+         C5k8yUh96cutQ==
+Received: by mail-pl1-f197.google.com with SMTP id x10-20020a170902a38a00b00151e09a4e15so3444873pla.15
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 19:42:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Bt5u+dqRXX5TG4kpL4NYCF0+7EST57EITnb/tm+FvLo=;
+        b=t37X5ezBKWxQOiPNF9jBfKywF++ANNmrmhNwZLaXaymEjmRxk9LbAoAapxz2bueVRy
+         MXi6RlW0oA1/qvcHNCSLMwmwIS3vt1s0gCofmfpR7wAbymXPblyxU8n29o+fFVfh++4X
+         Nbm83ZNdv/TUegILBHk9Ftn0ebpJeROTQ86awtT7yNNPIPvNw/hhN276C1SVntRG0s/n
+         bVGRYaKpHNZSS/eaCvqNjU5m9FDbWdUgpUqFbo8KrUYcRvl2sbUJfLj75wio1dKp7Alk
+         ShlPbb13l8qOyskw+SzQqqw8Tf04+cgV2vOSGNj1VAxV3dRG+KCqygRn5KFlczQaUHWI
+         awEA==
+X-Gm-Message-State: AOAM531NuiEB/NvFYi3G1h/OngBiNfJCpNo5wzE2jHMofNOaF9bVBCy+
+        xZaCZX1bKbcMV41/OjtF+/Z8f+7qiht6iKOh7VSb/b5FudL3FVBD7xXfXyzzaGd7qWeLYkZXo2V
+        OQUBjlxjraQfKR9oKghzVOqcv9H8xIxkyVssA84vt9ZFM
+X-Received: by 2002:a17:90b:4c08:b0:1c6:40e4:776c with SMTP id na8-20020a17090b4c0800b001c640e4776cmr8724575pjb.237.1647571372087;
+        Thu, 17 Mar 2022 19:42:52 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyBmgzsy0zKa9NwPy5bZZxUZZGmF1IcYkjfssmssCj9ufj7jR+nQNE2iuZ3iJhBwTgTt3sHOw==
+X-Received: by 2002:a17:90b:4c08:b0:1c6:40e4:776c with SMTP id na8-20020a17090b4c0800b001c640e4776cmr8724556pjb.237.1647571371753;
+        Thu, 17 Mar 2022 19:42:51 -0700 (PDT)
+Received: from localhost.localdomain (2001-b400-e287-a413-5915-32ac-82c3-a966.emome-ip6.hinet.net. [2001:b400:e287:a413:5915:32ac:82c3:a966])
+        by smtp.gmail.com with ESMTPSA id v16-20020a056a00149000b004f7ae2cbd3asm8191232pfu.166.2022.03.17.19.42.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Mar 2022 19:42:51 -0700 (PDT)
+From:   Chris Chiu <chris.chiu@canonical.com>
+To:     kvalo@kernel.org, Jes.Sorensen@gmail.com, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     code@reto-schneider.ch, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chris Chiu <chris.chiu@canonical.com>
+Subject: [PATCH v2 0/2] rtl8xxxu: Fill up more TX information
+Date:   Fri, 18 Mar 2022 10:42:14 +0800
+Message-Id: <20220318024216.42204-1-chris.chiu@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 03/18/2022 02:15:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMTggpFekyCAxMjo0MDowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-8852C uses different fields to represent RX bandwidth. Since other fields
-are the same, I check chip_id to get bandwidth instead of creating another
-v1 function.
+The antenna information is missing in rtl8xxxu and txrate is NULL
+in 8188cu and 8192cu. Fill up the missing information for iw
+commands.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c | 6 +++++-
- drivers/net/wireless/realtek/rtw89/txrx.h | 2 ++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+Chris Chiu (2):
+  rtl8xxxu: feed antenna information for cfg80211
+  rtl8xxxu: fill up txrate info for gen1 chips
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 245d8514961e8..d923e4a0f963b 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1492,6 +1492,7 @@ void rtw89_core_query_rxdesc(struct rtw89_dev *rtwdev,
- 			     struct rtw89_rx_desc_info *desc_info,
- 			     u8 *data, u32 data_offset)
- {
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	struct rtw89_rxdesc_short *rxd_s;
- 	struct rtw89_rxdesc_long *rxd_l;
- 	u8 shift_len, drv_info_len;
-@@ -1502,7 +1503,10 @@ void rtw89_core_query_rxdesc(struct rtw89_dev *rtwdev,
- 	desc_info->long_rxdesc = RTW89_GET_RXWD_LONG_RXD(rxd_s);
- 	desc_info->pkt_type = RTW89_GET_RXWD_RPKT_TYPE(rxd_s);
- 	desc_info->mac_info_valid = RTW89_GET_RXWD_MAC_INFO_VALID(rxd_s);
--	desc_info->bw = RTW89_GET_RXWD_BW(rxd_s);
-+	if (chip->chip_id == RTL8852C)
-+		desc_info->bw = RTW89_GET_RXWD_BW_V1(rxd_s);
-+	else
-+		desc_info->bw = RTW89_GET_RXWD_BW(rxd_s);
- 	desc_info->data_rate = RTW89_GET_RXWD_DATA_RATE(rxd_s);
- 	desc_info->gi_ltf = RTW89_GET_RXWD_GI_LTF(rxd_s);
- 	desc_info->user_id = RTW89_GET_RXWD_USER_ID(rxd_s);
-diff --git a/drivers/net/wireless/realtek/rtw89/txrx.h b/drivers/net/wireless/realtek/rtw89/txrx.h
-index 1250e26ade406..b889e7bf34c0c 100644
---- a/drivers/net/wireless/realtek/rtw89/txrx.h
-+++ b/drivers/net/wireless/realtek/rtw89/txrx.h
-@@ -204,6 +204,8 @@
- 	le32_get_bits((rxdesc)->dword0, GENMASK(13, 0))
- #define RTW89_GET_RXWD_BW(rxdesc) \
- 	le32_get_bits((rxdesc)->dword1, GENMASK(31, 30))
-+#define RTW89_GET_RXWD_BW_V1(rxdesc) \
-+	le32_get_bits((rxdesc)->dword1, GENMASK(31, 29))
- #define RTW89_GET_RXWD_GI_LTF(rxdesc) \
- 	le32_get_bits((rxdesc)->dword1, GENMASK(27, 25))
- #define RTW89_GET_RXWD_DATA_RATE(rxdesc) \
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 75 +++++++++++++++++++
+ 1 file changed, 75 insertions(+)
+
 -- 
-2.25.1
+2.20.1
 
