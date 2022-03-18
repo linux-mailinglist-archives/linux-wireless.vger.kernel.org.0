@@ -2,92 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A2DE4DD352
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Mar 2022 03:54:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED6824DD358
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Mar 2022 03:58:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231342AbiCRCzw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Mar 2022 22:55:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53452 "EHLO
+        id S232045AbiCRC7l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Mar 2022 22:59:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231189AbiCRCzu (ORCPT
+        with ESMTP id S232040AbiCRC7j (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Mar 2022 22:55:50 -0400
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 387D01F977F
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 19:54:32 -0700 (PDT)
-X-QQ-mid: bizesmtp75t1647572020t6n26plq
-Received: from localhost.localdomain ( [58.240.82.166])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Fri, 18 Mar 2022 10:53:33 +0800 (CST)
-X-QQ-SSF: 01400000002000D0I000B00A0000000
-X-QQ-FEAT: 9ftZnmyzxdiZygKhI/a9zsn2Ql3YkPwABNkaIECyxsLsHR0HX3LZxYTXcGRQN
-        m/KV9Td9UttvaF421hJafNdN84yLyFLXh/3SwI7fhumPIHVOoHQgSiKgC6wYUJ4uBnotNI5
-        yFUoyEco1kDAEXwtm7AV5ryuizUoeRS1ejNF4WSIdoDVNn7uPb2ClEkj+s6SFSQ96xRNEiY
-        gkWb4KfvTqoNIcND6cSWlOwVAazxTUxi0TnJJ3aq933vRODCyB5Y11SzXTEefnQfefI9NYJ
-        4P3CeX/j6o7pENkfjLH1G8vJqsf7I9ETEi0F2ql4tDe7sGBEKDp+l2ojgC7ytO/AjU2BZcW
-        Y3rd8xrdbXQ4adIcfUgTADIuPO9iQ==
-X-QQ-GoodBg: 2
-From:   Meng Tang <tangmeng@uniontech.com>
-To:     kvalo@kernel.org, davem@davemloft.net
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Meng Tang <tangmeng@uniontech.com>
-Subject: [PATCH] net: wireless: ath10k: Use of_device_get_match_data() helper
-Date:   Fri, 18 Mar 2022 10:53:31 +0800
-Message-Id: <20220318025331.23030-1-tangmeng@uniontech.com>
-X-Mailer: git-send-email 2.20.1
+        Thu, 17 Mar 2022 22:59:39 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD70797B98
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Mar 2022 19:58:21 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22I2vwEpB025316, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22I2vwEpB025316
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 18 Mar 2022 10:57:58 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Fri, 18 Mar 2022 10:57:58 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 18 Mar
+ 2022 10:57:58 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>
+Subject: [PATCH 0/2] rtw89: some fixes related to hw_scan
+Date:   Fri, 18 Mar 2022 10:57:08 +0800
+Message-ID: <20220318025710.35328-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:uniontech.com:qybgforeign:qybgforeign8
-X-QQ-Bgrelay: 1
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 03/18/2022 02:32:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMTggpFekyCAxMjo0MDowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Only the device data is needed, not the entire struct of_device_id.
-Use of_device_get_match_data() instead of of_match_device().
+After applying hw_scan, it can't play STA and monitor mode simultaneously,
+because power is off after hw_scan unconditionally. The new firmware,
+which supports hw_scan, adds an new C2H message to notify driver, but
+this message is debug purpose, so just add a dummy function to avoid the
+unsupported message.
 
-Signed-off-by: Meng Tang <tangmeng@uniontech.com>
----
- drivers/net/wireless/ath/ath10k/ahb.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+Po Hao Huang (2):
+  rtw89: change idle mode condition during hw_scan
+  rtw89: packet offload handler to avoid warning
 
-diff --git a/drivers/net/wireless/ath/ath10k/ahb.c b/drivers/net/wireless/ath/ath10k/ahb.c
-index ab8f77ae5e66..f0c615fa5614 100644
---- a/drivers/net/wireless/ath/ath10k/ahb.c
-+++ b/drivers/net/wireless/ath/ath10k/ahb.c
-@@ -728,20 +728,17 @@ static int ath10k_ahb_probe(struct platform_device *pdev)
- 	struct ath10k *ar;
- 	struct ath10k_ahb *ar_ahb;
- 	struct ath10k_pci *ar_pci;
--	const struct of_device_id *of_id;
- 	enum ath10k_hw_rev hw_rev;
- 	size_t size;
- 	int ret;
- 	struct ath10k_bus_params bus_params = {};
- 
--	of_id = of_match_device(ath10k_ahb_of_match, &pdev->dev);
--	if (!of_id) {
--		dev_err(&pdev->dev, "failed to find matching device tree id\n");
-+	hw_rev = (enum ath10k_hw_rev)of_device_get_match_data(&pdev->dev);
-+	if (!hw_rev) {
-+		dev_err(&pdev->dev, "OF data missing\n");
- 		return -EINVAL;
- 	}
- 
--	hw_rev = (enum ath10k_hw_rev)of_id->data;
--
- 	size = sizeof(*ar_pci) + sizeof(*ar_ahb);
- 	ar = ath10k_core_create(size, &pdev->dev, ATH10K_BUS_AHB,
- 				hw_rev, &ath10k_ahb_hif_ops);
+ drivers/net/wireless/realtek/rtw89/core.c | 8 ++++----
+ drivers/net/wireless/realtek/rtw89/mac.c  | 8 +++++++-
+ 2 files changed, 11 insertions(+), 5 deletions(-)
+
 -- 
-2.20.1
-
-
+2.25.1
 
