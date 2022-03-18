@@ -2,92 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80AE14DD8C2
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Mar 2022 12:10:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3EDB4DD9ED
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Mar 2022 13:47:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235659AbiCRLLn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Mar 2022 07:11:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48238 "EHLO
+        id S236295AbiCRMsW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Mar 2022 08:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234829AbiCRLLm (ORCPT
+        with ESMTP id S230247AbiCRMsW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Mar 2022 07:11:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B0B3160694
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Mar 2022 04:10:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E624C6172C
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Mar 2022 11:10:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0354DC340E8;
-        Fri, 18 Mar 2022 11:10:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647601823;
-        bh=ILk3uFGMUCXr+XEUkP8BHLCmfpJ7GIdoV+EMW7yerUc=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Uuk9GjSc2xnI6Kz5BfJNfqW0dJiKDN9tuqEec1EzUEleftAitqcc8/pzcn5Fl3vE1
-         pqAp5KM6/DcuSLF2zH4UuLVZgM52nwjnw/WrrJZL61a6mat3NM2MLgCYIv1nFAGizK
-         oId032+ABK+CkH00brnmvKhrKuymzSQaxAnO8dAAWgSFstxiGlIkWO83T1LrRNvx8V
-         aEY3+O4bGCeY2q5yuidRnbo3F0OGgIeQOopV4BckzU6Q+yL04yL/xzgkFw6uTOB3Lr
-         ksXBsmlLAcVbzcSyzU/1xs5E0Lu/T43tLGJI+kNS1OtamYXBDb5VQm+PXkWhY2po6/
-         QwZr7nXXtSAkw==
-Content-Type: text/plain; charset="utf-8"
+        Fri, 18 Mar 2022 08:48:22 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1816F2E415F
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Mar 2022 05:47:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=er26jgQqqWIkeiYung6sP9Xm4srJZgmxOHOKKqOmBtg=; t=1647607623; x=1648817223; 
+        b=okHx03aD5yBx/a+i512FVpA/dQ0GvQPyc12CCJbILaYr61f1UPbGj/VD5XvRQfOD/94gWZtHIFm
+        /kI8KksO0akXK0BeM/sRVun6sJl+jbyWPKtjQp5lWXJpYNwOeP+z5vv9zyHfZU+Hphstz6n3D6Q8L
+        /rAYdWIU1xeYWQtda8JTjNlMr9z7e2Y/IkI7DqP+peYbGZaCk1QOBp2dS+9DjAIOjnUCOwJvU99gd
+        xSh60bfVIzd4t3zEciQ9yDdv/LKT2d632p6HQn3e2Ef5whUC2WPbKqNnqloFOun/EuH/q8zdKm9Sm
+        ENVmB1/pvBhYkmLgybewlr1WQX7M+Hxet2Pw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nVC0S-00ErVU-Mx;
+        Fri, 18 Mar 2022 13:47:00 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] nl80211: show SSID for P2P_GO interfaces
+Date:   Fri, 18 Mar 2022 13:46:57 +0100
+Message-Id: <20220318134656.14354ae223f0.Ia25e85a512281b92e1645d4160766a4b1a471597@changeid>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rfkill: make new event layout opt-in
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220316212749.16491491b270.Ifcb1950998330a596f29a2a162e00b7546a1d6d0@changeid>
-References: <20220316212749.16491491b270.Ifcb1950998330a596f29a2a162e00b7546a1d6d0@changeid>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Benjamin Berg <benjamin@sipsolutions.net>,
-        Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-        Johannes Berg <johannes.berg@intel.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164760181908.1508.6458450052251228118.kvalo@kernel.org>
-Date:   Fri, 18 Mar 2022 11:10:21 +0000 (UTC)
-X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> wrote:
+From: Johannes Berg <johannes.berg@intel.com>
 
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> Again new complaints surfaced that we had broken the ABI here,
-> although previously all the userspace tools had agreed that it
-> was their mistake and fixed it. Yet now there are cases (e.g.
-> RHEL) that want to run old userspace with newer kernels, and
-> thus are broken.
-> 
-> Since this is a bit of a whack-a-mole thing, change the whole
-> extensibility scheme of rfkill to no longer just rely on the
-> message lengths, but instead require userspace to opt in via a
-> new ioctl to a given maximum event size that it is willing to
-> understand.
-> 
-> By default, set that to RFKILL_EVENT_SIZE_V1 (8), so that the
-> behaviour for userspace not calling the ioctl will look as if
-> it's just running on an older kernel.
-> 
-> Fixes: 14486c82612a ("rfkill: add a reason to the HW rfkill state")
-> Cc: stable@vger.kernel.org # 5.11+
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+There's no real reason not to send the SSID to userspace
+when it requests information about P2P_GO, it is, in that
+respect, exactly the same as AP interfaces. Fix that.
 
-Patch applied to wireless-next.git, thanks.
+Fixes: 44905265bc15 ("nl80211: don't expose wdev->ssid for most interfaces")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/nl80211.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-54f586a91532 rfkill: make new event layout opt-in
-
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index ee1c2b6b6971..711061cd02d1 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -3709,6 +3709,7 @@ static int nl80211_send_iface(struct sk_buff *msg, u32 portid, u32 seq, int flag
+ 	wdev_lock(wdev);
+ 	switch (wdev->iftype) {
+ 	case NL80211_IFTYPE_AP:
++	case NL80211_IFTYPE_P2P_GO:
+ 		if (wdev->ssid_len &&
+ 		    nla_put(msg, NL80211_ATTR_SSID, wdev->ssid_len, wdev->ssid))
+ 			goto nla_put_failure_locked;
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220316212749.16491491b270.Ifcb1950998330a596f29a2a162e00b7546a1d6d0@changeid/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.35.1
 
