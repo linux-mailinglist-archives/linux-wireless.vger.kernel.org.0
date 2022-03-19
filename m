@@ -2,71 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B24394DE4A5
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Mar 2022 00:49:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 601F84DE532
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Mar 2022 03:36:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241571AbiCRXvA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Mar 2022 19:51:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53398 "EHLO
+        id S235898AbiCSCh1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Mar 2022 22:37:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241564AbiCRXvA (ORCPT
+        with ESMTP id S230294AbiCSChZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Mar 2022 19:51:00 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C341314924F;
-        Fri, 18 Mar 2022 16:49:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1647647380; x=1679183380;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=FvD98hz50M7JnRHfkfTWPNB0aCDVABKuZeTx5d5YSEg=;
-  b=bfvRbW9nNqhC8kSVbzIrUFZiPLISrZO3Kty7kaXVOlqLfTWt9l6Fp6CZ
-   coPRtxxyam04nzNyF6RYx2Kv0ZO1zQJrbgtHmjoC9zRrNdCUnUGCv7RdN
-   EqHDsv7k1cKfyObk3fdRYA8mt2ZpTi+sIjr/6gNNBRZtHhDWoGrF7pfhT
-   tZRVYLud/gW5TCtI0MbqvQLOjITVz7t2cLz8QWMYwVIYNx8y9g0MqhJhM
-   nfaSF20NMJO1o2oWqeuuNo9ExT4X7bFSS6MNbjLc66cVLUZ4OgUbstnIs
-   qrPxrrBqFMo00A0kD00JmIh7SRdajFxllWPPGMJdnOljJCdcDByAAy7el
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10290"; a="239412595"
-X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; 
-   d="scan'208";a="239412595"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2022 16:49:40 -0700
-X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; 
-   d="scan'208";a="691498551"
-Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.212.164.23]) ([10.212.164.23])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2022 16:49:39 -0700
-Message-ID: <a43666ad-4216-29e9-762d-ade19fd77620@linux.intel.com>
-Date:   Fri, 18 Mar 2022 16:49:38 -0700
+        Fri, 18 Mar 2022 22:37:25 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE5772BB7CD
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Mar 2022 19:36:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1647657365; x=1679193365;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RF5igoTu3j2FYAqjDSBzSvxMRT7HE8ocLWW0XvWMDw8=;
+  b=jA7o6DqLwt+4IjfXZfK1Z9/lXBmYzfEu00/nKcICg5qZpDCngvLsag/Q
+   Q2xncBUHBXvFzQ7EY+/XCPsilRSJ5ByWwRbE6w5i9RuKe+Hom/hT7EPZI
+   B4xygp4ufAXYukdu1KoQWqTdYyYIapgB8TJdN8qU71xSJvY/GnK0A/TuZ
+   k=;
+Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 18 Mar 2022 19:36:05 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2022 19:36:05 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Fri, 18 Mar 2022 19:36:04 -0700
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Fri, 18 Mar 2022 19:36:03 -0700
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH 0/3] ath11k: add support muti-type regdb data for WCN6855
+Date:   Fri, 18 Mar 2022 22:35:40 -0400
+Message-ID: <20220319023543.14288-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH net-next v5 12/13] net: wwan: t7xx: Device deep sleep
- lock/unlock
-Content-Language: en-US
-To:     =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
-        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
-        sreehari.kancharla@intel.com, madhusmita.sahu@intel.com
-References: <20220223223326.28021-1-ricardo.martinez@linux.intel.com>
- <20220223223326.28021-13-ricardo.martinez@linux.intel.com>
- <1aca9e1f-8b6b-d3e2-d3ff-1bf37abe63f5@linux.intel.com>
-From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
-In-Reply-To: <1aca9e1f-8b6b-d3e2-d3ff-1bf37abe63f5@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,92 +61,21 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Add enum value ATH11K_BD_IE_REGDB and enum type ath11k_bd_ie_regdb_type
+for regdb data, the board-2.bin will include both board data and regdb
+files.
 
-On 3/10/2022 2:21 AM, Ilpo Järvinen wrote:
-> On Wed, 23 Feb 2022, Ricardo Martinez wrote:
->
->> From: Haijun Liu <haijun.liu@mediatek.com>
->>
->> Introduce the mechanism to lock/unlock the device 'deep sleep' mode.
->> When the PCIe link state is L1.2 or L2, the host side still can keep
->> the device is in D0 state from the host side point of view. At the same
->> time, if the device's 'deep sleep' mode is unlocked, the device will
->> go to 'deep sleep' while it is still in D0 state on the host side.
->>
->> Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
->> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
->> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
->> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
->> ---
-...
->> +int t7xx_pci_sleep_disable_complete(struct t7xx_pci_dev *t7xx_dev)
->> +{
->> +	struct device *dev = &t7xx_dev->pdev->dev;
->> +	int ret;
->> +
->> +	ret = wait_for_completion_timeout(&t7xx_dev->sleep_lock_acquire,
->> +					  msecs_to_jiffies(PM_SLEEP_DIS_TIMEOUT_MS));
->> +	if (!ret)
->> +		dev_err_ratelimited(dev, "Resource wait complete timed out\n");
->> +
->> +	return ret;
->> +}
->> +
->> +/**
->> + * t7xx_pci_disable_sleep() - Disable deep sleep capability.
->> + * @t7xx_dev: MTK device.
->> + *
->> + * Lock the deep sleep capability, note that the device can still go into deep sleep
->> + * state while device is in D0 state, from the host's point-of-view.
->> + *
->> + * If device is in deep sleep state, wake up the device and disable deep sleep capability.
->> + */
->> +void t7xx_pci_disable_sleep(struct t7xx_pci_dev *t7xx_dev)
->> +{
->> +	unsigned long flags;
->> +
->> +	if (atomic_read(&t7xx_dev->md_pm_state) < MTK_PM_RESUMED) {
->> +		atomic_inc(&t7xx_dev->sleep_disable_count);
->> +		complete_all(&t7xx_dev->sleep_lock_acquire);
->> +		return;
->> +	}
->> +
->> +	spin_lock_irqsave(&t7xx_dev->md_pm_lock, flags);
->> +	if (atomic_inc_return(&t7xx_dev->sleep_disable_count) == 1) {
->> +		u32 deep_sleep_enabled;
->> +
->> +		reinit_completion(&t7xx_dev->sleep_lock_acquire);
-> You might want to check that there's a mechanism that prevents this
-> racing with wait_for_completion_timeout() in t7xx_pci_sleep_disable_complete().
->
-> I couldn't prove it myself but there are probably aspect in the PM side of
-> things I wasn't able to take fully into account (that is, which call
-> paths are not possible to occur).
-Those functions are called in the following order:
-1.- t7xx_pci_disable_sleep()
-2.- t7xx_pci_sleep_disable_complete()
-3.- t7xx_pci_enable_sleep()
+Wen Gong (3):
+  ath11k: remove unused ATH11K_BD_IE_BOARD_EXT
+  ath11k: disable regdb support for QCA6390
+  ath11k: add support to search regdb data in board-2.bin for WCN6855
 
-That sequence and md_pm_lock protect against a race condition between 
-wait_for_completion_timeout() and  reinit_completion().
-On the other hand, there could be a race condition between 
-t7xx_pci_disable_sleep() and t7xx_pci_enable_sleep() which may cause 
-sleep to get enabled while one thread expects it to be disabled.
-The fix would be to protect sleep_disable_count with md_pm_lock, then 
-sleep_disable_count doesn't need to be declared as atomic.
-The next version will include cleanup in this area.
->> +		t7xx_dev_set_sleep_capability(t7xx_dev, false);
->> +
->> +		deep_sleep_enabled = ioread32(IREG_BASE(t7xx_dev) + T7XX_PCIE_RESOURCE_STATUS);
->> +		deep_sleep_enabled &= T7XX_PCIE_RESOURCE_STS_MSK;
->> +		if (deep_sleep_enabled) {
->> +			spin_unlock_irqrestore(&t7xx_dev->md_pm_lock, flags);
->> +			complete_all(&t7xx_dev->sleep_lock_acquire);
->> +			return;
->> +		}
->> +
->> +		t7xx_mhccif_h2d_swint_trigger(t7xx_dev, H2D_CH_DS_LOCK);
->> +	}
->> +	spin_unlock_irqrestore(&t7xx_dev->md_pm_lock, flags);
->> +}
->
+ drivers/net/wireless/ath/ath11k/core.c | 81 ++++++++++++++++++--------
+ drivers/net/wireless/ath/ath11k/hw.h   | 20 ++++++-
+ 2 files changed, 75 insertions(+), 26 deletions(-)
+
+
+base-commit: d845cf007bdf8b2bf41522e1ecd0eb804e553d57
+-- 
+2.31.1
+
