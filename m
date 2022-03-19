@@ -2,48 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C98B4DE797
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Mar 2022 12:21:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01D134DE82A
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Mar 2022 14:28:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232356AbiCSLW4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Mar 2022 07:22:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47928 "EHLO
+        id S238509AbiCSN3i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Mar 2022 09:29:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242808AbiCSLWy (ORCPT
+        with ESMTP id S237343AbiCSN3g (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Mar 2022 07:22:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 721AF199E2D
-        for <linux-wireless@vger.kernel.org>; Sat, 19 Mar 2022 04:21:33 -0700 (PDT)
+        Sat, 19 Mar 2022 09:29:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22BBE89098
+        for <linux-wireless@vger.kernel.org>; Sat, 19 Mar 2022 06:28:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 655B26112B
-        for <linux-wireless@vger.kernel.org>; Sat, 19 Mar 2022 11:21:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699B1C340EC;
-        Sat, 19 Mar 2022 11:21:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B2F3360DBA
+        for <linux-wireless@vger.kernel.org>; Sat, 19 Mar 2022 13:28:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DFBC340EC;
+        Sat, 19 Mar 2022 13:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647688891;
-        bh=nQboeRw4EpHkl5AQE8IKF+bwgT1/W0my/Fjov0ky86o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tnanin3QsqZuzWUlz+BNxiEa4FSYF9U/+LSSAE8r0YwR3A1UtGSvUB8yThs1sTwSt
-         LDeg0Zv9Rku754yY6yO8XVf+J5+gVwJCF8PAije87VA5dsRaJ5zeAAmmndG2wS4HOR
-         MRG1rr6cJPLAk7V4uN5uRKQUO+cuQiMRCgcl/Llu7BS6nXueGBAE5LMjUpelBj1KEM
-         2vWT+GuXfkf239qNgbsgjymaB7EjQGbBpai4Gd0VRPgxyueFrMR8dKBrih2QI4+6hc
-         e8DTaqTiFCqSEgelxGuL5/GSRea8wydD06VcWlQ/aUXeXOciqJgC3Qn/OLGjO+Q5mx
-         5dRGNRkZoedIA==
-Date:   Sat, 19 Mar 2022 12:21:27 +0100
+        s=k20201202; t=1647696494;
+        bh=ud9GOAdlSs+htcqHe4z2OVXxgJ2BvkEh9kSf1b+GEdI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=k0Y6E9cVRk6yIJ1z4kaGi8pEEtdWRQAHYG0JeKDYjw2tvPI2MZb85UnRNabrrdEk0
+         ICH/7A4PaV383iOXbNiQ643c16DcFMJtYgHmyKG91uFYiFdqdrl+UwUAIuOmIYc1Pd
+         ebCi7GEYa6mWlIdpmCEzkFUGmPeI3g2MsvfwiFlHFNSG0kdVWIgk9nOONrNWtgcxr0
+         0SlstiVH5pXu/UtnxhPCxET8dv6APmrnKjRGFo9tt7gt0CjTP+yFuAudy7xP8ZquOT
+         le/eQlyar3n3Rzw93ffwkapbYeA/+7oaSgemVLnEARm6hypskIaG4SnQJOZB3wGuw/
+         lv9qQfWMSp4Mg==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [bug report] mt76: mt7915: introduce 802.11ax multi-bss support
-Message-ID: <YjW8t8N7T6EgGiOe@lore-desk>
-References: <20220319090501.GA5051@kili>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        dan.carpenter@oracle.com
+Subject: [PATCH] mt76: mt7915: fix unbounded shift in mt7915_mcu_beacon_mbss
+Date:   Sat, 19 Mar 2022 14:28:01 +0100
+Message-Id: <b48f89bf73860cc9149f99986ea528db9ab35b7f.1647696425.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="9/FoJLMF4HHheNmm"
-Content-Disposition: inline
-In-Reply-To: <20220319090501.GA5051@kili>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -54,106 +52,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Fix the following smatch static checker warning:
+	drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:1872 mt7915_mcu_beacon_mbss()
+	error: undefined (user controlled) shift '(((1))) << (data[2])'
 
---9/FoJLMF4HHheNmm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Rely on mac80211 definitions for ieee80211_bssid_index subelement.
 
-> Hello Lorenzo Bianconi,
->=20
-> The patch 6b7f9aff7c67: "mt76: mt7915: introduce 802.11ax multi-bss
-> support" from Mar 15, 2022, leads to the following Smatch static
-> checker warning:
->=20
-> 	drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:1872 mt7915_mcu_beacon_m=
-bss()
-> 	error: undefined (user controlled) shift '(((1))) << (data[2])'
+Fixes: 6b7f9aff7c67 ("mt76: mt7915: introduce 802.11ax multi-bss support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 20 ++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-I do not think it is a real issue since bssid_index is supposed to be limit=
-ed
-by mbssid_max_interfaces (set to 16 for 7915), but I will add a check. Than=
-ks.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index e7a6f80e7755..736c9c342baa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -1854,7 +1854,8 @@ mt7915_mcu_beacon_mbss(struct sk_buff *rskb, struct sk_buff *skb,
+ 			continue;
+ 
+ 		for_each_element(sub_elem, elem->data + 1, elem->datalen - 1) {
+-			const u8 *data;
++			const struct ieee80211_bssid_index *idx;
++			const u8 *idx_ie;
+ 
+ 			if (sub_elem->id || sub_elem->datalen < 4)
+ 				continue; /* not a valid BSS profile */
+@@ -1862,14 +1863,19 @@ mt7915_mcu_beacon_mbss(struct sk_buff *rskb, struct sk_buff *skb,
+ 			/* Find WLAN_EID_MULTI_BSSID_IDX
+ 			 * in the merged nontransmitted profile
+ 			 */
+-			data = cfg80211_find_ie(WLAN_EID_MULTI_BSSID_IDX,
+-						sub_elem->data,
+-						sub_elem->datalen);
+-			if (!data || data[1] < 1 || !data[2])
++			idx_ie = cfg80211_find_ie(WLAN_EID_MULTI_BSSID_IDX,
++						  sub_elem->data,
++						  sub_elem->datalen);
++			if (!idx_ie || idx_ie[1] < sizeof(*idx))
+ 				continue;
+ 
+-			mbss->offset[data[2]] = cpu_to_le16(data - skb->data);
+-			mbss->bitmap |= cpu_to_le32(BIT(data[2]));
++			idx = (void *)(idx_ie + 2);
++			if (!idx->bssid_index || idx->bssid_index > 31)
++				continue;
++
++			mbss->offset[idx->bssid_index] =
++				cpu_to_le16(idx_ie - skb->data);
++			mbss->bitmap |= cpu_to_le32(BIT(idx->bssid_index));
+ 		}
+ 	}
+ }
+-- 
+2.35.1
 
-Regards,
-Lorenzo
-
->=20
-> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
->     1828 static void
->     1829 mt7915_mcu_beacon_mbss(struct sk_buff *rskb, struct sk_buff *skb,
->     1830                        struct ieee80211_vif *vif, struct bss_inf=
-o_bcn *bcn,
->     1831                        struct ieee80211_mutable_offsets *offs)
->     1832 {
->     1833         struct bss_info_bcn_mbss *mbss;
->     1834         const struct element *elem;
->     1835         struct tlv *tlv;
->     1836=20
->     1837         if (!vif->bss_conf.bssid_indicator)
->     1838                 return;
->     1839=20
->     1840         tlv =3D mt7915_mcu_add_nested_subtlv(rskb, BSS_INFO_BCN_=
-MBSSID,
->     1841                                            sizeof(*mbss), &bcn->=
-sub_ntlv,
->     1842                                            &bcn->len);
->     1843=20
->     1844         mbss =3D (struct bss_info_bcn_mbss *)tlv;
->     1845         mbss->offset[0] =3D cpu_to_le16(offs->tim_offset);
->     1846         mbss->bitmap =3D cpu_to_le32(1);
->     1847=20
->     1848         for_each_element_id(elem, WLAN_EID_MULTIPLE_BSSID,
->     1849                             &skb->data[offs->mbssid_off],
->     1850                             skb->len - offs->mbssid_off) {
->     1851                 const struct element *sub_elem;
->     1852=20
->     1853                 if (elem->datalen < 2)
->     1854                         continue;
->     1855=20
->     1856                 for_each_element(sub_elem, elem->data + 1, elem-=
->datalen - 1) {
->     1857                         const u8 *data;
->     1858=20
->     1859                         if (sub_elem->id || sub_elem->datalen < =
-4)
->     1860                                 continue; /* not a valid BSS pro=
-file */
->     1861=20
->     1862                         /* Find WLAN_EID_MULTI_BSSID_IDX
->     1863                          * in the merged nontransmitted profile
->     1864                          */
->     1865                         data =3D cfg80211_find_ie(WLAN_EID_MULTI=
-_BSSID_IDX,
->     1866                                                 sub_elem->data,
->     1867                                                 sub_elem->datale=
-n);
->     1868                         if (!data || data[1] < 1 || !data[2])
->=20
-> This probably needs a "|| data[2] > 31" but maybe using a define?
->=20
->     1869                                 continue;
->     1870=20
->     1871                         mbss->offset[data[2]] =3D cpu_to_le16(da=
-ta - skb->data);
-> --> 1872                         mbss->bitmap |=3D cpu_to_le32(BIT(data[2=
-]));
->     1873                 }
->     1874         }
->     1875 }
->=20
-> regards,
-> dan carpenter
-
---9/FoJLMF4HHheNmm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYjW8twAKCRA6cBh0uS2t
-rBu+AQDLKqKuVxCGR++YMtY534nbRMMq09uGcKJsgPAqoiqG7QD/bApEj5OtgkYz
-ZwmuPsidsxRKDZfdSN+y0l3cgeauYAI=
-=eLFX
------END PGP SIGNATURE-----
-
---9/FoJLMF4HHheNmm--
