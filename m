@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F24364E1E3E
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Mar 2022 00:30:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9740A4E1E40
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Mar 2022 00:30:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343793AbiCTXcF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Mar 2022 19:32:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60204 "EHLO
+        id S1343794AbiCTXcG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Mar 2022 19:32:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343792AbiCTXcE (ORCPT
+        with ESMTP id S1343795AbiCTXcF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Mar 2022 19:32:04 -0400
+        Sun, 20 Mar 2022 19:32:05 -0400
 Received: from CAN01-QB1-obe.outbound.protection.outlook.com (mail-eopbgr660086.outbound.protection.outlook.com [40.107.66.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63271132E94
-        for <linux-wireless@vger.kernel.org>; Sun, 20 Mar 2022 16:30:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 327F4132E8C
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Mar 2022 16:30:41 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TTK2TidiE9PcHa3Ldk2mF3BfpIOIzds8NiDiDj5/z2xIHHXJyLJEcNXUsfd0y9473GHZ3t8Eu78HXJqdy3KGnm4jdo7wEg/roBV/PHlHDIwmiOqT+hdPUObu27sL0LXNb5F1cyzzcDtmgFyz2i9Crwhp9BNR2+q5wQ2ztZX1SCRNIAj1rAyvnD1TQ6T8OJ6+RTCoOLrMwYsBZweWlAnPCt1lT2QvE+Fb2cLmlUO/NCngCl8rR4uqbJLpnkHFLaQSo5EUxfqEyMNSHxIGdJHdWr7tEkEXsDnP0LRzdXyLECKAboQc2W6J3cjllIiYXZzy55lqMkbgHWVqNwlADVWClA==
+ b=IOEVL2tPOhTsQX9TDJVgomGXHwK9epTRaEhjuO6dYIYzbH8NDUP3RxTjRbIeJffpEBM6hRCFlWnAw74dNFJqPYOJdcDvu2Xi15K4Pxzf5uG6fGjWXrmblgUsqCB3Dku4n9GeGaa5gYqAlBGaaod4ejehEfbllDgXV5hjoVeapdWvzjr103Y5TifI61e/L0i+ek8gCsa6OUJRwQz9+/cgBqeLigvCmazJLAuLmfyiCJqrSosV25Mmdx0uRSQ+EJ21+ILLaiKaR+536N3ycO+1LyRgbKg+pUX2Xhg48vYj2pGpfhBK5tTn8el1rDoyWeVUTUQBx5UbPWcnZxlUp3GX2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2reHbE0WPgtyWD89wih7l4T4Dvd0Lh9f54OomM55zsA=;
- b=YGh5+DtMmDTvpuEA2Cgd/zC8zzkzktLgr80a++WPbYwcPFcKf0k1d3pOMHmG97ETdNoB/xkvQiBkbN1tdcDqT99zFUVIgFM/E2G51yydxen0ks2Hz/A/NQDclgyv5pwL+ahdACZ00gOuS/PFZ9KgWXOpTYyEF3fYwRIJIlaMPlvvB+J3aRdbiCOIBo0xhAWfyIs/eUvYE0Kxh7mr59I7xootm8FX+CqSF5Ke01BoO4NHW6mj0r5OUZqq7US0FtAEw5E7w+uiIDe5FKhphEdqdjLdGc3+ESDsldgv8l3lDNaO9+4sqY8mUfGeFz279H8P2F0DhhhG2mIbRKp9In+CCA==
+ bh=3P/bbTUJj/+WdI/CITQLN5rbydm6fd7pty+OZOYwbJE=;
+ b=E2Potz9ZRVlo4gOW+sEoa5qosQOn1hQAyiV87WCPcewIuleSbSQXms1PNfuMZLxVOUsljx0CiLwzW+vSGnNUCDfETeamRp5zrV/A8CZ4FcSjNMun1oQ4ads/vQ/HQgFOB6IUIFjyXZCoi4fRRMPwPcS4RThzW5ETgmvi/d/YJ3nyY/QGD5yQQSyiTwwAOXR8cxZX4it1D889xSojAILlGyQDXjoeNFwFmO3FuXM/M+qJtKH8YnruFxQTVqfWbwOz4Ylx6cP0/fDxocJedfZPlkVsOpFIEF0QgFD+rYJuGIAWhSUSIYEK1mBzeOaaIH5M2hexWBFOHpjM6mAkhsNrpg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=ucalgary.ca; dmarc=pass action=none header.from=ucalgary.ca;
  dkim=pass header.d=ucalgary.ca; arc=none
@@ -31,18 +31,18 @@ Received: from YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:c00:4a::23)
  by YTBPR01MB2989.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:18::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5081.17; Sun, 20 Mar
- 2022 23:30:37 +0000
+ 2022 23:30:39 +0000
 Received: from YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
  ([fe80::dd8c:6e57:c431:9323]) by YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
  ([fe80::dd8c:6e57:c431:9323%6]) with mapi id 15.20.5081.022; Sun, 20 Mar 2022
- 23:30:37 +0000
+ 23:30:39 +0000
 From:   Wenli Looi <wlooi@ucalgary.ca>
 To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
 Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
         ath9k-devel@qca.qualcomm.com, Wenli Looi <wlooi@ucalgary.ca>
-Subject: [PATCH 4/6] ath9k: fix ar9003_get_eepmisc
-Date:   Sun, 20 Mar 2022 17:30:08 -0600
-Message-Id: <20220320233010.123106-5-wlooi@ucalgary.ca>
+Subject: [PATCH 5/6] ath9k: refactor ar9003_hw_spur_mitigate_ofdm
+Date:   Sun, 20 Mar 2022 17:30:09 -0600
+Message-Id: <20220320233010.123106-6-wlooi@ucalgary.ca>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220320233010.123106-1-wlooi@ucalgary.ca>
 References: <20220320233010.123106-1-wlooi@ucalgary.ca>
@@ -53,50 +53,50 @@ X-ClientProxiedBy: MW4PR04CA0176.namprd04.prod.outlook.com
  (2603:10b6:c00:4a::23)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 382e7f97-682a-4253-b708-08da0ac9a37d
+X-MS-Office365-Filtering-Correlation-Id: ad7bed0e-4013-4294-0998-08da0ac9a478
 X-MS-TrafficTypeDiagnostic: YTBPR01MB2989:EE_
-X-Microsoft-Antispam-PRVS: <YTBPR01MB2989FA3E36FBA643820AE6BDB2159@YTBPR01MB2989.CANPRD01.PROD.OUTLOOK.COM>
+X-Microsoft-Antispam-PRVS: <YTBPR01MB2989CB4AAFB1962BFCDC05A0B2159@YTBPR01MB2989.CANPRD01.PROD.OUTLOOK.COM>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: j6+GFUUldEPDFavbQlnxf8KME7XkW/cqZNclYKknDJUFmd+qHzaGQ0l3qMzbTbPQ8VXDzKS7cyKwMl8vs+xijB0zpTjJN7l69BXHht188NkxOQyuls+bKQUYhEeFmVOn+Dt3deWadVzTx6c8GHzshhlfh/6b0P6477kyMWXJWlOY1Oo64xoodqZTQty5Js+dS3lOvfF63D/DydxXY6K78DCh+du3mpQKcd9t164aWR/Fxg3IfoqlLMrCIyS62MBMB9S7CwvTLGT97slPJBFwlKUeSGxQ3ni0Dle1B/PKJhZYUuJ8ScXfG5qASTFbifzQ122+//CM3hUvxNcNkrS9IPs+1vRFKCtW4g3yg3K9H1WzIH9mT+oA6Txtuxt2taKI+/NbLroqYhet1vHNQDC+2guBcsE7wt5MOPaG8VancCPEn8vP6Ajx1DS9PnIg3k3rXfgVhSb1IjAFlTAzrP7e/LgB2VcrF27ZUq1iLhW5kfq2ui7cQY5Gn0KiCybXqpCzHlx9d13kUVyz61DPK0Wcd1BywfruQ9MDxj9jmRr83lA1uxyBpSnpRAqY9TVZocbu095V5uKPb8Gnl84uyUNH9LKl+PkxOi/sTFWXUm1d3gIPhQ8M6TP8361kk0G2tKfCfeC76yaUlvuAUNR4YMq/EKSIf5B/GOkmOw/T6JaQlsJAaWP/fBi1tlEp/yVwUANx
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(6486002)(2906002)(83380400001)(66946007)(66556008)(8676002)(66476007)(4326008)(786003)(316002)(6916009)(54906003)(86362001)(508600001)(5660300002)(38100700002)(38350700002)(4744005)(8936002)(186003)(36756003)(6666004)(26005)(6512007)(2616005)(6506007)(52116002)(107886003)(1076003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: hS3kSJEIES/r+Rjksjksz0pVG8mB6GCdEbsYQvGEOmhoEe63gf2q4/trU/iqZD/gvMsPJrRP+f4DU+L2IKIBT39Fvwnudwfwlkc+Su6bL6j8XMaRpMy8ULJkqGhoIkJhJvKXgiF0VU1/7EkrQopSBhc/axepQjKQUSiemSkhMsPAEVzQn6xhGhUfTYcsYp0x1wmwojhdPKQbZoM27zK/d3m5V/IyMTPGAVCRyl7nX9EZo9oleJE9/KSuPmHeb14wKh0cLcMUFV3cV0Tirfi9px5XaO1dDh6yOnqUSSOMY15UzXvfABgcTjJq0OzpPXrswoFl3TB+JCppUUVheQOHpKXo5LINSD2Mtv87T0y/lP0+SzPlpDQzwfnP8KIkJO3qsQTOZaERbM2grX79PjarzI61o0vvvzskKsWeNEaGQcKZmaQePnUYQaDcX+lsHIcVVxfSV7fD3GwFkh70YIHjuaHUflYY0Qp23A0c7JjK92cCoGrVppGiF4rPxmtgGhbm6kqVggF4/M+iD11C2LDsYVggXdW7216Q+2STTbl766gPbAF+5HGnzuv0IFsao+WU7t67kn0R5pHsFzqg0ddEq4qWTfoPeJXwbGgOyN0xBbypHDJUweGsoSXtbyktYrxSK655tzSwmnboK4z3JnQ8rPjlaLminhUgBfvLTQyOEZKxzxmJBOKuvDaunKy0bIbACF/4kl35JXVFvYXhZNf0fw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(6486002)(2906002)(83380400001)(66946007)(66556008)(8676002)(66476007)(4326008)(786003)(316002)(6916009)(54906003)(86362001)(508600001)(5660300002)(38100700002)(38350700002)(8936002)(186003)(36756003)(6666004)(26005)(6512007)(2616005)(6506007)(52116002)(107886003)(1076003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?OLIOt37zWCimUeSmGgexgRk9fLn7R9CwfU4wjoebBfZ3JFZsQW8vUqcF3QQO?=
- =?us-ascii?Q?RNwQaQFqQ6rFU/6LV1zpsIfSFHb+T741/+1KcxbER4PbWJSBrQxdeS0F3S2b?=
- =?us-ascii?Q?3kdtSAdW6LqT/BUGEMk42Jzvg/iGOO+VGSytm86dj8wZ8LVNzyWDgXXp+1Qj?=
- =?us-ascii?Q?2ubS9AQNXdLn0Ur/gPJmTRNFdehITLfw9pabp3IKxuuQ4vN46qgqV/2J2TfH?=
- =?us-ascii?Q?wbhya7VtQZO4vlJcUum8DPS3GM9Zqz7fbaWuH9ejDqwXZJxDdz6h3tZHPGgV?=
- =?us-ascii?Q?U+rtHsEAqs9dIBdYmwJa2JPSNH+/VLKRTqjOrrUEHOmTgqfV6QUdvynuaIJa?=
- =?us-ascii?Q?9+IYeaMGPB13uxO+dX4dU/PGh4Bo4v+QMIkWBiR7Il+pMTh3a3y1K2YUsjss?=
- =?us-ascii?Q?UD2I/nizWv4TztqQ1mZLWcHoiDK9M2+KYtAhFCQhU27slVRaiagrItjzctG7?=
- =?us-ascii?Q?ih8Jd2JlPBHVn2/0fctV1LZ82M6pZQNTUMjyAMEtqnKXRom0707YYYbCtdku?=
- =?us-ascii?Q?Y1Pezx7wXqbTQlWzeFaDJW8Wl0gYUGHJDDrAqxt4wyp/y72aAmksq5fLCT25?=
- =?us-ascii?Q?7z6PQHqO7cnWs48/2Di1D0vLGCZYWWMK7FtS0LlIrXUvMEdd4fkwlitAbQbl?=
- =?us-ascii?Q?YXVEMZ4uhZCQcz9/j4efEjAhBGIFVNghawR8R6nYqbl4bx3xMv9zlHA+cZNP?=
- =?us-ascii?Q?nKmKJfWEMNgUDs/mI69kzA66ttxfi74Wu3xfLaZy/NLnEli5HkjVdvDepbSq?=
- =?us-ascii?Q?4cpsN5Sh1dRLAOg6e6r5Gh61ocZSot/hyrLiGeYeKetzXhd/cl0SuXlO/1X1?=
- =?us-ascii?Q?eFEp4moS6bPVPwb1wQmnSenm5nPOx53up0k3fr9tm6Nx7WGi4HZpVHASKyaq?=
- =?us-ascii?Q?+cSlHRGXS+p1yiTkR9TM8My/Zz3YcwuP9ptOY+rH/QTOebYzUDV6R9+iosVN?=
- =?us-ascii?Q?NKmG3AIwSmX9GLqSB1C3i3R4cbjjQGv92B/6PV4dNWBsGg46LTp6eKatm3xP?=
- =?us-ascii?Q?PSXv54ePWnQZ/OI/do3vAb5/vhjxftKMcey+V87eOezEiecqI+tbpLc1B7QA?=
- =?us-ascii?Q?qCRW9VRKxoeg4Pqgd7ro1TyFT2VO3hn6SUUHlHanfR29Easzl4S3oARD3Sxv?=
- =?us-ascii?Q?v/UJ4+laonE1ZhBieVEjD+Eu4uBNvVuIrjy36WGwz0w3DQtBWmHyWkKmXg/H?=
- =?us-ascii?Q?KHOVYmLX4GZpIyKLTWbh29lg87kjn1afbwqN80nPjIQmFcvP5C/LM2B5FX7Z?=
- =?us-ascii?Q?az+M2NFiFYYyt1crVUBl/fWbJ4dAn+8gSjK8aAqzM81r/djRTEmIXaHB7zou?=
- =?us-ascii?Q?7OmMncrzwXNRQIe/he9aPWPp2sSMcKGpc0u7WvIwuvye4zl07a3xWiJcgMu4?=
- =?us-ascii?Q?MfH49oyxzQmPaitJE0WI6fy1uSLkY9xK3kALAS1horvMlgTNm7Y3dHwMS674?=
- =?us-ascii?Q?+MO7jUXH+u28oeQiBxkn8h4XDoe3RV+7?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?M1wAcmprbpjfQ8/CgqhNebm8KCs5F4PSMsOh2hgxulJhNHfPMrCB3rQC4zSv?=
+ =?us-ascii?Q?4KSA//55moRtBeez3JGCa+W1YaFaWKXx17C1C4wjMTeKNFqFvFdiu3jESZ+I?=
+ =?us-ascii?Q?NIhJv2ynul2QEJCVfI2WdJJRRZ8yNTfhfhRRzasdrQ5ttkYdyip1JdMV+4cE?=
+ =?us-ascii?Q?/KBIZ+L1OzHcdttg+ldkuRaK5xI9TcsXN+SFSaflqXveRvtUonpkucO8aQ9E?=
+ =?us-ascii?Q?Nr4GGAq/V5/wRC+ML5RlRytSy248rezE8Ewkge+4lmAlGoTgEWj3Jb1V1F+s?=
+ =?us-ascii?Q?ur0n1+CTRH2eaecK4azfopnLex5lTEe6eocHzRsDRXlBeoTxWXc3bpJ6X9s1?=
+ =?us-ascii?Q?d5ncBavD/hryQQ7Vo2m2IezWl6KLgiluK3zLimHmlDLeEtBU6VzV/7COulzz?=
+ =?us-ascii?Q?jNVJwjBJoGmIp+Evq+e3B9EyVuiDoi2jQknxxfxONQix7BhexV55NDs1rsxU?=
+ =?us-ascii?Q?DF2bR7tJZh7Cp6AFybfBwUeKlOn4EVTwdDyERHdAhZhM1XjLaNWbQC6eFWxp?=
+ =?us-ascii?Q?TJXD50AydKPFOGvJt7k1y3djian1UMV2NUstLskInpBVY7ETE1wHZ71nAh2V?=
+ =?us-ascii?Q?FxShFrZEG0R15IImUYO0U1F8Wx8FzAUCJU6xnscGcXwZODjTiJGkuVK8yfwG?=
+ =?us-ascii?Q?0B1j/YVhJeCXPQVElvUSbwhkXzbMPmGiRawlC5uK507RDxBsGMUEvO/V0Kr0?=
+ =?us-ascii?Q?D1MGJ4JfkLeMX+VA5Un7YhfPtWzOZ7MjtBjRD6pmJvH7+CHXnislaGTr7mWl?=
+ =?us-ascii?Q?gaSZ9GdnKOwJbXWYNNgv+Rh55ofv2KCiyHMQgFx6epFK/sgZg294jd6h1UiO?=
+ =?us-ascii?Q?s+g+F4WxJQeXGrnNSagmQr82iuzhb/WvzjHX/khCul/hJnbGyj7L5G1hFgHj?=
+ =?us-ascii?Q?rf6gYqZEjVsmyLdwd6NlbTNR0CoPPQ3rCyKW/n1ULrWBjpXlpP6U5/KRTzLq?=
+ =?us-ascii?Q?C7CEdIH+Z+EhfHkZvCawS92GotWuXatX/R46pKgdbdj76L2MGavTEdJnAhsI?=
+ =?us-ascii?Q?sd+f3/YweWDfK1pWrMIhuf8v05PkzUOAHOrJfxouUdsY5Re4Txu3Tc5h1Q6e?=
+ =?us-ascii?Q?3XIviI+LcWEeJj4hHt6AKDVj4nTfDdzhULe/qqF+XrRmOFbvjcD/7iv8U5Dt?=
+ =?us-ascii?Q?Gi8lN3ewhMGwZhlooWKJFOkcanRnFKuBZzIaWP3HVXxkXugzzw3ncew4vph0?=
+ =?us-ascii?Q?14C3M9j77Wg+TcQgyfhiMeXV8sNBe1udb4Fzo6l8unOYAQE9UIE0hP2zgKOJ?=
+ =?us-ascii?Q?n1svmxsLWKSzbnnxtPCsBJHRiTRmYC7UkHTJGfbcliP3h7Go7L5IrB7+wmSK?=
+ =?us-ascii?Q?WnlA4YlOPnGSVKHzHsenuO5yTQFyMq1OuLUuRbS6MhniaZP/PA1tFDki36E4?=
+ =?us-ascii?Q?AtDoCRP3aTggB/oTDd40+5aMwItbTa0Kd/ujiAU3ismr1Co5TEZzIg8V4N72?=
+ =?us-ascii?Q?ujpg/5kjIziIupoZmrsy7Z/A67o66K2t?=
 X-OriginatorOrg: ucalgary.ca
-X-MS-Exchange-CrossTenant-Network-Message-Id: 382e7f97-682a-4253-b708-08da0ac9a37d
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad7bed0e-4013-4294-0998-08da0ac9a478
 X-MS-Exchange-CrossTenant-AuthSource: YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2022 23:30:37.5538
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2022 23:30:39.1318
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: c609a0ec-a5e3-4631-9686-192280bd9151
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AxtTWErNdoLIcz948umcvJ2XeS0+wL/AQXPNqvLDuicAC0Nj1+NSSUn/Xr/YY3XZzJof1mNHgmeZGWE469e27Q==
+X-MS-Exchange-CrossTenant-UserPrincipalName: FEKmnImcXpd1lknarZSENhRS51W1h6t5bGBqMJBeCtZB0F5aSB1z1uYQwmwDUMtCpCvom38EmQXoBqt9K5dagA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: YTBPR01MB2989
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -107,27 +107,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The current implementation is reading the wrong eeprom type.
+Similar to ar9003_hw_spur_mitigate_mrc_cck, simplify the code by using
+ar9003_get_spur_chan_ptr. This may also be required for QCN550x support,
+to provide an abstraction over the underlying EEPROM format.
 
-Fixes: d8ec2e ("ath9k: Add an eeprom_ops callback for retrieving the eepmisc value")
 Signed-off-by: Wenli Looi <wlooi@ucalgary.ca>
 ---
- drivers/net/wireless/ath/ath9k/ar9003_eeprom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/ar9003_phy.c | 25 +++++++--------------
+ 1 file changed, 8 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-index 669b49b56..a109a44a1 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -5615,7 +5615,7 @@ unsigned int ar9003_get_paprd_scale_factor(struct ath_hw *ah,
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_phy.c b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
+index daf30f994..dc0e5ea25 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_phy.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
+@@ -523,21 +523,10 @@ static void ar9003_hw_spur_mitigate_ofdm(struct ath_hw *ah,
+ 	int synth_freq;
+ 	int range = 10;
+ 	int freq_offset = 0;
+-	int mode;
+-	u8* spurChansPtr;
++	u8 *spur_fbin_ptr = ar9003_get_spur_chan_ptr(ah, IS_CHAN_2GHZ(chan));
+ 	unsigned int i;
+-	struct ar9300_eeprom *eep = &ah->eeprom.ar9300_eep;
+-
+-	if (IS_CHAN_5GHZ(chan)) {
+-		spurChansPtr = &(eep->modalHeader5G.spurChans[0]);
+-		mode = 0;
+-	}
+-	else {
+-		spurChansPtr = &(eep->modalHeader2G.spurChans[0]);
+-		mode = 1;
+-	}
  
- static u8 ar9003_get_eepmisc(struct ath_hw *ah)
- {
--	return ah->eeprom.map4k.baseEepHeader.eepMisc;
-+	return ah->eeprom.ar9300_eep.baseEepHeader.opCapFlags.eepMisc;
- }
+-	if (spurChansPtr[0] == 0)
++	if (spur_fbin_ptr[0] == 0)
+ 		return; /* No spur in the mode */
  
- const struct eeprom_ops eep_ar9300_ops = {
+ 	if (IS_CHAN_HT40(chan)) {
+@@ -554,16 +543,18 @@ static void ar9003_hw_spur_mitigate_ofdm(struct ath_hw *ah,
+ 
+ 	ar9003_hw_spur_ofdm_clear(ah);
+ 
+-	for (i = 0; i < AR_EEPROM_MODAL_SPURS && spurChansPtr[i]; i++) {
+-		freq_offset = ath9k_hw_fbin2freq(spurChansPtr[i], mode);
++	for (i = 0; i < AR_EEPROM_MODAL_SPURS && spur_fbin_ptr[i]; i++) {
++		freq_offset = ath9k_hw_fbin2freq(spur_fbin_ptr[i],
++						 IS_CHAN_2GHZ(chan));
+ 		freq_offset -= synth_freq;
+ 		if (abs(freq_offset) < range) {
+ 			ar9003_hw_spur_ofdm_work(ah, chan, freq_offset,
+ 						 range, synth_freq);
+ 
+ 			if (AR_SREV_9565(ah) && (i < 4)) {
+-				freq_offset = ath9k_hw_fbin2freq(spurChansPtr[i + 1],
+-								 mode);
++				freq_offset =
++					ath9k_hw_fbin2freq(spur_fbin_ptr[i + 1],
++							   IS_CHAN_2GHZ(chan));
+ 				freq_offset -= synth_freq;
+ 				if (abs(freq_offset) < range)
+ 					ar9003_hw_spur_ofdm_9565(ah, freq_offset);
 -- 
 2.25.1
 
