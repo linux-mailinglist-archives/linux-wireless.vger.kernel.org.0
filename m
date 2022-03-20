@@ -2,62 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 923274E1963
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Mar 2022 02:53:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F14734E1995
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Mar 2022 04:54:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244626AbiCTByd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Mar 2022 21:54:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48686 "EHLO
+        id S244683AbiCTD4H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Mar 2022 23:56:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234519AbiCTByc (ORCPT
+        with ESMTP id S231244AbiCTD4G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Mar 2022 21:54:32 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76E103F892;
-        Sat, 19 Mar 2022 18:53:10 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id o3-20020a17090a3d4300b001c6bc749227so4188889pjf.1;
-        Sat, 19 Mar 2022 18:53:10 -0700 (PDT)
+        Sat, 19 Mar 2022 23:56:06 -0400
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1BF514B87D;
+        Sat, 19 Mar 2022 20:54:44 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id o23so7979477pgk.13;
+        Sat, 19 Mar 2022 20:54:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=0kdePg8fbLCsR4bHxRYPcJiT3QmeXnSHIseCWuQOMGQ=;
-        b=Dsl1Ny7AWCR1AbBZ9wnOmmdIF2tkZHbNYOdX1Ie+rKA/Bj66PCpyWfPS5WYJlsYneY
-         8Fh7ty67qjYn4lqlJsdpMgMG1LIqD9goD5vv1MF5B4aJS3c47qyerYMw1LkmhvuXkGVn
-         fXA4p6jfXo5mpvgcQPe/fMXTXDFMuxRs2qu7JK8ksK3uQUezkLv14aV7glnqRUkANaaE
-         eu96e9F7bq6uJ90o1jrHH75DWxLPNOHhOnlN/M8K2zT15p0gHzJZnhVx/+Vign4Asq8R
-         dfy9BYURR8SoZcJUKHDWkqvq9ybe3t0hgzO0c8r7WDB6ZE/ej4sXYpA+1oCaWktrds0Y
-         OtOQ==
+        h=from:to:cc:subject:date:message-id;
+        bh=imxsjvClszLiVFlSXeqAvOWndWBefHJ4UoHE31UCw34=;
+        b=f04iMKP1ycIlKTDUthtjZ2ga4WOhbsgyISVcqFlss4PfutkAoYRRaiXWFZ30XMDwDc
+         T9z4n9yIAvDgClsYyBCM86sexcCYDf2mx3QqQhjiUJDng/+VU4iV9AwNRpEMCuFhWjSd
+         SmniDtPR93aHeWRJmIodfrIKnKMSa6qtcrmwymzmZ3psVBiHQFI8ZvHQcMX/lXHYCxT7
+         KIHhVmuVEE95Gzk82Jo93IZpDk1+3IPQCAuJwK/73YjhXs9L9jO6YRiHXOo3y2RmGWKU
+         m9O93kNprA3cvRx74+jl+zkpORMBWl7A861maiUFSKdaowcDX/BcEWTooJ64TDa+E7gP
+         9JWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=0kdePg8fbLCsR4bHxRYPcJiT3QmeXnSHIseCWuQOMGQ=;
-        b=LZsp6IBBLNocpFrkwl3Llzst2HhheUzWIxjJejBSDSA8BmmFDs1WCF/Qj4Nd23JCJ7
-         aTHyyYUfTDw6knbhkCNSIRAKx+khw4rXIuQe4d3DhMFPo6u+HrfF5D0r+4kRyMrNDV1L
-         aD8NDC8Nmj+iMTFdkZvYOPeWKGvgnRSssqGMQNrXcddMJcbBLvcwqBJGFQsgjeQdeZPS
-         64xH3J4s8wAnW5VLgZZ9k82LzE2A8+tN65e6cOzau7iEn7NWbu7tiViKsuFKDhH06bGR
-         xaZNpUCxCSaC8GvUgApFaFZn7X3B1Y/jq2H6+fPcEDnO2UE5Sn/srOLxnUsSEGlI8JP4
-         zglQ==
-X-Gm-Message-State: AOAM5300ot3/HPTjSea6q2Pz1AVUFq9jfQCKXf5Rqv2cm5DeSSopJG/Y
-        wXDz0+//Wr4bq0NVVb2wY4Y=
-X-Google-Smtp-Source: ABdhPJwDKvZ2+4zEnJ2D+50OQLagrRDm9AMJl2zg0HXmdjwvAQc9GdWpGAlRfpUaKhv0QKLYaW61GQ==
-X-Received: by 2002:a17:902:a415:b0:153:a1b6:729f with SMTP id p21-20020a170902a41500b00153a1b6729fmr6542471plq.52.1647741189915;
-        Sat, 19 Mar 2022 18:53:09 -0700 (PDT)
-Received: from localhost.localdomain ([183.157.215.81])
-        by smtp.googlemail.com with ESMTPSA id oo16-20020a17090b1c9000b001b89e05e2b2sm12859101pjb.34.2022.03.19.18.53.06
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=imxsjvClszLiVFlSXeqAvOWndWBefHJ4UoHE31UCw34=;
+        b=JsNBKxLzKR3z5XDwl6N7uK/95w/uk4cvdmlthQvm98fdz19VVSfoxaKR2kAi5bQ+Gn
+         HgDBw6VIUMszvLWCC1fh3gTxIZKtxDQvX573eHUDmR+Y6aPdNfWGELFiSY6ErIOXSr53
+         yS9dAObGq9ea7wpYnjdKYArr6xgI1MX8EZ4EkBoji9tXKN1jxiwNYucqqJbl+GWsdNiH
+         7GADF8nFj8I+fyXkcY/whZlFo5Jy1T1TQoHPDosVtBPBN1HEvsqDDVitu05sUtpeKoc3
+         g/t72JvmwtuFUWUJLKs+74oiTx4uuRN2UHxvywxHsKoSa2/Te34HnBoIBWhkT7Klcbmc
+         hi1Q==
+X-Gm-Message-State: AOAM532T2F/osS+KApNPIAtNYzubfX9wWqaEC0BmC3yizsazL2eY1rLf
+        ARzdsvRJEN+WDtuL577asR0=
+X-Google-Smtp-Source: ABdhPJx9pEgM+E9i8eZPfuiCaOXD2jZ8mquslGNKq13EOY8EZHidUQqOueJRZwKSHt0tK0FfMC6zDw==
+X-Received: by 2002:a05:6a00:179f:b0:4f7:8ed9:ebae with SMTP id s31-20020a056a00179f00b004f78ed9ebaemr17453768pfg.28.1647748484170;
+        Sat, 19 Mar 2022 20:54:44 -0700 (PDT)
+Received: from localhost.localdomain ([36.24.165.243])
+        by smtp.googlemail.com with ESMTPSA id p10-20020a056a0026ca00b004f7d9dac802sm14308492pfw.114.2022.03.19.20.54.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Mar 2022 18:53:09 -0700 (PDT)
+        Sat, 19 Mar 2022 20:54:43 -0700 (PDT)
 From:   Xiaomeng Tong <xiam0nd.tong@gmail.com>
-To:     jakobkoschel@gmail.com
-Cc:     davem@davemloft.net, kuba@kernel.org, kvalo@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pizza@shaftnet.org, xiam0nd.tong@gmail.com
-Subject: Re: [PATCH] cw1200: remove an unneeded NULL check on list iterator
-Date:   Sun, 20 Mar 2022 09:53:02 +0800
-Message-Id: <20220320015302.6883-1-xiam0nd.tong@gmail.com>
+To:     pizza@shaftnet.org
+Cc:     kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
+        pabeni@redhat.com, linville@tuxdriver.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, jakobkoschel@gmail.com,
+        Xiaomeng Tong <xiam0nd.tong@gmail.com>
+Subject: [PATCH v2] cw1200: fix incorrect check to determine if no element is found in list
+Date:   Sun, 20 Mar 2022 11:54:36 +0800
+Message-Id: <20220320035436.11293-1-xiam0nd.tong@gmail.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <EFA8A102-59B2-4FC6-AB2E-CA8311E11635@gmail.com>
-References: <EFA8A102-59B2-4FC6-AB2E-CA8311E11635@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -68,49 +67,70 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 20 Mar 2022 01:47:26 +0100, Jakob Koschel
-<jakobkoschel@gmail.com> wrote:  
-> I don't think this is fixing anything here. You are basically just removing
-> a check that was always true.
+The bug is here: "} else if (item) {".
 
-Yes.
+The list iterator value will *always* be set and non-NULL by
+list_for_each_entry(), so it is incorrect to assume that the iterator
+value will be NULL if the list is empty or no element is found in list.
 
-> 
-> I'm pretty sure that this check is here to check if either the list is empty or no
-> element was found. If I'm not wrong, some time ago, lists where not circular but
-> actually pointed to NULL (or the head was NULL) so this check made sense but doesn't
-> anymore.
-> 
-> The appropriate fix would be only setting 'item' when a break is hit and keep
-> the original check.
+Use a new value 'iter' as the list iterator, while use the old value
+'item' as a dedicated pointer to point to the found element, which
+1. can fix this bug, due to now 'item' is NULL only if it's not found.
+2. do not need to change all the uses of 'item' after the loop.
+3. can also limit the scope of the list iterator 'iter' *only inside*
+   the traversal loop by simply declaring 'iter' inside the loop in the
+   future, as usage of the iterator outside of the list_for_each_entry
+   is considered harmful. https://lkml.org/lkml/2022/2/17/1032
 
-You are right if that is the author's original intention. I will fix it in PATCH v2.
+Fixes: a910e4a94f692 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Signed-off-by: Xiaomeng Tong <xiam0nd.tong@gmail.com>
+---
+changes since v1:
+ - fix incorrect check to item (Jakob Koschel)
 
-> 
-> > 			unsigned long tmo = item->queue_timestamp + queue->ttl;
-> > 			mod_timer(&queue->gc, tmo);
-> > 			cw1200_pm_stay_awake(&stats->priv->pm_state,
-> > -- 
-> > 2.17.1
-> > 
-> > 
-> 
-> I've made those changes already and I'm in the process of upstreaming them in an organized
-> way, so maybe it would make sense to synchronize, so we don't post duplicate patches.
+v1: https://lore.kernel.org/all/20220319063800.28791-1-xiam0nd.tong@gmail.com/
+---
+ drivers/net/wireless/st/cw1200/queue.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-Ok, I will cc you when sending related patches to avoid duplication.
-I hope you can do the same, thank you.
+diff --git a/drivers/net/wireless/st/cw1200/queue.c b/drivers/net/wireless/st/cw1200/queue.c
+index 12952b1c29df..d8dd4fac4ef1 100644
+--- a/drivers/net/wireless/st/cw1200/queue.c
++++ b/drivers/net/wireless/st/cw1200/queue.c
+@@ -90,23 +90,25 @@ static void __cw1200_queue_gc(struct cw1200_queue *queue,
+ 			      bool unlock)
+ {
+ 	struct cw1200_queue_stats *stats = queue->stats;
+-	struct cw1200_queue_item *item = NULL, *tmp;
++	struct cw1200_queue_item *item = NULL, *iter, *tmp;
+ 	bool wakeup_stats = false;
+ 
+-	list_for_each_entry_safe(item, tmp, &queue->queue, head) {
+-		if (jiffies - item->queue_timestamp < queue->ttl)
++	list_for_each_entry_safe(iter, tmp, &queue->queue, head) {
++		if (jiffies - iter->queue_timestamp < queue->ttl) {
++			item = iter;
+ 			break;
++		}
+ 		--queue->num_queued;
+-		--queue->link_map_cache[item->txpriv.link_id];
++		--queue->link_map_cache[iter->txpriv.link_id];
+ 		spin_lock_bh(&stats->lock);
+ 		--stats->num_queued;
+-		if (!--stats->link_map_cache[item->txpriv.link_id])
++		if (!--stats->link_map_cache[iter->txpriv.link_id])
+ 			wakeup_stats = true;
+ 		spin_unlock_bh(&stats->lock);
+ 		cw1200_debug_tx_ttl(stats->priv);
+-		cw1200_queue_register_post_gc(head, item);
+-		item->skb = NULL;
+-		list_move_tail(&item->head, &queue->free_pool);
++		cw1200_queue_register_post_gc(head, iter);
++		iter->skb = NULL;
++		list_move_tail(&iter->head, &queue->free_pool);
+ 	}
+ 
+ 	if (wakeup_stats)
+-- 
+2.17.1
 
-Here are the 9 patches I have sent, so you don't have to reinvent th wheel:
-https://lore.kernel.org/all/20220319102222.3079-1-xiam0nd.tong@gmail.com/
-https://lore.kernel.org/all/20220319073143.30184-1-xiam0nd.tong@gmail.com/
-https://lore.kernel.org/all/20220319063800.28791-1-xiam0nd.tong@gmail.com/
-https://lore.kernel.org/all/20220319053742.27443-1-xiam0nd.tong@gmail.com/
-https://lore.kernel.org/all/20220319052350.26535-1-xiam0nd.tong@gmail.com/
-https://lore.kernel.org/all/20220319044416.24242-1-xiam0nd.tong@gmail.com/
-https://lore.kernel.org/all/20220319043606.23292-1-xiam0nd.tong@gmail.com/
-https://lore.kernel.org/all/20220319042657.21835-1-xiam0nd.tong@gmail.com/
-https://lore.kernel.org/all/20220316075153.3708-1-xiam0nd.tong@gmail.com/
-
---
-Xiaomeng Tong
