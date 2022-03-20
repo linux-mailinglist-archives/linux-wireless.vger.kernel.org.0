@@ -2,66 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F7454E18DD
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Mar 2022 23:48:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 937364E1940
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Mar 2022 01:47:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244304AbiCSWtj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Mar 2022 18:49:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58526 "EHLO
+        id S242730AbiCTAsx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Mar 2022 20:48:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236144AbiCSWth (ORCPT
+        with ESMTP id S237020AbiCTAsv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Mar 2022 18:49:37 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 797603D1F2
-        for <linux-wireless@vger.kernel.org>; Sat, 19 Mar 2022 15:48:14 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id d10so23283900eje.10
-        for <linux-wireless@vger.kernel.org>; Sat, 19 Mar 2022 15:48:14 -0700 (PDT)
+        Sat, 19 Mar 2022 20:48:51 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88E25241A0A;
+        Sat, 19 Mar 2022 17:47:29 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id bi12so23654201ejb.3;
+        Sat, 19 Mar 2022 17:47:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=XCqBpccjcNXkw8O9oNUVFQJT/haogygOhyRJMS2AB2E=;
-        b=N3CWSeh/NWG8EuFwVWQYxoMS4aRFPjr2bFPKL175b+2knlUAgeeNcl/yP9PpbSdHEK
-         +7RuT16xi3r0qkiqCNKw5XGFRermvxjJkwy/MqbqJnuuObPrhp4gcwwGdiiIe96DP4BK
-         BHD51lK0B1vN6gdnkyUmn+VOuCJuEkc1W+f9SAVwS7YWL1bqBOQql+ZT/ktp5wKdqATK
-         +rf3kfFke6413I9nDwYfJbP/u+DFt+vp29DZeUsqnTt4wFBoXRUDnzLoBlykRpm9I8Yl
-         M0Bw6HFrnDAIBziDz6IfXhyN6ZsT+r5xvpm0YWXQ7mBhagvr2yaiPUMfqjN78Bdzd869
-         lJpg==
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=0ifyIt4w3ru4kSUncv7WDTsjeoxWtuh4NygTEp+o10k=;
+        b=JS2ve3DrBfAHO2P2Bv3CJUr8wZE1QGvOPf3jTnTHJlshxFiFtst86yTCxrkHvAo0Bq
+         KlxwJAcYZ2SXlDA9dlY7yZrlhh2WBVmlsIECnw8BB1e+YwBzrOd6dsbDdd4Z2GxC1y5o
+         /xgjlBb69i+8WBpXUyoSkGwTkIFOc5RR/8hobCPg7/XOwEq5zjwhMy5b+Z3Nr+NZjmvu
+         kQXtsSROEsmu8Kb4bi6inmo7/AkIqY2kFvrrsjitEQuM5DtE14S0SnZly7dyjh+V3q5t
+         p+jQ4KtUnTTzYioIR7Y3+jYpwde1h9Qibs/fM8dwLBMZajmwzBYrpxgeoFsyPQvY6HtI
+         LpeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=XCqBpccjcNXkw8O9oNUVFQJT/haogygOhyRJMS2AB2E=;
-        b=1nfqEJaxH4g96eghq69I1xN7dbqdCioNXwVPbQUbeENZK4UUUi1t5DBNz+kuvqiXcq
-         LvG6BUq9iobPGXDG8TKOk058ykjqIwuI3TZV41cwoxixTuOOAkekxD8MiWhKjQgGcHmp
-         19PWz5iu9BlcRKnFohFYzRYCMw7HtfCGvxR7LPVPur6sNwOkf8UKDAHJ5k+QYRytRpwH
-         gifTyz8za9uOvBxs0Qt/Cb2ItnUi7oihEBVo8LFnrI/XuzVER2hubmGyGE1Aq8pEpVlF
-         mdC7XlBBmkdQSXyADNI9vMX7oBU6/GlaEZ9o8YCb5cB06PQ1MnXff5R3p8QwIDF3Kb3C
-         hxXw==
-X-Gm-Message-State: AOAM531xipGh3Vj3L9/xkxOX+FBBp4vXyfmdeZZ8BTWGP4V8wMDYdClP
-        pglBkTOCh3QEH8WP9349Gxi+dpnPIiI=
-X-Google-Smtp-Source: ABdhPJzu8px8EW3fkckcs/HKuogafm66o3eSF+9Qti10PakF90oiMSUNguxNfZ2Gnr2UMF0M9qo16Q==
-X-Received: by 2002:a17:906:58c7:b0:6da:955b:d300 with SMTP id e7-20020a17090658c700b006da955bd300mr14544930ejs.481.1647730093110;
-        Sat, 19 Mar 2022 15:48:13 -0700 (PDT)
-Received: from nlaptop.localdomain (178-117-137-225.access.telenet.be. [178.117.137.225])
-        by smtp.gmail.com with ESMTPSA id b2-20020a17090630c200b006d58f94acecsm5301292ejb.210.2022.03.19.15.48.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Mar 2022 15:48:12 -0700 (PDT)
-From:   Niels Dossche <dossche.niels@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Niels Dossche <dossche.niels@gmail.com>
-Subject: [PATCH RFT] mwifiex: add mutex lock for call in mwifiex_dfs_chan_sw_work_queue
-Date:   Sat, 19 Mar 2022 23:47:52 +0100
-Message-Id: <20220319224751.72241-1-dossche.niels@gmail.com>
-X-Mailer: git-send-email 2.35.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=0ifyIt4w3ru4kSUncv7WDTsjeoxWtuh4NygTEp+o10k=;
+        b=sPx+82hO9ZX9qJkkzjSdk1Yz7rnMKB9NzwsmcHL4J6qSIQ9QdEgOtwaU1tambu3+D5
+         eUI/KEVmYzmWy5+QlH8Yl4TfnuBKOBYNTTokfsYQliqZ4FGNVrEGLq33Dzf0iK36rgaQ
+         0vQhUNDZKgFWznn1JdOvZCPrQ7bAVUy2rs5K1ipNKx7eBqskZYpm9ZExx8bPREHHpCtT
+         KTatBEpEVnn2CROdbN0VUJTGL/gph4VrlM5WmxYUEd5jmf9PXdCVlXcI3vHI51f/ixvf
+         GPAA/BVwyifeOnRRdqcuDuBo0UoQ/4SLFAMgdoQk5iV3lksmZeGmrtmEHrTL+kvdlkOg
+         k72Q==
+X-Gm-Message-State: AOAM530S6QPtkib7k+mB8T+efIo/h9sxjIKv5zrvC5dyLjpdl66ZnkA4
+        gaT8D2GfqbabRmA+hBij1CM=
+X-Google-Smtp-Source: ABdhPJwRZWqRBGortOGDtAQnykWS4EycPTH+HTz7A18lAY7FNnk+WBZhAEFGa6roBtwOKTHFFOB2qg==
+X-Received: by 2002:a17:907:a42c:b0:6df:e64b:ed6e with SMTP id sg44-20020a170907a42c00b006dfe64bed6emr3082864ejc.284.1647737247965;
+        Sat, 19 Mar 2022 17:47:27 -0700 (PDT)
+Received: from smtpclient.apple (i130160.upc-i.chello.nl. [62.195.130.160])
+        by smtp.gmail.com with ESMTPSA id fx3-20020a170906b74300b006daecedee44sm5301881ejb.220.2022.03.19.17.47.27
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 19 Mar 2022 17:47:27 -0700 (PDT)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.60.0.1.1\))
+Subject: Re: [PATCH] cw1200: remove an unneeded NULL check on list iterator
+From:   Jakob Koschel <jakobkoschel@gmail.com>
+In-Reply-To: <20220319063800.28791-1-xiam0nd.tong@gmail.com>
+Date:   Sun, 20 Mar 2022 01:47:26 +0100
+Cc:     pizza@shaftnet.org, kvalo@kernel.org, davem@davemloft.net,
+        kuba@kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <EFA8A102-59B2-4FC6-AB2E-CA8311E11635@gmail.com>
+References: <20220319063800.28791-1-xiam0nd.tong@gmail.com>
+To:     Xiaomeng Tong <xiam0nd.tong@gmail.com>
+X-Mailer: Apple Mail (2.3693.60.0.1.1)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -72,51 +73,72 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-cfg80211_ch_switch_notify uses ASSERT_WDEV_LOCK to assert that
-net_device->ieee80211_ptr->mtx is held during the function's execution.
-mwifiex_dfs_chan_sw_work_queue is one of its callers, which does not
-hold that lock, therefore violating the assertion.
-Add a lock around the call.
 
-Disclaimer:
-I am currently working on a static analyser to detect missing locks.
-This was a reported case. I manually verified the report by looking
-at the code, so that I do not send wrong information or patches.
-After concluding that this seems to be a true positive, I created
-this patch.
-However, as I do not in fact have this particular hardware,
-I was unable to test it.
 
-Signed-off-by: Niels Dossche <dossche.niels@gmail.com>
----
- drivers/net/wireless/marvell/mwifiex/11h.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+> On 19. Mar 2022, at 07:38, Xiaomeng Tong <xiam0nd.tong@gmail.com> =
+wrote:
+>=20
+> The list iterator 'item' is always non-NULL so it doesn't need to be
+> checked. Thus just remove the unnecessary NULL check. Also remove the
+> unnecessary initializer because the list iterator is always =
+initialized.
+>=20
+> Signed-off-by: Xiaomeng Tong <xiam0nd.tong@gmail.com>
+> ---
+> drivers/net/wireless/st/cw1200/queue.c | 4 ++--
+> 1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/st/cw1200/queue.c =
+b/drivers/net/wireless/st/cw1200/queue.c
+> index 12952b1c29df..05392598e273 100644
+> --- a/drivers/net/wireless/st/cw1200/queue.c
+> +++ b/drivers/net/wireless/st/cw1200/queue.c
+> @@ -90,7 +90,7 @@ static void __cw1200_queue_gc(struct cw1200_queue =
+*queue,
+> 			      bool unlock)
+> {
+> 	struct cw1200_queue_stats *stats =3D queue->stats;
+> -	struct cw1200_queue_item *item =3D NULL, *tmp;
+> +	struct cw1200_queue_item *item, *tmp;
+> 	bool wakeup_stats =3D false;
+>=20
+> 	list_for_each_entry_safe(item, tmp, &queue->queue, head) {
+> @@ -117,7 +117,7 @@ static void __cw1200_queue_gc(struct cw1200_queue =
+*queue,
+> 			queue->overfull =3D false;
+> 			if (unlock)
+> 				__cw1200_queue_unlock(queue);
+> -		} else if (item) {
+> +		} else {
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/11h.c b/drivers/net/wireless/marvell/mwifiex/11h.c
-index d2ee6469e67b..f2cba764024e 100644
---- a/drivers/net/wireless/marvell/mwifiex/11h.c
-+++ b/drivers/net/wireless/marvell/mwifiex/11h.c
-@@ -285,6 +285,7 @@ void mwifiex_dfs_chan_sw_work_queue(struct work_struct *work)
- 	struct mwifiex_private *priv =
- 			container_of(delayed_work, struct mwifiex_private,
- 				     dfs_chan_sw_work);
-+	struct net_device *netdev;
- 
- 	bss_cfg = &priv->bss_cfg;
- 	if (!bss_cfg->beacon_period) {
-@@ -301,7 +302,11 @@ void mwifiex_dfs_chan_sw_work_queue(struct work_struct *work)
- 		return;
- 	}
- 
-+	netdev = priv->netdev;
-+
- 	mwifiex_dbg(priv->adapter, MSG,
- 		    "indicating channel switch completion to kernel\n");
--	cfg80211_ch_switch_notify(priv->netdev, &priv->dfs_chandef);
-+	mutex_lock(&netdev->ieee80211_ptr->mtx);
-+	cfg80211_ch_switch_notify(netdev, &priv->dfs_chandef);
-+	mutex_unlock(&netdev->ieee80211_ptr->mtx);
- }
--- 
-2.35.1
+I don't think this is fixing anything here. You are basically just =
+removing
+a check that was always true.
 
+I'm pretty sure that this check is here to check if either the list is =
+empty or no
+element was found. If I'm not wrong, some time ago, lists where not =
+circular but
+actually pointed to NULL (or the head was NULL) so this check made sense =
+but doesn't
+anymore.
+
+The appropriate fix would be only setting 'item' when a break is hit and =
+keep
+the original check.
+
+> 			unsigned long tmo =3D item->queue_timestamp + =
+queue->ttl;
+> 			mod_timer(&queue->gc, tmo);
+> 			cw1200_pm_stay_awake(&stats->priv->pm_state,
+> --=20
+> 2.17.1
+>=20
+>=20
+
+I've made those changes already and I'm in the process of upstreaming =
+them in an organized
+way, so maybe it would make sense to synchronize, so we don't post =
+duplicate patches.
+
+        Jakob=
