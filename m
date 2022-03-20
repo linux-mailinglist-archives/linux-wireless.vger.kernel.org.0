@@ -2,98 +2,278 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D22F84E1BD7
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Mar 2022 14:22:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 367994E1C40
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Mar 2022 16:27:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244578AbiCTNXX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Mar 2022 09:23:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43504 "EHLO
+        id S245352AbiCTPWH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Mar 2022 11:22:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236759AbiCTNXW (ORCPT
+        with ESMTP id S233331AbiCTPWG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Mar 2022 09:23:22 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEBBC3D1C7
-        for <linux-wireless@vger.kernel.org>; Sun, 20 Mar 2022 06:21:58 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id l1-20020a05600c4f0100b00389645443d2so7095623wmq.2
-        for <linux-wireless@vger.kernel.org>; Sun, 20 Mar 2022 06:21:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=CiwhGRNrXz4QNizMa/oAhqtF2xiNgjqkYli9zHg8NMo=;
-        b=ooINi4qmadEwMMSSbUh9xuE2GUMZdFzpXR1++zh7EgKuDr1/NmJNrR7aEgX9YEYnqR
-         j/C7WHJwAEaroHujPrPBwHaVKiGIbu1nwhw6Bvq+dEbjefo+cmS41dhKhkQ7W2enDIcn
-         FwsFB9BzT3mLwMM+/x6ZL3laea9/DI7YnSRRxUERp8zMouKs6KjyFAF0jRCtuQjp1GFb
-         NzO6gACyZQm+mAnPo/n3gilRevnFb/8ycSHL5qutcWmYhYgL/Hn1gcm7GD7dGf2KMLkg
-         14giC/KDFp/is73wLuzsjr6B2mi5ks2+ehWaq7GJRiCaKi+k83jrzVLsf4GEDI/JshXs
-         kKcA==
+        Sun, 20 Mar 2022 11:22:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 868F61AE63C
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Mar 2022 08:20:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1647789641;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=mMHoF4oLIGcLK1h/iBDUgENjgW/5WCbA77DMrsLcqDY=;
+        b=XPBi0duBcLpdu8UI9PRDc2WSc27OIGQBFq6Uf+DMPHeP5Dklh5yJ5wiEQ9Tau9Sn+TPjkW
+        NCsH19YWZZPE1n6KWPLRdy1r3cMIc4CDLOum+N9Aax/aD5amrJw0T9CkyE08PbE58apx79
+        oQ/whKseIAH8HLKm3EhFATC42QEJ8v0=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-387-DH68JTOTP2-OD_bD-sXRLQ-1; Sun, 20 Mar 2022 11:20:40 -0400
+X-MC-Unique: DH68JTOTP2-OD_bD-sXRLQ-1
+Received: by mail-qt1-f199.google.com with SMTP id y23-20020ac85257000000b002e06697f2ebso7738979qtn.16
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Mar 2022 08:20:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=CiwhGRNrXz4QNizMa/oAhqtF2xiNgjqkYli9zHg8NMo=;
-        b=2ajnEqKEzuVXb9W+HbvhqrnR6ziIdxxrDGOeecpRUVABqQQyDSXPZcFDwxqFOpR+AB
-         KLwh6q0FKkCdTinnx2VWCWhtvDvr22/KZXNPBQn54SCPJ2RlPn18BZPRaL8hliHkwiP/
-         7oSgMUoFiQ7WEkvMyAKCxiiAk0CukI033s8LZzOGpuVYz4SVDOMVLg62koez97OQhYDh
-         y12VXmXALcy/1KTvEkqf5sHHwv6OuccGGpz9qUePoD0+32ceM2mSmF40U5+Z5DBJzisj
-         7rH6s4c8zYuV2C32K3QhqiICzLo2GaFhlW46vNJZcl/szOvtQ+WWgoxn+HfzS0eYAksQ
-         Nryw==
-X-Gm-Message-State: AOAM5321fjEvRHSsl2oIBz4UvMtq0Y6HwrlA/Fel/51Tk/ICdbmOH/zK
-        OcXstshSYNBlMNB4wnwPk9kxYA==
-X-Google-Smtp-Source: ABdhPJwpvkdAY6cBXr3dOsU2mQlSFPo8+WDyEP4JRfxs73L2obnJJNJLtCZo6KY0b0mYyHj82adJdg==
-X-Received: by 2002:a7b:c2aa:0:b0:389:891f:1fd1 with SMTP id c10-20020a7bc2aa000000b00389891f1fd1mr23391259wmk.138.1647782517417;
-        Sun, 20 Mar 2022 06:21:57 -0700 (PDT)
-Received: from [192.168.0.69] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id l9-20020a5d6d89000000b00203d62072c4sm11795831wrs.43.2022.03.20.06.21.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 20 Mar 2022 06:21:56 -0700 (PDT)
-Message-ID: <c8f31312-5356-704e-1f55-89c9f5888238@linaro.org>
-Date:   Sun, 20 Mar 2022 13:21:55 +0000
+        bh=mMHoF4oLIGcLK1h/iBDUgENjgW/5WCbA77DMrsLcqDY=;
+        b=6En7GOyid8waSI0ngX7e2NAR3UOapC4ITQhjXGE0fAB7tIH+jBNAmDESi0OPNqjcNa
+         2hMsevVwLaKGmTo8fOARaW8f0W4KwcFOvXg+OAsseDxbGf1CU+3YV/x++NYs7MxcaTKP
+         BTSgd/Co5ENcw0zOY0qf/M9bbTA9JgvUkbPBSC2J9bguThv5ykcMJUVPs4Bf63cXsD3o
+         yh6oR7BVeVO3skFzn5n+ufKMXOX4qsNfMrh1kME7PTT4xnfqAgrGzF+wMZ6SgyACaKdg
+         +ZN9VFKHPYgdBVWrhb+gOJqoZEaYNOSQ20GwCsaI0xmMxDi6kzkwi8aYUCQNujkVLrxm
+         GmCA==
+X-Gm-Message-State: AOAM530RAtoi3jUkam75u96y1+S7aD1oylPqtxIeyjx06VqjaX0Uob1v
+        kEAv2u7ySqpuj2RNlKXK/Soe88O6XMsD8iXxK+DeSsFvWYWRdUf7qW+NWwUCLCZjxPVgvttFsDB
+        aW/Xe/BWOxfgT/xSSllQ8b5z+Lbs=
+X-Received: by 2002:a05:620a:d96:b0:67a:ee04:d947 with SMTP id q22-20020a05620a0d9600b0067aee04d947mr10823540qkl.237.1647789639554;
+        Sun, 20 Mar 2022 08:20:39 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJww3Jh7JH+2cXy3Yo745MCSk50TxGBn+pD01Iwa4SBik/FxBhJb/yL+61DlFQRR1guQkKBzUw==
+X-Received: by 2002:a05:620a:d96:b0:67a:ee04:d947 with SMTP id q22-20020a05620a0d9600b0067aee04d947mr10823533qkl.237.1647789639296;
+        Sun, 20 Mar 2022 08:20:39 -0700 (PDT)
+Received: from localhost.localdomain.com (024-205-208-113.res.spectrum.com. [24.205.208.113])
+        by smtp.gmail.com with ESMTPSA id x20-20020ac85f14000000b002e1ee1c56c3sm8541952qta.76.2022.03.20.08.20.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Mar 2022 08:20:38 -0700 (PDT)
+From:   trix@redhat.com
+To:     toke@toke.dk, kvalo@kernel.org, davem@davemloft.net,
+        kuba@kernel.org, pabeni@redhat.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Tom Rix <trix@redhat.com>
+Subject: [PATCH] ath9k: initialize arrays at compile time
+Date:   Sun, 20 Mar 2022 08:20:28 -0700
+Message-Id: <20220320152028.2263518-1-trix@redhat.com>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Subject: Re: [PATCH v2 2/2] wcn36xx: Implement tx_rate reporting
-Content-Language: en-US
-To:     Edmond Gagnon <egagnon@squareup.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     Benjamin Li <benl@squareup.com>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220318195804.4169686-1-egagnon@squareup.com>
- <20220318195804.4169686-3-egagnon@squareup.com>
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20220318195804.4169686-3-egagnon@squareup.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 18/03/2022 19:58, Edmond Gagnon wrote:
-> +	INIT_DELAYED_WORK(&wcn->get_stats_work, wcn36xx_get_stats_work);
+From: Tom Rix <trix@redhat.com>
 
-Instead of forking a worker and polling we could add the relevant SMD 
-command to
+Early clearing of arrays with
+memset(array, 0, size);
+is equivilent to initializing the array in its decl with
+array[size] = { 0 };
 
-static int wcn36xx_smd_tx_compl_ind(struct wcn36xx *wcn, void *buf, 
-size_t len)
-{
-     wcn36xx_smd_get_stats(wcn, 0xSomeMask);
-}
+Since compile time is preferred over runtime,
+convert the memsets to initializations.
 
-That way we only ever ask for and report a new TX data rate when we know 
-a TX event - and hence a potential TX data-rate update - has taken place.
-
+Signed-off-by: Tom Rix <trix@redhat.com>
 ---
-bod
+ drivers/net/wireless/ath/ath9k/ar9003_calib.c  |  6 ++----
+ drivers/net/wireless/ath/ath9k/ar9003_eeprom.c |  4 +---
+ drivers/net/wireless/ath/ath9k/ar9003_paprd.c  | 14 ++++++--------
+ drivers/net/wireless/ath/ath9k/eeprom.c        |  3 +--
+ drivers/net/wireless/ath/ath9k/eeprom_4k.c     |  4 +---
+ drivers/net/wireless/ath/ath9k/eeprom_9287.c   |  4 +---
+ drivers/net/wireless/ath/ath9k/eeprom_def.c    |  4 +---
+ drivers/net/wireless/ath/ath9k/wow.c           |  7 ++-----
+ 8 files changed, 15 insertions(+), 31 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_calib.c b/drivers/net/wireless/ath/ath9k/ar9003_calib.c
+index dc24da1ff00b1..39fcc158cb159 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_calib.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_calib.c
+@@ -891,10 +891,9 @@ static void ar9003_hw_tx_iq_cal_outlier_detection(struct ath_hw *ah,
+ {
+ 	int i, im, nmeasurement;
+ 	int magnitude, phase;
+-	u32 tx_corr_coeff[MAX_MEASUREMENT][AR9300_MAX_CHAINS];
++	u32 tx_corr_coeff[MAX_MEASUREMENT][AR9300_MAX_CHAINS] = { 0 };
+ 	struct ath9k_hw_cal_data *caldata = ah->caldata;
+ 
+-	memset(tx_corr_coeff, 0, sizeof(tx_corr_coeff));
+ 	for (i = 0; i < MAX_MEASUREMENT / 2; i++) {
+ 		tx_corr_coeff[i * 2][0] = tx_corr_coeff[(i * 2) + 1][0] =
+ 					AR_PHY_TX_IQCAL_CORR_COEFF_B0(i);
+@@ -1155,10 +1154,9 @@ static void ar9003_hw_tx_iq_cal_post_proc(struct ath_hw *ah,
+ static void ar9003_hw_tx_iq_cal_reload(struct ath_hw *ah)
+ {
+ 	struct ath9k_hw_cal_data *caldata = ah->caldata;
+-	u32 tx_corr_coeff[MAX_MEASUREMENT][AR9300_MAX_CHAINS];
++	u32 tx_corr_coeff[MAX_MEASUREMENT][AR9300_MAX_CHAINS] = { 0 };
+ 	int i, im;
+ 
+-	memset(tx_corr_coeff, 0, sizeof(tx_corr_coeff));
+ 	for (i = 0; i < MAX_MEASUREMENT / 2; i++) {
+ 		tx_corr_coeff[i * 2][0] = tx_corr_coeff[(i * 2) + 1][0] =
+ 					AR_PHY_TX_IQCAL_CORR_COEFF_B0(i);
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+index b0a4ca3559fd8..55fdee5ec93be 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+@@ -5451,14 +5451,12 @@ static void ath9k_hw_ar9300_set_txpower(struct ath_hw *ah,
+ 	struct ath_common *common = ath9k_hw_common(ah);
+ 	struct ar9300_eeprom *eep = &ah->eeprom.ar9300_eep;
+ 	struct ar9300_modal_eep_header *modal_hdr;
+-	u8 targetPowerValT2[ar9300RateSize];
++	u8 targetPowerValT2[ar9300RateSize] = { 0 };
+ 	u8 target_power_val_t2_eep[ar9300RateSize];
+ 	u8 targetPowerValT2_tpc[ar9300RateSize];
+ 	unsigned int i = 0, paprd_scale_factor = 0;
+ 	u8 pwr_idx, min_pwridx = 0;
+ 
+-	memset(targetPowerValT2, 0 , sizeof(targetPowerValT2));
+-
+ 	/*
+ 	 * Get target powers from EEPROM - our baseline for TX Power
+ 	 */
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_paprd.c b/drivers/net/wireless/ath/ath9k/ar9003_paprd.c
+index 34e1009402846..d9c5b6bb5db07 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_paprd.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_paprd.c
+@@ -419,13 +419,16 @@ static inline int find_proper_scale(int expn, int N)
+ static bool create_pa_curve(u32 *data_L, u32 *data_U, u32 *pa_table, u16 *gain)
+ {
+ 	unsigned int thresh_accum_cnt;
+-	int x_est[NUM_BIN + 1], Y[NUM_BIN + 1], theta[NUM_BIN + 1];
++	int x_est[NUM_BIN + 1] = { 0 };
++	int Y[NUM_BIN + 1] = { 0 };
++	int theta[NUM_BIN + 1] = { 0 };
+ 	int PA_in[NUM_BIN + 1];
+ 	int B1_tmp[NUM_BIN + 1], B2_tmp[NUM_BIN + 1];
+ 	unsigned int B1_abs_max, B2_abs_max;
+ 	int max_index, scale_factor;
+-	int y_est[NUM_BIN + 1];
+-	int x_est_fxp1_nonlin, x_tilde[NUM_BIN + 1];
++	int y_est[NUM_BIN + 1] = { 0 };
++	int x_est_fxp1_nonlin;
++	int x_tilde[NUM_BIN + 1] = { 0 };
+ 	unsigned int x_tilde_abs;
+ 	int G_fxp, Y_intercept, order_x_by_y, M, I, L, sum_y_sqr, sum_y_quad;
+ 	int Q_x, Q_B1, Q_B2, beta_raw, alpha_raw, scale_B;
+@@ -439,11 +442,6 @@ static bool create_pa_curve(u32 *data_L, u32 *data_U, u32 *pa_table, u16 *gain)
+ 	thresh_accum_cnt = 16;
+ 	scale_factor = 5;
+ 	max_index = 0;
+-	memset(theta, 0, sizeof(theta));
+-	memset(x_est, 0, sizeof(x_est));
+-	memset(Y, 0, sizeof(Y));
+-	memset(y_est, 0, sizeof(y_est));
+-	memset(x_tilde, 0, sizeof(x_tilde));
+ 
+ 	for (i = 0; i < NUM_BIN; i++) {
+ 		s32 accum_cnt, accum_tx, accum_rx, accum_ang;
+diff --git a/drivers/net/wireless/ath/ath9k/eeprom.c b/drivers/net/wireless/ath/ath9k/eeprom.c
+index efb7889142d47..061d33921495c 100644
+--- a/drivers/net/wireless/ath/ath9k/eeprom.c
++++ b/drivers/net/wireless/ath/ath9k/eeprom.c
+@@ -480,7 +480,7 @@ void ath9k_hw_get_gain_boundaries_pdadcs(struct ath_hw *ah,
+ 		[AR5416_MAX_PWR_RANGE_IN_HALF_DB];
+ 
+ 	u8 *pVpdL, *pVpdR, *pPwrL, *pPwrR;
+-	u8 minPwrT4[AR5416_NUM_PD_GAINS];
++	u8 minPwrT4[AR5416_NUM_PD_GAINS] = { 0 };
+ 	u8 maxPwrT4[AR5416_NUM_PD_GAINS];
+ 	int16_t vpdStep;
+ 	int16_t tmpVal;
+@@ -500,7 +500,6 @@ void ath9k_hw_get_gain_boundaries_pdadcs(struct ath_hw *ah,
+ 	else
+ 		intercepts = AR5416_PD_GAIN_ICEPTS;
+ 
+-	memset(&minPwrT4, 0, AR5416_NUM_PD_GAINS);
+ 	ath9k_hw_get_channel_centers(ah, chan, &centers);
+ 
+ 	for (numPiers = 0; numPiers < availPiers; numPiers++) {
+diff --git a/drivers/net/wireless/ath/ath9k/eeprom_4k.c b/drivers/net/wireless/ath/ath9k/eeprom_4k.c
+index e8c2cc03be0cb..1d295d7fa0848 100644
+--- a/drivers/net/wireless/ath/ath9k/eeprom_4k.c
++++ b/drivers/net/wireless/ath/ath9k/eeprom_4k.c
+@@ -583,12 +583,10 @@ static void ath9k_hw_4k_set_txpower(struct ath_hw *ah,
+ 	struct ath_regulatory *regulatory = ath9k_hw_regulatory(ah);
+ 	struct ar5416_eeprom_4k *pEepData = &ah->eeprom.map4k;
+ 	struct modal_eep_4k_header *pModal = &pEepData->modalHeader;
+-	int16_t ratesArray[Ar5416RateSize];
++	int16_t ratesArray[Ar5416RateSize] = { 0 };
+ 	u8 ht40PowerIncForPdadc = 2;
+ 	int i;
+ 
+-	memset(ratesArray, 0, sizeof(ratesArray));
+-
+ 	if (ath9k_hw_4k_get_eeprom_rev(ah) >= AR5416_EEP_MINOR_VER_2)
+ 		ht40PowerIncForPdadc = pModal->ht40PowerIncForPdadc;
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/eeprom_9287.c b/drivers/net/wireless/ath/ath9k/eeprom_9287.c
+index 3caa149b10131..b068e15226022 100644
+--- a/drivers/net/wireless/ath/ath9k/eeprom_9287.c
++++ b/drivers/net/wireless/ath/ath9k/eeprom_9287.c
+@@ -711,12 +711,10 @@ static void ath9k_hw_ar9287_set_txpower(struct ath_hw *ah,
+ 	struct ath_regulatory *regulatory = ath9k_hw_regulatory(ah);
+ 	struct ar9287_eeprom *pEepData = &ah->eeprom.map9287;
+ 	struct modal_eep_ar9287_header *pModal = &pEepData->modalHeader;
+-	int16_t ratesArray[Ar5416RateSize];
++	int16_t ratesArray[Ar5416RateSize] = { 0 };
+ 	u8 ht40PowerIncForPdadc = 2;
+ 	int i;
+ 
+-	memset(ratesArray, 0, sizeof(ratesArray));
+-
+ 	if (ath9k_hw_ar9287_get_eeprom_rev(ah) >= AR9287_EEP_MINOR_VER_2)
+ 		ht40PowerIncForPdadc = pModal->ht40PowerIncForPdadc;
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/eeprom_def.c b/drivers/net/wireless/ath/ath9k/eeprom_def.c
+index 9729a69d3e2e3..b5ee261c86382 100644
+--- a/drivers/net/wireless/ath/ath9k/eeprom_def.c
++++ b/drivers/net/wireless/ath/ath9k/eeprom_def.c
+@@ -1150,12 +1150,10 @@ static void ath9k_hw_def_set_txpower(struct ath_hw *ah,
+ 	struct ar5416_eeprom_def *pEepData = &ah->eeprom.def;
+ 	struct modal_eep_header *pModal =
+ 		&(pEepData->modalHeader[IS_CHAN_2GHZ(chan)]);
+-	int16_t ratesArray[Ar5416RateSize];
++	int16_t ratesArray[Ar5416RateSize] = { 0 };
+ 	u8 ht40PowerIncForPdadc = 2;
+ 	int i, cck_ofdm_delta = 0;
+ 
+-	memset(ratesArray, 0, sizeof(ratesArray));
+-
+ 	if (ath9k_hw_def_get_eeprom_rev(ah) >= AR5416_EEP_MINOR_VER_2)
+ 		ht40PowerIncForPdadc = pModal->ht40PowerIncForPdadc;
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/wow.c b/drivers/net/wireless/ath/ath9k/wow.c
+index 8d0b1730a9d5b..3d39c7ec1da30 100644
+--- a/drivers/net/wireless/ath/ath9k/wow.c
++++ b/drivers/net/wireless/ath/ath9k/wow.c
+@@ -53,11 +53,8 @@ static int ath9k_wow_add_disassoc_deauth_pattern(struct ath_softc *sc)
+ 	struct ath_common *common = ath9k_hw_common(ah);
+ 	int pattern_count = 0;
+ 	int ret, i, byte_cnt = 0;
+-	u8 dis_deauth_pattern[MAX_PATTERN_SIZE];
+-	u8 dis_deauth_mask[MAX_PATTERN_SIZE];
+-
+-	memset(dis_deauth_pattern, 0, MAX_PATTERN_SIZE);
+-	memset(dis_deauth_mask, 0, MAX_PATTERN_SIZE);
++	u8 dis_deauth_pattern[MAX_PATTERN_SIZE] = { 0 };
++	u8 dis_deauth_mask[MAX_PATTERN_SIZE] = { 0 };
+ 
+ 	/*
+ 	 * Create Dissassociate / Deauthenticate packet filter
+-- 
+2.26.3
 
