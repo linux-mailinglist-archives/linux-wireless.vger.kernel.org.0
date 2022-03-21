@@ -2,79 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 280454E25A2
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Mar 2022 12:52:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B53544E258A
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Mar 2022 12:52:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346934AbiCULxw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Mar 2022 07:53:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48140 "EHLO
+        id S1346902AbiCULxO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Mar 2022 07:53:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346923AbiCULwt (ORCPT
+        with ESMTP id S1346900AbiCULwo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Mar 2022 07:52:49 -0400
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEBB61575A2
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Mar 2022 04:51:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding; s=k1; bh=WqN5GinpQ6GaOH
-        m+NbWUDUynB6s3adKS8MwbgKgGEGw=; b=urhrVmn82vKxahoXY7wN8ma9p08gyC
-        ymgZc+ozWpv435AAaT8AxVIN5PS0H78AhUDebx2xPHrkB27d8Gb2kU/YO6GANqNE
-        A82vlgtD1s7Gu49coOaNO4gClr+m51VolaT0HLgW1ZwB8okxfPZWHGUhtkfpI3yB
-        fgvkNDVtLPzHE=
-Received: (qmail 860372 invoked from network); 21 Mar 2022 12:51:09 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 21 Mar 2022 12:51:09 +0100
-X-UD-Smtp-Session: l3s3148p1@qMWyHLnaCqcgAQnoAFxnAN8BywfgXJ9V
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-mmc@vger.kernel.org
-Cc:     linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Kalle Valo <kvalo@kernel.org>,
+        Mon, 21 Mar 2022 07:52:44 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11B0C554AA
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Mar 2022 04:51:19 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id dr20so28925947ejc.6
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Mar 2022 04:51:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=31mi1xSjYY2wTa+khnQ3+dG3iEIyKWgXiXOvGCIrKBE=;
+        b=jfFZ8VsFI1HdLREUwkEXd8rFqvLRXM+yai7M/Md38tN+Zgmen+m0EfUYdbVZ/eIXaw
+         0u4nXDxU/wuVDeS3CMnlD2UvpWKsVkrry9fkMIbjeOenM+hWcoAjOMR1QJ2NUAEI6GAg
+         wv8z8JNiN+MEtPMhqj8f0sXCyHFv2a3ILzzwrLiG1H2LbU816FLj2yreFtSYYjc/uJq5
+         ZJxsH/WF9mYVu/levNzwoXmfH0cx7lqPEnx6B7al/tF8fh3K6vaubw4PpmZR9fqIJdRP
+         I13VOepbJoH5HNNYmxfwlwvWGLw6dlJ/s2k8kW1B13nRPnMFkqwykh6PdTJ6yrxYj5ng
+         wl3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=31mi1xSjYY2wTa+khnQ3+dG3iEIyKWgXiXOvGCIrKBE=;
+        b=6ioapn2mRlV6xReXm7PYX5aQPC1k2IGdHCr+mk51/2GMagLFP7w4bCvySz1gyDtGFM
+         WTCB0uKMFP8hmYGuaQkauUhEwfikloDDA7KO9kivPRP4zdiL4QGq067/j8ztxve83Z0V
+         y6HaYhZqGxOWXxuEVJpG6+9f97UjHsUMA3yDEl0jPtfjS6C6vQ3bEEh9v4w3gRNxdGHz
+         9COEyxUc3EXUQ4QQ/nWT+nBM8gU1dcBqIe/dLUI652LG8SG7CEKUJRATxUBtw2EluRBE
+         AGp8pa9XLsAqM4eSmTss0jx0AQUW32jkxnPjmuso9iaS5ReWnmbOfASxTuy4kJ8/aGzm
+         ApXQ==
+X-Gm-Message-State: AOAM533r+cnwjd1Cnolt3jxMbgKgjlVgLKZj8w39vEm0UvWOOnSXhRim
+        HqzyrzWmTsQcLbX4klPKHMHh7Tv715F2Ew==
+X-Google-Smtp-Source: ABdhPJzhR3m6WoS4q0lvp2YisKZtGfj14YEvdA15dKdTpcMajLdKU8aw+FTomp6V/1deqGCz8I2D3g==
+X-Received: by 2002:a17:907:ea1:b0:6df:7900:e4de with SMTP id ho33-20020a1709070ea100b006df7900e4demr19925395ejc.26.1647863477497;
+        Mon, 21 Mar 2022 04:51:17 -0700 (PDT)
+Received: from ?IPV6:2a02:1811:cc83:eef0:7bf1:a0f8:a9aa:ac98? (ptr-dtfv0pmq82wc9dcpm6w.18120a2.ip6.access.telenet.be. [2a02:1811:cc83:eef0:7bf1:a0f8:a9aa:ac98])
+        by smtp.gmail.com with ESMTPSA id x12-20020a50d9cc000000b0040f70fe78f3sm7969608edj.36.2022.03.21.04.51.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Mar 2022 04:51:17 -0700 (PDT)
+Message-ID: <306b8f3c-55ff-24a3-1f7f-31c0b9e247fc@gmail.com>
+Date:   Mon, 21 Mar 2022 12:51:16 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [PATCH] ath11k: acquire ab->base_lock in unassign when finding
+ the peer by addr
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [RFC PATCH 05/10] wlcore: sdio: update to new MMC API for resetting cards
-Date:   Mon, 21 Mar 2022 12:50:51 +0100
-Message-Id: <20220321115059.21803-6-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220321115059.21803-1-wsa+renesas@sang-engineering.com>
-References: <20220321115059.21803-1-wsa+renesas@sang-engineering.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        Carl Huang <cjhuang@codeaurora.org>
+References: <20220314215253.92658-1-dossche.niels@gmail.com>
+ <87zgljmvne.fsf@kernel.org>
+From:   Niels Dossche <dossche.niels@gmail.com>
+In-Reply-To: <87zgljmvne.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-No functional change, only the name and the argument type change to
-avoid confusion between resetting a card and a host controller.
+On 21/03/2022 11:45, Kalle Valo wrote:
+> Niels Dossche <dossche.niels@gmail.com> writes:
+> 
+>> ath11k_peer_find_by_addr states via lockdep that ab->base_lock must be
+>> held when calling that function in order to protect the list. All
+>> callers except ath11k_mac_op_unassign_vif_chanctx have that lock
+>> acquired when calling ath11k_peer_find_by_addr. That lock is also not
+>> transitively held by a path towards ath11k_mac_op_unassign_vif_chanctx.
+>> The solution is to acquire the lock when calling
+>> ath11k_peer_find_by_addr inside ath11k_mac_op_unassign_vif_chanctx.
+>>
+>> Fixes: 701e48a43e15 ("ath11k: add packet log support for QCA6390")
+>> Signed-off-by: Niels Dossche <dossche.niels@gmail.com>
+>> ---
+>>  drivers/net/wireless/ath/ath11k/mac.c | 12 +++++++++---
+>>  1 file changed, 9 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+>> index 07f499d5ec92..5db2333478a2 100644
+>> --- a/drivers/net/wireless/ath/ath11k/mac.c
+>> +++ b/drivers/net/wireless/ath/ath11k/mac.c
+>> @@ -7077,9 +7077,15 @@ ath11k_mac_op_unassign_vif_chanctx(struct ieee80211_hw *hw,
+>>  	WARN_ON(!arvif->is_started);
+>>  
+>>  	if (ab->hw_params.vdev_start_delay &&
+>> -	    arvif->vdev_type == WMI_VDEV_TYPE_MONITOR &&
+>> -	    ath11k_peer_find_by_addr(ab, ar->mac_addr))
+>> -		ath11k_peer_delete(ar, arvif->vdev_id, ar->mac_addr);
+>> +	    arvif->vdev_type == WMI_VDEV_TYPE_MONITOR) {
+>> +		struct ath11k_peer *peer;
+> 
+> In the pending branch I moved the declaration to the beginning of the
+> function and added this to the commit log:
+> 
+> "I am currently working on a static analyser to detect missing locks and
+> this was a reported case. I manually verified the report by looking at
+> the code, but I do not have real hardware so this is compile tested
+> only."
+> 
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
-
-RFC, please do not apply yet.
-
- drivers/net/wireless/ti/wlcore/sdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ti/wlcore/sdio.c b/drivers/net/wireless/ti/wlcore/sdio.c
-index 72fc41ac83c0..62246a98bbc9 100644
---- a/drivers/net/wireless/ti/wlcore/sdio.c
-+++ b/drivers/net/wireless/ti/wlcore/sdio.c
-@@ -146,7 +146,7 @@ static int wl12xx_sdio_power_on(struct wl12xx_sdio_glue *glue)
- 	 * To guarantee that the SDIO card is power cycled, as required to make
- 	 * the FW programming to succeed, let's do a brute force HW reset.
- 	 */
--	mmc_hw_reset(card->host);
-+	mmc_card_hw_reset(card);
- 
- 	sdio_enable_func(func);
- 	sdio_release_host(func);
--- 
-2.30.2
-
+Sounds good to me. Thanks!
