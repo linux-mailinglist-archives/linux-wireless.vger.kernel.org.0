@@ -2,243 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB7FA4E1E43
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Mar 2022 00:30:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A5F44E1EB3
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Mar 2022 02:25:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343798AbiCTXcH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Mar 2022 19:32:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60426 "EHLO
+        id S1343981AbiCUB0g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Mar 2022 21:26:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343795AbiCTXcG (ORCPT
+        with ESMTP id S232538AbiCUB0f (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Mar 2022 19:32:06 -0400
-Received: from CAN01-QB1-obe.outbound.protection.outlook.com (mail-eopbgr660086.outbound.protection.outlook.com [40.107.66.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5719132E91
-        for <linux-wireless@vger.kernel.org>; Sun, 20 Mar 2022 16:30:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MCDmvhSVbAYlZ/DVkYXsZr6GNlmRVxLIj1JtD8n1r+XKBMaAWl4DA4Ogq8OfHOix5ES0znWVUtT1Qiavrmyq1EAEXsmAX+KqJU5k1SkzNZm3U0AYhUNHbR9bXWxR0vq1Zm9Jne7U8Eu+8SmPmb7DW1TPfKZdAG96Nl/XO622Kgt0k9NacwYwjOa1Ey7RF7oBTjGqfbln5HqlBrDHXZ6gZZIhnQybQcQRS9gIHWsm4WGyHnRHqkwiN9orrjIK6GkSDtSWKI1SH4nvQCUMmsLuPSaQlzchFT7md1TvPF1WlGSJB+RfSIyYNS6zC3561TDZ0KY/nypA4vFQj7RtI7dDUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ohiycFmcjE5J95joqMSCU76LfZ7WOkwbrG4bmZqbGPs=;
- b=kuuOgwPmqT6oA2FJrt3uvozf2rrY0Q3hSkz4poCc+P0eTsEg2LEiWME5KzgVfyZC2MHyz7LuE7uVYDvf23cTAh9vD8FjjK0qmjb+YJBf9HYAfUVxnBHFU2UVRtjvTar4jP6lJs2y9RAf8Cy1FwGD75vC1Jw4DTA/3tBblp+3Nvk22i7JuuYXcFFNTCtUiCa+D01OWiXLhXqeACfDlHs+l8Ubp/bZDxXNY33i4rTQLsyxMaYQ1P7QEio7SOs7TfgOUVCORcML3VZVAJr0hmL2bId6XQSpp0/tq1ObHZIqxNxOdHlIZdCYja9mhOz0Uuc9c/LgrhBldpPi8qSx75/Wjg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ucalgary.ca; dmarc=pass action=none header.from=ucalgary.ca;
- dkim=pass header.d=ucalgary.ca; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=ucalgary.ca;
-Received: from YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:c00:4a::23)
- by YTBPR01MB2989.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:18::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5081.17; Sun, 20 Mar
- 2022 23:30:40 +0000
-Received: from YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::dd8c:6e57:c431:9323]) by YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::dd8c:6e57:c431:9323%6]) with mapi id 15.20.5081.022; Sun, 20 Mar 2022
- 23:30:40 +0000
-From:   Wenli Looi <wlooi@ucalgary.ca>
-To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        ath9k-devel@qca.qualcomm.com, Wenli Looi <wlooi@ucalgary.ca>
-Subject: [PATCH 6/6] ath9k: add functions to get paprd rate mask
-Date:   Sun, 20 Mar 2022 17:30:10 -0600
-Message-Id: <20220320233010.123106-7-wlooi@ucalgary.ca>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220320233010.123106-1-wlooi@ucalgary.ca>
-References: <20220320233010.123106-1-wlooi@ucalgary.ca>
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ClientProxiedBy: MW4PR04CA0176.namprd04.prod.outlook.com
- (2603:10b6:303:85::31) To YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c00:4a::23)
+        Sun, 20 Mar 2022 21:26:35 -0400
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2048B275DE;
+        Sun, 20 Mar 2022 18:25:11 -0700 (PDT)
+Received: from fsav314.sakura.ne.jp (fsav314.sakura.ne.jp [153.120.85.145])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 22L1OQ9W020821;
+        Mon, 21 Mar 2022 10:24:26 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav314.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp);
+ Mon, 21 Mar 2022 10:24:26 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 22L1OOpR020816
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Mon, 21 Mar 2022 10:24:25 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <49925af7-78a8-a3dd-bce6-cfc02e1a9236@I-love.SAKURA.ne.jp>
+Date:   Mon, 21 Mar 2022 10:24:23 +0900
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2fa4179b-ca15-4231-7097-08da0ac9a566
-X-MS-TrafficTypeDiagnostic: YTBPR01MB2989:EE_
-X-Microsoft-Antispam-PRVS: <YTBPR01MB2989BB43E5DFCD1F6F57EBCBB2159@YTBPR01MB2989.CANPRD01.PROD.OUTLOOK.COM>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: mdMPP3x6bRliCiL3C3ibNfm+6CXd976gIiD0JOVEJ8NzWjiOiZufLvhfwTt2j2aFkDmbLsipiqVxrtV5MmqPDjmvAHysDaJEOYE59koad2+hx/vR8h5IpZAcnnBTquWFr67QSiLZoBhTSqH5injky5GUCVpkKxxvj29XURECpW239eAiYUt7n26fOs4WObOXFPxi6npjvxWFERK6g+zKzpfH2s/+c2qrgOMcwsfAqddcHe5y2LeM1TfekX1VJSkIpYl4f1d4bvKKvm8hl3orfYCVkgakfw7s7QleSKIWB7Zl51NlVueZ3iqDH3+2ryoJkUkHXEZT8ipGRG67OCKTjl/X5uEA8OQGDSs74Tj5bAUD83Szmwiq/uaez7lKrz+FYcPylpieDZSDHnhZO/OBxl0LSgeO2jzHEUx74p269NEyXmYoMOK5zA7Qk1hqD/delN2ycFq198Tbv+WuU/XtjB1JAbQvydrDmn40V9s/eAJ34fWXb+swQ4w/3tMNu+fUgigEzCR9ClflanEI+tRFE4y1zEkrXp9jHdB9c2kfMUnRTmw48co5z84cBowT5iT5RMq8zRqP6ovYcQ0imAAjCUJm4f4kTfRrV6R4g2phXObDeuZ8j4lbPmr1v2v+kK82baEErAWhZBDSwymMpPX7CuS5eiiqD4zvz2GEwr1w+tXEZnum1vS+21p2rJxMAVVyg/xmA8t3MJK8KnMW5jR/Ug==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(6486002)(2906002)(83380400001)(66946007)(66556008)(8676002)(19627235002)(66476007)(4326008)(786003)(316002)(6916009)(54906003)(86362001)(508600001)(5660300002)(38100700002)(38350700002)(8936002)(186003)(36756003)(6666004)(26005)(6512007)(2616005)(6506007)(52116002)(107886003)(1076003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4ZW5AV5m+Xe0DB65jPehD4QYAXhjxNEGl1Fqd2DZqpjmYF9EWITc8/LPmU6y?=
- =?us-ascii?Q?3seSz/h7yodiADa8v7LZOENHHYXed21g/LNAZwN5X/WUFMFoK/KRJAQKNx47?=
- =?us-ascii?Q?yZrUaZ+gpo8UTnlocgBKyL0tTwYxx3ncwuU3PXH/8JyyHcGyYqYTvDrEi7/B?=
- =?us-ascii?Q?s1Q6GgYvMdh83N/gPx0JvbQDU5qv+AdZkb6sd1+7aEhifV1yHHPQZi3ciXuK?=
- =?us-ascii?Q?vvSvpsRjd18vRAnegD/eIRuxVLm/zUYNR8owy+nfRA+ZiYG65rT2pVQtk4bj?=
- =?us-ascii?Q?DtqXnZpkHyYByYmjLVJpB1yznQXtgf02WLT+VCO2eOiyfH7cMyC6tlAt2to4?=
- =?us-ascii?Q?7MswQw6WJVBIGEArlA86AvSpbdlBWvhl0+A1A2Z7L2Jb/Sha3s4eAQDaFdie?=
- =?us-ascii?Q?nFiym2dnkn0bS+XG2k9RPYuZOS4EFme03WTKBK2907b1VUTkKjn4X+RzPaTl?=
- =?us-ascii?Q?nKDp26dNE2A90GryEgNO1jl1gxQpSutbqrKMirYYqnCF/N1CVlMJlKjtfdAl?=
- =?us-ascii?Q?uVGFP9getNYbaBEUYQLmyy0aSVL7x4X9WgEkxGgpQJWUpTuUS4hKDWpZ94I5?=
- =?us-ascii?Q?TcXXXfhFpSdfgnu85yE50fdtJ7zgdVWCUYFeuFvkCmEKFYPP8F5trZ02B8r9?=
- =?us-ascii?Q?10kJhElWONc+WaHbIXFLOx12Tqznce3Pbl7ODFhsbHJsKfPscapGe82deMOu?=
- =?us-ascii?Q?78wV9l/BAefB827hsZdx4SoQCtMPdwKXED4FIf0qUhSwjfQYjpavNkICXy3Q?=
- =?us-ascii?Q?yTQhJBKSRHYVlfsRcoiz+llF/4s1939q4E5v3HlxI3R6nslyLcn7wU7Si8wl?=
- =?us-ascii?Q?gYlwQc5Fh9+p0qf/X6c6+PRhWwduWhPfFGIzuLhlluu/0gLV93gXcFzl/eV6?=
- =?us-ascii?Q?xHUjK54LdBvIU68mZIiVBTpDvFO3Cl/HakSLeutZn8puhWRYH/R+4+Q2XIiQ?=
- =?us-ascii?Q?wQh3iBOzH2aDKP915V5NI+zJFeVWrSDunI1iNFJu4EtJoeRt1LGpG32zP2hs?=
- =?us-ascii?Q?u/nNF6nLB/xNNk6P/LyQ/sH7OuGMsiMPUyJkKIdWoMkf6ijkWKw+eOCP2CC0?=
- =?us-ascii?Q?laovK4fKIWt+WEQ8Em524Gygo0i7X4pkyiTk8YFhbXa4HSck38BrI76hxlr7?=
- =?us-ascii?Q?KD0FQ3naXyraiSVBFUuUNklpEXoPz25aUJ4SBGIQLTKZSUywrV3iN/vpRYca?=
- =?us-ascii?Q?4rNi3iTZXfsS1jpc3o7E+oExC7W+drGFtMzonkZfHHs/PaEyKgfWWTOYR5Hl?=
- =?us-ascii?Q?iTILGIZnkQ9iPY6wc8jzAyyCOJnNioddRtCjxNuPlWhCf6KG0rVKn4FhptYl?=
- =?us-ascii?Q?zheYIF5jXK78s3xU0izKl5ATdZzuFB/D++g2mzFnFZnnXo++x9x38wigXmpK?=
- =?us-ascii?Q?lVZV2PKWh1TReMYoAUZK3w2lmKfSQssEzNtANYOWY980Uv50Z31Ms6cCUIYJ?=
- =?us-ascii?Q?MA4+WNdk3XZgzEEyfUggBHy16bdrd1kE?=
-X-OriginatorOrg: ucalgary.ca
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2fa4179b-ca15-4231-7097-08da0ac9a566
-X-MS-Exchange-CrossTenant-AuthSource: YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2022 23:30:40.6942
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: c609a0ec-a5e3-4631-9686-192280bd9151
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vhHOGI3WzDazsM7tSbhfLuqnQl3LbaZp1qMx8+kbqG/tSMGfPsMyF0ZT6aFfAO+Vek04ElcoeeXcbqRXKW2/Jg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YTBPR01MB2989
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Content-Language: en-US
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: An announcement for kernel-global workqueue users.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,RCVD_IN_SBL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This removes some code duplication with le32_to_cpu. This may also be
-required for QCN550x support, to provide an abstraction over the
-underlying EEPROM format.
+Hello.
 
-Signed-off-by: Wenli Looi <wlooi@ucalgary.ca>
----
- .../net/wireless/ath/ath9k/ar9003_eeprom.c    | 33 ++++++++++---------
- .../net/wireless/ath/ath9k/ar9003_eeprom.h    |  2 ++
- drivers/net/wireless/ath/ath9k/ar9003_paprd.c | 10 +++---
- 3 files changed, 25 insertions(+), 20 deletions(-)
+The Linux kernel provides kernel-global WQs (namely, system_wq, system_highpri_wq,
+system_long_wq, system_unbound_wq, system_freezable_wq, system_power_efficient_wq
+and system_freezable_power_efficient_wq). But since attempt to flush kernel-global
+WQs has possibility of deadlock, Tejun Heo thinks that we should stop calling
+flush_scheduled_work() and flush_workqueue(system_*). Such callers as of Linux 5.17
+are listed below.
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-index a109a44a1..abf12de0e 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -5449,8 +5449,6 @@ static void ath9k_hw_ar9300_set_txpower(struct ath_hw *ah,
- {
- 	struct ath_regulatory *regulatory = ath9k_hw_regulatory(ah);
- 	struct ath_common *common = ath9k_hw_common(ah);
--	struct ar9300_eeprom *eep = &ah->eeprom.ar9300_eep;
--	struct ar9300_modal_eep_header *modal_hdr;
- 	u8 targetPowerValT2[ar9300RateSize];
- 	u8 target_power_val_t2_eep[ar9300RateSize];
- 	u8 targetPowerValT2_tpc[ar9300RateSize];
-@@ -5465,17 +5463,12 @@ static void ath9k_hw_ar9300_set_txpower(struct ath_hw *ah,
- 	ar9003_hw_get_target_power_eeprom(ah, chan, targetPowerValT2);
- 
- 	if (ar9003_is_paprd_enabled(ah)) {
--		if (IS_CHAN_2GHZ(chan))
--			modal_hdr = &eep->modalHeader2G;
--		else
--			modal_hdr = &eep->modalHeader5G;
--
- 		ah->paprd_ratemask =
--			le32_to_cpu(modal_hdr->papdRateMaskHt20) &
-+			ar9003_get_paprd_rate_mask_ht20(ah, IS_CHAN_2GHZ(chan)) &
- 			AR9300_PAPRD_RATE_MASK;
- 
- 		ah->paprd_ratemask_ht40 =
--			le32_to_cpu(modal_hdr->papdRateMaskHt40) &
-+			ar9003_get_paprd_rate_mask_ht40(ah, IS_CHAN_2GHZ(chan)) &
- 			AR9300_PAPRD_RATE_MASK;
- 
- 		paprd_scale_factor = ar9003_get_paprd_scale_factor(ah, chan);
-@@ -5592,23 +5585,33 @@ u8 *ar9003_get_spur_chan_ptr(struct ath_hw *ah, bool is2ghz)
- 	return ar9003_modal_header(ah, is2ghz)->spurChans;
- }
- 
-+u32 ar9003_get_paprd_rate_mask_ht20(struct ath_hw *ah, bool is2ghz)
-+{
-+	return le32_to_cpu(ar9003_modal_header(ah, is2ghz)->papdRateMaskHt20);
-+}
-+
-+u32 ar9003_get_paprd_rate_mask_ht40(struct ath_hw *ah, bool is2ghz)
-+{
-+	return le32_to_cpu(ar9003_modal_header(ah, is2ghz)->papdRateMaskHt40);
-+}
-+
- unsigned int ar9003_get_paprd_scale_factor(struct ath_hw *ah,
- 					   struct ath9k_channel *chan)
- {
--	struct ar9300_eeprom *eep = &ah->eeprom.ar9300_eep;
-+	bool is2ghz = IS_CHAN_2GHZ(chan);
- 
--	if (IS_CHAN_2GHZ(chan))
--		return MS(le32_to_cpu(eep->modalHeader2G.papdRateMaskHt20),
-+	if (is2ghz)
-+		return MS(ar9003_get_paprd_rate_mask_ht20(ah, is2ghz),
- 			  AR9300_PAPRD_SCALE_1);
- 	else {
- 		if (chan->channel >= 5700)
--			return MS(le32_to_cpu(eep->modalHeader5G.papdRateMaskHt20),
-+			return MS(ar9003_get_paprd_rate_mask_ht20(ah, is2ghz),
- 				  AR9300_PAPRD_SCALE_1);
- 		else if (chan->channel >= 5400)
--			return MS(le32_to_cpu(eep->modalHeader5G.papdRateMaskHt40),
-+			return MS(ar9003_get_paprd_rate_mask_ht40(ah, is2ghz),
- 				  AR9300_PAPRD_SCALE_2);
- 		else
--			return MS(le32_to_cpu(eep->modalHeader5G.papdRateMaskHt40),
-+			return MS(ar9003_get_paprd_rate_mask_ht40(ah, is2ghz),
- 				  AR9300_PAPRD_SCALE_1);
- 	}
- }
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.h b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.h
-index e8fda54ac..f8ae20318 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.h
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.h
-@@ -363,6 +363,8 @@ u32 ar9003_hw_ant_ctrl_common_2_get(struct ath_hw *ah, bool is2ghz);
- 
- u8 *ar9003_get_spur_chan_ptr(struct ath_hw *ah, bool is_2ghz);
- 
-+u32 ar9003_get_paprd_rate_mask_ht20(struct ath_hw *ah, bool is2ghz);
-+u32 ar9003_get_paprd_rate_mask_ht40(struct ath_hw *ah, bool is2ghz);
- unsigned int ar9003_get_paprd_scale_factor(struct ath_hw *ah,
- 					   struct ath9k_channel *chan);
- 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_paprd.c b/drivers/net/wireless/ath/ath9k/ar9003_paprd.c
-index 34e100940..b2d53b6c0 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_paprd.c
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_paprd.c
-@@ -21,7 +21,7 @@
- void ar9003_paprd_enable(struct ath_hw *ah, bool val)
- {
- 	struct ath9k_channel *chan = ah->curchan;
--	struct ar9300_eeprom *eep = &ah->eeprom.ar9300_eep;
-+	bool is2ghz = IS_CHAN_2GHZ(chan);
- 
- 	/*
- 	 * 3 bits for modalHeader5G.papdRateMaskHt20
-@@ -36,17 +36,17 @@ void ar9003_paprd_enable(struct ath_hw *ah, bool val)
- 	 * -- disable PAPRD for lower band 5GHz
- 	 */
- 
--	if (IS_CHAN_5GHZ(chan)) {
-+	if (!is2ghz) {
- 		if (chan->channel >= UPPER_5G_SUB_BAND_START) {
--			if (le32_to_cpu(eep->modalHeader5G.papdRateMaskHt20)
-+			if (ar9003_get_paprd_rate_mask_ht20(ah, is2ghz)
- 								  & BIT(30))
- 				val = false;
- 		} else if (chan->channel >= MID_5G_SUB_BAND_START) {
--			if (le32_to_cpu(eep->modalHeader5G.papdRateMaskHt20)
-+			if (ar9003_get_paprd_rate_mask_ht20(ah, is2ghz)
- 								  & BIT(29))
- 				val = false;
- 		} else {
--			if (le32_to_cpu(eep->modalHeader5G.papdRateMaskHt20)
-+			if (ar9003_get_paprd_rate_mask_ht20(ah, is2ghz)
- 								  & BIT(28))
- 				val = false;
- 		}
--- 
-2.25.1
+----------
+$ git grep -nF 'flush_scheduled_work()'
+drivers/acpi/osl.c:1182:         * invoke flush_scheduled_work()/acpi_os_wait_events_complete() to flush
+drivers/acpi/osl.c:1575:        flush_scheduled_work();
+drivers/block/aoe/aoedev.c:324: flush_scheduled_work();
+drivers/block/aoe/aoedev.c:523: flush_scheduled_work();
+drivers/crypto/atmel-ecc.c:401: flush_scheduled_work();
+drivers/crypto/atmel-sha204a.c:162:     flush_scheduled_work();
+drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c:2606:       flush_scheduled_work();
+drivers/gpu/drm/bridge/lontium-lt9611uxc.c:985: flush_scheduled_work();
+drivers/gpu/drm/i915/display/intel_display.c:10790:     flush_scheduled_work();
+drivers/gpu/drm/i915/gt/selftest_execlists.c:87:        flush_scheduled_work();
+drivers/iio/light/tsl2563.c:811:        flush_scheduled_work();
+drivers/infiniband/hw/mlx4/cm.c:511:            flush_scheduled_work();
+drivers/infiniband/hw/mlx4/cm.c:543:            flush_scheduled_work(); /* make sure all timers were flushed */
+drivers/infiniband/ulp/isert/ib_isert.c:2639:   flush_scheduled_work();
+drivers/input/mouse/psmouse-smbus.c:320:        flush_scheduled_work();
+drivers/md/dm.c:229:    flush_scheduled_work();
+drivers/message/fusion/mptscsih.c:1234: flush_scheduled_work();
+drivers/net/phy/phy.c:1060:     /* Cannot call flush_scheduled_work() here as desired because
+drivers/net/usb/lan78xx.c:3240:  * can't flush_scheduled_work() until we drop rtnl (later),
+drivers/net/usb/usbnet.c:853:    * can't flush_scheduled_work() until we drop rtnl (later),
+drivers/net/wireless/ath/ath6kl/usb.c:481:      flush_scheduled_work();
+drivers/net/wwan/wwan_hwsim.c:537:      flush_scheduled_work();         /* Wait deletion works completion */
+drivers/nvme/target/configfs.c:1557:    flush_scheduled_work();
+drivers/nvme/target/rdma.c:1587:                flush_scheduled_work();
+drivers/nvme/target/rdma.c:2056:        flush_scheduled_work();
+drivers/nvme/target/tcp.c:1818:         flush_scheduled_work();
+drivers/nvme/target/tcp.c:1879: flush_scheduled_work();
+drivers/nvme/target/tcp.c:1884: flush_scheduled_work();
+drivers/platform/surface/surface_acpi_notify.c:863:     flush_scheduled_work();
+drivers/power/supply/ab8500_btemp.c:975:        flush_scheduled_work();
+drivers/power/supply/ab8500_chargalg.c:1993:    flush_scheduled_work();
+drivers/power/supply/ab8500_charger.c:3400:     flush_scheduled_work();
+drivers/power/supply/ab8500_fg.c:3021:  flush_scheduled_work();
+drivers/rapidio/devices/tsi721.c:2944:  flush_scheduled_work();
+drivers/rtc/dev.c:99:                   flush_scheduled_work();
+drivers/scsi/mpt3sas/mpt3sas_scsih.c:12409:     flush_scheduled_work();
+drivers/scsi/qla2xxx/qla_target.c:1568:         flush_scheduled_work();
+drivers/staging/olpc_dcon/olpc_dcon.c:386:      flush_scheduled_work();
+sound/soc/intel/atom/sst/sst.c:363:     flush_scheduled_work();
+$ git grep -nF 'flush_workqueue(system_'
+drivers/block/rnbd/rnbd-clt.c:1776:     flush_workqueue(system_long_wq);
+drivers/infiniband/core/device.c:2857:  flush_workqueue(system_unbound_wq);
+include/linux/workqueue.h:592:  flush_workqueue(system_wq);
+----------
 
+I tried to send a patch that emits a warning when flushing kernel-global WQs is attempted
+( https://lkml.kernel.org/r/2efd5461-fccd-f1d9-7138-0a6767cbf5fe@I-love.SAKURA.ne.jp ).
+But Linus does not want such patch
+( https://lkml.kernel.org/r/CAHk-=whWreGjEQ6yasspzBrNnS7EQiL+SknToWt=SzUh4XomyQ@mail.gmail.com ).
+
+Steps for converting kernel-global WQs into module's local WQs are shown below.
+But since an oversight in Step 4 results in breakage, I think that this conversion
+should be carefully handled by maintainers/developers of each module who are
+familiar with that module. (This is why I'm sending this mail than sending patches,
+in order to ask for your cooperation.)
+
+----------
+Step 0: Consider if flushing kernel-global WQs is unavoidable.
+
+    For example, commit 081bdc9fe05bb232 ("RDMA/ib_srp: Fix a deadlock")
+    simply removed flush_workqueue(system_long_wq) call.
+
+    For another example, schedule_on_each_cpu() does not need to call
+    flush_scheduled_work() because schedule_on_each_cpu() knows the list
+    of all "struct work_struct" instances which need to be flushed using
+    flush_work() call.
+
+    If flushing kernel-global WQs is still unavoidable, please proceed to
+    the following steps.
+
+Step 1: Declare a variable for your module.
+
+    struct workqueue_struct *my_wq;
+
+Step 2: Create a WQ for your module from __init function. The same flags
+        used by corresponding kernel-global WQ can be used when creating
+        the WQ for your module.
+
+    my_wq = alloc_workqueue("my_wq_name", 0, 0);
+
+Step 3: Destroy the WQ created in Step 2 from __exit function (and the error
+        handling path of __init function if __init function may fail after
+        creating the WQ).
+
+    destroy_workqueue(my_wq);
+
+Step 4: Replace e.g. schedule_work() call with corresponding queue_work() call
+        throughout your module which should be handled by the WQ for your module.
+
+Step 5: Replace flush_scheduled_work() and flush_workqueue(system_*) calls
+        with flush_workqueue() of the WQ for your module.
+
+    flush_workqueue(my_wq);
+----------
+
+Regards.
