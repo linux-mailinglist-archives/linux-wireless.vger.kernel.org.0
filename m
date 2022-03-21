@@ -2,77 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 731304E2EA4
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Mar 2022 18:00:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 102F84E2EFB
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Mar 2022 18:23:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351548AbiCURBr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Mar 2022 13:01:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52398 "EHLO
+        id S1351798AbiCURYj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Mar 2022 13:24:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343823AbiCURBq (ORCPT
+        with ESMTP id S1351792AbiCURYi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Mar 2022 13:01:46 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B856A72E2C
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Mar 2022 10:00:20 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id p5so9868039pfo.5
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Mar 2022 10:00:20 -0700 (PDT)
+        Mon, 21 Mar 2022 13:24:38 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 700B83BF8E
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Mar 2022 10:23:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=re+ElXIzTQy5rCx63a7lonLbk/LZ9pkEiZiZ3EmVdPU=;
-        b=ZQTHwvHwoLS2LZrT/qbrGqCVvtYIDbVN+QZ/CEj5heQn9DoiuHYkbDzUaTMCb3AJOD
-         etj4PhQXrLDt2rIXLFPEHcXT0FOZnMZJVHvLEpm3zLr3O0MqgzIQ+0pQ45R9vh1JPUkJ
-         Qtd39NNNRLY31TtYv4MtuToce3/ucogB4e7xhFbBuY9r2IYxQAusjYC4hffCj2zFsvzd
-         O+jlk6fyLJ7dmWaY+U+XhOHR8Ra+yD408ZUakFxfkQ5vSBVjyo3nlcW9GatETneJzbFw
-         zm7+hABDXabl2vE8eRZv0W0f35mmMUSxGkMA8V3pRDPWEVFGtTSy17FKw9g4KGF46/16
-         Mz0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=re+ElXIzTQy5rCx63a7lonLbk/LZ9pkEiZiZ3EmVdPU=;
-        b=jv95yRAfiUZN4Q89uHCu5jHv+z6k5nGS9XsFdcc0x+vvTDmn56YnO2jaDRv+rNlLwR
-         O/T4UKRqU7RqqvL02qV+RZjIjwF7QCo+wgj78lgJfWKtdYnMTsxe7XqGNsq8EcoyJZLh
-         4DJJanfk7js7ukNa3LDIS0G6YEDMYo/gPpBUGrCetobu6LjqawPZpFozv236nDlVVx9K
-         w/zZDD3ucO1Wkh++cYQ6EnLOEXCOWwg9iLv7tzbD46cFLTutM+x9vc1kvJQeBOSIfpu2
-         gbD939RViqKbAh3p2YRPS1IyfwHkVDh7yPbhPawcfS/XG5IcpkBr4ajFvu451WOtquvO
-         wA0A==
-X-Gm-Message-State: AOAM5311cHFE5IKmyBYOdg1xi0VJtKFMrQzkqGYTnwSlfMB6fzbjenbw
-        KM6wxoZ+/7vm7l0E73HMCs8WYPnS1d1Nbw==
-X-Google-Smtp-Source: ABdhPJzw9kRtLPxPsmRWaQmY/xve+Tjeo16MjgIwychWdjvqRkt743QRaDxiD2/PTth4uvKP0lcykA==
-X-Received: by 2002:aa7:8256:0:b0:4e0:78ad:eb81 with SMTP id e22-20020aa78256000000b004e078adeb81mr25218291pfn.30.1647882018633;
-        Mon, 21 Mar 2022 10:00:18 -0700 (PDT)
-Received: from google.com (249.189.233.35.bc.googleusercontent.com. [35.233.189.249])
-        by smtp.gmail.com with ESMTPSA id l9-20020a655609000000b0037589f4337dsm15217666pgs.78.2022.03.21.10.00.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Mar 2022 10:00:17 -0700 (PDT)
-Date:   Mon, 21 Mar 2022 17:00:14 +0000
-From:   William McVicker <willmcvicker@google.com>
-To:     Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org
-Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        "Cc: Android Kernel" <kernel-team@android.com>
-Subject: Re: [BUG] deadlock in nl80211_vendor_cmd
-Message-ID: <YjivHrPnzG7h2Sdf@google.com>
-References: <0000000000009e9b7105da6d1779@google.com>
- <CABYd82Z=YXmZPTQhf0K1M4nS2wk3dPBSqx91D8SoUd59AUzpHg@mail.gmail.com>
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1647883392; x=1679419392;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=yirBN0FCyH1Z6wIMXksUg4ALNTNGcfiiNQVe+V5YtEI=;
+  b=vuT/VUTwXON+MtCuJSAOTgkYZRflXKVs2EmkM2DBSiVdetMHZlJIZHiR
+   957qz0U9eDI5pcHk0N9gbTFE4HOQk1ewSmtaVdvlNeGUHJZIZKMfJ/Lm3
+   Iz4agvUPB3LaK2oiktVncHi3NTKXcjb7AliGYQ5Ctto0T0ntuz+pRsXQl
+   8=;
+Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
+  by alexa-out.qualcomm.com with ESMTP; 21 Mar 2022 10:23:11 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2022 10:23:11 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 21 Mar 2022 10:23:11 -0700
+Received: from ppranees-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 21 Mar 2022 03:17:15 -0700
+From:   P Praneesh <quic_ppranees@quicinc.com>
+To:     <ath11k@lists.infradead.org>, <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>,
+        P Praneesh <quic_ppranees@quicinc.com>
+Subject: [PATCH v4 0/3] mac80211: Add extended ROC support for 40-80 MHz bandwidth
+Date:   Mon, 21 Mar 2022 15:46:34 +0530
+Message-ID: <1647857797-19749-1-git-send-email-quic_ppranees@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABYd82Z=YXmZPTQhf0K1M4nS2wk3dPBSqx91D8SoUd59AUzpHg@mail.gmail.com>
-X-Spam-Status: No, score=-15.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=no autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,131 +60,62 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 03/21/2022, Will McVicker wrote:
-> On Thu, Mar 17, 2022 at 10:09 AM <willmcvicker@google.com> wrote:
-> 
-> > Hi,
-> >
-> > I wanted to report a deadlock that I'm hitting as a result of the upstream
-> > commit a05829a7222e ("cfg80211: avoid holding the RTNL when calling the
-> > driver"). I'm using the Pixel 6 with downstream version of the 5.15 kernel,
-> > but I'm pretty sure this will happen on the upstream tip-of-tree kernel as
-> > well.
-> >
-> > Basically, my wlan driver uses the wiphy_vendor_command ops to handle
-> > a number of vendor specific operations. One of them in particular deletes
-> > a cfg80211 interface. The deadlock happens when thread 1 tries to take the
-> > RTNL lock before calling cfg80211_unregister_device() while thread 2 is
-> > inside nl80211_pre_doit(), holding the RTNL lock, and waiting on
-> > wiphy_lock().
-> >
-> > Here is the call flow:
-> >
-> > Thread 1:                         Thread 2:
-> >
-> > nl80211_pre_doit():
-> >   -> rtnl_lock()
-> >                                       nl80211_pre_doit():
-> >                                        -> rtnl_lock()
-> >                                        -> <blocked by Thread 1>
-> >   -> wiphy_lock()
-> >   -> rtnl_unlock()
-> >   -> <unblock Thread 1>
-> > exit nl80211_pre_doit()
-> >                                        <Thread 2 got the RTNL lock>
-> >                                        -> wiphy_lock()
-> >                                        -> <blocked by Thread 1>
-> > nl80211_doit()
-> >   -> nl80211_vendor_cmd()
-> >       -> rtnl_lock() <DEADLOCK>
-> >       -> cfg80211_unregister_device()
-> >       -> rtnl_unlock()
-> >
-> >
-> > To be complete, here are the kernel call traces when the deadlock occurs:
-> >
-> > Thread 1 Call trace:
-> >     <Take rtnl before calling cfg80211_unregister_device()>
-> >     nl80211_vendor_cmd+0x210/0x218
-> >     genl_rcv_msg+0x3ac/0x45c
-> >     netlink_rcv_skb+0x130/0x168
-> >     genl_rcv+0x38/0x54
-> >     netlink_unicast_kernel+0xe4/0x1f4
-> >     netlink_unicast+0x128/0x21c
-> >     netlink_sendmsg+0x2d8/0x3d8
-> >
-> > Thread 2 Call trace:
-> >     <Take wiphy_lock>
-> >     nl80211_pre_doit+0x1b0/0x250
-> >     genl_rcv_msg+0x37c/0x45c
-> >     netlink_rcv_skb+0x130/0x168
-> >     genl_rcv+0x38/0x54
-> >     netlink_unicast_kernel+0xe4/0x1f4
-> >     netlink_unicast+0x128/0x21c
-> >     netlink_sendmsg+0x2d8/0x3d8
-> >
-> > I'm not an networking expert. So my main question is if I'm allowed to take
-> > the RTNL lock inside the nl80211_vendor_cmd callbacks? If so, then
-> > regardless of why I take it, we shouldn't be allowing this deadlock
-> > situation, right?
-> >
-> > I hope that helps explain the issue. Let me know if you need any more
-> > details.
-> >
-> > Thanks,
-> > Will
-> >
-> 
-> Sorry my CC list got dropped. Adding the following:
-> 
-> Kalle Valo <kvalo@codeaurora.org>
-> "David S. Miller" <davem@davemloft.net>
-> Jakub Kicinski <kuba@kernel.org>
-> netdev@vger.kernel.org
-> Amitkumar Karwar <amitkarwar@gmail.com>
-> Ganapathi Bhat <ganapathi.bhat@nxp.com>
-> Xinming Hu <huxinming820@gmail.com>
-> kernel-team@android.com
+This patch add extended roc support for 40 and 80 Mhz bandwidth.
+It helps to handle remain on channel for wide band scan in ath11k.
+---
+v4:
+	- added feature check based on the hardware advertisement
+	  SUPPORTS_EXT_REMAIN_ON_CHAN and addressed other review comments.
+v3:
+	- addressed Johannes comment to use ROC instead of SCAN command and
+	  changed cover letter title from 'add Wide Band Scan support' to
+	  'mac80211: Add extended ROC support for 40-80 MHz bandwidth'
+v2:
+	- updated message on cover letter.
 
-Sorry for the noise. The lists bounced due to html. Resending with mutt to make
-sure everyone gets this message.
+---
+P Praneesh (3):
+  nl80211: Extended ROC support for 40-80 MHz bandwidth
+  ath11k: Refactor update channel list function
+  ath11k: Add ROC support for wide band scan
 
-As an update, I was able to fix the deadlock by updating nl80211_pre_doit() to
-not hold the RTNL lock while waiting to get the wiphy_lock. This allows us to
-take the RTNL lock within nl80211_doit() and have parallel calls to
-nl80211_doit(). Below is the logic I tested. Please let me know if I'm heading
-in the right direction.
+ drivers/net/wireless/ath/ath10k/mac.c              |   3 +-
+ drivers/net/wireless/ath/ath11k/core.c             |   1 +
+ drivers/net/wireless/ath/ath11k/mac.c              | 215 ++++++++++++++++++---
+ drivers/net/wireless/ath/ath11k/reg.c              |  49 +++--
+ drivers/net/wireless/ath/ath11k/reg.h              |   2 +-
+ drivers/net/wireless/ath/ath11k/wmi.c              |  59 +++++-
+ drivers/net/wireless/ath/ath11k/wmi.h              |  26 ++-
+ drivers/net/wireless/ath/ath6kl/cfg80211.c         |   5 +-
+ drivers/net/wireless/ath/ath6kl/wmi.c              |  10 +-
+ drivers/net/wireless/ath/ath9k/main.c              |   4 +-
+ drivers/net/wireless/ath/wil6210/cfg80211.c        |  13 +-
+ drivers/net/wireless/ath/wil6210/p2p.c             |  27 ++-
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c         |   2 +-
+ .../net/wireless/broadcom/brcm80211/brcmfmac/p2p.c |  10 +-
+ .../net/wireless/broadcom/brcm80211/brcmfmac/p2p.h |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |   3 +-
+ drivers/net/wireless/mac80211_hwsim.c              |   3 +-
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c    |  10 +-
+ drivers/net/wireless/marvell/mwifiex/sta_event.c   |   4 +-
+ drivers/net/wireless/marvell/mwifiex/uap_event.c   |   4 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c   |   3 +-
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c |  17 +-
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c        |   3 +-
+ drivers/net/wireless/ti/wlcore/main.c              |   3 +-
+ drivers/staging/rtl8723bs/include/ioctl_cfg80211.h |   4 +-
+ include/net/cfg80211.h                             |  17 +-
+ include/net/mac80211.h                             |   5 +-
+ net/mac80211/debugfs.c                             |   1 +
+ net/mac80211/driver-ops.h                          |   6 +-
+ net/mac80211/ieee80211_i.h                         |   4 +-
+ net/mac80211/offchannel.c                          |  64 +++---
+ net/mac80211/trace.h                               |   9 +-
+ net/wireless/nl80211.c                             |  27 +--
+ net/wireless/rdev-ops.h                            |   6 +-
+ net/wireless/trace.h                               |  44 ++---
+ 35 files changed, 489 insertions(+), 176 deletions(-)
 
-Thanks,
-Will
+-- 
+2.7.4
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 686a69381731..bb4ad746509b 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -15227,7 +15227,24 @@ static int nl80211_pre_doit(const struct genl_ops *ops, struct sk_buff *skb,
- 	}
- 
- 	if (rdev && !(ops->internal_flags & NL80211_FLAG_NO_WIPHY_MTX)) {
--		wiphy_lock(&rdev->wiphy);
-+		while (!mutex_trylock(&rdev->wiphy.mtx)) {
-+			/* Holding the RTNL lock while waiting for the wiphy lock can lead to
-+			 * a deadlock within doit() ops that don't hold the RTNL in pre_doit. So
-+			 * we need to release the RTNL lock first while we wait for the wiphy
-+			 * lock.
-+			 */
-+			rtnl_unlock();
-+			wiphy_lock(&rdev->wiphy);
-+
-+			/* Once we get the wiphy_lock, we need to grab the RTNL lock. If we can't
-+			 * get it, then we need to unlock the wiphy to avoid a deadlock in
-+			 * pre_doit and then retry taking the locks again. */
-+			if (!rtnl_trylock()) {
-+				wiphy_unlock(&rdev->wiphy);
-+				rtnl_lock();
-+			} else
-+				break;
-+		}
- 		/* we keep the mutex locked until post_doit */
- 		__release(&rdev->wiphy.mtx);
- 	}
