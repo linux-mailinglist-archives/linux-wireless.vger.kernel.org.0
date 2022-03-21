@@ -2,158 +2,420 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A5F44E1EB3
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Mar 2022 02:25:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02AB24E1F02
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Mar 2022 03:22:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343981AbiCUB0g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Mar 2022 21:26:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44752 "EHLO
+        id S1344158AbiCUCYI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Mar 2022 22:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232538AbiCUB0f (ORCPT
+        with ESMTP id S1344147AbiCUCYH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Mar 2022 21:26:35 -0400
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2048B275DE;
-        Sun, 20 Mar 2022 18:25:11 -0700 (PDT)
-Received: from fsav314.sakura.ne.jp (fsav314.sakura.ne.jp [153.120.85.145])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 22L1OQ9W020821;
-        Mon, 21 Mar 2022 10:24:26 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav314.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp);
- Mon, 21 Mar 2022 10:24:26 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp)
-Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 22L1OOpR020816
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-        Mon, 21 Mar 2022 10:24:25 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <49925af7-78a8-a3dd-bce6-cfc02e1a9236@I-love.SAKURA.ne.jp>
-Date:   Mon, 21 Mar 2022 10:24:23 +0900
+        Sun, 20 Mar 2022 22:24:07 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47204931A8
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Mar 2022 19:22:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1647829363; x=1679365363;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=VHGfL+v1oJDwWPA8HGxSdIn1VSWrxrmR/5UU8QIpxHo=;
+  b=cWR9cNHY33NeIoTUxgmszq4lpkTeZLpca3EwUT86hJxnveI5gdT3WZm/
+   glT/O0/lJV8mxqIl2pIgX7xNxhCIgWfaSQskgw88j0xsD+NqoDbKAQbUO
+   aDBn0sEESaTPa+0kQH1jsD403sagpvSjkQIhiT8pFU4C98OcRAAe0OQA5
+   4=;
+Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 20 Mar 2022 19:22:42 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2022 19:22:42 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Sun, 20 Mar 2022 19:22:42 -0700
+Received: from bqiang-NUC8i7HVK.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Sun, 20 Mar 2022 19:22:41 -0700
+From:   Baochen Qiang <quic_bqiang@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2] ath11k: Add support for SAR
+Date:   Mon, 21 Mar 2022 10:22:31 +0800
+Message-ID: <20220321022231.268197-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Content-Language: en-US
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>
-From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Subject: An announcement for kernel-global workqueue users.
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,RCVD_IN_SBL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello.
+ath11k assigns ath11k_mac_op_set_bios_sar_specs to ath11k_ops,
+and this function is called when user space application
+calls NL80211_CMD_SET_SAR_SPECS. ath11k also registers SAR
+type and frequency ranges to wiphy so user space can query
+SAR capabilities.
 
-The Linux kernel provides kernel-global WQs (namely, system_wq, system_highpri_wq,
-system_long_wq, system_unbound_wq, system_freezable_wq, system_power_efficient_wq
-and system_freezable_power_efficient_wq). But since attempt to flush kernel-global
-WQs has possibility of deadlock, Tejun Heo thinks that we should stop calling
-flush_scheduled_work() and flush_workqueue(system_*). Such callers as of Linux 5.17
-are listed below.
+This feature is currently enabled for WCN6855.
 
-----------
-$ git grep -nF 'flush_scheduled_work()'
-drivers/acpi/osl.c:1182:         * invoke flush_scheduled_work()/acpi_os_wait_events_complete() to flush
-drivers/acpi/osl.c:1575:        flush_scheduled_work();
-drivers/block/aoe/aoedev.c:324: flush_scheduled_work();
-drivers/block/aoe/aoedev.c:523: flush_scheduled_work();
-drivers/crypto/atmel-ecc.c:401: flush_scheduled_work();
-drivers/crypto/atmel-sha204a.c:162:     flush_scheduled_work();
-drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c:2606:       flush_scheduled_work();
-drivers/gpu/drm/bridge/lontium-lt9611uxc.c:985: flush_scheduled_work();
-drivers/gpu/drm/i915/display/intel_display.c:10790:     flush_scheduled_work();
-drivers/gpu/drm/i915/gt/selftest_execlists.c:87:        flush_scheduled_work();
-drivers/iio/light/tsl2563.c:811:        flush_scheduled_work();
-drivers/infiniband/hw/mlx4/cm.c:511:            flush_scheduled_work();
-drivers/infiniband/hw/mlx4/cm.c:543:            flush_scheduled_work(); /* make sure all timers were flushed */
-drivers/infiniband/ulp/isert/ib_isert.c:2639:   flush_scheduled_work();
-drivers/input/mouse/psmouse-smbus.c:320:        flush_scheduled_work();
-drivers/md/dm.c:229:    flush_scheduled_work();
-drivers/message/fusion/mptscsih.c:1234: flush_scheduled_work();
-drivers/net/phy/phy.c:1060:     /* Cannot call flush_scheduled_work() here as desired because
-drivers/net/usb/lan78xx.c:3240:  * can't flush_scheduled_work() until we drop rtnl (later),
-drivers/net/usb/usbnet.c:853:    * can't flush_scheduled_work() until we drop rtnl (later),
-drivers/net/wireless/ath/ath6kl/usb.c:481:      flush_scheduled_work();
-drivers/net/wwan/wwan_hwsim.c:537:      flush_scheduled_work();         /* Wait deletion works completion */
-drivers/nvme/target/configfs.c:1557:    flush_scheduled_work();
-drivers/nvme/target/rdma.c:1587:                flush_scheduled_work();
-drivers/nvme/target/rdma.c:2056:        flush_scheduled_work();
-drivers/nvme/target/tcp.c:1818:         flush_scheduled_work();
-drivers/nvme/target/tcp.c:1879: flush_scheduled_work();
-drivers/nvme/target/tcp.c:1884: flush_scheduled_work();
-drivers/platform/surface/surface_acpi_notify.c:863:     flush_scheduled_work();
-drivers/power/supply/ab8500_btemp.c:975:        flush_scheduled_work();
-drivers/power/supply/ab8500_chargalg.c:1993:    flush_scheduled_work();
-drivers/power/supply/ab8500_charger.c:3400:     flush_scheduled_work();
-drivers/power/supply/ab8500_fg.c:3021:  flush_scheduled_work();
-drivers/rapidio/devices/tsi721.c:2944:  flush_scheduled_work();
-drivers/rtc/dev.c:99:                   flush_scheduled_work();
-drivers/scsi/mpt3sas/mpt3sas_scsih.c:12409:     flush_scheduled_work();
-drivers/scsi/qla2xxx/qla_target.c:1568:         flush_scheduled_work();
-drivers/staging/olpc_dcon/olpc_dcon.c:386:      flush_scheduled_work();
-sound/soc/intel/atom/sst/sst.c:363:     flush_scheduled_work();
-$ git grep -nF 'flush_workqueue(system_'
-drivers/block/rnbd/rnbd-clt.c:1776:     flush_workqueue(system_long_wq);
-drivers/infiniband/core/device.c:2857:  flush_workqueue(system_unbound_wq);
-include/linux/workqueue.h:592:  flush_workqueue(system_wq);
-----------
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-02431-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
 
-I tried to send a patch that emits a warning when flushing kernel-global WQs is attempted
-( https://lkml.kernel.org/r/2efd5461-fccd-f1d9-7138-0a6767cbf5fe@I-love.SAKURA.ne.jp ).
-But Linus does not want such patch
-( https://lkml.kernel.org/r/CAHk-=whWreGjEQ6yasspzBrNnS7EQiL+SknToWt=SzUh4XomyQ@mail.gmail.com ).
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/core.c |  6 +++
+ drivers/net/wireless/ath/ath11k/hw.c   | 20 ++++++++
+ drivers/net/wireless/ath/ath11k/hw.h   |  2 +
+ drivers/net/wireless/ath/ath11k/mac.c  | 66 ++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/wmi.c  | 70 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/wmi.h  | 27 ++++++++++
+ 6 files changed, 191 insertions(+)
 
-Steps for converting kernel-global WQs into module's local WQs are shown below.
-But since an oversight in Step 4 results in breakage, I think that this conversion
-should be carefully handled by maintainers/developers of each module who are
-familiar with that module. (This is why I'm sending this mail than sending patches,
-in order to ask for your cooperation.)
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 104149050205..382ffcf9d79c 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -100,6 +100,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.fw_wmi_diag_event = false,
+ 		.current_cc_support = false,
+ 		.dbr_debug_support = true,
++		.bios_sar_capa = NULL,
+ 	},
+ 	{
+ 		.hw_rev = ATH11K_HW_IPQ6018_HW10,
+@@ -166,6 +167,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.fw_wmi_diag_event = false,
+ 		.current_cc_support = false,
+ 		.dbr_debug_support = true,
++		.bios_sar_capa = NULL,
+ 	},
+ 	{
+ 		.name = "qca6390 hw2.0",
+@@ -231,6 +233,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.fw_wmi_diag_event = true,
+ 		.current_cc_support = true,
+ 		.dbr_debug_support = false,
++		.bios_sar_capa = NULL,
+ 	},
+ 	{
+ 		.name = "qcn9074 hw1.0",
+@@ -296,6 +299,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.fw_wmi_diag_event = false,
+ 		.current_cc_support = false,
+ 		.dbr_debug_support = true,
++		.bios_sar_capa = NULL,
+ 	},
+ 	{
+ 		.name = "wcn6855 hw2.0",
+@@ -361,6 +365,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.fw_wmi_diag_event = true,
+ 		.current_cc_support = true,
+ 		.dbr_debug_support = false,
++		.bios_sar_capa = &ath11k_hw_sar_capa_wcn6855,
+ 	},
+ 	{
+ 		.name = "wcn6855 hw2.1",
+@@ -425,6 +430,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.fw_wmi_diag_event = true,
+ 		.current_cc_support = true,
+ 		.dbr_debug_support = false,
++		.bios_sar_capa = &ath11k_hw_sar_capa_wcn6855,
+ 	},
+ };
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
+index d1b0e76d9ec2..46449a18b5cb 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.c
++++ b/drivers/net/wireless/ath/ath11k/hw.c
+@@ -2154,3 +2154,23 @@ const struct ath11k_hw_hal_params ath11k_hw_hal_params_ipq8074 = {
+ const struct ath11k_hw_hal_params ath11k_hw_hal_params_qca6390 = {
+ 	.rx_buf_rbm = HAL_RX_BUF_RBM_SW1_BM,
+ };
++
++static const struct cfg80211_sar_freq_ranges ath11k_hw_sar_freq_ranges_wcn6855[] = {
++	{.start_freq = 2402, .end_freq = 2482 },  /* 2G ch1~ch13 */
++	{.start_freq = 5150, .end_freq = 5250 },  /* 5G UNII-1 ch32~ch48 */
++	{.start_freq = 5250, .end_freq = 5725 },  /* 5G UNII-2 ch50~ch144 */
++	{.start_freq = 5725, .end_freq = 5810 },  /* 5G UNII-3 ch149~ch161 */
++	{.start_freq = 5815, .end_freq = 5895 },  /* 5G UNII-4 ch163~ch177 */
++	{.start_freq = 5925, .end_freq = 6165 },  /* 6G UNII-5 Ch1, Ch2 ~ Ch41 */
++	{.start_freq = 6165, .end_freq = 6425 },  /* 6G UNII-5 ch45~ch93 */
++	{.start_freq = 6425, .end_freq = 6525 },  /* 6G UNII-6 ch97~ch113 */
++	{.start_freq = 6525, .end_freq = 6705 },  /* 6G UNII-7 ch117~ch149 */
++	{.start_freq = 6705, .end_freq = 6875 },  /* 6G UNII-7 ch153~ch185 */
++	{.start_freq = 6875, .end_freq = 7125 },  /* 6G UNII-8 ch189~ch233 */
++};
++
++const struct cfg80211_sar_capa ath11k_hw_sar_capa_wcn6855 = {
++	.type = NL80211_SAR_TYPE_POWER,
++	.num_freq_ranges = (ARRAY_SIZE(ath11k_hw_sar_freq_ranges_wcn6855)),
++	.freq_ranges = ath11k_hw_sar_freq_ranges_wcn6855,
++};
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index 27ca4a9c20fc..2e6ce5240c46 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -194,6 +194,7 @@ struct ath11k_hw_params {
+ 	bool fw_wmi_diag_event;
+ 	bool current_cc_support;
+ 	bool dbr_debug_support;
++	const struct cfg80211_sar_capa *bios_sar_capa;
+ };
+ 
+ struct ath11k_hw_ops {
+@@ -361,4 +362,5 @@ extern const struct ath11k_hw_regs qca6390_regs;
+ extern const struct ath11k_hw_regs qcn9074_regs;
+ extern const struct ath11k_hw_regs wcn6855_regs;
+ 
++extern const struct cfg80211_sar_capa ath11k_hw_sar_capa_wcn6855;
+ #endif
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index e0e31605e0b0..a4479ca5b849 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -8236,6 +8236,67 @@ static void ath11k_mac_op_set_rekey_data(struct ieee80211_hw *hw,
+ 	mutex_unlock(&ar->conf_mutex);
+ }
+ 
++static int ath11k_mac_op_set_bios_sar_specs(struct ieee80211_hw *hw,
++					    const struct cfg80211_sar_specs *sar)
++{
++	struct ath11k *ar = hw->priv;
++	const struct cfg80211_sar_sub_specs *sspec = sar->sub_specs;
++	u8 *sar_tbl;
++	u32 i;
++	int ret;
++
++	mutex_lock(&ar->conf_mutex);
++
++	if (!test_bit(WMI_TLV_SERVICE_BIOS_SAR_SUPPORT, ar->ab->wmi_ab.svc_map) ||
++	    !ar->ab->hw_params.bios_sar_capa) {
++		ret = -EOPNOTSUPP;
++		goto exit;
++	}
++
++	if (!sar || sar->type != NL80211_SAR_TYPE_POWER ||
++	    sar->num_sub_specs == 0) {
++		ret = -EINVAL;
++		goto exit;
++	}
++
++	ret = ath11k_wmi_pdev_set_bios_geo_table_param(ar);
++	if (ret) {
++		ath11k_warn(ar->ab, "failed to set geo table: %d\n", ret);
++		goto exit;
++	}
++
++	sar_tbl = kzalloc(BIOS_SAR_TABLE_LEN, GFP_KERNEL);
++	if (!sar_tbl) {
++		ret = -ENOMEM;
++		goto exit;
++	}
++
++	for (i = 0; i < sar->num_sub_specs; i++) {
++		if (sspec->freq_range_index >= (BIOS_SAR_TABLE_LEN >> 1)) {
++			ath11k_warn(ar->ab, "Ignore bad frequency index %u, max allowed %u\n",
++				    sspec->freq_range_index, BIOS_SAR_TABLE_LEN >> 1);
++			continue;
++		}
++
++		/* chain0 and chain1 share same power setting */
++		sar_tbl[sspec->freq_range_index] = sspec->power;
++		sar_tbl[sspec->freq_range_index + (BIOS_SAR_TABLE_LEN >> 1)] = sspec->power;
++		ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "sar tbl[%d] = %d\n",
++			   sspec->freq_range_index, sar_tbl[sspec->freq_range_index]);
++		sspec++;
++	}
++
++	ret = ath11k_wmi_pdev_set_bios_sar_table_param(ar, sar_tbl);
++	if (ret)
++		ath11k_warn(ar->ab, "failed to set sar power: %d", ret);
++
++	kfree(sar_tbl);
++exit:
++	mutex_unlock(&ar->conf_mutex);
++
++	return ret;
++}
++
+ static const struct ieee80211_ops ath11k_ops = {
+ 	.tx				= ath11k_mac_op_tx,
+ 	.start                          = ath11k_mac_op_start,
+@@ -8286,6 +8347,7 @@ static const struct ieee80211_ops ath11k_ops = {
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	.ipv6_addr_change = ath11k_mac_op_ipv6_changed,
+ #endif
++	.set_sar_specs			= ath11k_mac_op_set_bios_sar_specs,
+ 
+ };
+ 
+@@ -8707,6 +8769,10 @@ static int __ath11k_mac_register(struct ath11k *ar)
+ 		ieee80211_hw_set(ar->hw, SUPPORT_FAST_XMIT);
+ 	}
+ 
++	if (test_bit(WMI_TLV_SERVICE_BIOS_SAR_SUPPORT, ar->ab->wmi_ab.svc_map) &&
++	    ab->hw_params.bios_sar_capa)
++		ar->hw->wiphy->sar_capa = ab->hw_params.bios_sar_capa;
++
+ 	ret = ieee80211_register_hw(ar->hw);
+ 	if (ret) {
+ 		ath11k_err(ar->ab, "ieee80211 registration failed: %d\n", ret);
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index b3b4d5267916..28ecc793b3f8 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -8871,3 +8871,73 @@ int ath11k_wmi_gtk_rekey_getinfo(struct ath11k *ar,
+ 		   arvif->vdev_id);
+ 	return ath11k_wmi_cmd_send(ar->wmi, skb, WMI_GTK_OFFLOAD_CMDID);
+ }
++
++int ath11k_wmi_pdev_set_bios_sar_table_param(struct ath11k *ar, const u8 *sar_val)
++{	struct ath11k_pdev_wmi *wmi = ar->wmi;
++	struct wmi_pdev_set_sar_table_cmd *cmd;
++	struct wmi_tlv *tlv;
++	struct sk_buff *skb;
++	u8 *buf_ptr;
++	u32 len, sar_len_aligned, rsvd_len_aligned;
++
++	sar_len_aligned = roundup(BIOS_SAR_TABLE_LEN, sizeof(u32));
++	rsvd_len_aligned = roundup(BIOS_SAR_RSVD1_LEN, sizeof(u32));
++	len = sizeof(*cmd) +
++	      TLV_HDR_SIZE + sar_len_aligned +
++	      TLV_HDR_SIZE + rsvd_len_aligned;
++
++	skb = ath11k_wmi_alloc_skb(wmi->wmi_ab, len);
++	if (!skb)
++		return -ENOMEM;
++
++	cmd = (struct wmi_pdev_set_sar_table_cmd *)skb->data;
++	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_PDEV_SET_BIOS_SAR_TABLE_CMD) |
++			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
++	cmd->pdev_id = ar->pdev->pdev_id;
++	cmd->sar_len = BIOS_SAR_TABLE_LEN;
++	cmd->rsvd_len = BIOS_SAR_RSVD1_LEN;
++
++	buf_ptr = skb->data + sizeof(*cmd);
++	tlv = (struct wmi_tlv *) buf_ptr;
++	tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_BYTE) |
++		      FIELD_PREP(WMI_TLV_LEN, sar_len_aligned);
++	buf_ptr += TLV_HDR_SIZE;
++	memcpy(buf_ptr, sar_val, BIOS_SAR_TABLE_LEN);
++
++	buf_ptr += sar_len_aligned;
++	tlv = (struct wmi_tlv *) buf_ptr;
++	tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_BYTE) |
++		      FIELD_PREP(WMI_TLV_LEN, rsvd_len_aligned);
++
++	return ath11k_wmi_cmd_send(wmi, skb, WMI_PDEV_SET_BIOS_SAR_TABLE_CMDID);
++}
++
++int ath11k_wmi_pdev_set_bios_geo_table_param(struct ath11k *ar)
++{
++	struct ath11k_pdev_wmi *wmi = ar->wmi;
++	struct wmi_pdev_set_geo_table_cmd *cmd;
++	struct wmi_tlv *tlv;
++	struct sk_buff *skb;
++	u8 *buf_ptr;
++	u32 len, rsvd_len_aligned;
++
++	rsvd_len_aligned = roundup(BIOS_SAR_RSVD2_LEN, sizeof(u32));
++	len = sizeof(*cmd) + TLV_HDR_SIZE + rsvd_len_aligned;
++
++	skb = ath11k_wmi_alloc_skb(wmi->wmi_ab, len);
++	if (!skb)
++		return -ENOMEM;
++
++	cmd = (struct wmi_pdev_set_geo_table_cmd *)skb->data;
++	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_PDEV_SET_BIOS_GEO_TABLE_CMD) |
++			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
++	cmd->pdev_id = ar->pdev->pdev_id;
++	cmd->rsvd_len = BIOS_SAR_RSVD2_LEN;
++
++	buf_ptr = skb->data + sizeof(*cmd);
++	tlv = (struct wmi_tlv *) buf_ptr;
++	tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_BYTE) |
++		      FIELD_PREP(WMI_TLV_LEN, rsvd_len_aligned);
++
++	return ath11k_wmi_cmd_send(wmi, skb, WMI_PDEV_SET_BIOS_GEO_TABLE_CMDID);
++}
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index da9b0a90fd70..c9c6faee45c1 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -285,6 +285,11 @@ enum wmi_tlv_cmd_id {
+ 	WMI_PDEV_SET_SRG_OBSS_BSSID_ENABLE_BITMAP_CMDID,
+ 	WMI_PDEV_SET_NON_SRG_OBSS_COLOR_ENABLE_BITMAP_CMDID,
+ 	WMI_PDEV_SET_NON_SRG_OBSS_BSSID_ENABLE_BITMAP_CMDID,
++	WMI_PDEV_GET_TPC_STATS_CMDID,
++	WMI_PDEV_ENABLE_DURATION_BASED_TX_MODE_SELECTION_CMDID,
++	WMI_PDEV_GET_DPD_STATUS_CMDID,
++	WMI_PDEV_SET_BIOS_SAR_TABLE_CMDID,
++	WMI_PDEV_SET_BIOS_GEO_TABLE_CMDID,
+ 	WMI_VDEV_CREATE_CMDID = WMI_TLV_CMD(WMI_GRP_VDEV),
+ 	WMI_VDEV_DELETE_CMDID,
+ 	WMI_VDEV_START_REQUEST_CMDID,
+@@ -1859,6 +1864,8 @@ enum wmi_tlv_tag {
+ 	WMI_TAG_PDEV_SRG_OBSS_BSSID_ENABLE_BITMAP_CMD,
+ 	WMI_TAG_PDEV_NON_SRG_OBSS_COLOR_ENABLE_BITMAP_CMD,
+ 	WMI_TAG_PDEV_NON_SRG_OBSS_BSSID_ENABLE_BITMAP_CMD,
++	WMI_TAG_PDEV_SET_BIOS_SAR_TABLE_CMD = 0x3D8,
++	WMI_TAG_PDEV_SET_BIOS_GEO_TABLE_CMD,
+ 	WMI_TAG_MAX
+ };
+ 
+@@ -2087,6 +2094,7 @@ enum wmi_tlv_service {
+ 
+ 	/* The second 128 bits */
+ 	WMI_MAX_EXT_SERVICE = 256,
++	WMI_TLV_SERVICE_BIOS_SAR_SUPPORT = 326,
+ 
+ 	/* The third 128 bits */
+ 	WMI_MAX_EXT2_SERVICE = 384
+@@ -5890,6 +5898,23 @@ struct wmi_gtk_rekey_offload_cmd {
+ 	u8 replay_ctr[GTK_REPLAY_COUNTER_BYTES];
+ } __packed;
+ 
++#define BIOS_SAR_TABLE_LEN	(22)
++#define BIOS_SAR_RSVD1_LEN	(6)
++#define BIOS_SAR_RSVD2_LEN	(18)
++
++struct wmi_pdev_set_sar_table_cmd {
++	u32 tlv_header;
++	u32 pdev_id;
++	u32 sar_len;
++	u32 rsvd_len;
++} __packed;
++
++struct wmi_pdev_set_geo_table_cmd {
++	u32 tlv_header;
++	u32 pdev_id;
++	u32 rsvd_len;
++} __packed;
++
+ int ath11k_wmi_cmd_send(struct ath11k_pdev_wmi *wmi, struct sk_buff *skb,
+ 			u32 cmd_id);
+ struct sk_buff *ath11k_wmi_alloc_skb(struct ath11k_wmi_base *wmi_sc, u32 len);
+@@ -6068,5 +6093,7 @@ int ath11k_wmi_gtk_rekey_offload(struct ath11k *ar,
+ 				 struct ath11k_vif *arvif, bool enable);
+ int ath11k_wmi_gtk_rekey_getinfo(struct ath11k *ar,
+ 				 struct ath11k_vif *arvif);
++int ath11k_wmi_pdev_set_bios_sar_table_param(struct ath11k *ar, const u8 *sar_val);
++int ath11k_wmi_pdev_set_bios_geo_table_param(struct ath11k *ar);
+ 
+ #endif
 
-----------
-Step 0: Consider if flushing kernel-global WQs is unavoidable.
+base-commit: 3e0f69bea2c2cb7f050b316ccba47cb61ebf240b
+prerequisite-patch-id: 8ed14a45e891683ebc28d3fe1c9405430561b09f
+-- 
+2.25.1
 
-    For example, commit 081bdc9fe05bb232 ("RDMA/ib_srp: Fix a deadlock")
-    simply removed flush_workqueue(system_long_wq) call.
-
-    For another example, schedule_on_each_cpu() does not need to call
-    flush_scheduled_work() because schedule_on_each_cpu() knows the list
-    of all "struct work_struct" instances which need to be flushed using
-    flush_work() call.
-
-    If flushing kernel-global WQs is still unavoidable, please proceed to
-    the following steps.
-
-Step 1: Declare a variable for your module.
-
-    struct workqueue_struct *my_wq;
-
-Step 2: Create a WQ for your module from __init function. The same flags
-        used by corresponding kernel-global WQ can be used when creating
-        the WQ for your module.
-
-    my_wq = alloc_workqueue("my_wq_name", 0, 0);
-
-Step 3: Destroy the WQ created in Step 2 from __exit function (and the error
-        handling path of __init function if __init function may fail after
-        creating the WQ).
-
-    destroy_workqueue(my_wq);
-
-Step 4: Replace e.g. schedule_work() call with corresponding queue_work() call
-        throughout your module which should be handled by the WQ for your module.
-
-Step 5: Replace flush_scheduled_work() and flush_workqueue(system_*) calls
-        with flush_workqueue() of the WQ for your module.
-
-    flush_workqueue(my_wq);
-----------
-
-Regards.
