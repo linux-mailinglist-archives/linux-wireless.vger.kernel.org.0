@@ -2,159 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F0E04E2034
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Mar 2022 06:43:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8028D4E2108
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Mar 2022 08:15:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344431AbiCUFpS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Mar 2022 01:45:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58488 "EHLO
+        id S1344764AbiCUHRB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Mar 2022 03:17:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237634AbiCUFpR (ORCPT
+        with ESMTP id S245477AbiCUHRA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Mar 2022 01:45:17 -0400
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 947393467E
-        for <linux-wireless@vger.kernel.org>; Sun, 20 Mar 2022 22:43:53 -0700 (PDT)
+        Mon, 21 Mar 2022 03:17:00 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1FBF3EBAB;
+        Mon, 21 Mar 2022 00:15:35 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id d19so14675201pfv.7;
+        Mon, 21 Mar 2022 00:15:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1647841433; x=1679377433;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=oYhsCb8l5yI0e3B4DHROAet318X6YWn9Ofatkwp8gdQ=;
-  b=fUFvBPb0UtqxWOLdYu4s0RoMCL0OhP6+AkCXgztQQlpevev+R2uw9hPK
-   Wq19B3IuG8kYny+kiPfQqAwU+Dbc1NUShSocf4o7acnRD6qYMd3HlcWJj
-   I0To8P10JJTffE9aSn6gKgoxAHmiz/kS1gd6iabhJGk+vb+8qhLk4yNlU
-   Q=;
-Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 20 Mar 2022 22:43:53 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2022 22:43:53 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Sun, 20 Mar 2022 22:43:53 -0700
-Received: from ramess-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Sun, 20 Mar 2022 22:43:51 -0700
-From:   Rameshkumar Sundaram <quic_ramess@quicinc.com>
-To:     <johannes@sipsolutions.net>, <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Subject: [PATCH v2 2/2] ath11k: add support to configure 6GHz non-ht duplicate transmission
-Date:   Mon, 21 Mar 2022 11:13:15 +0530
-Message-ID: <1647841395-20213-3-git-send-email-quic_ramess@quicinc.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1647841395-20213-1-git-send-email-quic_ramess@quicinc.com>
-References: <1647841395-20213-1-git-send-email-quic_ramess@quicinc.com>
+        d=gmail.com; s=20210112;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OUJOZBwGbollWrpdYQoZPkdenvguOm3D7K6hbDbX3PU=;
+        b=hng2vQGxKUpbyul73fNVPi5UIZanX4aLXWj8pyRLyGYjb+VcYR1+gxxWnaJIb7MV5U
+         AZn027iDkdKY9GXaRJy9A8rxuAF355IszIfGZcOiCz30PH/ZaojLpi08jJOXPVS3SZuR
+         sZkoPZWPtm+PzwOP98hvIB7t/0xl5cxOCm/StZY4FyVMl4O3LhdfZY77DpqClbXvbWjn
+         3V1xI4TxhxloTbtLlX8pHcwBQVpjuOv6PbGn7H0eyICCSpXq30j3I4+LIEhaK8wxSI1I
+         AqplfshvYcKzyxF9S7w92w/1hqJE3qLSuuAJDLAP4sqceyAJ7PPTOtqHqMRuAl//h/uw
+         or6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OUJOZBwGbollWrpdYQoZPkdenvguOm3D7K6hbDbX3PU=;
+        b=rwSCbopFb+s5oZmD9ElWBzpzYb/4GQ6SB3+WkbTNg3WHbZk1nAsRjANA+0J+RSTWAq
+         PBUluGqfx93DATIX9IpevR6MvdrZ3hCii9E1IKNVekgbHPn2G3AfwKn9d0r4FoVYwjy0
+         ENRas8G9I7lNjVh2jX0XlZ4CfPyxpsApbBs/VZ0TqKAJt9LjiBjgxdQjSRyk3GW0AlD5
+         cZ6II/zO+vhx/6c6G4WG+gBjn6jomt4EoiteCUmfHkcNMEBolck7JMZjFTXjaZCpuReF
+         09TChukfFUYjkZkFO8dhzysQJmFwwfFzD/5dSpe7SQ9Kx8tXhVLAk1kW2Nq+kvXepsVs
+         IakQ==
+X-Gm-Message-State: AOAM531CiQo6n5cZZA6FDTv+K1XDGgAX//ut3U4TS91wKbSYRwEPvG5Y
+        nNqSLvMdviKvDEdsnKbYMNI=
+X-Google-Smtp-Source: ABdhPJzlRaJRgpY29vlVyh8Ywx8tQrnGEO3U7HoRjp0EoXBNvs47FPCiSsu9hD6zQzwfOhL1aNcHdA==
+X-Received: by 2002:a05:6a00:1687:b0:4e1:45d:3ded with SMTP id k7-20020a056a00168700b004e1045d3dedmr22428890pfc.0.1647846934909;
+        Mon, 21 Mar 2022 00:15:34 -0700 (PDT)
+Received: from tong-desktop.local ([2600:1700:3ec7:421f:a425:dbce:b9cb:7c6f])
+        by smtp.googlemail.com with ESMTPSA id 3-20020a630003000000b003828fc1455esm1333261pga.60.2022.03.21.00.15.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Mar 2022 00:15:34 -0700 (PDT)
+From:   Tong Zhang <ztong0001@gmail.com>
+To:     Karsten Keil <isdn@linux-pingi.de>, Sam Creasey <sammy@sammy.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Pontus Fuchs <pontus.fuchs@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Alexandra Winter <wintera@linux.ibm.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Tong Zhang <ztong0001@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-s390@vger.kernel.org
+Subject: [PATCH 0/4] fix typos: "to short" -> "too short"
+Date:   Mon, 21 Mar 2022 00:13:50 -0700
+Message-Id: <20220321071350.3476185-1-ztong0001@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A 6GHz AP can decide to transmit Beacon, Broadcast probe response
-and FILS discovery frames in a non-HT duplicate PPDU when
-operating in non 20MHz Bandwidth to enhance its discoverability.
-(IEEE Std 802.11ax‐2021-26.17.2.2)
+doing some code review and I found out there are a couple of places
+where "too short" is misspelled as "to short".
 
-Send WMI_VDEV_PARAM_6GHZ_PARAMS with enable/disable option to FW
-based on he_6g_nonht_dup_beacon_set.
+Tong Zhang (4):
+  ar5523: fix typo "to short" -> "too short"
+  s390/ctcm: fix typo "length to short" -> "length too short"
+  i825xx: fix typo "Frame to short" -> "Frame too short"
+  mISDN: fix typo "frame to short" -> "frame too short"
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
+ drivers/isdn/hardware/mISDN/mISDNipac.c  | 2 +-
+ drivers/isdn/hardware/mISDN/mISDNisar.c  | 4 ++--
+ drivers/net/ethernet/i825xx/sun3_82586.h | 2 +-
+ drivers/net/wireless/ath/ar5523/ar5523.c | 2 +-
+ drivers/s390/net/ctcm_fsms.c             | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 38 +++++++++++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/wmi.h |  8 ++++++++
- 2 files changed, 46 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 07f499d..697e4dc 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -2915,6 +2915,33 @@ static int ath11k_mac_fils_discovery(struct ath11k_vif *arvif,
- 	return ret;
- }
- 
-+static int ath11k_mac_set_6g_nonht_dup_conf(struct ath11k_vif *arvif,
-+					    const struct cfg80211_chan_def *chandef)
-+{
-+	struct ath11k *ar = arvif->ar;
-+	int ret = 0;
-+	bool is_nontx_ap = arvif->vif->bss_conf.nontransmitted;
-+	enum wmi_phy_mode mode = ath11k_phymodes[chandef->chan->band][chandef->width];
-+	bool dup_bcn_enable = arvif->vif->bss_conf.he_6g_nonht_dup_beacon_set;
-+
-+	if ((arvif->vdev_type == WMI_VDEV_TYPE_AP) && !is_nontx_ap &&
-+	    (chandef->chan->band == NL80211_BAND_6GHZ)) {
-+		u32 param_id = WMI_VDEV_PARAM_6GHZ_PARAMS;
-+		u32 value = 0;
-+
-+		if (mode > MODE_11AX_HE20 && dup_bcn_enable) {
-+			value |= WMI_VDEV_6GHZ_BITMAP_NON_HT_DUPLICATE_BEACON;
-+			value |= WMI_VDEV_6GHZ_BITMAP_NON_HT_DUPLICATE_BCAST_PROBE_RSP;
-+			value |= WMI_VDEV_6GHZ_BITMAP_NON_HT_DUPLICATE_FD_FRAME;
-+		}
-+		ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "Set 6GHz non-ht dup params for "
-+			   "vdev %pM vdev_id %d param %d value %d\n", arvif->vif->addr,
-+			   arvif->vdev_id, param_id, value);
-+		ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id, param_id, value);
-+	}
-+	return ret;
-+}
-+
- static int ath11k_mac_config_obss_pd(struct ath11k *ar,
- 				     struct ieee80211_he_obss_pd *he_obss_pd)
- {
-@@ -3128,6 +3155,17 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 			arvif->do_not_send_tmpl = true;
- 		else
- 			arvif->do_not_send_tmpl = false;
-+
-+		if (vif->type == NL80211_IFTYPE_AP && vif->bss_conf.he_support) {
-+			if (!ath11k_mac_vif_chan(arvif->vif, &def)) {
-+				ret = ath11k_mac_set_6g_nonht_dup_conf(arvif, &def);
-+				if (ret) {
-+					ath11k_warn(ar->ab, "failed to set 6G non-ht dup"
-+						    " conf for vdev %d: %d\n",
-+						    arvif->vdev_id, ret);
-+				}
-+			}
-+		}
- 	}
- 
- 	if (changed & (BSS_CHANGED_BEACON_INFO | BSS_CHANGED_BEACON)) {
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 2f26ec1a..96ed891 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -2125,6 +2125,14 @@ enum {
- /* preablbe short */
- #define WMI_VDEV_PREAMBLE_SHORT         0x2
- 
-+/** 6GHZ params **/
-+/* Control to enable/disable beacon tx in non-HT duplicate */
-+#define WMI_VDEV_6GHZ_BITMAP_NON_HT_DUPLICATE_BEACON		BIT(0)
-+/* Control to enable/disable broadcast probe response tx in non-HT duplicate */
-+#define WMI_VDEV_6GHZ_BITMAP_NON_HT_DUPLICATE_BCAST_PROBE_RSP	BIT(1)
-+/* Control to enable/disable FILS discovery frame tx in non-HT duplicate */
-+#define WMI_VDEV_6GHZ_BITMAP_NON_HT_DUPLICATE_FD_FRAME		BIT(2)
-+
- enum wmi_peer_smps_state {
- 	WMI_PEER_SMPS_PS_NONE = 0x0,
- 	WMI_PEER_SMPS_STATIC  = 0x1,
 -- 
-2.7.4
+2.25.1
 
