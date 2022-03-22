@@ -2,87 +2,207 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3A844E3B3B
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Mar 2022 09:53:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7435D4E3BDC
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Mar 2022 10:43:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231882AbiCVIyK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Mar 2022 04:54:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39600 "EHLO
+        id S232683AbiCVJpI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Mar 2022 05:45:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231920AbiCVIyI (ORCPT
+        with ESMTP id S231180AbiCVJpH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Mar 2022 04:54:08 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E8067DE22
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Mar 2022 01:52:34 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22M8qQ221028037, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22M8qQ221028037
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 22 Mar 2022 16:52:26 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Tue, 22 Mar 2022 16:52:25 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Tue, 22 Mar 2022 16:52:25 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::41d7:1d2e:78a6:ff34]) by
- RTEXMBS04.realtek.com.tw ([fe80::41d7:1d2e:78a6:ff34%5]) with mapi id
- 15.01.2308.021; Tue, 22 Mar 2022 16:52:25 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Stefan K <Shadow_7@gmx.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: RE: rtw89: unstable connection
-Thread-Topic: RE: rtw89: unstable connection
-Thread-Index: AQHYPRok8gD20x9bsU6oG/M1WzUcY6zK7kDA//+jdICAAIe24A==
-Date:   Tue, 22 Mar 2022 08:52:25 +0000
-Message-ID: <8e9bee3d3062450fba7f3f3e14d21c8a@realtek.com>
-References: <2127068.tFZMq15b3B@t460-skr>
- <c9ff4269e3864ee4bd437a40678a9e5f@realtek.com>
- <trinity-ddca7a32-b0cd-440d-9018-f1da4af9be6a-1647938655236@3c-app-gmx-bap19>
-In-Reply-To: <trinity-ddca7a32-b0cd-440d-9018-f1da4af9be6a-1647938655236@3c-app-gmx-bap19>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMjIg5LiK5Y2IIDA3OjIzOjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Tue, 22 Mar 2022 05:45:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0F1E1275F8
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Mar 2022 02:43:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1647942216;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ep6u9o8UtFSjs92tM2XwPFhronAu/I5S/aCvFIk7Ohg=;
+        b=F6cNIq9s8QntcZ1YADk+xnYwOsG9A9AEKjsgjbD9KbfOWVj4DMKGcBG9HkBcVplm7hnJTD
+        SIcLGoi9FSN0Ok0qttuY20De6TQBd0NG8xPGTgyYJvX5nj8ZiJV33pXtpJppUVLLhNtTJM
+        4teNuragQgC0woJYZtkGWqQPFYQ3G7I=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-589-wvvK939QOgOxU8v4zhLiAg-1; Tue, 22 Mar 2022 05:43:34 -0400
+X-MC-Unique: wvvK939QOgOxU8v4zhLiAg-1
+Received: by mail-qv1-f70.google.com with SMTP id cl19-20020a05621404f300b0044103143211so7957774qvb.10
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Mar 2022 02:43:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ep6u9o8UtFSjs92tM2XwPFhronAu/I5S/aCvFIk7Ohg=;
+        b=GwYrUqn0CWuRrJ4N4FXZc5Lc8Pfo627yWDOJ69hNK/YzGDU5llFe57PF8acuvq0sZ6
+         dPU2PkvjgU7wxYGin4Y6S2gVUdNoDa8Ut5ae3gC11XOb09+zG3CO70Po4+duLDNxDl1p
+         Z8UN0L4WORr82loKJh36IxqD+BrFMpGfn1BVExwr+baFEs4/dyI4yysD9rka4TjAccJx
+         s1/QZ1x+Kf23Nre1z9o3GISPnHxqW68amTITdD/KHZ0Ur62o1gWP7BcrUMWtuMPFqWIQ
+         WyhAgPkHoAMo3S80xwXh9v6VFsRJENPOdxYUUG9KTVZbw6yTu8FRr7VDAzIonoRHFdXE
+         +SQA==
+X-Gm-Message-State: AOAM532uaIuIRU3D/v9731Oox8ciz71cNzZIL9YQuKD+vPHskt7LVmj2
+        fzaJcRoTU+rYFiWdEVM45gpkXSV7mL8qhkd90fI1NUqYxK/ejDszq4APxNqlJAQnqrR6bDEJIQq
+        MSxwxg6NqnTDZNMsWhkKECfEfPnA=
+X-Received: by 2002:a05:620a:4592:b0:67d:8ed9:8c37 with SMTP id bp18-20020a05620a459200b0067d8ed98c37mr15105659qkb.150.1647942214081;
+        Tue, 22 Mar 2022 02:43:34 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxZvkISH3lDe807I0UBeCaupY1PO+wJn7a1WiPNh27CybqEuvnY8S97iMCf0xws2fJn2UYH8Q==
+X-Received: by 2002:a05:620a:4592:b0:67d:8ed9:8c37 with SMTP id bp18-20020a05620a459200b0067d8ed98c37mr15105647qkb.150.1647942213784;
+        Tue, 22 Mar 2022 02:43:33 -0700 (PDT)
+Received: from localhost (net-93-144-71-136.cust.dsl.teletu.it. [93.144.71.136])
+        by smtp.gmail.com with ESMTPSA id b126-20020a376784000000b0067d21404704sm8602500qkc.131.2022.03.22.02.43.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Mar 2022 02:43:33 -0700 (PDT)
+Date:   Tue, 22 Mar 2022 10:43:29 +0100
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     kbuild@lists.01.org, Lorenzo Bianconi <lorenzo@kernel.org>,
+        johannes@sipsolutions.net, lkp@intel.com, kbuild-all@lists.01.org,
+        nbd@nbd.name, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, evelyn.tsai@mediatek.com,
+        chui-hao.chiu@mediatek.com, j@w1.fi
+Subject: Re: [kbuild] Re: [PATCH wireless-next] mac80211: introduce BSS color
+ collision detection
+Message-ID: <YjmaQeDWT2G7wHzU@lore-desk>
+References: <6226a016389e034fd9c208b3a7a75edd01aba6f4.1647858505.git.lorenzo@kernel.org>
+ <202203220555.BHvsEAhe-lkp@intel.com>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="6c6FqmyFF63MIXN5"
+Content-Disposition: inline
+In-Reply-To: <202203220555.BHvsEAhe-lkp@intel.com>
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGkNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBTdGVmYW4gSyA8U2hh
-ZG93XzdAZ214Lm5ldD4NCj4gU2VudDogVHVlc2RheSwgTWFyY2ggMjIsIDIwMjIgNDo0NCBQTQ0K
-PiBUbzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IEF3OiBSRTog
-cnR3ODk6IHVuc3RhYmxlIGNvbm5lY3Rpb24NCj4gDQo+IEhlbGxvLA0KPiANCj4gSSByYW4gdmVy
-c2lvbiAwLjkuMTIuMiwgbm93IEkgdXNpbmcgMC4xMy4zNi4wDQo+IA0KPiBBbmQgaXQgd29ya3Mg
-ZmluZSBhbmQgbG9va3Mgc3RhYmxlIHNvIGZhci4NCj4gDQo+IEJ1dCBmcm9tIHRpbWUgdG8gdGlt
-ZSBJIGdvdCB0aGUgZm9sbG93aW5nIG1lc3NhZ2VzIChkb24ndCBrbm93IHdoYXQgaXQgbWVhbik6
-DQo+IFsgIDQxMi4wMzYzNDddIHJ0dzg5Xzg4NTJhZSAwMDAwOjAzOjAwLjA6IG1hYyBjMmggY2xh
-c3MgMSBmdW5jIDIgbm90IHN1cHBvcnQNCj4gWyAgNDEyLjAzNjM1M10gcnR3ODlfODg1MmFlIDAw
-MDA6MDM6MDAuMDogbWFjIGMyaCBjbGFzcyAxIGZ1bmMgMiBub3Qgc3VwcG9ydA0KPiBbICA0NDIu
-MDUxNTgxXSBydHc4OV84ODUyYWUgMDAwMDowMzowMC4wOiBtYWMgYzJoIGNsYXNzIDEgZnVuYyAy
-IG5vdCBzdXBwb3J0DQo+IFsgIDQ0Mi4wNTE1OTFdIHJ0dzg5Xzg4NTJhZSAwMDAwOjAzOjAwLjA6
-IG1hYyBjMmggY2xhc3MgMSBmdW5jIDIgbm90IHN1cHBvcnQNCj4gDQoNClRoZXNlIGFyZSBkZWJ1
-ZyBtZXNzYWdlcy4gVG8gYXZvaWQgdGhlbSwgSSBoYXZlIHN1Ym1pdHRlZCBhIHBhdGNoLCBidXQg
-aXQgaXMgaGFybWxlc3MgdGhvdWdoLg0KDQotLQ0KUGluZy1LZQ0KDQo=
+
+--6c6FqmyFF63MIXN5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+> Hi Lorenzo,
+>=20
+> url:    https://github.com/0day-ci/linux/commits/Lorenzo-Bianconi/mac8021=
+1-introduce-BSS-color-collision-detection/20220321-183456=20
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless=
+-next.git  main
+> config: nios2-randconfig-m031-20220321 (https://download.01.org/0day-ci/a=
+rchive/20220322/202203220555.BHvsEAhe-lkp@intel.com/config )
+> compiler: nios2-linux-gcc (GCC) 11.2.0
+>=20
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+>=20
+> New smatch warnings:
+> net/mac80211/rx.c:3218 ieee80211_rx_check_bss_color_collision() warn: sho=
+uld '(((1))) << color' be a 64 bit type?
+>=20
+> vim +3218 net/mac80211/rx.c
+>=20
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3181  static void
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3182  ieee80211_rx_check_bss_=
+color_collision(struct ieee80211_rx_data *rx)
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3183  {
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3184  	struct ieee80211_mgmt =
+*mgmt =3D (void *)rx->skb->data;
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3185  	const struct element *=
+ie;
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3186  	size_t baselen;
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3187 =20
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3188  	if (!wiphy_ext_feature=
+_isset(rx->local->hw.wiphy,
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3189  				     NL80211_EXT_FE=
+ATURE_BSS_COLOR))
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3190  		return;
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3191 =20
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3192  	if (wiphy_ext_feature_=
+isset(rx->local->hw.wiphy,
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3193  				    NL80211_EXT_FEA=
+TURE_HW_COLOR_COLLISION))
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3194  		return;
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3195 =20
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3196  	baselen =3D mgmt->u.be=
+acon.variable - rx->skb->data;
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3197  	if (baselen > rx->skb-=
+>len)
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3198  		return;
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3199 =20
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3200  	ie =3D cfg80211_find_e=
+xt_elem(WLAN_EID_EXT_HE_OPERATION,
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3201  				    mgmt->u.beacon.=
+variable,
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3202  				    rx->skb->len - =
+baselen);
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3203  	if (ie && ie->datalen =
+>=3D sizeof(struct ieee80211_he_operation) &&
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3204  	    ie->datalen >=3D i=
+eee80211_he_oper_size(ie->data + 1)) {
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3205  		struct ieee80211_bss_=
+conf *bss_conf =3D &rx->sdata->vif.bss_conf;
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3206  		const struct ieee8021=
+1_he_operation *he_oper;
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3207  		u8 color;
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3208 =20
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3209  		he_oper =3D (void *)(=
+ie->data + 1);
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3210  		if (le32_get_bits(he_=
+oper->he_oper_params,
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3211  				  IEEE80211_HE_OPER=
+ATION_BSS_COLOR_DISABLED))
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3212  			return;
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3213 =20
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3214  		color =3D le32_get_bi=
+ts(he_oper->he_oper_params,
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3215  				      IEEE80211_HE_=
+OPERATION_BSS_COLOR_MASK);
+>=20
+> IEEE80211_HE_OPERATION_BSS_COLOR_MASK gives us 63
+>=20
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3216  		if (color =3D=3D bss_=
+conf->he_bss_color.color)
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3217  			ieeee80211_obss_colo=
+r_collision_notify(&rx->sdata->vif,
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21 @3218  							       BIT(color=
+));
+>=20
+> So this should be BIT_ULL()
+
+ack, I will fix it in v2.
+
+Regards,
+Lorenzo
+
+>=20
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3219  	}
+> 964596b43c17b4 Lorenzo Bianconi 2022-03-21  3220  }
+>=20
+> --=20
+> 0-DAY CI Kernel Test Service
+> https://01.org/lkp=20
+> _______________________________________________
+> kbuild mailing list -- kbuild@lists.01.org
+> To unsubscribe send an email to kbuild-leave@lists.01.org
+>=20
+
+--6c6FqmyFF63MIXN5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYjmaQQAKCRA6cBh0uS2t
+rCFUAP430vetz1K7lv7+1f4YaRmuJIV42yFse17ZI6tNZjNkUwEAzkHfUrQ7jDYc
+/gz1nivQw3U+gsv0XT9IXAaox3P8cAE=
+=6ByS
+-----END PGP SIGNATURE-----
+
+--6c6FqmyFF63MIXN5--
+
