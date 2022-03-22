@@ -2,161 +2,381 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A7774E3FD1
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Mar 2022 14:50:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40ABA4E404A
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Mar 2022 15:13:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235869AbiCVNwQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Mar 2022 09:52:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38272 "EHLO
+        id S236272AbiCVOOW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Mar 2022 10:14:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235858AbiCVNwP (ORCPT
+        with ESMTP id S236375AbiCVOOU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Mar 2022 09:52:15 -0400
-Received: from esa.hc3962-90.iphmx.com (esa.hc3962-90.iphmx.com [216.71.140.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67F2B49CAF
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Mar 2022 06:50:44 -0700 (PDT)
+        Tue, 22 Mar 2022 10:14:20 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0668F5EBE8
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Mar 2022 07:12:52 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id h1so21813661edj.1
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Mar 2022 07:12:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qccesdkim1;
-  t=1647957044; x=1648561844;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=uOs0Ix8xHLgozkBtnVsqGAxcGTavdoh3zZvideMhdeQ=;
-  b=rL4pgi6jsDSHleaNcLO2zkMe0aInEcuGobIkU++rTYOTykUJkU5RYddM
-   Bv1+Jo9GLEnudE1Oqo0Jgupwko5aJxOTBX8w6jOfm4VIOUbJt0JqItALq
-   hK6zqXZK3ymN1O1VnmifjhnKn+HqISJbQFT8d3b6/8UaPHKIqx6qvO6YZ
-   w=;
-Received: from mail-dm6nam08lp2049.outbound.protection.outlook.com (HELO NAM04-DM6-obe.outbound.protection.outlook.com) ([104.47.73.49])
-  by ob1.hc3962-90.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2022 13:50:42 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ig6YNESzp/fhIhY4ZG2zgFDTBXfVaxDmLnQke/X8fN2PuoYA+cgW31bPsUugzgToGNjoWKe+gHHrJ0fqKWxIVVz852d0aHdBsN9HhdsMvTx/Hljv7ZLSz5o3dlrckVno60uNwozIdfJrIe+egrLRGXSknGQgCfrONBQ/ngZ+sY3FR9fDh7cQKNtf17svUGoniVyvq+E8IlPtFRHtIeA3tP+sZSgdRbL4Vqb5F5ceHE381iANV2AzBIL4Al93Lk77a9lN/HGBIsVKljhEVhPj110hd+wMfE3t6w1IhS3Mu4HnLMaE1nt8v4Xx3k2iPO2ICHQnQKCJhITVhbR7Rxhs6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uOs0Ix8xHLgozkBtnVsqGAxcGTavdoh3zZvideMhdeQ=;
- b=mIQ7IeA8ThlDWlC8XS8kyIHyny6kYDGdNFBT66Tqq+jUZN2SpXcHAKqBHWFqYMM4QlsKngnv7wVj8umQdsygsNAKObiXU6AAFEdFQMUidljD1cROaS/4pBCCdfcUN4Fw/bYD9O/lL74ji4f/kKU6Fn8+SAEbpb3BhCkXanKt0hR+OZ7NAZHUr1s+zZQ9AhnuNOsKhvF6C3iEbPPkF4yMlHyYTedDl8CxAspdsHcMEzKz3i9I1j6PCr1yZH1gTufvZipzbsQdQQ7tZ+x/v1bDYUPotKo/ENZ6/vBPKBvVMZifLx2//5TMJYC7Vn3Xx9php2UNmyPOO4XUEGjPtLn14A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=quicinc.com; dmarc=pass action=none header.from=quicinc.com;
- dkim=pass header.d=quicinc.com; arc=none
-Received: from DM6PR02MB4937.namprd02.prod.outlook.com (2603:10b6:5:1a::16) by
- SJ0PR02MB8643.namprd02.prod.outlook.com (2603:10b6:a03:3fd::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5081.17; Tue, 22 Mar
- 2022 13:50:39 +0000
-Received: from DM6PR02MB4937.namprd02.prod.outlook.com
- ([fe80::68c2:f8b4:f787:211e]) by DM6PR02MB4937.namprd02.prod.outlook.com
- ([fe80::68c2:f8b4:f787:211e%3]) with mapi id 15.20.5081.023; Tue, 22 Mar 2022
- 13:50:39 +0000
-From:   "Rameshkumar Sundaram (QUIC)" <quic_ramess@quicinc.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "Rameshkumar Sundaram (QUIC)" <quic_ramess@quicinc.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
-Subject: RE: [PATCH 1/2] mac80211: add support to configure 6GHz non-ht
- duplicate transmission
-Thread-Topic: [PATCH 1/2] mac80211: add support to configure 6GHz non-ht
- duplicate transmission
-Thread-Index: AQHYIkgqfAgpLdnS+EWoRYfPSRKpZ6y6KrAAgA9VNCCAAD8mAIAB5AFw
-Date:   Tue, 22 Mar 2022 13:50:39 +0000
-Message-ID: <DM6PR02MB493734ADBBC6C996845B9EF3E9179@DM6PR02MB4937.namprd02.prod.outlook.com>
-References: <1644914581-21682-1-git-send-email-quic_ramess@quicinc.com>
-         <1644914581-21682-2-git-send-email-quic_ramess@quicinc.com>
-         <a517835c51a5eaf00e87fdaaef47546f70ff0d42.camel@sipsolutions.net>
-         <DM6PR02MB4937C53041172E9A52846A0BE9169@DM6PR02MB4937.namprd02.prod.outlook.com>
- <a537c6e02afbfa26eec2a54dbd8bc649f77ae3a3.camel@sipsolutions.net>
-In-Reply-To: <a537c6e02afbfa26eec2a54dbd8bc649f77ae3a3.camel@sipsolutions.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=quicinc.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 9666fb9b-ea18-40c1-2759-08da0c0af31c
-x-ms-traffictypediagnostic: SJ0PR02MB8643:EE_
-x-ld-processed: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d,ExtAddr
-x-microsoft-antispam-prvs: <SJ0PR02MB8643679E13F825695F97363795179@SJ0PR02MB8643.namprd02.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: GfgQISZN6XKnCXaC5usA9N7/dnuffu6xyTcLymPk0dlzqnFDGYJEoxraYU0/pWpLLQ3UTZaxFOX2z3Z8R6Bj40YcxUHdUmYRvKlm1K6hk/TGgadHvQchYmcgWB5ny34p9OYhva091TdyIT/d0O7f1RQfgQZWHnuJpDV7HPuz26LSsKHRd08bbn5dLEFdhH9rtm0zAlX4k+gi7Ck9HgRvaw+4SL5Z340qzglWIq6aMwb3M2M/g0vHAiYaCyAhfSRbkYl8Lijqb3tEhL05RR+ny6zq2Ur3CO0rgYYZPYBS83zLEmDtsEyUAMzfpPxJL5lZmlxlx7CGqtLV6xiBu7ijDzlk5q8YTBbwEgSHPNnXHdcZQep8QST9NoYU1Gy+CP9gJZ73DZhz0+pFLyVxjYdWgBMoDisPQdWKmYNHsIV0QUXKsCz4hvj2k2WHjle9Buy8RuGl25od4de8aAOOK4SBJOQWDfUTtK6roBh7D8JpWYLvaTfwR6DVm6kQ02+7PGDSv14lOy54PSYFhxahhsm6ljH1ibPmudXr0Sr2vBNDA0q3WiUT4sqqh+Gqpn8fIBh1sIlCPiuIV2OF1eBtzkQ337iXDrf3lI/nAuT9lyrV2L6lOqXz9DyjRMJMz2ZRtYK4qi3IOd5O82skqpaAgVmqmyPxJUYTIpkV+p9M1YPhWgcTR9mxDhVB6FkEVWeNQoY32APAgWpkTxhLEV4wrdziDg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR02MB4937.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(83380400001)(4326008)(2906002)(52536014)(66476007)(66946007)(8676002)(66556008)(64756008)(66446008)(76116006)(55016003)(186003)(26005)(508600001)(6506007)(9686003)(8936002)(7696005)(53546011)(71200400001)(38070700005)(316002)(122000001)(86362001)(5660300002)(110136005)(54906003)(38100700002)(33656002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?aTRNdFhIdTlLL1plSnJldVRXbStETVlxTGYvL2VvNnRzMVBZdFpSNzRHTng3?=
- =?utf-8?B?eTlqaHpKNjZuM1N2d3VnZGxzOEdYV3pGdStESzd5RSthU09NUTNJSlk5S3ZX?=
- =?utf-8?B?dnRDY3BkbE95SFJiQTF2VVpkdHZoVFJ3T1FCL2V0TFh2SGhRRnBsdWt1ZUQ0?=
- =?utf-8?B?WTVyVDRiVTZMS2RGa0FWOEFpOTBjWlRNQk5LZlpya1BZOVduQldmcUtxK3cy?=
- =?utf-8?B?VGF4amllUGN5YzdtQnV4NEYydXRFK1I3cnRmODRNL1lEY29DczR6R1l5N1BR?=
- =?utf-8?B?SkExSXZrQjZWWTRsMnNZbWpmQi9KZ1QvbUV0eGlnTDZDUjBzd2dCS0ZnYUY4?=
- =?utf-8?B?azV1bU0vekdYRWMxQ1pDTVRpMjZDK0hEN2dSSzQ1bFI1Q3hXMVVhT2p0dFFL?=
- =?utf-8?B?Yy9UcFNLdEF6anNSOEtVWUhiZXdKRm5EYzRGcFBrRG9sd094aFZZdzd4UkEz?=
- =?utf-8?B?STMxOUY1YkJEYnE3dlVTUTErWnQxM3Z2SmQ2dUVLS1dDWjVRUGhGQU5RSkVv?=
- =?utf-8?B?aWZVOHVJbkorSVRHbmkrR3NsVmdTd1hRZ0w3VEdDZFM2ajBOendiTVMvQ2Jh?=
- =?utf-8?B?M3AzMy9tN3FNZi8rY1hwYjFzK2FHcnlDNGdZYXE0Yjl4Lzc5U0R5eGpkalov?=
- =?utf-8?B?SjRYRFk5ZGJaaW15cTNEYXUwdkN6ZHZSVnk4ditCaUJkbE1JLytXVUJKTUJm?=
- =?utf-8?B?TG5rd3Z5WFRrbUF2L2M3YXkraXorYzhlRjRyaUFYOHl4WG0yQ283dkZOY3ZT?=
- =?utf-8?B?NndSeHFIWDBWNzhnbEFtOU9tY0lraFRoM2RDR0NxQUE2Q25OOWpuTlFLbXh4?=
- =?utf-8?B?T3locUZhNWZ4WTR0ZkcrWXBNdVhPT2ExOFRDcWJmcGh3ZXdwWXNsWk9QeVdw?=
- =?utf-8?B?MTRZd1RoV3dIazYzRXFzbit2NndxQ3hkVTBUajFnNElMZVBtVXp1M0JNbEFS?=
- =?utf-8?B?dER6Y0grY2pkS2xRZm5jOXVSdEw2Nkx5ZHFUbFJLNWxhanhremFkQjBxcUlv?=
- =?utf-8?B?eGQ5Wi8zQzBwS1grUUJHdjlqS1VKY3Ava3ZvQytxd0E1ODAxcEFzREpzUEh2?=
- =?utf-8?B?NjRNaWxjQ1RhMUppbkRxODF4aENwRnhxOCtTUEFHRGZWdExLK0orenNoR3BM?=
- =?utf-8?B?S0RJdnB5WUNjYjVMNzJqSEZlbmdHY2h5TlZoM0RNQzZsQ3l0elZ5U2dNYUgv?=
- =?utf-8?B?Tjd0dXRZc0NyLzVrNDFlNTBMcytHQlN2eWEyTFlpdVk4SUUxUTk4bEZUaTE2?=
- =?utf-8?B?TDB0Q0lubmJqMThFNDBRZWZKdHF6Nzk5emNUR1RVaTBzUGozNiszYUc4d3Zi?=
- =?utf-8?B?dExXTDRCK1YvRTF0ano1QnVZV3ViOWtEVUJiWXNTelVkN3ZzTzBDV1JoREpx?=
- =?utf-8?B?T3pFOXY1OVd2NnVKeHg5SW8xbFFUOUp0Uks3eHc4bGRobkY3cjdSVHhLNHpy?=
- =?utf-8?B?bmltYXAvQThSdURiVzJqQ3F0Z2ZiRjJIeGl4dTJURzl2d1hWT01xMFhQTk1I?=
- =?utf-8?B?ZE1YSDdRaXdjWWtiaXl6a2ZxZ2F2czlyVEJWa2xBQXpPK3VMeElJSUEreFMx?=
- =?utf-8?B?U1o3azEyMmF2Nkh3cEhmUmZWSDdCT09oZ3lJaGNGSG5WRE5JR08yU01pYnpq?=
- =?utf-8?B?QzdHdjhRcXNsQm9JdlprNmtVbzUyKzNIR0hhUGFoSXpTL1lLdFdRNlBWRXNu?=
- =?utf-8?B?TUVGVXNVSWs3WkVpSUtNOHBiVzVTQVVUa1dKU3JvN2xPZ3BMUHNEdjg5aVFC?=
- =?utf-8?B?UVRvRlpWTWtuZkN4Q1dkS1FjeGJzMDF2WXJQVXE2Zm1QZ0xZbUo4MS9jQ2Q2?=
- =?utf-8?B?aGNaRjNEbXVLOHBBRm81QkVoaVVYd3pLNE1YYjJXMDg5bEJVVWtaaXpKM1d1?=
- =?utf-8?B?M2ZsRkJHdjJPOXRkTGJHcUI2TC9qT0ZHSnVFbkx3cDJGeldFalEvaEpJS1hs?=
- =?utf-8?Q?eu5c6FPkP7uP85x8akZWO7Dx/Eq4nwrw?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=b/g6tTbOh1J+b6I0Bj7+4xBjDC+KuKXoWPrgs4jGFZY=;
+        b=ENIYC5DWMSnFJrGhldn/1hcXzlFWlZYd3l9SrKHw2ghi9QSR6YV852tu1MwT2lUAUx
+         agXIkF+1EluMwp05knqCwLCGmFWnjuAU+bl8CSpeia3D87G0OoY7wgYabz0csj/bhH2J
+         wyDVHvOdrml/C/K3mnCgn30lUQ0KkTycjOkkcmDpXsq00pf1lscFwl3xzntJlMFRE+WL
+         S6FjlrSpoAHUPcuGqM39U7qszKYODR0emH3nTnt6vxM2B+uOWu8ctOyjNDkDnGfG8FYZ
+         OBCw8VB2cCnK66cdIG1WP8nNR7K3wr+3JrZFV7KOeO71ID6VAeSzNX06jKzauQkxfWMz
+         SjTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=b/g6tTbOh1J+b6I0Bj7+4xBjDC+KuKXoWPrgs4jGFZY=;
+        b=1Fdannoo3wmSmbSSeb8VoIyXwZRX60MaGDybOgbm+5bMxazeKUMHA5qVRbe+DKUocn
+         2yIavHOxLAq8V+N9u6XYs1L34mQHpnKbC0bAZW28sEQYlVZhItCGh7uXRoiUKT2Gcv5Q
+         2sA5CO2+IaeX9xlE/UTG0G7FJW42sc61wkpP7iKHNR+1IAJOp2P71YujEekHcx4HoVZQ
+         Pno+rchIxwuJDcmVUr+r7laIfMSzZ2F8NJ9ntjte3WXJ0D/M5WyMwWb3qu+Ed25eh/Vh
+         G//vn8Re4amsLbF9KyT+RlfVVDle2Mqifw88EhnNrHayYDiXh/KPKFc1bRTQmkrqGvtV
+         Gu6g==
+X-Gm-Message-State: AOAM533US6k4G9sYDyObpD99PAtH65GxwHLVQrWgn7gqGThRJdfsF21K
+        k5QJ02ijM2yKN6NcHlMCNjZUaJaUt88jNgL2ulU=
+X-Google-Smtp-Source: ABdhPJzvS7ml8Ex06Obh1flW08eSBskW1dEeogCf+eP3E1GYXvNih72DTt8s54sO7BBajvbGg3cGybqNaLxS6LCd0nU=
+X-Received: by 2002:a50:99cd:0:b0:418:d6c2:2405 with SMTP id
+ n13-20020a5099cd000000b00418d6c22405mr28398636edb.342.1647958365769; Tue, 22
+ Mar 2022 07:12:45 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: quicinc.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR02MB4937.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9666fb9b-ea18-40c1-2759-08da0c0af31c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Mar 2022 13:50:39.3167
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rjpS0dc1rHEGh7rj7WRHzVcKT91fzpXDVRt5ATzP68BP1uqfMPIPqOYg7NM0u2kKCZR1fX4yQPataGGT1fZwDw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR02MB8643
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Tue, 22 Mar 2022 14:12:36 +0000
+Message-ID: <CAHpNFcOb8vwZPySqV_htA7+mZCaNX3h=DQN_tu-MZbG-B38SxQ@mail.gmail.com>
+Subject: Kernel C/TRNG System TIMECrystal Quartz Variable T, Variable Fraction
+ & Security Leaf Systems :RS NT Interrupt counter Entropy : A counter theory : RS
+To:     torvalds@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,LOTS_OF_MONEY,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEpvaGFubmVzIEJlcmcgPGpv
-aGFubmVzQHNpcHNvbHV0aW9ucy5uZXQ+DQo+IFNlbnQ6IE1vbmRheSwgTWFyY2ggMjEsIDIwMjIg
-MjoyOCBQTQ0KPiBUbzogUmFtZXNoa3VtYXIgU3VuZGFyYW0gKFFVSUMpIDxxdWljX3JhbWVzc0Bx
-dWljaW5jLmNvbT4NCj4gQ2M6IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZzsgYXRoMTFr
-QGxpc3RzLmluZnJhZGVhZC5vcmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSCAxLzJdIG1hYzgwMjEx
-OiBhZGQgc3VwcG9ydCB0byBjb25maWd1cmUgNkdIeiBub24taHQNCj4gZHVwbGljYXRlIHRyYW5z
-bWlzc2lvbg0KPiANCj4gT24gTW9uLCAyMDIyLTAzLTIxIGF0IDA1OjEyICswMDAwLCBSYW1lc2hr
-dW1hciBTdW5kYXJhbSAoUVVJQykgd3JvdGU6DQo+ID4NCj4gPiA+DQo+ID4gPiBJIGFtIHdvbmRl
-cmluZyB0aG91Z2ggaWYgdGhpcyBzaG91bGQgZXZlbiBiZSBkZXRlY3RlZCBmcm9tIHRoZSBIRQ0K
-PiA+ID4gb3BlcmF0aW9uIGVsZW1lbnQgaXRzZWxmLCByYXRoZXIgdGhhbiBmcm9tIHRoZSBiZWFj
-b24gcmF0ZSBzZXR0aW5ncw0KPiA+ID4gdGhhdCBhcmUgc2VwYXJhdGUgaW4gbmw4MDIxMT8NCj4g
-PiBUaGlzIGlzIGEgQlcgZGVwZW5kZW50IGJpdCBpbiBIRSBPcGVyIElFIGFuZCB1c2VyIHNwYWNl
-IGNhbiBzd2l0Y2ggQlcNCj4gPiAoQ1NBL2NoYW4gc3dpdGNoIHNjZW5hcmlvcykuDQo+ID4gV2hp
-Y2ggY2FuIGNhbGwgYXNzaWduX2JlYWNvbiBkaXJlY3RseSwgSGVuY2UgYWRkaW5nIHRoZSBsb2dp
-YyBoZXJlIHRvDQo+ID4gY292ZXIgYWxsIEJlYWNvbiBjaGFuZ2UgY2FzZXMuDQo+ID4NCj4gDQo+
-IFllYWggYnV0IHN0aWxsIC4uLiB3aHkgZG8gd2UgdGFrZSBpdCBmcm9tIHRoZSBjb250ZW50IHJh
-dGhlciB0aGFuIGFkZGluZyBhDQo+IGNvbnRyb2wgZm9yIGl0Pw0KU28sIFN1Z2dlc3Rpb24gaGVy
-ZSBpcyB0byBhZGQgYSBuZXcgTkwgYXR0cmlidXRlIHRvIGNhcnJ5IHRoZSBpbmZvcm1hdGlvbiBm
-cm9tIHVzZXIgc3BhY2UgZm9yDQpTVEFSVF9BUCBhbmQgU0VUX0JFQUNPTiBOTCBjb21tYW5kcyBh
-bmQgdXNlIGl0IGhlcmUsIGlzIHRoYXQgdW5kZXJzdGFuZGluZyBjb3JyZWN0ID8NCj4gDQo+IGpv
-aGFubmVzDQo=
+Kernel C/TRNG System TIMECrystal Quartz Variable T, Variable Fraction
+& Security Leaf Systems :RS NT Interrupt counter Entropy : A counter
+theory : RS
+
+NT Interrupt counter Entropy : A counter theory : RS
+
+"more importantly, our
+distribution is not 2-monotone like NT's, because in addition to the
+cycle counter, we also include in those 4 words a register value, a
+return address, and an inverted jiffies. (Whether capturing anything
+beyond the cycle counter in the interrupt handler is even adding much of
+value is a question for a different time.)"
+
+NT Interrupt counter Entropy : A counter theory : RS
+
+To be clear interrupts are old fashioned (NT & Bios) : Points
+
+Network cards have offloading? Yes & why cannot we?
+
+Offloaded does not mean that a time differential matrix HASH AES of 32Bit w=
+ords,
+Cross pollinated though MMX, AVX , SiMD is plausible!
+
+Combined with even network latency timing & interrupt latency...
+
+Various system differentials can alternate line in our table per clock sync=
+!
+
+In this reference Quartz clock instability is not only counter acted by NTP=
+...
+But also utilized as a variable co-modifier.
+
+So why not also advantage ourselves of the clock frequency scaling
+effect to confuse odds again for Entropy (Random, Not Entropy)
+
+SSD does also have a write counter & a cleared state, not so boring as
+one thinks if per 32KB segment is hashed in 4Bit, 8,Bit 32Bit float!
+(remember we have DOT3 DOT 4 & INT8 in ML)
+
+We can utilize write cycle statistics & all hardware; Interrupts by
+themselves are rather Boring!
+
+Computed timings on processes multiplexed over 3 Threads per group in
+competition is also a potential complexifier of Random
+
+Rupert S
+
+https://science.n-helix.com/2018/12/rng.html
+
+https://science.n-helix.com/2022/02/rdseed.html
+
+https://science.n-helix.com/2017/04/rng-and-random-web.html
+
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+
+https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.h=
+tml
+
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+
+****
+
+PreSEED Poly Elliptic SiMD RAND : RS
+
+Preseed ; 3 Seeds with AES or Poly ChaCha or even 1 : 2 would be
+rather fast Init
+
+Blending them would make a rather paranoid Kernel developer feel safe! :D
+
+Like so List:
+
+3 seeds 32Bit or 64Bit :
+Examples :
+
+1 Seed : Pre seeded from CPU IRQ & Net 16Bit values each & merged
+2 & 3 from server https://pollinate.n-helix.com &or System TRNG
+
+4 Seed mix 128Bit Value
+
+Advantages :
+
+AVX & SiMD Mixxer is fast 'Byte Swap & Maths etcetera" & MultiThreaded
+AES Support is common :
+
+*
+HASH : RSA Source Cert C/TRNG : (c)RS
+
+Elliptic RSA : Cert Mixer : RSA 4096/2048/1024Temporal : 384/256/192
+ECC Temporal
+
+Centric Entropy HASH: Butterfly Effects
+
+ChaCha
+SM4
+SHA2
+SHA3
+
+Elliptic Encipher
+AES
+Poly ChaCha
+
+Elliptic : Time Variance : Tick Count Variance : On & Off Variance : IRQ
+
+*
+Time & Crystal : Quartz as a diffraction point fractal differentiator : RS
+
+RDTSC Variable bit differentiation & deviation of the quartz sub .0001
+Value combined with complexity of unique interplay with Alternative
+clocks such as Network cards, Audio cards & USB Sticks & Bluetooth
+radio clocks & Ultimately the NTP Pools themselves when required.
+
+(TIME Differential Float maths) TSC : RDTSC : RDTSCP : TCE supports
+single and half precision floating-point calculations
+
+Processor features: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr
+pge mca cmov pat pse36 clflush mmx fxsr sse sse2 htt pni ssse3 fma
+cx16 sse4_1 sse4_2 popcnt aes f16c syscall nx lm avx svm sse4a osvw
+ibs xop skinit wdt lwp fma4 tce tbm topx page1gb rdtscp bmi1
+
+*
+For RDTSCP =3D TValue TV1=3D16.0685 TV2=3D16.1432 TV3=3D15.1871
+When Processor Mzh =3D PV1 PV2 PV3
+RAND Source =3D Es1 Es2 Es3
+
+If Xt =3D 1.9 < then roll right
+
+((TV1 - TV2) * (PV1 - PV2)) / ((TV1 - TV3) * (PV1 - PV3)) =3D FractorXt(Xt)
+
+Es1 * Xt =3D Differential
+
+Es2 Es3
+
+(c) Rupert S
+
+Quartz as a diffraction point fractal differentiator : RS
+
+https://tches.iacr.org/index.php/TCHES/article/download/7274/6452
+https://perso.univ-rennes1.fr/david.lubicz/articles/gda.pdf
+https://patents.google.com/patent/US9335971
+*
+
+"Taking spinlocks from IRQ context is problematic for PREEMPT_RT. That
+is, in part, why we take trylocks instead. But apparently this still
+trips up various lock dependency analysers. That seems like a bug in the
+analyser's that should be fixed, rather than having to change things
+here.
+
+But maybe there's another reason to change things up: by deferring the
+crng pre-init loading to the worker, we can use the cryptographic hash
+function rather than xor, which is perhaps a meaningful difference when
+considering this data has only been through the relatively weak
+fast_mix() function.
+
+The biggest downside of this approach is that the pre-init loading is
+now deferred until later, which means things that need random numbers
+after interrupts are enabled, but before work-queues are running -- or
+before this particular worker manages to run -- are going to get into
+trouble. Hopefully in the real world, this window is rather small,
+especially since this code won't run until 64 interrupts have occurred."
+
+https://lore.kernel.org/lkml/Yhc4LwK3biZFIqwQ@owl.dominikbrodowski.net/T/
+
+Rupert S
+
+*****
+Serve C-TRNG QT Fractional Differentiator(c)RS
+
+Server C/TRNG Quarts Time * Fractional differentiator : 8Bit, 16Bit,
+32Bit, Float Int32 : Fractional Differentiator : fig-mantuary micro
+differentiator.
+
+SipHash: a fast short-input PRF
+
+Rotation Alignment : "The advantage of choosing such =E2=80=9Caligned=E2=80=
+=9D
+rotation counts is that aligned rotation counts are much faster than
+unaligned rotation counts on many non-64-bit architectures."
+
+http://cr.yp.to/siphash/siphash-20120918.pdf
+
+https://www.aumasson.jp/siphash/siphash.pdf
+
+"Choice of rotation counts. Finding really bad rotation counts for ARX
+algorithms turns out to be difficult. For example, randomly setting
+all rotations in
+BLAKE-512 or Skein to a value in {8, 16, 24, . . . , 56} may allow known at=
+tacks
+to reach slightly more rounds, but no dramatic improvement is expected.
+The advantage of choosing such =E2=80=9Caligned=E2=80=9D rotation counts is=
+ that
+aligned rotation counts are much faster than unaligned rotation counts
+on many non-64-bit
+architectures. Many 8-bit microcontrollers have only 1-bit shifts of bytes,=
+ so
+rotation by (e.g.) 3 bits is particularly expensive; implementing a rotatio=
+n by
+a mere permutation of bytes greatly speeds up ARX algorithms. Even 64-bit
+systems can benefit from alignment, when a sequence of shift-shift-xor can =
+be
+replaced by SSSE3=E2=80=99s pshufb byte-shuffling instruction. For comparis=
+on,
+implementing BLAKE-256=E2=80=99s 16- and 8-bit rotations with pshufb led to=
+ a
+20% speedup
+on Intel=E2=80=99s Nehalem microarchitecture."
+
+https://www.kernel.org/doc/html/latest/security/siphash.html
+
+https://en.wikipedia.org/wiki/SipHash
+
+Code SIP-HASH
+https://github.com/veorq/SipHash
+
+Serve C-TRNG QT Fractional Differentiator(c)RS
+
+Server C/TRNG Quarts Time * Fractional differentiator : 8Bit, 16Bit,
+32Bit, Float Int32 : Fractional Differentiator : fig-mantuary micro
+differentiator.
+
+As we see rotation may benefit from the addition of Quartz crystal
+alignment sync data from 4 cycles & aligning data blocks,
+
+Obviously we can pre share 4 64Bit blocks use; use a pre seed AES/ChaCha Qu=
+ad!
+Indeed we can have 16 64Bit pre Seeds & chose them by time sync for kernel
+
+Security bug; Solutions & explanation's (contains additional RANDOM
+Security Methods) :RS
+
+https://science.n-helix.com/2020/06/cryptoseed.html
+https://science.n-helix.com/2019/05/zombie-load.html
+https://science.n-helix.com/2018/01/microprocessor-bug-meltdown.html
+
+Rupert S https://science.n-helix.com
+
+*RAND OP Ubuntu :
+https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
+
+https://pollinate.n-helix.com
+
+https://science.n-helix.com/2018/12/rng.html
+
+https://science.n-helix.com/2022/02/rdseed.html
+
+https://science.n-helix.com/2017/04/rng-and-random-web.html
+
+https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+https://aka.ms/win10rng
+*
+
+Encryption Methods:
+https://tools.ietf.org/id/?doc=3Dhash
+
+https://tools.ietf.org/id/?doc=3Dencrypt
+
+HASH :
+
+https://datatracker.ietf.org/doc/html/draft-ietf-cose-hash-algs
+
+https://tools.ietf.org/id/draft-ribose-cfrg-sm4-10.html
+
+https://tools.ietf.org/id/?doc=3Dsha
+
+https://tools.ietf.org/id/?doc=3Drsa
+
+Encryption Common Support:
+
+https://tools.ietf.org/id/?doc=3Dchacha
+
+https://tools.ietf.org/id/?doc=3Daes
+
+SM4e does seem a good possibility for C/T/RNG CORE HASH Functions!
+
+ARM Crypto Extensions Code (Maybe AES Extensions would work here)
+https://lkml.org/lkml/2022/3/15/324
+
+ARM Neon / SiMD / AVX Compatible (GPU is possible)
+https://lkml.org/lkml/2022/3/15/323
+
+*
+
+197 FIPS NIST Standards Specification C/T/RNG
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+Only a Neanderthal would approve a non additive source combination
+that is injected into the HASH & Re-HASHED ,
+
+One does not Procreate inadequate RANDOM from a simple bias KERNEL,
+Hardware RNG's added together may add around 450% Complexity!
+
+Hardware RNG devices MUST be able to Re-HASH to their 197 NIST
+Standards Specification, That is FINAL 2022 DT
+
+KEYS: trusted: allow use of kernel RNG for key material
+
+https://lkml.org/lkml/2022/3/16/598
+
+CAAM PRNG Reference : https://lkml.org/lkml/2022/3/16/649
+
+TRNG Samples & Method
+
+https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=
+=3Ddrive_web
+https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=
+=3Ddrive_web
+https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=
+=3Ddrive_web
+https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=
+=3Ddrive_web
