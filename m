@@ -2,52 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBD974E46D0
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Mar 2022 20:38:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6931A4E484B
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Mar 2022 22:31:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231283AbiCVTjq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Mar 2022 15:39:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47720 "EHLO
+        id S233342AbiCVVcx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Mar 2022 17:32:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231650AbiCVThw (ORCPT
+        with ESMTP id S235650AbiCVVct (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Mar 2022 15:37:52 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C278A339
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Mar 2022 12:36:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9C884B81D12
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Mar 2022 19:36:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2C3C340EC;
-        Tue, 22 Mar 2022 19:36:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647977782;
-        bh=UhFppCXtAzXQVadyNVtg7U6obhEZAUcuQufsLBLC/3s=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=T53CgwmPSQ+DapVtILqCGntKyaXveIJJNV+c1VuAND1Rn8LOyvFFhb56fpOF/jUqD
-         w+fzRHPaP9klBKLwMrJITdE8EaM3fSBKC6VBaJWMjCtvTij+r37YGSZ1tUrVUPHG/1
-         T2kkTG6kZNdfd/65YjgNiyGvq9jNwQHtAsgLx1IxOzqDYv/1ETJE+58BiPuR6LLx0Q
-         g4s79qBxJrqCu3nxPApqBn/BTOMtLbVOvgI5DXAY0tWVio6Nc9WuuzaFaC88wSbKb8
-         dMdQ+YTEh74ZsNpkYxxRsw+OSmY9ttP99jl88xBGCpo3yym7yBSnCOaVtJUkt9GHjK
-         KnkXOs5jzV/bw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     johannes@sipsolutions.net, socketcan@hartkopp.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] iwlwifi: mvm: Don't fail if PPAG isn't supported
-References: <iwlwifi.20220322173828.fa47f369b717.I6a9c65149c2c3c11337f3a802dff22f514a3a436@changeid>
-        <3166a024cd5bef43bf192418e95d3c75409a861f.camel@coelho.fi>
-Date:   Tue, 22 Mar 2022 21:36:16 +0200
-In-Reply-To: <3166a024cd5bef43bf192418e95d3c75409a861f.camel@coelho.fi> (Luca
-        Coelho's message of "Tue, 22 Mar 2022 17:43:31 +0200")
-Message-ID: <87a6dhwzin.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 22 Mar 2022 17:32:49 -0400
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15E635C351
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Mar 2022 14:31:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1647984681; x=1679520681;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ULo5CplepATrxROPecP3oeLTxp5zxCn9YqvRuZUbyZk=;
+  b=JuuVgoBiRKD1aYhG3z8TA6hBLMKCCRn8UuTm2XvioVN3FEWlsspP0tUE
+   Z8EdoH+TZhu3S7fxqq6X+ZITconiMQyqEbTgTaPv4ZlQXzopX7LPoExZF
+   XHlCLBW4lgq9Ax9GRXks6FmHSoWtuN1R3KznBTzfDsFR7cJLlIhAhhC76
+   A=;
+Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 22 Mar 2022 14:31:20 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2022 14:31:20 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Tue, 22 Mar 2022 14:31:20 -0700
+Received: from [10.110.23.155] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Tue, 22 Mar
+ 2022 14:31:19 -0700
+Message-ID: <5d5cf050-7de0-7bad-2407-276970222635@quicinc.com>
+Date:   Tue, 22 Mar 2022 14:31:18 -0700
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [BUG] deadlock in nl80211_vendor_cmd
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <willmcvicker@google.com>, <linux-wireless@vger.kernel.org>
+CC:     Marek Szyprowski <m.szyprowski@samsung.com>
+References: <0000000000009e9b7105da6d1779@google.com>
+ <99eda6d1dad3ff49435b74e539488091642b10a8.camel@sipsolutions.net>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <99eda6d1dad3ff49435b74e539488091642b10a8.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,55 +67,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> writes:
+On 3/21/2022 1:07 PM, Johannes Berg wrote:
+[..snip..]
 
-> On Tue, 2022-03-22 at 17:39 +0200, Luca Coelho wrote:
->> From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
->> 
->> When we're copying the PPAG table into the cmd structure we're failing
->> if the table doesn't exist in ACPI or is invalid, or if the FW doesn't
->> support PPAG setting etc.
->> 
->> This is wrong because those are valid scenarios.  Fix this by not
->> failing in those cases.
->> 
->> Fixes: e8e10a37c51c ("iwlwifi: acpi: move ppag code from mvm to fw/acpi")
->> Tested-by: Oliver Hartkopp <socketcan@hartkopp.net>
->> Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
->> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
->> ---
->>  drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->> 
->> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
->> index 4632d3ad1a2b..e842816134f1 100644
->> --- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
->> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
->> @@ -1015,8 +1015,9 @@ int iwl_mvm_ppag_send_cmd(struct iwl_mvm *mvm)
->>  	int ret, cmd_size;
->>  
->>  	ret = iwl_read_ppag_table(&mvm->fwrt, &cmd, &cmd_size);
->> +	/* Not supporting PPAG table is a valid scenario */
->>  	if(ret < 0)
->> -		return ret;
->> +		return 0;
->>  
->>  	IWL_DEBUG_RADIO(mvm, "Sending PER_PLATFORM_ANT_GAIN_CMD\n");
->>  	ret = iwl_mvm_send_cmd_pdu(mvm, WIDE_ID(PHY_OPS_GROUP,
->
-> Hi,
->
-> Jakub, this is the fix for the PPAG regression that we talked about
-> earlier.  If it's fine with Kalle, you can apply it directly to net-
-> next to expedite it.
+>> I'm not an networking expert. So my main question is if I'm allowed to take
+>> the RTNL lock inside the nl80211_vendor_cmd callbacks?
+> 
+> Evidently, you're not. It's interesting though, it used to be that we
+> called these with the RTNL held, now we don't, and the driver you're
+> using somehow "got fixed" to take it, but whoever fixed it didn't take
+> into account that this is not possible?
 
-You didn't CC netdev though so it's not visible on their patchwork.
+On this point I just want to remind that prior to the locking change 
+that a driver would specify on a per-vendor command basis whether or not 
+it wanted the rtnl_lock to be held via NL80211_FLAG_NEED_RTNL. I'm 
+guessing for the command in question the driver did not set this flag 
+since the driver wanted to explicitly take the lock itself, otherwise it 
+would have deadlocked on itself with the 5.10 kernel.
 
-> Kalle can you ack?
-
-Acked-by: Kalle Valo <kvalo@kernel.org>
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+/jeff
