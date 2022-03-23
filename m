@@ -2,91 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27BF54E4D5B
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Mar 2022 08:31:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE0024E4DC8
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Mar 2022 09:08:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242222AbiCWHdL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Mar 2022 03:33:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55892 "EHLO
+        id S233488AbiCWIJu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Mar 2022 04:09:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232562AbiCWHdL (ORCPT
+        with ESMTP id S233418AbiCWIIO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Mar 2022 03:33:11 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DCF072E36;
-        Wed, 23 Mar 2022 00:31:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 103FAB81DC9;
-        Wed, 23 Mar 2022 07:31:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD96C340E8;
-        Wed, 23 Mar 2022 07:31:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648020699;
-        bh=xmpfDtMMsZeVIRw9r9g+fWtSN/SN5MNsLW7UTEV9McM=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=IBCyqHOLXNrlbiOTOo8IH2EftaGeTKVcQ/ZTBEM2LBP+7wIATYSO+t32nlNxUsEUT
-         WqPOxuJHQb6BtHqGEaBBf3rgFHB4V4PnK87T2PYd5BmB/9SkTLf1Jijx4kYXMLUkvg
-         wa33664W3GEZGeZaIev6rwm/GxoTK2/++PTXCEmzqticobTTM5HRg8ZZiwPPrpXMqH
-         ayRApnKFzE2ZbEahrHuk+9llMSlntJxRE5Ij+3T1VaolGU2MQs4qbjGlzEdexe/zFf
-         TGpaPDDvAOczg67f/uvTxfUfJPmeXicB6E9uR5wXoUSqxCjLZdihV7Bjdo/UrCDP41
-         BfrJOXhwdgxVw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Francesco Dolcini <francesco.dolcini@toradex.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        linux-wireless@vger.kernel.org,
-        Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        Jonas =?utf-8?Q?Dre=C3=9Fler?= <verdre@v0yd.nl>
-Subject: Re: [RFC PATCH] mwifiex: Select firmware based on strapping
-References: <20220321161003.39214-1-francesco.dolcini@toradex.com>
-        <Yjjgi4YJVYBnJTqK@google.com>
-Date:   Wed, 23 Mar 2022 09:31:32 +0200
-In-Reply-To: <Yjjgi4YJVYBnJTqK@google.com> (Brian Norris's message of "Mon, 21
-        Mar 2022 13:31:07 -0700")
-Message-ID: <87zglhktuz.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Wed, 23 Mar 2022 04:08:14 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C38474871
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 01:06:45 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id EA8E6210F4;
+        Wed, 23 Mar 2022 08:06:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1648022803; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=fVc1r9WWP/81nZVxNXVVFWksf7u2PARCyEh4wB1yqlQ=;
+        b=EUEK/bdYvFT5KqU9KZF5vHdcQ8zKAr3c8miuojG7TF/PiIWZ/rOPmbVlgtd3e7wQbvyw7D
+        rhra0ywEAaaA3ULFWvEo/E2cyQKRMQSeDQ7zKwb3Tf417NkEaWl5g5/i5rh+gH+TSVlUsc
+        Vluiz7xLtaG9aABcfctv6dj1lqaV34I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1648022803;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=fVc1r9WWP/81nZVxNXVVFWksf7u2PARCyEh4wB1yqlQ=;
+        b=eBYrBA1C6MhLmQSW2zFSxQHgsSTzVwC/8EKQ9psYwslBkeKvSgbajse7yZoTISOFoe5F+L
+        2Qr4ETO/2CLhk0Cw==
+Received: from alsa1.suse.de (alsa1.suse.de [10.160.4.42])
+        by relay2.suse.de (Postfix) with ESMTP id DE944A3B88;
+        Wed, 23 Mar 2022 08:06:43 +0000 (UTC)
+Date:   Wed, 23 Mar 2022 09:06:43 +0100
+Message-ID: <s5h1qytw0rw.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Jouni Malinen <j@w1.fi>
+Cc:     Josh Boyer <jwboyer@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
+Subject: Re: [PULL] ath11k firmware 20211223
+In-Reply-To: <20220304161430.GA430462@w1.fi>
+References: <BYAPR02MB4567669033A210A78AC397E9927E9@BYAPR02MB4567.namprd02.prod.outlook.com>
+        <CA+5PVA4WEuJDB3OCKfYK-BPaccpVWd9t_au9S7MCEtpy7cdF-A@mail.gmail.com>
+        <87ee4brodv.fsf@kernel.org>
+        <CA+5PVA5DJmwPqpz8F9iDbJKcF1hDBRLdDT4URgSaiEcjet74Kw@mail.gmail.com>
+        <20220302175014.GA14801@w1.fi>
+        <CA+5PVA6R6F=VqAZRf=xDwGcC+cpqLY1kStkoHck53XiLURVyaw@mail.gmail.com>
+        <20220304161430.GA430462@w1.fi>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
+ (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Brian Norris <briannorris@chromium.org> writes:
+On Fri, 04 Mar 2022 17:14:30 +0100,
+Jouni Malinen wrote:
+> 
+> On Fri, Mar 04, 2022 at 08:04:26AM -0500, Josh Boyer wrote:
+> > On Wed, Mar 2, 2022 at 12:50 PM Jouni Malinen <j@w1.fi> wrote:
+> > > Would the following in WHENCE work for you?
+> > >
+> > > Driver: ath11k - Qualcomm Technologies 802.11ax chipset support
+> > >
+> > > File: ath11k/IPQ6018/hw1.0/board-2.bin
+> > > ...
+> > > Version: WLAN.HK.2.1.0.1-01238-QCAHKSWPL_SILICONZ-2
+> > > Notice: ath11k/IPQ6018/hw1.0/Notice.txt
+> > 
+> > We'd have to teach copy-firmware.sh what to do with a "Notice:" key.
+> > Is there a reason "File:" wouldn't work?  The intention is to install
+> > the notices alongside the binaries, so that would accomplish it.
+> 
+> Yeah, that sounds reasonable to me. From copying/installing/distribution
+> view point, these can really be handled in the exact same way as the
+> actual firmware binaries in practice.
+> 
+> > > In other words, there would be only a single "License:" line and one
+> > > "Notice:" line for each firmware version? The license itself (i.e.,
+> > > LICENSE.QualcommAtheros_ath10k) is same for all the versions while the
+> > > set of notices (i.e., those notice.txt files) can be different based on
+> > > what is included in the particular build.
+> > 
+> > Yes, that would help.  Would you be able to adjust the existing
+> > entries for ath firmware in the same way?
+> 
+> Yes, I'll work with Kalle to update the existing ath* WLAN cases.
+> 
+> > > > > I'm still working on your other comment about notice.txt, will get back
+> > > > > on that later.
+> > >
+> > > This part about clearly identifying the files should be clear now, but
+> > > it would be good to resolve that part about the notice.txt files in
+> > > general before sending out an updated pull request.
+> > 
+> > Given these were merged in the past, perhaps I'm being overly
+> > pedantic.  If we can mark them as Files or Notices instead of
+> > Licenses, I won't hold it up.  It leaves me slightly confused why
+> > attribution files need to reference agreements with Qualcomm, splatter
+> > Confidential and Proprietary throughout the file, and reference
+> > COPYING and README in reference to GPLv2 when the BSD license was
+> > clearly chosen.  Perhaps that could be cleaned up in the future.
+> 
+> Thanks. We'll remove most of the unnecessary information from the new
+> notice.txt files and that should get rid of many of the potentially
+> confusing parts. If that cleanup leaves something confusing in place,
+> we are open to cleaning these up further in followup patches, but it
+> would be nice to be able to get the updated versions into
+> linux-firmware.git without much more additional delay and yes, this
+> would be with the File: instead of Licence: entries for the notice.txt
+> files.
 
->> --- a/drivers/net/wireless/marvell/mwifiex/sdio.h
->> +++ b/drivers/net/wireless/marvell/mwifiex/sdio.h
->> @@ -39,6 +39,7 @@
->>  #define SD8977_DEFAULT_FW_NAME "mrvl/sdsd8977_combo_v2.bin"
->>  #define SD8987_DEFAULT_FW_NAME "mrvl/sd8987_uapsta.bin"
->>  #define SD8997_DEFAULT_FW_NAME "mrvl/sdsd8997_combo_v4.bin"
->> +#define SD8997_SDIOUART_FW_NAME "nxp/sdiouart8997_combo_v4.bin"
->
-> This isn't your main issue, but just because companies buy and sell IP
-> doesn't mean we'll change the firmware paths. Qualcomm drivers still use
-> "ath" prefixes, for one ;)
->
-> Personally, I'd still keep the mrvl/ path. But that might be up to Kalle
-> and/or linux-firmware.git maintainers.
+The problem of "File:" is that it's more or less intended to be
+installed as the firmware files themselves, i.e. they are installed in
+/lib/firmware/* that can be loaded to the kernel.  Putting such a
+random (document) file there makes me a bit nervous.
 
-I also prefer to have all the firmware files in the mrvl directory.
+We may introduce another tag to list up misc document files
+(e.g. "Doc:" or whatever)?  Distros can pick up them and put to the
+appropriate places in the package, too.
 
-Actually I would prefer that each driver has it's own firmware
-directory, but that's another topic.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+thanks,
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Takashi
