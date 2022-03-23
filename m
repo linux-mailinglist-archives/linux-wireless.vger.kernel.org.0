@@ -2,112 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B5164E55F6
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Mar 2022 17:07:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6592C4E575A
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Mar 2022 18:22:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245374AbiCWQI2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Mar 2022 12:08:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43994 "EHLO
+        id S238896AbiCWRXm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Mar 2022 13:23:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239096AbiCWQI0 (ORCPT
+        with ESMTP id S1343507AbiCWRXl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Mar 2022 12:08:26 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7B791706C;
-        Wed, 23 Mar 2022 09:06:56 -0700 (PDT)
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 22NEob0u010036;
-        Wed, 23 Mar 2022 17:06:42 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=k0X50u6/n1u+2cH9IIPOPaW2XEKc9m24e0oZy5yoqzE=;
- b=IszIyvXsKzgByTrOGDy1n72xkh1IacPrHFxWOamEfJWHLyxpgsUGKddakNaqIii+t3D1
- gbkFZ8znFCi7sfLa1lZQGJFqAeNOEKuSeibVWQYay2f09Puzq5kBvio7nXshNkeufiaj
- nUq13LFQNTI4vxj5dBfthPq0JyaPfTuE5pj9JNrNfMygoPinh7a7QcI8EjJZ4ChUTP8q
- vkucgt1MdWAAGs+QFeNMgTo6chrfTMyAsHKIV7wpFB2Q9I/RvOU/YeGmmtJh/MBF7ecO
- 5PjQWkfk83QHmN1XW0AF9Ge0cnmem+SUWDkZ8/Fl53pbVbyZnqNFfsdcItV7LlDMdngm yw== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3ewr5g0q87-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 23 Mar 2022 17:06:42 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 8663910002A;
-        Wed, 23 Mar 2022 17:06:37 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 708F723BE0E;
-        Wed, 23 Mar 2022 17:06:37 +0100 (CET)
-Received: from [10.211.9.79] (10.75.127.48) by SFHDAG2NODE2.st.com
- (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1497.26; Wed, 23 Mar
- 2022 17:06:36 +0100
-Message-ID: <b99c7541-64d9-2c5e-8c66-bcf5a4ec00d7@foss.st.com>
-Date:   Wed, 23 Mar 2022 17:06:36 +0100
+        Wed, 23 Mar 2022 13:23:41 -0400
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8A4A7CB22
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 10:22:11 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id mp6-20020a17090b190600b001c6841b8a52so7040524pjb.5
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 10:22:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:subject:from:to:date:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=Vcs/ijmM+IYtFvRxEnf7jKzIhxJi8SzEvbU3lDOat44=;
+        b=kYrI/ns4ocHbwGR8sPCY3GF2uKSRUMIDNXZHiv2x2s8Ir/8A+gi/C+zdSgtFYvnMme
+         i5FXhdwsyX7uPG2544bS34TPM7fNzf0fW9vefEk3Dyrz6bHVqzeVwUZqWfIKtYde5+7U
+         1bE7cb4skl6axuKP5JcvkmeA6N7UDLQk3P3jmYE9wJZd6NoI42oMUcyzvnqAytqSQbhZ
+         GuKyXOsWqjgSkbxX9rio3XMKobBcvdCwFIzblWHjWkiy1idcoEi4jWuD9nv+u96hiMXE
+         cGOZpLqO63k1LOxstYqr4letaqEZbOt+cJwWHrkMWv7FBCqBY7onPXyWtSyXdSq4NT/z
+         03cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:date:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=Vcs/ijmM+IYtFvRxEnf7jKzIhxJi8SzEvbU3lDOat44=;
+        b=61rz9oBZBxD056pOIXbghFIZhCHtXGo+54xuWN5wqGdHMdk3K6Rlzi/XUBovmAgWz2
+         8h9mS8rXuhyKEOwdtiyPzHcP/iROU5wHqboIWcZuxxdDgnGgGVqW1yNooQXZAA875suc
+         JSvBmOgKZ6GPLHL1tK6ZLiH6ynoP0nTX2R7/CjxVOAaPrwlunn49QWP61yy8TaWUCle9
+         10NP4qq4f1+nWbFNIFCDGbDWahMiME3HMXF1IRxH7n3YoWxXNHDjBxwy7iZaaIMXZpRn
+         4x6jClcNYPh/3SE0JLHmjFcJmE/YwpgGSmJllNRrBmLOyyDpupzRpAQIZ1XzvkLfxmC3
+         3gYA==
+X-Gm-Message-State: AOAM530/UVFUdooVpURg59cZ6by/n717mCZ9WRmYTWQp4N2exypONtOr
+        k0uQvo/AWwZacCbCuvfOd1STtqLS3Wo=
+X-Google-Smtp-Source: ABdhPJwryMq2E6OAnaqTO7P633o5ddWO8oqxNj7Q9x953gTYMt6utoMde7rZ6FieAekESoDF+101rA==
+X-Received: by 2002:a17:90b:38cf:b0:1bf:42ee:6fa with SMTP id nn15-20020a17090b38cf00b001bf42ee06famr12887365pjb.9.1648056130662;
+        Wed, 23 Mar 2022 10:22:10 -0700 (PDT)
+Received: from [192.168.254.55] ([50.45.187.22])
+        by smtp.gmail.com with ESMTPSA id l23-20020a17090a071700b001c67a95e7fbsm288522pjl.47.2022.03.23.10.22.09
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Mar 2022 10:22:10 -0700 (PDT)
+Message-ID: <928be46d97a3da3fd677c9d87f9be6a02f4d3277.camel@gmail.com>
+Subject: poor beacon/scan reliability with mac80211_hwsim
+From:   James Prestwood <prestwoj@gmail.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Date:   Wed, 23 Mar 2022 10:22:09 -0700
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4 (3.40.4-3.fc34) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2] brcmfmac: Avoid keeping power to SDIO card unless WOWL
- is used
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     Ulf Hansson <ulf.hansson@linaro.org>,
-        <linux-wireless@vger.kernel.org>,
-        Christophe ROULLIER-SCND-02 <christophe.roullier@foss.st.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Gustavo Padovan <gustavo.padovan@collabora.com>,
-        Adrian Ratiu <adrian.ratiu@collabora.com>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <linux-kernel@vger.kernel.org>,
-        Christophe KERELLO - foss <christophe.kerello@foss.st.com>
-References: <20220323083950.414783-1-ulf.hansson@linaro.org>
- <51b4917b-823d-263a-2412-a4b17cb38420@foss.st.com>
- <87a6dgk63l.fsf@kernel.org>
-From:   Yann Gautier <yann.gautier@foss.st.com>
-In-Reply-To: <87a6dgk63l.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.48]
-X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE2.st.com
- (10.75.127.5)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-23_07,2022-03-23_01,2022-02-23_01
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/23/22 17:04, Kalle Valo wrote:
-> Yann Gautier <yann.gautier@foss.st.com> writes:
-> 
->> On 3/23/22 09:39, Ulf Hansson wrote:
->>> Keeping the power to the SDIO card during system wide suspend, consumes
->>> energy. Especially on battery driven embedded systems, this can be a
->>> problem. Therefore, let's change the behaviour into allowing the SDIO card
->>> to be powered off, unless WOWL is supported and enabled.
->>>
->>> Note that, the downside from this change, is that during system resume the
->>> SDIO card needs to be re-initialized and the FW must be re-programmed. Even
->>> if this may take some time to complete, it should we worth it, rather than
->>> draining the battery.
->>>
->>> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
->>
->> Thanks for the patch, it is OK, and tested by Christophe (R.).
->> So you can add:
->> Tested-by: Christophe Roullier <christophe.roullier@foss.st.com>
->> Acked-by: Yann Gautier <yann.gautier@foss.st.com>
-> 
-> Acked-by is used by the driver maintainer, so I assume you mean
-> Reviewed-by?
-> 
-Oops, sorry, yes I meant Reviewed-by.
+Hi,
 
-Best regards,
-Yann
+We use mac80211_hwsim and our own 'hwsim' daemon to test conditions
+like poor signal strength or dropped frames. For quite a while we've
+noticed very poor reliability related to scanning when
+HWSIM_CMD_REGISTER is used to process frames. Scan results are just
+empty.
+
+We've put in some work arounds like only registering for tests that
+absolutely need it and repeatedly scanning until the expected network
+is found, but there are cases where this is not possible.
+
+I'm hoping for some ideas on how to actually fix this problem rather
+than continue trying to come up with workarounds. I have tried removing
+any frame processing (just an empty function) and noticed the problem
+still occurs, basically just calling HWSIM_CMD_REGISTER causes these
+problems.
+
+I will admit this seems to happen more on slower systems, like inside a
+virtual machine environment, or in tests which create more than just a
+few radios (like ~5-6+) so it does seem like mac80211_hwsim/wmediumd
+processing the frame is just taking too long for beacons.
+
+Thanks,
+James
+
