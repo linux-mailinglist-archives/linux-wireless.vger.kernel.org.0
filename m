@@ -2,86 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3A364E52DA
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Mar 2022 14:13:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1F7D4E52F1
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Mar 2022 14:21:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244185AbiCWNPD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Mar 2022 09:15:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37058 "EHLO
+        id S244218AbiCWNWh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Mar 2022 09:22:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234314AbiCWNPC (ORCPT
+        with ESMTP id S229482AbiCWNWg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Mar 2022 09:15:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 207D4DFF6
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 06:13:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1648041211;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Ifuc5oqWU21Io0fAnVVGyPcyUyUccxzM0pDfQGg0di4=;
-        b=SAOduq4vPH7rQRzXDWU4tXtGq9f2RSCK4WkW6EitVW1T07oNWOVCMXc9Q9H4fuO9YBq66V
-        ayl3DRLZWcnpJ2QU9+qS2T4ypjOHOd2NX7rkcgEMD8NBBu5LCRJw1OSMnZeb6S3FkdrGm4
-        EQDMZFncoyDAPeYmElkz0xhhU9kNOMw=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-362-wduDM0fSO1OuH6N6KMn-gw-1; Wed, 23 Mar 2022 09:13:30 -0400
-X-MC-Unique: wduDM0fSO1OuH6N6KMn-gw-1
-Received: by mail-qt1-f200.google.com with SMTP id p6-20020a05622a00c600b002e1cb9508e8so1105162qtw.20
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 06:13:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=Ifuc5oqWU21Io0fAnVVGyPcyUyUccxzM0pDfQGg0di4=;
-        b=uMZjVC9Thja859t5u6Cu5oeu1OtOmMSyJojj50gzWU6HZuevKl92mzSrubwA2mCfH5
-         EFUo4ZFmG//MTdrAnuTH5wq9nUP7hcZ8pHZzWc6nHHIU/CCBvir3ke2lDxFh9uWolbAU
-         PDIoM3dCR3RsTEKu1RFzOTR5qtWgBH0o9f6fMkkRz8EH6PExzTOUgcrw4UjYx/qmN7kw
-         giM6JPaZ1sITsxW7sCJmzlHIjkmQQ7Xtx+r0pMRa8Ms0pWn+wiwROAtbEgPZcoh/7ZXT
-         Rj09MhXp3XvuxwFVZbgkpG+j7vWf7PdB+znhRsEHXYJDspHoMQumFKjyPoP7CI0vBxWx
-         owoA==
-X-Gm-Message-State: AOAM530CaV9uiMavbjKjDBfyzHH2XZfq02Og1DHupEv3k40jIv5RHdfB
-        7Zg9TRVvAG8T7c3E8YsUR5fJ/y6K7xQEPXJx9rl8QDe7Q32AD8NtiO2ZLYIBTty3NdZSPw12XTp
-        w3qNVQ8WlN8yI0mdP8hEvMg3NNaA=
-X-Received: by 2002:ad4:5f05:0:b0:440:ea8c:c439 with SMTP id fo5-20020ad45f05000000b00440ea8cc439mr22435353qvb.69.1648041210026;
-        Wed, 23 Mar 2022 06:13:30 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwUgNb4wvcfdWZ2zbAFuWeegIGg+k6cziT03ZdV/wBH98ZC0J9cJTusg3OZ0832ZtCJW5BOOA==
-X-Received: by 2002:ad4:5f05:0:b0:440:ea8c:c439 with SMTP id fo5-20020ad45f05000000b00440ea8cc439mr22435335qvb.69.1648041209812;
-        Wed, 23 Mar 2022 06:13:29 -0700 (PDT)
-Received: from localhost.localdomain (024-205-208-113.res.spectrum.com. [24.205.208.113])
-        by smtp.gmail.com with ESMTPSA id b202-20020ae9ebd3000000b0067b11d53365sm10517757qkg.47.2022.03.23.06.13.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Mar 2022 06:13:28 -0700 (PDT)
-Subject: Re: [PATCH] ath9k: initialize arrays at compile time
-To:     Joe Perches <joe@perches.com>,
-        Sebastian Gottschall <s.gottschall@newmedia-net.de>,
-        John Crispin <john@phrozen.org>, toke@toke.dk,
-        kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
-        pabeni@redhat.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220320152028.2263518-1-trix@redhat.com>
- <af6042d0-952f-f497-57e7-37fef45a1f76@phrozen.org>
- <233074c3-03dc-cf8b-a597-da0fb5d98be0@newmedia-net.de>
- <7a12fd4599758b8cd5fd376db6c9a950d2ed2094.camel@perches.com>
-From:   Tom Rix <trix@redhat.com>
-Message-ID: <c290ae27-9e4a-96ed-d8d6-a8b8bf8d0181@redhat.com>
-Date:   Wed, 23 Mar 2022 06:13:25 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        Wed, 23 Mar 2022 09:22:36 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AEFB7A99B;
+        Wed, 23 Mar 2022 06:21:00 -0700 (PDT)
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 22ND6jYY009715;
+        Wed, 23 Mar 2022 14:20:41 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=ll1t8Ir3H0qz808D0MiUytqqfMAXZhxxOsdPSkfQBGA=;
+ b=ur9kxkLqoBnbt7Gng+THHatMVZbGgUgMWxGs+joMLLKFxv0LP07QKpQOqkMXA/GZLtrI
+ xgSCACXm6bqFKcKhIHCXev/qWgjnmJgbpCoecs5m2txUYOCsAEbXNOgNN6DHTMlV9HBy
+ pH6Vt2M9JBoolyGJurua2RXbG0iZEfwpWVtzre87hM/iHLPzxaQ0kT7t3FSXDjWTi5Ge
+ DGfKvve3CCAzM9ZrmUFo6Y5uScmPfXORifHBVVKCKnMlpYvjI6qS9rWRXEMBVwJoKDhC
+ 0BvKKD1eA9qZ+FCz0sfFvJwUMxCdxbNed7jo+jdlq7wAHycabeS5XmiaEQ7YxbhFqSAT Eg== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3ew5fpgnj6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 23 Mar 2022 14:20:41 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C141010002A;
+        Wed, 23 Mar 2022 14:20:37 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id B4B7622FA51;
+        Wed, 23 Mar 2022 14:20:37 +0100 (CET)
+Received: from [10.211.9.79] (10.75.127.50) by SFHDAG2NODE2.st.com
+ (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1497.26; Wed, 23 Mar
+ 2022 14:20:37 +0100
+Message-ID: <51b4917b-823d-263a-2412-a4b17cb38420@foss.st.com>
+Date:   Wed, 23 Mar 2022 14:20:36 +0100
 MIME-Version: 1.0
-In-Reply-To: <7a12fd4599758b8cd5fd376db6c9a950d2ed2094.camel@perches.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v2] brcmfmac: Avoid keeping power to SDIO card unless WOWL
+ is used
 Content-Language: en-US
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        Christophe ROULLIER-SCND-02 <christophe.roullier@foss.st.com>
+CC:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Gustavo Padovan <gustavo.padovan@collabora.com>,
+        Adrian Ratiu <adrian.ratiu@collabora.com>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <linux-kernel@vger.kernel.org>,
+        Christophe KERELLO - foss <christophe.kerello@foss.st.com>
+References: <20220323083950.414783-1-ulf.hansson@linaro.org>
+From:   Yann Gautier <yann.gautier@foss.st.com>
+In-Reply-To: <20220323083950.414783-1-ulf.hansson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.50]
+X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE2.st.com
+ (10.75.127.5)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-23_07,2022-03-22_01,2022-02-23_01
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -89,61 +81,129 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 3/23/22 09:39, Ulf Hansson wrote:
+> Keeping the power to the SDIO card during system wide suspend, consumes
+> energy. Especially on battery driven embedded systems, this can be a
+> problem. Therefore, let's change the behaviour into allowing the SDIO card
+> to be powered off, unless WOWL is supported and enabled.
+> 
+> Note that, the downside from this change, is that during system resume the
+> SDIO card needs to be re-initialized and the FW must be re-programmed. Even
+> if this may take some time to complete, it should we worth it, rather than
+> draining the battery.
+> 
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> ---
+> 
+> Changes in v2:
+> 	- As pointed out by Yann, the changes for the resume path was missing,
+> 	so I have added that too.
+> 
+> Again, please note that, I have only compile-tested this patch, so I am relying
+> on help from Yann and others to run tests on real HW.
+> 
+> Kind regards
+> Ulf Hansson
+> 
+> ---
+>   .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 39 +++++++++++--------
+>   1 file changed, 22 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> index ac02244a6fdf..9c598ea97499 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> @@ -1119,9 +1119,21 @@ void brcmf_sdio_wowl_config(struct device *dev, bool enabled)
+>   {
+>   	struct brcmf_bus *bus_if = dev_get_drvdata(dev);
+>   	struct brcmf_sdio_dev *sdiodev = bus_if->bus_priv.sdio;
+> +	mmc_pm_flag_t pm_caps = sdio_get_host_pm_caps(sdiodev->func1);
+>   
+> -	brcmf_dbg(SDIO, "Configuring WOWL, enabled=%d\n", enabled);
+> -	sdiodev->wowl_enabled = enabled;
+> +	/* Power must be preserved to be able to support WOWL. */
+> +	if (!(pm_caps & MMC_PM_KEEP_POWER))
+> +		goto notsup;
+> +
+> +	if (sdiodev->settings->bus.sdio.oob_irq_supported ||
+> +	    pm_caps & MMC_PM_WAKE_SDIO_IRQ) {
+> +		sdiodev->wowl_enabled = enabled;
+> +		brcmf_dbg(SDIO, "Configuring WOWL, enabled=%d\n", enabled);
+> +		return;
+> +	}
+> +
+> +notsup:
+> +	brcmf_dbg(SDIO, "WOWL not supported\n");
+>   }
+>   
+>   #ifdef CONFIG_PM_SLEEP
+> @@ -1130,7 +1142,7 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
+>   	struct sdio_func *func;
+>   	struct brcmf_bus *bus_if;
+>   	struct brcmf_sdio_dev *sdiodev;
+> -	mmc_pm_flag_t pm_caps, sdio_flags;
+> +	mmc_pm_flag_t sdio_flags;
+>   	int ret = 0;
+>   
+>   	func = container_of(dev, struct sdio_func, dev);
+> @@ -1142,20 +1154,15 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
+>   	bus_if = dev_get_drvdata(dev);
+>   	sdiodev = bus_if->bus_priv.sdio;
+>   
+> -	pm_caps = sdio_get_host_pm_caps(func);
+> -
+> -	if (pm_caps & MMC_PM_KEEP_POWER) {
+> -		/* preserve card power during suspend */
+> +	if (sdiodev->wowl_enabled) {
+>   		brcmf_sdiod_freezer_on(sdiodev);
+>   		brcmf_sdio_wd_timer(sdiodev->bus, 0);
+>   
+>   		sdio_flags = MMC_PM_KEEP_POWER;
+> -		if (sdiodev->wowl_enabled) {
+> -			if (sdiodev->settings->bus.sdio.oob_irq_supported)
+> -				enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
+> -			else
+> -				sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
+> -		}
+> +		if (sdiodev->settings->bus.sdio.oob_irq_supported)
+> +			enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
+> +		else
+> +			sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
+>   
+>   		if (sdio_set_host_pm_flags(sdiodev->func1, sdio_flags))
+>   			brcmf_err("Failed to set pm_flags %x\n", sdio_flags);
+> @@ -1176,21 +1183,19 @@ static int brcmf_ops_sdio_resume(struct device *dev)
+>   	struct brcmf_bus *bus_if = dev_get_drvdata(dev);
+>   	struct brcmf_sdio_dev *sdiodev = bus_if->bus_priv.sdio;
+>   	struct sdio_func *func = container_of(dev, struct sdio_func, dev);
+> -	mmc_pm_flag_t pm_caps = sdio_get_host_pm_caps(func);
+>   	int ret = 0;
+>   
+>   	brcmf_dbg(SDIO, "Enter: F%d\n", func->num);
+>   	if (func->num != 2)
+>   		return 0;
+>   
+> -	if (!(pm_caps & MMC_PM_KEEP_POWER)) {
+> +	if (!sdiodev->wowl_enabled) {
+>   		/* bus was powered off and device removed, probe again */
+>   		ret = brcmf_sdiod_probe(sdiodev);
+>   		if (ret)
+>   			brcmf_err("Failed to probe device on resume\n");
+>   	} else {
+> -		if (sdiodev->wowl_enabled &&
+> -		    sdiodev->settings->bus.sdio.oob_irq_supported)
+> +		if (sdiodev->settings->bus.sdio.oob_irq_supported)
+>   			disable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
+>   
+>   		brcmf_sdiod_freezer_off(sdiodev);
 
-On 3/20/22 10:36 AM, Joe Perches wrote:
-> On Sun, 2022-03-20 at 18:17 +0100, Sebastian Gottschall wrote:
->> Am 20.03.2022 um 17:48 schrieb John Crispin:
->>>
->>> On 20.03.22 16:20, trix@redhat.com wrote:
->>>> array[size] = { 0 };
->>> should this not be array[size] = { }; ?!
->>>
->>> If I recall correctly { 0 } will only set the first element of the
->>> struct/array to 0 and leave random data in all others elements
->>>
->>>      John
->> You are right, john
-> No.  The patch is fine.
->
-> Though generally the newer code in the kernel uses
->
-> 	type dec[size] = {};
->
-> to initialize stack arrays.
->
-> array stack declarations not using 0
->
-> $ git grep -P '^\t(?:\w++\s*){1,2}\[\s*\w+\s*\]\s*=\s*\{\s*\};' -- '*.c' | wc -l
-> 213
->
-> array stack declarations using 0
->
-> $ git grep -P '^\t(?:\w++\s*){1,2}\[\s*\w+\s*\]\s*=\s*\{\s*0\s*\};' -- '*.c' | wc -l
-> 776
->
-> Refer to the c standard section on initialization 6.7.8 subsections 19 and 21
->
-> 19
->
-> The initialization shall occur in initializer list order, each initializer provided for a
-> particular subobject overriding any previously listed initializer for the same subobject
-> all subobjects that are not initialized explicitly shall be initialized implicitly the same as
-> objects that have static storage duration.
->
-> ...
->
-> 21
->
-> If there are fewer initializers in a brace-enclosed list than there are elements or members
-> of an aggregate, or fewer characters in a string literal used to initialize an array of known
-> size than there are elements in the array, the remainder of the aggregate shall be
-> initialized implicitly the same as objects that have static storage duration.
->
-Joe,
+Hi Ulf,
 
-Thanks for providing these sections for c reference !
+Thanks for the patch, it is OK, and tested by Christophe (R.).
+So you can add:
+Tested-by: Christophe Roullier <christophe.roullier@foss.st.com>
+Acked-by: Yann Gautier <yann.gautier@foss.st.com>
 
-I will update the commit log and replace { 0 } with { }
 
-Tom
-
+Best regards,
+Yann
