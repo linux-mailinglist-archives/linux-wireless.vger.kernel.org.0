@@ -2,100 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 435894E594A
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Mar 2022 20:41:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A14C54E595A
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Mar 2022 20:45:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344350AbiCWTnI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Mar 2022 15:43:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41982 "EHLO
+        id S1344380AbiCWTrO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Mar 2022 15:47:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344334AbiCWTnI (ORCPT
+        with ESMTP id S241263AbiCWTrO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Mar 2022 15:43:08 -0400
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A32108B6F5
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 12:41:37 -0700 (PDT)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-d4164acd34so2789742fac.4
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 12:41:37 -0700 (PDT)
+        Wed, 23 Mar 2022 15:47:14 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F31058BE1C
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 12:45:43 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id k6so2540081plg.12
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 12:45:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=forshee.me; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=7CUKoQqqtzrjMgIuYVrIVsqW153Ub0tNPj/H249Q6ig=;
-        b=FUK2t5UiH/LbhG0gnBokE7UeYtdE3PCNock02ICrHilTNWPQhDUE7rRKAu60Djit83
-         1FGr84X/6FrdSrFaqBCMgx1AfTA6Ol96kw6Ul7R74QDh8rvoJ+UeMdEcSIf097Y2gUnp
-         K0HKHystMRzFSWBt+HfEn+fkOZAIjjuzcoQZkYTRvT+OVYIkMSbvOu+piUARk9u+bS6K
-         Bbx4eG/iUy+p6o7gwDeX0lUNk6WoUVRtvxe68hJid4X7nXAICFvLFef7hOzr9wzSrDEj
-         co2BsPukhQ59j6e0WEmqpgLeBrekJeYHWKCV+PeLiOKXnIXZvbWrr0EyjObizFZmMoBO
-         pNAw==
+        d=gmail.com; s=20210112;
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=+t9TtPNODMLFR1Zb3Enjo1evHmtSbfolTfN3QB79Ybo=;
+        b=h0sY61F7Dj2BB2ci7tb0nho4jLTCvR5GMAXiydTwt2G94d3qw/ozhkMHJpfn+JH9hG
+         zlZout4wh+A/9nX5LCIaq9D85vzqA4tzIZWyG9Ngid0qcKt94cgt1qJ5U4pcsmINNNAt
+         +T0kHuiCWZkpoU1YiTxab6YxEOQqevDRaRljaWw5GnNaojFD6Z/KGE39s+jXcuwgNOeT
+         vzKIEjyxjW9yhM3hRuWUrhg1OpodvDaqrCYlkXfFPWlcEd4b6GsnteNlHwAhmtfR1P44
+         EuI1JPy5hFubHRyGf+JlbSKMOKP/I9Vlp9lxqK2Xiymap4zao25QF2J3OJKiacUhsOwM
+         MgMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=7CUKoQqqtzrjMgIuYVrIVsqW153Ub0tNPj/H249Q6ig=;
-        b=fpNZgPTEQ4E8j+idI9X+UgjBbNr/vV4CxKx1cApZmTPruBo7Z1XSpZiaBJVQtCuNeh
-         5/UpjJv/gZV4dllk/zxeHKYsGpWMCRpYF/jSZe9Bhzbd7GFLJrrPKJCQWe/5t7axDim7
-         HKvmLSo13Ffq0AgfozE8LQyr8xEWm+iFHiQAoZepw72kcF56a+EcnH0Dp35UvzcQajbk
-         GizGuK+d2S1A4YrXAwFrOaoJ9EOyrVtE0HCfDmnx6rXvDC+t08NR1Zta/emzR93SGKGL
-         OTQJT456caMmSBSuR9OUaKar6mz4RVbd7G6L3Je3lxzZn2j3MaDfvomDhYtB6xUGKYwg
-         n7Mg==
-X-Gm-Message-State: AOAM5325eoZZhu/xbrfs/NXLdMrqmy9s07VDUaAUgRxrFpfR6zGMLdYp
-        C83m7cLc9qukO4ZUk/q637wjy+d3jvEsZA==
-X-Google-Smtp-Source: ABdhPJy/0eWpNEhcKMBMgvB26Tz1iKQhJ/yQ5omVMFFkbu9BuvpYBkQwFyiGuh+rIeQ2m070ghO7sw==
-X-Received: by 2002:a05:6870:3509:b0:dd:b3d8:115d with SMTP id k9-20020a056870350900b000ddb3d8115dmr773824oah.151.1648064496921;
-        Wed, 23 Mar 2022 12:41:36 -0700 (PDT)
-Received: from localhost ([2605:a601:ac0f:820:1106:a97c:b0a4:146a])
-        by smtp.gmail.com with ESMTPSA id k14-20020a056830168e00b005b22c20b195sm388565otr.45.2022.03.23.12.41.36
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=+t9TtPNODMLFR1Zb3Enjo1evHmtSbfolTfN3QB79Ybo=;
+        b=6WoCadcnQPSzCnXOxfij4PbIUdG3nlpSLucotunvaeqBDIulJ3zIc5V3S5rxKVQPbK
+         Gt14J3EYE4P62MNTCmtt+acpPNcjyiEJ5henjzBD+Nmzu95CuLJXl6tEChNnza+GQjS4
+         Zs4Y90dcGspWq9jDL4L86NWfL2iwqtmyapNEOllYUOudR9ROUSOvh3b5oQcCiuEEv7M0
+         wV3a4AE63bo63eEvACj3Lyq5M+AwvoXkT27hvxN9yBXRVAs9oEtAmHU80CEqmQrADi5/
+         LlcYP8lzpRlowYawUvwcNnOy4D8cxdCov+K6+vOPL3hR15YQW0cdD0s1XWEMan4mD6po
+         5WtQ==
+X-Gm-Message-State: AOAM532ozP+bGbuDYgTD62s2CmsFkuhcS5xNo/XMFe52GRdVHLKnlrPF
+        FyGy8CV0wgjUpbvEapHJSzTFthU3Tpc=
+X-Google-Smtp-Source: ABdhPJxXUuqaGerOkL6/fm/05938b13iNMF5vI9Pfckvz3I8os/JbQxf3yft0EytPYKOVkzRlL+tZw==
+X-Received: by 2002:a17:90b:4d8c:b0:1c7:61ce:b706 with SMTP id oj12-20020a17090b4d8c00b001c761ceb706mr1458037pjb.211.1648064743254;
+        Wed, 23 Mar 2022 12:45:43 -0700 (PDT)
+Received: from [192.168.254.55] ([50.45.187.22])
+        by smtp.gmail.com with ESMTPSA id o17-20020a639a11000000b0038160e4a2f7sm559631pge.48.2022.03.23.12.45.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Mar 2022 12:41:36 -0700 (PDT)
-From:   Seth Forshee <seth@forshee.me>
-X-Google-Original-From: Seth Forshee <sforshee@kernel.org>
-To:     wireless-regdb@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] wireless-regdb: add missing spaces for US S1G rules
-Date:   Wed, 23 Mar 2022 14:41:34 -0500
-Message-Id: <20220323194134.169332-1-sforshee@kernel.org>
-X-Mailer: git-send-email 2.32.0
+        Wed, 23 Mar 2022 12:45:42 -0700 (PDT)
+Message-ID: <545f0fb3be911c4bed6a0dc81b0679a9824fe6c9.camel@gmail.com>
+Subject: Re: poor beacon/scan reliability with mac80211_hwsim
+From:   James Prestwood <prestwoj@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Date:   Wed, 23 Mar 2022 12:45:42 -0700
+In-Reply-To: <a2c1706527d11312b504f8d445bcbba7738f9c8c.camel@sipsolutions.net>
+References: <928be46d97a3da3fd677c9d87f9be6a02f4d3277.camel@gmail.com>
+         <a2c1706527d11312b504f8d445bcbba7738f9c8c.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4 (3.40.4-3.fc34) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The rules lack spaces in the frequency range definition, which works
-find for building the database but causes problems for some external
-parsers. Add the missing spaces.
+Hi Johannes,
 
-Signed-off-by: Seth Forshee <sforshee@kernel.org>
----
- db.txt | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+On Wed, 2022-03-23 at 19:50 +0100, Johannes Berg wrote:
+> Hi James,
+> 
+> > We use mac80211_hwsim and our own 'hwsim' daemon to test conditions
+> > like poor signal strength or dropped frames. For quite a while
+> > we've
+> > noticed very poor reliability related to scanning when
+> > HWSIM_CMD_REGISTER is used to process frames. Scan results are just
+> > empty.
+> > 
+> > We've put in some work arounds like only registering for tests that
+> > absolutely need it and repeatedly scanning until the expected
+> > network
+> > is found, but there are cases where this is not possible.
+> > 
+> > I'm hoping for some ideas on how to actually fix this problem
+> > rather
+> > than continue trying to come up with workarounds. I have tried
+> > removing
+> > any frame processing (just an empty function) and noticed the
+> > problem
+> > still occurs, basically just calling HWSIM_CMD_REGISTER causes
+> > these
+> > problems.
+> > 
+> > I will admit this seems to happen more on slower systems, like
+> > inside a
+> > virtual machine environment, or in tests which create more than
+> > just a
+> > few radios (like ~5-6+) so it does seem like
+> > mac80211_hwsim/wmediumd
+> > processing the frame is just taking too long for beacons.
+> > 
+> 
+> That sounds like it's just scheduling? HWSIM_CMD_REGISTER makes all
+> the
+> frames go through the wmediumd (or whatever other tool you use),
+> including the beacons - which makes sense, but there's scheduling
+> overhead. Also probe requests/probe responses will go through, and we
+> only wait for a limited time on each channel for a response/beacon.
+> 
+> Though I'm surprised the overhead and all is enough to make the jump
+> out
+> to userspace and back take 30+ milliseconds (which is the smallest
+> possible dwell time if you have hwsim hw-scan enabled, otherwise it's
+> slightly larger).
 
-diff --git a/db.txt b/db.txt
-index d45ec082e7c4..5f2168d21222 100644
---- a/db.txt
-+++ b/db.txt
-@@ -1619,11 +1619,11 @@ country UG: DFS-FCC
- # set out in 47 CFR § 15.205. TODO: reenable and specify a safe TX power here.
- country US: DFS-FCC
- 	# S1G Channel 1-3
--	(902-904 @ 2), (30)
-+	(902 - 904 @ 2), (30)
- 	# S1G Channel 5-35
--	(904-920 @ 16), (30)
-+	(904 - 920 @ 16), (30)
- 	# S1G Channel 37-51
--	(920-928 @ 8), (30)
-+	(920 - 928 @ 8), (30)
- 	(2400 - 2472 @ 40), (30)
- 	# 5.15 ~ 5.25 GHz: 30 dBm for master mode, 23 dBm for clients
- 	(5150 - 5250 @ 80), (23), AUTO-BW
--- 
-2.32.0
+Yeah I'm surprised as well. I haven't _proven_ this is the case but its
+really all I can think of for why scan results are missing. I don't
+think hw-scan is being used, we don't set ATTR_USE_SCANCTX or
+ATTR_CHANNELS so I guess this is the best case scenario for dwell time,
+hmm.
+
+> 
+> Maybe, since beacons are sent periodically, and perhaps we can assume
+> the overhead is always similar, then you could do passive scanning?
+> 
+> No good answers to this, I guess ...
+> 
+> Though if you can run tests under UML/time-travel that would get rid
+> of
+> this problem ;-)
+
+Yeah this has been in the back of my mind for a while since it could
+also speed stuff not having to wait for timeouts.
+
+But with respect to this issue how could UML fix it? Pause time to
+allow the scheduler to catch up?
+
+> 
+> johannes
+
 
