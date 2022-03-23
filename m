@@ -2,93 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F0264E5906
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Mar 2022 20:17:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 435894E594A
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Mar 2022 20:41:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344132AbiCWTSm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Mar 2022 15:18:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58454 "EHLO
+        id S1344350AbiCWTnI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Mar 2022 15:43:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344046AbiCWTSl (ORCPT
+        with ESMTP id S1344334AbiCWTnI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Mar 2022 15:18:41 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50EAE8879B
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 12:17:11 -0700 (PDT)
+        Wed, 23 Mar 2022 15:43:08 -0400
+Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A32108B6F5
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 12:41:37 -0700 (PDT)
+Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-d4164acd34so2789742fac.4
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 12:41:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1648063031; x=1679599031;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Ll1M4XLJeZ33EIstqlI3R1RG8FVmeRFTgtdd2vAQYW4=;
-  b=pvgpjzTSF2e875SFX+RFxS53YyDygL5XJ7f0YTQaxb9olWn/TRAQeWdd
-   ekliJBwNpYcN6BcXbwny4KdFCjnDHFQXI14kNZaI284fTcraeAxdqDAXC
-   J52nSm30asTkSrLhYb517sHQXzAdtHnp/Zq8SO4UyTTxUYikr+jf4YYpu
-   c=;
-Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
-  by alexa-out.qualcomm.com with ESMTP; 23 Mar 2022 12:17:10 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2022 12:17:10 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 23 Mar 2022 12:16:53 -0700
-Received: from alokad-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 23 Mar 2022 12:16:53 -0700
-From:   Aloka Dixit <quic_alokad@quicinc.com>
-To:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
-CC:     Aloka Dixit <quic_alokad@quicinc.com>
-Subject: [PATCH v2 4/4] mac80211: reset puncturing bitmap during width downgrade
-Date:   Wed, 23 Mar 2022 12:16:40 -0700
-Message-ID: <20220323191640.31230-4-quic_alokad@quicinc.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220323191640.31230-1-quic_alokad@quicinc.com>
-References: <20220323191640.31230-1-quic_alokad@quicinc.com>
+        d=forshee.me; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7CUKoQqqtzrjMgIuYVrIVsqW153Ub0tNPj/H249Q6ig=;
+        b=FUK2t5UiH/LbhG0gnBokE7UeYtdE3PCNock02ICrHilTNWPQhDUE7rRKAu60Djit83
+         1FGr84X/6FrdSrFaqBCMgx1AfTA6Ol96kw6Ul7R74QDh8rvoJ+UeMdEcSIf097Y2gUnp
+         K0HKHystMRzFSWBt+HfEn+fkOZAIjjuzcoQZkYTRvT+OVYIkMSbvOu+piUARk9u+bS6K
+         Bbx4eG/iUy+p6o7gwDeX0lUNk6WoUVRtvxe68hJid4X7nXAICFvLFef7hOzr9wzSrDEj
+         co2BsPukhQ59j6e0WEmqpgLeBrekJeYHWKCV+PeLiOKXnIXZvbWrr0EyjObizFZmMoBO
+         pNAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7CUKoQqqtzrjMgIuYVrIVsqW153Ub0tNPj/H249Q6ig=;
+        b=fpNZgPTEQ4E8j+idI9X+UgjBbNr/vV4CxKx1cApZmTPruBo7Z1XSpZiaBJVQtCuNeh
+         5/UpjJv/gZV4dllk/zxeHKYsGpWMCRpYF/jSZe9Bhzbd7GFLJrrPKJCQWe/5t7axDim7
+         HKvmLSo13Ffq0AgfozE8LQyr8xEWm+iFHiQAoZepw72kcF56a+EcnH0Dp35UvzcQajbk
+         GizGuK+d2S1A4YrXAwFrOaoJ9EOyrVtE0HCfDmnx6rXvDC+t08NR1Zta/emzR93SGKGL
+         OTQJT456caMmSBSuR9OUaKar6mz4RVbd7G6L3Je3lxzZn2j3MaDfvomDhYtB6xUGKYwg
+         n7Mg==
+X-Gm-Message-State: AOAM5325eoZZhu/xbrfs/NXLdMrqmy9s07VDUaAUgRxrFpfR6zGMLdYp
+        C83m7cLc9qukO4ZUk/q637wjy+d3jvEsZA==
+X-Google-Smtp-Source: ABdhPJy/0eWpNEhcKMBMgvB26Tz1iKQhJ/yQ5omVMFFkbu9BuvpYBkQwFyiGuh+rIeQ2m070ghO7sw==
+X-Received: by 2002:a05:6870:3509:b0:dd:b3d8:115d with SMTP id k9-20020a056870350900b000ddb3d8115dmr773824oah.151.1648064496921;
+        Wed, 23 Mar 2022 12:41:36 -0700 (PDT)
+Received: from localhost ([2605:a601:ac0f:820:1106:a97c:b0a4:146a])
+        by smtp.gmail.com with ESMTPSA id k14-20020a056830168e00b005b22c20b195sm388565otr.45.2022.03.23.12.41.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Mar 2022 12:41:36 -0700 (PDT)
+From:   Seth Forshee <seth@forshee.me>
+X-Google-Original-From: Seth Forshee <sforshee@kernel.org>
+To:     wireless-regdb@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] wireless-regdb: add missing spaces for US S1G rules
+Date:   Wed, 23 Mar 2022 14:41:34 -0500
+Message-Id: <20220323194134.169332-1-sforshee@kernel.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Set the RU puncturing bitmap to 0 if for any reason bandwidth
-is downgraded to less than 80 Mhz.
+The rules lack spaces in the frequency range definition, which works
+find for building the database but causes problems for some external
+parsers. Add the missing spaces.
 
-Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+Signed-off-by: Seth Forshee <sforshee@kernel.org>
 ---
- net/mac80211/util.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ db.txt | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 682a164f795a..0dd7e8dae5a9 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -4135,6 +4135,13 @@ u32 ieee80211_chandef_downgrade(struct cfg80211_chan_def *c)
- 		break;
- 	}
- 
-+	if (c->width != NL80211_CHAN_WIDTH_320 &&
-+	    c->width != NL80211_CHAN_WIDTH_160 &&
-+	    c->width != NL80211_CHAN_WIDTH_80) {
-+		c->ru_punct_bitmap = 0;
-+		c->ru_punct_bitmap_supp_he = 0;
-+	}
-+
- 	WARN_ON_ONCE(!cfg80211_chandef_valid(c));
- 
- 	return ret;
+diff --git a/db.txt b/db.txt
+index d45ec082e7c4..5f2168d21222 100644
+--- a/db.txt
++++ b/db.txt
+@@ -1619,11 +1619,11 @@ country UG: DFS-FCC
+ # set out in 47 CFR § 15.205. TODO: reenable and specify a safe TX power here.
+ country US: DFS-FCC
+ 	# S1G Channel 1-3
+-	(902-904 @ 2), (30)
++	(902 - 904 @ 2), (30)
+ 	# S1G Channel 5-35
+-	(904-920 @ 16), (30)
++	(904 - 920 @ 16), (30)
+ 	# S1G Channel 37-51
+-	(920-928 @ 8), (30)
++	(920 - 928 @ 8), (30)
+ 	(2400 - 2472 @ 40), (30)
+ 	# 5.15 ~ 5.25 GHz: 30 dBm for master mode, 23 dBm for clients
+ 	(5150 - 5250 @ 80), (23), AUTO-BW
 -- 
-2.31.1
+2.32.0
 
