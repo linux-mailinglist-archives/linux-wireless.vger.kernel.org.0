@@ -2,73 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD2E54E523C
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Mar 2022 13:35:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26F924E52BF
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Mar 2022 14:05:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242110AbiCWMg3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Mar 2022 08:36:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51412 "EHLO
+        id S243896AbiCWNHU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Mar 2022 09:07:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231716AbiCWMg3 (ORCPT
+        with ESMTP id S243997AbiCWNHS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Mar 2022 08:36:29 -0400
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 699EA140A6
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 05:34:58 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1648038897; bh=ynLlvBFbAghLbTzC3nZ4wJLUSewy18DQiGfQ7N/C3iY=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=TgwfCq3bvWYz6sSN3v9q/RyWdLvND/J6AXiDbepeNIfKUaptEPc4znX696AQGqBq0
-         L6F3MkSxd7cxSgyKOYvRGIaGsB+XOw93ISz886W75BCXwv6EPfCLvmwtM5IV6jmYXH
-         KEBTODO8HbRrJ6je4FUHD/V+x8G2kviDnoLzwDo8drvYwW1F+w1jJjVjGV+n7GP3Iy
-         LyTotZ3kWI1Ug3bz1giQuZQCmtx6/4/qr6vpeT31nj5WIDP3bZTMP7IjAXS6k+DElf
-         636DU9XBbLYhGtYEl/HYGPu1raCwQ5H3AMhP97sElh3maCDB/V3cclMo+D3pfP3yC3
-         QYOY58DGxRh3Q==
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Wenli Looi <wlooi@ucalgary.ca>, linux-wireless@vger.kernel.org,
-        ath9k-devel@qca.qualcomm.com
-Subject: Re: [PATCH 4/6] ath9k: fix ar9003_get_eepmisc
-In-Reply-To: <87pmmckgnp.fsf@kernel.org>
-References: <20220320233010.123106-1-wlooi@ucalgary.ca>
- <20220320233010.123106-5-wlooi@ucalgary.ca>
- <8735j9vww4.fsf@tynnyri.adurom.net> <87v8w4api4.fsf@toke.dk>
- <87pmmckgnp.fsf@kernel.org>
-Date:   Wed, 23 Mar 2022 13:34:56 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87sfr8alu7.fsf@toke.dk>
+        Wed, 23 Mar 2022 09:07:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34F376E369
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 06:05:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B78EC615CF
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 13:05:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52772C340F2;
+        Wed, 23 Mar 2022 13:05:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648040748;
+        bh=tHsyjwpNSbihQ+nfFKQQGpXUDzivyStE32WHuyKcSTY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=KTfdSqDPJw314OiqtKVL4wQdxrmMsTF+8b/qF2Letd0fMr7ii9sdZI5yErd9YTuz1
+         DV72OeLZFWonHZwscLFH0gb/I9ZrdNsy1Y+FShMfcbjlPikOxch9FULiYeL/GXl5d9
+         Mwx6vHqorzWDVskSX8Zqh7k1tcV+YeB84Bi5OSRUYhAQwUVYLZFhzWm/ZV51VtzczD
+         O1yMEVPRX/YQJbFZ0Q3vOMJCv3gJRETyhurx3bis5AzIgecyvLgUPo0YdUoeXh+c0R
+         fEWT/nxgW81aOLTupNYHQvp8aFpSxBfygfpcsAxe3g95/WzXinYRnj0T3ADNsHLczE
+         Qt6Kr9DzPQZsQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v6 2/2] ath11k: add read variant from SMBIOS for download board data
+References: <20220315104721.26649-1-quic_wgong@quicinc.com>
+        <20220315104721.26649-3-quic_wgong@quicinc.com>
+        <87r16tkqbx.fsf@kernel.org>
+        <1c4230e0-f01e-0db1-af95-65aa2d3ac508@quicinc.com>
+Date:   Wed, 23 Mar 2022 15:05:42 +0200
+In-Reply-To: <1c4230e0-f01e-0db1-af95-65aa2d3ac508@quicinc.com> (Wen Gong's
+        message of "Wed, 23 Mar 2022 16:52:43 +0800")
+Message-ID: <87h77okee1.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+Wen Gong <quic_wgong@quicinc.com> writes:
 
-> Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
->
->> Kalle Valo <kvalo@kernel.org> writes:
+> On 3/23/2022 4:47 PM, Kalle Valo wrote:
+>> Wen Gong <quic_wgong@quicinc.com> writes:
 >>
->>> Wenli Looi <wlooi@ucalgary.ca> writes:
+>>> This is to read variant from SMBIOS such as read from DT, the variant
+>>> string will be used to one part of string which used to search board
+>>> data from board-2.bin.
 >>>
->>>> The current implementation is reading the wrong eeprom type.
->>>>
->>>> Fixes: d8ec2e ("ath9k: Add an eeprom_ops callback for retrieving
->>>> the eepmisc value")
->>>> Signed-off-by: Wenli Looi <wlooi@ucalgary.ca>
+>>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
 >>>
->>> The Fixes tag is wrong, I fixed it in the pending branch.
+>>> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+>> [...]
 >>
->> Ah, oops, my bad for not catching that; thanks for the fixup! :)
+>>> +struct ath11k_smbios_bdf {
+>>> +	struct dmi_header hdr;
+>>> +	u32 padding;
+>>> +	u8 bdf_enabled;
+>>> +	u8 bdf_ext[1];
+>>> +};
+>> I was about to commit this but noticed bdf_ext[1], is there a reason for
+>> that? Use of [1] in arrays is deprecated nowadays:
 >
-> No worries, I'm using Stephen's script which check that :)
+> Kalle,
+>
+> no reason for it, please change bdf_ext[1] to bdf_ext[0] or bdf_ext[].
+> It will also work well.
 
-Ah yes, I thought I recognised the format of the notice ;)
+[0] is deprecated as well so I changed it to [].
 
--Toke
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
