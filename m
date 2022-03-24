@@ -2,81 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 910D84E671E
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Mar 2022 17:35:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C6A54E6751
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Mar 2022 17:54:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229817AbiCXQhH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Mar 2022 12:37:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48858 "EHLO
+        id S1352038AbiCXQ4N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Mar 2022 12:56:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351726AbiCXQhC (ORCPT
+        with ESMTP id S1352043AbiCXQzq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Mar 2022 12:37:02 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E2B939AE
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Mar 2022 09:35:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1648139729; x=1679675729;
-  h=message-id:date:mime-version:subject:to:references:from:
-   in-reply-to:content-transfer-encoding;
-  bh=2J4PgJ1a5/7ztFT+xARxoHKZycXYJXqDU7KaePGH8Ug=;
-  b=BkBGlnXBFvIGXP2lmkYQDzKjC5FMPGXPdqiWO+MhKlVJMXJAUCyQukAB
-   wlvjVXMqUYSfi2quCv5cOyFo6TnH6rLzr4HiO1fMDrdWzIUXjnGT+0WnA
-   oalZGGRJRdLha2VvDdBDf8PEBg3TkzWusFkKOxXGedkqBIVHztyN6ezRK
-   I=;
-Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
-  by alexa-out.qualcomm.com with ESMTP; 24 Mar 2022 09:35:29 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2022 09:35:29 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Thu, 24 Mar 2022 09:35:29 -0700
-Received: from [10.111.183.2] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Thu, 24 Mar
- 2022 09:35:28 -0700
-Message-ID: <224a3fb3-df3f-7da3-8130-416a80f116f3@quicinc.com>
-Date:   Thu, 24 Mar 2022 09:35:27 -0700
+        Thu, 24 Mar 2022 12:55:46 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AAB55B7156;
+        Thu, 24 Mar 2022 09:52:38 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 39B06D6E;
+        Thu, 24 Mar 2022 09:52:38 -0700 (PDT)
+Received: from [10.57.41.19] (unknown [10.57.41.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6D3993F73B;
+        Thu, 24 Mar 2022 09:52:35 -0700 (PDT)
+Message-ID: <d8a1cbf4-a521-78ec-1560-28d855e0913e@arm.com>
+Date:   Thu, 24 Mar 2022 16:52:31 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH v2 2/4] cfg80211: validate RU puncturing bitmap
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-References: <20220323191640.31230-1-quic_alokad@quicinc.com>
- <20220323191640.31230-2-quic_alokad@quicinc.com>
- <1b1976bd936be8530cac9a55726382450f691e3f.camel@sipsolutions.net>
-From:   Aloka Dixit <quic_alokad@quicinc.com>
-In-Reply-To: <1b1976bd936be8530cac9a55726382450f691e3f.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
+ ath9k-based AP
+Content-Language: en-GB
+To:     Christoph Hellwig <hch@lst.de>, Maxime Bizon <mbizon@freebox.fr>
+Cc:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Olha Cherevyk <olha.cherevyk@gmail.com>,
+        iommu <iommu@lists.linux-foundation.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable <stable@vger.kernel.org>
+References: <1812355.tdWV9SEqCh@natalenko.name>
+ <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
+ <20220324055732.GB12078@lst.de> <4386660.LvFx2qVVIh@natalenko.name>
+ <81ffc753-72aa-6327-b87b-3f11915f2549@arm.com> <878rsza0ih.fsf@toke.dk>
+ <4be26f5d8725cdb016c6fdd9d05cfeb69cdd9e09.camel@freebox.fr>
+ <20220324163132.GB26098@lst.de>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <20220324163132.GB26098@lst.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/24/2022 3:37 AM, Johannes Berg wrote:
+On 2022-03-24 16:31, Christoph Hellwig wrote:
+> On Thu, Mar 24, 2022 at 05:29:12PM +0100, Maxime Bizon wrote:
+>>> I'm looking into this; but in the interest of a speedy resolution of
+>>> the regression I would be in favour of merging that partial revert
+>>> and reinstating it if/when we identify (and fix) any bugs in ath9k :)
+>>
+>> This looks fishy:
+>>
+>> ath9k/recv.c
+>>
+>>                  /* We will now give hardware our shiny new allocated skb */
+>>                  new_buf_addr = dma_map_single(sc->dev, requeue_skb->data,
+>>                                                common->rx_bufsize, dma_type);
+>>                  if (unlikely(dma_mapping_error(sc->dev, new_buf_addr))) {
+>>                          dev_kfree_skb_any(requeue_skb);
+>>                          goto requeue_drop_frag;
+>>                  }
+>>
+>>                  /* Unmap the frame */
+>>                  dma_unmap_single(sc->dev, bf->bf_buf_addr,
+>>                                   common->rx_bufsize, dma_type);
+>>
+>>                  bf->bf_mpdu = requeue_skb;
+>>                  bf->bf_buf_addr = new_buf_addr;
 > 
-> (and also, you included all kinds of random other things in these
-> patches, specifically in nl80211.h, so there's no way I can apply them
-> as is anyway)
-> 
+> Creating a new mapping for the same buffer before unmapping the
+> previous one does looks rather bogus.  But it does not fit the
+> pattern where revering the sync_single changes make the driver
+> work again.
 
-I had added the other nl80211 parts to match local user-space
-nl80211 order during testing, forgot to take it out.
+OK, you made me look :)
 
-Let's discuss once your client side version is sent out.
+Now that it's obvious what to look for, I can only conclude that during 
+the stanza in ath_edma_get_buffers(), the device is still writing to the 
+buffer while ownership has been transferred to the CPU, and whatever got 
+written while ath9k_hw_process_rxdesc_edma() was running then gets wiped 
+out by the subsequent sync_for_device, which currently resets the 
+SWIOTLB slot to the state that sync_for_cpu copied out. By the letter of 
+the DMA API that's not allowed, but on the other hand I'm not sure if we 
+even have a good idiom for "I can't tell if the device has finished with 
+this buffer or not unless I look at it" :/
 
-Thanks.
+Robin.
