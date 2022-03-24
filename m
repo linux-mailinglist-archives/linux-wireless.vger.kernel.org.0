@@ -2,112 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AD3C4E6685
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Mar 2022 16:59:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 540874E6724
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Mar 2022 17:39:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239938AbiCXQAn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Mar 2022 12:00:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60078 "EHLO
+        id S1351705AbiCXQkw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Mar 2022 12:40:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351640AbiCXQAW (ORCPT
+        with ESMTP id S239263AbiCXQkv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Mar 2022 12:00:22 -0400
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6665BB0A4F;
-        Thu, 24 Mar 2022 08:58:25 -0700 (PDT)
-Received: by mail-oi1-x22c.google.com with SMTP id q189so5288156oia.9;
-        Thu, 24 Mar 2022 08:58:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=5/1n/yQL0PaM9gpjD8BL74vTTmyMhMnVzexUmrmhuJo=;
-        b=Xd02s76ifoRZYHgxVZVoGj7o32xaP8PYrWtiLUWFsLaid3Xe+Zg4MvqlbbeUF3XWJy
-         H1YsQvMOBj8Nqb1t0dXT4JKGp8mOaBbGUBbn1YBDIOaIQxb56dP1OCQvqz/Uj6VkdDIH
-         2uTUcFwYNXNlH1ggTs2KnooZD7ZK2k1TtK93J5u4zT2LWYdA+3eL9KCA4XYjf6JRS1BB
-         1kYs3JjyQu3kiibLECkxEGK/oTg/5uydV0Pd9EsUMj4NDr7S/Mi6Zrr04wEwL125Gfd8
-         3NERsTPTYs9Xl09XzBeDK3pLH8lZ/FQ/Zq/zAb7fq+otxeovbtX8wd5CPDBDWF3ozAhK
-         8fuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=5/1n/yQL0PaM9gpjD8BL74vTTmyMhMnVzexUmrmhuJo=;
-        b=8GKLsREIorNVIWNebH0th747OL9TXgpOGXBIwy4CbKezwsIK5hts9R6cr1aeckKf9y
-         7QfXpGAcnNn2m0C+wvdqxqFoqNT0AZJuBm7uofk6v0mT6kI0waFWZkFd614KDeV9rFS/
-         MRz8UMMt9T37v7Vhy2alO3TxKpP4ktfQMyfEgdrymmJ8B7mkkshFAejl11ubrQlf/np1
-         wjS36aN3RfS6mQ11/r9WiW3Kl9AR166+dsUbgo2kJKqtKafPWqyfJgkbJnPwXIfBy+/6
-         Y1JD+2W4ecAv1SVmR6+2fLx2K4cQ+Wync0jON8aDepjGvULP/SA/eYCHr2fY4F5m6UD0
-         8AiA==
-X-Gm-Message-State: AOAM531hagjKdF7+9+8lnRTjnzDdBXhvgpzocJtW/JcrnHklcik5za61
-        dv5+gUPApCVHiUqCS8Lc5euXxAziktc=
-X-Google-Smtp-Source: ABdhPJx9Wki8uy2EDKrx8/rZ1eDeCsTF58VIL/O8LGICSDDrdUITcqbIF4jleblqxMIHXjrqPiNqYA==
-X-Received: by 2002:aca:e102:0:b0:2d9:bdc6:b2e7 with SMTP id y2-20020acae102000000b002d9bdc6b2e7mr3108149oig.128.1648137504681;
-        Thu, 24 Mar 2022 08:58:24 -0700 (PDT)
-Received: from ?IPV6:2603:8090:2005:39b3::1084? (2603-8090-2005-39b3-0000-0000-0000-1084.res6.spectrum.com. [2603:8090:2005:39b3::1084])
-        by smtp.gmail.com with ESMTPSA id m3-20020a4ae3c3000000b00320d7c78b01sm1403252oov.20.2022.03.24.08.58.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Mar 2022 08:58:23 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <d7e3752e-0aad-e247-3708-41f7aba8248c@lwfinger.net>
-Date:   Thu, 24 Mar 2022 10:58:22 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH V2] wireless: broadcom: b43legacy: Fix assigning negative
- value to unsigned variable
-Content-Language: en-US
-To:     Haowen Bai <baihaowen@meizu.com>, kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <1648109173-28403-1-git-send-email-baihaowen@meizu.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <1648109173-28403-1-git-send-email-baihaowen@meizu.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        Thu, 24 Mar 2022 12:40:51 -0400
+X-Greylist: delayed 603 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 24 Mar 2022 09:39:17 PDT
+Received: from ns.iliad.fr (ns.iliad.fr [212.27.33.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A088843AD9;
+        Thu, 24 Mar 2022 09:39:17 -0700 (PDT)
+Received: from ns.iliad.fr (localhost [127.0.0.1])
+        by ns.iliad.fr (Postfix) with ESMTP id 7668D208CF;
+        Thu, 24 Mar 2022 17:29:12 +0100 (CET)
+Received: from sakura (freebox.vlq16.iliad.fr [213.36.7.13])
+        by ns.iliad.fr (Postfix) with ESMTP id 6FAA6208C9;
+        Thu, 24 Mar 2022 17:29:12 +0100 (CET)
+Message-ID: <4be26f5d8725cdb016c6fdd9d05cfeb69cdd9e09.camel@freebox.fr>
+Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
+ ath9k-based AP
+From:   Maxime Bizon <mbizon@freebox.fr>
+Reply-To: mbizon@freebox.fr
+To:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Christoph Hellwig <hch@lst.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Olha Cherevyk <olha.cherevyk@gmail.com>,
+        iommu <iommu@lists.linux-foundation.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable <stable@vger.kernel.org>
+Date:   Thu, 24 Mar 2022 17:29:12 +0100
+In-Reply-To: <878rsza0ih.fsf@toke.dk>
+References: <1812355.tdWV9SEqCh@natalenko.name>
+         <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
+         <20220324055732.GB12078@lst.de> <4386660.LvFx2qVVIh@natalenko.name>
+         <81ffc753-72aa-6327-b87b-3f11915f2549@arm.com> <878rsza0ih.fsf@toke.dk>
+Organization: Freebox
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ; Thu Mar 24 17:29:12 2022 +0100 (CET)
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/24/22 03:06, Haowen Bai wrote:
-> fix warning reported by smatch:
-> drivers/net/wireless/broadcom/b43legacy/phy.c:1181 b43legacy_phy_lo_b_measure()
-> warn: assigning (-772) to unsigned variable 'fval'
+
+On Thu, 2022-03-24 at 15:27 +0100, Toke Høiland-Jørgensen wrote:
+
 > 
-> Signed-off-by: Haowen Bai <baihaowen@meizu.com>
+> I'm looking into this; but in the interest of a speedy resolution of
+> the regression I would be in favour of merging that partial revert
+> and reinstating it if/when we identify (and fix) any bugs in ath9k :)
 
-This change makes no change to the executable code, but as long as it makes 
-smatch happy -
+This looks fishy:
 
-Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
+ath9k/recv.c
 
-Larry
+                /* We will now give hardware our shiny new allocated skb */
+                new_buf_addr = dma_map_single(sc->dev, requeue_skb->data,
+                                              common->rx_bufsize, dma_type);
+                if (unlikely(dma_mapping_error(sc->dev, new_buf_addr))) {
+                        dev_kfree_skb_any(requeue_skb);
+                        goto requeue_drop_frag;
+                }
 
-> ---
-> V1->V2: modify title of this patch
->   drivers/net/wireless/broadcom/b43legacy/phy.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/b43legacy/phy.c b/drivers/net/wireless/broadcom/b43legacy/phy.c
-> index 05404fb..c1395e6 100644
-> --- a/drivers/net/wireless/broadcom/b43legacy/phy.c
-> +++ b/drivers/net/wireless/broadcom/b43legacy/phy.c
-> @@ -1123,7 +1123,7 @@ void b43legacy_phy_lo_b_measure(struct b43legacy_wldev *dev)
->   	struct b43legacy_phy *phy = &dev->phy;
->   	u16 regstack[12] = { 0 };
->   	u16 mls;
-> -	u16 fval;
-> +	s16 fval;
->   	int i;
->   	int j;
->   
+                /* Unmap the frame */
+                dma_unmap_single(sc->dev, bf->bf_buf_addr,
+                                 common->rx_bufsize, dma_type);
+
+                bf->bf_mpdu = requeue_skb;
+                bf->bf_buf_addr = new_buf_addr;
+
+-- 
+Maxime
+
+
 
