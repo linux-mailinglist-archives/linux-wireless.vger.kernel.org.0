@@ -2,75 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9110F4E5F27
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Mar 2022 08:12:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D6944E5F44
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Mar 2022 08:22:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347537AbiCXHOW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Mar 2022 03:14:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33200 "EHLO
+        id S1348487AbiCXHYT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Mar 2022 03:24:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237660AbiCXHOV (ORCPT
+        with ESMTP id S242325AbiCXHYT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Mar 2022 03:14:21 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F74298589;
-        Thu, 24 Mar 2022 00:12:49 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id b24so4504152edu.10;
-        Thu, 24 Mar 2022 00:12:49 -0700 (PDT)
+        Thu, 24 Mar 2022 03:24:19 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FB1B985AF;
+        Thu, 24 Mar 2022 00:22:47 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id r13so7315210ejd.5;
+        Thu, 24 Mar 2022 00:22:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=lEWXgJkZ9YkjxmIKVgLVKeUu8IQ302XTSv9LN9G/J+k=;
-        b=W+gG8BokMRYHEkCN2M8homaBABnxT8olVNZHC7zntI4rmt4fe6Qx3dOEHrDyJdQG4r
-         VoRgu+wCqprKXvRR8s74QmWRmxhYNJQ5mh7KUyYrJtYtHkrNutcJhfudYF2NOcuwXIMF
-         XqLR2zgQ3W/QK2U0fBDJSmBDU/C/DggMVKPs5FYtQikZHfDD2gUcQSiGBqR+QOtEATuk
-         7M6cyM9j/5otM+mzv1G5El10T52y4NXs4hUSCDNSZnzXZKC4R00sJBYnSBKmYlSQcASC
-         hj1TNRwt7VjnmLZB85iQ9989a1m9DiXRRDQIyQeVkq3G0YrdP41Ew0esEY01s5bshVHk
-         zU2A==
+        bh=k6M1gtBhcLwqQhb+6I8nGgl3IyuB311pIjZdGukijdI=;
+        b=L4IX3OwTZxUxrNhktlXcbxAakQfTvK2MJI+NKsQsKmxHywc5E5OpaiPdrGSpqXwGbY
+         TLhQIHemuM/TMwUjD0cLJcNJY2/O9RnmQlwOEKARWNWUFAKnz15/3QCMgQ08hblJ4Ci1
+         74tRnVeF6AkwQ8wZjq5nh2BZFDuj4cgokhTxRdVywRTOYNzjgefnoBLMFe/Bx6E9FVLw
+         cYDh7FDOQIWLktc8w0zc6I/XOeh2sItjkXVbH/aNbMAVMKsmU4518cKP/3ubA8kegvjc
+         r2g6MwwqUilEmJmuwpXxvIgIk0dc+NXsYKKXmITjriQwHPff6yMs0D+JWkOG95OB8MuU
+         sXLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=lEWXgJkZ9YkjxmIKVgLVKeUu8IQ302XTSv9LN9G/J+k=;
-        b=kji1/2B/sT0/3Hp+IOq9nWw4BBUzIbsh+LSw05ymgUbpQF4seLxLyh3cxxTdnbhFQP
-         yvyRPl8wamIDG+OY1Xwt3vfYKtqGv6pYojfL5pWtgNLbH/JrXLYdY2AXCDzYfldx+UhH
-         VfIgZlWIifvIpSIk8n1h9lqvcKBkJ671z32d9BMXWvivUjKQzSqQZUlSAzti8HH/DOhD
-         3wMKffUv+RbygFIYlg7/y7t24gjuOOhC0eKXPP78TsQa8XiAurPm3g5u/sMSOMURn56S
-         1ZkOK6ePxz06xKJ007yfg2mlmPEEVJIy65Lfn+T/GksV+2q2YKtuISv1nmTEAz6MDQwH
-         dWSg==
-X-Gm-Message-State: AOAM530KECHQXlNb+kzmpjMFURzl/nLTfxaRkttWhwBFSD7QScssoRNv
-        y4MGcXkq1Jt01TJ/cH0kJR0=
-X-Google-Smtp-Source: ABdhPJxqxODbVuYI/M8Rfky4+i8CZnMy/P+h+yDMWA72ydylMCAAGrYl2qjH/DkP6+2Lj3ch+BMpQg==
-X-Received: by 2002:a50:875c:0:b0:419:29a:4c35 with SMTP id 28-20020a50875c000000b00419029a4c35mr5020387edv.188.1648105968150;
-        Thu, 24 Mar 2022 00:12:48 -0700 (PDT)
+        bh=k6M1gtBhcLwqQhb+6I8nGgl3IyuB311pIjZdGukijdI=;
+        b=n05Pr6worbl4pwvRhRWYd1RTjXlXu66+WZVppsRGiFfdXjtxQfbckUlJJi8Aa9tk8L
+         SuUBCKaWVNt2X+h/vXLExJNwrI8lVChcZer0Ei/VXCvWsi8/KC38EqQb1Jzr+IpBQB2b
+         CqcWZXppQZ2BgLlpUfRtbvnD7aF0ASbUw4OJQRyP88QEwfzj88nxTeUyCH0RwkNQd2Ld
+         oUczV61cLXc8dFWDihZVWmgaMsUBjPM6NadbXTbHgS5nmaWJ2aFv7mZAuXt9QjORYcM+
+         bcEOwREY8ErTD2DCOYHDCf7mKRHij96C6V75uU2DGdpMx0J17ZPcGOk3xe5Rj/j9JXWr
+         pDDA==
+X-Gm-Message-State: AOAM530CtduJH6nAmjiqQQogW+JZBWHvuZKJTe9D73Izmsm//QqmS+i/
+        EMuZY5fgV+FEXiYa2F+1deI=
+X-Google-Smtp-Source: ABdhPJwIp/xzeJPmwR1G32bIVCIfFh55Pl6gao8TcaC0AZAsDGrk5eDexTV6HfibDkyOdUhWcNsYEQ==
+X-Received: by 2002:a17:907:97c5:b0:6da:c285:44f5 with SMTP id js5-20020a17090797c500b006dac28544f5mr4169179ejc.208.1648106566094;
+        Thu, 24 Mar 2022 00:22:46 -0700 (PDT)
 Received: from localhost.localdomain (i130160.upc-i.chello.nl. [62.195.130.160])
-        by smtp.googlemail.com with ESMTPSA id j17-20020a05640211d100b00419357a2647sm1032369edw.25.2022.03.24.00.12.47
+        by smtp.googlemail.com with ESMTPSA id i11-20020a05640242cb00b0041922d3ce3bsm1071532edc.26.2022.03.24.00.22.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Mar 2022 00:12:47 -0700 (PDT)
+        Thu, 24 Mar 2022 00:22:45 -0700 (PDT)
 From:   Jakob Koschel <jakobkoschel@gmail.com>
-To:     Luca Coelho <luciano.coelho@intel.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
 Cc:     Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        Avraham Stern <avraham.stern@intel.com>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Shaul Triebitz <shaul.triebitz@intel.com>,
-        Ilan Peer <ilan.peer@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Sara Sharon <sara.sharon@intel.com>,
-        Nathan Errera <nathan.errera@intel.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
         "Brian Johannesmeyer" <bjohannesmeyer@gmail.com>,
         Cristiano Giuffrida <c.giuffrida@vu.nl>,
         "Bos, H.J." <h.j.bos@vu.nl>, Jakob Koschel <jakobkoschel@gmail.com>
-Subject: [PATCH] iwlwifi: mvm: replace usage of found with dedicated list iterator variable
-Date:   Thu, 24 Mar 2022 08:11:58 +0100
-Message-Id: <20220324071158.60032-1-jakobkoschel@gmail.com>
+Subject: [PATCH] rtlwifi: replace usage of found with dedicated list iterator variable
+Date:   Thu, 24 Mar 2022 08:21:24 +0100
+Message-Id: <20220324072124.62458-1-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -98,73 +89,94 @@ the variable was set, can determine if the break/goto was hit.
 Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/
 Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/ftm-initiator.c   | 12 +++++-------
- drivers/net/wireless/intel/iwlwifi/mvm/time-event.c  | 11 +++++------
- 2 files changed, 10 insertions(+), 13 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/base.c | 13 ++++++-------
+ drivers/net/wireless/realtek/rtlwifi/pci.c  | 15 +++++++--------
+ 2 files changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-index 628aee634b2a..67a03fcde759 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-@@ -1011,11 +1011,10 @@ static int iwl_mvm_ftm_range_resp_valid(struct iwl_mvm *mvm, u8 request_id,
- static void iwl_mvm_ftm_rtt_smoothing(struct iwl_mvm *mvm,
- 				      struct cfg80211_pmsr_result *res)
- {
--	struct iwl_mvm_smooth_entry *resp;
-+	struct iwl_mvm_smooth_entry *resp = NULL, *iter;
- 	s64 rtt_avg, rtt = res->ftm.rtt_avg;
- 	u32 undershoot, overshoot;
- 	u8 alpha;
--	bool found;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
+index ffd150ec181f..a7ef84f55939 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/base.c
++++ b/drivers/net/wireless/realtek/rtlwifi/base.c
+@@ -1994,8 +1994,7 @@ void rtl_collect_scan_list(struct ieee80211_hw *hw, struct sk_buff *skb)
+ 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+ 	unsigned long flags;
  
- 	if (!IWL_MVM_FTM_INITIATOR_ENABLE_SMOOTH)
- 		return;
-@@ -1029,15 +1028,14 @@ static void iwl_mvm_ftm_rtt_smoothing(struct iwl_mvm *mvm,
- 		return;
- 	}
+-	struct rtl_bssid_entry *entry;
+-	bool entry_found = false;
++	struct rtl_bssid_entry *entry = NULL, *iter;
  
--	found = false;
--	list_for_each_entry(resp, &mvm->ftm_initiator.smooth.resp, list) {
--		if (!memcmp(res->addr, resp->addr, ETH_ALEN)) {
--			found = true;
-+	list_for_each_entry(iter, &mvm->ftm_initiator.smooth.resp, list) {
-+		if (!memcmp(res->addr, iter->addr, ETH_ALEN)) {
-+			resp = iter;
- 			break;
+ 	/* check if it is scanning */
+ 	if (!mac->act_scanning)
+@@ -2008,10 +2007,10 @@ void rtl_collect_scan_list(struct ieee80211_hw *hw, struct sk_buff *skb)
+ 
+ 	spin_lock_irqsave(&rtlpriv->locks.scan_list_lock, flags);
+ 
+-	list_for_each_entry(entry, &rtlpriv->scan_list.list, list) {
+-		if (memcmp(entry->bssid, hdr->addr3, ETH_ALEN) == 0) {
+-			list_del_init(&entry->list);
+-			entry_found = true;
++	list_for_each_entry(iter, &rtlpriv->scan_list.list, list) {
++		if (memcmp(iter->bssid, hdr->addr3, ETH_ALEN) == 0) {
++			list_del_init(&iter->list);
++			entry = iter;
+ 			rtl_dbg(rtlpriv, COMP_SCAN, DBG_LOUD,
+ 				"Update BSSID=%pM to scan list (total=%d)\n",
+ 				hdr->addr3, rtlpriv->scan_list.num);
+@@ -2019,7 +2018,7 @@ void rtl_collect_scan_list(struct ieee80211_hw *hw, struct sk_buff *skb)
  		}
  	}
  
--	if (!found) {
-+	if (!resp) {
- 		resp = kzalloc(sizeof(*resp), GFP_KERNEL);
- 		if (!resp)
- 			return;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-index ab06dcda1462..98e91231cc20 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-@@ -377,16 +377,15 @@ static void iwl_mvm_te_handle_notif(struct iwl_mvm *mvm,
- static int iwl_mvm_aux_roc_te_handle_notif(struct iwl_mvm *mvm,
- 					   struct iwl_time_event_notif *notif)
- {
--	struct iwl_mvm_time_event_data *te_data, *tmp;
--	bool aux_roc_te = false;
-+	struct iwl_mvm_time_event_data *te_data = NULL, *iter, *tmp;
+-	if (!entry_found) {
++	if (!entry) {
+ 		entry = kmalloc(sizeof(*entry), GFP_ATOMIC);
  
--	list_for_each_entry_safe(te_data, tmp, &mvm->aux_roc_te_list, list) {
--		if (le32_to_cpu(notif->unique_id) == te_data->uid) {
--			aux_roc_te = true;
-+	list_for_each_entry_safe(iter, tmp, &mvm->aux_roc_te_list, list) {
-+		if (le32_to_cpu(notif->unique_id) == iter->uid) {
-+			te_data = iter;
- 			break;
+ 		if (!entry)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index ad327bae754b..8e4c15654746 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -323,14 +323,13 @@ static bool rtl_pci_check_buddy_priv(struct ieee80211_hw *hw,
+ {
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+ 	struct rtl_pci_priv *pcipriv = rtl_pcipriv(hw);
+-	bool find_buddy_priv = false;
+-	struct rtl_priv *tpriv;
++	struct rtl_priv *tpriv = NULL, *iter;
+ 	struct rtl_pci_priv *tpcipriv = NULL;
+ 
+ 	if (!list_empty(&rtlpriv->glb_var->glb_priv_list)) {
+-		list_for_each_entry(tpriv, &rtlpriv->glb_var->glb_priv_list,
++		list_for_each_entry(iter, &rtlpriv->glb_var->glb_priv_list,
+ 				    list) {
+-			tpcipriv = (struct rtl_pci_priv *)tpriv->priv;
++			tpcipriv = (struct rtl_pci_priv *)iter->priv;
+ 			rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
+ 				"pcipriv->ndis_adapter.funcnumber %x\n",
+ 				pcipriv->ndis_adapter.funcnumber);
+@@ -344,19 +343,19 @@ static bool rtl_pci_check_buddy_priv(struct ieee80211_hw *hw,
+ 			    tpcipriv->ndis_adapter.devnumber &&
+ 			    pcipriv->ndis_adapter.funcnumber !=
+ 			    tpcipriv->ndis_adapter.funcnumber) {
+-				find_buddy_priv = true;
++				tpriv = iter;
+ 				break;
+ 			}
  		}
  	}
--	if (!aux_roc_te) /* Not a Aux ROC time event */
-+	if (!te_data) /* Not a Aux ROC time event */
- 		return -EINVAL;
  
- 	iwl_mvm_te_check_trigger(mvm, notif, te_data);
+ 	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
+-		"find_buddy_priv %d\n", find_buddy_priv);
++		"find_buddy_priv %d\n", tpriv != NULL);
+ 
+-	if (find_buddy_priv)
++	if (tpriv)
+ 		*buddy_priv = tpriv;
+ 
+-	return find_buddy_priv;
++	return tpriv != NULL;
+ }
+ 
+ static void rtl_pci_get_linkcontrol_field(struct ieee80211_hw *hw)
 
 base-commit: f443e374ae131c168a065ea1748feac6b2e76613
 -- 
