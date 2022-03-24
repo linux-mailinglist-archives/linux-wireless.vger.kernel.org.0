@@ -2,121 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E65364E5C6E
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Mar 2022 01:49:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D59114E5CAD
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Mar 2022 02:19:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346869AbiCXAut (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Mar 2022 20:50:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33266 "EHLO
+        id S241714AbiCXBUp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Mar 2022 21:20:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230220AbiCXAus (ORCPT
+        with ESMTP id S230416AbiCXBUp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Mar 2022 20:50:48 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B31E90FDF
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 17:49:13 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22O0n3rnD026454, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22O0n3rnD026454
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 24 Mar 2022 08:49:03 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Thu, 24 Mar 2022 08:49:03 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 24 Mar
- 2022 08:49:03 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] mac80211: consider Order bit to fill CCMP AAD
-Date:   Thu, 24 Mar 2022 08:48:16 +0800
-Message-ID: <20220324004816.6202-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 23 Mar 2022 21:20:45 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99AC692872
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Mar 2022 18:19:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1648084755; x=1679620755;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=aZaxFGN7wIInQGry0NnfGJUmQpkaYS5NdcbjHX9xLOI=;
+  b=zM8Dw4r3qxUqExaDdSY7Q3/S/yW+dkFtq1wRzS3wrL5S63nmkyt4CMmD
+   lGZnQUcBZwn4kOUw16vvOQpvR0G6FJvBojMHBggBrOWRT4F2BdJ+loMIR
+   T0jG6QpbGcfXMkP+7lO81x4t6odIsxnpHgndNMn9l0bJeVwaFXlIxlfVZ
+   0=;
+Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
+  by alexa-out.qualcomm.com with ESMTP; 23 Mar 2022 18:19:14 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2022 18:19:14 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 23 Mar 2022 18:19:13 -0700
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 23 Mar 2022 18:19:12 -0700
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH v2] ath11k: store and send country code to firmware after recovery
+Date:   Wed, 23 Mar 2022 21:18:56 -0400
+Message-ID: <20220324011856.11014-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 03/24/2022 00:32:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMjMgpFWkyCAxMDowMDowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Follow IEEE 802.11-21 that HTC subfield masked to 0 for all data frames
-containing a QoS Control field. It also defines the AAD length depends on
-QC and A4 fields, so change logic to determine length accordingly.
+Currently ath11k does not send the country code to firmware after device
+recovery, as a result the regdomain info is reported from firmware by
+default. Regdomain info is important, so ath11k also need to restore
+it to the value which was used before recovery.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 ---
- net/mac80211/wpa.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+v2: rebased to ath.git ath-202203230912
 
-diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
-index 7ed0d268aff2f..cd35ae76d5b78 100644
---- a/net/mac80211/wpa.c
-+++ b/net/mac80211/wpa.c
-@@ -317,13 +317,12 @@ static void ccmp_special_blocks(struct sk_buff *skb, u8 *pn, u8 *b_0, u8 *aad)
- 	__le16 mask_fc;
- 	int a4_included, mgmt;
- 	u8 qos_tid;
--	u16 len_a;
--	unsigned int hdrlen;
-+	u16 len_a = 22;
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ drivers/net/wireless/ath/ath11k/core.c | 1 +
+ drivers/net/wireless/ath/ath11k/core.h | 1 +
+ drivers/net/wireless/ath/ath11k/mac.c  | 8 ++++++++
+ drivers/net/wireless/ath/ath11k/reg.c  | 1 +
+ 4 files changed, 11 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 9cfba73b9e22..5243bd0aadb3 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1300,6 +1300,7 @@ static void ath11k_update_11d(struct work_struct *work)
+ 		pdev = &ab->pdevs[i];
+ 		ar = pdev->ar;
  
- 	/*
- 	 * Mask FC: zero subtype b4 b5 b6 (if not mgmt)
--	 * Retry, PwrMgt, MoreData; set Protected
-+	 * Retry, PwrMgt, MoreData, Order (if Qos Data); set Protected
++		memcpy(&ar->alpha2, &set_current_param.alpha2, 2);
+ 		ret = ath11k_wmi_send_set_current_country_cmd(ar, &set_current_param);
+ 		if (ret)
+ 			ath11k_warn(ar->ab,
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 70eb6e418422..a23812617298 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -651,6 +651,7 @@ struct ath11k {
+ 	int hw_rate_code;
+ 	u8 twt_enabled;
+ 	bool nlo_enabled;
++	u8 alpha2[REG_ALPHA2_LEN + 1];
+ };
+ 
+ struct ath11k_band_cap {
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 34a62933ccd2..9c25c60587ae 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -7951,6 +7951,14 @@ ath11k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
+ 		ar->state = ATH11K_STATE_ON;
+ 		ieee80211_wake_queues(ar->hw);
+ 
++		if (ar->ab->hw_params.current_cc_support &&
++		    ar->alpha2[0] != 0 && ar->alpha2[1] != 0) {
++			struct wmi_set_current_country_params set_current_param = {};
++
++			memcpy(&set_current_param.alpha2, ar->alpha2, 2);
++			ath11k_wmi_send_set_current_country_cmd(ar, &set_current_param);
++		}
++
+ 		if (ab->is_reset) {
+ 			recovery_count = atomic_inc_return(&ab->recovery_count);
+ 			ath11k_dbg(ab, ATH11K_DBG_BOOT,
+diff --git a/drivers/net/wireless/ath/ath11k/reg.c b/drivers/net/wireless/ath/ath11k/reg.c
+index 81e11cde31d7..35eb1a0c04dc 100644
+--- a/drivers/net/wireless/ath/ath11k/reg.c
++++ b/drivers/net/wireless/ath/ath11k/reg.c
+@@ -83,6 +83,7 @@ ath11k_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request)
  	 */
- 	mgmt = ieee80211_is_mgmt(hdr->frame_control);
- 	mask_fc = hdr->frame_control;
-@@ -333,14 +332,17 @@ static void ccmp_special_blocks(struct sk_buff *skb, u8 *pn, u8 *b_0, u8 *aad)
- 		mask_fc &= ~cpu_to_le16(0x0070);
- 	mask_fc |= cpu_to_le16(IEEE80211_FCTL_PROTECTED);
- 
--	hdrlen = ieee80211_hdrlen(hdr->frame_control);
--	len_a = hdrlen - 2;
- 	a4_included = ieee80211_has_a4(hdr->frame_control);
-+	if (a4_included)
-+		len_a += 6;
- 
--	if (ieee80211_is_data_qos(hdr->frame_control))
-+	if (ieee80211_is_data_qos(hdr->frame_control)) {
- 		qos_tid = ieee80211_get_tid(hdr);
--	else
-+		mask_fc &= ~cpu_to_le16(IEEE80211_FCTL_ORDER);
-+		len_a += 2;
-+	} else {
- 		qos_tid = 0;
-+	}
- 
- 	/* In CCM, the initial vectors (IV) used for CTR mode encryption and CBC
- 	 * mode authentication are not allowed to collide, yet both are derived
+ 	if (ar->ab->hw_params.current_cc_support) {
+ 		memcpy(&set_current_param.alpha2, request->alpha2, 2);
++		memcpy(&ar->alpha2, &set_current_param.alpha2, 2);
+ 		ret = ath11k_wmi_send_set_current_country_cmd(ar, &set_current_param);
+ 		if (ret)
+ 			ath11k_warn(ar->ab,
+
+base-commit: d3dc55a0ce389be715ac7d104ee2cc852681e8d1
 -- 
-2.25.1
+2.31.1
 
