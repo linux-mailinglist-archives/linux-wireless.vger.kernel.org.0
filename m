@@ -2,76 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C76F74E7BE2
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:21:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56A5E4E7BD7
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:21:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229693AbiCYT0n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 15:26:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58148 "EHLO
+        id S229684AbiCYT1T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 15:27:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229643AbiCYT0T (ORCPT
+        with ESMTP id S229670AbiCYT0z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 15:26:19 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5708A2A1284
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 11:58:51 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id c15so11467122ljr.9
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 11:58:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gljIlYXXpBBHbzRdornYZ4fw3jcv11aVW7PwNEPzJZQ=;
-        b=Ii2GPivqxQ2ddlxdamEhnLuCB7pfEZti2yKg70Bu00oB1TmGoLi9mmcYJjffLMgr7M
-         kO6nzHq/i07S3UkaqTeRHaZx6aM4PAZtnbT71SCPe4jEAxpBzhOPO14QdcWfKG0/keb9
-         Rp7c48ZnU1d+fvcLBcoGkqAn/OeN51HLRkwCE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gljIlYXXpBBHbzRdornYZ4fw3jcv11aVW7PwNEPzJZQ=;
-        b=Il3dZuPuF4NRG1FzfyOxFcrFgG42zWSj3GCgWKNJr4j2O5GdfpejrIfntMnpR7MwY3
-         2TKeoNvY6QzzXdDVOZy7xq+nkzf0V5HAgZ8gr8w1r2xd/Age7i9nbYS1j190NsXVN19O
-         gmQrdBuEPhkWEu8M7pCab4lNqrYGZ6xO73HLnsoljJuRFa+SBCqm/p6PWmtqb8i8Dgi+
-         7rzmYTJlFzxKKlB5FqTLATyfjeAMImzXzXFHHI0QrT8eEHjd56g6q+3fNpMGOcbQ0G88
-         ZKOLBbfW68XJr6f9jiJhQASOQ3keAioxC5m/3nJg8UdlufTVaX9U7pTG1G3Ge2a6Zc4i
-         dnDg==
-X-Gm-Message-State: AOAM530PYI8CbISAos8bIrbnQq7W7EkWJ+jWCZ0TFlhn9XemFDnBbO82
-        POBereaWgBsrxPO+gyKKCAUnvt0t9Xy/iKoT0to=
-X-Google-Smtp-Source: ABdhPJy03eWlrTdyRObPCdG3LW91Eup1/Dk1yV0a5e9EqAtOF378nf1FyP1iIqsiRL0CHK5ureLMQw==
-X-Received: by 2002:a2e:87d4:0:b0:249:a34a:2532 with SMTP id v20-20020a2e87d4000000b00249a34a2532mr9271833ljj.328.1648233040948;
-        Fri, 25 Mar 2022 11:30:40 -0700 (PDT)
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com. [209.85.167.52])
-        by smtp.gmail.com with ESMTPSA id n12-20020a19ef0c000000b0044a2aea14bdsm786410lfh.277.2022.03.25.11.30.38
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Mar 2022 11:30:39 -0700 (PDT)
-Received: by mail-lf1-f52.google.com with SMTP id w27so14796292lfa.5
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 11:30:38 -0700 (PDT)
-X-Received: by 2002:a05:6512:2296:b0:44a:6aaf:b330 with SMTP id
- f22-20020a056512229600b0044a6aafb330mr5713368lfu.531.1648233037928; Fri, 25
- Mar 2022 11:30:37 -0700 (PDT)
+        Fri, 25 Mar 2022 15:26:55 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DEC171E5222;
+        Fri, 25 Mar 2022 12:00:11 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F1AF313D5;
+        Fri, 25 Mar 2022 11:42:25 -0700 (PDT)
+Received: from [10.57.41.19] (unknown [10.57.41.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F0FCD3F73D;
+        Fri, 25 Mar 2022 11:42:22 -0700 (PDT)
+Message-ID: <e077b229-c92b-c9a6-3581-61329c4b4a4b@arm.com>
+Date:   Fri, 25 Mar 2022 18:42:19 +0000
 MIME-Version: 1.0
-References: <1812355.tdWV9SEqCh@natalenko.name> <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
- <20220324055732.GB12078@lst.de> <4386660.LvFx2qVVIh@natalenko.name>
- <81ffc753-72aa-6327-b87b-3f11915f2549@arm.com> <878rsza0ih.fsf@toke.dk>
- <4be26f5d8725cdb016c6fdd9d05cfeb69cdd9e09.camel@freebox.fr>
- <20220324163132.GB26098@lst.de> <d8a1cbf4-a521-78ec-1560-28d855e0913e@arm.com>
- <871qyr9t4e.fsf@toke.dk> <CAHk-=whUQCCaQXJt3KUeQ8mtnLeVXEScNXCp+_DYh2SNY7EcEA@mail.gmail.com>
- <31434708dcad126a8334c99ee056dcce93e507f1.camel@freebox.fr>
-In-Reply-To: <31434708dcad126a8334c99ee056dcce93e507f1.camel@freebox.fr>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri, 25 Mar 2022 11:30:21 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wippum+MksdY7ixMfa3i1sZ+nxYPWLLpVMNyXCgmiHbBQ@mail.gmail.com>
-Message-ID: <CAHk-=wippum+MksdY7ixMfa3i1sZ+nxYPWLLpVMNyXCgmiHbBQ@mail.gmail.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
 Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
  ath9k-based AP
-To:     Maxime Bizon <mbizon@freebox.fr>
-Cc:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>,
-        Robin Murphy <robin.murphy@arm.com>,
+Content-Language: en-GB
+To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
         Christoph Hellwig <hch@lst.de>,
+        Halil Pasic <pasic@linux.ibm.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Halil Pasic <pasic@linux.ibm.com>,
         Marek Szyprowski <m.szyprowski@samsung.com>,
         Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -84,197 +46,55 @@ Cc:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+References: <1812355.tdWV9SEqCh@natalenko.name>
+ <CAHk-=wiwz+Z2MaP44h086jeniG-OpK3c=FywLsCwXV7Crvadrg@mail.gmail.com>
+ <27b5a287-7a33-9a8b-ad6d-04746735fb0c@arm.com>
+ <CAHk-=wip7TCD_+2STTepuEZvGMg6wcz+o=kyFUvHjuKziTMixw@mail.gmail.com>
+ <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
+ <20220324190216.0efa067f.pasic@linux.ibm.com> <20220325163204.GB16426@lst.de>
+ <87y20x7vaz.fsf@toke.dk>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <87y20x7vaz.fsf@toke.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Mar 25, 2022 at 3:25 AM Maxime Bizon <mbizon@freebox.fr> wrote:
->
-> In the non-cache-coherent scenario, and assuming dma_map() did an
-> initial cache invalidation, you can write this:
+On 2022-03-25 18:15, Toke Høiland-Jørgensen wrote:
+> Christoph Hellwig <hch@lst.de> writes:
+> 
+>> On Thu, Mar 24, 2022 at 07:02:16PM +0100, Halil Pasic wrote:
+>>>> If
+>>>> ddbd89deb7d3 alone turns out to work OK then I'd be inclined to try a
+>>>> partial revert of just that one hunk.
+>>>>
+>>>
+>>> I'm not against being pragmatic and doing the partial revert. But as
+>>> explained above, I do believe for correctness of swiotlb we ultimately
+>>> do need that change. So if the revert is the short term solution,
+>>> what should be our mid-term road-map?
+>>
+>> Unless I'm misunderstanding this thread we found the bug in ath9k
+>> and have a fix for that now?
+> 
+> According to Maxim's comment on the other subthread, that ath9k patch
+> wouldn't work on all platforms (and constitutes a bit of a violation of
+> the DMA API ownership abstraction). So not quite, I think?
 
-.. but the problem is that the dma mapping code is supposed to just
-work, and the driver isn't supposed to know or care whether dma is
-coherent or not, or using bounce buffers or not.
+Indeed, it would potentially stand to pose the same problem as the 
+SWIOTLB change, but on the scale of individual cache lines touched by 
+ath9k_hw_process_rxdesc_edma() rather than the whole buffer. However, 
+that might represent a less severe impact on a smaller number of users 
+(maybe the MIPS systems? I'm not sure...) so perhaps it's an acceptable 
+tourniquet? Note that the current code is already a violation of the DMA 
+API (because the device keeps writing even when it doesn't have 
+ownership), so there's not a very strong argument in that regard.
 
-And currently it doesn't work.
-
-Because what that ath9k driver does is "natural", but it's wrong for
-the bounce buffer case.
-
-And I think the problem is squarely on the dma-mapping side for two reasons:
-
- (a) this used to work, now it doesn't, and it's unclear how many
-other drivers are affected
-
- (b) the dma-mapping naming and calling conventions are horrible and
-actively misleading
-
-That (a) is a big deal. The reason the ath9k issue was found quickly
-is very likely *NOT* because ath9k is the only thing affected. No,
-it's because ath9k is relatively common.
-
-Just grep for dma_sync_single_for_device() and ask yourself: how many
-of those other drivers have you ever even HEARD of, much less be able
-to test?
-
-And that's just one "dma_sync" function. Admittedly it's likely one of
-the more common ones, but still..
-
-Now, (b) is why I think driver nufgt get this so wrong - or, in this
-case, possibly the dma-mapping code itself.
-
-The naming - and even the documentation(!!!) - implies that what ath9k
-does IS THE RIGHT THING TO DO.
-
-The documentation clearly states:
-
-  "Before giving the memory to the device, dma_sync_single_for_device() needs
-   to be called, and before reading memory written by the device,
-   dma_sync_single_for_cpu(), just like for streaming DMA mappings that are
-   reused"
-
-and ath9k obviously did exactly that, even with a comment to the effect.
-
-And I think ath9k is actually right here, but the documentation is so
-odd and weak that it's the dma-mapping code that was buggy.
-
-So the dma mapping layer literally broke the documented behavior, and
-then Christoph goes and says (in another email in this discussion):
-
- "Unless I'm misunderstanding this thread we found the bug in ath9k
-  and have a fix for that now?"
-
-which I think is a gross mis-characterization of the whole issue, and
-ignores *BOTH* of (a) and (b).
-
-So what's the move forward here?
-
-I personally think we need to
-
- - revert commit aa6f8dcbab47 for the simple reason that it is known
-to break one driver. But it is unknown how many other drivers are
-affected.
-
-   Even if you think aa6f8dcbab47 was the right thing to do (and I
-don't - see later), the fact is that it's new behavior that the dma
-bounce buffer code hasn't done in the past, and clearly confuses
-things.
-
- - think very carefully about the ath9k case.
-
-   We have a patch that fixes it for the bounce buffer case, but you
-seem to imply that it might actually break non-coherent cases:
-
-   "So I'd be very cautious assuming sync_for_cpu() and sync_for_device()
-    are both doing invalidation in existing implementation of arch DMA ops,
-    implementers may have taken some liberty around DMA-API to avoid
-    unnecessary cache operation (not to blame them)"
-
-   so who knows what other dma situations it might break?
-
-   Because if some non-coherent mapping infrastructure assumes that
-*only* sync_for_device() will actually flush-and-invalidate caches
-(because the platform thinks that once they are flushed, getting them
-back to the CPU doesn't need any special ops), then you're right:
-Toke's ath9k patch will just result in cache coherency issues on those
-platforms instead.
-
- - think even *more* about what the ath9k situation means for the dma
-mapping naming and documentation.
-
-I basically think the DMA syncing has at least three cases (and a
-fourth combination that makes no sense):
-
- (1) The CPU has actively written to memory, and wants to give that
-data to the device.
-
-   This is "dma_sync_single_for_device(DMA_TO_DEVICE)".
-
-    A cache-coherent thing needs to do nothing.
-
-   A non-coherent thing needs to do a cache "writeback" (and probably
-will flush)
-
-   A bounce buffer implementation needs to copy *to* the bounce buffer
-
- (2) The CPU now wants to see any state written by the device since
-the last sync
-
-    This is "dma_sync_single_for_cpu(DMA_FROM_DEVICE)".
-
-    A bounce-buffer implementation needs to copy *from* the bounce buffer.
-
-    A cache-coherent implementation needs to do nothing.
-
-    A non-coherent implementation maybe needs to do nothing (ie it
-assumes that previous ops have flushed the cache, and just accessing
-the data will bring the rigth thing back into it). Or it could just
-flush the cache.
-
- (3) The CPU has seen the state, but wants to leave it to the device
-
-   This is "dma_sync_single_for_device(DMA_FROM_DEVICE)".
-
-   A bounce buffer implementation needs to NOT DO ANYTHING (this is
-the current ath9k bug - copying to the bounce buffer is wrong)
-
-  A cache coherent implementation needs to do nothing
-
-  A non-coherent implementation needs to flush the cache again, bot
-not necessarily do a writeback-flush if there is some cheaper form
-(assuming it does nothing in the "CPU now wants to see any state" case
-because it depends on the data not having been in the caches)
-
- (4) There is a fourth case: dma_sync_single_for_cpu(DMA_TO_DEVICE)
-which maybe should generate a warning because it seems to make no
-sense? I can't think of a case where this would be an issue - the data
-is specifically for the device, but it's synced "for the CPU"?
-
-Do people agree? Or am I missing something?
-
-But I don't think the documentation lays out these cases, and I don't
-think the naming is great.
-
-I also don't think that we can *change* the naming. That's water under
-the bridge. It is what it is. So I think people need to really agree
-on the semantics (did I get them entirely wrong above?) and try to
-think about ways to maybe give warnings for things that make no sense.
-
-Based on my suggested understanding of what the DMA layer should do,
-the ath9k code is actually doing exactly the right thing. It is doing
-
-        dma_sync_single_for_device(DMA_FROM_DEVICE);
-
-and based on my four cases above, the bounce buffer code must do
-nothing, because "for_device()" together with "FROM_DEVICE" clearly
-says that all the data is coming *from* the device, and copying any
-bounce buffers is wrong.
-
-In other words, I think commit aa6f8dcbab47 ("swiotlb: rework 'fix
-info leak with DMA_FROM_DEVICE'") is fundamentally wrong. It doesn't
-just break ath9k, it fundamentally break that "case 3" above. It's
-doing a DMA_TO_DEVICE copy, even though it was a DMA_FROM_DEVICE sync.
-
-So I really think that "revert aa6f8dcbab47" is not only inevitable
-because of practical worries about what it breaks, but because that
-commit was just entirely and utterly WRONG.
-
-But having written this long wall of text, I'm now slightly worried
-that I'm just confused, and am trying to just convince myself.
-
-So please: can people think about this a bit more, and try to shoot
-down the above argument and show that I'm just being silly?
-
-And if I'm right, can we please document this and try really hard to
-come up with some sanity checks (perhaps based on some "dma buffer
-state" debug code?)
-
-                 Linus
+Thanks,
+Robin.
