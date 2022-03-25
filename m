@@ -2,268 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BC614E7C1F
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:21:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62C3B4E7D37
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:22:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233650AbiCYV6s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 17:58:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58588 "EHLO
+        id S233690AbiCYWTs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 18:19:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233635AbiCYV6q (ORCPT
+        with ESMTP id S233603AbiCYWTr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 17:58:46 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FEDD3B3EC
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 14:57:11 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id q14so11925095ljc.12
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 14:57:11 -0700 (PDT)
+        Fri, 25 Mar 2022 18:19:47 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12A6816AA6A;
+        Fri, 25 Mar 2022 15:18:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3QkuXhB7uf6W60gZWDJ6opx1SFjmEWQp6mnWCLk/yVk=;
-        b=V81bw1iGLTqXaYjf0jsGudI2NeIxBtbKHIXsodRWH/kb6aHXXKdpMothCmIcD6Rfoh
-         /fz1HWRx8XbZMAnqoaWL21ZRDlx4DYW9SvsheHOi4qGFu+UH1Pw7IcM109+bJ1kvB6MT
-         cuSniBp5OIcGWyjJpE0F6/a/QiUmhZEXVvkTo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3QkuXhB7uf6W60gZWDJ6opx1SFjmEWQp6mnWCLk/yVk=;
-        b=4xHBnzeRodBUGK10Uu5uwHXYf34t3rbZkd1tWdUD5dg4Hdw9EcHovTgxzxd6CyYN5n
-         SABpdB2859fFTBogYSQ/ajXbIoh8JcS/NO1hZUtTvHcBZhwip8ykTPr0iOYsePhia3F3
-         hLj4p58iepY2/9IpEYXm4Lu1wRacOzRnu1ZMPlZ5XuarlUr/RxNywGlHyGwouKY6KDMH
-         pRE7lp7gyrP09I1pN+aytwHNgQTC+aWRKEluJRsnyMFCZdq67UkBhZ/jwHWh0M2jSBNg
-         EEeviAo55WdFdtuqZ6g9GaU2qyqdN6VOQzYKHQ6CThUAD00/5qZHmurYbuiEHWdr88Er
-         SUOw==
-X-Gm-Message-State: AOAM530ZKwcyqXmhD/L7E+Iqb16qRjZ3R0U+EpR4GQHC9SlhoqzhKEYb
-        gBs5sUagiamkai/o9mWWqOWAkC8+UD6ukmbbD1c=
-X-Google-Smtp-Source: ABdhPJz2wzcLH+7DTheLRUfspkcyJ80jAI1dh5iUISUYF6PuGTijHGW8UrgT50mKcJM0inpoAHw+UQ==
-X-Received: by 2002:a2e:894f:0:b0:24a:c034:8cd0 with SMTP id b15-20020a2e894f000000b0024ac0348cd0mr1887355ljk.191.1648245429585;
-        Fri, 25 Mar 2022 14:57:09 -0700 (PDT)
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com. [209.85.208.179])
-        by smtp.gmail.com with ESMTPSA id br38-20020a056512402600b0044a70a9494bsm387739lfb.67.2022.03.25.14.57.07
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Mar 2022 14:57:08 -0700 (PDT)
-Received: by mail-lj1-f179.google.com with SMTP id b43so7434657ljr.10
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 14:57:07 -0700 (PDT)
-X-Received: by 2002:a2e:9794:0:b0:249:8488:7dbd with SMTP id
- y20-20020a2e9794000000b0024984887dbdmr9643335lji.176.1648245427344; Fri, 25
- Mar 2022 14:57:07 -0700 (PDT)
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1648246693; x=1679782693;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=9jYjx+4jeXCmvNIm9diCTLqf2spnMxHz/9y78hPvvBQ=;
+  b=Yk/zxMdglai/5OZ8UFe7yPyyVRs8dAHlgseQ+zq8o8bULUZ0rcTOimj7
+   XDKEd3pSlyUv48fxqnarSzSlxHxmz9eO9fqdkel0WunEIgD8g4cg2YCD6
+   N5fJxw2BsHLhi/+rnI/7ev5qxUa07zER6LYgKlByWXzSZI9qh8QzNNjaw
+   Q=;
+Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
+  by alexa-out.qualcomm.com with ESMTP; 25 Mar 2022 15:18:13 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2022 15:18:12 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Fri, 25 Mar 2022 15:18:11 -0700
+Received: from [10.110.27.134] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Fri, 25 Mar
+ 2022 15:18:10 -0700
+Message-ID: <487e4136-94dc-5a77-89c7-e416a05c3a35@quicinc.com>
+Date:   Fri, 25 Mar 2022 15:18:10 -0700
 MIME-Version: 1.0
-References: <1812355.tdWV9SEqCh@natalenko.name> <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
- <20220324055732.GB12078@lst.de> <4386660.LvFx2qVVIh@natalenko.name>
- <81ffc753-72aa-6327-b87b-3f11915f2549@arm.com> <878rsza0ih.fsf@toke.dk>
- <4be26f5d8725cdb016c6fdd9d05cfeb69cdd9e09.camel@freebox.fr>
- <20220324163132.GB26098@lst.de> <d8a1cbf4-a521-78ec-1560-28d855e0913e@arm.com>
- <871qyr9t4e.fsf@toke.dk> <CAHk-=whUQCCaQXJt3KUeQ8mtnLeVXEScNXCp+_DYh2SNY7EcEA@mail.gmail.com>
- <31434708dcad126a8334c99ee056dcce93e507f1.camel@freebox.fr>
- <CAHk-=wippum+MksdY7ixMfa3i1sZ+nxYPWLLpVMNyXCgmiHbBQ@mail.gmail.com>
- <298f4f9ccad7c3308d3a1fd8b4b4740571305204.camel@sipsolutions.net>
- <CAHk-=whXAan2ExANMryPSFaBWeyzikPi+fPUseMoVhQAxR7cEA@mail.gmail.com> <e42e4c8bf35b62c671ec20ec6c21a43216e7daa6.camel@sipsolutions.net>
-In-Reply-To: <e42e4c8bf35b62c671ec20ec6c21a43216e7daa6.camel@sipsolutions.net>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri, 25 Mar 2022 14:56:50 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjJp5xCx0CCrLCzFGZyyABYSNNNa0i=4fN3fBydP7r97w@mail.gmail.com>
-Message-ID: <CAHk-=wjJp5xCx0CCrLCzFGZyyABYSNNNa0i=4fN3fBydP7r97w@mail.gmail.com>
-Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
- ath9k-based AP
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Maxime Bizon <mbizon@freebox.fr>,
-        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Halil Pasic <pasic@linux.ibm.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Olha Cherevyk <olha.cherevyk@gmail.com>,
-        iommu <iommu@lists.linux-foundation.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [BUG] deadlock in nl80211_vendor_cmd
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        William McVicker <willmcvicker@google.com>
+CC:     Jakub Kicinski <kuba@kernel.org>, <linux-wireless@vger.kernel.org>,
+        "Marek Szyprowski" <m.szyprowski@samsung.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        "Amitkumar Karwar" <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>, <kernel-team@android.com>,
+        Paolo Abeni <pabeni@redhat.com>
+References: <0000000000009e9b7105da6d1779@google.com>
+ <99eda6d1dad3ff49435b74e539488091642b10a8.camel@sipsolutions.net>
+ <5d5cf050-7de0-7bad-2407-276970222635@quicinc.com>
+ <YjpGlRvcg72zNo8s@google.com>
+ <dc556455-51a2-06e8-8ec5-b807c2901b7e@quicinc.com>
+ <Yjzpo3TfZxtKPMAG@google.com>
+ <19e12e6b5f04ba9e5b192001fbe31a3fc47d380a.camel@sipsolutions.net>
+ <20220325094952.10c46350@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <f4f8a27dc07c1adaab470fde302ed841113e6b7f.camel@sipsolutions.net>
+ <Yj4FFIXi//ivQC3X@google.com> <Yj4ntUejxaPhrM5b@google.com>
+ <976e8cf697c7e5bc3a752e758a484b69a058710a.camel@sipsolutions.net>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <976e8cf697c7e5bc3a752e758a484b69a058710a.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Mar 25, 2022 at 2:13 PM Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> Well I see now that you said 'cache "writeback"' in (1), and 'flush' in
-> (2), so perhaps you were thinking of the same, and I'm just calling it
-> "flush" and "invalidate" respectively?
+On 3/25/2022 2:16 PM, Johannes Berg wrote:
+> On Fri, 2022-03-25 at 20:36 +0000, William McVicker wrote:
+>>
+>> I found that my wlan driver is using the vendor commands to create/delete NAN
+>> interfaces for this Android feature called Wi-Fi aware [1]. Basically, this
+>> features allows users to discover other nearby devices and allows them to
+>> connect directly with one another over a local network.
+>>
+> 
+> Wait, why is it doing that? We actually support a NAN interface type
+> upstream :) It's not really quite fully fleshed out, but it could be?
+> Probably should be?
 
-Yeah, so I mentally tend to think of the operations as just
-"writeback" (which doesn't invalidate) and "flush" (which is a
-writeback-invalidate).
+And this is the issue with Android drivers. Android team proposes 
+changes to the Wifi HAL and driver vendors have to implement those 
+quickly to meet product deadlines. Some infrastructure changes we're 
+able to get into the core kernel without having an in-tree driver that 
+uses them (such as introducing NL80211_IFTYPE_NAN), but there have been 
+instances of core kernel changes being rejected because there was not an 
+in-tree user.
 
-Which explains my word-usage, but isn't great, because it's not
-well-defined. And I'm not even consistent about it.
+Yes, in your ideal world all of the Android wifi drivers would be 
+in-tree. And in that ideal world every release cycle the Android team 
+would advocate for core kernel changes needed to support the new 
+features of the HAL. But past history has shown attempts to upstream new 
+features has been delayed, perhaps in part due to the absence of an 
+in-tree driver that utilizes those features, and the only way to meet 
+product deadlines is to take the vendor command route.
 
-> However, this seems to be the wrong spot to flush (writeback?) the
-> cache, as we're trying to get data from the device, not potentially
-> overwrite the data that the device wrote because we have a dirty
-> cacheline. Hmm. Then again, how could we possibly have a dirty
-> cacheline?
+And yes my out-of-tree driver is facing the exact same issue with NAN 
+interface creation and deletion via vendor commands.
 
-So in my model, (1) is the only case where there's actively dirty data
-that needs to be written back. That's the "CPU wrote the data to
-memory, and wants to transfer it to the device" case.
+Previously you had suggested:
+> Your easiest option might be to just patch NL80211_FLAG_NEED_RTNL into
+> your kernel for vendor commands and call it a day? 
 
-In (2) and (3), the only question is whether possibly clean cachelines
-contain - or will contain - stale data.
+Would you consider taking that upstream given that there are very few 
+in-tree users of vendor commands, and I fear Will and I aren't the only 
+ones who'll face this issue?
 
-And then exactly when you actually invalidate is up to you.
+Will, suggest you at least advocate for getting this into the 5.15 ACK.
 
-For example, in
-
- (2) The CPU now wants to see any state written by the device
-
-you have multiple options. You could invalidate any stale cache lines.
-
-Or you could say "We wrote them back and invalidated them in (1), so
-we don't need to invalidate them now".
-
-And in
-
- (3) The CPU looked at the data while it was in flight and is now done with it.
-
-you can (again) decide to do nothing at all, BUT ONLY IF (2) chose
-that "invalidate" option. Because if you made your (2) depend on that
-"they were already invalidated", then (3) has to invalidate the CPU
-caches so that a subsequent (2) will work right.
-
-So these are all somewhat interconnected.
-
-You can do just "writeback" in (1), but then you _have_ to do
-"invalidate" in (2), and in that case you don't have to do anything at
-all in (3).
-
-Or maybe your CPU only has that "writeback-and-invalidate" operation,
-so you decide that (2) should be a no-op, and (3) - which is
-presumably less common than (2) - also does that writeback-invalidate
-thing.
-
-Or we can also say that (3) is not allowed at all - so the ath9k case
-is actively wrong and we should warn about that case - but that again
-constrains what you can do in (2) and now that previous optimization
-is not valid.
-
-And it's worth noting that if your CPU may do cache fills as a result
-of speculative accesses (or just sufficiently out of order), then the
-whole argument that "I invalidated those lines earlier, so I don't
-need to invalidate them now" is just garbage.
-
-Fun, isn't it?
-
-> Which starts to clarify in my mind why we have a sort of (implied)
-> ownership model: if the CPU dirties a cacheline while the device has
-> ownership then the cache writeback might overwrite the DMA data.
-
-Right, I think that "if the CPU dirties the cacheline while the device
-has ownership, then the data is going to be undefined".
-
-And btw, it does actually potentially happen for real - imagine a user
-mmap'ing the IO buffer while IO is in flight. The kernel can't control
-for that (well, we can make things read-only, and some uses do), but
-then it's often a question of "you have to dirty that area and do the
-IO again, because the last attempt sent out undefined data".
-
-And note how this "undefined data" situation can happen even with
-coherent IO, so this part isn't even about cache coherency - it's
-literally about just about memory accesses being in some undefined
-order.
-
-So it *can* be valid to send inconsistent data, but that should be
-considered the really odd case.
-
-> So it's
-> easier to think of it as "CPU has ownership" and "device has ownership",
-> but evidently that simple model breaks down in real-world cases such as
-> ath9k where the CPU wants to look, but not write, and the device
-> continues doing DMA at the same time.
-
-Yeah, and see above about how the CPU could even write (but honestly,
-that isn't valid in the general case, it really requires that kind of
-active "we can fix it up later" thing).
-
-> Well if you actually did dirty the cacheline, then you have a bug one
-> way or the other, and it's going to be really hard to debug - either you
-> lose the CPU write, or you lose the device write, there's no way you're
-> not losing one of them?
-
-Again, see above. Losing the CPU write is really bad, because then you
-can't even recover by re-doing the operation.
-
-So yes, when looking at only the "single operation" case, it looks
-like "lose one or the other". But in the bigger picture, one is more
-important than the other.
-
-> So the operations
-> (1) dma_sync_single_for_device(DMA_TO_DEVICE)
-> (2) dma_sync_single_for_cpu(DMA_FROM_DEVICE)
-> (3) dma_sync_single_for_device(DMA_FROM_DEVICE)
->
-> really only (1) passes write ownership to the device, but then you can't
-> get it back?
-
-Well, you get it back by just checking that the IO is done. Once the
-IO is done, the CPU owns the area again.
-
-And the "IO is done" is often some entirely independent status in some
-entirely different place.
-
-But it *could* be something that requires a CPU read from that DMA
-area. But it's a CPU _read_, so you don't need write ownership for
-that.
-
-That's why there is only one DMA_TO_DEVICE, and there are two
-DMA_FROM_DEVICE cases.
-
-The DMA_TO_DEVICE cannot have a "let me write in the middle" situation.
-
-But the DMA_FROM_DEVICE has that "let me read in the middle, and
-decide if it's done or not", so you can have a looping read, and
-that's where (3) comes in.
-
-You can't have a looping write for one operation (but you can
-obviously have several independent write operations - that's what the
-whole "are you done" is all about)
-
-> But that cannot be true, because ath9k maps the buffer as
-> DMA_BIDIRECTIONAL, and then eventually might want to recycle it.
-
-See above. Both cases have "the device is done with this", but they
-are fundamentally different situations.
-
-> > That sounds really odd for
-> > a "sync" operation. It sounds very reasonable for _allocating_ DMA,
-> > but for syncing I'm left scratching my head what the semantics would
-> > be.
->
-> I agree.
->
-> > But yes, if we do and people come up with semantics for it, those
-> > semantics should be clearly documented.
->
-> I'm not sure? I'm wondering if this isn't just because - like me
-> initially - people misunderstood the direction argument, or didn't
-> understand it well enough, and then just passed the same value as for
-> the map()/unmap()?
-
-Yeah, the solution may well be "grep for it, and pick the right
-direction once the docs are clear".
-
-             Linus
+/jeff
