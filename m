@@ -2,40 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C5A64E6F27
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 08:48:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B36954E6F51
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 09:13:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353065AbiCYHu0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 03:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45964 "EHLO
+        id S1347318AbiCYIOq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 04:14:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241046AbiCYHuY (ORCPT
+        with ESMTP id S1346416AbiCYIOp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 03:50:24 -0400
-X-Greylist: delayed 1354 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 25 Mar 2022 00:48:51 PDT
-Received: from dvalin.narfation.org (dvalin.narfation.org [IPv6:2a00:17d8:100::8b1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 472883B543
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 00:48:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1648194529;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=i+P0KHJR5IxWQGQVnkvS35TIM3P98/PQ/lmJTKSZ9jo=;
-        b=T2JIac/TgTqZJdCwgxlR4XNogDy6pp2IWqRCW9x+aSjY+/6lH849qZ7fz0++zpFDqV91L5
-        Vl/6eqzaMqFafaln7HpPRtqCokugGTgLrKBNw3l6SHAaTzugN9kWKysnFv1ca1uQn5Y0+a
-        0MdVFlMJZtiFuAYudDQ51sUYDQIbhPQ=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Cc:     Maharaja Kennadyrajan <quic_mkenna@quicinc.com>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH v6 1/3] nl80211: Add support for beacon tx mode
-Date:   Fri, 25 Mar 2022 08:48:44 +0100
-Message-ID: <4555984.c4UlCidsYr@ripper>
-In-Reply-To: <20220325055949.3035053-2-quic_mkenna@quicinc.com>
-References: <20220325055949.3035053-1-quic_mkenna@quicinc.com> <20220325055949.3035053-2-quic_mkenna@quicinc.com>
+        Fri, 25 Mar 2022 04:14:45 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A74D6BC0B
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 01:13:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1648195991; x=1679731991;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=l8shMzMIeFBbNb205xbxfy+9MlVcmL5YFu4MfGWuIvA=;
+  b=Fw1sYsn4s/K0UL3zuZjgpzTuoBF5owqu0NNX916r7uUTTrQxEMOxgSFE
+   fWeNNrB7jBs7SVAHrqzDzWPsV8ImyE+LhG8v9ioDZ64sTWLVEli1/buDU
+   wqA9vuQckXm+sxGfxMLIzzNth96BzZ/yyNlkh51WIM0YzlOhzjiH2hfNQ
+   M=;
+Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
+  by alexa-out.qualcomm.com with ESMTP; 25 Mar 2022 01:13:10 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2022 01:13:10 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Fri, 25 Mar 2022 01:13:09 -0700
+Received: from ramess-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Fri, 25 Mar 2022 01:13:07 -0700
+From:   Rameshkumar Sundaram <quic_ramess@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>,
+        Lavanya Suresh <lavaks@codeaurora.org>,
+        Rameshkumar Sundaram <quic_ramess@quicinc.com>
+Subject: [PATCH v4] mac80211: disable BSS color collision detection in case of no free colors
+Date:   Fri, 25 Mar 2022 13:42:41 +0530
+Message-ID: <1648195961-3811-1-git-send-email-quic_ramess@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart6084859.M4ah1GsTNC"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -46,73 +61,214 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart6084859.M4ah1GsTNC
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Cc: Maharaja Kennadyrajan <quic_mkenna@quicinc.com>, Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH v6 1/3] nl80211: Add support for beacon tx mode
-Date: Fri, 25 Mar 2022 08:48:44 +0100
-Message-ID: <4555984.c4UlCidsYr@ripper>
-In-Reply-To: <20220325055949.3035053-2-quic_mkenna@quicinc.com>
-References: <20220325055949.3035053-1-quic_mkenna@quicinc.com> <20220325055949.3035053-2-quic_mkenna@quicinc.com>
+From: Lavanya Suresh <lavaks@codeaurora.org>
 
-On Friday, 25 March 2022 06:59:47 CET Maharaja Kennadyrajan wrote:
-> @@ -5555,6 +5558,10 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
->         params->dtim_period =
->                 nla_get_u32(info->attrs[NL80211_ATTR_DTIM_PERIOD]);
->  
-> +       if (info->attrs[NL80211_ATTR_BEACON_TX_MODE])
-> +               params->beacon_tx_mode =
-> +                       nla_get_u32(info->attrs[NL80211_ATTR_BEACON_TX_MODE]);
-> +
->         err = cfg80211_validate_beacon_int(rdev, dev->ieee80211_ptr->iftype,
->                                            params->beacon_interval);
->         if (err)
+AP may run out of BSS color after color collision
+detection event from driver.
+Disable BSS color collision detection if no free colors are
+available based on bss color disabled bit sent as a part of
+NL80211_ATTR_HE_BSS_COLOR attribute sent in
+NL80211_CMD_SET_BEACON.
 
-But why are you setting it by vif when it is actually a PHY setting? [1]
+It can be reenabled once new color is available.
 
+Signed-off-by: Lavanya Suresh <lavaks@codeaurora.org>
+Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+---
+Changes since v3:
+ - Updated subject
 
-And there is also the open question from Felix [2]:
+Changes since v2:
+ - Moved the logic to ieee80211_change_beacon() to have this
+   BSS color enabled unset only during set_beacon case based
+   on NL80211_ATTR_HE_BSS_COLOR attribute sent by hostapd.
+ - Removed the relocation and parsing changes done on v1 and moved
+   he_bss_color to cfg80211_beacon_data and parsed
+   NL80211_ATTR_HE_BSS_COLOR in nl80211_parse_beacon()
 
-On Tuesday, 10 August 2021 16:33:41 CET Felix Fietkau wrote:
-> It still seems to me like something that the driver should detect and
-> handle internally without user configuration, based on number of VAPs
-> and maybe multicast/beacon rate (since the packet duration issue will be
-> worse with CCK rates).
+Changes since v1:
+ - Relocated ap params to cfg80211_beacon_data and
+   nl80211_calculate_ap_params() to nl80211_parse_beacon()
+   to have them parsed for all (start_ap and change beacon) commands.
+---
+ include/net/cfg80211.h |  4 ++--
+ net/mac80211/cfg.c     | 11 +++++++--
+ net/wireless/nl80211.c | 62 ++++++++++++++++++++++++--------------------------
+ 3 files changed, 41 insertions(+), 36 deletions(-)
 
-Kind regards,
-        Sven
-
-[1] https://lore.kernel.org/all/2718995.X0rUDs3ZmB@ripper/
-    https://lore.kernel.org/all/4581459.tLtf2NohVe@ripper/
-    https://lore.kernel.org/all/6210385.n8AMQ0p90U@ripper/
-    https://lore.kernel.org/all/4594028.WNQrFERZ9z@ripper/
-[2] https://lore.kernel.org/all/92b48724-277c-fc48-a922-6b1d49cd6a71@nbd.name/
---nextPart6084859.M4ah1GsTNC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmI9c90ACgkQXYcKB8Em
-e0Y7FRAAm3fE0tpWVdZo4Hz419mTkM4kURrTcS+8uYtS7GPSRcT9ZhdwCKV4OnV3
-MIyFGSGznYUeVwTcEsNwtyac2BhmialPykapF6XHpbNK9+gaVIvCKG764mtvPOjS
-TxsEPW72RnG5PjMNVvnDNAmqxNR5R5lNPG29v6HmyOCdW7FwHfXdWm6gIC+Lg88j
-z5fMZixyQZr92EnNpfItH6VlTIwppjEt7bO2DX9Yqlrh7JESYF2c5BTiXxjXwKJ9
-qdI6iVSfHkOwkb7iC1OlMIOmq7Vsn/+zmyrOmw87gw1wY4gIC8nn0McDjLc8lycg
-7xmdOHC6afW44kJB60RUF5LCNhNxCec0Q/VVaedq59GGfj5UGrV6rDlo1Zwbr5WQ
-8jnn8Y3pCJyFlsgvdF+ydfZwJpX3Go5jKYj6Ysg5iSJo1guyqrR3puU+Fb4YhH91
-iT7E9JWBfYQtpLAH2bIWil0ibSKoVUEzxqIshFwvJEbfB41/DQ5aOnjIijpfPMtu
-WRa977JutlN6p88lZTSQ5j36aMdU7CFLVPOFi5A8URz5HmcD8qCxofW7opiW6zBj
-BYWiWCtkgrj+vUZhwcn5FfVB53EgXO//nrT7BOlP8xkDktmeEfV2c5esIgfFagQf
-t4o2vzK6bOOu0omKk+eNW+DSl+0832yO2wyl0kGAScl+x8ZB820=
-=kHAi
------END PGP SIGNATURE-----
-
---nextPart6084859.M4ah1GsTNC--
-
-
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index a887086..08b795d 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1113,6 +1113,7 @@ struct cfg80211_mbssid_elems {
+  *	Token (measurement type 11)
+  * @lci_len: LCI data length
+  * @civicloc_len: Civic location data length
++ * @he_bss_color: BSS Color settings
+  */
+ struct cfg80211_beacon_data {
+ 	const u8 *head, *tail;
+@@ -1132,6 +1133,7 @@ struct cfg80211_beacon_data {
+ 	size_t probe_resp_len;
+ 	size_t lci_len;
+ 	size_t civicloc_len;
++	struct cfg80211_he_bss_color he_bss_color;
+ };
+ 
+ struct mac_address {
+@@ -1233,7 +1235,6 @@ enum cfg80211_ap_settings_flags {
+  * @sae_h2e_required: stations must support direct H2E technique in SAE
+  * @flags: flags, as defined in enum cfg80211_ap_settings_flags
+  * @he_obss_pd: OBSS Packet Detection settings
+- * @he_bss_color: BSS Color settings
+  * @he_oper: HE operation IE (or %NULL if HE isn't enabled)
+  * @fils_discovery: FILS discovery transmission parameters
+  * @unsol_bcast_probe_resp: Unsolicited broadcast probe response parameters
+@@ -1267,7 +1268,6 @@ struct cfg80211_ap_settings {
+ 	bool twt_responder;
+ 	u32 flags;
+ 	struct ieee80211_he_obss_pd he_obss_pd;
+-	struct cfg80211_he_bss_color he_bss_color;
+ 	struct cfg80211_fils_discovery fils_discovery;
+ 	struct cfg80211_unsol_bcast_probe_resp unsol_bcast_probe_resp;
+ 	struct cfg80211_mbssid_config mbssid_config;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 26cc762..f54aaf1 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1133,7 +1133,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 			      IEEE80211_HE_OPERATION_RTS_THRESHOLD_MASK);
+ 		changed |= BSS_CHANGED_HE_OBSS_PD;
+ 
+-		if (params->he_bss_color.enabled)
++		if (params->beacon.he_bss_color.enabled)
+ 			changed |= BSS_CHANGED_HE_BSS_COLOR;
+ 	}
+ 
+@@ -1190,7 +1190,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 	sdata->vif.bss_conf.allow_p2p_go_ps = sdata->vif.p2p;
+ 	sdata->vif.bss_conf.twt_responder = params->twt_responder;
+ 	sdata->vif.bss_conf.he_obss_pd = params->he_obss_pd;
+-	sdata->vif.bss_conf.he_bss_color = params->he_bss_color;
++	sdata->vif.bss_conf.he_bss_color = params->beacon.he_bss_color;
+ 	sdata->vif.bss_conf.s1g = params->chandef.chan->band ==
+ 				  NL80211_BAND_S1GHZ;
+ 
+@@ -1272,6 +1272,7 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
+ 				   struct cfg80211_beacon_data *params)
+ {
+ 	struct ieee80211_sub_if_data *sdata;
++	struct ieee80211_bss_conf *bss_conf;
+ 	struct beacon_data *old;
+ 	int err;
+ 
+@@ -1291,6 +1292,12 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
+ 	err = ieee80211_assign_beacon(sdata, params, NULL, NULL);
+ 	if (err < 0)
+ 		return err;
++
++	bss_conf = &sdata->vif.bss_conf;
++	if (params->he_bss_color.enabled != bss_conf->he_bss_color.enabled) {
++		bss_conf->he_bss_color.enabled = params->he_bss_color.enabled;
++		err |= BSS_CHANGED_HE_BSS_COLOR;
++	}
+ 	ieee80211_bss_info_change_notify(sdata, err);
+ 	return 0;
+ }
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index bfa5d74..df609e4 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -5124,6 +5124,30 @@ nl80211_parse_mbssid_elems(struct wiphy *wiphy, struct nlattr *attrs)
+ 	return elems;
+ }
+ 
++static int nl80211_parse_he_bss_color(struct nlattr *attrs,
++				      struct cfg80211_he_bss_color *he_bss_color)
++{
++	struct nlattr *tb[NL80211_HE_BSS_COLOR_ATTR_MAX + 1];
++	int err;
++
++	err = nla_parse_nested(tb, NL80211_HE_BSS_COLOR_ATTR_MAX, attrs,
++			       he_bss_color_policy, NULL);
++	if (err)
++		return err;
++
++	if (!tb[NL80211_HE_BSS_COLOR_ATTR_COLOR])
++		return -EINVAL;
++
++	he_bss_color->color =
++		nla_get_u8(tb[NL80211_HE_BSS_COLOR_ATTR_COLOR]);
++	he_bss_color->enabled =
++		!nla_get_flag(tb[NL80211_HE_BSS_COLOR_ATTR_DISABLED]);
++	he_bss_color->partial =
++		nla_get_flag(tb[NL80211_HE_BSS_COLOR_ATTR_PARTIAL]);
++
++	return 0;
++}
++
+ static int nl80211_parse_beacon(struct cfg80211_registered_device *rdev,
+ 				struct nlattr *attrs[],
+ 				struct cfg80211_beacon_data *bcn)
+@@ -5204,6 +5228,12 @@ static int nl80211_parse_beacon(struct cfg80211_registered_device *rdev,
+ 		bcn->ftm_responder = -1;
+ 	}
+ 
++	if (attrs[NL80211_ATTR_HE_BSS_COLOR]) {
++		err = nl80211_parse_he_bss_color(attrs[NL80211_ATTR_HE_BSS_COLOR],
++						 &bcn->he_bss_color);
++		if (err)
++			return err;
++	}
+ 	if (attrs[NL80211_ATTR_MBSSID_ELEMS]) {
+ 		struct cfg80211_mbssid_elems *mbssid =
+ 			nl80211_parse_mbssid_elems(&rdev->wiphy,
+@@ -5262,30 +5292,6 @@ static int nl80211_parse_he_obss_pd(struct nlattr *attrs,
+ 	return 0;
+ }
+ 
+-static int nl80211_parse_he_bss_color(struct nlattr *attrs,
+-				      struct cfg80211_he_bss_color *he_bss_color)
+-{
+-	struct nlattr *tb[NL80211_HE_BSS_COLOR_ATTR_MAX + 1];
+-	int err;
+-
+-	err = nla_parse_nested(tb, NL80211_HE_BSS_COLOR_ATTR_MAX, attrs,
+-			       he_bss_color_policy, NULL);
+-	if (err)
+-		return err;
+-
+-	if (!tb[NL80211_HE_BSS_COLOR_ATTR_COLOR])
+-		return -EINVAL;
+-
+-	he_bss_color->color =
+-		nla_get_u8(tb[NL80211_HE_BSS_COLOR_ATTR_COLOR]);
+-	he_bss_color->enabled =
+-		!nla_get_flag(tb[NL80211_HE_BSS_COLOR_ATTR_DISABLED]);
+-	he_bss_color->partial =
+-		nla_get_flag(tb[NL80211_HE_BSS_COLOR_ATTR_PARTIAL]);
+-
+-	return 0;
+-}
+-
+ static int nl80211_parse_fils_discovery(struct cfg80211_registered_device *rdev,
+ 					struct nlattr *attrs,
+ 					struct cfg80211_ap_settings *params)
+@@ -5677,14 +5683,6 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 			goto out;
+ 	}
+ 
+-	if (info->attrs[NL80211_ATTR_HE_BSS_COLOR]) {
+-		err = nl80211_parse_he_bss_color(
+-					info->attrs[NL80211_ATTR_HE_BSS_COLOR],
+-					&params->he_bss_color);
+-		if (err)
+-			goto out;
+-	}
+-
+ 	if (info->attrs[NL80211_ATTR_FILS_DISCOVERY]) {
+ 		err = nl80211_parse_fils_discovery(rdev,
+ 						   info->attrs[NL80211_ATTR_FILS_DISCOVERY],
+-- 
+2.7.4
 
