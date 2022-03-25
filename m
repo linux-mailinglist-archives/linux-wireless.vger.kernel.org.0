@@ -2,165 +2,241 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCEE44E7997
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 18:01:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B611C4E79B0
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 18:11:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354394AbiCYRDV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 13:03:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47830 "EHLO
+        id S1345797AbiCYRNZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 13:13:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377352AbiCYRDS (ORCPT
+        with ESMTP id S235438AbiCYRNY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 13:03:18 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54FB84D268;
-        Fri, 25 Mar 2022 10:01:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=KIBXOVtkmOwL5E0vgfaT6N95rJNQ6um0hl1Uz1iYDsM=;
-        t=1648227704; x=1649437304; b=L4IdXzV4ge3lc5bsXEejWvQ+wEuLPal+k1jKGIH27lTUjuR
-        IvfvmSc8C1Pqh8/U4PW9DHWjMJfPMkCEPNWUiZMHWwLy5zP7GNPMKfaePQnPqYqAMs/8JB92NPezM
-        CphOYxPiukqTAlkYdh12K+LAXVQKjErK0AkYpfA/klWVb2lrL+XmTwL/J2nQLRfcktIfAXK01BSLM
-        wl6AME5PCbw9DuWOyNvMEzjhu2oU2v+3mX6sJPTqmdCQzzKqhAW5nDaWtfNXlJ4OlT32BjWp8w0D3
-        fAbn4ccGC7+42EPk7jw8Hno5bQknFTqFOIrVtFR/gKIRb4PcmsjIlzRLXjl8fWDA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nXnJb-000QWH-Nz;
-        Fri, 25 Mar 2022 18:01:31 +0100
-Message-ID: <f4f8a27dc07c1adaab470fde302ed841113e6b7f.camel@sipsolutions.net>
-Subject: Re: [BUG] deadlock in nl80211_vendor_cmd
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     William McVicker <willmcvicker@google.com>,
-        linux-wireless@vger.kernel.org,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>, kernel-team@android.com,
-        Paolo Abeni <pabeni@redhat.com>
-Date:   Fri, 25 Mar 2022 18:01:30 +0100
-In-Reply-To: <20220325094952.10c46350@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-References: <0000000000009e9b7105da6d1779@google.com>
-         <99eda6d1dad3ff49435b74e539488091642b10a8.camel@sipsolutions.net>
-         <5d5cf050-7de0-7bad-2407-276970222635@quicinc.com>
-         <YjpGlRvcg72zNo8s@google.com>
-         <dc556455-51a2-06e8-8ec5-b807c2901b7e@quicinc.com>
-         <Yjzpo3TfZxtKPMAG@google.com>
-         <19e12e6b5f04ba9e5b192001fbe31a3fc47d380a.camel@sipsolutions.net>
-         <20220325094952.10c46350@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
+        Fri, 25 Mar 2022 13:13:24 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4990DC12CB
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 10:11:50 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.64.31])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id E34C31C0095;
+        Fri, 25 Mar 2022 17:11:32 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 959C26001C7;
+        Fri, 25 Mar 2022 17:11:32 +0000 (UTC)
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id D491713C2B0;
+        Fri, 25 Mar 2022 10:11:31 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D491713C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1648228291;
+        bh=qTREhwqWwhwCUckUY7hqVF25Px13R4deVZiDynfBH20=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=bwoLUpjaesVb9OWpyk0XdhL1X78wdN7fjmri9pfw0hHnMD1svB1opaxahLD6t4W/e
+         GS8Y1rcPKfkH3WYVd68HZ70mCs3WgxTc+HyW9x+X1kbS4Qo34hJ+A9j4sUriQKnWWF
+         FC2+3HU/AyHC9a0gbgNAJE7lEVBQPHMC775WFUh8=
+Subject: Re: [PATCH 04/12] iwlwifi: mvm: Passively scan non PSC channels only
+ when requested so
+To:     Luca Coelho <luca@coelho.fi>, kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org
+References: <20220204102511.606112-1-luca@coelho.fi>
+ <iwlwifi.20220204122220.457da4cc95eb.Ic98472bab5f5475f1e102547644caaae89ce4c4a@changeid>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <f18f11f2-b9b9-9d86-340e-d567247ef7bc@candelatech.com>
+Date:   Fri, 25 Mar 2022 10:11:31 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
+In-Reply-To: <iwlwifi.20220204122220.457da4cc95eb.Ic98472bab5f5475f1e102547644caaae89ce4c4a@changeid>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+X-MDID: 1648228301-h8oVxPg7qFbV
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2022-03-25 at 09:49 -0700, Jakub Kicinski wrote:
-> On Fri, 25 Mar 2022 13:04:23 +0100 Johannes Berg wrote:
-> > So we can avoid the potential deadlock in cfg80211 in a few ways:
-> > 
-> >  1) export rtnl_lock_unregistering_all() or maybe a variant after
-> >     refactoring the two versions, to allow cfg80211 to use it, that way
-> >     netdev_run_todo() can never have a non-empty todo list
-> > 
-> >  2) export __rtnl_unlock() so cfg80211 can avoid running
-> >     netdev_run_todo() in the unlock, personally I like this less because
-> >     it might encourage random drivers to use it
-> > 
-> >  3) completely rework cfg80211's locking, adding a separate mutex for
-> >     the wiphy list so we don't need to acquire the RTNL at all here
-> >     (unless the ops need it, but there's no issue if we don't drop it),
-> >     something like https://p.sipsolutions.net/27d08e1f5881a793.txt
-> > 
-> > 
-> > I think I'm happy with 3) now (even if it took a couple of hours), so I
-> > think we can go with it, just need to go through all the possibilities.
+On 2/4/22 2:25 AM, Luca Coelho wrote:
+> From: Ilan Peer <ilan.peer@intel.com>
 > 
-> I like 3) as well. FWIW a few places (e.g. mlx5, devlink, I think I've
-> seen more) had been converting to xarray for managing the "registered"
-> objects. It may be worth looking into if you're re-doing things, anyway.
+> Non PSC channels should generally be scanned based on information about
+> collocated APs obtained during scan on legacy bands, and otherwise
+> should not be scanned unless specifically requested so (as there are
+> relatively many non PSC channels, scanning them passively is time consuming
+> and interferes with regular data traffic).
 > 
+> Thus, modify the scan logic to avoid passively scanning PSC channels
+> if there is no information about collocated APs and the scan is not
+> a passive scan.
 
-That's not a bad idea, but I think I wouldn't want to backport that, so
-separately :) I don't think that fundamentally changes the locking
-properties though.
+Hello,
 
+This breaks association against a Cisco test AP on frequency 5995.
 
-Couple of more questions I guess: First, are we assuming that the
-cfg80211 code *is* actually broken, even if it looks like nothing can
-cause the situation, due to the empty todo list?
+Here are logs of the previous commit working (scan takes longer, but SSID
+is found), and at the bottom, scan with this commit, which fails to detect
+the SSID.
 
-Given that we have rtnl_lock_unregistering() (and also
-rtnl_lock_unregistering_all()), it looks like we *do* in fact at least
-not want to make an assumption that no user of __rtnl_unlock() can have
-added a todo item.
+# ethtool -i sta0000
+driver: iwlwifi
+version: 5.17.0+
+firmware-version: 68.01d30b0c.0 ty-a0-gf-a0-68.uc
+expansion-rom-version:
+bus-info: 0000:05:00.0
+supports-statistics: yes
+supports-test: no
+supports-eeprom-access: no
+supports-register-dump: no
+supports-priv-flags: no
 
-I mean, there's technically yet *another* thing we could do - something
-like this:
+It breaks on version 71 firmware too.
 
-[this doesn't compile, need to suitably make net_todo_list non-static]
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -95,6 +95,7 @@ void __rtnl_unlock(void)
- 
-        defer_kfree_skb_list = NULL;
- 
-+       WARN_ON(!list_empty(&net_todo_list));
-        mutex_unlock(&rtnl_mutex);
- 
-        while (head) {
-
-and actually that would allow us to get rid of rtnl_lock_unregistering()
-and rtnl_lock_unregistering_all() simply because we'd actually guarantee
-the invariant that when the RTNL is freshly locked, the list is empty
-(by guaranteeing that it's always empty when it's unlocked, since it can
-only be added to under RTNL).
-
-With some suitable commentary, that might also be a reasonable thing?
-__rtnl_unlock() is actually rather pretty rare, and not exported.
-
-
-However, if you don't like that ...
-
-I've been testing with this patch, to make lockdep complain:
-
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -9933,6 +9933,11 @@ void netdev_run_todo(void)
-        if (!list_empty(&list))
-                rcu_barrier();
- 
-+#ifdef CONFIG_LOCKDEP
-+       rtnl_lock();
-+       __rtnl_unlock();
-+#endif
-+
-        while (!list_empty(&list)) {
-                struct net_device *dev
-                        = list_first_entry(&list, struct net_device, todo_list);
+2022-03-25 09:56:35.464  1.1:  sta0000 (phy #0): scan started
+2022-03-25 09:56:42.095  1.1:  sta0000 (phy #0): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 
+5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825 5955 5975 5995 6015 6035 6055 6075 6095 6115 6135 6155 6175 6195 
+6215 6235 6255 6275 6295 6315 6335 6355 6375 6395 6415 6435 6455 6475 6495 6515 6535 6555 6575 6595 6615 6635 6655 6675 6695 6715 6735 6755 6775 6795 6815 6835 
+6855 6875 6895 6915 6935 6955 6975 6995 7015 7035 7055 7075 7095 7115, ""
+2022-03-25 09:56:42.101  1.1:  IFNAME=sta0000 <3>SME: Trying to authenticate with 68:7d:b4:60:04:b8 (SSID=
+2022-03-25 09:56:42.122  1.1:  sta0000: new station 68:7d:b4:60:04:b8
+2022-03-25 09:56:42.252  1.1:  sta0000 (phy #0): auth 68:7d:b4:60:04:b8 -> a4:6b:b6:5a:b1:da status: 126: <unknown>
+2022-03-25 09:56:42.254  1.1:  IFNAME=sta0000 <3>SME: Trying to authenticate with 68:7d:b4:60:04:b8 (SSID=
+2022-03-25 09:56:42.310  1.1:  sta0000 (phy #0): auth 68:7d:b4:60:04:b8 -> a4:6b:b6:5a:b1:da status: 0: Successful
+2022-03-25 09:56:42.310  1.1:  IFNAME=sta0000 <3>PMKSA-CACHE-ADDED 68:7d:b4:60:04:b8 0
+2022-03-25 09:56:42.311  1.1:  IFNAME=sta0000 <3>Trying to associate with 68:7d:b4:60:04:b8 (SSID=
+2022-03-25 09:56:42.312  1.1:  IFNAME=sta0000 <3>EAPOL-RX 68:7d:b4:60:04:b8 121
+2022-03-25 09:56:42.313  1.1:  sta0000 (phy #0): assoc 68:7d:b4:60:04:b8 -> a4:6b:b6:5a:b1:da status: 0: Successful
+2022-03-25 09:56:42.313  1.1:  IFNAME=sta0000 <3>Associated with 68:7d:b4:60:04:b8
+2022-03-25 09:56:42.314  1.1:  IFNAME=sta0000 <3>EAPOL-RX 68:7d:b4:60:04:b8 121
+2022-03-25 09:56:42.321  1.1:  IFNAME=sta0000 <3>CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
+2022-03-25 09:56:42.322  1.1:  sta0000 (phy #0): ctrl. port TX status (cookie 1): acked
+2022-03-25 09:56:42.323  1.1:  IFNAME=sta0000 <3>EAPOL-RX 68:7d:b4:60:04:b8 195
+2022-03-25 09:56:42.328  1.1:  sta0000 (phy #0): ctrl. port TX status (cookie 2): acked
+2022-03-25 09:56:42.364  1.1:  IFNAME=sta0000 <3>WPA: Key negotiation completed with 68:7d:b4:60:04:b8 [PTK=CCMP GTK=CCMP]
+2022-03-25 09:56:42.403  1.1:  IFNAME=sta0000 <3>CTRL-EVENT-CONNECTED - Connection to 68:7d:b4:60:04:b8 completed [id=0 id_str=]
+2022-03-25 09:56:42.403  1.1:  IFNAME=sta0000 <3>WPA: Key negotiation completed with 68:7d:b4:60:04:b8 [PTK=CCMP GTK=CCMP]
 
 
-That causes lockdep to complain for cfg80211 even if the list *is* in
-fact empty.
 
-Would you be open to adding something like that? Perhaps if I don't just
-do the easy rtnl_lock/unlock, but try to find the corresponding lockdep-
-only things to do there, to cause lockdep to do things without really
-locking? OTOH, the locking overhead of the RTNL we just unlocked is
-probably minimal, vs. the actual work *lockdep* is doing to track all
-this ...
+2022-03-25 10:05:52.416  1.1:  sta0000 (phy #7): scan started
+2022-03-25 10:05:56.215  1.1:  sta0000 (phy #7): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 
+5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825, ""
+2022-03-25 10:05:56.215  1.1:  phy #7: regulatory domain change (phy): set to US by a driver request on phy7
+2022-03-25 10:05:56.216  1.1:  IFNAME=sta0000 <3>CTRL-EVENT-NETWORK-NOT-FOUND
+2022-03-25 10:05:56.216  1.1:  IFNAME=sta0000 <3>CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=COUNTRY alpha2=US
+2022-03-25 10:06:01.217  1.1:  IFNAME=sta0000 <3>CTRL-EVENT-SCAN-STARTED
+2022-03-25 10:06:01.217  1.1:  sta0000 (phy #7): scan started
+2022-03-25 10:06:02.739  1.1:  sta0000 (phy #7): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 
+5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825 5955 5975 5995 6015 6035 6055 6075 6095 6115 6135 6155 6175 6195 
+6215 6235 6255 6275 6295 6315 6335 6355 6375 6395 6415 6435 6455 6475 6495 6515 6535 6555 6575 6595 6615 6635 6655 6675 6695 6715 6735 6755 6775 6795 6815 6835 
+6855 6875 6895 6915 6935 6955 6975 6995 7015 7035 7055 7075 7095 7115, ""
+
+[ SSID is not found, sta never associates]
 
 Thanks,
-johannes
+Ben
+
+> 
+> Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> ---
+>   drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 42 ++++++++++++++-----
+>   1 file changed, 32 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+> index 8c7cb491330d..901df916baa4 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+> @@ -1728,27 +1728,37 @@ iwl_mvm_umac_scan_fill_6g_chan_list(struct iwl_mvm *mvm,
+>   }
+>   
+>   /* TODO: this function can be merged with iwl_mvm_scan_umac_fill_ch_p_v6 */
+> -static void
+> -iwl_mvm_umac_scan_cfg_channels_v6_6g(struct iwl_mvm_scan_params *params,
+> +static u32
+> +iwl_mvm_umac_scan_cfg_channels_v6_6g(struct iwl_mvm *mvm,
+> +				     struct iwl_mvm_scan_params *params,
+>   				     u32 n_channels,
+>   				     struct iwl_scan_probe_params_v4 *pp,
+>   				     struct iwl_scan_channel_params_v6 *cp,
+>   				     enum nl80211_iftype vif_type)
+>   {
+> -	struct iwl_scan_channel_cfg_umac *channel_cfg = cp->channel_config;
+>   	int i;
+>   	struct cfg80211_scan_6ghz_params *scan_6ghz_params =
+>   		params->scan_6ghz_params;
+> +	u32 ch_cnt;
+>   
+> -	for (i = 0; i < params->n_channels; i++) {
+> +	for (i = 0, ch_cnt = 0; i < params->n_channels; i++) {
+>   		struct iwl_scan_channel_cfg_umac *cfg =
+> -			&cp->channel_config[i];
+> +			&cp->channel_config[ch_cnt];
+>   
+>   		u32 s_ssid_bitmap = 0, bssid_bitmap = 0, flags = 0;
+>   		u8 j, k, s_max = 0, b_max = 0, n_used_bssid_entries;
+>   		bool force_passive, found = false, allow_passive = true,
+>   		     unsolicited_probe_on_chan = false, psc_no_listen = false;
+>   
+> +		/*
+> +		 * Avoid performing passive scan on non PSC channels unless the
+> +		 * scan is specifically a passive scan, i.e., no SSIDs
+> +		 * configured in the scan command.
+> +		 */
+> +		if (!cfg80211_channel_is_psc(params->channels[i]) &&
+> +		    !params->n_6ghz_params && params->n_ssids)
+> +			continue;
+> +
+>   		cfg->v1.channel_num = params->channels[i]->hw_value;
+>   		cfg->v2.band = 2;
+>   		cfg->v2.iter_count = 1;
+> @@ -1868,8 +1878,16 @@ iwl_mvm_umac_scan_cfg_channels_v6_6g(struct iwl_mvm_scan_params *params,
+>   		else
+>   			flags |= bssid_bitmap | (s_ssid_bitmap << 16);
+>   
+> -		channel_cfg[i].flags |= cpu_to_le32(flags);
+> +		cfg->flags |= cpu_to_le32(flags);
+> +		ch_cnt++;
+>   	}
+> +
+> +	if (params->n_channels > ch_cnt)
+> +		IWL_DEBUG_SCAN(mvm,
+> +			       "6GHz: reducing number channels: (%u->%u)\n",
+> +			       params->n_channels, ch_cnt);
+> +
+> +	return ch_cnt;
+>   }
+>   
+>   static u8 iwl_mvm_scan_umac_chan_flags_v2(struct iwl_mvm *mvm,
+> @@ -2415,10 +2433,14 @@ static int iwl_mvm_scan_umac_v14_and_above(struct iwl_mvm *mvm,
+>   
+>   	iwl_mvm_umac_scan_fill_6g_chan_list(mvm, params, pb);
+>   
+> -	iwl_mvm_umac_scan_cfg_channels_v6_6g(params,
+> -					     params->n_channels,
+> -					     pb, cp, vif->type);
+> -	cp->count = params->n_channels;
+> +	cp->count = iwl_mvm_umac_scan_cfg_channels_v6_6g(mvm, params,
+> +							 params->n_channels,
+> +							 pb, cp, vif->type);
+> +	if (!cp->count) {
+> +		mvm->scan_uid_status[uid] = 0;
+> +		return -EINVAL;
+> +	}
+> +
+>   	if (!params->n_ssids ||
+>   	    (params->n_ssids == 1 && !params->ssids[0].ssid_len))
+>   		cp->flags |= IWL_SCAN_CHANNEL_FLAG_6G_PSC_NO_FILTER;
+> 
+
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
