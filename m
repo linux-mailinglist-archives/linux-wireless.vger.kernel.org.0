@@ -2,148 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3864E7B90
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:20:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61C844E7CC4
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:22:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231299AbiCYTn5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 15:43:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36180 "EHLO
+        id S230453AbiCYTkb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 15:40:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232225AbiCYTnc (ORCPT
+        with ESMTP id S232747AbiCYTjU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 15:43:32 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 06B34160FDF;
-        Fri, 25 Mar 2022 12:14:27 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A898413D5;
-        Fri, 25 Mar 2022 12:14:26 -0700 (PDT)
-Received: from [10.57.41.19] (unknown [10.57.41.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1A5C93F73D;
-        Fri, 25 Mar 2022 12:14:23 -0700 (PDT)
-Message-ID: <a1829f4a-d916-c486-ac49-2c6dff77521a@arm.com>
-Date:   Fri, 25 Mar 2022 19:14:20 +0000
+        Fri, 25 Mar 2022 15:39:20 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4907E1BB79C
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 12:18:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1648235923; x=1679771923;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=bKj8TilLGdyVW9vS4DTruobfv+ddR2kfPYUpYlsH4ic=;
+  b=TTgZmNGLeLgGxIJFbBDXFCH+ICXUpiKrhZyfN1abo8mYYNcQ3ScuIWTr
+   jw9Aws/AKOfEZDgZjNZnMimWuWjtWNR2p7xZ6JnLgh7F3uNFASooDKY+9
+   koU2gDXFINhqmm3iNg8VIhgI4pH+eOvcRiR63cayILOL8BXxoh08OnPEN
+   w=;
+Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
+  by alexa-out.qualcomm.com with ESMTP; 25 Mar 2022 12:18:43 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2022 12:18:42 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Fri, 25 Mar 2022 12:18:42 -0700
+Received: from [10.110.27.134] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Fri, 25 Mar
+ 2022 12:18:42 -0700
+Message-ID: <bca5ba81-7e97-9b54-be57-a40df9b0634c@quicinc.com>
+Date:   Fri, 25 Mar 2022 12:18:41 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
-Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
- ath9k-based AP
-Content-Language: en-GB
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Maxime Bizon <mbizon@freebox.fr>
-Cc:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
-        Christoph Hellwig <hch@lst.de>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Halil Pasic <pasic@linux.ibm.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Olha Cherevyk <olha.cherevyk@gmail.com>,
-        iommu <iommu@lists.linux-foundation.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable <stable@vger.kernel.org>
-References: <1812355.tdWV9SEqCh@natalenko.name>
- <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
- <20220324055732.GB12078@lst.de> <4386660.LvFx2qVVIh@natalenko.name>
- <81ffc753-72aa-6327-b87b-3f11915f2549@arm.com> <878rsza0ih.fsf@toke.dk>
- <4be26f5d8725cdb016c6fdd9d05cfeb69cdd9e09.camel@freebox.fr>
- <20220324163132.GB26098@lst.de>
- <d8a1cbf4-a521-78ec-1560-28d855e0913e@arm.com> <871qyr9t4e.fsf@toke.dk>
- <CAHk-=whUQCCaQXJt3KUeQ8mtnLeVXEScNXCp+_DYh2SNY7EcEA@mail.gmail.com>
- <31434708dcad126a8334c99ee056dcce93e507f1.camel@freebox.fr>
- <CAHk-=wippum+MksdY7ixMfa3i1sZ+nxYPWLLpVMNyXCgmiHbBQ@mail.gmail.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <CAHk-=wippum+MksdY7ixMfa3i1sZ+nxYPWLLpVMNyXCgmiHbBQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v6 1/3] nl80211: Add support for beacon tx mode
+Content-Language: en-US
+To:     Maharaja Kennadyrajan <quic_mkenna@quicinc.com>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20220325055949.3035053-1-quic_mkenna@quicinc.com>
+ <20220325055949.3035053-2-quic_mkenna@quicinc.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20220325055949.3035053-2-quic_mkenna@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2022-03-25 18:30, Linus Torvalds wrote:
-> On Fri, Mar 25, 2022 at 3:25 AM Maxime Bizon <mbizon@freebox.fr> wrote:
->>
->> In the non-cache-coherent scenario, and assuming dma_map() did an
->> initial cache invalidation, you can write this:
-> 
-> .. but the problem is that the dma mapping code is supposed to just
-> work, and the driver isn't supposed to know or care whether dma is
-> coherent or not, or using bounce buffers or not.
-> 
-> And currently it doesn't work.
-> 
-> Because what that ath9k driver does is "natural", but it's wrong for
-> the bounce buffer case.
-> 
-> And I think the problem is squarely on the dma-mapping side for two reasons:
-> 
->   (a) this used to work, now it doesn't, and it's unclear how many
-> other drivers are affected
-> 
->   (b) the dma-mapping naming and calling conventions are horrible and
-> actively misleading
-> 
-> That (a) is a big deal. The reason the ath9k issue was found quickly
-> is very likely *NOT* because ath9k is the only thing affected. No,
-> it's because ath9k is relatively common.
-> 
-> Just grep for dma_sync_single_for_device() and ask yourself: how many
-> of those other drivers have you ever even HEARD of, much less be able
-> to test?
-> 
-> And that's just one "dma_sync" function. Admittedly it's likely one of
-> the more common ones, but still..
-> 
-> Now, (b) is why I think driver nufgt get this so wrong - or, in this
-> case, possibly the dma-mapping code itself.
-> 
-> The naming - and even the documentation(!!!) - implies that what ath9k
-> does IS THE RIGHT THING TO DO.
-> 
-> The documentation clearly states:
-> 
->    "Before giving the memory to the device, dma_sync_single_for_device() needs
->     to be called, and before reading memory written by the device,
->     dma_sync_single_for_cpu(), just like for streaming DMA mappings that are
->     reused"
+On 3/24/2022 10:59 PM, Maharaja Kennadyrajan wrote:
+[...snip...]
 
-Except that's documentation for the non-coherent allocation API, rather 
-than the streaming API in question here. I'll refrain from commenting on 
-having at least 3 DMA APIs, with the same set of sync functions serving 
-two of them, and just stand back a safe distance...
+> +/**
+> + * enum nl80211_beacon_tx_mode - Beacon Tx Mode enum.
+> + * @NL80211_BEACON_STAGGERED_MODE: Used to configure beacon tx mode as
+> + *	staggered mode. This is the default beacon tx mode.
 
+Documentation doesn't match the code. There is now a default mode, and 
+that is, well, the default mode
 
-
-
-Anyway, the appropriate part of that document is probably:
-
-   "You must do this:
-
-    - Before reading values that have been written by DMA from the device
-      (use the DMA_FROM_DEVICE direction)"
-
-I'm not saying it constitutes *good* documentation, but I would note how 
-it says "have been written", and not "are currently being written". 
-Similarly from the HOWTO:
-
-    "If you need to use the same streaming DMA region multiple times and
-     touch the data in between the DMA transfers, the buffer needs to be
-     synced properly..."
-
-Note "between the DMA transfers", and not "during the DMA transfers". 
-The fundamental assumption of the streaming API is that only one thing 
-is ever accessing the mapping at any given time, which is what the whole 
-notion of ownership is about.
-
-Thanks,
-Robin.
+> + * @NL80211_BEACON_BURST_MODE: Used to configure beacon tx mode as burst mode.
+> + */
+> +enum nl80211_beacon_tx_mode {
+> +	NL80211_BEACON_DEFAULT_MODE = 0,
+> +	NL80211_BEACON_STAGGERED_MODE = 1,
+> +	NL80211_BEACON_BURST_MODE = 2,
+> +};
+> +
