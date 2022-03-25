@@ -2,52 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3B154E7C84
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:21:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00C644E7BCC
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:21:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233570AbiCYVvr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 17:51:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60584 "EHLO
+        id S233584AbiCYV4X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 17:56:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233563AbiCYVvq (ORCPT
+        with ESMTP id S233577AbiCYV4W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 17:51:46 -0400
+        Fri, 25 Mar 2022 17:56:22 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF7DA15AAF8;
-        Fri, 25 Mar 2022 14:50:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADEEF220EE;
+        Fri, 25 Mar 2022 14:54:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=60OMP8UDGCo2v151LkV47kmUGiZyavD4SmhjdQ5wwUk=;
-        t=1648245011; x=1649454611; b=wYVrZW7EwtB7mSEvSZ48TSGqoD9G9nav/Xj/aVH2Ib2yAce
-        RX3J3RP/52Q90qv9LiY0KlobTo7jU2A3uKwLgY7YVBfMKk67kDCdAlRb1ongtxJB3dTI34es2MB4q
-        T+/x5KQUFAPox6K1T7gOFW8Ubd0U8p5ucJU9HS3z1b2XqWGjwtVl79gq1D8nscdcPrcnCUw3WnAyV
-        Qy0a+pjITCur8Q6jWf9Jul+EiOUsWRX22l//PcxSYTlVhTP7AHHYy/KQdKgr5ZhJirry2OaFXr/+j
-        xAtAUCZ+3Ie0J83VsU9ZXluK8GIvzQ/G2OgqBOOQtb2Qu8Ovb0G0iNzHbQnIqjiA==;
+        Resent-Cc:Resent-Message-ID; bh=O89r3kLV+3EEUAMr9w+snOfj3ajDh1BFqK6IJ85WWws=;
+        t=1648245287; x=1649454887; b=JdU9HHVzw1faTiB4XMBqevUSguuZ0AZlBynDLpExZrGG/Af
+        XH1bixD477b7stiskx3zKgVq2jpa8V7Y7MBmhHoK4EcBtNsrtTpNpcwaToKfHAYnJYtA6UKhpM+MO
+        8E5NTGVCyQESKJz53ikINo9Y+VPrZiIYdNdvoidvyFmrGKFUjWU2J1pzRcZZKw0Ajv+ZO9VDnbrtd
+        dE0wb9kYSbPw6gfZ/dG8b1VO04sE7r76Z7oTErgNvfJ8RoewvT6WGazjo778LBdP+MmAxzmeWrEBo
+        dYbs3xBKkZp/kB81/PxriZ8F9GvNL8uxawBz6dyRjCNPDiLPt2J/W4Ca3i1KlOjg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nXrop-000WYJ-N0;
-        Fri, 25 Mar 2022 22:50:03 +0100
-Message-ID: <b01ce2cb79ca3a22a9ca54e481d4a6b0420afff2.camel@sipsolutions.net>
+        id 1nXrtH-000Wd1-2D;
+        Fri, 25 Mar 2022 22:54:39 +0100
+Message-ID: <1e4ef09dea2c22a03fa2303a0e909b99e8ed9028.camel@sipsolutions.net>
 Subject: Re: [BUG] deadlock in nl80211_vendor_cmd
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     William McVicker <willmcvicker@google.com>,
-        linux-wireless@vger.kernel.org,
+To:     William McVicker <willmcvicker@google.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>, linux-wireless@vger.kernel.org,
         Marek Szyprowski <m.szyprowski@samsung.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
         Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
         Xinming Hu <huxinming820@gmail.com>, kernel-team@android.com,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Cong Wang <cwang@twopensource.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>
-Date:   Fri, 25 Mar 2022 22:50:02 +0100
-In-Reply-To: <20220325144839.7110fc8d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        Paolo Abeni <pabeni@redhat.com>
+Date:   Fri, 25 Mar 2022 22:54:38 +0100
+In-Reply-To: <976e8cf697c7e5bc3a752e758a484b69a058710a.camel@sipsolutions.net>
 References: <0000000000009e9b7105da6d1779@google.com>
          <99eda6d1dad3ff49435b74e539488091642b10a8.camel@sipsolutions.net>
          <5d5cf050-7de0-7bad-2407-276970222635@quicinc.com>
@@ -57,9 +53,8 @@ References: <0000000000009e9b7105da6d1779@google.com>
          <19e12e6b5f04ba9e5b192001fbe31a3fc47d380a.camel@sipsolutions.net>
          <20220325094952.10c46350@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
          <f4f8a27dc07c1adaab470fde302ed841113e6b7f.camel@sipsolutions.net>
-         <20220325134040.0d98835b@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <46b8555d4cded50bc5573fd9b7dd444021317a6b.camel@sipsolutions.net>
-         <20220325144839.7110fc8d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+         <Yj4FFIXi//ivQC3X@google.com> <Yj4ntUejxaPhrM5b@google.com>
+         <976e8cf697c7e5bc3a752e758a484b69a058710a.camel@sipsolutions.net>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
 MIME-Version: 1.0
@@ -74,28 +69,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2022-03-25 at 14:48 -0700, Jakub Kicinski wrote:
-> > 
-> > > The WARN_ON() you suggested up front make perfect sense to me.
-> > > You can also take the definition of net_unlink_todo() out of
-> > > netdevice.h while at it because o_0  
-> > 
-> > Heh indeed, what?
+On Fri, 2022-03-25 at 22:16 +0100, Johannes Berg wrote:
 > 
-> To be clear - I just meant that it's declaring a static variable in 
-> a header, so I doubt that it'll do the right thing unless it's only
-> called from one compilation unit.
-
-Right, it's odd. I just made a patch (will send in a minute) moving the
-entire block to dev.c, which is the only user of any of it.
-
-> > Ah, no. This isn't about locking in this case, it's literally about
-> > ensuring that free_netdev() has been called in netdev_run_todo()?
+> > Thread 1                         Thread 2
+> >  nl80211_pre_doit():
+> >    rtnl_lock()
+> >    wiphy_lock()                   nl80211_pre_doit():
+> >                                     rtnl_lock() // blocked by Thread 1
+> >  nl80211_vendor_cmd():
+> >    doit()
+> >      cfg80211_unregister_netdevice()
+> >    rtnl_unlock():
+> >      netdev_run_todo():
+> >        __rtnl_unlock()
+> >                                     <got RTNL lock>
+> >                                     wiphy_lock() // blocked by Thread 1
+> >        rtnl_lock(); // DEADLOCK
+> >  nl80211_post_doit():
+> >    wiphy_unlock();
 > 
-> Yup, multiple contexts sitting independently in netdev_run_todo() and
-> chewing on netdevs is slightly different. destructors of those netdevs
-> could be pointing at memory of a module being unloaded.
+> 
+> Right, this is what I had discussed in my other mails.
+> 
+> Basically, you're actually doing (some form of) unregister_netdevice()
+> before rtnl_unlock().
+> 
+> Clearly this isn't possible in cfg80211 itself.
+> 
+> However, I couldn't entirely discount the possibility that this is
+> possible:
+> 
+> Thread 1                   Thread 2
+>                             rtnl_lock()
+>                             unregister_netdevice()
+>                             __rtnl_unlock()
+> rtnl_lock()
+> wiphy_lock()
+> netdev_run_todo()
+>  __rtnl_unlock()
+>  // list not empty now    
+>  // because of thread 2     rtnl_lock()
+>  rtnl_lock()
+>                             wiphy_lock()
+> 
+> ** DEADLOCK **
+> 
+> 
+> Given my other discussion with Jakub though, it seems that we can indeed
+> make sure that this cannot happen, and then this scenario is impossible
+> without the unregistration you're doing.
+> 
 
-Right, thanks.
+I just sent a patch for this then, forgot to CC everyone:
+
+https://lore.kernel.org/r/20220325225055.37e89a72f814.Ic73d206e217db20fd22dcec14fe5442ca732804b@changeid
+
+But basically it changes nothing, just adds a WARN_ON with documentation
+ensuring that the invariant never breaks, i.e. that Thread 2 can't
+happen.
+
+And maybe I should've written that with 3 Threads, but the setup of
+unregister_netdevice()/__rtnl_unlock() could happen anywhere in the
+system anyway.
+
 
 johannes
