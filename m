@@ -2,40 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C25A44E6DFE
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 07:02:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5F924E6E01
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 07:02:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349575AbiCYGDn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 02:03:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59784 "EHLO
+        id S1358388AbiCYGDq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 02:03:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234812AbiCYGDm (ORCPT
+        with ESMTP id S1358389AbiCYGDq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 02:03:42 -0400
+        Fri, 25 Mar 2022 02:03:46 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E129C681C
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Mar 2022 23:02:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EBE9C681C
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Mar 2022 23:02:10 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22P61sZN2011000, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22P61sZN2011000
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22P61vveE011007, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22P61vveE011007
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 25 Mar 2022 14:01:54 +0800
+        Fri, 25 Mar 2022 14:01:58 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 25 Mar 2022 14:01:54 +0800
+ 15.1.2308.27; Fri, 25 Mar 2022 14:01:57 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 25 Mar
- 2022 14:01:53 +0800
+ 2022 14:01:57 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>
-Subject: [PATCH 00/16] rtw89: refine PCI and MAC codes into function with attributes
-Date:   Fri, 25 Mar 2022 14:00:39 +0800
-Message-ID: <20220325060055.58482-1-pkshih@realtek.com>
+Subject: [PATCH 01/16] rtw89: pci: add register definition to rtw89_pci_info to generalize pci code
+Date:   Fri, 25 Mar 2022 14:00:40 +0800
+Message-ID: <20220325060055.58482-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220325060055.58482-1-pkshih@realtek.com>
+References: <20220325060055.58482-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -53,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMjUgpFekyCAwNDo0ODowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -66,52 +68,521 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The existing PCI and MAC codes are only used by 8852AE, so many settings are
-put in single function. To be clear, move the settings into an individual
-function according to its functionality. Since functions will be shared
-with chips, add attributes to make it possible to use common functions.
+The PCI code of 8852AE and 8852CE are different, but the flow and register
+names are similar. To reuse the code, add a struct to define register or
+value accordingly. We also use chip id to control the slightly different
+flow.
 
-Also, update the settings to the latest version of our internal code.
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/pci.c      | 138 ++++++++++++++----
+ drivers/net/wireless/realtek/rtw89/pci.h      |  68 +++++++++
+ drivers/net/wireless/realtek/rtw89/reg.h      |  40 +++++
+ .../net/wireless/realtek/rtw89/rtw8852ae.c    |  11 ++
+ .../net/wireless/realtek/rtw89/rtw8852ce.c    |  11 ++
+ 5 files changed, 238 insertions(+), 30 deletions(-)
 
-This patchset is based on                                                       
- "rtw89: add firmware reset and dump firmware memory and backtrace" and
- "rtw89: update TX power table and 6G, refine IGI, and add TX/RX descriptors V1"
-But no actual function dependency.     
-
-Chia-Yuan Li (1):
-  rtw89: pci: refine pci pre_init function
-
-Ping-Ke Shih (15):
-  rtw89: pci: add register definition to rtw89_pci_info to generalize
-    pci code
-  rtw89: pci: add pci attributes to configure operating mode
-  rtw89: pci: add LTR setting for v1 chip
-  rtw89: pci: set address info registers depends on chips
-  rtw89: pci: add deglitch setting
-  rtw89: pci: add L1 settings
-  rtw89: extend dmac_pre_init to support 8852C
-  rtw89: update STA scheduler parameters for v1 chip
-  rtw89: add chip_ops::{enable,disable}_bb_rf to support v1 chip
-  rtw89: Turn on CR protection of CMAC
-  rtw89: 8852c: update security engine setting
-  rtw89: update scheduler setting
-  rtw89: initialize NAV control
-  rtw89: update TMAC parameters
-  rtw89: update ptcl_init
-
- drivers/net/wireless/realtek/rtw89/core.c     |   7 +-
- drivers/net/wireless/realtek/rtw89/core.h     |   2 +
- drivers/net/wireless/realtek/rtw89/mac.c      | 129 ++++-
- drivers/net/wireless/realtek/rtw89/mac.h      |  19 +-
- drivers/net/wireless/realtek/rtw89/pci.c      | 519 +++++++++++++++---
- drivers/net/wireless/realtek/rtw89/pci.h      | 211 +++++++
- drivers/net/wireless/realtek/rtw89/reg.h      | 187 +++++++
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |   2 +
- .../net/wireless/realtek/rtw89/rtw8852ae.c    |  30 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  45 ++
- .../net/wireless/realtek/rtw89/rtw8852ce.c    |  30 +
- 11 files changed, 1080 insertions(+), 101 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 3a27d6f8c6305..2395a29c176f5 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -1426,16 +1426,23 @@ static void rtw89_pci_ops_write32(struct rtw89_dev *rtwdev, u32 addr, u32 data)
+ 
+ static void rtw89_pci_ctrl_dma_all(struct rtw89_dev *rtwdev, bool enable)
+ {
++	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
++	const struct rtw89_pci_info *info = rtwdev->pci_info;
++	u32 txhci_en = info->txhci_en_bit;
++	u32 rxhci_en = info->rxhci_en_bit;
++
+ 	if (enable) {
++		if (chip_id != RTL8852C)
++			rtw89_write32_clr(rtwdev, info->dma_stop1_reg,
++					  B_AX_STOP_PCIEIO);
+ 		rtw89_write32_set(rtwdev, R_AX_PCIE_INIT_CFG1,
+-				  B_AX_TXHCI_EN | B_AX_RXHCI_EN);
+-		rtw89_write32_clr(rtwdev, R_AX_PCIE_DMA_STOP1,
+-				  B_AX_STOP_PCIEIO);
++				  txhci_en | rxhci_en);
+ 	} else {
+-		rtw89_write32_set(rtwdev, R_AX_PCIE_DMA_STOP1,
+-				  B_AX_STOP_PCIEIO);
++		if (chip_id != RTL8852C)
++			rtw89_write32_set(rtwdev, info->dma_stop1_reg,
++					  B_AX_STOP_PCIEIO);
+ 		rtw89_write32_clr(rtwdev, R_AX_PCIE_INIT_CFG1,
+-				  B_AX_TXHCI_EN | B_AX_RXHCI_EN);
++				  txhci_en | rxhci_en);
+ 	}
+ }
+ 
+@@ -1500,6 +1507,28 @@ rtw89_write16_mdio(struct rtw89_dev *rtwdev, u8 addr, u16 data, u8 speed)
+ 	return 0;
+ }
+ 
++static int
++rtw89_write16_mdio_mask(struct rtw89_dev *rtwdev, u8 addr, u16 mask, u16 data, u8 speed)
++{
++	u32 shift;
++	int ret;
++	u16 val;
++
++	ret = rtw89_read16_mdio(rtwdev, addr, speed, &val);
++	if (!ret)
++		return ret;
++
++	shift = __ffs(mask);
++	val &= ~mask;
++	val |= ((data << shift) & mask);
++
++	ret = rtw89_write16_mdio(rtwdev, addr, val, speed);
++	if (!ret)
++		return ret;
++
++	return 0;
++}
++
+ static int rtw89_write16_mdio_set(struct rtw89_dev *rtwdev, u8 addr, u16 mask, u8 speed)
+ {
+ 	int ret;
+@@ -1628,8 +1657,7 @@ static int rtw89_pci_auto_refclk_cal(struct rtw89_dev *rtwdev, bool autook_en)
+ 	bool l1_flag = false;
+ 	int ret = 0;
+ 
+-	if ((rtwdev->chip->chip_id == RTL8852A && rtwdev->hal.cv == CHIP_CBV) ||
+-	    rtwdev->chip->chip_id == RTL8852C)
++	if (rtwdev->chip->chip_id != RTL8852B)
+ 		return 0;
+ 
+ 	ret = rtw89_pci_read_config_byte(rtwdev, RTW89_PCIE_PHY_RATE, &val8);
+@@ -1793,12 +1821,15 @@ static int rtw89_pci_deglitch_setting(struct rtw89_dev *rtwdev)
+ 
+ static void rtw89_pci_rxdma_prefth(struct rtw89_dev *rtwdev)
+ {
++	if (rtwdev->chip->chip_id != RTL8852A)
++		return;
++
+ 	rtw89_write32_set(rtwdev, R_AX_PCIE_INIT_CFG1, B_AX_DIS_RXDMA_PRE);
+ }
+ 
+ static void rtw89_pci_l1off_pwroff(struct rtw89_dev *rtwdev)
+ {
+-	if (rtwdev->chip->chip_id == RTL8852C)
++	if (rtwdev->chip->chip_id != RTL8852A && rtwdev->chip->chip_id != RTL8852B)
+ 		return;
+ 
+ 	rtw89_write32_clr(rtwdev, R_AX_PCIE_PS_CTRL, B_AX_L1OFF_PWR_OFF_EN);
+@@ -1808,7 +1839,7 @@ static u32 rtw89_pci_l2_rxen_lat(struct rtw89_dev *rtwdev)
+ {
+ 	int ret;
+ 
+-	if (rtwdev->chip->chip_id == RTL8852C)
++	if (rtwdev->chip->chip_id != RTL8852A)
+ 		return 0;
+ 
+ 	ret = rtw89_write16_mdio_clr(rtwdev, RAC_ANA26, B_AX_RXEN,
+@@ -1843,6 +1874,40 @@ static void rtw89_pci_hci_ldo(struct rtw89_dev *rtwdev)
+ 			  B_AX_PCIE_DIS_WLSUS_AFT_PDN);
+ }
+ 
++static int rtw89_pci_dphy_delay(struct rtw89_dev *rtwdev)
++{
++	if (rtwdev->chip->chip_id != RTL8852B)
++		return 0;
++
++	return rtw89_write16_mdio_mask(rtwdev, RAC_REG_REV2, BAC_CMU_EN_DLY_MASK,
++				       PCIE_DPHY_DLY_25US, PCIE_PHY_GEN1);
++}
++
++static void rtw89_pci_power_wake(struct rtw89_dev *rtwdev, bool pwr_up)
++{
++	if (pwr_up)
++		rtw89_write32_set(rtwdev, R_AX_HCI_OPT_CTRL, BIT_WAKE_CTRL);
++	else
++		rtw89_write32_clr(rtwdev, R_AX_HCI_OPT_CTRL, BIT_WAKE_CTRL);
++}
++
++static void rtw89_pci_autoload_hang(struct rtw89_dev *rtwdev)
++{
++	if (rtwdev->chip->chip_id != RTL8852C)
++		return;
++
++	rtw89_write32_set(rtwdev, R_AX_PCIE_BG_CLR, B_AX_BG_CLR_ASYNC_M3);
++	rtw89_write32_clr(rtwdev, R_AX_PCIE_BG_CLR, B_AX_BG_CLR_ASYNC_M3);
++}
++
++static void rtw89_pci_l12_vmain(struct rtw89_dev *rtwdev)
++{
++	if (rtwdev->chip->chip_id != RTL8852C && rtwdev->hal.cv == CHIP_CAV)
++		return;
++
++	rtw89_write32_set(rtwdev, R_AX_SYS_SDIO_CTRL, B_AX_PCIE_FORCE_PWR_NGAT);
++}
++
+ static void rtw89_pci_set_sic(struct rtw89_dev *rtwdev)
+ {
+ 	if (rtwdev->chip->chip_id == RTL8852C)
+@@ -1867,19 +1932,23 @@ static void rtw89_pci_set_dbg(struct rtw89_dev *rtwdev)
+ 
+ static void rtw89_pci_clr_idx_all(struct rtw89_dev *rtwdev)
+ {
++	const struct rtw89_pci_info *info = rtwdev->pci_info;
++	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
+ 	u32 val = B_AX_CLR_ACH0_IDX | B_AX_CLR_ACH1_IDX | B_AX_CLR_ACH2_IDX |
+ 		  B_AX_CLR_ACH3_IDX | B_AX_CLR_CH8_IDX | B_AX_CLR_CH9_IDX |
+ 		  B_AX_CLR_CH12_IDX;
++	u32 rxbd_rwptr_clr = info->rxbd_rwptr_clr_reg;
++	u32 txbd_rwptr_clr2 = info->txbd_rwptr_clr2_reg;
+ 
+-	if (rtwdev->chip->chip_id == RTL8852A)
++	if (chip_id == RTL8852A || chip_id == RTL8852C)
+ 		val |= B_AX_CLR_ACH4_IDX | B_AX_CLR_ACH5_IDX |
+ 		       B_AX_CLR_ACH6_IDX | B_AX_CLR_ACH7_IDX;
+ 	/* clear DMA indexes */
+ 	rtw89_write32_set(rtwdev, R_AX_TXBD_RWPTR_CLR1, val);
+-	if (rtwdev->chip->chip_id == RTL8852A)
+-		rtw89_write32_set(rtwdev, R_AX_TXBD_RWPTR_CLR2,
++	if (chip_id == RTL8852A || chip_id == RTL8852C)
++		rtw89_write32_set(rtwdev, txbd_rwptr_clr2,
+ 				  B_AX_CLR_CH10_IDX | B_AX_CLR_CH11_IDX);
+-	rtw89_write32_set(rtwdev, R_AX_RXBD_RWPTR_CLR,
++	rtw89_write32_set(rtwdev, rxbd_rwptr_clr,
+ 			  B_AX_CLR_RXQ_IDX | B_AX_CLR_RPQ_IDX);
+ }
+ 
+@@ -1897,6 +1966,7 @@ static int rtw89_pci_ops_deinit(struct rtw89_dev *rtwdev)
+ 
+ static int rtw89_pci_ops_mac_pre_init(struct rtw89_dev *rtwdev)
+ {
++	const struct rtw89_pci_info *info = rtwdev->pci_info;
+ 	u32 dma_busy;
+ 	u32 check;
+ 	u32 lbc;
+@@ -1913,6 +1983,7 @@ static int rtw89_pci_ops_mac_pre_init(struct rtw89_dev *rtwdev)
+ 
+ 	rtw89_pci_aphy_pwrcut(rtwdev);
+ 	rtw89_pci_hci_ldo(rtwdev);
++	rtw89_pci_dphy_delay(rtwdev);
+ 
+ 	ret = rtw89_pci_auto_refclk_cal(rtwdev, false);
+ 	if (ret) {
+@@ -1920,21 +1991,26 @@ static int rtw89_pci_ops_mac_pre_init(struct rtw89_dev *rtwdev)
+ 		return ret;
+ 	}
+ 
++	rtw89_pci_power_wake(rtwdev, true);
++	rtw89_pci_autoload_hang(rtwdev);
++	rtw89_pci_l12_vmain(rtwdev);
+ 	rtw89_pci_set_sic(rtwdev);
+ 	rtw89_pci_set_dbg(rtwdev);
+ 
+-	if (rtwdev->chip->chip_id == RTL8852A)
++	if (rtwdev->chip->chip_id == RTL8852A) {
+ 		rtw89_write32_clr(rtwdev, R_AX_SYS_SDIO_CTRL,
+ 				  B_AX_PCIE_AUXCLK_GATE);
+ 
+-	lbc = rtw89_read32(rtwdev, R_AX_LBC_WATCHDOG);
+-	lbc = u32_replace_bits(lbc, RTW89_MAC_LBC_TMR_128US, B_AX_LBC_TIMER);
+-	lbc |= B_AX_LBC_FLAG | B_AX_LBC_EN;
+-	rtw89_write32(rtwdev, R_AX_LBC_WATCHDOG, lbc);
++		lbc = rtw89_read32(rtwdev, R_AX_LBC_WATCHDOG);
++		lbc = u32_replace_bits(lbc, RTW89_MAC_LBC_TMR_128US, B_AX_LBC_TIMER);
++		lbc |= B_AX_LBC_FLAG | B_AX_LBC_EN;
++		rtw89_write32(rtwdev, R_AX_LBC_WATCHDOG, lbc);
+ 
+-	rtw89_write32_set(rtwdev, R_AX_PCIE_INIT_CFG1,
+-			  B_AX_PCIE_TXRST_KEEP_REG | B_AX_PCIE_RXRST_KEEP_REG);
+-	rtw89_write32_set(rtwdev, R_AX_PCIE_DMA_STOP1, B_AX_STOP_WPDMA);
++		rtw89_write32_set(rtwdev, R_AX_PCIE_INIT_CFG1,
++				  B_AX_PCIE_TXRST_KEEP_REG | B_AX_PCIE_RXRST_KEEP_REG);
++	}
++
++	rtw89_write32_set(rtwdev, info->dma_stop1_reg, B_AX_STOP_WPDMA);
+ 
+ 	/* stop DMA activities */
+ 	rtw89_pci_ctrl_dma_all(rtwdev, false);
+@@ -1975,9 +2051,9 @@ static int rtw89_pci_ops_mac_pre_init(struct rtw89_dev *rtwdev)
+ 	}
+ 
+ 	/* enable FW CMD queue to download firmware */
+-	rtw89_write32_set(rtwdev, R_AX_PCIE_DMA_STOP1, B_AX_TX_STOP1_ALL);
+-	rtw89_write32_clr(rtwdev, R_AX_PCIE_DMA_STOP1, B_AX_STOP_CH12);
+-	rtw89_write32_set(rtwdev, R_AX_PCIE_DMA_STOP2, B_AX_TX_STOP2_ALL);
++	rtw89_write32_set(rtwdev, info->dma_stop1_reg, B_AX_TX_STOP1_ALL);
++	rtw89_write32_clr(rtwdev, info->dma_stop1_reg, B_AX_STOP_CH12);
++	rtw89_write32_set(rtwdev, info->dma_stop2_reg, B_AX_TX_STOP2_ALL);
+ 
+ 	/* start DMA activities */
+ 	rtw89_pci_ctrl_dma_all(rtwdev, true);
+@@ -2018,6 +2094,7 @@ static int rtw89_pci_ltr_set(struct rtw89_dev *rtwdev)
+ 
+ static int rtw89_pci_ops_mac_post_init(struct rtw89_dev *rtwdev)
+ {
++	const struct rtw89_pci_info *info = rtwdev->pci_info;
+ 	int ret;
+ 
+ 	ret = rtw89_pci_ltr_set(rtwdev);
+@@ -2035,11 +2112,11 @@ static int rtw89_pci_ops_mac_post_init(struct rtw89_dev *rtwdev)
+ 	rtw89_write32_clr(rtwdev, R_AX_PKTIN_SETTING, B_AX_WD_ADDR_INFO_LENGTH);
+ 
+ 	/* enable DMA for all queues */
+-	rtw89_write32_clr(rtwdev, R_AX_PCIE_DMA_STOP1, B_AX_TX_STOP1_ALL);
+-	rtw89_write32_clr(rtwdev, R_AX_PCIE_DMA_STOP2, B_AX_TX_STOP2_ALL);
++	rtw89_write32_clr(rtwdev, info->dma_stop1_reg, B_AX_TX_STOP1_ALL);
++	rtw89_write32_clr(rtwdev, info->dma_stop2_reg, B_AX_TX_STOP2_ALL);
+ 
+ 	/* Release PCI IO */
+-	rtw89_write32_clr(rtwdev, R_AX_PCIE_DMA_STOP1,
++	rtw89_write32_clr(rtwdev, info->dma_stop1_reg,
+ 			  B_AX_STOP_WPDMA | B_AX_STOP_PCIEIO);
+ 
+ 	return 0;
+@@ -2767,17 +2844,18 @@ static void rtw89_pci_l1ss_cfg(struct rtw89_dev *rtwdev)
+ 
+ static void rtw89_pci_ctrl_dma_all_pcie(struct rtw89_dev *rtwdev, u8 en)
+ {
++	const struct rtw89_pci_info *info = rtwdev->pci_info;
+ 	u32 val32;
+ 
+ 	if (en == MAC_AX_FUNC_EN) {
+ 		val32 = B_AX_STOP_PCIEIO;
+-		rtw89_write32_clr(rtwdev, R_AX_PCIE_DMA_STOP1, val32);
++		rtw89_write32_clr(rtwdev, info->dma_stop1_reg, val32);
+ 
+ 		val32 = B_AX_TXHCI_EN | B_AX_RXHCI_EN;
+ 		rtw89_write32_set(rtwdev, R_AX_PCIE_INIT_CFG1, val32);
+ 	} else {
+ 		val32 = B_AX_STOP_PCIEIO;
+-		rtw89_write32_set(rtwdev, R_AX_PCIE_DMA_STOP1, val32);
++		rtw89_write32_set(rtwdev, info->dma_stop1_reg, val32);
+ 
+ 		val32 = B_AX_TXHCI_EN | B_AX_RXHCI_EN;
+ 		rtw89_write32_clr(rtwdev, R_AX_PCIE_INIT_CFG1, val32);
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
+index a67595b211853..8eabeaeec045f 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.h
++++ b/drivers/net/wireless/realtek/rtw89/pci.h
+@@ -12,6 +12,9 @@
+ #define MDIO_PG0_G2 2
+ #define MDIO_PG1_G2 3
+ #define RAC_ANA10			0x10
++#define RAC_REG_REV2			0x1B
++#define BAC_CMU_EN_DLY_MASK		GENMASK(15, 12)
++#define PCIE_DPHY_DLY_25US		0x1
+ #define RAC_ANA19			0x19
+ #define RAC_ANA1F			0x1F
+ #define RAC_ANA24			0x24
+@@ -35,6 +38,48 @@
+ #define R_AX_MDIO_WDATA			0x10A4
+ #define R_AX_MDIO_RDATA			0x10A6
+ 
++#define R_AX_PCIE_BG_CLR		0x303C
++#define B_AX_BG_CLR_ASYNC_M3		BIT(4)
++
++#define R_AX_PCIE_IO_RCY_M1 0x3100
++#define B_AX_PCIE_IO_RCY_P_M1 BIT(5)
++#define B_AX_PCIE_IO_RCY_WDT_P_M1 BIT(4)
++#define B_AX_PCIE_IO_RCY_WDT_MODE_M1 BIT(3)
++#define B_AX_PCIE_IO_RCY_TRIG_M1 BIT(0)
++
++#define R_AX_PCIE_WDT_TIMER_M1 0x3104
++#define B_AX_PCIE_WDT_TIMER_M1_MASK GENMASK(31, 0)
++
++#define R_AX_PCIE_IO_RCY_M2 0x310C
++#define B_AX_PCIE_IO_RCY_P_M2 BIT(5)
++#define B_AX_PCIE_IO_RCY_WDT_P_M2 BIT(4)
++#define B_AX_PCIE_IO_RCY_WDT_MODE_M2 BIT(3)
++#define B_AX_PCIE_IO_RCY_TRIG_M2 BIT(0)
++
++#define R_AX_PCIE_WDT_TIMER_M2 0x3110
++#define B_AX_PCIE_WDT_TIMER_M2_MASK GENMASK(31, 0)
++
++#define R_AX_PCIE_IO_RCY_E0 0x3118
++#define B_AX_PCIE_IO_RCY_P_E0 BIT(5)
++#define B_AX_PCIE_IO_RCY_WDT_P_E0 BIT(4)
++#define B_AX_PCIE_IO_RCY_WDT_MODE_E0 BIT(3)
++#define B_AX_PCIE_IO_RCY_TRIG_E0 BIT(0)
++
++#define R_AX_PCIE_WDT_TIMER_E0 0x311C
++#define B_AX_PCIE_WDT_TIMER_E0_MASK GENMASK(31, 0)
++
++#define R_AX_PCIE_IO_RCY_S1 0x3124
++#define B_AX_PCIE_IO_RCY_RP_S1 BIT(7)
++#define B_AX_PCIE_IO_RCY_WP_S1 BIT(6)
++#define B_AX_PCIE_IO_RCY_WDT_RP_S1 BIT(5)
++#define B_AX_PCIE_IO_RCY_WDT_WP_S1 BIT(4)
++#define B_AX_PCIE_IO_RCY_WDT_MODE_S1 BIT(3)
++#define B_AX_PCIE_IO_RCY_RTRIG_S1 BIT(1)
++#define B_AX_PCIE_IO_RCY_WTRIG_S1 BIT(0)
++
++#define R_AX_PCIE_WDT_TIMER_S1 0x3128
++#define B_AX_PCIE_WDT_TIMER_S1_MASK GENMASK(31, 0)
++
+ #define RTW89_PCI_WR_RETRY_CNT		20
+ 
+ /* Interrupts */
+@@ -330,6 +375,7 @@
+ #define R_AX_PCIE_INIT_CFG2		0x1004
+ #define B_AX_WD_ITVL_IDLE		GENMASK(27, 24)
+ #define B_AX_WD_ITVL_ACT		GENMASK(19, 16)
++#define B_AX_PCIE_RX_APPLEN_MASK	GENMASK(13, 0)
+ 
+ #define R_AX_PCIE_PS_CTRL		0x1008
+ #define B_AX_L1OFF_PWR_OFF_EN		BIT(5)
+@@ -356,11 +402,22 @@
+ #define B_AX_PCIE_TXBD_LEN0		BIT(1)
+ #define B_AX_PCIE_TXBD_4KBOUD_LENERR	BIT(0)
+ 
++#define R_AX_TXBD_RWPTR_CLR2_V1		0x11C4
++#define B_AX_CLR_CH11_IDX		BIT(1)
++#define B_AX_CLR_CH10_IDX		BIT(0)
++
+ #define R_AX_LBC_WATCHDOG		0x11D8
+ #define B_AX_LBC_TIMER			GENMASK(7, 4)
+ #define B_AX_LBC_FLAG			BIT(1)
+ #define B_AX_LBC_EN			BIT(0)
+ 
++#define R_AX_RXBD_RWPTR_CLR_V1		0x1200
++#define B_AX_CLR_RPQ_IDX		BIT(1)
++#define B_AX_CLR_RXQ_IDX		BIT(0)
++
++#define R_AX_HAXI_EXP_CTRL		0x1204
++#define B_AX_MAX_TAG_NUM_V1_MASK	GENMASK(2, 0)
++
+ #define R_AX_PCIE_EXP_CTRL		0x13F0
+ #define B_AX_EN_CHKDSC_NO_RX_STUCK	BIT(20)
+ #define B_AX_MAX_TAG_NUM		GENMASK(18, 16)
+@@ -447,6 +504,17 @@ struct rtw89_pci_ch_dma_addr_set {
+ };
+ 
+ struct rtw89_pci_info {
++	u32 init_cfg_reg;
++	u32 txhci_en_bit;
++	u32 rxhci_en_bit;
++	u32 rxbd_mode_bit;
++	u32 exp_ctrl_reg;
++	u32 max_tag_num_mask;
++	u32 rxbd_rwptr_clr_reg;
++	u32 txbd_rwptr_clr2_reg;
++	u32 dma_stop1_reg;
++	u32 dma_stop2_reg;
++
+ 	const struct rtw89_pci_ch_dma_addr_set *dma_addr_set;
+ 
+ 	u32 (*fill_txaddr_info)(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index 25b1067881188..f67584efeea9a 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -103,10 +103,14 @@
+ #define R_AX_SYS_SDIO_CTRL 0x0070
+ #define B_AX_PCIE_DIS_L2_CTRL_LDO_HCI BIT(15)
+ #define B_AX_PCIE_DIS_WLSUS_AFT_PDN BIT(14)
++#define B_AX_PCIE_FORCE_PWR_NGAT BIT(13)
+ #define B_AX_PCIE_CALIB_EN_V1 BIT(12)
+ #define B_AX_PCIE_AUXCLK_GATE BIT(11)
+ #define B_AX_LTE_MUX_CTRL_PATH BIT(26)
+ 
++#define R_AX_HCI_OPT_CTRL 0x0074
++#define BIT_WAKE_CTRL BIT(5)
++
+ #define R_AX_PLATFORM_ENABLE 0x0088
+ #define B_AX_WCPU_EN BIT(1)
+ #define B_AX_PLATFORM_EN BIT(0)
+@@ -220,6 +224,38 @@
+ 
+ #define R_AX_FILTER_MODEL_ADDR 0x0C04
+ 
++#define R_AX_HAXI_INIT_CFG1 0x1000
++#define B_AX_WD_ITVL_IDLE_V1_MASK GENMASK(31, 28)
++#define B_AX_WD_ITVL_ACT_V1_MASK GENMASK(27, 24)
++#define B_AX_DMA_MODE_MASK GENMASK(19, 18)
++#define DMA_MOD_PCIE_1B 0x0
++#define DMA_MOD_PCIE_4B 0x1
++#define DMA_MOD_USB 0x2
++#define DMA_MOD_SDIO 0x3
++#define B_AX_STOP_AXI_MST BIT(17)
++#define B_AX_HAXI_RST_KEEP_REG BIT(16)
++#define B_AX_RXHCI_EN_V1 BIT(15)
++#define B_AX_RXBD_MODE_V1 BIT(14)
++#define B_AX_HAXI_MAX_RXDMA_MASK GENMASK(9, 8)
++#define B_AX_TXHCI_EN_V1 BIT(7)
++#define B_AX_FLUSH_AXI_MST BIT(4)
++#define B_AX_RST_BDRAM BIT(3)
++#define B_AX_HAXI_MAX_TXDMA_MASK GENMASK(1, 0)
++
++#define R_AX_HAXI_DMA_STOP1 0x1010
++#define B_AX_STOP_WPDMA BIT(19)
++#define B_AX_STOP_CH12 BIT(18)
++#define B_AX_STOP_CH9 BIT(17)
++#define B_AX_STOP_CH8 BIT(16)
++#define B_AX_STOP_ACH7 BIT(15)
++#define B_AX_STOP_ACH6 BIT(14)
++#define B_AX_STOP_ACH5 BIT(13)
++#define B_AX_STOP_ACH4 BIT(12)
++#define B_AX_STOP_ACH3 BIT(11)
++#define B_AX_STOP_ACH2 BIT(10)
++#define B_AX_STOP_ACH1 BIT(9)
++#define B_AX_STOP_ACH0 BIT(8)
++
+ #define R_AX_PCIE_DBG_CTRL 0x11C0
+ #define B_AX_DBG_DUMMY_MASK GENMASK(23, 16)
+ #define B_AX_DBG_SEL_MASK GENMASK(15, 13)
+@@ -228,6 +264,10 @@
+ #define B_AX_ASFF_FULL_NO_STK BIT(1)
+ #define B_AX_EN_STUCK_DBG BIT(0)
+ 
++#define R_AX_HAXI_DMA_STOP2 0x11C0
++#define B_AX_STOP_CH11 BIT(1)
++#define B_AX_STOP_CH10 BIT(0)
++
+ #define R_AX_HCI_FC_CTRL_V1 0x1700
+ #define R_AX_CH_PAGE_CTRL_V1 0x1704
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
+index 8ffc0dd90d41c..b9047ac6b86db 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
+@@ -9,6 +9,17 @@
+ #include "rtw8852a.h"
+ 
+ static const struct rtw89_pci_info rtw8852a_pci_info = {
++	.init_cfg_reg		= R_AX_PCIE_INIT_CFG1,
++	.txhci_en_bit		= B_AX_TXHCI_EN,
++	.rxhci_en_bit		= B_AX_RXHCI_EN,
++	.rxbd_mode_bit		= B_AX_RXBD_MODE,
++	.exp_ctrl_reg		= R_AX_PCIE_EXP_CTRL,
++	.max_tag_num_mask	= B_AX_MAX_TAG_NUM,
++	.rxbd_rwptr_clr_reg	= R_AX_RXBD_RWPTR_CLR,
++	.txbd_rwptr_clr2_reg	= R_AX_TXBD_RWPTR_CLR2,
++	.dma_stop1_reg		= R_AX_PCIE_DMA_STOP1,
++	.dma_stop2_reg		= R_AX_PCIE_DMA_STOP2,
++
+ 	.dma_addr_set		= &rtw89_pci_ch_dma_addr_set,
+ 
+ 	.fill_txaddr_info	= rtw89_pci_fill_txaddr_info,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
+index 09794836d5c0f..33e69e34e385c 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
+@@ -10,6 +10,17 @@
+ #include "rtw8852c.h"
+ 
+ static const struct rtw89_pci_info rtw8852c_pci_info = {
++	.init_cfg_reg		= R_AX_HAXI_INIT_CFG1,
++	.txhci_en_bit		= B_AX_TXHCI_EN_V1,
++	.rxhci_en_bit		= B_AX_RXHCI_EN_V1,
++	.rxbd_mode_bit		= B_AX_RXBD_MODE_V1,
++	.exp_ctrl_reg		= R_AX_HAXI_EXP_CTRL,
++	.max_tag_num_mask	= B_AX_MAX_TAG_NUM_V1_MASK,
++	.rxbd_rwptr_clr_reg	= R_AX_RXBD_RWPTR_CLR_V1,
++	.txbd_rwptr_clr2_reg	= R_AX_TXBD_RWPTR_CLR2_V1,
++	.dma_stop1_reg		= R_AX_HAXI_DMA_STOP1,
++	.dma_stop2_reg		= R_AX_HAXI_DMA_STOP2,
++
+ 	.dma_addr_set		= &rtw89_pci_ch_dma_addr_set_v1,
+ 
+ 	.fill_txaddr_info	= rtw89_pci_fill_txaddr_info_v1,
 -- 
 2.25.1
 
