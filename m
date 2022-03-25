@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CD924E6E03
+	by mail.lfdr.de (Postfix) with ESMTP id D77A44E6E04
 	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 07:02:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358397AbiCYGDr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 02:03:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59846 "EHLO
+        id S1358399AbiCYGDt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 02:03:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358390AbiCYGDq (ORCPT
+        with ESMTP id S1358395AbiCYGDr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 02:03:46 -0400
+        Fri, 25 Mar 2022 02:03:47 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7722C6821
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Mar 2022 23:02:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16C66C682B
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Mar 2022 23:02:13 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22P626jZ4011068, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22P626jZ4011068
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22P627PB0011081, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22P627PB0011081
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 25 Mar 2022 14:02:06 +0800
+        Fri, 25 Mar 2022 14:02:08 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Fri, 25 Mar 2022 14:02:06 +0800
+ 15.1.2375.24; Fri, 25 Mar 2022 14:02:07 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 25 Mar
- 2022 14:02:06 +0800
+ 2022 14:02:07 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>
-Subject: [PATCH 06/16] rtw89: pci: add deglitch setting
-Date:   Fri, 25 Mar 2022 14:00:45 +0800
-Message-ID: <20220325060055.58482-7-pkshih@realtek.com>
+Subject: [PATCH 07/16] rtw89: pci: add L1 settings
+Date:   Fri, 25 Mar 2022 14:00:46 +0800
+Message-ID: <20220325060055.58482-8-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220325060055.58482-1-pkshih@realtek.com>
 References: <20220325060055.58482-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMjUgpFekyCAwNDo0ODowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -68,68 +68,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add setting to support 8852ce.
+Configure L1 settings of enter and exit.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/pci.c | 27 ++++++++++++++----------
- drivers/net/wireless/realtek/rtw89/pci.h |  3 +++
- 2 files changed, 19 insertions(+), 11 deletions(-)
+ drivers/net/wireless/realtek/rtw89/pci.c | 18 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/pci.h |  7 +++++++
+ 2 files changed, 25 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index 25d385be6e862..5112b2d443c3e 100644
+index 5112b2d443c3e..dcf907b81cffa 100644
 --- a/drivers/net/wireless/realtek/rtw89/pci.c
 +++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -1809,19 +1809,24 @@ static int rtw89_pci_auto_refclk_cal(struct rtw89_dev *rtwdev, bool autook_en)
- 
- static int rtw89_pci_deglitch_setting(struct rtw89_dev *rtwdev)
- {
-+	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
- 	int ret;
- 
--	if (rtwdev->chip->chip_id != RTL8852A)
--		return 0;
--
--	ret = rtw89_write16_mdio_clr(rtwdev, RAC_ANA24, B_AX_DEGLITCH,
--				     PCIE_PHY_GEN1);
--	if (ret)
--		return ret;
--	ret = rtw89_write16_mdio_clr(rtwdev, RAC_ANA24, B_AX_DEGLITCH,
--				     PCIE_PHY_GEN2);
--	if (ret)
--		return ret;
-+	if (chip_id == RTL8852A) {
-+		ret = rtw89_write16_mdio_clr(rtwdev, RAC_ANA24, B_AX_DEGLITCH,
-+					     PCIE_PHY_GEN1);
-+		if (ret)
-+			return ret;
-+		ret = rtw89_write16_mdio_clr(rtwdev, RAC_ANA24, B_AX_DEGLITCH,
-+					     PCIE_PHY_GEN2);
-+		if (ret)
-+			return ret;
-+	} else if (chip_id == RTL8852C) {
-+		rtw89_write16_clr(rtwdev, R_RAC_DIRECT_OFFSET_G1 + RAC_ANA24 * 2,
-+				  B_AX_DEGLITCH);
-+		rtw89_write16_clr(rtwdev, R_RAC_DIRECT_OFFSET_G2 + RAC_ANA24 * 2,
-+				  B_AX_DEGLITCH);
-+	}
- 
- 	return 0;
+@@ -1935,6 +1935,22 @@ static void rtw89_pci_gen2_force_ib(struct rtw89_dev *rtwdev)
+ 			  B_AX_SYSON_DIS_PMCR_AX_WRMSK);
  }
+ 
++static void rtw89_pci_l1_ent_lat(struct rtw89_dev *rtwdev)
++{
++	if (rtwdev->chip->chip_id != RTL8852C)
++		return;
++
++	rtw89_write32_clr(rtwdev, R_AX_PCIE_PS_CTRL_V1, B_AX_SEL_REQ_ENTR_L1);
++}
++
++static void rtw89_pci_wd_exit_l1(struct rtw89_dev *rtwdev)
++{
++	if (rtwdev->chip->chip_id != RTL8852C)
++		return;
++
++	rtw89_write32_set(rtwdev, R_AX_PCIE_PS_CTRL_V1, B_AX_DMAC0_EXIT_L1_EN);
++}
++
+ static void rtw89_pci_set_sic(struct rtw89_dev *rtwdev)
+ {
+ 	if (rtwdev->chip->chip_id == RTL8852C)
+@@ -2228,6 +2244,8 @@ static int rtw89_pci_ops_mac_pre_init(struct rtw89_dev *rtwdev)
+ 	rtw89_pci_autoload_hang(rtwdev);
+ 	rtw89_pci_l12_vmain(rtwdev);
+ 	rtw89_pci_gen2_force_ib(rtwdev);
++	rtw89_pci_l1_ent_lat(rtwdev);
++	rtw89_pci_wd_exit_l1(rtwdev);
+ 	rtw89_pci_set_sic(rtwdev);
+ 	rtw89_pci_set_lbc(rtwdev);
+ 	rtw89_pci_set_io_rcy(rtwdev);
 diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
-index 99f0cd2f47da2..805fc3e8c1a4a 100644
+index 805fc3e8c1a4a..a085d1f27a120 100644
 --- a/drivers/net/wireless/realtek/rtw89/pci.h
 +++ b/drivers/net/wireless/realtek/rtw89/pci.h
-@@ -80,6 +80,9 @@
- #define R_AX_PCIE_WDT_TIMER_S1 0x3128
- #define B_AX_PCIE_WDT_TIMER_S1_MASK GENMASK(31, 0)
+@@ -38,6 +38,13 @@
+ #define R_AX_MDIO_WDATA			0x10A4
+ #define R_AX_MDIO_RDATA			0x10A6
  
-+#define R_RAC_DIRECT_OFFSET_G1 0x3800
-+#define R_RAC_DIRECT_OFFSET_G2 0x3880
++#define R_AX_PCIE_PS_CTRL_V1		0x3008
++#define B_AX_CMAC_EXIT_L1_EN		BIT(7)
++#define B_AX_DMAC0_EXIT_L1_EN		BIT(6)
++#define B_AX_SEL_XFER_PENDING		BIT(3)
++#define B_AX_SEL_REQ_ENTR_L1		BIT(2)
++#define B_AX_SEL_REQ_EXIT_L1		BIT(0)
 +
- #define RTW89_PCI_WR_RETRY_CNT		20
+ #define R_AX_PCIE_BG_CLR		0x303C
+ #define B_AX_BG_CLR_ASYNC_M3		BIT(4)
  
- /* Interrupts */
 -- 
 2.25.1
 
