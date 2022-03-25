@@ -2,251 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9279E4E74B1
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 15:02:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6B2C4E778C
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 16:27:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359119AbiCYOEZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 10:04:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42410 "EHLO
+        id S1355676AbiCYP2p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 11:28:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348191AbiCYOEZ (ORCPT
+        with ESMTP id S1376708AbiCYP14 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 10:04:25 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECD01D76F9
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 07:02:49 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id lr4so7145025ejb.11
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 07:02:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=mTkB/8ok0Jsn34jiNB203Plx4NPfqmN3UIIy2Jyu7bo=;
-        b=In8qGeWW39amfdfMaC7ALJwwk2vGMRr7lk3s0LuuCmMDrxlYuKp3Rw/6rsW5fK8Glk
-         owwPL6TsetbV897lpSyliYR53rBbH8Du7kfmVB1i0Wx9yhTKjEZhQsfhRlWmVajNgvOM
-         nhs+APW1gXhEvsnz0sfKQ/EUrupA0vRe1xplRl8+TDIn9B7Zncg8D4QuK/DlQ4WuexHq
-         UWWHyB9h7j7K03KcGsElBWO8Kkm7WPVH4bc32h1GD8EeuI25OMggTeHvyLN/rqLMAY8N
-         JKCGBqpmnvRhobpxCr29K1Y3o9HVPXUz4M0crNYKx0m2G2e+u0xQ2+x4B7N6x2u/wK/X
-         LWxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=mTkB/8ok0Jsn34jiNB203Plx4NPfqmN3UIIy2Jyu7bo=;
-        b=oDO+i681N9zGRA8MqTW6B+rjtMwu+dxBqqzTIAkXoOKRVN0Ce1tV+4KgiEj0INOi+Y
-         34BvbSk4zF9pWNYzmF6Z5ZXHP9GQ5XxLM79fexi8X9bsthktPnnkZOygEXRHR7URk381
-         M44ymotdlnzM04/6ckZpZ1IIsfUSuTC91YMn6xLUXWPm+3fl5z3rk7tCFEmvUhZxB/RW
-         UDNLLOUs8KCwknUYIZPfzArVm+MI5a+JSB8dNMAptPAiYe9DeK0S9jpK2wRzB+i/LMrm
-         TBOOg6sS7S3iN+7EsH3m8VakdxI35Xs3RC2HpdOtNKAVwV1r9xSEv5e0gNGeN+Rp5WKZ
-         JZLg==
-X-Gm-Message-State: AOAM53300GgktL0ppcbdIMB5uHWQf7HThzugo2H3qIh6tyxsWpmwzWbz
-        VgeH0/VPJsiiRmMEyurw0177trLIrNr8tjDv0WE=
-X-Google-Smtp-Source: ABdhPJwa+fESlJNgq3HJUEZBYThRPkGFuUFWog5FxbokThEcrv6N1wNu+ZKY4DjXlyBAga2mWsQ1PY/VlBrI93FD4kU=
-X-Received: by 2002:a17:906:d555:b0:6db:148e:5cc with SMTP id
- cr21-20020a170906d55500b006db148e05ccmr11527925ejc.63.1648216967841; Fri, 25
- Mar 2022 07:02:47 -0700 (PDT)
+        Fri, 25 Mar 2022 11:27:56 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B72F86CA57;
+        Fri, 25 Mar 2022 08:25:40 -0700 (PDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22PEcQHe018886;
+        Fri, 25 Mar 2022 15:25:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=wtZ7yK/0CRnLGQyyfEq04PkrYcuVIqNGBRYNpsmm4LU=;
+ b=EK9KlqWRtK9jemIaBWXPSfVTRv7USZwJCT2m7UkMY4Fbqu1mZPPCfOO3KX6LaME2tqtY
+ SCJSJ99+VNvyQNplV6DpxQ8ZR6IWEGAAds16W1nmTaf8MqUbsID0FMXHhdGLi5Jses/0
+ t9MFw6avPEyLFxSeXEGpjX7V3EtJ2RhHM/n9AgH49GMInB2hLRNZb0kSRe9EDnDYihtq
+ 16LcTVMK9lmYQLG6vKMqdFQ1h8vYzlN4bZgDET3/Pl1fXf+8A1cr8jP4/aesY+Yy1NnB
+ RRmf1dUNIW2zY+kdFDM5Zd7T6okZbG7oohnxKAfHoS0VUC/Czwnuyv+DJKHhKmPuRZhc Kw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3f0kax5t98-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 25 Mar 2022 15:25:16 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22PF4OYI008470;
+        Fri, 25 Mar 2022 15:25:16 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3f0kax5t8f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 25 Mar 2022 15:25:16 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+        by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22PFN9xa018376;
+        Fri, 25 Mar 2022 15:25:14 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+        by ppma06fra.de.ibm.com with ESMTP id 3ew6ej3kf7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 25 Mar 2022 15:25:14 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 22PFDNU850856374
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 25 Mar 2022 15:13:23 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BB1014C040;
+        Fri, 25 Mar 2022 15:25:11 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B44944C044;
+        Fri, 25 Mar 2022 15:25:10 +0000 (GMT)
+Received: from li-e979b1cc-23ba-11b2-a85c-dfd230f6cf82 (unknown [9.171.85.1])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+        Fri, 25 Mar 2022 15:25:10 +0000 (GMT)
+Date:   Fri, 25 Mar 2022 16:25:08 +0100
+From:   Halil Pasic <pasic@linux.ibm.com>
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Toke =?UTF-8?B?SMO4aWxhbmQtSsO4?= =?UTF-8?B?cmdlbnNlbg==?= 
+        <toke@toke.dk>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Olha Cherevyk <olha.cherevyk@gmail.com>,
+        iommu <iommu@lists.linux-foundation.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable <stable@vger.kernel.org>,
+        Halil Pasic <pasic@linux.ibm.com>
+Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
+ ath9k-based AP
+Message-ID: <20220325162508.3273e0db.pasic@linux.ibm.com>
+In-Reply-To: <20220324190216.0efa067f.pasic@linux.ibm.com>
+References: <1812355.tdWV9SEqCh@natalenko.name>
+        <CAHk-=wiwz+Z2MaP44h086jeniG-OpK3c=FywLsCwXV7Crvadrg@mail.gmail.com>
+        <27b5a287-7a33-9a8b-ad6d-04746735fb0c@arm.com>
+        <CAHk-=wip7TCD_+2STTepuEZvGMg6wcz+o=kyFUvHjuKziTMixw@mail.gmail.com>
+        <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
+        <20220324190216.0efa067f.pasic@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Fri, 25 Mar 2022 14:02:37 +0000
-Message-ID: <CAHpNFcMj2Pr5EyTEW2S_UDnLSpzacEznEb=aSOr-arV5F-i4oA@mail.gmail.com>
-Subject: New GPU/CPU & Motherboard Bios strategy for ASUS unique RX6700XTC-FlareEdition2021
-To:     mobile@cloudflare.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: xAmGyw1lgESr16IrNUtiGC-eJnDwcDex
+X-Proofpoint-GUID: 71FqG_G0CuPRDUQFTyfziAzEYfbIJLzg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-25_04,2022-03-24_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ mlxlogscore=899 priorityscore=1501 phishscore=0 lowpriorityscore=0
+ impostorscore=0 clxscore=1015 spamscore=0 suspectscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203250084
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-https://www.phoronix.com/scan.php?page=3Dnews_item&px=3DLinux-5.18-x86-Plat=
-form-Drivers
+On Thu, 24 Mar 2022 19:02:16 +0100
+Halil Pasic <pasic@linux.ibm.com> wrote:
 
-New GPU/CPU & Motherboard Bios strategy for ASUS unique
-RX6700XTC-FlareEdition2021
+> > I'll admit I still never quite grasped the reason for also adding the 
+> > override to swiotlb_sync_single_for_device() in aa6f8dcbab47, but I 
+> > think by that point we were increasingly tired and confused and starting 
+> > to second-guess ourselves (well, I was, at least).  
+> 
+> I raised the question, do we need to do the same for
+> swiotlb_sync_single_for_device(). Did that based on my understanding of the
+> DMA API documentation. I had the following scenario in mind
+> 
+> SWIOTLB without the snyc_single:
+>                                   Memory      Bounce buffer      Owner
+> --------------------------------------------------------------------------
+> start                             12345678    xxxxxxxx             C
+> dma_map(DMA_FROM_DEVICE)          12345678 -> 12345678             C->D
+> device writes partial data        12345678    12ABC678 <- ABC      D
+> sync_for_cpu(DMA_FROM_DEVICE)     12ABC678 <- 12ABC678             D->C
+> cpu modifies buffer               66666666    12ABC678             C
+> sync_for_device(DMA_FROM_DEVICE)  66666666    12ABC678             C->D
+> device writes partial data        66666666    1EFGC678 <-EFG       D
+> dma_unmap(DMA_FROM_DEVICE)        1EFGC678 <- 1EFGC678             D->C
+> 
+> Legend: in Owner column C stands for cpu and D for device.
+> 
+> Without swiotlb, I believe we should have arrived at 6EFG6666. To get the
+> same result, IMHO, we need to do a sync in sync_for_device().
+> And aa6f8dcbab47 is an imperfect solution to that (because of size).
+> 
 
-Important Business : RS
-Date: Sun, Jan 3, 2021 at 11:12 AM
-To: Kr*****, L** <l**.kr****@amd.com>
-  To: <Med**@xilinx.com>
+@Robin, Christoph: Do we consider this a valid scenario?
 
-FPGA BitFile & Code Opt (c)RS 2021-01
-
-Priority of Operating process for streamlining Dynamic FPGA units on
-CPU & GPU By Rupert S
-
-Factors common in FPGA are:100000 Gates to 750000 Gates (Ideal for
-complex tasks)
-
-Programmable Processor command implementation & reprogram  speed 3ns
-to 15 Seconds
-2 million gates
-Processor core usage to reprogram ?
-15% of a 200Mhz processor =3D 200ns programming time
-Processor core usage to reprogram ? 20% to 25% of a 200Mhz processor =3D
-30ns programming time
-
-250 to 2900 Gates 1uns to 2ns
-(ideal for small complex instructions)
-Processor usage (in programming) 2 to 5% CPU @200Mhz
-
-2000 to 12500 to 25000 Gates (ideal for very complex function)
-30uns to 8ns (ideal for small complex instructions & RISC)
-
-Processor usage (in programming) 2 to 9% CPU @200Mhz
-
-Plans to load a BitFile rely on constant use & not on the fly, However
-small gate arrays permit microsecond coding..
-
-However I do state that a parameter for operating order is specified &
-for most users Automatic.
-
-Operating system functions.. for example AUDIO are a priority & will
-stay consistent..
-
-So we will have specific common instructions that are specific to OS &
-BIOS Firmware..
-Commons will take 20% of a large FPGA (relative)
-
-With the aim of having at least 4 common & hard to match functions; As
-a core large ARRAY..The aim being not to reprogram every second,
-
-For example during boot process with: Bitfile preorder profile:
-1uns to 2ns (ideal for small complex instructions)
-
-During the operation of the Computer or array the FPGA may contain
-specific ANTIVirus & firewall functions, That we map to ML
-
-The small unit groups of fast reprogrammables will be ideal for
-application that we are using for more than 30 minutes.. & May be
-clustered.
-
-Optimus (Prime) bitfile : RS
-Obviously handheld devices require uniquely optimum feature set & tiny
-processor size..
-Create the boundry and push that limit.
-
-We will obviously prefer to enable Hardcode pre trained models such as :
-
-SiMD
-Tessellation & maths objective : for gaming & science
-Dynamic DMA Clusters (OS,Security,Root)
-Maths Unit
-HardDrive Accelerators
-Compressors
-Compiler optimisers CPU/GPU
-Core Prefetch/ML optimiser (on die)
-Combined Shader & function for both DirectX,Metal & Vulkan utility..
-GPU & CPU Synergy Network & Cache.
-Direct Audio & Video,Haptic processing dynamic; element 3D Extrapolation..
-Dynamic Meta Data processing & conversion ..
-(Very important because not all Meta data is understood directly in
-the used process.)
-
-Obviously handheld devices require uniquely optimum feature set & tiny
-processor size..
-Create the boundry and push that limit.
-
-(c)Rupert S https://science.n-helix.com
-
-"processor programs a reprogrammable execution unit with the bitfile
-so that the reprogrammable execution unit is capable of executing
-specialized instructions associated with the program."
-
-https://hothardware.com/news/amd-patent-hybrid-cpu-fpga-design-xilinx
-
-"AMD Patent Reveals Hybrid CPU-FPGA Design That Could Be Enabled By Xilinx =
-Tech
-xilinx office
-
-While they often aren=E2=80=99t as great as CPUs on their own, FPGAs can do=
- a
-wonderful job accelerating specific tasks. Whether it's accelerating
-acting as a fabric for wide-scale datacenter services boosting AI
-performance, an FPGA in the hands of a capable engineer can offload a
-wide variety of tasks from a CPU and speed processes along. Intel has
-talked a big game about integrating Xeons with FPGAs over the last six
-years, but it hasn't resulted in a single product hitting its lineup.
-A new patent by AMD, though, could mean that the FPGA newcomer might
-be ready to make one of its own.
-
-In October, AMD announced plans to acquire Xilinx as part of a big
-push into the datacenter. On Thursday, the United States Patent and
-Trademark Office (USPTO) published an AMD patent for integrating
-programmable execution units with a CPU. AMD made 20 claims in its
-patent application, but the gist is that a processor can include one
-or more execution units that can be programmed to handle different
-types of custom instruction sets. That's exactly what an FPGA does. It
-might be a little bit until we see products based on this design, as
-it seems a little too soon to be part of CPUs included in recent EPYC
-leaks.
-
-While AMD has made waves with its chiplet designs for Zen 2 and Zen 3
-processors, that doesn't seem to be what's happening here. The
-programmable unit in AMD's FPGA patent actually shares registers with
-the processor's floating-point and integer execution units, which
-would be difficult, or at least very slow, if they're not on the same
-package. This kind of integration should make it easy for developers
-to weave these custom instructions into applications, and the CPU
-would just know to pass those onto the on-processor FPGA. Those
-programmable units can handle atypical data types, specifically FP16
-(or half-precision) values used to speed up AI training and inference.
-
-xilinx vu19p
-
-In the case of multiple programmable units, each unit could be
-programmed with a different set of specialized instructions, so the
-processor could accelerate multiple instruction sets, and these
-programmable EUs can be reprogrammed on the fly. The idea is that when
-a processor loads a program, it also loads a bitfile that configures
-the programmable execution unit to speed up certain tasks. The CPU's
-own decode and dispatch unit could address the programmable unit,
-passing those custom instructions to be processed.
-
-AMD has been working on different ways to speed up AI calculations for
-years. First the company announced and released the Radeon Impact
-series of AI accelerators, which were just big headless Radeon
-graphics processors with custom drivers. The company doubled down on
-that with the release of the MI60, its first 7-nm GPU ahead of the
-Radeon RX 5000 series launch, in 2018. A shift to focusing on AI via
-FPGAs after the Xilinx acquisition makes sense, and we're excited to
-see what the company comes up with."
-
-*****
-
-https://science.n-helix.com/2018/12/rng.html
-
-https://science.n-helix.com/2022/02/rdseed.html
-
-https://science.n-helix.com/2017/04/rng-and-random-web.html
-
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.h=
-tml
-
-
-Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
-
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-
-https://science.n-helix.com/2022/03/ice-ssrtp.html
-
-https://science.n-helix.com/2021/11/ihmtes.html
-
-https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
-https://science.n-helix.com/2021/11/wave-focus-anc.html
-https://science.n-helix.com/2021/12/3d-audio-plugin.html
-
-Integral to Telecoms Security TRNG
-
-*RAND OP Ubuntu :
-https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
-
-https://pollinate.n-helix.com
+Regards,
+Halil
