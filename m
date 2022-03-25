@@ -2,86 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61C844E7CC4
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:22:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C0724E7C6B
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:21:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230453AbiCYTkb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 15:40:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52162 "EHLO
+        id S230490AbiCYThp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 15:37:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232747AbiCYTjU (ORCPT
+        with ESMTP id S230481AbiCYTh1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 15:39:20 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4907E1BB79C
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 12:18:43 -0700 (PDT)
+        Fri, 25 Mar 2022 15:37:27 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97F49261DD3
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 12:21:55 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id d5so14973347lfj.9
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 12:21:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1648235923; x=1679771923;
-  h=message-id:date:mime-version:subject:to:references:from:
-   in-reply-to:content-transfer-encoding;
-  bh=bKj8TilLGdyVW9vS4DTruobfv+ddR2kfPYUpYlsH4ic=;
-  b=TTgZmNGLeLgGxIJFbBDXFCH+ICXUpiKrhZyfN1abo8mYYNcQ3ScuIWTr
-   jw9Aws/AKOfEZDgZjNZnMimWuWjtWNR2p7xZ6JnLgh7F3uNFASooDKY+9
-   koU2gDXFINhqmm3iNg8VIhgI4pH+eOvcRiR63cayILOL8BXxoh08OnPEN
-   w=;
-Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
-  by alexa-out.qualcomm.com with ESMTP; 25 Mar 2022 12:18:43 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2022 12:18:42 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Fri, 25 Mar 2022 12:18:42 -0700
-Received: from [10.110.27.134] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Fri, 25 Mar
- 2022 12:18:42 -0700
-Message-ID: <bca5ba81-7e97-9b54-be57-a40df9b0634c@quicinc.com>
-Date:   Fri, 25 Mar 2022 12:18:41 -0700
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=4MqmH9CCCrUKFAq5y+I/qeK/sNikgDEGLg2VH+hZ/B8=;
+        b=EEYCtzdxDwF4pZQoFLQy5R1bkbtIioQJ+didZOsq+7BOWsBdCAqNeXRuHlQHbxjkxI
+         6ZpgNOxAuZZNbggkh7Po3d0QcOFG1glqGOPQvM9m9QhMt25NNyLu1evDrcAPEgux5s6f
+         doW8iQM9agqh0IgmvQNxMRNQkwdp7w1AkhPq4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4MqmH9CCCrUKFAq5y+I/qeK/sNikgDEGLg2VH+hZ/B8=;
+        b=6LRl08f7pUAkoX25yPiQft+FGbGC6zR7/sd107QY6eCXcM6s8UXrCrfQtbuaUxAyHO
+         MQZW8+2QM+A7TJRYS3PwQoFBM5cCy2QrqOv+hsD++kbo86YaG1N6Y7HHfWlwnAAK80px
+         pPXGQZb8CBtJZCpe/D8Bx8ua8fEEGd2titArNtRAn58CmLqMq2FO7ZEEB9TLvxSm91ff
+         nC/pPiiculs6Q/G4JWgBNOcizIBGDyKve1E+TtLt59eSljp63XnIGuRhg23uvwfI6eHq
+         07EqtOC33JrxyPZyBj218MckEuHHLCuxRH3sM0a0aKXfNw6aoCdKehYLoQXYof7rRit+
+         Vs5A==
+X-Gm-Message-State: AOAM531nsrNCroU369ASoWX69Ve+jDPUHT+S7qXSL4r6tsUdQMefWg/k
+        tqM3HAD2pSvOn9rtbh75zeVrn1ImSvGVZy3xaUY=
+X-Google-Smtp-Source: ABdhPJzmlil6CrUunu7vqwacCgmkluuwec68zdM/wlkJKinBS3grLuKcuzS2XBJ5QlIG2SDjvFccTA==
+X-Received: by 2002:ac2:5e31:0:b0:44a:247d:6022 with SMTP id o17-20020ac25e31000000b0044a247d6022mr8688477lfg.509.1648236113589;
+        Fri, 25 Mar 2022 12:21:53 -0700 (PDT)
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com. [209.85.167.45])
+        by smtp.gmail.com with ESMTPSA id f17-20020a2e1f11000000b00247f8eb86a7sm746771ljf.108.2022.03.25.12.21.50
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Mar 2022 12:21:51 -0700 (PDT)
+Received: by mail-lf1-f45.google.com with SMTP id 5so14988820lfp.1
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 12:21:50 -0700 (PDT)
+X-Received: by 2002:ac2:4203:0:b0:448:8053:d402 with SMTP id
+ y3-20020ac24203000000b004488053d402mr8851909lfh.687.1648236109737; Fri, 25
+ Mar 2022 12:21:49 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v6 1/3] nl80211: Add support for beacon tx mode
-Content-Language: en-US
-To:     Maharaja Kennadyrajan <quic_mkenna@quicinc.com>,
-        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20220325055949.3035053-1-quic_mkenna@quicinc.com>
- <20220325055949.3035053-2-quic_mkenna@quicinc.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20220325055949.3035053-2-quic_mkenna@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <1812355.tdWV9SEqCh@natalenko.name> <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
+ <20220324055732.GB12078@lst.de> <4386660.LvFx2qVVIh@natalenko.name>
+ <81ffc753-72aa-6327-b87b-3f11915f2549@arm.com> <878rsza0ih.fsf@toke.dk>
+ <4be26f5d8725cdb016c6fdd9d05cfeb69cdd9e09.camel@freebox.fr>
+ <20220324163132.GB26098@lst.de> <d8a1cbf4-a521-78ec-1560-28d855e0913e@arm.com>
+ <871qyr9t4e.fsf@toke.dk> <CAHk-=whUQCCaQXJt3KUeQ8mtnLeVXEScNXCp+_DYh2SNY7EcEA@mail.gmail.com>
+ <31434708dcad126a8334c99ee056dcce93e507f1.camel@freebox.fr>
+ <CAHk-=wippum+MksdY7ixMfa3i1sZ+nxYPWLLpVMNyXCgmiHbBQ@mail.gmail.com> <a1829f4a-d916-c486-ac49-2c6dff77521a@arm.com>
+In-Reply-To: <a1829f4a-d916-c486-ac49-2c6dff77521a@arm.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri, 25 Mar 2022 12:21:33 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whpKDePfUoKmvJhSNbWcHFY5e7Uq5qEypD=R14+66DNvQ@mail.gmail.com>
+Message-ID: <CAHk-=whpKDePfUoKmvJhSNbWcHFY5e7Uq5qEypD=R14+66DNvQ@mail.gmail.com>
+Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
+ ath9k-based AP
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     Maxime Bizon <mbizon@freebox.fr>,
+        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>,
+        Christoph Hellwig <hch@lst.de>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Olha Cherevyk <olha.cherevyk@gmail.com>,
+        iommu <iommu@lists.linux-foundation.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/24/2022 10:59 PM, Maharaja Kennadyrajan wrote:
-[...snip...]
+On Fri, Mar 25, 2022 at 12:14 PM Robin Murphy <robin.murphy@arm.com> wrote:
+>
+> Note "between the DMA transfers", and not "during the DMA transfers".
+> The fundamental assumption of the streaming API is that only one thing
+> is ever accessing the mapping at any given time, which is what the whole
+> notion of ownership is about.
 
-> +/**
-> + * enum nl80211_beacon_tx_mode - Beacon Tx Mode enum.
-> + * @NL80211_BEACON_STAGGERED_MODE: Used to configure beacon tx mode as
-> + *	staggered mode. This is the default beacon tx mode.
+Well, but that ignores reality.
 
-Documentation doesn't match the code. There is now a default mode, and 
-that is, well, the default mode
+Any documentation that ignores the "CPU will want to see the
+intermediate state" is by definition garbage, because that is clearly
+a simple fact.
 
-> + * @NL80211_BEACON_BURST_MODE: Used to configure beacon tx mode as burst mode.
-> + */
-> +enum nl80211_beacon_tx_mode {
-> +	NL80211_BEACON_DEFAULT_MODE = 0,
-> +	NL80211_BEACON_STAGGERED_MODE = 1,
-> +	NL80211_BEACON_BURST_MODE = 2,
-> +};
-> +
+We don't write documentation for fantasy.
+
+            Linus
