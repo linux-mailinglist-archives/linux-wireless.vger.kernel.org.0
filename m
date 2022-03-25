@@ -2,159 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1D654E7BE1
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:21:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4664E4E7C58
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:21:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233386AbiCYV0z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 17:26:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54132 "EHLO
+        id S233538AbiCYVmG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 17:42:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233363AbiCYV0w (ORCPT
+        with ESMTP id S233526AbiCYVmE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 17:26:52 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3759123932C;
-        Fri, 25 Mar 2022 14:25:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=QEDhIgJeIbzCTSaqjVqTZlpKCAowR+UcFnXwn8gtAfA=;
-        t=1648243516; x=1649453116; b=pf8OVm9SPCIjev//bYF0G+SVdxQ9cy1rcFiKdhlOzQgt58D
-        MAGmC/4Byaal5ODDkraahfVJWGOn7MCS6vG0uTChP0UYTa8kZxdC0eZw2tdVX9kByv1Z74AjDu3cW
-        1LWKYuijksu9NuxrSVHZKt6ZkwtCZ3/N+1lT8uTGrd7oltKxuoDZat1zty3tvhffh9o9dyXmeUVco
-        aCCY/QprEZlfAS6A7lco2UfUgrzwS6Kt8RzptXbt5kK3e/dWg6o31pEE/Oc6PS2dw8UqPmKTMh/az
-        BALcmIMsMtT439hfI4CQiOI2gLQY4vtSOsG/5AlkVEImqQ02mrmZujHxSnOucHUw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nXrQg-000VlP-Hr;
-        Fri, 25 Mar 2022 22:25:06 +0100
-Message-ID: <46b8555d4cded50bc5573fd9b7dd444021317a6b.camel@sipsolutions.net>
-Subject: Re: [BUG] deadlock in nl80211_vendor_cmd
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     William McVicker <willmcvicker@google.com>,
-        linux-wireless@vger.kernel.org,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>, kernel-team@android.com,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Cong Wang <cwang@twopensource.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>
-Date:   Fri, 25 Mar 2022 22:25:05 +0100
-In-Reply-To: <20220325134040.0d98835b@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-References: <0000000000009e9b7105da6d1779@google.com>
-         <99eda6d1dad3ff49435b74e539488091642b10a8.camel@sipsolutions.net>
-         <5d5cf050-7de0-7bad-2407-276970222635@quicinc.com>
-         <YjpGlRvcg72zNo8s@google.com>
-         <dc556455-51a2-06e8-8ec5-b807c2901b7e@quicinc.com>
-         <Yjzpo3TfZxtKPMAG@google.com>
-         <19e12e6b5f04ba9e5b192001fbe31a3fc47d380a.camel@sipsolutions.net>
-         <20220325094952.10c46350@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <f4f8a27dc07c1adaab470fde302ed841113e6b7f.camel@sipsolutions.net>
-         <20220325134040.0d98835b@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
+        Fri, 25 Mar 2022 17:42:04 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 959F16E372
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 14:40:25 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-198-v6S2T8p_MaetwOyqgJM0fQ-1; Fri, 25 Mar 2022 21:40:22 +0000
+X-MC-Unique: v6S2T8p_MaetwOyqgJM0fQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.32; Fri, 25 Mar 2022 21:40:20 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.033; Fri, 25 Mar 2022 21:40:20 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Johannes Berg' <johannes@sipsolutions.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+CC:     Maxime Bizon <mbizon@freebox.fr>,
+        =?utf-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        "Marek Szyprowski" <m.szyprowski@samsung.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Paolo Abeni" <pabeni@redhat.com>,
+        Olha Cherevyk <olha.cherevyk@gmail.com>,
+        iommu <iommu@lists.linux-foundation.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable <stable@vger.kernel.org>
+Subject: RE: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
+ ath9k-based AP
+Thread-Topic: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
+ ath9k-based AP
+Thread-Index: AQHYQI1aK/9JYQDqEEKfLChLw6SC36zQnHkQ
+Date:   Fri, 25 Mar 2022 21:40:20 +0000
+Message-ID: <19b4ad5f9909446ea0eca93f9b5b4c40@AcuMS.aculab.com>
+References: <1812355.tdWV9SEqCh@natalenko.name>
+         <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
+         <20220324055732.GB12078@lst.de> <4386660.LvFx2qVVIh@natalenko.name>
+         <81ffc753-72aa-6327-b87b-3f11915f2549@arm.com>
+ <878rsza0ih.fsf@toke.dk>
+         <4be26f5d8725cdb016c6fdd9d05cfeb69cdd9e09.camel@freebox.fr>
+         <20220324163132.GB26098@lst.de>
+         <d8a1cbf4-a521-78ec-1560-28d855e0913e@arm.com>
+ <871qyr9t4e.fsf@toke.dk>
+         <CAHk-=whUQCCaQXJt3KUeQ8mtnLeVXEScNXCp+_DYh2SNY7EcEA@mail.gmail.com>
+         <31434708dcad126a8334c99ee056dcce93e507f1.camel@freebox.fr>
+         <CAHk-=wippum+MksdY7ixMfa3i1sZ+nxYPWLLpVMNyXCgmiHbBQ@mail.gmail.com>
+         <298f4f9ccad7c3308d3a1fd8b4b4740571305204.camel@sipsolutions.net>
+         <CAHk-=whXAan2ExANMryPSFaBWeyzikPi+fPUseMoVhQAxR7cEA@mail.gmail.com>
+ <e42e4c8bf35b62c671ec20ec6c21a43216e7daa6.camel@sipsolutions.net>
+In-Reply-To: <e42e4c8bf35b62c671ec20ec6c21a43216e7daa6.camel@sipsolutions.net>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2022-03-25 at 13:40 -0700, Jakub Kicinski wrote:
-> On Fri, 25 Mar 2022 18:01:30 +0100 Johannes Berg wrote:
-> > That's not a bad idea, but I think I wouldn't want to backport that, so
-> > separately :) I don't think that fundamentally changes the locking
-> > properties though.
-> > 
-> > 
-> > Couple of more questions I guess: First, are we assuming that the
-> > cfg80211 code *is* actually broken, even if it looks like nothing can
-> > cause the situation, due to the empty todo list?
-> 
-> Right.
+SSd2ZSBiZWVuIHRoaW5raW5nIG9mIHRoZSBjYXNlIHdoZXJlIGEgZGVzY3JpcHRvciByaW5nIGhh
+cw0KdG8gYmUgaW4gbm9uLWNvaGVyZW50IG1lbW9yeSAoZWcgYmVjYXVzZSB0aGF0IGlzIGFsbCB0
+aGVyZSBpcykuDQoNClRoZSByZWNlaXZlIHJpbmcgcHJvY2Vzc2luZyBpc24ndCBhY3R1YWxseSB0
+aGF0IGRpZmZpY3VsdC4NCg0KVGhlIGRyaXZlciBoYXMgdG8gZmlsbCBhIGNhY2hlIGxpbmUgZnVs
+bCBvZiBuZXcgYnVmZmVyDQpkZXNjcmlwdG9ycyBpbiBtZW1vcnkgYnV0IHdpdGhvdXQgYXNzaWdu
+aW5nIHRoZSBmaXJzdA0KYnVmZmVyIHRvIHRoZSBoYXJkd2FyZS4NClRoZW4gaXQgaGFzIHRvIGRv
+IGEgY2FjaGUgbGluZSB3cml0ZSBvZiBqdXN0IHRoYXQgbGluZS4NClRoZW4gaXQgY2FuIGFzc2ln
+biBvd25lcnNoaXAgb2YgdGhlIGZpcnN0IGJ1ZmZlciBhbmQNCmZpbmFsbHkgZG8gYSBzZWNvbmQg
+Y2FjaGUgbGluZSB3cml0ZS4NCihUaGUgZmlyc3QgZXhwbGljaXQgd3JpdGUgY2FuIGJlIHNraXBw
+ZWQgaWYgdGhlIGNhY2hlDQp3cml0ZXMgYXJlIGtub3duIHRvIGJlIGF0b21pYy4pDQpJdCB0aGVu
+IG11c3Qgbm90IGRpcnR5IHRoYXQgY2FjaGUgbGluZS4NCg0KVG8gY2hlY2sgZm9yIG5ldyBmcmFt
+ZXMgaXQgbXVzdCBpbnZhbGlkYXRlIHRoZSBjYWNoZQ0KbGluZSB0aGF0IGNvbnRhaW5zIHRoZSAn
+bmV4dCB0byBiZSBmaWxsZWQnIGRlc2NyaXB0b3INCmFuZCB0aGVuIHJlYWQgdGhhdCBjYWNoZSBs
+aW5lLg0KVGhpcyB3aWxsIGNvbnRhaW4gaW5mbyBhYm91dCBvbmUgb3IgbW9yZSByZWNlaXZlIGZy
+YW1lcy4NCkJ1dCB0aGUgaGFyZHdhcmUgaXMgc3RpbGwgZG9pbmcgdXBkYXRlcy4NCg0KQnV0IGJv
+dGggdGhlc2Ugb3BlcmF0aW9ucyBjYW4gYmUgaGFwcGVuaW5nIGF0IHRoZSBzYW1lDQp0aW1lIG9u
+IGRpZmZlcmVudCBwYXJ0cyBvZiB0aGUgYnVmZmVyLg0KDQpTbyB5b3UgbmVlZCB0byBrbm93IGEg
+J2NhY2hlIGxpbmUgc2l6ZScgZm9yIHRoZSBtYXBwaW5nDQphbmQgYmUgYWJsZSB0byBkbyB3cml0
+ZWJhY2tzIGFuZCBpbnZhbGlkYXRlcyBmb3IgcGFydHMNCm9mIHRoZSBidWZmZXIsIG5vdCBqdXN0
+IGFsbCBvZiBpdC4NCg0KVGhlIHRyYW5zbWl0IHNpZGUgaXMgaGFyZGVyLg0KSXQgZWl0aGVyIHJl
+cXVpcmVzIHdhaXRpbmcgZm9yIGFsbCBwZW5kaW5nIHRyYW5zbWl0cyB0bw0KZmluaXNoIG9yIHNw
+bGl0dGluZyBhIHNpbmdsZSB0cmFuc21pdCBpbnRvIGVub3VnaCBmcmFnbWVudHMNCnRoYXQgaXRz
+IGRlc2NyaXB0b3JzIGVuZCBvbiBhIGNhY2hlIGxpbmUgYm91bmRhcnkuDQpCdXQgYWdhaW4sIGFu
+ZCBpZiB0aGUgaW50ZXJmYWNlIGlzIGJ1c3ksIHlvdSB3YW50IHRoZSBjcHUNCnRvIGJlIGFibGUg
+dG8gdXBkYXRlIG9uZSBjYWNoZSBsaW5lIG9mIHRyYW5zbWl0IGRlc2NyaXB0b3JzDQp3aGlsZSB0
+aGUgZGV2aWNlIGlzIHdyaXRpbmcgdHJhbnNtaXQgY29tcGxldGlvbiBzdGF0dXMNCnRvIHRoZSBw
+cmV2aW91cyBjYWNoZSBsaW5lLg0KDQpJIGRvbid0IHRoaW5rIHRoYXQgaXMgbWF0ZXJpYWxseSBk
+aWZmZXJlbnQgZm9yIG5vbi1jb2hlcmVudA0KbWVtb3J5IG9yIGJvdW5jZSBidWZmZXJzLg0KQnV0
+IHBhcnRpYWwgZmx1c2gvaW52YWxpZGF0ZSBpcyBuZWVkZWQuDQoNCglEYXZpZA0KDQotDQpSZWdp
+c3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9u
+IEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
 
-I guess that the below is basically saying "it's not really broken" :)
-
-> > Given that we have rtnl_lock_unregistering() (and also
-> > rtnl_lock_unregistering_all()), it looks like we *do* in fact at least
-> > not want to make an assumption that no user of __rtnl_unlock() can have
-> > added a todo item.
-> > 
-> > I mean, there's technically yet *another* thing we could do - something
-> > like this:
-> > 
-> > [this doesn't compile, need to suitably make net_todo_list non-static]
-> > --- a/net/core/rtnetlink.c
-> > +++ b/net/core/rtnetlink.c
-> > @@ -95,6 +95,7 @@ void __rtnl_unlock(void)
-> >  
-> >         defer_kfree_skb_list = NULL;
-> >  
-> > +       WARN_ON(!list_empty(&net_todo_list));
-> >         mutex_unlock(&rtnl_mutex);
-> >  
-> >         while (head) {
-> 
-> Yeah, I think we could do that.
-
-It seems that would be simpler. Even if I might eventually still want to
-do the cfg80211 change, but it would give us some confidence that this
-really cannot be happening anywhere.
-
-
-> TBH I don't know what you mean by rtnl_lock_unregistering(), I don't
-> have that in my tree. rtnl_lock_unregistering_all() can't hurt the case
-> we're talking about AFAICT.
-> 
-> Eric removed some of the netns / loopback dependencies in net-next, 
-> make sure you pull!
-
-Sorry, yeah, I was looking at an older tree where I was testing on in
-the simulation environment - this disappeared in commit 8a4fc54b07d7
-("net: get rid of rtnl_lock_unregistering()").
-
-> > With some suitable commentary, that might also be a reasonable thing?
-> > __rtnl_unlock() is actually rather pretty rare, and not exported.
-> 
-> The main use for it seems to be re-locking before loading a module,
-> which TBH I have no idea why, is it just a cargo cult or a historical
-> thing :S  I don't see how letting netdevs leave before _loading_ 
-> a module makes any difference whatsoever.
-
-Indeed.
-
-
-> The WARN_ON() you suggested up front make perfect sense to me.
-> You can also take the definition of net_unlink_todo() out of
-> netdevice.h while at it because o_0
-
-Heh indeed, what?
-
-But (and now I'll CC even more people...) if we can actually have an
-invariant that while RTNL is unlocked the todo list is empty, then we
-also don't need rtnl_lock_unregistering_all(), and can remove the
-netdev_unregistering_wq, etc., no?
-
-IOW, I'm not sure why we needed commit 50624c934db1 ("net: Delay
-default_device_exit_batch until no devices are unregistering v2"), but I
-also have little doubt that we did.
-
-Ah, no. This isn't about locking in this case, it's literally about
-ensuring that free_netdev() has been called in netdev_run_todo()?
-
-Which we don't care about in cfg80211 - we just care about the list
-being empty so there's no chance we'll reacquire the RTNL.
-
-johannes
