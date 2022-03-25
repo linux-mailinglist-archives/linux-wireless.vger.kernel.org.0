@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B53F94E6E0C
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 07:02:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B7494E6E0F
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 07:02:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354867AbiCYGEB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 02:04:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60160 "EHLO
+        id S1358413AbiCYGEE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 02:04:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358412AbiCYGEA (ORCPT
+        with ESMTP id S1358416AbiCYGEB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 02:04:00 -0400
+        Fri, 25 Mar 2022 02:04:01 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89EDBC6824
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Mar 2022 23:02:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE5C9C683D
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Mar 2022 23:02:24 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22P62H3l8011157, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22P62H3l8011157
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22P62IWF0011166, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22P62IWF0011166
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 25 Mar 2022 14:02:17 +0800
+        Fri, 25 Mar 2022 14:02:18 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Fri, 25 Mar 2022 14:02:17 +0800
+ 15.1.2375.24; Fri, 25 Mar 2022 14:02:18 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 25 Mar
- 2022 14:02:16 +0800
+ 2022 14:02:17 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>
-Subject: [PATCH 14/16] rtw89: initialize NAV control
-Date:   Fri, 25 Mar 2022 14:00:53 +0800
-Message-ID: <20220325060055.58482-15-pkshih@realtek.com>
+Subject: [PATCH 15/16] rtw89: update TMAC parameters
+Date:   Fri, 25 Mar 2022 14:00:54 +0800
+Message-ID: <20220325060055.58482-16-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220325060055.58482-1-pkshih@realtek.com>
 References: <20220325060055.58482-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMjUgpFekyCAwNDo0ODowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -68,70 +68,79 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Configure NAV function and its parameters.
+TMAC is short for TX MAC, and this patch is to configure FIFO thresholds.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c | 17 +++++++++++++++++
- drivers/net/wireless/realtek/rtw89/reg.h | 10 ++++++++++
- 2 files changed, 27 insertions(+)
+ drivers/net/wireless/realtek/rtw89/mac.c |  7 ++++++
+ drivers/net/wireless/realtek/rtw89/reg.h | 29 ++++++++++++++++++++++++
+ 2 files changed, 36 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 569c390a03cb0..72debef03f6e3 100644
+index 72debef03f6e3..1103b261b9ab4 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.c
 +++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1959,6 +1959,16 @@ static int cca_ctrl_init(struct rtw89_dev *rtwdev, u8 mac_idx)
+@@ -1995,6 +1995,13 @@ static int tmac_init(struct rtw89_dev *rtwdev, u8 mac_idx)
+ 	reg = rtw89_mac_reg_by_idx(R_AX_MAC_LOOPBACK, mac_idx);
+ 	rtw89_write32_clr(rtwdev, reg, B_AX_MACLBK_EN);
+ 
++	reg = rtw89_mac_reg_by_idx(R_AX_TCR0, mac_idx);
++	rtw89_write32_mask(rtwdev, reg, B_AX_TCR_UDF_THSD_MASK, TCR_UDF_THSD);
++
++	reg = rtw89_mac_reg_by_idx(R_AX_TXD_FIFO_CTRL, mac_idx);
++	rtw89_write32_mask(rtwdev, reg, B_AX_TXDFIFO_HIGH_MCS_THRE_MASK, TXDFIFO_HIGH_MCS_THRE);
++	rtw89_write32_mask(rtwdev, reg, B_AX_TXDFIFO_LOW_MCS_THRE_MASK, TXDFIFO_LOW_MCS_THRE);
++
  	return 0;
  }
  
-+static int nav_ctrl_init(struct rtw89_dev *rtwdev)
-+{
-+	rtw89_write32_set(rtwdev, R_AX_WMAC_NAV_CTL, B_AX_WMAC_PLCP_UP_NAV_EN |
-+						     B_AX_WMAC_TF_UP_NAV_EN |
-+						     B_AX_WMAC_NAV_UPPER_EN);
-+	rtw89_write32_mask(rtwdev, R_AX_WMAC_NAV_CTL, B_AX_WMAC_NAV_UPPER_MASK, NAV_12MS);
-+
-+	return 0;
-+}
-+
- static int spatial_reuse_init(struct rtw89_dev *rtwdev, u8 mac_idx)
- {
- 	u32 reg;
-@@ -2174,6 +2184,13 @@ static int cmac_init(struct rtw89_dev *rtwdev, u8 mac_idx)
- 		return ret;
- 	}
- 
-+	ret = nav_ctrl_init(rtwdev);
-+	if (ret) {
-+		rtw89_err(rtwdev, "[ERR]CMAC%d NAV CTRL init %d\n", mac_idx,
-+			  ret);
-+		return ret;
-+	}
-+
- 	ret = spatial_reuse_init(rtwdev, mac_idx);
- 	if (ret) {
- 		rtw89_err(rtwdev, "[ERR]CMAC%d Spatial Reuse init %d\n",
 diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index dea7d2c8547be..aca9fc3ac09ed 100644
+index aca9fc3ac09ed..3822cf0daef0a 100644
 --- a/drivers/net/wireless/realtek/rtw89/reg.h
 +++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -1435,6 +1435,16 @@
- #define R_AX_MAC_LOOPBACK_C1 0xEC20
- #define B_AX_MACLBK_EN BIT(0)
+@@ -1351,6 +1351,24 @@
+ #define R_AX_RXDMA_PKT_INFO_1 0xC818
+ #define R_AX_RXDMA_PKT_INFO_2 0xC81C
  
-+#define R_AX_WMAC_NAV_CTL 0xCC80
-+#define R_AX_WMAC_NAV_CTL_C1 0xEC80
-+#define B_AX_WMAC_NAV_UPPER_EN BIT(26)
-+#define B_AX_WMAC_0P125US_TIMER_MASK GENMASK(25, 18)
-+#define B_AX_WMAC_PLCP_UP_NAV_EN BIT(17)
-+#define B_AX_WMAC_TF_UP_NAV_EN BIT(16)
-+#define B_AX_WMAC_NAV_UPPER_MASK GENMASK(15, 8)
-+#define NAV_12MS 0xBC
-+#define B_AX_WMAC_RTS_RST_DUR_MASK GENMASK(7, 0)
++#define R_AX_TCR0 0xCA00
++#define R_AX_TCR0_C1 0xEA00
++#define B_AX_TCR_ZLD_NUM_MASK GENMASK(31, 24)
++#define B_AX_TCR_UDF_EN BIT(23)
++#define B_AX_TCR_UDF_THSD_MASK GENMASK(22, 16)
++#define TCR_UDF_THSD 0x6
++#define B_AX_TCR_ERRSTEN_MASK GENMASK(15, 10)
++#define B_AX_TCR_VHTSIGA1_TXPS BIT(9)
++#define B_AX_TCR_PLCP_ERRHDL_EN BIT(8)
++#define B_AX_TCR_PADSEL BIT(7)
++#define B_AX_TCR_MASK_SIGBCRC BIT(6)
++#define B_AX_TCR_SR_VAL15_ALLOW BIT(5)
++#define B_AX_TCR_EN_EOF BIT(4)
++#define B_AX_TCR_EN_SCRAM_INC BIT(3)
++#define B_AX_TCR_EN_20MST BIT(2)
++#define B_AX_TCR_CRC BIT(1)
++#define B_AX_TCR_DISGCLK BIT(0)
 +
- #define R_AX_RXTRIG_TEST_USER_2 0xCCB0
- #define R_AX_RXTRIG_TEST_USER_2_C1 0xECB0
- #define B_AX_RXTRIG_MACID_MASK GENMASK(31, 24)
+ #define R_AX_TCR1 0xCA04
+ #define R_AX_TCR1_C1 0xEA04
+ #define B_AX_TXDFIFO_THRESHOLD GENMASK(31, 28)
+@@ -1374,6 +1392,17 @@
+ #define R_AX_PPWRBIT_SETTING 0xCA0C
+ #define R_AX_PPWRBIT_SETTING_C1 0xEA0C
+ 
++#define R_AX_TXD_FIFO_CTRL 0xCA1C
++#define R_AX_TXD_FIFO_CTRL_C1 0xEA1C
++#define B_AX_NON_LEGACY_PPDU_ZLD_USTIMER_MASK GENMASK(28, 24)
++#define B_AX_LEGACY_PPDU_ZLD_USTIMER_MASK GENMASK(20, 16)
++#define B_AX_TXDFIFO_HIGH_MCS_THRE_MASK GENMASK(15, 12)
++#define TXDFIFO_HIGH_MCS_THRE 0x7
++#define B_AX_TXDFIFO_LOW_MCS_THRE_MASK GENMASK(11, 8)
++#define TXDFIFO_LOW_MCS_THRE  0x7
++#define B_AX_HIGH_MCS_PHY_RATE_MASK GENMASK(7, 4)
++#define B_AX_BW_PHY_RATE_MASK GENMASK(1, 0)
++
+ #define R_AX_MACTX_DBG_SEL_CNT 0xCA20
+ #define R_AX_MACTX_DBG_SEL_CNT_C1 0xEA20
+ #define B_AX_MACTX_MPDU_CNT GENMASK(31, 24)
 -- 
 2.25.1
 
