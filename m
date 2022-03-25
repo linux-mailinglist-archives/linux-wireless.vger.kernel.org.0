@@ -2,55 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57B344E6DFB
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 07:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C25A44E6DFE
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 07:02:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358387AbiCYGBv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 02:01:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56952 "EHLO
+        id S1349575AbiCYGDn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 02:03:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238643AbiCYGBu (ORCPT
+        with ESMTP id S234812AbiCYGDm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 02:01:50 -0400
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5C99C681C
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Mar 2022 23:00:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1648188016; x=1679724016;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qlkNo0rlME38fjoU/3oXKjNCucC8om9fe5w4NImMYFQ=;
-  b=YFYA9vOtzkxBJVDk4v5rsLqMWzZuPtJy1nq/v7PTeehZ8JlEn2Ci5B4u
-   aFfUx7VgMv/Yeb0nEw5+BAlmWBS7OBMLFBsasKW9tEwgvFFjeHKRMcafL
-   LKwdRUlJ3WN0W769tY0HgCI7IFH7A3hjo0elEVG4kIyIfSZ0VNt5IS0Ib
-   k=;
-Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 24 Mar 2022 23:00:16 -0700
-X-QCInternal: smtphost
-Received: from unknown (HELO nasanex01a.na.qualcomm.com) ([10.52.223.231])
-  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2022 23:00:16 -0700
-Received: from che-siroccolnx03.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Thu, 24 Mar 2022 23:00:14 -0700
-From:   Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
-To:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-CC:     Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
-Subject: [PATCH v6 3/3] ath11k: Add support for beacon tx mode
-Date:   Fri, 25 Mar 2022 11:29:49 +0530
-Message-ID: <20220325055949.3035053-4-quic_mkenna@quicinc.com>
+        Fri, 25 Mar 2022 02:03:42 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E129C681C
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Mar 2022 23:02:07 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 22P61sZN2011000, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 22P61sZN2011000
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 25 Mar 2022 14:01:54 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 25 Mar 2022 14:01:54 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 25 Mar
+ 2022 14:01:53 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>
+Subject: [PATCH 00/16] rtw89: refine PCI and MAC codes into function with attributes
+Date:   Fri, 25 Mar 2022 14:00:39 +0800
+Message-ID: <20220325060055.58482-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220325055949.3035053-1-quic_mkenna@quicinc.com>
-References: <20220325055949.3035053-1-quic_mkenna@quicinc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 03/25/2022 05:51:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzMvMjUgpFekyCAwNDo0ODowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,54 +66,52 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support to configure the beacon tx mode in
-the driver.
+The existing PCI and MAC codes are only used by 8852AE, so many settings are
+put in single function. To be clear, move the settings into an individual
+function according to its functionality. Since functions will be shared
+with chips, add attributes to make it possible to use common functions.
 
-Beacons can be sent out in burst(continuously in a single shot
-one after another) or staggered (equally spread out over beacon
-interval) mode.
+Also, update the settings to the latest version of our internal code.
 
-Use the below configuration in the hostapd/wpa_supplicant
-for AP/MESH mode to configure the beacon tx mode.
+This patchset is based on                                                       
+ "rtw89: add firmware reset and dump firmware memory and backtrace" and
+ "rtw89: update TX power table and 6G, refine IGI, and add TX/RX descriptors V1"
+But no actual function dependency.     
 
-"beacon_tx_mode=N", where N = 1 for STAGGERED beacon mode
-and N = 2 for BURST beacon mode.
+Chia-Yuan Li (1):
+  rtw89: pci: refine pci pre_init function
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-00480-QCAHKSWPL_SILICONZ-1
+Ping-Ke Shih (15):
+  rtw89: pci: add register definition to rtw89_pci_info to generalize
+    pci code
+  rtw89: pci: add pci attributes to configure operating mode
+  rtw89: pci: add LTR setting for v1 chip
+  rtw89: pci: set address info registers depends on chips
+  rtw89: pci: add deglitch setting
+  rtw89: pci: add L1 settings
+  rtw89: extend dmac_pre_init to support 8852C
+  rtw89: update STA scheduler parameters for v1 chip
+  rtw89: add chip_ops::{enable,disable}_bb_rf to support v1 chip
+  rtw89: Turn on CR protection of CMAC
+  rtw89: 8852c: update security engine setting
+  rtw89: update scheduler setting
+  rtw89: initialize NAV control
+  rtw89: update TMAC parameters
+  rtw89: update ptcl_init
 
-Signed-off-by: Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c     |   7 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |   2 +
+ drivers/net/wireless/realtek/rtw89/mac.c      | 129 ++++-
+ drivers/net/wireless/realtek/rtw89/mac.h      |  19 +-
+ drivers/net/wireless/realtek/rtw89/pci.c      | 519 +++++++++++++++---
+ drivers/net/wireless/realtek/rtw89/pci.h      | 211 +++++++
+ drivers/net/wireless/realtek/rtw89/reg.h      | 187 +++++++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   2 +
+ .../net/wireless/realtek/rtw89/rtw8852ae.c    |  30 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  45 ++
+ .../net/wireless/realtek/rtw89/rtw8852ce.c    |  30 +
+ 11 files changed, 1080 insertions(+), 101 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 34a62933ccd2..46b8220a4e80 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3125,7 +3125,10 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & BSS_CHANGED_BEACON) {
- 		param_id = WMI_PDEV_PARAM_BEACON_TX_MODE;
--		param_value = WMI_BEACON_STAGGERED_MODE;
-+		if (info->beacon_tx_mode == NL80211_BEACON_BURST_MODE)
-+			param_value = WMI_BEACON_BURST_MODE;
-+		else
-+			param_value = WMI_BEACON_STAGGERED_MODE;
- 		ret = ath11k_wmi_pdev_set_param(ar, param_id,
- 						param_value, ar->pdev->pdev_id);
- 		if (ret)
-@@ -3133,8 +3136,9 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 				    arvif->vdev_id);
- 		else
- 			ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
--				   "Set staggered beacon mode for VDEV: %d\n",
--				   arvif->vdev_id);
-+				   "Set %s beacon mode for VDEV: %d mode: %d\n",
-+				   (param_value == WMI_BEACON_BURST_MODE) ? "burst" : "staggered",
-+				   arvif->vdev_id, param_value);
- 
- 		if (!arvif->do_not_send_tmpl || !arvif->bcca_zero_sent) {
- 			ret = ath11k_mac_setup_bcn_tmpl(arvif);
 -- 
 2.25.1
 
