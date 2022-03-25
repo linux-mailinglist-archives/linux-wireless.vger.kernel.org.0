@@ -2,50 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 449E04E73D9
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 13:57:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A5BF4E73F6
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 14:09:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359194AbiCYM6d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 08:58:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44250 "EHLO
+        id S244405AbiCYNKo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 09:10:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347741AbiCYM6c (ORCPT
+        with ESMTP id S242748AbiCYNKn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 08:58:32 -0400
+        Fri, 25 Mar 2022 09:10:43 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4AF6D0AB1
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 05:56:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0A3B1AF38
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 06:09:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=sM3gAVPDWiQVKmoDz3Gf2dMl+3SvmTeBjE2WbYrJ/VU=;
-        t=1648213017; x=1649422617; b=gdWEaiVdozemIvgU+1wn5PCz35ENm+VbRs7E5/yvmFFC/I4
-        y3Qxp1xqmiPXypdp4PxqOHzfqdraG4Jt2u5OrrUZ6XkEKQ2yMAZXMBxphAuIRZNP8ZnuGwz0kIwgW
-        ZoJdkNut2YJndcbeSbJGQr7GuiQB/1diC5pTBB5IgxnCaJygG9U8fPoDIKyLPS+kgf90h1DgFTamJ
-        kNWRLzMdYXzZMfMqknosGils4wU98iSsUTDs6/hKWxCXY4I956z4fgH1owcOOgpvqqBvHCC4pB/et
-        tGlqIfwMZt+vqq4T6qSkuZHac3B466MpdCf4NANxIbAS8PNmm9RNRE1EWIh0zHrw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=ZEsq4x0vleYO2yFrFgOiBA4lgZuCYpfuer8dFVFGXXM=; t=1648213748; x=1649423348; 
+        b=K7w6RYPT+O7K0fJ4RS8WWU3isthLFUnSnjPvTCQ4sXpDY/wqM2sheFww3t271o7v7K5L6KLimWo
+        wa8Lq5zzGEiGGO7HXIjC7et19I2gX6xEJMoNFEi8RiOYRkff5/PJoR7ol3oxZflgCeT8er7rQkIFn
+        PfqWAcwZLnDJx9/gIRALfskiTo5rfTLCgJrnSjK22isOmmk1v+bi4XXcrpvMK56gZIEUW2mlBVhH1
+        NQYINeXq11kQoD5UwxSR8mBRqH5Iovj9IK3Bev5zkVHyRwiP1TmVdz/BVtpUNH/f4iBBJNVH93p14
+        Hn4B/54nI5Hy1qrv/WNEaDzMlT9eUz7/pzxQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nXjUt-000Kh3-To;
-        Fri, 25 Mar 2022 13:56:56 +0100
-Message-ID: <20abb029438166d02b5fb47093ea857671fa86e8.camel@sipsolutions.net>
-Subject: Re: [RFC] mac80211: prepare sta handling for MLO support
+        id 1nXjgf-000Kxd-LB;
+        Fri, 25 Mar 2022 14:09:05 +0100
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Sriram R <quic_srirrama@quicinc.com>,
-        linux-wireless@vger.kernel.org
-Cc:     vkthiagu@gmail.com, Aaron Komisar <akomisar@maxlinear.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Jouni Malinen <j@w1.fi>
-Date:   Fri, 25 Mar 2022 13:56:54 +0100
-In-Reply-To: <1648194497-15848-1-git-send-email-quic_srirrama@quicinc.com>
-References: <1648194497-15848-1-git-send-email-quic_srirrama@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
+To:     linux-wireless@vger.kernel.org
+Cc:     Aloka Dixit <quic_alokad@quicinc.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [RFC PATCH] mac80211: mlme: Handle Puncturing information received from the AP
+Date:   Fri, 25 Mar 2022 14:09:00 +0100
+Message-Id: <20220325140859.e48bf244f157.I3547481d49f958389f59dfeba3fcc75e72b0aa6e@changeid>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
@@ -55,254 +50,483 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2022-03-25 at 13:18 +0530, Sriram R wrote:
-> [snip]
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+
+Handle the Puncturing info received from the AP
+in the EHT Operation IE in beacons.
+If the info changed and is valid - update the driver.
+If the info is invalid:
+ - During association: disable EHT connection for the AP.
+ - After association: disconnect.
+
+type=feature
+ticket=none
+
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+RFC because I wanted you to see it now, and I didn't change all
+the drivers yet
+---
+ drivers/net/wireless/intel/iwlwifi/dvm/agn.h  |   4 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/rxon.c |   4 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   4 +-
+ drivers/net/wireless/mac80211_hwsim.c         |   6 +-
+ include/net/mac80211.h                        |   6 +-
+ net/mac80211/driver-ops.h                     |   4 +-
+ net/mac80211/ieee80211_i.h                    |   2 +-
+ net/mac80211/main.c                           |   2 +-
+ net/mac80211/mlme.c                           | 199 +++++++++++++++++-
+ net/mac80211/util.c                           |   3 +
+ 10 files changed, 218 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/agn.h b/drivers/net/wireless/intel/iwlwifi/dvm/agn.h
+index abb8696ba294..2045d027bfd1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/agn.h
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/agn.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2005-2014, 2021 Intel Corporation
++ * Copyright (C) 2005-2014, 2021-2022 Intel Corporation
+  */
+ #ifndef __iwl_agn_h__
+ #define __iwl_agn_h__
+@@ -92,7 +92,7 @@ int iwlagn_mac_config(struct ieee80211_hw *hw, u32 changed);
+ void iwlagn_bss_info_changed(struct ieee80211_hw *hw,
+ 			     struct ieee80211_vif *vif,
+ 			     struct ieee80211_bss_conf *bss_conf,
+-			     u32 changes);
++			     u64 changes);
+ void iwlagn_config_ht40(struct ieee80211_conf *conf,
+ 			struct iwl_rxon_context *ctx);
+ void iwl_set_rxon_ht(struct iwl_priv *priv, struct iwl_ht_config *ht_conf);
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rxon.c b/drivers/net/wireless/intel/iwlwifi/dvm/rxon.c
+index 70338bc7bb54..23295fa602b9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/rxon.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/rxon.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /******************************************************************************
+  *
+- * Copyright(c) 2003 - 2014 Intel Corporation. All rights reserved.
++ * Copyright(c) 2003 - 2014, 2022 Intel Corporation. All rights reserved.
+  * Copyright(c) 2015 Intel Deutschland GmbH
+  *****************************************************************************/
+ 
+@@ -1383,7 +1383,7 @@ static void iwlagn_chain_noise_reset(struct iwl_priv *priv)
+ void iwlagn_bss_info_changed(struct ieee80211_hw *hw,
+ 			     struct ieee80211_vif *vif,
+ 			     struct ieee80211_bss_conf *bss_conf,
+-			     u32 changes)
++			     u64 changes)
+ {
+ 	struct iwl_priv *priv = IWL_MAC80211_GET_DVM(hw);
+ 	struct iwl_rxon_context *ctx = iwl_rxon_ctx_from_vif(vif);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 784d91281c02..37d9ff01ad7c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -2192,7 +2192,7 @@ static void iwl_mvm_protect_assoc(struct iwl_mvm *mvm,
+ static void iwl_mvm_bss_info_changed_station(struct iwl_mvm *mvm,
+ 					     struct ieee80211_vif *vif,
+ 					     struct ieee80211_bss_conf *bss_conf,
+-					     u32 changes)
++					     u64 changes)
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	int ret;
+@@ -2632,7 +2632,7 @@ iwl_mvm_bss_info_changed_ap_ibss(struct iwl_mvm *mvm,
+ static void iwl_mvm_bss_info_changed(struct ieee80211_hw *hw,
+ 				     struct ieee80211_vif *vif,
+ 				     struct ieee80211_bss_conf *bss_conf,
+-				     u32 changes)
++				     u64 changes)
+ {
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 28bfa7b7b73c..a6c991453c50 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -2097,15 +2097,15 @@ static void mac80211_hwsim_bcn_en_iter(void *data, u8 *mac,
+ static void mac80211_hwsim_bss_info_changed(struct ieee80211_hw *hw,
+ 					    struct ieee80211_vif *vif,
+ 					    struct ieee80211_bss_conf *info,
+-					    u32 changed)
++					    u64 changed)
+ {
+ 	struct hwsim_vif_priv *vp = (void *)vif->drv_priv;
+ 	struct mac80211_hwsim_data *data = hw->priv;
+ 
+ 	hwsim_check_magic(vif);
+ 
+-	wiphy_dbg(hw->wiphy, "%s(changed=0x%x vif->addr=%pM)\n",
+-		  __func__, changed, vif->addr);
++	wiphy_dbg(hw->wiphy, "%s(changed=0x%llx vif->addr=%pM)\n",
++		  __func__, (unsigned long long)changed, vif->addr);
+ 
+ 	if (changed & BSS_CHANGED_BSSID) {
+ 		wiphy_dbg(hw->wiphy, "%s: BSSID changed: %pM\n",
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 382ebb862ea8..b2b0bcfab957 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -320,6 +320,7 @@ struct ieee80211_vif_chanctx_switch {
+  * @BSS_CHANGED_FILS_DISCOVERY: FILS discovery status changed.
+  * @BSS_CHANGED_UNSOL_BCAST_PROBE_RESP: Unsolicited broadcast probe response
+  *	status changed.
++ * @BSS_CHANGED_EHT_PUNCTURING: Puncturing bitmap changed.
+  *
+  */
+ enum ieee80211_bss_change {
+@@ -355,6 +356,7 @@ enum ieee80211_bss_change {
+ 	BSS_CHANGED_HE_BSS_COLOR	= 1<<29,
+ 	BSS_CHANGED_FILS_DISCOVERY      = 1<<30,
+ 	BSS_CHANGED_UNSOL_BCAST_PROBE_RESP = 1<<31,
++	BSS_CHANGED_EHT_PUNCTURING	= 1ULL<<32,
+ 
+ 	/* when adding here, make sure to change ieee80211_reconfig */
+ };
+@@ -637,6 +639,7 @@ struct ieee80211_fils_discovery {
+  * @tx_pwr_env_num: number of @tx_pwr_env.
+  * @pwr_reduction: power constraint of BSS.
+  * @eht_support: does this BSS support EHT
++ * @eht_puncturing: bitmap to indicate which channels are punctured in this BSS
+  */
+ struct ieee80211_bss_conf {
+ 	const u8 *bssid;
+@@ -712,6 +715,7 @@ struct ieee80211_bss_conf {
+ 	u8 tx_pwr_env_num;
+ 	u8 pwr_reduction;
+ 	bool eht_support;
++	u16 eht_puncturing;
+ };
+ 
+ /**
+@@ -3989,7 +3993,7 @@ struct ieee80211_ops {
+ 	void (*bss_info_changed)(struct ieee80211_hw *hw,
+ 				 struct ieee80211_vif *vif,
+ 				 struct ieee80211_bss_conf *info,
+-				 u32 changed);
++				 u64 changed);
+ 
+ 	int (*start_ap)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
+ 	void (*stop_ap)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
+diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
+index 4e2fc1a08681..46797a6cabd6 100644
+--- a/net/mac80211/driver-ops.h
++++ b/net/mac80211/driver-ops.h
+@@ -2,7 +2,7 @@
+ /*
+ * Portions of this file
+ * Copyright(c) 2016 Intel Deutschland GmbH
+-* Copyright (C) 2018 - 2019, 2021 Intel Corporation
++* Copyright (C) 2018 - 2019, 2021 - 2022 Intel Corporation
+ */
+ 
+ #ifndef __MAC80211_DRIVER_OPS
+@@ -150,7 +150,7 @@ static inline int drv_config(struct ieee80211_local *local, u32 changed)
+ static inline void drv_bss_info_changed(struct ieee80211_local *local,
+ 					struct ieee80211_sub_if_data *sdata,
+ 					struct ieee80211_bss_conf *info,
+-					u32 changed)
++					u64 changed)
+ {
+ 	might_sleep();
+ 
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index d4a7ba4a8202..76d31c11bf31 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1812,7 +1812,7 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ int ieee80211_hw_config(struct ieee80211_local *local, u32 changed);
+ void ieee80211_tx_set_protected(struct ieee80211_tx_data *tx);
+ void ieee80211_bss_info_change_notify(struct ieee80211_sub_if_data *sdata,
+-				      u32 changed);
++				      u64 changed);
+ void ieee80211_configure_filter(struct ieee80211_local *local);
+ u32 ieee80211_reset_erp_info(struct ieee80211_sub_if_data *sdata);
+ 
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index a48a32f87897..832923005c5e 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -200,7 +200,7 @@ int ieee80211_hw_config(struct ieee80211_local *local, u32 changed)
+ }
+ 
+ void ieee80211_bss_info_change_notify(struct ieee80211_sub_if_data *sdata,
+-				      u32 changed)
++				      u64 changed)
+ {
+ 	struct ieee80211_local *local = sdata->local;
+ 
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 1b30c724ca8d..51d5a1cbdd88 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -88,6 +88,117 @@ MODULE_PARM_DESC(probe_wait_ms,
+  */
+ #define IEEE80211_SIGNAL_AVE_MIN_COUNT	4
+ 
++struct ieee80211_per_bw_puncturing_values {
++	u8 len;
++	const u16 *valid_values;
++};
++
++static const u16 puncturing_values_80mhz[] = {
++	0x8, 0x4, 0x2, 0x1
++};
++
++static const u16 puncturing_values_160mhz[] = {
++	 0x80, 0x40, 0x20, 0x10, 0x8, 0x4, 0x2, 0x1, 0xc0, 0x30, 0xc, 0x3
++};
++
++static const u16 puncturing_values_320mhz[] = {
++	0xc000, 0x3000, 0xc00, 0x300, 0xc0, 0x30, 0xc, 0x3, 0xf000, 0xf00,
++	0xf0, 0xf, 0xfc00, 0xf300, 0xf0c0, 0xf030, 0xf00c, 0xf003, 0xc00f,
++	0x300f, 0xc0f, 0x30f, 0xcf, 0x3f
++};
++
++#define IEEE80211_PER_BW_VALID_PUNCTURING_VALUES(_bw) \
++	[IEEE80211_EHT_OPER_CHAN_WIDTH_ ## _bw ## MHZ - IEEE80211_EHT_OPER_CHAN_WIDTH_80MHZ] = \
++	{ \
++		.len = ARRAY_SIZE(puncturing_values_ ## _bw ## mhz), \
++		.valid_values = puncturing_values_ ## _bw ## mhz \
++	}
++
++static const struct ieee80211_per_bw_puncturing_values per_bw_puncturing[] = {
++	IEEE80211_PER_BW_VALID_PUNCTURING_VALUES(80),
++	IEEE80211_PER_BW_VALID_PUNCTURING_VALUES(160),
++	IEEE80211_PER_BW_VALID_PUNCTURING_VALUES(320)
++};
++
++static bool ieee80211_valid_disable_subchannel_bitmap(u16 *bitmap, u8 bw)
++{
++	int i;
++
++	if (bw < IEEE80211_EHT_OPER_CHAN_WIDTH_80MHZ)
++		*bitmap = 0;
++
++	if (!*bitmap)
++		return true;
++
++	/* Convert the bw to an array index */
++	bw -= IEEE80211_EHT_OPER_CHAN_WIDTH_80MHZ;
++	for (i = 0; i < per_bw_puncturing[bw].len; i++)
++		if (per_bw_puncturing[bw].valid_values[i] == *bitmap)
++			return true;
++
++	return false;
++}
++
++/*
++ * Extract from the given disabled subchannel bitmap (raw format
++ * from the EHT Operation Element) the bits for the subchannel
++ * we're using right now.
++ */
++static u16
++ieee80211_extract_dis_subch_bmap(const struct ieee80211_eht_operation *eht_oper,
++				 struct cfg80211_chan_def *chandef, u16 bitmap)
++{
++	int sta_center_freq = ieee80211_channel_to_frequency(eht_oper->ccfs,
++							     chandef->chan->band);
++	u32 center_freq = chandef->chan->center_freq;
++	u8 sta_bw = 20 * BIT(u8_get_bits(eht_oper->chan_width,
++					 IEEE80211_EHT_OPER_CHAN_WIDTH));
++	u8 bw = 20 * BIT(ieee80211_chan_width_to_rx_bw(chandef->width));
++	int sta_start_freq = sta_center_freq - sta_bw / 2;
++	int start_freq = center_freq - bw / 2;
++	u16 shift = (start_freq - sta_start_freq) / 20;
++	u16 mask = BIT(sta_bw / 20) - 1;
++
++	return (bitmap >> shift) & mask;
++}
++
++/*
++ * Handle the puncturing bitmap, possibly downgrading bandwidth to get a
++ * valid bitmap.
++ */
++static void
++ieee80211_handle_puncturing_bitmap(struct ieee80211_sub_if_data *sdata,
++				   const struct ieee80211_eht_operation *eht_oper,
++				   u16 bitmap, u64 *changed)
++{
++	struct cfg80211_chan_def *chandef = &sdata->vif.bss_conf.chandef;
++	u16 extracted;
++	u64 _changed = 0;
++
++	if (!changed)
++		changed = &_changed;
++
++	while (chandef->width > NL80211_CHAN_WIDTH_40) {
++		extracted =
++			ieee80211_extract_dis_subch_bmap(eht_oper, chandef,
++							 bitmap);
++
++		if (ieee80211_valid_disable_subchannel_bitmap(&bitmap,
++							      chandef->width))
++			break;
++		sdata->u.mgd.flags |= ieee80211_chandef_downgrade(chandef);
++		*changed |= BSS_CHANGED_BANDWIDTH;
++	}
++
++	if (chandef->width == NL80211_CHAN_WIDTH_40)
++		extracted = 0;
++
++	if (sdata->vif.bss_conf.eht_puncturing != extracted) {
++		sdata->vif.bss_conf.eht_puncturing = extracted;
++		*changed |= BSS_CHANGED_EHT_PUNCTURING;
++	}
++}
++
+ /*
+  * We can have multiple work items (and connection probing)
+  * scheduling this timer, but we need to take care to only
+@@ -3608,6 +3719,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 							    sta);
+ 
+ 			bss_conf->eht_support = sta->sta.eht_cap.has_eht;
++			changed |= BSS_CHANGED_EHT_PUNCTURING;
+ 		} else {
+ 			bss_conf->eht_support = false;
+ 		}
+@@ -4100,6 +4212,41 @@ static bool ieee80211_rx_our_beacon(const u8 *tx_bssid,
+ 	return ether_addr_equal(tx_bssid, bss->transmitted_bss->bssid);
+ }
+ 
++static bool ieee80211_config_puncturing(struct ieee80211_sub_if_data *sdata,
++					const struct ieee80211_eht_operation *eht_oper,
++					u64 *changed)
++{
++	u16 bitmap, extracted;
++	u8 bw;
++
++	if (!u8_get_bits(eht_oper->present_bm,
++			 IEEE80211_EHT_OPER_DISABLED_SUBCHANNEL_BITMAP_PRESENT))
++		bitmap = 0;
++	else
++		bitmap = get_unaligned_le16(eht_oper->disable_subchannel_bitmap);
++
++	extracted = ieee80211_extract_dis_subch_bmap(eht_oper,
++						     &sdata->vif.bss_conf.chandef,
++						     bitmap);
++
++	/* accept if there are no changes */
++	if (!(*changed & BSS_CHANGED_BANDWIDTH) &&
++	    extracted == sdata->vif.bss_conf.eht_puncturing)
++		return true;
++
++	bw = u8_get_bits(eht_oper->chan_width, IEEE80211_EHT_OPER_CHAN_WIDTH);
++
++	if (!ieee80211_valid_disable_subchannel_bitmap(&bitmap, bw)) {
++		sdata_info(sdata,
++			   "Got an invalid disable subchannel bitmap from AP %pM: bitmap = 0x%x, bw = 0x%x. disconnect\n",
++			    sdata->u.mgd.associated->bssid, bitmap, bw);
++		return false;
++	}
++
++	ieee80211_handle_puncturing_bitmap(sdata, eht_oper, bitmap, changed);
++	return true;
++}
++
+ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 				     struct ieee80211_hdr *hdr, size_t len,
+ 				     struct ieee80211_rx_status *rx_status)
+@@ -4113,7 +4260,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_chanctx_conf *chanctx_conf;
+ 	struct ieee80211_channel *chan;
+ 	struct sta_info *sta;
+-	u32 changed = 0;
++	u64 changed = 0;
+ 	bool erp_valid;
+ 	u8 erp_value = 0;
+ 	u32 ncrc = 0;
+@@ -4360,7 +4507,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 				elems->vht_cap_elem, elems->ht_operation,
+ 				elems->vht_operation, elems->he_operation,
+ 				elems->eht_operation,
+-				elems->s1g_oper, bssid, &changed)) {
++				elems->s1g_oper, bssid, (u32 *)&changed)) {
+ 		mutex_unlock(&local->sta_mtx);
+ 		sdata_info(sdata,
+ 			   "failed to follow AP %pM bandwidth change, disconnect\n",
+@@ -4386,6 +4533,21 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 					       elems->pwr_constr_elem,
+ 					       elems->cisco_dtpc_elem);
+ 
++	if (elems->eht_operation &&
++	    !(ifmgd->flags & IEEE80211_STA_DISABLE_EHT)) {
++		if (!ieee80211_config_puncturing(sdata, elems->eht_operation,
++						 &changed)) {
++			ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
++					       WLAN_REASON_DEAUTH_LEAVING,
++					       true, deauth_buf);
++			ieee80211_report_disconnect(sdata, deauth_buf,
++						    sizeof(deauth_buf), true,
++						    WLAN_REASON_DEAUTH_LEAVING,
++						    false);
++			goto free;
++		}
++	}
++
+ 	ieee80211_bss_info_change_notify(sdata, changed);
+ free:
+ 	kfree(elems);
+@@ -6189,6 +6351,39 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 		assoc_data->timeout = jiffies;
+ 		assoc_data->timeout_started = true;
+ 	}
++
++	sdata->vif.bss_conf.eht_puncturing = 0;
++	if (beacon_ies) {
++		const struct element *elem =
++			cfg80211_find_ext_elem(WLAN_EID_EXT_EHT_OPERATION,
++					       beacon_ies->data, beacon_ies->len);
++		const struct ieee80211_eht_operation *eht_oper;
++
++		eht_oper = (const void *)(elem->data + 1);
++
++		/*
++		 * The length should include one byte for the EID
++		 * and 2 for the disabled subchannel bitmap
++		 */
++		if (elem &&
++		    elem->datalen >= sizeof(*eht_oper) + 1 + 2 &&
++		    eht_oper->present_bm &
++				IEEE80211_EHT_OPER_DISABLED_SUBCHANNEL_BITMAP_PRESENT) {
++			u8 bw = u8_get_bits(eht_oper->chan_width,
++					    IEEE80211_EHT_OPER_CHAN_WIDTH);
++			u16 bitmap;
++
++			bitmap = get_unaligned_le16(eht_oper->disable_subchannel_bitmap);
++
++			if (ieee80211_valid_disable_subchannel_bitmap(&bitmap, bw))
++				ieee80211_handle_puncturing_bitmap(sdata,
++								   eht_oper,
++								   bitmap,
++								   NULL);
++			else
++				ifmgd->flags |= IEEE80211_STA_DISABLE_EHT;
++		}
++	}
+ 	rcu_read_unlock();
+ 
+ 	run_again(sdata, assoc_data->timeout);
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 682a164f795a..18786213bd16 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2540,6 +2540,9 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 			    sdata->vif.bss_conf.protected_keep_alive)
+ 				changed |= BSS_CHANGED_KEEP_ALIVE;
+ 
++			if (sdata->vif.bss_conf.eht_puncturing)
++				changed |= BSS_CHANGED_EHT_PUNCTURING;
++
+ 			sdata_lock(sdata);
+ 			ieee80211_bss_info_change_notify(sdata, changed);
+ 			sdata_unlock(sdata);
+-- 
+2.35.1
 
-I think this looks good so far!
-
-> RFC Note:
-> This patch breaks build since it requires changes in all
-> mac80211 based drivers. Only ath11k driver changes are added
-> here for reference. All driver changes will be covered once
-> we arrive at final design.
-> Basically for existing drivers, the link params that are moved
-> to a new struct within ieee80211_sta will be accessed via first link.
-> Ex. 'sta->rx_nss' will change to 'sta->link[0]->rx_nss'
-
-Right. These are large but fairly mechanical changes as long as there's
-no MLO support, I guess most could be done with a carefully crafted
-spatch.
-
->  
-> +#define MAX_STA_LINKS			16
-
-Isn't that 15? 15 is reserved, I believe?
-
-> +struct ieee80211_link_sta {
-> +	u8 addr[ETH_ALEN];
-> +
-> +	struct ieee80211_sta_ht_cap ht_cap;
-> +	struct ieee80211_sta_vht_cap vht_cap;
-> +	struct ieee80211_sta_he_cap he_cap;
-> +	struct ieee80211_he_6ghz_capa he_6ghz_capa;
-> +
-> +	u8 rx_nss;
-> +	enum ieee80211_sta_rx_bandwidth bandwidth;
-> +	struct ieee80211_sta_txpwr txpwr;
-
-That looks mostly fine.
-
-I think you missed at least
- - supp_rates (clearly, the list of legacy rates)
- - rates (rate control must be done separately per band)
-
-and I'm not sure about the A-MSDU related ones?
-
-> +	bool multi_link_sta;
-> +	u8 num_sta_links;
-
-Why do we need the num_sta_links? We can always count which link[]
-entries are non-NULL?
-
-> +	struct ieee80211_link_sta *link[MAX_STA_LINKS];
-
-I guess we index this by link-ID, which may be assigned by the AP and we
-might end up using e.g. 1 and 14, and then things are simpler but we
-might have a lot of NULL pointers? I'm fine with that, just asking if
-I'm interpreting it correctly.
-
-> +static int sta_link_alloc(struct ieee80211_sub_if_data *sdata,
-> +			  struct sta_info *sta, const u8 *addr,
-> +			  bool update, gfp_t gfp)
-
-no point passing gfp
-
-> +{
-> +	struct ieee80211_local *local = sdata->local;
-> +	struct ieee80211_hw *hw = &local->hw;
-> +	struct link_sta_info *lsinfo = NULL;
-> +	struct ieee80211_link_sta *lsta = NULL;
-> +	u8 link_id, i;
-> +
-> +	spin_lock_bh(&sta->lock);
-
-you spin_lock here so you need GFP_ATOMIC always
-
-> +	/* TODO This is temporary, the link_id will be assigned based on sta vif */
-> +	link_id = sta->num_sta_links;
-> +
-> +	if (update) {
-> +		if (!sta->link[link_id] || !sta->sta.link[link_id])
-> +			return -EINVAL;
-> +		ether_addr_copy(sta->link[link_id]->addr, addr);
-> +		ether_addr_copy(sta->sta.link[link_id]->addr, addr);
-> +		goto out;
-> +	}
-> +
-> +	lsinfo = kzalloc(sizeof(*lsinfo), gfp);
-> +	if (!lsinfo)
-> +		goto free;
-> +
-> +	lsta = kzalloc(sizeof(*lsta), gfp);
-> +	if (!lsta)
-> +		goto free;
-
-I did start wondering if we wouldn't want to move struct link_sta_info
-to mac80211.h as well, though I'm not sure what else we'd have to move,
-and not have to allocate all of these separately?
-
-Though if we follow them through pointers, we can still allocate them in
-the same memory chunk (just add the sizes).
-
-Not sure we need to optimise anything here though.
-
-Or maybe in addition or instead we should allocate an *array* of links?
-But of course only however many we actually need, regardless of which
-ones are actually active.
-
-OTOH, maybe we should keep it this way, and then we could embed the 0th
-link instead? Then we wouldn't have
-
-	sta->link[0]->rx_nss
-
-(picking up your example), but
-
-	sta->deflink.rx_nss
-
-which saves a pointer dereference. We'd also do
-
-	sta->link[0] = &sta->deflink;
-
-of course. This removes the MLO overhead in the *drivers* at least, for
-those drivers not supporting MLO at all.
-
-We couldn't do this in mac80211 though, only in the mac80211.h level,
-but still, might be worthwhile?
-
-You say in the commit message:
-
-> Stats are accumulated per link sta and finally aggregated
-> if mld sta stats is required.
-
-but the changes here
-
->  static struct ieee80211_sta_rx_stats *
->  sta_get_last_rx_stats(struct sta_info *sta)
->  {
-> -	struct ieee80211_sta_rx_stats *stats = &sta->rx_stats;
-> +	struct ieee80211_sta_rx_stats *stats = &sta->link[0]->rx_stats;
-
-don't seem like you did that yet? Which again, is fine, just wondering
-if I'm missing something.
-
-
-Which, btw, makes this patch fairly much mechanical, so maybe put the
-spatch in the commit message? That way can re-apply it if there are
-conflicts, or such.
-
-> + * TODO Move other link params from sta_info as required for MLD operation
-
-:)
-
-So looks good I think! Let's get an spatch to do it in both mac80211 and
-the drivers, and start splitting things.
-
-Unless you see any major problem with it, I think I'd really prefer to
-have a "deflink" embedded and instead of changing
-
-	sta->something
-to
-	sta->links[0]->something
-
-make all the changes be like
-
-	sta->something
-to
-	sta->deflink.something
-
-which of course does nothing for MLO yet, but it's easier to grep for,
-and we'll surely always have a single link, so in the non-MLO cases we
-need not have all the extra allocations around etc., even if in mac80211
-we end up accessing through a pointer.
-
-
-
-Pivoting a bit - I meant to work on the netdev/wdev stuff again today,
-but got side-tracked into the locking issue... but nonetheless I've been
-thinking about it, and looking at this, I'm starting to wonder if we
-shouldn't do the same with interfaces. The changes are large, but
-basically mechanical, and then we can incrementally build on them to
-differentiate the link[] in different areas, which makes it nicer to
-work on things in parallel?
-
-From an API POV that would obviously require a LINK_ID attribute for a
-lot of operations (like GTK settings, AP, add/remove station if not MLD,
-etc.), and it would be a *required* attribute in those cases, i.e. if
-the interface is in MLD mode.
-
-It would also require some other new attributes, like when you add an
-MLD station you'd of course have to give the link addresses for each of
-the links, but all of those things are required anyway.
-
-The alternative - having the different wdevs/netdevs as we have seen in
-the RFC patches and discussed before seems to have a lot of issues. We
-basically discussed a few approaches so far:
-
-1) My original favourite of adding NL80211_IFTYPE_MLD, which would then
-have a netdev and get a bunch of non-netdev NL80211_IFTYPE_(STATION|AP)
-linked to it, and know what it is based on that.
-Problem: you'd have to change the interface type (and destroy the links,
-but that's less interesting, though it might actually take quite some
-time with synchronize_rcu and all in there) when roaming from an MLO AP
-to a non-MLO AP.
-
-
-2) A variant of this, which was discussed even earlier, where the APs
-also have netdevs, so that you can separate the traffic from non-MLD
-clients.
-Problem: Now you have to deal with multicast in very fancy ways,
-especially since you don't immediately know if all the netdevs are
-bridged together, or only some, etc. This gets hugely complex, you even
-need to still assign sequence numbers for multicast on the separate non-
-MLD netdevs from the MLD ... I cannot see this working well.
-
-
-3) Doing it the other way around - having NL80211_IFTYPE_(STATION|AP) be
-the MLD (with netdev) and adding an NL80211_IFTYPE_MLD_LINK (no netdev)
-that gets linked to it, and knows what kind it is because it's linked.
-This solves the roaming.
-Problem: As you have to set the GTK on the _MLD_LINK wdev, it gets
-extremely messy to support AP_VLAN here, you'd likely have to have
-AP_VLAN under the AP as MLD, so you can add MLD stations to it, but then
-you need _MLD_LINKs for each link for the AP_VLAN as well? I cannot see
-how that would really work well...
-
-This latter issue actually came up only because I said to Jouni that the
-issue of separating non-MLD clients out addressed by (2) above could
-instead be solved by putting them into different AP_VLAN, which then got
-me thinking about AP_VLAN in the context of MLD :) [1]
-
-
-Which then leads me to think that maybe the approach with some form of
-separate netdev/wdev, that I at least seemed to think was better (in
-part because it'd require fewer API changes), isn't so great after all?
-And then I'm back at adding a LINK_ID and splitting the wdev/sdata/vif
-state in a similar way to the station splitting in this patch.
-
-Thoughts?
-
-Oh also I've been thinking about doing a (video) meeting say next week
-or so, in order to hash out this stuff, but I guess timezone wise that
-might be very difficult with the different locations people are in?
-
-johannes
-
-
-[1] I'll note that if we solve the non-MLD client separation issue with
-AP_VLAN, we might want to optimize multicast a bit to restrict to a
-subset of the links that are actually used by the clients that the
-multicast is intended for, but that's probably something we want to do
-anyway, since you might at any given time have only legacy clients
-connected to only a single band or a subset of bands, or have an MLD
-client that has many inactive links (depending on how the spec ends up
-evolving in this area).
