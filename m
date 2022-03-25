@@ -2,43 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B06734E7BE7
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:21:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 870004E7BEB
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:21:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231550AbiCYTw2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 15:52:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38446 "EHLO
+        id S232226AbiCYUXD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 16:23:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231689AbiCYTwQ (ORCPT
+        with ESMTP id S232209AbiCYUXC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 15:52:16 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F1D17B8AB;
-        Fri, 25 Mar 2022 12:37:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=+YSGzMp9SBuqTEcUN1kImZMU6TG8MWr4+adML0IsDwo=; b=NNUVZcwrNcGvZqy+FtCK+vjHK1
-        rGuWH6snGdJqekmk4+kkJzT56eR4JXYWoV1Nf3dHY290fUeHpSPOdUuTzo2Q7oIO7jh/jRev7qE9J
-        ToiSYUW+8thZXi3GzQlflUF9VcBYHkDAPqmRDkVW1Lz6KME2HQGPqdd1RL3rzVGLVBB4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1nXpkn-00CgP5-1I; Fri, 25 Mar 2022 20:37:45 +0100
-Date:   Fri, 25 Mar 2022 20:37:45 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Meng Tang <tangmeng@uniontech.com>
-Cc:     stas.yakovlev@gmail.com, kvalo@kernel.org, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ipw2200: Fix permissions setted by DEVICE_ATTR
-Message-ID: <Yj4aCUlGY12VvuI/@lunn.ch>
-References: <20220325074141.17446-1-tangmeng@uniontech.com>
+        Fri, 25 Mar 2022 16:23:02 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1480C5DA69;
+        Fri, 25 Mar 2022 13:21:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=b5wJQQ7YqCa3aFhJqIL39US+IJSbvv4VXqtaGEmA6ik=;
+        t=1648239685; x=1649449285; b=CXFnQ8EcqIPxkIZDl6uyj8xPm1TCgANxFC5vmJMRmEWlEim
+        zD7Mp0BhY9R79BpE9noxVMnq12N/vFVsqQXQqll877EK9buQnWPJg4I+qkO8n/wRxkBcUt29e+ttQ
+        DOpMvboK5z2JSvdTqjAcEgrjJ21naFa75Y8Yg+162bhOhHlmW1/YTFtV1JrjWKiqx5Q8pEL9xXZKz
+        HzofRBD+2TlvuyhuTXK5EQiTbqPXh7YAzcgA9RrsngnWvAb/S1HTx4YQngVHNQFGQkmIR5ZgmcBS9
+        Crpq8b79thPjsJEOS8DGPiEqqdxNubU1eyVgR7XfILisUl3W6I0jISQzm1yyGpvw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nXqQq-000UKo-TY;
+        Fri, 25 Mar 2022 21:21:12 +0100
+Message-ID: <ae6ebb34ba100fa8e17cc7eb187b7cfdf7a20a56.camel@sipsolutions.net>
+Subject: Re: [BUG] deadlock in nl80211_vendor_cmd
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     William McVicker <willmcvicker@google.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>, linux-wireless@vger.kernel.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>, kernel-team@android.com,
+        Paolo Abeni <pabeni@redhat.com>
+Date:   Fri, 25 Mar 2022 21:21:11 +0100
+In-Reply-To: <Yj4FFIXi//ivQC3X@google.com>
+References: <0000000000009e9b7105da6d1779@google.com>
+         <99eda6d1dad3ff49435b74e539488091642b10a8.camel@sipsolutions.net>
+         <5d5cf050-7de0-7bad-2407-276970222635@quicinc.com>
+         <YjpGlRvcg72zNo8s@google.com>
+         <dc556455-51a2-06e8-8ec5-b807c2901b7e@quicinc.com>
+         <Yjzpo3TfZxtKPMAG@google.com>
+         <19e12e6b5f04ba9e5b192001fbe31a3fc47d380a.camel@sipsolutions.net>
+         <20220325094952.10c46350@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+         <f4f8a27dc07c1adaab470fde302ed841113e6b7f.camel@sipsolutions.net>
+         <Yj4FFIXi//ivQC3X@google.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220325074141.17446-1-tangmeng@uniontech.com>
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
@@ -48,31 +68,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Mar 25, 2022 at 03:41:41PM +0800, Meng Tang wrote:
-> Because xcode_version and rtc only implement the show function
-> and do not provide the store function, so ucode_version and rtc
-> only need the read permission, not need the write permission more.
+On Fri, 2022-03-25 at 18:08 +0000, William McVicker wrote:
 > 
-> So, remove the write permission from xcode_version and rtc.
+> I'm able to reproduce this issue pretty easily with a Pixel 6 when I add
+> support to allow vendor commands to request for the RTNL. 
 > 
-> Signed-off-by: Meng Tang <tangmeng@uniontech.com>
-> ---
->  drivers/net/wireless/intel/ipw2x00/ipw2200.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-> index 6830e88c4ed6..fa4f38d54d0a 100644
-> --- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-> +++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-> @@ -1578,7 +1578,7 @@ static ssize_t show_ucode_version(struct device *d,
->  	return sprintf(buf, "0x%08x\n", tmp);
->  }
->  
-> -static DEVICE_ATTR(ucode_version, 0644, show_ucode_version, NULL);
-> +static DEVICE_ATTR(ucode_version, 0444, show_ucode_version, NULL);
 
-DEVICE_ATTR_RO() exists to make this more obvious. But it looks like
-you would need to rename the show_ucode_version() to
-ucode_version_show() in order to use it.
+Hm, wait, which of the two issues?
 
-     Andrew
+> For this case, I just
+> delay unlocking the RTNL until nl80211_vendor_cmds() at which point I check the
+> flags to see if I should unlock before calling doit(). That allows me to run my
+> tests again and hit this issue. I imagine that I could hit this issue without
+> any changes if I re-work my vendor ops to not need the RTNL.
+
+What are the vendor ops doing though?
+
+If they're actually unregistering a netdev - which I believe you
+mentioned earlier - then that's quite clearly going to cause an issue,
+if you unlock RTNL while the wiphy mutex is still held.
+
+If not, then I don't see right now how you'd be able to trigger any
+issue here at all.
+
+The original issue - that you rtnl_lock() yourself while the wiphy mutex
+is held - can't happen anymore with your rework I guess.
+
+
+johannes
