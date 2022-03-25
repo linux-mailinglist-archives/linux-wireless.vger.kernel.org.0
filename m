@@ -2,60 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A32724E6FED
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 10:22:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D2D384E703A
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Mar 2022 10:48:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356722AbiCYJXX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 05:23:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49688 "EHLO
+        id S1348127AbiCYJuW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 05:50:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345014AbiCYJXX (ORCPT
+        with ESMTP id S243192AbiCYJuU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 05:23:23 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A99BCF49F;
-        Fri, 25 Mar 2022 02:21:49 -0700 (PDT)
-Received: from ip4d144895.dynamic.kabel-deutschland.de ([77.20.72.149] helo=[192.168.66.200]); authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1nXg8U-00023m-32; Fri, 25 Mar 2022 10:21:34 +0100
-Message-ID: <a45549b5-1c05-f995-2c0f-99c0e40cea09@leemhuis.info>
-Date:   Fri, 25 Mar 2022 10:21:24 +0100
+        Fri, 25 Mar 2022 05:50:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB96251314
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 02:48:45 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B51360BC8
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 09:48:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8720C340E9;
+        Fri, 25 Mar 2022 09:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648201724;
+        bh=tyFPuBZdQzahVRT8oKGAhP1UiQ3ydMO+7g2vOclZClw=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=F4oposrp218RAu8qOecJsUNdzyMQOqnysS1bK1fVuhko7B1m+UMLf3X1q/MsQ/13W
+         7KQamQMmBJqoXm7wHs3uRvjddQmtilzwdEV5SVQ5HKkq6017bXnxndf1ZYZ0QeaqSH
+         /ZqsnJtU0CX5FegX2C/YawtWRrpbxcWE1HCZJ5nszU8NWaWD8/XYdPojoZ5Ed/mL2m
+         R9xb2X+NsWDlIRnJe8oHiqGCm9zw74YP5KCULqUIWJmc/0HDYTSlQJO6kWYwX7CjyN
+         BMx5renh958yDO+zvrlJ+GWm/7K5eWkfuU2P4+dFFcvdONHD47oIbThHwFjGygkPUr
+         +l7b3bFWa8C7g==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
- ath9k-based AP
-Content-Language: en-US
-To:     Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgense?= =?UTF-8?Q?n?= 
-        <toke@toke.dk>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Halil Pasic <pasic@linux.ibm.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Olha Cherevyk <olha.cherevyk@gmail.com>,
-        iommu <iommu@lists.linux-foundation.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable <stable@vger.kernel.org>
-References: <1812355.tdWV9SEqCh@natalenko.name>
- <d8a1cbf4-a521-78ec-1560-28d855e0913e@arm.com> <871qyr9t4e.fsf@toke.dk>
- <4699073.GXAFRqVoOG@natalenko.name>
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-In-Reply-To: <4699073.GXAFRqVoOG@natalenko.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1648200109;1a0d0afe;
-X-HE-SMSGID: 1nXg8U-00023m-32
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+Content-Transfer-Encoding: 7bit
+Subject: Re: MAINTAINERS: update Lorenzo's email address
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <e98fcf759f8c23a9736f1c4d20ca0437e4b145de.1648120046.git.lorenzo@kernel.org>
+References: <e98fcf759f8c23a9736f1c4d20ca0437e4b145de.1648120046.git.lorenzo@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        nbd@nbd.name
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <164820172015.21419.17052973104472568029.kvalo@kernel.org>
+Date:   Fri, 25 Mar 2022 09:48:43 +0000 (UTC)
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,40 +55,18 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 25.03.22 08:12, Oleksandr Natalenko wrote:
-> On čtvrtek 24. března 2022 18:07:29 CET Toke Høiland-Jørgensen wrote:
->> Right, but is that sync_for_device call really needed? AFAICT, that
->> ath9k_hw_process_rxdesc_edma() invocation doesn't actually modify any of
->> the data when it returns EINPROGRESS, so could we just skip it? Like
->> the patch below? Or am I misunderstanding the semantics here?
->>
->> diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
->> index 0c0624a3b40d..19244d4c0ada 100644
->> --- a/drivers/net/wireless/ath/ath9k/recv.c
->> +++ b/drivers/net/wireless/ath/ath9k/recv.c
->> @@ -647,12 +647,8 @@ static bool ath_edma_get_buffers(struct ath_softc *sc,
->>                                 common->rx_bufsize, DMA_FROM_DEVICE);
->>  
->>         ret = ath9k_hw_process_rxdesc_edma(ah, rs, skb->data);
->> -       if (ret == -EINPROGRESS) {
->> -               /*let device gain the buffer again*/
->> -               dma_sync_single_for_device(sc->dev, bf->bf_buf_addr,
->> -                               common->rx_bufsize, DMA_FROM_DEVICE);
->> +       if (ret == -EINPROGRESS)
->>                 return false;
->> -       }
->>  
->>         __skb_unlink(skb, &rx_edma->rx_fifo);
->>         if (ret == -EINVAL) {
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+
+> Using my kernel.org email.
 > 
-> With this patch and both ddbd89deb7d3+aa6f8dcbab47 in place the AP works for me.
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-TWIMC: If anyone needs more testers or something, I noticed two bug
-report in bko about this problem:
+Patch applied to wireless.git, thanks.
 
-https://bugzilla.kernel.org/show_bug.cgi?id=215703
-https://bugzilla.kernel.org/show_bug.cgi?id=215698
+24b488061b97 MAINTAINERS: update Lorenzo's email address
 
-I'll point both to this discussion and the patch.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/e98fcf759f8c23a9736f1c4d20ca0437e4b145de.1648120046.git.lorenzo@kernel.org/
 
-Ciao, Thorsten
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
