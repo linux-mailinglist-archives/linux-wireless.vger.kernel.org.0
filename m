@@ -2,147 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FBAA4E81E5
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 17:05:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97AFD4E8205
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 18:00:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233759AbiCZQHU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Mar 2022 12:07:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58298 "EHLO
+        id S233828AbiCZRCS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Mar 2022 13:02:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233570AbiCZQHT (ORCPT
+        with ESMTP id S233801AbiCZRCP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Mar 2022 12:07:19 -0400
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 856B6473AB;
-        Sat, 26 Mar 2022 09:05:39 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1648310737; bh=j8t9GHYbTPEWySbmxXMqGskEDtyF/bdWSNoBF6Lu/64=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=vg5mZbAvUN7CYb8K0HW8bypeTCqe4EFeCCg/wFiKDy9xFjqeiZqBVqi5dL/LcpteU
-         BdD2O10/08TxH+ZSpQfApD7e4kXNnhXEswpAi0qIPzZLyHIb8vwAGK7sSvEuh+ATRh
-         8A1bKgWXXH7vxKok1gmasDztPnrGJX/kETDfmTXL6S69P9nLYP9pNNT4YiW4DkuV+I
-         rCIzYyRNFJvclHuPjZib3iboNjgTAjVMsc98W3fXQw8BCGOQWWZrWl+al87Q0Hnh4P
-         Wsie6QDudtT0oWCYjMNYitOFVJEHi++yrHQm3mHva53vdhFOgmKIFP9QpVg5VbsnWE
-         gsMxBomOxfcPQ==
-To:     Halil Pasic <pasic@linux.ibm.com>,
-        Robin Murphy <robin.murphy@arm.com>
-Cc:     mbizon@freebox.fr, Linus Torvalds <torvalds@linux-foundation.org>,
-        Netdev <netdev@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        stable <stable@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        iommu <iommu@lists.linux-foundation.org>,
-        Olha Cherevyk <olha.cherevyk@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Halil Pasic <pasic@linux.ibm.com>
-Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
- ath9k-based AP
-In-Reply-To: <20220326003853.44c3285c.pasic@linux.ibm.com>
-References: <1812355.tdWV9SEqCh@natalenko.name>
- <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
- <20220324055732.GB12078@lst.de> <4386660.LvFx2qVVIh@natalenko.name>
- <81ffc753-72aa-6327-b87b-3f11915f2549@arm.com> <878rsza0ih.fsf@toke.dk>
- <4be26f5d8725cdb016c6fdd9d05cfeb69cdd9e09.camel@freebox.fr>
- <20220324163132.GB26098@lst.de>
- <d8a1cbf4-a521-78ec-1560-28d855e0913e@arm.com> <871qyr9t4e.fsf@toke.dk>
- <CAHk-=whUQCCaQXJt3KUeQ8mtnLeVXEScNXCp+_DYh2SNY7EcEA@mail.gmail.com>
- <31434708dcad126a8334c99ee056dcce93e507f1.camel@freebox.fr>
- <cce202fb-5185-aa3e-9e9b-11626192cb49@arm.com>
- <20220326003853.44c3285c.pasic@linux.ibm.com>
-Date:   Sat, 26 Mar 2022 17:05:37 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <8735j47l7y.fsf@toke.dk>
+        Sat, 26 Mar 2022 13:02:15 -0400
+X-Greylist: delayed 63 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 26 Mar 2022 10:00:37 PDT
+Received: from stuerz.xyz (stuerz.xyz [IPv6:2001:19f0:5:15da:5400:3ff:fecc:7379])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56432B0A55;
+        Sat, 26 Mar 2022 10:00:37 -0700 (PDT)
+Received: by stuerz.xyz (Postfix, from userid 114)
+        id 9D1C6FBBCB; Sat, 26 Mar 2022 17:00:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
+        t=1648314036; bh=yA14H5kSGXs8c9NCVOmgKRy/cJtHbkLoXQ2K5ISZu/k=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=eY1iX0wlkZRA78TwrFBdZG5S+wos6UWvMNaeR3ebSkGbpl4BzyM69Wnujm+MCNQSH
+         XbYHpCtunp+VYPd+8B4Z5YGwrYKyldxYneKwJEtMuoQi4VfjayP4248ZkrvYzPbvb7
+         tGC3cCNQMmjqLyVHL80IqUG9N6enWqcQ/eJAksuxRO0+t/nSWobYmI6E3gPDs1NmYL
+         ++FZTGyvor1q8BXZzeNj7KNTMHP2+jtmpdc0KeaKsrUDcsC7Efw6IdkQp5pRDFDxi5
+         ZHAUmnDb1nehnND3R9P08aARBVYF4iAixYWRlLVzHEAsYgL1pTWrWTNVmmmb1i34gg
+         o2AMI/9CsY+SQ==
+Received: from benni-fedora.. (unknown [IPv6:2a02:8109:a100:1a48:ff0:ef2f:d4da:17d8])
+        by stuerz.xyz (Postfix) with ESMTPSA id E7EF6FB7D3;
+        Sat, 26 Mar 2022 17:00:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
+        t=1648314033; bh=yA14H5kSGXs8c9NCVOmgKRy/cJtHbkLoXQ2K5ISZu/k=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=M6I6oe9jogZM/zVnBnLg0eaNUUV4jcB+jkMO9qefS3HmAz419f42DcLOvKYiY1LvT
+         ker3YtWSKtrbYWXcC4P4Q34z4I0kvS8nnURN2zDZp/1ciFgjp8H5+LMGc47dFCGwK3
+         ZPM4LcjH7WSaWHLXUgQ1uu7Se/TXMvIZ6a51YDM4XN9HQOfPjY/V51c3xkYKlQc9Ff
+         sw/spsdrAwyTcjFyMYk3HffZ0vEu3G6iY0fWhPwKxCUfoge6rziWcIxAyYMFWRia7f
+         wJwSd/xnAYJBhYpaStdDoJq2gMpeyL3UlSNNsSRrS5W5qX2Ex1kaIwSG6rdxXYA+KQ
+         WQdOdxe313yGg==
+From:   =?UTF-8?q?Benjamin=20St=C3=BCrz?= <benni@stuerz.xyz>
+To:     andrew@lunn.ch
+Cc:     sebastian.hesselbarth@gmail.com, gregory.clement@bootlin.com,
+        linux@armlinux.org.uk, linux@simtec.co.uk, krzk@kernel.org,
+        alim.akhtar@samsung.com, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
+        robert.moore@intel.com, rafael.j.wysocki@intel.com,
+        lenb@kernel.org, 3chas3@gmail.com, laforge@gnumonks.org,
+        arnd@arndb.de, gregkh@linuxfoundation.org, mchehab@kernel.org,
+        tony.luck@intel.com, james.morse@arm.com, rric@kernel.org,
+        linus.walleij@linaro.org, brgl@bgdev.pl,
+        mike.marciniszyn@cornelisnetworks.com,
+        dennis.dalessandro@cornelisnetworks.com, jgg@ziepe.ca,
+        pali@kernel.org, dmitry.torokhov@gmail.com, isdn@linux-pingi.de,
+        benh@kernel.crashing.org, fbarrat@linux.ibm.com, ajd@linux.ibm.com,
+        davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        nico@fluxnic.net, loic.poulain@linaro.org, kvalo@kernel.org,
+        pkshih@realtek.com, bhelgaas@google.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+        linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-input@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-pci@vger.kernel.org,
+        =?UTF-8?q?Benjamin=20St=C3=BCrz?= <benni@stuerz.xyz>
+Subject: [PATCH 11/22] rdmavt: Replace comments with C99 initializers
+Date:   Sat, 26 Mar 2022 17:58:58 +0100
+Message-Id: <20220326165909.506926-11-benni@stuerz.xyz>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220326165909.506926-1-benni@stuerz.xyz>
+References: <20220326165909.506926-1-benni@stuerz.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_SUSPICIOUS_NTLD,
+        PDS_OTHER_BAD_TLD,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Halil Pasic <pasic@linux.ibm.com> writes:
+This replaces comments with C99's designated
+initializers because the kernel supports them now.
 
-> On Fri, 25 Mar 2022 11:27:41 +0000
-> Robin Murphy <robin.murphy@arm.com> wrote:
->
->> What muddies the waters a bit is that the opposite combination 
->> sync_for_cpu(DMA_TO_DEVICE) really *should* always be a no-op, and I for 
->> one have already made the case for eliding that in code elsewhere, but 
->> it doesn't necessarily hold for the inverse here, hence why I'm not sure 
->> there even is a robust common solution for peeking at a live 
->> DMA_FROM_DEVICE buffer.
->
-> In https://lkml.org/lkml/2022/3/24/739 I also argued, that a robust
-> common solution for a peeking at a live DMA_FROM_DEVICE buffer is
-> probably not possible, at least not with the current programming model
-> as described by Documentation/core-api/dma-api.rst.
->
-> Namely AFAIU the programming model is based on exclusive ownership: the
-> buffer is either owned by the device, which means CPU(s) are not allowed
-> to *access* it, or it is owned by the CPU(s), and the device is not
-> allowed to *access* it. Do we agree on this?
->
-> Considering what Linus said here https://lkml.org/lkml/2022/3/24/775
-> I understand that: if the idea that dma_sync_*_for_{cpu,device} always
-> transfers ownership to the cpu and device respectively is abandoned, 
-> and we re-define ownership in a sense that only the owner may write,
-> but non-owner is allowed to read, then it may be possible to make the
-> scenario under discussion work. 
->
-> The scenario in pseudo code:
->
-> /* when invoked device might be doing DMA into buf */
-> rx_buf_complete(buf)
-> {
-> 	prepare_peek(buf, DMA_FROM_DEVICE);
->         if (!is_ready(buf)) {
->                 /*let device gain the buffer again*/
->                 peek_done_not_ready(buf, DMA_FROM_DEVICE);
->                 return false;
->         }
-> 	peek_done_ready(buf, DMA_FROM_DEVICE);
-> 	process_buff(buf, DMA_FROM_DEVICE); is
-> }
->
-> IMHO it is pretty obvious, that prepare_peek() has to update the
-> cpu copy of the data *without* transferring ownership to the CPU. Since
-> the owner is still the device, it is legit for the device to keep
-> modifying the buffer via DMA. In case of the swiotlb, we would copy the
-> content of the bounce buffer to the orig buffer possibly after
-> invalidating
-> caches, and for non-swiotlb we would do invalidate caches. So
-> prepare_peek() could be actually something like,
-> dma_sync_single_for_cpu(buf, DMA_FROM_DEVICE,
->                         DMA_ATTR_NO_OWNERSHIP_TRANSFER)
-> which would most end up being functionally the same, as without the
-> flag, since my guess is that the ownership is only tracked in our
-> heads.
+Signed-off-by: Benjamin Stürz <benni@stuerz.xyz>
+---
+ drivers/infiniband/sw/rdmavt/rc.c | 62 +++++++++++++++----------------
+ 1 file changed, 31 insertions(+), 31 deletions(-)
 
-Well we also need to ensure that the CPU caches are properly invalidated
-either in prepare_peek() or peek_done_not_ready(), so that the data is
-not cached between subsequent peeks. This could translate to either
-turning prepare_peek() into dma_sync_single_for_cpu(buf,
-DMA_FROM_DEVICE, DMA_ATTR_NO_OWNERSHIP_TRANSFER_BUT_INVALIDATE_CACHES),
-or it could turn peek_done_not_ready() into something that just
-invalidates the cache.
+diff --git a/drivers/infiniband/sw/rdmavt/rc.c b/drivers/infiniband/sw/rdmavt/rc.c
+index 4e5d4a27633c..121b8a23ac07 100644
+--- a/drivers/infiniband/sw/rdmavt/rc.c
++++ b/drivers/infiniband/sw/rdmavt/rc.c
+@@ -10,37 +10,37 @@
+  * Convert the AETH credit code into the number of credits.
+  */
+ static const u16 credit_table[31] = {
+-	0,                      /* 0 */
+-	1,                      /* 1 */
+-	2,                      /* 2 */
+-	3,                      /* 3 */
+-	4,                      /* 4 */
+-	6,                      /* 5 */
+-	8,                      /* 6 */
+-	12,                     /* 7 */
+-	16,                     /* 8 */
+-	24,                     /* 9 */
+-	32,                     /* A */
+-	48,                     /* B */
+-	64,                     /* C */
+-	96,                     /* D */
+-	128,                    /* E */
+-	192,                    /* F */
+-	256,                    /* 10 */
+-	384,                    /* 11 */
+-	512,                    /* 12 */
+-	768,                    /* 13 */
+-	1024,                   /* 14 */
+-	1536,                   /* 15 */
+-	2048,                   /* 16 */
+-	3072,                   /* 17 */
+-	4096,                   /* 18 */
+-	6144,                   /* 19 */
+-	8192,                   /* 1A */
+-	12288,                  /* 1B */
+-	16384,                  /* 1C */
+-	24576,                  /* 1D */
+-	32768                   /* 1E */
++	[0x00] = 0,
++	[0x01] = 1,
++	[0x02] = 2,
++	[0x03] = 3,
++	[0x04] = 4,
++	[0x05] = 6,
++	[0x06] = 8,
++	[0x07] = 12,
++	[0x08] = 16,
++	[0x09] = 24,
++	[0x0A] = 32,
++	[0x0B] = 48,
++	[0x0C] = 64,
++	[0x0D] = 96,
++	[0x0E] = 128,
++	[0x0F] = 192,
++	[0x10] = 256,
++	[0x11] = 384,
++	[0x12] = 512,
++	[0x13] = 768,
++	[0x14] = 1024,
++	[0x15] = 1536,
++	[0x16] = 2048,
++	[0x17] = 3072,
++	[0x18] = 4096,
++	[0x19] = 6144,
++	[0x1A] = 8192,
++	[0x1B] = 12288,
++	[0x1C] = 16384,
++	[0x1D] = 24576,
++	[0x1E] = 32768
+ };
+ 
+ /**
+-- 
+2.35.1
 
-I was also toying with the idea of having a copy-based peek helper like:
-
-u32 data = dma_peek_word(buf, offset)
-
-which leaves the ownership as-is, but copies out a single word from the
-buffer at the given offset (from the bounce buffer or real buffer as
-appropriate) without messing with the ownership notion. The trouble with
-this idea is that ath9k reads two different words that are 44 bytes from
-each other, so it would have to do two such calls, which would be racy :(
-
--Toke
