@@ -2,48 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5CC44E8018
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 09:48:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA1E24E801A
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 09:50:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231671AbiCZIuK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Mar 2022 04:50:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44178 "EHLO
+        id S232119AbiCZIwN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Mar 2022 04:52:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbiCZIuJ (ORCPT
+        with ESMTP id S230080AbiCZIwM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Mar 2022 04:50:09 -0400
+        Sat, 26 Mar 2022 04:52:12 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A24A652C8
-        for <linux-wireless@vger.kernel.org>; Sat, 26 Mar 2022 01:48:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41EF3167D8;
+        Sat, 26 Mar 2022 01:50:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 21D1AB800C1
-        for <linux-wireless@vger.kernel.org>; Sat, 26 Mar 2022 08:48:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF1CC2BBE4;
-        Sat, 26 Mar 2022 08:48:27 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CFCB2B800C1;
+        Sat, 26 Mar 2022 08:50:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48932C2BBE4;
+        Sat, 26 Mar 2022 08:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648284508;
-        bh=CWs64S7u0xalXvKpz9zCgW770mWGSrIjJcogyJjbcLg=;
+        s=k20201202; t=1648284634;
+        bh=s9f5bnhBuCk46wN4ssaRjCDYFb2Vt9/9/gOzq5IqbM4=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=CLpm8T5gs5sWV1cTCVsyg7NwM+WUCv1k2ipHkDwfw06Ih6W7bCGNOUQaOO4/qk9GG
-         EljLeUN9AsUEDu1nR/mThtH9muvX8cRGO7igJbHt1dAr+X/hE9ENhcbcBCAfFO+o1W
-         xyea1DqyKEAh2ZnrLVDtIHxWluOqNLRUTFIKh5+IURC3s2gMmMErK5UgbDO0Q99bQM
-         rBuWtkg8nn76Dd2WXbgbW6llegrgBPGLIJbRuQhSROKapeFDtS0Pxmu6xxmrjojC6d
-         c25ys0smg+imOgRFLiTa8WucKB3NnYRdZcex3xMX0ZBvWJKpP1i0nRgN04leZBo9cU
-         oGAIFrtIjq3Sw==
+        b=Wsse77TQPF6Ke+C1gwGny+B0XKyIweV6uyw2XgRapNZle2hcsN2dg8aDx9LXj4dAN
+         PBgKW2grATQi5ZyNEWpqzKZ6MPFEaHsQwcezvyaHc8vdwU0sOPnbuZvUhwwC1nxIbo
+         u1PPuhVSk/g20nvY8jYE6NBwWxZR4+yvC451ZqDInfSPsb5OR8BqfSUFywTb3lW0R7
+         fYgax0D8VE7OqsznQ9DK+wZPW07B2wLBBph9ALnjaHIs3KB6qrrbPAR3/QG8t6+rC/
+         fH7TK85liowzjgBSVuBp4MsLChL0z9cOn/59a1QKdbSMjuUrwHbG3VcEnSNrw6TZtT
+         79NjatLt1tMfQ==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     Maharaja Kennadyrajan <quic_mkenna@quicinc.com>,
-        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v6 1/3] nl80211: Add support for beacon tx mode
-References: <20220325055949.3035053-1-quic_mkenna@quicinc.com>
-        <20220325055949.3035053-2-quic_mkenna@quicinc.com>
-        <bca5ba81-7e97-9b54-be57-a40df9b0634c@quicinc.com>
-Date:   Sat, 26 Mar 2022 10:48:23 +0200
-In-Reply-To: <bca5ba81-7e97-9b54-be57-a40df9b0634c@quicinc.com> (Jeff
-        Johnson's message of "Fri, 25 Mar 2022 12:18:41 -0700")
-Message-ID: <87lewxnlpk.fsf@kernel.org>
+Cc:     Edmond Gagnon <egagnon@squareup.com>,
+        Benjamin Li <benl@squareup.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        <wcn36xx@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4] wcn36xx: Implement tx_rate reporting
+References: <20220323214533.1951791-1-egagnon@squareup.com>
+        <20220325224212.159690-1-egagnon@squareup.com>
+        <7ae9915d-98fc-efd4-4a1e-872c446aacca@quicinc.com>
+Date:   Sat, 26 Mar 2022 10:50:30 +0200
+In-Reply-To: <7ae9915d-98fc-efd4-4a1e-872c446aacca@quicinc.com> (Jeff
+        Johnson's message of "Fri, 25 Mar 2022 17:09:00 -0700")
+Message-ID: <87h77lnlm1.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -59,19 +63,74 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> On 3/24/2022 10:59 PM, Maharaja Kennadyrajan wrote:
-> [...snip...]
->
->> +/**
->> + * enum nl80211_beacon_tx_mode - Beacon Tx Mode enum.
->> + * @NL80211_BEACON_STAGGERED_MODE: Used to configure beacon tx mode as
->> + *	staggered mode. This is the default beacon tx mode.
->
-> Documentation doesn't match the code. There is now a default mode, and
-> that is, well, the default mode
+> On 3/25/2022 3:42 PM, Edmond Gagnon wrote:
+>> Currently, the driver reports a tx_rate of 6.0 MBit/s no matter the true
+>> rate:
+>>
+>> root@linaro-developer:~# iw wlan0 link
+>> Connected to 6c:f3:7f:eb:9b:92 (on wlan0)
+>>          SSID: SQ-DEVICETEST
+>>          freq: 5200
+>>          RX: 4141 bytes (32 packets)
+>>          TX: 2082 bytes (15 packets)
+>>          signal: -77 dBm
+>>          rx bitrate: 135.0 MBit/s MCS 6 40MHz short GI
+>>          tx bitrate: 6.0 MBit/s
+>>
+>>          bss flags:      short-slot-time
+>>          dtim period:    1
+>>          beacon int:     100
+>>
+>> This patch requests HAL_GLOBAL_CLASS_A_STATS_INFO via a hal_get_stats
+>> firmware message and reports it via ieee80211_ops::sta_statistics.
+>>
+>> root@linaro-developer:~# iw wlan0 link
+>> Connected to 6c:f3:7f:eb:73:b2 (on wlan0)
+>>          SSID: SQ-DEVICETEST
+>>          freq: 5700
+>>          RX: 26788094 bytes (19859 packets)
+>>          TX: 1101376 bytes (12119 packets)
+>>          signal: -75 dBm
+>>          rx bitrate: 135.0 MBit/s MCS 6 40MHz short GI
+>>          tx bitrate: 108.0 MBit/s VHT-MCS 5 40MHz VHT-NSS 1
+>>
+>>          bss flags:      short-slot-time
+>>          dtim period:    1
+>>          beacon int:     100
+>>
+>> Tested on MSM8939 with WCN3680B running firmware CNSS-PR-2-0-1-2-c1-00083,
+>> and verified by sniffing frames over the air with Wireshark to ensure the
+>> MCS indices match.
+>>
+>> Signed-off-by: Edmond Gagnon <egagnon@squareup.com>
+>> Reviewed-by: Benjamin Li <benl@squareup.com>
 
-But what does the default mode mean in this case? :) Please document in
-detail what the driver is supposed to do in this mode.
+[...]
+
+>>   +static void wcn36xx_sta_statistics(struct ieee80211_hw *hw,
+>> struct ieee80211_vif *vif,
+>> +				   struct ieee80211_sta *sta, struct station_info *sinfo)
+>> +{
+>> +	struct wcn36xx *wcn;
+>> +	u8 sta_index;
+>> +	int status = 0;
+>
+> remove initializer that is always overwritten
+
+I can fix that in the pending branch, no need to resend because of this.
+
+>>   +int wcn36xx_smd_get_stats(struct wcn36xx *wcn, u8 sta_index, u32
+>> stats_mask,
+>> +			  struct station_info *sinfo)
+>> +{
+>> +	struct wcn36xx_hal_stats_req_msg msg_body;
+>> +	struct wcn36xx_hal_stats_rsp_msg *rsp;
+>> +	void *rsp_body;
+>> +	int ret = 0;
+>
+> remove initializer that is always overwritten before use
+
+Ditto.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
