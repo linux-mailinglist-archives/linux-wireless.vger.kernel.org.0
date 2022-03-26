@@ -2,173 +2,173 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8287B4E8360
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 19:39:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 193E64E839C
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 19:55:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234600AbiCZSk6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Mar 2022 14:40:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43216 "EHLO
+        id S233977AbiCZS5R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Mar 2022 14:57:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232795AbiCZSk4 (ORCPT
+        with ESMTP id S231740AbiCZS5P (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Mar 2022 14:40:56 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 197BB31206
-        for <linux-wireless@vger.kernel.org>; Sat, 26 Mar 2022 11:39:20 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id e16so18386992lfc.13
-        for <linux-wireless@vger.kernel.org>; Sat, 26 Mar 2022 11:39:20 -0700 (PDT)
+        Sat, 26 Mar 2022 14:57:15 -0400
+Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67C63241B69;
+        Sat, 26 Mar 2022 11:55:38 -0700 (PDT)
+Received: by mail-oi1-x22e.google.com with SMTP id 12so11626132oix.12;
+        Sat, 26 Mar 2022 11:55:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=2m51oiAn/Cj+SF/F+aV22/Ai48y8dhVaDitWIYFgHko=;
-        b=Xzpb8EwMd16IfpevZXCSnZ1w7igDgljvhc1UKwPCGJbTR1UuTbbMqaENrY8MItnW6A
-         /mhYRG9m1OqxvKFji2pu2e6epPatTwTurg1n0sv6438+lqS7kq56HR/JgRktiNPSjzbW
-         jslyVNaXHhOqnGPtddZTS6jVTkH+ZYGjaxVaM=
+        d=gmail.com; s=20210112;
+        h=sender:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=od8p5pl2U97jeU4B5zrg7n+5mCzeV+pC/ksqgi0ZrCg=;
+        b=FLgjPZbpsRgixevsWBrkzNi6JX+0JOdLVae2WiE33dW2CYOkn5xqbMkUlVUP8W2wu7
+         GkxJRlQBc9JikV5LxxH776y/rCGduf9iWPHNwF2JwC98xLaDJOBMG8veU5JxGQ7nOAvJ
+         m/+JrXhLeGunBEipRoADOWS5rGjDCc6Gz4IggFgtvunK5yE88pyhHsgbZfGiHbN0KDJE
+         NB8NTlDVtPBrxk4PUIVxhTUnFKrA8WccJDTDtm7JqRWvIiRfCooKnwEhY3aTmayCwMpQ
+         V3hyLVfO0DlGQFzspBvlHmqHXQ6R9+E5kFXKetAYpzKWkBQUTmJFethoAMM1paiNI8zm
+         YaGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=2m51oiAn/Cj+SF/F+aV22/Ai48y8dhVaDitWIYFgHko=;
-        b=i8v+npO1XrDcewkukc6oCUsOE4BzG3xh+hEUpfFUxKRDCsEQ/ACzLeuWSL67ro6hah
-         QYz+Gxo40a0PZNDC/Midmv/RtP61kj9jrpRhCVz/P2IFoUqA2TtfO6xYkB2ymvrjofIx
-         eUlUGUGVkNUpJTQiQoew6jzlofnaWsDHb1siGoOHqLpi2uMaEoSK3hWc4cHg8POAQDOb
-         +/KHmbqmYZPzkUX8NWUFy3anUX5HCK3yMg0nr+4qmwhbtUwX0cMT0nbWqsX1VJXoPmZN
-         +MCf/JuMv8EaViwL0gPd1Z0q00X/I+Q66tDyLfVGEcJl0+dyUJvLFPuzvJvubI0l43Ff
-         iiIQ==
-X-Gm-Message-State: AOAM532n1jvbHABCDm5TichlvFxEmiCwIxukIszgRGAYC9TEPH+tCkpS
-        b6/0y8INaNCux40oSdEWrI/PhelAdz2Hph3t/UI=
-X-Google-Smtp-Source: ABdhPJy6mF0TrVU2aMjf4FZtYGb/PZdpicJVS1k2Zj9pyrAUFZaFO61XB3ikaL3aR0jFsaIlNnv6ng==
-X-Received: by 2002:a05:6512:1694:b0:448:3fd4:c7a9 with SMTP id bu20-20020a056512169400b004483fd4c7a9mr13153234lfb.29.1648319958114;
-        Sat, 26 Mar 2022 11:39:18 -0700 (PDT)
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com. [209.85.208.177])
-        by smtp.gmail.com with ESMTPSA id h1-20020a056512220100b0044a23d466c2sm1131502lfu.74.2022.03.26.11.39.16
-        for <linux-wireless@vger.kernel.org>
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :subject:content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=od8p5pl2U97jeU4B5zrg7n+5mCzeV+pC/ksqgi0ZrCg=;
+        b=r4k/ZLMSm2hGaZp0BJolxckS67SFML0s78RsE+8NiRJtTIJjiR7iTUcsPn2boAz2Vv
+         ybz7IlRpirjSR8WbZcmDUi67Wcdi/CEzM6IC75FzjbT5nPLL5uTrMwJ4OsKlNa4JEuV7
+         6kdnURfSa8SzqlfjT2hUHF2o46YRSK/+FU7aTVgoSqiwpoHmYmttls0pWSo8pEGumHfo
+         VJahmxfnNxAiHJtGzGQEfZkToklM6Hkq7P71exK6vCC8vpz1uiMqqs26cOr8wMZflN/v
+         PWEstBAt2MWu3qzuSeCYUKmLcIwynnKFScUNbwqPhMENULFQvDB4S2ey95MG6cdsR2IG
+         iviA==
+X-Gm-Message-State: AOAM530nuM0l5w3i2NKx96h5mNEYhFz/NwcMZWQRJgsZ9MFzEF3DaqbJ
+        oDO63FLHbDAVpIwc7lRXkd8=
+X-Google-Smtp-Source: ABdhPJwENpqHi0yoebC6ynBYdoBH1ZAUKF4tDj7px8PfwrXlpK2apNGv6Udv3OPe7ze8luScmr+hMg==
+X-Received: by 2002:a05:6808:118c:b0:2d4:4194:70db with SMTP id j12-20020a056808118c00b002d4419470dbmr8444758oil.93.1648320937799;
+        Sat, 26 Mar 2022 11:55:37 -0700 (PDT)
+Received: from [192.168.1.103] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
+        by smtp.gmail.com with ESMTPSA id k4-20020a9d4b84000000b005b2310ebdffsm4697502otf.54.2022.03.26.11.55.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 26 Mar 2022 11:39:16 -0700 (PDT)
-Received: by mail-lj1-f177.google.com with SMTP id v12so1446806ljd.3
-        for <linux-wireless@vger.kernel.org>; Sat, 26 Mar 2022 11:39:16 -0700 (PDT)
-X-Received: by 2002:a2e:6f17:0:b0:248:124:9c08 with SMTP id
- k23-20020a2e6f17000000b0024801249c08mr13222025ljc.506.1648319955630; Sat, 26
- Mar 2022 11:39:15 -0700 (PDT)
+        Sat, 26 Mar 2022 11:55:37 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <f7bb9164-2f66-8985-5771-5f31ee5740b7@lwfinger.net>
+Date:   Sat, 26 Mar 2022 13:55:33 -0500
 MIME-Version: 1.0
-References: <1812355.tdWV9SEqCh@natalenko.name> <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
- <20220324055732.GB12078@lst.de> <4386660.LvFx2qVVIh@natalenko.name>
- <81ffc753-72aa-6327-b87b-3f11915f2549@arm.com> <878rsza0ih.fsf@toke.dk>
- <4be26f5d8725cdb016c6fdd9d05cfeb69cdd9e09.camel@freebox.fr>
- <20220324163132.GB26098@lst.de> <d8a1cbf4-a521-78ec-1560-28d855e0913e@arm.com>
- <871qyr9t4e.fsf@toke.dk> <CAHk-=whUQCCaQXJt3KUeQ8mtnLeVXEScNXCp+_DYh2SNY7EcEA@mail.gmail.com>
- <31434708dcad126a8334c99ee056dcce93e507f1.camel@freebox.fr>
- <cce202fb-5185-aa3e-9e9b-11626192cb49@arm.com> <20220326003853.44c3285c.pasic@linux.ibm.com>
- <8735j47l7y.fsf@toke.dk>
-In-Reply-To: <8735j47l7y.fsf@toke.dk>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Sat, 26 Mar 2022 11:38:59 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjorwZTQuQB8QBgNpdBZNz7uyprgaTT+1Q6_1FaT3sAmQ@mail.gmail.com>
-Message-ID: <CAHk-=wjorwZTQuQB8QBgNpdBZNz7uyprgaTT+1Q6_1FaT3sAmQ@mail.gmail.com>
-Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
- ath9k-based AP
-To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
-Cc:     Halil Pasic <pasic@linux.ibm.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Netdev <netdev@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        stable <stable@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        iommu <iommu@lists.linux-foundation.org>,
-        Olha Cherevyk <olha.cherevyk@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH 21/22] rtw89: Replace comments with C99 initializers
+Content-Language: en-US
+To:     =?UTF-8?Q?Benjamin_St=c3=bcrz?= <benni@stuerz.xyz>, andrew@lunn.ch
+Cc:     sebastian.hesselbarth@gmail.com, gregory.clement@bootlin.com,
+        linux@armlinux.org.uk, linux@simtec.co.uk, krzk@kernel.org,
+        alim.akhtar@samsung.com, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
+        robert.moore@intel.com, rafael.j.wysocki@intel.com,
+        lenb@kernel.org, 3chas3@gmail.com, laforge@gnumonks.org,
+        arnd@arndb.de, gregkh@linuxfoundation.org, mchehab@kernel.org,
+        tony.luck@intel.com, james.morse@arm.com, rric@kernel.org,
+        linus.walleij@linaro.org, brgl@bgdev.pl,
+        mike.marciniszyn@cornelisnetworks.com,
+        dennis.dalessandro@cornelisnetworks.com, jgg@ziepe.ca,
+        pali@kernel.org, dmitry.torokhov@gmail.com, isdn@linux-pingi.de,
+        benh@kernel.crashing.org, fbarrat@linux.ibm.com, ajd@linux.ibm.com,
+        davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        nico@fluxnic.net, loic.poulain@linaro.org, kvalo@kernel.org,
+        pkshih@realtek.com, bhelgaas@google.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+        linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-input@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-pci@vger.kernel.org
+References: <20220326165909.506926-1-benni@stuerz.xyz>
+ <20220326165909.506926-21-benni@stuerz.xyz>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <20220326165909.506926-21-benni@stuerz.xyz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Mar 26, 2022 at 9:06 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke=
-.dk> wrote:
->
-> I was also toying with the idea of having a copy-based peek helper like:
->
-> u32 data =3D dma_peek_word(buf, offset)
+On 3/26/22 11:59, Benjamin Stürz wrote:
+> This replaces comments with C99's designated
+> initializers because the kernel supports them now.
+> 
+> Signed-off-by: Benjamin Stürz <benni@stuerz.xyz>
+> ---
+>   drivers/net/wireless/realtek/rtw89/coex.c | 40 +++++++++++------------
+>   1 file changed, 20 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+> index 684583955511..3c83a0bfb120 100644
+> --- a/drivers/net/wireless/realtek/rtw89/coex.c
+> +++ b/drivers/net/wireless/realtek/rtw89/coex.c
+> @@ -97,26 +97,26 @@ static const struct rtw89_btc_fbtc_slot s_def[] = {
+>   };
+>   
+>   static const u32 cxtbl[] = {
+> -	0xffffffff, /* 0 */
+> -	0xaaaaaaaa, /* 1 */
+> -	0x55555555, /* 2 */
+> -	0x66555555, /* 3 */
+> -	0x66556655, /* 4 */
+> -	0x5a5a5a5a, /* 5 */
+> -	0x5a5a5aaa, /* 6 */
+> -	0xaa5a5a5a, /* 7 */
+> -	0x6a5a5a5a, /* 8 */
+> -	0x6a5a5aaa, /* 9 */
+> -	0x6a5a6a5a, /* 10 */
+> -	0x6a5a6aaa, /* 11 */
+> -	0x6afa5afa, /* 12 */
+> -	0xaaaa5aaa, /* 13 */
+> -	0xaaffffaa, /* 14 */
+> -	0xaa5555aa, /* 15 */
+> -	0xfafafafa, /* 16 */
+> -	0xffffddff, /* 17 */
+> -	0xdaffdaff, /* 18 */
+> -	0xfafadafa  /* 19 */
+> +	[0]  = 0xffffffff,
+> +	[1]  = 0xaaaaaaaa,
+> +	[2]  = 0x55555555,
+> +	[3]  = 0x66555555,
+> +	[4]  = 0x66556655,
+> +	[5]  = 0x5a5a5a5a,
+> +	[6]  = 0x5a5a5aaa,
+> +	[7]  = 0xaa5a5a5a,
+> +	[8]  = 0x6a5a5a5a,
+> +	[9]  = 0x6a5a5aaa,
+> +	[10] = 0x6a5a6a5a,
+> +	[11] = 0x6a5a6aaa,
+> +	[12] = 0x6afa5afa,
+> +	[13] = 0xaaaa5aaa,
+> +	[14] = 0xaaffffaa,
+> +	[15] = 0xaa5555aa,
+> +	[16] = 0xfafafafa,
+> +	[17] = 0xffffddff,
+> +	[18] = 0xdaffdaff,
+> +	[19] = 0xfafadafa
+>   };
+>   
+>   struct rtw89_btc_btf_tlv {
 
-I really don't think you can or want to have a word-based one.
 
-That said, I like the *name* of that thing.
+Is this change really necessary? Yes, the entries must be ordered; however, the 
+comment carries that information at very few extra characters. To me, this patch 
+looks like unneeded source churn. One other concern is that this driver is 
+backported to older kernels and older compilers by several distros. Will this 
+change require adding extra conditional statements to the source used in these 
+applications?
 
-I think a lot of confusion comes from the very subtle naming of
-fundamentally having a lot of odd conditions with
+Larry
 
- - two different "directions of the sync" - ie who it is that cares:
-
-       dma_sync_single_for_{cpu,device}
-
- - three different "direction of the data" - ie who it is that writes the d=
-ata:
-
-        DMA_FROM_DEVICE / DMA_TO_DEVICE / DMA_BIDIRECTIONAL
-
-so you have six possible combinations, three of which seem insane and
-not useful, and of the three that are actually possible, some are very
-unusual (it exactly that "device is the one writing, but we want to
-sync the dma area for the device").
-
-I do not think it helps that not only do we have this combinatorial
-naming, we also use _different_ names. We say "for device" and "for
-cpu", but then when we specify who does the writing, we don't say "cpu
-vs device", we just specify the direction instead (FROM_DEVICE means
-the device did the writing, TO_DEVICE means that the CPU did the
-writing).
-
-Anyway, I spent a lot of time looking at this, and I am now personally
-convinced that commit aa6f8dcbab47 (swiotlb: rework "fix info leak
-with DMA_FROM_DEVICE") was just completely buggy, and was buggy
-exactly becasue it was fundamentally confused even about which
-direction the bounce was happening.
-
-I have reverted it in my tree, and I tried to write a comprehensive
-summary about why it was wrong.
-
-What I *didn't* do in that commit was to argue against the naming, and
-try to enumerate all the different valid cases.
-
-Because I think naming matters, and I think the current dma_sync()
-interfaces are horribly confusing exactly due to those naming
-combinatorials.
-
-But I think "peek" is a good name, not because I think reading one
-work is a valid thing (you want to often peek more than that), but
-because it seems much more intuitive than
-"dma_sync_for_cpu(DMA_FROM_DEVICE)".
-
-Similarly, I would think that "flush" is a much better word for
-"dma_sync_for_device(DMA_FROM_CPU)".
-
-I don't know what a good word for
-"dma_sync_for_device(DMA_FROM_DEVICE)" is, but maybe "forget" would
-come closest - we want the CPU to "forget" what it peeked.
-
-Anyway, I have reverted that commit, and I think it was wrong both in
-spirit and in implementation, and I'll ask Greg to remove it from
-stable.
-
-And I think the security argument was entirely bogus, because the
-whole security argument was based on an incorrect understanding of the
-direction of the data.
-
-But hey, I may currently be convinced that revert is the right thing
-to do, BUT I've been wrong before, and I'll happily change my mind if
-somebody makes a really cogent argument
-
-               Linus
