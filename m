@@ -2,335 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 726BF4E7D7F
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:22:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64F504E7BE5
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 01:21:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229995AbiCZAKj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Mar 2022 20:10:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36142 "EHLO
+        id S230194AbiCZAOI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Mar 2022 20:14:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229567AbiCZAKi (ORCPT
+        with ESMTP id S230171AbiCZAOH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Mar 2022 20:10:38 -0400
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCDBFFD1A;
-        Fri, 25 Mar 2022 17:09:02 -0700 (PDT)
+        Fri, 25 Mar 2022 20:14:07 -0400
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13501175859
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 17:12:33 -0700 (PDT)
+Received: by mail-pg1-x52d.google.com with SMTP id c2so7681844pga.10
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Mar 2022 17:12:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1648253342; x=1679789342;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/4/hLSPErMshZS/R4PQkE0KQWm7CKRIwCZX9uyxfrRo=;
-  b=K54t00u53qqfYGv9dRcqVZUmUjRIeMpE7KHFZ4ztbDHM+cLqst8MqI4R
-   kQnwEef9zddqGydMVqs+6316NdCDHaGo9tRDJwOojcj6VXW/aFPwGq9Zs
-   J2EDs+AUPMB253143oJYHWTK4XSHJCZlGkPDSmJVLqmks+ILUOBlUaQdo
-   Q=;
-Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 25 Mar 2022 17:09:02 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2022 17:09:01 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Fri, 25 Mar 2022 17:09:01 -0700
-Received: from [10.110.27.134] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Fri, 25 Mar
- 2022 17:09:00 -0700
-Message-ID: <7ae9915d-98fc-efd4-4a1e-872c446aacca@quicinc.com>
-Date:   Fri, 25 Mar 2022 17:09:00 -0700
+        d=google.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Iovdo5gFW3lzHAF30oHCSlnhp9HGhN02yXG4gTQEzBo=;
+        b=IFxbrtw6MX2TzbzPUVW0OZVJ60JT3UsTUf7o84Lwn974qsIPRA2qCnz2AIm3i7ESQ8
+         AnkP997VGJGbxPrru5B+NrOjHm1pxfwjmGmXLN58bOL6b07IqcO91WmgoMoAmPFWddaH
+         TY5AbGT/zqRrPa9VdHwPq3ebX7UVVx4eZpkEP4nVSMq3bagk1iqieC1TBgJc9hEFdT0e
+         bf1/9DM3ZpDF5+mr1ImJYtt+e1Qo5CJvIJAf6SSEJ5eI2YgahFOcmIveR2IhUtrjiv7y
+         T8MsRFfG/uVLki2FNxm0zZV6afAvOzMYFgt2DVHL0ttdcqAWcKhR80mOobAOwid26BtA
+         U2yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Iovdo5gFW3lzHAF30oHCSlnhp9HGhN02yXG4gTQEzBo=;
+        b=SOn5+y2/4cshOUS3bR6mu0KaJNtDxusuuOlDpo1pexNa4U1n2JxWzgdUAQn7mlx0Nm
+         SmzOJhwEKmOc9Rx+eLrsWo+M8TQh51+XjeWdUQu51xxzPVJmVvB4UxmnwWUy1zTETiQw
+         Gt4QCHg8JPv9XrpkYkIZgS/0oPW9BaRxfwB3XxwGuoSdjs0/SnUW/iSqhZCHKKTjVpXG
+         PWm3uNrpfrTGTTt29drfUEqAsLvvtvdMFyNNrsl27RPJdcpl580A4GH2qeNmhnSnLa4o
+         FpglOJvNqG6LjBPJmddZYK7GCk9Bhs+WNDWgFj8zn7MdIOANzhROGQLe8SU9eKbNtfdo
+         0bDw==
+X-Gm-Message-State: AOAM531qtzOvGr+C4EOd50OZQ5RltLCcsoEj3H02fHUvHMg3Yb1Lhvmq
+        SElgsxR5A9lCWpgu+AnrGyLOtA==
+X-Google-Smtp-Source: ABdhPJxb+QHc1qDnE+bUQ6UG68K0+VneJg5AtSaOi5mGuIUAaFCbZcanO833Lxs5xzdX6+b4ZdaKeQ==
+X-Received: by 2002:a05:6a00:4198:b0:4fa:8591:5456 with SMTP id ca24-20020a056a00419800b004fa85915456mr12630644pfb.81.1648253552353;
+        Fri, 25 Mar 2022 17:12:32 -0700 (PDT)
+Received: from google.com (249.189.233.35.bc.googleusercontent.com. [35.233.189.249])
+        by smtp.gmail.com with ESMTPSA id o3-20020a056a0015c300b004fb24adc4b8sm1269851pfu.159.2022.03.25.17.12.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Mar 2022 17:12:31 -0700 (PDT)
+Date:   Sat, 26 Mar 2022 00:12:28 +0000
+From:   William McVicker <willmcvicker@google.com>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>, kernel-team@android.com,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [BUG] deadlock in nl80211_vendor_cmd
+Message-ID: <Yj5abNAYJEDdoJNg@google.com>
+References: <dc556455-51a2-06e8-8ec5-b807c2901b7e@quicinc.com>
+ <Yjzpo3TfZxtKPMAG@google.com>
+ <19e12e6b5f04ba9e5b192001fbe31a3fc47d380a.camel@sipsolutions.net>
+ <20220325094952.10c46350@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <f4f8a27dc07c1adaab470fde302ed841113e6b7f.camel@sipsolutions.net>
+ <Yj4FFIXi//ivQC3X@google.com>
+ <Yj4ntUejxaPhrM5b@google.com>
+ <976e8cf697c7e5bc3a752e758a484b69a058710a.camel@sipsolutions.net>
+ <Yj5W7VEij0BGwFK0@google.com>
+ <20220325170712.69c2c8d3@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v4] wcn36xx: Implement tx_rate reporting
-Content-Language: en-US
-To:     Edmond Gagnon <egagnon@squareup.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-CC:     Benjamin Li <benl@squareup.com>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        <wcn36xx@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20220323214533.1951791-1-egagnon@squareup.com>
- <20220325224212.159690-1-egagnon@squareup.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20220325224212.159690-1-egagnon@squareup.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220325170712.69c2c8d3@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+X-Spam-Status: No, score=-15.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/25/2022 3:42 PM, Edmond Gagnon wrote:
-> Currently, the driver reports a tx_rate of 6.0 MBit/s no matter the true
-> rate:
+On 03/25/2022, Jakub Kicinski wrote:
+> On Fri, 25 Mar 2022 23:57:33 +0000 William McVicker wrote:
+> > Instead of open coding it, we could just pass the internal_flags via struct
+> > genl_info to nl80211_vendor_cmds() and then handle the rtnl_unlock() there if
+> > the vendor command doesn't request it. I included the patch below in case
+> > there's any chance you would consider this for upstream. This would at least
+> > add backwards compatibility to the vendor ops API so that existing drivers that
+> > depend on the RTNL being held don't need to be fully refactored.
 > 
-> root@linaro-developer:~# iw wlan0 link
-> Connected to 6c:f3:7f:eb:9b:92 (on wlan0)
->          SSID: SQ-DEVICETEST
->          freq: 5200
->          RX: 4141 bytes (32 packets)
->          TX: 2082 bytes (15 packets)
->          signal: -77 dBm
->          rx bitrate: 135.0 MBit/s MCS 6 40MHz short GI
->          tx bitrate: 6.0 MBit/s
-> 
->          bss flags:      short-slot-time
->          dtim period:    1
->          beacon int:     100
-> 
-> This patch requests HAL_GLOBAL_CLASS_A_STATS_INFO via a hal_get_stats
-> firmware message and reports it via ieee80211_ops::sta_statistics.
-> 
-> root@linaro-developer:~# iw wlan0 link
-> Connected to 6c:f3:7f:eb:73:b2 (on wlan0)
->          SSID: SQ-DEVICETEST
->          freq: 5700
->          RX: 26788094 bytes (19859 packets)
->          TX: 1101376 bytes (12119 packets)
->          signal: -75 dBm
->          rx bitrate: 135.0 MBit/s MCS 6 40MHz short GI
->          tx bitrate: 108.0 MBit/s VHT-MCS 5 40MHz VHT-NSS 1
-> 
->          bss flags:      short-slot-time
->          dtim period:    1
->          beacon int:     100
-> 
-> Tested on MSM8939 with WCN3680B running firmware CNSS-PR-2-0-1-2-c1-00083,
-> and verified by sniffing frames over the air with Wireshark to ensure the
-> MCS indices match.
-> 
-> Signed-off-by: Edmond Gagnon <egagnon@squareup.com>
-> Reviewed-by: Benjamin Li <benl@squareup.com>
-> ---
-> 
-> Changes in v4:
->   - Shortened very long line in smd.c
->   - Fixed every checkpatch issue I could find:
-> 	scripts/checkpatch.pl --strict
-> 		0001-wcn36xx-Implement-tx_rate-reporting.patch
-> 	total: 0 errors, 0 warnings, 0 checks, 156 lines checked
-> Changes in v3:
->   - Refactored to report tx_rate via ieee80211_ops::sta_statistics
->   - Dropped get_sta_index patch
->   - Addressed style comments
-> Changes in v2:
->   - Refactored to use existing wcn36xx_hal_get_stats_{req,rsp}_msg structs.
->   - Added more notes about testing.
->   - Reduced reporting interval to 3000msec.
->   - Assorted type and memory safety fixes.
->   - Make wcn36xx_smd_get_stats friendlier to future message implementors.
-> 
->   drivers/net/wireless/ath/wcn36xx/hal.h  |  7 ++-
->   drivers/net/wireless/ath/wcn36xx/main.c | 16 +++++++
->   drivers/net/wireless/ath/wcn36xx/smd.c  | 57 +++++++++++++++++++++++++
->   drivers/net/wireless/ath/wcn36xx/smd.h  |  2 +
->   drivers/net/wireless/ath/wcn36xx/txrx.c | 29 +++++++++++++
->   drivers/net/wireless/ath/wcn36xx/txrx.h |  1 +
->   6 files changed, 111 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/wcn36xx/hal.h b/drivers/net/wireless/ath/wcn36xx/hal.h
-> index 2a1db9756fd5..46a49f0a51b3 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/hal.h
-> +++ b/drivers/net/wireless/ath/wcn36xx/hal.h
-> @@ -2626,7 +2626,12 @@ enum tx_rate_info {
->   	HAL_TX_RATE_SGI = 0x8,
->   
->   	/* Rate with Long guard interval */
-> -	HAL_TX_RATE_LGI = 0x10
-> +	HAL_TX_RATE_LGI = 0x10,
-> +
-> +	/* VHT rates */
-> +	HAL_TX_RATE_VHT20  = 0x20,
-> +	HAL_TX_RATE_VHT40  = 0x40,
-> +	HAL_TX_RATE_VHT80  = 0x80,
->   };
->   
->   struct ani_global_class_a_stats_info {
-> diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-> index b545d4b2b8c4..fc76b090c39f 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/main.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/main.c
-> @@ -1400,6 +1400,21 @@ static int wcn36xx_get_survey(struct ieee80211_hw *hw, int idx,
->   	return 0;
->   }
->   
-> +static void wcn36xx_sta_statistics(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-> +				   struct ieee80211_sta *sta, struct station_info *sinfo)
-> +{
-> +	struct wcn36xx *wcn;
-> +	u8 sta_index;
-> +	int status = 0;
+> Sorry to step in, Johannes may be AFK already. There's no asterisk next
+> to the "we don't cater to out of tree code" rule, AFAIK.  We change
+> locking often, making a precedent like this would be ill-advised.
 
-remove initializer that is always overwritten
+Yeah I understand. I'll talk to Broadcom about this to see why they didn't use
+the existing upstream NAN interface. This sounds like it's going to be
+a problem for all the Android out-of-tree drivers.
 
-> +
-> +	wcn = hw->priv;
-> +	sta_index = get_sta_index(vif, wcn36xx_sta_to_priv(sta));
-> +	status = wcn36xx_smd_get_stats(wcn, sta_index, HAL_GLOBAL_CLASS_A_STATS_INFO, sinfo);
-> +
-> +	if (status)
-> +		wcn36xx_err("wcn36xx_smd_get_stats failed\n");
-> +}
-> +
->   static const struct ieee80211_ops wcn36xx_ops = {
->   	.start			= wcn36xx_start,
->   	.stop			= wcn36xx_stop,
-> @@ -1423,6 +1438,7 @@ static const struct ieee80211_ops wcn36xx_ops = {
->   	.set_rts_threshold	= wcn36xx_set_rts_threshold,
->   	.sta_add		= wcn36xx_sta_add,
->   	.sta_remove		= wcn36xx_sta_remove,
-> +	.sta_statistics		= wcn36xx_sta_statistics,
->   	.ampdu_action		= wcn36xx_ampdu_action,
->   #if IS_ENABLED(CONFIG_IPV6)
->   	.ipv6_addr_change	= wcn36xx_ipv6_addr_change,
-> diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-> index caeb68901326..a2188b41e308 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/smd.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-> @@ -2627,6 +2627,62 @@ int wcn36xx_smd_del_ba(struct wcn36xx *wcn, u16 tid, u8 direction, u8 sta_index)
->   	return ret;
->   }
->   
-> +int wcn36xx_smd_get_stats(struct wcn36xx *wcn, u8 sta_index, u32 stats_mask,
-> +			  struct station_info *sinfo)
-> +{
-> +	struct wcn36xx_hal_stats_req_msg msg_body;
-> +	struct wcn36xx_hal_stats_rsp_msg *rsp;
-> +	void *rsp_body;
-> +	int ret = 0;
+Thanks for the help!
 
-remove initializer that is always overwritten before use
-
-> +
-> +	if (stats_mask & ~HAL_GLOBAL_CLASS_A_STATS_INFO) {
-> +		wcn36xx_err("stats_mask 0x%x contains unimplemented types\n",
-> +			    stats_mask);
-> +		return -EINVAL;
-> +	}
-> +
-> +	mutex_lock(&wcn->hal_mutex);
-> +	INIT_HAL_MSG(msg_body, WCN36XX_HAL_GET_STATS_REQ);
-> +
-> +	msg_body.sta_id = sta_index;
-> +	msg_body.stats_mask = stats_mask;
-> +
-> +	PREPARE_HAL_BUF(wcn->hal_buf, msg_body);
-> +
-> +	ret = wcn36xx_smd_send_and_wait(wcn, msg_body.header.len);
-> +	if (ret) {
-> +		wcn36xx_err("sending hal_get_stats failed\n");
-> +		goto out;
-> +	}
-> +
-> +	ret = wcn36xx_smd_rsp_status_check(wcn->hal_buf, wcn->hal_rsp_len);
-> +	if (ret) {
-> +		wcn36xx_err("hal_get_stats response failed err=%d\n", ret);
-> +		goto out;
-> +	}
-> +
-> +	rsp = (struct wcn36xx_hal_stats_rsp_msg *)wcn->hal_buf;
-> +	rsp_body = (wcn->hal_buf + sizeof(struct wcn36xx_hal_stats_rsp_msg));
-> +
-> +	if (rsp->stats_mask != stats_mask) {
-> +		wcn36xx_err("stats_mask 0x%x differs from requested 0x%x\n",
-> +			    rsp->stats_mask, stats_mask);
-> +		goto out;
-> +	}
-> +
-> +	if (rsp->stats_mask & HAL_GLOBAL_CLASS_A_STATS_INFO) {
-> +		struct ani_global_class_a_stats_info *stats_info = rsp_body;
-> +
-> +		wcn36xx_process_tx_rate(stats_info, &sinfo->txrate);
-> +		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
-> +		rsp_body += sizeof(struct ani_global_class_a_stats_info);
-> +	}
-> +out:
-> +	mutex_unlock(&wcn->hal_mutex);
-> +
-> +	return ret;
-> +}
-> +
->   static int wcn36xx_smd_trigger_ba_rsp(void *buf, int len, struct add_ba_info *ba_info)
->   {
->   	struct wcn36xx_hal_trigger_ba_rsp_candidate *candidate;
-> @@ -3316,6 +3372,7 @@ int wcn36xx_smd_rsp_process(struct rpmsg_device *rpdev,
->   	case WCN36XX_HAL_ADD_BA_SESSION_RSP:
->   	case WCN36XX_HAL_ADD_BA_RSP:
->   	case WCN36XX_HAL_DEL_BA_RSP:
-> +	case WCN36XX_HAL_GET_STATS_RSP:
->   	case WCN36XX_HAL_TRIGGER_BA_RSP:
->   	case WCN36XX_HAL_UPDATE_CFG_RSP:
->   	case WCN36XX_HAL_JOIN_RSP:
-> diff --git a/drivers/net/wireless/ath/wcn36xx/smd.h b/drivers/net/wireless/ath/wcn36xx/smd.h
-> index 957cfa87fbde..3fd598ac2a27 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/smd.h
-> +++ b/drivers/net/wireless/ath/wcn36xx/smd.h
-> @@ -138,6 +138,8 @@ int wcn36xx_smd_add_ba_session(struct wcn36xx *wcn,
->   int wcn36xx_smd_add_ba(struct wcn36xx *wcn, u8 session_id);
->   int wcn36xx_smd_del_ba(struct wcn36xx *wcn, u16 tid, u8 direction, u8 sta_index);
->   int wcn36xx_smd_trigger_ba(struct wcn36xx *wcn, u8 sta_index, u16 tid, u16 *ssn);
-> +int wcn36xx_smd_get_stats(struct wcn36xx *wcn, u8 sta_index, u32 stats_mask,
-> +			  struct station_info *sinfo);
->   
->   int wcn36xx_smd_update_cfg(struct wcn36xx *wcn, u32 cfg_id, u32 value);
->   
-> diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
-> index df749b114568..8da3955995b6 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/txrx.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
-> @@ -699,3 +699,32 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
->   
->   	return ret;
->   }
-> +
-> +void wcn36xx_process_tx_rate(struct ani_global_class_a_stats_info *stats, struct rate_info *info)
-> +{
-> +	/* tx_rate is in units of 500kbps; mac80211 wants them in 100kbps */
-> +	if (stats->tx_rate_flags & HAL_TX_RATE_LEGACY)
-> +		info->legacy = stats->tx_rate * 5;
-> +
-> +	info->flags = 0;
-> +	info->mcs = stats->mcs_index;
-> +	info->nss = 1;
-> +
-> +	if (stats->tx_rate_flags & (HAL_TX_RATE_HT20 | HAL_TX_RATE_HT40))
-> +		info->flags |= RATE_INFO_FLAGS_MCS;
-> +
-> +	if (stats->tx_rate_flags & (HAL_TX_RATE_VHT20 | HAL_TX_RATE_VHT40 | HAL_TX_RATE_VHT80))
-> +		info->flags |= RATE_INFO_FLAGS_VHT_MCS;
-> +
-> +	if (stats->tx_rate_flags & HAL_TX_RATE_SGI)
-> +		info->flags |= RATE_INFO_FLAGS_SHORT_GI;
-> +
-> +	if (stats->tx_rate_flags & (HAL_TX_RATE_HT20 | HAL_TX_RATE_VHT20))
-> +		info->bw = RATE_INFO_BW_20;
-> +
-> +	if (stats->tx_rate_flags & (HAL_TX_RATE_HT40 | HAL_TX_RATE_VHT40))
-> +		info->bw = RATE_INFO_BW_40;
-> +
-> +	if (stats->tx_rate_flags & HAL_TX_RATE_VHT80)
-> +		info->bw = RATE_INFO_BW_80;
-> +}
-> diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.h b/drivers/net/wireless/ath/wcn36xx/txrx.h
-> index b54311ffde9c..fb0d6cabd52b 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/txrx.h
-> +++ b/drivers/net/wireless/ath/wcn36xx/txrx.h
-> @@ -164,5 +164,6 @@ int  wcn36xx_rx_skb(struct wcn36xx *wcn, struct sk_buff *skb);
->   int wcn36xx_start_tx(struct wcn36xx *wcn,
->   		     struct wcn36xx_sta *sta_priv,
->   		     struct sk_buff *skb);
-> +void wcn36xx_process_tx_rate(struct ani_global_class_a_stats_info *stats, struct rate_info *info);
->   
->   #endif	/* _TXRX_H_ */
-
+--Will
