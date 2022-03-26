@@ -2,137 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA1E24E801A
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 09:50:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 118B94E801E
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 09:55:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232119AbiCZIwN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Mar 2022 04:52:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52846 "EHLO
+        id S232192AbiCZI4h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Mar 2022 04:56:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230080AbiCZIwM (ORCPT
+        with ESMTP id S230080AbiCZI4g (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Mar 2022 04:52:12 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41EF3167D8;
-        Sat, 26 Mar 2022 01:50:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CFCB2B800C1;
-        Sat, 26 Mar 2022 08:50:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48932C2BBE4;
-        Sat, 26 Mar 2022 08:50:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648284634;
-        bh=s9f5bnhBuCk46wN4ssaRjCDYFb2Vt9/9/gOzq5IqbM4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Wsse77TQPF6Ke+C1gwGny+B0XKyIweV6uyw2XgRapNZle2hcsN2dg8aDx9LXj4dAN
-         PBgKW2grATQi5ZyNEWpqzKZ6MPFEaHsQwcezvyaHc8vdwU0sOPnbuZvUhwwC1nxIbo
-         u1PPuhVSk/g20nvY8jYE6NBwWxZR4+yvC451ZqDInfSPsb5OR8BqfSUFywTb3lW0R7
-         fYgax0D8VE7OqsznQ9DK+wZPW07B2wLBBph9ALnjaHIs3KB6qrrbPAR3/QG8t6+rC/
-         fH7TK85liowzjgBSVuBp4MsLChL0z9cOn/59a1QKdbSMjuUrwHbG3VcEnSNrw6TZtT
-         79NjatLt1tMfQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     Edmond Gagnon <egagnon@squareup.com>,
-        Benjamin Li <benl@squareup.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        <wcn36xx@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4] wcn36xx: Implement tx_rate reporting
-References: <20220323214533.1951791-1-egagnon@squareup.com>
-        <20220325224212.159690-1-egagnon@squareup.com>
-        <7ae9915d-98fc-efd4-4a1e-872c446aacca@quicinc.com>
-Date:   Sat, 26 Mar 2022 10:50:30 +0200
-In-Reply-To: <7ae9915d-98fc-efd4-4a1e-872c446aacca@quicinc.com> (Jeff
-        Johnson's message of "Fri, 25 Mar 2022 17:09:00 -0700")
-Message-ID: <87h77lnlm1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Sat, 26 Mar 2022 04:56:36 -0400
+Received: from m1368.mail.163.com (m1368.mail.163.com [220.181.13.68])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EE5E1BD2FC
+        for <linux-wireless@vger.kernel.org>; Sat, 26 Mar 2022 01:54:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=9JLde
+        jWEwG01m0iNMIGNwN6THuZak8PfBMdTNi01ns8=; b=Wg6SLq3cSa9nYu572+iud
+        cJewL5LDEXNI0+GEXXEuted8PytNQ/1ITGzgDsCP7LZd3toYSeuHqlkstrpT81eT
+        sqtgMwZTSoS61Ni96tLOlSYituMsX5BABakAgv4eTcX2obVzBta6uZH7X7GHtxg3
+        VCXlo/lCpAhQ6zxszy2DpU=
+Received: from logoerthiner1$163.com ( [120.244.198.223] ) by
+ ajax-webmail-wmsvr68 (Coremail) ; Sat, 26 Mar 2022 16:53:59 +0800 (CST)
+X-Originating-IP: [120.244.198.223]
+Date:   Sat, 26 Mar 2022 16:53:59 +0800 (CST)
+From:   ThinerLogoer <logoerthiner1@163.com>
+To:     nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        shayne.chen@mediatek.com, sean.wang@mediatek.com
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re:MT7921 mt7921_pci_remove crashes
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210622(1d4788a8)
+ Copyright (c) 2002-2022 www.mailtech.cn 163com
+In-Reply-To: <153f1a0c.36a0.17fba8be75c.Coremail.logoerthiner1@163.com>
+References: <153f1a0c.36a0.17fba8be75c.Coremail.logoerthiner1@163.com>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-ID: <6042904b.235e.17fc56eadc5.Coremail.logoerthiner1@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: RMGowADXkIin1D5iBeYAAA--.7780W
+X-CM-SenderInfo: 5orj0vpuwkx0thurqiywtou0bp/xtbBPQfPnmAY-alxAQAAs3
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
-
-> On 3/25/2022 3:42 PM, Edmond Gagnon wrote:
->> Currently, the driver reports a tx_rate of 6.0 MBit/s no matter the true
->> rate:
->>
->> root@linaro-developer:~# iw wlan0 link
->> Connected to 6c:f3:7f:eb:9b:92 (on wlan0)
->>          SSID: SQ-DEVICETEST
->>          freq: 5200
->>          RX: 4141 bytes (32 packets)
->>          TX: 2082 bytes (15 packets)
->>          signal: -77 dBm
->>          rx bitrate: 135.0 MBit/s MCS 6 40MHz short GI
->>          tx bitrate: 6.0 MBit/s
->>
->>          bss flags:      short-slot-time
->>          dtim period:    1
->>          beacon int:     100
->>
->> This patch requests HAL_GLOBAL_CLASS_A_STATS_INFO via a hal_get_stats
->> firmware message and reports it via ieee80211_ops::sta_statistics.
->>
->> root@linaro-developer:~# iw wlan0 link
->> Connected to 6c:f3:7f:eb:73:b2 (on wlan0)
->>          SSID: SQ-DEVICETEST
->>          freq: 5700
->>          RX: 26788094 bytes (19859 packets)
->>          TX: 1101376 bytes (12119 packets)
->>          signal: -75 dBm
->>          rx bitrate: 135.0 MBit/s MCS 6 40MHz short GI
->>          tx bitrate: 108.0 MBit/s VHT-MCS 5 40MHz VHT-NSS 1
->>
->>          bss flags:      short-slot-time
->>          dtim period:    1
->>          beacon int:     100
->>
->> Tested on MSM8939 with WCN3680B running firmware CNSS-PR-2-0-1-2-c1-00083,
->> and verified by sniffing frames over the air with Wireshark to ensure the
->> MCS indices match.
->>
->> Signed-off-by: Edmond Gagnon <egagnon@squareup.com>
->> Reviewed-by: Benjamin Li <benl@squareup.com>
-
-[...]
-
->>   +static void wcn36xx_sta_statistics(struct ieee80211_hw *hw,
->> struct ieee80211_vif *vif,
->> +				   struct ieee80211_sta *sta, struct station_info *sinfo)
->> +{
->> +	struct wcn36xx *wcn;
->> +	u8 sta_index;
->> +	int status = 0;
->
-> remove initializer that is always overwritten
-
-I can fix that in the pending branch, no need to resend because of this.
-
->>   +int wcn36xx_smd_get_stats(struct wcn36xx *wcn, u8 sta_index, u32
->> stats_mask,
->> +			  struct station_info *sinfo)
->> +{
->> +	struct wcn36xx_hal_stats_req_msg msg_body;
->> +	struct wcn36xx_hal_stats_rsp_msg *rsp;
->> +	void *rsp_body;
->> +	int ret = 0;
->
-> remove initializer that is always overwritten before use
-
-Ditto.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+ZGlmZiAnLS1jb2xvcj1hdXRvJyAtdSAtciBvbGQvbGludXgtNS4xNi4xMy9kcml2ZXJzL25ldC93
+aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkyMS9wY2kuYyBsaW51eC01LjE2LjEzL2RyaXZlcnMv
+bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTIxL3BjaS5jCi0tLSBvbGQvbGludXgtNS4x
+Ni4xMy9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkyMS9wY2kuYwkyMDIy
+LTAzLTA5IDAyOjE0OjIwLjAwMDAwMDAwMCArMDgwMAorKysgbGludXgtNS4xNi4xMy9kcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkyMS9wY2kuYwkyMDIyLTAzLTI2IDE2OjE1
+OjExLjE5NTAwMDAwMCArMDgwMApAQCAtMjI0LDggKzIyNCw4IEBACiAJc3RydWN0IG10NzZfZGV2
+ICptZGV2ID0gcGNpX2dldF9kcnZkYXRhKHBkZXYpOwogCXN0cnVjdCBtdDc5MjFfZGV2ICpkZXYg
+PSBjb250YWluZXJfb2YobWRldiwgc3RydWN0IG10NzkyMV9kZXYsIG10NzYpOwogCi0JbXQ3OTIx
+ZV91bnJlZ2lzdGVyX2RldmljZShkZXYpOwogCWRldm1fZnJlZV9pcnEoJnBkZXYtPmRldiwgcGRl
+di0+aXJxLCBkZXYpOworCW10NzkyMWVfdW5yZWdpc3Rlcl9kZXZpY2UoZGV2KTsKIAlwY2lfZnJl
+ZV9pcnFfdmVjdG9ycyhwZGV2KTsKIH0KCgoKSSBoYXZlIGhvdC1wYXRjaGVkIHRoZSBtdDc5MjFl
+IG1vZHVsZSB3aXRoIHRoZSBgbXQ3OTIxZV91bnJlZ2lzdGVyX2RldmljZWAgbGluZSBhbmQgYGRl
+dm1fZnJlZV9pcnFgIGxpbmUgc3dhcHBlZCwgYW5kIG5vdyBtdDc5MjFlIG1vZHVsZSB3b24ndCBw
+YW5pYyB3aGVuIGl0IGlzIHVuYmluZGVkLgoKVGVzdGVkIGluIDUuMTYuMTMga2VybmVsIGJ1dCB0
+aGlzIHNob3VsZCBhcHBseSB0byBtb3N0IHZlcnNpb25zLgoKSXQgd291bGQgYmUgb2YgZ3JlYXQg
+aGVscCBpZiB5b3UgY2FuIHRlc3Qgb3V0IHRoaXMgcGF0Y2ggYW5kIG1lcmdlIHRoZSBwYXRjaC4K
+CkF0IDIwMjItMDMtMjQgMTQ6MTA6MDUsICJUaGluZXJMb2dvZXIiIDxsb2dvZXJ0aGluZXIxQDE2
+My5jb20+IHdyb3RlOgo+U29ycnkgaWYgdGhpcyBicmluZ3MgeW91IHRoZSBpbmNvbnZlbmllbmNl
+LiBJIGFtIG5vdCBmYW1pbGlhciB0byBtYWlsaW5nLgo+Cj5UaGUgaXNzdWUgaXMgcmVwb3J0ZWQg
+YXQ6IGh0dHBzOi8vZ2l0aHViLmNvbS9RdWJlc09TL3F1YmVzLWlzc3Vlcy9pc3N1ZXMvNzI5NAo+
+Cj5gbXQ3OTIxX3BjaV9yZW1vdmVgIHNlZW1zIHRvIGFsd2F5cyBjcmFzaCB3aGVuZXZlciBpdCBp
+cyBjYWxsZWQuIEkgaGF2ZSByZWFkIHRoZSBrZXJuZWwgc291cmNlIGNvZGUgYW5kIGhhdmUgYSBn
+dWVzcy4KPgo+YGBgCj5zdGF0aWMgdm9pZCBtdDc5MjFfcGNpX3JlbW92ZShzdHJ1Y3QgcGNpX2Rl
+diAqcGRldikKPnsKPglzdHJ1Y3QgbXQ3Nl9kZXYgKm1kZXYgPSBwY2lfZ2V0X2RydmRhdGEocGRl
+dik7Cj4Jc3RydWN0IG10NzkyMV9kZXYgKmRldiA9IGNvbnRhaW5lcl9vZihtZGV2LCBzdHJ1Y3Qg
+bXQ3OTIxX2RldiwgbXQ3Nik7Cj4KPgltdDc5MjFlX3VucmVnaXN0ZXJfZGV2aWNlKGRldik7Cj4J
+ZGV2bV9mcmVlX2lycSgmYW1wO3BkZXYtJmd0O2RldiwgcGRldi0mZ3Q7aXJxLCBkZXYpOwo+CXBj
+aV9mcmVlX2lycV92ZWN0b3JzKHBkZXYpOwo+fQo+YGBgCj4KPkZyb20gbXkgbmV3YmllIGtlcm5l
+bCBrbm93bGVkZ2UgSSBzdXNwZWN0IHRoYXQgYG10NzkyMV9wY2lfcmVtb3ZlYCBzaG91bGQgZmly
+c3QgY2FsbCBgZGV2bV9mcmVlX2lycWAgYW5kIHRoZW4gYG10NzkyMWVfdW5yZWdpc3Rlcl9kZXZp
+Y2VgLCBkdWUgdG8gdGhlIHJlYXNvbiB0aGF0IGBkZXZtX2ZyZWVfaXJxYCBjYWxscyBgZnJlZV9p
+cnFgIHRoYXQgImRvZXMgbm90IHJldHVybiB1bnRpbCBhbnkgZXhlY3V0aW5nIGludGVycnVwdHMg
+Zm9yIHRoaXMgSVJRIGhhdmUgY29tcGxldGVkIiBhY2NvcmRpbmcgdG8gdGhlIGNvbW1lbnQgdGhl
+cmUsIGFuZCB0aGF0IHdoZW4gSVJRIGZvciBtdDc5MjEgaXMgYmVpbmcgaGFuZGxlZCwgaXQgMTAw
+JSB1c2VzIHNvbWUgZmllbGRzIGluIGBkZXZgLCBzbyBiZWZvcmUgdGhhdCBgZGV2YCBjYW5ub3Qg
+YmUgdW5yZWdpc3RlcmVkLgo+Cj5UaGlzIGNhbiBiZSByZXByb2R1Y2VkIGJ5IGVjaG9pbmcgYSBw
+Y2kgYWRkcmVzcyAoZm9yIGV4YW1wbGUgYDAwMDA6MDA6MDcuMGApIHRvIGAvc3lzL2J1cy9wY2kv
+ZHJpdmVycy9tdDc5MjFlL3VuYmluZGAuCg==
