@@ -2,303 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D82BC4E844F
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 22:09:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B1E14E848F
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Mar 2022 23:39:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235346AbiCZVKa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Mar 2022 17:10:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57806 "EHLO
+        id S235080AbiCZWkO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Mar 2022 18:40:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230308AbiCZVK0 (ORCPT
+        with ESMTP id S235303AbiCZWkL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Mar 2022 17:10:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1113F193DB;
-        Sat, 26 Mar 2022 14:08:49 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E23B60DF5;
-        Sat, 26 Mar 2022 21:08:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27841C340E8;
-        Sat, 26 Mar 2022 21:08:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648328928;
-        bh=MP9nN3CNp6SiJyOp5HEvbQgmSEStPacOWmXaMA6T+VI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=DPisaLuR2bg59S2ffL9OvvWP75Bz5dqezDQcQCh1wOp8lGducSetQuRb+dOXb/r5O
-         fEQsB1iM8rTGrXXedRfSuOyaXp11/BPbQeXNy9BV6AK+baU08FnQLF2z0r6ROS/k+5
-         2PI1UEFN9lJL/vjVZ9dSqxf/iuV2Tt2Fyvh+UbJDkR9ZIxeJ4sAe/YVBxQHIgLVN2L
-         rCfZ3DyD8B28NsPeLOOUZAxFyqvboFdmS2FW1BoGi16P+ft2df3XqHLRYVcHB0Xn/S
-         lNmKbmqDuDeGqTHVpG1PVOAAEGxabe3gLKgZ7REYKsgdQaCaReoDRnMctvlp1Qa7II
-         vm6r+7nR0wwbA==
-Date:   Sat, 26 Mar 2022 22:08:32 +0100
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Joe Perches <joe@perches.com>,
-        Benjamin =?UTF-8?B?U3TDvHJ6?= <benni@stuerz.xyz>,
-        andrew@lunn.ch, sebastian.hesselbarth@gmail.com,
-        gregory.clement@bootlin.com, linux@armlinux.org.uk,
-        linux@simtec.co.uk, krzk@kernel.org, alim.akhtar@samsung.com,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, hpa@zytor.com, robert.moore@intel.com,
-        rafael.j.wysocki@intel.com, lenb@kernel.org, 3chas3@gmail.com,
-        laforge@gnumonks.org, arnd@arndb.de, gregkh@linuxfoundation.org,
-        tony.luck@intel.com, james.morse@arm.com, rric@kernel.org,
-        linus.walleij@linaro.org, brgl@bgdev.pl,
-        mike.marciniszyn@cornelisnetworks.com,
-        dennis.dalessandro@cornelisnetworks.com, jgg@ziepe.ca,
-        pali@kernel.org, dmitry.torokhov@gmail.com, isdn@linux-pingi.de,
-        benh@kernel.crashing.org, fbarrat@linux.ibm.com, ajd@linux.ibm.com,
-        davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        nico@fluxnic.net, loic.poulain@linaro.org, kvalo@kernel.org,
-        pkshih@realtek.com, bhelgaas@google.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-input@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Subject: Re: [PATCH 16/22] dvb-usb: Replace comments with C99 initializers
-Message-ID: <20220326220832.12b4e91b@coco.lan>
-In-Reply-To: <bc2d4f83-0674-ccae-71c8-14427de59f96@lwfinger.net>
-References: <20220326165909.506926-1-benni@stuerz.xyz>
-        <20220326165909.506926-16-benni@stuerz.xyz>
-        <20220326192454.14115baa@coco.lan>
-        <20220326192720.0fddd6dd@coco.lan>
-        <63a5e3143e904d1391490f27cc106be894b52ca2.camel@perches.com>
-        <bc2d4f83-0674-ccae-71c8-14427de59f96@lwfinger.net>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-redhat-linux-gnu)
+        Sat, 26 Mar 2022 18:40:11 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AD0AF255B7
+        for <linux-wireless@vger.kernel.org>; Sat, 26 Mar 2022 15:38:32 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-319-sg83NcgSN6CniSYATwmuJw-1; Sat, 26 Mar 2022 22:38:30 +0000
+X-MC-Unique: sg83NcgSN6CniSYATwmuJw-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.32; Sat, 26 Mar 2022 22:38:27 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.033; Sat, 26 Mar 2022 22:38:27 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Linus Torvalds' <torvalds@linux-foundation.org>,
+        =?utf-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
+CC:     Halil Pasic <pasic@linux.ibm.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Netdev <netdev@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        stable <stable@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        iommu <iommu@lists.linux-foundation.org>,
+        Olha Cherevyk <olha.cherevyk@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: RE: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
+ ath9k-based AP
+Thread-Topic: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
+ ath9k-based AP
+Thread-Index: AQHYQUDBK/9JYQDqEEKfLChLw6SC36zSPELQ
+Date:   Sat, 26 Mar 2022 22:38:27 +0000
+Message-ID: <d9fbd3ab9b514b0d8121d4d7d21662a6@AcuMS.aculab.com>
+References: <1812355.tdWV9SEqCh@natalenko.name>
+ <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
+ <20220324055732.GB12078@lst.de> <4386660.LvFx2qVVIh@natalenko.name>
+ <81ffc753-72aa-6327-b87b-3f11915f2549@arm.com> <878rsza0ih.fsf@toke.dk>
+ <4be26f5d8725cdb016c6fdd9d05cfeb69cdd9e09.camel@freebox.fr>
+ <20220324163132.GB26098@lst.de>
+ <d8a1cbf4-a521-78ec-1560-28d855e0913e@arm.com> <871qyr9t4e.fsf@toke.dk>
+ <CAHk-=whUQCCaQXJt3KUeQ8mtnLeVXEScNXCp+_DYh2SNY7EcEA@mail.gmail.com>
+ <31434708dcad126a8334c99ee056dcce93e507f1.camel@freebox.fr>
+ <cce202fb-5185-aa3e-9e9b-11626192cb49@arm.com>
+ <20220326003853.44c3285c.pasic@linux.ibm.com> <8735j47l7y.fsf@toke.dk>
+ <CAHk-=wjorwZTQuQB8QBgNpdBZNz7uyprgaTT+1Q6_1FaT3sAmQ@mail.gmail.com>
+In-Reply-To: <CAHk-=wjorwZTQuQB8QBgNpdBZNz7uyprgaTT+1Q6_1FaT3sAmQ@mail.gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Em Sat, 26 Mar 2022 15:11:46 -0500
-Larry Finger <Larry.Finger@lwfinger.net> escreveu:
+RnJvbTogTGludXMgVG9ydmFsZHMNCj4gU2VudDogMjYgTWFyY2ggMjAyMiAxODozOQ0KPiANCj4g
+T24gU2F0LCBNYXIgMjYsIDIwMjIgYXQgOTowNiBBTSBUb2tlIEjDuGlsYW5kLUrDuHJnZW5zZW4g
+PHRva2VAdG9rZS5kaz4gd3JvdGU6DQo+ID4NCj4gPiBJIHdhcyBhbHNvIHRveWluZyB3aXRoIHRo
+ZSBpZGVhIG9mIGhhdmluZyBhIGNvcHktYmFzZWQgcGVlayBoZWxwZXIgbGlrZToNCj4gPg0KPiA+
+IHUzMiBkYXRhID0gZG1hX3BlZWtfd29yZChidWYsIG9mZnNldCkNCj4gDQo+IEkgcmVhbGx5IGRv
+bid0IHRoaW5rIHlvdSBjYW4gb3Igd2FudCB0byBoYXZlIGEgd29yZC1iYXNlZCBvbmUuDQo+IA0K
+PiBUaGF0IHNhaWQsIEkgbGlrZSB0aGUgKm5hbWUqIG9mIHRoYXQgdGhpbmcuDQo+IA0KPiBJIHRo
+aW5rIGEgbG90IG9mIGNvbmZ1c2lvbiBjb21lcyBmcm9tIHRoZSB2ZXJ5IHN1YnRsZSBuYW1pbmcg
+b2YNCj4gZnVuZGFtZW50YWxseSBoYXZpbmcgYSBsb3Qgb2Ygb2RkIGNvbmRpdGlvbnMgd2l0aA0K
+PiANCj4gIC0gdHdvIGRpZmZlcmVudCAiZGlyZWN0aW9ucyBvZiB0aGUgc3luYyIgLSBpZSB3aG8g
+aXQgaXMgdGhhdCBjYXJlczoNCj4gDQo+ICAgICAgICBkbWFfc3luY19zaW5nbGVfZm9yX3tjcHUs
+ZGV2aWNlfQ0KPiANCj4gIC0gdGhyZWUgZGlmZmVyZW50ICJkaXJlY3Rpb24gb2YgdGhlIGRhdGEi
+IC0gaWUgd2hvIGl0IGlzIHRoYXQgd3JpdGVzIHRoZSBkYXRhOg0KPiANCj4gICAgICAgICBETUFf
+RlJPTV9ERVZJQ0UgLyBETUFfVE9fREVWSUNFIC8gRE1BX0JJRElSRUNUSU9OQUwNCj4gDQo+IHNv
+IHlvdSBoYXZlIHNpeCBwb3NzaWJsZSBjb21iaW5hdGlvbnMsIHRocmVlIG9mIHdoaWNoIHNlZW0g
+aW5zYW5lIGFuZA0KPiBub3QgdXNlZnVsLCBhbmQgb2YgdGhlIHRocmVlIHRoYXQgYXJlIGFjdHVh
+bGx5IHBvc3NpYmxlLCBzb21lIGFyZSB2ZXJ5DQo+IHVudXN1YWwgKGl0IGV4YWN0bHkgdGhhdCAi
+ZGV2aWNlIGlzIHRoZSBvbmUgd3JpdGluZywgYnV0IHdlIHdhbnQgdG8NCj4gc3luYyB0aGUgZG1h
+IGFyZWEgZm9yIHRoZSBkZXZpY2UiKS4NCg0KQW5vdGhlciAyYyA6LSkNCg0KSXMgdGhlIGlkZWEg
+b2YgJ2J1ZmZlciBvd25lcnNoaXAnIGV2ZW4gYSBnb29kIG9uZT8NClBlcmhhcHMgdGhlIHdob2xl
+IHRoaW5nIHdvdWxkIGJlIGJldHRlciBkZXNjcmliZWQgaW4gdGVybXMgb2YNCndoYXQgaGFwcGVu
+cyB3aGVuIGJvdW5jZSBidWZmZXJzIGFyZSB1c2VkLg0KU28gdGhlcmUgYXJlIG5vdGlvbmFsbHkg
+dHdvIGJ1ZmZlcnMuDQpPbmUgYWNjZXNzZWQgYnkgdGhlIGNwdSwgdGhlIG90aGVyIGJ5IHRoZSBk
+ZXZpY2UuDQoNClRoZXJlIGFyZSB0aGVuIGp1c3QgMyB0aGluZ3MgdGhhdCBoYXBwZW46DQoxKSBE
+aXJ0eSBkYXRhIG1heSBnZXQgbW92ZWQgdG8gdGhlIG90aGVyIGJ1ZmZlciBhdCBhbnkgdGltZS4N
+CiAgIFNvIHRoZSBkcml2ZXIgbXVzdCBub3QgZGlydHkgYnVmZmVycyAoY2FjaGUgbGluZXMpIHRo
+YXQgdGhlDQogICBkZXZpY2UgbWlnaHQgd3JpdGUgdG8uDQoyKSBUaGUgY3B1IGhhcyB0byByZXF1
+ZXN0IGRhdGEgYmUgY29waWVkIHRvIHRoZSBkZXZpY2UgYnVmZmVyDQogICBhZnRlciB1cGRhdGlu
+ZyB0aGUgY3B1IGJ1ZmZlci4NCiAgIFRoaXMgbWFrZXMgdGhlIGNwdSBidWZmZXIgJ25vdCBkaXJ0
+eScgc28gY29waWVzICgxKSBjYW4gbm8NCiAgIGxvbmdlciBoYXBwZW4uDQozKSBUaGUgY3B1IGhh
+cyB0byByZXF1ZXN0IGRhdGEgYmUgY29waWVkIGZyb20gdGhlIGRldmljZSBidWZmZXINCiAgIGJl
+Zm9yZSBsb29raW5nIGF0IHRoZSBkYXRhLg0KQWxsIGNvcGllcyBhZmZlY3QgYSBkbWEtY2FjaGUt
+bGluZSBzaXplZCBibG9jayBvZiBkYXRhICh3aGljaA0KbWlnaHQgYmUgZGV2aWNlIGRlcGVuZGFu
+dCkuDQpBbiBvcHRpbWlzZWQgdmVyc2lvbiBvZiAoMikgdGhhdCBkb2Vzbid0IGFjdHVhbGx5IGRv
+IHRoZSBjb3B5DQpjYW4gYmUgaW1wbGVtZW50ZWQgZm9yIHVzZSBwcmlvciB0byByZWFkIHJlcXVl
+c3RzLg0KDQpGb3IgY2FjaGUtY29oZXJlbnQgbWVtb3J5IG9ubHkgKDEpIGhhcHBlbnMgYW5kICgy
+KSBhbmQgKDMpDQphcmUgbm8gb3BlcmF0aW9ucy4NCkZvciBub24tY29oZXJlbnQgbWVtb3J5ICgy
+KSBpcyB3cml0ZS1iYWNrLWFuZC1pbnZhbGlkYXRlIGFuZA0KKDMpIG1pZ2h0IGp1c3QgYmUgYW4g
+aW52YWxpZGF0ZS4NCkZvciBib3VuY2UgYnVmZmVycyBhbGwgYXJlIGFjdHVhbCBjb3BpZXMgLSBh
+bmQgYWRkaXRpb25hbA0Kb3BlcmF0aW9ucyBtaWdodCBiZSBuZWVkZWQgZm9yIGRldmljZSBhY2Nl
+c3MgdG8gdGhlIGJvdW5jZQ0KYnVmZmVyIGl0c2VsZi4NCg0KRm9yIHNlY3VyaXR5IHJlYXNvbnMg
+Ym91bmNlIGJ1ZmZlcnMgbWF5IG5lZWQgaW5pdGlhbGlzaW5nLg0KQnV0IHRoaXMgd291bGQgYmUg
+ZG9uZSB3aGVuIHRoZXkgYXJlIGFsbG9jYXRlZC4NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQg
+QWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVz
+LCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
 
-> On 3/26/22 14:51, Joe Perches wrote:
-> > On Sat, 2022-03-26 at 19:27 +0100, Mauro Carvalho Chehab wrote: =20
-> >> Em Sat, 26 Mar 2022 19:24:54 +0100
-> >> Mauro Carvalho Chehab <mchehab@kernel.org> escreveu:
-> >> =20
-> >>> Em Sat, 26 Mar 2022 17:59:03 +0100
-> >>> Benjamin St=C3=BCrz <benni@stuerz.xyz> escreveu:
-> >>> =20
-> >>>> This replaces comments with C99's designated
-> >>>> initializers because the kernel supports them now.
-> >>>>
-> >>>> Signed-off-by: Benjamin St=C3=BCrz <benni@stuerz.xyz>
-> >>>> ---
-> >>>>   drivers/media/usb/dvb-usb/dibusb-mb.c | 62 +++++++++++++----------=
-----
-> >>>>   drivers/media/usb/dvb-usb/dibusb-mc.c | 34 +++++++--------
-> >>>>   2 files changed, 48 insertions(+), 48 deletions(-)
-> >>>>
-> >>>> diff --git a/drivers/media/usb/dvb-usb/dibusb-mb.c b/drivers/media/u=
-sb/dvb-usb/dibusb-mb.c
-> >>>> index e9dc27f73970..f188e07f518b 100644
-> >>>> --- a/drivers/media/usb/dvb-usb/dibusb-mb.c
-> >>>> +++ b/drivers/media/usb/dvb-usb/dibusb-mb.c
-> >>>> @@ -122,40 +122,40 @@ static int dibusb_probe(struct usb_interface *=
-intf,
-> >>>>  =20
-> >>>>   /* do not change the order of the ID table */
-> >>>>   static struct usb_device_id dibusb_dib3000mb_table [] =3D {
-> >>>> -/* 00 */	{ USB_DEVICE(USB_VID_WIDEVIEW,		USB_PID_AVERMEDIA_DVBT_USB=
-_COLD) },
-> >>>> -/* 01 */	{ USB_DEVICE(USB_VID_WIDEVIEW,		USB_PID_AVERMEDIA_DVBT_USB=
-_WARM) },
-> >>>> -/* 02 */	{ USB_DEVICE(USB_VID_COMPRO,		USB_PID_COMPRO_DVBU2000_COLD=
-) },
-> >>>> -/* 03 */	{ USB_DEVICE(USB_VID_COMPRO,		USB_PID_COMPRO_DVBU2000_WARM=
-) },
-> >>>> -/* 04 */	{ USB_DEVICE(USB_VID_COMPRO_UNK,	USB_PID_COMPRO_DVBU2000_U=
-NK_COLD) },
-> >>>> -/* 05 */	{ USB_DEVICE(USB_VID_DIBCOM,		USB_PID_DIBCOM_MOD3000_COLD)=
- },
-> >>>> -/* 06 */	{ USB_DEVICE(USB_VID_DIBCOM,		USB_PID_DIBCOM_MOD3000_WARM)=
- },
-> >>>> -/* 07 */	{ USB_DEVICE(USB_VID_EMPIA,		USB_PID_KWORLD_VSTREAM_COLD) =
-},
-> >>>> -/* 08 */	{ USB_DEVICE(USB_VID_EMPIA,		USB_PID_KWORLD_VSTREAM_WARM) =
-},
-> >>>> -/* 09 */	{ USB_DEVICE(USB_VID_GRANDTEC,		USB_PID_GRANDTEC_DVBT_USB_=
-COLD) },
-> >>>> -/* 10 */	{ USB_DEVICE(USB_VID_GRANDTEC,		USB_PID_GRANDTEC_DVBT_USB_=
-WARM) },
-> >>>> -/* 11 */	{ USB_DEVICE(USB_VID_GRANDTEC,		USB_PID_DIBCOM_MOD3000_COL=
-D) },
-> >>>> -/* 12 */	{ USB_DEVICE(USB_VID_GRANDTEC,		USB_PID_DIBCOM_MOD3000_WAR=
-M) },
-> >>>> -/* 13 */	{ USB_DEVICE(USB_VID_HYPER_PALTEK,	USB_PID_UNK_HYPER_PALTE=
-K_COLD) },
-> >>>> -/* 14 */	{ USB_DEVICE(USB_VID_HYPER_PALTEK,	USB_PID_UNK_HYPER_PALTE=
-K_WARM) },
-> >>>> -/* 15 */	{ USB_DEVICE(USB_VID_VISIONPLUS,	USB_PID_TWINHAN_VP7041_CO=
-LD) },
-> >>>> -/* 16 */	{ USB_DEVICE(USB_VID_VISIONPLUS,	USB_PID_TWINHAN_VP7041_WA=
-RM) },
-> >>>> -/* 17 */	{ USB_DEVICE(USB_VID_TWINHAN,		USB_PID_TWINHAN_VP7041_COLD=
-) },
-> >>>> -/* 18 */	{ USB_DEVICE(USB_VID_TWINHAN,		USB_PID_TWINHAN_VP7041_WARM=
-) },
-> >>>> -/* 19 */	{ USB_DEVICE(USB_VID_ULTIMA_ELECTRONIC,	USB_PID_ULTIMA_TVB=
-OX_COLD) },
-> >>>> -/* 20 */	{ USB_DEVICE(USB_VID_ULTIMA_ELECTRONIC,	USB_PID_ULTIMA_TVB=
-OX_WARM) },
-> >>>> -/* 21 */	{ USB_DEVICE(USB_VID_ULTIMA_ELECTRONIC,	USB_PID_ULTIMA_TVB=
-OX_AN2235_COLD) },
-> >>>> -/* 22 */	{ USB_DEVICE(USB_VID_ULTIMA_ELECTRONIC,	USB_PID_ULTIMA_TVB=
-OX_AN2235_WARM) },
-> >>>> -/* 23 */	{ USB_DEVICE(USB_VID_ADSTECH,		USB_PID_ADSTECH_USB2_COLD) =
-},
-> >>>> +[0]  =3D	{ USB_DEVICE(USB_VID_WIDEVIEW,		USB_PID_AVERMEDIA_DVBT_USB=
-_COLD) },
-> >>>> +[1]  =3D	{ USB_DEVICE(USB_VID_WIDEVIEW,		USB_PID_AVERMEDIA_DVBT_USB=
-_WARM) }, =20
-> >>>
-> >>> While here, please properly indent this table, and respect the 80-col=
-umns limit,
-> >>> e. g.:
-> >>>
-> >>> static struct usb_device_id dibusb_dib3000mb_table [] =3D {
-> >>> 	[0] =3D { USB_DEVICE(USB_VID_WIDEVIEW
-> >>> 			   USB_PID_AVERMEDIA_DVBT_USB_COLD)
-> >>> 	},
-> >>> 	[1]  =3D	{ USB_DEVICE(USB_VID_WIDEVIEW,
-> >>> 			     USB_PID_AVERMEDIA_DVBT_USB_WARM)
-> >>> 	},
-> >>> 	... =20
-> >>
-> >> Err.... something went wrong with my space bar and I ended hitting sen=
-d to
-> >> soon... I meant:
-> >>
-> >> static struct usb_device_id dibusb_dib3000mb_table [] =3D {
-> >>   	[0] =3D { USB_DEVICE(USB_VID_WIDEVIEW
-> >>   			   USB_PID_AVERMEDIA_DVBT_USB_COLD)
-> >>   	},
-> >>   	[1] =3D { USB_DEVICE(USB_VID_WIDEVIEW,
-> >>   			   USB_PID_AVERMEDIA_DVBT_USB_WARM)
-> >>   	},
-> >> 	...
-> >> }; =20
-> >=20
-> > maybe static const too
-> >=20
-> > and
-> >=20
-> > maybe
-> >=20
-> > #define DIB_DEVICE(vid, pid)	\
-> > 	{ USB_DEVICE(USB_VID_ ## vid, USB_PID_ ## pid) }
-> >=20
-> > so maybe
-> >=20
-> > static const struct usb_device_id dibusb_dib3000mb_table[] =3D {
-> > 	[0] =3D DIB_DEVICE(WIDEVIEW, AVERMEDIA_DVBT_USB_COLD),
-> > 	[1] =3D DIB_DEVICE(WIDEVIEW, AVERMEDIA_DVBT_USB_WARM),
-> > 	...
-> > };
-> >=20
-> > though I _really_ doubt the value of the specific indexing.
-> >=20
-> > I think this isn't really worth changing at all. =20
->=20
-> I agree. For the drivers that I maintain, I try to keep the vendor and de=
-vice=20
-> ids in numerical order. As this table does not require a special order, a=
-dding a=20
-> new one in the middle would require redoing all of then after that point.=
- That=20
-> would be pointless work!
-
-Unfortunately, that's not the case for drivers that use the legacy dvb-usb
-core, as it has other tables that reference the device IDs from this table
-by number.
-
-The best here would be to do something like:
-
-enum {
-	AVERMEDIA_DVBT_USB_COLD,
-	AVERMEDIA_DVBT_USB_WARM,
-	COMPRO_DVBU2000_COLD,
-	COMPRO_DVBU2000_WARM,
-	COMPRO_DVBU2000_UNK_COLD,
-	DIBCOM_MOD3000_COLD,
-	DIBCOM_MOD3000_WARM,
-	KWORLD_VSTREAM_COLD,
-	KWORLD_VSTREAM_WARM,
-	GRANDTEC_DVBT_USB_COLD,
-	GRANDTEC_DVBT_USB_WARM,
-	DIBCOM_MOD3000_COLD,
-	DIBCOM_MOD3000_WARM,
-	UNK_HYPER_PALTEK_COLD,
-	UNK_HYPER_PALTEK_WARM,
-	TWINHAN_VP7041_COLD,
-	TWINHAN_VP7041_WARM,
-	TWINHAN_VP7041_COLD,
-	TWINHAN_VP7041_WARM,
-	ULTIMA_TVBOX_COLD,
-	ULTIMA_TVBOX_WARM,
-	ULTIMA_TVBOX_AN2235_COLD,
-	ULTIMA_TVBOX_AN2235_WARM,
-	ADSTECH_USB2_COLD,
-	ADSTECH_USB2_WARM,
-	KYE_DVB_T_COLD,
-	KYE_DVB_T_WARM,
-	KWORLD_VSTREAM_COLD,
-	ULTIMA_TVBOX_USB2_COLD,
-	ULTIMA_TVBOX_USB2_WARM,
-	ULTIMA_TVBOX_ANCHOR_COLD,
-};
-
-Then define the table as:
-
-static const struct usb_device_id dibusb_dib3000mb_table[]=20
-{
-  	[AVERMEDIA_DVBT_USB_COLD] =3D { USB_DEVICE(USB_VID_WIDEVIEW,
-				      USB_PID_AVERMEDIA_DVBT_USB_COLD)
-  	},
-  	[AVERMEDIA_DVBT_USB_WARM] =3D { USB_DEVICE(USB_VID_WIDEVIEW,
-				      USB_PID_AVERMEDIA_DVBT_USB_WARM)
-  	},
-	...
-}
-
-(eventually, using some macro to help defining them)
-
-Finally, change the other static tables to also use the same name,
-e. g.:
-
-static const struct dvb_usb_device_properties dibusb1_1_properties =3D {
-	...
-	.num_device_descs =3D 9,
-	.devices =3D {
-		{	"AVerMedia AverTV DVBT USB1.1",
-			{ &dibusb_dib3000mb_table[AVERMEDIA_DVBT_USB_COLD],  NULL },
-			{ &dibusb_dib3000mb_table[AVERMEDIA_DVBT_USB_WARM],  NULL },
-		},
-
-	...
-};
-
-The same applies to other drivers inside drivers/media/usb/dvb-usb/.
-
-Alternatively, the drivers there should be ported to the newer DVB USB
-core (dvb-usb-v2).
-
-Thanks,
-Mauro
