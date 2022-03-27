@@ -2,391 +2,259 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E01DC4E895A
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Mar 2022 20:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39E4A4E89AE
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Mar 2022 21:24:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236321AbiC0Sil (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Mar 2022 14:38:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36346 "EHLO
+        id S236512AbiC0TZo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Mar 2022 15:25:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbiC0Sik (ORCPT
+        with ESMTP id S231214AbiC0TZj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Mar 2022 14:38:40 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E48EE4091F
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Mar 2022 11:36:59 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id bi12so24531892ejb.3
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Mar 2022 11:36:59 -0700 (PDT)
+        Sun, 27 Mar 2022 15:25:39 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8740AAE57
+        for <linux-wireless@vger.kernel.org>; Sun, 27 Mar 2022 12:23:56 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id v12so3837814ljd.3
+        for <linux-wireless@vger.kernel.org>; Sun, 27 Mar 2022 12:23:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=vPkWPK9fcrenNX3+70MAXLkgTo7ZH+XGzuJnlJpQ+tY=;
-        b=K0FOnBwPoH0sISCMEALWpe2aHrvlhzM6ps+MqZ7dum3H1lrvM3N8BGs5NpZPrmLgRG
-         +SQhcFojpo6YZNqBPG5ROAgrp4wfk2/vqvAMlog0HEot6OtbZ8kXtgmlaHG+CbnPFaWq
-         dSzz8HbD9VvgHsDxkcbGPnmeXTk1clpoSTAg4qmlPZAF11MNWBd0IPFZX9incy5adj8O
-         ClbE4TQ8wKsPcUhpqJVoUdJsz0Z81hYukaT1GYK7JJWAgoXhn2HxzQJjgydG0nk0+h/K
-         +ebttYTJCTa6636N9oVdASUHb2bztz676S9JmoEL8FwiG/mDT1rZSbjfoAGL8fVwSbdE
-         1EGw==
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=81R8ObTvU5bcOjgPkhjrVdYMQgLpHwwmsUh10DuWTXw=;
+        b=QVswRSXvuEFhZlnuaBAnMB1TOMg78uyn8mRLwSOZtWi/86mVxTdWeJmg8H09RYWcp4
+         O6lvIOKP0C2OxXUCyV3ffNy61gxSdcLR6Kl9jGUx2xgYt16l8oVTj7BEMInCe8aUUdRF
+         U28WrmitywInVLFpJqv3NSZNOfcB3kKShK/cw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=vPkWPK9fcrenNX3+70MAXLkgTo7ZH+XGzuJnlJpQ+tY=;
-        b=BXa9Rl01ehePmgjqE51JQnmYZqjU2FrRkMRn6j0XIeU65GiaqP5ZMvCA9RG5QK1Oae
-         4/SuI0jSUpZRHtdx7/dnBVbDNTifGPmolOm4S1kDnqqydZ+WxClPcL2ZJo0viVbZzNeO
-         9I8hhBpt635VchSAI8KxFSISgcEusyXA8rk6C6IoHa3/j9lGaSEPZ4vTMxZifIdeC06h
-         cYB/sbjgDShvHBkqTStCeCujcWnAMO+BhVueCHwnlRsZQlk5rUDqCZUQV8k6Qa4+pngK
-         UGU+UohRxH3Gs67kkoyhLCblwb3wPoynMn4rd2/aKydMqoGuXn3J3bLSes9Dv7cvi59i
-         W/OQ==
-X-Gm-Message-State: AOAM532Vrcjvd/MeLFWrduBaLCVEUBINI7NynbItidAbtazz/3wNVvOv
-        WYr+B4GrRw3jHRFSJM1rSLy33Tps0cM3CTT7lyw=
-X-Google-Smtp-Source: ABdhPJwLGrFHvKqbadJlybD5vZR20nmJ1xLDZFySDZ5iPxe3wgxVdyGbVwAuQ8+Awfi9M6uo6g59KnVrCUqV8QyLfe0=
-X-Received: by 2002:a17:906:1e94:b0:6cc:4382:f12e with SMTP id
- e20-20020a1709061e9400b006cc4382f12emr22844093ejj.482.1648406217735; Sun, 27
- Mar 2022 11:36:57 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=81R8ObTvU5bcOjgPkhjrVdYMQgLpHwwmsUh10DuWTXw=;
+        b=7w3z21mk1ZlxYyzRZ7xQxoywqf4+7ZLkz/NGWWqEX2gPZ73MN9Vjd0E2M8RG2RPBBU
+         6VhPaQgf5YxxZ9xgKp3NVvs3XNaUE4axWBTLYzHI+TrnObFQ6UILarmtTgSw8i0IrIlz
+         swKtlxImzZJ59hj3VzfKfCDnargjsGOyEC9YLPwwnDzfFVUJwhi11YLojPtod4Lqed7u
+         2q5/vxXYkn507c5XiqRNv8ezECVLgKml16CuJc3rxbBirBVq+vzBtuTySCN8akjndfvl
+         dY3pgxjuR698YSuO02HTRUhznfxyjGGfOeTYqBtvRwBE4oORJOcokFgWvbZS6xdlCogj
+         N1sA==
+X-Gm-Message-State: AOAM533L0QfV6c2ZUiYwAGMV/xvgG0Nf9hkmtlHqFRXB9TybmdvBwcV8
+        fgQr3QYjG13ORo9Z0M2dc10VcgkQRuleDBiroB0=
+X-Google-Smtp-Source: ABdhPJwn2sP1GbCw7BKW6nGXuy+pnWZHu6b376mWRaVjKwfbmHxB76uqfbdSFdH+gIV1ugeW6PD0Xw==
+X-Received: by 2002:a2e:818f:0:b0:24a:7c17:7226 with SMTP id e15-20020a2e818f000000b0024a7c177226mr9675644ljg.472.1648409034484;
+        Sun, 27 Mar 2022 12:23:54 -0700 (PDT)
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com. [209.85.208.171])
+        by smtp.gmail.com with ESMTPSA id j11-20020a056512108b00b0044a23c1e679sm1437521lfg.18.2022.03.27.12.23.52
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 27 Mar 2022 12:23:52 -0700 (PDT)
+Received: by mail-lj1-f171.google.com with SMTP id 17so16574948lji.1
+        for <linux-wireless@vger.kernel.org>; Sun, 27 Mar 2022 12:23:52 -0700 (PDT)
+X-Received: by 2002:a05:651c:1213:b0:247:e2d9:cdda with SMTP id
+ i19-20020a05651c121300b00247e2d9cddamr17499555lja.443.1648409031649; Sun, 27
+ Mar 2022 12:23:51 -0700 (PDT)
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Sun, 27 Mar 2022 19:36:20 +0100
-Message-ID: <CAHpNFcMpMEkmWPjSNnoYuAY=9H-1Sqx-WtKqZ-SW=ipeN5BhwQ@mail.gmail.com>
-Subject: (Refinement) Presenting GPRS VT2 from ViaLicensing today world wide
- RS : for ViaLicencing GPRS is quite a package, New from RS @ Via 2022
-To:     press@vialicensing.com
+References: <1812355.tdWV9SEqCh@natalenko.name> <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
+ <20220324055732.GB12078@lst.de> <4386660.LvFx2qVVIh@natalenko.name>
+ <81ffc753-72aa-6327-b87b-3f11915f2549@arm.com> <878rsza0ih.fsf@toke.dk>
+ <4be26f5d8725cdb016c6fdd9d05cfeb69cdd9e09.camel@freebox.fr>
+ <20220324163132.GB26098@lst.de> <d8a1cbf4-a521-78ec-1560-28d855e0913e@arm.com>
+ <871qyr9t4e.fsf@toke.dk> <CAHk-=whUQCCaQXJt3KUeQ8mtnLeVXEScNXCp+_DYh2SNY7EcEA@mail.gmail.com>
+ <20220327054848.1a545b12.pasic@linux.ibm.com> <CAHk-=whUJ=tMEgP3KiWwk0pzmHn+1QORUu50syE+zOGk4UnFog@mail.gmail.com>
+ <CAHk-=wgUx5CVF_1aEkhhEiRGXHgKzUdKiyctBKcHAxkxPpbiaw@mail.gmail.com> <0745b44456d44d1e9fc364e5a3780d9a@AcuMS.aculab.com>
+In-Reply-To: <0745b44456d44d1e9fc364e5a3780d9a@AcuMS.aculab.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun, 27 Mar 2022 12:23:34 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgLyqNJx=bb8=o0Nk5U8gMnf0-=qx53ShLEb3V=Yrt8fw@mail.gmail.com>
+Message-ID: <CAHk-=wgLyqNJx=bb8=o0Nk5U8gMnf0-=qx53ShLEb3V=Yrt8fw@mail.gmail.com>
+Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
+ ath9k-based AP
+To:     David Laight <David.Laight@aculab.com>
+Cc:     Halil Pasic <pasic@linux.ibm.com>,
+        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Olha Cherevyk <olha.cherevyk@gmail.com>,
+        iommu <iommu@lists.linux-foundation.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ICE-SSRTP GEA Replacement 2022 + (c)RS
+On Sun, Mar 27, 2022 at 8:24 AM David Laight <David.Laight@aculab.com> wrote:
+>
+> Aren't bounce buffers just a more extreme case on non-coherent
+> memory accesses?
 
-IiCE-SSR for digital channel infrastructure can help heal GPRS+ 3G+ 4G+ 5G+
+No.
 
-Time NTP Protocols : is usable in 2G+ <> 5G+LTE Network SIM
+In fact, this whoe change came about exactly because bounce buffers
+are different.
 
-ICE-SSRTP Encryption AES,Blake2, Poly ChaCha, SM4, SHA2, SHA3, GEA-1 and GEA-2
-'Ideal for USB Dongle & Radio' in Rust RS ' Ideal for Quality TPM
-Implementation'
+The difference is that bounce buffers have that (wait for it) bounce
+buffer, which can have stale contents.
 
-"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
-of GEA-1 with a higher amount of processing, and apparently not
-weakened) are bit-oriented stream ciphers."
+> They just need explicit memory copies rather than just cache
+> writeback and invalidate operations.
 
-IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+That's the thing - the memory copies introduce entirely new issues.
 
-Interleaved signals help Isolate noise from a Signal Send & Receive ...
+I really think that instead of making up abstract rules ("ownership"
+or "bounce buffers are just extreme cases of non-coherency") we should
+make the rules very much practical and down to earth, and write out
+exactly what they *do*.
 
-Overlapping inverted waves are a profile for complex audio & FFT is the result.
+The whole "sync DMA" is odd and abstract enough as a concept on its
+own, we shouldn't then make the rules for it odd and abstract. We
+should make them very very practical.
 
-Interleaved, Inverted & Compressed & a simple encryption?
+So I will propose that we really make it very much about practical
+concerns, and we document things as
 
-*
+ (a) the "sync" operation has by definition a "whose _future_ access
+do we sync for" notion.
 
-Time differentiated : Interleave, Inversion & differentiating Elliptic curve.
+     So "dma_sync_single_for_cpu()" says that the future accesses to
+this dma area is for the CPU.
 
-We will be able to know and test the Cypher : PRINCIPLE OF INTENT TO TRUST
+     Note how it does *NOT* say that the "CPU owns the are". That's
+bullsh*t, and we now know it's BS.
 
-We know of a cypher but : (Principle RS)
+ (b) but the sync operation also has a "who wrote the data we're syncing"
 
-We blend the cypher..
-Interleaved pages of a cypher obfuscate : PAL CScam does this
+     Note that this is *not* "who accessed or owned it last", because
+that's nonsensical: if we're syncing for the CPU, then the only reason
+to do so is because we expect that the last access was by the device,
+so specifying that separately would just be redundant and stupid.
 
-Timed : Theoretically unique to you in principle for imprecision, But
-we cannot really have imprecise in Crypto!
+     But specifying who *wrote* to the area is meaningful and matters.
+It matters for the non-coherent cache case (because of writeback
+issues), but it also matters for the bounce buffer case (becasue it
+determines which way we should copy).
 
-But we can have a set time & in effect Elliptic curve a transient variable T,
-With this, Interleave the resulting pages (RAM Buffer Concept)
+Note how this makes sense: a "sync" operation is clearly about taking
+some past state, and making it palatable for a future use. The past
+state is pretty much defined by who wrote the data, and then we can
+use that and the "the next thing to access it" to determine what we
+need to do about the sync.
 
-Invert them over Time Var = T
+It is *NOT* about "ownership".
 
-We can do all & principally this is relatively simple.
+So let's go through the cases, and I'm going to ignore the "CPU caches
+are coherent with device DMA" case because that's always going to be a
+no-op wrt data movement (but it will still generally need a memory
+barrier, which I will mention here and then ignore going forward).
 
-(c)RS
+Syncing for *CPU* accesses (ie dma_sync_single_for_cpu()) has four
+choices I can see:
 
-*
+ - nobody wrote the data at all (aka DMA_NONE).
 
-Example of use:
+   This is nonsensical and should warn. If nobody wrote to it, why
+would the CPU ever validly access it?
 
-Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade marker
+   Maybe you should have written "memset(buffer, 0, size)" instead?
 
-Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
-Interleaved channel BAND.
+ - the CPU wrote the data in the first place (aka DMA_TO_DEVICE)
 
-Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
-Coprocessor digital channel selector &
+   This is a no-op (possibly a memory barrier), because even stale CPU
+caches are fine, and even if it was in a bounce buffer, the original
+CPU-side data is fine.
 
-channel Key selection based on unique..
+ - the device wrote the data (aka DMA_FROM_DEVICE)
 
-Crystal time Quartz with Synced Tick (Regulated & modular)
+   This is just the regular case of a device having written something,
+and the CPU wants to see it.
 
-All digital interface and resistor ring channel & sync selector with
-micro band tuning firmware.
+   It obviously needs real work, but it's simple and straightforward.
 
-(c)Rupert S
+   For non-coherent caches, it needs a cache invalidate. For a bounce
+buffer, it needs a copy from the bounce buffer to the "real" buffer.
 
-*
+ - it's not clear who write the data (aka DMA_BIDIRECTIONAL)
 
-Good for cables ? and noise ?
+   This is not really doable for a bounce buffer - we just don't know
+which buffer contents are valid.
 
-Presenting :  IiCE-SSR for digital channel infrastructure & cables
-<Yes Even The Internet &+ Ethernet 5 Band>
+   I think it's very very questionable for non-coherent caches too,
+but "writeback and invalidate" probably can't hurt.
 
-So the question of interleaved Bands & or signal inversion is a simple
-question but we have,
+   So probably warn about it, and do whatever we used to do historically.
 
-SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
+Syncing for device accesses (ie dma_sync_single_for_device()) also has
+the same four choices I can see, but obviously does different things:
 
-In Audio inversion would be a strange way to hear! but the inversion
-does help alleviate ...
+ - nobody wrote the data at all (aka DMA_NONE)
 
-Transistor emission fatigue...
+   This sounds as nonsensical as the CPU case, but maybe isn't.
 
-IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+   We may not have any previous explicit writes, but we *do* have that
+"insecure and possibly stale buffer contents" bounce buffer thing on
+the device side.
 
-Interleaved signals help Isolate noise from a Signal Send & Receive ...
+   So with a bounce buffer, it's actually somewhat sane to say
+"initialize the bounce buffer to a known state".
 
-Overlapping inverted waves are a profile for complex audio & FFT is the result.
+   Because bounce buffers *are* special. Unlike even the "noncoherent
+caches" issue, they have that entirely *other* hidden state in the
+form of the bounce buffer itself.
 
-Interleaved, Inverted & Compressed & a simple encryption?
+   Discuss.
 
-Good for cables ? and noise ?
+ - the CPU wrote the data in the first place (aka DMA_TO_DEVICE).
 
-Presenting : IiCE for digital channel infrastructure & cables <Yes
-Even The Internet &+ Ethernet 5 Band>
+   This is the regular and common case of "we have data on the CPU
+side that is written to the device".
 
-(c) Rupert S
+   Again, needs work, but is simple and straightforward.
 
-https://science.n-helix.com/2018/12/rng.html
+   For non-coherent caches, we need a writeback on the CPU. For a
+bounce buffer, we need to copy from the regular buffer to the bounce
+buffer.
 
-https://science.n-helix.com/2022/02/rdseed.html
+ - the device wrote the data in the first place (aka DMA_FROM_DEVICE)
 
-https://science.n-helix.com/2017/04/rng-and-random-web.html
+   This is the case that we hit on ath9k. It's *not* obvious, but when
+we write this out this way, I really think the semantics are pretty
+clear.
 
-https://science.n-helix.com/2022/02/interrupt-entropy.html
+   For non-coherent caches, we may need an "invalidate". For a bounce
+buffer, it's a no-op (because the bounce buffer already contains the
+data)
 
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+ - it's not clear who write the data (aka DMA_BIDIRECTIONAL)
 
-https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
+   This is again not really doable for a bounce buffer. We don't know
+which buffer contains the right data, we should warn about it and do
+whatever we used to do historically.
 
+   Again, it's very questionable for non-coherent caches too, but
+"writeback and invalidate" probably at least can't hurt.
 
-Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
+So hey, that's my thinking. The whole "ownership"  model is, I think,
+obviously untenable.
 
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+But just going through and listing the different cases and making them
+explicit I think explains exactly what the different situations are,
+and that then makes it fairly clear what the different combinations
+should do.
 
-https://science.n-helix.com/2022/03/ice-ssrtp.html
+No?
 
-https://science.n-helix.com/2021/11/ihmtes.html
-
-https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
-https://science.n-helix.com/2021/11/wave-focus-anc.html
-https://science.n-helix.com/2021/12/3d-audio-plugin.html
-
-Integral to Telecoms Security TRNG
-
-*RAND OP Ubuntu :
-https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
-
-https://pollinate.n-helix.com
-
-*
-
-***** Dukes Of THRUST ******
-
-Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade markerz
-
-Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
-Interleaved channel BAND.
-
-Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
-Coprocessor digital channel selector &
-
-channel Key selection based on unique..
-
-Crystal time Quartz with Synced Tick (Regulated & modular)
-
-All digital interface and resistor ring channel & sync selector with
-micro band tuning firmware.
-
-(c)Rupert S
-
-Dev/Random : Importance
-
-Dev/Random : Importance : Our C/T/RNG Can Help GEA-2 Open Software
-implementation of 3 Bits (T/RNG) Not 1 : We need Chaos : GEA-1 and
-GEA-2 Implementations we will improve with our /Dev/Random
-
-Our C/T/RNG Can Help GEA-2 Open Software implementation of 3 Bits
-(T/RNG) Not 1 : We need Chaos : GEA-1 and GEA-2 Implementations we
-will improve with our /Dev/Random
-
-We can improve GPRS 2G to 5G networks still need to save power, GPRS
-Doubles a phones capacity to run all day,
-
-Code can and will be improved, Proposals include:
-
-Blake2
-ChaCha
-SM4
-SHA2
-SHA3
-
-Elliptic Encipher
-AES
-Poly ChaCha
-
-Firstly we need a good solid & stable /dev/random
-
-So we can examine the issue with a true SEED!
-
-Rupert S https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-TRNG Samples & Method DRAND Proud!
-
-https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=drive_web
-https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=drive_web
-https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=drive_web
-https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=drive_web
-
-https://github.com/P1sec/gea-implementation
-
-"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
-of GEA-1 with a higher amount of processing, and apparently not
-weakened) are bit-oriented stream ciphers."
-
-"A stream cipher, such as the well-known RC4 or GEA-1, usually works
-through using the Xor operation against a plaintext. The Xor operation
-being symmetrical, this means that encrypting should be considered the
-same operation as decrypting: GEA-1 and GEA-2 are basically
-pseudo-random data generators, taking a seed (the key, IV and
-direction bit of the GPRS data, which are concatenated),
-
-The generated random data (the keystream) is xored with the clear-text
-data (the plaintext) for encrypting. Then, later, the keystream is
-xored with the encrypted data (the ciphertext) for decrypting. That is
-why the functions called in the target library for decrypting and
-encrypting are the same.
-
-GEA-1 and GEA-2 are bit-oriented, unlike RC4 which is byte-oriented,
-because their algorithms generate only one bit of pseudo-random data
-at once (derived from their internal state), while algorithms like RC4
-generate no less than one byte at once (in RC4's case, derived from
-
-permutation done in its internal state). Even though the keystream
-bits are put together by the current encryption / decryption C and
-Rust libraries into bytes in order to generate usable keystream,
-obviously.
-
-Based on this, you can understand that GEA-1 and GEA-2 are LFSR:
-Linear Feedback Shift Register-oriented ciphers, because their
-internal state is stored into fixed-size registers. This includes the
-S and W registers which serve for initialization / key scheduling
-purposes and are respectively 64 and 97-bit wide registers, and the A,
-B, C (and for GEA-2 only D) registers which serve for the purpose of
-keystream generation, which are respectively 31, 32, 33 and 29-bit
-wide registers.
-
-On each iteration of the keystream generation, each register is
-bit-wise rotated by one position, while the bit being rotated from the
-left towards the right side (or conversely depending on in which bit
-order you internally represent your registers) is fed back to the
-algorithm and mutated depending on given conditions. Hence, the
-
-shifted-out bit is derived from other processing, and reinserted,
-while being for this reason possibly flipped depending on conditions
-depending on bits present at the other side of the given register.
-
-This is the explanation for the name of linear feedback shift register
-(shift because of the shift operation required for the rotation, and
-linear feedback because of the constant-time transform operation
-involved).
-
-The rest of the register may also be mutated at each iteration steps,
-as in the case of the GEA-1 and 2, whole fixed Xor sequences (which
-differ for each register) may be applied depending on whether the
-rotated bit is a 0 or a 1.
-
-Note that a step where the register iterates is called clocking (the
-register is clocked), and that the fixed points where the register may
-be Xor'ed when the rotated bit becomes a 1 are called taps. The linear
-function which may transmute the rotated bit at the clocking step
-(taking several bits of the original register as an input) is called
-the F function.
-
-Those kind of bit-oriented LFSR algorithms, such as GEA-1 and 2 (for
-GPRS) and A5/1 and 2 (for GSM), were designed this way for optimal
-hardware implementations in the late 80's and early 90's."
-
-*****
-
-IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
-
-Interleaved signals help Isolate noise from a Signal Send & Receive ...
-
-Overlapping inverted waves are a profile for complex audio & FFT is the result.
-
-Interleaved, Inverted & Compressed & a simple encryption?
-
-Good for cables ? and noise ?
-
-Presenting :  IiCE-SSR for digital channel infrastructure & cables
-<Yes Even The Internet &+ Ethernet 5 Band>
-
-So the question of interleaved Bands & or signal inversion is a simple
-question but we have,
-
-SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
-
-In Audio inversion would be a strange way to hear! but the inversion
-does help alleviate ...
-
-Transistor emission fatigue...
-
-IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
-
-Interleaved signals help Isolate noise from a Signal Send & Receive ...
-
-Overlapping inverted waves are a profile for complex audio & FFT is the result.
-
-Interleaved, Inverted & Compressed & a simple encryption?
-
-Good for cables ? and noise ?
-
-Presenting : IiCE for digital channel infrastructure & cables <Yes
-Even The Internet &+ Ethernet 5 Band>
-
-(c) Rupert S
-
-
-***** Dukes Of THRUST ******
-
-Autism, Deafness & the hard of hearing : In need of ANC & Active audio
-clarification or correction 2022-01
-
-Sony & a few others make noise cancelling headphones that are suitable
-for people with Acute disfunction to brain function for ear drums ...
-Attention deficit or Autism,
-The newer Sony headsets are theoretically enablers of a clear
-confusion free world for Autistic people..
-Reaching out to a larger audience of people simply annoyed by a
-confusing world; While they listen to music..
-Can and does protect a small percentage of people who are confused &
-harassed by major discord located in all jurisdictions of life...
-
-Crazy noise levels, Or simply drowned in HISSING Static:
-
-Search for active voice enhanced noise cancellation today.
-
-Rupert S https://science.n-helix.com
-
-
-https://science.n-helix.com/2021/11/wave-focus-anc.html
-
-https://science.n-helix.com/2021/10/noise-violation-technology-bluetooth.html
-
-
-https://www.orosound.com/
-
-https://www.consumerreports.org/noise-canceling-headphone/best-noise-canceling-headphones-of-the-year-a1166868524/
+           Linus
