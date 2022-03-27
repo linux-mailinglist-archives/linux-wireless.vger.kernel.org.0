@@ -2,120 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEC5F4E87C9
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Mar 2022 14:46:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 982E84E87F9
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Mar 2022 16:11:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235329AbiC0Mry (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Mar 2022 08:47:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45378 "EHLO
+        id S235708AbiC0ONY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Mar 2022 10:13:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232193AbiC0Mrv (ORCPT
+        with ESMTP id S232854AbiC0ONX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Mar 2022 08:47:51 -0400
-Received: from stuerz.xyz (unknown [45.77.206.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65554433B5;
-        Sun, 27 Mar 2022 05:46:12 -0700 (PDT)
-Received: by stuerz.xyz (Postfix, from userid 114)
-        id 3C409FBBC6; Sun, 27 Mar 2022 12:46:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
-        t=1648385171; bh=G70xCP6D8WSn+bAqlXu192tXuBsjh/gv9sAawqfU9NY=;
-        h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
-        b=XW7jQ0JjvkbBwWYcDnJe2nlVcVuRIXoXRSxf3PNWwPKilsznYeHIMaHkGHbpF6CPi
-         nqty3MnXTqG+wOEmI6ELfBW3t6Ot8AvrXhUDwqW1UwZJf6kiQJniSr9SnP78twlnv0
-         ZUgcLapZcbEI4qbn8OxvPWktNikL6Kc+Etx6Bphh9afk/Hjw9xpphYQkktP6pYTs4U
-         LH6YzQsfUm6Srdnzw7PCZmDV1KvBPkO+9qnzYPwcN+LOHDfP1TScrzVJPWp75MbJFA
-         PLeKhwC+Gp8yjNM/5t52esOjGU9lpx0aWVyem4iFCEGjhJnePoGwI4TGCoWVDXFMVG
-         IaZqNMJ7zdbtQ==
-Received: from [IPV6:2a02:8109:a100:1a48:ff0:ef2f:d4da:17d8] (unknown [IPv6:2a02:8109:a100:1a48:ff0:ef2f:d4da:17d8])
-        by stuerz.xyz (Postfix) with ESMTPSA id 2060CFBBBC;
-        Sun, 27 Mar 2022 12:46:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
-        t=1648385168; bh=G70xCP6D8WSn+bAqlXu192tXuBsjh/gv9sAawqfU9NY=;
-        h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
-        b=vBbH8cJYXUrIhSgvFCWqsIlouOaWa0Ob/IwOKcnk6W9EsrhxCv3d9ruHzL3uCcOyT
-         isUVW1tcpcwMZ4y6KY5ZxcD9C88CnxszLWDsiAskZjdJ53DER27M6zK0oaEhWWieSL
-         Juy7xWTEZPuLwOj9cO6+/7dR2PqcKQxjkt2MABFO0zPwNEsjU2mafYbXnQPlZ2I0cL
-         2ZDQJwWjnuzEx4AHGvLxNgfwyXB0lIDpMXfYtHANjMklviMBw30yLOvmuMA/WBhhwQ
-         lTIOL/KwWHU60GJWJ06zwdDByMnoxCjLnfIwK3SRtaOMOkXk/Hr5rtRBTGuebT4pdB
-         MUwu53koBYhbA==
-Message-ID: <8f9271b6-0381-70a9-f0c2-595b2235866a@stuerz.xyz>
-Date:   Sun, 27 Mar 2022 14:46:00 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: [PATCH 00/22] Replace comments with C99 initializers
-Content-Language: en-US
-To:     =?UTF-8?Q?Benjamin_St=c3=bcrz?= <benni@stuerz.xyz>
-References: <20220326165909.506926-1-benni@stuerz.xyz>
-Cc:     sebastian.hesselbarth@gmail.com, gregory.clement@bootlin.com,
-        linux@armlinux.org.uk, linux@simtec.co.uk, krzk@kernel.org,
-        alim.akhtar@samsung.com, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
-        robert.moore@intel.com, rafael.j.wysocki@intel.com,
-        lenb@kernel.org, 3chas3@gmail.com, laforge@gnumonks.org,
-        arnd@arndb.de, gregkh@linuxfoundation.org, mchehab@kernel.org,
-        tony.luck@intel.com, james.morse@arm.com, rric@kernel.org,
-        linus.walleij@linaro.org, brgl@bgdev.pl,
-        mike.marciniszyn@cornelisnetworks.com,
-        dennis.dalessandro@cornelisnetworks.com, jgg@ziepe.ca,
-        pali@kernel.org, dmitry.torokhov@gmail.com, isdn@linux-pingi.de,
-        benh@kernel.crashing.org, fbarrat@linux.ibm.com, ajd@linux.ibm.com,
-        davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        nico@fluxnic.net, loic.poulain@linaro.org, kvalo@kernel.org,
-        pkshih@realtek.com, bhelgaas@google.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-input@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-pci@vger.kernel.org
-From:   =?UTF-8?Q?Benjamin_St=c3=bcrz?= <benni@stuerz.xyz>
-In-Reply-To: <20220326165909.506926-1-benni@stuerz.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_SUSPICIOUS_NTLD,
-        PDS_OTHER_BAD_TLD,RDNS_DYNAMIC,SPF_HELO_PASS,SPF_PASS,
+        Sun, 27 Mar 2022 10:13:23 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 058F3B7E2;
+        Sun, 27 Mar 2022 07:11:45 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id mj15-20020a17090b368f00b001c637aa358eso16441124pjb.0;
+        Sun, 27 Mar 2022 07:11:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=H1at9llyYi2Z1V+fDKTA1p3pK6c4N+0psjZ6neSptW8=;
+        b=AY5IKAeG0b/nRO2YNYn5DJ3RJXQRp9cwlerHO9QEu5SuyvqxaRt+Y4kQSu8kPen1gd
+         +QTCTl2i+ujx/iIeLw/OkQYnSaHavw+b5b6dP7O64xgXtICA6Vg46KInj7/bCqZrVRUD
+         jzvqIGaDg9pbEtgsCdeFLfXUOjJ6hdnYIhpfy/WEXomag9x1WCNUb977D8Im063IcAnx
+         WGIz4KJa5ILF5kaVV+mVrXW5xSqv8CE27nLBaU8977U1XXvSvkIdECWDz+0KTCJ35ASh
+         7/DAVYcYONfYMU814D2omwXusfd7cF+dhaRkU3qGN51j2NJjh5ifzCiffylS3JyY8ZqG
+         zvHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=H1at9llyYi2Z1V+fDKTA1p3pK6c4N+0psjZ6neSptW8=;
+        b=KwVXlS0gJcYoaA+XbWdUtanh3gt6NsXFMT9SM2karzz5Nc+8c10rM6NrIjbLVoLTfO
+         PVdB5grTJPr8zE+waVUn+dhdUOhIqD1x9iLWX+TeVHcugjxwb2Ia0WcvCvOur8/zrpt8
+         uL0AUJYlNvuHdHzICqcgbyJYB5mOIlDJ+T2tHTCJr0o6ZCFtzDV6UF3t4g4Q9j3hsL5R
+         wUHYa28kPg0DBYRfq+88BQga155aI6sYNIaIr4TW+PWMhib6zcO9NjllhKgGRyfWyIth
+         z3Px6MlnLySJZ2rrrXkKTzKkfbvihOa2xFUizU9HHuNgSZsQWURr0tfuREvhrYdIEovD
+         YunQ==
+X-Gm-Message-State: AOAM530gufjorvrFjn2EnhuRUbHZGPjpC12nqIvFuRd8RVIgXf3vk3/4
+        U7qwynxEs1T9PO5qQUwFx0SR2nj5+1ouZw==
+X-Google-Smtp-Source: ABdhPJypyC0064bZL/sA9jWIsQTyfVX5ppPpMT+/wezYv0VYl3Q21NusGld36NqZRAk/kYtLeyWPjA==
+X-Received: by 2002:a17:90a:5ae4:b0:1bf:9c61:6973 with SMTP id n91-20020a17090a5ae400b001bf9c616973mr24300806pji.73.1648390304427;
+        Sun, 27 Mar 2022 07:11:44 -0700 (PDT)
+Received: from localhost.localdomain ([115.220.243.108])
+        by smtp.googlemail.com with ESMTPSA id v13-20020a17090a088d00b001c64d30fa8bsm14689431pjc.1.2022.03.27.07.11.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Mar 2022 07:11:43 -0700 (PDT)
+From:   Xiaomeng Tong <xiam0nd.tong@gmail.com>
+To:     chunkeey@gmail.com
+Cc:     chunkeey@googlemail.com, davem@davemloft.net, kuba@kernel.org,
+        kvalo@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linville@tuxdriver.com,
+        netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org,
+        xiam0nd.tong@gmail.com
+Subject: Re: [PATCH] carl9170: main: fix an incorrect use of list iterator
+Date:   Sun, 27 Mar 2022 22:11:36 +0800
+Message-Id: <20220327141136.17059-1-xiam0nd.tong@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <a5689ba5-2a88-2bef-348b-5bec5cbc3b60@gmail.com>
+References: <a5689ba5-2a88-2bef-348b-5bec5cbc3b60@gmail.com>
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch series replaces comments with C99's designated initializers
-in a few places. It also adds some enum initializers. This is my first
-time contributing to the Linux kernel, therefore I'm probably doing a
-lot of things the wrong way. I'm sorry for that.
+On Sun, 27 Mar 2022 14:05:29, Christian Lamparter <chunkeey@gmail.com> wrote:
+> Hi,
+> 
+> On 27/03/2022 09:27, Xiaomeng Tong wrote:
+> > The bug is here:
+> > 	rcu_assign_pointer(ar->tx_ampdu_iter,
+> > 		(struct carl9170_sta_tid *) &ar->tx_ampdu_list);
+> 
+> yeah, so... I know there's currently a big discussion revolving
+> around LISTs due to incoming the GNU89 to GNU11 switch. I'm not
+> currently aware that something related to this had updated
+> INIT_LIST_HEAD + friends. So, please tell me if there is extra
+> information that has to be considered.
+> 
+> > The 'ar->tx_ampdu_iter' is used as a list iterator variable
+> > which point to a structure object containing the list HEAD
+> > (&ar->tx_ampdu_list), not as the HEAD itself.
+> > 
+> > The only use case of 'ar->tx_ampdu_iter' is as a base pos
+> > for list_for_each_entry_continue_rcu in carl9170_tx_ampdu().
+> > If the iterator variable holds the *wrong* HEAD value here
+> > (has not been modified elsewhere before), this will lead to
+> > an invalid memory access.
+> > 
+> > Using list_entry_rcu to get the right list iterator variable
+> > and reassign it, to fix this bug.
+> > Note: use 'ar->tx_ampdu_list.next' instead of '&ar->tx_ampdu_list'
+> > to avoid compiler error.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: fe8ee9ad80b28 ("carl9170: mac80211 glue and command interface")
+> > Signed-off-by: Xiaomeng Tong <xiam0nd.tong@gmail.com>
+> > ---
+> >   drivers/net/wireless/ath/carl9170/main.c | 6 ++++--
+> >   1 file changed, 4 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/net/wireless/ath/carl9170/main.c b/drivers/net/wireless/ath/carl9170/main.c
+> > index 49f7ee1c912b..a287937bf666 100644
+> > --- a/drivers/net/wireless/ath/carl9170/main.c
+> > +++ b/drivers/net/wireless/ath/carl9170/main.c
+> > @@ -1756,6 +1756,7 @@ static const struct ieee80211_ops carl9170_ops = {
+> >   
+> >   void *carl9170_alloc(size_t priv_size)
+> >   {
+> > +	struct carl9170_sta_tid *tid_info;
+> >   	struct ieee80211_hw *hw;
+> >   	struct ar9170 *ar;
+> >   	struct sk_buff *skb;
+> > @@ -1815,8 +1816,9 @@ void *carl9170_alloc(size_t priv_size)
+> >   	INIT_DELAYED_WORK(&ar->stat_work, carl9170_stat_work);
+> >   	INIT_DELAYED_WORK(&ar->tx_janitor, carl9170_tx_janitor);
+> >   	INIT_LIST_HEAD(&ar->tx_ampdu_list);
+> > -	rcu_assign_pointer(ar->tx_ampdu_iter,
+> > -			   (struct carl9170_sta_tid *) &ar->tx_ampdu_list);
+> > +	tid_info = list_entry_rcu(ar->tx_ampdu_list.next,
+> > +				struct carl9170_sta_tid, list);
+> > +	rcu_assign_pointer(ar->tx_ampdu_iter, tid_info);
+> 
+> 
+> I've tested this. I've added the following pr_info that would
+> print the (raw) pointer of both your new method (your patch)
+> and the old (current code) one:
+> 
+>   pr_info("new:%px\n", list_entry_rcu(ar->tx_ampdu_list.next,struct carl9170_sta_tid, list)); // tid_info
+>   pr_info("old:%px\n", (struct carl9170_sta_tid *) &ar->tx_ampdu_list);
+> 
+> and run it on AR9170 USB Stick
+> 
+> [  216.547932] usb 2-10: SerialNumber: 12345
+> [  216.673629] usb 2-10: reset high-speed USB device number 10 using xhci_hcd
+> [  216.853488] new:ffff9394268a38e0
+> [  216.853496] old:ffff9394268a38e0
+> [  216.858174] usb 2-10: driver   API: 1.9.9 2016-02-15 [1-1]
+> [  216.858186] usb 2-10: firmware API: 1.9.9 2021-02-05
+> 
+> phew, what a relieve :). Both the new and old pointers are the same.
+> 
 
-I've gotten a few emails so far stating that this patch series is
-unnecessary. Yes, in fact this patch series is not necessary by itself,
-but it could help me understand how the whole process works and maybe I
-could help somewhere, where help is actually needed.
+I double check it, and this should not be a bug, at least for now.
+the 'list' happens to be the first member of struct carl9170_sta_tid,
+so both the new and old pointers are the same. However, we should not
+depend on the member order of structure or compiler to guarantee the
+correctness, in case some day the order is changed by accident. Instead,
+we should guarantee it using the correct logic explicitly.
 
-This patch itself is a no-op.
-
-Signed-off-by: Benjamin Stürz <benni@stuerz.xyz>
----
- .gitignore | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/.gitignore b/.gitignore
-index 7afd412dadd2..706f667261eb 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -20,7 +20,7 @@
- *.dtb
- *.dtbo
- *.dtb.S
--*.dwo
-+*.dwo
- *.elf
- *.gcno
- *.gz
--- 
-2.35.1
+--
+Xiaomeng Tong
