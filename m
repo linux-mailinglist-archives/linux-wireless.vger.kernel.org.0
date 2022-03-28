@@ -2,94 +2,190 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 959B84E95D4
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 13:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA0BD4E9626
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 14:02:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241826AbiC1L4J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Mar 2022 07:56:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40948 "EHLO
+        id S242173AbiC1MER (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Mar 2022 08:04:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242046AbiC1Lz7 (ORCPT
+        with ESMTP id S235781AbiC1MEQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Mar 2022 07:55:59 -0400
-Received: from stuerz.xyz (stuerz.xyz [IPv6:2001:19f0:5:15da:5400:3ff:fecc:7379])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BBA3587B;
-        Mon, 28 Mar 2022 04:51:50 -0700 (PDT)
-Received: by stuerz.xyz (Postfix, from userid 114)
-        id DB5E3FA6D6; Mon, 28 Mar 2022 11:51:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
-        t=1648468308; bh=3Wi+uKVZkL99swRaVau3EJ8BXQXDlu9JC1kflQpPOrg=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=oUQch5AaF2NS4T0Fc7buc7qaKcaMKVG810YRJRo241bkl85duCMxS23fDm3GVMDw1
-         xL8wfFwfguE7DE2l/k4vVmJ5m+zw1ufGo67LfJIKzisY6pcfbZGcdaFk0B9ghPqfKS
-         I2W7g/SOQV7recVh3ztaUhpWJY1H9k0XjfmxF8AmYZ/fAW3ggk2byys8WeLu0ak9ah
-         IgL+/CAYYREpGVUMMRCs+UZIGRhzVjykJ9daQ0sVnnmKwNo2ovBFc7vsiaUCV/jRSa
-         ex0Ku60KERB06l+p4AJhX5EDQm9DgjMeTcaApMq8icB704ISrupDr4D5KxV4dtLzM0
-         6HAU3bjLTErUA==
-Received: from [IPV6:2a02:8109:a100:1a48::e7c] (unknown [IPv6:2a02:8109:a100:1a48::e7c])
-        by stuerz.xyz (Postfix) with ESMTPSA id 96ED2FA6AC;
-        Mon, 28 Mar 2022 11:51:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
-        t=1648468306; bh=3Wi+uKVZkL99swRaVau3EJ8BXQXDlu9JC1kflQpPOrg=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=zBafXC0qmHbBy2R0CwrqEVHxB0KbRcM6x7IR+QfcMB3oUVBkemOuTu17YEp7Cwbgd
-         Lw+gvLver4LCPJCOHCL2eAzpr1O+pT/EX986F+oA22O2GOoGJb/57oYXvhAOACQpb/
-         rN+svuiDvsbTolC94H1JtxdXdx0U3+g4ZYZxI9bHa94d/+r+oRSAJqz7+XAzj1cCh3
-         ict551S0UMWEtEMaDv06/XFQYnv7JqCdIWuWPwV30h6+Z5RIA9IJAECe2MRFrynB4K
-         mSzFCFSElIq/pRqE39gIg1HoMMEgNA6qMLNrZGciYbRFSH0ycDjGpa+qscnhjrtqTE
-         wSGn8LEPrkJpQ==
-Message-ID: <cc104272-d79a-41e1-f4de-cb78fb073991@stuerz.xyz>
-Date:   Mon, 28 Mar 2022 13:51:42 +0200
+        Mon, 28 Mar 2022 08:04:16 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E34AA184;
+        Mon, 28 Mar 2022 05:02:36 -0700 (PDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22SBGVe1003281;
+        Mon, 28 Mar 2022 12:02:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=eopDlAerto5cu8t7VL8uSZexV6d47sbjv0WpEVVN2rU=;
+ b=Cu5VpJUCNGXzVkcSJxYEJwsCik8ePrSlSlPkWaTPJPiteXSvT692JkTW4vkesEpt/Qrh
+ pVwIjXv9/WVCfu6htCYTDqN8BMKJInzIHP6NKsXB6bfk5cxulFVuVdSm0quOhHuphxOX
+ dUCcmP3dZy/ntPuyCvjV4wRYHU7yu+OQsNTfIzSNrUEn2jp2gujrepHGsIpimgNHwCrB
+ +aS9cWislnobScISShwC5c2D1YX9IvaYwMojGU4MlWJB4bobg0bAZ7TcNBcN3QLtNVFY
+ Z1XjfektwqWVmCFPy0WYSudFWon8dmZDBG6PcqRy4TtxqFrzRBDBU1xdu5UWikEjnVv1 jw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3f3c0f8wk0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 28 Mar 2022 12:02:13 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22SBqrwq021727;
+        Mon, 28 Mar 2022 12:02:12 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3f3c0f8wj2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 28 Mar 2022 12:02:12 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+        by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22SBrN3m021407;
+        Mon, 28 Mar 2022 12:02:10 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+        by ppma02fra.de.ibm.com with ESMTP id 3f1tf8ua8m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 28 Mar 2022 12:02:10 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 22SC273W35651888
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 28 Mar 2022 12:02:08 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D1CDB52067;
+        Mon, 28 Mar 2022 12:02:07 +0000 (GMT)
+Received: from li-e979b1cc-23ba-11b2-a85c-dfd230f6cf82 (unknown [9.171.73.54])
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id 037DC5204F;
+        Mon, 28 Mar 2022 12:02:06 +0000 (GMT)
+Date:   Mon, 28 Mar 2022 14:02:04 +0200
+From:   Halil Pasic <pasic@linux.ibm.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@toke.dk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Maxime Bizon <mbizon@freebox.fr>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Olha Cherevyk <olha.cherevyk@gmail.com>,
+        iommu <iommu@lists.linux-foundation.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable <stable@vger.kernel.org>,
+        Halil Pasic <pasic@linux.ibm.com>
+Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
+ ath9k-based AP
+Message-ID: <20220328140205.59c2c1b8.pasic@linux.ibm.com>
+In-Reply-To: <CAHk-=whK3z5O4G55cOb2JYgwisb4cpDK=qhM=0CfmCC8PD+xMQ@mail.gmail.com>
+References: <1812355.tdWV9SEqCh@natalenko.name>
+        <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
+        <20220324055732.GB12078@lst.de>
+        <4386660.LvFx2qVVIh@natalenko.name>
+        <81ffc753-72aa-6327-b87b-3f11915f2549@arm.com>
+        <878rsza0ih.fsf@toke.dk>
+        <4be26f5d8725cdb016c6fdd9d05cfeb69cdd9e09.camel@freebox.fr>
+        <20220324163132.GB26098@lst.de>
+        <d8a1cbf4-a521-78ec-1560-28d855e0913e@arm.com>
+        <871qyr9t4e.fsf@toke.dk>
+        <CAHk-=whUQCCaQXJt3KUeQ8mtnLeVXEScNXCp+_DYh2SNY7EcEA@mail.gmail.com>
+        <20220327054848.1a545b12.pasic@linux.ibm.com>
+        <CAHk-=whUJ=tMEgP3KiWwk0pzmHn+1QORUu50syE+zOGk4UnFog@mail.gmail.com>
+        <CAHk-=wgUx5CVF_1aEkhhEiRGXHgKzUdKiyctBKcHAxkxPpbiaw@mail.gmail.com>
+        <20220328015211.296739a4.pasic@linux.ibm.com>
+        <CAHk-=whK3z5O4G55cOb2JYgwisb4cpDK=qhM=0CfmCC8PD+xMQ@mail.gmail.com>
+Organization: IBM
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH 00/22] Replace comments with C99 initializers
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-input@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-pci@vger.kernel.org
-References: <20220326165909.506926-1-benni@stuerz.xyz>
- <8f9271b6-0381-70a9-f0c2-595b2235866a@stuerz.xyz> <87fsn2zaix.fsf@kernel.org>
-From:   =?UTF-8?Q?Benjamin_St=c3=bcrz?= <benni@stuerz.xyz>
-In-Reply-To: <87fsn2zaix.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_SUSPICIOUS_NTLD,
-        NICE_REPLY_A,PDS_OTHER_BAD_TLD,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: qM3F7YJf-cGX00jEe2OWQrGFmuf7JALY
+X-Proofpoint-GUID: -noAAuTabGO02OaibSytSTpo2UpQgv16
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-28_04,2022-03-28_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
+ impostorscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
+ mlxlogscore=999 adultscore=0 mlxscore=0 spamscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203280069
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 28.03.22 11:33, Kalle Valo wrote:
-> Benjamin Stürz <benni@stuerz.xyz> writes:
+On Sun, 27 Mar 2022 17:30:01 -0700
+Linus Torvalds <torvalds@linux-foundation.org> wrote:
+
+> On Sun, Mar 27, 2022 at 4:52 PM Halil Pasic <pasic@linux.ibm.com> wrote:
+> >
+> > I have no intention of pursuing this.  When fixing the information leak,
+> > I happened to realize, that a somewhat similar situation can emerge when
+> > mappings are reused. It seemed like an easy fix, so I asked the swiotlb
+> > maintainers, and they agreed. It ain't my field of expertise, and the
+> > drivers I'm interested in don't need this functionality.  
 > 
->> This patch series replaces comments with C99's designated initializers
->> in a few places. It also adds some enum initializers. This is my first
->> time contributing to the Linux kernel, therefore I'm probably doing a
->> lot of things the wrong way. I'm sorry for that.
+> Ok.
 > 
-> Just a small tip: If you are new, start with something small and learn
-> from that. Don't do a controversial big patchset spanning multiple
-> subsystems, that's the hard way to learn things. First submit one patch
-> at a time to one subsystem and gain understanding of the process that
-> way.
+> That said, I think you are putting yourself down when you said in an
+> earlier email that you aren't veryt knowledgeable in this area.
+> 
+> I think the fact that you *did* think of this other similar situation
+> is actually very interesting, and it's something people probably
+> _haven't_ been thinking about.
+
+Thank you!
+
+> 
+> So I think your first commit fixes the straightforward and common case
+> where you do that "map / partial dma / unmap" case.
+> 
+> And that straightforward case is probably all that the disk IO case
+> ever really triggers, which is presumably why those "drivers I'm
+> interested in don't need this functionality" don't need anything else?
 > 
 
-I actually thought this would be such simple thing. Do you know of any
-good thing where to start? I already looked into drivers/staging/*/TODO
-and didn't found something for me personally.
+I agree.
 
-Should I drop this patchset and start with something different? If yes,
-what would the proper way to drop it? Just announcing, that this is
-going nowhere in a separate patch?
+> And yes, your second commit didn't work, but hey, whatever. The whole
+> "multiple operations on the same double buffering allocation"
+> situation is something I don't think people have necessarily thought
+> about enough.
+> 
+> And by that I don't mean you. I mean very much the whole history of
+> our dma mapping code.
+> 
+
+I agree. We are in the process of catching up! :) My idea was to aid
+a process, as a relatively naive pair of eyes: somebody didn't read any
+data sheets describing non-cache-coherent DMA, and never programmed
+a DMA. It is a fairly common problem, that for the very knowledgeable
+certain things seem obvious, self-explanatory or trivial, but for the
+less knowledgeable the are not. And knowledge can create bias.
+
+> I then get opinionated and probably too forceful, but please don't
+> take it as being about you - it's about just my frustration with that
+> code - and if it comes off too negative then please accept my
+> apologies.
+
+I have to admit, I did feel a little uncomfortable, and I did look for
+an exit strategy. I do believe, that people in your position do have to
+occasionally get forceful, and even abrasive to maintain efficiency. I
+try to not ignore the social aspect of things, but I do get carried away
+occasionally.
+
+Your last especially paragraph is very encouraging and welcome. Thank
+you!
+
+Regards,
+Halil
+
+[..]
