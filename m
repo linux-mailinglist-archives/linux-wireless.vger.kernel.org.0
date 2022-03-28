@@ -2,352 +2,280 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF4D84E96B4
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 14:33:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9CAA4E9788
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 15:08:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242520AbiC1Mfa convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Mar 2022 08:35:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41798 "EHLO
+        id S242949AbiC1NJp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Mar 2022 09:09:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234500AbiC1Mf0 (ORCPT
+        with ESMTP id S231730AbiC1NJf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Mar 2022 08:35:26 -0400
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF14A634B;
-        Mon, 28 Mar 2022 05:33:45 -0700 (PDT)
-Received: by mail-yb1-f169.google.com with SMTP id o5so25732740ybe.2;
-        Mon, 28 Mar 2022 05:33:45 -0700 (PDT)
+        Mon, 28 Mar 2022 09:09:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D21D45DA76
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Mar 2022 06:07:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1648472858;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=PtHN8VWVvChKHe7fcrbgQxII1uEL3nooKYmXW4yHoDA=;
+        b=CuH6UwThAioSZmqjKrcT7n1o4zf2OXAH+4+kXX5BvuBGmsEbjaavIygL+VYzDxBjy10n4M
+        mDwQ/dJFDCYgMBdaflgCeICWtzQaY43K8XBWekVwkW2jQ55y2efDTnTW6xxjYGjkFP5fdp
+        nY+//r6HRrNldctgOy/cRCCm0G2uvGY=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-88-yi7s9_CZNCi2wUCfopHKQA-1; Mon, 28 Mar 2022 09:07:37 -0400
+X-MC-Unique: yi7s9_CZNCi2wUCfopHKQA-1
+Received: by mail-qk1-f198.google.com with SMTP id r11-20020a05620a03cb00b0067e0cd1c855so8373264qkm.4
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Mar 2022 06:07:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=96R3YZlaxPkbqjS50KOs84E9IviQBiQAWcWza7S6bDo=;
-        b=Eq2mSL2vnD6O8+ZRBdoVRBmAzgq1r6rWgZzq7LOOvHwzASWFDXpCszJbiVo012a9IS
-         KrdQT5R31WmUNLZrAECQeCnBglVyWTUqKuJ43nw8AZ9VfDU2zZaUklkvR9BnM3S/v78E
-         zUEVstpqnqhwc3lJonlMgYYtI1y0bew6v+5Nw08VU8nRs70VPZrmDlKjKP0DpLBs0biV
-         He4quWuPDU9CqDdVp3couqESWsolz3fKT7Q4/1GulbgxBEjtg140XPxti9KW6lzk1UAI
-         cpHx10t1/B7uG3mXCNP2ZxI2puZxYC58O+PR8RtoToBfa/oNEHrMarxQmK9uuTHRX7RS
-         cjKA==
-X-Gm-Message-State: AOAM533VjPY1pHRPQbGeOxrFqejjcPG0THMlugHn1enlAF/zPsUG+Z0U
-        lfUN+mUAfBg7cWBQ9Ob/ZuwBDI9lKmWFZP8RKQM=
-X-Google-Smtp-Source: ABdhPJx8Wg38N6VDkBqHhGiMOIVXRrg4vGvCYLhNlosUsWn6MZ6VqGYcxoBV2Rzxwr0C4NFzPtT0Oq2lDLGzpa8RiBA=
-X-Received: by 2002:a25:9d8a:0:b0:633:9668:c48a with SMTP id
- v10-20020a259d8a000000b006339668c48amr23154148ybp.153.1648470824874; Mon, 28
- Mar 2022 05:33:44 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=PtHN8VWVvChKHe7fcrbgQxII1uEL3nooKYmXW4yHoDA=;
+        b=syeOXFt/c/lu5RyRA0HOPEq09nL1Rmi+4GIpG1VcFY/x3M3j1IeUdmGB/GIFrgIK78
+         +lM8ZNEI8YscR3fMQigbRL9tSHdLBgHSgtyG93LAUKqgLUsT42GOxMmamP0IBxhx8Y0s
+         sado8Q0XjCJxld5nfrtNoALWnC21LtotAzFwyZzTmxcTXnV2fwq0LqH0RZDVwizCN4Xy
+         Nl69Tl1RD+l77b3C26daBK3aEidg8LuLz65TmDIxDZbbbJveJEPa89FvbOdoS0G3V88k
+         y5n3ZwFVUHNWQ27Hr3LD5X8F9KkDwWWVmqjI8C1BESe3dxSLc3wHLXkCCiB2bi/fByCw
+         bU8A==
+X-Gm-Message-State: AOAM532GHrmscpay+rIFcVuX4kzJC/0fW5hpEnkejWNeEPOw5y1wvNPi
+        PXsew/eFLRw14fhVlXXvbtfa5eugvbozvWOEzATCHREdtuxHLLRkTwx+nwbSKfMLy63wiYHD3hy
+        B3Y1o2+5PCjbBMEatoY+hJGl+bYU=
+X-Received: by 2002:a05:620a:44d6:b0:67b:2dd8:3064 with SMTP id y22-20020a05620a44d600b0067b2dd83064mr15958166qkp.219.1648472856944;
+        Mon, 28 Mar 2022 06:07:36 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzXF6xziFnZvT7B9Thf2sImzwCkc8tQCsS4WrJzX9a9Q+rXQD1iC0oh26pKBl4kArr2VB9/qQ==
+X-Received: by 2002:a05:620a:44d6:b0:67b:2dd8:3064 with SMTP id y22-20020a05620a44d600b0067b2dd83064mr15958127qkp.219.1648472856653;
+        Mon, 28 Mar 2022 06:07:36 -0700 (PDT)
+Received: from localhost.localdomain.com (024-205-208-113.res.spectrum.com. [24.205.208.113])
+        by smtp.gmail.com with ESMTPSA id n8-20020ac85a08000000b002e06aa02021sm13035414qta.49.2022.03.28.06.07.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Mar 2022 06:07:35 -0700 (PDT)
+From:   trix@redhat.com
+To:     toke@toke.dk, kvalo@kernel.org, davem@davemloft.net,
+        kuba@kernel.org, pabeni@redhat.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Tom Rix <trix@redhat.com>
+Subject: [PATCH v2] ath9k: initialize arrays at compile time
+Date:   Mon, 28 Mar 2022 06:07:27 -0700
+Message-Id: <20220328130727.3090827-1-trix@redhat.com>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
-References: <20220326165909.506926-1-benni@stuerz.xyz> <20220326165909.506926-5-benni@stuerz.xyz>
-In-Reply-To: <20220326165909.506926-5-benni@stuerz.xyz>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 28 Mar 2022 14:33:29 +0200
-Message-ID: <CAJZ5v0iJ=t26mnxHx9B+_A3ue7tVjgATN=TTtNNf2UNfuySd7Q@mail.gmail.com>
-Subject: Re: [PATCH 05/22] acpica: Replace comments with C99 initializers
-To:     =?UTF-8?Q?Benjamin_St=C3=BCrz?= <benni@stuerz.xyz>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        linux@simtec.co.uk, Krzysztof Kozlowski <krzk@kernel.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>, 3chas3@gmail.com,
-        laforge@gnumonks.org, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        James Morse <james.morse@arm.com>,
-        Robert Richter <rric@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        mike.marciniszyn@cornelisnetworks.com,
-        dennis.dalessandro@cornelisnetworks.com,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        isdn@linux-pingi.de,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com,
-        Nicolas Pitre <nico@fluxnic.net>,
-        Loic Poulain <loic.poulain@linaro.org>, kvalo@kernel.org,
-        pkshih@realtek.com, Bjorn Helgaas <bhelgaas@google.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Samsung SoC <linux-samsung-soc@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        linux-atm-general@lists.sourceforge.net,
-        netdev <netdev@vger.kernel.org>,
-        "open list:EDAC-CORE" <linux-edac@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-rdma@vger.kernel.org,
-        linux-input <linux-input@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        wcn36xx@lists.infradead.org,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Mar 26, 2022 at 6:09 PM Benjamin Stürz <benni@stuerz.xyz> wrote:
->
-> This replaces comments with C99's designated
-> initializers because the kernel supports them now.
+From: Tom Rix <trix@redhat.com>
 
-However, note that all of the ACPICA material should be submitted to
-the upstream ACPICA project via https://github.com/acpica/acpica
+Early clearing of arrays with
+memset(array, 0, size);
+is equivilent to initializing the array in its decl with
+array[size] = {};
 
-Also please note that the set of compilers that need to be supported
-by the ACPICA project is greater than the set of compilers that can
-build the Linux kernel.
+Convert the memsets to initializations.
 
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+v2: cleanup commit log
+    change { 0 } to {}
+    
+ drivers/net/wireless/ath/ath9k/ar9003_calib.c  |  6 ++----
+ drivers/net/wireless/ath/ath9k/ar9003_eeprom.c |  4 +---
+ drivers/net/wireless/ath/ath9k/ar9003_paprd.c  | 14 ++++++--------
+ drivers/net/wireless/ath/ath9k/eeprom.c        |  3 +--
+ drivers/net/wireless/ath/ath9k/eeprom_4k.c     |  4 +---
+ drivers/net/wireless/ath/ath9k/eeprom_9287.c   |  4 +---
+ drivers/net/wireless/ath/ath9k/eeprom_def.c    |  4 +---
+ drivers/net/wireless/ath/ath9k/wow.c           |  7 ++-----
+ 8 files changed, 15 insertions(+), 31 deletions(-)
 
-> Signed-off-by: Benjamin Stürz <benni@stuerz.xyz>
-> ---
->  drivers/acpi/acpica/utdecode.c | 183 ++++++++++++++++-----------------
->  1 file changed, 90 insertions(+), 93 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/utdecode.c b/drivers/acpi/acpica/utdecode.c
-> index bcd3871079d7..d19868d2ea46 100644
-> --- a/drivers/acpi/acpica/utdecode.c
-> +++ b/drivers/acpi/acpica/utdecode.c
-> @@ -156,37 +156,37 @@ static const char acpi_gbl_bad_type[] = "UNDEFINED";
->  /* Printable names of the ACPI object types */
->
->  static const char *acpi_gbl_ns_type_names[] = {
-> -       /* 00 */ "Untyped",
-> -       /* 01 */ "Integer",
-> -       /* 02 */ "String",
-> -       /* 03 */ "Buffer",
-> -       /* 04 */ "Package",
-> -       /* 05 */ "FieldUnit",
-> -       /* 06 */ "Device",
-> -       /* 07 */ "Event",
-> -       /* 08 */ "Method",
-> -       /* 09 */ "Mutex",
-> -       /* 10 */ "Region",
-> -       /* 11 */ "Power",
-> -       /* 12 */ "Processor",
-> -       /* 13 */ "Thermal",
-> -       /* 14 */ "BufferField",
-> -       /* 15 */ "DdbHandle",
-> -       /* 16 */ "DebugObject",
-> -       /* 17 */ "RegionField",
-> -       /* 18 */ "BankField",
-> -       /* 19 */ "IndexField",
-> -       /* 20 */ "Reference",
-> -       /* 21 */ "Alias",
-> -       /* 22 */ "MethodAlias",
-> -       /* 23 */ "Notify",
-> -       /* 24 */ "AddrHandler",
-> -       /* 25 */ "ResourceDesc",
-> -       /* 26 */ "ResourceFld",
-> -       /* 27 */ "Scope",
-> -       /* 28 */ "Extra",
-> -       /* 29 */ "Data",
-> -       /* 30 */ "Invalid"
-> +       [0]  = "Untyped",
-> +       [1]  = "Integer",
-> +       [2]  = "String",
-> +       [3]  = "Buffer",
-> +       [4]  = "Package",
-> +       [5]  = "FieldUnit",
-> +       [6]  = "Device",
-> +       [7]  = "Event",
-> +       [8]  = "Method",
-> +       [9]  = "Mutex",
-> +       [10] = "Region",
-> +       [11] = "Power",
-> +       [12] = "Processor",
-> +       [13] = "Thermal",
-> +       [14] = "BufferField",
-> +       [15] = "DdbHandle",
-> +       [16] = "DebugObject",
-> +       [17] = "RegionField",
-> +       [18] = "BankField",
-> +       [19] = "IndexField",
-> +       [20] = "Reference",
-> +       [21] = "Alias",
-> +       [22] = "MethodAlias",
-> +       [23] = "Notify",
-> +       [24] = "AddrHandler",
-> +       [25] = "ResourceDesc",
-> +       [26] = "ResourceFld",
-> +       [27] = "Scope",
-> +       [28] = "Extra",
-> +       [29] = "Data",
-> +       [30] = "Invalid"
->  };
->
->  const char *acpi_ut_get_type_name(acpi_object_type type)
-> @@ -284,22 +284,22 @@ const char *acpi_ut_get_node_name(void *object)
->  /* Printable names of object descriptor types */
->
->  static const char *acpi_gbl_desc_type_names[] = {
-> -       /* 00 */ "Not a Descriptor",
-> -       /* 01 */ "Cached Object",
-> -       /* 02 */ "State-Generic",
-> -       /* 03 */ "State-Update",
-> -       /* 04 */ "State-Package",
-> -       /* 05 */ "State-Control",
-> -       /* 06 */ "State-RootParseScope",
-> -       /* 07 */ "State-ParseScope",
-> -       /* 08 */ "State-WalkScope",
-> -       /* 09 */ "State-Result",
-> -       /* 10 */ "State-Notify",
-> -       /* 11 */ "State-Thread",
-> -       /* 12 */ "Tree Walk State",
-> -       /* 13 */ "Parse Tree Op",
-> -       /* 14 */ "Operand Object",
-> -       /* 15 */ "Namespace Node"
-> +       [0]  = "Not a Descriptor",
-> +       [1]  = "Cached Object",
-> +       [2]  = "State-Generic",
-> +       [3]  = "State-Update",
-> +       [4]  = "State-Package",
-> +       [5]  = "State-Control",
-> +       [6]  = "State-RootParseScope",
-> +       [7]  = "State-ParseScope",
-> +       [8]  = "State-WalkScope",
-> +       [9]  = "State-Result",
-> +       [10] = "State-Notify",
-> +       [11] = "State-Thread",
-> +       [12] = "Tree Walk State",
-> +       [13] = "Parse Tree Op",
-> +       [14] = "Operand Object",
-> +       [15] = "Namespace Node"
->  };
->
->  const char *acpi_ut_get_descriptor_name(void *object)
-> @@ -331,13 +331,13 @@ const char *acpi_ut_get_descriptor_name(void *object)
->  /* Printable names of reference object sub-types */
->
->  static const char *acpi_gbl_ref_class_names[] = {
-> -       /* 00 */ "Local",
-> -       /* 01 */ "Argument",
-> -       /* 02 */ "RefOf",
-> -       /* 03 */ "Index",
-> -       /* 04 */ "DdbHandle",
-> -       /* 05 */ "Named Object",
-> -       /* 06 */ "Debug"
-> +       [0] = "Local",
-> +       [1] = "Argument",
-> +       [2] = "RefOf",
-> +       [3] = "Index",
-> +       [4] = "DdbHandle",
-> +       [5] = "Named Object",
-> +       [6] = "Debug"
->  };
->
->  const char *acpi_ut_get_reference_name(union acpi_operand_object *object)
-> @@ -416,25 +416,22 @@ const char *acpi_ut_get_mutex_name(u32 mutex_id)
->  /* Names for Notify() values, used for debug output */
->
->  static const char *acpi_gbl_generic_notify[ACPI_GENERIC_NOTIFY_MAX + 1] = {
-> -       /* 00 */ "Bus Check",
-> -       /* 01 */ "Device Check",
-> -       /* 02 */ "Device Wake",
-> -       /* 03 */ "Eject Request",
-> -       /* 04 */ "Device Check Light",
-> -       /* 05 */ "Frequency Mismatch",
-> -       /* 06 */ "Bus Mode Mismatch",
-> -       /* 07 */ "Power Fault",
-> -       /* 08 */ "Capabilities Check",
-> -       /* 09 */ "Device PLD Check",
-> -       /* 0A */ "Reserved",
-> -       /* 0B */ "System Locality Update",
-> -                                                               /* 0C */ "Reserved (was previously Shutdown Request)",
-> -                                                               /* Reserved in ACPI 6.0 */
-> -       /* 0D */ "System Resource Affinity Update",
-> -                                                               /* 0E */ "Heterogeneous Memory Attributes Update",
-> -                                                               /* ACPI 6.2 */
-> -                                               /* 0F */ "Error Disconnect Recover"
-> -                                               /* ACPI 6.3 */
-> +       [0]  = "Bus Check",
-> +       [1]  = "Device Check",
-> +       [2]  = "Device Wake",
-> +       [3]  = "Eject Request",
-> +       [4]  = "Device Check Light",
-> +       [5]  = "Frequency Mismatch",
-> +       [6]  = "Bus Mode Mismatch",
-> +       [7]  = "Power Fault",
-> +       [8]  = "Capabilities Check",
-> +       [9]  = "Device PLD Check",
-> +       [10] = "Reserved",
-> +       [11] = "System Locality Update",
-> +       [12] = "Reserved (was previously Shutdown Request)",  /* Reserved in ACPI 6.0 */
-> +       [13] = "System Resource Affinity Update",
-> +       [14] = "Heterogeneous Memory Attributes Update",      /* ACPI 6.2 */
-> +       [15] = "Error Disconnect Recover"                     /* ACPI 6.3 */
->  };
->
->  static const char *acpi_gbl_device_notify[5] = {
-> @@ -521,26 +518,26 @@ const char *acpi_ut_get_notify_name(u32 notify_value, acpi_object_type type)
->   ******************************************************************************/
->
->  static const char *acpi_gbl_argument_type[20] = {
-> -       /* 00 */ "Unknown ARGP",
-> -       /* 01 */ "ByteData",
-> -       /* 02 */ "ByteList",
-> -       /* 03 */ "CharList",
-> -       /* 04 */ "DataObject",
-> -       /* 05 */ "DataObjectList",
-> -       /* 06 */ "DWordData",
-> -       /* 07 */ "FieldList",
-> -       /* 08 */ "Name",
-> -       /* 09 */ "NameString",
-> -       /* 0A */ "ObjectList",
-> -       /* 0B */ "PackageLength",
-> -       /* 0C */ "SuperName",
-> -       /* 0D */ "Target",
-> -       /* 0E */ "TermArg",
-> -       /* 0F */ "TermList",
-> -       /* 10 */ "WordData",
-> -       /* 11 */ "QWordData",
-> -       /* 12 */ "SimpleName",
-> -       /* 13 */ "NameOrRef"
-> +       [0x00] = "Unknown ARGP",
-> +       [0x01] = "ByteData",
-> +       [0x02] = "ByteList",
-> +       [0x03] = "CharList",
-> +       [0x04] = "DataObject",
-> +       [0x05] = "DataObjectList",
-> +       [0x06] = "DWordData",
-> +       [0x07] = "FieldList",
-> +       [0x08] = "Name",
-> +       [0x09] = "NameString",
-> +       [0x0A] = "ObjectList",
-> +       [0x0B] = "PackageLength",
-> +       [0x0C] = "SuperName",
-> +       [0x0D] = "Target",
-> +       [0x0E] = "TermArg",
-> +       [0x0F] = "TermList",
-> +       [0x10] = "WordData",
-> +       [0x11] = "QWordData",
-> +       [0x12] = "SimpleName",
-> +       [0x13] = "NameOrRef"
->  };
->
->  const char *acpi_ut_get_argument_type_name(u32 arg_type)
-> --
-> 2.35.1
->
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_calib.c b/drivers/net/wireless/ath/ath9k/ar9003_calib.c
+index dc24da1ff00b1..142b11085bbc6 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_calib.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_calib.c
+@@ -891,10 +891,9 @@ static void ar9003_hw_tx_iq_cal_outlier_detection(struct ath_hw *ah,
+ {
+ 	int i, im, nmeasurement;
+ 	int magnitude, phase;
+-	u32 tx_corr_coeff[MAX_MEASUREMENT][AR9300_MAX_CHAINS];
++	u32 tx_corr_coeff[MAX_MEASUREMENT][AR9300_MAX_CHAINS] = {};
+ 	struct ath9k_hw_cal_data *caldata = ah->caldata;
+ 
+-	memset(tx_corr_coeff, 0, sizeof(tx_corr_coeff));
+ 	for (i = 0; i < MAX_MEASUREMENT / 2; i++) {
+ 		tx_corr_coeff[i * 2][0] = tx_corr_coeff[(i * 2) + 1][0] =
+ 					AR_PHY_TX_IQCAL_CORR_COEFF_B0(i);
+@@ -1155,10 +1154,9 @@ static void ar9003_hw_tx_iq_cal_post_proc(struct ath_hw *ah,
+ static void ar9003_hw_tx_iq_cal_reload(struct ath_hw *ah)
+ {
+ 	struct ath9k_hw_cal_data *caldata = ah->caldata;
+-	u32 tx_corr_coeff[MAX_MEASUREMENT][AR9300_MAX_CHAINS];
++	u32 tx_corr_coeff[MAX_MEASUREMENT][AR9300_MAX_CHAINS] = {};
+ 	int i, im;
+ 
+-	memset(tx_corr_coeff, 0, sizeof(tx_corr_coeff));
+ 	for (i = 0; i < MAX_MEASUREMENT / 2; i++) {
+ 		tx_corr_coeff[i * 2][0] = tx_corr_coeff[(i * 2) + 1][0] =
+ 					AR_PHY_TX_IQCAL_CORR_COEFF_B0(i);
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+index b0a4ca3559fd8..25dd9d92f656f 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+@@ -5451,14 +5451,12 @@ static void ath9k_hw_ar9300_set_txpower(struct ath_hw *ah,
+ 	struct ath_common *common = ath9k_hw_common(ah);
+ 	struct ar9300_eeprom *eep = &ah->eeprom.ar9300_eep;
+ 	struct ar9300_modal_eep_header *modal_hdr;
+-	u8 targetPowerValT2[ar9300RateSize];
++	u8 targetPowerValT2[ar9300RateSize] = {};
+ 	u8 target_power_val_t2_eep[ar9300RateSize];
+ 	u8 targetPowerValT2_tpc[ar9300RateSize];
+ 	unsigned int i = 0, paprd_scale_factor = 0;
+ 	u8 pwr_idx, min_pwridx = 0;
+ 
+-	memset(targetPowerValT2, 0 , sizeof(targetPowerValT2));
+-
+ 	/*
+ 	 * Get target powers from EEPROM - our baseline for TX Power
+ 	 */
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_paprd.c b/drivers/net/wireless/ath/ath9k/ar9003_paprd.c
+index 34e1009402846..ab3987777dd08 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_paprd.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_paprd.c
+@@ -419,13 +419,16 @@ static inline int find_proper_scale(int expn, int N)
+ static bool create_pa_curve(u32 *data_L, u32 *data_U, u32 *pa_table, u16 *gain)
+ {
+ 	unsigned int thresh_accum_cnt;
+-	int x_est[NUM_BIN + 1], Y[NUM_BIN + 1], theta[NUM_BIN + 1];
++	int x_est[NUM_BIN + 1] = {};
++	int Y[NUM_BIN + 1] = {};
++	int theta[NUM_BIN + 1] = {};
+ 	int PA_in[NUM_BIN + 1];
+ 	int B1_tmp[NUM_BIN + 1], B2_tmp[NUM_BIN + 1];
+ 	unsigned int B1_abs_max, B2_abs_max;
+ 	int max_index, scale_factor;
+-	int y_est[NUM_BIN + 1];
+-	int x_est_fxp1_nonlin, x_tilde[NUM_BIN + 1];
++	int y_est[NUM_BIN + 1] = {};
++	int x_est_fxp1_nonlin;
++	int x_tilde[NUM_BIN + 1] = {};
+ 	unsigned int x_tilde_abs;
+ 	int G_fxp, Y_intercept, order_x_by_y, M, I, L, sum_y_sqr, sum_y_quad;
+ 	int Q_x, Q_B1, Q_B2, beta_raw, alpha_raw, scale_B;
+@@ -439,11 +442,6 @@ static bool create_pa_curve(u32 *data_L, u32 *data_U, u32 *pa_table, u16 *gain)
+ 	thresh_accum_cnt = 16;
+ 	scale_factor = 5;
+ 	max_index = 0;
+-	memset(theta, 0, sizeof(theta));
+-	memset(x_est, 0, sizeof(x_est));
+-	memset(Y, 0, sizeof(Y));
+-	memset(y_est, 0, sizeof(y_est));
+-	memset(x_tilde, 0, sizeof(x_tilde));
+ 
+ 	for (i = 0; i < NUM_BIN; i++) {
+ 		s32 accum_cnt, accum_tx, accum_rx, accum_ang;
+diff --git a/drivers/net/wireless/ath/ath9k/eeprom.c b/drivers/net/wireless/ath/ath9k/eeprom.c
+index efb7889142d47..03675f6e0409e 100644
+--- a/drivers/net/wireless/ath/ath9k/eeprom.c
++++ b/drivers/net/wireless/ath/ath9k/eeprom.c
+@@ -480,7 +480,7 @@ void ath9k_hw_get_gain_boundaries_pdadcs(struct ath_hw *ah,
+ 		[AR5416_MAX_PWR_RANGE_IN_HALF_DB];
+ 
+ 	u8 *pVpdL, *pVpdR, *pPwrL, *pPwrR;
+-	u8 minPwrT4[AR5416_NUM_PD_GAINS];
++	u8 minPwrT4[AR5416_NUM_PD_GAINS] = {};
+ 	u8 maxPwrT4[AR5416_NUM_PD_GAINS];
+ 	int16_t vpdStep;
+ 	int16_t tmpVal;
+@@ -500,7 +500,6 @@ void ath9k_hw_get_gain_boundaries_pdadcs(struct ath_hw *ah,
+ 	else
+ 		intercepts = AR5416_PD_GAIN_ICEPTS;
+ 
+-	memset(&minPwrT4, 0, AR5416_NUM_PD_GAINS);
+ 	ath9k_hw_get_channel_centers(ah, chan, &centers);
+ 
+ 	for (numPiers = 0; numPiers < availPiers; numPiers++) {
+diff --git a/drivers/net/wireless/ath/ath9k/eeprom_4k.c b/drivers/net/wireless/ath/ath9k/eeprom_4k.c
+index e8c2cc03be0cb..b74a60fd6cf17 100644
+--- a/drivers/net/wireless/ath/ath9k/eeprom_4k.c
++++ b/drivers/net/wireless/ath/ath9k/eeprom_4k.c
+@@ -583,12 +583,10 @@ static void ath9k_hw_4k_set_txpower(struct ath_hw *ah,
+ 	struct ath_regulatory *regulatory = ath9k_hw_regulatory(ah);
+ 	struct ar5416_eeprom_4k *pEepData = &ah->eeprom.map4k;
+ 	struct modal_eep_4k_header *pModal = &pEepData->modalHeader;
+-	int16_t ratesArray[Ar5416RateSize];
++	int16_t ratesArray[Ar5416RateSize] = {};
+ 	u8 ht40PowerIncForPdadc = 2;
+ 	int i;
+ 
+-	memset(ratesArray, 0, sizeof(ratesArray));
+-
+ 	if (ath9k_hw_4k_get_eeprom_rev(ah) >= AR5416_EEP_MINOR_VER_2)
+ 		ht40PowerIncForPdadc = pModal->ht40PowerIncForPdadc;
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/eeprom_9287.c b/drivers/net/wireless/ath/ath9k/eeprom_9287.c
+index 3caa149b10131..f70e3ef9b10b3 100644
+--- a/drivers/net/wireless/ath/ath9k/eeprom_9287.c
++++ b/drivers/net/wireless/ath/ath9k/eeprom_9287.c
+@@ -711,12 +711,10 @@ static void ath9k_hw_ar9287_set_txpower(struct ath_hw *ah,
+ 	struct ath_regulatory *regulatory = ath9k_hw_regulatory(ah);
+ 	struct ar9287_eeprom *pEepData = &ah->eeprom.map9287;
+ 	struct modal_eep_ar9287_header *pModal = &pEepData->modalHeader;
+-	int16_t ratesArray[Ar5416RateSize];
++	int16_t ratesArray[Ar5416RateSize] = {};
+ 	u8 ht40PowerIncForPdadc = 2;
+ 	int i;
+ 
+-	memset(ratesArray, 0, sizeof(ratesArray));
+-
+ 	if (ath9k_hw_ar9287_get_eeprom_rev(ah) >= AR9287_EEP_MINOR_VER_2)
+ 		ht40PowerIncForPdadc = pModal->ht40PowerIncForPdadc;
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/eeprom_def.c b/drivers/net/wireless/ath/ath9k/eeprom_def.c
+index 9729a69d3e2e3..4d24c877cbfc2 100644
+--- a/drivers/net/wireless/ath/ath9k/eeprom_def.c
++++ b/drivers/net/wireless/ath/ath9k/eeprom_def.c
+@@ -1150,12 +1150,10 @@ static void ath9k_hw_def_set_txpower(struct ath_hw *ah,
+ 	struct ar5416_eeprom_def *pEepData = &ah->eeprom.def;
+ 	struct modal_eep_header *pModal =
+ 		&(pEepData->modalHeader[IS_CHAN_2GHZ(chan)]);
+-	int16_t ratesArray[Ar5416RateSize];
++	int16_t ratesArray[Ar5416RateSize] = {};
+ 	u8 ht40PowerIncForPdadc = 2;
+ 	int i, cck_ofdm_delta = 0;
+ 
+-	memset(ratesArray, 0, sizeof(ratesArray));
+-
+ 	if (ath9k_hw_def_get_eeprom_rev(ah) >= AR5416_EEP_MINOR_VER_2)
+ 		ht40PowerIncForPdadc = pModal->ht40PowerIncForPdadc;
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/wow.c b/drivers/net/wireless/ath/ath9k/wow.c
+index 8d0b1730a9d5b..0232fba96d74c 100644
+--- a/drivers/net/wireless/ath/ath9k/wow.c
++++ b/drivers/net/wireless/ath/ath9k/wow.c
+@@ -53,11 +53,8 @@ static int ath9k_wow_add_disassoc_deauth_pattern(struct ath_softc *sc)
+ 	struct ath_common *common = ath9k_hw_common(ah);
+ 	int pattern_count = 0;
+ 	int ret, i, byte_cnt = 0;
+-	u8 dis_deauth_pattern[MAX_PATTERN_SIZE];
+-	u8 dis_deauth_mask[MAX_PATTERN_SIZE];
+-
+-	memset(dis_deauth_pattern, 0, MAX_PATTERN_SIZE);
+-	memset(dis_deauth_mask, 0, MAX_PATTERN_SIZE);
++	u8 dis_deauth_pattern[MAX_PATTERN_SIZE] = {};
++	u8 dis_deauth_mask[MAX_PATTERN_SIZE] = {};
+ 
+ 	/*
+ 	 * Create Dissassociate / Deauthenticate packet filter
+-- 
+2.26.3
+
