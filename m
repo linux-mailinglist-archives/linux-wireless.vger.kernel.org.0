@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6C574E91DB
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 11:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D92A64E91D4
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 11:49:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239967AbiC1Ju5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Mar 2022 05:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47912 "EHLO
+        id S239969AbiC1JvA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Mar 2022 05:51:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239964AbiC1Jux (ORCPT
+        with ESMTP id S239981AbiC1Ju6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Mar 2022 05:50:53 -0400
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D97042EDA;
-        Mon, 28 Mar 2022 02:49:11 -0700 (PDT)
+        Mon, 28 Mar 2022 05:50:58 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D85D433A3;
+        Mon, 28 Mar 2022 02:49:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1648460952; x=1679996952;
+  t=1648460954; x=1679996954;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=svX/L7ZvICmcCgUp5mA18E9A+V8o7zk94F2szAqge98=;
-  b=L1ZbwiOJIYREm6Fxo3wPyo6S4QU1uiTVqFAkIUGNFL0z3dpmjX1L2j05
-   0VJF/motRjDrWjdSsf2AhnUtehzet/4MlVvZFpmevQ3SWBl9NJA0eocDM
-   rpJExrYZYWSCDB0azO8dIFVi/LgmXwtr/SwoC2RlZi8vUYBJchrVaY2ht
-   s=;
-Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 28 Mar 2022 02:49:11 -0700
+  bh=WDDAAfSo87dB2NNVHSr7+wOtWnIpJ7UHcDaelW54uzg=;
+  b=kQT2eyuHFfrI+UbTlm17ETt1iaMtpE8+PV7qrzsJeR6wY4yzUbH8h2hi
+   oYDlxO3eFxfFmL2wCoZv21QHj6OI6HvUXQgciqSfCEIeKUdX7Rzn4/c5q
+   uz4VbG/NLDxIYCaFThW/zLMkUpfC9lon+1qurjlxnIHEqTqn2Eo474e8Z
+   E=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 28 Mar 2022 02:49:14 -0700
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2022 02:49:11 -0700
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2022 02:49:14 -0700
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Mon, 28 Mar 2022 02:49:11 -0700
+ 15.2.986.22; Mon, 28 Mar 2022 02:49:13 -0700
 Received: from mpubbise-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Mon, 28 Mar 2022 02:49:09 -0700
+ 15.2.986.22; Mon, 28 Mar 2022 02:49:11 -0700
 From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 To:     <ath11k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <robh@kernel.org>, Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Subject: [PATCH v3 05/12] ath11k: Fetch device information via QMI for WCN6750
-Date:   Mon, 28 Mar 2022 15:18:31 +0530
-Message-ID: <20220328094838.14093-6-quic_mpubbise@quicinc.com>
+Subject: [PATCH v3 06/12] ath11k: Add QMI changes for WCN6750
+Date:   Mon, 28 Mar 2022 15:18:32 +0530
+Message-ID: <20220328094838.14093-7-quic_mpubbise@quicinc.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220328094838.14093-1-quic_mpubbise@quicinc.com>
 References: <20220328094838.14093-1-quic_mpubbise@quicinc.com>
@@ -64,12 +64,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since WPPS Q6 does the PCIe enumeration of WCN6750, device
-information like BAR and BAR size is not known to the APPS
-processor (Application Processor SubSystem). In order to
-fetch these details, a QMI message called device info request
-will be sent to the target. Therefore, add logic to fetch
-BAR details from the target.
+In the case of WCN6750, FW doesn't request for DDR memory
+via QMI, instead it uses a fixed 12MB reserved Memory region
+in the DDR which is called as MSA region. As a result, QMI
+message sequence is not same as other ath11k supported devices.
+
+Also, M3 firmware will be bundled into the FW and will be
+downloaded to the target as part of Q6 boot.
+
+This is the QMI flow in the case of WCN6750,
+
+1) QMI firmware indication REQ/RESP
+2) QMI host capability REQ/RESP
+3) QMI target capability REQ/RESP
+4) QMI device info REQ/RESP
+5) QMI BDF download
+6) QMI FW ready
 
 Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00573-QCAMSLSWPLZ-1
 Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
@@ -78,242 +88,200 @@ Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
 
 Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 ---
- drivers/net/wireless/ath/ath11k/qmi.c | 144 ++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/qmi.h |  24 ++++-
- 2 files changed, 164 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.c |  7 +++
+ drivers/net/wireless/ath/ath11k/hw.h   |  1 +
+ drivers/net/wireless/ath/ath11k/qmi.c  | 76 ++++++++++++++++----------
+ 3 files changed, 56 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index 0442faa3b7af..df49f8b68556 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2021-2022, Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include <linux/elf.h>
-@@ -12,6 +13,8 @@
- #include <linux/of_address.h>
- #include <linux/ioport.h>
- #include <linux/firmware.h>
-+#include <linux/of_device.h>
-+#include <linux/of_irq.h>
- 
- #define SLEEP_CLOCK_SELECT_INTERNAL_BIT	0x02
- #define HOST_CSTATE_BIT			0x04
-@@ -748,6 +751,68 @@ static struct qmi_elem_info qmi_wlanfw_cap_req_msg_v01_ei[] = {
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 93bab713f754..4abf80e6707c 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -101,6 +101,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.current_cc_support = false,
+ 		.dbr_debug_support = true,
+ 		.global_reset = false,
++		.fixed_fw_mem = false,
+ 	},
+ 	{
+ 		.hw_rev = ATH11K_HW_IPQ6018_HW10,
+@@ -167,6 +168,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.current_cc_support = false,
+ 		.dbr_debug_support = true,
+ 		.global_reset = false,
++		.fixed_fw_mem = false,
+ 	},
+ 	{
+ 		.name = "qca6390 hw2.0",
+@@ -232,6 +234,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.current_cc_support = true,
+ 		.dbr_debug_support = false,
+ 		.global_reset = true,
++		.fixed_fw_mem = false,
+ 	},
+ 	{
+ 		.name = "qcn9074 hw1.0",
+@@ -297,6 +300,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.current_cc_support = false,
+ 		.dbr_debug_support = true,
+ 		.global_reset = false,
++		.fixed_fw_mem = false,
+ 	},
+ 	{
+ 		.name = "wcn6855 hw2.0",
+@@ -362,6 +366,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.current_cc_support = true,
+ 		.dbr_debug_support = false,
+ 		.global_reset = true,
++		.fixed_fw_mem = false,
+ 	},
+ 	{
+ 		.name = "wcn6855 hw2.1",
+@@ -426,6 +431,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.current_cc_support = true,
+ 		.dbr_debug_support = false,
+ 		.global_reset = true,
++		.fixed_fw_mem = false,
+ 	},
+ 	{
+ 		.name = "wcn6750 hw1.0",
+@@ -487,6 +493,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.current_cc_support = true,
+ 		.dbr_debug_support = false,
+ 		.global_reset = false,
++		.fixed_fw_mem = true,
  	},
  };
  
-+static struct qmi_elem_info qmi_wlanfw_device_info_req_msg_v01_ei[] = {
-+	{
-+		.data_type      = QMI_EOTI,
-+		.array_type     = NO_ARRAY,
-+		.tlv_type       = QMI_COMMON_TLV_TYPE,
-+	},
-+};
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index e1bcdc538b0e..4823e2bb4df5 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -195,6 +195,7 @@ struct ath11k_hw_params {
+ 	bool current_cc_support;
+ 	bool dbr_debug_support;
+ 	bool global_reset;
++	bool fixed_fw_mem;
+ };
+ 
+ struct ath11k_hw_ops {
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index df49f8b68556..57804c152692 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -1799,10 +1799,6 @@ static int ath11k_qmi_fw_ind_register_send(struct ath11k_base *ab)
+ 	req->client_id = QMI_WLANFW_CLIENT_ID;
+ 	req->fw_ready_enable_valid = 1;
+ 	req->fw_ready_enable = 1;
+-	req->request_mem_enable_valid = 1;
+-	req->request_mem_enable = 1;
+-	req->fw_mem_ready_enable_valid = 1;
+-	req->fw_mem_ready_enable = 1;
+ 	req->cal_done_enable_valid = 1;
+ 	req->cal_done_enable = 1;
+ 	req->fw_init_done_enable_valid = 1;
+@@ -1811,6 +1807,17 @@ static int ath11k_qmi_fw_ind_register_send(struct ath11k_base *ab)
+ 	req->pin_connect_result_enable_valid = 0;
+ 	req->pin_connect_result_enable = 0;
+ 
++	/* WCN6750 doesn't request for DDR memory via QMI,
++	 * instead it uses a fixed 12MB reserved memory
++	 * region in DDR.
++	 */
++	if (!ab->hw_params.fixed_fw_mem) {
++		req->request_mem_enable_valid = 1;
++		req->request_mem_enable = 1;
++		req->fw_mem_ready_enable_valid = 1;
++		req->fw_mem_ready_enable = 1;
++	}
 +
-+static struct qmi_elem_info qmi_wlfw_device_info_resp_msg_v01_ei[] = {
-+	{
-+		.data_type	= QMI_STRUCT,
-+		.elem_len	= 1,
-+		.elem_size	= sizeof(struct qmi_response_type_v01),
-+		.array_type	= NO_ARRAY,
-+		.tlv_type	= 0x02,
-+		.offset		= offsetof(struct qmi_wlanfw_device_info_resp_msg_v01,
-+					   resp),
-+		.ei_array	= qmi_response_type_v01_ei,
-+	},
-+	{
-+		.data_type	= QMI_OPT_FLAG,
-+		.elem_len	= 1,
-+		.elem_size	= sizeof(u8),
-+		.array_type	= NO_ARRAY,
-+		.tlv_type	= 0x10,
-+		.offset		= offsetof(struct qmi_wlanfw_device_info_resp_msg_v01,
-+					   bar_addr_valid),
-+	},
-+	{
-+		.data_type	= QMI_UNSIGNED_8_BYTE,
-+		.elem_len	= 1,
-+		.elem_size	= sizeof(u64),
-+		.array_type	= NO_ARRAY,
-+		.tlv_type	= 0x10,
-+		.offset		= offsetof(struct qmi_wlanfw_device_info_resp_msg_v01,
-+					   bar_addr),
-+	},
-+	{
-+		.data_type	= QMI_OPT_FLAG,
-+		.elem_len	= 1,
-+		.elem_size	= sizeof(u8),
-+		.array_type	= NO_ARRAY,
-+		.tlv_type	= 0x11,
-+		.offset		= offsetof(struct qmi_wlanfw_device_info_resp_msg_v01,
-+					   bar_size_valid),
-+	},
-+	{
-+		.data_type	= QMI_UNSIGNED_4_BYTE,
-+		.elem_len	= 1,
-+		.elem_size	= sizeof(u32),
-+		.array_type	= NO_ARRAY,
-+		.tlv_type	= 0x11,
-+		.offset		= offsetof(struct qmi_wlanfw_device_info_resp_msg_v01,
-+					   bar_size),
-+	},
-+	{
-+		.data_type	= QMI_EOTI,
-+		.array_type	= NO_ARRAY,
-+		.tlv_type	= QMI_COMMON_TLV_TYPE,
-+	},
-+};
-+
- static struct qmi_elem_info qmi_wlanfw_rf_chip_info_s_v01_ei[] = {
- 	{
- 		.data_type	= QMI_UNSIGNED_4_BYTE,
-@@ -2007,6 +2072,79 @@ static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
+ 	ret = qmi_txn_init(handle, &txn,
+ 			   qmi_wlanfw_ind_register_resp_msg_v01_ei, resp);
+ 	if (ret < 0)
+@@ -2839,27 +2846,6 @@ ath11k_qmi_driver_event_post(struct ath11k_qmi *qmi,
  	return 0;
  }
  
-+static int ath11k_qmi_request_device_info(struct ath11k_base *ab)
-+{
-+	struct qmi_wlanfw_device_info_req_msg_v01 req = {};
-+	struct qmi_wlanfw_device_info_resp_msg_v01 resp = {};
-+	struct qmi_txn txn;
-+	void __iomem *bar_addr_va;
-+	int ret;
-+
-+	/* device info message req is only sent for hybrid bus devices */
-+	if (!ab->bus_params.hybrid_bus_type)
-+		return 0;
-+
-+	ret = qmi_txn_init(&ab->qmi.handle, &txn,
-+			   qmi_wlfw_device_info_resp_msg_v01_ei, &resp);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = qmi_send_request(&ab->qmi.handle, NULL, &txn,
-+			       QMI_WLANFW_DEVICE_INFO_REQ_V01,
-+			       QMI_WLANFW_DEVICE_INFO_REQ_MSG_V01_MAX_LEN,
-+			       qmi_wlanfw_device_info_req_msg_v01_ei, &req);
-+	if (ret < 0) {
-+		qmi_txn_cancel(&txn);
-+		ath11k_warn(ab, "qmi failed to send target device info request, err = %d\n",
-+			    ret);
-+		goto out;
-+	}
-+
-+	ret = qmi_txn_wait(&txn, msecs_to_jiffies(ATH11K_QMI_WLANFW_TIMEOUT_MS));
-+	if (ret < 0) {
-+		ath11k_warn(ab, "qmi failed target device info request %d\n", ret);
-+		goto out;
-+	}
-+
-+	if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
-+		ath11k_warn(ab, "qmi device info req failed, result: %d, err: %d\n",
-+			    resp.resp.result, resp.resp.error);
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	if (!resp.bar_addr_valid || !resp.bar_size_valid) {
-+		ath11k_warn(ab, "qmi device info response invalid, result: %d, err: %d\n",
-+			    resp.resp.result, resp.resp.error);
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	if (!resp.bar_addr ||
-+	    resp.bar_size != ATH11K_QMI_DEVICE_BAR_SIZE) {
-+		ath11k_warn(ab, "qmi device info invalid addr and size, result: %d, err: %d\n",
-+			    resp.resp.result, resp.resp.error);
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	bar_addr_va = devm_ioremap(ab->dev, resp.bar_addr, resp.bar_size);
-+
-+	if (!bar_addr_va) {
-+		ath11k_warn(ab, "qmi device info ioremap failed\n");
-+		ab->mem_len = 0;
-+		ret = -EIO;
-+		goto out;
-+	}
-+
-+	ab->mem = bar_addr_va;
-+	ab->mem_len = resp.bar_size;
-+
-+	return 0;
-+out:
-+	return ret;
-+}
-+
- static int ath11k_qmi_request_target_cap(struct ath11k_base *ab)
+-static int ath11k_qmi_event_server_arrive(struct ath11k_qmi *qmi)
+-{
+-	struct ath11k_base *ab = qmi->ab;
+-	int ret;
+-
+-	ret = ath11k_qmi_fw_ind_register_send(ab);
+-	if (ret < 0) {
+-		ath11k_warn(ab, "failed to send qmi firmware indication: %d\n",
+-			    ret);
+-		return ret;
+-	}
+-
+-	ret = ath11k_qmi_host_cap_send(ab);
+-	if (ret < 0) {
+-		ath11k_warn(ab, "failed to send qmi host cap: %d\n", ret);
+-		return ret;
+-	}
+-
+-	return ret;
+-}
+-
+ static int ath11k_qmi_event_mem_request(struct ath11k_qmi *qmi)
  {
- 	struct qmi_wlanfw_cap_req_msg_v01 req;
-@@ -2748,6 +2886,12 @@ static int ath11k_qmi_event_load_bdf(struct ath11k_qmi *qmi)
+ 	struct ath11k_base *ab = qmi->ab;
+@@ -2901,9 +2887,33 @@ static int ath11k_qmi_event_load_bdf(struct ath11k_qmi *qmi)
  		return ret;
  	}
  
-+	ret = ath11k_qmi_request_device_info(ab);
+-	ret = ath11k_qmi_wlanfw_m3_info_send(ab);
++	return 0;
++}
++
++static int ath11k_qmi_event_server_arrive(struct ath11k_qmi *qmi)
++{
++	struct ath11k_base *ab = qmi->ab;
++	int ret;
++
++	ret = ath11k_qmi_fw_ind_register_send(ab);
 +	if (ret < 0) {
-+		ath11k_warn(ab, "failed to request qmi device info %d\n", ret);
++		ath11k_warn(ab, "failed to send qmi firmware indication: %d\n",
++			    ret);
 +		return ret;
 +	}
 +
- 	if (ab->hw_params.supports_regdb)
- 		ath11k_qmi_load_bdf_qmi(ab, true);
- 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
-index 872646c3b3ed..445b6bd34eb5 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.h
-+++ b/drivers/net/wireless/ath/ath11k/qmi.h
-@@ -38,6 +38,8 @@
- #define ATH11K_FIRMWARE_MODE_OFF		4
- #define ATH11K_COLD_BOOT_FW_RESET_DELAY		(40 * HZ)
- 
-+#define ATH11K_QMI_DEVICE_BAR_SIZE		0x200000
++	ret = ath11k_qmi_host_cap_send(ab);
+ 	if (ret < 0) {
+-		ath11k_warn(ab, "failed to send qmi m3 info req: %d\n", ret);
++		ath11k_warn(ab, "failed to send qmi host cap: %d\n", ret);
++		return ret;
++	}
 +
- struct ath11k_base;
- 
- enum ath11k_qmi_file_type {
-@@ -287,10 +289,12 @@ struct qmi_wlanfw_fw_cold_cal_done_ind_msg_v01 {
- 	char placeholder;
- };
- 
--#define QMI_WLANFW_CAP_REQ_MSG_V01_MAX_LEN	0
--#define QMI_WLANFW_CAP_RESP_MSG_V01_MAX_LEN	235
--#define QMI_WLANFW_CAP_REQ_V01			0x0024
--#define QMI_WLANFW_CAP_RESP_V01			0x0024
-+#define QMI_WLANFW_CAP_REQ_MSG_V01_MAX_LEN		0
-+#define QMI_WLANFW_CAP_RESP_MSG_V01_MAX_LEN		235
-+#define QMI_WLANFW_CAP_REQ_V01				0x0024
-+#define QMI_WLANFW_CAP_RESP_V01				0x0024
-+#define QMI_WLANFW_DEVICE_INFO_REQ_V01			0x004C
-+#define QMI_WLANFW_DEVICE_INFO_REQ_MSG_V01_MAX_LEN	0
- 
- enum qmi_wlanfw_pipedir_enum_v01 {
- 	QMI_WLFW_PIPEDIR_NONE_V01 = 0,
-@@ -383,6 +387,18 @@ struct qmi_wlanfw_cap_req_msg_v01 {
- 	char placeholder;
- };
- 
-+struct qmi_wlanfw_device_info_req_msg_v01 {
-+	char placeholder;
-+};
++	if (!ab->hw_params.fixed_fw_mem)
++		return ret;
 +
-+struct qmi_wlanfw_device_info_resp_msg_v01 {
-+	struct qmi_response_type_v01 resp;
-+	u64 bar_addr;
-+	u32 bar_size;
-+	u8 bar_addr_valid;
-+	u8 bar_size_valid;
-+};
++	ret = ath11k_qmi_event_load_bdf(qmi);
++	if (ret < 0) {
++		ath11k_warn(ab, "qmi failed to download BDF:%d\n", ret);
+ 		return ret;
+ 	}
+ 
+@@ -3103,8 +3113,18 @@ static void ath11k_qmi_driver_event_work(struct work_struct *work)
+ 			break;
+ 		case ATH11K_QMI_EVENT_FW_MEM_READY:
+ 			ret = ath11k_qmi_event_load_bdf(qmi);
+-			if (ret < 0)
++			if (ret < 0) {
+ 				set_bit(ATH11K_FLAG_QMI_FAIL, &ab->dev_flags);
++				break;
++			}
 +
- #define QMI_WLANFW_BDF_DOWNLOAD_REQ_MSG_V01_MAX_LEN	6182
- #define QMI_WLANFW_BDF_DOWNLOAD_RESP_MSG_V01_MAX_LEN	7
- #define QMI_WLANFW_BDF_DOWNLOAD_RESP_V01		0x0025
++			ret = ath11k_qmi_wlanfw_m3_info_send(ab);
++			if (ret < 0) {
++				ath11k_warn(ab,
++					    "failed to send qmi m3 info req: %d\n", ret);
++				set_bit(ATH11K_FLAG_QMI_FAIL, &ab->dev_flags);
++			}
++
+ 			break;
+ 		case ATH11K_QMI_EVENT_FW_READY:
+ 			clear_bit(ATH11K_FLAG_QMI_FAIL, &ab->dev_flags);
 -- 
 2.35.1
 
