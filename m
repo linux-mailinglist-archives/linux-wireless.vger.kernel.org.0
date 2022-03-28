@@ -2,99 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5B044E921D
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 11:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B22604E95C4
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 13:53:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240094AbiC1J70 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Mar 2022 05:59:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43986 "EHLO
+        id S241927AbiC1Ly7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Mar 2022 07:54:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236910AbiC1J7Y (ORCPT
+        with ESMTP id S241973AbiC1Lyx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Mar 2022 05:59:24 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99EF653B40;
-        Mon, 28 Mar 2022 02:57:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=zDjy6QdYMZfzrDBM8z3vmKyXyiyg4NDUsUB16DZQfq4=;
-        t=1648461464; x=1649671064; b=UH6b4NIvopRVAzMa3bCp21YnfgYRvz2wKKPlyNtOm/5l7Bx
-        zidQmCp78kWhq94JmnVBI4Sjp6hftur7hpIxHYsyfot3b240KdM+iIJnJR2yfvzumMWj4tTQT551K
-        tT7Uxyzq/GxMKif6riOAe9s1pJV1ZEL0hLA4ewpRwWP8x99T1GPTK4JEpw+KB5FbRAv/XT4BR+Eh0
-        sQlsS4TIoJ+FIo35KVxww8Ur2b4T4XSOxFbk+T2DirF2EPh7w4DQUfgMUivjYUd8Z/ULRi8ykQCkN
-        uY/+VEnymDcNX6av1ziQYFxMIZ2NmjBYbQWUhRpx586dwvvL0sb2pTaKWWw4KwKA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nYm7v-001X9R-7G;
-        Mon, 28 Mar 2022 11:57:31 +0200
-Message-ID: <ab02e1298955d6f535928e2c34079973e656e3b8.camel@sipsolutions.net>
-Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
- ath9k-based AP
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Halil Pasic <pasic@linux.ibm.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Olha Cherevyk <olha.cherevyk@gmail.com>,
-        iommu <iommu@lists.linux-foundation.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable <stable@vger.kernel.org>
-Date:   Mon, 28 Mar 2022 11:57:30 +0200
-In-Reply-To: <bf9a4949635c01c5dec53b0e873eccec4e2b0d33.camel@sipsolutions.net>
-References: <1812355.tdWV9SEqCh@natalenko.name>
-         <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com>
-         <20220324055732.GB12078@lst.de> <4386660.LvFx2qVVIh@natalenko.name>
-         <81ffc753-72aa-6327-b87b-3f11915f2549@arm.com> <878rsza0ih.fsf@toke.dk>
-         <4be26f5d8725cdb016c6fdd9d05cfeb69cdd9e09.camel@freebox.fr>
-         <20220324163132.GB26098@lst.de>
-         <d8a1cbf4-a521-78ec-1560-28d855e0913e@arm.com> <871qyr9t4e.fsf@toke.dk>
-         <CAHk-=whUQCCaQXJt3KUeQ8mtnLeVXEScNXCp+_DYh2SNY7EcEA@mail.gmail.com>
-         <31434708dcad126a8334c99ee056dcce93e507f1.camel@freebox.fr>
-         <CAHk-=wippum+MksdY7ixMfa3i1sZ+nxYPWLLpVMNyXCgmiHbBQ@mail.gmail.com>
-         <298f4f9ccad7c3308d3a1fd8b4b4740571305204.camel@sipsolutions.net>
-         <CAHk-=whXAan2ExANMryPSFaBWeyzikPi+fPUseMoVhQAxR7cEA@mail.gmail.com>
-         <e42e4c8bf35b62c671ec20ec6c21a43216e7daa6.camel@sipsolutions.net>
-         <20220327051502.63fde20a.pasic@linux.ibm.com>
-         <f94c4fc26251262de0ecab003c74833617c1b305.camel@sipsolutions.net>
-         <bf9a4949635c01c5dec53b0e873eccec4e2b0d33.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
+        Mon, 28 Mar 2022 07:54:53 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D3693B02B
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Mar 2022 04:50:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B294BB80EAE
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Mar 2022 11:50:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA04C004DD;
+        Mon, 28 Mar 2022 11:50:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648468205;
+        bh=x9eKyuj2KmrT7dFpC0fUVZrekzKi7+BNPmEVT2exOK0=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=hmmJNrjsVxR2lMahV4w1UzWvSzvDm+OY66Y0nIRwp0Szk9qx37wNZHA0gL3US453d
+         kctXdoMDRIGLW4HNAq531f9cAjXCX3tT9Q7RjU/l0m4kOk68u1NsopxB5CeqRCubse
+         GNkYmN8FWdFGOf0YmZ5nbCzCMnRuJo4Wy0HOtj4ovSopXQUGKdt+x1lJbmbqZMKCiB
+         ZiooffZBAlS/PFsX8OZjfIOnMG84xdIbftJB/DSkH+hwOxohhPvzLhXGZZp0tfTphB
+         ngMSJp6Qst6nTRyDKMDxeOJ54/AmOifrXZFT7CvFmYnc15kjNpBHOgYhL6HIcprO2H
+         79nxoUk0K2XGQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v2] ath11k: store and send country code to firmware after
+ recovery
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20220324011856.11014-1-quic_wgong@quicinc.com>
+References: <20220324011856.11014-1-quic_wgong@quicinc.com>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <quic_wgong@quicinc.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <164846820213.31335.9001260494172365360.kvalo@kernel.org>
+Date:   Mon, 28 Mar 2022 11:50:04 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2022-03-28 at 11:50 +0200, Johannes Berg wrote:
-> No I worded that badly - the direction isn't useless, but thinking of it
-> in terms of a buffer property rather than data movement is inaccurate.
-> So then if we need something else to indicate how data was expected to
-> be moved, the direction argument becomes useless, since it's not a
-> buffer property but rather a temporal thing on a specific place that
-> expected certain data movement.
+Wen Gong <quic_wgong@quicinc.com> wrote:
+
+> Currently ath11k does not send the country code to firmware after device
+> recovery, as a result the regdomain info is reported from firmware by
+> default. Regdomain info is important, so ath11k also need to restore
+> it to the value which was used before recovery.
 > 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+> 
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Yeah, umm. I should've read the whole thread of the weekend first, sorry
-for the noise.
+Patch applied to ath-next branch of ath.git, thanks.
 
-johannes
+b2beae327e03 ath11k: store and send country code to firmware after recovery
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20220324011856.11014-1-quic_wgong@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
