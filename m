@@ -2,96 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8A304E8D90
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 07:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 312344E8DA1
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 07:57:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238179AbiC1FuQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Mar 2022 01:50:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40138 "EHLO
+        id S238186AbiC1F7U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Mar 2022 01:59:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235040AbiC1FuK (ORCPT
+        with ESMTP id S232968AbiC1F7T (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Mar 2022 01:50:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B582412A94;
-        Sun, 27 Mar 2022 22:48:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 314846109A;
-        Mon, 28 Mar 2022 05:48:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C6AC340F0;
-        Mon, 28 Mar 2022 05:48:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648446508;
-        bh=LQyxRKXMf0S7uzGj5hH8/MvLm79Jjubtz0m602VOG1Y=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=r5X52gFgn7hx5pBW0q/WF5RxNd/bFfG97hhie/kXFd6DHGiu014p/NEc7mw71W4xZ
-         JJpY+PSzyAACVYpBT6O0ZzdFiKjp6QJrXwz+v0jZ7x8AJTX6/l/NDBnYq1sqlVgnP4
-         TC9jttkCIwV4kZjwHq751BRBgg7/+OxOYMBKlQ/1/VEqBv9F3R4vDNzdzejBiC9izJ
-         MwyCxqyS/J6At+JIUj9cKkOJws2Airt7fxk70wDV4zRR3FrKmDl6N3EgrhD7z/mJZs
-         ndT9+LTH0vJ2Dvn9wSN5uSjcwCDucJNGGZLWHffCIeuhJtuxVUhgOof8UH0DuiljxA
-         Bgz69gFqxOmfw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] iwlwifi: mei: Replace zero-length array with flexible-array member
-References: <20220216195030.GA904170@embeddedor>
-        <202202161235.F3A134A9@keescook> <20220326004137.GB2602091@embeddedor>
-Date:   Mon, 28 Mar 2022 08:48:24 +0300
-In-Reply-To: <20220326004137.GB2602091@embeddedor> (Gustavo A. R. Silva's
-        message of "Fri, 25 Mar 2022 19:41:37 -0500")
-Message-ID: <87wngezkyf.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 28 Mar 2022 01:59:19 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D87951584
+        for <linux-wireless@vger.kernel.org>; Sun, 27 Mar 2022 22:57:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1648447059; x=1679983059;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RVYlVHjwfF7ezNm1v6K6Oq6FySdDFVnygc9rKgQEDsc=;
+  b=sDRuYqbubb1S6Sq3IzoHVt/kWNZbdclX5rvLv7+ahM+m+1gF5gXi6SCr
+   EjzPvJR4QGRoNV62Exg4659YrgMnQXLuREUxwfiyajsHBYAS9h4UQ3Vta
+   Rm2AaNKroKOsdpH1n7BJqXiYf4Noy4KAi+QPHzfmVspqoDoekSJTxR0df
+   k=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 27 Mar 2022 22:57:39 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2022 22:57:39 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Sun, 27 Mar 2022 22:57:38 -0700
+Received: from mpubbise-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Sun, 27 Mar 2022 22:57:37 -0700
+From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Subject: [PATCH v3 0/5] Refactor PCI code to support WCN6750
+Date:   Mon, 28 Mar 2022 11:27:09 +0530
+Message-ID: <20220328055714.6449-1-quic_mpubbise@quicinc.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Gustavo A. R. Silva" <gustavoars@kernel.org> writes:
+Unlike other ATH11K PCIe devices which are enumerated by APSS
+processor (Application Processor SubSystem), WCN6750 gets
+enumerated by the WPSS Q6 processor (Wireless Processor SubSystem);
+In simple terms, though WCN6750 is PCIe device, it is not attached
+to the APSS processor, APSS will not know of such a device being
+present in the system and therefore WCN6750 will be registered as
+a platform device to the kernel core like other supported AHB
+devices.
 
-> On Wed, Feb 16, 2022 at 12:35:22PM -0800, Kees Cook wrote:
->> On Wed, Feb 16, 2022 at 01:50:30PM -0600, Gustavo A. R. Silva wrote:
->> > There is a regular need in the kernel to provide a way to declare
->> > having a dynamically sized set of trailing elements in a structure.
->> > Kernel code should always use =E2=80=9Cflexible array members=E2=80=9D=
-[1] for these
->> > cases. The older style of one-element or zero-length arrays should
->> > no longer be used[2].
->> >=20
->> > [1] https://en.wikipedia.org/wiki/Flexible_array_member
->> > [2]
->> > https://www.kernel.org/doc/html/v5.16/process/deprecated.html#zero-len=
-gth-and-one-element-arrays
->> >=20
->> > Link: https://github.com/KSPP/linux/issues/78
->> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
->>=20
->> Reviewed-by: Kees Cook <keescook@chromium.org>
->
-> Hi all,
->
-> Friendly ping: can someone take this, please?
->
-> ...I can take this in my -next tree in the meantime.
+WCN6750 needs both AHB and PCI APIs for it's operation, it uses
+AHB APIs for device probe/boot and PCI APIs for device setup and
+register accesses. Because of this nature, it is referred as a
+hybrid bus device.
 
-I'll take this. Luca, ack?
+Refactor PCI code to support hybrid bus devices like WCN6750.
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+Manikanta Pubbisetty (5):
+  ath11k: PCI changes to support WCN6750
+  ath11k: Refactor PCI code to support WCN6750
+  ath11k: Choose MSI config based on HW revision
+  ath11k: Refactor MSI logic to support WCN6750
+  ath11k: Remove core PCI references from PCI common code
+---
+V3:
+ - Patch series with 19 patches is split in 2 patch series, this is the first one
+ - Rebased on ToT SHAID: 7316a74e54318d0cd648242b18ea83cdef6dda96
+ - Changed the PCI common code file name from pci_cmn.* to pcic.*
+ - Added ath11k_pcic_* prefix to all APIs in PCI common code
+ - Added pci_ops instead of having the chip specific PCI ops in bus_params
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+V2:
+ - Rebased on ToT
+
+ drivers/net/wireless/ath/ath11k/Makefile |   2 +-
+ drivers/net/wireless/ath/ath11k/core.c   |   6 -
+ drivers/net/wireless/ath/ath11k/core.h   |  34 +
+ drivers/net/wireless/ath/ath11k/hw.h     |   2 +-
+ drivers/net/wireless/ath/ath11k/mhi.c    |  30 +-
+ drivers/net/wireless/ath/ath11k/pci.c    | 978 ++++-------------------
+ drivers/net/wireless/ath/ath11k/pci.h    |  28 +-
+ drivers/net/wireless/ath/ath11k/pcic.c   | 741 +++++++++++++++++
+ drivers/net/wireless/ath/ath11k/pcic.h   |  46 ++
+ 9 files changed, 1013 insertions(+), 854 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath11k/pcic.c
+ create mode 100644 drivers/net/wireless/ath/ath11k/pcic.h
+
+-- 
+2.35.1
+
