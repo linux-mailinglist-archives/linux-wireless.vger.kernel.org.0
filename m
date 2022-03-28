@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EF494E8DD7
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 08:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC9744E8DDB
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 08:11:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238302AbiC1GML (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Mar 2022 02:12:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46084 "EHLO
+        id S238319AbiC1GMl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Mar 2022 02:12:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238304AbiC1GMJ (ORCPT
+        with ESMTP id S234924AbiC1GMj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Mar 2022 02:12:09 -0400
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DABBB17066
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Mar 2022 23:10:27 -0700 (PDT)
+        Mon, 28 Mar 2022 02:12:39 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B952C515AB
+        for <linux-wireless@vger.kernel.org>; Sun, 27 Mar 2022 23:10:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1648447827; x=1679983827;
+  t=1648447860; x=1679983860;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8S+bVEcyHGRAYP7LA7lx1oMoBf93I1QzQ/FaRoN4iTE=;
-  b=jQhvn/cU+Rhh9Gens7bsEjijOsbrgtznUH+Sm3kqza5w1ZQAMchKja/N
-   5bkO0XhXR2NzDZOgEAPPIWJtE/+5yntMav/QBFcoI28mA4KYhc658A8Yi
-   ixXTW1nYfcREtqaqNda2AqAwfs7xsgAdwlmmFDcu67hAC4GEZDkS6HB0g
-   Q=;
-Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 27 Mar 2022 23:10:27 -0700
+  bh=3UfOAs3TkTQChKmeOaobtliZsrFHAKOmPnwrvKnlnE8=;
+  b=rfoRflw0YondUw5O2fNrN9MkiO5j8ShaGGCK3vj8lK3AxO5MYGbKwD4n
+   jENffRB4BGzWxtv4pX5QO9hA1LXoaeTaLdv6C/H9iT+WiyrOtwDwHcW5B
+   icq5qSiOXc5QdoELlgOs9VHAWjzRDHeCDZRdoSW0AEmQCLOsVRu1LmB4h
+   0=;
+Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
+  by alexa-out.qualcomm.com with ESMTP; 27 Mar 2022 23:11:00 -0700
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2022 23:10:27 -0700
+  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2022 23:10:29 -0700
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Sun, 27 Mar 2022 23:10:27 -0700
+ 15.2.986.22; Sun, 27 Mar 2022 23:10:29 -0700
 Received: from mpubbise-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Sun, 27 Mar 2022 23:10:25 -0700
+ 15.2.986.22; Sun, 27 Mar 2022 23:10:27 -0700
 From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 To:     <ath11k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>,
         Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Subject: [PATCH v3 09/12] ath11k: Do not put HW in DBS mode for WCN6750
-Date:   Mon, 28 Mar 2022 11:39:34 +0530
-Message-ID: <20220328060937.16738-10-quic_mpubbise@quicinc.com>
+Subject: [PATCH v3 10/12] ath11k: WMI changes to support WCN6750
+Date:   Mon, 28 Mar 2022 11:39:35 +0530
+Message-ID: <20220328060937.16738-11-quic_mpubbise@quicinc.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220328060937.16738-1-quic_mpubbise@quicinc.com>
 References: <20220328060937.16738-1-quic_mpubbise@quicinc.com>
@@ -54,8 +54,8 @@ Content-Type: text/plain
 X-Originating-IP: [10.80.80.8]
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,8 +64,9 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Though WCN6750 is a single PDEV device, it is not a
-DBS solution. So, do not put HW in DBS mode for WCN6750.
+WCN6750 is a single PDEV non-DBS chip which supports 2G, 5G and 6G bands.
+It is a single LMAC device which can be either hooked to 2G/5G/6G bands.
+Add WMI changes to support WCN6750.
 
 Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00573-QCAMSLSWPLZ-1
 Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
@@ -74,44 +75,44 @@ Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
 
 Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 2 +-
- drivers/net/wireless/ath/ath11k/wmi.c  | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 1955426ca549..d9a06629651c 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -1249,7 +1249,7 @@ static int ath11k_core_start(struct ath11k_base *ab,
- 	}
- 
- 	/* put hardware to DBS mode */
--	if (ab->hw_params.single_pdev_only) {
-+	if (ab->hw_params.single_pdev_only && ab->hw_params.num_rxmda_per_pdev > 1) {
- 		ret = ath11k_wmi_set_hw_mode(ab, WMI_HOST_HW_MODE_DBS);
- 		if (ret) {
- 			ath11k_err(ab, "failed to send dbs mode: %d\n", ret);
 diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 7f97c26bffd9..119fe1e6a07a 100644
+index 119fe1e6a07a..b814d43672df 100644
 --- a/drivers/net/wireless/ath/ath11k/wmi.c
 +++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2021, Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- #include <linux/skbuff.h>
- #include <linux/ctype.h>
-@@ -8196,7 +8197,7 @@ int ath11k_wmi_attach(struct ath11k_base *ab)
- 	ab->wmi_ab.preferred_hw_mode = WMI_HOST_HW_MODE_MAX;
+@@ -391,6 +391,10 @@ ath11k_pull_mac_phy_cap_svc_ready_ext(struct ath11k_pdev_wmi *wmi_handle,
+ 	ab->target_pdev_ids[ab->target_pdev_count].pdev_id = mac_phy_caps->pdev_id;
+ 	ab->target_pdev_count++;
  
- 	/* It's overwritten when service_ext_ready is handled */
--	if (ab->hw_params.single_pdev_only)
-+	if (ab->hw_params.single_pdev_only && ab->hw_params.num_rxmda_per_pdev > 1)
- 		ab->wmi_ab.preferred_hw_mode = WMI_HOST_HW_MODE_SINGLE;
++	if (!(mac_phy_caps->supported_bands & WMI_HOST_WLAN_2G_CAP) &&
++	    !(mac_phy_caps->supported_bands & WMI_HOST_WLAN_5G_CAP))
++		return -EINVAL;
++
+ 	/* Take non-zero tx/rx chainmask. If tx/rx chainmask differs from
+ 	 * band to band for a single radio, need to see how this should be
+ 	 * handled.
+@@ -398,7 +402,9 @@ ath11k_pull_mac_phy_cap_svc_ready_ext(struct ath11k_pdev_wmi *wmi_handle,
+ 	if (mac_phy_caps->supported_bands & WMI_HOST_WLAN_2G_CAP) {
+ 		pdev_cap->tx_chain_mask = mac_phy_caps->tx_chain_mask_2g;
+ 		pdev_cap->rx_chain_mask = mac_phy_caps->rx_chain_mask_2g;
+-	} else if (mac_phy_caps->supported_bands & WMI_HOST_WLAN_5G_CAP) {
++	}
++
++	if (mac_phy_caps->supported_bands & WMI_HOST_WLAN_5G_CAP) {
+ 		pdev_cap->vht_cap = mac_phy_caps->vht_cap_info_5g;
+ 		pdev_cap->vht_mcs = mac_phy_caps->vht_supp_mcs_5g;
+ 		pdev_cap->he_mcs = mac_phy_caps->he_supp_mcs_5g;
+@@ -408,8 +414,6 @@ ath11k_pull_mac_phy_cap_svc_ready_ext(struct ath11k_pdev_wmi *wmi_handle,
+ 			WMI_NSS_RATIO_ENABLE_DISABLE_GET(mac_phy_caps->nss_ratio);
+ 		pdev_cap->nss_ratio_info =
+ 			WMI_NSS_RATIO_INFO_GET(mac_phy_caps->nss_ratio);
+-	} else {
+-		return -EINVAL;
+ 	}
  
- 	/* TODO: Init remaining wmi soc resources required */
+ 	/* tx/rx chainmask reported from fw depends on the actual hw chains used,
 -- 
 2.35.1
 
