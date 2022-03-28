@@ -2,529 +2,495 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCDD54E8DD9
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 08:10:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ADA44E8DE0
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 08:13:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238307AbiC1GMV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Mar 2022 02:12:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46650 "EHLO
+        id S236753AbiC1GPg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Mar 2022 02:15:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238298AbiC1GMU (ORCPT
+        with ESMTP id S232223AbiC1GPe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Mar 2022 02:12:20 -0400
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10A2217077
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Mar 2022 23:10:33 -0700 (PDT)
+        Mon, 28 Mar 2022 02:15:34 -0400
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B05C01EED1;
+        Sun, 27 Mar 2022 23:13:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1648447840; x=1679983840;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ojUMEPipfCVzdUwSC9LsqVR++t7VZ3sSTfxNc8BhPY4=;
-  b=rBFFmXUU/+9Fp0kVbbyywaAS7zUnsCGCyQhpkzDkU+tjW4IRI9+93sOC
-   aelxJESIK6Zlt5BfkDQS9Yr9VzP8uXizFT0m5uyUFgtAtwUmFoDavMbxS
-   /al2UvAJvYE1bj7ERKrWGyUQjYXt0yp9KPDoC8YeqYCjuBcIl+pAJ5zlx
-   M=;
-Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 27 Mar 2022 23:10:33 -0700
+  t=1648448033; x=1679984033;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=U+9ZmkhDUhcI5YakNfhr8qMLDH56rv8dZA8vCaxq8SA=;
+  b=Xi25gid1cncupS2xdT5Yx0CilsJebNH5StoTvTdCh7YmPE2V+Rp+DydP
+   wqs4YrV+Z51sV1hYiwkgyw/bKr++s60XWVyuXXCq7AKGM0D5Iy5Um+jyv
+   TtEUGMQlcidowRjCgjY4rposFoEW0pYGHiVGyPTVwidTE2IlblKb0/qoP
+   A=;
+Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 27 Mar 2022 23:13:53 -0700
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2022 23:10:33 -0700
+  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2022 23:13:53 -0700
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Sun, 27 Mar 2022 23:10:33 -0700
-Received: from mpubbise-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Sun, 27 Mar 2022 23:10:31 -0700
-From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Subject: [PATCH v3 12/12] ath11k: Add support for WCN6750 device
-Date:   Mon, 28 Mar 2022 11:39:37 +0530
-Message-ID: <20220328060937.16738-13-quic_mpubbise@quicinc.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220328060937.16738-1-quic_mpubbise@quicinc.com>
-References: <20220328060937.16738-1-quic_mpubbise@quicinc.com>
+ 15.2.986.22; Sun, 27 Mar 2022 23:13:52 -0700
+Received: from [10.50.8.132] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Sun, 27 Mar
+ 2022 23:13:50 -0700
+Message-ID: <0256a6c6-088b-a7d5-68c4-b99238bbb0f4@quicinc.com>
+Date:   Mon, 28 Mar 2022 11:43:47 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH v3 01/12] dt: bindings: net: add bindings of WCN6750 for
+ ath11k
+Content-Language: en-US
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        "Rob Herring" <robh@kernel.org>
+References: <20220328060937.16738-1-quic_mpubbise@quicinc.com>
+ <20220328060937.16738-2-quic_mpubbise@quicinc.com>
+From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+In-Reply-To: <20220328060937.16738-2-quic_mpubbise@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-WCN6750 is non-DBS 2x2 11AX chipset. Unlike QCA6390 which is a
-DBS (dual band simultaneous) solution (2 LMACs), WCN6750 has a
-single LMAC supporting 2G, 5G and 6G bands but will operate only
-on one band at any given point.
+Sorry for top posting, missed to add device tree mail aliases.
+Adding them now.
 
-WCN6750 is a PCIe based solution, but it is attached to the WPSS
-(Wireless Processor SubSystem) Q6 processor, hence it is enumerated
-by the Q6 processor. It is registered to the APSS processor
-(Application Processor SubSystem) as a platform device(AHB) and
-remoteproc APIs are used to boot up or shutdown the device like
-other AHB devices.
-
-Also, Device information like BAR and it's size is not known to the
-APSS processor as the chip is enumerated by WPSS Q6. These details
-are fetched over QMI.
-
-STA and AP modes are supported. Verified basic connectivity and ping
-in both the modes.
-
-An important point to note is that though WCN6750 is a PCIe device,
-it cannot be attached to any other platform except on Qualcomm
-Snapdragon SoCs due to the aforementioned reasons.
-
-Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00573-QCAMSLSWPLZ-1
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/Makefile |   5 +-
- drivers/net/wireless/ath/ath11k/ahb.c    | 152 ++++++++++++++++++++---
- drivers/net/wireless/ath/ath11k/ahb.h    |   1 -
- drivers/net/wireless/ath/ath11k/core.h   |   1 +
- drivers/net/wireless/ath/ath11k/pcic.c   |  23 ++++
- 5 files changed, 164 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/Makefile b/drivers/net/wireless/ath/ath11k/Makefile
-index 0ebfe41d6143..cc47e0114595 100644
---- a/drivers/net/wireless/ath/ath11k/Makefile
-+++ b/drivers/net/wireless/ath/ath11k/Makefile
-@@ -16,7 +16,8 @@ ath11k-y += core.o \
- 	    ce.o \
- 	    peer.o \
- 	    dbring.o \
--	    hw.o
-+	    hw.o \
-+	    pcic.o
- 
- ath11k-$(CONFIG_ATH11K_DEBUGFS) += debugfs.o debugfs_htt_stats.o debugfs_sta.o
- ath11k-$(CONFIG_NL80211_TESTMODE) += testmode.o
-@@ -29,7 +30,7 @@ obj-$(CONFIG_ATH11K_AHB) += ath11k_ahb.o
- ath11k_ahb-y += ahb.o
- 
- obj-$(CONFIG_ATH11K_PCI) += ath11k_pci.o
--ath11k_pci-y += mhi.o pci.o pcic.o
-+ath11k_pci-y += mhi.o pci.o
- 
- # for tracing framework to find trace.h
- CFLAGS_trace.o := -I$(src)
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index d27fc7276977..4fa5aba286ff 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -13,6 +13,7 @@
- #include "debug.h"
- #include "hif.h"
- #include <linux/remoteproc.h>
-+#include "pcic.h"
- 
- static const struct of_device_id ath11k_ahb_of_match[] = {
- 	/* TODO: Should we change the compatible string to something similar
-@@ -24,19 +25,22 @@ static const struct of_device_id ath11k_ahb_of_match[] = {
- 	{ .compatible = "qcom,ipq6018-wifi",
- 	  .data = (void *)ATH11K_HW_IPQ6018_HW10,
- 	},
-+	{ .compatible = "qcom,wcn6750-wifi",
-+	  .data = (void *)ATH11K_HW_WCN6750_HW10,
-+	},
- 	{ }
- };
- 
- MODULE_DEVICE_TABLE(of, ath11k_ahb_of_match);
- 
--static const struct ath11k_bus_params ath11k_ahb_bus_params = {
-+static const struct ath11k_bus_params ath11k_ahb_bus_params_ipq8074 = {
- 	.mhi_support = false,
- 	.m3_fw_support = false,
- 	.fixed_bdf_addr = true,
- 	.fixed_mem_region = true,
- };
- 
--const struct ath11k_bus_params ath11k_ahb_hybrid_bus_params = {
-+static const struct ath11k_bus_params ath11k_ahb_bus_params_wcn6750 = {
- 	.mhi_support = false,
- 	.m3_fw_support = false,
- 	.fixed_bdf_addr = false,
-@@ -47,6 +51,16 @@ const struct ath11k_bus_params ath11k_ahb_hybrid_bus_params = {
- 	.ce_window_idx = 2,
- };
- 
-+static int
-+ath11k_ahb_get_msi_irq_wcn6750(struct ath11k_base *ab, unsigned int vector)
-+{
-+	return ab->pci.msi.irqs[vector];
-+}
-+
-+static const struct ath11k_pci_ops ath11k_ahb_pci_ops_wcn6750 = {
-+	.get_msi_irq = ath11k_ahb_get_msi_irq_wcn6750,
-+};
-+
- #define ATH11K_IRQ_CE0_OFFSET 4
- 
- static const char *irq_name[ATH11K_IRQ_NUM_MAX] = {
-@@ -413,6 +427,9 @@ static void ath11k_ahb_free_irq(struct ath11k_base *ab)
- 	int irq_idx;
- 	int i;
- 
-+	if (ab->bus_params.hybrid_bus_type)
-+		return ath11k_pcic_free_irq(ab);
-+
- 	for (i = 0; i < ab->hw_params.ce_count; i++) {
- 		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
- 			continue;
-@@ -567,6 +584,9 @@ static int ath11k_ahb_config_irq(struct ath11k_base *ab)
- 	int irq, irq_idx, i;
- 	int ret;
- 
-+	if (ab->bus_params.hybrid_bus_type)
-+		return ath11k_pcic_config_irq(ab);
-+
- 	/* Configure CE irqs */
- 	for (i = 0; i < ab->hw_params.ce_count; i++) {
- 		struct ath11k_ce_pipe *ce_pipe = &ab->ce.ce_pipe[i];
-@@ -636,7 +656,7 @@ static int ath11k_ahb_map_service_to_pipe(struct ath11k_base *ab, u16 service_id
- 	return 0;
- }
- 
--static const struct ath11k_hif_ops ath11k_ahb_hif_ops = {
-+static const struct ath11k_hif_ops ath11k_ahb_hif_ops_ipq8074 = {
- 	.start = ath11k_ahb_start,
- 	.stop = ath11k_ahb_stop,
- 	.read32 = ath11k_ahb_read32,
-@@ -648,6 +668,20 @@ static const struct ath11k_hif_ops ath11k_ahb_hif_ops = {
- 	.power_up = ath11k_ahb_power_up,
- };
- 
-+static const struct ath11k_hif_ops ath11k_ahb_hif_ops_wcn6750 = {
-+	.start = ath11k_pcic_start,
-+	.stop = ath11k_pcic_stop,
-+	.read32 = ath11k_pcic_read32,
-+	.write32 = ath11k_pcic_write32,
-+	.irq_enable = ath11k_pcic_ext_irq_enable,
-+	.irq_disable = ath11k_pcic_ext_irq_disable,
-+	.get_msi_address =  ath11k_pcic_get_msi_address,
-+	.get_user_msi_vector = ath11k_pcic_get_user_msi_assignment,
-+	.map_service_to_pipe = ath11k_pcic_map_service_to_pipe,
-+	.power_down = ath11k_ahb_power_down,
-+	.power_up = ath11k_ahb_power_up,
-+};
-+
- static int ath11k_core_get_rproc(struct ath11k_base *ab)
- {
- 	struct ath11k_ahb *ab_ahb = ath11k_ahb_priv(ab);
-@@ -670,12 +704,85 @@ static int ath11k_core_get_rproc(struct ath11k_base *ab)
- 	return 0;
- }
- 
-+static int ath11k_ahb_setup_msi_resources(struct ath11k_base *ab)
-+{
-+	struct platform_device *pdev = ab->pdev;
-+	phys_addr_t msi_addr_pa;
-+	dma_addr_t msi_addr_iova;
-+	struct resource *res;
-+	int int_prop;
-+	int ret;
-+	int i;
-+
-+	ret = ath11k_pcic_init_msi_config(ab);
-+	if (ret) {
-+		ath11k_err(ab, "failed to init msi config: %d\n", ret);
-+		return ret;
-+	}
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res) {
-+		ath11k_err(ab, "failed to fetch msi_addr\n");
-+		return -ENOENT;
-+	}
-+
-+	msi_addr_pa = res->start;
-+	msi_addr_iova = dma_map_resource(ab->dev, msi_addr_pa, PAGE_SIZE,
-+					 DMA_FROM_DEVICE, 0);
-+	if (dma_mapping_error(ab->dev, msi_addr_iova))
-+		return -ENOMEM;
-+
-+	ab->pci.msi.addr_lo = lower_32_bits(msi_addr_iova);
-+	ab->pci.msi.addr_hi = upper_32_bits(msi_addr_iova);
-+
-+	ret = of_property_read_u32_index(ab->dev->of_node, "interrupts", 1, &int_prop);
-+	if (ret)
-+		return ret;
-+
-+	ab->pci.msi.ep_base_data = int_prop + 32;
-+
-+	for (i = 0; i < ab->pci.msi.config->total_vectors; i++) {
-+		res = platform_get_resource(pdev, IORESOURCE_IRQ, i);
-+		if (!res)
-+			return -ENODEV;
-+
-+		ab->pci.msi.irqs[i] = res->start;
-+	}
-+
-+	set_bit(ATH11K_FLAG_MULTI_MSI_VECTORS, &ab->dev_flags);
-+
-+	return 0;
-+}
-+
-+static int ath11k_ahb_setup_resources(struct ath11k_base *ab)
-+{
-+	struct platform_device *pdev = ab->pdev;
-+	struct resource *mem_res;
-+	void __iomem *mem;
-+
-+	if (ab->bus_params.hybrid_bus_type)
-+		return ath11k_ahb_setup_msi_resources(ab);
-+
-+	mem = devm_platform_get_and_ioremap_resource(pdev, 0, &mem_res);
-+	if (IS_ERR(mem)) {
-+		dev_err(&pdev->dev, "ioremap error\n");
-+		return PTR_ERR(mem);
-+	}
-+
-+	ab->mem = mem;
-+	ab->mem_len = resource_size(mem_res);
-+
-+	return 0;
-+}
-+
- static int ath11k_ahb_probe(struct platform_device *pdev)
- {
- 	struct ath11k_base *ab;
- 	const struct of_device_id *of_id;
--	struct resource *mem_res;
--	void __iomem *mem;
-+	const struct ath11k_bus_params *bus_params;
-+	const struct ath11k_hif_ops *hif_ops;
-+	const struct ath11k_pci_ops *pci_ops;
-+	enum ath11k_hw_rev hw_rev;
- 	int ret;
- 
- 	of_id = of_match_device(ath11k_ahb_of_match, &pdev->dev);
-@@ -684,10 +791,23 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
- 
--	mem = devm_platform_get_and_ioremap_resource(pdev, 0, &mem_res);
--	if (IS_ERR(mem)) {
--		dev_err(&pdev->dev, "ioremap error\n");
--		return PTR_ERR(mem);
-+	hw_rev = (enum ath11k_hw_rev)of_id->data;
-+
-+	switch (hw_rev) {
-+	case ATH11K_HW_IPQ8074:
-+	case ATH11K_HW_IPQ6018_HW10:
-+		bus_params = &ath11k_ahb_bus_params_ipq8074;
-+		hif_ops = &ath11k_ahb_hif_ops_ipq8074;
-+		pci_ops = NULL;
-+		break;
-+	case ATH11K_HW_WCN6750_HW10:
-+		bus_params = &ath11k_ahb_bus_params_wcn6750;
-+		hif_ops = &ath11k_ahb_hif_ops_wcn6750;
-+		pci_ops = &ath11k_ahb_pci_ops_wcn6750;
-+		break;
-+	default:
-+		dev_err(&pdev->dev, "unsupported device type %d\n", hw_rev);
-+		return -EOPNOTSUPP;
- 	}
- 
- 	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
-@@ -697,20 +817,22 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
- 	}
- 
- 	ab = ath11k_core_alloc(&pdev->dev, sizeof(struct ath11k_ahb),
--			       ATH11K_BUS_AHB,
--			       &ath11k_ahb_bus_params);
-+			       ATH11K_BUS_AHB, bus_params);
- 	if (!ab) {
- 		dev_err(&pdev->dev, "failed to allocate ath11k base\n");
- 		return -ENOMEM;
- 	}
- 
--	ab->hif.ops = &ath11k_ahb_hif_ops;
-+	ab->hif.ops = hif_ops;
-+	ab->pci.ops = pci_ops;
- 	ab->pdev = pdev;
--	ab->hw_rev = (enum ath11k_hw_rev)of_id->data;
--	ab->mem = mem;
--	ab->mem_len = resource_size(mem_res);
-+	ab->hw_rev = hw_rev;
- 	platform_set_drvdata(pdev, ab);
- 
-+	ret = ath11k_ahb_setup_resources(ab);
-+	if (ret)
-+		goto err_core_free;
-+
- 	ret = ath11k_core_pre_init(ab);
- 	if (ret)
- 		goto err_core_free;
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.h b/drivers/net/wireless/ath/ath11k/ahb.h
-index a276e3d1dff8..eeb1feed2c81 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.h
-+++ b/drivers/net/wireless/ath/ath11k/ahb.h
-@@ -10,7 +10,6 @@
- 
- #define ATH11K_AHB_RECOVERY_TIMEOUT (3 * HZ)
- struct ath11k_base;
--extern const struct ath11k_bus_params ath11k_ahb_hybrid_bus_params;
- 
- struct ath11k_ahb {
- 	struct rproc *tgt_rproc;
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 28b635d5bba9..52fe73d19db6 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -928,6 +928,7 @@ struct ath11k_base {
- 		struct {
- 			const struct ath11k_msi_config *config;
- 			u32 ep_base_data;
-+			u32 irqs[32];
- 			u32 addr_lo;
- 			u32 addr_hi;
- 		} msi;
-diff --git a/drivers/net/wireless/ath/ath11k/pcic.c b/drivers/net/wireless/ath/ath11k/pcic.c
-index 6d0b5307d5c7..0f343d768ac2 100644
---- a/drivers/net/wireless/ath/ath11k/pcic.c
-+++ b/drivers/net/wireless/ath/ath11k/pcic.c
-@@ -106,6 +106,15 @@ static const struct ath11k_msi_config ath11k_msi_config[] = {
- 		},
- 		.hw_rev = ATH11K_HW_WCN6855_HW21,
- 	},
-+	{
-+		.total_vectors = 28,
-+		.total_users = 2,
-+		.users = (struct ath11k_msi_user[]) {
-+			{ .name = "CE", .num_vectors = 10, .base_vector = 0 },
-+			{ .name = "DP", .num_vectors = 18, .base_vector = 10 },
-+		},
-+		.hw_rev = ATH11K_HW_WCN6750_HW10,
-+	},
- };
- 
- int ath11k_pcic_init_msi_config(struct ath11k_base *ab)
-@@ -173,6 +182,7 @@ void ath11k_pcic_write32(struct ath11k_base *ab, u32 offset, u32 value)
- 	    !ret)
- 		ab->pci.ops->release(ab);
- }
-+EXPORT_SYMBOL(ath11k_pcic_write32);
- 
- u32 ath11k_pcic_read32(struct ath11k_base *ab, u32 offset)
- {
-@@ -204,6 +214,7 @@ u32 ath11k_pcic_read32(struct ath11k_base *ab, u32 offset)
- 
- 	return val;
- }
-+EXPORT_SYMBOL(ath11k_pcic_read32);
- 
- void ath11k_pcic_get_msi_address(struct ath11k_base *ab, u32 *msi_addr_lo,
- 				 u32 *msi_addr_hi)
-@@ -211,6 +222,7 @@ void ath11k_pcic_get_msi_address(struct ath11k_base *ab, u32 *msi_addr_lo,
- 	*msi_addr_lo = ab->pci.msi.addr_lo;
- 	*msi_addr_hi = ab->pci.msi.addr_hi;
- }
-+EXPORT_SYMBOL(ath11k_pcic_get_msi_address);
- 
- int ath11k_pcic_get_user_msi_assignment(struct ath11k_base *ab, char *user_name,
- 					int *num_vectors, u32 *user_base_data,
-@@ -238,6 +250,7 @@ int ath11k_pcic_get_user_msi_assignment(struct ath11k_base *ab, char *user_name,
- 
- 	return -EINVAL;
- }
-+EXPORT_SYMBOL(ath11k_pcic_get_user_msi_assignment);
- 
- void ath11k_pcic_get_ce_msi_idx(struct ath11k_base *ab, u32 ce_id, u32 *msi_idx)
- {
-@@ -254,6 +267,7 @@ void ath11k_pcic_get_ce_msi_idx(struct ath11k_base *ab, u32 ce_id, u32 *msi_idx)
- 	}
- 	*msi_idx = msi_data_idx;
- }
-+EXPORT_SYMBOL(ath11k_pcic_get_ce_msi_idx);
- 
- static void ath11k_pcic_free_ext_irq(struct ath11k_base *ab)
- {
-@@ -282,6 +296,7 @@ void ath11k_pcic_free_irq(struct ath11k_base *ab)
- 
- 	ath11k_pcic_free_ext_irq(ab);
- }
-+EXPORT_SYMBOL(ath11k_pcic_free_irq);
- 
- static void ath11k_pcic_ce_irq_enable(struct ath11k_base *ab, u16 ce_id)
- {
-@@ -432,6 +447,7 @@ void ath11k_pcic_ext_irq_enable(struct ath11k_base *ab)
- 		ath11k_pcic_ext_grp_enable(irq_grp);
- 	}
- }
-+EXPORT_SYMBOL(ath11k_pcic_ext_irq_enable);
- 
- static void ath11k_pcic_sync_ext_irqs(struct ath11k_base *ab)
- {
-@@ -452,6 +468,7 @@ void ath11k_pcic_ext_irq_disable(struct ath11k_base *ab)
- 	__ath11k_pcic_ext_irq_disable(ab);
- 	ath11k_pcic_sync_ext_irqs(ab);
- }
-+EXPORT_SYMBOL(ath11k_pcic_ext_irq_disable);
- 
- static int ath11k_pcic_ext_grp_napi_poll(struct napi_struct *napi, int budget)
- {
-@@ -631,6 +648,7 @@ int ath11k_pcic_config_irq(struct ath11k_base *ab)
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(ath11k_pcic_config_irq);
- 
- void ath11k_pcic_ce_irqs_enable(struct ath11k_base *ab)
- {
-@@ -644,6 +662,7 @@ void ath11k_pcic_ce_irqs_enable(struct ath11k_base *ab)
- 		ath11k_pcic_ce_irq_enable(ab, i);
- 	}
- }
-+EXPORT_SYMBOL(ath11k_pcic_ce_irqs_enable);
- 
- static void ath11k_pcic_kill_tasklets(struct ath11k_base *ab)
- {
-@@ -665,12 +684,14 @@ void ath11k_pcic_ce_irq_disable_sync(struct ath11k_base *ab)
- 	ath11k_pcic_sync_ce_irqs(ab);
- 	ath11k_pcic_kill_tasklets(ab);
- }
-+EXPORT_SYMBOL(ath11k_pcic_ce_irq_disable_sync);
- 
- void ath11k_pcic_stop(struct ath11k_base *ab)
- {
- 	ath11k_pcic_ce_irq_disable_sync(ab);
- 	ath11k_ce_cleanup_pipes(ab);
- }
-+EXPORT_SYMBOL(ath11k_pcic_stop);
- 
- int ath11k_pcic_start(struct ath11k_base *ab)
- {
-@@ -681,6 +702,7 @@ int ath11k_pcic_start(struct ath11k_base *ab)
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(ath11k_pcic_start);
- 
- int ath11k_pcic_map_service_to_pipe(struct ath11k_base *ab, u16 service_id,
- 				    u8 *ul_pipe, u8 *dl_pipe)
-@@ -724,3 +746,4 @@ int ath11k_pcic_map_service_to_pipe(struct ath11k_base *ab, u16 service_id,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(ath11k_pcic_map_service_to_pipe);
--- 
-2.35.1
-
+On 3/28/2022 11:39 AM, Manikanta Pubbisetty wrote:
+> WCN6750 is the WLAN chip on Qualcomm Snapdragon SoC SC7280;
+> Though being a PCIe based solution, it is not attached to
+> the APSS processor (Application Processor SubSystem), it is
+> instead attached to another tiny processor called WPSS Q6
+> processor (Wireless Processor SubSystem) on the SC7280 MSM,
+> where the WLAN firmware runs, and it is the WLAN firmware
+> running on the Q6 processor which enumerates WCN6750, as a
+> result APPS processor would never know such a device being
+> present in the system and would not detect the WCN6750
+> hardware unless and otherwise WCN6750 is registered as a
+> platform device. This is the reason behind adding WCN6750
+> WLAN node in the device tree.
+> 
+> Add WCN6750 wireless driver support, its based on ath11k driver.
+> 
+> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+> ---
+>   .../bindings/net/wireless/qcom,ath11k.yaml    | 361 ++++++++++++------
+>   1 file changed, 252 insertions(+), 109 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+> index cdf7b873b419..67104d69fd72 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+> @@ -20,120 +20,17 @@ properties:
+>       enum:
+>         - qcom,ipq8074-wifi
+>         - qcom,ipq6018-wifi
+> +      - qcom,wcn6750-wifi
+>   
+>     reg:
+>       maxItems: 1
+>   
+>     interrupts:
+> -    items:
+> -      - description: misc-pulse1 interrupt events
+> -      - description: misc-latch interrupt events
+> -      - description: sw exception interrupt events
+> -      - description: watchdog interrupt events
+> -      - description: interrupt event for ring CE0
+> -      - description: interrupt event for ring CE1
+> -      - description: interrupt event for ring CE2
+> -      - description: interrupt event for ring CE3
+> -      - description: interrupt event for ring CE4
+> -      - description: interrupt event for ring CE5
+> -      - description: interrupt event for ring CE6
+> -      - description: interrupt event for ring CE7
+> -      - description: interrupt event for ring CE8
+> -      - description: interrupt event for ring CE9
+> -      - description: interrupt event for ring CE10
+> -      - description: interrupt event for ring CE11
+> -      - description: interrupt event for ring host2wbm-desc-feed
+> -      - description: interrupt event for ring host2reo-re-injection
+> -      - description: interrupt event for ring host2reo-command
+> -      - description: interrupt event for ring host2rxdma-monitor-ring3
+> -      - description: interrupt event for ring host2rxdma-monitor-ring2
+> -      - description: interrupt event for ring host2rxdma-monitor-ring1
+> -      - description: interrupt event for ring reo2ost-exception
+> -      - description: interrupt event for ring wbm2host-rx-release
+> -      - description: interrupt event for ring reo2host-status
+> -      - description: interrupt event for ring reo2host-destination-ring4
+> -      - description: interrupt event for ring reo2host-destination-ring3
+> -      - description: interrupt event for ring reo2host-destination-ring2
+> -      - description: interrupt event for ring reo2host-destination-ring1
+> -      - description: interrupt event for ring rxdma2host-monitor-destination-mac3
+> -      - description: interrupt event for ring rxdma2host-monitor-destination-mac2
+> -      - description: interrupt event for ring rxdma2host-monitor-destination-mac1
+> -      - description: interrupt event for ring ppdu-end-interrupts-mac3
+> -      - description: interrupt event for ring ppdu-end-interrupts-mac2
+> -      - description: interrupt event for ring ppdu-end-interrupts-mac1
+> -      - description: interrupt event for ring rxdma2host-monitor-status-ring-mac3
+> -      - description: interrupt event for ring rxdma2host-monitor-status-ring-mac2
+> -      - description: interrupt event for ring rxdma2host-monitor-status-ring-mac1
+> -      - description: interrupt event for ring host2rxdma-host-buf-ring-mac3
+> -      - description: interrupt event for ring host2rxdma-host-buf-ring-mac2
+> -      - description: interrupt event for ring host2rxdma-host-buf-ring-mac1
+> -      - description: interrupt event for ring rxdma2host-destination-ring-mac3
+> -      - description: interrupt event for ring rxdma2host-destination-ring-mac2
+> -      - description: interrupt event for ring rxdma2host-destination-ring-mac1
+> -      - description: interrupt event for ring host2tcl-input-ring4
+> -      - description: interrupt event for ring host2tcl-input-ring3
+> -      - description: interrupt event for ring host2tcl-input-ring2
+> -      - description: interrupt event for ring host2tcl-input-ring1
+> -      - description: interrupt event for ring wbm2host-tx-completions-ring3
+> -      - description: interrupt event for ring wbm2host-tx-completions-ring2
+> -      - description: interrupt event for ring wbm2host-tx-completions-ring1
+> -      - description: interrupt event for ring tcl2host-status-ring
+> -
+> +    minItems: 32
+> +    maxItems: 52
+>   
+>     interrupt-names:
+> -    items:
+> -      - const: misc-pulse1
+> -      - const: misc-latch
+> -      - const: sw-exception
+> -      - const: watchdog
+> -      - const: ce0
+> -      - const: ce1
+> -      - const: ce2
+> -      - const: ce3
+> -      - const: ce4
+> -      - const: ce5
+> -      - const: ce6
+> -      - const: ce7
+> -      - const: ce8
+> -      - const: ce9
+> -      - const: ce10
+> -      - const: ce11
+> -      - const: host2wbm-desc-feed
+> -      - const: host2reo-re-injection
+> -      - const: host2reo-command
+> -      - const: host2rxdma-monitor-ring3
+> -      - const: host2rxdma-monitor-ring2
+> -      - const: host2rxdma-monitor-ring1
+> -      - const: reo2ost-exception
+> -      - const: wbm2host-rx-release
+> -      - const: reo2host-status
+> -      - const: reo2host-destination-ring4
+> -      - const: reo2host-destination-ring3
+> -      - const: reo2host-destination-ring2
+> -      - const: reo2host-destination-ring1
+> -      - const: rxdma2host-monitor-destination-mac3
+> -      - const: rxdma2host-monitor-destination-mac2
+> -      - const: rxdma2host-monitor-destination-mac1
+> -      - const: ppdu-end-interrupts-mac3
+> -      - const: ppdu-end-interrupts-mac2
+> -      - const: ppdu-end-interrupts-mac1
+> -      - const: rxdma2host-monitor-status-ring-mac3
+> -      - const: rxdma2host-monitor-status-ring-mac2
+> -      - const: rxdma2host-monitor-status-ring-mac1
+> -      - const: host2rxdma-host-buf-ring-mac3
+> -      - const: host2rxdma-host-buf-ring-mac2
+> -      - const: host2rxdma-host-buf-ring-mac1
+> -      - const: rxdma2host-destination-ring-mac3
+> -      - const: rxdma2host-destination-ring-mac2
+> -      - const: rxdma2host-destination-ring-mac1
+> -      - const: host2tcl-input-ring4
+> -      - const: host2tcl-input-ring3
+> -      - const: host2tcl-input-ring2
+> -      - const: host2tcl-input-ring1
+> -      - const: wbm2host-tx-completions-ring3
+> -      - const: wbm2host-tx-completions-ring2
+> -      - const: wbm2host-tx-completions-ring1
+> -      - const: tcl2host-status-ring
+> +    maxItems: 52
+>   
+>     qcom,rproc:
+>       $ref: /schemas/types.yaml#/definitions/phandle
+> @@ -151,20 +48,205 @@ properties:
+>         board-2.bin for designs with colliding bus and device specific ids
+>   
+>     memory-region:
+> -    maxItems: 1
+> +    minItems: 1
+> +    maxItems: 2
+>       description:
+>         phandle to a node describing reserved memory (System RAM memory)
+>         used by ath11k firmware (see bindings/reserved-memory/reserved-memory.txt)
+>   
+> +  iommus:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +  wifi-firmware:
+> +    type: object
+> +    description: |
+> +      WCN6750 wifi node can contain one optional firmware subnode.
+> +      Firmware subnode is needed when the platform does not have Tustzone.
+> +    required:
+> +      - iommus
+> +
+>   required:
+>     - compatible
+>     - reg
+>     - interrupts
+> -  - interrupt-names
+>     - qcom,rproc
+>   
+>   additionalProperties: false
+>   
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,ipq8074-wifi
+> +              - qcom,ipq6018-wifi
+> +    then:
+> +      properties:
+> +        interrupts:
+> +          items:
+> +            - description: misc-pulse1 interrupt events
+> +            - description: misc-latch interrupt events
+> +            - description: sw exception interrupt events
+> +            - description: watchdog interrupt events
+> +            - description: interrupt event for ring CE0
+> +            - description: interrupt event for ring CE1
+> +            - description: interrupt event for ring CE2
+> +            - description: interrupt event for ring CE3
+> +            - description: interrupt event for ring CE4
+> +            - description: interrupt event for ring CE5
+> +            - description: interrupt event for ring CE6
+> +            - description: interrupt event for ring CE7
+> +            - description: interrupt event for ring CE8
+> +            - description: interrupt event for ring CE9
+> +            - description: interrupt event for ring CE10
+> +            - description: interrupt event for ring CE11
+> +            - description: interrupt event for ring host2wbm-desc-feed
+> +            - description: interrupt event for ring host2reo-re-injection
+> +            - description: interrupt event for ring host2reo-command
+> +            - description: interrupt event for ring host2rxdma-monitor-ring3
+> +            - description: interrupt event for ring host2rxdma-monitor-ring2
+> +            - description: interrupt event for ring host2rxdma-monitor-ring1
+> +            - description: interrupt event for ring reo2ost-exception
+> +            - description: interrupt event for ring wbm2host-rx-release
+> +            - description: interrupt event for ring reo2host-status
+> +            - description: interrupt event for ring reo2host-destination-ring4
+> +            - description: interrupt event for ring reo2host-destination-ring3
+> +            - description: interrupt event for ring reo2host-destination-ring2
+> +            - description: interrupt event for ring reo2host-destination-ring1
+> +            - description: interrupt event for ring rxdma2host-monitor-destination-mac3
+> +            - description: interrupt event for ring rxdma2host-monitor-destination-mac2
+> +            - description: interrupt event for ring rxdma2host-monitor-destination-mac1
+> +            - description: interrupt event for ring ppdu-end-interrupts-mac3
+> +            - description: interrupt event for ring ppdu-end-interrupts-mac2
+> +            - description: interrupt event for ring ppdu-end-interrupts-mac1
+> +            - description: interrupt event for ring rxdma2host-monitor-status-ring-mac3
+> +            - description: interrupt event for ring rxdma2host-monitor-status-ring-mac2
+> +            - description: interrupt event for ring rxdma2host-monitor-status-ring-mac1
+> +            - description: interrupt event for ring host2rxdma-host-buf-ring-mac3
+> +            - description: interrupt event for ring host2rxdma-host-buf-ring-mac2
+> +            - description: interrupt event for ring host2rxdma-host-buf-ring-mac1
+> +            - description: interrupt event for ring rxdma2host-destination-ring-mac3
+> +            - description: interrupt event for ring rxdma2host-destination-ring-mac2
+> +            - description: interrupt event for ring rxdma2host-destination-ring-mac1
+> +            - description: interrupt event for ring host2tcl-input-ring4
+> +            - description: interrupt event for ring host2tcl-input-ring3
+> +            - description: interrupt event for ring host2tcl-input-ring2
+> +            - description: interrupt event for ring host2tcl-input-ring1
+> +            - description: interrupt event for ring wbm2host-tx-completions-ring3
+> +            - description: interrupt event for ring wbm2host-tx-completions-ring2
+> +            - description: interrupt event for ring wbm2host-tx-completions-ring1
+> +            - description: interrupt event for ring tcl2host-status-ring
+> +        interrupt-names:
+> +          items:
+> +            - const: misc-pulse1
+> +            - const: misc-latch
+> +            - const: sw-exception
+> +            - const: watchdog
+> +            - const: ce0
+> +            - const: ce1
+> +            - const: ce2
+> +            - const: ce3
+> +            - const: ce4
+> +            - const: ce5
+> +            - const: ce6
+> +            - const: ce7
+> +            - const: ce8
+> +            - const: ce9
+> +            - const: ce10
+> +            - const: ce11
+> +            - const: host2wbm-desc-feed
+> +            - const: host2reo-re-injection
+> +            - const: host2reo-command
+> +            - const: host2rxdma-monitor-ring3
+> +            - const: host2rxdma-monitor-ring2
+> +            - const: host2rxdma-monitor-ring1
+> +            - const: reo2ost-exception
+> +            - const: wbm2host-rx-release
+> +            - const: reo2host-status
+> +            - const: reo2host-destination-ring4
+> +            - const: reo2host-destination-ring3
+> +            - const: reo2host-destination-ring2
+> +            - const: reo2host-destination-ring1
+> +            - const: rxdma2host-monitor-destination-mac3
+> +            - const: rxdma2host-monitor-destination-mac2
+> +            - const: rxdma2host-monitor-destination-mac1
+> +            - const: ppdu-end-interrupts-mac3
+> +            - const: ppdu-end-interrupts-mac2
+> +            - const: ppdu-end-interrupts-mac1
+> +            - const: rxdma2host-monitor-status-ring-mac3
+> +            - const: rxdma2host-monitor-status-ring-mac2
+> +            - const: rxdma2host-monitor-status-ring-mac1
+> +            - const: host2rxdma-host-buf-ring-mac3
+> +            - const: host2rxdma-host-buf-ring-mac2
+> +            - const: host2rxdma-host-buf-ring-mac1
+> +            - const: rxdma2host-destination-ring-mac3
+> +            - const: rxdma2host-destination-ring-mac2
+> +            - const: rxdma2host-destination-ring-mac1
+> +            - const: host2tcl-input-ring4
+> +            - const: host2tcl-input-ring3
+> +            - const: host2tcl-input-ring2
+> +            - const: host2tcl-input-ring1
+> +            - const: wbm2host-tx-completions-ring3
+> +            - const: wbm2host-tx-completions-ring2
+> +            - const: wbm2host-tx-completions-ring1
+> +            - const: tcl2host-status-ring
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,ipq8074-wifi
+> +              - qcom,ipq6018-wifi
+> +    then:
+> +      required:
+> +        - interrupt-names
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,wcn6750-wifi
+> +    then:
+> +      properties:
+> +        interrupts:
+> +          items:
+> +            - description: interrupt event for ring CE1
+> +            - description: interrupt event for ring CE2
+> +            - description: interrupt event for ring CE3
+> +            - description: interrupt event for ring CE4
+> +            - description: interrupt event for ring CE5
+> +            - description: interrupt event for ring CE6
+> +            - description: interrupt event for ring CE7
+> +            - description: interrupt event for ring CE8
+> +            - description: interrupt event for ring CE9
+> +            - description: interrupt event for ring CE10
+> +            - description: interrupt event for ring DP1
+> +            - description: interrupt event for ring DP2
+> +            - description: interrupt event for ring DP3
+> +            - description: interrupt event for ring DP4
+> +            - description: interrupt event for ring DP5
+> +            - description: interrupt event for ring DP6
+> +            - description: interrupt event for ring DP7
+> +            - description: interrupt event for ring DP8
+> +            - description: interrupt event for ring DP9
+> +            - description: interrupt event for ring DP10
+> +            - description: interrupt event for ring DP11
+> +            - description: interrupt event for ring DP12
+> +            - description: interrupt event for ring DP13
+> +            - description: interrupt event for ring DP14
+> +            - description: interrupt event for ring DP15
+> +            - description: interrupt event for ring DP16
+> +            - description: interrupt event for ring DP17
+> +            - description: interrupt event for ring DP18
+> +            - description: interrupt event for ring DP19
+> +            - description: interrupt event for ring DP20
+> +            - description: interrupt event for ring DP21
+> +            - description: interrupt event for ring DP22
+> +
+>   examples:
+>     - |
+>   
+> @@ -309,3 +391,64 @@ examples:
+>               };
+>           };
+>       };
+> +
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +
+> +    reserved-memory {
+> +        #address-cells = <2>;
+> +        #size-cells = <2>;
+> +
+> +        wlan_ce_mem: wlan_ce_mem@4cd000 {
+> +            no-map;
+> +            reg = <0x0 0x4cd000 0x0 0x1000>;
+> +        };
+> +
+> +        wlan_fw_mem: wlan_fw_mem@80c00000 {
+> +            no-map;
+> +            reg = <0x0 0x80c00000 0x0 0xc00000>;
+> +        };
+> +    };
+> +
+> +    wifi: wifi@17a10040 {
+> +        compatible = "qcom,wcn6750-wifi";
+> +        reg = <0x17A10040 0x0>;
+> +        iommus = <&apps_smmu 0x1C00 0x1>;
+> +        interrupts = <GIC_SPI 768 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 769 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 770 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 771 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 772 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 773 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 774 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 775 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 776 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 777 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 778 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 779 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 780 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 781 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 782 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 783 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 784 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 785 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 786 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 787 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 788 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 789 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 790 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 791 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 792 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 793 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 794 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 795 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 796 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 797 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 798 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 799 IRQ_TYPE_EDGE_RISING>;
+> +        qcom,rproc = <&remoteproc_wpss>;
+> +        memory-region = <&wlan_fw_mem>, <&wlan_ce_mem>;
+> +        wifi-firmware {
+> +                iommus = <&apps_smmu 0x1C02 0x1>;
+> +        };
+> +    };
