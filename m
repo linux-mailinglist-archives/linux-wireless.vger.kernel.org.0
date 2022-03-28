@@ -2,76 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8D134E910E
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 11:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6977E4E9138
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 11:26:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236730AbiC1JVY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Mar 2022 05:21:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47640 "EHLO
+        id S237916AbiC1J2S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Mar 2022 05:28:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239727AbiC1JVX (ORCPT
+        with ESMTP id S233959AbiC1J2Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Mar 2022 05:21:23 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 735779FE9;
-        Mon, 28 Mar 2022 02:19:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id E7AD6CE12AE;
-        Mon, 28 Mar 2022 09:19:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F80EC004DD;
-        Mon, 28 Mar 2022 09:19:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648459180;
-        bh=ClHjhWRmcFOdOaa/lPlhbdmH1GQdx/klSYpf8w5b4sU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ZdC3lku6nl26vPWvj2h9LtHRt4ivBjHX1scpK9quD/5QBa3grT5Oi2fAddW/FBSdo
-         9SKGBy1cWpZ/Jg14D68e1ZJxlxpaAb4xjAgE7Z8gRHEoZHQdOQqK32OrHDhkzNAw14
-         ahQ8JYbOWsMZFtQ0TRewIquMMPKQvApFdGrPU5n5FKbrvzB+L+VRUL3Xv6MP8iZhSZ
-         76TK9E+A0AJngoGsH0NhEwZesFXmYuNthrDo0x3UfQr3QTc+tlcZMLK5eCTXgViNcd
-         86RG10eE9OVo3Q+dqTKQ0Hk/HwTKOKm6AkmKFOLKFKADXz2CL1g/TPTC331sQ/9cTd
-         GPL7+8Fmh2Irw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, "Rob Herring" <robh@kernel.org>
-Subject: Re: [PATCH v3 01/12] dt: bindings: net: add bindings of WCN6750 for ath11k
-References: <20220328060937.16738-1-quic_mpubbise@quicinc.com>
-        <20220328060937.16738-2-quic_mpubbise@quicinc.com>
-        <0256a6c6-088b-a7d5-68c4-b99238bbb0f4@quicinc.com>
-        <87sfr2zb8y.fsf@kernel.org>
-Date:   Mon, 28 Mar 2022 12:19:36 +0300
-In-Reply-To: <87sfr2zb8y.fsf@kernel.org> (Kalle Valo's message of "Mon, 28 Mar
-        2022 12:18:05 +0300")
-Message-ID: <87o81qzb6f.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 28 Mar 2022 05:28:16 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7DAA53A4A
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Mar 2022 02:26:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=l4zHrg+VvY6z7NJpxAn2hNXJpQZYfDuFP+eY2tT9H0k=;
+        t=1648459596; x=1649669196; b=LF7+zLEVetkuV1a2cIVrCXRJf/BAdOvwdklRwcf/YpL2be3
+        hGUTr6/ipsAOZ48r+SqtDMXulUbi/fqQQsxUs3jdMW7AUqezWefzZ6fyMD92Xv0PD0Cqa2GsIZAR1
+        IMdPEWPIy5mpYNtFlYDdZjR7mEr1U6LW4Q+FxckctI5HZ5zLO//1USdqix4sD2pqP2P0c0bDTC6Nt
+        ioeRDvf95BiJgqeiFNIP/EtyKhQivWvOWpPIioghp1k0XrpSgPkOh/M9+749eN80XV67S1bBXC80b
+        6ETCt6jHDhczMSoPYn1LqPp2BXgzdCrGF18dyTwXqoME/AkkQmM7zRiwgKbdienA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nYldx-001WLN-Dn;
+        Mon, 28 Mar 2022 11:26:33 +0200
+Message-ID: <644dd3e9fdb893245e4a31d681cb534f5197e968.camel@sipsolutions.net>
+Subject: Re: [RFC] mac80211: prepare sta handling for MLO support
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     "Sriram R (QUIC)" <quic_srirrama@quicinc.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     "vkthiagu@gmail.com" <vkthiagu@gmail.com>,
+        Aaron Komisar <akomisar@maxlinear.com>,
+        "Jeff Johnson (QUIC)" <quic_jjohnson@quicinc.com>,
+        Jouni Malinen <j@w1.fi>
+Date:   Mon, 28 Mar 2022 11:26:32 +0200
+In-Reply-To: <SN6PR02MB433497C4F6E9BD97294488C5F71D9@SN6PR02MB4334.namprd02.prod.outlook.com>
+References: <1648194497-15848-1-git-send-email-quic_srirrama@quicinc.com>
+         <20abb029438166d02b5fb47093ea857671fa86e8.camel@sipsolutions.net>
+         <SN6PR02MB433497C4F6E9BD97294488C5F71D9@SN6PR02MB4334.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+Hi,
 
-> Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
->
->> Sorry for top posting, missed to add device tree mail aliases.
->> Adding them now.
->
-> IIRC DT maintainers use patchwork, so adding them to CC in a followup
-> email won't properly work.
+> 
+> Sure, the contents of the link sta (link_sta_info or
+> ieee80211_link_sta) needs to be definitely revisited.
+> This RFC was to mainly conclude on the approach of splitting the
+> sta_info, ieee80211_sta structs
+> and how we access the link sta related info within them. I'll relook
+> into the contents and add any
+> link related info to link structs in next version and we can review
+> that part again if any more info
+> requires to be moved.
 
-Argh, s/properly/probably/. I blame it on the DST switch we had
-yesterday :)
+OK, that's fair.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+> > > +     lsinfo = kzalloc(sizeof(*lsinfo), gfp);
+> > > +     if (!lsinfo)
+> > > +             goto free;
+> > > +
+> > > +     lsta = kzalloc(sizeof(*lsta), gfp);
+> > > +     if (!lsta)
+> > > +             goto free;
+> > 
+> > I did start wondering if we wouldn't want to move struct
+> > link_sta_info to
+> > mac80211.h as well, though I'm not sure what else we'd have to move,
+> > and not
+> > have to allocate all of these separately?
+> I didn’t get this point correctly, Do you mean to merge link_sta_info
+> and ieee80211_link_sta structs
+> so as to avoid these two allocs?
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Yes, kind of, I meant different things later as my thinking evolved over
+the course of writing the email :)
+
+> > Though if we follow them through pointers, we can still allocate
+> > them in the
+> > same memory chunk (just add the sizes).
+> Do you mean something like,
+> lsinfo = kzalloc(sizeof(*lsinfo) + sizeof(*lsta), gfp);
+> lsta = (u8 *)lsinfo + sizeof(*lsinfo);
+> 
+> This seems fine I guess and helps to do away with the second
+> kzalloc(). Can we go with this?
+
+Need to be careful with alignment there, but otherwise yes?
+
+> > Not sure we need to optimise anything here though.
+> > 
+> > Or maybe in addition or instead we should allocate an *array* of
+> > links?
+> > But of course only however many we actually need, regardless of
+> > which ones
+> > are actually active.
+> The array of link pointers are already allocated as part of struct
+> ieee80211_sta and struct sta_info, right?
+> Did I misunderstood?
+
+Correct. I meant that we should probably know how many links we need up
+front, so we could allocate
+
+	n_links * (sizeof(*lsinfo) + sizeof(*lsta))
+
+kind of.
+
+But then again that might be more complicated?
+
+
+We might be allocating a lot of these - so maybe it'd be worthwile to
+get a kmem cache? But we can also do that later.
+
+
+> This 'deflink' approach looks very neat, Thanks. I'll update in next
+> version.
+
+:)
+
+> > 
+> Yes, this change would be part of MLO support changes.
+
+Makes sense, so let's just update the commit message for now.
+
+> 
+
+Thanks,
+johannes
