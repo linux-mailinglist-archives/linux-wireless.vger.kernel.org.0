@@ -2,195 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 322F44EA0D7
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 21:56:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8759E4EA15B
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 22:20:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243764AbiC1T4I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Mar 2022 15:56:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38922 "EHLO
+        id S1344450AbiC1UWI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Mar 2022 16:22:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232294AbiC1T4B (ORCPT
+        with ESMTP id S1344410AbiC1UWA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Mar 2022 15:56:01 -0400
-Received: from stuerz.xyz (unknown [45.77.206.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12EA1B13;
-        Mon, 28 Mar 2022 12:54:19 -0700 (PDT)
-Received: by stuerz.xyz (Postfix, from userid 114)
-        id 3B250FA71D; Mon, 28 Mar 2022 19:54:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
-        t=1648497258; bh=vLujta4nZyWs+WRhXVDs/r9cMmB7D9buGBDSpH905nQ=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=Yn49FpLcNYkEPaqVCB+mlfSyG/bPPHG2t194EzTcGPaC/nM6rV3/RBwyIv/EqPxqr
-         eU31BGDKBFVvILCvvBjSWoZ0mBJzFQpD/CW0feRKghfhyeMKeM6ivADRbIJSOqZ+0s
-         Uq8j3GtApWGBGuSEa9RrgT3vp5wfNaP63p01YhA+/+SW96iCiHPg1QfQpu1Wrb8/fI
-         FQSGutgQVFYrTkWH04ibID/JwKRDtF6Z6ry3mRPDF/Z5GZa790v7pXCanGJbgocNyO
-         PLG20VlLzx5VoiIQHje4gj8NvrxixMlBdj/dYCpmTDAUxFp4lYzW1mYbT+HZfoQPec
-         DPnv+ugxfeWKQ==
-Received: from [IPV6:2a02:8109:a100:1a48:ff0:ef2f:d4da:17d8] (unknown [IPv6:2a02:8109:a100:1a48:ff0:ef2f:d4da:17d8])
-        by stuerz.xyz (Postfix) with ESMTPSA id E7D78FA6B1;
-        Mon, 28 Mar 2022 19:54:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
-        t=1648497255; bh=vLujta4nZyWs+WRhXVDs/r9cMmB7D9buGBDSpH905nQ=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=RtLxYW4DBUyyHTFQEL882cfZ2TUySc5QkJJC3ZkaaYG0ptDes5KHHO4xJ+kIgtKAg
-         STWYNCCwYyJSaBybQR5XU2DdrBJ8Gtj0eiVu9BZqnULzAykR5unK/FBX9bdWqeIZCs
-         3HUccN3oyf4iMFW6WbsZyjQPMOYq6M3pZ0HlufcIDinhylPIR67J7Dq0f5KP7d/fRh
-         KRnsh+3OaZc5yM03avILSMBdBMbfMy+2JdqY0hffJIsPIV7zgNH9C1E34dhezUoZwo
-         YKrhD7zHwq2Ev+f/uW/sR5IIJMgliEuWEhu4EfciEB9N/UhFJXKJ4JyYeUEwxGXICg
-         5ckAvpmEYAOVw==
-Message-ID: <6cae7be8-0329-7b0f-9a61-695f3d0cceb4@stuerz.xyz>
-Date:   Mon, 28 Mar 2022 21:54:13 +0200
+        Mon, 28 Mar 2022 16:22:00 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06B4740E4D;
+        Mon, 28 Mar 2022 13:20:19 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AAD83B81204;
+        Mon, 28 Mar 2022 20:20:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF991C340F0;
+        Mon, 28 Mar 2022 20:20:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648498816;
+        bh=DYKSgCLyLSG5eVAyXEXBJzv5wUb4KbwLHueX4TuM2es=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=nccR77DmMt5fnc/o6gzPVyT3/n47SLxU5yK+UpwKdHx+DMcaLuX/6OketRHPbmZK4
+         q8cXPhOeS5U/lTt4ZBRJMWdOApW5jbpoUqhxVh/BedGBZMTMV5wkH3BtP7s6iGDW7Q
+         y0QdQapyEyF3Bt/RYtFN3DcVWfO6ymXfIwUMVbM0YopTHxL2aIt7JhbD6dj4ejWOxW
+         pc+m/7ZMIf0Ie62Bdb6sgKnlk4iE+Z9kmM5yyWzogfPqXEglCECce8tPm4qxiKW+nA
+         n66IatdJU8T97URqDPNt56LnxyLR99fOCTtEa0OoWadqYlrX2oFEX/OYDMGmH5+pqh
+         E51HpRAN1M85Q==
+Date:   Mon, 28 Mar 2022 13:20:14 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Benjamin =?UTF-8?B?U3TDvHJ6?= <benni@stuerz.xyz>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+        linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-input@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-pci@vger.kernel.org
+Subject: Re: [PATCH 00/22] Replace comments with C99 initializers
+Message-ID: <20220328132014.6b8c0a21@kernel.org>
+In-Reply-To: <cc104272-d79a-41e1-f4de-cb78fb073991@stuerz.xyz>
+References: <20220326165909.506926-1-benni@stuerz.xyz>
+        <8f9271b6-0381-70a9-f0c2-595b2235866a@stuerz.xyz>
+        <87fsn2zaix.fsf@kernel.org>
+        <cc104272-d79a-41e1-f4de-cb78fb073991@stuerz.xyz>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: [PATCH 20/22 v3] ray_cs: Improve card_status[]
-Content-Language: en-US
-To:     Joe Perches <joe@perches.com>, Kalle Valo <kvalo@kernel.org>
-Cc:     kuba@kernel.org, davem@davemloft.net, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220326165909.506926-20-benni@stuerz.xyz>
- <164846920750.11945.16978682699891961444.kvalo@kernel.org>
- <1b694c4c-100b-951a-20f7-df1c912bb550@stuerz.xyz>
- <683c72536c0672aa69c285ee505ec552fa76935f.camel@perches.com>
-From:   =?UTF-8?Q?Benjamin_St=c3=bcrz?= <benni@stuerz.xyz>
-In-Reply-To: <683c72536c0672aa69c285ee505ec552fa76935f.camel@perches.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_SUSPICIOUS_NTLD,
-        PDS_OTHER_BAD_TLD,RDNS_DYNAMIC,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 28.03.22 21:23, Joe Perches wrote:
-> On Mon, 2022-03-28 at 20:21 +0200, Benjamin Stürz wrote:
->> Replace comments with C99's designated initializers.
-> []
->> diff --git a/drivers/net/wireless/ray_cs.c b/drivers/net/wireless/ray_cs.c
-> []
->> @@ -2529,20 +2529,23 @@ static void clear_interrupt(ray_dev_t *local)
->>  #define MAXDATA (PAGE_SIZE - 80)
->>
->>  static const char *card_status[] = {
->> -	"Card inserted - uninitialized",	/* 0 */
->> -	"Card not downloaded",			/* 1 */
->> -	"Waiting for download parameters",	/* 2 */
->> -	"Card doing acquisition",		/* 3 */
->> -	"Acquisition complete",			/* 4 */
->> -	"Authentication complete",		/* 5 */
->> -	"Association complete",			/* 6 */
->> -	"???", "???", "???", "???",		/* 7 8 9 10 undefined */
->> -	"Card init error",			/* 11 */
->> -	"Download parameters error",		/* 12 */
->> -	"???",					/* 13 */
->> -	"Acquisition failed",			/* 14 */
->> -	"Authentication refused",		/* 15 */
->> -	"Association failed"			/* 16 */
->> +	[0]  = "Card inserted - uninitialized",
-> 
-> If you are going to do this at all, please use the #defines
-> in drivers/net/wireless/rayctl.h
-> 
-> 	[CARD_INSERTED] = "Card inserted - uninitialized",
-> 	[CARD_AWAITING_PARAM] = "Card not downloaded",
-> 
-> etc...
-> 
-> $ git grep -w -P 'CARD_\w+' drivers/net/wireless/rayctl.h
-> drivers/net/wireless/rayctl.h:#define CARD_INSERTED       (0)
-> drivers/net/wireless/rayctl.h:#define CARD_AWAITING_PARAM (1)
-> drivers/net/wireless/rayctl.h:#define CARD_INIT_ERROR     (11)
-> drivers/net/wireless/rayctl.h:#define CARD_DL_PARAM       (2)
-> drivers/net/wireless/rayctl.h:#define CARD_DL_PARAM_ERROR (12)
-> drivers/net/wireless/rayctl.h:#define CARD_DOING_ACQ      (3)
-> drivers/net/wireless/rayctl.h:#define CARD_ACQ_COMPLETE   (4)
-> drivers/net/wireless/rayctl.h:#define CARD_ACQ_FAILED     (14)
-> drivers/net/wireless/rayctl.h:#define CARD_AUTH_COMPLETE  (5)
-> drivers/net/wireless/rayctl.h:#define CARD_AUTH_REFUSED   (15)
-> drivers/net/wireless/rayctl.h:#define CARD_ASSOC_COMPLETE (6)
-> drivers/net/wireless/rayctl.h:#define CARD_ASSOC_FAILED   (16)
-> 
->> +	[1]  = "Card not downloaded",
->> +	[2]  = "Waiting for download parameters",
->> +	[3]  = "Card doing acquisition",
->> +	[4]  = "Acquisition complete",
->> +	[5]  = "Authentication complete",
->> +	[6]  = "Association complete",
->> +	[7]  = "???",
->> +	[8]  = "???",
->> +	[9]  = "???",
->> +	[10] = "???",
->> +	[11] = "Card init error",
->> +	[12] = "Download parameters error",
->> +	[13] = "???",
->> +	[14] = "Acquisition failed",
->> +	[15] = "Authentication refused",
->> +	[16] = "Association failed"
->>  };
->>
->>  static const char *nettype[] = { "Adhoc", "Infra " };
-> 
-> 
+On Mon, 28 Mar 2022 13:51:42 +0200 Benjamin St=C3=BCrz wrote:
+> > Just a small tip: If you are new, start with something small and learn
+> > from that. Don't do a controversial big patchset spanning multiple
+> > subsystems, that's the hard way to learn things. First submit one patch
+> > at a time to one subsystem and gain understanding of the process that
+> > way.
+>=20
+> I actually thought this would be such simple thing. Do you know of any
+> good thing where to start? I already looked into drivers/staging/*/TODO
+> and didn't found something for me personally.
 
+FWIW on the netdev side there's work coming to convert a set of features
+from unsigned long to a BITMAP which will require converting a lot of
+drivers to an explicit helpers from direct access.
 
-- Make card_status[] const, because it should never be modified
-- Replace comments with C99's designated initializers to improve
-  readability and maintainability
+https://lore.kernel.org/all/20220324154932.17557-14-shenjian15@huawei.com/
 
-Signed-off-by: Benjamin Stürz <benni@stuerz.xyz>
----
- drivers/net/wireless/ray_cs.c | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/net/wireless/ray_cs.c b/drivers/net/wireless/ray_cs.c
-index 87e98ab068ed..07f36aaefbde 100644
---- a/drivers/net/wireless/ray_cs.c
-+++ b/drivers/net/wireless/ray_cs.c
-@@ -2528,21 +2528,24 @@ static void clear_interrupt(ray_dev_t *local)
- #ifdef CONFIG_PROC_FS
- #define MAXDATA (PAGE_SIZE - 80)
-
--static const char *card_status[] = {
--	"Card inserted - uninitialized",	/* 0 */
--	"Card not downloaded",			/* 1 */
--	"Waiting for download parameters",	/* 2 */
--	"Card doing acquisition",		/* 3 */
--	"Acquisition complete",			/* 4 */
--	"Authentication complete",		/* 5 */
--	"Association complete",			/* 6 */
--	"???", "???", "???", "???",		/* 7 8 9 10 undefined */
--	"Card init error",			/* 11 */
--	"Download parameters error",		/* 12 */
--	"???",					/* 13 */
--	"Acquisition failed",			/* 14 */
--	"Authentication refused",		/* 15 */
--	"Association failed"			/* 16 */
-+static const char * const card_status[] = {
-+	[CARD_INSERTED]		= "Card inserted - uninitialized",
-+	[CARD_AWAITING_PARAM]	= "Card not downloaded",
-+	[CARD_DL_PARAM]		= "Waiting for download parameters",
-+	[CARD_DOING_ACQ]	= "Card doing acquisition",
-+	[CARD_ACQ_COMPLETE]	= "Acquisition complete",
-+	[CARD_AUTH_COMPLETE]	= "Authentication complete",
-+	[CARD_ASSOC_COMPLETE]	= "Association complete",
-+	[7]			= "???",
-+	[8]			= "???",
-+	[9]			= "???",
-+	[10]			= "???",
-+	[CARD_INIT_ERROR]	= "Card init error",
-+	[CARD_DL_PARAM_ERROR]	= "Download parameters error",
-+	[13]			= "???",
-+	[CARD_ACQ_FAILED]	= "Acquisition failed",
-+	[CARD_AUTH_REFUSED]	= "Authentication refused",
-+	[CARD_ASSOC_FAILED]	= "Association failed"
- };
-
- static const char *nettype[] = { "Adhoc", "Infra " };
--- 
-2.35.1
+If it seems interesting enough you can try reaching out to Jian Shen.
