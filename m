@@ -2,249 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD5A24E9C19
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 18:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70CDC4E9CBA
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 18:52:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241804AbiC1QTe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Mar 2022 12:19:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52850 "EHLO
+        id S241550AbiC1Qvx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Mar 2022 12:51:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241774AbiC1QT1 (ORCPT
+        with ESMTP id S236419AbiC1Qvw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Mar 2022 12:19:27 -0400
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D00E23E5DC;
-        Mon, 28 Mar 2022 09:17:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1648484267; x=1680020267;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Eu7nJy5jkPS6ql5ANPoXUckpfZ6g40U1vF2Yo2ODg4c=;
-  b=lWeb1oJMQ0HozGS+eGbIRSBM70ecG0kNOWkFHmOM/8VfoOy75JCLoOb4
-   d47bbHtIXAkYOjAlBNW0AoXXVcWbG5tVN29cajuIQEVQ8nwDfHSXvscLI
-   8mEC8S3Z/VJIDvO+2/MEaYOobW+KYXjxtQ5n5Wam2hweqmslucbf1Rpki
-   4=;
-Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 28 Mar 2022 09:17:46 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2022 09:17:44 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Mon, 28 Mar 2022 09:17:44 -0700
-Received: from [10.110.35.108] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Mon, 28 Mar
- 2022 09:17:41 -0700
-Message-ID: <f0ebc901-051a-c7fe-ca5a-bc798e7c31e7@quicinc.com>
-Date:   Mon, 28 Mar 2022 09:17:40 -0700
+        Mon, 28 Mar 2022 12:51:52 -0400
+X-Greylist: delayed 363 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 28 Mar 2022 09:50:10 PDT
+Received: from simonwunderlich.de (simonwunderlich.de [IPv6:2a01:4f8:c17:e8c0::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4299641325
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Mar 2022 09:50:09 -0700 (PDT)
+Received: from [IPv6:2003:c5:974d:4090::607] (p200300C5974d40900000000000000607.dip0.t-ipconnect.de [IPv6:2003:c5:974d:4090::607])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by simonwunderlich.de (Postfix) with ESMTPSA id D2F91FA768;
+        Mon, 28 Mar 2022 18:44:01 +0200 (CEST)
+To:     akolli@codeaurora.org
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        periyasa@codeaurora.org
+References: <1612946530-28504-7-git-send-email-akolli@codeaurora.org>
+Subject: Re: [PATCH 06/11] ath11k: add static window support for register
+ access
+From:   Hamdi Issam <ih@simonwunderlich.de>
+Message-ID: <4c708ea3-d027-aa01-e157-17a29889ac44@simonwunderlich.de>
+Date:   Mon, 28 Mar 2022 18:44:00 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH 19/22] wnc36xx: Replace comments with C99 initializers
-Content-Language: en-US
-To:     =?UTF-8?Q?Benjamin_St=c3=bcrz?= <benni@stuerz.xyz>,
-        <andrew@lunn.ch>
-CC:     <sebastian.hesselbarth@gmail.com>, <gregory.clement@bootlin.com>,
-        <linux@armlinux.org.uk>, <linux@simtec.co.uk>, <krzk@kernel.org>,
-        <alim.akhtar@samsung.com>, <tglx@linutronix.de>,
-        <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-        <hpa@zytor.com>, <robert.moore@intel.com>,
-        <rafael.j.wysocki@intel.com>, <lenb@kernel.org>,
-        <3chas3@gmail.com>, <laforge@gnumonks.org>, <arnd@arndb.de>,
-        <gregkh@linuxfoundation.org>, <mchehab@kernel.org>,
-        <tony.luck@intel.com>, <james.morse@arm.com>, <rric@kernel.org>,
-        <linus.walleij@linaro.org>, <brgl@bgdev.pl>,
-        <mike.marciniszyn@cornelisnetworks.com>,
-        <dennis.dalessandro@cornelisnetworks.com>, <jgg@ziepe.ca>,
-        <pali@kernel.org>, <dmitry.torokhov@gmail.com>,
-        <isdn@linux-pingi.de>, <benh@kernel.crashing.org>,
-        <fbarrat@linux.ibm.com>, <ajd@linux.ibm.com>,
-        <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <nico@fluxnic.net>, <loic.poulain@linaro.org>, <kvalo@kernel.org>,
-        <pkshih@realtek.com>, <bhelgaas@google.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-samsung-soc@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <devel@acpica.org>,
-        <linux-atm-general@lists.sourceforge.net>,
-        <netdev@vger.kernel.org>, <linux-edac@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-        <linux-input@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-media@vger.kernel.org>, <wcn36xx@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, <linux-pci@vger.kernel.org>
-References: <20220326165909.506926-1-benni@stuerz.xyz>
- <20220326165909.506926-19-benni@stuerz.xyz>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20220326165909.506926-19-benni@stuerz.xyz>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+In-Reply-To: <1612946530-28504-7-git-send-email-akolli@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Language: en-US
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/26/2022 9:59 AM, Benjamin Stürz wrote:
-> This replaces comments with C99's designated
-> initializers because the kernel supports them now.
-> 
-> Signed-off-by: Benjamin Stürz <benni@stuerz.xyz>
-> ---
->   drivers/net/wireless/ath/wcn36xx/main.c | 122 ++++++++++++------------
->   1 file changed, 61 insertions(+), 61 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-> index 95ea7d040d8c..0fed64bd37b4 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/main.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/main.c
-> @@ -193,67 +193,67 @@ static inline u8 get_sta_index(struct ieee80211_vif *vif,
->   }
->   
->   static const char * const wcn36xx_caps_names[] = {
-> -	"MCC",				/* 0 */
-> -	"P2P",				/* 1 */
-> -	"DOT11AC",			/* 2 */
-> -	"SLM_SESSIONIZATION",		/* 3 */
-> -	"DOT11AC_OPMODE",		/* 4 */
-> -	"SAP32STA",			/* 5 */
-> -	"TDLS",				/* 6 */
-> -	"P2P_GO_NOA_DECOUPLE_INIT_SCAN",/* 7 */
-> -	"WLANACTIVE_OFFLOAD",		/* 8 */
-> -	"BEACON_OFFLOAD",		/* 9 */
-> -	"SCAN_OFFLOAD",			/* 10 */
-> -	"ROAM_OFFLOAD",			/* 11 */
-> -	"BCN_MISS_OFFLOAD",		/* 12 */
-> -	"STA_POWERSAVE",		/* 13 */
-> -	"STA_ADVANCED_PWRSAVE",		/* 14 */
-> -	"AP_UAPSD",			/* 15 */
-> -	"AP_DFS",			/* 16 */
-> -	"BLOCKACK",			/* 17 */
-> -	"PHY_ERR",			/* 18 */
-> -	"BCN_FILTER",			/* 19 */
-> -	"RTT",				/* 20 */
-> -	"RATECTRL",			/* 21 */
-> -	"WOW",				/* 22 */
-> -	"WLAN_ROAM_SCAN_OFFLOAD",	/* 23 */
-> -	"SPECULATIVE_PS_POLL",		/* 24 */
-> -	"SCAN_SCH",			/* 25 */
-> -	"IBSS_HEARTBEAT_OFFLOAD",	/* 26 */
-> -	"WLAN_SCAN_OFFLOAD",		/* 27 */
-> -	"WLAN_PERIODIC_TX_PTRN",	/* 28 */
-> -	"ADVANCE_TDLS",			/* 29 */
-> -	"BATCH_SCAN",			/* 30 */
-> -	"FW_IN_TX_PATH",		/* 31 */
-> -	"EXTENDED_NSOFFLOAD_SLOT",	/* 32 */
-> -	"CH_SWITCH_V1",			/* 33 */
-> -	"HT40_OBSS_SCAN",		/* 34 */
-> -	"UPDATE_CHANNEL_LIST",		/* 35 */
-> -	"WLAN_MCADDR_FLT",		/* 36 */
-> -	"WLAN_CH144",			/* 37 */
-> -	"NAN",				/* 38 */
-> -	"TDLS_SCAN_COEXISTENCE",	/* 39 */
-> -	"LINK_LAYER_STATS_MEAS",	/* 40 */
-> -	"MU_MIMO",			/* 41 */
-> -	"EXTENDED_SCAN",		/* 42 */
-> -	"DYNAMIC_WMM_PS",		/* 43 */
-> -	"MAC_SPOOFED_SCAN",		/* 44 */
-> -	"BMU_ERROR_GENERIC_RECOVERY",	/* 45 */
-> -	"DISA",				/* 46 */
-> -	"FW_STATS",			/* 47 */
-> -	"WPS_PRBRSP_TMPL",		/* 48 */
-> -	"BCN_IE_FLT_DELTA",		/* 49 */
-> -	"TDLS_OFF_CHANNEL",		/* 51 */
-> -	"RTT3",				/* 52 */
-> -	"MGMT_FRAME_LOGGING",		/* 53 */
-> -	"ENHANCED_TXBD_COMPLETION",	/* 54 */
-> -	"LOGGING_ENHANCEMENT",		/* 55 */
-> -	"EXT_SCAN_ENHANCED",		/* 56 */
-> -	"MEMORY_DUMP_SUPPORTED",	/* 57 */
-> -	"PER_PKT_STATS_SUPPORTED",	/* 58 */
-> -	"EXT_LL_STAT",			/* 60 */
-> -	"WIFI_CONFIG",			/* 61 */
-> -	"ANTENNA_DIVERSITY_SELECTION",	/* 62 */
-> +	[0]  = "MCC",
-> +	[1]  = "P2P",
-> +	[2]  = "DOT11AC",
-> +	[3]  = "SLM_SESSIONIZATION",
-> +	[4]  = "DOT11AC_OPMODE",
-> +	[5]  = "SAP32STA",
-> +	[6]  = "TDLS",
-> +	[7]  = "P2P_GO_NOA_DECOUPLE_INIT_SCAN",
-> +	[8]  = "WLANACTIVE_OFFLOAD",
-> +	[9]  = "BEACON_OFFLOAD",
-> +	[10] = "SCAN_OFFLOAD",
-> +	[11] = "ROAM_OFFLOAD",
-> +	[12] = "BCN_MISS_OFFLOAD",
-> +	[13] = "STA_POWERSAVE",
-> +	[14] = "STA_ADVANCED_PWRSAVE",
-> +	[15] = "AP_UAPSD",
-> +	[16] = "AP_DFS",
-> +	[17] = "BLOCKACK",
-> +	[18] = "PHY_ERR",
-> +	[19] = "BCN_FILTER",
-> +	[20] = "RTT",
-> +	[21] = "RATECTRL",
-> +	[22] = "WOW",
-> +	[23] = "WLAN_ROAM_SCAN_OFFLOAD",
-> +	[24] = "SPECULATIVE_PS_POLL",
-> +	[25] = "SCAN_SCH",
-> +	[26] = "IBSS_HEARTBEAT_OFFLOAD",
-> +	[27] = "WLAN_SCAN_OFFLOAD",
-> +	[28] = "WLAN_PERIODIC_TX_PTRN",
-> +	[29] = "ADVANCE_TDLS",
-> +	[30] = "BATCH_SCAN",
-> +	[31] = "FW_IN_TX_PATH",
-> +	[32] = "EXTENDED_NSOFFLOAD_SLOT",
-> +	[33] = "CH_SWITCH_V1",
-> +	[34] = "HT40_OBSS_SCAN",
-> +	[35] = "UPDATE_CHANNEL_LIST",
-> +	[36] = "WLAN_MCADDR_FLT",
-> +	[37] = "WLAN_CH144",
-> +	[38] = "NAN",
-> +	[39] = "TDLS_SCAN_COEXISTENCE",
-> +	[40] = "LINK_LAYER_STATS_MEAS",
-> +	[41] = "MU_MIMO",
-> +	[42] = "EXTENDED_SCAN",
-> +	[43] = "DYNAMIC_WMM_PS",
-> +	[44] = "MAC_SPOOFED_SCAN",
-> +	[45] = "BMU_ERROR_GENERIC_RECOVERY",
-> +	[46] = "DISA",
-> +	[47] = "FW_STATS",
-> +	[48] = "WPS_PRBRSP_TMPL",
-> +	[49] = "BCN_IE_FLT_DELTA",
-> +	[51] = "TDLS_OFF_CHANNEL",
-> +	[52] = "RTT3",
-> +	[53] = "MGMT_FRAME_LOGGING",
-> +	[54] = "ENHANCED_TXBD_COMPLETION",
-> +	[55] = "LOGGING_ENHANCEMENT",
-> +	[56] = "EXT_SCAN_ENHANCED",
-> +	[57] = "MEMORY_DUMP_SUPPORTED",
-> +	[58] = "PER_PKT_STATS_SUPPORTED",
-> +	[60] = "EXT_LL_STAT",
-> +	[61] = "WIFI_CONFIG",
-> +	[62] = "ANTENNA_DIVERSITY_SELECTION",
->   };
->   
->   static const char *wcn36xx_get_cap_name(enum place_holder_in_cap_bitmap x)
+Hello,
 
-I know there has been much discussion on this series. For this specific 
-patch this would be a great change if you use the actual enumerations 
-from enum place_holder_in_cap_bitmap as the index values,
-i.e.
-  [MCC] = "MCC",
-  etc.
+I was trying to read values of timers from some offsets on the QCN9074, 
+but I get every time an invalid values (0xffffffff):
+This is example of my code:
 
-So a v2 for this patch would be appreciated
+#define QCN9000_WLAON_GLOBAL_COUNTER_CTRL3      0x1F80118
+#define QCN9000_WLAON_GLOBAL_COUNTER_CTRL4      0x1F8011C
+#define QCN9000_WLAON_GLOBAL_COUNTER_CTRL5      0x1F80120
 
+#define QCN9000_TIME_SYNC_ENABLE                0x80000000
+#define QCN9000_TIME_SYNC_CLEAR                 0x0
+.
+.
+.
+ath11k_pci_write32(ab, QCN9000_WLAON_GLOBAL_COUNTER_CTRL5, 
+QCN9000_TIME_SYNC_CLEAR);
+ath11k_pci_write32(ab, QCN9000_WLAON_GLOBAL_COUNTER_CTRL5, 
+QCN9000_TIME_SYNC_ENABLE);
+low = ath11k_pci_read32(ab, QCN9000_WLAON_GLOBAL_COUNTER_CTRL3);
+high = ath11k_pci_read32(ab, QCN9000_WLAON_GLOBAL_COUNTER_CTRL4);
+.
+.
 
+The low and the high parameters always equal to "0xffffffff".
+
+When I made some debugging. I found that the issue is related to 
+"static_window_map" developed in the commit 
+"480a73610c95511e42fb7d0359b523f66883e51a: ath11k: add static window 
+support for register access" and enabled for QCN9074 in this commit 
+"4e80946197a83a6115e308334618449b77696d6a: ath11k: add qcn9074 pci 
+device support".
+When I disabled the "static_window_map" 
+(ab->bus_params.static_window_map = false;) for QCN9074, in that case I 
+was able to get the correct values.
+So it seems that there's an issue of reading some reg when 
+static_window_map is enabled.
+I need your help to solve this issue.
+
+Regards,
+Issam
 
