@@ -2,135 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26A564E8E89
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 09:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A64AE4E8E3C
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Mar 2022 08:37:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238649AbiC1HC5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Mar 2022 03:02:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37090 "EHLO
+        id S238500AbiC1GjN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Mar 2022 02:39:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234808AbiC1HCv (ORCPT
+        with ESMTP id S238377AbiC1GjM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Mar 2022 03:02:51 -0400
-X-Greylist: delayed 1499 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 28 Mar 2022 00:01:11 PDT
-Received: from gateway24.websitewelcome.com (gateway24.websitewelcome.com [192.185.51.251])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DDE0115D
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Mar 2022 00:01:11 -0700 (PDT)
-Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
-        by gateway24.websitewelcome.com (Postfix) with ESMTP id DFBA31A3C
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Mar 2022 01:15:26 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id Yif0nho70RnrrYif0nvYhO; Mon, 28 Mar 2022 01:15:26 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=jQgqtKv6g3c9JTlzvFF9fkILdnQrG04PzWMmUtyZ79I=; b=Z9m6Uy21YEhtJzNbcBVhcTYQYn
-        vTB3fNlc3MOfcSh6ksPbcbYt3oSXkofi5a6lRQPC05JtMruK8znKUKiTTX3akYnERi0THt5V62b9k
-        O3i2yVX8iGTxxGcpJ47nvcy0wCRN019I5YMj117403A7hpVRofIkzeD8LQgrGrmdIpYLwgqyOAlD/
-        AW2eJjvcAFsrsOMELIVWO1G++G5f5/H22dbAqQ8Ex3v0lYALkLQtX6V/okDZ43zfuA2OfLBspZOEH
-        Bw9+aSG4L4fcfrJe4f2a4dwsO/Uoddhuvu6U0FDkQ06+RWGTnrDTKhOxrvlY2iBr2UTk1rSe/pNCM
-        ikLFO6lA==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:38018 helo=[192.168.15.9])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1nYif0-000lJi-7y; Mon, 28 Mar 2022 01:15:26 -0500
-Message-ID: <4c520e2e-d1a5-6d2b-3ef1-b891d7946c01@embeddedor.com>
-Date:   Mon, 28 Mar 2022 01:23:59 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH][next] iwlwifi: fw: Replace zero-length arrays with
- flexible-array members
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
+        Mon, 28 Mar 2022 02:39:12 -0400
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427E348E7F;
+        Sun, 27 Mar 2022 23:37:28 -0700 (PDT)
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 6558068B05; Mon, 28 Mar 2022 08:37:23 +0200 (CEST)
+Date:   Mon, 28 Mar 2022 08:37:23 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Robin Murphy <robin.murphy@arm.com>,
+        Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+        Christoph Hellwig <hch@lst.de>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20220216195015.GA904148@embeddedor>
- <202202161235.2FB20E6A5@keescook> <20220326003843.GA2602091@embeddedor>
- <871qym1vck.fsf@kernel.org>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <871qym1vck.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1nYif0-000lJi-7y
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.9]) [187.162.31.110]:38018
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 4
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        Paolo Abeni <pabeni@redhat.com>,
+        Olha Cherevyk <olha.cherevyk@gmail.com>,
+        iommu <iommu@lists.linux-foundation.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable <stable@vger.kernel.org>
+Subject: Re: [REGRESSION] Recent swiotlb DMA_FROM_DEVICE fixes break
+ ath9k-based AP
+Message-ID: <20220328063723.GA29405@lst.de>
+References: <1812355.tdWV9SEqCh@natalenko.name> <CAHk-=wiwz+Z2MaP44h086jeniG-OpK3c=FywLsCwXV7Crvadrg@mail.gmail.com> <27b5a287-7a33-9a8b-ad6d-04746735fb0c@arm.com> <CAHk-=wip7TCD_+2STTepuEZvGMg6wcz+o=kyFUvHjuKziTMixw@mail.gmail.com> <f88ca616-96d1-82dc-1bc8-b17480e937dd@arm.com> <20220324190216.0efa067f.pasic@linux.ibm.com> <20220325163204.GB16426@lst.de> <87y20x7vaz.fsf@toke.dk> <e077b229-c92b-c9a6-3581-61329c4b4a4b@arm.com> <CAHk-=wgKF5GfLXyVGDQDifh0MpMccDdmBvJBG3dt2+idCa5DzQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wgKF5GfLXyVGDQDifh0MpMccDdmBvJBG3dt2+idCa5DzQ@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 3/28/22 00:47, Kalle Valo wrote:
-> "Gustavo A. R. Silva" <gustavoars@kernel.org> writes:
+On Fri, Mar 25, 2022 at 11:46:09AM -0700, Linus Torvalds wrote:
+> I think my list of three different sync cases (not just two! It's not
+> just about whether to sync for the CPU or the device, it's also about
+> what direction the data itself is taking) is correct.
 > 
->> On Wed, Feb 16, 2022 at 12:35:14PM -0800, Kees Cook wrote:
->>> On Wed, Feb 16, 2022 at 01:50:15PM -0600, Gustavo A. R. Silva wrote:
->>>> There is a regular need in the kernel to provide a way to declare
->>>> having a dynamically sized set of trailing elements in a structure.
->>>> Kernel code should always use “flexible array members”[1] for these
->>>> cases. The older style of one-element or zero-length arrays should
->>>> no longer be used[2].
->>>>
->>>> [1] https://en.wikipedia.org/wiki/Flexible_array_member
->>>> [2]
->>>> https://www.kernel.org/doc/html/v5.16/process/deprecated.html#zero-length-and-one-element-arrays
->>>>
->>>> Link: https://github.com/KSPP/linux/issues/78
->>>> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
->>>
->>> Reviewed-by: Kees Cook <keescook@chromium.org>
->>
->> Hi all,
->>
->> Friendly ping: can someone take this, please?
->>
->> ...I can take this in my -next tree in the meantime.
-> 
-> Like we have discussed before, please don't take any wireless patches to
-> your tree. The conflicts just cause more work of us.
+> But maybe I'm wrong.
 
-Sure thing. I just removed it from my tree.
+At the high level you are correct.  It is all about which direction
+the data is taking.  That is the direction argument that all the
+map/unmap/sync call take.  The sync calls then just toggle the ownership.
+You seem to hate that ownership concept, but I don't see how things
+could work without that ownership concept as we're going to be in
+trouble without having that.  And yes, a peek operation could work in
+some cases, but it would have to be at the cache line granularity.
 
-I didn't get any reply from wireless people in more than a month, and
-that's why I temporarily took it in my tree so it doesn't get lost. :)
+arch/arc/mm/dma.c has a really good comment how these transfers relate
+to actual cache operations btw>
 
-> I assigned this patch to me on patchwork and I'm planning to take it to
-> wireless-next once it opens. Luca, ack?
-
-Awesome.
-
-Thanks
---
-Gustavo
+ *
+ *          |   map          ==  for_device     |   unmap     ==  for_cpu
+ *          |----------------------------------------------------------------
+ * TO_DEV   |   writeback        writeback      |   none          none
+ * FROM_DEV |   invalidate       invalidate     |   invalidate*	  invalidate*
+ * BIDIR    |   writeback+inv    writeback+inv  |   invalidate    invalidate
+ *
+ *     [*] needed for CPU speculative prefetches
