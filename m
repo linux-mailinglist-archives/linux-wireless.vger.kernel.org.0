@@ -2,85 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96BBF4EB5E3
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Mar 2022 00:29:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41B534EB6DF
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Mar 2022 01:37:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237150AbiC2WbG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Mar 2022 18:31:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40814 "EHLO
+        id S240719AbiC2Xjg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Mar 2022 19:39:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237121AbiC2WbD (ORCPT
+        with ESMTP id S231628AbiC2Xjg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Mar 2022 18:31:03 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52E16340E9
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Mar 2022 15:29:19 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id m30so26810444wrb.1
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Mar 2022 15:29:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:mime-version:content-transfer-encoding
-         :content-description:subject:to:from:date:reply-to;
-        bh=+v//v9bV1cKxYYqp6E5HrJfuFydY/JXcjMGnmfr7lM0=;
-        b=KUrvgG8Hj4Oi4ofJnOcrlqCgL0ZdNDAP3sS90sQascYxaAAZTQyQgS1ngSbJaMET/B
-         sdYj53lRNjMbBjHl8niUK9LDMidlgj9+soINNKRmiOmfTjbm8cUSj/bTpxlZ/pCjay2o
-         by6YlnUh2iUEpk9dg2R8EHHXJPhx89svOhwGABM23sYZ7ldbO8SBYydNspaGlhEzqbYq
-         Vv8jAA6VeS6H+NTznzDsRz87a8iRyEdEKZO+zFVyH06rMhRPUzED8AKe8VI26xktvrGY
-         VOURA1mBEo2d8Pq0u18k+nBA75ZltzxqPs/Xd7Jx+OQlw208yJPbJGwdtLlSlqLlNZB+
-         j/uQ==
+        Tue, 29 Mar 2022 19:39:36 -0400
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB7E918A3EC;
+        Tue, 29 Mar 2022 16:37:52 -0700 (PDT)
+Received: by mail-oi1-f174.google.com with SMTP id k10so20591600oia.0;
+        Tue, 29 Mar 2022 16:37:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:mime-version
-         :content-transfer-encoding:content-description:subject:to:from:date
-         :reply-to;
-        bh=+v//v9bV1cKxYYqp6E5HrJfuFydY/JXcjMGnmfr7lM0=;
-        b=dsNk3iPVbbsXTAFrs3JKXnQcljeT+qvU7PYUk1saKAnDoBWtStXRtBFyhAQRC2xa58
-         X7u2KNR6RHDk9AqWq3bFbsyQGzkj+QidtJXH+etukQFw2k16ZVne2ydygQvLjd/3uUaC
-         RNJcsQBQWVAA+JZdF7EHjMUHXpuwkZC7C/l/fnqMShifBCAuqBxm7BxQCLcOxBxS9Ups
-         tGrqiJvp9jcMcHDd7E63rwq8Uu4mH/z2eLlqth5NPzcHgDGgPkREi4Y9FZi6K72L+7MP
-         pQGfgpIb01JzrHEBl4zeK6QjVYCzlhWXvms+FntBL9ppaG5ceDhOe6hsDtu6Q3ElBcQY
-         9wPg==
-X-Gm-Message-State: AOAM532y11k1pOOZpOuMtIQXxym3WxafZ/covbiyhJ/TbB+yS+7/GVy7
-        CzmXGJTY7qUzJ+bUx97M+aA=
-X-Google-Smtp-Source: ABdhPJyMC8U+My0DAQPNLjU0UMI/o27Syg3QpoUXKunFqLNAsAWtIsouAh0hLUqzieLfYd/T76xWFQ==
-X-Received: by 2002:a5d:6d86:0:b0:204:111f:17df with SMTP id l6-20020a5d6d86000000b00204111f17dfmr34147910wrs.498.1648592957933;
-        Tue, 29 Mar 2022 15:29:17 -0700 (PDT)
-Received: from [172.20.10.4] ([102.91.4.187])
-        by smtp.gmail.com with ESMTPSA id p16-20020a5d48d0000000b00205cf199abcsm2851970wrs.46.2022.03.29.15.29.12
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Tue, 29 Mar 2022 15:29:16 -0700 (PDT)
-Message-ID: <6243883c.1c69fb81.a7286.bcbe@mx.google.com>
-Content-Type: text/plain; charset="iso-8859-1"
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ZnlJJv2mTkW/GkybuP2Nvc5uQuWnGuRflKAeN/D9Jzo=;
+        b=QJp7WA61+X8OIzMn82yNwnOiAM1TJO7OAKXKYoU5/Rocu3qrjfoDlzf7XGmiCn0FRH
+         Whjzs0OAjXZme3+TYz8x+uDQpfUoM//+6OTBiiyIMnFn9vacCx4pr2Cdpz6dY3MsHdzm
+         dwHcskZIj4mWxy7FltZhZVrpoHqqGk5bRwPqf+47OVKbDqNN4VQkgek0kZPlJ0ir9IjJ
+         A5p4BU3UUEUukDBii5fsIaxXj3WEtjqsMAi3QkkceSLLKxlIublg+fgpmOgqn8XNcexu
+         +L7gND1IGMZC7Z8Jx3fPkFBWdKDljl2ShE0cIe0d3H5BUNzGn/YiTfOea1mumV28pN8p
+         6RJQ==
+X-Gm-Message-State: AOAM531i3BsfD+/1UnQC78SK7OLbi1BH6iGsvbN91iX4ohjrCT0H4bUK
+        XvXLEWWCEXMeWvnsxnn+FQ==
+X-Google-Smtp-Source: ABdhPJx2l0ZTgCmk04heyRtS3320sByNAy4I0VQIQZ3u3VZYVNJBCe43kHlXeU8pdRft7J9JBcMajA==
+X-Received: by 2002:a05:6808:302a:b0:2f7:6aa3:63b8 with SMTP id ay42-20020a056808302a00b002f76aa363b8mr714253oib.31.1648597071989;
+        Tue, 29 Mar 2022 16:37:51 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id c12-20020a9d75cc000000b005b24b061940sm9533498otl.33.2022.03.29.16.37.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Mar 2022 16:37:51 -0700 (PDT)
+Received: (nullmailer pid 1572238 invoked by uid 1000);
+        Tue, 29 Mar 2022 23:37:50 -0000
+Date:   Tue, 29 Mar 2022 18:37:50 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 01/12] dt: bindings: net: add bindings of WCN6750 for
+ ath11k
+Message-ID: <YkOYTpTMXTEx5mAU@robh.at.kernel.org>
+References: <20220328094838.14093-1-quic_mpubbise@quicinc.com>
+ <20220328094838.14093-2-quic_mpubbise@quicinc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Gefeliciteerd, er is geld aan je gedoneerd
-To:     Recipients <adeboyejofolashade55@gmail.com>
-From:   adeboyejofolashade55@gmail.com
-Date:   Tue, 29 Mar 2022 23:29:09 +0100
-Reply-To: mike.weirsky.foundation003@gmail.com
-X-Spam-Status: No, score=2.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,T_US_DOLLARS_3 autolearn=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220328094838.14093-2-quic_mpubbise@quicinc.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
-X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Beste begunstigde,
+On Mon, 28 Mar 2022 15:18:27 +0530, Manikanta Pubbisetty wrote:
+> WCN6750 is the WLAN chip on Qualcomm Snapdragon SoC SC7280;
+> Though being a PCIe based solution, it is not attached to
+> the APSS processor (Application Processor SubSystem), it is
+> instead attached to another tiny processor called WPSS Q6
+> processor (Wireless Processor SubSystem) on the SC7280 MSM,
+> where the WLAN firmware runs, and it is the WLAN firmware
+> running on the Q6 processor which enumerates WCN6750, as a
+> result APPS processor would never know such a device being
+> present in the system and would not detect the WCN6750
+> hardware unless and otherwise WCN6750 is registered as a
+> platform device. This is the reason behind adding WCN6750
+> WLAN node in the device tree.
+> 
+> Add WCN6750 wireless driver support, its based on ath11k driver.
+> 
+> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+> ---
+>  .../bindings/net/wireless/qcom,ath11k.yaml    | 361 ++++++++++++------
+>  1 file changed, 252 insertions(+), 109 deletions(-)
+> 
 
- Je hebt een liefdadigheidsdonatie van ($ 10.000.000,00) van Mr. Mike Weirs=
-ky, een winnaar van een powerball-jackpotloterij van $ 273 miljoen.  Ik don=
-eer aan 5 willekeurige personen als je deze e-mail ontvangt, dan is je e-ma=
-il geselecteerd na een spin-ball. Ik heb vrijwillig besloten om het bedrag =
-van $ 10 miljoen USD aan jou te doneren als een van de geselecteerde 5, om =
-mijn winst te verifi=EBren
- =
-
-  Vriendelijk antwoord op: mike.weirsky.foundation003@gmail.com
- Voor uw claim.
+Reviewed-by: Rob Herring <robh@kernel.org>
