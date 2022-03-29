@@ -2,101 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D92E64EAD91
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Mar 2022 14:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5A094EAFC5
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Mar 2022 17:02:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236477AbiC2Mtk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Mar 2022 08:49:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55772 "EHLO
+        id S237264AbiC2PEe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Mar 2022 11:04:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237324AbiC2Msm (ORCPT
+        with ESMTP id S237094AbiC2PEe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Mar 2022 08:48:42 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1E77262D4F
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Mar 2022 05:43:49 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id k21so30068340lfe.4
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Mar 2022 05:43:49 -0700 (PDT)
+        Tue, 29 Mar 2022 11:04:34 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D92618C0D0
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Mar 2022 08:02:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=VSEH8Q3Lr+Mcr/0lsL1VFPftJp7ALZ21MKYEz4sry74=;
-        b=NTbtfhXGLJZuqfIpqw2fsty7MoqTSC5+GeJXCCWn8ADDh5Qe8ZM6bZXN6VlL2kbXm7
-         TIo3UkblHq6UvhYtqgoOYySJWsIE7A+srTZKWDmMN/bdQ3w2kbSIhSXPTuanl/gXF+3i
-         /EojGPc3PfHUJ2qk7/G/qZVCT6CvNgx3ozM3or1Y6yThlZm9mSTcAwvmpxb2J+qZ10Qm
-         v067pqgjO/zD3qdIS+HsqhM47VKBo4IeOrc3sooq0iD4osN5PAkCCVcaq8eT2paSX22X
-         HLhzpZlvrWcuRKsJK1qqOWOPmBlaQS+IwK5/pjLKCiaEoMgqVGBn/hZ4BH3PCeidubrE
-         UzzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=VSEH8Q3Lr+Mcr/0lsL1VFPftJp7ALZ21MKYEz4sry74=;
-        b=Vd80JivjO8AEUHmElT6TiYhyWBX3uU59X26aEm9HSg01SA5Styp7wzyRWjDXVGCNxr
-         SdKMoV3dVK3o7avhEDAlHn3svt2XvPOSvoM4ES+6v4VHd1Y7TBzuNEwljq6MgLNkK1PP
-         JSMGTKQAYvRAN0AET+4/8qxTAnxNNayb0atEKALu4y50JrlhicTKePvpPzbxnCit2SoZ
-         wXtm2G1Tw2GeKn18fHOgwvP8TmEF5XANtUy+CgxmyWqmwm+2xM4sYnVaJLKfgGnj/XAE
-         MRTngb0x/5xh9/33Ta6/4SX9XQfBSGdYirt/HCEAsLUTwoFHwBWVTm2jH/M5Mc3knYUH
-         ZUPA==
-X-Gm-Message-State: AOAM532VsThJl7bxykXeUsonOZS/oOG7/ukERrVgSlWv+wlsqgMDnO0h
-        aThRHmZnJBftrp+vbnVDGJ3kVfC3jMbLz0+Ir0Q=
-X-Google-Smtp-Source: ABdhPJyp6v5LBrjboaGiVuOqYycvFu1xtOmg70SHkmps46kcPjhScfjWyiFXHT/wXa11KzJrhQhbX2BXcWg9EY6+rxk=
-X-Received: by 2002:a05:6512:230c:b0:44a:2282:8e38 with SMTP id
- o12-20020a056512230c00b0044a22828e38mr2555869lfu.315.1648557826683; Tue, 29
- Mar 2022 05:43:46 -0700 (PDT)
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1648566171; x=1680102171;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=sXujaEN5nHLpPV9RxMoiZbS35N+Y4Qx+sgw2qjfj924=;
+  b=rPX4GcIX9HB2eoNq2KteSmQ0X6RtppCcMPV9GyTYZ5iKXQMww+vjRldq
+   H0Avq+FvAFvzJ4O3iuepgH97qQlxFkAQhaF+r4K2XINua4K/EBDlklwn4
+   0QgE1kqXwzaPFyKW5Bvr8ZhU8sIEkSYja96Sn/D3o+SW2zXxHCaf3KrbS
+   E=;
+Received: from unknown (HELO ironmsg03-sd.qualcomm.com) ([10.53.140.143])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 29 Mar 2022 08:02:50 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg03-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2022 08:02:50 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Tue, 29 Mar 2022 08:02:50 -0700
+Received: from akalaise-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Tue, 29 Mar 2022 08:02:48 -0700
+From:   Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Subject: [PATCH] ath11k: Change max no of active probe SSID and BSSID to fw capability
+Date:   Tue, 29 Mar 2022 20:32:21 +0530
+Message-ID: <20220329150221.21907-1-quic_kathirve@quicinc.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Received: by 2002:a05:6504:9cd:0:0:0:0 with HTTP; Tue, 29 Mar 2022 05:43:45
- -0700 (PDT)
-Reply-To: christopherdaniel830@gmail.com
-From:   Christopher Daniel <cd01100230@gmail.com>
-Date:   Tue, 29 Mar 2022 12:43:45 +0000
-Message-ID: <CADacUq-KxndfOowTReH_hUPwZkBzZaE+knLG6A7qyPEVcxuVNg@mail.gmail.com>
-Subject: Hello Dear
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:131 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4949]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [cd01100230[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [christopherdaniel830[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [cd01100230[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-.
-I wish to invite you to participate in our Investment Funding Program,
-get back to me for more details if interested please.
+The maximum number of SSIDs in a for active probe requests is currently
+reported as 16 (WLAN_SCAN_PARAMS_MAX_SSID) when registering the driver.
+The scan_req_params structure only has the capacity to hold 10 SSIDs.
+This leads to a buffer overflow which can be triggered from
+wpa_supplicant in userspace. When copying the SSIDs into the
+scan_req_params structure in the ath11k_mac_op_hw_scan route, it can
+overwrite the extraie pointer.
 
-Regards.
-Christopher Daniel.
+Firmware supports 16 ssid * 4 bssid, for each ssid 4 bssid combo probe
+request will be sent, so totally 64 probe requests supported. So
+set both max ssid and bssid to 16 and 4 respectively. Remove the
+redundant macros of ssid and bssid.
+
+Tested-on : WLAN.HK.2.7.0.1-01300-QCAHKSWPL_SILICONZ-1 v1
+
+Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/wmi.h | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index 587f42307250..b5b72483477d 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -3088,9 +3088,6 @@ enum scan_dwelltime_adaptive_mode {
+ 	SCAN_DWELL_MODE_STATIC = 4
+ };
+ 
+-#define WLAN_SCAN_MAX_NUM_SSID          10
+-#define WLAN_SCAN_MAX_NUM_BSSID         10
+-
+ #define WLAN_SSID_MAX_LEN 32
+ 
+ struct element_info {
+@@ -3105,7 +3102,6 @@ struct wlan_ssid {
+ 
+ #define WMI_IE_BITMAP_SIZE             8
+ 
+-#define WMI_SCAN_MAX_NUM_SSID                0x0A
+ /* prefix used by scan requestor ids on the host */
+ #define WMI_HOST_SCAN_REQUESTOR_ID_PREFIX 0xA000
+ 
+@@ -3113,10 +3109,6 @@ struct wlan_ssid {
+ /* host cycles through the lower 12 bits to generate ids */
+ #define WMI_HOST_SCAN_REQ_ID_PREFIX 0xA000
+ 
+-#define WLAN_SCAN_PARAMS_MAX_SSID    16
+-#define WLAN_SCAN_PARAMS_MAX_BSSID   4
+-#define WLAN_SCAN_PARAMS_MAX_IE_LEN  256
+-
+ /* Values lower than this may be refused by some firmware revisions with a scan
+  * completion with a timedout reason.
+  */
+@@ -3312,8 +3304,8 @@ struct scan_req_params {
+ 	u32 n_probes;
+ 	u32 *chan_list;
+ 	u32 notify_scan_events;
+-	struct wlan_ssid ssid[WLAN_SCAN_MAX_NUM_SSID];
+-	struct wmi_mac_addr bssid_list[WLAN_SCAN_MAX_NUM_BSSID];
++	struct wlan_ssid ssid[WLAN_SCAN_PARAMS_MAX_SSID];
++	struct wmi_mac_addr bssid_list[WLAN_SCAN_PARAMS_MAX_BSSID];
+ 	struct element_info extraie;
+ 	struct element_info htcap;
+ 	struct element_info vhtcap;
+
+base-commit: 1198cbe26aa57ebef7a5c4315260d2e93a93e9a6
+-- 
+2.23.0
+
