@@ -2,169 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07DAB4EA50D
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Mar 2022 04:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DB7D4EA747
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Mar 2022 07:43:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230237AbiC2CSu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Mar 2022 22:18:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39362 "EHLO
+        id S232010AbiC2Fna (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Mar 2022 01:43:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230218AbiC2CSt (ORCPT
+        with ESMTP id S231860AbiC2Fn3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Mar 2022 22:18:49 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEDFF23F3C7
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Mar 2022 19:17:05 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id h1so19083186edj.1
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Mar 2022 19:17:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=OgOwwwPtBqtH2Nfvw1oTQa9WeHu8kROOmi+nT3PQOWs=;
-        b=V7+/CQTv/H4n6YyDO8BLudQHcJgZxpoNa9CD/3M3UIY/1jEZXiWxext68upgmuvFwF
-         BjngFaVv5dGVhg4VDJI5HYCL6/kzbJXP7GRK754XfWFlOyw4Z9ApV049UlrmyqTyM4Zv
-         kkfiZEncbpF3dD3yofGwLrJ9Y8U0zARijB2jtTZx9kBPdoVTNiJhCYOUp+gBvrwQ6lVC
-         w2+Dd7W5+5Z9DjOX89fTRhJlos0ncJXGJa1SgdOfIGQ0TgOgDBI0Xqnsy0z+7seCrSQ+
-         C8UWfBv35a+04581MsPqEEpXrGQpKxiKZu2MrOwsZUy+uI7Zz9nfoKYBt1qVIsrcp2ph
-         dS6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=OgOwwwPtBqtH2Nfvw1oTQa9WeHu8kROOmi+nT3PQOWs=;
-        b=WZVgPHGciFiqr0BNnLfiWAlmZn2jOXnGndlvXWmHdoxInfYp1Mc+rymDv2vXk92T3w
-         zGpt2LF0gNOh18QVRUHwb9hHBVRRVnjSX7Ldhw+ENQGsQuFgp4cImJxDHIai0ls+rlGL
-         1rWfxpLlURiF6/7pVf5ieSHsfVS4LLJuPbJh0mm6QVntfaKKU2ZDLe10mM7FEAMOrZw/
-         I0EL2SDvzaaT9AI4V7T2Gt+Y4Afwmx09yd9ynoX5+ayMOmY06MqxNhkzziLMsGFtxK1/
-         egRv19Ui5SzZTVfWQuzqiNw7WoeGfj53kA1EOfhfnx8zg/0k+BCqwQlccBK5deIMwHYV
-         NsLw==
-X-Gm-Message-State: AOAM530jxZO7VmCJESFq69M66T1FFQCrEzXGPzLhQI8zXrj0OTV1eRw2
-        nt2t2sinDkkrHstaOMnpkprhmG/0YRpaZgJG/u0=
-X-Google-Smtp-Source: ABdhPJyuFLNxU6tDwxqf3G3+4NkWH0WP5fgIDlKCEEToOCDFNckn0o8usGU5L7W468nFbMiVibAYURDgefwZiDNvWq0=
-X-Received: by 2002:a50:d592:0:b0:415:e599:4166 with SMTP id
- v18-20020a50d592000000b00415e5994166mr1251977edi.195.1648520224123; Mon, 28
- Mar 2022 19:17:04 -0700 (PDT)
+        Tue, 29 Mar 2022 01:43:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA12B31935
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Mar 2022 22:41:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 79372614B0
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Mar 2022 05:41:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA074C2BBE4;
+        Tue, 29 Mar 2022 05:41:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648532506;
+        bh=RwNoFM5iop5uuOcwXJSPODTVCkfxUX+FYSSJ45vyO5o=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Zg0eRgW6GN9sKksqyeQqBgBzEZ+D/sKn/s5KIqgALfKs9DTYdlZIVyGRSZa1SJ6LE
+         HTVcsAeJgWFU8pNELH9U55LE3/PoJYj45QnOTggm/NlTftJaU8lxKd7QFtkoQz8jbo
+         W8psyShlVbe6AaBj+7JCEdUmRbq0RQb00JnpLx+kXk9pT1ZJcH/Cnd2CyjUnrDZTAR
+         TSL99A8i2Ev0GV6NbdBG9UzWIx0+tBZySh3EHEkOkPVQyLVSLMU3XuXFONPuY/T02O
+         EusleJCAAjO+Wh17hMkM7o1KHWEwNku2xKru3b1h1VRVY90uIxsAQvl1i68ISS+c+0
+         pP+TETHBM7Grg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Aloka Dixit <quic_alokad@quicinc.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: Re: [RFC PATCH] mac80211: mlme: Handle Puncturing information received from the AP
+References: <20220325140859.e48bf244f157.I3547481d49f958389f59dfeba3fcc75e72b0aa6e@changeid>
+Date:   Tue, 29 Mar 2022 08:41:42 +0300
+In-Reply-To: <20220325140859.e48bf244f157.I3547481d49f958389f59dfeba3fcc75e72b0aa6e@changeid>
+        (Johannes Berg's message of "Fri, 25 Mar 2022 14:09:00 +0100")
+Message-ID: <87o81puxgp.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Tue, 29 Mar 2022 03:16:55 +0100
-Message-ID: <CAHpNFcMxWJHfjAbAX+5uLsd7LaK1Kfo2DArFMOeSMt1pkeFh2w@mail.gmail.com>
-Subject: Dev/Random : 4096-bit LFSR used for entropy collection : Submission 118
-To:     torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dev/Random : 4096-bit LFSR used for entropy collection
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-Basically the HASH is what makes a difference, In respect to BLAKE2
-running out of entropy...
-An internal backup PKI AES/Blake2 Secondary HASH stored in Kernel...
+> From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+>
+> Handle the Puncturing info received from the AP
+> in the EHT Operation IE in beacons.
+> If the info changed and is valid - update the driver.
+> If the info is invalid:
+>  - During association: disable EHT connection for the AP.
+>  - After association: disconnect.
+>
+> type=feature
+> ticket=none
 
-Bear in mind that the backup seed is worked from quality Random & is
-99% unique : "We are The 99%"
+I guess type and ticket is some internal marking. I know this is RFC,
+but wanted to point out anyway.
 
-This keeps simple Pseudo numbers from being the bearer of predictable
-kernel Security behavior,
-Nothing wrong with keeping more! & we can for system device pools for example!
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-For reference core HASH reserve storage can be per type:
-
-Main groups for Secondary hash main leaf HASH:
-
-/Dev
-/Memory
-/Storage
-/Keys
-/Con
-
-Rupert S
-
-*RAND OP Ubuntu :
-https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
-
-https://pollinate.n-helix.com
-
-https://science.n-helix.com/2018/12/rng.html
-
-https://science.n-helix.com/2022/02/rdseed.html
-
-https://science.n-helix.com/2017/04/rng-and-random-web.html
-
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
-
-
-Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
-
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-
-https://science.n-helix.com/2022/03/ice-ssrtp.html
-
-https://science.n-helix.com/2021/11/ihmtes.html
-
-https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
-https://science.n-helix.com/2021/11/wave-focus-anc.html
-https://science.n-helix.com/2021/12/3d-audio-plugin.html
-
-https://aka.ms/win10rng
-
-"https://www.spinics.net/lists/stable/msg543787.html
-
-From: "Jason A. Donenfeld" <Jason@xxxxxxxxx>
-
-[ Upstream commit 6e8ec2552c7d13991148e551e3325a624d73fac6 ]
-
-The current 4096-bit LFSR used for entropy collection had a few
-desirable attributes for the context in which it was created. For
-example, the state was huge, which meant that /dev/random would be able
-to output quite a bit of accumulated entropy before blocking. It was
-also, in its time, quite fast at accumulating entropy byte-by-byte,
-which matters given the varying contexts in which mix_pool_bytes() is
-called. And its diffusion was relatively high, which meant that changes
-would ripple across several words of state rather quickly.
-
-However, it also suffers from a few security vulnerabilities. In
-particular, inputs learned by an attacker can be undone, but moreover,
-if the state of the pool leaks, its contents can be controlled and
-entirely zeroed out. I've demonstrated this attack with this SMT2
-script, <https://xn--4db.cc/5o9xO8pb>, which Boolector/CaDiCal solves in
-a matter of seconds on a single core of my laptop, resulting in little
-proof of concept C demonstrators such as <https://xn--4db.cc/jCkvvIaH/c>.
-
-For basically all recent formal models of RNGs, these attacks represent
-a significant cryptographic flaw. But how does this manifest
-practically? If an attacker has access to the system to such a degree
-that he can learn the internal state of the RNG, arguably there are
-other lower hanging vulnerabilities -- side-channel, infoleak, or
-otherwise -- that might have higher priority. On the other hand, seed
-files are frequently used on systems that have a hard time generating
-much entropy on their own, and these seed files, being files, often leak
-or are duplicated and distributed accidentally, or are even seeded over
-the Internet intentionally, where their contents might be recorded or
-tampered with. Seen this way, an otherwise quasi-implausible
-vulnerability is a bit more practical than initially thought.
-
-Another aspect of the current mix_pool_bytes() function is that, while
-its performance was arguably competitive for the time in which it was
-created, it's no longer considered so. This patch improves performance
-significantly: on a high-end CPU, an i7-11850H, it improves performance
-of mix_pool_bytes() by 225%, and on a low-end CPU, a Cortex-A7, it
-improves performance by 103%.
-
-This commit replaces the LFSR of mix_pool_bytes() with a straight-
-forward cryptographic hash function, BLAKE2s, which is already in use
-for pool extraction. Universal hashing with a secret seed was considered
-too, something along the lines of <https://eprint.iacr.org/2013/338>,
-but the requirement for a secret seed makes for a chicken & egg problem.
-Instead we go with a formally proven scheme using a computational hash
-function, described in sections 5.1, 6.4, and B.1.8 of
-<https://eprint.iacr.org/2019/198>."
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
