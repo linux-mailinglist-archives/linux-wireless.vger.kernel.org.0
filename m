@@ -2,237 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFE764EB4FA
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Mar 2022 23:02:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBF144EB50C
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Mar 2022 23:07:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232984AbiC2VEW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Mar 2022 17:04:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54578 "EHLO
+        id S233092AbiC2VIl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Mar 2022 17:08:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232924AbiC2VEU (ORCPT
+        with ESMTP id S232495AbiC2VIk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Mar 2022 17:04:20 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74E741890CF
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Mar 2022 14:02:35 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.66.137])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id A9CD91C008C
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Mar 2022 21:02:33 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 7AB3D1400AA
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Mar 2022 21:02:33 +0000 (UTC)
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 0604113C2B0;
-        Tue, 29 Mar 2022 14:02:32 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0604113C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1648587753;
-        bh=6DzSgyrmmuanq2zcRz3D2T/RmgnrSEQzR5aZ1pRjGoI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Wv2XuW1nszmTdxzH918PzYp76ZRk6Yca7eeGudxceCZeDHe8TtyW6K085MLABUxAw
-         6sAlD1U6hiXqU25J18YvllZGhqTykUJ8lrBXLKoP9pQTMM/PIctCLP5CmVtRLi89FZ
-         cu7vCs6mdL5qTWxMV4GIjCMNkGr9rJ+68CHU4JxE=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] mac80211:  report per-chain signal values through ethtool.
-Date:   Tue, 29 Mar 2022 14:02:28 -0700
-Message-Id: <20220329210228.8137-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
+        Tue, 29 Mar 2022 17:08:40 -0400
+Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BF511890EA
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Mar 2022 14:06:56 -0700 (PDT)
+Received: by mail-qk1-x729.google.com with SMTP id d142so15180487qkc.4
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Mar 2022 14:06:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=EAqRIc9fT64ewsHGFESskdphI9pIsxJrpTtguJ8/Dyg=;
+        b=fj4lMvN6rKaBuz6EjmSYruA1pk2DRqkImF1f/UDAr2yjOcBE0t/LXrgsp5D1tHiuv/
+         uFRmPT/FtRWSNzy8bys6q1APr5tOfm04N6gxh0AzPVGmWoBFm8aGySQ9TmQi33PNKcCb
+         rwynLXeqS0yAdHpEt5JWck4NM2sNdwOiOWgSs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=EAqRIc9fT64ewsHGFESskdphI9pIsxJrpTtguJ8/Dyg=;
+        b=t6Edox9+XypKaY6p2Dpu3FLFjvJILdlM8uthTASX1VmI3GacUmy7Yy5O8jZ7ryX5z1
+         Gq71s9rDAD0zDgDrXms2F0lwcW2D1BmB0ZBMwbMP5wpW0l6EG0bup5XoqYdBAKRjrz+7
+         e3jtutefDSTcq4qfHnmG9laDw8zGfxVjFNXDjMlfbhtdXuuxnWQGaFxqJkrlt/JcCRlg
+         q+Y6RDVHieOea38qH+0gqg04uBrj7tjhmCCK4fUohhRcBFREwezZ383TGPisf4V2EcJb
+         dV8Bl2kPR0SfNh7WsHM/+WXx5B5Zh8bcSKwA1hlLIkl5kkC54YDUMfs4Lh1oiFBFC9Bq
+         rwBw==
+X-Gm-Message-State: AOAM530hXIajMN70ME6ogj4YzRAOqQ8WiOpIbDbePfl1rPWtQHuiFvHT
+        4RQJhHweyzQj1ddgXZ7ca2GG+GxjDZGwbL2x
+X-Google-Smtp-Source: ABdhPJzu3Ns5of6SoHy5wtTiSExWkz8cUHxwDe3zBkGthG6/arpBRVXk+5HRKd2msucS9C9B0BTtkg==
+X-Received: by 2002:a05:620a:280d:b0:67d:2480:fdea with SMTP id f13-20020a05620a280d00b0067d2480fdeamr21634887qkp.157.1648588015040;
+        Tue, 29 Mar 2022 14:06:55 -0700 (PDT)
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com. [209.85.128.179])
+        by smtp.gmail.com with ESMTPSA id i68-20020a375447000000b006809e0adfffsm10212204qkb.25.2022.03.29.14.06.52
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Mar 2022 14:06:52 -0700 (PDT)
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-2d07ae0b1c4so196985127b3.11
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Mar 2022 14:06:52 -0700 (PDT)
+X-Received: by 2002:a0d:df82:0:b0:2e5:ad6c:d9d with SMTP id
+ i124-20020a0ddf82000000b002e5ad6c0d9dmr33485447ywe.17.1648588011807; Tue, 29
+ Mar 2022 14:06:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1648587754-nflT0baI4RC4
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <YSJ//ki/A1EgfLga@skv.local> <CA+ASDXNzv6D1PthjUU-CVw6amT+JHmJP2mNSL=LVJKGm0zkEXw@mail.gmail.com>
+ <YSQC32TygIq2SHJR@skv.local> <CA+ASDXPi0RRd0gFYcON=XLu8ABwKKcRXf0j0QoCRnvDwGa0VyQ@mail.gmail.com>
+ <4c44fdc2-8dde-8a98-8dd4-4b7e6b57a090@bang-olufsen.dk>
+In-Reply-To: <4c44fdc2-8dde-8a98-8dd4-4b7e6b57a090@bang-olufsen.dk>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Tue, 29 Mar 2022 14:06:40 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXOeC+S2d7g0b=aS_q9XxNtdayF1S5XE9T85NZrxXnK5KA@mail.gmail.com>
+Message-ID: <CA+ASDXOeC+S2d7g0b=aS_q9XxNtdayF1S5XE9T85NZrxXnK5KA@mail.gmail.com>
+Subject: Re: Revert: ath: add support for special 0x0 regulatory domain
+To:     =?UTF-8?Q?Alvin_=C5=A0ipraga?= <ALSI@bang-olufsen.dk>
+Cc:     Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        ath10k <ath10k@lists.infradead.org>,
+        Wen Gong <wgong@codeaurora.org>,
+        Julian Calaby <julian.calaby@gmail.com>, svp <svpm@yandex.ru>,
+        "felix+debian@gueux.org" <felix+debian@gueux.org>,
+        Massimo Maggi <me@massimo-maggi.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+On Tue, Aug 24, 2021 at 1:00 AM Alvin =C5=A0ipraga <ALSI@bang-olufsen.dk> w=
+rote:
+> Numerous people - myself included - have cited sources clearly
+> indicating that 0x0 =3D US, NOT unset. See the same post[1] for more info=
+.
+>
+> I still think this patch should be reverted unless somebody can provide
+> a source to the contrary, re: the meaning of 0x0.
+>
+> It's unfortunate that this is still affecting users, particularly when
+> the original author of the patch even asked for it to be reverted.[2]
 
-Combine them into a u64, each byte is one chain.
-Re-work the way that APs averaged stats to be more
-efficient.
+FYI, my revert was recently merged to Linus's tree and is making its
+way into various -stable trees:
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
- net/mac80211/ethtool.c | 103 +++++++++++++++++++++++++++++++++++++----
- 1 file changed, 93 insertions(+), 10 deletions(-)
+https://git.kernel.org/linus/1ec7ed5163c70a0d040150d2279f932c7e7c143f
 
-diff --git a/net/mac80211/ethtool.c b/net/mac80211/ethtool.c
-index 028ffe1a4d2d..10a9a30bcbf3 100644
---- a/net/mac80211/ethtool.c
-+++ b/net/mac80211/ethtool.c
-@@ -64,6 +64,7 @@ static const char ieee80211_gstrings_sta_stats[][ETH_GSTRING_LEN] = {
- 	"tx_packets", "tx_bytes",
- 	"tx_filtered", "tx_retry_failed", "tx_retries",
- 	"sta_state", "txrate", "rxrate", "signal", "signal_beacon",
-+	"signal_chains", "signal_chains_avg",
- 	"channel", "noise", "ch_time", "ch_time_busy",
- 	"ch_time_ext_busy", "ch_time_rx", "ch_time_tx"
- };
-@@ -96,6 +97,7 @@ static void ieee80211_get_stats2(struct net_device *dev,
- 	struct station_info sinfo;
- 	struct survey_info survey;
- 	int i, q;
-+	int z;
- #define STA_STATS_SURVEY_LEN 7
- 
- 	memset(data, 0, sizeof(u64) * STA_STATS_LEN);
-@@ -154,14 +156,49 @@ static void ieee80211_get_stats2(struct net_device *dev,
- 		if (sinfo.filled & BIT_ULL(NL80211_STA_INFO_SIGNAL_AVG))
- 			data[i] = (u8)sinfo.rx_beacon_signal_avg;
- 		i++;
-+
-+		if (sinfo.filled & BIT_ULL(NL80211_STA_INFO_CHAIN_SIGNAL)) {
-+			int mn = min_t(int, sizeof(u64), ARRAY_SIZE(sinfo.chain_signal));
-+			u64 accum = (u8)sinfo.chain_signal[0];
-+
-+			mn = min_t(int, mn, sinfo.chains);
-+			for (z = 1; z < mn; z++) {
-+				u64 csz = sinfo.chain_signal[z] & 0xFF;
-+				u64 cs = csz << (8 * z);
-+
-+				accum |= cs;
-+			}
-+			data[i] = accum;
-+		}
-+		i++;
-+
-+		if (sinfo.filled & BIT_ULL(NL80211_STA_INFO_CHAIN_SIGNAL_AVG)) {
-+			int mn = min_t(int, sizeof(u64), ARRAY_SIZE(sinfo.chain_signal_avg));
-+			u64 accum = (u8)sinfo.chain_signal_avg[0];
-+
-+			for (z = 1; z < mn; z++) {
-+				u64 csz = sinfo.chain_signal_avg[z] & 0xFF;
-+				u64 cs = csz << (8 * z);
-+
-+				accum |= cs;
-+			}
-+			data[i] = accum;
-+		}
-+		i++;
- 	} else {
- 		int amt_tx = 0;
- 		int amt_rx = 0;
- 		int amt_sig = 0;
-+		s16 amt_accum_chain[8] = {0};
-+		s16 amt_accum_chain_avg[8] = {0};
- 		s64 tx_accum = 0;
- 		s64 rx_accum = 0;
- 		s64 sig_accum = 0;
- 		s64 sig_accum_beacon = 0;
-+		s64 sig_accum_chain[8] = {0};
-+		s64 sig_accum_chain_avg[8] = {0};
-+		int start_accum_idx = 0;
-+
- 		list_for_each_entry(sta, &local->sta_list, list) {
- 			/* Make sure this station belongs to the proper dev */
- 			if (sta->sdata->dev != dev)
-@@ -173,35 +210,48 @@ static void ieee80211_get_stats2(struct net_device *dev,
- 			ADD_STA_STATS(sta);
- 
- 			i++; /* skip sta state */
-+			start_accum_idx = i;
- 
- 			if (sinfo.filled & BIT(NL80211_STA_INFO_TX_BITRATE)) {
- 				tx_accum += 100000ULL *
- 					cfg80211_calculate_bitrate(&sinfo.txrate);
- 				amt_tx++;
- 			}
--			if (amt_tx)
--				data[i] = mac_div(tx_accum, amt_tx);
--			i++;
- 
- 			if (sinfo.filled & BIT(NL80211_STA_INFO_RX_BITRATE)) {
- 				rx_accum += 100000ULL *
- 					cfg80211_calculate_bitrate(&sinfo.rxrate);
- 				amt_rx++;
- 			}
--			if (amt_rx)
--				data[i] = mac_div(rx_accum, amt_rx);
--			i++;
- 
- 			if (sinfo.filled & BIT(NL80211_STA_INFO_SIGNAL_AVG)) {
- 				sig_accum += sinfo.signal_avg;
- 				sig_accum_beacon += sinfo.rx_beacon_signal_avg;
- 				amt_sig++;
- 			}
--			if (amt_sig) {
--				data[i] = (mac_div(sig_accum, amt_sig) & 0xFF);
--				data[i+1] = (mac_div(sig_accum_beacon, amt_sig) & 0xFF);
-+
-+			if (sinfo.filled & BIT_ULL(NL80211_STA_INFO_CHAIN_SIGNAL)) {
-+				int mn = min_t(int, sizeof(u64), ARRAY_SIZE(sinfo.chain_signal));
-+
-+				mn = min_t(int, mn, sinfo.chains);
-+				for (z = 0; z < mn; z++) {
-+					sig_accum_chain[z] += sinfo.chain_signal[z];
-+					amt_accum_chain[z]++;
-+				}
- 			}
--			i += 2;
-+			i++;
-+
-+			if (sinfo.filled & BIT_ULL(NL80211_STA_INFO_CHAIN_SIGNAL_AVG)) {
-+				int mn;
-+
-+				mn = min_t(int, sizeof(u64), ARRAY_SIZE(sinfo.chain_signal_avg));
-+				mn = min_t(int, mn, sinfo.chains);
-+				for (z = 0; z < mn; z++) {
-+					sig_accum_chain_avg[z] += sinfo.chain_signal_avg[z];
-+					amt_accum_chain_avg[z]++;
-+				}
-+			}
-+			i++;
- 
- 			/*pr_err("sta: %p (%s) sig_accum: %ld  amt-sig: %d filled: 0x%x:%08x rpt-sig-avg: %d  i: %d  div: %d sinfo.signal_avg: %d\n",
- 			       sta, sta->sdata->name, (long)(sig_accum), amt_sig, (u32)(sinfo.filled >> 32),
-@@ -209,6 +259,39 @@ static void ieee80211_get_stats2(struct net_device *dev,
- 			       sinfo.signal_avg);*/
- 
- 		}
-+
-+		/* Do averaging */
-+		i = start_accum_idx;
-+
-+		if (amt_tx)
-+			data[i] = mac_div(tx_accum, amt_tx);
-+		i++;
-+
-+		if (amt_rx)
-+			data[i] = mac_div(rx_accum, amt_rx);
-+		i++;
-+
-+		if (amt_sig) {
-+			data[i] = (mac_div(sig_accum, amt_sig) & 0xFF);
-+			data[i + 1] = (mac_div(sig_accum_beacon, amt_sig) & 0xFF);
-+		}
-+		i += 2;
-+
-+		for (z = 0; z < sizeof(u64); z++) {
-+			if (amt_accum_chain[z]) {
-+				u64 val = mac_div(sig_accum_chain[z], amt_accum_chain[z]);
-+
-+				val |= 0xFF;
-+				data[i] |= (val << (z * 8));
-+			}
-+			if (amt_accum_chain_avg[z]) {
-+				u64 val = mac_div(sig_accum_chain_avg[z], amt_accum_chain_avg[z]);
-+
-+				val |= 0xFF;
-+				data[i + 1] |= (val << (z * 8));
-+			}
-+		}
-+		i += 2;
- 	}
- 
- do_survey:
--- 
-2.20.1
+Side note: it's a small shame that Kalle's scripts seem to have munged
+the authorship date -- git thinks it was authored in 2022, when in
+fact it was in 2020 ;)
 
+Regards,
+Brian
