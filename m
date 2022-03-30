@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 484D14EBC51
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Mar 2022 10:07:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C39374EBC59
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Mar 2022 10:07:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243880AbiC3IHf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Mar 2022 04:07:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44200 "EHLO
+        id S236650AbiC3IJJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Mar 2022 04:09:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241258AbiC3IHe (ORCPT
+        with ESMTP id S232101AbiC3IJH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Mar 2022 04:07:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B98A42E9E7
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 01:05:49 -0700 (PDT)
+        Wed, 30 Mar 2022 04:09:07 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B24312E6A4
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 01:07:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 55764617A5
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 08:05:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE98C340F0;
-        Wed, 30 Mar 2022 08:05:47 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 33965B8128F
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 08:07:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03264C340EC;
+        Wed, 30 Mar 2022 08:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648627548;
-        bh=lMwTSB85/tsnYn79vvntRMAyII4q2RgNdTc9seOc6a0=;
+        s=k20201202; t=1648627639;
+        bh=VeqVUHrwVumQkd/+UiBnyW9Un4ZO7zwAY3fgeshHU4g=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Sxzyy+4mwEhcVXrZVboKMFEJUqsKTeEKaLfjvLR/LUKiZoNkvNOawJVy5BE6w6r/p
-         35aaE6ycEhtuVs2lQr3olOPx81JVybisN+CSOM6O1FMeEElXLqrTPZQ4YiRxS9LdPw
-         VgRg9FwJL4Q6SP/aorlXEoxBdz06uyzrfiWOx2tfq+hOUVk7UwMDJSq1P6IMDamFY9
-         zAlOebrdlT5Vg44TKjgIXSxKlmvUt+rRJltfpzmGzaqRG7wmZTLQvf5Nlil150t5Lq
-         vpsmNsWPMm55BKMW5YG09HnwB+MtgA5bPX6aCzY9SMrKotbfc7uUu/wuGm9oCyHi2C
-         WEs/qJ46JiTYw==
+        b=nLIh3E9B7EknvVUTaYGP7itaLzZ5Kgoa0IumWbg0de/g6j/3BSKe1BzqrR2dQ3F/G
+         Y3qSQGtjMCufKzL/B5pFnhLAHMklNel80iu0aRcMIuIq4uLyOmmRfYkc6ZaiPboDYZ
+         8vL2Iv/yVitvt2WRPGK0jVYPM8sVnZj3bXhSOAsMlgXUPSp7ahm19aGXHRo4JQ4EAR
+         w64+S98oaR6df5FUQd72vld4UlMeiIyIirYS1bqC6SiRO51cS7nbr6nrmKiPBXK4H8
+         p29cXnMbIedjGo4xDNaYNI04OEU2LCM9iM7snoJhOWk3GeAY8G2Mj5vV65WQWpFE2d
+         u7g+TWKEV5Cmg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 3/3] ath11k: add support to search regdb data in
- board-2.bin
- for WCN6855
+Subject: Re: [PATCH v2] ath11k: reduce the wait time of 11d scan and hw scan
+ while
+ add interface
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220319023543.14288-4-quic_wgong@quicinc.com>
-References: <20220319023543.14288-4-quic_wgong@quicinc.com>
+In-Reply-To: <20220328035832.14122-1-quic_wgong@quicinc.com>
+References: <20220328035832.14122-1-quic_wgong@quicinc.com>
 To:     Wen Gong <quic_wgong@quicinc.com>
 Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
         <quic_wgong@quicinc.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164862754496.10264.18242438305394450679.kvalo@kernel.org>
-Date:   Wed, 30 Mar 2022 08:05:47 +0000 (UTC)
+Message-ID: <164862763578.10264.10006075245448797606.kvalo@kernel.org>
+Date:   Wed, 30 Mar 2022 08:07:17 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -59,86 +59,52 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Wen Gong <quic_wgong@quicinc.com> wrote:
 
-> Currently ath11k only download the same regdb.bin file for all WCN6855
-> chips, actually ath11k needs to distinguish all different WCN6855 chips.
+> Currently ath11k will wait 11d scan complete while add interface in
+> ath11k_mac_op_add_interface(), when system resume without enable
+> wowlan, ath11k_mac_op_add_interface() is called for each resume, thus
+> it increase the resume time of system. And ath11k_mac_op_hw_scan()
+> after ath11k_mac_op_add_interface() also needs some time cost because
+> the previous 11d scan need more than 5 seconds when 6 GHz is enabled,
+> then the scan started event will indicated to ath11k after the 11d
+> scan completed.
 > 
-> This is to re-use the string type which include bus, chip id, board id,
-> vendor, device, subsystem-vendor, subsystem-device and variant for
-> WCN6855 to distinguish different regdb in board-2.bin.
+> While 11d scan/hw scan is running in firmware, if ath11k update channel
+> list to firmware by WMI_SCAN_CHAN_LIST_CMDID, then firmware will cancel
+> the current scan which is running, it lead the scan failed. The patch
+> commit 9dcf6808b253 ("ath11k: add 11d scan offload support") used
+> finish_11d_scan/finish_11d_ch_list/pending_11d to synchronize the 11d
+> scan/hw scan/channel list between ath11k/firmware/mac80211 and to avoid
+> the scan fail.
 > 
-> ath11k will first load board-2.bin and search in it for the regdb data
-> with the above parameters, if matched one regdb data, then download it
-> to firmware, if not matched any one, then ath11k will download the file
-> regdb.bin to firmware.
+> Add wait operation before ath11k update channel list, function
+> ath11k_reg_update_chan_list() will wait until the current 11d scan/hw
+> scan completed. And remove the wait operation of start 11d scan and
+> waiting channel list complete in hw scan. After these changes, resume
+> time cost reduce about 5 seconds and also hw scan time cost reduced
+> obviously, and scan failed not seen.
 > 
-> Add enum value ATH11K_BD_IE_REGDB and enum type ath11k_bd_ie_regdb_type
-> to distinguish regdb data and board data since they are in the same file
-> board-2.bin.
-> 
-> This only take effect for WCN6855 which supports regdb in hardware parameters.
-> 
-> Test log:
-> [ 3833.091948] ath11k_pci 0000:05:00.0: boot using board name 'bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262'
-> [ 3833.092072] ath11k_pci 0000:05:00.0: boot firmware request ath11k/WCN6855/hw2.0/board-2.bin size 205316
-> [ 3833.092079] ath11k_pci 0000:05:00.0: board name
-> [ 3833.092083] ath11k_pci 0000:05:00.0: 00000000: 62 75 73 3d 70 63 69 2c 71 6d 69 2d 63 68 69 70  bus=pci,qmi-chip
-> [ 3833.092088] ath11k_pci 0000:05:00.0: 00000010: 2d 69 64 3d 31                                   -id=1
-> [ 3833.092091] ath11k_pci 0000:05:00.0: board name
-> [ 3833.092095] ath11k_pci 0000:05:00.0: 00000000: 62 75 73 3d 70 63 69 2c 71 6d 69 2d 63 68 69 70  bus=pci,qmi-chip
-> [ 3833.092099] ath11k_pci 0000:05:00.0: 00000010: 2d 69 64 3d 32                                   -id=2
-> [ 3833.092102] ath11k_pci 0000:05:00.0: board name
-> [ 3833.092105] ath11k_pci 0000:05:00.0: 00000000: 62 75 73 3d 70 63 69 2c 71 6d 69 2d 63 68 69 70  bus=pci,qmi-chip
-> [ 3833.092109] ath11k_pci 0000:05:00.0: 00000010: 2d 69 64 3d 33                                   -id=3
-> [ 3833.092112] ath11k_pci 0000:05:00.0: board name
-> [ 3833.092116] ath11k_pci 0000:05:00.0: 00000000: 62 75 73 3d 70 63 69 2c 76 65 6e 64 6f 72 3d 31  bus=pci,vendor=1
-> [ 3833.092119] ath11k_pci 0000:05:00.0: 00000010: 37 63 62 2c 64 65 76 69 63 65 3d 31 31 30 33 2c  7cb,device=1103,
-> [ 3833.092123] ath11k_pci 0000:05:00.0: 00000020: 73 75 62 73 79 73 74 65 6d 2d 76 65 6e 64 6f 72  subsystem-vendor
-> [ 3833.092126] ath11k_pci 0000:05:00.0: 00000030: 3d 31 37 63 62 2c 73 75 62 73 79 73 74 65 6d 2d  =17cb,subsystem-
-> [ 3833.092130] ath11k_pci 0000:05:00.0: 00000040: 64 65 76 69 63 65 3d 33 33 37 34 2c 71 6d 69 2d  device=3374,qmi-
-> [ 3833.092133] ath11k_pci 0000:05:00.0: 00000050: 63 68 69 70 2d 69 64 3d 32 2c 71 6d 69 2d 62 6f  chip-id=2,qmi-bo
-> [ 3833.092137] ath11k_pci 0000:05:00.0: 00000060: 61 72 64 2d 69 64 3d 32 36 36 2c 76 61 72 69 61  ard-id=266,varia
-> [ 3833.092140] ath11k_pci 0000:05:00.0: 00000070: 6e 74 3d 48 50 5f 47 38 5f 4c 61 6e 63 69 61 31  nt=HP_G8_Lancia1
-> [ 3833.092144] ath11k_pci 0000:05:00.0: 00000080: 35                                               5
-> [ 3833.092147] ath11k_pci 0000:05:00.0: board name
-> [ 3833.092150] ath11k_pci 0000:05:00.0: 00000000: 62 75 73 3d 70 63 69 2c 76 65 6e 64 6f 72 3d 31  bus=pci,vendor=1
-> [ 3833.092154] ath11k_pci 0000:05:00.0: 00000010: 37 63 62 2c 64 65 76 69 63 65 3d 31 31 30 33 2c  7cb,device=1103,
-> [ 3833.092157] ath11k_pci 0000:05:00.0: 00000020: 73 75 62 73 79 73 74 65 6d 2d 76 65 6e 64 6f 72  subsystem-vendor
-> [ 3833.092161] ath11k_pci 0000:05:00.0: 00000030: 3d 31 37 63 62 2c 73 75 62 73 79 73 74 65 6d 2d  =17cb,subsystem-
-> [ 3833.092165] ath11k_pci 0000:05:00.0: 00000040: 64 65 76 69 63 65 3d 33 33 37 34 2c 71 6d 69 2d  device=3374,qmi-
-> [ 3833.092168] ath11k_pci 0000:05:00.0: 00000050: 63 68 69 70 2d 69 64 3d 32 2c 71 6d 69 2d 62 6f  chip-id=2,qmi-bo
-> [ 3833.092172] ath11k_pci 0000:05:00.0: 00000060: 61 72 64 2d 69 64 3d 32 36 36                    ard-id=266
-> [ 3833.092206] ath11k_pci 0000:05:00.0: board name
-> [ 3833.092209] ath11k_pci 0000:05:00.0: 00000000: 62 75 73 3d 70 63 69 2c 76 65 6e 64 6f 72 3d 31  bus=pci,vendor=1
-> [ 3833.092213] ath11k_pci 0000:05:00.0: 00000010: 37 63 62 2c 64 65 76 69 63 65 3d 31 31 30 33 2c  7cb,device=1103,
-> [ 3833.092216] ath11k_pci 0000:05:00.0: 00000020: 73 75 62 73 79 73 74 65 6d 2d 76 65 6e 64 6f 72  subsystem-vendor
-> [ 3833.092220] ath11k_pci 0000:05:00.0: 00000030: 3d 31 37 63 62 2c 73 75 62 73 79 73 74 65 6d 2d  =17cb,subsystem-
-> [ 3833.092223] ath11k_pci 0000:05:00.0: 00000040: 64 65 76 69 63 65 3d 33 33 37 34 2c 71 6d 69 2d  device=3374,qmi-
-> [ 3833.092227] ath11k_pci 0000:05:00.0: 00000050: 63 68 69 70 2d 69 64 3d 32 2c 71 6d 69 2d 62 6f  chip-id=2,qmi-bo
-> [ 3833.092230] ath11k_pci 0000:05:00.0: 00000060: 61 72 64 2d 69 64 3d 32 36 32                    ard-id=262
-> [ 3833.092234] ath11k_pci 0000:05:00.0: boot found match regdb data for name 'bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262'
-> [ 3833.092238] ath11k_pci 0000:05:00.0: board name
-> [ 3833.092241] ath11k_pci 0000:05:00.0: 00000000: 62 75 73 3d 70 63 69 2c 71 6d 69 2d 63 68 69 70  bus=pci,qmi-chip
-> [ 3833.092245] ath11k_pci 0000:05:00.0: 00000010: 2d 69 64 3d 31 31                                -id=11
-> [ 3833.092248] ath11k_pci 0000:05:00.0: board name
-> [ 3833.092251] ath11k_pci 0000:05:00.0: 00000000: 62 75 73 3d 70 63 69 2c 71 6d 69 2d 63 68 69 70  bus=pci,qmi-chip
-> [ 3833.092255] ath11k_pci 0000:05:00.0: 00000010: 2d 69 64 3d 32 32                                -id=22
-> [ 3833.092258] ath11k_pci 0000:05:00.0: board name
-> [ 3833.092261] ath11k_pci 0000:05:00.0: 00000000: 62 75 73 3d 70 63 69 2c 71 6d 69 2d 63 68 69 70  bus=pci,qmi-chip
-> [ 3833.092265] ath11k_pci 0000:05:00.0: 00000010: 2d 69 64 3d 33 33                                -id=33
-> [ 3833.092268] ath11k_pci 0000:05:00.0: boot found regdb data for 'bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262'
-> [ 3833.092272] ath11k_pci 0000:05:00.0: fetched regdb
+> The 11d scan is sent to firmware only one time for each interface added
+> in mac.c, and it is moved after the 1st hw scan because 11d scan will
+> cost some time and thus leads the AP scan result update to UI delay.
+> Currently priority of ath11k's hw scan is WMI_SCAN_PRIORITY_LOW, and
+> priority of 11d scan in firmware is WMI_SCAN_PRIORITY_MEDIUM, then the
+> 11d scan which sent after hw scan will cancel the hw scan in firmware,
+> so change the priority to WMI_SCAN_PRIORITY_MEDIUM for the hw scan which
+> is in front of the 11d scan, thus it will not happen scan cancel in
+> firmware.
 > 
 > Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
 > 
+> Fixes: 9dcf6808b253 ("ath11k: add 11d scan offload support")
 > Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-801cb1d23428 ath11k: add support to search regdb data in board-2.bin for WCN6855
+1f682dc9fb37 ath11k: reduce the wait time of 11d scan and hw scan while add interface
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220319023543.14288-4-quic_wgong@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220328035832.14122-1-quic_wgong@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
