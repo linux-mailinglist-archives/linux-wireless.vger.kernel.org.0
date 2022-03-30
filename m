@@ -2,65 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2987A4EBA03
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Mar 2022 07:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 976844EBA40
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Mar 2022 07:35:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242875AbiC3FU4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Mar 2022 01:20:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47534 "EHLO
+        id S243017AbiC3Fh3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Mar 2022 01:37:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232306AbiC3FUz (ORCPT
+        with ESMTP id S243016AbiC3FhY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Mar 2022 01:20:55 -0400
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28595A27C0;
-        Tue, 29 Mar 2022 22:19:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1648617551; x=1680153551;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=DrQrBtnuoEiDhYwrgeogj26bXxENzzF7ytxPr/um6/Q=;
-  b=LfsrbPUYK2B3joipYyBFPqhTkMd80QIz01h8Eys0Lzj9PFQKOhAFnmxY
-   aiNIOQOMn7vJWVgyLyHBM/pYRnQhb62oP75L6erzLPM/TM7KzNEpoGixg
-   PIlUOMownozLvRyhZnyG0m9TMZr5D3iEM7zZatILZIwXyWCF1JZ5bNJmB
-   k=;
-Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 29 Mar 2022 22:19:10 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2022 22:19:10 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Tue, 29 Mar 2022 22:19:10 -0700
-Received: from [10.50.50.150] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Tue, 29 Mar
- 2022 22:19:08 -0700
-Message-ID: <31ea937d-d1d9-b9ed-c023-8a1ea0eea42c@quicinc.com>
-Date:   Wed, 30 Mar 2022 10:49:05 +0530
+        Wed, 30 Mar 2022 01:37:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 143D321F76E
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Mar 2022 22:35:41 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9099B61626
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 05:35:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D9DC340EC;
+        Wed, 30 Mar 2022 05:35:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648618539;
+        bh=TWVPJfY5eyKwBexepSodh8rgKJMsyWSpBXPJjSDi398=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=aDNuRbuqqyWc4lemm8RsnNQeJouNvC3oVxjZEYiCweSzb/bwBDcmohWU6OOEaq27/
+         fIY50FCwcbj7wSxyix5owQ95FCxP/BavKXclz2L536tluUcd1RyFdopHRiX7tNR8lK
+         ldtqvPHw/1Ys7nsPqoPuOZg+BUPxcZzC3U7I0uiqaBq+UF18l+5gQjKbF2ttW9NJ5u
+         qxesyrL0xgHr/8S2ZEdVL8enOVlNQJicCycwwI2Y53hnaUPmVB1xMH3+l9sM5o/uMy
+         OwfofbKvruuInvtgHUJ8OI/KXtZe3DjhOCgnkXkyMN9/PVw58hJACosQtKwJm2hVcq
+         1C1wbc+v1MAmg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     ALSI@bang-olufsen.dk,
+        Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        ath10k <ath10k@lists.infradead.org>,
+        Julian Calaby <julian.calaby@gmail.com>, svp <svpm@yandex.ru>,
+        Massimo Maggi <me@massimo-maggi.eu>
+Subject: Re: Revert: ath: add support for special 0x0 regulatory domain
+References: <YSJ//ki/A1EgfLga@skv.local>
+        <CA+ASDXNzv6D1PthjUU-CVw6amT+JHmJP2mNSL=LVJKGm0zkEXw@mail.gmail.com>
+        <YSQC32TygIq2SHJR@skv.local>
+        <CA+ASDXPi0RRd0gFYcON=XLu8ABwKKcRXf0j0QoCRnvDwGa0VyQ@mail.gmail.com>
+        <4c44fdc2-8dde-8a98-8dd4-4b7e6b57a090@bang-olufsen.dk>
+        <CA+ASDXOeC+S2d7g0b=aS_q9XxNtdayF1S5XE9T85NZrxXnK5KA@mail.gmail.com>
+Date:   Wed, 30 Mar 2022 08:35:34 +0300
+In-Reply-To: <CA+ASDXOeC+S2d7g0b=aS_q9XxNtdayF1S5XE9T85NZrxXnK5KA@mail.gmail.com>
+        (Brian Norris's message of "Tue, 29 Mar 2022 14:06:40 -0700")
+Message-ID: <8735j0xas9.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH v3 01/12] dt: bindings: net: add bindings of WCN6750 for
- ath11k
-Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
-        <devicetree@vger.kernel.org>
-References: <20220328094838.14093-1-quic_mpubbise@quicinc.com>
- <20220328094838.14093-2-quic_mpubbise@quicinc.com>
- <YkOYTpTMXTEx5mAU@robh.at.kernel.org>
-From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-In-Reply-To: <YkOYTpTMXTEx5mAU@robh.at.kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,33 +64,16 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Brian Norris <briannorris@chromium.org> writes:
 
+> Side note: it's a small shame that Kalle's scripts seem to have munged
+> the authorship date -- git thinks it was authored in 2022, when in
+> fact it was in 2020 ;)
 
-On 3/30/2022 5:07 AM, Rob Herring wrote:
-> On Mon, 28 Mar 2022 15:18:27 +0530, Manikanta Pubbisetty wrote:
->> WCN6750 is the WLAN chip on Qualcomm Snapdragon SoC SC7280;
->> Though being a PCIe based solution, it is not attached to
->> the APSS processor (Application Processor SubSystem), it is
->> instead attached to another tiny processor called WPSS Q6
->> processor (Wireless Processor SubSystem) on the SC7280 MSM,
->> where the WLAN firmware runs, and it is the WLAN firmware
->> running on the Q6 processor which enumerates WCN6750, as a
->> result APPS processor would never know such a device being
->> present in the system and would not detect the WCN6750
->> hardware unless and otherwise WCN6750 is registered as a
->> platform device. This is the reason behind adding WCN6750
->> WLAN node in the device tree.
->>
->> Add WCN6750 wireless driver support, its based on ath11k driver.
->>
->> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
->> ---
->>   .../bindings/net/wireless/qcom,ath11k.yaml    | 361 ++++++++++++------
->>   1 file changed, 252 insertions(+), 109 deletions(-)
->>
-> 
-> Reviewed-by: Rob Herring <robh@kernel.org>
+Oops, sorry about that. I use stgit and then I edited the commit log to
+add the Link tag, it must have changed the date.
 
-Thanks for the review Rob!!
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Manikanta
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
