@@ -2,79 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 977634EC6D0
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Mar 2022 16:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB42B4EC7BD
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Mar 2022 17:05:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244124AbiC3Oml (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Mar 2022 10:42:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46582 "EHLO
+        id S1347027AbiC3PGm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Mar 2022 11:06:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239909AbiC3Omk (ORCPT
+        with ESMTP id S241476AbiC3PGj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Mar 2022 10:42:40 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9029E0BE
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 07:40:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 5D76FCE1D6A
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 14:40:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6786AC340EC
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 14:40:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648651251;
-        bh=iVRT4dVQKY394dSLHmlqx8DiQrpYG2wQ00ttFzMvByk=;
-        h=From:To:Subject:Date:From;
-        b=b3OsHfUD8D5/o1Lm4lRr4wrPOdxMx7Kp72swwJNLsDyRto4j/qy/zfVFM9cVr8KkI
-         Bu8yZmg6a2t3gYMe22LvERa7LO8Xq/H9BR70pKPkXRyupnWvL1rX+g+VIUCUeQQi2u
-         f+k4QwjKsfwec1tL7x7WKCj69ni8muRfGpPHfMHPvIGxqVHGg2ekkmAfSNMx4o4v35
-         PbGveRhBbzqRsD4KEcYa0COX/z+guQvQPteVAzc5FjH3p/5AaT9ENXAy5ELkraszPk
-         iMhYJnHcFoYcwT4nfiX1oKpsTP5gSi7cbrPdm5cwOpRru4RzrNMKiFssvJseG1Wsij
-         NiaSFsbKuWtoA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH] MAINTAINERS: mark wil6210 as orphan
-Date:   Wed, 30 Mar 2022 17:40:46 +0300
-Message-Id: <20220330144046.11229-1-kvalo@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        Wed, 30 Mar 2022 11:06:39 -0400
+X-Greylist: delayed 471 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 30 Mar 2022 08:04:50 PDT
+Received: from zsmtp-out1.bppt.go.id (zsmtp-out1.bppt.go.id [103.224.137.202])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 298808BF28;
+        Wed, 30 Mar 2022 08:04:50 -0700 (PDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by zsmtp-out1.bppt.go.id (Postfix) with ESMTP id 9EB7A86CA7;
+        Wed, 30 Mar 2022 21:56:40 +0700 (WIB)
+Received: from zsmtp-out1.bppt.go.id ([127.0.0.1])
+        by localhost (zsmtp-out1.bppt.go.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id b74l4jZhvkEy; Wed, 30 Mar 2022 21:56:39 +0700 (WIB)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by zsmtp-out1.bppt.go.id (Postfix) with ESMTP id 1368186CAF;
+        Wed, 30 Mar 2022 21:56:39 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zsmtp-out1.bppt.go.id 1368186CAF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bppt.go.id;
+        s=selector; t=1648652199;
+        bh=VyNFlD7/cu41Triwpcp5Awv70tSUbdDqwtfboErdO+g=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=svAmnrrBHYNDdvp9KRdriEwM50eXaii7PA98Y0bUkFBdk1jAsN2JbFniYehHyrljh
+         +C4l89xl6mPD3WldV6Bm2eXTIB9PPW6uJK9JslaS90zOLOXpiFgJ2MQxcOiD9I09jL
+         3EUh9tmBzKGB//JGuvbkQ4dl592znsWxkV/Fx6Ww=
+X-Amavis-Modified: Mail body modified (using disclaimer) -
+        zsmtp-out1.bppt.go.id
+X-Virus-Scanned: amavisd-new at bppt.go.id
+Received: from zsmtp-out1.bppt.go.id ([127.0.0.1])
+        by localhost (zsmtp-out1.bppt.go.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id oo8HqgG1iuj0; Wed, 30 Mar 2022 21:56:38 +0700 (WIB)
+Received: from mta1.bppt.go.id (mta1.bppt.go.id [10.10.180.6])
+        by zsmtp-out1.bppt.go.id (Postfix) with ESMTPS id 03A3086C8D;
+        Wed, 30 Mar 2022 21:56:36 +0700 (WIB)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mta1.bppt.go.id (Postfix) with ESMTP id D8D41253B4;
+        Wed, 30 Mar 2022 21:56:35 +0700 (WIB)
+Received: from mta1.bppt.go.id ([127.0.0.1])
+        by localhost (mta1.bppt.go.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 3ax2wUkxVRaB; Wed, 30 Mar 2022 21:56:35 +0700 (WIB)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mta1.bppt.go.id (Postfix) with ESMTP id 510E325405;
+        Wed, 30 Mar 2022 21:56:32 +0700 (WIB)
+X-Virus-Scanned: amavisd-new at mta1.bppt.go.id
+Received: from mta1.bppt.go.id ([127.0.0.1])
+        by localhost (mta1.bppt.go.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id BUdznHRq4uXj; Wed, 30 Mar 2022 21:56:31 +0700 (WIB)
+Received: from mbox2.bppt.go.id (mbox2.bppt.go.id [10.10.180.5])
+        by mta1.bppt.go.id (Postfix) with ESMTP id 9F58924F4D;
+        Wed, 30 Mar 2022 21:56:26 +0700 (WIB)
+Date:   Wed, 30 Mar 2022 21:56:26 +0700 (WIB)
+From:   Nadirah <nadirah@bppt.go.id>
+Reply-To: huangjinping@winghang.info
+Message-ID: <1605392657.4889796.1648652186596.JavaMail.zimbra@bppt.go.id>
+Subject: Aw:Dringende Antwort erforderlich
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.8.15_GA_4101 (zclient/8.8.15_GA_4101)
+Thread-Index: Z5AUbGAGX1kurSPX/G7dIggd9c75xw==
+Thread-Topic: Dringende Antwort erforderlich
+X-Spam-Status: No, score=3.9 required=5.0 tests=BAYES_60,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_QP_LONG_LINE,
+        MISSING_HEADERS,REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Maya is not working on wil6210 anymore so mark it as orphan.
 
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
----
- MAINTAINERS | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e406a6db67d0..64c55d9412ef 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20964,10 +20964,8 @@ S:	Maintained
- F:	drivers/hid/hid-wiimote*
- 
- WILOCITY WIL6210 WIRELESS DRIVER
--M:	Maya Erez <merez@codeaurora.org>
- L:	linux-wireless@vger.kernel.org
--L:	wil6210@qti.qualcomm.com
--S:	Supported
-+S:	Orphan
- W:	https://wireless.wiki.kernel.org/en/users/Drivers/wil6210
- F:	drivers/net/wireless/ath/wil6210/
- 
-
-base-commit: 24b488061b97a6c6ff82c433e6843eaf54f41f3c
--- 
-2.30.2
+Es tut mir leid, dass ich Ihnen diese E-Mail, die in Ihrem Junk-Ordner eing=
+egangen ist, als unerw=C3=BCnschte E-Mail gesendet habe. Ich hei=C3=9Fe Hua=
+ng Jinping. Ich habe einen Gesch=C3=A4ftsvorschlag f=C3=BCr Sie. Ich wei=C3=
+=9F, dass dieser Gesch=C3=A4ftsvorschlag f=C3=BCr Sie von Interesse sein w=
+=C3=BCrde. F=C3=BCr weitere Informationen kontaktieren Sie mich bitte *****=
+***************************************************************************=
+**********#################################################################=
+####################################
+Isi e-mail ini mungkin bersifat rahasia dan penyalahgunaan, penyalinan, atau penyebaran dari e-mail ini dan semua attachment dari e-mail ini dilarang. Komunikasi internet tidak aman dan oleh karena itu Badan Pengkajian dan Penerapan Teknologi tidak menerima tanggung jawab hukum atas isi pesan ini atau untuk setiap kerusakan yang disebabkan oleh virus. Pendapat-pendapat yang diungkapkan di sini tidak selalu mewakili Badan Pengkajian dan Penerapan Teknologi.
 
