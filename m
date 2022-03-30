@@ -2,94 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB42B4EC7BD
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Mar 2022 17:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1BE74EC855
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Mar 2022 17:33:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347027AbiC3PGm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Mar 2022 11:06:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49654 "EHLO
+        id S1348263AbiC3PfC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Mar 2022 11:35:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241476AbiC3PGj (ORCPT
+        with ESMTP id S1347144AbiC3PfB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Mar 2022 11:06:39 -0400
-X-Greylist: delayed 471 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 30 Mar 2022 08:04:50 PDT
-Received: from zsmtp-out1.bppt.go.id (zsmtp-out1.bppt.go.id [103.224.137.202])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 298808BF28;
-        Wed, 30 Mar 2022 08:04:50 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by zsmtp-out1.bppt.go.id (Postfix) with ESMTP id 9EB7A86CA7;
-        Wed, 30 Mar 2022 21:56:40 +0700 (WIB)
-Received: from zsmtp-out1.bppt.go.id ([127.0.0.1])
-        by localhost (zsmtp-out1.bppt.go.id [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id b74l4jZhvkEy; Wed, 30 Mar 2022 21:56:39 +0700 (WIB)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by zsmtp-out1.bppt.go.id (Postfix) with ESMTP id 1368186CAF;
-        Wed, 30 Mar 2022 21:56:39 +0700 (WIB)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zsmtp-out1.bppt.go.id 1368186CAF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bppt.go.id;
-        s=selector; t=1648652199;
-        bh=VyNFlD7/cu41Triwpcp5Awv70tSUbdDqwtfboErdO+g=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=svAmnrrBHYNDdvp9KRdriEwM50eXaii7PA98Y0bUkFBdk1jAsN2JbFniYehHyrljh
-         +C4l89xl6mPD3WldV6Bm2eXTIB9PPW6uJK9JslaS90zOLOXpiFgJ2MQxcOiD9I09jL
-         3EUh9tmBzKGB//JGuvbkQ4dl592znsWxkV/Fx6Ww=
-X-Amavis-Modified: Mail body modified (using disclaimer) -
-        zsmtp-out1.bppt.go.id
-X-Virus-Scanned: amavisd-new at bppt.go.id
-Received: from zsmtp-out1.bppt.go.id ([127.0.0.1])
-        by localhost (zsmtp-out1.bppt.go.id [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id oo8HqgG1iuj0; Wed, 30 Mar 2022 21:56:38 +0700 (WIB)
-Received: from mta1.bppt.go.id (mta1.bppt.go.id [10.10.180.6])
-        by zsmtp-out1.bppt.go.id (Postfix) with ESMTPS id 03A3086C8D;
-        Wed, 30 Mar 2022 21:56:36 +0700 (WIB)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mta1.bppt.go.id (Postfix) with ESMTP id D8D41253B4;
-        Wed, 30 Mar 2022 21:56:35 +0700 (WIB)
-Received: from mta1.bppt.go.id ([127.0.0.1])
-        by localhost (mta1.bppt.go.id [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 3ax2wUkxVRaB; Wed, 30 Mar 2022 21:56:35 +0700 (WIB)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mta1.bppt.go.id (Postfix) with ESMTP id 510E325405;
-        Wed, 30 Mar 2022 21:56:32 +0700 (WIB)
-X-Virus-Scanned: amavisd-new at mta1.bppt.go.id
-Received: from mta1.bppt.go.id ([127.0.0.1])
-        by localhost (mta1.bppt.go.id [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id BUdznHRq4uXj; Wed, 30 Mar 2022 21:56:31 +0700 (WIB)
-Received: from mbox2.bppt.go.id (mbox2.bppt.go.id [10.10.180.5])
-        by mta1.bppt.go.id (Postfix) with ESMTP id 9F58924F4D;
-        Wed, 30 Mar 2022 21:56:26 +0700 (WIB)
-Date:   Wed, 30 Mar 2022 21:56:26 +0700 (WIB)
-From:   Nadirah <nadirah@bppt.go.id>
-Reply-To: huangjinping@winghang.info
-Message-ID: <1605392657.4889796.1648652186596.JavaMail.zimbra@bppt.go.id>
-Subject: Aw:Dringende Antwort erforderlich
+        Wed, 30 Mar 2022 11:35:01 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C1C343AFD
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 08:33:15 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id bh17so2806478ejb.8
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 08:33:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=k4tOjXwVcjRbwIqO75tPZMywji6NA5bvyUrV2lo9zfU=;
+        b=ZvpGgO0rTRy4BxXcRwzsHHFuZRo4g3CARr5qe1cMD3fSVYBkhDQT6I2pcj7Wkus4vD
+         L/pV4kO5BVuN7x61TI7A+uMRtm6324yVDgXfaYOq8q+KMQ4/V+pPoRb3AiLc/FKSr3if
+         J+GN3sLdj4bXGUUPsxuj3SC4VikYaGpYroHXs5RMwPBZOrA1zUbc8rzoSnbIoyzl5VYP
+         89L+v9l7lH3QmK4n4TBz8AELmkTFCPVCwiqHn4OIwiNAuuOatlSMaRsSEJOknqnFEvhk
+         bDxbb6BqZPGpGeIOCUn9EPudkbn9Vuherq8IXnE6nukxV9ijFCla9WR35o8ITBwkLi59
+         jHgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=k4tOjXwVcjRbwIqO75tPZMywji6NA5bvyUrV2lo9zfU=;
+        b=QZo+HQGGnNXTVLjdsDuM6okadvQ1ZTSnSxYbaGla06EN3j1b8WnqzK7gVOGFPPMf1m
+         DPEgnHJsW2vi7chv8QgI4XWPwzsa3xvHOFvfmifxi692kCjn0ksTml3rsLSo+HsEM9r5
+         B1lAAVE7aUcaHnVlGwcymsUJDphDLjEfR5ViQuLAOuRG+8Y4l5NNBPYL8AKOsvxFTXIM
+         1n7NZx+xyL9lXViin0jLu+aB2jNNcDv2happiCQ7qyrT/fba6xH6MlLMMMNBPvXkHZLT
+         I4s6AR72LjT7BbM6JV0SfIO50e4ahgw/HDSOoNgI+8d3Kr/TL9UGZ6BIduLrm3dR+AWV
+         8OUA==
+X-Gm-Message-State: AOAM530KenwWXZvs8q1Qc3yy4yP6dqm88fmPSOIskL4tQ6G9AacxIMKu
+        5Pxja3hXWbxzjLph+ovIX41M0FCpqK7UApNnxzk=
+X-Google-Smtp-Source: ABdhPJwqVo/RXrPoFsKPyisy5cThCgK4HiCNge6BTqyGlCrCBOuLxp78snnPGrCVRBmrldImsNzhfzIlFfVZyJBHyi0=
+X-Received: by 2002:a17:907:a42a:b0:6e4:973b:9d34 with SMTP id
+ sg42-20020a170907a42a00b006e4973b9d34mr102917ejc.24.1648654393947; Wed, 30
+ Mar 2022 08:33:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Zimbra 8.8.15_GA_4101 (zclient/8.8.15_GA_4101)
-Thread-Index: Z5AUbGAGX1kurSPX/G7dIggd9c75xw==
-Thread-Topic: Dringende Antwort erforderlich
-X-Spam-Status: No, score=3.9 required=5.0 tests=BAYES_60,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_QP_LONG_LINE,
-        MISSING_HEADERS,REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Wed, 30 Mar 2022 16:33:09 +0100
+Message-ID: <CAHpNFcPYBVg53gm_P7yh29n6ZyT=C=MsLXB5p9KyNMfZMjjMKQ@mail.gmail.com>
+Subject: On the subject of PSP processors : Arm features include NEON2! Why
+ not use this to our advantage? if safely potentiated! Every SiMD matters
+ after all! RS
+To:     submissions@vialicensing.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,PLING_QUERY,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On the subject of PSP processors : Arm features include NEON2!
+Why not use this to our advantage? if safely potentiated! Every SiMD
+matters after all,
 
+Particularly preparing for the GPU & Audio output!
+As a driver specific the advantages are around 13% improved
+performance & 20% improved code flexibility on SiMD compatibility.
 
-Es tut mir leid, dass ich Ihnen diese E-Mail, die in Ihrem Junk-Ordner eing=
-egangen ist, als unerw=C3=BCnschte E-Mail gesendet habe. Ich hei=C3=9Fe Hua=
-ng Jinping. Ich habe einen Gesch=C3=A4ftsvorschlag f=C3=BCr Sie. Ich wei=C3=
-=9F, dass dieser Gesch=C3=A4ftsvorschlag f=C3=BCr Sie von Interesse sein w=
-=C3=BCrde. F=C3=BCr weitere Informationen kontaktieren Sie mich bitte *****=
-***************************************************************************=
-**********#################################################################=
-####################################
-Isi e-mail ini mungkin bersifat rahasia dan penyalahgunaan, penyalinan, atau penyebaran dari e-mail ini dan semua attachment dari e-mail ini dilarang. Komunikasi internet tidak aman dan oleh karena itu Badan Pengkajian dan Penerapan Teknologi tidak menerima tanggung jawab hukum atas isi pesan ini atau untuk setiap kerusakan yang disebabkan oleh virus. Pendapat-pendapat yang diungkapkan di sini tidak selalu mewakili Badan Pengkajian dan Penerapan Teknologi.
+We can also directly utilize for Automated Direct Reactive Secure DMA or ADRSDMA
 
+(signed RS)
+
+ARM Patches 3 arte enabled! https://lkml.org/lkml/2022/3/30/977
+
+*
+
+GPRS for immediate use in all SFR SIM's & SFR Firmware & routers &
+boxes including ADSL & Fibre
+
+Cloudflare Kernels & VM linux, I pretty obviously would like to be
+able to utilise cloudflare Kernel & Linux & cloudflare is very special
+to me
+
+Submissions for review
+
+RS
+
+https://drive.google.com/drive/folders/1X5fUvsXkvBU6td78uq3EdEUJ_S6iUplA?usp=sharing
+
+https://lore.kernel.org/lkml/20220329164117.1449-1-mario.limonciello@amd.com/
