@@ -2,167 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 146874ED2D8
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Mar 2022 06:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 585D04ED311
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Mar 2022 06:54:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229582AbiCaEIb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Mar 2022 00:08:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50464 "EHLO
+        id S229451AbiCaEj7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Mar 2022 00:39:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229574AbiCaEIT (ORCPT
+        with ESMTP id S229478AbiCaEj5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Mar 2022 00:08:19 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCB6023DE9E
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 20:57:11 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id yy13so45441774ejb.2
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 20:57:11 -0700 (PDT)
+        Thu, 31 Mar 2022 00:39:57 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 403B9C69
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 21:38:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=DQEdIqJQMT2DTXxNnryD3JrAvawMTCRUVp7h3+Y4I58=;
-        b=cc2rALVw1jxOK2Gb8L0J6Mph69Y5VA57JZQiuXcdW5z3m5d/DZa8hjTvhe9AMJD+oR
-         sZWBxGtudQhCDz36qcCCNXc3ZsuQhTI5QG975d+QEmIL1cXJrOcVg13mjtJE8BHQS/S4
-         iIpcrSGJc0jxFV9wD+VDOhUyo6n2rNmRzTngyO4v1oH9t0lTZGBvhB7L8IY+4CzZD6+5
-         M4FqiJvek0gzYy5Td1KrRIVZHZrS0to+wXWFHnEmd210xrZ0KyIsMVxwUnRTdhYssOXv
-         tEb6TOB/UOHofzCf3ePHP/RV74cESHbxnUZZk4LeNqIi36k63llzvcvq1RWBRsRe+fH3
-         8SsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=DQEdIqJQMT2DTXxNnryD3JrAvawMTCRUVp7h3+Y4I58=;
-        b=aYVvvSInDeJt5k9fAjV9G4uLWDomiFz9dtdJ85y29w8bgmyvn3U99cZWT3E5TLHm+N
-         HThSdHn/sW5vXHzelJOaIddlw1kaYOuNtePH9zuWo7UGNuXqLuJpBkai5YJD+5UnPfQp
-         h+MSSEkHFUxey1Yu+4ek5DqbISbtDK7H9AiLpASDVI1PduB9TFpGjD++2yuY+1ALl0mP
-         WZbuwdfmsfRovJ6wnM/XNSTKN5+M8Zlsfi3Qvac/bYjZSH3I37NxeCg91krUraTkTk7X
-         QGX8iFyocYMWicrl3Xrcrc/bIfJRL6JOrNh+uTbZ0uOwCcagPmNSNWpZDO9wmZpNijen
-         s26g==
-X-Gm-Message-State: AOAM532ss93aTASy6/7rmWArBbSdAse/TBf8XW0N6ssOu+DOy0FR0Wa/
-        rfGF6iJ0j0+6jJ9gusr9kn9j6sJNuX2fLsEr+WY=
-X-Google-Smtp-Source: ABdhPJy14q49ndRpft22Zxx3hmPk1d7rlxFG+MTHM3G13eqOKVC53V7KmYGrVmRIuAapJFVzhRur/hctam12CatbZ+4=
-X-Received: by 2002:a17:907:980d:b0:6d6:f910:513a with SMTP id
- ji13-20020a170907980d00b006d6f910513amr2951893ejc.643.1648699030251; Wed, 30
- Mar 2022 20:57:10 -0700 (PDT)
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1648701490; x=1680237490;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=5Ug/c+onuuFVHOMnWrXE1dZ96puP8xNz8D0CvaUjs/A=;
+  b=OAJV8ALTkJ6IIL8oSRlK5GXcA2ns4G9dqpNAha5LBYKGZgULQ1afWAIz
+   d+VPf3f/kewdENiZBOBEYL8fVZ3euPtuDQTXVt8nyhh+DKEYO2s5mbpEF
+   F5yOWFjWfnhNCtdNiBnULu7Ww3dDH2CKDYEdTdVpZFCIkch5vmDoSV8id
+   E=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 30 Mar 2022 21:38:10 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2022 21:38:09 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 30 Mar 2022 21:38:09 -0700
+Received: from akolli-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 30 Mar 2022 21:38:07 -0700
+From:   Anilkumar Kolli <quic_akolli@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Anilkumar Kolli <quic_akolli@quicinc.com>
+Subject: [PATCH v5.18] Revert "ath11k: mesh: add support for 256 bitmap in blockack frames in 11ax"
+Date:   Thu, 31 Mar 2022 10:07:57 +0530
+Message-ID: <1648701477-16367-1-git-send-email-quic_akolli@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Thu, 31 Mar 2022 04:57:06 +0100
-Message-ID: <CAHpNFcPLqwMyzHt9F5WTGSHr8goaFcczEHS5YL7uajnhe3EwZw@mail.gmail.com>
-Subject: Fast AMD, MIPS & RISC Instruction guidance in reference to https://lkml.org/lkml/2022/3/30/1565
-To:     support.android@sfr.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RISC Instructions : What do they all mean ? Todays manuel BLTU
+This reverts commit 743b9065fe6348a5f8f5ce04869ce2d701e5e1bc.
 
-signed magnitude (BLT/BGE) or unsigned magnitude (BLTU/ BGEU) =E2=80=A2 12-=
-bit
-immediate encodes branch target address as a signed o=EF=AC=80set from PC, =
-in
-units of 16-bits (i.e., shiR leR by 1 then add to
+The original commit breaks the 256 bitmap in blockack frames in AP
+mode. After reverting the commit the feature works again in both AP and
+mesh modes
 
-https://passlab.github.io/CSE564/notes/lecture08_RISCV_Impl.pdf
+Tested-on: IPQ8074 hw2.0 PCI WLAN.HK.2.6.0.1-00786-QCAHKSWPL_SILICONZ-1
 
-#CryptoFASTintFL Polynomial ROOFLINING : In terms of Entropy pool Int
-& Timer collections Polynomial is a Cryptologic_Functiontion & should
-be A : Rooflined B : Streamlined & C : In Crypto_hash_function.h
-https://lkml.org/lkml/2022/3/30/1313
+Signed-off-by: Anilkumar Kolli <quic_akolli@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/mac.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-https://lkml.org/lkml/2022/3/30/1565
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 175a4ae752f3..ca998fb13b62 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -3150,6 +3150,20 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+ 			arvif->do_not_send_tmpl = true;
+ 		else
+ 			arvif->do_not_send_tmpl = false;
++
++		if (vif->bss_conf.he_support) {
++			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
++							    WMI_VDEV_PARAM_BA_MODE,
++							    WMI_BA_MODE_BUFFER_SIZE_256);
++			if (ret)
++				ath11k_warn(ar->ab,
++					    "failed to set BA BUFFER SIZE 256 for vdev: %d\n",
++					    arvif->vdev_id);
++			else
++				ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
++					   "Set BA BUFFER SIZE 256 for VDEV: %d\n",
++					   arvif->vdev_id);
++		}
+ 	}
+ 
+ 	if (changed & (BSS_CHANGED_BEACON_INFO | BSS_CHANGED_BEACON)) {
+@@ -3185,14 +3199,6 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+ 
+ 		if (arvif->is_up && vif->bss_conf.he_support &&
+ 		    vif->bss_conf.he_oper.params) {
+-			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
+-							    WMI_VDEV_PARAM_BA_MODE,
+-							    WMI_BA_MODE_BUFFER_SIZE_256);
+-			if (ret)
+-				ath11k_warn(ar->ab,
+-					    "failed to set BA BUFFER SIZE 256 for vdev: %d\n",
+-					    arvif->vdev_id);
+-
+ 			param_id = WMI_VDEV_PARAM_HEOPS_0_31;
+ 			param_value = vif->bss_conf.he_oper.params;
+ 			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
+-- 
+2.7.4
 
-Coding folder:
-https://bit.ly/VESA_BT
-
-Rupert S
-*****
-
-Polynomial ROOFLINING : #CryptoFASTintFL
-
-In terms of Entropy pool Int & Timer collections Polynomial is a
-Cryptologic_Functiontion & should be A : Rooflined B : Streamlined & C
-: In Crypto_hash_function.h
-
-https://lkml.org/lkml/2022/3/30/1313
-
-**Reference**
-
-Multi Bit load operations for bitmap,Texture & Other tasks +ON+HighLowOP (c=
-)RS
-May take higher or lower bit depth & precisions: Rupert S 2021
-
-MultiBit Serial & Parallel execution conversion inline of N*Bit -+
-
-2 16 Bit loads is 32Bit but takes 2 cycles...
-
-16 Bit loads with 32 Bit Stores & Math unit:
-
-Operation 1
-
-16Bit , 16Bit , 16Bit , 16Bit Operation
-    \         /    \         /
-           Inline Store
-     32Bit Store 32Bit Store
-           64Bit Store
-       \     /
-32Bit ADD/DIV x 2 or 64Bit ADD/DIV x1
-
-Operation 2
-
-32Bit ADD/DIV x 2 or 64Bit ADD/DIV x1
-          \            /
-          4x 16Bit Store
-
-4 x 16Bit Operation
-
-MultiBit Serial & Parallel execution conversion inline of N*Bit -+
-
-In the case of ADD -+ Signed for example:(c)RS
-Plus & - Lines ADD or Subtract (Signed, Bit Depth Irrelevant)
-
-Multiples of 16Bit works in place of 32Bit or 64Bit
-
-V1: 16Bit Values composing a total 128Bit number
-V2: 16Bit Values composing a total 128Bit number - (Value less than V1)
-V3: Result
-NBit: Bit Depth
-
-4x16Bit operations in the same cycle >
-If Value =3D 16Bit =3D Store
-If Value =3D V3=3DBit =3D Store * NBit
-
-Stored 128Bit RAM or if remainder =3D less > 4x16Bit -1-1-1 ; 16Bit Value S=
-tore
-
-*
-
-*RAND OP Ubuntu
-
-https://pollinate.n-helix.com/
-
-(Rn1 *<>/ Rn2 *<>/ Rn3)
-
--+
-VAR(+-) Var =3D Rn1 +- Rn8
-
-(Rn5 *<>/ Rn6 *<>/ Rn7)
-
-4 Samples over N * Sample 1 to 4
-
-Input into pool 1 Low half -+
-Input into pool 1 High half -+
-
-*RAND OP Recycle It
-
-*
-
-(c)RS https://bit.ly/DJ_EQ
