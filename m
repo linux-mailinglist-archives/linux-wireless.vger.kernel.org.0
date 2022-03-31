@@ -2,222 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 149C84EE1AC
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Mar 2022 21:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 032C94EE415
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 00:32:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240677AbiCaT31 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Mar 2022 15:29:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35148 "EHLO
+        id S242491AbiCaWe2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Mar 2022 18:34:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234433AbiCaT3Y (ORCPT
+        with ESMTP id S242501AbiCaWe0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Mar 2022 15:29:24 -0400
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A85E51DFDE4;
-        Thu, 31 Mar 2022 12:27:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1648754856; x=1680290856;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=TRQtemiCmSPiRE+OLaaMiZ1EEVqMTWlOqDLFNj47CUU=;
-  b=dU1CNnFiqTX20CuwuVCk8ICZi0yl4C4yBUroxBbFqSRHZb1zZRutFQs7
-   io0sYpQqMiylyXHfCnOnFbspbitE9yxxWNgbnIErgqtGJ+1VbFKOKaGle
-   UztNfdKnzsA/qO5JTxbjZrB3UMm2azCsWC/KUkSQlLIFXfWQRIzJby4Rs
-   8UchjaAAaaFp16vsEggZrkw9+T3H4ebh61BIDLIYaL7pLA7qXyxPlTnIb
-   ldA1Cy7dfYJjGb8x9S0MkgpljSoJTwFRzdKXt4azPWAJzaSIL92/nrbyM
-   c6qH+fDKyxBjSOfGPPLG4bo58XV3/NiPbkH2N+U+jOMaVOSXfIE5/yl/d
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10302"; a="320625879"
-X-IronPort-AV: E=Sophos;i="5.90,225,1643702400"; 
-   d="scan'208";a="320625879"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2022 12:27:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,225,1643702400"; 
-   d="scan'208";a="586559170"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orsmga001.jf.intel.com with ESMTP; 31 Mar 2022 12:27:33 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Thu, 31 Mar 2022 12:27:32 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27 via Frontend Transport; Thu, 31 Mar 2022 12:27:32 -0700
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.45) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2308.27; Thu, 31 Mar 2022 12:27:31 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VjUol4fL7/it/8yB2yxYffcnAKvwf/ahA9ktqElmxStqHVWh7NUDCKbkOkZvToK/gnUWj+u+MWC8aE31O5kYVVWj0McuTbl+ezL2Xe6BrrKXByTKQ8yxuriwSx3gIivi+Im5KU0qTNwTjLqwdOJHFxqN2pwcvY+bJroC6mRLuVktIcCFRtOSCtI92zMe9TJlsB1AIQeFSBZgPeqYDZs4tMB9u9fegFWNveFn9bb+tw7JfrEcQ6RJvN74g8Y9xF8DivsC7ll69l1SqaUbmLyaaid3sMQ6KYMbqEzyJwsI6h9CvX9HcKcd4mqx0j+PjPFbyGufTb+jMHM6DEhj77zQhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TRQtemiCmSPiRE+OLaaMiZ1EEVqMTWlOqDLFNj47CUU=;
- b=fmUGqdNVKI3+pBz8S6XX4BKJqJFv6xK+s99IjVmmgu06CB6qCqvU6XIpI0f2gVpQ/k4fqSLGBBdQfaKZO4wPI+ngelmcwAd1KLhtG6mvUrSEBDrSZfsRPm/NJiz62oxNTikkF0oj2XuOZaB3ilVAkyKB7vvQSmHXURuVt5HN2Bd5dSYvO3oCLZsrIWka2oTRjhJFWDR9Rc2Jp/1fDIXZWMjSm61VaQLAldfIVRaCgKlrk6vfVVoqi2l0TyZQNoRRhs8wrO968ovkqEqHRE7T2HohR/ZNWF7YrbcnUhJoqM+5slDVHyhtwHvwsNXM2+j8khDlZ5DWu7mBI4qI4iBXtA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BYAPR11MB3256.namprd11.prod.outlook.com (2603:10b6:a03:76::19)
- by BY5PR11MB4434.namprd11.prod.outlook.com (2603:10b6:a03:1c2::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5123.23; Thu, 31 Mar
- 2022 19:27:29 +0000
-Received: from BYAPR11MB3256.namprd11.prod.outlook.com
- ([fe80::a833:61cb:3c40:6df]) by BYAPR11MB3256.namprd11.prod.outlook.com
- ([fe80::a833:61cb:3c40:6df%7]) with mapi id 15.20.5123.021; Thu, 31 Mar 2022
- 19:27:29 +0000
-From:   "Moore, Robert" <robert.moore@intel.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        =?utf-8?B?QmVuamFtaW4gU3TDvHJ6?= <benni@stuerz.xyz>
-CC:     Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        "linux@simtec.co.uk" <linux@simtec.co.uk>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Ingo Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        "3chas3@gmail.com" <3chas3@gmail.com>,
-        Harald Welte <laforge@gnumonks.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "Luck, Tony" <tony.luck@intel.com>,
-        James Morse <james.morse@arm.com>,
-        Robert Richter <rric@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        "mike.marciniszyn@cornelisnetworks.com" 
-        <mike.marciniszyn@cornelisnetworks.com>,
-        "dennis.dalessandro@cornelisnetworks.com" 
-        <dennis.dalessandro@cornelisnetworks.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        =?utf-8?B?UGFsaSBSb2jDoXI=?= <pali@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "linux-arm Mailing List" <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Samsung SOC <linux-samsung-soc@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "linux-atm-general@lists.sourceforge.net" 
-        <linux-atm-general@lists.sourceforge.net>,
-        netdev <netdev@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "open list:HFI1 DRIVER" <linux-rdma@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>,
-        "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" 
-        <linuxppc-dev@lists.ozlabs.org>,
-        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-        "wcn36xx@lists.infradead.org" <wcn36xx@lists.infradead.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: RE: [PATCH 05/22] acpica: Replace comments with C99 initializers
-Thread-Topic: [PATCH 05/22] acpica: Replace comments with C99 initializers
-Thread-Index: AQHYQTLw0CnWOb6Cm06gV2rlVTnV06zTqA0AgAY//BA=
-Date:   Thu, 31 Mar 2022 19:27:29 +0000
-Message-ID: <BYAPR11MB3256D71C02271CD434959E0187E19@BYAPR11MB3256.namprd11.prod.outlook.com>
-References: <20220326165909.506926-1-benni@stuerz.xyz>
- <20220326165909.506926-5-benni@stuerz.xyz>
- <CAHp75VeTXMAueQc_c0Ryj5+a8PrJ7gk-arugiNnxtAm03x7XTg@mail.gmail.com>
-In-Reply-To: <CAHp75VeTXMAueQc_c0Ryj5+a8PrJ7gk-arugiNnxtAm03x7XTg@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-version: 11.6.401.20
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 6c4c014a-a248-43cc-3951-08da134c7ef4
-x-ms-traffictypediagnostic: BY5PR11MB4434:EE_
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-microsoft-antispam-prvs: <BY5PR11MB44347E2B37E4457B39814AAD87E19@BY5PR11MB4434.namprd11.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: u+u3AnVEttCpBQaqF4LgujPzZqjW9MP/As7L7nltcwfgO6DCKmIVv2h/kAmYCDaB6nMAwJbkyBf6FAvg5acHU+FUgRcoU4sAsnDcIBwPsPzpjCozlyTyjZSv34VpOIy1l35nyOuVY1qFNaOlTlZT2AKIYAeKNnQl2mjoXykBiWTCuHP/1EVKjlVTj0//ooLZJjYpOWWwdgz15kywScet8kIp4h5zql3MGdxAERLH54yxERb1765h00Z8O8fe7TfZnI5LQYh8h1LrubUsnd+i1AAa2Hu4L+pxLhEABMgtGWUUg1a/3aBLkshIACImxYMpchRuB4ZVr9B43TVvkVN6Wbl96ZgwQFw+dSONFz7X6DCUdmZuTOk8GJoycN8jdRyuEi+Omsovuu0y+6hVtDs/q5XBE3buEueL1zDiIauvT6IjzfVuVH5QCLrNc9+3GIBLNZyuGDwkQLCXMEwEE8m4ya3bzl0xYxYGXeEf7SyojwKrET5jufiJx9x9KzX7tp9cKlgeRwYObKTd1S4xGVTGfBTnMiFHb0gk00mmpG0kDj2TdNLW3BA1UsEPT9fTJ6tR9msKGcaERyuCPZQM3TeEauRB+pFScwsDhslFcZpMZKq9Q+1hYO/v2+KwgbAPfZnccq2IygO/X1hMpEaUquTypnbZbau6GoSlF0jUeZiPIm0CxrQuxtU3Poazu91bg3p6OG1SELwGV2mBwNQzUNs9JQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3256.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(508600001)(83380400001)(9686003)(33656002)(7406005)(7416002)(2906002)(7366002)(6506007)(53546011)(7696005)(5660300002)(86362001)(52536014)(38100700002)(55016003)(54906003)(82960400001)(71200400001)(110136005)(122000001)(186003)(26005)(76116006)(316002)(38070700005)(4326008)(66446008)(8936002)(8676002)(66946007)(66556008)(66476007)(64756008);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?L2h5WCtjNWFVa3lJY0RqWDQ1dE4xbFA5MWhScm5hclM4MkVyUlNVU0ZUSWhN?=
- =?utf-8?B?S0gxWHFncVRMQ2dHMllCb3NqTTdaM0NubnUwYlVJR05CMERSSlBEcEtBeFRX?=
- =?utf-8?B?UklzTkRsZGw3NEFWK05LSTZNT3k4TGlRcDF3cXRjalVnU29Qem9PbGZPV3kw?=
- =?utf-8?B?UTBNTGFNN01tbVBtajc0WE9wMi9lbDdmdmtSK1lzQ3RXZzBBSCtDcm1qaWRT?=
- =?utf-8?B?YjBOTDV2YXl2eTFWK29aS3lmNXJ3TlZNODI1bHVBQXRFUnpmcXJpSU55S3VJ?=
- =?utf-8?B?L3ZlYjNoZWM0QVVPSG5LR3ZSNUIwUDRqM01NdEMyb2J0eUV2SjVyR0RMSnNM?=
- =?utf-8?B?SHJXUlpQaFlBVWUzNXdaYTRHR1IxK2YvaU5yMU11V01Rc3NHR3VhVmV6RWJs?=
- =?utf-8?B?ZXZaZnZvTGRqMDFlV01DT0RSM3FsWGxrUTFPS2R3SEtjYnVmVDY3T0Z3MnlR?=
- =?utf-8?B?ZSt6SXdhV1lxb2tJQ2pHSGlCZmRHSlRtcXlLbktRdG9qS1FmaHVkc1d1SURi?=
- =?utf-8?B?QlN3SG01ek1BWm90d0lHSnU4QmlPd0VQUnNxeEVzWUViWEdwa2l6VnhNMys0?=
- =?utf-8?B?K2RIWjZ4YVJXa2lTM3p3dEFkMnArNVByWVQrMm1nM3luQ1FSVSt2T1JRaTJ2?=
- =?utf-8?B?NENYdmxEVDZWeEpTVDNneW1SYUlJTjZJMlcyNUpicUtHTTVjVjlkTGtLV3l1?=
- =?utf-8?B?U1ozSXZNVHJRdk95Rm04WGpRWVpiMmFFQjlvK2lXdk51MzJBa04vQnNwUTVu?=
- =?utf-8?B?emRqUk1QNGlWckcvQjdleHk5YVFWN1U1dlBkOUlIT2VVeXZ3d3U0bms3N3RL?=
- =?utf-8?B?R0wxdGx6Y3RMb1hYY3c2enBrVWRmSkZxQUREakVnL0FOWTFxWkVwRTNJbEk5?=
- =?utf-8?B?clptREorU0dlcG5BRnBHU0ZKRCtydXM5UnYrUWltMkhIY0lBaFFoZ1JqNHQ3?=
- =?utf-8?B?VGRWc25JT01zVlJ4ak9BdVVUNHd0ZzRCeHFkb0hXWS9wSjZlSVhJS0ZPOFhC?=
- =?utf-8?B?QlJPTXZkMGJ4WUxuQUh0Q0t6WW9wU000blA2aS80dFYxWnI4VmRzNndaTWQ5?=
- =?utf-8?B?dC82SHMrYjIxQVVJU2xnNWtXNjkyMEdaOVkxS3ZyLzMwR2RJM2FvRGdHQ0VJ?=
- =?utf-8?B?NlhUc0ZPNzVBV0pFZC92TGFxeG1WL3ZqcmsrWm1GZ0dBaEFrMzlJUUJGUEJ0?=
- =?utf-8?B?Q0tVeDhQNHI2OG03QkU0VjB4NXhCczNoZTdyYkdVVFRnN3ZRcXhkcURoNW5y?=
- =?utf-8?B?cE10QzBRS2w1QnduWFIvY2xWSUF4aEpJUnlnYUVNbGEydVNBamZxbmRlZEUy?=
- =?utf-8?B?eGNvdWhyYkxnaHBSRlFxRTgrZ2dOeE4zc0JuMFR6Y1JWeVlNRncvREFyT2Nm?=
- =?utf-8?B?THRhbHhEU0xmdlRUUUpIdk5hNFpkQXFlSkppdFRTYm5rdTgxdEZ1WGswZksy?=
- =?utf-8?B?VFFCd1NJZHpWRitraUJ0d21qUzNWTlNJUVZ2cUhiR2V5NWZxS0tBUHJwWGhm?=
- =?utf-8?B?Mlg4QTdUL0Ric3JyUUxuMy9PbHYzMW83bXZja0I0R25rV0dWYmxLUktnZ1J0?=
- =?utf-8?B?Z0s5OGRjZDdBTjJraCtqOTNXSGt3aFBYcW40NFM3LzZVM0VibVpUbXVpNldl?=
- =?utf-8?B?WGdxaUVLbzNjK2tMN3BzNmdDNmRCdUlKQTN1REpFV2NtL3loYnlxdFdDbzdN?=
- =?utf-8?B?MURNdkpwRWE4N2YzLzFXN0FGeUhxNXB5QitkbFZqcXUvUXFDcjdkRGYyTEtM?=
- =?utf-8?B?RC9aZnVUbHlKRVQ4V0hxTmpLVkdWUjJ5Q1ppd3JCd2gwNnBWdC9qVUJVMHpK?=
- =?utf-8?B?VmVYdEVSVEd2dEdjNFZoaFdVVVpKRXRhZUFjenY3cVM1cUVWeEUyRGZBT0pp?=
- =?utf-8?B?TU9VYXFaOUoyY2dvd3BOYzlDMmN6MEZYOEVxT2I5NkJydzVrSHBSSnVPQU1m?=
- =?utf-8?B?c1B6TUI1TTBDSDY1VHp2T2IyMUFManZCZTZIdWtBYmNTWkNoNzBodWlWWEpK?=
- =?utf-8?B?UHkvN3JTdVZodE5CNVovbi8rcHIyZmt6OGhXMXJHLzBqbUs0ZGdIRzBJUTZv?=
- =?utf-8?B?ODNGaDNXNGxTRkZtemxIZFVoT1NNakpUbEFIaFc3WGhUK3phNWY2bWliUjFL?=
- =?utf-8?B?NUc2UnlxNVhpeGx4ZFZ4Z05PVmFUWVRtRUcwd2NZTmM5N3J2d1E4WDdld0lr?=
- =?utf-8?B?M2liU3E1alRnRWlKTkhndjZvbWhyTVMzOVREV3hnOE9SR0svUmRyWTIreVRP?=
- =?utf-8?B?akhiN2ZIQ0gva2lFUTFnbnB2VEpDWU1POURJT3Y4ZlNXSEFxaktLVWdEVTF5?=
- =?utf-8?B?QVlYYWlYN3M5N2EzNUsraFN0VXJONXJaWU5mR2V3WVRVZkp2ZGVJdz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Thu, 31 Mar 2022 18:34:26 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 931A524A77C
+        for <linux-wireless@vger.kernel.org>; Thu, 31 Mar 2022 15:32:33 -0700 (PDT)
+X-UUID: ffeee6dc82124f9c92919d7900c5f864-20220401
+X-UUID: ffeee6dc82124f9c92919d7900c5f864-20220401
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1408182338; Fri, 01 Apr 2022 06:32:27 +0800
+Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Fri, 1 Apr 2022 06:32:26 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb02.mediatek.inc
+ (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 1 Apr
+ 2022 06:32:25 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 1 Apr 2022 06:32:25 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
+        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <ted.huang@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <Stella.Chang@mediatek.com>, <Tom.Chou@mediatek.com>,
+        <steve.lee@mediatek.com>, <jsiuda@google.com>,
+        <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH] mt76: mt7921: Add hotspot mode support
+Date:   Fri, 1 Apr 2022 06:32:24 +0800
+Message-ID: <734908dd741b85b7cc3855f23596cc5884c335e4.1648765636.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3256.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c4c014a-a248-43cc-3951-08da134c7ef4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Mar 2022 19:27:29.2692
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5uTajmqGxt7mTQiV9pD0/aTkOD6vBuxotIMgcct863pCyakfNv9AmCvB/G17XGBrhrghCqbRLmyRCdb3gzcyEQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR11MB4434
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -225,57 +62,275 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBBbmR5IFNoZXZjaGVua28gPGFu
-ZHkuc2hldmNoZW5rb0BnbWFpbC5jb20+IA0KU2VudDogU3VuZGF5LCBNYXJjaCAyNywgMjAyMiAx
-OjAwIFBNDQpUbzogQmVuamFtaW4gU3TDvHJ6IDxiZW5uaUBzdHVlcnoueHl6Pg0KQ2M6IEFuZHJl
-dyBMdW5uIDxhbmRyZXdAbHVubi5jaD47IFNlYmFzdGlhbiBIZXNzZWxiYXJ0aCA8c2ViYXN0aWFu
-Lmhlc3NlbGJhcnRoQGdtYWlsLmNvbT47IEdyZWdvcnkgQ2xlbWVudCA8Z3JlZ29yeS5jbGVtZW50
-QGJvb3RsaW4uY29tPjsgUnVzc2VsbCBLaW5nIC0gQVJNIExpbnV4IDxsaW51eEBhcm1saW51eC5v
-cmcudWs+OyBsaW51eEBzaW10ZWMuY28udWs7IEtyenlzenRvZiBLb3psb3dza2kgPGtyemtAa2Vy
-bmVsLm9yZz47IEFsaW0gQWtodGFyIDxhbGltLmFraHRhckBzYW1zdW5nLmNvbT47IFRob21hcyBH
-bGVpeG5lciA8dGdseEBsaW51dHJvbml4LmRlPjsgSW5nbyBNb2xuYXIgPG1pbmdvQHJlZGhhdC5j
-b20+OyBCb3Jpc2xhdiBQZXRrb3YgPGJwQGFsaWVuOC5kZT47IERhdmUgSGFuc2VuIDxkYXZlLmhh
-bnNlbkBsaW51eC5pbnRlbC5jb20+OyBILiBQZXRlciBBbnZpbiA8aHBhQHp5dG9yLmNvbT47IE1v
-b3JlLCBSb2JlcnQgPHJvYmVydC5tb29yZUBpbnRlbC5jb20+OyBXeXNvY2tpLCBSYWZhZWwgSiA8
-cmFmYWVsLmoud3lzb2NraUBpbnRlbC5jb20+OyBMZW4gQnJvd24gPGxlbmJAa2VybmVsLm9yZz47
-IDNjaGFzM0BnbWFpbC5jb207IEhhcmFsZCBXZWx0ZSA8bGFmb3JnZUBnbnVtb25rcy5vcmc+OyBB
-cm5kIEJlcmdtYW5uIDxhcm5kQGFybmRiLmRlPjsgR3JlZyBLcm9haC1IYXJ0bWFuIDxncmVna2hA
-bGludXhmb3VuZGF0aW9uLm9yZz47IE1hdXJvIENhcnZhbGhvIENoZWhhYiA8bWNoZWhhYkBrZXJu
-ZWwub3JnPjsgTHVjaywgVG9ueSA8dG9ueS5sdWNrQGludGVsLmNvbT47IEphbWVzIE1vcnNlIDxq
-YW1lcy5tb3JzZUBhcm0uY29tPjsgUm9iZXJ0IFJpY2h0ZXIgPHJyaWNAa2VybmVsLm9yZz47IExp
-bnVzIFdhbGxlaWogPGxpbnVzLndhbGxlaWpAbGluYXJvLm9yZz47IEJhcnRvc3ogR29sYXN6ZXdz
-a2kgPGJyZ2xAYmdkZXYucGw+OyBtaWtlLm1hcmNpbmlzenluQGNvcm5lbGlzbmV0d29ya3MuY29t
-OyBkZW5uaXMuZGFsZXNzYW5kcm9AY29ybmVsaXNuZXR3b3Jrcy5jb207IEphc29uIEd1bnRob3Jw
-ZSA8amdnQHppZXBlLmNhPjsgUGFsaSBSb2jDoXIgPHBhbGlAa2VybmVsLm9yZz47IERtaXRyeSBU
-b3Jva2hvdiA8ZG1pdHJ5LnRvcm9raG92QGdtYWlsLmNvbT47IEthcnN0ZW4gS2VpbCA8aXNkbkBs
-aW51eC1waW5naS5kZT47IEJlbmphbWluIEhlcnJlbnNjaG1pZHQgPGJlbmhAa2VybmVsLmNyYXNo
-aW5nLm9yZz47IEZyZWRlcmljIEJhcnJhdCA8ZmJhcnJhdEBsaW51eC5pYm0uY29tPjsgQW5kcmV3
-IERvbm5lbGxhbiA8YWpkQGxpbnV4LmlibS5jb20+OyBEYXZpZCBTLiBNaWxsZXIgPGRhdmVtQGRh
-dmVtbG9mdC5uZXQ+OyBKYWt1YiBLaWNpbnNraSA8a3ViYUBrZXJuZWwub3JnPjsgUGFvbG8gQWJl
-bmkgPHBhYmVuaUByZWRoYXQuY29tPjsgTmljb2xhcyBQaXRyZSA8bmljb0BmbHV4bmljLm5ldD47
-IExvaWMgUG91bGFpbiA8bG9pYy5wb3VsYWluQGxpbmFyby5vcmc+OyBLYWxsZSBWYWxvIDxrdmFs
-b0BrZXJuZWwub3JnPjsgUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+OyBCam9ybiBI
-ZWxnYWFzIDxiaGVsZ2Fhc0Bnb29nbGUuY29tPjsgbGludXgtYXJtIE1haWxpbmcgTGlzdCA8bGlu
-dXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnPjsgTGludXggS2VybmVsIE1haWxpbmcg
-TGlzdCA8bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZz47IExpbnV4IFNhbXN1bmcgU09DIDxs
-aW51eC1zYW1zdW5nLXNvY0B2Z2VyLmtlcm5lbC5vcmc+OyBsaW51eC1pYTY0QHZnZXIua2VybmVs
-Lm9yZzsgQUNQSSBEZXZlbCBNYWxpbmcgTGlzdCA8bGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc+
-OyBvcGVuIGxpc3Q6QUNQSSBDT01QT05FTlQgQVJDSElURUNUVVJFIChBQ1BJQ0EpIDxkZXZlbEBh
-Y3BpY2Eub3JnPjsgbGludXgtYXRtLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0OyBuZXRk
-ZXYgPG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+OyBsaW51eC1lZGFjQHZnZXIua2VybmVsLm9yZzsg
-b3BlbiBsaXN0OkdQSU8gU1VCU1lTVEVNIDxsaW51eC1ncGlvQHZnZXIua2VybmVsLm9yZz47IG9w
-ZW4gbGlzdDpIRkkxIERSSVZFUiA8bGludXgtcmRtYUB2Z2VyLmtlcm5lbC5vcmc+OyBsaW51eC1p
-bnB1dCA8bGludXgtaW5wdXRAdmdlci5rZXJuZWwub3JnPjsgb3BlbiBsaXN0OkxJTlVYIEZPUiBQ
-T1dFUlBDIFBBIFNFTUkgUFdSRklDSUVOVCA8bGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmc+
-OyBsaW51eC1tZWRpYUB2Z2VyLmtlcm5lbC5vcmc7IHdjbjM2eHhAbGlzdHMuaW5mcmFkZWFkLm9y
-ZzsgbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnOyBsaW51eC1wY2lAdmdlci5rZXJuZWwu
-b3JnDQpTdWJqZWN0OiBSZTogW1BBVENIIDA1LzIyXSBhY3BpY2E6IFJlcGxhY2UgY29tbWVudHMg
-d2l0aCBDOTkgaW5pdGlhbGl6ZXJzDQoNCk9uIFNhdCwgTWFyIDI2LCAyMDIyIGF0IDc6MzkgUE0g
-QmVuamFtaW4gU3TDvHJ6IDxiZW5uaUBzdHVlcnoueHl6PiB3cm90ZToNCj4NCj4gVGhpcyByZXBs
-YWNlcyBjb21tZW50cyB3aXRoIEM5OSdzIGRlc2lnbmF0ZWQgaW5pdGlhbGl6ZXJzIGJlY2F1c2Ug
-dGhlIA0KPiBrZXJuZWwgc3VwcG9ydHMgdGhlbSBub3cuDQoNCkRvZXMgaXQgZm9sbG93IHRoZSBj
-b252ZW50aW9ucyB3aGljaCBhcmUgYWNjZXB0ZWQgaW4gdGhlIEFDUEkgQ0EgcHJvamVjdD8NCg0K
-Tm8sIGl0IGRvZXNuJ3QuIEFDUElDQSBtdXN0IHdvcmsgd2l0aCBtYW55IGNvbXBpbGVycywgc29t
-ZSBvZiB3aGljaCBhcmUgcmF0aGVyIG9sZC4gU28sIHdlIGRvbid0IHN1cHBvcnQgdGhlc2UgaW5p
-dGlhbGl6ZXJzLg0KQm9iDQoNCi0tDQpXaXRoIEJlc3QgUmVnYXJkcywNCkFuZHkgU2hldmNoZW5r
-bw0K
+From: Sean Wang <sean.wang@mediatek.com>
+
+add hostspot mode support to mt7921 that can work for mt7921[e,s,u]
+with the common code.
+
+Tested-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7921/init.c  | 11 ++-
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   |  9 +++
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 46 +++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 79 ++++++++++++++++++-
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  4 +
+ 5 files changed, 147 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 91fc41922d95..f9e1255bd9c7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -11,6 +11,10 @@ static const struct ieee80211_iface_limit if_limits[] = {
+ 	{
+ 		.max = MT7921_MAX_INTERFACES,
+ 		.types = BIT(NL80211_IFTYPE_STATION)
++	},
++	{
++		.max = 1,
++		.types = BIT(NL80211_IFTYPE_AP)
+ 	}
+ };
+ 
+@@ -64,7 +68,8 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
+ 	wiphy->iface_combinations = if_comb;
+ 	wiphy->flags &= ~(WIPHY_FLAG_IBSS_RSN | WIPHY_FLAG_4ADDR_AP |
+ 			  WIPHY_FLAG_4ADDR_STATION);
+-	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION);
++	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
++				 BIT(NL80211_IFTYPE_AP);
+ 	wiphy->n_iface_combinations = ARRAY_SIZE(if_comb);
+ 	wiphy->max_scan_ie_len = MT76_CONNAC_SCAN_IE_LEN;
+ 	wiphy->max_scan_ssids = 4;
+@@ -80,6 +85,10 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
+ 	wiphy->features |= NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR |
+ 			   NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_SET_SCAN_DWELL);
++	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BEACON_RATE_LEGACY);
++	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BEACON_RATE_HT);
++	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BEACON_RATE_VHT);
++	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BEACON_RATE_HE);
+ 
+ 	ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
+ 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index f34070ca7bbe..368e54c53ddd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -1361,12 +1361,21 @@ mt7921_vif_connect_iter(void *priv, u8 *mac,
+ {
+ 	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
+ 	struct mt7921_dev *dev = mvif->phy->dev;
++	struct ieee80211_hw *hw = mt76_hw(dev);
+ 
+ 	if (vif->type == NL80211_IFTYPE_STATION)
+ 		ieee80211_disconnect(vif, true);
+ 
+ 	mt76_connac_mcu_uni_add_dev(&dev->mphy, vif, &mvif->sta.wcid, true);
+ 	mt7921_mcu_set_tx(dev, vif);
++
++	if (vif->type == NL80211_IFTYPE_AP) {
++		mt76_connac_mcu_uni_add_bss(dev->phy.mt76, vif, &mvif->sta.wcid,
++					    true);
++		mt7921_mcu_sta_update(dev, NULL, vif, true,
++				      MT76_STA_INFO_STATE_NONE);
++		mt7921_mcu_uni_add_beacon_offload(dev, hw, vif, true);
++	}
+ }
+ 
+ /* system error recovery */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index ae86705faec2..52b7e3684189 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -53,6 +53,7 @@ mt7921_init_he_caps(struct mt7921_phy *phy, enum nl80211_band band,
+ 
+ 		switch (i) {
+ 		case NL80211_IFTYPE_STATION:
++		case NL80211_IFTYPE_AP:
+ 			break;
+ 		default:
+ 			continue;
+@@ -86,6 +87,23 @@ mt7921_init_he_caps(struct mt7921_phy *phy, enum nl80211_band band,
+ 			IEEE80211_HE_PHY_CAP2_UL_MU_PARTIAL_MU_MIMO;
+ 
+ 		switch (i) {
++		case NL80211_IFTYPE_AP:
++			he_cap_elem->mac_cap_info[2] |=
++				IEEE80211_HE_MAC_CAP2_BSR;
++			he_cap_elem->mac_cap_info[4] |=
++				IEEE80211_HE_MAC_CAP4_BQR;
++			he_cap_elem->mac_cap_info[5] |=
++				IEEE80211_HE_MAC_CAP5_OM_CTRL_UL_MU_DATA_DIS_RX;
++			he_cap_elem->phy_cap_info[3] |=
++				IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_TX_QPSK |
++				IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_RX_QPSK;
++			he_cap_elem->phy_cap_info[6] |=
++				IEEE80211_HE_PHY_CAP6_PARTIAL_BW_EXT_RANGE |
++				IEEE80211_HE_PHY_CAP6_PPE_THRESHOLD_PRESENT;
++			he_cap_elem->phy_cap_info[9] |=
++				IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU |
++				IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU;
++			break;
+ 		case NL80211_IFTYPE_STATION:
+ 			he_cap_elem->mac_cap_info[1] |=
+ 				IEEE80211_HE_MAC_CAP1_TF_MAC_PAD_DUR_16US;
+@@ -634,6 +652,21 @@ static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
+ 		}
+ 	}
+ 
++	if (changed & BSS_CHANGED_BEACON_ENABLED && info->enable_beacon) {
++		struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
++
++		mt76_connac_mcu_uni_add_bss(phy->mt76, vif, &mvif->sta.wcid,
++					    true);
++		mt7921_mcu_sta_update(dev, NULL, vif, true,
++				      MT76_STA_INFO_STATE_NONE);
++	}
++
++	if (changed & (BSS_CHANGED_BEACON |
++		       BSS_CHANGED_BEACON_ENABLED)) {
++		mt7921_mcu_uni_add_beacon_offload(dev, hw, vif,
++						  info->enable_beacon);
++	}
++
+ 	/* ensure that enable txcmd_mode after bss_info */
+ 	if (changed & (BSS_CHANGED_QOS | BSS_CHANGED_BEACON_ENABLED))
+ 		mt7921_mcu_set_tx(dev, vif);
+@@ -1394,6 +1427,18 @@ static int mt7921_set_sar_specs(struct ieee80211_hw *hw,
+ 	return err;
+ }
+ 
++static void
++mt7921_channel_switch_beacon(struct ieee80211_hw *hw,
++			     struct ieee80211_vif *vif,
++			     struct cfg80211_chan_def *chandef)
++{
++	struct mt7921_dev *dev = mt7921_hw_dev(hw);
++
++	mt7921_mutex_acquire(dev);
++	mt7921_mcu_uni_add_beacon_offload(dev, hw, vif, true);
++	mt7921_mutex_release(dev);
++}
++
+ const struct ieee80211_ops mt7921_ops = {
+ 	.tx = mt7921_tx,
+ 	.start = mt7921_start,
+@@ -1412,6 +1457,7 @@ const struct ieee80211_ops mt7921_ops = {
+ 	.set_rts_threshold = mt7921_set_rts_threshold,
+ 	.wake_tx_queue = mt76_wake_tx_queue,
+ 	.release_buffered_frames = mt76_release_buffered_frames,
++	.channel_switch_beacon = mt7921_channel_switch_beacon,
+ 	.get_txpower = mt76_get_txpower,
+ 	.get_stats = mt7921_get_stats,
+ 	.get_et_sset_count = mt7921_get_et_sset_count,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index da2be050ed7c..1ecbbe4fa498 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -248,7 +248,8 @@ mt7921_mcu_connection_loss_iter(void *priv, u8 *mac,
+ 	if (mvif->idx != event->bss_idx)
+ 		return;
+ 
+-	if (!(vif->driver_flags & IEEE80211_VIF_BEACON_FILTER))
++	if (!(vif->driver_flags & IEEE80211_VIF_BEACON_FILTER) ||
++	    vif->type != NL80211_IFTYPE_STATION)
+ 		return;
+ 
+ 	ieee80211_connection_loss(vif);
+@@ -1166,3 +1167,79 @@ int mt7921_mcu_set_sniffer(struct mt7921_dev *dev, struct ieee80211_vif *vif,
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(SNIFFER), &req, sizeof(req),
+ 				 true);
+ }
++
++int
++mt7921_mcu_uni_add_beacon_offload(struct mt7921_dev *dev,
++				  struct ieee80211_hw *hw,
++				  struct ieee80211_vif *vif,
++				  bool enable)
++{
++	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
++	struct mt76_wcid *wcid = &dev->mt76.global_wcid;
++	struct ieee80211_mutable_offsets offs;
++	struct {
++		struct req_hdr {
++			u8 bss_idx;
++			u8 pad[3];
++		} __packed hdr;
++		struct bcn_content_tlv {
++			__le16 tag;
++			__le16 len;
++			__le16 tim_ie_pos;
++			__le16 csa_ie_pos;
++			__le16 bcc_ie_pos;
++			/* 0: disable beacon offload
++			 * 1: enable beacon offload
++			 * 2: update probe respond offload
++			 */
++			u8 enable;
++			/* 0: legacy format (TXD + payload)
++			 * 1: only cap field IE
++			 */
++			u8 type;
++			__le16 pkt_len;
++			u8 pkt[512];
++		} __packed beacon_tlv;
++	} req = {
++		.hdr = {
++			.bss_idx = mvif->mt76.idx,
++		},
++		.beacon_tlv = {
++			.tag = cpu_to_le16(UNI_BSS_INFO_BCN_CONTENT),
++			.len = cpu_to_le16(sizeof(struct bcn_content_tlv)),
++			.enable = enable,
++		},
++	};
++	struct sk_buff *skb;
++
++	if (!enable)
++		goto out;
++
++	skb = ieee80211_beacon_get_template(mt76_hw(dev), vif, &offs);
++	if (!skb)
++		return -EINVAL;
++
++	if (skb->len > 512 - MT_TXD_SIZE) {
++		dev_err(dev->mt76.dev, "beacon size limit exceed\n");
++		dev_kfree_skb(skb);
++		return -EINVAL;
++	}
++
++	mt7921_mac_write_txwi(dev, (__le32 *)(req.beacon_tlv.pkt), skb,
++			      wcid, NULL, 0, true);
++	memcpy(req.beacon_tlv.pkt + MT_TXD_SIZE, skb->data, skb->len);
++	req.beacon_tlv.pkt_len = cpu_to_le16(MT_TXD_SIZE + skb->len);
++	req.beacon_tlv.tim_ie_pos = cpu_to_le16(MT_TXD_SIZE + offs.tim_offset);
++
++	if (offs.cntdwn_counter_offs[0]) {
++		u16 csa_offs;
++
++		csa_offs = MT_TXD_SIZE + offs.cntdwn_counter_offs[0] - 4;
++		req.beacon_tlv.csa_ie_pos = cpu_to_le16(csa_offs);
++	}
++	dev_kfree_skb(skb);
++
++out:
++	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(BSS_INFO_UPDATE),
++				 &req, sizeof(req), true);
++}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index eae223a31000..adbdb2e22934 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -469,4 +469,8 @@ int mt7921u_wfsys_reset(struct mt7921_dev *dev);
+ int mt7921u_dma_init(struct mt7921_dev *dev, bool resume);
+ int mt7921u_init_reset(struct mt7921_dev *dev);
+ int mt7921u_mac_reset(struct mt7921_dev *dev);
++int mt7921_mcu_uni_add_beacon_offload(struct mt7921_dev *dev,
++				      struct ieee80211_hw *hw,
++				      struct ieee80211_vif *vif,
++				      bool enable);
+ #endif
+-- 
+2.25.1
+
