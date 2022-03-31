@@ -2,141 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1707C4ECE0C
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Mar 2022 22:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9E3E4ED0CF
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Mar 2022 02:21:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348360AbiC3UfX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Mar 2022 16:35:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51100 "EHLO
+        id S1352076AbiCaAXH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Mar 2022 20:23:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350991AbiC3UfW (ORCPT
+        with ESMTP id S229567AbiCaAXF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Mar 2022 16:35:22 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 828F12AF9
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 13:33:31 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id yy13so43884938ejb.2
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 13:33:31 -0700 (PDT)
+        Wed, 30 Mar 2022 20:23:05 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C6AD1FCD1
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 17:21:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=eT9vDzjHW/FfFjL/ybLsrFbYukyfSiHXua+06jvkaok=;
-        b=SdK00kOdGLMNpNRGXAKju/gX1QDNAxsedO8Be9oSjbeBiwJWwYWruJXp8dtzLVugP3
-         vuYNQaCh0a4Rq/W1vHeldoAF3IxsvczavxPaduQY4P8bN3ABDk6BCcpde6cMMRO5CW5o
-         M6uB0iP9zpzxHLJSgaOXRS/lxEZyFbDsNKhvtp20e0wh2fBGfRbzQCk94jQjACvz7svJ
-         T6i3RTcWzrCg7ur65S7teGHwdVOM4AYnp0E91DhTZVIyoTI5N8WNy2DyOOuZCq8xrPdy
-         RcyWIZM54Wd9HRIjCmfnsCFk7OXzRxHhwv6JzXooB9ZnxkGv/jBnauBsQouqdFstugTL
-         mURA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=eT9vDzjHW/FfFjL/ybLsrFbYukyfSiHXua+06jvkaok=;
-        b=XIjBdP8BVPLoM0yxHJSoGSRnu309C+Nz4nnCPO9y6p4TXpXsLXEHkr5CFRDAVFuk27
-         zlD0cVhcpl3z6TuHqP8Y+PF7wy4ItdWeExf2S7k1jK6jqob0NG0encG5G61VfvN3tKot
-         ysOaJbJzQ7MbDtl0ztY1nXdaIFpflfysYrtnjdbh105VaBI/+6+MTx4Kn70x56CLMcTZ
-         hJYqj7UxrsEzcHfq+RwBm5HZHhxOT0hB9MY3t7CvaCWiAujnKUTPSEhrrAkbU4QkDnWI
-         I8Utj8lE8TOyt+OSNlmjqsbROSSdqYuSZvSqIUvsrS0R5ARww228gkEbveyzbKVbSQRn
-         Aerg==
-X-Gm-Message-State: AOAM532VKqdqy6K7//eNnar9o/QAZ11+c6g/d43aWw/4WaZYMOp5npBx
-        3iHR6xNvGR/2+bs3oh3AAfbf2VKi2+brgB9Y/38=
-X-Google-Smtp-Source: ABdhPJxQu+j0gzlsyl6qstIUfJJpxFEVJeyEgyZ7fwX3PXwXznQbMiWdMgLheok+0hjEE2jW6cOZ2+h35MGNtYrdr1k=
-X-Received: by 2002:a17:907:c0c:b0:6d1:8c46:6415 with SMTP id
- ga12-20020a1709070c0c00b006d18c466415mr1609240ejc.326.1648672409944; Wed, 30
- Mar 2022 13:33:29 -0700 (PDT)
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1648686079; x=1680222079;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=5FRvCD7h6pC+ySGbwaZD+OK9XuQCej2qlEclI+8oj4o=;
+  b=O/2oBi3NZzmu1gM56zqu73GEIQOZ3J3tu5TlfkWc0jhCxLC71PuWkkLb
+   gAplCWM4CyW6NfxFe8pdy6DFNmOyz1BiOGTqQxVgiQ0Eydf1n//Mi9Hxl
+   //0cSj5y5m8hryjHzc8pq+C98P4BaWImzVbBwBLHqNt72v/grVGwaDa0X
+   w=;
+Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 30 Mar 2022 17:21:19 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2022 17:21:19 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 30 Mar 2022 17:21:18 -0700
+Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 30 Mar 2022 17:21:17 -0700
+From:   Baochen Qiang <quic_bqiang@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH] ath11k: Remove unnecessary delay in ath11k_core_suspend
+Date:   Thu, 31 Mar 2022 08:21:05 +0800
+Message-ID: <20220331002105.1162099-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Wed, 30 Mar 2022 21:33:25 +0100
-Message-ID: <CAHpNFcPdVQ3N+SH6uJM5mhDcT-D_x1=8HJzTuEOjNrLpicWHHw@mail.gmail.com>
-Subject: #CryptoFASTintFL Polynomial ROOFLINING : In terms of Entropy pool Int
- & Timer collections Polynomial is a Cryptologic_Functiontion & should be A :
- Rooflined B : Streamlined & C : In Crypto_hash_function.h https://lkml.org/lkml/2022/3/30/1313
-To:     submissions@vialicensing.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Polynomial ROOFLINING : #CryptoFASTintFL
+The intended delay in ath11k_core_suspend is introduced in commit
+d1b0c33850d2 ("ath11k: implement suspend for QCA6390 PCI devices"),
+now with ath11k_mac_wait_tx_complete added in commit ba9177fcef21
+("ath11k: Add basic WoW functionalities"), that delay is not
+necessary now, so remove it.
 
-In terms of Entropy pool Int & Timer collections Polynomial is a
-Cryptologic_Functiontion & should be A : Rooflined B : Streamlined & C
-: In Crypto_hash_function.h
+This is found in code review.
 
-https://lkml.org/lkml/2022/3/30/1313
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-02431-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
 
-**Reference**
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/core.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-Multi Bit load operations for bitmap,Texture & Other tasks +ON+HighLowOP (c)RS
-May take higher or lower bit depth & precisions: Rupert S 2021
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 7f4462cf5787..509bfffceba1 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -459,11 +459,6 @@ int ath11k_core_suspend(struct ath11k_base *ab)
+ 	if (!ar || ar->state != ATH11K_STATE_OFF)
+ 		return 0;
+ 
+-	/* TODO: there can frames in queues so for now add delay as a hack.
+-	 * Need to implement to handle and remove this delay.
+-	 */
+-	msleep(500);
+-
+ 	ret = ath11k_dp_rx_pktlog_stop(ab, true);
+ 	if (ret) {
+ 		ath11k_warn(ab, "failed to stop dp rx (and timer) pktlog during suspend: %d\n",
 
-MultiBit Serial & Parallel execution conversion inline of N*Bit -+
+base-commit: 748b34786d1c96e758862d8e8577106ccde6515a
+-- 
+2.25.1
 
-2 16 Bit loads is 32Bit but takes 2 cycles...
-
-16 Bit loads with 32 Bit Stores & Math unit:
-
-Operation 1
-
-16Bit , 16Bit , 16Bit , 16Bit Operation
-    \         /    \         /
-           Inline Store
-     32Bit Store 32Bit Store
-           64Bit Store
-       \     /
-32Bit ADD/DIV x 2 or 64Bit ADD/DIV x1
-
-Operation 2
-
-32Bit ADD/DIV x 2 or 64Bit ADD/DIV x1
-          \            /
-          4x 16Bit Store
-
-4 x 16Bit Operation
-
-MultiBit Serial & Parallel execution conversion inline of N*Bit -+
-
-In the case of ADD -+ Signed for example:(c)RS
-Plus & - Lines ADD or Subtract (Signed, Bit Depth Irrelevant)
-
-Multiples of 16Bit works in place of 32Bit or 64Bit
-
-V1: 16Bit Values composing a total 128Bit number
-V2: 16Bit Values composing a total 128Bit number - (Value less than V1)
-V3: Result
-NBit: Bit Depth
-
-4x16Bit operations in the same cycle >
-If Value = 16Bit = Store
-If Value = V3=Bit = Store * NBit
-
-Stored 128Bit RAM or if remainder = less > 4x16Bit -1-1-1 ; 16Bit Value Store
-
-*
-
-*RAND OP Ubuntu
-
-https://pollinate.n-helix.com/
-
-(Rn1 *<>/ Rn2 *<>/ Rn3)
-
--+
-VAR(+-) Var = Rn1 +- Rn8
-
-(Rn5 *<>/ Rn6 *<>/ Rn7)
-
-4 Samples over N * Sample 1 to 4
-
-Input into pool 1 Low half -+
-Input into pool 1 High half -+
-
-*RAND OP Recycle It
-
-*
-
-(c)RS https://bit.ly/DJ_EQ
