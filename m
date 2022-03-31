@@ -2,117 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 585D04ED311
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Mar 2022 06:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D7F64ED328
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Mar 2022 07:07:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229451AbiCaEj7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Mar 2022 00:39:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49798 "EHLO
+        id S229593AbiCaFJK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Mar 2022 01:09:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbiCaEj5 (ORCPT
+        with ESMTP id S229631AbiCaFIk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Mar 2022 00:39:57 -0400
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 403B9C69
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 21:38:10 -0700 (PDT)
+        Thu, 31 Mar 2022 01:08:40 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51B8E4349D
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 22:06:50 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id x31so14311486pfh.9
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Mar 2022 22:06:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1648701490; x=1680237490;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=5Ug/c+onuuFVHOMnWrXE1dZ96puP8xNz8D0CvaUjs/A=;
-  b=OAJV8ALTkJ6IIL8oSRlK5GXcA2ns4G9dqpNAha5LBYKGZgULQ1afWAIz
-   d+VPf3f/kewdENiZBOBEYL8fVZ3euPtuDQTXVt8nyhh+DKEYO2s5mbpEF
-   F5yOWFjWfnhNCtdNiBnULu7Ww3dDH2CKDYEdTdVpZFCIkch5vmDoSV8id
-   E=;
-Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 30 Mar 2022 21:38:10 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2022 21:38:09 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 30 Mar 2022 21:38:09 -0700
-Received: from akolli-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 30 Mar 2022 21:38:07 -0700
-From:   Anilkumar Kolli <quic_akolli@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Anilkumar Kolli <quic_akolli@quicinc.com>
-Subject: [PATCH v5.18] Revert "ath11k: mesh: add support for 256 bitmap in blockack frames in 11ax"
-Date:   Thu, 31 Mar 2022 10:07:57 +0530
-Message-ID: <1648701477-16367-1-git-send-email-quic_akolli@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=AoBZG/yiJ6+iCgMDn0fAA0KBmLbpdCwlKXKAQfWztPc=;
+        b=aW6e5LYEk9vvZLGnTh7AfLPRozdASjaoVU1P21Z0Rza63SVH1jBLSIeqJH2rsB3Jxr
+         gi2ffg8zv9jGd1Tj0yfAYcr5fi2JF+lge7yIof7mw//fRQ5pSuKO/SyidhXuH0upuT/2
+         41oy78q84xP5tHLk3sCxkYs7iIAeVpXZNVA8h7HskBUwhhXfWSHIqNkg9rFyqY9uAJRG
+         B/zdwH7+hIiLiPGSss7qZxiMk0CvyxkLkUq/iw0fXB0i1qiP+t7htPmre840mDgQS/dE
+         0Jz5Mzk295iz39+wOmoeRKipUL5WFufwhNeguoyPRlZVszRLv2TP3aDeD/cQSJGhaJNs
+         xPdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=AoBZG/yiJ6+iCgMDn0fAA0KBmLbpdCwlKXKAQfWztPc=;
+        b=vitArG4Jz6lMDrHqIhW8raV/75TYzQSPErK6LEHD4vMN/DGw0AlBeluP3qxvUe4fTi
+         QDoZFUeM1BT4AnbimK6KCvzdZioiNXTG1nqpccLqGIPKcSEZY+y+52OiMjDWBjpIoXiC
+         4pvf+/HCTPIND8CsXx6Xv1MZdCTSQsLRh/NgqumRAPI4v5fgdv5xsK3/Nio498MI5Bdq
+         19bq4EpFuKd1FbUmW9Jd5+3rcxVKQqWNnlH1TsSThTT/rv9AsYQ7bHcSbGfxQXwDBx/4
+         qkChSLrKjft6lt9eT+CqF/URyOLmewmReJgsO5xJZIucPJ2/1QMiBW7AFg5IAZ33VInl
+         j5yg==
+X-Gm-Message-State: AOAM530y459BhQQXK8QqZytp50S3Qcf1uskGHhhLI7rrS0AV+1Dd+f6h
+        KkGvew/7SKsW9jClQry7BEQwtopVeI9KHg==
+X-Google-Smtp-Source: ABdhPJzkhEPH4/VGyGSACMTh6UnzZjVAbFYUX35MI0A+APiD2c1NFSnJcLCijK7O77iDycwaCdhvcw==
+X-Received: by 2002:a05:6a00:288c:b0:4fa:8c08:aca9 with SMTP id ch12-20020a056a00288c00b004fa8c08aca9mr3576135pfb.62.1648703209727;
+        Wed, 30 Mar 2022 22:06:49 -0700 (PDT)
+Received: from [192.168.43.80] (subs32-116-206-28-30.three.co.id. [116.206.28.30])
+        by smtp.gmail.com with ESMTPSA id u25-20020a62ed19000000b004f140515d56sm25729140pfh.46.2022.03.30.22.06.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Mar 2022 22:06:48 -0700 (PDT)
+Message-ID: <8ad2754c-c5bb-7b07-6b3f-5701d0434eee@gmail.com>
+Date:   Thu, 31 Mar 2022 12:06:45 +0700
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v5.18] ath9k: Properly clear TX status area before
+ reporting to mac80211
+Content-Language: en-US
+To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+References: <20220330164409.16645-1-toke@toke.dk>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+In-Reply-To: <20220330164409.16645-1-toke@toke.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This reverts commit 743b9065fe6348a5f8f5ce04869ce2d701e5e1bc.
+On 30/03/22 23.44, Toke Høiland-Jørgensen wrote:
+> The ath9k driver was not properly clearing the status area in the
+> ieee80211_tx_info struct before reporting TX status to mac80211. Instead,
+> it was manually filling in fields, which meant that fields introduced later
+> were left as-is.
+> 
+> Conveniently, mac80211 actually provides a helper to zero out the status
+> area, so use that to make sure we zero everything.
+> 
+> The last commit touching the driver function writing the status information
+> seems to have actually been fixing an issue that was also caused by the
+> area being uninitialised; but it only added clearing of a single field
+> instead of the whole struct. That is now redundant, though, so revert that
+> commit and use it as a convenient Fixes tag.
+> 
+> Fixes: cc591d77aba1 ("ath9k: Make sure to zero status.tx_time before reporting TX status")
+> Reported-by: Bagas Sanjaya <bagasdotme@gmail.com>
+> Signed-off-by: Toke Høiland-Jørgensen <toke@toke.dk>
 
-The original commit breaks the 256 bitmap in blockack frames in AP
-mode. After reverting the commit the feature works again in both AP and
-mesh modes
+No regressions and UBSAN warning [1] reported on dmesg.
 
-Tested-on: IPQ8074 hw2.0 PCI WLAN.HK.2.6.0.1-00786-QCAHKSWPL_SILICONZ-1
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
-Signed-off-by: Anilkumar Kolli <quic_akolli@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+However, there is something missing. I don't see Cc: stable@vger.kernel.org
+trailer in this patch. I think it should, because I reported that this issue
+first occurred on v5.17, then still appeared on v5.17.1.
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 175a4ae752f3..ca998fb13b62 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3150,6 +3150,20 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 			arvif->do_not_send_tmpl = true;
- 		else
- 			arvif->do_not_send_tmpl = false;
-+
-+		if (vif->bss_conf.he_support) {
-+			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
-+							    WMI_VDEV_PARAM_BA_MODE,
-+							    WMI_BA_MODE_BUFFER_SIZE_256);
-+			if (ret)
-+				ath11k_warn(ar->ab,
-+					    "failed to set BA BUFFER SIZE 256 for vdev: %d\n",
-+					    arvif->vdev_id);
-+			else
-+				ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
-+					   "Set BA BUFFER SIZE 256 for VDEV: %d\n",
-+					   arvif->vdev_id);
-+		}
- 	}
- 
- 	if (changed & (BSS_CHANGED_BEACON_INFO | BSS_CHANGED_BEACON)) {
-@@ -3185,14 +3199,6 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 
- 		if (arvif->is_up && vif->bss_conf.he_support &&
- 		    vif->bss_conf.he_oper.params) {
--			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
--							    WMI_VDEV_PARAM_BA_MODE,
--							    WMI_BA_MODE_BUFFER_SIZE_256);
--			if (ret)
--				ath11k_warn(ar->ab,
--					    "failed to set BA BUFFER SIZE 256 for vdev: %d\n",
--					    arvif->vdev_id);
--
- 			param_id = WMI_VDEV_PARAM_HEOPS_0_31;
- 			param_value = vif->bss_conf.he_oper.params;
- 			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
 -- 
-2.7.4
-
+An old man doll... just what I always wanted! - Clara
