@@ -2,50 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7714D4EF0AC
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 16:38:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82DC64EF0C4
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 16:39:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348018AbiDAOgy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Apr 2022 10:36:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56418 "EHLO
+        id S1347958AbiDAOgg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Apr 2022 10:36:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348167AbiDAOds (ORCPT
+        with ESMTP id S1348399AbiDAOeU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Apr 2022 10:33:48 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2717C292BB4;
-        Fri,  1 Apr 2022 07:31:11 -0700 (PDT)
+        Fri, 1 Apr 2022 10:34:20 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 728A2BC7;
+        Fri,  1 Apr 2022 07:32:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B0682B82507;
-        Fri,  1 Apr 2022 14:31:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB6CC2BBE4;
-        Fri,  1 Apr 2022 14:31:06 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 27E94B8250D;
+        Fri,  1 Apr 2022 14:32:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A165BC340F2;
+        Fri,  1 Apr 2022 14:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648823468;
-        bh=AHSkIi7sAyuh9lQQb1qJyTgGEnakqQVbl7rHrpR4dG0=;
+        s=k20201202; t=1648823547;
+        bh=JUu1VZ2ZtuYvOXHjQxlxjlIy0uC2WzX5rrlXEFGLhO8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EkvxzVjq48adhOhN4sFzSnKwzxrKLDvH1HYy5Q0pgCTfboLUNS5ExGX/h3K3dnZ6T
-         DFo4Q5Lz+xKf33RMfEvjJ8SihP4IDVs3czbYsfGom1WODwPAuCJm1lwRLzxhfEOKtG
-         8BgXrRjINkH4PV0WHcpFsbqxCIqNsX5fIMEVxpLrOchv7tTq9MQN76j6MnrffNcez1
-         RkRz7z7XB8HXcfKJIRwYk/lYm41c8gnoVdxHToah4X3qkMLrhwtZP0C4icnstszPkk
-         e6OHfZDWmqIL5IeVrMpFYD0XAN8GDMGerimpsqZ81RV713nBtqCmYtK7/QwOSMHe+W
-         Xj2651UiCG0iQ==
+        b=H9Huu3i440CBVCRZDrYQJD6BDvrcRwdTOK6AAYWtiTHPiisgj2oiv7uvtDfqKgGDq
+         bxXnHa4Yr/QkqTijbrgfpxWCE1eXutCl94JH8F119ED8dUoj1SW1gE9JBJz2hYeaNz
+         OHejhSzYbQ5xbiq7BvVXSvhPJkEjqSgLICkdnyTFpxFbt1Aq8o9y/nvjTZZozfsWAu
+         BzCeSHQShF7Z/uq9fVnI1BDv3C9kC9e1JyJZJCcSlztrGDYvEP7QWy9NFp/cRWGXnb
+         B+r52/iW2bF++q9Ty2rs5AVghnjTqMTUhnbqQYoUm45O9pYl6U4MQEXOB4Y38zmR0f
+         c+JE+0QjLpRPQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Yang Li <yang.lee@linux.alibaba.com>,
-        Abaci Robot <abaci@linux.alibaba.com>,
+Cc:     Deren Wu <deren.wu@mediatek.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Sean Wang <sean.wang@mediatek.com>,
         Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
         lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
         kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
-        pabeni@redhat.com, matthias.bgg@gmail.com, xing.song@mediatek.com,
+        pabeni@redhat.com, matthias.bgg@gmail.com,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.17 103/149] mt76: mt7615: Fix assigning negative values to unsigned variable
-Date:   Fri,  1 Apr 2022 10:24:50 -0400
-Message-Id: <20220401142536.1948161-103-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.17 138/149] mt76: fix monitor mode crash with sdio driver
+Date:   Fri,  1 Apr 2022 10:25:25 -0400
+Message-Id: <20220401142536.1948161-138-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220401142536.1948161-1-sashal@kernel.org>
 References: <20220401142536.1948161-1-sashal@kernel.org>
@@ -63,39 +64,53 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yang Li <yang.lee@linux.alibaba.com>
+From: Deren Wu <deren.wu@mediatek.com>
 
-[ Upstream commit 9273ffcc9a11942bd586bb42584337ef3962b692 ]
+[ Upstream commit 123bc712b1de0805f9d683687e17b1ec2aba0b68 ]
 
-Smatch reports the following:
-drivers/net/wireless/mediatek/mt76/mt7615/mac.c:1865
-mt7615_mac_adjust_sensitivity() warn: assigning (-110) to unsigned
-variable 'def_th'
-drivers/net/wireless/mediatek/mt76/mt7615/mac.c:1865
-mt7615_mac_adjust_sensitivity() warn: assigning (-98) to unsigned
-variable 'def_th'
+mt7921s driver may receive frames with fragment buffers. If there is a
+CTS packet received in monitor mode, the payload is 10 bytes only and
+need 6 bytes header padding after RXD buffer. However, only RXD in the
+first linear buffer, if we pull buffer size RXD-size+6 bytes with
+skb_pull(), that would trigger "BUG_ON(skb->len < skb->data_len)" in
+__skb_pull().
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+To avoid the nonlinear buffer issue, enlarge the RXD size from 128 to
+256 to make sure all MCU operation in linear buffer.
+
+[   52.007562] kernel BUG at include/linux/skbuff.h:2313!
+[   52.007578] Internal error: Oops - BUG: 0 [#1] PREEMPT SMP
+[   52.007987] pc : skb_pull+0x48/0x4c
+[   52.008015] lr : mt7921_queue_rx_skb+0x494/0x890 [mt7921_common]
+[   52.008361] Call trace:
+[   52.008377]  skb_pull+0x48/0x4c
+[   52.008400]  mt76s_net_worker+0x134/0x1b0 [mt76_sdio 35339a92c6eb7d4bbcc806a1d22f56365565135c]
+[   52.008431]  __mt76_worker_fn+0xe8/0x170 [mt76 ef716597d11a77150bc07e3fdd68eeb0f9b56917]
+[   52.008449]  kthread+0x148/0x3ac
+[   52.008466]  ret_from_fork+0x10/0x30
+
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index ec25e5a95d44..dd4ab6063440 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1835,7 +1835,7 @@ mt7615_mac_adjust_sensitivity(struct mt7615_phy *phy,
- 	struct mt7615_dev *dev = phy->dev;
- 	int false_cca = ofdm ? phy->false_cca_ofdm : phy->false_cca_cck;
- 	bool ext_phy = phy != &dev->phy;
--	u16 def_th = ofdm ? -98 : -110;
-+	s16 def_th = ofdm ? -98 : -110;
- 	bool update = false;
- 	s8 *sensitivity;
- 	int signal;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 404c3d1a70d6..368a5c6455b1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -19,7 +19,7 @@
+ 
+ #define MT_MCU_RING_SIZE	32
+ #define MT_RX_BUF_SIZE		2048
+-#define MT_SKB_HEAD_LEN		128
++#define MT_SKB_HEAD_LEN		256
+ 
+ #define MT_MAX_NON_AQL_PKT	16
+ #define MT_TXQ_FREE_THR		32
 -- 
 2.34.1
 
