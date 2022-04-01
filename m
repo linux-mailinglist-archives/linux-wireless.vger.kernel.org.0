@@ -2,46 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8B994EF70D
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 18:01:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6016C4EF3B4
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 17:27:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352556AbiDAPxN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Apr 2022 11:53:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43950 "EHLO
+        id S1349482AbiDAO4Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Apr 2022 10:56:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349161AbiDAOxS (ORCPT
+        with ESMTP id S1346432AbiDAOx4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Apr 2022 10:53:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 832E12B51A1;
-        Fri,  1 Apr 2022 07:42:40 -0700 (PDT)
+        Fri, 1 Apr 2022 10:53:56 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 752542B5ACE;
+        Fri,  1 Apr 2022 07:42:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1356060A3C;
-        Fri,  1 Apr 2022 14:42:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED74C34112;
-        Fri,  1 Apr 2022 14:42:38 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3111EB82504;
+        Fri,  1 Apr 2022 14:42:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557CCC2BBE4;
+        Fri,  1 Apr 2022 14:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648824159;
-        bh=aN1qM77wmJjzxBeg0zePnA10frPcAbO5h7VfCiWBCMY=;
+        s=k20201202; t=1648824171;
+        bh=ZPRDkc1kCRCDXeYCrIOvP8qDwUgvwNontCric9MwptY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CvCa9ocAaQq/485HtTSnqry4FqQoRk0Ktz4iE+UBLXt+2K8yJu5NgBeKPs7d6LNdQ
-         zi+qH/UBqwL7i5+Atk/GwebpndFF1n1p3CjNSBLawjSIOD0bl8va1+6Fpwgn5INAFx
-         U1zDR6MB8J33BbWU1cOLy9aU59m1iujkqWKRyCLHY5IHzdr2MpuGdgO351i8vpypqv
-         0/JEZe0Zlz9drBVoUnEltLrrEumyGoG3HFp5G6RlWaeEr0hAdNeuSjxmyJVOe653tG
-         J0ePN3KvyizWQg39xENj2j50vjSPM/Exom1koSOinbeJ+L1fMXedtCMk7E7nhY3UrX
-         WWM88y5CE9Lvg==
+        b=rTc6XQ592P3lHp/blbOoZrNokVpDW6at27UKrTAvuWEDas6Ovao1LyTzAM+5XlDEG
+         qllNFKUYJnsG8zynLhsP37gNd/0dQ73E57AJ9tqrDBl4ypH4/+DG7hYD7+52+ruQ0U
+         DCfVeq214KkOXaP/oAuNPDNWEJzrPgq3EUQJgl32aaWTQbGfAs0la0homnfRcG1cK5
+         Ef/XPmCA0p8mLqRpQp9E6uqL5zFpgFuIAuB6f46cbxXFB42NOvSrqe9cMviBzSTorv
+         TNHxsJbD3i1f64AAsQrzpx64/fc1IKeykkGOWiVk8PK2nXi5DpjebKCM8xNHUCaY23
+         kroz4+qaEyuEQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 10/65] ath11k: mhi: use mhi_sync_power_up()
-Date:   Fri,  1 Apr 2022 10:41:11 -0400
-Message-Id: <20220401144206.1953700-10-sashal@kernel.org>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
+        lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
+        pabeni@redhat.com, matthias.bgg@gmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.10 15/65] mt76: dma: initialize skip_unmap in mt76_dma_rx_fill
+Date:   Fri,  1 Apr 2022 10:41:16 -0400
+Message-Id: <20220401144206.1953700-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220401144206.1953700-1-sashal@kernel.org>
 References: <20220401144206.1953700-1-sashal@kernel.org>
@@ -59,85 +62,87 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kalle Valo <quic_kvalo@quicinc.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 3df6d74aedfdca919cca475d15dfdbc8b05c9e5d ]
+[ Upstream commit 577298ec55dfc8b9aece54520f0258c3f93a6573 ]
 
-If amss.bin was missing ath11k would crash during 'rmmod ath11k_pci'. The
-reason for that was that we were using mhi_async_power_up() which does not
-check any errors. But mhi_sync_power_up() on the other hand does check for
-errors so let's use that to fix the crash.
+Even if it is only a false-positive since skip_buf0/skip_buf1 are only
+used in mt76_dma_tx_cleanup_idx routine, initialize skip_unmap in
+mt76_dma_rx_fill in order to fix the following UBSAN report:
 
-I was not able to find a reason why an async version was used.
-ath11k_mhi_start() (which enables state ATH11K_MHI_POWER_ON) is called from
-ath11k_hif_power_up(), which can sleep. So sync version should be safe to use
-here.
+[   13.924906] UBSAN: invalid-load in linux-5.15.0/drivers/net/wireless/mediatek/mt76/dma.c:162:13
+[   13.924909] load of value 225 is not a valid value for type '_Bool'
+[   13.924912] CPU: 9 PID: 672 Comm: systemd-udevd Not tainted 5.15.0-18-generic #18-Ubuntu
+[   13.924914] Hardware name: LENOVO 21A0000CMX/21A0000CMX, BIOS R1MET43W (1.13 ) 11/05/2021
+[   13.924915] Call Trace:
+[   13.924917]  <TASK>
+[   13.924920]  show_stack+0x52/0x58
+[   13.924925]  dump_stack_lvl+0x4a/0x5f
+[   13.924931]  dump_stack+0x10/0x12
+[   13.924932]  ubsan_epilogue+0x9/0x45
+[   13.924934]  __ubsan_handle_load_invalid_value.cold+0x44/0x49
+[   13.924935]  ? __iommu_dma_map+0x84/0xf0
+[   13.924939]  mt76_dma_add_buf.constprop.0.cold+0x23/0x85 [mt76]
+[   13.924949]  mt76_dma_rx_fill.isra.0+0x102/0x1f0 [mt76]
+[   13.924954]  mt76_dma_init+0xc9/0x150 [mt76]
+[   13.924959]  ? mt7921_dma_enable+0x110/0x110 [mt7921e]
+[   13.924966]  mt7921_dma_init+0x1e3/0x260 [mt7921e]
+[   13.924970]  mt7921_register_device+0x29d/0x510 [mt7921e]
+[   13.924975]  mt7921_pci_probe.part.0+0x17f/0x1b0 [mt7921e]
+[   13.924980]  mt7921_pci_probe+0x43/0x60 [mt7921e]
+[   13.924984]  local_pci_probe+0x4b/0x90
+[   13.924987]  pci_device_probe+0x115/0x1f0
+[   13.924989]  really_probe+0x21e/0x420
+[   13.924992]  __driver_probe_device+0x115/0x190
+[   13.924994]  driver_probe_device+0x23/0xc0
+[   13.924996]  __driver_attach+0xbd/0x1d0
+[   13.924998]  ? __device_attach_driver+0x110/0x110
+[   13.924999]  bus_for_each_dev+0x7e/0xc0
+[   13.925001]  driver_attach+0x1e/0x20
+[   13.925003]  bus_add_driver+0x135/0x200
+[   13.925005]  driver_register+0x95/0xf0
+[   13.925008]  ? 0xffffffffc0766000
+[   13.925010]  __pci_register_driver+0x68/0x70
+[   13.925011]  mt7921_pci_driver_init+0x23/0x1000 [mt7921e]
+[   13.925015]  do_one_initcall+0x48/0x1d0
+[   13.925019]  ? kmem_cache_alloc_trace+0x19e/0x2e0
+[   13.925022]  do_init_module+0x62/0x280
+[   13.925025]  load_module+0xac9/0xbb0
+[   13.925027]  __do_sys_finit_module+0xbf/0x120
+[   13.925029]  __x64_sys_finit_module+0x18/0x20
+[   13.925030]  do_syscall_64+0x5c/0xc0
+[   13.925033]  ? do_syscall_64+0x69/0xc0
+[   13.925034]  ? sysvec_reschedule_ipi+0x78/0xe0
+[   13.925036]  ? asm_sysvec_reschedule_ipi+0xa/0x20
+[   13.925039]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+[   13.925040] RIP: 0033:0x7fbf2b90f94d
+[   13.925045] RSP: 002b:00007ffe2ec7e5d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+[   13.925047] RAX: ffffffffffffffda RBX: 000056106b0634e0 RCX: 00007fbf2b90f94d
+[   13.925048] RDX: 0000000000000000 RSI: 00007fbf2baa3441 RDI: 0000000000000013
+[   13.925049] RBP: 0000000000020000 R08: 0000000000000000 R09: 0000000000000002
+[   13.925050] R10: 0000000000000013 R11: 0000000000000246 R12: 00007fbf2baa3441
+[   13.925051] R13: 000056106b062620 R14: 000056106b0610c0 R15: 000056106b0640d0
+[   13.925053]  </TASK>
 
-[  145.569731] general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC KASAN PTI
-[  145.569789] KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-[  145.569843] CPU: 2 PID: 1628 Comm: rmmod Kdump: loaded Tainted: G        W         5.16.0-wt-ath+ #567
-[  145.569898] Hardware name: Intel(R) Client Systems NUC8i7HVK/NUC8i7HVB, BIOS HNKBLi70.86A.0067.2021.0528.1339 05/28/2021
-[  145.569956] RIP: 0010:ath11k_hal_srng_access_begin+0xb5/0x2b0 [ath11k]
-[  145.570028] Code: df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 ec 01 00 00 48 8b ab a8 00 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 ea 48 c1 ea 03 <0f> b6 14 02 48 89 e8 83 e0 07 83 c0 03 45 85 ed 75 48 38 d0 7c 08
-[  145.570089] RSP: 0018:ffffc900025d7ac0 EFLAGS: 00010246
-[  145.570144] RAX: dffffc0000000000 RBX: ffff88814fca2dd8 RCX: 1ffffffff50cb455
-[  145.570196] RDX: 0000000000000000 RSI: ffff88814fca2dd8 RDI: ffff88814fca2e80
-[  145.570252] RBP: 0000000000000000 R08: 0000000000000000 R09: ffffffffa8659497
-[  145.570329] R10: fffffbfff50cb292 R11: 0000000000000001 R12: ffff88814fca0000
-[  145.570410] R13: 0000000000000000 R14: ffff88814fca2798 R15: ffff88814fca2dd8
-[  145.570465] FS:  00007fa399988540(0000) GS:ffff888233e00000(0000) knlGS:0000000000000000
-[  145.570519] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  145.570571] CR2: 00007fa399b51421 CR3: 0000000137898002 CR4: 00000000003706e0
-[  145.570623] Call Trace:
-[  145.570675]  <TASK>
-[  145.570727]  ? ath11k_ce_tx_process_cb+0x34b/0x860 [ath11k]
-[  145.570797]  ath11k_ce_tx_process_cb+0x356/0x860 [ath11k]
-[  145.570864]  ? tasklet_init+0x150/0x150
-[  145.570919]  ? ath11k_ce_alloc_pipes+0x280/0x280 [ath11k]
-[  145.570986]  ? tasklet_clear_sched+0x42/0xe0
-[  145.571042]  ? tasklet_kill+0xe9/0x1b0
-[  145.571095]  ? tasklet_clear_sched+0xe0/0xe0
-[  145.571148]  ? irq_has_action+0x120/0x120
-[  145.571202]  ath11k_ce_cleanup_pipes+0x45a/0x580 [ath11k]
-[  145.571270]  ? ath11k_pci_stop+0x10e/0x170 [ath11k_pci]
-[  145.571345]  ath11k_core_stop+0x8a/0xc0 [ath11k]
-[  145.571434]  ath11k_core_deinit+0x9e/0x150 [ath11k]
-[  145.571499]  ath11k_pci_remove+0xd2/0x260 [ath11k_pci]
-[  145.571553]  pci_device_remove+0x9a/0x1c0
-[  145.571605]  __device_release_driver+0x332/0x660
-[  145.571659]  driver_detach+0x1e7/0x2c0
-[  145.571712]  bus_remove_driver+0xe2/0x2d0
-[  145.571772]  pci_unregister_driver+0x21/0x250
-[  145.571826]  __do_sys_delete_module+0x30a/0x4b0
-[  145.571879]  ? free_module+0xac0/0xac0
-[  145.571933]  ? lockdep_hardirqs_on_prepare.part.0+0x18c/0x370
-[  145.571986]  ? syscall_enter_from_user_mode+0x1d/0x50
-[  145.572039]  ? lockdep_hardirqs_on+0x79/0x100
-[  145.572097]  do_syscall_64+0x3b/0x90
-[  145.572153]  entry_SYSCALL_64_after_hwframe+0x44/0xae
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03003-QCAHSPSWPL_V1_V2_SILICONZ_LITE-2
-
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20220127090117.2024-2-kvalo@kernel.org
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mhi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/dma.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
-index aded9a719d51..84db9e55c3e7 100644
---- a/drivers/net/wireless/ath/ath11k/mhi.c
-+++ b/drivers/net/wireless/ath/ath11k/mhi.c
-@@ -402,7 +402,7 @@ static int ath11k_mhi_set_state(struct ath11k_pci *ab_pci,
- 		ret = 0;
- 		break;
- 	case ATH11K_MHI_POWER_ON:
--		ret = mhi_async_power_up(ab_pci->mhi_ctrl);
-+		ret = mhi_sync_power_up(ab_pci->mhi_ctrl);
- 		break;
- 	case ATH11K_MHI_POWER_OFF:
- 		mhi_power_down(ab_pci->mhi_ctrl, true);
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 0fdfead45c77..f01b455783b2 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -455,6 +455,7 @@ mt76_dma_rx_fill(struct mt76_dev *dev, struct mt76_queue *q)
+ 
+ 		qbuf.addr = addr + offset;
+ 		qbuf.len = len - offset;
++		qbuf.skip_unmap = false;
+ 		mt76_dma_add_buf(dev, q, &qbuf, 1, 0, buf, NULL);
+ 		frames++;
+ 	}
 -- 
 2.34.1
 
