@@ -2,48 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8799C4EF711
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 18:01:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C5714EF715
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 18:01:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355612AbiDAPxe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Apr 2022 11:53:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48760 "EHLO
+        id S241578AbiDAPxg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Apr 2022 11:53:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349367AbiDAOzT (ORCPT
+        with ESMTP id S1345602AbiDAOze (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Apr 2022 10:55:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71EA0218D;
-        Fri,  1 Apr 2022 07:43:29 -0700 (PDT)
+        Fri, 1 Apr 2022 10:55:34 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 190B060CC9;
+        Fri,  1 Apr 2022 07:43:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1082D60A53;
-        Fri,  1 Apr 2022 14:43:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB5FC34111;
-        Fri,  1 Apr 2022 14:43:27 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CA1AEB823EB;
+        Fri,  1 Apr 2022 14:43:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1351C340EE;
+        Fri,  1 Apr 2022 14:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648824208;
-        bh=YN8rVKoHJkwn//O4wWKc+RyuqsBXXq+JWURZufff5jU=;
+        s=k20201202; t=1648824226;
+        bh=LSzVRn0NDfhPSMCSW4F1VVYlmUgrs7tEe750gpeqMOs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dIpYNBflJ+e+bQoLN/uCLUCbIJwgqWRmrlg2iSkIVKw/x9jSgVOeTjzpHsWbFR8U/
-         xPujiQjUANMt4CywhikSG6p1j3VbYCAOfLtyw6VY+/zTd2mn0yxzLeEANDAA19kIDr
-         XYAmQIlCeDoLZyqdZ6qAP+DSSLYYvo5L4CKujiyruhwgVhFX40x5HkOBHuTM05nboW
-         zT+HVMfk7h15wwmg+ZPclESEDt00HJ4B51PaAENxaqPUYKstod9oKB7xRZeNDvv8i9
-         ++fsPCoCezKSj6L8mpOvsLsuCWYD1U2KNoBrl3hfiOqpyIvvOZFYsBBEuIKd+vJOJk
-         vT4/G5Z9CCxgg==
+        b=ddy5brxVmk4E0iIcdxzLkArG1ZV86eSiO+DiNgmfspO6qP2o2jfAczO7LUEKED+QZ
+         UQadmcfgaW39i5s+uI05duO/bMvn+4bvzTuMYSWAMBeR/LwX9jncx/ahIIyI697LTr
+         cNTUmOIVFG8kwzSnhDNpkCkffEpLrcWEuMaV+MdryXi6sEUxx2nrKv0HnFCRMpbl90
+         xkVu+3prTsv7xSchz7Ar+GHeBZ26mBxUqRDONzo2ONU84m7G+MBBOq3iGoshbYLpio
+         Jiy90UIBxAb/6D55Gw0GvTMBMbBU+4C9NPwm8o9DsLTA0oZE/eilCVBsM41ElQ/Tkl
+         xZz+o2pXhuPHg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ilan Peer <ilan.peer@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        johannes.berg@intel.com, avraham.stern@intel.com,
-        ayala.beker@intel.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 28/65] iwlwifi: mvm: Correctly set fragmented EBS
-Date:   Fri,  1 Apr 2022 10:41:29 -0400
-Message-Id: <20220401144206.1953700-28-sashal@kernel.org>
+Cc:     Yang Li <yang.lee@linux.alibaba.com>,
+        Abaci Robot <abaci@linux.alibaba.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
+        lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
+        pabeni@redhat.com, matthias.bgg@gmail.com, xing.song@mediatek.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.10 38/65] mt76: mt7615: Fix assigning negative values to unsigned variable
+Date:   Fri,  1 Apr 2022 10:41:39 -0400
+Message-Id: <20220401144206.1953700-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220401144206.1953700-1-sashal@kernel.org>
 References: <20220401144206.1953700-1-sashal@kernel.org>
@@ -61,40 +63,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Yang Li <yang.lee@linux.alibaba.com>
 
-[ Upstream commit d8d4dd26b9e0469baf5017f0544d852fd4e3fb6d ]
+[ Upstream commit 9273ffcc9a11942bd586bb42584337ef3962b692 ]
 
-Currently, fragmented EBS was set for a channel only if the 'hb_type'
-was set to fragmented or balanced scan. However, 'hb_type' is set only
-in case of CDB, and thus fragmented EBS is never set for a channel for
-non-CDB devices. Fix it.
+Smatch reports the following:
+drivers/net/wireless/mediatek/mt76/mt7615/mac.c:1865
+mt7615_mac_adjust_sensitivity() warn: assigning (-110) to unsigned
+variable 'def_th'
+drivers/net/wireless/mediatek/mt76/mt7615/mac.c:1865
+mt7615_mac_adjust_sensitivity() warn: assigning (-98) to unsigned
+variable 'def_th'
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20220204122220.a6165ac9b9d5.I654eafa62fd647030ae6d4f07f32c96c3171decb@changeid
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 46255d2c555b..17b992526694 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -1706,7 +1706,10 @@ static u8 iwl_mvm_scan_umac_chan_flags_v2(struct iwl_mvm *mvm,
- 			IWL_SCAN_CHANNEL_FLAG_CACHE_ADD;
- 
- 	/* set fragmented ebs for fragmented scan on HB channels */
--	if (iwl_mvm_is_scan_fragmented(params->hb_type))
-+	if ((!iwl_mvm_is_cdb_supported(mvm) &&
-+	     iwl_mvm_is_scan_fragmented(params->type)) ||
-+	    (iwl_mvm_is_cdb_supported(mvm) &&
-+	     iwl_mvm_is_scan_fragmented(params->hb_type)))
- 		flags |= IWL_SCAN_CHANNEL_FLAG_EBS_FRAG;
- 
- 	return flags;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 424be103093c..1465a92ea3fc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1626,7 +1626,7 @@ mt7615_mac_adjust_sensitivity(struct mt7615_phy *phy,
+ 	struct mt7615_dev *dev = phy->dev;
+ 	int false_cca = ofdm ? phy->false_cca_ofdm : phy->false_cca_cck;
+ 	bool ext_phy = phy != &dev->phy;
+-	u16 def_th = ofdm ? -98 : -110;
++	s16 def_th = ofdm ? -98 : -110;
+ 	bool update = false;
+ 	s8 *sensitivity;
+ 	int signal;
 -- 
 2.34.1
 
