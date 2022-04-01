@@ -2,47 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D31C4EF405
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 17:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 207804EF482
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 17:31:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346351AbiDAO4J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Apr 2022 10:56:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57372 "EHLO
+        id S1347924AbiDAOz3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Apr 2022 10:55:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348145AbiDAOmb (ORCPT
+        with ESMTP id S1349443AbiDAOp5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Apr 2022 10:42:31 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84E0D1DEC0D;
-        Fri,  1 Apr 2022 07:34:23 -0700 (PDT)
+        Fri, 1 Apr 2022 10:45:57 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B719729B7F1;
+        Fri,  1 Apr 2022 07:36:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 45B2AB82526;
-        Fri,  1 Apr 2022 14:34:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04B0C36AEC;
-        Fri,  1 Apr 2022 14:34:17 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 28F88B82518;
+        Fri,  1 Apr 2022 14:35:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673F9C2BBE4;
+        Fri,  1 Apr 2022 14:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648823659;
-        bh=46xtQP3sEG4bd/+5uaK42VTkQHBykCftchmAdN2E8EQ=;
+        s=k20201202; t=1648823726;
+        bh=4e8UqcVtt2bDl/TcYTWbp0P7wBjX17psqcDRy4Jt0OE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qBHn7Z+jaoZWKKeM9XHv+1N2PC4YkyPAPGD/GLkDcO9NdMebQ13tAQMTCnVPSLLpO
-         HNPkBpRxudFUb4/Bge4JNksYyOFjy/9AZKaW0JtI3m3aCiGe35ZZRbnffwB3VHG7C3
-         qOQYwd/n8T9lBk/6MVZoAMSZpQsE1c3qa/W3iQo/hdHOcM6FdXY/w6xKjh8DDN5DOH
-         FqbTfP+5OYXpLqqG1EM17H2abHCqrdBOo/KG9DlK60AVzfeaGdQz0tsIRpVRgHJZh2
-         23Uo1pw6KSi/sQcPmzx/2APlzC2MIXqNzWoE3zlp5bFjFFSgUWzIDYFgVNmHnvgWEH
-         CJ0E+JgAw/x0A==
+        b=PVXh5rLA34WHCJFd72sEetXfE+zOwa2ROZa7dRvbXcsiqXLvyU2mxAwkm4mBrAWTQ
+         PsWIWWfpcsB46NBgjezTDv5bs+DL0LQfMXCeQvXpgvdS9GW3/TU8Ho8OSG9X7iuXlU
+         PG2VnNrKFBIWdDjqFeyS5Juc26RIfxXRd0sP0FgCk1WaNZdj0gHFQMps5dwV6ucgxR
+         CbLjYnIN3GLhzLktd3NA/4xvpNnVENzexkMoA54ihQ3FllJ7wNi9pAk3Jv5CmmZRiS
+         ggyEPwhe82qEURl5uDX7UnryQbsw0v3S+MHqFg40oB8G3nOG6EUUg1mkJce9syf8Qv
+         jYw5w8qpIX76A==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Avraham Stern <avraham.stern@intel.com>,
+Cc:     Ilan Peer <ilan.peer@intel.com>,
         Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
+        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
         davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.16 031/109] cfg80211: don't add non transmitted BSS to 6GHz scanned channels
-Date:   Fri,  1 Apr 2022 10:31:38 -0400
-Message-Id: <20220401143256.1950537-31-sashal@kernel.org>
+        johannes.berg@intel.com, ayala.beker@intel.com,
+        avraham.stern@intel.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.16 053/109] iwlwifi: mvm: Correctly set fragmented EBS
+Date:   Fri,  1 Apr 2022 10:32:00 -0400
+Message-Id: <20220401143256.1950537-53-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220401143256.1950537-1-sashal@kernel.org>
 References: <20220401143256.1950537-1-sashal@kernel.org>
@@ -60,52 +61,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 5666ee154f4696c011dfa8544aaf5591b6b87515 ]
+[ Upstream commit d8d4dd26b9e0469baf5017f0544d852fd4e3fb6d ]
 
-When adding 6GHz channels to scan request based on reported
-co-located APs, don't add channels that have only APs with
-"non-transmitted" BSSes if they only match the wildcard SSID since
-they will be found by probing the "transmitted" BSS.
+Currently, fragmented EBS was set for a channel only if the 'hb_type'
+was set to fragmented or balanced scan. However, 'hb_type' is set only
+in case of CDB, and thus fragmented EBS is never set for a channel for
+non-CDB devices. Fix it.
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20220202104617.f6ddf099f934.I231e55885d3644f292d00dfe0f42653269f2559e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://lore.kernel.org/r/iwlwifi.20220204122220.a6165ac9b9d5.I654eafa62fd647030ae6d4f07f32c96c3171decb@changeid
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 22e92be61938..ea0b768def5e 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -702,8 +702,12 @@ static bool cfg80211_find_ssid_match(struct cfg80211_colocated_ap *ap,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 960b21719b80..e3eefc55beaf 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -1890,7 +1890,10 @@ static u8 iwl_mvm_scan_umac_chan_flags_v2(struct iwl_mvm *mvm,
+ 			IWL_SCAN_CHANNEL_FLAG_CACHE_ADD;
  
- 	for (i = 0; i < request->n_ssids; i++) {
- 		/* wildcard ssid in the scan request */
--		if (!request->ssids[i].ssid_len)
-+		if (!request->ssids[i].ssid_len) {
-+			if (ap->multi_bss && !ap->transmitted_bssid)
-+				continue;
-+
- 			return true;
-+		}
+ 	/* set fragmented ebs for fragmented scan on HB channels */
+-	if (iwl_mvm_is_scan_fragmented(params->hb_type))
++	if ((!iwl_mvm_is_cdb_supported(mvm) &&
++	     iwl_mvm_is_scan_fragmented(params->type)) ||
++	    (iwl_mvm_is_cdb_supported(mvm) &&
++	     iwl_mvm_is_scan_fragmented(params->hb_type)))
+ 		flags |= IWL_SCAN_CHANNEL_FLAG_EBS_FRAG;
  
- 		if (ap->ssid_len &&
- 		    ap->ssid_len == request->ssids[i].ssid_len) {
-@@ -829,6 +833,9 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
- 		    !cfg80211_find_ssid_match(ap, request))
- 			continue;
- 
-+		if (!request->n_ssids && ap->multi_bss && !ap->transmitted_bssid)
-+			continue;
-+
- 		cfg80211_scan_req_add_chan(request, chan, true);
- 		memcpy(scan_6ghz_params->bssid, ap->bssid, ETH_ALEN);
- 		scan_6ghz_params->short_ssid = ap->short_ssid;
+ 	return flags;
 -- 
 2.34.1
 
