@@ -2,47 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DFEC4EF2CB
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 17:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF1074EF436
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 17:30:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348228AbiDAOyq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Apr 2022 10:54:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60486 "EHLO
+        id S1349164AbiDAOzb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Apr 2022 10:55:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352008AbiDAOtr (ORCPT
+        with ESMTP id S1352162AbiDAOt7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Apr 2022 10:49:47 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C61502921ED;
-        Fri,  1 Apr 2022 07:40:49 -0700 (PDT)
+        Fri, 1 Apr 2022 10:49:59 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C9742B19DA;
+        Fri,  1 Apr 2022 07:41:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 176FAB82502;
-        Fri,  1 Apr 2022 14:40:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D162C2BBE4;
-        Fri,  1 Apr 2022 14:40:00 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 68B76B82504;
+        Fri,  1 Apr 2022 14:40:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD15C2BBE4;
+        Fri,  1 Apr 2022 14:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648824001;
-        bh=bRdx8OImyd8hpObz/0qEKfFH0PdnVpMb4ukSvdDBojU=;
+        s=k20201202; t=1648824029;
+        bh=9Wc3k6gE6jmVeDTnq2FcMaJX6Ctbq58Pzce8ZBN2X+c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=opdzYuiimqyed1qCYjUg/mBWmZkcS+mk/2NkLn7blDc5D+YoPAEzb0oXKhQdr9ZPI
-         T4G9p4V+kuXc8sADk4f8HvvlWT1FaHl9kqRF9wevlwcQ27fgPUGitO/nO2HzTaitZY
-         9PYpMiHMDeAJS3mJylATbVlnZDXwoJqLKqKumd010kHvvqe1SIco4kYdTfK5AYyYYQ
-         8lbBm+f1jc1xIQH4+3N4lZdKSOLxuZ+11fiMg2zVH8YCS3csjTGFRWs5CBIPWjF/ON
-         jV7Cmz9hzpvBV61XRGUQmz2Yj1Rt+XonT4+zL/leoZZLr0MynTV3WWaqSFVzAe3ZBY
-         4w+x9XRjisZ/w==
+        b=HBi+scHJlORbjdv5JIfJwlokRmWF/VVoBT+JgjB+MadOsxqd1Mli4e+XMpHyZRM/9
+         SWiPcWBhe5MBsBu6kOq8yKUjA9ddTY+nyz04JLcWWXdLiJFeoHFWeSX/nBAYybKe4C
+         Lnzsu7iuNLjCtbZrc/wsqN1pmeUihiA9I2hYUKUI0L6pxtOWuXDSgrwOfZcX+VIwoS
+         l4PUFWwgwMkq6+dB2d1gyDNrAnOKsxqaiBS4jqeCc7bNh6XXmhgjxr81hMVIEo/PIY
+         lFtYAPumZbiZfPlzxlB0QzNYG/x59dSaUAA9JCl5vHpC7UVZBDBp+LtM9Hg2Er3Mqc
+         XD0OXYMRUXI6A==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        johannes.berg@intel.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 46/98] iwlwifi: mvm: move only to an enabled channel
-Date:   Fri,  1 Apr 2022 10:36:50 -0400
-Message-Id: <20220401143742.1952163-46-sashal@kernel.org>
+Cc:     Johan Almbladh <johan.almbladh@anyfinetworks.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
+        lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
+        pabeni@redhat.com, matthias.bgg@gmail.com, Bo.Jiao@mediatek.com,
+        shayne.chen@mediatek.com, greearb@candelatech.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 58/98] mt76: mt7915: fix injected MPDU transmission to not use HW A-MSDU
+Date:   Fri,  1 Apr 2022 10:37:02 -0400
+Message-Id: <20220401143742.1952163-58-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220401143742.1952163-1-sashal@kernel.org>
 References: <20220401143742.1952163-1-sashal@kernel.org>
@@ -60,78 +63,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Johan Almbladh <johan.almbladh@anyfinetworks.com>
 
-[ Upstream commit e04135c07755d001b5cde61048c69a7cc84bb94b ]
+[ Upstream commit 28225a6ef80ebf46c46e5fbd5b1ee231a0b2b5b7 ]
 
-During disassociation we're decreasing the phy's ref count.
-If the ref count becomes 0, we're configuring the phy ctxt
-to the default channel (the lowest channel which the device
-can operate on). Currently we're not checking whether the
-the default channel is enabled or not. Fix it by configuring
-the phy ctxt to the lowest channel which is enabled.
+Before, the hardware would be allowed to transmit injected 802.11 MPDUs
+as A-MSDU. This resulted in corrupted frames being transmitted. Now,
+injected MPDUs are transmitted as-is, without A-MSDU.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20220210181930.03f281b6a6bc.I5b63d43ec41996d599e6f37ec3f32e878b3e405e@changeid
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+The fix was verified with frame injection on MT7915 hardware, both with
+and without the injected frame being encrypted.
+
+If the hardware cannot do A-MSDU aggregation on MPDUs, this problem
+would also be present in the TX path where mac80211 does the 802.11
+encapsulation. However, I have not observed any such problem when
+disabling IEEE80211_HW_SUPPORTS_TX_ENCAP_OFFLOAD to force that mode.
+Therefore this fix is isolated to injected frames only.
+
+The same A-MSDU logic is also present in the mt7921 driver, so it is
+likely that this fix should be applied there too. I do not have access
+to mt7921 hardware so I have not been able to test that.
+
+Signed-off-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/intel/iwlwifi/mvm/phy-ctxt.c | 31 +++++++++++++------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-index 035336a9e755..6d82725cb87d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2021 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
-  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
-  * Copyright (C) 2017 Intel Deutschland GmbH
-  */
-@@ -295,18 +295,31 @@ void iwl_mvm_phy_ctxt_unref(struct iwl_mvm *mvm, struct iwl_mvm_phy_ctxt *ctxt)
- 	 * otherwise we might not be able to reuse this phy.
- 	 */
- 	if (ctxt->ref == 0) {
--		struct ieee80211_channel *chan;
-+		struct ieee80211_channel *chan = NULL;
- 		struct cfg80211_chan_def chandef;
--		struct ieee80211_supported_band *sband = NULL;
--		enum nl80211_band band = NL80211_BAND_2GHZ;
-+		struct ieee80211_supported_band *sband;
-+		enum nl80211_band band;
-+		int channel;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index ff613d705611..7691292526e0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -899,6 +899,7 @@ mt7915_mac_write_txwi_80211(struct mt7915_dev *dev, __le32 *txwi,
+ 		val = MT_TXD3_SN_VALID |
+ 		      FIELD_PREP(MT_TXD3_SEQ, IEEE80211_SEQ_TO_SN(seqno));
+ 		txwi[3] |= cpu_to_le32(val);
++		txwi[7] &= ~cpu_to_le32(MT_TXD7_HW_AMSDU);
+ 	}
  
--		while (!sband && band < NUM_NL80211_BANDS)
--			sband = mvm->hw->wiphy->bands[band++];
-+		for (band = NL80211_BAND_2GHZ; band < NUM_NL80211_BANDS; band++) {
-+			sband = mvm->hw->wiphy->bands[band];
- 
--		if (WARN_ON(!sband))
--			return;
-+			if (!sband)
-+				continue;
-+
-+			for (channel = 0; channel < sband->n_channels; channel++)
-+				if (!(sband->channels[channel].flags &
-+						IEEE80211_CHAN_DISABLED)) {
-+					chan = &sband->channels[channel];
-+					break;
-+				}
- 
--		chan = &sband->channels[0];
-+			if (chan)
-+				break;
-+		}
-+
-+		if (WARN_ON(!chan))
-+			return;
- 
- 		cfg80211_chandef_create(&chandef, chan, NL80211_CHAN_NO_HT);
- 		iwl_mvm_phy_ctxt_changed(mvm, ctxt, &chandef, 1, 1);
+ 	val = FIELD_PREP(MT_TXD7_TYPE, fc_type) |
 -- 
 2.34.1
 
