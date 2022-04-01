@@ -2,48 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42B174EEC74
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 13:38:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15AF14EEC7B
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 13:43:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345565AbiDALkH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Apr 2022 07:40:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47990 "EHLO
+        id S1345490AbiDALpZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Apr 2022 07:45:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344937AbiDALkF (ORCPT
+        with ESMTP id S233087AbiDALpZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Apr 2022 07:40:05 -0400
+        Fri, 1 Apr 2022 07:45:25 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1389D1DB89E
-        for <linux-wireless@vger.kernel.org>; Fri,  1 Apr 2022 04:38:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A39E43A5DD;
+        Fri,  1 Apr 2022 04:43:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BDD10B8245D
-        for <linux-wireless@vger.kernel.org>; Fri,  1 Apr 2022 11:38:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0F5C2BBE4;
-        Fri,  1 Apr 2022 11:38:12 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 583F6B824B1;
+        Fri,  1 Apr 2022 11:43:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DDDC340F2;
+        Fri,  1 Apr 2022 11:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648813093;
-        bh=JeZ02QkfWVzX6ts+UvtEHBfdA9PpxWAQowCGmjr19R0=;
+        s=k20201202; t=1648813412;
+        bh=9b2hrUOXZUT4PtJ74mv2OEiQ6y7RhlwtuoDd+ejgaHI=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=P7yd6E74dtHmw5gQgplfq0oqYqm9HXuoAt+DAPxAekQjzUHm6Mmcm+nyL9wX6Ij5u
-         4x6kDEZQdJyHO1mb3VCraxt1SXA01L6IiqVeSG8Kz6YVeF0QrnGznpiUG99FwRqBiw
-         JjUHzmDemt/o6nUHKE2bOGjc/96S5gdJp0oVyIMHdabOebJT9GACwEojM8re73qMjK
-         bnWuIN7fn4tZLkSC1hJjXo4V0Et99sRLElNOMQoYUCs5z86fM+nKCu+5EgPp9zcdUv
-         5ccoKK3SYXNXGXy9k3+o3p2tuyS0OO7K3Ff/xLBkqsZ+iu8V/V+Jw7ny56282suNZ9
-         GUZEBvodhBE3w==
+        b=p2wSzyrF0VBZw1zFe1IbnVN7qphAnFNPX8ag1U5Qc5lBrI9JpRxpzJiMU+21SfuC0
+         e27digsEly0p7uLDQZrbnshD5m9zC367HP5izc1WZ+N82FtkX1/rvLNGXOUntpS6Vm
+         i4YAImYwXujxOOl/niepyVgbxLMHxFW5w8d94WyDxXlaPKrSaBnQP8QhUmA3nL9c/X
+         U3U1Y39LDDq8RniNgJkd/iWi7WTo9lIPEHR26CguHEgWTgIk8PUSaX62eJayZOPSEI
+         ipZxOIhpAVRHbXeS1fMjTtRJxSWCsEik/BoRGVIowLf90o4bX8SZ6UpfLTjt1+8E0E
+         SWhT3rpqq5A1w==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Baochen Qiang <quic_bqiang@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v3 1/2] ath11k: add support for extended wmi service bit
-References: <20220401073200.1195070-1-quic_bqiang@quicinc.com>
-Date:   Fri, 01 Apr 2022 14:38:10 +0300
-In-Reply-To: <20220401073200.1195070-1-quic_bqiang@quicinc.com> (Baochen
-        Qiang's message of "Fri, 1 Apr 2022 15:31:59 +0800")
-Message-ID: <875yntuj8d.fsf@kernel.org>
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH][next] iwlwifi: fw: Replace zero-length arrays with flexible-array members
+References: <20220216195015.GA904148@embeddedor>
+        <202202161235.2FB20E6A5@keescook>
+        <20220326003843.GA2602091@embeddedor> <871qym1vck.fsf@kernel.org>
+        <4c520e2e-d1a5-6d2b-3ef1-b891d7946c01@embeddedor.com>
+Date:   Fri, 01 Apr 2022 14:43:26 +0300
+In-Reply-To: <4c520e2e-d1a5-6d2b-3ef1-b891d7946c01@embeddedor.com> (Gustavo A.
+        R. Silva's message of "Mon, 28 Mar 2022 01:23:59 -0500")
+Message-ID: <871qyhuizl.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -54,33 +64,54 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Baochen Qiang <quic_bqiang@quicinc.com> writes:
+"Gustavo A. R. Silva" <gustavo@embeddedor.com> writes:
 
-> From: Wen Gong <quic_wgong@quicinc.com>
+> On 3/28/22 00:47, Kalle Valo wrote:
+>> "Gustavo A. R. Silva" <gustavoars@kernel.org> writes:
+>>
+>>> On Wed, Feb 16, 2022 at 12:35:14PM -0800, Kees Cook wrote:
+>>>> On Wed, Feb 16, 2022 at 01:50:15PM -0600, Gustavo A. R. Silva wrote:
+>>>>> There is a regular need in the kernel to provide a way to declare
+>>>>> having a dynamically sized set of trailing elements in a structure.
+>>>>> Kernel code should always use =E2=80=9Cflexible array members=E2=80=
+=9D[1] for these
+>>>>> cases. The older style of one-element or zero-length arrays should
+>>>>> no longer be used[2].
+>>>>>
+>>>>> [1] https://en.wikipedia.org/wiki/Flexible_array_member
+>>>>> [2]
+>>>>> https://www.kernel.org/doc/html/v5.16/process/deprecated.html#zero-le=
+ngth-and-one-element-arrays
+>>>>>
+>>>>> Link: https://github.com/KSPP/linux/issues/78
+>>>>> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+>>>>
+>>>> Reviewed-by: Kees Cook <keescook@chromium.org>
+>>>
+>>> Hi all,
+>>>
+>>> Friendly ping: can someone take this, please?
+>>>
+>>> ...I can take this in my -next tree in the meantime.
+>>
+>> Like we have discussed before, please don't take any wireless patches to
+>> your tree. The conflicts just cause more work of us.
 >
-> Currently the wmi service bis is report from firmware, it is divided
-> to 128 bits for each segment. The first segment is processed by
-> ath11k_wmi_service_bitmap_copy(), the second segment is processed by
-> ath11k_service_available_event() with WMI_TAG_SERVICE_AVAILABLE_EVENT,
-> When the service bit exceed 256 bits, then firmware report it by tag
-> WMI_TAG_ARRAY_UINT32 in WMI_SERVICE_AVAILABLE_EVENTID.
+> Sure thing. I just removed it from my tree.
 >
-> ath11k does not process the third segment, this is to extend the wmi
-> service bits from 256 to 384 for the third 128 bits. The 3 enum value
-> WMI_MAX_SERVICE(128)/WMI_MAX_EXT_SERVICE(256)/WMI_MAX_EXT2_SERVICE(384)
-> are convenient to process the service bits.
->
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
->
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> I didn't get any reply from wireless people in more than a month, and
+> that's why I temporarily took it in my tree so it doesn't get lost. :)
 
-Baochen, you need to add your own s-o-b in the end. Please read:
+That increases the risk of conflicts and, because of multiple trees we
+have, the conflicts cause more work for us. Please don't take ANY
+wireless patches to your tree (or any other tree for that matter) unless
+Johannes or me has acked them.
 
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
+If you don't get reply to your patch for few weeks (and the merge window
+is not open), you can ping in the list or contact me.
 
-But remember to keep Wen's s-o-b, they should be never removed.
-
--- 
+--=20
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
