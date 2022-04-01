@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A171B4EE7F3
+	by mail.lfdr.de (Postfix) with ESMTP id 55BEE4EE7F1
 	for <lists+linux-wireless@lfdr.de>; Fri,  1 Apr 2022 07:52:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245212AbiDAFxv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Apr 2022 01:53:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54404 "EHLO
+        id S245218AbiDAFxy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Apr 2022 01:53:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245201AbiDAFxu (ORCPT
+        with ESMTP id S245223AbiDAFxx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Apr 2022 01:53:50 -0400
+        Fri, 1 Apr 2022 01:53:53 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83E75261DC5
-        for <linux-wireless@vger.kernel.org>; Thu, 31 Mar 2022 22:52:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 467C5261DD4
+        for <linux-wireless@vger.kernel.org>; Thu, 31 Mar 2022 22:52:03 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2315pnarF019758, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2315pnarF019758
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2315poaH7019762, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2315poaH7019762
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 1 Apr 2022 13:51:49 +0800
+        Fri, 1 Apr 2022 13:51:50 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 1 Apr 2022 13:51:48 +0800
+ 15.1.2308.27; Fri, 1 Apr 2022 13:51:50 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 1 Apr
- 2022 13:51:48 +0800
+ 2022 13:51:49 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <ku920601@realtek.com>,
         <phhuang@realtek.com>
-Subject: [PATCH v2 2/4] rtw89: packet offload handler to avoid warning
-Date:   Fri, 1 Apr 2022 13:50:41 +0800
-Message-ID: <20220401055043.12512-3-pkshih@realtek.com>
+Subject: [PATCH v2 3/4] rtw89: coex: Add case for scan offload
+Date:   Fri, 1 Apr 2022 13:50:42 +0800
+Message-ID: <20220401055043.12512-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220401055043.12512-1-pkshih@realtek.com>
 References: <20220401055043.12512-1-pkshih@realtek.com>
@@ -56,7 +56,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvMSCkV6TIIDAzOjI4OjAw?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -69,43 +69,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po Hao Huang <phhuang@realtek.com>
+From: Ching-Te Ku <ku920601@realtek.com>
 
-Add a dummy function for packet offload to eliminate warning message
-"c2h class 1 func 2 not support". This c2h is for debug purpose and
-its presence itself can do the work, so further parsing won't be
-required for now.
+Turn off coexistence driver control, let firmware can control the
+traffic during scan. This prevents potential unexpected behavior of
+the BT driver.
 
-Signed-off-by: Po Hao Huang <phhuang@realtek.com>
+Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/coex.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 0a8fd672b41f6..b4855886d1207 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -3341,12 +3341,18 @@ rtw89_mac_c2h_bcn_cnt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
- {
- }
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+index 07f26718b66fb..bf433a68c1ded 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.c
++++ b/drivers/net/wireless/realtek/rtw89/coex.c
+@@ -3068,7 +3068,17 @@ static void _action_wl_scan(struct rtw89_dev *rtwdev)
+ 	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
+ 	struct rtw89_btc_wl_dbcc_info *wl_dinfo = &wl->dbcc_info;
  
-+static void
-+rtw89_mac_c2h_pkt_ofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
-+			   u32 len)
-+{
-+}
+-	if (rtwdev->dbcc_en) {
++	if (RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw)) {
++		_set_ant(rtwdev, NM_EXEC, BTC_PHY_ALL, BTC_ANT_W25G);
++		if (btc->mdinfo.ant.type == BTC_ANT_SHARED)
++			_set_policy(rtwdev, BTC_CXP_OFFE_DEF,
++				    BTC_RSN_NTFY_SCAN_START);
++		else
++			_set_policy(rtwdev, BTC_CXP_OFF_EQ0,
++				    BTC_RSN_NTFY_SCAN_START);
 +
- static
- void (* const rtw89_mac_c2h_ofld_handler[])(struct rtw89_dev *rtwdev,
- 					    struct sk_buff *c2h, u32 len) = {
- 	[RTW89_MAC_C2H_FUNC_EFUSE_DUMP] = NULL,
- 	[RTW89_MAC_C2H_FUNC_READ_RSP] = NULL,
--	[RTW89_MAC_C2H_FUNC_PKT_OFLD_RSP] = NULL,
-+	[RTW89_MAC_C2H_FUNC_PKT_OFLD_RSP] = rtw89_mac_c2h_pkt_ofld_rsp,
- 	[RTW89_MAC_C2H_FUNC_BCN_RESEND] = NULL,
- 	[RTW89_MAC_C2H_FUNC_MACID_PAUSE] = rtw89_mac_c2h_macid_pause,
- 	[RTW89_MAC_C2H_FUNC_SCANOFLD_RSP] = rtw89_mac_c2h_scanofld_rsp,
++		rtw89_debug(rtwdev, RTW89_DBG_BTC, "[BTC], Scan offload!\n");
++	} else if (rtwdev->dbcc_en) {
+ 		if (wl_dinfo->real_band[RTW89_PHY_0] != RTW89_BAND_2G &&
+ 		    wl_dinfo->real_band[RTW89_PHY_1] != RTW89_BAND_2G)
+ 			_action_wl_5g(rtwdev);
 -- 
 2.25.1
 
