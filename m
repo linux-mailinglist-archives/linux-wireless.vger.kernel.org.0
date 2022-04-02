@@ -2,97 +2,224 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C3F44F00AB
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Apr 2022 12:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30B8A4F00C9
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Apr 2022 12:52:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349348AbiDBKeP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 2 Apr 2022 06:34:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38104 "EHLO
+        id S1354483AbiDBKyZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 2 Apr 2022 06:54:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229630AbiDBKeN (ORCPT
+        with ESMTP id S1354567AbiDBKyW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 2 Apr 2022 06:34:13 -0400
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D65271AF7C7;
-        Sat,  2 Apr 2022 03:32:21 -0700 (PDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4KVtdc3jtZz9sSZ;
-        Sat,  2 Apr 2022 12:32:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 7csE0CeWtf1c; Sat,  2 Apr 2022 12:32:20 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4KVtdc2mp9z9sSQ;
-        Sat,  2 Apr 2022 12:32:20 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 40C358B76D;
-        Sat,  2 Apr 2022 12:32:15 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id ojO2rBaO92SZ; Sat,  2 Apr 2022 12:32:15 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.136])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id F1F148B768;
-        Sat,  2 Apr 2022 12:32:14 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 232AW44C685938
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Sat, 2 Apr 2022 12:32:04 +0200
-Received: (from chleroy@localhost)
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 232AW344685937;
-        Sat, 2 Apr 2022 12:32:03 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-To:     Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH wireless-next] orinoco: Prepare cleanup of powerpc's asm/prom.h
-Date:   Sat,  2 Apr 2022 12:32:02 +0200
-Message-Id: <4e3bfd4ffe2ed6b713ddd99b69dcc3d96adffe34.1648833427.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.35.1
+        Sat, 2 Apr 2022 06:54:22 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA309148660
+        for <linux-wireless@vger.kernel.org>; Sat,  2 Apr 2022 03:52:16 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id i27so3566892ejd.9
+        for <linux-wireless@vger.kernel.org>; Sat, 02 Apr 2022 03:52:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=Zu8eKPzRskdlQlbramfPaoD/f1fGti5TmNsQY/hQanM=;
+        b=GY1j8tzy/iDpw5ZJczyjRnKh/rlWb7bFzscp7zALfPv6PUvQKhRLyFUClMnBwdOit1
+         Qjco5r1NYNkX48o1HPbAJENvDQYr4Ji2z8feBQMHUpsmyTOkI7Z+Ag9eSCxya8oa3n13
+         74HghIOf/UOx8ZIFpgRrXCOCquCfHl57OF+1OIPOSf1NeSK57R1iaDX+TZs6ZxdXEzhO
+         ecK7nqqnlwYk5alg+boRREXT74AfNPKjmmw+stYPehetPDmT47qZJkQeOyT1AiAh4EBN
+         BIcgOCVM2u1OYM2BM4BOXcBDsli3ZupoRbO2jV3QlrawgXFDX2KckQx8qcvAuq+fjHHo
+         8Fvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=Zu8eKPzRskdlQlbramfPaoD/f1fGti5TmNsQY/hQanM=;
+        b=0lcqJIQoTQpHmJnd6EbqhMLuxu3s52gp37vNQCUxaofr618I+PI/pKgfqiZhPbMQiH
+         D9OmIr9hueIT0xfNDT0HeGGLE2zgva3HgYoQQFtbpsG4B56EPvDRVMH/IAoQOWDiN+9q
+         X+ywO96DUjld3t2n2xXED7Rwfbvo0ebAGqRoEGhs/iiAx/5tYCUQo81Nt65IScEwfPE9
+         L2Wlvzg37TRWSFbvCSWP1E5e3c7/NzMET2NWE5pm+qSJbgbi8RANgyHtPLi+EOPaPkdL
+         49cDBkygWl0zQ1yGzBYYjqRNCTFMX8wNbRFfEU0B0DASnbrSv3Lldh5zrS5nIy8ClQ/P
+         OJfA==
+X-Gm-Message-State: AOAM533KGovl514aWbCvKGTZdS6Fx+aMmHrzllOs9SGscniRfdIazXIi
+        jS7xFvG1LO6CA5YuKtcZcv/TB6kyZkZ9UuYO2MY=
+X-Google-Smtp-Source: ABdhPJz5+6PACXGqfh3RKI04rKN0HSLK/vS+N6oXQKeLI1lmw2daUD2eqc4MZA333CysDKTaGXC64G4Wduj0dDB9GmI=
+X-Received: by 2002:a17:907:1b10:b0:6e4:bac5:f080 with SMTP id
+ mp16-20020a1709071b1000b006e4bac5f080mr3434011ejc.24.1648896735229; Sat, 02
+ Apr 2022 03:52:15 -0700 (PDT)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1648895522; l=835; s=20211009; h=from:subject:message-id; bh=GUx5U0qn3qbDEa/zJ9S/ekEfNR8yOyXRHdvd7h8rtUI=; b=pn1f1qnmiPgEGXep2zpCysDtoWbf9q5rH5Xd6EmCGz49l5R3pHnWa5yZt8sIHMcedIEzmKAUpH4A 1WSO2XFkDxm5sESa0ujdS5jn2qmfNhG6OgsfuURqtYrjEODZarIf
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Sat, 2 Apr 2022 11:52:16 +0100
+Message-ID: <CAHpNFcOhLyPqE4-0f7vZ1rRRdC6BK6UgX17bJrM8_99GQ9T5bQ@mail.gmail.com>
+Subject: VecSR is really good for secondary loading of sprites & text; In
+ these terms very good for pre loading on for example the X86, RISC, AMIGA &
+ Famicon type devices, With appropriate loading into Sprite buffers or
+ Emulated Secondaries (Special Animations) or Font Buffers. RS
+To:     torvalds@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-powerpc's asm/prom.h brings some headers that it doesn't
-need itself.
+VecSR is really good for secondary loading of sprites & text; In these
+terms very good for pre loading on for example the X86, RISC, AMIGA &
+Famicon type devices,
+With appropriate loading into Sprite buffers or Emulated Secondaries
+(Special Animations) or Font Buffers.
 
-In order to clean it up, first add missing headers in
-users of asm/prom.h
+Although Large TT-SVG & OT-SVG fonts load well in 8MB Ram on the Amiga
+with Integer & Emulated Float (Library); Traditional BitMap fonts work
+well in a Set Size & can resize well if cached!
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- Resending for application on wireless-next (per Kalle)
+The full process leads upto the terminal & how to optimise CON,
+We can & will need to exceed capacities of any system & To improve them!
 
- drivers/net/wireless/intersil/orinoco/airport.c | 1 +
- 1 file changed, 1 insertion(+)
+presenting: Dev-Con-VectorE=C2=B2
 
-diff --git a/drivers/net/wireless/intersil/orinoco/airport.c b/drivers/net/wireless/intersil/orinoco/airport.c
-index 77e6c53040a3..a890bfa0d5cc 100644
---- a/drivers/net/wireless/intersil/orinoco/airport.c
-+++ b/drivers/net/wireless/intersil/orinoco/airport.c
-@@ -18,6 +18,7 @@
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/delay.h>
-+#include <linux/of_device.h>
- #include <asm/pmac_feature.h>
- 
- #include "orinoco.h"
--- 
-2.35.1
+Fast/dev/CON 3DText & Audio Almost any CPU & GPU ''SiMD & Float/int"
+Class VESA Console +
 
+With Console in VecSR you can 3DText & Audio,
+
+VecSR Firmware update 2022 For immediate implementation in all
+operating systems & ROM's
+
+Potential is fast & useful
+
+DT
+
+https://lkml.org/lkml/2022/4/1/1451
+
+*****
+
+VecSR - Vector Standard Render
+
+VESA Standards : Vector Graphics, Boxes, Ellipses, Curves & Fonts :
+Consolas & other brilliant fonts : (c)RS
+
+SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
+
+OT-SVG Fonts & TT-SVG Obviously Rendered in Direct X 9+ & OpenGL 3+
+Mode & Desktop Rendering modes
+
+Improve Console & TV & BIOS & General Animated Render
+
+Vector Display Standards with low relative CPU Weight
+SiMD Polygon Font Method Render
+
+Default option point scaling (the space) : Metadata Vector Fonts with
+Curl mathematical vector :
+
+16 Bit : SiMD 1 width
+32 Bit : SiMD Double Width
+
+High precision for AVX 32Bit to 256Bit width precision.
+
+Vectoring with SiMD allows traditional CPU mastered VESA Emulation
+desktops & safe mode to be super fast & displays to conform to VESA
+render standards with little effort & a 1MB Table ROM.
+
+Though the VESA & HDMI & DisplayPort standards Facilitates direct low
+bandwidth transport of and transformation of 3D & 2D graphics & fonts
+into directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
+
+Display Standards Vector Render : DSVR-SiMD Can and will be directly
+rendered to a Surface for visual element : SfVE-Vec
+
+As such transport of Vectors & transformation onto display (Monitor,
+3D Unit, Render, TV, & Though HDMI, PCI Port & DP & RAM)
+
+Directly resolve The total graphics pipeline into high quality output
+or input & allow communication of almost infinite Floating point
+values for all rendered 3D & 2D Elements on a given surface (RAM
+Render Page or Surface)
+
+In high precision that is almost unbeatable & yet consumes many levels
+less RAM & Transport Protocol bandwidth,
+
+Further more can also render Vector 3D & 2D Audio & other elements
+though Vector 'Fonting' Systems, Examples exist : 3D Wave Tables,
+Harmonic reproduction units for example Yamaha and Casio keyboards.
+
+(c)Rupert S
+
+https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
+
+https://science.n-helix.com/2019/06/vulkan-stack.html
+
+https://science.n-helix.com/2019/06/kernel.html
+
+https://science.n-helix.com/2022/03/fsr-focal-length.html
+
+https://science.n-helix.com/2018/01/integer-floats-with-remainder-theory.ht=
+ml
+
+https://bit.ly/VESA_BT
+
+*
+
+*Application of SiMD Polygon Font Method Render
+*3D Render method with Console input DEMO : RS
+
+3D Display access to correct display of fonts at angles in games &
+apps without Utilizing 3rd Axis maths on a simple Shape polygon Vector
+font or shape. (c)Rupert S
+
+3rd dimensional access with vector fonts by a simple method:
+
+Render text to virtual screen layer AKA a fully rendered monochrome, 2
+colour or multi colour..
+
+Bitmap/Texture,
+
+Due to latency we have 3 frames ahead to render to bitmap DPT 3 / Dot 5
+
+Can be higher resolution & we can sub sample with closer view priority...
+
+We then rotate the texture on our output polygon & factor size differential=
+.
+
+The maths is simple enough to implement in games on an SSE configured
+Celeron D (depending on resolution and Bilinear filter & resize
+
+Why ? Because rotating a polygon is harder than subtracting or adding
+width, Hight & direction to fully complex polygon Fonts & Polygon
+lines or curves...
+
+The maths is simple enough to implement in games on an SSE configured
+Celeron D (depending on resolution and Bilinear filter & resize.
+
+*
+
+VecSR is really good for secondary loading of sprites & text; In these
+terms very good for pre loading on for example the X86, RISC, AMIGA &
+Famicon type devices,
+With appropriate loading into Sprite buffers or Emulated Secondaries
+(Special Animations) or Font Buffers.
+
+Although Large TT-SVG & OT-SVG fonts load well in 8MB Ram on the Amiga
+with Integer & Emulated Float (Library); Traditional BitMap fonts work
+well in a Set Size & can resize well if cached!
+
+The full process leads upto the terminal & how to optimise CON,
+We can & will need to exceed capacities of any system & To improve them!
+
+presenting: Dev-Con-VectorE=C2=B2
+Fast/dev/CON 3DText & Audio Almost any CPU & GPU ''SiMD & Float/int"
+Class VESA Console +
+
+With Console in VecSR you can 3DText & Audio,
+
+VecSR Firmware update 2022 For immediate implementation in all
+operating systems & ROM's
+
+Potential is fast & useful.
+
+*
+
+https://science.n-helix.com/2022/04/vecsr.html
