@@ -2,77 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C74654F0065
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Apr 2022 12:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C3F44F00AB
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Apr 2022 12:32:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233255AbiDBKSP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 2 Apr 2022 06:18:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41828 "EHLO
+        id S1349348AbiDBKeP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 2 Apr 2022 06:34:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354271AbiDBKRz (ORCPT
+        with ESMTP id S229630AbiDBKeN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 2 Apr 2022 06:17:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E27D1A8C15;
-        Sat,  2 Apr 2022 03:16:02 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A206E61239;
-        Sat,  2 Apr 2022 10:16:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68767C340EC;
-        Sat,  2 Apr 2022 10:15:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648894561;
-        bh=DkcXIedyA5WoWD32Wfb0ixzTbuY09aixGrQDXb2pWC4=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=Ubyq+QT4nm5P5Q5jYMYqHGm9WwTMjgbKsyVVjNgMFWMHNbJS2QAto+N13XfwbUGQ5
-         E9Cw+1xNlRSRJo1dz2ufaEaviqxRvbpnOggN/BG/X7QcB5g/mOBWeBlxdYW4Opit9h
-         eQRyWfKOWWZvM1vnKw7kY792vP4/SQm5M4QlyrtfHhY2qx/H+0+oPU56HnMFrbYR6H
-         4btd8Ny9o9VB0BEYnpplH8+CPyvNaz39SKDKNiwxEP7uUvvreHJ5X9oyL1ZgKNMpS6
-         iUv66Ozt8HeIcE13uCoRA0PxZUAUclSnr3gyA+gXU79l7Mty5oLwYAwC7GtMblmmGZ
-         3iNzO2UFdz/ow==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     "David S. Miller" <davem@davemloft.net>,
+        Sat, 2 Apr 2022 06:34:13 -0400
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D65271AF7C7;
+        Sat,  2 Apr 2022 03:32:21 -0700 (PDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+        by localhost (Postfix) with ESMTP id 4KVtdc3jtZz9sSZ;
+        Sat,  2 Apr 2022 12:32:20 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 7csE0CeWtf1c; Sat,  2 Apr 2022 12:32:20 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase2.c-s.fr (Postfix) with ESMTP id 4KVtdc2mp9z9sSQ;
+        Sat,  2 Apr 2022 12:32:20 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 40C358B76D;
+        Sat,  2 Apr 2022 12:32:15 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id ojO2rBaO92SZ; Sat,  2 Apr 2022 12:32:15 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.136])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id F1F148B768;
+        Sat,  2 Apr 2022 12:32:14 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 232AW44C685938
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+        Sat, 2 Apr 2022 12:32:04 +0200
+Received: (from chleroy@localhost)
+        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 232AW344685937;
+        Sat, 2 Apr 2022 12:32:03 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From:   Christophe Leroy <christophe.leroy@csgroup.eu>
+To:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH net-next] orinoco: Prepare cleanup of powerpc's asm/prom.h
-In-Reply-To: <4e3bfd4ffe2ed6b713ddd99b69dcc3d96adffe34.1648833427.git.christophe.leroy@csgroup.eu>
-        (Christophe Leroy's message of "Sat, 2 Apr 2022 12:10:37 +0200")
-References: <4e3bfd4ffe2ed6b713ddd99b69dcc3d96adffe34.1648833427.git.christophe.leroy@csgroup.eu>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Sat, 02 Apr 2022 13:15:55 +0300
-Message-ID: <878rsnu6xw.fsf@kernel.org>
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH wireless-next] orinoco: Prepare cleanup of powerpc's asm/prom.h
+Date:   Sat,  2 Apr 2022 12:32:02 +0200
+Message-Id: <4e3bfd4ffe2ed6b713ddd99b69dcc3d96adffe34.1648833427.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1648895522; l=835; s=20211009; h=from:subject:message-id; bh=GUx5U0qn3qbDEa/zJ9S/ekEfNR8yOyXRHdvd7h8rtUI=; b=pn1f1qnmiPgEGXep2zpCysDtoWbf9q5rH5Xd6EmCGz49l5R3pHnWa5yZt8sIHMcedIEzmKAUpH4A 1WSO2XFkDxm5sESa0ujdS5jn2qmfNhG6OgsfuURqtYrjEODZarIf
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+powerpc's asm/prom.h brings some headers that it doesn't
+need itself.
 
-> powerpc's asm/prom.h brings some headers that it doesn't
-> need itself.
->
-> In order to clean it up, first add missing headers in
-> users of asm/prom.h
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  drivers/net/wireless/intersil/orinoco/airport.c | 1 +
->  1 file changed, 1 insertion(+)
+In order to clean it up, first add missing headers in
+users of asm/prom.h
 
-orinoco patches are applied to wireless-next, not net-next.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ Resending for application on wireless-next (per Kalle)
 
+ drivers/net/wireless/intersil/orinoco/airport.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/intersil/orinoco/airport.c b/drivers/net/wireless/intersil/orinoco/airport.c
+index 77e6c53040a3..a890bfa0d5cc 100644
+--- a/drivers/net/wireless/intersil/orinoco/airport.c
++++ b/drivers/net/wireless/intersil/orinoco/airport.c
+@@ -18,6 +18,7 @@
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/delay.h>
++#include <linux/of_device.h>
+ #include <asm/pmac_feature.h>
+ 
+ #include "orinoco.h"
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.35.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
