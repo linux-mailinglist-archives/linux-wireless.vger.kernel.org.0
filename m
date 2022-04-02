@@ -2,224 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30B8A4F00C9
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Apr 2022 12:52:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77E1D4F014D
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Apr 2022 14:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354483AbiDBKyZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 2 Apr 2022 06:54:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42260 "EHLO
+        id S241573AbiDBMCl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 2 Apr 2022 08:02:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354567AbiDBKyW (ORCPT
+        with ESMTP id S229534AbiDBMCj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 2 Apr 2022 06:54:22 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA309148660
-        for <linux-wireless@vger.kernel.org>; Sat,  2 Apr 2022 03:52:16 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id i27so3566892ejd.9
-        for <linux-wireless@vger.kernel.org>; Sat, 02 Apr 2022 03:52:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Zu8eKPzRskdlQlbramfPaoD/f1fGti5TmNsQY/hQanM=;
-        b=GY1j8tzy/iDpw5ZJczyjRnKh/rlWb7bFzscp7zALfPv6PUvQKhRLyFUClMnBwdOit1
-         Qjco5r1NYNkX48o1HPbAJENvDQYr4Ji2z8feBQMHUpsmyTOkI7Z+Ag9eSCxya8oa3n13
-         74HghIOf/UOx8ZIFpgRrXCOCquCfHl57OF+1OIPOSf1NeSK57R1iaDX+TZs6ZxdXEzhO
-         ecK7nqqnlwYk5alg+boRREXT74AfNPKjmmw+stYPehetPDmT47qZJkQeOyT1AiAh4EBN
-         BIcgOCVM2u1OYM2BM4BOXcBDsli3ZupoRbO2jV3QlrawgXFDX2KckQx8qcvAuq+fjHHo
-         8Fvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Zu8eKPzRskdlQlbramfPaoD/f1fGti5TmNsQY/hQanM=;
-        b=0lcqJIQoTQpHmJnd6EbqhMLuxu3s52gp37vNQCUxaofr618I+PI/pKgfqiZhPbMQiH
-         D9OmIr9hueIT0xfNDT0HeGGLE2zgva3HgYoQQFtbpsG4B56EPvDRVMH/IAoQOWDiN+9q
-         X+ywO96DUjld3t2n2xXED7Rwfbvo0ebAGqRoEGhs/iiAx/5tYCUQo81Nt65IScEwfPE9
-         L2Wlvzg37TRWSFbvCSWP1E5e3c7/NzMET2NWE5pm+qSJbgbi8RANgyHtPLi+EOPaPkdL
-         49cDBkygWl0zQ1yGzBYYjqRNCTFMX8wNbRFfEU0B0DASnbrSv3Lldh5zrS5nIy8ClQ/P
-         OJfA==
-X-Gm-Message-State: AOAM533KGovl514aWbCvKGTZdS6Fx+aMmHrzllOs9SGscniRfdIazXIi
-        jS7xFvG1LO6CA5YuKtcZcv/TB6kyZkZ9UuYO2MY=
-X-Google-Smtp-Source: ABdhPJz5+6PACXGqfh3RKI04rKN0HSLK/vS+N6oXQKeLI1lmw2daUD2eqc4MZA333CysDKTaGXC64G4Wduj0dDB9GmI=
-X-Received: by 2002:a17:907:1b10:b0:6e4:bac5:f080 with SMTP id
- mp16-20020a1709071b1000b006e4bac5f080mr3434011ejc.24.1648896735229; Sat, 02
- Apr 2022 03:52:15 -0700 (PDT)
+        Sat, 2 Apr 2022 08:02:39 -0400
+Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F6E13BAFC
+        for <linux-wireless@vger.kernel.org>; Sat,  2 Apr 2022 05:00:44 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1648900842; bh=b8isrzYTCz+4FEOVXSzYrUnEDF9ukrKC11oZNQM53Lw=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=T/WQKvyxAOHOC5TKieYQLTTnd2ODqJcnS+i0zECIcbzvWVX1IGbX9xO98ZX/c1RgA
+         zBEfqC1x8QXr/MwBm9PvW7O4mcN3uq/urdw/WlbPH8qeL+pM7Wsp0LaqC55ypQJ27P
+         TKnStZEmsHtaYvRpmgRC30D64NaDjRrh+3oich05D9z3a/O8e9qwHdhg5ZJEsdl1Ik
+         cgnkPNFru8uDW6Z70/bxPOHQAisY6PeJspmxdnrree/YtWCIJpc3lh5vkFFhEMS3tC
+         WsGIS+otArjV/mo2TMnWMWlPSTy9I3wlYdhvxHoj2xqkCd145u3zIVOBXZ5erHQl/U
+         7NjmXn8fZOnBw==
+To:     Peter Seiderer <ps.report@gmx.net>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: Re: [PATCH v5.18] ath9k: Properly clear TX status area before
+ reporting to mac80211
+In-Reply-To: <20220401192657.16674bf7@gmx.net>
+References: <20220330164409.16645-1-toke@toke.dk>
+ <20220401192657.16674bf7@gmx.net>
+Date:   Sat, 02 Apr 2022 14:00:41 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87r16fg0eu.fsf@toke.dk>
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Sat, 2 Apr 2022 11:52:16 +0100
-Message-ID: <CAHpNFcOhLyPqE4-0f7vZ1rRRdC6BK6UgX17bJrM8_99GQ9T5bQ@mail.gmail.com>
-Subject: VecSR is really good for secondary loading of sprites & text; In
- these terms very good for pre loading on for example the X86, RISC, AMIGA &
- Famicon type devices, With appropriate loading into Sprite buffers or
- Emulated Secondaries (Special Animations) or Font Buffers. RS
-To:     torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-VecSR is really good for secondary loading of sprites & text; In these
-terms very good for pre loading on for example the X86, RISC, AMIGA &
-Famicon type devices,
-With appropriate loading into Sprite buffers or Emulated Secondaries
-(Special Animations) or Font Buffers.
+Peter Seiderer <ps.report@gmx.net> writes:
 
-Although Large TT-SVG & OT-SVG fonts load well in 8MB Ram on the Amiga
-with Integer & Emulated Float (Library); Traditional BitMap fonts work
-well in a Set Size & can resize well if cached!
+> Hello Toke,
+>
+> On Wed, 30 Mar 2022 18:44:09 +0200, Toke H=C3=B8iland-J=C3=B8rgensen <tok=
+e@toke.dk> wrote:
+>
+>> The ath9k driver was not properly clearing the status area in the
+>> ieee80211_tx_info struct before reporting TX status to mac80211. Instead,
+>> it was manually filling in fields, which meant that fields introduced la=
+ter
+>> were left as-is.
+>>=20
+>> Conveniently, mac80211 actually provides a helper to zero out the status
+>> area, so use that to make sure we zero everything.
+>>=20
+>> The last commit touching the driver function writing the status informat=
+ion
+>> seems to have actually been fixing an issue that was also caused by the
+>> area being uninitialised; but it only added clearing of a single field
+>> instead of the whole struct. That is now redundant, though, so revert th=
+at
+>> commit and use it as a convenient Fixes tag.
+>>=20
+>> Fixes: cc591d77aba1 ("ath9k: Make sure to zero status.tx_time before rep=
+orting TX status")
+>> Reported-by: Bagas Sanjaya <bagasdotme@gmail.com>
+>> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+>> ---
+>>  drivers/net/wireless/ath/ath9k/xmit.c | 5 ++---
+>>  1 file changed, 2 insertions(+), 3 deletions(-)
+>>=20
+>> diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireles=
+s/ath/ath9k/xmit.c
+>> index d0caf1de2bde..cbcf96ac303e 100644
+>> --- a/drivers/net/wireless/ath/ath9k/xmit.c
+>> +++ b/drivers/net/wireless/ath/ath9k/xmit.c
+>> @@ -2553,6 +2553,8 @@ static void ath_tx_rc_status(struct ath_softc *sc,=
+ struct ath_buf *bf,
+>>  	struct ath_hw *ah =3D sc->sc_ah;
+>>  	u8 i, tx_rateindex;
+>>=20=20
+>> +	ieee80211_tx_info_clear_status(tx_info);
+>> +
+>
+> As this also clears the status.rates[].count, see include/net/mac80211.h:
+>
+> 1195 static inline void
+> 1196 ieee80211_tx_info_clear_status(struct ieee80211_tx_info *info)
+> 1197 {
+> 1198         int i;
+> 1199=20=20=20=20=20=20=20=20=20
+> 1200         BUILD_BUG_ON(offsetof(struct ieee80211_tx_info, status.rates=
+) !=3D
+> 1201                      offsetof(struct ieee80211_tx_info, control.rate=
+s));
+> 1202         BUILD_BUG_ON(offsetof(struct ieee80211_tx_info, status.rates=
+) !=3D
+> 1203                      offsetof(struct ieee80211_tx_info, driver_rates=
+));
+> 1204         BUILD_BUG_ON(offsetof(struct ieee80211_tx_info, status.rates=
+) !=3D 8)     ;=20=20=20=20=20=20=20
+> 1205         /* clear the rate counts */
+> 1206         for (i =3D 0; i < IEEE80211_TX_MAX_RATES; i++)
+> 1207                 info->status.rates[i].count =3D 0;
+> 1208         memset_after(&info->status, 0, rates);
+> 1209 }
+>
+> I would have expected some lines added to restore the count (for the
+> rates with index < tx_rateindex), e.g. as done in
+> drivers/net/wireless/ath/ath5k/base.c:
+>
+> 1731         ieee80211_tx_info_clear_status(info);
+> 1732=20
+> 1733         for (i =3D 0; i < ts->ts_final_idx; i++) {
+> 1734                 struct ieee80211_tx_rate *r =3D
+> 1735                         &info->status.rates[i];
+> 1736=20
+> 1737                 r->count =3D tries[i];
+> 1738         }
+>
+> In drivers/net/wireless/ath/ath9k/xmit.c this is only done/changed for
+> the tx_rateindex index (which is often zero in case the first suggested r=
+ate
+> succeeds, but in noisy environment is sometimes > 0)...
 
-The full process leads upto the terminal & how to optimise CON,
-We can & will need to exceed capacities of any system & To improve them!
+Ah, you're right! I looked at that code, and somehow parsed that as "OK,
+it's setting all the rate counts, we're fine". But obviously that's not
+what that code is doing, so we'll lose some information now. Bugger :(
 
-presenting: Dev-Con-VectorE=C2=B2
+I'll send a follow-up, thanks for flagging this!
 
-Fast/dev/CON 3DText & Audio Almost any CPU & GPU ''SiMD & Float/int"
-Class VESA Console +
-
-With Console in VecSR you can 3DText & Audio,
-
-VecSR Firmware update 2022 For immediate implementation in all
-operating systems & ROM's
-
-Potential is fast & useful
-
-DT
-
-https://lkml.org/lkml/2022/4/1/1451
-
-*****
-
-VecSR - Vector Standard Render
-
-VESA Standards : Vector Graphics, Boxes, Ellipses, Curves & Fonts :
-Consolas & other brilliant fonts : (c)RS
-
-SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
-
-OT-SVG Fonts & TT-SVG Obviously Rendered in Direct X 9+ & OpenGL 3+
-Mode & Desktop Rendering modes
-
-Improve Console & TV & BIOS & General Animated Render
-
-Vector Display Standards with low relative CPU Weight
-SiMD Polygon Font Method Render
-
-Default option point scaling (the space) : Metadata Vector Fonts with
-Curl mathematical vector :
-
-16 Bit : SiMD 1 width
-32 Bit : SiMD Double Width
-
-High precision for AVX 32Bit to 256Bit width precision.
-
-Vectoring with SiMD allows traditional CPU mastered VESA Emulation
-desktops & safe mode to be super fast & displays to conform to VESA
-render standards with little effort & a 1MB Table ROM.
-
-Though the VESA & HDMI & DisplayPort standards Facilitates direct low
-bandwidth transport of and transformation of 3D & 2D graphics & fonts
-into directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
-
-Display Standards Vector Render : DSVR-SiMD Can and will be directly
-rendered to a Surface for visual element : SfVE-Vec
-
-As such transport of Vectors & transformation onto display (Monitor,
-3D Unit, Render, TV, & Though HDMI, PCI Port & DP & RAM)
-
-Directly resolve The total graphics pipeline into high quality output
-or input & allow communication of almost infinite Floating point
-values for all rendered 3D & 2D Elements on a given surface (RAM
-Render Page or Surface)
-
-In high precision that is almost unbeatable & yet consumes many levels
-less RAM & Transport Protocol bandwidth,
-
-Further more can also render Vector 3D & 2D Audio & other elements
-though Vector 'Fonting' Systems, Examples exist : 3D Wave Tables,
-Harmonic reproduction units for example Yamaha and Casio keyboards.
-
-(c)Rupert S
-
-https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
-
-https://science.n-helix.com/2019/06/vulkan-stack.html
-
-https://science.n-helix.com/2019/06/kernel.html
-
-https://science.n-helix.com/2022/03/fsr-focal-length.html
-
-https://science.n-helix.com/2018/01/integer-floats-with-remainder-theory.ht=
-ml
-
-https://bit.ly/VESA_BT
-
-*
-
-*Application of SiMD Polygon Font Method Render
-*3D Render method with Console input DEMO : RS
-
-3D Display access to correct display of fonts at angles in games &
-apps without Utilizing 3rd Axis maths on a simple Shape polygon Vector
-font or shape. (c)Rupert S
-
-3rd dimensional access with vector fonts by a simple method:
-
-Render text to virtual screen layer AKA a fully rendered monochrome, 2
-colour or multi colour..
-
-Bitmap/Texture,
-
-Due to latency we have 3 frames ahead to render to bitmap DPT 3 / Dot 5
-
-Can be higher resolution & we can sub sample with closer view priority...
-
-We then rotate the texture on our output polygon & factor size differential=
-.
-
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize
-
-Why ? Because rotating a polygon is harder than subtracting or adding
-width, Hight & direction to fully complex polygon Fonts & Polygon
-lines or curves...
-
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize.
-
-*
-
-VecSR is really good for secondary loading of sprites & text; In these
-terms very good for pre loading on for example the X86, RISC, AMIGA &
-Famicon type devices,
-With appropriate loading into Sprite buffers or Emulated Secondaries
-(Special Animations) or Font Buffers.
-
-Although Large TT-SVG & OT-SVG fonts load well in 8MB Ram on the Amiga
-with Integer & Emulated Float (Library); Traditional BitMap fonts work
-well in a Set Size & can resize well if cached!
-
-The full process leads upto the terminal & how to optimise CON,
-We can & will need to exceed capacities of any system & To improve them!
-
-presenting: Dev-Con-VectorE=C2=B2
-Fast/dev/CON 3DText & Audio Almost any CPU & GPU ''SiMD & Float/int"
-Class VESA Console +
-
-With Console in VecSR you can 3DText & Audio,
-
-VecSR Firmware update 2022 For immediate implementation in all
-operating systems & ROM's
-
-Potential is fast & useful.
-
-*
-
-https://science.n-helix.com/2022/04/vecsr.html
+-Toke
