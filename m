@@ -2,100 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C08F74F046B
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Apr 2022 17:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8F4A4F0474
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Apr 2022 17:36:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355367AbiDBPcV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 2 Apr 2022 11:32:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35650 "EHLO
+        id S237607AbiDBPi2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 2 Apr 2022 11:38:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232006AbiDBPcT (ORCPT
+        with ESMTP id S237518AbiDBPiS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 2 Apr 2022 11:32:19 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7F38123BC1;
-        Sat,  2 Apr 2022 08:30:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1648913416;
-        bh=lZSOBxnkYshkouLS0XGvOyWTUsSm5nmlSADx/QK6Sfw=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=kVQc5hIpXWsPIBo4CqyEoFtkrTTHR+l8ZKsnDBawQvRMO4d4OgLfptcilNjQPRmnP
-         aGj5zk6Jd8xd0un09eFMrNQpKa9YzJNTRldjakHpkqr+fCrGEx5+yoEGK4BafWBypY
-         i3kG9YNc2vhwGc7jleG6KxEMx+H3hSr7dsFSS9cA=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.fritz.box ([62.216.209.166]) by mail.gmx.net
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1M6ll8-1neWn80Xq2-008JPY; Sat, 02 Apr 2022 17:30:16 +0200
-From:   Peter Seiderer <ps.report@gmx.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/2] mac80211: minstrel_ht: fill all requested rates
-Date:   Sat,  2 Apr 2022 17:30:14 +0200
-Message-Id: <20220402153014.31332-2-ps.report@gmx.net>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220402153014.31332-1-ps.report@gmx.net>
-References: <20220402153014.31332-1-ps.report@gmx.net>
+        Sat, 2 Apr 2022 11:38:18 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 050CC143459
+        for <linux-wireless@vger.kernel.org>; Sat,  2 Apr 2022 08:36:26 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id z12so9842521lfu.10
+        for <linux-wireless@vger.kernel.org>; Sat, 02 Apr 2022 08:36:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=sQp3E/tCtBXrNhoAsk/Z0N/SCGmUP8kpIty3COodPo0=;
+        b=A65EsVXEABnj6gSYQg6vpas/3zrSi/rQORU3vmz8AqDExqUXj0Tz5FRs/ZowLKOOdn
+         V5cIP2e7IMvKQP0u1xQjdgVDdDzVsIyC69JeKmbEUFjecNVpItjGInEDdtCRbb56S2rF
+         q0deq9CGnM62VhbTdSLOjaZIIjdP/IOhyReGIFVxxtUCAO+myyQOWDOvPb80VLZk46I7
+         y+G6uC49Dw5ebnH+jFHOFVWBQ7Vqf7V8ptcWOSDiUNRAIkUhd8WUMxIXMzFoQf+wEHtI
+         CF8JuUUFJ/lBPYPy5ZSMWap9h5GqVQmhnXW+D3j28oxRnpijmFLGheIFA/oyNSLJQpj6
+         B2sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=sQp3E/tCtBXrNhoAsk/Z0N/SCGmUP8kpIty3COodPo0=;
+        b=QDwqcq7lJieqLKHx3uRCZH/fO2/bYt3vw2KovLSQZfSU5KEkBuKZCDxc3HjvHCbfUI
+         iloiPbmtWYJ1c8YB8XHsBDwk7RVXv84YyqS1IP6usPt/2szYezJvUex3+bYSfthSqNnf
+         v1TUlPRhUvrhDv+DdrRslIplgS0OWde/oh/vqjTYkNrzHiSeccEzYNFunhWFP4ab4NTS
+         Ij39hC/MEjP+XQgJQXU/RzPmXCPVMV+Md9uxzolMXKZwMWjk+K3xuVxOJFIY/HHrybyO
+         WLpAWDq2tZTjgVh0BWcKwQ7XmFlQHnBZxXp9sZu0BseIJHwJr27VVqgU8N9ANJkWSwSd
+         LCZg==
+X-Gm-Message-State: AOAM533sixQ6zmhELlXmqqKvzLmA06XDOcW11FF/seVHlD1K6D1dfeI2
+        00YsKVeOBFqcvQRaz9qkB/8vgSdTz6k=
+X-Google-Smtp-Source: ABdhPJyHE4/QbkgpBXdGcPqWrtFCSZBwKxDLhQyBeLGnKHYRLR3VUzBdIk65DNiw2Ywg3Rrgo2bFrw==
+X-Received: by 2002:ac2:4dbb:0:b0:44a:da57:33f5 with SMTP id h27-20020ac24dbb000000b0044ada5733f5mr5439929lfe.653.1648913784094;
+        Sat, 02 Apr 2022 08:36:24 -0700 (PDT)
+Received: from rsa-laptop.rossosh.lan ([217.25.229.52])
+        by smtp.gmail.com with ESMTPSA id z18-20020a2e3512000000b0024b12b5044csm52884ljz.89.2022.04.02.08.36.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Apr 2022 08:36:23 -0700 (PDT)
+From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: [PATCH RFC 0/3] ath10k: add encapsulation offloading support
+Date:   Sat,  2 Apr 2022 18:36:12 +0300
+Message-Id: <20220402153615.9593-1-ryazanov.s.a@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-X-Provags-ID: V03:K1:0wr3EzeN+lXmgwruwVbHbIItUpzgHp396SesflJa0YdqyVF7t9q
- AAfaD+Bqk5Z8ghMD22ji/bpePDOkXCm5iQpJqWksXImYnUzRj3IAFShCWrAk5OvIJiWvQYV
- omYoq8j7QN2w//ZnHY94nI4eiXh194ZMZ/01En5eiderY913paxogcTgjPukBO9nqPK6iGd
- Doyvjg7XAqbkVVFsgTaTg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:dQFF1XUE+VA=:+9BjDVBnY0wpvaIt/MzbH9
- pmGlfNEofzMulJnqM4e7NunE/2BHfI4EF4+aFHgR9G6w0cdeTeOZEujNlRBfUn+aDwuyOSoZZ
- jSEfcVb+rjw779miOENlYOfJWH4c0n74Vq8eUyEoaX8ZhYkddxLQAtNsjZQKQedXJFZ/AnNvY
- vcIc0BScF7Mt99WUQ7DUXxzj39AGkyRveARAvot6Nt6U2zPCdmqR7rCsEhMzusqkb0FrxR4Xd
- knNEbGPFU/LzzkCsVtV5hnLaCYPvx4w8OLso8z7RHYqWQgpUVr35Erd5jOAYRDBgRA94GE97p
- qX4IC2VxUuOw9rSLJJ5ysCtmgqoZY/Vb7N0zaabHdpF5QqwlpEpxiddiYuvhJ2jQTTVnzIThd
- 8vjmbpcGEUIFGG6EoezQ0exDBoC6jSQVa+2kBixxluHZOBgscNqSKUPb2H3PRpXxAojc0tec7
- 2uZon9zKNlviNUkvq/hZnN91YmdbqsecbE4gewXwzLWyUjH8oaJtbD5KDXSNcxod6tBPcw0JA
- JAJZ8ioMVb/ngpRW/LxoVlXMRkDIxzQb1xVxFLkH5Pp8Cobent8dSVJNMPyHPN17Aw6YlaQXu
- vtHq8gP6fRrRVL1RreRGmaOsHIhA4T6kdSux9OgJphSYz0z6YFTPqCUYik8GCzV3Htf9a2dVV
- lKT40dR5lF+jOly03fVVpFm6M2zEtFZFyVyqKztM48IS5Jd8dVDzZI/dhLvdwmlJYzvxXM4vR
- QrTQriskVhB2IynDyi9D9vp8KUgHLTxjY9nm/mMGB3nP6k3RBjzUqWV0/8sWdDighPD8oF0ao
- Ile0c7EaWDFVijVLkVFDl/roacDv5IMoEpkYIJHxU1rMaR0h/oKu3G5gjSEXNZCJRLJcWZj5h
- o0zJhHNwtDZi6iCUS4W9kRu1Q0oHw0ymjcPMuySxvR5RlDXrZ0N8w9V+scOJdOh8bdjv7d3lw
- q/kVvZjFHx7S6uiPeJ79Iy3CKH+G3W7DPma/qWkVyzbpWFJcumcmXlE7Q05cds9XYjSShygtF
- Sxvn8N0FfBA/nP1mGJTOv7A3Gts/ikY4r1Kzocg/NhkVkodaSjrSSwIA3gscDrWaxz+5w6LOc
- 6Gh/cNOWpDAJr4=
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,MIME_BASE64_TEXT,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RmlsbCBhbGwgcmVxdWVzdGVkIHJhdGVzIChpbiBjYXNlIG9mIGF0aDlrIDQgcmF0ZSBzbG90cyBh
-cmUKYXZhaWxhYmxlLCBzbyBmaWxsIGFsbCA0IGluc3RlYWQgb2Ygb25seSAzKSwgaW1wcm92ZXMg
-dGhyb3VnaHB1dCBpbgpub2lzeSBlbnZpcm9ubWVudC4KClNpZ25lZC1vZmYtYnk6IFBldGVyIFNl
-aWRlcmVyIDxwcy5yZXBvcnRAZ214Lm5ldD4KLS0tCiBuZXQvbWFjODAyMTEvcmM4MDIxMV9taW5z
-dHJlbF9odC5jIHwgMTQgKysrKysrKy0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlv
-bnMoKyksIDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbmV0L21hYzgwMjExL3JjODAyMTFf
-bWluc3RyZWxfaHQuYyBiL25ldC9tYWM4MDIxMS9yYzgwMjExX21pbnN0cmVsX2h0LmMKaW5kZXgg
-OWM2YWNlODU4MTA3Li5jZDZhMGYxNTM2ODggMTAwNjQ0Ci0tLSBhL25ldC9tYWM4MDIxMS9yYzgw
-MjExX21pbnN0cmVsX2h0LmMKKysrIGIvbmV0L21hYzgwMjExL3JjODAyMTFfbWluc3RyZWxfaHQu
-YwpAQCAtMTQzNiwxNyArMTQzNiwxNyBAQCBtaW5zdHJlbF9odF91cGRhdGVfcmF0ZXMoc3RydWN0
-IG1pbnN0cmVsX3ByaXYgKm1wLCBzdHJ1Y3QgbWluc3RyZWxfaHRfc3RhICptaSkKIAkvKiBTdGFy
-dCB3aXRoIG1heF90cF9yYXRlWzBdICovCiAJbWluc3RyZWxfaHRfc2V0X3JhdGUobXAsIG1pLCBy
-YXRlcywgaSsrLCBtaS0+bWF4X3RwX3JhdGVbMF0pOwogCi0JaWYgKG1wLT5ody0+bWF4X3JhdGVz
-ID49IDMpIHsKLQkJLyogQXQgbGVhc3QgMyB0eCByYXRlcyBzdXBwb3J0ZWQsIHVzZSBtYXhfdHBf
-cmF0ZVsxXSBuZXh0ICovCi0JCW1pbnN0cmVsX2h0X3NldF9yYXRlKG1wLCBtaSwgcmF0ZXMsIGkr
-KywgbWktPm1heF90cF9yYXRlWzFdKTsKLQl9CisJLyogRmlsbCB1cCByZW1haW5pbmcsIGtlZXAg
-b25lIGVudHJ5IGZvciBtYXhfcHJvYmVfcmF0ZSAqLworCWZvciAoOyBpIDwgKG1wLT5ody0+bWF4
-X3JhdGVzIC0gMSk7IGkrKykKKwkJbWluc3RyZWxfaHRfc2V0X3JhdGUobXAsIG1pLCByYXRlcywg
-aSwgbWktPm1heF90cF9yYXRlW2ldKTsKIAotCWlmIChtcC0+aHctPm1heF9yYXRlcyA+PSAyKSB7
-CisJaWYgKGkgPCBtcC0+aHctPm1heF9yYXRlcykKIAkJbWluc3RyZWxfaHRfc2V0X3JhdGUobXAs
-IG1pLCByYXRlcywgaSsrLCBtaS0+bWF4X3Byb2JfcmF0ZSk7Ci0JfQorCisJaWYgKGkgPCBJRUVF
-ODAyMTFfVFhfUkFURV9UQUJMRV9TSVpFKQorCQlyYXRlcy0+cmF0ZVtpXS5pZHggPSAtMTsKIAog
-CW1pLT5zdGEtPm1heF9yY19hbXNkdV9sZW4gPSBtaW5zdHJlbF9odF9nZXRfbWF4X2Ftc2R1X2xl
-bihtaSk7Ci0JcmF0ZXMtPnJhdGVbaV0uaWR4ID0gLTE7CiAJcmF0ZV9jb250cm9sX3NldF9yYXRl
-cyhtcC0+aHcsIG1pLT5zdGEsIHJhdGVzKTsKIH0KIAotLSAKMi4zNS4xCgo=
+Hello,
+
+this series introduces driver support for hardware encapsulation
+offloading feature.
+
+The main goal of the series is an overall improvement of system
+performance. On a QCA9563+QCA9888-based access point in bridged mode,
+encapsulation offloading increases TCP 16-streams DL throughput from
+365 to 396 mbps (+8%) and UDP DL throughput from 436 to 483 mbps (+11%).
+
+The series consist of three patches, the first two prepare the code, and
+the last one introduces the offloading support itself. The first patch
+reworks transmission status reporting to make it flexible enough to
+support 802.11 and Ethernet encapsulated frames reporting. The second
+patch reworks the module parameter that configures the main
+encapsulation format of frames that are passed from the driver to the
+hardware. It makes it possible to configure more encapsulation methods
+than just raw or not-raw. And, as stated before, the third patch
+actually introduces offloading support. It changes a couple of frame
+analysis places along the xmit path and starts reporting offloading
+support to mac80211 via the corresponding hw attribute.
+
+The new feature has been extensively tested with QCA9888 and works well,
+but it may introduces some regression for other untested chips. So the
+series is just an RFC for now.
+
+Sergey Ryazanov (3):
+  ath10k: improve tx status reporting
+  ath10k: turn rawmode into frame_mode
+  ath10k: add encapsulation offloading support
+
+ drivers/net/wireless/ath/ath10k/core.c | 11 +++--
+ drivers/net/wireless/ath/ath10k/core.h |  1 +
+ drivers/net/wireless/ath/ath10k/mac.c  | 67 +++++++++++++++++++++-----
+ drivers/net/wireless/ath/ath10k/txrx.c | 12 ++++-
+ 4 files changed, 73 insertions(+), 18 deletions(-)
+
+-- 
+2.34.1
+
