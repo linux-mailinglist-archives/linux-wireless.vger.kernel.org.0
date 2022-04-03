@@ -2,59 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EA904F081C
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 Apr 2022 08:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 564344F08D6
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 Apr 2022 12:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352977AbiDCGpd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 3 Apr 2022 02:45:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51278 "EHLO
+        id S234359AbiDCLBc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 3 Apr 2022 07:01:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238779AbiDCGpc (ORCPT
+        with ESMTP id S234614AbiDCLBa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 3 Apr 2022 02:45:32 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A571FD36
-        for <linux-wireless@vger.kernel.org>; Sat,  2 Apr 2022 23:43:35 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id ot30so3966259ejb.12
-        for <linux-wireless@vger.kernel.org>; Sat, 02 Apr 2022 23:43:35 -0700 (PDT)
+        Sun, 3 Apr 2022 07:01:30 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86EE21DA5A
+        for <linux-wireless@vger.kernel.org>; Sun,  3 Apr 2022 03:59:33 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id bq8so14416932ejb.10
+        for <linux-wireless@vger.kernel.org>; Sun, 03 Apr 2022 03:59:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=3Xx2ErVMBxvM/FsKeVuUk3St6Mlwp0omh3F7AKnqaSI=;
-        b=i9rDzybQOX37P+qV8TaQQg/OWkO8nhv8kgK42pzWL139Z8Xu9iSCKQwDblvXomhQdz
-         erv8P/h9REJoC4eMGW651lYjvDDBy3NA7QOPQL8DfMmtPpvkbCZ6n7//UrRniEAi29yw
-         4tSlQ1bvLmKZJeBSJwKQV45geF/xfvB/Lm3lHTu/WbIlhhLZQ8DqrR+FpcUJpM2zaJZm
-         LRVQ0cFP1rJPYw3si2S3se7+ZTQmjcFLpmEc4dDx+6seXPz/iiZziII8dEb84JGicwcN
-         IuS8ILoduby5VIzBgGJF+E7viQ/8AwAUImqesCBKIfbnxqlXVNc4drxfJZAMlQi7wTS2
-         SACQ==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=nyBvcJp6mRrQPKBpyIR21awT1EYL+eciU9AOxh5ALmI=;
+        b=XMqnegJZvpjidT9zZmfBPzcB2shOPPCd4Cd6jwxu2XG/ax2iNOGP0fVwFiO2ZJAfN9
+         JleQZq/BZ2tE8/x81yQgHE+gGkFeBp44Nkq1/0Px81xyJfUxnJ+l5PwSZQTBTEazWRJG
+         fUAbTlGgbBMlClQjHT5rktSE1GrAKKMdVyHI3VaLxFJWwAz8SPkt4v739JBab/3fXzU6
+         1QuqlsYLrn3GU8NAGwMymaNOy3PKFczaUA38OQaYz2DBl4UtGdAJSM2tXZ3jgwyButhK
+         8SzXw1IbFmGWHMid13cyiPxPf8F75nwBrjn0e55VKxhtIMp4xykrFSsxlKIA6gh/FyYq
+         kEzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=3Xx2ErVMBxvM/FsKeVuUk3St6Mlwp0omh3F7AKnqaSI=;
-        b=W0pJBwPWKDEoK3LBu04jJIAd+rv/NuveRWZRWCebtACH/mUh2LRiS9lr80ZvB4FZP+
-         aZT3EV6NrChfkK2i95tkw4fGiA1HIbuudXihKgzt0GnFYEDgly6ndtzlkWEx80e23D6B
-         jb4jd/NUaiaBIE/6Cb1iZedRH27OgHK050/FSNNdkQncTUoGse0UsNCM5pspcLAVRKHN
-         qhW65wdaQXSEsYhjNyD+10d9/sIQ70IeqHHL/YiXEJrYhpyiCq6ohznqt9gth5pgE9TK
-         mPo8RQjQ2lOKZi08fGLeS2j8qRNX6W/yy0NNSq9Js/2MjWhrqaZNVWSlaNxOjkJl1mzA
-         vBiA==
-X-Gm-Message-State: AOAM533MwnkHHq/Gb4BXeeC4RzrYBD1RCCTnL7ES51O6dNDKDgpUIilz
-        tOQdBR8uXF4aiqWv82ZCU714X4rnVcrC/0kVIJs=
-X-Google-Smtp-Source: ABdhPJx/3YPNiIHFwcdTaaNlKfTfaMhjgdlgvxJs/3tX27AB4qh3X5TrQZv3Z73xqSyo00fOZ3JUVsT4gKwvPn2U1js=
-X-Received: by 2002:a17:907:6e06:b0:6e4:dae7:9574 with SMTP id
- sd6-20020a1709076e0600b006e4dae79574mr6451508ejc.540.1648968213486; Sat, 02
- Apr 2022 23:43:33 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=nyBvcJp6mRrQPKBpyIR21awT1EYL+eciU9AOxh5ALmI=;
+        b=LS/absGZ3gFOb7qA3XArp5FJsf63gpWs9eZ/e3Gs66wXdoupgJM+1/BWc8d1w81sPs
+         /B91xdsN4wfnb4L6er5CHL0qJIXxGhMEjm+RpwEZdK6UmSairf8i486z1Xti0+eVD2wP
+         UFe0P+FtakxjBdVuYESv+0+gBFEE28zOuv+BH52kWizF+KOm1dO+xDFvw0tNrxh2q36j
+         PY60q1zgPXjEZyge4iKEyyBoiiCSSmbKkhPTiZhJpnGWwQpz5JWqHJOgo3IeeMDMSWTa
+         FaOkOhmKOfOCbGwt4KeVoH8UEl6VGm45xcV5qE+zevchMrn01L+DHYNXQwKYiMxYCBLn
+         Maeg==
+X-Gm-Message-State: AOAM532zMCgIJSOPiaJwlE9KRu4QG/lSMug34ASbCGb0nEqTxDZPISYn
+        MLbGzK5p5zNeoOxz4C8O7gKBmiG39UXFjA18vQY=
+X-Google-Smtp-Source: ABdhPJxrQ4ZFXtrWbvV/UGCkUjXweXwdns9MUwQAhu+ypbjxtHI+VApvXkjUN+XSEPm99DIF6vreW+ycwLrfY7BhTNc=
+X-Received: by 2002:a17:907:d13:b0:6e0:b799:8fcc with SMTP id
+ gn19-20020a1709070d1300b006e0b7998fccmr6820829ejc.11.1648983571537; Sun, 03
+ Apr 2022 03:59:31 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Sun, 3 Apr 2022 07:43:37 +0100
-Message-ID: <CAHpNFcNqkhWQ3xpSw1+MowYrVWii8FMjVOzv_DViCPSBMAHz0g@mail.gmail.com>
-Subject: VecSR Compression (HDMI & DP) & X-OR DSC1.2C & Along with our
- brilliant security features in NTP Folder (Security bat & WebHSM) & Default
- JS VESA_BT sure to please all on their servers
+Date:   Sun, 3 Apr 2022 11:59:35 +0100
+Message-ID: <CAHpNFcOTZQJYoWyVdbMvnYzFL1iFMdjE2GaOgFBnjKukL=iPEQ@mail.gmail.com>
+Subject: GPRS Expansion & Development - Basic comparison of Modes for
+ Authenticated-Encryption -IAPM, XCBC, OCB, CCM, EAX, CWC, GCM, PCFB, CS
 To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -65,165 +61,364 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+GPRS Expansion & Development
+
+Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
+OCB, CCM, EAX, CWC, GCM, PCFB, CS
+
+https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
+
 VecSR Compression (HDMI  & DP) & X-OR DSC1.2C & Along with our
 brilliant security features in NTP Folder (Security bat & WebHSM) &
 Default JS https://bit.ly/VESA_BT sure to please all on their servers
 
-is QFT a Zero compression or low level compression version of DSC
-1.2b? Maybe X-OR X=3D1 New Data & X=3D0 being not sent ? Therefore Masking
-The Frame Buffer!
-
-If not i dually submit it for inclusion in the standard along with
-Vector Compression VESA Standard Display protocol 3
-https://lkml.org/lkml/2022/4/2/328
-https://lkml.org/lkml/2022/4/2/295
-
-Include vector today *important* RS
-https://vesa.org/vesa-display-compression-codecs/
-
-"QFT transports each frame at a higher rate to decrease =E2=80=9Cdisplay
-latency=E2=80=9D, which is the amount of time between a frame being ready f=
-or
-transport in the GPU and that frame being completely displayed. This
-latency is the sum of the transport time through the source=E2=80=99s outpu=
-t
-circuits, the transport time across the interface, the processing of
-the video data in the display, and the painting of the screen with the
-new data. This overall latency affects the responsiveness of games:
-how long it appears between a button is pressed to the time at which
-the resultant action is observed on the screen.
-
-While there are a lot of variables in this equation, not many are
-adjustable from an HDMI specification perspective. QFT operates on the
-transport portion of this equation by reducing the time it takes to
-send only the active video across the cable. This results in reduced
-display latency and increased responsiveness."
-
 *****
 
-VecSR - Vector Standard Render
+ICE-SSRTP GEA Replacement 2022 + (c)RS
 
-VESA Standards : Vector Graphics, Boxes, Ellipses, Curves & Fonts :
-Consolas & other brilliant fonts : (c)RS
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
 
-SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
+GEA-2 > GEA-3 is therefor 64Bit Safe (Mobile calls) & 128Bit Safe
+(Reasonable security)
+SHA2, SHA3therefor 128Bit Safe (Reasonable security Mobile) ++
+AES & PolyChaCha both provide a premise of 128Bit++
 
-OT-SVG Fonts & TT-SVG Obviously Rendered in Direct X 9+ & OpenGL 3+
-Mode & Desktop Rendering modes
+So by reason alone GEA has a place in our hearts.
 
-Improve Console & TV & BIOS & General Animated Render
+*
 
-Vector Display Standards with low relative CPU Weight
-SiMD Polygon Font Method Render
+ICE-SSRTP GEA Replacement 2022 + (c)RS
 
-Default option point scaling (the space) : Metadata Vector Fonts with
-Curl mathematical vector :
+IiCE-SSR for digital channel infrastructure can help heal GPRS+ 3G+ 4G+ 5G+
 
-16 Bit : SiMD 1 width
-32 Bit : SiMD Double Width
+Time NTP Protocols : is usable in 2G+ <> 5G+LTE Network SIM
 
-High precision for AVX 32Bit to 256Bit width precision.
+ICE-SSRTP Encryption AES,Blake2, Poly ChaCha, SM4, SHA2, SHA3, GEA-1 and GEA-2
+'Ideal for USB Dongle & Radio' in Rust RS ' Ideal for Quality TPM
+Implementation'
 
-Vectoring with SiMD allows traditional CPU mastered VESA Emulation
-desktops & safe mode to be super fast & displays to conform to VESA
-render standards with little effort & a 1MB Table ROM.
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
 
-Though the VESA & HDMI & DisplayPort standards Facilitates direct low
-bandwidth transport of and transformation of 3D & 2D graphics & fonts
-into directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
 
-Display Standards Vector Render : DSVR-SiMD Can and will be directly
-rendered to a Surface for visual element : SfVE-Vec
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
 
-As such transport of Vectors & transformation onto display (Monitor,
-3D Unit, Render, TV, & Though HDMI, PCI Port & DP & RAM)
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
 
-Directly resolve The total graphics pipeline into high quality output
-or input & allow communication of almost infinite Floating point
-values for all rendered 3D & 2D Elements on a given surface (RAM
-Render Page or Surface)
+Interleaved, Inverted & Compressed & a simple encryption?
 
-In high precision that is almost unbeatable & yet consumes many levels
-less RAM & Transport Protocol bandwidth,
+*
 
-Further more can also render Vector 3D & 2D Audio & other elements
-though Vector 'Fonting' Systems, Examples exist : 3D Wave Tables,
-Harmonic reproduction units for example Yamaha and Casio keyboards.
+Time differentiated : Interleave, Inversion & differentiating Elliptic curve.
+
+We will be able to know and test the Cypher : PRINCIPLE OF INTENT TO TRUST
+
+We know of a cypher but : (Principle RS)
+
+We blend the cypher..
+Interleaved pages of a cypher obfuscate : PAL CScam does this
+
+Timed : Theoretically unique to you in principle for imprecision, But
+we cannot really have imprecise in Crypto!
+
+But we can have a set time & in effect Elliptic curve a transient variable T,
+With this, Interleave the resulting pages (RAM Buffer Concept)
+
+Invert them over Time Var = T
+
+We can do all & principally this is relatively simple.
+
+(c)RS
+
+*
+
+Example of use:
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade marker
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
 
 (c)Rupert S
 
-https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
+*
 
-https://science.n-helix.com/2019/06/vulkan-stack.html
+Good for cables ? and noise ?
 
-https://science.n-helix.com/2019/06/kernel.html
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
 
-https://science.n-helix.com/2022/03/fsr-focal-length.html
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
 
-https://science.n-helix.com/2018/01/integer-floats-with-remainder-theory.ht=
-ml
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
 
-https://bit.ly/VESA_BT
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
+
+https://science.n-helix.com/2018/12/rng.html
+
+https://science.n-helix.com/2022/02/rdseed.html
+
+https://science.n-helix.com/2017/04/rng-and-random-web.html
+
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+
+https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
+
+Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
+OCB, CCM, EAX, CWC, GCM, PCFB, CS
+
+https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
+
+Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
+
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+
+https://science.n-helix.com/2022/03/ice-ssrtp.html
+
+https://science.n-helix.com/2021/11/ihmtes.html
+
+https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+https://science.n-helix.com/2021/12/3d-audio-plugin.html
+
+Integral to Telecoms Security TRNG
+
+*RAND OP Ubuntu :
+https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
+
+https://pollinate.n-helix.com
 
 *
 
-*Application of SiMD Polygon Font Method Render
-*3D Render method with Console input DEMO : RS
+***** Dukes Of THRUST ******
 
-3D Display access to correct display of fonts at angles in games &
-apps without Utilizing 3rd Axis maths on a simple Shape polygon Vector
-font or shape. (c)Rupert S
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade markerz
 
-3rd dimensional access with vector fonts by a simple method:
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
 
-Render text to virtual screen layer AKA a fully rendered monochrome, 2
-colour or multi colour..
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
 
-Bitmap/Texture,
+channel Key selection based on unique..
 
-Due to latency we have 3 frames ahead to render to bitmap DPT 3 / Dot 5
+Crystal time Quartz with Synced Tick (Regulated & modular)
 
-Can be higher resolution & we can sub sample with closer view priority...
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
 
-We then rotate the texture on our output polygon & factor size differential=
-.
+(c)Rupert S
 
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize
+Dev/Random : Importance
 
-Why ? Because rotating a polygon is harder than subtracting or adding
-width, Hight & direction to fully complex polygon Fonts & Polygon
-lines or curves...
+Dev/Random : Importance : Our C/T/RNG Can Help GEA-2 Open Software
+implementation of 3 Bits (T/RNG) Not 1 : We need Chaos : GEA-1 and
+GEA-2 Implementations we will improve with our /Dev/Random
 
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize.
+Our C/T/RNG Can Help GEA-2 Open Software implementation of 3 Bits
+(T/RNG) Not 1 : We need Chaos : GEA-1 and GEA-2 Implementations we
+will improve with our /Dev/Random
 
-*
+We can improve GPRS 2G to 5G networks still need to save power, GPRS
+Doubles a phones capacity to run all day,
 
-VecSR is really good for secondary loading of sprites & text; In these
-terms very good for pre loading on for example the X86, RISC, AMIGA &
-Famicon type devices,
-With appropriate loading into Sprite buffers or Emulated Secondaries
-(Special Animations) or Font Buffers.
+Code can and will be improved, Proposals include:
 
-Although Large TT-SVG & OT-SVG fonts load well in 8MB Ram on the Amiga
-with Integer & Emulated Float (Library); Traditional BitMap fonts work
-well in a Set Size & can resize well if cached!
+Blake2
+ChaCha
+SM4
+SHA2
+SHA3
 
-The full process leads upto the terminal & how to optimise CON,
-We can & will need to exceed capacities of any system & To improve them!
+Elliptic Encipher
+AES
+Poly ChaCha
 
-presenting: Dev-Con-VectorE=C2=B2
-Fast/dev/CON 3DText & Audio Almost any CPU & GPU ''SiMD & Float/int"
-Class VESA Console +
+Firstly we need a good solid & stable /dev/random
 
-With Console in VecSR you can 3DText & Audio,
+So we can examine the issue with a true SEED!
 
-VecSR Firmware update 2022 For immediate implementation in all
-operating systems & ROM's
+Rupert S https://science.n-helix.com/2022/02/interrupt-entropy.html
 
-Potential is fast & useful.
+TRNG Samples & Method DRAND Proud!
 
-*
+https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=drive_web
+https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=drive_web
+https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=drive_web
+https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=drive_web
 
-https://science.n-helix.com/2022/04/vecsr.html
+https://github.com/P1sec/gea-implementation
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+"A stream cipher, such as the well-known RC4 or GEA-1, usually works
+through using the Xor operation against a plaintext. The Xor operation
+being symmetrical, this means that encrypting should be considered the
+same operation as decrypting: GEA-1 and GEA-2 are basically
+pseudo-random data generators, taking a seed (the key, IV and
+direction bit of the GPRS data, which are concatenated),
+
+The generated random data (the keystream) is xored with the clear-text
+data (the plaintext) for encrypting. Then, later, the keystream is
+xored with the encrypted data (the ciphertext) for decrypting. That is
+why the functions called in the target library for decrypting and
+encrypting are the same.
+
+GEA-1 and GEA-2 are bit-oriented, unlike RC4 which is byte-oriented,
+because their algorithms generate only one bit of pseudo-random data
+at once (derived from their internal state), while algorithms like RC4
+generate no less than one byte at once (in RC4's case, derived from
+
+permutation done in its internal state). Even though the keystream
+bits are put together by the current encryption / decryption C and
+Rust libraries into bytes in order to generate usable keystream,
+obviously.
+
+Based on this, you can understand that GEA-1 and GEA-2 are LFSR:
+Linear Feedback Shift Register-oriented ciphers, because their
+internal state is stored into fixed-size registers. This includes the
+S and W registers which serve for initialization / key scheduling
+purposes and are respectively 64 and 97-bit wide registers, and the A,
+B, C (and for GEA-2 only D) registers which serve for the purpose of
+keystream generation, which are respectively 31, 32, 33 and 29-bit
+wide registers.
+
+On each iteration of the keystream generation, each register is
+bit-wise rotated by one position, while the bit being rotated from the
+left towards the right side (or conversely depending on in which bit
+order you internally represent your registers) is fed back to the
+algorithm and mutated depending on given conditions. Hence, the
+
+shifted-out bit is derived from other processing, and reinserted,
+while being for this reason possibly flipped depending on conditions
+depending on bits present at the other side of the given register.
+
+This is the explanation for the name of linear feedback shift register
+(shift because of the shift operation required for the rotation, and
+linear feedback because of the constant-time transform operation
+involved).
+
+The rest of the register may also be mutated at each iteration steps,
+as in the case of the GEA-1 and 2, whole fixed Xor sequences (which
+differ for each register) may be applied depending on whether the
+rotated bit is a 0 or a 1.
+
+Note that a step where the register iterates is called clocking (the
+register is clocked), and that the fixed points where the register may
+be Xor'ed when the rotated bit becomes a 1 are called taps. The linear
+function which may transmute the rotated bit at the clocking step
+(taking several bits of the original register as an input) is called
+the F function.
+
+Those kind of bit-oriented LFSR algorithms, such as GEA-1 and 2 (for
+GPRS) and A5/1 and 2 (for GSM), were designed this way for optimal
+hardware implementations in the late 80's and early 90's."
+
+*****
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
+
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
+
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
+
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
+
+
+***** Dukes Of THRUST ******
+
+Autism, Deafness & the hard of hearing : In need of ANC & Active audio
+clarification or correction 2022-01
+
+Sony & a few others make noise cancelling headphones that are suitable
+for people with Acute disfunction to brain function for ear drums ...
+Attention deficit or Autism,
+The newer Sony headsets are theoretically enablers of a clear
+confusion free world for Autistic people..
+Reaching out to a larger audience of people simply annoyed by a
+confusing world; While they listen to music..
+Can and does protect a small percentage of people who are confused &
+harassed by major discord located in all jurisdictions of life...
+
+Crazy noise levels, Or simply drowned in HISSING Static:
+
+Search for active voice enhanced noise cancellation today.
+
+Rupert S https://science.n-helix.com
+
+
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+
+https://science.n-helix.com/2021/10/noise-violation-technology-bluetooth.html
+
+
+https://www.orosound.com/
+
+https://www.consumerreports.org/noise-canceling-headphone/best-noise-canceling-headphones-of-the-year-a1166868524/
