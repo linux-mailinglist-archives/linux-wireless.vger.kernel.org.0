@@ -2,53 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 564344F08D6
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 Apr 2022 12:59:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AB2C4F0944
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 Apr 2022 14:13:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234359AbiDCLBc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 3 Apr 2022 07:01:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39370 "EHLO
+        id S1357470AbiDCMOx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 3 Apr 2022 08:14:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234614AbiDCLBa (ORCPT
+        with ESMTP id S1357286AbiDCMOv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 3 Apr 2022 07:01:30 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86EE21DA5A
-        for <linux-wireless@vger.kernel.org>; Sun,  3 Apr 2022 03:59:33 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id bq8so14416932ejb.10
-        for <linux-wireless@vger.kernel.org>; Sun, 03 Apr 2022 03:59:33 -0700 (PDT)
+        Sun, 3 Apr 2022 08:14:51 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B35231340
+        for <linux-wireless@vger.kernel.org>; Sun,  3 Apr 2022 05:12:55 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id d10so3160578edj.0
+        for <linux-wireless@vger.kernel.org>; Sun, 03 Apr 2022 05:12:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
-        bh=nyBvcJp6mRrQPKBpyIR21awT1EYL+eciU9AOxh5ALmI=;
-        b=XMqnegJZvpjidT9zZmfBPzcB2shOPPCd4Cd6jwxu2XG/ax2iNOGP0fVwFiO2ZJAfN9
-         JleQZq/BZ2tE8/x81yQgHE+gGkFeBp44Nkq1/0Px81xyJfUxnJ+l5PwSZQTBTEazWRJG
-         fUAbTlGgbBMlClQjHT5rktSE1GrAKKMdVyHI3VaLxFJWwAz8SPkt4v739JBab/3fXzU6
-         1QuqlsYLrn3GU8NAGwMymaNOy3PKFczaUA38OQaYz2DBl4UtGdAJSM2tXZ3jgwyButhK
-         8SzXw1IbFmGWHMid13cyiPxPf8F75nwBrjn0e55VKxhtIMp4xykrFSsxlKIA6gh/FyYq
-         kEzg==
+        bh=NQyHn+U8eVPdUIPvGzN3lKmJI7IauuBDznn8eNpqpKU=;
+        b=KGcQD8Mn0/jy05r0IiH697GNb2wCmzwZbm1upjSDYVA4CrGiZICd/wJ16EB3hFD6k+
+         ePwbGKjhG8cTaEhTK0KPo6YdDaJFO2ADS3aAZjoAusxrXZcKmUb+0y3njw9AHnLWj/oB
+         AVu2tjwTyTtn0TZNJ0WsNIa33TNyjwHK66UlU57sqJBAiXaCDCA7FWkvGhZVuGAYuZSy
+         6T97y0Ksn0gr0IBCy/89ZGuntkoyAqFrKrbji61sttvF1xH1sbVVcDw9BOm3B/N6CeVh
+         somEY6uunZWTeubgTPXFpG18Tt1drLl6CDfTuWETGPkylpADgARxwClkTUVateepNHAk
+         QMXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=nyBvcJp6mRrQPKBpyIR21awT1EYL+eciU9AOxh5ALmI=;
-        b=LS/absGZ3gFOb7qA3XArp5FJsf63gpWs9eZ/e3Gs66wXdoupgJM+1/BWc8d1w81sPs
-         /B91xdsN4wfnb4L6er5CHL0qJIXxGhMEjm+RpwEZdK6UmSairf8i486z1Xti0+eVD2wP
-         UFe0P+FtakxjBdVuYESv+0+gBFEE28zOuv+BH52kWizF+KOm1dO+xDFvw0tNrxh2q36j
-         PY60q1zgPXjEZyge4iKEyyBoiiCSSmbKkhPTiZhJpnGWwQpz5JWqHJOgo3IeeMDMSWTa
-         FaOkOhmKOfOCbGwt4KeVoH8UEl6VGm45xcV5qE+zevchMrn01L+DHYNXQwKYiMxYCBLn
-         Maeg==
-X-Gm-Message-State: AOAM532zMCgIJSOPiaJwlE9KRu4QG/lSMug34ASbCGb0nEqTxDZPISYn
-        MLbGzK5p5zNeoOxz4C8O7gKBmiG39UXFjA18vQY=
-X-Google-Smtp-Source: ABdhPJxrQ4ZFXtrWbvV/UGCkUjXweXwdns9MUwQAhu+ypbjxtHI+VApvXkjUN+XSEPm99DIF6vreW+ycwLrfY7BhTNc=
-X-Received: by 2002:a17:907:d13:b0:6e0:b799:8fcc with SMTP id
- gn19-20020a1709070d1300b006e0b7998fccmr6820829ejc.11.1648983571537; Sun, 03
- Apr 2022 03:59:31 -0700 (PDT)
+        bh=NQyHn+U8eVPdUIPvGzN3lKmJI7IauuBDznn8eNpqpKU=;
+        b=zAnVhuJgrQOwsfJDoqUjh5WdomxhszaTzfS7yfyr6+mnfNFhOXceIR+u/gW82uLKQM
+         eSvUuiypBO0ZWjEsBCoWZdEFvNwyriqSVB+ObnJBXYurBR9hQ1GheLuhy2++KBL7M0U/
+         2jtJdZconYsBExu5ILXxVXCEV1ft4dZSd/2wyzvTv71Pub7jpBnHEVREaZ+I5imv/jjU
+         LGdBCmZsaL4Nlfw9EF5s1kmSz7STgcxEdxEFMnwJTjY21TSiVDNjJeq1OP/hjz7DMPvr
+         blLKV3YkA+WRNhX/N7qdpm6bSqyKKSlMkDwmEjRiQjkziNLnXZqOt7MRUk/PlP0+WrXM
+         HEiw==
+X-Gm-Message-State: AOAM5302G9YPyPsqCDAzHlGLRSmlGFTjFLwOLWvNpRNq7X/XsTsaJO8Z
+        NXtzMTkQ96PhT7ymN3mWWkQJtKkh5LbMMWsvj1M=
+X-Google-Smtp-Source: ABdhPJyee7Uspz+HoclvXe8kI62vrNVU1vInYowNLQoL1xZMYCxmrtlG9iHpvglxvFXB7O9vIzLApbU6+78IPl+19sA=
+X-Received: by 2002:a50:ce03:0:b0:41c:c36b:c75 with SMTP id
+ y3-20020a50ce03000000b0041cc36b0c75mr1687142edi.195.1648987973246; Sun, 03
+ Apr 2022 05:12:53 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Sun, 3 Apr 2022 11:59:35 +0100
-Message-ID: <CAHpNFcOTZQJYoWyVdbMvnYzFL1iFMdjE2GaOgFBnjKukL=iPEQ@mail.gmail.com>
-Subject: GPRS Expansion & Development - Basic comparison of Modes for
- Authenticated-Encryption -IAPM, XCBC, OCB, CCM, EAX, CWC, GCM, PCFB, CS
+Date:   Sun, 3 Apr 2022 13:12:57 +0100
+Message-ID: <CAHpNFcMwsTH6cCHms0MwckbSZqy8RoSu=Bcs_dfx9uE5sdDr4g@mail.gmail.com>
+Subject: Modulus Dual Encrypt & Decrypt package : Processor feature RS AES-CCM
+ & AES-GCM & Other Cypher Modulus
 To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -61,16 +61,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-GPRS Expansion & Development
+Modulus Dual Encrypt & Decrypt package : Processor feature (c)RS
+
+AES-CCM & AES-GCM & Other Cypher Modulus + CCM & GCM can be
+accelerated with a joint AES Crypto module,
+
+Processor feature & package : Module list:
+
+2 Decryption pipelines working in parallel,
+With a Shared cache & RAM Module
+Modulus & Semi-parallel modulating decryption & Encryption combined
+with Encapsulation Cypher IP Protocol packet
+
+*reference*
+
+Performance Comparison of AES-CCM and AES-GCM Authenticated Encryption Modes
+http://worldcomp-proceedings.com/proc/p2016/SAM9746.pdf
 
 Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
 OCB, CCM, EAX, CWC, GCM, PCFB, CS
-
 https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
 
-VecSR Compression (HDMI  & DP) & X-OR DSC1.2C & Along with our
-brilliant security features in NTP Folder (Security bat & WebHSM) &
-Default JS https://bit.ly/VESA_BT sure to please all on their servers
 
 *****
 
@@ -133,6 +144,30 @@ Invert them over Time Var = T
 We can do all & principally this is relatively simple.
 
 (c)RS
+
+*
+
+Modulus Dual Encrypt & Decrypt package : Processor feature (c)RS
+
+AES-CCM & AES-GCM & Other Cypher Modulus + CCM & GCM can be
+accelerated with a joint AES Crypto module,
+
+Processor feature & package : Module list:
+
+2 Decryption pipelines working in parallel,
+With a Shared cache & RAM Module
+Modulus & Semi-parallel modulating decryption & Encryption combined
+with Encapsulation Cypher IP Protocol packet
+
+*reference*
+
+Performance Comparison of AES-CCM and AES-GCM Authenticated Encryption Modes
+http://worldcomp-proceedings.com/proc/p2016/SAM9746.pdf
+
+Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
+OCB, CCM, EAX, CWC, GCM, PCFB, CS
+https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
+
 
 *
 
@@ -199,10 +234,6 @@ https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
 
 https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
 
-Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
-OCB, CCM, EAX, CWC, GCM, PCFB, CS
-
-https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
 
 Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
 
