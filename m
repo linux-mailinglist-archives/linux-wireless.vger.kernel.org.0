@@ -2,130 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCA144F1FF2
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 01:12:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D13E14F200F
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 01:13:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241438AbiDDXNc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Apr 2022 19:13:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33516 "EHLO
+        id S244289AbiDDXPo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Apr 2022 19:15:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245452AbiDDXLw (ORCPT
+        with ESMTP id S243538AbiDDXPg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Apr 2022 19:11:52 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E1842714
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 15:51:03 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.166])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id E806B1A006F
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 22:51:01 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id BE62890007C
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 22:51:01 +0000 (UTC)
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 2271513C2B0;
-        Mon,  4 Apr 2022 15:51:01 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 2271513C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1649112661;
-        bh=eTxdnXb0GyBcyBa0Hmicj6RDB/2JX86y/qaBebGfSbw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bMgxhxiLLIgT3GjqaGN2Z9K0jiC3qtOJbLIBtGqzPuBgi6x9XCvVdzLYBJRxmo436
-         ro1zat9x0mnZU3wCrMAclNAJg2Z6cN0CwgfWvjNkGzh0C0oS4pnnUmkOO+TJP88dS3
-         SZNTZSFBndEvh00Em7wj5d5qgrNci8QXzELWryrk=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH 2/2] mt76: mt7915:  improve logging around unhandled events.
-Date:   Mon,  4 Apr 2022 15:50:58 -0700
-Message-Id: <20220404225058.32475-2-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20220404225058.32475-1-greearb@candelatech.com>
-References: <20220404225058.32475-1-greearb@candelatech.com>
+        Mon, 4 Apr 2022 19:15:36 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FE5F2F393
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 15:59:20 -0700 (PDT)
+X-UUID: c407711cda0d40b9b0150dbc3ebdeb18-20220405
+X-UUID: c407711cda0d40b9b0150dbc3ebdeb18-20220405
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 905769536; Tue, 05 Apr 2022 06:59:15 +0800
+Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Tue, 5 Apr 2022 06:59:14 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb02.mediatek.inc
+ (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 5 Apr
+ 2022 06:59:14 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 5 Apr 2022 06:59:14 +0800
+From:   <sean.wang@mediatek.com>
+To:     <ihuguet@redhat.com>
+CC:     <linux-wireless@vger.kernel.org>, <Sean.Wang@mediatek.com>,
+        <Ryder.Lee@mediatek.com>, <Shayne.Chen@mediatek.com>,
+        <lorenzo.bianconi83@gmail.com>, <nbd@nbd.name>,
+        Sean Wang <sean.wang@mediatek.com>
+Subject: =?UTF-8?q?Re=3A=20MT7921=20Causing=20Kernel=20to=20Freeze=20after=20Reboot?=
+Date:   Tue, 5 Apr 2022 06:59:12 +0800
+Message-ID: <1649113152-3982-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <d67a480b032523d65da24b77dee163899dc21ac2.camel@pschenker.ch--annotate>
+References: <d67a480b032523d65da24b77dee163899dc21ac2.camel@pschenker.ch--annotate>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-MDID: 1649112662-vqgomUADLNrx
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+From: Sean Wang <sean.wang@mediatek.com>
 
-It would be good to know of events that firmware is sending that
-the driver does not currently handle.
+>On Thu, 2022-03-24 at 10:13 +0100, Íñigo Huguet wrote:
+>> On Wed, Dec 22, 2021 at 12:52 PM Philippe Schenker <dev@pschenker.ch>
+>> wrote:
+>> >
+>> > Hello
+>> >
+>> > So I received a new notebook recently, this is a Lenovo P14s that
+>> > has a Mediatek 7961 network controller inside.
+>> >
+>> > -----
+>> >
+>> > 03:00.0 Network controller: MEDIATEK Corp. Device 7961
+>> >         Subsystem: Lenovo Device e0bc
+>> >         Physical Slot: 0
+>> >         Flags: bus master, fast devsel, latency 0, IRQ 91, IOMMU
+>> > group
+>> > 13
+>> >         Memory at 870200000 (64-bit, prefetchable) [size=1M]
+>> >         Memory at 870300000 (64-bit, prefetchable) [size=16K]
+>> >         Memory at 870304000 (64-bit, prefetchable) [size=4K]
+>> >         Capabilities: <access denied>
+>> >         Kernel driver in use: mt7921e
+>> >         Kernel modules: mt7921e
+>> > ------
+>> >
+>> > I have the issue that on 5.16-rc6 kernel (also on other rcs) it is
+>> > always freezing after I issue a "reboot" command. "poweroff"
+>> > followed by
+>> > a normal power-on works always.
+>>
+>> I have a bug report with this same behaviour and almost identical
+>> kernel logs.: message "Timeout for driver own" followed by traces
+>> related to mt7921 dma stuff, indicating bad page state with refcount
+>> -1 and "page dumped because: nonzero _refcount", finally causing a
+>> crash during boot up, but only after reboot, not after normal power
+>> on.
+>>
+>> It happens always, even with v5.17. Commit 602cc0c9618a (mt76:
+>> mt7921e: fix possible probe failure after reboot) doesn't fix the
+>> issue.
+>>
+>> I hadn't been able to verify where the problem exactly is, but my
+>> guess is this:
+>> - In function mt7921_init_hardware, initialization fails because
+>> mt7921e_driver_own doesn't finish before the timeout (thus we see the
+>> "Timeout for driver own")
+>> - Then, before retrying to init, mt7921_init_hardware calls
+>> mt7921e_init_reset, and the latter calls to mt7921_wpdma_reset
+>> - That makes a cleanup of the DMA queues before stopping the DMA,
+>> which had been enabled short before during probe
+>> - Then, my guess is that in the meanwhile, a DMA event arrives with
+>> the queues stillI being cleaned up
+>>
+>> Does it make sense?
+>
+>After your suggestion I went down the rabbit-hole and bisected this issue. Fortunately I found the commit introducing the issue. Reverting this commit solves the problem for me on v5.17. It is caused around the PCIe ASPM feature.
+>
+># first bad commit: [bf3747ae2e25dda6a9e6c464a717c66118c588c8] mt76:
+>mt7921: enable aspm by default
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
- .../net/wireless/mediatek/mt76/mt76_connac_mcu.h   |  1 +
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c    | 14 ++++++++++++--
- 2 files changed, 13 insertions(+), 2 deletions(-)
+have you tried the latest firmware to see if it can help with the issue ?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index c3c93338d56a..272b107b7e91 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -820,6 +820,7 @@ enum {
- 	MCU_EXT_EVENT_CSA_NOTIFY = 0x4f,
- 	MCU_EXT_EVENT_BCC_NOTIFY = 0x75,
- 	MCU_EXT_EVENT_MURU_CTRL = 0x9f,
-+	MCU_EXT_EVENT_IGMP_FLOODING = 0xBD, /* Seen on 7915 */
- };
- 
- enum {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index d09cf89c4505..83af8e2ca95f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -487,7 +487,13 @@ mt7915_mcu_rx_ext_event(struct mt7915_dev *dev, struct sk_buff *skb)
- 	case MCU_EXT_EVENT_BCC_NOTIFY:
- 		mt7915_mcu_rx_bcc_notify(dev, skb);
- 		break;
-+	case MCU_EXT_EVENT_IGMP_FLOODING:
-+	case MCU_EXT_EVENT_PS_SYNC:
-+		/* ignore some we know we do not care about */
-+		break;
- 	default:
-+		/* in SDK, grep for EventExtEventHandler */
-+		dev_info(dev->mt76.dev, "mt7915, unhandled rx_ext_event: 0x%x", rxd->ext_eid);
- 		break;
- 	}
- }
-@@ -502,6 +508,7 @@ mt7915_mcu_rx_unsolicited_event(struct mt7915_dev *dev, struct sk_buff *skb)
- 		mt7915_mcu_rx_ext_event(dev, skb);
- 		break;
- 	default:
-+		dev_info(dev->mt76.dev, "mt7915, unhandled unsolicited event: 0x%x", rxd->eid);
- 		break;
- 	}
- 	dev_kfree_skb(skb);
-@@ -2090,7 +2097,7 @@ static int mt7915_load_patch(struct mt7915_dev *dev)
- 	case PATCH_NOT_DL_SEM_SUCCESS:
- 		break;
- 	default:
--		dev_err(dev->mt76.dev, "Failed to get patch semaphore\n");
-+		dev_err(dev->mt76.dev, "Failed to get patch semaphore: %d", sem);
- 		return -EAGAIN;
- 	}
- 
-@@ -2530,8 +2537,11 @@ int mt7915_mcu_init(struct mt7915_dev *dev)
- 	}
- 
- 	ret = mt7915_load_firmware(dev);
--	if (ret)
-+	if (ret) {
-+		dev_info(dev->mt76.dev, "mcu-init: Failed to load firmware, err: %d",
-+			 ret);
- 		return ret;
-+	}
- 
- 	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
- 
--- 
-2.20.1
+such as https://patchwork.kernel.org/project/linux-mediatek/patch/8e8a3e94ffe7586cec5abe56ba507e1e3ed8b823.1648171096.git.objelf@gmail.com/
 
+>
+>@Felix do I have to report this anywhere else than on here?
+>
+>Thanks,
+>Philippe
+>
+>>
+>> >
+>> > Since it freezes and showing multiple Call Traces I included 4 logs
+>> > in the attachment, it certainly points always to mt76_dma functions.
+
+<snip>
