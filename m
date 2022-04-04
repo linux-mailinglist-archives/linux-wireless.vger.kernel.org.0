@@ -2,167 +2,178 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 444954F1EB6
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 00:25:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 335994F2008
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 01:12:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241322AbiDDVyj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Apr 2022 17:54:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57280 "EHLO
+        id S240973AbiDDXNb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Apr 2022 19:13:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1386311AbiDDVmo (ORCPT
+        with ESMTP id S245394AbiDDXLw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Apr 2022 17:42:44 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8345BAE7E;
-        Mon,  4 Apr 2022 14:34:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1649108034;
-        bh=7pBH/QTJ4K2fdCD9q+U67btQCRzR9hRO991I2DZKjOg=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
-        b=fPiI8WSIvhnY2eYzKH3G+8kOIH69YAbJLtEAz1x3F7p5LFTZPTj5/cMgttplO59FA
-         +F5jkqUHuogpsPMrpzoD3KLdwiELqbohuibbuz4FZD58yBY3pJp8iAXsgh82JlUBRd
-         alVAgJygCNjKIjf24/0xmDIBsina6AEGE5O5iVrI=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost ([62.216.209.4]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MhU9Z-1oEQ3W3oG3-00eaxt; Mon, 04
- Apr 2022 23:33:54 +0200
-Date:   Mon, 4 Apr 2022 23:33:52 +0200
-From:   Peter Seiderer <ps.report@gmx.net>
+        Mon, 4 Apr 2022 19:11:52 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B50B26FE
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 15:51:02 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.121])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id CFE5C1A0068
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 22:51:00 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 98C4A4C009F
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 22:51:00 +0000 (UTC)
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 0A3EB13C2B0;
+        Mon,  4 Apr 2022 15:51:00 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0A3EB13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1649112660;
+        bh=1iwDxC6ujRhg/xJSQNybtzQggExjPVsczveA7x69l/A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LDfHC9lTdZZ0sn2AXkN7hnrbWDcnKFB0vjV1saLoQZVlHhHEU+4Af9qKlD66Hj2N+
+         PbcE11gZE8LHfxMmF7NlpAONU/E1ztW/8hWz5+/aGBZSefh58RDoqulZXzTD4+bSdZ
+         THpKOQioTvEqJ3GOnrDobU76c5zQ/u0WVP4ZfUVE=
+From:   greearb@candelatech.com
 To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH v1] mac80211: minstrel_ht: fix where rate stats are
- stored (fixes debugfs output)
-Message-ID: <20220404233352.015c466d@gmx.net>
-In-Reply-To: <20220404165414.1036-1-ps.report@gmx.net>
-References: <20220404165414.1036-1-ps.report@gmx.net>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-suse-linux-gnu)
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH 1/2] mt76: mt7915:  retry pci probe logic up to 3 times.
+Date:   Mon,  4 Apr 2022 15:50:57 -0700
+Message-Id: <20220404225058.32475-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:cgac7zs78FX8fY5Aa49qEpPlxy5uOGFoENtF+BbX9fV7jWveeVe
- 3KGFnIjV1+SsvHQzxW9/YjP4MpxEogFZu4SkirmkahXVhke9yn7camcSlO6selYHh8Or5kq
- 59vwB86Ch7NRfdKH2u9f55GMJ7QsvX8V0QKLUUJ6nxecX1RH56qj/z+8TdGBMeH6aGoEVZK
- /VQZZlbPHISWwpyNzW/Wg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:LzUmXy3axEo=:XHAx0L/RxKqYFylh5BsEYG
- IX3NqFxW1SQ3vtVl9d6OzpZWhK6hJ+4Ggv3avalmawWGzFh+htjm54+dKsmicY8VaLSw8mZsj
- zly0SluDHPeL97EWfxwVzMmlUQtRRpDmss2CWYz7AK00O8i+U+QBI6vE8ou501IWsnIo9xP7O
- q3ljSHobd1YXz35e3jzMepVfYki3rNdvluRxV38SZo8iG8aP4iqaplMDih3jMcVuz8fQuJTwV
- vJXE6d3mRtQ8jmYHMe6TxiPwstfaEdsZpVYMcH9YwOiSB4VCTLV3wCcGGZlrPAumdA5RW/Mpp
- LJsmMg1ly0V2gkcJxew/rC8x7tmjr7MeWaVPCyB7YAxQu9r+IVgbMYCEcXYzjhMfZBliJS7wK
- QYDL3brzRsqN8VO7T8nmc8aLy5AbgYCa2O+wj9LeuKO9vBcVEDeUWS2WKvUSqPBunRuAvIhfG
- vTV+rWSZ+/T+dMKL+xsVrVPdE646CWx/rXrQRuqKQobrYYFKjHFlSBGgOad9I9Megv8n/2ohS
- JLW8opSEF6f0mRGycIYSJSwaZId7Wfjl8QPRK5FMG30ccECTV3TE94dD17tFiA81iFsv3TMGi
- Zca7rIDXRh/0lrmSp1muC1roxPEmN/aG6RDHDLvIlcQ7bTJ9BUPKJfVQwHFqA7I8ZpNudcSXE
- i36LCVm7Sr+Tqa7GplW1YJhbE+AZ2Wo2wJvD2ABH8rrrfIvXaEuk4puyFqf0CimZRO8/U506b
- BI58vqhMfSjHVxq5tjMPFR9N+RTjxtLvmICLPMjybAF4h+jcdSMfiN+kDQEfLwiNgOsVzNzy0
- QRrgXBXGhqSZVJ3XmI7N3SN7wuzLEnUPHkl5ZVNkskigowenT0Jt/1m1jEBvDB9SSxpt+Y6so
- Wxid+S/KvY4cTuOTAlknJeQvWAI3pKGCAp5ug6d9gkgMEiQGo8jRlx8s1riaj3han6VgkTfV8
- Dzf0AxuZsrXLaUWZMxZc2OR7AG5QBJGwFHQDdMfVQNsfVq8rmXpadGUnBZh1egtYWIOqSeolf
- 0j9wd+DzZfTVboBoTWm5y9t1RROvwYBsQlz8ctOCwMKs6SFQJKHoMsQFDOdeZBTfPcQytI28/
- 80/XUlHor1bFgs=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-MDID: 1649112661-LnSlg-cs1YHA
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Ben Greear <greearb@candelatech.com>
 
-+ CC: Felix Fietkau
+On my x86-64 system with 6 mtk7915 radios, one or more radios
+often fails to start upon reboot.  So, do up to 3 retries in
+the pci probe logic.  Example of this mitigation working:
 
-On Mon,  4 Apr 2022 18:54:14 +0200, Peter Seiderer <ps.report@gmx.net> wro=
-te:
+[    8.637908] mt7915e 0000:06:00.0: ASIC revision: 79150000
+[    8.638026] mt7915e 0000:06:00.0: mt7915:  register_device  Driver-Version: 5.17.0-ct
+[   28.863203] mt7915e 0000:06:00.0: MCU: Initial Failure: Message 00000010 (cid 10 ext_cid: 0 seq 1) timeout.  Last successful cmd: 0x0
+[   28.873960] mt7915e 0000:06:00.0: Failed to get patch semaphore: -110
+[   28.879141] mt7915e 0000:06:00.0: mcu-init: Failed to load firmware, err: -11
+[   28.879143] mt7915e 0000:06:00.0: mt7915_register_device failed, ret: -11
+[   28.884796] mt7915e 0000:06:00.0: mt7915_pci_probe had error on try 1/3, ret: -11
+[   28.891161] mt7915e 0000:06:00.0: ASIC revision: 79150094
+[   28.891261] mt7915e 0000:06:00.0: mt7915:  register_device  Driver-Version: 5.17.0-ct
+[   29.022875] mt7915e 0000:06:00.0: HW/SW Version: 0x8a108a10, Build Time: 20211222184017a
+[   29.033934] mt7915e 0000:06:00.0: WM Firmware Version: ____000000, Build Time: 20211222184052
+[   29.051992] mt7915e 0000:06:00.0: WA Firmware Version: DEV_000000, Build Time: 20211222184111
+[   29.446014] mt7915e 0000:06:00.0: mt7915_pci_probe succeeded on try 2/3
 
-> Using an ath9k card the debugfs output of minstrel_ht looks like the fol=
-lowing
-> (note the zero values for the first four rates sum-of success/attempts):
->
->              best    ____________rate__________    ____statistics___    =
-_____last____    ______sum-of________
-> mode guard #  rate   [name   idx airtime  max_tp]  [avg(tp) avg(prob)]  =
-[retry|suc|att]  [#success | #attempts]
-> OFDM       1    DP     6.0M  272    1640     5.2       3.1      53.8    =
-   3     0 0             0   0
-> OFDM       1   C       9.0M  273    1104     7.7       4.6      53.8    =
-   4     0 0             0   0
-> OFDM       1  B       12.0M  274     836    10.0       6.0      53.8    =
-   4     0 0             0   0
-> OFDM       1 A    S   18.0M  275     568    14.3       8.5      53.8    =
-   5     0 0             0   0
-> OFDM       1      S   24.0M  276     436    18.1       0.0       0.0    =
-   5     0 1            80   1778
-> OFDM       1          36.0M  277     300    24.9       0.0       0.0    =
-   0     0 1             0   107
-> OFDM       1      S   48.0M  278     236    30.4       0.0       0.0    =
-   0     0 0             0   75
-> OFDM       1          54.0M  279     212    33.0       0.0       0.0    =
-   0     0 0             0   72
->
-> Total packet count::    ideal 16582      lookaround 885
-> Average # of aggregated frames per A-MPDU: 1.0
->
-> Debugging showed that the rate statistics for the first four rates where
-> stored in the MINSTREL_CCK_GROUP instead of the MINSTREL_OFDM_GROUP beca=
-use
-> in minstrel_ht_get_stats() the supported check was not honoured as done =
-in
-> various other places, e.g net/mac80211/rc80211_minstrel_ht_debugfs.c:
->
->  74                 if (!(mi->supported[i] & BIT(j)))
->  75                         continue;
->
-> With the patch applied the output looks good:
->
->               best    ____________rate__________    ____statistics___   =
- _____last____    ______sum-of________
-> mode guard #  rate   [name   idx airtime  max_tp]  [avg(tp) avg(prob)]  =
-[retry|suc|att]  [#success | #attempts]
-> OFDM       1    D      6.0M  272    1640     5.2       5.2     100.0    =
-   3     0 0             1   1
-> OFDM       1   C       9.0M  273    1104     7.7       7.7     100.0    =
-   4     0 0            38   38
-> OFDM       1  B       12.0M  274     836    10.0       9.9      89.5    =
-   4     2 2           372   395
-> OFDM       1 A   P    18.0M  275     568    14.3      14.3      97.2    =
-   5    52 53         6956   7181
-> OFDM       1      S   24.0M  276     436    18.1       0.0       0.0    =
-   0     0 1             6   163
-> OFDM       1          36.0M  277     300    24.9       0.0       0.0    =
-   0     0 1             0   35
-> OFDM       1      S   48.0M  278     236    30.4       0.0       0.0    =
-   0     0 0             0   38
-> OFDM       1      S   54.0M  279     212    33.0       0.0       0.0    =
-   0     0 0             0   38
->
-> Total packet count::    ideal 7097      lookaround 287
-> Average # of aggregated frames per A-MPDU: 1.0
->
-> Signed-off-by: Peter Seiderer <ps.report@gmx.net>
-> ---
->  net/mac80211/rc80211_minstrel_ht.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_m=
-instrel_ht.c
-> index 9c6ace858107..5a6bf46a4248 100644
-> --- a/net/mac80211/rc80211_minstrel_ht.c
-> +++ b/net/mac80211/rc80211_minstrel_ht.c
-> @@ -362,6 +362,9 @@ minstrel_ht_get_stats(struct minstrel_priv *mp, stru=
-ct minstrel_ht_sta *mi,
->
->  	group =3D MINSTREL_CCK_GROUP;
->  	for (idx =3D 0; idx < ARRAY_SIZE(mp->cck_rates); idx++) {
-> +		if (!(mi->supported[group] & BIT(idx)))
-> +			continue;
-> +
->  		if (rate->idx !=3D mp->cck_rates[idx])
->  			continue;
->
+A quick test of traffic shows the radio works fine after recovery.
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/pci.c   | 61 +++++++++++++------
+ 1 file changed, 44 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+index 6f819c41a4c4..07cb8a699b75 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+@@ -92,8 +92,8 @@ static int mt7915_pci_hif2_probe(struct pci_dev *pdev)
+ 	return 0;
+ }
+ 
+-static int mt7915_pci_probe(struct pci_dev *pdev,
+-			    const struct pci_device_id *id)
++static int _mt7915_pci_probe(struct pci_dev *pdev,
++			     const struct pci_device_id *id)
+ {
+ 	struct mt7915_dev *dev;
+ 	struct mt76_dev *mdev;
+@@ -101,20 +101,6 @@ static int mt7915_pci_probe(struct pci_dev *pdev,
+ 	int irq;
+ 	int ret;
+ 
+-	ret = pcim_enable_device(pdev);
+-	if (ret)
+-		return ret;
+-
+-	ret = pcim_iomap_regions(pdev, BIT(0), pci_name(pdev));
+-	if (ret)
+-		return ret;
+-
+-	pci_set_master(pdev);
+-
+-	ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
+-	if (ret)
+-		return ret;
+-
+ 	mt76_pci_disable_aspm(pdev);
+ 
+ 	if (id->device == 0x7916 || id->device == 0x790a)
+@@ -161,8 +147,11 @@ static int mt7915_pci_probe(struct pci_dev *pdev,
+ 	}
+ 
+ 	ret = mt7915_register_device(dev);
+-	if (ret)
++	if (ret) {
++		dev_err(dev->mt76.dev, "mt7915_register_device failed, ret: %d",
++			ret);
+ 		goto free_hif2_irq;
++	}
+ 
+ 	return 0;
+ 
+@@ -181,6 +170,44 @@ static int mt7915_pci_probe(struct pci_dev *pdev,
+ 	return ret;
+ }
+ 
++static int mt7915_pci_probe(struct pci_dev *pdev,
++			     const struct pci_device_id *id)
++{
++	int z;
++	int ret;
++
++	ret = pcim_enable_device(pdev);
++	if (ret)
++		return ret;
++
++	ret = pcim_iomap_regions(pdev, BIT(0), pci_name(pdev));
++	if (ret)
++		return ret;
++
++	pci_set_master(pdev);
++
++	ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
++	if (ret)
++		return ret;
++
++	for (z = 0; z<3; z++) {
++		ret = _mt7915_pci_probe(pdev, id);
++		if (ret) {
++			dev_err(&pdev->dev, "mt7915_pci_probe had error on try %d/3, ret: %d",
++			       z + 1, ret);
++		} else {
++			/* It is worth a message to let user know we succeeded if
++			 * earlier attempts failed.
++			 */
++			if (z > 0)
++				dev_info(&pdev->dev, "mt7915_pci_probe succeeded on try %d/3",
++					 z + 1);
++			break;
++		}
++	}
++	return ret;
++}
++
+ static void mt7915_hif_remove(struct pci_dev *pdev)
+ {
+ 	struct mt7915_hif *hif = pci_get_drvdata(pdev);
+-- 
+2.20.1
 
