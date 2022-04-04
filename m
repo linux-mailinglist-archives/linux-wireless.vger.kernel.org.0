@@ -2,139 +2,431 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EA924F2040
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 01:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93D774F21A7
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 06:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229905AbiDDXbQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Apr 2022 19:31:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52712 "EHLO
+        id S230152AbiDECqK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Apr 2022 22:46:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231603AbiDDXbL (ORCPT
+        with ESMTP id S230050AbiDECpu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Apr 2022 19:31:11 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83F082F038;
-        Mon,  4 Apr 2022 16:29:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649114952; x=1680650952;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=cGXyR49bcccWv8eCK+ywXLkpFHhfbWs9AEBVEeAZ8VU=;
-  b=OXIlTAxpHVqMdmYFAfH5s9JkPcB1q843m4+PL1B+nbEZyUX5W7Jo+iQU
-   8PKXr9LMLlwdW41/BtV1zVI5A2i2JYDobaTHa2ztQihG72DjgAqI6+zfm
-   nu7+fpOHKBZG9WhNRBRZwpAd0+XgCTijA3aMbcow8VDFATInrW3g7dUtl
-   zrGfsHj+izjZqvqcfuxZBaZDBN+CC3FODwzB+LOZ7o+aXl/4n4gE26jI6
-   baKWHgDaw5cp79B+YQ0UHs4GcFGJ+9MlqMENwhtDuKuBbvC8bEipoyR/V
-   MhIyArMXbixjXCkwLM8hCuPe9K3oq1Ha4H/6jsFB7j/Gd/CxOtfGY+bac
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10307"; a="347070072"
-X-IronPort-AV: E=Sophos;i="5.90,235,1643702400"; 
-   d="scan'208";a="347070072"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2022 16:29:11 -0700
-X-IronPort-AV: E=Sophos;i="5.90,235,1643702400"; 
-   d="scan'208";a="657694011"
-Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.251.1.231]) ([10.251.1.231])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2022 16:29:10 -0700
-Message-ID: <a0f3d677-e3a8-ecef-a17e-0638764bd425@linux.intel.com>
-Date:   Mon, 4 Apr 2022 16:29:10 -0700
+        Mon, 4 Apr 2022 22:45:50 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF33743128C
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 18:51:51 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id g24so15221953lja.7
+        for <linux-wireless@vger.kernel.org>; Mon, 04 Apr 2022 18:51:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=CWwE63Uj70Dz+evqLhQ44oFva+2asIsEVowZ5R1Hj4s=;
+        b=MTLi0SN2/CtQ9VsgDxb4iZw37Af+lcedVzKzwlt/rmiU3szSaf1Mv3N/u9xi3EjKW4
+         As58Mj2xb6L0b04HBhREhOF8LOwlWJtKm6vySkVCOclR11PWOC6bhMTYqgE05YJhtBdb
+         5OQ3jY3GywxxqaPBCQtQbevm0MzOCT72UjiWNZM4dmLvb5WJEN1gYU8dQ6hroNZA1ZCP
+         S8AMDnex+b44bPoRiKsyTACN7qHEPi1mkQP3F4JZWO4U0iSsQNR5wQRuyMUb73/7G4qF
+         n6uxWWdRtzpkW2SMWrnLG/oq95ZvLjK62GJT9FntZmFsCbAyqgHqvFNdWlyOAPhHY5mH
+         T0OA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=CWwE63Uj70Dz+evqLhQ44oFva+2asIsEVowZ5R1Hj4s=;
+        b=sqf8w6hOAPq3ItPqFL1Ynbs5kG7NIIHGzHag2dby/Uwtokvu1+8ifKh///sX1wgb6w
+         +Ajso25QuKZnGqLC2nTqi9eFrm6xpqPlqZxRjXtGRq73ApNFSnF4vWhpSQFGNnb9bn+3
+         NBqD0tyZMneLqf2MDfLinDNgs/WFkYGHHLzxy+rGy/wibAZdidqhudBcIyVdWdhQz2Ox
+         j2yZ04qgFXIIkQ2v9yhZgpSJFjDaD1mYzuLPnFizYGhNAlkx8++Dlp/4V1EEdiwA61hp
+         azZATZjgard1F8iGV1jN+YnIJASclDSrI/+7UqbYf6w/cOtuF27aFEJAAli5JJ2MFXg6
+         L54Q==
+X-Gm-Message-State: AOAM532JDbM8eLEAfQyIHeoFqZ9RvNP2jznHTb+RCTX2kDGwxOVuF82h
+        0F+GB6L2NNv415tq+lL0qNw/+oOR+l2JNpgASOjQF8kokfAjMQ+A
+X-Google-Smtp-Source: ABdhPJzBsKO2j9MyoYnx+NlhM7baoEAm89DrhoHnN5DW27ua2r0tUJkiTippVbrs/IZPEpxjLGP1OVm7wmko/9JjohY=
+X-Received: by 2002:a05:6402:3604:b0:41c:c4e6:2988 with SMTP id
+ el4-20020a056402360400b0041cc4e62988mr631649edb.157.1649115815748; Mon, 04
+ Apr 2022 16:43:35 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH net-next v5 08/13] net: wwan: t7xx: Add data path
- interface
-Content-Language: en-US
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Jakub Kicinski <kuba@kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        M Chetan Kumar <m.chetan.kumar@intel.com>,
-        chandrashekar.devegowda@intel.com,
-        Intel Corporation <linuxwwan@intel.com>,
-        chiranjeevi.rapolu@linux.intel.com,
-        =?UTF-8?B?SGFpanVuIExpdSAo5YiY5rW35YabKQ==?= 
-        <haijun.liu@mediatek.com>, amir.hanania@intel.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        ilpo.johannes.jarvinen@intel.com, moises.veleta@intel.com,
-        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
-        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
-        madhusmita.sahu@intel.com
-References: <20220223223326.28021-1-ricardo.martinez@linux.intel.com>
- <20220223223326.28021-9-ricardo.martinez@linux.intel.com>
- <CAHNKnsTZ57hZfy_CTv8-AXuXJEuYVCaO0oax03eMMYzerB-Oyw@mail.gmail.com>
-From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
-In-Reply-To: <CAHNKnsTZ57hZfy_CTv8-AXuXJEuYVCaO0oax03eMMYzerB-Oyw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Tue, 5 Apr 2022 00:43:24 +0100
+Message-ID: <CAHpNFcPWphMzXVYiPtkyUVBUQKWUc_cW4NkG4k4xeiGbUYBHhA@mail.gmail.com>
+Subject: Parallax Cryptographic Processing Unit: RS AES-CCM & AES-GCM & Other
+ Cypher Modulus + CCM & GCM can be accelerated with a joint AES Crypto module
+ : Modulus Dual Encrypt & Decrypt package : Processor feature
+To:     torvalds@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Sergey,
+Duke Abbaddon <duke.abbaddon@gmail.com>
+Mon, Apr 4, 10:41 AM (13 hours ago)
+to torvalds, bcc: heiko, bcc: guoren, bcc: atish.patra, bcc: hch, bcc:
+Anup, bcc: :, bcc: Dennis, bcc: ebiggers@kernel.org, bcc: Emil, bcc:
+jarkko@kernel.org, bcc: Jonathan, bcc: keyrings@vger.kernel.org, bcc:
+kvalo@kernel.org, bcc: linux-crypto@vger.kernel.org, bcc:
+linux-iio@vger.kernel.org, bcc: linux-integrity@vger.kernel.org, bcc:
+linux-kernel@vger.kernel.org, bcc: linux-mips@vger.kernel.org, bcc:
+linux-security-module@vger.kernel.org, bcc:
+linux-wireless@vger.kernel.org, bcc: luto@kernel.org, bcc: Nathan,
+bcc: netdev@vger.kernel.org, bcc: sultan@kerneltoast.com, bcc:
+ak@linux.intel.com, bcc: Andrew, bcc: Andy, bcc:
+development@linux.org, bcc: feedback@linux.org, bcc:
+geert@linux-m68k.org, bcc: Greg, bcc: hostmaster+ntp@linux-ia64.org,
+bcc: jejb@linux.ibm.com, bcc: kirill.shutemov@linux.intel.com, bcc:
+linus@linux.org, bcc: linux-m68k@lists.linux-m68k.org, bcc:
+linux-riscv@lists.infradead.org, bcc: linux@dominikbrodowski.net, bcc:
+Micha=C5=82, bcc: press@linux.org, bcc: Rasmus, bcc:
+sathyanarayanan.kuppuswamy@linux.intel.com, bcc: security@linux.org,
+bcc: support@linux.org, bcc: torvalds@linux-foundation.org, bcc:
+webmaster@linux.org, bcc: zohar@linux.ibm.com, bcc:
+info@vialicensing.com, bcc: corpcomm@qualcomm.com, bcc:
+rukikaire@un.org, bcc: virt-owner@lists.fedoraproject.org, bcc:
+martin@strongswan.org, bcc: security@microsoft.com, bcc:
+sotonino@un.org, bcc: security@ubuntu.com, bcc:
+opencode@microsoft.com, bcc: moses.osani@un.org, bcc:
+webmaster@playstation.com, bcc: webmaster@amazon.com, bcc:
+Corporate.Secretary@amd.com, bcc: haqf@un.org, bcc:
+Copyright_Agent@spe.sony.com, bcc: tremblay@un.org, bcc:
+webmaster@sony.com, bcc: dujarric@un.org, bcc: consul@ps.mofa.go.jp,
+bcc: press@eu.sony.com, bcc: agriculture@rusemb.org.uk, bcc:
+suzuki.poulose@arm.com, bcc: grovesn@un.org, bcc: kaneko@un.org, bcc:
+media.help@apple.com, bcc: security@asus.com, bcc:
+visa@egyptconsulate.co.uk, bcc: help.redhat.com, bcc:
+cirrus_logic@pr-tocs.co.jp, bcc: customercare@logitech.com, bcc: Logi,
+bcc: logitech@feverpr.com, bcc: logitech@vertigo6.nl, bcc:
+logitech@wellcom.fr, bcc: mediarelations@logitech.com, bcc:
+morchard@scottlogic.co.uk, bcc: samasaki@logitech.com, bcc:
+slan@logitech.com, bcc: support@logitech.com, bcc: pctech@realtek.com,
+bcc: press@google.com, bcc: Nintendo, bcc: tech.support@amd.com, bcc:
+Nvidia, bcc: security@intel.com, bcc: saporit@us.ibm.com, bcc:
+Gabriel.Kerneis@ssi.gouv.fr, bcc: hughsient@gmail.com, bcc:
+ksuzuki@polyphony.co.jp, bcc: uchimura@polyphony.co.jp, bcc:
+mario.limonciello@amd.com, bcc: thomas.lendacky@amd.com, bcc:
+john.allen@amd.com, bcc: herbert@gondor.apana.org.au
 
-On 3/6/2022 6:58 PM, Sergey Ryazanov wrote:
-> On Thu, Feb 24, 2022 at 1:35 AM Ricardo Martinez
-> <ricardo.martinez@linux.intel.com> wrote:
->> From: Haijun Liu <haijun.liu@mediatek.com>
->>
->> Data Path Modem AP Interface (DPMAIF) HIF layer provides methods
->> for initialization, ISR, control and event handling of TX/RX flows.
->>
->> DPMAIF TX
->> Exposes the `dmpaif_tx_send_skb` function which can be used by the
->> network device to transmit packets.
->> The uplink data management uses a Descriptor Ring Buffer (DRB).
->> First DRB entry is a message type that will be followed by 1 or more
->> normal DRB entries. Message type DRB will hold the skb information
->> and each normal DRB entry holds a pointer to the skb payload.
->>
->> DPMAIF RX
->> The downlink buffer management uses Buffer Address Table (BAT) and
->> Packet Information Table (PIT) rings.
->> The BAT ring holds the address of skb data buffer for the HW to use,
->> while the PIT contains metadata about a whole network packet including
->> a reference to the BAT entry holding the data buffer address.
->> The driver reads the PIT and BAT entries written by the modem, when
->> reaching a threshold, the driver will reload the PIT and BAT rings.
-...
->> +static int t7xx_dpmaif_add_skb_to_ring(struct dpmaif_ctrl *dpmaif_ctrl, struct sk_buff *skb)
->> +{
->> +       unsigned short cur_idx, drb_wr_idx_backup;
->> ...
->> +       txq = &dpmaif_ctrl->txq[skb_cb->txq_number];
->> ...
->> +       cur_idx = txq->drb_wr_idx;
->> +       drb_wr_idx_backup = cur_idx;
->> ...
->> +       for (wr_cnt = 0; wr_cnt < payload_cnt; wr_cnt++) {
->> ...
->> +               bus_addr = dma_map_single(dpmaif_ctrl->dev, data_addr, data_len, DMA_TO_DEVICE);
->> +               if (dma_mapping_error(dpmaif_ctrl->dev, bus_addr)) {
->> +                       dev_err(dpmaif_ctrl->dev, "DMA mapping fail\n");
->> +                       atomic_set(&txq->tx_processing, 0);
->> +
->> +                       spin_lock_irqsave(&txq->tx_lock, flags);
->> +                       txq->drb_wr_idx = drb_wr_idx_backup;
->> +                       spin_unlock_irqrestore(&txq->tx_lock, flags);
-> What is the purpose of locking here?
+Modulus Dual Encrypt & Decrypt package : Processor feature (c)RS
 
-The intention is to protect against concurrent access of drb_wr_idx by t7xx_txq_drb_wr_available()
+AES-CCM & AES-GCM & Other Cypher Modulus + CCM & GCM can be
+accelerated with a joint AES Crypto module,
 
->
->> +                       return -ENOMEM;
->> +               }
->> ...
->> +       }
->> ...
->> +}
->
+Processor feature & package : Module list:
+
+2 Decryption pipelines working in parallel,
+With a Shared cache & RAM Module
+Modulus & Semi-parallel modulating decryption & Encryption combined
+with Encapsulation Cypher IP Protocol packet
+
+Parallax Cryptographic Processing Unit: RS
+
+The capacity To Multiply decryption on specific hardware in situations
+such as lower Bit precision is to be implemented as follows:
+
+On AES-NI & ARM Cryptographic processors; In particular PPS(ARM+) & SiMD ..
+
+The capacity to exploit the fact that the nonce is 16Bit to 64Bit &
+full float upto 128Bit for legal decryption (client) means there is a
+simple method to use:
+
+In situations that a AES-NI & ARM Cryptographic unit can process 2
+threads on a 256Bit Function we can do both the main 128Bit/192Bit &
+the nonce 16Bit to 64Bit & Enable a single instruction Roll to
+Synchronise both The main HASH & Nonce.
+
+AES & Crypto hardware can utilise the CPU/GPU/Processor FPU & SiMD to
+decrypt the nonce (smaller so fast) & in the same 8bto to 64Bits of
+code; Inline & parallax the cryptographic function.
+
+With a 256Bit AES-NI & Cryptographic unit : Parallel Decryption &
+Return Encryption by using 2x 128Bit & a Processor Enciphered Nonce.
+
+(c)Rupert S
+
+*reference* https://bit.ly/VESA_BT
+
+Performance Comparison of AES-CCM and AES-GCM Authenticated Encryption Mode=
+s
+http://worldcomp-proceedings.com/proc/p2016/SAM9746.pdf
+
+Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
+OCB, CCM, EAX, CWC, GCM, PCFB, CS
+https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
+
+*****
+ICE-SSRTP GEA Replacement 2022 + (c)RS
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+GEA-2 > GEA-3 is therefor 64Bit Safe (Mobile calls) & 128Bit Safe
+(Reasonable security)
+SHA2, SHA3therefor 128Bit Safe (Reasonable security Mobile) ++
+AES & PolyChaCha both provide a premise of 128Bit++
+
+So by reason alone GEA has a place in our hearts.
+
+*
+
+ICE-SSRTP GEA Replacement 2022 + (c)RS
+
+IiCE-SSR for digital channel infrastructure can help heal GPRS+ 3G+ 4G+ 5G+
+
+Time NTP Protocols : is usable in 2G+ <> 5G+LTE Network SIM
+
+ICE-SSRTP Encryption AES,Blake2, Poly ChaCha, SM4, SHA2, SHA3, GEA-1 and GE=
+A-2
+'Ideal for USB Dongle & Radio' in Rust RS ' Ideal for Quality TPM
+Implementation'
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protoc=
+ol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the res=
+ult.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+*
+
+Time differentiated : Interleave, Inversion & differentiating Elliptic curv=
+e.
+
+We will be able to know and test the Cypher : PRINCIPLE OF INTENT TO TRUST
+
+We know of a cypher but : (Principle RS)
+
+We blend the cypher..
+Interleaved pages of a cypher obfuscate : PAL CScam does this
+
+Timed : Theoretically unique to you in principle for imprecision, But
+we cannot really have imprecise in Crypto!
+
+But we can have a set time & in effect Elliptic curve a transient variable =
+T,
+With this, Interleave the resulting pages (RAM Buffer Concept)
+
+Invert them over Time Var =3D T
+
+We can do all & principally this is relatively simple.
+
+(c)RS
+
+*
+
+Modulus Dual Encrypt & Decrypt package : Processor feature (c)RS
+
+AES-CCM & AES-GCM & Other Cypher Modulus + CCM & GCM can be
+accelerated with a joint AES Crypto module,
+
+Processor feature & package : Module list:
+
+2 Decryption pipelines working in parallel,
+With a Shared cache & RAM Module
+Modulus & Semi-parallel modulating decryption & Encryption combined
+with Encapsulation Cypher IP Protocol packet
+
+Parallax Cryptographic Processing Unit: RS
+
+The capacity To Multiply decryption on specific hardware in situations
+such as lower Bit precision is to be implemented as follows:
+
+On AES-NI & ARM Cryptographic processors; In particular PSP+PPS(ARM+) & SiM=
+D ..
+
+The capacity to exploit the fact that the nonce is 16Bit to 64Bit &
+full float upto 128Bit for legal decryption (client) means there is a
+simple method to use:
+
+In situations that a AES-NI & ARM Cryptographic unit can process 2
+threads on a 256Bit Function we can do both the main 128Bit/192Bit &
+the nonce 16Bit to 64Bit & Enable a single instruction Roll to
+Synchronise both The main HASH & Nonce.
+
+AES & Crypto hardware can utilise the CPU/GPU/Processor FPU & SiMD to
+decrypt the nonce (smaller so fast) & in the same 8bto to 64Bits of
+code; Inline & parallax the cryptographic function.
+
+With a 256Bit AES-NI & Cryptographic unit : Parallel Decryption &
+Return Encryption by using 2x 128Bit & a Processor Enciphered Nonce.
+
+(c)Rupert S
+
+*reference*
+
+Performance Comparison of AES-CCM and AES-GCM Authenticated Encryption Mode=
+s
+http://worldcomp-proceedings.com/proc/p2016/SAM9746.pdf
+
+Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
+OCB, CCM, EAX, CWC, GCM, PCFB, CS
+https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
+
+
+*
+
+Example of use:
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade ma=
+rker
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+*
+
+Good for cables ? and noise ?
+
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
+
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
+
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands hel=
+p us?
+
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protoc=
+ol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the res=
+ult.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
+
+https://science.n-helix.com/2018/12/rng.html
+
+https://science.n-helix.com/2022/02/rdseed.html
+
+https://science.n-helix.com/2017/04/rng-and-random-web.html
+
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+
+https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.h=
+tml
+
+
+Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
+
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+
+https://science.n-helix.com/2022/03/ice-ssrtp.html
+
+https://science.n-helix.com/2021/11/ihmtes.html
+
+https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+https://science.n-helix.com/2021/12/3d-audio-plugin.html
+
+Integral to Telecoms Security TRNG
+
+*RAND OP Ubuntu :
+https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
+
+https://pollinate.n-helix.com
+
+*
+
+***** Dukes Of THRUST ******
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade ma=
+rkerz
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+Dev/Random : Importance
+
+Dev/Random : Importance : Our C/T/RNG Can Help GEA-2 Open Software
+implementation of 3 Bits (T/RNG) Not 1 : We need Chaos : GEA-1 and
+GEA-2 Implementations we will improve with our /Dev/Random
+
+Our C/T/RNG Can Help GEA-2 Open Software implementation of 3 Bits
+(T/RNG) Not 1 : We need Chaos : GEA-1 and GEA-2 Implementations we
+will improve with our /Dev/Random
+
+We can improve GPRS 2G to 5G networks still need to save power, GPRS
+Doubles a phones capacity to run all day,
+
+Code can and will be improved, Proposals include:
+
+Blake2
+ChaCha
+SM4
+SHA2
+SHA3
+
+Elliptic Encipher
+AES
+Poly ChaCha
+
+Firstly we need a good solid & stable /dev/random
+
+So we can examine the issue with a true SEED!
+
+Rupert S https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+TRNG Samples & Method DRAND Proud!
+
+https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=
+=3Ddrive_web
+https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=
+=3Ddrive_web
+https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=
+=3Ddrive_web
+https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=
+=3Ddrive_web
+
+https://github.com/P1sec/gea-implementation
