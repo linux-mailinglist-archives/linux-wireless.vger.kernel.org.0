@@ -2,49 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 762844F0FC5
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Apr 2022 09:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1F8B4F0FE1
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Apr 2022 09:17:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357842AbiDDHIp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Apr 2022 03:08:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43634 "EHLO
+        id S243837AbiDDHRS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Apr 2022 03:17:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238837AbiDDHIo (ORCPT
+        with ESMTP id S234334AbiDDHRR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Apr 2022 03:08:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3C7B340E0;
-        Mon,  4 Apr 2022 00:06:48 -0700 (PDT)
+        Mon, 4 Apr 2022 03:17:17 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E1121E3E2
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 00:15:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F7B361223;
-        Mon,  4 Apr 2022 07:06:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23734C340EE;
-        Mon,  4 Apr 2022 07:06:45 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7247CB80E83
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 07:15:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A3A9C2BBE4;
+        Mon,  4 Apr 2022 07:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649056007;
-        bh=kBUstR3J4ItDnVp87evnZA04BHghVTsaKKXGf6QdOCs=;
+        s=k20201202; t=1649056519;
+        bh=33JNaffd8otlV35YViy6jbj0lroij12UsvFEKWkDUX0=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Tg/FdtHFmcrmCnSrrTX6e2TfhXvy+gFfSfrRcwTmUN+vOL+1fUZr1X+O9oNBsK77G
-         j4ChIZ0Ix083n7qG+D3ZNnSEM8lrbY4Uq3iQQwrHJu+meR56KfXxfiJHs7vQ0XMaRk
-         fs/xuIsVC64ZovxMTZFxb0Tw+iN2In5PF1eiIeLwqk3rpM4LanwAswPaJvK+0x2CiS
-         MilTbKqH2arAIBqv8rfpBfv+e2GfoR0r67Dkn2opw6HL32p6G8fiuQHRuvMLUXjWyT
-         +oqJlrBF0Hw7yZayJMq9oMj2UWYAhFUjmc4NY19QxRoDLi/oFTzx4cvE4JrEUOgsol
-         lXXzkUj2VF3vA==
+        b=sW9LQZuy5V2Si3gEkIjeOIOiAQBRX6aglO6grAFRG9O9pw26ieOEBWrtM/X2XyeUA
+         eTrLOm6sfxpud/rFZx77fief7nxdJfWg0TaSuol3rGNGNh7axFCk+uyvlqw6Sh5Xmt
+         4QmBhgWbaF12XqC8LOdIE8xuMEphoME2LZuTP3HNYcZtTdCV8efS0HuBZh1u5j4Pn1
+         RejfZws/kQPA5ByQGubSq4MBHsR854bYJmaAxGH2nBkhrVGsFugQOpcWuO8aTgowEM
+         hLfMvBSnmCWsNszYkZ0hiWfrfvNeJ0eG9LoNbba7keXTZdo71DQWcQ8ecyTB2TMGPj
+         EigQjLnCGK36Q==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Robert Marko <robimarko@gmail.com>
-Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ath11k: select QRTR for AHB as well
-References: <20220401093554.360211-1-robimarko@gmail.com>
-        <87ilrsuab4.fsf@kernel.org>
-        <CAOX2RU4pCn8C-HhhuOzyikjk2Ax3VDcjMKh7N6X5HeMN4xLMEg@mail.gmail.com>
-Date:   Mon, 04 Apr 2022 10:06:40 +0300
-In-Reply-To: <CAOX2RU4pCn8C-HhhuOzyikjk2Ax3VDcjMKh7N6X5HeMN4xLMEg@mail.gmail.com>
-        (Robert Marko's message of "Sat, 2 Apr 2022 11:52:21 +0200")
-Message-ID: <87zgl1s4xr.fsf@kernel.org>
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH RFC 0/3] ath10k: add encapsulation offloading support
+References: <20220402153615.9593-1-ryazanov.s.a@gmail.com>
+Date:   Mon, 04 Apr 2022 10:15:15 +0300
+In-Reply-To: <20220402153615.9593-1-ryazanov.s.a@gmail.com> (Sergey Ryazanov's
+        message of "Sat, 2 Apr 2022 18:36:12 +0300")
+Message-ID: <87v8vps4jg.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -58,67 +54,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Robert Marko <robimarko@gmail.com> writes:
+Sergey Ryazanov <ryazanov.s.a@gmail.com> writes:
 
-> On Fri, 1 Apr 2022 at 16:51, Kalle Valo <kvalo@kernel.org> wrote:
->>
->> Robert Marko <robimarko@gmail.com> writes:
->>
->> > Currently, ath11k only selects QRTR if ath11k PCI is selected, however
->> > AHB support requires QRTR, more precisely QRTR_SMD because it is using
->> > QMI as well which in turn uses QRTR.
->> >
->> > Without QRTR_SMD AHB does not work, so select QRTR in ATH11K and then
->> > select QRTR_SMD for ATH11K_AHB and QRTR_MHI for ATH11K_PCI.
->> >
->> > Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
->> >
->> > Signed-off-by: Robert Marko <robimarko@gmail.com>
->> > ---
->> >  drivers/net/wireless/ath/ath11k/Kconfig | 3 ++-
->> >  1 file changed, 2 insertions(+), 1 deletion(-)
->> >
->> > diff --git a/drivers/net/wireless/ath/ath11k/Kconfig b/drivers/net/wireless/ath/ath11k/Kconfig
->> > index ad5cc6cac05b..b45baad184f6 100644
->> > --- a/drivers/net/wireless/ath/ath11k/Kconfig
->> > +++ b/drivers/net/wireless/ath/ath11k/Kconfig
->> > @@ -5,6 +5,7 @@ config ATH11K
->> >       depends on CRYPTO_MICHAEL_MIC
->> >       select ATH_COMMON
->> >       select QCOM_QMI_HELPERS
->> > +     select QRTR
->> >       help
->> >         This module adds support for Qualcomm Technologies 802.11ax family of
->> >         chipsets.
->> > @@ -15,6 +16,7 @@ config ATH11K_AHB
->> >       tristate "Atheros ath11k AHB support"
->> >       depends on ATH11K
->> >       depends on REMOTEPROC
->> > +     select QRTR_SMD
->> >       help
->> >         This module adds support for AHB bus
->> >
->> > @@ -22,7 +24,6 @@ config ATH11K_PCI
->> >       tristate "Atheros ath11k PCI support"
->> >       depends on ATH11K && PCI
->> >       select MHI_BUS
->> > -     select QRTR
->> >       select QRTR_MHI
->> >       help
->> >         This module adds support for PCIE bus
->>
->> I now see a new warning:
->>
->> WARNING: unmet direct dependencies detected for QRTR_SMD
->>   Depends on [n]: NET [=y] && QRTR [=m] && (RPMSG [=n] || COMPILE_TEST [=n] && RPMSG [=n]=n)
->>   Selected by [m]:
->>   - ATH11K_AHB [=m] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_ATH [=y] && ATH11K [=m] && REMOTEPROC [=y]
+> Hello,
 >
-> Ahh yeah, since it's SMD then it requires RPMGS which in turn requires
-> more stuff. What do you think about making it depend on QRTR_SMD
-> instead, because without it AHB literally does not work?
+> this series introduces driver support for hardware encapsulation
+> offloading feature.
+>
+> The main goal of the series is an overall improvement of system
+> performance. On a QCA9563+QCA9888-based access point in bridged mode,
+> encapsulation offloading increases TCP 16-streams DL throughput from
+> 365 to 396 mbps (+8%) and UDP DL throughput from 436 to 483 mbps (+11%).
+>
+> The series consist of three patches, the first two prepare the code, and
+> the last one introduces the offloading support itself. The first patch
+> reworks transmission status reporting to make it flexible enough to
+> support 802.11 and Ethernet encapsulated frames reporting. The second
+> patch reworks the module parameter that configures the main
+> encapsulation format of frames that are passed from the driver to the
+> hardware. It makes it possible to configure more encapsulation methods
+> than just raw or not-raw. And, as stated before, the third patch
+> actually introduces offloading support. It changes a couple of frame
+> analysis places along the xmit path and starts reporting offloading
+> support to mac80211 via the corresponding hw attribute.
+>
+> The new feature has been extensively tested with QCA9888 and works well,
+> but it may introduces some regression for other untested chips. So the
+> series is just an RFC for now.
 
-To be honest I don't know qrtr well enough to comment right now :)
+This looks very good to me. But the testing part concerns me as well, it
+would be good to have some quick testing at least with QCA6174/QCA9377
+PCI devices to make sure we don't break those. Preferably also
+QCA6174/QCA9377 SDIO devices should be tested, they work somewhat
+differently. Can anyone help?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
