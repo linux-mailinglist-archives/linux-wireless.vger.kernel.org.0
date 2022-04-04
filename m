@@ -2,140 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC6D34F179D
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Apr 2022 16:50:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA7954F18A2
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Apr 2022 17:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349816AbiDDOvq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Apr 2022 10:51:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43574 "EHLO
+        id S1378634AbiDDPmm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Apr 2022 11:42:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354558AbiDDOvZ (ORCPT
+        with ESMTP id S1378631AbiDDPmj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Apr 2022 10:51:25 -0400
-Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C4723BCD
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 07:49:15 -0700 (PDT)
-Received: by mail-ot1-x331.google.com with SMTP id z9-20020a05683020c900b005b22bf41872so7346424otq.13
-        for <linux-wireless@vger.kernel.org>; Mon, 04 Apr 2022 07:49:14 -0700 (PDT)
+        Mon, 4 Apr 2022 11:42:39 -0400
+Received: from esa.hc3962-90.iphmx.com (esa.hc3962-90.iphmx.com [216.71.142.165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 529E7387B9
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 08:40:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:from:subject:to:cc
-         :references:content-language:in-reply-to:content-transfer-encoding;
-        bh=QF1AbWF1FsN1/Qzjq17M6/poRQaG0jjTSkcR71d4GTo=;
-        b=oFbyOurzFVNKn/F2TWyGlmuePshZgofOYfnxl8sofCiEWAYXTZNRh3SKHbVyZ3xAyy
-         dCuPOuZGZSIY5pa9fNihKQ7dsCBGu1oGcF8fyYYUZxDiXfJzhkozwPBd19sZ6c31dAw+
-         d0zsaKYnIb6EW9BnzLgjv1U96mRB/3DZuty7EjcxrN1AP4W+JgbXsdVk8+7LhmRoSY6t
-         RC6URUDiof8FaJtmNegNpYPlO8KgvO7sUXVOSUsyWiuufnZTgR3w1LgB3KSE1Da5lBSO
-         odU855Z1G0J4Ga6HrLF9eBCNwVw24pNeGea5GOJCfjlu3FrkYGx4m3xSmW6rAhsyPbA1
-         47bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :from:subject:to:cc:references:content-language:in-reply-to
-         :content-transfer-encoding;
-        bh=QF1AbWF1FsN1/Qzjq17M6/poRQaG0jjTSkcR71d4GTo=;
-        b=lKeYzBFvRdWOG5joLxMQPMoAAtQRvYv6mqLZF7rPHl5i4hTPn470Q57hy4Kx28StjI
-         OSZPhGnX50fqtGL0uRHzsUDKoUcA1ICqKc1ubDm4ZaK9Sa4TTSZI3PXCVliznPWVIYrA
-         l7aVyv3qn4KdRNs8ZyuZTNnhz/hxS6bC2vyT0+48nmWPdQhGC4q0T6RxlW91QRjaZvZC
-         D5IS/cJMx5RC8TbSNQj/WiisoD8Rf1FzpF1v+LNYwuu/fftfqvdrv4b7V5lCTdIfIvgi
-         YdQ9tFn11quQZrxlaZUiAVSTiM/QygWIwOtGDyO8wFlUTIdgHFQa2dmQh2EFoHIXfyN5
-         tfCQ==
-X-Gm-Message-State: AOAM531E9cWcGeRFQ8iJyl+k3A3CbRSIBmxMdOOD81F9h/QUYz30y5kT
-        uxCzYijjM88YVOX86p7Qv0S2UsKf6YU=
-X-Google-Smtp-Source: ABdhPJwVDx5BSavFHVb5Q3RoVY9fhaTLP7/5g7MBO11XfrbxLTd2bT0xIzrwAW+EaVQdovPB1kMvJg==
-X-Received: by 2002:a05:6830:104c:b0:5c9:5d9f:e924 with SMTP id b12-20020a056830104c00b005c95d9fe924mr156701otp.369.1649083754165;
-        Mon, 04 Apr 2022 07:49:14 -0700 (PDT)
-Received: from ?IPV6:2603:8090:2005:39b3::1004? (2603-8090-2005-39b3-0000-0000-0000-1004.res6.spectrum.com. [2603:8090:2005:39b3::1004])
-        by smtp.gmail.com with ESMTPSA id f8-20020a4ace88000000b00321598cd45dsm3973190oos.33.2022.04.04.07.49.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Apr 2022 07:49:13 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <ba45934b-69ab-edfa-1679-2e8e00fac126@lwfinger.net>
-Date:   Mon, 4 Apr 2022 09:49:11 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Subject: Re: rtw_8822ce wifi regression after kernel update from 5.15 to 5.16
-To:     "G. P. B." <george.banyard@gmail.com>, snecknico@gmail.com
-Cc:     kvalo@kernel.org, linux-wireless@vger.kernel.org,
-        regressions@leemhuis.info, regressions@lists.linux.dev,
-        tony0620emma@gmail.com
-References: <CAFPFaMLHXhHMhuAuvXWHb3c-tX_9qRxsquEUHXY0fMxh_VsKtw@mail.gmail.com>
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qccesdkim1;
+  t=1649086843; x=1649691643;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=lEPSPo/4E1YP+o6PNNCR2C2egQ5Z60zwYrjQMuWn4PI=;
+  b=sEI7RpwXEJm3JxCJAB7CLCXOoALqVawNY395uywihJb4YRhgdjNNqhdq
+   E4cWBcUP9SZnj+T9QRHmrBolyl+G925zXb8+gTEhlmUlcoqL4eDvSBfD7
+   0KdCmEFMAZLmzo2n+GNb1OcyAWziAA2Tjd9VNSwtGK3d1Gp4STJpLcY/Y
+   k=;
+Received: from mail-bn8nam12lp2174.outbound.protection.outlook.com (HELO NAM12-BN8-obe.outbound.protection.outlook.com) ([104.47.55.174])
+  by ob1.hc3962-90.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2022 15:40:42 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FLg5aWoll9Y+9vasfye+TTFuCmCUmhcJiIgy07GsqBPI1BIEfHM2Pf1cPux3OY4IhLC2jSSnmZTBD8xTrw3eGQWeAGOzs9z0h3yOdRxXuRw1Eyi51ecISCagGCRPntIXNZFQDmxV3RUEvm6EHA7safqjKRpj8b5vglolzkea10Np7SLuF55uxmosJ9rccPClNwIvMEkrfZ9dYHD7fo6ZRNjnIuJquEk/4QdS6XDVokpkNFik7TE7x63yOpDvp2OPh+0JvYhecczgJJuL1yMNZXCp2Urnu6Whe1mhytUkHut0ZZKUlzSm4cTdRtAJkjdVGd6aH9CA/EGjV4T734aRpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lEPSPo/4E1YP+o6PNNCR2C2egQ5Z60zwYrjQMuWn4PI=;
+ b=SRJbfqBK2qn3+xR3VV+m65UEseDMYlvHH9BskBrRoUNjq0ej0pXzvQVMFuSELNu/sAjiUfe2OBGolLfUkKcEC5fQFhIh4yFTqgDwPKN/eH8uxU7VBqk/YdtyuJ7CY0ukaXhj+afybSkHkVJp37/BD13Uyhy0eWIDnFLqNZB7veLGl9Awzz2GZcMwFTHDogjBD8cDHDJZYfn7D4akf4izQ6COmolmpddVTfDmI8NUDKzLUWRVKWvP+3iJADXkx5CXw4YdcbrSCP2Qvkiq6VXSO170WMTcZtk7RsUTzMYmds0wVBLxDJgVMnHmEjRDP7Y4b01Ai61+sQmpyBl3ik81cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=quicinc.com; dmarc=pass action=none header.from=quicinc.com;
+ dkim=pass header.d=quicinc.com; arc=none
+Received: from SN6PR02MB4334.namprd02.prod.outlook.com (2603:10b6:805:ac::20)
+ by BYAPR02MB4614.namprd02.prod.outlook.com (2603:10b6:a03:5b::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5123.31; Mon, 4 Apr
+ 2022 15:40:36 +0000
+Received: from SN6PR02MB4334.namprd02.prod.outlook.com
+ ([fe80::e5a3:e283:efc7:a889]) by SN6PR02MB4334.namprd02.prod.outlook.com
+ ([fe80::e5a3:e283:efc7:a889%5]) with mapi id 15.20.5123.031; Mon, 4 Apr 2022
+ 15:40:36 +0000
+From:   "Sriram R (QUIC)" <quic_srirrama@quicinc.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "Sriram R (QUIC)" <quic_srirrama@quicinc.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [RFC v2] mac80211: prepare sta handling for MLO support
+Thread-Topic: [RFC v2] mac80211: prepare sta handling for MLO support
+Thread-Index: AQHYQ2ShGJYmZDfjMUStBmBUa2Mr6azfx1IAgAAjhgA=
+Date:   Mon, 4 Apr 2022 15:40:36 +0000
+Message-ID: <SN6PR02MB433476576476A9AA7EAF3F95F7E59@SN6PR02MB4334.namprd02.prod.outlook.com>
+References: <1648555198-8065-1-git-send-email-quic_srirrama@quicinc.com>
+ <467e7f83270a9b1f8e2b32f27b48607e2c2ff480.camel@sipsolutions.net>
+In-Reply-To: <467e7f83270a9b1f8e2b32f27b48607e2c2ff480.camel@sipsolutions.net>
+Accept-Language: en-US
 Content-Language: en-US
-In-Reply-To: <CAFPFaMLHXhHMhuAuvXWHb3c-tX_9qRxsquEUHXY0fMxh_VsKtw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=quicinc.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 9fe747b2-5fa2-4a9e-831e-08da165176d9
+x-ms-traffictypediagnostic: BYAPR02MB4614:EE_
+x-ld-processed: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d,ExtAddr
+x-microsoft-antispam-prvs: <BYAPR02MB461420140B94ADBB2D60E2528BE59@BYAPR02MB4614.namprd02.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: JN7ksblCV3jOb40Ywithvwvk9GXVlk5rCsqbMezcYhBP7CpFn8dOzJuSMyuENJZQONohT6Auzf2qwDpg0w9NB7mjVtifRINCugqtiUSKIPe6LwAEIOGVenryppOcgo2kvj0BLIKyWQMhG8XiTtatwppfSyNieaha3eQGcdlnBAyYJZsF/nSnp+KsPlyV9vhfcfSte7LNAjvys3+SzXtoqFlJP016Wa+pfPsQEKFCu1tiTRw62D70V/Y+OTnjyDdNLExEIVhg1a2wl3FoIW9XvBXPYYYBt7YounAm0NiOwkIubmiQ0gJbFf7H/ZlfGRU9Q4DWsviaZK7K0QYPZudKUIDt67uVJbmrmkl9/307AhyuG9T/sT75fUkG3h8dw5T1vFE1w0PeoRyjmudhYGtc3R4+w3jPrteikpAh8UkqZheOtld1tsb6hvQpzNgvtuDCqOnmi5SOiEy5/M0N7rO2WKDZw2pDG/5BH4docOXzdDFhGkqfpZh/frChUBThyT9REDS20WKhqGXDCss87hJBZ+byiMwUlLBN6Xl+8PTXT92HalJD1RVlke2E+WFt6q+FLUQet55NJwfizRzgwPfeW8DrG2EKyQKPoSPm6gXBUEhcT2mHMF1rsXoH53Lq8JtSGPcL/iZPeUITZl7vzDye0bSFQpBpbtgXtwCLiJbsGVa9r55qNrGjGeH2VOeGDR5xv2D1iPQPq36Fc6QOKnAS6Q==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR02MB4334.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(6506007)(7696005)(8936002)(33656002)(2906002)(86362001)(9686003)(52536014)(38100700002)(4744005)(122000001)(5660300002)(186003)(64756008)(66476007)(8676002)(38070700005)(26005)(316002)(55016003)(110136005)(66556008)(66946007)(71200400001)(76116006)(508600001)(66446008);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?R3FsSkNkMnZRVWVKand0RzZjdXdEU21MUkRDTmlySmRnT3YvZ0lXQmYzNmVV?=
+ =?utf-8?B?aWw1SkVSRjRQUHBTSW9lY3NzWmhpYTR6a0FMY0FRaWlISFl4NmFPV3FJenQv?=
+ =?utf-8?B?RG9sb09XZ3M1TTZyYjlZQXJyOFdaNVdtZ1UrcS9IaXpRcHhKZHZLcjh0bWht?=
+ =?utf-8?B?NDc0OEY1WWFMSkpoSEMwc0ZobTR5cXpuN05DVEpUNGJyaW5WOGhLMHA3K05C?=
+ =?utf-8?B?RXJEZ0V1VDZhUUF1L1l2dkJTblZQNFA4MmFSWjdmQ1loamtjTzVyVEJMWmxU?=
+ =?utf-8?B?Tk5zK2JOZG02RHV1UE5Qd0RIRHk3bVhLOGpDTkdEbS9IL25kc2dVd0NmM0tZ?=
+ =?utf-8?B?WW1xSUNQRkM2eWkxNUJsSDE2ZkhCVFdXWnZlUXJLVzRrN3dwNysxZ29rY2Zu?=
+ =?utf-8?B?U0ZPQS9oR3BVSlNScDhxT3JYYTFuK05aSi94dWxkL0sxQUFGSTlPWGtrcXJY?=
+ =?utf-8?B?V3d5WW9hNEZUNURwWDM3eTgrR0psZDRBODZzZGc0U3JOdlZ5UEVYaXREQTJC?=
+ =?utf-8?B?dEExM09hVUNYN1lpNUxuUTZnWURvd0UvNG93aXFxeURieFRSSWp3Sm5DZWMz?=
+ =?utf-8?B?VlNIT1kvWHZSSG9VZ0JEU3JQVUZVOHdIY3ZtSUF5NlQxOCsxWDg1TnZGdUdv?=
+ =?utf-8?B?blpuT2NjK2ZGMTc4V3h4d0hTUEF3TTZjU0RDNVNJUWp6OGcyRHJQdG5vbXdv?=
+ =?utf-8?B?SldXQzl1QWdXQWoxZXJodWljQWNrbW1LVk1NTlIvb3YzVE0wVVZsTWlTYStH?=
+ =?utf-8?B?aFk2NVNnVGxVWWNCQ0x3UUNPS1ZqZmg4ZGllZDVJb0w4V1FyWDM4ei9VZnhO?=
+ =?utf-8?B?V3pxMElsbExFeTIrQnhtS2V0UVAzK09UQ2hyakUyYzgrTlU3L0E1aVZ5NkRT?=
+ =?utf-8?B?YzQxTGp3Uncrd2c3aHRYQ3ZKQlYveThFNU1lOHlVYjU0RVhBaGQ4VHFkTGpB?=
+ =?utf-8?B?QmxtSW9PUFNKMnRQTFJiUk8rTkk5VEV2TVdOVFJyMkY0c1J6TXQ1d0JQMUwx?=
+ =?utf-8?B?TWtOdkpXZm1FVG9iLzRlWEQwL2g1M0xNOVViZ1orcXBoNDhtTEdVU1ZWdFBL?=
+ =?utf-8?B?QW5Tb0ZUUzhQd0JULzJoMDZNS2c0aUpVcHdLanBtUkYzWVg3WFIvYUhUVy85?=
+ =?utf-8?B?SWtJcEV0Znd4TWoxZEdmSnNSODlMY2xZZlc2Q3JuNmhiNkR3eXMzbVNtUDF0?=
+ =?utf-8?B?ZVlpNnduMS93SlFaVGs5ZStqeWtpVW5xOWhMcDA0UWlZaWR6dGtpR1FKQnNZ?=
+ =?utf-8?B?T003dTlwUFBneVoybFB6NHN6bDJFVlVIa0pLbWpDUmw4UHdjTU9XT2NBMjZR?=
+ =?utf-8?B?SzhCTjdkWW1qSVdyMHRnMFdWaEZBeUtoamNmNklvT3pyQ21YWVpDM0RqMHgx?=
+ =?utf-8?B?clVtM1R4L1czMzFOYWRvRSt6WkIvQmc3MUh4K3A2T2FuTlRrT0lXd2Z4Y3kv?=
+ =?utf-8?B?dk9ZZmtZZmVRNDY3SVZTcEVEbDNLWmloaW9XM3YveGIwTnVwZlAzVDJwZGxj?=
+ =?utf-8?B?RitXUEtoWG5HTG8zTStKK0g3RDI4QWJYMjQ4bXpwNER2YllSRmVGZlJYZW9I?=
+ =?utf-8?B?NFZmeWtUUzE4cnlHZm9HL1NQc3dIMHQ3T0hFZWFORXJuVWJvZVZKK05JZktm?=
+ =?utf-8?B?alJja1d6cGlXcDNLYnZiemQ0UmtBUTJXNEY2R2ovWnR4Z1FNMHF4ZG5RREtV?=
+ =?utf-8?B?Z0pvTFkwMVFrMndtSC9VejJzUEZkOFhscnQxc1R1NE1LdEM2NFYyRVZmWGRq?=
+ =?utf-8?B?eWo1eGVMODlyZkFyQWd4VlMyWUVza3JFR1k1MnNkVnBlV1IzWDlFY09SNDQ5?=
+ =?utf-8?B?QXgrcmg2eVUvbDJtTWV5M2Y2aEhFRFk0K2d0OVViOEVwazZVcllwYmhNNW03?=
+ =?utf-8?B?ODB0WE9ZaTBkZFlUMlZLZ2lKNUpMWVc3S1EzTkYwdDlhT1RqSDYwcGlZY211?=
+ =?utf-8?B?TU41ZCtucllzT1EzcEE4ODJEektuTmk5eHhnVmpQU1IvaXlld2liWVZPUHlw?=
+ =?utf-8?B?VytRaFVTd2pkQ1BmWUsyK2lUcGdOZVBKVHhmMDF4LzFyY0FCNGZWSnZ3d2xh?=
+ =?utf-8?B?RDZYeWRFNlNXNlcweHNWUDFxVWZFSmd3UlhGeTRReFNxb3pwM3Bla0tFcUZh?=
+ =?utf-8?B?WklBTkVGTVV4S2FHd0dwSXpxUHh0LzBGcFdRNDg5ZzJQSEFFSmswRVZOZ0o4?=
+ =?utf-8?B?V2FzVWVVWkhmQ3EvbU1JeWVjQU1nTWNPK2tkVVJVV3BIbGtpTzZLbDc0dDMx?=
+ =?utf-8?B?aGRId3p3QW42K3I3bG1NN0QxSjFaajZzSXlacG1STVlMRmo2VkZ4ZWs2emZD?=
+ =?utf-8?B?bW5PZGJhaDc1bmFzT0VrY0Fnakl3UExDYVZYM1VTaUFMVFd5M3BUZz09?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: quicinc.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4334.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9fe747b2-5fa2-4a9e-831e-08da165176d9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Apr 2022 15:40:36.8006
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Zrsi1dsXsXrtB1FVnyOL+1FSqhCNotPlo27F9ePQ4hz/ob0zoaoodNmbCPMF0XPhKi3dhGfVYX2MVNjsCersfD+IDddU+yjxxJlc0EJ5KdU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB4614
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/3/22 13:11, G. P. B. wrote:
-> Dear all,
-> 
-> Hopefully this email gets added to the thread correctly as I came here from 
-> https://lore.kernel.org/linux-wireless/CAO_iuKG0gE=5fEKMF2A+iWUhsxtnPOQtTQTkBRo2vH5CmKu7iA@mail.gmail.com/ 
-> <https://lore.kernel.org/linux-wireless/CAO_iuKG0gE=5fEKMF2A+iWUhsxtnPOQtTQTkBRo2vH5CmKu7iA@mail.gmail.com/>
-> and using the mailto link with Gmail.
-> 
-> I'm also hitting this issue but I'm not sure if this is a regression in 5.16. 
-> I've been struggling with weird random disconnects for a while but I blamed it 
-> on the known bad router that I usually connect to at my university (at least 
-> October 2021 when I got this laptop brand new).
-> 
-> The laptop is a HP Pavilion Laptop 15-eh0014na running Fedora 34:
-> Linux fedora 5.16.18-100.fc34.x86_64 #1 SMP PREEMPT Mon Mar 28 14:46:06 UTC 2022 
-> x86_64 x86_64 x86_64 GNU/Linux
-> 
-> Network driver:
-> 02:00.0 Network controller: Realtek Semiconductor Co., Ltd. RTL8822CE 802.11ac 
-> PCIe Wireless Network Adapter DeviceName: Realtek Wireless LAN + BT Subsystem: 
-> Hewlett-Packard Company Device 85f7 Kernel driver in use: rtw_8822ce Kernel 
-> modules: rtw88_8822ce
-> 
-> A sample, similar to the ones of Nico, of the output of dmesg -w:
-> [ 915.489081] rtw_8822ce 0000:02:00.0: timed out to flush queue 1 [ 915.599086] 
-> rtw_8822ce 0000:02:00.0: timed out to flush queue 2 [ 915.711096] rtw_8822ce 
-> 0000:02:00.0: timed out to flush queue 1 [ 915.822106] rtw_8822ce 0000:02:00.0: 
-> timed out to flush queue 2 [ 916.265097] rtw_8822ce 0000:02:00.0: timed out to 
-> flush queue 0 [ 916.376085] rtw_8822ce 0000:02:00.0: timed out to flush queue 1 
-> [ 916.449083] rtw_8822ce 0000:02:00.0: failed to get tx report from firmware
-> 
-> I'm not very proficient at debugging Linux so not sure how much more I can help 
-> to narrow down the issue.
-> But maybe a description of my experience might help, the WiFi icon still 
-> considers at all time to be connected to the router and have a perfect signal.
-> Sometimes enabling and immediately disabling Airplane mode fixes the issue 
-> (probably due to a restart of the module?), and the issue is more likely to come 
-> up after waking up from sleep.
-> 
-> I will try to see if I can rollback the kernel to 5.15 and see if that fixes the 
-> issue and report back.
-> 
-> If I can be of any other assistance please let me know.
-
-George,
-
-I do not know of any regression in 5.16 with regard to the driver for RTL8822CE. 
-Certainly, I saw no regressions in my testing of that driver from before it was 
-in the kernel up to the present. That said, I can only comment on the user-space 
-part of openSUSE Tumbleweed, which is probably not your distro of choice.
-
-Are you using the drivers at https://GitHub.com/lwfinger/rtw88.git rather than 
-the ones in the kernel? Your posted errors that refer to rtw_8822ce indicate 
-that to be true. If the drivers came from the kernel, the reference would be to 
-rtw88_8822ce! If so, do a 'git pull' to get the drivers updated to match the 
-code in kernel 5.18. A lot of things have been fixed.
-
-In your system, please do a 'lsmod | grep rtw'. If any items refer to rtw88_*, 
-you have mixed drivers loaded. In that case, you should blacklist the rtw88_* 
-driver.
-
-Larry
+SGkgSm9oYW5uZXMsDQo+IA0KPiBJIHRoaW5rIHRoaXMgbG9va3MgZmluZSAtIHdhbnQgdG8gc2Vu
+ZCBpdCBhcyBhIFBBVENIPyBJIHRoaW5rIEknbGwganVzdCBhcHBseSB0aGUNCj4gc3BhdGNoIGRp
+cmVjdGx5Lg0KU3VyZSwgTGV0IG1lIHNlbmQgb3V0IGEgUEFUQ0ggc2hvcnRseS4NCj4gDQo+IElm
+IHRoZXJlJ3MgYW55IG5lZWRlZCBmaXh1cHMgYmV5b25kIHRoZSBzcGF0Y2ggdGhhdCBtaWdodCBi
+ZSBnb29kIHRvIGtub3cgdG9vLg0KU28sIGluIHRoaXMgcGF0Y2ggKG1hYzgwMjExKSBJIGhhZCB0
+byBtYW51YWxseSBmaXggY291cGxlIG9mIGNoYW5nZXMgYXJvdW5kIEFERF9TVEFfU1RBVFMsIFRS
+QUNFX0VWRU5UIG1hY3Jvcy4NCg0KSW4gZHJpdmVycywgb25seSBiZWxvdyBjaGFuZ2Ugd2FzIHJl
+cXVpcmVkIGluIGFkZGl0aW9uLg0KDQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
+ay9tdDc2L210NzkxNS9tY3UuYw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsv
+bXQ3Ni9tdDc5MTUvbWN1LmMNCkBAIC0xNDY0LDcgKzE0NjQsNyBAQCBtdDc5MTVfbWN1X2FkZF9y
+YXRlX2N0cmxfZml4ZWQoc3RydWN0IG10NzkxNV9kZXYgKmRldiwNCiAgICAgICAgZG8geyAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgXA0KICAgICAgICAgICAgICAgIHU4IGksIGdpID0gbWFzay0+Y29udHJvbFtiYW5kXS5f
+Z2k7ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcDQogICAgICAgICAgICAgICAgZ2kgPSAo
+X2hlKSA/IGdpIDogZ2kgPT0gTkw4MDIxMV9UWFJBVEVfRk9SQ0VfU0dJOyAgICAgICAgICAgICAg
+IFwNCi0gICAgICAgICAgICAgICBmb3IgKGkgPSAwOyBpIDw9IHN0YS0+YmFuZHdpZHRoOyBpKysp
+IHsgICAgICAgICAgICAgICAgICAgICAgICAgXA0KKyAgICAgICAgICAgICAgIGZvciAoaSA9IDA7
+IGkgPD0gc3RhLT5kZWZsaW5rLmJhbmR3aWR0aDsgaSsrKSB7ICAgICAgICAgICAgICAgICBcDQog
+ICAgICAgICAgICAgICAgICAgICAgICBwaHkuc2dpIHw9IGdpIDw8IChpIDw8IChfaGUpKTsgICAg
+ICAgICAgICAgICAgICAgICAgICAgIFwNCiAgICAgICAgICAgICAgICAgICAgICAgIHBoeS5oZV9s
+dGYgfD0gbWFzay0+Y29udHJvbFtiYW5kXS5oZV9sdGYgPDwgKGkgPDwgKF9oZSkpO1wNCiAgICAg
+ICAgICAgICAgICB9ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgXA0KICAgICAgICAgICAgICANCiAgIA0KVGhhbmtzLA0KU3JpcmFt
+LlINCg==
