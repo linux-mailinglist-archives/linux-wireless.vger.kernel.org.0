@@ -2,115 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 980EB4F15CB
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Apr 2022 15:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC6D34F179D
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Apr 2022 16:50:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351404AbiDDNYj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Apr 2022 09:24:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55008 "EHLO
+        id S1349816AbiDDOvq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Apr 2022 10:51:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241154AbiDDNYi (ORCPT
+        with ESMTP id S1354558AbiDDOvZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Apr 2022 09:24:38 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2646B3DA7D
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 06:22:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=Rew0cdTpnke9CgROpUBMb6MHmpkMBoERLKmsDQMqusQ=;
-        t=1649078562; x=1650288162; b=pCrHQc0PSXtiwniy1802ZLfp9Eku/fw89cZhMk8uTn4IsAH
-        ct4WQVtxZUqcDeDXdIDrGa66lUh+4n0aK77fF9W4bjBQAdWtjmp4NIGsLo6gHPix/yc9VJOmN9jAa
-        Jqb9Ld7Ya9j2IlYJPs6QIEjcajhXoUVwj86uqHaJtjp7ESfGI9oE7j/rHE7IQgLuo0bwIshkekyGD
-        Bia4Skv6g/HxSRl815yBtfJiwaK4nu6A0I3rZf28O95t4b6++FFJEx4zzmqwEEjl17i1wlgJtTmGW
-        JGJlzc/EBcZ9M/KzYP1looiSGBC5ZEwts5FpQZajudlgLrYmL3AyE+Kunr3ZLY/A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nbMfH-004tcr-R5;
-        Mon, 04 Apr 2022 15:22:39 +0200
-Message-ID: <467e7f83270a9b1f8e2b32f27b48607e2c2ff480.camel@sipsolutions.net>
-Subject: Re: [RFC v2] mac80211: prepare sta handling for MLO support
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Sriram R <quic_srirrama@quicinc.com>,
-        linux-wireless@vger.kernel.org
-Date:   Mon, 04 Apr 2022 15:22:38 +0200
-In-Reply-To: <1648555198-8065-1-git-send-email-quic_srirrama@quicinc.com>
-References: <1648555198-8065-1-git-send-email-quic_srirrama@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
+        Mon, 4 Apr 2022 10:51:25 -0400
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C4723BCD
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 07:49:15 -0700 (PDT)
+Received: by mail-ot1-x331.google.com with SMTP id z9-20020a05683020c900b005b22bf41872so7346424otq.13
+        for <linux-wireless@vger.kernel.org>; Mon, 04 Apr 2022 07:49:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:message-id:date:mime-version:user-agent:from:subject:to:cc
+         :references:content-language:in-reply-to:content-transfer-encoding;
+        bh=QF1AbWF1FsN1/Qzjq17M6/poRQaG0jjTSkcR71d4GTo=;
+        b=oFbyOurzFVNKn/F2TWyGlmuePshZgofOYfnxl8sofCiEWAYXTZNRh3SKHbVyZ3xAyy
+         dCuPOuZGZSIY5pa9fNihKQ7dsCBGu1oGcF8fyYYUZxDiXfJzhkozwPBd19sZ6c31dAw+
+         d0zsaKYnIb6EW9BnzLgjv1U96mRB/3DZuty7EjcxrN1AP4W+JgbXsdVk8+7LhmRoSY6t
+         RC6URUDiof8FaJtmNegNpYPlO8KgvO7sUXVOSUsyWiuufnZTgR3w1LgB3KSE1Da5lBSO
+         odU855Z1G0J4Ga6HrLF9eBCNwVw24pNeGea5GOJCfjlu3FrkYGx4m3xSmW6rAhsyPbA1
+         47bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :from:subject:to:cc:references:content-language:in-reply-to
+         :content-transfer-encoding;
+        bh=QF1AbWF1FsN1/Qzjq17M6/poRQaG0jjTSkcR71d4GTo=;
+        b=lKeYzBFvRdWOG5joLxMQPMoAAtQRvYv6mqLZF7rPHl5i4hTPn470Q57hy4Kx28StjI
+         OSZPhGnX50fqtGL0uRHzsUDKoUcA1ICqKc1ubDm4ZaK9Sa4TTSZI3PXCVliznPWVIYrA
+         l7aVyv3qn4KdRNs8ZyuZTNnhz/hxS6bC2vyT0+48nmWPdQhGC4q0T6RxlW91QRjaZvZC
+         D5IS/cJMx5RC8TbSNQj/WiisoD8Rf1FzpF1v+LNYwuu/fftfqvdrv4b7V5lCTdIfIvgi
+         YdQ9tFn11quQZrxlaZUiAVSTiM/QygWIwOtGDyO8wFlUTIdgHFQa2dmQh2EFoHIXfyN5
+         tfCQ==
+X-Gm-Message-State: AOAM531E9cWcGeRFQ8iJyl+k3A3CbRSIBmxMdOOD81F9h/QUYz30y5kT
+        uxCzYijjM88YVOX86p7Qv0S2UsKf6YU=
+X-Google-Smtp-Source: ABdhPJwVDx5BSavFHVb5Q3RoVY9fhaTLP7/5g7MBO11XfrbxLTd2bT0xIzrwAW+EaVQdovPB1kMvJg==
+X-Received: by 2002:a05:6830:104c:b0:5c9:5d9f:e924 with SMTP id b12-20020a056830104c00b005c95d9fe924mr156701otp.369.1649083754165;
+        Mon, 04 Apr 2022 07:49:14 -0700 (PDT)
+Received: from ?IPV6:2603:8090:2005:39b3::1004? (2603-8090-2005-39b3-0000-0000-0000-1004.res6.spectrum.com. [2603:8090:2005:39b3::1004])
+        by smtp.gmail.com with ESMTPSA id f8-20020a4ace88000000b00321598cd45dsm3973190oos.33.2022.04.04.07.49.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Apr 2022 07:49:13 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <ba45934b-69ab-edfa-1679-2e8e00fac126@lwfinger.net>
+Date:   Mon, 4 Apr 2022 09:49:11 -0500
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Subject: Re: rtw_8822ce wifi regression after kernel update from 5.15 to 5.16
+To:     "G. P. B." <george.banyard@gmail.com>, snecknico@gmail.com
+Cc:     kvalo@kernel.org, linux-wireless@vger.kernel.org,
+        regressions@leemhuis.info, regressions@lists.linux.dev,
+        tony0620emma@gmail.com
+References: <CAFPFaMLHXhHMhuAuvXWHb3c-tX_9qRxsquEUHXY0fMxh_VsKtw@mail.gmail.com>
+Content-Language: en-US
+In-Reply-To: <CAFPFaMLHXhHMhuAuvXWHb3c-tX_9qRxsquEUHXY0fMxh_VsKtw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2022-03-29 at 17:29 +0530, Sriram R wrote:
-> Currently in mac80211 each STA object is represented
-> using sta_info datastructure with the associated
-> STA specific information and drivers access ieee80211_sta
-> part of it.
+On 4/3/22 13:11, G. P. B. wrote:
+> Dear all,
 > 
-> With MLO (Multi Link Operation) support being added
-> in 802.11be standard, though the association is logically
-> with a single Multi Link capable STA, at the physical level
-> communication can happen via different advertised
-> links (uniquely identified by Channel, operating class,
-> BSSID) and hence the need to handle multiple link
-> STA parameters within a composite sta_info object
-> called the MLD STA. The different link STA part of
-> MLD STA are identified using the link address which can
-> be same or different as the MLD STA address and unique
-> link id based on the link vif.
+> Hopefully this email gets added to the thread correctly as I came here from 
+> https://lore.kernel.org/linux-wireless/CAO_iuKG0gE=5fEKMF2A+iWUhsxtnPOQtTQTkBRo2vH5CmKu7iA@mail.gmail.com/ 
+> <https://lore.kernel.org/linux-wireless/CAO_iuKG0gE=5fEKMF2A+iWUhsxtnPOQtTQTkBRo2vH5CmKu7iA@mail.gmail.com/>
+> and using the mailto link with Gmail.
 > 
-> To support extension of such a model, the sta_info
-> datastructure is modified to hold multiple link STA
-> objects with link specific params currently within
-> sta_info moved to this new structure. Similarly this is
-> done for ieee80211_sta as well which will be accessed
-> within mac80211 as well as by drivers, hence trivial
-> driver changes are expected to support this.
+> I'm also hitting this issue but I'm not sure if this is a regression in 5.16. 
+> I've been struggling with weird random disconnects for a while but I blamed it 
+> on the known bad router that I usually connect to at my university (at least 
+> October 2021 when I got this laptop brand new).
 > 
-> For current non MLO supported drivers, only one link STA
-> is present and link information is accessed via 'deflink'
-> member.
+> The laptop is a HP Pavilion Laptop 15-eh0014na running Fedora 34:
+> Linux fedora 5.16.18-100.fc34.x86_64 #1 SMP PREEMPT Mon Mar 28 14:46:06 UTC 2022 
+> x86_64 x86_64 x86_64 GNU/Linux
 > 
-> Note for MLO supported drivers:
-> In mac80211 ops, the link id can be fetched from the
-> passed link vif struct (TBD) and corresponding link STA
-> within ieee80211_sta can be accessed. If the vif passed to
-> the driver is a MLD vif in any case, it implies all
-> the affliated link vif and its link STA needs to
-> be handled for the particular mac80211 op.
+> Network driver:
+> 02:00.0 Network controller: Realtek Semiconductor Co., Ltd. RTL8822CE 802.11ac 
+> PCIe Wireless Network Adapter DeviceName: Realtek Wireless LAN + BT Subsystem: 
+> Hewlett-Packard Company Device 85f7 Kernel driver in use: rtw_8822ce Kernel 
+> modules: rtw88_8822ce
 > 
-> In mac80211 for MLO usage, in cases where we need link sta(ex. to
-> get MLD STA from link address in 802.11 header) needs a new
-> lookup function to search for link sta address, This is TBD.
-> For legacy driver too this will work directly since the
-> address in sta_info and link_sta_info are same.
-> MLD supported drivers need to pass the link id or link
-> address and pubsta for ethernet mode to find the link sta.
-> Stats are accumulated per link sta and finally aggregated
-> if mld sta stats is required. These will be supported along
-> with MLO support patches.
+> A sample, similar to the ones of Nico, of the output of dmesg -w:
+> [ 915.489081] rtw_8822ce 0000:02:00.0: timed out to flush queue 1 [ 915.599086] 
+> rtw_8822ce 0000:02:00.0: timed out to flush queue 2 [ 915.711096] rtw_8822ce 
+> 0000:02:00.0: timed out to flush queue 1 [ 915.822106] rtw_8822ce 0000:02:00.0: 
+> timed out to flush queue 2 [ 916.265097] rtw_8822ce 0000:02:00.0: timed out to 
+> flush queue 0 [ 916.376085] rtw_8822ce 0000:02:00.0: timed out to flush queue 1 
+> [ 916.449083] rtw_8822ce 0000:02:00.0: failed to get tx report from firmware
 > 
-> Currently in mac80211, all link STA info are accessed directly
-> via deflink. These will be updated to access via link pointers
-> indexed by link id with MLO support patches, with link id
-> being 0 for non MLO supported cases.
+> I'm not very proficient at debugging Linux so not sure how much more I can help 
+> to narrow down the issue.
+> But maybe a description of my experience might help, the WiFi icon still 
+> considers at all time to be connected to the router and have a perfect signal.
+> Sometimes enabling and immediately disabling Airplane mode fixes the issue 
+> (probably due to a restart of the module?), and the issue is more likely to come 
+> up after waking up from sleep.
 > 
+> I will try to see if I can rollback the kernel to 5.15 and see if that fixes the 
+> issue and report back.
+> 
+> If I can be of any other assistance please let me know.
 
-I think this looks fine - want to send it as a PATCH? I think I'll just
-apply the spatch directly.
+George,
 
-If there's any needed fixups beyond the spatch that might be good to
-know too.
+I do not know of any regression in 5.16 with regard to the driver for RTL8822CE. 
+Certainly, I saw no regressions in my testing of that driver from before it was 
+in the kernel up to the present. That said, I can only comment on the user-space 
+part of openSUSE Tumbleweed, which is probably not your distro of choice.
 
-johannes
+Are you using the drivers at https://GitHub.com/lwfinger/rtw88.git rather than 
+the ones in the kernel? Your posted errors that refer to rtw_8822ce indicate 
+that to be true. If the drivers came from the kernel, the reference would be to 
+rtw88_8822ce! If so, do a 'git pull' to get the drivers updated to match the 
+code in kernel 5.18. A lot of things have been fixed.
+
+In your system, please do a 'lsmod | grep rtw'. If any items refer to rtw88_*, 
+you have mixed drivers loaded. In that case, you should blacklist the rtw88_* 
+driver.
+
+Larry
