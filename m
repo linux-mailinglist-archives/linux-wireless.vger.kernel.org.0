@@ -2,100 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35FB44F1A7E
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Apr 2022 23:16:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 493584F1A97
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Apr 2022 23:16:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378981AbiDDVSc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Apr 2022 17:18:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35196 "EHLO
+        id S1379069AbiDDVSm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Apr 2022 17:18:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379925AbiDDSXW (ORCPT
+        with ESMTP id S1380030AbiDDSlV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Apr 2022 14:23:22 -0400
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F21122B20;
-        Mon,  4 Apr 2022 11:21:26 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1649096484; bh=SLo9d96mThar86dgaQcYX5QHm8tQkuqDH+jBwfpMzbI=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=aWF3yN5E1EG5YjRBbEsUeRcqbRiOYTHkZ9dONDIoQqc+LuZqSWTWvU+fcoWY3KdZ5
-         vPUwr6sugS5CjsDG+nVkDYCp1XvAZa7AzTsmXJm8x6j1yBBOhQgg4jxTtB5AdNmeEW
-         Nk/3U1T776AwYYHFrX9RDoDQEkqom7Neh12ITsXxpTOtr2ZI20eaAaeT4HFz6/mlrB
-         uOtQWxEplrTgaSoy/oTqMP4E96Xudy+6X2byJ9uHq1kOt4lJwbNkVgm2iOrayYGZFq
-         ytGzGC6JaGqHlpkOVmYLuju4kGDcS9JE1dhNPkwd9VXbolkDfex+G13UfrycHbUi0C
-         Z0web2oOgDHGg==
-To:     Peter Seiderer <ps.report@gmx.net>, linux-wireless@vger.kernel.org
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH v1 2/2] mac80211: minstrel_ht: fill all requested rates
-In-Reply-To: <20220402153014.31332-2-ps.report@gmx.net>
-References: <20220402153014.31332-1-ps.report@gmx.net>
- <20220402153014.31332-2-ps.report@gmx.net>
-Date:   Mon, 04 Apr 2022 20:21:24 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87fsmseml7.fsf@toke.dk>
+        Mon, 4 Apr 2022 14:41:21 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959D85F99;
+        Mon,  4 Apr 2022 11:39:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 42A3FB818D8;
+        Mon,  4 Apr 2022 18:39:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B0EC340F3;
+        Mon,  4 Apr 2022 18:39:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649097561;
+        bh=uoCUt9kRip3xmuGeLGDqglk9GEPAPCSc46dVFwVFFvs=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=pWjK8T/SiEbCNPFdLabaKBhPZF8HEsxpYiFOPoj11AhzUzWc0mFSTNoTlb44mzjIt
+         F3UZs1LSUjPo/vOdjOWkHWODjT6vCZV4ZDdN74DxYDMI5v/o8GBHU2fLfKRNJyKNv7
+         gtUzy0Kf5ojn5swpmgVLnbCnNNgCbQO7w0i9dnoCj/kzOzhXBF6WNWKxFi9motkxV1
+         mAZPq5pTW07Pv3EOFvaB4dD/VUmByyweb+IizmotBRaNxe2OECt5SeCdq2GbRkzw8s
+         AQKJTPhJozQ/0jP8eneP9qLPjEAktInngDlNV+gUc4cd2uHWA+D6yPbPP1WfCZEgV2
+         5G+GoDEs7Lu2A==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+        Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
+        linux-rdma@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-media@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-xfs@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-s390@vger.kernel.org
+Subject: Re: Build regressions/improvements in v5.18-rc1
+References: <CAHk-=wg6FWL1xjVyHx7DdjD2dHZETA5_=FqqW17Z19X-WTfWSg@mail.gmail.com>
+        <20220404074734.1092959-1-geert@linux-m68k.org>
+        <alpine.DEB.2.22.394.2204041006230.1941618@ramsan.of.borg>
+Date:   Mon, 04 Apr 2022 21:39:15 +0300
+In-Reply-To: <alpine.DEB.2.22.394.2204041006230.1941618@ramsan.of.borg> (Geert
+        Uytterhoeven's message of "Mon, 4 Apr 2022 10:16:08 +0200 (CEST)")
+Message-ID: <874k38u20c.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+Felix
+Geert Uytterhoeven <geert@linux-m68k.org> writes:
 
-Peter Seiderer <ps.report@gmx.net> writes:
-
-> Fill all requested rates (in case of ath9k 4 rate slots are
-> available, so fill all 4 instead of only 3), improves throughput in
-> noisy environment.
-
-How did you test this? Could you quantify the gains in throughput you saw?
-
--Toke
-
-> Signed-off-by: Peter Seiderer <ps.report@gmx.net>
-> ---
->  net/mac80211/rc80211_minstrel_ht.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+>> /kisskb/src/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c:
+>> error: case label does not reduce to an integer constant: => 3798:2,
+>> 3809:2
 >
-> diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
-> index 9c6ace858107..cd6a0f153688 100644
-> --- a/net/mac80211/rc80211_minstrel_ht.c
-> +++ b/net/mac80211/rc80211_minstrel_ht.c
-> @@ -1436,17 +1436,17 @@ minstrel_ht_update_rates(struct minstrel_priv *mp, struct minstrel_ht_sta *mi)
->  	/* Start with max_tp_rate[0] */
->  	minstrel_ht_set_rate(mp, mi, rates, i++, mi->max_tp_rate[0]);
->  
-> -	if (mp->hw->max_rates >= 3) {
-> -		/* At least 3 tx rates supported, use max_tp_rate[1] next */
-> -		minstrel_ht_set_rate(mp, mi, rates, i++, mi->max_tp_rate[1]);
-> -	}
-> +	/* Fill up remaining, keep one entry for max_probe_rate */
-> +	for (; i < (mp->hw->max_rates - 1); i++)
-> +		minstrel_ht_set_rate(mp, mi, rates, i, mi->max_tp_rate[i]);
->  
-> -	if (mp->hw->max_rates >= 2) {
-> +	if (i < mp->hw->max_rates)
->  		minstrel_ht_set_rate(mp, mi, rates, i++, mi->max_prob_rate);
-> -	}
-> +
-> +	if (i < IEEE80211_TX_RATE_TABLE_SIZE)
-> +		rates->rate[i].idx = -1;
->  
->  	mi->sta->max_rc_amsdu_len = minstrel_ht_get_max_amsdu_len(mi);
-> -	rates->rate[i].idx = -1;
->  	rate_control_set_rates(mp->hw, mi->sta, rates);
->  }
->  
-> -- 
-> 2.35.1
+> arm64-gcc5.4/arm64-allmodconfig
+> powerpc-gcc5/powerpc-allmodconfig
+> powerpc-gcc5/ppc64_book3e_allmodconfig
+
+After v5.17 there were two commits to brcmfmac/sdio.c:
+
+$ git log --oneline v5.17.. drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+ed26edf7bfd9 brcmfmac: Add BCM43454/6 support
+6d766d8cb505 brcmfmac: pcie: Declare missing firmware files in pcie.c
+
+I can't see how either of them could cause this warning. Could something
+else cause this or am I missing something?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
