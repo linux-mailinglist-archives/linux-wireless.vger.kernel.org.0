@@ -2,58 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5535C4F202C
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 01:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EA924F2040
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 01:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241416AbiDDXTm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Apr 2022 19:19:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50302 "EHLO
+        id S229905AbiDDXbQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Apr 2022 19:31:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243766AbiDDXTa (ORCPT
+        with ESMTP id S231603AbiDDXbL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Apr 2022 19:19:30 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2DC4100
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 16:16:04 -0700 (PDT)
-X-UUID: efc2378dded64fe0b875356ca3df9f60-20220405
-X-UUID: efc2378dded64fe0b875356ca3df9f60-20220405
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 294306073; Tue, 05 Apr 2022 07:15:59 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Tue, 5 Apr 2022 07:15:57 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 5 Apr 2022 07:15:57 +0800
-From:   <sean.wang@mediatek.com>
-To:     <lorenzo.bianconi@redhat.com>
-CC:     <nbd@nbd.name>, <sean.wang@mediatek.com>,
-        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
-        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
-        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
-        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
-        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
-        <abhishekpandit@google.com>, <shawnku@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] mt76: mt7921: Add hotspot mode support
-Date:   Tue, 5 Apr 2022 07:15:56 +0800
-Message-ID: <1649114156-5573-1-git-send-email-sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <YksWqWcwmIHcttDv@lore-desk--annotate>
-References: <YksWqWcwmIHcttDv@lore-desk--annotate>
+        Mon, 4 Apr 2022 19:31:11 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83F082F038;
+        Mon,  4 Apr 2022 16:29:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649114952; x=1680650952;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=cGXyR49bcccWv8eCK+ywXLkpFHhfbWs9AEBVEeAZ8VU=;
+  b=OXIlTAxpHVqMdmYFAfH5s9JkPcB1q843m4+PL1B+nbEZyUX5W7Jo+iQU
+   8PKXr9LMLlwdW41/BtV1zVI5A2i2JYDobaTHa2ztQihG72DjgAqI6+zfm
+   nu7+fpOHKBZG9WhNRBRZwpAd0+XgCTijA3aMbcow8VDFATInrW3g7dUtl
+   zrGfsHj+izjZqvqcfuxZBaZDBN+CC3FODwzB+LOZ7o+aXl/4n4gE26jI6
+   baKWHgDaw5cp79B+YQ0UHs4GcFGJ+9MlqMENwhtDuKuBbvC8bEipoyR/V
+   MhIyArMXbixjXCkwLM8hCuPe9K3oq1Ha4H/6jsFB7j/Gd/CxOtfGY+bac
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10307"; a="347070072"
+X-IronPort-AV: E=Sophos;i="5.90,235,1643702400"; 
+   d="scan'208";a="347070072"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2022 16:29:11 -0700
+X-IronPort-AV: E=Sophos;i="5.90,235,1643702400"; 
+   d="scan'208";a="657694011"
+Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.251.1.231]) ([10.251.1.231])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2022 16:29:10 -0700
+Message-ID: <a0f3d677-e3a8-ecef-a17e-0638764bd425@linux.intel.com>
+Date:   Mon, 4 Apr 2022 16:29:10 -0700
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH net-next v5 08/13] net: wwan: t7xx: Add data path
+ interface
+Content-Language: en-US
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        chandrashekar.devegowda@intel.com,
+        Intel Corporation <linuxwwan@intel.com>,
+        chiranjeevi.rapolu@linux.intel.com,
+        =?UTF-8?B?SGFpanVuIExpdSAo5YiY5rW35YabKQ==?= 
+        <haijun.liu@mediatek.com>, amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        ilpo.johannes.jarvinen@intel.com, moises.veleta@intel.com,
+        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
+        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
+        madhusmita.sahu@intel.com
+References: <20220223223326.28021-1-ricardo.martinez@linux.intel.com>
+ <20220223223326.28021-9-ricardo.martinez@linux.intel.com>
+ <CAHNKnsTZ57hZfy_CTv8-AXuXJEuYVCaO0oax03eMMYzerB-Oyw@mail.gmail.com>
+From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
+In-Reply-To: <CAHNKnsTZ57hZfy_CTv8-AXuXJEuYVCaO0oax03eMMYzerB-Oyw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,186 +80,61 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+Hi Sergey,
 
->> From: Sean Wang <sean.wang@mediatek.com>
+On 3/6/2022 6:58 PM, Sergey Ryazanov wrote:
+> On Thu, Feb 24, 2022 at 1:35 AM Ricardo Martinez
+> <ricardo.martinez@linux.intel.com> wrote:
+>> From: Haijun Liu <haijun.liu@mediatek.com>
 >>
->> add hostspot mode support to mt7921 that can work for mt7921[e,s,u]
->> with the common code.
+>> Data Path Modem AP Interface (DPMAIF) HIF layer provides methods
+>> for initialization, ISR, control and event handling of TX/RX flows.
 >>
->> Tested-by: Deren Wu <deren.wu@mediatek.com>
-
-<snip>
-
->> +		struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
->> +
->> +		mt76_connac_mcu_uni_add_bss(phy->mt76, vif, &mvif->sta.wcid,
->> +					    true);
->> +		mt7921_mcu_sta_update(dev, NULL, vif, true,
->> +				      MT76_STA_INFO_STATE_NONE);
->> +	}
->> +
->> +	if (changed & (BSS_CHANGED_BEACON |
->> +		       BSS_CHANGED_BEACON_ENABLED)) {
->
->nit: we do not need brackets here.
-
-thanks. will be fixed in v2.
-
->
->> +		mt7921_mcu_uni_add_beacon_offload(dev, hw, vif,
->> +						  info->enable_beacon);
->> +	}
->> +
->>	/* ensure that enable txcmd_mode after bss_info */
->>	if (changed & (BSS_CHANGED_QOS | BSS_CHANGED_BEACON_ENABLED))
->>		mt7921_mcu_set_tx(dev, vif);
->> @@ -1394,6 +1427,18 @@ static int mt7921_set_sar_specs(struct ieee80211_hw *hw,
->>	return err;
->>  }
+>> DPMAIF TX
+>> Exposes the `dmpaif_tx_send_skb` function which can be used by the
+>> network device to transmit packets.
+>> The uplink data management uses a Descriptor Ring Buffer (DRB).
+>> First DRB entry is a message type that will be followed by 1 or more
+>> normal DRB entries. Message type DRB will hold the skb information
+>> and each normal DRB entry holds a pointer to the skb payload.
 >>
->> +static void
->> +mt7921_channel_switch_beacon(struct ieee80211_hw *hw,
->> +			     struct ieee80211_vif *vif,
->> +			     struct cfg80211_chan_def *chandef) {
->> +	struct mt7921_dev *dev = mt7921_hw_dev(hw);
->> +
->> +	mt7921_mutex_acquire(dev);
->> +	mt7921_mcu_uni_add_beacon_offload(dev, hw, vif, true);
->> +	mt7921_mutex_release(dev);
->> +}
->> +
->>  const struct ieee80211_ops mt7921_ops = {
->>	.tx = mt7921_tx,
->>	.start = mt7921_start,
->> @@ -1412,6 +1457,7 @@ const struct ieee80211_ops mt7921_ops = {
->>	.set_rts_threshold = mt7921_set_rts_threshold,
->>	.wake_tx_queue = mt76_wake_tx_queue,
->>	.release_buffered_frames = mt76_release_buffered_frames,
->> +	.channel_switch_beacon = mt7921_channel_switch_beacon,
->>	.get_txpower = mt76_get_txpower,
->>	.get_stats = mt7921_get_stats,
->>	.get_et_sset_count = mt7921_get_et_sset_count, diff --git
->> a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
->> b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
->> index da2be050ed7c..1ecbbe4fa498 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
->> @@ -248,7 +248,8 @@ mt7921_mcu_connection_loss_iter(void *priv, u8 *mac,
->>	if (mvif->idx != event->bss_idx)
->>		return;
->>
->> -	if (!(vif->driver_flags & IEEE80211_VIF_BEACON_FILTER))
->> +	if (!(vif->driver_flags & IEEE80211_VIF_BEACON_FILTER) ||
->> +	    vif->type != NL80211_IFTYPE_STATION)
->>		return;
->>
->>	ieee80211_connection_loss(vif);
->> @@ -1166,3 +1167,79 @@ int mt7921_mcu_set_sniffer(struct mt7921_dev *dev, struct ieee80211_vif *vif,
->>	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(SNIFFER), &req, sizeof(req),
->>				 true);
->>  }
->> +
->> +int
->> +mt7921_mcu_uni_add_beacon_offload(struct mt7921_dev *dev,
->> +				  struct ieee80211_hw *hw,
->> +				  struct ieee80211_vif *vif,
->> +				  bool enable)
+>> DPMAIF RX
+>> The downlink buffer management uses Buffer Address Table (BAT) and
+>> Packet Information Table (PIT) rings.
+>> The BAT ring holds the address of skb data buffer for the HW to use,
+>> while the PIT contains metadata about a whole network packet including
+>> a reference to the BAT entry holding the data buffer address.
+>> The driver reads the PIT and BAT entries written by the modem, when
+>> reaching a threshold, the driver will reload the PIT and BAT rings.
+...
+>> +static int t7xx_dpmaif_add_skb_to_ring(struct dpmaif_ctrl *dpmaif_ctrl, struct sk_buff *skb)
 >> +{
->> +	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
->> +	struct mt76_wcid *wcid = &dev->mt76.global_wcid;
->> +	struct ieee80211_mutable_offsets offs;
->> +	struct {
->> +		struct req_hdr {
->> +			u8 bss_idx;
->> +			u8 pad[3];
->> +		} __packed hdr;
->> +		struct bcn_content_tlv {
->> +			__le16 tag;
->> +			__le16 len;
->> +			__le16 tim_ie_pos;
->> +			__le16 csa_ie_pos;
->> +			__le16 bcc_ie_pos;
->
->does the fw support bcc IE? if so I guess we introduce support for it here, right?
+>> +       unsigned short cur_idx, drb_wr_idx_backup;
+>> ...
+>> +       txq = &dpmaif_ctrl->txq[skb_cb->txq_number];
+>> ...
+>> +       cur_idx = txq->drb_wr_idx;
+>> +       drb_wr_idx_backup = cur_idx;
+>> ...
+>> +       for (wr_cnt = 0; wr_cnt < payload_cnt; wr_cnt++) {
+>> ...
+>> +               bus_addr = dma_map_single(dpmaif_ctrl->dev, data_addr, data_len, DMA_TO_DEVICE);
+>> +               if (dma_mapping_error(dpmaif_ctrl->dev, bus_addr)) {
+>> +                       dev_err(dpmaif_ctrl->dev, "DMA mapping fail\n");
+>> +                       atomic_set(&txq->tx_processing, 0);
+>> +
+>> +                       spin_lock_irqsave(&txq->tx_lock, flags);
+>> +                       txq->drb_wr_idx = drb_wr_idx_backup;
+>> +                       spin_unlock_irqrestore(&txq->tx_lock, flags);
+> What is the purpose of locking here?
 
-bcc IE cannot be supported by the ap mode in mt7921 fw
+The intention is to protect against concurrent access of drb_wr_idx by t7xx_txq_drb_wr_available()
 
 >
->Regards,
->Lorenzo
->
->> +			/* 0: disable beacon offload
->> +			 * 1: enable beacon offload
->> +			 * 2: update probe respond offload
->> +			 */
->> +			u8 enable;
->> +			/* 0: legacy format (TXD + payload)
->> +			 * 1: only cap field IE
->> +			 */
->> +			u8 type;
->> +			__le16 pkt_len;
->> +			u8 pkt[512];
->> +		} __packed beacon_tlv;
->> +	} req = {
->> +		.hdr = {
->> +			.bss_idx = mvif->mt76.idx,
->> +		},
->> +		.beacon_tlv = {
->> +			.tag = cpu_to_le16(UNI_BSS_INFO_BCN_CONTENT),
->> +			.len = cpu_to_le16(sizeof(struct bcn_content_tlv)),
->> +			.enable = enable,
->> +		},
->> +	};
->> +	struct sk_buff *skb;
->> +
->> +	if (!enable)
->> +		goto out;
->> +
->> +	skb = ieee80211_beacon_get_template(mt76_hw(dev), vif, &offs);
->> +	if (!skb)
->> +		return -EINVAL;
->> +
->> +	if (skb->len > 512 - MT_TXD_SIZE) {
->> +		dev_err(dev->mt76.dev, "beacon size limit exceed\n");
->> +		dev_kfree_skb(skb);
->> +		return -EINVAL;
->> +	}
->> +
->> +	mt7921_mac_write_txwi(dev, (__le32 *)(req.beacon_tlv.pkt), skb,
->> +			      wcid, NULL, 0, true);
->> +	memcpy(req.beacon_tlv.pkt + MT_TXD_SIZE, skb->data, skb->len);
->> +	req.beacon_tlv.pkt_len = cpu_to_le16(MT_TXD_SIZE + skb->len);
->> +	req.beacon_tlv.tim_ie_pos = cpu_to_le16(MT_TXD_SIZE +
->> +offs.tim_offset);
->> +
->> +	if (offs.cntdwn_counter_offs[0]) {
->> +		u16 csa_offs;
->> +
->> +		csa_offs = MT_TXD_SIZE + offs.cntdwn_counter_offs[0] - 4;
->> +		req.beacon_tlv.csa_ie_pos = cpu_to_le16(csa_offs);
->> +	}
->> +	dev_kfree_skb(skb);
->> +
->> +out:
->> +	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(BSS_INFO_UPDATE),
->> +				 &req, sizeof(req), true);
+>> +                       return -ENOMEM;
+>> +               }
+>> ...
+>> +       }
+>> ...
 >> +}
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
->> b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
->> index eae223a31000..adbdb2e22934 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
->> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
->> @@ -469,4 +469,8 @@ int mt7921u_wfsys_reset(struct mt7921_dev *dev);
->> int mt7921u_dma_init(struct mt7921_dev *dev, bool resume);  int
->> mt7921u_init_reset(struct mt7921_dev *dev);  int
->> mt7921u_mac_reset(struct mt7921_dev *dev);
->> +int mt7921_mcu_uni_add_beacon_offload(struct mt7921_dev *dev,
->> +				      struct ieee80211_hw *hw,
->> +				      struct ieee80211_vif *vif,
->> +				      bool enable);
->>  #endif
->> --
->> 2.25.1
->>
 >
