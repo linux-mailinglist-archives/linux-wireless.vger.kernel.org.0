@@ -2,118 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 711ED4F53F5
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 06:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B8674F5390
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 06:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1453440AbiDFDKQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Apr 2022 23:10:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37084 "EHLO
+        id S1454255AbiDFDKg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Apr 2022 23:10:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1457895AbiDEQ5o (ORCPT
+        with ESMTP id S1573101AbiDER7U (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Apr 2022 12:57:44 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C729220BD6;
-        Tue,  5 Apr 2022 09:55:41 -0700 (PDT)
-Received: from zn.tnic (p2e55dff8.dip0.t-ipconnect.de [46.85.223.248])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 796EF1EC0502;
-        Tue,  5 Apr 2022 18:55:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1649177735;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JY4/OPfg1PtWK4WJhPTqkYrmoKWgxT1mUYXtCHiS4ug=;
-        b=k5ii1JF5xPofyJTFKU5oNprGEWoub9d1wYkVRZs2+LqjlasIW90ySctLvwVo/9iM6bXfqe
-        wfV6moDTGIN5YaUgAbBRYTYDjmbdGAm+M4sPvzkxnjhEbuDGFo4qpkzUqVT2XGMCiEq16D
-        LCgp9HqbqIiI1MlXEv+1qMEUzNt1DkU=
-Date:   Tue, 5 Apr 2022 18:55:37 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        brcm80211-dev-list.pdl@broadcom.com, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: [RESEND PATCH 06/11] brcmfmac: sdio: Fix undefined behavior due to
- shift overflowing the constant
-Message-ID: <Ykx0iRlvtBnKqtbG@zn.tnic>
-References: <20220405151517.29753-1-bp@alien8.de>
- <20220405151517.29753-7-bp@alien8.de>
- <87y20jr1qt.fsf@kernel.org>
- <YkxpIQHKLXmGBwV1@zn.tnic>
- <87pmlvqye0.fsf@kernel.org>
+        Tue, 5 Apr 2022 13:59:20 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23AF8E7F59
+        for <linux-wireless@vger.kernel.org>; Tue,  5 Apr 2022 10:57:21 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id p15so24625956lfk.8
+        for <linux-wireless@vger.kernel.org>; Tue, 05 Apr 2022 10:57:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hBgkgZVxUFaHHWVT8MJPRfMm0CbtM8C9QcwHO150roA=;
+        b=cikBVFVsqfHRfiS3Za+lqvw+SF2Z6x/1MAsZHBWiKm3TYeQxJz3Y0V9vvb2Vr+8BwK
+         Jn1ZJp1uro8v3++kb/aq9ZfjZVI6oa3qIicCw98cuFEYl/dIeN/oj/xmGC4g2dqmIZqm
+         GU6YFirBWWt7ZxKJZRVr7StDOW++mx3rKhSt9xa1tOiTMyk7a+nTs04xo1uxfG6hIxBI
+         GOHsndkoLejoUUhZfN2WHf48bDJKSJQKfeGOyi6KSg4cZaKaVNFoY9HZ/jDgCuSjRyqh
+         Ls/cOFBuFDhnoL/DtPqxcNbIKqg9dVW60GggP6esN5jq3IZPfcDGEh5dDc4zL/J2B6rJ
+         ptow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hBgkgZVxUFaHHWVT8MJPRfMm0CbtM8C9QcwHO150roA=;
+        b=cexdCTgxoIghsYGGZOQAvVqMWsycG8NY7RsC14hBcx7dBiZx+AIpGAmusgPFPKDhXl
+         OMVX3qkPxZ0q2BWSviB7hCtPrA0EEbnvJutSnpJ7P3OfmCZ/tzZ6FHckDuIoOD9lpCPK
+         Onv29zY8TXTZ9mAo44o36sLPtlqmgia7Z5hlC2g8u2o8uhgemLieOQyDUjPzB2YvYS/I
+         C1JVcB5CD0+oT0vmF1KlCusyc1NvJ9B0KoJMVB9sYnwTg6B1DBuNcuMj2SZ3kUIIWyTq
+         0yZlTVg3qO43v9HOmTl1Bz+YZ1BBuKqmkCSYIp1xir/kDBnopMC4Hd2drGRMuFvtnyDZ
+         iYNw==
+X-Gm-Message-State: AOAM532EZIutnurZ0DoP63RRd0X1F7CYjSNnGB9SjRDHiAtFZTV/KJDx
+        5evc/hsgd421plzJ+S3ZF0NAQGmA0sDv1X+Y9lzG0A==
+X-Google-Smtp-Source: ABdhPJz2VaFmMYt5PGtt9rPGIZ+g8Of7B0s0umeXy0XDUFW7BCfGgvKZYRvQKJox0fPHoaedJxkrhq2IosfOwyw+srk=
+X-Received: by 2002:a05:6512:33d4:b0:44a:9971:de48 with SMTP id
+ d20-20020a05651233d400b0044a9971de48mr3392619lfg.392.1649181439072; Tue, 05
+ Apr 2022 10:57:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87pmlvqye0.fsf@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220401230640.3196196-1-trix@redhat.com>
+In-Reply-To: <20220401230640.3196196-1-trix@redhat.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Tue, 5 Apr 2022 10:57:07 -0700
+Message-ID: <CAKwvOdng7CbqGrDH+WYwY0aAkjpW8mT428m4p=K8VTTD8ddV0Q@mail.gmail.com>
+Subject: Re: [PATCH] iwlwifi: mvm: initialize seq variable
+To:     Tom Rix <trix@redhat.com>
+Cc:     luciano.coelho@intel.com, kvalo@kernel.org, davem@davemloft.net,
+        kuba@kernel.org, pabeni@redhat.com, nathan@kernel.org,
+        johannes.berg@intel.com, emmanuel.grumbach@intel.com,
+        dan.carpenter@oracle.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix:
+On Fri, Apr 1, 2022 at 4:06 PM Tom Rix <trix@redhat.com> wrote:
+>
+> Clang static analysis reports this issue
+> d3.c:567:22: warning: The left operand of '>' is
+>   a garbage value
+>   if (seq.tkip.iv32 > cur_rx_iv32)
+>       ~~~~~~~~~~~~~ ^
+>
+> seq is never initialized. Call ieee80211_get_key_rx_seq() to
+> initialize seq.
+>
+> Fixes: 0419e5e672d6 ("iwlwifi: mvm: d3: separate TKIP data from key iteration")
+> Signed-off-by: Tom Rix <trix@redhat.com>
 
-  drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c: In function ‘brcmf_sdio_drivestrengthinit’:
-  drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c:3798:2: error: case label does not reduce to an integer constant
-    case SDIOD_DRVSTR_KEY(BRCM_CC_43143_CHIP_ID, 17):
-    ^~~~
-  drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c:3809:2: error: case label does not reduce to an integer constant
-    case SDIOD_DRVSTR_KEY(BRCM_CC_43362_CHIP_ID, 13):
-    ^~~~
+Thanks for the patch!
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-See https://lore.kernel.org/r/YkwQ6%2BtIH8GQpuct@zn.tnic for the gory
-details as to why it triggers with older gccs only.
-
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: Arend van Spriel <aspriel@gmail.com>
-Cc: Franky Lin <franky.lin@broadcom.com>
-Cc: Hante Meuleman <hante.meuleman@broadcom.com>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: brcm80211-dev-list.pdl@broadcom.com
-Cc: netdev@vger.kernel.org
----
-
-Resend, this time with linux-wireless on Cc so that patchwork can pick
-it up.
-
-Thx.
-
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index ba3c159111d3..d78ccc223709 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -557,7 +557,7 @@ enum brcmf_sdio_frmtype {
- 	BRCMF_SDIO_FT_SUB,
- };
- 
--#define SDIOD_DRVSTR_KEY(chip, pmu)     (((chip) << 16) | (pmu))
-+#define SDIOD_DRVSTR_KEY(chip, pmu)     (((unsigned int)(chip) << 16) | (pmu))
- 
- /* SDIO Pad drive strength to select value mappings */
- struct sdiod_drive_str {
--- 
-2.35.1
+> ---
+>  drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+> index a995bba0ba81..9b190b3ce6c1 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+> @@ -563,6 +563,7 @@ static void iwl_mvm_wowlan_get_tkip_data(struct ieee80211_hw *hw,
+>                 }
+>
+>                 for (i = 0; i < IWL_NUM_RSC; i++) {
+> +                       ieee80211_get_key_rx_seq(key, i, &seq);
+>                         /* wrapping isn't allowed, AP must rekey */
+>                         if (seq.tkip.iv32 > cur_rx_iv32)
+>                                 cur_rx_iv32 = seq.tkip.iv32;
+> --
+> 2.27.0
+>
 
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks,
+~Nick Desaulniers
