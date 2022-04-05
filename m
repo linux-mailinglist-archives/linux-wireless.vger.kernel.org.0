@@ -2,379 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2CB34F52C6
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 05:06:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DF504F53C2
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 06:39:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238868AbiDFDG5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Apr 2022 23:06:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44220 "EHLO
+        id S1455932AbiDFDMC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Apr 2022 23:12:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1573074AbiDERxN (ORCPT
+        with ESMTP id S1454034AbiDEP5u (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Apr 2022 13:53:13 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F28CDE0B1
-        for <linux-wireless@vger.kernel.org>; Tue,  5 Apr 2022 10:51:12 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a6so17377377ejk.0
-        for <linux-wireless@vger.kernel.org>; Tue, 05 Apr 2022 10:51:12 -0700 (PDT)
+        Tue, 5 Apr 2022 11:57:50 -0400
+Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D38F3167F8E
+        for <linux-wireless@vger.kernel.org>; Tue,  5 Apr 2022 08:03:01 -0700 (PDT)
+Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-d6ca46da48so14639600fac.12
+        for <linux-wireless@vger.kernel.org>; Tue, 05 Apr 2022 08:03:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
+        h=sender:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=71VjE26wPh9ej6RgLNzZLjV1gyE1eSSpA4bJwgE7Yx0=;
-        b=TWaP8JwC5o8iBLTw9CODzM5aRo0JC/FLK+j+aWugaAWMVUqJa3ytY5ypTcq7HlgQNT
-         vMyudlVc3uFiCg5wlfZj4es1DKKUsZnsAyrNmPleekmNiHH9X9kiAmw58x1QBUZWhouA
-         B+CnACM2mjA30xil9LgJNEfH6/6FvEm8WD1XknfPOg8PvZHpLsab+uDwrMIdxv5fAS5j
-         EsvmxXh5sSXIC7rgcUH/OWYBBSTDctz0P10laxSUMfNxjiY8HMxlHuxOPFFipbGLUvMd
-         vUWuD62m0P7jQdxjKrM2L6XSW6AODE7UiBDuqkn95bfFdlKqE7aP/foEJfxLyJ8/fBTw
-         yxUw==
+        bh=/WeqeqXC6BXYo1pJqD9CNBUUl9OFyWmWbFYxNLGDQHI=;
+        b=bQukCczxFTy/nyTkXP0QiIbXJ65RiCMy2RGaZ2YF2bzbKJhyB8438iEcdN24lSV7WJ
+         crzZJHtlCFdqB10/RaxDK8HCHc3gj9IG1QFkjyXFxVL9+uqMGfB2dwWBc7MrwwMJxoxz
+         u09XT3dgTZ1beuRrNgb3DGyuJyXbCOBes9eWTkIM4en0hl4YEBynXGHCsp15XuKAGY2b
+         /wVmYgjHEGD3EwviJIkkypHQzk4QqruU8zYY4YMsuQw1WHmdSNcJcZt/zY0ykKImJf9+
+         NWy7hlvYRorDHLgtxFLQZB5y6svec40sethw88hoW5QNyunh+iVmjh3ztbGvZvMwJ45I
+         Wmwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :subject:content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=71VjE26wPh9ej6RgLNzZLjV1gyE1eSSpA4bJwgE7Yx0=;
-        b=I+sBaBZtfVkFZOcWHz2T7872bLopbNFz/HlYxR7Xk3PzHmPZDz9qifhRblDqKhUnTn
-         RZ4ECaMcf8L15318xFb+zSLUT4AJi+SpfyJqpGQYwaquSBbrcOwUK7NndLQCzxw0cz/4
-         nB7POk/FTKmOKISgyslhKm4oRaNdcDFKLTKmyc6CS6Pse1FXshp9M4jbB0CwNcTTmkK8
-         n4/pXFjdqM/yZZnJueXpe9o+6S4STSKCOvy8LXIAsyeLj/1yNKzCpHQ3XJDiHeJJxhOt
-         +guSiT/6dnhoXhwIzOGzfQxynwFVlIoLVX5uWNn7TF4lRCv23IRBeuCP14L8roS39RB1
-         ZioA==
-X-Gm-Message-State: AOAM530vACY+o0nxkybYx00eRhERPtJx/PKOpBxabfJq66AmRpRYfF/J
-        O2P+QkZaGeNVMoIiuqCfD9sZ+fJzZNAyvKo6Dr8=
-X-Google-Smtp-Source: ABdhPJy3WqnbFWhFyzR2jjv9wo3teILmv3rquwAOArhBIyRmnyDnYZLaGkiIJ7sloKGihwZJppz+pMAkxRt4WJz8Q/4=
-X-Received: by 2002:a17:906:d555:b0:6db:148e:5cc with SMTP id
- cr21-20020a170906d55500b006db148e05ccmr4559155ejc.63.1649181069336; Tue, 05
- Apr 2022 10:51:09 -0700 (PDT)
+        bh=/WeqeqXC6BXYo1pJqD9CNBUUl9OFyWmWbFYxNLGDQHI=;
+        b=SILvHEcTHENHyxpqps2F5m2rzEI7THwYBkdmhsJUdue5eWjDQJ4Wer+nW6HURnkin8
+         LHn2NhYA3iA9NGfLXptlgbpj2AFov7OLicxqHP0IHvLESLrDNabipUnbf9xY9EaKS7IR
+         nj5O7rtttTY10BVFQoxxDnErytVy4kI/XEYrRpVg8R8ODGYGuMoTgIt9LJ+XUxaH7IPs
+         ud3u1hsnJqFkCDRF9aCd5uMxMTRs7eLn89h+4/Fxzk2mtY5jeL9FVW2owEjpf0qxWM8k
+         zWrdNHODUyi+RAVzUL7bqBB9NvyXI6KGjTheS76SZKmk3na9eegppB/hZf+iy+fyHFgT
+         yXag==
+X-Gm-Message-State: AOAM530rzImQ6vSeS3qb5wHyY0O+cbERdfWQsgztq1uOV5o1K8gCieEO
+        aELqwixmFwt8NBxu0wCZAV0=
+X-Google-Smtp-Source: ABdhPJx1RS2czUvlPYXgLqNNr0WKtbFxWTRwTbBUmMCYrGa7dlW692hqmrZE0kLTFVXtiqS5KTElSQ==
+X-Received: by 2002:a05:6870:2184:b0:e1:e0bf:3436 with SMTP id l4-20020a056870218400b000e1e0bf3436mr1663789oae.156.1649170980851;
+        Tue, 05 Apr 2022 08:03:00 -0700 (PDT)
+Received: from ?IPV6:2603:8090:2005:39b3::1004? (2603-8090-2005-39b3-0000-0000-0000-1004.res6.spectrum.com. [2603:8090:2005:39b3::1004])
+        by smtp.gmail.com with ESMTPSA id 12-20020a05687012cc00b000de97cc1beesm5586428oam.43.2022.04.05.08.02.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Apr 2022 08:03:00 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <4032c417-fb57-c253-63e5-94a9c3f605bd@lwfinger.net>
+Date:   Tue, 5 Apr 2022 10:02:58 -0500
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Tue, 5 Apr 2022 18:50:57 +0100
-Message-ID: <CAHpNFcPDv_NYw-h50YgH5qmQmFmpWVL6DCf4jvjg-KE0iSN2OQ@mail.gmail.com>
-Subject: USB & Dongle & Bluetooth & 2.4g Devices 'Example' Logitech devices'
- need a /dev/random Seed Saved for their Cryptological security for both the
- device & the USB Dongle>
-To:     torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: rtw_8822ce wifi regression after kernel update from 5.15 to 5.16
+Content-Language: en-US
+To:     "G. P. B." <george.banyard@gmail.com>
+Cc:     snecknico@gmail.com, kvalo@kernel.org,
+        linux-wireless@vger.kernel.org, regressions@leemhuis.info,
+        regressions@lists.linux.dev, tony0620emma@gmail.com
+References: <CAFPFaMLHXhHMhuAuvXWHb3c-tX_9qRxsquEUHXY0fMxh_VsKtw@mail.gmail.com>
+ <ba45934b-69ab-edfa-1679-2e8e00fac126@lwfinger.net>
+ <CAFPFaMKpwmGqc_Cm1fv4psR6m+waax6YZO2ugOPhgmnG4mGJ4A@mail.gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <CAFPFaMKpwmGqc_Cm1fv4psR6m+waax6YZO2ugOPhgmnG4mGJ4A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,LOTS_OF_MONEY,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-USB & Dongle & Bluetooth & 2.4g Devices 'Example' Logitech devices'
-need a /dev/random Seed Saved for their Cryptological security for
-both the device & the USB Dongle>
+On 4/5/22 06:39, G. P. B. wrote:
+> On Mon, 4 Apr 2022 at 15:49, Larry Finger <Larry.Finger@lwfinger.net 
+> <mailto:Larry.Finger@lwfinger.net>> wrote:
+> 
+>     George,
+> 
+>     I do not know of any regression in 5.16 with regard to the driver for
+>     RTL8822CE.
+>     Certainly, I saw no regressions in my testing of that driver from before it was
+>     in the kernel up to the present. That said, I can only comment on the
+>     user-space
+>     part of openSUSE Tumbleweed, which is probably not your distro of choice.
+> 
+>     Are you using the drivers at https://GitHub.com/lwfinger/rtw88.git
+>     <https://GitHub.com/lwfinger/rtw88.git> rather than
+>     the ones in the kernel? Your posted errors that refer to rtw_8822ce indicate
+>     that to be true. If the drivers came from the kernel, the reference would be to
+>     rtw88_8822ce! If so, do a 'git pull' to get the drivers updated to match the
+>     code in kernel 5.18. A lot of things have been fixed.
+> 
+>     In your system, please do a 'lsmod | grep rtw'. If any items refer to rtw88_*,
+>     you have mixed drivers loaded. In that case, you should blacklist the rtw88_*
+>     driver.
+> 
+>     Larry
+> 
+> 
+> I haven't had time to rollback to 5.15 to check if this fixes the issue but I 
+> have the following command line output:
+> [girgias@fedora ~]$ lsmod | grep rtw
+> rtw88_8822ce           16384  0
+> rtw88_8822c           483328  1 rtw88_8822ce
+> rtw88_pci              28672  1 rtw88_8822ce
+> rtw88_core            167936  2 rtw88_pci,rtw88_8822c
+> mac80211             1175552  2 rtw88_pci,rtw88_core
+> cfg80211             1036288  2 rtw88_core,mac80211
+> 
+> Which if I understand your email correctly means I have mixed drivers?
+> I personally did not start to use the drivers you provide on GitHub as I just do 
+> dnf update to update my packages.
+> Therefore, does this implies there is an issue with how Fedora is packaging the 
+> WiFi drivers?
+> 
+> If I need to blacklist drivers, I imagine I need to do this at the package 
+> manager level?
+
+George,
+
+No, you have the in-kernel version - the rtw drivers all start with "rtw88".
+
+Your "regression" between 5.15 and 5.16 is that you switched from the GitHub 
+repo to the in-kernel drivers. There have been many improvements in the kernel 
+version since 5.16. Those are included in the GitHub version. One or more of 
+them helped your system. I am not that familiar with fedora, but to get the 
+kernel versions of the drivers, it is not necessary to "dnf" anything other than 
+the kernel itself. All the in-kernel drivers come along with it.
+
+Blacklisting is done by creating (as root) a blacklist file in /etc/modprobe.d/, 
+not in the package manager. It is at a much lower level. On my system is such a 
+file named /etc/modprobe.d/60-blacklist-rtw8822c.conf with contents of:
+blacklist rtw88_8822ce
+blacklist rtw88_8822c
+blacklist rtw88_pci
+blacklist rtw88_core
+
+With this file, I am assured that only the drivers from GitHub will be loaded.
+
+Larry
 
-Instructions  *RAND OP Ubuntu :
-https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
-
-https://pollinate.n-helix.com
-
-*****
-
-NT Interrupt counter Entropy : A counter theory : RS
-
-"more importantly, our
-distribution is not 2-monotone like NT's, because in addition to the
-cycle counter, we also include in those 4 words a register value, a
-return address, and an inverted jiffies. (Whether capturing anything
-beyond the cycle counter in the interrupt handler is even adding much of
-value is a question for a different time.)"
-
-NT Interrupt counter Entropy : A counter theory : RS
-
-To be clear interrupts are old fashioned (NT & Bios) : Points
-
-Network cards have offloading? Yes & why cannot we?
-
-Offloaded does not mean that a time differential matrix HASH AES of 32Bit w=
-ords,
-Cross pollinated though MMX, AVX , SiMD is plausible!
-
-Combined with even network latency timing & interrupt latency...
-
-Various system differentials can alternate line in our table per clock sync=
-!
-
-In this reference Quartz clock instability is not only counter acted by NTP=
-...
-But also utilized as a variable co-modifier.
-
-So why not also advantage ourselves of the clock frequency scaling
-effect to confuse odds again for Entropy (Random, Not Entropy)
-
-SSD does also have a write counter & a cleared state, not so boring as
-one thinks if per 32KB segment is hashed in 4Bit, 8,Bit 32Bit float!
-(remember we have DOT3 DOT 4 & INT8 in ML)
-
-We can utilize write cycle statistics & all hardware; Interrupts by
-themselves are rather Boring!
-
-Computed timings on processes multiplexed over 3 Threads per group in
-competition is also a potential complexifier of Random
-
-Rupert S
-
-https://science.n-helix.com/2018/12/rng.html
-
-https://science.n-helix.com/2022/02/rdseed.html
-
-https://science.n-helix.com/2017/04/rng-and-random-web.html
-
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.h=
-tml
-
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-
-****
-
-PreSEED Poly Elliptic SiMD RAND : RS
-
-Preseed ; 3 Seeds with AES or Poly ChaCha or even 1 : 2 would be
-rather fast Init
-
-Blending them would make a rather paranoid Kernel developer feel safe! :D
-
-Like so List:
-
-3 seeds 32Bit or 64Bit :
-Examples :
-
-1 Seed : Pre seeded from CPU IRQ & Net 16Bit values each & merged
-2 & 3 from server https://pollinate.n-helix.com &or System TRNG
-
-4 Seed mix 128Bit Value
-
-Advantages :
-
-AVX & SiMD Mixxer is fast 'Byte Swap & Maths etcetera" & MultiThreaded
-AES Support is common :
-
-*
-HASH : RSA Source Cert C/TRNG : (c)RS
-
-Elliptic RSA : Cert Mixer : RSA 4096/2048/1024Temporal : 384/256/192
-ECC Temporal
-
-Centric Entropy HASH: Butterfly Effects
-
-Blake2
-ChaCha
-SM4
-SHA2
-SHA3
-
-Elliptic Encipher
-AES
-Poly ChaCha
-
-Elliptic : Time Variance : Tick Count Variance : On & Off Variance : IRQ
-
-*
-Time & Crystal : Quartz as a diffraction point fractal differentiator : RS
-
-RDTSC Variable bit differentiation & deviation of the quartz sub .0001
-Value combined with complexity of unique interplay with Alternative
-clocks such as Network cards, Audio cards & USB Sticks & Bluetooth
-radio clocks & Ultimately the NTP Pools themselves when required.
-
-(TIME Differential Float maths) TSC : RDTSC : RDTSCP : TCE supports
-single and half precision floating-point calculations
-
-Processor features: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr
-pge mca cmov pat pse36 clflush mmx fxsr sse sse2 htt pni ssse3 fma
-cx16 sse4_1 sse4_2 popcnt aes f16c syscall nx lm avx svm sse4a osvw
-ibs xop skinit wdt lwp fma4 tce tbm topx page1gb rdtscp bmi1
-
-*
-For RDTSCP =3D TValue TV1=3D16.0685 TV2=3D16.1432 TV3=3D15.1871
-When Processor Mzh =3D PV1 PV2 PV3
-RAND Source =3D Es1 Es2 Es3
-
-If Xt =3D 1.9 < then roll right
-
-((TV1 - TV2) * (PV1 - PV2)) / ((TV1 - TV3) * (PV1 - PV3)) =3D FractorXt(Xt)
-
-Es1 * Xt =3D Differential
-
-Es2 Es3
-
-(c) Rupert S
-
-Quartz as a diffraction point fractal differentiator : RS
-
-https://tches.iacr.org/index.php/TCHES/article/download/7274/6452
-https://perso.univ-rennes1.fr/david.lubicz/articles/gda.pdf
-https://patents.google.com/patent/US9335971
-*
-
-"Taking spinlocks from IRQ context is problematic for PREEMPT_RT. That
-is, in part, why we take trylocks instead. But apparently this still
-trips up various lock dependency analysers. That seems like a bug in the
-analyser's that should be fixed, rather than having to change things
-here.
-
-But maybe there's another reason to change things up: by deferring the
-crng pre-init loading to the worker, we can use the cryptographic hash
-function rather than xor, which is perhaps a meaningful difference when
-considering this data has only been through the relatively weak
-fast_mix() function.
-
-The biggest downside of this approach is that the pre-init loading is
-now deferred until later, which means things that need random numbers
-after interrupts are enabled, but before work-queues are running -- or
-before this particular worker manages to run -- are going to get into
-trouble. Hopefully in the real world, this window is rather small,
-especially since this code won't run until 64 interrupts have occurred."
-
-https://lore.kernel.org/lkml/Yhc4LwK3biZFIqwQ@owl.dominikbrodowski.net/T/
-
-Rupert S
-
-*****
-Serve C-TRNG QT Fractional Differentiator(c)RS
-
-Server C/TRNG Quarts Time * Fractional differentiator : 8Bit, 16Bit,
-32Bit, Float Int32 : Fractional Differentiator : fig-mantuary micro
-differentiator.
-
-SipHash: a fast short-input PRF
-
-Rotation Alignment : "The advantage of choosing such =E2=80=9Caligned=E2=80=
-=9D
-rotation counts is that aligned rotation counts are much faster than
-unaligned rotation counts on many non-64-bit architectures."
-
-http://cr.yp.to/siphash/siphash-20120918.pdf
-
-https://www.aumasson.jp/siphash/siphash.pdf
-
-"Choice of rotation counts. Finding really bad rotation counts for ARX
-algorithms turns out to be difficult. For example, randomly setting
-all rotations in
-BLAKE-512 or Skein to a value in {8, 16, 24, . . . , 56} may allow known at=
-tacks
-to reach slightly more rounds, but no dramatic improvement is expected.
-The advantage of choosing such =E2=80=9Caligned=E2=80=9D rotation counts is=
- that
-aligned rotation counts are much faster than unaligned rotation counts
-on many non-64-bit
-architectures. Many 8-bit microcontrollers have only 1-bit shifts of bytes,=
- so
-rotation by (e.g.) 3 bits is particularly expensive; implementing a rotatio=
-n by
-a mere permutation of bytes greatly speeds up ARX algorithms. Even 64-bit
-systems can benefit from alignment, when a sequence of shift-shift-xor can =
-be
-replaced by SSSE3=E2=80=99s pshufb byte-shuffling instruction. For comparis=
-on,
-implementing BLAKE-256=E2=80=99s 16- and 8-bit rotations with pshufb led to=
- a
-20% speedup
-on Intel=E2=80=99s Nehalem microarchitecture."
-
-https://www.kernel.org/doc/html/latest/security/siphash.html
-
-https://en.wikipedia.org/wiki/SipHash
-
-Code SIP-HASH
-https://github.com/veorq/SipHash
-
-Serve C-TRNG QT Fractional Differentiator(c)RS
-
-Server C/TRNG Quarts Time * Fractional differentiator : 8Bit, 16Bit,
-32Bit, Float Int32 : Fractional Differentiator : fig-mantuary micro
-differentiator.
-
-As we see rotation may benefact from the addition of Quartz crystal
-alignment sync data from 4 cycles & aligning data blocks,
-
-Obviously we can pre share 4 64Bit blocks use use a pre seed AES/ChaCha Qua=
-d!
-Indeed we can have 16 64Bit pre Seeds & chose them by time sync for kernel
-
-Security bug; Solutions & explanation's (contains additional RANDOM
-Security Methods) :RS
-
-https://science.n-helix.com/2020/06/cryptoseed.html
-https://science.n-helix.com/2019/05/zombie-load.html
-https://science.n-helix.com/2018/01/microprocessor-bug-meltdown.html
-
-Rupert S https://science.n-helix.com
-
-*RAND OP Ubuntu :
-https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
-
-https://pollinate.n-helix.com
-
-https://science.n-helix.com/2018/12/rng.html
-
-https://science.n-helix.com/2022/02/rdseed.html
-
-https://science.n-helix.com/2017/04/rng-and-random-web.html
-
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-https://aka.ms/win10rng
-*
-
-Encryption Methods:
-https://tools.ietf.org/id/?doc=3Dhash
-
-https://tools.ietf.org/id/?doc=3Dencrypt
-
-HASH :
-
-https://datatracker.ietf.org/doc/html/draft-ietf-cose-hash-algs
-
-https://tools.ietf.org/id/draft-ribose-cfrg-sm4-10.html
-
-https://tools.ietf.org/id/?doc=3Dsha
-
-https://tools.ietf.org/id/?doc=3Drsa
-
-Encryption Common Support:
-
-https://tools.ietf.org/id/?doc=3Dchacha
-
-https://tools.ietf.org/id/?doc=3Daes
-
-SM4e does seem a good possibility for C/T/RNG CORE HASH Functions!
-
-ARM Crypto Extensions Code (Maybe AES Extensions would work here)
-https://lkml.org/lkml/2022/3/15/324
-
-ARM Neon / SiMD / AVX Compatible (GPU is possible)
-https://lkml.org/lkml/2022/3/15/323
-
-*
-
-197 FIPS NIST Standards Specification C/T/RNG
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-Only a Neanderthal would approve a non additive source combination
-that is injected into the HASH & Re-HASHED ,
-
-One does not Procreate inadequate RANDOM from a simple bias KERNEL,
-Hardware RNG's added together may add around 450% Complexity!
-
-Hardware RNG devices MUST be able to Re-HASH to their 197 NIST
-Standards Specification, That is FINAL 2022 DT
-
-KEYS: trusted: allow use of kernel RNG for key material
-
-https://lkml.org/lkml/2022/3/16/598
-
-CAAM PRNG Reference : https://lkml.org/lkml/2022/3/16/649
