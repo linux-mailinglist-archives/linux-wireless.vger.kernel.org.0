@@ -2,54 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6874C4F21C2
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 06:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F6EE4F22B2
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 07:48:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230371AbiDEEIu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Apr 2022 00:08:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34738 "EHLO
+        id S229971AbiDEFud (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Apr 2022 01:50:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230345AbiDEEIr (ORCPT
+        with ESMTP id S229942AbiDEFu0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Apr 2022 00:08:47 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93F221DA
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 21:06:44 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id g20so13407674edw.6
-        for <linux-wireless@vger.kernel.org>; Mon, 04 Apr 2022 21:06:44 -0700 (PDT)
+        Tue, 5 Apr 2022 01:50:26 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 747F4527DE
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Apr 2022 22:48:27 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id qh7so14323630ejb.11
+        for <linux-wireless@vger.kernel.org>; Mon, 04 Apr 2022 22:48:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
-        bh=k33GZGWU+w9uUOgE7RI/0gXQX1NT8yDgH8ann6GGs8w=;
-        b=bxGBiyEIZStrtD3+4iQ1HCM1sWxhlXV10+iqEn/qlNsNX+5jYs2oeIrAi38GhH3C/S
-         c4jmU83itAIPmrqzQsT48+z9H0vZrIhLoIvwKeWHiAcWWZh6Rg0n8hISzOGzlrM8qjss
-         GUH0oG8ecLJJgWZesSFb6l0iqdc7YCTiHwoTZ+UwPKDeDaddbqwYkO+PhnucQWqqOI5z
-         aXQuqLdPO5kq9uzkL7RUjUz6OOsmFI8eWqAFhel/n5OnlxRJSpL34TAzn+pq0PyA+dVp
-         SntH10wmVLUg7gRuVFaDTOSkTQXEU5W3v4ZPNRSzW+wAc7bhj7EjZGWtG2NJu4+Z+vzc
-         Xt1g==
+        bh=UDHAMxs9mV1EMuLwtCxTt6T4FIB57N3ZOKBk0SEX43I=;
+        b=QaFSLDRdIAu5jQgFLWMNCpzMa5yvS6h8MbRbV6I0PLoNleptEM54m2gTYRdrZBPAct
+         HAEbYcso3gv2WMCfxwtzTA4rktsHyJBulhlxBvBiCLnV5KS6Bg9btgh4L6UFwwPpCdY1
+         niTjGdTQ9D2/sYFebCy34OmN7lfL5Bu2yTbiBv9KtslnWEjP9b3bXILHA5TBJI9qfqWY
+         jf652FCx3cAeRyFl8wIlI8G+3/F3W0AclggEj3xWO/3BKetis2VTcf9XCL9D09TySmS6
+         FEJO5JS8grk9ppcmyTXVxxsHeAnnfoRKlylvzkuIoQKkRLe5FX8r9t3ytVH2nYLTNknl
+         wK6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=k33GZGWU+w9uUOgE7RI/0gXQX1NT8yDgH8ann6GGs8w=;
-        b=zVjEvsXE9YEyHmnoerImStu/ucM5KfpqLzMzigTLaeuzAduT3cvbYBf6S+b01kNA2M
-         us+nMggHCSk6BOZR1E7Z6I9dV3m6na1SizJSyi1gihTdnROkTrw0ISXaFAspXlgCtkAd
-         pSjeKAHtGAFlf1dMvQPF7MyVjszAmMoX/uZPSadFFFwCAPWIpe5T1boH57Z584fUCl6E
-         W2yqp6r7S4/HTLT9zIl3ynv55B7rxP7HRfFe4CZFREerphtDiCzM3ptLRkq84iESK3nu
-         xsVa3qX0ViU/CimjoK9MUtuLV0LpTtLOFZYKrMFyJPcMR2QdD5otq/iBz6LmC5YNoNo/
-         gimA==
-X-Gm-Message-State: AOAM533CF26Jkz1VaYG9x3zyRNMmHGyvc7QHuPujLJ80US02U5FncfU6
-        Ixw8+EJ9PfY1ymFvdpZwfNSmbko79z8yfQ/y+TQ=
-X-Google-Smtp-Source: ABdhPJzIwxH2Bdxpe3kP5X875Mjtstqa6tDNBqcHYydSExz556mCkxa77yqXPypcDIe5L5yfy2+OGnvw8Xqzcr2Wdek=
-X-Received: by 2002:a05:6402:3604:b0:41c:c4e6:2988 with SMTP id
- el4-20020a056402360400b0041cc4e62988mr1477962edb.157.1649131602779; Mon, 04
- Apr 2022 21:06:42 -0700 (PDT)
+        bh=UDHAMxs9mV1EMuLwtCxTt6T4FIB57N3ZOKBk0SEX43I=;
+        b=PgE4TmWtBgpr5G8GF+SmZrotkmyS4ORsyC2A26JcEaXr5ipIqk4MWN/UsHRPECcBT0
+         Fxtc4bMAJp1ouX8O/3c2XcylFAYk8z6c+qvTxoWZVwt1gULlvJNwuPrhb+Gz72C1JI8P
+         O/19AFVdjglrjaA+eQXyUkcXBOE/H4Wt64jH8RgrupIEZBIv9/sQqRkIGXp69CFpjd+3
+         ZBG+owA15nOdJHF8JFT2POSCv9IcLRxfjjaS/Mhq4T1EG988oD+y6ZHWxXqklHkv/nQk
+         KPLTbZuBgawQc1mIWWJyqp7gGGMGyw0BwMgE+NuRNhNiMMX0zgd2xhePRcpaVI+CM6Hz
+         cBGw==
+X-Gm-Message-State: AOAM530N8MPPabC6XbHWJ5GkzOY7uXkxLk+jNVmuiBYxr7sGoAicjLZj
+        xgSd7Rsp+qrYLBkmflqaF4o2A/JjGft53yRuvho=
+X-Google-Smtp-Source: ABdhPJyZyVtRY0qmb1cHAXrDsY6J0hmABrGvKcpsHaHvh5isaDs9Pm82ZSa9uDWiwoTP46TQzvh3SdK+tIut+hmGEpE=
+X-Received: by 2002:a17:907:d13:b0:6e0:b799:8fcc with SMTP id
+ gn19-20020a1709070d1300b006e0b7998fccmr1836715ejc.11.1649137705679; Mon, 04
+ Apr 2022 22:48:25 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Tue, 5 Apr 2022 05:06:31 +0100
-Message-ID: <CAHpNFcMO+-rxX=T4GPX9C8hb81AfMP8KhEaxiozFx3URRcf89Q@mail.gmail.com>
-Subject: Device Cache Align 'code align also speeds up prefetch' RS 128Bit
- Buffer to Cache Align = Pure, 32Bit,64Bit,128Bit Align Quads & Float Quads -
- HDD,SSD & Subject: Hardware Dual Encrypt & Decrypt : Hardware Accelerators
+Date:   Tue, 5 Apr 2022 06:48:09 +0100
+Message-ID: <CAHpNFcO-iDrRSVvgogwQgkxXOogBuiLKPkQ4XQ4X0x1d9CS-MQ@mail.gmail.com>
+Subject: Secure-Enable PSP + SGX + Initiator Security Virtualise 2022
 To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -61,6 +59,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
+
+Secure-Enable PSP + SGX + Initiator Security Virtualise 2022
+
+Proper initiation requires at least a basic permission statement
+before kernel load:RS
+
+<VMaWare Initiator>
+Firmware, bios load <init>1 }
+Boot Loader <init>2         } Enclave 1
+Kernel Jack on safe boot <init>3 : Enclave 2
+Core Modules <init>4 Enclave 3
+System <init><init><init><init><init>
+
+(c)Rupert S https://bit.ly/VESA_BT
+
+> > + * Some 'Enable PSP + SGX' functions require that no cached linear-to-physical address
+> > + * mappings are present before they can succeed. Collaborate with
+> > + * hardware via ENCLS[ETRACK] to ensure that all cached
+> > + * linear-to-physical address mappings belonging to all threads of
+> > + * the enclave are cleared. See sgx_encl_cpumask() for details.
+
+Cache Buffer can hide locations from direct attack! <VERUALISE LOC>
+But do involve a potential page break if not aligned
+
+> > + * Return valid permission fields from a secinfo structure provided by
+> > + * user space. The secinfo structure is required to only have bits in
+> > + * the permission fields set.
+
+Virtualise buffer can lazy IO & Lazy DMA #Thread mate DT
+
+> > + * Ensure enclave is ready for SGX2 functions. Readiness is checked
+> > + * by ensuring the hardware supports SGX2 and the enclave is initialized
+> > + * and thus able to handle requests to modify pages within it.
+
+Boot time check can validate SGX & PSP & YES Cache a relocatable table,
+Direct Read required INT & IO Activations & is not Cache permitted one
+presumes. DT
+
+> > Changes since V2:
+> > - Include the sgx_ioc_sgx2_ready() utility
+> >   that previously was in "x86/sgx: Support relaxing of enclave page
+> >   permissions" that is removed from the next version.
+> > - Few renames requested >
+
+Broken Alignment DT
+Separated BASE Code DT
+
+Strict Code Align =1
+Buffer RELOC = 1
+Security permission Buffer = 751
+
+Enable PSP + SGX
+
+https://lkml.org/lkml/2022/4/5/29
+https://lkml.org/lkml/2022/4/5/27
+https://lkml.org/lkml/2022/4/5/25
+
+*****
 
 DMAC yep Security Align 128Bits to Cache Array
 Align that 128Bit Buffer to Cache Align = Pure, 32Bit,64Bit,128Bit
