@@ -2,167 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE11B4F24A0
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 09:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A86D14F24BF
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 09:38:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231651AbiDEHZG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Apr 2022 03:25:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50180 "EHLO
+        id S231697AbiDEHkG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Apr 2022 03:40:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230527AbiDEHZF (ORCPT
+        with ESMTP id S231665AbiDEHkF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Apr 2022 03:25:05 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D772C1107
-        for <linux-wireless@vger.kernel.org>; Tue,  5 Apr 2022 00:23:05 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id b24so13771306edu.10
-        for <linux-wireless@vger.kernel.org>; Tue, 05 Apr 2022 00:23:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=+8o8z5eAjLzoYYRvcyTFAdvRMOxVZDs+vsqJse2i6K8=;
-        b=Y5/3UhaHntNXfB2TN4ZFHBeoH7NHgcGpTBvw1CDMino9u74zFb7p+n/AYkI5T3TzzM
-         c8IyXxav15nxKvzaW8lxlIeT2aWt7xmn50foWzvXIPsDm72fgvkEgutX2Fv7vuUWZLcK
-         2df8ytRflytA49ox9FZbr04iHoJWNC1JU0T3wJjPJM4MjnwSgTguSDSmfdgkGbRmkqQm
-         ITXlzLboQQMQ8CfG78FNhSqZFVQ8I3o1dT6NIEOdeynGDgcqNGuo01n1I0OYVmFzm/tM
-         5+50j0VZUFkKXUoLKI/86JPQfhUNOEcTrWa17daDZbrWiayeZDO5H5MFJaMsct7JUf4V
-         WSFQ==
+        Tue, 5 Apr 2022 03:40:05 -0400
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2BD74B402
+        for <linux-wireless@vger.kernel.org>; Tue,  5 Apr 2022 00:38:07 -0700 (PDT)
+Received: by mail-io1-f70.google.com with SMTP id f7-20020a056602088700b00645ebbe277cso7833945ioz.22
+        for <linux-wireless@vger.kernel.org>; Tue, 05 Apr 2022 00:38:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=+8o8z5eAjLzoYYRvcyTFAdvRMOxVZDs+vsqJse2i6K8=;
-        b=wgNA0BDUAFbdzqMPoBQWiihcFaAXnpgExLFNk3wmSBeQazajkLDDkHTSehq5L8EPoW
-         kU3VMHivZVDlmnlxzWo6tCTdu9LOTloLJfX7VIStzn8OZhlwfXcI9X2pQ6OhuAmExGLq
-         XTkkAbWF0EOY2dVH2hyTJlzWMm8lKJ35v/mSm8e6TDKJf5cq2ieGWI/hcpSPznOBt28M
-         6ONATTixahs32pMLrw7dIJ+ywTF01CACofxmB9CsaAGhyz+OVbirT3OM6ouYhoZ9gNOQ
-         BJnJYGYpTDSbnfe/aAWiS69lz1zwx7e1C9C5v37/Ae40tYOuREf2pjOETwBkwWyDPP9H
-         js+A==
-X-Gm-Message-State: AOAM531ELXc9aiguas+Akp6ytqxUxQzZrNiIwrfV8CQ5pBIVxy+OoUdN
-        Oa57knV/QXu5EfPPi+i7xsuYI18v7DhxbCdPQ9Q=
-X-Google-Smtp-Source: ABdhPJxszRfb4MAH+uRd8PDmlTXfLlXkLh3f6uRbdWkZbR4uEU9HGWYcTJVRXAETr72FGznghHf2knvK56APV21QgOw=
-X-Received: by 2002:a05:6402:4414:b0:419:28bc:55dc with SMTP id
- y20-20020a056402441400b0041928bc55dcmr2203578eda.130.1649143384192; Tue, 05
- Apr 2022 00:23:04 -0700 (PDT)
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=wcyi7XrZQP853dByi9+1YxDyQa3+xhgfC53tgafqARg=;
+        b=S0eQg4VgSDOibF3D69JxoEsXNFIH6aiHOIe8HZggfzDiFQdgKdM16H95yhsGLLAImY
+         SPtn/a4yz/HwNwls8FuytE+aPRwygeAJzml4wLnluGEBYcT6hdpiBAaR7g9mlrcciDC2
+         p/EmDqaqVuPsyEnSBQQGj5Ze/s8Uet7b9eOkrp/uoy6cep4b5Z2RfhlrW1094xjoEGG/
+         cGxe03zPDh5tpRcCsl6eFKV5MjhdWr7bYmcxogE8x3gQQAFaFPeQq4sfyQ27vMY8o54L
+         YfcNq4v+Fl1bZaA5nL/8ymK7l97G+0HgUlwh88ZO6rC5h1H/pzTqpg95S2H7MBVsghD6
+         dzsw==
+X-Gm-Message-State: AOAM531cSaf6nbcG0WQYqJChADHZ8U9a0cEbXkxsc/i+MOTJ4yZOt4uc
+        L5PKHyy4Pk6b8pXF7cmJyikAvETLPJnY8zTGgWPRZuYUc+nI
+X-Google-Smtp-Source: ABdhPJylwAgh1hTPED7kBLSTNMTi5KhXxeEahh2ttq/LYtuLKAfNNHO6HKO8c5krILmrEuJME3L2D43vjv+w9+R5yfXJVTS9+bYv
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Tue, 5 Apr 2022 08:22:53 +0100
-Message-ID: <CAHpNFcO+WoN1A1uHuoV2YhgiZnLkiddw3_D8nLA4LygTZWU7Gw@mail.gmail.com>
-Subject: Secure-Enable PSP + SGX + Initiator Security Virtualise 2022 : Self
- Tests & Thread control pages *Kernel Base L1:L2,L3:Cache MontiCarlos
- Processor Feature & Task Manger*
-To:     torvalds@linux-foundation.org
+X-Received: by 2002:a05:6e02:1d8e:b0:2ca:41bf:554a with SMTP id
+ h14-20020a056e021d8e00b002ca41bf554amr1051738ila.128.1649144286768; Tue, 05
+ Apr 2022 00:38:06 -0700 (PDT)
+Date:   Tue, 05 Apr 2022 00:38:06 -0700
+In-Reply-To: <0000000000001779fd05a46b001f@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000006574b705dbe3533f@google.com>
+Subject: Re: [syzbot] INFO: task hung in linkwatch_event (2)
+From:   syzbot <syzbot+96ff6cfc4551fcc29342@syzkaller.appspotmail.com>
+To:     allison@lohutok.net, andrew@lunn.ch, aviad.krawczyk@huawei.com,
+        axboe@kernel.dk, davem@davemloft.net, gregkh@linuxfoundation.org,
+        hdanton@sina.com, io-uring@vger.kernel.org,
+        johannes.berg@intel.com, johannes@sipsolutions.net,
+        kuba@kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linyunsheng@huawei.com, luobin9@huawei.com, netdev@vger.kernel.org,
+        pabeni@redhat.com, phind.uet@gmail.com,
+        syzkaller-bugs@googlegroups.com, tglx@linutronix.de,
+        viro@zeniv.linux.org.uk, xiaoguang.wang@linux.alibaba.com
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Secure-Enable PSP + SGX + Initiator Security Virtualise 2022
+syzbot suspects this issue was fixed by commit:
 
-Proper initiation requires at least a basic permission statement
-before kernel load:RS
+commit 563fbefed46ae4c1f70cffb8eb54c02df480b2c2
+Author: Nguyen Dinh Phi <phind.uet@gmail.com>
+Date:   Wed Oct 27 17:37:22 2021 +0000
 
-<VMaWare Initiator>
-Firmware, bios load <init>1 }
-Boot Loader <init>2         } Enclave 1
-Kernel Jack on safe boot <init>3 : Enclave 2
-Core Modules <init>4 Enclave 3
-System <init><init><init><init><init>
+    cfg80211: call cfg80211_stop_ap when switch from P2P_GO type
 
-(c)Rupert S https://bit.ly/VESA_BT
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1048725f700000
+start commit:   dd86e7fa07a3 Merge tag 'pci-v5.11-fixes-2' of git://git.ke..
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e83e68d0a6aba5f6
+dashboard link: https://syzkaller.appspot.com/bug?extid=96ff6cfc4551fcc29342
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11847bc4d00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1267e5a0d00000
 
-> > + * Some 'Enable PSP + SGX' functions require that no cached linear-to-physical address
-> > + * mappings are present before they can succeed. Collaborate with
-> > + * hardware via ENCLS[ETRACK] to ensure that all cached
-> > + * linear-to-physical address mappings belonging to all threads of
-> > + * the enclave are cleared. See sgx_encl_cpumask() for details.
+If the result looks correct, please mark the issue as fixed by replying with:
 
-Cache Buffer can hide locations from direct attack! <VIRUALISE LOC>
-But do involve a potential page break if not aligned
+#syz fix: cfg80211: call cfg80211_stop_ap when switch from P2P_GO type
 
-> > + * Return valid permission fields from a secinfo structure provided by
-> > + * user space. The secinfo structure is required to only have bits in
-> > + * the permission fields set.
-
-Virtualise buffer can lazy IO & Lazy DMA #Thread mate DT
-
-> > + * Ensure enclave is ready for SGX2 functions. Readiness is checked
-> > + * by ensuring the hardware supports SGX2 and the enclave is initialized
-> > + * and thus able to handle requests to modify pages within it.
-
-Boot time check can validate SGX & PSP & YES Cache a relocatable table,
-Direct Read required INT & IO Activations & is not Cache permitted one
-presumes. DT
-
-> > Changes since V2:
-> > - Include the sgx_ioc_sgx2_ready() utility
-> >   that previously was in "x86/sgx: Support relaxing of enclave page
-> >   permissions" that is removed from the next version.
-> > - Few renames requested >
-
-Broken Alignment DT
-Separated BASE Code DT
-
-Strict Code Align =1
-Buffer RELOC = 1
-Security permission Buffer = 751
-
-Enable PSP + SGX
-
-https://lkml.org/lkml/2022/4/5/29
-https://lkml.org/lkml/2022/4/5/27
-https://lkml.org/lkml/2022/4/5/25
-
-https://lkml.org/lkml/2022/4/5/50
-
-https://lkml.org/lkml/2022/4/4/982
-
-Self Tests & Thread control pages *Kernel Base L1:L2,L3:Cache
-MontiCarlos Processor Feature & Task Manger* >> Reference :
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-https://lkml.org/lkml/2022/4/5/119
-https://lkml.org/lkml/2022/4/5/120
-https://lkml.org/lkml/2022/4/5/121
-https://lkml.org/lkml/2022/4/5/122
-https://lkml.org/lkml/2022/4/5/123
-https://lkml.org/lkml/2022/4/5/125
-https://lkml.org/lkml/2022/4/5/127
-https://lkml.org/lkml/2022/4/5/128
-https://lkml.org/lkml/2022/4/5/129
-https://lkml.org/lkml/2022/4/5/130
-
-<< Self Tests & Thread control pages *Kernel Base L1:L2,L3:Cache
-MontiCarlos Processor Feature & Task Manger*
-
-*
-
-https://science.n-helix.com/2018/12/rng.html
-
-https://science.n-helix.com/2022/02/rdseed.html
-
-https://science.n-helix.com/2017/04/rng-and-random-web.html
-
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
-
-
-Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
-
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-
-https://science.n-helix.com/2022/03/ice-ssrtp.html
-
-https://science.n-helix.com/2021/11/ihmtes.html
-
-https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
-https://science.n-helix.com/2021/11/wave-focus-anc.html
-https://science.n-helix.com/2021/12/3d-audio-plugin.html
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
