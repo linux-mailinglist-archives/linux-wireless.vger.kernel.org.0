@@ -2,74 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 515D24F231A
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 08:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67D3C4F2390
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 08:46:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230200AbiDEGbf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Apr 2022 02:31:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33096 "EHLO
+        id S230494AbiDEGsZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Apr 2022 02:48:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229886AbiDEGbc (ORCPT
+        with ESMTP id S229961AbiDEGsT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Apr 2022 02:31:32 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 849B433A3D;
-        Mon,  4 Apr 2022 23:29:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2A150B81B98;
-        Tue,  5 Apr 2022 06:29:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89032C340F3;
-        Tue,  5 Apr 2022 06:29:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649140171;
-        bh=kcD8piI7TjLNSLlS5U7+xwCT0pyjngczKZUKaVKe62g=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SXWR9MZJVas509w7bdMer/rdOmzJObKxWjVaxkDzLQaMoTDQ68FT6/vU8KcTIv8Kx
-         ggyeVL29ksUI1Rz+ntwzQTX6SY6xK0379tgjk3bNjkQl2GJ+ULgGbT/sLXhGhGZC1Q
-         Nz/OdxeaU/NpOfLiIyqcJ4gSr3mGKUuBVeHmpSeV78lanr2Vk7lwquL+Ma9/hGgL45
-         slYvnN+H2hOa3jzGTdXFejHfOU/5v11pTb2mujoVvX5/WZ7sYbv1JilbUBqMmgVOYM
-         jvZu3N4mOh2/180R6AlD5v62WkTW0sW8G6Rfmohag6EkkIIPtx5JpeTaqK0YV7aWkq
-         AC3rE717h7hCg==
-Date:   Mon, 4 Apr 2022 23:29:30 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     =?UTF-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v10 0/1] wfx: get out from the staging area
-Message-ID: <20220404232930.05dd49cf@kernel.org>
-In-Reply-To: <20220404232247.01cc6567@kernel.org>
-References: <20220226092142.10164-1-Jerome.Pouiller@silabs.com>
-        <YhojjHGp4EfsTpnG@kroah.com>
-        <87wnhhsr9m.fsf@kernel.org>
-        <5830958.DvuYhMxLoT@pc-42>
-        <878rslt975.fsf@tynnyri.adurom.net>
-        <20220404232247.01cc6567@kernel.org>
+        Tue, 5 Apr 2022 02:48:19 -0400
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4D9A57175;
+        Mon,  4 Apr 2022 23:46:20 -0700 (PDT)
+Received: by mail-qt1-f181.google.com with SMTP id v2so9708009qtc.5;
+        Mon, 04 Apr 2022 23:46:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UuWjfy1DmKGBwxecHn9QW28Mp8RGeP8Fe6idp3HhRGs=;
+        b=XM48JdQlRjpvDo6pAnEfInZQ02JydMyJSRb+hGGXieNxNU8mZ3kXD/gEu0mZV++O2k
+         BqS6NEIoz2gsS8qU754qXmlGGdecWLhxBKTy8nQHlXUP7/An4b0tCe6BQQkN8HUGP3mg
+         CZ/Aro8sSU0utf0rAYn2baDlmL3oNG88I8GpFzbPK/CacovKR6jKzxmPjLaSSRenV6Ph
+         BvXPV8XItBJUMXSpzEcjVzhTBf3m5fL8OHSPHARPfMlGu7keGZVa8qfRRKOu3BXJNv2O
+         2xdRgdMmflZWYsTNNuF3/AlnRJKOjBKcZ+veIgQodE67F/b2u0SX2U4pATdnsUqAv6g5
+         WrqA==
+X-Gm-Message-State: AOAM532nBU/gi9XQjDN33cMYjxk2EBLOmHtK3YNCKQilvc6FC+iT8SSA
+        ZP4ihtDGGD79/PMkzdXb+luSSoATM5GxDA==
+X-Google-Smtp-Source: ABdhPJwkZT+cT8EcW9YAwiSyF8z2cWBBKHK+j5v06cUcI/z3ZQE/vjvuRTuaahHCBiEU5I/o9Rlyjg==
+X-Received: by 2002:ac8:5c84:0:b0:2e1:eede:8b1b with SMTP id r4-20020ac85c84000000b002e1eede8b1bmr1709809qta.228.1649141179007;
+        Mon, 04 Apr 2022 23:46:19 -0700 (PDT)
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com. [209.85.219.169])
+        by smtp.gmail.com with ESMTPSA id q8-20020a05622a04c800b002e06d7c1eabsm10360081qtx.16.2022.04.04.23.46.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Apr 2022 23:46:18 -0700 (PDT)
+Received: by mail-yb1-f169.google.com with SMTP id g9so21718806ybf.1;
+        Mon, 04 Apr 2022 23:46:18 -0700 (PDT)
+X-Received: by 2002:a25:45:0:b0:633:96e2:2179 with SMTP id 66-20020a250045000000b0063396e22179mr1490905yba.393.1649141178137;
+ Mon, 04 Apr 2022 23:46:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <CAHk-=wg6FWL1xjVyHx7DdjD2dHZETA5_=FqqW17Z19X-WTfWSg@mail.gmail.com>
+ <20220404074734.1092959-1-geert@linux-m68k.org> <alpine.DEB.2.22.394.2204041006230.1941618@ramsan.of.borg>
+ <874k38u20c.fsf@tynnyri.adurom.net>
+In-Reply-To: <874k38u20c.fsf@tynnyri.adurom.net>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 5 Apr 2022 08:46:06 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV_-3TOHYehUsHeqwHjQtzN1Ot886K7vwPr4P-4u8eehw@mail.gmail.com>
+Message-ID: <CAMuHMdV_-3TOHYehUsHeqwHjQtzN1Ot886K7vwPr4P-4u8eehw@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.18-rc1
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+        Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
+        linux-rdma <linux-rdma@vger.kernel.org>,
+        linux-um <linux-um@lists.infradead.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        scsi <linux-scsi@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        linux-xfs@vger.kernel.org,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        linux-s390 <linux-s390@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 4 Apr 2022 23:22:47 -0700 Jakub Kicinski wrote:
-> On Mon, 04 Apr 2022 13:49:18 +0300 Kalle Valo wrote:
-> > Dave&Jakub, once you guys open net-next will it be based on -rc1?  
-> 
-> Not normally. We usually let net feed net-next so it'd get -rc1 this
-> Thursday. But we should be able to fast-forward, let me confirm with
-> Dave.
+Hi Kalle,
 
-Wait, why is -rc1 magic? If you based the branch on whatever
-the merge-base of net-next and staging-next is, would that be
-an aberration?
+On Mon, Apr 4, 2022 at 8:39 PM Kalle Valo <kvalo@kernel.org> wrote:
+> Geert Uytterhoeven <geert@linux-m68k.org> writes:
+> >> /kisskb/src/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c:
+> >> error: case label does not reduce to an integer constant: => 3798:2,
+> >> 3809:2
+> >
+> > arm64-gcc5.4/arm64-allmodconfig
+> > powerpc-gcc5/powerpc-allmodconfig
+> > powerpc-gcc5/ppc64_book3e_allmodconfig
+>
+> After v5.17 there were two commits to brcmfmac/sdio.c:
+>
+> $ git log --oneline v5.17.. drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> ed26edf7bfd9 brcmfmac: Add BCM43454/6 support
+> 6d766d8cb505 brcmfmac: pcie: Declare missing firmware files in pcie.c
+>
+> I can't see how either of them could cause this warning. Could something
+> else cause this or am I missing something?
+
+Doh, I should not have reduced the CC list in the xfs subthread...
+
+The builds above are all gcc-5 builds, so they are affected by the same
+issue as XFS: unsigned constants that don't fit in int are lacking a
+"U" suffix.
+
+I assume Arnd's patch for
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+fixes this?
+https://lore.kernel.org/all/CAK8P3a0wRiS03imdXk2WbGONkSSczEGdE-ue5ubF6UyyDE9dQg@mail.gmail.com
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
