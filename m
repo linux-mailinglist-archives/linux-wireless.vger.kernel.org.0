@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFC384F290A
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 10:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB3D34F2904
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Apr 2022 10:23:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234374AbiDEIZH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Apr 2022 04:25:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39696 "EHLO
+        id S234362AbiDEIZB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Apr 2022 04:25:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238686AbiDEITR (ORCPT
+        with ESMTP id S239257AbiDEIT4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Apr 2022 04:19:17 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B0731AF1D
-        for <linux-wireless@vger.kernel.org>; Tue,  5 Apr 2022 01:09:20 -0700 (PDT)
+        Tue, 5 Apr 2022 04:19:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ADF27E0A9;
+        Tue,  5 Apr 2022 01:10:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AE06BB81B18
-        for <linux-wireless@vger.kernel.org>; Tue,  5 Apr 2022 08:09:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66635C385A0;
-        Tue,  5 Apr 2022 08:09:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9516C60B0E;
+        Tue,  5 Apr 2022 08:10:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4FEC385A4;
+        Tue,  5 Apr 2022 08:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649146157;
-        bh=VzMbINFNTvSENLG/I6ooncrp2ypoqck+oxssEZccqoM=;
+        s=k20201202; t=1649146242;
+        bh=yiUb0KeDIElbsWH/tWSC27FCtW1g3j0B1+uvrjcMk30=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=RRvQs/ew/vr6siHZtExBHLT9lWLJNq8Hyy4R9/QXp7goNUlHhRv5ouiMwqvaym8nS
-         KW4UrRfoLi8M+IRhl/WIajFgH0jx31qT3ibM9ZFQrAHYdqRlZ69JFr4akgquE80Yfd
-         V1tnoHoTaYjq3BDO1Fj3lO8/3IjN7HLvqiRG0siMp5r/YC+cjF+birFgWxCppUzAxC
-         VvDmsjqvYw/5WKT9MnoNdmnb4frQKfqNcCimdVDHvvNvs4bwF+DR0K3GPtAmb8/W5r
-         Q4F/B1EBeYk/vuJWtsDH4Lgg2Pxzpu+KG1fLu3PrDFEWOVEvDt5o870PXs+mn7XCLm
-         EJIcfYqJOZPFA==
+        b=PZodR0flrzbsq2oxkUiMgDvB7X2Elj5eNDBNIJZYSeibE9SQv6EZwbMGUNvIdfWQp
+         tpWaIYsoOOdrFrg9SICP2LeeFpBryS4jQX219mjUt5KHjgKoX2oWwqm8LcfCwJsFK1
+         qelcqd7V/+W+pYJ4i3MkuqMCh3PfFnrJaeMshf/4xSM7fcxHcv5qUoqcy8emqr1k33
+         B5pEfaORqVyi0IwN7hesLxg7AkNyUyY/rEPUfRa/yw2aaBj/z5hQ5iBN8fLg+a8vz5
+         rvekW1PWphkFy52GuzH69jcaHfVAXXXanfNn8lg4iW9/vstteRQFxrNZdH1V7UhmvD
+         WsrXlZCQ2W7Sg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Change max no of active probe SSID and BSSID to
- fw
- capability
+Subject: Re: [PATCH v2] carl9170: tx: fix an incorrect use of list iterator
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220329150221.21907-1-quic_kathirve@quicinc.com>
-References: <20220329150221.21907-1-quic_kathirve@quicinc.com>
-To:     Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+In-Reply-To: <20220328122820.1004-1-xiam0nd.tong@gmail.com>
+References: <20220328122820.1004-1-xiam0nd.tong@gmail.com>
+To:     Xiaomeng Tong <xiam0nd.tong@gmail.com>
+Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        linville@tuxdriver.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Xiaomeng Tong <xiam0nd.tong@gmail.com>, stable@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164914615451.12306.2945099051936753478.kvalo@kernel.org>
-Date:   Tue,  5 Apr 2022 08:09:16 +0000 (UTC)
+Message-ID: <164914623778.12306.14074908465775082444.kvalo@kernel.org>
+Date:   Tue,  5 Apr 2022 08:10:39 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,32 +57,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Karthikeyan Kathirvel <quic_kathirve@quicinc.com> wrote:
+Xiaomeng Tong <xiam0nd.tong@gmail.com> wrote:
 
-> The maximum number of SSIDs in a for active probe requests is currently
-> reported as 16 (WLAN_SCAN_PARAMS_MAX_SSID) when registering the driver.
-> The scan_req_params structure only has the capacity to hold 10 SSIDs.
-> This leads to a buffer overflow which can be triggered from
-> wpa_supplicant in userspace. When copying the SSIDs into the
-> scan_req_params structure in the ath11k_mac_op_hw_scan route, it can
-> overwrite the extraie pointer.
+> If the previous list_for_each_entry_continue_rcu() don't exit early
+> (no goto hit inside the loop), the iterator 'cvif' after the loop
+> will be a bogus pointer to an invalid structure object containing
+> the HEAD (&ar->vif_list). As a result, the use of 'cvif' after that
+> will lead to a invalid memory access (i.e., 'cvif->id': the invalid
+> pointer dereference when return back to/after the callsite in the
+> carl9170_update_beacon()).
 > 
-> Firmware supports 16 ssid * 4 bssid, for each ssid 4 bssid combo probe
-> request will be sent, so totally 64 probe requests supported. So
-> set both max ssid and bssid to 16 and 4 respectively. Remove the
-> redundant macros of ssid and bssid.
+> The original intention should have been to return the valid 'cvif'
+> when found in list, NULL otherwise. So just return NULL when no
+> entry found, to fix this bug.
 > 
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01300-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 1f1d9654e183c ("carl9170: refactor carl9170_update_beacon")
+> Signed-off-by: Xiaomeng Tong <xiam0nd.tong@gmail.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Patch applied to ath-next branch of ath.git, thanks.
-
-50dc9ce9f805 ath11k: Change max no of active probe SSID and BSSID to fw capability
+Christian, is this ok to take?
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220329150221.21907-1-quic_kathirve@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220328122820.1004-1-xiam0nd.tong@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
