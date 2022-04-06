@@ -2,116 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1DB44F6748
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 19:39:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCF184F6947
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 20:19:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238968AbiDFRbB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Apr 2022 13:31:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39946 "EHLO
+        id S240371AbiDFSTd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Apr 2022 14:19:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239013AbiDFRaw (ORCPT
+        with ESMTP id S241268AbiDFSSc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Apr 2022 13:30:52 -0400
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA8B12261C3;
-        Wed,  6 Apr 2022 08:34:13 -0700 (PDT)
-Received: by mail-ot1-x32b.google.com with SMTP id o20-20020a9d7194000000b005cb20cf4f1bso1946987otj.7;
-        Wed, 06 Apr 2022 08:34:13 -0700 (PDT)
+        Wed, 6 Apr 2022 14:18:32 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D58D1877E5;
+        Wed,  6 Apr 2022 10:02:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=4hMtYW8ejyVNsXsDDmZKOxRpVqVOrU52f8U8RZOFYlY=;
-        b=IqIyktVY311DFjbmDPP4ic4cdzBrnzgjKTZgWfIeLIZFg6FfPEkhHUkT5Zj6rfto7h
-         BQRxkRHzAiSulFy2YFec8nAkZWvCllh1zbALLq64sz2/QVt7mTjhJ+JG/ej88C0b11+k
-         BwVQEMleReAL3YpOXzHLM8cIRXNyanvfiJhN5lDYqXNshjOwuYDmc9cb2x61KnBTNZty
-         ciqLgG4919hNuopRTj2O+QKphznuDKkTQ8QiQGRcSk3iN8XbWaMp6TaI7ChtJ2yA7MmK
-         HRU6jCoMhBpU5jM1MZb1uzcuTT/OOwHYHXC1f8Z5nYrg2Te6o27nj9RK55JaRHUpDsvf
-         sY4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=4hMtYW8ejyVNsXsDDmZKOxRpVqVOrU52f8U8RZOFYlY=;
-        b=KRMO3t+mp52xypTZEIslQuNuHSqS9ESATMiiUSDwF6LlbAEe3JPNjLa3oHAmFW5ecV
-         /p/A3V1ch5Nt6Q5E/RwvsdjKl9OD5V1kDIQtLJ+OgHJCxuHzclw9Puaj1TYzDa7dChou
-         PN9ZeG66wWc240LTIpBikWacV+fJJVHv331OiG1j59xbCzvptCjHjSctElmJDAFd48PW
-         rYzPQg1D6wLIXgoNtQwum5JHoxnrVuk1/Rngd9PqG6ljFtn7q1vtk20E9R1TeT+RXNXP
-         5jqzpz7qVn9abymBqiqLPlGKbJ9XeAusUrneAP/+5xXHBymn7usXf8HBc2oy57atBsJ5
-         ar3w==
-X-Gm-Message-State: AOAM530ON6atLspMCdtGUuzacZnropv6/OdfpZ2GtAbyziPSZoeWtQQb
-        NhfIrIeRfLPNPkFbsLMi1NOQ/8DgigU=
-X-Google-Smtp-Source: ABdhPJyfztwSyLIrPzXkxEB6gqPnEQD03LiQ/Mk4qn6LhOXcbiGDkVhFV42ZY282/UbfnI+mGiMTig==
-X-Received: by 2002:a05:6830:3c1:b0:5b0:339a:e770 with SMTP id p1-20020a05683003c100b005b0339ae770mr3289929otc.16.1649259253256;
-        Wed, 06 Apr 2022 08:34:13 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 8-20020a056870130800b000dea2399c5esm6623543oab.45.2022.04.06.08.34.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Apr 2022 08:34:12 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Luca Coelho <luciano.coelho@intel.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [RFC PATCH] iwlwifi: iwl-dbg: Use del_timer_sync() before freeing
-Date:   Wed,  6 Apr 2022 08:34:10 -0700
-Message-Id: <20220406153410.1899768-1-linux@roeck-us.net>
-X-Mailer: git-send-email 2.35.1
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1649264554; x=1680800554;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=zCm35dqJeIsDGwuyLVEnPyr0Q2EEi3+4jjs5g8wcZjU=;
+  b=a9yGXzAXrrEvTK3brLkFa/vFFy1K1VLtfMW+E4W5rxFQY5cHkDARwA09
+   SLnp/h7nXqMMCYfGrvnzSAO2qo9s0jG/y5pSND6cJnyJzv/y8/RabKSRx
+   Hg/FHpK//3P5Hgc2Lzj3bbg4qyetQgWOCYBPJ4RDTjdfh71eogOAX7Gvw
+   I=;
+Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
+  by alexa-out.qualcomm.com with ESMTP; 06 Apr 2022 10:02:34 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2022 10:02:33 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 6 Apr 2022 10:02:33 -0700
+Received: from [10.110.72.142] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Wed, 6 Apr 2022
+ 10:02:32 -0700
+Message-ID: <fb02ab86-4c7f-8303-621d-349ac8c25546@quicinc.com>
+Date:   Wed, 6 Apr 2022 10:02:31 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v2] cw1200: fix incorrect check to determine if no element
+ is found in list
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>,
+        Xiaomeng Tong <xiam0nd.tong@gmail.com>
+CC:     <pizza@shaftnet.org>, <davem@davemloft.net>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <linville@tuxdriver.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <jakobkoschel@gmail.com>
+References: <20220320035436.11293-1-xiam0nd.tong@gmail.com>
+ <164924475461.19026.8095141212129340061.kvalo@kernel.org>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <164924475461.19026.8095141212129340061.kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-5.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In Chrome OS, a large number of crashes is observed due to corrupted timer
-lists. Steven Rostedt pointed out that this usually happens when a timer
-is freed while still active, and that the problem is often triggered
-by code calling del_timer() instead of del_timer_sync() just before
-freeing.
+On 4/6/2022 4:32 AM, Kalle Valo wrote:
+> Xiaomeng Tong <xiam0nd.tong@gmail.com> wrote:
+> 
+>> The bug is here: "} else if (item) {".
+>>
+>> The list iterator value will *always* be set and non-NULL by
+>> list_for_each_entry(), so it is incorrect to assume that the iterator
+>> value will be NULL if the list is empty or no element is found in list.
+>>
+>> Use a new value 'iter' as the list iterator, while use the old value
+>> 'item' as a dedicated pointer to point to the found element, which
+>> 1. can fix this bug, due to now 'item' is NULL only if it's not found.
+>> 2. do not need to change all the uses of 'item' after the loop.
+>> 3. can also limit the scope of the list iterator 'iter' *only inside*
+>>     the traversal loop by simply declaring 'iter' inside the loop in the
+>>     future, as usage of the iterator outside of the list_for_each_entry
+>>     is considered harmful. https://lkml.org/lkml/2022/2/17/1032
+>>
+>> Fixes: a910e4a94f692 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+>> Signed-off-by: Xiaomeng Tong <xiam0nd.tong@gmail.com>
+> 
+> Can someone review this, please?
+> 
 
-Steven also identified the iwlwifi driver as one of the possible culprits
-since it does exactly that.
-
-Reported-by: Steven Rostedt <rostedt@goodmis.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Shahar S Matityahu <shahar.s.matityahu@intel.com>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Fixes: 60e8abd9d3e91 ("iwlwifi: dbg_ini: add periodic trigger new API support")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
-RFC:
-    Maybe there was a reason to use del_timer() instead of del_timer_sync().
-    Also, I am not sure if the change is sufficient since I don't see any
-    obvious locking that would prevent timers from being added and then
-    modified in iwl_dbg_tlv_set_periodic_trigs() while being removed in
-    iwl_dbg_tlv_del_timers().
-
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-index 866a33f49915..3237d4b528b5 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -371,7 +371,7 @@ void iwl_dbg_tlv_del_timers(struct iwl_trans *trans)
- 	struct iwl_dbg_tlv_timer_node *node, *tmp;
- 
- 	list_for_each_entry_safe(node, tmp, timer_list, list) {
--		del_timer(&node->timer);
-+		del_timer_sync(&node->timer);
- 		list_del(&node->list);
- 		kfree(node);
- 	}
--- 
-2.35.1
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
