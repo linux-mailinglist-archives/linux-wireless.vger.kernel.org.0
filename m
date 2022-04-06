@@ -2,54 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76C2E4F6303
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 17:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 171644F62D7
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 17:18:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235520AbiDFPOi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Apr 2022 11:14:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58494 "EHLO
+        id S235359AbiDFPQr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Apr 2022 11:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235929AbiDFPOU (ORCPT
+        with ESMTP id S235190AbiDFPQf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Apr 2022 11:14:20 -0400
+        Wed, 6 Apr 2022 11:16:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E22163557C;
-        Wed,  6 Apr 2022 05:14:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9260F50D273;
+        Wed,  6 Apr 2022 05:16:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2351F61A3E;
-        Wed,  6 Apr 2022 12:14:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B37C385B2;
-        Wed,  6 Apr 2022 12:14:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 883EB618FE;
+        Wed,  6 Apr 2022 12:16:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D07C385A3;
+        Wed,  6 Apr 2022 12:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649247293;
-        bh=QSlo+VJNovr4VoLpiSbiM+XDM/hycOOPvzYC9iV7eyc=;
+        s=k20201202; t=1649247376;
+        bh=5v3AQnHZZ8jEjcXCDtZexiGNzFftZWLppjBWO3R2KuU=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=XURuD0d/JRDUQCDejgT53UdP1HXPuSU/EQ+CAZVtuNr+TLiQaWeuDte7SkRWtrboB
-         g02bzFYk8z/SUWh+qNtMIpDFz2K6jvU3Rf05q9i3h6BFfA5pQT2Xh/S1AHDrPb2NxB
-         Ri3oloUX6wHbdguXtW4zkhXnJpi07czbKNx7M9WNjsvgBjELoEEwpVoIXg2hEwxQIQ
-         Bou1jAfocBEGzIORPAD1yIPi0mdLEawDYafJMJahK9F6SnNqzOrkBqykpaRkRuYmP4
-         gkqWrUTgseiuD1Imbd9Ud1FEHxmt1a+8hye8EUot/TlK3lk7oVlSKMxjqAGsB48YVz
-         kfxf8rOf2AoDg==
+        b=mlS6d76xWO6f1K1NJN8KAHaBgeFeoW1ngVzPLNoaRrMPJUM6K7EXfN6zpssWCigIQ
+         keYVreceYWtCZdqFdrEmRPQLFCSVtWxRW3//TbRnjDVW3CBE60OUwWwDo52keC8VM4
+         29K7fw4L5SzmKnSHBZGVvPNvoWZ1Vmh3KmToHJXd84K9GKFbEVanRTEPy86kFVt+/o
+         nusvFUfhmmUD79Eb/W8BXg5biYec8M05IZY5mAPNgQq3zlrJIMvVnA06RRb2C6lj/7
+         8OcPh/owNxeudOn3NwJtbayH/juYEREIuF8FXQbim0PPNAT2qgzBaYgbAWrc29TDaA
+         ijI8rmy8i4xiA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ipw2x00: Fix potential NULL dereference in libipw_xmit()
+Subject: Re: [PATCH net-next] orinoco: Prepare cleanup of powerpc's asm/prom.h
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <1648797055-25730-1-git-send-email-baihaowen@meizu.com>
-References: <1648797055-25730-1-git-send-email-baihaowen@meizu.com>
-To:     Haowen Bai <baihaowen@meizu.com>
-Cc:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
+In-Reply-To: <4e3bfd4ffe2ed6b713ddd99b69dcc3d96adffe34.1648833427.git.christophe.leroy@csgroup.eu>
+References: <4e3bfd4ffe2ed6b713ddd99b69dcc3d96adffe34.1648833427.git.christophe.leroy@csgroup.eu>
+To:     Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc:     "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        Haowen Bai <baihaowen@meizu.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-wireless@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164924728954.19026.2659969788331477081.kvalo@kernel.org>
-Date:   Wed,  6 Apr 2022 12:14:51 +0000 (UTC)
+Message-ID: <164924737245.19026.5653169967927981259.kvalo@kernel.org>
+Date:   Wed,  6 Apr 2022 12:16:14 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -60,19 +59,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Haowen Bai <baihaowen@meizu.com> wrote:
+Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-> crypt and crypt->ops could be null, so we need to checking null
-> before dereference
+> powerpc's asm/prom.h brings some headers that it doesn't
+> need itself.
 > 
-> Signed-off-by: Haowen Bai <baihaowen@meizu.com>
+> In order to clean it up, first add missing headers in
+> users of asm/prom.h
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
 Patch applied to wireless-next.git, thanks.
 
-e8366bbabe1d ipw2x00: Fix potential NULL dereference in libipw_xmit()
+3223e922ccf8 orinoco: Prepare cleanup of powerpc's asm/prom.h
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1648797055-25730-1-git-send-email-baihaowen@meizu.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/4e3bfd4ffe2ed6b713ddd99b69dcc3d96adffe34.1648833427.git.christophe.leroy@csgroup.eu/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
