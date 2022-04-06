@@ -2,94 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D61E34F65C9
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 18:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F40454F675B
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 19:39:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237525AbiDFQgd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Apr 2022 12:36:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60730 "EHLO
+        id S238986AbiDFRZo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Apr 2022 13:25:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237821AbiDFQgM (ORCPT
+        with ESMTP id S238639AbiDFRZg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Apr 2022 12:36:12 -0400
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66ECC2C9923;
-        Wed,  6 Apr 2022 08:08:44 -0700 (PDT)
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-de48295467so3220917fac.2;
-        Wed, 06 Apr 2022 08:08:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RBUbX74ObfqzzSNCHOoh02AEXuH/Bv5AB2YAxYPhz64=;
-        b=pCXcRlFeRqL1CBjktd9etRPJbEh/UUKTawuNove875XSKExyTpolm+mN1ynmiTUiao
-         ugkE9DWysb58whjlrOlcvE6cjHhwQM6wfTDAHnotq7pxALmnEUcJ9HPkHSCGl0iH8l59
-         lvSXmqLNqjlu4ugFJOusaNqahFblUxnlh/Pzcz/mq/beudvL3lO9q3HReekjszbdlbEP
-         0RDuEEOa7x3sK+KAZF+sULI6YMilroslncTIweE1SVeux1NB48aZCTk/sqTRwcK5Ks4M
-         +nYtTeaw9sILFTf8xmZTzFtVKcW5Sf6F611wabur1z+04k+0SgIfEA4F7cc4cnxoREvw
-         1PhQ==
-X-Gm-Message-State: AOAM532R01CnOdwFP6jFg79KkOubV7SAx+OC93q7arzUZeTAaB9Wwc9h
-        SRqDyMua5ngaHzcGRtW4NwH789HWxg==
-X-Google-Smtp-Source: ABdhPJx1qtYaiwuI0WnLa7ET2uBlBwt+jJZcV45wjauHWImhM3vIaQgljQ4NKCifrB4FrBLJqNNfRA==
-X-Received: by 2002:a05:6870:c1cb:b0:dd:b81f:3ea1 with SMTP id i11-20020a056870c1cb00b000ddb81f3ea1mr4004298oad.131.1649257723709;
-        Wed, 06 Apr 2022 08:08:43 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id fw15-20020a056870080f00b000ddc3ec2533sm6547545oab.9.2022.04.06.08.08.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Apr 2022 08:08:43 -0700 (PDT)
-Received: (nullmailer pid 2253710 invoked by uid 1000);
-        Wed, 06 Apr 2022 15:08:42 -0000
-Date:   Wed, 6 Apr 2022 10:08:42 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org, mka@chromium.org,
-        ath11k@lists.infradead.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 01/12] dt: bindings: net: add bindings of WCN6750 for
- ath11k
-Message-ID: <Yk2s+srO9DKP7xW1@robh.at.kernel.org>
-References: <20220406094107.17878-1-quic_mpubbise@quicinc.com>
- <20220406094107.17878-2-quic_mpubbise@quicinc.com>
+        Wed, 6 Apr 2022 13:25:36 -0400
+Received: from stuerz.xyz (stuerz.xyz [IPv6:2001:19f0:5:15da:5400:3ff:fecc:7379])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CC014B75A7;
+        Wed,  6 Apr 2022 08:24:29 -0700 (PDT)
+Received: by stuerz.xyz (Postfix, from userid 114)
+        id EECFCFC6D8; Wed,  6 Apr 2022 15:24:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
+        t=1649258668; bh=vlsd1PJdKyHK1SGffch1w4JGaYZk4ff39fIfLFwEuZM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Bhm85yBeKpAs0mNtJfQmunUKCt9wKZ6FJlrORtEaXOS1UPoe0RWsefVsFM7oR+USC
+         aR4CU4LEZugODwYdume9WUxLc6RpnUJwTy7CDgFdvrYaL1WKTRcIDHseSqQt+Bx1l5
+         qzqnOXu7lLnRgkgsc0HL/MaUbcyTc5O5gK60+ocvl+Jekvr1zFvAeraE2FlJIa99HP
+         7cfBZS24vOXasOWXrxeZOgBHNgyMGbuod1dH71PPCoBe/LhhQZx0gI86yzahyV7mo2
+         45/fL/edMCJTWHcM1qtok3ObuxxLTToHN0uNcpcTBojZeUmmbhsJ4dG1+oAKy+r/si
+         FXcl5bQZhWmfw==
+Received: from benni-fedora.. (unknown [IPv6:2a02:8109:a100:1a48::1e62])
+        by stuerz.xyz (Postfix) with ESMTPSA id 96194FBC37;
+        Wed,  6 Apr 2022 15:24:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
+        t=1649258666; bh=vlsd1PJdKyHK1SGffch1w4JGaYZk4ff39fIfLFwEuZM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=GIiyk/hmfR1kNFA+Ij4qKoJN429DqKLzNttrcYiiQaZWbyXyf+yiOzEqxAjtYO7nz
+         sCU07p2g9Aw7wMKWzH6ZQTImglyoQ2tum3gGu/4vY5PXK+Nc4Ne1GJo8Qfb3fG+9ll
+         lxdKlhULMG9TOnTd2tvgK1h7jDABAPE4HnAyfMrVar7yx0KJiXyd1DbrLnns6bfwXm
+         fCIUskh/3plAkSKldKr7iSyM/QBP9WWFJsZP53Nr185guYscRoF9D6gvV/MXp3oOBu
+         1zbRL6c94ExtCicpzm0xhcIzNA5prqYi7I09Il0fd9Ymzj5DRd8HDJknMOJWHizIx0
+         Dfh0HyZFShlXg==
+From:   =?UTF-8?q?Benjamin=20St=C3=BCrz?= <benni@stuerz.xyz>
+To:     kvalo@kernel.org
+Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?q?Benjamin=20St=C3=BCrz?= <benni@stuerz.xyz>
+Subject: [PATCH v4 0/2] wireless: ray_cs: Improve card_status[]
+Date:   Wed,  6 Apr 2022 17:22:45 +0200
+Message-Id: <20220406152247.386267-1-benni@stuerz.xyz>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220406094107.17878-2-quic_mpubbise@quicinc.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_SUSPICIOUS_NTLD,
+        FROM_SUSPICIOUS_NTLD_FP,PDS_OTHER_BAD_TLD,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 06 Apr 2022 15:10:55 +0530, Manikanta Pubbisetty wrote:
-> WCN6750 is the WLAN chip on Qualcomm Snapdragon SoC SC7280;
-> Though being a PCIe based solution, it is not attached to
-> the APSS processor (Application Processor SubSystem), it is
-> instead attached to another tiny processor called WPSS Q6
-> processor (Wireless Processor SubSystem) on the SC7280 MSM,
-> where the WLAN firmware runs, and it is the WLAN firmware
-> running on the Q6 processor which enumerates WCN6750, as a
-> result APPS processor would never know such a device being
-> present in the system and would not detect the WCN6750
-> hardware unless and otherwise WCN6750 is registered as a
-> platform device. This is the reason behind adding WCN6750
-> WLAN node in the device tree.
-> 
-> Add WCN6750 wireless driver support, its based on ath11k driver.
-> 
-> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-> ---
->  .../bindings/net/wireless/qcom,ath11k.yaml    | 361 ++++++++++++------
->  1 file changed, 252 insertions(+), 109 deletions(-)
-> 
+This small patch series improves the card_status[] array in ray_cs.c.
+It essentially replaces comments describing the index with designated
+initializers using enum constants as indexes.
+It also makes the array const because it shouldn't be modified at
+runtime.
 
+Benjamin Stürz (2):
+  ray_cs: Improve card_status[]
+  ray_cs: Make card_status[] const
 
-Please add Acked-by/Reviewed-by tags when posting new versions. However,
-there's no need to repost patches *only* to add the tags. The upstream
-maintainer will do that for acks received on the version they apply.
+ drivers/net/wireless/ray_cs.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-If a tag was not added on purpose, please state why and what changed.
+-- 
+2.35.1
 
