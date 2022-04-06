@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE8664F63D6
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 17:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4072D4F62F4
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 17:19:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236309AbiDFPjO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Apr 2022 11:39:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39616 "EHLO
+        id S235589AbiDFPLx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Apr 2022 11:11:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236786AbiDFPiP (ORCPT
+        with ESMTP id S235768AbiDFPL1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Apr 2022 11:38:15 -0400
+        Wed, 6 Apr 2022 11:11:27 -0400
 Received: from farmhouse.coelho.fi (paleale.coelho.fi [176.9.41.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A3592F2301
-        for <linux-wireless@vger.kernel.org>; Wed,  6 Apr 2022 05:52:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 876CA2B448A
+        for <linux-wireless@vger.kernel.org>; Wed,  6 Apr 2022 05:11:22 -0700 (PDT)
 Received: from 91-156-4-241.elisa-laajakaista.fi ([91.156.4.241] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.95)
         (envelope-from <luca@coelho.fi>)
-        id 1nc4Tg-000pov-PR;
-        Wed, 06 Apr 2022 15:09:38 +0300
+        id 1nc4Th-000pov-Uy;
+        Wed, 06 Apr 2022 15:09:40 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     johannes@sipsolutions.net, kvalo@kernel.org
 Cc:     luca@coelho.fi, gregory.greenman@intel.com,
         linux-wireless@vger.kernel.org
-Date:   Wed,  6 Apr 2022 15:09:23 +0300
-Message-Id: <iwlwifi.20220406145756.8c67d9d16b62.Ib11def78ef30a308f73602338b8c17d4a781a433@changeid>
+Date:   Wed,  6 Apr 2022 15:09:24 +0300
+Message-Id: <iwlwifi.20220406145756.fb26dd85f17d.I9bf12c8ecfb3f17253a13dc48a48647ddd6e7855@changeid>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220406120924.979792-1-luca@coelho.fi>
 References: <20220406120924.979792-1-luca@coelho.fi>
@@ -38,260 +38,605 @@ X-Spam-Level:
 X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
-Subject: [PATCH 6/7] mac80211: add hardware timestamps for RX and TX
+Subject: [PATCH 7/7] iwlwifi: mvm: report hardware timestamps in RX/TX status
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Avraham Stern <avraham.stern@intel.com>
 
-When the low level driver reports hardware timestamps for frame
-TX status or frame RX, pass the timestamps to cfg80211.
+For TM/FTM frames, report the hardware timestamps reported by the
+fw as part of the RX/TX status. Since the fw reports the timestamps
+in a dedicated notification (and not as part of the RX/TX status),
+hold the frame until the fw timestamps notification is received.
+Timestamping is enabled when a station is connected and disabled
+when disconnected. For AP interface, only the first station will
+have timestamping enabled since the fw only supports timestamping
+for one peer.
 
 Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- include/net/mac80211.h | 30 +++++++++++++++++++++++++++++-
- net/mac80211/rx.c      | 32 ++++++++++++++++++++++++--------
- net/mac80211/status.c  | 40 ++++++++++++++++++++++++++++++----------
- 3 files changed, 83 insertions(+), 19 deletions(-)
+ .../wireless/intel/iwlwifi/fw/api/commands.h  |  20 +-
+ .../wireless/intel/iwlwifi/fw/api/datapath.h  | 126 ++++++++++++-
+ .../net/wireless/intel/iwlwifi/mvm/Makefile   |   2 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   4 +
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   8 +
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  12 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |   7 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |   6 +
+ .../wireless/intel/iwlwifi/mvm/time-sync.c    | 172 ++++++++++++++++++
+ .../wireless/intel/iwlwifi/mvm/time-sync.h    |  30 +++
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |   4 +-
+ 11 files changed, 384 insertions(+), 7 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mvm/time-sync.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mvm/time-sync.h
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 382ebb862ea8..1d18c005a4e9 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -125,6 +125,22 @@
-  * via the usual ieee80211_tx_dequeue).
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
+index c78d2f1c722c..90f97032fc2f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
+@@ -2,7 +2,7 @@
+ /*
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2020 Intel Corporation
++ * Copyright (C) 2018-2021 Intel Corporation
   */
+ #ifndef __iwl_fw_api_commands_h__
+ #define __iwl_fw_api_commands_h__
+@@ -261,6 +261,24 @@ enum iwl_legacy_cmds {
+ 	 */
+ 	HOT_SPOT_CMD = 0x53,
  
-+/**
-+ * DOC: HW timestamping
-+ *
-+ * Timing Measurement and Fine Timing Measurement require accurate timestamps
-+ * of the action frames TX/RX and their respective acks.
-+ *
-+ * To report hardware timestamps for Timing Measurement or Fine Timing
-+ * Measurement frame RX, the low level driver should set the SKB's hwtstamp
-+ * field to the frame RX timestamp and report the ack TX timestamp in the
-+ * ieee80211_rx_status struct.
-+ *
-+ * Similarly, To report hardware timestamps for Timing Measurement or Fine
-+ * Timing Measurement frame TX, the driver should set the SKB's hwtstamp field
-+ * to the frame TX timestamp and report the ack RX timestamp in the
-+ * ieee80211_tx_status struct.
-+ */
- struct device;
++	/**
++	 * @WNM_80211V_TIMING_MEASUREMENT_NOTIFICATION: Time Sync
++	 *	measurement notification for TM/FTM. Sent on receipt of respective
++	 *	WNM action frame for TM protocol or public action frame for FTM
++	 *	protocol from peer device along with additional meta data specified in
++	 *	&struct iwl_time_msmt_notify
++	 */
++	WNM_80211V_TIMING_MEASUREMENT_NOTIFICATION = 0x67,
++
++	/**
++	 * @WNM_80211V_TIMING_MEASUREMENT_CONFIRM_NOTIFICATION: Time Sync
++	 *	measurement confirmation notification for TM/FTM. Sent on
++	 *	receipt of Ack from peer for previously Tx'ed TM/FTM
++	 *	action frame along with additional meta data specified in
++	 *	&struct iwl_time_msmt_cfm_notify
++	 */
++	WNM_80211V_TIMING_MEASUREMENT_CONFIRM_NOTIFICATION = 0x68,
++
+ 	/**
+ 	 * @SCAN_OFFLOAD_COMPLETE:
+ 	 * notification, &struct iwl_periodic_scan_complete
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h b/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
+index 43619acc29fd..b085148dc7d3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
+@@ -26,6 +26,11 @@ enum iwl_data_path_subcmd_ids {
+ 	 */
+ 	TRIGGER_RX_QUEUES_NOTIF_CMD = 0x2,
  
- /**
-@@ -1151,6 +1167,10 @@ ieee80211_info_get_tx_time_est(struct ieee80211_tx_info *info)
-  * @info: Basic tx status information
-  * @skb: Packet skb (can be NULL if not provided by the driver)
-  * @rate: The TX rate that was used when sending the packet
-+ * @ack_hwtstamp: Hardware timestamp of the received ack in nanoseconds
-+ *	Only needed for Timing measurement and Fine timing measurement action
-+ *	frames. Only reported by devices that have the
-+ *	%NL80211_EXT_FEATURE_HW_TIMESTAMP capability.
-  * @free_list: list where processed skbs are stored to be free'd by the driver
-  */
- struct ieee80211_tx_status {
-@@ -1158,6 +1178,7 @@ struct ieee80211_tx_status {
- 	struct ieee80211_tx_info *info;
- 	struct sk_buff *skb;
- 	struct rate_info *rate;
-+	ktime_t ack_hwtstamp;
- 	struct list_head *free_list;
++	/**
++	 * @WNM_80211V_TIMING_MEASUREMENT_CONFIG_CMD: &struct iwl_time_sync_cfg_cmd
++	 */
++	WNM_80211V_TIMING_MEASUREMENT_CONFIG_CMD = 0x4,
++
+ 	/**
+ 	 * @STA_HE_CTXT_CMD: &struct iwl_he_sta_context_cmd
+ 	 */
+@@ -142,7 +147,126 @@ enum iwl_channel_estimation_flags {
  };
  
-@@ -1393,6 +1414,10 @@ enum mac80211_rx_encoding {
-  * 	(TSF) timer when the first data symbol (MPDU) arrived at the hardware.
-  * @boottime_ns: CLOCK_BOOTTIME timestamp the frame was received at, this is
-  *	needed only for beacons and probe responses that update the scan cache.
-+ * @ack_tx_hwtstamp: Hardware timestamp for the ack TX in nanoseconds. Only
-+ *	needed for Timing measurement and Fine timing measurement action frames.
-+ *	Only reported by devices that have the %NL80211_EXT_FEATURE_HW_TIMESTAMP
-+ *	capability.
-  * @device_timestamp: arbitrary timestamp for the device, mac80211 doesn't use
-  *	it but can store it and pass it back to the driver for synchronisation
-  * @band: the active band when this frame was received
-@@ -1426,7 +1451,10 @@ enum mac80211_rx_encoding {
+ /**
+- * struct iwl_channel_estimation_cfg - channel estimation reporting config
++ * struct iwl_time_sync_cfg_cmd - TM/FTM time sync measurement configuration
++ *
++ * @protocols: The type of frames to raise notifications for. A bitmap
++ *	of @iwl_time_sync_protocol_type
++ * @peer_addr: peer address with which TM/FTM measurements are required
++ * @reserved: for alignment
++ */
++struct iwl_time_sync_cfg_cmd {
++	__le32 protocols;
++	u8 peer_addr[ETH_ALEN];
++	u8 reserved[2];
++} __packed; /* WNM_80211V_TIMING_MEASUREMENT_CONFIG_CMD_API_S_VER_1 */
++
++/* PTP_CTX_MAX_DATA_SIZE_IN_API_D_VER_1 */
++#define PTP_CTX_MAX_DATA_SIZE   128
++
++/**
++ * struct iwl_time_msmt_ptp_ctx - Vendor specific information element
++ * to allow a space for flexibility for the userspace App
++ *
++ * @element_id: element id of vendor specific ie
++ * @length: length of vendor specific ie
++ * @reserved: for alignment
++ * @data: vendor specific data blob
++ */
++struct iwl_time_msmt_ptp_ctx {
++	u8 element_id;
++	u8 length;
++	__le16 reserved;
++	u8 data[PTP_CTX_MAX_DATA_SIZE];
++} __packed /* PTP_CTX_VER_1 */;
++
++/**
++ * struct iwl_time_msmt_notify - Time Sync measurement notification
++ * for TM/FTM, along with additional meta data.
++ *
++ * @peer_addr: peer address
++ * @reserved: for alignment
++ * @dialog_token: measurement flow dialog token number
++ * @followup_dialog_token: Measurement flow previous dialog token number
++ * @t1_hi: high dword of t1-time of the Tx'ed action frame departure on
++ *	sender side in units of 10 nano seconds
++ * @t1_lo: low dword of t1-time of the Tx'ed action frame departure on
++ *	sender side in units of 10 nano seconds
++ * @t1_max_err: maximum t1-time error in units of 10 nano seconds
++ * @t4_hi: high dword of t4-time of the Rx'ed action frame's Ack arrival on
++ *	sender side in units of 10 nano seconds
++ * @t4_lo: low dword of t4-time of the Rx'ed action frame's Ack arrival on
++ *	sender side in units of 10 nano seconds
++ * @t4_max_err: maximum t4-time error in units of 10 nano seconds
++ * @t2_hi: high dword of t2-time of the Rx'ed action frame arrival on
++ *	receiver side in units of 10 nano seconds
++ * @t2_lo: low dword of t2-time of the Rx'ed action frame arrival on
++ *	receiver side in units of 10 nano seconds
++ * @t2_max_err: maximum t2-time error in units of 10 nano seconds
++ * @t3_hi: high dword of t3-time of the Tx'ed action frame's Ack departure on
++ *	receiver side in units of 10 nano seconds
++ * @t3_lo: low dword of t3-time of the Tx'ed action frame's Ack departure on
++ *	receiver side in units of 10 nano seconds
++ * @t3_max_err: maximum t3-time error in units of 10 nano seconds
++ * @ptp: vendor specific information element
++ */
++struct iwl_time_msmt_notify {
++	u8 peer_addr[ETH_ALEN];
++	u8 reserved[2];
++	__le32 dialog_token;
++	__le32 followup_dialog_token;
++	__le32 t1_hi;
++	__le32 t1_lo;
++	__le32 t1_max_err;
++	__le32 t4_hi;
++	__le32 t4_lo;
++	__le32 t4_max_err;
++	__le32 t2_hi;
++	__le32 t2_lo;
++	__le32 t2_max_err;
++	__le32 t3_hi;
++	__le32 t3_lo;
++	__le32 t3_max_err;
++	struct iwl_time_msmt_ptp_ctx ptp;
++} __packed; /* WNM_80211V_TIMING_MEASUREMENT_NTFY_API_S_VER_1 */
++
++/**
++ * struct iwl_time_msmt_cfm_notify - Time Sync measurement confirmation
++ * notification for TM/FTM. Sent on receipt of 802.11 Ack from peer for the
++ * Tx'ed TM/FTM measurement action frame.
++ *
++ * @peer_addr: peer address
++ * @reserved: for alignment
++ * @dialog_token: measurement flow dialog token number
++ * @t1_hi: high dword of t1-time of the Tx'ed action frame departure on
++ *	sender side in units of 10 nano seconds
++ * @t1_lo: low dword of t1-time of the Tx'ed action frame departure on
++ *	sender side in units of 10 nano seconds
++ * @t1_max_err: maximum t1-time error in units of 10 nano seconds
++ * @t4_hi: high dword of t4-time of the Rx'ed action frame's Ack arrival on
++ *	sender side in units of 10 nano seconds
++ * @t4_lo: low dword of t4-time of the Rx'ed action frame's Ack arrival on
++ *	sender side in units of 10 nano seconds
++ * @t4_max_err: maximum t4-time error in units of 10 nano seconds
++ */
++struct iwl_time_msmt_cfm_notify {
++	u8 peer_addr[ETH_ALEN];
++	u8 reserved[2];
++	__le32 dialog_token;
++	__le32 t1_hi;
++	__le32 t1_lo;
++	__le32 t1_max_err;
++	__le32 t4_hi;
++	__le32 t4_lo;
++	__le32 t4_max_err;
++} __packed; /* WNM_80211V_TIMING_MEASUREMENT_CONFIRM_NTFY_API_S_VER_1 */
++
++enum iwl_time_sync_protocol_type {
++	IWL_TIME_SYNC_PROTOCOL_TM       = BIT(0),
++	IWL_TIME_SYNC_PROTOCOL_FTM      = BIT(1),
++}; /* WNM_TIMING_ENABLED_PROTOCOL_API_E_VER_1 */
++
++/**
++ * struct iwl_channel_estimation_cfg_v1 - channel estimation reporting config
   */
- struct ieee80211_rx_status {
- 	u64 mactime;
--	u64 boottime_ns;
-+	union {
-+		u64 boottime_ns;
-+		ktime_t ack_tx_hwtstamp;
-+	};
- 	u32 device_timestamp;
- 	u32 ampdu_reference;
- 	u32 flag;
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index beb6b92eb780..2d9c2a3370b2 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3586,7 +3586,11 @@ static ieee80211_rx_result debug_noinline
- ieee80211_rx_h_userspace_mgmt(struct ieee80211_rx_data *rx)
- {
- 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(rx->skb);
--	int sig = 0;
-+	struct cfg80211_rx_info info = {
-+		.freq = ieee80211_rx_status_to_khz(status),
-+		.buf = rx->skb->data,
-+		.len = rx->skb->len
-+	};
+ struct iwl_channel_estimation_cfg {
+ 	/**
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/Makefile b/drivers/net/wireless/intel/iwlwifi/mvm/Makefile
+index 11e814b7cad0..2421fc2251cc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/Makefile
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/Makefile
+@@ -6,7 +6,7 @@ iwlmvm-y += scan.o time-event.o rs.o rs-fw.o
+ iwlmvm-y += power.o coex.o
+ iwlmvm-y += tt.o offloading.o tdls.o
+ iwlmvm-y += ftm-responder.o ftm-initiator.o
+-iwlmvm-y += rfi.o
++iwlmvm-y += rfi.o time-sync.o
+ iwlmvm-$(CONFIG_IWLWIFI_DEBUGFS) += debugfs.o debugfs-vif.o
+ iwlmvm-$(CONFIG_IWLWIFI_LEDS) += led.o
+ iwlmvm-$(CONFIG_PM) += d3.o
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 784d91281c02..3fcd47abe754 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -386,6 +386,10 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ 		wiphy_ext_feature_set(hw->wiphy,
+ 				      NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT);
  
- 	/* skip known-bad action frames and return them in the next handler */
- 	if (status->rx_flags & IEEE80211_RX_MALFORMED_ACTION_FRM)
-@@ -3601,11 +3605,17 @@ ieee80211_rx_h_userspace_mgmt(struct ieee80211_rx_data *rx)
- 
- 	if (ieee80211_hw_check(&rx->local->hw, SIGNAL_DBM) &&
- 	    !(status->flag & RX_FLAG_NO_SIGNAL_VAL))
--		sig = status->signal;
-+		info.sig_dbm = status->signal;
++	if (mvm->trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_9000)
++		wiphy_ext_feature_set(hw->wiphy,
++				      NL80211_EXT_FEATURE_HW_TIMESTAMP);
 +
-+	if (wiphy_ext_feature_isset(rx->local->hw.wiphy,
-+				    NL80211_EXT_FEATURE_HW_TIMESTAMP) &&
-+	    (ieee80211_is_timing_measurement(rx->skb) ||
-+	     ieee80211_is_ftm(rx->skb))) {
-+		info.rx_tstamp = ktime_to_ns(skb_hwtstamps(rx->skb)->hwtstamp);
-+		info.ack_tstamp = ktime_to_ns(status->ack_tx_hwtstamp);
-+	}
+ 	ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
+ 	hw->wiphy->features |=
+ 		NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR |
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index c6bc85d4600a..0a07e0674db0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -769,6 +769,12 @@ struct iwl_mvm_dqa_txq_info {
+ 	enum iwl_mvm_queue_status status;
+ };
  
--	if (cfg80211_rx_mgmt_khz(&rx->sdata->wdev,
--				 ieee80211_rx_status_to_khz(status), sig,
--				 rx->skb->data, rx->skb->len, 0)) {
-+	if (cfg80211_rx_mgmt_ext(&rx->sdata->wdev, &info)) {
- 		if (rx->sta)
- 			rx->sta->rx_stats.packets++;
- 		dev_kfree_skb(rx->skb);
-@@ -4677,8 +4687,10 @@ static bool ieee80211_prepare_and_rx_handle(struct ieee80211_rx_data *rx,
- 		return false;
- 
- 	if (!consume) {
--		skb = skb_copy(skb, GFP_ATOMIC);
--		if (!skb) {
-+		struct skb_shared_hwtstamps *shwt;
++struct iwl_time_sync_data {
++	struct sk_buff_head frame_list;
++	u8 peer_addr[ETH_ALEN];
++	bool active;
++};
 +
-+		rx->skb = skb_copy(skb, GFP_ATOMIC);
-+		if (!rx->skb) {
- 			if (net_ratelimit())
- 				wiphy_debug(local->hw.wiphy,
- 					"failed to copy skb for %s\n",
-@@ -4686,7 +4698,11 @@ static bool ieee80211_prepare_and_rx_handle(struct ieee80211_rx_data *rx,
- 			return true;
- 		}
+ struct iwl_mvm {
+ 	/* for logger access */
+ 	struct device *dev;
+@@ -1106,6 +1112,8 @@ struct iwl_mvm {
+ 	unsigned long last_reset_or_resume_time_jiffies;
  
--		rx->skb = skb;
-+		/* skb_copy() does not copy the hw timestamps, so copy it
-+		 * explicitly
-+		 */
-+		shwt = skb_hwtstamps(rx->skb);
-+		shwt->hwtstamp = skb_hwtstamps(skb)->hwtstamp;
- 	}
- 
- 	ieee80211_invoke_rx_handlers(rx);
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index e81e8a5bb774..eb3c75a435f7 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -612,9 +612,11 @@ ieee80211_sdata_from_skb(struct ieee80211_local *local, struct sk_buff *skb)
- }
- 
- static void ieee80211_report_ack_skb(struct ieee80211_local *local,
--				     struct ieee80211_tx_info *info,
--				     bool acked, bool dropped)
-+				     struct sk_buff *orig_skb,
-+				     bool acked, bool dropped,
-+				     ktime_t ack_hwtstamp)
- {
-+	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(orig_skb);
- 	struct sk_buff *skb;
- 	unsigned long flags;
- 
-@@ -631,6 +633,21 @@ static void ieee80211_report_ack_skb(struct ieee80211_local *local,
- 		struct ieee80211_hdr *hdr = (void *)skb->data;
- 		bool is_valid_ack_signal =
- 			!!(info->status.flags & IEEE80211_TX_STATUS_ACK_SIGNAL_VALID);
-+		struct cfg80211_tx_status status = {
-+			.cookie = cookie,
-+			.buf = skb->data,
-+			.len = skb->len,
-+			.ack = acked,
-+		};
+ 	bool sta_remove_requires_queue_remove;
 +
-+		if (wiphy_ext_feature_isset(local->hw.wiphy,
-+					    NL80211_EXT_FEATURE_HW_TIMESTAMP) &&
-+		    (ieee80211_is_timing_measurement(orig_skb) ||
-+		     ieee80211_is_ftm(orig_skb))) {
-+			status.tx_tstamp =
-+				ktime_to_ns(skb_hwtstamps(orig_skb)->hwtstamp);
-+			status.ack_tstamp = ktime_to_ns(ack_hwtstamp);
-+		}
++	struct iwl_time_sync_data time_sync;
+ };
  
- 		rcu_read_lock();
- 		sdata = ieee80211_sdata_from_skb(local, skb);
-@@ -650,9 +667,9 @@ static void ieee80211_report_ack_skb(struct ieee80211_local *local,
- 						      is_valid_ack_signal,
- 						      GFP_ATOMIC);
- 			else if (ieee80211_is_mgmt(hdr->frame_control))
--				cfg80211_mgmt_tx_status(&sdata->wdev, cookie,
--							skb->data, skb->len,
--							acked, GFP_ATOMIC);
-+				cfg80211_mgmt_tx_status_ext(&sdata->wdev,
-+							    &status,
-+							    GFP_ATOMIC);
- 			else
- 				pr_warn("Unknown status report in ack skb\n");
+ /* Extract MVM priv from op_mode and _hw */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index b2f33ebdf485..27520436e830 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -29,6 +29,7 @@
+ #include "fw-api.h"
+ #include "fw/acpi.h"
+ #include "fw/uefi.h"
++#include "time-sync.h"
  
-@@ -669,7 +686,8 @@ static void ieee80211_report_ack_skb(struct ieee80211_local *local,
- }
- 
- static void ieee80211_report_used_skb(struct ieee80211_local *local,
--				      struct sk_buff *skb, bool dropped)
-+				      struct sk_buff *skb, bool dropped,
-+				      ktime_t ack_hwtstamp)
- {
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 	u16 tx_time_est = ieee80211_info_get_tx_time_est(info);
-@@ -732,7 +750,8 @@ static void ieee80211_report_used_skb(struct ieee80211_local *local,
- 
- 		rcu_read_unlock();
- 	} else if (info->ack_frame_id) {
--		ieee80211_report_ack_skb(local, info, acked, dropped);
-+		ieee80211_report_ack_skb(local, skb, acked, dropped,
-+					 ack_hwtstamp);
- 	}
- 
- 	if (!dropped && skb->destructor) {
-@@ -1047,7 +1066,7 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
- 			  jiffies + msecs_to_jiffies(10));
- 	}
- 
--	ieee80211_report_used_skb(local, skb, false);
-+	ieee80211_report_used_skb(local, skb, false, status->ack_hwtstamp);
- 
- 	/* this was a transmitted frame, but now we want to reuse it */
- 	skb_orphan(skb);
-@@ -1212,7 +1231,7 @@ void ieee80211_tx_status_ext(struct ieee80211_hw *hw,
- 	if (!skb)
- 		return;
- 
--	ieee80211_report_used_skb(local, skb, false);
-+	ieee80211_report_used_skb(local, skb, false, status->ack_hwtstamp);
- 	if (status->free_list)
- 		list_add_tail(&skb->list, status->free_list);
+ #define DRV_DESCRIPTION	"The new Intel(R) wireless AGN driver for Linux"
+ MODULE_DESCRIPTION(DRV_DESCRIPTION);
+@@ -401,6 +402,15 @@ static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
+ 	RX_HANDLER_GRP(SYSTEM_GROUP, RFI_DEACTIVATE_NOTIF,
+ 		       iwl_rfi_deactivate_notif_handler, RX_HANDLER_ASYNC_UNLOCKED,
+ 		       struct iwl_rfi_deactivate_notif),
++
++	RX_HANDLER_GRP(LEGACY_GROUP,
++		       WNM_80211V_TIMING_MEASUREMENT_NOTIFICATION,
++		       iwl_mvm_time_sync_msmt_event, RX_HANDLER_SYNC,
++		       struct iwl_time_msmt_notify),
++	RX_HANDLER_GRP(LEGACY_GROUP,
++		       WNM_80211V_TIMING_MEASUREMENT_CONFIRM_NOTIFICATION,
++		       iwl_mvm_time_sync_msmt_confirm_event, RX_HANDLER_SYNC,
++		       struct iwl_time_msmt_cfm_notify),
+ };
+ #undef RX_HANDLER
+ #undef RX_HANDLER_GRP
+@@ -1316,6 +1326,8 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
  	else
-@@ -1274,8 +1293,9 @@ EXPORT_SYMBOL(ieee80211_report_low_ack);
- void ieee80211_free_txskb(struct ieee80211_hw *hw, struct sk_buff *skb)
- {
- 	struct ieee80211_local *local = hw_to_local(hw);
-+	ktime_t kt = ktime_set(0, 0);
+ 		memset(&mvm->rx_stats, 0, sizeof(struct mvm_statistics_rx));
  
--	ieee80211_report_used_skb(local, skb, true);
-+	ieee80211_report_used_skb(local, skb, true, kt);
- 	dev_kfree_skb_any(skb);
++	iwl_mvm_init_time_sync(&mvm->time_sync);
++
+ 	mvm->debugfs_dir = dbgfs_dir;
+ 
+ 	mvm->mei_registered = !iwl_mei_register(mvm, &mei_ops);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 2c43a9989783..e66658c7b34e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -9,6 +9,7 @@
+ #include "iwl-trans.h"
+ #include "mvm.h"
+ #include "fw-api.h"
++#include "time-sync.h"
+ 
+ static void *iwl_mvm_skb_get_hdr(struct sk_buff *skb)
+ {
+@@ -2026,9 +2027,9 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 		goto out;
+ 	}
+ 
+-	if (!iwl_mvm_reorder(mvm, napi, queue, sta, skb, desc))
+-		iwl_mvm_pass_packet_to_mac80211(mvm, napi, skb, queue,
+-						sta);
++	if (!iwl_mvm_reorder(mvm, napi, queue, sta, skb, desc) &&
++	    (likely(!iwl_mvm_time_sync_frame(mvm, skb, hdr->addr2))))
++		iwl_mvm_pass_packet_to_mac80211(mvm, napi, skb, queue, sta);
+ out:
+ 	rcu_read_unlock();
  }
- EXPORT_SYMBOL(ieee80211_free_txskb);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index c7f9d3870f21..3faf74871ed2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -9,6 +9,7 @@
+ #include "mvm.h"
+ #include "sta.h"
+ #include "rs.h"
++#include "time-sync.h"
+ 
+ /*
+  * New version of ADD_STA_sta command added new fields at the end of the
+@@ -1763,6 +1764,9 @@ int iwl_mvm_add_sta(struct iwl_mvm *mvm,
+ 		}
+ 	}
+ 
++	iwl_mvm_time_sync_config(mvm, sta->addr, IWL_TIME_SYNC_PROTOCOL_TM |
++						 IWL_TIME_SYNC_PROTOCOL_FTM);
++
+ 	rcu_assign_pointer(mvm->fw_id_to_mac_id[sta_id], sta);
+ 
+ 	return 0;
+@@ -1972,6 +1976,8 @@ int iwl_mvm_rm_sta(struct iwl_mvm *mvm,
+ 	spin_lock_bh(&mvm_sta->lock);
+ 	spin_unlock_bh(&mvm_sta->lock);
+ 
++	iwl_mvm_time_sync_sta_rm(mvm, sta);
++
+ 	ret = iwl_mvm_rm_sta_common(mvm, mvm_sta->sta_id);
+ 	RCU_INIT_POINTER(mvm->fw_id_to_mac_id[mvm_sta->sta_id], NULL);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-sync.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-sync.c
+new file mode 100644
+index 000000000000..abe9a0ec61da
+--- /dev/null
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-sync.c
+@@ -0,0 +1,172 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
++/*
++ * Copyright (C) 2022 Intel Corporation
++ */
++
++#include "mvm.h"
++#include "time-sync.h"
++#include <linux/ieee80211.h>
++
++void iwl_mvm_init_time_sync(struct iwl_time_sync_data *data)
++{
++	skb_queue_head_init(&data->frame_list);
++}
++
++static bool iwl_mvm_is_skb_match(struct sk_buff *skb, u8 *addr, u8 dialog_token)
++{
++	struct ieee80211_mgmt *mgmt = (void *)skb->data;
++	u8 skb_dialog_token;
++
++	if (ieee80211_is_timing_measurement(skb))
++		skb_dialog_token = mgmt->u.action.u.wnm_timing_msr.dialog_token;
++	else
++		skb_dialog_token = mgmt->u.action.u.ftm.dialog_token;
++
++	if ((ether_addr_equal(mgmt->sa, addr) ||
++	     ether_addr_equal(mgmt->da, addr)) &&
++	    skb_dialog_token == dialog_token)
++		return true;
++
++	return false;
++}
++
++static struct sk_buff *iwl_mvm_time_sync_find_skb(struct iwl_mvm *mvm, u8 *addr,
++						  u8 dialog_token)
++{
++	struct sk_buff *skb;
++
++	/*
++	 * The queue is expected to have only one SKB. If there are other SKBs
++	 * in the queue, they did not get a time sync notification and are
++	 * probably obsolete by now, so drop them.
++	 */
++	while ((skb = skb_dequeue(&mvm->time_sync.frame_list))) {
++		if (iwl_mvm_is_skb_match(skb, addr, dialog_token))
++			break;
++
++		kfree_skb(skb);
++		skb = NULL;
++	}
++
++	return skb;
++}
++
++static inline u64 iwl_mvm_get_64_bit(__le32 high, __le32 low)
++{
++	return ((u64)le32_to_cpu(high) << 32) | le32_to_cpu(low);
++}
++
++void iwl_mvm_time_sync_msmt_event(struct iwl_mvm *mvm,
++				  struct iwl_rx_cmd_buffer *rxb)
++{
++	struct iwl_rx_packet *pkt = rxb_addr(rxb);
++	struct iwl_time_msmt_notify *notif = (void *)pkt->data;
++	struct ieee80211_rx_status *rx_status;
++	struct skb_shared_hwtstamps *shwt;
++	u64 ts_10ns;
++	struct sk_buff *skb =
++		iwl_mvm_time_sync_find_skb(mvm, notif->peer_addr,
++					   le32_to_cpu(notif->dialog_token));
++
++	if (!skb) {
++		IWL_DEBUG_INFO(mvm, "Time sync event but no pending skb\n");
++		return;
++	}
++
++	ts_10ns = iwl_mvm_get_64_bit(notif->t3_hi, notif->t3_lo);
++	rx_status = IEEE80211_SKB_RXCB(skb);
++	rx_status->ack_tx_hwtstamp = ktime_set(0, ts_10ns * 10);
++
++	ts_10ns = iwl_mvm_get_64_bit(notif->t2_hi, notif->t2_lo);
++	shwt = skb_hwtstamps(skb);
++	shwt->hwtstamp = ktime_set(0, ts_10ns * 10);
++
++	IWL_DEBUG_INFO(mvm,
++		       "Time sync: RX event - report frame t2=%llu t3=%llu\n",
++		       ktime_to_ns(shwt->hwtstamp),
++		       ktime_to_ns(rx_status->ack_tx_hwtstamp));
++	ieee80211_rx_napi(mvm->hw, NULL, skb, NULL);
++}
++
++void iwl_mvm_time_sync_msmt_confirm_event(struct iwl_mvm *mvm,
++					  struct iwl_rx_cmd_buffer *rxb)
++{
++	struct iwl_rx_packet *pkt = rxb_addr(rxb);
++	struct iwl_time_msmt_cfm_notify *notif = (void *)pkt->data;
++	struct ieee80211_tx_status status = {};
++	struct skb_shared_hwtstamps *shwt;
++	u64 ts_10ns;
++
++	status.skb =
++		iwl_mvm_time_sync_find_skb(mvm, notif->peer_addr,
++					   le32_to_cpu(notif->dialog_token));
++
++	if (!status.skb) {
++		IWL_DEBUG_INFO(mvm, "Time sync confirm but no pending skb\n");
++		return;
++	}
++
++	status.info = IEEE80211_SKB_CB(status.skb);
++
++	ts_10ns = iwl_mvm_get_64_bit(notif->t4_hi, notif->t4_lo);
++	status.ack_hwtstamp = ktime_set(0, ts_10ns * 10);
++
++	ts_10ns = iwl_mvm_get_64_bit(notif->t1_hi, notif->t1_lo);
++	shwt = skb_hwtstamps(status.skb);
++	shwt->hwtstamp = ktime_set(0, ts_10ns * 10);
++
++	IWL_DEBUG_INFO(mvm,
++		       "Time sync: TX event - report frame t1=%llu t4=%llu\n",
++		       ktime_to_ns(shwt->hwtstamp),
++		       ktime_to_ns(status.ack_hwtstamp));
++	ieee80211_tx_status_ext(mvm->hw, &status);
++}
++
++int iwl_mvm_time_sync_config(struct iwl_mvm *mvm, u8 *addr, u32 protocols)
++{
++	struct iwl_time_sync_cfg_cmd cmd = {};
++	int err;
++
++	lockdep_assert_held(&mvm->mutex);
++
++	/*
++	 * The fw only supports one peer. We do allow reconfiguration of the
++	 * same peer for cases of fw reset etc.
++	 */
++	if (mvm->time_sync.active &&
++	    !ether_addr_equal(addr, mvm->time_sync.peer_addr)) {
++		IWL_DEBUG_INFO(mvm, "Time sync: reject config for peer: %pM\n",
++			       addr);
++		return -ENOBUFS;
++	}
++
++	if (protocols & ~(IWL_TIME_SYNC_PROTOCOL_TM |
++			  IWL_TIME_SYNC_PROTOCOL_FTM))
++		return -EINVAL;
++
++	cmd.protocols = cpu_to_le32(protocols);
++
++	ether_addr_copy(cmd.peer_addr, addr);
++
++	err = iwl_mvm_send_cmd_pdu(mvm,
++				   WIDE_ID(DATA_PATH_GROUP,
++					   WNM_80211V_TIMING_MEASUREMENT_CONFIG_CMD),
++				   0, sizeof(cmd), &cmd);
++	if (err) {
++		IWL_ERR(mvm, "Failed to send time sync cfg cmd: %d\n", err);
++	} else {
++		mvm->time_sync.active = protocols != 0;
++		ether_addr_copy(mvm->time_sync.peer_addr, addr);
++		IWL_DEBUG_INFO(mvm, "Time sync: set peer addr=%pM\n", addr);
++	}
++
++	return err;
++}
++
++void iwl_mvm_time_sync_sta_rm(struct iwl_mvm *mvm, struct ieee80211_sta *sta)
++{
++	/* Disable time sync with this station */
++	iwl_mvm_time_sync_config(mvm, sta->addr, 0);
++
++	skb_queue_purge(&mvm->time_sync.frame_list);
++}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-sync.h b/drivers/net/wireless/intel/iwlwifi/mvm/time-sync.h
+new file mode 100644
+index 000000000000..c43d1d0b25cb
+--- /dev/null
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-sync.h
+@@ -0,0 +1,30 @@
++/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
++/*
++ * Copyright (C) 2022 Intel Corporation
++ */
++#ifndef __TIME_SYNC_H__
++#define __TIME_SYNC_H__
++
++#include "mvm.h"
++#include <linux/ieee80211.h>
++
++void iwl_mvm_init_time_sync(struct iwl_time_sync_data *data);
++void iwl_mvm_time_sync_msmt_event(struct iwl_mvm *mvm,
++				  struct iwl_rx_cmd_buffer *rxb);
++void iwl_mvm_time_sync_msmt_confirm_event(struct iwl_mvm *mvm,
++					  struct iwl_rx_cmd_buffer *rxb);
++int iwl_mvm_time_sync_config(struct iwl_mvm *mvm, u8 *addr, u32 protocols);
++void iwl_mvm_time_sync_sta_rm(struct iwl_mvm *mvm, struct ieee80211_sta *sta);
++
++static inline
++bool iwl_mvm_time_sync_frame(struct iwl_mvm *mvm, struct sk_buff *skb, u8 *addr)
++{
++	if (ether_addr_equal(mvm->time_sync.peer_addr, addr) &&
++	    (ieee80211_is_timing_measurement(skb) || ieee80211_is_ftm(skb))) {
++		skb_queue_tail(&mvm->time_sync.frame_list, skb);
++		return true;
++	}
++
++	return false;
++}
++#endif
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index 7763037b93ed..86ea8b1f64fc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -14,6 +14,7 @@
+ #include "iwl-eeprom-parse.h"
+ #include "mvm.h"
+ #include "sta.h"
++#include "time-sync.h"
+ 
+ static void
+ iwl_mvm_bar_check_trigger(struct iwl_mvm *mvm, const u8 *addr,
+@@ -1624,7 +1625,8 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
+ 		info->status.status_driver_data[0] =
+ 			RS_DRV_DATA_PACK(lq_color, tx_resp->reduced_tpc);
+ 
+-		ieee80211_tx_status(mvm->hw, skb);
++		if (likely(!iwl_mvm_time_sync_frame(mvm, skb, hdr->addr1)))
++			ieee80211_tx_status(mvm->hw, skb);
+ 	}
+ 
+ 	/* This is an aggregation queue or might become one, so we use
 -- 
 2.35.1
 
