@@ -2,53 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 171644F62D7
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 17:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B615E4F630C
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 17:19:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235359AbiDFPQr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Apr 2022 11:16:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44630 "EHLO
+        id S235624AbiDFPSR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Apr 2022 11:18:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235190AbiDFPQf (ORCPT
+        with ESMTP id S235722AbiDFPRF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Apr 2022 11:16:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9260F50D273;
-        Wed,  6 Apr 2022 05:16:17 -0700 (PDT)
+        Wed, 6 Apr 2022 11:17:05 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 253A1524349;
+        Wed,  6 Apr 2022 05:16:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 883EB618FE;
-        Wed,  6 Apr 2022 12:16:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D07C385A3;
-        Wed,  6 Apr 2022 12:16:14 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A7CCCB822B2;
+        Wed,  6 Apr 2022 12:16:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B897C385A1;
+        Wed,  6 Apr 2022 12:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649247376;
-        bh=5v3AQnHZZ8jEjcXCDtZexiGNzFftZWLppjBWO3R2KuU=;
+        s=k20201202; t=1649247406;
+        bh=bBXDw64UOpzm7gZgO/Usb8R7Vc4waEovDX6UsSvLe3g=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=mlS6d76xWO6f1K1NJN8KAHaBgeFeoW1ngVzPLNoaRrMPJUM6K7EXfN6zpssWCigIQ
-         keYVreceYWtCZdqFdrEmRPQLFCSVtWxRW3//TbRnjDVW3CBE60OUwWwDo52keC8VM4
-         29K7fw4L5SzmKnSHBZGVvPNvoWZ1Vmh3KmToHJXd84K9GKFbEVanRTEPy86kFVt+/o
-         nusvFUfhmmUD79Eb/W8BXg5biYec8M05IZY5mAPNgQq3zlrJIMvVnA06RRb2C6lj/7
-         8OcPh/owNxeudOn3NwJtbayH/juYEREIuF8FXQbim0PPNAT2qgzBaYgbAWrc29TDaA
-         ijI8rmy8i4xiA==
+        b=TU8cYii2k0J2zHNl4T9PTAmCaJOM13yuwVdi5EFGMICiq8qSTUcCJzR4M7cbAs7eb
+         V+I9jZbPnxr3rFimLi5uA0dvNZy/wLv5S3cMruztrzOp+cU58JhkZjPMw64maGu7bA
+         UYd7gvFo/xSvinA4dfkrqha9GRcYBeD2xqp0YAs2PvUWBEoWJlvaiDxz0u1itEuKwJ
+         sLcmBdc4amKVW1tDuQMWxE0zY4mnqttGW2aQROYTnbda/6gF2IyzOOsyMWZ9SRF8Ro
+         vV8GtmvcUCrfqHg3gndsqYIfXBdAvd2DBuLhKMMoTSeJKQROwm86Vr0SNSjDC6EETC
+         Q8aAvcvPQlFXg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net-next] orinoco: Prepare cleanup of powerpc's asm/prom.h
+Subject: Re: [PATCH net] ipw2x00: use DEVICE_ATTR_*() macro
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <4e3bfd4ffe2ed6b713ddd99b69dcc3d96adffe34.1648833427.git.christophe.leroy@csgroup.eu>
-References: <4e3bfd4ffe2ed6b713ddd99b69dcc3d96adffe34.1648833427.git.christophe.leroy@csgroup.eu>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-wireless@vger.kernel.org
+In-Reply-To: <20220406015444.14408-1-tangmeng@uniontech.com>
+References: <20220406015444.14408-1-tangmeng@uniontech.com>
+To:     Meng Tang <tangmeng@uniontech.com>
+Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Meng Tang <tangmeng@uniontech.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164924737245.19026.5653169967927981259.kvalo@kernel.org>
-Date:   Wed,  6 Apr 2022 12:16:14 +0000 (UTC)
+Message-ID: <164924740245.19026.7090113247090845414.kvalo@kernel.org>
+Date:   Wed,  6 Apr 2022 12:16:44 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -59,22 +56,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+Meng Tang <tangmeng@uniontech.com> wrote:
 
-> powerpc's asm/prom.h brings some headers that it doesn't
-> need itself.
+> Use DEVICE_ATTR_*() helper instead of plain DEVICE_ATTR,
+> which makes the code a bit shorter and easier to read.
 > 
-> In order to clean it up, first add missing headers in
-> users of asm/prom.h
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Meng Tang <tangmeng@uniontech.com>
 
 Patch applied to wireless-next.git, thanks.
 
-3223e922ccf8 orinoco: Prepare cleanup of powerpc's asm/prom.h
+92bbf95df768 ipw2x00: use DEVICE_ATTR_*() macro
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/4e3bfd4ffe2ed6b713ddd99b69dcc3d96adffe34.1648833427.git.christophe.leroy@csgroup.eu/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220406015444.14408-1-tangmeng@uniontech.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
