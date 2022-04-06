@@ -2,95 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D54E24F5F76
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 15:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3F0E4F5DA1
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 14:20:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233026AbiDFNSu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Apr 2022 09:18:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45890 "EHLO
+        id S232149AbiDFMBV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Apr 2022 08:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232933AbiDFNRP (ORCPT
+        with ESMTP id S232135AbiDFMBK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Apr 2022 09:17:15 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6449407E18
-        for <linux-wireless@vger.kernel.org>; Tue,  5 Apr 2022 21:42:17 -0700 (PDT)
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 112153F85E
-        for <linux-wireless@vger.kernel.org>; Wed,  6 Apr 2022 04:42:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1649220135;
-        bh=Mt/wIr8VCHfxx+fAT86RPcS+1hpBF4cXlsZS+mb9xdE=;
-        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-         To:Cc:Content-Type;
-        b=iUxOvNG6YajEHp0kF2JdMv/52tmbHq5DRlxwkH+QUcg186VpeTNqgoccW2JMMf2ji
-         aP7tWesAOlh6pHj1OzkqU7c6smWgkFYBL7yBhaKMOSyJ14hbkhkW12sawK/pUvi7Yw
-         lYgPqOYRWOwXz4ljmXdLj6ArCxWZ+cqnnqwBt/fjlN0sxSYvZMWiMVFqWPTN5xzDbP
-         aWgYrLG1F/g7Uqala43Zwlised96gzeiFSPeobgq2uL7nOv3AR4ZI9/yfPLqI0XTel
-         2IEpUtCd0CgjJ8eAp9bMLrQGmTyWbhivmr0TKSE1NZURD8wsmC2jbxiHGecGzS/Zi/
-         WMzYmJUcOYaJg==
-Received: by mail-ot1-f70.google.com with SMTP id n7-20020a9d4d07000000b005b2389a99cfso755462otf.17
-        for <linux-wireless@vger.kernel.org>; Tue, 05 Apr 2022 21:42:14 -0700 (PDT)
+        Wed, 6 Apr 2022 08:01:10 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AA7653D7D3
+        for <linux-wireless@vger.kernel.org>; Wed,  6 Apr 2022 00:37:33 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id j20-20020a17090ae61400b001ca9553d073so1874267pjy.5
+        for <linux-wireless@vger.kernel.org>; Wed, 06 Apr 2022 00:37:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=l65YhfnHNiuRQvPfyLULCDuZuVqbWmQdpnQ3LUx3xMY=;
+        b=bKhQpNUy8jH9hjvXpq0ZEPbobGkkXhD42iq2mBHOxLQav1GJjyL2HGDgJkwXExAm1D
+         ty0EZd2ckRHMR8qzyJVovjb00L5nPj3THLyksMXsDw+412ilM3cysOqWACKuFEGXpQRh
+         l9lFFku7r/nlkrZJsWQTO9Jo+nVhz+HpuSxlWbtvjMe5NCE9nyVncVo1TsToOmW6Dwhn
+         HRSgf6ckuj7dgqY3YYx/eqixL90E12hgDRbnbNOB3xp7noI7qUEExfxQtnlygjix+oW1
+         mH5mw2UrhsjKNjs+h8+z7JSe0uGFl0OBrT+7EojNC09hvdGlgEP7Bia4vFSazKqOiE7O
+         D9OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Mt/wIr8VCHfxx+fAT86RPcS+1hpBF4cXlsZS+mb9xdE=;
-        b=Wlq5rPNXMC/fgTGpdiYA2X/uA0SFgqPwdtKAp7c2epzHA18fg4/LopHw0g/Xef2XnI
-         q6dAVUYR7l8wrn5ig3p8qrghMFxpaEZoAU5EGUVwHAC0yrgYyCGkLJnf3VpHb1j+Q9Qu
-         e79RtWED30JnZUb6c1rXv6+h9GR8T79xzorFFYUnpYonblzxMo9eNEZ/ghS4r9022IBP
-         Tmb1aP6/cZUeHs8ry+cQjvm0gmI0ONaGzbBt86Z5XlvqwdIDzrEHGquD2pBoRhVlPeIk
-         BaZ5UBnRjtOkOXzeHOIvf9pjnUzDl+OHakAACXECj+F+YTlFg5+A8IFtFrgdEl6uTpgL
-         f74Q==
-X-Gm-Message-State: AOAM5322Sx0so6eBC2+a0DhByQ7aTGnt9JOxg/vnqdyFiZD8KWnCrjEp
-        lzvApdqrWeAQ3gBX671tO21WqgsOc+c5DwTgAFVcmZELakdVQBk4qp6DwAM2pkYwNtsihWIYK55
-        wCEkR/87un+jIhZeqqx4O3AMI0fshRYitfwGNsV3e5uLwb7CskJhM/soDGQrR
-X-Received: by 2002:a05:6830:2456:b0:5ce:7f4:c702 with SMTP id x22-20020a056830245600b005ce07f4c702mr2472249otr.269.1649220130605;
-        Tue, 05 Apr 2022 21:42:10 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwHon0m0wisgENa7vRcxIQKSklrsxRLeAHmcisDb0KZ+faoRnPeYjrTDc6wEXCRXA5PMWMjLRWCaPLy2KtTmTE=
-X-Received: by 2002:a05:6830:2456:b0:5ce:7f4:c702 with SMTP id
- x22-20020a056830245600b005ce07f4c702mr2472245otr.269.1649220130353; Tue, 05
- Apr 2022 21:42:10 -0700 (PDT)
+        bh=l65YhfnHNiuRQvPfyLULCDuZuVqbWmQdpnQ3LUx3xMY=;
+        b=Vl4f1ETBtMfY/6L4fGuvimHUnSPEQ1DLx8wgIlIVNiYEDZcP8kLOUqRVDJNeb9ypWn
+         Df24+j/xygfhphUzFb4hMY/kHHaY1lswGgFeXqneGfZ6Eq/Eo64JjZAdVt65rdFoCxyf
+         KLgTvWRJ7PLnadSxdKkzJd9gSeUCTgvRn42trUVs+BSlUfuX7I0hXQz7wq3azjpNiiVA
+         zt/yG8mQ7ZLFxCr/d6umnmvS1KpFtodFrEOWl1MTaWGxLS241JjIYnqpqKxKEyXvW0Do
+         RYnfu4gu4rGNK2Y90Et/TE3loqv4FJgKTMYZTDMeb01py/vPgUT57jUBzJoavqLU9GHG
+         ky+Q==
+X-Gm-Message-State: AOAM532Bd8JR0gFHx9JCjAR87coC5tAV+S2uOqnL/96yubLpUFeqBxqc
+        mfwWM3iaDjqdoxcCotSLGZyjOjSbLZwkJQgc2O2xO6c1
+X-Google-Smtp-Source: ABdhPJydd3cH/DNQxlcUrR/ItI6gYfO1vjG/vlg+S0M4ZIIJhS382S4OJ/cp853LNnK6Bk2l49Tmerj0msOmXDoTO+I=
+X-Received: by 2002:a17:902:c745:b0:151:e8fa:629b with SMTP id
+ q5-20020a170902c74500b00151e8fa629bmr7523294plq.90.1649230652768; Wed, 06 Apr
+ 2022 00:37:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220325035735.4745-1-chris.chiu@canonical.com>
-In-Reply-To: <20220325035735.4745-1-chris.chiu@canonical.com>
-From:   Chris Chiu <chris.chiu@canonical.com>
-Date:   Wed, 6 Apr 2022 12:41:58 +0800
-Message-ID: <CABTNMG2z33a6FgsBPbj=cFN9umVdhF8nXwsnVkkF--PYbeGS7Q@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] rtl8xxxu: Fill up more TX information
-To:     kvalo@kernel.org, Jes.Sorensen@gmail.com, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     code@reto-schneider.ch, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <CAA=hcWQFNOeycXFPhrtHcQG3V8fWSShNRuAi49jtv8h1fPVUuQ@mail.gmail.com>
+ <8ef5d73a-6293-a6c5-6bbb-b130266a8f0b@broadcom.com>
+In-Reply-To: <8ef5d73a-6293-a6c5-6bbb-b130266a8f0b@broadcom.com>
+From:   Jupiter <jupiter.hce@gmail.com>
+Date:   Wed, 6 Apr 2022 17:36:55 +1000
+Message-ID: <CAA=hcWQ_FVTVfRe91z1yHXMBLkkhi0eTq-9Lw3Tg=X6OS5Ku-Q@mail.gmail.com>
+Subject: Re: Support for bcm43364 wireless chipset in brcm80211/brcmfmac
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Sean Lanigan <sean@lano.id.au>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Mar 25, 2022 at 11:57 AM Chris Chiu <chris.chiu@canonical.com> wrote:
->
-> The antenna information is missing in rtl8xxxu and txrate is NULL
-> in 8188cu and 8192cu. Fill up the missing information for iw
-> commands.
->
-> Chris Chiu (2):
->   rtl8xxxu: feed antenna information for cfg80211
->   rtl8xxxu: fill up txrate info for gen1 chips
->
->  .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 104 +++++++++++++-----
->  1 file changed, 75 insertions(+), 29 deletions(-)
->
-> --
-> 2.25.1
->
+Hi Arend,
 
-Gentle ping. Any comment or suggestion is appreciated. Thanks
+Thanks for your response.
+
+>> Our design criteria is that it must be supported by mainline Linux.
+>> Searching kernel log file to find that you added bcm43364 wireless
+>> chipset to broadcom/brcm80211/brcmfmac driver, could you please advise
+>> how stable and reliable to run brcm80211/brcmfmac for CYW43364 /
+>> Broadcom BCM43364 Chipset?
+>
+> Is Murata providing you with firmware or just the hardware.
+
+Good question, we'll buy Murata hardware and we'll use Murata firmware
+in linux-firmware so we can run Yocto to build WiFi to the image using
+mainline Linux, linux-firmware and other open sources.
+
+I've just checked the firmware, there is no bcm43364 binary in
+linux-firmware, only bcm43362 links to cyfmac43362-sdio.bin, is the
+cyfmac43362-sdio.bin the right firmware for Murata WiFi module
+LBWA1KL1FX (CYW43364 / BCM43364 Chipset)? If not, where is the right
+Murata WiFi module LBWA1KL1FX firmware in linux-firmware?
+
+The Broadcom did very good job to support mainline Linux, Cypress
+acquired Broadcom wireless IoT, Infineon acquired Cypress wireless,
+has anyone known if the Infineon is committed to continually maintain
+and support CYW43364 / BCM43364 Chipset driver and firmware in
+mainline Linux and linux-firmware?
+
+There is a wired backward tendency in recent years, large vendors
+acquired wireless sectors then stopped supporting open source and
+mainline Linux, switched its wireless sources to use its proprietary
+Linux and SDK. Our original design was using Marvell Avastar 88W8801
+chipset, the driver mwifiex and wifiex_sdio worked well for kernel 4,
+but after NXP acquired Marvell wireless sector, NXP stopped supporting
+mainline Linux, the kernel 5 mwifiex cannot communicate to 88W8801
+chipset firmware, we were told to use the proprietary Linux driver
+sources which is incompatible to our Yocto / OE build system, we have
+no choice but to change the WiFi module.
+
+>> In addition to add CONFIG_BRCMFMAC and CONFIG_BRCMFMAC_SDIO, should I
+>> also add   CONFIG_BRCMFMAC_PROTO_MSGBUF, CONFIG_DMI,
+>> CONFIG_BRCMFMAC_PROTO_BCDC and CONFIG_OF?
+>
+> I would suggest using menuconfig as it already answers some if not all
+> of these. CONFIG_DMI and CONFIG_OF are really depending on your platform.
+
+We'll certainly use the menuconfig that is not the issue, our CPU is
+iMX6ULZ running on kernel 5.10, apologize we are not familiar with the
+CONFIG_DMI and CONFIG_OF, appreciate your advice.
+
+Thank you very much.
+
+Kind regards,
+
+Jupiter
