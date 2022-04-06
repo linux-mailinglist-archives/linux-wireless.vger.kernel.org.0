@@ -2,80 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B21A4F69D6
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 21:27:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E4344F6A30
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Apr 2022 21:43:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231512AbiDFT3M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Apr 2022 15:29:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47644 "EHLO
+        id S232139AbiDFTpD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Apr 2022 15:45:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232702AbiDFT2Z (ORCPT
+        with ESMTP id S232535AbiDFTod (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Apr 2022 15:28:25 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80CF127971F
-        for <linux-wireless@vger.kernel.org>; Wed,  6 Apr 2022 10:57:22 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.66.134])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 3E43C1C0084
-        for <linux-wireless@vger.kernel.org>; Wed,  6 Apr 2022 17:57:06 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 1B11168008D
-        for <linux-wireless@vger.kernel.org>; Wed,  6 Apr 2022 17:57:06 +0000 (UTC)
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 52E9513C2B0;
-        Wed,  6 Apr 2022 10:57:05 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 52E9513C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1649267825;
-        bh=mc6SLO6ffh4RwSRC2qXIzQWSBGwD8SONajM44Ak0UlY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=BRGMtbLKnYxKQmcKkNE4c0IR2t3Q0u8D4sxW24C1p6HcBMigSqkirXSyGL7pzTpV3
-         dRLu8oEVJFy0Z13XPXJlV6yJpv3nyJeoI7gw8A0sM/GhxkTrfvwOm27NHwq1HrK5AF
-         FjV8RUd+vx05NnDgSTjPk6UVAksxHvFmJeAP/F+A=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] mac80211:  fix ht_capa printout in debugfs.
-Date:   Wed,  6 Apr 2022 10:56:59 -0700
-Message-Id: <20220406175659.20611-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
+        Wed, 6 Apr 2022 15:44:33 -0400
+Received: from relay5.hostedemail.com (relay5.hostedemail.com [64.99.140.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9A262AE9CE
+        for <linux-wireless@vger.kernel.org>; Wed,  6 Apr 2022 10:58:41 -0700 (PDT)
+Received: from omf13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+        by unirelay10.hostedemail.com (Postfix) with ESMTP id C613E35D0;
+        Wed,  6 Apr 2022 17:58:39 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf13.hostedemail.com (Postfix) with ESMTPA id AA85120011;
+        Wed,  6 Apr 2022 17:58:37 +0000 (UTC)
+Message-ID: <1064228a2bb8a5fbdcb483295c641c100dd08c9f.camel@perches.com>
+Subject: Re: [PATCH v4 1/2] ray_cs: Improve card_status[]
+From:   Joe Perches <joe@perches.com>
+To:     Benjamin =?ISO-8859-1?Q?St=FCrz?= <benni@stuerz.xyz>,
+        kvalo@kernel.org
+Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Wed, 06 Apr 2022 10:58:35 -0700
+In-Reply-To: <20220406152247.386267-2-benni@stuerz.xyz>
+References: <20220406152247.386267-1-benni@stuerz.xyz>
+         <20220406152247.386267-2-benni@stuerz.xyz>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.40.4-1ubuntu2 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1649267831-Bz0zECROe0A6
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
+X-Stat-Signature: 4x93hygzkp67pzsimy8pxrem6idwkheg
+X-Rspamd-Server: rspamout04
+X-Rspamd-Queue-Id: AA85120011
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX18okezJojRz1U2N98r1sNAPyIQfCdYT8Jw=
+X-HE-Tag: 1649267917-578212
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+On Wed, 2022-04-06 at 17:22 +0200, Benjamin Stürz wrote:
+> Replace comments with C99's designated initializers to improve
+> readability and maintainability.
+[]
+> diff --git a/drivers/net/wireless/ray_cs.c b/drivers/net/wireless/ray_cs.c
+[]
+> @@ -2529,20 +2529,23 @@ static void clear_interrupt(ray_dev_t *local)
+>  #define MAXDATA (PAGE_SIZE - 80)
+>  
+>  static const char *card_status[] = {
+> -	"Card inserted - uninitialized",	/* 0 */
+> -	"Card not downloaded",			/* 1 */
+> -	"Waiting for download parameters",	/* 2 */
+> -	"Card doing acquisition",		/* 3 */
+> -	"Acquisition complete",			/* 4 */
+> -	"Authentication complete",		/* 5 */
+> -	"Association complete",			/* 6 */
+> -	"???", "???", "???", "???",		/* 7 8 9 10 undefined */
+> -	"Card init error",			/* 11 */
+> -	"Download parameters error",		/* 12 */
+> -	"???",					/* 13 */
+> -	"Acquisition failed",			/* 14 */
+> -	"Authentication refused",		/* 15 */
+> -	"Association failed"			/* 16 */
+> +	[CARD_INSERTED]		= "Card inserted - uninitialized",
+> +	[CARD_AWAITING_PARAM]	= "Card not downloaded",
+> +	[CARD_DL_PARAM]		= "Waiting for download parameters",
+> +	[CARD_DOING_ACQ]	= "Card doing acquisition",
+> +	[CARD_ACQ_COMPLETE]	= "Acquisition complete",
+> +	[CARD_AUTH_COMPLETE]	= "Authentication complete",
+> +	[CARD_ASSOC_COMPLETE]	= "Association complete",
+> +	[7]			= "???",
+> +	[8]			= "???",
+> +	[9]			= "???",
+> +	[10]			= "???",
 
-Don't use sizeof(pointer) when calculating scnprintf offset.
+Rather than using specific numbers and "???"
+it's probably better to use no initialization at all
+and change the output call to test the array index
+ao all of the [number] = "???" could be removed.
 
-Fixes: mac80211: debugfs: calculate free buffer size correctly (eb3d6175e4a9)
-Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- net/mac80211/debugfs_sta.c | 2 +-
+ drivers/net/wireless/ray_cs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index 19195d63ae5c..db852f8c5feb 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -584,7 +584,7 @@ static ssize_t sta_ht_capa_read(struct file *file, char __user *userbuf,
- #define PRINT_HT_CAP(_cond, _str) \
- 	do { \
- 	if (_cond) \
--			p += scnprintf(p, sizeof(buf)+buf-p, "\t" _str "\n"); \
-+			p += scnprintf(p, bufsz + buf - p, "\t" _str "\n"); \
- 	} while (0)
- 	char *buf, *p;
- 	int i;
--- 
-2.20.1
+diff --git a/drivers/net/wireless/ray_cs.c b/drivers/net/wireless/ray_cs.c
+index 87e98ab068ed..29451cd0a22a 100644
+--- a/drivers/net/wireless/ray_cs.c
++++ b/drivers/net/wireless/ray_cs.c
+@@ -2600,7 +2600,7 @@ static int ray_cs_proc_show(struct seq_file *m, void *v)
+ 		i = 10;
+ 	if (i > 16)
+ 		i = 10;
+-	seq_printf(m, "Card status          = %s\n", card_status[i]);
++	seq_printf(m, "Card status          = %s\n", card_status[i] ?: "???");
+ 
+ 	seq_printf(m, "Framing mode         = %s\n", framing[translate]);
+ 
 
