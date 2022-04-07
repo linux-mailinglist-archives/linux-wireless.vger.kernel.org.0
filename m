@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 731B44F806C
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Apr 2022 15:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2F064F8069
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Apr 2022 15:23:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243504AbiDGNZo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Apr 2022 09:25:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48922 "EHLO
+        id S1343623AbiDGNZn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Apr 2022 09:25:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240187AbiDGNZm (ORCPT
+        with ESMTP id S243504AbiDGNZm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 7 Apr 2022 09:25:42 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2F638C7FF
-        for <linux-wireless@vger.kernel.org>; Thu,  7 Apr 2022 06:23:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90523A88B3
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Apr 2022 06:23:42 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 237DNaczE007535, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 237DNaczE007535
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 237DNaywE007539, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 237DNaywE007539
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 7 Apr 2022 21:23:36 +0800
+        Thu, 7 Apr 2022 21:23:37 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 7 Apr 2022 21:23:35 +0800
+ 15.1.2308.27; Thu, 7 Apr 2022 21:23:36 +0800
 Received: from localhost (172.16.21.190) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 7 Apr
- 2022 21:23:33 +0800
+ 2022 21:23:35 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>,
         <johnson.lin@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH 07/13] rtw89: 8852c: disable firmware watchdog if CPU disabled
-Date:   Thu, 7 Apr 2022 21:23:10 +0800
-Message-ID: <20220407132316.61132-8-pkshih@realtek.com>
+Subject: [PATCH 08/13] rtw89: Skip useless dig gain and igi related settings for 8852C
+Date:   Thu, 7 Apr 2022 21:23:11 +0800
+Message-ID: <20220407132316.61132-9-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220407132316.61132-1-pkshih@realtek.com>
 References: <20220407132316.61132-1-pkshih@realtek.com>
@@ -56,7 +56,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvNyCkV6TIIDA4OjExOjAw?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -69,141 +69,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chia-Yuan Li <leo.li@realtek.com>
+From: Johnson Lin <johnson.lin@realtek.com>
 
-Disable watchdog timer to prevent it timeout suddenly.
+Separated DIG RX gain, IGI configurations from not supportted HW using
+"support_igi" capability flag.
 
-Signed-off-by: Chia-Yuan Li <leo.li@realtek.com>
+Signed-off-by: Johnson Lin <johnson.lin@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c | 37 +++++++++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/mac.h |  6 ++--
- drivers/net/wireless/realtek/rtw89/reg.h | 17 +++++++++++
- 3 files changed, 56 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/phy.c      | 9 +++++++--
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 1 +
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 91383c08beb3a..da66d28e98a62 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -10,7 +10,7 @@
- #include "reg.h"
- #include "util.h"
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 193afb1f53f5a..be9c0cf9e4696 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -2930,6 +2930,9 @@ static void rtw89_phy_dig_update_gain_para(struct rtw89_dev *rtwdev)
+ 	u32 tmp;
+ 	u8 i;
  
--const u32 rtw89_mac_mem_base_addrs[RTW89_MAC_MEM_MAX] = {
-+const u32 rtw89_mac_mem_base_addrs[RTW89_MAC_MEM_NUM] = {
- 	[RTW89_MAC_MEM_AXIDMA]	        = AXIDMA_BASE_ADDR,
- 	[RTW89_MAC_MEM_SHARED_BUF]	= SHARED_BUF_BASE_ADDR,
- 	[RTW89_MAC_MEM_DMAC_TBL]	= DMAC_TBL_BASE_ADDR,
-@@ -28,8 +28,27 @@ const u32 rtw89_mac_mem_base_addrs[RTW89_MAC_MEM_MAX] = {
- 	[RTW89_MAC_MEM_TXD_FIFO_1]	= TXD_FIFO_1_BASE_ADDR,
- 	[RTW89_MAC_MEM_TXDATA_FIFO_0]	= TXDATA_FIFO_0_BASE_ADDR,
- 	[RTW89_MAC_MEM_TXDATA_FIFO_1]	= TXDATA_FIFO_1_BASE_ADDR,
-+	[RTW89_MAC_MEM_CPU_LOCAL]	= CPU_LOCAL_BASE_ADDR,
- };
- 
-+static void rtw89_mac_mem_write(struct rtw89_dev *rtwdev, u32 offset,
-+				u32 val, enum rtw89_mac_mem_sel sel)
-+{
-+	u32 addr = rtw89_mac_mem_base_addrs[sel] + offset;
++	if (!rtwdev->hal.support_igi)
++		return;
 +
-+	rtw89_write32(rtwdev, R_AX_FILTER_MODEL_ADDR, addr);
-+	rtw89_write32(rtwdev, R_AX_INDIR_ACCESS_ENTRY, val);
-+}
-+
-+static u32 rtw89_mac_mem_read(struct rtw89_dev *rtwdev, u32 offset,
-+			      enum rtw89_mac_mem_sel sel)
-+{
-+	u32 addr = rtw89_mac_mem_base_addrs[sel] + offset;
-+
-+	rtw89_write32(rtwdev, R_AX_FILTER_MODEL_ADDR, addr);
-+	return rtw89_read32(rtwdev, R_AX_INDIR_ACCESS_ENTRY);
-+}
-+
- int rtw89_mac_check_mac_en(struct rtw89_dev *rtwdev, u8 mac_idx,
- 			   enum rtw89_mac_hwmod_sel sel)
+ 	tmp = rtw89_phy_read32_mask(rtwdev, R_PATH0_IB_PKPW,
+ 				    B_PATH0_IB_PKPW_MSK);
+ 	dig->ib_pkpwr = sign_extend32(tmp >> DIG_GAIN_SHIFT, U8_MAX_BIT);
+@@ -3184,6 +3187,9 @@ static void rtw89_phy_dig_config_igi(struct rtw89_dev *rtwdev)
  {
-@@ -2965,6 +2984,19 @@ static int rtw89_mac_trx_init(struct rtw89_dev *rtwdev)
- 	return 0;
- }
+ 	struct rtw89_dig_info *dig = &rtwdev->dig;
  
-+static void rtw89_disable_fw_watchdog(struct rtw89_dev *rtwdev)
-+{
-+	u32 val32;
++	if (!rtwdev->hal.support_igi)
++		return;
 +
-+	rtw89_mac_mem_write(rtwdev, R_AX_WDT_CTRL,
-+			    WDT_CTRL_ALL_DIS, RTW89_MAC_MEM_CPU_LOCAL);
-+
-+	val32 = rtw89_mac_mem_read(rtwdev, R_AX_WDT_STATUS, RTW89_MAC_MEM_CPU_LOCAL);
-+	val32 |= B_AX_FS_WDT_INT;
-+	val32 &= ~B_AX_FS_WDT_INT_MSK;
-+	rtw89_mac_mem_write(rtwdev, R_AX_WDT_STATUS, val32, RTW89_MAC_MEM_CPU_LOCAL);
-+}
-+
- static void rtw89_mac_disable_cpu(struct rtw89_dev *rtwdev)
- {
- 	clear_bit(RTW89_FLAG_FW_RDY, rtwdev->flags);
-@@ -2973,6 +3005,9 @@ static void rtw89_mac_disable_cpu(struct rtw89_dev *rtwdev)
- 	rtw89_write32_clr(rtwdev, R_AX_WCPU_FW_CTRL, B_AX_WCPU_FWDL_EN |
- 			  B_AX_H2C_PATH_RDY | B_AX_FWDL_PATH_RDY);
- 	rtw89_write32_clr(rtwdev, R_AX_SYS_CLK_CTRL, B_AX_CPU_CLK_EN);
-+
-+	rtw89_disable_fw_watchdog(rtwdev);
-+
- 	rtw89_write32_clr(rtwdev, R_AX_PLATFORM_ENABLE, B_AX_PLATFORM_EN);
- 	rtw89_write32_set(rtwdev, R_AX_PLATFORM_ENABLE, B_AX_PLATFORM_EN);
- }
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index de65d9becb056..31d53de97cfce 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -245,6 +245,7 @@ enum rtw89_mac_dbg_port_sel {
- #define	TXD_FIFO_1_BASE_ADDR		0x188A1080
- #define	TXDATA_FIFO_0_BASE_ADDR		0x18856000
- #define	TXDATA_FIFO_1_BASE_ADDR		0x188A1000
-+#define	CPU_LOCAL_BASE_ADDR		0x18003000
+ 	if (dig->force_gaincode_idx_en) {
+ 		rtw89_phy_dig_set_igi_cr(rtwdev, dig->force_gaincode);
+ 		rtw89_debug(rtwdev, RTW89_DBG_DIG,
+@@ -3309,8 +3315,7 @@ void rtw89_phy_dig(struct rtw89_dev *rtwdev)
+ 		    dig->igi_rssi, dig->dyn_igi_max, dig->dyn_igi_min,
+ 		    dig->igi_fa_rssi);
  
- #define CCTL_INFO_SIZE		32
+-	if (rtwdev->hal.support_igi)
+-		rtw89_phy_dig_config_igi(rtwdev);
++	rtw89_phy_dig_config_igi(rtwdev);
  
-@@ -266,11 +267,10 @@ enum rtw89_mac_mem_sel {
- 	RTW89_MAC_MEM_TXD_FIFO_1,
- 	RTW89_MAC_MEM_TXDATA_FIFO_0,
- 	RTW89_MAC_MEM_TXDATA_FIFO_1,
-+	RTW89_MAC_MEM_CPU_LOCAL,
+ 	rtw89_phy_dig_dyn_pd_th(rtwdev, dig->igi_fa_rssi, dig->dyn_pd_th_en);
  
- 	/* keep last */
--	RTW89_MAC_MEM_LAST,
--	RTW89_MAC_MEM_MAX = RTW89_MAC_MEM_LAST,
--	RTW89_MAC_MEM_INVALID = RTW89_MAC_MEM_LAST,
-+	RTW89_MAC_MEM_NUM,
- };
- 
- extern const u32 rtw89_mac_mem_base_addrs[];
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index bc343e756aad7..0ec6636d62c9a 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -3773,4 +3773,21 @@
- #define B_IQKINF2_FCNT GENMASK(23, 16)
- #define B_IQKINF2_KCNT GENMASK(15, 8)
- #define B_IQKINF2_NCTLV GENMAKS(7, 0)
-+
-+/* WiFi CPU local domain */
-+#define R_AX_WDT_CTRL 0x0040
-+#define B_AX_WDT_EN BIT(31)
-+#define B_AX_WDT_OPT_RESET_PLATFORM_EN BIT(29)
-+#define B_AX_IO_HANG_IMR BIT(27)
-+#define B_AX_IO_HANG_CMAC_RDATA_EN BIT(26)
-+#define B_AX_IO_HANG_DMAC_EN BIT(25)
-+#define B_AX_WDT_CLR BIT(16)
-+#define B_AX_WDT_COUNT_SH 0
-+#define B_AX_WDT_COUNT_MSK 0xffff
-+#define WDT_CTRL_ALL_DIS 0
-+
-+#define R_AX_WDT_STATUS 0x0044
-+#define B_AX_FS_WDT_INT BIT(8)
-+#define B_AX_FS_WDT_INT_MSK BIT(0)
-+
- #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 9689fc5a63723..ca254339ea7a9 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -598,6 +598,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
+ 	.rf_base_addr		= {0xe000, 0xf000},
+ 	.pwr_on_seq		= NULL,
+ 	.pwr_off_seq		= NULL,
++	.dig_table		= NULL,
+ 	.hw_sec_hdr		= true,
+ 	.sec_ctrl_efuse_size	= 4,
+ 	.physical_efuse_size	= 1216,
 -- 
 2.25.1
 
