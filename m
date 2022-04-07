@@ -2,110 +2,253 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 121B44F7D1B
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Apr 2022 12:37:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9394C4F7EF7
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Apr 2022 14:28:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244322AbiDGKjU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Apr 2022 06:39:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50246 "EHLO
+        id S245122AbiDGM3s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Apr 2022 08:29:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244374AbiDGKjQ (ORCPT
+        with ESMTP id S245112AbiDGM3r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Apr 2022 06:39:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2010F3B2AC
-        for <linux-wireless@vger.kernel.org>; Thu,  7 Apr 2022 03:37:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DB4C61DCD
-        for <linux-wireless@vger.kernel.org>; Thu,  7 Apr 2022 10:37:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D777C385A0;
-        Thu,  7 Apr 2022 10:37:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649327834;
-        bh=XllP2YEwaqN7vVQ+F8Fo0krkOL7zmoJdkW181d2G/O8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=PzWv+JY8VtawrCVUUDtvpT/40IGXqctoz1lUkNvVrEgDOcK+AkwFBuRpGJH776tHB
-         bzx61tnjbJT0PJkLrxi9ifsJVIlMsoDZvgYLlR0Y0+Qj/aJ+/zyKFVVWhAXfDtgO6x
-         rrV/cz1Azb939tiCejYvK2XAnD8ngWC9TkOzp7jC2u/G/QJd7pGXs+dFk3AsFFu9yL
-         0Mct9uRA0TBinnEFDim21ALTzlRCK/WTHWaZzIkB20KvHep2jQyHSGFrFqi01SYbyb
-         08e+Pq3APMjStwa9y9q52QCRIWopeMwvKR9EZhSxeWsZrmpau+s33nJUmRYJPnt2vy
-         gkgAVnHLVhn6w==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     johannes@sipsolutions.net
-Cc:     kvalo@kernel.org, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com
-Subject: [PATCH wireless-next] mac80211: protect ieee80211_assign_beacon with next_beacon check
-Date:   Thu,  7 Apr 2022 12:36:58 +0200
-Message-Id: <041764ed7e9781bcee66c33b41f1365aa4205932.1649327683.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.35.1
+        Thu, 7 Apr 2022 08:29:47 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D28A77246C
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Apr 2022 05:27:38 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id f18so6220018edc.5
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Apr 2022 05:27:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=VRuoAIQ8VM7Z7lkjnKl30FJLKecdPI+AAj9EpsNSn2k=;
+        b=pjuzAXsmGUfimoqYqkuIDhQezqaFwxIutqB489Dv2Wm6p+bqikvsuLx0pRh5WRfKF0
+         xzqz+Rxa2d6UoA9YV2hYUMqzJ3rJ3BwpR5d10EhpJI7rMd0X3yRCj9H/XCPV26VohZyT
+         gXLwdemo1hExYlfRek+blr/0B9Sg02n87v+A/EtvANbahRzFqYdBVw3WLOFmLpMSh9ku
+         xczB7aP7A4m4WsvgbrY8y3z7yNpHX0ZNy4F/g5zZDmop9kvZF3DJkWtf8MLEFSzyLeWt
+         eKDpMnjYliQRoEEeNy0Xqzuv3TEAiYUXm3wORsCQynvBP1duaALpucL9HXfP7CSTIXLH
+         tFvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=VRuoAIQ8VM7Z7lkjnKl30FJLKecdPI+AAj9EpsNSn2k=;
+        b=F5gv+tC49fSM2aTg42xVYxUjPqaxTYrPb6FWy0bjHCCSjg9AoN2AFM+jcYfjUFMtDX
+         zWJEqj567Bq47E03BFMrjAXsKNvWTlTDf0qhcmb7Vrvuh5WoevT11FiXh52OsJh2jHDi
+         QX1DFdnwIfsbPXNosbyPpcIdzKGTOhWJJfdimLYdtLz0MuwQFhtu9TjkX+aA43vtpUrh
+         ktb0oujoQyxfF/v6I2rSK11qF4SsZmZvFk/Ydy64JTXjPQwbEcZWcx1kxcQEEKiY1xfc
+         r7ge7krs5nDlLg9fLXkQ5C1RVKVWQi0RT9mrwCw9gOyMWELfYbmRkL0TACCrvdTzFLoH
+         Ar9A==
+X-Gm-Message-State: AOAM532/V2ci2QEnh13W/hLuO3Z6etIHJVsYxstxkq5h+lAMacktsqC2
+        pmpoPwx01uSCEKJNFP1OMBgVS02hRNs5Krr7ZNc=
+X-Google-Smtp-Source: ABdhPJw0Jqrrh7/d2QZPdCy+X/ZgkW51U3q/hqh4YEClrBeDkimwT6OirRgRyVtwDUG2wV87fTl/0HtTj+00K+kH6d4=
+X-Received: by 2002:a05:6402:3604:b0:41c:c4e6:2988 with SMTP id
+ el4-20020a056402360400b0041cc4e62988mr13852621edb.157.1649334457045; Thu, 07
+ Apr 2022 05:27:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Thu, 7 Apr 2022 13:27:25 +0100
+Message-ID: <CAHpNFcM-uqvy7kTzdNjt9ipt4XVGKC4xyWbvxqGDYsxKORSsDQ@mail.gmail.com>
+Subject: Frame Buffer - Personally QFT  is a much more pleasurable experience
+ than VRR at 2xFPS+ Stable FPS & X-OR Partial Frame Retention saving on compression.
+To:     torvalds@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Even if it is not a real issue since ieee80211_set_after_csa_beacon()
-or ieee80211_set_after_color_change_beacon() are run only when csa or bcc
-is active, move next_beacon check before running ieee80211_assign_beacon
-routine.
+VecSR - Vector Standard Render
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- net/mac80211/cfg.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+VESA Standards : Vector Graphics, Boxes, Ellipses, Curves & Fonts :
+Consolas & other brilliant fonts : (c)RS
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index ba752539d1d9..8e14ff53e4bd 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3306,13 +3306,14 @@ static int ieee80211_set_after_csa_beacon(struct ieee80211_sub_if_data *sdata,
- 
- 	switch (sdata->vif.type) {
- 	case NL80211_IFTYPE_AP:
-+		if (!sdata->u.ap.next_beacon)
-+			return -EINVAL;
-+
- 		err = ieee80211_assign_beacon(sdata, sdata->u.ap.next_beacon,
- 					      NULL, NULL);
--		if (sdata->u.ap.next_beacon) {
--			kfree(sdata->u.ap.next_beacon->mbssid_ies);
--			kfree(sdata->u.ap.next_beacon);
--			sdata->u.ap.next_beacon = NULL;
--		}
-+		kfree(sdata->u.ap.next_beacon->mbssid_ies);
-+		kfree(sdata->u.ap.next_beacon);
-+		sdata->u.ap.next_beacon = NULL;
- 
- 		if (err < 0)
- 			return err;
-@@ -4314,13 +4315,14 @@ ieee80211_set_after_color_change_beacon(struct ieee80211_sub_if_data *sdata,
- 	case NL80211_IFTYPE_AP: {
- 		int ret;
- 
-+		if (!sdata->u.ap.next_beacon)
-+			return -EINVAL;
-+
- 		ret = ieee80211_assign_beacon(sdata, sdata->u.ap.next_beacon,
- 					      NULL, NULL);
--		if (sdata->u.ap.next_beacon) {
--			kfree(sdata->u.ap.next_beacon->mbssid_ies);
--			kfree(sdata->u.ap.next_beacon);
--			sdata->u.ap.next_beacon = NULL;
--		}
-+		kfree(sdata->u.ap.next_beacon->mbssid_ies);
-+		kfree(sdata->u.ap.next_beacon);
-+		sdata->u.ap.next_beacon = NULL;
- 
- 		if (ret < 0)
- 			return ret;
--- 
-2.35.1
+Vector Compression VESA Standard Display protocol 3 : RS
 
+SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
+
+OT-SVG Fonts & TT-SVG Obviously Rendered in Direct X 9+ & OpenGL 3+
+Mode & Desktop Rendering modes
+
+Improve Console & TV & BIOS & General Animated Render
+
+*
+Vector Compression VESA Standard Display protocol 3 +
+DSC : Zero compression or low level compression version of DSC
+1.2bc
+
+Frame by Frame compression with vector prediction.
+
+Personally QFT  is a much more pleasurable experience than VRR at 2xFPS+
+Stable FPS & X-OR Partial Frame Retention saving on compression.
+
+X-OR Frame Buffer Compression & Blank Space Compression:
+
+X-OR X=3D1 New Data & X=3D0 being not sent,
+Therefore Masking the frame buffer,
+
+A Frame buffer needs a cleared aria; A curve or ellipsoid for example,
+Draw the ellipsoid; This is the mask & can be in 3 levels:
+
+X-OR : Draw or not Draw Aria : Blitter XOR
+AND : Draw 1 Value & The other : Blitter Additive
+Variable Value Resistor : Draw 1 Value +- The other : Blitter + or - Modifi=
+er
+*
+
+Vector Compression VESA Standard Display protocol 3 : RS
+
+SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
+Improve Console & TV & BIOS & General Animated Render
+
+Vector Display Standards with low relative CPU Weight
+SiMD Polygon Font Method Render
+
+Default option point scaling (the space) : Metadata Vector Fonts with
+Curl mathematical vector :
+
+16 Bit : SiMD 1 width
+32 Bit : SiMD Double Width
+
+High precision for AVX 32Bit to 256Bit width precision.
+
+Vectoring with SiMD allows traditional CPU mastered VESA Emulation
+desktops & safe mode to be super fast & displays to conform to VESA
+render standards with little effort & a 1MB Table ROM.
+
+Though the VESA & HDMI & DisplayPort standards Facilitates direct low
+bandwidth transport of and transformation of 3D & 2D graphics & fonts
+into directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
+
+Display Standards Vector Render : DSVR-SiMD Can and will be directly
+rendered to a Surface for visual element : SfVE-Vec
+
+As such transport of Vectors & transformation onto display (Monitor,
+3D Unit, Render, TV, & Though HDMI, PCI Port & DP & RAM)
+
+Directly resolve The total graphics pipeline into high quality output
+or input & allow communication of almost infinite Floating point
+values for all rendered 3D & 2D Elements on a given surface (RAM
+Render Page or Surface)
+
+In high precision that is almost unbeatable & yet consumes many levels
+less RAM & Transport Protocol bandwidth,
+
+Further more can also render Vector 3D & 2D Audio & other elements
+though Vector 'Fonting' Systems, Examples exist : 3D Wave Tables,
+Harmonic reproduction units for example Yamaha and Casio keyboards.
+
+Personally QFT  is a much more pleasurable experience than VRR at 2xFPS+
+Stable FPS & X-OR Partial Frame Retention saving on compression.
+
+"QFT a Zero compression or low level compression version of DSC
+1.2bc
+
+X-OR Frame Buffer Compression & Blank Space Compression:
+Vector Compression VESA Standard Display protocol 3"
+
+"QFT transports each frame at a higher rate to decrease =E2=80=9Cdisplay
+latency=E2=80=9D, which is the amount of time between a frame being ready f=
+or
+transport in the GPU and that frame being completely displayed. This
+latency is the sum of the transport time through the source=E2=80=99s outpu=
+t
+circuits, the transport time across the interface, the processing of
+the video data in the display, and the painting of the screen with the
+new data. This overall latency affects the responsiveness of games:
+how long it appears between a button is pressed to the time at which
+the resultant action is observed on the screen.
+
+
+While there are a lot of variables in this equation, not many are
+adjustable from an HDMI specification perspective. QFT operates on the
+transport portion of this equation by reducing the time it takes to
+send only the active video across the cable. This results in reduced
+display latency and increased responsiveness."
+*
+
+(c)Rupert S
+
+Include vector today *important* RS
+https://vesa.org/vesa-display-compression-codecs/
+
+https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
+
+https://science.n-helix.com/2019/06/vulkan-stack.html
+
+https://science.n-helix.com/2019/06/kernel.html
+
+https://science.n-helix.com/2022/03/fsr-focal-length.html
+
+https://science.n-helix.com/2018/01/integer-floats-with-remainder-theory.ht=
+ml
+
+https://bit.ly/VESA_BT
+*
+
+*Application of SiMD Polygon Font Method Render
+*3D Render method with Console input DEMO : RS
+
+3D Display access to correct display of fonts at angles in games &
+apps without Utilizing 3rd Axis maths on a simple Shape polygon Vector
+font or shape. (c)Rupert S
+
+3rd dimensional access with vector fonts by a simple method:
+
+Render text to virtual screen layer AKA a fully rendered monochrome, 2
+colour or multi colour..
+
+Bitmap/Texture,
+
+Due to latency we have 3 frames ahead to render to bitmap DPT 3 / Dot 5
+
+Can be higher resolution & we can sub sample with closer view priority...
+
+We then rotate the texture on our output polygon & factor size differential=
+.
+
+The maths is simple enough to implement in games on an SSE configured
+Celeron D (depending on resolution and Bilinear filter & resize
+
+Why ? Because rotating a polygon is harder than subtracting or adding
+width, Hight & direction to fully complex polygon Fonts & Polygon
+lines or curves...
+
+The maths is simple enough to implement in games on an SSE configured
+Celeron D (depending on resolution and Bilinear filter & resize.
+
+*
+
+VecSR is really good for secondary loading of sprites & text; In these
+terms very good for pre loading on for example the X86, RISC, AMIGA &
+Famicon type devices,
+With appropriate loading into Sprite buffers or Emulated Secondaries
+(Special Animations) or Font Buffers.
+
+Although Large TT-SVG & OT-SVG fonts load well in 8MB Ram on the Amiga
+with Integer & Emulated Float (Library); Traditional BitMap fonts work
+well in a Set Size & can resize well if cached!
+
+The full process leads upto the terminal & how to optimise CON,
+We can & will need to exceed capacities of any system & To improve them!
+
+presenting: Dev-Con-VectorE=C2=B2
+Fast/dev/CON 3DText & Audio Almost any CPU & GPU ''SiMD & Float/int"
+Class VESA Console +
+
+With Console in VecSR you can 3DText & Audio,
+
+VecSR Firmware update 2022 For immediate implementation in all
+operating systems & ROM's
+
+Potential is fast & useful.
+
+*
+
+https://science.n-helix.com/2022/04/vecsr.html
