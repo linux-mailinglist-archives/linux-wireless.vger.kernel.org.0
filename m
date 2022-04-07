@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2DC54F806A
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Apr 2022 15:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F02464F806E
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Apr 2022 15:24:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343636AbiDGNZt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Apr 2022 09:25:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49442 "EHLO
+        id S1343649AbiDGNZ5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Apr 2022 09:25:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343637AbiDGNZs (ORCPT
+        with ESMTP id S1343642AbiDGNZv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Apr 2022 09:25:48 -0400
+        Thu, 7 Apr 2022 09:25:51 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46FB7CD640
-        for <linux-wireless@vger.kernel.org>; Thu,  7 Apr 2022 06:23:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7F2A88B3
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Apr 2022 06:23:47 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 237DNeCH2007549, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 237DNeCH2007549
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 237DNfuH6007554, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 237DNfuH6007554
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 7 Apr 2022 21:23:40 +0800
+        Thu, 7 Apr 2022 21:23:41 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Thu, 7 Apr 2022 21:23:40 +0800
+ 15.1.2375.24; Thu, 7 Apr 2022 21:23:41 +0800
 Received: from localhost (172.16.21.190) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 7 Apr
- 2022 21:23:39 +0800
+ 2022 21:23:40 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>,
         <johnson.lin@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH 10/13] rtw89: extend H2C of CMAC control info
-Date:   Thu, 7 Apr 2022 21:23:13 +0800
-Message-ID: <20220407132316.61132-11-pkshih@realtek.com>
+Subject: [PATCH 11/13] rtw89: add new H2C to configure security CAM via DCTL for V1 chip
+Date:   Thu, 7 Apr 2022 21:23:14 +0800
+Message-ID: <20220407132316.61132-12-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220407132316.61132-1-pkshih@realtek.com>
 References: <20220407132316.61132-1-pkshih@realtek.com>
@@ -56,7 +56,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvNyCkV6TIIDA4OjExOjAw?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -69,255 +69,445 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In order to support new chip that has capability of 160M, we need new
-format to fill new information, so add a new V1 ID for newer use. Since
-most fields are the same, fill fields according to the function ID of chip.
+DCTL is short for D-MAC control that V1 chip uses this H2C to configure
+security CAM. Implement the callers in next patch.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h     |  3 +-
- drivers/net/wireless/realtek/rtw89/fw.c       | 47 ++++++++++++-------
- drivers/net/wireless/realtek/rtw89/fw.h       | 43 ++++++++++++++---
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
- 5 files changed, 72 insertions(+), 23 deletions(-)
+ drivers/net/wireless/realtek/rtw89/cam.c |  28 +++
+ drivers/net/wireless/realtek/rtw89/cam.h |   4 +
+ drivers/net/wireless/realtek/rtw89/fw.c  |  35 +++
+ drivers/net/wireless/realtek/rtw89/fw.h  | 306 +++++++++++++++++++++++
+ 4 files changed, 373 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 5f0f675fe2a11..d3de229d3e7d9 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -578,7 +578,7 @@ enum rtw89_ps_mode {
- #define RTW89_2G_BW_NUM (RTW89_CHANNEL_WIDTH_40 + 1)
- #define RTW89_5G_BW_NUM (RTW89_CHANNEL_WIDTH_160 + 1)
- #define RTW89_6G_BW_NUM (RTW89_CHANNEL_WIDTH_160 + 1)
--#define RTW89_PPE_BW_NUM (RTW89_CHANNEL_WIDTH_80 + 1)
-+#define RTW89_PPE_BW_NUM (RTW89_CHANNEL_WIDTH_160 + 1)
- 
- enum rtw89_ru_bandwidth {
- 	RTW89_RU26 = 0,
-@@ -2413,6 +2413,7 @@ struct rtw89_chip_info {
- 	const struct rtw89_btc_rf_trx_para *rf_para_dlink;
- 	u8 ps_mode_supported;
- 
-+	u32 h2c_cctl_func_id;
- 	u32 hci_func_en_addr;
- 	u32 h2c_desc_size;
- 	u32 txwd_body_size;
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index fc77d9bfd6260..beedc650e33aa 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -780,6 +780,7 @@ int rtw89_fw_h2c_lps_parm(struct rtw89_dev *rtwdev,
- int rtw89_fw_h2c_default_cmac_tbl(struct rtw89_dev *rtwdev,
- 				  struct rtw89_vif *rtwvif)
- {
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	struct rtw89_hal *hal = &rtwdev->hal;
- 	struct sk_buff *skb;
- 	u8 ntx_path = hal->antenna_tx ? hal->antenna_tx : RF_B;
-@@ -794,16 +795,18 @@ int rtw89_fw_h2c_default_cmac_tbl(struct rtw89_dev *rtwdev,
- 	skb_put(skb, H2C_CMC_TBL_LEN);
- 	SET_CTRL_INFO_MACID(skb->data, macid);
- 	SET_CTRL_INFO_OPERATION(skb->data, 1);
--	SET_CMC_TBL_TXPWR_MODE(skb->data, 0);
--	SET_CMC_TBL_NTX_PATH_EN(skb->data, ntx_path);
--	SET_CMC_TBL_PATH_MAP_A(skb->data, 0);
--	SET_CMC_TBL_PATH_MAP_B(skb->data, map_b);
--	SET_CMC_TBL_PATH_MAP_C(skb->data, 0);
--	SET_CMC_TBL_PATH_MAP_D(skb->data, 0);
--	SET_CMC_TBL_ANTSEL_A(skb->data, 0);
--	SET_CMC_TBL_ANTSEL_B(skb->data, 0);
--	SET_CMC_TBL_ANTSEL_C(skb->data, 0);
--	SET_CMC_TBL_ANTSEL_D(skb->data, 0);
-+	if (chip->h2c_cctl_func_id == H2C_FUNC_MAC_CCTLINFO_UD) {
-+		SET_CMC_TBL_TXPWR_MODE(skb->data, 0);
-+		SET_CMC_TBL_NTX_PATH_EN(skb->data, ntx_path);
-+		SET_CMC_TBL_PATH_MAP_A(skb->data, 0);
-+		SET_CMC_TBL_PATH_MAP_B(skb->data, map_b);
-+		SET_CMC_TBL_PATH_MAP_C(skb->data, 0);
-+		SET_CMC_TBL_PATH_MAP_D(skb->data, 0);
-+		SET_CMC_TBL_ANTSEL_A(skb->data, 0);
-+		SET_CMC_TBL_ANTSEL_B(skb->data, 0);
-+		SET_CMC_TBL_ANTSEL_C(skb->data, 0);
-+		SET_CMC_TBL_ANTSEL_D(skb->data, 0);
-+	}
- 	SET_CMC_TBL_DOPPLER_CTRL(skb->data, 0);
- 	SET_CMC_TBL_TXPWR_TOLERENCE(skb->data, 0);
- 	if (rtwvif->net_type == RTW89_NET_TYPE_AP_MODE)
-@@ -811,7 +814,7 @@ int rtw89_fw_h2c_default_cmac_tbl(struct rtw89_dev *rtwdev,
- 
- 	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
- 			      H2C_CAT_MAC, H2C_CL_MAC_FR_EXCHG,
--			      H2C_FUNC_MAC_CCTLINFO_UD, 0, 1,
-+			      chip->h2c_cctl_func_id, 0, 1,
- 			      H2C_CMC_TBL_LEN);
- 
- 	if (rtw89_h2c_tx(rtwdev, skb, false)) {
-@@ -851,6 +854,8 @@ static void __get_sta_he_pkt_padding(struct rtw89_dev *rtwdev,
- 
- 		for (i = 0; i < RTW89_PPE_BW_NUM; i++)
- 			pads[i] = pad;
-+
-+		return;
- 	}
- 
- 	ru_bitmap = FIELD_GET(IEEE80211_PPE_THRES_RU_INDEX_BITMASK_MASK, ppe_thres_hdr);
-@@ -885,6 +890,7 @@ int rtw89_fw_h2c_assoc_cmac_tbl(struct rtw89_dev *rtwdev,
- 				struct ieee80211_vif *vif,
- 				struct ieee80211_sta *sta)
- {
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	struct rtw89_hal *hal = &rtwdev->hal;
- 	struct rtw89_sta *rtwsta = sta_to_rtwsta_safe(sta);
- 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
-@@ -917,9 +923,17 @@ int rtw89_fw_h2c_assoc_cmac_tbl(struct rtw89_dev *rtwdev,
- 	else
- 		SET_CMC_TBL_ULDL(skb->data, 0);
- 	SET_CMC_TBL_MULTI_PORT_ID(skb->data, rtwvif->port);
--	SET_CMC_TBL_NOMINAL_PKT_PADDING(skb->data, pads[RTW89_CHANNEL_WIDTH_20]);
--	SET_CMC_TBL_NOMINAL_PKT_PADDING40(skb->data, pads[RTW89_CHANNEL_WIDTH_40]);
--	SET_CMC_TBL_NOMINAL_PKT_PADDING80(skb->data, pads[RTW89_CHANNEL_WIDTH_80]);
-+	if (chip->h2c_cctl_func_id == H2C_FUNC_MAC_CCTLINFO_UD_V1) {
-+		SET_CMC_TBL_NOMINAL_PKT_PADDING_V1(skb->data, pads[RTW89_CHANNEL_WIDTH_20]);
-+		SET_CMC_TBL_NOMINAL_PKT_PADDING40_V1(skb->data, pads[RTW89_CHANNEL_WIDTH_40]);
-+		SET_CMC_TBL_NOMINAL_PKT_PADDING80_V1(skb->data, pads[RTW89_CHANNEL_WIDTH_80]);
-+		SET_CMC_TBL_NOMINAL_PKT_PADDING160_V1(skb->data, pads[RTW89_CHANNEL_WIDTH_160]);
-+	} else if (chip->h2c_cctl_func_id == H2C_FUNC_MAC_CCTLINFO_UD) {
-+		SET_CMC_TBL_NOMINAL_PKT_PADDING(skb->data, pads[RTW89_CHANNEL_WIDTH_20]);
-+		SET_CMC_TBL_NOMINAL_PKT_PADDING40(skb->data, pads[RTW89_CHANNEL_WIDTH_40]);
-+		SET_CMC_TBL_NOMINAL_PKT_PADDING80(skb->data, pads[RTW89_CHANNEL_WIDTH_80]);
-+		SET_CMC_TBL_NOMINAL_PKT_PADDING160(skb->data, pads[RTW89_CHANNEL_WIDTH_160]);
-+	}
- 	if (sta)
- 		SET_CMC_TBL_BSR_QUEUE_SIZE_FORMAT(skb->data, sta->he_cap.has_he);
- 	if (rtwvif->net_type == RTW89_NET_TYPE_AP_MODE)
-@@ -927,7 +941,7 @@ int rtw89_fw_h2c_assoc_cmac_tbl(struct rtw89_dev *rtwdev,
- 
- 	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
- 			      H2C_CAT_MAC, H2C_CL_MAC_FR_EXCHG,
--			      H2C_FUNC_MAC_CCTLINFO_UD, 0, 1,
-+			      chip->h2c_cctl_func_id, 0, 1,
- 			      H2C_CMC_TBL_LEN);
- 
- 	if (rtw89_h2c_tx(rtwdev, skb, false)) {
-@@ -945,6 +959,7 @@ int rtw89_fw_h2c_assoc_cmac_tbl(struct rtw89_dev *rtwdev,
- int rtw89_fw_h2c_txtime_cmac_tbl(struct rtw89_dev *rtwdev,
- 				 struct rtw89_sta *rtwsta)
- {
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	struct sk_buff *skb;
- 
- 	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, H2C_CMC_TBL_LEN);
-@@ -966,7 +981,7 @@ int rtw89_fw_h2c_txtime_cmac_tbl(struct rtw89_dev *rtwdev,
- 
- 	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
- 			      H2C_CAT_MAC, H2C_CL_MAC_FR_EXCHG,
--			      H2C_FUNC_MAC_CCTLINFO_UD, 0, 1,
-+			      chip->h2c_cctl_func_id, 0, 1,
- 			      H2C_CMC_TBL_LEN);
- 
- 	if (rtw89_h2c_tx(rtwdev, skb, false)) {
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 2a010154a8e88..9cba8990b8365 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -973,6 +973,36 @@ static inline void SET_CMC_TBL_ANTSEL_D(void *table, u32 val)
- 	le32p_replace_bits((__le32 *)(table) + 14, SET_CMC_TBL_MASK_ANTSEL_D,
- 			   BIT(31));
+diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
+index 34827f174ba1e..08b9779163bb5 100644
+--- a/drivers/net/wireless/realtek/rtw89/cam.c
++++ b/drivers/net/wireless/realtek/rtw89/cam.c
+@@ -710,3 +710,31 @@ void rtw89_cam_fill_addr_cam_info(struct rtw89_dev *rtwdev,
+ 	FWCMD_SET_ADDR_SEC_ENT5(cmd, addr_cam->sec_ent[5]);
+ 	FWCMD_SET_ADDR_SEC_ENT6(cmd, addr_cam->sec_ent[6]);
  }
 +
-+#define SET_CMC_TBL_MASK_NOMINAL_PKT_PADDING GENMASK(1, 0)
-+static inline void SET_CMC_TBL_NOMINAL_PKT_PADDING_V1(void *table, u32 val)
++void rtw89_cam_fill_dctl_sec_cam_info_v1(struct rtw89_dev *rtwdev,
++					 struct rtw89_vif *rtwvif,
++					 struct rtw89_sta *rtwsta,
++					 u8 *cmd)
 +{
-+	le32p_replace_bits((__le32 *)(table) + 7, val, GENMASK(1, 0));
-+	le32p_replace_bits((__le32 *)(table) + 15, SET_CMC_TBL_MASK_NOMINAL_PKT_PADDING,
-+			   GENMASK(1, 0));
++	struct rtw89_addr_cam_entry *addr_cam = rtw89_get_addr_cam_of(rtwvif, rtwsta);
++
++	SET_DCTL_MACID_V1(cmd, rtwsta ? rtwsta->mac_id : rtwvif->mac_id);
++	SET_DCTL_OPERATION_V1(cmd, 1);
++
++	SET_DCTL_SEC_ENT0_KEYID_V1(cmd, addr_cam->sec_ent_keyid[0]);
++	SET_DCTL_SEC_ENT1_KEYID_V1(cmd, addr_cam->sec_ent_keyid[1]);
++	SET_DCTL_SEC_ENT2_KEYID_V1(cmd, addr_cam->sec_ent_keyid[2]);
++	SET_DCTL_SEC_ENT3_KEYID_V1(cmd, addr_cam->sec_ent_keyid[3]);
++	SET_DCTL_SEC_ENT4_KEYID_V1(cmd, addr_cam->sec_ent_keyid[4]);
++	SET_DCTL_SEC_ENT5_KEYID_V1(cmd, addr_cam->sec_ent_keyid[5]);
++	SET_DCTL_SEC_ENT6_KEYID_V1(cmd, addr_cam->sec_ent_keyid[6]);
++
++	SET_DCTL_SEC_ENT_VALID_V1(cmd, addr_cam->sec_cam_map[0] & 0xff);
++	SET_DCTL_SEC_ENT0_V1(cmd, addr_cam->sec_ent[0]);
++	SET_DCTL_SEC_ENT1_V1(cmd, addr_cam->sec_ent[1]);
++	SET_DCTL_SEC_ENT2_V1(cmd, addr_cam->sec_ent[2]);
++	SET_DCTL_SEC_ENT3_V1(cmd, addr_cam->sec_ent[3]);
++	SET_DCTL_SEC_ENT4_V1(cmd, addr_cam->sec_ent[4]);
++	SET_DCTL_SEC_ENT5_V1(cmd, addr_cam->sec_ent[5]);
++	SET_DCTL_SEC_ENT6_V1(cmd, addr_cam->sec_ent[6]);
++}
+diff --git a/drivers/net/wireless/realtek/rtw89/cam.h b/drivers/net/wireless/realtek/rtw89/cam.h
+index 3a6a786530d17..a3931d3e40d26 100644
+--- a/drivers/net/wireless/realtek/rtw89/cam.h
++++ b/drivers/net/wireless/realtek/rtw89/cam.h
+@@ -355,6 +355,10 @@ void rtw89_cam_fill_addr_cam_info(struct rtw89_dev *rtwdev,
+ 				  struct rtw89_vif *vif,
+ 				  struct rtw89_sta *rtwsta,
+ 				  const u8 *scan_mac_addr, u8 *cmd);
++void rtw89_cam_fill_dctl_sec_cam_info_v1(struct rtw89_dev *rtwdev,
++					 struct rtw89_vif *rtwvif,
++					 struct rtw89_sta *rtwsta,
++					 u8 *cmd);
+ int rtw89_cam_fill_bssid_cam_info(struct rtw89_dev *rtwdev,
+ 				  struct rtw89_vif *vif, u8 *cmd);
+ int rtw89_cam_sec_key_add(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index beedc650e33aa..5d411f8ee2eda 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -599,6 +599,41 @@ int rtw89_fw_h2c_cam(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
+ 	return -EBUSY;
+ }
+ 
++#define H2C_DCTL_SEC_CAM_LEN 68
++int rtw89_fw_h2c_dctl_sec_cam_v1(struct rtw89_dev *rtwdev,
++				 struct rtw89_vif *rtwvif,
++				 struct rtw89_sta *rtwsta)
++{
++	struct sk_buff *skb;
++
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, H2C_DCTL_SEC_CAM_LEN);
++	if (!skb) {
++		rtw89_err(rtwdev, "failed to alloc skb for dctl sec cam\n");
++		return -ENOMEM;
++	}
++	skb_put(skb, H2C_DCTL_SEC_CAM_LEN);
++
++	rtw89_cam_fill_dctl_sec_cam_info_v1(rtwdev, rtwvif, rtwsta, skb->data);
++
++	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
++			      H2C_CAT_MAC,
++			      H2C_CL_MAC_FR_EXCHG,
++			      H2C_FUNC_MAC_DCTLINFO_UD_V1, 0, 0,
++			      H2C_DCTL_SEC_CAM_LEN);
++
++	if (rtw89_h2c_tx(rtwdev, skb, false)) {
++		rtw89_err(rtwdev, "failed to send h2c\n");
++		goto fail;
++	}
++
++	return 0;
++fail:
++	dev_kfree_skb_any(skb);
++
++	return -EBUSY;
++}
++EXPORT_SYMBOL(rtw89_fw_h2c_dctl_sec_cam_v1);
++
+ #define H2C_BA_CAM_LEN 8
+ int rtw89_fw_h2c_ba_cam(struct rtw89_dev *rtwdev, struct rtw89_sta *rtwsta,
+ 			bool valid, struct ieee80211_ampdu_params *params)
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+index 9cba8990b8365..aaabfc0dfd713 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.h
++++ b/drivers/net/wireless/realtek/rtw89/fw.h
+@@ -1151,6 +1151,308 @@ static inline void SET_CMC_TBL_CSI_BW(void *table, u32 val)
+ 			   GENMASK(31, 30));
+ }
+ 
++static inline void SET_DCTL_MACID_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 0, val, GENMASK(6, 0));
 +}
 +
-+static inline void SET_CMC_TBL_NOMINAL_PKT_PADDING40_V1(void *table, u32 val)
++static inline void SET_DCTL_OPERATION_V1(void *table, u32 val)
 +{
-+	le32p_replace_bits((__le32 *)(table) + 7, val, GENMASK(3, 2));
-+	le32p_replace_bits((__le32 *)(table) + 15, SET_CMC_TBL_MASK_NOMINAL_PKT_PADDING,
-+			   GENMASK(3, 2));
++	le32p_replace_bits((__le32 *)(table) + 0, val, BIT(7));
 +}
 +
-+static inline void SET_CMC_TBL_NOMINAL_PKT_PADDING80_V1(void *table, u32 val)
++#define SET_DCTL_MASK_QOS_FIELD_V1 GENMASK(7, 0)
++static inline void SET_DCTL_QOS_FIELD_V1(void *table, u32 val)
 +{
-+	le32p_replace_bits((__le32 *)(table) + 7, val, GENMASK(5, 4));
-+	le32p_replace_bits((__le32 *)(table) + 15, SET_CMC_TBL_MASK_NOMINAL_PKT_PADDING,
-+			   GENMASK(5, 4));
++	le32p_replace_bits((__le32 *)(table) + 1, val, GENMASK(7, 0));
++	le32p_replace_bits((__le32 *)(table) + 9, SET_DCTL_MASK_QOS_FIELD_V1,
++			   GENMASK(7, 0));
 +}
 +
-+static inline void SET_CMC_TBL_NOMINAL_PKT_PADDING160_V1(void *table, u32 val)
++#define SET_DCTL_MASK_SET_DCTL_HW_EXSEQ_MACID GENMASK(6, 0)
++static inline void SET_DCTL_HW_EXSEQ_MACID_V1(void *table, u32 val)
 +{
-+	le32p_replace_bits((__le32 *)(table) + 7, val, GENMASK(7, 6));
-+	le32p_replace_bits((__le32 *)(table) + 15, SET_CMC_TBL_MASK_NOMINAL_PKT_PADDING,
++	le32p_replace_bits((__le32 *)(table) + 1, val, GENMASK(14, 8));
++	le32p_replace_bits((__le32 *)(table) + 9, SET_DCTL_MASK_SET_DCTL_HW_EXSEQ_MACID,
++			   GENMASK(14, 8));
++}
++
++#define SET_DCTL_MASK_QOS_DATA BIT(0)
++static inline void SET_DCTL_QOS_DATA_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 1, val, BIT(15));
++	le32p_replace_bits((__le32 *)(table) + 9, SET_DCTL_MASK_QOS_DATA,
++			   BIT(15));
++}
++
++#define SET_DCTL_MASK_AES_IV_L GENMASK(15, 0)
++static inline void SET_DCTL_AES_IV_L_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 1, val, GENMASK(31, 16));
++	le32p_replace_bits((__le32 *)(table) + 9, SET_DCTL_MASK_AES_IV_L,
++			   GENMASK(31, 16));
++}
++
++#define SET_DCTL_MASK_AES_IV_H GENMASK(31, 0)
++static inline void SET_DCTL_AES_IV_H_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 2, val, GENMASK(31, 0));
++	le32p_replace_bits((__le32 *)(table) + 10, SET_DCTL_MASK_AES_IV_H,
++			   GENMASK(31, 0));
++}
++
++#define SET_DCTL_MASK_SEQ0 GENMASK(11, 0)
++static inline void SET_DCTL_SEQ0_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 3, val, GENMASK(11, 0));
++	le32p_replace_bits((__le32 *)(table) + 11, SET_DCTL_MASK_SEQ0,
++			   GENMASK(11, 0));
++}
++
++#define SET_DCTL_MASK_SEQ1 GENMASK(11, 0)
++static inline void SET_DCTL_SEQ1_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 3, val, GENMASK(23, 12));
++	le32p_replace_bits((__le32 *)(table) + 11, SET_DCTL_MASK_SEQ1,
++			   GENMASK(23, 12));
++}
++
++#define SET_DCTL_MASK_AMSDU_MAX_LEN GENMASK(2, 0)
++static inline void SET_DCTL_AMSDU_MAX_LEN_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 3, val, GENMASK(26, 24));
++	le32p_replace_bits((__le32 *)(table) + 11, SET_DCTL_MASK_AMSDU_MAX_LEN,
++			   GENMASK(26, 24));
++}
++
++#define SET_DCTL_MASK_STA_AMSDU_EN BIT(0)
++static inline void SET_DCTL_STA_AMSDU_EN_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 3, val, BIT(27));
++	le32p_replace_bits((__le32 *)(table) + 11, SET_DCTL_MASK_STA_AMSDU_EN,
++			   BIT(27));
++}
++
++#define SET_DCTL_MASK_CHKSUM_OFLD_EN BIT(0)
++static inline void SET_DCTL_CHKSUM_OFLD_EN_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 3, val, BIT(28));
++	le32p_replace_bits((__le32 *)(table) + 11, SET_DCTL_MASK_CHKSUM_OFLD_EN,
++			   BIT(28));
++}
++
++#define SET_DCTL_MASK_WITH_LLC BIT(0)
++static inline void SET_DCTL_WITH_LLC_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 3, val, BIT(29));
++	le32p_replace_bits((__le32 *)(table) + 11, SET_DCTL_MASK_WITH_LLC,
++			   BIT(29));
++}
++
++#define SET_DCTL_MASK_SEQ2 GENMASK(11, 0)
++static inline void SET_DCTL_SEQ2_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 4, val, GENMASK(11, 0));
++	le32p_replace_bits((__le32 *)(table) + 12, SET_DCTL_MASK_SEQ2,
++			   GENMASK(11, 0));
++}
++
++#define SET_DCTL_MASK_SEQ3 GENMASK(11, 0)
++static inline void SET_DCTL_SEQ3_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 4, val, GENMASK(23, 12));
++	le32p_replace_bits((__le32 *)(table) + 12, SET_DCTL_MASK_SEQ3,
++			   GENMASK(23, 12));
++}
++
++#define SET_DCTL_MASK_TGT_IND GENMASK(3, 0)
++static inline void SET_DCTL_TGT_IND_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 4, val, GENMASK(27, 24));
++	le32p_replace_bits((__le32 *)(table) + 12, SET_DCTL_MASK_TGT_IND,
++			   GENMASK(27, 24));
++}
++
++#define SET_DCTL_MASK_TGT_IND_EN BIT(0)
++static inline void SET_DCTL_TGT_IND_EN_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 4, val, BIT(28));
++	le32p_replace_bits((__le32 *)(table) + 12, SET_DCTL_MASK_TGT_IND_EN,
++			   BIT(28));
++}
++
++#define SET_DCTL_MASK_HTC_LB GENMASK(2, 0)
++static inline void SET_DCTL_HTC_LB_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 4, val, GENMASK(31, 29));
++	le32p_replace_bits((__le32 *)(table) + 12, SET_DCTL_MASK_HTC_LB,
++			   GENMASK(31, 29));
++}
++
++#define SET_DCTL_MASK_MHDR_LEN GENMASK(4, 0)
++static inline void SET_DCTL_MHDR_LEN_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, GENMASK(4, 0));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_MHDR_LEN,
++			   GENMASK(4, 0));
++}
++
++#define SET_DCTL_MASK_VLAN_TAG_VALID BIT(0)
++static inline void SET_DCTL_VLAN_TAG_VALID_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, BIT(5));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_VLAN_TAG_VALID,
++			   BIT(5));
++}
++
++#define SET_DCTL_MASK_VLAN_TAG_SEL GENMASK(1, 0)
++static inline void SET_DCTL_VLAN_TAG_SEL_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, GENMASK(7, 6));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_VLAN_TAG_SEL,
 +			   GENMASK(7, 6));
 +}
 +
- #define SET_CMC_TBL_MASK_ADDR_CAM_INDEX GENMASK(7, 0)
- static inline void SET_CMC_TBL_ADDR_CAM_INDEX(void *table, u32 val)
- {
-@@ -1001,7 +1031,6 @@ static inline void SET_CMC_TBL_DOPPLER_CTRL(void *table, u32 val)
- 	le32p_replace_bits((__le32 *)(table) + 15, SET_CMC_TBL_MASK_DOPPLER_CTRL,
- 			   GENMASK(19, 18));
- }
--#define SET_CMC_TBL_MASK_NOMINAL_PKT_PADDING GENMASK(1, 0)
- static inline void SET_CMC_TBL_NOMINAL_PKT_PADDING(void *table, u32 val)
- {
- 	le32p_replace_bits((__le32 *)(table) + 7, val, GENMASK(21, 20));
-@@ -1106,13 +1135,14 @@ static inline void SET_CMC_TBL_CSI_GI_LTF(void *table, u32 val)
- 	le32p_replace_bits((__le32 *)(table) + 16, SET_CMC_TBL_MASK_CSI_GI_LTF,
- 			   GENMASK(27, 25));
- }
--#define SET_CMC_TBL_MASK_CSI_GID_SEL BIT(0)
--static inline void SET_CMC_TBL_CSI_GID_SEL(void *table, u32 val)
++#define SET_DCTL_MASK_HTC_ORDER BIT(0)
++static inline void SET_DCTL_HTC_ORDER_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, BIT(8));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_HTC_ORDER,
++			   BIT(8));
++}
 +
-+static inline void SET_CMC_TBL_NOMINAL_PKT_PADDING160(void *table, u32 val)
- {
--	le32p_replace_bits((__le32 *)(table) + 8, val, BIT(29));
--	le32p_replace_bits((__le32 *)(table) + 16, SET_CMC_TBL_MASK_CSI_GID_SEL,
--			   BIT(29));
-+	le32p_replace_bits((__le32 *)(table) + 8, val, GENMASK(29, 28));
-+	le32p_replace_bits((__le32 *)(table) + 16, SET_CMC_TBL_MASK_NOMINAL_PKT_PADDING,
++#define SET_DCTL_MASK_SEC_KEY_ID GENMASK(1, 0)
++static inline void SET_DCTL_SEC_KEY_ID_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, GENMASK(10, 9));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_SEC_KEY_ID,
++			   GENMASK(10, 9));
++}
++
++#define SET_DCTL_MASK_WAPI BIT(0)
++static inline void SET_DCTL_WAPI_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, BIT(15));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_WAPI,
++			   BIT(15));
++}
++
++#define SET_DCTL_MASK_SEC_ENT_MODE GENMASK(1, 0)
++static inline void SET_DCTL_SEC_ENT_MODE_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, GENMASK(17, 16));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_SEC_ENT_MODE,
++			   GENMASK(17, 16));
++}
++
++#define SET_DCTL_MASK_SEC_ENTX_KEYID GENMASK(1, 0)
++static inline void SET_DCTL_SEC_ENT0_KEYID_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, GENMASK(19, 18));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_SEC_ENTX_KEYID,
++			   GENMASK(19, 18));
++}
++
++static inline void SET_DCTL_SEC_ENT1_KEYID_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, GENMASK(21, 20));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_SEC_ENTX_KEYID,
++			   GENMASK(21, 20));
++}
++
++static inline void SET_DCTL_SEC_ENT2_KEYID_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, GENMASK(23, 22));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_SEC_ENTX_KEYID,
++			   GENMASK(23, 22));
++}
++
++static inline void SET_DCTL_SEC_ENT3_KEYID_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, GENMASK(25, 24));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_SEC_ENTX_KEYID,
++			   GENMASK(25, 24));
++}
++
++static inline void SET_DCTL_SEC_ENT4_KEYID_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, GENMASK(27, 26));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_SEC_ENTX_KEYID,
++			   GENMASK(27, 26));
++}
++
++static inline void SET_DCTL_SEC_ENT5_KEYID_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, GENMASK(29, 28));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_SEC_ENTX_KEYID,
 +			   GENMASK(29, 28));
- }
++}
 +
- #define SET_CMC_TBL_MASK_CSI_BW GENMASK(1, 0)
- static inline void SET_CMC_TBL_CSI_BW(void *table, u32 val)
++static inline void SET_DCTL_SEC_ENT6_KEYID_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 5, val, GENMASK(31, 30));
++	le32p_replace_bits((__le32 *)(table) + 13, SET_DCTL_MASK_SEC_ENTX_KEYID,
++			   GENMASK(31, 30));
++}
++
++#define SET_DCTL_MASK_SEC_ENT_VALID GENMASK(7, 0)
++static inline void SET_DCTL_SEC_ENT_VALID_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 6, val, GENMASK(7, 0));
++	le32p_replace_bits((__le32 *)(table) + 14, SET_DCTL_MASK_SEC_ENT_VALID,
++			   GENMASK(7, 0));
++}
++
++#define SET_DCTL_MASK_SEC_ENTX GENMASK(7, 0)
++static inline void SET_DCTL_SEC_ENT0_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 6, val, GENMASK(15, 8));
++	le32p_replace_bits((__le32 *)(table) + 14, SET_DCTL_MASK_SEC_ENTX,
++			   GENMASK(15, 8));
++}
++
++static inline void SET_DCTL_SEC_ENT1_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 6, val, GENMASK(23, 16));
++	le32p_replace_bits((__le32 *)(table) + 14, SET_DCTL_MASK_SEC_ENTX,
++			   GENMASK(23, 16));
++}
++
++static inline void SET_DCTL_SEC_ENT2_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 6, val, GENMASK(31, 24));
++	le32p_replace_bits((__le32 *)(table) + 14, SET_DCTL_MASK_SEC_ENTX,
++			   GENMASK(31, 24));
++}
++
++static inline void SET_DCTL_SEC_ENT3_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 7, val, GENMASK(7, 0));
++	le32p_replace_bits((__le32 *)(table) + 15, SET_DCTL_MASK_SEC_ENTX,
++			   GENMASK(7, 0));
++}
++
++static inline void SET_DCTL_SEC_ENT4_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 7, val, GENMASK(15, 8));
++	le32p_replace_bits((__le32 *)(table) + 15, SET_DCTL_MASK_SEC_ENTX,
++			   GENMASK(15, 8));
++}
++
++static inline void SET_DCTL_SEC_ENT5_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 7, val, GENMASK(23, 16));
++	le32p_replace_bits((__le32 *)(table) + 15, SET_DCTL_MASK_SEC_ENTX,
++			   GENMASK(23, 16));
++}
++
++static inline void SET_DCTL_SEC_ENT6_V1(void *table, u32 val)
++{
++	le32p_replace_bits((__le32 *)(table) + 7, val, GENMASK(31, 24));
++	le32p_replace_bits((__le32 *)(table) + 15, SET_DCTL_MASK_SEC_ENTX,
++			   GENMASK(31, 24));
++}
++
+ static inline void SET_BCN_UPD_PORT(void *h2c, u32 val)
  {
-@@ -2170,6 +2200,7 @@ struct rtw89_fw_h2c_rf_reg_info {
+ 	le32p_replace_bits((__le32 *)h2c, val, GENMASK(7, 0));
+@@ -2200,6 +2502,7 @@ struct rtw89_fw_h2c_rf_reg_info {
  #define H2C_CL_MAC_FR_EXCHG		0x5
  #define H2C_FUNC_MAC_CCTLINFO_UD	0x2
  #define H2C_FUNC_MAC_BCN_UPD		0x5
-+#define H2C_FUNC_MAC_CCTLINFO_UD_V1	0xa
++#define H2C_FUNC_MAC_DCTLINFO_UD_V1	0x9
+ #define H2C_FUNC_MAC_CCTLINFO_UD_V1	0xa
  
  /* CLASS 6 - Address CAM */
- #define H2C_CL_MAC_ADDR_CAM_UPDATE	0x6
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 9871ed78e44ca..6371bbf7a2fd5 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2147,6 +2147,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
- 	.ps_mode_supported	= BIT(RTW89_PS_MODE_RFOFF) |
- 				  BIT(RTW89_PS_MODE_CLK_GATED) |
- 				  BIT(RTW89_PS_MODE_PWR_GATED),
-+	.h2c_cctl_func_id	= H2C_FUNC_MAC_CCTLINFO_UD,
- 	.hci_func_en_addr	= R_AX_HCI_FUNC_EN,
- 	.h2c_desc_size		= sizeof(struct rtw89_txwd_body),
- 	.txwd_body_size		= sizeof(struct rtw89_txwd_body),
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 38b1383307161..d900129c1a7c8 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -667,6 +667,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
- 	.dav_log_efuse_size	= 16,
- 	.phycap_addr		= 0x590,
- 	.phycap_size		= 0x60,
-+	.h2c_cctl_func_id	= H2C_FUNC_MAC_CCTLINFO_UD_V1,
- 	.hci_func_en_addr	= R_AX_HCI_FUNC_EN_V1,
- 	.h2c_desc_size		= sizeof(struct rtw89_rxdesc_short),
- 	.txwd_body_size		= sizeof(struct rtw89_txwd_body_v1),
+@@ -2267,6 +2570,9 @@ int rtw89_fw_h2c_update_beacon(struct rtw89_dev *rtwdev,
+ 			       struct rtw89_vif *rtwvif);
+ int rtw89_fw_h2c_cam(struct rtw89_dev *rtwdev, struct rtw89_vif *vif,
+ 		     struct rtw89_sta *rtwsta, const u8 *scan_mac_addr);
++int rtw89_fw_h2c_dctl_sec_cam_v1(struct rtw89_dev *rtwdev,
++				 struct rtw89_vif *rtwvif,
++				 struct rtw89_sta *rtwsta);
+ void rtw89_fw_c2h_irqsafe(struct rtw89_dev *rtwdev, struct sk_buff *c2h);
+ void rtw89_fw_c2h_work(struct work_struct *work);
+ int rtw89_fw_h2c_role_maintain(struct rtw89_dev *rtwdev,
 -- 
 2.25.1
 
