@@ -2,214 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 936D54F9071
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 10:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 823204F9085
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 10:16:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231187AbiDHIOV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Apr 2022 04:14:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46770 "EHLO
+        id S231363AbiDHIQo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Apr 2022 04:16:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230391AbiDHIOT (ORCPT
+        with ESMTP id S231345AbiDHIQm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Apr 2022 04:14:19 -0400
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93D514AE0D;
-        Fri,  8 Apr 2022 01:12:15 -0700 (PDT)
-Received: by mail-qt1-x831.google.com with SMTP id s7so10080555qtk.6;
-        Fri, 08 Apr 2022 01:12:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=jw/XuL4gze/EjFGmPl0tsO01dQMr5OjXvuq1Bzbys1Q=;
-        b=irp/7ScHoeQsUxSmCUbAbcmEFlRuyij8MQCMERCJiRm+THOMIlWJki09aJB2hid65U
-         /rxDnCPH03txnpSNWJhtBWWKthYSeN6w/nrPv+kdpTz6CEmReXQ4MahGS54VstfzT5Al
-         rPQTvbtnpJxfnd0KeUL8Lb9A7ZOW7X6KiYmJ3fJNWVo4iruVR9PZHeFI9HidNJIKaVHx
-         P763oWiScRxs52CJGi4NKf76AQtHbmvfn11sQOXX6d9vL+VLFslPM7ZJFo4XbrVW9Nv4
-         2ELk8SSeH+VGzRRDmktslJHWAWJah9gyiMjr5MQuntfw9Em06dAfHeoqBsKJccm8oJWh
-         wigQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=jw/XuL4gze/EjFGmPl0tsO01dQMr5OjXvuq1Bzbys1Q=;
-        b=Pap+e8iU6HKO8xVz/EspvjG0cAFxpNlCkmdKwXuoD2ipapxvYOPeheJELVfNVT2hyD
-         IIvhn2BsDWvFBr+eu1EH3umi5p4JWQ/so1sPwxxwTXw/IRjhxmc38fG60tsiX1Y21EHy
-         aVMwPmMsw4Lc2ZDwmTrOoPaL0Gyctp3MfUBRpK7Q81h1hEmvbL6VDvb6s017rcLsa+PD
-         /TfBYO6sGrBtoYrkjf2GFHksma001AmqYOf5dzqTb/tkEYQx7KReY9It76tp63CziRb0
-         5R5d80WTFM2DsGMr4jXx6HfgPCIXXeINBeUt11fcyOcGlYhCjmBCPBBmBwCkx8yYQQFP
-         v/mw==
-X-Gm-Message-State: AOAM530Bi89mUN8jVTt/7lfOz68E3gQEgdy955Z8sadvrNLwWihmbbM2
-        xIX+Gbk/gtAbD/MiI7N1pdI=
-X-Google-Smtp-Source: ABdhPJx3epWw8SnQaL8w47Y6EpL+Nxb2TfF2wFBPcUkPnpy1geqdfdb4Fr2esV6hzF8GexBy05uDgw==
-X-Received: by 2002:ac8:5895:0:b0:2e1:c997:a629 with SMTP id t21-20020ac85895000000b002e1c997a629mr14991481qta.124.1649405534737;
-        Fri, 08 Apr 2022 01:12:14 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id m6-20020a05622a118600b002ebb68c31d5sm10487776qtk.45.2022.04.08.01.12.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Apr 2022 01:12:14 -0700 (PDT)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: chi.minghao@zte.com.cn
-To:     kvalo@kernel.org
-Cc:     davem@davemloft.net, kuba@kernel.org,
+        Fri, 8 Apr 2022 04:16:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6960360D87;
+        Fri,  8 Apr 2022 01:14:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 054B3615A7;
+        Fri,  8 Apr 2022 08:14:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BDFC385A1;
+        Fri,  8 Apr 2022 08:14:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649405678;
+        bh=DXntX2Jz7Nztnd1dMcRMCaGMy0UPIH0WJlp5HA4774s=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Qu+tD/xH27JIeXTaUKCquAn5fQayD4kxRqf9nIEs5/Z/nJRRkNrYMgZhuJZXKt8Al
+         NkLhsVjHZOQo7GV7TnXxgY/OhKOkJU3Osmzr9x7wxOTEUJqNBpdfoz4FPDWMUGX/64
+         u5jSI6cp8wrTBzl12n2nao2HO36tXUvV7ocDKe08fD9PBw+bB24wUGrlfy8Po3axfC
+         48EribHBfxK/csfTD4gSi23AoDNCMmpAeki/n+TADylKpJEf3htCMIfhNEuUqVJq8e
+         vepktCqnHgHTjfdLOMttvcbqtGvHV3pvfSY79LhuYzJ1SgqriOd3dpsluPlBAmvsnT
+         YOSlmsHLEDPGA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        linux-kernel@vger.kernel.org, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] wlcore: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
-Date:   Fri,  8 Apr 2022 08:12:05 +0000
-Message-Id: <20220408081205.2494512-1-chi.minghao@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: Re: [PATCH 1/3] mmc: core: improve API to make clear mmc_hw_reset is for cards
+References: <20220408080045.6497-1-wsa+renesas@sang-engineering.com>
+        <20220408080045.6497-2-wsa+renesas@sang-engineering.com>
+Date:   Fri, 08 Apr 2022 11:14:31 +0300
+In-Reply-To: <20220408080045.6497-2-wsa+renesas@sang-engineering.com> (Wolfram
+        Sang's message of "Fri, 8 Apr 2022 10:00:42 +0200")
+Message-ID: <87bkxcouu0.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Minghao Chi <chi.minghao@zte.com.cn>
+Wolfram Sang <wsa+renesas@sang-engineering.com> writes:
 
-Using pm_runtime_resume_and_get is more appropriate
-for simplifing code
+> To make it unambiguous that mmc_hw_reset() is for cards and not for
+> controllers, we make the function argument mmc_card instead of mmc_host.
+> Also, all users are converted.
+>
+> Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> ---
+>
+> Ulf prefers one cross-subsystem patch to have all users converted. So,
+> we are looking for ACKs from the maintainers of the wireless drivers.
+> Thank you!
+>
+> Changes since RFC:
+> * don't rename the function but only change the argument type
+> * remove fallback and convert all users in one go
+> * remove comment as suggested by Ulf
+>
+>  drivers/mmc/core/block.c                                | 2 +-
+>  drivers/mmc/core/core.c                                 | 5 +++--
+>  drivers/mmc/core/mmc_test.c                             | 3 +--
+>  drivers/net/wireless/ath/ath10k/sdio.c                  | 2 +-
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 2 +-
+>  drivers/net/wireless/marvell/mwifiex/sdio.c             | 2 +-
+>  drivers/net/wireless/ti/wlcore/sdio.c                   | 2 +-
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
----
- drivers/net/wireless/ti/wlcore/debugfs.c | 52 ++++++++----------------
- 1 file changed, 17 insertions(+), 35 deletions(-)
+For wireless:
 
-diff --git a/drivers/net/wireless/ti/wlcore/debugfs.c b/drivers/net/wireless/ti/wlcore/debugfs.c
-index cce8d75d8b81..eb3d3f0e0b4d 100644
---- a/drivers/net/wireless/ti/wlcore/debugfs.c
-+++ b/drivers/net/wireless/ti/wlcore/debugfs.c
-@@ -52,11 +52,9 @@ void wl1271_debugfs_update_stats(struct wl1271 *wl)
- 	if (unlikely(wl->state != WLCORE_STATE_ON))
- 		goto out;
- 
--	ret = pm_runtime_get_sync(wl->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(wl->dev);
-+	ret = pm_runtime_resume_and_get(wl->dev);
-+	if (ret < 0)
- 		goto out;
--	}
- 
- 	if (!wl->plt &&
- 	    time_after(jiffies, wl->stats.fw_stats_update +
-@@ -108,12 +106,9 @@ static void chip_op_handler(struct wl1271 *wl, unsigned long value,
- 		return;
- 	}
- 
--	ret = pm_runtime_get_sync(wl->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(wl->dev);
--
-+	ret = pm_runtime_resume_and_get(wl->dev);
-+	if (ret < 0)
- 		return;
--	}
- 
- 	chip_op = arg;
- 	chip_op(wl);
-@@ -279,11 +274,9 @@ static ssize_t dynamic_ps_timeout_write(struct file *file,
- 	if (unlikely(wl->state != WLCORE_STATE_ON))
- 		goto out;
- 
--	ret = pm_runtime_get_sync(wl->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(wl->dev);
-+	ret = pm_runtime_resume_and_get(wl->dev);
-+	if (ret < 0)
- 		goto out;
--	}
- 
- 	/* In case we're already in PSM, trigger it again to set new timeout
- 	 * immediately without waiting for re-association
-@@ -349,11 +342,9 @@ static ssize_t forced_ps_write(struct file *file,
- 	if (unlikely(wl->state != WLCORE_STATE_ON))
- 		goto out;
- 
--	ret = pm_runtime_get_sync(wl->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(wl->dev);
-+	ret = pm_runtime_resume_and_get(wl->dev);
-+	if (ret < 0)
- 		goto out;
--	}
- 
- 	/* In case we're already in PSM, trigger it again to switch mode
- 	 * immediately without waiting for re-association
-@@ -831,11 +822,9 @@ static ssize_t rx_streaming_interval_write(struct file *file,
- 
- 	wl->conf.rx_streaming.interval = value;
- 
--	ret = pm_runtime_get_sync(wl->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(wl->dev);
-+	ret = pm_runtime_resume_and_get(wl->dev);
-+	if (ret < 0)
- 		goto out;
--	}
- 
- 	wl12xx_for_each_wlvif_sta(wl, wlvif) {
- 		wl1271_recalc_rx_streaming(wl, wlvif);
-@@ -889,11 +878,9 @@ static ssize_t rx_streaming_always_write(struct file *file,
- 
- 	wl->conf.rx_streaming.always = value;
- 
--	ret = pm_runtime_get_sync(wl->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(wl->dev);
-+	ret = pm_runtime_resume_and_get(wl->dev);
-+	if (ret < 0)
- 		goto out;
--	}
- 
- 	wl12xx_for_each_wlvif_sta(wl, wlvif) {
- 		wl1271_recalc_rx_streaming(wl, wlvif);
-@@ -939,11 +926,9 @@ static ssize_t beacon_filtering_write(struct file *file,
- 
- 	mutex_lock(&wl->mutex);
- 
--	ret = pm_runtime_get_sync(wl->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(wl->dev);
-+	ret = pm_runtime_resume_and_get(wl->dev);
-+	if (ret < 0)
- 		goto out;
--	}
- 
- 	wl12xx_for_each_wlvif(wl, wlvif) {
- 		ret = wl1271_acx_beacon_filter_opt(wl, wlvif, !!value);
-@@ -1021,11 +1006,9 @@ static ssize_t sleep_auth_write(struct file *file,
- 		goto out;
- 	}
- 
--	ret = pm_runtime_get_sync(wl->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(wl->dev);
-+	ret = pm_runtime_resume_and_get(wl->dev);
-+	if (ret < 0)
- 		goto out;
--	}
- 
- 	ret = wl1271_acx_sleep_auth(wl, value);
- 	if (ret < 0)
-@@ -1254,9 +1237,8 @@ static ssize_t fw_logger_write(struct file *file,
- 	}
- 
- 	mutex_lock(&wl->mutex);
--	ret = pm_runtime_get_sync(wl->dev);
-+	ret = pm_runtime_resume_and_get(wl->dev);
- 	if (ret < 0) {
--		pm_runtime_put_noidle(wl->dev);
- 		count = ret;
- 		goto out;
- 	}
+Acked-by: Kalle Valo <kvalo@kernel.org>
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
