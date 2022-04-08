@@ -2,61 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BC704F8E00
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 08:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1AEF4F8D78
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 08:25:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234202AbiDHER4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Apr 2022 00:17:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40132 "EHLO
+        id S231300AbiDHExX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Apr 2022 00:53:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234307AbiDHERx (ORCPT
+        with ESMTP id S234360AbiDHExR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Apr 2022 00:17:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E77E32E4BA2;
-        Thu,  7 Apr 2022 21:15:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64FA961E16;
-        Fri,  8 Apr 2022 04:15:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D0AC385A1;
-        Fri,  8 Apr 2022 04:15:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649391349;
-        bh=EStePIw+CMLR4aey6pRfe8ZFXCPEn48dQTN3ybwAr/k=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dEuOEXcjBODPReRkKvtLXhreIDACN0N09wiZyKB7/Z6UvvaR/95s7cRC25j4oG8BN
-         jMzFaBn2TWcFpdCWWFrQVc8iasb49xWlBNzd+XhODXE+tvX37NqHg1MDOT4oCCaW6I
-         ZfW3xbbgn4AT5nh7DpvW2ffCX9lIoqpraU1aj9rpm9XyWNPj9kP2KxyYQNp+gvedEN
-         +qb03yVwth+xnpKn7mXmoyTpc2bIbm/a4djfiJLHjHczRtg5LtO/A/z5X/U82kyVLZ
-         IzmZNFPAy4E8CzOtlMUHdKrluqudyk/fkbYN3bvfvduPYDBsJ+wZw7FRsNMfaAqDBi
-         faatoaNPDibLQ==
-Date:   Thu, 7 Apr 2022 21:15:47 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        andriy.shevchenko@linux.intel.com, dinesh.sharma@intel.com,
-        eliot.lee@intel.com, ilpo.johannes.jarvinen@intel.com,
-        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
-        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
-        sreehari.kancharla@intel.com, madhusmita.sahu@intel.com
-Subject: Re: [PATCH net-next v6 00/13] net: wwan: t7xx: PCIe driver for
- MediaTek M.2 modem
-Message-ID: <20220407211547.6dac8246@kernel.org>
-In-Reply-To: <20220407223629.21487-1-ricardo.martinez@linux.intel.com>
-References: <20220407223629.21487-1-ricardo.martinez@linux.intel.com>
+        Fri, 8 Apr 2022 00:53:17 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6C01188571
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Apr 2022 21:51:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1649393472; x=1680929472;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=ANxMMGOayknmcr1cq1QY1dJBVKlMfVeWKCgQTTJSHyk=;
+  b=WNcJzDEzPcQEKS+BHexPWEmU4fFSLRo/Fu8qPP/mOG/egOlXtoef5kLo
+   w/2/qye6aes3wIYoYegG/S0AnWolKqfji65lds06X/axptXgH3ZYk0s9G
+   0pTqbc2T2PZD78qCs/OBVFE/Kc8cqxvU73sw8NNCqU2WymTrl3sjgHnqH
+   A=;
+Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
+  by alexa-out.qualcomm.com with ESMTP; 07 Apr 2022 21:51:12 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2022 21:51:12 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Thu, 7 Apr 2022 21:51:11 -0700
+Received: from haric-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Thu, 7 Apr 2022 21:51:10 -0700
+From:   <quic_haric@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>,
+        Hari Chandrakanthan <quic_haric@quicinc.com>
+Subject: [PATCH] mac80211 : fix bw change to 40 MHz during channel switch
+Date:   Fri, 8 Apr 2022 10:20:52 +0530
+Message-ID: <1649393452-11704-1-git-send-email-quic_haric@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,47 +60,55 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu,  7 Apr 2022 15:36:16 -0700 Ricardo Martinez wrote:
-> t7xx is the PCIe host device driver for Intel 5G 5000 M.2 solution which
-> is based on MediaTek's T700 modem to provide WWAN connectivity.
-> The driver uses the WWAN framework infrastructure to create the following
-> control ports and network interfaces:
-> * /dev/wwan0mbim0 - Interface conforming to the MBIM protocol.
->   Applications like libmbim [1] or Modem Manager [2] from v1.16 onwards
->   with [3][4] can use it to enable data communication towards WWAN.
-> * /dev/wwan0at0 - Interface that supports AT commands.
-> * wwan0 - Primary network interface for IP traffic.
+From: Hari Chandrakanthan <quic_haric@quicinc.com>
 
-Does not build here (allmodconfig, W=3D1, gcc 11).
+When AP reduces its channel bandwidth from 80 MHz to 40 MHz, the associated
+station reduces the channel bandwidth from 80 MHz to 20 MHz.
 
-drivers/net/wwan/t7xx/t7xx_hif_cldma.c: In function =E2=80=98t7xx_cldma_irq=
-_work_cb=E2=80=99:
-include/linux/find.h:40:23: error: array subscript =E2=80=98long unsigned i=
-nt[0]=E2=80=99 is partly outside array bounds of =E2=80=98u32[1]=E2=80=99 {=
-aka =E2=80=98unsigned int[1]=E2=80=99} [-Werror=3Darray-bounds]
-   40 |                 val =3D *addr & GENMASK(size - 1, offset);
-      |                       ^~~~~
-drivers/net/wwan/t7xx/t7xx_hif_cldma.c:569:43: note: while referencing =E2=
-=80=98l2_tx_int=E2=80=99
-  569 |         u32 l2_tx_int_msk, l2_rx_int_msk, l2_tx_int, l2_rx_int, val;
-      |                                           ^~~~~~~~~
-In file included from ../include/linux/bitmap.h:9,
-                 from ../include/linux/cpumask.h:12,
-                 from ../arch/x86/include/asm/paravirt.h:17,
-                 from ../arch/x86/include/asm/irqflags.h:63,
-                 from ../include/linux/irqflags.h:16,
-                 from ../include/linux/rcupdate.h:26,
-                 from ../include/linux/rculist.h:11,
-                 from ../include/linux/pid.h:5,
-                 from ../include/linux/sched.h:14,
-                 from ../include/linux/delay.h:23,
-                 from ../drivers/net/wwan/t7xx/t7xx_hif_cldma.c:21:
-include/linux/find.h:40:23: error: array subscript =E2=80=98long unsigned i=
-nt[0]=E2=80=99 is partly outside array bounds of =E2=80=98u32[1]=E2=80=99 {=
-aka =E2=80=98unsigned int[1]=E2=80=99} [-Werror=3Darray-bounds]
-   40 |                 val =3D *addr & GENMASK(size - 1, offset);
-      |                       ^~~~~
-drivers/net/wwan/t7xx/t7xx_hif_cldma.c:569:54: note: while referencing =E2=
-=80=98l2_rx_int=E2=80=99
-  569 |         u32 l2_tx_int_msk, l2_rx_int_msk, l2_tx_int, l2_rx_int, val;
-      |                                                      ^~~~~~~~~
+In the above case, the associated sta is expected to reduce the channel
+bandwidth to 40 MHz.
+
+The API ieee80211_parse_ch_switch_ie which parses CSA element,
+checks for 80 MHz and 160 MHz if wide band channel switch element and does not
+consider 40 MHz.
+
+From IEEE Std 802.11-2020 9.4.2.162 Channel Switch Wrapper element :
+
+The Wide Bandwidth Channel Switch subelement is present under the
+following conditions:
+1.Channel switching to a BSS operating channel width of 40 MHz or
+wider
+2.Extended channel switching to a BSS operating channel width of
+80 MHz or wider
+
+So if a station receives a CSA element from AP and if Wide Bandwidth Channel
+Switch subelement is present, station can assume that ap is switching to a
+bandwidth of 40 MHz and higher.
+
+To fix the issue, station can assume 40 MHz as default new channel bandwidth
+if Wide Bandwidth Channel Switch subelement is present.
+
+Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+---
+ net/mac80211/spectmgmt.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/net/mac80211/spectmgmt.c b/net/mac80211/spectmgmt.c
+index 76747bf..cc29436 100644
+--- a/net/mac80211/spectmgmt.c
++++ b/net/mac80211/spectmgmt.c
+@@ -148,6 +148,11 @@ int ieee80211_parse_ch_switch_ie(struct ieee80211_sub_if_data *sdata,
+ 					    IEEE80211_HT_OP_MODE_CCFS2_SHIFT),
+ 		};
+ 
++		csa_ie->chandef.width = NL80211_CHAN_WIDTH_40;
++		csa_ie->chandef.center_freq1 =
++			ieee80211_channel_to_frequency(wide_bw_chansw_ie->new_center_freq_seg0,
++						       new_chan->band);
++
+ 		/* default, for the case of IEEE80211_VHT_CHANWIDTH_USE_HT,
+ 		 * to the previously parsed chandef
+ 		 */
+-- 
+2.7.4
+
