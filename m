@@ -2,49 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5ACD4F9494
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 13:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 849AF4F9891
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 16:49:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235221AbiDHLzs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Apr 2022 07:55:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57412 "EHLO
+        id S233541AbiDHOvG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Apr 2022 10:51:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232152AbiDHLzp (ORCPT
+        with ESMTP id S235147AbiDHOvF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Apr 2022 07:55:45 -0400
-Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A15F7DE0B;
-        Fri,  8 Apr 2022 04:53:39 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1649418816; bh=zivYut1AiMU4O2qsRQrApqir8I1ZCtnVZttACI98ZsU=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=JHPHxpd7Y6BHAvmVpiYcZHXKmphnE0W2EJDlgJg1iujP7WCLJj5uzJGMuVd4a4Pmv
-         aRPf75G5493uN3+C/eYwK0j1SHL0+jaITiixsMxrulPhn/vcP2sKMYZo0dv3MaXCix
-         RoGabv5HCLnY/b3LjwEvO41wSx5uymKIrupuOOkdNaUF9BR9icljuhXqVyidFXPcvu
-         AiHY90NxRJSuVj3OKnHEGgUJ9s9dBBog/it08ChgV0l6sczoJGQ/0GcwBgjLa144Lg
-         x2Bqt0gYsjdijYYDpLSe4Kpfo+PCW6WA4WWMWbUP+YEuF9YtrY5oG42PW/coD8F8et
-         0A/dgrYVYVCqA==
-To:     Yang Li <yang.lee@linux.alibaba.com>, kvalo@kernel.org
-Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        loic.poulain@linaro.org, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yang Li <yang.lee@linux.alibaba.com>,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: Re: [PATCH -next 2/2] ath9k: Remove unnecessary print function
- dev_err()
-In-Reply-To: <20220408000113.129906-2-yang.lee@linux.alibaba.com>
-References: <20220408000113.129906-1-yang.lee@linux.alibaba.com>
- <20220408000113.129906-2-yang.lee@linux.alibaba.com>
-Date:   Fri, 08 Apr 2022 13:53:35 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87h77394g0.fsf@toke.dk>
+        Fri, 8 Apr 2022 10:51:05 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 885FA100745
+        for <linux-wireless@vger.kernel.org>; Fri,  8 Apr 2022 07:49:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 342D6B82BA0
+        for <linux-wireless@vger.kernel.org>; Fri,  8 Apr 2022 14:49:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9CC1C385A6;
+        Fri,  8 Apr 2022 14:48:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649429338;
+        bh=UCw9lJ89gM1G47+6jUvUy042yvVjuZPlcFqVj9h7QeA=;
+        h=Date:From:To:Cc:Subject:From;
+        b=jXfP84rW3WbgHLhiwuZG4Z6xn89VZ1TYhECvBcX9bEE8C54mkY40zBftXPo5n16zc
+         2zJVQVamh4NYhaQ5+Sp3aPI0Y9U8FzYoRSkxa2dB4Yrydagf/oWNOeBc2zzrEYghyz
+         EGpkt/oj0DDt7QHy+sK+8K8UvA5og2HBL2KzcaePEp7RiszrTddBMn50FhNvIwYkdq
+         mIn6nYGk9N25sL4Z9ep0Z5IElQ9JplJ7fkvb4B4UJ3Q6sP7+qHYiM+b6GitGtk0vkn
+         2hZj7HANB2H9V+13613ONjgbzB/43wsakDRRAYvavYB0IVG5fS6//mZZE3t8MA/SDg
+         LtV6MHu+x8kGw==
+Date:   Fri, 8 Apr 2022 09:48:58 -0500
+From:   Seth Forshee <sforshee@kernel.org>
+To:     wireless-regdb@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [ANN] wireless-regdb: master-2022-04-08
+Message-ID: <YlBLWuf0eKyS1HL0@ubuntu-x1>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,19 +51,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Yang Li <yang.lee@linux.alibaba.com> writes:
+A new release of wireless-regdb (master-2022-04-08) is available at:
 
-> The print function dev_err() is redundant because
-> platform_get_irq_byname() already prints an error.
->
-> Eliminate the follow coccicheck warning:
-> ./drivers/net/wireless/ath/ath9k/ahb.c:103:2-9: line 103 is redundant
-> because platform_get_irq() already prints an error
->
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+https://www.kernel.org/pub/software/network/wireless-regdb/wireless-regdb-2022.04.08.tar.xz
 
-Heh, so I was the one originally insisting on keeping that err print,
-but looking a bit closer now it does really appear to be redundant, so:
+The short log of changes since the master-2022-02-18 release is below.
 
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+Thanks,
+Seth
+
+---
+
+Richard Huynh (1):
+      wireless-regdb: Update regulatory rules for Australia (AU)
+
+Roman Kunzman (1):
+      wireless-regdb: Update regulatory rules for Israel (IL)
+
+Seth Forshee (2):
+      wireless-regdb: add missing spaces for US S1G rules
+      wireless-regdb: update regulatory database based on preceding changes
