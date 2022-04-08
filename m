@@ -2,67 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06FE34F9250
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 11:55:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD9E64F925B
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 11:58:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233861AbiDHJ5r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Apr 2022 05:57:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58414 "EHLO
+        id S233924AbiDHKAb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Apr 2022 06:00:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233974AbiDHJ5o (ORCPT
+        with ESMTP id S232459AbiDHKA3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Apr 2022 05:57:44 -0400
-Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E9FB1C5502;
-        Fri,  8 Apr 2022 02:55:41 -0700 (PDT)
-Received: by mail-qt1-x82e.google.com with SMTP id c4so10284308qtx.1;
-        Fri, 08 Apr 2022 02:55:41 -0700 (PDT)
+        Fri, 8 Apr 2022 06:00:29 -0400
+Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F954166E0E;
+        Fri,  8 Apr 2022 02:58:10 -0700 (PDT)
+Received: by mail-qk1-x733.google.com with SMTP id c199so2668568qkg.4;
+        Fri, 08 Apr 2022 02:58:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=MxHsvmkk8E+8FpG6AO+OTMlzwh4VkmczYAqMfO0S5aY=;
-        b=BjuUx+JN6YPMS4VPTaoGRmF4THiXRmE5dClVXANJdixb00Tmbx9YBz44v7xr2sb/13
-         LsbzNJoCfAgPqUlohr+6TaSVVNqSo7rC55YUfi2rarKPR3ezym6sz21lsd8Cexf3unTk
-         iWmArqHoI/zthTWFhuEmH533coMXfmKduMUE+EP4aFHb2DOBjXTuWmx/J+cykgsbhfij
-         +K+2UM+53MJu5JL/0X0+sFTripwxwLzwKie/EnhqZkC9Ee0i3ycinT8wcvcOw6jJinD0
-         WhssIJRDulkEyq3DldPQz7sCjE794etEPc7n8izJvBs8jLMK1gcdbch9lSHtXUAEvBHP
-         US9Q==
+        bh=JC7HU5myZPsK6jCheQ0Ef5hbofKUPdurtc8JhOElAAQ=;
+        b=fFwI1tAZfzk4mtfW+9OkFWvX+Gps+rQl7W4wAAMXrL3dHXRcvD9iIfy7yQjHJG09pM
+         KT20oE9yu1IP7EIfWMdZTLjQ2l1gU0YgwscCL3G/aQ7yCFsBQA65WePb336YqYpIdotq
+         k0lenE9fKEVWysRpTwQULrpTZZ+xwNcheyh1haJA2YeHbmWYsh4hyOPimusJUtCPGXHt
+         wOkHk47mdHRTflnfamhXXbLSG93/2W3Em3/DBNyxR6kK3iHVPnyH78SpXG1bVazSWtp3
+         fskvDqN7UKUk5QuWxXMh5MsHPcYVn356VNlQZz4CaBNP4hYBW2D9AQcfXdcBrCbBs7os
+         HRPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=MxHsvmkk8E+8FpG6AO+OTMlzwh4VkmczYAqMfO0S5aY=;
-        b=q+m2h9oTBhvfmXJz0WUAdV6d40AFN2RJzimAF+YXt+KbeUJwOMQ2cgzNIgu/KKSCnv
-         ujgTiU4s+JXVf6dmXfIUFcdCWcl15LXK+ynY3iEfrmi9djFL0nO0XJb9Ma0qNfuzzQc9
-         twJkd22rnbBtkcFePN0blP+NdZ5rgrpPdOlTUb1d6DMPeHqpB7tKix0cCxBfw9AWFSUe
-         /sHL07oNy3VbdsAsITjBv9Yu8+yCAd5BZyD0g5B1W4RCkv+YWeZZf2PHd3lgFfswTm+5
-         IiQ1G80kXDw1F1VOI3bfsTvkRh7EHq8RR1+Tm9BD1Irp8kbCixu+7masbZuJi/6RLPCe
-         jqCg==
-X-Gm-Message-State: AOAM532XCG9zwoRiwZIobvq3YecOooQUGlmvrkU+ROFIcQnyBo8ONErR
-        LTCBLmMj8GNonCVNf451WbJ4WYeNkxg=
-X-Google-Smtp-Source: ABdhPJzWJ5ni8b38p1rxFytKpgn8pmy+7CSvFE2lehyOcyiuL5HOJcAl+7zIec6Yxf6Sj0fsKsSi9w==
-X-Received: by 2002:a05:622a:1308:b0:2e1:e8a9:8aaf with SMTP id v8-20020a05622a130800b002e1e8a98aafmr15320487qtk.282.1649411740330;
-        Fri, 08 Apr 2022 02:55:40 -0700 (PDT)
+        bh=JC7HU5myZPsK6jCheQ0Ef5hbofKUPdurtc8JhOElAAQ=;
+        b=3zXwpkclBse3GAbrtHJNCuDeT7FjgwPfAPqAreU81SFDSVN8ZR/jq2pk0MmajU3wqI
+         13OGScfx3kqLpKsR2rpdZM5ajhUYRoz2WpGMGzWOw9Dx0pa+rZcGHQpFCy9f6coaWp9D
+         F0jhzD97zMCDzILJt/NBi+KE4/KVTNM+27Ric1qQLKnzOjdbe7vILCQz6O7DBB/rGYcl
+         y6mlSCCIdZBQ8VDiX54cwAx8sbmm6FPqXIcO0X+mF/glfpwhKS82WjYTnJrzMoTln/60
+         0tqXrPYzExtL6VHu+CRjLZka3oR/EmITBWT4uyUrwa74CGyQYTOr0CNXtS8VA7Ix1SQX
+         xVAA==
+X-Gm-Message-State: AOAM531x9rh8aLSuyyCoNON4KPXWMO4MoexHC3pfqlMCyXWvwvfMKM4I
+        By2SPnJEzFYlt8DkdFhsEqw=
+X-Google-Smtp-Source: ABdhPJwe223nBc4xK4K5r+bfTbqUb6Z76o29Fv7hbVg9W9wM3i3H8RR81ki0Mom2JkeajPh/Z/kfBQ==
+X-Received: by 2002:a05:620a:298c:b0:680:9f2a:c213 with SMTP id r12-20020a05620a298c00b006809f2ac213mr12250765qkp.11.1649411889809;
+        Fri, 08 Apr 2022 02:58:09 -0700 (PDT)
 Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id u13-20020a05622a010d00b002e1d653c2e1sm18122546qtw.46.2022.04.08.02.55.34
+        by smtp.gmail.com with ESMTPSA id az17-20020a05620a171100b00680af0db559sm14131025qkb.127.2022.04.08.02.58.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Apr 2022 02:55:39 -0700 (PDT)
+        Fri, 08 Apr 2022 02:58:09 -0700 (PDT)
 From:   cgel.zte@gmail.com
 X-Google-Original-From: lv.ruyi@zte.com.cn
-To:     alexander.deucher@amd.com, christian.koenig@amd.com,
-        Xinhui.Pan@amd.com, airlied@linux.ie
-Cc:     daniel@ffwll.ch, jani.nikula@linux.intel.com,
-        joonas.lahtinen@linux.intel.com, rodrigo.vivi@intel.com,
-        tvrtko.ursulin@linux.intel.com, lv.ruyi@zte.com.cn,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] drivers: Fix spelling mistake "writting" -> "writing"
-Date:   Fri,  8 Apr 2022 09:55:31 +0000
-Message-Id: <20220408095531.2495168-1-lv.ruyi@zte.com.cn>
+To:     pkshih@realtek.com, kvalo@kernel.org, davem@davemloft.net
+Cc:     kuba@kernel.org, pabeni@redhat.com, lv.ruyi@zte.com.cn,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] realtek: rtlwifi: Fix spelling mistake "cacluated" -> "calculated"
+Date:   Fri,  8 Apr 2022 09:58:03 +0000
+Message-Id: <20220408095803.2495336-1-lv.ruyi@zte.com.cn>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -83,140 +77,137 @@ There are some spelling mistakes in the comments. Fix it.
 Reported-by: Zeal Robot <zealci@zte.com.cn>
 Signed-off-by: Lv Ruyi <lv.ruyi@zte.com.cn>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c              | 2 +-
- drivers/gpu/drm/i915/i915_request.c                 | 2 +-
- drivers/net/ethernet/sfc/mcdi_pcol.h                | 4 ++--
- drivers/net/ethernet/toshiba/tc35815.c              | 2 +-
- drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c | 4 ++--
- drivers/platform/x86/hp_accel.c                     | 2 +-
- drivers/rtc/rtc-sa1100.c                            | 2 +-
- drivers/scsi/pmcraid.c                              | 4 ++--
- 8 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.c | 4 ++--
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.c | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ee/trx.c | 4 ++--
+ drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c | 4 ++--
+ drivers/net/wireless/realtek/rtlwifi/rtl8723be/trx.c | 4 ++--
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.c | 4 ++--
+ 6 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 9426e252d8aa..ce361fce7155 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -7304,7 +7304,7 @@ static void gfx_v10_0_setup_grbm_cam_remapping(struct amdgpu_device *adev)
- 		return;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.c
+index c948dafa0c80..171c7b16e048 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.c
+@@ -58,7 +58,7 @@ static void _rtl88ee_query_rxphystatus(struct ieee80211_hw *hw,
+ 		cck_agc_rpt = cck_buf->cck_agc_rpt;
  
- 	/* initialize cam_index to 0
--	 * index will auto-inc after each data writting */
-+	 * index will auto-inc after each data writing */
- 	WREG32_SOC15(GC, 0, mmGRBM_CAM_INDEX, 0);
- 
- 	switch (adev->ip_versions[GC_HWIP][0]) {
-diff --git a/drivers/gpu/drm/i915/i915_request.c b/drivers/gpu/drm/i915/i915_request.c
-index 582770360ad1..cf79a25cd98a 100644
---- a/drivers/gpu/drm/i915/i915_request.c
-+++ b/drivers/gpu/drm/i915/i915_request.c
-@@ -451,7 +451,7 @@ static bool __request_in_flight(const struct i915_request *signal)
- 	 * to avoid tearing.]
- 	 *
- 	 * Note that the read of *execlists->active may race with the promotion
--	 * of execlists->pending[] to execlists->inflight[], overwritting
-+	 * of execlists->pending[] to execlists->inflight[], overwriting
- 	 * the value at *execlists->active. This is fine. The promotion implies
- 	 * that we received an ACK from the HW, and so the context is not
- 	 * stuck -- if we do not see ourselves in *active, the inflight status
-diff --git a/drivers/net/ethernet/sfc/mcdi_pcol.h b/drivers/net/ethernet/sfc/mcdi_pcol.h
-index d3fcbf930dba..ff617b1b38d3 100644
---- a/drivers/net/ethernet/sfc/mcdi_pcol.h
-+++ b/drivers/net/ethernet/sfc/mcdi_pcol.h
-@@ -73,8 +73,8 @@
-  *               \------------------------------ Resync (always set)
-  *
-  * The client writes it's request into MC shared memory, and rings the
-- * doorbell. Each request is completed by either by the MC writting
-- * back into shared memory, or by writting out an event.
-+ * doorbell. Each request is completed by either by the MC writing
-+ * back into shared memory, or by writing out an event.
-  *
-  * All MCDI commands support completion by shared memory response. Each
-  * request may also contain additional data (accounted for by HEADER.LEN),
-diff --git a/drivers/net/ethernet/toshiba/tc35815.c b/drivers/net/ethernet/toshiba/tc35815.c
-index ce38f7515225..1b4c207afb66 100644
---- a/drivers/net/ethernet/toshiba/tc35815.c
-+++ b/drivers/net/ethernet/toshiba/tc35815.c
-@@ -157,7 +157,7 @@ struct tc35815_regs {
- #define PROM_Read	       0x00004000 /*10:Read operation		     */
- #define PROM_Write	       0x00002000 /*01:Write operation		     */
- #define PROM_Erase	       0x00006000 /*11:Erase operation		     */
--					  /*00:Enable or Disable Writting,   */
-+					  /*00:Enable or Disable Writing,    */
- 					  /*	  as specified in PROM_Addr. */
- #define PROM_Addr_Ena	       0x00000030 /*11xxxx:PROM Write enable	     */
- 					  /*00xxxx:	      disable	     */
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
-index eaba66113328..fbb4941d0da8 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
-@@ -520,7 +520,7 @@ static void _rtl92cu_init_queue_reserved_page(struct ieee80211_hw *hw,
- 		 * 2 out-ep. Remainder pages have assigned to High queue */
- 		if (outepnum > 1 && txqremaininpage)
- 			numhq += txqremaininpage;
--		/* NOTE: This step done before writting REG_RQPN. */
-+		/* NOTE: This step done before writing REG_RQPN. */
- 		if (ischipn) {
- 			if (queue_sel & TX_SELE_NQ)
- 				numnq = txqpageunit;
-@@ -539,7 +539,7 @@ static void _rtl92cu_init_queue_reserved_page(struct ieee80211_hw *hw,
- 			numlq = ischipn ? WMM_CHIP_B_PAGE_NUM_LPQ :
- 				WMM_CHIP_A_PAGE_NUM_LPQ;
+ 		/* (1)Hardware does not provide RSSI for CCK
+-		 * (2)PWDB, Average PWDB cacluated by
++		 * (2)PWDB, Average PWDB calculated by
+ 		 * hardware (for rate adaptive)
+ 		 */
+ 		if (ppsc->rfpwr_state == ERFON)
+@@ -187,7 +187,7 @@ static void _rtl88ee_query_rxphystatus(struct ieee80211_hw *hw,
+ 				pstatus->rx_mimo_signalstrength[i] = (u8)rssi;
  		}
--		/* NOTE: This step done before writting REG_RQPN. */
-+		/* NOTE: This step done before writing REG_RQPN. */
- 		if (ischipn) {
- 			if (queue_sel & TX_SELE_NQ)
- 				numnq = WMM_CHIP_B_PAGE_NUM_NPQ;
-diff --git a/drivers/platform/x86/hp_accel.c b/drivers/platform/x86/hp_accel.c
-index e9f852f7c27f..b59b852a666f 100644
---- a/drivers/platform/x86/hp_accel.c
-+++ b/drivers/platform/x86/hp_accel.c
-@@ -122,7 +122,7 @@ static int lis3lv02d_acpi_read(struct lis3lv02d *lis3, int reg, u8 *ret)
- static int lis3lv02d_acpi_write(struct lis3lv02d *lis3, int reg, u8 val)
- {
- 	struct acpi_device *dev = lis3->bus_priv;
--	unsigned long long ret; /* Not used when writting */
-+	unsigned long long ret; /* Not used when writing */
- 	union acpi_object in_obj[2];
- 	struct acpi_object_list args = { 2, in_obj };
  
-diff --git a/drivers/rtc/rtc-sa1100.c b/drivers/rtc/rtc-sa1100.c
-index 1250887e4382..a52a333de8e8 100644
---- a/drivers/rtc/rtc-sa1100.c
-+++ b/drivers/rtc/rtc-sa1100.c
-@@ -231,7 +231,7 @@ int sa1100_rtc_init(struct platform_device *pdev, struct sa1100_rtc *info)
- 	 * initialization is unknown and could in principle happen during
- 	 * normal processing.
- 	 *
--	 * Notice that clearing bit 1 and 0 is accomplished by writting ONES to
-+	 * Notice that clearing bit 1 and 0 is accomplished by writing ONES to
- 	 * the corresponding bits in RTSR. */
- 	writel_relaxed(RTSR_AL | RTSR_HZ, info->rtsr);
+-		/* (2)PWDB, Average PWDB cacluated by
++		/* (2)PWDB, Average PWDB calculated by
+ 		 * hardware (for rate adaptive)
+ 		 */
+ 		rx_pwr_all = ((p_drvinfo->pwdb_all >> 1) & 0x7f) - 110;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.c
+index 4165175cf5c0..65ebdd2e5f05 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.c
+@@ -166,7 +166,7 @@ static void _rtl92ce_query_rxphystatus(struct ieee80211_hw *hw,
+ 				pstats->rx_mimo_signalstrength[i] = (u8) rssi;
+ 		}
  
-diff --git a/drivers/scsi/pmcraid.c b/drivers/scsi/pmcraid.c
-index fd674ed1febe..d7f4680f6106 100644
---- a/drivers/scsi/pmcraid.c
-+++ b/drivers/scsi/pmcraid.c
-@@ -857,7 +857,7 @@ static void _pmcraid_fire_command(struct pmcraid_cmd *cmd)
- 	unsigned long lock_flags;
+-		/* (2)PWDB, Average PWDB cacluated by
++		/* (2)PWDB, Average PWDB calculated by
+ 		 * hardware (for rate adaptive)
+ 		 */
+ 		rx_pwr_all = ((p_drvinfo->pwdb_all >> 1) & 0x7f) - 110;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/trx.c
+index eef7a041e80d..66845724b6cc 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/trx.c
+@@ -55,7 +55,7 @@ static void _rtl92ee_query_rxphystatus(struct ieee80211_hw *hw,
+ 		cck_agc_rpt = p_phystrpt->cck_agc_rpt_ofdm_cfosho_a;
  
- 	/* Add this command block to pending cmd pool. We do this prior to
--	 * writting IOARCB to ioarrin because IOA might complete the command
-+	 * writing IOARCB to ioarrin because IOA might complete the command
- 	 * by the time we are about to add it to the list. Response handler
- 	 * (isr/tasklet) looks for cmd block in the pending pending list.
- 	 */
-@@ -2450,7 +2450,7 @@ static void pmcraid_request_sense(struct pmcraid_cmd *cmd)
+ 		/* (1)Hardware does not provide RSSI for CCK
+-		 * (2)PWDB, Average PWDB cacluated by
++		 * (2)PWDB, Average PWDB calculated by
+ 		 * hardware (for rate adaptive)
+ 		 */
+ 		cck_highpwr = (u8)rtl_get_bbreg(hw, RFPGA0_XA_HSSIPARAMETER2,
+@@ -153,7 +153,7 @@ static void _rtl92ee_query_rxphystatus(struct ieee80211_hw *hw,
+ 			pstatus->rx_mimo_signalstrength[i] = (u8)rssi;
+ 		}
  
- 	/* request sense might be called as part of error response processing
- 	 * which runs in tasklets context. It is possible that mid-layer might
--	 * schedule queuecommand during this time, hence, writting to IOARRIN
-+	 * schedule queuecommand during this time, hence, writing to IOARRIN
- 	 * must be protect by host_lock
- 	 */
- 	pmcraid_send_cmd(cmd, pmcraid_erp_done,
+-		/* (2)PWDB, Average PWDB cacluated by
++		/* (2)PWDB, Average PWDB calculated by
+ 		 * hardware (for rate adaptive)
+ 		 */
+ 		rx_pwr_all = ((p_phystrpt->cck_sig_qual_ofdm_pwdb_all >> 1)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c
+index 340b3d68a54e..8054e92e6774 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c
+@@ -52,7 +52,7 @@ static void _rtl8723e_query_rxphystatus(struct ieee80211_hw *hw,
+ 		cck_buf = (struct phy_sts_cck_8723e_t *)p_drvinfo;
+ 
+ 		/* (1)Hardware does not provide RSSI for CCK */
+-		/* (2)PWDB, Average PWDB cacluated by
++		/* (2)PWDB, Average PWDB calculated by
+ 		 * hardware (for rate adaptive)
+ 		 */
+ 		if (ppsc->rfpwr_state == ERFON)
+@@ -170,7 +170,7 @@ static void _rtl8723e_query_rxphystatus(struct ieee80211_hw *hw,
+ 				pstatus->rx_mimo_signalstrength[i] = (u8)rssi;
+ 		}
+ 
+-		/* (2)PWDB, Average PWDB cacluated by
++		/* (2)PWDB, Average PWDB calculated by
+ 		 * hardware (for rate adaptive)
+ 		 */
+ 		rx_pwr_all = ((p_drvinfo->pwdb_all >> 1) & 0x7f) - 110;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/trx.c
+index 5a7cd270575a..c73074d8a537 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/trx.c
+@@ -55,7 +55,7 @@ static void _rtl8723be_query_rxphystatus(struct ieee80211_hw *hw,
+ 		cck_agc_rpt = p_phystrpt->cck_agc_rpt_ofdm_cfosho_a;
+ 
+ 		/* (1)Hardware does not provide RSSI for CCK */
+-		/* (2)PWDB, Average PWDB cacluated by
++		/* (2)PWDB, Average PWDB calculated by
+ 		 * hardware (for rate adaptive)
+ 		 */
+ 		rtl_get_bbreg(hw, RFPGA0_XA_HSSIPARAMETER2, BIT(9));
+@@ -126,7 +126,7 @@ static void _rtl8723be_query_rxphystatus(struct ieee80211_hw *hw,
+ 			pstatus->rx_mimo_signalstrength[i] = (u8)rssi;
+ 		}
+ 
+-		/* (2)PWDB, Average PWDB cacluated by
++		/* (2)PWDB, Average PWDB calculated by
+ 		 * hardware (for rate adaptive)
+ 		 */
+ 		rx_pwr_all = ((p_phystrpt->cck_sig_qual_ofdm_pwdb_all >> 1) &
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.c
+index 9d6f8dcbf2d6..537d4cb3c6a2 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/trx.c
+@@ -86,7 +86,7 @@ static void query_rxphystatus(struct ieee80211_hw *hw,
+ 		cck_agc_rpt = p_phystrpt->cfosho[0];
+ 
+ 		/* (1)Hardware does not provide RSSI for CCK
+-		 * (2)PWDB, Average PWDB cacluated by
++		 * (2)PWDB, Average PWDB calculated by
+ 		 * hardware (for rate adaptive)
+ 		 */
+ 		cck_highpwr = (u8)rtlphy->cck_high_power;
+@@ -215,7 +215,7 @@ static void query_rxphystatus(struct ieee80211_hw *hw,
+ 			pstatus->rx_mimo_signalstrength[i] = (u8)rssi;
+ 		}
+ 
+-		/* (2)PWDB, Average PWDB cacluated by
++		/* (2)PWDB, Average PWDB calculated by
+ 		 * hardware (for rate adaptive)
+ 		 */
+ 		rx_pwr_all = ((p_drvinfo->pwdb_all >> 1) & 0x7f) - 110;
 -- 
 2.25.1
 
