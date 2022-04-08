@@ -2,42 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 474544F8B89
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 02:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C916F4F8BB2
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 02:57:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232718AbiDHAD0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Apr 2022 20:03:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35228 "EHLO
+        id S232782AbiDHAQ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Apr 2022 20:16:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232702AbiDHADX (ORCPT
+        with ESMTP id S232766AbiDHAQT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Apr 2022 20:03:23 -0400
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D98821F95E9;
-        Thu,  7 Apr 2022 17:01:21 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R601e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0V9SkcgY_1649376078;
-Received: from localhost(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0V9SkcgY_1649376078)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Fri, 08 Apr 2022 08:01:18 +0800
-From:   Yang Li <yang.lee@linux.alibaba.com>
-To:     kvalo@kernel.org
-Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        loic.poulain@linaro.org, toke@toke.dk, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yang Li <yang.lee@linux.alibaba.com>,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: [PATCH -next 2/2] ath9k: Remove unnecessary print function dev_err()
-Date:   Fri,  8 Apr 2022 08:01:13 +0800
-Message-Id: <20220408000113.129906-2-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 2.20.1.7.g153144c
-In-Reply-To: <20220408000113.129906-1-yang.lee@linux.alibaba.com>
-References: <20220408000113.129906-1-yang.lee@linux.alibaba.com>
+        Thu, 7 Apr 2022 20:16:19 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58BA91F6359
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Apr 2022 17:14:16 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2380E81s8019323, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2380E81s8019323
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 8 Apr 2022 08:14:08 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 8 Apr 2022 08:14:07 +0800
+Received: from localhost (172.16.21.190) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 8 Apr
+ 2022 08:14:07 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>,
+        <johnson.lin@realtek.com>, <kevin_yang@realtek.com>
+Subject: [PATCH v2 00/13] rtw89: refine interrupt masks for SER, and add H2C for new chip
+Date:   Fri, 8 Apr 2022 08:13:40 +0800
+Message-ID: <20220408001353.17188-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.16.21.190]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 04/07/2022 23:57:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvNyCkVaTIIDEwOjAwOjAw?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -45,35 +67,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The print function dev_err() is redundant because
-platform_get_irq_byname() already prints an error.
+SER, standing for System Error Recovery, is triggered by hardware interrupt
+with mask settings. Though it is working in firmware, driver needs to
+configure masks properly before downloading firmware. Patches 1/13~4/13 are
+related to it.
 
-Eliminate the follow coccicheck warning:
-./drivers/net/wireless/ath/ath9k/ahb.c:103:2-9: line 103 is redundant
-because platform_get_irq() already prints an error
+Patches 5/13~9/13 are to add some MAC and BB settings to be expected.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- drivers/net/wireless/ath/ath9k/ahb.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Patches 10/13~12/13 are to add new H2C for new chip to control TX info
+and security CAM.
 
-diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
-index c9b853af41d1..9cd12b20b18d 100644
---- a/drivers/net/wireless/ath/ath9k/ahb.c
-+++ b/drivers/net/wireless/ath/ath9k/ahb.c
-@@ -99,10 +99,8 @@ static int ath_ahb_probe(struct platform_device *pdev)
- 	}
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		dev_err(&pdev->dev, "no IRQ resource found\n");
-+	if (irq < 0)
- 		return irq;
--	}
- 
- 	ath9k_fill_chanctx_ops();
- 	hw = ieee80211_alloc_hw(sizeof(struct ath_softc), &ath9k_ops);
+The last one is to fix trivial error of return value handling.
+
+v2: correct register name of
+    "rtw89: 8852c: disable firmware watchdog if CPU disabled",
+    but not change logic.
+
+Chia-Yuan Li (4):
+  rtw89: ser: configure D-MAC interrupt mask
+  rtw89: ser: configure C-MAC interrupt mask
+  rtw89: 8852c: disable firmware watchdog if CPU disabled
+  rtw89: 8852c: add 8852c specific BT-coexistence initial function
+
+Johnson Lin (1):
+  rtw89: Skip useless dig gain and igi related settings for 8852C
+
+Ping-Ke Shih (7):
+  rtw89: ser: configure top ERR IMR for firmware to recover
+  rtw89: change station scheduler setting for hardware TX mode
+  rtw89: reset BA CAM
+  rtw89: extend H2C of CMAC control info
+  rtw89: add new H2C to configure security CAM via DCTL for V1 chip
+  rtw89: configure security CAM for V1 chip
+  rtw89: pci: correct return value handling of rtw89_write16_mdio_mask()
+
+Zong-Zhe Yang (1):
+  rtw89: ser: fix unannotated fall-through
+
+ drivers/net/wireless/realtek/rtw89/cam.c      |   37 +
+ drivers/net/wireless/realtek/rtw89/cam.h      |    4 +
+ drivers/net/wireless/realtek/rtw89/core.h     |   64 +-
+ drivers/net/wireless/realtek/rtw89/fw.c       |   82 +-
+ drivers/net/wireless/realtek/rtw89/fw.h       |  349 ++++-
+ drivers/net/wireless/realtek/rtw89/mac.c      |  370 ++++-
+ drivers/net/wireless/realtek/rtw89/mac.h      |    8 +-
+ drivers/net/wireless/realtek/rtw89/pci.c      |    4 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      |    9 +-
+ drivers/net/wireless/realtek/rtw89/reg.h      | 1243 ++++++++++++++++-
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   48 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  108 ++
+ drivers/net/wireless/realtek/rtw89/ser.c      |    1 +
+ 13 files changed, 2239 insertions(+), 88 deletions(-)
+
 -- 
-2.20.1.7.g153144c
+2.25.1
 
