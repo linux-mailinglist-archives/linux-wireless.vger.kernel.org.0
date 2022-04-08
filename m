@@ -2,41 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C916F4F8BB2
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 02:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C16B54F8AEB
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 02:55:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232782AbiDHAQ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Apr 2022 20:16:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52688 "EHLO
+        id S232786AbiDHAQb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Apr 2022 20:16:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232766AbiDHAQT (ORCPT
+        with ESMTP id S232769AbiDHAQT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 7 Apr 2022 20:16:19 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58BA91F6359
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58F931FAA14
         for <linux-wireless@vger.kernel.org>; Thu,  7 Apr 2022 17:14:16 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2380E81s8019323, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2380E81s8019323
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2380E91o8019351, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2380E91o8019351
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 8 Apr 2022 08:14:08 +0800
+        Fri, 8 Apr 2022 08:14:09 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 8 Apr 2022 08:14:07 +0800
+ 15.1.2308.27; Fri, 8 Apr 2022 08:14:09 +0800
 Received: from localhost (172.16.21.190) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 8 Apr
- 2022 08:14:07 +0800
+ 2022 08:14:08 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>,
         <johnson.lin@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH v2 00/13] rtw89: refine interrupt masks for SER, and add H2C for new chip
-Date:   Fri, 8 Apr 2022 08:13:40 +0800
-Message-ID: <20220408001353.17188-1-pkshih@realtek.com>
+Subject: [PATCH v2 01/13] rtw89: ser: fix unannotated fall-through
+Date:   Fri, 8 Apr 2022 08:13:41 +0800
+Message-ID: <20220408001353.17188-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220408001353.17188-1-pkshih@realtek.com>
+References: <20220408001353.17188-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -54,7 +56,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvNyCkVaTIIDEwOjAwOjAw?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -67,58 +69,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SER, standing for System Error Recovery, is triggered by hardware interrupt
-with mask settings. Though it is working in firmware, driver needs to
-configure masks properly before downloading firmware. Patches 1/13~4/13 are
-related to it.
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Patches 5/13~9/13 are to add some MAC and BB settings to be expected.
+add `break` to fix warning of unannotated fall-through between switch
+labels.
 
-Patches 10/13~12/13 are to add new H2C for new chip to control TX info
-and security CAM.
+Fixes: 14f9f4790048 ("rtw89: ser: control hci interrupts on/off by state")
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/ser.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-The last one is to fix trivial error of return value handling.
-
-v2: correct register name of
-    "rtw89: 8852c: disable firmware watchdog if CPU disabled",
-    but not change logic.
-
-Chia-Yuan Li (4):
-  rtw89: ser: configure D-MAC interrupt mask
-  rtw89: ser: configure C-MAC interrupt mask
-  rtw89: 8852c: disable firmware watchdog if CPU disabled
-  rtw89: 8852c: add 8852c specific BT-coexistence initial function
-
-Johnson Lin (1):
-  rtw89: Skip useless dig gain and igi related settings for 8852C
-
-Ping-Ke Shih (7):
-  rtw89: ser: configure top ERR IMR for firmware to recover
-  rtw89: change station scheduler setting for hardware TX mode
-  rtw89: reset BA CAM
-  rtw89: extend H2C of CMAC control info
-  rtw89: add new H2C to configure security CAM via DCTL for V1 chip
-  rtw89: configure security CAM for V1 chip
-  rtw89: pci: correct return value handling of rtw89_write16_mdio_mask()
-
-Zong-Zhe Yang (1):
-  rtw89: ser: fix unannotated fall-through
-
- drivers/net/wireless/realtek/rtw89/cam.c      |   37 +
- drivers/net/wireless/realtek/rtw89/cam.h      |    4 +
- drivers/net/wireless/realtek/rtw89/core.h     |   64 +-
- drivers/net/wireless/realtek/rtw89/fw.c       |   82 +-
- drivers/net/wireless/realtek/rtw89/fw.h       |  349 ++++-
- drivers/net/wireless/realtek/rtw89/mac.c      |  370 ++++-
- drivers/net/wireless/realtek/rtw89/mac.h      |    8 +-
- drivers/net/wireless/realtek/rtw89/pci.c      |    4 +-
- drivers/net/wireless/realtek/rtw89/phy.c      |    9 +-
- drivers/net/wireless/realtek/rtw89/reg.h      | 1243 ++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |   48 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  108 ++
- drivers/net/wireless/realtek/rtw89/ser.c      |    1 +
- 13 files changed, 2239 insertions(+), 88 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
+index 25d1df10f2262..5aebd6839d299 100644
+--- a/drivers/net/wireless/realtek/rtw89/ser.c
++++ b/drivers/net/wireless/realtek/rtw89/ser.c
+@@ -394,6 +394,7 @@ static void ser_idle_st_hdl(struct rtw89_ser *ser, u8 evt)
+ 		break;
+ 	case SER_EV_STATE_OUT:
+ 		rtw89_hci_recovery_start(rtwdev);
++		break;
+ 	default:
+ 		break;
+ 	}
 -- 
 2.25.1
 
