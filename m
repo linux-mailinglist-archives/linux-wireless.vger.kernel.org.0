@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CA564F8B92
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 02:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04B4A4F8B67
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Apr 2022 02:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232801AbiDHAQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Apr 2022 20:16:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52912 "EHLO
+        id S232812AbiDHAQi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Apr 2022 20:16:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232771AbiDHAQY (ORCPT
+        with ESMTP id S232777AbiDHAQ2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Apr 2022 20:16:24 -0400
+        Thu, 7 Apr 2022 20:16:28 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 386DF239304
-        for <linux-wireless@vger.kernel.org>; Thu,  7 Apr 2022 17:14:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BAA61A6E6E
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Apr 2022 17:14:24 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2380EGTk8019397, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2380EGTk8019397
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2380EI4j8019403, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2380EI4j8019403
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 8 Apr 2022 08:14:16 +0800
+        Fri, 8 Apr 2022 08:14:18 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 8 Apr 2022 08:14:16 +0800
+ 15.1.2308.27; Fri, 8 Apr 2022 08:14:17 +0800
 Received: from localhost (172.16.21.190) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 8 Apr
- 2022 08:14:15 +0800
+ 2022 08:14:17 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>,
         <johnson.lin@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH v2 06/13] rtw89: reset BA CAM
-Date:   Fri, 8 Apr 2022 08:13:46 +0800
-Message-ID: <20220408001353.17188-7-pkshih@realtek.com>
+Subject: [PATCH v2 07/13] rtw89: 8852c: disable firmware watchdog if CPU disabled
+Date:   Fri, 8 Apr 2022 08:13:47 +0800
+Message-ID: <20220408001353.17188-8-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220408001353.17188-1-pkshih@realtek.com>
 References: <20220408001353.17188-1-pkshih@realtek.com>
@@ -56,7 +56,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvNyCkVaTIIDEwOjAwOjAw?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -69,64 +69,140 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-BA CAM is used to react receiving AMPDU packets, so reset them to be
-expected initial state.
+From: Chia-Yuan Li <leo.li@realtek.com>
 
+Disable watchdog timer to prevent it timeout suddenly.
+
+Signed-off-by: Chia-Yuan Li <leo.li@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c | 18 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/reg.h |  2 ++
- 2 files changed, 20 insertions(+)
+ drivers/net/wireless/realtek/rtw89/mac.c | 37 +++++++++++++++++++++++-
+ drivers/net/wireless/realtek/rtw89/mac.h |  6 ++--
+ drivers/net/wireless/realtek/rtw89/reg.h | 16 ++++++++++
+ 3 files changed, 55 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index b6c063e54f4c5..91383c08beb3a 100644
+index 91383c08beb3a..da66d28e98a62 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.c
 +++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1964,6 +1964,21 @@ static int trxptcl_init(struct rtw89_dev *rtwdev, u8 mac_idx)
+@@ -10,7 +10,7 @@
+ #include "reg.h"
+ #include "util.h"
+ 
+-const u32 rtw89_mac_mem_base_addrs[RTW89_MAC_MEM_MAX] = {
++const u32 rtw89_mac_mem_base_addrs[RTW89_MAC_MEM_NUM] = {
+ 	[RTW89_MAC_MEM_AXIDMA]	        = AXIDMA_BASE_ADDR,
+ 	[RTW89_MAC_MEM_SHARED_BUF]	= SHARED_BUF_BASE_ADDR,
+ 	[RTW89_MAC_MEM_DMAC_TBL]	= DMAC_TBL_BASE_ADDR,
+@@ -28,8 +28,27 @@ const u32 rtw89_mac_mem_base_addrs[RTW89_MAC_MEM_MAX] = {
+ 	[RTW89_MAC_MEM_TXD_FIFO_1]	= TXD_FIFO_1_BASE_ADDR,
+ 	[RTW89_MAC_MEM_TXDATA_FIFO_0]	= TXDATA_FIFO_0_BASE_ADDR,
+ 	[RTW89_MAC_MEM_TXDATA_FIFO_1]	= TXDATA_FIFO_1_BASE_ADDR,
++	[RTW89_MAC_MEM_CPU_LOCAL]	= CPU_LOCAL_BASE_ADDR,
+ };
+ 
++static void rtw89_mac_mem_write(struct rtw89_dev *rtwdev, u32 offset,
++				u32 val, enum rtw89_mac_mem_sel sel)
++{
++	u32 addr = rtw89_mac_mem_base_addrs[sel] + offset;
++
++	rtw89_write32(rtwdev, R_AX_FILTER_MODEL_ADDR, addr);
++	rtw89_write32(rtwdev, R_AX_INDIR_ACCESS_ENTRY, val);
++}
++
++static u32 rtw89_mac_mem_read(struct rtw89_dev *rtwdev, u32 offset,
++			      enum rtw89_mac_mem_sel sel)
++{
++	u32 addr = rtw89_mac_mem_base_addrs[sel] + offset;
++
++	rtw89_write32(rtwdev, R_AX_FILTER_MODEL_ADDR, addr);
++	return rtw89_read32(rtwdev, R_AX_INDIR_ACCESS_ENTRY);
++}
++
+ int rtw89_mac_check_mac_en(struct rtw89_dev *rtwdev, u8 mac_idx,
+ 			   enum rtw89_mac_hwmod_sel sel)
+ {
+@@ -2965,6 +2984,19 @@ static int rtw89_mac_trx_init(struct rtw89_dev *rtwdev)
  	return 0;
  }
  
-+static void rst_bacam(struct rtw89_dev *rtwdev)
++static void rtw89_disable_fw_watchdog(struct rtw89_dev *rtwdev)
 +{
 +	u32 val32;
-+	int ret;
 +
-+	rtw89_write32_mask(rtwdev, R_AX_RESPBA_CAM_CTRL, B_AX_BACAM_RST_MASK,
-+			   S_AX_BACAM_RST_ALL);
++	rtw89_mac_mem_write(rtwdev, R_AX_WDT_CTRL,
++			    WDT_CTRL_ALL_DIS, RTW89_MAC_MEM_CPU_LOCAL);
 +
-+	ret = read_poll_timeout_atomic(rtw89_read32_mask, val32, val32 == 0,
-+				       1, 1000, false,
-+				       rtwdev, R_AX_RESPBA_CAM_CTRL, B_AX_BACAM_RST_MASK);
-+	if (ret)
-+		rtw89_warn(rtwdev, "failed to reset BA CAM\n");
++	val32 = rtw89_mac_mem_read(rtwdev, R_AX_WDT_STATUS, RTW89_MAC_MEM_CPU_LOCAL);
++	val32 |= B_AX_FS_WDT_INT;
++	val32 &= ~B_AX_FS_WDT_INT_MSK;
++	rtw89_mac_mem_write(rtwdev, R_AX_WDT_STATUS, val32, RTW89_MAC_MEM_CPU_LOCAL);
 +}
 +
- static int rmac_init(struct rtw89_dev *rtwdev, u8 mac_idx)
+ static void rtw89_mac_disable_cpu(struct rtw89_dev *rtwdev)
  {
- #define TRXCFG_RMAC_CCA_TO	32
-@@ -1978,6 +1993,9 @@ static int rmac_init(struct rtw89_dev *rtwdev, u8 mac_idx)
- 	if (ret)
- 		return ret;
- 
-+	if (mac_idx == RTW89_MAC_0)
-+		rst_bacam(rtwdev);
+ 	clear_bit(RTW89_FLAG_FW_RDY, rtwdev->flags);
+@@ -2973,6 +3005,9 @@ static void rtw89_mac_disable_cpu(struct rtw89_dev *rtwdev)
+ 	rtw89_write32_clr(rtwdev, R_AX_WCPU_FW_CTRL, B_AX_WCPU_FWDL_EN |
+ 			  B_AX_H2C_PATH_RDY | B_AX_FWDL_PATH_RDY);
+ 	rtw89_write32_clr(rtwdev, R_AX_SYS_CLK_CTRL, B_AX_CPU_CLK_EN);
 +
- 	reg = rtw89_mac_reg_by_idx(R_AX_RESPBA_CAM_CTRL, mac_idx);
- 	rtw89_write8_set(rtwdev, reg, B_AX_SSN_SEL);
++	rtw89_disable_fw_watchdog(rtwdev);
++
+ 	rtw89_write32_clr(rtwdev, R_AX_PLATFORM_ENABLE, B_AX_PLATFORM_EN);
+ 	rtw89_write32_set(rtwdev, R_AX_PLATFORM_ENABLE, B_AX_PLATFORM_EN);
+ }
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index de65d9becb056..31d53de97cfce 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -245,6 +245,7 @@ enum rtw89_mac_dbg_port_sel {
+ #define	TXD_FIFO_1_BASE_ADDR		0x188A1080
+ #define	TXDATA_FIFO_0_BASE_ADDR		0x18856000
+ #define	TXDATA_FIFO_1_BASE_ADDR		0x188A1000
++#define	CPU_LOCAL_BASE_ADDR		0x18003000
  
+ #define CCTL_INFO_SIZE		32
+ 
+@@ -266,11 +267,10 @@ enum rtw89_mac_mem_sel {
+ 	RTW89_MAC_MEM_TXD_FIFO_1,
+ 	RTW89_MAC_MEM_TXDATA_FIFO_0,
+ 	RTW89_MAC_MEM_TXDATA_FIFO_1,
++	RTW89_MAC_MEM_CPU_LOCAL,
+ 
+ 	/* keep last */
+-	RTW89_MAC_MEM_LAST,
+-	RTW89_MAC_MEM_MAX = RTW89_MAC_MEM_LAST,
+-	RTW89_MAC_MEM_INVALID = RTW89_MAC_MEM_LAST,
++	RTW89_MAC_MEM_NUM,
+ };
+ 
+ extern const u32 rtw89_mac_mem_base_addrs[];
 diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index e5f8374f49ad5..bc343e756aad7 100644
+index bc343e756aad7..15d29c226b0c3 100644
 --- a/drivers/net/wireless/realtek/rtw89/reg.h
 +++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -2819,6 +2819,8 @@
- #define R_AX_RESPBA_CAM_CTRL 0xCE3C
- #define R_AX_RESPBA_CAM_CTRL_C1 0xEE3C
- #define B_AX_SSN_SEL BIT(2)
-+#define B_AX_BACAM_RST_MASK GENMASK(1, 0)
-+#define S_AX_BACAM_RST_ALL 2
- 
- #define R_AX_PPDU_STAT 0xCE40
- #define R_AX_PPDU_STAT_C1 0xEE40
+@@ -3773,4 +3773,20 @@
+ #define B_IQKINF2_FCNT GENMASK(23, 16)
+ #define B_IQKINF2_KCNT GENMASK(15, 8)
+ #define B_IQKINF2_NCTLV GENMAKS(7, 0)
++
++/* WiFi CPU local domain */
++#define R_AX_WDT_CTRL 0x0040
++#define B_AX_WDT_EN BIT(31)
++#define B_AX_WDT_OPT_RESET_PLATFORM_EN BIT(29)
++#define B_AX_IO_HANG_IMR BIT(27)
++#define B_AX_IO_HANG_CMAC_RDATA_EN BIT(26)
++#define B_AX_IO_HANG_DMAC_EN BIT(25)
++#define B_AX_WDT_CLR BIT(16)
++#define B_AX_WDT_COUNT_MASK GENMASK(15, 0)
++#define WDT_CTRL_ALL_DIS 0
++
++#define R_AX_WDT_STATUS 0x0044
++#define B_AX_FS_WDT_INT BIT(8)
++#define B_AX_FS_WDT_INT_MSK BIT(0)
++
+ #endif
 -- 
 2.25.1
 
