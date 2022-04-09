@@ -2,169 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BEDF4FA567
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Apr 2022 08:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B663D4FA5A9
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Apr 2022 09:54:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237452AbiDIG1K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 9 Apr 2022 02:27:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52706 "EHLO
+        id S240360AbiDIH4r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 9 Apr 2022 03:56:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233998AbiDIG1I (ORCPT
+        with ESMTP id S229909AbiDIH4p (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 9 Apr 2022 02:27:08 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A353638B1;
-        Fri,  8 Apr 2022 23:25:02 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id s14so113328plk.8;
-        Fri, 08 Apr 2022 23:25:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=pA0w4O8CRiuXzvroFL62p9tDgX2SohP+G9Ok90h6Fcc=;
-        b=L3BiklhbmiTW5WIODOPjQsK+EqQy7cAIB1x2Ta48ZFCfL4ylkePY8rt0k48ijrGnZi
-         yixG4Dzh0uwl7HYOFM7N+jvM0QLUjtKWdA4yb2tPDqQk6EcusiqFXjMOhfl8Jll3ABuc
-         zDDTkFd7lclif8zLg4LqGoqfkPhI/qwY8YJcTeuVnc/+n9mRAbI0WS19SP9HGW+/eExk
-         3QMpyEg2nHGqLpYREc01qy10tC2Vqro0SaIcXAh4xq4ZwiE6u9+8w4t+waUqLgmM34iY
-         l3EkMkk1EhIX+gEuD4Wp2BK0aa4uKjbp3DYjNVA57eakqIhvLkV7URyfm0gg7kxs23Q8
-         PReQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=pA0w4O8CRiuXzvroFL62p9tDgX2SohP+G9Ok90h6Fcc=;
-        b=bxlqsgxb2fj4d1Z0iKItHO+eXub6Jhqg1BEx3uldIOXzB1Wm8JRvzEz7owas1is+3C
-         nNt8YN8AzGOPa2ia+Ob6gUROGDN0zwV3R7OeYYKbQXAYdgD4xOkHDH0r7m1/Yd4c/9gY
-         dkc8mMXuD0b0/hPqnL3Q0KRc+r9/VpwoMR4KxOx0csfqJuLaowrVdiqw1dyUna5IG5w1
-         CvlNyCw34cugMnXoGP7mvbNsgGKldZu+Bi4UVs1iqwLgSwO6+c+l5Wa2n2GrDjBHjnR8
-         FFzGrClHYHO1GTdZGm6SJhM246Ek7SJoJVF02aOu24l47tZcwEU9ZgfhmUVBRBO6pN3K
-         6Yuw==
-X-Gm-Message-State: AOAM533dFdYVXUr5RoJl2aa/uyH4lQCqUSKrkWijZh0BlQA+eHgxS4OZ
-        JLgOsvhGykiHyxpV0cXITA==
-X-Google-Smtp-Source: ABdhPJzWQcBOPqOngHyVHxk75RPQHA6pbYbYLBoE2zEL49QqbCtGx9ArK4Djp3I7JPx7JN+5JB7VIA==
-X-Received: by 2002:a17:90b:1e4e:b0:1c7:3507:30db with SMTP id pi14-20020a17090b1e4e00b001c7350730dbmr25713445pjb.39.1649485502117;
-        Fri, 08 Apr 2022 23:25:02 -0700 (PDT)
-Received: from localhost.localdomain ([144.202.91.207])
-        by smtp.gmail.com with ESMTPSA id 8-20020a056a00070800b004e14ae3e8d7sm26387128pfl.164.2022.04.08.23.24.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Apr 2022 23:25:01 -0700 (PDT)
-From:   Zheyu Ma <zheyuma97@gmail.com>
-To:     stas.yakovlev@gmail.com, kvalo@kernel.org, davem@davemloft.net,
-        kuba@kernel.org, pabeni@redhat.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Zheyu Ma <zheyuma97@gmail.com>
-Subject: [PATCH] wireless: ipw2x00: Refine the error handling of ipw2100_pci_init_one()
-Date:   Sat,  9 Apr 2022 14:24:49 +0800
-Message-Id: <20220409062449.3752252-1-zheyuma97@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Sat, 9 Apr 2022 03:56:45 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 071AE38D95;
+        Sat,  9 Apr 2022 00:54:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1649490834;
+        bh=luZq8lrGFZ4kx0jdQXktj//Kdt2hzMCkIhTuT7UjDa0=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=Ks5LtJJLlSZxVTnqJdzqMzFugrZJuWp7j7+UpI6yWFsWB48eJjmGb2QOMiJE5tp3T
+         21C3qNMqnBmS8Hfarje4hXo3i6ym2MeJ7E2mhUSeZPTFll+MNEZTC1GwhMjXI0Ytu3
+         YHPtlkH4DVITE3HAmSqXPeQGBARekhiVv/HtJYPo=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.86.95] ([95.91.192.147]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MCbEp-1nm8Cv2tHv-009fer; Sat, 09
+ Apr 2022 09:53:54 +0200
+Message-ID: <00a0f9f7-2fbf-8883-38e7-edec3687e6a8@rempel-privat.de>
+Date:   Sat, 9 Apr 2022 09:53:53 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH] ath9k_htc: fix potential out of bounds access with
+ invalid rxstatus->rs_keyix
+Content-Language: en-US
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>
+Cc:     Kalle Valo <kvalo@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20220409061225.GA5447@kili>
+From:   Oleksij Rempel <linux@rempel-privat.de>
+In-Reply-To: <20220409061225.GA5447@kili>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:hQxSM885JV9wHVfy28pZU9+jOPYcxASYy9IPAaGCyf7RpzyyJef
+ Cegv2sKxKDFA/9XrBgxv4S+kf9yHgY3Bas73zf7jljPeMQf+Y6PeTtJMZhUHNASkkFbDPbi
+ RTCResGG4WSD5RzvXIJooI0cnEqs/UNGgzQnTeLR4VhYT1F0f3ajBlb3HL1vXY+W6McKcAy
+ T457rWNrT/Xo6gQnw9YDA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:kEC/CnyNuDM=:7EPkAa0dFbHFCKmllImUJO
+ zgUbTeHGxm6By72t4xcazSrf6/wd0/0HaChoXyDBvVpb/i+nZqjFbqaShY/9YqP4EXa98zvl5
+ 9VksbOL4Jc66TxyQjuf1/x7T6mvciWyH6bi5HDJdndGlTQInCINBJ+ncrDqfgvzJCuUegzc5w
+ SbuyGmnYlBUjXg1blv/lCSKHPX8N8eU7MrKnON217kFtEDJ4Z1nI7afUUQwbKMdUvqcf++3ty
+ oFN1VayPZEmkEvnls5oq6xwdk1Y3LmfRLMFXhmsdXNVDMvWFwbT6w7wyZVwN2+I43MLbzpoAe
+ Yu9MdR/BY8c2idqpQDWyFr5T9ZWgkhtcmNoAdnSpMUN+1GttYj9xOIvBCpQXSc6G1PPDcisYQ
+ 9JBPfQQvUkZSoq4Xr0v5G5kImsfZN/ophrC7T0XgZLs1d2GQ0+nu4BTmhTPXo+J8pzuyqepX8
+ 4AZlIr4SZUPU0QA4YiJu4CEhul9o/HRJRX3aCrUBkY7imSOlvZLD9BiEe1VtvFyEzprLY0Y9x
+ Waxa1zPYOo18uhbZyl0+bJM+EBh4Tw2xsmN7CGg9u9gx5q0/RoQtw36q8CPBOPe2BAQvSqtX/
+ yI9sDh1HKQRonb61HUSnXgO9k1recXFjeB+5Etgcq6S466sQpnNCOaGh49Yh6Px4+lb9SEXg7
+ WSA2X2ZuQ5kOpkWYbc/oHHl4uXhd4Oc0rOiFxO0ICewpYpylAJhNNSCPXJ1awH4Z2NdVrYpzQ
+ u44Y6l+eD8oOwpBHVjEHHOUMHKQLDxZhN0b0D0fknqPzS6+rsdTkG0e++ljkbcgie+NAjPY1p
+ MEyhcohY737xKKjXsTD6L3M+P90YFgy6Lz/OpVDBDAx94Gn82uXnKRnhDbWTXgkjHdI2W1iBy
+ z5wmixTloAccOg0G/QH/mqR96JIjX+CxonxtqVk5tV2rUGOb1bE3wbo+lScg8+UxGkHPLxZV5
+ 9Qte2HHrMmA+G+xIuE2b1QAuITzBm131XoQTLnIZvJgq/gAB62y698iFWTbsmC/YXNQV/kPrg
+ FHkJ8i59xC3qvN+EPNoHi73k4L6N9U9M5oakIQ7x76m/hcCsPWgnRC/W9kNcl+JSgI5iI6GUB
+ 6XydpXHTKsduu0=
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The driver should release resources in reverse order, i.e., the
-resources requested first should be released last, and the driver
-should adjust the order of error handling code by this rule.
+Hi Dan,
 
-Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
----
- drivers/net/wireless/intel/ipw2x00/ipw2100.c | 34 +++++++++-----------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+thank you for your patch.
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-index 2ace2b27ecad..b10d10660eb8 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-@@ -6166,7 +6166,7 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
- 		printk(KERN_WARNING DRV_NAME
- 		       "Error calling ioremap.\n");
- 		err = -EIO;
--		goto fail;
-+		goto out;
- 	}
- 
- 	/* allocate and initialize our net_device */
-@@ -6175,36 +6175,33 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
- 		printk(KERN_WARNING DRV_NAME
- 		       "Error calling ipw2100_alloc_device.\n");
- 		err = -ENOMEM;
--		goto fail;
-+		goto fail_iounmap;
- 	}
- 
-+	priv = libipw_priv(dev);
-+	pci_set_master(pci_dev);
-+	pci_set_drvdata(pci_dev, priv);
-+
- 	/* set up PCI mappings for device */
- 	err = pci_enable_device(pci_dev);
- 	if (err) {
- 		printk(KERN_WARNING DRV_NAME
- 		       "Error calling pci_enable_device.\n");
--		return err;
-+		goto fail_dev;
- 	}
- 
--	priv = libipw_priv(dev);
--
--	pci_set_master(pci_dev);
--	pci_set_drvdata(pci_dev, priv);
--
- 	err = dma_set_mask(&pci_dev->dev, DMA_BIT_MASK(32));
- 	if (err) {
- 		printk(KERN_WARNING DRV_NAME
- 		       "Error calling pci_set_dma_mask.\n");
--		pci_disable_device(pci_dev);
--		return err;
-+		goto fail_disable;
- 	}
- 
- 	err = pci_request_regions(pci_dev, DRV_NAME);
- 	if (err) {
- 		printk(KERN_WARNING DRV_NAME
- 		       "Error calling pci_request_regions.\n");
--		pci_disable_device(pci_dev);
--		return err;
-+		goto fail_disable;
- 	}
- 
- 	/* We disable the RETRY_TIMEOUT register (0x41) to keep
-@@ -6306,9 +6303,13 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
- out:
- 	return err;
- 
--      fail_unlock:
-+fail_unlock:
- 	mutex_unlock(&priv->action_mutex);
--      fail:
-+fail:
-+	pci_release_regions(pci_dev);
-+fail_disable:
-+	pci_disable_device(pci_dev);
-+fail_dev:
- 	if (dev) {
- 		if (registered >= 2)
- 			unregister_netdev(dev);
-@@ -6334,11 +6335,8 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
- 
- 		free_libipw(dev, 0);
- 	}
--
-+fail_iounmap:
- 	pci_iounmap(pci_dev, ioaddr);
--
--	pci_release_regions(pci_dev);
--	pci_disable_device(pci_dev);
- 	goto out;
- }
- 
--- 
-2.25.1
+Am 09.04.22 um 08:12 schrieb Dan Carpenter:
+> The "rxstatus->rs_keyix" eventually gets passed to test_bit() so we need=
+ to
+> ensure that it is within than bitmap.
+>
+> drivers/net/wireless/ath/ath9k/common.c:46 ath9k_cmn_rx_accept()
+> error: passing untrusted data 'rx_stats->rs_keyix' to 'test_bit()'
+>
+> Fixes: 4ed1a8d4a257 ("ath9k_htc: use ath9k_cmn_rx_accept")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>   drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+>
+> diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net=
+/wireless/ath/ath9k/htc_drv_txrx.c
+> index 6a850a0bfa8a..a23eaca0326d 100644
+> --- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+> +++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+> @@ -1016,6 +1016,14 @@ static bool ath9k_rx_prepare(struct ath9k_htc_pri=
+v *priv,
+>   		goto rx_next;
+>   	}
+>
+> +	if (rxstatus->rs_keyix >=3D ATH_KEYMAX &&
+> +	    rxstatus->rs_keyix !=3D ATH9K_RXKEYIX_INVALID) {
+> +		ath_dbg(common, ANY,
+> +			"Invalid keyix, dropping (keyix: %d)\n",
+> +			rxstatus->rs_keyix);
+> +		goto rx_next;
+> +	}
+> +
+>   	/* Get the RX status information */
+>
+>   	memset(rx_status, 0, sizeof(struct ieee80211_rx_status));
 
+Looks ok to me.
+
+By the way, rs_keyix seems to have a wrong type. It is declared as u8, but=
+ used as s8.
+
+=2D-
+Regards,
+Oleksij
