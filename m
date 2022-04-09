@@ -2,101 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AF854FA563
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Apr 2022 08:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BEDF4FA567
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Apr 2022 08:25:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238138AbiDIGVp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 9 Apr 2022 02:21:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60008 "EHLO
+        id S237452AbiDIG1K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 9 Apr 2022 02:27:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231951AbiDIGVo (ORCPT
+        with ESMTP id S233998AbiDIG1I (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 9 Apr 2022 02:21:44 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8A923AA5E;
-        Fri,  8 Apr 2022 23:19:37 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2396JGY00012484, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2396JGY00012484
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Sat, 9 Apr 2022 14:19:16 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Sat, 9 Apr 2022 14:19:16 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Sat, 9 Apr 2022 14:19:15 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
- RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
- 15.01.2308.021; Sat, 9 Apr 2022 14:19:15 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>
-CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>
-Subject: Re: [PATCH] rtw89: pci: reversed conditions in rtw89_write16_mdio_mask()
-Thread-Topic: [PATCH] rtw89: pci: reversed conditions in
- rtw89_write16_mdio_mask()
-Thread-Index: AQHYS9j4UB37KjNlp02PwOAzTJmg7qzmlaQA
-Date:   Sat, 9 Apr 2022 06:19:15 +0000
-Message-ID: <55fe8f8f382ae27048152c59dfc51be75dd4e658.camel@realtek.com>
-References: <20220409061318.GB5447@kili>
-In-Reply-To: <20220409061318.GB5447@kili>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [125.224.82.63]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvOSDkuIrljYggMDM6NDA6MDA=?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BCDCD34B54B53F4B97A77C518867BE66@realtek.com>
-Content-Transfer-Encoding: base64
+        Sat, 9 Apr 2022 02:27:08 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A353638B1;
+        Fri,  8 Apr 2022 23:25:02 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id s14so113328plk.8;
+        Fri, 08 Apr 2022 23:25:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pA0w4O8CRiuXzvroFL62p9tDgX2SohP+G9Ok90h6Fcc=;
+        b=L3BiklhbmiTW5WIODOPjQsK+EqQy7cAIB1x2Ta48ZFCfL4ylkePY8rt0k48ijrGnZi
+         yixG4Dzh0uwl7HYOFM7N+jvM0QLUjtKWdA4yb2tPDqQk6EcusiqFXjMOhfl8Jll3ABuc
+         zDDTkFd7lclif8zLg4LqGoqfkPhI/qwY8YJcTeuVnc/+n9mRAbI0WS19SP9HGW+/eExk
+         3QMpyEg2nHGqLpYREc01qy10tC2Vqro0SaIcXAh4xq4ZwiE6u9+8w4t+waUqLgmM34iY
+         l3EkMkk1EhIX+gEuD4Wp2BK0aa4uKjbp3DYjNVA57eakqIhvLkV7URyfm0gg7kxs23Q8
+         PReQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pA0w4O8CRiuXzvroFL62p9tDgX2SohP+G9Ok90h6Fcc=;
+        b=bxlqsgxb2fj4d1Z0iKItHO+eXub6Jhqg1BEx3uldIOXzB1Wm8JRvzEz7owas1is+3C
+         nNt8YN8AzGOPa2ia+Ob6gUROGDN0zwV3R7OeYYKbQXAYdgD4xOkHDH0r7m1/Yd4c/9gY
+         dkc8mMXuD0b0/hPqnL3Q0KRc+r9/VpwoMR4KxOx0csfqJuLaowrVdiqw1dyUna5IG5w1
+         CvlNyCw34cugMnXoGP7mvbNsgGKldZu+Bi4UVs1iqwLgSwO6+c+l5Wa2n2GrDjBHjnR8
+         FFzGrClHYHO1GTdZGm6SJhM246Ek7SJoJVF02aOu24l47tZcwEU9ZgfhmUVBRBO6pN3K
+         6Yuw==
+X-Gm-Message-State: AOAM533dFdYVXUr5RoJl2aa/uyH4lQCqUSKrkWijZh0BlQA+eHgxS4OZ
+        JLgOsvhGykiHyxpV0cXITA==
+X-Google-Smtp-Source: ABdhPJzWQcBOPqOngHyVHxk75RPQHA6pbYbYLBoE2zEL49QqbCtGx9ArK4Djp3I7JPx7JN+5JB7VIA==
+X-Received: by 2002:a17:90b:1e4e:b0:1c7:3507:30db with SMTP id pi14-20020a17090b1e4e00b001c7350730dbmr25713445pjb.39.1649485502117;
+        Fri, 08 Apr 2022 23:25:02 -0700 (PDT)
+Received: from localhost.localdomain ([144.202.91.207])
+        by smtp.gmail.com with ESMTPSA id 8-20020a056a00070800b004e14ae3e8d7sm26387128pfl.164.2022.04.08.23.24.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Apr 2022 23:25:01 -0700 (PDT)
+From:   Zheyu Ma <zheyuma97@gmail.com>
+To:     stas.yakovlev@gmail.com, kvalo@kernel.org, davem@davemloft.net,
+        kuba@kernel.org, pabeni@redhat.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Zheyu Ma <zheyuma97@gmail.com>
+Subject: [PATCH] wireless: ipw2x00: Refine the error handling of ipw2100_pci_init_one()
+Date:   Sat,  9 Apr 2022 14:24:49 +0800
+Message-Id: <20220409062449.3752252-1-zheyuma97@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gU2F0LCAyMDIyLTA0LTA5IGF0IDA5OjEzICswMzAwLCBEYW4gQ2FycGVudGVyIHdyb3RlOg0K
-PiBUaGVzZSBpZiBjb25kaXRpb25zIGFyZSByZXZlcnNlZCBzbyBpdCB3aWxsIGp1c3QgcmV0dXJu
-IHN1Y2Nlc3Mgd2l0aG91dA0KPiB3cml0aW5nLg0KPiANCj4gRml4ZXM6IDc0MGM0MzFjMjJmZSAo
-InJ0dzg5OiBwY2k6IGFkZCByZWdpc3RlciBkZWZpbml0aW9uIHRvIHJ0dzg5X3BjaV9pbmZvIHRv
-IGdlbmVyYWxpemUgcGNpDQo+IGNvZGUiKQ0KPiBTaWduZWQtb2ZmLWJ5OiBEYW4gQ2FycGVudGVy
-IDxkYW4uY2FycGVudGVyQG9yYWNsZS5jb20+DQo+IC0tLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydHc4OS9wY2kuYyB8IDQgKystLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5z
-ZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25l
-dC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3BjaS5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydHc4OS9wY2kuYw0KPiBpbmRleCBkY2Y5MDdiODFjZmYuLmVjYjQxOTAxMGYwYyAxMDA2
-NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9wY2kuYw0KPiAr
-KysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3BjaS5jDQo+IEBAIC0xNTIy
-LDcgKzE1MjIsNyBAQCBydHc4OV93cml0ZTE2X21kaW9fbWFzayhzdHJ1Y3QgcnR3ODlfZGV2ICpy
-dHdkZXYsIHU4IGFkZHIsIHUxNiBtYXNrLCB1MTYNCj4gZGF0YSwgdQ0KPiAgCXUxNiB2YWw7DQo+
-ICANCj4gIAlyZXQgPSBydHc4OV9yZWFkMTZfbWRpbyhydHdkZXYsIGFkZHIsIHNwZWVkLCAmdmFs
-KTsNCj4gLQlpZiAoIXJldCkNCj4gKwlpZiAocmV0KQ0KPiAgCQlyZXR1cm4gcmV0Ow0KPiAgDQo+
-ICAJc2hpZnQgPSBfX2ZmcyhtYXNrKTsNCj4gQEAgLTE1MzAsNyArMTUzMCw3IEBAIHJ0dzg5X3dy
-aXRlMTZfbWRpb19tYXNrKHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwgdTggYWRkciwgdTE2IG1h
-c2ssIHUxNg0KPiBkYXRhLCB1DQo+ICAJdmFsIHw9ICgoZGF0YSA8PCBzaGlmdCkgJiBtYXNrKTsN
-Cj4gIA0KPiAgCXJldCA9IHJ0dzg5X3dyaXRlMTZfbWRpbyhydHdkZXYsIGFkZHIsIHZhbCwgc3Bl
-ZWQpOw0KPiAtCWlmICghcmV0KQ0KPiArCWlmIChyZXQpDQo+ICAJCXJldHVybiByZXQ7DQo+ICAN
-Cj4gIAlyZXR1cm4gMDsNCg0KSSBoYXZlIGZvdW5kIGFuZCBzZW50IGEgcGF0Y2ggdG8gZml4IHRo
-aXM6DQpodHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC13aXJlbGVzcy8yMDIyMDQwODAwMTM1
-My4xNzE4OC0xNC1wa3NoaWhAcmVhbHRlay5jb20vVC8jdQ0KDQpUaGFuayB5b3UNClBpbmctS2UN
-Cg0KDQo=
+The driver should release resources in reverse order, i.e., the
+resources requested first should be released last, and the driver
+should adjust the order of error handling code by this rule.
+
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+---
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c | 34 +++++++++-----------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+index 2ace2b27ecad..b10d10660eb8 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+@@ -6166,7 +6166,7 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
+ 		printk(KERN_WARNING DRV_NAME
+ 		       "Error calling ioremap.\n");
+ 		err = -EIO;
+-		goto fail;
++		goto out;
+ 	}
+ 
+ 	/* allocate and initialize our net_device */
+@@ -6175,36 +6175,33 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
+ 		printk(KERN_WARNING DRV_NAME
+ 		       "Error calling ipw2100_alloc_device.\n");
+ 		err = -ENOMEM;
+-		goto fail;
++		goto fail_iounmap;
+ 	}
+ 
++	priv = libipw_priv(dev);
++	pci_set_master(pci_dev);
++	pci_set_drvdata(pci_dev, priv);
++
+ 	/* set up PCI mappings for device */
+ 	err = pci_enable_device(pci_dev);
+ 	if (err) {
+ 		printk(KERN_WARNING DRV_NAME
+ 		       "Error calling pci_enable_device.\n");
+-		return err;
++		goto fail_dev;
+ 	}
+ 
+-	priv = libipw_priv(dev);
+-
+-	pci_set_master(pci_dev);
+-	pci_set_drvdata(pci_dev, priv);
+-
+ 	err = dma_set_mask(&pci_dev->dev, DMA_BIT_MASK(32));
+ 	if (err) {
+ 		printk(KERN_WARNING DRV_NAME
+ 		       "Error calling pci_set_dma_mask.\n");
+-		pci_disable_device(pci_dev);
+-		return err;
++		goto fail_disable;
+ 	}
+ 
+ 	err = pci_request_regions(pci_dev, DRV_NAME);
+ 	if (err) {
+ 		printk(KERN_WARNING DRV_NAME
+ 		       "Error calling pci_request_regions.\n");
+-		pci_disable_device(pci_dev);
+-		return err;
++		goto fail_disable;
+ 	}
+ 
+ 	/* We disable the RETRY_TIMEOUT register (0x41) to keep
+@@ -6306,9 +6303,13 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
+ out:
+ 	return err;
+ 
+-      fail_unlock:
++fail_unlock:
+ 	mutex_unlock(&priv->action_mutex);
+-      fail:
++fail:
++	pci_release_regions(pci_dev);
++fail_disable:
++	pci_disable_device(pci_dev);
++fail_dev:
+ 	if (dev) {
+ 		if (registered >= 2)
+ 			unregister_netdev(dev);
+@@ -6334,11 +6335,8 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
+ 
+ 		free_libipw(dev, 0);
+ 	}
+-
++fail_iounmap:
+ 	pci_iounmap(pci_dev, ioaddr);
+-
+-	pci_release_regions(pci_dev);
+-	pci_disable_device(pci_dev);
+ 	goto out;
+ }
+ 
+-- 
+2.25.1
+
