@@ -2,140 +2,217 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23CAF4F9F9B
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Apr 2022 00:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDD444FA551
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Apr 2022 08:09:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235614AbiDHWck (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Apr 2022 18:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43134 "EHLO
+        id S236302AbiDIGLH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 9 Apr 2022 02:11:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239968AbiDHWci (ORCPT
+        with ESMTP id S239954AbiDIGLF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Apr 2022 18:32:38 -0400
-Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AEDB97BA4;
-        Fri,  8 Apr 2022 15:30:32 -0700 (PDT)
-Received: by mail-ot1-x32a.google.com with SMTP id c24-20020a9d6c98000000b005e6b7c0a8a8so3592304otr.2;
-        Fri, 08 Apr 2022 15:30:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=4D8qTUklAEU1Yxn4e8QNJnRlkiWhCNSeqaSpIz0yIKI=;
-        b=FjPOPNJuMxe8hDrsRq0RYn6XWBkbA7x1DAwE29B4iAkPQ7Ap5Y31P14H9Zzm3wlvuQ
-         cofMjGZ+by66sYbnN4TAWvBzZ/5zDrhTaMaZ/wAGdAzeJxByVOLb9I+zfA9QQZrZjOay
-         HKvHNG+kEq9q5pRSYECjWl1lm3VQM6wx7IQlOesm6tlRopn0Sq8UFPNnEkFZ0QmZufnS
-         X/CIRFynxF1yTWIAQWtY45Mc4TJiAV7ivm3brqapMIC3pSV4TwPH1jidLfs6KEXgCxf7
-         ae6GoRSMqURzaMBWP4Ga83gbkek4+YqsFGjaYfeI7K6qEi0K4882hTfl8yXLYJCD42qi
-         A4gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=4D8qTUklAEU1Yxn4e8QNJnRlkiWhCNSeqaSpIz0yIKI=;
-        b=tQWVg8CfeoiClrdYkIij4Mqn3dPYQCbNpZFHis8sSqMSTFJB5wS9zSpWvdiEocf+lC
-         y48fw8ssQSJ4A3w8aT/qD1idEtKV3oA7rGsw+c/ptldxQmNIMFJWtOJN9zWwPgvJulFF
-         mv3t8ZLSzTjC8ky6w0KDiLKI/+Ur/wUqFCojws+hdO6pt+v//syaI3Z/9V8x7EmvSp4A
-         OzlIBuOMYL9YKscfeL2NZEWsKWNlrXlwYjTjiyF69sdL6utIYMbHPZk9mwpebfCNiV+D
-         gU3IskuFRf9GVDVHbgHhLqG9+CMTRuCOxXmfDmtYlgh6/TzCA6eRDWxqiZYKJKKUkh1m
-         ct0w==
-X-Gm-Message-State: AOAM530kUaSStYJ/bRsE+28OIZz5hnA2DdWyS6xCPmf+62b1w3dhioQT
-        rOOYB5HsbYGjBgZYKzdjEQQ=
-X-Google-Smtp-Source: ABdhPJxTIWAwbq4xtUFZlmEeBWKWQTOzRcWZVjrAhnTudh/qJIPOpGFfRQWSxch3z2IYVypAAV0JlQ==
-X-Received: by 2002:a9d:69c4:0:b0:5b2:3abb:612a with SMTP id v4-20020a9d69c4000000b005b23abb612amr7433425oto.319.1649457031506;
-        Fri, 08 Apr 2022 15:30:31 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id i67-20020acaea46000000b002efa121b127sm9092586oih.46.2022.04.08.15.30.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Apr 2022 15:30:23 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <4d47bc62-89be-048d-5295-a35c3c748995@roeck-us.net>
-Date:   Fri, 8 Apr 2022 15:30:21 -0700
+        Sat, 9 Apr 2022 02:11:05 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF8F1403C8
+        for <linux-wireless@vger.kernel.org>; Fri,  8 Apr 2022 23:08:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649484539; x=1681020539;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qfsA0uWw3VZFPnuGwCh9jF6s1cep0lQh6OVbvKLAAII=;
+  b=aolEZtLeMd6Jit7U+hpa2QQkk4nWuh3rKYHYE0z2aOAaSAhcVZiPHkMI
+   J9M8wOm6ew0IsB/oi1heVTBEvAtzt9gHI46x+3LL96Qj+PA/ADXp4gONV
+   VRFPRUjKHaOPLeVOV02ucW65nLVy1R+xogdBbzaj2uVehoO0Lj/GNgLpb
+   gzBtl2JERtgxEcm+FglqR6OhwE/X1pR917ApZGOls4VzRXDjlet2U9BZR
+   SQ7zDmxlVXNmBnYV88EDCugmY5NkOs9oJ+UabSLJXuHciWvSjAY3hczlu
+   h21HrG4LtDdrCZLA0xjFtX5TirTH+rqhIbvHoJ9A9bAt+jAdIk8CYMZWG
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10311"; a="259362283"
+X-IronPort-AV: E=Sophos;i="5.90,247,1643702400"; 
+   d="scan'208";a="259362283"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 23:08:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,247,1643702400"; 
+   d="scan'208";a="852430984"
+Received: from lkp-server02.sh.intel.com (HELO 7e80bc2a00a0) ([10.239.97.151])
+  by fmsmga005.fm.intel.com with ESMTP; 08 Apr 2022 23:08:58 -0700
+Received: from kbuild by 7e80bc2a00a0 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nd4HJ-0000wK-Ce;
+        Sat, 09 Apr 2022 06:08:57 +0000
+Date:   Sat, 09 Apr 2022 14:08:52 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:pending] BUILD SUCCESS
+ 9755733049a826abe429912a7fb6bf45052ec30c
+Message-ID: <625122f4.GQzJqe0gDcDz9qIP%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [RFC PATCH] iwlwifi: iwl-dbg: Use del_timer_sync() before freeing
-Content-Language: en-US
-To:     "Coelho, Luciano" <luciano.coelho@intel.com>,
-        "Greenman, Gregory" <gregory.greenman@intel.com>
-Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "Berg, Johannes" <johannes.berg@intel.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-References: <20220406153410.1899768-1-linux@roeck-us.net>
- <5b361192-6fd4-e84d-d6fc-e552a473c23e@roeck-us.net>
- <f233cb842303e121338e2d881eec88762068d324.camel@intel.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <f233cb842303e121338e2d881eec88762068d324.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Luca,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
+branch HEAD: 9755733049a826abe429912a7fb6bf45052ec30c  wireless: add driver plfxlc for pureLiFi X, XL, XC devices
 
-On 4/7/22 22:20, Coelho, Luciano wrote:
-> On Thu, 2022-04-07 at 12:50 -0700, Guenter Roeck wrote:
->> Hi,
->>
->> On 4/6/22 08:34, Guenter Roeck wrote:
->>> In Chrome OS, a large number of crashes is observed due to corrupted timer
->>> lists. Steven Rostedt pointed out that this usually happens when a timer
->>> is freed while still active, and that the problem is often triggered
->>> by code calling del_timer() instead of del_timer_sync() just before
->>> freeing.
->>>
->>> Steven also identified the iwlwifi driver as one of the possible culprits
->>> since it does exactly that.
->>>
->>> Reported-by: Steven Rostedt <rostedt@goodmis.org>
->>> Cc: Steven Rostedt <rostedt@goodmis.org>
->>> Cc: Shahar S Matityahu <shahar.s.matityahu@intel.com>
->>> Cc: Johannes Berg <johannes.berg@intel.com>
->>> Fixes: 60e8abd9d3e91 ("iwlwifi: dbg_ini: add periodic trigger new API support")
->>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
->>> ---
->>> RFC:
->>>       Maybe there was a reason to use del_timer() instead of del_timer_sync().
->>>       Also, I am not sure if the change is sufficient since I don't see any
->>>       obvious locking that would prevent timers from being added and then
->>>       modified in iwl_dbg_tlv_set_periodic_trigs() while being removed in
->>>       iwl_dbg_tlv_del_timers().
->>>
->>
->> I prepared a new version of this patch, introducing a mutex to protect changes
->> to periodic_trig_list. I'd like to get some feedback before sending it out,
->> though, so I'll wait until next week before sending it.
->>
->> If you have any feedback/thoughts/comments, please let me know.
-> 
-> Hi Guenter,
-> 
-> Thanks for your proposal!
-> 
-> I recently moved from the Intel WiFi team to the Graphics team, so I'm
-> adding Gregory, who has taken over my duties, to the discussion.
-> 
-> I don't recall any specific reasons for using del_timer() instead of
-> del_timer_sync() here.  So your patch does look correct to me.
-> 
+elapsed time: 722m
 
-Thanks a lot for the feedback. I spent some time trying to determine
-if a mutex to protect the periodic timer list is needed, but concluded
-that it is not necessary because the code adding the timer list and
-the code removing it are never executed in parallel. Of course,
-I may be missing something, so I'd be happy to be corrected.
+configs tested: 131
+configs skipped: 3
 
-Thanks,
-Guenter
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm64                               defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                          randconfig-c001
+m68k                             allyesconfig
+microblaze                      mmu_defconfig
+powerpc                    sam440ep_defconfig
+xtensa                              defconfig
+m68k                        m5407c3_defconfig
+h8300                            alldefconfig
+sh                        edosk7760_defconfig
+sh                           se7722_defconfig
+arc                          axs103_defconfig
+m68k                          atari_defconfig
+ia64                             alldefconfig
+arc                            hsdk_defconfig
+powerpc                    adder875_defconfig
+arm                           stm32_defconfig
+powerpc                       maple_defconfig
+openrisc                            defconfig
+sh                            migor_defconfig
+arm64                            alldefconfig
+nios2                         10m50_defconfig
+mips                    maltaup_xpa_defconfig
+sh                           se7206_defconfig
+powerpc                      chrp32_defconfig
+arm                            xcep_defconfig
+arm                          badge4_defconfig
+sh                        sh7785lcr_defconfig
+s390                       zfcpdump_defconfig
+arm                          exynos_defconfig
+powerpc64                           defconfig
+ia64                          tiger_defconfig
+powerpc                 mpc8540_ads_defconfig
+arm                          gemini_defconfig
+xtensa                generic_kc705_defconfig
+ia64                             allmodconfig
+arc                     haps_hs_smp_defconfig
+riscv             nommu_k210_sdcard_defconfig
+xtensa                  nommu_kc705_defconfig
+h8300                       h8s-sim_defconfig
+parisc                generic-32bit_defconfig
+x86_64                        randconfig-c001
+arm                  randconfig-c002-20220408
+ia64                             allyesconfig
+ia64                                defconfig
+m68k                             allmodconfig
+m68k                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+csky                                defconfig
+nios2                            allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+s390                                defconfig
+s390                             allmodconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+sparc                               defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+x86_64                        randconfig-a002
+x86_64                        randconfig-a004
+x86_64                        randconfig-a006
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+arc                  randconfig-r043-20220408
+s390                 randconfig-r044-20220408
+riscv                randconfig-r042-20220408
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                         rhel-8.3-kunit
+x86_64                               rhel-8.3
+
+clang tested configs:
+x86_64                        randconfig-c007
+i386                          randconfig-c001
+s390                 randconfig-c005-20220408
+powerpc              randconfig-c003-20220408
+riscv                randconfig-c006-20220408
+mips                 randconfig-c004-20220408
+arm                  randconfig-c002-20220408
+mips                      pic32mzda_defconfig
+powerpc                     pseries_defconfig
+powerpc                   bluestone_defconfig
+powerpc                      obs600_defconfig
+mips                        qi_lb60_defconfig
+mips                     cu1000-neo_defconfig
+riscv                             allnoconfig
+mips                   sb1250_swarm_defconfig
+mips                     loongson1c_defconfig
+powerpc                       ebony_defconfig
+powerpc                     mpc5200_defconfig
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+hexagon              randconfig-r045-20220408
+hexagon              randconfig-r041-20220408
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
