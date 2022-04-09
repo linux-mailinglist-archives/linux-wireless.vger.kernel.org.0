@@ -2,125 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B663D4FA5A9
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Apr 2022 09:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4452F4FA8B1
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Apr 2022 15:45:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240360AbiDIH4r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 9 Apr 2022 03:56:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49476 "EHLO
+        id S242228AbiDINrA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 9 Apr 2022 09:47:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229909AbiDIH4p (ORCPT
+        with ESMTP id S242234AbiDINq7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 9 Apr 2022 03:56:45 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 071AE38D95;
-        Sat,  9 Apr 2022 00:54:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1649490834;
-        bh=luZq8lrGFZ4kx0jdQXktj//Kdt2hzMCkIhTuT7UjDa0=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=Ks5LtJJLlSZxVTnqJdzqMzFugrZJuWp7j7+UpI6yWFsWB48eJjmGb2QOMiJE5tp3T
-         21C3qNMqnBmS8Hfarje4hXo3i6ym2MeJ7E2mhUSeZPTFll+MNEZTC1GwhMjXI0Ytu3
-         YHPtlkH4DVITE3HAmSqXPeQGBARekhiVv/HtJYPo=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.86.95] ([95.91.192.147]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MCbEp-1nm8Cv2tHv-009fer; Sat, 09
- Apr 2022 09:53:54 +0200
-Message-ID: <00a0f9f7-2fbf-8883-38e7-edec3687e6a8@rempel-privat.de>
-Date:   Sat, 9 Apr 2022 09:53:53 +0200
+        Sat, 9 Apr 2022 09:46:59 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E22279BAC4
+        for <linux-wireless@vger.kernel.org>; Sat,  9 Apr 2022 06:44:48 -0700 (PDT)
+X-UUID: 601a400f306a40849f43d1ef05bc5ac4-20220409
+X-UUID: 601a400f306a40849f43d1ef05bc5ac4-20220409
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1519573908; Sat, 09 Apr 2022 21:44:43 +0800
+Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Sat, 9 Apr 2022 21:44:42 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb01.mediatek.inc
+ (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Sat, 9 Apr
+ 2022 21:44:42 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 9 Apr 2022 21:44:41 +0800
+From:   Deren Wu <Deren.Wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Shayne Chen" <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH] mt76: fix antenna config missing in 6G cap
+Date:   Sat, 9 Apr 2022 21:44:07 +0800
+Message-ID: <357763fe0b112838d500422a27b114b4281adb9a.1649511465.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH] ath9k_htc: fix potential out of bounds access with
- invalid rxstatus->rs_keyix
-Content-Language: en-US
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>
-Cc:     Kalle Valo <kvalo@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20220409061225.GA5447@kili>
-From:   Oleksij Rempel <linux@rempel-privat.de>
-In-Reply-To: <20220409061225.GA5447@kili>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:hQxSM885JV9wHVfy28pZU9+jOPYcxASYy9IPAaGCyf7RpzyyJef
- Cegv2sKxKDFA/9XrBgxv4S+kf9yHgY3Bas73zf7jljPeMQf+Y6PeTtJMZhUHNASkkFbDPbi
- RTCResGG4WSD5RzvXIJooI0cnEqs/UNGgzQnTeLR4VhYT1F0f3ajBlb3HL1vXY+W6McKcAy
- T457rWNrT/Xo6gQnw9YDA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:kEC/CnyNuDM=:7EPkAa0dFbHFCKmllImUJO
- zgUbTeHGxm6By72t4xcazSrf6/wd0/0HaChoXyDBvVpb/i+nZqjFbqaShY/9YqP4EXa98zvl5
- 9VksbOL4Jc66TxyQjuf1/x7T6mvciWyH6bi5HDJdndGlTQInCINBJ+ncrDqfgvzJCuUegzc5w
- SbuyGmnYlBUjXg1blv/lCSKHPX8N8eU7MrKnON217kFtEDJ4Z1nI7afUUQwbKMdUvqcf++3ty
- oFN1VayPZEmkEvnls5oq6xwdk1Y3LmfRLMFXhmsdXNVDMvWFwbT6w7wyZVwN2+I43MLbzpoAe
- Yu9MdR/BY8c2idqpQDWyFr5T9ZWgkhtcmNoAdnSpMUN+1GttYj9xOIvBCpQXSc6G1PPDcisYQ
- 9JBPfQQvUkZSoq4Xr0v5G5kImsfZN/ophrC7T0XgZLs1d2GQ0+nu4BTmhTPXo+J8pzuyqepX8
- 4AZlIr4SZUPU0QA4YiJu4CEhul9o/HRJRX3aCrUBkY7imSOlvZLD9BiEe1VtvFyEzprLY0Y9x
- Waxa1zPYOo18uhbZyl0+bJM+EBh4Tw2xsmN7CGg9u9gx5q0/RoQtw36q8CPBOPe2BAQvSqtX/
- yI9sDh1HKQRonb61HUSnXgO9k1recXFjeB+5Etgcq6S466sQpnNCOaGh49Yh6Px4+lb9SEXg7
- WSA2X2ZuQ5kOpkWYbc/oHHl4uXhd4Oc0rOiFxO0ICewpYpylAJhNNSCPXJ1awH4Z2NdVrYpzQ
- u44Y6l+eD8oOwpBHVjEHHOUMHKQLDxZhN0b0D0fknqPzS6+rsdTkG0e++ljkbcgie+NAjPY1p
- MEyhcohY737xKKjXsTD6L3M+P90YFgy6Lz/OpVDBDAx94Gn82uXnKRnhDbWTXgkjHdI2W1iBy
- z5wmixTloAccOg0G/QH/mqR96JIjX+CxonxtqVk5tV2rUGOb1bE3wbo+lScg8+UxGkHPLxZV5
- 9Qte2HHrMmA+G+xIuE2b1QAuITzBm131XoQTLnIZvJgq/gAB62y698iFWTbsmC/YXNQV/kPrg
- FHkJ8i59xC3qvN+EPNoHi73k4L6N9U9M5oakIQ7x76m/hcCsPWgnRC/W9kNcl+JSgI5iI6GUB
- 6XydpXHTKsduu0=
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dan,
+From: Deren Wu <deren.wu@mediatek.com>
 
-thank you for your patch.
+To make sure we have the proper antenna config in 6g cap,
+move IEEE80211_VHT_CAP_[T/R]X_ANTENNA_PATTERN to stream init.
 
-Am 09.04.22 um 08:12 schrieb Dan Carpenter:
-> The "rxstatus->rs_keyix" eventually gets passed to test_bit() so we need=
- to
-> ensure that it is within than bitmap.
->
-> drivers/net/wireless/ath/ath9k/common.c:46 ath9k_cmn_rx_accept()
-> error: passing untrusted data 'rx_stats->rs_keyix' to 'test_bit()'
->
-> Fixes: 4ed1a8d4a257 ("ath9k_htc: use ath9k_cmn_rx_accept")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->   drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net=
-/wireless/ath/ath9k/htc_drv_txrx.c
-> index 6a850a0bfa8a..a23eaca0326d 100644
-> --- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-> +++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-> @@ -1016,6 +1016,14 @@ static bool ath9k_rx_prepare(struct ath9k_htc_pri=
-v *priv,
->   		goto rx_next;
->   	}
->
-> +	if (rxstatus->rs_keyix >=3D ATH_KEYMAX &&
-> +	    rxstatus->rs_keyix !=3D ATH9K_RXKEYIX_INVALID) {
-> +		ath_dbg(common, ANY,
-> +			"Invalid keyix, dropping (keyix: %d)\n",
-> +			rxstatus->rs_keyix);
-> +		goto rx_next;
-> +	}
-> +
->   	/* Get the RX status information */
->
->   	memset(rx_status, 0, sizeof(struct ieee80211_rx_status));
+Fixes: f1103fa6b3492 ("mt76: add TX/RX antenna pattern capabilities")
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Looks ok to me.
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 026ab1e16d45..2dd3ebd1863f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -248,6 +248,8 @@ static void mt76_init_stream_cap(struct mt76_phy *phy,
+ 		vht_cap->cap |= IEEE80211_VHT_CAP_TXSTBC;
+ 	else
+ 		vht_cap->cap &= ~IEEE80211_VHT_CAP_TXSTBC;
++	vht_cap->cap |= IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN |
++			IEEE80211_VHT_CAP_RX_ANTENNA_PATTERN;
+ 
+ 	for (i = 0; i < 8; i++) {
+ 		if (i < nstream)
+@@ -323,8 +325,6 @@ mt76_init_sband(struct mt76_phy *phy, struct mt76_sband *msband,
+ 	vht_cap->cap |= IEEE80211_VHT_CAP_RXLDPC |
+ 			IEEE80211_VHT_CAP_RXSTBC_1 |
+ 			IEEE80211_VHT_CAP_SHORT_GI_80 |
+-			IEEE80211_VHT_CAP_RX_ANTENNA_PATTERN |
+-			IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN |
+ 			(3 << IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_SHIFT);
+ 
+ 	return 0;
+-- 
+2.18.0
 
-By the way, rs_keyix seems to have a wrong type. It is declared as u8, but=
- used as s8.
-
-=2D-
-Regards,
-Oleksij
