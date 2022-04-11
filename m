@@ -2,88 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAFCB4FB9DF
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Apr 2022 12:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 958494FBD25
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Apr 2022 15:32:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345665AbiDKKoZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Apr 2022 06:44:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58780 "EHLO
+        id S1343875AbiDKNeK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Apr 2022 09:34:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231722AbiDKKoY (ORCPT
+        with ESMTP id S1346520AbiDKNeH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Apr 2022 06:44:24 -0400
-Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D49D37026
-        for <linux-wireless@vger.kernel.org>; Mon, 11 Apr 2022 03:42:10 -0700 (PDT)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:b509:6862:2557:437a])
-        by laurent.telenet-ops.be with bizsmtp
-        id HNi82700A1G7NMJ01Ni8NX; Mon, 11 Apr 2022 12:42:08 +0200
-Received: from geert (helo=localhost)
-        by ramsan.of.borg with local-esmtp (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1ndrUl-000A17-WE; Mon, 11 Apr 2022 12:42:08 +0200
-Date:   Mon, 11 Apr 2022 12:42:07 +0200 (CEST)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-X-X-Sender: geert@ramsan.of.borg
-To:     linux-kernel@vger.kernel.org
-cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>, sparclinux@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: Build regressions/improvements in v5.18-rc2
-In-Reply-To: <20220411103528.2187797-1-geert@linux-m68k.org>
-Message-ID: <alpine.DEB.2.22.394.2204111240560.38484@ramsan.of.borg>
-References: <CAHk-=wh0+DYC2+Aeu2=vfUtGaDqVuKxKrxyhwQFoG89rcynzww@mail.gmail.com> <20220411103528.2187797-1-geert@linux-m68k.org>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Mon, 11 Apr 2022 09:34:07 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0511A3BBDB
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Apr 2022 06:31:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=bDZga5W4ByKTW3fjpHFc5Pr78Sw6vXoCobwjKct//1g=;
+        t=1649683913; x=1650893513; b=rVIG3GsSEjYojQUpO+A3KsXro9e1FyODGPvJDgMowp2uGGA
+        CNveGmFsBlMKFbDbBR0r/vdm8oRdpAwSjDp/OaOYdlKbJrnXxiA01yhRPzkVWrUmEigjakdbXl+a6
+        VoDbmhTvF08DmC31tM3cRP+nYdT6QXhtZTcWZVcdYqBZVuSVJRVKOOKhwVKxh8bIqsFyaq0G1PC+g
+        BMT8J0oGIgz/0toCGh334hQIjbY8/FvdFOIe1KKYx/J4yc8ZCRG4m5aH+d141Wphyp1rIvtiCNHDx
+        lNWzb8oY532pABV25aPg2KYfST1ly6bz7iUxTqN1pFq1SeiX69Vs+tIOCIc1Nhog==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1ndu90-008ItI-HA;
+        Mon, 11 Apr 2022 15:31:50 +0200
+Message-ID: <27b8b92f8fe9883d808a9412370bf23386165482.camel@sipsolutions.net>
+Subject: Re: [PATCH v4] mac80211: disable BSS color collision detection in
+ case of no free colors
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Rameshkumar Sundaram <quic_ramess@quicinc.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Lavanya Suresh <lavaks@codeaurora.org>
+Date:   Mon, 11 Apr 2022 15:31:49 +0200
+In-Reply-To: <1648195961-3811-1-git-send-email-quic_ramess@quicinc.com>
+References: <1648195961-3811-1-git-send-email-quic_ramess@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 11 Apr 2022, Geert Uytterhoeven wrote:
-> JFYI, when comparing v5.18-rc2[1] to v5.18-rc1[3], the summaries are:
->  - build warnings: +23/-0
+On Fri, 2022-03-25 at 13:42 +0530, Rameshkumar Sundaram wrote:
 
-   + /kisskb/src/arch/sparc/include/asm/cacheflush_32.h: error: 'struct page' declared inside parameter list [-Werror]:  => 38:37
-   + /kisskb/src/arch/sparc/include/asm/cacheflush_32.h: error: its scope is only this definition or declaration, which is probably not what you want [-Werror]:  => 38:37
 
-sparc64/sparc-allmodconfig
+> +	he_bss_color->color =
+> +		nla_get_u8(tb[NL80211_HE_BSS_COLOR_ATTR_COLOR]);
+> +	he_bss_color->enabled =
+> +		!nla_get_flag(tb[NL80211_HE_BSS_COLOR_ATTR_DISABLED]);
+> +	he_bss_color->partial =
+> +		nla_get_flag(tb[NL80211_HE_BSS_COLOR_ATTR_PARTIAL]);
+> +
+> +	return 0;
+> +}
+> +
+>  static int nl80211_parse_beacon(struct cfg80211_registered_device *rdev,
+>  				struct nlattr *attrs[],
+>  				struct cfg80211_beacon_data *bcn)
+> @@ -5204,6 +5228,12 @@ static int nl80211_parse_beacon(struct cfg80211_registered_device *rdev,
+>  		bcn->ftm_responder = -1;
+>  	}
+>  
+> +	if (attrs[NL80211_ATTR_HE_BSS_COLOR]) {
+> +		err = nl80211_parse_he_bss_color(attrs[NL80211_ATTR_HE_BSS_COLOR],
+> +						 &bcn->he_bss_color);
+> +		if (err)
+> +			return err;
+> +	}
 
-   + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible function types from 'void (*)(long unsigned int)' to 'void (*)(long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int)' [-Werror=cast-function-type]:  => 1639:13, 1756:13
-   + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible function types from 'void (*)(struct mm_struct *)' to 'void (*)(long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int)' [-Werror=cast-function-type]:  => 1662:29, 1674:29
-   + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible function types from 'void (*)(struct mm_struct *, long unsigned int)' to 'void (*)(long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int)' [-Werror=cast-function-type]:  => 1767:21
-   + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible function types from 'void (*)(struct vm_area_struct *, long unsigned int)' to 'void (*)(long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int)' [-Werror=cast-function-type]:  => 1741:29, 1726:29
-   + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible function types from 'void (*)(struct vm_area_struct *, long unsigned int,  long unsigned int)' to 'void (*)(long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int)' [-Werror=cast-function-type]:  => 1711:29, 1694:29
+Could use a newline after this.
 
-sparc64-gcc11/sparc-allmodconfig
+But not sure I get it - doesn't that always disable BSS coloring now if
+you do a beacon update that didn't include the attribute? Did hostapd
+always include it in the past?
 
-   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_491' declared with attribute error: FIELD_PREP: mask is not constant:  => 352:38
-   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_520' declared with attribute error: FIELD_PREP: mask is not constant:  => 352:38
-
-mipsel/mips-allmodconfig
-arm64-gcc5.4/arm64-allmodconfig
-
-Actual error is:
-
-     /kisskb/src/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c: In function 'mt76x2e_probe':
-     /kisskb/src/include/linux/compiler_types.h:352:38: error: call to '__compiletime_assert_520' declared with attribute error: FIELD_PREP: mask is not constant
-
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/ce522ba9ef7e2d9fb22a39eb3371c0c64e2a433e/ (all 96 configs)
-> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/3123109284176b1532874591f7c81f3837bbdc17/ (all 96 configs)
-
-Gr{oetje,eeting}s,
-
- 						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
- 							    -- Linus Torvalds
+johannes
