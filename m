@@ -2,55 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD50D4FB779
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Apr 2022 11:27:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32DA14FB7EC
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Apr 2022 11:42:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344398AbiDKJaC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Apr 2022 05:30:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39428 "EHLO
+        id S1344652AbiDKJoX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Apr 2022 05:44:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235101AbiDKJaA (ORCPT
+        with ESMTP id S231818AbiDKJoV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Apr 2022 05:30:00 -0400
+        Mon, 11 Apr 2022 05:44:21 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 592EF3299F;
-        Mon, 11 Apr 2022 02:27:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F0C37A11;
+        Mon, 11 Apr 2022 02:42:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=JA9mOJWzTolCXQKQvJN/92K8GCFv6ef6QsNhTck14oM=;
-        t=1649669266; x=1650878866; b=MLIIurGoCjTAzw5Os1bkiaLE/VxuksQ/MR1LJORSxhe7q9M
-        T+Xi2v6wQ4WUzgsawMUkTSJf8zUj7SKO5OLUVFKAU8sv//L3dQTM0MIlte6vbHupUO88Z4ILuFGyi
-        WH89ld2rACSd4Fr4z1l7EP3b7EDWEigCcKjyOGfxO5zWmPkKL0qvuqiKqhOtl2V1aMDq/NwZqmKCx
-        u/wkReEWr8Xfyr+tdwA3L53DZzVIpb4nWlz1s7/yWf19dNP9uRMXTuEvhLdQjhkvJlyUsA7v9Uvvh
-        +WjR6W6VflBjQ/sT8HNW/G7nVuRskTEYgvidM6m6X7sLnbVDOB8uMT2JPaZsRUeg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=//CENzgbmsozcbwJyIoiHm22WQ8QVpiASXdzO6hbltU=; t=1649670128; x=1650879728; 
+        b=H4fDPilRQCzW1wofc5LI7JSWDm7cerpDb2vAHVDr7rlgieN788w3ljTLVkSgMkxzFaAJXpcCO9B
+        RfAmi1Oc70wzHY3ZmpHDrUSdkVFqozfqhMfuESeeMRBnsiaDRBKf17Rtsy/nx4Wm6k7u31usJS37O
+        /wHPOdFNNsmHqT6TLrqnzovbQuAgPbYx/PugFfq69zOFMTREHgvwsZfmFZTBjqMzMeKmn3DI2BPyF
+        GbqPM70AlPS5/QdzqVfhYy+tYnzobzt7npkfenBeqhcPqJS3K3uqmF2P68vMINVS1bt6w1Q8YSNC9
+        iDnAvDm72fvgoiT12Ip9wxy3s2jUTtfTd6PA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1ndqKP-008Duy-GT;
-        Mon, 11 Apr 2022 11:27:21 +0200
-Message-ID: <eb5873b4afeee8a7e183a9b1f2e6af461bf7f69f.camel@sipsolutions.net>
-Subject: Re: [nl80211]  584f2e43bb: hwsim.ap_country.fail
+        id 1ndqYf-008ED8-0g;
+        Mon, 11 Apr 2022 11:42:05 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Lee Jones <lee.jones@linaro.org>,
-        kernel test robot <oliver.sang@intel.com>
-Cc:     0day robot <lkp@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>, lkp@lists.01.org,
-        stable@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Date:   Mon, 11 Apr 2022 11:27:20 +0200
-In-Reply-To: <YlP0A+PurZl39sUG@google.com>
-References: <20220401105046.1952815-1-lee.jones@linaro.org>
-         <20220405091420.GD17553@xsang-OptiPlex-9020> <YlP0A+PurZl39sUG@google.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org,
+        Lee Jones <lee.jones@linaro.org>
+Subject: [PATCH] nl80211: correctly check NL80211_ATTR_REG_ALPHA2 size
+Date:   Mon, 11 Apr 2022 11:42:03 +0200
+Message-Id: <20220411114201.fd4a31f06541.Ie7ff4be2cf348d8cc28ed0d626fc54becf7ea799@changeid>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
@@ -60,32 +50,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2022-04-11 at 10:25 +0100, Lee Jones wrote:
-> So what exactly happened here?  What does this failure tell us?
+From: Johannes Berg <johannes.berg@intel.com>
 
-Probably nothing.
+We need this to be at least two bytes, so we can access
+alpha2[0] and alpha2[1]. It may be three in case some
+userspace used NUL-termination since it was NLA_STRING
+(and we also push it out with NUL-termination).
 
-> Is the LKP test broken or did I overlook something in the kernel
-> patch?
+Cc: stable@vger.kernel.org
+Reported-by: Lee Jones <lee.jones@linaro.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/nl80211.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-I think the test is just randomly fluking out.
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index ee1c2b6b6971..21e808fcb676 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -528,7 +528,8 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 				   .len = IEEE80211_MAX_MESH_ID_LEN },
+ 	[NL80211_ATTR_MPATH_NEXT_HOP] = NLA_POLICY_ETH_ADDR_COMPAT,
+ 
+-	[NL80211_ATTR_REG_ALPHA2] = { .type = NLA_STRING, .len = 2 },
++	/* allow 3 for NUL-termination, we used to declare this NLA_STRING */
++	[NL80211_ATTR_REG_ALPHA2] = NLA_POLICY_RANGE(NLA_BINARY, 2, 3),
+ 	[NL80211_ATTR_REG_RULES] = { .type = NLA_NESTED },
+ 
+ 	[NL80211_ATTR_BSS_CTS_PROT] = { .type = NLA_U8 },
+-- 
+2.35.1
 
-> How does LKP make use of NL80211_ATTR_REG_ALPHA2?
-> 
-> I'm struggling to find any mention of 'hostapd.py' or 'ap_country' in
-> LKP [0].  Are these benchmarks bespoke add-ons? 
-> 
-
-it's running the tests from hostap:
-https://w1.fi/cgit/hostap/tree/tests/hwsim
-
-Anyway, I think we'd better fix the issue like this:
-
--       [NL80211_ATTR_REG_ALPHA2] = { .type = NLA_STRING, .len = 2 },
-+       /* allow 3 for NUL-termination, we used to declare this NLA_STRING */
-+       [NL80211_ATTR_REG_ALPHA2] = NLA_POLICY_RANGE(NLA_BINARY, 2, 3),
-
-
-What do you think?
-
-johannes
