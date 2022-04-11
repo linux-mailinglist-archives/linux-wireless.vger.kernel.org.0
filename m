@@ -2,119 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 577C14FC12B
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Apr 2022 17:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1978C4FC3F0
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Apr 2022 20:15:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348126AbiDKPoj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Apr 2022 11:44:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42282 "EHLO
+        id S1349066AbiDKSRk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Apr 2022 14:17:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348169AbiDKPog (ORCPT
+        with ESMTP id S234426AbiDKSRj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Apr 2022 11:44:36 -0400
-Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 004D93B004;
-        Mon, 11 Apr 2022 08:42:19 -0700 (PDT)
-Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-df22f50e0cso17673359fac.3;
-        Mon, 11 Apr 2022 08:42:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=TxbUHNQvrMBIjTCW3//JKuYPMwW2kqiY97PwifExrW0=;
-        b=XlnjY4oJEsmqZB55ghLmlOimOPY0RzYLb/AfQU6nI2vdlmK0pF0sOosXA5xjhY1xje
-         DcbHccNQE+JUR1/SHK65Pr9104N6ZeutHWlCIR33lxl5VTRZhwsrR1Zv1MY4tnhZvM3z
-         QQKkRGZMeaA20iFJVktLgkSTLRMZmlNG3HobVNASgycrkA0IgK17OZLDMRInivTj85T2
-         IAs9JRRJet16/+4vjmQN9sb8H0BJSKCLU9c85YUhbi4KJcieBC7WrJNO+PDxolwiBrdM
-         zrUpdvX7r7uUIhpfci5wFFbLklAsC7uUnxbvq82FIH0WsRajKe0xguA7OXJ59PlZy0F4
-         RA2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=TxbUHNQvrMBIjTCW3//JKuYPMwW2kqiY97PwifExrW0=;
-        b=ypa0TndwiDDhxyZa9Y10ByHStrM7p+ruD9wWU6otFaIiTy7vVwI90SKe4YCt84HyRP
-         6CD8E0A/SP7YeEF1LmLqC1rY/8WLgr7PCLaXyltfncephDtwyyuOKWqPifKxL/NbKprO
-         9bDsYYvkw15BoeLNypmuUpGrdu+JuH6/GszZegQYHrrV4HXLyp1Gnuphy+GD1kHsCoGv
-         8bb8YPfyv4ZheoJ0BWhlb2rj+WrdPj69v0tC938iuq5SWIdIhkypIJUT3Tcle9MwM8+B
-         9h6k+rS9e+hPyUEBEo9RlXWor6HpwjMy8fIsAzsFIpaxhlDx14nzBHuynYqrl077cKtV
-         IhBw==
-X-Gm-Message-State: AOAM5338adRH4VI9sVPU/fZMpfQHM92gWPXt0SgvX9vtQBKqIm6zTvaN
-        ajHAvP+o1ja4hns7dd4pTva9sPaJf4g=
-X-Google-Smtp-Source: ABdhPJzniQoI+xcfeMw2+smpP0QcrSIfAaa6a3E0tMqs8h5Apl4XV+TulHiqRKW4kTxjB+R0UVH00w==
-X-Received: by 2002:a05:6871:79b:b0:d3:4039:7e7c with SMTP id o27-20020a056871079b00b000d340397e7cmr14657208oap.121.1649691738902;
-        Mon, 11 Apr 2022 08:42:18 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id c9-20020a4a8ec9000000b0032438ba79b0sm11513951ool.0.2022.04.11.08.42.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Apr 2022 08:42:17 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@kernel.org>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH] iwlwifi: iwl-dbg: Use del_timer_sync() before freeing
-Date:   Mon, 11 Apr 2022 08:42:10 -0700
-Message-Id: <20220411154210.1870008-1-linux@roeck-us.net>
-X-Mailer: git-send-email 2.35.1
+        Mon, 11 Apr 2022 14:17:39 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3270317053;
+        Mon, 11 Apr 2022 11:15:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D3DCDB817F3;
+        Mon, 11 Apr 2022 18:15:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1223BC385A4;
+        Mon, 11 Apr 2022 18:15:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649700922;
+        bh=HR43g8dQZ+Bf1PK6RXmGBq51cAbYP3qPfOsUCTcQM/s=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=b+6SlUL0MNqNciSMHvizcaqgsproBh8RhlWrywElPTDdbV1yOn8Zrs4jEcudwNKXI
+         wdMeh7ZImEiqzpvQ1H8RJF2+sik10SHDXdFdJIDem06V78JydjbMDlguteVmZrg8D6
+         Pv80MSf+tS+Yx5ackjJmg+UYHe8ZxASKeqzExZvDBD/uofO/lyNE7HpXqaKjKVvC6N
+         lfF5t1HkHQDh+aETqbWcSWVhe2D+83gopjZ2390ofgnXFzUnzUi6SCFDla3OXUNd3F
+         CCG04moCR8SQ7otnfw0kkZpFgspQAwC09VPPZeC/h1MHUNzVN0hipMxjQU2lmikb5e
+         7iOopVVL7QrNg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     linux-kernel@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>, sparclinux@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: Build regressions/improvements in v5.18-rc2
+References: <CAHk-=wh0+DYC2+Aeu2=vfUtGaDqVuKxKrxyhwQFoG89rcynzww@mail.gmail.com>
+        <20220411103528.2187797-1-geert@linux-m68k.org>
+        <alpine.DEB.2.22.394.2204111240560.38484@ramsan.of.borg>
+Date:   Mon, 11 Apr 2022 21:15:16 +0300
+In-Reply-To: <alpine.DEB.2.22.394.2204111240560.38484@ramsan.of.borg> (Geert
+        Uytterhoeven's message of "Mon, 11 Apr 2022 12:42:07 +0200 (CEST)")
+Message-ID: <87zgkrqyff.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In Chrome OS, a large number of crashes is observed due to corrupted timer
-lists. Steven Rostedt pointed out that this usually happens when a timer
-is freed while still active, and that the problem is often triggered
-by code calling del_timer() instead of del_timer_sync() just before
-freeing.
+Geert Uytterhoeven <geert@linux-m68k.org> writes:
 
-Steven also identified the iwlwifi driver as one of the possible culprits
-since it does exactly that.
+> On Mon, 11 Apr 2022, Geert Uytterhoeven wrote:
+>> JFYI, when comparing v5.18-rc2[1] to v5.18-rc1[3], the summaries are:
+>>  - build warnings: +23/-0
+>
+>   + /kisskb/src/arch/sparc/include/asm/cacheflush_32.h: error: 'struct page' declared inside parameter list [-Werror]:  => 38:37
+>   + /kisskb/src/arch/sparc/include/asm/cacheflush_32.h: error: its scope is only this definition or declaration, which is probably not what you want [-Werror]:  => 38:37
+>
+> sparc64/sparc-allmodconfig
+>
+>   + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible function types from 'void (*)(long unsigned int)' to 'void (*)(long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int)' [-Werror=cast-function-type]:  => 1639:13, 1756:13
+>   + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible function types from 'void (*)(struct mm_struct *)' to 'void (*)(long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int)' [-Werror=cast-function-type]:  => 1662:29, 1674:29
+>   + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible function types from 'void (*)(struct mm_struct *, long unsigned int)' to 'void (*)(long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int)' [-Werror=cast-function-type]:  => 1767:21
+>   + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible function types from 'void (*)(struct vm_area_struct *, long unsigned int)' to 'void (*)(long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int)' [-Werror=cast-function-type]:  => 1741:29, 1726:29
+>   + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible function types from 'void (*)(struct vm_area_struct *, long unsigned int,  long unsigned int)' to 'void (*)(long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int,  long unsigned int)' [-Werror=cast-function-type]:  => 1711:29, 1694:29
+>
+> sparc64-gcc11/sparc-allmodconfig
+>
+>   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_491' declared with attribute error: FIELD_PREP: mask is not constant:  => 352:38
+>   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_520' declared with attribute error: FIELD_PREP: mask is not constant:  => 352:38
+>
+> mipsel/mips-allmodconfig
+> arm64-gcc5.4/arm64-allmodconfig
+>
+> Actual error is:
+>
+>     /kisskb/src/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c: In function 'mt76x2e_probe':
+>     /kisskb/src/include/linux/compiler_types.h:352:38: error: call to '__compiletime_assert_520' declared with attribute error: FIELD_PREP: mask is not constant
 
-Reported-by: Steven Rostedt <rostedt@goodmis.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Gregory Greenman <gregory.greenman@intel.com>
-Fixes: 60e8abd9d3e91 ("iwlwifi: dbg_ini: add periodic trigger new API support")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
-v1 (from RFC):
-    Removed Shahar S Matityahu from Cc: and added Gregory Greenman.
-    No functional change.
+Does this commit fix it:
 
-I thought about the need to add a mutex to protect the timer list, but
-I convinced myself that it is not necessary because the code adding
-the timer list and the code removing it should never be never executed
-in parallel.
+https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=dbc2b1764734857d68425468ffa8486e97ab89df
 
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Or is this another issue?
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-index 866a33f49915..3237d4b528b5 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -371,7 +371,7 @@ void iwl_dbg_tlv_del_timers(struct iwl_trans *trans)
- 	struct iwl_dbg_tlv_timer_node *node, *tmp;
- 
- 	list_for_each_entry_safe(node, tmp, timer_list, list) {
--		del_timer(&node->timer);
-+		del_timer_sync(&node->timer);
- 		list_del(&node->list);
- 		kfree(node);
- 	}
 -- 
-2.35.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
