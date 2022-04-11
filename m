@@ -2,43 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E23D54FBD3A
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Apr 2022 15:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41DC64FBDA4
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Apr 2022 15:45:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346550AbiDKNg5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Apr 2022 09:36:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54404 "EHLO
+        id S1346662AbiDKNr7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Apr 2022 09:47:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346540AbiDKNgz (ORCPT
+        with ESMTP id S1346669AbiDKNr4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Apr 2022 09:36:55 -0400
+        Mon, 11 Apr 2022 09:47:56 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAE9965F9
-        for <linux-wireless@vger.kernel.org>; Mon, 11 Apr 2022 06:34:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D85612090
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Apr 2022 06:45:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=C9xchTjAFtTmjuDam3HVfCer5l+epoWakYY3IKI8vpw=;
-        t=1649684078; x=1650893678; b=PvKleetziwk0qvP9GcMrj28DI8kl0pVwrSmuLcUwMT/2uwR
-        VryMJw4ibBgYIrOKNwlElRdFJ3Ms0FmrzO1Pu0kuOusg7ycyQc5T5Sgq/ceRrCwVnyKK2WhGNEZEL
-        4QfNped51EZ5Ypv6uY1TyunVG5MLEbSG3j8dz17ayYxlhVLj3oSZNmjt8zZCEsIsUXzf95lPvESkY
-        WMkzEwyjmRUJAAxamHyESFkmuNPFpZRKdip0IyXdUsEEh1sghSVUieQMXLfnfuoAdiQo76uupa9xx
-        dssy2Bd4EtToYVJsCNq89Y4XTUEXc+2O+O3sv0g1thSKzVp5rMIKzCayuESrIiag==;
+        Resent-Cc:Resent-Message-ID; bh=bn195SmM6LrFCs1RfAPAESaQ3kDGPOl/6T+EIRT1vKo=;
+        t=1649684739; x=1650894339; b=tHqTXrqRoNYQHv/EEc9S9y4W/f7u+CPbqOAXFq3jtegeBNa
+        6ETYs0KZT7Aoi9yVz9RupX9e6WdtgMqwYjD2ioOF4fsYqe0QE4pPEaG2LYb7Fa7JdadxXVWli3ntA
+        EV+eM1hy+ztP9jyUle3r7RT4FgA0r324jUEm1V8fZAmnaUrC62eokl1xqFRPH3voGD1y4EwFr1vhP
+        U8BzFkfr4ZwahtVk1i5tyfYtdvYolt5jmrg2iy8W8vunyqN5FplqeUQZ6Wu0oy4zubpvviZvGhcwI
+        aikwAzZ3iOD31wZkKzvEpQiErWOFQmo3+5ZVtfkRqQwjX/yn3RnrZ00hlkRFDUcQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nduBg-008Ixl-Va;
-        Mon, 11 Apr 2022 15:34:37 +0200
-Message-ID: <01e5333a9a41f1eba214d3bca36cd38fada5a3fd.camel@sipsolutions.net>
-Subject: Re: [PATCH v4] mac80211: disable BSS color collision detection in
- case of no free colors
+        id 1nduML-008JCd-Bv;
+        Mon, 11 Apr 2022 15:45:37 +0200
+Message-ID: <cb24c3dfb707fd361a3e64489b8b68e1e3dbaa07.camel@sipsolutions.net>
+Subject: Re: [PATCH v3] cfg80211: Handle driver updated MU-EDCA params
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 11 Apr 2022 15:34:36 +0200
-In-Reply-To: <1648195961-3811-1-git-send-email-quic_ramess@quicinc.com>
-References: <1648195961-3811-1-git-send-email-quic_ramess@quicinc.com>
+To:     Muna Sinada <msinada@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, j@w1.fi
+Date:   Mon, 11 Apr 2022 15:45:36 +0200
+In-Reply-To: <1641512609-29774-1-git-send-email-msinada@codeaurora.org>
+References: <1641512609-29774-1-git-send-email-msinada@codeaurora.org>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
 MIME-Version: 1.0
@@ -53,15 +52,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
->  include/net/cfg80211.h |  4 ++--
->  net/mac80211/cfg.c     | 11 +++++++--
->  net/wireless/nl80211.c | 62 ++++++++++++++++++++++++--------------------------
+On Thu, 2022-01-06 at 15:43 -0800, Muna Sinada wrote:
+> Add necessary functions and attributes to receive updated MU-EDCA
+> parameters from driver and send to user space, where management
+> frame are updated to reflect latest parameters.
+> 
+> The updated parameters from driver are part of an AP mode feature
+> where firmware determines better MU-EDCA parameters based on channel
+> conditions. The updated parameters are used and reported to user space
+> to reflect in AP management frames. These dynamic parameter updates
+> are offloaded to firmware for better user experience, thus details on
+> algorithm are not provided. This is a driver specific feature, thus
+> no IEEE80211 spec references.
 > 
 
-Also, the mac80211 part is small, so maybe split the patch. Yes, the
-mac80211 part is the key part that actually does something, but the
-changes in the API could use a separate commit message explaining how
-they work and how they are backward compatible.
+So, I think this is missing tracing? Earlier I thought you had it, but
+that was in mac80211 -- I thought you had both so I said you can remove
+it, but it looks like you should have it in cfg80211 perhaps.
+
+More importantly though, shouldn't we have some kind of opt-in flag, so
+userspace actually can tell the driver that it's willing to accept this?
+As it is, the driver might update it without userspace ever reacting,
+since this needs a corresponding hostapd change. Wouldn't this cause
+problems? Do you really not care at all about any users who might be
+running a slightly older version of hostapd? So maybe hostapd should set
+an attribute (even this one as a flag) somewhere to opt in to receiving
+this, and thereby promising it will use it?
 
 johannes
