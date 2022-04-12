@@ -2,53 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 889AB4FDD64
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 13:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24B184FDDFA
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 13:43:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244941AbiDLLJY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Apr 2022 07:09:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58778 "EHLO
+        id S233095AbiDLLod (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Apr 2022 07:44:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353482AbiDLLEz (ORCPT
+        with ESMTP id S1350968AbiDLLli (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Apr 2022 07:04:55 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C39CE5FF2A;
-        Tue, 12 Apr 2022 02:55:21 -0700 (PDT)
-Received: from ip4d144895.dynamic.kabel-deutschland.de ([77.20.72.149] helo=[192.168.66.200]); authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1neDEx-0005Ez-CY; Tue, 12 Apr 2022 11:55:15 +0200
-Message-ID: <7aa0bbd0-5498-ba74-ad6d-6dacbade8a3d@leemhuis.info>
-Date:   Tue, 12 Apr 2022 11:55:13 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>, Philippe Schenker <dev@pschenker.ch>
-Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        Tue, 12 Apr 2022 07:41:38 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C67E50446
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 03:23:24 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id g18so10755428wrb.10
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 03:23:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=PWMqY36PdhLmPkOzVF3q3fwHeKiOtTKe2AjxmCLE4AM=;
+        b=rxPkFbXFz9aCNjSPQJCPwsRgNusOv6QOeU6kHeI7J2jLUpfCOO7NPqnM6zMHlWJPlf
+         c1flepjryToeCDaC4JFADEtJTlrVPVeJkLG4Un7QDQFozlTM4ojPUd7Qy7AV7Nnmg7VR
+         o6aMqa6PuHkNAywHEzkjenaw5mFQCqftxZVV7QphwAB4tIuB7lE+D/8nVP1xT8t/c2gE
+         S+UWahfMmnDhXFy8IAYIU+k/SBFRn8N1iRznqKcBa3s/5mKo4812cUFjYTQdXHQWZpks
+         t5jejttpdawk3BTjhZouX1n+M8NeHYQ2aaGiBC/i0pijXEDRINDJ3stJYWMU9svnI6xy
+         mNEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=PWMqY36PdhLmPkOzVF3q3fwHeKiOtTKe2AjxmCLE4AM=;
+        b=kaRx6npVGQYK+dAnEfgdCnFP+4BwLrY2U8l2TNVSTet96VCNeC8xxBVbWLhEFRcUcA
+         JDnxNIErdFrhgJpR+6FscIWhbDE1z5A4yW/J59rOxJk/lLJRgerFvpXCJ1phKwyOL4Gi
+         7B1Zh4tfWLtynlmi3r6QO4SN2JB0MzeBrctWTXjYykkIAyI7Gxpm93WxW5a+joQSOzol
+         mW4c5A3cqALED59H+okoFs6k7vAgY3KDmLhK+6DrLqpkAAEXUBMG2krAfnoSVXN7T1am
+         +Wx/ZqsyBR2pGwsUdzWuWjeCyynNxHrrm/iRdbH4NwFu0331bVaQ+QWRnxk4NPInVd4v
+         OakQ==
+X-Gm-Message-State: AOAM532/C7R0ZvaLJI5l6pVPtAg++B0sEIGytkw671mFD6+r5fPN3mq1
+        Y4TWyQk9SnTh71VhYg1dSYUnQQ==
+X-Google-Smtp-Source: ABdhPJyU87YmXxLZxW7oXhFtjM8IEwsiPrNqUd6sNpFKh9QYGd776pDXXzthW10OfB72M9oSz7/6cw==
+X-Received: by 2002:adf:ff86:0:b0:207:a89b:f532 with SMTP id j6-20020adfff86000000b00207a89bf532mr6176553wrr.558.1649759002672;
+        Tue, 12 Apr 2022 03:23:22 -0700 (PDT)
+Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
+        by smtp.gmail.com with ESMTPSA id b1-20020a05600018a100b00207ab2305d5sm3803038wri.16.2022.04.12.03.23.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Apr 2022 03:23:22 -0700 (PDT)
+Date:   Tue, 12 Apr 2022 11:23:20 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     kernel test robot <oliver.sang@intel.com>,
+        0day robot <lkp@intel.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Deren Wu <deren.wu@mediatek.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
         Paolo Abeni <pabeni@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-References: <20220412090415.17541-1-dev@pschenker.ch>
- <87y20aod5d.fsf@kernel.org>
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-Subject: Re: [PATCH] Revert "mt76: mt7921: enable aspm by default"
-In-Reply-To: <87y20aod5d.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1649757321;4339350e;
-X-HE-SMSGID: 1neDEx-0005Ez-CY
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        LKML <linux-kernel@vger.kernel.org>, lkp@lists.01.org,
+        stable@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [nl80211]  584f2e43bb: hwsim.ap_country.fail
+Message-ID: <YlVTGIhTvzCsZhmO@google.com>
+References: <20220401105046.1952815-1-lee.jones@linaro.org>
+ <20220405091420.GD17553@xsang-OptiPlex-9020>
+ <YlP0A+PurZl39sUG@google.com>
+ <eb5873b4afeee8a7e183a9b1f2e6af461bf7f69f.camel@sipsolutions.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <eb5873b4afeee8a7e183a9b1f2e6af461bf7f69f.camel@sipsolutions.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,39 +81,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12.04.22 11:37, Kalle Valo wrote:
-> Philippe Schenker <dev@pschenker.ch> writes:
-> 
->> This reverts commit bf3747ae2e25dda6a9e6c464a717c66118c588c8.
->>
->> This commit introduces a regression on some systems where the kernel is
->> crashing in different locations after a reboot was issued.
->>
->> This issue was bisected on a Thinkpad P14s Gen2 (AMD) with latest firmware.
->>
->> Link: https://lore.kernel.org/linux-wireless/5077a953487275837e81bdf1808ded00b9676f9f.camel@pschenker.ch/
->> Signed-off-by: Philippe Schenker <dev@pschenker.ch>
-> 
-> Can I take this to wireless tree? Felix, ack?
-> 
-> I'll also add:
-> 
-> Fixes: bf3747ae2e25 ("mt76: mt7921: enable aspm by default")
+On Mon, 11 Apr 2022, Johannes Berg wrote:
 
-Sorry, stupid questions from the regression tracker: wouldn't this cause
-a regression for users of kernel versions post-bf3747ae2e25, as the
-power consumption is likely to increase for them? Without having dug
-into the backstory much: would disabling ASPM for this particular
-machine using a quirk be the better approach? Or are we assuming a lot
-of machines are affected?
+> On Mon, 2022-04-11 at 10:25 +0100, Lee Jones wrote:
+> > So what exactly happened here?  What does this failure tell us?
+> 
+> Probably nothing.
+> 
+> > Is the LKP test broken or did I overlook something in the kernel
+> > patch?
+> 
+> I think the test is just randomly fluking out.
+> 
+> > How does LKP make use of NL80211_ATTR_REG_ALPHA2?
+> > 
+> > I'm struggling to find any mention of 'hostapd.py' or 'ap_country' in
+> > LKP [0].  Are these benchmarks bespoke add-ons? 
+> > 
+> 
+> it's running the tests from hostap:
+> https://w1.fi/cgit/hostap/tree/tests/hwsim
+> 
+> Anyway, I think we'd better fix the issue like this:
+> 
+> -       [NL80211_ATTR_REG_ALPHA2] = { .type = NLA_STRING, .len = 2 },
+> +       /* allow 3 for NUL-termination, we used to declare this NLA_STRING */
+> +       [NL80211_ATTR_REG_ALPHA2] = NLA_POLICY_RANGE(NLA_BINARY, 2, 3),
+> 
+> 
+> What do you think?
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+I'm not entirely sure of the semantics, but so long as it ensures the
+user declares enough space to hold both Bytes of data, I'd be happy.
 
-P.S.: As the Linux kernel's regression tracker I'm getting a lot of
-reports on my table. I can only look briefly into most of them and lack
-knowledge about most of the areas they concern. I thus unfortunately
-will sometimes get things wrong or miss something important. I hope
-that's not the case here; if you think it is, don't hesitate to tell me
-in a public reply, it's in everyone's interest to set the public record
-straight.
-
+-- 
+Lee Jones [李琼斯]
+Principal Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
