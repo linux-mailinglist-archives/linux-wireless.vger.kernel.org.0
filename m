@@ -2,52 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 879014FE736
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 19:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E41664FE867
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 21:02:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358339AbiDLRgv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Apr 2022 13:36:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48138 "EHLO
+        id S239493AbiDLTE1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Apr 2022 15:04:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358355AbiDLRgp (ORCPT
+        with ESMTP id S236431AbiDLTEZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Apr 2022 13:36:45 -0400
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B0CC18B09
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 10:34:22 -0700 (PDT)
-Received: by mail-io1-f71.google.com with SMTP id g16-20020a05660226d000b00638d8e1828bso12004717ioo.13
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 10:34:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=76SE2NB56vXH5NM9G3THUUmZ2Fv37V7kWmVL28ZuXes=;
-        b=pT9jB8tXA7dqQWWlDQjFQ7pf/oUaOagjrw4WiZ98nUnYCN7kajK25J9hadRbwxc0rN
-         KOel/Jj76wL2E3IvQ9eTFJ9lG3jpumyLJZbcaYqsqiSvm+vUWU2swM9Epfbl5Kt2n1lW
-         YuxY9DI2fyMayP8VqwdMYZzfovsQbFhYinrLgNt/mSZTRJy3MDccqZrYegnxZVZmdoWx
-         fGZkWSBOjxmK+xjLjwROYuwDP6oMmltrJdQQ/R9J36p4/30RD2kvCRa+nSePEz0dbd6S
-         Hifh95s9V9KttVMJ3eyZ1CcZNnDeyXWijMkZ+x4gohjEwuicJc/q0Dcqv/RbAQiSQmn8
-         qAfA==
-X-Gm-Message-State: AOAM533BZFGeCMRcLAN/Hv5dLfgAHH6alsixuzpteRcDRn1v2Tw/ohiv
-        Et38F5xzCA47CvfW6QUwmMQVyLmLEVHAA2Ct3qjtLbywRcIe
-X-Google-Smtp-Source: ABdhPJw7Ru72pObzE9Ta+Gy9/XRzJSF88PI1vo7s+/HcQl1xcbdg6NKzC7f73j9FYrS1PSgL31qv+xV4Q93w8cztjSqRNAGRc0CS
+        Tue, 12 Apr 2022 15:04:25 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96FF620E
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 12:02:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649790127; x=1681326127;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RBNPrefe8ZmddWqaYvMHWA3kI5l2YFVxnKTiFFQO1Wg=;
+  b=DlDats40DGwPZ/y17B4UWrQ6JkdbI+RyC1eWDCTrt/j8aSkklBMMaAsp
+   sj3DEZzctXsG9c5kzhiYhsBj2U6BA52Ph/MJ2wr2d0sjXw8SFj75/J/1j
+   PsYoeAwroKSC5t9orebTQBa4VdYz30COrTDswTSDKIu/MmogXbmms2VEu
+   q22iHyfash2pm3jG261+UvKK1pMn8vbZI4hcAAu/ujNNHFD7Upb3wI7PA
+   6TZPq+N/Once/yCshtKwqzpKHpEVlXKT4MdBqlnCsLc3sk4rswMPGQm2m
+   VcYxXfkR1ELU2Xokhiaqq1Lv1T3ZWYY4qunuMo6QWCjGN5bs9f7/+9ezD
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10315"; a="262232135"
+X-IronPort-AV: E=Sophos;i="5.90,254,1643702400"; 
+   d="scan'208";a="262232135"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2022 12:01:56 -0700
+X-IronPort-AV: E=Sophos;i="5.90,254,1643702400"; 
+   d="scan'208";a="572916307"
+Received: from sergeyst-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.228.61])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2022 12:01:53 -0700
+From:   gregory.greenman@intel.com
+To:     kvalo@kernel.org, johannes@sipsolutions.net
+Cc:     luca@coelho.fi, luciano.coelho@intel.com,
+        linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH] MAINTAINERS: update iwlwifi driver maintainer
+Date:   Tue, 12 Apr 2022 22:01:41 +0300
+Message-Id: <20220412190141.4543-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1c48:b0:2cb:cba0:f301 with SMTP id
- d8-20020a056e021c4800b002cbcba0f301mr772266ilg.156.1649784861528; Tue, 12 Apr
- 2022 10:34:21 -0700 (PDT)
-Date:   Tue, 12 Apr 2022 10:34:21 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000a095a405dc7878c5@google.com>
-Subject: [syzbot] WARNING: suspicious RCU usage in ieee80211_tx_h_select_key
-From:   syzbot <syzbot+e550ebeb0bc610768394@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,61 +58,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-syzbot found the following issue on:
+Set myself as a maintainer of iwlwifi driver as Luca is
+moving to a new role.
 
-HEAD commit:    ce522ba9ef7e Linux 5.18-rc2
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17b1ddc4f00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9ac56d6828346c4e
-dashboard link: https://syzkaller.appspot.com/bug?extid=e550ebeb0bc610768394
-compiler:       Debian clang version 13.0.1-++20220126092033+75e33f71c2da-1~exp1~20220126212112.63, GNU ld (GNU Binutils for Debian) 2.35.2
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e550ebeb0bc610768394@syzkaller.appspotmail.com
-
-=============================
-WARNING: suspicious RCU usage
-5.18.0-rc2-syzkaller #0 Not tainted
------------------------------
-net/mac80211/tx.c:604 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-
-rcu_scheduler_active = 2, debug_locks = 1
-3 locks held by kworker/u4:7/5407:
- #0: ffff888023e70938 ((wq_completion)phy24){+.+.}-{0:0}, at: process_one_work+0x796/0xd10 kernel/workqueue.c:2262
- #1: ffffc90002fffd00 ((work_completion)(&(&data->hw_scan)->work)){+.+.}-{0:0}, at: process_one_work+0x7d0/0xd10 kernel/workqueue.c:2264
- #2: ffff88801c127128 (&data->mutex){+.+.}-{3:3}, at: hw_scan_work+0xbd/0xcf0 drivers/net/wireless/mac80211_hwsim.c:2431
-
-stack backtrace:
-CPU: 0 PID: 5407 Comm: kworker/u4:7 Not tainted 5.18.0-rc2-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: phy24 hw_scan_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x1e3/0x2cb lib/dump_stack.c:106
- ieee80211_tx_h_select_key+0x6ba/0x14a0 net/mac80211/tx.c:604
- invoke_tx_handlers_early+0x9db/0x1cd0 net/mac80211/tx.c:1798
- invoke_tx_handlers net/mac80211/tx.c:1862 [inline]
- ieee80211_tx_prepare_skb+0x1c0/0x4d0 net/mac80211/tx.c:1885
- hw_scan_work+0x7e8/0xcf0 drivers/net/wireless/mac80211_hwsim.c:2478
- process_one_work+0x81c/0xd10 kernel/workqueue.c:2289
- worker_thread+0xb14/0x1330 kernel/workqueue.c:2436
- kthread+0x266/0x300 kernel/kthread.c:376
- ret_from_fork+0x1f/0x30
- </TASK>
-
-
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e5ce4f60786e..283ddb060e6c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9945,7 +9945,7 @@ S:	Supported
+ F:	drivers/net/wireless/intel/iwlegacy/
+ 
+ INTEL WIRELESS WIFI LINK (iwlwifi)
+-M:	Luca Coelho <luciano.coelho@intel.com>
++M:	Gregory Greenman <gregory.greenman@intel.com>
+ L:	linux-wireless@vger.kernel.org
+ S:	Supported
+ W:	https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi
+-- 
+2.35.1
+
