@@ -2,62 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 678334FDEC6
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 13:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6916B4FDF3B
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 14:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344607AbiDLL7f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Apr 2022 07:59:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59502 "EHLO
+        id S242961AbiDLMGW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Apr 2022 08:06:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349365AbiDLL5t (ORCPT
+        with ESMTP id S1354073AbiDLMEV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Apr 2022 07:57:49 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82A6D60DB5;
-        Tue, 12 Apr 2022 03:47:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2CD02B81CBB;
-        Tue, 12 Apr 2022 10:47:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90C5C385A1;
-        Tue, 12 Apr 2022 10:47:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649760424;
-        bh=8nrqqM3IkuVaMYtRsABBZlIcS5QBrVTQAj/P3+5fYYI=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=IFJ0f4ZD3Llfeaj09qoCE9fqavR0fqRwZhrOfd+ghn84ggQnDQE8GFnbmO08hqc8c
-         JU2zcJpWxRU9xlS2+iOAJVmdlpFlYPlfjMaZ+TgCK19Tk0XJ4Xehrzzr0XlQGF9/Mm
-         d/U1TWLuYMyucl59ci/bEKB6t+9Zu5cmuypNYgNrNXp/8dTfQd1FYIUgiJ/j5MoDyR
-         D0llTsWIxesJzjKOrQy6NdDLgGXJE8RK2eUESE9sWSpQVCZ9xXaQDO/hyUmOQ8YWjo
-         T/KN8c4LpQexG+qvay1ZBzDW2gRysRhGBVsJjK6plN+gbY/I5FgCgpoxQIt9r01whD
-         mtGRjmuH7zPXg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Abhishek Kumar <kuabhs@chromium.org>
-Cc:     Doug Anderson <dianders@chromium.org>,
-        Rakesh Pillai <pillair@codeaurora.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        ath10k <ath10k@lists.infradead.org>,
-        netdev <netdev@vger.kernel.org>
-Subject: Re: [PATCH 1/2] ath10k: search for default BDF name provided in DT
-References: <20220107200417.1.Ie4dcc45b0bf365077303c596891d460d716bb4c5@changeid>
-        <CAD=FV=W5fHP8K-PcoYWxYHiDWnPUVQQzOzw=REbuJSSqGeVVfg@mail.gmail.com>
-        <87sfrqqfzy.fsf@kernel.org>
-        <CAD=FV=U0Qw-OnKJg8SWk9=e=B0qgqnaTHpuR0cRA0WCmSHSJYQ@mail.gmail.com>
-        <CACTWRwtpYBokTehRE0_zSdSjio6Ga1yqdCfj1TNck7SqOT8o_Q@mail.gmail.com>
-Date:   Tue, 12 Apr 2022 13:46:55 +0300
-In-Reply-To: <CACTWRwtpYBokTehRE0_zSdSjio6Ga1yqdCfj1TNck7SqOT8o_Q@mail.gmail.com>
-        (Abhishek Kumar's message of "Mon, 11 Apr 2022 16:25:10 -0700")
-Message-ID: <87fsmio9y8.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 12 Apr 2022 08:04:21 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21BC547ADC;
+        Tue, 12 Apr 2022 04:07:00 -0700 (PDT)
+X-UUID: 676868af6406413787f0d702b42f98eb-20220412
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.4,REQID:51df6b48-84d7-4058-bb75-9795b7018160,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:50,FILE:0,RULE:Release_Ham,ACT
+        ION:release,TS:50
+X-CID-INFO: VERSION:1.1.4,REQID:51df6b48-84d7-4058-bb75-9795b7018160,OB:0,LOB:
+        0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:50,FILE:0,RULE:Release_Ham,ACTIO
+        N:release,TS:50
+X-CID-META: VersionHash:faefae9,CLOUDID:8e5ae6a8-d103-4e36-82b9-b0e86991b3df,C
+        OID:IGNORED,Recheck:0,SF:13|15|28|17|19|48,TC:nil,Content:0,EDM:-3,File:ni
+        l,QS:0,BEC:nil
+X-UUID: 676868af6406413787f0d702b42f98eb-20220412
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 417370313; Tue, 12 Apr 2022 19:06:56 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 12 Apr 2022 19:06:55 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 12 Apr 2022 19:06:55 +0800
+Message-ID: <668f1310cc78b17c24ce7be10f5f907d5578e280.camel@mediatek.com>
+Subject: Re: [PATCH] Revert "mt76: mt7921: enable aspm by default"
+From:   Deren Wu <deren.wu@mediatek.com>
+To:     Kalle Valo <kvalo@kernel.org>, Philippe Schenker <dev@pschenker.ch>
+CC:     <linux-wireless@vger.kernel.org>, Felix Fietkau <nbd@nbd.name>,
+        <linux@leemhuis.info>, "David S. Miller" <davem@davemloft.net>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Sean Wang" <sean.wang@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        "YN Chen" <YN.Chen@mediatek.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>, <netdev@vger.kernel.org>
+Date:   Tue, 12 Apr 2022 19:06:54 +0800
+In-Reply-To: <87y20aod5d.fsf@kernel.org>
+References: <20220412090415.17541-1-dev@pschenker.ch>
+         <87y20aod5d.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 7bit
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,48 +72,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Abhishek Kumar <kuabhs@chromium.org> writes:
+On Tue, 2022-04-12 at 12:37 +0300, Kalle Valo wrote:
+> Philippe Schenker <dev@pschenker.ch> writes:
+> 
+> > This reverts commit bf3747ae2e25dda6a9e6c464a717c66118c588c8.
+> > 
+> > This commit introduces a regression on some systems where the
+> > kernel is
+> > crashing in different locations after a reboot was issued.
+> > 
+> > This issue was bisected on a Thinkpad P14s Gen2 (AMD) with latest
+> > firmware.
+> > 
+> > Link: 
+> > https://urldefense.com/v3/__https://lore.kernel.org/linux-wireless/5077a953487275837e81bdf1808ded00b9676f9f.camel@pschenker.ch/__;!!CTRNKA9wMg0ARbw!09tjyaQlMci3fVI3yiNiDJKUW_qwNA_CbVhoAraeIX96B99Q14J4iDycWA9cq36Y$
+> >  
+> > Signed-off-by: Philippe Schenker <dev@pschenker.ch>
+> 
+> Can I take this to wireless tree? Felix, ack?
+> 
+> I'll also add:
+> 
+> Fixes: bf3747ae2e25 ("mt76: mt7921: enable aspm by default")
+> 
 
-> Hi All,
->
-> Apologies for the late reply, too many things at the same time.
+Hi Kalle,
 
-Trust me, I know the feeling :)
+We have a patch for a similar problem. Can you wait for the
+verification by Philippe?
+Commit 602cc0c9618a81 ("mt76: mt7921e: fix possible probe failure after
+reboot")
+Link: 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/net/wireless/mediatek/mt76?id=602cc0c9618a819ab00ea3c9400742a0ca318380
 
-> Just a quick note, Qcomm provided a new BDF file with support for
-> 'bus=snoc,qmi-board-id=ff' as well, so even without this patch, the
-> non-programmed devices(with board-id=0xff) would work. However, for
-> optimization of the BDF search strategy, the above mentioned strategy
-> would still not work: - The stripping of full Board name would not
-> work if board-id itself is not programmed i.e. =0xff e.g. for
-> 'bus=snoc,qmi-board-id=ff,qmi-chip-id=320,variant=GO_LAZOR' => no
-> match 'bus=snoc,qmi-board-id=ff,qmi-chip-id=320' => no match
-> 'bus=snoc,qmi-board-id=ff' => no match 'bus=snoc' => no match because
-> all the BDFs contains board-id=67
+I can reproduce the problem in my v5.16-rc5 desktop. And the issue can
+be fixed when the patch applied.
 
-Sorry, not fully following your here. Are you saying that the problem is
-that WCN3990/hw1.0/board-2.bin is missing board file for 'bus=snoc'?
-That's easy to add, each board file within board-2.bin has multiple
-names so we can easily select one board file for which we add
-'bus=snoc'.
 
-> So with this DT patch specifically for case 'bus=snoc,qmi-board-id=ff'
-> => no match, we fallback to default case ( the one provided in DT)
-> i.e. 'bus=snoc,qmi-board-id=67' => match . I do not see how exactly
-> the driver can know that it should check for a board-id of 67.
+Hi Philippe,
 
-Sorry, not following you here either. Why would the driver need to use
-board-id 67?
+Can you please help to check the patch in your platform?
 
-> However, to still remove dependency on the DT, we can make the
-> board-id as no-op if it is not programmed i.e. if the board-id=ff then
-> we would pick any BDF that match 'bus=snoc,qmi-board-id=<XX>' where XX
-> can be any arbitrary number. Thoughts ?
 
-To me using just 'bus=snoc' is more logical than picking up an arbitrary
-number. But I might be missing something here.
+Regards,
+Deren
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
