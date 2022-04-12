@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 473844FE957
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 22:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A8C64FE994
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 22:42:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229674AbiDLUPF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Apr 2022 16:15:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33470 "EHLO
+        id S230230AbiDLUnP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Apr 2022 16:43:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230298AbiDLUPC (ORCPT
+        with ESMTP id S230160AbiDLUmy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Apr 2022 16:15:02 -0400
+        Tue, 12 Apr 2022 16:42:54 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E8FAB645E
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 13:12:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41A051704E
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 13:37:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
         Resent-Message-ID:In-Reply-To:References;
-        bh=DvXP29wr0qTTPtoDc/epf0W9+yJEFZNyem++GYEyQFc=; t=1649794361; x=1651003961; 
-        b=ScszqcwH5aYTtOcbHlxalddIbspVf0tYIY0zW82OnXK5VSEQ3sEuYYL0cO8usJ4fmpYVDJI2kVl
-        V4tB9a9GnlyJf5nwyNS9Xsklhs0rEwDCpCR59rFXuoGhAnxKQDFSff20uuA1cY7vv4xK2kpCuegFT
-        T/AjKfMDGk+90vS+L7ijtxt/fAqnZR4tjD+jGlTidZw0IluimqwnXsBpTdyspAt4954faoY2pLJ0+
-        X4DgWz7lsd8Favfy2dGSAoAd0f+NMqBpe7HLJ41dgLyKKpN6QTc/yJ82Mco/xT7kAMlweIJpSD74f
-        Pj7Hk1iu+ZLWQlLV8TUHp3rfOo5Kj0mIFAjg==;
+        bh=j0by0npqCyevpFr0e9s/uO2tRbkL6fmzEW7VD0mn3vo=; t=1649795858; x=1651005458; 
+        b=SlRu0U1WXQJ5SLdi0Od04xXC3ATkkhmqql9OHr3H6X2AxFBnpXebBbK4su7IN06nBxs3c3ZWi2h
+        y6cOoh6CAoDnsNJ9W5TtDId8o4wALou43HRHKpF+XLJgViRWF5kEPEJdLrMpXZM+1l4OZz1ltXSNV
+        OWXGnAyrOenEonAqBxChn+C9sA41E5uEol1OXOKLHkmyW+Enyz/vNFLW4vDbSh+mmMIi4UbkwiyZ1
+        w94Ufk968bEbaVIVhNI3/Kn82aB65s6RuAP2z4HaX2rqEsJh1AdvOhmRneV6A4OCeIG7fz0+Y0Gt3
+        Pfg/A0n74yjoIb5Oh5zX7D+UxqJmhinCZPZA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1neMo9-0096RH-3T;
-        Tue, 12 Apr 2022 22:08:13 +0200
+        id 1neMpu-0096U2-Hu;
+        Tue, 12 Apr 2022 22:10:02 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] cfg80211: remove cfg80211_get_chan_state()
-Date:   Tue, 12 Apr 2022 22:08:10 +0200
-Message-Id: <20220412220809.026f03c412c0.Ide4448f02d0e2f1ca2992971421ffc1933a5370a@changeid>
+Subject: [PATCH v2] cfg80211: remove cfg80211_get_chan_state()
+Date:   Tue, 12 Apr 2022 22:09:59 +0200
+Message-Id: <20220412220958.1a191dca19d7.Ide4448f02d0e2f1ca2992971421ffc1933a5370a@changeid>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -63,10 +63,10 @@ members that were only used for this function.
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
  include/net/cfg80211.h |  5 ---
- net/wireless/chan.c    | 91 ------------------------------------------
- net/wireless/core.h    | 12 ------
- net/wireless/ibss.c    |  2 -
- 4 files changed, 110 deletions(-)
+ net/wireless/chan.c    | 93 +-----------------------------------------
+ net/wireless/core.h    | 14 +------
+ net/wireless/ibss.c    |  4 +-
+ 4 files changed, 3 insertions(+), 113 deletions(-)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
 index 68713388b617..cd1212113901 100644
@@ -92,9 +92,18 @@ index 68713388b617..cd1212113901 100644
  	int ps_timeout;
  
 diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index 8b7fb4a9e07b..21962ac08d72 100644
+index 8b7fb4a9e07b..f74f176e0d9d 100644
 --- a/net/wireless/chan.c
 +++ b/net/wireless/chan.c
+@@ -6,7 +6,7 @@
+  *
+  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+- * Copyright 2018-2021	Intel Corporation
++ * Copyright 2018-2022	Intel Corporation
+  */
+ 
+ #include <linux/export.h>
 @@ -1344,97 +1344,6 @@ int cfg80211_set_monitor_channel(struct cfg80211_registered_device *rdev,
  	return rdev_set_monitor_channel(rdev, chandef);
  }
@@ -194,9 +203,18 @@ index 8b7fb4a9e07b..21962ac08d72 100644
  				  unsigned long sband_mask,
  				  u32 prohibited_flags)
 diff --git a/net/wireless/core.h b/net/wireless/core.h
-index 3a7dbd63d8c6..b9aa6f52a308 100644
+index 3a7dbd63d8c6..5436ada91b1a 100644
 --- a/net/wireless/core.h
 +++ b/net/wireless/core.h
+@@ -3,7 +3,7 @@
+  * Wireless configuration interface internals.
+  *
+  * Copyright 2006-2010	Johannes Berg <johannes@sipsolutions.net>
+- * Copyright (C) 2018-2021 Intel Corporation
++ * Copyright (C) 2018-2022 Intel Corporation
+  */
+ #ifndef __NET_WIRELESS_CORE_H
+ #define __NET_WIRELESS_CORE_H
 @@ -281,12 +281,6 @@ struct cfg80211_cached_keys {
  	int def;
  };
@@ -224,9 +242,18 @@ index 3a7dbd63d8c6..b9aa6f52a308 100644
  				 struct cfg80211_chan_def *chandef);
  
 diff --git a/net/wireless/ibss.c b/net/wireless/ibss.c
-index 8f98e546becf..bcbdd27b0b1c 100644
+index 8f98e546becf..5d89eec2869a 100644
 --- a/net/wireless/ibss.c
 +++ b/net/wireless/ibss.c
+@@ -3,7 +3,7 @@
+  * Some IBSS support code for cfg80211.
+  *
+  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
+- * Copyright (C) 2020-2021 Intel Corporation
++ * Copyright (C) 2020-2022 Intel Corporation
+  */
+ 
+ #include <linux/etherdevice.h>
 @@ -131,8 +131,6 @@ int __cfg80211_join_ibss(struct cfg80211_registered_device *rdev,
  		kfree_sensitive(wdev->connect_keys);
  	wdev->connect_keys = connkeys;
