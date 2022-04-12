@@ -2,61 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4C174FDE9E
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 13:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADA584FDEB2
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 13:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244049AbiDLLyf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Apr 2022 07:54:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48480 "EHLO
+        id S245312AbiDLL5S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Apr 2022 07:57:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350732AbiDLLxE (ORCPT
+        with ESMTP id S1344344AbiDLL4t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Apr 2022 07:53:04 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A19F5D67F;
-        Tue, 12 Apr 2022 03:37:05 -0700 (PDT)
+        Tue, 12 Apr 2022 07:56:49 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B92CF60A9A;
+        Tue, 12 Apr 2022 03:40:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DF75DB81CA4;
-        Tue, 12 Apr 2022 10:37:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CB0C385A9;
-        Tue, 12 Apr 2022 10:36:57 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6EDB4B81CA1;
+        Tue, 12 Apr 2022 10:40:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33452C385A1;
+        Tue, 12 Apr 2022 10:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649759822;
-        bh=aW4x6amHzum00rDQPT0FUG+ggRroUKbynU3+mFAMVMs=;
+        s=k20201202; t=1649760014;
+        bh=9pk3pVVU+tzTaBuH4UHl5rYkdZrqMTBhJJtEpCzTfyo=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=qA+nHcZTf76+eD7wAm4dguMty2X7Md0r/KunP1VnoFC53/YPOSJyFrJRjRb1C6Os/
-         i77YGzYijefmhXDTFLslXAKRS7T2NiScf7dO4p60+AswhP8uWewlnKa/Up6uG3pNq+
-         dnOGUKfms80yp8RYw5UlMXDllY8DOMX7hUiEW6kESVrVdaJNe61vTUNQubYMBQ9H5+
-         a9+jCxp3Pa7OqtWH+p8q87XlwbsgDcoN+RiYFKb/SeB4wqrph9EZl15pKyxMalpeND
-         BaS9myYIVHQQfIzqcrUIWj3I1U3qRBz2Qi4XFNlbIRp3hOIYZkm+qEsoLy6gpgDpGV
-         IYMdLHZ7etrSA==
+        b=eahZ62fOXAYpMrYgfr9ydE51IMiVoUgBsXQph+GuZSgcqRrtunDqIhC2jLGvvXcnA
+         ouOr1dnxr4uX2dK+0HJFnAZZUVhv1A8WnxN3jR1Atx8s868HhTy2roiTmytWKO+rJa
+         OAMxcepuKuCGfcBD+hN5vNcKJNQXs5KHPNgHGFfa4gS+rr+8deqC2nfE1tlQRIxBk1
+         Rt2BGnLctZoGv17phoi/Xk7pb1d2WnPe3inqxPXMmxtLtLBR+7dqk6ZLhd5v0u+hJk
+         1AXGRVBPtu3Cs+iBii4FtUCaPFZhoXcc8XR6ssyMJSFkVwUkpfdaf8cJLht+dxstMn
+         RJ1e1OdttNz+g==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     Philippe Schenker <dev@pschenker.ch>,
-        linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        "David S. Miller" <davem@davemloft.net>,
-        Deren Wu <deren.wu@mediatek.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-        "regressions\@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: Re: [PATCH] Revert "mt76: mt7921: enable aspm by default"
-References: <20220412090415.17541-1-dev@pschenker.ch>
-        <87y20aod5d.fsf@kernel.org>
-        <7aa0bbd0-5498-ba74-ad6d-6dacbade8a3d@leemhuis.info>
-Date:   Tue, 12 Apr 2022 13:36:52 +0300
-In-Reply-To: <7aa0bbd0-5498-ba74-ad6d-6dacbade8a3d@leemhuis.info> (Thorsten
-        Leemhuis's message of "Tue, 12 Apr 2022 11:55:13 +0200")
-Message-ID: <87o816oaez.fsf@kernel.org>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc:     Prasad Malisetty <quic_pmaliset@quicinc.com>, agross@kernel.org,
+        bjorn.andersson@linaro.org, lorenzo.pieralisi@arm.com,
+        robh@kernel.org, kw@linux.com, bhelgaas@google.com,
+        linux-pci@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rajatja@google.com,
+        refactormyself@gmail.com, quic_vbadigan@quicinc.com,
+        quic_ramkri@quicinc.com, swboyd@chromium.org,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH v4] PCI: qcom: Add system PM support
+References: <1646679306-4768-1-git-send-email-quic_pmaliset@quicinc.com>
+        <20220412060144.GA41348@thinkpad>
+Date:   Tue, 12 Apr 2022 13:40:08 +0300
+In-Reply-To: <20220412060144.GA41348@thinkpad> (Manivannan Sadhasivam's
+        message of "Tue, 12 Apr 2022 11:31:44 +0530")
+Message-ID: <87k0buoa9j.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -70,49 +62,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thorsten Leemhuis <regressions@leemhuis.info> writes:
++ ath11k
 
-> On 12.04.22 11:37, Kalle Valo wrote:
->> Philippe Schenker <dev@pschenker.ch> writes:
->> 
->>> This reverts commit bf3747ae2e25dda6a9e6c464a717c66118c588c8.
->>>
->>> This commit introduces a regression on some systems where the kernel is
->>> crashing in different locations after a reboot was issued.
->>>
->>> This issue was bisected on a Thinkpad P14s Gen2 (AMD) with latest firmware.
->>>
->>> Link:
->>> https://lore.kernel.org/linux-wireless/5077a953487275837e81bdf1808ded00b9676f9f.camel@pschenker.ch/
->>> Signed-off-by: Philippe Schenker <dev@pschenker.ch>
->> 
->> Can I take this to wireless tree? Felix, ack?
->> 
->> I'll also add:
->> 
->> Fixes: bf3747ae2e25 ("mt76: mt7921: enable aspm by default")
->
-> Sorry, stupid questions from the regression tracker: wouldn't this cause
-> a regression for users of kernel versions post-bf3747ae2e25, as the
-> power consumption is likely to increase for them? Without having dug
-> into the backstory much: would disabling ASPM for this particular
-> machine using a quirk be the better approach? Or are we assuming a lot
-> of machines are affected?
->
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
->
-> P.S.: As the Linux kernel's regression tracker I'm getting a lot of
-> reports on my table. I can only look briefly into most of them and lack
-> knowledge about most of the areas they concern. I thus unfortunately
-> will sometimes get things wrong or miss something important. I hope
-> that's not the case here; if you think it is, don't hesitate to tell me
-> in a public reply, it's in everyone's interest to set the public record
-> straight.
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
 
-BTW, maybe you could add that boilerplace text after P.S. into the
-signature (ie. under "-- " line)? That way your mails would more
-readable and make it more clear that you didn't write the boilerplate
-text specifically for this mail.
+> +Kalle, linux-wireless
+>
+> On Tue, Mar 08, 2022 at 12:25:06AM +0530, Prasad Malisetty wrote:
+>> Add suspend_noirq and resume_noirq callbacks to handle
+>> system suspend and resume in dwc PCIe controller driver.
+>> 
+>> When system suspends, send PME turnoff message to enter
+>> link into L2 state. Along with powerdown the PHY, disable
+>> pipe clock, switch gcc_pcie_1_pipe_clk_src to XO if mux is
+>> supported and disable the pcie clocks, regulators.
+>> 
+>
+> Kalle, is this behaviour appropriate for WLAN devices as well? The devices
+> will be put into poweroff state (assuming no Vaux provided in D3cold) during
+> system suspend.
+
+ath11k leaves the firmware running during suspend. I don't fully
+understand what the patch is doing, but if it cuts the power from the
+WLAN chip during suspend that will break ath11k.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
