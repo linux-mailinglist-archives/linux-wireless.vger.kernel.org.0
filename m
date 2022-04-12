@@ -2,60 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DC684FE405
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 16:42:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 879014FE736
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 19:34:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351784AbiDLOoy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Apr 2022 10:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32858 "EHLO
+        id S1358339AbiDLRgv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Apr 2022 13:36:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234174AbiDLOox (ORCPT
+        with ESMTP id S1358355AbiDLRgp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Apr 2022 10:44:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E481E11155;
-        Tue, 12 Apr 2022 07:42:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E9686114A;
-        Tue, 12 Apr 2022 14:42:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88B6C385A5;
-        Tue, 12 Apr 2022 14:42:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649774554;
-        bh=Q52tCbAaRn1P664NKV7dZwxginIy/el2s/AYgozHef4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ssTA9KpdYm40RCouhGZ+/ajNjpVuu6ytq5iM8LRk9C4kgaH5PH/dWbFO3lMVafwqx
-         5703RBhnTYQ3dzI+nekBH0j7TpqscM58jiZM8BL1ViMM0+JDRA2ybnwzEH7D1Tmv+A
-         8TDTgUm1HC9zD6rWsQeNm9rRtO2gUc+xOl1p+5xQ2VRP2ve+tncf+gMpjkePbwBZgT
-         DQOzXwGc6vSNXAC52cmh/zRpo3iMO+zKqtMJvRZnESqdO23it5Mt98PWirJAGIlrrl
-         HlhzgzM+bIbdtEjVV0YMFzi/6ZqhcXq68pdid5FaePk8yhwxvIUBzWNxWRg9m96avr
-         0D5sWbWx1z16w==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Jakub Kicinski <kuba@kernel.org>, devel@driverdev.osuosl.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [PATCH v10 0/1] wfx: get out from the staging area
-References: <20220226092142.10164-1-Jerome.Pouiller@silabs.com>
-        <YhojjHGp4EfsTpnG@kroah.com> <87wnhhsr9m.fsf@kernel.org>
-        <5830958.DvuYhMxLoT@pc-42> <878rslt975.fsf@tynnyri.adurom.net>
-        <20220404232247.01cc6567@kernel.org>
-        <20220404232930.05dd49cf@kernel.org> <878rskrod1.fsf@kernel.org>
-        <20220405092046.465ff7e5@kernel.org> <875ynmr8qu.fsf@kernel.org>
-        <Yk8iiZKFpYNgCbCz@kroah.com>
-Date:   Tue, 12 Apr 2022 17:42:29 +0300
-In-Reply-To: <Yk8iiZKFpYNgCbCz@kroah.com> (Greg Kroah-Hartman's message of
-        "Thu, 7 Apr 2022 19:42:33 +0200")
-Message-ID: <871qy2nz1m.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 12 Apr 2022 13:36:45 -0400
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B0CC18B09
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 10:34:22 -0700 (PDT)
+Received: by mail-io1-f71.google.com with SMTP id g16-20020a05660226d000b00638d8e1828bso12004717ioo.13
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 10:34:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=76SE2NB56vXH5NM9G3THUUmZ2Fv37V7kWmVL28ZuXes=;
+        b=pT9jB8tXA7dqQWWlDQjFQ7pf/oUaOagjrw4WiZ98nUnYCN7kajK25J9hadRbwxc0rN
+         KOel/Jj76wL2E3IvQ9eTFJ9lG3jpumyLJZbcaYqsqiSvm+vUWU2swM9Epfbl5Kt2n1lW
+         YuxY9DI2fyMayP8VqwdMYZzfovsQbFhYinrLgNt/mSZTRJy3MDccqZrYegnxZVZmdoWx
+         fGZkWSBOjxmK+xjLjwROYuwDP6oMmltrJdQQ/R9J36p4/30RD2kvCRa+nSePEz0dbd6S
+         Hifh95s9V9KttVMJ3eyZ1CcZNnDeyXWijMkZ+x4gohjEwuicJc/q0Dcqv/RbAQiSQmn8
+         qAfA==
+X-Gm-Message-State: AOAM533BZFGeCMRcLAN/Hv5dLfgAHH6alsixuzpteRcDRn1v2Tw/ohiv
+        Et38F5xzCA47CvfW6QUwmMQVyLmLEVHAA2Ct3qjtLbywRcIe
+X-Google-Smtp-Source: ABdhPJw7Ru72pObzE9Ta+Gy9/XRzJSF88PI1vo7s+/HcQl1xcbdg6NKzC7f73j9FYrS1PSgL31qv+xV4Q93w8cztjSqRNAGRc0CS
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Received: by 2002:a05:6e02:1c48:b0:2cb:cba0:f301 with SMTP id
+ d8-20020a056e021c4800b002cbcba0f301mr772266ilg.156.1649784861528; Tue, 12 Apr
+ 2022 10:34:21 -0700 (PDT)
+Date:   Tue, 12 Apr 2022 10:34:21 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000a095a405dc7878c5@google.com>
+Subject: [syzbot] WARNING: suspicious RCU usage in ieee80211_tx_h_select_key
+From:   syzbot <syzbot+e550ebeb0bc610768394@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,59 +55,61 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ stephen
+Hello,
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+syzbot found the following issue on:
 
-> On Wed, Apr 06, 2022 at 10:06:33AM +0300, Kalle Valo wrote:
->> Jakub Kicinski <kuba@kernel.org> writes:
->> 
->> > On Tue, 05 Apr 2022 10:16:58 +0300 Kalle Valo wrote:
->> >> Sure, that would technically work. But I just think it's cleaner to use
->> >> -rc1 (or later) as the baseline for an immutable branch. If the baseline
->> >> is an arbitrary commit somewhere within merge windows commits, it's more
->> >> work for everyone to verify the branch is suitable.
->> >> 
->> >> Also in general I would also prefer to base -next trees to -rc1 or newer
->> >> to make the bisect cleaner. The less we need to test kernels from the
->> >> merge window (ie. commits after the final release and before -rc1) the
->> >> better.
->> >> 
->> >> But this is just a small wish from me, I fully understand that it might
->> >> be too much changes to your process. Wanted to point out this anyway.
->> >
->> > Forwarded!
->> 
->> Awesome, thank you Jakub!
->> 
->> Greg, I now created an immutable branch for moving wfx from
->> drivers/staging to drivers/net/wireless/silabs:
->> 
->> git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
->> wfx-move-out-of-staging
->> 
->> The baseline for this branch is v5.18-rc1. If you think the branch is
->> ok, please pull it to staging-next and let me know. I can then pull the
->> branch to wireless-next and the transition should be complete. And do
->> let me know if there are any problems.
->
-> Looks great to me!  I've pulled it into staging-next now.  And will not
-> take any more patches to the driver (some happened before the merge but
-> git handled the move just fine.)
+HEAD commit:    ce522ba9ef7e Linux 5.18-rc2
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17b1ddc4f00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=9ac56d6828346c4e
+dashboard link: https://syzkaller.appspot.com/bug?extid=e550ebeb0bc610768394
+compiler:       Debian clang version 13.0.1-++20220126092033+75e33f71c2da-1~exp1~20220126212112.63, GNU ld (GNU Binutils for Debian) 2.35.2
 
-Great, thanks Greg! I now merged the immutable branch also to
-wireless-next:
+Unfortunately, I don't have any reproducer for this issue yet.
 
-79649041edc8 Merge branch 'wfx-move-out-of-staging'
-4a5fb1bbcdf1 wfx: get out from the staging area
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+e550ebeb0bc610768394@syzkaller.appspotmail.com
 
-So from now on wfx patches should be submitted for wireless-next via the
-linux-wireless mailing list, instructions in the wiki link below.
+=============================
+WARNING: suspicious RCU usage
+5.18.0-rc2-syzkaller #0 Not tainted
+-----------------------------
+net/mac80211/tx.c:604 suspicious rcu_dereference_check() usage!
 
-Stephen, I want to warn you in advance about this driver move but
-hopefully everything goes smoothly.
+other info that might help us debug this:
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+rcu_scheduler_active = 2, debug_locks = 1
+3 locks held by kworker/u4:7/5407:
+ #0: ffff888023e70938 ((wq_completion)phy24){+.+.}-{0:0}, at: process_one_work+0x796/0xd10 kernel/workqueue.c:2262
+ #1: ffffc90002fffd00 ((work_completion)(&(&data->hw_scan)->work)){+.+.}-{0:0}, at: process_one_work+0x7d0/0xd10 kernel/workqueue.c:2264
+ #2: ffff88801c127128 (&data->mutex){+.+.}-{3:3}, at: hw_scan_work+0xbd/0xcf0 drivers/net/wireless/mac80211_hwsim.c:2431
+
+stack backtrace:
+CPU: 0 PID: 5407 Comm: kworker/u4:7 Not tainted 5.18.0-rc2-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: phy24 hw_scan_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1e3/0x2cb lib/dump_stack.c:106
+ ieee80211_tx_h_select_key+0x6ba/0x14a0 net/mac80211/tx.c:604
+ invoke_tx_handlers_early+0x9db/0x1cd0 net/mac80211/tx.c:1798
+ invoke_tx_handlers net/mac80211/tx.c:1862 [inline]
+ ieee80211_tx_prepare_skb+0x1c0/0x4d0 net/mac80211/tx.c:1885
+ hw_scan_work+0x7e8/0xcf0 drivers/net/wireless/mac80211_hwsim.c:2478
+ process_one_work+0x81c/0xd10 kernel/workqueue.c:2289
+ worker_thread+0xb14/0x1330 kernel/workqueue.c:2436
+ kthread+0x266/0x300 kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
