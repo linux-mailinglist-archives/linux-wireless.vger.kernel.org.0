@@ -2,60 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4D0F4FD9A4
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 12:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FB124FDD41
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 13:08:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353173AbiDLJ41 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Apr 2022 05:56:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48876 "EHLO
+        id S240707AbiDLLCI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Apr 2022 07:02:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352396AbiDLIkP (ORCPT
+        with ESMTP id S233157AbiDLLAA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Apr 2022 04:40:15 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1084F24976
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 01:06:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649750798; x=1681286798;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=4ygQx8gDHsorwWGPcLNOYvL7O+tXSp51Fk2WHcrDRSQ=;
-  b=OQV+DqyHCnv0eGn59OXdWQy9jFe/3WQfKCmoQ2CdC4S1Ny4jslc9du3o
-   Y/DGcgA8qv2kOIPbroHC5M5lGHY4FzukffLI2zyxFlCb/P+C+c7D/rEtV
-   PCqA+Hju47YiDOFzbM0lg7y4wMX1VojTPzzM1zQk0bT1eUZC+UYN2dLQP
-   YxRphlUgSEGwyI6IL9OpsFKZzq0U8HG03ZijQWAqd0+fXwDEvcG0WuDHN
-   vF1NM+hzosjvanDPPiaSfGxGOgPZV86snE+tRTeXoKr2BZi2XP/zYxSQj
-   NO/IueuJMJjLWAr42B9oQoLeQMy+swIIkKKclM0UcNXYBDG4OKuRZz/h1
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10314"; a="261154897"
-X-IronPort-AV: E=Sophos;i="5.90,253,1643702400"; 
-   d="scan'208";a="261154897"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2022 01:06:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,253,1643702400"; 
-   d="scan'208";a="644611655"
-Received: from lkp-server02.sh.intel.com (HELO d3fc50ef50de) ([10.239.97.151])
-  by FMSMGA003.fm.intel.com with ESMTP; 12 Apr 2022 01:06:36 -0700
-Received: from kbuild by d3fc50ef50de with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1neBXn-0002eX-M5;
-        Tue, 12 Apr 2022 08:06:35 +0000
-Date:   Tue, 12 Apr 2022 16:06:02 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: [wireless-next:main] BUILD SUCCESS
- 046d2e7c50e3087a32a85fd384c21f896dbccf83
-Message-ID: <625532ea.kNjEM3tlXT8i+kT9%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Tue, 12 Apr 2022 07:00:00 -0400
+X-Greylist: delayed 1140 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 12 Apr 2022 02:50:58 PDT
+Received: from mxout012.mail.hostpoint.ch (mxout012.mail.hostpoint.ch [IPv6:2a00:d70:0:e::312])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E270165163;
+        Tue, 12 Apr 2022 02:50:56 -0700 (PDT)
+Received: from [10.0.2.44] (helo=asmtp014.mail.hostpoint.ch)
+        by mxout012.mail.hostpoint.ch with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.95 (FreeBSD))
+        (envelope-from <dev@pschenker.ch>)
+        id 1neCSD-000OOB-IK;
+        Tue, 12 Apr 2022 11:04:53 +0200
+Received: from 31-10-206-124.static.upc.ch ([31.10.206.124] helo=localhost.localdomain)
+        by asmtp014.mail.hostpoint.ch with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.95 (FreeBSD))
+        (envelope-from <dev@pschenker.ch>)
+        id 1neCSD-000CGw-Ce;
+        Tue, 12 Apr 2022 11:04:53 +0200
+X-Authenticated-Sender-Id: dev@pschenker.ch
+From:   Philippe Schenker <dev@pschenker.ch>
+To:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>
+Cc:     linux@leemhuis.info, Philippe Schenker <dev@pschenker.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Deren Wu <deren.wu@mediatek.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: [PATCH] Revert "mt76: mt7921: enable aspm by default"
+Date:   Tue, 12 Apr 2022 11:04:14 +0200
+Message-Id: <20220412090415.17541-1-dev@pschenker.ch>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,155 +60,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 046d2e7c50e3087a32a85fd384c21f896dbccf83  mac80211: prepare sta handling for MLO support
+This reverts commit bf3747ae2e25dda6a9e6c464a717c66118c588c8.
 
-Unverified Warning (likely false positive, please contact us if interested):
+This commit introduces a regression on some systems where the kernel is
+crashing in different locations after a reboot was issued.
 
-net/mac80211/status.c:980 __ieee80211_tx_status() warn: potential spectre issue 'sta->deflink.status_stats.msdu_failed' [w]
-net/mac80211/status.c:982 __ieee80211_tx_status() warn: potential spectre issue 'sta->deflink.status_stats.msdu_retries' [w]
+This issue was bisected on a Thinkpad P14s Gen2 (AMD) with latest firmware.
 
-Warning ids grouped by kconfigs:
+Link: https://lore.kernel.org/linux-wireless/5077a953487275837e81bdf1808ded00b9676f9f.camel@pschenker.ch/
+Signed-off-by: Philippe Schenker <dev@pschenker.ch>
+---
 
-gcc_recent_errors
-|-- i386-randconfig-m021-20220411
-|   |-- net-mac80211-status.c-__ieee80211_tx_status()-warn:potential-spectre-issue-sta-deflink.status_stats.msdu_failed-w
-|   `-- net-mac80211-status.c-__ieee80211_tx_status()-warn:potential-spectre-issue-sta-deflink.status_stats.msdu_retries-w
-`-- x86_64-randconfig-m001-20220411
-    |-- net-mac80211-status.c-__ieee80211_tx_status()-warn:potential-spectre-issue-sta-deflink.status_stats.msdu_failed-w
-    `-- net-mac80211-status.c-__ieee80211_tx_status()-warn:potential-spectre-issue-sta-deflink.status_stats.msdu_retries-w
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-elapsed time: 975m
-
-configs tested: 116
-configs skipped: 4
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm64                               defconfig
-arm64                            allyesconfig
-arm                              allmodconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                 randconfig-c001-20220411
-arm                     eseries_pxa_defconfig
-powerpc                      mgcoge_defconfig
-mips                  decstation_64_defconfig
-sh                 kfr2r09-romimage_defconfig
-arm                       imx_v6_v7_defconfig
-arm                          pxa3xx_defconfig
-m68k                       m5475evb_defconfig
-xtensa                          iss_defconfig
-powerpc                      ppc40x_defconfig
-arc                           tb10x_defconfig
-xtensa                  cadence_csp_defconfig
-sh                          rsk7203_defconfig
-mips                         cobalt_defconfig
-nios2                            alldefconfig
-sh                               j2_defconfig
-m68k                       m5249evb_defconfig
-powerpc                     stx_gp3_defconfig
-openrisc                         alldefconfig
-arm                      jornada720_defconfig
-arm                  randconfig-c002-20220411
-x86_64               randconfig-c001-20220411
-ia64                             allmodconfig
-ia64                             allyesconfig
-ia64                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-csky                                defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-alpha                            allyesconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                             allmodconfig
-s390                                defconfig
-s390                             allyesconfig
-sparc                               defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-x86_64               randconfig-a016-20220411
-x86_64               randconfig-a012-20220411
-x86_64               randconfig-a013-20220411
-x86_64               randconfig-a014-20220411
-x86_64               randconfig-a015-20220411
-x86_64               randconfig-a011-20220411
-i386                 randconfig-a015-20220411
-i386                 randconfig-a011-20220411
-i386                 randconfig-a016-20220411
-i386                 randconfig-a012-20220411
-i386                 randconfig-a013-20220411
-i386                 randconfig-a014-20220411
-riscv                randconfig-r042-20220411
-arc                  randconfig-r043-20220411
-s390                 randconfig-r044-20220411
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                         rhel-8.3-kunit
-x86_64                               rhel-8.3
-
-clang tested configs:
-powerpc              randconfig-c003-20220411
-arm                  randconfig-c002-20220411
-riscv                randconfig-c006-20220411
-x86_64               randconfig-c007-20220411
-mips                 randconfig-c004-20220411
-i386                 randconfig-c001-20220411
-powerpc                 mpc832x_mds_defconfig
-arm                        multi_v5_defconfig
-powerpc                 mpc8315_rdb_defconfig
-powerpc                     mpc512x_defconfig
-hexagon                             defconfig
-powerpc                     ppa8548_defconfig
-x86_64                           allyesconfig
-powerpc                 mpc837x_rdb_defconfig
-i386                 randconfig-a004-20220411
-i386                 randconfig-a001-20220411
-i386                 randconfig-a003-20220411
-i386                 randconfig-a005-20220411
-i386                 randconfig-a006-20220411
-i386                 randconfig-a002-20220411
-x86_64               randconfig-a003-20220411
-x86_64               randconfig-a004-20220411
-x86_64               randconfig-a006-20220411
-x86_64               randconfig-a001-20220411
-x86_64               randconfig-a002-20220411
-x86_64               randconfig-a005-20220411
-hexagon              randconfig-r041-20220411
-hexagon              randconfig-r045-20220411
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 1a01d025bbe5..59f9ee089389 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -20,10 +20,6 @@ static const struct pci_device_id mt7921_pci_device_table[] = {
+ 	{ },
+ };
+ 
+-static bool mt7921_disable_aspm;
+-module_param_named(disable_aspm, mt7921_disable_aspm, bool, 0644);
+-MODULE_PARM_DESC(disable_aspm, "disable PCI ASPM support");
+-
+ static void
+ mt7921_rx_poll_complete(struct mt76_dev *mdev, enum mt76_rxq_id q)
+ {
+@@ -280,8 +276,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+ 	if (ret)
+ 		goto err_free_pci_vec;
+ 
+-	if (mt7921_disable_aspm)
+-		mt76_pci_disable_aspm(pdev);
++	mt76_pci_disable_aspm(pdev);
+ 
+ 	mdev = mt76_alloc_device(&pdev->dev, sizeof(*dev), &mt7921_ops,
+ 				 &drv_ops);
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.35.1
+
