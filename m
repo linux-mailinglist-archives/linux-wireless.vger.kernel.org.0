@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 182A94FE2D2
+	by mail.lfdr.de (Postfix) with ESMTP id C2BEB4FE2D3
 	for <lists+linux-wireless@lfdr.de>; Tue, 12 Apr 2022 15:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237884AbiDLNhX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Apr 2022 09:37:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40708 "EHLO
+        id S245512AbiDLNiQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Apr 2022 09:38:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232921AbiDLNhX (ORCPT
+        with ESMTP id S1356343AbiDLNiN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Apr 2022 09:37:23 -0400
+        Tue, 12 Apr 2022 09:38:13 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A09A1CB35
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 06:35:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C23652D1CA
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 06:35:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 59D07B81D7A
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 13:35:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51ACC385A5;
-        Tue, 12 Apr 2022 13:35:01 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7CD9BB81DA9
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 13:35:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247E6C385A6;
+        Tue, 12 Apr 2022 13:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649770503;
-        bh=flebTVYRC7PF7Pn2mlVDLfZTNlOIqfWxE9rQwXd2yPg=;
+        s=k20201202; t=1649770553;
+        bh=SuXlMzwcDmn7a5+aJzr1vKBKmzOIHZZ8lGMmDoXDmsA=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=VGNfja1gZ/H85OHdpPYsJTXVe0IlvxtFgWQtM+b/K+3GJtiiwJeRa8/WEKn+my3+U
-         JzIjocAmoRZc5YvqYrQXr45ATt28pL50jIZRLu5fqaKvhxtqYLv23j3P/N8oUVedQE
-         uFeV0YAI4EYTd/vxEeJ/h+t04K+6X6/9izWfAfQ/hz2+VlzQNYnpRgYffkbpX1BLl0
-         uvYcblDuekYUTH2UjzYIhYEd0J9dNwudDmJFoWTj2gmDWeprSFdcT4GMXaQSlRoVpL
-         O4bYxR9D6j8NmW0nRpRLKOrG0C6ZTnhohxeqbzXbcFfS65iTfTbuMeX+M4+XrcVBvi
-         HOLSpjsyH0TRg==
+        b=FbJmq3tBjAQHayGQse35WzjUClm2GYj6ZNEzSOzO7nmDdZRW0is2R6Mtwh1r7rRyz
+         HYpSbtgz5zvHOKCsvM8GJu8r1omnk2YyaHqpQ4+fJX6gkpE9JMzAupJPlpKx049Vea
+         p8nbiTS6I/zts8LUl+KJ7WV3jqhesSinXExGKnTtp9H5+b2pGSx3+nffN4o5bs/RxY
+         pltHHIyHst0ft/n+ZiwoW5B4gxBGK4s9MMnDUqfOu5qlnuDxyWLwlA8CBMYlKMVMN1
+         ITVw0nO2ISAviE4LjoPD8fmN5ZNVD9PUxXAscIbcgLO0bZNqdUIaGhw9WFiwdtqQS1
+         jN3F2mgA/eZTQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 01/13] rtw89: ser: fix unannotated fall-through
+Subject: Re: [PATCH v2 10/13] rtw89: extend H2C of CMAC control info
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220408001353.17188-2-pkshih@realtek.com>
-References: <20220408001353.17188-2-pkshih@realtek.com>
+In-Reply-To: <20220408001353.17188-11-pkshih@realtek.com>
+References: <20220408001353.17188-11-pkshih@realtek.com>
 To:     Ping-Ke Shih <pkshih@realtek.com>
 Cc:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>,
         <johnson.lin@realtek.com>, <kevin_yang@realtek.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164977049978.31115.8928477805509989443.kvalo@kernel.org>
-Date:   Tue, 12 Apr 2022 13:35:01 +0000 (UTC)
+Message-ID: <164977055030.31115.15520119707373894158.kvalo@kernel.org>
+Date:   Tue, 12 Apr 2022 13:35:51 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,29 +57,29 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Zong-Zhe Yang <kevin_yang@realtek.com>
+> In order to support new chip that has capability of 160M, we need new
+> format to fill new information, so add a new V1 ID for newer use. Since
+> most fields are the same, fill fields according to the function ID of chip.
 > 
-> add `break` to fix warning of unannotated fall-through between switch
-> labels.
-> 
-> Fixes: 14f9f4790048 ("rtw89: ser: control hci interrupts on/off by state")
-> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-9 patches applied to wireless-next.git, thanks.
+Failed to apply, please rebase.
 
-5ddfffd6da9b rtw89: ser: fix unannotated fall-through
-eeadcd2a47f8 rtw89: ser: configure D-MAC interrupt mask
-d86369e937f1 rtw89: ser: configure C-MAC interrupt mask
-9f405b0162ba rtw89: ser: configure top ERR IMR for firmware to recover
-9a1ab283c709 rtw89: change station scheduler setting for hardware TX mode
-181751970107 rtw89: reset BA CAM
-ec356ffb2917 rtw89: 8852c: disable firmware watchdog if CPU disabled
-d264edb1cc65 rtw89: Skip useless dig gain and igi related settings for 8852C
-065cf8f9777f rtw89: 8852c: add 8852c specific BT-coexistence initial function
+error: sha1 information is lacking or useless (drivers/net/wireless/realtek/rtw89/core.h).
+error: could not build fake ancestor
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
+Applying: rtw89: extend H2C of CMAC control info
+Patch failed at 0001 rtw89: extend H2C of CMAC control info
+
+4 patches set to Changes Requested.
+
+12805942 [v2,10/13] rtw89: extend H2C of CMAC control info
+12805945 [v2,11/13] rtw89: add new H2C to configure security CAM via DCTL for V1 chip
+12805944 [v2,12/13] rtw89: configure security CAM for V1 chip
+12805943 [v2,13/13] rtw89: pci: correct return value handling of rtw89_write16_mdio_mask()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220408001353.17188-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220408001353.17188-11-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
