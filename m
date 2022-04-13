@@ -2,46 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ACB34FF264
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 10:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 252BE4FF24B
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 10:41:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbiDMIpE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Apr 2022 04:45:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38790 "EHLO
+        id S233487AbiDMIne (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Apr 2022 04:43:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230518AbiDMIpD (ORCPT
+        with ESMTP id S234432AbiDMInM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Apr 2022 04:45:03 -0400
-X-Greylist: delayed 89214 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 13 Apr 2022 01:42:42 PDT
-Received: from mail.growthmindset24.pl (mail.growthmindset24.pl [212.237.36.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007C44EA25
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 01:42:42 -0700 (PDT)
-Received: by mail.growthmindset24.pl (Postfix, from userid 1001)
-        id B2DD18818C; Tue, 12 Apr 2022 08:52:48 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=growthmindset24.pl;
-        s=mail; t=1649750044;
-        bh=FDuFY3XQoq0gMX1b2gxgT7Py2p4Sxl0PJZYZ4NVaPho=;
-        h=Date:From:To:Subject:From;
-        b=HF2ILvwwXkRn19LkN6htMwH57d3Qev7jJFisWp0fxbKEp15q2jrRdHyZmm/ENsRzp
-         Z0PPRm4f7tAnSfc4yB5T4GCk3sDUYVON6ajDyDcojqC3W0NcnzKCE1faS6hHXPzr0e
-         4O01ycg8r+iP83Y3r2CJ2KVRFwK3v8Aqm6d1ScWYmS3D20yOzupqhCIYYMzE7JUxEy
-         vcZ+sH+apuCiFLLlGPFjgD/6Ok7MkAOrEiD0ewzr7WZOdj/TEL2I/VO+c36lYr2Avo
-         8eu9/5wx/HS9UYQuXEvIWJ1v25UPSCE6pJ01vqo2rLF5ruhH1iBm1g2xdJOTCQt2xD
-         GWGIw+X48vGlw==
-Received: by mail.growthmindset24.pl for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 07:50:49 GMT
-Message-ID: <20220412073001-0.1.2w.d7lk.0.pl8e6q4lpi@growthmindset24.pl>
-Date:   Tue, 12 Apr 2022 07:50:49 GMT
-From:   =?UTF-8?Q? "Przemys=C5=82aw_Wr=C3=B3blewski" ?= 
-        <przemyslaw.wroblewski@growthmindset24.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.growthmindset24.pl
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        Wed, 13 Apr 2022 04:43:12 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41E83377FD
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 01:40:52 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id E97C11F38D;
+        Wed, 13 Apr 2022 08:40:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1649839250; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=IaPPTWya/VKzjjNmn+IY5/AuKBTZK3KmyyeZDAx4Gc0=;
+        b=yWCsD1emTwO6139KdiLkVgQcAv/X0Khfr8A4Ash/shn16ot7Bl+sdU9tNheklm3chhEXsT
+        ktqTldVQ8hpyfQ1U391hjihran9W+rq1kAV8CXMJFt7Sj4IjnQAjbUQq5cr3RqFS3ZxW5J
+        CdpEwUYNtpkAuynTwrq/juOiZqCO5Fg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1649839250;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=IaPPTWya/VKzjjNmn+IY5/AuKBTZK3KmyyeZDAx4Gc0=;
+        b=OGhjr95hrTIE45n1d3Z12tDXnpp/q75j0HlN9e00rXDq+4kmJkfNDpSG4JvLL2Q1OufscB
+        R4I56aKB3fZNrrCw==
+Received: from alsa1.suse.de (alsa1.suse.de [10.160.4.42])
+        by relay2.suse.de (Postfix) with ESMTP id C849FA3B92;
+        Wed, 13 Apr 2022 08:40:50 +0000 (UTC)
+Date:   Wed, 13 Apr 2022 10:40:50 +0200
+Message-ID: <s5hk0bt74vh.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Takashi Iwai <tiwai@suse.de>, Jouni Malinen <j@w1.fi>,
+        Josh Boyer <jwboyer@kernel.org>,
+        "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
+Subject: Re: [PULL] ath11k firmware 20211223
+In-Reply-To: <87h76xmlrw.fsf@kernel.org>
+References: <BYAPR02MB4567669033A210A78AC397E9927E9@BYAPR02MB4567.namprd02.prod.outlook.com>
+        <CA+5PVA4WEuJDB3OCKfYK-BPaccpVWd9t_au9S7MCEtpy7cdF-A@mail.gmail.com>
+        <87ee4brodv.fsf@kernel.org>
+        <CA+5PVA5DJmwPqpz8F9iDbJKcF1hDBRLdDT4URgSaiEcjet74Kw@mail.gmail.com>
+        <20220302175014.GA14801@w1.fi>
+        <CA+5PVA6R6F=VqAZRf=xDwGcC+cpqLY1kStkoHck53XiLURVyaw@mail.gmail.com>
+        <20220304161430.GA430462@w1.fi>
+        <s5h1qytw0rw.wl-tiwai@suse.de>
+        <87h76xmlrw.fsf@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
+ (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,17 +72,84 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Wed, 13 Apr 2022 10:26:43 +0200,
+Kalle Valo wrote:
+> 
+> Takashi Iwai <tiwai@suse.de> writes:
+> 
+> > On Fri, 04 Mar 2022 17:14:30 +0100,
+> > Jouni Malinen wrote:
+> >> 
+> >> On Fri, Mar 04, 2022 at 08:04:26AM -0500, Josh Boyer wrote:
+> >> > On Wed, Mar 2, 2022 at 12:50 PM Jouni Malinen <j@w1.fi> wrote:
+> >> > > Would the following in WHENCE work for you?
+> >> > >
+> >> > > Driver: ath11k - Qualcomm Technologies 802.11ax chipset support
+> >> > >
+> >> > > File: ath11k/IPQ6018/hw1.0/board-2.bin
+> >> > > ...
+> >> > > Version: WLAN.HK.2.1.0.1-01238-QCAHKSWPL_SILICONZ-2
+> >> > > Notice: ath11k/IPQ6018/hw1.0/Notice.txt
+> >> > 
+> >> > We'd have to teach copy-firmware.sh what to do with a "Notice:" key.
+> >> > Is there a reason "File:" wouldn't work?  The intention is to install
+> >> > the notices alongside the binaries, so that would accomplish it.
+> >> 
+> >> Yeah, that sounds reasonable to me. From copying/installing/distribution
+> >> view point, these can really be handled in the exact same way as the
+> >> actual firmware binaries in practice.
+> >> 
+> >> > > In other words, there would be only a single "License:" line and one
+> >> > > "Notice:" line for each firmware version? The license itself (i.e.,
+> >> > > LICENSE.QualcommAtheros_ath10k) is same for all the versions while the
+> >> > > set of notices (i.e., those notice.txt files) can be different based on
+> >> > > what is included in the particular build.
+> >> > 
+> >> > Yes, that would help.  Would you be able to adjust the existing
+> >> > entries for ath firmware in the same way?
+> >> 
+> >> Yes, I'll work with Kalle to update the existing ath* WLAN cases.
+> >> 
+> >> > > > > I'm still working on your other comment about notice.txt, will get back
+> >> > > > > on that later.
+> >> > >
+> >> > > This part about clearly identifying the files should be clear now, but
+> >> > > it would be good to resolve that part about the notice.txt files in
+> >> > > general before sending out an updated pull request.
+> >> > 
+> >> > Given these were merged in the past, perhaps I'm being overly
+> >> > pedantic.  If we can mark them as Files or Notices instead of
+> >> > Licenses, I won't hold it up.  It leaves me slightly confused why
+> >> > attribution files need to reference agreements with Qualcomm, splatter
+> >> > Confidential and Proprietary throughout the file, and reference
+> >> > COPYING and README in reference to GPLv2 when the BSD license was
+> >> > clearly chosen.  Perhaps that could be cleaned up in the future.
+> >> 
+> >> Thanks. We'll remove most of the unnecessary information from the new
+> >> notice.txt files and that should get rid of many of the potentially
+> >> confusing parts. If that cleanup leaves something confusing in place,
+> >> we are open to cleaning these up further in followup patches, but it
+> >> would be nice to be able to get the updated versions into
+> >> linux-firmware.git without much more additional delay and yes, this
+> >> would be with the File: instead of Licence: entries for the notice.txt
+> >> files.
+> >
+> > The problem of "File:" is that it's more or less intended to be
+> > installed as the firmware files themselves, i.e. they are installed in
+> > /lib/firmware/* that can be loaded to the kernel.  Putting such a
+> > random (document) file there makes me a bit nervous.
+> >
+> > We may introduce another tag to list up misc document files
+> > (e.g. "Doc:" or whatever)?  Distros can pick up them and put to the
+> > appropriate places in the package, too.
+> 
+> What about "Notice:" which I proposed above? To me "Doc:" sounds like an
+> optional file, which notice.txt files are not. That's why I prefer
+> "Notice:".
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
-
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
-
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
+Sure, it'd work, too.  Only a patch is missing :)
 
 
-Pozdrawiam,
-Przemys=C5=82aw Wr=C3=B3blewski
+thanks,
+
+Takashi
