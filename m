@@ -2,121 +2,191 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F4954FFE0C
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 20:40:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 010D050013F
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 23:36:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237598AbiDMSnL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Apr 2022 14:43:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58864 "EHLO
+        id S231375AbiDMViX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Apr 2022 17:38:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237789AbiDMSmd (ORCPT
+        with ESMTP id S231442AbiDMViW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Apr 2022 14:42:33 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E935223BDF;
-        Wed, 13 Apr 2022 11:40:09 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id u19so5138278lff.4;
-        Wed, 13 Apr 2022 11:40:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MDR0Fg5QWdm585RNYBMjB04jwb3sFn/V9jLMN5lDMUg=;
-        b=qrBrDzqcreAYaA733LjFmIOK2n07pxS+7vJhMVpAV9lIvaHwH1/RSpbglSH7Rs+nhZ
-         hsySkF0Jdh19E697WXVher4+6h1ri0/kHlH+qAWio6s0wmRuJXZPaTDuIHsdQwqPgwEI
-         P5EaKCmSyp1lOhGFRsu3WUU4IcXObg9bGQRK31GJMj7Es9/RX0T3Zk64VC2yPdA8qdlR
-         /u9PdpOGPWyXR59OUo9591/KdaKdq05N1kdDphnR+kED47LbNsnSZgwFqfcJnoW3uN12
-         CUYVaf5TdZGJqOcSauYebjYfCj8EUSIrpCSEmNRVZqWIorQKnhjjwItyKF0ga8mWSAMS
-         rXYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MDR0Fg5QWdm585RNYBMjB04jwb3sFn/V9jLMN5lDMUg=;
-        b=We6A2OHgDQpdNBt62LyvQjbviEhEP4qdkroepkQjPqvxHp+ta5SM8pZQFkufEwuJM5
-         JNb2u8+TL7TKhbQO5om1Wt5NuiYlSMkaoJQoSoOEuTGHRm4UYlJPYldI2+J0YE0eW1WM
-         WllqNI3yGRXwcipZKmUnkt/YriCyx8xyprhqB/iTqxG/cUDdospnvayn0V58WhJdlZyA
-         8yN1/jLFxdM/+dky79qdmDb0yvlvr2Axu62ku7bqEgWUBvY/Tt3kaEFyz8TakDjzKgHC
-         0ZshPbQwWxtQtwZvl3qTho9VvCAyrpxzEOShG0VCKz/B/90DBpcZaBGz/qYBjRmH31g8
-         olcQ==
-X-Gm-Message-State: AOAM530zg/SyOf0S1ukbY0svwHw8mBXpiKifRsdOxopP7j+OpNGngpWQ
-        72KunqN6h6m0zsgFmxwpdvd63uQBXA209NPix9Q=
-X-Google-Smtp-Source: ABdhPJzeDf8ZH88L1WhbR/Mu5T8Lqhxe2UylQed//0u6hSOwi+wreW2FAIestF0SpDXLY2GNqmfovwCNVNTp3HN5FU8=
-X-Received: by 2002:ac2:41c4:0:b0:445:9a7c:b76f with SMTP id
- d4-20020ac241c4000000b004459a7cb76fmr28407987lfi.497.1649875208069; Wed, 13
- Apr 2022 11:40:08 -0700 (PDT)
+        Wed, 13 Apr 2022 17:38:22 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 270E35D1B0
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 14:35:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649885759; x=1681421759;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=teh0akgvONON6QtvWmLRP3NNIqwf0Km2XTVXLgO8Z8A=;
+  b=EfBstkKKXfhNGb/+pTnPzWFVUWF6yP34A0QD/VVMB57xuJ+36VefwxhH
+   a/AfQwCQkpKkouUdNfyko0TO6e3ateK4yiQ9zKB5c1PKV88C6k7vWk83K
+   JURK/tBd36hyFnRl7k0ySdOMXrwezVuqKcZf08gon0WlKIjVocri6PnZO
+   6z2l7AmZiPjMVyMKhpiCGP0DUeskcfkCFvmx8uv3ZOR0nzPnfFlZVM5kT
+   +HyKOGI1y9HZRnGA5m4pK1YSJhXnIiqHWt8knxePfQrU4ZGXrd+npUeYW
+   /rEQCKjr/wN4IBJsrsyFrW7UdEVb6fjrdco+RD4Svo2bScJM407JST2kC
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10316"; a="287813075"
+X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
+   d="scan'208";a="287813075"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 14:35:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
+   d="scan'208";a="700410664"
+Received: from lkp-server01.sh.intel.com (HELO 3abc53900bec) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 13 Apr 2022 14:35:57 -0700
+Received: from kbuild by 3abc53900bec with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nekea-0000eD-IE;
+        Wed, 13 Apr 2022 21:35:56 +0000
+Date:   Thu, 14 Apr 2022 05:34:57 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ dc4246eff026699c48b27d5bae944b664a5c8035
+Message-ID: <62574201.hNpnMs12lQzMiP70%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20220409062449.3752252-1-zheyuma97@gmail.com>
-In-Reply-To: <20220409062449.3752252-1-zheyuma97@gmail.com>
-From:   Stanislav Yakovlev <stas.yakovlev@gmail.com>
-Date:   Wed, 13 Apr 2022 14:39:54 -0400
-Message-ID: <CA++WF2Np7Bk_qT68Uc3mrC38mN5p3fm9eVT7VA8NoX6=es2r2w@mail.gmail.com>
-Subject: Re: [PATCH] wireless: ipw2x00: Refine the error handling of ipw2100_pci_init_one()
-To:     Zheyu Ma <zheyuma97@gmail.com>
-Cc:     kvalo@kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com,
-        wireless <linux-wireless@vger.kernel.org>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_HI,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 9 Apr 2022 at 02:25, Zheyu Ma <zheyuma97@gmail.com> wrote:
->
-> The driver should release resources in reverse order, i.e., the
-> resources requested first should be released last, and the driver
-> should adjust the order of error handling code by this rule.
->
-> Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
-> ---
->  drivers/net/wireless/intel/ipw2x00/ipw2100.c | 34 +++++++++-----------
->  1 file changed, 16 insertions(+), 18 deletions(-)
->
-[Skipped]
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: dc4246eff026699c48b27d5bae944b664a5c8035  rtw89: pci: correct return value handling of rtw89_write16_mdio_mask()
 
-> @@ -6306,9 +6303,13 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
->  out:
->         return err;
->
-> -      fail_unlock:
-> +fail_unlock:
->         mutex_unlock(&priv->action_mutex);
-> -      fail:
-> +fail:
-> +       pci_release_regions(pci_dev);
-> +fail_disable:
-> +       pci_disable_device(pci_dev);
-We can't move these functions before the following block.
+elapsed time: 733m
 
-> +fail_dev:
->         if (dev) {
->                 if (registered >= 2)
->                         unregister_netdev(dev);
-This block continues with a function call to ipw2100_hw_stop_adapter
-which assumes that device is still accessible via pci bus.
+configs tested: 105
+configs skipped: 3
 
-> @@ -6334,11 +6335,8 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
->
->                 free_libipw(dev, 0);
->         }
-> -
-> +fail_iounmap:
->         pci_iounmap(pci_dev, ioaddr);
-> -
-> -       pci_release_regions(pci_dev);
-> -       pci_disable_device(pci_dev);
->         goto out;
->  }
->
-> --
-> 2.25.1
->
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Stanislav.
+gcc tested configs:
+arm64                               defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                          randconfig-c001
+mips                           ci20_defconfig
+arm                        cerfcube_defconfig
+sh                   sh7770_generic_defconfig
+powerpc                       maple_defconfig
+powerpc                 mpc837x_mds_defconfig
+sh                             sh03_defconfig
+sh                           se7721_defconfig
+arc                            hsdk_defconfig
+riscv                            allmodconfig
+arc                     nsimosci_hs_defconfig
+powerpc                   motionpro_defconfig
+arc                     haps_hs_smp_defconfig
+parisc                           alldefconfig
+arm                            zeus_defconfig
+arm                           sunxi_defconfig
+xtensa                           alldefconfig
+arm                           u8500_defconfig
+arm                        spear6xx_defconfig
+arm                            mps2_defconfig
+arm                        oxnas_v6_defconfig
+x86_64                        randconfig-c001
+arm                  randconfig-c002-20220413
+ia64                             allmodconfig
+ia64                             allyesconfig
+ia64                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+csky                                defconfig
+nios2                            allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+s390                                defconfig
+s390                             allmodconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+sparc                               defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+riscv                randconfig-r042-20220413
+arc                  randconfig-r043-20220413
+s390                 randconfig-r044-20220413
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+riscv                            allyesconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                         rhel-8.3-kunit
+x86_64                               rhel-8.3
+
+clang tested configs:
+x86_64                        randconfig-c007
+powerpc              randconfig-c003-20220413
+arm                  randconfig-c002-20220413
+i386                          randconfig-c001
+riscv                randconfig-c006-20220413
+mips                 randconfig-c004-20220413
+powerpc                        icon_defconfig
+powerpc                 mpc836x_mds_defconfig
+powerpc                      obs600_defconfig
+arm                       spear13xx_defconfig
+mips                malta_qemu_32r6_defconfig
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+hexagon              randconfig-r041-20220413
+hexagon              randconfig-r045-20220413
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
