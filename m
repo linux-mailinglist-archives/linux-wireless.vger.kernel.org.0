@@ -2,191 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 010D050013F
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 23:36:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05DF250022F
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Apr 2022 01:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231375AbiDMViX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Apr 2022 17:38:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57548 "EHLO
+        id S238050AbiDMXDL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Apr 2022 19:03:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231442AbiDMViW (ORCPT
+        with ESMTP id S230185AbiDMXDH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Apr 2022 17:38:22 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 270E35D1B0
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 14:35:58 -0700 (PDT)
+        Wed, 13 Apr 2022 19:03:07 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72278252AB;
+        Wed, 13 Apr 2022 16:00:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649885759; x=1681421759;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=teh0akgvONON6QtvWmLRP3NNIqwf0Km2XTVXLgO8Z8A=;
-  b=EfBstkKKXfhNGb/+pTnPzWFVUWF6yP34A0QD/VVMB57xuJ+36VefwxhH
-   a/AfQwCQkpKkouUdNfyko0TO6e3ateK4yiQ9zKB5c1PKV88C6k7vWk83K
-   JURK/tBd36hyFnRl7k0ySdOMXrwezVuqKcZf08gon0WlKIjVocri6PnZO
-   6z2l7AmZiPjMVyMKhpiCGP0DUeskcfkCFvmx8uv3ZOR0nzPnfFlZVM5kT
-   +HyKOGI1y9HZRnGA5m4pK1YSJhXnIiqHWt8knxePfQrU4ZGXrd+npUeYW
-   /rEQCKjr/wN4IBJsrsyFrW7UdEVb6fjrdco+RD4Svo2bScJM407JST2kC
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10316"; a="287813075"
-X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
-   d="scan'208";a="287813075"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 14:35:58 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
-   d="scan'208";a="700410664"
-Received: from lkp-server01.sh.intel.com (HELO 3abc53900bec) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 13 Apr 2022 14:35:57 -0700
-Received: from kbuild by 3abc53900bec with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nekea-0000eD-IE;
-        Wed, 13 Apr 2022 21:35:56 +0000
-Date:   Thu, 14 Apr 2022 05:34:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:main] BUILD SUCCESS
- dc4246eff026699c48b27d5bae944b664a5c8035
-Message-ID: <62574201.hNpnMs12lQzMiP70%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+  t=1649890844; x=1681426844;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OjccN9bs2KpOWb7jep2rWqSlBHp3YKXCzqYUVTW/1Xc=;
+  b=kKaOEwEmN5i3MJRMEJjiQMj76R6fD/pWRkQ2wh78rk3yvvfdl7llr5bu
+   7cXfVK7o9Jsnhn1apyzP/Z2vAdSxSbcXPfSw0Ge7/yGuPHPYm2bfH3HHZ
+   0sQIvm1qGqbxpcZ58mogKa6qi9ekwDYgPY0MO7kGs40VA/YZCrdI+a/iN
+   kN7aL8Azlv6eCw7FQLSFs8HNNczeq5ZnvQyd28njGmnjh5Yd0w2RcEvMj
+   MfD20ea7uSQuJoQ/xxvggYlHKm2r22qsKVz3PO3uM1S8+14+2y4EouoVH
+   kjMDoliM4dzmE3WFGGUG9fOjfveNTFdKu5IoMS2psZFSq6Q9KnErDHiC2
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10316"; a="250086783"
+X-IronPort-AV: E=Sophos;i="5.90,258,1643702400"; 
+   d="scan'208";a="250086783"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 16:00:43 -0700
+X-IronPort-AV: E=Sophos;i="5.90,258,1643702400"; 
+   d="scan'208";a="661117121"
+Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.209.84.69]) ([10.209.84.69])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 16:00:43 -0700
+Message-ID: <a3c98699-c9f1-ff96-1c66-5bb93e20b6ff@linux.intel.com>
+Date:   Wed, 13 Apr 2022 16:00:42 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_HI,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH net-next v6 05/13] net: wwan: t7xx: Add control port
+Content-Language: en-US
+To:     =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
+        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
+        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
+        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
+        haijun.liu@mediatek.com, amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
+        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
+        sreehari.kancharla@intel.com, madhusmita.sahu@intel.com
+References: <20220407223629.21487-1-ricardo.martinez@linux.intel.com>
+ <20220407223629.21487-6-ricardo.martinez@linux.intel.com>
+ <20ed7cce-6ba0-29fa-2cb0-89b02f31ce6f@linux.intel.com>
+From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
+In-Reply-To: <20ed7cce-6ba0-29fa-2cb0-89b02f31ce6f@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: dc4246eff026699c48b27d5bae944b664a5c8035  rtw89: pci: correct return value handling of rtw89_write16_mdio_mask()
 
-elapsed time: 733m
+On 4/12/2022 5:04 AM, Ilpo Järvinen wrote:
+> On Thu, 7 Apr 2022, Ricardo Martinez wrote:
+>
+>> From: Haijun Liu <haijun.liu@mediatek.com>
+>>
+>> Control Port implements driver control messages such as modem-host
+>> handshaking, controls port enumeration, and handles exception messages.
+>>
+>> The handshaking process between the driver and the modem happens during
+>> the init sequence. The process involves the exchange of a list of
+>> supported runtime features to make sure that modem and host are ready
+>> to provide proper feature lists including port enumeration. Further
+>> features can be enabled and controlled in this handshaking process.
+>>
+>> Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
+>> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+>> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+>> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+>>
+>> >From a WWAN framework perspective:
+>> Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
+>>
+>> Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+>> +static int t7xx_prepare_device_rt_data(struct t7xx_sys_info *core, struct device *dev,
+>> +				       void *data)
+>> +{
+>> +	struct feature_query *md_feature = data;
+>> +	struct mtk_runtime_feature *rt_feature;
+>> +	unsigned int i, rt_data_len = 0;
+>> +	struct sk_buff *skb;
+>> +
+>> +	/* Parse MD runtime data query */
+>> +	if (le32_to_cpu(md_feature->head_pattern) != MD_FEATURE_QUERY_ID ||
+>> +	    le32_to_cpu(md_feature->tail_pattern) != MD_FEATURE_QUERY_ID) {
+>> +		dev_err(dev, "Invalid feature pattern: head 0x%x, tail 0x%x\n",
+>> +			le32_to_cpu(md_feature->head_pattern),
+>> +			le32_to_cpu(md_feature->tail_pattern));
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	for (i = 0; i < FEATURE_COUNT; i++) {
+>> +		if (FIELD_GET(FEATURE_MSK, md_feature->feature_set[i]) !=
+>> +		    MTK_FEATURE_MUST_BE_SUPPORTED)
+>> +			rt_data_len += sizeof(*rt_feature);
+>> +	}
+>> +
+>> +	skb = t7xx_ctrl_alloc_skb(rt_data_len);
+>> +	if (!skb)
+>> +		return -ENOMEM;
+>> +
+>> +	rt_feature  = skb_put(skb, rt_data_len);
+>> +	memset(rt_feature, 0, rt_data_len);
+>> +
+>> +	/* Fill runtime feature */
+>> +	for (i = 0; i < FEATURE_COUNT; i++) {
+>> +		u8 md_feature_mask = FIELD_GET(FEATURE_MSK, md_feature->feature_set[i]);
+>> +
+>> +		if (md_feature_mask == MTK_FEATURE_MUST_BE_SUPPORTED)
+>> +			continue;
+>> +
+>> +		rt_feature->feature_id = i;
+>> +		if (md_feature_mask == MTK_FEATURE_DOES_NOT_EXIST)
+>> +			rt_feature->support_info = md_feature->feature_set[i];
+>> +
+>> +		rt_feature++;
+>> +	}
+>> +
+>> +	/* Send HS3 message to device */
+>> +	t7xx_port_send_ctl_skb(core->ctl_port, skb, CTL_ID_HS3_MSG, 0);
+>> +	return 0;
+>> +}
+>> +
+>> +static int t7xx_parse_host_rt_data(struct t7xx_fsm_ctl *ctl, struct t7xx_sys_info *core,
+>> +				   struct device *dev, void *data, int data_length)
+>> +{
+>> +	enum mtk_feature_support_type ft_spt_st, ft_spt_cfg;
+>> +	struct mtk_runtime_feature *rt_feature;
+>> +	int i, offset;
+>> +
+>> +	offset = sizeof(struct feature_query);
+>> +	for (i = 0; i < FEATURE_COUNT && offset < data_length; i++) {
+>> +		rt_feature = data + offset;
+>> +		offset += sizeof(*rt_feature) + le32_to_cpu(rt_feature->data_len);
+>> +
+>> +		ft_spt_cfg = FIELD_GET(FEATURE_MSK, core->feature_set[i]);
+>> +		if (ft_spt_cfg != MTK_FEATURE_MUST_BE_SUPPORTED)
+>> +			continue;
+> Do MTK_FEATURE_MUST_BE_SUPPORTED appear in the host rt_features
+> (unlike in the device rt_features)?
+>
+Yes, in the first step of the handshake protocol, the host creates its
+rt_feature list with the proper support label and sends the list to the device.
+t7xx_parse_host_rt_data() is part of the handshake step 2, the host received the
+response from the device and now it will verify that the host rt_features
+labeled as MTK_FEATURE_MUST_BE_SUPPORTED are also supported in the device rt_features.
 
-configs tested: 105
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm64                               defconfig
-arm64                            allyesconfig
-arm                              allmodconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                          randconfig-c001
-mips                           ci20_defconfig
-arm                        cerfcube_defconfig
-sh                   sh7770_generic_defconfig
-powerpc                       maple_defconfig
-powerpc                 mpc837x_mds_defconfig
-sh                             sh03_defconfig
-sh                           se7721_defconfig
-arc                            hsdk_defconfig
-riscv                            allmodconfig
-arc                     nsimosci_hs_defconfig
-powerpc                   motionpro_defconfig
-arc                     haps_hs_smp_defconfig
-parisc                           alldefconfig
-arm                            zeus_defconfig
-arm                           sunxi_defconfig
-xtensa                           alldefconfig
-arm                           u8500_defconfig
-arm                        spear6xx_defconfig
-arm                            mps2_defconfig
-arm                        oxnas_v6_defconfig
-x86_64                        randconfig-c001
-arm                  randconfig-c002-20220413
-ia64                             allmodconfig
-ia64                             allyesconfig
-ia64                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-csky                                defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-alpha                            allyesconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                                defconfig
-s390                             allmodconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                             allyesconfig
-sparc                               defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-riscv                randconfig-r042-20220413
-arc                  randconfig-r043-20220413
-s390                 randconfig-r044-20220413
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-riscv                            allyesconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                         rhel-8.3-kunit
-x86_64                               rhel-8.3
-
-clang tested configs:
-x86_64                        randconfig-c007
-powerpc              randconfig-c003-20220413
-arm                  randconfig-c002-20220413
-i386                          randconfig-c001
-riscv                randconfig-c006-20220413
-mips                 randconfig-c004-20220413
-powerpc                        icon_defconfig
-powerpc                 mpc836x_mds_defconfig
-powerpc                      obs600_defconfig
-arm                       spear13xx_defconfig
-mips                malta_qemu_32r6_defconfig
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
-x86_64                        randconfig-a001
-hexagon              randconfig-r041-20220413
-hexagon              randconfig-r045-20220413
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
