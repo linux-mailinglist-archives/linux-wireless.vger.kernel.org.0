@@ -2,135 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E702B4FFB50
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 18:30:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E7C94FFB5A
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 18:31:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236869AbiDMQc2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Apr 2022 12:32:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55420 "EHLO
+        id S233072AbiDMQeC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Apr 2022 12:34:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236866AbiDMQcZ (ORCPT
+        with ESMTP id S233279AbiDMQeB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Apr 2022 12:32:25 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9069062A17
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 09:30:03 -0700 (PDT)
+        Wed, 13 Apr 2022 12:34:01 -0400
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 413BC5EDCF
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 09:31:40 -0700 (PDT)
+Received: by mail-qt1-x834.google.com with SMTP id bb38so1761717qtb.3
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 09:31:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1649867403; x=1681403403;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version;
-  bh=4yXpUbWJ+UWLOmXbm/mEZ+Ln9CVd7BfZlhQJHydYkco=;
-  b=M7Qf5NOjFbUrdXFZFtHYatCjqj4+JDx6QkC2x6nn4rrEfHc6B9Xg094R
-   5sNXiIqcVtQFGKy3a9tiLifxHSHvfwZeAY5hdAy7D+hE7G+6gn6REuJ9F
-   1nEaH1pvy9ZAusPEKLi+oZLeMWYFOxB9lODJPAEKuvEoeDtmeE5fkm/sJ
-   4=;
-Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
-  by alexa-out.qualcomm.com with ESMTP; 13 Apr 2022 09:30:03 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 09:30:03 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 13 Apr 2022 09:30:02 -0700
-Received: from ramess-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 13 Apr 2022 09:30:00 -0700
-From:   Rameshkumar Sundaram <quic_ramess@quicinc.com>
-To:     <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>,
-        Lavanya Suresh <lavaks@codeaurora.org>,
-        Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Subject: [PATCH v5 2/2] mac80211: disable BSS color collision detection in case of no free colors
-Date:   Wed, 13 Apr 2022 21:58:15 +0530
-Message-ID: <1649867295-7204-3-git-send-email-quic_ramess@quicinc.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1649867295-7204-1-git-send-email-quic_ramess@quicinc.com>
-References: <1649867295-7204-1-git-send-email-quic_ramess@quicinc.com>
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=HBhDOEjfV2hkoUxsv2+Y0l8LOqOCdnEetZj+12oD488=;
+        b=ISZBymi2znD8YEYFvdLqA3rFbWxU7B6lTtgW0VK0jlWZIgvm+ZoFDRw8w80qrAKhYo
+         3lK4N0hRQYEmLGX6V3KBxLw2AfrWfpQU2R4MN1LuyTEkAscOUF4oENr67yILubOnTHxY
+         poL4+JQ3y9V01p7q5vrXufWYqErgQKMRwLMiDkKy/7NuCu1S/G5ij9WqAcLfGw/8AL2N
+         +vXewdATzJyL+4P5hU2vAsEgQ91gk312PTkM2zjW0zvoSG+oC/Ft3Vm7KzhN7wJh4scg
+         sRprIh2WcwWmTZgfaz3395J2jO692JaEVRsjq057nhzPpDxXUc9SB+3lx+jzsyMWj+oO
+         5K3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=HBhDOEjfV2hkoUxsv2+Y0l8LOqOCdnEetZj+12oD488=;
+        b=W3g4Aq6wA8OBiVQGJJhQnopRCYXVIX+9FNh+SvL/LNXEgCbWOM7B9vn3fw6gi0gKjM
+         2MczhZSPLlLQfz3C9O3Cn31Hywtn5Bt1wHE9tSjS/NH56rh1eTDcTXOBWkT3UGNuNd3o
+         RRZppuADWnVc2jmHaOGjbzRnCc4ceOXbok6CRBpmPTKuyax5P6nd8cQ9bZvTzzV+BpUT
+         KmqqyB+P8/higq9sjTQSADnzLB8I4D12HXiLW+anOg4xpl3vVrQHkwjOMMQjo7sdK8Uh
+         bTOPrXDG4cdHbFENNWfbF2ethdLyjyBKS4nySjqtmtU161qcT2FoOtlytF1cw637Wb3e
+         xX9Q==
+X-Gm-Message-State: AOAM530Lz5MlMdr2vaPX3Hcj8R7bqxi8M9EjJTgZ7nwn7pFooOxY25m2
+        kl9d7w3AsD1RRS1FvkaTzr1daXeLOE30wFW9cSxLXcn1ojOKsw==
+X-Google-Smtp-Source: ABdhPJzuPPjbBHrydYafUyQi0ZjC1ZVLszLdvSh/NaqNRp/8NIzObvc5PifCliszLV04NQXhMAZrDEFwfqUTMh3lsxg=
+X-Received: by 2002:ac8:6693:0:b0:2ed:964:c268 with SMTP id
+ d19-20020ac86693000000b002ed0964c268mr7735827qtp.459.1649867499231; Wed, 13
+ Apr 2022 09:31:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+From:   Chris Rogers <crogers122@gmail.com>
+Date:   Wed, 13 Apr 2022 12:31:28 -0400
+Message-ID: <CAC4Yorhi_Zf-xcSJFOsJja-ZdLJYh6V-_hfkidzfQJ_+HeHX1Q@mail.gmail.com>
+Subject: iwlwifi fw reset handshake
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Lavanya Suresh <lavaks@codeaurora.org>
+In commit 906d4eb84408a4bfd63eef0de4f1bd5262f73ac0, a firmware reset
+handshake was introduced to iwlwifi. This code looks for the
+MSIX_HW_INT_CAUSES_REG_RESET_DONE interrupt in
+iwl_pcie_irq_msix_handler in rx.c, but it does not appear to handle
+anything along the MSI path.
 
-AP may run out of BSS color after color collision
-detection event from driver.
+My environment is:
+- AX210 card, xen pci passthrough in MSI mode
+- linux v5.15.32
 
-Disable BSS color collision detection if no free colors are
-available based on bss color disabled bit sent as a part of
-NL80211_ATTR_HE_BSS_COLOR attribute sent in
-NL80211_CMD_SET_BEACON.
+Based on some testing I've done, the wait_event_timeout in
+pcie/trans-gen2.c always times out.  The result is the "firmware
+didn't ACK the reset - continue anyway" message and a dump before it
+continues on.  Is the reset handshake something that should be handled
+on the MSI path? Given what's defined in iwl-csr.h, I'm not sure how
+to listen for a response from the card to wake_up the fw_reset_waitq
+like the MSI-X path.
 
-It can be reenabled once new color is available.
+Thanks for your time.
 
-Signed-off-by: Lavanya Suresh <lavaks@codeaurora.org>
-Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
----
- net/mac80211/cfg.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 87a2080..789bc62 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1132,9 +1132,9 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 			le32_get_bits(params->he_oper->he_oper_params,
- 			      IEEE80211_HE_OPERATION_RTS_THRESHOLD_MASK);
- 		changed |= BSS_CHANGED_HE_OBSS_PD;
--
--		if (params->he_bss_color.enabled)
--			changed |= BSS_CHANGED_HE_BSS_COLOR;
-+		if (params->beacon.he_bss_color_valid)
-+			if (params->beacon.he_bss_color.enabled)
-+				changed |= BSS_CHANGED_HE_BSS_COLOR;
- 	}
- 
- 	if (sdata->vif.type == NL80211_IFTYPE_AP &&
-@@ -1190,7 +1190,8 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 	sdata->vif.bss_conf.allow_p2p_go_ps = sdata->vif.p2p;
- 	sdata->vif.bss_conf.twt_responder = params->twt_responder;
- 	sdata->vif.bss_conf.he_obss_pd = params->he_obss_pd;
--	sdata->vif.bss_conf.he_bss_color = params->he_bss_color;
-+	if (params->beacon.he_bss_color_valid)
-+		sdata->vif.bss_conf.he_bss_color = params->beacon.he_bss_color;
- 	sdata->vif.bss_conf.s1g = params->chandef.chan->band ==
- 				  NL80211_BAND_S1GHZ;
- 
-@@ -1275,6 +1276,7 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
- 				   struct cfg80211_beacon_data *params)
- {
- 	struct ieee80211_sub_if_data *sdata;
-+	struct ieee80211_bss_conf *bss_conf;
- 	struct beacon_data *old;
- 	int err;
- 
-@@ -1294,6 +1296,13 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
- 	err = ieee80211_assign_beacon(sdata, params, NULL, NULL);
- 	if (err < 0)
- 		return err;
-+
-+	bss_conf = &sdata->vif.bss_conf;
-+	if (params->he_bss_color_valid &&
-+	    params->he_bss_color.enabled != bss_conf->he_bss_color.enabled) {
-+		bss_conf->he_bss_color.enabled = params->he_bss_color.enabled;
-+		err |= BSS_CHANGED_HE_BSS_COLOR;
-+	}
- 	ieee80211_bss_info_change_notify(sdata, err);
- 	return 0;
- }
--- 
-2.7.4
-
+Chris
