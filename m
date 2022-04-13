@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8694B4FEC14
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 03:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBA304FEC12
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 03:08:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231285AbiDMBLC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Apr 2022 21:11:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56324 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231282AbiDMBLB (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
+        id S231256AbiDMBLB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Tue, 12 Apr 2022 21:11:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56302 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231214AbiDMBK7 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 12 Apr 2022 21:10:59 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EAA525590
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 18:08:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 672C525590
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Apr 2022 18:08:38 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23D18VBm8014614, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23D18VBm8014614
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23D18WK70014638, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23D18WK70014638
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 13 Apr 2022 09:08:31 +0800
+        Wed, 13 Apr 2022 09:08:32 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Wed, 13 Apr 2022 09:08:30 +0800
+ 15.1.2375.24; Wed, 13 Apr 2022 09:08:32 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Wed, 13 Apr
- 2022 09:08:30 +0800
+ 2022 09:08:31 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v3 3/4] rtw89: configure security CAM for V1 chip
-Date:   Wed, 13 Apr 2022 09:08:03 +0800
-Message-ID: <20220413010804.8941-4-pkshih@realtek.com>
+Subject: [PATCH v3 4/4] rtw89: pci: correct return value handling of rtw89_write16_mdio_mask()
+Date:   Wed, 13 Apr 2022 09:08:04 +0800
+Message-ID: <20220413010804.8941-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220413010804.8941-1-pkshih@realtek.com>
 References: <20220413010804.8941-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvMTIgpFWkyCAxMDo1NzowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -68,100 +68,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add to configure security CAM while mac80211 calls set_key and del_key.
+Fix wrong checking statement. Fortunately, this wrong code doesn't affect
+existing chip.
 
+Fixes: 740c431c22fe ("rtw89: pci: add register definition to rtw89_pci_info to generalize pci code")
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/cam.c      |  9 +++++++++
- drivers/net/wireless/realtek/rtw89/core.h     | 15 +++++++++++++++
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
- 4 files changed, 26 insertions(+)
+ drivers/net/wireless/realtek/rtw89/pci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
-index 08b9779163bb5..8a26adeb23fb2 100644
---- a/drivers/net/wireless/realtek/rtw89/cam.c
-+++ b/drivers/net/wireless/realtek/rtw89/cam.c
-@@ -244,6 +244,12 @@ static int rtw89_cam_attach_sec_cam(struct rtw89_dev *rtwdev,
- 	addr_cam->sec_ent[key_idx] = sec_cam->sec_cam_idx;
- 	addr_cam->sec_entries[key_idx] = sec_cam;
- 	set_bit(key_idx, addr_cam->sec_cam_map);
-+	ret = rtw89_chip_h2c_dctl_sec_cam(rtwdev, rtwvif, rtwsta);
-+	if (ret) {
-+		rtw89_err(rtwdev, "failed to update dctl cam sec entry: %d\n",
-+			  ret);
-+		return ret;
-+	}
- 	ret = rtw89_fw_h2c_cam(rtwdev, rtwvif, rtwsta, NULL);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to update addr cam sec entry: %d\n",
-@@ -398,6 +404,9 @@ int rtw89_cam_sec_key_del(struct rtw89_dev *rtwdev,
- 	clear_bit(key_idx, addr_cam->sec_cam_map);
- 	addr_cam->sec_entries[key_idx] = NULL;
- 	if (inform_fw) {
-+		ret = rtw89_chip_h2c_dctl_sec_cam(rtwdev, rtwvif, rtwsta);
-+		if (ret)
-+			rtw89_err(rtwdev, "failed to update dctl cam del key: %d\n", ret);
- 		ret = rtw89_fw_h2c_cam(rtwdev, rtwvif, rtwsta, NULL);
- 		if (ret)
- 			rtw89_err(rtwdev, "failed to update cam del key: %d\n", ret);
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 2715dc1ff73ff..090d416569010 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2106,6 +2106,9 @@ struct rtw89_chip_ops {
- 	int (*stop_sch_tx)(struct rtw89_dev *rtwdev, u8 mac_idx,
- 			   u32 *tx_en, enum rtw89_sch_tx_sel sel);
- 	int (*resume_sch_tx)(struct rtw89_dev *rtwdev, u8 mac_idx, u32 tx_en);
-+	int (*h2c_dctl_sec_cam)(struct rtw89_dev *rtwdev,
-+				struct rtw89_vif *rtwvif,
-+				struct rtw89_sta *rtwsta);
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index dcf907b81cffa..ecb419010f0c2 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -1522,7 +1522,7 @@ rtw89_write16_mdio_mask(struct rtw89_dev *rtwdev, u8 addr, u16 mask, u16 data, u
+ 	u16 val;
  
- 	void (*btc_set_rfe)(struct rtw89_dev *rtwdev);
- 	void (*btc_init_cfg)(struct rtw89_dev *rtwdev);
-@@ -3634,6 +3637,18 @@ int rtw89_chip_resume_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx, u32 tx_en)
- 	return chip->ops->resume_sch_tx(rtwdev, mac_idx, tx_en);
- }
+ 	ret = rtw89_read16_mdio(rtwdev, addr, speed, &val);
+-	if (!ret)
++	if (ret)
+ 		return ret;
  
-+static inline
-+int rtw89_chip_h2c_dctl_sec_cam(struct rtw89_dev *rtwdev,
-+				struct rtw89_vif *rtwvif,
-+				struct rtw89_sta *rtwsta)
-+{
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+
-+	if (!chip->ops->h2c_dctl_sec_cam)
-+		return 0;
-+	return chip->ops->h2c_dctl_sec_cam(rtwdev, rtwvif, rtwsta);
-+}
-+
- static inline u8 *get_hdr_bssid(struct ieee80211_hdr *hdr)
- {
- 	__le16 fc = hdr->frame_control;
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 6371bbf7a2fd5..975c504953049 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2075,6 +2075,7 @@ static const struct rtw89_chip_ops rtw8852a_chip_ops = {
- 	.mac_cfg_gnt		= rtw89_mac_cfg_gnt,
- 	.stop_sch_tx		= rtw89_mac_stop_sch_tx,
- 	.resume_sch_tx		= rtw89_mac_resume_sch_tx,
-+	.h2c_dctl_sec_cam	= NULL,
+ 	shift = __ffs(mask);
+@@ -1530,7 +1530,7 @@ rtw89_write16_mdio_mask(struct rtw89_dev *rtwdev, u8 addr, u16 mask, u16 data, u
+ 	val |= ((data << shift) & mask);
  
- 	.btc_set_rfe		= rtw8852a_btc_set_rfe,
- 	.btc_init_cfg		= rtw8852a_btc_init_cfg,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index d900129c1a7c8..d56d65661ce08 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -645,6 +645,7 @@ static const struct rtw89_chip_ops rtw8852c_chip_ops = {
- 	.mac_cfg_gnt		= rtw89_mac_cfg_gnt_v1,
- 	.stop_sch_tx		= rtw89_mac_stop_sch_tx_v1,
- 	.resume_sch_tx		= rtw89_mac_resume_sch_tx_v1,
-+	.h2c_dctl_sec_cam	= rtw89_fw_h2c_dctl_sec_cam_v1,
+ 	ret = rtw89_write16_mdio(rtwdev, addr, val, speed);
+-	if (!ret)
++	if (ret)
+ 		return ret;
  
- 	.btc_init_cfg		= rtw8852c_btc_init_cfg,
- };
+ 	return 0;
 -- 
 2.25.1
 
