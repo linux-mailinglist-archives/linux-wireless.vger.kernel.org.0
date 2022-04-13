@@ -2,48 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50A2B4FEFF3
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 08:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AD6B4FF059
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 09:06:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232809AbiDMGlN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Apr 2022 02:41:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59210 "EHLO
+        id S232134AbiDMHIW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Apr 2022 03:08:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230106AbiDMGlL (ORCPT
+        with ESMTP id S233244AbiDMHIO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Apr 2022 02:41:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5884650075;
-        Tue, 12 Apr 2022 23:38:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E887F61CFC;
-        Wed, 13 Apr 2022 06:38:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1EE4C385A3;
-        Wed, 13 Apr 2022 06:38:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649831930;
-        bh=G7/WJoWD9FfHoh4X7HlXVQoamqq7l9XUV19pw+KNsSI=;
-        h=From:Subject:To:Cc:Date:From;
-        b=f3GbY+whWmrOYbP5T8ldGzwehXMkDFlvnddBCmNoSye1yqi5n5tFkWvyYdE3j4oqh
-         J9e7v8wRXfd+uPBo/CYSXZHaMNQW19bD9+/pZO/xRBeaOIeqbwAbja7I6UyF3qrG2o
-         A4Ytn8lNzMQEX0vV6Ghw3ajcDP6Kc5cgT8YPigqGkeO4Pzcz08DeRRa++V3eBPCMAq
-         E3mRSBj0ueiLgcM6YsiDnMiSh/GYSKK+wWXgO/n0IyHGbGiJuy+yDJ90pJ3hJ8Msxh
-         L/IhLfLKo+Zz6A8eS6sn2YbJgsk2BnOhSJo0HzR6NqvPGtHuzQAvn+uZCC9zQuKFUQ
-         fSc8k8ZU6ONfQ==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 13 Apr 2022 03:08:14 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E84D62ED4A
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 00:05:52 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id b15so1214106pfm.5
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 00:05:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=wA/XhN+liF7FNQdYD63xlSjmBiv/wnn45LKu56yG8aw=;
+        b=AreLMy3LsZ/2P+aighUoU5gjlgpeBV8R7aO4E6ZmNrH9sPFlHDYfXCQ9dsaQSKUUDZ
+         jV695MA6AjTW9RaVAKwYYDjPOSnx5VhKZBhY+t+VOpMmHsvuvmUO3uevsu7U4SoQZX/Q
+         hKY670Ht3+qDXUL6ihxfD4vmxjl3ro3ScX1SDiJ3bn9yNvTvyI5Jk5d9mYgm8hoPX7qr
+         1+qPrlrepeFD1qFKz+Inw4HQwj7zVmeaIa1RIZvKj+dElNrFnhxT76DSr9HnuNU6qNNj
+         CDAr/V+AXPW6hm65wKobzJCFQHpgmZ/HCfP68ZL1bibg1imj6sYE0SrrHqGdYcyfLpKZ
+         /IFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=wA/XhN+liF7FNQdYD63xlSjmBiv/wnn45LKu56yG8aw=;
+        b=2ixaLKUyv2iWQv5ceSZuo+qkgn5nkYyWu+qV451zwicXNPahSGBWjHQUUV3TH3RhG9
+         zwh/IfJFrXE6/sbQTrqsYXMDifJljK7VdgXaxAPaNuKp6V5KXyDA9xKvH0NA6ZbAOLzZ
+         md8kZ+uYex+RD98OUjHbuBRUpppGbU558PIUbw2B4BdOh647GHSva4Gu5G7b0FzqBzHf
+         FFOEkECGzwnBSNzaCMoH7GlLwLU7tjqf2DwmHr80ln9mepmVuobuzMaPvcx/ElYKH/aO
+         hdhd8zBmwksQaFGzJGY5TCOSc8FCtVo887vC7z1sY4+tLcxwXw5DEct6Sr71LF5LJ4bw
+         JcYA==
+X-Gm-Message-State: AOAM532wPtxHGNWnleX+QALP7tr233ACqUgGb9dEo6UbLDQ3/DTk4McD
+        M01xZHVuoc759d8x/VYPAc1i
+X-Google-Smtp-Source: ABdhPJzozXDajJ1TNHGEamoE5ZZSxjlxIF5/046swX9Uyn7xnV9vkvwlcsjXH3KBZ12ieR4vKeneWw==
+X-Received: by 2002:a05:6a00:10cc:b0:505:ada6:e03e with SMTP id d12-20020a056a0010cc00b00505ada6e03emr17405824pfu.45.1649833552212;
+        Wed, 13 Apr 2022 00:05:52 -0700 (PDT)
+Received: from thinkpad ([117.207.28.99])
+        by smtp.gmail.com with ESMTPSA id t15-20020a63b70f000000b00381510608e9sm5035307pgf.14.2022.04.13.00.05.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Apr 2022 00:05:51 -0700 (PDT)
+Date:   Wed, 13 Apr 2022 12:35:42 +0530
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        Prasad Malisetty <quic_pmaliset@quicinc.com>,
+        agross@kernel.org, bjorn.andersson@linaro.org,
+        lorenzo.pieralisi@arm.com, robh@kernel.org, kw@linux.com,
+        bhelgaas@google.com, linux-pci@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        rajatja@google.com, refactormyself@gmail.com,
+        quic_vbadigan@quicinc.com, quic_ramkri@quicinc.com,
+        swboyd@chromium.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org
+Subject: Re: [PATCH v4] PCI: qcom: Add system PM support
+Message-ID: <20220413070542.GB2015@thinkpad>
+References: <1646679306-4768-1-git-send-email-quic_pmaliset@quicinc.com>
+ <20220412060144.GA41348@thinkpad>
+ <87k0buoa9j.fsf@kernel.org>
+ <20220413054904.GA2015@thinkpad>
+ <CAA8EJprcQtVFvjL_WsMoDxvPSAqaRMS90ZuTsD_cDuujtr83Xw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-From:   Kalle Valo <kvalo@kernel.org>
-Subject: pull-request: wireless-2022-04-13
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20220413063849.C1EE4C385A3@smtp.kernel.org>
-Date:   Wed, 13 Apr 2022 06:38:49 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAA8EJprcQtVFvjL_WsMoDxvPSAqaRMS90ZuTsD_cDuujtr83Xw@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,67 +82,56 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Wed, Apr 13, 2022 at 09:36:30AM +0300, Dmitry Baryshkov wrote:
+> On Wed, 13 Apr 2022 at 08:49, Manivannan Sadhasivam
+> <manivannan.sadhasivam@linaro.org> wrote:
+> >
+> > On Tue, Apr 12, 2022 at 01:40:08PM +0300, Kalle Valo wrote:
+> > > + ath11k
+> > >
+> > > Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
+> > >
+> > > > +Kalle, linux-wireless
+> > > >
+> > > > On Tue, Mar 08, 2022 at 12:25:06AM +0530, Prasad Malisetty wrote:
+> > > >> Add suspend_noirq and resume_noirq callbacks to handle
+> > > >> system suspend and resume in dwc PCIe controller driver.
+> > > >>
+> > > >> When system suspends, send PME turnoff message to enter
+> > > >> link into L2 state. Along with powerdown the PHY, disable
+> > > >> pipe clock, switch gcc_pcie_1_pipe_clk_src to XO if mux is
+> > > >> supported and disable the pcie clocks, regulators.
+> > > >>
+> > > >
+> > > > Kalle, is this behaviour appropriate for WLAN devices as well? The devices
+> > > > will be put into poweroff state (assuming no Vaux provided in D3cold) during
+> > > > system suspend.
+> > >
+> > > ath11k leaves the firmware running during suspend. I don't fully
+> > > understand what the patch is doing, but if it cuts the power from the
+> > > WLAN chip during suspend that will break ath11k.
+> > >
+> >
+> > Thanks Kalle for the confirmation. Yes the device will be put into D3cold state
+> > and that will most likely equal to poweroff state.
+> 
+> Just to remind that ath11k on Qualcomm boards has a separate power
+> supply, not directly tied to the PCIe power supply.
+> 
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+It may change in the future or on a different OEM setup. Irrespective of that,
+this patch sends the PME_Turn_Off event to the ep devices. The devices in turn
+will shutdown the internal resources for poweroff/refclk removal. Therefore the
+device state shall be lost.
 
-Kalle
+Thanks,
+Mani
 
-The following changes since commit a81687886ca9a64c0aeefefcbc6e7a64ce083ab0:
-
-  Merge branch 'vsock-virtio-enable-vqs-early-on-probe-and-finish-the-setup-before-using-them' (2022-03-24 18:36:39 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-04-13
-
-for you to fetch changes up to fb4bccd863ccccd36ad000601856609e259a1859:
-
-  mac80211: fix ht_capa printout in debugfs (2022-04-11 11:57:27 +0200)
-
-----------------------------------------------------------------
-wireless fixes for v5.18
-
-First set of fixes for v5.18. Maintainers file updates, two
-compilation warning fixes, one revert for ath11k and smaller fixes to
-drivers and stack. All the usual stuff.
-
-----------------------------------------------------------------
-Anilkumar Kolli (1):
-      Revert "ath11k: mesh: add support for 256 bitmap in blockack frames in 11ax"
-
-Ben Greear (1):
-      mac80211: fix ht_capa printout in debugfs
-
-Borislav Petkov (2):
-      mt76: Fix undefined behavior due to shift overflowing the constant
-      brcmfmac: sdio: Fix undefined behavior due to shift overflowing the constant
-
-Johannes Berg (2):
-      MAINTAINERS: claim include/uapi/linux/wireless.h
-      nl80211: correctly check NL80211_ATTR_REG_ALPHA2 size
-
-Kalle Valo (1):
-      MAINTAINERS: mark wil6210 as orphan
-
-Lorenzo Bianconi (1):
-      MAINTAINERS: update Lorenzo's email address
-
-Rameshkumar Sundaram (1):
-      cfg80211: hold bss_lock while updating nontrans_list
-
-Toke Høiland-Jørgensen (2):
-      ath9k: Properly clear TX status area before reporting to mac80211
-      ath9k: Fix usage of driver-private space in tx_info
-
- MAINTAINERS                                        |  7 ++---
- drivers/net/wireless/ath/ath11k/mac.c              | 22 +++++++++------
- drivers/net/wireless/ath/ath9k/main.c              |  2 +-
- drivers/net/wireless/ath/ath9k/xmit.c              | 33 ++++++++++++++--------
- .../wireless/broadcom/brcm80211/brcmfmac/sdio.c    |  2 +-
- drivers/net/wireless/mediatek/mt76/mt76x2/pci.c    |  2 +-
- net/mac80211/debugfs_sta.c                         |  2 +-
- net/wireless/nl80211.c                             |  3 +-
- net/wireless/scan.c                                |  2 ++
- 9 files changed, 46 insertions(+), 29 deletions(-)
+> > Prasad, you should try to just turn off the host resources like clocks and
+> > regulators (not refclk) and let the device be in the default state
+> > (D3hot/L{0/1}?) during suspend.
+> 
+> 
+> -- 
+> With best wishes
+> Dmitry
