@@ -2,82 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E7C94FFB5A
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 18:31:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E76B4FFB84
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 18:41:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233072AbiDMQeC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Apr 2022 12:34:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56856 "EHLO
+        id S236937AbiDMQns (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Apr 2022 12:43:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233279AbiDMQeB (ORCPT
+        with ESMTP id S236938AbiDMQnp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Apr 2022 12:34:01 -0400
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 413BC5EDCF
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 09:31:40 -0700 (PDT)
-Received: by mail-qt1-x834.google.com with SMTP id bb38so1761717qtb.3
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 09:31:40 -0700 (PDT)
+        Wed, 13 Apr 2022 12:43:45 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC240554BF
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 09:41:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=HBhDOEjfV2hkoUxsv2+Y0l8LOqOCdnEetZj+12oD488=;
-        b=ISZBymi2znD8YEYFvdLqA3rFbWxU7B6lTtgW0VK0jlWZIgvm+ZoFDRw8w80qrAKhYo
-         3lK4N0hRQYEmLGX6V3KBxLw2AfrWfpQU2R4MN1LuyTEkAscOUF4oENr67yILubOnTHxY
-         poL4+JQ3y9V01p7q5vrXufWYqErgQKMRwLMiDkKy/7NuCu1S/G5ij9WqAcLfGw/8AL2N
-         +vXewdATzJyL+4P5hU2vAsEgQ91gk312PTkM2zjW0zvoSG+oC/Ft3Vm7KzhN7wJh4scg
-         sRprIh2WcwWmTZgfaz3395J2jO692JaEVRsjq057nhzPpDxXUc9SB+3lx+jzsyMWj+oO
-         5K3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=HBhDOEjfV2hkoUxsv2+Y0l8LOqOCdnEetZj+12oD488=;
-        b=W3g4Aq6wA8OBiVQGJJhQnopRCYXVIX+9FNh+SvL/LNXEgCbWOM7B9vn3fw6gi0gKjM
-         2MczhZSPLlLQfz3C9O3Cn31Hywtn5Bt1wHE9tSjS/NH56rh1eTDcTXOBWkT3UGNuNd3o
-         RRZppuADWnVc2jmHaOGjbzRnCc4ceOXbok6CRBpmPTKuyax5P6nd8cQ9bZvTzzV+BpUT
-         KmqqyB+P8/higq9sjTQSADnzLB8I4D12HXiLW+anOg4xpl3vVrQHkwjOMMQjo7sdK8Uh
-         bTOPrXDG4cdHbFENNWfbF2ethdLyjyBKS4nySjqtmtU161qcT2FoOtlytF1cw637Wb3e
-         xX9Q==
-X-Gm-Message-State: AOAM530Lz5MlMdr2vaPX3Hcj8R7bqxi8M9EjJTgZ7nwn7pFooOxY25m2
-        kl9d7w3AsD1RRS1FvkaTzr1daXeLOE30wFW9cSxLXcn1ojOKsw==
-X-Google-Smtp-Source: ABdhPJzuPPjbBHrydYafUyQi0ZjC1ZVLszLdvSh/NaqNRp/8NIzObvc5PifCliszLV04NQXhMAZrDEFwfqUTMh3lsxg=
-X-Received: by 2002:ac8:6693:0:b0:2ed:964:c268 with SMTP id
- d19-20020ac86693000000b002ed0964c268mr7735827qtp.459.1649867499231; Wed, 13
- Apr 2022 09:31:39 -0700 (PDT)
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1649868084; x=1681404084;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=Esu+ZeehLPeS6o0Mo1qnw6hDiWot+EkqcC4Y1PgYUuI=;
+  b=eJNWVpdeiE3Kpiq1qLar4o/rdCux2uaNWdpWLWdxn2Cbg41jtSuTL45w
+   QKLxLs3zMGwbO2pGTARADFGC/HVYZpw86p/sJtPS84lrT3MyX9n7lhKG6
+   +n932/j/aLDiYDOBv+Y71aNTEXf0d3c2YoE0Zq4yWnTTjJ4yHRxeZcK5m
+   E=;
+Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
+  by alexa-out.qualcomm.com with ESMTP; 13 Apr 2022 09:41:24 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 09:41:23 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 13 Apr 2022 09:41:23 -0700
+Received: from ramess-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 13 Apr 2022 09:41:21 -0700
+From:   Rameshkumar Sundaram <quic_ramess@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>,
+        Rameshkumar Sundaram <quic_ramess@quicinc.com>
+Subject: [PATCH] cfg80211: hold bss_lock while updating nontrans_list
+Date:   Wed, 13 Apr 2022 22:11:07 +0530
+Message-ID: <1649868067-23974-1-git-send-email-quic_ramess@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-From:   Chris Rogers <crogers122@gmail.com>
-Date:   Wed, 13 Apr 2022 12:31:28 -0400
-Message-ID: <CAC4Yorhi_Zf-xcSJFOsJja-ZdLJYh6V-_hfkidzfQJ_+HeHX1Q@mail.gmail.com>
-Subject: iwlwifi fw reset handshake
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In commit 906d4eb84408a4bfd63eef0de4f1bd5262f73ac0, a firmware reset
-handshake was introduced to iwlwifi. This code looks for the
-MSIX_HW_INT_CAUSES_REG_RESET_DONE interrupt in
-iwl_pcie_irq_msix_handler in rx.c, but it does not appear to handle
-anything along the MSI path.
+Synchronize additions to nontrans_list of transmitting BSS with
+bss_lock to avoid races. Also when cfg80211_add_nontrans_list() fails
+__cfg80211_unlink_bss() needs bss_lock to be held (has lockdep assert
+on bss_lock). So protect the whole block with bss_lock to avoid
+races and warnings. Found during code review.
 
-My environment is:
-- AX210 card, xen pci passthrough in MSI mode
-- linux v5.15.32
+Fixes: 0b8fb8235be8 ("cfg80211: Parsing of Multiple BSSID information in scanning")
+Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+---
+ net/wireless/scan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Based on some testing I've done, the wait_event_timeout in
-pcie/trans-gen2.c always times out.  The result is the "firmware
-didn't ACK the reset - continue anyway" message and a dump before it
-continues on.  Is the reset handshake something that should be handled
-on the MSI path? Given what's defined in iwl-csr.h, I'm not sure how
-to listen for a response from the card to wake_up the fw_reset_waitq
-like the MSI-X path.
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index b888522..286cfe3 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -2011,11 +2011,13 @@ cfg80211_inform_single_bss_data(struct wiphy *wiphy,
+ 		/* this is a nontransmitting bss, we need to add it to
+ 		 * transmitting bss' list if it is not there
+ 		 */
++		spin_lock_bh(&rdev->bss_lock);
+ 		if (cfg80211_add_nontrans_list(non_tx_data->tx_bss,
+ 					       &res->pub)) {
+ 			if (__cfg80211_unlink_bss(rdev, res))
+ 				rdev->bss_generation++;
+ 		}
++		spin_unlock_bh(&rdev->bss_lock);
+ 	}
+ 
+ 	trace_cfg80211_return_bss(&res->pub);
+-- 
+2.7.4
 
-Thanks for your time.
-
-Chris
