@@ -2,64 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51C094FF3A6
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 11:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 308DE4FF3BF
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 11:39:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234497AbiDMJha (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Apr 2022 05:37:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48366 "EHLO
+        id S233441AbiDMJmI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Apr 2022 05:42:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231734AbiDMJh2 (ORCPT
+        with ESMTP id S229934AbiDMJmF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Apr 2022 05:37:28 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AFA631204;
-        Wed, 13 Apr 2022 02:35:07 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id c23so1517036plo.0;
-        Wed, 13 Apr 2022 02:35:07 -0700 (PDT)
+        Wed, 13 Apr 2022 05:42:05 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DBD416599;
+        Wed, 13 Apr 2022 02:39:44 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id n18so1484673plg.5;
+        Wed, 13 Apr 2022 02:39:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=g8bxk6TEEm2E4o6Pbnd9rhcp6xDjb41DTe9/87BNTLo=;
-        b=JZp5Hsljcm5VODYRCefVlERxtrwbMN/LlqYjsY9aehOsYfTRooM0dffeuovLITcMpa
-         t+jLjYNrGEtMRhwrgwT2BysFowAmmBOr0FU6zVCUa+z3DV7LgxziTGs0j7buO6IFvma2
-         DUpc5v19rO3MTWgZTwg3fujt3L/WU9EST7MUOQqFS19JHXJTek3cJzrW04U2zCTDooeA
-         cR8x3X0mjGiDHOTPwSWI5jKLuxaKULhc0/DSmB8qDJN6/L0VVpyuI1ois0AYFu+2K36M
-         xcLUU3YCm0fbXvG/x+TtoxZV30tsAJribr7soOiY0ZmIO8FXCwy1UyM405dOqsAKkUh8
-         jXjg==
+        bh=rhegUgjc/7VHRLP2gdtsnZm8adnS3l3cX73PyLsMGRk=;
+        b=ARKI66sAkLyVzLdo1WE8DshrLMWmBCs9E7n6aGgK9cqB3oVkTySrW8TkAyxoxGms2E
+         K222tpdE9a+sxA+q7V2nGmIgu6FiZLQbx73ITRSU4APR9gpUKY7K4QwXHsb8AEXB59I8
+         c9HCyDrm4OCF7UY8jFeY5F0a3R81n5Otjd4WQ+7JHwOzk037mlwL8bzmej5bxTbg42qm
+         HJFt9TyjX+pqdQhAgKAlEpz3dUiz18+cdiGIn3YlBFanQ8mfci5Cczvpb5RruJALPqS7
+         C8GfyeZbQz/gjftS0XKefkLgK2Gy2i/3XoJwbbGu0QvOD+swJ2YsugwaCqhPoUPr255t
+         mjYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=g8bxk6TEEm2E4o6Pbnd9rhcp6xDjb41DTe9/87BNTLo=;
-        b=GbRDLK42vyF5bSb7h9Tk+cUkp+xLX/JlYbaExgC248KCT19YAzG+QJKRqtZdCHAqCR
-         1UpLTTtKrxi7PEZ/4wvod/pFxR1ly1rwygHJx+YMI3G08R60Fx+xSezZLZsKiRWbz+ks
-         hC/+2X9xhZTteYoFOnr39Z4pKqsGfNIxVWaVG5Whk61My3NJy2aGAunLc5mwFCpstum8
-         Ls0cVFRPDuSar5h5DHiwRPqHBY7cVBlcA/Q9980WxQOKXte/j5/JvUO0jX+6qEKjl/0Z
-         TB63VYesdhvhNZ2mk2BF7zgTPZMsvFGEb3bcPYbVjlsdFPjBnLxD6X7QrD32l/fMG92M
-         yWcw==
-X-Gm-Message-State: AOAM530tFKUPnIg2UZz5N7WmQ5a1RZ2WRNzTkPm3ajJ178n6rhhCWOeV
-        QP8lDGHz8dNxkmG24h+0YYE=
-X-Google-Smtp-Source: ABdhPJw45U2NXOywU+IuPRm5iLbjbC1jplGTrrmeq9htOE9PfollGG0Q1anN3JrXMq7WI+IagnJpBg==
-X-Received: by 2002:a17:90b:3144:b0:1cd:37de:3bbc with SMTP id ip4-20020a17090b314400b001cd37de3bbcmr6458307pjb.110.1649842506902;
-        Wed, 13 Apr 2022 02:35:06 -0700 (PDT)
+        bh=rhegUgjc/7VHRLP2gdtsnZm8adnS3l3cX73PyLsMGRk=;
+        b=51JdK1VVLATZDhIIPcw4IUvtiJi6xb8YZtzkeGhA1J0lAN9b843gGS/R9L+AbMG8GS
+         LYIY0+w91NA12i4HmE0+v1fWwoW26TgRSyP5YKYinuVzva5bt2pmhIVQggUYtQn9jtO0
+         LgyBjGSVvJ7TPaJQk22i/kRYOFPeL33qGlYx9HAFAHoDbsSUBqRISV4FsgZP6Vt31rl4
+         pYt6bmCaTv1V9tSm0iU9K0Kv8W1/C3uUXD1YpIJqjUrimX4RvI4r/aFdtMzte8jrvVcf
+         oP8De8oD99En6KkGzW3jTpyPogI4AMUwKyfOd5Q5aVuGGtc6bk4e/SFZarL2AluKmEqJ
+         dFwQ==
+X-Gm-Message-State: AOAM532JgIQl13v/Uq+nJJzTvQK8fYEr/XigKwow3xt7QzWZVKX/lVze
+        qHK325qM7tocftxtL8pOLjQ=
+X-Google-Smtp-Source: ABdhPJwkgg7b/12aUFRK5iwhxMcz1c2QyYp9PhA6rSpY/3uzhaFb3dcLDGd0TQxSU3Ady4kqsgP1Jw==
+X-Received: by 2002:a17:902:cf0d:b0:156:1cc:f08f with SMTP id i13-20020a170902cf0d00b0015601ccf08fmr41362048plg.42.1649842784486;
+        Wed, 13 Apr 2022 02:39:44 -0700 (PDT)
 Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id q15-20020a056a00150f00b004fb28ea8d9fsm44168349pfu.171.2022.04.13.02.35.04
+        by smtp.gmail.com with ESMTPSA id r35-20020a635163000000b0039d2213ca6csm5522616pgl.45.2022.04.13.02.39.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Apr 2022 02:35:06 -0700 (PDT)
+        Wed, 13 Apr 2022 02:39:44 -0700 (PDT)
 From:   cgel.zte@gmail.com
 X-Google-Original-From: chi.minghao@zte.com.cn
 To:     kvalo@kernel.org
 Cc:     davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Minghao Chi <chi.minghao@zte.com.cn>,
+        linux-kernel@vger.kernel.org, Minghao Chi <chi.minghao@zte.com.cn>,
         Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] wlcore: testmode: use pm_runtime_resume_and_get() instead of pm_runtime_get_sync()
-Date:   Wed, 13 Apr 2022 09:35:02 +0000
-Message-Id: <20220413093502.2538316-1-chi.minghao@zte.com.cn>
+Subject: [PATCH] wlcore: vendor_cmd: use pm_runtime_resume_and_get instead of pm_runtime_get_sync
+Date:   Wed, 13 Apr 2022 09:39:39 +0000
+Message-Id: <20220413093939.2538825-1-chi.minghao@zte.com.cn>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -81,14 +79,14 @@ for simplifing code
 Reported-by: Zeal Robot <zealci@zte.com.cn>
 Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
 ---
- drivers/net/wireless/ti/wlcore/testmode.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/net/wireless/ti/wlcore/vendor_cmd.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/ti/wlcore/testmode.c b/drivers/net/wireless/ti/wlcore/testmode.c
-index 3a17b9a8207e..3f338b8096c7 100644
---- a/drivers/net/wireless/ti/wlcore/testmode.c
-+++ b/drivers/net/wireless/ti/wlcore/testmode.c
-@@ -83,11 +83,9 @@ static int wl1271_tm_cmd_test(struct wl1271 *wl, struct nlattr *tb[])
+diff --git a/drivers/net/wireless/ti/wlcore/vendor_cmd.c b/drivers/net/wireless/ti/wlcore/vendor_cmd.c
+index e1bd344c4ebc..e4269e2b0098 100644
+--- a/drivers/net/wireless/ti/wlcore/vendor_cmd.c
++++ b/drivers/net/wireless/ti/wlcore/vendor_cmd.c
+@@ -53,11 +53,9 @@ wlcore_vendor_cmd_smart_config_start(struct wiphy *wiphy,
  		goto out;
  	}
  
@@ -100,9 +98,9 @@ index 3a17b9a8207e..3f338b8096c7 100644
  		goto out;
 -	}
  
- 	ret = wl1271_cmd_test(wl, buf, buf_len, answer);
- 	if (ret < 0) {
-@@ -158,11 +156,9 @@ static int wl1271_tm_cmd_interrogate(struct wl1271 *wl, struct nlattr *tb[])
+ 	ret = wlcore_smart_config_start(wl,
+ 			nla_get_u32(tb[WLCORE_VENDOR_ATTR_GROUP_ID]));
+@@ -88,11 +86,9 @@ wlcore_vendor_cmd_smart_config_stop(struct wiphy *wiphy,
  		goto out;
  	}
  
@@ -114,8 +112,22 @@ index 3a17b9a8207e..3f338b8096c7 100644
  		goto out;
 -	}
  
- 	cmd = kzalloc(sizeof(*cmd), GFP_KERNEL);
- 	if (!cmd) {
+ 	ret = wlcore_smart_config_stop(wl);
+ 
+@@ -135,11 +131,9 @@ wlcore_vendor_cmd_smart_config_set_group_key(struct wiphy *wiphy,
+ 		goto out;
+ 	}
+ 
+-	ret = pm_runtime_get_sync(wl->dev);
+-	if (ret < 0) {
+-		pm_runtime_put_noidle(wl->dev);
++	ret = pm_runtime_resume_and_get(wl->dev);
++	if (ret < 0)
+ 		goto out;
+-	}
+ 
+ 	ret = wlcore_smart_config_set_group_key(wl,
+ 			nla_get_u32(tb[WLCORE_VENDOR_ATTR_GROUP_ID]),
 -- 
 2.25.1
 
