@@ -2,94 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E76B4FFB84
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 18:41:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F4954FFE0C
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Apr 2022 20:40:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236937AbiDMQns (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Apr 2022 12:43:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48836 "EHLO
+        id S237598AbiDMSnL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Apr 2022 14:43:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236938AbiDMQnp (ORCPT
+        with ESMTP id S237789AbiDMSmd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Apr 2022 12:43:45 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC240554BF
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 09:41:23 -0700 (PDT)
+        Wed, 13 Apr 2022 14:42:33 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E935223BDF;
+        Wed, 13 Apr 2022 11:40:09 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id u19so5138278lff.4;
+        Wed, 13 Apr 2022 11:40:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1649868084; x=1681404084;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=Esu+ZeehLPeS6o0Mo1qnw6hDiWot+EkqcC4Y1PgYUuI=;
-  b=eJNWVpdeiE3Kpiq1qLar4o/rdCux2uaNWdpWLWdxn2Cbg41jtSuTL45w
-   QKLxLs3zMGwbO2pGTARADFGC/HVYZpw86p/sJtPS84lrT3MyX9n7lhKG6
-   +n932/j/aLDiYDOBv+Y71aNTEXf0d3c2YoE0Zq4yWnTTjJ4yHRxeZcK5m
-   E=;
-Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
-  by alexa-out.qualcomm.com with ESMTP; 13 Apr 2022 09:41:24 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 09:41:23 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 13 Apr 2022 09:41:23 -0700
-Received: from ramess-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 13 Apr 2022 09:41:21 -0700
-From:   Rameshkumar Sundaram <quic_ramess@quicinc.com>
-To:     <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>,
-        Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Subject: [PATCH] cfg80211: hold bss_lock while updating nontrans_list
-Date:   Wed, 13 Apr 2022 22:11:07 +0530
-Message-ID: <1649868067-23974-1-git-send-email-quic_ramess@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MDR0Fg5QWdm585RNYBMjB04jwb3sFn/V9jLMN5lDMUg=;
+        b=qrBrDzqcreAYaA733LjFmIOK2n07pxS+7vJhMVpAV9lIvaHwH1/RSpbglSH7Rs+nhZ
+         hsySkF0Jdh19E697WXVher4+6h1ri0/kHlH+qAWio6s0wmRuJXZPaTDuIHsdQwqPgwEI
+         P5EaKCmSyp1lOhGFRsu3WUU4IcXObg9bGQRK31GJMj7Es9/RX0T3Zk64VC2yPdA8qdlR
+         /u9PdpOGPWyXR59OUo9591/KdaKdq05N1kdDphnR+kED47LbNsnSZgwFqfcJnoW3uN12
+         CUYVaf5TdZGJqOcSauYebjYfCj8EUSIrpCSEmNRVZqWIorQKnhjjwItyKF0ga8mWSAMS
+         rXYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MDR0Fg5QWdm585RNYBMjB04jwb3sFn/V9jLMN5lDMUg=;
+        b=We6A2OHgDQpdNBt62LyvQjbviEhEP4qdkroepkQjPqvxHp+ta5SM8pZQFkufEwuJM5
+         JNb2u8+TL7TKhbQO5om1Wt5NuiYlSMkaoJQoSoOEuTGHRm4UYlJPYldI2+J0YE0eW1WM
+         WllqNI3yGRXwcipZKmUnkt/YriCyx8xyprhqB/iTqxG/cUDdospnvayn0V58WhJdlZyA
+         8yN1/jLFxdM/+dky79qdmDb0yvlvr2Axu62ku7bqEgWUBvY/Tt3kaEFyz8TakDjzKgHC
+         0ZshPbQwWxtQtwZvl3qTho9VvCAyrpxzEOShG0VCKz/B/90DBpcZaBGz/qYBjRmH31g8
+         olcQ==
+X-Gm-Message-State: AOAM530zg/SyOf0S1ukbY0svwHw8mBXpiKifRsdOxopP7j+OpNGngpWQ
+        72KunqN6h6m0zsgFmxwpdvd63uQBXA209NPix9Q=
+X-Google-Smtp-Source: ABdhPJzeDf8ZH88L1WhbR/Mu5T8Lqhxe2UylQed//0u6hSOwi+wreW2FAIestF0SpDXLY2GNqmfovwCNVNTp3HN5FU8=
+X-Received: by 2002:ac2:41c4:0:b0:445:9a7c:b76f with SMTP id
+ d4-20020ac241c4000000b004459a7cb76fmr28407987lfi.497.1649875208069; Wed, 13
+ Apr 2022 11:40:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220409062449.3752252-1-zheyuma97@gmail.com>
+In-Reply-To: <20220409062449.3752252-1-zheyuma97@gmail.com>
+From:   Stanislav Yakovlev <stas.yakovlev@gmail.com>
+Date:   Wed, 13 Apr 2022 14:39:54 -0400
+Message-ID: <CA++WF2Np7Bk_qT68Uc3mrC38mN5p3fm9eVT7VA8NoX6=es2r2w@mail.gmail.com>
+Subject: Re: [PATCH] wireless: ipw2x00: Refine the error handling of ipw2100_pci_init_one()
+To:     Zheyu Ma <zheyuma97@gmail.com>
+Cc:     kvalo@kernel.org, "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com,
+        wireless <linux-wireless@vger.kernel.org>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Synchronize additions to nontrans_list of transmitting BSS with
-bss_lock to avoid races. Also when cfg80211_add_nontrans_list() fails
-__cfg80211_unlink_bss() needs bss_lock to be held (has lockdep assert
-on bss_lock). So protect the whole block with bss_lock to avoid
-races and warnings. Found during code review.
+On Sat, 9 Apr 2022 at 02:25, Zheyu Ma <zheyuma97@gmail.com> wrote:
+>
+> The driver should release resources in reverse order, i.e., the
+> resources requested first should be released last, and the driver
+> should adjust the order of error handling code by this rule.
+>
+> Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+> ---
+>  drivers/net/wireless/intel/ipw2x00/ipw2100.c | 34 +++++++++-----------
+>  1 file changed, 16 insertions(+), 18 deletions(-)
+>
+[Skipped]
 
-Fixes: 0b8fb8235be8 ("cfg80211: Parsing of Multiple BSSID information in scanning")
-Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
----
- net/wireless/scan.c | 2 ++
- 1 file changed, 2 insertions(+)
+> @@ -6306,9 +6303,13 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
+>  out:
+>         return err;
+>
+> -      fail_unlock:
+> +fail_unlock:
+>         mutex_unlock(&priv->action_mutex);
+> -      fail:
+> +fail:
+> +       pci_release_regions(pci_dev);
+> +fail_disable:
+> +       pci_disable_device(pci_dev);
+We can't move these functions before the following block.
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index b888522..286cfe3 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -2011,11 +2011,13 @@ cfg80211_inform_single_bss_data(struct wiphy *wiphy,
- 		/* this is a nontransmitting bss, we need to add it to
- 		 * transmitting bss' list if it is not there
- 		 */
-+		spin_lock_bh(&rdev->bss_lock);
- 		if (cfg80211_add_nontrans_list(non_tx_data->tx_bss,
- 					       &res->pub)) {
- 			if (__cfg80211_unlink_bss(rdev, res))
- 				rdev->bss_generation++;
- 		}
-+		spin_unlock_bh(&rdev->bss_lock);
- 	}
- 
- 	trace_cfg80211_return_bss(&res->pub);
--- 
-2.7.4
+> +fail_dev:
+>         if (dev) {
+>                 if (registered >= 2)
+>                         unregister_netdev(dev);
+This block continues with a function call to ipw2100_hw_stop_adapter
+which assumes that device is still accessible via pci bus.
 
+> @@ -6334,11 +6335,8 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
+>
+>                 free_libipw(dev, 0);
+>         }
+> -
+> +fail_iounmap:
+>         pci_iounmap(pci_dev, ioaddr);
+> -
+> -       pci_release_regions(pci_dev);
+> -       pci_disable_device(pci_dev);
+>         goto out;
+>  }
+>
+> --
+> 2.25.1
+>
+
+Stanislav.
