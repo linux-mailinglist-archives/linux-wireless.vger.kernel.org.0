@@ -2,171 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05DF250022F
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Apr 2022 01:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 544825005DD
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Apr 2022 08:21:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238050AbiDMXDL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Apr 2022 19:03:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54972 "EHLO
+        id S240030AbiDNGXg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Apr 2022 02:23:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230185AbiDMXDH (ORCPT
+        with ESMTP id S240003AbiDNGXc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Apr 2022 19:03:07 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72278252AB;
-        Wed, 13 Apr 2022 16:00:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649890844; x=1681426844;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=OjccN9bs2KpOWb7jep2rWqSlBHp3YKXCzqYUVTW/1Xc=;
-  b=kKaOEwEmN5i3MJRMEJjiQMj76R6fD/pWRkQ2wh78rk3yvvfdl7llr5bu
-   7cXfVK7o9Jsnhn1apyzP/Z2vAdSxSbcXPfSw0Ge7/yGuPHPYm2bfH3HHZ
-   0sQIvm1qGqbxpcZ58mogKa6qi9ekwDYgPY0MO7kGs40VA/YZCrdI+a/iN
-   kN7aL8Azlv6eCw7FQLSFs8HNNczeq5ZnvQyd28njGmnjh5Yd0w2RcEvMj
-   MfD20ea7uSQuJoQ/xxvggYlHKm2r22qsKVz3PO3uM1S8+14+2y4EouoVH
-   kjMDoliM4dzmE3WFGGUG9fOjfveNTFdKu5IoMS2psZFSq6Q9KnErDHiC2
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10316"; a="250086783"
-X-IronPort-AV: E=Sophos;i="5.90,258,1643702400"; 
-   d="scan'208";a="250086783"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 16:00:43 -0700
-X-IronPort-AV: E=Sophos;i="5.90,258,1643702400"; 
-   d="scan'208";a="661117121"
-Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.209.84.69]) ([10.209.84.69])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 16:00:43 -0700
-Message-ID: <a3c98699-c9f1-ff96-1c66-5bb93e20b6ff@linux.intel.com>
-Date:   Wed, 13 Apr 2022 16:00:42 -0700
+        Thu, 14 Apr 2022 02:23:32 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD85F1EECB
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Apr 2022 23:21:05 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23E6KpW52001318, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23E6KpW52001318
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 14 Apr 2022 14:20:51 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 14 Apr 2022 14:20:51 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 14 Apr
+ 2022 14:20:50 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
+Subject: [PATCH 00/12] rtw89: 8852c: add 8852c tables, TX power and set channel functions
+Date:   Thu, 14 Apr 2022 14:20:14 +0800
+Message-ID: <20220414062027.62638-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH net-next v6 05/13] net: wwan: t7xx: Add control port
-Content-Language: en-US
-To:     =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
-        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
-        sreehari.kancharla@intel.com, madhusmita.sahu@intel.com
-References: <20220407223629.21487-1-ricardo.martinez@linux.intel.com>
- <20220407223629.21487-6-ricardo.martinez@linux.intel.com>
- <20ed7cce-6ba0-29fa-2cb0-89b02f31ce6f@linux.intel.com>
-From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
-In-Reply-To: <20ed7cce-6ba0-29fa-2cb0-89b02f31ce6f@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 04/14/2022 06:05:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvMTQgpFekyCAwMzo1OTowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+This patchset is to add 8852c specific tables and functions, so it doesn't
+affect existing chip as usual.
 
-On 4/12/2022 5:04 AM, Ilpo Järvinen wrote:
-> On Thu, 7 Apr 2022, Ricardo Martinez wrote:
->
->> From: Haijun Liu <haijun.liu@mediatek.com>
->>
->> Control Port implements driver control messages such as modem-host
->> handshaking, controls port enumeration, and handles exception messages.
->>
->> The handshaking process between the driver and the modem happens during
->> the init sequence. The process involves the exchange of a list of
->> supported runtime features to make sure that modem and host are ready
->> to provide proper feature lists including port enumeration. Further
->> features can be enabled and controlled in this handshaking process.
->>
->> Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
->> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
->> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
->> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
->>
->> >From a WWAN framework perspective:
->> Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
->>
->> Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
->> +static int t7xx_prepare_device_rt_data(struct t7xx_sys_info *core, struct device *dev,
->> +				       void *data)
->> +{
->> +	struct feature_query *md_feature = data;
->> +	struct mtk_runtime_feature *rt_feature;
->> +	unsigned int i, rt_data_len = 0;
->> +	struct sk_buff *skb;
->> +
->> +	/* Parse MD runtime data query */
->> +	if (le32_to_cpu(md_feature->head_pattern) != MD_FEATURE_QUERY_ID ||
->> +	    le32_to_cpu(md_feature->tail_pattern) != MD_FEATURE_QUERY_ID) {
->> +		dev_err(dev, "Invalid feature pattern: head 0x%x, tail 0x%x\n",
->> +			le32_to_cpu(md_feature->head_pattern),
->> +			le32_to_cpu(md_feature->tail_pattern));
->> +		return -EINVAL;
->> +	}
->> +
->> +	for (i = 0; i < FEATURE_COUNT; i++) {
->> +		if (FIELD_GET(FEATURE_MSK, md_feature->feature_set[i]) !=
->> +		    MTK_FEATURE_MUST_BE_SUPPORTED)
->> +			rt_data_len += sizeof(*rt_feature);
->> +	}
->> +
->> +	skb = t7xx_ctrl_alloc_skb(rt_data_len);
->> +	if (!skb)
->> +		return -ENOMEM;
->> +
->> +	rt_feature  = skb_put(skb, rt_data_len);
->> +	memset(rt_feature, 0, rt_data_len);
->> +
->> +	/* Fill runtime feature */
->> +	for (i = 0; i < FEATURE_COUNT; i++) {
->> +		u8 md_feature_mask = FIELD_GET(FEATURE_MSK, md_feature->feature_set[i]);
->> +
->> +		if (md_feature_mask == MTK_FEATURE_MUST_BE_SUPPORTED)
->> +			continue;
->> +
->> +		rt_feature->feature_id = i;
->> +		if (md_feature_mask == MTK_FEATURE_DOES_NOT_EXIST)
->> +			rt_feature->support_info = md_feature->feature_set[i];
->> +
->> +		rt_feature++;
->> +	}
->> +
->> +	/* Send HS3 message to device */
->> +	t7xx_port_send_ctl_skb(core->ctl_port, skb, CTL_ID_HS3_MSG, 0);
->> +	return 0;
->> +}
->> +
->> +static int t7xx_parse_host_rt_data(struct t7xx_fsm_ctl *ctl, struct t7xx_sys_info *core,
->> +				   struct device *dev, void *data, int data_length)
->> +{
->> +	enum mtk_feature_support_type ft_spt_st, ft_spt_cfg;
->> +	struct mtk_runtime_feature *rt_feature;
->> +	int i, offset;
->> +
->> +	offset = sizeof(struct feature_query);
->> +	for (i = 0; i < FEATURE_COUNT && offset < data_length; i++) {
->> +		rt_feature = data + offset;
->> +		offset += sizeof(*rt_feature) + le32_to_cpu(rt_feature->data_len);
->> +
->> +		ft_spt_cfg = FIELD_GET(FEATURE_MSK, core->feature_set[i]);
->> +		if (ft_spt_cfg != MTK_FEATURE_MUST_BE_SUPPORTED)
->> +			continue;
-> Do MTK_FEATURE_MUST_BE_SUPPORTED appear in the host rt_features
-> (unlike in the device rt_features)?
->
-Yes, in the first step of the handshake protocol, the host creates its
-rt_feature list with the proper support label and sends the list to the device.
-t7xx_parse_host_rt_data() is part of the handshake step 2, the host received the
-response from the device and now it will verify that the host rt_features
-labeled as MTK_FEATURE_MUST_BE_SUPPORTED are also supported in the device rt_features.
+First patch is to add BB and RF parameters tables. Patch 2/12 and 3/13 are
+to set TX power by rate, limit and tracking tables. Patch 4/13~7/13 belongs
+to BB gain and waveform. Patch 8/13 is to configure HFC parameter. The last
+4 patches are used to set channel, a basic and important function.
+
+Ping-Ke Shih (10):
+  rtw89: 8852c: add BB and RF parameters tables
+  rtw89: 8852c: add TX power by rate and limit tables
+  rtw89: 8852c: phy: configure TSSI bandedge
+  rtw89: 8852c: add BB initial and reset functions
+  rtw89: 8852c: add efuse gain offset parser
+  rtw89: 8852c: add HFC parameters
+  rtw89: 8852c: add set channel function of RF part
+  rtw89: 8852c: set channel of MAC part
+  rtw89: 8852c: add set channel of BB part
+  rtw89: 8852c: add help function of set channel
+
+Zong-Zhe Yang (2):
+  rtw89: 8852c: add TX power track tables
+  rtw89: 8852c: support bb gain info
+
+ drivers/net/wireless/realtek/rtw89/core.h     |    57 +
+ drivers/net/wireless/realtek/rtw89/phy.c      |   349 +
+ drivers/net/wireless/realtek/rtw89/phy.h      |    73 +-
+ drivers/net/wireless/realtek/rtw89/reg.h      |   171 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |     2 +
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.c |     8 +-
+ .../wireless/realtek/rtw89/rtw8852a_table.c   |    24 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1338 ++
+ drivers/net/wireless/realtek/rtw89/rtw8852c.h |    19 +-
+ .../net/wireless/realtek/rtw89/rtw8852c_rfk.c |   214 +
+ .../net/wireless/realtek/rtw89/rtw8852c_rfk.h |    14 +
+ .../wireless/realtek/rtw89/rtw8852c_table.c   | 19470 ++++++++++++++++
+ .../wireless/realtek/rtw89/rtw8852c_table.h   |    36 +
+ drivers/net/wireless/realtek/rtw89/util.h     |    30 +
+ 14 files changed, 21769 insertions(+), 36 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852c_table.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852c_table.h
+
+-- 
+2.25.1
 
