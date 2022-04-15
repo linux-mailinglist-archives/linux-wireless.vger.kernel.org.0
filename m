@@ -2,91 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04E6A502885
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Apr 2022 12:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9865C5028C3
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Apr 2022 13:16:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352431AbiDOK4B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Apr 2022 06:56:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44218 "EHLO
+        id S243960AbiDOLS2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Apr 2022 07:18:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348531AbiDOK4A (ORCPT
+        with ESMTP id S241828AbiDOLS0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Apr 2022 06:56:00 -0400
-X-Greylist: delayed 491 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 15 Apr 2022 03:53:31 PDT
-Received: from vps.slashdirt.org (vps.slashdirt.org [144.91.108.218])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8720DAACA8
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Apr 2022 03:53:31 -0700 (PDT)
-Received: from supercopter.milliways.lan (82-64-212-153.subs.proxad.net [82.64.212.153])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by vps.slashdirt.org (Postfix) with ESMTPSA id BBB246021A;
-        Fri, 15 Apr 2022 12:45:16 +0200 (CEST)
-DMARC-Filter: OpenDMARC Filter v1.4.0 vps.slashdirt.org BBB246021A
-Authentication-Results: vps.slashdirt.org; dmarc=fail (p=quarantine dis=none) header.from=slashdirt.org
-DKIM-Filter: OpenDKIM Filter v2.11.0 vps.slashdirt.org BBB246021A
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=slashdirt.org; s=mail;
-        t=1650019517; bh=lkrm3ROjHkqcg0OsziAkJPqgkECGkh89TmnGlT8fS+o=;
-        h=From:To:Cc:Subject:Date:From;
-        b=rJEMmm9TZ3B9sju4UTc+4bfwx8ZCrgdRmvPzUxthk4l/rGtl2hzsr7ebhGUmS7cv+
-         Zp9UWKQ/u/8CAtDyuUyvYzaJD/34H0xclHt6CVf8QvVYuVOjGlvUPfp+zpaSBZMgDE
-         jpQ4kdCZqX9l4wOePkRfHLWZUTa7LLox4gZx5JiY=
-From:   =?UTF-8?q?Thibaut=20VAR=C3=88NE?= <hacks+kernel@slashdirt.org>
-To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Cc:     =?UTF-8?q?Thibaut=20VAR=C3=88NE?= <hacks+kernel@slashdirt.org>,
-        =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>,
-        Clemens Hopfer <openwrt@wireloss.net>
-Subject: [PATCH] ath9k: fix QCA9561 PA bias
-Date:   Fri, 15 Apr 2022 12:44:19 +0200
-Message-Id: <20220415104419.22749-1-hacks+kernel@slashdirt.org>
-X-Mailer: git-send-email 2.30.2
+        Fri, 15 Apr 2022 07:18:26 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71DD2101E6
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Apr 2022 04:15:54 -0700 (PDT)
+X-UUID: 8dfdb75e29ba459a91564ab4f8383ad0-20220415
+X-UUID: 8dfdb75e29ba459a91564ab4f8383ad0-20220415
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 114709593; Fri, 15 Apr 2022 19:15:49 +0800
+Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Fri, 15 Apr 2022 19:15:48 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb02.mediatek.inc
+ (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 15 Apr
+ 2022 19:15:47 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 15 Apr 2022 19:15:47 +0800
+Message-ID: <9188cd3d7463cb8fc65c741bd07de817d0e60f6f.camel@mediatek.com>
+Subject: Re: [PATCH v2] mt76: mt7915: add debugfs knob for RF registers
+ read/write
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Bo Jiao <Bo.Jiao@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>
+Date:   Fri, 15 Apr 2022 19:15:47 +0800
+In-Reply-To: <c8662170-bf59-06df-a78c-8fb24303f274@nbd.name>
+References: <20220415061444.30720-1-shayne.chen@mediatek.com>
+         <c8662170-bf59-06df-a78c-8fb24303f274@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NO_DNS_FOR_FROM,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ath9k is setting the TX PA DC bias level differently on QCA9561 and
-QCA9565 although they have the same radio IP-core, which results in a
-very low output power and very low throughput as devices are further
-away from the AP (compared to other 2.4GHz APs).
+On Fri, 2022-04-15 at 10:26 +0200, Felix Fietkau wrote:
+> On 15.04.22 08:14, Shayne Chen wrote:
+> > Add RF registers read/write support for debugging RF issues, which
+> > should be processed by mcu commands.
+> > 
+> > Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+> > Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+> > Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+> 
+> What's the required width of rf_sel and rf_ofs? Would both fit
+> together 
+> in a single u32? If so, you could just use the generic regidx
+> debugfs 
+> file for both and simply add a rf_regval debugfs file.
+> 
+> - Felix
 
-In real life testing, without this patch the 2.4GHz throughput on
-Yuncore XD3200 is around 10Mbps sitting next to the AP, and close to
-practical maximum with the patch applied.
+Hi Felix,
 
-Tested-by: Petr Štetiar <ynezz@true.cz>
-Signed-off-by: Clemens Hopfer <openwrt@wireloss.net>
-Signed-off-by: Thibaut VARÈNE <hacks+kernel@slashdirt.org>
----
- drivers/net/wireless/ath/ath9k/ar9003_eeprom.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+FW use the WF sel (antenna 0-3) and offset to locate rf registers.
+I'll send an update patch to merge them in the generic regidx with
+wf sel [31:28] and offset [27:0].
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-index b0a4ca355..8f8682f25 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -3606,9 +3606,10 @@ static void ar9003_hw_xpa_bias_level_apply(struct ath_hw *ah, bool is2ghz)
- 	int bias = ar9003_modal_header(ah, is2ghz)->xpaBiasLvl;
- 
- 	if (AR_SREV_9485(ah) || AR_SREV_9330(ah) || AR_SREV_9340(ah) ||
--	    AR_SREV_9531(ah) || AR_SREV_9561(ah))
-+	    AR_SREV_9531(ah))
- 		REG_RMW_FIELD(ah, AR_CH0_TOP2, AR_CH0_TOP2_XPABIASLVL, bias);
--	else if (AR_SREV_9462(ah) || AR_SREV_9550(ah) || AR_SREV_9565(ah))
-+	else if (AR_SREV_9462(ah) || AR_SREV_9550(ah) || AR_SREV_9561(ah) ||
-+		 AR_SREV_9565(ah))
- 		REG_RMW_FIELD(ah, AR_CH0_TOP, AR_CH0_TOP_XPABIASLVL, bias);
- 	else {
- 		REG_RMW_FIELD(ah, AR_CH0_TOP, AR_CH0_TOP_XPABIASLVL, bias);
--- 
-2.30.2
+Thanks,
+Shayne
 
