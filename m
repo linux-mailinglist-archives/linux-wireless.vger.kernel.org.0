@@ -2,40 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F049B5024A1
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Apr 2022 07:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C8B9502561
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Apr 2022 08:14:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241148AbiDOFr0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Apr 2022 01:47:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33236 "EHLO
+        id S231435AbiDOGRX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Apr 2022 02:17:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233507AbiDOFrZ (ORCPT
+        with ESMTP id S234910AbiDOGRV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Apr 2022 01:47:25 -0400
+        Fri, 15 Apr 2022 02:17:21 -0400
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC0D13E0D8
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Apr 2022 22:44:53 -0700 (PDT)
-X-UUID: 9931f9f0d0b743138cf3cd1165742cac-20220415
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 781053C492
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Apr 2022 23:14:53 -0700 (PDT)
+X-UUID: 92d0064d55554472a13182e1f1e5a045-20220415
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.4,REQID:b3ffb270-f3bf-409f-961c-4588338bf5bc,OB:0,LO
-        B:0,IP:0,URL:8,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
-        ON:release,TS:8
-X-CID-META: VersionHash:faefae9,CLOUDID:226939a9-d103-4e36-82b9-b0e86991b3df,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,File:nil,QS:0,BEC:nil
-X-UUID: 9931f9f0d0b743138cf3cd1165742cac-20220415
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
+X-CID-O-INFO: VERSION:1.1.4,REQID:dddddf8a-f101-48f7-9d69-2e7b9806084a,OB:0,LO
+        B:0,IP:0,URL:8,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,RULE:Release_Ham,ACT
+        ION:release,TS:103
+X-CID-INFO: VERSION:1.1.4,REQID:dddddf8a-f101-48f7-9d69-2e7b9806084a,OB:0,LOB:
+        0,IP:0,URL:8,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,RULE:Spam_GS981B3D,ACT
+        ION:quarantine,TS:103
+X-CID-META: VersionHash:faefae9,CLOUDID:27a83aa9-d103-4e36-82b9-b0e86991b3df,C
+        OID:961720e55576,Recheck:0,SF:13|15|28|17|19|48,TC:nil,Content:0,EDM:-3,Fi
+        le:nil,QS:0,BEC:nil
+X-UUID: 92d0064d55554472a13182e1f1e5a045-20220415
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
         (envelope-from <shayne.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1518763462; Fri, 15 Apr 2022 13:44:48 +0800
-Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 15 Apr 2022 13:44:46 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb02.mediatek.inc
- (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 15 Apr
- 2022 13:44:46 +0800
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1203422980; Fri, 15 Apr 2022 14:14:49 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Fri, 15 Apr 2022 14:14:48 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 15 Apr 2022 13:44:46 +0800
+ Transport; Fri, 15 Apr 2022 14:14:48 +0800
 From:   Shayne Chen <shayne.chen@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>
 CC:     linux-wireless <linux-wireless@vger.kernel.org>,
@@ -46,16 +48,16 @@ CC:     linux-wireless <linux-wireless@vger.kernel.org>,
         linux-mediatek <linux-mediatek@lists.infradead.org>,
         Shayne Chen <shayne.chen@mediatek.com>,
         Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: [PATCH] mt76: mt7915: add debugfs knob for RF registers read/write
-Date:   Fri, 15 Apr 2022 13:44:14 +0800
-Message-ID: <20220415054414.28954-1-shayne.chen@mediatek.com>
+Subject: [PATCH v2] mt76: mt7915: add debugfs knob for RF registers read/write
+Date:   Fri, 15 Apr 2022 14:14:44 +0800
+Message-ID: <20220415061444.30720-1-shayne.chen@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -69,10 +71,12 @@ Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
 Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
+v2: add dev_kfree_skb()
+---
  .../wireless/mediatek/mt76/mt7915/debugfs.c   | 82 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 29 +++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 30 +++++++
  .../wireless/mediatek/mt76/mt7915/mt7915.h    |  4 +
- 3 files changed, 115 insertions(+)
+ 3 files changed, 116 insertions(+)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
 index dece0a6e..275ff49e 100644
@@ -175,10 +179,10 @@ index dece0a6e..275ff49e 100644
  		debugfs_create_u32("dfs_hw_pattern", 0400, dir,
  				   &dev->hw_pattern);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index ec93a924..c6a80902 100644
+index ec93a924..183ab554 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3677,3 +3677,32 @@ int mt7915_mcu_twt_agrt_update(struct mt7915_dev *dev,
+@@ -3677,3 +3677,33 @@ int mt7915_mcu_twt_agrt_update(struct mt7915_dev *dev,
  	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(TWT_AGRT_UPDATE),
  				 &req, sizeof(req), true);
  }
@@ -208,6 +212,7 @@ index ec93a924..c6a80902 100644
 +		return ret;
 +
 +	*val = le32_to_cpu(*(__le32 *)(skb->data + 8));
++	dev_kfree_skb(skb);
 +
 +	return 0;
 +}
