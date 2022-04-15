@@ -2,274 +2,237 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 766C6502075
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Apr 2022 04:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F049B5024A1
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Apr 2022 07:45:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240142AbiDOC3p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Apr 2022 22:29:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37604 "EHLO
+        id S241148AbiDOFr0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Apr 2022 01:47:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233911AbiDOC3o (ORCPT
+        with ESMTP id S233507AbiDOFrZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Apr 2022 22:29:44 -0400
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E465E86E07
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Apr 2022 19:27:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1649989637; x=1681525637;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=hjvUzvOPfS1ipmCCVvTPVZiBypu2XFWitmfc5NLLkSY=;
-  b=XGH1V5o8DrI0mgAkPy11mbRzrrYhlb+OzG94i9mecpGX7nSGawkzqcfg
-   MXuEh5S9dNy0Kcx9ej1XtaQiWp12e0dnihTNp1RLdQQGAMu2gRNLA9bbG
-   Ym/NTRJr+lGKKzdEUWzmms7znCUvydvKNsF31wKTOXFPYmptudTgjvQa9
-   o=;
-Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 14 Apr 2022 19:27:17 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2022 19:27:17 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Thu, 14 Apr 2022 19:27:16 -0700
-Received: from [10.253.8.85] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Thu, 14 Apr
- 2022 19:27:13 -0700
-Message-ID: <aee8fc50-3ffb-f985-f0ad-9752bb51890d@quicinc.com>
-Date:   Fri, 15 Apr 2022 10:27:09 +0800
+        Fri, 15 Apr 2022 01:47:25 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC0D13E0D8
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Apr 2022 22:44:53 -0700 (PDT)
+X-UUID: 9931f9f0d0b743138cf3cd1165742cac-20220415
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.4,REQID:b3ffb270-f3bf-409f-961c-4588338bf5bc,OB:0,LO
+        B:0,IP:0,URL:8,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
+        ON:release,TS:8
+X-CID-META: VersionHash:faefae9,CLOUDID:226939a9-d103-4e36-82b9-b0e86991b3df,C
+        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,File:nil,QS:0,BEC:nil
+X-UUID: 9931f9f0d0b743138cf3cd1165742cac-20220415
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1518763462; Fri, 15 Apr 2022 13:44:48 +0800
+Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 15 Apr 2022 13:44:46 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb02.mediatek.inc
+ (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 15 Apr
+ 2022 13:44:46 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 15 Apr 2022 13:44:46 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Bo Jiao <Bo.Jiao@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>
+Subject: [PATCH] mt76: mt7915: add debugfs knob for RF registers read/write
+Date:   Fri, 15 Apr 2022 13:44:14 +0800
+Message-ID: <20220415054414.28954-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v5] cfg80211: save power spectral density(psd) of
- regulatory rule
-Content-Language: en-US
-To:     Wen Gong <wgong@codeaurora.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        <johannes.berg@intel.com>
-CC:     Venkateswara Naralasetty <vnaralas@qti.qualcomm.com>,
-        "Venkateswara Naralasetty" <vnaralas@codeaurora.org>,
-        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <wgong=codeaurora.org@codeaurora.org>, <quic_adisi@quicinc.com>,
-        <quic_vnaralas@quicinc.com>
-References: <20210928085211.26186-1-wgong@codeaurora.org>
- <bd649a3d2cf2ea9064d427d633055891@codeaurora.org>
- <cb20427eae96c4551084e4c899618b94@codeaurora.org>
- <2afb1bf6f06cb53f43fe0d354afa4e7c@codeaurora.org>
- <2ed76cff292dcca18326de0407a93821@codeaurora.org>
- <1222384c2bc7d80bf572b65ab17660477bb27300.camel@sipsolutions.net>
- <562080d7fc3b7568811c47a8e8e79156@codeaurora.org>
- <DM8PR02MB8154258563A4F7C805C84B4BE6B59@DM8PR02MB8154.namprd02.prod.outlook.com>
- <0b05f6e555bcb89c49f56279c077ce63@codeaurora.org>
- <18363bc18538ea9b7e8fe28f4c5595c54f3b93d3.camel@sipsolutions.net>
- <67936afa5545b9a5d6eb5ad6931026d7@codeaurora.org>
- <6053b0963612057267f00b89e14b9e15@codeaurora.org>
- <68b700b371399db0ed4174d20ddd0b8b@codeaurora.org>
- <7761dc6f736b04cce1137b68a7132ac7@codeaurora.org>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <7761dc6f736b04cce1137b68a7132ac7@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+Add RF registers read/write support for debugging RF issues, which
+should be processed by mcu commands.
 
-PSD is another type power value as well as the power_rule in 
-ieee80211_reg_rule
-and max_reg_power/max_power in ieee80211_channel. For 6G, it need the
-both the 2 values (psd and tx-power) for power control.
+Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   | 82 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 29 +++++++
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  4 +
+ 3 files changed, 115 insertions(+)
 
-To support LPI/SP/VLP mode + concurrency, it is not only to process the
-TX power and psd, it need to process all fields in ieee80211_reg_rule.
-for example, for the same country US, it has some ieee80211_reg_rule for
-6G:
-LPI mode for AP mode is:
-(5945 - 7125 @ 160) (0, 30) (FLAGS 512) (psd 5 dB/MHz)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index dece0a6e..275ff49e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -867,6 +867,85 @@ mt7915_twt_stats(struct seq_file *s, void *data)
+ 	return 0;
+ }
+ 
++static ssize_t
++mt7915_rf_regidx_read(struct file *file, char __user *userbuf,
++		      size_t count, loff_t *ppos)
++{
++	struct mt7915_dev *dev = file->private_data;
++	int ret, len = 14;
++	char *buf;
++
++	buf = kzalloc(len, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
++
++	ret = snprintf(buf, len, "%u 0x%08x\n", dev->rf_sel, dev->rf_ofs);
++	ret = simple_read_from_buffer(userbuf, count, ppos, buf, ret);
++
++	kfree(buf);
++	return ret;
++}
++
++static ssize_t
++mt7915_rf_regidx_write(struct file *file, const char __user *userbuf,
++		       size_t count, loff_t *ppos)
++{
++	struct mt7915_dev *dev = file->private_data;
++	char buf[13];
++
++	if (count > sizeof(buf))
++		return -EINVAL;
++
++	if (copy_from_user(buf, userbuf, count))
++		return -EFAULT;
++
++	buf[sizeof(buf) - 1] = '\0';
++
++	if (sscanf(buf, "%hhu 0x%x", &dev->rf_sel, &dev->rf_ofs) != 2) {
++		dev_warn(dev->mt76.dev,
++			 "format: <rf_sel> 0x<rf_ofs>\n");
++		return -EINVAL;
++	}
++
++	return count;
++}
++
++static const struct file_operations fops_rf_regidx = {
++	.open = simple_open,
++	.llseek = generic_file_llseek,
++	.read = mt7915_rf_regidx_read,
++	.write = mt7915_rf_regidx_write,
++	.owner = THIS_MODULE,
++};
++
++static int
++mt7915_rf_regval_get(void *data, u64 *val)
++{
++	struct mt7915_dev *dev = data;
++	u32 regval;
++	int ret;
++
++	ret = mt7915_mcu_rf_regval(dev, dev->rf_sel, dev->rf_ofs, &regval, false);
++	if (ret)
++		return ret;
++
++	*val = le32_to_cpu(regval);
++
++	return 0;
++}
++
++static int
++mt7915_rf_regval_set(void *data, u64 val)
++{
++	struct mt7915_dev *dev = data;
++
++	return mt7915_mcu_rf_regval(dev, dev->rf_sel, dev->rf_ofs,
++				    (u32 *)&val, true);
++}
++
++DEFINE_DEBUGFS_ATTRIBUTE(fops_rf_regval, mt7915_rf_regval_get,
++			 mt7915_rf_regval_set, "0x%08llx\n");
++
+ int mt7915_init_debugfs(struct mt7915_phy *phy)
+ {
+ 	struct mt7915_dev *dev = phy->dev;
+@@ -898,6 +977,9 @@ int mt7915_init_debugfs(struct mt7915_phy *phy)
+ 	debugfs_create_devm_seqfile(dev->mt76.dev, "twt_stats", dir,
+ 				    mt7915_twt_stats);
+ 	debugfs_create_file("ser_trigger", 0200, dir, dev, &fops_ser_trigger);
++	debugfs_create_file("rf_regidx", 0600, dir, dev, &fops_rf_regidx);
++	debugfs_create_file("rf_regval", 0600, dir, dev, &fops_rf_regval);
++
+ 	if (!dev->dbdc_support || phy->band_idx) {
+ 		debugfs_create_u32("dfs_hw_pattern", 0400, dir,
+ 				   &dev->hw_pattern);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index ec93a924..c6a80902 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3677,3 +3677,32 @@ int mt7915_mcu_twt_agrt_update(struct mt7915_dev *dev,
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(TWT_AGRT_UPDATE),
+ 				 &req, sizeof(req), true);
+ }
++
++int mt7915_mcu_rf_regval(struct mt7915_dev *dev, u8 rf_sel,
++			 u32 rf_offset, u32 *val, bool set)
++{
++	struct {
++		__le32 idx;
++		__le32 ofs;
++		__le32 data;
++	} __packed req = {
++		.idx = cpu_to_le32(dev->rf_sel),
++		.ofs = cpu_to_le32(dev->rf_ofs),
++		.data = set ? cpu_to_le32(*val) : 0,
++	};
++	struct sk_buff *skb;
++	int ret;
++
++	if (set)
++		return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(RF_REG_ACCESS),
++					 &req, sizeof(req), false);
++
++	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_EXT_QUERY(RF_REG_ACCESS),
++					&req, sizeof(req), true, &skb);
++	if (ret)
++		return ret;
++
++	*val = le32_to_cpu(*(__le32 *)(skb->data + 8));
++
++	return 0;
++}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index ca129e5e..ccff5043 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -312,6 +312,8 @@ struct mt7915_dev {
+ 	u8 fw_debug_wm;
+ 	u8 fw_debug_wa;
+ 	u8 fw_debug_bin;
++	u8 rf_sel;
++	u32 rf_ofs;
+ 
+ 	struct dentry *debugfs_dir;
+ 	struct rchan *relay_fwlog;
+@@ -507,6 +509,8 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta, struct rate_info *rate);
+ int mt7915_mcu_rdd_background_enable(struct mt7915_phy *phy,
+ 				     struct cfg80211_chan_def *chandef);
++int mt7915_mcu_rf_regval(struct mt7915_dev *dev, u8 rf_sel,
++			 u32 rf_offset, u32 *val, bool set);
+ int mt7915_mcu_wa_cmd(struct mt7915_dev *dev, int cmd, u32 a1, u32 a2, u32 a3);
+ int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 type, u8 ctrl);
+ int mt7915_mcu_fw_dbg_ctrl(struct mt7915_dev *dev, u32 module, u8 level);
+-- 
+2.25.1
 
-LPI mode for client mode is:
-(5945 - 7125 @ 160) (0, 24) (FLAGS 512) (psd -1 dB/MHz)
-
-SP mode is:
-(5945 - 6425 @ 160) (0, 30) (FLAGS 0) (psd 17 dB/MHz)
-(6525 - 6875 @ 160) (0, 30) (FLAGS 0) (psd 17 dB/MHz)
-
-you can see the frequency range/flags/tx power/psd are not same between
-the 3 mode. So the psd value is a same kind field as well as the frequency
-range/flags/tx power in ieee80211_reg_rule and ieee80211_channel.
-If it has only one interface in the same ieee80211_hw, the interface
-must choose one the the above modes at any time, and the reg rules
-will be updated when the interface changed its mode, then the info
-of channels of ieee80211_supported_band for 6G also update, it has
-no problem.
-
-When it has 2 interface up simultaneously in the same ieee80211_hw,
-then it will have problem. because the 2 interface share the same
-ieee80211_reg_rule and the same channels and same ieee80211_supported_band
-for 6G, if interface #1 is LPI-AP, and interface #2 is SP mode, then
-even the channels count is not same for the 2 interface, channels count
-of SP mode is smaller than LPI-AP, also the info of channel is not same.
-
-So adding/not adding psd value into ieee80211_reg_rule/ieee80211_channel
-will not effect the problem of muti-interface concurrency issue of 6G.
-When muti-interface concurrency run, all the fields of ieee80211_reg_rule/
-ieee80211_channel should be split.
-
-I think the easy way is to save the channels of ieee80211_supported_band
-of 6G in each interface instead of ieee80211_hw, then interface #1/#2
-have/use their own channels, they use their own frequency range/flags/
-tx power/psd... This is a high level change, and adding psd into
-ieee80211_reg_rule/ieee80211_channel is a low level change. So I think
-they have no dependency with each other.
-
-On 3/3/2022 10:13 AM, Wen Gong wrote:
-> Hi Johannes,
->
-> Do you have comments for this patch?
->
-> Currently these patches of mac80211/cfg80211/ieee80211 for LPI/SP/VLP is
-> the base patches, to enable the feature of LPI/SP/VLP, it still need 
-> other
-> patches of lower drivers such as ath11k to enable it. It will not have
-> LPI/SP/VLP without patches of ath11k, it means all these patches of
-> mac80211/cfg80211 will not take effect.
->
-> When lower driver such as ath11k set max_interfaces of 
-> ieee80211_iface_combination
-> to 1, then it can not start more than 1 interface on the same 
-> ieee80211_hw/wiphy.
-> When STATION interface is up, then AP interface can not start up. AP 
-> interface
-> can start up after STATION interface down. Also when AP interface is up,
-> STATION interface can not start up. STATION interface can start up after
-> AP interface down.
->
-> I have sent out my ath11k v2 
-> patches(https://patchwork.kernel.org/project/linux-wireless/list/?series=601212),
-> it will allow only one interface
-> up simultaneously for the chip which enable LPI/SP/VLP feature in this
-> patch: "ath11k: allow only one interface up simultaneously for WCN6855"
-> https://patchwork.kernel.org/project/linux-wireless/patch/20211224085236.9064-5-quic_wgong@quicinc.com/ 
->
-> It means it will not have both AP/STA together and these patches of 
-> mac80211/
-> cfg80211/ieee80211 not need changes and it will not have bugs.
->
-> If there are some chip want to both enable LPI/SP/VLP feature and
-> enable AP/STA simultaneously in same ieee80211_hw/wiphy in future,
-> then he/she need to refine reg rules and channels of mac80211/cfg80211/
-> ieee80211, but at that moment, this patch "cfg80211: save power
-> spectral density(psd) of regulatory rule" still not need change.
-> Because this patch is change in each reg rule/each channel in a
-> low layer, the refine reg rules and channels is a high layer, they
-> have no intersection.
->
-> On 2021-12-06 16:48, Wen Gong wrote:
->> Hi Johannes,
->>
->> Are you waiting for the AP/STA concurrency patches, then apply this 
->> patch?
->>
->> On 2021-11-09 17:57, Wen Gong wrote:
->>> Hi Johannes,
->>>
->>> do you have comments about my description for PSD?
->>>
->>> On 2021-10-26 19:26, Wen Gong wrote:
->>>> On 2021-10-26 04:09, Johannes Berg wrote:
->>>>> On Mon, 2021-10-11 at 15:48 +0800, Wen Gong wrote:
->>>>>>
->>>>>> > IMO, Only power rules and PSD info might vary for AP and 
->>>>>> STATION. Rest
->>>>>> > of the rules will remains same right?
->>>>>> >
->>>>>> The freq_range may also be different for AP and STATION.
->>>>>> and reg_rules number also may also be different for AP and STATION.
->>>>>>
->>>>>> for example:
->>>>>> SUBORDINATE CLIENT of STANDARD POWER reg rules number 2
->>>>>> reg rule 1: (5945 - 6425 @ 160) (0, 30) (FLAGS 0) (psd flag 1 
->>>>>> EIRP 17
->>>>>> dB/MHz)
->>>>>> reg rule 2: (6525 - 6885 @ 160) (0, 30) (FLAGS 0) (psd flag 1 
->>>>>> EIRP 17
->>>>>> dB/MHz)
->>>>>>
->>>>>> INDOOR AP reg rules number 1
->>>>>> reg rule 1: (5945 - 7125 @ 160) (0, 24) (FLAGS 0) (psd flag 0 EIRP 0
->>>>>> dB/MHz)
->>>>>
->>>>> That seems right, but isn't that an orthogonal question?
->>>>>
->>>>> Here, on this patch, we're discussing what data we should have in the
->>>>> channel information, and it would seem that if it's different for
->>>>> AP/client, then we do need both information stored, so that we can 
->>>>> cope
->>>>> with concurrency between AP and client?
->>>>>
->>>>> If we additionally need to have different data for the regulatory 
->>>>> rules
->>>>> for AP and client, that might mean we need to go back and actually
->>>>> change the code there *as well*, and then fill in the right fields in
->>>>> this patch?
->>>>>
->>>>> Unless somehow we're convinced that for this feature we don't need to
->>>>> worry about concurrently using AP and client modes?
->>>>>
->>>>> johannes
->>>>
->>>> Currently these patches of mac80211/cfg80211/ieee80211 for 
->>>> LPI/SP/VLP is
->>>> the base patches, to enable the feature of LPI/SP/VLP, it still 
->>>> need other
->>>> patches of lower drivers such as ath11k to enable it. It will not have
->>>> LPI/SP/VLP without patches of ath11k, it means all these patches will
->>>> not take effect.
->>>>
->>>> When lower driver such as ath11k set max_interfaces of
->>>> ieee80211_iface_combination
->>>> to 1, then it can not start more than 1 interface on the same
->>>> ieee80211_hw/wiphy.
->>>> When STATION interface is up, then AP interface can not start up. 
->>>> AP interface
->>>> can start up after STATION interfacedown. Also when AP interface is 
->>>> up,
->>>> STATION interface can not start up. STATION interface can start up 
->>>> after
->>>> AP interface down.
->>>>
->>>> I have sent out my ath11k
->>>> patches(https://lore.kernel.org/linux-wireless/20211026111913.7346-1-quic_wgong@quicinc.com/), 
->>>>
->>>> it will allow only one interface
->>>> up simultaneously for the chip which enable LPI/SP/VLP feature in this
->>>> patch: "ath11k: allow only one interface up simultaneously for 
->>>> WCN6855"
->>>> https://lore.kernel.org/linux-wireless/20211026111913.7346-5-quic_wgong@quicinc.com/ 
->>>>
->>>> It means it will not have both AP/STA together and these patches of 
->>>> mac80211/
->>>> cfg80211/ieee80211 not need changes and it will not have bugs.
->>>>
->>>> If there are some chip want to both enable LPI/SP/VLP feature and
->>>> enable AP/STA simultaneously in same ieee80211_hw/wiphy in future,
->>>> then he/she need to refine reg rules and channels of 
->>>> mac80211/cfg80211/
->>>> ieee80211, but at that moment, this patch "cfg80211: save power
->>>> spectral density(psd) of regulatory rule" still not need change.
->>>> Because this patch is change in each reg rule/each channel in a
->>>> low layer, the refine reg rules and channels is a high layer, they
->>>> have no intersection.
->
