@@ -2,94 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64E6F504819
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Apr 2022 16:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A753504835
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Apr 2022 17:40:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234251AbiDQOyy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 17 Apr 2022 10:54:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52642 "EHLO
+        id S234324AbiDQPmo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 17 Apr 2022 11:42:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbiDQOyx (ORCPT
+        with ESMTP id S234317AbiDQPmn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 17 Apr 2022 10:54:53 -0400
-Received: from vps.slashdirt.org (vps.slashdirt.org [144.91.108.218])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 726789FD5
-        for <linux-wireless@vger.kernel.org>; Sun, 17 Apr 2022 07:52:17 -0700 (PDT)
-Received: from supercopter.milliways.lan (82-64-212-153.subs.proxad.net [82.64.212.153])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Sun, 17 Apr 2022 11:42:43 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E8D812AE5
+        for <linux-wireless@vger.kernel.org>; Sun, 17 Apr 2022 08:40:06 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by vps.slashdirt.org (Postfix) with ESMTPSA id 8EF3D60140;
-        Sun, 17 Apr 2022 16:52:15 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 vps.slashdirt.org 8EF3D60140
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=slashdirt.org; s=mail;
-        t=1650207135; bh=nietznB6ZgTnFg0C9cBqE28wMNc+jFjgA4EF0khtlIs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lzHZ7+umWyAIt1hLdMGBuneJSjQgHn7ubFcB8kuQT/b/DANXamUh/j2nHs42ap+Mu
-         kFpbOIMDpqUxTcCHICPQ6V21mhP+8RBWjzvrBckZe7FW9mrBksq6jIn7UKupOtJicl
-         aiuSQ0+LpvSCzZfgtKM+ZSAEuZlv65mNjQArD9k4=
-From:   =?UTF-8?q?Thibaut=20VAR=C3=88NE?= <hacks+kernel@slashdirt.org>
-To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>,
-        Clemens Hopfer <openwrt@wireloss.net>,
-        =?UTF-8?q?Thibaut=20VAR=C3=88NE?= <hacks+kernel@slashdirt.org>
-Subject: [PATCH v2] ath9k: fix QCA9561 PA bias level
-Date:   Sun, 17 Apr 2022 16:51:45 +0200
-Message-Id: <20220417145145.1847-1-hacks+kernel@slashdirt.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <EC4F8380-4725-441D-B3FF-8CD7048F2236@slashdirt.org>
-References: <EC4F8380-4725-441D-B3FF-8CD7048F2236@slashdirt.org>
+        by ams.source.kernel.org (Postfix) with ESMTPS id 44026B80CBA
+        for <linux-wireless@vger.kernel.org>; Sun, 17 Apr 2022 15:40:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5237AC385A7;
+        Sun, 17 Apr 2022 15:40:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650210003;
+        bh=KSB0MYgWPf3L7rb8N4slf+2wJ6SHZh3ifjjYdBaOLKw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=XTrAA/yD8EbYhun+aLbq9bMvvA2hBpuTRI3NF8a7JyNs56FYsUeNIQMx8jjVCl4cq
+         cyQ06wcNsyLIeqjFFe6mxF6RoXgrWldQxNb9MjMVldjHKoY5ifCQUpr47T03mUdEBG
+         fBEhZSWBg8oA+iF7in/2T7nC9IlqIbHgE6qqBdL4hXD8+j+PpxaMqEbjNXyjTkPU7T
+         NZdm9foZXiqxyUKjmF6FdZGZ2B9i3CyFUjCYWfmqOyVdjcaIu81W+p4rKM9qpqkt+3
+         XUsfXcYmaZtuD2uYEVbEIsfBQ7NgoemMPP5ZsqkKgQ1N4bNEbOFEr4moacBwmEEDTq
+         92CTQ0KfvPGjw==
+Date:   Sun, 17 Apr 2022 17:40:00 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Ben Greear <greearb@candelatech.com>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, ryder.lee@mediatek.com,
+        evelyn.tsai@mediatek.com, owen.peng@mediatek.com
+Subject: Re: [PATCH 5/6] mt76: mt7915: enable radar background detection
+Message-ID: <Ylw00A5YN0mybkCw@localhost.localdomain>
+References: <cover.1641996493.git.lorenzo@kernel.org>
+ <f97a4fe5bec70d8e5594c0f4d286b46b844939a5.1641996493.git.lorenzo@kernel.org>
+ <70c4ecc0-cfc6-e924-6578-3314dca42d75@candelatech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NO_DNS_FOR_FROM,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="c/qzhBrLScOgABlj"
+Content-Disposition: inline
+In-Reply-To: <70c4ecc0-cfc6-e924-6578-3314dca42d75@candelatech.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch fixes an invalid TX PA DC bias level on QCA9561, which
-results in a very low output power and very low throughput as devices
-are further away from the AP (compared to other 2.4GHz APs).
 
-This patch was suggested by Felix Fietkau, who noted[1]:
-"The value written to that register is wrong, because while the mask
-definition AR_CH0_TOP2_XPABIASLVL uses a different value for 9561, the
-shift definition AR_CH0_TOP2_XPABIASLVL_S is hardcoded to 12, which is
-wrong for 9561."
+--c/qzhBrLScOgABlj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In real life testing, without this patch the 2.4GHz throughput on
-Yuncore XD3200 is around 10Mbps sitting next to the AP, and closer to
-practical maximum with the patch applied.
+> On 1/12/22 6:13 AM, Lorenzo Bianconi wrote:
+> > Notify userland the hw supports background radar/CAC detection.
+>=20
+> So, what about someone like me using mtk7915 4x4 radio from asia-rf?  It
+> has no extra RF chains afaik, and it is certainly broken when
+> trying to use DFS channels on my system.
 
-[1] https://lore.kernel.org/all/91c58969-c60e-2f41-00ac-737786d435ae@nbd.name
+according to my understanding asia-rf card can be considered an outlier from
+this point of view (mt7915 regular card should support a dedicated radar ch=
+ain).
+AFAIU there is no way to autodetect this feature (@Ryder correct?), so we c=
+ould
+add a module parameter (similar to dts one) to disable this feature. What do
+you think?
 
-Signed-off-by: Thibaut VARÈNE <hacks+kernel@slashdirt.org>
----
-v2: Adjust #define per Felix's suggestion
----
- drivers/net/wireless/ath/ath9k/ar9003_phy.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Regards,
+Lorenzo
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_phy.h b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
-index a171dbb29..ad949eb02 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_phy.h
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
-@@ -720,7 +720,7 @@
- #define AR_CH0_TOP2		(AR_SREV_9300(ah) ? 0x1628c : \
- 					(AR_SREV_9462(ah) ? 0x16290 : 0x16284))
- #define AR_CH0_TOP2_XPABIASLVL		(AR_SREV_9561(ah) ? 0x1e00 : 0xf000)
--#define AR_CH0_TOP2_XPABIASLVL_S	12
-+#define AR_CH0_TOP2_XPABIASLVL_S	(AR_SREV_9561(ah) ? 9 : 12)
- 
- #define AR_CH0_XTAL		(AR_SREV_9300(ah) ? 0x16294 : \
- 				 ((AR_SREV_9462(ah) || AR_SREV_9565(ah)) ? 0x16298 : \
--- 
-2.30.2
+>=20
+> Maybe you need a positive check instead of negative check before
+> enabling this feature?
+>=20
+> Thanks,
+> Ben
+>=20
+> >=20
+> > Tested-by: Owen Peng <owen.peng@mediatek.com>
+> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > ---
+> >   drivers/net/wireless/mediatek/mt76/mt7915/init.c | 7 +++++++
+> >   1 file changed, 7 insertions(+)
+> >=20
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers=
+/net/wireless/mediatek/mt76/mt7915/init.c
+> > index 5c1643963506..91c7ce60f296 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+> > @@ -309,6 +309,7 @@ static void
+> >   mt7915_init_wiphy(struct ieee80211_hw *hw)
+> >   {
+> >   	struct mt7915_phy *phy =3D mt7915_hw_phy(hw);
+> > +	struct mt76_dev *mdev =3D &phy->dev->mt76;
+> >   	struct wiphy *wiphy =3D hw->wiphy;
+> >   	struct mt7915_dev *dev =3D phy->dev;
+> > @@ -337,6 +338,12 @@ mt7915_init_wiphy(struct ieee80211_hw *hw)
+> >   	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BEACON_RATE_VHT);
+> >   	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BEACON_RATE_HE);
+> > +	if (!mdev->dev->of_node ||
+> > +	    !of_property_read_bool(mdev->dev->of_node,
+> > +				   "mediatek,disable-radar-background"))
+> > +		wiphy_ext_feature_set(wiphy,
+> > +				      NL80211_EXT_FEATURE_RADAR_BACKGROUND);
+> > +
+> >   	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
+> >   	ieee80211_hw_set(hw, SUPPORTS_TX_ENCAP_OFFLOAD);
+> >   	ieee80211_hw_set(hw, SUPPORTS_RX_DECAP_OFFLOAD);
+> >=20
+>=20
+>=20
+> --=20
+> Ben Greear <greearb@candelatech.com>
+> Candela Technologies Inc  http://www.candelatech.com
+>=20
 
+--c/qzhBrLScOgABlj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYlw0zAAKCRA6cBh0uS2t
+rHItAQCDgS4CZSkVBJ5X9lUPEQy4yW9kgFZq1KVpAXoSTCyRLAD+InDPFSPQtJ9u
+O3CjwblkH2XGFhXtkCZLBuXNt9+1aAk=
+=2Wj0
+-----END PGP SIGNATURE-----
+
+--c/qzhBrLScOgABlj--
