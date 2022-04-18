@@ -2,43 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 377375049ED
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Apr 2022 01:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61395504B26
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Apr 2022 05:05:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233172AbiDQXFP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 17 Apr 2022 19:05:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52572 "EHLO
+        id S235935AbiDRDHg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 17 Apr 2022 23:07:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235278AbiDQXFG (ORCPT
+        with ESMTP id S235941AbiDRDHb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 17 Apr 2022 19:05:06 -0400
-X-Greylist: delayed 407 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 17 Apr 2022 16:02:28 PDT
-Received: from confino.investici.org (confino.investici.org [93.190.126.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09C64186DF
-        for <linux-wireless@vger.kernel.org>; Sun, 17 Apr 2022 16:02:27 -0700 (PDT)
-Received: from mx1.investici.org (unknown [127.0.0.1])
-        by confino.investici.org (Postfix) with ESMTP id 4KhQQH49Hcz10wt
-        for <linux-wireless@vger.kernel.org>; Sun, 17 Apr 2022 22:55:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=autistici.org;
-        s=stigmate; t=1650236135;
-        bh=hTjQ2OBwytQSgOzaE5Iyglzt7Ylt9xF/OgFi1mttji8=;
-        h=Subject:From:To:Date:From;
-        b=EXbjw1GEkDmUJrFNwAxfhR3oEA3tK31lQp0a4fYl1hN0YIWfjWfxBZ9VukQsJAWAD
-         ymIMbk0vW7KgHBiBBA8y3DDa7hzN8xhiBVS6j6LuQ5EIakSXKK+to0ZFADwHb/MhdQ
-         YRShANBRl4GaqoAyNFubJzTyb500l63gVzU+J4nE=
-Received: from [93.190.126.19] (mx1.investici.org [93.190.126.19]) (Authenticated sender: kitestramuort@autistici.org) by localhost (Postfix) with ESMTPSA id 4KhQQH32yqz10wg
-        for <linux-wireless@vger.kernel.org>; Sun, 17 Apr 2022 22:55:35 +0000 (UTC)
-Message-ID: <63741bd20284a108454625bc322b46e4d10b1735.camel@autistici.org>
-Subject: iwlwifi crash with 5.18
-From:   kitestramuort <kitestramuort@autistici.org>
-To:     linux-wireless@vger.kernel.org
-Date:   Sun, 17 Apr 2022 23:55:34 +0100
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.0 
+        Sun, 17 Apr 2022 23:07:31 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E8D4B12;
+        Sun, 17 Apr 2022 20:04:53 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id md4so11933986pjb.4;
+        Sun, 17 Apr 2022 20:04:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MxqIUjNDmotUpRJvqMX8HiRsI8PcgO9pEtW2E7+We90=;
+        b=YqY1IpEAJtY+3nSKPKovbX5ZPmB16lHTBhps7tBI5vu7uRBP7DyQW0OBOeRSOJDOn+
+         0ctKzKpzcQrGT0CvL014ak+s7bBvi4a2CsEfzfNgxKQx0KwryTGuqW41B6qcXdLyLHuX
+         L5yWrUrNqmcI9tLvM4o+DuVY9kg8G7EEVaXrmowaWOrnXobd6koUunt8Nou+iInsahHq
+         +yNKAO51p7Ti1HP7o7NWUMDr73mB66aY5o+XSnhSodHYN+Kn62U4J0dWnueB3nWQ4AWw
+         l08EQ3IhEbMApmH00CrWqw9kNQ30sQPGlKBScnJGBrsCeoLzoqod0z+qv2PHcynSm0Oj
+         GidQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MxqIUjNDmotUpRJvqMX8HiRsI8PcgO9pEtW2E7+We90=;
+        b=lfPOgAEoZt9V2y+eD++O5AR6HeuAQV5QvvBwY7b7ibO5UyGKbh5EY7STl1s/baqAAg
+         gKnfRvRluHjPqG4UUWwa9135bQQsRswPZVuB8xEQkbylIli5pV6q/codPbEanns8AC4k
+         /tmf3kY/GL3ifYuAIR3Z5Jr/SSDoLgq7sPq3atNYIcSPTdRAVoP/Yn4PJ4xG+/KUkevb
+         68euZGLOyuWR8f2fEYknQX6eX5So8ZbysM1sA4Ia/m/3z0Q4X86Qld8oJQpgQouoEqqz
+         LJtUjipSVNf5rAkxzQiwp+9lR39qKghGKg2YN5U7d5EhO5NP/5KzqVQNBK8KlVZdgiOG
+         I8Qg==
+X-Gm-Message-State: AOAM531M+mB+VbxwnbGH4JNDViNFYmr2UyePFEHXAo2ZgTdT39LtQ1Xy
+        YDjb+IXIKgs5M4UVB4l6mUQxrFF1LfN0P8XRus11l2wOyLkCRQw=
+X-Google-Smtp-Source: ABdhPJzLwuwIwIsKQeNrnOR1eH70BULF3eMjhhDGorPZ/67ziabUCa8Bt5AjvyU66TFxRjL2ouuiqWiDVlNuMvGSADM=
+X-Received: by 2002:a17:902:b18d:b0:158:9e97:deee with SMTP id
+ s13-20020a170902b18d00b001589e97deeemr9006742plr.31.1650251093000; Sun, 17
+ Apr 2022 20:04:53 -0700 (PDT)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+References: <20220409062449.3752252-1-zheyuma97@gmail.com> <CA++WF2Np7Bk_qT68Uc3mrC38mN5p3fm9eVT7VA8NoX6=es2r2w@mail.gmail.com>
+In-Reply-To: <CA++WF2Np7Bk_qT68Uc3mrC38mN5p3fm9eVT7VA8NoX6=es2r2w@mail.gmail.com>
+From:   Zheyu Ma <zheyuma97@gmail.com>
+Date:   Mon, 18 Apr 2022 11:04:41 +0800
+Message-ID: <CAMhUBjkWcg4+YYynsd90jX1A+zp95tUUcLgYrTPAqSmbxM7TJA@mail.gmail.com>
+Subject: Re: [PATCH] wireless: ipw2x00: Refine the error handling of ipw2100_pci_init_one()
+To:     Stanislav Yakovlev <stas.yakovlev@gmail.com>
+Cc:     kvalo@kernel.org, "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com,
+        wireless <linux-wireless@vger.kernel.org>,
+        netdev@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,264 +69,54 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-AX210 card, iwlwifi compiled into the kernel, firmware (69 or 71)
-crashes systematically on boot. Still there in rc3. All good on 5.17
+On Thu, Apr 14, 2022 at 2:40 AM Stanislav Yakovlev
+<stas.yakovlev@gmail.com> wrote:
+>
+> On Sat, 9 Apr 2022 at 02:25, Zheyu Ma <zheyuma97@gmail.com> wrote:
+> >
+> > The driver should release resources in reverse order, i.e., the
+> > resources requested first should be released last, and the driver
+> > should adjust the order of error handling code by this rule.
+> >
+> > Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+> > ---
+> >  drivers/net/wireless/intel/ipw2x00/ipw2100.c | 34 +++++++++-----------
+> >  1 file changed, 16 insertions(+), 18 deletions(-)
+> >
+> [Skipped]
+>
+> > @@ -6306,9 +6303,13 @@ static int ipw2100_pci_init_one(struct pci_dev *pci_dev,
+> >  out:
+> >         return err;
+> >
+> > -      fail_unlock:
+> > +fail_unlock:
+> >         mutex_unlock(&priv->action_mutex);
+> > -      fail:
+> > +fail:
+> > +       pci_release_regions(pci_dev);
+> > +fail_disable:
+> > +       pci_disable_device(pci_dev);
+> We can't move these functions before the following block.
+>
+> > +fail_dev:
+> >         if (dev) {
+> >                 if (registered >= 2)
+> >                         unregister_netdev(dev);
+> This block continues with a function call to ipw2100_hw_stop_adapter
+> which assumes that device is still accessible via pci bus.
 
- iwlwifi 0000:01:00.0: enabling device (0000 -> 0002)
- iwlwifi 0000:01:00.0: Direct firmware load for iwlwifi-ty-a0-gf-a0-
-72.ucode failed with error -2
- iwlwifi 0000:01:00.0: api flags index 2 larger than supported by
-driver
- iwlwifi 0000:01:00.0: TLV_FW_FSEQ_VERSION: FSEQ Version: 0.0.2.36
- iwlwifi 0000:01:00.0: loaded firmware version 71.058653f6.0 ty-a0-gf-
-a0-71.ucode op_mode iwlmvm
- iwlwifi 0000:01:00.0: Detected Intel(R) Wi-Fi 6 AX210 160MHz,
-REV=3D0x420
- iwlwifi 0000:01:00.0: Allocated 0x04000000 bytes for firmware monitor.
- iwlwifi 0000:01:00.0: SecBoot CPU1 Status: 0x8d71, CPU2 Status: 0xb03
- iwlwifi 0000:01:00.0: WFPM_LMAC1_PD_NOTIFICATION: 0x1f
- iwlwifi 0000:01:00.0: HPM_SECONDARY_DEVICE_STATE: 0x42
- iwlwifi 0000:01:00.0: UMAC PC: 0x8047e2d8
- iwlwifi 0000:01:00.0: LMAC PC: 0x0
- iwlwifi 0000:01:00.0: Collecting data: trigger 15 fired.
- iwlwifi 0000:01:00.0: Loaded firmware version: 71.058653f6.0 ty-a0-gf-
-a0-71.ucode
- iwlwifi 0000:01:00.0: 0x00000000 | ADVANCED_SYSASSERT         =20
- iwlwifi 0000:01:00.0: 0x00000000 | trm_hw_status0
- iwlwifi 0000:01:00.0: 0x00000000 | trm_hw_status1
- iwlwifi 0000:01:00.0: 0x00000000 | branchlink2
- iwlwifi 0000:01:00.0: 0x00000000 | interruptlink1
- iwlwifi 0000:01:00.0: 0x00000000 | interruptlink2
- iwlwifi 0000:01:00.0: 0x00000000 | data1
- iwlwifi 0000:01:00.0: 0x00000000 | data2
- iwlwifi 0000:01:00.0: 0x00000000 | data3
- iwlwifi 0000:01:00.0: 0x00000000 | beacon time
- iwlwifi 0000:01:00.0: 0x00000000 | tsf low
- iwlwifi 0000:01:00.0: 0x00000000 | tsf hi
- iwlwifi 0000:01:00.0: 0x00000000 | time gp1
- iwlwifi 0000:01:00.0: 0x00000000 | time gp2
- iwlwifi 0000:01:00.0: 0x00000000 | uCode revision type
- iwlwifi 0000:01:00.0: 0x00000000 | uCode version major
- iwlwifi 0000:01:00.0: 0x00000000 | uCode version minor
- iwlwifi 0000:01:00.0: 0x00000000 | hw version
- iwlwifi 0000:01:00.0: 0x00000000 | board version
- iwlwifi 0000:01:00.0: 0x00000000 | hcmd
- iwlwifi 0000:01:00.0: 0x00000000 | isr0
- iwlwifi 0000:01:00.0: 0x00000000 | isr1
- iwlwifi 0000:01:00.0: 0x00000000 | isr2
- iwlwifi 0000:01:00.0: 0x00000000 | isr3
- iwlwifi 0000:01:00.0: 0x00000000 | isr4
- iwlwifi 0000:01:00.0: 0x00000000 | last cmd Id
- iwlwifi 0000:01:00.0: 0x00000000 | wait_event
- iwlwifi 0000:01:00.0: 0x00000000 | l2p_control
- iwlwifi 0000:01:00.0: 0x00000000 | l2p_duration
- iwlwifi 0000:01:00.0: 0x00000000 | l2p_mhvalid
- iwlwifi 0000:01:00.0: 0x00000000 | l2p_addr_match
- iwlwifi 0000:01:00.0: 0x00000000 | lmpm_pmg_sel
- iwlwifi 0000:01:00.0: 0x00000000 | timestamp
- iwlwifi 0000:01:00.0: 0x00000000 | flow_handler
- iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
- iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: 7
- iwlwifi 0000:01:00.0: 0x2010210B | ADVANCED_SYSASSERT
- iwlwifi 0000:01:00.0: 0x00000000 | umac branchlink1
- iwlwifi 0000:01:00.0: 0x8045EFDC | umac branchlink2
- iwlwifi 0000:01:00.0: 0x00000000 | umac interruptlink1
- iwlwifi 0000:01:00.0: 0x00000000 | umac interruptlink2
- iwlwifi 0000:01:00.0: 0x00000000 | umac data1
- iwlwifi 0000:01:00.0: 0x00000000 | umac data2
- iwlwifi 0000:01:00.0: 0x04000000 | umac data3
- iwlwifi 0000:01:00.0: 0x00000047 | umac major
- iwlwifi 0000:01:00.0: 0x058653F6 | umac minor
- iwlwifi 0000:01:00.0: 0x00015BC5 | frame pointer
- iwlwifi 0000:01:00.0: 0xC0887E28 | stack pointer
- iwlwifi 0000:01:00.0: 0x00000000 | last host cmd
- iwlwifi 0000:01:00.0: 0x00000000 | isr status reg
- iwlwifi 0000:01:00.0: IML/ROM dump:
- iwlwifi 0000:01:00.0: 0x00000B03 | IML/ROM error/state
- iwlwifi 0000:01:00.0: 0x00008D71 | IML/ROM data1
- iwlwifi 0000:01:00.0: 0x00000080 | IML/ROM WFPM_AUTH_KEY_0
- iwlwifi 0000:01:00.0: Fseq Registers:
- iwlwifi 0000:01:00.0: 0x20000000 | FSEQ_ERROR_CODE
- iwlwifi 0000:01:00.0: 0x80440005 | FSEQ_TOP_INIT_VERSION
- iwlwifi 0000:01:00.0: 0x00080009 | FSEQ_CNVIO_INIT_VERSION
- iwlwifi 0000:01:00.0: 0x0000A652 | FSEQ_OTP_VERSION
- iwlwifi 0000:01:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
- iwlwifi 0000:01:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
- iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVI_ID
- iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVR_ID
- iwlwifi 0000:01:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
- iwlwifi 0000:01:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
- iwlwifi 0000:01:00.0: 0x00009061 |
-CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
- iwlwifi 0000:01:00.0: 0x00000061 |
-CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
- iwlwifi 0000:01:00.0: Failed to start RT ucode: -110
- iwlwifi 0000:01:00.0: Collecting data: trigger 16 fired.
- iwlwifi 0000:01:00.0: Failed to run INIT ucode: -110
- iwlwifi 0000:01:00.0: retry init count 0
- iwlwifi 0000:01:00.0: Detected Intel(R) Wi-Fi 6 AX210 160MHz,
-REV=3D0x420
- iwlwifi 0000:01:00.0: SecBoot CPU1 Status: 0x8d70, CPU2 Status: 0xb03
- iwlwifi 0000:01:00.0: WFPM_LMAC1_PD_NOTIFICATION: 0x1f
- iwlwifi 0000:01:00.0: HPM_SECONDARY_DEVICE_STATE: 0x42
- iwlwifi 0000:01:00.0: UMAC PC: 0x8047e2d8
- iwlwifi 0000:01:00.0: LMAC PC: 0x0
- iwlwifi 0000:01:00.0: Collecting data: trigger 15 fired.
- iwlwifi 0000:01:00.0: Loaded firmware version: 71.058653f6.0 ty-a0-gf-
-a0-71.ucode
- iwlwifi 0000:01:00.0: 0x00000000 | ADVANCED_SYSASSERT         =20
- iwlwifi 0000:01:00.0: 0x00000000 | trm_hw_status0
- iwlwifi 0000:01:00.0: 0x00000000 | trm_hw_status1
- iwlwifi 0000:01:00.0: 0x00000000 | branchlink2
- iwlwifi 0000:01:00.0: 0x00000000 | interruptlink1
- iwlwifi 0000:01:00.0: 0x00000000 | interruptlink2
- iwlwifi 0000:01:00.0: 0x00000000 | data1
- iwlwifi 0000:01:00.0: 0x00000000 | data2
- iwlwifi 0000:01:00.0: 0x00000000 | data3
- iwlwifi 0000:01:00.0: 0x00000000 | beacon time
- iwlwifi 0000:01:00.0: 0x00000000 | tsf low
- iwlwifi 0000:01:00.0: 0x00000000 | tsf hi
- iwlwifi 0000:01:00.0: 0x00000000 | time gp1
- iwlwifi 0000:01:00.0: 0x00000000 | time gp2
- iwlwifi 0000:01:00.0: 0x00000000 | uCode revision type
- iwlwifi 0000:01:00.0: 0x00000000 | uCode version major
- iwlwifi 0000:01:00.0: 0x00000000 | uCode version minor
- iwlwifi 0000:01:00.0: 0x00000000 | hw version
- iwlwifi 0000:01:00.0: 0x00000000 | board version
- iwlwifi 0000:01:00.0: 0x00000000 | hcmd
- iwlwifi 0000:01:00.0: 0x00000000 | isr0
- iwlwifi 0000:01:00.0: 0x00000000 | isr1
- iwlwifi 0000:01:00.0: 0x00000000 | isr2
- iwlwifi 0000:01:00.0: 0x00000000 | isr3
- iwlwifi 0000:01:00.0: 0x00000000 | isr4
- iwlwifi 0000:01:00.0: 0x00000000 | last cmd Id
- iwlwifi 0000:01:00.0: 0x00000000 | wait_event
- iwlwifi 0000:01:00.0: 0x00000000 | l2p_control
- iwlwifi 0000:01:00.0: 0x00000000 | l2p_duration
- iwlwifi 0000:01:00.0: 0x00000000 | l2p_mhvalid
- iwlwifi 0000:01:00.0: 0x00000000 | l2p_addr_match
- iwlwifi 0000:01:00.0: 0x00000000 | lmpm_pmg_sel
- iwlwifi 0000:01:00.0: 0x00000000 | timestamp
- iwlwifi 0000:01:00.0: 0x00000000 | flow_handler
- iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
- iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: 7
- iwlwifi 0000:01:00.0: 0x2010210B | ADVANCED_SYSASSERT
- iwlwifi 0000:01:00.0: 0x00000000 | umac branchlink1
- iwlwifi 0000:01:00.0: 0x8045EFDC | umac branchlink2
- iwlwifi 0000:01:00.0: 0x00000000 | umac interruptlink1
- iwlwifi 0000:01:00.0: 0x00000000 | umac interruptlink2
- iwlwifi 0000:01:00.0: 0x00000000 | umac data1
- iwlwifi 0000:01:00.0: 0x00000000 | umac data2
- iwlwifi 0000:01:00.0: 0x04000000 | umac data3
- iwlwifi 0000:01:00.0: 0x00000047 | umac major
- iwlwifi 0000:01:00.0: 0x058653F6 | umac minor
- iwlwifi 0000:01:00.0: 0x00015AEB | frame pointer
- iwlwifi 0000:01:00.0: 0xC0887E28 | stack pointer
- iwlwifi 0000:01:00.0: 0x00000000 | last host cmd
- iwlwifi 0000:01:00.0: 0x00000000 | isr status reg
- iwlwifi 0000:01:00.0: IML/ROM dump:
- iwlwifi 0000:01:00.0: 0x00000B03 | IML/ROM error/state
- iwlwifi 0000:01:00.0: 0x00008D70 | IML/ROM data1
- iwlwifi 0000:01:00.0: 0x00000080 | IML/ROM WFPM_AUTH_KEY_0
- iwlwifi 0000:01:00.0: Fseq Registers:
- iwlwifi 0000:01:00.0: 0x60000000 | FSEQ_ERROR_CODE
- iwlwifi 0000:01:00.0: 0x80440005 | FSEQ_TOP_INIT_VERSION
- iwlwifi 0000:01:00.0: 0x00080009 | FSEQ_CNVIO_INIT_VERSION
- iwlwifi 0000:01:00.0: 0x0000A652 | FSEQ_OTP_VERSION
- iwlwifi 0000:01:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
- iwlwifi 0000:01:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
- iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVI_ID
- iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVR_ID
- iwlwifi 0000:01:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
- iwlwifi 0000:01:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
- iwlwifi 0000:01:00.0: 0x00009061 |
-CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
- iwlwifi 0000:01:00.0: 0x00000061 |
-CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
- iwlwifi 0000:01:00.0: Failed to start RT ucode: -110
- iwlwifi 0000:01:00.0: Collecting data: trigger 16 fired.
- iwlwifi 0000:01:00.0: Failed to run INIT ucode: -110
- iwlwifi 0000:01:00.0: retry init count 1
- iwlwifi 0000:01:00.0: Detected Intel(R) Wi-Fi 6 AX210 160MHz,
-REV=3D0x420
- iwlwifi 0000:01:00.0: SecBoot CPU1 Status: 0x8d3e, CPU2 Status: 0xb03
- iwlwifi 0000:01:00.0: WFPM_LMAC1_PD_NOTIFICATION: 0x1f
- iwlwifi 0000:01:00.0: HPM_SECONDARY_DEVICE_STATE: 0x42
- iwlwifi 0000:01:00.0: UMAC PC: 0x8047e2d8
- iwlwifi 0000:01:00.0: LMAC PC: 0x0
- iwlwifi 0000:01:00.0: Collecting data: trigger 15 fired.
- iwlwifi 0000:01:00.0: Loaded firmware version: 71.058653f6.0 ty-a0-gf-
-a0-71.ucode
- iwlwifi 0000:01:00.0: 0x00000000 | ADVANCED_SYSASSERT         =20
- iwlwifi 0000:01:00.0: 0x00000000 | trm_hw_status0
- iwlwifi 0000:01:00.0: 0x00000000 | trm_hw_status1
- iwlwifi 0000:01:00.0: 0x00000000 | branchlink2
- iwlwifi 0000:01:00.0: 0x00000000 | interruptlink1
- iwlwifi 0000:01:00.0: 0x00000000 | interruptlink2
- iwlwifi 0000:01:00.0: 0x00000000 | data1
- iwlwifi 0000:01:00.0: 0x00000000 | data2
- iwlwifi 0000:01:00.0: 0x00000000 | data3
- iwlwifi 0000:01:00.0: 0x00000000 | beacon time
- iwlwifi 0000:01:00.0: 0x00000000 | tsf low
- iwlwifi 0000:01:00.0: 0x00000000 | tsf hi
- iwlwifi 0000:01:00.0: 0x00000000 | time gp1
- iwlwifi 0000:01:00.0: 0x00000000 | time gp2
- iwlwifi 0000:01:00.0: 0x00000000 | uCode revision type
- iwlwifi 0000:01:00.0: 0x00000000 | uCode version major
- iwlwifi 0000:01:00.0: 0x00000000 | uCode version minor
- iwlwifi 0000:01:00.0: 0x00000000 | hw version
- iwlwifi 0000:01:00.0: 0x00000000 | board version
- iwlwifi 0000:01:00.0: 0x00000000 | hcmd
- iwlwifi 0000:01:00.0: 0x00000000 | isr0
- iwlwifi 0000:01:00.0: 0x00000000 | isr1
- iwlwifi 0000:01:00.0: 0x00000000 | isr2
- iwlwifi 0000:01:00.0: 0x00000000 | isr3
- iwlwifi 0000:01:00.0: 0x00000000 | isr4
- iwlwifi 0000:01:00.0: 0x00000000 | last cmd Id
- iwlwifi 0000:01:00.0: 0x00000000 | wait_event
- iwlwifi 0000:01:00.0: 0x00000000 | l2p_control
- iwlwifi 0000:01:00.0: 0x00000000 | l2p_duration
- iwlwifi 0000:01:00.0: 0x00000000 | l2p_mhvalid
- iwlwifi 0000:01:00.0: 0x00000000 | l2p_addr_match
- iwlwifi 0000:01:00.0: 0x00000000 | lmpm_pmg_sel
- iwlwifi 0000:01:00.0: 0x00000000 | timestamp
- iwlwifi 0000:01:00.0: 0x00000000 | flow_handler
- iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
- iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: 7
- iwlwifi 0000:01:00.0: 0x2010210B | ADVANCED_SYSASSERT
- iwlwifi 0000:01:00.0: 0x00000000 | umac branchlink1
- iwlwifi 0000:01:00.0: 0x8045EFDC | umac branchlink2
- iwlwifi 0000:01:00.0: 0x00000000 | umac interruptlink1
- iwlwifi 0000:01:00.0: 0x00000000 | umac interruptlink2
- iwlwifi 0000:01:00.0: 0x00000000 | umac data1
- iwlwifi 0000:01:00.0: 0x00000000 | umac data2
- iwlwifi 0000:01:00.0: 0x04000000 | umac data3
- iwlwifi 0000:01:00.0: 0x00000047 | umac major
- iwlwifi 0000:01:00.0: 0x058653F6 | umac minor
- iwlwifi 0000:01:00.0: 0x00015AB8 | frame pointer
- iwlwifi 0000:01:00.0: 0xC0887E28 | stack pointer
- iwlwifi 0000:01:00.0: 0x00000000 | last host cmd
- iwlwifi 0000:01:00.0: 0x00000000 | isr status reg
- iwlwifi 0000:01:00.0: IML/ROM dump:
- iwlwifi 0000:01:00.0: 0x00000B03 | IML/ROM error/state
- iwlwifi 0000:01:00.0: 0x00008D3E | IML/ROM data1
- iwlwifi 0000:01:00.0: 0x00000080 | IML/ROM WFPM_AUTH_KEY_0
- iwlwifi 0000:01:00.0: Fseq Registers:
- iwlwifi 0000:01:00.0: 0x60000000 | FSEQ_ERROR_CODE
- iwlwifi 0000:01:00.0: 0x80440005 | FSEQ_TOP_INIT_VERSION
- iwlwifi 0000:01:00.0: 0x00080009 | FSEQ_CNVIO_INIT_VERSION
- iwlwifi 0000:01:00.0: 0x0000A652 | FSEQ_OTP_VERSION
- iwlwifi 0000:01:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
- iwlwifi 0000:01:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
- iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVI_ID
- iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVR_ID
- iwlwifi 0000:01:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
- iwlwifi 0000:01:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
- iwlwifi 0000:01:00.0: 0x00009061 |
-CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
- iwlwifi 0000:01:00.0: 0x00000061 |
-CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
- iwlwifi 0000:01:00.0: Failed to start RT ucode: -110
- iwlwifi 0000:01:00.0: Collecting data: trigger 16 fired.
- iwlwifi 0000:01:00.0: Failed to run INIT ucode: -110
- iwlwifi 0000:01:00.0: retry init count 2
+Thanks for your reminder, but the existing error handling does need to
+be revised, I got the following warning when the probing fails at
+pci_resource_flags():
+
+[   20.712160] WARNING: CPU: 1 PID: 462 at lib/iomap.c:44 pci_iounmap+0x40/0x50
+[   20.716583] RIP: 0010:pci_iounmap+0x40/0x50
+[   20.726342]  <TASK>
+[   20.726550]  ipw2100_pci_init_one+0x101/0x1ee0 [ipw2100]
+
+Since I am not familiar with the ipw2100, could someone give me some
+advice to fix this.
+
+Thanks,
+Zheyu Ma
