@@ -2,230 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82174504CFC
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Apr 2022 09:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B233A504D1C
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Apr 2022 09:20:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236913AbiDRHMa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Apr 2022 03:12:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49092 "EHLO
+        id S236274AbiDRHWw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Apr 2022 03:22:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233326AbiDRHM3 (ORCPT
+        with ESMTP id S236948AbiDRHWs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Apr 2022 03:12:29 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D19B2167E5
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Apr 2022 00:09:50 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id g18so25348942ejc.10
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Apr 2022 00:09:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:to:cc:references
-         :from:in-reply-to;
-        bh=ZIWJr7WD6PM/Db0dmXl7hvKdITWh/BZP970XHwqJf0w=;
-        b=OIjXwbd1ymExJZ2l9cDZOmQfTydJb0eIjQrqnR6Y8zE6CBkbNXb5tlO+g8Ft/LiOFD
-         +jGBrsXGQYqdXcuyuS4rQsrbzs1v9I1AWExbJiTYTJxo5Z6tzxBPm9fFUf6wJUAYCcnw
-         1LfNbVxv4N5Xflg3vulfbFeEuNFONE/HhQ0zQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :to:cc:references:from:in-reply-to;
-        bh=ZIWJr7WD6PM/Db0dmXl7hvKdITWh/BZP970XHwqJf0w=;
-        b=vX82g7ukA+O7jz7kllOL0uE//iM2nWccEacigJe9C/s2xS/+OWtUHDnJuClO+fpAmq
-         4q4+dAamzoNm+B7MxUrB9t3P19TKWXj36cKY+kuShwG9f59pk6kru8RDMU1FD+cxdgAy
-         qk0J+hBGZcM8SiLzVUzE+++wT8rvcnPkQ8ogMR/t3292xuXPivE/lmkO1Q0hf7zpW+4T
-         /ICiMzV7vVv8j/ius7v5Bii2Od3BmJNZAEo5CVgRbjLykH8uq0IoyuWUPtWR9hrGxUvg
-         k2WH9/4F9l7MfR/z6Hct5HEQ3GnxKau9Ku0WUg5wEMtHSidoBQ48O8H2w9Wdnx20saCJ
-         +ZXw==
-X-Gm-Message-State: AOAM530uOR+7M/CU1yAgmgQIUt4/sJTDkDmzTJtOhxxA0rjqMkkgeY3e
-        DhhZiSyA1OmWL6QXBdZcb1p8ng==
-X-Google-Smtp-Source: ABdhPJwNslJeJPOu9xIKHkkjkmCkG4D+0D2dsckjp2gXFUxyaKK58H/Sa3ZLu63OEj/5tSYTs8lqgA==
-X-Received: by 2002:a17:907:9803:b0:6db:ab21:738e with SMTP id ji3-20020a170907980300b006dbab21738emr7692168ejc.112.1650265789329;
-        Mon, 18 Apr 2022 00:09:49 -0700 (PDT)
-Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id l26-20020a1709062a9a00b006e7ee7ad20bsm4343343eje.149.2022.04.18.00.09.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Apr 2022 00:09:47 -0700 (PDT)
-Message-ID: <afb9ea60-7f93-a646-da82-4f408051c748@broadcom.com>
-Date:   Mon, 18 Apr 2022 09:09:46 +0200
+        Mon, 18 Apr 2022 03:22:48 -0400
+Received: from CAN01-YT3-obe.outbound.protection.outlook.com (mail-yt3can01on2072.outbound.protection.outlook.com [40.107.115.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D0E9639A
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Apr 2022 00:20:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=koAJn2L2w1rYm7oEALEGy+EMXsuO/jJYHKY8L8PTIsV2a+C5FQcFvLEt3VAF1XvAhtOyQ5LR/R2RBB7vuVEaXcUVHRTzkb6l9VLZJ/yzAmpfsCVujrw9gjkMd1uENQk+jNSYaM/QbyYUf9T9XE6APUpV9hI+4lOe8NKD2eKkjBMIFNdpuiNhylat4AQvfA2UR1/Mh/L4U8oTBTg9HrkZY0rdRBHcBmyXiwTOFdN4RIEaH56lJQF5VknSfhWHM3gdeN4n0sqiTSfdaZcEKttdDR74A2FY0mdP0B8iXobBNQQCQ4LwLRSqyq1DpvncP4jYXQhfoCbEVu39bft2/pO9GA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Dnhaax4XCk2kztjwCp4e5DaoxBY8BGm0nvk3Vkh1FZQ=;
+ b=YYyDhaW3GoSSQ4W5an4tcn6duUZxgNpeCo5o31tB4W7t2OjOi5Gc2RwlnHutm3FPFG2Y+ePZ7mo4t0DfJbhMJhsoXXx+FeWctTROnTmMQQClY0dfWIwJ8cbewQaC1wbUVfHX+vz4d+plEPfyEgOuwprWs9nh6Xu+X5tpX84RqtERx6NMVKKod8sUiRZcTByy96Y9g1pZxU0zyOtdWmCtVVHOlgf3iZLHrZZ1RB4yh8fmS/lEU1FlqIHjywwixLZ8VdsVdM9TJnwu/LUjqUJYDWTbNZlV/O8Mzj/Ea0gtCA0+3iL2xHODsCQA9oHEicLL2VCNfOtiy/M6xUyLmV2oXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ucalgary.ca; dmarc=pass action=none header.from=ucalgary.ca;
+ dkim=pass header.d=ucalgary.ca; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=ucalgary.ca;
+Received: from YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:c00:4a::23)
+ by YT1PR01MB4363.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:2a::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5164.20; Mon, 18 Apr
+ 2022 07:20:08 +0000
+Received: from YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::788b:f975:24ac:69f]) by YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::788b:f975:24ac:69f%6]) with mapi id 15.20.5164.025; Mon, 18 Apr 2022
+ 07:20:07 +0000
+From:   Wenli Looi <wlooi@ucalgary.ca>
+To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        ath9k-devel@qca.qualcomm.com, Wenli Looi <wlooi@ucalgary.ca>
+Subject: [PATCH 0/9] ath9k: add support for QCN550x
+Date:   Mon, 18 Apr 2022 00:13:04 -0700
+Message-Id: <20220418071313.882179-1-wlooi@ucalgary.ca>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ClientProxiedBy: SJ0PR03CA0034.namprd03.prod.outlook.com
+ (2603:10b6:a03:33e::9) To YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c00:4a::23)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH] brcmfmac: Remove #ifdef guards for PM related functions
-To:     Paul Cercueil <paul@crapouillou.net>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220415200322.7511-1-paul@crapouillou.net>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20220415200322.7511-1-paul@crapouillou.net>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000002cac9b05dce87234"
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 8a3ce53f-413e-4fbd-adc8-08da210bddbc
+X-MS-TrafficTypeDiagnostic: YT1PR01MB4363:EE_
+X-Microsoft-Antispam-PRVS: <YT1PR01MB4363822EE4A77AD761DCE91FB2F39@YT1PR01MB4363.CANPRD01.PROD.OUTLOOK.COM>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: L1rOeF5rwLeQ1Yw8PYvZzOj20cwGvSD5C7a2FQ3/2Q5w5iYyXgvuODNR9wIg3HdBxTOri9cv6saOZVHSv2a2pm7ZIDgdS/DePj4IRZVlyK44+e1GPD1tmcTeP1bdekDU/yXA4PctV+VJ2UrePdMqPnwhWWLAFhZ1M2YFm8vEJyul5h11NoAJUr87yyDn12/9aWYXz1h1VV6KSUTYdawAf/GhhpgoTWR5agcMAeidfDFPrHbA+Y3F9+eZL3+GgUfne0oRmzsXgYYuT5YcZnZ2xZDmvYfGMCjsQG/5N7ujpzH69j3hZCGWlmW1c1zbFYq/0C/c0Hs36yz/o4gwwIoCBwErN8ktEbsAo0sXYwu0I1NPNpKqvFyzdhcfrIO+i2K18um9jlOn/xoYgLITqJTostiypxeNuublmIyUEUvwkKXVD9us/xtSh8lkaMqDWCqSAKHrsacezmF9W3AxrJMgiZFvQVvuOOEiJIlyz89j3xkU+HFALigM3mRvVuR7o5Xx7KcDUSii5pvGo9pY19SWnfpWOJextYqwArZNsBQwhFXS1PQ1nM9cwKSrN8GssoxWIQOCRays18uwDkz8DXhAMYaPeOuNHIyJwjzgaOvFqSKYJg41GC7vavcvfWl/a2YPJ752sr4WE7UjpKIBHZtfaC8d3ewjd9egaJ9oqjdcndHA5CXPGmY0e33xnPMo7ikKGA7QD8T80of3Zvhj9VLAZoE8HIPc36wg9lOFO7mS8exTwkPPFFuDsd300FZlka2gutKEcNZWIjlDdkhbIEGXJOII96RteHJ8rzRuQFATkkhSlySx9Tz6aSo3w/wV1J5t
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(5660300002)(86362001)(83380400001)(6666004)(6916009)(54906003)(966005)(66946007)(316002)(186003)(26005)(786003)(38350700002)(6486002)(38100700002)(107886003)(2616005)(1076003)(4326008)(8676002)(66476007)(66556008)(508600001)(8936002)(6506007)(36756003)(52116002)(2906002)(6512007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?P36dE2WTcb1oFr4Y9m8mR+hbT54CqQ5UTR5565xCjFt5U787KZaP/KUfpDTD?=
+ =?us-ascii?Q?wQpe95LDaP0GYJ8rxCPYDDCykY1YQC/nmzmyS8E34ctshgcR+e3YGzYIiUfa?=
+ =?us-ascii?Q?iHWJnjqxzryk928Km1CuuCRqX6qBKZY7dgDr3mQWYZKzXvOJRGuq/BvyO1kI?=
+ =?us-ascii?Q?zbfIPH83C1awW36C/rg1+cEjKVA5sBeWrqg0l++PhAFbon2Z/UEscVtmr0/E?=
+ =?us-ascii?Q?jR9utWXgmjOapsmqDPAWb4EXPOXxfIPzCicJpKQGTHkY9zrcwqhM0awTmwPk?=
+ =?us-ascii?Q?/JvKFnEEXG/LFxv34k1VjJfVRtWM90NhcgugncU68FQ19jZifj/k7Oum/AF1?=
+ =?us-ascii?Q?VE62UaKAw4fW6FWJI3dog6rdTMpsnyOzRp72AoZ0lNEDJRXaspEoUL/cVMUJ?=
+ =?us-ascii?Q?YTuLbYGRGiH1fpiWJyOMS3ARETTkT7+/1HCmkdgE6OC7USIjfux0A1yZGCta?=
+ =?us-ascii?Q?O/wFPJ8dFcZZGPLm72FIVV1d4D+B6UcOtu7uxyrbctq29OLhOCwOAvMcnjvn?=
+ =?us-ascii?Q?r01qCcBkx+IifA96/sAsAVQEMfI9x2Q3RGmnVTlrqaYjWocIVc6l4+vcI1a4?=
+ =?us-ascii?Q?UMMqQkghmeXVUnKJ2pHrzc82zAJmOXt7tVJy2Rsj1plRLAa4zu8Qp6WRKJBv?=
+ =?us-ascii?Q?CUaCFE9X9iJgYVPD24nntXk48x3Ll/i6Bd8vWXddiarWbESJhmLljbMncS8F?=
+ =?us-ascii?Q?/qKDOqorGs4pRKbxCYqvUkP32KT5wWmMqn6VeW2vcktns2DsL4Yt6xpXK7Tw?=
+ =?us-ascii?Q?ODD2McveayD95SsNrH/GjrvQMpIxfi85LvOLY6Evyid5V0nXX7qbzrL3sujw?=
+ =?us-ascii?Q?oE6MkTyD5RxCyJgeJ2BJ+zjPluYwBoHBPtR4lDxV69EJh6lmqIan7E5rZFIL?=
+ =?us-ascii?Q?aoC0YlNjLuqTuFx03QukRb/nrsBTLmcbQE9O4XwI8HfgTbLXtDbdJaUgTNPN?=
+ =?us-ascii?Q?CStGxdbDEOOY1WeDNkHuudxGST58lS++JV1YwEGzTZCwSKSzcPKGkYum+LjZ?=
+ =?us-ascii?Q?7YHUKRwAoi4ireCol+oRflcatWpEqYVZuZnkrHnzCw6qz3C2E+fT90KD31wL?=
+ =?us-ascii?Q?+CrPMD7ITA6lcsYHI7/3aF1tJVkHstznpGly+3Jvp454013rV7apNIIdY6OD?=
+ =?us-ascii?Q?exRDk6W9XTmxw4tAns03jdmWVnLwAQn9zjVOanzkfqRKcMnWiS0e8M77TBmk?=
+ =?us-ascii?Q?fErFxPpAPGGHqbE9aRpCWV2070IXZpQPZq3L9KxT05ZW+xP7JPE93IeBsVfZ?=
+ =?us-ascii?Q?41EYjPIb7+U45JsD5/bRMwMEIqElbUl9v/xOkuaZ9PKx1x/UwilTXKEDDaxb?=
+ =?us-ascii?Q?mnK7IZkTtVkDfqlBbuItrR5kKb14I7liYmYRq9TWOzObU/tozUPxwEzdytVX?=
+ =?us-ascii?Q?2iXeJ9sWPSHY4TGCJVSCT2Ja4H7brHyVdfZkHGJB+Unin9C0q+eKmbX2BJ19?=
+ =?us-ascii?Q?aohjefLpx5qhHUk7bzX4Mv0noIQMvHBt4PUKXPxfhZAELfdGvMr1cSVFui1u?=
+ =?us-ascii?Q?+wOzFrwjZWuvB2VrHN5mYtWdRHgBhfcdScCVZIQMhThreYmtckmal7GfPHIs?=
+ =?us-ascii?Q?S52OeA79FM2UEgD3m3tFwCIH0U/Tk85ruesVXFYHZI/4YeRAtc3T8dJIk+43?=
+ =?us-ascii?Q?v3GIzjHY7J8MNTPvocN2Nk14pgSC2N5O850a9I9py+X2shKYqmrVW6PMvtmM?=
+ =?us-ascii?Q?xT2IXi2M6+H4YNyfc0ftRSnC+MPsCAfSvYx1hBfgG1jRQEkzxoIajgE1/OZy?=
+ =?us-ascii?Q?ByvMJJEqeg=3D=3D?=
+X-OriginatorOrg: ucalgary.ca
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a3ce53f-413e-4fbd-adc8-08da210bddbc
+X-MS-Exchange-CrossTenant-AuthSource: YQXPR01MB3302.CANPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2022 07:20:07.6864
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: c609a0ec-a5e3-4631-9686-192280bd9151
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hRDkwkdkl3r3j1nNeK6QoznAewdmUhWq44BEPM/XW7J+kn1z7anZYTcz0tOOSVKRY+pxlm0Tr2HIcGLufYSRRA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT1PR01MB4363
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000002cac9b05dce87234
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+This patchset adds support for QCN550x. It is an attempt to write a
+cleaner version of the following patch:
 
-On 4/15/2022 10:03 PM, Paul Cercueil wrote:
-> Use the new DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr() macros to
-> handle the .suspend/.resume callbacks.
-> 
-> These macros allow the suspend and resume functions to be automatically
-> dropped by the compiler when CONFIG_SUSPEND is disabled, without having
-> to use #ifdef guards. The advantage is then that these functions are not
-> conditionally compiled.
+https://github.com/openwrt/openwrt/pull/9389
 
-The advantage stated here may not be obvious to everyone and that is 
-because it only scratches the surface. The code is always compiled 
-independent from the Kconfig options used and because of that the real 
-advantage is that build regressions are easier to catch.
+I'm definitely open to ideas on how to better implement this change.
 
-> Some other functions not directly called by the .suspend/.resume
-> callbacks, but still related to PM were also taken outside #ifdef
-> guards.
+Notes:
 
-a few comments on this inline...
+- While QCN5502 is a 4-stream device, ath9k only supports 3 streams, and
+  that is unchanged.
+- The QCN550x EEPROM format is different from other AR9003 devices due
+  to the 4th stream. An abstraction layer has been added over the EEPROM
+  to support both formats.
+- The QCN550x initvals here are a hacked version of the QCA956x
+  initvals, and have only been partially tested.
+- This change has been tested on the following devices, which appear to
+  work as an access point:
+  - QCN5502: Netgear EX6400v2
+  - QCA9558: Netgear EX7300v1
 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->   .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 44 +++++++------------
->   .../broadcom/brcm80211/brcmfmac/sdio.c        |  5 +--
->   .../broadcom/brcm80211/brcmfmac/sdio.h        | 16 -------
->   3 files changed, 19 insertions(+), 46 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> index ac02244a6fdf..a8cf5a570101 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+Relevant links:
 
-[...]
+- QCN550x SoC support, which appears to be identical to QCA956x:
+  https://github.com/torvalds/linux/commit/a0b8cd5c223042efe764864b8dd9396ee127c763
+- QSDK patch for QCN550x:
+  https://source.codeaurora.org/quic/qsdk/oss/system/openwrt/tree/target/linux/ar71xx/patches-3.3/9991-MIPS-ath79-add-SoC-detection-code-for-QCN550X.patch?h=aa/banana
 
-> @@ -873,7 +865,8 @@ int brcmf_sdiod_remove(struct brcmf_sdio_dev *sdiodev)
->   		sdiodev->bus = NULL;
->   	}
->   
-> -	brcmf_sdiod_freezer_detach(sdiodev);
-> +	if (IS_ENABLED(CONFIG_PM_SLEEP))
-> +		brcmf_sdiod_freezer_detach(sdiodev);
+Wenli Looi (9):
+  ath9k: add QCN550x device IDs
+  ath9k: basic support for QCN550x
+  ath9k: add QCN550x initvals
+  ath9k: implement QCN550x rx
+  ath9k: implement QCN550x tx
+  ath9k: group some ar9300 eeprom functions at the top
+  ath9k: add abstractions over ar9300 eeprom
+  ath9k: rename ar9300_eeprom to ar9300_eeprom_v1
+  ath9k: add ar9300_eeprom_v2
 
-Please move the if statement inside the function to keep the code flow 
-in the calling function the same as before.
+ drivers/net/wireless/ath/ath9k/ahb.c          |    4 +
+ drivers/net/wireless/ath/ath9k/ani.c          |    2 +-
+ .../net/wireless/ath/ath9k/ar550x_initvals.h  | 1296 +++++++++++++++++
+ drivers/net/wireless/ath/ath9k/ar9003_calib.c |    4 +-
+ .../net/wireless/ath/ath9k/ar9003_eeprom.c    |  949 ++++++++----
+ .../net/wireless/ath/ath9k/ar9003_eeprom.h    |  144 +-
+ drivers/net/wireless/ath/ath9k/ar9003_hw.c    |   59 +
+ drivers/net/wireless/ath/ath9k/ar9003_mac.c   |   79 +-
+ drivers/net/wireless/ath/ath9k/ar9003_mac.h   |   10 +
+ drivers/net/wireless/ath/ath9k/ar9003_paprd.c |    4 +-
+ drivers/net/wireless/ath/ath9k/ar9003_phy.c   |   35 +-
+ drivers/net/wireless/ath/ath9k/ar9003_phy.h   |   83 +-
+ drivers/net/wireless/ath/ath9k/hw.c           |   38 +-
+ drivers/net/wireless/ath/ath9k/hw.h           |    4 +-
+ drivers/net/wireless/ath/ath9k/mac.c          |    2 +-
+ drivers/net/wireless/ath/ath9k/mac.h          |   12 +
+ drivers/net/wireless/ath/ath9k/recv.c         |    2 +-
+ drivers/net/wireless/ath/ath9k/reg.h          |   11 +-
+ drivers/net/wireless/ath/ath9k/reg_aic.h      |    6 +-
+ 19 files changed, 2330 insertions(+), 414 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath9k/ar550x_initvals.h
 
->   
->   	/* Disable Function 2 */
->   	sdio_claim_host(sdiodev->func2);
-> @@ -949,9 +942,11 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
->   		goto out;
->   	}
->   
-> -	ret = brcmf_sdiod_freezer_attach(sdiodev);
-> -	if (ret)
-> -		goto out;
-> +	if (IS_ENABLED(CONFIG_PM_SLEEP)) {
-> +		ret = brcmf_sdiod_freezer_attach(sdiodev);
-> +		if (ret)
-> +			goto out;
-> +	}
+-- 
+2.25.1
 
-Dito. Move the if statement inside the function.
-
->   
->   	/* try to attach to the target device */
->   	sdiodev->bus = brcmf_sdio_probe(sdiodev);
-
---0000000000002cac9b05dce87234
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
-yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
-0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
-NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
-FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
-aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
-OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
-UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCEAKscpDh2LuhXOm1l
-BWDNmcdgGBjLAlkTxkDYwJxrjDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjA0MTgwNzA5NDlaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEALvVjew3eF0RYefxXw7tTDYHkIUTm0QBns1Pa
-L4IpdMbLE4Q2T9jltOgRdbgCjd1+kcmA7mRogYO0jaJKLbdOfljG6gwQv2uizmbVhHp/hKLimtqP
-tJotSps9HZYzllTcCqpKtRQg4zhpYwVPRQZcmPSSYwOKazPrcqyHoKOKYG6dp5lTSnWx/aTKZhMA
-kT+nJXtCmqKxWFwLEMACi/QjLcfSVk6MtwWNEPUhZAgYCWK8OYFktA5gRPMZvybaUEImocm6uksP
-NV4TbXBks9sUCfA6RA661sd1N4acOMW+tRdQZvvmQ2Cbp2gTjvA6KFNnrCq9UQyQb74/OQITyqR5
-FQ==
---0000000000002cac9b05dce87234--
