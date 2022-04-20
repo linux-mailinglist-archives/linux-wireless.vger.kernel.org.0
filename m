@@ -2,82 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F770508670
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 12:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 484ED50868A
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 13:04:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377849AbiDTK5F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Apr 2022 06:57:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55972 "EHLO
+        id S1357186AbiDTLGw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Apr 2022 07:06:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244353AbiDTK5F (ORCPT
+        with ESMTP id S1377886AbiDTLGt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Apr 2022 06:57:05 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0A4C403FD
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 03:54:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=ByaG4RWHCrXJDRCrH0eRM21F8h0r29Z2Sw9BM35Ne/s=; b=fJf0utWWMZOnO46t5IYlh2dIKz
-        18ZIHcrqj5oEGNdTeuh8aGBtlcxCwOv9NznRe3WkjMCx7/RMa/qzWkyyWsOC4O7JcCLv5PXGkfCNu
-        PjxPt25wT+K39LOj+nQCdwhCwcdrdBHt6MfKgApfQF/IlACSeNPupL8lGo/LboIR7LE0=;
-Received: from p200300daa70ef200009e86881025829d.dip0.t-ipconnect.de ([2003:da:a70e:f200:9e:8688:1025:829d] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1nh7yQ-0005OS-B0; Wed, 20 Apr 2022 12:54:14 +0200
-Message-ID: <90e39a67-b765-1c88-384c-9a7873274163@nbd.name>
-Date:   Wed, 20 Apr 2022 12:54:13 +0200
+        Wed, 20 Apr 2022 07:06:49 -0400
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73B544131E
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 04:03:57 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1650452636; bh=naWMBiinACBkPb3VQa4ASl1RJDyD1VGA8MbhP3dsIB4=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=jtMBYJCRo0XPnPPX/wVzPei6uKKHCcEIa2FxlthZj7phnHMJqIMK6S1y6/d1X2eWs
+         1g4/1+v5PCOhu0GmZLBjeSjAWXgo63/1W6ftvzDm2+eZ4ouqnGq8YD7qGFPTnfd2Io
+         4PYTSJEfaUCKXBqo7lH4Qf32A/8sAta+YZxjmP2QySz9XgH68ya7ZPA2RPzrdtwGbs
+         7z+hP7XUMzIvPprkkFvVrzsuzIjuTQ/K5Zyk0/NpPf7+YKaRONsQcisHAhA5Q9HR2d
+         99S8OzlXpgZ+eB4M514uTxSZFR/Fgy7/8XGjC+551a/L7Wsk5VI6xZV61nt/V2mkoc
+         yeBMkWUyV74wg==
+To:     "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Greenman, Gregory" <gregory.greenman@intel.com>,
+        "Stern, Avraham" <avraham.stern@intel.com>
+Subject: Re: iwlwifi devices disappear after suspend on kernel 5.17
+In-Reply-To: <724999bde562fedea5933cbe7bc949da796b2f30.camel@intel.com>
+References: <87czhe39p6.fsf@toke.dk>
+ <1f6188ee5c88ac78a4aadcf169b4b1cc857a84d8.camel@intel.com>
+ <d3158dfeb64276f5a9259b17342ff85dc6a4b79c.camel@intel.com>
+ <be3b424aec839d899e4a8cd659ebb53a85d67339.camel@intel.com>
+ <87mtghs3y2.fsf@toke.dk>
+ <e0872b6f468bfda08717214044b64187f71b4e18.camel@intel.com>
+ <94b98b712b86690dd5ae19df0cc608b8193be1f3.camel@intel.com>
+ <877d7kn62t.fsf@toke.dk>
+ <a8b437f1fc466096f119298ae1562c2aa224ad95.camel@intel.com>
+ <87o80whyoy.fsf@toke.dk>
+ <724999bde562fedea5933cbe7bc949da796b2f30.camel@intel.com>
+Date:   Wed, 20 Apr 2022 13:03:55 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87ilr4hv8k.fsf@toke.dk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.8.0
-Subject: Re: [PATCH] mt76: fix antenna config missing in 6G cap
-Content-Language: en-US
-To:     Deren Wu <Deren.Wu@mediatek.com>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-References: <357763fe0b112838d500422a27b114b4281adb9a.1649511465.git.deren.wu@mediatek.com>
-From:   Felix Fietkau <nbd@nbd.name>
-In-Reply-To: <357763fe0b112838d500422a27b114b4281adb9a.1649511465.git.deren.wu@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 09.04.22 15:44, Deren Wu wrote:
-> From: Deren Wu <deren.wu@mediatek.com>
-> 
-> To make sure we have the proper antenna config in 6g cap,
-> move IEEE80211_VHT_CAP_[T/R]X_ANTENNA_PATTERN to stream init.
-> 
-> Fixes: f1103fa6b3492 ("mt76: add TX/RX antenna pattern capabilities")
-The fixes line is wrong, since that commit is older than 6G support in 
-mt76. I will change it to this instead:
-Fixes: edf9dab8ba27 ("mt76: add 6GHz support")
+"Grumbach, Emmanuel" <emmanuel.grumbach@intel.com> writes:
 
-Thanks,
+> removing Luca
+>
+> On Wed, 2022-04-20 at 11:49 +0200, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>
+>
+> <snip>
+>
+>> > >=20
+>> >=20
+>> > So you do get a SAP connection. Weird.
+>> > Checking with the CSME guys.
+>> > Can you get dynamic debug prints for iwlmei module?
+>> > Best would be tracing with -e iwlmei_sap_cmd
+>>=20
+>> Sure! Recorded these while doing a suspend-restore, then restarting iwd:
+>>=20
+>> =C2=A0 kworker/u16:34-34555 [004] 46452.506238: iwlmei_sap_cmd:=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 sap_cmd Tx: type 1010 len 8 seq
+>> 11
+>> =C2=A0 kworker/u16:34-34555 [004] 46452.506243: iwlmei_me_msg:=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ME message: Tx: type 3 seq 8
+>> =C2=A0 kworker/u16:34-34555 [004] 46452.559407: iwlmei_sap_cmd:=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 sap_cmd Tx: type 1001 len 4 seq
+>> 12
+>> =C2=A0 kworker/u16:14-33311 [004] 46452.573077: iwlmei_sap_cmd:=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 sap_cmd Tx: type 1006 len 0 seq
+>> 13
+>> =C2=A0 kworker/u16:14-33311 [004] 46452.573078: iwlmei_me_msg:=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ME message: Tx: type 3 seq 10
+>> =C2=A0=C2=A0=C2=A0=C2=A0 kworker/4:0-34305 [004] 46452.706737: iwlmei_me=
+_msg:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ME message: Tx: type 3 seq =
+11
+>> =C2=A0=C2=A0 kworker/u16:8-34462 [000] 46457.939453: iwlmei_me_msg:=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ME message: Tx: type 1 seq 1
+>> =C2=A0=C2=A0=C2=A0=C2=A0 kworker/4:2-32196 [004] 46457.940910: iwlmei_me=
+_msg:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ME message: Rx: type 2 seq =
+81
+>> =C2=A0=C2=A0=C2=A0=C2=A0 kworker/4:2-32196 [004] 46457.940912: iwlmei_sa=
+p_cmd:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sap_cmd Tx: type 1013 len 0 seq 1
+>> =C2=A0=C2=A0=C2=A0=C2=A0 kworker/4:2-32196 [004] 46457.940913: iwlmei_me=
+_msg:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ME message: Tx: type 3 seq 2
+>> =C2=A0=C2=A0=C2=A0=C2=A0 kworker/4:2-32196 [004] 46457.942056: iwlmei_me=
+_msg:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ME message: Rx: type 3 seq =
+82
+>> =C2=A0=C2=A0=C2=A0=C2=A0 kworker/4:2-32196 [004] 46457.942060: iwlmei_sa=
+p_cmd:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sap_cmd Rx: type 502 len 4 seq 1
+>> =C2=A0=C2=A0=C2=A0=C2=A0 kworker/4:2-32196 [004] 46458.042205: iwlmei_me=
+_msg:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ME message: Rx: type 3 seq =
+83
+>> =C2=A0=C2=A0=C2=A0=C2=A0 kworker/4:2-32196 [004] 46458.042208: iwlmei_sa=
+p_cmd:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sap_cmd Rx: type 500 len 1896 seq
+>> 2
+>> =C2=A0=C2=A0=C2=A0=C2=A0 kworker/4:2-32196 [004] 46458.042209: iwlmei_sa=
+p_cmd:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sap_cmd Rx: type 512 len 64 seq 3
+>> =C2=A0=C2=A0=C2=A0=C2=A0 kworker/4:2-32196 [004] 46458.042214: iwlmei_sa=
+p_cmd:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sap_cmd Rx: type 502 len 4 seq 4
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ iwd-35396 [003] 46467.085642: iwlmei_sap_cmd:=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 sap_cmd Tx: type 1008 len 8 seq 2
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ iwd-35396 [003] 46467.085645: iwlmei_me_msg:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 ME message: Tx: type 3 seq 3
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ iwd-35396 [003] 46467.102818: iwlmei_sap_cmd:=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 sap_cmd Tx: type 1008 len 8 seq 3
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ iwd-35396 [003] 46467.103369: iwlmei_sap_cmd:=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 sap_cmd Tx: type 1016 len 20 seq
+>> 4
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ iwd-35396 [003] 46467.103842: iwlmei_sap_cmd:=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 sap_cmd Tx: type 1001 len 4 seq 5
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ iwd-35396 [003] 46467.104689: iwlmei_sap_cmd:=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 sap_cmd Tx: type 1002 len 12 seq
+>> 6
+>
+> can you please send the content of tracing unparsed?
+> There is more binary data that I can use.
 
-- Felix
+Sure! I'll send you the trace.dat file off-list (it's almost 10 MB).
+
+> I definitely need to talk to the CSME guys, I can see that CSME is
+> alive even if you have AMT disabled.
+
+What is this CSME thing, anyway? And does this imply that the AMT is not
+really disabling itself (there's also a "permanently disable" option in
+BIOS that I have not dared pick..)
+
+> Problem: it's holiday season here.
+
+No worries, I can live with working around the issue in the meantime; I
+guess I can get systemd to automatically restart iwd when returning from
+suspend if I can just figure out the right incantation :)
+
+-Toke
