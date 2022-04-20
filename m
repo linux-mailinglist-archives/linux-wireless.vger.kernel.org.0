@@ -2,48 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BC9B508D74
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 18:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 529C7508D76
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 18:36:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380705AbiDTQiE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Apr 2022 12:38:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46142 "EHLO
+        id S1355821AbiDTQiw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Apr 2022 12:38:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380692AbiDTQh7 (ORCPT
+        with ESMTP id S1380668AbiDTQiu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Apr 2022 12:37:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A02140A0E
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 09:35:12 -0700 (PDT)
+        Wed, 20 Apr 2022 12:38:50 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA29040E5F
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 09:35:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8304261A0D
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 16:35:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE845C385A4;
-        Wed, 20 Apr 2022 16:35:09 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6FFBCB82025
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 16:35:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18445C385A4;
+        Wed, 20 Apr 2022 16:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650472510;
-        bh=9ejcmMDe5SdSPg8+S6T6l9v/lhyBsRC+v5fAmICWhf4=;
+        s=k20201202; t=1650472548;
+        bh=X4OCNceuUdOmJ6pHXdidkIToDf/6iJZO1Nwm8PptHCw=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=G0esuMOiYcfLJhQ/UB7sCdfiBh/6Ap5hQ7GQs+Sa7Ndwab7+NMhzkUJbkzD8qA4dQ
-         Ei7n45c8TeCu7DRwhkC+GV4m2QDmScPeAHGgB5izYpK7vz3LsHUIEkq0W/8P/1TqGQ
-         kOwB4zon3v9gJEr48RYlDA3a/k8MBoPEg6mf96ucWjgXY5ux20d88+odxoT8m9Wwqx
-         Mbi5a0tU/T9Aw7HXkCBhYTUSDDFFf8wD17N5JWSWLP4CcvickD9JhswCWx7MCuRZ7m
-         9FBrNfNZQVUw89rv3nwfh2KUOAgK6RuRWRIPFzNWmg09THzSNEcfyQ138N3G2vEQMG
-         URbLo5IqwpstQ==
+        b=rOhxEadSAFSWOFJVT7fk3pfeQ3evZubnWGtIHe4A7ipZ6q8GeclA862PbFaudVDMB
+         iFDOsiM5HPJoF3xRKI7VNL9c/GQ7W76boIdIId4KbcZ5upi/2SzueW0t8+TOHHNi12
+         c2X7YPabhshOTZ+8bwN+mgOavnL88FIMfjH6E7JAx+dk/tNDLsqhQVeagiW1KmSU7Q
+         +V/nnVIjGcChcYyGJ7yhhGuBLAdz7A1ipyKuW2rIlC2howJa5udeTPeJtPfQoilAmQ
+         ErIOxzmh6VZg+ug0MFNq6zuMTEmVtnis+8mloVP+zh/Jwm6FnbAwWLGa+Pw9s1Y2Xg
+         X7OzPpWqRx/OA==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Jeff Johnson <quic_jjohnson@quicinc.com>
 Cc:     Baochen Qiang <quic_bqiang@quicinc.com>,
         <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v4 1/2] ath11k: add support for extended wmi service bit
+Subject: Re: [PATCH v4 2/2] ath11k: Add support for SAR
 References: <20220401120948.1312956-1-quic_bqiang@quicinc.com>
-        <20220401120948.1312956-2-quic_bqiang@quicinc.com>
-        <4f421eab-1ace-51c6-e677-42b32b6afc56@quicinc.com>
-Date:   Wed, 20 Apr 2022 19:35:06 +0300
-In-Reply-To: <4f421eab-1ace-51c6-e677-42b32b6afc56@quicinc.com> (Jeff
-        Johnson's message of "Fri, 1 Apr 2022 11:07:51 -0700")
-Message-ID: <87h76nogqt.fsf@kernel.org>
+        <20220401120948.1312956-3-quic_bqiang@quicinc.com>
+        <cb07aa82-2971-69dd-bf80-ff7f0cff4569@quicinc.com>
+Date:   Wed, 20 Apr 2022 19:35:45 +0300
+In-Reply-To: <cb07aa82-2971-69dd-bf80-ff7f0cff4569@quicinc.com> (Jeff
+        Johnson's message of "Fri, 1 Apr 2022 12:06:44 -0700")
+Message-ID: <87czhbogpq.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -59,42 +59,22 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
 > On 4/1/2022 5:09 AM, Baochen Qiang wrote:
->> From: Wen Gong <quic_wgong@quicinc.com>
->>
->> Currently the wmi service bis is report from firmware, it is divided
+>> ath11k assigns ath11k_mac_op_set_bios_sar_specs to ath11k_ops,
+>> and this function is called when user space application
+>> calls NL80211_CMD_SET_SAR_SPECS. ath11k also registers SAR
+>> type and frequency ranges to wiphy so user space can query
+>> SAR capabilities.
 >
-> "bis" is a typo?
-> Also use of "Currently" here is confusing since it seems you are
-> changing that behavior. But the firmware reporting isn't changing,
-> only the host processing is changing.
+> I find this commit text very confusing since it uses "present simple"
+> tense instead of "imperative" tense so it comes across as describing
+> what the driver did prior to the patch instead of what the driver is
+> supposed to do after the patch is applied.
 >
-> So perhaps:
-> When the WMI service bits are reported from firmware they are divided
-> into multiple segments, with 128 bits in each segment.
->
->> to 128 bits for each segment. The first segment is processed by
->> ath11k_wmi_service_bitmap_copy(), the second segment is processed by
->> ath11k_service_available_event() with WMI_TAG_SERVICE_AVAILABLE_EVENT,
->> When the service bit exceed 256 bits, then firmware report it by tag
->> WMI_TAG_ARRAY_UINT32 in WMI_SERVICE_AVAILABLE_EVENTID.
->>
->> ath11k does not process the third segment, this is to extend the wmi
->
-> Here is where you can use "currently". And this is also a good place
-> to say why the change is needed since that is also missing from the
-> commit text. So consider:
-> Currently ath11k does not process the third segment. Upcoming features
-> need to know if firmware support is available for the features, so add
-> processing of the third segment.
->
-> Also IMO the implementation details below do not need to be in the
-> commit text.
->
-> I suspect Kalle can just apply these comments to his pending branch.
+> The patch itself LGTM.
 
-Did that now, please check:
+I tried to improve the commit log, please check:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=d98a4c9bd0b32824ad9ee2d24ecabb345edfaafe
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=6b0778eaea60533a8b48df2d890543a48b590f55
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
