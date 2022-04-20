@@ -2,135 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EABD507B91
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Apr 2022 22:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E917507DB7
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 02:43:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357878AbiDSVBV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Apr 2022 17:01:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50462 "EHLO
+        id S1358609AbiDTAqD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Apr 2022 20:46:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357877AbiDSVBU (ORCPT
+        with ESMTP id S1358612AbiDTAqA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Apr 2022 17:01:20 -0400
-Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 067C04132B
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Apr 2022 13:58:36 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1650401914; bh=U7jyPX2bgK8CoLgco4Slp0FkOWoz7hA6BQLdJt+mxuM=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=f823i2//pnVusrlcsGeM3U93XntNPyhsPhb89AcUe6hlsGxA4438aJ/TWq/6r817U
-         mI+Bll1cMjh9XE2d3PZhcaGqt1PVDnQayzRA4uDcc/8+m0HE/Hm4zXtW7IT9pvLLRT
-         f5ih77uxUjsJgVLhDJQ94DLSKByL9BudDyKdLAmAL9Rznwt1EasjkMYRVQIUTbvipi
-         JXy6RSWbDcyYP0hk6c3+6LEWyQ8/ADD1yuOPcMF+ykta77dnYwEW/CAiZQePo6UjIP
-         NZQpAS+SNFvsOKJ5RlSQWJj6B/TFxSs4tC1O1KxirUTH2pqf8VSQw+bic3Wc92KhW6
-         QBUfuyHD8Yosw==
-To:     "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
-        "Coelho, Luciano" <luciano.coelho@intel.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "Stern, Avraham" <avraham.stern@intel.com>
-Subject: Re: iwlwifi devices disappear after suspend on kernel 5.17
-In-Reply-To: <94b98b712b86690dd5ae19df0cc608b8193be1f3.camel@intel.com>
-References: <87czhe39p6.fsf@toke.dk>
- <1f6188ee5c88ac78a4aadcf169b4b1cc857a84d8.camel@intel.com>
- <d3158dfeb64276f5a9259b17342ff85dc6a4b79c.camel@intel.com>
- <be3b424aec839d899e4a8cd659ebb53a85d67339.camel@intel.com>
- <87mtghs3y2.fsf@toke.dk>
- <e0872b6f468bfda08717214044b64187f71b4e18.camel@intel.com>
- <94b98b712b86690dd5ae19df0cc608b8193be1f3.camel@intel.com>
-Date:   Tue, 19 Apr 2022 22:58:34 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <877d7kn62t.fsf@toke.dk>
+        Tue, 19 Apr 2022 20:46:00 -0400
+Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F86628989
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Apr 2022 17:43:16 -0700 (PDT)
+Received: by mail-il1-x12c.google.com with SMTP id t4so34277ilo.12
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Apr 2022 17:43:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=l+ByOqKk3aTPDxOgi+MMXPoJaKvFYjmLHvE3XekD1Uk=;
+        b=JmR0pcqjjI6YzateDyGtk1MhYbDzRKG/FbmqtGeN/mQoa5eGagsWoTWt7YHJ19A7yw
+         IZvnTcD8zmglvHiaKtcUbQmYYQjwRPW4/B/maJVyPt69Vn+Df/Esf+QK+aBi8OOsffB2
+         2ShP+sI29u2/BwgQ3bxIIHDCYwBU4J3ovXjSI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=l+ByOqKk3aTPDxOgi+MMXPoJaKvFYjmLHvE3XekD1Uk=;
+        b=lQpBSVYm9BOo4miCc7P/QeoII3qZM5rqvqOPHK0o7Oko8sGURHVkcD/beWIpScxdab
+         JtanIQn1g1LvLyRyl9eEPf682EvOP5daQK9eTEvy69hc9TNmdEYV7lwiH/4PqR/S8MKu
+         0kGOHZsFvpWrxqkmE2Aqe25oxRU6qtH+LmKOG1G7DAKWbkISjpkaWAdirgPgbSMmeS2P
+         ywK7o++dow+mSYgBmqns6IUbHQalNHGmpN6m6cXLSJtTyabGTXUnavT9PDc3S18Gk0tr
+         t9yvN9tPUucSpu92/6DEQaeuiz2ApJZJVq0fpPxJqmBCOYp79NXq6ugBaRZFt//v7y8d
+         +ldA==
+X-Gm-Message-State: AOAM531iR8oVyEdmB8lli4S576RLNJG8vWiQ5bUcBq8d84YvPtWCyupB
+        OUxr5tZr6pEJzYRNtAKioVwayuwGD2cTt9Q1qmloLA==
+X-Google-Smtp-Source: ABdhPJxMZ9q71p23gnlmfhB955TXqLup+J9rvIv9OISue1PbZHuQDASslHqoDgDuQs/O6ZnxgiievLi/4a2/HhwYXRc=
+X-Received: by 2002:a05:6e02:2184:b0:2cc:56e0:1686 with SMTP id
+ j4-20020a056e02218400b002cc56e01686mr1048598ila.28.1650415395243; Tue, 19 Apr
+ 2022 17:43:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220107200417.1.Ie4dcc45b0bf365077303c596891d460d716bb4c5@changeid>
+ <CAD=FV=W5fHP8K-PcoYWxYHiDWnPUVQQzOzw=REbuJSSqGeVVfg@mail.gmail.com>
+ <87sfrqqfzy.fsf@kernel.org> <CAD=FV=U0Qw-OnKJg8SWk9=e=B0qgqnaTHpuR0cRA0WCmSHSJYQ@mail.gmail.com>
+ <CACTWRwtpYBokTehRE0_zSdSjio6Ga1yqdCfj1TNck7SqOT8o_Q@mail.gmail.com> <87fsmio9y8.fsf@kernel.org>
+In-Reply-To: <87fsmio9y8.fsf@kernel.org>
+From:   Abhishek Kumar <kuabhs@chromium.org>
+Date:   Tue, 19 Apr 2022 17:43:02 -0700
+Message-ID: <CACTWRwvQNswu1nYNHS-Y580QqDV6MHiS56NwyRXm3cLN2que=Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ath10k: search for default BDF name provided in DT
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Doug Anderson <dianders@chromium.org>,
+        Rakesh Pillai <pillair@codeaurora.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        ath10k <ath10k@lists.infradead.org>,
+        netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Grumbach, Emmanuel" <emmanuel.grumbach@intel.com> writes:
-
-> On Tue, 2022-04-19 at 20:46 +0300, Grumbach, Emmanuel wrote:
->> On Tue, 2022-04-19 at 13:33 +0200, Toke H=C3=B8iland-J=C3=B8rgensen wrot=
-e:
->> > "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com> writes:
->> >=20
->> > > On Tue, 2022-04-19 at 09:41 +0300, Grumbach, Emmanuel wrote:
->> > > > Hi Toke,
->> > > >=20
->> > > > On Tue, 2022-04-19 at 06:24 +0000, Coelho, Luciano wrote:
->> > > > > On Mon, 2022-04-18 at 13:36 +0200, Toke H=C3=B8iland-J=C3=B8rgen=
-sen wrote:
->> > > > > > Hi Luca
->> > > > >=20
->> > > > > Hi Toke,
->> > > > >=20
->> > > > > > I've started seeing issues with my iwlwifi interface going awa=
-y after
->> > > > > > suspend. I get errors like these in dmesg:
->> > > > > >=20
->> > > > > > [104393.142264] wlan0: deauthenticating from 4c:60:de:ea:b8:58=
- by local choice (Reason:
->> > > > > > 3=3DDEAUTH_LEAVING)
->> > > > > > [104393.347775] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1aa-5e=
-70cbb1e865: Couldn't get
->> > > > > > ACK
->> > > > > > from
->> > > > > > CSME on HOST_GOES_DOWN message
->> > > > > > [104393.347876] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1aa-5e=
-70cbb1e865: failed to send
->> > > > > > the
->> > > > > > SAP_ME_MSG_CHECK_SHARED_AREA message -19
->> > > > > >=20
->> > > > > > And when the host comes back up, there is no connectivity. Res=
-tarting
->> > > > > > iwd fixes the problem.
->> > > > > >=20
->> > > > > > This is on a 5.17.3 kernel (Arch Linux distribution kernel), a=
-nd lspci
->> > > > > > says the WiFi device is an "Intel Corporation Wi-Fi 6 AX201".
->> > > > > >=20
->> > > > > > Any ideas? :)
->> > > > >=20
->> > > > > This seems to be related to iwlmei, so I added Emmanuel to the t=
-hread.
->> > > > >=20
->> > > >=20
->> > > > Can we have the full dmesg output?
->> > > > What NIC / platform do you have?
->> > > > Do you have AMT configured in the BIOS?
->> > > > Did you enable wireless operation in AMT?
->> > >=20
->> > > Ah - this is AX201, ok, but I still need the platform and thefull dm=
-esg :-)
->> >=20
->> > It's a Lenovo ThinkPad X1 Carbon Gen 9, model 20XXS3HC26; AMT is set to
->> > "Disabled" in the BIOS. I rebooted and did a suspend/wake cycle after
->> > connecting to the WiFi network, which produced the dmesg below.
->>=20
->> Thanks.
->> This is a Skylake platform and we didn't have a handshake with CSME whic=
-h is not enabled. We are
->> missing a check before we shut down iwlmei.
+On Tue, Apr 12, 2022 at 3:47 AM Kalle Valo <kvalo@kernel.org> wrote:
 >
-> Hm... no, that seems to be 11th generation... so TigerLake?
-> But still, the fix below seems relevant.
+> Abhishek Kumar <kuabhs@chromium.org> writes:
+>
+> > Hi All,
+> >
+> > Apologies for the late reply, too many things at the same time.
+>
+> Trust me, I know the feeling :)
+>
+> > Just a quick note, Qcomm provided a new BDF file with support for
+> > 'bus=snoc,qmi-board-id=ff' as well, so even without this patch, the
+> > non-programmed devices(with board-id=0xff) would work. However, for
+> > optimization of the BDF search strategy, the above mentioned strategy
+> > would still not work: - The stripping of full Board name would not
+> > work if board-id itself is not programmed i.e. =0xff e.g. for
+> > 'bus=snoc,qmi-board-id=ff,qmi-chip-id=320,variant=GO_LAZOR' => no
+> > match 'bus=snoc,qmi-board-id=ff,qmi-chip-id=320' => no match
+> > 'bus=snoc,qmi-board-id=ff' => no match 'bus=snoc' => no match because
+> > all the BDFs contains board-id=67
+>
+> Sorry, not fully following your here. Are you saying that the problem is
+> that WCN3990/hw1.0/board-2.bin is missing board file for 'bus=snoc'?
+Ya, that is what I meant here, the board-2.bin file does not contain
+an entry for 'bus=snoc' and so if board-id=oxff then still there
+cannot be any BDF that matches. So adding BDF for 'bus=snoc' would
+simplify the approach.
+> That's easy to add, each board file within board-2.bin has multiple
+> names so we can easily select one board file for which we add
+> 'bus=snoc'.
+>
+> > So with this DT patch specifically for case 'bus=snoc,qmi-board-id=ff'
+> > => no match, we fallback to default case ( the one provided in DT)
+> > i.e. 'bus=snoc,qmi-board-id=67' => match . I do not see how exactly
+> > the driver can know that it should check for a board-id of 67.
+>
+> Sorry, not following you here either. Why would the driver need to use
+> board-id 67?
+>
+> > However, to still remove dependency on the DT, we can make the
+> > board-id as no-op if it is not programmed i.e. if the board-id=ff then
+> > we would pick any BDF that match 'bus=snoc,qmi-board-id=<XX>' where XX
+> > can be any arbitrary number. Thoughts ?
+>
+> To me using just 'bus=snoc' is more logical than picking up an arbitrary
+> number. But I might be missing something here.
+The reason I mentioned that if the board-id=oxff then pick any
+available BDF entry which matches
+'bus=snoc,qmi-board-id=<XX>' is because:
+- This will atleast let the wlan chip to boot.
+- There is no BDF for 'bus=snoc' , so further stripping of boardname
+will not find any match, but as you mentioned that BDF for 'bus=snoc'
+can be added, then this will make the logic simpler and we don't have
+to pick 'bus=snoc,qmi-board-id=<XX>' with any arbitrary board-id.
+I will rollout a patch with this approach.
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-Hmm, tried the patch and the message is still there (as is the bug)...
-The error code is different now, though:
-
-[   65.773731] wlan0: deauthenticating from 4c:60:de:ea:b8:5a by local choi=
-ce (Reason: 3=3DDEAUTH_LEAVING)
-[   65.973767] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1aa-5e70cbb1e865: Co=
-uldn't get ACK from CSME on HOST_GOES_DOWN message
-[   65.973845] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1aa-5e70cbb1e865: fa=
-iled to send the SAP_ME_MSG_CHECK_SHARED_AREA message -14
-
--Toke
+Thanks
+Abhishek
