@@ -2,102 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 313F550806F
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 07:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AA5350807E
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 07:21:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350076AbiDTFQn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Apr 2022 01:16:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48428 "EHLO
+        id S1346941AbiDTFXl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Apr 2022 01:23:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232351AbiDTFQm (ORCPT
+        with ESMTP id S241585AbiDTFXk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Apr 2022 01:16:42 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FD9533E3A;
-        Tue, 19 Apr 2022 22:13:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D9659B81244;
-        Wed, 20 Apr 2022 05:13:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9DFC385A0;
-        Wed, 20 Apr 2022 05:13:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650431634;
-        bh=Xl8xanXzGG/XbMPJDPUaNRxh8BraaLlRbxRew5ksBiw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=MWRbUBz9aU0uUj7CU39+2wGmazTXtMvR03ApKZl5oW7EFAVuhS5jKf7sp03Q9r9S/
-         JPPbgcGQiWfrN8OXQ9DsliVf5S5ZV/BvfTSU1BuKOqln8qdq/EypwAvgz1QwP8Xr4d
-         yX1den7jqPZaRgiuM588z3n/dS4IvviSoB7ZmOWeNdMNQMnouRFfgPuz1lRohNclPl
-         15SyuSrsu/1OtpHeV7kDRj4sX7XF31fygnHkVtAGWoX2CwcI/yQoRIkIEkC78tNz1Y
-         rhjcIig2B7J0YCIuF8MPsm06kuInhm56U70+8sBEMyv0DdgArF6Ic73iWHs5WSYV3+
-         9hSf3BfWl3+Tw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jani Nikula <jani.nikula@intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Lucas De Marchi <lucas.demarchi@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 0/1] add support for enum module parameters
-References: <20220414123033.654198-1-jani.nikula@intel.com>
-        <YlgfXxjefuxiXjtC@kroah.com> <87a6cneoco.fsf@intel.com>
-Date:   Wed, 20 Apr 2022 08:13:47 +0300
-In-Reply-To: <87a6cneoco.fsf@intel.com> (Jani Nikula's message of "Thu, 14 Apr
-        2022 17:22:47 +0300")
-Message-ID: <87sfq8qqus.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 20 Apr 2022 01:23:40 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3A8B3587B
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Apr 2022 22:20:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:Subject:
+        From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID
+        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+        Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
+        :List-Post:List-Owner:List-Archive;
+        bh=YAZC9y8BBhsm62CdLgduktz90VpmUPVlcKmGJkLc64w=; b=lA91Tk/4hnua5jf4aEIAWRR1sV
+        WIKl9OGKQoW/fH/6ev9Qqb5GdhIJfDlbokw0y2slAZs+912GNSY4xQo5i0jMUZ6yriao4VVjeVRcU
+        EDZoEJ5JRE2U/IIspZKQSzr68VZANu47JkOMKteLVHw3KomerHBP9OqnnpEQphZkz4xo=;
+Received: from p200300daa70ef200009e86881025829d.dip0.t-ipconnect.de ([2003:da:a70e:f200:9e:8688:1025:829d] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1nh2ll-00024n-85; Wed, 20 Apr 2022 07:20:49 +0200
+Message-ID: <c7757409-9197-32d1-84f1-6c5588c92a73@nbd.name>
+Date:   Wed, 20 Apr 2022 07:20:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.8.0
+Content-Language: en-US
+To:     Bo Jiao <bo.jiao@mediatek.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+References: <20220420040346.8378-1-bo.jiao@mediatek.com>
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: Re: [PATCH] mt76: mt7915: report qos_ctl without ACK policy
+In-Reply-To: <20220420040346.8378-1-bo.jiao@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ linux-wireless, netdev
 
-Jani Nikula <jani.nikula@intel.com> writes:
+On 20.04.22 06:03, Bo Jiao wrote:
+> From: Bo Jiao <Bo.Jiao@mediatek.com>
+> 
+> there is no need to report to the mac80211 layer the ACK policy which may
+> cause rx out-of-order issue, because the hardware rmac module already handle it
+> 
+> Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+> ---
+>   drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+> index b47aea6..5080280 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+> @@ -675,6 +675,11 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+>   
+>   		fc = cpu_to_le16(FIELD_GET(MT_RXD6_FRAME_CONTROL, v0));
+>   		qos_ctl = FIELD_GET(MT_RXD8_QOS_CTL, v2);
+> +		/*
+> +		 * there is no need to report the ACK policy to the
+> +		 * mac80211 layer, because hw has already processed it.
+> +		 */
+> +		qos_ctl &= ~IEEE80211_QOS_CTL_ACK_POLICY_MASK;
+I don't understand this change at all. First of all, the qos_ctl field 
+isn't really reported to the mac80211 layer, it's used in mt76 internally.
+The rx reorder code uses it to detect no-ack policy in order to avoid 
+reordering for it.
+Since you're masking out the ack policy, the value will be 
+IEEE80211_QOS_CTL_ACK_POLICY_NORMAL, which ends up forcibly enabling rx 
+reordering, even when the policy indicates no-ack.
+How does this help, and what part does the rmac module already handle?
 
-> On Thu, 14 Apr 2022, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
->> On Thu, Apr 14, 2022 at 03:30:32PM +0300, Jani Nikula wrote:
->>> Hey, I've sent this before, ages ago, but haven't really followed
->>> through with it. I still think it would be useful for many scenarios
->>> where a plain number is a clumsy interface for a module param.
->>> 
->>> Thoughts?
->>
->> We should not be adding new module parameters anyway (they operate on
->> code, not data/devices), so what would this be used for?
->
-> I think it's just easier to use names than random values, and this also
-> gives you range check on the input.
->
-> I also keep telling people not to add new module parameters, but it's
-> not like they're going away anytime soon.
->
-> If there's a solution to being able to pass device specific debug
-> parameters at probe time, I'm all ears. At least i915 has a bunch of
-> things which can't really be changed after probe, when debugfs for the
-> device is around. Module parameters aren't ideal, but debugfs doesn't
-> work for this.
-
-Wireless drivers would also desperately need to pass device specific
-parameters at (or before) probe time. And not only debug parameters but
-also configuration parameters, for example firmware memory allocations
-schemes (optimise for features vs number of clients etc) and whatnot.
-
-Any ideas how to implement that? Is there any prior work for anything
-like this? This is pretty hard limiting usability of upstream wireless
-drivers and I really want to find a proper solution.
-
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+- Felix
