@@ -2,87 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0FE15089F3
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 16:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14332508C42
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 17:35:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379212AbiDTODi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Apr 2022 10:03:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50444 "EHLO
+        id S1380291AbiDTPiV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Apr 2022 11:38:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354209AbiDTODh (ORCPT
+        with ESMTP id S1380280AbiDTPiV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Apr 2022 10:03:37 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3FEF1A392;
-        Wed, 20 Apr 2022 07:00:51 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id y10so3723703ejw.8;
-        Wed, 20 Apr 2022 07:00:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=fUhflkjuCQ88rw7Co6ugfAm65XGN6gdXNEWk+vq4zPg=;
-        b=mTQ16iAF+djeeNR9aPcILOYKECu/ZbfrGwtnu+XynE7Cbibu3eYpGHSkx0VsKCzYaH
-         0vYMp4nkY7qUJdvf7jEqbOrK82j/wxNovOIraHMJGjrSzwXHGuDGYjdszN3R9KWy7hHi
-         tLjBmaB5emRntrDbTzVb1D8TRy4/lwo8AMBaRdQCCNfiFsFhtL496un7SXtv1bwq388Q
-         diNH+Vi0cy4dgxWKADNIKM9tsPXTqI+f9ezwaG6fGyyoPpGsAalTl/PjuXprMswpykTd
-         rzG7NjM25EnzH9IKqAHyXahVzan18fdTBRU0jUJ60dy8+cMV1JkdrThgPdjmTNLwvFUo
-         OUmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=fUhflkjuCQ88rw7Co6ugfAm65XGN6gdXNEWk+vq4zPg=;
-        b=TwDm1iDn+EsreAce2wwMAvoMT9l+KYK56Jnk91Ti5fJptz6auhph0X6CN6E4Lg/vVx
-         EqLpnWt7gJPBQzoX6j5MLR48lJZ0AHuZW/Fk4XbnypvKGypMot7PA0jNlORwaZ5QR6jO
-         Jd8GjvtNgyUN4FXhZIEXL/wcsCY1K3d6ArJbFAGkYpK7yl6ocfrG6j1tf8zi6zkJgNoo
-         /lOknjU7A5EKhJasqtK4Rk4TogsiQKsdVIVr7tsSQ59dTeZSiu/omreSY7xozTqEH0d2
-         LORDNGBOCMqkMKmqdcjtaGUExsQAlBSjfq1hQS3D8bNCs3WLdwZOvkVCdiGQ6EseGG1E
-         08kQ==
-X-Gm-Message-State: AOAM53112uAAgXqw2l/2tNvTSH86EXkvgCsULPlyu6kN49VSuj6Y7UJ5
-        Pb5qBKH15BLayJG45iJ8ohxrL06/GSjotEGkJReoKn/Q0gM=
-X-Google-Smtp-Source: ABdhPJwven6/+OjHqo8zevNFU9kEoxmbW/0E8ncV3gakvluubft6qctAClBbe5/Rkcv9DDjAPNFmSfX4Ao9bTAw3O7w=
-X-Received: by 2002:a17:907:e88:b0:6ef:bce9:ff6a with SMTP id
- ho8-20020a1709070e8800b006efbce9ff6amr12474874ejc.275.1650463249997; Wed, 20
- Apr 2022 07:00:49 -0700 (PDT)
+        Wed, 20 Apr 2022 11:38:21 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C44843AF4;
+        Wed, 20 Apr 2022 08:35:34 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.119])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 808AC2007B;
+        Wed, 20 Apr 2022 15:35:32 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 97CA07C0091;
+        Wed, 20 Apr 2022 15:35:31 +0000 (UTC)
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 0D55D13C2B0;
+        Wed, 20 Apr 2022 08:35:31 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0D55D13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1650468931;
+        bh=m6UmcaUNAJbiUAjl9D1S7563d1lALHm4+6MIjVko97A=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=VOttTPX9D2xuN0YICl2Gr74GByEwy6WkJtsWdYYbJ1jWW92A+ZjlIRkHQkeFwMfe/
+         Bx4/9LYrN7rYiRhBm81uvJmeMyt9H39cTT7CxWcHu8ch+Au38fqb9pz3xT02gj3+T5
+         1mcU2k0rtCDlXqGL2HzqW+G/wJyTd8/SJ3meo4eY=
+Subject: Re: [PATCH 0/1] add support for enum module parameters
+To:     Kalle Valo <kvalo@kernel.org>, Jani Nikula <jani.nikula@intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Lucas De Marchi <lucas.demarchi@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <20220414123033.654198-1-jani.nikula@intel.com>
+ <YlgfXxjefuxiXjtC@kroah.com> <87a6cneoco.fsf@intel.com>
+ <87sfq8qqus.fsf@tynnyri.adurom.net>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <0be3baa1-d4aa-8ab2-173f-085d47497251@candelatech.com>
+Date:   Wed, 20 Apr 2022 08:35:30 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-From:   Yegor Yefremov <yegorslists@googlemail.com>
-Date:   Wed, 20 Apr 2022 15:57:24 +0200
-Message-ID: <CAGm1_ktEim1vGOf5i=H_sqrPvg=dT50790YYwXgYKgAut-a=ng@mail.gmail.com>
-Subject: wl18xx: NVS file handling
-To:     Linux-OMAP <linux-omap@vger.kernel.org>
-Cc:     linux-wireless@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
-        sebastian.reichel@collabora.co.uk
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <87sfq8qqus.fsf@tynnyri.adurom.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-MDID: 1650468933-iY1Kl7vagF1E
+X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi all,
+On 4/19/22 10:13 PM, Kalle Valo wrote:
+> + linux-wireless, netdev
+> 
+> Jani Nikula <jani.nikula@intel.com> writes:
+> 
+>> On Thu, 14 Apr 2022, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>>> On Thu, Apr 14, 2022 at 03:30:32PM +0300, Jani Nikula wrote:
+>>>> Hey, I've sent this before, ages ago, but haven't really followed
+>>>> through with it. I still think it would be useful for many scenarios
+>>>> where a plain number is a clumsy interface for a module param.
+>>>>
+>>>> Thoughts?
+>>>
+>>> We should not be adding new module parameters anyway (they operate on
+>>> code, not data/devices), so what would this be used for?
+>>
+>> I think it's just easier to use names than random values, and this also
+>> gives you range check on the input.
+>>
+>> I also keep telling people not to add new module parameters, but it's
+>> not like they're going away anytime soon.
+>>
+>> If there's a solution to being able to pass device specific debug
+>> parameters at probe time, I'm all ears. At least i915 has a bunch of
+>> things which can't really be changed after probe, when debugfs for the
+>> device is around. Module parameters aren't ideal, but debugfs doesn't
+>> work for this.
+> 
+> Wireless drivers would also desperately need to pass device specific
+> parameters at (or before) probe time. And not only debug parameters but
+> also configuration parameters, for example firmware memory allocations
+> schemes (optimise for features vs number of clients etc) and whatnot.
+> 
+> Any ideas how to implement that? Is there any prior work for anything
+> like this? This is pretty hard limiting usability of upstream wireless
+> drivers and I really want to find a proper solution.
 
-using the 5.18.x kernel, I get the following warning:
+I used a 'fwcfg' file that is loaded during ath10k initialization, from
+same general location as the firmware.  Name is with pci-id or other unique
+identifier like board files sometimes are named, and you get per radio
+configuration at device load time.  I'm sure I posted a patch on this
+some years ago, but I can point you to my current tree if you prefer.
 
-wlcore: WARNING Detected unconfigured mac address in nvs, derive from
-fuse instead.
-wlcore: WARNING This default nvs file can be removed from the file system
+Thanks,
+Ben
 
-removing the /lib/firmware/ti-connectivity/wl127x-nvs.bin file, I get
-this warning:
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
-wl18xx_driver wl18xx.0.auto: Direct firmware load for
-ti-connectivity/wl1271-nvs.bin failed with error -2
-
-What's the best way to get rid of these warnings when I don't want to
-handle WLAN's MAC address via the wl127x-nvs.bin?
-
-According to this discussion [1], NVS file is the last resort for
-handling the MAC address.
-
-[1] https://patchwork.kernel.org/project/linux-wireless/patch/8665E2433BC68541A24DFFCA87B70F5B363E1A3D@DFRE01.ent.ti.com/
-
-Regards,
-Yegor
