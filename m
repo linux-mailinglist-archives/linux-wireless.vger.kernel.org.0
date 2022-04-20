@@ -2,69 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E917507DB7
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 02:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8205A507F7F
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 05:15:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358609AbiDTAqD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Apr 2022 20:46:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58662 "EHLO
+        id S1359195AbiDTDRv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Apr 2022 23:17:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358612AbiDTAqA (ORCPT
+        with ESMTP id S1349010AbiDTDRt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Apr 2022 20:46:00 -0400
-Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F86628989
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Apr 2022 17:43:16 -0700 (PDT)
-Received: by mail-il1-x12c.google.com with SMTP id t4so34277ilo.12
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Apr 2022 17:43:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=l+ByOqKk3aTPDxOgi+MMXPoJaKvFYjmLHvE3XekD1Uk=;
-        b=JmR0pcqjjI6YzateDyGtk1MhYbDzRKG/FbmqtGeN/mQoa5eGagsWoTWt7YHJ19A7yw
-         IZvnTcD8zmglvHiaKtcUbQmYYQjwRPW4/B/maJVyPt69Vn+Df/Esf+QK+aBi8OOsffB2
-         2ShP+sI29u2/BwgQ3bxIIHDCYwBU4J3ovXjSI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=l+ByOqKk3aTPDxOgi+MMXPoJaKvFYjmLHvE3XekD1Uk=;
-        b=lQpBSVYm9BOo4miCc7P/QeoII3qZM5rqvqOPHK0o7Oko8sGURHVkcD/beWIpScxdab
-         JtanIQn1g1LvLyRyl9eEPf682EvOP5daQK9eTEvy69hc9TNmdEYV7lwiH/4PqR/S8MKu
-         0kGOHZsFvpWrxqkmE2Aqe25oxRU6qtH+LmKOG1G7DAKWbkISjpkaWAdirgPgbSMmeS2P
-         ywK7o++dow+mSYgBmqns6IUbHQalNHGmpN6m6cXLSJtTyabGTXUnavT9PDc3S18Gk0tr
-         t9yvN9tPUucSpu92/6DEQaeuiz2ApJZJVq0fpPxJqmBCOYp79NXq6ugBaRZFt//v7y8d
-         +ldA==
-X-Gm-Message-State: AOAM531iR8oVyEdmB8lli4S576RLNJG8vWiQ5bUcBq8d84YvPtWCyupB
-        OUxr5tZr6pEJzYRNtAKioVwayuwGD2cTt9Q1qmloLA==
-X-Google-Smtp-Source: ABdhPJxMZ9q71p23gnlmfhB955TXqLup+J9rvIv9OISue1PbZHuQDASslHqoDgDuQs/O6ZnxgiievLi/4a2/HhwYXRc=
-X-Received: by 2002:a05:6e02:2184:b0:2cc:56e0:1686 with SMTP id
- j4-20020a056e02218400b002cc56e01686mr1048598ila.28.1650415395243; Tue, 19 Apr
- 2022 17:43:15 -0700 (PDT)
+        Tue, 19 Apr 2022 23:17:49 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7826125F3
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Apr 2022 20:15:01 -0700 (PDT)
+X-UUID: 48c836d13c884b87ac80a9f609018623-20220420
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.4,REQID:0a728892-a66b-4844-88c3-be52cf917282,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,RULE:Release_Ham,AC
+        TION:release,TS:100
+X-CID-INFO: VERSION:1.1.4,REQID:0a728892-a66b-4844-88c3-be52cf917282,OB:0,LOB:
+        0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,RULE:Spam_GS981B3D,AC
+        TION:quarantine,TS:100
+X-CID-META: VersionHash:faefae9,CLOUDID:7c3774ef-06b0-4305-bfbf-554bfc9d151a,C
+        OID:2b68c1424a01,Recheck:0,SF:12|15|28|16|19|48,TC:nil,Content:0,EDM:-3,Fi
+        le:nil,QS:0,BEC:nil
+X-UUID: 48c836d13c884b87ac80a9f609018623-20220420
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+        (envelope-from <bo.jiao@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 122441462; Wed, 20 Apr 2022 11:14:57 +0800
+Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Wed, 20 Apr 2022 11:14:55 +0800
+Received: from MTKCAS36.mediatek.inc (172.27.4.186) by MTKMBS34N1.mediatek.inc
+ (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 20 Apr
+ 2022 11:14:54 +0800
+Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
+ MTKCAS36.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
+ 15.0.1497.2 via Frontend Transport; Wed, 20 Apr 2022 11:14:54 +0800
+From:   Bo Jiao <bo.jiao@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Subject: [PATCH] mt76: mt7915: fix msta->wcid use-after-free in mt76_tx_status_check()
+Date:   Wed, 20 Apr 2022 11:14:51 +0800
+Message-ID: <20220420031451.6770-1-bo.jiao@mediatek.com>
+X-Mailer: git-send-email 2.17.0
 MIME-Version: 1.0
-References: <20220107200417.1.Ie4dcc45b0bf365077303c596891d460d716bb4c5@changeid>
- <CAD=FV=W5fHP8K-PcoYWxYHiDWnPUVQQzOzw=REbuJSSqGeVVfg@mail.gmail.com>
- <87sfrqqfzy.fsf@kernel.org> <CAD=FV=U0Qw-OnKJg8SWk9=e=B0qgqnaTHpuR0cRA0WCmSHSJYQ@mail.gmail.com>
- <CACTWRwtpYBokTehRE0_zSdSjio6Ga1yqdCfj1TNck7SqOT8o_Q@mail.gmail.com> <87fsmio9y8.fsf@kernel.org>
-In-Reply-To: <87fsmio9y8.fsf@kernel.org>
-From:   Abhishek Kumar <kuabhs@chromium.org>
-Date:   Tue, 19 Apr 2022 17:43:02 -0700
-Message-ID: <CACTWRwvQNswu1nYNHS-Y580QqDV6MHiS56NwyRXm3cLN2que=Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ath10k: search for default BDF name provided in DT
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Doug Anderson <dianders@chromium.org>,
-        Rakesh Pillai <pillair@codeaurora.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        ath10k <ath10k@lists.infradead.org>,
-        netdev <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,66 +66,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Apr 12, 2022 at 3:47 AM Kalle Valo <kvalo@kernel.org> wrote:
->
-> Abhishek Kumar <kuabhs@chromium.org> writes:
->
-> > Hi All,
-> >
-> > Apologies for the late reply, too many things at the same time.
->
-> Trust me, I know the feeling :)
->
-> > Just a quick note, Qcomm provided a new BDF file with support for
-> > 'bus=snoc,qmi-board-id=ff' as well, so even without this patch, the
-> > non-programmed devices(with board-id=0xff) would work. However, for
-> > optimization of the BDF search strategy, the above mentioned strategy
-> > would still not work: - The stripping of full Board name would not
-> > work if board-id itself is not programmed i.e. =0xff e.g. for
-> > 'bus=snoc,qmi-board-id=ff,qmi-chip-id=320,variant=GO_LAZOR' => no
-> > match 'bus=snoc,qmi-board-id=ff,qmi-chip-id=320' => no match
-> > 'bus=snoc,qmi-board-id=ff' => no match 'bus=snoc' => no match because
-> > all the BDFs contains board-id=67
->
-> Sorry, not fully following your here. Are you saying that the problem is
-> that WCN3990/hw1.0/board-2.bin is missing board file for 'bus=snoc'?
-Ya, that is what I meant here, the board-2.bin file does not contain
-an entry for 'bus=snoc' and so if board-id=oxff then still there
-cannot be any BDF that matches. So adding BDF for 'bus=snoc' would
-simplify the approach.
-> That's easy to add, each board file within board-2.bin has multiple
-> names so we can easily select one board file for which we add
-> 'bus=snoc'.
->
-> > So with this DT patch specifically for case 'bus=snoc,qmi-board-id=ff'
-> > => no match, we fallback to default case ( the one provided in DT)
-> > i.e. 'bus=snoc,qmi-board-id=67' => match . I do not see how exactly
-> > the driver can know that it should check for a board-id of 67.
->
-> Sorry, not following you here either. Why would the driver need to use
-> board-id 67?
->
-> > However, to still remove dependency on the DT, we can make the
-> > board-id as no-op if it is not programmed i.e. if the board-id=ff then
-> > we would pick any BDF that match 'bus=snoc,qmi-board-id=<XX>' where XX
-> > can be any arbitrary number. Thoughts ?
->
-> To me using just 'bus=snoc' is more logical than picking up an arbitrary
-> number. But I might be missing something here.
-The reason I mentioned that if the board-id=oxff then pick any
-available BDF entry which matches
-'bus=snoc,qmi-board-id=<XX>' is because:
-- This will atleast let the wlan chip to boot.
-- There is no BDF for 'bus=snoc' , so further stripping of boardname
-will not find any match, but as you mentioned that BDF for 'bus=snoc'
-can be added, then this will make the logic simpler and we don't have
-to pick 'bus=snoc,qmi-board-id=<XX>' with any arbitrary board-id.
-I will rollout a patch with this approach.
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+From: Bo Jiao <Bo.Jiao@mediatek.com>
 
-Thanks
-Abhishek
+fix msta->wcid use-after-free in mt76_tx_status_check when the sta
+has been removed.
+
+Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 800f720..160d80e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -701,6 +701,11 @@ void mt7915_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 	if (!list_empty(&msta->rc_list))
+ 		list_del_init(&msta->rc_list);
+ 	spin_unlock_bh(&dev->sta_poll_lock);
++
++	spin_lock_bh(&mdev->status_lock);
++	if (!list_empty(&msta->wcid.list))
++		list_del_init(&msta->wcid.list);
++	spin_unlock_bh(&mdev->status_lock);
+ }
+ 
+ static void mt7915_tx(struct ieee80211_hw *hw,
+-- 
+2.18.0
+
