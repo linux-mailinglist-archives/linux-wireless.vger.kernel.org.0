@@ -2,217 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AED4B508534
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 11:49:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86E59508588
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 12:10:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377331AbiDTJwI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Apr 2022 05:52:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47354 "EHLO
+        id S1377544AbiDTKNA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Apr 2022 06:13:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350547AbiDTJwH (ORCPT
+        with ESMTP id S1377484AbiDTKM7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Apr 2022 05:52:07 -0400
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A98E38781
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 02:49:20 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1650448159; bh=uWh15eKgUDnDFx4SW9NadA0nfRIrzB86LhvimqtPQWo=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=JfMtHmG06UVG6rXXSstXKFy0WWkbJzPopBju+EfIXe31B877IvMJcHrHaMvK4Rd15
-         5sNHdu88kURykUOoLioIBXE000FJ95w7XiZ7T9sP0RzVCZHP7nR9yJDd+UA8XY1PSI
-         RPx++6ms6nsKzg7xsCYAG0E391uU3+Q1MNuCA046Xwmus8g/SVIgrj4IE+8K3B79kC
-         gXXwoYz6nWMRIxVA/VcbRdfYlJydBtBwl/kQJGjKasSzicRmWfHd1xpHg8zJ5li1/9
-         FtoyXjFi67ckhaIY3416uWbVj2Tyi99RzzzEwHTLAw/lqbh6eUCtMByu1cT1fKsFul
-         nM4Pz9edf54cA==
-To:     "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
-        "Coelho, Luciano" <luciano.coelho@intel.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "Stern, Avraham" <avraham.stern@intel.com>
-Subject: Re: iwlwifi devices disappear after suspend on kernel 5.17
-In-Reply-To: <a8b437f1fc466096f119298ae1562c2aa224ad95.camel@intel.com>
-References: <87czhe39p6.fsf@toke.dk>
- <1f6188ee5c88ac78a4aadcf169b4b1cc857a84d8.camel@intel.com>
- <d3158dfeb64276f5a9259b17342ff85dc6a4b79c.camel@intel.com>
- <be3b424aec839d899e4a8cd659ebb53a85d67339.camel@intel.com>
- <87mtghs3y2.fsf@toke.dk>
- <e0872b6f468bfda08717214044b64187f71b4e18.camel@intel.com>
- <94b98b712b86690dd5ae19df0cc608b8193be1f3.camel@intel.com>
- <877d7kn62t.fsf@toke.dk>
- <a8b437f1fc466096f119298ae1562c2aa224ad95.camel@intel.com>
-Date:   Wed, 20 Apr 2022 11:49:17 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87o80whyoy.fsf@toke.dk>
+        Wed, 20 Apr 2022 06:12:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB6933EBB5;
+        Wed, 20 Apr 2022 03:10:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 62E8561755;
+        Wed, 20 Apr 2022 10:10:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8EC58C385A1;
+        Wed, 20 Apr 2022 10:10:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650449412;
+        bh=kgUJN+UBTLmDmzszyDcZPLTkalYOukejwnpRQs4AeAI=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=AwjgT+6W2dzbhhkNsCJAcf2oHZEW9UfQNy9qrmXYC4/JAy6DTlCz9rL/LHR9DKYlu
+         o8K6h01aSyUVDlc7cb1EQ6vnqnXk1QfRKbSda9pYwA4dUS2QeH7F4dDfdL0lPUGQsU
+         38JHh1VIMetB8mRLVjVWI3siPOQYtxSmvvUUDQyTXQzfJgN4X9O9IPcSyRtx4K+IFG
+         EVCqoFqb+nlm2+fyNMvIg3WCZpF3gJCtkZaJW0RMoO0cgyL4MXzrTGXN2fij9Que7a
+         TlrCOPofBJ+TD2xQTOVirCCGk8F5Gi7OifmURNej5wy3FD3uBgxPYyxj3of/p3ONQt
+         VSMID04DNhK4g==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7154DE85D90;
+        Wed, 20 Apr 2022 10:10:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] ar5523: Use kzalloc instead of kmalloc/memset
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <165044941246.8751.12176607608401955459.git-patchwork-notify@kernel.org>
+Date:   Wed, 20 Apr 2022 10:10:12 +0000
+References: <1650332252-4994-1-git-send-email-baihaowen@meizu.com>
+In-Reply-To: <1650332252-4994-1-git-send-email-baihaowen@meizu.com>
+To:     Haowen Bai <baihaowen@meizu.com>
+Cc:     pontus.fuchs@gmail.com, kvalo@kernel.org, davem@davemloft.net,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Grumbach, Emmanuel" <emmanuel.grumbach@intel.com> writes:
+Hello:
 
-> On Tue, 2022-04-19 at 22:58 +0200, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com> writes:
->>=20
->> > On Tue, 2022-04-19 at 20:46 +0300, Grumbach, Emmanuel wrote:
->> > > On Tue, 2022-04-19 at 13:33 +0200, Toke H=C3=B8iland-J=C3=B8rgensen =
-wrote:
->> > > > "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com> writes:
->> > > >=20
->> > > > > On Tue, 2022-04-19 at 09:41 +0300, Grumbach, Emmanuel wrote:
->> > > > > > Hi Toke,
->> > > > > >=20
->> > > > > > On Tue, 2022-04-19 at 06:24 +0000, Coelho, Luciano wrote:
->> > > > > > > On Mon, 2022-04-18 at 13:36 +0200, Toke H=C3=B8iland-J=C3=B8=
-rgensen wrote:
->> > > > > > > > Hi Luca
->> > > > > > >=20
->> > > > > > > Hi Toke,
->> > > > > > >=20
->> > > > > > > > I've started seeing issues with my iwlwifi interface going=
- away after
->> > > > > > > > suspend. I get errors like these in dmesg:
->> > > > > > > >=20
->> > > > > > > > [104393.142264] wlan0: deauthenticating from 4c:60:de:ea:b=
-8:58 by local choice
->> > > > > > > > (Reason:
->> > > > > > > > 3=3DDEAUTH_LEAVING)
->> > > > > > > > [104393.347775] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1a=
-a-5e70cbb1e865: Couldn't
->> > > > > > > > get
->> > > > > > > > ACK
->> > > > > > > > from
->> > > > > > > > CSME on HOST_GOES_DOWN message
->> > > > > > > > [104393.347876] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1a=
-a-5e70cbb1e865: failed to
->> > > > > > > > send
->> > > > > > > > the
->> > > > > > > > SAP_ME_MSG_CHECK_SHARED_AREA message -19
->> > > > > > > >=20
->> > > > > > > > And when the host comes back up, there is no connectivity.=
- Restarting
->> > > > > > > > iwd fixes the problem.
->> > > > > > > >=20
->> > > > > > > > This is on a 5.17.3 kernel (Arch Linux distribution kernel=
-), and lspci
->> > > > > > > > says the WiFi device is an "Intel Corporation Wi-Fi 6 AX20=
-1".
->> > > > > > > >=20
->> > > > > > > > Any ideas? :)
->> > > > > > >=20
->> > > > > > > This seems to be related to iwlmei, so I added Emmanuel to t=
-he thread.
->> > > > > > >=20
->> > > > > >=20
->> > > > > > Can we have the full dmesg output?
->> > > > > > What NIC / platform do you have?
->> > > > > > Do you have AMT configured in the BIOS?
->> > > > > > Did you enable wireless operation in AMT?
->> > > > >=20
->> > > > > Ah - this is AX201, ok, but I still need the platform and theful=
-l dmesg :-)
->> > > >=20
->> > > > It's a Lenovo ThinkPad X1 Carbon Gen 9, model 20XXS3HC26; AMT is s=
-et to
->> > > > "Disabled" in the BIOS. I rebooted and did a suspend/wake cycle af=
-ter
->> > > > connecting to the WiFi network, which produced the dmesg below.
->> > >=20
->> > > Thanks.
->> > > This is a Skylake platform and we didn't have a handshake with CSME =
-which is not enabled. We
->> > > are
->> > > missing a check before we shut down iwlmei.
->> >=20
->> > Hm... no, that seems to be 11th generation... so TigerLake?
->> > But still, the fix below seems relevant.
->>=20
->> Hmm, tried the patch and the message is still there (as is the bug)...
->> The error code is different now, though:
->>=20
->> [=C2=A0=C2=A0 65.773731] wlan0: deauthenticating from 4c:60:de:ea:b8:5a =
-by local choice (Reason:
->> 3=3DDEAUTH_LEAVING)
->> [=C2=A0=C2=A0 65.973767] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1aa-5e7=
-0cbb1e865: Couldn't get ACK from
->> CSME on HOST_GOES_DOWN message
->> [=C2=A0=C2=A0 65.973845] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1aa-5e7=
-0cbb1e865: failed to send the
->> SAP_ME_MSG_CHECK_SHARED_AREA message -14
->>=20
->
-> So you do get a SAP connection. Weird.
-> Checking with the CSME guys.
-> Can you get dynamic debug prints for iwlmei module?
-> Best would be tracing with -e iwlmei_sap_cmd
+This patch was applied to netdev/net-next.git (master)
+by David S. Miller <davem@davemloft.net>:
 
-Sure! Recorded these while doing a suspend-restore, then restarting iwd:
+On Tue, 19 Apr 2022 09:37:31 +0800 you wrote:
+> Use kzalloc rather than duplicating its implementation, which
+> makes code simple and easy to understand.
+> 
+> Signed-off-by: Haowen Bai <baihaowen@meizu.com>
+> ---
+>  drivers/net/wireless/ath/ar5523/ar5523.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-  kworker/u16:34-34555 [004] 46452.506238: iwlmei_sap_cmd:       sap_cmd Tx=
-: type 1010 len 8 seq 11
-  kworker/u16:34-34555 [004] 46452.506243: iwlmei_me_msg:        ME message=
-: Tx: type 3 seq 8
-  kworker/u16:34-34555 [004] 46452.559407: iwlmei_sap_cmd:       sap_cmd Tx=
-: type 1001 len 4 seq 12
-  kworker/u16:14-33311 [004] 46452.573077: iwlmei_sap_cmd:       sap_cmd Tx=
-: type 1006 len 0 seq 13
-  kworker/u16:14-33311 [004] 46452.573078: iwlmei_me_msg:        ME message=
-: Tx: type 3 seq 10
-     kworker/4:0-34305 [004] 46452.706737: iwlmei_me_msg:        ME message=
-: Tx: type 3 seq 11
-   kworker/u16:8-34462 [000] 46457.939453: iwlmei_me_msg:        ME message=
-: Tx: type 1 seq 1
-     kworker/4:2-32196 [004] 46457.940910: iwlmei_me_msg:        ME message=
-: Rx: type 2 seq 81
-     kworker/4:2-32196 [004] 46457.940912: iwlmei_sap_cmd:       sap_cmd Tx=
-: type 1013 len 0 seq 1
-     kworker/4:2-32196 [004] 46457.940913: iwlmei_me_msg:        ME message=
-: Tx: type 3 seq 2
-     kworker/4:2-32196 [004] 46457.942056: iwlmei_me_msg:        ME message=
-: Rx: type 3 seq 82
-     kworker/4:2-32196 [004] 46457.942060: iwlmei_sap_cmd:       sap_cmd Rx=
-: type 502 len 4 seq 1
-     kworker/4:2-32196 [004] 46458.042205: iwlmei_me_msg:        ME message=
-: Rx: type 3 seq 83
-     kworker/4:2-32196 [004] 46458.042208: iwlmei_sap_cmd:       sap_cmd Rx=
-: type 500 len 1896 seq 2
-     kworker/4:2-32196 [004] 46458.042209: iwlmei_sap_cmd:       sap_cmd Rx=
-: type 512 len 64 seq 3
-     kworker/4:2-32196 [004] 46458.042214: iwlmei_sap_cmd:       sap_cmd Rx=
-: type 502 len 4 seq 4
-             iwd-35396 [003] 46467.085642: iwlmei_sap_cmd:       sap_cmd Tx=
-: type 1008 len 8 seq 2
-             iwd-35396 [003] 46467.085645: iwlmei_me_msg:        ME message=
-: Tx: type 3 seq 3
-             iwd-35396 [003] 46467.102818: iwlmei_sap_cmd:       sap_cmd Tx=
-: type 1008 len 8 seq 3
-             iwd-35396 [003] 46467.103369: iwlmei_sap_cmd:       sap_cmd Tx=
-: type 1016 len 20 seq 4
-             iwd-35396 [003] 46467.103842: iwlmei_sap_cmd:       sap_cmd Tx=
-: type 1001 len 4 seq 5
-             iwd-35396 [003] 46467.104689: iwlmei_sap_cmd:       sap_cmd Tx=
-: type 1002 len 12 seq 6
+Here is the summary with links:
+  - ar5523: Use kzalloc instead of kmalloc/memset
+    https://git.kernel.org/netdev/net-next/c/e63dd4123507
 
-The dmesg log looked like this (back to -19 in the error):
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-[46452.483343] wlan0: deauthenticating from 4c:60:de:ea:b8:5a by local choi=
-ce (Reason: 3=3DDEAUTH_LEAVING)
-[46452.689465] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1aa-5e70cbb1e865: Co=
-uldn't get ACK from CSME on HOST_GOES_DOWN message
-[46452.689567] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1aa-5e70cbb1e865: fa=
-iled to send the SAP_ME_MSG_CHECK_SHARED_AREA message -19
 
-> I might also need dynamic debgug prints from the mei bus driver but that =
-will be for later.
-> Thanks for reporting and providing the data!
-
-You're welcome! Thanks for looking into it :)
-
--Toke
