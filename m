@@ -2,46 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2B17508CD4
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 18:09:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BC9B508D74
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 18:35:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380380AbiDTQLr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Apr 2022 12:11:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48952 "EHLO
+        id S1380705AbiDTQiE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Apr 2022 12:38:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240259AbiDTQLq (ORCPT
+        with ESMTP id S1380692AbiDTQh7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Apr 2022 12:11:46 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3849326F5
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 09:08:59 -0700 (PDT)
+        Wed, 20 Apr 2022 12:37:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A02140A0E
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 09:35:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9379AB81F91
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 16:08:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7181CC385A1;
-        Wed, 20 Apr 2022 16:08:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8304261A0D
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 16:35:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE845C385A4;
+        Wed, 20 Apr 2022 16:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650470937;
-        bh=CxHiVml8e9Zc1jlwhEl3vaf6HMvRlYOE8fgYfvNaO7w=;
+        s=k20201202; t=1650472510;
+        bh=9ejcmMDe5SdSPg8+S6T6l9v/lhyBsRC+v5fAmICWhf4=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=cvcZsUm8S6xtUbKuHoVCSZaaKYngfUDSFGNtrU5N6/phV8cmM02zfllcC+kdvbKyh
-         TxKqJoIwc8ROypPM7tEsq53jMBNwET2YRZcR6S19nDSrXuX2qutg716PldDNdSCdo2
-         WquB13OIYpgGt+M8K1wK+INL8+vpPio1PjviM6Uxmn1u/aoLwXveVe4oc6CpvQoB2w
-         /D9SMqocukbRIdeTDOcTec2UD6DBangy8WVL/N26E5n5lzTQFF9cshOW4Xswq5Wokv
-         iL2AX2DvuqwXKck7Rh1QRP7smIi0Eqb3vgqNbfT0L5C7mk+LXvL1UPTwFggzXuW1Od
-         7Xiq61o7+a8Ig==
+        b=G0esuMOiYcfLJhQ/UB7sCdfiBh/6Ap5hQ7GQs+Sa7Ndwab7+NMhzkUJbkzD8qA4dQ
+         Ei7n45c8TeCu7DRwhkC+GV4m2QDmScPeAHGgB5izYpK7vz3LsHUIEkq0W/8P/1TqGQ
+         kOwB4zon3v9gJEr48RYlDA3a/k8MBoPEg6mf96ucWjgXY5ux20d88+odxoT8m9Wwqx
+         Mbi5a0tU/T9Aw7HXkCBhYTUSDDFFf8wD17N5JWSWLP4CcvickD9JhswCWx7MCuRZ7m
+         9FBrNfNZQVUw89rv3nwfh2KUOAgK6RuRWRIPFzNWmg09THzSNEcfyQ138N3G2vEQMG
+         URbLo5IqwpstQ==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     <quic_haric@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] ath11k: disable spectral scan during spectral deinit
-References: <1649396345-349-1-git-send-email-quic_haric@quicinc.com>
-        <87fsmooz83.fsf@kernel.org>
-Date:   Wed, 20 Apr 2022 19:08:51 +0300
-In-Reply-To: <87fsmooz83.fsf@kernel.org> (Kalle Valo's message of "Fri, 08 Apr
-        2022 09:39:40 +0300")
-Message-ID: <87levzohyk.fsf@kernel.org>
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     Baochen Qiang <quic_bqiang@quicinc.com>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v4 1/2] ath11k: add support for extended wmi service bit
+References: <20220401120948.1312956-1-quic_bqiang@quicinc.com>
+        <20220401120948.1312956-2-quic_bqiang@quicinc.com>
+        <4f421eab-1ace-51c6-e677-42b32b6afc56@quicinc.com>
+Date:   Wed, 20 Apr 2022 19:35:06 +0300
+In-Reply-To: <4f421eab-1ace-51c6-e677-42b32b6afc56@quicinc.com> (Jeff
+        Johnson's message of "Fri, 1 Apr 2022 11:07:51 -0700")
+Message-ID: <87h76nogqt.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -54,66 +56,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> <quic_haric@quicinc.com> writes:
+> On 4/1/2022 5:09 AM, Baochen Qiang wrote:
+>> From: Wen Gong <quic_wgong@quicinc.com>
+>>
+>> Currently the wmi service bis is report from firmware, it is divided
 >
->> From: Hari Chandrakanthan <quic_haric@quicinc.com>
->>
->> When ath11k modules are removed using rmmod with spectral scan enabled,
->> crash is observed. Different crash trace is observed for each crash.
->>
->> Send spectral scan disable WMI command to firmware before cleaning
->> the spectral dbring in the spectral_deinit API to avoid this crash.
->>
->> call trace from one of the crash observed:
->> [ 1252.880802] Unable to handle kernel NULL pointer dereference at
->> virtual address 00000008
->> [ 1252.882722] pgd = 0f42e886
->> [ 1252.890955] [00000008] *pgd=00000000
->> [ 1252.893478] Internal error: Oops: 5 [#1] PREEMPT SMP ARM
->> [ 1253.093035] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.4.89 #0
->> [ 1253.115261] Hardware name: Generic DT based system
->> [ 1253.121149] PC is at ath11k_spectral_process_data+0x434/0x574 [ath11k]
->> [ 1253.125940] LR is at 0x88e31017
->> [ 1253.132448] pc : [<7f9387b8>]    lr : [<88e31017>]    psr: a0000193
->> [ 1253.135488] sp : 80d01bc8  ip : 00000001  fp : 970e0000
->> [ 1253.141737] r10: 88e31000  r9 : 970ec000  r8 : 00000080
->> [ 1253.146946] r7 : 94734040  r6 : a0000113  r5 : 00000057  r4 : 00000000
->> [ 1253.152159] r3 : e18cb694  r2 : 00000217  r1 : 1df1f000  r0 : 00000001
->> [ 1253.158755] Flags: NzCv  IRQs off  FIQs on  Mode SVC_32  ISA ARM  Segment user
->> [ 1253.165266] Control: 10c0383d  Table: 5e71006a  DAC: 00000055
->> [ 1253.172472] Process swapper/0 (pid: 0, stack limit = 0x60870141)
->> [ 1253.458055] [<7f9387b8>] (ath11k_spectral_process_data [ath11k])
->> from [<7f917fdc>] (ath11k_dbring_buffer_release_event+0x214/0x2e4
->> [ath11k])
->> [ 1253.466139] [<7f917fdc>] (ath11k_dbring_buffer_release_event
->> [ath11k]) from [<7f8ea3c4>] (ath11k_wmi_tlv_op_rx+0x1840/0x29cc
->> [ath11k])
->> [ 1253.478807] [<7f8ea3c4>] (ath11k_wmi_tlv_op_rx [ath11k]) from
->> [<7f8fe868>] (ath11k_htc_rx_completion_handler+0x180/0x4e0 [ath11k])
->> [ 1253.490699] [<7f8fe868>] (ath11k_htc_rx_completion_handler
->> [ath11k]) from [<7f91308c>]
->> (ath11k_ce_per_engine_service+0x2c4/0x3b4 [ath11k])
->> [ 1253.502386] [<7f91308c>] (ath11k_ce_per_engine_service [ath11k])
->> from [<7f9a4198>] (ath11k_pci_ce_tasklet+0x28/0x80 [ath11k_pci])
->> [ 1253.514811] [<7f9a4198>] (ath11k_pci_ce_tasklet [ath11k_pci])
->> from [<8032227c>] (tasklet_action_common.constprop.2+0x64/0xe8)
->> [ 1253.526476] [<8032227c>] (tasklet_action_common.constprop.2) from
->> [<803021e8>] (__do_softirq+0x130/0x2d0)
->> [ 1253.537756] [<803021e8>] (__do_softirq) from [<80322610>] (irq_exit+0xcc/0xe8)
->> [ 1253.547304] [<80322610>] (irq_exit) from [<8036a4a4>]
->> (__handle_domain_irq+0x60/0xb4)
->> [ 1253.554428] [<8036a4a4>] (__handle_domain_irq) from [<805eb348>]
->> (gic_handle_irq+0x4c/0x90)
->> [ 1253.562321] [<805eb348>] (gic_handle_irq) from [<80301a78>] (__irq_svc+0x58/0x8c)
->>
->> Tested on : WLAN.HK.2.6.0.1-00851-QCAHKSWPL_SILICONZ-1
+> "bis" is a typo?
+> Also use of "Currently" here is confusing since it seems you are
+> changing that behavior. But the firmware reporting isn't changing,
+> only the host processing is changing.
 >
-> Tested-on tag is not in correct format, but I can fix that.
+> So perhaps:
+> When the WMI service bits are reported from firmware they are divided
+> into multiple segments, with 128 bits in each segment.
+>
+>> to 128 bits for each segment. The first segment is processed by
+>> ath11k_wmi_service_bitmap_copy(), the second segment is processed by
+>> ath11k_service_available_event() with WMI_TAG_SERVICE_AVAILABLE_EVENT,
+>> When the service bit exceed 256 bits, then firmware report it by tag
+>> WMI_TAG_ARRAY_UINT32 in WMI_SERVICE_AVAILABLE_EVENTID.
+>>
+>> ath11k does not process the third segment, this is to extend the wmi
+>
+> Here is where you can use "currently". And this is also a good place
+> to say why the change is needed since that is also missing from the
+> commit text. So consider:
+> Currently ath11k does not process the third segment. Upcoming features
+> need to know if firmware support is available for the features, so add
+> processing of the third segment.
+>
+> Also IMO the implementation details below do not need to be in the
+> commit text.
+>
+> I suspect Kalle can just apply these comments to his pending branch.
 
-Actuall I cannot as I don't know on what hardware you tested this. So
-what hardware did you use?
+Did that now, please check:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=d98a4c9bd0b32824ad9ee2d24ecabb345edfaafe
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
