@@ -2,118 +2,217 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6661F508500
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 11:31:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AED4B508534
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 11:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357745AbiDTJeS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Apr 2022 05:34:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60284 "EHLO
+        id S1377331AbiDTJwI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Apr 2022 05:52:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353295AbiDTJeQ (ORCPT
+        with ESMTP id S1350547AbiDTJwH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Apr 2022 05:34:16 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22E59DFE8
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 02:31:29 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23K9VGOz8027337, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23K9VGOz8027337
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 20 Apr 2022 17:31:16 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Wed, 20 Apr 2022 17:31:16 +0800
-Received: from localhost (172.16.16.159) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Wed, 20 Apr
- 2022 17:31:15 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>
-Subject: [PATCH 2/2] rtw88: pci: 8821c: Disable 21ce completion timeout
-Date:   Wed, 20 Apr 2022 17:30:58 +0800
-Message-ID: <20220420093058.31646-2-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220420093058.31646-1-pkshih@realtek.com>
-References: <20220420093058.31646-1-pkshih@realtek.com>
+        Wed, 20 Apr 2022 05:52:07 -0400
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A98E38781
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 02:49:20 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1650448159; bh=uWh15eKgUDnDFx4SW9NadA0nfRIrzB86LhvimqtPQWo=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=JfMtHmG06UVG6rXXSstXKFy0WWkbJzPopBju+EfIXe31B877IvMJcHrHaMvK4Rd15
+         5sNHdu88kURykUOoLioIBXE000FJ95w7XiZ7T9sP0RzVCZHP7nR9yJDd+UA8XY1PSI
+         RPx++6ms6nsKzg7xsCYAG0E391uU3+Q1MNuCA046Xwmus8g/SVIgrj4IE+8K3B79kC
+         gXXwoYz6nWMRIxVA/VcbRdfYlJydBtBwl/kQJGjKasSzicRmWfHd1xpHg8zJ5li1/9
+         FtoyXjFi67ckhaIY3416uWbVj2Tyi99RzzzEwHTLAw/lqbh6eUCtMByu1cT1fKsFul
+         nM4Pz9edf54cA==
+To:     "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
+        "Coelho, Luciano" <luciano.coelho@intel.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Greenman, Gregory" <gregory.greenman@intel.com>,
+        "Stern, Avraham" <avraham.stern@intel.com>
+Subject: Re: iwlwifi devices disappear after suspend on kernel 5.17
+In-Reply-To: <a8b437f1fc466096f119298ae1562c2aa224ad95.camel@intel.com>
+References: <87czhe39p6.fsf@toke.dk>
+ <1f6188ee5c88ac78a4aadcf169b4b1cc857a84d8.camel@intel.com>
+ <d3158dfeb64276f5a9259b17342ff85dc6a4b79c.camel@intel.com>
+ <be3b424aec839d899e4a8cd659ebb53a85d67339.camel@intel.com>
+ <87mtghs3y2.fsf@toke.dk>
+ <e0872b6f468bfda08717214044b64187f71b4e18.camel@intel.com>
+ <94b98b712b86690dd5ae19df0cc608b8193be1f3.camel@intel.com>
+ <877d7kn62t.fsf@toke.dk>
+ <a8b437f1fc466096f119298ae1562c2aa224ad95.camel@intel.com>
+Date:   Wed, 20 Apr 2022 11:49:17 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87o80whyoy.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.16.159]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/20/2022 09:17:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvMjAgpFekyCAwNzo1MDowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
+"Grumbach, Emmanuel" <emmanuel.grumbach@intel.com> writes:
 
-Disable this capability to avoid timeout errors on certain platforms.
-Without it, pci bus might stuck and leads to disconnection.
+> On Tue, 2022-04-19 at 22:58 +0200, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com> writes:
+>>=20
+>> > On Tue, 2022-04-19 at 20:46 +0300, Grumbach, Emmanuel wrote:
+>> > > On Tue, 2022-04-19 at 13:33 +0200, Toke H=C3=B8iland-J=C3=B8rgensen =
+wrote:
+>> > > > "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com> writes:
+>> > > >=20
+>> > > > > On Tue, 2022-04-19 at 09:41 +0300, Grumbach, Emmanuel wrote:
+>> > > > > > Hi Toke,
+>> > > > > >=20
+>> > > > > > On Tue, 2022-04-19 at 06:24 +0000, Coelho, Luciano wrote:
+>> > > > > > > On Mon, 2022-04-18 at 13:36 +0200, Toke H=C3=B8iland-J=C3=B8=
+rgensen wrote:
+>> > > > > > > > Hi Luca
+>> > > > > > >=20
+>> > > > > > > Hi Toke,
+>> > > > > > >=20
+>> > > > > > > > I've started seeing issues with my iwlwifi interface going=
+ away after
+>> > > > > > > > suspend. I get errors like these in dmesg:
+>> > > > > > > >=20
+>> > > > > > > > [104393.142264] wlan0: deauthenticating from 4c:60:de:ea:b=
+8:58 by local choice
+>> > > > > > > > (Reason:
+>> > > > > > > > 3=3DDEAUTH_LEAVING)
+>> > > > > > > > [104393.347775] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1a=
+a-5e70cbb1e865: Couldn't
+>> > > > > > > > get
+>> > > > > > > > ACK
+>> > > > > > > > from
+>> > > > > > > > CSME on HOST_GOES_DOWN message
+>> > > > > > > > [104393.347876] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1a=
+a-5e70cbb1e865: failed to
+>> > > > > > > > send
+>> > > > > > > > the
+>> > > > > > > > SAP_ME_MSG_CHECK_SHARED_AREA message -19
+>> > > > > > > >=20
+>> > > > > > > > And when the host comes back up, there is no connectivity.=
+ Restarting
+>> > > > > > > > iwd fixes the problem.
+>> > > > > > > >=20
+>> > > > > > > > This is on a 5.17.3 kernel (Arch Linux distribution kernel=
+), and lspci
+>> > > > > > > > says the WiFi device is an "Intel Corporation Wi-Fi 6 AX20=
+1".
+>> > > > > > > >=20
+>> > > > > > > > Any ideas? :)
+>> > > > > > >=20
+>> > > > > > > This seems to be related to iwlmei, so I added Emmanuel to t=
+he thread.
+>> > > > > > >=20
+>> > > > > >=20
+>> > > > > > Can we have the full dmesg output?
+>> > > > > > What NIC / platform do you have?
+>> > > > > > Do you have AMT configured in the BIOS?
+>> > > > > > Did you enable wireless operation in AMT?
+>> > > > >=20
+>> > > > > Ah - this is AX201, ok, but I still need the platform and theful=
+l dmesg :-)
+>> > > >=20
+>> > > > It's a Lenovo ThinkPad X1 Carbon Gen 9, model 20XXS3HC26; AMT is s=
+et to
+>> > > > "Disabled" in the BIOS. I rebooted and did a suspend/wake cycle af=
+ter
+>> > > > connecting to the WiFi network, which produced the dmesg below.
+>> > >=20
+>> > > Thanks.
+>> > > This is a Skylake platform and we didn't have a handshake with CSME =
+which is not enabled. We
+>> > > are
+>> > > missing a check before we shut down iwlmei.
+>> >=20
+>> > Hm... no, that seems to be 11th generation... so TigerLake?
+>> > But still, the fix below seems relevant.
+>>=20
+>> Hmm, tried the patch and the message is still there (as is the bug)...
+>> The error code is different now, though:
+>>=20
+>> [=C2=A0=C2=A0 65.773731] wlan0: deauthenticating from 4c:60:de:ea:b8:5a =
+by local choice (Reason:
+>> 3=3DDEAUTH_LEAVING)
+>> [=C2=A0=C2=A0 65.973767] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1aa-5e7=
+0cbb1e865: Couldn't get ACK from
+>> CSME on HOST_GOES_DOWN message
+>> [=C2=A0=C2=A0 65.973845] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1aa-5e7=
+0cbb1e865: failed to send the
+>> SAP_ME_MSG_CHECK_SHARED_AREA message -14
+>>=20
+>
+> So you do get a SAP connection. Weird.
+> Checking with the CSME guys.
+> Can you get dynamic debug prints for iwlmei module?
+> Best would be tracing with -e iwlmei_sap_cmd
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/pci.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Sure! Recorded these while doing a suspend-restore, then restarting iwd:
 
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 33042b63a151e..3ef0de70af328 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1482,12 +1482,15 @@ static void rtw_pci_interface_cfg(struct rtw_dev *rtwdev)
- 
- static void rtw_pci_phy_cfg(struct rtw_dev *rtwdev)
- {
-+	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
- 	struct rtw_chip_info *chip = rtwdev->chip;
-+	struct pci_dev *pdev = rtwpci->pdev;
- 	const struct rtw_intf_phy_para *para;
- 	u16 cut;
- 	u16 value;
- 	u16 offset;
- 	int i;
-+	int ret;
- 
- 	cut = BIT(0) << rtwdev->hal.cut_version;
- 
-@@ -1520,6 +1523,15 @@ static void rtw_pci_phy_cfg(struct rtw_dev *rtwdev)
- 	}
- 
- 	rtw_pci_link_cfg(rtwdev);
-+
-+	/* Disable 8821ce completion timeout by default */
-+	if (chip->id == RTW_CHIP_TYPE_8821C) {
-+		ret = pcie_capability_set_word(pdev, PCI_EXP_DEVCTL2,
-+					       PCI_EXP_DEVCTL2_COMP_TMOUT_DIS);
-+		if (ret)
-+			rtw_err(rtwdev, "failed to set PCI cap, ret = %d\n",
-+				ret);
-+	}
- }
- 
- static int __maybe_unused rtw_pci_suspend(struct device *dev)
--- 
-2.25.1
+  kworker/u16:34-34555 [004] 46452.506238: iwlmei_sap_cmd:       sap_cmd Tx=
+: type 1010 len 8 seq 11
+  kworker/u16:34-34555 [004] 46452.506243: iwlmei_me_msg:        ME message=
+: Tx: type 3 seq 8
+  kworker/u16:34-34555 [004] 46452.559407: iwlmei_sap_cmd:       sap_cmd Tx=
+: type 1001 len 4 seq 12
+  kworker/u16:14-33311 [004] 46452.573077: iwlmei_sap_cmd:       sap_cmd Tx=
+: type 1006 len 0 seq 13
+  kworker/u16:14-33311 [004] 46452.573078: iwlmei_me_msg:        ME message=
+: Tx: type 3 seq 10
+     kworker/4:0-34305 [004] 46452.706737: iwlmei_me_msg:        ME message=
+: Tx: type 3 seq 11
+   kworker/u16:8-34462 [000] 46457.939453: iwlmei_me_msg:        ME message=
+: Tx: type 1 seq 1
+     kworker/4:2-32196 [004] 46457.940910: iwlmei_me_msg:        ME message=
+: Rx: type 2 seq 81
+     kworker/4:2-32196 [004] 46457.940912: iwlmei_sap_cmd:       sap_cmd Tx=
+: type 1013 len 0 seq 1
+     kworker/4:2-32196 [004] 46457.940913: iwlmei_me_msg:        ME message=
+: Tx: type 3 seq 2
+     kworker/4:2-32196 [004] 46457.942056: iwlmei_me_msg:        ME message=
+: Rx: type 3 seq 82
+     kworker/4:2-32196 [004] 46457.942060: iwlmei_sap_cmd:       sap_cmd Rx=
+: type 502 len 4 seq 1
+     kworker/4:2-32196 [004] 46458.042205: iwlmei_me_msg:        ME message=
+: Rx: type 3 seq 83
+     kworker/4:2-32196 [004] 46458.042208: iwlmei_sap_cmd:       sap_cmd Rx=
+: type 500 len 1896 seq 2
+     kworker/4:2-32196 [004] 46458.042209: iwlmei_sap_cmd:       sap_cmd Rx=
+: type 512 len 64 seq 3
+     kworker/4:2-32196 [004] 46458.042214: iwlmei_sap_cmd:       sap_cmd Rx=
+: type 502 len 4 seq 4
+             iwd-35396 [003] 46467.085642: iwlmei_sap_cmd:       sap_cmd Tx=
+: type 1008 len 8 seq 2
+             iwd-35396 [003] 46467.085645: iwlmei_me_msg:        ME message=
+: Tx: type 3 seq 3
+             iwd-35396 [003] 46467.102818: iwlmei_sap_cmd:       sap_cmd Tx=
+: type 1008 len 8 seq 3
+             iwd-35396 [003] 46467.103369: iwlmei_sap_cmd:       sap_cmd Tx=
+: type 1016 len 20 seq 4
+             iwd-35396 [003] 46467.103842: iwlmei_sap_cmd:       sap_cmd Tx=
+: type 1001 len 4 seq 5
+             iwd-35396 [003] 46467.104689: iwlmei_sap_cmd:       sap_cmd Tx=
+: type 1002 len 12 seq 6
 
+The dmesg log looked like this (back to -19 in the error):
+
+[46452.483343] wlan0: deauthenticating from 4c:60:de:ea:b8:5a by local choi=
+ce (Reason: 3=3DDEAUTH_LEAVING)
+[46452.689465] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1aa-5e70cbb1e865: Co=
+uldn't get ACK from CSME on HOST_GOES_DOWN message
+[46452.689567] iwlmei 0000:00:16.0-13280904-7792-4fcb-a1aa-5e70cbb1e865: fa=
+iled to send the SAP_ME_MSG_CHECK_SHARED_AREA message -19
+
+> I might also need dynamic debgug prints from the mei bus driver but that =
+will be for later.
+> Thanks for reporting and providing the data!
+
+You're welcome! Thanks for looking into it :)
+
+-Toke
