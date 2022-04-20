@@ -2,62 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1A98508CA8
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 17:59:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2B17508CD4
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 18:09:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241780AbiDTQCP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Apr 2022 12:02:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39330 "EHLO
+        id S1380380AbiDTQLr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Apr 2022 12:11:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232100AbiDTQCO (ORCPT
+        with ESMTP id S240259AbiDTQLq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Apr 2022 12:02:14 -0400
+        Wed, 20 Apr 2022 12:11:46 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE0440926
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 08:59:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3849326F5
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 09:08:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 18366B81FC3
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 15:59:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD00C385A4
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 15:59:24 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9379AB81F91
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 16:08:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7181CC385A1;
+        Wed, 20 Apr 2022 16:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650470364;
-        bh=jBfkbPt+WqgrPbEPmDx39QoUW/YAD8qvmYlg9t4Mkzc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mBQ78bcB6jv/eAbe97JJ8+XTsUUv+Fv5eapfmKoPLosoW1/bBsGuUTm+jOMTjqO3Q
-         w+7eagVbzzcLB019NsyReCqk3xJTYToZAmHOPSRAHZYwl42QpuisUDVqf6sDZHmV7k
-         XGU7KbGQycQ64H92sJMIxZvR6eWjeSsOyIFFGmHOe4ob0U1yRF9hU/y0QMDBWa3EuV
-         Jmw38jHt7/c4N6rooAP9Lf4Wn7Qos7KWrEiTrRGPlFaL9/a/XSqYT+ZTc403mzWwN/
-         rA3YkxV7gMLeeI/dtXGw4wD4HjhBPcmD+DGJaczdqjoEk2laSBvuhI8NeuvjEMYP0r
-         qubCCfPI2bvnA==
-Received: by mail-pf1-f169.google.com with SMTP id b15so2325164pfm.5
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 08:59:24 -0700 (PDT)
-X-Gm-Message-State: AOAM530jr0QXBO5gD31/nHq804x9CyJakuRQ4ejabtTb3jqrVwwHTy4Q
-        oOMkQgGidRhp13BPg7mU3DAn20hjogPevUo0Z08=
-X-Google-Smtp-Source: ABdhPJwonKJxRDyNfYcRX41UD6pJGFn6O6+MW6Tc4OsxbMvkwf4L2igEDcKtGR2bmUF/TGdgM5vT2NCjIxr35hYd7mU=
-X-Received: by 2002:a05:6a00:181b:b0:50a:46c6:aa74 with SMTP id
- y27-20020a056a00181b00b0050a46c6aa74mr23988768pfa.15.1650470364221; Wed, 20
- Apr 2022 08:59:24 -0700 (PDT)
+        s=k20201202; t=1650470937;
+        bh=CxHiVml8e9Zc1jlwhEl3vaf6HMvRlYOE8fgYfvNaO7w=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=cvcZsUm8S6xtUbKuHoVCSZaaKYngfUDSFGNtrU5N6/phV8cmM02zfllcC+kdvbKyh
+         TxKqJoIwc8ROypPM7tEsq53jMBNwET2YRZcR6S19nDSrXuX2qutg716PldDNdSCdo2
+         WquB13OIYpgGt+M8K1wK+INL8+vpPio1PjviM6Uxmn1u/aoLwXveVe4oc6CpvQoB2w
+         /D9SMqocukbRIdeTDOcTec2UD6DBangy8WVL/N26E5n5lzTQFF9cshOW4Xswq5Wokv
+         iL2AX2DvuqwXKck7Rh1QRP7smIi0Eqb3vgqNbfT0L5C7mk+LXvL1UPTwFggzXuW1Od
+         7Xiq61o7+a8Ig==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     <quic_haric@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] ath11k: disable spectral scan during spectral deinit
+References: <1649396345-349-1-git-send-email-quic_haric@quicinc.com>
+        <87fsmooz83.fsf@kernel.org>
+Date:   Wed, 20 Apr 2022 19:08:51 +0300
+In-Reply-To: <87fsmooz83.fsf@kernel.org> (Kalle Valo's message of "Fri, 08 Apr
+        2022 09:39:40 +0300")
+Message-ID: <87levzohyk.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <20220420090433.20003-1-bo.jiao@mediatek.com>
-In-Reply-To: <20220420090433.20003-1-bo.jiao@mediatek.com>
-From:   Ryder Lee <ryder.lee@kernel.org>
-Date:   Wed, 20 Apr 2022 08:59:12 -0700
-X-Gmail-Original-Message-ID: <CA+SzRW5ZU+riTg3939O10+8Xtoms-i_oGRMFTF_8WBtawV0H_g@mail.gmail.com>
-Message-ID: <CA+SzRW5ZU+riTg3939O10+8Xtoms-i_oGRMFTF_8WBtawV0H_g@mail.gmail.com>
-Subject: Re: [PATCH] mt76: mt7915: dump SER stats through debugfs
-To:     Bo Jiao <bo.jiao@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        "lian . chen" <lian.chen@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -67,101 +54,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Apr 20, 2022 at 2:05 AM Bo Jiao <bo.jiao@mediatek.com> wrote:
->
-> From: Ryder Lee <ryder.lee@mediatek.com>
->
-> Grab status of system recovery from firmware.
->
-> Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> ---
->  .../wireless/mediatek/mt76/mt7915/debugfs.c   | 48 +++++++++++++++++--
->  .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  5 +-
->  .../net/wireless/mediatek/mt76/mt7915/mmio.c  |  3 ++
->  .../net/wireless/mediatek/mt76/mt7915/regs.h  | 18 ++++++-
->  4 files changed, 64 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-> index dece0a6..76a6570 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-> @@ -45,7 +45,7 @@ DEFINE_DEBUGFS_ATTRIBUTE(fops_implicit_txbf, mt7915_implicit_txbf_get,
->                          mt7915_implicit_txbf_set, "%lld\n");
->
->  /* test knob of system layer 1/2 error recovery */
-> -static int mt7915_ser_trigger_set(void *data, u64 val)
-> +static int mt7915_fw_ser_set(void *data, u64 val)
->  {
->         enum {
->                 SER_SET_RECOVER_L1 = 1,
-> @@ -71,8 +71,47 @@ static int mt7915_ser_trigger_set(void *data, u64 val)
->         return ret;
->  }
->
-> -DEFINE_DEBUGFS_ATTRIBUTE(fops_ser_trigger, NULL,
-> -                        mt7915_ser_trigger_set, "%lld\n");
-> +DEFINE_DEBUGFS_ATTRIBUTE(fops_fw_ser, NULL,
-> +                        mt7915_fw_ser_set, "%lld\n");
-> +
-> +static int
-> +mt7915_fw_ser_stats_show(struct seq_file *s, void *data)
-> +{
-> +       struct mt7915_dev *dev = s->private;
-> +       int ret;
-> +
-> +       /* grab firmware SER stats */
-> +       ret = mt7915_mcu_set_ser(dev, 0, 0, 0);
-> +       if (ret)
-> +               return ret;
-> +
-> +       msleep(100);
-> +
-> +       seq_printf(s, "::E  R , SER_STATUS        = 0x%08x\n",
-> +                  MT_SWDEF_SER_STATS);
-> +       seq_printf(s, "::E  R , SER_PLE_ERR       = 0x%08x\n",
-> +                  MT_SWDEF_PLE_STATS);
-> +       seq_printf(s, "::E  R , SER_PLE_ERR_1     = 0x%08x\n",
-> +                  MT_SWDEF_PLE1_STATS);
-> +       seq_printf(s, "::E  R , SER_PLE_ERR_AMSDU = 0x%08x\n",
-> +                  MT_SWDEF_PLE_AMSDU_STATS);
-> +       seq_printf(s, "::E  R , SER_PSE_ERR       = 0x%08x\n",
-> +                  MT_SWDEF_PSE_STATS);
-> +       seq_printf(s, "::E  R , SER_PSE_ERR_1     = 0x%08x\n",
-> +                  MT_SWDEF_PSE1_STATS);
-> +       seq_printf(s, "::E  R , SER_LMAC_WISR6_B0 = 0x%08x\n",
-> +                  MT_SWDEF_LAMC_WISR6_BN0_STATS);
-> +       seq_printf(s, "::E  R , SER_LMAC_WISR6_B1 = 0x%08x\n",
-> +                  MT_SWDEF_LAMC_WISR6_BN1_STATS);
-> +       seq_printf(s, "::E  R , SER_LMAC_WISR7_B0 = 0x%08x\n",
-> +                  MT_SWDEF_LAMC_WISR7_BN0_STATS);
-> +       seq_printf(s, "::E  R , SER_LMAC_WISR7_B1 = 0x%08x\n",
-> +                  MT_SWDEF_LAMC_WISR7_BN1_STATS);
-> +
-> +       return 0;
-> +}
-> +
-> +DEFINE_SHOW_ATTRIBUTE(mt7915_fw_ser_stats);
+Kalle Valo <kvalo@kernel.org> writes:
 
-I'm thinking we can merge this knob fw_ser_stats into fw_ser to make
-it more convenient for use.
+> <quic_haric@quicinc.com> writes:
+>
+>> From: Hari Chandrakanthan <quic_haric@quicinc.com>
+>>
+>> When ath11k modules are removed using rmmod with spectral scan enabled,
+>> crash is observed. Different crash trace is observed for each crash.
+>>
+>> Send spectral scan disable WMI command to firmware before cleaning
+>> the spectral dbring in the spectral_deinit API to avoid this crash.
+>>
+>> call trace from one of the crash observed:
+>> [ 1252.880802] Unable to handle kernel NULL pointer dereference at
+>> virtual address 00000008
+>> [ 1252.882722] pgd = 0f42e886
+>> [ 1252.890955] [00000008] *pgd=00000000
+>> [ 1252.893478] Internal error: Oops: 5 [#1] PREEMPT SMP ARM
+>> [ 1253.093035] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.4.89 #0
+>> [ 1253.115261] Hardware name: Generic DT based system
+>> [ 1253.121149] PC is at ath11k_spectral_process_data+0x434/0x574 [ath11k]
+>> [ 1253.125940] LR is at 0x88e31017
+>> [ 1253.132448] pc : [<7f9387b8>]    lr : [<88e31017>]    psr: a0000193
+>> [ 1253.135488] sp : 80d01bc8  ip : 00000001  fp : 970e0000
+>> [ 1253.141737] r10: 88e31000  r9 : 970ec000  r8 : 00000080
+>> [ 1253.146946] r7 : 94734040  r6 : a0000113  r5 : 00000057  r4 : 00000000
+>> [ 1253.152159] r3 : e18cb694  r2 : 00000217  r1 : 1df1f000  r0 : 00000001
+>> [ 1253.158755] Flags: NzCv  IRQs off  FIQs on  Mode SVC_32  ISA ARM  Segment user
+>> [ 1253.165266] Control: 10c0383d  Table: 5e71006a  DAC: 00000055
+>> [ 1253.172472] Process swapper/0 (pid: 0, stack limit = 0x60870141)
+>> [ 1253.458055] [<7f9387b8>] (ath11k_spectral_process_data [ath11k])
+>> from [<7f917fdc>] (ath11k_dbring_buffer_release_event+0x214/0x2e4
+>> [ath11k])
+>> [ 1253.466139] [<7f917fdc>] (ath11k_dbring_buffer_release_event
+>> [ath11k]) from [<7f8ea3c4>] (ath11k_wmi_tlv_op_rx+0x1840/0x29cc
+>> [ath11k])
+>> [ 1253.478807] [<7f8ea3c4>] (ath11k_wmi_tlv_op_rx [ath11k]) from
+>> [<7f8fe868>] (ath11k_htc_rx_completion_handler+0x180/0x4e0 [ath11k])
+>> [ 1253.490699] [<7f8fe868>] (ath11k_htc_rx_completion_handler
+>> [ath11k]) from [<7f91308c>]
+>> (ath11k_ce_per_engine_service+0x2c4/0x3b4 [ath11k])
+>> [ 1253.502386] [<7f91308c>] (ath11k_ce_per_engine_service [ath11k])
+>> from [<7f9a4198>] (ath11k_pci_ce_tasklet+0x28/0x80 [ath11k_pci])
+>> [ 1253.514811] [<7f9a4198>] (ath11k_pci_ce_tasklet [ath11k_pci])
+>> from [<8032227c>] (tasklet_action_common.constprop.2+0x64/0xe8)
+>> [ 1253.526476] [<8032227c>] (tasklet_action_common.constprop.2) from
+>> [<803021e8>] (__do_softirq+0x130/0x2d0)
+>> [ 1253.537756] [<803021e8>] (__do_softirq) from [<80322610>] (irq_exit+0xcc/0xe8)
+>> [ 1253.547304] [<80322610>] (irq_exit) from [<8036a4a4>]
+>> (__handle_domain_irq+0x60/0xb4)
+>> [ 1253.554428] [<8036a4a4>] (__handle_domain_irq) from [<805eb348>]
+>> (gic_handle_irq+0x4c/0x90)
+>> [ 1253.562321] [<805eb348>] (gic_handle_irq) from [<80301a78>] (__irq_svc+0x58/0x8c)
+>>
+>> Tested on : WLAN.HK.2.6.0.1-00851-QCAHKSWPL_SILICONZ-1
+>
+> Tested-on tag is not in correct format, but I can fix that.
 
->  static int
->  mt7915_radar_trigger(void *data, u64 val)
-> @@ -884,6 +923,8 @@ int mt7915_init_debugfs(struct mt7915_phy *phy)
->         debugfs_create_file("xmit-queues", 0400, dir, phy,
->                             &mt7915_xmit_queues_fops);
->         debugfs_create_file("tx_stats", 0400, dir, phy, &mt7915_tx_stats_fops);
-> +       debugfs_create_file("fw_ser", 0200, dir, dev, &fops_fw_ser);
-> +       debugfs_create_file("fw_ser_stats", 0400, dir, dev, &mt7915_fw_ser_stats_fops);
->         debugfs_create_file("fw_debug_wm", 0600, dir, dev, &fops_fw_debug_wm);
->         debugfs_create_file("fw_debug_wa", 0600, dir, dev, &fops_fw_debug_wa);
->         debugfs_create_file("fw_debug_bin", 0600, dir, dev, &fops_fw_debug_bin);
-> @@ -897,7 +938,6 @@ int mt7915_init_debugfs(struct mt7915_phy *phy)
->                             &mt7915_rate_txpower_fops);
->         debugfs_create_devm_seqfile(dev->mt76.dev, "twt_stats", dir,
->                                     mt7915_twt_stats);
-> -       debugfs_create_file("ser_trigger", 0200, dir, dev, &fops_ser_trigger);
->         if (!dev->dbdc_support || phy->band_idx) {
->                 debugfs_create_u32("dfs_hw_pattern", 0400, dir,
->                                    &dev->hw_pattern);
+Actuall I cannot as I don't know on what hardware you tested this. So
+what hardware did you use?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
