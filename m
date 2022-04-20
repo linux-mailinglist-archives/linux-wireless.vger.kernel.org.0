@@ -2,51 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A39E350878D
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 13:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3233508798
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 14:00:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378358AbiDTMAw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Apr 2022 08:00:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37934 "EHLO
+        id S1359795AbiDTMDY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Apr 2022 08:03:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376472AbiDTMAv (ORCPT
+        with ESMTP id S1343673AbiDTMDW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Apr 2022 08:00:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED6561C90B;
-        Wed, 20 Apr 2022 04:58:05 -0700 (PDT)
+        Wed, 20 Apr 2022 08:03:22 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E974334664
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 05:00:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8616F61956;
-        Wed, 20 Apr 2022 11:58:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F898C385A1;
-        Wed, 20 Apr 2022 11:58:02 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9B142B81D0B
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 12:00:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66390C385A1;
+        Wed, 20 Apr 2022 12:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650455885;
-        bh=jIZaCR72MF416k5GIz4UoDMTlUaPThfpK+9Q+0zcmnA=;
+        s=k20201202; t=1650456034;
+        bh=s4h4iNGNSRMhU8eoKlzQfxtlVjp6pqF5NBiJ2H+kiLc=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=NfDGpu1qdTYrgU1CsS4C493/8J8g7H83U69IwcitBhqJRfSidYmtcLEanfyNq6EbH
-         /5j8jbyJHH8uyMGmM3drZuhFOOARrXoDzSm70oiHYofgNXtYaMg2/VNW2z67PhjB0I
-         L4DUYj6f0hTq6Sfnz8HGZXxpjbXVHN0HJugl5dQz+9BLCt7+wJqfKUSEnpiZDs6jNx
-         3gJe4Xxx/tDHdNnl+aFTdYKgEcKP2jUiI+AZRM/L6gbU9nXlrAYlFH0fGiCbef64I1
-         a1ftlEy/XIt2moCYmXDBBveAANFowT7iLF7M/MrDGdBnNUpN+L6ek8sv+HVoGaPnvt
-         hZN/i+uTYH5bA==
+        b=Teh/2Tvr3OIp3cB16oakEVyv64/IzLvum6oqV0yZAyvRsWx0HXmmgtJNbrwopwWpL
+         qSjdesyGba+FD30dqUN/fhiT45iIiEY5vTVYrdTfxQ8qRjc5zwrx5dtMWjjoHnsBcC
+         PPvJ5UDPs4VYKZC8yVz3pCD61AYvybwTy4dtEJAbChiWVA1nEq3qDX+Pltyzb+Vcou
+         j5HKjoCGKcx+9iFLnx5ldWE+RP2WZ4KHf/3WwnGgAspUFKBK28uiwpv+pgPxSVxZx6
+         NcDnlpdYDQjXUjHM7c/07aNVuiXqjnI8iY7GQ1SqGi6JN+jlSl0c5zySngsvbOoc2N
+         W6XyGKDc2yC9A==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Jaehee Park <jhpark1013@gmail.com>
-Cc:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
-        outreachy@lists.linux.dev, Stefano Brivio <sbrivio@redhat.com>
-Subject: Re: [PATCH] wfx: use container_of() to get vif
-References: <20220418035110.GA937332@jaehee-ThinkPad-X1-Extreme>
-Date:   Wed, 20 Apr 2022 14:57:57 +0300
-In-Reply-To: <20220418035110.GA937332@jaehee-ThinkPad-X1-Extreme> (Jaehee
-        Park's message of "Sun, 17 Apr 2022 23:51:10 -0400")
-Message-ID: <87y200nf0a.fsf@kernel.org>
+To:     Wenli Looi <wlooi@ucalgary.ca>
+Cc:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        linux-wireless@vger.kernel.org, ath9k-devel@qca.qualcomm.com
+Subject: Re: [PATCH 1/9] ath9k: add QCN550x device IDs
+References: <20220418071313.882179-1-wlooi@ucalgary.ca>
+        <20220418071313.882179-2-wlooi@ucalgary.ca>
+Date:   Wed, 20 Apr 2022 15:00:31 +0300
+In-Reply-To: <20220418071313.882179-2-wlooi@ucalgary.ca> (Wenli Looi's message
+        of "Mon, 18 Apr 2022 00:13:05 -0700")
+Message-ID: <87tuaonew0.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -59,30 +55,11 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jaehee Park <jhpark1013@gmail.com> writes:
+Wenli Looi <wlooi@ucalgary.ca> writes:
 
-> Currently, upon virtual interface creation, wfx_add_interface() stores
-> a reference to the corresponding struct ieee80211_vif in private data,
-> for later usage. This is not needed when using the container_of
-> construct. This construct already has all the info it needs to retrieve
-> the reference to the corresponding struct from the offset that is
-> already available, inherent in container_of(), between its type and
-> member inputs (struct ieee80211_vif and drv_priv, respectively).
-> Remove vif (which was previously storing the reference to the struct
-> ieee80211_vif) from the struct wfx_vif, define a function
-> wvif_to_vif(wvif) for container_of(), and replace all wvif->vif with
-> the newly defined container_of construct.
->
-> Signed-off-by: Jaehee Park <jhpark1013@gmail.com>
+> Signed-off-by: Wenli Looi <wlooi@ucalgary.ca>
 
-[...]
-
-> +static inline struct ieee80211_vif *wvif_to_vif(struct wfx_vif *wvif)
-> +{
-> +	return container_of((void *)wvif, struct ieee80211_vif, drv_priv);
-> +}
-
-Why the void pointer cast? Avoid casts as much possible.
+No empty commit logs, please.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
