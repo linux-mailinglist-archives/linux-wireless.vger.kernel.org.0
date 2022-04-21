@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 129F0509F5F
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Apr 2022 14:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70290509F63
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Apr 2022 14:10:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1384208AbiDUMNS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Apr 2022 08:13:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54830 "EHLO
+        id S1384330AbiDUMNW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Apr 2022 08:13:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1383651AbiDUMMl (ORCPT
+        with ESMTP id S1383694AbiDUMMm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Apr 2022 08:12:41 -0400
+        Thu, 21 Apr 2022 08:12:42 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F9442E9E2
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Apr 2022 05:09:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EE5EA8
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Apr 2022 05:09:51 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23LC9hmH6029019, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23LC9jRE2029028, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23LC9hmH6029019
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23LC9jRE2029028
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 21 Apr 2022 20:09:43 +0800
+        Thu, 21 Apr 2022 20:09:45 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 21 Apr 2022 20:09:43 +0800
+ 15.1.2375.24; Thu, 21 Apr 2022 20:09:45 +0800
 Received: from localhost (172.16.16.159) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 21 Apr
- 2022 20:09:43 +0800
+ 2022 20:09:44 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 10/14] rtw89: 8852c: configure default BB TX/RX path
-Date:   Thu, 21 Apr 2022 20:08:59 +0800
-Message-ID: <20220421120903.73715-11-pkshih@realtek.com>
+Subject: [PATCH 11/14] rtw89: 8852c: implement chip_ops related to TX power
+Date:   Thu, 21 Apr 2022 20:09:00 +0800
+Message-ID: <20220421120903.73715-12-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220421120903.73715-1-pkshih@realtek.com>
 References: <20220421120903.73715-1-pkshih@realtek.com>
@@ -67,429 +67,385 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-8852c propose new API to configure BB TX/RX path. Without fix patch, it
-can't transmit any packet.
+Three chip_ops are implemented in this patch. The ::set_txpwr_ctrl and
+::init_txpwr_unit are called when we up interface and then configure TX
+power registers to initial values. The ::set_txpwr_ctrl is to configure
+'txpwr_ref' to make basic output TX power of OFDM and CCK rate to be the
+same. The ::init_txpwr_unit is to initialize TSSI (a method to do TX power
+compensation depends on thermal value) control and bandedge.
+
+The ::set_txpwr is called once switching channel. First, it sets TX power
+for each rate section (e.g. CCK, OFDM), and then sets TX power offset
+between 1SS and 2SS rate. Finally, it sets TX power limit to prevent
+power over regulation.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h     |   9 +
- drivers/net/wireless/realtek/rtw89/phy.c      |   1 +
- drivers/net/wireless/realtek/rtw89/reg.h      |  76 ++++++-
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c | 194 ++++++++++++++++++
- 5 files changed, 279 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 324 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/rtw8852c.h |   1 +
+ 2 files changed, 325 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 9be74d8673cfd..d544cf29e588a 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2104,6 +2104,7 @@ struct rtw89_chip_ops {
- 			   struct rtw89_rx_phy_ppdu *phy_ppdu,
- 			   struct ieee80211_rx_status *status);
- 	void (*bb_ctrl_btc_preagc)(struct rtw89_dev *rtwdev, bool bt_en);
-+	void (*cfg_txrx_path)(struct rtw89_dev *rtwdev);
- 	void (*set_txpwr_ul_tb_offset)(struct rtw89_dev *rtwdev,
- 				       s8 pw_ofst, enum rtw89_mac_idx mac_idx);
- 	int (*pwr_on_func)(struct rtw89_dev *rtwdev);
-@@ -3633,6 +3634,14 @@ static inline void rtw89_chip_bb_ctrl_btc_preagc(struct rtw89_dev *rtwdev,
- 		chip->ops->bb_ctrl_btc_preagc(rtwdev, bt_en);
- }
- 
-+static inline void rtw89_chip_cfg_txrx_path(struct rtw89_dev *rtwdev)
-+{
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+
-+	if (chip->ops->cfg_txrx_path)
-+		chip->ops->cfg_txrx_path(rtwdev);
-+}
-+
- static inline
- void rtw89_chip_cfg_txpwr_ul_tb_offset(struct rtw89_dev *rtwdev,
- 				       struct ieee80211_vif *vif)
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 7d0593d8fafe9..33494e8451cf3 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -3592,6 +3592,7 @@ void rtw89_phy_dm_init(struct rtw89_dev *rtwdev)
- 	rtw89_load_txpwr_table(rtwdev, chip->byr_table);
- 	rtw89_chip_set_txpwr_ctrl(rtwdev);
- 	rtw89_chip_power_trim(rtwdev);
-+	rtw89_chip_cfg_txrx_path(rtwdev);
- }
- 
- void rtw89_phy_set_bss_color(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif)
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 0f08b25817976..6dc11e8e2a839 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -2962,6 +2962,45 @@
- #define R_AX_PWR_MACID_LMT_TABLE0 0xD36C
- #define R_AX_PWR_MACID_LMT_TABLE127 0xD568
- 
-+#define R_AX_PATH_COM0 0xD800
-+#define AX_PATH_COM0_DFVAL 0x00000000
-+#define AX_PATH_COM0_PATHA 0x08888880
-+#define AX_PATH_COM0_PATHB 0x11111100
-+#define AX_PATH_COM0_PATHAB 0x19999980
-+#define R_AX_PATH_COM1 0xD804
-+#define AX_PATH_COM1_DFVAL 0x00000000
-+#define AX_PATH_COM1_PATHA 0x11111111
-+#define AX_PATH_COM1_PATHB 0x22222222
-+#define AX_PATH_COM1_PATHAB 0x33333333
-+#define R_AX_PATH_COM2 0xD808
-+#define AX_PATH_COM2_DFVAL 0x00000000
-+#define AX_PATH_COM2_PATHA 0x01209111
-+#define AX_PATH_COM2_PATHB 0x01209222
-+#define AX_PATH_COM2_PATHAB 0x01209333
-+#define R_AX_PATH_COM3 0xD80C
-+#define AX_PATH_COM3_DFVAL 0x49249249
-+#define R_AX_PATH_COM4 0xD810
-+#define AX_PATH_COM4_DFVAL 0x1C9C9C49
-+#define R_AX_PATH_COM5 0xD814
-+#define AX_PATH_COM5_DFVAL 0x39393939
-+#define R_AX_PATH_COM6 0xD818
-+#define AX_PATH_COM6_DFVAL 0x39393939
-+#define R_AX_PATH_COM7 0xD81C
-+#define AX_PATH_COM7_DFVAL 0x39393939
-+#define AX_PATH_COM7_PATHA 0x39393939
-+#define AX_PATH_COM7_PATHB 0x39383939
-+#define AX_PATH_COM7_PATHAB 0x39393939
-+#define R_AX_PATH_COM8 0xD820
-+#define AX_PATH_COM8_DFVAL 0x00000000
-+#define AX_PATH_COM8_PATHA 0x00003939
-+#define AX_PATH_COM8_PATHB 0x00003938
-+#define AX_PATH_COM8_PATHAB 0x00003939
-+#define R_AX_PATH_COM9 0xD824
-+#define AX_PATH_COM9_DFVAL 0x000007C0
-+#define R_AX_PATH_COM10 0xD828
-+#define AX_PATH_COM10_DFVAL 0xE0000000
-+#define R_AX_PATH_COM11 0xD82C
-+#define AX_PATH_COM11_DFVAL 0x00000000
- #define R_P80_AT_HIGH_FREQ_BB_WRP 0xD848
- #define B_P80_AT_HIGH_FREQ_BB_WRP BIT(28)
- #define R_AX_TSSI_CTRL_HEAD 0xD908
-@@ -3097,6 +3136,9 @@
- #define R_AX_LTE_WDATA 0xDAF4
- #define R_AX_LTE_RDATA 0xDAF8
- 
-+#define R_AX_MACID_ANT_TABLE 0xDC00
-+#define R_AX_MACID_ANT_TABLE_LAST 0xDDFC
-+
- #define CMAC1_START_ADDR 0xE000
- #define CMAC1_END_ADDR 0xFFFF
- #define R_AX_CMAC_REG_END 0xFFFF
-@@ -3360,9 +3402,10 @@
- #define R_PMAC_RXMOD 0x0994
- #define B_PMAC_RXMOD_MSK GENMASK(7, 4)
- #define R_MAC_SEL 0x09A4
--#define B_MAC_SEL_MOD GENMASK(4, 2)
--#define B_MAC_SEL_DPD_EN BIT(10)
-+#define B_MAC_SEL_OFDM_TRI_FILTER BIT(31)
- #define B_MAC_SEL_PWR_EN BIT(16)
-+#define B_MAC_SEL_DPD_EN BIT(10)
-+#define B_MAC_SEL_MOD GENMASK(4, 2)
- #define R_PMAC_TX_CTRL 0x09C0
- #define B_PMAC_TXEN_DIS BIT(0)
- #define R_PMAC_TX_PRD 0x09C4
-@@ -3413,8 +3456,16 @@
- #define B_SNDCCA_A1_EN GENMASK(19, 12)
- #define R_SNDCCA_A2 0x0CA0
- #define B_SNDCCA_A2_VAL GENMASK(19, 12)
-+#define R_RXHT_MCS_LIMIT 0x0D18
-+#define B_RXHT_MCS_LIMIT GENMASK(9, 8)
-+#define R_RXVHT_MCS_LIMIT 0x0D18
-+#define B_RXVHT_MCS_LIMIT GENMASK(22, 21)
- #define R_P0_EN_SOUND_WO_NDP 0x0D7C
- #define B_P0_EN_SOUND_WO_NDP BIT(1)
-+#define R_RXHE 0x0D80
-+#define B_RXHETB_MAX_NSS GENMASK(25, 23)
-+#define B_RXHE_MAX_NSS GENMASK(16, 14)
-+#define B_RXHE_USER_MAX GENMASK(13, 6)
- #define R_SPOOF_ASYNC_RST 0x0D84
- #define B_SPOOF_ASYNC_RST BIT(15)
- #define R_NDP_BRK0 0xDA0
-@@ -3634,6 +3685,8 @@
- #define B_PATH0_P20_FOLLOW_BY_PAGCUGC_EN_MSK BIT(5)
- #define R_PATH0_S20_FOLLOW_BY_PAGCUGC 0x46A4
- #define B_PATH0_S20_FOLLOW_BY_PAGCUGC_EN_MSK BIT(5)
-+#define R_PATH0_G_LNA6_OP1DB_V1 0x4688
-+#define B_PATH0_G_LNA6_OP1DB_V1 GENMASK(31, 24)
- #define R_PATH0_G_TIA0_LNA6_OP1DB_V1 0x4694
- #define B_PATH0_G_TIA0_LNA6_OP1DB_V1 GENMASK(7, 0)
- #define R_PATH0_G_TIA1_LNA6_OP1DB_V1 0x4694
-@@ -3650,6 +3703,9 @@
- #define R_P0_NBIIDX 0x469C
- #define B_P0_NBIIDX_VAL GENMASK(11, 0)
- #define B_P0_NBIIDX_NOTCH_EN BIT(12)
-+#define R_P0_BACKOFF_IBADC_V1 0x469C
-+#define B_P0_BACKOFF_IBADC_V1 GENMASK(31, 26)
-+#define B_P0_NBIIDX_NOTCH_EN_V1 BIT(12)
- #define R_P1_MODE 0x4718
- #define B_P1_MODE_SEL GENMASK(31, 30)
- #define R_PATH1_LNA_INIT 0x473C
-@@ -3668,6 +3724,8 @@
- #define B_PATH1_S20_FOLLOW_BY_PAGCUGC_EN_MSK BIT(5)
- #define R_PATH1_G_TIA0_LNA6_OP1DB_V1 0x4778
- #define B_PATH1_G_TIA0_LNA6_OP1DB_V1 GENMASK(7, 0)
-+#define R_PATH1_G_TIA1_LNA6_OP1DB_V1 0x4778
-+#define B_PATH1_G_TIA1_LNA6_OP1DB_V1 GENMASK(15, 8)
- #define R_PATH1_BAND_SEL_V1 0x4AA4
- #define B_PATH1_BAND_SEL_MSK_V1 BIT(17)
- #define R_PATH1_BT_SHARE_V1 0x4AA4
-@@ -3693,15 +3751,29 @@
- #define B_CHBW_MOD_SBW GENMASK(13, 12)
- #define B_CHBW_MOD_PRICH GENMASK(11, 8)
- #define B_ANT_RX_SEG0 GENMASK(3, 0)
-+#define R_P1_BACKOFF_IBADC_V1 0x49F0
-+#define B_P1_BACKOFF_IBADC_V1 GENMASK(31, 26)
- #define R_BK_FC0_INV_V1 0x4A1C
- #define B_BK_FC0_INV_MSK_V1 GENMASK(18, 0)
- #define R_CCK_FC0_INV_V1 0x4A20
- #define B_CCK_FC0_INV_MSK_V1 GENMASK(18, 0)
-+#define R_PATH0_RXBB_V1 0x4AD4
-+#define B_PATH0_RXBB_MSK_V1 GENMASK(31, 0)
-+#define R_PATH1_RXBB_V1 0x4AE0
-+#define B_PATH1_RXBB_MSK_V1 GENMASK(31, 0)
-+#define R_PATH0_BT_BACKOFF_V1 0x4AE4
-+#define B_PATH0_BT_BACKOFF_V1 GENMASK(23, 0)
-+#define R_PATH1_BT_BACKOFF_V1 0x4AEC
-+#define B_PATH1_BT_BACKOFF_V1 GENMASK(23, 0)
-+#define R_PATH0_FRC_FIR_TYPE_V1 0x4C00
-+#define B_PATH0_FRC_FIR_TYPE_MSK_V1 GENMASK(1, 0)
- #define R_PATH0_5MDET 0x4C4C
- #define B_PATH0_5MDET_EN BIT(12)
- #define B_PATH0_5MDET_SB2 BIT(8)
- #define B_PATH0_5MDET_SB0 BIT(6)
- #define B_PATH0_5MDET_TH GENMASK(5, 0)
-+#define R_PATH1_FRC_FIR_TYPE_V1 0x4CC4
-+#define B_PATH1_FRC_FIR_TYPE_MSK_V1 GENMASK(1, 0)
- #define R_PATH1_5MDET 0x4D10
- #define B_PATH1_5MDET_EN BIT(12)
- #define B_PATH1_5MDET_SB2 BIT(8)
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 5af618709dedd..81bd0c4fe21bc 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2066,6 +2066,7 @@ static const struct rtw89_chip_ops rtw8852a_chip_ops = {
- 	.ctrl_btg		= rtw8852a_ctrl_btg,
- 	.query_ppdu		= rtw8852a_query_ppdu,
- 	.bb_ctrl_btc_preagc	= rtw8852a_bb_ctrl_btc_preagc,
-+	.cfg_txrx_path		= NULL,
- 	.set_txpwr_ul_tb_offset	= rtw8852a_set_txpwr_ul_tb_offset,
- 	.pwr_on_func		= NULL,
- 	.pwr_off_func		= NULL,
 diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 3ee57df0a6396..290c453d8c23a 100644
+index 290c453d8c23a..adcc2b597419d 100644
 --- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
 +++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -1813,6 +1813,199 @@ void rtw8852c_set_txpwr_ul_tb_offset(struct rtw89_dev *rtwdev,
+@@ -1778,6 +1778,32 @@ static void rtw8852c_rfk_channel(struct rtw89_dev *rtwdev)
+ 	rtw89_fw_h2c_rf_ntfy_mcc(rtwdev);
+ }
+ 
++static u32 rtw8852c_bb_cal_txpwr_ref(struct rtw89_dev *rtwdev,
++				     enum rtw89_phy_idx phy_idx, s16 ref)
++{
++	s8 ofst_int = 0;
++	u8 base_cw_0db = 0x27;
++	u16 tssi_16dbm_cw = 0x12c;
++	s16 pwr_s10_3 = 0;
++	s16 rf_pwr_cw = 0;
++	u16 bb_pwr_cw = 0;
++	u32 pwr_cw = 0;
++	u32 tssi_ofst_cw = 0;
++
++	pwr_s10_3 = (ref << 1) + (s16)(ofst_int) + (s16)(base_cw_0db << 3);
++	bb_pwr_cw = FIELD_GET(GENMASK(2, 0), pwr_s10_3);
++	rf_pwr_cw = FIELD_GET(GENMASK(8, 3), pwr_s10_3);
++	rf_pwr_cw = clamp_t(s16, rf_pwr_cw, 15, 63);
++	pwr_cw = (rf_pwr_cw << 3) | bb_pwr_cw;
++
++	tssi_ofst_cw = (u32)((s16)tssi_16dbm_cw + (ref << 1) - (16 << 3));
++	rtw89_debug(rtwdev, RTW89_DBG_TXPWR,
++		    "[TXPWR] tssi_ofst_cw=%d rf_cw=0x%x bb_cw=0x%x\n",
++		    tssi_ofst_cw, rf_pwr_cw, bb_pwr_cw);
++
++	return (tssi_ofst_cw << 18) | (pwr_cw << 9) | (ref & GENMASK(8, 0));
++}
++
+ static
+ void rtw8852c_set_txpwr_ul_tb_offset(struct rtw89_dev *rtwdev,
+ 				     s8 pw_ofst, enum rtw89_mac_idx mac_idx)
+@@ -1813,6 +1839,301 @@ void rtw8852c_set_txpwr_ul_tb_offset(struct rtw89_dev *rtwdev,
  	}
  }
  
-+static void rtw8852c_bb_cfg_rx_path(struct rtw89_dev *rtwdev, u8 rx_path)
++static void rtw8852c_set_txpwr_ref(struct rtw89_dev *rtwdev,
++				   enum rtw89_phy_idx phy_idx)
 +{
-+	struct rtw89_hal *hal = &rtwdev->hal;
-+	u32 rst_mask0 = B_P0_TXPW_RSTB_MANON | B_P0_TXPW_RSTB_TSSI;
-+	u32 rst_mask1 = B_P1_TXPW_RSTB_MANON | B_P1_TXPW_RSTB_TSSI;
++	static const u32 addr[RF_PATH_NUM_8852C] = {0x5800, 0x7800};
++	const u32 mask = 0x7FFFFFF;
++	const u8 ofst_ofdm = 0x4;
++	const u8 ofst_cck = 0x8;
++	s16 ref_ofdm = 0;
++	s16 ref_cck = 0;
++	u32 val;
++	u8 i;
 +
-+	if (rtwdev->dbcc_en) {
-+		rtw89_phy_write32_mask(rtwdev, R_CHBW_MOD, B_ANT_RX_SEG0, 1);
-+		rtw89_phy_write32_idx(rtwdev, R_CHBW_MOD, B_ANT_RX_SEG0, 2,
-+				      RTW89_PHY_1);
++	rtw89_debug(rtwdev, RTW89_DBG_TXPWR, "[TXPWR] set txpwr reference\n");
 +
-+		rtw89_phy_write32_mask(rtwdev, R_FC0_BW, B_ANT_RX_1RCCA_SEG0,
-+				       1);
-+		rtw89_phy_write32_mask(rtwdev, R_FC0_BW, B_ANT_RX_1RCCA_SEG1,
-+				       1);
-+		rtw89_phy_write32_idx(rtwdev, R_FC0_BW, B_ANT_RX_1RCCA_SEG0, 2,
-+				      RTW89_PHY_1);
-+		rtw89_phy_write32_idx(rtwdev, R_FC0_BW, B_ANT_RX_1RCCA_SEG1, 2,
-+				      RTW89_PHY_1);
++	rtw89_mac_txpwr_write32_mask(rtwdev, phy_idx, R_AX_PWR_RATE_CTRL,
++				     GENMASK(27, 10), 0x0);
 +
-+		rtw89_phy_write32_mask(rtwdev, R_RXHT_MCS_LIMIT,
-+				       B_RXHT_MCS_LIMIT, 0);
-+		rtw89_phy_write32_mask(rtwdev, R_RXVHT_MCS_LIMIT,
-+				       B_RXVHT_MCS_LIMIT, 0);
-+		rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHE_USER_MAX, 8);
-+		rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHE_MAX_NSS, 0);
-+		rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHETB_MAX_NSS, 0);
++	rtw89_debug(rtwdev, RTW89_DBG_TXPWR, "[TXPWR] set bb ofdm txpwr ref\n");
++	val = rtw8852c_bb_cal_txpwr_ref(rtwdev, phy_idx, ref_ofdm);
 +
-+		rtw89_phy_write32_idx(rtwdev, R_RXHT_MCS_LIMIT,
-+				      B_RXHT_MCS_LIMIT, 0, RTW89_PHY_1);
-+		rtw89_phy_write32_idx(rtwdev, R_RXVHT_MCS_LIMIT,
-+				      B_RXVHT_MCS_LIMIT, 0, RTW89_PHY_1);
-+		rtw89_phy_write32_idx(rtwdev, R_RXHE, B_RXHE_USER_MAX, 1,
-+				      RTW89_PHY_1);
-+		rtw89_phy_write32_idx(rtwdev, R_RXHE, B_RXHE_MAX_NSS, 0,
-+				      RTW89_PHY_1);
-+		rtw89_phy_write32_idx(rtwdev, R_RXHE, B_RXHETB_MAX_NSS, 0,
-+				      RTW89_PHY_1);
-+		rtw89_phy_write32_mask(rtwdev, R_P0_TXPW_RSTB, rst_mask0, 1);
-+		rtw89_phy_write32_mask(rtwdev, R_P0_TXPW_RSTB, rst_mask0, 3);
-+		rtw89_phy_write32_mask(rtwdev, R_P1_TXPW_RSTB, rst_mask1, 1);
-+		rtw89_phy_write32_mask(rtwdev, R_P1_TXPW_RSTB, rst_mask1, 3);
-+	} else {
-+		if (rx_path == RF_PATH_A) {
-+			rtw89_phy_write32_mask(rtwdev, R_CHBW_MOD,
-+					       B_ANT_RX_SEG0, 1);
-+			rtw89_phy_write32_mask(rtwdev, R_FC0_BW,
-+					       B_ANT_RX_1RCCA_SEG0, 1);
-+			rtw89_phy_write32_mask(rtwdev, R_FC0_BW,
-+					       B_ANT_RX_1RCCA_SEG1, 1);
-+			rtw89_phy_write32_mask(rtwdev, R_RXHT_MCS_LIMIT,
-+					       B_RXHT_MCS_LIMIT, 0);
-+			rtw89_phy_write32_mask(rtwdev, R_RXVHT_MCS_LIMIT,
-+					       B_RXVHT_MCS_LIMIT, 0);
-+			rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHE_MAX_NSS,
-+					       0);
-+			rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHETB_MAX_NSS,
-+					       0);
-+			rtw89_phy_write32_mask(rtwdev, R_P0_TXPW_RSTB,
-+					       rst_mask0, 1);
-+			rtw89_phy_write32_mask(rtwdev, R_P0_TXPW_RSTB,
-+					       rst_mask0, 3);
-+		} else if (rx_path == RF_PATH_B) {
-+			rtw89_phy_write32_mask(rtwdev, R_CHBW_MOD,
-+					       B_ANT_RX_SEG0, 2);
-+			rtw89_phy_write32_mask(rtwdev, R_FC0_BW,
-+					       B_ANT_RX_1RCCA_SEG0, 2);
-+			rtw89_phy_write32_mask(rtwdev, R_FC0_BW,
-+					       B_ANT_RX_1RCCA_SEG1, 2);
-+			rtw89_phy_write32_mask(rtwdev, R_RXHT_MCS_LIMIT,
-+					       B_RXHT_MCS_LIMIT, 0);
-+			rtw89_phy_write32_mask(rtwdev, R_RXVHT_MCS_LIMIT,
-+					       B_RXVHT_MCS_LIMIT, 0);
-+			rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHE_MAX_NSS,
-+					       0);
-+			rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHETB_MAX_NSS,
-+					       0);
-+			rtw89_phy_write32_mask(rtwdev, R_P1_TXPW_RSTB,
-+					       rst_mask1, 1);
-+			rtw89_phy_write32_mask(rtwdev, R_P1_TXPW_RSTB,
-+					       rst_mask1, 3);
-+		} else {
-+			rtw89_phy_write32_mask(rtwdev, R_CHBW_MOD,
-+					       B_ANT_RX_SEG0, 3);
-+			rtw89_phy_write32_mask(rtwdev, R_FC0_BW,
-+					       B_ANT_RX_1RCCA_SEG0, 3);
-+			rtw89_phy_write32_mask(rtwdev, R_FC0_BW,
-+					       B_ANT_RX_1RCCA_SEG1, 3);
-+			rtw89_phy_write32_mask(rtwdev, R_RXHT_MCS_LIMIT,
-+					       B_RXHT_MCS_LIMIT, 1);
-+			rtw89_phy_write32_mask(rtwdev, R_RXVHT_MCS_LIMIT,
-+					       B_RXVHT_MCS_LIMIT, 1);
-+			rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHE_MAX_NSS,
-+					       1);
-+			rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHETB_MAX_NSS,
-+					       1);
-+			rtw8852c_ctrl_btg(rtwdev, hal->current_band_type == RTW89_BAND_2G);
-+			rtw89_phy_write32_mask(rtwdev, R_P0_TXPW_RSTB,
-+					       rst_mask0, 1);
-+			rtw89_phy_write32_mask(rtwdev, R_P0_TXPW_RSTB,
-+					       rst_mask0, 3);
-+			rtw89_phy_write32_mask(rtwdev, R_P1_TXPW_RSTB,
-+					       rst_mask1, 1);
-+			rtw89_phy_write32_mask(rtwdev, R_P1_TXPW_RSTB,
-+					       rst_mask1, 3);
++	for (i = 0; i < RF_PATH_NUM_8852C; i++)
++		rtw89_phy_write32_idx(rtwdev, addr[i] + ofst_ofdm, mask, val,
++				      phy_idx);
++
++	rtw89_debug(rtwdev, RTW89_DBG_TXPWR, "[TXPWR] set bb cck txpwr ref\n");
++	val = rtw8852c_bb_cal_txpwr_ref(rtwdev, phy_idx, ref_cck);
++
++	for (i = 0; i < RF_PATH_NUM_8852C; i++)
++		rtw89_phy_write32_idx(rtwdev, addr[i] + ofst_cck, mask, val,
++				      phy_idx);
++}
++
++static void rtw8852c_set_txpwr_byrate(struct rtw89_dev *rtwdev,
++				      enum rtw89_phy_idx phy_idx)
++{
++	u8 ch = rtwdev->hal.current_channel;
++	static const u8 rs[] = {
++		RTW89_RS_CCK,
++		RTW89_RS_OFDM,
++		RTW89_RS_MCS,
++		RTW89_RS_HEDCM,
++	};
++	s8 tmp;
++	u8 i, j;
++	u32 val, shf, addr = R_AX_PWR_BY_RATE;
++	struct rtw89_rate_desc cur;
++
++	rtw89_debug(rtwdev, RTW89_DBG_TXPWR,
++		    "[TXPWR] set txpwr byrate with ch=%d\n", ch);
++
++	for (cur.nss = 0; cur.nss <= RTW89_NSS_2; cur.nss++) {
++		for (i = 0; i < ARRAY_SIZE(rs); i++) {
++			if (cur.nss >= rtw89_rs_nss_max[rs[i]])
++				continue;
++
++			val = 0;
++			cur.rs = rs[i];
++
++			for (j = 0; j < rtw89_rs_idx_max[rs[i]]; j++) {
++				cur.idx = j;
++				shf = (j % 4) * 8;
++				tmp = rtw89_phy_read_txpwr_byrate(rtwdev, &cur);
++				val |= (tmp << shf);
++
++				if ((j + 1) % 4)
++					continue;
++
++				rtw89_mac_txpwr_write32(rtwdev, phy_idx, addr, val);
++				val = 0;
++				addr += 4;
++			}
 +		}
-+		rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHE_USER_MAX, 8);
 +	}
 +}
 +
-+static void rtw8852c_ctrl_tx_path_tmac(struct rtw89_dev *rtwdev, u8 tx_path,
-+				       enum rtw89_mac_idx mac_idx)
++static void rtw8852c_set_txpwr_offset(struct rtw89_dev *rtwdev,
++				      enum rtw89_phy_idx phy_idx)
 +{
-+	struct rtw89_reg2_def path_com[] = {
-+		{R_AX_PATH_COM0, AX_PATH_COM0_DFVAL},
-+		{R_AX_PATH_COM1, AX_PATH_COM1_DFVAL},
-+		{R_AX_PATH_COM2, AX_PATH_COM2_DFVAL},
-+		{R_AX_PATH_COM3, AX_PATH_COM3_DFVAL},
-+		{R_AX_PATH_COM4, AX_PATH_COM4_DFVAL},
-+		{R_AX_PATH_COM5, AX_PATH_COM5_DFVAL},
-+		{R_AX_PATH_COM6, AX_PATH_COM6_DFVAL},
-+		{R_AX_PATH_COM7, AX_PATH_COM7_DFVAL},
-+		{R_AX_PATH_COM8, AX_PATH_COM8_DFVAL},
-+		{R_AX_PATH_COM9, AX_PATH_COM9_DFVAL},
-+		{R_AX_PATH_COM10, AX_PATH_COM10_DFVAL},
-+		{R_AX_PATH_COM11, AX_PATH_COM11_DFVAL},
++	struct rtw89_rate_desc desc = {
++		.nss = RTW89_NSS_1,
++		.rs = RTW89_RS_OFFSET,
 +	};
-+	u32 addr;
-+	u32 reg;
-+	u8 cr_size = ARRAY_SIZE(path_com);
-+	u8 i = 0;
++	u32 val = 0;
++	s8 v;
 +
-+	rtw89_phy_write32_idx(rtwdev, R_MAC_SEL, B_MAC_SEL_MOD, 0, RTW89_PHY_0);
-+	rtw89_phy_write32_idx(rtwdev, R_MAC_SEL, B_MAC_SEL_MOD, 0, RTW89_PHY_1);
++	rtw89_debug(rtwdev, RTW89_DBG_TXPWR, "[TXPWR] set txpwr offset\n");
 +
-+	for (addr = R_AX_MACID_ANT_TABLE;
-+	     addr <= R_AX_MACID_ANT_TABLE_LAST; addr += 4) {
-+		reg = rtw89_mac_reg_by_idx(addr, mac_idx);
-+		rtw89_write32(rtwdev, reg, 0);
++	for (desc.idx = 0; desc.idx < RTW89_RATE_OFFSET_MAX; desc.idx++) {
++		v = rtw89_phy_read_txpwr_byrate(rtwdev, &desc);
++		val |= ((v & 0xf) << (4 * desc.idx));
 +	}
 +
-+	if (tx_path == RF_PATH_A) {
-+		path_com[0].data = AX_PATH_COM0_PATHA;
-+		path_com[1].data = AX_PATH_COM1_PATHA;
-+		path_com[2].data = AX_PATH_COM2_PATHA;
-+		path_com[7].data = AX_PATH_COM7_PATHA;
-+		path_com[8].data = AX_PATH_COM8_PATHA;
-+	} else if (tx_path == RF_PATH_B) {
-+		path_com[0].data = AX_PATH_COM0_PATHB;
-+		path_com[1].data = AX_PATH_COM1_PATHB;
-+		path_com[2].data = AX_PATH_COM2_PATHB;
-+		path_com[7].data = AX_PATH_COM7_PATHB;
-+		path_com[8].data = AX_PATH_COM8_PATHB;
-+	} else if (tx_path == RF_PATH_AB) {
-+		path_com[0].data = AX_PATH_COM0_PATHAB;
-+		path_com[1].data = AX_PATH_COM1_PATHAB;
-+		path_com[2].data = AX_PATH_COM2_PATHAB;
-+		path_com[7].data = AX_PATH_COM7_PATHAB;
-+		path_com[8].data = AX_PATH_COM8_PATHAB;
-+	} else {
-+		rtw89_warn(rtwdev, "[Invalid Tx Path]Tx Path: %d\n", tx_path);
++	rtw89_mac_txpwr_write32_mask(rtwdev, phy_idx, R_AX_PWR_RATE_OFST_CTRL,
++				     GENMASK(19, 0), val);
++}
++
++static void rtw8852c_bb_set_tx_shape_dfir(struct rtw89_dev *rtwdev,
++					  u8 tx_shape_idx,
++					  enum rtw89_phy_idx phy_idx)
++{
++#define __DFIR_CFG_MASK 0xffffff
++#define __DFIR_CFG_NR 8
++#define __DECL_DFIR_VAR(_prefix, _name, _val...) \
++	static const u32 _prefix ## _ ## _name[] = {_val}; \
++	static_assert(ARRAY_SIZE(_prefix ## _ ## _name) == __DFIR_CFG_NR)
++#define __DECL_DFIR_PARAM(_name, _val...) __DECL_DFIR_VAR(param, _name, _val)
++#define __DECL_DFIR_ADDR(_name, _val...) __DECL_DFIR_VAR(addr, _name, _val)
++
++	__DECL_DFIR_PARAM(flat,
++			  0x003D23FF, 0x0029B354, 0x000FC1C8, 0x00FDB053,
++			  0x00F86F9A, 0x00FAEF92, 0x00FE5FCC, 0x00FFDFF5);
++	__DECL_DFIR_PARAM(sharp,
++			  0x003D83FF, 0x002C636A, 0x0013F204, 0x00008090,
++			  0x00F87FB0, 0x00F99F83, 0x00FDBFBA, 0x00003FF5);
++	__DECL_DFIR_PARAM(sharp_14,
++			  0x003B13FF, 0x001C42DE, 0x00FDB0AD, 0x00F60F6E,
++			  0x00FD8F92, 0x0002D011, 0x0001C02C, 0x00FFF00A);
++	__DECL_DFIR_ADDR(filter,
++			 0x45BC, 0x45CC, 0x45D0, 0x45D4, 0x45D8, 0x45C0,
++			 0x45C4, 0x45C8);
++	u8 ch = rtwdev->hal.current_channel;
++	const u32 *param;
++	int i;
++
++	if (ch > 14) {
++		rtw89_warn(rtwdev,
++			   "set tx shape dfir by unknown ch: %d on 2G\n", ch);
 +		return;
 +	}
 +
-+	for (i = 0; i < cr_size; i++) {
-+		rtw89_debug(rtwdev, RTW89_DBG_TSSI, "0x%x = 0x%x\n",
-+			    path_com[i].addr, path_com[i].data);
-+		reg = rtw89_mac_reg_by_idx(path_com[i].addr, mac_idx);
-+		rtw89_write32(rtwdev, reg, path_com[i].data);
++	if (ch == 14)
++		param = param_sharp_14;
++	else
++		param = tx_shape_idx == 0 ? param_flat : param_sharp;
++
++	for (i = 0; i < __DFIR_CFG_NR; i++) {
++		rtw89_debug(rtwdev, RTW89_DBG_TXPWR,
++			    "set tx shape dfir: 0x%x: 0x%x\n", addr_filter[i],
++			    param[i]);
++		rtw89_phy_write32_idx(rtwdev, addr_filter[i], __DFIR_CFG_MASK,
++				      param[i], phy_idx);
 +	}
++
++#undef __DECL_DFIR_ADDR
++#undef __DECL_DFIR_PARAM
++#undef __DECL_DFIR_VAR
++#undef __DFIR_CFG_NR
++#undef __DFIR_CFG_MASK
 +}
 +
-+static void rtw8852c_bb_cfg_txrx_path(struct rtw89_dev *rtwdev)
++static void rtw8852c_set_tx_shape(struct rtw89_dev *rtwdev,
++				  enum rtw89_phy_idx phy_idx)
 +{
-+	struct rtw89_hal *hal = &rtwdev->hal;
++	u8 band = rtwdev->hal.current_band_type;
++	u8 regd = rtw89_regd_get(rtwdev, band);
++	u8 tx_shape_cck = rtw89_8852c_tx_shape[band][RTW89_RS_CCK][regd];
++	u8 tx_shape_ofdm = rtw89_8852c_tx_shape[band][RTW89_RS_OFDM][regd];
 +
-+	rtw8852c_bb_cfg_rx_path(rtwdev, RF_PATH_AB);
++	if (band == RTW89_BAND_2G)
++		rtw8852c_bb_set_tx_shape_dfir(rtwdev, tx_shape_cck, phy_idx);
 +
-+	if (hal->rx_nss == 1) {
-+		rtw89_phy_write32_mask(rtwdev, R_RXHT_MCS_LIMIT, B_RXHT_MCS_LIMIT, 0);
-+		rtw89_phy_write32_mask(rtwdev, R_RXVHT_MCS_LIMIT, B_RXVHT_MCS_LIMIT, 0);
-+		rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHE_MAX_NSS, 0);
-+		rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHETB_MAX_NSS, 0);
-+	} else {
-+		rtw89_phy_write32_mask(rtwdev, R_RXHT_MCS_LIMIT, B_RXHT_MCS_LIMIT, 1);
-+		rtw89_phy_write32_mask(rtwdev, R_RXVHT_MCS_LIMIT, B_RXVHT_MCS_LIMIT, 1);
-+		rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHE_MAX_NSS, 1);
-+		rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHETB_MAX_NSS, 1);
-+	}
-+
-+	rtw8852c_ctrl_tx_path_tmac(rtwdev, RF_PATH_AB, RTW89_MAC_0);
++	rtw89_phy_tssi_ctrl_set_bandedge_cfg(rtwdev,
++					     (enum rtw89_mac_idx)phy_idx,
++					     tx_shape_ofdm);
 +}
 +
- static void rtw8852c_ctrl_btg(struct rtw89_dev *rtwdev, bool btg)
++static void rtw8852c_set_txpwr_limit(struct rtw89_dev *rtwdev,
++				     enum rtw89_phy_idx phy_idx)
++{
++#define __MAC_TXPWR_LMT_PAGE_SIZE 40
++	u8 ch = rtwdev->hal.current_channel;
++	u8 bw = rtwdev->hal.current_band_width;
++	struct rtw89_txpwr_limit lmt[NTX_NUM_8852C];
++	u32 addr, val;
++	const s8 *ptr;
++	u8 i, j, k;
++
++	rtw89_debug(rtwdev, RTW89_DBG_TXPWR,
++		    "[TXPWR] set txpwr limit with ch=%d bw=%d\n", ch, bw);
++
++	for (i = 0; i < NTX_NUM_8852C; i++) {
++		rtw89_phy_fill_txpwr_limit(rtwdev, &lmt[i], i);
++
++		for (j = 0; j < __MAC_TXPWR_LMT_PAGE_SIZE; j += 4) {
++			addr = R_AX_PWR_LMT + j + __MAC_TXPWR_LMT_PAGE_SIZE * i;
++			ptr = (s8 *)&lmt[i] + j;
++			val = 0;
++
++			for (k = 0; k < 4; k++)
++				val |= (ptr[k] << (8 * k));
++
++			rtw89_mac_txpwr_write32(rtwdev, phy_idx, addr, val);
++		}
++	}
++#undef __MAC_TXPWR_LMT_PAGE_SIZE
++}
++
++static void rtw8852c_set_txpwr_limit_ru(struct rtw89_dev *rtwdev,
++					enum rtw89_phy_idx phy_idx)
++{
++#define __MAC_TXPWR_LMT_RU_PAGE_SIZE 24
++	u8 ch = rtwdev->hal.current_channel;
++	u8 bw = rtwdev->hal.current_band_width;
++	struct rtw89_txpwr_limit_ru lmt_ru[NTX_NUM_8852C];
++	u32 addr, val;
++	const s8 *ptr;
++	u8 i, j, k;
++
++	rtw89_debug(rtwdev, RTW89_DBG_TXPWR,
++		    "[TXPWR] set txpwr limit ru with ch=%d bw=%d\n", ch, bw);
++
++	for (i = 0; i < NTX_NUM_8852C; i++) {
++		rtw89_phy_fill_txpwr_limit_ru(rtwdev, &lmt_ru[i], i);
++
++		for (j = 0; j < __MAC_TXPWR_LMT_RU_PAGE_SIZE; j += 4) {
++			addr = R_AX_PWR_RU_LMT + j +
++			       __MAC_TXPWR_LMT_RU_PAGE_SIZE * i;
++			ptr = (s8 *)&lmt_ru[i] + j;
++			val = 0;
++
++			for (k = 0; k < 4; k++)
++				val |= (ptr[k] << (8 * k));
++
++			rtw89_mac_txpwr_write32(rtwdev, phy_idx, addr, val);
++		}
++	}
++
++#undef __MAC_TXPWR_LMT_RU_PAGE_SIZE
++}
++
++static void rtw8852c_set_txpwr(struct rtw89_dev *rtwdev)
++{
++	rtw8852c_set_txpwr_byrate(rtwdev, RTW89_PHY_0);
++	rtw8852c_set_txpwr_offset(rtwdev, RTW89_PHY_0);
++	rtw8852c_set_tx_shape(rtwdev, RTW89_PHY_0);
++	rtw8852c_set_txpwr_limit(rtwdev, RTW89_PHY_0);
++	rtw8852c_set_txpwr_limit_ru(rtwdev, RTW89_PHY_0);
++}
++
++static void rtw8852c_set_txpwr_ctrl(struct rtw89_dev *rtwdev)
++{
++	rtw8852c_set_txpwr_ref(rtwdev, RTW89_PHY_0);
++}
++
++static void
++rtw8852c_init_tssi_ctrl(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
++{
++	static const struct rtw89_reg2_def ctrl_ini[] = {
++		{0xD938, 0x00010100},
++		{0xD93C, 0x0500D500},
++		{0xD940, 0x00000500},
++		{0xD944, 0x00000005},
++		{0xD94C, 0x00220000},
++		{0xD950, 0x00030000},
++	};
++	u32 addr;
++	int i;
++
++	for (addr = R_AX_TSSI_CTRL_HEAD; addr <= R_AX_TSSI_CTRL_TAIL; addr += 4)
++		rtw89_mac_txpwr_write32(rtwdev, phy_idx, addr, 0);
++
++	for (i = 0; i < ARRAY_SIZE(ctrl_ini); i++)
++		rtw89_mac_txpwr_write32(rtwdev, phy_idx, ctrl_ini[i].addr,
++					ctrl_ini[i].data);
++
++	rtw89_phy_tssi_ctrl_set_bandedge_cfg(rtwdev,
++					     (enum rtw89_mac_idx)phy_idx,
++					     RTW89_TSSI_BANDEDGE_FLAT);
++}
++
++static int
++rtw8852c_init_txpwr_unit(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
++{
++	int ret;
++
++	ret = rtw89_mac_txpwr_write32(rtwdev, phy_idx, R_AX_PWR_UL_CTRL2, 0x07763333);
++	if (ret)
++		return ret;
++
++	ret = rtw89_mac_txpwr_write32(rtwdev, phy_idx, R_AX_PWR_COEXT_CTRL, 0x01ebf000);
++	if (ret)
++		return ret;
++
++	ret = rtw89_mac_txpwr_write32(rtwdev, phy_idx, R_AX_PWR_UL_CTRL0, 0x0002f8ff);
++	if (ret)
++		return ret;
++
++	rtw8852c_set_txpwr_ul_tb_offset(rtwdev, 0, phy_idx == RTW89_PHY_1 ?
++							      RTW89_MAC_1 :
++							      RTW89_MAC_0);
++	rtw8852c_init_tssi_ctrl(rtwdev, phy_idx);
++
++	return 0;
++}
++
+ static void rtw8852c_bb_cfg_rx_path(struct rtw89_dev *rtwdev, u8 rx_path)
  {
- 	if (btg) {
-@@ -1973,6 +2166,7 @@ static const struct rtw89_chip_ops rtw8852c_chip_ops = {
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+@@ -2163,6 +2484,9 @@ static const struct rtw89_chip_ops rtw8852c_chip_ops = {
+ 	.rfk_init		= rtw8852c_rfk_init,
+ 	.rfk_channel		= rtw8852c_rfk_channel,
+ 	.power_trim		= rtw8852c_power_trim,
++	.set_txpwr		= rtw8852c_set_txpwr,
++	.set_txpwr_ctrl		= rtw8852c_set_txpwr_ctrl,
++	.init_txpwr_unit	= rtw8852c_init_txpwr_unit,
  	.read_rf		= rtw89_phy_read_rf_v1,
  	.write_rf		= rtw89_phy_write_rf_v1,
  	.set_txpwr_ul_tb_offset	= rtw8852c_set_txpwr_ul_tb_offset,
-+	.cfg_txrx_path		= rtw8852c_bb_cfg_txrx_path,
- 	.pwr_on_func		= rtw8852c_pwr_on_func,
- 	.pwr_off_func		= rtw8852c_pwr_off_func,
- 	.fill_txdesc		= rtw89_core_fill_txdesc_v1,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.h b/drivers/net/wireless/realtek/rtw89/rtw8852c.h
+index ac642808a81ff..558dd0f048f2b 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.h
+@@ -9,6 +9,7 @@
+ 
+ #define RF_PATH_NUM_8852C 2
+ #define BB_PATH_NUM_8852C 2
++#define NTX_NUM_8852C 2
+ 
+ struct rtw8852c_u_efuse {
+ 	u8 rsvd[0x38];
 -- 
 2.25.1
 
