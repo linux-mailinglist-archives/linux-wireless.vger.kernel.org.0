@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82836509F60
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Apr 2022 14:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 261A0509F5C
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Apr 2022 14:10:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383529AbiDUMNN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Apr 2022 08:13:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54618 "EHLO
+        id S1383530AbiDUMNO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Apr 2022 08:13:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1383530AbiDUMMd (ORCPT
+        with ESMTP id S1383571AbiDUMMf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Apr 2022 08:12:33 -0400
+        Thu, 21 Apr 2022 08:12:35 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A5F32E9E2
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Apr 2022 05:09:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 842DE2ED63
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Apr 2022 05:09:45 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23LC9cyA6028994, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23LC9cyA6028994
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23LC9euP6029009, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23LC9euP6029009
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 21 Apr 2022 20:09:38 +0800
+        Thu, 21 Apr 2022 20:09:40 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Thu, 21 Apr 2022 20:09:38 +0800
+ 15.1.2375.24; Thu, 21 Apr 2022 20:09:40 +0800
 Received: from localhost (172.16.16.159) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 21 Apr
- 2022 20:09:37 +0800
+ 2022 20:09:39 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 07/14] rtw89: pci: allow to process RPP prior to TX BD
-Date:   Thu, 21 Apr 2022 20:08:56 +0800
-Message-ID: <20220421120903.73715-8-pkshih@realtek.com>
+Subject: [PATCH 08/14] rtw89: don't flush hci queues and send h2c if power is off
+Date:   Thu, 21 Apr 2022 20:08:57 +0800
+Message-ID: <20220421120903.73715-9-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220421120903.73715-1-pkshih@realtek.com>
 References: <20220421120903.73715-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvMjEgpFekyCAxMDowNzowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -67,64 +67,50 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RPP is to report certain skb(s) can be freed, and TX BD indicates which
-TX descriptors can be freed. Normally, TX BD is happened before RPP.
-In low power mode, RPP can happen ahead, so change flow to handle this
-case.
+When disconnecting, it warns somethings after power is off, and we can't
+do HCI IO. So, add this patch to avoid below messages:
+
+  rtw89_8852ce 0000:03:00.0: timed out to flush pci txch: 11
+  rtw89_8852ce 0000:03:00.0: failed to pre-release fwcmd
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/pci.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 7 +++++++
+ drivers/net/wireless/realtek/rtw89/core.h | 3 +++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index 31c62d116f44f..2bdce7024f25b 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -382,6 +382,10 @@ static void rtw89_pci_reclaim_txbd(struct rtw89_dev *rtwdev, struct rtw89_pci_tx
- 		}
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 796b205854ac6..e3317deafa1d0 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -856,6 +856,13 @@ int rtw89_h2c_tx(struct rtw89_dev *rtwdev,
+ 	u32 cnt;
+ 	int ret;
  
- 		list_del_init(&txwd->list);
++	if (!test_bit(RTW89_FLAG_POWERON, rtwdev->flags)) {
++		rtw89_debug(rtwdev, RTW89_DBG_FW,
++			    "ignore h2c due to power is off with firmware state=%d\n",
++			    test_bit(RTW89_FLAG_FW_RDY, rtwdev->flags));
++		return 0;
++	}
 +
-+		/* this skb has been freed by RPP */
-+		if (skb_queue_len(&txwd->queue) == 0)
-+			rtw89_pci_enqueue_txwd(tx_ring, txwd);
- 	}
+ 	tx_req.skb = skb;
+ 	tx_req.tx_type = RTW89_CORE_TX_TYPE_FWCMD;
+ 	if (fwdl)
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 27a3ceda90b90..6ca915cb7a29f 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3199,6 +3199,9 @@ static inline void rtw89_hci_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
+ static inline void rtw89_hci_flush_queues(struct rtw89_dev *rtwdev, u32 queues,
+ 					  bool drop)
+ {
++	if (!test_bit(RTW89_FLAG_POWERON, rtwdev->flags))
++		return;
++
+ 	if (rtwdev->hci.ops->flush_queues)
+ 		return rtwdev->hci.ops->flush_queues(rtwdev, queues, drop);
  }
- 
-@@ -413,18 +417,12 @@ static void rtw89_pci_release_txwd_skb(struct rtw89_dev *rtwdev,
- 
- 	if (!list_empty(&txwd->list)) {
- 		rtw89_pci_reclaim_txbd(rtwdev, tx_ring);
--		if (!list_empty(&txwd->list)) {
-+		/* In low power mode, RPP can receive before updating of TX BD.
-+		 * In normal mode, it should not happen so give it a warning.
-+		 */
-+		if (!rtwpci->low_power && !list_empty(&txwd->list))
- 			rtw89_warn(rtwdev, "queue %d txwd %d is not idle\n",
- 				   txch, seq);
--			return;
--		}
--	}
--
--	/* currently, support for only one frame */
--	if (skb_queue_len(&txwd->queue) != 1) {
--		rtw89_warn(rtwdev, "empty pending queue %d page %d\n",
--			   txch, seq);
--		return;
- 	}
- 
- 	skb_queue_walk_safe(&txwd->queue, skb, tmp) {
-@@ -437,7 +435,8 @@ static void rtw89_pci_release_txwd_skb(struct rtw89_dev *rtwdev,
- 		rtw89_pci_tx_status(rtwdev, tx_ring, skb, tx_status);
- 	}
- 
--	rtw89_pci_enqueue_txwd(tx_ring, txwd);
-+	if (list_empty(&txwd->list))
-+		rtw89_pci_enqueue_txwd(tx_ring, txwd);
- }
- 
- static void rtw89_pci_release_rpp(struct rtw89_dev *rtwdev,
 -- 
 2.25.1
 
