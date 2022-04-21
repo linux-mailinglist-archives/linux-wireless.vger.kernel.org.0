@@ -2,92 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2C60509F3C
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Apr 2022 14:02:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6ABE509F53
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Apr 2022 14:10:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383107AbiDUMFJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Apr 2022 08:05:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49020 "EHLO
+        id S1351963AbiDUMNE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Apr 2022 08:13:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1384637AbiDUMFB (ORCPT
+        with ESMTP id S1383230AbiDUMM0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Apr 2022 08:05:01 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06BF31219;
-        Thu, 21 Apr 2022 05:02:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1650542525; x=1682078525;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=AbaOiCK+EAHgbJTLsHwe8buT74HUlzWhaSY+4qLD+hY=;
-  b=cEwArfB8p6VHlw6vxbfTGwvttPkmi/RNC95Dcfl+T//m6NaQrjaQhI1g
-   +EThdAhLJTHSZ6OfEVUbD2f2bQd74ztwBRh8IdH+JZl8SyyxumVunA7oJ
-   +5WzPBhyE+bJRKwfTWZl1WmjnUDtLNZIDaFLpY6xOnGu80tHikj3z2mWG
-   SmGEVAiZVwbbYGd9Cx6RheA/4A1L0bpjxFL0tDkIb3rxnY2W0F+LHa8/A
-   UdZ6rG+piYvhbZvRqmjuAQvhdad7ewmHgN/8elQ7IojA9VBjrIuKEfW/e
-   EdUotN94xysiq7v04M6MK4qKCzTJmJ0L/H7tiELXaQsSb6UQkLMTnvPlr
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10323"; a="324771944"
-X-IronPort-AV: E=Sophos;i="5.90,278,1643702400"; 
-   d="scan'208";a="324771944"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2022 05:01:42 -0700
-X-IronPort-AV: E=Sophos;i="5.90,278,1643702400"; 
-   d="scan'208";a="577190611"
-Received: from bpeddu-mobl.amr.corp.intel.com ([10.251.216.95])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2022 05:01:36 -0700
-Date:   Thu, 21 Apr 2022 15:01:33 +0300 (EEST)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
-cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
-        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
-        sreehari.kancharla@intel.com, madhusmita.sahu@intel.com
-Subject: Re: [PATCH net-next v6 13/13] net: wwan: t7xx: Add maintainers and
- documentation
-In-Reply-To: <20220407223629.21487-14-ricardo.martinez@linux.intel.com>
-Message-ID: <5f4d426-1966-f78d-c09-55f853f8c21f@linux.intel.com>
-References: <20220407223629.21487-1-ricardo.martinez@linux.intel.com> <20220407223629.21487-14-ricardo.martinez@linux.intel.com>
+        Thu, 21 Apr 2022 08:12:26 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08BFD2ED73
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Apr 2022 05:09:36 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23LC9MPr8028945, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23LC9MPr8028945
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 21 Apr 2022 20:09:22 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 21 Apr 2022 20:09:22 +0800
+Received: from localhost (172.16.16.159) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 21 Apr
+ 2022 20:09:20 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH 00/14] rtw89: 8852c: extend PCI code to support 8852ce and add 8852c chip_ops
+Date:   Thu, 21 Apr 2022 20:08:49 +0800
+Message-ID: <20220421120903.73715-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1124358250-1650542501=:1673"
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.16.16.159]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 04/21/2022 11:49:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvMjEgpFekyCAxMDowNzowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+The PCI code of 8852CE is different from 8852AE. The IMR/ISR addresses are
+different, and 8852CE has a special low power mode that uses another set
+of addresses. To handle the special mode, we add a special interrupt
+threadfn to handle packets, because regular NAPI poll function does many
+things that can't access at this mode.
 
---8323329-1124358250-1650542501=:1673
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: 8BIT
+Another special handle is RPP (TX skb completion) prior to TX BD (TX ring
+completion). In low mode power, it can be possible, so we extend the code
+to handle this case as well as normal mode.
 
-On Thu, 7 Apr 2022, Ricardo Martinez wrote:
+Patch 3/14 is to optimize count of reading IO, and patch 8/14 is to resolve
+some warnings happened on 8852ce, because PCI ring registers are power-off
+after running power-off function. These registers on 8852ae aren't
+power-off.
 
-> Adds maintainers and documentation for MediaTek t7xx 5G WWAN modem
-> device driver.
-> 
-> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
-> 
-> >From a WWAN framework perspective:
-> Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
+Patches 9/14-14/14 are to add chip ops of 8852c as description of the
+patches individually.
 
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Ping-Ke Shih (14):
+  rtw89: pci: add variant IMR/ISR and configure functions
+  rtw89: pci: add variant RPWM/CPWM to enter low power mode
+  rtw89: pci: reclaim TX BD only if it really need
+  rtw89: pci: does RX in interrupt threadfn if low power mode
+  rtw89: ser: re-enable interrupt in threadfn if under_recovery
+  rtw89: ps: access TX/RX rings via another registers in low power mode
+  rtw89: pci: allow to process RPP prior to TX BD
+  rtw89: don't flush hci queues and send h2c if power is off
+  rtw89: add RF H2C to notify firmware
+  rtw89: 8852c: configure default BB TX/RX path
+  rtw89: 8852c: implement chip_ops related to TX power
+  rtw89: 8852c: implement chip_ops::get_thermal
+  rtw89: 8852c: fill freq and band of RX status by PPDU report
+  rtw89: 8852c: add chip_ops related to BTC
 
+ drivers/net/wireless/realtek/rtw89/core.c     |  10 +
+ drivers/net/wireless/realtek/rtw89/core.h     |  34 +
+ drivers/net/wireless/realtek/rtw89/fw.c       |  39 +
+ drivers/net/wireless/realtek/rtw89/fw.h       |  12 +
+ drivers/net/wireless/realtek/rtw89/mac.c      |   6 +-
+ drivers/net/wireless/realtek/rtw89/pci.c      | 339 ++++++--
+ drivers/net/wireless/realtek/rtw89/pci.h      | 144 ++++
+ drivers/net/wireless/realtek/rtw89/phy.c      |   1 +
+ drivers/net/wireless/realtek/rtw89/ps.c       |  34 +-
+ drivers/net/wireless/realtek/rtw89/reg.h      |  83 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   2 +
+ .../net/wireless/realtek/rtw89/rtw8852ae.c    |   8 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 766 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/rtw8852c.h |   1 +
+ .../net/wireless/realtek/rtw89/rtw8852ce.c    |  16 +
+ 15 files changed, 1438 insertions(+), 57 deletions(-)
 
 -- 
- i.
+2.25.1
 
---8323329-1124358250-1650542501=:1673--
