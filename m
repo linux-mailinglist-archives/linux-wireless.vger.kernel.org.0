@@ -2,119 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28CC3509BA0
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Apr 2022 11:08:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CB0C509E13
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Apr 2022 12:55:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382042AbiDUJE5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Apr 2022 05:04:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42702 "EHLO
+        id S1388605AbiDUK5I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Apr 2022 06:57:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345407AbiDUJE5 (ORCPT
+        with ESMTP id S240175AbiDUK5G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Apr 2022 05:04:57 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 154C51FCFE;
-        Thu, 21 Apr 2022 02:02:08 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id 21so5664619edv.1;
-        Thu, 21 Apr 2022 02:02:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=K6EZ7wsWI5y8UAAAGRQmR1xNFdJPl4DdgJFZp25DwRE=;
-        b=O1hZi3IGLAN5IQCn+JjFH/2oHhCsW3/cgFtEPYCdOUFvSwDHuW33xXHSdHnq78zYf2
-         9Dzb8CutasJJgN+m7fv4Fl+vd1T3JqfYQvdUbEYQQ7vVvLtxpxY2q1v5GyqdGL5XgHnk
-         chDETEMsMLm+R1iabmPqcwGUF5vQtFpFff658AhYsoL+0j1Rbt7hPJ/WKs3n8diq+FSq
-         f2tusAfkYm1ZKQyDIgbGD1sha5Qbiu/vxjS+0t+WhN/1Dp1gL+a0Y2N92KXw/m7s5UGM
-         yjjCAxR74M37zmjDxB33PRK4H800PP59uGS7uOQLWrL1F5MwEOWQpVfbJCVx1CB8kxrW
-         jtsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=K6EZ7wsWI5y8UAAAGRQmR1xNFdJPl4DdgJFZp25DwRE=;
-        b=W7YbLaNKwXGaCM0xyVLC1I+43U3j/wTQqlzIeGUvIIN5QDln8UN3OzuvpceAu/p7P4
-         p2rcTwDKqqZZnILpMpLZ95ZQqYXRsYsVHmVueaxpN2e1U1PL8IR5RM3lS2cM+JYLdp1+
-         u/v7lY3iM01Vfpv7vBVi1sNjOCc/I5PmAjYsmlZy7GzVzU24l/jBj6TlAfCCylhHiQlL
-         RvdXdWVvRIBBkv86DBdBvjAJ0XOlJYC+i850FJlvTzyxO9Sxug82hCQ+QPaoUyCt/4J/
-         aaVvrYT/lNE7Iqsf1LcLQ+ASlodxsgElzBIAsl87UUc2d9cmCq7i4IAIbh8gpvI+jsoY
-         nM7A==
-X-Gm-Message-State: AOAM533gwYNuPx5W5Ahipk+w/0gsji/MrsW81bAqRTONDUHgkHLBILV4
-        lbyw8szfD1vkwttQefKE+hFFpmEKVwsL1VZTYkkP9Wi4Wtg=
-X-Google-Smtp-Source: ABdhPJx4guVtJCUodnfDDJjHz9fHaung5eLfba2XvwbduoSETDjq9IF429gakqBk5vx9H2Hm9o7NLrGzw2whII55WoY=
-X-Received: by 2002:a05:6402:11c7:b0:423:f7f1:e718 with SMTP id
- j7-20020a05640211c700b00423f7f1e718mr15858549edw.279.1650531726500; Thu, 21
- Apr 2022 02:02:06 -0700 (PDT)
+        Thu, 21 Apr 2022 06:57:06 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B1812B18D;
+        Thu, 21 Apr 2022 03:54:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1650538457; x=1682074457;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=GnT4SrJqOLSZlKeeUebougUUm0THwO8n63ba7RH8Fhk=;
+  b=LsKONnW53fDCZOBDG9VvwUu1bvni+pPgm5rnE1eD+3LWNs7NQoRX8fpT
+   EkN4qkiV7UHrqIU8Py+hEMMeXwNAbDnjMa4XwlEEHjokKvLH3i9SMCQCY
+   5IokTgBexKtfZ8PafdhW9gMzZ83IBoAShtmgd0lWg6GXdUsUHfIOt9TF7
+   6yejlZ3lNGmbmf0WWVRQJyuHBnOWfTFndySPWnXZw/5bbMft6RXwTdQo1
+   /F3ZJEG5vDDqCeDbeBQbioxp1uxHh/IwbcLG8WvBLRNEtERqXwtoV9Sr8
+   rZCWC1ksREtXdhWvi6QILhd+B1n7aLBYvoSsqipKpyNx58GELlolw9tTu
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10323"; a="251628398"
+X-IronPort-AV: E=Sophos;i="5.90,278,1643702400"; 
+   d="scan'208";a="251628398"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2022 03:54:16 -0700
+X-IronPort-AV: E=Sophos;i="5.90,278,1643702400"; 
+   d="scan'208";a="577160429"
+Received: from bpeddu-mobl.amr.corp.intel.com ([10.251.216.95])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2022 03:54:10 -0700
+Date:   Thu, 21 Apr 2022 13:54:08 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
+cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
+        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
+        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
+        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
+        haijun.liu@mediatek.com, amir.hanania@intel.com,
+        andriy.shevchenko@linux.intel.com, dinesh.sharma@intel.com,
+        eliot.lee@intel.com, ilpo.johannes.jarvinen@intel.com,
+        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
+        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
+        sreehari.kancharla@intel.com, madhusmita.sahu@intel.com
+Subject: Re: [PATCH net-next v6 08/13] net: wwan: t7xx: Add data path
+ interface
+In-Reply-To: <20220407223629.21487-9-ricardo.martinez@linux.intel.com>
+Message-ID: <8ae9719c-296-6b8a-5ac8-776afe1a0a2@linux.intel.com>
+References: <20220407223629.21487-1-ricardo.martinez@linux.intel.com> <20220407223629.21487-9-ricardo.martinez@linux.intel.com>
 MIME-Version: 1.0
-References: <CAGm1_ktEim1vGOf5i=H_sqrPvg=dT50790YYwXgYKgAut-a=ng@mail.gmail.com>
- <YmDpTAu9wmlLijDA@atomide.com>
-In-Reply-To: <YmDpTAu9wmlLijDA@atomide.com>
-From:   Yegor Yefremov <yegorslists@googlemail.com>
-Date:   Thu, 21 Apr 2022 11:01:54 +0200
-Message-ID: <CAGm1_kv+b1h1OuWr4w5jS_mqfQpXF7UexiWFsOSs+MJK546=ew@mail.gmail.com>
-Subject: Re: wl18xx: NVS file handling
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, sebastian.reichel@collabora.co.uk,
-        Eyal Reizer <eyalr@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; CHARSET=US-ASCII
+Content-ID: <7f973260-38d4-46f7-a25b-7eed10268ecf@linux.intel.com>
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Tony,
+On Thu, 7 Apr 2022, Ricardo Martinez wrote:
 
-On Thu, Apr 21, 2022 at 7:19 AM Tony Lindgren <tony@atomide.com> wrote:
->
-> Hi,
->
-> * Yegor Yefremov <yegorslists@googlemail.com> [220420 13:58]:
-> > Hi all,
-> >
-> > using the 5.18.x kernel, I get the following warning:
-> >
-> > wlcore: WARNING Detected unconfigured mac address in nvs, derive from
-> > fuse instead.
-> > wlcore: WARNING This default nvs file can be removed from the file system
-> >
-> > removing the /lib/firmware/ti-connectivity/wl127x-nvs.bin file, I get
-> > this warning:
-> >
-> > wl18xx_driver wl18xx.0.auto: Direct firmware load for
-> > ti-connectivity/wl1271-nvs.bin failed with error -2
-> >
-> > What's the best way to get rid of these warnings when I don't want to
-> > handle WLAN's MAC address via the wl127x-nvs.bin?
->
-> See commit d382b9c00782 ("wlcore: add missing nvs file name info for
-> wilink8"), to me looks like the the second warning should be just removed
-> for wl18xx.
->
-> > According to this discussion [1], NVS file is the last resort for
-> > handling the MAC address.
-> >
-> > [1] https://patchwork.kernel.org/project/linux-wireless/patch/8665E2433BC68541A24DFFCA87B70F5B363E1A3D@DFRE01.ent.ti.com/
->
-> Yes the NVS file does not work at all for NFSroot for multiple devices.
->
-> To me it seems we should have the option for the MAC address to be
-> populated by the bootloader for the devicetree property like Ethernet
-> adapters typically do. Not sure what that might take, maybe it
-> already works. I guess the first step would be to make the nvs file
-> completely optional for wlcore.
+> From: Haijun Liu <haijun.liu@mediatek.com>
+> 
+> Data Path Modem AP Interface (DPMAIF) HIF layer provides methods
+> for initialization, ISR, control and event handling of TX/RX flows.
+> 
+> DPMAIF TX
+> Exposes the 'dmpaif_tx_send_skb' function which can be used by the
+> network device to transmit packets.
+> The uplink data management uses a Descriptor Ring Buffer (DRB).
+> First DRB entry is a message type that will be followed by 1 or more
+> normal DRB entries. Message type DRB will hold the skb information
+> and each normal DRB entry holds a pointer to the skb payload.
+> 
+> DPMAIF RX
+> The downlink buffer management uses Buffer Address Table (BAT) and
+> Packet Information Table (PIT) rings.
+> The BAT ring holds the address of skb data buffer for the HW to use,
+> while the PIT contains metadata about a whole network packet including
+> a reference to the BAT entry holding the data buffer address.
+> The driver reads the PIT and BAT entries written by the modem, when
+> reaching a threshold, the driver will reload the PIT and BAT rings.
+> 
+> Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
+> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+> 
+> >From a WWAN framework perspective:
+> Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
 
-I'll try to create a patch for making nvs file optional.
+> +       if (txq->tx_skb_head.qlen >= txq->tx_list_max_len)
+> +               goto report_full_state;
+> +
+> +       skb_cb = T7XX_SKB_CB(skb);
+> +       skb_cb->txq_number = txq_number;
+> +       skb_queue_tail(&txq->tx_skb_head, skb);
+> +       wake_up(&dpmaif_ctrl->tx_wq);
+> +       return 0;
+> +
+> +report_full_state:
+> +       callbacks = dpmaif_ctrl->callbacks;
+> +       callbacks->state_notify(dpmaif_ctrl->t7xx_dev, DMPAIF_TXQ_STATE_FULL, txq_number>
+> +       return -EBUSY;
+> +}
 
-P.S. a TI maintainer for wlcore would be great .... WPA3 and mesh are
-still not really there [1].
+Should this actually report full earlier so that the queue can be stopped 
+before NETDEV_TX_BUSY has to be returned (by the callers in 09/13)?
+(see Documentation/networking/driver.rst)
 
-[1] https://software-dl.ti.com/ecs/WiLink8/R8_8/change_log_R8_8.html
+> +		/* Wait for active Tx to be doneg */
 
-Regards,
-Yegor
+doneg -> done
+
+> +struct dpmaif_drb {
+> +	__le32 header;
+> +	union {
+> +		struct {
+> +			__le32 data_addr_l;
+> +			__le32 data_addr_h;
+> +			__le32 reserved;
+> +		} pd;
+> +		struct {
+> +			__le32 msg_hdr;
+> +			__le32 reserved1;
+> +			__le32 reserved2;
+> +		} msg;
+> +	};
+> +};
+
+"reserved" and "reserved2" could be placed outside of the union
+as they have the same offset.
+
+
+-- 
+ i.
