@@ -2,207 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B65150950D
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Apr 2022 04:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22ED850958A
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Apr 2022 05:45:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358101AbiDUCi1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Apr 2022 22:38:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40362 "EHLO
+        id S1383998AbiDUDsk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Apr 2022 23:48:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1383796AbiDUCiT (ORCPT
+        with ESMTP id S242476AbiDUDsj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Apr 2022 22:38:19 -0400
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4404AF1D
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 19:35:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1650508516; x=1682044516;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=s3yIx6lzX2Qdd7/djdCHBUNrnWZkAuTzjG2OdUyyfcc=;
-  b=bMjdMTpW1ct/48ZYij3CO1ERkFR9g2GW59H3eC/M86TBZ/5LOwaBQshF
-   Dps7qcW0rzvVCpKiUGyG9iOmA9AdVDxK16rYGFno+nmzBAnTYkWlQrJtU
-   0XE4gckiAIGoqK3/ufxpkdCwvP7W5MtgS4WzmyID4GkwnHY5GP/ibYjQS
-   M=;
-Received: from unknown (HELO ironmsg03-sd.qualcomm.com) ([10.53.140.143])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 20 Apr 2022 19:35:16 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg03-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2022 19:35:15 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 20 Apr 2022 19:35:15 -0700
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 20 Apr 2022 19:35:14 -0700
-From:   Wen Gong <quic_wgong@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
-Subject: [PATCH] ath11k: add read country code from SMBIOS for WCN6855/QCA6390
-Date:   Wed, 20 Apr 2022 22:35:01 -0400
-Message-ID: <20220421023501.32167-1-quic_wgong@quicinc.com>
-X-Mailer: git-send-email 2.31.1
+        Wed, 20 Apr 2022 23:48:39 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30274AE69
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 20:45:50 -0700 (PDT)
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 11C113F1BA
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Apr 2022 03:45:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1650512748;
+        bh=2f878bmi4JxnBjaZ2FfqMVkNzpe8ionbFp3Pao0b0Yg=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=BMMhHoruZofAc/YaiIt+oeAdQ194TjAHQ5TPBz8qe3pTZ38NBbUR7ln52cV8NmQiP
+         zgln+K+FY7K0cJnDtnccfb+Hs4/2SYcK13DbuUCGWz/jf/NEuRQI/+UhQWKyZ8oN1R
+         1bELNLpQuacYOSOZXHII+wWoUq36hk4xp4HT08t2thyPSa2Gss47lWYZLEfTNASlHC
+         DEfb4Yc/xLSAo6xD3YSBP5c27bHMgp688wTBpiZWPYWyImD1+QLnw2cvKLco4ZZL8w
+         YXj+p8jKsCKc8fdEYxrsS5VGk+texpDgLc/5WQcSDZFEu0dIb8/3XvId7jc42BIVmS
+         bV/oi4COn5VJg==
+Received: by mail-pf1-f199.google.com with SMTP id d5-20020a62f805000000b0050566b4f4c0so2279793pfh.11
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 20:45:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=2f878bmi4JxnBjaZ2FfqMVkNzpe8ionbFp3Pao0b0Yg=;
+        b=3O2lYRulIH98vUlTOHJ1NdsHPxp9TNJa53MHTLjDbeps9c0lQyb90kE1alI/EEjoq5
+         620AhyT34iGt0BD3X5ds+BIX7nWRHKAjSSqb9MG89EK+OTmMT0xu+CcEBpLlbwbeopXZ
+         QAupQIhyfUnLCAO1g28Ja3WwcTVL5V6aI2U/aK5JRZizMCWQ5t198WvJlyAlnf6o/eFC
+         ygc9c34uwa/yeT7ZjjN27bzRv1raf9hdu53ReEzU2g4Z60o7f+JifJrXnPkoKXvDMeHk
+         dUgZco2E3xjCIt86zIHUPLhA3TpvI6jL9h4QCPZPBuuvwx0oUjZDAkHDY9RSe/UFy3D6
+         l/Wg==
+X-Gm-Message-State: AOAM533CcPrn+ZXBmiINgU6MzgR3OL+fXpWR8Jry1w/xsyCCRRylaGIl
+        Dnua30ssAPA7DslHvOjuS5dObA300ru90CyKhgEkM90pEmRwSRt6BHEe8AlEV1LiulEMgtwpWrv
+        okIsmEoWhg0Ae6QCSGTaXGSobx4khPK/bml0juAUZ+ssJ
+X-Received: by 2002:a17:90a:8c8e:b0:1c9:c81d:9e13 with SMTP id b14-20020a17090a8c8e00b001c9c81d9e13mr7941075pjo.123.1650512746414;
+        Wed, 20 Apr 2022 20:45:46 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJy8Xp7HQ6Hs/QOzCyci14ZeH/ae1kO7dg80oIteJcz1hnJ1eoV7qtQLGtxFhiyFZHZ0jvRrqw==
+X-Received: by 2002:a17:90a:8c8e:b0:1c9:c81d:9e13 with SMTP id b14-20020a17090a8c8e00b001c9c81d9e13mr7941047pjo.123.1650512746077;
+        Wed, 20 Apr 2022 20:45:46 -0700 (PDT)
+Received: from [192.168.0.18] (59-115-201-204.dynamic-ip.hinet.net. [59.115.201.204])
+        by smtp.gmail.com with ESMTPSA id j1-20020a17090a7e8100b001d2edf4b513sm697253pjl.56.2022.04.20.20.45.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Apr 2022 20:45:45 -0700 (PDT)
+Message-ID: <aef304a3-beab-71f4-7967-a8a5fa8e1371@canonical.com>
+Date:   Thu, 21 Apr 2022 11:45:42 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH 2/2] rtw88: pci: 8821c: Disable 21ce completion timeout
+Content-Language: en-US
+To:     Ping-Ke Shih <pkshih@realtek.com>, tony0620emma@gmail.com,
+        kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, phhuang@realtek.com
+References: <20220420093058.31646-1-pkshih@realtek.com>
+ <20220420093058.31646-2-pkshih@realtek.com>
+From:   Chris Chiu <chris.chiu@canonical.com>
+In-Reply-To: <20220420093058.31646-2-pkshih@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-9.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This read the country code from SMBIOS and send the country code
-to firmware, firmware will indicate the regulatory domain info of the
-country code and then ath11k will use the info.
 
-dmesg:
-[ 1242.637173] ath11k_pci 0000:02:00.0: chip_id 0x2 chip_family 0xb board_id 0xff soc_id 0x400c0200
-[ 1242.637176] ath11k_pci 0000:02:00.0: fw_version 0x110b09e5 fw_build_timestamp 2021-06-22 09:32 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HSP.1.1-02533-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-[ 1242.637253] ath11k_pci 0000:02:00.0: worldwide regdomain setting from SMBIOS
-[ 1242.637259] ath11k_pci 0000:02:00.0: bdf variant name not found.
-[ 1242.637261] ath11k_pci 0000:02:00.0: SMBIOS bdf variant name not set.
-[ 1242.637263] ath11k_pci 0000:02:00.0: DT bdf variant name not set.
-[ 1242.927543] ath11k_pci 0000:02:00.0: set current country pdev id 0 alpha2 00
+On 2022/4/20 17:30, Ping-Ke Shih wrote:
+> From: Po-Hao Huang <phhuang@realtek.com>
+>
+> Disable this capability to avoid timeout errors on certain platforms.
+> Without it, pci bus might stuck and leads to disconnection.
+>
+> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> ---
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+Tested-by: Chris Chiu <chris.chiu@canonical.com>
 
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/core.c | 28 ++++++++++++++++++++++++--
- drivers/net/wireless/ath/ath11k/core.h | 23 +++++++++++++++++++--
- drivers/net/wireless/ath/ath11k/mac.c  | 11 ++++++++++
- 3 files changed, 58 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 1537ec0ae2e7..721669c04dcf 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -538,13 +538,14 @@ int ath11k_core_resume(struct ath11k_base *ab)
- }
- EXPORT_SYMBOL(ath11k_core_resume);
- 
--static void ath11k_core_check_bdfext(const struct dmi_header *hdr, void *data)
-+static void ath11k_core_check_cc_code_bdfext(const struct dmi_header *hdr, void *data)
- {
- 	struct ath11k_base *ab = data;
- 	const char *magic = ATH11K_SMBIOS_BDF_EXT_MAGIC;
- 	struct ath11k_smbios_bdf *smbios = (struct ath11k_smbios_bdf *)hdr;
- 	ssize_t copied;
- 	size_t len;
-+	u16 cc_code;
- 	int i;
- 
- 	if (ab->qmi.target.bdf_ext[0] != '\0')
-@@ -560,6 +561,29 @@ static void ath11k_core_check_bdfext(const struct dmi_header *hdr, void *data)
- 		return;
- 	}
- 
-+	spin_lock_bh(&ab->base_lock);
-+
-+	switch (smbios->country_code_flag) {
-+	case ATH11K_SMBIOS_CC_ISO:
-+		cc_code = __le16_to_cpu(smbios->cc_code);
-+		ab->new_alpha2[0] = (cc_code >> 8) & 0xff;
-+		ab->new_alpha2[1] = cc_code & 0xff;
-+		ath11k_dbg(ab, ATH11K_DBG_BOOT, "cc code from SMBIOS %c%c\n",
-+			   ab->new_alpha2[0], ab->new_alpha2[1]);
-+		break;
-+	case ATH11K_SMBIOS_CC_WW:
-+		ab->new_alpha2[0] = '0';
-+		ab->new_alpha2[1] = '0';
-+		ath11k_dbg(ab, ATH11K_DBG_BOOT, "worldwide regdomain setting from SMBIOS\n");
-+		break;
-+	default:
-+		ath11k_dbg(ab, ATH11K_DBG_BOOT, "ignore country code setting %d from SMBIOS\n",
-+			   smbios->country_code_flag);
-+		break;
-+	}
-+
-+	spin_unlock_bh(&ab->base_lock);
-+
- 	if (!smbios->bdf_enabled) {
- 		ath11k_dbg(ab, ATH11K_DBG_BOOT, "bdf variant name not found.\n");
- 		return;
-@@ -599,7 +623,7 @@ static void ath11k_core_check_bdfext(const struct dmi_header *hdr, void *data)
- int ath11k_core_check_smbios(struct ath11k_base *ab)
- {
- 	ab->qmi.target.bdf_ext[0] = '\0';
--	dmi_walk(ath11k_core_check_bdfext, ab);
-+	dmi_walk(ath11k_core_check_cc_code_bdfext, ab);
- 
- 	if (ab->qmi.target.bdf_ext[0] == '\0')
- 		return -ENODATA;
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index fa299bfb4efc..88f87b212ac7 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -169,12 +169,31 @@ struct ath11k_ext_irq_grp {
- 	struct net_device napi_ndev;
- };
- 
-+enum ath11k_smbios_cc_type {
-+	/* disable country code setting from SMBIOS */
-+	ATH11K_SMBIOS_CC_DISABLE = 0,
-+	/* set country code by ANSI country name, based on ISO3166-1 alpha2 */
-+	ATH11K_SMBIOS_CC_ISO = 1,
-+	/* worldwide regdomain */
-+	ATH11K_SMBIOS_CC_WW = 2,
-+};
-+
- struct ath11k_smbios_bdf {
- 	struct dmi_header hdr;
--	u32 padding;
-+	u8 features_disabled;
-+	/* enum ath11k_smbios_cc_type */
-+	u8 country_code_flag;
-+	/* To set specific country, you need to set country code
-+	 * flag=ATH11K_SMBIOS_CC_ISO first, then if country is United States, then country
-+	 * code value = 0x5553 ("US",'U' = 0x55, 'S'= 0x53), To set country
-+	 * to INDONESIA, then country code value = 0x4944 ("IN", 'I'=0x49, 'D'=0x44).
-+	 * If country code flag = ATH11K_SMBIOS_CC_WW, then you can use
-+	 * worldwide regulatory setting.
-+	 */
-+	__le16 cc_code;
- 	u8 bdf_enabled;
- 	u8 bdf_ext[];
--};
-+} __packed;
- 
- #define HEHANDLE_CAP_PHYINFO_SIZE       3
- #define HECAP_PHYINFO_SIZE              9
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index ca998fb13b62..06d6261e49b2 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -8773,6 +8773,17 @@ static int __ath11k_mac_register(struct ath11k *ar)
- 		goto err_unregister_hw;
- 	}
- 
-+	if (ab->hw_params.current_cc_support && ab->new_alpha2[0]) {
-+		struct wmi_set_current_country_params set_current_param = {};
-+
-+		memcpy(&set_current_param.alpha2, ab->new_alpha2, 2);
-+		memcpy(&ar->alpha2, ab->new_alpha2, 2);
-+		ret = ath11k_wmi_send_set_current_country_cmd(ar, &set_current_param);
-+		if (ret)
-+			ath11k_warn(ar->ab,
-+				    "failed set cc code for mac register: %d\n", ret);
-+	}
-+
- 	ret = ath11k_debugfs_register(ar);
- 	if (ret) {
- 		ath11k_err(ar->ab, "debugfs registration failed: %d\n", ret);
-
-base-commit: 00576220f0dea728fdecfd0d31a0dd661c14e6a1
--- 
-2.31.1
-
+>   drivers/net/wireless/realtek/rtw88/pci.c | 12 ++++++++++++
+>   1 file changed, 12 insertions(+)
+>
+> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+> index 33042b63a151e..3ef0de70af328 100644
+> --- a/drivers/net/wireless/realtek/rtw88/pci.c
+> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
+> @@ -1482,12 +1482,15 @@ static void rtw_pci_interface_cfg(struct rtw_dev *rtwdev)
+>   
+>   static void rtw_pci_phy_cfg(struct rtw_dev *rtwdev)
+>   {
+> +	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
+>   	struct rtw_chip_info *chip = rtwdev->chip;
+> +	struct pci_dev *pdev = rtwpci->pdev;
+>   	const struct rtw_intf_phy_para *para;
+>   	u16 cut;
+>   	u16 value;
+>   	u16 offset;
+>   	int i;
+> +	int ret;
+>   
+>   	cut = BIT(0) << rtwdev->hal.cut_version;
+>   
+> @@ -1520,6 +1523,15 @@ static void rtw_pci_phy_cfg(struct rtw_dev *rtwdev)
+>   	}
+>   
+>   	rtw_pci_link_cfg(rtwdev);
+> +
+> +	/* Disable 8821ce completion timeout by default */
+> +	if (chip->id == RTW_CHIP_TYPE_8821C) {
+> +		ret = pcie_capability_set_word(pdev, PCI_EXP_DEVCTL2,
+> +					       PCI_EXP_DEVCTL2_COMP_TMOUT_DIS);
+> +		if (ret)
+> +			rtw_err(rtwdev, "failed to set PCI cap, ret = %d\n",
+> +				ret);
+> +	}
+>   }
+>   
+>   static int __maybe_unused rtw_pci_suspend(struct device *dev)
