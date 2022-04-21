@@ -2,120 +2,207 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6BF1508DCC
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Apr 2022 18:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B65150950D
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Apr 2022 04:35:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380790AbiDTQ4c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Apr 2022 12:56:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43330 "EHLO
+        id S1358101AbiDUCi1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Apr 2022 22:38:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234342AbiDTQ4b (ORCPT
+        with ESMTP id S1383796AbiDUCiT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Apr 2022 12:56:31 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B8FB3E5C4;
-        Wed, 20 Apr 2022 09:53:43 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id lc2so4733866ejb.12;
-        Wed, 20 Apr 2022 09:53:43 -0700 (PDT)
+        Wed, 20 Apr 2022 22:38:19 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4404AF1D
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Apr 2022 19:35:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Rfm74VEUMWZeXlpuLUyC+UQS6WldzCAHTX0ZUV4DSls=;
-        b=blpgcPwCTkxucUu2qZrWjwcq7sstE9xLRf5AbMMlxE8YZrJ0K0DNZxOq4mCHEiyIyZ
-         XdoMlOsuUf/eyx3g2tt7V7BIGpKZARWCyw1YovPsqhkocExAa58e2kNc0dv0QBaUvZTa
-         ObRRFqQ4FyNMmEiFGHCCqZyPP+x7gzFpMJbnyt2QOVwKfhkFb3cu+p9W2jcva0Vxo2JL
-         lO9F9NUmdDYZfFpt3wm6+UBs1MD6omwNrsa9yUtpOxuAmZ8f7zy3kfQpG3afpx91hIaT
-         XBh/sjnCyaTmpslP6liNlZldDuaPtD9AyVqE2rsH4dciA+m8PBxfVU+bGhG2acy4lRXn
-         OzIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Rfm74VEUMWZeXlpuLUyC+UQS6WldzCAHTX0ZUV4DSls=;
-        b=Ga428sQXnIt8y9TLN9dmCYe7YR4MYziCIzq3hq6bdMmKcZjyn51xtepg9cix9q1RA8
-         pkag3NnZqTrXRckXKQaAMxunTI6ms+d7r+DFWUXPYsFuoi7izJZpaDR5ftEtCEMKvCiX
-         MWlGxUl0BholX0v6rqAxngtSDTAtbsCfYcGs8S1+4lm+WunImFlqgcZ42noHAHKGByPU
-         y63dpo+dMTy5vkjtG5pEfJZSJoWtvrzTcaZCfaVBF1ZPHxU1KaYysuhW5jKs/FaIs6Et
-         a18e+jT6b9HcTy9Pv4Y22CVLcFlyp/hVNjrp7owktUwWiOedrtEZPS5XKE6l/fR7n2C8
-         e3yg==
-X-Gm-Message-State: AOAM533pMuWmFHM8YB4K9t2ki8U9RAy6SevE0cKDGC0pvkmwPvcvu2Ef
-        vET3Dw2uUYnREZoxJil+5dk=
-X-Google-Smtp-Source: ABdhPJxQ3uQH39NmcFzDqchDbenZC7Dj2C9W1dhPLDuReZA2QBfhi5bpkVEuZLM9fty7klo1viKK2g==
-X-Received: by 2002:a17:907:6d96:b0:6e8:d7d9:d573 with SMTP id sb22-20020a1709076d9600b006e8d7d9d573mr19276189ejc.90.1650473621788;
-        Wed, 20 Apr 2022 09:53:41 -0700 (PDT)
-Received: from leap.localnet (host-79-50-86-254.retail.telecomitalia.it. [79.50.86.254])
-        by smtp.gmail.com with ESMTPSA id ee17-20020a056402291100b0041fe1e4e342sm10006539edb.27.2022.04.20.09.53.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Apr 2022 09:53:40 -0700 (PDT)
-From:   "Fabio M. De Francesco" <fmdefrancesco@gmail.com>
-To:     Jaehee Park <jhpark1013@gmail.com>, Kalle Valo <kvalo@kernel.org>
-Cc:     =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
-        outreachy@lists.linux.dev, Stefano Brivio <sbrivio@redhat.com>
-Subject: Re: [PATCH] wfx: use container_of() to get vif
-Date:   Wed, 20 Apr 2022 18:53:39 +0200
-Message-ID: <2258432.bcXerOTE6V@leap>
-In-Reply-To: <87y200nf0a.fsf@kernel.org>
-References: <20220418035110.GA937332@jaehee-ThinkPad-X1-Extreme> <87y200nf0a.fsf@kernel.org>
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1650508516; x=1682044516;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=s3yIx6lzX2Qdd7/djdCHBUNrnWZkAuTzjG2OdUyyfcc=;
+  b=bMjdMTpW1ct/48ZYij3CO1ERkFR9g2GW59H3eC/M86TBZ/5LOwaBQshF
+   Dps7qcW0rzvVCpKiUGyG9iOmA9AdVDxK16rYGFno+nmzBAnTYkWlQrJtU
+   0XE4gckiAIGoqK3/ufxpkdCwvP7W5MtgS4WzmyID4GkwnHY5GP/ibYjQS
+   M=;
+Received: from unknown (HELO ironmsg03-sd.qualcomm.com) ([10.53.140.143])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 20 Apr 2022 19:35:16 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg03-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2022 19:35:15 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 20 Apr 2022 19:35:15 -0700
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 20 Apr 2022 19:35:14 -0700
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH] ath11k: add read country code from SMBIOS for WCN6855/QCA6390
+Date:   Wed, 20 Apr 2022 22:35:01 -0400
+Message-ID: <20220421023501.32167-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On mercoled=C3=AC 20 aprile 2022 13:57:57 CEST Kalle Valo wrote:
-> Jaehee Park <jhpark1013@gmail.com> writes:
->=20
-> > Currently, upon virtual interface creation, wfx_add_interface() stores
-> > a reference to the corresponding struct ieee80211_vif in private data,
-> > for later usage. This is not needed when using the container_of
-> > construct. This construct already has all the info it needs to retrieve
-> > the reference to the corresponding struct from the offset that is
-> > already available, inherent in container_of(), between its type and
-> > member inputs (struct ieee80211_vif and drv_priv, respectively).
-> > Remove vif (which was previously storing the reference to the struct
-> > ieee80211_vif) from the struct wfx_vif, define a function
-> > wvif_to_vif(wvif) for container_of(), and replace all wvif->vif with
-> > the newly defined container_of construct.
-> >
-> > Signed-off-by: Jaehee Park <jhpark1013@gmail.com>
->=20
-> [...]
->=20
-> > +static inline struct ieee80211_vif *wvif_to_vif(struct wfx_vif *wvif)
-> > +{
-> > +	return container_of((void *)wvif, struct ieee80211_vif,=20
-drv_priv);
-> > +}
->=20
-> Why the void pointer cast? Avoid casts as much possible.
+This read the country code from SMBIOS and send the country code
+to firmware, firmware will indicate the regulatory domain info of the
+country code and then ath11k will use the info.
 
-In a previous email Jaehee wrote that she could compile her changes only by=
-=20
-using that "(void *)" cast.
+dmesg:
+[ 1242.637173] ath11k_pci 0000:02:00.0: chip_id 0x2 chip_family 0xb board_id 0xff soc_id 0x400c0200
+[ 1242.637176] ath11k_pci 0000:02:00.0: fw_version 0x110b09e5 fw_build_timestamp 2021-06-22 09:32 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HSP.1.1-02533-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+[ 1242.637253] ath11k_pci 0000:02:00.0: worldwide regdomain setting from SMBIOS
+[ 1242.637259] ath11k_pci 0000:02:00.0: bdf variant name not found.
+[ 1242.637261] ath11k_pci 0000:02:00.0: SMBIOS bdf variant name not set.
+[ 1242.637263] ath11k_pci 0000:02:00.0: DT bdf variant name not set.
+[ 1242.927543] ath11k_pci 0000:02:00.0: set current country pdev id 0 alpha2 00
 
-I replied that probably this is a hint that something is broken, although=20
-my argument is not necessarily a "proof". Might very well be that this cast=
-=20
-was needed in this particular situation but I cannot see why.
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
 
-@Jaehee, please try to explain why this "(void *)" cast is actually=20
-necessary and why your changes cannot avoid it.
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/core.c | 28 ++++++++++++++++++++++++--
+ drivers/net/wireless/ath/ath11k/core.h | 23 +++++++++++++++++++--
+ drivers/net/wireless/ath/ath11k/mac.c  | 11 ++++++++++
+ 3 files changed, 58 insertions(+), 4 deletions(-)
 
-Thanks,
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 1537ec0ae2e7..721669c04dcf 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -538,13 +538,14 @@ int ath11k_core_resume(struct ath11k_base *ab)
+ }
+ EXPORT_SYMBOL(ath11k_core_resume);
+ 
+-static void ath11k_core_check_bdfext(const struct dmi_header *hdr, void *data)
++static void ath11k_core_check_cc_code_bdfext(const struct dmi_header *hdr, void *data)
+ {
+ 	struct ath11k_base *ab = data;
+ 	const char *magic = ATH11K_SMBIOS_BDF_EXT_MAGIC;
+ 	struct ath11k_smbios_bdf *smbios = (struct ath11k_smbios_bdf *)hdr;
+ 	ssize_t copied;
+ 	size_t len;
++	u16 cc_code;
+ 	int i;
+ 
+ 	if (ab->qmi.target.bdf_ext[0] != '\0')
+@@ -560,6 +561,29 @@ static void ath11k_core_check_bdfext(const struct dmi_header *hdr, void *data)
+ 		return;
+ 	}
+ 
++	spin_lock_bh(&ab->base_lock);
++
++	switch (smbios->country_code_flag) {
++	case ATH11K_SMBIOS_CC_ISO:
++		cc_code = __le16_to_cpu(smbios->cc_code);
++		ab->new_alpha2[0] = (cc_code >> 8) & 0xff;
++		ab->new_alpha2[1] = cc_code & 0xff;
++		ath11k_dbg(ab, ATH11K_DBG_BOOT, "cc code from SMBIOS %c%c\n",
++			   ab->new_alpha2[0], ab->new_alpha2[1]);
++		break;
++	case ATH11K_SMBIOS_CC_WW:
++		ab->new_alpha2[0] = '0';
++		ab->new_alpha2[1] = '0';
++		ath11k_dbg(ab, ATH11K_DBG_BOOT, "worldwide regdomain setting from SMBIOS\n");
++		break;
++	default:
++		ath11k_dbg(ab, ATH11K_DBG_BOOT, "ignore country code setting %d from SMBIOS\n",
++			   smbios->country_code_flag);
++		break;
++	}
++
++	spin_unlock_bh(&ab->base_lock);
++
+ 	if (!smbios->bdf_enabled) {
+ 		ath11k_dbg(ab, ATH11K_DBG_BOOT, "bdf variant name not found.\n");
+ 		return;
+@@ -599,7 +623,7 @@ static void ath11k_core_check_bdfext(const struct dmi_header *hdr, void *data)
+ int ath11k_core_check_smbios(struct ath11k_base *ab)
+ {
+ 	ab->qmi.target.bdf_ext[0] = '\0';
+-	dmi_walk(ath11k_core_check_bdfext, ab);
++	dmi_walk(ath11k_core_check_cc_code_bdfext, ab);
+ 
+ 	if (ab->qmi.target.bdf_ext[0] == '\0')
+ 		return -ENODATA;
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index fa299bfb4efc..88f87b212ac7 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -169,12 +169,31 @@ struct ath11k_ext_irq_grp {
+ 	struct net_device napi_ndev;
+ };
+ 
++enum ath11k_smbios_cc_type {
++	/* disable country code setting from SMBIOS */
++	ATH11K_SMBIOS_CC_DISABLE = 0,
++	/* set country code by ANSI country name, based on ISO3166-1 alpha2 */
++	ATH11K_SMBIOS_CC_ISO = 1,
++	/* worldwide regdomain */
++	ATH11K_SMBIOS_CC_WW = 2,
++};
++
+ struct ath11k_smbios_bdf {
+ 	struct dmi_header hdr;
+-	u32 padding;
++	u8 features_disabled;
++	/* enum ath11k_smbios_cc_type */
++	u8 country_code_flag;
++	/* To set specific country, you need to set country code
++	 * flag=ATH11K_SMBIOS_CC_ISO first, then if country is United States, then country
++	 * code value = 0x5553 ("US",'U' = 0x55, 'S'= 0x53), To set country
++	 * to INDONESIA, then country code value = 0x4944 ("IN", 'I'=0x49, 'D'=0x44).
++	 * If country code flag = ATH11K_SMBIOS_CC_WW, then you can use
++	 * worldwide regulatory setting.
++	 */
++	__le16 cc_code;
+ 	u8 bdf_enabled;
+ 	u8 bdf_ext[];
+-};
++} __packed;
+ 
+ #define HEHANDLE_CAP_PHYINFO_SIZE       3
+ #define HECAP_PHYINFO_SIZE              9
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index ca998fb13b62..06d6261e49b2 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -8773,6 +8773,17 @@ static int __ath11k_mac_register(struct ath11k *ar)
+ 		goto err_unregister_hw;
+ 	}
+ 
++	if (ab->hw_params.current_cc_support && ab->new_alpha2[0]) {
++		struct wmi_set_current_country_params set_current_param = {};
++
++		memcpy(&set_current_param.alpha2, ab->new_alpha2, 2);
++		memcpy(&ar->alpha2, ab->new_alpha2, 2);
++		ret = ath11k_wmi_send_set_current_country_cmd(ar, &set_current_param);
++		if (ret)
++			ath11k_warn(ar->ab,
++				    "failed set cc code for mac register: %d\n", ret);
++	}
++
+ 	ret = ath11k_debugfs_register(ar);
+ 	if (ret) {
+ 		ath11k_err(ar->ab, "debugfs registration failed: %d\n", ret);
 
-=46abio M. De Francesco
-
-
+base-commit: 00576220f0dea728fdecfd0d31a0dd661c14e6a1
+-- 
+2.31.1
 
