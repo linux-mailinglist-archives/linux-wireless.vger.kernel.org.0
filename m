@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F401509F56
+	by mail.lfdr.de (Postfix) with ESMTP id 7AB31509F57
 	for <lists+linux-wireless@lfdr.de>; Thu, 21 Apr 2022 14:10:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383336AbiDUMNG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Apr 2022 08:13:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54484 "EHLO
+        id S1383476AbiDUMNK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Apr 2022 08:13:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1383242AbiDUMM2 (ORCPT
+        with ESMTP id S1383318AbiDUMM3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Apr 2022 08:12:28 -0400
+        Thu, 21 Apr 2022 08:12:29 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D98462F006
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Apr 2022 05:09:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 845182ED77
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Apr 2022 05:09:40 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23LC9XbxC028976, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23LC9XbxC028976
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23LC9YWV0028983, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23LC9YWV0028983
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 21 Apr 2022 20:09:33 +0800
+        Thu, 21 Apr 2022 20:09:34 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 21 Apr 2022 20:09:33 +0800
+ 15.1.2308.27; Thu, 21 Apr 2022 20:09:34 +0800
 Received: from localhost (172.16.16.159) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 21 Apr
- 2022 20:09:29 +0800
+ 2022 20:09:34 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 04/14] rtw89: pci: does RX in interrupt threadfn if low power mode
-Date:   Thu, 21 Apr 2022 20:08:53 +0800
-Message-ID: <20220421120903.73715-5-pkshih@realtek.com>
+Subject: [PATCH 05/14] rtw89: ser: re-enable interrupt in threadfn if under_recovery
+Date:   Thu, 21 Apr 2022 20:08:54 +0800
+Message-ID: <20220421120903.73715-6-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220421120903.73715-1-pkshih@realtek.com>
 References: <20220421120903.73715-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvMjEgpFekyCAxMDowNzowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -67,81 +67,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In lower power mode, there are very low amount of RX, and it must process
-in a separated function instead of schedule_napi(), because the existing
-napi_poll does many things to optimize performance, but not all registers
-can access in low power mode. The simple way is to use threadfn to process
-the simple thing.
+Normally, we re-enable interrupt by napi_poll, but for this special
+situation, we must turn it on immediately because napi_poll isn't
+scheduled.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c |  3 +++
- drivers/net/wireless/realtek/rtw89/pci.c  | 23 +++++++++++++++++++++++
- 2 files changed, 26 insertions(+)
+ drivers/net/wireless/realtek/rtw89/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 6e8a65b021ce4..796b205854ac6 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1420,7 +1420,10 @@ static void rtw89_core_rx_to_mac80211(struct rtw89_dev *rtwdev,
- {
- 	rtw89_core_hw_to_sband_rate(rx_status);
- 	rtw89_core_rx_stats(rtwdev, phy_ppdu, desc_info, skb_ppdu);
-+	/* In low power mode, it does RX in thread context. */
-+	local_bh_disable();
- 	ieee80211_rx_napi(rtwdev->hw, NULL, skb_ppdu, &rtwdev->napi);
-+	local_bh_enable();
- 	rtwdev->napi_budget_countdown--;
- }
- 
 diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index c1bb44bcd48e1..e8bcecbe77e14 100644
+index e8bcecbe77e14..ad3db5aa890c6 100644
 --- a/drivers/net/wireless/realtek/rtw89/pci.c
 +++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -713,6 +713,18 @@ static void rtw89_pci_ops_recovery_complete(struct rtw89_dev *rtwdev)
- 	spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
- }
+@@ -743,7 +743,7 @@ static irqreturn_t rtw89_pci_interrupt_threadfn(int irq, void *dev)
+ 		rtw89_ser_notify(rtwdev, rtw89_mac_get_err_status(rtwdev));
  
-+static void rtw89_pci_low_power_interrupt_handler(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
-+	int budget = NAPI_POLL_WEIGHT;
-+
-+	/* To prevent RXQ get stuck due to run out of budget. */
-+	rtwdev->napi_budget_countdown = budget;
-+
-+	rtw89_pci_poll_rpq_dma(rtwdev, rtwpci, budget);
-+	rtw89_pci_poll_rxq_dma(rtwdev, rtwpci, budget);
-+}
-+
- static irqreturn_t rtw89_pci_interrupt_threadfn(int irq, void *dev)
- {
- 	struct rtw89_dev *rtwdev = dev;
-@@ -733,6 +745,11 @@ static irqreturn_t rtw89_pci_interrupt_threadfn(int irq, void *dev)
  	if (unlikely(rtwpci->under_recovery))
- 		return IRQ_HANDLED;
- 
-+	if (unlikely(rtwpci->low_power)) {
-+		rtw89_pci_low_power_interrupt_handler(rtwdev);
+-		return IRQ_HANDLED;
 +		goto enable_intr;
-+	}
-+
- 	if (likely(rtwpci->running)) {
- 		local_bh_disable();
- 		napi_schedule(&rtwdev->napi);
-@@ -740,6 +757,12 @@ static irqreturn_t rtw89_pci_interrupt_threadfn(int irq, void *dev)
- 	}
  
- 	return IRQ_HANDLED;
-+
-+enable_intr:
-+	spin_lock_irqsave(&rtwpci->irq_lock, flags);
-+	rtw89_chip_enable_intr(rtwdev, rtwpci);
-+	spin_unlock_irqrestore(&rtwpci->irq_lock, flags);
-+	return IRQ_HANDLED;
- }
- 
- static irqreturn_t rtw89_pci_interrupt_handler(int irq, void *dev)
+ 	if (unlikely(rtwpci->low_power)) {
+ 		rtw89_pci_low_power_interrupt_handler(rtwdev);
 -- 
 2.25.1
 
