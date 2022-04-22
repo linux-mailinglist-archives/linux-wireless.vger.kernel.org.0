@@ -2,111 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F21850AA87
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Apr 2022 23:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9F0C50AD95
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Apr 2022 04:03:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1441825AbiDUVRQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Apr 2022 17:17:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46244 "EHLO
+        id S1379729AbiDVCFI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Apr 2022 22:05:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229976AbiDUVRP (ORCPT
+        with ESMTP id S233237AbiDVCFH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Apr 2022 17:17:15 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A53349F2C
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Apr 2022 14:14:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=c/02Q/vf5R3LFZzkS8JBR0foELszGqvAH/lUEI2ausk=; b=edEm6nmYj4x9gUS0C5+He5pF+/
-        jSOofWu05NcKaT1KrzbtjDIqxltnmVOkNgdwtQQhF7wnzne5RZ+keeKNajfi+rUVv1lPG9SOTFeql
-        OArLOAQR1xm+ISKZ7+lz/4ObNyeyKYd6EYWLHvs6QJKjCi9nizjGP3372mSgRPtvwg3M=;
-Received: from p200300daa70ef20028a36ac9fd74af32.dip0.t-ipconnect.de ([2003:da:a70e:f200:28a3:6ac9:fd74:af32] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1nhe85-0006Ib-Gz; Thu, 21 Apr 2022 23:14:21 +0200
-Message-ID: <f1b944f5-b440-d32e-84b9-7cb140b0adc6@nbd.name>
-Date:   Thu, 21 Apr 2022 23:14:21 +0200
+        Thu, 21 Apr 2022 22:05:07 -0400
+X-Greylist: delayed 1988 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 21 Apr 2022 19:02:15 PDT
+Received: from m15111.mail.126.com (m15111.mail.126.com [220.181.15.111])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 171DE4A92D;
+        Thu, 21 Apr 2022 19:02:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=b328s
+        Yp84i/CvToFx9BMqGedw/IAbOAcUjUC3unR+0k=; b=go+2Bo+2qK87t7eB6c+oo
+        Atu+RHLiaYM/OoANhqq6GbeDToLyMNrYUptCdn7qpK9oLrgDIFezVn6kjgtMFVcv
+        CcYuKed7tcGSJoPhT3CHMieau6v5R+W6ICcVWTUlGTtf6ThywAY9KI3FpT5B3k26
+        FzpSgMdJUiKtg2teYzWIIU=
+Received: from ubuntu.localdomain (unknown [58.213.83.157])
+        by smtp1 (Coremail) with SMTP id C8mowABHTzfABGJiO8MNBA--.8225S4;
+        Fri, 22 Apr 2022 09:28:34 +0800 (CST)
+From:   Bernard Zhao <zhaojunkui2008@126.com>
+To:     Jakub Kicinski <kubakici@wp.pl>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     bernard@vivo.com, Bernard Zhao <zhaojunkui2008@126.com>
+Subject: [PATCH] net/wireless: add debugfs exit function
+Date:   Thu, 21 Apr 2022 18:28:30 -0700
+Message-Id: <20220422012830.342993-1-zhaojunkui2008@126.com>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.8.1
-Subject: Re: [PATCH] mt76: mt7915: disable RX_HDR_TRANS_SHORT
-Content-Language: en-US
-To:     "bo.jiao" <bo.jiao@mediatek.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        "lian . chen" <lian.chen@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-References: <20220420071144.14573-1-bo.jiao@mediatek.com>
- <46f14357-d02b-cad3-9fa8-7e1962305251@nbd.name>
- <5b0f28fa67b27151a59ea42d9f60e29919f36f36.camel@mediatek.com>
-From:   Felix Fietkau <nbd@nbd.name>
-In-Reply-To: <5b0f28fa67b27151a59ea42d9f60e29919f36f36.camel@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: C8mowABHTzfABGJiO8MNBA--.8225S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWryDur13Jw1kJr4rGr15Jwb_yoW5Gw1xpa
+        yUKa4Ykw18Zr1DJ3y8AF4UAFyrG3Zagry7GF90v34ru348Ar1Fq3W0qFW7Aa40qFWUCa45
+        tF4UtFnrGryIvFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zizBT7UUUUU=
+X-Originating-IP: [58.213.83.157]
+X-CM-SenderInfo: p2kd0y5xqn3xasqqmqqrswhudrp/1tbiYAPqqlpEG-QfMQAAs8
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+This patch add exit debugfs function to mt7601u.
+Debugfs need to be cleanup when module is unloaded or load fail.
 
-Hi,
+Signed-off-by: Bernard Zhao <zhaojunkui2008@126.com>
+---
+ drivers/net/wireless/mediatek/mt7601u/debugfs.c | 9 +++++++--
+ drivers/net/wireless/mediatek/mt7601u/init.c    | 1 +
+ drivers/net/wireless/mediatek/mt7601u/mt7601u.h | 1 +
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
-On 21.04.22 03:44, bo.jiao wrote:
-> hi felix:
-> 
-> mt7915_mac_fill_rx:
-> 	......
-> 
-> 	if (!status->wcid || !ieee80211_is_data_qos(fc))
-> 		return 0;
-> 
-> 	status->aggr = unicast &&
-> 		       !ieee80211_is_qos_nullfunc(fc);
-> 	status->qos_ctl = qos_ctl;
-> 	status->seqno = IEEE80211_SEQ_TO_SN(seq_ctrl);
-> 
-> 	return 0;
-> 
-> it will be returned by the condition !ieee80211_is_data_qos(fc) when
-> receive non-Qos (null) data, and the status->aggr/status-
->>qos_ctl/status->seqno keep the default value 0.
-> 
-> mt76_rx_aggr_reorder:
-> 	....
-> 
-> 	sta = wcid_to_sta(wcid);
-> 	if (!sta)
-> 		return;
-> 
-> 	if (!status->aggr && !(status->flag & RX_FLAG_8023)) {
-> 		mt76_rx_aggr_check_ctl(skb, frames);
-> 		return;
-> 	}
-> 
-> 	....
-> 
-> those packet will be forced to do rx reorder and may incorrectly update
-> tid->head.
-> https://patchwork.kernel.org/project/linux-wireless/patch/2022042010503
-> 8.36443-1-nbd@nbd.name/
-> Your replacement patch did not include this change.
-> +	if (!status->aggr)
-> +		return;
-> +
-> 
-> Thanks.
-I posted this patch: https://patchwork.kernel.org/project/linux-wireless/patch/20220420112524.52430-1-nbd@nbd.name/
+diff --git a/drivers/net/wireless/mediatek/mt7601u/debugfs.c b/drivers/net/wireless/mediatek/mt7601u/debugfs.c
+index 20669eacb66e..5ae27aae685b 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt7601u/debugfs.c
+@@ -9,6 +9,8 @@
+ #include "mt7601u.h"
+ #include "eeprom.h"
+ 
++static struct dentry *dir;
++
+ static int
+ mt76_reg_set(void *data, u64 val)
+ {
+@@ -124,8 +126,6 @@ DEFINE_SHOW_ATTRIBUTE(mt7601u_eeprom_param);
+ 
+ void mt7601u_init_debugfs(struct mt7601u_dev *dev)
+ {
+-	struct dentry *dir;
+-
+ 	dir = debugfs_create_dir("mt7601u", dev->hw->wiphy->debugfsdir);
+ 	if (!dir)
+ 		return;
+@@ -138,3 +138,8 @@ void mt7601u_init_debugfs(struct mt7601u_dev *dev)
+ 	debugfs_create_file("ampdu_stat", 0400, dir, dev, &mt7601u_ampdu_stat_fops);
+ 	debugfs_create_file("eeprom_param", 0400, dir, dev, &mt7601u_eeprom_param_fops);
+ }
++
++void mt7601u_exit_debugfs(struct mt7601u_dev *dev)
++{
++	debugfs_remove(dir);
++}
+diff --git a/drivers/net/wireless/mediatek/mt7601u/init.c b/drivers/net/wireless/mediatek/mt7601u/init.c
+index 5d9e952b2966..eacdd5785fa6 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/init.c
++++ b/drivers/net/wireless/mediatek/mt7601u/init.c
+@@ -427,6 +427,7 @@ void mt7601u_cleanup(struct mt7601u_dev *dev)
+ 	mt7601u_stop_hardware(dev);
+ 	mt7601u_dma_cleanup(dev);
+ 	mt7601u_mcu_cmd_deinit(dev);
++	mt7601u_exit_debugfs(dev);
+ }
+ 
+ struct mt7601u_dev *mt7601u_alloc_device(struct device *pdev)
+diff --git a/drivers/net/wireless/mediatek/mt7601u/mt7601u.h b/drivers/net/wireless/mediatek/mt7601u/mt7601u.h
+index a122f1dd38f6..a77bfef0d39f 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/mt7601u.h
++++ b/drivers/net/wireless/mediatek/mt7601u/mt7601u.h
+@@ -279,6 +279,7 @@ struct mt7601u_rxwi;
+ extern const struct ieee80211_ops mt7601u_ops;
+ 
+ void mt7601u_init_debugfs(struct mt7601u_dev *dev);
++void mt7601u_exit_debugfs(struct mt7601u_dev *dev);
+ 
+ u32 mt7601u_rr(struct mt7601u_dev *dev, u32 offset);
+ void mt7601u_wr(struct mt7601u_dev *dev, u32 offset, u32 val);
+-- 
+2.33.1
 
-- Felix
