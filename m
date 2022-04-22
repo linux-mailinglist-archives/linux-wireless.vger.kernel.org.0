@@ -2,77 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DEE650C11B
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Apr 2022 23:36:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79CD050C14B
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 00:06:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230122AbiDVViw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Apr 2022 17:38:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40622 "EHLO
+        id S231440AbiDVWFB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Apr 2022 18:05:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230062AbiDVVit (ORCPT
+        with ESMTP id S231400AbiDVWEt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Apr 2022 17:38:49 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DCFE29DF15;
-        Fri, 22 Apr 2022 13:44:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C8204B8325D;
-        Fri, 22 Apr 2022 20:44:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD2DC385A0;
-        Fri, 22 Apr 2022 20:44:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650660247;
-        bh=HnbkQVOtfa7+/56LQ5INga98V0wHs2i7oJ/vI85Yrbo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ncbmxN3DmsIJneYRy5/ENYjoC5IpODUGNtoqIcYvp/kNhyNvjtlhNgLsf6F+yjb1g
-         jVstrDggPk3uYKOKKFux0FNjQg3bs96RfiXaseCMLwErKmAc8oBTYrAdPRplYUgsCr
-         QYNI4YeEOzSnE32G+XYQ8zz4EfY8tkrhGUEPj68EpOas+hjCUvS65aUIip7ajutCsd
-         +gdiDnVGG5UwdRzvLF6aiIWhUeiNmoIpEkflQamA1hjzkDrTzh8s4lIvT10OyyMXKF
-         AaV6d/p07sO4C8+ML8hhojkVpFX7fBRXEmpsgecLOiAB2R/yWEnqoAlV1bTEkyIF0K
-         ZJXv69B6gizkw==
-Date:   Fri, 22 Apr 2022 13:44:05 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Jani Nikula <jani.nikula@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Lucas De Marchi <lucas.demarchi@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 0/1] add support for enum module parameters
-Message-ID: <20220422134405.7a519a0f@kernel.org>
-In-Reply-To: <87sfq8qqus.fsf@tynnyri.adurom.net>
-References: <20220414123033.654198-1-jani.nikula@intel.com>
-        <YlgfXxjefuxiXjtC@kroah.com>
-        <87a6cneoco.fsf@intel.com>
-        <87sfq8qqus.fsf@tynnyri.adurom.net>
+        Fri, 22 Apr 2022 18:04:49 -0400
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF8711EE8E8
+        for <linux-wireless@vger.kernel.org>; Fri, 22 Apr 2022 13:47:15 -0700 (PDT)
+Received: (wp-smtpd smtp.wp.pl 29161 invoked from network); 22 Apr 2022 21:47:12 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1650656832; bh=xN2TT2giRziTYzxkSRV3HAksGNGWVBKa+uXJBNXkzg8=;
+          h=From:To:Cc:Subject;
+          b=OaGiXdxuDtJlr6gXKJMqvpfHpw99AKST0JhzfU229DzbMl/J+krQWmDL0JaMn3wZ+
+           nLYzvdrGHvHszYhPrBHs6aXhFXMAhayra5vhItjEqeLtXIx/Awutg9aHIuu0eIUDfd
+           DolY4LgU+nV3ARsdp1tJC43865542AEiY+9HqATk=
+Received: from unknown (HELO kicinski-fedora-PC1C0HJN) (kubakici@wp.pl@[163.114.132.6])
+          (envelope-sender <kubakici@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <zhaojunkui2008@126.com>; 22 Apr 2022 21:47:12 +0200
+Date:   Fri, 22 Apr 2022 12:47:04 -0700
+From:   Jakub Kicinski <kubakici@wp.pl>
+To:     Bernard Zhao <zhaojunkui2008@126.com>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        bernard@vivo.com
+Subject: Re: [PATCH v2] mediatek/mt7601u: add debugfs exit function
+Message-ID: <20220422124704.259244e7@kicinski-fedora-PC1C0HJN>
+In-Reply-To: <20220422080854.490379-1-zhaojunkui2008@126.com>
+References: <20220422080854.490379-1-zhaojunkui2008@126.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-WP-MailID: 9321f50bc9e4db09d6c2149ef2c2edd3
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 000000A [UYOE]                               
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 20 Apr 2022 08:13:47 +0300 Kalle Valo wrote:
-> Wireless drivers would also desperately need to pass device specific
-> parameters at (or before) probe time. And not only debug parameters but
-> also configuration parameters, for example firmware memory allocations
-> schemes (optimise for features vs number of clients etc) and whatnot.
+On Fri, 22 Apr 2022 01:08:54 -0700 Bernard Zhao wrote:
+> When mt7601u loaded, there are two cases:
+> First when mt7601u is loaded, in function mt7601u_probe, if
+> function mt7601u_probe run into error lable err_hw,
+> mt7601u_cleanup didn`t cleanup the debugfs node.
+> Second when the module disconnect, in function mt7601u_disconnect,
+> mt7601u_cleanup didn`t cleanup the debugfs node.
+> This patch add debugfs exit function and try to cleanup debugfs
+> node when mt7601u loaded fail or unloaded.
 > 
-> Any ideas how to implement that? Is there any prior work for anything
-> like this? This is pretty hard limiting usability of upstream wireless
-> drivers and I really want to find a proper solution.
+> Signed-off-by: Bernard Zhao <zhaojunkui2008@126.com>
 
-In netdev we have devlink which is used for all sort of device
-configuration. devlink-resource sounds like what you need,
-but it'd have to be extended to support configuration which requires
-reload/re-probe. Currently only devlink-params support that but params
-were a mistake so don't use that.
+Ah, missed that there was a v2. My point stands, wiphy debugfs dir
+should do the cleanup.
+
+Do you encounter problems in practice or are you sending this patches
+based on reading / static analysis of the code only.
