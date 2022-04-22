@@ -2,76 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96E6A50B04B
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Apr 2022 08:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82AE850B0BD
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Apr 2022 08:39:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1444259AbiDVGPa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Apr 2022 02:15:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51100 "EHLO
+        id S1444465AbiDVGl0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Apr 2022 02:41:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229813AbiDVGP3 (ORCPT
+        with ESMTP id S1349475AbiDVGlZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Apr 2022 02:15:29 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8533250067;
-        Thu, 21 Apr 2022 23:12:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0AFC6B82A8B;
-        Fri, 22 Apr 2022 06:12:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8884BC385A0;
-        Fri, 22 Apr 2022 06:12:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650607954;
-        bh=sQ993ibhAeZKDcNyaBxUh8xxW2w0Mr0D59fXMweNxDo=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=MO2Y585mR5sjxallnGbTxLm7lumX8vaQRJ1VQ77iUu+P4Lv4T6D9/Ra2zZZXIZP4H
-         /9kITjFvEp3MuTorG+KCGgZgqyuxJEs+mats6svXnewEo/I3CG6U5nybxQTqbc/6vT
-         v7wn5/fR9gBsCVYQNW1ck7iOwRlVdKTvKMwPPwAOcTnMQx1qU3GWBBdPr0C/rTFEuZ
-         VuX+91k4L/1K4/GgRe8wz2tsXi6HLDCSSFPdH+4eFodyOQGPWGXOIM58GFHMMH6FaX
-         xjZY/NAo1Q1ElIgWRaoh8aK0ZSjnRbsXQKNBR0fkkC3OHmnuL15oqqjzT5UVYcMIIr
-         Oq6UNsKnGi4ZA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Yunbo Yu <yuyunbo519@gmail.com>
-Cc:     nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
-        shayne.chen@mediatek.com, sean.wang@mediatek.com,
-        davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-        matthias.bgg@gmail.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] =?utf-8?B?bXQ3Nu+8mm10NzYwM++8mg==?= move
- spin_lock_bh() to spin_lock()
-References: <20220422060723.424862-1-yuyunbo519@gmail.com>
-Date:   Fri, 22 Apr 2022 09:12:28 +0300
-In-Reply-To: <20220422060723.424862-1-yuyunbo519@gmail.com> (Yunbo Yu's
-        message of "Fri, 22 Apr 2022 14:07:23 +0800")
-Message-ID: <87y1zxmysz.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 22 Apr 2022 02:41:25 -0400
+Received: from m1541.mail.126.com (m1541.mail.126.com [220.181.15.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 602BE3FD9F;
+        Thu, 21 Apr 2022 23:38:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+        s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=yVM+N
+        e5UA83M8xLJzmBVV3Y0VtWxbKAdVuywD6V0vX0=; b=UGDV4TGlRuwu1HMMyiC5C
+        yLfXyf58SamRDI9yHEAyr5erYpGF+2oVl5qouEZLygEyYhO1xLr3v2XeTcYFJnE9
+        0KiLQST7Auxz4uyKYX4GBqBRUfGtTF+6qaPqnXh+AMRZfZXqQGesxyLndUbu7ueA
+        nR3VJ3Op3cOcMlAncuVu7I=
+Received: from zhaojunkui2008$126.com ( [112.80.34.205] ) by
+ ajax-webmail-wmsvr41 (Coremail) ; Fri, 22 Apr 2022 14:37:55 +0800 (CST)
+X-Originating-IP: [112.80.34.205]
+Date:   Fri, 22 Apr 2022 14:37:55 +0800 (CST)
+From:   z <zhaojunkui2008@126.com>
+To:     "Kalle Valo" <kvalo@kernel.org>
+Cc:     "Jakub Kicinski" <kubakici@wp.pl>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Paolo Abeni" <pabeni@redhat.com>,
+        "Matthias Brugger" <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        bernard@vivo.com
+Subject: Re:Re: [PATCH] net/wireless: add debugfs exit function
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210622(1d4788a8)
+ Copyright (c) 2002-2022 www.mailtech.cn 126com
+In-Reply-To: <877d7hoe2i.fsf@kernel.org>
+References: <20220422012830.342993-1-zhaojunkui2008@126.com>
+ <877d7hoe2i.fsf@kernel.org>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <3c0443f.3b82.1804ffdcdeb.Coremail.zhaojunkui2008@126.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: KcqowADn9t5ETWJizOERAA--.42288W
+X-CM-SenderInfo: p2kd0y5xqn3xasqqmqqrswhudrp/1tbiuRrqqlpD8lA2UwACs-
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Yunbo Yu <yuyunbo519@gmail.com> writes:
-
-> It is unnecessary to call spin_lock_bh(), for you are already in a tasklet.
->
-> Signed-off-by: Yunbo Yu <yuyunbo519@gmail.com>
-
-Why do you use unicode character "=EF=BC=9A"[1] as colon in the title?
-After all recent news about left-to-right trickery all special
-characters make me suspicious.
-
-https://www.fileformat.info/info/unicode/char/ff1a/index.htm
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+SGkgS2FsbGUgVmFsbzoKCj4tLS0tLdPKvP7Urbz+LS0tLS0KPreivP7IyzogS2FsbGUgVmFsbyA8
+a3ZhbG9Aa2VybmVsLm9yZz4gCj63osvNyrG85DogMjAyMsTqNNTCMjLI1SAxMzo1Nwo+ytW8/sjL
+OiBCZXJuYXJkIFpoYW8gPHpoYW9qdW5rdWkyMDA4QDEyNi5jb20+Cj6zrcvNOiBKYWt1YiBLaWNp
+bnNraSA8a3ViYWtpY2lAd3AucGw+OyBEYXZpZCBTLiBNaWxsZXIgPGRhdmVtQGRhdmVtbG9mdC5u
+ZXQ+OyBQYW9sbyBBYmVuaSA8cGFiZW5pQHJlZGhhdC5jb20+OyBNYXR0aGlhcyBCcnVnZ2VyIDxt
+YXR0aGlhcy5iZ2dAZ21haWwuY29tPjsgbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnOyBu
+ZXRkZXZAdmdlci5rZXJuZWwub3JnOyA+bGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQu
+b3JnOyBsaW51eC1tZWRpYXRla0BsaXN0cy5pbmZyYWRlYWQub3JnOyBsaW51eC1rZXJuZWxAdmdl
+ci5rZXJuZWwub3JnOyDV1L78v/wgPGJlcm5hcmRAdml2by5jb20+Cj7W98ziOiBSZTogW1BBVENI
+XSBuZXQvd2lyZWxlc3M6IGFkZCBkZWJ1Z2ZzIGV4aXQgZnVuY3Rpb24KCj5CZXJuYXJkIFpoYW8g
+PHpoYW9qdW5rdWkyMDA4QDEyNi5jb20+IHdyaXRlczoKCj4+IFRoaXMgcGF0Y2ggYWRkIGV4aXQg
+ZGVidWdmcyBmdW5jdGlvbiB0byBtdDc2MDF1Lgo+PiBEZWJ1Z2ZzIG5lZWQgdG8gYmUgY2xlYW51
+cCB3aGVuIG1vZHVsZSBpcyB1bmxvYWRlZCBvciBsb2FkIGZhaWwuCgo+ImxvYWQgZmFpbCI/IFBs
+ZWFzZSBiZSBtb3JlIHNwZWNpZmljLCBhcmUgeW91IHNheWluZyB0aGF0IHRoZSBzZWNvbmQgbW9k
+dWxlIGxvYWQgZmFpbHMgb3Igd2hhdD8KRm9yIHRoaXMgcGFydCwgdGhlcmUgYXJlIHR3byBjYXNl
+czoKRmlyc3Qgd2hlbiBtdDc2MDF1IGlzIGxvYWRlZCwgaW4gZnVuY3Rpb24gbXQ3NjAxdV9wcm9i
+ZSwgaWYgZnVuY3Rpb24gbXQ3NjAxdV9wcm9iZSBydW4gaW50byBlcnJvciBsYWJsZSBlcnJfaHcs
+IG10NzYwMXVfY2xlYW51cCBkaWRuYHQgY2xlYW51cCB0aGUgZGVidWdmcyBub2RlLgpTZWNvbmQg
+d2hlbiB0aGUgbW9kdWxlIGRpc2Nvbm5lY3QsIGluIGZ1bmN0aW9uIG10NzYwMXVfZGlzY29ubmVj
+dCwgbXQ3NjAxdV9jbGVhbnVwIGRpZG5gdCBjbGVhbnVwIHRoZSBkZWJ1Z2ZzIG5vZGUuCkkgdGhp
+bmsgdGhlc2UgYXJlIHRoZSBtdDc2MDF1IHVubG9hZGVkIG9yIGxvYWQgZmFpbCBjYXNlcywgYnV0
+IGJvdGggd2l0aCBubyBkZWJ1Z2ZzIGNsZWFudXAgd29yay4KCj4+ICBkcml2ZXJzL25ldC93aXJl
+bGVzcy9tZWRpYXRlay9tdDc2MDF1L2RlYnVnZnMuYyB8IDkgKysrKysrKy0tCj4+ICBkcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2MDF1L2luaXQuYyAgICB8IDEgKwo+PiAgZHJpdmVy
+cy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3NjAxdS9tdDc2MDF1LmggfCAxICsKCj5UaGUgdGl0
+bGUgc2hvdWxkIGJlOgoKPm10NzYwMXU6IGFkZCBkZWJ1Z2ZzIGV4aXQgZnVuY3Rpb24KR290IGl0
+LCB0aGFua3OjoQoKPj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3NjAx
+dS9kZWJ1Z2ZzLmMKPj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3NjAx
+dS9kZWJ1Z2ZzLmMKPj4gQEAgLTksNiArOSw4IEBACj4+ICAjaW5jbHVkZSAibXQ3NjAxdS5oIgo+
+PiAgI2luY2x1ZGUgImVlcHJvbS5oIgo+PiAgCj4+ICtzdGF0aWMgc3RydWN0IGRlbnRyeSAqZGly
+OwoKPkhvdyB3aWxsIHRoaXMgd29yayB3aGVuIHRoZXJlIGFyZSBtdWx0aXBsZSBtdDc2MDF1IGRl
+dmljZXM/IEJlY2F1c2Ugb2YgdGhhdCwgYXZvaWQgdXNpbmcgbm9uLWNvbnN0IHN0YXRpYyB2YXJp
+YWJsZXMuClNvcnJ5IGZvciBtaXNzaW5nIHRoaXMgcGFydCwgSSB1bmRlcnN0YW5kIHRoYXQgdGhl
+IGJldHRlciB3YXkgaXMgdG8gbWFuYWdlIGl0IGluIHRoZSBzdHJ1Y3Qgb2YgdGhlIG1hdGNoZWQg
+ZGV2aWNlLCBJIHdvdWxkIGZpeCB0aGlzIGluIHRoZSBuZXh0IHBhdGNoLgpUaGFuayB5b3UgdmVy
+eSBtdWNoIQoKQlIvL0Jlcm5hcmQKCj4tLQo+aHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9w
+cm9qZWN0L2xpbnV4LXdpcmVsZXNzL2xpc3QvCgo+aHR0cHM6Ly93aXJlbGVzcy53aWtpLmtlcm5l
+bC5vcmcvZW4vZGV2ZWxvcGVycy9kb2N1bWVudGF0aW9uL3N1Ym1pdHRpbmdwYXRjaGVzCg==
