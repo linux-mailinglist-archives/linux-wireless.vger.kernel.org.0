@@ -2,162 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5247C50B1F8
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Apr 2022 09:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B28D50B248
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Apr 2022 09:59:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1445014AbiDVHtD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Apr 2022 03:49:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59602 "EHLO
+        id S1445376AbiDVICP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Apr 2022 04:02:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242661AbiDVHtA (ORCPT
+        with ESMTP id S1349087AbiDVICK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Apr 2022 03:49:00 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02F87434B4;
-        Fri, 22 Apr 2022 00:46:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A88A1B829DC;
-        Fri, 22 Apr 2022 07:46:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E2BC385A0;
-        Fri, 22 Apr 2022 07:45:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650613562;
-        bh=d7DdfLVHBzoMwY9s9afOMHivuS5z7UO53y+qRExaI4g=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=g2Ix2CmD+h6XYXS+ZxSj7/TtWfmzDMgqg280d2chhORi0tqBDGCr+AcUsnJT4qRBb
-         sRRUcsC04Us16r9ELqy1MpknoMXvx/MQwBJ/Lj8FA9QDa+iWTjowciFQbg0tJC60lH
-         NHyR5m3HH5jKcsl/CpJ4cIMq5MOMudSJlSeYUXjMIXXzHdXi+SJcZZLPsfS2QQcD94
-         qV9oD7mYtKr1cGETBv0p3SuxvN9KxbHSixLkV5FaQ/UYL3YpoPzwpHBcjD2NCd18TV
-         2SMpZmgormeA4vc4aG4ohUEpEhor7wrPAiUYdKPnsH0zhqZXrm17dGVECoJSaWtrMy
-         9kP2dbAoyV7xg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Bernard Zhao <zhaojunkui2008@126.com>
-Cc:     Jakub Kicinski <kubakici@wp.pl>,
+        Fri, 22 Apr 2022 04:02:10 -0400
+Received: from m1541.mail.126.com (m1541.mail.126.com [220.181.15.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 84C62522DB;
+        Fri, 22 Apr 2022 00:59:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+        s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=KOOwj
+        Ngxtpj+BOV9RiocwkEJ5gaHVgyNXKB2q9i864s=; b=I2bcLGGMBZdE8yJCQe73E
+        ublKXrfowHicATx4CEeGLTb6eCcoRMxL5WoQOTv2+7QZxwlqAzF4e/JPdbJi3Hv0
+        A8AVgXuuhLURpEiqwFDsWBb4y1DE5YvfB6w7f1mKr1sC1ZbZ4TWP3y/hEY3dxCYf
+        tslRTLpgh+V2PhvjmdSg5c=
+Received: from zhaojunkui2008$126.com ( [58.213.83.157] ) by
+ ajax-webmail-wmsvr41 (Coremail) ; Fri, 22 Apr 2022 15:58:26 +0800 (CST)
+X-Originating-IP: [58.213.83.157]
+Date:   Fri, 22 Apr 2022 15:58:26 +0800 (CST)
+From:   z <zhaojunkui2008@126.com>
+To:     "Kalle Valo" <kvalo@kernel.org>
+Cc:     "Jakub Kicinski" <kubakici@wp.pl>,
         "David S. Miller" <davem@davemloft.net>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
+        "Paolo Abeni" <pabeni@redhat.com>,
+        "Matthias Brugger" <matthias.bgg@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
         bernard@vivo.com
-Subject: Re: [PATCH] mediatek/mt7601u: add debugfs exit function
+Subject: Re:Re: [PATCH] mediatek/mt7601u: add debugfs exit function
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210622(1d4788a8)
+ Copyright (c) 2002-2022 www.mailtech.cn 126com
+In-Reply-To: <87k0bhmuh6.fsf@kernel.org>
 References: <20220422070325.465918-1-zhaojunkui2008@126.com>
-Date:   Fri, 22 Apr 2022 10:45:57 +0300
-In-Reply-To: <20220422070325.465918-1-zhaojunkui2008@126.com> (Bernard Zhao's
-        message of "Fri, 22 Apr 2022 00:03:25 -0700")
-Message-ID: <87k0bhmuh6.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+ <87k0bhmuh6.fsf@kernel.org>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <6fd91edd.4c2b.1805047850c.Coremail.zhaojunkui2008@126.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: KcqowADn9t4jYGJiD_oRAA--.42888W
+X-CM-SenderInfo: p2kd0y5xqn3xasqqmqqrswhudrp/1tbiuQPqqlpD8lH33AAAsr
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bernard Zhao <zhaojunkui2008@126.com> writes:
-
-> When mt7601u loaded, there are two cases:
-> First when mt7601u is loaded, in function mt7601u_probe, if
-> function mt7601u_probe run into error lable err_hw,
-> mt7601u_cleanup didn`t cleanup the debugfs node.
-> Second when the module disconnect, in function mt7601u_disconnect,
-> mt7601u_cleanup didn`t cleanup the debugfs node.
-> This patch add debugfs exit function and try to cleanup debugfs
-> node when mt7601u loaded fail or unloaded.
->
-> Signed-off-by: Bernard Zhao <zhaojunkui2008@126.com>
-> ---
->  .../net/wireless/mediatek/mt7601u/debugfs.c   | 25 +++++++++++--------
->  drivers/net/wireless/mediatek/mt7601u/init.c  |  5 ++++
->  .../net/wireless/mediatek/mt7601u/mt7601u.h   |  4 +++
->  3 files changed, 24 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt7601u/debugfs.c b/drivers/net/wireless/mediatek/mt7601u/debugfs.c
-> index 20669eacb66e..1ae3d75d3c9b 100644
-> --- a/drivers/net/wireless/mediatek/mt7601u/debugfs.c
-> +++ b/drivers/net/wireless/mediatek/mt7601u/debugfs.c
-> @@ -124,17 +124,22 @@ DEFINE_SHOW_ATTRIBUTE(mt7601u_eeprom_param);
->  
->  void mt7601u_init_debugfs(struct mt7601u_dev *dev)
->  {
-> -	struct dentry *dir;
-> -
-> -	dir = debugfs_create_dir("mt7601u", dev->hw->wiphy->debugfsdir);
-> -	if (!dir)
-> +	dev->root_dir = debugfs_create_dir("mt7601u", dev->hw->wiphy->debugfsdir);
-> +	if (!dev->root_dir)
->  		return;
->  
-> -	debugfs_create_u8("temperature", 0400, dir, &dev->raw_temp);
-> -	debugfs_create_u32("temp_mode", 0400, dir, &dev->temp_mode);
-> +	debugfs_create_u8("temperature", 0400, dev->root_dir, &dev->raw_temp);
-> +	debugfs_create_u32("temp_mode", 0400, dev->root_dir, &dev->temp_mode);
-> +
-> +	debugfs_create_u32("regidx", 0600, dev->root_dir, &dev->debugfs_reg);
-> +	debugfs_create_file("regval", 0600, dev->root_dir, dev, &fops_regval);
-> +	debugfs_create_file("ampdu_stat", 0400, dev->root_dir, dev, &mt7601u_ampdu_stat_fops);
-> +	debugfs_create_file("eeprom_param", 0400, dev->root_dir, dev, &mt7601u_eeprom_param_fops);
-> +}
->  
-> -	debugfs_create_u32("regidx", 0600, dir, &dev->debugfs_reg);
-> -	debugfs_create_file("regval", 0600, dir, dev, &fops_regval);
-> -	debugfs_create_file("ampdu_stat", 0400, dir, dev, &mt7601u_ampdu_stat_fops);
-> -	debugfs_create_file("eeprom_param", 0400, dir, dev, &mt7601u_eeprom_param_fops);
-> +void mt7601u_exit_debugfs(struct mt7601u_dev *dev)
-> +{
-> +	if (!dev->root_dir)
-> +		return;
-> +	debugfs_remove(dev->root_dir);
-
-debugfs_remove() has IS_ERR_OR_NULL() check, so no need to check for
-null here.
-
->  }
-> diff --git a/drivers/net/wireless/mediatek/mt7601u/init.c b/drivers/net/wireless/mediatek/mt7601u/init.c
-> index 5d9e952b2966..1e905ef2ed19 100644
-> --- a/drivers/net/wireless/mediatek/mt7601u/init.c
-> +++ b/drivers/net/wireless/mediatek/mt7601u/init.c
-> @@ -427,6 +427,9 @@ void mt7601u_cleanup(struct mt7601u_dev *dev)
->  	mt7601u_stop_hardware(dev);
->  	mt7601u_dma_cleanup(dev);
->  	mt7601u_mcu_cmd_deinit(dev);
-> +#ifdef CONFIG_DEBUG_FS
-> +	mt7601u_exit_debugfs(dev);
-> +#endif
->  }
->  
->  struct mt7601u_dev *mt7601u_alloc_device(struct device *pdev)
-> @@ -625,7 +628,9 @@ int mt7601u_register_device(struct mt7601u_dev *dev)
->  	if (ret)
->  		return ret;
->  
-> +#ifdef CONFIG_DEBUG_FS
->  	mt7601u_init_debugfs(dev);
-> +#endif
-
-Are these two ifdefs really needed? debugfs functions are empty
-functions when CONFIG_DEBUG_FS is disabled.
-
-> --- a/drivers/net/wireless/mediatek/mt7601u/mt7601u.h
-> +++ b/drivers/net/wireless/mediatek/mt7601u/mt7601u.h
-> @@ -242,6 +242,9 @@ struct mt7601u_dev {
->  	u32 rf_pa_mode[2];
->  
->  	struct mac_stats stats;
-> +#ifdef CONFIG_DEBUG_FS
-> +	struct dentry *root_dir;
-> +#endif
-
-I would remove this ifdef, it's just saving one pointer size. Less
-ifdefs we have the better.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+SEkgS2FsbGUgVmFsbzoKCkF0IDIwMjItMDQtMjIgMTU6NDU6NTcsICJLYWxsZSBWYWxvIiA8a3Zh
+bG9Aa2VybmVsLm9yZz4gd3JvdGU6Cj5CZXJuYXJkIFpoYW8gPHpoYW9qdW5rdWkyMDA4QDEyNi5j
+b20+IHdyaXRlczoKPgo+PiBXaGVuIG10NzYwMXUgbG9hZGVkLCB0aGVyZSBhcmUgdHdvIGNhc2Vz
+Ogo+PiBGaXJzdCB3aGVuIG10NzYwMXUgaXMgbG9hZGVkLCBpbiBmdW5jdGlvbiBtdDc2MDF1X3By
+b2JlLCBpZgo+PiBmdW5jdGlvbiBtdDc2MDF1X3Byb2JlIHJ1biBpbnRvIGVycm9yIGxhYmxlIGVy
+cl9odywKPj4gbXQ3NjAxdV9jbGVhbnVwIGRpZG5gdCBjbGVhbnVwIHRoZSBkZWJ1Z2ZzIG5vZGUu
+Cj4+IFNlY29uZCB3aGVuIHRoZSBtb2R1bGUgZGlzY29ubmVjdCwgaW4gZnVuY3Rpb24gbXQ3NjAx
+dV9kaXNjb25uZWN0LAo+PiBtdDc2MDF1X2NsZWFudXAgZGlkbmB0IGNsZWFudXAgdGhlIGRlYnVn
+ZnMgbm9kZS4KPj4gVGhpcyBwYXRjaCBhZGQgZGVidWdmcyBleGl0IGZ1bmN0aW9uIGFuZCB0cnkg
+dG8gY2xlYW51cCBkZWJ1Z2ZzCj4+IG5vZGUgd2hlbiBtdDc2MDF1IGxvYWRlZCBmYWlsIG9yIHVu
+bG9hZGVkLgo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBCZXJuYXJkIFpoYW8gPHpoYW9qdW5rdWkyMDA4
+QDEyNi5jb20+Cj4+IC0tLQo+PiAgLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2MDF1L2Rl
+YnVnZnMuYyAgIHwgMjUgKysrKysrKysrKystLS0tLS0tLQo+PiAgZHJpdmVycy9uZXQvd2lyZWxl
+c3MvbWVkaWF0ZWsvbXQ3NjAxdS9pbml0LmMgIHwgIDUgKysrKwo+PiAgLi4uL25ldC93aXJlbGVz
+cy9tZWRpYXRlay9tdDc2MDF1L210NzYwMXUuaCAgIHwgIDQgKysrCj4+ICAzIGZpbGVzIGNoYW5n
+ZWQsIDI0IGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQo+Pgo+PiBkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3NjAxdS9kZWJ1Z2ZzLmMgYi9kcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2MDF1L2RlYnVnZnMuYwo+PiBpbmRleCAyMDY2OWVh
+Y2I2NmUuLjFhZTNkNzVkM2M5YiAxMDA2NDQKPj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+bWVkaWF0ZWsvbXQ3NjAxdS9kZWJ1Z2ZzLmMKPj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+bWVkaWF0ZWsvbXQ3NjAxdS9kZWJ1Z2ZzLmMKPj4gQEAgLTEyNCwxNyArMTI0LDIyIEBAIERFRklO
+RV9TSE9XX0FUVFJJQlVURShtdDc2MDF1X2VlcHJvbV9wYXJhbSk7Cj4+ICAKPj4gIHZvaWQgbXQ3
+NjAxdV9pbml0X2RlYnVnZnMoc3RydWN0IG10NzYwMXVfZGV2ICpkZXYpCj4+ICB7Cj4+IC0Jc3Ry
+dWN0IGRlbnRyeSAqZGlyOwo+PiAtCj4+IC0JZGlyID0gZGVidWdmc19jcmVhdGVfZGlyKCJtdDc2
+MDF1IiwgZGV2LT5ody0+d2lwaHktPmRlYnVnZnNkaXIpOwo+PiAtCWlmICghZGlyKQo+PiArCWRl
+di0+cm9vdF9kaXIgPSBkZWJ1Z2ZzX2NyZWF0ZV9kaXIoIm10NzYwMXUiLCBkZXYtPmh3LT53aXBo
+eS0+ZGVidWdmc2Rpcik7Cj4+ICsJaWYgKCFkZXYtPnJvb3RfZGlyKQo+PiAgCQlyZXR1cm47Cj4+
+ICAKPj4gLQlkZWJ1Z2ZzX2NyZWF0ZV91OCgidGVtcGVyYXR1cmUiLCAwNDAwLCBkaXIsICZkZXYt
+PnJhd190ZW1wKTsKPj4gLQlkZWJ1Z2ZzX2NyZWF0ZV91MzIoInRlbXBfbW9kZSIsIDA0MDAsIGRp
+ciwgJmRldi0+dGVtcF9tb2RlKTsKPj4gKwlkZWJ1Z2ZzX2NyZWF0ZV91OCgidGVtcGVyYXR1cmUi
+LCAwNDAwLCBkZXYtPnJvb3RfZGlyLCAmZGV2LT5yYXdfdGVtcCk7Cj4+ICsJZGVidWdmc19jcmVh
+dGVfdTMyKCJ0ZW1wX21vZGUiLCAwNDAwLCBkZXYtPnJvb3RfZGlyLCAmZGV2LT50ZW1wX21vZGUp
+Owo+PiArCj4+ICsJZGVidWdmc19jcmVhdGVfdTMyKCJyZWdpZHgiLCAwNjAwLCBkZXYtPnJvb3Rf
+ZGlyLCAmZGV2LT5kZWJ1Z2ZzX3JlZyk7Cj4+ICsJZGVidWdmc19jcmVhdGVfZmlsZSgicmVndmFs
+IiwgMDYwMCwgZGV2LT5yb290X2RpciwgZGV2LCAmZm9wc19yZWd2YWwpOwo+PiArCWRlYnVnZnNf
+Y3JlYXRlX2ZpbGUoImFtcGR1X3N0YXQiLCAwNDAwLCBkZXYtPnJvb3RfZGlyLCBkZXYsICZtdDc2
+MDF1X2FtcGR1X3N0YXRfZm9wcyk7Cj4+ICsJZGVidWdmc19jcmVhdGVfZmlsZSgiZWVwcm9tX3Bh
+cmFtIiwgMDQwMCwgZGV2LT5yb290X2RpciwgZGV2LCAmbXQ3NjAxdV9lZXByb21fcGFyYW1fZm9w
+cyk7Cj4+ICt9Cj4+ICAKPj4gLQlkZWJ1Z2ZzX2NyZWF0ZV91MzIoInJlZ2lkeCIsIDA2MDAsIGRp
+ciwgJmRldi0+ZGVidWdmc19yZWcpOwo+PiAtCWRlYnVnZnNfY3JlYXRlX2ZpbGUoInJlZ3ZhbCIs
+IDA2MDAsIGRpciwgZGV2LCAmZm9wc19yZWd2YWwpOwo+PiAtCWRlYnVnZnNfY3JlYXRlX2ZpbGUo
+ImFtcGR1X3N0YXQiLCAwNDAwLCBkaXIsIGRldiwgJm10NzYwMXVfYW1wZHVfc3RhdF9mb3BzKTsK
+Pj4gLQlkZWJ1Z2ZzX2NyZWF0ZV9maWxlKCJlZXByb21fcGFyYW0iLCAwNDAwLCBkaXIsIGRldiwg
+Jm10NzYwMXVfZWVwcm9tX3BhcmFtX2ZvcHMpOwo+PiArdm9pZCBtdDc2MDF1X2V4aXRfZGVidWdm
+cyhzdHJ1Y3QgbXQ3NjAxdV9kZXYgKmRldikKPj4gK3sKPj4gKwlpZiAoIWRldi0+cm9vdF9kaXIp
+Cj4+ICsJCXJldHVybjsKPj4gKwlkZWJ1Z2ZzX3JlbW92ZShkZXYtPnJvb3RfZGlyKTsKPgo+ZGVi
+dWdmc19yZW1vdmUoKSBoYXMgSVNfRVJSX09SX05VTEwoKSBjaGVjaywgc28gbm8gbmVlZCB0byBj
+aGVjayBmb3IKPm51bGwgaGVyZS4KR290IGl0LCB0aGFua3MhCgo+PiAgfQo+PiBkaWZmIC0tZ2l0
+IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3NjAxdS9pbml0LmMgYi9kcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2MDF1L2luaXQuYwo+PiBpbmRleCA1ZDllOTUyYjI5
+NjYuLjFlOTA1ZWYyZWQxOSAxMDA2NDQKPj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVk
+aWF0ZWsvbXQ3NjAxdS9pbml0LmMKPj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
+ZWsvbXQ3NjAxdS9pbml0LmMKPj4gQEAgLTQyNyw2ICs0MjcsOSBAQCB2b2lkIG10NzYwMXVfY2xl
+YW51cChzdHJ1Y3QgbXQ3NjAxdV9kZXYgKmRldikKPj4gIAltdDc2MDF1X3N0b3BfaGFyZHdhcmUo
+ZGV2KTsKPj4gIAltdDc2MDF1X2RtYV9jbGVhbnVwKGRldik7Cj4+ICAJbXQ3NjAxdV9tY3VfY21k
+X2RlaW5pdChkZXYpOwo+PiArI2lmZGVmIENPTkZJR19ERUJVR19GUwo+PiArCW10NzYwMXVfZXhp
+dF9kZWJ1Z2ZzKGRldik7Cj4+ICsjZW5kaWYKPj4gIH0KPj4gIAo+PiAgc3RydWN0IG10NzYwMXVf
+ZGV2ICptdDc2MDF1X2FsbG9jX2RldmljZShzdHJ1Y3QgZGV2aWNlICpwZGV2KQo+PiBAQCAtNjI1
+LDcgKzYyOCw5IEBAIGludCBtdDc2MDF1X3JlZ2lzdGVyX2RldmljZShzdHJ1Y3QgbXQ3NjAxdV9k
+ZXYgKmRldikKPj4gIAlpZiAocmV0KQo+PiAgCQlyZXR1cm4gcmV0Owo+PiAgCj4+ICsjaWZkZWYg
+Q09ORklHX0RFQlVHX0ZTCj4+ICAJbXQ3NjAxdV9pbml0X2RlYnVnZnMoZGV2KTsKPj4gKyNlbmRp
+Zgo+Cj5BcmUgdGhlc2UgdHdvIGlmZGVmcyByZWFsbHkgbmVlZGVkPyBkZWJ1Z2ZzIGZ1bmN0aW9u
+cyBhcmUgZW1wdHkKPmZ1bmN0aW9ucyB3aGVuIENPTkZJR19ERUJVR19GUyBpcyBkaXNhYmxlZC4K
+SWZkZWYgZG9lc24ndCBzZWVtIHRvIG1ha2UgbXVjaCBzZW5zZSwgdGhhbmtzIGZvciB5b3VyIGFk
+dmljZSEKCj4+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYwMXUvbXQ3
+NjAxdS5oCj4+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYwMXUvbXQ3
+NjAxdS5oCj4+IEBAIC0yNDIsNiArMjQyLDkgQEAgc3RydWN0IG10NzYwMXVfZGV2IHsKPj4gIAl1
+MzIgcmZfcGFfbW9kZVsyXTsKPj4gIAo+PiAgCXN0cnVjdCBtYWNfc3RhdHMgc3RhdHM7Cj4+ICsj
+aWZkZWYgQ09ORklHX0RFQlVHX0ZTCj4+ICsJc3RydWN0IGRlbnRyeSAqcm9vdF9kaXI7Cj4+ICsj
+ZW5kaWYKPgo+SSB3b3VsZCByZW1vdmUgdGhpcyBpZmRlZiwgaXQncyBqdXN0IHNhdmluZyBvbmUg
+cG9pbnRlciBzaXplLiBMZXNzCj5pZmRlZnMgd2UgaGF2ZSB0aGUgYmV0dGVyLgpJIHdvdWxkIG1v
+ZGlmeSB0aGUgY29kZSBhbmQgcmVzdWJtaXQgYSBwYXRjaCwgdGhhbmsgeW91IHZlcnkgbXVjaCEK
+CkJSLy9CZXJuYXJkCj4tLSAKPmh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5vcmcvcHJvamVjdC9s
+aW51eC13aXJlbGVzcy9saXN0Lwo+Cj5odHRwczovL3dpcmVsZXNzLndpa2kua2VybmVsLm9yZy9l
+bi9kZXZlbG9wZXJzL2RvY3VtZW50YXRpb24vc3VibWl0dGluZ3BhdGNoZXMK
