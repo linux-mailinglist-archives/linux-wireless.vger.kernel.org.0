@@ -2,55 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 102AC50BADC
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Apr 2022 16:55:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E29FA50BB30
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Apr 2022 17:06:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1449008AbiDVO6j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Apr 2022 10:58:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42074 "EHLO
+        id S1449144AbiDVPFv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Apr 2022 11:05:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1449031AbiDVO6c (ORCPT
+        with ESMTP id S1449156AbiDVPF1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Apr 2022 10:58:32 -0400
-X-Greylist: delayed 280 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 22 Apr 2022 07:55:38 PDT
-Received: from mail.kevlo.org (mail.kevlo.org [220.134.220.36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0241B5AA61
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Apr 2022 07:55:38 -0700 (PDT)
-Received: from localhost (ns.kevlo.org [local])
-        by ns.kevlo.org (OpenSMTPD) with ESMTPA id 62f7c6f5;
-        Fri, 22 Apr 2022 22:50:54 +0800 (CST)
-Date:   Fri, 22 Apr 2022 22:50:54 +0800
-From:   Kevin Lo <kevlo@kevlo.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] rtw88: use the correct bit in the REG_HCI_OPT_CTRL register
-Message-ID: <YmLAzuyPr0P4Y6BP@ns.kevlo.org>
+        Fri, 22 Apr 2022 11:05:27 -0400
+X-Greylist: delayed 566 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 22 Apr 2022 08:02:00 PDT
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C4EDD5D64E;
+        Fri, 22 Apr 2022 08:02:00 -0700 (PDT)
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1650639152;
+        bh=GaoJjEeYtrkZYq4AFZT1+CvDCcuhrnUYGXMkfI7FpRQ=;
+        h=From:To:Cc:Subject:Date;
+        b=CzwZrV5NYZL8KIzCM80lEPB0a80IVCueADtEVEo9uBUEVg8EmD2lDnBRKGL3r+Z8o
+         5S5mdhPakWfCJItvRs08fROhG85iWAsV715NDOvLFcvnk/HL6a/SnuT4ztipDUmFpQ
+         bebjjXoAlKOM3jkhvN7xSI6T0SiOgcMESUb9RuTU=
+To:     linux-wireless@vger.kernel.org
+Cc:     Alexander Wetzel <alexander@wetzel-home.de>,
+        stable@vger.kernel.org, pa@panix.com
+Subject: [PATCH] rtl8180: Prevent using not initialized queues
+Date:   Fri, 22 Apr 2022 16:52:28 +0200
+Message-Id: <20220422145228.7567-1-alexander@wetzel-home.de>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Write the BIT_USB_SUS_DIS bit rather than BIT_BT_DIG_CLK_EN to the
-REG_HCI_OPT_CTRL register for fixing failure to PCIe power on.
+Using not existing queues can panic the kernel with rtl8180/rtl8185
+cards. Ignore the skb priority for those cards, they only have one
+tx queue.
 
-Signed-off-by: Kevin Lo <kevlo@kevlo.org>
+Cc: stable@vger.kernel.org
+Reported-by: pa@panix.com
+Tested-by: pa@panix.com
+Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
 ---
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index d1678aed9d9c..caf2603da2d6 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -75,7 +75,7 @@ static int rtw_mac_pre_system_cfg(struct rtw_dev *rtwdev)
+
+Pierre Asselin (pa@panix.com) reported a kernel crash in the Gentoo forum:
+https://forums.gentoo.org/viewtopic-t-1147832-postdays-0-postorder-asc-start-25.html
+He also confirmed that this patch fixes the issue.
+
+In summary this happened:
+After updating wpa_supplicant from 2.9 to 2.10 the kernel crashed with a
+"divide error: 0000" when connecting to an AP.
+Control port tx now tries to use IEEE80211_AC_VO for the priority, which
+wpa_supplicants starts to use in 2.10.
+
+Since only the rtl8187se part of the driver supports QoS, the priority
+of the skb is set to IEEE80211_AC_BE (2) by mac80211 for rtl8180/rtl8185
+cards.
+
+rtl8180 is then unconditionally reading out the priority and finally crashes on
+drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c line 544 without this
+patch:
+	idx = (ring->idx + skb_queue_len(&ring->queue)) % ring->entries
+
+"ring->entries" is zero for rtl8180/rtl8185 cards, tx_ring[2] never got
+initialized.
+
+ drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+index 2477e18c7cae..025619cd14e8 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
+@@ -460,8 +460,10 @@ static void rtl8180_tx(struct ieee80211_hw *dev,
+ 	struct rtl8180_priv *priv = dev->priv;
+ 	struct rtl8180_tx_ring *ring;
+ 	struct rtl8180_tx_desc *entry;
++	unsigned int prio = 0;
+ 	unsigned long flags;
+-	unsigned int idx, prio, hw_prio;
++	unsigned int idx, hw_prio;
++
+ 	dma_addr_t mapping;
+ 	u32 tx_flags;
+ 	u8 rc_flags;
+@@ -470,7 +472,9 @@ static void rtl8180_tx(struct ieee80211_hw *dev,
+ 	/* do arithmetic and then convert to le16 */
+ 	u16 frame_duration = 0;
  
- 	switch (rtw_hci_type(rtwdev)) {
- 	case RTW_HCI_TYPE_PCIE:
--		rtw_write32_set(rtwdev, REG_HCI_OPT_CTRL, BIT_BT_DIG_CLK_EN);
-+		rtw_write32_set(rtwdev, REG_HCI_OPT_CTRL, BIT_USB_SUS_DIS);
- 		break;
- 	case RTW_HCI_TYPE_USB:
- 		break;
+-	prio = skb_get_queue_mapping(skb);
++	/* rtl8180/rtl8185 only has one useable tx queue */
++	if (dev->queues > IEEE80211_AC_BK)
++		prio = skb_get_queue_mapping(skb);
+ 	ring = &priv->tx_ring[prio];
+ 
+ 	mapping = dma_map_single(&priv->pdev->dev, skb->data, skb->len,
+-- 
+2.35.1
+
