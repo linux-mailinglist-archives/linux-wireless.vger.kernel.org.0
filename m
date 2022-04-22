@@ -2,57 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82AE850B0BD
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Apr 2022 08:39:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFB2250B111
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Apr 2022 09:05:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1444465AbiDVGl0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Apr 2022 02:41:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45094 "EHLO
+        id S1444637AbiDVHGw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Apr 2022 03:06:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349475AbiDVGlZ (ORCPT
+        with ESMTP id S1443752AbiDVHGu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Apr 2022 02:41:25 -0400
-Received: from m1541.mail.126.com (m1541.mail.126.com [220.181.15.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 602BE3FD9F;
-        Thu, 21 Apr 2022 23:38:29 -0700 (PDT)
+        Fri, 22 Apr 2022 03:06:50 -0400
+Received: from m15114.mail.126.com (m15114.mail.126.com [220.181.15.114])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5FBE450E3D;
+        Fri, 22 Apr 2022 00:03:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-        s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=yVM+N
-        e5UA83M8xLJzmBVV3Y0VtWxbKAdVuywD6V0vX0=; b=UGDV4TGlRuwu1HMMyiC5C
-        yLfXyf58SamRDI9yHEAyr5erYpGF+2oVl5qouEZLygEyYhO1xLr3v2XeTcYFJnE9
-        0KiLQST7Auxz4uyKYX4GBqBRUfGtTF+6qaPqnXh+AMRZfZXqQGesxyLndUbu7ueA
-        nR3VJ3Op3cOcMlAncuVu7I=
-Received: from zhaojunkui2008$126.com ( [112.80.34.205] ) by
- ajax-webmail-wmsvr41 (Coremail) ; Fri, 22 Apr 2022 14:37:55 +0800 (CST)
-X-Originating-IP: [112.80.34.205]
-Date:   Fri, 22 Apr 2022 14:37:55 +0800 (CST)
-From:   z <zhaojunkui2008@126.com>
-To:     "Kalle Valo" <kvalo@kernel.org>
-Cc:     "Jakub Kicinski" <kubakici@wp.pl>,
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=IugEc
+        7TCS4filMhSENNWMSdUhh7TomdXhWV1WOvsR7c=; b=ghSz560Mmgy+yQGBrvQmX
+        uemRjhsrOTDFsr5kD/Vq21HvCzYfPxJBb72bDtlD+Ap1MPchlann49tqiMo057r7
+        8ROCnB8J9E0IDcWhch1mzLZnGeqbdWcYLcLnHZhgntV+b5DO8/5Wz3EGLOHQKntM
+        HBotY5E1t0Iqwo9ov0Iac4=
+Received: from ubuntu.localdomain (unknown [58.213.83.157])
+        by smtp7 (Coremail) with SMTP id DsmowACndf4+U2JieoI6Aw--.46022S4;
+        Fri, 22 Apr 2022 15:03:28 +0800 (CST)
+From:   Bernard Zhao <zhaojunkui2008@126.com>
+To:     Jakub Kicinski <kubakici@wp.pl>, Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
-        "Paolo Abeni" <pabeni@redhat.com>,
-        "Matthias Brugger" <matthias.bgg@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        bernard@vivo.com
-Subject: Re:Re: [PATCH] net/wireless: add debugfs exit function
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210622(1d4788a8)
- Copyright (c) 2002-2022 www.mailtech.cn 126com
-In-Reply-To: <877d7hoe2i.fsf@kernel.org>
-References: <20220422012830.342993-1-zhaojunkui2008@126.com>
- <877d7hoe2i.fsf@kernel.org>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     bernard@vivo.com, Bernard Zhao <zhaojunkui2008@126.com>
+Subject: [PATCH] mediatek/mt7601u: add debugfs exit function
+Date:   Fri, 22 Apr 2022 00:03:25 -0700
+Message-Id: <20220422070325.465918-1-zhaojunkui2008@126.com>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-Message-ID: <3c0443f.3b82.1804ffdcdeb.Coremail.zhaojunkui2008@126.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: KcqowADn9t5ETWJizOERAA--.42288W
-X-CM-SenderInfo: p2kd0y5xqn3xasqqmqqrswhudrp/1tbiuRrqqlpD8lA2UwACs-
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: DsmowACndf4+U2JieoI6Aw--.46022S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCr1xZr43WF4UAFy8Cw48JFb_yoWrAryUpa
+        yDKa4Ykw18Zr1UG3yxAF4UZryrG3s3Wr1xJF95Z345Z3y8Ar1Fq3WjqFy2vasxXFZ8A3WY
+        qF45tF47CryI9FJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zi7DGrUUUUU=
+X-Originating-IP: [58.213.83.157]
+X-CM-SenderInfo: p2kd0y5xqn3xasqqmqqrswhudrp/1tbiqAHqqlpD9hmR1AAAsa
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,41 +56,105 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGkgS2FsbGUgVmFsbzoKCj4tLS0tLdPKvP7Urbz+LS0tLS0KPreivP7IyzogS2FsbGUgVmFsbyA8
-a3ZhbG9Aa2VybmVsLm9yZz4gCj63osvNyrG85DogMjAyMsTqNNTCMjLI1SAxMzo1Nwo+ytW8/sjL
-OiBCZXJuYXJkIFpoYW8gPHpoYW9qdW5rdWkyMDA4QDEyNi5jb20+Cj6zrcvNOiBKYWt1YiBLaWNp
-bnNraSA8a3ViYWtpY2lAd3AucGw+OyBEYXZpZCBTLiBNaWxsZXIgPGRhdmVtQGRhdmVtbG9mdC5u
-ZXQ+OyBQYW9sbyBBYmVuaSA8cGFiZW5pQHJlZGhhdC5jb20+OyBNYXR0aGlhcyBCcnVnZ2VyIDxt
-YXR0aGlhcy5iZ2dAZ21haWwuY29tPjsgbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnOyBu
-ZXRkZXZAdmdlci5rZXJuZWwub3JnOyA+bGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQu
-b3JnOyBsaW51eC1tZWRpYXRla0BsaXN0cy5pbmZyYWRlYWQub3JnOyBsaW51eC1rZXJuZWxAdmdl
-ci5rZXJuZWwub3JnOyDV1L78v/wgPGJlcm5hcmRAdml2by5jb20+Cj7W98ziOiBSZTogW1BBVENI
-XSBuZXQvd2lyZWxlc3M6IGFkZCBkZWJ1Z2ZzIGV4aXQgZnVuY3Rpb24KCj5CZXJuYXJkIFpoYW8g
-PHpoYW9qdW5rdWkyMDA4QDEyNi5jb20+IHdyaXRlczoKCj4+IFRoaXMgcGF0Y2ggYWRkIGV4aXQg
-ZGVidWdmcyBmdW5jdGlvbiB0byBtdDc2MDF1Lgo+PiBEZWJ1Z2ZzIG5lZWQgdG8gYmUgY2xlYW51
-cCB3aGVuIG1vZHVsZSBpcyB1bmxvYWRlZCBvciBsb2FkIGZhaWwuCgo+ImxvYWQgZmFpbCI/IFBs
-ZWFzZSBiZSBtb3JlIHNwZWNpZmljLCBhcmUgeW91IHNheWluZyB0aGF0IHRoZSBzZWNvbmQgbW9k
-dWxlIGxvYWQgZmFpbHMgb3Igd2hhdD8KRm9yIHRoaXMgcGFydCwgdGhlcmUgYXJlIHR3byBjYXNl
-czoKRmlyc3Qgd2hlbiBtdDc2MDF1IGlzIGxvYWRlZCwgaW4gZnVuY3Rpb24gbXQ3NjAxdV9wcm9i
-ZSwgaWYgZnVuY3Rpb24gbXQ3NjAxdV9wcm9iZSBydW4gaW50byBlcnJvciBsYWJsZSBlcnJfaHcs
-IG10NzYwMXVfY2xlYW51cCBkaWRuYHQgY2xlYW51cCB0aGUgZGVidWdmcyBub2RlLgpTZWNvbmQg
-d2hlbiB0aGUgbW9kdWxlIGRpc2Nvbm5lY3QsIGluIGZ1bmN0aW9uIG10NzYwMXVfZGlzY29ubmVj
-dCwgbXQ3NjAxdV9jbGVhbnVwIGRpZG5gdCBjbGVhbnVwIHRoZSBkZWJ1Z2ZzIG5vZGUuCkkgdGhp
-bmsgdGhlc2UgYXJlIHRoZSBtdDc2MDF1IHVubG9hZGVkIG9yIGxvYWQgZmFpbCBjYXNlcywgYnV0
-IGJvdGggd2l0aCBubyBkZWJ1Z2ZzIGNsZWFudXAgd29yay4KCj4+ICBkcml2ZXJzL25ldC93aXJl
-bGVzcy9tZWRpYXRlay9tdDc2MDF1L2RlYnVnZnMuYyB8IDkgKysrKysrKy0tCj4+ICBkcml2ZXJz
-L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2MDF1L2luaXQuYyAgICB8IDEgKwo+PiAgZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3NjAxdS9tdDc2MDF1LmggfCAxICsKCj5UaGUgdGl0
-bGUgc2hvdWxkIGJlOgoKPm10NzYwMXU6IGFkZCBkZWJ1Z2ZzIGV4aXQgZnVuY3Rpb24KR290IGl0
-LCB0aGFua3OjoQoKPj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3NjAx
-dS9kZWJ1Z2ZzLmMKPj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3NjAx
-dS9kZWJ1Z2ZzLmMKPj4gQEAgLTksNiArOSw4IEBACj4+ICAjaW5jbHVkZSAibXQ3NjAxdS5oIgo+
-PiAgI2luY2x1ZGUgImVlcHJvbS5oIgo+PiAgCj4+ICtzdGF0aWMgc3RydWN0IGRlbnRyeSAqZGly
-OwoKPkhvdyB3aWxsIHRoaXMgd29yayB3aGVuIHRoZXJlIGFyZSBtdWx0aXBsZSBtdDc2MDF1IGRl
-dmljZXM/IEJlY2F1c2Ugb2YgdGhhdCwgYXZvaWQgdXNpbmcgbm9uLWNvbnN0IHN0YXRpYyB2YXJp
-YWJsZXMuClNvcnJ5IGZvciBtaXNzaW5nIHRoaXMgcGFydCwgSSB1bmRlcnN0YW5kIHRoYXQgdGhl
-IGJldHRlciB3YXkgaXMgdG8gbWFuYWdlIGl0IGluIHRoZSBzdHJ1Y3Qgb2YgdGhlIG1hdGNoZWQg
-ZGV2aWNlLCBJIHdvdWxkIGZpeCB0aGlzIGluIHRoZSBuZXh0IHBhdGNoLgpUaGFuayB5b3UgdmVy
-eSBtdWNoIQoKQlIvL0Jlcm5hcmQKCj4tLQo+aHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9w
-cm9qZWN0L2xpbnV4LXdpcmVsZXNzL2xpc3QvCgo+aHR0cHM6Ly93aXJlbGVzcy53aWtpLmtlcm5l
-bC5vcmcvZW4vZGV2ZWxvcGVycy9kb2N1bWVudGF0aW9uL3N1Ym1pdHRpbmdwYXRjaGVzCg==
+When mt7601u loaded, there are two cases:
+First when mt7601u is loaded, in function mt7601u_probe, if
+function mt7601u_probe run into error lable err_hw,
+mt7601u_cleanup didn`t cleanup the debugfs node.
+Second when the module disconnect, in function mt7601u_disconnect,
+mt7601u_cleanup didn`t cleanup the debugfs node.
+This patch add debugfs exit function and try to cleanup debugfs
+node when mt7601u loaded fail or unloaded.
+
+Signed-off-by: Bernard Zhao <zhaojunkui2008@126.com>
+---
+ .../net/wireless/mediatek/mt7601u/debugfs.c   | 25 +++++++++++--------
+ drivers/net/wireless/mediatek/mt7601u/init.c  |  5 ++++
+ .../net/wireless/mediatek/mt7601u/mt7601u.h   |  4 +++
+ 3 files changed, 24 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt7601u/debugfs.c b/drivers/net/wireless/mediatek/mt7601u/debugfs.c
+index 20669eacb66e..1ae3d75d3c9b 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt7601u/debugfs.c
+@@ -124,17 +124,22 @@ DEFINE_SHOW_ATTRIBUTE(mt7601u_eeprom_param);
+ 
+ void mt7601u_init_debugfs(struct mt7601u_dev *dev)
+ {
+-	struct dentry *dir;
+-
+-	dir = debugfs_create_dir("mt7601u", dev->hw->wiphy->debugfsdir);
+-	if (!dir)
++	dev->root_dir = debugfs_create_dir("mt7601u", dev->hw->wiphy->debugfsdir);
++	if (!dev->root_dir)
+ 		return;
+ 
+-	debugfs_create_u8("temperature", 0400, dir, &dev->raw_temp);
+-	debugfs_create_u32("temp_mode", 0400, dir, &dev->temp_mode);
++	debugfs_create_u8("temperature", 0400, dev->root_dir, &dev->raw_temp);
++	debugfs_create_u32("temp_mode", 0400, dev->root_dir, &dev->temp_mode);
++
++	debugfs_create_u32("regidx", 0600, dev->root_dir, &dev->debugfs_reg);
++	debugfs_create_file("regval", 0600, dev->root_dir, dev, &fops_regval);
++	debugfs_create_file("ampdu_stat", 0400, dev->root_dir, dev, &mt7601u_ampdu_stat_fops);
++	debugfs_create_file("eeprom_param", 0400, dev->root_dir, dev, &mt7601u_eeprom_param_fops);
++}
+ 
+-	debugfs_create_u32("regidx", 0600, dir, &dev->debugfs_reg);
+-	debugfs_create_file("regval", 0600, dir, dev, &fops_regval);
+-	debugfs_create_file("ampdu_stat", 0400, dir, dev, &mt7601u_ampdu_stat_fops);
+-	debugfs_create_file("eeprom_param", 0400, dir, dev, &mt7601u_eeprom_param_fops);
++void mt7601u_exit_debugfs(struct mt7601u_dev *dev)
++{
++	if (!dev->root_dir)
++		return;
++	debugfs_remove(dev->root_dir);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt7601u/init.c b/drivers/net/wireless/mediatek/mt7601u/init.c
+index 5d9e952b2966..1e905ef2ed19 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/init.c
++++ b/drivers/net/wireless/mediatek/mt7601u/init.c
+@@ -427,6 +427,9 @@ void mt7601u_cleanup(struct mt7601u_dev *dev)
+ 	mt7601u_stop_hardware(dev);
+ 	mt7601u_dma_cleanup(dev);
+ 	mt7601u_mcu_cmd_deinit(dev);
++#ifdef CONFIG_DEBUG_FS
++	mt7601u_exit_debugfs(dev);
++#endif
+ }
+ 
+ struct mt7601u_dev *mt7601u_alloc_device(struct device *pdev)
+@@ -625,7 +628,9 @@ int mt7601u_register_device(struct mt7601u_dev *dev)
+ 	if (ret)
+ 		return ret;
+ 
++#ifdef CONFIG_DEBUG_FS
+ 	mt7601u_init_debugfs(dev);
++#endif
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt7601u/mt7601u.h b/drivers/net/wireless/mediatek/mt7601u/mt7601u.h
+index a122f1dd38f6..c5f06818bb35 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/mt7601u.h
++++ b/drivers/net/wireless/mediatek/mt7601u/mt7601u.h
+@@ -242,6 +242,9 @@ struct mt7601u_dev {
+ 	u32 rf_pa_mode[2];
+ 
+ 	struct mac_stats stats;
++#ifdef CONFIG_DEBUG_FS
++	struct dentry *root_dir;
++#endif
+ };
+ 
+ struct mt7601u_tssi_params {
+@@ -279,6 +282,7 @@ struct mt7601u_rxwi;
+ extern const struct ieee80211_ops mt7601u_ops;
+ 
+ void mt7601u_init_debugfs(struct mt7601u_dev *dev);
++void mt7601u_exit_debugfs(struct mt7601u_dev *dev);
+ 
+ u32 mt7601u_rr(struct mt7601u_dev *dev, u32 offset);
+ void mt7601u_wr(struct mt7601u_dev *dev, u32 offset, u32 val);
+-- 
+2.33.1
+
