@@ -2,97 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9896650AF3E
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Apr 2022 06:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3D1E50AFD8
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Apr 2022 08:00:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1443974AbiDVEry (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Apr 2022 00:47:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39424 "EHLO
+        id S232953AbiDVGAl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Apr 2022 02:00:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231707AbiDVErx (ORCPT
+        with ESMTP id S233011AbiDVGAg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Apr 2022 00:47:53 -0400
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65F58B3A;
-        Thu, 21 Apr 2022 21:44:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1650602701;
-  x=1682138701;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ToZPNNcFICAl5kNbjhROOShmc9lRKbW7VGDIpg6Onc0=;
-  b=mKVCfG8m+RiEOZudWI1wsw+PYV7sSVFJALuIGiJWp0cTtOQZh+46BZgq
-   fUhlBasLgoTOyMTUv8BSuI15eLtmCoqimaOTBV/PVlo9EeIRWx+245IIg
-   KlIziBqfT/3wo1S07gv60hhnknCPbizRp8oD7A1kEcb3EqiN6vaF8O1VD
-   jV5WkR9cEwCW1NVO/pkzc59mxGTqvQqcoOqSxqhGOe8SZKhCSfmyapCwU
-   EMvB5DBu5WZMEb90jUgGoGX2NMZrvjPxFeg2TZbEdwdV3bLlVR0trEFUB
-   2czQSZyt9l4kEumjV4P1q9tSwgHZm7lDbvG0pLzX8BoUYiEnpi1UjvFYN
-   A==;
-From:   Hermes Zhang <chenhui.zhang@axis.com>
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
+        Fri, 22 Apr 2022 02:00:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53EB84F9D8;
+        Thu, 21 Apr 2022 22:57:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E480161D9D;
+        Fri, 22 Apr 2022 05:57:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A684C385A9;
+        Fri, 22 Apr 2022 05:57:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650607051;
+        bh=Rvf90UcwzPbS3F5AqAtneVu3nF9B07X7cwvF7nN8ENI=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=bBXFaJywcqTcX8KxDYflryjhANwgEc2Bam3efuHS/L8sddABY8ol1JI333xINwl/x
+         mkC4XgNcMUNV1ZyKxdgrMcIb67PF5i8sOG1mN5LY/P2TBErRJPCha8euLdDppa/YBT
+         hRZLeqNjkb59HQX8W1QqAa5GIOYRRtNjUE6AVdECGvddUCG+SoZw9GBIzhMLhYO1Cn
+         wttlxzGWVq4Ishol80XcTWBC87GvIb+BjnbvfgbpQTsL+l0Ev6Lrixyboso7u3R7Kk
+         wrG+pUgEDv85U3YCcrGtAOU/UVkdgxuNo8gKLGJbiGLi2h2R51VtJ0JhjRhBdIQL0U
+         5XtEbXYyKMPHA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Bernard Zhao <zhaojunkui2008@126.com>
+Cc:     Jakub Kicinski <kubakici@wp.pl>,
         "David S. Miller" <davem@davemloft.net>,
-        "Jakub Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC:     <kernel@axis.com>, Hermes Zhang <chenhuiz@axis.com>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2] brcmfmac: of: introduce new property to allow disable PNO
-Date:   Fri, 22 Apr 2022 12:44:18 +0800
-Message-ID: <20220422044419.3415842-1-chenhui.zhang@axis.com>
-X-Mailer: git-send-email 2.30.2
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        bernard@vivo.com
+Subject: Re: [PATCH] net/wireless: add debugfs exit function
+In-Reply-To: <20220422012830.342993-1-zhaojunkui2008@126.com> (Bernard Zhao's
+        message of "Thu, 21 Apr 2022 18:28:30 -0700")
+References: <20220422012830.342993-1-zhaojunkui2008@126.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Fri, 22 Apr 2022 08:57:25 +0300
+Message-ID: <877d7hoe2i.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Hermes Zhang <chenhuiz@axis.com>
+Bernard Zhao <zhaojunkui2008@126.com> writes:
 
-The PNO feature need to be disable for some scenario in different
-product. This commit introduce a new property to allow the
-product-specific toggling of this feature.
+> This patch add exit debugfs function to mt7601u.
+> Debugfs need to be cleanup when module is unloaded or load fail.
 
-Signed-off-by: Hermes Zhang <chenhuiz@axis.com>
----
+"load fail"? Please be more specific, are you saying that the second
+module load fails or what?
 
-Notes:
-    Change property name to brcm,pno-disable
+>  drivers/net/wireless/mediatek/mt7601u/debugfs.c | 9 +++++++--
+>  drivers/net/wireless/mediatek/mt7601u/init.c    | 1 +
+>  drivers/net/wireless/mediatek/mt7601u/mt7601u.h | 1 +
 
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 4 ++++
- 1 file changed, 4 insertions(+)
+The title should be:
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-index 8623bde5eb70..121a195e4054 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-@@ -11,6 +11,7 @@
- #include "core.h"
- #include "common.h"
- #include "of.h"
-+#include "feature.h"
- 
- static int brcmf_of_get_country_codes(struct device *dev,
- 				      struct brcmf_mp_device *settings)
-@@ -102,6 +103,9 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 	if (bus_type != BRCMF_BUSTYPE_SDIO)
- 		return;
- 
-+	if (of_find_property(np, "brcm,pno-disable", NULL))
-+		settings->feature_disable |= BIT(BRCMF_FEAT_PNO);
-+
- 	if (of_property_read_u32(np, "brcm,drive-strength", &val) == 0)
- 		sdio->drive_strength = val;
- 
+mt7601u: add debugfs exit function
+
+> --- a/drivers/net/wireless/mediatek/mt7601u/debugfs.c
+> +++ b/drivers/net/wireless/mediatek/mt7601u/debugfs.c
+> @@ -9,6 +9,8 @@
+>  #include "mt7601u.h"
+>  #include "eeprom.h"
+>  
+> +static struct dentry *dir;
+
+How will this work when there are multiple mt7601u devices? Because of
+that, avoid using non-const static variables.
+
 -- 
-2.30.2
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
