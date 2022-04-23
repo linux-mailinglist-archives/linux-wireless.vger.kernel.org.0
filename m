@@ -2,51 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0760750CA0C
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 14:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CAED50CC30
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 18:09:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235474AbiDWMuH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Apr 2022 08:50:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35866 "EHLO
+        id S229552AbiDWQMq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Apr 2022 12:12:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233371AbiDWMuG (ORCPT
+        with ESMTP id S236342AbiDWQMk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Apr 2022 08:50:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28CC01A066
-        for <linux-wireless@vger.kernel.org>; Sat, 23 Apr 2022 05:47:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7A1C61123
-        for <linux-wireless@vger.kernel.org>; Sat, 23 Apr 2022 12:47:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F043C385A0;
-        Sat, 23 Apr 2022 12:47:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650718029;
-        bh=MeKJqdRE/4umX9GIoMLr6EIlWYrZ0JtMrp4Z9R5Nqxc=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=TwmblnMR+130TjdVuvuT6fojV3NG/HxVmdtNCbgLTJQApBNs31DerpUcOI42VRbfE
-         1WSMNdaFoHCTdEPxU0gMhtIvmuLnfml4TlV57HxbRUjEDadhxF2kfjf8xGuO7aedMG
-         IPvxNHTLKwC+Iyqh/TTK+TnV9rugAJlpxEmWNAchhTJ7TyTOBZm2Tm6GmrH/zUnhPM
-         NhfK0BAHGLdve5+9S/PJjtIA/KzlRNdCnGhaFeJErzaflA69K7Qdr/43C2k6r/d5sY
-         voLyG9KKLP5hjVINiSqbR7j8B9klsJNVXBBOj2ENkeLJqoRJOthn/CRW1BiOUUxicE
-         Q8KBH0AAtsu6g==
-Content-Type: text/plain; charset="utf-8"
+        Sat, 23 Apr 2022 12:12:40 -0400
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D662A14B2EA
+        for <linux-wireless@vger.kernel.org>; Sat, 23 Apr 2022 09:09:41 -0700 (PDT)
+Received: (Authenticated sender: didi.debian@cknow.org)
+        by mail.gandi.net (Postfix) with ESMTPSA id BA9331BF205;
+        Sat, 23 Apr 2022 16:09:36 +0000 (UTC)
+From:   Diederik de Haas <didi.debian@cknow.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Diederik de Haas <didi.debian@cknow.org>
+Subject: [PATCH] iw: fix double tab in mesh path header
+Date:   Sat, 23 Apr 2022 18:09:22 +0200
+Message-Id: <20220423160922.14952-1-didi.debian@cknow.org>
+X-Mailer: git-send-email 2.35.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] rtw88: fix uninitialized 'tim_offset' warning
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220420093058.31646-1-pkshih@realtek.com>
-References: <20220420093058.31646-1-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
-        <phhuang@realtek.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165071802597.1434.4137792080732021281.kvalo@kernel.org>
-Date:   Sat, 23 Apr 2022 12:47:07 +0000 (UTC)
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,23 +36,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+As reported in https://bugs.debian.org/974833, the double tab char
+causes a mismatch of the header and contents after 'EXPTIME'.
 
-> From: Po-Hao Huang <phhuang@realtek.com>
-> 
-> This avoids below warning and makes compiler happy.
-> error: uninitialized symbol 'tim_offset'
-> 
-> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
+---
+ mpath.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-2 patches applied to wireless-next.git, thanks.
-
-9cbdadf0097f rtw88: fix uninitialized 'tim_offset' warning
-9ebacb1e7e75 rtw88: pci: 8821c: Disable 21ce completion timeout
-
+diff --git a/mpath.c b/mpath.c
+index a88f89f..2a559c2 100644
+--- a/mpath.c
++++ b/mpath.c
+@@ -226,7 +226,7 @@ static int handle_mpath_dump(struct nl80211_state *state,
+ 			     enum id_input id)
+ {
+ 	printf("DEST ADDR         NEXT HOP          IFACE\tSN\tMETRIC\tQLEN\t"
+-	       "EXPTIME\t\tDTIM\tDRET\tFLAGS\tHOP_COUNT\tPATH_CHANGE\n");
++	       "EXPTIME\tDTIM\tDRET\tFLAGS\tHOP_COUNT\tPATH_CHANGE\n");
+ 	register_handler(print_mpath_handler, NULL);
+ 	return 0;
+ }
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220420093058.31646-1-pkshih@realtek.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.35.2
 
