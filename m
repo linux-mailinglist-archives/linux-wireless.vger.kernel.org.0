@@ -2,55 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 252D550C895
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 11:32:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24A5E50C8AB
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 11:32:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234535AbiDWJfX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Apr 2022 05:35:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37556 "EHLO
+        id S234539AbiDWJfr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Apr 2022 05:35:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230527AbiDWJfW (ORCPT
+        with ESMTP id S230527AbiDWJfq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Apr 2022 05:35:22 -0400
+        Sat, 23 Apr 2022 05:35:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F223236691;
-        Sat, 23 Apr 2022 02:32:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B6E4236691
+        for <linux-wireless@vger.kernel.org>; Sat, 23 Apr 2022 02:32:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F0CF460E77;
-        Sat, 23 Apr 2022 09:32:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42F0C385A0;
-        Sat, 23 Apr 2022 09:32:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A19660E8B
+        for <linux-wireless@vger.kernel.org>; Sat, 23 Apr 2022 09:32:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E783C385A5;
+        Sat, 23 Apr 2022 09:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650706345;
-        bh=iTzT18ATw05JJxPbBnFZHAUxOKvVk2zyufdr7Bnot1E=;
+        s=k20201202; t=1650706369;
+        bh=1FuOPeHbpWF7zNpeKdchowX9Wu6JvviN/jEYZyp4DMg=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=QmGJZDFDPiVLQAO+00Js0dVsA0NJLwBjcRE9p3yY83qzo/FzkeDCzssrXp1ZwiMx3
-         IP7aQjNSssqSQdLXiWXMpPvWExaKttOzL979WcHEHRtX7VLrzbDCQBGCxUlt5roIz8
-         rid7IWNVw+yclqnE+y8xUDHWClwFjnngKeLoYKlvLIqIX4e6HeVdssHlDKmcGVta9l
-         4sy+avg5DNH6stqAstKCLcVNSPnIhl/q3EjsSpOekFaHwxLiFpNnh/AkfuiuK2v+BH
-         55WaLg/irgQISBHyO9iji/U6aK50++5tj3ZJYWIXeLwvsbNisjK5ZoXiFL73GL4Ym4
-         WpzJLdnqamzwg==
+        b=AoQ/yqw8jI+e0Uofm9YW/xPSwbxrJsbq6SEMuQEaGbywDfNfPPfRVDq2mt1ApIhfJ
+         LT/559RJ6SrnlNkPzbkU+suPT+GrLvMA5+Oe4oXK9GpPPGb2mjMoybYbazI1SKwbhT
+         bgQ7ce7kMy2XSF2cBvH+JcVML4BcYaa7M/DlICJ/7d3z0/bfUJ39oIdc5XTPGVDdC0
+         h0X1LW3Qbom6v17UdCbbQLPvMNb8/058CfxBCDndjOovI03Fa3KNa1DyQIqScrrnW5
+         n5V+9e9EJ5EIzr63ZuC/HjSWWhk5Jkwe7CiUaHw2yvaiA6IYLmIsjbUY2NuuvLPmJI
+         5tO/qS5Q9tFrw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] ath9k_htc: fix potential out of bounds access with
- invalid
- rxstatus->rs_keyix
+Subject: Re: [PATCH v2] ath9k: fix QCA9561 PA bias level
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220409061225.GA5447@kili>
-References: <20220409061225.GA5447@kili>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Toke =?iso-8859-1?q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20220417145145.1847-1-hacks+kernel@slashdirt.org>
+References: <20220417145145.1847-1-hacks+kernel@slashdirt.org>
+To:     =?utf-8?q?Thibaut_VAR=C3=88NE?= <hacks+kernel@slashdirt.org>
+Cc:     =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        =?utf-8?q?Petr_=C5=A0tetiar?= <ynezz@true.cz>,
+        Clemens Hopfer <openwrt@wireloss.net>,
+        =?utf-8?q?Thibaut_VAR=C3=88NE?= <hacks+kernel@slashdirt.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165070634193.13738.14372114031952605423.kvalo@kernel.org>
-Date:   Sat, 23 Apr 2022 09:32:23 +0000 (UTC)
+Message-ID: <165070636562.13738.512642859585994950.kvalo@kernel.org>
+Date:   Sat, 23 Apr 2022 09:32:47 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -60,25 +57,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+Thibaut VARÈNE <hacks+kernel@slashdirt.org> wrote:
 
-> The "rxstatus->rs_keyix" eventually gets passed to test_bit() so we need to
-> ensure that it is within the bitmap.
+> This patch fixes an invalid TX PA DC bias level on QCA9561, which
+> results in a very low output power and very low throughput as devices
+> are further away from the AP (compared to other 2.4GHz APs).
 > 
-> drivers/net/wireless/ath/ath9k/common.c:46 ath9k_cmn_rx_accept()
-> error: passing untrusted data 'rx_stats->rs_keyix' to 'test_bit()'
+> This patch was suggested by Felix Fietkau, who noted[1]:
+> "The value written to that register is wrong, because while the mask
+> definition AR_CH0_TOP2_XPABIASLVL uses a different value for 9561, the
+> shift definition AR_CH0_TOP2_XPABIASLVL_S is hardcoded to 12, which is
+> wrong for 9561."
 > 
-> Fixes: 4ed1a8d4a257 ("ath9k_htc: use ath9k_cmn_rx_accept")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> In real life testing, without this patch the 2.4GHz throughput on
+> Yuncore XD3200 is around 10Mbps sitting next to the AP, and closer to
+> practical maximum with the patch applied.
+> 
+> [1] https://lore.kernel.org/all/91c58969-c60e-2f41-00ac-737786d435ae@nbd.name
+> 
+> Signed-off-by: Thibaut VARÈNE <hacks+kernel@slashdirt.org>
+> Acked-by: Felix Fietkau <nbd@nbd.name>
 > Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-2dc509305cf9 ath9k_htc: fix potential out of bounds access with invalid rxstatus->rs_keyix
+e999a5da28a0 ath9k: fix QCA9561 PA bias level
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220409061225.GA5447@kili/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220417145145.1847-1-hacks+kernel@slashdirt.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
