@@ -2,78 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E9CC50C7EF
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 09:13:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEF1D50C827
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 10:01:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233937AbiDWHPk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Apr 2022 03:15:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38748 "EHLO
+        id S234073AbiDWIDz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Apr 2022 04:03:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233887AbiDWHPi (ORCPT
+        with ESMTP id S231787AbiDWIDy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Apr 2022 03:15:38 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6E50E77;
-        Sat, 23 Apr 2022 00:12:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 885BFB802C6;
-        Sat, 23 Apr 2022 07:12:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FB7C385A5;
-        Sat, 23 Apr 2022 07:12:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650697960;
-        bh=J5jMXGylimVpTn2SlCRUPm/5z4Abv22keiWd1plZlTs=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=LucOI3IIkNaKx74mZPKIZZlAJt1L7zmuv1EpjK/pVLK8EXXQQXUqivdhp67PHIK1c
-         WuR1fRX+jE/HxApQo0XubcHW7hHipFTyIgVoknqgK+7G201/vctxIB/P7A6HkXXlmY
-         GAEMjXS8IYq+MWqjoV+uYbqbL3aHJljfRepeqXtTlXF2omMp/tmGdAGm9fDqmPRk9o
-         xKlbxM1h99kx8iHfr935D6S1U0QB/LH+bRdFMNyW5bNZxBFawr8Sn2wTKVnNQi1BIL
-         wiCHpqS6BgULRi445btIU6EMbY3czMqi+WVNN11Fu9W7Ut0EsQY8Q4XagQqsZ6+ZpP
-         +unHM5zK3p03Q==
-Content-Type: text/plain; charset="utf-8"
+        Sat, 23 Apr 2022 04:03:54 -0400
+X-Greylist: delayed 61699 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 23 Apr 2022 01:00:56 PDT
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [IPv6:2a03:4000:40:5b2::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 13578230D1D;
+        Sat, 23 Apr 2022 01:00:55 -0700 (PDT)
+Message-ID: <d6b8540f-da10-5103-8321-4c7e37e89314@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1650700851;
+        bh=9eq82fgG4skizTeC+ITC4fUGMFtOrrdQQkhV1P0VF4Y=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=t+wqvTPWJ5ygJKBILx8k3YSiAETMKcex7R+4BixO02950fqNCUKWhRoEUyN6mfNpF
+         ykD7iaJeg76MReFKtMbESJc1r/qwM3Rm9/8u6WI1O9JOIyBeHOtD+Wf5Nyz8qeTvb8
+         +sVCyteX2GQzVy9hgx+yvY/KY3d9iZESA+ibMiTE=
+Date:   Sat, 23 Apr 2022 10:00:48 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH] rtl8180: Prevent using not initialized queues
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, stable@vger.kernel.org,
+        pa@panix.com
+References: <20220422145228.7567-1-alexander@wetzel-home.de>
+ <87a6ccqpzg.fsf@tynnyri.adurom.net>
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+In-Reply-To: <87a6ccqpzg.fsf@tynnyri.adurom.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: wlcore: cmd: using pm_runtime_resume_and_get() instead of
- pm_runtime_get_sync()
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220420090141.2588553-1-chi.minghao@zte.com.cn>
-References: <20220420090141.2588553-1-chi.minghao@zte.com.cn>
-To:     cgel.zte@gmail.com
-Cc:     davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165069795660.11296.2623975498511981713.kvalo@kernel.org>
-Date:   Sat, 23 Apr 2022 07:12:38 +0000 (UTC)
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-cgel.zte@gmail.com wrote:
-
-> From: Minghao Chi <chi.minghao@zte.com.cn>
+On 23.04.22 08:21, Kalle Valo wrote:
+> Alexander Wetzel <alexander@wetzel-home.de> writes:
 > 
-> Using pm_runtime_resume_and_get() to replace pm_runtime_get_sync and
-> pm_runtime_put_noidle. This change is just to simplify the code, no
-> actual functional changes.
+>> Using not existing queues can panic the kernel with rtl8180/rtl8185
+>> cards. Ignore the skb priority for those cards, they only have one
+>> tx queue.
+>>
+>> Cc: stable@vger.kernel.org
+>> Reported-by: pa@panix.com
+>> Tested-by: pa@panix.com
+>> Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+>> ---
+>>
+>> Pierre Asselin (pa@panix.com) reported a kernel crash in the Gentoo forum:
+>> https://forums.gentoo.org/viewtopic-t-1147832-postdays-0-postorder-asc-start-25.html
+>> He also confirmed that this patch fixes the issue.
+>>
+>> In summary this happened:
+>> After updating wpa_supplicant from 2.9 to 2.10 the kernel crashed with a
+>> "divide error: 0000" when connecting to an AP.
+>> Control port tx now tries to use IEEE80211_AC_VO for the priority, which
+>> wpa_supplicants starts to use in 2.10.
+>>
+>> Since only the rtl8187se part of the driver supports QoS, the priority
+>> of the skb is set to IEEE80211_AC_BE (2) by mac80211 for rtl8180/rtl8185
+>> cards.
+>>
+>> rtl8180 is then unconditionally reading out the priority and finally crashes on
+>> drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c line 544 without this
+>> patch:
+>> 	idx = (ring->idx + skb_queue_len(&ring->queue)) % ring->entries
+>>
+>> "ring->entries" is zero for rtl8180/rtl8185 cards, tx_ring[2] never got
+>> initialized.
 > 
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+> All this after "---" line is very useful information but the actual
+> commit log is just two sentences. I would copy all to the commit log.
+> We don't need to limit the size of the commit log, on the contrary we
+> should include all the information in it.
+> 
 
-Patch applied to wireless-next.git, thanks.
+I see what you mean, fine for me.
+If you prefer I can also make an update but feel to handle that at your 
+convenience. If you e.g. see a better way to do that drop the patch and 
+simply submit your version.
 
-e05c7ddfeb23 wlcore: cmd: using pm_runtime_resume_and_get() instead of pm_runtime_get_sync()
+While I spent some time figuring out how QoS is intended to work and I'm 
+pretty sure I finally got the outline it I'm still wondering why we 
+never set the priority for skb's on the normal transmit path.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220420090141.2588553-1-chi.minghao@zte.com.cn/
+Obviously the idea is to keep the queue from whoever set it prior to us 
+and just overwriting it with good reason.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+I plan to look a bit more into that, especially since Pierre's system 
+was working when wpa_supplicant is not using control Port. Thus 
+skb_get_queue_mapping() must return zero - or max one - on that path. 
+That only makes sense when the network subsystem knows that QoS is not 
+supported and is not bothering to set the queue. (Or if we would map 
+zero to IEEE80211_AC_BE, but we are not handling it that way)
 
+It basically drills down to the fact that we only call 
+_ieee80211_select_queue() on the normal tx path for drivers supporting 
+wake_tx_queue. I would have expected that call to be done for all 
+drivers. (Or at least all drivers supporting QoS.)
+
+So there is either a strange bug or - so far more likely - some serious 
+gap in my still evolving understanding of QoS.
