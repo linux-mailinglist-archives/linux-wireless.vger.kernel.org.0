@@ -2,132 +2,230 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 584C950C954
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 12:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 393C750C968
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 12:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235051AbiDWKgF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Apr 2022 06:36:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39946 "EHLO
+        id S235081AbiDWKzj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Apr 2022 06:55:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235064AbiDWKgD (ORCPT
+        with ESMTP id S235093AbiDWKzh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Apr 2022 06:36:03 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 585FD75618
-        for <linux-wireless@vger.kernel.org>; Sat, 23 Apr 2022 03:33:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 12032B80A73
-        for <linux-wireless@vger.kernel.org>; Sat, 23 Apr 2022 10:33:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF25FC385A0;
-        Sat, 23 Apr 2022 10:33:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650709983;
-        bh=3+MiHjepdSBOzsa4FqtEGwxjolutuhcJAjmMBdk4C60=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ia73tQAm5SbhDJEex+r0sohnFIboOyLGfQIfPeI4e24FmFZaaBpBzug+dKzT2BFjP
-         q/fWhjqE/bvcPQS0eh1IVVc5SW1oi62veKK/NhkATb0p5FHq795f962eBZgbpM6GMc
-         s4/xwyIo8/H4bfDZ56Kw1NhcDWFxfQZwCg8Z+ZnuhAGiZiHsCC2nifHoVA/9RL1/kL
-         TozhP49EwEtLJvO+BGNhJEoz5nbwHS4eiSzl9BA3WD5ZNswmqu5bZxaQuZmNb7QRsC
-         7uwZ7kIq38e+SlR14HZgjP0ZjVBzAVuXZMwqcephe+zhXTNcH/VTgPlfZx7VKX0I6l
-         o09VPBsbScfQw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Cheng Wang <quic_chengwan@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] ath11k: add register read debugfs interface for WCN6855
-References: <20220125063731.3049556-1-quic_chengwan@quicinc.com>
-        <878rv0ezy5.fsf@kernel.org>
-Date:   Sat, 23 Apr 2022 13:32:57 +0300
-In-Reply-To: <878rv0ezy5.fsf@kernel.org> (Kalle Valo's message of "Fri, 28 Jan
-        2022 15:45:38 +0200")
-Message-ID: <87tuakjdie.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Sat, 23 Apr 2022 06:55:37 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC6851FFDDD;
+        Sat, 23 Apr 2022 03:52:39 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id 1C7005C00E6;
+        Sat, 23 Apr 2022 06:52:37 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Sat, 23 Apr 2022 06:52:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pks.im; h=cc:cc
+        :content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm1; t=1650711157; x=1650797557; bh=UE1GerCR9T
+        LmzaV9tns9QX/P+hEnHBRCJ/KKmCkbz1k=; b=DpMg52adGu8bG69Y4pZkmTU5V+
+        d+rJhUM1R6+bhTuHFdJfDf0Z8/lXMoN2nCCfGFokAKW5boTIidKSI4CWwJc6oLVN
+        se0DUWQ1BZqqyTHdDiQsRUdCKhbJXVVcnbYOspn8S8ti15/fMehGRjvv94zozylc
+        dGWT3EOm93zrnI5R8nT8C+gq9GbaAEWGR1cafWsoOYHt5jl3uCQAuztjKTL/0wR6
+        zAMaLhk/T6iBxQZpQSDFzft/FhN9/EsbO040ASt5aB7x+Bb2tEbvhYl2cLRVEw9f
+        sCOZu75kkWb380GC3L8EZ7a74u11ltWsKunZEWvUmwT3kq69lTdLyF2x7zRg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1650711157; x=
+        1650797557; bh=UE1GerCR9TLmzaV9tns9QX/P+hEnHBRCJ/KKmCkbz1k=; b=O
+        3nG5iyYeCtVi7aMp8k3niKM4ykY3ooHpiGgTRXRWO2U6rP6+THDz+q1nxd0vF4jW
+        ngVonQdbuzt4/e+qW/IQn7wpqgG7bd0mGOZtWNl+ZFpkP0z6sey+D5tNeCBVqOmM
+        klJOASfK/N/P2ghEJ1ASakpjeb+9pU2kQq2RHHyx2dhGgwRbh8CJ+2yG7B2hpseo
+        ZG2WUMLQJdg1d2G41PyaDgX2b7gEpeGWcXxeWRTMxbqK+K5SepEFnCdgEKmb9uod
+        QTOi8tkBZ53C64ABYRLvg8NBerPwO0npg/day8RW8IyAvieJewjYbzcR6gvZl377
+        hFZTgsqwgVhIdZyaxMURA==
+X-ME-Sender: <xms:dNpjYj9hVS57y590vJkL7LAw0DxAUWXGoI0DWB2xJyheNFOqYuXWpg>
+    <xme:dNpjYvsdw_9emZQCQ4P0XpEu3cxb5RyNCBxThHet3FS58ji1uUCmtKPQ15NcME7gC
+    n4I03WS-h9UkiAxDw>
+X-ME-Received: <xmr:dNpjYhCex3e6_I8l-XOnTZ5ilHXg-nM6L_7KhJFanSLeY5covBA_dDWnIhfLGe5devN1GaOU2rgKfyta92BeH-hzWPazo__XKuHLk1z74gAIb_ycXrsDTA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrtdeigdeffecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehgtderredttddvnecuhfhrohhmpefrrghtrhhi
+    tghkucfuthgvihhnhhgrrhguthcuoehpshesphhkshdrihhmqeenucggtffrrghtthgvrh
+    hnpeehgeefhfeuueeghffglefffeduudeffffgfeduleehtddttdelieduudeukedvgeen
+    ucffohhmrghinhepghhithhhuhgsrdgtohhmpdgrrhgthhhlihhnuhigrdhorhhgpdhinh
+    hfrhgruggvrggurdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehm
+    rghilhhfrhhomhepphhssehpkhhsrdhimh
+X-ME-Proxy: <xmx:dNpjYvcYpDMCGRcKB34PB7rNyhCpoT9oSEJQGrLSrddoKBbqCE-PtA>
+    <xmx:dNpjYoNPRN3P7Jk2gTiOkX5w30aRgYtrsq6WrWi2OrxAURZoAGoKpA>
+    <xmx:dNpjYhkpMP18LvTtMiGSS9Z5rCz0Fbox4ENHfN8VRA-zdZXlWJdKoQ>
+    <xmx:ddpjYlqwJAkB7w-JIQQABeWBXDNxzYEI_LXz9Tg1MPCJ-A8b4kYAEQ>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 23 Apr 2022 06:52:35 -0400 (EDT)
+Received: from localhost (xps [10.192.0.12])
+        by vm-mail.pks.im (OpenSMTPD) with ESMTPSA id c92f9d6c (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+        Sat, 23 Apr 2022 10:52:32 +0000 (UTC)
+Date:   Sat, 23 Apr 2022 12:52:37 +0200
+From:   Patrick Steinhardt <ps@pks.im>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Wen Gong <wgong@codeaurora.org>
+Subject: Re: [PATCH] Revert "ath: add support for special 0x0 regulatory
+ domain"
+Message-ID: <YmPadTu8CfEARfWs@xps>
+References: <20200527165718.129307-1-briannorris@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="fPTOmHiq9JC98ggj"
+Content-Disposition: inline
+In-Reply-To: <20200527165718.129307-1-briannorris@chromium.org>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
 
-> Cheng Wang <quic_chengwan@quicinc.com> writes:
->
->> Add debugfs interface reg_addr/reg_value and use these two interfaces
->> to read register value.
->> For example, execute the following commands to read WCN6855 HW register =
-of
->> =E2=80=9Cmemtype=3D0xa offset=3D0x3a00d0=E2=80=9D:
->>
->> $ echo 0xa 0x3a00d0>reg_addr
->> $ cat reg_value
->> 0x10200000
->>
->> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILIC=
-ONZ_LITE-1
->>
->> Signed-off-by: Cheng Wang <quic_chengwan@quicinc.com>
->
-> This had new warnings, fixed in the pending branch:
->
-> drivers/net/wireless/ath/ath11k/debugfs.c:1207: line length of 96 exceeds=
- 90 columns
-> drivers/net/wireless/ath/ath11k/debugfs.c:1253: line length of 94 exceeds=
- 90 columns
-> drivers/net/wireless/ath/ath11k/debugfs.c:1318: line length of 91 exceeds=
- 90 columns
-> drivers/net/wireless/ath/ath11k/qmi.c:1673: line length of 94 exceeds 90 =
-columns
+--fPTOmHiq9JC98ggj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I tried to test this[1] and I couldn't get it to work:
+On Wed, May 27, 2020 at 09:57:18AM -0700, Brian Norris wrote:
+> This reverts commit 2dc016599cfa9672a147528ca26d70c3654a5423.
+>=20
+> Users are reporting regressions in regulatory domain detection and
+> channel availability.
+>=20
+> The problem this was trying to resolve was fixed in firmware anyway:
+>=20
+>     QCA6174 hw3.0: sdio-4.4.1: add firmware.bin_WLAN.RMH.4.4.1-00042
+>     https://github.com/kvalo/ath10k-firmware/commit/4d382787f0efa77dba403=
+94e0bc604f8eff82552
+>=20
+> Link: https://bbs.archlinux.org/viewtopic.php?id=3D254535
+> Link: http://lists.infradead.org/pipermail/ath10k/2020-April/014871.html
+> Link: http://lists.infradead.org/pipermail/ath10k/2020-May/015152.html
+> Fixes: 2dc016599cfa ("ath: add support for special 0x0 regulatory domain")
+> Cc: <stable@vger.kernel.org>
+> Cc: Wen Gong <wgong@codeaurora.org>
+> Signed-off-by: Brian Norris <briannorris@chromium.org>
+> ---
+>  drivers/net/wireless/ath/regd.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/ath/regd.c b/drivers/net/wireless/ath/r=
+egd.c
+> index bee9110b91f3..20f4f8ea9f89 100644
+> --- a/drivers/net/wireless/ath/regd.c
+> +++ b/drivers/net/wireless/ath/regd.c
+> @@ -666,14 +666,14 @@ ath_regd_init_wiphy(struct ath_regulatory *reg,
+> =20
+>  /*
+>   * Some users have reported their EEPROM programmed with
+> - * 0x8000 or 0x0 set, this is not a supported regulatory
+> - * domain but since we have more than one user with it we
+> - * need a solution for them. We default to 0x64, which is
+> - * the default Atheros world regulatory domain.
+> + * 0x8000 set, this is not a supported regulatory domain
+> + * but since we have more than one user with it we need
+> + * a solution for them. We default to 0x64, which is the
+> + * default Atheros world regulatory domain.
+>   */
+>  static void ath_regd_sanitize(struct ath_regulatory *reg)
+>  {
+> -	if (reg->current_rd !=3D COUNTRY_ERD_FLAG && reg->current_rd !=3D 0)
+> +	if (reg->current_rd !=3D COUNTRY_ERD_FLAG)
+>  		return;
+>  	printk(KERN_DEBUG "ath: EEPROM regdomain sanitized\n");
+>  	reg->current_rd =3D 0x64;
+> --=20
+> 2.27.0.rc0.183.gde8f92d652-goog
+>=20
 
-# echo 0xa 0x3a00d0>reg_addr
-# cat reg_value=20
-failed to read reg, err=3D-22
+This revert is in fact causing problems on my machine. I have a QCA9984,
+which exports two network interfaces. While I was able to still use one
+of both NICs for 2.4GHz, I couldn't really use the other card to set up
+a 5GHz AP anymore because all frequencies were restricted. This has
+started with v5.17.1, to which this revert was backported.
 
-The error message from ath11k is:
+Reverting this patch again fixes the issue on my system. So it seems
+like there still are cards out there in the wild which have a value of
+0x0 as their regulatory domain.
 
-[  923.629220] ath11k_pci 0000:06:00.0: ath11k_qmi_wlanfw_athdiag_read_send=
- start, mem_type 10 offset 0x300000
-[  923.647156] ath11k_pci 0000:06:00.0: QMI request failed result=3D0, erro=
-r=3D0, valid=3D1, len=3D0
+Quoting from your other mail:
 
-While reviewing the patch I found other issues:
+> My understanding was that no QCA modules *should* be shipped with a
+> value of 0 in this field. The instance I'm aware of was more or less a
+> manufacturing error I think, and we got Qualcomm to patch it over in
+> software.
 
-o do not use ath11k_info()
+This sounds like the issue should've already been fixed in firmware,
+right? To the best of my knowledge I'm using the latest that's currently
+available, which seems to contradict this. I've added the relevant dmesg
+snippets though in case I'm mistaken:
 
-o debug messages don't follow ath11k style
+    ath10k_pci 0000:03:00.0: enabling device (0000 -> 0002)
+    ath10k_pci 0000:03:00.0: pci irq msi oper_irq_mode 2 irq_mode 0 reset_m=
+ode 0
+    ath10k_pci 0000:04:00.0: enabling device (0000 -> 0002)
+    ath10k_pci 0000:04:00.0: pci irq msi oper_irq_mode 2 irq_mode 0 reset_m=
+ode 0
+    ath10k_pci 0000:03:00.0: qca9984/qca9994 hw1.0 target 0x01000000 chip_i=
+d 0x00000000 sub 168c:cafe
+    ath10k_pci 0000:03:00.0: kconfig debug 0 debugfs 0 tracing 0 dfs 1 test=
+mode 0
+    ath10k_pci 0000:03:00.0: firmware ver 10.4-3.9.0.2-00131 api 5 features=
+ no-p2p,mfp,peer-flow-ctrl,btcoex-param,allows-mesh-bcast,no-ps,peer-fixed-=
+rate,iram-recovery crc32 23bd9e43
+    ath10k_pci 0000:04:00.0: qca9984/qca9994 hw1.0 target 0x01000000 chip_i=
+d 0x00000000 sub 168c:cafe
+    ath10k_pci 0000:04:00.0: kconfig debug 0 debugfs 0 tracing 0 dfs 1 test=
+mode 0
+    ath10k_pci 0000:04:00.0: firmware ver 10.4-3.9.0.2-00131 api 5 features=
+ no-p2p,mfp,peer-flow-ctrl,btcoex-param,allows-mesh-bcast,no-ps,peer-fixed-=
+rate,iram-recovery crc32 23bd9e43
+    ath10k_pci 0000:03:00.0: board_file api 2 bmi_id 0:1 crc32 85498734
+    ath10k_pci 0000:04:00.0: board_file api 2 bmi_id 0:2 crc32 85498734
+    ath10k_pci 0000:03:00.0: htt-ver 2.2 wmi-op 6 htt-op 4 cal otp max-sta =
+512 raw 0 hwcrypto 1
+    ath: EEPROM regdomain sanitized
+    ath: EEPROM regdomain: 0x64
+    ath: EEPROM indicates we should expect a direct regpair map
+    ath: Country alpha2 being used: 00
+    ath: Regpair used: 0x64
+    ath10k_pci 0000:04:00.0: htt-ver 2.2 wmi-op 6 htt-op 4 cal otp max-sta =
+512 raw 0 hwcrypto 1
+    ath: EEPROM regdomain sanitized
+    ath: EEPROM regdomain: 0x64
+    ath: EEPROM indicates we should expect a direct regpair map
+    ath: Country alpha2 being used: 00
+    ath: Regpair used: 0x64
 
-o warning messages don't follow ath11k style
+Patrick
 
-o convert ab->hw_reg to struct ath11k_hw_params flag
+--fPTOmHiq9JC98ggj
+Content-Type: application/pgp-signature; name="signature.asc"
 
-o don't print a warning if register read feature is not supported
+-----BEGIN PGP SIGNATURE-----
 
-My setup on my NUC is:
+iQIzBAABCgAdFiEEF9hrgiFbCdvenl/rVbJhu7ckPpQFAmJj2nQACgkQVbJhu7ck
+PpR9KhAAiF4B5kQfSXTMPny/kJcAHZn0zrVMyGxLFsrKNwucmhArlaT3n7QCxZ8C
+6vw0oGMXzkc/nA3fYE/O1P8UUzCQYlVPYqVK6iMSfrcfdGR87kPU8bMltSR4DVoo
+Sg4vtGixrTVT1/nG4pzoxnGw8nceuUKgbu3gPa1HWdE+RKkIILNrvq3fNo9utmMk
+nKRXay4P1qgotr2Hydc/OA/PRl/LmydvO39uXLX8H2lZN3wxYEQlhukbkErdyILB
+OCwyy7m+9cxLt0HPZjNo4lhQGR0QnwcOo6GoL+gaVeljM6XyCusnAXud6WZd0EcL
+0tOBuADbe30plhm4Vp+fbHBA3lA1JETBCvpPaaJNVo06NgqLnBdfG1rP2PLaEMfq
+mFFH7fbW5qNUg57JPrqwz1F8FAfLK7DOpOXcymkC9wqgTVclQJvcTKJWlRpRXJ1x
+lwEsN0lB4Y+6zOA0zwsIiUGC4IY6/BGEaEYuDhVYazhYPSDMzM+S/2Wn6zQW02Di
+yea/qAcKITL4eE1OiquRJaJtbGEX9OcG3Vg5kgW+WTD1tx/JgSbQCYl/Ayqj+rEN
+/sHa5zm4S4BRXGbA9+1Q9quYQYS0RE6nBaAUYBZEhT/8swWCGGnNMSXG3ZOUfYi7
+/hMRvB6IWOTtviqLJAmADqsaISjk26JTeODnYMdQQcIOeUFyqXY=
+=MzMM
+-----END PGP SIGNATURE-----
 
-[  679.283156] ath11k_pci 0000:06:00.0: MSI vectors: 32
-[  679.283230] ath11k_pci 0000:06:00.0: wcn6855 hw2.0
-[  679.486183] mhi mhi0: Requested to power ON
-[  679.488864] mhi mhi0: Power on setup success
-[  679.890486] mhi mhi0: Wait for device to enter SBL or Mission mode
-[  680.537360] ath11k_pci 0000:06:00.0: chip_id 0x2 chip_family 0xb board_i=
-d 0x106 soc_id 0x400c0200
-[  680.537669] ath11k_pci 0000:06:00.0: fw_version 0x110f0c35 fw_build_time=
-stamp 2022-03-30 09:05 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILI=
-CONZ_LITE-3.6510.7
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=
-=3Dpending&id=3D26c7a6e468f27c1155fd7e7cc8653eabe44b9640
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+--fPTOmHiq9JC98ggj--
