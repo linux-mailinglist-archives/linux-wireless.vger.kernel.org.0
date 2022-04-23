@@ -2,48 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AD1250C891
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 11:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23C9D50C89A
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 11:32:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234412AbiDWJaV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Apr 2022 05:30:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49562 "EHLO
+        id S234422AbiDWJbT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Apr 2022 05:31:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233174AbiDWJaT (ORCPT
+        with ESMTP id S233774AbiDWJbR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Apr 2022 05:30:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04901F3E59
-        for <linux-wireless@vger.kernel.org>; Sat, 23 Apr 2022 02:27:23 -0700 (PDT)
+        Sat, 23 Apr 2022 05:31:17 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560C51FB0FF;
+        Sat, 23 Apr 2022 02:28:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 944E660C8B
-        for <linux-wireless@vger.kernel.org>; Sat, 23 Apr 2022 09:27:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3603EC385A0;
-        Sat, 23 Apr 2022 09:27:21 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id BD965CE1407;
+        Sat, 23 Apr 2022 09:28:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E63C385A5;
+        Sat, 23 Apr 2022 09:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650706042;
-        bh=3H37Rzqk1FeYhFU0BDkTs02vxT4OQtbKSHd2qad04g4=;
+        s=k20201202; t=1650706096;
+        bh=/+CKqgTbK9rNNHE8MCzIbx+SObxDR4c6qp5yN1sWSCA=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=sBWG/lcaiH1iCoWYQ4E9dT/hgN77tKdFs7ZEzHVNPl74ed4+hajgstc8zxh1hQlos
-         fZqit9Y/RoqvMNuOFe9lpVROVL739sNBlY2V1hcDM3mfJLBCEK3QH9EjIkqjwpHazP
-         /c2o/PCS5dvw3z4rBbPWTF61rcJgnf/QaeMcqQ2V/A8c17psPYrsGTFQD8DDdsbHu2
-         sxtkS3lzgqcs8JhsnJ0Q4mseonLXbtBpVJscBhR/t5aVcXGPt19CfuFSD9RxLhje2R
-         BQbLUWazoySWOSviKTd10TNwspmIkH8Srwzh8Mfh/0/aAluZJaQu3PrRh8PjvWJWIU
-         WbS5FEnBRntvA==
+        b=nsi8Z8QiLbKVacOfIA9KGhtcV9Xr7+bgaXaPA5pfwyoixWIoYFg0ur3QNd/zaT6UN
+         KusmWz19YQwdUOJNJUyMBTP9kltY1bhpJDdnUjuYske192NBEENzUq6IMVlaDj4btF
+         H2AMx/oxlw/jx5VyELmXrILkLhIs7nwPg/NBMpq5WgaZ/eNH2o1iO8dGk6hIHz6U8F
+         mZQbEwMLeQa+UfpP1LwByasAfFc2EdgntqzQZBHwpQ9OhGK+/LWIx3mPSBRWoBQFX3
+         WqHyuZm27sBpCVqY+jJjBr+h4UA3EKxiAjSvevqAbB3HGIZDGE/yAqzBaAiiHNacgr
+         0vj6cys8g4+Jg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 1/2] ath11k: add support for extended wmi service bit
+Subject: Re: [PATCH -next] ath11k: fix missing unlock on error in
+ ath11k_wow_op_resume()
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220401120948.1312956-2-quic_bqiang@quicinc.com>
-References: <20220401120948.1312956-2-quic_bqiang@quicinc.com>
-To:     Baochen Qiang <quic_bqiang@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+In-Reply-To: <20220408030912.3087293-1-yangyingliang@huawei.com>
+References: <20220408030912.3087293-1-yangyingliang@huawei.com>
+To:     Yang Yingliang <yangyingliang@huawei.com>
+Cc:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
+        <quic_kvalo@quicinc.com>, <quic_cjhuang@quicinc.com>,
+        <davem@davemloft.net>, <kuba@kernel.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165070603759.959.12335103712357746834.kvalo@kernel.org>
-Date:   Sat, 23 Apr 2022 09:27:21 +0000 (UTC)
+Message-ID: <165070609282.959.52286614356518398.kvalo@kernel.org>
+Date:   Sat, 23 Apr 2022 09:28:14 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -53,32 +57,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Baochen Qiang <quic_bqiang@quicinc.com> wrote:
+Yang Yingliang <yangyingliang@huawei.com> wrote:
 
-> When the WMI service bits are reported from firmware they are divided into
-> multiple segments, with 128 bits in each segment. The first segment is
-> processed by ath11k_wmi_service_bitmap_copy(), the second segment is processed
-> by ath11k_service_available_event() with WMI_TAG_SERVICE_AVAILABLE_EVENT. When
-> the service bit exceed 256 bits, then firmware reports it by tag
-> WMI_TAG_ARRAY_UINT32 in WMI_SERVICE_AVAILABLE_EVENTID.
+> Add the missing unlock before return from function ath11k_wow_op_resume()
+> in the error handling case.
 > 
-> Currently ath11k does not process the third segment. Upcoming features
-> need to know if firmware support is available for the features, so add
-> processing of the third segment.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-> 
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> Fixes: 90bf5c8d0f7e ("ath11k: purge rx pktlog when entering WoW")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-2 patches applied to ath-next branch of ath.git, thanks.
+Patch applied to ath-next branch of ath.git, thanks.
 
-e2e23a791745 ath11k: add support for extended wmi service bit
-652f69ed9c1b ath11k: Add support for SAR
+605194411d73 ath11k: fix missing unlock on error in ath11k_wow_op_resume()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220401120948.1312956-2-quic_bqiang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220408030912.3087293-1-yangyingliang@huawei.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
