@@ -2,92 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2E1E50C787
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 07:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1527E50C7BF
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 08:16:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233157AbiDWFTx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Apr 2022 01:19:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48078 "EHLO
+        id S233160AbiDWGTs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Apr 2022 02:19:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229945AbiDWFTw (ORCPT
+        with ESMTP id S230324AbiDWGTo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Apr 2022 01:19:52 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 691678D6B1
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Apr 2022 22:16:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=WcYERNmbGHz6qnpdXVE+fTJevHMz5wvD2HERDxIzTKA=; b=LGu8eDCxK/Wujg2lPwoMOlRFrX
-        mKnECNI9203Jz5H0bmnDAopmr68RMqIlupO2qtGHG5Dhk2c/heKpkSlOIo9UaaCVYGVn11vwfqdsI
-        2iUE6s6mfiWiP0Ko7+q7xgDPbmO9WH/WaEqBV7sjjVQqgrhtr2euxL+xpKcE/3Uz0bPY=;
-Received: from [217.114.218.20] (helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1ni88b-0002gY-2W; Sat, 23 Apr 2022 07:16:53 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] mt76: fix tx status related use-after-free race on station removal
-Date:   Sat, 23 Apr 2022 07:16:48 +0200
-Message-Id: <20220423051648.17362-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.35.1
+        Sat, 23 Apr 2022 02:19:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C0771A8C09;
+        Fri, 22 Apr 2022 23:16:45 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 485E560AFA;
+        Sat, 23 Apr 2022 06:16:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9095DC385A0;
+        Sat, 23 Apr 2022 06:16:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650694604;
+        bh=NVI7VzmGBiOb+BBY2T+Sry5ii2m+JF0yOSOAGGiJGNA=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=TDuUON4SFSkzEbWklnAI+3lnzbniB8kLFlbcWVemxsIJYxQk2TwXi6dXAS5XkMmM8
+         NK951vyvCCosAr5rTQjj/KuZIXgDShmGTB043Z/iEOhRm8wrqNroXk3NWkStHP97nO
+         7Gt6Hmu322Dip+uoTweYkFUPRzPEfqro6YXR1uQGV8S3NOgUeeMEj2e1BUaDfXrmqx
+         VC1k7rL/uzdBmVR2eSV46wyvZBphfk/kDtN6/QyeQ49MSkofBTP8R4Ez1JdB9bL7EY
+         A0EntQezILIo6CT/9AbOoW146GVfX0/xl4P5+B6LcQvBqiYQJS3hy5mkz8XjEPWPXH
+         4qnUKAsfkd6hA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Yegor Yefremov <yegorslists@googlemail.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-wireless@vger.kernel.org, sebastian.reichel@collabora.co.uk
+Subject: Re: wl18xx: NVS file handling
+References: <CAGm1_ktEim1vGOf5i=H_sqrPvg=dT50790YYwXgYKgAut-a=ng@mail.gmail.com>
+        <YmDpTAu9wmlLijDA@atomide.com>
+        <CAGm1_kv+b1h1OuWr4w5jS_mqfQpXF7UexiWFsOSs+MJK546=ew@mail.gmail.com>
+        <CAGm1_ksOt-JtOcTBG7wEqaHagx1NTGYXTMTOG40AN2RELqWKwg@mail.gmail.com>
+        <YmKaoRfxo4bMzDdR@atomide.com>
+Date:   Sat, 23 Apr 2022 09:16:39 +0300
+In-Reply-To: <YmKaoRfxo4bMzDdR@atomide.com> (Tony Lindgren's message of "Fri,
+        22 Apr 2022 15:08:01 +0300")
+Message-ID: <87ee1oqq7s.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is a small race window where ongoing tx activity can lead to a skb
-getting added to the status tracking idr after that idr has already been
-cleaned up, which will keep the wcid linked in the status poll list.
-Fix this by only adding status skbs if the wcid pointer is still assigned
-in dev->wcid, which gets cleared early by mt76_sta_pre_rcu_remove
+Tony Lindgren <tony@atomide.com> writes:
 
-Fixes: bd1e3e7b693c ("mt76: introduce packet_id idr")
-Tested-by: Ben Greear <greearb@candelatech.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c | 2 ++
- drivers/net/wireless/mediatek/mt76/tx.c       | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+> * Yegor Yefremov <yegorslists@googlemail.com> [220422 10:40]:
+>> Wouldn't we need this functionality [1] to make the NVS fw file optional? :-(
+>> 
+>> [1] https://patchwork.kernel.org/project/linux-dmaengine/patch/20181112160143.4459-1-l.stach@pengutronix.de/
+>
+> Hmm yeah, how about if we use just an empty nvs file for no warnings then?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 2dd3ebd1863f..8a2fedbb1451 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -1381,7 +1381,9 @@ void mt76_sta_pre_rcu_remove(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	struct mt76_wcid *wcid = (struct mt76_wcid *)sta->drv_priv;
- 
- 	mutex_lock(&dev->mutex);
-+	spin_lock_bh(&dev->status_lock);
- 	rcu_assign_pointer(dev->wcid[wcid->idx], NULL);
-+	spin_unlock_bh(&dev->status_lock);
- 	mutex_unlock(&dev->mutex);
- }
- EXPORT_SYMBOL_GPL(mt76_sta_pre_rcu_remove);
-diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
-index c3be62f58b62..d5a8456c108b 100644
---- a/drivers/net/wireless/mediatek/mt76/tx.c
-+++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -120,7 +120,7 @@ mt76_tx_status_skb_add(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 
- 	memset(cb, 0, sizeof(*cb));
- 
--	if (!wcid)
-+	if (!wcid || !rcu_access_pointer(dev->wcid[wcid->idx]))
- 		return MT_PACKET_ID_NO_ACK;
- 
- 	if (info->flags & IEEE80211_TX_CTL_NO_ACK)
+What's wrong with firmware_request_nowarn()?
+
 -- 
-2.35.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
