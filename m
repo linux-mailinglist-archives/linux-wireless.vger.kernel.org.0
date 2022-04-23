@@ -2,75 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79CD050C14B
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 00:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2E1E50C787
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Apr 2022 07:17:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231440AbiDVWFB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Apr 2022 18:05:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34152 "EHLO
+        id S233157AbiDWFTx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Apr 2022 01:19:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231400AbiDVWEt (ORCPT
+        with ESMTP id S229945AbiDWFTw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Apr 2022 18:04:49 -0400
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF8711EE8E8
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Apr 2022 13:47:15 -0700 (PDT)
-Received: (wp-smtpd smtp.wp.pl 29161 invoked from network); 22 Apr 2022 21:47:12 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1650656832; bh=xN2TT2giRziTYzxkSRV3HAksGNGWVBKa+uXJBNXkzg8=;
-          h=From:To:Cc:Subject;
-          b=OaGiXdxuDtJlr6gXKJMqvpfHpw99AKST0JhzfU229DzbMl/J+krQWmDL0JaMn3wZ+
-           nLYzvdrGHvHszYhPrBHs6aXhFXMAhayra5vhItjEqeLtXIx/Awutg9aHIuu0eIUDfd
-           DolY4LgU+nV3ARsdp1tJC43865542AEiY+9HqATk=
-Received: from unknown (HELO kicinski-fedora-PC1C0HJN) (kubakici@wp.pl@[163.114.132.6])
-          (envelope-sender <kubakici@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <zhaojunkui2008@126.com>; 22 Apr 2022 21:47:12 +0200
-Date:   Fri, 22 Apr 2022 12:47:04 -0700
-From:   Jakub Kicinski <kubakici@wp.pl>
-To:     Bernard Zhao <zhaojunkui2008@126.com>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        bernard@vivo.com
-Subject: Re: [PATCH v2] mediatek/mt7601u: add debugfs exit function
-Message-ID: <20220422124704.259244e7@kicinski-fedora-PC1C0HJN>
-In-Reply-To: <20220422080854.490379-1-zhaojunkui2008@126.com>
-References: <20220422080854.490379-1-zhaojunkui2008@126.com>
+        Sat, 23 Apr 2022 01:19:52 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 691678D6B1
+        for <linux-wireless@vger.kernel.org>; Fri, 22 Apr 2022 22:16:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=WcYERNmbGHz6qnpdXVE+fTJevHMz5wvD2HERDxIzTKA=; b=LGu8eDCxK/Wujg2lPwoMOlRFrX
+        mKnECNI9203Jz5H0bmnDAopmr68RMqIlupO2qtGHG5Dhk2c/heKpkSlOIo9UaaCVYGVn11vwfqdsI
+        2iUE6s6mfiWiP0Ko7+q7xgDPbmO9WH/WaEqBV7sjjVQqgrhtr2euxL+xpKcE/3Uz0bPY=;
+Received: from [217.114.218.20] (helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1ni88b-0002gY-2W; Sat, 23 Apr 2022 07:16:53 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH] mt76: fix tx status related use-after-free race on station removal
+Date:   Sat, 23 Apr 2022 07:16:48 +0200
+Message-Id: <20220423051648.17362-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-WP-MailID: 9321f50bc9e4db09d6c2149ef2c2edd3
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 000000A [UYOE]                               
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 22 Apr 2022 01:08:54 -0700 Bernard Zhao wrote:
-> When mt7601u loaded, there are two cases:
-> First when mt7601u is loaded, in function mt7601u_probe, if
-> function mt7601u_probe run into error lable err_hw,
-> mt7601u_cleanup didn`t cleanup the debugfs node.
-> Second when the module disconnect, in function mt7601u_disconnect,
-> mt7601u_cleanup didn`t cleanup the debugfs node.
-> This patch add debugfs exit function and try to cleanup debugfs
-> node when mt7601u loaded fail or unloaded.
-> 
-> Signed-off-by: Bernard Zhao <zhaojunkui2008@126.com>
+There is a small race window where ongoing tx activity can lead to a skb
+getting added to the status tracking idr after that idr has already been
+cleaned up, which will keep the wcid linked in the status poll list.
+Fix this by only adding status skbs if the wcid pointer is still assigned
+in dev->wcid, which gets cleared early by mt76_sta_pre_rcu_remove
 
-Ah, missed that there was a v2. My point stands, wiphy debugfs dir
-should do the cleanup.
+Fixes: bd1e3e7b693c ("mt76: introduce packet_id idr")
+Tested-by: Ben Greear <greearb@candelatech.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 2 ++
+ drivers/net/wireless/mediatek/mt76/tx.c       | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-Do you encounter problems in practice or are you sending this patches
-based on reading / static analysis of the code only.
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 2dd3ebd1863f..8a2fedbb1451 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1381,7 +1381,9 @@ void mt76_sta_pre_rcu_remove(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	struct mt76_wcid *wcid = (struct mt76_wcid *)sta->drv_priv;
+ 
+ 	mutex_lock(&dev->mutex);
++	spin_lock_bh(&dev->status_lock);
+ 	rcu_assign_pointer(dev->wcid[wcid->idx], NULL);
++	spin_unlock_bh(&dev->status_lock);
+ 	mutex_unlock(&dev->mutex);
+ }
+ EXPORT_SYMBOL_GPL(mt76_sta_pre_rcu_remove);
+diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
+index c3be62f58b62..d5a8456c108b 100644
+--- a/drivers/net/wireless/mediatek/mt76/tx.c
++++ b/drivers/net/wireless/mediatek/mt76/tx.c
+@@ -120,7 +120,7 @@ mt76_tx_status_skb_add(struct mt76_dev *dev, struct mt76_wcid *wcid,
+ 
+ 	memset(cb, 0, sizeof(*cb));
+ 
+-	if (!wcid)
++	if (!wcid || !rcu_access_pointer(dev->wcid[wcid->idx]))
+ 		return MT_PACKET_ID_NO_ACK;
+ 
+ 	if (info->flags & IEEE80211_TX_CTL_NO_ACK)
+-- 
+2.35.1
+
