@@ -2,89 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE09450D1A0
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Apr 2022 14:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30CEA50D435
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Apr 2022 20:37:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230198AbiDXMOj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 Apr 2022 08:14:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56358 "EHLO
+        id S237070AbiDXSkq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 Apr 2022 14:40:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbiDXMOg (ORCPT
+        with ESMTP id S229929AbiDXSkp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 Apr 2022 08:14:36 -0400
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F24E53135D
-        for <linux-wireless@vger.kernel.org>; Sun, 24 Apr 2022 05:11:36 -0700 (PDT)
+        Sun, 24 Apr 2022 14:40:45 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 275FFB8208
+        for <linux-wireless@vger.kernel.org>; Sun, 24 Apr 2022 11:37:44 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id m20so4979738ejj.10
+        for <linux-wireless@vger.kernel.org>; Sun, 24 Apr 2022 11:37:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1650802296; x=1682338296;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=dMNiOiLzChr/7IMjjJyhXX+Ew+uWRVB1fgb0yHCKV3Y=;
-  b=KrYC2d8ZcXr6vc1uTr6qO9ondIjB6hFmDaojyOtb6Ajo62dW5jPFia7E
-   ylL3ZH2/nD0SkLkWnNskAURuuNItXTWRY2nG+hJdhzQlgcfTCQWPpFIO6
-   ezSKMisRXh7pmR9D256DLMKNeMqmYkgi6pFO+McLNfA4WlMQjh/5uPVDe
-   g=;
-Received: from unknown (HELO ironmsg03-sd.qualcomm.com) ([10.53.140.143])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 24 Apr 2022 05:11:36 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg03-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2022 05:11:36 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Sun, 24 Apr 2022 05:11:35 -0700
-Received: from [10.253.33.23] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Sun, 24 Apr
- 2022 05:11:34 -0700
-Message-ID: <a97692be-d1a6-266d-6876-3716923aceb0@quicinc.com>
-Date:   Sun, 24 Apr 2022 20:11:32 +0800
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=hHnO21wAcSPivgtKgL8+8teBQmI+iQYmyoK7/9xFNlg=;
+        b=lAFvC+KmdXMqKuNzDNeXbAZC+lQr0s5t/QapYFNYvct72nJHuaj3zQnzlSpOh+bUiO
+         z4CzOejVL03odcejQ0jcy8A8GTBJf82JPRNXTIbJJG755bA6v3eKw6XjmiRShtOPrVT4
+         VYjOie8lLPFQgdwVvE18S7Mt9+71QLw6ZZrdKNHZBAsFP7BuWztNHemaQdYpgaH/VzYY
+         5x/PYEpU/4Udfi/iQeYGs1ny7ALolPxCWOe2wCWAtV2z2Tb8DEGctt9WddukQpxbzSgL
+         glP9HnyWpR1f5bsUbLC/Z4R84PuIh6/ADg2ChDfDRcEE1AV1H59/zBWOMovoHRldwxcV
+         GzIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=hHnO21wAcSPivgtKgL8+8teBQmI+iQYmyoK7/9xFNlg=;
+        b=0/Eq3fUOgmuYH0YFpq3UU+GdkBaAoQWECxEVlp62l6Skhty9ZXVjz0cTRmavcsm+XH
+         0KC0naeiXOO7Hy3Xhn0oj7nKPE2BwJtz1xUDmYGMXxdPQwoHJv9Jo6GfbpVhAov78kN+
+         J/mKN8MGztP29aaAKZshzE8PMUIG23urOUghBbpz2xvBPsNmz9f/oWkvu+DuZwzp1MI/
+         6OGT6gNSg4rpJb0g0M/a9vepj7TDdDMv+7Jrab97hLqt1sinqK5UKJO1XTIdtZlHiXEO
+         J4TV4IwFXS1gjM73KZWNlZPFGOaU2wYfe4RuKd+06sS2tp/FYmHJHyXBI+HJARdGX9Cw
+         55Xg==
+X-Gm-Message-State: AOAM531kpcuP56UiXalUEh3xqjmy0Mh1IPyKFVo0jdSjlaDUzzvpSIFz
+        yX+YFMVA8YX8vuBwodF8zhdtz6I1YVe38EB0jy8=
+X-Google-Smtp-Source: ABdhPJyC0eW4n3K4HJ2iUYyRHQkNHeQWuYC/xnyXPesgA2w2PnbAqjCyl5UBg4A/75jHStnh91k0KmC/RWfoy8y9EyY=
+X-Received: by 2002:a17:906:99c1:b0:6ef:d995:11ac with SMTP id
+ s1-20020a17090699c100b006efd99511acmr12662747ejn.244.1650825462333; Sun, 24
+ Apr 2022 11:37:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH] ath11k: add read country code from SMBIOS for
- WCN6855/QCA6390
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20220421023501.32167-1-quic_wgong@quicinc.com>
- <8735i4m8hu.fsf@kernel.org>
- <61d2a5aa-c82d-6994-a8f3-0d31e32421be@quicinc.com>
- <87o80qkcau.fsf@kernel.org>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <87o80qkcau.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Received: by 2002:a54:304e:0:0:0:0:0 with HTTP; Sun, 24 Apr 2022 11:37:41
+ -0700 (PDT)
+Reply-To: Mrs_Bill.Chantal.Lawrence2022@europemail.com
+From:   "mrs.Bill Chantal" <chantalbill031@gmail.com>
+Date:   Sun, 24 Apr 2022 21:37:41 +0300
+Message-ID: <CAErKYFRvbTj-wm6-XbuDn_Ex1udgmwBo8bBzX3nfsgvP4o0svA@mail.gmail.com>
+Subject: WhatsAppi number: +1(646)7400625
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:641 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4477]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [chantalbill031[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mrs_bill.chantal.lawrence2022[at]europemail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [chantalbill031[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/24/2022 6:26 PM, Kalle Valo wrote:
-> Wen Gong <quic_wgong@quicinc.com> writes:
->
->> On 4/23/2022 5:53 PM, Kalle Valo wrote:
->>> Wen Gong <quic_wgong@quicinc.com> writes:
->>>
->>>
->> ...
-...
->> Yes, Kalle,
->>
->> I agree with you.
->>
->> need I send new version to change the "__le16 cc_code" to "u16 cc_code"?
-> I fixed this in the pending branch, compile tested only. Please check:
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=a6d583e310c70fb93ec7045f0ea38c12632098d8
-yes, it is OK after check.
->
+Tere, kallis
+
+Selle eest on teile h=C3=BCvitatud 4,4 miljonit dollarit
+=C3=9CRO makse v=C3=A4ljastatakse sularahaautomaadi Visa kaardile ja saadet=
+akse
+Sulle
+Pangast. V=C3=B5ite saata mulle oma Whatsi rakenduse ja passi.
+
+AIT=C3=84H
+
+Proua Bill Singing Lawrence
