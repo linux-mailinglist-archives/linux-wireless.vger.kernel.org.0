@@ -2,89 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE8E50CEC7
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Apr 2022 04:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 749F550CF17
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Apr 2022 06:16:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237049AbiDXDCD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Apr 2022 23:02:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51958 "EHLO
+        id S238037AbiDXESv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 Apr 2022 00:18:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231260AbiDXDCC (ORCPT
+        with ESMTP id S238039AbiDXESt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Apr 2022 23:02:02 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0DAC13FB53
-        for <linux-wireless@vger.kernel.org>; Sat, 23 Apr 2022 19:59:02 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23O2wncX7011520, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23O2wncX7011520
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Sun, 24 Apr 2022 10:58:49 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Sun, 24 Apr 2022 10:58:49 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Sun, 24 Apr 2022 10:58:49 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
- RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
- 15.01.2308.021; Sun, 24 Apr 2022 10:58:49 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "kvalo@kernel.org" <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+        Sun, 24 Apr 2022 00:18:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B8D41C04BD
+        for <linux-wireless@vger.kernel.org>; Sat, 23 Apr 2022 21:15:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D709F6124F
+        for <linux-wireless@vger.kernel.org>; Sun, 24 Apr 2022 04:15:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E566C385AB;
+        Sun, 24 Apr 2022 04:15:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650773749;
+        bh=HihQALnqFpJOjpZ/CRj1wUbh8YQud7YOBCN7QKcEZo8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=dTi+5LNXEy1OQBJXE0lzsqnpZpfy6Vs8ASnoXRXOiOYgxUYDdPYhEX2U2vy7lqIYR
+         q5ca+h7J++Ww0fN7LuIhNarZROssKjb4YLL5zi9k1uCCiDNT+6EhBtbxiPmQKBttmP
+         3WG7bKwqWIcqn4qJDRh7xe1Dz/T7ztE5ofjLh/k4NVjXBkUwZxN99H7OqT/jEA6NFG
+         KiflCVZ4gyZhDR+xNVLcqRuhhjCgJIOegf2tzF8pUXqdQY7duB3BuLTeJ6IqtTimiP
+         OkY30NgOMDftLNtPRwVzeT51eKKF0QnTRMgoZfd5RG2nRO0Do4YyWS8iABVs4UpDg1
+         21Dwinj+L2SxA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Pkshih <pkshih@realtek.com>
+Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Subject: Re: [PATCH 04/14] rtw89: pci: does RX in interrupt threadfn if low power mode
-Thread-Topic: [PATCH 04/14] rtw89: pci: does RX in interrupt threadfn if low
- power mode
-Thread-Index: AQHYVXjKft0nRNIh+Uy/BSkulDfRKqz862uAgACHaQeAAGqCAA==
-Date:   Sun, 24 Apr 2022 02:58:48 +0000
-Message-ID: <dcdf7eed815fb6e557a85910ad91d4a2f4614f5c.camel@realtek.com>
 References: <20220421120903.73715-5-pkshih@realtek.com>
-         <165071716438.1434.8811355640487410145.kvalo@kernel.org>
-         <875yn0q8lf.fsf@tynnyri.adurom.net>
-In-Reply-To: <875yn0q8lf.fsf@tynnyri.adurom.net>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [125.224.67.176]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvMjMg5LiL5Y2IIDEwOjMzOjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C666F3924C7FFA4985C0F6BE8836C199@realtek.com>
-Content-Transfer-Encoding: base64
+        <165071716438.1434.8811355640487410145.kvalo@kernel.org>
+        <875yn0q8lf.fsf@tynnyri.adurom.net>
+        <dcdf7eed815fb6e557a85910ad91d4a2f4614f5c.camel@realtek.com>
+Date:   Sun, 24 Apr 2022 07:15:43 +0300
+In-Reply-To: <dcdf7eed815fb6e557a85910ad91d4a2f4614f5c.camel@realtek.com>
+        (Pkshih's message of "Sun, 24 Apr 2022 02:58:48 +0000")
+Message-ID: <871qxnqfps.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gU2F0LCAyMDIyLTA0LTIzIGF0IDE1OjM3ICswMzAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiBL
-YWxsZSBWYWxvIDxrdmFsb0BrZXJuZWwub3JnPiB3cml0ZXM6DQo+IA0KPiA+IFBpbmctS2UgU2hp
-aCA8cGtzaGloQHJlYWx0ZWsuY29tPiB3cm90ZToNCj4gPiANCj4gPiA+IEluIGxvd2VyIHBvd2Vy
-IG1vZGUsIHRoZXJlIGFyZSB2ZXJ5IGxvdyBhbW91bnQgb2YgUlgsIGFuZCBpdCBtdXN0IHByb2Nl
-c3MNCj4gPiA+IGluIGEgc2VwYXJhdGVkIGZ1bmN0aW9uIGluc3RlYWQgb2Ygc2NoZWR1bGVfbmFw
-aSgpLCBiZWNhdXNlIHRoZSBleGlzdGluZw0KPiA+ID4gbmFwaV9wb2xsIGRvZXMgbWFueSB0aGlu
-Z3MgdG8gb3B0aW1pemUgcGVyZm9ybWFuY2UsIGJ1dCBub3QgYWxsIHJlZ2lzdGVycw0KPiA+ID4g
-Y2FuIGFjY2VzcyBpbiBsb3cgcG93ZXIgbW9kZS4gVGhlIHNpbXBsZSB3YXkgaXMgdG8gdXNlIHRo
-cmVhZGZuIHRvIHByb2Nlc3MNCj4gPiA+IHRoZSBzaW1wbGUgdGhpbmcuDQo+ID4gPiANCj4gPiA+
-IFNpZ25lZC1vZmYtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiA+IA0K
-PiA+IFRoZSB0aXRsZSBpcyBoYXJkIHRvIHVuZGVyc3RhbmQuDQo+IA0KPiBJZiB5b3UgY2FuIHBy
-b3ZpZGUgYSBuZXcgdGl0bGUgSSBjYW4gZml4IGl0IGR1cmluZyBjb21taXQuDQo+IA0KDQpQbGVh
-c2UgaGVscCByZS10aXRsZSB0byAicnR3ODk6IHBjaTogYWRkIGEgc2VwYXJhdGVkIGludGVycnVw
-dCBoYW5kbGVyIGZvciBsb3cgcG93ZXIgbW9kZSIuDQoNClRoYW5rIHlvdQ0KUGluZy1LZQ0KDQoN
-Cg==
+Pkshih <pkshih@realtek.com> writes:
+
+> On Sat, 2022-04-23 at 15:37 +0300, Kalle Valo wrote:
+>> Kalle Valo <kvalo@kernel.org> writes:
+>> 
+>> > Ping-Ke Shih <pkshih@realtek.com> wrote:
+>> > 
+>> > > In lower power mode, there are very low amount of RX, and it must process
+>> > > in a separated function instead of schedule_napi(), because the existing
+>> > > napi_poll does many things to optimize performance, but not all registers
+>> > > can access in low power mode. The simple way is to use threadfn to process
+>> > > the simple thing.
+>> > > 
+>> > > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+>> > 
+>> > The title is hard to understand.
+>> 
+>> If you can provide a new title I can fix it during commit.
+>> 
+>
+> Please help re-title to "rtw89: pci: add a separated interrupt handler for low power mode".
+
+This is much better, thanks. I'll update the title during commit.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
