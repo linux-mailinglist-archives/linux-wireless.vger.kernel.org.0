@@ -2,100 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6334550CE6C
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Apr 2022 04:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CE8E50CEC7
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Apr 2022 04:59:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237466AbiDXCZb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Apr 2022 22:25:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57978 "EHLO
+        id S237049AbiDXDCD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Apr 2022 23:02:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229779AbiDXCZa (ORCPT
+        with ESMTP id S231260AbiDXDCC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Apr 2022 22:25:30 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12BD8237FD;
-        Sat, 23 Apr 2022 19:22:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1650766950;
-  x=1682302950;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=QDh0au46jwGUKNxxZkaZpw8h8HU6jf4Ztj+mwSJXuEk=;
-  b=hoRItIIpXJVMNqiT1T4kGsVH4TPcT9U+AlvzuxlBZUFSWIEfP4BfnK76
-   ZCQ/m7PB5udbTK5mjIW7hfSJyxI8tBfNjM9+EmY+CXnGdvhikq6O3OHaE
-   /pIq+4Mi9PAarSBEjoAtbOE3u7YOl9eSRA41qgOxO7mgTCb1gUdQZu7zt
-   bCreesVyHjovGu7mZO/rlQbc85G/rwxQQL5nTknWaTph6xVGxZRfqQFgJ
-   QyRRYUvB7vTntHFRGZcE00Hz7khDoQUx3Yl6GfuNBzL2XTZHHhMRTwvz7
-   4ZpV25h/tj+PXPuGxO1k/OxuGa+HkNiV1ahslMYh6bxu5VBRVYszAKzhg
-   w==;
-From:   Hermes Zhang <chenhui.zhang@axis.com>
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-CC:     <kernel@axis.com>, Hermes Zhang <chenhuiz@axis.com>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3] brcmfmac: of: introduce new property to allow disable PNO
-Date:   Sun, 24 Apr 2022 10:22:24 +0800
-Message-ID: <20220424022224.3609950-1-chenhui.zhang@axis.com>
-X-Mailer: git-send-email 2.30.2
+        Sat, 23 Apr 2022 23:02:02 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0DAC13FB53
+        for <linux-wireless@vger.kernel.org>; Sat, 23 Apr 2022 19:59:02 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23O2wncX7011520, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23O2wncX7011520
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Sun, 24 Apr 2022 10:58:49 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Sun, 24 Apr 2022 10:58:49 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Sun, 24 Apr 2022 10:58:49 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
+ RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
+ 15.01.2308.021; Sun, 24 Apr 2022 10:58:49 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "kvalo@kernel.org" <kvalo@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 04/14] rtw89: pci: does RX in interrupt threadfn if low power mode
+Thread-Topic: [PATCH 04/14] rtw89: pci: does RX in interrupt threadfn if low
+ power mode
+Thread-Index: AQHYVXjKft0nRNIh+Uy/BSkulDfRKqz862uAgACHaQeAAGqCAA==
+Date:   Sun, 24 Apr 2022 02:58:48 +0000
+Message-ID: <dcdf7eed815fb6e557a85910ad91d4a2f4614f5c.camel@realtek.com>
+References: <20220421120903.73715-5-pkshih@realtek.com>
+         <165071716438.1434.8811355640487410145.kvalo@kernel.org>
+         <875yn0q8lf.fsf@tynnyri.adurom.net>
+In-Reply-To: <875yn0q8lf.fsf@tynnyri.adurom.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [125.224.67.176]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvMjMg5LiL5Y2IIDEwOjMzOjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C666F3924C7FFA4985C0F6BE8836C199@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Hermes Zhang <chenhuiz@axis.com>
-
-Some versions of the Broadcom firmware for this chip seem to hang
-if the PNO feature is enabled when connecting to a dummy or
-non-existent AP.
-Add a new property to allow the disabling of PNO for devices with
-this specific firmware.
-
-Signed-off-by: Hermes Zhang <chenhuiz@axis.com>
----
-
-Notes:
-    Comments update
-
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-index 8623bde5eb70..121a195e4054 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-@@ -11,6 +11,7 @@
- #include "core.h"
- #include "common.h"
- #include "of.h"
-+#include "feature.h"
- 
- static int brcmf_of_get_country_codes(struct device *dev,
- 				      struct brcmf_mp_device *settings)
-@@ -102,6 +103,9 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 	if (bus_type != BRCMF_BUSTYPE_SDIO)
- 		return;
- 
-+	if (of_find_property(np, "brcm,pno-disable", NULL))
-+		settings->feature_disable |= BIT(BRCMF_FEAT_PNO);
-+
- 	if (of_property_read_u32(np, "brcm,drive-strength", &val) == 0)
- 		sdio->drive_strength = val;
- 
--- 
-2.30.2
-
+T24gU2F0LCAyMDIyLTA0LTIzIGF0IDE1OjM3ICswMzAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiBL
+YWxsZSBWYWxvIDxrdmFsb0BrZXJuZWwub3JnPiB3cml0ZXM6DQo+IA0KPiA+IFBpbmctS2UgU2hp
+aCA8cGtzaGloQHJlYWx0ZWsuY29tPiB3cm90ZToNCj4gPiANCj4gPiA+IEluIGxvd2VyIHBvd2Vy
+IG1vZGUsIHRoZXJlIGFyZSB2ZXJ5IGxvdyBhbW91bnQgb2YgUlgsIGFuZCBpdCBtdXN0IHByb2Nl
+c3MNCj4gPiA+IGluIGEgc2VwYXJhdGVkIGZ1bmN0aW9uIGluc3RlYWQgb2Ygc2NoZWR1bGVfbmFw
+aSgpLCBiZWNhdXNlIHRoZSBleGlzdGluZw0KPiA+ID4gbmFwaV9wb2xsIGRvZXMgbWFueSB0aGlu
+Z3MgdG8gb3B0aW1pemUgcGVyZm9ybWFuY2UsIGJ1dCBub3QgYWxsIHJlZ2lzdGVycw0KPiA+ID4g
+Y2FuIGFjY2VzcyBpbiBsb3cgcG93ZXIgbW9kZS4gVGhlIHNpbXBsZSB3YXkgaXMgdG8gdXNlIHRo
+cmVhZGZuIHRvIHByb2Nlc3MNCj4gPiA+IHRoZSBzaW1wbGUgdGhpbmcuDQo+ID4gPiANCj4gPiA+
+IFNpZ25lZC1vZmYtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiA+IA0K
+PiA+IFRoZSB0aXRsZSBpcyBoYXJkIHRvIHVuZGVyc3RhbmQuDQo+IA0KPiBJZiB5b3UgY2FuIHBy
+b3ZpZGUgYSBuZXcgdGl0bGUgSSBjYW4gZml4IGl0IGR1cmluZyBjb21taXQuDQo+IA0KDQpQbGVh
+c2UgaGVscCByZS10aXRsZSB0byAicnR3ODk6IHBjaTogYWRkIGEgc2VwYXJhdGVkIGludGVycnVw
+dCBoYW5kbGVyIGZvciBsb3cgcG93ZXIgbW9kZSIuDQoNClRoYW5rIHlvdQ0KUGluZy1LZQ0KDQoN
+Cg==
