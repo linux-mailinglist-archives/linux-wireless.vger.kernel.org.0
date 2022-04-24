@@ -2,48 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 749F550CF17
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Apr 2022 06:16:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9E3450CF1B
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Apr 2022 06:20:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238037AbiDXESv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 Apr 2022 00:18:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52096 "EHLO
+        id S238039AbiDXEVg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 Apr 2022 00:21:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238039AbiDXESt (ORCPT
+        with ESMTP id S235553AbiDXEVf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 Apr 2022 00:18:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B8D41C04BD
-        for <linux-wireless@vger.kernel.org>; Sat, 23 Apr 2022 21:15:50 -0700 (PDT)
+        Sun, 24 Apr 2022 00:21:35 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A2B21C241B;
+        Sat, 23 Apr 2022 21:18:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D709F6124F
-        for <linux-wireless@vger.kernel.org>; Sun, 24 Apr 2022 04:15:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E566C385AB;
-        Sun, 24 Apr 2022 04:15:48 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 14F28B800C1;
+        Sun, 24 Apr 2022 04:18:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F95C385AB;
+        Sun, 24 Apr 2022 04:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650773749;
-        bh=HihQALnqFpJOjpZ/CRj1wUbh8YQud7YOBCN7QKcEZo8=;
+        s=k20201202; t=1650773912;
+        bh=hZeQ8l2GGPUcm2HtV6Tvb87TuH2XsCJO1iGyBKj/7cg=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=dTi+5LNXEy1OQBJXE0lzsqnpZpfy6Vs8ASnoXRXOiOYgxUYDdPYhEX2U2vy7lqIYR
-         q5ca+h7J++Ww0fN7LuIhNarZROssKjb4YLL5zi9k1uCCiDNT+6EhBtbxiPmQKBttmP
-         3WG7bKwqWIcqn4qJDRh7xe1Dz/T7ztE5ofjLh/k4NVjXBkUwZxN99H7OqT/jEA6NFG
-         KiflCVZ4gyZhDR+xNVLcqRuhhjCgJIOegf2tzF8pUXqdQY7duB3BuLTeJ6IqtTimiP
-         OkY30NgOMDftLNtPRwVzeT51eKKF0QnTRMgoZfd5RG2nRO0Do4YyWS8iABVs4UpDg1
-         21Dwinj+L2SxA==
+        b=HHZvvWFbiHF2bu3CA1xXesfF+s+/D7MUTITGW8a89I+62eh4AHYo/De/j2kl4U6Q3
+         Ovs4PeCTHk7240bdRX0Kj+4WKJFfWr27hlQGEYA95e/i5H546cN/y3AuH/JPI/kCan
+         Yuay0G4Hbzo3mNz7RJf8jbRAiY67r5InWB/ZMhMx4F121AYV5ZLNOa99nMP/m2lMYA
+         xro6DsI1RxHky2+5anZghYayM7alMo4s9xx3CM0m+3rqHXOqWMw7hpyDkXRO+eCTe/
+         ftMzQhgetXaJ5iUp4yIS0Vl8AP2S5mlUUKSCSVkcqyjn7Xs8VKGUy7enoRlB1fizkG
+         AhHf16EwsaeKA==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 04/14] rtw89: pci: does RX in interrupt threadfn if low power mode
-References: <20220421120903.73715-5-pkshih@realtek.com>
-        <165071716438.1434.8811355640487410145.kvalo@kernel.org>
-        <875yn0q8lf.fsf@tynnyri.adurom.net>
-        <dcdf7eed815fb6e557a85910ad91d4a2f4614f5c.camel@realtek.com>
-Date:   Sun, 24 Apr 2022 07:15:43 +0300
-In-Reply-To: <dcdf7eed815fb6e557a85910ad91d4a2f4614f5c.camel@realtek.com>
-        (Pkshih's message of "Sun, 24 Apr 2022 02:58:48 +0000")
-Message-ID: <871qxnqfps.fsf@tynnyri.adurom.net>
+To:     Hermes Zhang <chenhui.zhang@axis.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, <kernel@axis.com>,
+        Hermes Zhang <chenhuiz@axis.com>,
+        <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <SHA-cyfmac-dev-list@infineon.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3] brcmfmac: of: introduce new property to allow disable PNO
+References: <20220424022224.3609950-1-chenhui.zhang@axis.com>
+Date:   Sun, 24 Apr 2022 07:18:28 +0300
+In-Reply-To: <20220424022224.3609950-1-chenhui.zhang@axis.com> (Hermes Zhang's
+        message of "Sun, 24 Apr 2022 10:22:24 +0800")
+Message-ID: <87wnffp10r.fsf@tynnyri.adurom.net>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -56,29 +63,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pkshih <pkshih@realtek.com> writes:
+Hermes Zhang <chenhui.zhang@axis.com> writes:
 
-> On Sat, 2022-04-23 at 15:37 +0300, Kalle Valo wrote:
->> Kalle Valo <kvalo@kernel.org> writes:
->> 
->> > Ping-Ke Shih <pkshih@realtek.com> wrote:
->> > 
->> > > In lower power mode, there are very low amount of RX, and it must process
->> > > in a separated function instead of schedule_napi(), because the existing
->> > > napi_poll does many things to optimize performance, but not all registers
->> > > can access in low power mode. The simple way is to use threadfn to process
->> > > the simple thing.
->> > > 
->> > > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
->> > 
->> > The title is hard to understand.
->> 
->> If you can provide a new title I can fix it during commit.
->> 
+> From: Hermes Zhang <chenhuiz@axis.com>
 >
-> Please help re-title to "rtw89: pci: add a separated interrupt handler for low power mode".
+> Some versions of the Broadcom firmware for this chip seem to hang
+> if the PNO feature is enabled when connecting to a dummy or
+> non-existent AP.
+> Add a new property to allow the disabling of PNO for devices with
+> this specific firmware.
+>
+> Signed-off-by: Hermes Zhang <chenhuiz@axis.com>
+> ---
+>
+> Notes:
+>     Comments update
+>
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 4 ++++
 
-This is much better, thanks. I'll update the title during commit.
+This is still missing the bindings documentation and ack from the DT
+maintainers. You also need to CC the devicetree list:
+
+https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
