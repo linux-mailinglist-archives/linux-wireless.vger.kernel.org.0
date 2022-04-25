@@ -2,145 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB30150E17B
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Apr 2022 15:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 724A150E5C6
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Apr 2022 18:27:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237064AbiDYNYo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Apr 2022 09:24:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52638 "EHLO
+        id S243607AbiDYQak (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Apr 2022 12:30:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241959AbiDYNYl (ORCPT
+        with ESMTP id S243639AbiDYQad (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Apr 2022 09:24:41 -0400
-X-Greylist: delayed 216 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 25 Apr 2022 06:21:36 PDT
-Received: from mail1.nippynetworks.com (mail1.nippynetworks.com [91.220.24.129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA97433E0D
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 06:21:36 -0700 (PDT)
-Received: from [192.168.8.188] (unknown [94.228.36.46])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-256))
-        (No client certificate requested)
-        (Authenticated sender: ed@wildgooses.com)
-        by mail1.nippynetworks.com (Postfix) with ESMTPSA id 4Kn5D632CszTgSQ;
-        Mon, 25 Apr 2022 14:17:58 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wildgooses.com;
-        s=dkim; t=1650892678;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ugldtJvJRE+iZ7grfzTpN4hFTUFMYT/R84SKDFhQpEU=;
-        b=FPQd6IKeSalwjjWt93VUceESHSDwBrK/TrQ8ZUPEZm7+o7bOmVc4b1DWvyVv8Hwk5W/jX9
-        c8L+Q6bwMuSdo011LK3KPaEiPh9goUw7SHzGQ3DOYn6BwTQDfiE7qZQYXqGJ3LSxDR0wYN
-        tXxcROiOWtw3vslDhSlA557EvH22th4=
-Message-ID: <e7268989-03cf-ae7c-f3c6-b48fe679b790@wildgooses.com>
-Date:   Mon, 25 Apr 2022 14:17:57 +0100
+        Mon, 25 Apr 2022 12:30:33 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFD5E1FCC5
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 09:26:21 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id y85so16446462iof.3
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 09:26:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HU3UDCc+mIqj0/fp/LE7q8+k94zCe9E1Hd4WYWfxitY=;
+        b=jgVuez9s1TQ+m/thsk1SoF2n6jLIvdnsC+TSdm3h/UY7rFdEYPJpCUNBVO2xL/L8jG
+         aB7dtnOWSlvzIAOeliZvm4CWNAi6M63Vf9FjYAtC07CvNJ1CgJbByEgsttFCt4oufUTR
+         CSQaLZMqVA9o2+L7pmQW/PpRncduTaBQ5lGRc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HU3UDCc+mIqj0/fp/LE7q8+k94zCe9E1Hd4WYWfxitY=;
+        b=cveALUx20D1UE/Y4uz9w69B6o+pCDuWqI5HvsRNhxxGFB05BpzfRXKRbzbuKDCIS9B
+         jb+cTnJVUL/ndtRvVX8t3H8CKkwiymBwDsG5rwt7GCKOfeEouxwvZ/V31nYdGL97M9Ll
+         xtlB9KwdeIyF5jwz5j4H+tsQvdjeXkiZyJ91So5/sKKweP+P6shs65Zp0k/X2netmRU9
+         nvcM9Ws7u00vpJwrqaVHyZk6xWv0HRa8yD1xV3WJBPRXnkzjxbPsWxA/u7+x+K9XgYYG
+         DWZjJKGvoJ88ZElBvFznYxgtlsKwcYm7YI3GG78rP03RCiFz3Qb5kOML+trY+4yc7MKy
+         br9Q==
+X-Gm-Message-State: AOAM532Bj+bG1hGa1YQhJ6JlBPD/ekgyfysMi7qALimzQTMKwTB3U3wk
+        ZCDi8eqwByf3YTNUtezmr+/DbSGMMPglFiTad9OxEg==
+X-Google-Smtp-Source: ABdhPJwXZUZ5zyqAqVlx/rPhR9eSgerc+CnpehGwUvzudCRMcUQFGT1nRMwSQGb1+5GWDsBJTK8fhG1CWTqwn2ATAYU=
+X-Received: by 2002:a05:6638:617:b0:32a:de4f:7772 with SMTP id
+ g23-20020a056638061700b0032ade4f7772mr4070395jar.155.1650903981260; Mon, 25
+ Apr 2022 09:26:21 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.8.0
-Subject: Re: [wireless-regdb] Correction of wireless-regdb for GB
-Content-Language: en-GB
-To:     Seth Forshee <seth.forshee@canonical.com>
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <4d07581c-a3be-a3c6-bf32-7007eb45d541@wildgooses.com>
- <20201106214446.GG6125@ubuntu-x1>
- <2a710032-f2ec-d55b-5da4-d881089fe0cd@wildgooses.com>
- <20201120175444.GN5439@ubuntu-x1>
-From:   Ed W <lists@wildgooses.com>
-In-Reply-To: <20201120175444.GN5439@ubuntu-x1>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20220425021442.1.I650b809482e1af8d0156ed88b5dc2677a0711d46@changeid>
+ <87czh5k7ua.fsf@kernel.org>
+In-Reply-To: <87czh5k7ua.fsf@kernel.org>
+From:   Abhishek Kumar <kuabhs@chromium.org>
+Date:   Mon, 25 Apr 2022 09:26:09 -0700
+Message-ID: <CACTWRwvqtDW_91-JGvH4bNRRo4EqEZZQCJHy7ms0QNwrz=f-oA@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: skip ath10k_halt during suspend for driver state RESTARTING
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        briannorris@chromium.org, ath10k@lists.infradead.org,
+        netdev@vger.kernel.org, Wen Gong <quic_wgong@quicinc.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 20/11/2020 17:54, Seth Forshee wrote:
->> Signed-off-by: Ed Wildgoose <lists@wildgooses.com>
->> ---
->>  db.txt | 7 +++++--
->>  1 file changed, 5 insertions(+), 2 deletions(-)
->>
->> diff --git a/db.txt b/db.txt
->> index ac32483..cc5ffd0 100644
->> --- a/db.txt
->> +++ b/db.txt
->> @@ -588,13 +588,16 @@ country FR: DFS-ETSI
->>  # GB: https://www.ofcom.org.uk/__data/assets/pdf_file/0019/136009/Ofc=
-om-Information-Sheet-5-GHz-RLANs.pdf
->>  # GB: https://www.ofcom.org.uk/__data/assets/pdf_file/0028/84970/ir-2=
-030.pdf
->>  # GB: https://www.ofcom.org.uk/__data/assets/pdf_file/0013/126121/Sta=
-tement_Implementing-Ofcoms-decision-on-the-57-71GHz-band.pdf
->> +# GB: https://www.ofcom.org.uk/__data/assets/pdf_file/0036/198927/6gh=
-z-statement.pdf
->>  country GB: DFS-ETSI
->>  	(2400 - 2483.5 @ 40), (100 mW)
->>  	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=3DETSI
->>  	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=3DET=
-SI
->> -	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=3DETSI
->> +	(5470 - 5730 @ 160), (500 mW), DFS, wmmrule=3DETSI
-> This looks okay to me.
->
->>  	# short range devices (ETSI EN 300 440-1)
->> -	(5725 - 5875 @ 80), (25 mW)
->> +	# See UK specific notes in ir-2030.pdf, p47
->> +	(5725 - 5850 @ 80), (200 mW), AUTO-BW, wmmrule=3DETSI
-> To echo what I said above, I'm unclear whether this change is in effect=
-
-> yet, and based what I've seen so far I think it would need to include
-> NO-OUTDOOR.
->
->> +	(5925 - 6425 @ 160), (250 mW), NO-OUTDOOR, AUTO-BW, wmmrule=3DETSI
-> I'm also unclear on whether this change is in effect yet.
->
-> Thanks,
-> Seth
->
->>  	# 60 GHz band channels 1-6
->>  	(57000 - 71000 @ 2160), (40)
->> =20
->> --=20
->> 2.26.2
->>
-
-Hi all, I dropped off watching this for a while....
-
-Seems like the update to IR2030 (GB country code regulations) was re-publ=
-ished last year, and the
-relevant sections are in pages 32 + 34-36
-
-My reading of this is:
-
-- Other stuff we changed 2 years ago seems ok, caveat I'm unclear when we=
- need to state half power
-vs using mean EIRP?
-- The 5.9-6.4Ghz range is now good for use (page 35 near the bottom), per=
-haps add something like:
-
-+=C2=A0=C2=A0=C2=A0 (5925 - 6425 @ 160), (250 mW), NO-OUTDOOR, AUTO-BW, w=
-mmrule=3DETSI
-
-- The 60Ghz range seems to available now, but I'm not sure what power num=
-ber we should have in our
-db.txt, see page 32.
-Says "40 dBm e.i.r.p / 27 dBm maximum transmit output power"
-- There are also some geographic restrictions, not sure what we can do ab=
-out those?
-
-So something like this perhaps?:
-
-> +	(5700 - 71000 @ 160), (40)
-
-Happy to knock this up into a patch if you can help with a little guidanc=
-e (although it might be
-faster for you to just commit the 2 extra lines if you agree?)
+Thanks Kalle for having a look and adding this on behalf of me.
+Here is the Tested-on tag,
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00288-QCARMSWPZ-1
 
 Thanks
+Abhishek
 
-Ed W
+On Sun, Apr 24, 2022 at 11:14 PM Kalle Valo <kvalo@kernel.org> wrote:
+>
+> Abhishek Kumar <kuabhs@chromium.org> writes:
+>
+> > Double free crash is observed when FW recovery(caused by wmi
+> > timeout/crash) is followed by immediate suspend event. The FW recovery
+> > is triggered by ath10k_core_restart() which calls driver clean up via
+> > ath10k_halt(). When the suspend event occurs between the FW recovery,
+> > the restart worker thread is put into frozen state until suspend completes.
+> > The suspend event triggers ath10k_stop() which again triggers ath10k_halt()
+> > The double invocation of ath10k_halt() causes ath10k_htt_rx_free() to be
+> > called twice(Note: ath10k_htt_rx_alloc was not called by restart worker
+> > thread because of its frozen state), causing the crash.
+> >
+> > To fix this, during the suspend flow, skip call to ath10k_halt() in
+> > ath10k_stop() when the current driver state is ATH10K_STATE_RESTARTING.
+> > Also, for driver state ATH10K_STATE_RESTARTING, call
+> > ath10k_wait_for_suspend() in ath10k_stop(). This is because call to
+> > ath10k_wait_for_suspend() is skipped later in
+> > [ath10k_halt() > ath10k_core_stop()] for the driver state
+> > ATH10K_STATE_RESTARTING.
+> >
+> > The frozen restart worker thread will be cancelled during resume when the
+> > device comes out of suspend.
+> >
+> > Below is the crash stack for reference:
+> >
+> > [  428.469167] ------------[ cut here ]------------
+> > [  428.469180] kernel BUG at mm/slub.c:4150!
+> > [  428.469193] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+> > [  428.469219] Workqueue: events_unbound async_run_entry_fn
+> > [  428.469230] RIP: 0010:kfree+0x319/0x31b
+> > [  428.469241] RSP: 0018:ffffa1fac015fc30 EFLAGS: 00010246
+> > [  428.469247] RAX: ffffedb10419d108 RBX: ffff8c05262b0000
+> > [  428.469252] RDX: ffff8c04a8c07000 RSI: 0000000000000000
+> > [  428.469256] RBP: ffffa1fac015fc78 R08: 0000000000000000
+> > [  428.469276] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > [  428.469285] Call Trace:
+> > [  428.469295]  ? dma_free_attrs+0x5f/0x7d
+> > [  428.469320]  ath10k_core_stop+0x5b/0x6f
+> > [  428.469336]  ath10k_halt+0x126/0x177
+> > [  428.469352]  ath10k_stop+0x41/0x7e
+> > [  428.469387]  drv_stop+0x88/0x10e
+> > [  428.469410]  __ieee80211_suspend+0x297/0x411
+> > [  428.469441]  rdev_suspend+0x6e/0xd0
+> > [  428.469462]  wiphy_suspend+0xb1/0x105
+> > [  428.469483]  ? name_show+0x2d/0x2d
+> > [  428.469490]  dpm_run_callback+0x8c/0x126
+> > [  428.469511]  ? name_show+0x2d/0x2d
+> > [  428.469517]  __device_suspend+0x2e7/0x41b
+> > [  428.469523]  async_suspend+0x1f/0x93
+> > [  428.469529]  async_run_entry_fn+0x3d/0xd1
+> > [  428.469535]  process_one_work+0x1b1/0x329
+> > [  428.469541]  worker_thread+0x213/0x372
+> > [  428.469547]  kthread+0x150/0x15f
+> > [  428.469552]  ? pr_cont_work+0x58/0x58
+> > [  428.469558]  ? kthread_blkcg+0x31/0x31
+> >
+> > Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
+> > Co-developed-by: Wen Gong <quic_wgong@quicinc.com>
+> > Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+>
+> Tested-on tag missing, but I can add it if you provide it.
+>
+> https://wireless.wiki.kernel.org/en/users/drivers/ath10k/submittingpatches#tested-on_tag
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
