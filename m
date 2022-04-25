@@ -2,61 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 724A150E5C6
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Apr 2022 18:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D5C750E8DE
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Apr 2022 20:55:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243607AbiDYQak (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Apr 2022 12:30:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41918 "EHLO
+        id S244702AbiDYS5V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Apr 2022 14:57:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243639AbiDYQad (ORCPT
+        with ESMTP id S244351AbiDYS5U (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Apr 2022 12:30:33 -0400
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFD5E1FCC5
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 09:26:21 -0700 (PDT)
-Received: by mail-io1-xd30.google.com with SMTP id y85so16446462iof.3
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 09:26:21 -0700 (PDT)
+        Mon, 25 Apr 2022 14:57:20 -0400
+Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECD3FC6EF7
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 11:54:13 -0700 (PDT)
+Received: by mail-ot1-x329.google.com with SMTP id t6-20020a056830224600b00605491a5cd7so11394813otd.13
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 11:54:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=HU3UDCc+mIqj0/fp/LE7q8+k94zCe9E1Hd4WYWfxitY=;
-        b=jgVuez9s1TQ+m/thsk1SoF2n6jLIvdnsC+TSdm3h/UY7rFdEYPJpCUNBVO2xL/L8jG
-         aB7dtnOWSlvzIAOeliZvm4CWNAi6M63Vf9FjYAtC07CvNJ1CgJbByEgsttFCt4oufUTR
-         CSQaLZMqVA9o2+L7pmQW/PpRncduTaBQ5lGRc=
+        bh=yaCTjN5CZzui2ztqLkxvGGCYTFHIuiGBpbp3r9GpozM=;
+        b=L4K++dPQRP+MDKtfMHchKPwefz1Mk5XkaIVfDC5UgwCSxVRbl8+VCMBFGhXXyigOFF
+         b3Yjvi2VpRRnsVtMX32hY+SiEuIvgLnKyn3k6xyGLFzJyTeFX6czxPd7GO/CIEhhooCJ
+         ulZXlRslJqczsGJMoOIXoEVfXD2T7C4ylx0vQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=HU3UDCc+mIqj0/fp/LE7q8+k94zCe9E1Hd4WYWfxitY=;
-        b=cveALUx20D1UE/Y4uz9w69B6o+pCDuWqI5HvsRNhxxGFB05BpzfRXKRbzbuKDCIS9B
-         jb+cTnJVUL/ndtRvVX8t3H8CKkwiymBwDsG5rwt7GCKOfeEouxwvZ/V31nYdGL97M9Ll
-         xtlB9KwdeIyF5jwz5j4H+tsQvdjeXkiZyJ91So5/sKKweP+P6shs65Zp0k/X2netmRU9
-         nvcM9Ws7u00vpJwrqaVHyZk6xWv0HRa8yD1xV3WJBPRXnkzjxbPsWxA/u7+x+K9XgYYG
-         DWZjJKGvoJ88ZElBvFznYxgtlsKwcYm7YI3GG78rP03RCiFz3Qb5kOML+trY+4yc7MKy
-         br9Q==
-X-Gm-Message-State: AOAM532Bj+bG1hGa1YQhJ6JlBPD/ekgyfysMi7qALimzQTMKwTB3U3wk
-        ZCDi8eqwByf3YTNUtezmr+/DbSGMMPglFiTad9OxEg==
-X-Google-Smtp-Source: ABdhPJwXZUZ5zyqAqVlx/rPhR9eSgerc+CnpehGwUvzudCRMcUQFGT1nRMwSQGb1+5GWDsBJTK8fhG1CWTqwn2ATAYU=
-X-Received: by 2002:a05:6638:617:b0:32a:de4f:7772 with SMTP id
- g23-20020a056638061700b0032ade4f7772mr4070395jar.155.1650903981260; Mon, 25
- Apr 2022 09:26:21 -0700 (PDT)
+        bh=yaCTjN5CZzui2ztqLkxvGGCYTFHIuiGBpbp3r9GpozM=;
+        b=NJHji3eALrEUtBSV6axyiKhqVS09ATlBNVYtpExwsS4j5PzEGlRGjfqdlAIUxFFYNc
+         Kqq8OqIZwXMaOym4U71N6kaMvbQ4+Kmd2SP/BckLqcubICn4830xpxGtmNXMVnOmO6lB
+         C26NqIFQc3t7pf3x7JF+quWv1NqzD+wQ6WwQ0Wh5rRdvDFtAhr3R17+HzWhWp+93M98X
+         cP5Y1zGZUWsSjSrBO2D0KvewLWY+JismeCbc7FM2308aracaUrz9PpJdDjHckOswkHPV
+         dIATmlNZ5JwJmMv7kzZCbT7xQC7TT7zfTlj1T6g2MqCQeaAM7Ltlt3KqOEfRGW5UYkHI
+         jzrQ==
+X-Gm-Message-State: AOAM531QmJgmZgq6QRTIn5k3VC1Y5Jv3yCWR7zLeQ30BSYuBk7Peqg8h
+        g2jIuIoc8JMO/Z1dKzgy2gRgHAplZ/5IjA==
+X-Google-Smtp-Source: ABdhPJxkX3S/0aaXlZRXz+sRGU1b39S8Ynp8dVoXvZ3qwgucWnw5+Y2aUhC3MhnxbQZmAV55nYClhw==
+X-Received: by 2002:a05:6830:1404:b0:605:46c8:3b4e with SMTP id v4-20020a056830140400b0060546c83b4emr6869648otp.293.1650912852947;
+        Mon, 25 Apr 2022 11:54:12 -0700 (PDT)
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com. [209.85.160.52])
+        by smtp.gmail.com with ESMTPSA id a11-20020a056830008b00b0060546411473sm4076173oto.75.2022.04.25.11.54.11
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Apr 2022 11:54:12 -0700 (PDT)
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-d6e29fb3d7so17040283fac.7
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 11:54:11 -0700 (PDT)
+X-Received: by 2002:a05:6870:4201:b0:e6:47c4:e104 with SMTP id
+ u1-20020a056870420100b000e647c4e104mr11422188oac.257.1650912851468; Mon, 25
+ Apr 2022 11:54:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220425021442.1.I650b809482e1af8d0156ed88b5dc2677a0711d46@changeid>
- <87czh5k7ua.fsf@kernel.org>
-In-Reply-To: <87czh5k7ua.fsf@kernel.org>
-From:   Abhishek Kumar <kuabhs@chromium.org>
-Date:   Mon, 25 Apr 2022 09:26:09 -0700
-Message-ID: <CACTWRwvqtDW_91-JGvH4bNRRo4EqEZZQCJHy7ms0QNwrz=f-oA@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: skip ath10k_halt during suspend for driver state RESTARTING
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        briannorris@chromium.org, ath10k@lists.infradead.org,
-        netdev@vger.kernel.org, Wen Gong <quic_wgong@quicinc.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
+References: <20200527165718.129307-1-briannorris@chromium.org> <YmPadTu8CfEARfWs@xps>
+In-Reply-To: <YmPadTu8CfEARfWs@xps>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Mon, 25 Apr 2022 11:54:00 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXPeJ6fD9hvc0Nq_RY05YRdSP77U_96vUZcTYgkQKY9Bvg@mail.gmail.com>
+Message-ID: <CA+ASDXPeJ6fD9hvc0Nq_RY05YRdSP77U_96vUZcTYgkQKY9Bvg@mail.gmail.com>
+Subject: Re: [PATCH] Revert "ath: add support for special 0x0 regulatory domain"
+To:     Patrick Steinhardt <ps@pks.im>
+Cc:     ath10k <ath10k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -68,80 +75,62 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thanks Kalle for having a look and adding this on behalf of me.
-Here is the Tested-on tag,
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00288-QCARMSWPZ-1
+Hi Patrick,
 
-Thanks
-Abhishek
+On Sat, Apr 23, 2022 at 3:52 AM Patrick Steinhardt <ps@pks.im> wrote:
+> This revert is in fact causing problems on my machine. I have a QCA9984,
+> which exports two network interfaces. While I was able to still use one
+> of both NICs for 2.4GHz, I couldn't really use the other card to set up
+> a 5GHz AP anymore because all frequencies were restricted. This has
+> started with v5.17.1, to which this revert was backported.
+>
+> Reverting this patch again fixes the issue on my system. So it seems
+> like there still are cards out there in the wild which have a value of
+> 0x0 as their regulatory domain.
+>
+> Quoting from your other mail:
+>
+> > My understanding was that no QCA modules *should* be shipped with a
+> > value of 0 in this field. The instance I'm aware of was more or less a
+> > manufacturing error I think, and we got Qualcomm to patch it over in
+> > software.
+>
+> This sounds like the issue should've already been fixed in firmware,
+> right?
 
-On Sun, Apr 24, 2022 at 11:14 PM Kalle Valo <kvalo@kernel.org> wrote:
->
-> Abhishek Kumar <kuabhs@chromium.org> writes:
->
-> > Double free crash is observed when FW recovery(caused by wmi
-> > timeout/crash) is followed by immediate suspend event. The FW recovery
-> > is triggered by ath10k_core_restart() which calls driver clean up via
-> > ath10k_halt(). When the suspend event occurs between the FW recovery,
-> > the restart worker thread is put into frozen state until suspend completes.
-> > The suspend event triggers ath10k_stop() which again triggers ath10k_halt()
-> > The double invocation of ath10k_halt() causes ath10k_htt_rx_free() to be
-> > called twice(Note: ath10k_htt_rx_alloc was not called by restart worker
-> > thread because of its frozen state), causing the crash.
-> >
-> > To fix this, during the suspend flow, skip call to ath10k_halt() in
-> > ath10k_stop() when the current driver state is ATH10K_STATE_RESTARTING.
-> > Also, for driver state ATH10K_STATE_RESTARTING, call
-> > ath10k_wait_for_suspend() in ath10k_stop(). This is because call to
-> > ath10k_wait_for_suspend() is skipped later in
-> > [ath10k_halt() > ath10k_core_stop()] for the driver state
-> > ATH10K_STATE_RESTARTING.
-> >
-> > The frozen restart worker thread will be cancelled during resume when the
-> > device comes out of suspend.
-> >
-> > Below is the crash stack for reference:
-> >
-> > [  428.469167] ------------[ cut here ]------------
-> > [  428.469180] kernel BUG at mm/slub.c:4150!
-> > [  428.469193] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-> > [  428.469219] Workqueue: events_unbound async_run_entry_fn
-> > [  428.469230] RIP: 0010:kfree+0x319/0x31b
-> > [  428.469241] RSP: 0018:ffffa1fac015fc30 EFLAGS: 00010246
-> > [  428.469247] RAX: ffffedb10419d108 RBX: ffff8c05262b0000
-> > [  428.469252] RDX: ffff8c04a8c07000 RSI: 0000000000000000
-> > [  428.469256] RBP: ffffa1fac015fc78 R08: 0000000000000000
-> > [  428.469276] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [  428.469285] Call Trace:
-> > [  428.469295]  ? dma_free_attrs+0x5f/0x7d
-> > [  428.469320]  ath10k_core_stop+0x5b/0x6f
-> > [  428.469336]  ath10k_halt+0x126/0x177
-> > [  428.469352]  ath10k_stop+0x41/0x7e
-> > [  428.469387]  drv_stop+0x88/0x10e
-> > [  428.469410]  __ieee80211_suspend+0x297/0x411
-> > [  428.469441]  rdev_suspend+0x6e/0xd0
-> > [  428.469462]  wiphy_suspend+0xb1/0x105
-> > [  428.469483]  ? name_show+0x2d/0x2d
-> > [  428.469490]  dpm_run_callback+0x8c/0x126
-> > [  428.469511]  ? name_show+0x2d/0x2d
-> > [  428.469517]  __device_suspend+0x2e7/0x41b
-> > [  428.469523]  async_suspend+0x1f/0x93
-> > [  428.469529]  async_run_entry_fn+0x3d/0xd1
-> > [  428.469535]  process_one_work+0x1b1/0x329
-> > [  428.469541]  worker_thread+0x213/0x372
-> > [  428.469547]  kthread+0x150/0x15f
-> > [  428.469552]  ? pr_cont_work+0x58/0x58
-> > [  428.469558]  ? kthread_blkcg+0x31/0x31
-> >
-> > Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
-> > Co-developed-by: Wen Gong <quic_wgong@quicinc.com>
-> > Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
->
-> Tested-on tag missing, but I can add it if you provide it.
->
-> https://wireless.wiki.kernel.org/en/users/drivers/ath10k/submittingpatches#tested-on_tag
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+See the original patch:
+https://git.kernel.org/linus/2dc016599cfa9672a147528ca26d70c3654a5423
+
+"Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00029."
+
+That patch was only tested for QCA6174 SDIO, and the 6174 firmware has
+since been updated. So none of that really applies to QCA9984. I
+suppose your device was also not working before v5.6 either, and IIUC,
+according to Qualcomm your hardware is a manufacturing error (i.e.,
+invalid country code).
+
+I don't know what to tell you exactly, other than that the original
+patch was wrong/unnecessary (and broke various existing systems) so it
+should be reverted. I'm not quite sure how to fix the variety of
+hardware out there (like yours) that may be using non-conforming
+EEPROM settings. It would seem to me that we might need some more
+targeted way of addressing broken hardware, rather than changing this
+particular default workaround. I'm honestly not that familiar with
+this Qualcomm regulatory stuff though, so my main contribution was
+just to suggest reverting (i.e., don't break what used to work); I'm
+not as savvy on providing alternative "fixes" for you.
+
+(That said: I *think* what's happening is that in the absence of a
+proper EEPROM code, ath drivers fall back to a default=US country
+code, and without further information to know you're compliant,
+regulatory rules disallow initiating radiation (such as, an AP) on
+5GHz.)
+
+>  I've added the relevant dmesg
+> snippets though in case I'm mistaken:
+
+With what kernel? That looks like pre-v5.17.1. The "broken"
+(post-5.17.1) logs might be a bit more informative.
+
+Sorry,
+Brian
