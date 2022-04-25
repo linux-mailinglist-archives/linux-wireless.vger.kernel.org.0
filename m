@@ -2,32 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4279150D7BF
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Apr 2022 05:42:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 084B350D920
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Apr 2022 08:03:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240686AbiDYDoo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 Apr 2022 23:44:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56482 "EHLO
+        id S240475AbiDYGG3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Apr 2022 02:06:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240826AbiDYDnl (ORCPT
+        with ESMTP id S241345AbiDYGEg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 Apr 2022 23:43:41 -0400
-Received: from m1541.mail.126.com (m1541.mail.126.com [220.181.15.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DF2CB645E;
-        Sun, 24 Apr 2022 20:40:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-        s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=Xb2jU
-        I68L4ingevBNbIwSF+oSRTmjSydhDTtvsIxWcs=; b=pFYM06IGpHTkeYdf0zJK8
-        +GSBQZCR2VR6HNUh6tNvRFpRpwCXpr7bY9XUlgBFkn2vjdilIyecsrQSVdy9lRd9
-        bpKLnWsW46UYad2Yv2T7a0Tl6uAk846LQizehMhZytT7oOvoYiNQnQXECBDZskko
-        /wBb7WgdTAp6yJc+RnfCNA=
-Received: from zhaojunkui2008$126.com ( [112.80.34.205] ) by
- ajax-webmail-wmsvr41 (Coremail) ; Mon, 25 Apr 2022 11:40:02 +0800 (CST)
-X-Originating-IP: [112.80.34.205]
-Date:   Mon, 25 Apr 2022 11:40:02 +0800 (CST)
-From:   z <zhaojunkui2008@126.com>
-To:     "Jakub Kicinski" <kubakici@wp.pl>
-Cc:     "Kalle Valo" <kvalo@kernel.org>,
+        Mon, 25 Apr 2022 02:04:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B457393D4;
+        Sun, 24 Apr 2022 23:01:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DC96611CC;
+        Mon, 25 Apr 2022 06:01:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0C6C385A7;
+        Mon, 25 Apr 2022 06:01:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650866483;
+        bh=jJSzwEMcRNQclSonKLXvhl6er2akDymhmWYinGpo/W8=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=lSWzbJpMsUcGjsZldMreaAWEEO9jJDWy+f/3W96Q2SJDLVq06bKQd5Q1Yax9gvhU2
+         V5tdlQC28gXmulRhky1zUjcXZoMNs+l0agLzfh9piHO6Tet4ytXfWqWTBdGU3MUcKm
+         lRyrM4Sf72QILzk5qgzPNl4/HfTpanxn4x6Fqa01gtRZC1na+FqBqVYclazzIhckhQ
+         ymMfezjxoVWv0f4iSVDXalh/LV0pfOnuE73KosBv95qY2aAxFjggYFsdVzKZFYfioL
+         k6nf/wql32x6PRkGgcbg5ZZhL82T1OO08PU3L2OdCeqqdRKLGQbS3d/zUelZwjJXNh
+         moqM24yUKrR0w==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     z <zhaojunkui2008@126.com>
+Cc:     "Jakub Kicinski" <kubakici@wp.pl>,
         "David S. Miller" <davem@davemloft.net>,
         "Paolo Abeni" <pabeni@redhat.com>,
         "Matthias Brugger" <matthias.bgg@gmail.com>,
@@ -35,52 +42,78 @@ Cc:     "Kalle Valo" <kvalo@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
         bernard@vivo.com
-Subject: Re:Re: [PATCH v2] mediatek/mt7601u: add debugfs exit function
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210622(1d4788a8)
- Copyright (c) 2002-2022 www.mailtech.cn 126com
-In-Reply-To: <20220422124704.259244e7@kicinski-fedora-PC1C0HJN>
+Subject: Re: [PATCH v2] mediatek/mt7601u: add debugfs exit function
+In-Reply-To: <15b4f.2aad.1805ece06a1.Coremail.zhaojunkui2008@126.com> (z.'s
+        message of "Mon, 25 Apr 2022 11:40:02 +0800 (CST)")
 References: <20220422080854.490379-1-zhaojunkui2008@126.com>
- <20220422124704.259244e7@kicinski-fedora-PC1C0HJN>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+        <20220422124704.259244e7@kicinski-fedora-PC1C0HJN>
+        <15b4f.2aad.1805ece06a1.Coremail.zhaojunkui2008@126.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Mon, 25 Apr 2022 09:01:18 +0300
+Message-ID: <87h76hk8gh.fsf@kernel.org>
 MIME-Version: 1.0
-Message-ID: <15b4f.2aad.1805ece06a1.Coremail.zhaojunkui2008@126.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: KcqowABHV98TGGZi9k4TAA--.52204W
-X-CM-SenderInfo: p2kd0y5xqn3xasqqmqqrswhudrp/1tbiqBPtqlpD9keacgAAs8
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-CkF0IDIwMjItMDQtMjMgMDM6NDc6MDQsICJKYWt1YiBLaWNpbnNraSIgPGt1YmFraWNpQHdwLnBs
-PiB3cm90ZToKPk9uIEZyaSwgMjIgQXByIDIwMjIgMDE6MDg6NTQgLTA3MDAgQmVybmFyZCBaaGFv
-IHdyb3RlOgo+PiBXaGVuIG10NzYwMXUgbG9hZGVkLCB0aGVyZSBhcmUgdHdvIGNhc2VzOgo+PiBG
-aXJzdCB3aGVuIG10NzYwMXUgaXMgbG9hZGVkLCBpbiBmdW5jdGlvbiBtdDc2MDF1X3Byb2JlLCBp
-Zgo+PiBmdW5jdGlvbiBtdDc2MDF1X3Byb2JlIHJ1biBpbnRvIGVycm9yIGxhYmxlIGVycl9odywK
-Pj4gbXQ3NjAxdV9jbGVhbnVwIGRpZG5gdCBjbGVhbnVwIHRoZSBkZWJ1Z2ZzIG5vZGUuCj4+IFNl
-Y29uZCB3aGVuIHRoZSBtb2R1bGUgZGlzY29ubmVjdCwgaW4gZnVuY3Rpb24gbXQ3NjAxdV9kaXNj
-b25uZWN0LAo+PiBtdDc2MDF1X2NsZWFudXAgZGlkbmB0IGNsZWFudXAgdGhlIGRlYnVnZnMgbm9k
-ZS4KPj4gVGhpcyBwYXRjaCBhZGQgZGVidWdmcyBleGl0IGZ1bmN0aW9uIGFuZCB0cnkgdG8gY2xl
-YW51cCBkZWJ1Z2ZzCj4+IG5vZGUgd2hlbiBtdDc2MDF1IGxvYWRlZCBmYWlsIG9yIHVubG9hZGVk
-Lgo+PiAKPj4gU2lnbmVkLW9mZi1ieTogQmVybmFyZCBaaGFvIDx6aGFvanVua3VpMjAwOEAxMjYu
-Y29tPgo+Cj5BaCwgbWlzc2VkIHRoYXQgdGhlcmUgd2FzIGEgdjIuIE15IHBvaW50IHN0YW5kcywg
-d2lwaHkgZGVidWdmcyBkaXIKPnNob3VsZCBkbyB0aGUgY2xlYW51cC4KPgo+RG8geW91IGVuY291
-bnRlciBwcm9ibGVtcyBpbiBwcmFjdGljZSBvciBhcmUgeW91IHNlbmRpbmcgdGhpcyBwYXRjaGVz
-Cj5iYXNlZCBvbiByZWFkaW5nIC8gc3RhdGljIGFuYWx5c2lzIG9mIHRoZSBjb2RlIG9ubHkuCgpI
-aSBKYWt1YiBLaWNpbnNraToKClRoZSBpc3N1ZSBoZXJlIGlzIGZvdW5kIGJ5IHJlYWRpbmcgY29k
-ZS4KSSByZWFkIHRoZSBkcml2ZXJzL25ldC93aXJlbGVzcyBjb2RlIGFuZCBmb3VuZCB0aGF0IG1h
-bnkgbW9kdWxlcyBhcmUgbm90IGNsZWFudXAgdGhlIGRlYnVnZnMuIApJIHNvcnRlZCBvdXQgdGhl
-IG1vZHVsZXMgdGhhdCB3ZXJlIG5vdCBjbGVhbmVkIHVwIHRoZSBkZWJ1Z2ZzOgouL3RpL3dsMTh4
-eAouL3RpL3dsMTJ4eAouL2ludGVsL2l3bHdpZmkKLi9pbnRlbC9pd2x3aWZpCi4vbWVkaWF0ZWsv
-bXQ3NgpJIGFtIG5vdCBzdXJlIHdoZXRoZXIgdGhpcyBwYXJ0IGlzIHdlbGNvbWUgdG8ga2VybmVs
-IHNvIEkgc3VibWl0dGVkIGEgcGF0Y2guCklmIHlvdSBoYXZlIGFueSBzdWdnZXN0aW9ucywgd2Vs
-Y29tZSB0byBwdXQgZm9yd2FyZCBmb3IgZGlzY3Vzc2lvbiwgdGhhbmsgeW91o6EKCkJSLy9CZXJu
-YXJkCgo=
+z  <zhaojunkui2008@126.com> writes:
+
+> At 2022-04-23 03:47:04, "Jakub Kicinski" <kubakici@wp.pl> wrote:
+>>On Fri, 22 Apr 2022 01:08:54 -0700 Bernard Zhao wrote:
+>>> When mt7601u loaded, there are two cases:
+>>> First when mt7601u is loaded, in function mt7601u_probe, if
+>>> function mt7601u_probe run into error lable err_hw,
+>>> mt7601u_cleanup didn`t cleanup the debugfs node.
+>>> Second when the module disconnect, in function mt7601u_disconnect,
+>>> mt7601u_cleanup didn`t cleanup the debugfs node.
+>>> This patch add debugfs exit function and try to cleanup debugfs
+>>> node when mt7601u loaded fail or unloaded.
+>>>=20
+>>> Signed-off-by: Bernard Zhao <zhaojunkui2008@126.com>
+>>
+>>Ah, missed that there was a v2. My point stands, wiphy debugfs dir
+>>should do the cleanup.
+>>
+>>Do you encounter problems in practice or are you sending this patches
+>>based on reading / static analysis of the code only.
+>
+> Hi Jakub Kicinski:
+>
+> The issue here is found by reading code.
+> I read the drivers/net/wireless code and found that many modules are
+> not cleanup the debugfs.
+> I sorted out the modules that were not cleaned up the debugfs:
+> ./ti/wl18xx
+> ./ti/wl12xx
+> ./intel/iwlwifi
+> ./intel/iwlwifi
+> ./mediatek/mt76
+> I am not sure whether this part is welcome to kernel so I submitted a pat=
+ch.
+> If you have any suggestions, welcome to put forward for discussion, thank=
+ you=EF=BC=81
+
+Jakub is saying that wiphy_unregister() recursively removes the debugfs
+directories:
+
+	/*
+	 * First remove the hardware from everywhere, this makes
+	 * it impossible to find from userspace.
+	 */
+	debugfs_remove_recursive(rdev->wiphy.debugfsdir);
+
+So AFAICS there is no bug. But if you are testing this on a real
+hardware and something is wrong, please provide more info.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
