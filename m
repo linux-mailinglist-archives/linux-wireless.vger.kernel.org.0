@@ -2,69 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D5C750E8DE
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Apr 2022 20:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F81450EC72
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Apr 2022 01:11:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244702AbiDYS5V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Apr 2022 14:57:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51228 "EHLO
+        id S237076AbiDYXOy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Apr 2022 19:14:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244351AbiDYS5U (ORCPT
+        with ESMTP id S236623AbiDYXOy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Apr 2022 14:57:20 -0400
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECD3FC6EF7
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 11:54:13 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id t6-20020a056830224600b00605491a5cd7so11394813otd.13
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 11:54:13 -0700 (PDT)
+        Mon, 25 Apr 2022 19:14:54 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A6264614D
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 16:11:48 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id iq2-20020a17090afb4200b001d93cf33ae9so662185pjb.5
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 16:11:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yaCTjN5CZzui2ztqLkxvGGCYTFHIuiGBpbp3r9GpozM=;
-        b=L4K++dPQRP+MDKtfMHchKPwefz1Mk5XkaIVfDC5UgwCSxVRbl8+VCMBFGhXXyigOFF
-         b3Yjvi2VpRRnsVtMX32hY+SiEuIvgLnKyn3k6xyGLFzJyTeFX6czxPd7GO/CIEhhooCJ
-         ulZXlRslJqczsGJMoOIXoEVfXD2T7C4ylx0vQ=
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=7qfaiS7UptGcLjv78D3MJ3R6HW7ht14Xm/IpQ4WlFks=;
+        b=MmhFoO2V8w9wi8xpsU1YJ3SIL+O1UDp6+GMDMyeQp/HYO0bw9etoHhAaDiQhGx+kCo
+         9/zrw47FA6hWwth8/g/FVpkVz2aRxuLT2fHCJhSEgPH4TXyXv9Rhv+jTf2zyAbGQTK2X
+         lgZ8uSIrgQAY/M9WgRVxk0xSYXDZ7ttngcP3Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yaCTjN5CZzui2ztqLkxvGGCYTFHIuiGBpbp3r9GpozM=;
-        b=NJHji3eALrEUtBSV6axyiKhqVS09ATlBNVYtpExwsS4j5PzEGlRGjfqdlAIUxFFYNc
-         Kqq8OqIZwXMaOym4U71N6kaMvbQ4+Kmd2SP/BckLqcubICn4830xpxGtmNXMVnOmO6lB
-         C26NqIFQc3t7pf3x7JF+quWv1NqzD+wQ6WwQ0Wh5rRdvDFtAhr3R17+HzWhWp+93M98X
-         cP5Y1zGZUWsSjSrBO2D0KvewLWY+JismeCbc7FM2308aracaUrz9PpJdDjHckOswkHPV
-         dIATmlNZ5JwJmMv7kzZCbT7xQC7TT7zfTlj1T6g2MqCQeaAM7Ltlt3KqOEfRGW5UYkHI
-         jzrQ==
-X-Gm-Message-State: AOAM531QmJgmZgq6QRTIn5k3VC1Y5Jv3yCWR7zLeQ30BSYuBk7Peqg8h
-        g2jIuIoc8JMO/Z1dKzgy2gRgHAplZ/5IjA==
-X-Google-Smtp-Source: ABdhPJxkX3S/0aaXlZRXz+sRGU1b39S8Ynp8dVoXvZ3qwgucWnw5+Y2aUhC3MhnxbQZmAV55nYClhw==
-X-Received: by 2002:a05:6830:1404:b0:605:46c8:3b4e with SMTP id v4-20020a056830140400b0060546c83b4emr6869648otp.293.1650912852947;
-        Mon, 25 Apr 2022 11:54:12 -0700 (PDT)
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com. [209.85.160.52])
-        by smtp.gmail.com with ESMTPSA id a11-20020a056830008b00b0060546411473sm4076173oto.75.2022.04.25.11.54.11
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Apr 2022 11:54:12 -0700 (PDT)
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-d6e29fb3d7so17040283fac.7
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 11:54:11 -0700 (PDT)
-X-Received: by 2002:a05:6870:4201:b0:e6:47c4:e104 with SMTP id
- u1-20020a056870420100b000e647c4e104mr11422188oac.257.1650912851468; Mon, 25
- Apr 2022 11:54:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200527165718.129307-1-briannorris@chromium.org> <YmPadTu8CfEARfWs@xps>
-In-Reply-To: <YmPadTu8CfEARfWs@xps>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=7qfaiS7UptGcLjv78D3MJ3R6HW7ht14Xm/IpQ4WlFks=;
+        b=HfTUp7c/RPb1SKmm/QoBRxHMEVAwP1UpGzBZpVlSTrkffpBFVk6UggGqrvGgmLuUp+
+         40eOHvY5yYgm5BCOVvrGoV4JKNfUwwWez4CitT9AEZ3vhjIqnxZ38pShomxU7J/bucWY
+         p+WYbxeAffuTJn/KTyDUa7ubFs/7AVioPgma4u4eATonX1QJt6vn89xodOtnlvkLYj00
+         SRNB0G9TQxgd3mkysae9zsoPW0fLVWcqCD+7yAND+2wy7qfPV1iXEctk3DVSot7OZGJP
+         RRZhSlS8AMNTPZcgYo/SJNVYlanCEC0NscMWqPAG/M6KVXASpTP615VkWhmCWrFpLo3I
+         P/9g==
+X-Gm-Message-State: AOAM530CUcpngwmini96LCVbiWHJVinCzS71Wm/yIQNZfDJplX11UqMK
+        +9EMSs4nk2o5B5nk8rYDhsnfxw==
+X-Google-Smtp-Source: ABdhPJxq8tSG81ZERtNbzC6rp5Tzf57SH9Vgo2lZtFXB6AkCwnY/CL5q9qLUlUQbRHBd70yLFSRgyg==
+X-Received: by 2002:a17:90a:a82:b0:1c9:ef95:486 with SMTP id 2-20020a17090a0a8200b001c9ef950486mr34213615pjw.93.1650928307416;
+        Mon, 25 Apr 2022 16:11:47 -0700 (PDT)
+Received: from google.com ([2620:15c:202:201:84c6:2d6d:c16:1a1b])
+        by smtp.gmail.com with ESMTPSA id f4-20020aa782c4000000b00505da6251ebsm12495302pfn.154.2022.04.25.16.11.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Apr 2022 16:11:46 -0700 (PDT)
+Date:   Mon, 25 Apr 2022 16:11:44 -0700
 From:   Brian Norris <briannorris@chromium.org>
-Date:   Mon, 25 Apr 2022 11:54:00 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXPeJ6fD9hvc0Nq_RY05YRdSP77U_96vUZcTYgkQKY9Bvg@mail.gmail.com>
-Message-ID: <CA+ASDXPeJ6fD9hvc0Nq_RY05YRdSP77U_96vUZcTYgkQKY9Bvg@mail.gmail.com>
-Subject: Re: [PATCH] Revert "ath: add support for special 0x0 regulatory domain"
-To:     Patrick Steinhardt <ps@pks.im>
-Cc:     ath10k <ath10k@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     Abhishek Kumar <kuabhs@chromium.org>
+Cc:     kvalo@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        netdev@vger.kernel.org, Wen Gong <quic_wgong@quicinc.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH] ath10k: skip ath10k_halt during suspend for driver state
+ RESTARTING
+Message-ID: <YmcqsFyCMqcWAEMM@google.com>
+References: <20220425021442.1.I650b809482e1af8d0156ed88b5dc2677a0711d46@changeid>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220425021442.1.I650b809482e1af8d0156ed88b5dc2677a0711d46@changeid>
 X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
@@ -75,62 +72,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Patrick,
+On Mon, Apr 25, 2022 at 02:15:20AM +0000, Abhishek Kumar wrote:
+> --- a/drivers/net/wireless/ath/ath10k/mac.c
+> +++ b/drivers/net/wireless/ath/ath10k/mac.c
+> @@ -5345,8 +5345,22 @@ static void ath10k_stop(struct ieee80211_hw *hw)
+>  
+>  	mutex_lock(&ar->conf_mutex);
+>  	if (ar->state != ATH10K_STATE_OFF) {
+> -		if (!ar->hw_rfkill_on)
+> -			ath10k_halt(ar);
+> +		if (!ar->hw_rfkill_on) {
+> +			/* If the current driver state is RESTARTING but not yet
+> +			 * fully RESTARTED because of incoming suspend event,
+> +			 * then ath11k_halt is already called via
 
-On Sat, Apr 23, 2022 at 3:52 AM Patrick Steinhardt <ps@pks.im> wrote:
-> This revert is in fact causing problems on my machine. I have a QCA9984,
-> which exports two network interfaces. While I was able to still use one
-> of both NICs for 2.4GHz, I couldn't really use the other card to set up
-> a 5GHz AP anymore because all frequencies were restricted. This has
-> started with v5.17.1, to which this revert was backported.
->
-> Reverting this patch again fixes the issue on my system. So it seems
-> like there still are cards out there in the wild which have a value of
-> 0x0 as their regulatory domain.
->
-> Quoting from your other mail:
->
-> > My understanding was that no QCA modules *should* be shipped with a
-> > value of 0 in this field. The instance I'm aware of was more or less a
-> > manufacturing error I think, and we got Qualcomm to patch it over in
-> > software.
->
-> This sounds like the issue should've already been fixed in firmware,
-> right?
+s/ath11k/ath10k/
 
-See the original patch:
-https://git.kernel.org/linus/2dc016599cfa9672a147528ca26d70c3654a5423
+I know ath11k is the hot new thing, but this is ath10k ;)
 
-"Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00029."
+> +			 * ath10k_core_restart and should not be called here.
 
-That patch was only tested for QCA6174 SDIO, and the 6174 firmware has
-since been updated. So none of that really applies to QCA9984. I
-suppose your device was also not working before v5.6 either, and IIUC,
-according to Qualcomm your hardware is a manufacturing error (i.e.,
-invalid country code).
+s/ath10k/ath11k/
 
-I don't know what to tell you exactly, other than that the original
-patch was wrong/unnecessary (and broke various existing systems) so it
-should be reverted. I'm not quite sure how to fix the variety of
-hardware out there (like yours) that may be using non-conforming
-EEPROM settings. It would seem to me that we might need some more
-targeted way of addressing broken hardware, rather than changing this
-particular default workaround. I'm honestly not that familiar with
-this Qualcomm regulatory stuff though, so my main contribution was
-just to suggest reverting (i.e., don't break what used to work); I'm
-not as savvy on providing alternative "fixes" for you.
+> +			 */
+> +			if (ar->state != ATH10K_STATE_RESTARTING)
+> +				ath10k_halt(ar);
+> +			else
+> +				/* Suspending here, because when in RESTARTING
+> +				 * state, ath11k_core_stop skips
 
-(That said: I *think* what's happening is that in the absence of a
-proper EEPROM code, ath drivers fall back to a default=US country
-code, and without further information to know you're compliant,
-regulatory rules disallow initiating radiation (such as, an AP) on
-5GHz.)
+s/ath10k/ath11k/
 
->  I've added the relevant dmesg
-> snippets though in case I'm mistaken:
+> +				 * ath10k_wait_for_suspend.
+> +				 */
+> +				ath10k_wait_for_suspend(ar,
+> +							WMI_PDEV_SUSPEND_AND_DISABLE_INTR);
+> +		}
+>  		ar->state = ATH10K_STATE_OFF;
+>  	}
+>  	mutex_unlock(&ar->conf_mutex);
 
-With what kernel? That looks like pre-v5.17.1. The "broken"
-(post-5.17.1) logs might be a bit more informative.
+Otherwise, I believe this is the right solution to the problem pointed
+out in the commit message:
 
-Sorry,
-Brian
+Reviewed-by: Brian Norris <briannorris@chromium.org>
