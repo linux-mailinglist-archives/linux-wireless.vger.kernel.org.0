@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 594D750ED06
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Apr 2022 01:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C7C050ED0B
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Apr 2022 01:56:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238184AbiDYX6p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Apr 2022 19:58:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41498 "EHLO
+        id S238633AbiDYX7A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Apr 2022 19:59:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237497AbiDYX6o (ORCPT
+        with ESMTP id S232853AbiDYX67 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Apr 2022 19:58:44 -0400
-Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 638B6E8A;
-        Mon, 25 Apr 2022 16:55:39 -0700 (PDT)
-Received: by mail-ua1-x92d.google.com with SMTP id x5so2511003uap.8;
-        Mon, 25 Apr 2022 16:55:39 -0700 (PDT)
+        Mon, 25 Apr 2022 19:58:59 -0400
+Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com [IPv6:2607:f8b0:4864:20::e2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73F3B34B98;
+        Mon, 25 Apr 2022 16:55:54 -0700 (PDT)
+Received: by mail-vs1-xe2f.google.com with SMTP id y74so7176713vsy.7;
+        Mon, 25 Apr 2022 16:55:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=tH/ROVgKY3OT6LRZuUX9V9tkUlYpErNSE1cVABWRc/0=;
-        b=TfqcjRGnMHUjrb34mmbVPfHSaNQYuMbIy6msF1RO80iuMW62Z3vx5lcbN4wylTKXVi
-         /qCPW29EOvm9iGGWVUFrOTYMlaz0Lrcql5XHu1Hk5CA0MS9QUprvuIPBgLlIz+jeKD0G
-         1Zr8Bi1bofZXqGFDjDrA1GjyRUUZuA471gnGqm7WjctFN1x95DF136XNKLiB9ofkwIMW
-         bGN89DD0MYPScD8u4SXPVGuxZM205Vd8zgHY0+v7GbrHR0rOdsfpe7TsV9EWJ9Pah2Wr
-         XflwxPsohU/XyWCWqx0YjDn1gHskwFlm3wnyvmCX3umShj+B1PnTupJyLRy/xmnt+1pd
-         pYYA==
+        bh=Bv57S0OvM1aFezwJzyGZ87lOYSC5nBjuQM0tf53bOpU=;
+        b=G8v6hbD41qZ2NtXy7HU1p3rgwYYUEUfh922IBRou3zGedeJK+qCRdNj1sksuxeS9c2
+         6WA437rRDM8ngerjp5Fg2YZJmCRV9rD1JwFEpw+V4rsnieHSECxuKqb8WCPS1niYRw2H
+         0HQw1VipNhwvydH3Wy+SCdI/kMsN23TzOqlFSbWxXf/YWA6giIzxmPyLHAr32B45jMs3
+         pz/N1AVhDglAHo5jsC6jQl1gQF9ynGy9Nw0dh2FMmXL7qxS4VJUrFWe4N7B6bKBjkieT
+         /eG609XzOuaDjwLOCOMYdE+3xSRwqkTHRfx0L1E3ShWJDC07YBl5vCATE9e50q3Dhic0
+         VqXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=tH/ROVgKY3OT6LRZuUX9V9tkUlYpErNSE1cVABWRc/0=;
-        b=PnRszXaCi8AvpaZ4OjSk7RbSlrijB9gy/KOMYayj8LsQEsHWVvMMB/ifiwqcvCxTfD
-         E4eo9c3r7C1x5UnA3FUvIlhpEt12BcGaHUFc70XxWjPG7K7UVYHVlDdneG0isr6nIrQC
-         nEU/fOeE3q8WhKe/FuJQe9shReSiATZKszB2SNzH6N6aM86qmYbztZa7Q7uvAKrxiX08
-         F/pvj7PRd8ZL4RYcZhCKEEaFuLEkaPbW+eUVvzxWDork1PRS1w+jLyaGM/KF3bgduC4d
-         /GE/8zs5aO61WMwD66UsHEQ2a+RFRDhwvJN8KU0xgQbLMNNGqvJNUMQja9Ujm5BlYgEW
-         r6oA==
-X-Gm-Message-State: AOAM5305pwcPviiY8JnBDaPRSkdpQUmWHvNv0Mt18zRdgsjONKTydQFZ
-        RnPwQwpX2rT6MdAgx1bMg8EfsG6o8dnkpiy3SX8=
-X-Google-Smtp-Source: ABdhPJw6KWmyL2s3n0gRxiUuWRnAHpxXakpaH0QTYnCaFMqA6llRM+33a+lswcCjCl1Xnr0gPaboWBcWE5s0E+FjcZ8=
-X-Received: by 2002:ab0:284c:0:b0:362:88a1:979e with SMTP id
- c12-20020ab0284c000000b0036288a1979emr2525497uaq.74.1650930938575; Mon, 25
- Apr 2022 16:55:38 -0700 (PDT)
+        bh=Bv57S0OvM1aFezwJzyGZ87lOYSC5nBjuQM0tf53bOpU=;
+        b=OYIg6Z/OkZR6B/WIIoOo4L9YWXK183G8GEzlv16UxT7X2N4Dv4xz+AR5Vy7xQYThYX
+         h/KBvtWx/RNtBvPfMD5tnezlzit+5gGUBt7rOw0/zEhYBoWEvFHz3q1KvWyMMo+XkB1M
+         UfVeiW+0XFgcRD0qLyxEkyy2aOCMz3DhqWWWwBi0fV21Oj4qrG2gAg3min3HiRWVxbPR
+         iZeJR9Q6P+ecoL2lJE8DQtCOXmErIJdwS4wXU65rj1d7yzRBBQ5hW5I98tAmai5a4unX
+         DDq8aFtQEOxh5jb8dNXGR0jDYtOwmhRxBfV/17mPgx7+ZnrgwH/t6TMu98qWzPs9z14c
+         fZoQ==
+X-Gm-Message-State: AOAM5309Mf7l0J6p8t7XqDZMWoGnpr4TWQ034XjBa9UK3tJVy7iDa/9W
+        oPi2MbkvJUPCmCSXs7B887esM3ydWvIfkCBoI8c=
+X-Google-Smtp-Source: ABdhPJwc9UboT1X21g0gaZewc07K8v+X9O7kYBV9FR/eYrLaTOVxkDbgp5pjw0F/6hSoxlyGHaMt0X9HPW8JeWkKeBo=
+X-Received: by 2002:a05:6102:3346:b0:32a:837d:3bec with SMTP id
+ j6-20020a056102334600b0032a837d3becmr6125916vse.69.1650930953620; Mon, 25 Apr
+ 2022 16:55:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220407223629.21487-1-ricardo.martinez@linux.intel.com> <20220407223629.21487-10-ricardo.martinez@linux.intel.com>
-In-Reply-To: <20220407223629.21487-10-ricardo.martinez@linux.intel.com>
+References: <20220407223629.21487-1-ricardo.martinez@linux.intel.com> <20220407223629.21487-14-ricardo.martinez@linux.intel.com>
+In-Reply-To: <20220407223629.21487-14-ricardo.martinez@linux.intel.com>
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Date:   Tue, 26 Apr 2022 02:55:38 +0300
-Message-ID: <CAHNKnsR41Okpt58ToJhBcjrA-O1rW8P2dRSPnp5t6E7XwXyJ7w@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 09/13] net: wwan: t7xx: Add WWAN network interface
+Date:   Tue, 26 Apr 2022 02:55:53 +0300
+Message-ID: <CAHNKnsTsPxDFqrydq2VdTOU2BS4=J6_yTBA0--2kvwKYVL+SFw@mail.gmail.com>
+Subject: Re: [PATCH net-next v6 13/13] net: wwan: t7xx: Add maintainers and documentation
 To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
 Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
         Jakub Kicinski <kuba@kernel.org>,
@@ -83,16 +83,9 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Fri, Apr 8, 2022 at 1:37 AM Ricardo Martinez
 <ricardo.martinez@linux.intel.com> wrote:
-> Creates the Cross Core Modem Network Interface (CCMNI) which implements
-> the wwan_ops for registration with the WWAN framework, CCMNI also
-> implements the net_device_ops functions used by the network device.
-> Network device operations include open, close, start transmission, TX
-> timeout and change MTU.
+> Adds maintainers and documentation for MediaTek t7xx 5G WWAN modem
+> device driver.
 >
-> Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
-> Co-developed-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
 > Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
 >
 > From a WWAN framework perspective:
