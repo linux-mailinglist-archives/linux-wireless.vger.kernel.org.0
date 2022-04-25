@@ -2,58 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4EC450E12D
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Apr 2022 15:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB30150E17B
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Apr 2022 15:21:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235070AbiDYNKJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Apr 2022 09:10:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35912 "EHLO
+        id S237064AbiDYNYo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Apr 2022 09:24:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbiDYNKB (ORCPT
+        with ESMTP id S241959AbiDYNYl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Apr 2022 09:10:01 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40019205EE;
-        Mon, 25 Apr 2022 06:06:55 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Mon, 25 Apr 2022 09:24:41 -0400
+X-Greylist: delayed 216 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 25 Apr 2022 06:21:36 PDT
+Received: from mail1.nippynetworks.com (mail1.nippynetworks.com [91.220.24.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA97433E0D
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 06:21:36 -0700 (PDT)
+Received: from [192.168.8.188] (unknown [94.228.36.46])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature ECDSA (P-256))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 562C6B8165D;
-        Mon, 25 Apr 2022 13:06:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D56CC385A4;
-        Mon, 25 Apr 2022 13:06:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650892013;
-        bh=8n1gEd9zrEZzTMEw2QahiJ2pqS9bWSF+C0RowIh4NBg=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=VtCn3hMiCg0c/Cf790/jHadQRUztU5dh0jhqh9WgQl14BQoadkh0tcxLs311WVMPw
-         I7ir48LBf2MsxXiNF9QyRlzPQqwroPA2D1F/uXhL5G2IYvLS68H4sbqafoyfB91kPn
-         b9vesaiVI1xNI4Ti0C7L0jFAG8PpVW7Rw4WJI1RPV2a1MAHV7bQXQGCu1aWnDnSQk/
-         riaRqtxKguxXO6sYFnrGvZCKrIaFIJEUEnDAuQycWTleAK2ocLgKoJNtY1xZqxtgj5
-         M8O6V5jD9VDcV1GwNfdJJ0mn4Qsrv+INZ35EMhsdFNvNYtEbVpvM6TyVq01S3LRjeA
-         cVOY12R7AjMxQ==
-Content-Type: text/plain; charset="utf-8"
+        (Authenticated sender: ed@wildgooses.com)
+        by mail1.nippynetworks.com (Postfix) with ESMTPSA id 4Kn5D632CszTgSQ;
+        Mon, 25 Apr 2022 14:17:58 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wildgooses.com;
+        s=dkim; t=1650892678;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ugldtJvJRE+iZ7grfzTpN4hFTUFMYT/R84SKDFhQpEU=;
+        b=FPQd6IKeSalwjjWt93VUceESHSDwBrK/TrQ8ZUPEZm7+o7bOmVc4b1DWvyVv8Hwk5W/jX9
+        c8L+Q6bwMuSdo011LK3KPaEiPh9goUw7SHzGQ3DOYn6BwTQDfiE7qZQYXqGJ3LSxDR0wYN
+        tXxcROiOWtw3vslDhSlA557EvH22th4=
+Message-ID: <e7268989-03cf-ae7c-f3c6-b48fe679b790@wildgooses.com>
+Date:   Mon, 25 Apr 2022 14:17:57 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v22 1/2] wireless: Initial driver submission for pureLiFi
- STA
- devices
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220224182042.132466-3-srini.raju@purelifi.com>
-References: <20220224182042.132466-3-srini.raju@purelifi.com>
-To:     Srinivasan Raju <srini.raju@purelifi.com>
-Cc:     mostafa.afgani@purelifi.com,
-        Srinivasan Raju <srini.raju@purelifi.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-kernel@vger.kernel.org (open list),
-        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
-        netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165089199642.17454.12727074837478904084.kvalo@kernel.org>
-Date:   Mon, 25 Apr 2022 13:06:51 +0000 (UTC)
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.8.0
+Subject: Re: [wireless-regdb] Correction of wireless-regdb for GB
+Content-Language: en-GB
+To:     Seth Forshee <seth.forshee@canonical.com>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+References: <4d07581c-a3be-a3c6-bf32-7007eb45d541@wildgooses.com>
+ <20201106214446.GG6125@ubuntu-x1>
+ <2a710032-f2ec-d55b-5da4-d881089fe0cd@wildgooses.com>
+ <20201120175444.GN5439@ubuntu-x1>
+From:   Ed W <lists@wildgooses.com>
+In-Reply-To: <20201120175444.GN5439@ubuntu-x1>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,60 +59,88 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Srinivasan Raju <srini.raju@purelifi.com> wrote:
+On 20/11/2020 17:54, Seth Forshee wrote:
+>> Signed-off-by: Ed Wildgoose <lists@wildgooses.com>
+>> ---
+>>  db.txt | 7 +++++--
+>>  1 file changed, 5 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/db.txt b/db.txt
+>> index ac32483..cc5ffd0 100644
+>> --- a/db.txt
+>> +++ b/db.txt
+>> @@ -588,13 +588,16 @@ country FR: DFS-ETSI
+>>  # GB: https://www.ofcom.org.uk/__data/assets/pdf_file/0019/136009/Ofc=
+om-Information-Sheet-5-GHz-RLANs.pdf
+>>  # GB: https://www.ofcom.org.uk/__data/assets/pdf_file/0028/84970/ir-2=
+030.pdf
+>>  # GB: https://www.ofcom.org.uk/__data/assets/pdf_file/0013/126121/Sta=
+tement_Implementing-Ofcoms-decision-on-the-57-71GHz-band.pdf
+>> +# GB: https://www.ofcom.org.uk/__data/assets/pdf_file/0036/198927/6gh=
+z-statement.pdf
+>>  country GB: DFS-ETSI
+>>  	(2400 - 2483.5 @ 40), (100 mW)
+>>  	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=3DETSI
+>>  	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, DFS, AUTO-BW, wmmrule=3DET=
+SI
+>> -	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=3DETSI
+>> +	(5470 - 5730 @ 160), (500 mW), DFS, wmmrule=3DETSI
+> This looks okay to me.
+>
+>>  	# short range devices (ETSI EN 300 440-1)
+>> -	(5725 - 5875 @ 80), (25 mW)
+>> +	# See UK specific notes in ir-2030.pdf, p47
+>> +	(5725 - 5850 @ 80), (200 mW), AUTO-BW, wmmrule=3DETSI
+> To echo what I said above, I'm unclear whether this change is in effect=
 
-> This driver implementation has been based on the zd1211rw driver
-> 
-> Driver is based on 802.11 softMAC Architecture and uses
-> native 802.11 for configuration and management
-> 
-> The driver is compiled and tested in ARM, x86 architectures and
-> compiled in powerpc architecture
-> 
-> Signed-off-by: Srinivasan Raju <srini.raju@purelifi.com>
+> yet, and based what I've seen so far I think it would need to include
+> NO-OUTDOOR.
+>
+>> +	(5925 - 6425 @ 160), (250 mW), NO-OUTDOOR, AUTO-BW, wmmrule=3DETSI
+> I'm also unclear on whether this change is in effect yet.
+>
+> Thanks,
+> Seth
+>
+>>  	# 60 GHz band channels 1-6
+>>  	(57000 - 71000 @ 2160), (40)
+>> =20
+>> --=20
+>> 2.26.2
+>>
 
-While reviewing this for the last time I did some minor changes in the pending branch:
+Hi all, I dropped off watching this for a while....
 
-https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/commit/?h=pending&id=68d57a07bfe5bb29b80cd8b8fa24c9d1ea104124
+Seems like the update to IR2030 (GB country code regulations) was re-publ=
+ished last year, and the
+relevant sections are in pages 32 + 34-36
 
-Here's the commit log I plan to use:
+My reading of this is:
 
-    wireless: add plfxlc driver for pureLiFi X, XL, XC devices
-    
-    This is a driver for pureLiFi X, XL, XC devices which use light to transmit
-    data, so they are not compatible with normal Wi-Fi devices. The driver uses
-    separate NL80211_BAND_LC band to distinguish from Wi-Fi.  The driver is based
-    on 802.11 softMAC Architecture and uses native 802.11 for configuration and
-    management. Station and Ad-Hoc modes are supported.
-    
-    The driver is compiled and tested in ARM, x86 architectures and compiled in
-    powerpc architecture. This driver implementation has been based on the zd1211rw
-    driver.
+- Other stuff we changed 2 years ago seems ok, caveat I'm unclear when we=
+ need to state half power
+vs using mean EIRP?
+- The 5.9-6.4Ghz range is now good for use (page 35 near the bottom), per=
+haps add something like:
 
-And the list of changes I made:
++=C2=A0=C2=A0=C2=A0 (5925 - 6425 @ 160), (250 mW), NO-OUTDOOR, AUTO-BW, w=
+mmrule=3DETSI
 
-* rewrote the commit log
+- The 60Ghz range seems to available now, but I'm not sure what power num=
+ber we should have in our
+db.txt, see page 32.
+Says "40 dBm e.i.r.p / 27 dBm maximum transmit output power"
+- There are also some geographic restrictions, not sure what we can do ab=
+out those?
 
-* change MAINTAINER to be only for plfxlc
+So something like this perhaps?:
 
-* CONFIG_PURELIFI_XLC -> CONFIG_PLFXLC
+> +	(5700 - 71000 @ 160), (40)
 
-* purelifi_xlc.ko -> plfxlc.ko
+Happy to knock this up into a patch if you can help with a little guidanc=
+e (although it might be
+faster for you to just commit the 2 extra lines if you agree?)
 
-* improve Kconfig help text
+Thanks
 
-* _LF_X_CHIP_H -> PLFXLC_CHIP_H
-
-* PURELIFI_MAC_H -> PLFXLC_MAC_H
-
-* _PURELIFI_USB_H -> PLFXLC_USB_H
-
-* upload_mac_and_serial() -> plfxlc_upload_mac_and_serial()
-
-Unless I don't get any comments I'm planning to merge this on Wednesday.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220224182042.132466-3-srini.raju@purelifi.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Ed W
