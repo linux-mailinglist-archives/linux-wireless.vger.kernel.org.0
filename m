@@ -2,157 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1FD250F200
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Apr 2022 09:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E01650F26A
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Apr 2022 09:30:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243052AbiDZHTl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Apr 2022 03:19:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48898 "EHLO
+        id S1343972AbiDZHdQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Apr 2022 03:33:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234483AbiDZHTj (ORCPT
+        with ESMTP id S1343964AbiDZHdP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Apr 2022 03:19:39 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 752527DE31
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Apr 2022 00:16:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=WUFsiz+uwy93ccSrBFza2FYOWtHTR6UGA+NZTqUG9ok=;
-        t=1650957392; x=1652166992; b=NlOo4SfXAlAGqYzqszdGwXEF9XJL81afUH+sDYMj+LC+EMb
-        4pPNz7bjoe39YCklXiRzmkeWmuN4T1AdD2W//nb5yn+kqRsypOCen0IiX17smxGCwBmUwjYWOGTeb
-        LcOgz0+F8Mji7R3DEloxZoagDibXtgY1lOHkHMSFx7Yr546Usq1eKs9Q4F6VuYXiEhCndB27qe1jC
-        vRdyk8FoXi46zjSYZxLZStA0YQ7xZAWB5CTWWFU9d4+FJP101/X6vFEMV3d/owZy0RmofUSap/4mp
-        5ADuHhCnzXDik6kNZZJTReKrHsQAu7PIM84fcpGaucOeVgifhzzQwXs4oUuiyvUA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1njFQz-00FCrH-J5;
-        Tue, 26 Apr 2022 09:16:29 +0200
-Message-ID: <6b40798e349d11e495a6df20ecba479a8357dad2.camel@sipsolutions.net>
-Subject: Re: [RFC PATCH] cfg80211: do some rework towards MLO link APIs
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
-        linux-wireless@vger.kernel.org
-Date:   Tue, 26 Apr 2022 09:16:28 +0200
-In-Reply-To: <f137ca7f-8b59-3368-c666-247f83d80383@quicinc.com>
-References: <20220414145522.116716-1-johannes@sipsolutions.net>
-         <f137ca7f-8b59-3368-c666-247f83d80383@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+        Tue, 26 Apr 2022 03:33:15 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B78B13E05;
+        Tue, 26 Apr 2022 00:30:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1650958207; x=1682494207;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=wKObrh7fSqP3n86ZK/ItNBIaS4Oe4iZY4KItAxqxkks=;
+  b=ktjkc46yn9UwCsW4lCls/kWWVbYfUAx9lBqtOphMD3mEgMfnI+iTKBRl
+   +myQSawtGUcp9siXAvbKmX4GHU2z9ydzgqU/kmsJMTcnfU2AnWjpxAsUM
+   dkfGsqh4oSONDPipqPUfpY/TPo9Zh01MrK9scJiP6P71ksZEOt3I2VHrF
+   siO4t0MkyIB9bJBdQAy2bWa64TB6yMhNVRZ1z45vWCzgwulm21pLttAZh
+   5tAGUHjNHfDjXkLeH1bPj6W32OXmeChyDsL7b7bc8cZQ+eRXSqv7U5cOY
+   hPCGlCkozOxz6nwr9+0QuVxWOZ4HdQ8SItOvvGm4wklkfyBmAidKZtXSh
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10328"; a="265650207"
+X-IronPort-AV: E=Sophos;i="5.90,290,1643702400"; 
+   d="scan'208";a="265650207"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2022 00:30:06 -0700
+X-IronPort-AV: E=Sophos;i="5.90,290,1643702400"; 
+   d="scan'208";a="579735322"
+Received: from mmilkovx-mobl.amr.corp.intel.com ([10.249.47.245])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2022 00:30:00 -0700
+Date:   Tue, 26 Apr 2022 10:29:55 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
+cc:     Ricardo Martinez <ricardo.martinez@linux.intel.com>,
+        Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        chandrashekar.devegowda@intel.com,
+        Intel Corporation <linuxwwan@intel.com>,
+        chiranjeevi.rapolu@linux.intel.com,
+        =?GB2312?Q?Haijun_Liu_=28=C1=F5=BA=A3=BE=FC=29?= 
+        <haijun.liu@mediatek.com>, amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
+        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
+        sreehari.kancharla@intel.com, madhusmita.sahu@intel.com
+Subject: Re: [PATCH net-next v6 08/13] net: wwan: t7xx: Add data path
+ interface
+In-Reply-To: <CAHNKnsTr3aq1sgHnZQFL7-0uHMp3Wt4PMhVgTMSAiiXT=8p35A@mail.gmail.com>
+Message-ID: <d829315b-79ca-ff88-c76-e352d8fb5b5b@linux.intel.com>
+References: <20220407223629.21487-1-ricardo.martinez@linux.intel.com> <20220407223629.21487-9-ricardo.martinez@linux.intel.com> <CAHNKnsTr3aq1sgHnZQFL7-0uHMp3Wt4PMhVgTMSAiiXT=8p35A@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, 26 Apr 2022, Sergey Ryazanov wrote:
+
+> On Fri, Apr 8, 2022 at 1:37 AM Ricardo Martinez
+> <ricardo.martinez@linux.intel.com> wrote:
+> > Data Path Modem AP Interface (DPMAIF) HIF layer provides methods
+> > for initialization, ISR, control and event handling of TX/RX flows.
+> >
+> > DPMAIF TX
+> > Exposes the 'dmpaif_tx_send_skb' function which can be used by the
+> > network device to transmit packets.
+> > The uplink data management uses a Descriptor Ring Buffer (DRB).
+> > First DRB entry is a message type that will be followed by 1 or more
+> > normal DRB entries. Message type DRB will hold the skb information
+> > and each normal DRB entry holds a pointer to the skb payload.
+> >
+> > DPMAIF RX
+> > The downlink buffer management uses Buffer Address Table (BAT) and
+> > Packet Information Table (PIT) rings.
+> > The BAT ring holds the address of skb data buffer for the HW to use,
+> > while the PIT contains metadata about a whole network packet including
+> > a reference to the BAT entry holding the data buffer address.
+> > The driver reads the PIT and BAT entries written by the modem, when
+> > reaching a threshold, the driver will reload the PIT and BAT rings.
+> >
+> > Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
+> > Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+> > Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+> > Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+> >
+> > From a WWAN framework perspective:
+> > Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
 > 
-> Thanks! At high level, we are fine with this approach. 
+> Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 > 
-
-:)
-
-> As discussed,
-> we need to have a mechanism to be able to set link specific 
-> configurations such as link STA mac addr before assoc in STA mode.
-
-Right.
-
-> The proposal to have some sort of mapping between local and OTA link 
-> will work. So in AP mode, it is OTA link_id but in STA mode, it is local 
-> link_id which does not change the life time of the STA link
-> interface? Will that be still called link_id or something which means 
-> pseudo link_id (something like link_idx?) to avoid confusions with
-> OTA link_id?
-
-I started calling it link_num later, but that might also be confusing
-and misinterpreted as num_links or so? ...
-
-> With a single netdev for MLD interface, we may need to add NL options
-> (in NL80211_CMD_SET_INTERFACE?) to set the link mac addr in both AP and 
-> STA mode? Also, interface to report the mac addresses of all interfaces 
-> to the user space in NL80211_CMD_NEW_INTERFACE event.
-
-Right, we need to report multi-link stuff in a lot of places, inside the
-LINKS attribute I guess.
-
-I thought setting the address would be good enough when we create a
-link, but maybe we need to be able to change it too, dunno. Not my
-highest priority :)
-
-> I assume link_id will be added in NL80211_CMD_FRAME command/event as 
-> well for the application to identify the link on which the frame
-> is-received/to-be-transmitted?
-
-Good point, I guess we need that.
-
->  >   	/* currently used for IBSS and SME - might be rearranged later */
->  > +	// FIXME: move SSID to link?
+> and a small question below.
 > 
-> It seems all the links affiliated to an MLD should have the same SSID,
-> may be SSID is not link specific?
-
-Yeah you mentioned this to me elsewhere - you're right. I got confused
-about MBSSID APs. I also made it so for MLD the NL80211_ATTR_SSID
-attribute is now required in AP mode.
-
->  > @@ -4669,8 +4709,12 @@ static int nl80211_set_mac_acl(struct sk_buff 
-> *skb, struct genl_info *info)
->  >   	    dev->ieee80211_ptr->iftype != NL80211_IFTYPE_P2P_GO)
->  >   		return -EOPNOTSUPP;
->  >
->  > -	if (!dev->ieee80211_ptr->beacon_interval)
->  > -		return -EINVAL;
->  > +// FIXME: do we consider this to be on the MLD? I guess so?
->  > +//	  then what about legacy stations? or should we have
->  > +//	  ACL on each link? seems odd ...
+> > diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
+> > ...
+> > +static bool t7xx_alloc_and_map_skb_info(const struct dpmaif_ctrl *dpmaif_ctrl,
+> > +                                       const unsigned int size, struct dpmaif_bat_skb *cur_skb)
+> > +{
+> > +       dma_addr_t data_bus_addr;
+> > +       struct sk_buff *skb;
+> > +       size_t data_len;
+> > +
+> > +       skb = __dev_alloc_skb(size, GFP_KERNEL);
+> > +       if (!skb)
+> > +               return false;
+> > +
+> > +       data_len = skb_end_pointer(skb) - skb->data;
 > 
-> I think it makes sense to have this for MLD rather than individual link
-> interfaces, it is unlikely to have different policies for link and MLD
-> interfaces in terms of blocking/allowing a particular station mac.
-
-Agree. Also implementations are unlikely to want different tables for
-different links, unless they're different NICs like in some of your use
-cases, but copying the same table over to each is always possible.
-
->  > @@ -5785,12 +5837,18 @@ static int nl80211_start_ap(struct sk_buff 
-> *skb, struct genl_info *info)
->  >   	else if (info->attrs[NL80211_ATTR_EXTERNAL_AUTH_SUPPORT])
->  >   		params->flags |= NL80211_AP_SETTINGS_EXTERNAL_AUTH_SUPPORT;
->  >
->  > +	/* FIXME: check that SSID(len) didn't change!
->  > +	 * or - ugh - can it? what about multi-BSSID
->  > +	 * where the transmitting BSSID/SSID might be
->  > +	 * different on different links?
->  > +	 */
+> Earlier you use a nice t7xx_skb_data_area_size() function here, but
+> now you opencode it. Is it a consequence of t7xx_common.h removing?
 > 
-> May be this is not an issue? With mBSSID, start_ap will be called for 
-> each BSS part of the mBSSID group. Configurations like SSID will be for 
-> that particular BSS irrespective of whether that is transmitting or 
-> non-transmitting BSS.
+> I would even encourage you to make this function common and place it
+> into include/linux/skbuff.h with a dedicated patch and call it
+> something like skb_data_size(). Surprisingly, there is no such helper
+> function in the kernel, and several other drivers will benefit from
+> it:
 
-Yep, I got confused, thanks.
+I agree other than the name. IMHO, skb_data_size sounds too much "data 
+size" which it exactly isn't but just how large the memory area is (we 
+already have "datalen" anyway and on language level, those two don't sound 
+different at all). The memory area allocated may or may not have actual 
+data in it, I suggested adding "area" into it.
 
->  > +	if (internal_flags & NL80211_FLAG_MLO_VALID_LINK_ID) {
->  > +		struct nlattr *link_id = info->attrs[NL80211_ATTR_MLO_LINK_ID];
 
-[...]
->  > +		/* non-MLO -> no link ID attribute accepted */
->  > +		if (!wdev->valid_links && link_id) {
-> 
-> Isn't that we hit this condition when adding the very first link to the 
-> MLD using NL80211_CMD_ADD_LINK?
-> 
+-- 
+ i.
 
-Oh, I don't think CMD_ADD_LINK would set NL80211_FLAG_MLO_VALID_LINK_ID,
-that's just helper functionality for those commands that expect
-everything to already be set up.
-
-johannes
