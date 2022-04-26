@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A4F50F118
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Apr 2022 08:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44DB150F11F
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Apr 2022 08:34:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234230AbiDZGhN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Apr 2022 02:37:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54238 "EHLO
+        id S243723AbiDZGhL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Apr 2022 02:37:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243365AbiDZGhK (ORCPT
+        with ESMTP id S240605AbiDZGhK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 26 Apr 2022 02:37:10 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAC5F15FC7
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480CD15A11
         for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 23:34:00 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23Q6XGgZ4015308, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com ([172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23Q6XGgZ4015308
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23Q6XIdZ4015324, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com ([172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23Q6XIdZ4015324
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 26 Apr 2022 14:33:16 +0800
+        Tue, 26 Apr 2022 14:33:18 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Tue, 26 Apr 2022 14:33:16 +0800
+ 15.1.2375.24; Tue, 26 Apr 2022 14:33:18 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Tue, 26 Apr
- 2022 14:33:16 +0800
+ 2022 14:33:17 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 14/15] rtw89: 8852c: correct register definitions used by 8852c
-Date:   Tue, 26 Apr 2022 14:32:34 +0800
-Message-ID: <20220426063235.41650-15-pkshih@realtek.com>
+Subject: [PATCH 15/15] rtw89: 8852c: add 8852ce to Makefile and Kconfig
+Date:   Tue, 26 Apr 2022 14:32:35 +0800
+Message-ID: <20220426063235.41650-16-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220426063235.41650-1-pkshih@realtek.com>
 References: <20220426063235.41650-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvMjYgpFekyCAwNDozODowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -67,35 +67,76 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-First one could affect SER because of false alarm event. Second one can
-affect spur elimination.
+This initial vesion is usable now. It can support STA, AP and monitor
+modes, so we can add 8852ce to Kconfig and Makefile.
+
+We are still working on some features, such as deep power save, and BT
+coexistence. But, this version still can have a good WiFi-only performance
+already, and will continue to fine tune power consumption.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/reg.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/Kconfig  | 18 ++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/Makefile |  9 +++++++++
+ 2 files changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index dff7992659dce..5c4de043845b2 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -2605,7 +2605,6 @@
- 			      B_AX_TMAC_HWSIGB_GEN | \
- 			      B_AX_TMAC_RXTB | \
- 			      B_AX_TMAC_MIMO_CTRL | \
--			      B_AX_RMAC_CSI | \
- 			      B_AX_RMAC_FTM)
+diff --git a/drivers/net/wireless/realtek/rtw89/Kconfig b/drivers/net/wireless/realtek/rtw89/Kconfig
+index dd02b6a6790e3..93e09400aac49 100644
+--- a/drivers/net/wireless/realtek/rtw89/Kconfig
++++ b/drivers/net/wireless/realtek/rtw89/Kconfig
+@@ -19,8 +19,11 @@ config RTW89_PCI
+ config RTW89_8852A
+ 	tristate
  
- #define R_AX_WMAC_TX_TF_INFO_0 0xCCD0
-@@ -3667,7 +3666,7 @@
- #define R_DCFO 0x4264
- #define B_DCFO GENMASK(1, 0)
- #define R_SEG0CSI 0x42AC
--#define B_SEG0CSI_IDX GENMASK(10, 0)
-+#define B_SEG0CSI_IDX GENMASK(11, 0)
- #define R_SEG0CSI_EN 0x42C4
- #define B_SEG0CSI_EN BIT(23)
- #define R_BSS_CLR_MAP 0x43ac
++config RTW89_8852C
++	tristate
++
+ config RTW89_8852AE
+-	tristate "Realtek 8852AE PCI wireless network adapter"
++	tristate "Realtek 8852AE PCI wireless network (Wi-Fi 6) adapter"
+ 	depends on PCI
+ 	select RTW89_CORE
+ 	select RTW89_PCI
+@@ -28,7 +31,18 @@ config RTW89_8852AE
+ 	help
+ 	  Select this option will enable support for 8852AE chipset
+ 
+-	  802.11ax PCIe wireless network adapter
++	  802.11ax PCIe wireless network (Wi-Fi 6) adapter
++
++config RTW89_8852CE
++	tristate "Realtek 8852CE PCI wireless network (Wi-Fi 6E) adapter"
++	depends on PCI
++	select RTW89_CORE
++	select RTW89_PCI
++	select RTW89_8852C
++	help
++	  Select this option will enable support for 8852CE chipset
++
++	  802.11ax PCIe wireless network (Wi-Fi 6E) adapter
+ 
+ config RTW89_DEBUG
+ 	bool
+diff --git a/drivers/net/wireless/realtek/rtw89/Makefile b/drivers/net/wireless/realtek/rtw89/Makefile
+index 012ae60c0b811..3006482d25c77 100644
+--- a/drivers/net/wireless/realtek/rtw89/Makefile
++++ b/drivers/net/wireless/realtek/rtw89/Makefile
+@@ -23,6 +23,15 @@ rtw89_8852a-objs := rtw8852a.o \
+ obj-$(CONFIG_RTW89_8852AE) += rtw89_8852ae.o
+ rtw89_8852ae-objs := rtw8852ae.o
+ 
++obj-$(CONFIG_RTW89_8852C) += rtw89_8852c.o
++rtw89_8852c-objs := rtw8852c.o \
++		    rtw8852c_table.o \
++		    rtw8852c_rfk.o \
++		    rtw8852c_rfk_table.o
++
++obj-$(CONFIG_RTW89_8852CE) += rtw89_8852ce.o
++rtw89_8852ce-objs := rtw8852ce.o
++
+ rtw89_core-$(CONFIG_RTW89_DEBUG) += debug.o
+ 
+ obj-$(CONFIG_RTW89_PCI) += rtw89_pci.o
 -- 
 2.25.1
 
