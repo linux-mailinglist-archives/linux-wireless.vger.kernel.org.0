@@ -2,74 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1609550EFAE
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Apr 2022 06:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5CA150F00F
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Apr 2022 07:01:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244041AbiDZEU5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Apr 2022 00:20:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60164 "EHLO
+        id S244224AbiDZFEe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Apr 2022 01:04:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231926AbiDZEUz (ORCPT
+        with ESMTP id S238085AbiDZFEc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Apr 2022 00:20:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D93E2E08E;
-        Mon, 25 Apr 2022 21:17:49 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 19D56608C3;
-        Tue, 26 Apr 2022 04:17:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141D2C385A4;
-        Tue, 26 Apr 2022 04:17:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650946668;
-        bh=TuixHq3qt953bpbIPmz0Qo3+44v5gXGeaxVhFfbNx3k=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=XgoSWHrJL5WfoSsvNpJWPEDWzTLcJ1BFIRadiepELJ4ajxJ4yE/LWDP9rOhD07l6+
-         1N92N9BYdD4S9cMsivFSegPO4lZvcBAQGtKoMgC/RVKTTArAdPagQtkagKTEQ+I1qE
-         uhA5EzyFZOuXgvgmsr9diIcmfiWke1tUgpQ9UyG0Y0JCmR6ZO0/aPJTaZrewPt9DRJ
-         rx2rbCxJyZyQlsYtWtnObjFM9oq0t0q6qXFGvJ5nszKOofwAfLyisPa5KYEdcAeyd5
-         mY/uthDH15hlBJMEkvLgeyLoAhLtI0FQbJHGxK+XK8UK+phePtZiAhxcLM6appUAex
-         PSTA0kM+U0Skg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Srinivasan Raju <srini.raju@purelifi.com>
-Cc:     Mostafa Afgani <mostafa.afgani@purelifi.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list\:NETWORKING DRIVERS \(WIRELESS\)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list\:NETWORKING DRIVERS" <netdev@vger.kernel.org>
-Subject: Re: [EXTERNAL] Re: [PATCH v22 1/2] wireless: Initial driver submission for pureLiFi STA devices
-References: <20220224182042.132466-3-srini.raju@purelifi.com>
-        <165089199642.17454.12727074837478904084.kvalo@kernel.org>
-        <CWLP265MB32173F6188304F6B2CB90C79E0F89@CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM>
-Date:   Tue, 26 Apr 2022 07:17:43 +0300
-In-Reply-To: <CWLP265MB32173F6188304F6B2CB90C79E0F89@CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM>
-        (Srinivasan Raju's message of "Mon, 25 Apr 2022 19:11:34 +0000")
-Message-ID: <87h76g1nrs.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 26 Apr 2022 01:04:32 -0400
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9242CEE1F
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 22:01:24 -0700 (PDT)
+Received: by mail-il1-f199.google.com with SMTP id r20-20020a056e02109400b002cc174742c9so7199873ilj.5
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Apr 2022 22:01:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=LxqcV03nxtRQab3OQQ/+BgCz/sCQjRuCxAx9hrcj9yU=;
+        b=5uWooHaiSytJuOTOrMJnCN2gcc/ZTjQVStlP0W7PIdkkdkStb9hHCdxye8DrJfNQGn
+         5dcFwoU16CCSTFIv3zhQ+fiJcjSGcTOGc5G8UdjE0kpPCbz9DFex/wkfUu27iQI0+Kcx
+         MQCtom4/do8HNcQ/vk2CzL1+udYZS44qTigUqUBwPvBZk5yfzAIGvuJi64lUhn9Ea5zS
+         KU1CE7XVDcb8Bwb6mQaZfMnoFW3ZHtLWXBgVLhuenRrNG4VjUkxgMmHKbIqWZ9PlNsWj
+         Ff0EvlyaW25xtbXvz/25fAWx2zhx0oJa5vU95IQ9a0sG0vZbMmxrGvuxDRsCR7uoFnZ7
+         sWaQ==
+X-Gm-Message-State: AOAM530DPTI5zXfMt7tRtd1AV1/JrosmMvEkIMOBeD9QFVE2k0psYobX
+        F/u8Lnz6iYbrGMr4mSCc9lGmN+4RLFzhuS6juylCeTY6Kb/5
+X-Google-Smtp-Source: ABdhPJxiNiWCZ6FKc0zZ4jjLFrau05T3E01K6CXGI3CqXHVUQYlYBO1cIkSLES0EaeP3983LcBM3BgoAitWToutKSknEs4qa1Pfm
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Received: by 2002:a05:6602:2cd2:b0:657:388f:b993 with SMTP id
+ j18-20020a0566022cd200b00657388fb993mr8878699iow.54.1650949284109; Mon, 25
+ Apr 2022 22:01:24 -0700 (PDT)
+Date:   Mon, 25 Apr 2022 22:01:24 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000009f1fa405dd87954f@google.com>
+Subject: [syzbot] WARNING: suspicious RCU usage in mac80211_hwsim_sta_rc_update
+From:   syzbot <syzbot+efb5967310cacc5ac63e@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        kvalo@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Srinivasan Raju <srini.raju@purelifi.com> writes:
+Hello,
 
->> Unless I don't get any comments I'm planning to merge this on Wednesday.
->
-> Thanks Kalle , I do not have any comments.
+syzbot found the following issue on:
 
-Please don't use HTML, our lists drop all HTML mail.
+HEAD commit:    59f0c2447e25 Merge tag 'net-5.18-rc4' of git://git.kernel...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=165262fcf00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=71bf5c8488a4e33a
+dashboard link: https://syzkaller.appspot.com/bug?extid=efb5967310cacc5ac63e
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Unfortunately, I don't have any reproducer for this issue yet.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+efb5967310cacc5ac63e@syzkaller.appspotmail.com
+
+wlan1: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
+wlan1: Creating new IBSS network, BSSID 50:50:50:50:50:50
+=============================
+WARNING: suspicious RCU usage
+5.18.0-rc3-syzkaller-00060-g59f0c2447e25 #0 Not tainted
+-----------------------------
+drivers/net/wireless/mac80211_hwsim.c:2206 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+
+rcu_scheduler_active = 2, debug_locks = 1
+4 locks held by kworker/u4:6/3738:
+ #0: ffff8881488a1138 ((wq_completion)phy37){+.+.}-{0:0}, at: arch_atomic64_set arch/x86/include/asm/atomic64_64.h:34 [inline]
+ #0: ffff8881488a1138 ((wq_completion)phy37){+.+.}-{0:0}, at: arch_atomic_long_set include/linux/atomic/atomic-long.h:41 [inline]
+ #0: ffff8881488a1138 ((wq_completion)phy37){+.+.}-{0:0}, at: atomic_long_set include/linux/atomic/atomic-instrumented.h:1280 [inline]
+ #0: ffff8881488a1138 ((wq_completion)phy37){+.+.}-{0:0}, at: set_work_data kernel/workqueue.c:636 [inline]
+ #0: ffff8881488a1138 ((wq_completion)phy37){+.+.}-{0:0}, at: set_work_pool_and_clear_pending kernel/workqueue.c:663 [inline]
+ #0: ffff8881488a1138 ((wq_completion)phy37){+.+.}-{0:0}, at: process_one_work+0x87a/0x1610 kernel/workqueue.c:2260
+ #1: ffffc90003fbfda8 ((work_completion)(&sdata->work)){+.+.}-{0:0}, at: process_one_work+0x8ae/0x1610 kernel/workqueue.c:2264
+ #2: ffff888080bf0dc0 (&wdev->mtx){+.+.}-{3:3}, at: sdata_lock net/mac80211/ieee80211_i.h:1039 [inline]
+ #2: ffff888080bf0dc0 (&wdev->mtx){+.+.}-{3:3}, at: ieee80211_ibss_rx_queued_mgmt+0x101/0x33b0 net/mac80211/ibss.c:1628
+ #3: ffff8880430e9870 (&local->sta_mtx){+.+.}-{3:3}, at: sta_info_insert_rcu+0xc1/0x2b50 net/mac80211/sta_info.c:726
+
+stack backtrace:
+CPU: 0 PID: 3738 Comm: kworker/u4:6 Not tainted 5.18.0-rc3-syzkaller-00060-g59f0c2447e25 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: phy37 ieee80211_iface_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 lib/dump_stack.c:106
+ mac80211_hwsim_sta_rc_update+0x2b8/0x430 drivers/net/wireless/mac80211_hwsim.c:2206
+ mac80211_hwsim_sta_add+0xba/0x170 drivers/net/wireless/mac80211_hwsim.c:2224
+ drv_sta_add net/mac80211/driver-ops.h:465 [inline]
+ drv_sta_state+0x5cf/0x1520 net/mac80211/driver-ops.c:127
+ sta_info_insert_drv_state net/mac80211/sta_info.c:575 [inline]
+ sta_info_insert_finish net/mac80211/sta_info.c:679 [inline]
+ sta_info_insert_rcu+0x14ab/0x2b50 net/mac80211/sta_info.c:736
+ ieee80211_ibss_finish_sta+0x212/0x390 net/mac80211/ibss.c:585
+ ieee80211_ibss_add_sta+0x405/0x740 net/mac80211/ibss.c:643
+ ieee80211_update_sta_info net/mac80211/ibss.c:1027 [inline]
+ ieee80211_rx_bss_info net/mac80211/ibss.c:1117 [inline]
+ ieee80211_rx_mgmt_probe_beacon net/mac80211/ibss.c:1610 [inline]
+ ieee80211_ibss_rx_queued_mgmt+0x271d/0x33b0 net/mac80211/ibss.c:1639
+ ieee80211_iface_process_skb net/mac80211/iface.c:1527 [inline]
+ ieee80211_iface_work+0xa6f/0xd10 net/mac80211/iface.c:1581
+ process_one_work+0x996/0x1610 kernel/workqueue.c:2289
+ worker_thread+0x665/0x1080 kernel/workqueue.c:2436
+ kthread+0x2e9/0x3a0 kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:298
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
