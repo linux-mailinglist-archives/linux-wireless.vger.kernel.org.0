@@ -2,53 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08EB950FA66
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Apr 2022 12:27:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1BD750FC19
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Apr 2022 13:42:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348795AbiDZK3v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Apr 2022 06:29:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58440 "EHLO
+        id S1349580AbiDZLpo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Apr 2022 07:45:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349014AbiDZK3I (ORCPT
+        with ESMTP id S1346071AbiDZLpn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Apr 2022 06:29:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A2E7329A0
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Apr 2022 03:03:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CBF0861516
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Apr 2022 10:03:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BFCC385A0;
-        Tue, 26 Apr 2022 10:03:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650967387;
-        bh=r3768dlHCT62Q2lOLUs6ZoPdNR4ReDkH5elN6FS+lHE=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=rWo2crH4IjZZrAZZZzHE8VrA91/fGW0Czq+aCJbv+AqMNiKTfc82CAKbt6CZyx2qi
-         XPgEmXUNGiScreV75xzPcgiGvcpMYrB/xUycS4akzupmQ1tnHZOosuGPXYAL65XL8a
-         QCDAwmvYLSn7KtiIuOboNGr7rOZXAm7O0UW9YBjEVSJT/DYvmyOuXa88n0CeFBUNzP
-         ctGRUink1xnUE264NPy86cJGgwCbG1mkOxbmWmDixFwAhMmOYlMoD+2t0+hW9Eygu0
-         ojrsl1HBrrXX0WeaH4eV/aduZq3zoQjQDbfV5l8Z77O2rRZzQ6DGTd3qdSjvz0acEb
-         QslqWM8uV05ZA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     "Hari Chandrakanthan \(QUIC\)" <quic_haric@quicinc.com>
-Cc:     "ath11k\@lists.infradead.org" <ath11k@lists.infradead.org>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] ath11k: disable spectral scan during spectral deinit
-In-Reply-To: <CY4PR02MB32702916194AF1DD0AAD009183FB9@CY4PR02MB3270.namprd02.prod.outlook.com>
-        (Hari Chandrakanthan's message of "Tue, 26 Apr 2022 09:55:57 +0000")
-References: <1649396345-349-1-git-send-email-quic_haric@quicinc.com>
-        <87fsmooz83.fsf@kernel.org> <87levzohyk.fsf@kernel.org>
-        <CY4PR02MB32702916194AF1DD0AAD009183FB9@CY4PR02MB3270.namprd02.prod.outlook.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Tue, 26 Apr 2022 13:03:02 +0300
-Message-ID: <877d7cjh61.fsf@kernel.org>
+        Tue, 26 Apr 2022 07:45:43 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31A393BA57
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Apr 2022 04:42:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1650973355; x=1682509355;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=AeNSb0FKkbLoHTZHKt+yir9RlhqqMU/vKU5zgdB3ehw=;
+  b=p0qx4AadMdqwnH9frtGjIWZAmQL587bfJNdE4JibVNPy5v1k9tWFpj6k
+   Qnno0Q8woo34Yc1psAFwMHcSq+1qK56hLKmMLhpYLUntoMD5WRDz2Uo8j
+   TsWzbHYB07qmu9uOQp2ToGXmHJX2oT/5/njfGd87horE85tn8uUBXq87G
+   0=;
+Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
+  by alexa-out.qualcomm.com with ESMTP; 26 Apr 2022 04:42:35 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2022 04:42:34 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Tue, 26 Apr 2022 04:42:34 -0700
+Received: from [10.50.24.135] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Tue, 26 Apr
+ 2022 04:42:31 -0700
+Message-ID: <9560c693-8dd5-ba68-69ca-dd3d213584e6@quicinc.com>
+Date:   Tue, 26 Apr 2022 17:12:28 +0530
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [RFC PATCH] cfg80211: do some rework towards MLO link APIs
+Content-Language: en-CA
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+References: <20220414145522.116716-1-johannes@sipsolutions.net>
+ <f137ca7f-8b59-3368-c666-247f83d80383@quicinc.com>
+ <6b40798e349d11e495a6df20ecba479a8357dad2.camel@sipsolutions.net>
+From:   Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+In-Reply-To: <6b40798e349d11e495a6df20ecba479a8357dad2.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,14 +66,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Hari Chandrakanthan (QUIC)" <quic_haric@quicinc.com> writes:
+On 4/26/2022 12:46 PM, Johannes Berg wrote:
+>>   > +	if (internal_flags & NL80211_FLAG_MLO_VALID_LINK_ID) {
+>>   > +		struct nlattr *link_id = info->attrs[NL80211_ATTR_MLO_LINK_ID];
+> 
+> [...]
+>>   > +		/* non-MLO -> no link ID attribute accepted */
+>>   > +		if (!wdev->valid_links && link_id) {
+>>
+>> Isn't that we hit this condition when adding the very first link to the
+>> MLD using NL80211_CMD_ADD_LINK?
+>>
+> 
+> Oh, I don't think CMD_ADD_LINK would set NL80211_FLAG_MLO_VALID_LINK_ID,
+> that's just helper functionality for those commands that expect
+> everything to already be set up.
 
-> Tested-on: QCN6122 hw1.0 AHB WLAN.HK.2.6.0.1-00851-QCAHKSWPL_SILICONZ-1
+got it, thanks!
 
-QCN6122 is not yet supported in upstream, so I guess you are testing
-something else than upstream? That's not good.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Vasanth
