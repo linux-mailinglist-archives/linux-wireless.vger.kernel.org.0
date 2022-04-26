@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D41751011E
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Apr 2022 16:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA20851011B
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Apr 2022 16:55:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351819AbiDZO6r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Apr 2022 10:58:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57872 "EHLO
+        id S1351803AbiDZO6q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Apr 2022 10:58:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351812AbiDZO6p (ORCPT
+        with ESMTP id S1351810AbiDZO6p (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 26 Apr 2022 10:58:45 -0400
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAEAF1BE98;
-        Tue, 26 Apr 2022 07:55:37 -0700 (PDT)
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD7041A804;
+        Tue, 26 Apr 2022 07:55:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1650984937; x=1682520937;
+  t=1650984936; x=1682520936;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=bd6f79/QrqIutwAMsSooX1Crx0HDx1k4EAQtsRgYs3g=;
-  b=WBUWiSxm6GdMNpQc2Y10tIIthJua56EyRSxRk1Wi1KfUkzDpReeyDKtu
-   3Ew8aJAfWdLejZjUfk/GYqVOgYTczwGw4B6H4NPnHbZRCN4FbFIG3Ibvd
-   kMTmQLCMDC5EZzEPgkds48lEQeC08JmZcp4NG65G35uPei0ZEbz5ffN+R
-   A=;
-Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 26 Apr 2022 07:55:37 -0700
+  bh=yTLLWE0SXXWGRUqV4sqM3D7u7blAViwEGOfbdiAv4UU=;
+  b=UZSx82I3FDBYn7JDFSPMn9nmva9lsDBBtR39QvDNl4Zw3DAzUxuXg/GF
+   rFc9RzXkBqwbK/ktOEJe4fvW4uZZoJ89+LkHQCtlY7zm1oSuIfjtyFJ7i
+   jn+mmrEOCtOa0BQERqw1atGy7Ul1KR5/O3fuuDUEL0g5wHn8I3HCY1Qz7
+   k=;
+Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 26 Apr 2022 07:55:36 -0700
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2022 07:55:33 -0700
+  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2022 07:55:34 -0700
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Tue, 26 Apr 2022 07:55:31 -0700
+ 15.2.986.22; Tue, 26 Apr 2022 07:55:34 -0700
 Received: from mpubbise-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Tue, 26 Apr 2022 07:55:29 -0700
+ 15.2.986.22; Tue, 26 Apr 2022 07:55:31 -0700
 From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 To:     <ath11k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <robh@kernel.org>, <mka@chromium.org>,
         Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Subject: [PATCH v5 03/12] ath11k: Add bus params for WCN6750
-Date:   Tue, 26 Apr 2022 20:24:47 +0530
-Message-ID: <20220426145456.8055-4-quic_mpubbise@quicinc.com>
+Subject: [PATCH v5 04/12] ath11k: Add register access logic for WCN6750
+Date:   Tue, 26 Apr 2022 20:24:48 +0530
+Message-ID: <20220426145456.8055-5-quic_mpubbise@quicinc.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220426145456.8055-1-quic_mpubbise@quicinc.com>
 References: <20220426145456.8055-1-quic_mpubbise@quicinc.com>
@@ -64,16 +64,13 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-WCN6750 is a PCIe based solution that is attached to and enumerated
-by the WPSS (Wireless Processor SubSystem) Q6 processor.
+WCN6750 uses static window mapping to access the HW registers.
+Unlike QCN9074 which uses 2nd window for CE and 3rd window
+for UMAC register accesses, WCN6750 uses 1st window for UMAC
+and 2nd window for CE registers.
 
-Though it is a PCIe device, since it is not attached to APSS processor
-(Application Processor SubSystem), APSS will be unaware of such a decice
-and hence it is registered to the APSS processor as a platform device(AHB).
-Because of this hybrid nature, it is called as a hybrid bus device.
-
-A new variable is defined in bus params to indicate the hybrid nature.
-Add bus params for WCN6750.
+Code is refactored so that WCN6750 can use the existing
+ath11k_pci_read/write() APIs for accessing the registers.
 
 Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
 Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
@@ -82,70 +79,142 @@ Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
 
 Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 ---
- drivers/net/wireless/ath/ath11k/ahb.c  | 9 +++++++++
- drivers/net/wireless/ath/ath11k/ahb.h  | 2 ++
- drivers/net/wireless/ath/ath11k/core.h | 1 +
- 3 files changed, 12 insertions(+)
+ drivers/net/wireless/ath/ath11k/ahb.c  |  3 ++
+ drivers/net/wireless/ath/ath11k/core.h |  2 +
+ drivers/net/wireless/ath/ath11k/pci.c  |  4 ++
+ drivers/net/wireless/ath/ath11k/pcic.c | 53 +++++++++-----------------
+ 4 files changed, 28 insertions(+), 34 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index f407d4af2074..d73643e3e8dd 100644
+index d73643e3e8dd..d27fc7276977 100644
 --- a/drivers/net/wireless/ath/ath11k/ahb.c
 +++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2021-2022, Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include <linux/module.h>
-@@ -35,6 +36,14 @@ static const struct ath11k_bus_params ath11k_ahb_bus_params = {
- 	.fixed_mem_region = true,
+@@ -42,6 +42,9 @@ const struct ath11k_bus_params ath11k_ahb_hybrid_bus_params = {
+ 	.fixed_bdf_addr = false,
+ 	.fixed_mem_region = false,
+ 	.hybrid_bus_type = true,
++	.static_window_map = true,
++	.dp_window_idx = 1,
++	.ce_window_idx = 2,
  };
  
-+const struct ath11k_bus_params ath11k_ahb_hybrid_bus_params = {
-+	.mhi_support = false,
-+	.m3_fw_support = false,
-+	.fixed_bdf_addr = false,
-+	.fixed_mem_region = false,
-+	.hybrid_bus_type = true,
-+};
-+
  #define ATH11K_IRQ_CE0_OFFSET 4
- 
- static const char *irq_name[ATH11K_IRQ_NUM_MAX] = {
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.h b/drivers/net/wireless/ath/ath11k/ahb.h
-index 51e6e4a5f686..a276e3d1dff8 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.h
-+++ b/drivers/net/wireless/ath/ath11k/ahb.h
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2021-2022, Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- #ifndef ATH11K_AHB_H
- #define ATH11K_AHB_H
-@@ -9,6 +10,7 @@
- 
- #define ATH11K_AHB_RECOVERY_TIMEOUT (3 * HZ)
- struct ath11k_base;
-+extern const struct ath11k_bus_params ath11k_ahb_hybrid_bus_params;
- 
- struct ath11k_ahb {
- 	struct rproc *tgt_rproc;
 diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index e63b01ba68c8..b0bb01cc9d04 100644
+index b0bb01cc9d04..d3bfaafcd571 100644
 --- a/drivers/net/wireless/ath/ath11k/core.h
 +++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -729,6 +729,7 @@ struct ath11k_bus_params {
- 	bool fixed_bdf_addr;
+@@ -730,6 +730,8 @@ struct ath11k_bus_params {
  	bool fixed_mem_region;
  	bool static_window_map;
-+	bool hybrid_bus_type;
+ 	bool hybrid_bus_type;
++	u8 dp_window_idx;
++	u8 ce_window_idx;
  };
  
  struct ath11k_pci_ops {
+diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+index 024661a17008..e5b68aad8be9 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.c
++++ b/drivers/net/wireless/ath/ath11k/pci.c
+@@ -767,6 +767,10 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
+ 		ab->bus_params.static_window_map = true;
+ 		ab->pci.ops = &ath11k_pci_ops_qcn9074;
+ 		ab->hw_rev = ATH11K_HW_QCN9074_HW10;
++
++		/* For QCN9074, CE: 2nd window, UMAC: 3rd window */
++		ab->bus_params.ce_window_idx = 2;
++		ab->bus_params.dp_window_idx = 3;
+ 		break;
+ 	case WCN6855_DEVICE_ID:
+ 		ab->id.bdf_search = ATH11K_BDF_SEARCH_BUS_AND_BOARD;
+diff --git a/drivers/net/wireless/ath/ath11k/pcic.c b/drivers/net/wireless/ath/ath11k/pcic.c
+index 63c678aea29e..6d0b5307d5c7 100644
+--- a/drivers/net/wireless/ath/ath11k/pcic.c
++++ b/drivers/net/wireless/ath/ath11k/pcic.c
+@@ -134,16 +134,14 @@ EXPORT_SYMBOL(ath11k_pcic_init_msi_config);
+ static inline u32 ath11k_pcic_get_window_start(struct ath11k_base *ab,
+ 					       u32 offset)
+ {
+-	u32 window_start;
++	u32 window_start = 0;
+ 
+ 	/* If offset lies within DP register range, use 3rd window */
+ 	if ((offset ^ HAL_SEQ_WCSS_UMAC_OFFSET) < ATH11K_PCI_WINDOW_RANGE_MASK)
+-		window_start = 3 * ATH11K_PCI_WINDOW_START;
+-	/* If offset lies within CE register range, use 2nd window */
+-	else if ((offset ^ HAL_CE_WFSS_CE_REG_BASE) < ATH11K_PCI_WINDOW_RANGE_MASK)
+-		window_start = 2 * ATH11K_PCI_WINDOW_START;
+-	else
+-		window_start = ATH11K_PCI_WINDOW_START;
++		window_start = ab->bus_params.dp_window_idx * ATH11K_PCI_WINDOW_START;
++	else if ((offset ^ HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab)) <
++		 ATH11K_PCI_WINDOW_RANGE_MASK)
++		window_start = ab->bus_params.ce_window_idx * ATH11K_PCI_WINDOW_START;
+ 
+ 	return window_start;
+ }
+@@ -162,19 +160,12 @@ void ath11k_pcic_write32(struct ath11k_base *ab, u32 offset, u32 value)
+ 
+ 	if (offset < ATH11K_PCI_WINDOW_START) {
+ 		iowrite32(value, ab->mem  + offset);
+-	} else {
+-		if (ab->bus_params.static_window_map)
+-			window_start = ath11k_pcic_get_window_start(ab, offset);
+-		else
+-			window_start = ATH11K_PCI_WINDOW_START;
+-
+-		if (window_start == ATH11K_PCI_WINDOW_START &&
+-		    ab->pci.ops->window_write32) {
+-			ab->pci.ops->window_write32(ab, offset, value);
+-		} else {
+-			iowrite32(value, ab->mem + window_start +
+-				  (offset & ATH11K_PCI_WINDOW_RANGE_MASK));
+-		}
++	} else if (ab->bus_params.static_window_map) {
++		window_start = ath11k_pcic_get_window_start(ab, offset);
++		iowrite32(value, ab->mem + window_start +
++			  (offset & ATH11K_PCI_WINDOW_RANGE_MASK));
++	} else if (ab->pci.ops->window_write32) {
++		ab->pci.ops->window_write32(ab, offset, value);
+ 	}
+ 
+ 	if (test_bit(ATH11K_FLAG_DEVICE_INIT_DONE, &ab->dev_flags) &&
+@@ -185,7 +176,8 @@ void ath11k_pcic_write32(struct ath11k_base *ab, u32 offset, u32 value)
+ 
+ u32 ath11k_pcic_read32(struct ath11k_base *ab, u32 offset)
+ {
+-	u32 val, window_start;
++	u32 val = 0;
++	u32 window_start;
+ 	int ret = 0;
+ 
+ 	/* for offset beyond BAR + 4K - 32, may
+@@ -197,19 +189,12 @@ u32 ath11k_pcic_read32(struct ath11k_base *ab, u32 offset)
+ 
+ 	if (offset < ATH11K_PCI_WINDOW_START) {
+ 		val = ioread32(ab->mem + offset);
+-	} else {
+-		if (ab->bus_params.static_window_map)
+-			window_start = ath11k_pcic_get_window_start(ab, offset);
+-		else
+-			window_start = ATH11K_PCI_WINDOW_START;
+-
+-		if (window_start == ATH11K_PCI_WINDOW_START &&
+-		    ab->pci.ops->window_read32) {
+-			val = ab->pci.ops->window_read32(ab, offset);
+-		} else {
+-			val = ioread32(ab->mem + window_start +
+-				       (offset & ATH11K_PCI_WINDOW_RANGE_MASK));
+-		}
++	} else if (ab->bus_params.static_window_map) {
++		window_start = ath11k_pcic_get_window_start(ab, offset);
++		val = ioread32(ab->mem + window_start +
++			       (offset & ATH11K_PCI_WINDOW_RANGE_MASK));
++	} else if (ab->pci.ops->window_read32) {
++		val = ab->pci.ops->window_read32(ab, offset);
+ 	}
+ 
+ 	if (test_bit(ATH11K_FLAG_DEVICE_INIT_DONE, &ab->dev_flags) &&
 -- 
 2.35.1
 
