@@ -2,57 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8626D511065
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Apr 2022 07:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5966951106C
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Apr 2022 07:14:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357797AbiD0FHW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Apr 2022 01:07:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37984 "EHLO
+        id S1357827AbiD0FRH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Apr 2022 01:17:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357793AbiD0FHV (ORCPT
+        with ESMTP id S1344747AbiD0FRF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Apr 2022 01:07:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A345978FD1;
-        Tue, 26 Apr 2022 22:04:11 -0700 (PDT)
+        Wed, 27 Apr 2022 01:17:05 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71D06A6E39;
+        Tue, 26 Apr 2022 22:13:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C17761483;
-        Wed, 27 Apr 2022 05:04:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E72C385A7;
-        Wed, 27 Apr 2022 05:04:08 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 29E26B824B1;
+        Wed, 27 Apr 2022 05:13:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68845C385A9;
+        Wed, 27 Apr 2022 05:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651035850;
-        bh=g+J0i0TxiKiWFZjglFxdDZfwM7Abk9bx3U/hpY/vWBk=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ChTjxKG5PtobXhy2/DvAV1k3i8eu30YUBQUBGLA1NReK4SnRdsxbvMIziQWlz5f2u
-         m/VotBOM3r/5uwY+MZ2rluzaMyVOKeMdwym/VtJdrIkA73Zl+T/yPhl1Bb5Ut/C2IP
-         VLkFY8DilyauGgQhSLVlHGr8v3/ZqXeMDCo9Aiy3Am0Kr23up8qFq35waUdnNRDNSb
-         ZJ/1V0ulOMhtRhoBN7Vl77xxqvC9QaZQ/0hcwZM8AW5mgx3r350UnGZxXQ4kZSEbqv
-         /OOux+ct8AETiwgfipAFGVLWBxqCCMznko5dGDof9xqTJpkPx9/C5xxs53kXvMYHUc
-         v+5+iF/uhpMeQ==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] rtlwifi: btcoex: fix if == else warning
+        s=k20201202; t=1651036432;
+        bh=xTF+yKrSWLuvuV03D2dhdn9f/P9hF8bFAdNp1Z38lbw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=L40PUmY8eS9XKJ0DrkX15ae7Jyw+cxpol+DixnLYhrMkGZDLXv6drWamCka/bYuY2
+         SCib48ZyLvuyWFUxlcmJBiwdkNq7bQ5CEqsoYxIWrhtDWlwZjwVDJgCMZ3So5q6B2r
+         Rx46AvJe7VFdY7D/S9ameshBz3NB2DM/sW+JmZZQCiCSHFY430znzGkWAgvvz92UTA
+         NJ3LcsG3q53fqQKYZENCr6x5w6hDtnckqXXJhA1cWWKpMyqvNRSbkXG/XxooPwu98g
+         HtsR0AMHE92dy51rZttgIVHFaa5jJe3UclOdhE0LkraEnhnF9BFciHl5q2Upwo0DhY
+         IWd5CjyJP+TWw==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220425031725.5808-1-guozhengkui@vivo.com>
-References: <20220425031725.5808-1-guozhengkui@vivo.com>
-To:     Guo Zhengkui <guozhengkui@vivo.com>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Guo Zhengkui <guozhengkui@vivo.com>,
-        linux-wireless@vger.kernel.org (open list:REALTEK WIRELESS DRIVER
-        (rtlwifi family)),
-        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-        linux-kernel@vger.kernel.org (open list),
-        zhengkui_guo@outlook.com
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165103584603.18987.13591716309765600257.kvalo@kernel.org>
-Date:   Wed, 27 Apr 2022 05:04:08 +0000 (UTC)
+To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc:     Rob Herring <robh@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <mka@chromium.org>, <ath11k@lists.infradead.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v4 01/12] dt: bindings: net: add bindings of WCN6750 for ath11k
+References: <20220406094107.17878-1-quic_mpubbise@quicinc.com>
+        <20220406094107.17878-2-quic_mpubbise@quicinc.com>
+        <Yk2s+srO9DKP7xW1@robh.at.kernel.org>
+        <e2fd6542-38fe-a855-1d8f-65799970727e@quicinc.com>
+Date:   Wed, 27 Apr 2022 08:13:47 +0300
+In-Reply-To: <e2fd6542-38fe-a855-1d8f-65799970727e@quicinc.com> (Manikanta
+        Pubbisetty's message of "Thu, 7 Apr 2022 10:51:37 +0530")
+Message-ID: <87zgk7hzw4.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -62,22 +58,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Guo Zhengkui <guozhengkui@vivo.com> wrote:
+Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 
-> Fix the following coccicheck warning:
-> 
-> drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a1ant.c:1604:2-4:
-> WARNING: possible condition with no effect (if == else).
-> 
-> Signed-off-by: Guo Zhengkui <guozhengkui@vivo.com>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> On 4/6/2022 8:38 PM, Rob Herring wrote:
+>> On Wed, 06 Apr 2022 15:10:55 +0530, Manikanta Pubbisetty wrote:
+>>> WCN6750 is the WLAN chip on Qualcomm Snapdragon SoC SC7280;
+>>> Though being a PCIe based solution, it is not attached to
+>>> the APSS processor (Application Processor SubSystem), it is
+>>> instead attached to another tiny processor called WPSS Q6
+>>> processor (Wireless Processor SubSystem) on the SC7280 MSM,
+>>> where the WLAN firmware runs, and it is the WLAN firmware
+>>> running on the Q6 processor which enumerates WCN6750, as a
+>>> result APPS processor would never know such a device being
+>>> present in the system and would not detect the WCN6750
+>>> hardware unless and otherwise WCN6750 is registered as a
+>>> platform device. This is the reason behind adding WCN6750
+>>> WLAN node in the device tree.
+>>>
+>>> Add WCN6750 wireless driver support, its based on ath11k driver.
+>>>
+>>> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+>>> ---
+>>>   .../bindings/net/wireless/qcom,ath11k.yaml    | 361 ++++++++++++------
+>>>   1 file changed, 252 insertions(+), 109 deletions(-)
+>>>
+>>
+>>
+>> Please add Acked-by/Reviewed-by tags when posting new versions. However,
+>> there's no need to repost patches *only* to add the tags. The upstream
+>> maintainer will do that for acks received on the version they apply.
+>>
+>> If a tag was not added on purpose, please state why and what changed.
+>>
+>
+> There are changes in V4 but nothing significant, I have missed adding
+> the tag, will make sure to add relevant tags going forward.
 
-Patch applied to wireless-next.git, thanks.
-
-8c783024d6ac rtlwifi: btcoex: fix if == else warning
+I added Rob's reviewed-by to patch 1.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220425031725.5808-1-guozhengkui@vivo.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
