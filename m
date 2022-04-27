@@ -2,135 +2,194 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC9B5511B66
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Apr 2022 16:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E25F511A53
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Apr 2022 16:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235426AbiD0NVi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Apr 2022 09:21:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44424 "EHLO
+        id S236072AbiD0N3y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Apr 2022 09:29:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235530AbiD0NVg (ORCPT
+        with ESMTP id S236065AbiD0N3w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Apr 2022 09:21:36 -0400
-Received: from mail-vk1-xa29.google.com (mail-vk1-xa29.google.com [IPv6:2607:f8b0:4864:20::a29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C288127172;
-        Wed, 27 Apr 2022 06:17:57 -0700 (PDT)
-Received: by mail-vk1-xa29.google.com with SMTP id h144so485686vkh.3;
-        Wed, 27 Apr 2022 06:17:57 -0700 (PDT)
+        Wed, 27 Apr 2022 09:29:52 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 988123CA40;
+        Wed, 27 Apr 2022 06:26:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=uN2AvNgUuh26EShG8XGbjQPKMO5dYMYNA35xtbAlORY=;
-        b=eOr/moldShOW+h3PPmtHh+ZMd9DBi5jhrB5PB5xFyTFk6TfNgfDw1kPV6sx6Mx1V1U
-         Cns5hVwdsJbU6i8/HmivoJmleq7px++hl1J3EwyGLcOwwLRBNvxC4xyKlexkAC+GCVKZ
-         2g/bKjaK8YQ2gcGukqjKgQ4WdPFSR9ur2xSyns9tz+8FCYtf0b5FrJjS3uc/Xwub3Qgl
-         YzDpXY2pDhEGF8lNzRVGDcgXN/rW/aWYUgF8JmAX+CpHbGU2CScT5wAPk/5WbEDfjgIW
-         BRrwIJGxbFAhZmspPuwvWPMf4HICsLunIx9g8dY0ZaQyGjfCknC+j5Mx+cfveZ+Ay+u7
-         97ZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=uN2AvNgUuh26EShG8XGbjQPKMO5dYMYNA35xtbAlORY=;
-        b=HKw8Dg8yKzL25uSahuDHfvKGzsjqQKoWUPTeb5FJvFbVP+t08vc5wKI3ppmsSdAgz6
-         6NULfZ0BhbHedpXmFqhE0e5n7WrKBr0q/vRWGnSv+ic+1aYrAw7YebLqLOtKZ01ARekB
-         3KSMAPnO8oWxVrfXYadpjuYJh1PnQXAWB4DpASer5duSTY5yrFVkjAmG5S7TrI31l27U
-         lbqgunixAtX1L2ow66vdfwCLvxTKuqcdzbLqeCz/4FQiOBrQVTKDQtBQcVumFwqSzE4D
-         1xu5oXaPvHdTthAuHo7wP3pYI1xZpfdGGo7mP1W/DG/oBFFdR8byFbCHnMLpfCOpaRWy
-         iz6Q==
-X-Gm-Message-State: AOAM533GTz4l8L7lDkFvOeDUbHQlX8oBwTyyQqcXx1umMzQM8X1oMSuA
-        j59vW/+/1r20elOrZZl65+XjFWKK3l6iwPMrbQk=
-X-Google-Smtp-Source: ABdhPJxy3WAzAZGtx686mGmZjiKglH7VD4zj+A6zktnSEohH6OWYf2drz2Bft82edO1fD2t6wcpakq1ftEMw+A7ZXeA=
-X-Received: by 2002:a1f:278b:0:b0:34d:34f3:3596 with SMTP id
- n133-20020a1f278b000000b0034d34f33596mr5900763vkn.25.1651065476900; Wed, 27
- Apr 2022 06:17:56 -0700 (PDT)
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1651066001; x=1682602001;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=TCm7Oo7LtecXBT3WIt7p+lqk/BrbGUUBL7loNIVAru4=;
+  b=FPxS+g07b/LTUPbGU4SFQe9gQDdTXSigQz71rPSmYg4j7syPnAbni72Q
+   GeGWMZsVOuoOHEF+t7s/L+8QQ9Cj6Y3P0DBWBAUqSCYFDOzvDqyZqWkLr
+   jFLXdibuZTKWhtxvbQvDgZzMd0b+eZSsk9owjQMajFApcEGP04/gr+gQ4
+   Y=;
+Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
+  by alexa-out.qualcomm.com with ESMTP; 27 Apr 2022 06:26:40 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2022 06:26:39 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 27 Apr 2022 06:26:39 -0700
+Received: from [10.50.15.218] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Wed, 27 Apr
+ 2022 06:26:36 -0700
+Message-ID: <6e607455-e42a-a591-f58b-b3b2c83ea2cc@quicinc.com>
+Date:   Wed, 27 Apr 2022 18:56:33 +0530
 MIME-Version: 1.0
-References: <20220407223629.21487-1-ricardo.martinez@linux.intel.com>
- <20220407223629.21487-3-ricardo.martinez@linux.intel.com> <CAHNKnsRt=H_tkqG7CNf15DBYJmmunYy6vsm4HjneN47EQB_uug@mail.gmail.com>
- <CAMZdPi90Joo8+_44ceqS3k8ez08W_AX-eWs42F0ztDN67WR2Pw@mail.gmail.com>
-In-Reply-To: <CAMZdPi90Joo8+_44ceqS3k8ez08W_AX-eWs42F0ztDN67WR2Pw@mail.gmail.com>
-From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Date:   Wed, 27 Apr 2022 16:17:45 +0300
-Message-ID: <CAHNKnsTh0A85XTy8+Gk-3dCFee9ynB3+r0S3HcwJ8DkM5e4ADg@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 02/13] net: wwan: t7xx: Add control DMA interface
-To:     Loic Poulain <loic.poulain@linaro.org>
-Cc:     Ricardo Martinez <ricardo.martinez@linux.intel.com>,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Jakub Kicinski <kuba@kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        M Chetan Kumar <m.chetan.kumar@intel.com>,
-        "Devegowda, Chandrashekar" <chandrashekar.devegowda@intel.com>,
-        Intel Corporation <linuxwwan@intel.com>,
-        chiranjeevi.rapolu@linux.intel.com,
-        =?UTF-8?B?SGFpanVuIExpdSAo5YiY5rW35YabKQ==?= 
-        <haijun.liu@mediatek.com>,
-        "Hanania, Amir" <amir.hanania@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Sharma, Dinesh" <dinesh.sharma@intel.com>,
-        "Lee, Eliot" <eliot.lee@intel.com>,
-        "Jarvinen, Ilpo Johannes" <ilpo.johannes.jarvinen@intel.com>,
-        "Veleta, Moises" <moises.veleta@intel.com>,
-        "Bossart, Pierre-louis" <pierre-louis.bossart@intel.com>,
-        "Sethuraman, Muralidharan" <muralidharan.sethuraman@intel.com>,
-        "Mishra, Soumya Prakash" <Soumya.Prakash.Mishra@intel.com>,
-        "Kancharla, Sreehari" <sreehari.kancharla@intel.com>,
-        "Sahu, Madhusmita" <madhusmita.sahu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v6 4/9] ath11k: Add register access logic for WCN6750
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh@kernel.org>, <mka@chromium.org>
+References: <20220427111848.9257-1-quic_mpubbise@quicinc.com>
+ <20220427111848.9257-5-quic_mpubbise@quicinc.com> <87pml2g1c7.fsf@kernel.org>
+From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+In-Reply-To: <87pml2g1c7.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Apr 27, 2022 at 3:35 PM Loic Poulain <loic.poulain@linaro.org> wrot=
-e:
-> On Tue, 26 Apr 2022 at 02:19, Sergey Ryazanov <ryazanov.s.a@gmail.com> wr=
-ote:
->> On Fri, Apr 8, 2022 at 1:37 AM Ricardo Martinez
->> <ricardo.martinez@linux.intel.com> wrote:
->>> ...
->>> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
->>> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
->>>
->>> From a WWAN framework perspective:
->>> Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
->>>
->>> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+On 4/27/2022 5:55 PM, Kalle Valo wrote:
+> Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
+> 
+>> WCN6750 uses static window mapping to access the HW registers.
+>> Unlike QCN9074 which uses 2nd window for CE and 3rd window
+>> for UMAC register accesses, WCN6750 uses 1st window for UMAC
+>> and 2nd window for CE registers.
 >>
->> This line with "From a WWAN framework perspective" looks confusing to
->> me. Anyone not familiar with all of the iterations will be in doubt as
->> to whether it belongs only to Loic's review or to both of them.
+>> Code is refactored so that WCN6750 can use the existing
+>> ath11k_pci_read/write() APIs for accessing the registers.
 >>
->> How about to format this block like this:
+>> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
+>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+>> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
+>> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
 >>
->>> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
->>> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
->>> Reviewed-by: Loic Poulain <loic.poulain@linaro.org> (WWAN framework)
->>> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+>> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+>> ---
+>>   drivers/net/wireless/ath/ath11k/ahb.c  |  6 +++
+>>   drivers/net/wireless/ath/ath11k/core.h |  2 +
+>>   drivers/net/wireless/ath/ath11k/pci.c  | 34 ++++++++++++++--
+>>   drivers/net/wireless/ath/ath11k/pcic.c | 54 +++++++++-----------------
+>>   4 files changed, 58 insertions(+), 38 deletions(-)
 >>
->> or like this:
->>
->>> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
->>> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
->>> Reviewed-by: Loic Poulain <loic.poulain@linaro.org> # WWAN framework
->>> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
->>
->> Parentheses vs. comment sign. I saw people use both of these formats,
->> I just do not know which is better. What do you think?
->
-> My initial comment was to highlight that someone else should double
-> check the network code, but it wasn't expected to end up in the commit
-> message. Maybe simply drop this extra comment?
+>> diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+>> index cfdd415f0203..fa12e50f32f4 100644
+>> --- a/drivers/net/wireless/ath/ath11k/ahb.c
+>> +++ b/drivers/net/wireless/ath/ath11k/ahb.c
+>> @@ -34,7 +34,10 @@ static const struct ath11k_bus_params ath11k_ahb_bus_params = {
+>>   	.m3_fw_support = false,
+>>   	.fixed_bdf_addr = true,
+>>   	.fixed_mem_region = true,
+>> +	.static_window_map = false,
+>>   	.hybrid_bus_type = false,
+>> +	.dp_window_idx = 0,
+>> +	.ce_window_idx = 0,
+>>   };
+>>   
+>>   const struct ath11k_bus_params ath11k_ahb_hybrid_bus_params = {
+>> @@ -42,7 +45,10 @@ const struct ath11k_bus_params ath11k_ahb_hybrid_bus_params = {
+>>   	.m3_fw_support = false,
+>>   	.fixed_bdf_addr = false,
+>>   	.fixed_mem_region = false,
+>> +	.static_window_map = true,
+>>   	.hybrid_bus_type = true,
+>> +	.dp_window_idx = 1,
+>> +	.ce_window_idx = 2,
+>>   };
+>>   
+>>   #define ATH11K_IRQ_CE0_OFFSET 4
+>> diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+>> index 51f313dd7f26..ee0ad93d5843 100644
+>> --- a/drivers/net/wireless/ath/ath11k/core.h
+>> +++ b/drivers/net/wireless/ath/ath11k/core.h
+>> @@ -756,6 +756,8 @@ struct ath11k_bus_params {
+>>   	bool fixed_mem_region;
+>>   	bool static_window_map;
+>>   	bool hybrid_bus_type;
+>> +	u8 dp_window_idx;
+>> +	u8 ce_window_idx;
+>>   };
+>>   
+>>   struct ath11k_pci_ops {
+>> diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+>> index ddd1e2de6a2e..9184cb893bd4 100644
+>> --- a/drivers/net/wireless/ath/ath11k/pci.c
+>> +++ b/drivers/net/wireless/ath/ath11k/pci.c
+>> @@ -115,12 +115,26 @@ static const struct ath11k_pci_ops ath11k_pci_ops_qcn9074 = {
+>>   	.window_read32 = ath11k_pci_window_read32,
+>>   };
+>>   
+>> -static const struct ath11k_bus_params ath11k_pci_bus_params = {
+>> +static const struct ath11k_bus_params ath11k_pci_bus_params_qca6390 = {
+>>   	.mhi_support = true,
+>>   	.m3_fw_support = true,
+>>   	.fixed_bdf_addr = false,
+>>   	.fixed_mem_region = false,
+>> +	.static_window_map = false,
+>>   	.hybrid_bus_type = false,
+>> +	.dp_window_idx = 0,
+>> +	.ce_window_idx = 0,
+>> +};
+>> +
+>> +static const struct ath11k_bus_params ath11k_pci_bus_params_qcn9074 = {
+>> +	.mhi_support = true,
+>> +	.m3_fw_support = true,
+>> +	.fixed_bdf_addr = false,
+>> +	.fixed_mem_region = false,
+>> +	.static_window_map = true,
+>> +	.hybrid_bus_type = false,
+>> +	.dp_window_idx = 3,
+>> +	.ce_window_idx = 2,
+>>   };
+>>   
+>>   static const struct ath11k_msi_config msi_config_one_msi = {
+>> @@ -704,11 +718,26 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
+>>   {
+>>   	struct ath11k_base *ab;
+>>   	struct ath11k_pci *ab_pci;
+>> +	const struct ath11k_bus_params *bus_params;
+>>   	u32 soc_hw_version_major, soc_hw_version_minor, addr;
+>>   	int ret;
+>>   
+>> +	switch (pci_dev->device) {
+>> +	case QCA6390_DEVICE_ID:
+>> +	case WCN6855_DEVICE_ID:
+>> +		bus_params = &ath11k_pci_bus_params_qca6390;
+>> +		break;
+>> +	case QCN9074_DEVICE_ID:
+>> +		bus_params = &ath11k_pci_bus_params_qcn9074;
+>> +		break;
+> 
+> Now you are making bus_params device specific, that's not really the
+> point of bus params. They are supposed to be _bus_ specific parameters.
+> 
+> Can't you use hw_params like I mentioned in the review?
+> 
 
-Yep, this drastically solves the problem with comment format :) I do not mi=
-nd.
+Even without this patch, as of today, bus_params is already device 
+specific with QCN9074 changing the static_window_map in bus_params to 
+true in ath11k_pci_probe(). And if we have to move these device specific 
+bus_params to hw_parmas, then bus_params can be pretty much removed 
+completely with the changes that WCN6750 bring in. Any thoughts on this? 
+I can make the changes that can get along with WCN6750 series.
 
---=20
-Sergey
+Thanks,
+Manikanta
