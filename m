@@ -2,112 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 320D4511594
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Apr 2022 13:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3D64511735
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Apr 2022 14:46:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232552AbiD0L1l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Apr 2022 07:27:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48818 "EHLO
+        id S233426AbiD0MEB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Apr 2022 08:04:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232502AbiD0L1k (ORCPT
+        with ESMTP id S233441AbiD0MD4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Apr 2022 07:27:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14B2433A12
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Apr 2022 04:24:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A1D65611C4
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Apr 2022 11:24:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C81EC385A9;
-        Wed, 27 Apr 2022 11:24:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651058669;
-        bh=LTGwnbGRpiim9T3RVtgFxvcwX/HqM66APROkek98ZdY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=QqjVfVfeYrg4Sdk6EU9lunChpyV3z/3p5CS24BqGpyJD9SF5yzB5Rf4+jlHSkUYQs
-         DKDJCLjOLNPf1BMU8lvLlk2/gdgt38lpTcbsGCuiaz5VEauR8j+Wxgg73DO0k61kp1
-         J3/Rzprs1gnAruO0GaGKrhezMIItUvVYVrpM4yazkJ56Pd21E1wmjsrK7mMCwDjuhA
-         l3VyLxVE4BfKnMrP8GO8r2vC7V8OHtuPek8rE4sfTMt3X/VtA6Ax2VXs5r2VGT9toY
-         H6+osXni21iKuT1nblC+fZg8HwQuOCqPD7bzyKJJqpP3NxwBpjN5qP2Vze+Nsv/lnW
-         8dhFUwIzLLPAQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v5.18] ath11k: reduce the wait time of 11d scan and hw scan while add interface
-References: <20220427111619.9758-1-kvalo@kernel.org>
-Date:   Wed, 27 Apr 2022 14:24:26 +0300
-In-Reply-To: <20220427111619.9758-1-kvalo@kernel.org> (Kalle Valo's message of
-        "Wed, 27 Apr 2022 14:16:19 +0300")
-Message-ID: <87bkwm22hh.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 27 Apr 2022 08:03:56 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1D1E2723
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Apr 2022 05:00:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1651060845; x=1682596845;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=gfOvwznRzoV/f6IntXCsqVrjNUb/oEzlFcMoqQaCc7k=;
+  b=ygpOEMqfCAcQ3WxZrYw+AjQxrP0bvAn9oARifEAqoj/nkogMaumZXpbz
+   981HHO/w59eOC1slpsrP9INdQfualcw001DFGDvgFmv3epj86s2SN4zKt
+   53X8mOCKQKCUausom4OzqTFRPTZwo45P8M9VHH5qQlSCfdeA6Gh9ny4Gz
+   M=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 27 Apr 2022 05:00:45 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2022 05:00:45 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 27 Apr 2022 05:00:45 -0700
+Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 27 Apr 2022 05:00:44 -0700
+From:   Baochen Qiang <quic_bqiang@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH] ath11k: Don't use GFP_KERNEL in atomic context
+Date:   Wed, 27 Apr 2022 20:00:33 +0800
+Message-ID: <20220427120033.1046759-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+We are seeing below warning:
+...
+kernel: [ 5720.362941] BUG: sleeping function called from invalid context at include/linux/sched/mm.h:197
+kernel: [ 5720.362943] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 0, name: swapper/4
+kernel: [ 5720.362947] CPU: 4 PID: 0 Comm: swapper/4 Tainted: G        W         5.10.90 #18 4fa489e3e5c16043994f416310c2f60eff666320
+kernel: [ 5720.362949] Hardware name: Google Nipperkin/Nipperkin, BIOS Google_Nipperkin.14316.0.0 10/30/2021
+kernel: [ 5720.362950] Call Trace:
+kernel: [ 5720.362953]  <IRQ>
+kernel: [ 5720.362959]  dump_stack+0x9c/0xe7
+kernel: [ 5720.362964]  ___might_sleep+0x14a/0x160
+kernel: [ 5720.362967]  kmem_cache_alloc+0x46/0x226
+kernel: [ 5720.362970]  ? __alloc_skb+0x6c/0x19e
+kernel: [ 5720.362972]  __alloc_skb+0x6c/0x19e
+kernel: [ 5720.362985]  cfg80211_gtk_rekey_notify+0xa2/0x21d [cfg80211 2c8b5aee0416e7d010d70c332a47990fc843c1c5]
+kernel: [ 5720.362995]  ath11k_wmi_gtk_offload_status_event+0x102/0x155 [ath11k 4c6bb5f7331c81199d56a7e37bdc10030f167838]
+kernel: [ 5720.363002]  ath11k_wmi_tlv_op_rx+0x301/0x51b [ath11k 4c6bb5f7331c81199d56a7e37bdc10030f167838]
+kernel: [ 5720.363009]  ath11k_htc_rx_completion_handler+0xee/0x3f5 [ath11k 4c6bb5f7331c81199d56a7e37bdc10030f167838]
+kernel: [ 5720.363017]  ath11k_ce_per_engine_service+0x2aa/0x32c [ath11k 4c6bb5f7331c81199d56a7e37bdc10030f167838]
+kernel: [ 5720.363024]  ath11k_pci_ce_tasklet+0x1a/0x30 [ath11k_pci 9acc399855ea172aa14a892c0bfdba0ce22d6f07]
+kernel: [ 5720.363028]  tasklet_action_common+0x8d/0x9f
+kernel: [ 5720.363032]  __do_softirq+0x163/0x29a
+kernel: [ 5720.363035]  asm_call_irq_on_stack+0x12/0x20
+kernel: [ 5720.363037]  </IRQ>
+kernel: [ 5720.363041]  do_softirq_own_stack+0x3c/0x48
+kernel: [ 5720.363043]  __irq_exit_rcu+0x9b/0x9d
+kernel: [ 5720.363046]  common_interrupt+0xc9/0x14d
+kernel: [ 5720.363049]  asm_common_interrupt+0x1e/0x40
+kernel: [ 5720.363054] RIP: 0010:cpuidle_enter_state+0x1c5/0x2ac
+kernel: [ 5720.363056] Code: 84 f6 4c 8b 75 c0 74 1e 48 c7 45 c8 00 00 00 00 9c 8f 45 c8 0f ba 65 c8 09 0f 82 d1 00 00 00 31 ff e8 4a bb 6c ff fb 45 85 e4 <78> 47 44 89 e0 48 6b d0 68 49 8b 4c 16 48 48 2b 5d b8 49 89 5d 18
+kernel: [ 5720.363058] RSP: 0018:ffffa7e640157e78 EFLAGS: 00000206
+kernel: [ 5720.363060] RAX: ffff9807ddf29b40 RBX: 00000533e033584c RCX: 00000533e033584c
+kernel: [ 5720.363062] RDX: 0000000000000004 RSI: 0000000000000000 RDI: 0000000000000000
+kernel: [ 5720.363063] RBP: ffffa7e640157ec0 R08: 0000000000000002 R09: 00000533e171bb7a
+kernel: [ 5720.363064] R10: 0000000000000900 R11: fffffffffffffffe R12: 0000000000000003
+kernel: [ 5720.363065] R13: ffff9804c2ef6000 R14: ffffffffbe9a7bd0 R15: 0000000000000003
+kernel: [ 5720.363069]  ? cpuidle_enter_state+0x19a/0x2ac
+kernel: [ 5720.363072]  cpuidle_enter+0x2e/0x3d
+kernel: [ 5720.363074]  do_idle+0x163/0x1ee
+kernel: [ 5720.363076]  cpu_startup_entry+0x1d/0x1f
+kernel: [ 5720.363078]  secondary_startup_64_no_verify+0xb1/0xbb
+...
 
-> From: Wen Gong <quic_wgong@quicinc.com>
->
-> (cherry picked from commit 1f682dc9fb3790aa7ec27d3d122ff32b1eda1365 in wireless-next)
->
-> Currently ath11k will wait 11d scan complete while add interface in
-> ath11k_mac_op_add_interface(), when system resume without enable
-> wowlan, ath11k_mac_op_add_interface() is called for each resume, thus
-> it increase the resume time of system. And ath11k_mac_op_hw_scan()
-> after ath11k_mac_op_add_interface() also needs some time cost because
-> the previous 11d scan need more than 5 seconds when 6 GHz is enabled,
-> then the scan started event will indicated to ath11k after the 11d
-> scan completed.
->
-> While 11d scan/hw scan is running in firmware, if ath11k update channel
-> list to firmware by WMI_SCAN_CHAN_LIST_CMDID, then firmware will cancel
-> the current scan which is running, it lead the scan failed. The patch
-> commit 9dcf6808b253 ("ath11k: add 11d scan offload support") used
-> finish_11d_scan/finish_11d_ch_list/pending_11d to synchronize the 11d
-> scan/hw scan/channel list between ath11k/firmware/mac80211 and to avoid
-> the scan fail.
->
-> Add wait operation before ath11k update channel list, function
-> ath11k_reg_update_chan_list() will wait until the current 11d scan/hw
-> scan completed. And remove the wait operation of start 11d scan and
-> waiting channel list complete in hw scan. After these changes, resume
-> time cost reduce about 5 seconds and also hw scan time cost reduced
-> obviously, and scan failed not seen.
->
-> The 11d scan is sent to firmware only one time for each interface added
-> in mac.c, and it is moved after the 1st hw scan because 11d scan will
-> cost some time and thus leads the AP scan result update to UI delay.
-> Currently priority of ath11k's hw scan is WMI_SCAN_PRIORITY_LOW, and
-> priority of 11d scan in firmware is WMI_SCAN_PRIORITY_MEDIUM, then the
-> 11d scan which sent after hw scan will cancel the hw scan in firmware,
-> so change the priority to WMI_SCAN_PRIORITY_MEDIUM for the hw scan which
-> is in front of the 11d scan, thus it will not happen scan cancel in
-> firmware.
->
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
->
-> Fixes: 9dcf6808b253 ("ath11k: add 11d scan offload support")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-> Link: https://lore.kernel.org/r/20220328035832.14122-1-quic_wgong@quicinc.com
+This is because GFP_KERNEL is used by ath11k_wmi_gtk_offload_status_event
+while in atomic context. Fix it by using GFP_ATOMIC instead.
 
-I forgot to include the link to the bug report:
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215777
+Fixes: a16d9b50cfba ("ath11k: support GTK rekey offload")
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/wmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'll add that during commit.
-
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 3c0ac1e29479..598ec061694f 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -7844,7 +7844,7 @@ static void ath11k_wmi_gtk_offload_status_event(struct ath11k_base *ab,
+ 	replay_ctr_be = cpu_to_be64(replay_ctr);
+ 
+ 	ieee80211_gtk_rekey_notify(arvif->vif, arvif->bssid,
+-				   (void *)&replay_ctr_be, GFP_KERNEL);
++				   (void *)&replay_ctr_be, GFP_ATOMIC);
+ 
+ 	kfree(tb);
+ }
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.25.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
