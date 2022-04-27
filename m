@@ -2,50 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5966951106C
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Apr 2022 07:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2EED51106E
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Apr 2022 07:14:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357827AbiD0FRH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Apr 2022 01:17:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43772 "EHLO
+        id S1357777AbiD0FSA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Apr 2022 01:18:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344747AbiD0FRF (ORCPT
+        with ESMTP id S1344747AbiD0FR7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Apr 2022 01:17:05 -0400
+        Wed, 27 Apr 2022 01:17:59 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71D06A6E39;
-        Tue, 26 Apr 2022 22:13:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBD3DC7489;
+        Tue, 26 Apr 2022 22:14:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 29E26B824B1;
-        Wed, 27 Apr 2022 05:13:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68845C385A9;
-        Wed, 27 Apr 2022 05:13:51 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 93281B82488;
+        Wed, 27 Apr 2022 05:14:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29CCC385A7;
+        Wed, 27 Apr 2022 05:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651036432;
-        bh=xTF+yKrSWLuvuV03D2dhdn9f/P9hF8bFAdNp1Z38lbw=;
+        s=k20201202; t=1651036487;
+        bh=yBv2EE30DRLNaYudcx9cZFvb01QnSzSCcKtunw7AoZU=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=L40PUmY8eS9XKJ0DrkX15ae7Jyw+cxpol+DixnLYhrMkGZDLXv6drWamCka/bYuY2
-         SCib48ZyLvuyWFUxlcmJBiwdkNq7bQ5CEqsoYxIWrhtDWlwZjwVDJgCMZ3So5q6B2r
-         Rx46AvJe7VFdY7D/S9ameshBz3NB2DM/sW+JmZZQCiCSHFY430znzGkWAgvvz92UTA
-         NJ3LcsG3q53fqQKYZENCr6x5w6hDtnckqXXJhA1cWWKpMyqvNRSbkXG/XxooPwu98g
-         HtsR0AMHE92dy51rZttgIVHFaa5jJe3UclOdhE0LkraEnhnF9BFciHl5q2Upwo0DhY
-         IWd5CjyJP+TWw==
+        b=fAj1h1TQ6UJdlIpNipwed9Rv9mASfJZquqKtNWdObZcsD99g6wgT7bPlM0gX2FCYM
+         m7cDFz4FVVBjeZ5iLhWJevN6SQxO7Ez/rbEdLtroJ5YfmtpP6ZYhdLe3cFcQ0i0FMW
+         jxyMoaCeJOQt3VPRZ235Ckv1qPExLTKnB+PcAwWNm1tNs6D2g7OuhuEATRk/DWjxHH
+         cds+jYochLsNAZfPGwMotbcrAMYRsuftHNz5Ahqg9KqVPixQbUNmQb7tpBT4f7zZ3r
+         n+aLVt/Xp5mNpPNFtMRTLtW+Lak1Eju5n6HlP68YPlsFmheXYqamMsexlhfgnMri6n
+         brswvqjtFb0EQ==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     Rob Herring <robh@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <mka@chromium.org>, <ath11k@lists.infradead.org>,
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v4 01/12] dt: bindings: net: add bindings of WCN6750 for ath11k
-References: <20220406094107.17878-1-quic_mpubbise@quicinc.com>
-        <20220406094107.17878-2-quic_mpubbise@quicinc.com>
-        <Yk2s+srO9DKP7xW1@robh.at.kernel.org>
-        <e2fd6542-38fe-a855-1d8f-65799970727e@quicinc.com>
-Date:   Wed, 27 Apr 2022 08:13:47 +0300
-In-Reply-To: <e2fd6542-38fe-a855-1d8f-65799970727e@quicinc.com> (Manikanta
-        Pubbisetty's message of "Thu, 7 Apr 2022 10:51:37 +0530")
-Message-ID: <87zgk7hzw4.fsf@kernel.org>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <robh@kernel.org>, <mka@chromium.org>
+Subject: Re: [PATCH v5 00/12] add support for WCN6750
+References: <20220426145456.8055-1-quic_mpubbise@quicinc.com>
+Date:   Wed, 27 Apr 2022 08:14:43 +0300
+In-Reply-To: <20220426145456.8055-1-quic_mpubbise@quicinc.com> (Manikanta
+        Pubbisetty's message of "Tue, 26 Apr 2022 20:24:44 +0530")
+Message-ID: <87v8uvhzuk.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -60,41 +56,62 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 
-> On 4/6/2022 8:38 PM, Rob Herring wrote:
->> On Wed, 06 Apr 2022 15:10:55 +0530, Manikanta Pubbisetty wrote:
->>> WCN6750 is the WLAN chip on Qualcomm Snapdragon SoC SC7280;
->>> Though being a PCIe based solution, it is not attached to
->>> the APSS processor (Application Processor SubSystem), it is
->>> instead attached to another tiny processor called WPSS Q6
->>> processor (Wireless Processor SubSystem) on the SC7280 MSM,
->>> where the WLAN firmware runs, and it is the WLAN firmware
->>> running on the Q6 processor which enumerates WCN6750, as a
->>> result APPS processor would never know such a device being
->>> present in the system and would not detect the WCN6750
->>> hardware unless and otherwise WCN6750 is registered as a
->>> platform device. This is the reason behind adding WCN6750
->>> WLAN node in the device tree.
->>>
->>> Add WCN6750 wireless driver support, its based on ath11k driver.
->>>
->>> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
->>> ---
->>>   .../bindings/net/wireless/qcom,ath11k.yaml    | 361 ++++++++++++------
->>>   1 file changed, 252 insertions(+), 109 deletions(-)
->>>
->>
->>
->> Please add Acked-by/Reviewed-by tags when posting new versions. However,
->> there's no need to repost patches *only* to add the tags. The upstream
->> maintainer will do that for acks received on the version they apply.
->>
->> If a tag was not added on purpose, please state why and what changed.
->>
+> WCN6750 is non-DBS 2x2 11AX chipset. Unlike QCA6390/WCN6855 which
+> are DBS (dual band simultaneous) solutions (2 LMACs), WCN6750 has a
+> single LMAC supporting 2G, 5G and 6G bands. It can be operated only
+> on one band at any given point.
 >
-> There are changes in V4 but nothing significant, I have missed adding
-> the tag, will make sure to add relevant tags going forward.
+> WCN6750 is a PCIe device. Unlike other supported ATH11K PCIe devices
+> which are directly attached to APSS (Application Processor SubSystem),
+> WCN6750 is not attached to APSS, it is attached to the WPSS
+> (Wireless Processor SubSystem) Q6 processor, the FW which runs on the
+> Q6 processor will enumerate the PCIe device. Since APSS is unaware of
+> such a device, it has to be registered as a platform device(AHB) to the
+> kernel for device probing. Like other AHB devices, remoteproc APIs are
+> used to boot up or shutdown of WCN6750.
+>
+> WCN6750 uses both AHB and PCIe ATH11K APIs for it's operation.
+> It uses AHB APIs for device probe and booting of the remote processor.
+> Once device is booted up, it uses ATH11K PCIe APIs for initialization
+> and register access. Hence, it is referred as hybrid bus device in
+> the rest of this series.
+>
+> Since the chip is enumerated by WPSS Q6, device information like
+> BAR and BAR size is not known to the APSS processor. A new QMI message
+> called device info QMI request will be sent to the target for fetching
+> these details.
+>
+> STA and AP modes are supported; Basic connectivity and ping are
+> verified in both the modes.
+>
+> An important point to note is that though WCN6750 is a PCIe device,
+> it cannot be attached to any other platform except on Qualcomm
+> Snapdragon SoCs due to the aforementioned reasons.
+>
+> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
+>
+> Manikanta Pubbisetty (12):
+>   dt: bindings: net: add bindings of WCN6750 for ath11k
+>   ath11k: Add HW params for WCN6750
+>   ath11k: Add bus params for WCN6750
+>   ath11k: Add register access logic for WCN6750
+>   ath11k: Fetch device information via QMI for WCN6750
+>   ath11k: Add QMI changes for WCN6750
+>   ath11k: HAL changes to support WCN6750
+>   ath11k: Datapath changes to support WCN6750
+>   ath11k: Do not put HW in DBS mode for WCN6750
+>   ath11k: WMI changes to support WCN6750
+>   ath11k: Update WBM idle ring HP after FW mode on
+>   ath11k: Add support for WCN6750 device
+> ---
+> V5:
+>  - Rebased on ToT SHAID: 01be26cde012478db958d9bde530877c46031e76
 
-I added Rob's reviewed-by to patch 1.
+I already had v4 applied to the pending branch so I'm going to drop v5
+and look at v4 instead.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
