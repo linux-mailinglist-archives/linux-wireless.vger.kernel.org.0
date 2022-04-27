@@ -2,79 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3278512242
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Apr 2022 21:15:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 203395123E2
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Apr 2022 22:28:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233003AbiD0TSV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Apr 2022 15:18:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38470 "EHLO
+        id S236408AbiD0UbJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Apr 2022 16:31:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233170AbiD0TSQ (ORCPT
+        with ESMTP id S236192AbiD0UbH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Apr 2022 15:18:16 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A38C43382
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Apr 2022 12:11:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=+9IXBObOSsqjtqJDtdiUwlAhLGcWncSy63DdbzZUAZw=;
-        t=1651086685; x=1652296285; b=WVr2QIqJTnPdtWjDMYtQQIffqhlu1bAKLJT0GI0gmJx5N+L
-        rZ0f55Hd/IWqaFCfXUVnfbe8jFx6s/4r6pfK6pIQRK6fPzvAXs1N/BbOIOysa+xnDa24d2R1BPUgO
-        ZwMuSSmjEngMknKQcHSBo/kUBTsLag8pfBCPPoPVszmIhdakYX2V9QM506tTQQWePTFjai2GnOvWH
-        d5RIMBdp/BLZ9mm7HSrQAp7eWVPaCALHapM+bNai4msxfGIbj48vfruPSDlKpxAOaK0hqpD4ceBxi
-        l9jWoW3zW5ArgpJO4GlToQX39nKzLa8lmI9IqrMSMqrR9hVYeDvSsAcZGAMCNojg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1njn4N-00G2E1-0b;
-        Wed, 27 Apr 2022 21:11:23 +0200
-Message-ID: <ca53bf4ce43f967723125313d5285cc40eb7d3f4.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: Reset MBSSID parameters upon connection
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 27 Apr 2022 21:11:22 +0200
-In-Reply-To: <20220427182305.11703-1-quic_mpubbise@quicinc.com>
-References: <20220427182305.11703-1-quic_mpubbise@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+        Wed, 27 Apr 2022 16:31:07 -0400
+Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4924463BF7
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Apr 2022 13:27:55 -0700 (PDT)
+Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-e93ff05b23so3186630fac.9
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Apr 2022 13:27:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gp/F1d/4pAenz5mNMTTask9wErh38GRFBpgSf17aNWY=;
+        b=Y0AbeCNkAgs0mjiUiyGZ/engX4b8WVlc02Y2wUD0hDGZhyPfy6Xt5PelzXLROAIYMY
+         eVpRZE834J9mmhPAjJ299MhHB3z/7Wuo1ma5GxgdRNqWE05oroUNUajPWkOIKCBk3FO8
+         JUCvvnkFoHNwWAF74dhzq6T0KmyitBNxK07d8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gp/F1d/4pAenz5mNMTTask9wErh38GRFBpgSf17aNWY=;
+        b=7r5z5uqrEX2mbMfnL5ntnHjgkxPtj9zJWgtpkhb2ZFiLw/Qq7zY8BIrQX2QZ/LKpjj
+         j3rPY1A72glJWF+WNOOB0vO1pK/+sl7gAKxWxF0w8I9cSd6CY4mdxngZ/YOvmjTh0lBg
+         K/xmrHPYx20Oe9WsJecmYnu8UmXUHUyfuPvQkbVjTVbNCQmW9cPekD2tywR0WEc7DNFI
+         iBi5WlU6zlmonLiHqrH8RbHH6+EFKhNzEXdJRpCaRQL4a7Sw/WgIBq/Xt5w8X1eOzit6
+         yFBFUQ2WWsfeV/1LMBWiWVxROt8/v4pKLeOd+UTONTwAf0kJ4rpCyW9UdPo7lZmCA3DF
+         Goyg==
+X-Gm-Message-State: AOAM531MHFbH4BxUIzx+L423X/P7hUhToVzqzsFIKYsVhdIA4eIDA0YI
+        lTM7WfN0Ai8zdeD/b6I/eDTU7Fd5jNDQNw==
+X-Google-Smtp-Source: ABdhPJy8yINI3ob9tMaK7M/KHB74+yrU9fVKP7sPMeARv1nWB97arkkJbrFpUAPPJ2e4I/35lz9pGw==
+X-Received: by 2002:a05:6870:4797:b0:e9:58ec:4c47 with SMTP id c23-20020a056870479700b000e958ec4c47mr6161913oaq.67.1651091273758;
+        Wed, 27 Apr 2022 13:27:53 -0700 (PDT)
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com. [209.85.210.54])
+        by smtp.gmail.com with ESMTPSA id dy40-20020a056870c7a800b000e686d1386asm1087788oab.4.2022.04.27.13.27.52
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Apr 2022 13:27:52 -0700 (PDT)
+Received: by mail-ot1-f54.google.com with SMTP id r14-20020a9d750e000000b00605446d683eso1834509otk.10
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Apr 2022 13:27:52 -0700 (PDT)
+X-Received: by 2002:a9d:58c3:0:b0:605:9fa7:f5b6 with SMTP id
+ s3-20020a9d58c3000000b006059fa7f5b6mr7777249oth.230.1651091272112; Wed, 27
+ Apr 2022 13:27:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220426221859.v2.1.I650b809482e1af8d0156ed88b5dc2677a0711d46@changeid>
+ <CA+ASDXPNFwvYVBMHjbTNQ-uTnQrs5TvPAH2jXgPKuFLUw2GbZA@mail.gmail.com> <CACTWRwtXSHnhxTEZ+pWWNpfd-BANtHuNUDimmwxJ=COL6HJQTA@mail.gmail.com>
+In-Reply-To: <CACTWRwtXSHnhxTEZ+pWWNpfd-BANtHuNUDimmwxJ=COL6HJQTA@mail.gmail.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Wed, 27 Apr 2022 13:27:40 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXNLnb4OEZtFVb4D64QNkK=sGYUUVuZPwO1-zOOD0hfqyg@mail.gmail.com>
+Message-ID: <CA+ASDXNLnb4OEZtFVb4D64QNkK=sGYUUVuZPwO1-zOOD0hfqyg@mail.gmail.com>
+Subject: Re: [PATCH v2] ath10k: skip ath10k_halt during suspend for driver
+ state RESTARTING
+To:     Abhishek Kumar <kuabhs@chromium.org>
+Cc:     kvalo@kernel.org, quic_wgong@quicinc.com,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        ath10k <ath10k@lists.infradead.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2022-04-27 at 23:53 +0530, Manikanta Pubbisetty wrote:
-> Currently MBSSID parameters in struct ieee80211_bss_conf
-> are not reset upon connection. This could be problematic
-> with some drivers in a scenario where the device first
-> connects to a non-transmit BSS and then connects to a
-> transmit BSS of a Multi BSS AP. The MBSSID parameters
-> which are set after connecting to a non-transmit BSS will
-> not be reset and the same parameters will be passed on to
-> the driver during the subsequent connection to a transmit
-> BSS of a Multi BSS AP.
-> 
-> For example, firmware running on the ath11k device uses the
-> Multi BSS data for tracking the beacon of a non-transmit BSS
-> and reports the driver when there is a beacon miss. If we do
-> not reset the MBSSID parameters during the subsequent
-> connection to a transmit BSS, then the driver would have
-> wrong MBSSID data and FW would be looking for an incorrect
-> BSSID in the MBSSID beacon of a Multi BSS AP and reports
-> beacon loss leading to an unstable connection.
-> 
-> Reset the MBSSID parameters upon every connection to solve this
-> problem.
+On Tue, Apr 26, 2022 at 10:20 PM Abhishek Kumar <kuabhs@chromium.org> wrote:
+> On Tue, Apr 26, 2022 at 3:34 PM Brian Norris <briannorris@chromium.org> wrote:
+> > You could have retained my:
+> >
+> > Reviewed-by: Brian Norris <briannorris@chromium.org>
+> >
+> > but no worries; it's just a few characters ;)
+> Oh! sorry about that, I was under the impression that if the next
+> iteration is posted, then I cannot just add the Reviewed-by tag
+> provided in the previous iteration by myself.
 
-Oops. Please add (or at least provide) a Fixes line though.
+You certainly *can* add it, but it's a judgment call on whether you
+should. In this case, you were only making cosmetic changes (commit
+message and comments, requested by reviewers) between versions, so IMO
+that's totally fine. If there are more substantial changes between
+versions, it may be better to skip it, and let the reviewer re-review.
+Sometimes a reviewer might even explicitly say, "with changes X and Y,
+consider this Reviewed-by: foo <foo@bar.tld>", which is a pretty
+strong indication you can add it.
 
-johannes
+Anyway, it's probably better to omit a review line that should have
+been included, rather than include one that should not have been
+(e.g., because undesirable changes were made). So again, no worries
+from me!
+
+Brian
