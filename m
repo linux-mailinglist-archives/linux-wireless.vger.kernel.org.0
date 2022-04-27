@@ -2,50 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85A0751105E
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Apr 2022 07:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 516BE511061
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Apr 2022 07:04:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357780AbiD0FGH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Apr 2022 01:06:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60948 "EHLO
+        id S1357783AbiD0FHC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Apr 2022 01:07:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240085AbiD0FGG (ORCPT
+        with ESMTP id S236081AbiD0FHB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Apr 2022 01:06:06 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8546F7522B;
-        Tue, 26 Apr 2022 22:02:56 -0700 (PDT)
+        Wed, 27 Apr 2022 01:07:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A65575226;
+        Tue, 26 Apr 2022 22:03:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3325DB824AE;
-        Wed, 27 Apr 2022 05:02:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4436C385A9;
-        Wed, 27 Apr 2022 05:02:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B70606137D;
+        Wed, 27 Apr 2022 05:03:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF2BC385A7;
+        Wed, 27 Apr 2022 05:03:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651035774;
-        bh=Ryk8RyZobT8Xsk55rLKfasMQd9aoSfXpUoz9jmg9C1w=;
+        s=k20201202; t=1651035830;
+        bh=DVM44mksHY1qbD7OHzHmnYqk/lP6UoqRj4SKi+lLs7s=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=uZ0hEjsQhtn5NIRodXZVZEOb+b8NreursonsXHaa98ogCO1eR2y1Qdw/Bz4a6H/bT
-         MAFQBSN/uY0BHKogTRpuh2TvhzbXim3yAY02An9d85IgHHXGVUB7qx9XmrFaq3i1Vp
-         1fE3I9VyOHtTwp4Qo5V1+NbL0OZ8K2LqDziwDk/Ej1tYw5+1Mwhv2Vvv48PkxZpjLA
-         i8mIKRh1PkgJK3EC26UWP/QD2uZS/ESaUwdx28rccNERJJPxraJUobFwWbm8WOE+aR
-         ATSfBKs8z+LxZaIJleuvIo265UtfeE553JU95tiQ7+0KsIuGWR7ghB4IZGVGHuM8GC
-         iJptZkILu589Q==
+        b=LpgzuC8ES6Ny59uKZpq71oF3O2MGmwT6J7yylPETJqzsyMYUcld2yiInvtIvVfUPr
+         eFch6XmFj5UPaf4LaVq9K+DaWLCYcNWKj2QIJWVnecigogB5/qFk8bpy29ap63QAja
+         +A8DwpALaM40UaSzAH/eiUepZAegNrqNHsBD3XjO6mYifyKQ5HzqylhnApU/VsLMAW
+         rNQTMQsMWo49vJ94RCe2YA5k4WUEXNJhrv7F2ot4dODZgdhaL8E1KNHtcBOH3Bcdf8
+         RCRaCdx80UM9h4quNgOa3rNVlVw3AnTLxau6SWsv0XmMElXLJbbtuC0XqyhA0LMWps
+         VGxcWiCFH7iLg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: rtl818x: Prevent using not initialized queues
+Subject: Re: [PATCH] brcmfmac: use ISO3166 country code and 0 rev as fallback
+ on
+ brcmfmac43602 chips
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220422145228.7567-1-alexander@wetzel-home.de>
-References: <20220422145228.7567-1-alexander@wetzel-home.de>
-To:     Alexander Wetzel <alexander@wetzel-home.de>
-Cc:     linux-wireless@vger.kernel.org,
-        Alexander Wetzel <alexander@wetzel-home.de>,
-        stable@vger.kernel.org, pa@panix.com
+In-Reply-To: <20220423111237.60892-1-hzamani.cs91@gmail.com>
+References: <20220423111237.60892-1-hzamani.cs91@gmail.com>
+To:     Hamid Zamani <hzamani.cs91@gmail.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Soeren Moch <smoch@web.de>, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Hamid Zamani <hzamani.cs91@gmail.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165103577076.18987.11755306741060093427.kvalo@kernel.org>
-Date:   Wed, 27 Apr 2022 05:02:52 +0000 (UTC)
+Message-ID: <165103582533.18987.15646969582351051016.kvalo@kernel.org>
+Date:   Wed, 27 Apr 2022 05:03:47 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -55,44 +63,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Alexander Wetzel <alexander@wetzel-home.de> wrote:
+Hamid Zamani <hzamani.cs91@gmail.com> wrote:
 
-> Using not existing queues can panic the kernel with rtl8180/rtl8185 cards.
-> Ignore the skb priority for those cards, they only have one tx queue. Pierre
-> Asselin (pa@panix.com) reported the kernel crash in the Gentoo forum:
+> This uses ISO3166 country code and 0 rev on brcmfmac43602 chips.
+> Without this patch 80 MHz width is not selected on 5 GHz channels.
 > 
-> https://forums.gentoo.org/viewtopic-t-1147832-postdays-0-postorder-asc-start-25.html
+> Commit a21bf90e927f ("brcmfmac: use ISO3166 country code and 0 rev as
+> fallback on some devices") provides a way to specify chips for using the
+> fallback case.
 > 
-> He also confirmed that this patch fixes the issue. In summary this happened:
+> Before commit 151a7c12c4fc ("Revert "brcmfmac: use ISO3166 country code
+> and 0 rev as fallback"") brcmfmac43602 devices works correctly and for
+> this specific case 80 MHz width is selected.
 > 
-> After updating wpa_supplicant from 2.9 to 2.10 the kernel crashed with a
-> "divide error: 0000" when connecting to an AP. Control port tx now tries to
-> use IEEE80211_AC_VO for the priority, which wpa_supplicants starts to use in
-> 2.10.
-> 
-> Since only the rtl8187se part of the driver supports QoS, the priority
-> of the skb is set to IEEE80211_AC_BE (2) by mac80211 for rtl8180/rtl8185
-> cards.
-> 
-> rtl8180 is then unconditionally reading out the priority and finally crashes on
-> drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c line 544 without this
-> patch:
-> 	idx = (ring->idx + skb_queue_len(&ring->queue)) % ring->entries
-> 
-> "ring->entries" is zero for rtl8180/rtl8185 cards, tx_ring[2] never got
-> initialized.
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: pa@panix.com
-> Tested-by: pa@panix.com
-> Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+> Signed-off-by: Hamid Zamani <hzamani.cs91@gmail.com>
 
 Patch applied to wireless-next.git, thanks.
 
-746285cf81dc rtl818x: Prevent using not initialized queues
+21947f3a74d6 brcmfmac: use ISO3166 country code and 0 rev as fallback on brcmfmac43602 chips
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220422145228.7567-1-alexander@wetzel-home.de/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220423111237.60892-1-hzamani.cs91@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
