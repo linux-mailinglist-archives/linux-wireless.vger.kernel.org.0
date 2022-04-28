@@ -2,160 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F0BA51278C
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Apr 2022 01:35:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6701751295B
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Apr 2022 04:06:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233054AbiD0XiX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Apr 2022 19:38:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57724 "EHLO
+        id S239935AbiD1CJW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Apr 2022 22:09:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233033AbiD0XiV (ORCPT
+        with ESMTP id S231698AbiD1CJU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Apr 2022 19:38:21 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 660C127B1D
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Apr 2022 16:35:07 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.17])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id C4D43A0068
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Apr 2022 23:35:05 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 8B6D5680074
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Apr 2022 23:35:05 +0000 (UTC)
-Received: from [192.168.1.115] (unknown [98.97.39.238])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id F332B13C2B0
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Apr 2022 16:35:04 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com F332B13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1651102505;
-        bh=BtnrMcDC7BJDEoNNoe/MxytlP/rmc0NnUorOQmq2eEo=;
-        h=Subject:From:To:References:Date:In-Reply-To:From;
-        b=E6/dkWIiHvzOKsqhMoN4wIYDYvnuWL6mWhaZ77x/0HfyGVj4hq6VsYe1mZHgfCuTe
-         Noj32H15GB60dQ6d7kLboBEUBh0F2BsD8p7x9MUJQke2wpoZCgJI6Yx6GHTwjD2RkN
-         ooUQUceorajq7C2dw4lKYPZCYafCBBAVTlloLvwk=
-Subject: Re: AP + STA on DFS channel breaks DFS detection.
-From:   Ben Greear <greearb@candelatech.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <c937f0dc-5be7-8986-01a5-152c6b20e868@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <3c49eb40-f225-48dd-b1e9-57a91736b727@candelatech.com>
-Date:   Wed, 27 Apr 2022 16:35:04 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        Wed, 27 Apr 2022 22:09:20 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FD4D5D1A1
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Apr 2022 19:06:03 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23S25mtqE032426, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23S25mtqE032426
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 28 Apr 2022 10:05:48 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 28 Apr 2022 10:05:48 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 28 Apr
+ 2022 10:05:47 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <gary.chang@realtek.com>
+Subject: [PATCH 1/3] rtw88: add HT MPDU density value for each chip
+Date:   Thu, 28 Apr 2022 10:05:19 +0800
+Message-ID: <20220428020521.8015-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <c937f0dc-5be7-8986-01a5-152c6b20e868@candelatech.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 8bit
-X-MDID: 1651102506-wJTUXuqlQFfK
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 04/28/2022 01:50:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvMjggpFekyCAwMTowOTowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I figure this is a horrible enough patch to increase my sin by top-posting.
-Just FYI, this 'fixes' it on my system.  Something better is needed probably,
-but after staring at this all day, this is the best I have:
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-iff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index e1d3705a166e0..00955d11901a9 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -1825,8 +1825,22 @@ static void handle_channel_single_rule(struct wiphy *wiphy,
-                 return;
-         }
+Each chip have best ampdu density value, the correct setting can improve
+throughput performance.
 
--       chan->dfs_state = NL80211_DFS_USABLE;
--       chan->dfs_state_entered = jiffies;
-+       /* HACK:  Work around problem where you have AP on DFS channel and then
-+        * STA on different radio connects on same channel.  That causes regdom to change
-+        * (or the code isn't smart enough to realize it didn't really change),
-+        * because STA gets regdom from its AP, causing CAC to restart,
-+        * which kills the AP interface before CAC can ever be finished.
-+        * This is the one path that hits in my system, there are other places that may
-+        * need latching too, and/or there is probably a better way to fix this.
-+        * --Ben
-+        */
-+       if (chan->dfs_state != NL80211_DFS_AVAILABLE) {
-+               chan->dfs_state = NL80211_DFS_USABLE;
-+               chan->dfs_state_entered = jiffies;
-+       } else {
-+               pr_info("wiphy %s %pM: freq %d.%03d MHz: NOT setting DFS state back to baseline in single_rule, leave it latched at DFS_AVAILABLE.\n",
-+                       dev_name(&wiphy->dev), wiphy->perm_addr, chan->center_freq, chan->freq_offset);
-+       }
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/main.c     | 3 ++-
+ drivers/net/wireless/realtek/rtw88/main.h     | 1 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c | 1 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c | 1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 1 +
+ 6 files changed, 7 insertions(+), 1 deletion(-)
 
-         chan->beacon_found = false;
-         chan->flags = flags | bw_flags | map_regdom_flags(reg_rule->flags);
-
-Thanks,
-Ben
-
-On 4/27/22 2:32 PM, Ben Greear wrote:
-> I am using 5.17.4+ kernel, MT7915 radios.  One radio (wiphy0) is acting as AP on
-> channel 132.  It starts, does CAC and starts working fine.
-> 
-> Then, I bring up a station on wiphy1 (on same machine).  The STA connects to the AP
-> on wiphy0 and starts running traffic for a short time (usually < 1 minute).  And then
-> the AP gets stopped.  I don't think this is specific to connecting AP to STA on same machine,
-> probably if STA connected to another AP on channel 132 it would have same issue.
-> 
-> I think I have tracked this down by adding prints and WARN_ON to find
-> the interesting state changes.  It looks like when the STA changes its
-> regdom (probably because it is admin-up and/or associated to the AP), then the state of the
-> channel's dfs_state is reset.  Channel objects are per band, not per wiphy.
-> 
-> And then a bit later, a timer kicks off and decides that CAC has not completed
-> (because it already completed earlier on the AP, but chan->dfs_state was lost,
-> and STA will not do CAC anyway.)
-> 
-> So, question is, how in the world to fix this properly!
-> 
-> 2818 Apr 27 14:20:42 lf0350-9634 kernel: cfg80211: handle-single-rule: wiphy0 chan: 00000000d9f5550d  old_state: 2  new: DFS_USABLE
-> 2819 Apr 27 14:20:42 lf0350-9634 kernel: ------------[ cut here ]------------
-> 2820 Apr 27 14:20:42 lf0350-9634 kernel: WARNING: CPU: 1 PID: 75 at net/wireless/reg.c:1830 wiphy_update_regulatory.cold.32+0x3ba/0x796 [cfg80211]
-> 2821 Apr 27 14:20:42 lf0350-9634 kernel: Modules linked in: nf_conntrack_netlink nfnetlink iptable_raw xt_CT nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 
-> libcrc32c          bpfilter vrf 8021q garp mrp stp llc macvlan pktgen rpcrdma rdma_cm iw_cm ib_cm ib_core pcengines_apuv2 gpio_keys_polled leds_gpio 
-> gpio_amd_fch amd64_edac             edac_mce_amd kvm_amd mt7915e kvm irqbypass bfq mt76_connac_lib mt76 mac80211 fam15h_power k10temp i2c_piix4 cfg80211 
-> acpi_cpufreq nfsd auth_rpcgss nfs_acl            sch_fq_codel lockd grace drm fuse agpgart sunrpc zram sdhci_pci cqhci sdhci igb hwmon i2c_algo_bit mmc_core 
-> sp5100_tco dca xhci_pci xhci_pci_renesas ccp              i2c_core [last unloaded: nfnetlink]
-> 2822 Apr 27 14:20:42 lf0350-9634 kernel: CPU: 1 PID: 75 Comm: kworker/1:1 Tainted: G        W         5.17.4+ #14
-> 2823 Apr 27 14:20:42 lf0350-9634 kernel: Hardware name: PC Engines APU2/APU2, BIOS 4.0.7 02/28/2017
-> 2824 Apr 27 14:20:42 lf0350-9634 kernel: Workqueue: events reg_regdb_apply [cfg80211]
-> 2825 Apr 27 14:20:42 lf0350-9634 kernel: RIP: 0010:wiphy_update_regulatory.cold.32+0x3ba/0x796 [cfg80211]
-> 2826 Apr 27 14:20:42 lf0350-9634 kernel: sta03000: Limiting TX power to 20 (23 - 3) dBm as advertised by 00:0a:52:06:9f:10
-> 2827 Apr 27 14:20:42 lf0350-9634 kernel: Code: 48 8b b3 c8 01 00 00 48 85 f6 0f 84 a8 00 00 00 41 8b 4e 2c 4c 89 f2 48 c7 c7 20 10 51 a0 e8 7e 70 6d e1 41 83 7e 
-> 2c        02 75 02 <0f> 0b 48 8b 05 b8 25 30 e2 8b 4c 24 24 41 c7 46 2c 00 00 00 00 41
-> 2828 Apr 27 14:20:42 lf0350-9634 kernel: RSP: 0018:ffffc90000297dc0 EFLAGS: 00010246
-> 2829 Apr 27 14:20:42 lf0350-9634 kernel: RAX: 000000000000005a RBX: ffff88810bca03a0 RCX: 0000000000000027
-> 2830 Apr 27 14:20:42 lf0350-9634 kernel: RDX: 0000000000000000 RSI: ffff88811ac9c440 RDI: ffff88811ac9c448
-> 2831 Apr 27 14:20:42 lf0350-9634 kernel: RBP: 0000000000000000 R08: 0000000000000000 R09: c0000000ffffdfff
-> 2832 Apr 27 14:20:42 lf0350-9634 kernel: R10: 0000000000000001 R11: ffffc90000297bf0 R12: ffff8880141a399c
-> 2833 Apr 27 14:20:42 lf0350-9634 kernel: R13: ffff88810c3803a0 R14: ffff88810ac00c28 R15: 0000000000565d60
-> 2834 Apr 27 14:20:42 lf0350-9634 kernel: FS:  0000000000000000(0000) GS:ffff88811ac80000(0000) knlGS:0000000000000000
-> 2835 Apr 27 14:20:42 lf0350-9634 kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> 2836 Apr 27 14:20:42 lf0350-9634 kernel: CR2: 00005601e502dba0 CR3: 000000000bf36000 CR4: 00000000000406e0
-> 2837 Apr 27 14:20:42 lf0350-9634 kernel: Call Trace:
-> 2838 Apr 27 14:20:42 lf0350-9634 kernel:  <TASK>
-> 2839 Apr 27 14:20:42 lf0350-9634 kernel:  update_all_wiphy_regulatory+0x2e/0x90 [cfg80211]
-> 2840 Apr 27 14:20:42 lf0350-9634 kernel:  set_regdom+0x101/0x420 [cfg80211]
-> 2841 Apr 27 14:20:42 lf0350-9634 kernel:  reg_regdb_apply+0x65/0x90 [cfg80211]
-> 2842 Apr 27 14:20:42 lf0350-9634 kernel:  process_one_work+0x21a/0x3f0
-> 2843 Apr 27 14:20:42 lf0350-9634 kernel:  ? process_one_work+0x3f0/0x3f0
-> 2844 Apr 27 14:20:42 lf0350-9634 kernel:  worker_thread+0x28/0x3a0
-> 2845 Apr 27 14:20:42 lf0350-9634 kernel:  ? process_one_work+0x3f0/0x3f0
-> 2846 Apr 27 14:20:42 lf0350-9634 kernel:  kthread+0xd2/0x100
-> 2847 Apr 27 14:20:42 lf0350-9634 kernel:  ? kthread_complete_and_exit+0x20/0x20
-> 2848 Apr 27 14:20:42 lf0350-9634 kernel:  ret_from_fork+0x1f/0x30
-> 2849 Apr 27 14:20:42 lf0350-9634 kernel:  </TASK>
-> 2850 Apr 27 14:20:42 lf0350-9634 kernel: ---[ end trace 0000000000000000 ]---
-> 
-> Thanks,
-> Ben
-> 
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 7431988b59859..14289f83feb54 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1461,6 +1461,7 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ 			    struct ieee80211_sta_ht_cap *ht_cap)
+ {
+ 	struct rtw_efuse *efuse = &rtwdev->efuse;
++	struct rtw_chip_info *chip = rtwdev->chip;
+ 
+ 	ht_cap->ht_supported = true;
+ 	ht_cap->cap = 0;
+@@ -1478,7 +1479,7 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ 				IEEE80211_HT_CAP_DSSSCCK40 |
+ 				IEEE80211_HT_CAP_SGI_40;
+ 	ht_cap->ampdu_factor = IEEE80211_HT_MAX_AMPDU_64K;
+-	ht_cap->ampdu_density = IEEE80211_HT_MPDU_DENSITY_16;
++	ht_cap->ampdu_density = chip->ampdu_density;
+ 	ht_cap->mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
+ 	if (efuse->hw_cap.nss > 1) {
+ 		ht_cap->mcs.rx_mask[0] = 0xFF;
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 2743074a42560..de149a3b3ba1b 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -1179,6 +1179,7 @@ struct rtw_chip_info {
+ 	bool rx_ldpc;
+ 	bool tx_stbc;
+ 	u8 max_power_index;
++	u8 ampdu_density;
+ 
+ 	u16 fw_fifo_addr[RTW_FW_FIFO_MAX];
+ 	const struct rtw_fwcd_segs *fwcd_segs;
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+index ad2b323a0423c..93cce44df5318 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+@@ -2747,6 +2747,7 @@ struct rtw_chip_info rtw8723d_hw_spec = {
+ 	.rx_ldpc = false,
+ 	.pwr_track_tbl = &rtw8723d_rtw_pwr_track_tbl,
+ 	.iqk_threshold = 8,
++	.ampdu_density = IEEE80211_HT_MPDU_DENSITY_16,
+ 
+ 	.coex_para_ver = 0x2007022f,
+ 	.bt_desired_ver = 0x2f,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index ec38a7c849517..ffee39ea5df69 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -1923,6 +1923,7 @@ struct rtw_chip_info rtw8821c_hw_spec = {
+ 	.iqk_threshold = 8,
+ 	.bfer_su_max_num = 2,
+ 	.bfer_mu_max_num = 1,
++	.ampdu_density = IEEE80211_HT_MPDU_DENSITY_2,
+ 
+ 	.coex_para_ver = 0x19092746,
+ 	.bt_desired_ver = 0x46,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index eee7bf0354030..dccd722b8e624 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -2548,6 +2548,7 @@ struct rtw_chip_info rtw8822b_hw_spec = {
+ 	.edcca_th = rtw8822b_edcca_th,
+ 	.l2h_th_ini_cs = 10 + EDCCA_IGI_BASE,
+ 	.l2h_th_ini_ad = -14 + EDCCA_IGI_BASE,
++	.ampdu_density = IEEE80211_HT_MPDU_DENSITY_2,
+ 
+ 	.coex_para_ver = 0x20070206,
+ 	.bt_desired_ver = 0x6,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index cd74607a61a28..c043b5c520b9a 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -5368,6 +5368,7 @@ struct rtw_chip_info rtw8822c_hw_spec = {
+ 	.edcca_th = rtw8822c_edcca_th,
+ 	.l2h_th_ini_cs = 60,
+ 	.l2h_th_ini_ad = 45,
++	.ampdu_density = IEEE80211_HT_MPDU_DENSITY_2,
+ 
+ #ifdef CONFIG_PM
+ 	.wow_fw_name = "rtw88/rtw8822c_wow_fw.bin",
+-- 
+2.25.1
 
