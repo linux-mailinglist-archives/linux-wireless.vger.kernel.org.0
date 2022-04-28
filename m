@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2D5A51295A
+	by mail.lfdr.de (Postfix) with ESMTP id A9782512959
 	for <lists+linux-wireless@lfdr.de>; Thu, 28 Apr 2022 04:06:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233156AbiD1CJV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S231757AbiD1CJV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Wed, 27 Apr 2022 22:09:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44040 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230289AbiD1CJU (ORCPT
+        with ESMTP id S231714AbiD1CJU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 27 Apr 2022 22:09:20 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F7D84704B
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC71938D
         for <linux-wireless@vger.kernel.org>; Wed, 27 Apr 2022 19:06:03 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23S25nOC2032448, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23S25nOC2032448
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23S25osdE032452, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23S25osdE032452
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 28 Apr 2022 10:05:49 +0800
+        Thu, 28 Apr 2022 10:05:50 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Thu, 28 Apr 2022 10:05:49 +0800
+ 15.1.2375.24; Thu, 28 Apr 2022 10:05:50 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 28 Apr
- 2022 10:05:48 +0800
+ 2022 10:05:50 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <gary.chang@realtek.com>
-Subject: [PATCH 2/3] rtw88: fix not disabling beacon filter after disconnection
-Date:   Thu, 28 Apr 2022 10:05:20 +0800
-Message-ID: <20220428020521.8015-2-pkshih@realtek.com>
+Subject: [PATCH 3/3] rtw88: fix hw scan may cause disconnect issue
+Date:   Thu, 28 Apr 2022 10:05:21 +0800
+Message-ID: <20220428020521.8015-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220428020521.8015-1-pkshih@realtek.com>
 References: <20220428020521.8015-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvMjggpFekyCAwMTowOTowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -69,38 +69,61 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Chih-Kang Chang <gary.chang@realtek.com>
 
-Correct the judgment to let beacon filter disable after disconnection.
+After scan aborts we still receive some hw scan c2h packets, and
+processing these c2h commands will change current channel. If device
+already connect to other AP, driver will set wrong op channel due
+to current channel changed. The disconnection happens when hw scan back
+to wrong op channel that device can't receive beacon from AP. To fix
+this issue, we ignore the late c2h if we are not scanning, and set
+current channel back to op channel after scan to align the FW behavior.
 
 Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/fw.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/fw.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 3545d51c6951a..28cc8d680be31 100644
+index 28cc8d680be31..e344e058f9432 100644
 --- a/drivers/net/wireless/realtek/rtw88/fw.c
 +++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -649,7 +649,7 @@ void rtw_fw_beacon_filter_config(struct rtw_dev *rtwdev, bool connect,
- 	s32 threshold = bss_conf->cqm_rssi_thold + rssi_offset;
- 	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
+@@ -2056,7 +2056,10 @@ void rtw_hw_scan_complete(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
+ 	struct cfg80211_scan_info info = {
+ 		.aborted = aborted,
+ 	};
++	struct rtw_hw_scan_info *scan_info = &rtwdev->scan_info;
++	struct rtw_hal *hal = &rtwdev->hal;
+ 	struct rtw_vif *rtwvif;
++	u8 chan = scan_info->op_chan;
  
--	if (!rtw_fw_feature_check(&rtwdev->fw, FW_FEATURE_BCN_FILTER) || !si)
-+	if (!rtw_fw_feature_check(&rtwdev->fw, FW_FEATURE_BCN_FILTER))
+ 	if (!vif)
  		return;
+@@ -2066,10 +2069,14 @@ void rtw_hw_scan_complete(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
  
- 	if (!connect) {
-@@ -659,6 +659,10 @@ void rtw_fw_beacon_filter_config(struct rtw_dev *rtwdev, bool connect,
+ 	rtw_core_scan_complete(rtwdev, vif, true);
  
- 		return;
- 	}
-+
-+	if (!si)
++	rtwvif = (struct rtw_vif *)vif->drv_priv;
++	if (rtwvif->net_type == RTW_NET_MGD_LINKED) {
++		hal->current_channel = chan;
++		hal->current_band_type = chan > 14 ? RTW_BAND_5G : RTW_BAND_2G;
++	}
+ 	ieee80211_wake_queues(rtwdev->hw);
+ 	ieee80211_scan_completed(rtwdev->hw, &info);
+ 
+-	rtwvif = (struct rtw_vif *)vif->drv_priv;
+ 	rtwvif->scan_req = NULL;
+ 	rtwvif->scan_ies = NULL;
+ 	rtwdev->scan_info.scanning_vif = NULL;
+@@ -2178,6 +2185,9 @@ void rtw_hw_scan_chan_switch(struct rtw_dev *rtwdev, struct sk_buff *skb)
+ 	enum rtw_scan_notify_id id;
+ 	u8 chan, status;
+ 
++	if (!test_bit(RTW_FLAG_SCANNING, rtwdev->flags))
 +		return;
 +
- 	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_BCN_FILTER_OFFLOAD_P0);
- 	ether_addr_copy(&h2c_pkt[1], bss_conf->bssid);
- 	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
+ 	c2h = get_c2h_from_skb(skb);
+ 	chan = GET_CHAN_SWITCH_CENTRAL_CH(c2h->payload);
+ 	id = GET_CHAN_SWITCH_ID(c2h->payload);
 -- 
 2.25.1
 
