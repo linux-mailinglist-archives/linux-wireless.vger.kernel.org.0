@@ -2,59 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D337151431C
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Apr 2022 09:19:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08C6C514345
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Apr 2022 09:26:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355087AbiD2HWT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Apr 2022 03:22:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44936 "EHLO
+        id S1355168AbiD2H31 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Apr 2022 03:29:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355085AbiD2HWP (ORCPT
+        with ESMTP id S1345193AbiD2H3Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Apr 2022 03:22:15 -0400
+        Fri, 29 Apr 2022 03:29:25 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B52AFBF303
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Apr 2022 00:18:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14AA0B7175
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Apr 2022 00:26:06 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23T7IqFW2001537, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 23T7PHmL4002953, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23T7IqFW2001537
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 23T7PHmL4002953
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 29 Apr 2022 15:18:52 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+        Fri, 29 Apr 2022 15:25:18 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
  RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Fri, 29 Apr 2022 15:18:52 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 29 Apr
- 2022 15:18:51 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 16/16] rtw89: 8852c: add 8852ce to Makefile and Kconfig
-Date:   Fri, 29 Apr 2022 15:18:09 +0800
-Message-ID: <20220429071809.32104-17-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220429071809.32104-1-pkshih@realtek.com>
-References: <20220429071809.32104-1-pkshih@realtek.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/29/2022 06:59:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ 15.1.2308.27; Fri, 29 Apr 2022 15:25:17 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Fri, 29 Apr 2022 15:25:17 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
+ RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
+ 15.01.2308.021; Fri, 29 Apr 2022 15:25:17 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     kernel test robot <lkp@intel.com>,
+        "llvm@lists.linux.dev" <llvm@lists.linux.dev>,
+        "kbuild-all@lists.01.org" <kbuild-all@lists.01.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 15/15] rtw89: 8852c: add 8852ce to Makefile and Kconfig
+Thread-Topic: [PATCH 15/15] rtw89: 8852c: add 8852ce to Makefile and Kconfig
+Thread-Index: AQHYWTevDaEDmvkQB06rbly2/np5Fa0FjE4AgADUjrCAAAdoJIAAGCUg
+Date:   Fri, 29 Apr 2022 07:25:17 +0000
+Message-ID: <3e05c7bab2e9406789fdf483e09bb85e@realtek.com>
+References: <20220426063235.41650-16-pkshih@realtek.com>
+        <202204290830.slUaIhad-lkp@intel.com>
+        <ba7dddf5224746daaaa4db7e3b9637ed@realtek.com> <877d78fnbv.fsf@kernel.org>
+In-Reply-To: <877d78fnbv.fsf@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
  rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzQvMjkgpFekyCAwNjowMDowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/4/29_=3F=3F_06:00:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
 X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
@@ -67,76 +74,110 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This initial vesion is usable now. It can support STA, AP and monitor
-modes, so we can add 8852ce to Kconfig and Makefile.
 
-We are still working on some features, such as deep power save, and BT
-coexistence. But, this version still can have a good WiFi-only performance
-already, and will continue to fine tune power consumption.
+> -----Original Message-----
+> From: Kalle Valo <kvalo@kernel.org>
+> Sent: Friday, April 29, 2022 1:53 PM
+> To: Pkshih <pkshih@realtek.com>
+> Cc: kernel test robot <lkp@intel.com>; llvm@lists.linux.dev; kbuild-all@lists.01.org;
+> linux-wireless@vger.kernel.org
+> Subject: Re: [PATCH 15/15] rtw89: 8852c: add 8852ce to Makefile and Kconfig
+> 
+> Pkshih <pkshih@realtek.com> writes:
+> 
+> >> -----Original Message-----
+> >> From: kernel test robot <lkp@intel.com>
+> >> Sent: Friday, April 29, 2022 8:46 AM
+> >> To: Pkshih <pkshih@realtek.com>; kvalo@kernel.org
+> >> Cc: llvm@lists.linux.dev; kbuild-all@lists.01.org; linux-wireless@vger.kernel.org
+> >> Subject: Re: [PATCH 15/15] rtw89: 8852c: add 8852ce to Makefile and Kconfig
+> >>
+> >> Hi Ping-Ke,
+> >>
+> >> I love your patch! Perhaps something to improve:
+> >>
+> >> [auto build test WARNING on wireless-next/main]
+> >> [also build test WARNING on next-20220428]
+> >> [cannot apply to wireless/main v5.18-rc4]
+> >> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> >> And when submitting patch, we suggest to use '--base' as documented in
+> >> https://git-scm.com/docs/git-format-patch]
+> >>
+> >> url:
+> >>
+> https://github.com/intel-lab-lkp/linux/commits/Ping-Ke-Shih/rtw89-8852c-add-RFK-and-then-enable-8852ce
+> >> -in-Makefile-and-Kconfig/20220426-143456
+> >> base:
+> >> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
+> >> main
+> >> config: i386-allmodconfig
+> >> (https://download.01.org/0day-ci/archive/20220429/202204290830.slUaIhad-lkp@intel.com/config)
+> >> compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project
+> >> c59473aacce38cd7dd77eebceaf3c98c5707ab3b)
+> >> reproduce (this is a W=1 build):
+> >>         wget
+> >> https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross
+> >> -O
+> >> ~/bin/make.cross
+> >>         chmod +x ~/bin/make.cross
+> >>         #
+> >> https://github.com/intel-lab-lkp/linux/commit/5aaabdd4d9ac433ed14c1c02147c2609827739d2
+> >>         git remote add linux-review https://github.com/intel-lab-lkp/linux
+> >>         git fetch --no-tags linux-review
+> >> Ping-Ke-Shih/rtw89-8852c-add-RFK-and-then-enable-8852ce-in-Makefile-and-Kconfig/20220426-143456
+> >>         git checkout 5aaabdd4d9ac433ed14c1c02147c2609827739d2
+> >>         # save the config file
+> >>         mkdir build_dir && cp config build_dir/.config
+> >>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross
+> >> W=1 O=build_dir ARCH=i386
+> >> SHELL=/bin/bash drivers/net/wireless/realtek/rtw89/
+> >>
+> >> If you fix the issue, kindly add following tag as appropriate
+> >> Reported-by: kernel test robot <lkp@intel.com>
+> >>
+> >> All warnings (new ones prefixed by >>):
+> >>
+> >> >> drivers/net/wireless/realtek/rtw89/rtw8852c.c:2640:2: warning:
+> >> > result of comparison of constant
+> >> 18446744073709551615 with expression of type 'typeof (_Generic((__msk), char: (unsigned char)0, unsigned
+> >> char: (unsigned char)0, signed char: (unsigned char)0, unsigned short: (unsigned short)0, short:
+> (unsigned
+> >> short)0, unsigned int: (unsigned int)0, int: (unsigned int)0, unsigned long: (unsigned long)0, long:
+> >> (unsigned long)0, unsigned long long: (unsigned long long)0, long long: (unsigned long long)0, default:
+> >> (__msk)))' (aka 'unsigned long') is always false [-Wtautological-constant-out-of-range-compare]
+> >>            __write_ctrl(R_AX_PWR_RATE_CTRL, B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
+> >>            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >>    drivers/net/wireless/realtek/rtw89/rtw8852c.c:2621:13: note: expanded from macro '__write_ctrl'
+> >>            u32 _wrt = FIELD_PREP(__msk, _val);                     \
+> >>                       ^~~~~~~~~~~~~~~~~~~~~~~
+> >>    include/linux/bitfield.h:114:3: note: expanded from macro 'FIELD_PREP'
+> >>                    __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: ");    \
+> >>                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >>    include/linux/bitfield.h:71:53: note: expanded from macro '__BF_FIELD_CHECK'
+> >>                    BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >     \
+> >>                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+> >>    note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+> >>    include/linux/compiler_types.h:352:22: note: expanded from macro 'compiletime_assert'
+> >>            _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+> >>            ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >>    include/linux/compiler_types.h:340:23: note: expanded from macro '_compiletime_assert'
+> >>            __compiletime_assert(condition, msg, prefix, suffix)
+> >>            ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >>    include/linux/compiler_types.h:332:9: note: expanded from macro '__compiletime_assert'
+> >>                    if (!(condition))                                       \
+> >>                          ^~~~~~~~~
+> >
+> > We add 'BUILD_BUG_ON((__msk & __en) != 0);' to prevent coding error during
+> > development. The __msk and __en in the expression are constant and expected
+> > no intersection of these two bit masks. Since we have verified this code,
+> > I think I can send a patch to remove the BUILD_BUG_ON() from this macro.
+> 
+> I'm dropping the patchset, please submit a new version including your
+> fix.
+> 
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/Kconfig  | 18 ++++++++++++++++--
- drivers/net/wireless/realtek/rtw89/Makefile |  9 +++++++++
- 2 files changed, 25 insertions(+), 2 deletions(-)
+v2 has sent. But, I misread the cause that isn't due to BUILD_BUG_ON() but mask type.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/Kconfig b/drivers/net/wireless/realtek/rtw89/Kconfig
-index dd02b6a6790e3..93e09400aac49 100644
---- a/drivers/net/wireless/realtek/rtw89/Kconfig
-+++ b/drivers/net/wireless/realtek/rtw89/Kconfig
-@@ -19,8 +19,11 @@ config RTW89_PCI
- config RTW89_8852A
- 	tristate
- 
-+config RTW89_8852C
-+	tristate
-+
- config RTW89_8852AE
--	tristate "Realtek 8852AE PCI wireless network adapter"
-+	tristate "Realtek 8852AE PCI wireless network (Wi-Fi 6) adapter"
- 	depends on PCI
- 	select RTW89_CORE
- 	select RTW89_PCI
-@@ -28,7 +31,18 @@ config RTW89_8852AE
- 	help
- 	  Select this option will enable support for 8852AE chipset
- 
--	  802.11ax PCIe wireless network adapter
-+	  802.11ax PCIe wireless network (Wi-Fi 6) adapter
-+
-+config RTW89_8852CE
-+	tristate "Realtek 8852CE PCI wireless network (Wi-Fi 6E) adapter"
-+	depends on PCI
-+	select RTW89_CORE
-+	select RTW89_PCI
-+	select RTW89_8852C
-+	help
-+	  Select this option will enable support for 8852CE chipset
-+
-+	  802.11ax PCIe wireless network (Wi-Fi 6E) adapter
- 
- config RTW89_DEBUG
- 	bool
-diff --git a/drivers/net/wireless/realtek/rtw89/Makefile b/drivers/net/wireless/realtek/rtw89/Makefile
-index 012ae60c0b811..3006482d25c77 100644
---- a/drivers/net/wireless/realtek/rtw89/Makefile
-+++ b/drivers/net/wireless/realtek/rtw89/Makefile
-@@ -23,6 +23,15 @@ rtw89_8852a-objs := rtw8852a.o \
- obj-$(CONFIG_RTW89_8852AE) += rtw89_8852ae.o
- rtw89_8852ae-objs := rtw8852ae.o
- 
-+obj-$(CONFIG_RTW89_8852C) += rtw89_8852c.o
-+rtw89_8852c-objs := rtw8852c.o \
-+		    rtw8852c_table.o \
-+		    rtw8852c_rfk.o \
-+		    rtw8852c_rfk_table.o
-+
-+obj-$(CONFIG_RTW89_8852CE) += rtw89_8852ce.o
-+rtw89_8852ce-objs := rtw8852ce.o
-+
- rtw89_core-$(CONFIG_RTW89_DEBUG) += debug.o
- 
- obj-$(CONFIG_RTW89_PCI) += rtw89_pci.o
--- 
-2.25.1
+Ping-Ke
+
 
