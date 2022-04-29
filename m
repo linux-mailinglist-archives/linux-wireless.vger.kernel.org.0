@@ -2,37 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC0C15147AF
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Apr 2022 12:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC4E45147EA
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Apr 2022 13:17:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357930AbiD2LCf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Apr 2022 07:02:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48106 "EHLO
+        id S1358234AbiD2LUT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Apr 2022 07:20:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236220AbiD2LCe (ORCPT
+        with ESMTP id S1358224AbiD2LUR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Apr 2022 07:02:34 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 020CAB6443;
-        Fri, 29 Apr 2022 03:59:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=kmc13/9QXKmxSe5KTNtIvDaUnhBa/LBzSHNpr/JlHjc=;
-        t=1651229956; x=1652439556; b=MGtZqaTln8kneYOUmUxxOjG+sy20jct3Y/eWQcRcjBh3FiL
-        QlwkhrNgiB6MmwZXhX3z5THBWW0cKvIFXUuDJc5z5+xkpiZM7QvFLMkqasks90X/AX5W1SFKwbSuV
-        JXyUrzAqORX5+vGDjeFIwLdsB5pcQfwFKAcjMul5YDI3r2opzJ89z/RMVc2eT5woYXhiKD5gRaukU
-        GtQbOvjNO/OAYmdfdzP4u8FluaG7pZa6+0g2s3fAa+ek72d7d3Yh/KuxR6BaHAFCYQuWRh4MHVW6V
-        Pv2KwZAqluynPHkY8KR/Td/rUcdBgTzF63MLN/snXRi/2zgpPhgQe279zc2cOYxw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nkOL3-00GukB-L5;
-        Fri, 29 Apr 2022 12:59:05 +0200
-Message-ID: <b16d831f7f8601702297d92fc28f2ae9bb159016.camel@sipsolutions.net>
-Subject: Re: [PATCH] [v2] plfxlc: fix le16_to_cpu warning for beacon_interval
-From:   Johannes Berg <johannes@sipsolutions.net>
+        Fri, 29 Apr 2022 07:20:17 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2548684EF7;
+        Fri, 29 Apr 2022 04:16:59 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id v4so10083802ljd.10;
+        Fri, 29 Apr 2022 04:16:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Hz0RNsEKTjmIo/p11tTiNf/OsbPRAe1Ze+MjYBl3gM4=;
+        b=FZQ+KjW/5JEg3drJp9CadA8zjFDEiVIbyqwZQe3yIx8qIF3Uo2m/BFr1gKw7EyFLDR
+         fTxiVISIAX5vMrNi0nJJCzstwqNGNoPmkaFqqqOcZqlrLO1MFkRUdYj3kew2F4d8fqv/
+         OnnwogvnSafElrMVD4RfNmGd2fRGTwAytWyo+4vBicG9RzPL9uqSrQAKKiCbAXzidBI5
+         rvdUQCev8SVTmEYmkvoqGdctmE1cnUKVJHezX3dfm9U98yNVZski+xcBgG2LA0VN9lP1
+         KrfztUi/6YhsJT3pLwyF7xT5mHTIb9/AlGgQaHKeCGM+J3+LLzD24F/qBE8hdGUk9B4R
+         F+7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Hz0RNsEKTjmIo/p11tTiNf/OsbPRAe1Ze+MjYBl3gM4=;
+        b=X1fCMPnhGVHsiOlgUhuc6XOnv6zSwDV1U7cIuyemP3PVcflc5S7tPovJC9TYjajbLU
+         wp+ZxrbpKS0CqBhuc2PJ+tpppXVUOS6UJsVkNGPrR3jJuGWNWsy19wgt8vgu/G0kRV8T
+         HMhw+mZD8FDXTt4XX0pAvDF4RULBwR/ARROxWwFocx0WBH2dtB0W39lfftytUsBR915G
+         vlDu22AJ51VQNWNW9auRJtUubJdYNgJuu/NwJIDYs/Wg6C1F5EyXWgP1OndJgl1RUYJd
+         q0ocgXIY8FASPKzncP0CV7xPlD9bTnF8bOUVRsSEkguUpljk1lSHnDptf5hyURm9U8m9
+         s0vw==
+X-Gm-Message-State: AOAM5304lV0nUpg/dgyKxEXD9ApALYOSR85rk5xt+j9gEuQRrylZ3i6P
+        Gqp+LvzihFao5V7Dkp3mvNRmEZX46TJaBeaubO8=
+X-Google-Smtp-Source: ABdhPJze0ExX3Xn5JBoNWskIr377b/kqzk6Orn04yfBcLyzUw+sKzIlmFLqgoOuZ6ug+nvQJn0d38dvvwtqf/KWQDig=
+X-Received: by 2002:a05:651c:1603:b0:248:e00:aeba with SMTP id
+ f3-20020a05651c160300b002480e00aebamr24953814ljq.456.1651231017381; Fri, 29
+ Apr 2022 04:16:57 -0700 (PDT)
+MIME-Version: 1.0
+References: <CWLP265MB3217B3A355529E36F6468A43E0FC9@CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM>
+In-Reply-To: <CWLP265MB3217B3A355529E36F6468A43E0FC9@CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Fri, 29 Apr 2022 21:16:45 +1000
+Message-ID: <CAGRGNgXJfHc4UOvz5QGDPpUsCLau+0caAsCzFDBnc3EHHgf1xw@mail.gmail.com>
+Subject: Re: [PATCH] Fix le16_to_cpu warning for beacon_interval
 To:     Srinivasan Raju <srini.raju@purelifi.com>
 Cc:     Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -43,48 +62,48 @@ Cc:     Kalle Valo <kvalo@kernel.org>,
         <linux-wireless@vger.kernel.org>,
         "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
         open list <linux-kernel@vger.kernel.org>
-Date:   Fri, 29 Apr 2022 12:59:04 +0200
-In-Reply-To: <CWLP265MB32172ACD5B2F2ECD0A512F0DE0FC9@CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM>
-References: <CWLP265MB32172ACD5B2F2ECD0A512F0DE0FC9@CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2022-04-29 at 10:44 +0000, Srinivasan Raju wrote:
-> Fix the following sparse warnings:
-> 
+Hi Srinivasan,
+
+On Fri, Apr 29, 2022 at 8:49 PM Srinivasan Raju <srini.raju@purelifi.com> wrote:
+>
+> Fixed the following warning
 > drivers/net/wireless/purelifi/plfxlc/chip.c:36:31: sparse: expected unsigned short [usertype] beacon_interval
 > drivers/net/wireless/purelifi/plfxlc/chip.c:36:31: sparse: got restricted __le16 [usertype]
-> 
+>
 > Reported-by: kernel test robot <lkp@intel.com>
 > Signed-off-by: Srinivasan Raju <srini.raju@purelifi.com>
 > ---
->  drivers/net/wireless/purelifi/plfxlc/chip.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
+>  drivers/net/wireless/purelifi/plfxlc/chip.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
 > diff --git a/drivers/net/wireless/purelifi/plfxlc/chip.c b/drivers/net/wireless/purelifi/plfxlc/chip.c
-> index a5ec10b66ed5..79d187cf3715 100644
+> index a5ec10b66ed5..5d952ca07195 100644
 > --- a/drivers/net/wireless/purelifi/plfxlc/chip.c
 > +++ b/drivers/net/wireless/purelifi/plfxlc/chip.c
-> @@ -29,11 +29,10 @@ int plfxlc_set_beacon_interval(struct plfxlc_chip *chip, u16 interval,
->                                u8 dtim_period, int type)
+> @@ -30,10 +30,10 @@ int plfxlc_set_beacon_interval(struct plfxlc_chip *chip, u16 interval,
 >  {
 >         if (!interval ||
-> -           (chip->beacon_set &&
+>             (chip->beacon_set &&
 > -            le16_to_cpu(chip->beacon_interval) == interval))
-> +           (chip->beacon_set && chip->beacon_interval) == interval)
-> 
+> +            chip->beacon_interval) == interval)
 
-I think you got the parentheses wrong.
+Shouldn't that first ")" go at the end of the line?
 
-johannes
+Thanks,
+
+-- 
+Julian Calaby
+
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
