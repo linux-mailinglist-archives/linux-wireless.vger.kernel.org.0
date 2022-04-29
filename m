@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64D285144EE
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Apr 2022 10:57:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33A8B514606
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Apr 2022 11:54:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356184AbiD2JAy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Apr 2022 05:00:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44284 "EHLO
+        id S1355195AbiD2J4R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Apr 2022 05:56:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356068AbiD2JAy (ORCPT
+        with ESMTP id S1357100AbiD2J4Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Apr 2022 05:00:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0A2D985A6;
-        Fri, 29 Apr 2022 01:57:36 -0700 (PDT)
+        Fri, 29 Apr 2022 05:56:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A406DF5A;
+        Fri, 29 Apr 2022 02:52:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 896C7621DF;
-        Fri, 29 Apr 2022 08:57:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 910DAC385A4;
-        Fri, 29 Apr 2022 08:57:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 15EF362279;
+        Fri, 29 Apr 2022 09:52:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BCE5C385A7;
+        Fri, 29 Apr 2022 09:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651222656;
-        bh=G+F4MHPC3gx10dTFgiEJr2YE94YbxB3UX1Lblg+1WzM=;
+        s=k20201202; t=1651225974;
+        bh=4dX3RZKOAnpU33fOLqblNxRSAKqlEVe0S6NJCykWw3g=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=hDXcu90eqSpCmOFcOynumu4/Wht0U5igvFoEz74Ca1xLPNFRge+ZuuYY12essSgfP
-         /P8YWT/wShcPCFHU0TDhFFkIdZteZXUZG5ZZaelM3e4GfT7Y3BrrBIXbg2qJTMPWr/
-         tHoax26SmAUW/xTC/YMuoFh4mNfsJqxUqgsMhGVk6qCQxLBBb9bW8ziYnSpNaAuYUu
-         Sag7EQYypipun+xKyTnhYPi9V+cPWpIXX5kEYSuXbLCgSFF4TzQvO4E+YQM0Q4T5AC
-         Bh54l0/1PPMu6XnS0qcOasmuwSX63YY+ayJEKWNNRrNm12DNrXFIbm1tltq3wsVZzE
-         1n2oPVZxzquig==
+        b=PV+lTtIAj27xwe/KlxXM8OCFDfRtERz2sAgqWHIvCZ9/Yfk1MLe3MT/5VT+rvQoGy
+         T/bt4tEQ8GI72joQDVBWouhGtI8vSosrPPcqM3yamjxAG9JZzrfcybY9+co3dT5+I7
+         zMw57GgGEgc3MANlJJa0TVJJKlfLUSdPxjX8WaoyKuUNf4xUA9KNq4tda0OjNmYYUN
+         lFJUp16QdS1giYeyAOfD6asLvGGYYdTdQSRC1WOLldVF0ftLlLOCHjrM5ABTN79NKm
+         p6FQgAwUYX9LPhqdc54orx1tPnPDp9WeWOT/rzUqDmc5OaO+4jNzht2eIpX89bfdFf
+         N3jx6PkslIDGA==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <robh@kernel.org>, <mka@chromium.org>
-Subject: Re: [PATCH v4 04/12] ath11k: Add register access logic for WCN6750
-References: <20220406094107.17878-1-quic_mpubbise@quicinc.com>
-        <20220406094107.17878-5-quic_mpubbise@quicinc.com>
-        <87czh3gjuq.fsf@kernel.org>
-        <2a18a4d3-254b-727e-e96d-90deec61571c@quicinc.com>
-Date:   Fri, 29 Apr 2022 11:57:32 +0300
-In-Reply-To: <2a18a4d3-254b-727e-e96d-90deec61571c@quicinc.com> (Manikanta
-        Pubbisetty's message of "Wed, 27 Apr 2022 11:23:52 +0530")
-Message-ID: <87levoe077.fsf@kernel.org>
+Subject: Re: [PATCH v6 4/9] ath11k: Add register access logic for WCN6750
+References: <20220427111848.9257-1-quic_mpubbise@quicinc.com>
+        <20220427111848.9257-5-quic_mpubbise@quicinc.com>
+        <87pml2g1c7.fsf@kernel.org>
+        <6e607455-e42a-a591-f58b-b3b2c83ea2cc@quicinc.com>
+Date:   Fri, 29 Apr 2022 12:52:49 +0300
+In-Reply-To: <6e607455-e42a-a591-f58b-b3b2c83ea2cc@quicinc.com> (Manikanta
+        Pubbisetty's message of "Wed, 27 Apr 2022 18:56:33 +0530")
+Message-ID: <87h76cdxn2.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -59,53 +59,43 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 
-> On 4/27/2022 11:15 AM, Kalle Valo wrote:
->> Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
+>>> @@ -704,11 +718,26 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
+>>>   {
+>>>   	struct ath11k_base *ab;
+>>>   	struct ath11k_pci *ab_pci;
+>>> +	const struct ath11k_bus_params *bus_params;
+>>>   	u32 soc_hw_version_major, soc_hw_version_minor, addr;
+>>>   	int ret;
+>>>   +	switch (pci_dev->device) {
+>>> +	case QCA6390_DEVICE_ID:
+>>> +	case WCN6855_DEVICE_ID:
+>>> +		bus_params = &ath11k_pci_bus_params_qca6390;
+>>> +		break;
+>>> +	case QCN9074_DEVICE_ID:
+>>> +		bus_params = &ath11k_pci_bus_params_qcn9074;
+>>> +		break;
 >>
->>> WCN6750 uses static window mapping to access the HW registers.
->>> Unlike QCN9074 which uses 2nd window for CE and 3rd window
->>> for UMAC register accesses, WCN6750 uses 1st window for UMAC
->>> and 2nd window for CE registers.
->>>
->>> Code is refactored so that WCN6750 can use the existing
->>> ath11k_pci_read/write() APIs for accessing the registers.
->>>
->>> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00573-QCAMSLSWPLZ-1
->>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
->>> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
->>> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
->>>
->>> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
->>> ---
->>>   drivers/net/wireless/ath/ath11k/ahb.c  |  3 ++
->>>   drivers/net/wireless/ath/ath11k/core.h |  2 +
->>>   drivers/net/wireless/ath/ath11k/pci.c  |  4 ++
->>>   drivers/net/wireless/ath/ath11k/pcic.c | 53 +++++++++-----------------
->>>   4 files changed, 28 insertions(+), 34 deletions(-)
->>>
->>> diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
->>> index d73643e3e8dd..d27fc7276977 100644
->>> --- a/drivers/net/wireless/ath/ath11k/ahb.c
->>> +++ b/drivers/net/wireless/ath/ath11k/ahb.c
->>> @@ -42,6 +42,9 @@ const struct ath11k_bus_params ath11k_ahb_hybrid_bus_params = {
->>>   	.fixed_bdf_addr = false,
->>>   	.fixed_mem_region = false,
->>>   	.hybrid_bus_type = true,
->>> +	.static_window_map = true,
->>> +	.dp_window_idx = 1,
->>> +	.ce_window_idx = 2,
->>>   };
+>> Now you are making bus_params device specific, that's not really the
+>> point of bus params. They are supposed to be _bus_ specific parameters.
 >>
->> Even if the values are zero, please initialise the new fields in every
->> bus_params structure:
->>
->> ahb.c:31:static const struct ath11k_bus_params ath11k_ahb_bus_params = {
->> pci.c:118:static const struct ath11k_bus_params ath11k_pci_bus_params = {
+>> Can't you use hw_params like I mentioned in the review?
 >>
 >
-> Makes sense, should I send another series addressing these?
+> Even without this patch, as of today, bus_params is already device
+> specific with QCN9074 changing the static_window_map in bus_params to
+> true in ath11k_pci_probe().
 
-Please fix that already in this patchset.
+Yeah, that's a mistake which slipped in review.
+
+> And if we have to move these device specific bus_params to hw_parmas,
+> then bus_params can be pretty much removed completely with the changes
+> that WCN6750 bring in. Any thoughts on this? I can make the changes
+> that can get along with WCN6750 series.
+
+My original idea with bus_params was to there are bus specific
+parameters and that way we could simplify hw_params. Clearly that's not
+working and I agree with you, bus_params should be removed. So it would
+be good if you can do that in the next patchset.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
