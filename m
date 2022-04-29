@@ -2,208 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1FD5513F2D
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Apr 2022 01:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61924513FBA
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Apr 2022 02:45:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353389AbiD1Xq7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Apr 2022 19:46:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58486 "EHLO
+        id S1353145AbiD2AtC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Apr 2022 20:49:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353323AbiD1Xq7 (ORCPT
+        with ESMTP id S1353238AbiD2As5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Apr 2022 19:46:59 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1B137A999
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Apr 2022 16:43:40 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id v4so8596722ljd.10
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Apr 2022 16:43:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=aqE1ybcBL/9Io1ScprRN5X8xoUPpj/53FgjLBSm+a3E=;
-        b=lxki6vTYGORyK08qGDPKngEowCLCBVaCBSZEGWQlu6nWE2K/HDz5TEWPlIEh6JYjA7
-         ol6W4DSIJpTExiwf0DhTEPfTjF00/AVCWgAVP9OFG3r4NlmjPnQ0vxz7uefor6cPQ/KN
-         nQPBTbh47G1Frsy42kFTAon9ha9lF6/L2byg5zr98ok6bbNXxfcZj+BFB44+v6dcehRv
-         g41qCNQaXBIjQ+hZJFz8m7uuIp0KbGXsn35ykSIjKtt834xscr61yTLvlSbdUM4sNF5h
-         FEaD3/M6oV/Wo2xeUDoAEUpwUvLf8QZ7F90Evzp1E3wdFxvZVO6qhgzXnnOY0MGBmuyv
-         4/+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=aqE1ybcBL/9Io1ScprRN5X8xoUPpj/53FgjLBSm+a3E=;
-        b=lt0fCCVn0DZ8cXR1UDVV96pXcbh/cSLLFAfPEnlR57OGVM7MI/6fJcQdBapq9huimb
-         Is1d6YqxXRSHcaO+LL9jI0F4huLTuSa591El04bEZyoI8kN4VgO+w+BGqRAjHnTmZPvZ
-         qG7pthvEpJz/X8YfSoQteGh2dEnMHycu4fa04G+rmrBMiV+pnqXfYpQEoyZGORvVI4Xb
-         mHxjq576+mc3GJcvxQ1ibemnj0N4ArgOkpfzkJyHVGqDVUTXkq0dSMvp2oj+VRURi8a5
-         w0Rjj1tw7BpT4GhphHksYAYCpHx69vFpCRAJk9mVq35CAhPOzVKoEewsuOoYA6Cmo9xe
-         bwVQ==
-X-Gm-Message-State: AOAM531V3L6ZQuiEP/BmniLw7mF1FRKoiaTu9oBXEFLJ4nT029YvTAta
-        mxo/el/x78gc2Frn713a1/Hhtw==
-X-Google-Smtp-Source: ABdhPJyRc/4TPe9KRmlXDLktw2VFls0ZibH+HcyAdhSUyaAKghaY4CA0SFGQB5P0Pse71H7ZMlMUmQ==
-X-Received: by 2002:a2e:854b:0:b0:24f:b98:e2d2 with SMTP id u11-20020a2e854b000000b0024f0b98e2d2mr17650865ljj.165.1651189419275;
-        Thu, 28 Apr 2022 16:43:39 -0700 (PDT)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id w22-20020a194916000000b0046ba5a6ff16sm109966lfa.11.2022.04.28.16.43.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Apr 2022 16:43:38 -0700 (PDT)
-Message-ID: <332e62e5-b04d-3a6a-38fe-924d056bf0f8@linaro.org>
-Date:   Fri, 29 Apr 2022 02:43:38 +0300
+        Thu, 28 Apr 2022 20:48:57 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FF0D887AD
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Apr 2022 17:45:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1651193140; x=1682729140;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=G1KTEg3E2fLwyJhjp59+GD2mzYup5rJkjawtWtHfXEQ=;
+  b=DetFJo6w+do9saYgORtS4P+czmN8S3zz0Cnk0VfuYp/EQLC08ZJPLYE4
+   Ciw65oR+ioEeyaBHCd7oaAVHJrmTz9kCEciSutbE8aH5sKsBc19KKUWsp
+   Qo8m+jTRd2xRvlgeTRBK+BQ0cfS/szE8YgRg7pufeqwvwK6gxVGWuYva2
+   U2WUT0DQbIHBxwBMsKesIXjKx6LfCebk1dQ3a/NRPrpSBqSgR9Azntf+6
+   su3qMqoZSlSyof/8bORbfC+m6EhjghIkF6RCXqOSOcNYmJKbC6goacOCe
+   GQE7QlZ1p1bp34cRv4lbtXBfMjrCSbM03OFOjSrvGK9S4u7FWUQvlJ7Z1
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10331"; a="253861982"
+X-IronPort-AV: E=Sophos;i="5.91,296,1647327600"; 
+   d="scan'208";a="253861982"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2022 17:45:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,296,1647327600"; 
+   d="scan'208";a="541852469"
+Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 28 Apr 2022 17:45:37 -0700
+Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nkElM-0005o7-NN;
+        Fri, 29 Apr 2022 00:45:36 +0000
+Date:   Fri, 29 Apr 2022 08:45:30 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>, kvalo@kernel.org
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 15/15] rtw89: 8852c: add 8852ce to Makefile and Kconfig
+Message-ID: <202204290830.slUaIhad-lkp@intel.com>
+References: <20220426063235.41650-16-pkshih@realtek.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PULL linux-firmware] ath10k & ath11k firmware 20220423
-Content-Language: en-GB
-To:     Kalle Valo <kvalo@qca.qualcomm.com>,
-        "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>,
-        "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
-References: <BYAPR02MB4567E377F14F272DFF48907A92FA9@BYAPR02MB4567.namprd02.prod.outlook.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <BYAPR02MB4567E377F14F272DFF48907A92FA9@BYAPR02MB4567.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220426063235.41650-16-pkshih@realtek.com>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+Hi Ping-Ke,
 
-On 27/04/2022 11:32, Kalle Valo wrote:
-> Add support for QCN9074 and WCN6750 ath11k hardware families. Also
-> there are several updates to existing firmwares and board files for both ath10k
-> and ath11k.
-> 
-> Please let me know if there are any problems.
+I love your patch! Perhaps something to improve:
 
-I noticed that this pull request doesn't include the board file for 
-WCN3990. Is there any issue with it that we can solve on our side?
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on next-20220428]
+[cannot apply to wireless/main v5.18-rc4]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-> 
-> Kalle
-> 
-> The following changes since commit e6553076626e932983b1947e1cc593421cb83aa8:
-> 
->    Mellanox: Add new mlxsw_spectrum firmware xx.2010.1502 (2022-04-21 06:46:21 -0400)
-> 
-> are available in the Git repository at:
-> 
->    git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/linux-firmware.git ath10k-20220423
-> 
-> for you to fetch changes up to 4a0e59f95830817b1601631281191a5c3327d138:
-> 
->    ath11k: QCA6390 hw2.0: update to WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1 (2022-04-27 11:23:17 +0300)
-> 
-> ----------------------------------------------------------------
-> Kalle Valo (19):
->        ath11k: IPQ6018 hw1.0: update board-2.bin
->        ath11k: IPQ6018 hw1.0: update to WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
->        ath11k: IPQ8074 hw2.0: update board-2.bin
->        ath11k: IPQ8074 hw2.0: update to WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
->        ath11k: QCA6390 hw2.0: update board-2.bin
->        ath11k: QCN9074 hw1.0: add board-2.bin
->        ath11k: QCN9074 hw1.0: add to WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
->        ath11k: WCN6750 hw1.0: add board-2.bin
->        ath11k: WCN6750 hw1.0: add to WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
->        ath11k: WCN6855 hw2.0: update to WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.7
->        ath10k: QCA99X0 hw2.0: add board-2.bin
->        ath10k: QCA4019 hw1.0: update board-2.bin
->        ath10k: QCA6174 hw3.0: update firmware-6.bin to WLAN.RM.4.4.1-00288-QCARMSWPZ-1
->        ath10k: QCA6174 hw3.0: update board-2.bin
->        ath10k: QCA9888 hw2.0: update firmware-5.bin to 10.4-3.9.0.2-00156
->        ath10k: QCA9888 hw2.0: update board-2.bin
->        ath10k: QCA9984 hw1.0: update firmware-5.bin to 10.4-3.9.0.2-00156
->        ath10k: QCA9984 hw1.0: update board-2.bin
->        ath11k: QCA6390 hw2.0: update to WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1
-> 
->   WHENCE                              |   34 +-
->   ath10k/QCA4019/hw1.0/board-2.bin    |  Bin 607304 -> 1129788 bytes
->   ath10k/QCA6174/hw3.0/board-2.bin    |  Bin 715444 -> 731852 bytes
->   ath10k/QCA6174/hw3.0/firmware-6.bin |  Bin 702844 -> 706004 bytes
->   ath10k/QCA9888/hw2.0/board-2.bin    |  Bin 84928 -> 133540 bytes
->   ath10k/QCA9888/hw2.0/firmware-5.bin |  Bin 691292 -> 693604 bytes
->   ath10k/QCA9984/hw1.0/board-2.bin    |  Bin 171916 -> 220528 bytes
->   ath10k/QCA9984/hw1.0/firmware-5.bin |  Bin 679288 -> 681568 bytes
->   ath10k/QCA99X0/hw2.0/board-2.bin    |  Bin 0 -> 157680 bytes
->   ath10k/QCA99X0/hw2.0/board.bin      |  Bin 12064 -> 0 bytes
->   ath11k/IPQ6018/hw1.0/Notice.txt     | 3916 +++++++++++++++++--
->   ath11k/IPQ6018/hw1.0/board-2.bin    |  Bin 787208 -> 787208 bytes
->   ath11k/IPQ6018/hw1.0/m3_fw.b01      |  Bin 6712 -> 6712 bytes
->   ath11k/IPQ6018/hw1.0/m3_fw.b02      |  Bin 294912 -> 294912 bytes
->   ath11k/IPQ6018/hw1.0/m3_fw.mdt      |  Bin 6860 -> 6860 bytes
->   ath11k/IPQ6018/hw1.0/q6_fw.b00      |  Bin 340 -> 340 bytes
->   ath11k/IPQ6018/hw1.0/q6_fw.b01      |  Bin 7000 -> 7000 bytes
->   ath11k/IPQ6018/hw1.0/q6_fw.b02      |  Bin 4696 -> 4696 bytes
->   ath11k/IPQ6018/hw1.0/q6_fw.b03      |  Bin 2357712 -> 2557136 bytes
->   ath11k/IPQ6018/hw1.0/q6_fw.b04      |  Bin 370560 -> 412064 bytes
->   ath11k/IPQ6018/hw1.0/q6_fw.b05      |  Bin 175588 -> 198052 bytes
->   ath11k/IPQ6018/hw1.0/q6_fw.b07      |  Bin 8936 -> 9416 bytes
->   ath11k/IPQ6018/hw1.0/q6_fw.b08      |  Bin 409914 -> 453364 bytes
->   ath11k/IPQ6018/hw1.0/q6_fw.mdt      |  Bin 7340 -> 7340 bytes
->   ath11k/IPQ8074/hw2.0/Notice.txt     | 3916 +++++++++++++++++--
->   ath11k/IPQ8074/hw2.0/board-2.bin    |  Bin 1311380 -> 1311380 bytes
->   ath11k/IPQ8074/hw2.0/m3_fw.b01      |  Bin 136 -> 136 bytes
->   ath11k/IPQ8074/hw2.0/m3_fw.b02      |  Bin 327680 -> 327680 bytes
->   ath11k/IPQ8074/hw2.0/m3_fw.mdt      |  Bin 284 -> 284 bytes
->   ath11k/IPQ8074/hw2.0/q6_fw.b00      |  Bin 340 -> 340 bytes
->   ath11k/IPQ8074/hw2.0/q6_fw.b01      |  Bin 328 -> 328 bytes
->   ath11k/IPQ8074/hw2.0/q6_fw.b02      |  Bin 4696 -> 4696 bytes
->   ath11k/IPQ8074/hw2.0/q6_fw.b03      |  Bin 2589264 -> 2934864 bytes
->   ath11k/IPQ8074/hw2.0/q6_fw.b04      |  Bin 985504 -> 1009888 bytes
->   ath11k/IPQ8074/hw2.0/q6_fw.b05      |  Bin 387076 -> 243652 bytes
->   ath11k/IPQ8074/hw2.0/q6_fw.b07      |  Bin 7048 -> 9816 bytes
->   ath11k/IPQ8074/hw2.0/q6_fw.b08      |  Bin 424524 -> 486546 bytes
->   ath11k/IPQ8074/hw2.0/q6_fw.mdt      |  Bin 668 -> 668 bytes
->   ath11k/QCA6390/hw2.0/Notice.txt     | 4839 ++++++++++++++++-------
->   ath11k/QCA6390/hw2.0/amss.bin       |  Bin 3609456 -> 3628672 bytes
->   ath11k/QCA6390/hw2.0/board-2.bin    |  Bin 58016 -> 115984 bytes
->   ath11k/QCA6390/hw2.0/m3.bin         |  Bin 266684 -> 266684 bytes
->   ath11k/QCN9074/hw1.0/Notice.txt     | 4094 +++++++++++++++++++
->   ath11k/QCN9074/hw1.0/amss.bin       |  Bin 0 -> 11905872 bytes
->   ath11k/QCN9074/hw1.0/board-2.bin    |  Bin 0 -> 786836 bytes
->   ath11k/QCN9074/hw1.0/m3.bin         |  Bin 0 -> 340108 bytes
->   ath11k/WCN6750/hw1.0/Notice.txt     | 7380 +++++++++++++++++++++++++++++++++++
->   ath11k/WCN6750/hw1.0/board-2.bin    |  Bin 0 -> 843548 bytes
->   ath11k/WCN6750/hw1.0/wpss.b00       |  Bin 0 -> 340 bytes
->   ath11k/WCN6750/hw1.0/wpss.b01       |  Bin 0 -> 6848 bytes
->   ath11k/WCN6750/hw1.0/wpss.b02       |  Bin 0 -> 10300 bytes
->   ath11k/WCN6750/hw1.0/wpss.b03       |  Bin 0 -> 4096 bytes
->   ath11k/WCN6750/hw1.0/wpss.b04       |  Bin 0 -> 5783231 bytes
->   ath11k/WCN6750/hw1.0/wpss.b05       |  Bin 0 -> 175236 bytes
->   ath11k/WCN6750/hw1.0/wpss.b06       |  Bin 0 -> 266684 bytes
->   ath11k/WCN6750/hw1.0/wpss.b07       |  Bin 0 -> 1176368 bytes
->   ath11k/WCN6750/hw1.0/wpss.b08       |    0
->   ath11k/WCN6750/hw1.0/wpss.mdt       |  Bin 0 -> 7188 bytes
->   ath11k/WCN6855/hw2.0/amss.bin       |  Bin 4972544 -> 4972544 bytes
->   59 files changed, 22238 insertions(+), 1941 deletions(-)
->   create mode 100644 ath10k/QCA99X0/hw2.0/board-2.bin
->   delete mode 100644 ath10k/QCA99X0/hw2.0/board.bin
->   create mode 100644 ath11k/QCN9074/hw1.0/Notice.txt
->   create mode 100644 ath11k/QCN9074/hw1.0/amss.bin
->   create mode 100644 ath11k/QCN9074/hw1.0/board-2.bin
->   create mode 100644 ath11k/QCN9074/hw1.0/m3.bin
->   create mode 100644 ath11k/WCN6750/hw1.0/Notice.txt
->   create mode 100644 ath11k/WCN6750/hw1.0/board-2.bin
->   create mode 100644 ath11k/WCN6750/hw1.0/wpss.b00
->   create mode 100644 ath11k/WCN6750/hw1.0/wpss.b01
->   create mode 100644 ath11k/WCN6750/hw1.0/wpss.b02
->   create mode 100644 ath11k/WCN6750/hw1.0/wpss.b03
->   create mode 100644 ath11k/WCN6750/hw1.0/wpss.b04
->   create mode 100644 ath11k/WCN6750/hw1.0/wpss.b05
->   create mode 100644 ath11k/WCN6750/hw1.0/wpss.b06
->   create mode 100644 ath11k/WCN6750/hw1.0/wpss.b07
->   create mode 100644 ath11k/WCN6750/hw1.0/wpss.b08
->   create mode 100644 ath11k/WCN6750/hw1.0/wpss.mdt
+url:    https://github.com/intel-lab-lkp/linux/commits/Ping-Ke-Shih/rtw89-8852c-add-RFK-and-then-enable-8852ce-in-Makefile-and-Kconfig/20220426-143456
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20220429/202204290830.slUaIhad-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project c59473aacce38cd7dd77eebceaf3c98c5707ab3b)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/5aaabdd4d9ac433ed14c1c02147c2609827739d2
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Ping-Ke-Shih/rtw89-8852c-add-RFK-and-then-enable-8852ce-in-Makefile-and-Kconfig/20220426-143456
+        git checkout 5aaabdd4d9ac433ed14c1c02147c2609827739d2
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/net/wireless/realtek/rtw89/
 
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/net/wireless/realtek/rtw89/rtw8852c.c:2640:2: warning: result of comparison of constant 18446744073709551615 with expression of type 'typeof (_Generic((__msk), char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsigned short: (unsigned short)0, short: (unsigned short)0, unsigned int: (unsigned int)0, int: (unsigned int)0, unsigned long: (unsigned long)0, long: (unsigned long)0, unsigned long long: (unsigned long long)0, long long: (unsigned long long)0, default: (__msk)))' (aka 'unsigned long') is always false [-Wtautological-constant-out-of-range-compare]
+           __write_ctrl(R_AX_PWR_RATE_CTRL, B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/wireless/realtek/rtw89/rtw8852c.c:2621:13: note: expanded from macro '__write_ctrl'
+           u32 _wrt = FIELD_PREP(__msk, _val);                     \
+                      ^~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/bitfield.h:114:3: note: expanded from macro 'FIELD_PREP'
+                   __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: ");    \
+                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/bitfield.h:71:53: note: expanded from macro '__BF_FIELD_CHECK'
+                   BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >     \
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+   note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+   include/linux/compiler_types.h:352:22: note: expanded from macro 'compiletime_assert'
+           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/compiler_types.h:340:23: note: expanded from macro '_compiletime_assert'
+           __compiletime_assert(condition, msg, prefix, suffix)
+           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/compiler_types.h:332:9: note: expanded from macro '__compiletime_assert'
+                   if (!(condition))                                       \
+                         ^~~~~~~~~
+   drivers/net/wireless/realtek/rtw89/rtw8852c.c:2653:2: warning: result of comparison of constant 18446744073709551615 with expression of type 'typeof (_Generic((__msk), char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsigned short: (unsigned short)0, short: (unsigned short)0, unsigned int: (unsigned int)0, int: (unsigned int)0, unsigned long: (unsigned long)0, long: (unsigned long)0, unsigned long long: (unsigned long long)0, long long: (unsigned long long)0, default: (__msk)))' (aka 'unsigned long') is always false [-Wtautological-constant-out-of-range-compare]
+           __write_ctrl(R_AX_PWR_COEXT_CTRL, B_AX_TXAGC_BT_MASK, val,
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/wireless/realtek/rtw89/rtw8852c.c:2621:13: note: expanded from macro '__write_ctrl'
+           u32 _wrt = FIELD_PREP(__msk, _val);                     \
+                      ^~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/bitfield.h:114:3: note: expanded from macro 'FIELD_PREP'
+                   __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: ");    \
+                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/bitfield.h:71:53: note: expanded from macro '__BF_FIELD_CHECK'
+                   BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >     \
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+   note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+   include/linux/compiler_types.h:352:22: note: expanded from macro 'compiletime_assert'
+           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/compiler_types.h:340:23: note: expanded from macro '_compiletime_assert'
+           __compiletime_assert(condition, msg, prefix, suffix)
+           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/compiler_types.h:332:9: note: expanded from macro '__compiletime_assert'
+                   if (!(condition))                                       \
+                         ^~~~~~~~~
+   2 warnings generated.
+
+
+vim +2640 drivers/net/wireless/realtek/rtw89/rtw8852c.c
+
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2630  
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2631  	switch (arg.ctrl_all_time) {
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2632  	case 0xffff:
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2633  		val = 0;
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2634  		break;
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2635  	default:
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2636  		val = arg.all_time.data;
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2637  		break;
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2638  	}
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2639  
+2fb822f82a59db Ping-Ke Shih 2022-04-21 @2640  	__write_ctrl(R_AX_PWR_RATE_CTRL, B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2641  		     val, B_AX_FORCE_PWR_BY_RATE_EN,
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2642  		     arg.ctrl_all_time != 0xffff);
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2643  
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2644  	switch (arg.ctrl_gnt_bt) {
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2645  	case 0xffff:
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2646  		val = 0;
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2647  		break;
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2648  	default:
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2649  		val = arg.gnt_bt.data;
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2650  		break;
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2651  	};
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2652  
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2653  	__write_ctrl(R_AX_PWR_COEXT_CTRL, B_AX_TXAGC_BT_MASK, val,
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2654  		     B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
+2fb822f82a59db Ping-Ke Shih 2022-04-21  2655  
 
 -- 
-With best wishes
-Dmitry
+0-DAY CI Kernel Test Service
+https://01.org/lkp
