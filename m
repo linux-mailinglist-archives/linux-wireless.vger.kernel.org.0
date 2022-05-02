@@ -2,72 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A69F6517237
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 May 2022 17:06:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0D93517509
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 May 2022 18:51:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239034AbiEBPJn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 May 2022 11:09:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43922 "EHLO
+        id S1386430AbiEBQzP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 May 2022 12:55:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1385660AbiEBPIl (ORCPT
+        with ESMTP id S1386483AbiEBQzL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 May 2022 11:08:41 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88A0C10E6;
-        Mon,  2 May 2022 08:05:11 -0700 (PDT)
-Received: from mail-yw1-f179.google.com ([209.85.128.179]) by
- mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MryOx-1oEmLg2M1l-00nxkF; Mon, 02 May 2022 17:05:09 +0200
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-2ec42eae76bso150714817b3.10;
-        Mon, 02 May 2022 08:05:09 -0700 (PDT)
-X-Gm-Message-State: AOAM531qJEsIAio7JduzkVdmX1EK2TQP8rIcNodqd4lUARfvitrqpSKk
-        C+aOAOuNwdLew/HhVVjv5rK9mC79+fAiLxh5nUI=
-X-Google-Smtp-Source: ABdhPJxAfT0mtI2mFGcDcjtQzedzMQz8eYf0Fg1hWBegKvQSKsyfxj/GbmFIqytbHgyFBYqHFBk+z8YEmiN6Z7/aQXY=
-X-Received: by 2002:a81:ad7:0:b0:2e6:84de:3223 with SMTP id
- 206-20020a810ad7000000b002e684de3223mr11916494ywk.209.1651503907978; Mon, 02
- May 2022 08:05:07 -0700 (PDT)
+        Mon, 2 May 2022 12:55:11 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70EC8636D;
+        Mon,  2 May 2022 09:51:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1651510302; x=1683046302;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Uap22b8vBrOF9cROfSAfWdTRU5KnLLaZWaIvbRRuYbk=;
+  b=PbBb2f9v+0IZmzOt47MqifhgrTNv/nH0QLKH1XFz3JlomtejoI0JXIES
+   v/Spb8ymVg3H1Wnx1t+ktNFFOj+uC6IjD4XRsS6WC9MfOQCLl4KTdzfZW
+   Izn0+6OIaYlU1wKsqyz2yrGjPKYzXOurIkJm7Ao8JLPvy+oEl5nTKgXHE
+   QHWo/HdzpCmsKgUE+PiVs67LnVrBMa7ZHRtoFR059uinz6blD88vXQlO7
+   gTwxKjX7J9qRMIcV8dJpl7jtjWnHsKKqGQGBms27t3rPHRPk+HTLy5sVJ
+   ohxis9WOX4982HCn+gCHtxhUSQRyr+2V5/j7ovdbaP9agxVdbGfBkto/r
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10335"; a="267415944"
+X-IronPort-AV: E=Sophos;i="5.91,192,1647327600"; 
+   d="scan'208";a="267415944"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2022 09:51:41 -0700
+X-IronPort-AV: E=Sophos;i="5.91,192,1647327600"; 
+   d="scan'208";a="887122788"
+Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.212.197.139]) ([10.212.197.139])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2022 09:51:40 -0700
+Message-ID: <20a16430-f68c-3df4-1592-e7dad5ec9d53@linux.intel.com>
+Date:   Mon, 2 May 2022 09:51:34 -0700
 MIME-Version: 1.0
-References: <1676021ae8b6d7aada0b1806fed99b1b8359bdc4.1651495112.git.hns@goldelico.com>
- <CAK8P3a3OiFJiR40FXmCZTc1fMZBteGjXqipDcvZqoO85QBxYow@mail.gmail.com> <123640FA-6AF2-4C0E-A7CC-31DCC4CEA15B@goldelico.com>
-In-Reply-To: <123640FA-6AF2-4C0E-A7CC-31DCC4CEA15B@goldelico.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 2 May 2022 17:04:51 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0owDwLYJ1nk6HciV=15wecC6QHPY-QiseRmeRnahcXXQ@mail.gmail.com>
-Message-ID: <CAK8P3a0owDwLYJ1nk6HciV=15wecC6QHPY-QiseRmeRnahcXXQ@mail.gmail.com>
-Subject: Re: [PATCH] wl1251: dynamically allocate memory used for DMA
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Tony Lindgren <tony@atomide.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH net-next v6 08/13] net: wwan: t7xx: Add data path
+ interface
+Content-Language: en-US
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc:     Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Luca Coelho <luca@coelho.fi>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:zjQz1dRpin9BiZg3s4VBfMuW9U+tlPf2caryZKIggkYhZ9Cjemd
- ow0D5GPGmRyloMl0oFDiGVSTOcj+6eu1WRzK2U5RioJjJ6icxlipq0t8eyFQLRz3yIcnXd9
- qoGiYQfXLpaXpfG+iBH0QqAGH9UcOaqPsszZbfbCGBlMNMuD6O15gsi8OkdBu2K2yGf6D7Z
- agURek6T9zdUGkRBpxD+g==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+cN6JuZ3Xro=:DVKj7YeXKBDE0Q9n6DEm06
- zXsZXZaulGdxTb7bhZwiH5xbP8lT2A4gv8QuMqzIevINKjnFi5uAqEYgJETFmRed1uTeZHwfc
- XQwq9QD+UN97jr+gRsqi2kekTgPzMKR6Q+xkzTKHxZKuB3j3Bd8+/ld/kODfmm976DJTJx2Cw
- ZVE0RG5aPH61joAXXYLeotKSMLraYmqxbkGoWrGtY1Za0+EQw/yXuuXVCvjpaBJ2bmYqBicOM
- /uQ6ZIpDCkgdmWlSmvnXlSLOOMVhKbmj/ynGyo749ZIlnb5MAtSo+CYF6BweAUrtOkAu3YhaZ
- uSXurW96e9Sd2gOxWTgBgD2+JF1nYZJwy+SoHWiwv3SFjhxVfkWP0Dexq2qObQHXFDujyzMJf
- k/yssEMaWTepybDzutgQae46ge30N4fUhv/vuxsb9hVK3YknAYo0h3SapvpBJ5H/xd/T8/5uM
- 9OFMS8Yl+zLcrqK+Ui0Wpn0tICLFQZMzvydVPyjBnb0s5JFQzF6sWhHG1g8wGbMNRKneubUh2
- vW2FNcfrcbY9V2HuAODHrl4NSir3iyuvtc4iRDRFomWpyZ3MtUemFORxXr1mQ9thsnklvyi26
- eFVX8zIXBe5zcmrJ4XvrikG9DtMPJlcZVrh8km8+L285dI260csYPNL3Qi0TZYDMsWOBVYjFw
- hcWNfxKQEX+1jFi3gp9jOc763x4HK3krfb5klOa7NpXJAVPR5WlZ8DlSiDZHWlps5JJqPdhWG
- VXdiRJSuX/OedDmfr6K3X8ERvvegTf5BhpvMHiWk8fCIlxmZ6K0lTmwTqk1vZ0tBOVdoyY9gq
- xGIlNpmiaTKh18E7cNZDi7H0RUBDH/76AMh40HIwrx79ta9NXs=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        David Miller <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        chandrashekar.devegowda@intel.com,
+        Intel Corporation <linuxwwan@intel.com>,
+        chiranjeevi.rapolu@linux.intel.com,
+        =?UTF-8?B?SGFpanVuIExpdSAo5YiY5rW35YabKQ==?= 
+        <haijun.liu@mediatek.com>, amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
+        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
+        sreehari.kancharla@intel.com, madhusmita.sahu@intel.com
+References: <20220407223629.21487-1-ricardo.martinez@linux.intel.com>
+ <20220407223629.21487-9-ricardo.martinez@linux.intel.com>
+ <CAHNKnsTr3aq1sgHnZQFL7-0uHMp3Wt4PMhVgTMSAiiXT=8p35A@mail.gmail.com>
+ <d829315b-79ca-ff88-c76-e352d8fb5b5b@linux.intel.com>
+ <CAHNKnsRMp9kbVLuYCe_-7BUeptmssqAN0fXJtNQ+j-ZmVEiwiw@mail.gmail.com>
+From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
+In-Reply-To: <CAHNKnsRMp9kbVLuYCe_-7BUeptmssqAN0fXJtNQ+j-ZmVEiwiw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -76,75 +82,75 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 2, 2022 at 4:47 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
-> > Am 02.05.2022 um 16:06 schrieb Arnd Bergmann <arnd@arndb.de>:
-> > On Mon, May 2, 2022 at 2:38 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
-> >
-> > The approach in the wlcore driver appears to be simpler because it
-> > avoids dynamic memory allocation and the associated error handling.
+
+On 4/26/2022 1:00 AM, Sergey Ryazanov wrote:
+> On Tue, Apr 26, 2022 at 10:30 AM Ilpo Järvinen
+> <ilpo.jarvinen@linux.intel.com> wrote:
+>> On Tue, 26 Apr 2022, Sergey Ryazanov wrote:
+>>> On Fri, Apr 8, 2022 at 1:37 AM Ricardo Martinez
+>>> <ricardo.martinez@linux.intel.com> wrote:
+>>>> Data Path Modem AP Interface (DPMAIF) HIF layer provides methods
+>>>> for initialization, ISR, control and event handling of TX/RX flows.
+>>>>
+>>>> DPMAIF TX
+>>>> Exposes the 'dmpaif_tx_send_skb' function which can be used by the
+>>>> network device to transmit packets.
+>>>> The uplink data management uses a Descriptor Ring Buffer (DRB).
+>>>> First DRB entry is a message type that will be followed by 1 or more
+>>>> normal DRB entries. Message type DRB will hold the skb information
+>>>> and each normal DRB entry holds a pointer to the skb payload.
+>>>>
+>>>> DPMAIF RX
+>>>> The downlink buffer management uses Buffer Address Table (BAT) and
+>>>> Packet Information Table (PIT) rings.
+>>>> The BAT ring holds the address of skb data buffer for the HW to use,
+>>>> while the PIT contains metadata about a whole network packet including
+>>>> a reference to the BAT entry holding the data buffer address.
+>>>> The driver reads the PIT and BAT entries written by the modem, when
+>>>> reaching a threshold, the driver will reload the PIT and BAT rings.
+>>>>
+>>>> Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
+>>>> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+>>>> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+>>>> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+>>>>
+>>>>  From a WWAN framework perspective:
+>>>> Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
+>>> Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+>>>
+>>> and a small question below.
+>>>
+>>>> diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
+>>>> ...
+>>>> +static bool t7xx_alloc_and_map_skb_info(const struct dpmaif_ctrl *dpmaif_ctrl,
+>>>> +                                       const unsigned int size, struct dpmaif_bat_skb *cur_skb)
+>>>> +{
+>>>> +       dma_addr_t data_bus_addr;
+>>>> +       struct sk_buff *skb;
+>>>> +       size_t data_len;
+>>>> +
+>>>> +       skb = __dev_alloc_skb(size, GFP_KERNEL);
+>>>> +       if (!skb)
+>>>> +               return false;
+>>>> +
+>>>> +       data_len = skb_end_pointer(skb) - skb->data;
+>>> Earlier you use a nice t7xx_skb_data_area_size() function here, but
+>>> now you opencode it. Is it a consequence of t7xx_common.h removing?
+>>>
+>>> I would even encourage you to make this function common and place it
+>>> into include/linux/skbuff.h with a dedicated patch and call it
+>>> something like skb_data_size(). Surprisingly, there is no such helper
+>>> function in the kernel, and several other drivers will benefit from
+>>> it:
+>> I agree other than the name. IMHO, skb_data_size sounds too much "data
+>> size" which it exactly isn't but just how large the memory area is (we
+>> already have "datalen" anyway and on language level, those two don't sound
+>> different at all). The memory area allocated may or may not have actual
+>> data in it, I suggested adding "area" into it.
+> I agree, using the "area" word in the helper name gives more clue
+> about its purpose, thanks.
 >
-> It looks as if it just avoids kmalloc/free sequences in event handling
-> by allocating a big enough buffer once.
->
-> wl1271_cmd_wait_for_event_or_timeout() allocates it like we do now.
+Sounds good. I'll add a patch to introduce skb_data_area_size(),
+I'm not planning to update other drivers to use it, at least in this series.
+Please let me know if you think otherwise.
 
-Ah right, I missed that one.
-
-> > However, it probably makes another problem worse that also exists
-> > here:
-> >
-> > static inline u32 wl1251_read32(struct wl1251 *wl, int addr)
-> > {
-> >       u32 response;
-> >       wl->if_ops->read(wl, addr, &wl->buffer_32, sizeof(wl->buffer_32));
-> >       return le32_to_cpu(wl->buffer_32);
-> > }
-> >
-> > I think the 'buffer_32' member of 'struct wl1251' needs an explicit
-> > '__cacheline_aligned' attribute to avoid potentially clobbering
-> > some of the structure during a DMA write.
-> >
-> > I don't know if anyone cares enough about the two drivers to
-> > have an opinion. I've added Luca to Cc, but he hasn't maintained
-> > the driver since 2013 and probably doesn't.
->
-> Well, there seems to be quite some common code but indeed devices
-> using these older chips are getting rare so it is probably not worth
-> combining code. And testing needs someone who owns boards
-> with both chips...
-
-No, I wasn't even thinking of combining code, just whether there
-is value in keeping the similar bits in sync to ensure we have the
-same set of bugs on both ;-)
-
-I think the best fix for both drivers would be to keep the DMA
-members (partition and buffer_32) in the respective device
-structures, but mark each one as aligned.
-
-> > My first guess would be that the driver never worked correctly on big-endian
-> > machines, and that the change is indeed correct, but on the other hand
-> > the conversion was added in commit ac9e2d9afa90 ("wl1251: convert
-> > 32-bit values to le32 before writing to the chip") in a way that suggests it
-> > was meant to work on both.
->
-> wl1251_event_wait() seems to work with the masks provided by code.
-> So I guess the conversion to le32 is harmless on the OpenPandora.
-> Most likely it should be done on big endian devices. I.e. we might have
-> done the right thing.
->
-> Let's see if someone compains or knows more. Otherwise we should
-> fix it just for the Pandora and N900 (both omap3 based) as the only
-> upstream users.
-
-Ok. In general I like ensure we keep things working for big-endian
-kernels, which are meant to work on any ARMv6+ or newer machine.
-Most of the time it's just a couple of drivers (like this one) that get
-in the way of actually doing it, but then again very few people ever
-care about big-endian ARMv6/v7.
-
-If we don't have a reason to believe this one is actually wrong, I think
-fixing the endian issue silently is fine, as is ignoring the potential
-other endian issues in the same driver that nobody complained about
-in the past decade ;-)
-
-       Arnd
