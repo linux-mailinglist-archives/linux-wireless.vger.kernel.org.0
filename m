@@ -2,53 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50F2A516D60
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 May 2022 11:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E269516FB4
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 May 2022 14:41:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1384187AbiEBJcp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 May 2022 05:32:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47090 "EHLO
+        id S1384925AbiEBMpN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 May 2022 08:45:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380009AbiEBJcp (ORCPT
+        with ESMTP id S1379648AbiEBMpL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 May 2022 05:32:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18BF233E0D;
-        Mon,  2 May 2022 02:29:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A5DDF611D0;
-        Mon,  2 May 2022 09:29:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C53C385A4;
-        Mon,  2 May 2022 09:29:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651483756;
-        bh=mpCCh1LYSN/qxfvRph1QMzK0NnMSfrNwVpF7Uzir8sY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=UD6zVba96lAU90DevmQSKaqj+6tnduJYu1duIevC0yVgrza7FnZCVYOHDVebEtRAG
-         qMRVaCz893bYhRS7MzADwI3RH/+8M/S2I52h1hWJcIEs0iO5PkadPFJcb1ma4OEOf6
-         1/kvvXwSyviTE1wNmI6YpLPpF9etI15FSm5OzBUFFwY3B1cYD5+7lkVlHDbxLdP8vc
-         Q8Ts3lJWBe5jyTw7oP03C0MNKR30gFVe2kS/1/8HguhpITuiYORr/Coat7U0pVJINX
-         kvot+MZwwGUeE+ZIFUF68EqCVzp49tlnLgT+GOJSJ/QBWzU2LvM5g0H0oeHR5D39Va
-         66JrDLUAD0Wlg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh@kernel.org>, <mka@chromium.org>
-Subject: Re: [PATCH v7 5/9] ath11k: Fetch device information via QMI for WCN6750
-References: <20220429170502.20080-1-quic_mpubbise@quicinc.com>
-        <20220429170502.20080-6-quic_mpubbise@quicinc.com>
-Date:   Mon, 02 May 2022 12:29:10 +0300
-In-Reply-To: <20220429170502.20080-6-quic_mpubbise@quicinc.com> (Manikanta
-        Pubbisetty's message of "Fri, 29 Apr 2022 22:34:58 +0530")
-Message-ID: <87k0b4b7vd.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 2 May 2022 08:45:11 -0400
+X-Greylist: delayed 171 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 02 May 2022 05:41:42 PDT
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D61B13E19;
+        Mon,  2 May 2022 05:41:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1651495114;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=Z49oEEdIYwZXRaAbptW7GvAdjNwZrbaxQ4jJIY0qqw8=;
+    b=IpNRoEtObH2IrY+dl9kVj6NFIGtXjC1fJSKUiU4sHorbFUxYj+dPPELsbbraW9IQpI
+    fOl+m3E+CIhtq4EX33clVFgTt9SFk4ErI0txAE/5tM2DGEhzCHtojOMYgL//rXJVEaBm
+    Wrffm8UUgDd6kLDw6MMWA76pGTjpyj1LIXL2sJECZNs7zwnrv1gAvieZt1gn9Cko258i
+    qVjmbq0ixiMkjsv0CvoHoq6OVwuVMJQSRMMgjiLHLWz98rwQNpQD/DpJBHpyYmxqxtn3
+    KtFDLww8/mE1SPL1z8fgXEcvhWfecibi5/DB+arcsZhIUQAoiQOh+m1BCUebWrim5Z79
+    s03w==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1KHeBQyh+ITDDFqZQ=="
+X-RZG-CLASS-ID: mo00
+Received: from iMac.fritz.box
+    by smtp.strato.de (RZmta 47.42.2 DYNA|AUTH)
+    with ESMTPSA id k708cfy42CcXVKe
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Mon, 2 May 2022 14:38:33 +0200 (CEST)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+To:     arnd@arndb.de, tony@atomide.com, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-omap@vger.kernel.org
+Subject: [PATCH] wl1251: dynamically allocate memory used for DMA
+Date:   Mon,  2 May 2022 14:38:32 +0200
+Message-Id: <1676021ae8b6d7aada0b1806fed99b1b8359bdc4.1651495112.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,117 +62,161 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
+With introduction of vmap'ed stacks, stack parameters can no
+longer be used for DMA and now leads to kernel panic.
 
-> Since WPPS Q6 does the PCIe enumeration of WCN6750, device
-> information like BAR and BAR size is not known to the APPS
-> processor (Application Processor SubSystem). In order to
-> fetch these details, a QMI message called device info request
-> will be sent to the target. Therefore, add logic to fetch
-> BAR details from the target.
->
-> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
->
-> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+It happens at several places for the wl1251 (e.g. when
+accessed through SDIO) making it unuseable on e.g. the
+OpenPandora.
 
-[...]
+We solve this by allocating temporary buffers or use wl1251_read32().
 
-> +static int ath11k_qmi_request_device_info(struct ath11k_base *ab)
-> +{
-> +	struct qmi_wlanfw_device_info_req_msg_v01 req = {};
-> +	struct qmi_wlanfw_device_info_resp_msg_v01 resp = {};
-> +	struct qmi_txn txn;
-> +	void __iomem *bar_addr_va;
-> +	int ret;
-> +
-> +	/* device info message req is only sent for hybrid bus devices */
-> +	if (!ab->hw_params.hybrid_bus_type)
-> +		return 0;
-> +
-> +	ret = qmi_txn_init(&ab->qmi.handle, &txn,
-> +			   qmi_wlfw_device_info_resp_msg_v01_ei, &resp);
-> +	if (ret < 0)
-> +		goto out;
-> +
-> +	ret = qmi_send_request(&ab->qmi.handle, NULL, &txn,
-> +			       QMI_WLANFW_DEVICE_INFO_REQ_V01,
-> +			       QMI_WLANFW_DEVICE_INFO_REQ_MSG_V01_MAX_LEN,
-> +			       qmi_wlanfw_device_info_req_msg_v01_ei, &req);
-> +	if (ret < 0) {
-> +		qmi_txn_cancel(&txn);
-> +		ath11k_warn(ab, "qmi failed to send target device info request, err = %d\n",
-> +			    ret);
-> +		goto out;
-> +	}
-> +
-> +	ret = qmi_txn_wait(&txn, msecs_to_jiffies(ATH11K_QMI_WLANFW_TIMEOUT_MS));
-> +	if (ret < 0) {
-> +		ath11k_warn(ab, "qmi failed target device info request %d\n", ret);
-> +		goto out;
-> +	}
-> +
-> +	if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
-> +		ath11k_warn(ab, "qmi device info req failed, result: %d, err: %d\n",
-> +			    resp.resp.result, resp.resp.error);
-> +		ret = -EINVAL;
-> +		goto out;
-> +	}
-> +
-> +	if (!resp.bar_addr_valid || !resp.bar_size_valid) {
-> +		ath11k_warn(ab, "qmi device info response invalid, result: %d, err: %d\n",
-> +			    resp.resp.result, resp.resp.error);
-> +		ret = -EINVAL;
-> +		goto out;
-> +	}
-> +
-> +	if (!resp.bar_addr ||
-> +	    resp.bar_size != ATH11K_QMI_DEVICE_BAR_SIZE) {
-> +		ath11k_warn(ab, "qmi device info invalid addr and size, result: %d, err: %d\n",
-> +			    resp.resp.result, resp.resp.error);
-> +		ret = -EINVAL;
-> +		goto out;
-> +	}
-> +
-> +	bar_addr_va = devm_ioremap(ab->dev, resp.bar_addr, resp.bar_size);
-> +
-> +	if (!bar_addr_va) {
-> +		ath11k_warn(ab, "qmi device info ioremap failed\n");
-> +		ab->mem_len = 0;
-> +		ret = -EIO;
-> +		goto out;
-> +	}
-> +
-> +	ab->mem = bar_addr_va;
-> +	ab->mem_len = resp.bar_size;
-> +
-> +	return 0;
-> +out:
-> +	return ret;
-> +}
+Tested on v5.18-rc5 with OpenPandora.
 
-In the pending branch I changed the warning messages to follow the style
-used in ath11k.
+Fixes: a1c510d0adc6 ("ARM: implement support for vmap'ed stacks")
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+---
+ drivers/net/wireless/ti/wl1251/event.c | 22 ++++++++++++++--------
+ drivers/net/wireless/ti/wl1251/io.c    | 20 ++++++++++++++------
+ drivers/net/wireless/ti/wl1251/tx.c    | 15 +++++++++++----
+ 3 files changed, 39 insertions(+), 18 deletions(-)
 
-> +
->  static int ath11k_qmi_request_target_cap(struct ath11k_base *ab)
->  {
->  	struct qmi_wlanfw_cap_req_msg_v01 req;
-> @@ -2749,6 +2886,12 @@ static int ath11k_qmi_event_load_bdf(struct ath11k_qmi *qmi)
->  		return ret;
->  	}
->  
-> +	ret = ath11k_qmi_request_device_info(ab);
-> +	if (ret < 0) {
-> +		ath11k_warn(ab, "failed to request qmi device info %d\n", ret);
-> +		return ret;
-> +	}
-
-Here too.
-
+diff --git a/drivers/net/wireless/ti/wl1251/event.c b/drivers/net/wireless/ti/wl1251/event.c
+index e6d426edab56b..e945aafd88ee5 100644
+--- a/drivers/net/wireless/ti/wl1251/event.c
++++ b/drivers/net/wireless/ti/wl1251/event.c
+@@ -169,11 +169,9 @@ int wl1251_event_wait(struct wl1251 *wl, u32 mask, int timeout_ms)
+ 		msleep(1);
+ 
+ 		/* read from both event fields */
+-		wl1251_mem_read(wl, wl->mbox_ptr[0], &events_vector,
+-				sizeof(events_vector));
++		events_vector = wl1251_mem_read32(wl, wl->mbox_ptr[0]);
+ 		event = events_vector & mask;
+-		wl1251_mem_read(wl, wl->mbox_ptr[1], &events_vector,
+-				sizeof(events_vector));
++		events_vector = wl1251_mem_read32(wl, wl->mbox_ptr[1]);
+ 		event |= events_vector & mask;
+ 	} while (!event);
+ 
+@@ -202,7 +200,7 @@ void wl1251_event_mbox_config(struct wl1251 *wl)
+ 
+ int wl1251_event_handle(struct wl1251 *wl, u8 mbox_num)
+ {
+-	struct event_mailbox mbox;
++	struct event_mailbox *mbox;
+ 	int ret;
+ 
+ 	wl1251_debug(DEBUG_EVENT, "EVENT on mbox %d", mbox_num);
+@@ -210,12 +208,20 @@ int wl1251_event_handle(struct wl1251 *wl, u8 mbox_num)
+ 	if (mbox_num > 1)
+ 		return -EINVAL;
+ 
++	mbox = kmalloc(sizeof(*mbox), GFP_KERNEL);
++	if (!mbox) {
++		wl1251_error("can not allocate mbox buffer");
++		return -ENOMEM;
++	}
++
+ 	/* first we read the mbox descriptor */
+-	wl1251_mem_read(wl, wl->mbox_ptr[mbox_num], &mbox,
+-			    sizeof(struct event_mailbox));
++	wl1251_mem_read(wl, wl->mbox_ptr[mbox_num], mbox,
++			sizeof(*mbox));
+ 
+ 	/* process the descriptor */
+-	ret = wl1251_event_process(wl, &mbox);
++	ret = wl1251_event_process(wl, mbox);
++	kfree(mbox);
++
+ 	if (ret < 0)
+ 		return ret;
+ 
+diff --git a/drivers/net/wireless/ti/wl1251/io.c b/drivers/net/wireless/ti/wl1251/io.c
+index 5ebe7958ed5c7..e8d567af74b4b 100644
+--- a/drivers/net/wireless/ti/wl1251/io.c
++++ b/drivers/net/wireless/ti/wl1251/io.c
+@@ -121,7 +121,13 @@ void wl1251_set_partition(struct wl1251 *wl,
+ 			  u32 mem_start, u32 mem_size,
+ 			  u32 reg_start, u32 reg_size)
+ {
+-	struct wl1251_partition partition[2];
++	struct wl1251_partition_set *partition;
++
++	partition = kmalloc(sizeof(*partition), GFP_KERNEL);
++	if (!partition) {
++		wl1251_error("can not allocate partition buffer");
++		return;
++	}
+ 
+ 	wl1251_debug(DEBUG_SPI, "mem_start %08X mem_size %08X",
+ 		     mem_start, mem_size);
+@@ -164,10 +170,10 @@ void wl1251_set_partition(struct wl1251 *wl,
+ 			     reg_start, reg_size);
+ 	}
+ 
+-	partition[0].start = mem_start;
+-	partition[0].size  = mem_size;
+-	partition[1].start = reg_start;
+-	partition[1].size  = reg_size;
++	partition->mem.start = mem_start;
++	partition->mem.size  = mem_size;
++	partition->reg.start = reg_start;
++	partition->reg.size  = reg_size;
+ 
+ 	wl->physical_mem_addr = mem_start;
+ 	wl->physical_reg_addr = reg_start;
+@@ -176,5 +182,7 @@ void wl1251_set_partition(struct wl1251 *wl,
+ 	wl->virtual_reg_addr = mem_size;
+ 
+ 	wl->if_ops->write(wl, HW_ACCESS_PART0_SIZE_ADDR, partition,
+-		sizeof(partition));
++		sizeof(*partition));
++
++	kfree(partition);
+ }
+diff --git a/drivers/net/wireless/ti/wl1251/tx.c b/drivers/net/wireless/ti/wl1251/tx.c
+index 98cd39619d579..e9dc3c72bb110 100644
+--- a/drivers/net/wireless/ti/wl1251/tx.c
++++ b/drivers/net/wireless/ti/wl1251/tx.c
+@@ -443,19 +443,25 @@ static void wl1251_tx_packet_cb(struct wl1251 *wl,
+ void wl1251_tx_complete(struct wl1251 *wl)
+ {
+ 	int i, result_index, num_complete = 0, queue_len;
+-	struct tx_result result[FW_TX_CMPLT_BLOCK_SIZE], *result_ptr;
++	struct tx_result *result, *result_ptr;
+ 	unsigned long flags;
+ 
+ 	if (unlikely(wl->state != WL1251_STATE_ON))
+ 		return;
+ 
++	result = kmalloc_array(FW_TX_CMPLT_BLOCK_SIZE, sizeof(*result), GFP_KERNEL);
++	if (!result) {
++		wl1251_error("can not allocate result buffer");
++		return;
++	}
++
+ 	/* First we read the result */
+-	wl1251_mem_read(wl, wl->data_path->tx_complete_addr,
+-			    result, sizeof(result));
++	wl1251_mem_read(wl, wl->data_path->tx_complete_addr, result,
++			FW_TX_CMPLT_BLOCK_SIZE * sizeof(*result));
+ 
+ 	result_index = wl->next_tx_complete;
+ 
+-	for (i = 0; i < ARRAY_SIZE(result); i++) {
++	for (i = 0; i < FW_TX_CMPLT_BLOCK_SIZE; i++) {
+ 		result_ptr = &result[result_index];
+ 
+ 		if (result_ptr->done_1 == 1 &&
+@@ -538,6 +544,7 @@ void wl1251_tx_complete(struct wl1251 *wl)
+ 
+ 	}
+ 
++	kfree(result);
+ 	wl->next_tx_complete = result_index;
+ }
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.33.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
