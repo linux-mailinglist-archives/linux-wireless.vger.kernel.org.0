@@ -2,23 +2,23 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3050517B0F
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 May 2022 01:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35C69517B15
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 May 2022 01:59:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230206AbiECAAb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 May 2022 20:00:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47356 "EHLO
+        id S231224AbiECAAf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 May 2022 20:00:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230363AbiEBX6G (ORCPT
+        with ESMTP id S231241AbiEBX6K (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 May 2022 19:58:06 -0400
+        Mon, 2 May 2022 19:58:10 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BDAA340DB
-        for <linux-wireless@vger.kernel.org>; Mon,  2 May 2022 16:54:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D6AA344C7
+        for <linux-wireless@vger.kernel.org>; Mon,  2 May 2022 16:54:30 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 242NsLxzD015649, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 242NsLy05015649, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 242NsLxzD015649
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 242NsLy05015649
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
         Tue, 3 May 2022 07:54:21 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
@@ -28,13 +28,13 @@ Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
 Received: from localhost (172.16.17.21) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Tue, 3 May
- 2022 07:54:14 +0800
+ 2022 07:54:15 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v3 2/8] rtw89: 8852c: rfk: add DACK
-Date:   Tue, 3 May 2022 07:54:02 +0800
-Message-ID: <20220502235408.15052-3-pkshih@realtek.com>
+Subject: [PATCH v3 3/8] rtw89: 8852c: rfk: add LCK
+Date:   Tue, 3 May 2022 07:54:03 +0800
+Message-ID: <20220502235408.15052-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220502235408.15052-1-pkshih@realtek.com>
 References: <20220502235408.15052-1-pkshih@realtek.com>
@@ -68,638 +68,174 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DACK (digital-to-analog converters calibration) is used to calibrate DAC
-to output analog signals as expected.
+LCK is short fro LC Tank calibration. Do this calibration once driver
+loads RF parameters table. Since the characteristic can be changed by
+temperature, we do this calibration again if difference of thermal value
+is over a threshold.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/reg.h      |  96 +++-
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |   2 +
- .../net/wireless/realtek/rtw89/rtw8852c_rfk.c | 446 ++++++++++++++++++
- .../net/wireless/realtek/rtw89/rtw8852c_rfk.h |   1 +
- 4 files changed, 538 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h     |  5 ++
+ drivers/net/wireless/realtek/rtw89/reg.h      |  2 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  7 +++
+ .../net/wireless/realtek/rtw89/rtw8852c_rfk.c | 63 +++++++++++++++++++
+ .../net/wireless/realtek/rtw89/rtw8852c_rfk.h |  2 +
+ 5 files changed, 79 insertions(+)
 
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index d544cf29e588a..41d23711dc354 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -2642,6 +2642,10 @@ struct rtw89_mcc_info {
+ 	u8 table_idx;
+ };
+ 
++struct rtw89_lck_info {
++	u8 thermal[RF_PATH_MAX];
++};
++
+ struct rtw89_iqk_info {
+ 	bool lok_cor_fail[RTW89_IQK_CHS_NR][RTW89_IQK_PATH_NR];
+ 	bool lok_fin_fail[RTW89_IQK_CHS_NR][RTW89_IQK_PATH_NR];
+@@ -3114,6 +3118,7 @@ struct rtw89_dev {
+ 	struct rtw89_iqk_info iqk;
+ 	struct rtw89_dpk_info dpk;
+ 	struct rtw89_mcc_info mcc;
++	struct rtw89_lck_info lck;
+ 	bool is_tssi_mode[RF_PATH_MAX];
+ 	bool is_bt_iqk_timeout;
+ 
 diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 83cb509d2fbe9..ce472d3b1a665 100644
+index ce472d3b1a665..028c881308237 100644
 --- a/drivers/net/wireless/realtek/rtw89/reg.h
 +++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -3484,9 +3484,12 @@
- #define R_S0_HW_SI_DIS 0x1200
- #define B_S0_HW_SI_DIS_W_R_TRIG GENMASK(30, 28)
- #define R_P0_RXCK 0x12A0
--#define B_P0_RXCK_VAL GENMASK(18, 16)
--#define B_P0_RXCK_ON BIT(19)
- #define B_P0_RXCK_BW3 BIT(30)
-+#define B_P0_TXCK_ALL GENMASK(19, 12)
-+#define B_P0_RXCK_ON BIT(19)
-+#define B_P0_RXCK_VAL GENMASK(18, 16)
-+#define B_P0_TXCK_ON BIT(15)
-+#define B_P0_TXCK_VAL GENMASK(14, 12)
- #define R_P0_NRBW 0x12B8
- #define B_P0_NRBW_DBG BIT(30)
- #define R_S0_RXDC 0x12D4
-@@ -4035,19 +4038,98 @@
- #define R_IQKINF2 0x9FE8
- #define B_IQKINF2_FCNT GENMASK(23, 16)
- #define B_IQKINF2_KCNT GENMASK(15, 8)
--#define B_IQKINF2_NCTLV GENMAKS(7, 0)
-+#define B_IQKINF2_NCTLV GENMASK(7, 0)
-+#define R_DCOF0 0xC000
-+#define B_DCOF0_V GENMASK(4, 1)
-+#define R_DCOF1 0xC004
-+#define B_DCOF1_S BIT(0)
-+#define R_DCOF8 0xC020
-+#define B_DCOF8_V GENMASK(4, 1)
-+#define R_DACK_S0P0 0xC040
-+#define B_DACK_S0P0_OK BIT(31)
-+#define R_DACK_BIAS00 0xc048
-+#define B_DACK_BIAS00 GENMASK(11, 2)
-+#define R_DACK_S0P2 0xC05C
-+#define B_DACK_S0M0 GENMASK(31, 24)
-+#define B_DACK_S0P2_OK BIT(2)
-+#define R_DACK_DADCK00 0xC060
-+#define B_DACK_DADCK00 GENMASK(31, 24)
-+#define R_DACK_S0P1 0xC064
-+#define B_DACK_S0P1_OK BIT(31)
-+#define R_DACK_BIAS01 0xC06C
-+#define B_DACK_BIAS01 GENMASK(11, 2)
-+#define R_DACK_S0P3 0xC080
-+#define B_DACK_S0M1 GENMASK(31, 24)
-+#define B_DACK_S0P3_OK BIT(2)
-+#define R_DACK_DADCK01 0xC084
-+#define B_DACK_DADCK01 GENMASK(31, 24)
-+#define R_DRCK 0xC0C4
-+#define B_DRCK_IDLE BIT(9)
-+#define B_DRCK_EN BIT(6)
-+#define B_DRCK_VAL GENMASK(4, 0)
-+#define R_DRCK_RES 0xC0C8
-+#define B_DRCK_RES GENMASK(19, 15)
-+#define B_DRCK_POL BIT(3)
- #define R_PATH0_SAMPL_DLY_T_V1 0xC0D4
- #define B_PATH0_SAMPL_DLY_T_MSK_V1 GENMASK(27, 26)
-+#define R_P0_CFCH_BW0 0xC0D4
-+#define B_P0_CFCH_BW0 GENMASK(27, 26)
-+#define R_P0_CFCH_BW1 0xC0D8
-+#define B_P0_CFCH_BW1 GENMASK(8, 5)
-+#define R_ADDCK0 0xC0F4
-+#define B_ADDCK0 GENMASK(9, 8)
-+#define B_ADDCK0_EN BIT(4)
-+#define B_ADDCK0_RST BIT(2)
-+#define R_ADDCK0_RL 0xC0F8
-+#define B_ADDCK0_RLS GENMASK(29, 28)
-+#define B_ADDCK0_RL1 GENMASK(27, 18)
-+#define B_ADDCK0_RL0 GENMASK(17, 8)
-+#define R_ADDCKR0 0xC0FC
-+#define B_ADDCKR0_A0 GENMASK(19, 10)
-+#define B_ADDCKR0_A1 GENMASK(9, 0)
-+#define R_DACK10 0xC100
-+#define B_DACK10 GENMASK(4, 1)
-+#define R_DACK1_K 0xc104
-+#define B_DACK1_EN BIT(0)
-+#define R_DACK11 0xC120
-+#define B_DACK11 GENMASK(4, 1)
-+#define R_DACK_S1P0 0xC140
-+#define B_DACK_S1P0_OK BIT(31)
-+#define R_DACK_BIAS10 0xC148
-+#define B_DACK_BIAS10 GENMASK(11, 2)
-+#define R_DACK10S 0xC15C
-+#define B_DACK10S GENMASK(31, 24)
-+#define R_DACK_S1P2 0xC15C
-+#define B_DACK_S1P2_OK BIT(2)
-+#define R_DACK_DADCK10 0xC160
-+#define B_DACK_DADCK10 GENMASK(31, 24)
-+#define R_DACK_S1P1 0xC164
-+#define B_DACK_S1P1_OK BIT(31)
-+#define R_DACK_BIAS11 0xC16C
-+#define B_DACK_BIAS11 GENMASK(11, 2)
-+#define R_DACK11S 0xC180
-+#define B_DACK11S GENMASK(31, 24)
-+#define R_DACK_S1P3 0xC180
-+#define B_DACK_S1P3_OK BIT(2)
-+#define R_DACK_DADCK11 0xC184
-+#define B_DACK_DADCK11 GENMASK(31, 24)
- #define R_PATH1_SAMPL_DLY_T_V1 0xC1D4
- #define B_PATH1_SAMPL_DLY_T_MSK_V1 GENMASK(27, 26)
- #define R_PATH0_BW_SEL_V1 0xC0D8
- #define B_PATH0_BW_SEL_MSK_V1 GENMASK(8, 5)
- #define R_PATH1_BW_SEL_V1 0xC1D8
- #define B_PATH1_BW_SEL_MSK_V1 GENMASK(8, 5)
--#define R_P0_CFCH_BW0 0xC0D4
--#define B_P0_CFCH_BW0 GENMASK(27, 26)
--#define R_P0_CFCH_BW1 0xC0D8
--#define B_P0_CFCH_BW1 GENMASK(8, 5)
-+#define R_ADDCK1 0xC1F4
-+#define B_ADDCK1 GENMASK(9, 8)
-+#define B_ADDCK1_EN BIT(4)
-+#define B_ADDCK1_RST BIT(2)
-+#define R_ADDCK1_RL 0xC1F8
-+#define B_ADDCK1_RLS GENMASK(29, 28)
-+#define B_ADDCK1_RL1 GENMASK(27, 18)
-+#define B_ADDCK1_RL0 GENMASK(17, 8)
-+#define R_ADDCKR1 0xC1fC
-+#define B_ADDCKR1_A0 GENMASK(19, 10)
-+#define B_ADDCKR1_A1 GENMASK(9, 0)
- 
- /* WiFi CPU local domain */
- #define R_AX_WDT_CTRL 0x0040
+@@ -3327,6 +3327,8 @@
+ #define RR_MIXER_GN GENMASK(4, 3)
+ #define RR_XTALX2 0xb8
+ #define RR_MALSEL 0xbe
++#define RR_LCK_TRG 0xd3
++#define RR_LCK_TRGSEL BIT(8)
+ #define RR_RCKD 0xde
+ #define RR_RCKD_POW GENMASK(19, 13)
+ #define RR_RCKD_BW BIT(2)
 diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 2755684682126..502627d8141d4 100644
+index 502627d8141d4..14302ebed3d5e 100644
 --- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
 +++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -1771,6 +1771,8 @@ static void rtw8852c_rfk_init(struct rtw89_dev *rtwdev)
+@@ -1771,6 +1771,7 @@ static void rtw8852c_rfk_init(struct rtw89_dev *rtwdev)
  	struct rtw89_mcc_info *mcc_info = &rtwdev->mcc;
  
  	memset(mcc_info, 0, sizeof(*mcc_info));
-+
-+	rtw8852c_dack(rtwdev);
++	rtw8852c_lck_init(rtwdev);
+ 
+ 	rtw8852c_dack(rtwdev);
+ }
+@@ -1780,6 +1781,11 @@ static void rtw8852c_rfk_channel(struct rtw89_dev *rtwdev)
+ 	rtw89_fw_h2c_rf_ntfy_mcc(rtwdev);
  }
  
- static void rtw8852c_rfk_channel(struct rtw89_dev *rtwdev)
++static void rtw8852c_rfk_track(struct rtw89_dev *rtwdev)
++{
++	rtw8852c_lck_track(rtwdev);
++}
++
+ static u32 rtw8852c_bb_cal_txpwr_ref(struct rtw89_dev *rtwdev,
+ 				     enum rtw89_phy_idx phy_idx, s16 ref)
+ {
+@@ -2708,6 +2714,7 @@ static const struct rtw89_chip_ops rtw8852c_chip_ops = {
+ 	.read_phycap		= rtw8852c_read_phycap,
+ 	.rfk_init		= rtw8852c_rfk_init,
+ 	.rfk_channel		= rtw8852c_rfk_channel,
++	.rfk_track		= rtw8852c_rfk_track,
+ 	.power_trim		= rtw8852c_power_trim,
+ 	.set_txpwr		= rtw8852c_set_txpwr,
+ 	.set_txpwr_ctrl		= rtw8852c_set_txpwr_ctrl,
 diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-index 56f0876c03fbd..4245a2c5f9d67 100644
+index 4245a2c5f9d67..ce08b2dcf5459 100644
 --- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
 +++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-@@ -2,11 +2,13 @@
- /* Copyright(c) 2019-2022  Realtek Corporation
-  */
- 
-+#include "coex.h"
- #include "debug.h"
- #include "phy.h"
- #include "reg.h"
- #include "rtw8852c.h"
- #include "rtw8852c_rfk.h"
-+#include "rtw8852c_rfk_table.h"
- 
- static u8 _kpath(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
-@@ -22,6 +24,441 @@ static u8 _kpath(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- 		return RF_B;
+@@ -632,6 +632,69 @@ static void _rxbb_bw(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
+ 	}
  }
  
-+static void _dack_dump(struct rtw89_dev *rtwdev)
++static void _lck_keep_thermal(struct rtw89_dev *rtwdev)
 +{
-+	struct rtw89_dack_info *dack = &rtwdev->dack;
-+	u8 i;
-+	u8 t;
++	struct rtw89_lck_info *lck = &rtwdev->lck;
++	int path;
 +
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+		    "[DACK]S0 ADC_DCK ic = 0x%x, qc = 0x%x\n",
-+		    dack->addck_d[0][0], dack->addck_d[0][1]);
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+		    "[DACK]S1 ADC_DCK ic = 0x%x, qc = 0x%x\n",
-+		    dack->addck_d[1][0], dack->addck_d[1][1]);
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+		    "[DACK]S0 DAC_DCK ic = 0x%x, qc = 0x%x\n",
-+		    dack->dadck_d[0][0], dack->dadck_d[0][1]);
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+		    "[DACK]S1 DAC_DCK ic = 0x%x, qc = 0x%x\n",
-+		    dack->dadck_d[1][0], dack->dadck_d[1][1]);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+		    "[DACK]S0 biask ic = 0x%x, qc = 0x%x\n",
-+		    dack->biask_d[0][0], dack->biask_d[0][1]);
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+		    "[DACK]S1 biask ic = 0x%x, qc = 0x%x\n",
-+		    dack->biask_d[1][0], dack->biask_d[1][1]);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 MSBK ic:\n");
-+	for (i = 0; i < RTW89_DACK_MSBK_NR; i++) {
-+		t = dack->msbk_d[0][0][i];
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]0x%x\n", t);
-+	}
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 MSBK qc:\n");
-+	for (i = 0; i < RTW89_DACK_MSBK_NR; i++) {
-+		t = dack->msbk_d[0][1][i];
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]0x%x\n", t);
-+	}
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S1 MSBK ic:\n");
-+	for (i = 0; i < RTW89_DACK_MSBK_NR; i++) {
-+		t = dack->msbk_d[1][0][i];
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]0x%x\n", t);
-+	}
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S1 MSBK qc:\n");
-+	for (i = 0; i < RTW89_DACK_MSBK_NR; i++) {
-+		t = dack->msbk_d[1][1][i];
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]0x%x\n", t);
++	for (path = 0; path < rtwdev->chip->rf_path_num; path++) {
++		lck->thermal[path] =
++			ewma_thermal_read(&rtwdev->phystat.avg_thermal[path]);
++		rtw89_debug(rtwdev, RTW89_DBG_RFK_TRACK,
++			    "[LCK] path=%d thermal=0x%x", path, lck->thermal[path]);
 +	}
 +}
 +
-+static void _addck_backup(struct rtw89_dev *rtwdev)
++static void _lck(struct rtw89_dev *rtwdev)
 +{
-+	struct rtw89_dack_info *dack = &rtwdev->dack;
++	u32 tmp18[2];
++	int path = rtwdev->dbcc_en ? 2 : 1;
++	int i;
 +
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK0, B_ADDCK0, 0x0);
-+	dack->addck_d[0][0] = rtw89_phy_read32_mask(rtwdev, R_ADDCKR0,
-+						    B_ADDCKR0_A0);
-+	dack->addck_d[0][1] = rtw89_phy_read32_mask(rtwdev, R_ADDCKR0,
-+						    B_ADDCKR0_A1);
++	rtw89_debug(rtwdev, RTW89_DBG_RFK_TRACK, "[LCK] DO LCK\n");
 +
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK1, B_ADDCK1, 0x0);
-+	dack->addck_d[1][0] = rtw89_phy_read32_mask(rtwdev, R_ADDCKR1,
-+						    B_ADDCKR1_A0);
-+	dack->addck_d[1][1] = rtw89_phy_read32_mask(rtwdev, R_ADDCKR1,
-+						    B_ADDCKR1_A1);
-+}
++	tmp18[0] = rtw89_read_rf(rtwdev, RF_PATH_A, RR_CFGCH, RFREG_MASK);
++	tmp18[1] = rtw89_read_rf(rtwdev, RF_PATH_B, RR_CFGCH, RFREG_MASK);
 +
-+static void _addck_reload(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_dack_info *dack = &rtwdev->dack;
-+
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK0_RL, B_ADDCK0_RL1,
-+			       dack->addck_d[0][0]);
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK0_RL, B_ADDCK0_RL0,
-+			       dack->addck_d[0][1]);
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK0_RL, B_ADDCK0_RLS, 0x3);
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK1_RL, B_ADDCK1_RL1,
-+			       dack->addck_d[1][0]);
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK1_RL, B_ADDCK1_RL0,
-+			       dack->addck_d[1][1]);
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK1_RL, B_ADDCK1_RLS, 0x3);
-+}
-+
-+static void _dack_backup_s0(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_dack_info *dack = &rtwdev->dack;
-+	u8 i;
-+
-+	rtw89_phy_write32_mask(rtwdev, R_P0_NRBW, B_P0_NRBW_DBG, 0x1);
-+	for (i = 0; i < RTW89_DACK_MSBK_NR; i++) {
-+		rtw89_phy_write32_mask(rtwdev, R_DCOF0, B_DCOF0_V, i);
-+		dack->msbk_d[0][0][i] = rtw89_phy_read32_mask(rtwdev,
-+							      R_DACK_S0P2,
-+							      B_DACK_S0M0);
-+		rtw89_phy_write32_mask(rtwdev, R_DCOF8, B_DCOF8_V, i);
-+		dack->msbk_d[0][1][i] = rtw89_phy_read32_mask(rtwdev,
-+							      R_DACK_S0P3,
-+							      B_DACK_S0M1);
-+	}
-+	dack->biask_d[0][0] = rtw89_phy_read32_mask(rtwdev, R_DACK_BIAS00,
-+						    B_DACK_BIAS00);
-+	dack->biask_d[0][1] = rtw89_phy_read32_mask(rtwdev, R_DACK_BIAS01,
-+						    B_DACK_BIAS01);
-+	dack->dadck_d[0][0] = rtw89_phy_read32_mask(rtwdev, R_DACK_DADCK00,
-+						    B_DACK_DADCK00);
-+	dack->dadck_d[0][1] = rtw89_phy_read32_mask(rtwdev, R_DACK_DADCK01,
-+						    B_DACK_DADCK01);
-+}
-+
-+static void _dack_backup_s1(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_dack_info *dack = &rtwdev->dack;
-+	u8 i;
-+
-+	rtw89_phy_write32_mask(rtwdev, R_P1_DBGMOD, B_P1_DBGMOD_ON, 0x1);
-+	for (i = 0; i < RTW89_DACK_MSBK_NR; i++) {
-+		rtw89_phy_write32_mask(rtwdev, R_DACK10, B_DACK10, i);
-+		dack->msbk_d[1][0][i] = rtw89_phy_read32_mask(rtwdev,
-+							      R_DACK10S,
-+							      B_DACK10S);
-+		rtw89_phy_write32_mask(rtwdev, R_DACK11, B_DACK11, i);
-+		dack->msbk_d[1][1][i] = rtw89_phy_read32_mask(rtwdev,
-+							      R_DACK11S,
-+							      B_DACK11S);
-+	}
-+	dack->biask_d[1][0] = rtw89_phy_read32_mask(rtwdev, R_DACK_BIAS10,
-+						    B_DACK_BIAS10);
-+	dack->biask_d[1][1] = rtw89_phy_read32_mask(rtwdev, R_DACK_BIAS11,
-+						    B_DACK_BIAS11);
-+	dack->dadck_d[1][0] = rtw89_phy_read32_mask(rtwdev, R_DACK_DADCK10,
-+						    B_DACK_DADCK10);
-+	dack->dadck_d[1][1] = rtw89_phy_read32_mask(rtwdev, R_DACK_DADCK11,
-+						    B_DACK_DADCK11);
-+}
-+
-+static void _dack_reload_by_path(struct rtw89_dev *rtwdev,
-+				 enum rtw89_rf_path path, u8 index)
-+{
-+	struct rtw89_dack_info *dack = &rtwdev->dack;
-+	u32 idx_offset, path_offset;
-+	u32 val32, offset, addr;
-+	u8 i;
-+
-+	idx_offset = (index == 0 ? 0 : 0x14);
-+	path_offset = (path == RF_PATH_A ? 0 : 0x28);
-+	offset = idx_offset + path_offset;
-+
-+	rtw89_rfk_parser(rtwdev, &rtw8852c_dack_reload_defs_tbl);
-+
-+	/* msbk_d: 15/14/13/12 */
-+	val32 = 0x0;
-+	for (i = 0; i < RTW89_DACK_MSBK_NR / 4; i++)
-+		val32 |= dack->msbk_d[path][index][i + 12] << (i * 8);
-+	addr = 0xc200 + offset;
-+	rtw89_phy_write32(rtwdev, addr, val32);
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]0x%x=0x%x\n", addr,
-+		    rtw89_phy_read32_mask(rtwdev, addr, MASKDWORD));
-+
-+	/* msbk_d: 11/10/9/8 */
-+	val32 = 0x0;
-+	for (i = 0; i < RTW89_DACK_MSBK_NR / 4; i++)
-+		val32 |= dack->msbk_d[path][index][i + 8] << (i * 8);
-+	addr = 0xc204 + offset;
-+	rtw89_phy_write32(rtwdev, addr, val32);
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]0x%x=0x%x\n", addr,
-+		    rtw89_phy_read32_mask(rtwdev, addr, MASKDWORD));
-+
-+	/* msbk_d: 7/6/5/4 */
-+	val32 = 0x0;
-+	for (i = 0; i < RTW89_DACK_MSBK_NR / 4; i++)
-+		val32 |= dack->msbk_d[path][index][i + 4] << (i * 8);
-+	addr = 0xc208 + offset;
-+	rtw89_phy_write32(rtwdev, addr, val32);
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]0x%x=0x%x\n", addr,
-+		    rtw89_phy_read32_mask(rtwdev, addr, MASKDWORD));
-+
-+	/* msbk_d: 3/2/1/0 */
-+	val32 = 0x0;
-+	for (i = 0; i < RTW89_DACK_MSBK_NR / 4; i++)
-+		val32 |= dack->msbk_d[path][index][i] << (i * 8);
-+	addr = 0xc20c + offset;
-+	rtw89_phy_write32(rtwdev, addr, val32);
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]0x%x=0x%x\n", addr,
-+		    rtw89_phy_read32_mask(rtwdev, addr, MASKDWORD));
-+
-+	/* dadak_d/biask_d */
-+	val32 = (dack->biask_d[path][index] << 22) |
-+		(dack->dadck_d[path][index] << 14);
-+	addr = 0xc210 + offset;
-+	rtw89_phy_write32(rtwdev, addr, val32);
-+	rtw89_phy_write32_set(rtwdev, addr, BIT(1));
-+}
-+
-+static void _dack_reload(struct rtw89_dev *rtwdev, enum rtw89_rf_path path)
-+{
-+	u8 i;
-+
-+	for (i = 0; i < 2; i++)
-+		_dack_reload_by_path(rtwdev, path, i);
-+}
-+
-+static void _addck(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_dack_info *dack = &rtwdev->dack;
-+	u32 val;
-+	int ret;
-+
-+	/* S0 */
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK0, B_ADDCK0_RST, 0x1);
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK0, B_ADDCK0_EN, 0x1);
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK0, B_ADDCK0_EN, 0x0);
-+	fsleep(1);
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK0, B_ADDCK0, 0x1);
-+
-+	ret = read_poll_timeout_atomic(rtw89_phy_read32_mask, val, val,
-+				       1, 10000, false, rtwdev, 0xc0fc, BIT(0));
-+	if (ret) {
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 ADDCK timeout\n");
-+		dack->addck_timeout[0] = true;
++	for (i = 0; i < path; i++) {
++		rtw89_write_rf(rtwdev, i, RR_LCK_TRG, RR_LCK_TRGSEL, 0x1);
++		rtw89_write_rf(rtwdev, i, RR_CFGCH, RFREG_MASK, tmp18[i]);
++		rtw89_write_rf(rtwdev, i, RR_LCK_TRG, RR_LCK_TRGSEL, 0x0);
 +	}
 +
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK0, B_ADDCK0_RST, 0x0);
++	_lck_keep_thermal(rtwdev);
++}
 +
-+	/* S1 */
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK1, B_ADDCK1_RST, 0x1);
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK1, B_ADDCK1_EN, 0x1);
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK1, B_ADDCK1_EN, 0x0);
-+	udelay(1);
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK1, B_ADDCK1, 0x1);
++#define RTW8852C_LCK_TH 8
 +
-+	ret = read_poll_timeout_atomic(rtw89_phy_read32_mask, val, val,
-+				       1, 10000, false, rtwdev, 0xc1fc, BIT(0));
-+	if (ret) {
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S1 ADDCK timeout\n");
-+		dack->addck_timeout[0] = true;
++void rtw8852c_lck_track(struct rtw89_dev *rtwdev)
++{
++	struct rtw89_lck_info *lck = &rtwdev->lck;
++	u8 cur_thermal;
++	int delta;
++	int path;
++
++	for (path = 0; path < rtwdev->chip->rf_path_num; path++) {
++		cur_thermal =
++			ewma_thermal_read(&rtwdev->phystat.avg_thermal[path]);
++		delta = abs((int)cur_thermal - lck->thermal[path]);
++
++		rtw89_debug(rtwdev, RTW89_DBG_RFK_TRACK,
++			    "[LCK] path=%d current thermal=0x%x delta=0x%x\n",
++			    path, cur_thermal, delta);
++
++		if (delta >= RTW8852C_LCK_TH) {
++			_lck(rtwdev);
++			return;
++		}
 +	}
-+	rtw89_phy_write32_mask(rtwdev, R_ADDCK1, B_ADDCK1_RST, 0x0);
 +}
 +
-+static void _dack_reset(struct rtw89_dev *rtwdev, u8 path)
++void rtw8852c_lck_init(struct rtw89_dev *rtwdev)
 +{
-+	rtw89_rfk_parser_by_cond(rtwdev, path == RF_PATH_A,
-+				 &rtw8852c_dack_reset_defs_a_tbl,
-+				 &rtw8852c_dack_reset_defs_b_tbl);
++	_lck_keep_thermal(rtwdev);
 +}
 +
-+enum adc_ck {
-+	ADC_NA = 0,
-+	ADC_480M = 1,
-+	ADC_960M = 2,
-+	ADC_1920M = 3,
-+};
-+
-+enum dac_ck {
-+	DAC_40M = 0,
-+	DAC_80M = 1,
-+	DAC_120M = 2,
-+	DAC_160M = 3,
-+	DAC_240M = 4,
-+	DAC_320M = 5,
-+	DAC_480M = 6,
-+	DAC_960M = 7,
-+};
-+
-+enum rf_mode {
-+	RF_SHUT_DOWN = 0x0,
-+	RF_STANDBY = 0x1,
-+	RF_TX = 0x2,
-+	RF_RX = 0x3,
-+	RF_TXIQK = 0x4,
-+	RF_DPK = 0x5,
-+	RF_RXK1 = 0x6,
-+	RF_RXK2 = 0x7,
-+};
-+
-+static void rtw8852c_txck_force(struct rtw89_dev *rtwdev, u8 path, bool force,
-+				enum dac_ck ck)
-+{
-+	rtw89_phy_write32_mask(rtwdev, R_P0_RXCK | (path << 13), B_P0_TXCK_ON, 0x0);
-+
-+	if (!force)
-+		return;
-+
-+	rtw89_phy_write32_mask(rtwdev, R_P0_RXCK | (path << 13), B_P0_TXCK_VAL, ck);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_RXCK | (path << 13), B_P0_TXCK_ON, 0x1);
-+}
-+
-+static void rtw8852c_rxck_force(struct rtw89_dev *rtwdev, u8 path, bool force,
-+				enum adc_ck ck)
-+{
-+	rtw89_phy_write32_mask(rtwdev, R_P0_RXCK | (path << 13), B_P0_RXCK_ON, 0x0);
-+
-+	if (!force)
-+		return;
-+
-+	rtw89_phy_write32_mask(rtwdev, R_P0_RXCK | (path << 13), B_P0_RXCK_VAL, ck);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_RXCK | (path << 13), B_P0_RXCK_ON, 0x1);
-+}
-+
-+static bool _check_dack_done(struct rtw89_dev *rtwdev, bool s0)
-+{
-+	if (s0) {
-+		if (rtw89_phy_read32_mask(rtwdev, R_DACK_S0P0, B_DACK_S0P0_OK) == 0 ||
-+		    rtw89_phy_read32_mask(rtwdev, R_DACK_S0P1, B_DACK_S0P1_OK) == 0 ||
-+		    rtw89_phy_read32_mask(rtwdev, R_DACK_S0P2, B_DACK_S0P2_OK) == 0 ||
-+		    rtw89_phy_read32_mask(rtwdev, R_DACK_S0P3, B_DACK_S0P3_OK) == 0)
-+			return false;
-+	} else {
-+		if (rtw89_phy_read32_mask(rtwdev, R_DACK_S1P0, B_DACK_S1P0_OK) == 0 ||
-+		    rtw89_phy_read32_mask(rtwdev, R_DACK_S1P1, B_DACK_S1P1_OK) == 0 ||
-+		    rtw89_phy_read32_mask(rtwdev, R_DACK_S1P2, B_DACK_S1P2_OK) == 0 ||
-+		    rtw89_phy_read32_mask(rtwdev, R_DACK_S1P3, B_DACK_S1P3_OK) == 0)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
-+static void _dack_s0(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_dack_info *dack = &rtwdev->dack;
-+	bool done;
-+	int ret;
-+
-+	rtw8852c_txck_force(rtwdev, RF_PATH_A, true, DAC_160M);
-+	rtw89_rfk_parser(rtwdev, &rtw8852c_dack_defs_s0_tbl);
-+
-+	_dack_reset(rtwdev, RF_PATH_A);
-+
-+	rtw89_phy_write32_mask(rtwdev, R_DCOF1, B_DCOF1_S, 0x1);
-+	ret = read_poll_timeout_atomic(_check_dack_done, done, done,
-+				       1, 10000, false, rtwdev, true);
-+	if (ret) {
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 DACK timeout\n");
-+		dack->msbk_timeout[0] = true;
-+	}
-+	rtw89_phy_write32_mask(rtwdev, R_DCOF1, B_DCOF1_S, 0x0);
-+	rtw8852c_txck_force(rtwdev, RF_PATH_A, false, DAC_960M);
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]after S0 DADCK\n");
-+
-+	_dack_backup_s0(rtwdev);
-+	_dack_reload(rtwdev, RF_PATH_A);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_NRBW, B_P0_NRBW_DBG, 0x0);
-+}
-+
-+static void _dack_s1(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_dack_info *dack = &rtwdev->dack;
-+	bool done;
-+	int ret;
-+
-+	rtw8852c_txck_force(rtwdev, RF_PATH_B, true, DAC_160M);
-+	rtw89_rfk_parser(rtwdev, &rtw8852c_dack_defs_s1_tbl);
-+
-+	_dack_reset(rtwdev, RF_PATH_B);
-+
-+	rtw89_phy_write32_mask(rtwdev, R_DACK1_K, B_DACK1_EN, 0x1);
-+	ret = read_poll_timeout_atomic(_check_dack_done, done, done,
-+				       1, 10000, false, rtwdev, false);
-+	if (ret) {
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S1 DACK timeout\n");
-+		dack->msbk_timeout[0] = true;
-+	}
-+	rtw89_phy_write32_mask(rtwdev, R_DACK1_K, B_DACK1_EN, 0x0);
-+	rtw8852c_txck_force(rtwdev, RF_PATH_B, false, DAC_960M);
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]after S1 DADCK\n");
-+
-+	_dack_backup_s1(rtwdev);
-+	_dack_reload(rtwdev, RF_PATH_B);
-+	rtw89_phy_write32_mask(rtwdev, R_P1_DBGMOD, B_P1_DBGMOD_ON, 0x0);
-+}
-+
-+static void _dack(struct rtw89_dev *rtwdev)
-+{
-+	_dack_s0(rtwdev);
-+	_dack_s1(rtwdev);
-+}
-+
-+static void _drck(struct rtw89_dev *rtwdev)
-+{
-+	u32 val;
-+	int ret;
-+
-+	rtw89_phy_write32_mask(rtwdev, R_DRCK, B_DRCK_EN, 0x1);
-+	ret = read_poll_timeout_atomic(rtw89_phy_read32_mask, val, val,
-+				       1, 10000, false, rtwdev, 0xc0c8, BIT(3));
-+	if (ret)
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK,  "[DACK]DRCK timeout\n");
-+
-+	rtw89_rfk_parser(rtwdev, &rtw8852c_drck_defs_tbl);
-+
-+	val = rtw89_phy_read32_mask(rtwdev, R_DRCK_RES, B_DRCK_RES);
-+	rtw89_phy_write32_mask(rtwdev, R_DRCK, B_DRCK_IDLE, 0x0);
-+	rtw89_phy_write32_mask(rtwdev, R_DRCK, B_DRCK_VAL, val);
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]0xc0c4 = 0x%x\n",
-+		    rtw89_phy_read32_mask(rtwdev, R_DRCK, MASKDWORD));
-+}
-+
-+static void _dac_cal(struct rtw89_dev *rtwdev, bool force)
-+{
-+	struct rtw89_dack_info *dack = &rtwdev->dack;
-+	u32 rf0_0, rf1_0;
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, RF_AB);
-+
-+	dack->dack_done = false;
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]DACK b\n");
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]DACK start!!!\n");
-+	rf0_0 = rtw89_read_rf(rtwdev, RF_PATH_A, RR_MOD, RFREG_MASK);
-+	rf1_0 = rtw89_read_rf(rtwdev, RF_PATH_B, RR_MOD, RFREG_MASK);
-+	_drck(rtwdev);
-+
-+	rtw89_write_rf(rtwdev, RF_PATH_A, RR_RSV1, RR_RSV1_RST, 0x0);
-+	rtw89_write_rf(rtwdev, RF_PATH_B, RR_RSV1, RR_RSV1_RST, 0x0);
-+	rtw89_write_rf(rtwdev, RF_PATH_A, RR_MOD, RFREG_MASK, 0x337e1);
-+	rtw89_write_rf(rtwdev, RF_PATH_B, RR_MOD, RFREG_MASK, 0x337e1);
-+	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DACK, BTC_WRFK_ONESHOT_START);
-+	_addck(rtwdev);
-+	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DACK, BTC_WRFK_ONESHOT_STOP);
-+
-+	_addck_backup(rtwdev);
-+	_addck_reload(rtwdev);
-+	rtw89_write_rf(rtwdev, RF_PATH_A, RR_MODOPT, RFREG_MASK, 0x0);
-+	rtw89_write_rf(rtwdev, RF_PATH_B, RR_MODOPT, RFREG_MASK, 0x0);
-+	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DACK, BTC_WRFK_ONESHOT_START);
-+	_dack(rtwdev);
-+	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DACK, BTC_WRFK_ONESHOT_STOP);
-+
-+	_dack_dump(rtwdev);
-+	dack->dack_done = true;
-+	rtw89_write_rf(rtwdev, RF_PATH_A, RR_MOD, RFREG_MASK, rf0_0);
-+	rtw89_write_rf(rtwdev, RF_PATH_B, RR_MOD, RFREG_MASK, rf1_0);
-+	rtw89_write_rf(rtwdev, RF_PATH_A, RR_RSV1, RR_RSV1_RST, 0x1);
-+	rtw89_write_rf(rtwdev, RF_PATH_B, RR_RSV1, RR_RSV1_RST, 0x1);
-+	dack->dack_cnt++;
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]DACK finish!!!\n");
-+}
-+
- static void _bw_setting(struct rtw89_dev *rtwdev, enum rtw89_rf_path path,
- 			enum rtw89_bandwidth bw, bool is_dav)
- {
-@@ -212,3 +649,12 @@ void rtw8852c_set_channel_rf(struct rtw89_dev *rtwdev,
- 	rtw8852c_ctrl_bw_ch(rtwdev, phy_idx, param->center_chan, param->band_type,
- 			    param->bandwidth);
- }
-+
-+void rtw8852c_dack(struct rtw89_dev *rtwdev)
-+{
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, 0);
-+
-+	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DACK, BTC_WRFK_START);
-+	_dac_cal(rtwdev, false);
-+	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DACK, BTC_WRFK_STOP);
-+}
+ static
+ void rtw8852c_ctrl_bw_ch(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
+ 			 u8 central_ch, enum rtw89_band band,
 diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.h b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.h
-index 0e75555c1612d..7323183e74d41 100644
+index 7323183e74d41..4ce76ef4c5e60 100644
 --- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.h
 +++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.h
-@@ -7,6 +7,7 @@
- 
- #include "core.h"
- 
-+void rtw8852c_dack(struct rtw89_dev *rtwdev);
+@@ -11,5 +11,7 @@ void rtw8852c_dack(struct rtw89_dev *rtwdev);
  void rtw8852c_set_channel_rf(struct rtw89_dev *rtwdev,
  			     struct rtw89_channel_params *param,
  			     enum rtw89_phy_idx phy_idx);
++void rtw8852c_lck_init(struct rtw89_dev *rtwdev);
++void rtw8852c_lck_track(struct rtw89_dev *rtwdev);
+ 
+ #endif
 -- 
 2.25.1
 
