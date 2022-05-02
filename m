@@ -2,50 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43A0D51711E
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 May 2022 16:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E841B517121
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 May 2022 16:01:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1385464AbiEBOEZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 May 2022 10:04:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40636 "EHLO
+        id S1385470AbiEBOE1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 May 2022 10:04:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1385484AbiEBOEC (ORCPT
+        with ESMTP id S1385467AbiEBOEZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 May 2022 10:04:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6091E3882
-        for <linux-wireless@vger.kernel.org>; Mon,  2 May 2022 07:00:32 -0700 (PDT)
+        Mon, 2 May 2022 10:04:25 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 335825F75;
+        Mon,  2 May 2022 07:00:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68AAF60BFA
-        for <linux-wireless@vger.kernel.org>; Mon,  2 May 2022 14:00:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A22C385A4;
-        Mon,  2 May 2022 14:00:30 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E7677B81147;
+        Mon,  2 May 2022 14:00:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B8FC385AC;
+        Mon,  2 May 2022 14:00:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651500031;
-        bh=Kdi+0fTwzL/PkfV5aJDO2b+5i3BnraJliQJBvXkWYT8=;
+        s=k20201202; t=1651500054;
+        bh=LnW2rQnd7IzWF/OG/CrCr2IFtLGxNBoAByjw1ptUJik=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=n6Nn4aJP7+ktUx/3/V6gu+foCSSGxQSXt/2SnyM55J87BtGX++l5P1689QHMc3Spg
-         DcK1RXXyGsGtl9D6JiV62U4Pp8O1E3Uy0wpFhHEZdRnV1z/V011si5KCNgh3lY3j7n
-         2TngyGN9dPVI2CtuhTR12MmyAucjvGpDjWGqwBrGVxKf0fWcLF/5NDNQPj5qvleC3/
-         6+JbwR5+a8kEsCZE3PaGh7qi9ZW0MedYXIrnJjKoPgo9sfzjPCqlmZyw3tYK48IRw0
-         wjCfEOJmfxpnEcL9qvohaoOSpWQMeB0H0da2KCI8mDYfZ43nutaVPY4+worIgfbAJw
-         j08N4Cz4F4UxQ==
+        b=rhtgqWpNJlQBCsFtXzZdQrzg0yOi0tjVjo8Xf5ZM9gFaOA6ZjnQk9fJCLRrnsutg2
+         3IQlsb6crkR/t1Deg0j2n9X30V4gCVTcovaDGU3QKyJPp2YmbRYcX4MlnmCaApJ5yL
+         k3VfWEgY/dgkrK7lN1Y21D7NuO/YyGAzN22FxLeoghU1qw4L6UJ6M13+aFIBwXUaBK
+         j5vTDbMo2sioPxPOhqmDXMQBv0dKZNEL6TnrzGzl7/jqfFGhnKGQzWy5wFMdyWAs+b
+         5qPX39TjwPkjjK3n8deSOFo6jNPP1QKpm+8LjLKSOLIO/7TEeDeAN4v8hlwCtmQDZh
+         lOqeZ1NDTnHCQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH wireless-next 2/3] wifi: ath10k: remove a copy of the
- NAPI_POLL_WEIGHT define
+Subject: Re: [PATCH v2] carl9170: tx: fix an incorrect use of list iterator
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220429174643.196994-3-kuba@kernel.org>
-References: <20220429174643.196994-3-kuba@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        ath10k@lists.infradead.org
+In-Reply-To: <20220328122820.1004-1-xiam0nd.tong@gmail.com>
+References: <20220328122820.1004-1-xiam0nd.tong@gmail.com>
+To:     Xiaomeng Tong <xiam0nd.tong@gmail.com>
+Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        linville@tuxdriver.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Xiaomeng Tong <xiam0nd.tong@gmail.com>, stable@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165150002658.16977.2818999103130463906.kvalo@kernel.org>
-Date:   Mon,  2 May 2022 14:00:30 +0000 (UTC)
+Message-ID: <165150005048.16977.15575451697134497197.kvalo@kernel.org>
+Date:   Mon,  2 May 2022 14:00:52 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -56,21 +57,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jakub Kicinski <kuba@kernel.org> wrote:
+Xiaomeng Tong <xiam0nd.tong@gmail.com> wrote:
 
-> Defining local versions of NAPI_POLL_WEIGHT with the same
-> values in the drivers just makes refactoring harder.
+> If the previous list_for_each_entry_continue_rcu() don't exit early
+> (no goto hit inside the loop), the iterator 'cvif' after the loop
+> will be a bogus pointer to an invalid structure object containing
+> the HEAD (&ar->vif_list). As a result, the use of 'cvif' after that
+> will lead to a invalid memory access (i.e., 'cvif->id': the invalid
+> pointer dereference when return back to/after the callsite in the
+> carl9170_update_beacon()).
 > 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> The original intention should have been to return the valid 'cvif'
+> when found in list, NULL otherwise. So just return NULL when no
+> entry found, to fix this bug.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 1f1d9654e183c ("carl9170: refactor carl9170_update_beacon")
+> Signed-off-by: Xiaomeng Tong <xiam0nd.tong@gmail.com>
+> Acked-by: Christian Lamparter <chunkeey@gmail.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-2 patches applied to ath-next branch of ath.git, thanks.
+Patch applied to ath-next branch of ath.git, thanks.
 
-52bcfd1b239b ath10k: remove a copy of the NAPI_POLL_WEIGHT define
-3b3299a1080e wil6210: use NAPI_POLL_WEIGHT for napi budget
+54a6f29522da carl9170: tx: fix an incorrect use of list iterator
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220429174643.196994-3-kuba@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220328122820.1004-1-xiam0nd.tong@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
