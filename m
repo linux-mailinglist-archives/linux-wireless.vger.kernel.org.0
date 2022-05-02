@@ -2,90 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04699516AF3
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 May 2022 08:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D455516BEB
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 May 2022 10:16:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383507AbiEBGtY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 May 2022 02:49:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58022 "EHLO
+        id S1377169AbiEBITw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 May 2022 04:19:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343598AbiEBGtX (ORCPT
+        with ESMTP id S239965AbiEBITu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 May 2022 02:49:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4932D2CE1D
-        for <linux-wireless@vger.kernel.org>; Sun,  1 May 2022 23:45:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9219C60C7F
-        for <linux-wireless@vger.kernel.org>; Mon,  2 May 2022 06:45:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AE6C385AC;
-        Mon,  2 May 2022 06:45:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651473954;
-        bh=QL5mKu8NQSQYC2o1qLuJuSMa2wrvjTbvRYPInb79afw=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=aVoTjSvqeC14pydjY9yUpTiG8AaozH6XUwfg1argCrlx2pUn4fQehEmTUdDBVqNkq
-         yDhFmrBmufwAqp1nl21mR1432mALnWqjckz5NML+jzyEHKyKN6XxQWBck7/wK3G8Bn
-         7GOfQhUJe54hxKA7vbQhZB3omCtqVui02rrYh1A84r8HYbHu+wE17DJr+tb62gW4/3
-         GEyGXgaJojtKuNAbE2Rd6jq7pSbF7kqV+owNzoMBd8I1VDwwA9BCKTovsF9d/XbONy
-         CKfDylu9KwCiGKSuQDrrWTQpEPWxjkw/ne5yU1nY6N2cJX5EHhxFRg6KJ7UwrcomMn
-         hQvYUFH13g0mA==
-Content-Type: text/plain; charset="utf-8"
+        Mon, 2 May 2022 04:19:50 -0400
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 013A61A3B8
+        for <linux-wireless@vger.kernel.org>; Mon,  2 May 2022 01:16:19 -0700 (PDT)
+Received: from fsav114.sakura.ne.jp (fsav114.sakura.ne.jp [27.133.134.241])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 2428GB1k081509;
+        Mon, 2 May 2022 17:16:11 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav114.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav114.sakura.ne.jp);
+ Mon, 02 May 2022 17:16:11 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav114.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 2428GAs9081392
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Mon, 2 May 2022 17:16:11 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <f15574a6-aba4-72bc-73af-26fdcdf9fb63@I-love.SAKURA.ne.jp>
+Date:   Mon, 2 May 2022 17:16:06 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: [PATCH v2] wfx: avoid flush_workqueue(system_highpri_wq) usage
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>,
+        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <20220225112405.355599-1-Jerome.Pouiller@silabs.com>
+ <20220225112405.355599-10-Jerome.Pouiller@silabs.com>
+ <033f49bc-cc31-7384-7a7c-5d3c45ce9594@I-love.SAKURA.ne.jp>
+ <4557835.LvFx2qVVIh@pc-42>
+ <e25078f4-96f4-482c-b5da-a4a22d88b072@I-love.SAKURA.ne.jp>
+ <87fsltd462.fsf@kernel.org>
+ <3841528e-78ae-c3c4-169a-eeb39714f7ca@I-love.SAKURA.ne.jp>
+ <87a6c0cuxf.fsf@kernel.org>
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <87a6c0cuxf.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 01/16] rtw89: 8852c: rfk: add RFK tables
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220429071809.32104-2-pkshih@realtek.com>
-References: <20220429071809.32104-2-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165147395131.22580.17272377169555802599.kvalo@kernel.org>
-Date:   Mon,  2 May 2022 06:45:53 +0000 (UTC)
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Flushing system-wide workqueues is dangerous and will be forbidden.
+Replace system_highpri_wq with per "struct wfx_dev" bh_wq.
 
-> These tables are used by RFK (RF calibration) to set parameters. These
-> parameters can trigger certain calibration, or configure/reset settings
-> before and after RF calibrations.
-> 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+---
+Note: This patch is only compile tested.
 
-16 patches is too much, I only reviewed patches 1-8. Please split this
-patchset into two.
+Changes in v2:
+  Use per "struct wfx_dev" workqueue.
 
-16 patches set to Changes Requested.
+ drivers/net/wireless/silabs/wfx/bh.c     | 6 +++---
+ drivers/net/wireless/silabs/wfx/hif_tx.c | 2 +-
+ drivers/net/wireless/silabs/wfx/main.c   | 6 ++++++
+ drivers/net/wireless/silabs/wfx/wfx.h    | 1 +
+ 4 files changed, 11 insertions(+), 4 deletions(-)
 
-12831552 [v2,01/16] rtw89: 8852c: rfk: add RFK tables
-12831545 [v2,02/16] rtw89: 8852c: rfk: add DACK
-12831547 [v2,03/16] rtw89: 8852c: rfk: add LCK
-12831551 [v2,04/16] rtw89: 8852c: rfk: add TSSI
-12831546 [v2,05/16] rtw89: 8852c: rfk: add RCK
-12831548 [v2,06/16] rtw89: 8852c: rfk: add RX DCK
-12831556 [v2,07/16] rtw89: 8852c: rfk: add IQK
-12831560 [v2,08/16] rtw89: 8852c: rfk: add DPK
-12831549 [v2,09/16] rtw89: 8852c: rfk: get calibrated channels to notify firmware
-12831550 [v2,10/16] rtw89: 8852c: add chip_ops::bb_ctrl_btc_preagc
-12831555 [v2,11/16] rtw89: 8852c: add basic and remaining chip_info
-12831553 [v2,12/16] rtw89: ps: fine tune polling interval while changing low power mode
-12831554 [v2,13/16] rtw89: correct AID settings of beamformee
-12831557 [v2,14/16] rtw89: 8852c: correct register definitions used by 8852c
-12831559 [v2,15/16] rtw89: 8852c: fix warning of FIELD_PREP() mask type
-12831558 [v2,16/16] rtw89: 8852c: add 8852ce to Makefile and Kconfig
-
+diff --git a/drivers/net/wireless/silabs/wfx/bh.c b/drivers/net/wireless/silabs/wfx/bh.c
+index bcea9d5b119c..21dfdcf9cc27 100644
+--- a/drivers/net/wireless/silabs/wfx/bh.c
++++ b/drivers/net/wireless/silabs/wfx/bh.c
+@@ -267,7 +267,7 @@ void wfx_bh_request_rx(struct wfx_dev *wdev)
+ 	wfx_control_reg_read(wdev, &cur);
+ 	prev = atomic_xchg(&wdev->hif.ctrl_reg, cur);
+ 	complete(&wdev->hif.ctrl_ready);
+-	queue_work(system_highpri_wq, &wdev->hif.bh);
++	queue_work(wdev->bh_wq, &wdev->hif.bh);
+ 
+ 	if (!(cur & CTRL_NEXT_LEN_MASK))
+ 		dev_err(wdev->dev, "unexpected control register value: length field is 0: %04x\n",
+@@ -280,7 +280,7 @@ void wfx_bh_request_rx(struct wfx_dev *wdev)
+ /* Driver want to send data */
+ void wfx_bh_request_tx(struct wfx_dev *wdev)
+ {
+-	queue_work(system_highpri_wq, &wdev->hif.bh);
++	queue_work(wdev->bh_wq, &wdev->hif.bh);
+ }
+ 
+ /* If IRQ is not available, this function allow to manually poll the control register and simulate
+@@ -295,7 +295,7 @@ void wfx_bh_poll_irq(struct wfx_dev *wdev)
+ 	u32 reg;
+ 
+ 	WARN(!wdev->poll_irq, "unexpected IRQ polling can mask IRQ");
+-	flush_workqueue(system_highpri_wq);
++	flush_workqueue(wdev->bh_wq);
+ 	start = ktime_get();
+ 	for (;;) {
+ 		wfx_control_reg_read(wdev, &reg);
+diff --git a/drivers/net/wireless/silabs/wfx/hif_tx.c b/drivers/net/wireless/silabs/wfx/hif_tx.c
+index 9c653d0e9034..d35dd940d968 100644
+--- a/drivers/net/wireless/silabs/wfx/hif_tx.c
++++ b/drivers/net/wireless/silabs/wfx/hif_tx.c
+@@ -73,7 +73,7 @@ int wfx_cmd_send(struct wfx_dev *wdev, struct wfx_hif_msg *request,
+ 
+ 	if (no_reply) {
+ 		/* Chip won't reply. Ensure the wq has send the buffer before to continue. */
+-		flush_workqueue(system_highpri_wq);
++		flush_workqueue(wdev->bh_wq);
+ 		ret = 0;
+ 		goto end;
+ 	}
+diff --git a/drivers/net/wireless/silabs/wfx/main.c b/drivers/net/wireless/silabs/wfx/main.c
+index e575a81ca2ca..e015bfb8d221 100644
+--- a/drivers/net/wireless/silabs/wfx/main.c
++++ b/drivers/net/wireless/silabs/wfx/main.c
+@@ -345,6 +345,10 @@ int wfx_probe(struct wfx_dev *wdev)
+ 	wdev->pdata.gpio_wakeup = NULL;
+ 	wdev->poll_irq = true;
+ 
++	wdev->bh_wq = alloc_workqueue("wfx_bh_wq", WQ_HIGHPRI, 0);
++	if (!wdev->bh_wq)
++		return -ENOMEM;
++
+ 	wfx_bh_register(wdev);
+ 
+ 	err = wfx_init_device(wdev);
+@@ -458,6 +462,7 @@ int wfx_probe(struct wfx_dev *wdev)
+ 	wdev->hwbus_ops->irq_unsubscribe(wdev->hwbus_priv);
+ bh_unregister:
+ 	wfx_bh_unregister(wdev);
++	destroy_workqueue(wdev->bh_wq);
+ 	return err;
+ }
+ 
+@@ -467,6 +472,7 @@ void wfx_release(struct wfx_dev *wdev)
+ 	wfx_hif_shutdown(wdev);
+ 	wdev->hwbus_ops->irq_unsubscribe(wdev->hwbus_priv);
+ 	wfx_bh_unregister(wdev);
++	destroy_workqueue(wdev->bh_wq);
+ }
+ 
+ static int __init wfx_core_init(void)
+diff --git a/drivers/net/wireless/silabs/wfx/wfx.h b/drivers/net/wireless/silabs/wfx/wfx.h
+index 6594cc647c2f..6f5e95dae21f 100644
+--- a/drivers/net/wireless/silabs/wfx/wfx.h
++++ b/drivers/net/wireless/silabs/wfx/wfx.h
+@@ -57,6 +57,7 @@ struct wfx_dev {
+ 	struct mutex               rx_stats_lock;
+ 	struct wfx_hif_tx_power_loop_info tx_power_loop_info;
+ 	struct mutex               tx_power_loop_info_lock;
++	struct workqueue_struct    *bh_wq;
+ };
+ 
+ struct wfx_vif {
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220429071809.32104-2-pkshih@realtek.com/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
