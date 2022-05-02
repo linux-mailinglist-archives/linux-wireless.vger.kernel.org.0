@@ -2,59 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22B6D5171BB
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 May 2022 16:38:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BA205171BF
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 May 2022 16:39:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238012AbiEBOmJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 May 2022 10:42:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48296 "EHLO
+        id S238216AbiEBOma (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 May 2022 10:42:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238024AbiEBOmI (ORCPT
+        with ESMTP id S238156AbiEBOm3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 May 2022 10:42:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A9A410BD;
-        Mon,  2 May 2022 07:38:35 -0700 (PDT)
+        Mon, 2 May 2022 10:42:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B728C60F3
+        for <linux-wireless@vger.kernel.org>; Mon,  2 May 2022 07:39:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9808160FAD;
-        Mon,  2 May 2022 14:38:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AAF0C385AC;
-        Mon,  2 May 2022 14:38:31 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6A809B81058
+        for <linux-wireless@vger.kernel.org>; Mon,  2 May 2022 14:38:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DA6C385AC;
+        Mon,  2 May 2022 14:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651502314;
-        bh=5xmYs16DqQgvQQ7n8Eayk+zOE2UfeGbZ788MYHG/7C0=;
+        s=k20201202; t=1651502338;
+        bh=L/dvX2BgI8HxvXU5xU2F5JMzkoAkwfnr/326EOEanVM=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=IwFi0V7jBWekNpU1Soz8LkJsUFRzMgEoIqJaHkIc3S8nt49GInIlirO6RrYn9pRGx
-         wkXv32V1UOIlev3yzM9vqY3UmUhU/MnOEHVRslt0gDj8Sgz+Hml8/uV0mUfDo8yMlQ
-         W5A6TbYsElP40EEPUbGbaCTUdrti70OqGustplloPw8QEMpuVsNl1LBJorO3vnpl/+
-         9nJjF09qS2CFYPhDITC1IH54GLNgvN61MUfsX81TD8YWgKuVun9/hFIU2BQcfDvTj+
-         jCDtFr3JZQZRlot/nNbBNJYIU+5AsX38ntxfWk7vCugJZnyS1ynU7grlN0NirkVsi2
-         DmOYkCWreUluw==
+        b=rPzMmQYUf28JH07PmLcrlZoF4cVPT5xwsQsNSrYCSR5pxV0MI5TFw2gGvK6ubSGdt
+         A/nsf4HsduklsNRIheCUhmI3eyefbxoWqEkMKCFIvypk6VrdHpQRNZ+OpTK5Dgp+I3
+         JH1MK1CdyY/kgoEX7Pm8dbDPD68yDGPIQ1ZX/pe2WgrPyyhYzHTW/+jTrReLIRGh47
+         8em/62o6YNbjiMfQfIm0tsoh41Zr1KpyKzfGi7i2QKcHdtUNlmFM/m6iah+Rp4Mi9I
+         X8NeHcFXFAjeheesugVoh31g3AXfxNyW1QeBHhl3SknmFg0TmO/JBIV5rItooFMi+A
+         CDsAdgkk8nHgw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] [v3] plfxlc: fix le16_to_cpu warning for beacon_interval
+Subject: Re: [wireless-next,1/3] rtw88: remove a copy of the NAPI_POLL_WEIGHT
+ define
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <CWLP265MB3217FDFE8E945E52492B002FE0FC9@CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM>
-References: <CWLP265MB3217FDFE8E945E52492B002FE0FC9@CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM>
-To:     Srinivasan Raju <srini.raju@purelifi.com>
-Cc:     unlisted-recipients:; (no To-header on input)
-        "David S. Miller" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
-        Cc:     unlisted-recipients:; (no To-header on input)"David S. Miller" <davem@davemloft.net>
-                                                                     ^-missing end of address
+In-Reply-To: <20220429174643.196994-2-kuba@kernel.org>
+References: <20220429174643.196994-2-kuba@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        tony0620emma@gmail.com
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165150230926.32510.3611898103134896335.kvalo@kernel.org>
-Date:   Mon,  2 May 2022 14:38:31 +0000 (UTC)
+Message-ID: <165150233492.32510.1215509289795240440.kvalo@kernel.org>
+Date:   Mon,  2 May 2022 14:38:56 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -65,32 +56,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Srinivasan Raju <srini.raju@purelifi.com> wrote:
+Jakub Kicinski <kuba@kernel.org> wrote:
 
-> Fix the following sparse warnings:
-> drivers/net/wireless/purelifi/plfxlc/chip.c:36:31: sparse: expected unsigned short [usertype] beacon_interval
-> drivers/net/wireless/purelifi/plfxlc/chip.c:36:31: sparse: got restricted __le16 [usertype]
+> Defining local versions of NAPI_POLL_WEIGHT with the same
+> values in the drivers just makes refactoring harder.
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Srinivasan Raju <srini.raju@purelifi.com>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-Failed to apply, please rebase on top of wireless-next. And also I
-strongly recommend to use git send-email for avoiding any formatting
-problems.
+Patch applied to wireless-next.git, thanks.
 
-error: patch failed: drivers/net/wireless/purelifi/plfxlc/chip.c:29
-error: drivers/net/wireless/purelifi/plfxlc/chip.c: patch does not apply
-error: Did you hand edit your patch?
-It does not apply to blobs recorded in its index.
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-Applying: plfxlc: fix le16_to_cpu warning for beacon_interval
-Using index info to reconstruct a base tree...
-Patch failed at 0001 plfxlc: fix le16_to_cpu warning for beacon_interval
-
-Patch set to Changes Requested.
+0d3b26c4b97a rtw88: remove a copy of the NAPI_POLL_WEIGHT define
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/CWLP265MB3217FDFE8E945E52492B002FE0FC9@CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220429174643.196994-2-kuba@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
