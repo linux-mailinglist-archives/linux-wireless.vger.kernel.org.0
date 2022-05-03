@@ -2,85 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B163517B23
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 May 2022 02:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74FC5517CD1
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 May 2022 07:37:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229707AbiECAJa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 May 2022 20:09:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34946 "EHLO
+        id S231387AbiECFdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 May 2022 01:33:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229574AbiECAJ2 (ORCPT
+        with ESMTP id S231342AbiECFdN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 May 2022 20:09:28 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4330635AB1
-        for <linux-wireless@vger.kernel.org>; Mon,  2 May 2022 17:05:53 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24305ja06017955, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24305ja06017955
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 3 May 2022 08:05:45 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 3 May 2022 08:05:45 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Tue, 3 May 2022 08:05:45 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
- RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
- 15.01.2308.021; Tue, 3 May 2022 08:05:45 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH v2 01/16] rtw89: 8852c: rfk: add RFK tables
-Thread-Topic: [PATCH v2 01/16] rtw89: 8852c: rfk: add RFK tables
-Thread-Index: AQHYW5ln57WGjoFhxkiAuoU9SntzOa0KozmAgAGoKlA=
-Date:   Tue, 3 May 2022 00:05:45 +0000
-Message-ID: <5ada5443e13044e9b366cc365e58bf19@realtek.com>
-References: <20220429071809.32104-2-pkshih@realtek.com>
- <165147395131.22580.17272377169555802599.kvalo@kernel.org>
-In-Reply-To: <165147395131.22580.17272377169555802599.kvalo@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzUvMiDkuIvljYggMTA6MDE6MDA=?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
+        Tue, 3 May 2022 01:33:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DED0387A7;
+        Mon,  2 May 2022 22:29:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 27A966154D;
+        Tue,  3 May 2022 05:29:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CF5C385A9;
+        Tue,  3 May 2022 05:29:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651555781;
+        bh=yMBoWF0nvWgsPkJx/J8zK0TimF5+YRey0fH4qHkvjTA=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=ufVas6kp1YoKwK8wNMl2zHcgQceNACHjhAi67pGAK/YEWI7m68RI4dhVVgq0YSfvf
+         Mh6jU5Rn2VA8jT730/Uis9SxmWGAQzOTtsovLx0wrsZ58d9ekkM1xfUHTF8QGZydN0
+         IbKqc/rT2nDRNugFw+Vt5dXbRUTXHTpomfPW35pLm08MjNo+kyCSxNS8j/EStfJGHl
+         AJKvIl2A0AotfnkG/ry4EQYC39FYs2z0vyqxxLwVwWtDGlqcXW0kqPcA0yOgGdPObh
+         hMBcNqRUCA9qxBz3jSg1j+cxLgjSAOCKYxCc22GLnQa6BGl1PkmmAG5qc8nUWPGwtN
+         msbtKXyW0VwQQ==
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] [v4] plfxlc: fix le16_to_cpu warning for beacon_interval
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20220502150133.6052-1-srini.raju@purelifi.com>
+References: <20220502150133.6052-1-srini.raju@purelifi.com>
+To:     Srinivasan Raju <srini.raju@purelifi.com>
+Cc:     unlisted-recipients:; (no To-header on input)
+        Srinivasan Raju <srini.raju@purelifi.com>,
+        kernel test robot <lkp@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org (open list:PURELIFI PLFXLC DRIVER),
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+        linux-kernel@vger.kernel.org (open list)
+Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
+        Cc:     unlisted-recipients:; (no To-header on input)Srinivasan Raju <srini.raju@purelifi.com>
+                                                                     ^-missing end of address
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <165155576592.23375.9180707873462805854.kvalo@kernel.org>
+Date:   Tue,  3 May 2022 05:29:39 +0000 (UTC)
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEthbGxlIFZhbG8gPGt2YWxv
-QGtlcm5lbC5vcmc+DQo+IFNlbnQ6IE1vbmRheSwgTWF5IDIsIDIwMjIgMjo0NiBQTQ0KPiBUbzog
-UGtzaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+IENjOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtl
-cm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2MiAwMS8xNl0gcnR3ODk6IDg4NTJjOiBy
-Zms6IGFkZCBSRksgdGFibGVzDQo+IA0KPiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNv
-bT4gd3JvdGU6DQo+IA0KPiA+IFRoZXNlIHRhYmxlcyBhcmUgdXNlZCBieSBSRksgKFJGIGNhbGli
-cmF0aW9uKSB0byBzZXQgcGFyYW1ldGVycy4gVGhlc2UNCj4gPiBwYXJhbWV0ZXJzIGNhbiB0cmln
-Z2VyIGNlcnRhaW4gY2FsaWJyYXRpb24sIG9yIGNvbmZpZ3VyZS9yZXNldCBzZXR0aW5ncw0KPiA+
-IGJlZm9yZSBhbmQgYWZ0ZXIgUkYgY2FsaWJyYXRpb25zLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1i
-eTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+IA0KPiAxNiBwYXRjaGVzIGlz
-IHRvbyBtdWNoLCBJIG9ubHkgcmV2aWV3ZWQgcGF0Y2hlcyAxLTguIFBsZWFzZSBzcGxpdCB0aGlz
-DQo+IHBhdGNoc2V0IGludG8gdHdvLg0KPiANCg0KSSBoYXZlIHNlbnQgdjMgb25seSBjb250YWlu
-aW5nIDggcGF0Y2hlcywgYW5kIGZpeCB0aGVtIGFjY29yZGluZyB0byBjb21tZW50cy4NCg0KVGhh
-bmsgeW91DQpQaW5nLUtlDQoNCg0K
+Srinivasan Raju <srini.raju@purelifi.com> wrote:
+
+> Fix the following sparse warnings:
+> drivers/net/wireless/purelifi/plfxlc/chip.c:36:31: sparse: expected unsigned short [usertype] beacon_interval
+> drivers/net/wireless/purelifi/plfxlc/chip.c:36:31: sparse: got restricted __le16 [usertype]
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Srinivasan Raju <srini.raju@purelifi.com>
+
+Patch applied to wireless-next.git, thanks.
+
+ccc915e7dd7e plfxlc: fix le16_to_cpu warning for beacon_interval
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20220502150133.6052-1-srini.raju@purelifi.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
