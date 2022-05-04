@@ -2,58 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FB2151B377
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 01:27:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FF2951B46F
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 02:09:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241263AbiEDX10 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 May 2022 19:27:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44492 "EHLO
+        id S229665AbiEEAEr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 May 2022 20:04:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1384647AbiEDXII (ORCPT
+        with ESMTP id S1381179AbiEDXiD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 May 2022 19:08:08 -0400
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD36546654
-        for <linux-wireless@vger.kernel.org>; Wed,  4 May 2022 16:00:39 -0700 (PDT)
-Received: by mail-wm1-f53.google.com with SMTP id a14-20020a7bc1ce000000b00393fb52a386so4097863wmj.1
-        for <linux-wireless@vger.kernel.org>; Wed, 04 May 2022 16:00:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=qfWwXZWPvxEE3w1uLnkzPlrx6nJaZSmQ1gbsC3kCZlI=;
-        b=fMehx6+pldeupaypGl5lGMLh8Blc5Pb964suvnwujkOTfmhEds0USznV5iIpAmDMiQ
-         3bX5ovLiBcm+P+Qjkm7S30sNoAIneyphU/3HUmg8FgNya3x4Ys+vGWu+B9CwMsbZwixV
-         5hhw5d61RXfF0ZuA9a19yWLWnmsownsAlvxGOq/bh+zf+KCchfsYUSjN3DbkCogRNiil
-         4sZMBBy0wN3DJWJ3HV3y9RTPrsOy6eZO4wbIVzlw9cfeY3DYzhWrMs9JJuoIK2/rWVPl
-         SzHF6XACCrgzPRUtq8fL5afcNflV6Vriy9o5VdAvBNuxRLNvKxX70jkd0hURqNp4X2R8
-         1xwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=qfWwXZWPvxEE3w1uLnkzPlrx6nJaZSmQ1gbsC3kCZlI=;
-        b=ygd2UlAxfLU+mYDJ7V52QH/uhOEuMoKI6mKmLzLz9IZG4r0AOT76nVz7Nhb6oWmoXH
-         zP0Yx+rFzhjhiCZtsRQwOovdZTtE+tvl5zOaV4Btse5+4TW5OOTXZJfTzEIDbtuz9G1d
-         f9/Dj98hIvBWwbIPthxjMGeRy7DOiMtqK6Y/tW91uy6RWp9bW4PYJ5JSLAU+1C42zELV
-         JSBl8PVsWH0v39O7PFaYzu9XR9DC09ITMGz/glQfHhvlsTHZCnlkYU6/BR5S2FQGenrR
-         Lx9U53IdrBIfXIdRe0OYV0So8VtZ89CYHUrjHMV0o/5aTTA4O8yDm7zFKg3MvFPjqSfZ
-         vlBg==
-X-Gm-Message-State: AOAM5301xfvLkG8M+bX2k7vz+AkYafESrC6safNBEsbUcK2RcjZ1TG+9
-        d1mkh3ZjSKJdnz0wbSJfPJ/HnvuUY2F5YiylGCDx
-X-Google-Smtp-Source: ABdhPJzn8kCki7g2xrksVPCE2X0dMoSQ5GNrlnQWJqU+8a/RnZE5ShgkUyQvDBvdRa4kG7oifCsX28YouBnWU5DkxR0=
-X-Received: by 2002:a05:600c:4fc9:b0:394:4317:1aa4 with SMTP id
- o9-20020a05600c4fc900b0039443171aa4mr1477643wmq.179.1651705059031; Wed, 04
- May 2022 15:57:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220504014440.3697851-1-keescook@chromium.org> <20220504014440.3697851-29-keescook@chromium.org>
-In-Reply-To: <20220504014440.3697851-29-keescook@chromium.org>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Wed, 4 May 2022 18:57:28 -0400
-Message-ID: <CAHC9VhT5Y=ENiSyb=S-NVbGX63sLOv4nVuR_GS-yww6tiz0wYA@mail.gmail.com>
-Subject: Re: [PATCH 28/32] selinux: Use mem_to_flex_dup() with xfrm and sidtab
-To:     Kees Cook <keescook@chromium.org>
-Cc:     "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+        Wed, 4 May 2022 19:38:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E38E1EEC0;
+        Wed,  4 May 2022 16:34:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AAD361CFE;
+        Wed,  4 May 2022 23:34:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1B9C385A4;
+        Wed,  4 May 2022 23:34:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651707264;
+        bh=rg7gAW6bX54fvgfTyj+iLNX8iI1sLhWyZHkaZSInPKI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rr/VhCUks/jvvIukLEQ8hvouelHSSI+9oZesVy9WjHsFReyAH53SdMAhNcNxTncRh
+         AeNcfpQbGYHxmfRd7jiZWMjG0UbB4TKauYhVIbCXLf6VkMiM+KTnvLtKq+XumdW3b5
+         5XsvfgT+eqRG0aM2cOon7t/TFhjG0ZcaDmVjSrCT8tVFYMC+NZbIz/9jgmtLbpb2XF
+         jXkHA/11zXgPOkzwOz9hKL1cmOdu/0VL29aSmhBA26JK83Tblanq8QYFCE42J8CQ6Y
+         8C4e2ka/Vcj7axXhNyNWWZ2uF0Rop6olk1luKtEofCYGXG5sML5MH30Czl0f2TcCS9
+         K08sslbYEpn+w==
+Date:   Wed, 4 May 2022 18:43:24 -0500
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     Kees Cook <keescook@chromium.org>,
         Steffen Klassert <steffen.klassert@secunet.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
@@ -61,7 +43,7 @@ Cc:     "Gustavo A . R . Silva" <gustavoars@kernel.org>,
         Eric Paris <eparis@parisplace.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
         Xiu Jianfeng <xiujianfeng@huawei.com>,
-        =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>,
+        Christian =?iso-8859-1?Q?G=F6ttsche?= <cgzones@googlemail.com>,
         netdev@vger.kernel.org, selinux@vger.kernel.org,
         Alexei Starovoitov <ast@kernel.org>,
         alsa-devel@alsa-project.org, Al Viro <viro@zeniv.linux.org.uk>,
@@ -140,7 +122,7 @@ Cc:     "Gustavo A . R . Silva" <gustavoars@kernel.org>,
         Mimi Zohar <zohar@linux.ibm.com>,
         Muchun Song <songmuchun@bytedance.com>,
         Nathan Chancellor <nathan@kernel.org>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Rich Felker <dalias@aerifal.cx>,
         Rob Herring <robh+dt@kernel.org>,
@@ -158,82 +140,53 @@ Cc:     "Gustavo A . R . Silva" <gustavoars@kernel.org>,
         wcn36xx@lists.infradead.org, Wei Liu <wei.liu@kernel.org>,
         xen-devel@lists.xenproject.org,
         Yang Yingliang <yangyingliang@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Subject: Re: [PATCH 28/32] selinux: Use mem_to_flex_dup() with xfrm and sidtab
+Message-ID: <20220504234324.GA12556@embeddedor>
+References: <20220504014440.3697851-1-keescook@chromium.org>
+ <20220504014440.3697851-29-keescook@chromium.org>
+ <CAHC9VhT5Y=ENiSyb=S-NVbGX63sLOv4nVuR_GS-yww6tiz0wYA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHC9VhT5Y=ENiSyb=S-NVbGX63sLOv4nVuR_GS-yww6tiz0wYA@mail.gmail.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, May 3, 2022 at 9:57 PM Kees Cook <keescook@chromium.org> wrote:
->
-> As part of the work to perform bounds checking on all memcpy() uses,
-> replace the open-coded a deserialization of bytes out of memory into a
-> trailing flexible array by using a flex_array.h helper to perform the
-> allocation, bounds checking, and copying:
->
->     struct xfrm_sec_ctx
->     struct sidtab_str_cache
->
-> Cc: Steffen Klassert <steffen.klassert@secunet.com>
-> Cc: Herbert Xu <herbert@gondor.apana.org.au>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Paul Moore <paul@paul-moore.com>
-> Cc: Stephen Smalley <stephen.smalley.work@gmail.com>
-> Cc: Eric Paris <eparis@parisplace.org>
-> Cc: Nick Desaulniers <ndesaulniers@google.com>
-> Cc: Xiu Jianfeng <xiujianfeng@huawei.com>
-> Cc: "Christian G=C3=B6ttsche" <cgzones@googlemail.com>
-> Cc: netdev@vger.kernel.org
-> Cc: selinux@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
->  include/uapi/linux/xfrm.h    | 4 ++--
->  security/selinux/ss/sidtab.c | 9 +++------
->  security/selinux/xfrm.c      | 7 ++-----
->  3 files changed, 7 insertions(+), 13 deletions(-)
->
-> diff --git a/include/uapi/linux/xfrm.h b/include/uapi/linux/xfrm.h
-> index 65e13a099b1a..4a6fa2beff6a 100644
-> --- a/include/uapi/linux/xfrm.h
-> +++ b/include/uapi/linux/xfrm.h
-> @@ -31,9 +31,9 @@ struct xfrm_id {
->  struct xfrm_sec_ctx {
->         __u8    ctx_doi;
->         __u8    ctx_alg;
-> -       __u16   ctx_len;
-> +       __DECLARE_FLEX_ARRAY_ELEMENTS_COUNT(__u16, ctx_len);
->         __u32   ctx_sid;
-> -       char    ctx_str[0];
-> +       __DECLARE_FLEX_ARRAY_ELEMENTS(char, ctx_str);
->  };
+Hi Paul,
 
-While I like the idea of this in principle, I'd like to hear about the
-testing you've done on these patches.  A previous flex array
-conversion in the audit uapi headers ended up causing a problem with
-GCC12 and SWIG; while it was a SWIG problem and not a kernel header
-problem that was thin consolation for those with broken builds.
+On Wed, May 04, 2022 at 06:57:28PM -0400, Paul Moore wrote:
+> On Tue, May 3, 2022 at 9:57 PM Kees Cook <keescook@chromium.org> wrote:
 
-> diff --git a/security/selinux/ss/sidtab.c b/security/selinux/ss/sidtab.c
-> index a54b8652bfb5..a9d434e8cff7 100644
-> --- a/security/selinux/ss/sidtab.c
-> +++ b/security/selinux/ss/sidtab.c
-> @@ -23,8 +23,8 @@ struct sidtab_str_cache {
->         struct rcu_head rcu_member;
->         struct list_head lru_member;
->         struct sidtab_entry *parent;
-> -       u32 len;
-> -       char str[];
-> +       DECLARE_FLEX_ARRAY_ELEMENTS_COUNT(u32, len);
-> +       DECLARE_FLEX_ARRAY_ELEMENTS(char, str);
->  };
->
->  #define index_to_sid(index) ((index) + SECINITSID_NUM + 1)
+[..]
 
---=20
-paul-moore.com
+> > +++ b/include/uapi/linux/xfrm.h
+> > @@ -31,9 +31,9 @@ struct xfrm_id {
+> >  struct xfrm_sec_ctx {
+> >         __u8    ctx_doi;
+> >         __u8    ctx_alg;
+> > -       __u16   ctx_len;
+> > +       __DECLARE_FLEX_ARRAY_ELEMENTS_COUNT(__u16, ctx_len);
+> >         __u32   ctx_sid;
+> > -       char    ctx_str[0];
+> > +       __DECLARE_FLEX_ARRAY_ELEMENTS(char, ctx_str);
+> >  };
+> 
+> While I like the idea of this in principle, I'd like to hear about the
+> testing you've done on these patches.  A previous flex array
+> conversion in the audit uapi headers ended up causing a problem with
+
+I'm curious about which commit caused those problems...?
+
+Thanks
+--
+Gustavo
+
+> GCC12 and SWIG; while it was a SWIG problem and not a kernel header
+> problem that was thin consolation for those with broken builds.
