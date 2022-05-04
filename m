@@ -2,58 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 102F951AD6C
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 May 2022 21:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50C3551ACD3
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 May 2022 20:29:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377449AbiEDTFj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 May 2022 15:05:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34092 "EHLO
+        id S1376910AbiEDSdA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 May 2022 14:33:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376492AbiEDTFh (ORCPT
+        with ESMTP id S1376932AbiEDScm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 May 2022 15:05:37 -0400
-X-Greylist: delayed 3958 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 04 May 2022 12:01:58 PDT
-Received: from vsrv1.cyfronet.pl (vsrv1.cyfronet.pl [149.156.2.166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AF442E9D0
-        for <linux-wireless@vger.kernel.org>; Wed,  4 May 2022 12:01:58 -0700 (PDT)
-Received: from vsrv1.cyfronet.pl (vsrv1.cyfronet.pl [127.0.0.1])
-        by vsrv1.cyfronet.pl (8.12.11.20060308/8.12.11) with ESMTP id 244GkHx7017448
-        for <linux-wireless@vger.kernel.org>; Wed, 4 May 2022 18:46:17 +0200
-Received: (from apache@localhost)
-        by vsrv1.cyfronet.pl (8.12.11.20060308/8.12.11/Submit) id 244GkGqZ017446;
-        Wed, 4 May 2022 18:46:16 +0200
-Date:   Wed, 4 May 2022 18:46:16 +0200
-To:     linux-wireless@vger.kernel.org
-From:   =?ISO-8859-2?Q?Polski_Zwi=B1zek_G=B3uchych_Oddzia=B3_Ma=B3opolski_w_Krako?=
-         =?ISO-8859-2?Q?wie?= <webmaster@pzg.krakow.pl>
-Subject: =?ISO-8859-2?Q?Dane_u=BFytkownika_dla_=F0=9F=92=9A_Allison_want_to_play_w?=
- =?ISO-8859-2?Q?ith_you!_Start_Play:_http://inx.lv/GHNL=3Fdw90_=F0=9F=92?=
- =?ISO-8859-2?Q?=9A_na_Polski_Zwi=B1zek_G=B3uchych_Oddzia=B3_Ma=B3opolski_?=
- =?ISO-8859-2?Q?w_Krakowie?=
-Message-ID: <5d8ee5c577cefc2c5cd32babd9f2351a@www.pzg.krakow.pl>
-X-Priority: 3
-X-Mailer: PHPMailer [version 1.73]
+        Wed, 4 May 2022 14:32:42 -0400
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C50E5AA43;
+        Wed,  4 May 2022 11:09:11 -0700 (PDT)
+Received: by mail-ot1-f43.google.com with SMTP id m6-20020a05683023a600b0060612720715so1395504ots.10;
+        Wed, 04 May 2022 11:09:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=D+E9lNuRbHFdd170vr+MtjOcic+cq6LuKuOZKRSFmmQ=;
+        b=hqu6R1IRae0VoX6RVScHw+Zzo1GjIz7JEVjL/qj/M5RsjpSzZPnxbWaJ2QRNj9pG/V
+         GzcagHr+46Vvmokee05IR5m2irmd6EgL7Zj5NeOxB9mO4H+0VWs7t+QY6SdSEHLAFOQX
+         7nlxFOlTSSaPyJczzOi0IByyUPBRQBxkBJureHxsnNNwZLVdOxVmsPv3XR9dms/Hhmdq
+         Dpei6T4pf7hR9BSOp3RbmeuXVXYkTBZhjTdTpNg8Sjcc5Id2RNDvW92doze4AoQiouKc
+         /p5ZsjI6uJj0BqaJNqAfTwSy3ZnrnJ6J4Wl3iDw286tyYbPdWZk0VQKlkpwQfXgmyYMV
+         dCDg==
+X-Gm-Message-State: AOAM531GBGiEJMipM7x6IPEegxYs2k8skR7Jmuzu2kokd0nLw2UfSWFh
+        7VEkFE2UyuEFyw5s9SPLig==
+X-Google-Smtp-Source: ABdhPJz7UxGCoN/1mtQLUptxPhW193aedSmrIFdTLYGH8vHQEwAOv7HLwELKhlP+txzkjgVxGZbMKA==
+X-Received: by 2002:a05:6830:116:b0:606:3fb1:e89e with SMTP id i22-20020a056830011600b006063fb1e89emr2227922otp.310.1651687750783;
+        Wed, 04 May 2022 11:09:10 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id d19-20020a4ad353000000b0035eb4e5a6bfsm6240803oos.21.2022.05.04.11.09.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 May 2022 11:09:10 -0700 (PDT)
+Received: (nullmailer pid 1975953 invoked by uid 1000);
+        Wed, 04 May 2022 18:09:09 -0000
+Date:   Wed, 4 May 2022 13:09:09 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-xtensa@linux-xtensa.org, devicetree@vger.kernel.org,
+        kunit-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org,
+        linux-bluetooth@vger.kernel.org, linux-hardening@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, llvm@lists.linux.dev,
+        netdev@vger.kernel.org, selinux@vger.kernel.org
+Subject: Re: [PATCH 29/32] xtensa: Use mem_to_flex_dup() with struct property
+Message-ID: <YnKbaXEUHyu+btOD@robh.at.kernel.org>
+References: <20220504014440.3697851-1-keescook@chromium.org>
+ <20220504014440.3697851-30-keescook@chromium.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="ISO-8859-2"
-X-Spam-Status: No, score=2.5 required=5.0 tests=BAYES_50,
-        HEADER_FROM_DIFFERENT_DOMAINS,PLING_QUERY,RCVD_IN_VALIDITY_RPBL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220504014440.3697851-30-keescook@chromium.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sz. P. ðŸ’š Allison want to play with you! Start Play: http://inx.lv/GHNL?dw90 ðŸ’š! Witaj,
+Gmail won't send this, so I've trimmed the recipients...
 
-Dziêkujemy za zarejestrowanie siê w serwisie Polski Zwi±zek G³uchych Oddzia³ Ma³opolski w Krakowie. Twoje konto zosta³o utworzone i musi zostaæ aktywowane zanim bêdzie mo¿na go u¿yæ.
-Aby aktywowaæ swoje konto, u¿yj poni¿szego odno¶nika lub skopiuj i wklej w pasku adresu swojej przegl±darki:
-http://www.pzg.krakow.pl/index.php?option=com_registration&task=activate&activation=43cee0ca57298f3d0c7cf656c2a56d8c
+On Tue, May 03, 2022 at 06:44:38PM -0700, Kees Cook wrote:
+> As part of the work to perform bounds checking on all memcpy() uses,
+> replace the open-coded a deserialization of bytes out of memory into a
+> trailing flexible array by using a flex_array.h helper to perform the
+> allocation, bounds checking, and copying.
+> 
+> Cc: Chris Zankel <chris@zankel.net>
+> Cc: Max Filippov <jcmvbkbc@gmail.com>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Frank Rowand <frowand.list@gmail.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: linux-xtensa@linux-xtensa.org
+> Cc: devicetree@vger.kernel.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  arch/xtensa/platforms/xtfpga/setup.c | 9 +++------
+>  include/linux/of.h                   | 3 ++-
+>  2 files changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/xtensa/platforms/xtfpga/setup.c b/arch/xtensa/platforms/xtfpga/setup.c
+> index 538e6748e85a..31c1fa4ba4ec 100644
+> --- a/arch/xtensa/platforms/xtfpga/setup.c
+> +++ b/arch/xtensa/platforms/xtfpga/setup.c
+> @@ -102,7 +102,7 @@ CLK_OF_DECLARE(xtfpga_clk, "cdns,xtfpga-clock", xtfpga_clk_setup);
+>  #define MAC_LEN 6
+>  static void __init update_local_mac(struct device_node *node)
+>  {
+> -	struct property *newmac;
+> +	struct property *newmac = NULL;
+>  	const u8* macaddr;
+>  	int prop_len;
+>  
+> @@ -110,19 +110,16 @@ static void __init update_local_mac(struct device_node *node)
+>  	if (macaddr == NULL || prop_len != MAC_LEN)
+>  		return;
+>  
+> -	newmac = kzalloc(sizeof(*newmac) + MAC_LEN, GFP_KERNEL);
+> -	if (newmac == NULL)
+> +	if (mem_to_flex_dup(&newmac, macaddr, MAC_LEN, GFP_KERNEL))
+>  		return;
+>  
+> -	newmac->value = newmac + 1;
+> -	newmac->length = MAC_LEN;
+> +	newmac->value = newmac->contents;
+>  	newmac->name = kstrdup("local-mac-address", GFP_KERNEL);
+>  	if (newmac->name == NULL) {
+>  		kfree(newmac);
+>  		return;
+>  	}
+>  
+> -	memcpy(newmac->value, macaddr, MAC_LEN);
+>  	((u8*)newmac->value)[5] = (*(u32*)DIP_SWITCHES_VADDR) & 0x3f;
+>  	of_update_property(node, newmac);
+>  }
+> diff --git a/include/linux/of.h b/include/linux/of.h
+> index 17741eee0ca4..efb0f419fd1f 100644
+> --- a/include/linux/of.h
+> +++ b/include/linux/of.h
+> @@ -30,7 +30,7 @@ typedef u32 ihandle;
+>  
+>  struct property {
+>  	char	*name;
+> -	int	length;
+> +	DECLARE_FLEX_ARRAY_ELEMENTS_COUNT(int, length);
+>  	void	*value;
+>  	struct property *next;
+>  #if defined(CONFIG_OF_DYNAMIC) || defined(CONFIG_SPARC)
+> @@ -42,6 +42,7 @@ struct property {
+>  #if defined(CONFIG_OF_KOBJ)
+>  	struct bin_attribute attr;
+>  #endif
+> +	DECLARE_FLEX_ARRAY_ELEMENTS(u8, contents);
 
-Po aktywacji mo¿esz zalogowaæ siê w serwisie http://www.pzg.krakow.pl, korzystaj±c z poni¿szego loginu i has³a:
+99.9% of the time, this is not where the property value is stored as it 
+points into an FDT blob. I suppose that is okay, but just want to make 
+sure.
 
-Login - ðŸ’š Allison want to play
-Has³o - wCAYIlkXUU!Z
+The DT API for creating new nodes and properties is horrible as it is 
+multiple allocs and strdups which makes for tricky error paths. A better 
+API to centralize it would be welcome, but if this is the only case you 
+came across it's certainly not a requirement.
+
+Rob
