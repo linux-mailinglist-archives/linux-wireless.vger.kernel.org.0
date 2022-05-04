@@ -2,168 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CF8E519E8A
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 May 2022 13:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46F06519EC0
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 May 2022 14:00:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347049AbiEDLyr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 May 2022 07:54:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34262 "EHLO
+        id S1345432AbiEDMED (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 May 2022 08:04:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348991AbiEDLyp (ORCPT
+        with ESMTP id S1349231AbiEDMDx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 May 2022 07:54:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 045552CE25
-        for <linux-wireless@vger.kernel.org>; Wed,  4 May 2022 04:51:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1651665068;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=tavZwp8BQxfV8UeYb9Xzxs1vfyyi2W9B0pF5sD/TmHM=;
-        b=fJxA5Z088NbB4pcBbh+reOm6AEEAHEG0gMkchmcEwumPuzmPHZ2iDgCd3xULWePYDGxx3M
-        Td2eQ3trk4b0HoB3dohgfBzE8otnXor7T1znF73w5UIKbz9BCQEEfOhsSffYNfDQLjkYmw
-        rhAOsUezj0lOAr9GZmcjr7oqPC3In+c=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-324-ZTJFlpB1O2O85P9uNzSqaQ-1; Wed, 04 May 2022 07:51:07 -0400
-X-MC-Unique: ZTJFlpB1O2O85P9uNzSqaQ-1
-Received: by mail-ej1-f71.google.com with SMTP id qw30-20020a1709066a1e00b006f45e7f44b0so708494ejc.5
-        for <linux-wireless@vger.kernel.org>; Wed, 04 May 2022 04:51:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:organization:mime-version:content-transfer-encoding;
-        bh=tavZwp8BQxfV8UeYb9Xzxs1vfyyi2W9B0pF5sD/TmHM=;
-        b=4O5MYknt994PlNc0onndnc48vijerCuq+v4MpMS9QqWHqWpMmU29eeDzBfLaz9UMZK
-         54geUKk+fPcEXSOf7PISrQWnDJCU0IXxw+Cikxf0VKUhbBwZS9JEyNP5Ii+aCM5/OQff
-         GtBLnG0f1f6i7HLtsHHWzA2runC5iWiYea7cI755+SNfimAdwQjWqid2kAokhD1Mbper
-         nA+DwsNoUindp1wuh1RJSB1sM4VnQmfYzLBe08edKyHbjS4TNZ+7Bz3LliN7Uihg+LWf
-         oS+pWmevS4VF2Zh8iUNZPGuwZi/A/Sbr7u8FxRXksqHPYVIYcF6jomraOflxm5Xn6WzZ
-         gBdw==
-X-Gm-Message-State: AOAM531N748ekLi0+G6sj0bm9kEEZiK7USN7/KTicn5QyPPh7imNdGdK
-        R5R01KK71ZljIctSENSFV0TzXD504V4sFog0CxlokMBgHgy+z2uX6KQfcV+kW8K62KaOnfCIPf4
-        PeTD32GVhmzCXUB+EuWGQXPru7KA=
-X-Received: by 2002:a17:906:3fd1:b0:6ef:606f:e5c5 with SMTP id k17-20020a1709063fd100b006ef606fe5c5mr19216829ejj.441.1651665065699;
-        Wed, 04 May 2022 04:51:05 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyfylvO+VKVVbzY5ASXCx0ehCojnDyP/xtWqHiM66c5/brxEnt1fwNb2R3LeYpLzPIIxvzLhQ==
-X-Received: by 2002:a17:906:3fd1:b0:6ef:606f:e5c5 with SMTP id k17-20020a1709063fd100b006ef606fe5c5mr19216817ejj.441.1651665065489;
-        Wed, 04 May 2022 04:51:05 -0700 (PDT)
-Received: from maya.cloud.tilaa.com (maya.cloud.tilaa.com. [2a02:2770:5:0:21a:4aff:fe98:d313])
-        by smtp.gmail.com with ESMTPSA id el8-20020a170907284800b006f3ef214e12sm5674426ejc.120.2022.05.04.04.51.04
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 04 May 2022 04:51:04 -0700 (PDT)
-Date:   Wed, 4 May 2022 13:50:59 +0200
-From:   Stefano Brivio <sbrivio@redhat.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jaehee <jhpark1013@gmail.com>, Kalle Valo <kvalo@kernel.org>,
-        =?UTF-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
-        Outreachy Linux Kernel <outreachy@lists.linux.dev>
-Subject: Re: [PATCH] wfx: use container_of() to get vif
-Message-ID: <20220504135059.7132b2b6@elisabeth>
-In-Reply-To: <20220504093347.GB4009@kadam>
-References: <20220418035110.GA937332@jaehee-ThinkPad-X1-Extreme>
-        <87y200nf0a.fsf@kernel.org>
-        <CAA1TwFCOEEwnayexnJin8T=Fc2HEgHC9jyfj5HxfiWybjUi9GA@mail.gmail.com>
-        <20220504093347.GB4009@kadam>
-Organization: Red Hat
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+        Wed, 4 May 2022 08:03:53 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7B33F4A
+        for <linux-wireless@vger.kernel.org>; Wed,  4 May 2022 05:00:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=mY2mgK4GXixkyAnRyVErr8pNbuciIp0UGA/C/xY3T48=;
+        t=1651665617; x=1652875217; b=t0K7nPsnXXYHDhjknCBPLNI54RCWsjTxQM6wMI2qgKHTaZz
+        /UB6RxtEqgO40s+GlJzIrL8hDlgqsSZCwwQlje+R5iRcrPPWBnLJvjgSHgmLx0t8lNnnX1oX5ImC5
+        j/G2rZyXTwkrc5ty37gSfQOtzkL6GQPBLo2Wu19GRLiN/FL3P67YknSbI7uikx3Wq9xTZZ0Hqdyk4
+        l7SBSlFCdW/Wu7n0gswZYmkoEgpWSXHO85I0nH1MRK/odAKsYKqiGbI1Ap4Lc4AbPr7gl6wO+jmvo
+        63MXDOUVt/LRxi4SloaHno/h6BnMmWEaXfZQomgJ7PgUIHOHNQ4UoOl3jQbs1/mQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nmDfu-0021gf-Or;
+        Wed, 04 May 2022 14:00:10 +0200
+Message-ID: <a0a40e7f40dd173cc4a3688bd77c90cc8c479ab7.camel@sipsolutions.net>
+Subject: Re: [PATCH v5] cfg80211: save power spectral density(psd) of
+ regulatory rule
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wen Gong <quic_wgong@quicinc.com>, Wen Gong <wgong@codeaurora.org>
+Cc:     Venkateswara Naralasetty <vnaralas@qti.qualcomm.com>,
+        Venkateswara Naralasetty <vnaralas@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        wgong=codeaurora.org@codeaurora.org, quic_adisi@quicinc.com,
+        quic_vnaralas@quicinc.com
+Date:   Wed, 04 May 2022 14:00:09 +0200
+In-Reply-To: <aee8fc50-3ffb-f985-f0ad-9752bb51890d@quicinc.com>
+References: <20210928085211.26186-1-wgong@codeaurora.org>
+         <bd649a3d2cf2ea9064d427d633055891@codeaurora.org>
+         <cb20427eae96c4551084e4c899618b94@codeaurora.org>
+         <2afb1bf6f06cb53f43fe0d354afa4e7c@codeaurora.org>
+         <2ed76cff292dcca18326de0407a93821@codeaurora.org>
+         <1222384c2bc7d80bf572b65ab17660477bb27300.camel@sipsolutions.net>
+         <562080d7fc3b7568811c47a8e8e79156@codeaurora.org>
+         <DM8PR02MB8154258563A4F7C805C84B4BE6B59@DM8PR02MB8154.namprd02.prod.outlook.com>
+         <0b05f6e555bcb89c49f56279c077ce63@codeaurora.org>
+         <18363bc18538ea9b7e8fe28f4c5595c54f3b93d3.camel@sipsolutions.net>
+         <67936afa5545b9a5d6eb5ad6931026d7@codeaurora.org>
+         <6053b0963612057267f00b89e14b9e15@codeaurora.org>
+         <68b700b371399db0ed4174d20ddd0b8b@codeaurora.org>
+         <7761dc6f736b04cce1137b68a7132ac7@codeaurora.org>
+         <aee8fc50-3ffb-f985-f0ad-9752bb51890d@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dan,
+Hi,
 
-On Wed, 4 May 2022 12:33:48 +0300
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+Sorry. I've been shying away from this, it's completely confusing me,
+and the code isn't really helping that much, so far.
 
-> On Mon, May 02, 2022 at 02:10:07PM -0400, Jaehee wrote:
-> > On Wed, Apr 20, 2022 at 7:58 AM Kalle Valo <kvalo@kernel.org> wrote:  
-> > >
-> > > Jaehee Park <jhpark1013@gmail.com> writes:
-> > >  
-> > > > Currently, upon virtual interface creation, wfx_add_interface() stores
-> > > > a reference to the corresponding struct ieee80211_vif in private data,
-> > > > for later usage. This is not needed when using the container_of
-> > > > construct. This construct already has all the info it needs to retrieve
-> > > > the reference to the corresponding struct from the offset that is
-> > > > already available, inherent in container_of(), between its type and
-> > > > member inputs (struct ieee80211_vif and drv_priv, respectively).
-> > > > Remove vif (which was previously storing the reference to the struct
-> > > > ieee80211_vif) from the struct wfx_vif, define a function
-> > > > wvif_to_vif(wvif) for container_of(), and replace all wvif->vif with
-> > > > the newly defined container_of construct.
-> > > >
-> > > > Signed-off-by: Jaehee Park <jhpark1013@gmail.com>  
-> > >
-> > > [...]
-> > >  
-> > > > +static inline struct ieee80211_vif *wvif_to_vif(struct wfx_vif *wvif)
-> > > > +{
-> > > > +     return container_of((void *)wvif, struct ieee80211_vif, drv_priv);
-> > > > +}  
-> > >
-> > > Why the void pointer cast? Avoid casts as much possible.
-> > >  
-> > 
-> > Hi Kalle,
-> > 
-> > Sorry for the delay in getting back to you about why the void pointer
-> > cast was used.
-> > 
-> > In essence, I'm taking private data with a driver-specific pointer
-> > and that needs to be resolved back to a generic pointer.
-> > 
-> > The private data (drv_priv) is declared as a generic u8 array in struct
-> > ieee80211_vif, but wvif is a more specific type.
-> > 
-> > I wanted to also point to existing, reasonable examples such as:
-> > static void iwl_mvm_tcm_uapsd_nonagg_detected_wk(struct work_struct *wk)
-> > {
-> >         struct iwl_mvm *mvm;
-> >         struct iwl_mvm_vif *mvmvif;
-> >         struct ieee80211_vif *vif;
-> > 
-> >         mvmvif = container_of(wk, struct iwl_mvm_vif,
-> >                               uapsd_nonagg_detected_wk.work);
-> >         vif = container_of((void *)mvmvif, struct ieee80211_vif, drv_priv);
-> > 
-> > in drivers/net/wireless$ less intel/iwlwifi/mvm/utils.c, which does the
-> > same thing.
-> > 
-> > There are fifteen of them throughout:  
+> PSD is another type power value as well as the power_rule in 
+> ieee80211_reg_rule
+> and max_reg_power/max_power in ieee80211_channel. For 6G, it need the
+> both the 2 values (psd and tx-power) for power control.
+
+Sure, that makes sense. You have PSD limits as well as TX power limits.
+
+> To support LPI/SP/VLP mode + concurrency, it is not only to process the
+> TX power and psd, it need to process all fields in ieee80211_reg_rule.
+> for example, for the same country US, it has some ieee80211_reg_rule for
+> 6G:
+> LPI mode for AP mode is:
+> (5945 - 7125 @ 160) (0, 30) (FLAGS 512) (psd 5 dB/MHz)
 > 
-> The cast is fine, but this email is frustrating.
+> LPI mode for client mode is:
+> (5945 - 7125 @ 160) (0, 24) (FLAGS 512) (psd -1 dB/MHz)
 > 
-> It sounds like you are saying that you copied it from other code and
-> that's not a good answer...  :/  It's easiest if you just copy and paste
-> the build error and we can figure out why the cast is need for our
-> selves...
+> SP mode is:
+> (5945 - 6425 @ 160) (0, 30) (FLAGS 0) (psd 17 dB/MHz)
+> (6525 - 6875 @ 160) (0, 30) (FLAGS 0) (psd 17 dB/MHz)
+> 
+> you can see the frequency range/flags/tx power/psd are not same between
+> the 3 mode.
 
-...my bad, then.
+Right. But here I already don't understand - does that mean your
+hardware can only be in one mode today overall? 
 
-I suggested to Jaehee she would *also* point out that there are already
-a pile of usages (which I grepped for myself, by the way).
+It seems you'd need to have separate regulatory rules per mode, and
+possibly per interface type, no?
 
-And that it's *obvious* that container_of() would trigger warnings
-otherwise. Well, obvious just for me, it seems.
+Or do you try to adjust the regulatory rules when the mode is switched?
+But we try to have regulatory rules capture the overall status, not a
+temporary status, and then apply the rules that make sense at any given
+time.
 
--- 
-Stefano
+> So the psd value is a same kind field as well as the frequency
+> range/flags/tx power in ieee80211_reg_rule and ieee80211_channel.
+> If it has only one interface in the same ieee80211_hw, the interface
+> must choose one the the above modes at any time, and the reg rules
+> will be updated when the interface changed its mode, then the info
+> of channels of ieee80211_supported_band for 6G also update, it has
+> no problem.
 
+Ah OK, so you answer that question - you're actually changing the
+regulatory rules, which is totally unexpected to me, since I'd expect
+those to only change when the regulatory changes, not when you mode
+switch ...
+
+> When it has 2 interface up simultaneously in the same ieee80211_hw,
+> then it will have problem. because the 2 interface share the same
+> ieee80211_reg_rule and the same channels and same ieee80211_supported_band
+> for 6G, if interface #1 is LPI-AP, and interface #2 is SP mode, then
+> even the channels count is not same for the 2 interface, channels count
+> of SP mode is smaller than LPI-AP, also the info of channel is not same.
+> 
+> So adding/not adding psd value into ieee80211_reg_rule/ieee80211_channel
+> will not effect the problem of muti-interface concurrency issue of 6G.
+
+Oh but I disagree - adding it will mean that this is how we interpret
+the reg_rule, that it only carries the current status according to "the"
+current mode (which isn't even well-defined), rather than the entirety
+of the regulatory information.
+
+> When muti-interface concurrency run, all the fields of ieee80211_reg_rule/
+> ieee80211_channel should be split.
+
+Right.
+
+> I think the easy way is to save the channels of ieee80211_supported_band
+> of 6G in each interface instead of ieee80211_hw, then interface #1/#2
+> have/use their own channels, they use their own frequency range/flags/
+> tx power/psd... 
+> 
+
+I'm not sure that will work, because we often compare chan pointers with
+==, and if you're doing something like remain-on-channel that's still
+relevant. So having the same channel struct on the same hardware with
+the same frequency is bound to be problematic.
+
+> This is a high level change, and adding psd into
+> ieee80211_reg_rule/ieee80211_channel is a low level change. So I think
+> they have no dependency with each other.
+
+I think I disagree, per the above disagreement.
+
+johannes
