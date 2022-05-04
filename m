@@ -2,170 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20079519616
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 May 2022 05:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C3ED5196EB
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 May 2022 07:29:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344387AbiEDDlU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 May 2022 23:41:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44500 "EHLO
+        id S242142AbiEDFdC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 May 2022 01:33:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344349AbiEDDlR (ORCPT
+        with ESMTP id S238209AbiEDFdB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 May 2022 23:41:17 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80855289BD
-        for <linux-wireless@vger.kernel.org>; Tue,  3 May 2022 20:37:37 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id a11so174040pff.1
-        for <linux-wireless@vger.kernel.org>; Tue, 03 May 2022 20:37:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=lsBVjxx2frcPFNjY4/BLqdzh7cys7mpO3LyMH5LAbSE=;
-        b=e/seADFb6dKCy5O35I2lb3QkGM1U1AG+HWJjIUEuWUaLYiQ/bRCqVwsL3BCOvWYEuK
-         9qpY1aU7RmqPGGBT5JUv2H6Jc6siGFaT+PVsx+FN+n4iHis5NM0gOyiK9HY2IIWzLhh4
-         mk3V/alwvU0/DDln8pB7kZALicerW3KUceFLU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=lsBVjxx2frcPFNjY4/BLqdzh7cys7mpO3LyMH5LAbSE=;
-        b=WKp66kBG077EBdjwQ8PW0S8mfLrF6L/M5KRgmTUCcYqj7kJgAkeQ1ypWoR1C2/l2OO
-         s66Vs8do8alGSmly1zrifLXvipL5ikeLAVtfd8pqGreDBv3+pgqtfNLeb7rTDvgdJHvv
-         WoBmbs1Me+LRxLZ8K5L20aR3ToORHl6FzH7DSp5Wbjcd/FBwFvBLO5zHD7isluE09nWf
-         VNH4Hqr/24ZPLUqUkEapz+ggq5bYCRPD0e/By+ojtH48yDlTXf/I7Uo7khO34S8RJsln
-         0d3CS/ml/BbA2HQuhy7dBFaNS2gfsoFmtlfYbLiJhvcRAbfifgVVVyZl1bI+boXRFeug
-         KOVA==
-X-Gm-Message-State: AOAM531nOC5RKdQctQlLY3dNifBUI6Meh9PCRO0sSlPV7Un6svWOrsCX
-        1ZqfHSxwGKVI0VxLuZ1WbbFOkg==
-X-Google-Smtp-Source: ABdhPJwD/uvCKEJ4PY5hYyja46c4g0gVoPoVIrAV6/UTN/22EI1oLPF2GDVC1zkPD9qJOD+dW3FeWQ==
-X-Received: by 2002:a63:8c1a:0:b0:3ab:35a9:5f8f with SMTP id m26-20020a638c1a000000b003ab35a95f8fmr16187660pgd.598.1651635457000;
-        Tue, 03 May 2022 20:37:37 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id j17-20020a62b611000000b0050dc7628170sm7022939pff.74.2022.05.03.20.37.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 May 2022 20:37:36 -0700 (PDT)
-Date:   Tue, 3 May 2022 20:37:35 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rich Felker <dalias@aerifal.cx>,
-        Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
-        Alexei Starovoitov <ast@kernel.org>,
-        alsa-devel@alsa-project.org, Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Gabbasov <andrew_gabbasov@mentor.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Gross <agross@kernel.org>,
-        Andy Lavr <andy.lavr@gmail.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Baowen Zheng <baowen.zheng@corigine.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Bradley Grove <linuxdrivers@attotech.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        Christian Brauner <brauner@kernel.org>,
-        Christian =?iso-8859-1?Q?G=F6ttsche?= <cgzones@googlemail.com>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Chris Zankel <chris@zankel.net>,
-        Cong Wang <cong.wang@bytedance.com>,
-        Daniel Axtens <dja@axtens.net>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Dan Williams <dan.j.williams@intel.com>,
-        David Gow <davidgow@google.com>,
-        David Howells <dhowells@redhat.com>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        devicetree@vger.kernel.org, Dexuan Cui <decui@microsoft.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Eli Cohen <elic@nvidia.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Eugeniu Rosca <erosca@de.adit-jv.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Francis Laniel <laniel_francis@privacyrequired.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Hulk Robot <hulkci@huawei.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        John Keeping <john@metanate.com>,
-        Juergen Gross <jgross@suse.com>, Kalle Valo <kvalo@kernel.org>,
-        Keith Packard <keithp@keithp.com>, keyrings@vger.kernel.org,
-        kunit-dev@googlegroups.com,
-        Kuniyuki Iwashima <kuniyu@amazon.co.jp>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Leon Romanovsky <leon@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux1394-devel@lists.sourceforge.net,
-        linux-afs@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, llvm@lists.linux.dev,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Louis Peens <louis.peens@corigine.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Mark Brown <broonie@kernel.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Muchun Song <songmuchun@bytedance.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Russell King <linux@armlinux.org.uk>, selinux@vger.kernel.org,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        SHA-cyfmac-dev-list@infineon.com,
-        Simon Horman <simon.horman@corigine.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Tadeusz Struk <tadeusz.struk@linaro.org>,
-        Takashi Iwai <tiwai@suse.com>, Tom Rix <trix@redhat.com>,
-        Udipto Goswami <quic_ugoswami@quicinc.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        wcn36xx@lists.infradead.org, Wei Liu <wei.liu@kernel.org>,
-        xen-devel@lists.xenproject.org,
-        Xiu Jianfeng <xiujianfeng@huawei.com>,
-        Yang Yingliang <yangyingliang@huawei.com>
-Subject: Re: [PATCH 01/32] netlink: Avoid memcpy() across flexible array
- boundary
-Message-ID: <202205032027.B2A9FB4AA@keescook>
-References: <20220504014440.3697851-1-keescook@chromium.org>
- <20220504014440.3697851-2-keescook@chromium.org>
- <20220504033105.GA13667@embeddedor>
+        Wed, 4 May 2022 01:33:01 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 309B923BD0
+        for <linux-wireless@vger.kernel.org>; Tue,  3 May 2022 22:29:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E2E60B82351
+        for <linux-wireless@vger.kernel.org>; Wed,  4 May 2022 05:29:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F79C385A5;
+        Wed,  4 May 2022 05:29:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651642163;
+        bh=plJ2nLfSySznqojpxRhT+kGpcXE6KjRIL+dyHw4JFe8=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=eScqYcliO+0L+yxDDYbIAIsq95jxra7DkDz8VOGyreOZq9ai4Qp0mba4oWoUMY8Re
+         o0Nzq8vVFMJD9YUOHUXucqQsOmbnPmLBfTdGgObkq7v2ekKxtKZvJW776mjV4e5kt9
+         R1UxQG/Y3jM/1wV4/mmRHA67BhNfOWNaXc6HD86masfMBeooI+3M8FLw50JHzlu+Se
+         Q5HDGib3qp/I7a5+TjoserL7fJ3hRm1sMunlvBHThTtZtu0RwvmwD6Sv/VtWdatp03
+         XC/hy8iX49xXg2pXOS1AZqhv941lu+Wm1Ezv6i3g+MxvqbP0rK64EJAw9I/PqM77q6
+         gm/uQGw+KwT2w==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220504033105.GA13667@embeddedor>
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [v2] wfx: avoid flush_workqueue(system_highpri_wq) usage
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <f15574a6-aba4-72bc-73af-26fdcdf9fb63@I-love.SAKURA.ne.jp>
+References: <f15574a6-aba4-72bc-73af-26fdcdf9fb63@I-love.SAKURA.ne.jp>
+To:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc:     =?utf-8?b?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <165164215752.17573.5008530399127165115.kvalo@kernel.org>
+Date:   Wed,  4 May 2022 05:29:22 +0000 (UTC)
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -173,86 +55,20 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, May 03, 2022 at 10:31:05PM -0500, Gustavo A. R. Silva wrote:
-> On Tue, May 03, 2022 at 06:44:10PM -0700, Kees Cook wrote:
-> [...]
-> > diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-> > index 1b5a9c2e1c29..09346aee1022 100644
-> > --- a/net/netlink/af_netlink.c
-> > +++ b/net/netlink/af_netlink.c
-> > @@ -2445,7 +2445,10 @@ void netlink_ack(struct sk_buff *in_skb, struct nlmsghdr *nlh, int err,
-> >  			  NLMSG_ERROR, payload, flags);
-> >  	errmsg = nlmsg_data(rep);
-> >  	errmsg->error = err;
-> > -	memcpy(&errmsg->msg, nlh, payload > sizeof(*errmsg) ? nlh->nlmsg_len : sizeof(*nlh));
-> > +	errmsg->msg = *nlh;
-> > +	if (payload > sizeof(*errmsg))
-> > +		memcpy(errmsg->msg.nlmsg_payload, nlh->nlmsg_payload,
-> > +		       nlh->nlmsg_len - sizeof(*nlh));
+Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp> wrote:
+
+> Flushing system-wide workqueues is dangerous and will be forbidden.
+> Replace system_highpri_wq with per "struct wfx_dev" bh_wq.
 > 
-> They have nlmsg_len()[1] for the length of the payload without the header:
-> 
-> /**
->  * nlmsg_len - length of message payload
->  * @nlh: netlink message header
->  */
-> static inline int nlmsg_len(const struct nlmsghdr *nlh)
-> {
-> 	return nlh->nlmsg_len - NLMSG_HDRLEN;
-> }
+> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+> Acked-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
 
-Oh, hm, yeah, that would be much cleaner. The relationship between
-"payload" and nlmsg_len is confusing in here. :)
+Patch applied to wireless-next.git, thanks.
 
-So, this should be simpler:
-
--	memcpy(&errmsg->msg, nlh, payload > sizeof(*errmsg) ? nlh->nlmsg_len : sizeof(*nlh));
-+	errmsg->msg = *nlh;
-+	memcpy(errmsg->msg.nlmsg_payload, nlh->nlmsg_payload, nlmsg_len(nlh));
-
-It's actually this case that triggered my investigation in __bos(1)'s
-misbehavior around sub-structs, since this case wasn't getting silenced:
-https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101832
-
-It still feels like it should be possible to get this right without
-splitting the memcpy, though. Hmpf.
-
-> (would that function use some sanitization, though? what if nlmsg_len is
-> somehow manipulated to be less than NLMSG_HDRLEN?...)
-
-Maybe something like:
-
-static inline int nlmsg_len(const struct nlmsghdr *nlh)
-{
-	if (WARN_ON(nlh->nlmsg_len < NLMSG_HDRLEN))
-		return 0;
-	return nlh->nlmsg_len - NLMSG_HDRLEN;
-}
-
-> Also, it seems there is at least one more instance of this same issue:
-> 
-> diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-> index 16ae92054baa..d06184b94af5 100644
-> --- a/net/netfilter/ipset/ip_set_core.c
-> +++ b/net/netfilter/ipset/ip_set_core.c
-> @@ -1723,7 +1723,8 @@ call_ad(struct net *net, struct sock *ctnl, struct sk_buff *skb,
->                                   nlh->nlmsg_seq, NLMSG_ERROR, payload, 0);
->                 errmsg = nlmsg_data(rep);
->                 errmsg->error = ret;
-> -               memcpy(&errmsg->msg, nlh, nlh->nlmsg_len);
-> +               errmsg->msg = *nlh;
-> +               memcpy(errmsg->msg.nlmsg_payload, nlh->nlmsg_payload, nlmsg_len(nlh));
-
-Ah, yes, nice catch!
-
->                 cmdattr = (void *)&errmsg->msg + min_len;
-> 
->                 ret = nla_parse(cda, IPSET_ATTR_CMD_MAX, cmdattr,
-> 
-> --
-> Gustavo
-> 
-> [1] https://elixir.bootlin.com/linux/v5.18-rc5/source/include/net/netlink.h#L577
+eeff214dbfcb wfx: avoid flush_workqueue(system_highpri_wq) usage
 
 -- 
-Kees Cook
+https://patchwork.kernel.org/project/linux-wireless/patch/f15574a6-aba4-72bc-73af-26fdcdf9fb63@I-love.SAKURA.ne.jp/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
