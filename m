@@ -2,133 +2,192 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D06A5198A2
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 May 2022 09:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FFD6519A10
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 May 2022 10:39:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345710AbiEDHvu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 May 2022 03:51:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49542 "EHLO
+        id S240893AbiEDIm7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 May 2022 04:42:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345505AbiEDHvt (ORCPT
+        with ESMTP id S240868AbiEDImz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 May 2022 03:51:49 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A74D013F03;
-        Wed,  4 May 2022 00:48:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 53726B821D8;
-        Wed,  4 May 2022 07:48:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15143C385A5;
-        Wed,  4 May 2022 07:48:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651650492;
-        bh=m64RQCqyjvzWxiO7fknKK0SA5V08XscCrerNlOARsp8=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=QJlVydFQ9EKJEIznsNdV8CBg4DU9tA4As27tQIGFCjanNC2wgU3vtgxXZKEePDbmr
-         ChPd9gy5ScO9j41YNrdidOUGpLoeOe5pSpARmg/IPtcaPkzf2ytMqawGVrqK21ovW2
-         fbj3q2xVaW8k03juchaWUT3v/SPVf9uPo8Hz+Eb/EF7Q6FFCdNucVNCFGSR65R4KpO
-         puq0ERGTRPtJoQD8pIoaMn4MDzl02AkC/QKQv5hvxSQPgh3OkBLBxEzSE2PU1WcQDq
-         9aieKNA66bMP4v0sa+kDzUl2LE1wvK97Z9kHqzuyOhIVh13OzWiB6bcV+pgxHIMJuw
-         2JuRoJ75jYbBw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Robert Marko <robimarko@gmail.com>
-Cc:     Thibaut <hacks@slashdirt.org>,
-        Christian Lamparter <chunkeey@gmail.com>, davem@davemloft.net,
-        kuba@kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ath10k: support bus and device specific API 1 BDF selection
-References: <20211009221711.2315352-1-robimarko@gmail.com>
-        <163890036783.24891.8718291787865192280.kvalo@kernel.org>
-        <CAOX2RU5mqUfPRDsQNSpVPdiz6sE_68KN5Ae+2bC_t1cQzdzgTA@mail.gmail.com>
-        <09a27912-9ea4-fe75-df72-41ba0fa5fd4e@gmail.com>
-        <CAOX2RU6qaZ7NkeRe1bukgH6OxXOPvJS=z9PRp=UYAxMfzwD2oQ@mail.gmail.com>
-        <EC2778B3-B957-4F3F-B299-CC18805F8381@slashdirt.org>
-        <CAOX2RU7FOdSuo2Jgo0i=8e-4bJwq7ahvQxLzQv_zNCz2HCTBwA@mail.gmail.com>
-        <CAOX2RU7d9amMseczgp-PRzdOvrgBO4ZFM_+hTRSevCU85qT=kA@mail.gmail.com>
-        <70a8dd7a-851d-686b-3134-50f21af0450c@gmail.com>
-        <7DCB1B9A-D08E-4837-B2FE-6DA476B54B0D@slashdirt.org>
-        <CAOX2RU7kF8Da8p_tHwuE-8YMXr5ZtWU2iL6ZY+UR+1OvGcyn+w@mail.gmail.com>
-Date:   Wed, 04 May 2022 10:48:04 +0300
-In-Reply-To: <CAOX2RU7kF8Da8p_tHwuE-8YMXr5ZtWU2iL6ZY+UR+1OvGcyn+w@mail.gmail.com>
-        (Robert Marko's message of "Tue, 3 May 2022 17:58:03 +0200")
-Message-ID: <87sfppagcr.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 4 May 2022 04:42:55 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D8A524977
+        for <linux-wireless@vger.kernel.org>; Wed,  4 May 2022 01:39:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1651653560; x=1683189560;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wjwJhR2OAxHa5P8ARk9m0NUgZJn5+8QZrILgs2vpKZ8=;
+  b=BG/yoIFCUsAwLYfyChLID7E3Uv5qkPfSe3O9Bco8gGh4DRbSGTWduur/
+   YfAYaPHO7i/c72I9uMowZ0lp4XWfNnC/EMtl0uskw+s0GZ4nAY7fB07vK
+   Y9cI3TLB4vW/038i0Xid02toe0sXhAeqeNsaNdMcHlfYhnGbYMROHk/Bi
+   g=;
+Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 04 May 2022 01:39:19 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2022 01:39:19 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 4 May 2022 01:39:19 -0700
+Received: from mpubbise-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 4 May 2022 01:39:17 -0700
+From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Subject: [PATCH v4] ath11k: Fix RX de-fragmentation issue on WCN6750
+Date:   Wed, 4 May 2022 14:09:00 +0530
+Message-ID: <20220504083900.31513-1-quic_mpubbise@quicinc.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Robert Marko <robimarko@gmail.com> writes:
+The offset of REO register where the RX fragment destination ring
+is configured is different in WCN6750 as compared to WCN6855.
+Due to this differnce in offsets, on WCN6750, fragment destination
+ring will be configured incorrectly, leading to RX fragments not
+getting delivered to the driver. Fix this by defining HW specific
+offsets for the REO MISC CTL register.
 
-> On Wed, 16 Feb 2022 at 22:55, Thibaut <hacks@slashdirt.org> wrote:
->>
->> Hi,
->>
->> > Le 16 f=C3=A9vr. 2022 =C3=A0 22:19, Christian Lamparter <chunkeey@gmai=
-l.com> a =C3=A9crit :
->> >
->> > Hi,
->> >
->> > On 16/02/2022 14:38, Robert Marko wrote:
->> >> Silent ping,
->> >> Does anybody have an opinion on this?
->> >
->> > As a fallback, I've cobbled together from the old scripts that
->> > "concat board.bin into a board-2.bin. Do this on the device
->> > in userspace on the fly" idea. This was successfully tested
->> > on one of the affected devices (MikroTik SXTsq 5 ac (RBSXTsqG-5acD))
->> > and should work for all MikroTik.
->> >
->> > "ipq40xx: dynamically build board-2.bin for Mikrotik"
->> > <https://git.openwrt.org/?p=3Dopenwrt/staging/chunkeey.git;a=3Dcommit;=
-h=3D52f3407d94da62b99ba6c09f3663464cccd29b4f>
->> > (though I don't think this link will stay active for
->> > too long.)
->>
->> IMHO Robert=E2=80=99s patch addresses an actual bug in ath10k whereby the
->> driver sends the same devpath for two different devices when
->> requesting board-1 BDF, which doesn=E2=80=99t seem right.
->>
->> Your proposal is less straightforward than using unmodified board-1
->> data (as could be done if the above bug did not occur) and negates
->> the previous efforts not to store this data on flash (using instead
->> the kernel=E2=80=99s documented firmware sysfs loading facility - again
->> possible without the above issue).
->
-> Kalle, any chance of reviewing this? It just brings the board data in
-> line with caldata as far as naming goes.
+Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
 
-Sorry for the delay in review. So the original idea was that board.bin
-would be only used by developers for testing purposes only and normal
-users will use the board file automatically from board-2.bin. It's a
-shame if Mikrotik broke this, it's not ideal if there are so many
-different ways to use board files. I need to think a bit about this.
+Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+---
+V4:
+ - Added relevant comments wherever needed
+ - Initialized REO misc control register to zero on other HWs that don't use this register
+ - Rebased on ToT SHAID: b04efb72cd9d2d471a14f0a5758873f6c78923c2
 
-The patch is now in pending branch for build testing:
+V3:
+ - Rebased on ToT SHAID: 7316a74e54318d0cd648242b18ea83cdef6dda96
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=3Dp=
-ending&id=3Deda838c3941863a486f7fced4b739de6fc80e857
+V2:
+ - Rebased on ToT
 
-I also fixed two checkpatch warnings:
+ drivers/net/wireless/ath/ath11k/hal.h |  2 +-
+ drivers/net/wireless/ath/ath11k/hw.c  | 23 +++++++++++++++++++++--
+ drivers/net/wireless/ath/ath11k/hw.h  |  1 +
+ 3 files changed, 23 insertions(+), 3 deletions(-)
 
-drivers/net/wireless/ath/ath10k/core.c:1252: line length of 93 exceeds 90 c=
-olumns
-drivers/net/wireless/ath/ath10k/core.c:1253: line length of 96 exceeds 90 c=
-olumns
+diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
+index 1aadb1566df8..110c337ddf33 100644
+--- a/drivers/net/wireless/ath/ath11k/hal.h
++++ b/drivers/net/wireless/ath/ath11k/hal.h
+@@ -121,7 +121,7 @@ struct ath11k_base;
+ #define HAL_REO1_DEST_RING_CTRL_IX_1		0x00000008
+ #define HAL_REO1_DEST_RING_CTRL_IX_2		0x0000000c
+ #define HAL_REO1_DEST_RING_CTRL_IX_3		0x00000010
+-#define HAL_REO1_MISC_CTL			0x00000630
++#define HAL_REO1_MISC_CTL(ab)			ab->hw_params.regs->hal_reo1_misc_ctl
+ #define HAL_REO1_RING_BASE_LSB(ab)		ab->hw_params.regs->hal_reo1_ring_base_lsb
+ #define HAL_REO1_RING_BASE_MSB(ab)		ab->hw_params.regs->hal_reo1_ring_base_msb
+ #define HAL_REO1_RING_ID(ab)			ab->hw_params.regs->hal_reo1_ring_id
+diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
+index 09ce357f0f0d..96db85c55585 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.c
++++ b/drivers/net/wireless/ath/ath11k/hw.c
+@@ -771,10 +771,10 @@ static void ath11k_hw_wcn6855_reo_setup(struct ath11k_base *ab)
+ 		FIELD_PREP(HAL_REO1_GEN_ENABLE_AGING_FLUSH_ENABLE, 1);
+ 	ath11k_hif_write32(ab, reo_base + HAL_REO1_GEN_ENABLE, val);
+ 
+-	val = ath11k_hif_read32(ab, reo_base + HAL_REO1_MISC_CTL);
++	val = ath11k_hif_read32(ab, reo_base + HAL_REO1_MISC_CTL(ab));
+ 	val &= ~HAL_REO1_MISC_CTL_FRAGMENT_DST_RING;
+ 	val |= FIELD_PREP(HAL_REO1_MISC_CTL_FRAGMENT_DST_RING, HAL_SRNG_RING_ID_REO2SW1);
+-	ath11k_hif_write32(ab, reo_base + HAL_REO1_MISC_CTL, val);
++	ath11k_hif_write32(ab, reo_base + HAL_REO1_MISC_CTL(ab), val);
+ 
+ 	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_0(ab),
+ 			   HAL_DEFAULT_REO_TIMEOUT_USEC);
+@@ -1983,6 +1983,9 @@ const struct ath11k_hw_regs ipq8074_regs = {
+ 
+ 	/* Shadow register area */
+ 	.hal_shadow_base_addr = 0x0,
++
++	/* REO misc control register, not used in IPQ8074 */
++	.hal_reo1_misc_ctl = 0x0,
+ };
+ 
+ const struct ath11k_hw_regs qca6390_regs = {
+@@ -2065,6 +2068,9 @@ const struct ath11k_hw_regs qca6390_regs = {
+ 
+ 	/* Shadow register area */
+ 	.hal_shadow_base_addr = 0x000008fc,
++
++	/* REO misc control register, not used in QCA6390 */
++	.hal_reo1_misc_ctl = 0x0,
+ };
+ 
+ const struct ath11k_hw_regs qcn9074_regs = {
+@@ -2147,6 +2153,9 @@ const struct ath11k_hw_regs qcn9074_regs = {
+ 
+ 	/* Shadow register area */
+ 	.hal_shadow_base_addr = 0x0,
++
++	/* REO misc control register, not used in QCN9074 */
++	.hal_reo1_misc_ctl = 0x0,
+ };
+ 
+ const struct ath11k_hw_regs wcn6855_regs = {
+@@ -2229,6 +2238,11 @@ const struct ath11k_hw_regs wcn6855_regs = {
+ 
+ 	/* Shadow register area */
+ 	.hal_shadow_base_addr = 0x000008fc,
++
++	/* REO misc control register, used for fragment
++	 * destination ring config in WCN6855.
++	 */
++	.hal_reo1_misc_ctl = 0x00000630,
+ };
+ 
+ const struct ath11k_hw_regs wcn6750_regs = {
+@@ -2311,6 +2325,11 @@ const struct ath11k_hw_regs wcn6750_regs = {
+ 
+ 	/* Shadow register area */
+ 	.hal_shadow_base_addr = 0x00000504,
++
++	/* REO misc control register, used for fragment
++	 * destination ring config in WCN6750.
++	 */
++	.hal_reo1_misc_ctl = 0x000005d8,
+ };
+ 
+ const struct ath11k_hw_hal_params ath11k_hw_hal_params_ipq8074 = {
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index 6d588cd80093..3a2abde63489 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -379,6 +379,7 @@ struct ath11k_hw_regs {
+ 	u32 pcie_pcs_osc_dtct_config_base;
+ 
+ 	u32 hal_shadow_base_addr;
++	u32 hal_reo1_misc_ctl;
+ };
+ 
+ extern const struct ath11k_hw_regs ipq8074_regs;
+-- 
+2.35.1
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
