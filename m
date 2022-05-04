@@ -2,102 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 749E051A599
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 May 2022 18:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79A1D51AB6F
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 May 2022 19:48:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353494AbiEDQhC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 May 2022 12:37:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40244 "EHLO
+        id S1359153AbiEDRsX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 May 2022 13:48:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353501AbiEDQhA (ORCPT
+        with ESMTP id S1359470AbiEDRoV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 May 2022 12:37:00 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 087D746B1E
-        for <linux-wireless@vger.kernel.org>; Wed,  4 May 2022 09:33:23 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 408D6B82794
-        for <linux-wireless@vger.kernel.org>; Wed,  4 May 2022 16:33:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C381CC385A5;
-        Wed,  4 May 2022 16:33:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651682001;
-        bh=si/jNKIZjWSD/yUoWGMbT7rlQSbsfPJ27eDg3wHOTDU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X1LQ1trrmK7l2ixEtDc9/JShSJkVrmkvVHDTlNjwgic9sYRN91ix7vzGkH96Irq1i
-         NGhO8krj95jR0BZbXM+wdZ+32Gw5pP6CSqOucLiaerzRgBnhAIg/VjitPi9D8Q68Im
-         Pp0g2ObO7BWRbhrZyemeWxLiVA3c6nITQI+Ry+eZ3oTvnoaPvvxV9O76EO+MEPKf+/
-         ERY8mzUAoonEoBmzymzRJDV++7qpW+8+q5VjJwlUz4ksngfq2nuKP6s76jhXjivF3C
-         xryWO9K26jOtIhxcdnPQxP/uLltYCR6S6DcugjwnP5jDxaL3Omr6hebK7MaZdIJBCg
-         E/xjyoxFqoZZQ==
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        imitsyanko@quantenna.com, geomatsi@gmail.com
-Subject: [PATCH wireless-next 3/3] wifi: qtnfmac: switch to netif_napi_add_weight()
-Date:   Wed,  4 May 2022 09:33:16 -0700
-Message-Id: <20220504163316.549648-4-kuba@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220504163316.549648-1-kuba@kernel.org>
-References: <20220504163316.549648-1-kuba@kernel.org>
+        Wed, 4 May 2022 13:44:21 -0400
+Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BD2052B02;
+        Wed,  4 May 2022 10:07:32 -0700 (PDT)
+Received: by mail-qv1-xf34.google.com with SMTP id kk28so1274210qvb.3;
+        Wed, 04 May 2022 10:07:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=IgL2IduVNcxBKQc1brpNbRJTmw+R5dGVZ1KkF4Imnfs=;
+        b=Eg5gAEMva3cKrtqR2A0Cc+3z5UUxLVsQA8v8rh2j36ZiCIVUt2H4HorcB4rwOuvWR6
+         JKNe++YLVfI/Sve1YFOIGZQfOgj6AfpwPRB3m/gb/hpvooo0XnPg0HpJYkGOH9nFB0/Q
+         jTK+a8wIo7oIvH3qgH5+ZRDz0YB9ixQ/yKzoe3Ez0ADPXowkRCfMr+HrgabOymRJoOb/
+         3LaM0ZlStKwt1NWQQWzHvaMoDJ0ayZ9I1kITpzOHM6iNWLBon1t3UAb6iJMoXE84vHGy
+         NsinH4cIOjFQgXdOI4hiZwDbidIff8YK35NKG3wSwTuTejjAgkljnlNx93NbwOEOFML8
+         NQDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=IgL2IduVNcxBKQc1brpNbRJTmw+R5dGVZ1KkF4Imnfs=;
+        b=xnxKbgmfPoZqd2gr5xmejmfnLe/w+ox889nHfXG0NU/saHQbWZ2GerzWvrLgne2dKD
+         MZ9cmL2l4kaI+5QriaFdODNI2UQIc7yHmPDkf9MRcRXbLBpvL+vtSECueIw5Qk9EYH0z
+         G98SP/qcBv9uuF9Maur70gxPipkyYSiMYVPUK5wmuJq6CUKlYlFO+MM6Pe1LddfLm/bV
+         EBNsbDUDt2f7mrwJ+XLa+tYYgDg2zbSfbAbsdWjX8GYR3AnLK510dHneaaTGDISg59uA
+         8VWgAlK77uWqMBStcrNHhg0xr7L1Rlg+LjsPX/TQA51Te2ut6aUTEwT29GQKMrT9+iNw
+         l1Ag==
+X-Gm-Message-State: AOAM530GF1E7/ZkKv2fBh4TUyrsxdlzPentpIN3cLGMJ13fdVfXodWOE
+        hMio2Gh5U/NZNsYaqj7XHqveV64MLj9UIQ==
+X-Google-Smtp-Source: ABdhPJymonwwKJEu+zKIwUyz7H7uJGSZslAlFiLL0za6AjT3ELvv5KYH3MFj0YwaRMr8wXpaUes4gw==
+X-Received: by 2002:a0c:ec41:0:b0:456:51c6:1800 with SMTP id n1-20020a0cec41000000b0045651c61800mr18384061qvq.44.1651684051063;
+        Wed, 04 May 2022 10:07:31 -0700 (PDT)
+Received: from jaehee-ThinkPad-X1-Extreme ([4.34.18.218])
+        by smtp.gmail.com with ESMTPSA id h3-20020ac85683000000b002f39b99f692sm7647171qta.44.2022.05.04.10.07.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 May 2022 10:07:30 -0700 (PDT)
+Date:   Wed, 4 May 2022 13:07:26 -0400
+From:   Jaehee Park <jhpark1013@gmail.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Stefano Brivio <sbrivio@redhat.com>,
+        =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
+        Outreachy Linux Kernel <outreachy@lists.linux.dev>
+Subject: Re: [PATCH] wfx: use container_of() to get vif
+Message-ID: <20220504170726.GA970146@jaehee-ThinkPad-X1-Extreme>
+References: <20220418035110.GA937332@jaehee-ThinkPad-X1-Extreme>
+ <87y200nf0a.fsf@kernel.org>
+ <CAA1TwFCOEEwnayexnJin8T=Fc2HEgHC9jyfj5HxfiWybjUi9GA@mail.gmail.com>
+ <20220504093347.GB4009@kadam>
+ <20220504135059.7132b2b6@elisabeth>
+ <20220504132551.GD4009@kadam>
+ <87o80d9tay.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87o80d9tay.fsf@kernel.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-qtnfmac chooses its own magic NAPI weight so switch to the new
-API created for those who don't use NAPI_POLL_WEIGHT.
+On Wed, May 04, 2022 at 07:05:57PM +0300, Kalle Valo wrote:
+> Dan Carpenter <dan.carpenter@oracle.com> writes:
+> 
+> > On Wed, May 04, 2022 at 01:50:59PM +0200, Stefano Brivio wrote:
+> >> And that it's *obvious* that container_of() would trigger warnings
+> >> otherwise. Well, obvious just for me, it seems.
+> >
+> > :P
+> >
+> > Apparently it wasn't obvious to Kalle and me.  My guess is that you saw
+> > the build error.  Either that or Kalle and I are geezers who haven't
+> > looked at container_of() since before the BUILD_BUG_ON() was added five
+> > years ago.
+> 
+> Exactly, I also had to duplicate the error myself before I was able to
+> understand the issue. So I'm officially a geezer now :D
+> 
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: imitsyanko@quantenna.com
-CC: geomatsi@gmail.com
-CC: kvalo@kernel.org
-CC: linux-wireless@vger.kernel.org
----
- drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c | 4 ++--
- drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+Hi Dan and Kalle, thanks for your messages!
+Understood -- I'll copy the error for reference next time. Sorry you
+had to recreate the build error yourself!
 
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c b/drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c
-index 840728ed57b2..8c23a77d1671 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c
-@@ -1146,8 +1146,8 @@ static int qtnf_pcie_pearl_probe(struct qtnf_bus *bus, unsigned int tx_bd_size,
- 	}
- 
- 	tasklet_setup(&ps->base.reclaim_tq, qtnf_pearl_reclaim_tasklet_fn);
--	netif_napi_add(&bus->mux_dev, &bus->mux_napi,
--		       qtnf_pcie_pearl_rx_poll, 10);
-+	netif_napi_add_weight(&bus->mux_dev, &bus->mux_napi,
-+			      qtnf_pcie_pearl_rx_poll, 10);
- 
- 	ipc_int.fn = qtnf_pcie_pearl_ipc_gen_ep_int;
- 	ipc_int.arg = ps;
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c b/drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c
-index 9534e1b33780..d83362578374 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c
-@@ -1159,8 +1159,8 @@ static int qtnf_pcie_topaz_probe(struct qtnf_bus *bus,
- 	}
- 
- 	tasklet_setup(&ts->base.reclaim_tq, qtnf_reclaim_tasklet_fn);
--	netif_napi_add(&bus->mux_dev, &bus->mux_napi,
--		       qtnf_topaz_rx_poll, 10);
-+	netif_napi_add_weight(&bus->mux_dev, &bus->mux_napi,
-+			      qtnf_topaz_rx_poll, 10);
- 
- 	ipc_int.fn = qtnf_topaz_ipc_gen_ep_int;
- 	ipc_int.arg = ts;
--- 
-2.34.1
-
+> -- 
+> https://patchwork.kernel.org/project/linux-wireless/list/
+> 
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
