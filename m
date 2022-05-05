@@ -2,42 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FDF851CAE0
+	by mail.lfdr.de (Postfix) with ESMTP id 9BCA951CAE1
 	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 23:04:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1385507AbiEEVIN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 May 2022 17:08:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41972 "EHLO
+        id S1385532AbiEEVIO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 May 2022 17:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1385526AbiEEVIL (ORCPT
+        with ESMTP id S1385511AbiEEVIL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 5 May 2022 17:08:11 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4FF45EBE6
-        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 14:04:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 528985EBED
+        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 14:04:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=C6FKzYw34+qmdFVZgK8cLQ42vN/M7AsO3TJsm5Y6uoA=; t=1651784670; x=1652994270; 
-        b=bLNzRBJJBZ1gh6feVGRLc1BhAj/wSmnipUIxzUxDeNscfdbGMwXvZqBtvrSou5WdQ/beh8RGt8C
-        tYwLSCQvIeAn+uic2Bf4w3e/UM1WwxeAlk+xH4h6WAdYfA07X+rIaQkv5Y/Ye+2JBq6za/oszhugW
-        e2p+PMlUTtXLtANkdhSE6yJZPVYrQC5VP3Hf0mzoCp4UGYz9cogRnpRZLD8JlXGnV9irpNq+7wzg0
-        VL31Nhiyd/0qG9lg/XnAonf+tap/Vzlq9s7bObk85oJ1mboDUF5yr0R6kumpr55E6LZFOA0rYs2t3
-        fkPOueOytXT6IWzpIHO5yNq04EKS4j3uG/nA==;
+        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=anIbNK3VEilWFiQ9WVjT/uS/j7QzljAsnGLvifpUJUY=;
+        t=1651784670; x=1652994270; b=U3GYuFFHfFnXkiwJPNEiwTiSz3fuz5DuVKpx6zilcMfoBr+
+        V2wUWWuTEBl/x4sKYbSAp8LzHuoMVbQkSYJ/3PJF2ueQVV/QDvKrMr1Evns4GxDwKDm6gskND6o37
+        rgni5Ss93gYaknHsCeemuMQZNO6IyqlIdbxcFG0kTE/4FxUij8N4/q2qmEO/tY+IskdC2Inii3QeD
+        U+5lMXgEgPE+1qaazs/MEiZEOaZv0Je0q4CdtWRAo60IxhgQOmtJM0cqS16otaWkRBcqhjGbJ7Spn
+        5vWlH9/sB6ii/8kUMo+3jzFKJ1TThSVaqwBBXO8D5GQbHmxEd9bC3NhJxl29HZCw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nmie8-0032Mz-U4;
+        id 1nmie9-0032Mz-65;
         Thu, 05 May 2022 23:04:25 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 1/2] mac80211_hwsim: fix RCU protected chanctx access
-Date:   Thu,  5 May 2022 23:04:21 +0200
-Message-Id: <20220505230421.fb8055c081a2.Ic6da3307c77a909bd61a0ea25dc2a4b08fe1b03f@changeid>
+Subject: [PATCH 2/2] mac80211_hwsim: call ieee80211_tx_prepare_skb under RCU protection
+Date:   Thu,  5 May 2022 23:04:22 +0200
+Message-Id: <20220505230421.5f139f9de173.I77ae111a28f7c0e9fd1ebcee7f39dbec5c606770@changeid>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220505230421.fb8055c081a2.Ic6da3307c77a909bd61a0ea25dc2a4b08fe1b03f@changeid>
+References: <20220505230421.fb8055c081a2.Ic6da3307c77a909bd61a0ea25dc2a4b08fe1b03f@changeid>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -51,36 +52,43 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We need to RCU protect the chanctx_conf access, so
-do that.
+This is needed since it might use (and pass out) pointers to
+e.g. keys protected by RCU. Can't really happen here as the
+frames aren't encrypted, but we need to still adhere to the
+rules.
 
-Fixes: 585625c955b1 ("mac80211_hwsim: check TX and STA bandwidth")
+Fixes: cacfddf82baf ("mac80211_hwsim: initialize ieee80211_tx_info at hw_scan_work")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/mac80211_hwsim.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mac80211_hwsim.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index afdf48550588..4689db129aec 100644
+index 4689db129aec..2f746eb64507 100644
 --- a/drivers/net/wireless/mac80211_hwsim.c
 +++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -2202,11 +2202,14 @@ mac80211_hwsim_sta_rc_update(struct ieee80211_hw *hw,
- 	if (!data->use_chanctx) {
- 		confbw = data->bw;
- 	} else {
--		struct ieee80211_chanctx_conf *chanctx_conf =
--			rcu_dereference(vif->chanctx_conf);
-+		struct ieee80211_chanctx_conf *chanctx_conf;
-+
-+		rcu_read_lock();
-+		chanctx_conf = rcu_dereference(vif->chanctx_conf);
+@@ -2478,11 +2478,13 @@ static void hw_scan_work(struct work_struct *work)
+ 			if (req->ie_len)
+ 				skb_put_data(probe, req->ie, req->ie_len);
  
- 		if (!WARN_ON(!chanctx_conf))
- 			confbw = chanctx_conf->def.width;
-+		rcu_read_unlock();
++			rcu_read_lock();
+ 			if (!ieee80211_tx_prepare_skb(hwsim->hw,
+ 						      hwsim->hw_scan_vif,
+ 						      probe,
+ 						      hwsim->tmp_chan->band,
+ 						      NULL)) {
++				rcu_read_unlock();
+ 				kfree_skb(probe);
+ 				continue;
+ 			}
+@@ -2490,6 +2492,7 @@ static void hw_scan_work(struct work_struct *work)
+ 			local_bh_disable();
+ 			mac80211_hwsim_tx_frame(hwsim->hw, probe,
+ 						hwsim->tmp_chan);
++			rcu_read_unlock();
+ 			local_bh_enable();
+ 		}
  	}
- 
- 	WARN(bw > hwsim_get_chanwidth(confbw),
 -- 
 2.35.1
 
