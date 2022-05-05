@@ -2,58 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E53AD51B60A
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 04:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 518BE51B65F
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 05:15:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239748AbiEECoU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 May 2022 22:44:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51862 "EHLO
+        id S240828AbiEEDSj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 May 2022 23:18:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234324AbiEECoT (ORCPT
+        with ESMTP id S240721AbiEEDSf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 May 2022 22:44:19 -0400
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A586B4B863
-        for <linux-wireless@vger.kernel.org>; Wed,  4 May 2022 19:40:41 -0700 (PDT)
+        Wed, 4 May 2022 23:18:35 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8547F50070
+        for <linux-wireless@vger.kernel.org>; Wed,  4 May 2022 20:14:55 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id k2so4323809wrd.5
+        for <linux-wireless@vger.kernel.org>; Wed, 04 May 2022 20:14:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1651718441; x=1683254441;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rMs0z5s6eelcvwJiWgRWZZjOtCXiIIzuE7LXVYMjhKY=;
-  b=pVRCAbkPKCc68CIaAzvk1r2sm9vKsqh8Rwfpav2tceNYJvZC0k0mnrgx
-   doXJDOv3RRURFnR1PCBYnRRXzwvUKbPcqmEWy0pRU81zpUOuS4PIKpaJV
-   Qox1FVVoMEWUOQ5v4XcUXUiZ0xOeIcHWXsl9BCUZiwivhg6CitwMVAXmT
-   4=;
-Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 04 May 2022 19:40:41 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2022 19:40:41 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 4 May 2022 19:40:41 -0700
-Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 4 May 2022 19:40:39 -0700
-From:   Baochen Qiang <quic_bqiang@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2] ath11k: Handle keepalive during WoWLAN suspend and resume
-Date:   Thu, 5 May 2022 10:40:27 +0800
-Message-ID: <20220505024027.1551157-1-quic_bqiang@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6ucVUJA/3XuUnAZZDdzrSa00V5OM/xNG80G7w+rY/AM=;
+        b=TuxTKLvOuI4WPEKhesTppN+S/ZTkV+RZI5Wf5W2p+hsrw7/gyfISF8EIiT+rnx8Zu6
+         zyyiN1wYwPcxjcCA2Sf5xnxirRkddqYIXy2R06dd7qAEUind0ZWDkOOMEqGzEQWPzWzC
+         ZTGq5qihhGmXwhHHxuYfhzg3wQjnC+ThZO+LDVhD9+QIb89VKx3wO1YbUFwWrxXrBCMa
+         SL8UA4+69pMFcpj8M2pJPoNe1J5xXeNZwxQABf1kR5+ALPhLTrYwt5fLtjpY8BeYkBF4
+         nHH6g/sC5IM5M9d/Ecm/JssJwuDneWf8+Vn5nXmTehGUz+AEuc9+Pt2ztZNda+z83bgG
+         KQkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6ucVUJA/3XuUnAZZDdzrSa00V5OM/xNG80G7w+rY/AM=;
+        b=geX5XTWM/eFG93KRoxu56KaJ94Mpo2HyFopGgR9L/PeaTcVgLHe3lBesXeeaSf/dR2
+         MjBxq36i+Vswk5xewZMgj5+VUimx5UrDzZZSCX5N+7E4ctEm3I1m2oXecXnAG6IRCJqX
+         IhQNHeBAXRwgAGg6Xqkp+gZXV9HGJUxnqTqWO7jo0BLVoG7tAl9MN1YsCpH1bUtsCRRA
+         G66JiVETLjz6XBV2V22RKPjkz0WwsYEorvSbf9MaqFtm+aA5LF75CytZZahZFa/8AZt9
+         XsXLNnWthhds7i+JiaqotQr+VHjTACbm/JdBU1+NH2uR8wuE374H8zWyYGT4BM9qs81Z
+         1hHw==
+X-Gm-Message-State: AOAM530m4PJIf5ja1wWQ1W5WyZ2d5EVKQQbtGS0FcIEusUgMKlnIxwp0
+        hfx/vrZ4kJ33A75dLYYxBMVduX9LQ5DzadZnBOt6
+X-Google-Smtp-Source: ABdhPJzVMX+BMHIo/6Rx3rt/EGt5DUCiA1Xs3vZE5oz5hLJkbM0bMmp2okAEnKI/au/mDAitpvRIKuXqsxBU1V8TuLw=
+X-Received: by 2002:a5d:590d:0:b0:20a:c3eb:2584 with SMTP id
+ v13-20020a5d590d000000b0020ac3eb2584mr18412244wrd.18.1651720493308; Wed, 04
+ May 2022 20:14:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+References: <20220504014440.3697851-1-keescook@chromium.org>
+ <20220504014440.3697851-29-keescook@chromium.org> <CAHC9VhT5Y=ENiSyb=S-NVbGX63sLOv4nVuR_GS-yww6tiz0wYA@mail.gmail.com>
+ <20220504234324.GA12556@embeddedor>
+In-Reply-To: <20220504234324.GA12556@embeddedor>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Wed, 4 May 2022 23:14:42 -0400
+Message-ID: <CAHC9VhRJC4AxeDsGpdphfJD4WzgaeBsdONHnixBzft5u_cE-Dw@mail.gmail.com>
+Subject: Re: [PATCH 28/32] selinux: Use mem_to_flex_dup() with xfrm and sidtab
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Xiu Jianfeng <xiujianfeng@huawei.com>,
+        =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>,
+        netdev@vger.kernel.org, selinux@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        alsa-devel@alsa-project.org, Al Viro <viro@zeniv.linux.org.uk>,
+        Andrew Gabbasov <andrew_gabbasov@mentor.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Gross <agross@kernel.org>,
+        Andy Lavr <andy.lavr@gmail.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Baowen Zheng <baowen.zheng@corigine.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Bradley Grove <linuxdrivers@attotech.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        Christian Brauner <brauner@kernel.org>,
+        Christian Lamparter <chunkeey@googlemail.com>,
+        Chris Zankel <chris@zankel.net>,
+        Cong Wang <cong.wang@bytedance.com>,
+        Daniel Axtens <dja@axtens.net>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Dan Williams <dan.j.williams@intel.com>,
+        David Gow <davidgow@google.com>,
+        David Howells <dhowells@redhat.com>,
+        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+        devicetree@vger.kernel.org, Dexuan Cui <decui@microsoft.com>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        Eli Cohen <elic@nvidia.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Eugeniu Rosca <erosca@de.adit-jv.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Francis Laniel <laniel_francis@privacyrequired.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Hulk Robot <hulkci@huawei.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        James Morris <jmorris@namei.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        John Keeping <john@metanate.com>,
+        Juergen Gross <jgross@suse.com>, Kalle Valo <kvalo@kernel.org>,
+        Keith Packard <keithp@keithp.com>, keyrings@vger.kernel.org,
+        kunit-dev@googlegroups.com,
+        Kuniyuki Iwashima <kuniyu@amazon.co.jp>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Leon Romanovsky <leon@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux1394-devel@lists.sourceforge.net,
+        linux-afs@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        linux-integrity@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, llvm@lists.linux.dev,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Louis Peens <louis.peens@corigine.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Marc Dionne <marc.dionne@auristor.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Mark Brown <broonie@kernel.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Muchun Song <songmuchun@bytedance.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rich Felker <dalias@aerifal.cx>,
+        Rob Herring <robh+dt@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        SHA-cyfmac-dev-list@infineon.com,
+        Simon Horman <simon.horman@corigine.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Stefan Richter <stefanr@s5r6.in-berlin.de>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Tadeusz Struk <tadeusz.struk@linaro.org>,
+        Takashi Iwai <tiwai@suse.com>, Tom Rix <trix@redhat.com>,
+        Udipto Goswami <quic_ugoswami@quicinc.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        wcn36xx@lists.infradead.org, Wei Liu <wei.liu@kernel.org>,
+        xen-devel@lists.xenproject.org,
+        Yang Yingliang <yangyingliang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,257 +171,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With WoWLAN enabled and after sleeping for a rather long time,
-we are seeing that with some APs, it is not able to wake up
-the STA though the correct wake up pattern has been configured.
-This is because the host doesn't send keepalive command to
-firmware, thus firmware will not send any packet to the AP and
-after a specific time the AP kicks out the STA.
+On Wed, May 4, 2022 at 7:34 PM Gustavo A. R. Silva
+<gustavoars@kernel.org> wrote:
+>
+> Hi Paul,
+>
+> On Wed, May 04, 2022 at 06:57:28PM -0400, Paul Moore wrote:
+> > On Tue, May 3, 2022 at 9:57 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> [..]
+>
+> > > +++ b/include/uapi/linux/xfrm.h
+> > > @@ -31,9 +31,9 @@ struct xfrm_id {
+> > >  struct xfrm_sec_ctx {
+> > >         __u8    ctx_doi;
+> > >         __u8    ctx_alg;
+> > > -       __u16   ctx_len;
+> > > +       __DECLARE_FLEX_ARRAY_ELEMENTS_COUNT(__u16, ctx_len);
+> > >         __u32   ctx_sid;
+> > > -       char    ctx_str[0];
+> > > +       __DECLARE_FLEX_ARRAY_ELEMENTS(char, ctx_str);
+> > >  };
+> >
+> > While I like the idea of this in principle, I'd like to hear about the
+> > testing you've done on these patches.  A previous flex array
+> > conversion in the audit uapi headers ended up causing a problem with
+>
+> I'm curious about which commit caused those problems...?
 
-Fix this issue by enabling keepalive before going to suspend
-and disabling it after resume back.
+Commit ed98ea2128b6 ("audit: replace zero-length array with
+flexible-array member"), however, as I said earlier, the problem was
+actually with SWIG, it just happened to be triggered by the kernel
+commit.  There was a brief fedora-devel mail thread about the problem,
+see the link below:
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+* https://www.spinics.net/lists/fedora-devel/msg297991.html
 
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
----
-v2:
- 1. s/wowlan/WoWLAN
- 2. s/DUT/STA
+To reiterate, I'm supportive of changes like this, but I would like to
+hear how it was tested to ensure there are no unexpected problems with
+userspace.  If there are userspace problems it doesn't mean we can't
+make changes like this, it just means we need to ensure that the
+userspace issues are resolved first.
 
- drivers/net/wireless/ath/ath11k/mac.c | 31 ++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/mac.h |  4 +++
- drivers/net/wireless/ath/ath11k/wmi.c | 40 ++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/wmi.h | 41 +++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/wow.c | 34 ++++++++++++++++++++++
- 5 files changed, 150 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 1957e1713548..6e0484708d6b 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -9026,3 +9026,34 @@ void ath11k_mac_destroy(struct ath11k_base *ab)
- 		pdev->ar = NULL;
- 	}
- }
-+
-+int ath11k_mac_vif_set_keepalive(struct ath11k_vif *arvif,
-+				 enum wmi_sta_keepalive_method method,
-+				 u32 interval)
-+{
-+	struct ath11k *ar = arvif->ar;
-+	struct wmi_sta_keepalive_arg arg = {};
-+	int ret;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	if (arvif->vdev_type != WMI_VDEV_TYPE_STA)
-+		return 0;
-+
-+	if (!test_bit(WMI_TLV_SERVICE_STA_KEEP_ALIVE, ar->ab->wmi_ab.svc_map))
-+		return 0;
-+
-+	arg.vdev_id = arvif->vdev_id;
-+	arg.enabled = 1;
-+	arg.method = method;
-+	arg.interval = interval;
-+
-+	ret = ath11k_wmi_sta_keepalive(ar, &arg);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to set keepalive on vdev %i: %d\n",
-+			    arvif->vdev_id, ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-diff --git a/drivers/net/wireless/ath/ath11k/mac.h b/drivers/net/wireless/ath/ath11k/mac.h
-index 7f93e3a9ca23..57ebfc592b00 100644
---- a/drivers/net/wireless/ath/ath11k/mac.h
-+++ b/drivers/net/wireless/ath/ath11k/mac.h
-@@ -8,6 +8,7 @@
- 
- #include <net/mac80211.h>
- #include <net/cfg80211.h>
-+#include "wmi.h"
- 
- struct ath11k;
- struct ath11k_base;
-@@ -173,4 +174,7 @@ void ath11k_mac_handle_beacon(struct ath11k *ar, struct sk_buff *skb);
- void ath11k_mac_handle_beacon_miss(struct ath11k *ar, u32 vdev_id);
- void ath11k_mac_bcn_tx_event(struct ath11k_vif *arvif);
- int ath11k_mac_wait_tx_complete(struct ath11k *ar);
-+int ath11k_mac_vif_set_keepalive(struct ath11k_vif *arvif,
-+				 enum wmi_sta_keepalive_method method,
-+				 u32 interval);
- #endif
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 1410114d1d5c..bd8b2f1d4c1e 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -8959,3 +8959,43 @@ int ath11k_wmi_pdev_set_bios_geo_table_param(struct ath11k *ar)
- 
- 	return ath11k_wmi_cmd_send(wmi, skb, WMI_PDEV_SET_BIOS_GEO_TABLE_CMDID);
- }
-+
-+int ath11k_wmi_sta_keepalive(struct ath11k *ar,
-+			     const struct wmi_sta_keepalive_arg *arg)
-+{
-+	struct ath11k_pdev_wmi *wmi = ar->wmi;
-+	struct wmi_sta_keepalive_cmd *cmd;
-+	struct wmi_sta_keepalive_arp_resp *arp;
-+	struct sk_buff *skb;
-+	size_t len;
-+
-+	len = sizeof(*cmd) + sizeof(*arp);
-+	skb = ath11k_wmi_alloc_skb(wmi->wmi_ab, len);
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	cmd = (struct wmi_sta_keepalive_cmd *)skb->data;
-+	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG,
-+				     WMI_TAG_STA_KEEPALIVE_CMD) |
-+				     FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
-+	cmd->vdev_id = arg->vdev_id;
-+	cmd->enabled = arg->enabled;
-+	cmd->interval = arg->interval;
-+	cmd->method = arg->method;
-+
-+	if (arg->method == WMI_STA_KEEPALIVE_METHOD_UNSOLICITED_ARP_RESPONSE ||
-+	    arg->method == WMI_STA_KEEPALIVE_METHOD_GRATUITOUS_ARP_REQUEST) {
-+		arp = (struct wmi_sta_keepalive_arp_resp *)(cmd + 1);
-+		arp->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_STA_KEEPALVE_ARP_RESPONSE) |
-+				 FIELD_PREP(WMI_TLV_LEN, sizeof(*arp) - TLV_HDR_SIZE);
-+		arp->src_ip4_addr = arg->src_ip4_addr;
-+		arp->dest_ip4_addr = arg->dest_ip4_addr;
-+		ether_addr_copy(arp->dest_mac_addr.addr, arg->dest_mac_addr);
-+	}
-+
-+	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
-+		   "wmi sta keepalive vdev %d enabled %d method %d interval %d\n",
-+		   arg->vdev_id, arg->enabled, arg->method, arg->interval);
-+
-+	return ath11k_wmi_cmd_send(wmi, skb, WMI_STA_KEEPALIVE_CMDID);
-+}
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 7600e9a52da8..0b53599a3743 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -5907,6 +5907,45 @@ struct wmi_pdev_set_geo_table_cmd {
- 	u32 rsvd_len;
- } __packed;
- 
-+struct wmi_sta_keepalive_cmd {
-+	u32 tlv_header;
-+	u32 vdev_id;
-+	u32 enabled;
-+	u32 method; /* WMI_STA_KEEPALIVE_METHOD_ */
-+	u32 interval; /* in seconds */
-+	/* NOTE: following this structure is the TLV for ARP Response:
-+	 * WMI_STA_KEEPALVE_ARP_RESPONSE arp_resp; <-- ARP response
-+	 */
-+} __packed;
-+
-+struct wmi_sta_keepalive_arp_resp {
-+	u32 tlv_header;
-+	u32 src_ip4_addr;
-+	u32 dest_ip4_addr;
-+	struct wmi_mac_addr dest_mac_addr;
-+} __packed;
-+
-+struct wmi_sta_keepalive_arg {
-+	u32 vdev_id;
-+	u32 enabled;
-+	u32 method;
-+	u32 interval;
-+	u32 src_ip4_addr;
-+	u32 dest_ip4_addr;
-+	const u8 dest_mac_addr[ETH_ALEN];
-+};
-+
-+enum wmi_sta_keepalive_method {
-+	WMI_STA_KEEPALIVE_METHOD_NULL_FRAME = 1, /* 802.11 NULL frame */
-+	WMI_STA_KEEPALIVE_METHOD_UNSOLICITED_ARP_RESPONSE = 2, /* ARP response */
-+	WMI_STA_KEEPALIVE_METHOD_ETHERNET_LOOPBACK = 3, /*ETHERNET LOOPBACK*/
-+	WMI_STA_KEEPALIVE_METHOD_GRATUITOUS_ARP_REQUEST = 4, /* gratuitous ARP req*/
-+	WMI_STA_KEEPALIVE_METHOD_MGMT_VENDOR_ACTION = 5, /* vendor action frame */
-+};
-+
-+#define WMI_STA_KEEPALIVE_INTERVAL_DEFAULT	30
-+#define WMI_STA_KEEPALIVE_INTERVAL_DISABLE	0
-+
- int ath11k_wmi_cmd_send(struct ath11k_pdev_wmi *wmi, struct sk_buff *skb,
- 			u32 cmd_id);
- struct sk_buff *ath11k_wmi_alloc_skb(struct ath11k_wmi_base *wmi_sc, u32 len);
-@@ -6087,5 +6126,7 @@ int ath11k_wmi_gtk_rekey_getinfo(struct ath11k *ar,
- 				 struct ath11k_vif *arvif);
- int ath11k_wmi_pdev_set_bios_sar_table_param(struct ath11k *ar, const u8 *sar_val);
- int ath11k_wmi_pdev_set_bios_geo_table_param(struct ath11k *ar);
-+int ath11k_wmi_sta_keepalive(struct ath11k *ar,
-+			     const struct wmi_sta_keepalive_arg *arg);
- 
- #endif
-diff --git a/drivers/net/wireless/ath/ath11k/wow.c b/drivers/net/wireless/ath/ath11k/wow.c
-index 9d088cebef03..b3e65cd13d83 100644
---- a/drivers/net/wireless/ath/ath11k/wow.c
-+++ b/drivers/net/wireless/ath/ath11k/wow.c
-@@ -640,6 +640,24 @@ static int ath11k_wow_protocol_offload(struct ath11k *ar, bool enable)
- 	return 0;
- }
- 
-+static int ath11k_wow_set_keepalive(struct ath11k *ar,
-+				    enum wmi_sta_keepalive_method method,
-+				    u32 interval)
-+{
-+	struct ath11k_vif *arvif;
-+	int ret;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	list_for_each_entry(arvif, &ar->arvifs, list) {
-+		ret = ath11k_mac_vif_set_keepalive(arvif, method, interval);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- int ath11k_wow_op_suspend(struct ieee80211_hw *hw,
- 			  struct cfg80211_wowlan *wowlan)
- {
-@@ -691,6 +709,14 @@ int ath11k_wow_op_suspend(struct ieee80211_hw *hw,
- 		goto cleanup;
- 	}
- 
-+	ret = ath11k_wow_set_keepalive(ar,
-+				       WMI_STA_KEEPALIVE_METHOD_NULL_FRAME,
-+				       WMI_STA_KEEPALIVE_INTERVAL_DEFAULT);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to enable wow keepalive: %d\n", ret);
-+		goto cleanup;
-+	}
-+
- 	ret = ath11k_wow_enable(ar->ab);
- 	if (ret) {
- 		ath11k_warn(ar->ab, "failed to start wow: %d\n", ret);
-@@ -786,6 +812,14 @@ int ath11k_wow_op_resume(struct ieee80211_hw *hw)
- 		goto exit;
- 	}
- 
-+	ret = ath11k_wow_set_keepalive(ar,
-+				       WMI_STA_KEEPALIVE_METHOD_NULL_FRAME,
-+				       WMI_STA_KEEPALIVE_INTERVAL_DISABLE);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to disable wow keepalive: %d\n", ret);
-+		goto exit;
-+	}
-+
- exit:
- 	if (ret) {
- 		switch (ar->state) {
-
-base-commit: b04efb72cd9d2d471a14f0a5758873f6c78923c2
 -- 
-2.25.1
-
+paul-moore.com
