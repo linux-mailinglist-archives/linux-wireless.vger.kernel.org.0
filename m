@@ -2,254 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21EDC51CC8F
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 May 2022 01:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA95C51CCC2
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 May 2022 01:31:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1386655AbiEEXUP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 May 2022 19:20:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56512 "EHLO
+        id S1386803AbiEEXfM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 May 2022 19:35:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237968AbiEEXUN (ORCPT
+        with ESMTP id S1386798AbiEEXfJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 May 2022 19:20:13 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29D545E769
-        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 16:16:31 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id w4so7872577wrg.12
-        for <linux-wireless@vger.kernel.org>; Thu, 05 May 2022 16:16:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BNb5FwciOrnmYbDhJp90kHEHFZ0681UtkEHiY9rBD84=;
-        b=Ohr3X3EP78LxuYDKhnz8KuPiuz1PhY8VlacN2n0UZF33p11lrzHmoTg5FkuLveaWWc
-         B+PHWzpGocOw99rYrrwOT2j6K7yl6TZjHfwiwfQv58T2SgC8RJjpZCrBvbUHRa3tAEjw
-         vBvW2uixSk3X4wocsWWICUIdWEyFIPpXBQF7km3BjP4lO/AiOmnrqBvYof/Hmrk8g3Ui
-         VsyTbQQECGTWGpH9GRnc/7V1pdbEyCgAuGzq4iO4E+9FajCsxUmBzSMnYaru+xQE/MDx
-         VovhSYGTu5JLsFhCQL0rb2sLJwJC/ZTQ8Ao2n8UXvDJkacdd5/9qZgjSKryNtgTW6CEs
-         aKmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BNb5FwciOrnmYbDhJp90kHEHFZ0681UtkEHiY9rBD84=;
-        b=h0lw4wD5knemJM/z9+aQGk8RyCjk9x8wQ5vzkOXbLDyNfHlO9ZAIfBA7ZEoynaW6hY
-         abj+Cbn08FCht3vRt5UUG1Hc/lt9xrcWapxMQonxX/tXuqRR8qeneBWWT2E8xSb+vcZ8
-         b4Gb8USEB8kSyuaQ7CNDeywdHEiS6vvs/7OnAee9B00/BpmLA0TQwoGagH2HdDDRMaxx
-         heNgts8+fSDredO6v/MbxUZQ68edYtbokQXxVFLecx9dBIU8ZHsdx8n6E1mt71jS3ASo
-         KDtOMlkx+UB3CROijKzmfAwjtbkiiBt0XrljjuUaHprHafaSK5L+i9y3e1q6ybQ160wv
-         9Hlw==
-X-Gm-Message-State: AOAM532vy5SPjAyn2mRBT6Q3noXzbIhyPEG+mYAsSOJd+LxW4kilJYSw
-        nnDM8wOEGyuATvYLck0jUtONuWNCOlmiTk3XhvfL
-X-Google-Smtp-Source: ABdhPJyI6zIzqRKP45wkz/HSJ9ebgV2/QaH+Jh5XG21YfFQB+clnUfHaAanM4WnjOyZZ77zPKKT04iIWWkNblva8IBo=
-X-Received: by 2002:a5d:590d:0:b0:20a:c3eb:2584 with SMTP id
- v13-20020a5d590d000000b0020ac3eb2584mr325652wrd.18.1651792589559; Thu, 05 May
- 2022 16:16:29 -0700 (PDT)
+        Thu, 5 May 2022 19:35:09 -0400
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C30245EBCE
+        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 16:31:28 -0700 (PDT)
+Received: from fsav117.sakura.ne.jp (fsav117.sakura.ne.jp [27.133.134.244])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 245NVRdq069580;
+        Fri, 6 May 2022 08:31:27 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav117.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav117.sakura.ne.jp);
+ Fri, 06 May 2022 08:31:27 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav117.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 245NVRRH069575
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Fri, 6 May 2022 08:31:27 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <d9e6cf88-4f19-bd50-3d73-e2aee1caefa4@I-love.SAKURA.ne.jp>
+Date:   Fri, 6 May 2022 08:31:24 +0900
 MIME-Version: 1.0
-References: <20220504014440.3697851-1-keescook@chromium.org>
- <20220504014440.3697851-29-keescook@chromium.org> <CAHC9VhT5Y=ENiSyb=S-NVbGX63sLOv4nVuR_GS-yww6tiz0wYA@mail.gmail.com>
- <20220504234324.GA12556@embeddedor> <CAHC9VhRJC4AxeDsGpdphfJD4WzgaeBsdONHnixBzft5u_cE-Dw@mail.gmail.com>
- <202205051124.6D80ABAE32@keescook>
-In-Reply-To: <202205051124.6D80ABAE32@keescook>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 5 May 2022 19:16:18 -0400
-Message-ID: <CAHC9VhT3EDCZEP1og3H_PGFETE6403HUHw7aQb_wDMwJnWeb3Q@mail.gmail.com>
-Subject: Re: [PATCH 28/32] selinux: Use mem_to_flex_dup() with xfrm and sidtab
-To:     Kees Cook <keescook@chromium.org>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Xiu Jianfeng <xiujianfeng@huawei.com>,
-        =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>,
-        netdev@vger.kernel.org, selinux@vger.kernel.org,
-        Alexei Starovoitov <ast@kernel.org>,
-        alsa-devel@alsa-project.org, Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Gabbasov <andrew_gabbasov@mentor.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Gross <agross@kernel.org>,
-        Andy Lavr <andy.lavr@gmail.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Baowen Zheng <baowen.zheng@corigine.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Bradley Grove <linuxdrivers@attotech.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        Christian Brauner <brauner@kernel.org>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Chris Zankel <chris@zankel.net>,
-        Cong Wang <cong.wang@bytedance.com>,
-        Daniel Axtens <dja@axtens.net>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Dan Williams <dan.j.williams@intel.com>,
-        David Gow <davidgow@google.com>,
-        David Howells <dhowells@redhat.com>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        devicetree@vger.kernel.org, Dexuan Cui <decui@microsoft.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Eli Cohen <elic@nvidia.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Eugeniu Rosca <erosca@de.adit-jv.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Francis Laniel <laniel_francis@privacyrequired.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Hulk Robot <hulkci@huawei.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        James Morris <jmorris@namei.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        John Keeping <john@metanate.com>,
-        Juergen Gross <jgross@suse.com>, Kalle Valo <kvalo@kernel.org>,
-        Keith Packard <keithp@keithp.com>, keyrings@vger.kernel.org,
-        kunit-dev@googlegroups.com,
-        Kuniyuki Iwashima <kuniyu@amazon.co.jp>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Leon Romanovsky <leon@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux1394-devel@lists.sourceforge.net,
-        linux-afs@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, llvm@lists.linux.dev,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Louis Peens <louis.peens@corigine.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Mark Brown <broonie@kernel.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Muchun Song <songmuchun@bytedance.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rich Felker <dalias@aerifal.cx>,
-        Rob Herring <robh+dt@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        SHA-cyfmac-dev-list@infineon.com,
-        Simon Horman <simon.horman@corigine.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Tadeusz Struk <tadeusz.struk@linaro.org>,
-        Takashi Iwai <tiwai@suse.com>, Tom Rix <trix@redhat.com>,
-        Udipto Goswami <quic_ugoswami@quicinc.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        wcn36xx@lists.infradead.org, Wei Liu <wei.liu@kernel.org>,
-        xen-devel@lists.xenproject.org,
-        Yang Yingliang <yangyingliang@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v3 1/2] ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
+Content-Language: en-US
+To:     Pavel Skripkin <paskripkin@gmail.com>,
+        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
+        ath9k-devel@qca.qualcomm.com, kvalo@kernel.org,
+        davem@davemloft.net, kuba@kernel.org, linville@tuxdriver.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
+        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+References: <80962aae265995d1cdb724f5362c556d494c7566.1644265120.git.paskripkin@gmail.com>
+ <87h799a007.fsf@toke.dk> <6f0615da-aa0b-df8e-589c-f5caf09d3449@gmail.com>
+ <5fd22dda-01d6-cfae-3458-cb3fa23eb84d@I-love.SAKURA.ne.jp>
+ <3cb712d9-c6be-94b7-6135-10b0eabba341@gmail.com>
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <3cb712d9-c6be-94b7-6135-10b0eabba341@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, May 5, 2022 at 2:39 PM Kees Cook <keescook@chromium.org> wrote:
-> On Wed, May 04, 2022 at 11:14:42PM -0400, Paul Moore wrote:
-> > On Wed, May 4, 2022 at 7:34 PM Gustavo A. R. Silva
-> > <gustavoars@kernel.org> wrote:
-> > >
-> > > Hi Paul,
-> > >
-> > > On Wed, May 04, 2022 at 06:57:28PM -0400, Paul Moore wrote:
-> > > > On Tue, May 3, 2022 at 9:57 PM Kees Cook <keescook@chromium.org> wrote:
-> > >
-> > > [..]
-> > >
-> > > > > +++ b/include/uapi/linux/xfrm.h
-> > > > > @@ -31,9 +31,9 @@ struct xfrm_id {
-> > > > >  struct xfrm_sec_ctx {
-> > > > >         __u8    ctx_doi;
-> > > > >         __u8    ctx_alg;
-> > > > > -       __u16   ctx_len;
-> > > > > +       __DECLARE_FLEX_ARRAY_ELEMENTS_COUNT(__u16, ctx_len);
-> > > > >         __u32   ctx_sid;
-> > > > > -       char    ctx_str[0];
-> > > > > +       __DECLARE_FLEX_ARRAY_ELEMENTS(char, ctx_str);
-> > > > >  };
-> > > >
-> > > > While I like the idea of this in principle, I'd like to hear about the
-> > > > testing you've done on these patches.  A previous flex array
-> > > > conversion in the audit uapi headers ended up causing a problem with
-> > >
-> > > I'm curious about which commit caused those problems...?
-> >
-> > Commit ed98ea2128b6 ("audit: replace zero-length array with
-> > flexible-array member"), however, as I said earlier, the problem was
-> > actually with SWIG, it just happened to be triggered by the kernel
-> > commit.  There was a brief fedora-devel mail thread about the problem,
-> > see the link below:
-> >
-> > * https://www.spinics.net/lists/fedora-devel/msg297991.html
->
-> Wow, that's pretty weird -- it looks like SWIG was scraping the headers
-> to build its conversions? I assume SWIG has been fixed now?
+On 2022/05/06 4:09, Pavel Skripkin wrote:
+>>> And we can meet NULL defer even if we leave drv_priv = priv initialization
+>>> on it's place.
+>>
+>> I didn't catch the location. As long as "htc_handle->drv_priv = priv;" is done
+>> before complete_all(&hif_dev->fw_done) is done, is something wrong?
+>>
+> 
+> I don't really remember why I said that, but looks like I just haven't opened callbacks' code.
 
-I honestly don't know, the audit userspace was hacking around it with
-some header file duplication/munging last I heard, but I try to avoid
-having to touch Steve's audit userspace code.
-
-> > To reiterate, I'm supportive of changes like this, but I would like to
-> > hear how it was tested to ensure there are no unexpected problems with
-> > userspace.  If there are userspace problems it doesn't mean we can't
-> > make changes like this, it just means we need to ensure that the
-> > userspace issues are resolved first.
->
-> Well, as this is the first and only report of any problems with [0] -> []
-> conversions (in UAPI or anywhere) that I remember seeing, and they've
-> been underway since at least v5.9, I hadn't been doing any new testing.
-
-... and for whatever it is worth, I wasn't expecting it to be a
-problem either.  Surprise :)
-
-> So, for this case, I guess I should ask what tests you think would be
-> meaningful here? Anything using #include should be fine:
-> https://codesearch.debian.net/search?q=linux%2Fxfrm.h&literal=1&perpkg=1
-> Which leaves just this, which may be doing something weird:
->
-> libabigail_2.0-1/tests/data/test-diff-filter/test-PR27569-v0.abi
->         </data-member>
->         <data-member access="public" layout-offset-in-bits="128">
->           <var-decl name="seq_hi" type-id="3f1a6b60" visibility="default" filepath="include/uapi/linux/xfrm.h" line="97" column="1"/>
->         </data-member>
->         <data-member access="public" layout-offset-in-bits="160">
->
-> But I see that SWIG doesn't show up in a search for linux/audit.h:
-> https://codesearch.debian.net/search?q=linux%2Faudit.h&literal=1&perpkg=1
->
-> So this may not be a sufficient analysis...
-
-I think from a practical perspective ensuring that the major IPsec/IKE
-tools, e.g. the various *SWANs, that know about labeled IPSec still
-build and can set/get the SA/SPD labels correctly would be sufficient.
-I seriously doubt there would be any problems, but who knows.
-
--- 
-paul-moore.com
+OK. Then, why not accept Pavel's patch?
