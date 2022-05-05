@@ -2,104 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ECC351B773
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 07:24:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D862E51B7F4
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 08:30:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243443AbiEEF1v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 May 2022 01:27:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56860 "EHLO
+        id S235857AbiEEGdq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 May 2022 02:33:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230073AbiEEF1t (ORCPT
+        with ESMTP id S233342AbiEEGdm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 May 2022 01:27:49 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 449961CFFF;
-        Wed,  4 May 2022 22:24:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651728251; x=1683264251;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=CQBdDyKWYy/iEf2kk4r6gXfF52WkzPzsr1wq92EJL6A=;
-  b=GKC8gnTjdMogCPrGCNA73O36ilVWBzw/HGU2E0XxHuHwQL3DJ89bL98d
-   JHNiu9sHhOHBux4llDAbmYe1EdqoviYHUWyLMoC2SpB7OFMqIRAHVWNBA
-   j8Z614JCdaVEKQm8DQyapX6R6Af6yOGHJzJAcxx8jfSZI9IzWE6HcoxyA
-   859P90b9uxbR5sWetStOpcGGN4n0rvqxqhZyHc17EEmS8nd0IHYmMMDJ7
-   CfbzkKwTuFNhmyy4RcnhgTcLEJ8kqnVIJGYkb/pKj/jAs5x289RaU3Pzu
-   l4UlN77uvJD0T0K6ve2cqHRy+TJGhzcub7nfhAyxU2sssUBWamz+43a9U
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10337"; a="354437405"
-X-IronPort-AV: E=Sophos;i="5.91,200,1647327600"; 
-   d="scan'208";a="354437405"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2022 22:24:10 -0700
-X-IronPort-AV: E=Sophos;i="5.91,200,1647327600"; 
-   d="scan'208";a="585138203"
-Received: from bfu-mobl3.ccr.corp.intel.com ([10.255.31.7])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2022 22:24:07 -0700
-Message-ID: <2358992684eb37823378cb48de2775620ee42031.camel@intel.com>
-Subject: Re: [PATCH 5/7] wil6210: remove debug message for unsupported PM
- event
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     rjw@rjwysocki.net, alexandre.belloni@bootlin.com,
-        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-wireless@vger.kernel.org,
-        daniel.lezcano@linaro.org, mat.jonczyk@o2.pl,
-        sumeet.r.pawnikar@intel.com, len.brown@intel.com
-Date:   Thu, 05 May 2022 13:24:04 +0800
-In-Reply-To: <875ymkzj9e.fsf@kernel.org>
-References: <20220505015814.3727692-1-rui.zhang@intel.com>
-         <20220505015814.3727692-6-rui.zhang@intel.com> <875ymkzj9e.fsf@kernel.org>
+        Thu, 5 May 2022 02:33:42 -0400
+Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09D271A05D;
+        Wed,  4 May 2022 23:30:04 -0700 (PDT)
+Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-2ef5380669cso38052897b3.9;
+        Wed, 04 May 2022 23:30:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=hPg/kHUDyxMY3LkVNBXDy7g4FaARqDwC2Ys4u38uvGI=;
+        b=Nm4Zz5nhKZ3HXeTj7BdPL1xu3o52ow/5uQwZaFOhdAcUzK/zag7Aj8mm1vQli0o6Iz
+         Hz7QCpbrWBxWo7rRBSwjU+ykaehOWrLsjSWvwuds/xNLnzNXGJItRFHFduf70lsHimoZ
+         khIrK/kIUZYwyRVDqVxtSYPVimSvCKKfA+YLSSn544yh/JR5TdSPCrxcathQbiwK3/hY
+         DFbRmkUQGoV78dXRWs7ca+EtE0UW20+ThPogonlP/WVlAORWPAzV7E4DmVeAtxtcKAOj
+         BiJ9kCIa4ltjnjRd+80t/lByJTNM68wldIpF9Y+Dcg8VC4TPC+cOsK3E6bz6hzRbwg7l
+         2iqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=hPg/kHUDyxMY3LkVNBXDy7g4FaARqDwC2Ys4u38uvGI=;
+        b=Ez0hxVixKiHuXRrT4UTEOysPzSUkp+QB43Qi84t6ktgrGBn6dX9pZvndeCKxBY492/
+         1HLvAjBuisQ6ILTImZDSaG9vwNaKsWhKrNXc71eDdCvdduhU6HYlkXCsNZ9HkJKCoj1W
+         jQKIUYmcbfWstaFD64mqfdJ0fncoGdrougIq4dc5RdCbqFoAV6tnHoiLrDFmdOb4CLkK
+         PKRpCzvlSyvVcx9lX+uwkX/dxOLD4iqcmZ+ISB3AlrAPvRkvx5ENdzMBiMOXkeVZ+z9t
+         htqBhy0CD6ZvTL1hUU73t43WXJz9HbHiG+ioCwiNBFl0xXPKrzgZZLuuwC0e40K8sX9f
+         mljw==
+X-Gm-Message-State: AOAM531vlDWGAkXyhBVPlmHBCFPo12Q7UHFwd3mmy6MEDTlL34XFRFpj
+        KYG0CRVi0nMeXQDPLrc/iEMo5Imz++5kSecu/Q4=
+X-Google-Smtp-Source: ABdhPJzfiMmMi8049ryLbdTumFiEB2azt22RyodOw27TSrh1paFQRoNHRdA9rucfDC/0WVdKgBLZtWA8bqBV8pDTstE=
+X-Received: by 2002:a81:2143:0:b0:2fb:1274:247e with SMTP id
+ h64-20020a812143000000b002fb1274247emr5212506ywh.384.1651732203173; Wed, 04
+ May 2022 23:30:03 -0700 (PDT)
+MIME-Version: 1.0
+From:   Gonsolo <gonsolo@gmail.com>
+Date:   Thu, 5 May 2022 08:29:52 +0200
+Message-ID: <CANL0fFQRBZiVcEM0OOxkLqiAKf=rFssGetrwN6vWj5SsxX__mA@mail.gmail.com>
+Subject: Suspend/resume error with AWUS036ACM
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, Kalle,
+Hi all.
 
-thanks for the quick response.
+After a resume I get the following error:
 
-On Thu, 2022-05-05 at 07:38 +0300, Kalle Valo wrote:
-> Zhang Rui <rui.zhang@intel.com> writes:
-> 
-> > Remove the useless debug message for unsupported PM event because
-> > it is
-> > noop in current code, and it gives a warning when a new event is
-> > introduced, which it doesn't care.
-> 
-> It's a debug message, not a warning, and only visible when debug
-> messages are enabled. Why do you want to remove it?
+ +0,000007] UBSAN: invalid-load in
+/build/linux-lowlatency-fSdu7c/linux-lowlatency-5.15.0/net/mac80211/status.c:1164:21
+[  +0,000004] load of value 255 is not a valid value for type '_Bool'
+[  +0,000004] CPU: 22 PID: 387 Comm: kworker/u256:5 Tainted: P
+  OE     5.15.0-27-lowlatency #28-Ubuntu
+[  +0,000004] Hardware name: To Be Filled By O.E.M. To Be Filled By
+O.E.M./X399 Phantom Gaming 6, BIOS P1.31 01/14/2021
+[  +0,000003] Workqueue: phy0 mt76x02_mac_work [mt76x02_lib]
+[  +0,000014] Call Trace:
+[  +0,000003]  <TASK>
+[  +0,000003]  show_stack+0x52/0x58
+[  +0,000006]  dump_stack_lvl+0x4a/0x5f
+[  +0,000007]  dump_stack+0x10/0x12
+[  +0,000003]  ubsan_epilogue+0x9/0x45
+[  +0,000002]  __ubsan_handle_load_invalid_value.cold+0x44/0x49
+[  +0,000004]  ieee80211_tx_status_ext.cold+0x4e/0x5f [mac80211]
+[  +0,000068]  mt76_tx_status_unlock+0x111/0x160 [mt76]
+[  +0,000010]  mt76_tx_status_check+0x68/0x90 [mt76]
+[  +0,000009]  mt76x02_mac_work+0x14b/0x240 [mt76x02_lib]
+[  +0,000008]  process_one_work+0x222/0x3f0
+[  +0,000006]  worker_thread+0x50/0x3f0
+[  +0,000004]  ? process_one_work+0x3f0/0x3f0
+[  +0,000004]  kthread+0x13b/0x160
+[  +0,000003]  ? set_kthread_struct+0x50/0x50
+[  +0,000004]  ret_from_fork+0x22/0x30
+[  +0,000006]  </TASK>
+[  +0,000001] ================================================================================
 
-I'm concerning that people will report problems when they see new
-messages which never shows up previously.
+This is a stock Ubuntu Jammy lowlatency kernel (with Nvidia drivers).
 
-Deleting or keeping this message are both okay to me. But patch 6/7
-indeed introduces a change to this piece of code and it's better for
-you to be aware of it before people starts to complain.
+I would be happy to provide all the needed information to resolve this.
 
-> 
-> > Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-> > Tested-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
-> 
-> Is this really tested on a wil6210 device? Not that it matters, just
-> surprised to see a Tested-by for a wil6210 patch. It's not really
-> common
-> hardware.
+I also want to note that the device is running quite unstable (lots of
+deauthenticating, network lost, etc...).
 
-No, we just tested the whole patch series on a Dell 9360 laptop, and a
-series of internal test machines. I didn't check if any of them has
-this device or not. Maybe I should remove the tested by in this case?
-
-thanks,
-rui
-
+Regards,
+g
