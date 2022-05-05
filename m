@@ -2,45 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF87851B724
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 06:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62DB351B735
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 06:38:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242694AbiEEE2v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 May 2022 00:28:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44184 "EHLO
+        id S242817AbiEEEmI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 May 2022 00:42:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230030AbiEEE2u (ORCPT
+        with ESMTP id S235678AbiEEEmG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 May 2022 00:28:50 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2336225285
-        for <linux-wireless@vger.kernel.org>; Wed,  4 May 2022 21:25:10 -0700 (PDT)
+        Thu, 5 May 2022 00:42:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB8B43D1FB;
+        Wed,  4 May 2022 21:38:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9EFF3B82B1E
-        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 04:25:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECA6C385AC;
-        Thu,  5 May 2022 04:25:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F19761A8E;
+        Thu,  5 May 2022 04:38:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7134AC385A4;
+        Thu,  5 May 2022 04:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651724708;
-        bh=3Oe6ZBRqpW08S5I0nat5b0sA/RqhRvjKjYgAURXkykQ=;
+        s=k20201202; t=1651725507;
+        bh=xQ9ID9upe/l42cR8AxOMGLL42hRtsjZ2bTQqZA2aAMM=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=maREjnhNrCvw7jkXa6R24oV3sqZLWzsLWymGpu1cwOQKgQsw/EEotl7ozfnZHiG0c
-         R1BJcM3f9HN4PvdtVomicpwkkv1MwBnugQNU27rjsFJavZPD1WXxlbSh+6xUZIc6Ek
-         U7noV6xxRKpA1bGxoMoX63I9Mc2oK5ok+J82akke3afoGqboWPNeyoVkq3HkWrm5px
-         h0hC8FBDdWzxqLmEwDl51YXMI7Pv+vFFpeXua7w54b7Sj1+IiSyBU1HbTf6XfDEGTy
-         K1NPrDNV9d/hkApOuQWrvVJ816OgZ6T0x4A7D+yjk5fOVy51s1s79ngdB/dtQtQF3U
-         Fay1neoq5ipPA==
+        b=MY5C4u+rQgWKYZxYi6J9XzTl/9Fa73VDfAWhFgcBMZOsArXByshbjRTTPJuCbl0Bw
+         Cuai5N/jRT4M8CxvA55PHlmaNK9/2utoeI07CGtrKWRIYVxtnaJf2qOoA9pkKEa80p
+         U/1HwjeOf5KOX75JUI2CKzI8SE5DbAuF5UXz54ULs7tmB9ntCXLKZaA/0pytoKpcyf
+         VA9D0LM7WuPmx/gNqe+GOdT8XlmK/5pPjgEFwYBVsv79QMg9sOyOgsZLcJHQtm33RD
+         yqFSTMpAZhtYicrEEPe8g6KH6tbI0EWWWPA0bPTVXDR2z5DwAMf82H7M+Bezy+WJV/
+         2FBJSUagDEy1w==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH wireless-next 0/3] wifi: netif_napi_add() conversions
-References: <20220504163316.549648-1-kuba@kernel.org>
-Date:   Thu, 05 May 2022 07:25:03 +0300
-In-Reply-To: <20220504163316.549648-1-kuba@kernel.org> (Jakub Kicinski's
-        message of "Wed, 4 May 2022 09:33:13 -0700")
-Message-ID: <87a6bwzjvk.fsf@kernel.org>
+To:     Zhang Rui <rui.zhang@intel.com>
+Cc:     rjw@rjwysocki.net, alexandre.belloni@bootlin.com,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-wireless@vger.kernel.org,
+        daniel.lezcano@linaro.org, mat.jonczyk@o2.pl,
+        sumeet.r.pawnikar@intel.com, len.brown@intel.com
+Subject: Re: [PATCH 5/7] wil6210: remove debug message for unsupported PM event
+References: <20220505015814.3727692-1-rui.zhang@intel.com>
+        <20220505015814.3727692-6-rui.zhang@intel.com>
+Date:   Thu, 05 May 2022 07:38:21 +0300
+In-Reply-To: <20220505015814.3727692-6-rui.zhang@intel.com> (Zhang Rui's
+        message of "Thu, 5 May 2022 09:58:12 +0800")
+Message-ID: <875ymkzj9e.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -54,27 +59,21 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Zhang Rui <rui.zhang@intel.com> writes:
 
-> Convert wifi callers to the new netif_napi_add() APIs.
->
-> The callers passing 64 or NAPI_POLL_WEIGHT to the non-Tx flavor
-> are left alone. I'm planning to include wifi drivers in the massive
-> tree-wide patch/series which will drop the last argument from
-> netif_napi_add(). Alternatively I can switch all of wifi to
-> netif_napi_add_tx_weight() and back after the netif_napi_add()
-> change makes its wait into wireless-next.
-> Please LMK if you prefer that.
->
-> Jakub Kicinski (3):
->   wifi: wil6210: switch to netif_napi_add_tx()
->   wifi: mt76: switch to netif_napi_add_tx()
->   wifi: qtnfmac: switch to netif_napi_add_weight()
+> Remove the useless debug message for unsupported PM event because it is
+> noop in current code, and it gives a warning when a new event is
+> introduced, which it doesn't care.
 
-We don't use that "wifi:" prefix, otherwise looks good. Feel free to
-take via your tree:
+It's a debug message, not a warning, and only visible when debug
+messages are enabled. Why do you want to remove it?
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
+> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+> Tested-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
+
+Is this really tested on a wil6210 device? Not that it matters, just
+surprised to see a Tested-by for a wil6210 patch. It's not really common
+hardware.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
