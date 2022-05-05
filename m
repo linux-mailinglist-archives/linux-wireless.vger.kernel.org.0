@@ -2,45 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D953651B87B
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 09:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DF5451B87C
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 09:09:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245713AbiEEHMd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 May 2022 03:12:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49964 "EHLO
+        id S245714AbiEEHMf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 May 2022 03:12:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245699AbiEEHMb (ORCPT
+        with ESMTP id S245636AbiEEHMc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 May 2022 03:12:31 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC3E946B3F
-        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 00:08:48 -0700 (PDT)
-X-UUID: b7962827cec8498da237b009b0f53705-20220505
+        Thu, 5 May 2022 03:12:32 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66FD44754D
+        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 00:08:49 -0700 (PDT)
+X-UUID: bc23d14ec1d1481d9462009e5fbb4fb3-20220505
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.4,REQID:5bf26b9a-361a-4828-b750-00cb63f7b775,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,RULE:Release_Ham,ACT
-        ION:release,TS:95
-X-CID-INFO: VERSION:1.1.4,REQID:5bf26b9a-361a-4828-b750-00cb63f7b775,OB:0,LOB:
-        0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,RULE:Spam_GS981B3D,ACT
-        ION:quarantine,TS:95
-X-CID-META: VersionHash:faefae9,CLOUDID:8c59a6b2-56b5-4c9e-8d83-0070b288eb6a,C
-        OID:07161d55507e,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,File:nil
+X-CID-O-INFO: VERSION:1.1.4,REQID:48f283f7-b254-4a73-afba-edc94321d5ef,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:-20,EDM:0,RT:0,SF:95,FILE:0,RULE:Release_Ham,A
+        CTION:release,TS:75
+X-CID-INFO: VERSION:1.1.4,REQID:48f283f7-b254-4a73-afba-edc94321d5ef,OB:0,LOB:
+        0,IP:0,URL:0,TC:0,Content:-20,EDM:0,RT:0,SF:95,FILE:0,RULE:Spam_GS981B3D,A
+        CTION:quarantine,TS:75
+X-CID-META: VersionHash:faefae9,CLOUDID:ab59a6b2-56b5-4c9e-8d83-0070b288eb6a,C
+        OID:d79bb41e6a2f,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,File:nil
         ,QS:0,BEC:nil
-X-UUID: b7962827cec8498da237b009b0f53705-20220505
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
+X-UUID: bc23d14ec1d1481d9462009e5fbb4fb3-20220505
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
         (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1234211795; Thu, 05 May 2022 15:08:42 +0800
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 2017893067; Thu, 05 May 2022 15:08:44 +0800
 Received: from mtkmbs07n1.mediatek.inc (172.21.101.16) by
  mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Thu, 5 May 2022 15:08:41 +0800
+ Thu, 5 May 2022 15:08:43 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
  mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 5 May 2022 15:08:41 +0800
+ 15.0.1497.2; Thu, 5 May 2022 15:08:43 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
  mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.3 via Frontend Transport; Thu, 5 May 2022 15:08:41 +0800
+ 15.2.792.3 via Frontend Transport; Thu, 5 May 2022 15:08:43 +0800
 From:   Ryder Lee <ryder.lee@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>
 CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
@@ -49,113 +49,84 @@ CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
         "Ryder Lee" <ryder.lee@mediatek.com>
-Subject: [PATCH 2/3] mt76: mt7915: introduce mt7915_mac_severe_check()
-Date:   Thu, 5 May 2022 15:08:35 +0800
-Message-ID: <84227dadf436ac1bef9cdfe5edff1f251ef4647e.1651722608.git.ryder.lee@mediatek.com>
+Subject: [PATCH 3/3] mt76: mt7915: move MT_INT_MASK_CSR to init.c
+Date:   Thu, 5 May 2022 15:08:36 +0800
+Message-ID: <7bfbc431f07401f73f51566ce347fca01cbaa98b.1651722608.git.ryder.lee@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <40f31a4550ff357468798a5950a62ceec396cbeb.1651722608.git.ryder.lee@mediatek.com>
 References: <40f31a4550ff357468798a5950a62ceec396cbeb.1651722608.git.ryder.lee@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In rare cases, TRB pointers might be out of sync leads to RMAC stopping
-Rx that requires minimal recovery, so add this helper to periodically
-check TRB status.
+To avoid redundant MT_INT_MASK_CSR settings.
 
-Tested-by: Chad Monroe <chad.monroe@smartrg.com>
 Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 27 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 ++
- .../net/wireless/mediatek/mt76/mt7915/regs.h  |  8 ++++++
- 3 files changed, 37 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 2 --
+ drivers/net/wireless/mediatek/mt76/mt7915/pci.c  | 2 --
+ drivers/net/wireless/mediatek/mt76/mt7915/soc.c  | 1 -
+ 4 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 803e5e05a40a..de317e871577 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -2307,6 +2307,32 @@ void mt7915_mac_update_stats(struct mt7915_phy *phy)
- 	}
- }
- 
-+static void mt7915_mac_severe_check(struct mt7915_phy *phy)
-+{
-+	struct mt7915_dev *dev = phy->dev;
-+	bool ext_phy = phy != &dev->phy;
-+	u32 trb;
-+
-+	if (!phy->omac_mask)
-+		return;
-+
-+	/* In rare cases, TRB pointers might be out of sync leads to RMAC
-+	 * stopping Rx, so check status periodically to see if TRB hardware
-+	 * requires minimal recovery.
-+	 */
-+	trb = mt76_rr(dev, MT_TRB_RXPSR0(phy->band_idx));
-+
-+	if ((FIELD_GET(MT_TRB_RXPSR0_RX_RMAC_PTR, trb) !=
-+	     FIELD_GET(MT_TRB_RXPSR0_RX_WTBL_PTR, trb)) &&
-+	    (FIELD_GET(MT_TRB_RXPSR0_RX_RMAC_PTR, phy->trb_ts) !=
-+	     FIELD_GET(MT_TRB_RXPSR0_RX_WTBL_PTR, phy->trb_ts)) &&
-+	    trb == phy->trb_ts)
-+		mt7915_mcu_set_ser(dev, SER_RECOVER, SER_SET_RECOVER_L3_RX_ABORT,
-+				   ext_phy);
-+
-+	phy->trb_ts = trb;
-+}
-+
- void mt7915_mac_sta_rc_work(struct work_struct *work)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index aa93aeab5634..db6904448063 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -649,6 +649,7 @@ mt7915_init_hardware(struct mt7915_dev *dev, struct mt7915_phy *phy2)
  {
- 	struct mt7915_dev *dev = container_of(work, struct mt7915_dev, rc_work);
-@@ -2359,6 +2385,7 @@ void mt7915_mac_work(struct work_struct *work)
- 		mphy->mac_work_count = 0;
+ 	int ret, idx;
  
- 		mt7915_mac_update_stats(phy);
-+		mt7915_mac_severe_check(phy);
- 	}
++	mt76_wr(dev, MT_INT_MASK_CSR, 0);
+ 	mt76_wr(dev, MT_INT_SOURCE_CSR, ~0);
  
- 	mutex_unlock(&mphy->dev->mutex);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 419ff08176b4..42e195dded01 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -247,6 +247,8 @@ struct mt7915_phy {
+ 	INIT_WORK(&dev->init_work, mt7915_init_work);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+index 229d40826c9b..3c55d4cebbf2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+@@ -668,8 +668,6 @@ struct mt7915_dev *mt7915_mmio_probe(struct device *pdev,
  
- 	u8 rdd_state;
+ 	tasklet_setup(&dev->irq_tasklet, mt7915_irq_tasklet);
  
-+	u32 trb_ts;
-+
- 	u32 rx_ampdu_ts;
- 	u32 ampdu_ref;
+-	mt76_wr(dev, MT_INT_MASK_CSR, 0);
+-
+ 	return dev;
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index 1a7f95223be1..7415118f6399 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -173,6 +173,14 @@ enum offs_rev {
- #define MT_MDP_TO_HIF			0
- #define MT_MDP_TO_WM			1
+ error:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+index 6f819c41a4c4..a9d4b3fced53 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+@@ -138,8 +138,6 @@ static int mt7915_pci_probe(struct pci_dev *pdev,
+ 	if (ret)
+ 		goto free_irq_vector;
  
-+/* TRB: band 0(0x820e1000), band 1(0x820f1000) */
-+#define MT_WF_TRB_BASE(_band)		((_band) ? 0x820f1000 : 0x820e1000)
-+#define MT_WF_TRB(_band, ofs)		(MT_WF_TRB_BASE(_band) + (ofs))
-+
-+#define MT_TRB_RXPSR0(_band)		MT_WF_TRB(_band, 0x03c)
-+#define MT_TRB_RXPSR0_RX_WTBL_PTR	GENMASK(25, 16)
-+#define MT_TRB_RXPSR0_RX_RMAC_PTR	GENMASK(9, 0)
-+
- /* TMAC: band 0(0x820e4000), band 1(0x820f4000) */
- #define MT_WF_TMAC_BASE(_band)		((_band) ? 0x820f4000 : 0x820e4000)
- #define MT_WF_TMAC(_band, ofs)		(MT_WF_TMAC_BASE(_band) + (ofs))
+-	mt76_wr(dev, MT_INT_MASK_CSR, 0);
+-
+ 	/* master switch of PCIe tnterrupt enable */
+ 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
+index 04e62d569599..b91f5485f97a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
+@@ -1168,7 +1168,6 @@ static int mt7986_wmac_probe(struct platform_device *pdev)
+ 		goto free_irq;
+ 
+ 	mt7915_wfsys_reset(dev);
+-	mt76_wr(dev, MT_INT_MASK_CSR, 0);
+ 
+ 	ret = mt7915_register_device(dev);
+ 	if (ret)
 -- 
 2.29.2
 
