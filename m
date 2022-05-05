@@ -2,122 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D1E451C3D2
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 17:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B4F251C44E
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 17:54:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381277AbiEEP0m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 May 2022 11:26:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51138 "EHLO
+        id S1354455AbiEEP6D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 May 2022 11:58:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381266AbiEEP0k (ORCPT
+        with ESMTP id S242926AbiEEP6C (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 May 2022 11:26:40 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61F4E5640E
-        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 08:23:00 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id c9so4005708plh.2
-        for <linux-wireless@vger.kernel.org>; Thu, 05 May 2022 08:23:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=HJq/qvj4FZwE6s96MeqFpqf47Ys+qQjfKC+Vl3h47kk=;
-        b=0ZXwdSgZILgbSfTpRkGbOJLVKuFNZdzEMsvyDK9VwGYCP4HAvpLQqNRHaQFb347qjx
-         sMhXEbywu0DRM8W+2CmTVBhZiERNFd466mUcCNFBvbbLb0hgAvd4AlPdm2Nrd7zOXoPX
-         GDR3wBK5Lwh/pzItEnf7XXi4WfM0GqS0ElL49JvpA+EKoV+e8mRvVOQlhWkWKYrcu+P+
-         D8D/diMJGVSskmjPOWEB46Jypy6v9lxrQus7d4p9hc9c0kTFrBl4pa+BE4bOIrKm5DpW
-         D9Vz4bytZ/mBDRg/dbwbTK7ZK+vc69do+KtwVbP7CzWumFO6LpcTZdp/ZCY0XSrHe/GA
-         d/Uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=HJq/qvj4FZwE6s96MeqFpqf47Ys+qQjfKC+Vl3h47kk=;
-        b=yzs6yfeNSLbMXMMK2tG/ZhixVb6iwbiGyA1WCH91ic2bDutSvwS9tXBLoi9SBJNDqz
-         SfPnh3fJrpzBZI8P8/QVQKlvWH+J0LNBApkSkSEHpaUTUjl+s19xJghJSp0ZdHHp9FmQ
-         TfRfXljeW2pX4Lz1lHpiqFoFnrvA6sYCfo1Q//6yiZOxnZcM8vZARC3CTXciZNZW0QgO
-         fZ/cBNcKJi9C/3fmR5W6mUawJmBcHshfj2v9FlDSZgB1z4nczeGxXUHI1m60/lSGIniW
-         nQ38VL1HbvEvYivD/D7zVyq9Ke5kZxmEMS9mXnNGI5ZRU+1i6A1+h/clf6BpBaigkjxT
-         FSiA==
-X-Gm-Message-State: AOAM532Enr+k0kd7godn5gjHgLivX7VblL0TyVVpAQ+vnelAQerB7XTy
-        pAnCK8ef3hcWo8/kBBNwwrQbKA==
-X-Google-Smtp-Source: ABdhPJzxxrHLaaFrj4SdCqEuXu2hYIOTSHOTO75S5Lm125KA7NuKgtEdnmV4IUFHvVLXOo11hjpJ1w==
-X-Received: by 2002:a17:903:1d1:b0:15e:9607:d4c9 with SMTP id e17-20020a17090301d100b0015e9607d4c9mr24712752plh.41.1651764179686;
-        Thu, 05 May 2022 08:22:59 -0700 (PDT)
-Received: from hermes.local (204-195-112-199.wavecable.com. [204.195.112.199])
-        by smtp.gmail.com with ESMTPSA id i14-20020a62870e000000b0050dc76281ecsm1496229pfe.198.2022.05.05.08.22.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 May 2022 08:22:59 -0700 (PDT)
-Date:   Thu, 5 May 2022 08:22:56 -0700
-From:   Stephen Hemminger <stephen@networkplumber.org>
-To:     Gonsolo <gonsolo@gmail.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: Suspend/resume error with AWUS036ACM
-Message-ID: <20220505082256.72c9ee43@hermes.local>
-In-Reply-To: <CANL0fFQRBZiVcEM0OOxkLqiAKf=rFssGetrwN6vWj5SsxX__mA@mail.gmail.com>
-References: <CANL0fFQRBZiVcEM0OOxkLqiAKf=rFssGetrwN6vWj5SsxX__mA@mail.gmail.com>
+        Thu, 5 May 2022 11:58:02 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 779015BD3E
+        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 08:54:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 263FCB82DFA
+        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 15:54:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFD4C385A4;
+        Thu,  5 May 2022 15:54:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651766059;
+        bh=BZ4OcKa4RZLJkgigptDDspCRyo7W2fFlrgS6bKz8hPg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=tGz4QzBrZjDakhoRCIYMtY0E6VP9AT3BDrvh7fBOOLqGng6wlt9IXiBOspYw5aArR
+         GSxxe+TnBsFNfJ0DEQcTFhfcmmJFX31i3xdEo8hh1SoYNWgzRIwenI1EiUtPy4mYIV
+         7BLGcRH7ZcPdOshHCdesv1OGrQv7oEujFSh57+tnobIz9wMp7oGumXxFdPM8/StEsz
+         zdzlJXJZSC1Zl4Tirtq6Yivs+ZFmu6qzvIZNf1u7N9H0X+eFKmJIoWnjtE1fsxDVc1
+         rwksg63l7dq20zrejecaOQAUhGZW8MR8AgQfB7H74HyB3hpU8Y0WRtjkNtlKucgnvw
+         +S4vHkEp99ENg==
+Date:   Thu, 5 May 2022 08:54:18 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH wireless-next 0/3] wifi: netif_napi_add() conversions
+Message-ID: <20220505085418.5384f6c9@kernel.org>
+In-Reply-To: <87a6bwzjvk.fsf@kernel.org>
+References: <20220504163316.549648-1-kuba@kernel.org>
+        <87a6bwzjvk.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 5 May 2022 08:29:52 +0200
-Gonsolo <gonsolo@gmail.com> wrote:
+On Thu, 05 May 2022 07:25:03 +0300 Kalle Valo wrote:
+> Jakub Kicinski <kuba@kernel.org> writes:
+> 
+> > Convert wifi callers to the new netif_napi_add() APIs.
+> >
+> > The callers passing 64 or NAPI_POLL_WEIGHT to the non-Tx flavor
+> > are left alone. I'm planning to include wifi drivers in the massive
+> > tree-wide patch/series which will drop the last argument from
+> > netif_napi_add(). Alternatively I can switch all of wifi to
+> > netif_napi_add_tx_weight() and back after the netif_napi_add()
+> > change makes its wait into wireless-next.
+> > Please LMK if you prefer that.
+> >
+> > Jakub Kicinski (3):
+> >   wifi: wil6210: switch to netif_napi_add_tx()
+> >   wifi: mt76: switch to netif_napi_add_tx()
+> >   wifi: qtnfmac: switch to netif_napi_add_weight()  
+> 
+> We don't use that "wifi:" prefix, otherwise looks good. 
 
-> Hi all.
-> 
-> After a resume I get the following error:
-> 
->  +0,000007] UBSAN: invalid-load in
-> /build/linux-lowlatency-fSdu7c/linux-lowlatency-5.15.0/net/mac80211/status.c:1164:21
-> [  +0,000004] load of value 255 is not a valid value for type '_Bool'
-> [  +0,000004] CPU: 22 PID: 387 Comm: kworker/u256:5 Tainted: P
->   OE     5.15.0-27-lowlatency #28-Ubuntu
-> [  +0,000004] Hardware name: To Be Filled By O.E.M. To Be Filled By
-> O.E.M./X399 Phantom Gaming 6, BIOS P1.31 01/14/2021
-> [  +0,000003] Workqueue: phy0 mt76x02_mac_work [mt76x02_lib]
-> [  +0,000014] Call Trace:
-> [  +0,000003]  <TASK>
-> [  +0,000003]  show_stack+0x52/0x58
-> [  +0,000006]  dump_stack_lvl+0x4a/0x5f
-> [  +0,000007]  dump_stack+0x10/0x12
-> [  +0,000003]  ubsan_epilogue+0x9/0x45
-> [  +0,000002]  __ubsan_handle_load_invalid_value.cold+0x44/0x49
-> [  +0,000004]  ieee80211_tx_status_ext.cold+0x4e/0x5f [mac80211]
-> [  +0,000068]  mt76_tx_status_unlock+0x111/0x160 [mt76]
-> [  +0,000010]  mt76_tx_status_check+0x68/0x90 [mt76]
-> [  +0,000009]  mt76x02_mac_work+0x14b/0x240 [mt76x02_lib]
-> [  +0,000008]  process_one_work+0x222/0x3f0
-> [  +0,000006]  worker_thread+0x50/0x3f0
-> [  +0,000004]  ? process_one_work+0x3f0/0x3f0
-> [  +0,000004]  kthread+0x13b/0x160
-> [  +0,000003]  ? set_kthread_struct+0x50/0x50
-> [  +0,000004]  ret_from_fork+0x22/0x30
-> [  +0,000006]  </TASK>
-> [  +0,000001] ================================================================================
-> 
-> This is a stock Ubuntu Jammy lowlatency kernel (with Nvidia drivers).
+I know, my silent effort to make git log --oneline be more
+understandable for folks outside of networking is not really
+being met with much applause :) Ethernet people also don't
+like the "eth:" prefix..
 
-Contact Ubuntu.  The rule for upstream is if you load out of tree drivers
-than that kernel is unsupported.
+AFAICS drivers tend to use a format consisting of (numbers at 
+the top denoting commonality):
+
+3    4       1       2
+net: vendor: driver: component: bla bla
+
+Driver name is the most common prefix. It is the most meaningful
+and natural for people working on the code. Not everyone is working 
+on the driver code, tho.
+
+1) When I send PRs to Linus I always wonder how much he can 
+make out of the shortlog. And if people throw "net:" into the mix
+whether it's still clear when something is "just" a driver bug vs
+a core bug affecting everyone. So I started using "eth: " for ethernet
+drivers, and "wifi: " for wireless drivers in the text of the PRs.
+
+2) For people doing backporting the driver names may not be meaningful,
+but if I'm doing backports for a datacenter kernel I know to pay
+attention to "eth:" while "wifi:" I can safely skip.
+
+3) The case of this set - I have conversions for the entire tree queued
+up on a branch, it's quite useful for me to use a common area-specific
+prefix to see what goes were.
+
+Anyway, that's just me rambling. I hope you don't mind if I send things
+with a wifi prefix from time to time given it's a convenient way for me
+to mark the queued patches.
+
+> Feel free to take via your tree:
+> 
+> Acked-by: Kalle Valo <kvalo@kernel.org>
+
+Actually I didn't cc netdev so would be easier if you could take them :)
+I have to wait for RDMA/infiniband to get merged up before I can start
+deleting stuff anyway :(
