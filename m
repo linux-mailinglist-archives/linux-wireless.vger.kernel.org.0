@@ -2,208 +2,316 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EEC851B58C
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 03:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E53AD51B60A
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 04:41:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237019AbiEECCU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 May 2022 22:02:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38524 "EHLO
+        id S239748AbiEECoU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 May 2022 22:44:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236879AbiEECCS (ORCPT
+        with ESMTP id S234324AbiEECoT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 May 2022 22:02:18 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C14251E4F;
-        Wed,  4 May 2022 18:58:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651715917; x=1683251917;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=5JGo0CUXEeDd0hKD63fYj2DEOqA2I95e7owhFGJ3cD0=;
-  b=T2vi7lviGPNuzJvBAs+HON3xp/9sCWSnLTDimeia0D56KrotSEV/osNb
-   cSmPXn9jx54NpSw9Z/xa0wZlefRSSsxmLNzQc0cuJSHUPIf84XCQk2wlW
-   Y1W+ITpjRceo7oJbyYnxUWma9Ux7IsMXEg+kCqK3xVOngKBlexFeHSnPd
-   WYLEo3dv4ud/1r5DW6is32jnywbQKSZCsU+pnxbwO/yF+6euoSCfdissl
-   aLRU9OLGvSG0cD44ahEv0bqg5VVUYI7uDI5EQXqwNfERfHGCzABWIaN4c
-   AAavDzmW/fEr0Vznirer6G/oq7LbWPn3WRYZuAHazalNtvkaBMfBgAQ7l
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10337"; a="293153507"
-X-IronPort-AV: E=Sophos;i="5.91,199,1647327600"; 
-   d="scan'208";a="293153507"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2022 18:58:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,199,1647327600"; 
-   d="scan'208";a="537106061"
-Received: from rzhang1-dev.sh.intel.com ([10.239.48.43])
-  by orsmga006.jf.intel.com with ESMTP; 04 May 2022 18:58:33 -0700
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     rjw@rjwysocki.net, kvalo@kernel.org, alexandre.belloni@bootlin.com
-Cc:     linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-wireless@vger.kernel.org,
-        daniel.lezcano@linaro.org, merez@codeaurora.org, mat.jonczyk@o2.pl,
-        sumeet.r.pawnikar@intel.com, len.brown@intel.com
-Subject: [PATCH 7/7] rtc: cmos: Add suspend/resume endurance testing hook
-Date:   Thu,  5 May 2022 09:58:14 +0800
-Message-Id: <20220505015814.3727692-8-rui.zhang@intel.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20220505015814.3727692-1-rui.zhang@intel.com>
-References: <20220505015814.3727692-1-rui.zhang@intel.com>
+        Wed, 4 May 2022 22:44:19 -0400
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A586B4B863
+        for <linux-wireless@vger.kernel.org>; Wed,  4 May 2022 19:40:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1651718441; x=1683254441;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=rMs0z5s6eelcvwJiWgRWZZjOtCXiIIzuE7LXVYMjhKY=;
+  b=pVRCAbkPKCc68CIaAzvk1r2sm9vKsqh8Rwfpav2tceNYJvZC0k0mnrgx
+   doXJDOv3RRURFnR1PCBYnRRXzwvUKbPcqmEWy0pRU81zpUOuS4PIKpaJV
+   Qox1FVVoMEWUOQ5v4XcUXUiZ0xOeIcHWXsl9BCUZiwivhg6CitwMVAXmT
+   4=;
+Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 04 May 2022 19:40:41 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2022 19:40:41 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 4 May 2022 19:40:41 -0700
+Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 4 May 2022 19:40:39 -0700
+From:   Baochen Qiang <quic_bqiang@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2] ath11k: Handle keepalive during WoWLAN suspend and resume
+Date:   Thu, 5 May 2022 10:40:27 +0800
+Message-ID: <20220505024027.1551157-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Automated suspend/resume testing uses the RTC for wakeup.
-A short rtcwake period is desirable, so that more suspend/resume
-cycles can be completed, while the machine is available for testing.
+With WoWLAN enabled and after sleeping for a rather long time,
+we are seeing that with some APs, it is not able to wake up
+the STA though the correct wake up pattern has been configured.
+This is because the host doesn't send keepalive command to
+firmware, thus firmware will not send any packet to the AP and
+after a specific time the AP kicks out the STA.
 
-But if too short a wake interval is specified, the event can occur,
-while still suspending, and then no event wakes the suspended system
-until the user notices that testing has stalled, and manually intervenes.
+Fix this issue by enabling keepalive before going to suspend
+and disabling it after resume back.
 
-Here we add a hook to the rtc-cmos driver to
-a) remove the alarm timer in the beginning of suspend, if there is any
-b) arm the wakeup in PM notifier callback, which is in the very late stage
-   before the system really suspends
-The remaining part of suspend is usually measured under 10 ms,
-and so arming the timer at this point could be as fast as the minimum
-time of 1-second.
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
 
-But there is a 2nd race.  The RTC has 1-second granularity, and unless
-you are timing the timer with a higher resolution timer,
-there is no telling if the current time + 1 will occur immediately,
-or a full second in the future.  And so 2-seconds is the safest minimum:
-
-Run 1,000 s2idle cycles with (max of) 2 second wakeup period:
-
- # echo 2 > /sys/module/rtc_cmos/parameters/rtc_wake_override_sec
- # sleepgraph.py -m freeze -multi 1000 0 -skiphtml -gzip
-
-Clear the timer override, to not interfere with subsequent
-real use of the machine's suspend/resume feature:
-
- # echo 0 > /sys/module/rtc_cmos/parameters/rtc_wake_override_sec
-
-Originally-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Tested-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 ---
- drivers/rtc/interface.c |  1 +
- drivers/rtc/rtc-cmos.c  | 45 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 46 insertions(+)
+v2:
+ 1. s/wowlan/WoWLAN
+ 2. s/DUT/STA
 
-diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-index 9edd662c69ac..fb93aa2dc99c 100644
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -1020,6 +1020,7 @@ void rtc_timer_cancel(struct rtc_device *rtc, struct rtc_timer *timer)
- 		rtc_timer_remove(rtc, timer);
- 	mutex_unlock(&rtc->ops_lock);
+ drivers/net/wireless/ath/ath11k/mac.c | 31 ++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/mac.h |  4 +++
+ drivers/net/wireless/ath/ath11k/wmi.c | 40 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/wmi.h | 41 +++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/wow.c | 34 ++++++++++++++++++++++
+ 5 files changed, 150 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 1957e1713548..6e0484708d6b 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -9026,3 +9026,34 @@ void ath11k_mac_destroy(struct ath11k_base *ab)
+ 		pdev->ar = NULL;
+ 	}
  }
-+EXPORT_SYMBOL_GPL(rtc_timer_cancel);
- 
- /**
-  * rtc_read_offset - Read the amount of rtc offset in parts per billion
-diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
-index 7c006c2b125f..9590c40fa9d8 100644
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -32,6 +32,7 @@
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/spinlock.h>
-+#include <linux/suspend.h>
- #include <linux/platform_device.h>
- #include <linux/log2.h>
- #include <linux/pm.h>
-@@ -70,6 +71,9 @@ static inline int cmos_use_acpi_alarm(void)
- }
- #endif
- 
-+static int rtc_wake_override_sec;
-+module_param(rtc_wake_override_sec, int, 0644);
 +
- struct cmos_rtc {
- 	struct rtc_device	*rtc;
- 	struct device		*dev;
-@@ -89,6 +93,7 @@ struct cmos_rtc {
- 	u8			century;
- 
- 	struct rtc_wkalrm	saved_wkalrm;
-+	struct notifier_block	pm_nb;
- };
- 
- /* both platform and pnp busses use negative numbers for invalid irqs */
-@@ -744,6 +749,42 @@ static irqreturn_t cmos_interrupt(int irq, void *p)
- 		return IRQ_NONE;
- }
- 
-+static int cmos_pm_notify(struct notifier_block *nb, unsigned long mode, void *_unused)
++int ath11k_mac_vif_set_keepalive(struct ath11k_vif *arvif,
++				 enum wmi_sta_keepalive_method method,
++				 u32 interval)
 +{
-+	struct cmos_rtc *cmos = container_of(nb, struct cmos_rtc, pm_nb);
-+	struct rtc_device       *rtc = cmos->rtc;
-+	unsigned long           now;
-+	struct rtc_wkalrm       alm;
++	struct ath11k *ar = arvif->ar;
++	struct wmi_sta_keepalive_arg arg = {};
++	int ret;
 +
-+	if (rtc_wake_override_sec == 0)
-+		return NOTIFY_OK;
++	lockdep_assert_held(&ar->conf_mutex);
 +
-+	switch (mode) {
-+	case PM_SUSPEND_PREPARE:
-+		/*
-+		 * Cancel the timer to make sure it won't fire
-+		 * before rtc is rearmed later.
-+		 */
-+		rtc_timer_cancel(rtc, &rtc->aie_timer);
-+		break;
-+	case PM_SUSPEND_LATE:
-+		if (rtc_read_time(rtc, &alm.time))
-+			return NOTIFY_BAD;
++	if (arvif->vdev_type != WMI_VDEV_TYPE_STA)
++		return 0;
 +
-+		now = rtc_tm_to_time64(&alm.time);
-+		memset(&alm, 0, sizeof(alm));
-+		rtc_time64_to_tm(now + rtc_wake_override_sec, &alm.time);
-+		alm.enabled = true;
-+		if (rtc_set_alarm(rtc, &alm))
-+			return NOTIFY_BAD;
-+		if (cmos->wake_on)
-+			cmos->wake_on(cmos->dev);
-+		break;
++	if (!test_bit(WMI_TLV_SERVICE_STA_KEEP_ALIVE, ar->ab->wmi_ab.svc_map))
++		return 0;
++
++	arg.vdev_id = arvif->vdev_id;
++	arg.enabled = 1;
++	arg.method = method;
++	arg.interval = interval;
++
++	ret = ath11k_wmi_sta_keepalive(ar, &arg);
++	if (ret) {
++		ath11k_warn(ar->ab, "failed to set keepalive on vdev %i: %d\n",
++			    arvif->vdev_id, ret);
++		return ret;
 +	}
 +
-+	return NOTIFY_OK;
++	return 0;
++}
+diff --git a/drivers/net/wireless/ath/ath11k/mac.h b/drivers/net/wireless/ath/ath11k/mac.h
+index 7f93e3a9ca23..57ebfc592b00 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.h
++++ b/drivers/net/wireless/ath/ath11k/mac.h
+@@ -8,6 +8,7 @@
+ 
+ #include <net/mac80211.h>
+ #include <net/cfg80211.h>
++#include "wmi.h"
+ 
+ struct ath11k;
+ struct ath11k_base;
+@@ -173,4 +174,7 @@ void ath11k_mac_handle_beacon(struct ath11k *ar, struct sk_buff *skb);
+ void ath11k_mac_handle_beacon_miss(struct ath11k *ar, u32 vdev_id);
+ void ath11k_mac_bcn_tx_event(struct ath11k_vif *arvif);
+ int ath11k_mac_wait_tx_complete(struct ath11k *ar);
++int ath11k_mac_vif_set_keepalive(struct ath11k_vif *arvif,
++				 enum wmi_sta_keepalive_method method,
++				 u32 interval);
+ #endif
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 1410114d1d5c..bd8b2f1d4c1e 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -8959,3 +8959,43 @@ int ath11k_wmi_pdev_set_bios_geo_table_param(struct ath11k *ar)
+ 
+ 	return ath11k_wmi_cmd_send(wmi, skb, WMI_PDEV_SET_BIOS_GEO_TABLE_CMDID);
+ }
++
++int ath11k_wmi_sta_keepalive(struct ath11k *ar,
++			     const struct wmi_sta_keepalive_arg *arg)
++{
++	struct ath11k_pdev_wmi *wmi = ar->wmi;
++	struct wmi_sta_keepalive_cmd *cmd;
++	struct wmi_sta_keepalive_arp_resp *arp;
++	struct sk_buff *skb;
++	size_t len;
++
++	len = sizeof(*cmd) + sizeof(*arp);
++	skb = ath11k_wmi_alloc_skb(wmi->wmi_ab, len);
++	if (!skb)
++		return -ENOMEM;
++
++	cmd = (struct wmi_sta_keepalive_cmd *)skb->data;
++	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG,
++				     WMI_TAG_STA_KEEPALIVE_CMD) |
++				     FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
++	cmd->vdev_id = arg->vdev_id;
++	cmd->enabled = arg->enabled;
++	cmd->interval = arg->interval;
++	cmd->method = arg->method;
++
++	if (arg->method == WMI_STA_KEEPALIVE_METHOD_UNSOLICITED_ARP_RESPONSE ||
++	    arg->method == WMI_STA_KEEPALIVE_METHOD_GRATUITOUS_ARP_REQUEST) {
++		arp = (struct wmi_sta_keepalive_arp_resp *)(cmd + 1);
++		arp->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_STA_KEEPALVE_ARP_RESPONSE) |
++				 FIELD_PREP(WMI_TLV_LEN, sizeof(*arp) - TLV_HDR_SIZE);
++		arp->src_ip4_addr = arg->src_ip4_addr;
++		arp->dest_ip4_addr = arg->dest_ip4_addr;
++		ether_addr_copy(arp->dest_mac_addr.addr, arg->dest_mac_addr);
++	}
++
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "wmi sta keepalive vdev %d enabled %d method %d interval %d\n",
++		   arg->vdev_id, arg->enabled, arg->method, arg->interval);
++
++	return ath11k_wmi_cmd_send(wmi, skb, WMI_STA_KEEPALIVE_CMDID);
++}
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index 7600e9a52da8..0b53599a3743 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -5907,6 +5907,45 @@ struct wmi_pdev_set_geo_table_cmd {
+ 	u32 rsvd_len;
+ } __packed;
+ 
++struct wmi_sta_keepalive_cmd {
++	u32 tlv_header;
++	u32 vdev_id;
++	u32 enabled;
++	u32 method; /* WMI_STA_KEEPALIVE_METHOD_ */
++	u32 interval; /* in seconds */
++	/* NOTE: following this structure is the TLV for ARP Response:
++	 * WMI_STA_KEEPALVE_ARP_RESPONSE arp_resp; <-- ARP response
++	 */
++} __packed;
++
++struct wmi_sta_keepalive_arp_resp {
++	u32 tlv_header;
++	u32 src_ip4_addr;
++	u32 dest_ip4_addr;
++	struct wmi_mac_addr dest_mac_addr;
++} __packed;
++
++struct wmi_sta_keepalive_arg {
++	u32 vdev_id;
++	u32 enabled;
++	u32 method;
++	u32 interval;
++	u32 src_ip4_addr;
++	u32 dest_ip4_addr;
++	const u8 dest_mac_addr[ETH_ALEN];
++};
++
++enum wmi_sta_keepalive_method {
++	WMI_STA_KEEPALIVE_METHOD_NULL_FRAME = 1, /* 802.11 NULL frame */
++	WMI_STA_KEEPALIVE_METHOD_UNSOLICITED_ARP_RESPONSE = 2, /* ARP response */
++	WMI_STA_KEEPALIVE_METHOD_ETHERNET_LOOPBACK = 3, /*ETHERNET LOOPBACK*/
++	WMI_STA_KEEPALIVE_METHOD_GRATUITOUS_ARP_REQUEST = 4, /* gratuitous ARP req*/
++	WMI_STA_KEEPALIVE_METHOD_MGMT_VENDOR_ACTION = 5, /* vendor action frame */
++};
++
++#define WMI_STA_KEEPALIVE_INTERVAL_DEFAULT	30
++#define WMI_STA_KEEPALIVE_INTERVAL_DISABLE	0
++
+ int ath11k_wmi_cmd_send(struct ath11k_pdev_wmi *wmi, struct sk_buff *skb,
+ 			u32 cmd_id);
+ struct sk_buff *ath11k_wmi_alloc_skb(struct ath11k_wmi_base *wmi_sc, u32 len);
+@@ -6087,5 +6126,7 @@ int ath11k_wmi_gtk_rekey_getinfo(struct ath11k *ar,
+ 				 struct ath11k_vif *arvif);
+ int ath11k_wmi_pdev_set_bios_sar_table_param(struct ath11k *ar, const u8 *sar_val);
+ int ath11k_wmi_pdev_set_bios_geo_table_param(struct ath11k *ar);
++int ath11k_wmi_sta_keepalive(struct ath11k *ar,
++			     const struct wmi_sta_keepalive_arg *arg);
+ 
+ #endif
+diff --git a/drivers/net/wireless/ath/ath11k/wow.c b/drivers/net/wireless/ath/ath11k/wow.c
+index 9d088cebef03..b3e65cd13d83 100644
+--- a/drivers/net/wireless/ath/ath11k/wow.c
++++ b/drivers/net/wireless/ath/ath11k/wow.c
+@@ -640,6 +640,24 @@ static int ath11k_wow_protocol_offload(struct ath11k *ar, bool enable)
+ 	return 0;
+ }
+ 
++static int ath11k_wow_set_keepalive(struct ath11k *ar,
++				    enum wmi_sta_keepalive_method method,
++				    u32 interval)
++{
++	struct ath11k_vif *arvif;
++	int ret;
++
++	lockdep_assert_held(&ar->conf_mutex);
++
++	list_for_each_entry(arvif, &ar->arvifs, list) {
++		ret = ath11k_mac_vif_set_keepalive(arvif, method, interval);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
 +}
 +
- #ifdef	CONFIG_PNP
- #define	INITSECTION
+ int ath11k_wow_op_suspend(struct ieee80211_hw *hw,
+ 			  struct cfg80211_wowlan *wowlan)
+ {
+@@ -691,6 +709,14 @@ int ath11k_wow_op_suspend(struct ieee80211_hw *hw,
+ 		goto cleanup;
+ 	}
  
-@@ -937,6 +978,9 @@ cmos_do_probe(struct device *dev, struct resource *ports, int rtc_irq)
- 		 nvmem_cfg.size,
- 		 use_hpet_alarm() ? ", hpet irqs" : "");
- 
-+	cmos_rtc.pm_nb.notifier_call = cmos_pm_notify;
-+	register_pm_notifier(&cmos_rtc.pm_nb);
++	ret = ath11k_wow_set_keepalive(ar,
++				       WMI_STA_KEEPALIVE_METHOD_NULL_FRAME,
++				       WMI_STA_KEEPALIVE_INTERVAL_DEFAULT);
++	if (ret) {
++		ath11k_warn(ar->ab, "failed to enable wow keepalive: %d\n", ret);
++		goto cleanup;
++	}
 +
- 	return 0;
+ 	ret = ath11k_wow_enable(ar->ab);
+ 	if (ret) {
+ 		ath11k_warn(ar->ab, "failed to start wow: %d\n", ret);
+@@ -786,6 +812,14 @@ int ath11k_wow_op_resume(struct ieee80211_hw *hw)
+ 		goto exit;
+ 	}
  
- cleanup2:
-@@ -965,6 +1009,7 @@ static void cmos_do_remove(struct device *dev)
- 	struct cmos_rtc	*cmos = dev_get_drvdata(dev);
- 	struct resource *ports;
- 
-+	unregister_pm_notifier(&cmos_rtc.pm_nb);
- 	cmos_do_shutdown(cmos->irq);
- 
- 	if (is_valid_irq(cmos->irq)) {
++	ret = ath11k_wow_set_keepalive(ar,
++				       WMI_STA_KEEPALIVE_METHOD_NULL_FRAME,
++				       WMI_STA_KEEPALIVE_INTERVAL_DISABLE);
++	if (ret) {
++		ath11k_warn(ar->ab, "failed to disable wow keepalive: %d\n", ret);
++		goto exit;
++	}
++
+ exit:
+ 	if (ret) {
+ 		switch (ar->state) {
+
+base-commit: b04efb72cd9d2d471a14f0a5758873f6c78923c2
 -- 
-2.17.1
+2.25.1
 
