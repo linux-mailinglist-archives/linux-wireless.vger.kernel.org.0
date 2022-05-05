@@ -2,102 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B99051BA46
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 10:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6305251BB75
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 11:08:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347742AbiEEI3z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 May 2022 04:29:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40032 "EHLO
+        id S241340AbiEEJLu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 May 2022 05:11:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238329AbiEEI3s (ORCPT
+        with ESMTP id S1351732AbiEEJLt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 May 2022 04:29:48 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39F1E2D1F5
-        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 01:26:04 -0700 (PDT)
-X-UUID: c186732969904fe3b24f21083a24a98e-20220505
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.4,REQID:17151af6-e12e-44a0-b815-5fc877a7fe06,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
-        ON:release,TS:0
-X-CID-META: VersionHash:faefae9,CLOUDID:8a284b16-2e53-443e-b81a-655c13977218,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,File:nil,QS:0,BEC:nil
-X-UUID: c186732969904fe3b24f21083a24a98e-20220505
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-        (envelope-from <chui-hao.chiu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1736132449; Thu, 05 May 2022 16:25:57 +0800
-Received: from MTKMBS07N2.mediatek.inc (172.21.101.141) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Thu, 5 May 2022 16:25:57 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 5 May 2022 16:25:56 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 5 May 2022 16:25:56 +0800
-From:   Peter Chiu <chui-hao.chiu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.Lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: [PATCH 4/4] mt76: mt7915: limit minimum twt duration
-Date:   Thu, 5 May 2022 16:25:54 +0800
-Message-ID: <20220505082554.16656-4-chui-hao.chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20220505082554.16656-1-chui-hao.chiu@mediatek.com>
-References: <20220505082554.16656-1-chui-hao.chiu@mediatek.com>
+        Thu, 5 May 2022 05:11:49 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D85754BBBA
+        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 02:08:07 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24597rq66014998, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24597rq66014998
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 5 May 2022 17:07:53 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Thu, 5 May 2022 17:07:53 +0800
+Received: from localhost (172.16.17.21) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 5 May
+ 2022 17:07:52 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <timlee@realtek.com>
+Subject: [PATCH] rtw88: adjutst adaptivity option to 1
+Date:   Thu, 5 May 2022 17:07:45 +0800
+Message-ID: <20220505090745.158892-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.16.17.21]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 05/05/2022 08:48:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzUvNSCkV6TIIDA3OjUwOjAw?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The minimum twt duration supported by mt7915 is 64 according to hardware
-design. Reply station with TWT_SETUP_CMD_DICTATE if min_twt_dur smaller
-than 64.
+From: Chin-Yen Lee <timlee@realtek.com>
 
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Fine tune algorithm of adaptivity sensitivity to avoid disconnecting
+from AP suddenly in field.
+
+Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wireless/realtek/rtw88/fw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index ff60a3d2d26d..e912ecacb578 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -2633,6 +2633,7 @@ void mt7915_mac_add_twt_setup(struct ieee80211_hw *hw,
- 			      struct ieee80211_sta *sta,
- 			      struct ieee80211_twt_setup *twt)
- {
-+#define MT7915_MIN_TWT_DUR 64
- 	enum ieee80211_twt_setup_cmd setup_cmd = TWT_SETUP_CMD_REJECT;
- 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
- 	struct ieee80211_twt_params *twt_agrt = (void *)twt->params;
-@@ -2654,6 +2655,12 @@ void mt7915_mac_add_twt_setup(struct ieee80211_hw *hw,
- 	if (hweight8(msta->twt.flowid_mask) == ARRAY_SIZE(msta->twt.flow))
- 		goto unlock;
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+index e344e058f9432..090610e48d08c 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -1786,7 +1786,7 @@ void rtw_fw_adaptivity(struct rtw_dev *rtwdev)
  
-+	if (twt_agrt->min_twt_dur < MT7915_MIN_TWT_DUR) {
-+		setup_cmd = TWT_SETUP_CMD_DICTATE;
-+		twt_agrt->min_twt_dur = MT7915_MIN_TWT_DUR;
-+		goto unlock;
-+	}
-+
- 	flowid = ffs(~msta->twt.flowid_mask) - 1;
- 	le16p_replace_bits(&twt_agrt->req_type, flowid,
- 			   IEEE80211_TWT_REQTYPE_FLOWID);
+ 	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_ADAPTIVITY);
+ 	SET_ADAPTIVITY_MODE(h2c_pkt, dm_info->edcca_mode);
+-	SET_ADAPTIVITY_OPTION(h2c_pkt, 2);
++	SET_ADAPTIVITY_OPTION(h2c_pkt, 1);
+ 	SET_ADAPTIVITY_IGI(h2c_pkt, dm_info->igi_history[0]);
+ 	SET_ADAPTIVITY_L2H(h2c_pkt, dm_info->l2h_th_ini);
+ 	SET_ADAPTIVITY_DENSITY(h2c_pkt, dm_info->scan_density);
 -- 
-2.18.0
+2.25.1
 
