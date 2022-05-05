@@ -2,130 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ADA051C425
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 17:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D1E451C3D2
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 May 2022 17:23:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380832AbiEEPsH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 May 2022 11:48:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37960 "EHLO
+        id S1381277AbiEEP0m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 May 2022 11:26:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230240AbiEEPsG (ORCPT
+        with ESMTP id S1381266AbiEEP0k (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 May 2022 11:48:06 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A2E4532E2;
-        Thu,  5 May 2022 08:44:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651765466; x=1683301466;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=/K27mxZVpjV2wVe4/S1pgizw/HTC8KiYO9tIqdJDhro=;
-  b=PYL7hq5OsEEpdMOVmkYyI1NSZsdKTEkDoWM/RT57PqS7WZbpPmoius0h
-   Q1QjnDamKW+pe545yKrwH7WLHlSBod3uKQpqpKnX7cjk4Cn+KpQzje2yi
-   Drk283JZqSOVxMxieHLK6FcqntyprVJC61+aKruIOKKw0OzDpNk6O8WbL
-   eiPECPreg6wOgiW113ZLLz3oCnPeLr/zf3KcDa03Gi21khpOmVBu27TYC
-   wgDpHS2a4iLaS2rf/m+BiDm7bbBP2TWKlWXOlebQhgDpWq+O0eUR81Qpw
-   d13OSkCaXqfYIvsJH9L0EmdL0xzakO/EhJGCao99ZYjZmbVGLasosOdid
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="268297952"
-X-IronPort-AV: E=Sophos;i="5.91,201,1647327600"; 
-   d="scan'208";a="268297952"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 08:18:09 -0700
-X-IronPort-AV: E=Sophos;i="5.91,201,1647327600"; 
-   d="scan'208";a="563286371"
-Received: from bfu-mobl3.ccr.corp.intel.com ([10.255.31.7])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 08:18:05 -0700
-Message-ID: <0f39c2be651d75895d3dfca1d8afc7cad2d4a1af.camel@intel.com>
-Subject: Re: [PATCH 0/7] PM: Solution for S0ix failure caused by PCH
- overheating
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Oliver Neukum <oneukum@suse.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>, kvalo@kernel.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-rtc@vger.kernel.org,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        merez@codeaurora.org, mat.jonczyk@o2.pl,
-        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-        Len Brown <len.brown@intel.com>
-Date:   Thu, 05 May 2022 23:18:02 +0800
-In-Reply-To: <CAJZ5v0hceDVkv05=SFbO53wsmHWkrs1SSoxZ=FuErYsnNutGWg@mail.gmail.com>
-References: <20220505015814.3727692-1-rui.zhang@intel.com>
-         <40b8ad06-6ef2-113c-fffb-2fa001603b3f@suse.com>
-         <CAJZ5v0hceDVkv05=SFbO53wsmHWkrs1SSoxZ=FuErYsnNutGWg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
+        Thu, 5 May 2022 11:26:40 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61F4E5640E
+        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 08:23:00 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id c9so4005708plh.2
+        for <linux-wireless@vger.kernel.org>; Thu, 05 May 2022 08:23:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=HJq/qvj4FZwE6s96MeqFpqf47Ys+qQjfKC+Vl3h47kk=;
+        b=0ZXwdSgZILgbSfTpRkGbOJLVKuFNZdzEMsvyDK9VwGYCP4HAvpLQqNRHaQFb347qjx
+         sMhXEbywu0DRM8W+2CmTVBhZiERNFd466mUcCNFBvbbLb0hgAvd4AlPdm2Nrd7zOXoPX
+         GDR3wBK5Lwh/pzItEnf7XXi4WfM0GqS0ElL49JvpA+EKoV+e8mRvVOQlhWkWKYrcu+P+
+         D8D/diMJGVSskmjPOWEB46Jypy6v9lxrQus7d4p9hc9c0kTFrBl4pa+BE4bOIrKm5DpW
+         D9Vz4bytZ/mBDRg/dbwbTK7ZK+vc69do+KtwVbP7CzWumFO6LpcTZdp/ZCY0XSrHe/GA
+         d/Uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=HJq/qvj4FZwE6s96MeqFpqf47Ys+qQjfKC+Vl3h47kk=;
+        b=yzs6yfeNSLbMXMMK2tG/ZhixVb6iwbiGyA1WCH91ic2bDutSvwS9tXBLoi9SBJNDqz
+         SfPnh3fJrpzBZI8P8/QVQKlvWH+J0LNBApkSkSEHpaUTUjl+s19xJghJSp0ZdHHp9FmQ
+         TfRfXljeW2pX4Lz1lHpiqFoFnrvA6sYCfo1Q//6yiZOxnZcM8vZARC3CTXciZNZW0QgO
+         fZ/cBNcKJi9C/3fmR5W6mUawJmBcHshfj2v9FlDSZgB1z4nczeGxXUHI1m60/lSGIniW
+         nQ38VL1HbvEvYivD/D7zVyq9Ke5kZxmEMS9mXnNGI5ZRU+1i6A1+h/clf6BpBaigkjxT
+         FSiA==
+X-Gm-Message-State: AOAM532Enr+k0kd7godn5gjHgLivX7VblL0TyVVpAQ+vnelAQerB7XTy
+        pAnCK8ef3hcWo8/kBBNwwrQbKA==
+X-Google-Smtp-Source: ABdhPJzxxrHLaaFrj4SdCqEuXu2hYIOTSHOTO75S5Lm125KA7NuKgtEdnmV4IUFHvVLXOo11hjpJ1w==
+X-Received: by 2002:a17:903:1d1:b0:15e:9607:d4c9 with SMTP id e17-20020a17090301d100b0015e9607d4c9mr24712752plh.41.1651764179686;
+        Thu, 05 May 2022 08:22:59 -0700 (PDT)
+Received: from hermes.local (204-195-112-199.wavecable.com. [204.195.112.199])
+        by smtp.gmail.com with ESMTPSA id i14-20020a62870e000000b0050dc76281ecsm1496229pfe.198.2022.05.05.08.22.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 May 2022 08:22:59 -0700 (PDT)
+Date:   Thu, 5 May 2022 08:22:56 -0700
+From:   Stephen Hemminger <stephen@networkplumber.org>
+To:     Gonsolo <gonsolo@gmail.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: Suspend/resume error with AWUS036ACM
+Message-ID: <20220505082256.72c9ee43@hermes.local>
+In-Reply-To: <CANL0fFQRBZiVcEM0OOxkLqiAKf=rFssGetrwN6vWj5SsxX__mA@mail.gmail.com>
+References: <CANL0fFQRBZiVcEM0OOxkLqiAKf=rFssGetrwN6vWj5SsxX__mA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, Neukum,
+On Thu, 5 May 2022 08:29:52 +0200
+Gonsolo <gonsolo@gmail.com> wrote:
 
-Thanks for your response, I missed your original reply in my Inbox.
-
-On Thu, 2022-05-05 at 14:02 +0200, Rafael J. Wysocki wrote:
-> On Thu, May 5, 2022 at 10:23 AM Oliver Neukum <oneukum@suse.com>
-> wrote:
-> > 
-> > 
-> > 
-> > On 05.05.22 03:58, Zhang Rui wrote:
-> > > On some Intel client platforms like SKL/KBL/CNL/CML, there is a
-> > > PCH thermal sensor that monitors the PCH temperature and blocks
-> > > the system
-> > > from entering S0ix in case it overheats.
-> > > 
-> > > Commit ef63b043ac86 ("thermal: intel: pch: fix S0ix failure due
-> > > to PCH
-> > > temperature above threshold") introduces a delay loop to cool the
-> > > temperature down for this purpose.
-> > > 
-> > > However, in practice, we found that the time it takes to cool the
-> > > PCH down
-> > > below threshold highly depends on the initial PCH temperature
-> > > when the
-> > > delay starts, as well as the ambient temperature.
-> > > 
-> > > This patch series has been tested on the same Dell XPS 9360
-> > > laptop and
-> > > S0ix is 100% achieved across 1000+ s2idle iterations.
-> > > 
-> > 
-> > Hi,
-> > 
-> > what is the user experience if this ever triggers? At that stage
-> > the
-> > system will appear to be suspended to an external observer, won't
-> > it?
-> > So in effect you'd have a system that spontaneously wakes up, won't
-> > you?
+> Hi all.
 > 
-> No, you won't.
+> After a resume I get the following error:
 > 
-> It will just go ahead and reach S0ix when it can.  It will only wake
-> up if there's a legitimate wakeup even in the meantime.
+>  +0,000007] UBSAN: invalid-load in
+> /build/linux-lowlatency-fSdu7c/linux-lowlatency-5.15.0/net/mac80211/status.c:1164:21
+> [  +0,000004] load of value 255 is not a valid value for type '_Bool'
+> [  +0,000004] CPU: 22 PID: 387 Comm: kworker/u256:5 Tainted: P
+>   OE     5.15.0-27-lowlatency #28-Ubuntu
+> [  +0,000004] Hardware name: To Be Filled By O.E.M. To Be Filled By
+> O.E.M./X399 Phantom Gaming 6, BIOS P1.31 01/14/2021
+> [  +0,000003] Workqueue: phy0 mt76x02_mac_work [mt76x02_lib]
+> [  +0,000014] Call Trace:
+> [  +0,000003]  <TASK>
+> [  +0,000003]  show_stack+0x52/0x58
+> [  +0,000006]  dump_stack_lvl+0x4a/0x5f
+> [  +0,000007]  dump_stack+0x10/0x12
+> [  +0,000003]  ubsan_epilogue+0x9/0x45
+> [  +0,000002]  __ubsan_handle_load_invalid_value.cold+0x44/0x49
+> [  +0,000004]  ieee80211_tx_status_ext.cold+0x4e/0x5f [mac80211]
+> [  +0,000068]  mt76_tx_status_unlock+0x111/0x160 [mt76]
+> [  +0,000010]  mt76_tx_status_check+0x68/0x90 [mt76]
+> [  +0,000009]  mt76x02_mac_work+0x14b/0x240 [mt76x02_lib]
+> [  +0,000008]  process_one_work+0x222/0x3f0
+> [  +0,000006]  worker_thread+0x50/0x3f0
+> [  +0,000004]  ? process_one_work+0x3f0/0x3f0
+> [  +0,000004]  kthread+0x13b/0x160
+> [  +0,000003]  ? set_kthread_struct+0x50/0x50
+> [  +0,000004]  ret_from_fork+0x22/0x30
+> [  +0,000006]  </TASK>
+> [  +0,000001] ================================================================================
+> 
+> This is a stock Ubuntu Jammy lowlatency kernel (with Nvidia drivers).
 
-Please correct me if I misunderstand your question, Oliver.
-
-Without the patch, the system becomes suspended and stays in PCx.
-With the patch, the system first stays in PCx during suspending (in the
-intel_pch_thermal driver' cooling delays), and then becomes suspended
-and stays in S0ix.
-
-thanks,
-rui
-
+Contact Ubuntu.  The rule for upstream is if you load out of tree drivers
+than that kernel is unsupported.
