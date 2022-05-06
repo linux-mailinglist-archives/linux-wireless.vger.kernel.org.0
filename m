@@ -2,105 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FD0D51D740
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 May 2022 14:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BAEC51D95D
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 May 2022 15:40:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1391626AbiEFMGn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 May 2022 08:06:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60000 "EHLO
+        id S1441796AbiEFNoS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 May 2022 09:44:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378312AbiEFMGk (ORCPT
+        with ESMTP id S1441793AbiEFNoK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 May 2022 08:06:40 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F35C6471C
-        for <linux-wireless@vger.kernel.org>; Fri,  6 May 2022 05:02:56 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 246C2pd36029501, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 246C2pd36029501
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 6 May 2022 20:02:51 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 6 May 2022 20:02:51 +0800
-Received: from localhost (172.16.17.21) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 6 May
- 2022 20:02:46 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <hsuan8331@realtek.com>
-Subject: [PATCH 5/5] rtw89: add debug entry to dump BSSID CAM
-Date:   Fri, 6 May 2022 20:02:16 +0800
-Message-ID: <20220506120216.58567-6-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220506120216.58567-1-pkshih@realtek.com>
-References: <20220506120216.58567-1-pkshih@realtek.com>
+        Fri, 6 May 2022 09:44:10 -0400
+Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88B3A334;
+        Fri,  6 May 2022 06:40:18 -0700 (PDT)
+Received: by mail-ua1-x936.google.com with SMTP id f13so2799220uax.11;
+        Fri, 06 May 2022 06:40:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=od0zloc/AA4CPbJv6r2zKruCgN8IBIBynulqDfOqRpM=;
+        b=ox8SDvd17bKlntYSKmZ665by/msQLYfuXc0rsTuR2LRCs2HvFoAPad2rDwv3I0sjmv
+         ie4Fz/4P+BLRp80RS8DxHE9TPSGppl0C+LxWsXaeNOrUAZ3IS/B7XpHa3vrCrLWy4l9t
+         caQsAGsRAp/glQ4Oa4HDI2qVTi5DgIzYnE4AuzKDj5cIq5G0zPxD9+7oq+Qyj8hNmkER
+         zZVp8287ee1c4a8ezcvgMsdwPFzFTxsIIIv0TIKYeupzcVOq8CsyRRe02InUyMk47qJS
+         7FDuFANbpAgvH90hPlyFtBnMRMVmuJbYQTRx2EZcbu5u5uUofy9qKoPxY56yrfyOKP9e
+         Y/Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=od0zloc/AA4CPbJv6r2zKruCgN8IBIBynulqDfOqRpM=;
+        b=ub4IUeEgR5GvOruqTO/gUihynEG7aszDbC8KG8tfgShRqTKpSSDOGT90KGqjKSeZXP
+         9LHEwUMe5hushbQoUSx5ggh2W4Ws7bkgBFQkYLvvHrB26xZGnSJ0WxOix3sBdOdhA+cF
+         zfLmxAJYmpCbore/L+pip9Sl2NDnqlsqvWQ3hMl+a4VyyYbzS7BTsfpzKfe9ItF1kKco
+         Oam//K1fXve/dsDZAOKkj+r5ufbuTzqo+HJVvyjEJqoJ0XB6XVxhlAne3TaPlVjtSJJ6
+         LkkqL42qox6ANLXk0F9dPP/2z4AG5y4SwUIpXTFeGBkYJfkJr5XrAm4E+1EzYJ+elfPz
+         ek9Q==
+X-Gm-Message-State: AOAM530utv6oHpG3ZMdtq5YTyl2PuRUC4Sezz7IQWXGHlBUhxwOiWhrx
+        +2gDXLnfPkk/q8h7HOLWsJffb+BU9/eGVYAJ88A=
+X-Google-Smtp-Source: ABdhPJyoNeN9aVMXNsxzulsgCIBI1BKIzbRf2uYrTvXqov1EJIXXrT4sFqdIT7cSssZH+PyNRxXl8CQvGYJWcCM4c2g=
+X-Received: by 2002:ab0:7290:0:b0:34b:71ac:96c2 with SMTP id
+ w16-20020ab07290000000b0034b71ac96c2mr980899uao.102.1651844417591; Fri, 06
+ May 2022 06:40:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.17.21]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 05/06/2022 11:45:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzUvNiCkV6TIIDEwOjM5OjAw?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220506011616.1774805-1-ricardo.martinez@linux.intel.com> <20220506011616.1774805-3-ricardo.martinez@linux.intel.com>
+In-Reply-To: <20220506011616.1774805-3-ricardo.martinez@linux.intel.com>
+From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Date:   Fri, 6 May 2022 16:40:06 +0300
+Message-ID: <CAHNKnsS2p3vFeOiE6L7JHg7LHhWs2-aqrvz_KquHh80P5KEtXw@mail.gmail.com>
+Subject: Re: [PATCH net-next v7 02/14] net: skb: introduce skb_data_area_size()
+To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        "Devegowda, Chandrashekar" <chandrashekar.devegowda@intel.com>,
+        Intel Corporation <linuxwwan@intel.com>,
+        chiranjeevi.rapolu@linux.intel.com,
+        =?UTF-8?B?SGFpanVuIExpdSAo5YiY5rW35YabKQ==?= 
+        <haijun.liu@mediatek.com>,
+        "Hanania, Amir" <amir.hanania@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Sharma, Dinesh" <dinesh.sharma@intel.com>,
+        "Lee, Eliot" <eliot.lee@intel.com>,
+        "Jarvinen, Ilpo Johannes" <ilpo.johannes.jarvinen@intel.com>,
+        "Veleta, Moises" <moises.veleta@intel.com>,
+        "Bossart, Pierre-louis" <pierre-louis.bossart@intel.com>,
+        "Sethuraman, Muralidharan" <muralidharan.sethuraman@intel.com>,
+        "Mishra, Soumya Prakash" <Soumya.Prakash.Mishra@intel.com>,
+        "Kancharla, Sreehari" <sreehari.kancharla@intel.com>,
+        "Sahu, Madhusmita" <madhusmita.sahu@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-BSSID CAM is a kind of CAM that is used to determine if we receive a packet
-or not. Add an entry to assist in debugging.
+On Fri, May 6, 2022 at 4:16 AM Ricardo Martinez
+<ricardo.martinez@linux.intel.com> wrote:
+>
+> Helper to calculate the linear data space in the skb.
+>
+> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/mac.c | 1 +
- drivers/net/wireless/realtek/rtw89/mac.h | 1 +
- 2 files changed, 2 insertions(+)
+Please refresh the patch, it does not apply to the current net-next tree.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 3b61ff02fe849..3cf892912c1d9 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -29,6 +29,7 @@ const u32 rtw89_mac_mem_base_addrs[RTW89_MAC_MEM_NUM] = {
- 	[RTW89_MAC_MEM_TXDATA_FIFO_0]	= TXDATA_FIFO_0_BASE_ADDR,
- 	[RTW89_MAC_MEM_TXDATA_FIFO_1]	= TXDATA_FIFO_1_BASE_ADDR,
- 	[RTW89_MAC_MEM_CPU_LOCAL]	= CPU_LOCAL_BASE_ADDR,
-+	[RTW89_MAC_MEM_BSSID_CAM]	= BSSID_CAM_BASE_ADDR,
- };
- 
- static void rtw89_mac_mem_write(struct rtw89_dev *rtwdev, u32 offset,
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 9eb4afe348b30..9f511c8d8a376 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -268,6 +268,7 @@ enum rtw89_mac_mem_sel {
- 	RTW89_MAC_MEM_TXDATA_FIFO_0,
- 	RTW89_MAC_MEM_TXDATA_FIFO_1,
- 	RTW89_MAC_MEM_CPU_LOCAL,
-+	RTW89_MAC_MEM_BSSID_CAM,
- 
- 	/* keep last */
- 	RTW89_MAC_MEM_NUM,
--- 
-2.25.1
-
+Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
