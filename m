@@ -2,48 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E59E51D122
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 May 2022 08:17:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D770451D128
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 May 2022 08:20:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1389386AbiEFGVD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 May 2022 02:21:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43300 "EHLO
+        id S1389400AbiEFGXj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 May 2022 02:23:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1389384AbiEFGVB (ORCPT
+        with ESMTP id S1389394AbiEFGXh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 May 2022 02:21:01 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE8925C361
-        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 23:17:19 -0700 (PDT)
+        Fri, 6 May 2022 02:23:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC49B5C67A;
+        Thu,  5 May 2022 23:19:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 77A36B831EF
-        for <linux-wireless@vger.kernel.org>; Fri,  6 May 2022 06:17:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FEA4C385A8;
-        Fri,  6 May 2022 06:17:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 44F7261F09;
+        Fri,  6 May 2022 06:19:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8924C385A8;
+        Fri,  6 May 2022 06:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651817837;
-        bh=R/IqYMA70GKlzEAbF0SXS9SWS5hXlUKXASu1VqBpxfw=;
+        s=k20201202; t=1651817994;
+        bh=V11+LAWJ1d5l67vnmx/JvBJkQlrT/ck1awnxoU+USPo=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=S1/tGnGQaxYrP0ra3aj+egoA0KODXIBEeBh+CXI7N2VXlS3CWQ0c5SfblPJhplgEm
-         7a2GOUENT5KxbDAHMhRPyKLEY9JRbIKmwqySAxQ6f2SeO3oPsbid1HF+jKp2UZT2Ax
-         CSr8IqvVlQaFHh7Hu87H9huxk9hUv/eUFCd62qfTUZ7xGTbMwBFbqTxJfhXULbaiW+
-         w9Fy19H1ux2VHjebdLS2om4AyFWy4/PwG7cej77eANUyp3KYSE5D8sUXge+xMluwVM
-         3bWER0avIVjoGCqRYUxacew8LpPU7U2TTwtaKv9aBDkwllJBfn080ebzh/5BTqpqc5
-         UA37wTzk/T4vw==
+        b=Td39A2a6SjBgRUPWf5cFiqwthdL+PTezWMG3cVnxsMqzDIghnZwRiSVZCCJluRK7d
+         D6qfreohXvGy0Qu2Zq89EgecScEo+tIgygb7sO09B514YTaxy6OCPPUx+hZ8iocr8Y
+         0I0ThOa/ryEEViBVJ1sajMCvuuJQycWDdpBmbRIBXRTN7DoEaqX2c7o+LB867yFE0u
+         A1GXvIuAv7e+OCwAQRc8+GJ/xuBdYfHzFO0DiKQaeOodZlstflCsAFHlCc58bMOCMX
+         9HcKY8taN/K+ygFkfr9NDOsYexRJWSTQHB5j3XY8qVQ0EJ2oeF+oRi4TufXm5zS7R4
+         4Hw3vaLXNblqA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] ath11k: mac: fix too long line
+Subject: Re: [PATCH] ath10k: support bus and device specific API 1 BDF
+ selection
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220503060415.24499-1-kvalo@kernel.org>
-References: <20220503060415.24499-1-kvalo@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+In-Reply-To: <20211009221711.2315352-1-robimarko@gmail.com>
+References: <20211009221711.2315352-1-robimarko@gmail.com>
+To:     Robert Marko <robimarko@gmail.com>
+Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Robert Marko <robimarko@gmail.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165181783347.13324.18042669600144341850.kvalo@kernel.org>
-Date:   Fri,  6 May 2022 06:17:16 +0000 (UTC)
+Message-ID: <165181799100.13324.13296205363993224857.kvalo@kernel.org>
+Date:   Fri,  6 May 2022 06:19:52 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -54,26 +58,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> wrote:
+Robert Marko <robimarko@gmail.com> wrote:
 
-> checkpatch warns:
+> Some ath10k IPQ40xx devices like the MikroTik hAP ac2 and ac3 require the
+> BDF-s to be extracted from the device storage instead of shipping packaged
+> API 2 BDF-s.
 > 
-> drivers/net/wireless/ath/ath11k/mac.c:7760: line length of 91 exceeds 90 columns
+> This is required as MikroTik has started shipping boards that require BDF-s
+> to be updated, as otherwise their WLAN performance really suffers.
+> This is however impossible as the devices that require this are release
+> under the same revision and its not possible to differentiate them from
+> devices using the older BDF-s.
 > 
-> This was introduced by commit 046d2e7c50e3 ("mac80211: prepare sta handling for
-> MLO support").
+> In OpenWrt we are extracting the calibration data during runtime and we are
+> able to extract the BDF-s in the same manner, however we cannot package the
+> BDF-s to API 2 format on the fly and can only use API 1 to provide BDF-s on
+> the fly.
+> This is an issue as the ath10k driver explicitly looks only for the
+> board.bin file and not for something like board-bus-device.bin like it does
+> for pre-cal data.
+> Due to this we have no way of providing correct BDF-s on the fly, so lets
+> extend the ath10k driver to first look for BDF-s in the
+> board-bus-device.bin format, for example: board-ahb-a800000.wifi.bin
+> If that fails, look for the default board file name as defined previously.
 > 
-> Compile tested only.
-> 
+> Signed-off-by: Robert Marko <robimarko@gmail.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-2 patches applied to ath-next branch of ath.git, thanks.
+Patch applied to ath-next branch of ath.git, thanks.
 
-80c5075f3999 ath11k: mac: fix too long line
-d9e441855c64 ath10k: mac: fix too long lines
+f2a7064a78b2 ath10k: support bus and device specific API 1 BDF selection
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220503060415.24499-1-kvalo@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211009221711.2315352-1-robimarko@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
