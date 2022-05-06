@@ -2,98 +2,213 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13FB251E0C8
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 May 2022 23:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 309A751E159
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 May 2022 23:46:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1444294AbiEFVNN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 May 2022 17:13:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35886 "EHLO
+        id S1444576AbiEFVue (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 May 2022 17:50:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1444302AbiEFVNM (ORCPT
+        with ESMTP id S1348985AbiEFVud (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 May 2022 17:13:12 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB0426F49C
-        for <linux-wireless@vger.kernel.org>; Fri,  6 May 2022 14:09:27 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id p6so8064080pjm.1
-        for <linux-wireless@vger.kernel.org>; Fri, 06 May 2022 14:09:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
-         :subject:to;
-        bh=VSSUIwdzgxQxnEkB7+u7pnweyPajIQMP3nQqWYs8VX0=;
-        b=DCL4ASSQyWhAON34kE5OIISSqSj3rOCfF8Ciqjh+lsqRdCfgeusA5Vwv0XnJkYI/K8
-         PpoBtZS88yuL3et/lZLKleXxq4URSZD9f6MROtdldcj3gOmiMCUI/6TV1Dl/T+qpwJiw
-         M0N+RaWrDo6cEqXCC4jcgWP8yqP5i27fdlJmL+Z22MNaap80xcYhj1kcUEIwB2pTrZYY
-         bvvbxOCDGxpg/KNpF54H7KtPoC+ybJ/VsbbP4Y4Ldgfhj+OsOwqpuNJpDXQhyZEajcO2
-         TQ+8Ad8csIfLm6I1rNVsM3KaAaNUHUcZcLEHvw01t2/Qn5zFCtxGu68RLxA3LTyrzGSv
-         07+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
-         :from:date:message-id:subject:to;
-        bh=VSSUIwdzgxQxnEkB7+u7pnweyPajIQMP3nQqWYs8VX0=;
-        b=iqqkUUA6paKmJqJZE5Va35a4F+NJzD62CxyTCNDAV6o0Z8TxyXO2o32JZg8SyNwX/T
-         9IdKdEgqy3EA+M69H/gvlIFEyOgOmPPBYsHZd8tOAg6NNmmBfycDWxdHUvFMwrF5fSpY
-         IJvHGfYkr3T0g5S+EPF17uaPeexp32V/pgvBZ3fKKPnF5tWzrFRnDJlptccVZ7zgHheI
-         Zbfxq84pxdfZrE8kbkLPEOT+DRJnmYJsspjmMZ72jGEpNFXtPVTkAMqpU7WrmzU1jfVK
-         z94Rwmn0TH8/zc42z70vcU8LVyw50bHhfGUuK7V2qd+fOA6piz9zerquBNx1lQYuSRau
-         3HAg==
-X-Gm-Message-State: AOAM530fI+XRpCmUGklUpczeFZ0oTO4b9/tkSN0P++jigJwaP3JEXbcq
-        vEI2VYdgmWbjjkiQWvf//V8MCBhY0e7/r+rsEg==
-X-Google-Smtp-Source: ABdhPJwp4Ke3UOg5WGZvnc+9zoj6LuBlmjaWEumAhXp6nyRAoOsi+A9K7QpSIh/DOmfrS0/kdtzDsFQAu7yldmf5qAo=
-X-Received: by 2002:a17:902:a501:b0:153:f956:29f0 with SMTP id
- s1-20020a170902a50100b00153f95629f0mr5613774plq.120.1651871367333; Fri, 06
- May 2022 14:09:27 -0700 (PDT)
+        Fri, 6 May 2022 17:50:33 -0400
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A54E2637D;
+        Fri,  6 May 2022 14:46:48 -0700 (PDT)
+Received: (Authenticated sender: alexandre.belloni@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 52EABFF802;
+        Fri,  6 May 2022 21:46:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1651873602;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=jgdW+utjX69lw9hZBaJPICrrQFeG4ACbfoIiurJVsC0=;
+        b=cWZn2bIvqcSVFGu3IsFqsqClQjrfuRcnBfGvVG1LC+EZb+VCl3Yve3JqmG+2HHscqfqp4i
+        vX97M++arG5GXblHmiyRHG9ZIgYSYZVpCZKXHS8td9kNTSj4IS28/SMJNhO9jrkVvk0ATN
+        24bIxEbxb/BKyXuR5gp81RK8bjzdn5jkjH//ttYhUvkv0x4kUkoWf4YX59s1KBc9aZOfNG
+        0gJTBGziACERliLJVvJ3QeGv//sGN7+r852isaiAwAtl7iQ64GSyw4gmGupgAcheSJ1W+9
+        g30110feSLlykUWTJKC7WTbThbnp43eb6vzRn+UpM8oxgk68GpzG5k+tY7GEVA==
+Date:   Fri, 6 May 2022 23:46:40 +0200
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Zhang Rui <rui.zhang@intel.com>
+Cc:     rjw@rjwysocki.net, kvalo@kernel.org, linux-pm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-wireless@vger.kernel.org, daniel.lezcano@linaro.org,
+        merez@codeaurora.org, mat.jonczyk@o2.pl,
+        sumeet.r.pawnikar@intel.com, len.brown@intel.com
+Subject: Re: [PATCH 7/7] rtc: cmos: Add suspend/resume endurance testing hook
+Message-ID: <YnWXQE9QASycOzZo@mail.local>
+References: <20220505015814.3727692-1-rui.zhang@intel.com>
+ <20220505015814.3727692-8-rui.zhang@intel.com>
 MIME-Version: 1.0
-Received: by 2002:ac4:9906:0:b0:4ba:807b:b8f3 with HTTP; Fri, 6 May 2022
- 14:09:26 -0700 (PDT)
-Reply-To: warren001buffett@gmail.com
-In-Reply-To: <CAD_xG_pvNZK6BFCW+28Xv4DE=_5rbDZXDok2BYNn9xw6Ma7iow@mail.gmail.com>
-References: <CAD_xG_pvNZK6BFCW+28Xv4DE=_5rbDZXDok2BYNn9xw6Ma7iow@mail.gmail.com>
-From:   Warren Buffett <guidayema@gmail.com>
-Date:   Fri, 6 May 2022 21:09:26 +0000
-Message-ID: <CAD_xG_qmkaecRMLoM=8Av+-AOUpQv=7REEM0B2SR_6pXvr6_sQ@mail.gmail.com>
-Subject: Fwd: My name is Warren Buffett, an American businessman.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:1043 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4751]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [guidayema[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220505015814.3727692-8-rui.zhang@intel.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-My name is Warren Buffett, an American businessman and investor I have
-something important to discuss with you.
+Hello,
 
-Mr. Warren Buffett
-warren001buffett@gmail.com
-Chief Executive Officer: Berkshire Hathaway
-aphy/Warren-Edward-Buffett
+I assume I can ignore this patch as this seems to be only for testing
+I'm not even sure why this is needed as this completely breaks setting
+the alarm time.
+
+On 05/05/2022 09:58:14+0800, Zhang Rui wrote:
+> Automated suspend/resume testing uses the RTC for wakeup.
+> A short rtcwake period is desirable, so that more suspend/resume
+> cycles can be completed, while the machine is available for testing.
+> 
+> But if too short a wake interval is specified, the event can occur,
+> while still suspending, and then no event wakes the suspended system
+> until the user notices that testing has stalled, and manually intervenes.
+> 
+> Here we add a hook to the rtc-cmos driver to
+> a) remove the alarm timer in the beginning of suspend, if there is any
+> b) arm the wakeup in PM notifier callback, which is in the very late stage
+>    before the system really suspends
+> The remaining part of suspend is usually measured under 10 ms,
+> and so arming the timer at this point could be as fast as the minimum
+> time of 1-second.
+> 
+> But there is a 2nd race.  The RTC has 1-second granularity, and unless
+> you are timing the timer with a higher resolution timer,
+> there is no telling if the current time + 1 will occur immediately,
+> or a full second in the future.  And so 2-seconds is the safest minimum:
+> 
+> Run 1,000 s2idle cycles with (max of) 2 second wakeup period:
+> 
+>  # echo 2 > /sys/module/rtc_cmos/parameters/rtc_wake_override_sec
+>  # sleepgraph.py -m freeze -multi 1000 0 -skiphtml -gzip
+> 
+> Clear the timer override, to not interfere with subsequent
+> real use of the machine's suspend/resume feature:
+> 
+>  # echo 0 > /sys/module/rtc_cmos/parameters/rtc_wake_override_sec
+> 
+> Originally-by: Len Brown <len.brown@intel.com>
+> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+> Tested-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
+> ---
+>  drivers/rtc/interface.c |  1 +
+>  drivers/rtc/rtc-cmos.c  | 45 +++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 46 insertions(+)
+> 
+> diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
+> index 9edd662c69ac..fb93aa2dc99c 100644
+> --- a/drivers/rtc/interface.c
+> +++ b/drivers/rtc/interface.c
+> @@ -1020,6 +1020,7 @@ void rtc_timer_cancel(struct rtc_device *rtc, struct rtc_timer *timer)
+>  		rtc_timer_remove(rtc, timer);
+>  	mutex_unlock(&rtc->ops_lock);
+>  }
+> +EXPORT_SYMBOL_GPL(rtc_timer_cancel);
+>  
+>  /**
+>   * rtc_read_offset - Read the amount of rtc offset in parts per billion
+> diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
+> index 7c006c2b125f..9590c40fa9d8 100644
+> --- a/drivers/rtc/rtc-cmos.c
+> +++ b/drivers/rtc/rtc-cmos.c
+> @@ -32,6 +32,7 @@
+>  #include <linux/init.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/spinlock.h>
+> +#include <linux/suspend.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/log2.h>
+>  #include <linux/pm.h>
+> @@ -70,6 +71,9 @@ static inline int cmos_use_acpi_alarm(void)
+>  }
+>  #endif
+>  
+> +static int rtc_wake_override_sec;
+> +module_param(rtc_wake_override_sec, int, 0644);
+> +
+>  struct cmos_rtc {
+>  	struct rtc_device	*rtc;
+>  	struct device		*dev;
+> @@ -89,6 +93,7 @@ struct cmos_rtc {
+>  	u8			century;
+>  
+>  	struct rtc_wkalrm	saved_wkalrm;
+> +	struct notifier_block	pm_nb;
+>  };
+>  
+>  /* both platform and pnp busses use negative numbers for invalid irqs */
+> @@ -744,6 +749,42 @@ static irqreturn_t cmos_interrupt(int irq, void *p)
+>  		return IRQ_NONE;
+>  }
+>  
+> +static int cmos_pm_notify(struct notifier_block *nb, unsigned long mode, void *_unused)
+> +{
+> +	struct cmos_rtc *cmos = container_of(nb, struct cmos_rtc, pm_nb);
+> +	struct rtc_device       *rtc = cmos->rtc;
+> +	unsigned long           now;
+> +	struct rtc_wkalrm       alm;
+> +
+> +	if (rtc_wake_override_sec == 0)
+> +		return NOTIFY_OK;
+> +
+> +	switch (mode) {
+> +	case PM_SUSPEND_PREPARE:
+> +		/*
+> +		 * Cancel the timer to make sure it won't fire
+> +		 * before rtc is rearmed later.
+> +		 */
+> +		rtc_timer_cancel(rtc, &rtc->aie_timer);
+> +		break;
+> +	case PM_SUSPEND_LATE:
+> +		if (rtc_read_time(rtc, &alm.time))
+> +			return NOTIFY_BAD;
+> +
+> +		now = rtc_tm_to_time64(&alm.time);
+> +		memset(&alm, 0, sizeof(alm));
+> +		rtc_time64_to_tm(now + rtc_wake_override_sec, &alm.time);
+> +		alm.enabled = true;
+> +		if (rtc_set_alarm(rtc, &alm))
+> +			return NOTIFY_BAD;
+> +		if (cmos->wake_on)
+> +			cmos->wake_on(cmos->dev);
+> +		break;
+> +	}
+> +
+> +	return NOTIFY_OK;
+> +}
+> +
+>  #ifdef	CONFIG_PNP
+>  #define	INITSECTION
+>  
+> @@ -937,6 +978,9 @@ cmos_do_probe(struct device *dev, struct resource *ports, int rtc_irq)
+>  		 nvmem_cfg.size,
+>  		 use_hpet_alarm() ? ", hpet irqs" : "");
+>  
+> +	cmos_rtc.pm_nb.notifier_call = cmos_pm_notify;
+> +	register_pm_notifier(&cmos_rtc.pm_nb);
+> +
+>  	return 0;
+>  
+>  cleanup2:
+> @@ -965,6 +1009,7 @@ static void cmos_do_remove(struct device *dev)
+>  	struct cmos_rtc	*cmos = dev_get_drvdata(dev);
+>  	struct resource *ports;
+>  
+> +	unregister_pm_notifier(&cmos_rtc.pm_nb);
+>  	cmos_do_shutdown(cmos->irq);
+>  
+>  	if (is_valid_irq(cmos->irq)) {
+> -- 
+> 2.17.1
+> 
+
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
