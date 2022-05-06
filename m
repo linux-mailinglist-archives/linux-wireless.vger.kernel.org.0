@@ -2,49 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BE2851CE47
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 May 2022 04:16:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 015DE51CED2
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 May 2022 04:16:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343748AbiEFBkI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 May 2022 21:40:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59096 "EHLO
+        id S1387815AbiEFBkJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 May 2022 21:40:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235264AbiEFBkH (ORCPT
+        with ESMTP id S235264AbiEFBkJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 May 2022 21:40:07 -0400
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5437E5DBE2
-        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 18:36:26 -0700 (PDT)
+        Thu, 5 May 2022 21:40:09 -0400
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A86105DBE2
+        for <linux-wireless@vger.kernel.org>; Thu,  5 May 2022 18:36:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1651800986; x=1683336986;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=FA94JyOdyKLzWnhysBgprLnh+J4ocncFt0+dV7mOlo8=;
-  b=vcDJCFN8DG0MQu8K3awXrD9vkmNCcceVVN+/W/DjbZ52npZ8G4ukjuah
-   JZpwgLnL9SyzAnbzaGg+ZkAQZWsBNGFr7Pp7wK5WSPxD62KR24uvgBnKg
-   PcN07Z/FKI+Z5pZAGo2cpr8DV3hKcPxMZi5J7fyFQelXDLm0aFA8LmQXP
-   c=;
-Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 05 May 2022 18:36:26 -0700
+  t=1651800987; x=1683336987;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Iky0TfHcm09L5bEkgcC6U4Gg3Ou5TlKMGqreqQj4/to=;
+  b=eToG3maaAYTgxmV7NzF+q6RehLax6TXlHnnFobO4AdZpvwCumIsxk6Oy
+   5m/krJ3b9atdYnKal5ZW6EaOOnu1KKEStLOxW/ZqrKt7aUjq3EArmSP8e
+   3P4fsl8oKK/PfSDi6g2ZFLy3bZtzL/kwT8Csj1fV8+lu7PMYOiXiAWw4H
+   w=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 05 May 2022 18:36:27 -0700
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 18:36:26 -0700
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 18:36:27 -0700
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Thu, 5 May 2022 18:36:25 -0700
+ 15.2.986.22; Thu, 5 May 2022 18:36:26 -0700
 Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Thu, 5 May 2022 18:36:24 -0700
+ 15.2.986.22; Thu, 5 May 2022 18:36:25 -0700
 From:   Baochen Qiang <quic_bqiang@quicinc.com>
 To:     <ath11k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 0/3] ath11k: Add support for Passpoint
-Date:   Fri, 6 May 2022 09:36:11 +0800
-Message-ID: <20220506013614.1580274-1-quic_bqiang@quicinc.com>
+Subject: [PATCH v2 1/3] ath11k: Implement remain-on-channel support
+Date:   Fri, 6 May 2022 09:36:12 +0800
+Message-ID: <20220506013614.1580274-2-quic_bqiang@quicinc.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220506013614.1580274-1-quic_bqiang@quicinc.com>
+References: <20220506013614.1580274-1-quic_bqiang@quicinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -61,26 +63,195 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is to add Passpoint support for WCN6855 and QCA6390.
-With this patch set, STA can successfully connect to an
-Passpoint AP.
+Add remain on channel support, it is needed in several
+scenarios such as Passpoint etc.
 
-v2:
- 1. update commit log of patch 2/3
+Currently this is supported by QCA6390, WCN6855, IPQ8074,
+IPQ6018 and QCN9074.
 
-Baochen Qiang (3):
-  ath11k: Implement remain-on-channel support
-  ath11k: Don't check arvif->is_started before sending management frames
-  ath11k: Designating channel frequency when sending management frames
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
 
- drivers/net/wireless/ath/ath11k/core.c |   8 ++
- drivers/net/wireless/ath/ath11k/hw.h   |   1 +
- drivers/net/wireless/ath/ath11k/mac.c  | 120 ++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath11k/wmi.c  |  21 ++++-
- 4 files changed, 147 insertions(+), 3 deletions(-)
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/core.c |   1 +
+ drivers/net/wireless/ath/ath11k/mac.c  | 115 +++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/wmi.c  |   4 +
+ 3 files changed, 120 insertions(+)
 
-
-base-commit: b04efb72cd9d2d471a14f0a5758873f6c78923c2
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 01e1d494b527..412bec8f1daf 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1623,6 +1623,7 @@ static void ath11k_core_pre_reconfigure_recovery(struct ath11k_base *ab)
+ 		complete(&ar->completed_11d_scan);
+ 		complete(&ar->scan.started);
+ 		complete(&ar->scan.completed);
++		complete(&ar->scan.on_channel);
+ 		complete(&ar->peer_assoc_done);
+ 		complete(&ar->peer_delete_done);
+ 		complete(&ar->install_key_done);
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 1957e1713548..6e6b8562b481 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -8345,6 +8345,118 @@ static int ath11k_mac_op_set_bios_sar_specs(struct ieee80211_hw *hw,
+ 	return ret;
+ }
+ 
++static int ath11k_mac_op_cancel_remain_on_channel(struct ieee80211_hw *hw,
++						  struct ieee80211_vif *vif)
++{
++	struct ath11k *ar = hw->priv;
++
++	mutex_lock(&ar->conf_mutex);
++
++	spin_lock_bh(&ar->data_lock);
++	ar->scan.roc_notify = false;
++	spin_unlock_bh(&ar->data_lock);
++
++	ath11k_scan_abort(ar);
++
++	mutex_unlock(&ar->conf_mutex);
++
++	cancel_delayed_work_sync(&ar->scan.timeout);
++
++	return 0;
++}
++
++static int ath11k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
++					   struct ieee80211_vif *vif,
++					   struct ieee80211_channel *chan,
++					   int duration,
++					   enum ieee80211_roc_type type)
++{
++	struct ath11k *ar = hw->priv;
++	struct ath11k_vif *arvif = (void *)vif->drv_priv;
++	struct scan_req_params arg;
++	int ret;
++	u32 scan_time_msec;
++
++	mutex_lock(&ar->conf_mutex);
++
++	spin_lock_bh(&ar->data_lock);
++	switch (ar->scan.state) {
++	case ATH11K_SCAN_IDLE:
++		reinit_completion(&ar->scan.started);
++		reinit_completion(&ar->scan.completed);
++		reinit_completion(&ar->scan.on_channel);
++		ar->scan.state = ATH11K_SCAN_STARTING;
++		ar->scan.is_roc = true;
++		ar->scan.vdev_id = arvif->vdev_id;
++		ar->scan.roc_freq = chan->center_freq;
++		ar->scan.roc_notify = true;
++		ret = 0;
++		break;
++	case ATH11K_SCAN_STARTING:
++	case ATH11K_SCAN_RUNNING:
++	case ATH11K_SCAN_ABORTING:
++		ret = -EBUSY;
++		break;
++	}
++	spin_unlock_bh(&ar->data_lock);
++
++	if (ret)
++		goto exit;
++
++	scan_time_msec = ar->hw->wiphy->max_remain_on_channel_duration * 2;
++
++	memset(&arg, 0, sizeof(arg));
++	ath11k_wmi_start_scan_init(ar, &arg);
++	arg.num_chan = 1;
++	arg.chan_list = kcalloc(arg.num_chan, sizeof(*arg.chan_list),
++				GFP_KERNEL);
++	if (!arg.chan_list) {
++		ret = -ENOMEM;
++		goto exit;
++	}
++
++	arg.vdev_id = arvif->vdev_id;
++	arg.scan_id = ATH11K_SCAN_ID;
++	arg.chan_list[0] = chan->center_freq;
++	arg.dwell_time_active = scan_time_msec;
++	arg.dwell_time_passive = scan_time_msec;
++	arg.max_scan_time = scan_time_msec;
++	arg.scan_flags |= WMI_SCAN_FLAG_PASSIVE;
++	arg.scan_flags |= WMI_SCAN_FILTER_PROBE_REQ;
++	arg.burst_duration = duration;
++
++	ret = ath11k_start_scan(ar, &arg);
++	if (ret) {
++		ath11k_warn(ar->ab, "failed to start roc scan: %d\n", ret);
++
++		spin_lock_bh(&ar->data_lock);
++		ar->scan.state = ATH11K_SCAN_IDLE;
++		spin_unlock_bh(&ar->data_lock);
++		goto free_chan_list;
++	}
++
++	ret = wait_for_completion_timeout(&ar->scan.on_channel, 3 * HZ);
++	if (ret == 0) {
++		ath11k_warn(ar->ab, "failed to switch to channel for roc scan\n");
++		ret = ath11k_scan_stop(ar);
++		if (ret)
++			ath11k_warn(ar->ab, "failed to stop scan: %d\n", ret);
++		ret = -ETIMEDOUT;
++		goto free_chan_list;
++	}
++
++	ieee80211_queue_delayed_work(ar->hw, &ar->scan.timeout,
++				     msecs_to_jiffies(duration));
++
++	ret = 0;
++
++free_chan_list:
++	kfree(arg.chan_list);
++exit:
++	mutex_unlock(&ar->conf_mutex);
++	return ret;
++}
++
+ static const struct ieee80211_ops ath11k_ops = {
+ 	.tx				= ath11k_mac_op_tx,
+ 	.start                          = ath11k_mac_op_start,
+@@ -8397,6 +8509,8 @@ static const struct ieee80211_ops ath11k_ops = {
+ #endif
+ 
+ 	.set_sar_specs			= ath11k_mac_op_set_bios_sar_specs,
++	.remain_on_channel		= ath11k_mac_op_remain_on_channel,
++	.cancel_remain_on_channel	= ath11k_mac_op_cancel_remain_on_channel,
+ };
+ 
+ static void ath11k_mac_update_ch_list(struct ath11k *ar,
+@@ -8986,6 +9100,7 @@ int ath11k_mac_allocate(struct ath11k_base *ab)
+ 		init_completion(&ar->bss_survey_done);
+ 		init_completion(&ar->scan.started);
+ 		init_completion(&ar->scan.completed);
++		init_completion(&ar->scan.on_channel);
+ 		init_completion(&ar->thermal.wmi_sync);
+ 
+ 		INIT_DELAYED_WORK(&ar->scan.timeout, ath11k_scan_timeout_work);
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 1410114d1d5c..e99dede0ab55 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -5264,6 +5264,8 @@ static void ath11k_wmi_event_scan_started(struct ath11k *ar)
+ 		break;
+ 	case ATH11K_SCAN_STARTING:
+ 		ar->scan.state = ATH11K_SCAN_RUNNING;
++		if (ar->scan.is_roc)
++			ieee80211_ready_on_channel(ar->hw);
+ 		complete(&ar->scan.started);
+ 		break;
+ 	}
+@@ -5346,6 +5348,8 @@ static void ath11k_wmi_event_scan_foreign_chan(struct ath11k *ar, u32 freq)
+ 	case ATH11K_SCAN_RUNNING:
+ 	case ATH11K_SCAN_ABORTING:
+ 		ar->scan_channel = ieee80211_get_channel(ar->hw->wiphy, freq);
++		if (ar->scan.is_roc && ar->scan.roc_freq == freq)
++			complete(&ar->scan.on_channel);
+ 		break;
+ 	}
+ }
 -- 
 2.25.1
 
