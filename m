@@ -2,56 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 896E251DA4D
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 May 2022 16:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D613B51DCC5
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 May 2022 18:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348657AbiEFOTQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 May 2022 10:19:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41658 "EHLO
+        id S1443336AbiEFQGx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 May 2022 12:06:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1442128AbiEFOSu (ORCPT
+        with ESMTP id S1443330AbiEFQGv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 May 2022 10:18:50 -0400
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6229467D1F
-        for <linux-wireless@vger.kernel.org>; Fri,  6 May 2022 07:15:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1651846507; x=1683382507;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=+0DeCUXgHYOliKNNx5awok/fbx4nt/t/OE7cBsxR4zk=;
-  b=WjjaHp3PtXF3cvQT4Ncn7j+vRC3H2HMzKjxogHjXW6qqp0yP44rQzjX8
-   dfkhGlmeUwyEETc4nR321RCgYsnC7inxiOj3Pmhc0j9K3PAlb+wAWuRkK
-   pPhzKxWHwZGfzFkxbMD2nZoICsFMu1Yh8T7f110IamosqUQKSC+aL38vb
-   A=;
-Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 06 May 2022 07:15:07 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2022 07:15:07 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Fri, 6 May 2022 07:15:06 -0700
-Received: from hu-akolli-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Fri, 6 May 2022 07:15:04 -0700
-From:   Anilkumar Kolli <quic_akolli@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Anilkumar Kolli <quic_akolli@quicinc.com>
-Subject: [PATCH] ath11k: Reuse the available memory after firmware reload
-Date:   Fri, 6 May 2022 19:44:48 +0530
-Message-ID: <20220506141448.10340-1-quic_akolli@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+        Fri, 6 May 2022 12:06:51 -0400
+X-Greylist: delayed 1950 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 May 2022 09:03:05 PDT
+Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D025369CCB;
+        Fri,  6 May 2022 09:03:05 -0700 (PDT)
+Received: by bues.ch with esmtpsa (Exim 4.92)
+        (envelope-from <m@bues.ch>)
+        id 1nmzuZ-0005Zh-4F; Fri, 06 May 2022 17:30:31 +0200
+Date:   Fri, 6 May 2022 17:29:56 +0200
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Abaci Robot <abaci@linux.alibaba.com>
+Subject: Re: [PATCH] ssb: remove unreachable code
+Message-ID: <20220506172956.25004612@barney>
+In-Reply-To: <20220506075814.115059-1-jiapeng.chong@linux.alibaba.com>
+References: <20220506075814.115059-1-jiapeng.chong@linux.alibaba.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+Content-Type: multipart/signed; boundary="Sig_/X0fbrmtqHTaRTxhiMw+aYS4";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,112 +41,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ath11k allocates memory when firmware requests memory in QMI.
-Coldboot calibration and firmware recovery uses firmware reload.
-On firmware reload, firmware sends memory request again. If Ath11k
-allocates memory on first firmware boot, reuse the available
-memory. Also check if the segment type and size is same
-on the next firmware boot. Reuse if segment type/size is
-same as previous firmware boot else free the segment and
-allocate the segment with size/type.
+--Sig_/X0fbrmtqHTaRTxhiMw+aYS4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.6.0.1-00752-QCAHKSWPL_SILICONZ-1
+On Fri,  6 May 2022 15:58:14 +0800
+Jiapeng Chong <jiapeng.chong@linux.alibaba.com> wrote:
 
-Signed-off-by: Anilkumar Kolli <quic_akolli@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/core.c |  1 -
- drivers/net/wireless/ath/ath11k/qmi.c  | 24 +++++++++++++++++++++---
- drivers/net/wireless/ath/ath11k/qmi.h  |  2 ++
- 3 files changed, 23 insertions(+), 4 deletions(-)
+> Clean up the following smatch warning:
+>=20
+> drivers/ssb/pci.c:917 ssb_pci_sprom_get() warn: ignoring unreachable
+> code.
+>=20
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+> ---
+>  drivers/ssb/pci.c | 1 -
+>  1 file changed, 1 deletion(-)
+>=20
+> diff --git a/drivers/ssb/pci.c b/drivers/ssb/pci.c
+> index 148bcb99c212..493bebbba521 100644
+> --- a/drivers/ssb/pci.c
+> +++ b/drivers/ssb/pci.c
+> @@ -914,7 +914,6 @@ static int ssb_pci_sprom_get(struct ssb_bus *bus,
+>  				err =3D 0;
+>  				goto out_free;
+>  			}
+> -			pr_warn("WARNING: Invalid SPROM CRC (corrupt
+> SPROM)\n"); }
+>  	}
+>  	err =3D sprom_extract(bus, sprom, buf, bus->sprom_size);
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 01e1d494b527..7115a3507bc6 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -1768,7 +1768,6 @@ static void ath11k_core_reset(struct work_struct *work)
- 						ATH11K_RECOVER_START_TIMEOUT_HZ);
- 
- 	ath11k_hif_power_down(ab);
--	ath11k_qmi_free_resource(ab);
- 	ath11k_hif_power_up(ab);
- 
- 	ath11k_dbg(ab, ATH11K_DBG_BOOT, "reset started\n");
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index d1e945074bc1..61ead37a944a 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -1970,6 +1970,21 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
- 
- 	for (i = 0; i < ab->qmi.mem_seg_count; i++) {
- 		chunk = &ab->qmi.target_mem[i];
-+
-+		/* Firmware reloads in coldboot/firmware recovery.
-+		 * in such case, no need to allocate memory for FW again.
-+		 */
-+		if (chunk->vaddr) {
-+			if (chunk->prev_type == chunk->type ||
-+			    chunk->prev_size == chunk->size)
-+				continue;
-+
-+			/* cannot reuse the existing chunk */
-+			dma_free_coherent(ab->dev, chunk->size,
-+					  chunk->vaddr, chunk->paddr);
-+			chunk->vaddr = NULL;
-+		}
-+
- 		chunk->vaddr = dma_alloc_coherent(ab->dev,
- 						  chunk->size,
- 						  &chunk->paddr,
-@@ -1990,6 +2005,8 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
- 				   chunk->type);
- 			return -EINVAL;
- 		}
-+		chunk->prev_type = chunk->type;
-+		chunk->prev_size = chunk->size;
- 	}
- 
- 	return 0;
-@@ -2466,9 +2483,6 @@ static int ath11k_qmi_m3_load(struct ath11k_base *ab)
- 	char path[100];
- 	int ret;
- 
--	if (m3_mem->vaddr || m3_mem->size)
--		return 0;
--
- 	fw = ath11k_core_firmware_request(ab, ATH11K_M3_FILE);
- 	if (IS_ERR(fw)) {
- 		ret = PTR_ERR(fw);
-@@ -2478,6 +2492,9 @@ static int ath11k_qmi_m3_load(struct ath11k_base *ab)
- 		return ret;
- 	}
- 
-+	if (m3_mem->vaddr || m3_mem->size)
-+		goto skip_m3_alloc;
-+
- 	m3_mem->vaddr = dma_alloc_coherent(ab->dev,
- 					   fw->size, &m3_mem->paddr,
- 					   GFP_KERNEL);
-@@ -2488,6 +2505,7 @@ static int ath11k_qmi_m3_load(struct ath11k_base *ab)
- 		return -ENOMEM;
- 	}
- 
-+skip_m3_alloc:
- 	memcpy(m3_mem->vaddr, fw->data, fw->size);
- 	m3_mem->size = fw->size;
- 	release_firmware(fw);
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
-index c24e6995cca3..c83cf822be81 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.h
-+++ b/drivers/net/wireless/ath/ath11k/qmi.h
-@@ -97,6 +97,8 @@ struct ath11k_qmi_event_msg {
- struct target_mem_chunk {
- 	u32 size;
- 	u32 type;
-+	u32 prev_size;
-+	u32 prev_type;
- 	dma_addr_t paddr;
- 	u32 *vaddr;
- 	void __iomem *iaddr;
--- 
-2.17.1
 
+
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
+
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
+
+--Sig_/X0fbrmtqHTaRTxhiMw+aYS4
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmJ1PvQACgkQ9TK+HZCN
+iw6NthAAyKfzsQpLYd9idoiE9ulR6GvTJkpq+syShMJB6lWxn4gK/pFXaHrz18Ko
+zM+cdWQnId/P1zlNH5UDw8wBL6CjCDdSAl0FfJX9Fsdiz9Mp0bM+cjPprI4Fn+Qx
+NO3pWKEIwy2C2DV4iK2QpgLUPgu7kIOfpCTevDmwXxMT9PIjl/DFGrqmZFo7X326
+MKVisT7nmoKQpCdeso7MkaXPFVRklE35KcHkQFlwtroo50IHn3Dt+Q+rrqqDN0nd
+D/aOh0rHgFDRlPn5CGj9oz+5/Mxy4soV7d+/VIIEdi4fhuywBw34stn4No+X/1v4
+JgrCU/tl2HSQemrhH+P8zkDaIziVLCYdDMZIj01WVnLEEAuaWezKladxqJkIHPKW
+Bm9qJ/e3t1ZekZ/SRPHXi+HTA+aetxjOWGgWgy1t0+ZOdT16Ail2ERxPvD5yGAo1
+EoFlHMzPuh3XYLWbwHajMj4U1uVNbwQfQCPE2xLbs1Vvl98x6vDoNPWMBvL8Uxzv
+l8MM9XtkPARm7fxsQPRwGWW3s++1IQot5U1CIWvpNlnHcscIJXdAEOmijb+lqLy/
+qinal+mbJ+9VQOvMRQ60yD27YcIHLTgFBqNEpXLBpq01kNtX6A3zEvAcmDnl/buZ
+kSQzM8TC02drF+Mmtr7bTcSd2FxD5tHZmgWww+pA3v6r9Q3Lrv0=
+=flqY
+-----END PGP SIGNATURE-----
+
+--Sig_/X0fbrmtqHTaRTxhiMw+aYS4--
