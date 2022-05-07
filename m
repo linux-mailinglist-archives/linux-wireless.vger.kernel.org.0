@@ -2,120 +2,181 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9498D51E93E
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 May 2022 20:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DD6C51EA8D
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 May 2022 00:47:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1386822AbiEGSps (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 May 2022 14:45:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44864 "EHLO
+        id S230525AbiEGWui (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 May 2022 18:50:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230421AbiEGSpq (ORCPT
+        with ESMTP id S229462AbiEGWug (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 May 2022 14:45:46 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FB701E3CC;
-        Sat,  7 May 2022 11:41:58 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id bg25so6260415wmb.4;
-        Sat, 07 May 2022 11:41:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=kewTTWx9DrsoNkFyYPFpRhSoXTo723KMXBl58gCLpBA=;
-        b=HknaJKY79dBIY1D6VMFQLWs/WIhEgTfNuz3aI6k+tQd9aE8MMxrbCef1C/yUII7xHN
-         JMqZ4mWeav2euIn+1sTGGS36vGdaSkoEV0ZoJj6tdyksJNIcsQjebk6QkYhpJkIdP+To
-         hQjzgKi+EkJFEP2D67BbeYbAct4F/Ke/Rg0UUtSmVBGVDI9p5yroeXA4ehdPe/EJXP/f
-         U2tsU/A1R96w85Rw/7HXno5FEAQ72UpbuoeZC4JgG1Gdmk4bJLTUjlCPJVtIWMYrb3qg
-         PVTzgk0TOW3uxKqI/C+yNNs9XyR7Pn01N40Az7SZZWnLW+fbu06z1IX/bpi807y1shS8
-         efFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=kewTTWx9DrsoNkFyYPFpRhSoXTo723KMXBl58gCLpBA=;
-        b=wPbzpC4ycWLL9N/naWxOKGBmBgCeV/JVUdcSD/lrOcKP5rsvfhINZSf8KdAK5NOTi+
-         LggxLIvITxCDVIpwBL2CCBZHbXXgW8u2D9ooQvNcEGcSOzgUeKhqQ2JtAydW9CYTaBgB
-         8LOKReFwLE8zVcNv+9eCk1SRib2WCZZpNESnqcf7x0QWo4DxuQNta5z03oss1J+dPsHy
-         BXe8/foLoX5zVsKXtjSwhtKWXS++ukqIU4Pw6RPqWZNwvjVT43xR6yiTtJUDF2OvMyhD
-         wzfcJMjKppEoCqNzcE8LYqp0TW4nDo0we+BUY4Zaz4idJR6LaCv+jB+Ilgt6w5nkYNWL
-         28+g==
-X-Gm-Message-State: AOAM531BGnlFTA8zS/6+fduQwoHlf2voEflqhS5gGUverT2HD2AbAW3O
-        0bh5hIHSEYYr7bRWWhprIF0=
-X-Google-Smtp-Source: ABdhPJzEhN7/ba6cBlDyUJyzxLGhN8q+DeRTHlhT4eK4i4nAt0Dp7nhCYEOoDXLCHHDpm1NuWdSmzg==
-X-Received: by 2002:a05:600c:1992:b0:394:826a:d40d with SMTP id t18-20020a05600c199200b00394826ad40dmr3928485wmq.146.1651948916519;
-        Sat, 07 May 2022 11:41:56 -0700 (PDT)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id q1-20020adff501000000b0020c5253d8cdsm6617330wro.25.2022.05.07.11.41.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 May 2022 11:41:56 -0700 (PDT)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-Subject: [PATCH] ath11k: remove redundant assignment to variables vht_mcs and he_mcs
-Date:   Sat,  7 May 2022 19:41:55 +0100
-Message-Id: <20220507184155.26939-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.35.1
+        Sat, 7 May 2022 18:50:36 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43CBC6450
+        for <linux-wireless@vger.kernel.org>; Sat,  7 May 2022 15:46:44 -0700 (PDT)
+X-UUID: 5936b367d76a48a3974a78aa02e0c70d-20220508
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.4,REQID:f0c54953-51e1-40e8-a998-ac692d495848,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:-20,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,AC
+        TION:release,TS:-20
+X-CID-META: VersionHash:faefae9,CLOUDID:a9b89416-2e53-443e-b81a-655c13977218,C
+        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,File:nil,QS:0,BEC:nil
+X-UUID: 5936b367d76a48a3974a78aa02e0c70d-20220508
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1044424186; Sun, 08 May 2022 06:46:38 +0800
+Received: from mtkmbs07n1.mediatek.inc (172.21.101.16) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Sun, 8 May 2022 06:46:37 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sun, 8 May 2022 06:46:37 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.3 via Frontend Transport; Sun, 8 May 2022 06:46:37 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        "Ryder Lee" <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: mt7915: rework fw_util debugfs knob
+Date:   Sun, 8 May 2022 06:45:37 +0800
+Message-ID: <7a47e6fb793030daf592a4e2fcd9cee71d8daf77.1651963443.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The variables vht_mcs and he_mcs are being initialized in the
-start of for-loops however they are re-assigned new values in
-the loop and not used outside the loop. The initializations
-are redundant and can be removed.
+Improve error handlings and add MCU program counters for debug.
 
-Cleans up clang scan warnings:
-
-warning: Although the value stored to 'vht_mcs' is used in the
-enclosing expression, the value is never actually read from
-'vht_mcs' [deadcode.DeadStores]
-
-warning: Although the value stored to 'he_mcs' is used in the
-enclosing expression, the value is never actually read from
-'he_mcs' [deadcode.DeadStores]
-
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   | 25 ++++++++++++++-----
+ .../net/wireless/mediatek/mt76/mt7915/regs.h  | 11 +++++---
+ 2 files changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 1957e1713548..014eaabb3af4 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1951,7 +1951,7 @@ static void ath11k_peer_assoc_h_vht(struct ath11k *ar,
- 	/* Calculate peer NSS capability from VHT capabilities if STA
- 	 * supports VHT.
- 	 */
--	for (i = 0, max_nss = 0, vht_mcs = 0; i < NL80211_VHT_NSS_MAX; i++) {
-+	for (i = 0, max_nss = 0; i < NL80211_VHT_NSS_MAX; i++) {
- 		vht_mcs = __le16_to_cpu(vht_cap->vht_mcs.rx_mcs_map) >>
- 			  (2 * i) & 3;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index 875f17ff33a9..2725b1b80634 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -460,7 +460,7 @@ mt7915_fw_debug_wm_set(void *data, u64 val)
  
-@@ -2272,7 +2272,7 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
- 	/* Calculate peer NSS capability from HE capabilities if STA
- 	 * supports HE.
- 	 */
--	for (i = 0, max_nss = 0, he_mcs = 0; i < NL80211_HE_NSS_MAX; i++) {
-+	for (i = 0, max_nss = 0; i < NL80211_HE_NSS_MAX; i++) {
- 		he_mcs = he_tx_mcs >> (2 * i) & 3;
+ 	ret = mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WM, val);
+ 	if (ret)
+-		return ret;
++		goto out;
  
- 		/* In case of fixed rates, MCS Range in he_tx_mcs might have
+ 	for (debug = DEBUG_TXCMD; debug <= DEBUG_RPT_RX; debug++) {
+ 		if (debug == DEBUG_RPT_RX)
+@@ -470,7 +470,7 @@ mt7915_fw_debug_wm_set(void *data, u64 val)
+ 
+ 		ret = mt7915_mcu_fw_dbg_ctrl(dev, debug, val);
+ 		if (ret)
+-			return ret;
++			goto out;
+ 	}
+ 
+ 	/* WM CPU info record control */
+@@ -479,7 +479,11 @@ mt7915_fw_debug_wm_set(void *data, u64 val)
+ 	mt76_wr(dev, MT_MCU_WM_CIRQ_IRQ_MASK_CLR_ADDR, BIT(5));
+ 	mt76_wr(dev, MT_MCU_WM_CIRQ_IRQ_SOFT_ADDR, BIT(5));
+ 
+-	return 0;
++out:
++	if (ret)
++		dev->fw_debug_wm = 0;
++
++	return ret;
+ }
+ 
+ static int
+@@ -505,10 +509,15 @@ mt7915_fw_debug_wa_set(void *data, u64 val)
+ 
+ 	ret = mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WA, dev->fw_debug_wa);
+ 	if (ret)
+-		return ret;
++		goto out;
++
++	ret = mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(SET),
++				MCU_WA_PARAM_PDMA_RX, !!dev->fw_debug_wa, 0);
++out:
++	if (ret)
++		dev->fw_debug_wa = 0;
+ 
+-	return mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(SET), MCU_WA_PARAM_PDMA_RX,
+-				 !!dev->fw_debug_wa, 0);
++	return ret;
+ }
+ 
+ static int
+@@ -588,6 +597,8 @@ mt7915_fw_util_wm_show(struct seq_file *file, void *data)
+ {
+ 	struct mt7915_dev *dev = file->private;
+ 
++	seq_printf(file, "Program counter: 0x%x\n", mt76_rr(dev, MT_WM_MCU_PC));
++
+ 	if (dev->fw_debug_wm) {
+ 		seq_printf(file, "Busy: %u%%  Peak busy: %u%%\n",
+ 			   mt76_rr(dev, MT_CPU_UTIL_BUSY_PCT),
+@@ -607,6 +618,8 @@ mt7915_fw_util_wa_show(struct seq_file *file, void *data)
+ {
+ 	struct mt7915_dev *dev = file->private;
+ 
++	seq_printf(file, "Program counter: 0x%x\n", mt76_rr(dev, MT_WA_MCU_PC));
++
+ 	if (dev->fw_debug_wa)
+ 		return mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(QUERY),
+ 					 MCU_WA_PARAM_CPU_UTIL, 0, 0);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+index 7415118f6399..f9479319fb62 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+@@ -987,10 +987,6 @@ enum offs_rev {
+ #define MT_TOP_MISC			MT_TOP(0xf0)
+ #define MT_TOP_MISC_FW_STATE		GENMASK(2, 0)
+ 
+-#define MT_HW_BOUND			0x70010020
+-#define MT_HW_REV			0x70010204
+-#define MT_WF_SUBSYS_RST		0x70002600
+-
+ #define MT_TOP_WFSYS_WAKEUP		MT_TOP(0x1a4)
+ #define MT_TOP_WFSYS_WAKEUP_MASK	BIT(0)
+ 
+@@ -1052,6 +1048,10 @@ enum offs_rev {
+ #define MT_MCU_BUS_DBG_TIMEOUT_CK_EN_MASK BIT(3)
+ #define MT_MCU_BUS_DBG_TIMEOUT_EN_MASK	BIT(2)
+ 
++#define MT_HW_BOUND			0x70010020
++#define MT_HW_REV			0x70010204
++#define MT_WF_SUBSYS_RST		0x70002600
++
+ /* PCIE MAC */
+ #define MT_PCIE_MAC_BASE		0x74030000
+ #define MT_PCIE_MAC(ofs)		(MT_PCIE_MAC_BASE + (ofs))
+@@ -1060,6 +1060,9 @@ enum offs_rev {
+ #define MT_PCIE1_MAC_INT_ENABLE		0x74020188
+ #define MT_PCIE1_MAC_INT_ENABLE_MT7916	0x74090188
+ 
++#define MT_WM_MCU_PC			0x7c060204
++#define MT_WA_MCU_PC			0x7c06020c
++
+ /* PP TOP */
+ #define MT_WF_PP_TOP_BASE		0x820cc000
+ #define MT_WF_PP_TOP(ofs)		(MT_WF_PP_TOP_BASE + (ofs))
 -- 
-2.35.1
+2.29.2
 
