@@ -2,84 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EDEA51E29A
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 May 2022 01:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A86C51E2F8
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 May 2022 03:22:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356164AbiEFXzs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 May 2022 19:55:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46816 "EHLO
+        id S1356384AbiEGBZp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 May 2022 21:25:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356080AbiEFXzr (ORCPT
+        with ESMTP id S236738AbiEGBZo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 May 2022 19:55:47 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E2247ACB
-        for <linux-wireless@vger.kernel.org>; Fri,  6 May 2022 16:52:02 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 246NpotZ7030265, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 246NpotZ7030265
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Sat, 7 May 2022 07:51:50 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Sat, 7 May 2022 07:51:50 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Fri, 6 May 2022 16:51:50 -0700
-Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
- RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
- 15.01.2308.021; Sat, 7 May 2022 07:51:50 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "quic_jjohnson@quicinc.com" <quic_jjohnson@quicinc.com>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Timlee <timlee@realtek.com>
-Subject: Re: [PATCH] rtw88: adjutst adaptivity option to 1
-Thread-Topic: [PATCH] rtw88: adjutst adaptivity option to 1
-Thread-Index: AQHYYF+q2c+ooO8RDEaLF9Rund/6fK0RrxCAgABSjYA=
-Date:   Fri, 6 May 2022 23:51:49 +0000
-Message-ID: <90cc751ddc20e5793812bdf42e7ae2fdf4f09448.camel@realtek.com>
-References: <20220505090745.158892-1-pkshih@realtek.com>
-         <56483fa2-c743-86c8-8790-db00ec79e331@quicinc.com>
-In-Reply-To: <56483fa2-c743-86c8-8790-db00ec79e331@quicinc.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [172.16.17.21]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzUvNiDkuIvljYggMTA6MDA6MDA=?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <152FF38FEDD237418B8C95527F1E2ECA@realtek.com>
-Content-Transfer-Encoding: base64
+        Fri, 6 May 2022 21:25:44 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95A591A074
+        for <linux-wireless@vger.kernel.org>; Fri,  6 May 2022 18:21:55 -0700 (PDT)
+X-UUID: 0810e5a139a14a6abd0615bb815bf67a-20220507
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.4,REQID:f5db847e-b4bf-457a-9c6e-732c72e7f81d,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
+        ON:release,TS:0
+X-CID-META: VersionHash:faefae9,CLOUDID:e687e4b2-56b5-4c9e-8d83-0070b288eb6a,C
+        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,File:nil,QS:0,BEC:nil
+X-UUID: 0810e5a139a14a6abd0615bb815bf67a-20220507
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
+        (envelope-from <bo.jiao@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 209804098; Sat, 07 May 2022 09:21:27 +0800
+Received: from mtkmbs07n1.mediatek.inc (172.21.101.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Sat, 7 May 2022 09:21:25 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 7 May 2022 09:21:25 +0800
+Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.3 via Frontend Transport; Sat, 7 May 2022 09:21:23 +0800
+From:   Bo Jiao <bo.jiao@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        "lian . chen" <lian.chen@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Subject: [PATCH] mt76: mt7615/mt7915: do reset_work with mt76's work queue
+Date:   Sat, 7 May 2022 09:21:21 +0800
+Message-ID: <20220507012121.2761-1-bo.jiao@mediatek.com>
+X-Mailer: git-send-email 2.17.0
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gRnJpLCAyMDIyLTA1LTA2IGF0IDExOjU2IC0wNzAwLCBKZWZmIEpvaG5zb24gd3JvdGU6DQo+
-IE9uIDUvNS8yMDIyIDI6MDcgQU0sIFBpbmctS2UgU2hpaCB3cm90ZToNCj4gPiBGcm9tOiBDaGlu
-LVllbiBMZWUgPHRpbWxlZUByZWFsdGVrLmNvbT4NCj4gPiANCj4gPiBGaW5lIHR1bmUgYWxnb3Jp
-dGhtIG9mIGFkYXB0aXZpdHkgc2Vuc2l0aXZpdHkgdG8gYXZvaWQgZGlzY29ubmVjdGluZw0KPiA+
-IGZyb20gQVAgc3VkZGVubHkgaW4gZmllbGQuDQo+ID4gDQo+ID4gU2lnbmVkLW9mZi1ieTogQ2hp
-bi1ZZW4gTGVlIDx0aW1sZWVAcmVhbHRlay5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogUGluZy1L
-ZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+IA0KPiBuaXQ6IHMvYWRqdXRzdC9hZGp1c3Qv
-IGluIHN1YmplY3QNCg0KRml4ZWQgYnkgdjIuDQpUaGFua3MuDQoNCi0tDQpQaW5nLUtlDQoNCg==
+From: Bo Jiao <Bo.Jiao@mediatek.com>
+
+reset_work may be blocked when mcu message timeout occurs
+
+Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mmio.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
+index ce45c3b..a208035 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
+@@ -145,7 +145,7 @@ static void mt7615_irq_tasklet(struct tasklet_struct *t)
+ 		return;
+ 
+ 	dev->reset_state = mcu_int;
+-	ieee80211_queue_work(mt76_hw(dev), &dev->reset_work);
++	queue_work(dev->mt76.wq, &dev->reset_work);
+ 	wake_up(&dev->reset_wait);
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+index 89ea285..1d73c5a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+@@ -607,7 +607,7 @@ static void mt7915_irq_tasklet(struct tasklet_struct *t)
+ 		mt76_wr(dev, MT_MCU_CMD, val);
+ 		if (val & MT_MCU_CMD_ERROR_MASK) {
+ 			dev->reset_state = val;
+-			ieee80211_queue_work(mt76_hw(dev), &dev->reset_work);
++			queue_work(dev->mt76.wq, &dev->reset_work);
+ 			wake_up(&dev->reset_wait);
+ 		}
+ 	}
+-- 
+2.18.0
+
