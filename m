@@ -2,103 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A86C51E2F8
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 May 2022 03:22:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F45051E2FD
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 May 2022 03:23:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356384AbiEGBZp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 May 2022 21:25:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48034 "EHLO
+        id S1445166AbiEGB1U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 May 2022 21:27:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236738AbiEGBZo (ORCPT
+        with ESMTP id S236738AbiEGB1T (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 May 2022 21:25:44 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95A591A074
-        for <linux-wireless@vger.kernel.org>; Fri,  6 May 2022 18:21:55 -0700 (PDT)
-X-UUID: 0810e5a139a14a6abd0615bb815bf67a-20220507
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.4,REQID:f5db847e-b4bf-457a-9c6e-732c72e7f81d,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
-        ON:release,TS:0
-X-CID-META: VersionHash:faefae9,CLOUDID:e687e4b2-56b5-4c9e-8d83-0070b288eb6a,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,File:nil,QS:0,BEC:nil
-X-UUID: 0810e5a139a14a6abd0615bb815bf67a-20220507
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
-        (envelope-from <bo.jiao@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 209804098; Sat, 07 May 2022 09:21:27 +0800
-Received: from mtkmbs07n1.mediatek.inc (172.21.101.16) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Sat, 7 May 2022 09:21:25 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sat, 7 May 2022 09:21:25 +0800
-Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.3 via Frontend Transport; Sat, 7 May 2022 09:21:23 +0800
-From:   Bo Jiao <bo.jiao@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        "lian . chen" <lian.chen@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Bo Jiao <Bo.Jiao@mediatek.com>
-Subject: [PATCH] mt76: mt7615/mt7915: do reset_work with mt76's work queue
-Date:   Sat, 7 May 2022 09:21:21 +0800
-Message-ID: <20220507012121.2761-1-bo.jiao@mediatek.com>
-X-Mailer: git-send-email 2.17.0
-MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+        Fri, 6 May 2022 21:27:19 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1978D7092F;
+        Fri,  6 May 2022 18:23:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1651886613; x=1683422613;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=5QLsHFyXUFmImXTHj9gckTtQ5H1fnqGlBkqRwszLNuw=;
+  b=iGzPCr9mqPLEZUqqMPEa3CS4Q+dFActVs4L7PseG4fMkh6DjcJOAw8T/
+   H3ASHs41d/rsXbsQdhOxq/Ym6sYK51Xni8L1cfrkdDLvq2cPW07B5x3YY
+   NwpzCMwKGFROzRxrEUrqVkqUwx1xxAqoMaQ2xX2PQNl8kBvRUYMxpGEfT
+   3jKoNVyp7pl476HgxqkCA+xMb2dixXOMQA0qjR8sKDzJBxam9tSELdWez
+   8elsAvCb0ube6CRGUWTZCLn0A6gbDDQqP1j/zsUwdaDVT07rxCsIpCx0h
+   up4qBa4gHxtJNoN/7yiWX1Zbbjn3HyUl1FYzH13AA9//qsOOeiLFz8KdB
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10339"; a="250631339"
+X-IronPort-AV: E=Sophos;i="5.91,205,1647327600"; 
+   d="scan'208";a="250631339"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2022 18:23:32 -0700
+X-IronPort-AV: E=Sophos;i="5.91,205,1647327600"; 
+   d="scan'208";a="538137724"
+Received: from xinmeigo-mobl.ccr.corp.intel.com ([10.255.29.106])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2022 18:23:28 -0700
+Message-ID: <163750123fe8868a34f963daf137d592edc0acd7.camel@intel.com>
+Subject: Re: [PATCH 5/7] wil6210: remove debug message for unsupported PM
+ event
+From:   Zhang Rui <rui.zhang@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     rjw@rjwysocki.net, alexandre.belloni@bootlin.com,
+        linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-wireless@vger.kernel.org,
+        daniel.lezcano@linaro.org, mat.jonczyk@o2.pl,
+        sumeet.r.pawnikar@intel.com, len.brown@intel.com
+Date:   Sat, 07 May 2022 09:23:26 +0800
+In-Reply-To: <87tua292pp.fsf@kernel.org>
+References: <20220505015814.3727692-1-rui.zhang@intel.com>
+         <20220505015814.3727692-6-rui.zhang@intel.com> <875ymkzj9e.fsf@kernel.org>
+         <2358992684eb37823378cb48de2775620ee42031.camel@intel.com>
+         <87tua292pp.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Bo Jiao <Bo.Jiao@mediatek.com>
+On Fri, 2022-05-06 at 17:04 +0300, Kalle Valo wrote:
+> Zhang Rui <rui.zhang@intel.com> writes:
+> 
+> > Hi, Kalle,
+> > 
+> > thanks for the quick response.
+> > 
+> > On Thu, 2022-05-05 at 07:38 +0300, Kalle Valo wrote:
+> > > Zhang Rui <rui.zhang@intel.com> writes:
+> > > 
+> > > > Remove the useless debug message for unsupported PM event
+> > > > because
+> > > > it is
+> > > > noop in current code, and it gives a warning when a new event
+> > > > is
+> > > > introduced, which it doesn't care.
+> > > 
+> > > It's a debug message, not a warning, and only visible when debug
+> > > messages are enabled. Why do you want to remove it?
+> > 
+> > I'm concerning that people will report problems when they see new
+> > messages which never shows up previously.
+> > 
+> > Deleting or keeping this message are both okay to me. But patch 6/7
+> > indeed introduces a change to this piece of code and it's better
+> > for
+> > you to be aware of it before people starts to complain.
+> > 
+> > > 
+> > > > Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+> > > > Tested-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
+> > > 
+> > > Is this really tested on a wil6210 device? Not that it matters,
+> > > just
+> > > surprised to see a Tested-by for a wil6210 patch. It's not really
+> > > common
+> > > hardware.
+> > 
+> > No, we just tested the whole patch series on a Dell 9360 laptop,
+> > and a
+> > series of internal test machines. I didn't check if any of them has
+> > this device or not. Maybe I should remove the tested by in this
+> > case?
+> 
+> I think it's best to drop this wil6210 patch. The driver is orphaned
+> anyway and if anyone complains, they will do that to me :)
+> 
+Sure, I will drop this patch.
+Thanks for reviewing.
 
-reset_work may be blocked when mcu message timeout occurs
+-rui
 
-Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7615/mmio.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
-index ce45c3b..a208035 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
-@@ -145,7 +145,7 @@ static void mt7615_irq_tasklet(struct tasklet_struct *t)
- 		return;
- 
- 	dev->reset_state = mcu_int;
--	ieee80211_queue_work(mt76_hw(dev), &dev->reset_work);
-+	queue_work(dev->mt76.wq, &dev->reset_work);
- 	wake_up(&dev->reset_wait);
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index 89ea285..1d73c5a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -607,7 +607,7 @@ static void mt7915_irq_tasklet(struct tasklet_struct *t)
- 		mt76_wr(dev, MT_MCU_CMD, val);
- 		if (val & MT_MCU_CMD_ERROR_MASK) {
- 			dev->reset_state = val;
--			ieee80211_queue_work(mt76_hw(dev), &dev->reset_work);
-+			queue_work(dev->mt76.wq, &dev->reset_work);
- 			wake_up(&dev->reset_wait);
- 		}
- 	}
--- 
-2.18.0
 
