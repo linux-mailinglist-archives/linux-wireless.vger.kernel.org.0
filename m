@@ -2,307 +2,206 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E522F51EE77
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 May 2022 17:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE6A251EFD4
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 May 2022 21:14:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234611AbiEHPPa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 May 2022 11:15:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41094 "EHLO
+        id S229740AbiEHTRX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 May 2022 15:17:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234601AbiEHPP2 (ORCPT
+        with ESMTP id S242828AbiEHSDU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 May 2022 11:15:28 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C05C9DF20
-        for <linux-wireless@vger.kernel.org>; Sun,  8 May 2022 08:11:37 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id o12-20020a1c4d0c000000b00393fbe2973dso9488289wmh.2
-        for <linux-wireless@vger.kernel.org>; Sun, 08 May 2022 08:11:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=oexfhGXQFcCkTwDQufLsPwSiPYhClG+xHtbNu7NelmM=;
-        b=pgku/3AI2SH726MarumPLMVv6ZaJDt7ncb8Vq0ZI8VOcPv0ljnq9vjmQfHRxt5A2ng
-         qBy8aFJpjISvwW1KzqWeWxfhZIN0eTTjV0CyF3pBtNfQTLrvw2LYdusLyNwu5bm4rkIK
-         OFN4QD0CEBzfTgnOMXSoSsZVNGqOChwrbX96k7oGXUtZ3+P2A3RQwruj/krZ8+OhmXGm
-         z5jsOW41y61FAHylOh+3cGNv1PGfGAJDKOjcaP0ALQdAUxiYAJBzktsPYVrYTcYVvdTY
-         bhJS68DtHVbXZLmgR72/oe0rVSa3hObmb7VyLkDwfFQ0Wh+NnrkCKMTW+hRL0tR7C4MS
-         bQOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=oexfhGXQFcCkTwDQufLsPwSiPYhClG+xHtbNu7NelmM=;
-        b=58NhRBKU8TpoAcAcjDSdY7ZJ71IF+xXsH5OvGx8SXnZFHsVLEtbFu31t9q6QeLie8C
-         XFdDjR5DRIvw3Xn0uHsYy+J92KEIPayB4CiIRbHf0/AflNFZ1qrruS07t5R39l/YPtr+
-         vXT71LVpuUp9bNvXnru8s+htExbqvG+6NlxRT6XygFaGsiE/OYlWNST6vFRf9sBYoJDa
-         QXYGECdumJQ1hiGMWr5u54hjk2e5999EoiZjLgFnXPHcq43tAzj1QZvq5qMsu90Mb9nW
-         hCIBckxvJHVl/mSBtes/Lc09c07PHQjrsayNK84YRfoO27vgHXNZGJ5jEiyfGG4gFev/
-         lh+A==
-X-Gm-Message-State: AOAM532J2wXo6FqYuLmBig40NvlvOOLZNAUhiYRoL44S0f6EwxYgHlh5
-        51J5qSkhrFqG+4H3ItE0qdZHkkew3Mc=
-X-Google-Smtp-Source: ABdhPJxBnij5NAcugFSjGiDbgwGff367L7cgWkqJVBGmWRCaI3KXkcpzShClvAdsdQtsdQaIuQ3h2w==
-X-Received: by 2002:a7b:c414:0:b0:394:21dd:e24f with SMTP id k20-20020a7bc414000000b0039421dde24fmr12242439wmi.133.1652022696002;
-        Sun, 08 May 2022 08:11:36 -0700 (PDT)
-Received: from build-server.fritz.box (p200300c56f1bf700880d3dfffedefb04.dip0.t-ipconnect.de. [2003:c5:6f1b:f700:880d:3dff:fede:fb04])
-        by smtp.gmail.com with ESMTPSA id h22-20020a05600c145600b003942a244f2esm14788023wmi.7.2022.05.08.08.11.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 May 2022 08:11:35 -0700 (PDT)
-From:   Jonas Jelonek <jelonek.jonas@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     kvalo@kernel.org, nbd@nbd.name, johannes@sipsolutions.net,
-        thomas.huehn@hs-nordhausen.de,
+        Sun, 8 May 2022 14:03:20 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 925FC5FBC
+        for <linux-wireless@vger.kernel.org>; Sun,  8 May 2022 10:59:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1652032768; x=1683568768;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=68Pn7zke99uMVNz1DzjSNpGV1gXJ8bJC1hn2i4CtgcM=;
+  b=Wfblr4l10WCUxP1wAvjbbs5tZk2hWw5q5qcK4n/D6x5yPjIoZ6JH3HT7
+   hDgpqZTNg+7ESYeegBNTZsHS/cH3GN/y/Hu47q6lP+d3atRGZsOyhdwzx
+   W3i5vFJqKjeOOErKOcrwjP0Et0Fj7OAcevgfHuvMRewmPUbcg7Tpgk/rB
+   mUGe6xpaiDO0wRTk4NBZ58irg3QVw4QyeVdbhgG87VEAHXVFMUciHs4OU
+   lcf61GlwbuvDR3ZE3+gBRmtYv9k2IKAUD0UU4E5jmRy1rcF2Awcd5/F2C
+   FuVGNPIHtiTCtYlnrRQKuA1OXoHlDWxQ4N7kTToE5JCQfKa4RvpleqPSw
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10341"; a="248767713"
+X-IronPort-AV: E=Sophos;i="5.91,208,1647327600"; 
+   d="scan'208";a="248767713"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2022 10:59:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,208,1647327600"; 
+   d="scan'208";a="550665748"
+Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 08 May 2022 10:59:25 -0700
+Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nnlBl-000Ffa-0y;
+        Sun, 08 May 2022 17:59:25 +0000
+Date:   Mon, 9 May 2022 01:58:18 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jonas Jelonek <jelonek.jonas@gmail.com>,
+        linux-wireless@vger.kernel.org
+Cc:     kbuild-all@lists.01.org, kvalo@kernel.org, nbd@nbd.name,
+        johannes@sipsolutions.net, thomas.huehn@hs-nordhausen.de,
         Jonas Jelonek <jelonek.jonas@gmail.com>
-Subject: [PATCH v3 2/2] mac80211: minstrel_ht: support ieee80211_rate_status
-Date:   Sun,  8 May 2022 17:10:56 +0200
-Message-Id: <20220508151056.2431775-3-jelonek.jonas@gmail.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220508151056.2431775-1-jelonek.jonas@gmail.com>
-References: <20220508151056.2431775-1-jelonek.jonas@gmail.com>
+Subject: Re: [PATCH v3 1/2] mac80211: extend current rate control tx status
+ API
+Message-ID: <202205090141.egLK4ZdI-lkp@intel.com>
+References: <20220508151056.2431775-2-jelonek.jonas@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220508151056.2431775-2-jelonek.jonas@gmail.com>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds support for the new struct ieee80211_rate_status and its
-annotation in struct ieee80211_tx_status in minstrel_ht.
+Hi Jonas,
 
-In minstrel_ht_tx_status, a check for the presence of instances of the
-new struct in ieee80211_tx_status is added. Based on this, minstrel_ht
-then gets and updates internal rate stats with either struct
-ieee80211_rate_status or ieee80211_tx_info->status.rates.
-Adjusted variants of minstrel_ht_txstat_valid, minstrel_ht_get_stats,
-minstrel_{ht/vht}_get_group_idx are added which use struct
-ieee80211_rate_status and struct rate_info instead of the legacy structs.
+Thank you for the patch! Yet something to improve:
 
-struct rate_info from cfg80211.h does not provide whether short preamble
-was used for the transmission. So we retrieve this information from VIF
-and STA configuration and cache it in a new flag in struct minstrel_ht_sta
-per rate control instance.
+[auto build test ERROR on wireless/main]
+[also build test ERROR on v5.18-rc5]
+[cannot apply to wireless-next/main next-20220506]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-Compile-Tested: current wireless-next tree with all flags on
-Tested-on: Xiaomi 4A Gigabit (MediaTek MT7603E, MT7612E) with OpenWrt
-                Linux 5.10.83
+url:    https://github.com/intel-lab-lkp/linux/commits/Jonas-Jelonek/mac80211-extend-current-rate-control-tx-status-API/20220508-231356
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git main
+config: i386-randconfig-a005 (https://download.01.org/0day-ci/archive/20220509/202205090141.egLK4ZdI-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.2.0-20) 11.2.0
+reproduce (this is a W=1 build):
+        # https://github.com/intel-lab-lkp/linux/commit/4241dcd99dd1ea39739668850806abcd249f8535
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Jonas-Jelonek/mac80211-extend-current-rate-control-tx-status-API/20220508-231356
+        git checkout 4241dcd99dd1ea39739668850806abcd249f8535
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        make W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/net/wireless/ath/ath11k/
 
-Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
----
- net/mac80211/rc80211_minstrel_ht.c | 138 +++++++++++++++++++++++++++--
- net/mac80211/rc80211_minstrel_ht.h |   2 +-
- 2 files changed, 131 insertions(+), 9 deletions(-)
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
-index 9c3b7fc377c1..e6300c80b0d0 100644
---- a/net/mac80211/rc80211_minstrel_ht.c
-+++ b/net/mac80211/rc80211_minstrel_ht.c
-@@ -333,6 +333,16 @@ minstrel_ht_get_group_idx(struct ieee80211_tx_rate *rate)
- 			 !!(rate->flags & IEEE80211_TX_RC_40_MHZ_WIDTH));
- }
- 
-+/*
-+ * Look up an MCS group index based on new cfg80211 rate_info.
-+ */
-+static int
-+minstrel_ht_ri_get_group_idx(struct rate_info *rate) {
-+	return GROUP_IDX((rate->mcs / 8) + 1,
-+			 !!(rate->flags & RATE_INFO_FLAGS_SHORT_GI),
-+			 !!(rate->bw & RATE_INFO_BW_40));
-+}
-+
- static int
- minstrel_vht_get_group_idx(struct ieee80211_tx_rate *rate)
- {
-@@ -342,6 +352,17 @@ minstrel_vht_get_group_idx(struct ieee80211_tx_rate *rate)
- 			     2*!!(rate->flags & IEEE80211_TX_RC_80_MHZ_WIDTH));
- }
- 
-+/*
-+ * Look up an MCS group index based on new cfg80211 rate_info.
-+ */
-+static int
-+minstrel_vht_ri_get_group_idx(struct rate_info *rate) {
-+	return VHT_GROUP_IDX(rate->nss,
-+			     !!(rate->flags & RATE_INFO_FLAGS_SHORT_GI),
-+			     !!(rate->bw & RATE_INFO_BW_40) +
-+			     2*!!(rate->bw & RATE_INFO_BW_80));
-+}
-+
- static struct minstrel_rate_stats *
- minstrel_ht_get_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
- 		      struct ieee80211_tx_rate *rate)
-@@ -382,6 +403,50 @@ minstrel_ht_get_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
- 	return &mi->groups[group].rates[idx];
- }
- 
-+/*
-+ * Get the minstrel rate statistics for specified STA and rate info.
-+ */
-+static struct minstrel_rate_stats *
-+minstrel_ht_ri_get_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
-+			  struct ieee80211_rate_status *rate_status)
-+{
-+	int group, idx;
-+	struct rate_info *rate = &rate_status->rate_idx;
-+
-+	if (rate->flags & RATE_INFO_FLAGS_MCS) {
-+		group = minstrel_ht_ri_get_group_idx(rate);
-+		idx = rate->mcs % 8;
-+		goto out;
-+	}
-+
-+	if (rate->flags & RATE_INFO_FLAGS_VHT_MCS) {
-+		group = minstrel_vht_ri_get_group_idx(rate);
-+		idx = rate->mcs;
-+		goto out;
-+	}
-+
-+	group = MINSTREL_CCK_GROUP;
-+	for (idx = 0; idx < ARRAY_SIZE(mp->cck_rates); idx++) {
-+		if (rate->legacy != minstrel_cck_bitrates[ mp->cck_rates[idx] ])
-+			continue;
-+
-+		/* short preamble */
-+		if ((mi->supported[group] & BIT(idx + 4)) &&
-+							mi->use_short_preamble)
-+			idx += 4;
-+		goto out;
-+	}
-+
-+	group = MINSTREL_OFDM_GROUP;
-+	for (idx = 0; idx < ARRAY_SIZE(mp->ofdm_rates[0]); idx++)
-+		if (rate->legacy == minstrel_ofdm_bitrates[ mp->ofdm_rates[mi->band][idx] ])
-+			goto out;
-+
-+	idx = 0;
-+out:
-+	return &mi->groups[group].rates[idx];
-+}
-+
- static inline struct minstrel_rate_stats *
- minstrel_get_ratestats(struct minstrel_ht_sta *mi, int index)
- {
-@@ -1149,6 +1214,40 @@ minstrel_ht_txstat_valid(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
- 	return false;
- }
- 
-+/*
-+ * Check whether rate_status contains valid information.
-+ */
-+static bool
-+minstrel_ht_ri_txstat_valid(struct minstrel_priv *mp,
-+			    struct minstrel_ht_sta *mi,
-+			    struct ieee80211_rate_status *rate_status)
-+{
-+	int i;
-+
-+	if (!rate_status)
-+		return false;
-+	if (!rate_status->try_count)
-+		return false;
-+
-+	if (rate_status->rate_idx.flags & RATE_INFO_FLAGS_MCS ||
-+	    rate_status->rate_idx.flags & RATE_INFO_FLAGS_VHT_MCS)
-+		return true;
-+
-+	for (i = 0; i < ARRAY_SIZE(mp->cck_rates); i++) {
-+		if (rate_status->rate_idx.legacy ==
-+		    minstrel_cck_bitrates[ mp->cck_rates[i] ])
-+			return true;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(mp->ofdm_rates); i++) {
-+		if (rate_status->rate_idx.legacy ==
-+		    minstrel_ofdm_bitrates[ mp->ofdm_rates[mi->band][i] ])
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static void
- minstrel_downgrade_rate(struct minstrel_ht_sta *mi, u16 *idx, bool primary)
- {
-@@ -1214,16 +1313,34 @@ minstrel_ht_tx_status(void *priv, struct ieee80211_supported_band *sband,
- 	mi->ampdu_packets++;
- 	mi->ampdu_len += info->status.ampdu_len;
- 
--	last = !minstrel_ht_txstat_valid(mp, mi, &ar[0]);
--	for (i = 0; !last; i++) {
--		last = (i == IEEE80211_TX_MAX_RATES - 1) ||
--		       !minstrel_ht_txstat_valid(mp, mi, &ar[i + 1]);
-+	if (st->rates && st->n_rates) {
-+		last = !minstrel_ht_ri_txstat_valid(mp, mi, &(st->rates[0]));
-+		for (i = 0; !last; i++) {
-+			last = (i == st->n_rates - 1) ||
-+				!minstrel_ht_ri_txstat_valid(mp, mi,
-+							&(st->rates[i + 1]));
-+
-+			rate = minstrel_ht_ri_get_stats(mp, mi,
-+							&(st->rates[i]));
-+
-+			if (last)
-+				rate->success += info->status.ampdu_ack_len;
-+
-+			rate->attempts += st->rates[i].try_count *
-+					  info->status.ampdu_len;
-+		}
-+	} else {
-+		last = !minstrel_ht_txstat_valid(mp, mi, &ar[0]);
-+		for (i = 0; !last; i++) {
-+			last = (i == IEEE80211_TX_MAX_RATES - 1) ||
-+				!minstrel_ht_txstat_valid(mp, mi, &ar[i + 1]);
- 
--		rate = minstrel_ht_get_stats(mp, mi, &ar[i]);
--		if (last)
--			rate->success += info->status.ampdu_ack_len;
-+			rate = minstrel_ht_get_stats(mp, mi, &ar[i]);
-+			if (last)
-+				rate->success += info->status.ampdu_ack_len;
- 
--		rate->attempts += ar[i].count * info->status.ampdu_len;
-+			rate->attempts += ar[i].count * info->status.ampdu_len;
-+		}
- 	}
- 
- 	if (mp->hw->max_rates > 1) {
-@@ -1576,6 +1693,7 @@ minstrel_ht_update_caps(void *priv, struct ieee80211_supported_band *sband,
- {
- 	struct minstrel_priv *mp = priv;
- 	struct minstrel_ht_sta *mi = priv_sta;
-+	struct sta_info *sta_info;
- 	struct ieee80211_mcs_info *mcs = &sta->ht_cap.mcs;
- 	u16 ht_cap = sta->ht_cap.cap;
- 	struct ieee80211_sta_vht_cap *vht_cap = &sta->vht_cap;
-@@ -1698,6 +1816,10 @@ minstrel_ht_update_caps(void *priv, struct ieee80211_supported_band *sband,
- 			n_supported++;
- 	}
- 
-+	sta_info = container_of(sta, struct sta_info, sta);
-+	mi->use_short_preamble = test_sta_flag(sta_info, WLAN_STA_SHORT_PREAMBLE) &&
-+				 sta_info->sdata->vif.bss_conf.use_short_preamble;
-+
- 	minstrel_ht_update_cck(mp, mi, sband, sta);
- 	minstrel_ht_update_ofdm(mp, mi, sband, sta);
- 
-diff --git a/net/mac80211/rc80211_minstrel_ht.h b/net/mac80211/rc80211_minstrel_ht.h
-index 06e7126727ad..1766ff0c78d3 100644
---- a/net/mac80211/rc80211_minstrel_ht.h
-+++ b/net/mac80211/rc80211_minstrel_ht.h
-@@ -180,7 +180,7 @@ struct minstrel_ht_sta {
- 
- 	/* tx flags to add for frames for this sta */
- 	u32 tx_flags;
--
-+	bool use_short_preamble;
- 	u8 band;
- 
- 	u8 sample_seq;
+All errors (new ones prefixed by >>):
+
+   drivers/net/wireless/ath/ath11k/dp_tx.c: In function 'ath11k_dp_tx_complete_msdu':
+>> drivers/net/wireless/ath/ath11k/dp_tx.c:606:16: error: 'struct ieee80211_tx_status' has no member named 'rate'; did you mean 'rates'?
+     606 |         status.rate = &rate;
+         |                ^~~~
+         |                rates
+
+
+vim +606 drivers/net/wireless/ath/ath11k/dp_tx.c
+
+1b8bb94c0612cf Wen Gong               2021-12-20  517  
+d5c65159f28953 Kalle Valo             2019-11-23  518  static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
+d5c65159f28953 Kalle Valo             2019-11-23  519  				       struct sk_buff *msdu,
+d5c65159f28953 Kalle Valo             2019-11-23  520  				       struct hal_tx_status *ts)
+d5c65159f28953 Kalle Valo             2019-11-23  521  {
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  522  	struct ieee80211_tx_status status = { 0 };
+d5c65159f28953 Kalle Valo             2019-11-23  523  	struct ath11k_base *ab = ar->ab;
+d5c65159f28953 Kalle Valo             2019-11-23  524  	struct ieee80211_tx_info *info;
+d5c65159f28953 Kalle Valo             2019-11-23  525  	struct ath11k_skb_cb *skb_cb;
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  526  	struct ath11k_peer *peer;
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  527  	struct ath11k_sta *arsta;
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  528  	struct rate_info rate;
+d5c65159f28953 Kalle Valo             2019-11-23  529  
+d5c65159f28953 Kalle Valo             2019-11-23  530  	if (WARN_ON_ONCE(ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_TQM)) {
+d5c65159f28953 Kalle Valo             2019-11-23  531  		/* Must not happen */
+d5c65159f28953 Kalle Valo             2019-11-23  532  		return;
+d5c65159f28953 Kalle Valo             2019-11-23  533  	}
+d5c65159f28953 Kalle Valo             2019-11-23  534  
+d5c65159f28953 Kalle Valo             2019-11-23  535  	skb_cb = ATH11K_SKB_CB(msdu);
+d5c65159f28953 Kalle Valo             2019-11-23  536  
+d5c65159f28953 Kalle Valo             2019-11-23  537  	dma_unmap_single(ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
+d5c65159f28953 Kalle Valo             2019-11-23  538  
+bcef57ea400cc2 P Praneesh             2021-11-12  539  	if (unlikely(!rcu_access_pointer(ab->pdevs_active[ar->pdev_idx]))) {
+d5c65159f28953 Kalle Valo             2019-11-23  540  		dev_kfree_skb_any(msdu);
+bcef57ea400cc2 P Praneesh             2021-11-12  541  		return;
+d5c65159f28953 Kalle Valo             2019-11-23  542  	}
+d5c65159f28953 Kalle Valo             2019-11-23  543  
+bcef57ea400cc2 P Praneesh             2021-11-12  544  	if (unlikely(!skb_cb->vif)) {
+d5c65159f28953 Kalle Valo             2019-11-23  545  		dev_kfree_skb_any(msdu);
+bcef57ea400cc2 P Praneesh             2021-11-12  546  		return;
+d5c65159f28953 Kalle Valo             2019-11-23  547  	}
+d5c65159f28953 Kalle Valo             2019-11-23  548  
+d5c65159f28953 Kalle Valo             2019-11-23  549  	info = IEEE80211_SKB_CB(msdu);
+d5c65159f28953 Kalle Valo             2019-11-23  550  	memset(&info->status, 0, sizeof(info->status));
+d5c65159f28953 Kalle Valo             2019-11-23  551  
+d5c65159f28953 Kalle Valo             2019-11-23  552  	/* skip tx rate update from ieee80211_status*/
+d5c65159f28953 Kalle Valo             2019-11-23  553  	info->status.rates[0].idx = -1;
+d5c65159f28953 Kalle Valo             2019-11-23  554  
+d5c65159f28953 Kalle Valo             2019-11-23  555  	if (ts->status == HAL_WBM_TQM_REL_REASON_FRAME_ACKED &&
+d5c65159f28953 Kalle Valo             2019-11-23  556  	    !(info->flags & IEEE80211_TX_CTL_NO_ACK)) {
+d5c65159f28953 Kalle Valo             2019-11-23  557  		info->flags |= IEEE80211_TX_STAT_ACK;
+d5c65159f28953 Kalle Valo             2019-11-23  558  		info->status.ack_signal = ATH11K_DEFAULT_NOISE_FLOOR +
+d5c65159f28953 Kalle Valo             2019-11-23  559  					  ts->ack_rssi;
+ea5907db2a9ccf Avraham Stern          2022-02-02  560  		info->status.flags |= IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
+d5c65159f28953 Kalle Valo             2019-11-23  561  	}
+d5c65159f28953 Kalle Valo             2019-11-23  562  
+d5c65159f28953 Kalle Valo             2019-11-23  563  	if (ts->status == HAL_WBM_TQM_REL_REASON_CMD_REMOVE_TX &&
+d5c65159f28953 Kalle Valo             2019-11-23  564  	    (info->flags & IEEE80211_TX_CTL_NO_ACK))
+d5c65159f28953 Kalle Valo             2019-11-23  565  		info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
+d5c65159f28953 Kalle Valo             2019-11-23  566  
+1b8bb94c0612cf Wen Gong               2021-12-20  567  	if (unlikely(ath11k_debugfs_is_extd_tx_stats_enabled(ar)) ||
+1b8bb94c0612cf Wen Gong               2021-12-20  568  	    ab->hw_params.single_pdev_only) {
+d5c65159f28953 Kalle Valo             2019-11-23  569  		if (ts->flags & HAL_TX_STATUS_FLAGS_FIRST_MSDU) {
+d5c65159f28953 Kalle Valo             2019-11-23  570  			if (ar->last_ppdu_id == 0) {
+d5c65159f28953 Kalle Valo             2019-11-23  571  				ar->last_ppdu_id = ts->ppdu_id;
+d5c65159f28953 Kalle Valo             2019-11-23  572  			} else if (ar->last_ppdu_id == ts->ppdu_id ||
+d5c65159f28953 Kalle Valo             2019-11-23  573  				   ar->cached_ppdu_id == ar->last_ppdu_id) {
+d5c65159f28953 Kalle Valo             2019-11-23  574  				ar->cached_ppdu_id = ar->last_ppdu_id;
+d5c65159f28953 Kalle Valo             2019-11-23  575  				ar->cached_stats.is_ampdu = true;
+1b8bb94c0612cf Wen Gong               2021-12-20  576  				ath11k_dp_tx_update_txcompl(ar, ts);
+d5c65159f28953 Kalle Valo             2019-11-23  577  				memset(&ar->cached_stats, 0,
+d5c65159f28953 Kalle Valo             2019-11-23  578  				       sizeof(struct ath11k_per_peer_tx_stats));
+d5c65159f28953 Kalle Valo             2019-11-23  579  			} else {
+d5c65159f28953 Kalle Valo             2019-11-23  580  				ar->cached_stats.is_ampdu = false;
+1b8bb94c0612cf Wen Gong               2021-12-20  581  				ath11k_dp_tx_update_txcompl(ar, ts);
+d5c65159f28953 Kalle Valo             2019-11-23  582  				memset(&ar->cached_stats, 0,
+d5c65159f28953 Kalle Valo             2019-11-23  583  				       sizeof(struct ath11k_per_peer_tx_stats));
+d5c65159f28953 Kalle Valo             2019-11-23  584  			}
+d5c65159f28953 Kalle Valo             2019-11-23  585  			ar->last_ppdu_id = ts->ppdu_id;
+d5c65159f28953 Kalle Valo             2019-11-23  586  		}
+d5c65159f28953 Kalle Valo             2019-11-23  587  
+d5c65159f28953 Kalle Valo             2019-11-23  588  		ath11k_dp_tx_cache_peer_stats(ar, msdu, ts);
+d5c65159f28953 Kalle Valo             2019-11-23  589  	}
+d5c65159f28953 Kalle Valo             2019-11-23  590  
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  591  	spin_lock_bh(&ab->base_lock);
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  592  	peer = ath11k_peer_find_by_id(ab, ts->peer_id);
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  593  	if (!peer || !peer->sta) {
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  594  		ath11k_dbg(ab, ATH11K_DBG_DATA,
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  595  			   "dp_tx: failed to find the peer with peer_id %d\n",
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  596  			    ts->peer_id);
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  597  		spin_unlock_bh(&ab->base_lock);
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  598  		dev_kfree_skb_any(msdu);
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  599  		return;
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  600  	}
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  601  	arsta = (struct ath11k_sta *)peer->sta->drv_priv;
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  602  	status.sta = peer->sta;
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  603  	status.skb = msdu;
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  604  	status.info = info;
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  605  	rate = arsta->last_txrate;
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16 @606  	status.rate = &rate;
+d5c65159f28953 Kalle Valo             2019-11-23  607  
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  608  	spin_unlock_bh(&ab->base_lock);
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  609  
+94739d45c388c5 Pradeep Kumar Chitrapu 2022-02-16  610  	ieee80211_tx_status_ext(ar->hw, &status);
+d5c65159f28953 Kalle Valo             2019-11-23  611  }
+d5c65159f28953 Kalle Valo             2019-11-23  612  
+
 -- 
-2.30.2
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
