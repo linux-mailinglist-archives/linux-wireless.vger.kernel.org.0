@@ -2,180 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60CFE51EBE9
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 May 2022 07:25:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77EC651EBEE
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 May 2022 07:44:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231243AbiEHF3A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 May 2022 01:29:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41832 "EHLO
+        id S231231AbiEHFsQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 May 2022 01:48:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231310AbiEHF2y (ORCPT
+        with ESMTP id S231214AbiEHFsN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 May 2022 01:28:54 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30CA5658F
-        for <linux-wireless@vger.kernel.org>; Sat,  7 May 2022 22:25:01 -0700 (PDT)
-X-UUID: bde6419bb1484ba7a6f7d9b1013e2b57-20220508
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.4,REQID:766b8ed6-3049-4957-8e30-62a91c3341e6,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:-20,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,AC
-        TION:release,TS:-20
-X-CID-META: VersionHash:faefae9,CLOUDID:1a909916-2e53-443e-b81a-655c13977218,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,File:nil,QS:0,BEC:nil
-X-UUID: bde6419bb1484ba7a6f7d9b1013e2b57-20220508
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 766018376; Sun, 08 May 2022 13:24:57 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Sun, 8 May 2022 13:24:56 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sun, 8 May 2022 13:24:56 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        "Ryder Lee" <ryder.lee@mediatek.com>
-Subject: [PATCH v2 2/2] mt76: mt7915: add more statistics from fw_util debugfs knobs
-Date:   Sun, 8 May 2022 13:24:54 +0800
-Message-ID: <b3957480ad74444b7170f3f9f124bd043e1a0ce8.1651983999.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <210119c0737d72aa049c113dac48e22a4d84d689.1651983999.git.ryder.lee@mediatek.com>
-References: <210119c0737d72aa049c113dac48e22a4d84d689.1651983999.git.ryder.lee@mediatek.com>
+        Sun, 8 May 2022 01:48:13 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8673FE010
+        for <linux-wireless@vger.kernel.org>; Sat,  7 May 2022 22:44:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ZYRzWLQJwALtz+6jjDAO6kxk/VQyyf63jq9MF8B8euY=; b=lp+XPVhkQEXa9P11e7AmI5lb3N
+        4MjJck1Uorns71x78ieWwbbtHwj9N2OGkhE0ZyD5lrlHYEex5JElIEE8ZjC+7IH9/C6bOVmg/uyGf
+        4d4lKZ/zSFkWSDXTQ6kcplEVdeGt9RabuNhovYsudZaAaZguQFxgN37Ck/qvEWsZqFSE=;
+Received: from p200300daa70ef20064df27b80c0ef847.dip0.t-ipconnect.de ([2003:da:a70e:f200:64df:27b8:c0e:f847] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1nnZiJ-0001Ha-Aj; Sun, 08 May 2022 07:44:15 +0200
+Message-ID: <65e6897d-e1ec-ffda-5f7a-4aec37621377@nbd.name>
+Date:   Sun, 8 May 2022 07:44:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.9.0
+Subject: Re: [PATCH] mac80211: Use full queue selection code for control port
+ tx
+Content-Language: en-US
+To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@kernel.org>,
+        Alexander Wetzel <alexander@wetzel-home.de>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, Pierre Asselin <pa@panix.com>
+References: <20220507083706.384513-1-alexander@wetzel-home.de>
+ <87r1551t4c.fsf@toke.dk>
+From:   Felix Fietkau <nbd@nbd.name>
+In-Reply-To: <87r1551t4c.fsf@toke.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Print out exception state and program counters of WA/WM MCUs.
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/debugfs.c    |  8 ++++++++
- drivers/net/wireless/mediatek/mt76/mt7915/mmio.c   |  3 +++
- drivers/net/wireless/mediatek/mt76/mt7915/regs.h   | 14 ++++++++++----
- 3 files changed, 21 insertions(+), 4 deletions(-)
+On 07.05.22 13:26, Toke Høiland-Jørgensen wrote:
+> Alexander Wetzel <alexander@wetzel-home.de> writes:
+> 
+>> Calling only __ieee80211_select_queue() for control port TX exposes
+>> drivers which do not support QoS to non-zero values in
+>> skb->queue_mapping and even can assign not available queues to
+>> info->hw_queue.
+>> This can cause issues for drivers like we did e.g. see in
+>> '746285cf81dc ("rtl818x: Prevent using not initialized queues")'.
+>>
+>> This also prevents a redundant call to __ieee80211_select_queue() when
+>> using control port TX with iTXQ (pull path).
+>> And it starts to prioritize 802.11 preauthentication frames
+>> (ETH_P_PREAUTH) on all TX paths.
+>>
+>> Pierre Asselin confirmed that this patch indeed prevents crashing his
+>> system without '746285cf81dc ("rtl818x: Prevent using not initialized
+>> queues")'.
+>>
+>> Tested-by: Pierre Asselin <pa@panix.com>
+>> Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+>> ---
+>>
+>> Starting to prioritize ETH_P_PREAUTH was just added since I noticed that
+>> contradictory to at least my expectations control port does accept
+>> ETH_P_PREAUTH but handles these like a normal frame for the priority.
+>> That can be broken out or even drop, when needed.
+>>
+>> While looking at the code I also tripped over multiple other questions
+>> and I'll probably propose a much more invasive change how to handle
+>> the queue assignment. (End2end we seem to do some quite stupid things.)
+>>
+>> Additionally I really don't get why we call skb_get_hash() on queue
+>> assignment:
+>> I found the commit '180ac48ee62f ("mac80211: calculate skb hash early
+>> when using itxq")' but don't see why calculating the hash early is
+>> useful. Any hints here are appreciated. fq_flow_idx() seems to do that
+>> when needed and I can't find any other usage of the hash...
+> 
+> The commit message of that commit has a hint:
+> 
+>      This avoids flow separation issues when using software encryption.
+> 
+> The idea being that the packet contents can change on encryption, but
+> skb->hash is preserved, so you want it to run before encryption happens
+> to keep flows in the same queue.
+> 
+> However, AFAICT ieee80211_tx_h_encrypt() is called after frames are
+> dequeued from the TXQs, so not actually sure this is needed. Adding
+> Felix, in the hope that he can explain the reasoning behind that commit :)Sorry, I don't remember the details on that one. One advantage that I 
+can think of (which isn't mentioned in the commit msg) is that it is 
+likely better for performance to calculate the hash early since there is 
+a good chance that more of the skb data is still in the CPU cache.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index 656f3ffccf4b..6edbbce92926 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -597,6 +597,12 @@ mt7915_fw_util_wm_show(struct seq_file *file, void *data)
- {
- 	struct mt7915_dev *dev = file->private;
- 
-+	seq_printf(file, "Program counter: 0x%x\n", mt76_rr(dev, MT_WM_MCU_PC));
-+	seq_printf(file, "Exception state: 0x%x\n",
-+		   is_mt7915(&dev->mt76) ?
-+		   mt76_get_field(dev, MT_FW_EXCEPTION, GENMASK(15, 8)) :
-+		   mt76_get_field(dev, MT_FW_EXCEPTION, GENMASK(7, 0)));
-+
- 	if (dev->fw.debug_wm) {
- 		seq_printf(file, "Busy: %u%%  Peak busy: %u%%\n",
- 			   mt76_rr(dev, MT_CPU_UTIL_BUSY_PCT),
-@@ -616,6 +622,8 @@ mt7915_fw_util_wa_show(struct seq_file *file, void *data)
- {
- 	struct mt7915_dev *dev = file->private;
- 
-+	seq_printf(file, "Program counter: 0x%x\n", mt76_rr(dev, MT_WA_MCU_PC));
-+
- 	if (dev->fw.debug_wa)
- 		return mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(QUERY),
- 					 MCU_WA_PARAM_CPU_UTIL, 0, 0);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index 3c55d4cebbf2..d95c32c7bd53 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -22,6 +22,7 @@ static const u32 mt7915_reg[] = {
- 	[WFDMA_EXT_CSR_ADDR]	= 0xd7000,
- 	[CBTOP1_PHY_END]	= 0x77ffffff,
- 	[INFRA_MCU_ADDR_END]	= 0x7c3fffff,
-+	[FW_EXCEPTION_ADDR]	= 0x219848,
- 	[SWDEF_BASE_ADDR]	= 0x41f200,
- };
- 
-@@ -37,6 +38,7 @@ static const u32 mt7916_reg[] = {
- 	[WFDMA_EXT_CSR_ADDR]	= 0xd7000,
- 	[CBTOP1_PHY_END]	= 0x7fffffff,
- 	[INFRA_MCU_ADDR_END]	= 0x7c085fff,
-+	[FW_EXCEPTION_ADDR]	= 0x022050bc,
- 	[SWDEF_BASE_ADDR]	= 0x411400,
- };
- 
-@@ -52,6 +54,7 @@ static const u32 mt7986_reg[] = {
- 	[WFDMA_EXT_CSR_ADDR]	= 0x27000,
- 	[CBTOP1_PHY_END]	= 0x7fffffff,
- 	[INFRA_MCU_ADDR_END]	= 0x7c085fff,
-+	[FW_EXCEPTION_ADDR]	= 0x02204ffc,
- 	[SWDEF_BASE_ADDR]	= 0x411400,
- };
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index 7415118f6399..eb8891c53e9c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -30,6 +30,7 @@ enum reg_rev {
- 	WFDMA_EXT_CSR_ADDR,
- 	CBTOP1_PHY_END,
- 	INFRA_MCU_ADDR_END,
-+	FW_EXCEPTION_ADDR,
- 	SWDEF_BASE_ADDR,
- 	__MT_REG_MAX,
- };
-@@ -922,6 +923,8 @@ enum offs_rev {
- #define MT_ADIE_TYPE_MASK		BIT(1)
- 
- /* FW MODE SYNC */
-+#define MT_FW_EXCEPTION		__REG(FW_EXCEPTION_ADDR)
-+
- #define MT_SWDEF_BASE			__REG(SWDEF_BASE_ADDR)
- 
- #define MT_SWDEF(ofs)			(MT_SWDEF_BASE + (ofs))
-@@ -987,10 +990,6 @@ enum offs_rev {
- #define MT_TOP_MISC			MT_TOP(0xf0)
- #define MT_TOP_MISC_FW_STATE		GENMASK(2, 0)
- 
--#define MT_HW_BOUND			0x70010020
--#define MT_HW_REV			0x70010204
--#define MT_WF_SUBSYS_RST		0x70002600
--
- #define MT_TOP_WFSYS_WAKEUP		MT_TOP(0x1a4)
- #define MT_TOP_WFSYS_WAKEUP_MASK	BIT(0)
- 
-@@ -1052,6 +1051,10 @@ enum offs_rev {
- #define MT_MCU_BUS_DBG_TIMEOUT_CK_EN_MASK BIT(3)
- #define MT_MCU_BUS_DBG_TIMEOUT_EN_MASK	BIT(2)
- 
-+#define MT_HW_BOUND			0x70010020
-+#define MT_HW_REV			0x70010204
-+#define MT_WF_SUBSYS_RST		0x70002600
-+
- /* PCIE MAC */
- #define MT_PCIE_MAC_BASE		0x74030000
- #define MT_PCIE_MAC(ofs)		(MT_PCIE_MAC_BASE + (ofs))
-@@ -1060,6 +1063,9 @@ enum offs_rev {
- #define MT_PCIE1_MAC_INT_ENABLE		0x74020188
- #define MT_PCIE1_MAC_INT_ENABLE_MT7916	0x74090188
- 
-+#define MT_WM_MCU_PC			0x7c060204
-+#define MT_WA_MCU_PC			0x7c06020c
-+
- /* PP TOP */
- #define MT_WF_PP_TOP_BASE		0x820cc000
- #define MT_WF_PP_TOP(ofs)		(MT_WF_PP_TOP_BASE + (ofs))
--- 
-2.29.2
-
+- Felix
