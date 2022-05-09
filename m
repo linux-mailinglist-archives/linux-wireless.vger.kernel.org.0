@@ -2,49 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EBF951FB74
+	by mail.lfdr.de (Postfix) with ESMTP id AB0E351FB75
 	for <lists+linux-wireless@lfdr.de>; Mon,  9 May 2022 13:44:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232102AbiEILok (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 May 2022 07:44:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34766 "EHLO
+        id S232578AbiEILps (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 May 2022 07:45:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231860AbiEILoj (ORCPT
+        with ESMTP id S232575AbiEILpr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 May 2022 07:44:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05C32213324
-        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 04:40:45 -0700 (PDT)
+        Mon, 9 May 2022 07:45:47 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9B591F0DF8;
+        Mon,  9 May 2022 04:41:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BE476118D
-        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 11:40:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F84C385A8;
-        Mon,  9 May 2022 11:40:43 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 42F23B80FE7;
+        Mon,  9 May 2022 11:41:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C54C385A8;
+        Mon,  9 May 2022 11:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652096444;
-        bh=eeVoDmHC4PGS58SJlBYUk0CFX2/KN3tqf7iSr215GkU=;
+        s=k20201202; t=1652096511;
+        bh=MriFEYCRXMcS4d1eJRDeJo66M96ghK/YDPGH2KZFOLE=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ZF43ZZVN3BU+a2QnD87qlFs5vHE6bcbKcnWuMheMj1Ga/NgSPkUtNc9EBSa0uULku
-         zUzqLAdmC4JiFvXm6LKHRsOJIQJAM0ILN+5DHCnkJ1k7XeAyC+ImtG4z7VsCRnQt78
-         44Gptb0HdrQO373ntlVRySGqjfieGDOX30U645ns2alC2NAKV5IagG8JSKqaSiWoaA
-         w0QWKc922o/xAgLWyNaItsPC5KbqMOA3S3XAlgVPAVSJf1iAe/XO46+zKmJmyWisOV
-         HbiG4jaRVZk5FAJfORkyZWvDTinELRkv+NcKfpotykh1AeHFNYbxiD8bMm3MlbnFih
-         OW7AtTMUVechQ==
+        b=h2ahg1DJH+MIiX8BDup3qy2RQXt26FIFvGIZTZSut5VUhF1zRoGqL7ExxE6cygUEn
+         mZwqLbI4m8zb86r8pdofvLPXbSiI3Fu4BJq3f93HOcyJUOGpXgs8Ve3KOfysYzNww4
+         RXDXBalFL4HVhMi9T2GyIg6K7mpVX4+ZQAofUAolgWwkG0yqcSEEPsN6Wb2XVrUWyE
+         AYiKiXZsnlDsqtvv/btzXbTUouTw6EW1bazXNNA3Pd5UmfvvLYXYHU8ZRPQhH4NlSU
+         Y0xtbUGjWZ20yC+pxWO6EshosXAd7usIppJNeA0F4ojA1oJxESNiP1FhMetIZ5Z1bC
+         o159Dh7nmU8Ww==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] rtw88: adjust adaptivity option to 1
+Subject: Re: [PATCH v2 1/1] bcma: gpio: Switch to use fwnode instead of
+ of_node
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220506235045.4669-1-pkshih@realtek.com>
-References: <20220506235045.4669-1-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
-        <timlee@realtek.com>
+In-Reply-To: <20220504092525.71668-1-andriy.shevchenko@linux.intel.com>
+References: <20220504092525.71668-1-andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165209644175.4132.7913165691142072268.kvalo@kernel.org>
-Date:   Mon,  9 May 2022 11:40:43 +0000 (UTC)
+Message-ID: <165209650778.4132.13422568580298973668.kvalo@kernel.org>
+Date:   Mon,  9 May 2022 11:41:49 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,22 +57,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> From: Chin-Yen Lee <timlee@realtek.com>
+> GPIO library now accepts fwnode as a firmware node,
+> so switch the driver to use it.
 > 
-> Fine tune algorithm of adaptivity sensitivity to avoid disconnecting
-> from AP suddenly in field.
-> 
-> Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
 Patch applied to wireless-next.git, thanks.
 
-4fb3f1f1818c rtw88: adjust adaptivity option to 1
+f63bc788727c bcma: gpio: Switch to use fwnode instead of of_node
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220506235045.4669-1-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220504092525.71668-1-andriy.shevchenko@linux.intel.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
