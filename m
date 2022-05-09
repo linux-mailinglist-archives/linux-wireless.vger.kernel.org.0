@@ -2,50 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C9F951FBB6
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 May 2022 13:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9E9B51FBC3
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 May 2022 13:54:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233483AbiEILy4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 May 2022 07:54:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47942 "EHLO
+        id S233368AbiEIL6k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 May 2022 07:58:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233475AbiEILyy (ORCPT
+        with ESMTP id S233367AbiEIL6k (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 May 2022 07:54:54 -0400
+        Mon, 9 May 2022 07:58:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A91419590F
-        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 04:50:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50E5F1E0288
+        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 04:54:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 11EC6611CA
-        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 11:50:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FC0C385AF;
-        Mon,  9 May 2022 11:50:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEA84612AF
+        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 11:54:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FBD2C385AB;
+        Mon,  9 May 2022 11:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652097053;
-        bh=JrJh/aizYV5fErvoTllW4dPM77/hns+tqqCLZufThEM=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=O6j9krbT3u+n0JF9SG5a96uQn6o/2ELZ5keCwVu0HcfLT/iD9YkNB7FMT+wjPMIX+
-         JTTv3F52be93atRFrx5izUJ5RmiRj2T6q3fuZawxil5fMJt+4ei+QfgYc7atAi8qX1
-         Ap68ChwSD0qf0fONj7tnVSpN1MRXxXWE/mXSz1pj4bqbsskNKEVPazY/PdxqFvJMiM
-         SntuDFN6z34C7oQ+pKHDPr1YRlVYCv4JDuhAUe6ZzW2C44pey6P3Djq9HISgeZldUG
-         Jruqh9yMkkiLdJRetm6HJNdlUXhinnZbBiPSO3FD8v4FnTJ+s5JFkYM/lvNa6MBRRX
-         UIjm/7pdpPggw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     <Ajay.Kathat@microchip.com>
-Cc:     <linux-wireless@vger.kernel.org>, <Claudiu.Beznea@microchip.com>,
-        <Sripad.Balwadgi@microchip.com>
-Subject: Re: [PATCH 3/5] wilc1000: fix crash observed in AP mode with cfg80211_register_netdevice()
-References: <20220504161924.2146601-1-ajay.kathat@microchip.com>
-        <20220504161924.2146601-3-ajay.kathat@microchip.com>
-Date:   Mon, 09 May 2022 14:50:46 +0300
-In-Reply-To: <20220504161924.2146601-3-ajay.kathat@microchip.com> (Ajay
-        Kathat's message of "Wed, 4 May 2022 16:19:26 +0000")
-Message-ID: <87pmkmylex.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1652097285;
+        bh=jQjOOtNpxpDFq6PzmcAd+quJ3sSW0LUC1b7oMv0wFNs=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=iMGQrT1YNlPViSNCEGS7KBymcWcEP+4d7YL+07FMAS2F5dMvXYdMtLUryLzMJQFTr
+         jgBS7etNr3a2raw9I8JSDVj5pIK0QT42lZzF+Vyx5wrWi5DuSoSDyr/MeG5g1EcFu5
+         4YjqKI6ycMyRN9FZ/PuZzPemxiJf/hByQYm+xtS3vL+b0g4SPz5O3Pos2UzLppRERY
+         Siubk4Qp+jE7CssroJ7EsFX8Z/at7sZ987VcY7dJnck5J1u63aEbumkrsgk4Ghapr6
+         M711cPJKb2rqnKLZ0DVmYAThmjRZSqL9obTRkC68CGBKsADC0hFsLILrLaY7il4CQr
+         W+ikIAutQDpcg==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath11k: reset 11d state in process of recovery
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20220505034636.29582-1-quic_wgong@quicinc.com>
+References: <20220505034636.29582-1-quic_wgong@quicinc.com>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <quic_wgong@quicinc.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <165209728067.20365.11713036278436650363.kvalo@kernel.org>
+Date:   Mon,  9 May 2022 11:54:44 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -56,22 +55,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<Ajay.Kathat@microchip.com> writes:
+Wen Gong <quic_wgong@quicinc.com> wrote:
 
-> From: Ajay Singh <ajay.kathat@microchip.com>
->
-> Monitor(mon.) interface is used for handling the AP mode and 'ieee80211_ptr'
-> reference is not getting set for it. Like earlier implementation,
-> use register_netdevice() instead of cfg80211_register_netdevice() which
-> expects valid 'ieee80211_ptr' reference to avoid the possible crash.
->
-> Fixes: 2fe8ef106238 ("cfg80211: change netdev registration/unregistration semantics")
-> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+> When doing simulate_fw_crash operation periodically with a short interval
+> time such as 10 seconds, it is easy happened WMI command timed out for
+> WMI_SCAN_CHAN_LIST_CMDID in ath11k_reg_update_chan_list().
+> 
+> log:
+> [42287.610053] ath11k_pci 0000:01:00.0: wmi command 12291 timeout
+> [42287.610064] ath11k_pci 0000:01:00.0: failed to send WMI_SCAN_CHAN_LIST cmd
+> [42287.610073] ath11k_pci 0000:01:00.0: failed to perform regd update : -11
+> 
+> Note that this issue does not occur with a longer interval such as 20 seconds.
+> 
+> The reason the issue occurs with a shorter interval is the following steps:
+> 1) Upon initial boot, or after device recovery, the initial hw scan plus
+> the 11d scan will run, and when 6 GHz support is present, these scans
+> can take up to 12 seconds to complete, so ath11k_reg_update_chan_list()
+> is still waiting the completion of ar->completed_11d_scan.
+> 2) If a simulate_fw_crash operation is received during this time, those
+> scans do not complete, and ath11k_core_pre_reconfigure_recovery()
+> complete the ar->completed_11d_scan, then ath11k_reg_update_chan_list()
+> wakeup and start to send WMI_SCAN_CHAN_LIST_CMDID, but firmware is crashed
+> at this moment, so wmi timed out occur.
+> 
+> To address this issue, reset the 11d state during device recovery so that
+> WMI_SCAN_CHAN_LIST_CMDID does not timed out for short interval time such
+> as 10 seconds.
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+> 
+> Fixes: 1f682dc9fb37 ("ath11k: reduce the wait time of 11d scan and hw scan while add interface")
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Is there a reason why wilc1000 does not use ieee8011_ptr? And what
-earlier implementation are you referring to?
+Patch applied to ath-next branch of ath.git, thanks.
+
+9497b7880ffd ath11k: reset 11d state in process of recovery
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220505034636.29582-1-quic_wgong@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
