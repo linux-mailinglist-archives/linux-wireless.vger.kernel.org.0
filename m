@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3C4C5203A6
+	by mail.lfdr.de (Postfix) with ESMTP id 7919A5203A5
 	for <lists+linux-wireless@lfdr.de>; Mon,  9 May 2022 19:38:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239722AbiEIRiB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 May 2022 13:38:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47868 "EHLO
+        id S239723AbiEIRiE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 May 2022 13:38:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239666AbiEIRiA (ORCPT
+        with ESMTP id S239693AbiEIRiA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 9 May 2022 13:38:00 -0400
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D7EC20139A
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A50852016C1
         for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 10:34:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
   t=1652117646; x=1683653646;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2mky/r+wcKmuElQWQD0LWzunAbI0wP2bDN+oYuyDKNU=;
-  b=ourZl7YXp+ulaepgn29uE5V0z88nof7PQ9iEDjGrtU8krOfDCP18fhf1
-   Yi442vszM5Y8JURKbWTzht0NNznP73K0iZECJSKk201HdXBoZ5t3j3SZg
-   /GZrK3DT2Eo/RMaKeRAK6ZfgbEax0yMYXfgtWIUHKoMFjkyll3OwcA04+
-   o=;
-Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 09 May 2022 10:34:05 -0700
+  bh=qAE/mRwXdE3kw0cxtB76458eJ/PpNa0Oc90/4iwC0wU=;
+  b=tgViLD9p4ckkRMY1uRH4qLnQQCkbkD28b8thBg8rGN/8Jy26QAAWZODB
+   ZzK7JEccMGfDXw15s96LJBZ6QY60J39VXX8cV2rxPPj8OKyleLehcMw+Z
+   JtORp/0rwYzNjbZ22xYwhTOafVOJ2dupoulqaCWujtG8Ek28AtGb6YTxh
+   Y=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 09 May 2022 10:34:06 -0700
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2022 10:34:05 -0700
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2022 10:34:06 -0700
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -37,14 +37,14 @@ Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
 Received: from alokad-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Mon, 9 May 2022 10:34:04 -0700
+ 15.2.986.22; Mon, 9 May 2022 10:34:05 -0700
 From:   Aloka Dixit <quic_alokad@quicinc.com>
 To:     <johannes@sipsolutions.net>
 CC:     <linux-wireless@vger.kernel.org>,
         Aloka Dixit <quic_alokad@quicinc.com>
-Subject: [PATCH v3 1/2] nl80211: process additional attributes in NL80211_CMD_SET_BEACON
-Date:   Mon, 9 May 2022 10:33:53 -0700
-Message-ID: <20220509173354.2482-2-quic_alokad@quicinc.com>
+Subject: [PATCH v3 2/2] mac80211: process additional data in ieee80211_change_beacon()
+Date:   Mon, 9 May 2022 10:33:54 -0700
+Message-ID: <20220509173354.2482-3-quic_alokad@quicinc.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20220509173354.2482-1-quic_alokad@quicinc.com>
 References: <20220509173354.2482-1-quic_alokad@quicinc.com>
@@ -64,184 +64,69 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-FILS discovery and unsolicited broadcast probe response transmissions
-are configured as part of NL80211_CMD_START_AP, however both stop
-after userspace uses the NL80211_CMD_SET_BEACON command as these
-attributes are not processed as part of this command.
-Add the missing implementation.
+Modify the prototype for ieee80211_change_beacon() to accept
+an instance of struct cfg80211_ap_settings instead of
+struct cfg80211_beacon_data to process FILS discovery and
+unsolicited broadcast probe response transmission configuration.
 
-Modify the local variable in nl80211_set_beacon() and input parameter
-to rdev_change_beacon() from type struct cfg80211_beacon_data to
-type struct cfg80211_ap_settings to support the new processing.
+Set the respective flags when applicable.
 
 Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
 ---
-v3: Dynamic memory allocation for 'params'.
-Also introduced local variable 'attrs' for better readability.
+v3: No change from v2.
 
-include/net/cfg80211.h  |  2 +-
- net/wireless/nl80211.c  | 28 ++++++++++++++++++----
- net/wireless/rdev-ops.h |  2 +-
- net/wireless/trace.h    | 52 +++++++++++++++++++++++------------------
- 4 files changed, 55 insertions(+), 29 deletions(-)
+net/mac80211/cfg.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 68713388b617..b388e5c9beb8 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -4195,7 +4195,7 @@ struct cfg80211_ops {
- 	int	(*start_ap)(struct wiphy *wiphy, struct net_device *dev,
- 			    struct cfg80211_ap_settings *settings);
- 	int	(*change_beacon)(struct wiphy *wiphy, struct net_device *dev,
--				 struct cfg80211_beacon_data *info);
-+				 struct cfg80211_ap_settings *info);
- 	int	(*stop_ap)(struct wiphy *wiphy, struct net_device *dev);
- 
- 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 945ed87d12e0..5ce4215125f0 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -5799,7 +5799,8 @@ static int nl80211_set_beacon(struct sk_buff *skb, struct genl_info *info)
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
- 	struct net_device *dev = info->user_ptr[1];
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
--	struct cfg80211_beacon_data params;
-+	struct cfg80211_ap_settings *params;
-+	struct nlattr *attrs;
- 	int err;
- 
- 	if (dev->ieee80211_ptr->iftype != NL80211_IFTYPE_AP &&
-@@ -5812,16 +5813,35 @@ static int nl80211_set_beacon(struct sk_buff *skb, struct genl_info *info)
- 	if (!wdev->beacon_interval)
- 		return -EINVAL;
- 
--	err = nl80211_parse_beacon(rdev, info->attrs, &params);
-+	params = kzalloc(sizeof(*params), GFP_KERNEL);
-+	if (!params)
-+		return -ENOMEM;
-+
-+	err = nl80211_parse_beacon(rdev, info->attrs, &params->beacon);
- 	if (err)
- 		goto out;
- 
-+	attrs = info->attrs[NL80211_ATTR_FILS_DISCOVERY];
-+	if (attrs) {
-+		err = nl80211_parse_fils_discovery(rdev, attrs, params);
-+		if (err)
-+			goto out;
-+	}
-+
-+	attrs = info->attrs[NL80211_ATTR_UNSOL_BCAST_PROBE_RESP];
-+	if (attrs) {
-+		err = nl80211_parse_unsol_bcast_probe_resp(rdev, attrs,	params);
-+		if (err)
-+			goto out;
-+	}
-+
- 	wdev_lock(wdev);
--	err = rdev_change_beacon(rdev, dev, &params);
-+	err = rdev_change_beacon(rdev, dev, params);
- 	wdev_unlock(wdev);
- 
- out:
--	kfree(params.mbssid_ies);
-+	kfree(params->beacon.mbssid_ies);
-+	kfree(params);
- 	return err;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index f1d211e61e49..22843184d6ee 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1313,11 +1313,12 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
  }
  
-diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
-index 439bcf52369c..131fbe9c3199 100644
---- a/net/wireless/rdev-ops.h
-+++ b/net/wireless/rdev-ops.h
-@@ -162,7 +162,7 @@ static inline int rdev_start_ap(struct cfg80211_registered_device *rdev,
- 
- static inline int rdev_change_beacon(struct cfg80211_registered_device *rdev,
- 				     struct net_device *dev,
--				     struct cfg80211_beacon_data *info)
-+				     struct cfg80211_ap_settings *info)
+ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
+-				   struct cfg80211_beacon_data *params)
++				   struct cfg80211_ap_settings *params)
  {
- 	int ret;
- 	trace_rdev_change_beacon(&rdev->wiphy, dev, info);
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 228079d7690a..97ca10cbbfee 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -597,44 +597,50 @@ TRACE_EVENT(rdev_start_ap,
+ 	struct ieee80211_sub_if_data *sdata;
+ 	struct beacon_data *old;
+ 	int err;
++	u32 changed;
  
- TRACE_EVENT(rdev_change_beacon,
- 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
--		 struct cfg80211_beacon_data *info),
-+		 struct cfg80211_ap_settings *info),
- 	TP_ARGS(wiphy, netdev, info),
- 	TP_STRUCT__entry(
- 		WIPHY_ENTRY
- 		NETDEV_ENTRY
--		__dynamic_array(u8, head, info ? info->head_len : 0)
--		__dynamic_array(u8, tail, info ? info->tail_len : 0)
--		__dynamic_array(u8, beacon_ies, info ? info->beacon_ies_len : 0)
-+		__dynamic_array(u8, head, info ? info->beacon.head_len : 0)
-+		__dynamic_array(u8, tail, info ? info->beacon.tail_len : 0)
-+		__dynamic_array(u8, beacon_ies,
-+				info ? info->beacon.beacon_ies_len : 0)
- 		__dynamic_array(u8, proberesp_ies,
--				info ? info->proberesp_ies_len : 0)
-+				info ? info->beacon.proberesp_ies_len : 0)
- 		__dynamic_array(u8, assocresp_ies,
--				info ? info->assocresp_ies_len : 0)
--		__dynamic_array(u8, probe_resp, info ? info->probe_resp_len : 0)
-+				info ? info->beacon.assocresp_ies_len : 0)
-+		__dynamic_array(u8, probe_resp,
-+				info ? info->beacon.probe_resp_len : 0)
- 	),
- 	TP_fast_assign(
- 		WIPHY_ASSIGN;
- 		NETDEV_ASSIGN;
- 		if (info) {
--			if (info->head)
--				memcpy(__get_dynamic_array(head), info->head,
--				       info->head_len);
--			if (info->tail)
--				memcpy(__get_dynamic_array(tail), info->tail,
--				       info->tail_len);
--			if (info->beacon_ies)
-+			if (info->beacon.head)
-+				memcpy(__get_dynamic_array(head),
-+				       info->beacon.head,
-+				       info->beacon.head_len);
-+			if (info->beacon.tail)
-+				memcpy(__get_dynamic_array(tail),
-+				       info->beacon.tail,
-+				       info->beacon.tail_len);
-+			if (info->beacon.beacon_ies)
- 				memcpy(__get_dynamic_array(beacon_ies),
--				       info->beacon_ies, info->beacon_ies_len);
--			if (info->proberesp_ies)
-+				       info->beacon.beacon_ies,
-+				       info->beacon.beacon_ies_len);
-+			if (info->beacon.proberesp_ies)
- 				memcpy(__get_dynamic_array(proberesp_ies),
--				       info->proberesp_ies,
--				       info->proberesp_ies_len);
--			if (info->assocresp_ies)
-+				       info->beacon.proberesp_ies,
-+				       info->beacon.proberesp_ies_len);
-+			if (info->beacon.assocresp_ies)
- 				memcpy(__get_dynamic_array(assocresp_ies),
--				       info->assocresp_ies,
--				       info->assocresp_ies_len);
--			if (info->probe_resp)
-+				       info->beacon.assocresp_ies,
-+				       info->beacon.assocresp_ies_len);
-+			if (info->beacon.probe_resp)
- 				memcpy(__get_dynamic_array(probe_resp),
--				       info->probe_resp, info->probe_resp_len);
-+				       info->beacon.probe_resp,
-+				       info->beacon.probe_resp_len);
- 		}
- 	),
- 	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT, WIPHY_PR_ARG, NETDEV_PR_ARG)
+ 	sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+ 	sdata_assert_lock(sdata);
+@@ -1332,10 +1333,28 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
+ 	if (!old)
+ 		return -ENOENT;
+ 
+-	err = ieee80211_assign_beacon(sdata, params, NULL, NULL);
++	err = ieee80211_assign_beacon(sdata, &params->beacon, NULL, NULL);
+ 	if (err < 0)
+ 		return err;
+-	ieee80211_bss_info_change_notify(sdata, err);
++	changed = err;
++
++	if (params->fils_discovery.max_interval) {
++		err = ieee80211_set_fils_discovery(sdata,
++						   &params->fils_discovery);
++		if (err < 0)
++			return err;
++		changed |= BSS_CHANGED_FILS_DISCOVERY;
++	}
++
++	if (params->unsol_bcast_probe_resp.interval) {
++		err = ieee80211_set_unsol_bcast_probe_resp(sdata,
++							   &params->unsol_bcast_probe_resp);
++		if (err < 0)
++			return err;
++		changed |= BSS_CHANGED_UNSOL_BCAST_PROBE_RESP;
++	}
++
++	ieee80211_bss_info_change_notify(sdata, changed);
+ 	return 0;
+ }
+ 
 -- 
 2.31.1
 
