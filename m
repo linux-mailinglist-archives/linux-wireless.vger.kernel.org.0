@@ -2,230 +2,196 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 108D151F2A7
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 May 2022 04:30:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B05A151F30A
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 May 2022 05:53:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229915AbiEICbQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 May 2022 22:31:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38514 "EHLO
+        id S230516AbiEIDtm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 May 2022 23:49:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229847AbiEICbF (ORCPT
+        with ESMTP id S233216AbiEIDks (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 May 2022 22:31:05 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 004B45798D
-        for <linux-wireless@vger.kernel.org>; Sun,  8 May 2022 19:27:10 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id c9so11866572plh.2
-        for <linux-wireless@vger.kernel.org>; Sun, 08 May 2022 19:27:10 -0700 (PDT)
+        Sun, 8 May 2022 23:40:48 -0400
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8B2E62103
+        for <linux-wireless@vger.kernel.org>; Sun,  8 May 2022 20:36:55 -0700 (PDT)
+Received: by mail-pg1-x530.google.com with SMTP id g184so8443642pgc.1
+        for <linux-wireless@vger.kernel.org>; Sun, 08 May 2022 20:36:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
+        d=networkplumber-org.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:mime-version
          :content-transfer-encoding;
-        bh=UVV0zq0BI+Boi5FKN3bFP+EprP0KgXC18tq4wiIrcbg=;
-        b=PO8GQx73Vg2JsGT0kyl3GqPW2ozaF5rDSl9B48i25inLdmg///T2YX/nbVqRLK3Du9
-         gGQgBwRS14q2LXG70IFuxsLnEkng/7DK7qdLnXofp/vvDEtqhYuujElTUj7UeWjg3xNC
-         P77Evszkbo9hTKh1FT2Jko1Nkelcl277S5Cac=
+        bh=saahcU8Gxy1zQvPPjnx+YvTy3qLLAMOIXdNRhIoez2w=;
+        b=1TfGpJsvkqAEdbSzf0irDvWIkG+xep/+uI5WJ2x0W5xTJ/bL7HDHCIko2fgPY4x54K
+         DzoOXGawM5L+WanTuc1CaLRPMpLEXnrP/XfB9yhfN79rTox066bB0y5fmbM6StSsCwwO
+         4yPJiGSj6knXbXe3gL09s3U/zjDeoyErw3dWZifv1JyCso/gaz+DIvUSubRd2DacALo9
+         iVcF7PVbc5Rer0Z29JEZThsY5XiMCTa9BfEoXFo1BEf0TsCgrjqdOo62bo3qSe8fMnCL
+         95SoMTaFDyduBINnLtMxtfsswgkvRSITnEaazfbKDUMXicVOw/J+I3fwQSa2U9yTo3L0
+         oyhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
          :content-transfer-encoding;
-        bh=UVV0zq0BI+Boi5FKN3bFP+EprP0KgXC18tq4wiIrcbg=;
-        b=3DSq2J+h9nAwO0DPK4gUxA5A94WUH3s71UokShH2hLfYyldwGbRAL4Z0nWtWLIky1J
-         icxdM8pDK9Pgk46SDRicTksuTH200WLj7/9cCBRi++hyhE/sHLT0e4la6YPvwECSNIEq
-         VJY3Y/weMd7+aTnvwpJca9jTsMjg785WbgL6tNOfCCAQBaPRrIzD2pfjvdgXe/QP/jri
-         b+/D1JOlUKQE2xMySAZllxP9q4GIkzAwmS59pS0blAT2HesvOjGqgwzWDk/59cprkSyL
-         TKgNEFEp2cD/zzh7CHEJhqKRGq0QYWa8Em72/+b38QLgFv52RXoc1LxTtU/bsvK1Npz1
-         F4Xw==
-X-Gm-Message-State: AOAM5328O7PbZyWYEfCHtlgfT/0uRYFhqnWyNuUhevoipUx4ilWkKgxi
-        UBtzTjFv9ErYhU9tADpAxyWX8A==
-X-Google-Smtp-Source: ABdhPJxC8BosOM+WPt9kdM4/G0Q0MjoRMTqdjhSzSHAo+4vQpubAXZjTzID6GZj9w7pUZ54NSYIzKQ==
-X-Received: by 2002:a17:902:d4c2:b0:15e:abd0:926f with SMTP id o2-20020a170902d4c200b0015eabd0926fmr14334901plg.129.1652063230046;
-        Sun, 08 May 2022 19:27:10 -0700 (PDT)
-Received: from kuabhs-cdev.c.googlers.com.com (254.80.82.34.bc.googleusercontent.com. [34.82.80.254])
-        by smtp.gmail.com with ESMTPSA id 1-20020a170902c20100b0015ec44d25dasm5776327pll.235.2022.05.08.19.27.09
+        bh=saahcU8Gxy1zQvPPjnx+YvTy3qLLAMOIXdNRhIoez2w=;
+        b=d3q1DkF2EMRpi1kHfpRIXTOscIYC92V9oDKhu7Nk7WJRxRsXl5iGidMcurVRiyU4VF
+         f5nOGYZEIUPSFW9hJh1bZ3iOCeDQsWnJefH7r1HvX0+HYWpIl0aQxWjfcT/CSRM540Cc
+         K5OrGonH3KXtWtb6gT8nG0/dp7z/dHmNn30pSG3KBNtsL1AXPDRntTHqY+J99UyXBJOF
+         hj4oEcST0xIGkRqkkTGoojpG94P+KBuUWcc5pFAOUVWycs+SKQPTZHySgS9P/02RjnFT
+         n9Db4i9iehZWo3x2c2HV66Ah0PhjApclyCQSmbeJl4aGuWHJcRQcncQq9BqLIC161q1g
+         /HKg==
+X-Gm-Message-State: AOAM532GZW0P4TvHoO217U2dAQdClAvyHwWHbHUo3zkeCvne173sk4/y
+        +v6nHFA2zvjBE4VXBREnZkq+9g==
+X-Google-Smtp-Source: ABdhPJwV7v9L1fRh2X4hD8dgVpePaVFqP3cMDspl8AxvzdWGrkNZ2BuIejU1P167Iz6EThbuXGLmBw==
+X-Received: by 2002:a63:8442:0:b0:3c6:4271:cad with SMTP id k63-20020a638442000000b003c642710cadmr11736813pgd.275.1652067415103;
+        Sun, 08 May 2022 20:36:55 -0700 (PDT)
+Received: from hermes.local (204-195-112-199.wavecable.com. [204.195.112.199])
+        by smtp.gmail.com with ESMTPSA id x14-20020aa79ace000000b005107a4d5096sm5889535pfp.30.2022.05.08.20.36.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 May 2022 19:27:09 -0700 (PDT)
-From:   Abhishek Kumar <kuabhs@chromium.org>
-To:     kvalo@kernel.org
-Cc:     netdev@vger.kernel.org, dianders@chromium.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ath10k@lists.infradead.org, kuabhs@chromium.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH v3] ath10k: improve BDF search fallback strategy
-Date:   Mon,  9 May 2022 02:26:36 +0000
-Message-Id: <20220509022618.v3.1.Ibfd52b9f0890fffe87f276fa84deaf6f1fb0055c@changeid>
-X-Mailer: git-send-email 2.36.0.512.ge40c2bad7a-goog
+        Sun, 08 May 2022 20:36:54 -0700 (PDT)
+Date:   Sun, 8 May 2022 20:36:51 -0700
+From:   Stephen Hemminger <stephen@networkplumber.org>
+To:     tony0620emma@gmail.com, kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Fw: [Bug 215959] New: net: realtek: rtw88: firmware is not good
+Message-ID: <20220508203651.606658c6@hermes.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Board data files wrapped inside board-2.bin files are
-identified based on a combination of bus architecture,
-chip-id, board-id or variants. Here is one such example
-of a BDF entry in board-2.bin file:
-bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_XXXX
-It is possible for few platforms none of the combinations
-of bus,qmi-board,chip-id or variants match, e.g. if
-board-id is not programmed and thus reads board-id=0xff,
-there won't be any matching BDF to be found. In such
-situations, the wlan will fail to enumerate.
 
-Currently, to search for BDF, there are two fallback
-boardnames creates to search for BDFs in case the full BDF
-is not found. It is still possible that even the fallback
-boardnames do not match.
 
-As an improvement, search for BDF with full BDF combination
-and perform the fallback searches by stripping down the last
-elements until a BDF entry is found or none is found for all
-possible BDF combinations.e.g.
-Search for initial BDF first then followed by reduced BDF
-names as follows:
-bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_XXXX
-bus=snoc,qmi-board-id=67,qmi-chip-id=320
-bus=snoc,qmi-board-id=67
-bus=snoc
-<No BDF found>
+Begin forwarded message:
 
-Tested-on: WCN3990/hw1.0 WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
-Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
----
+Date: Mon, 09 May 2022 01:22:51 +0000
+From: bugzilla-daemon@kernel.org
+To: stephen@networkplumber.org
+Subject: [Bug 215959] New: net: realtek: rtw88: firmware is not good
 
-Changes in v3:
-- As discussed, instead of adding support for default BDF in DT, added
-a method to drop the last elements from full BDF until a BDF is found.
-- Previous patch was "ath10k: search for default BDF name provided in DT"
 
- drivers/net/wireless/ath/ath10k/core.c | 65 +++++++++++++-------------
- 1 file changed, 32 insertions(+), 33 deletions(-)
+https://bugzilla.kernel.org/show_bug.cgi?id=215959
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 688177453b07..ebb0d2a02c28 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -1426,15 +1426,31 @@ static int ath10k_core_search_bd(struct ath10k *ar,
- 	return ret;
- }
- 
-+static bool ath10k_create_reduced_boardname(struct ath10k *ar, char *boardname)
-+{
-+	/* Find last BDF element */
-+	char *last_field = strrchr(boardname, ',');
-+
-+	if (last_field) {
-+		/* Drop the last BDF element */
-+		last_field[0] = '\0';
-+		ath10k_dbg(ar, ATH10K_DBG_BOOT,
-+			   "boardname =%s\n", boardname);
-+		return 0;
-+	}
-+	return -ENODATA;
-+}
-+
- static int ath10k_core_fetch_board_data_api_n(struct ath10k *ar,
- 					      const char *boardname,
--					      const char *fallback_boardname1,
--					      const char *fallback_boardname2,
- 					      const char *filename)
- {
--	size_t len, magic_len;
-+	size_t len, magic_len, board_len;
- 	const u8 *data;
- 	int ret;
-+	char temp_boardname[100];
-+
-+	board_len = 100 * sizeof(temp_boardname[0]);
- 
- 	/* Skip if already fetched during board data download */
- 	if (!ar->normal_mode_fw.board)
-@@ -1474,20 +1490,24 @@ static int ath10k_core_fetch_board_data_api_n(struct ath10k *ar,
- 	data += magic_len;
- 	len -= magic_len;
- 
--	/* attempt to find boardname in the IE list */
--	ret = ath10k_core_search_bd(ar, boardname, data, len);
-+	memcpy(temp_boardname, boardname, board_len);
-+	ath10k_dbg(ar, ATH10K_DBG_BOOT, "boardname :%s\n", boardname);
- 
--	/* if we didn't find it and have a fallback name, try that */
--	if (ret == -ENOENT && fallback_boardname1)
--		ret = ath10k_core_search_bd(ar, fallback_boardname1, data, len);
-+retry_search:
-+	/* attempt to find boardname in the IE list */
-+	ret = ath10k_core_search_bd(ar, temp_boardname, data, len);
- 
--	if (ret == -ENOENT && fallback_boardname2)
--		ret = ath10k_core_search_bd(ar, fallback_boardname2, data, len);
-+	/* If the full BDF entry was not found then drop the last element and
-+	 * recheck until a BDF is found or until all options are exhausted.
-+	 */
-+	if (ret == -ENOENT)
-+		if (!ath10k_create_reduced_boardname(ar, temp_boardname))
-+			goto retry_search;
- 
- 	if (ret == -ENOENT) {
- 		ath10k_err(ar,
- 			   "failed to fetch board data for %s from %s/%s\n",
--			   boardname, ar->hw_params.fw.dir, filename);
-+			   temp_boardname, ar->hw_params.fw.dir, filename);
- 		ret = -ENODATA;
- 	}
- 
-@@ -1566,7 +1586,7 @@ static int ath10k_core_create_eboard_name(struct ath10k *ar, char *name,
- 
- int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
- {
--	char boardname[100], fallback_boardname1[100], fallback_boardname2[100];
-+	char boardname[100];
- 	int ret;
- 
- 	if (bd_ie_type == ATH10K_BD_IE_BOARD) {
-@@ -1579,25 +1599,6 @@ int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
- 			return ret;
- 		}
- 
--		/* Without variant and only chip-id */
--		ret = ath10k_core_create_board_name(ar, fallback_boardname1,
--						    sizeof(boardname), false,
--						    true);
--		if (ret) {
--			ath10k_err(ar, "failed to create 1st fallback board name: %d",
--				   ret);
--			return ret;
--		}
--
--		/* Without variant and without chip-id */
--		ret = ath10k_core_create_board_name(ar, fallback_boardname2,
--						    sizeof(boardname), false,
--						    false);
--		if (ret) {
--			ath10k_err(ar, "failed to create 2nd fallback board name: %d",
--				   ret);
--			return ret;
--		}
- 	} else if (bd_ie_type == ATH10K_BD_IE_BOARD_EXT) {
- 		ret = ath10k_core_create_eboard_name(ar, boardname,
- 						     sizeof(boardname));
-@@ -1609,8 +1610,6 @@ int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
- 
- 	ar->bd_api = 2;
- 	ret = ath10k_core_fetch_board_data_api_n(ar, boardname,
--						 fallback_boardname1,
--						 fallback_boardname2,
- 						 ATH10K_BOARD_API2_FILE);
- 	if (!ret)
- 		goto success;
+            Bug ID: 215959
+           Summary: net: realtek: rtw88: firmware is not good
+           Product: Networking
+           Version: 2.5
+    Kernel Version: 5.10.0-14
+          Hardware: Intel
+                OS: Linux
+              Tree: Mainline
+            Status: NEW
+          Severity: normal
+          Priority: P1
+         Component: Other
+          Assignee: stephen@networkplumber.org
+          Reporter: o@zgur.org
+        Regression: No
+
+Hello,
+
+i have been getting this error for a while and firmware seems to have not good
+worked maybe didnt support when bandwidth was changed.
+
+
+[ 6688.175436] ------------[ cut here ]------------
+[ 6688.175438] purge skb(s) not reported by firmware
+[ 6688.175466] WARNING: CPU: 0 PID: 0 at
+drivers/net/wireless/realtek/rtw88/tx.c:161 rtw_tx_report_purge_timer+0x20/0x50
+[rtw88_core]
+[ 6688.175467] Modules linked in: ctr ccm uinput rfcomm cmac algif_hash
+algif_skcipher af_alg bnep btusb btrtl btbcm btintel bluetooth uvcvideo
+videobuf2_vmalloc videobuf2_memops usbhid videobuf2_v4l2 videobuf2_common
+jitterentropy_rng videodev drbg mc edac_mce_amd ansi_cprng ecdh_generic ecc
+rtw88_8821ce rtw88_8821c rtw88_pci rtw88_core mac80211 kvm_amd ccp joydev
+cfg80211 kvm snd_hda_codec_realtek snd_hda_codec_generic ledtrig_audio
+snd_hda_codec_hdmi irqbypass snd_hda_intel nls_ascii snd_intel_dspcfg
+soundwire_intel nls_cp437 soundwire_generic_allocation asus_nb_wmi
+nvidia_drm(POE) asus_wmi vfat ghash_clmulni_intel snd_soc_core fat snd_compress
+soundwire_cadence snd_hda_codec aesni_intel snd_hda_core libaes snd_hwdep
+crypto_simd nvidia_modeset(POE) soundwire_bus cryptd glue_helper snd_pcm
+snd_timer serio_raw pcspkr sparse_keymap efi_pstore rapl rfkill wmi_bmof snd
+hid_multitouch libarc4 soundcore sp5100_tco watchdog k10temp tpm_crb tpm_tis
+tpm_tis_core tpm ac rng_core asus_wireless evdev
+[ 6688.175513]  acpi_cpufreq nvidia(POE) msr parport_pc ppdev lp parport fuse
+configfs efivarfs ip_tables x_tables autofs4 ext4 crc16 mbcache jbd2
+crc32c_generic amdgpu dm_mod xhci_pci xhci_hcd gpu_sched i2c_algo_bit ttm
+usbcore nvme drm_kms_helper nvme_core r8169 t10_pi realtek cec crc_t10dif
+hid_generic mdio_devres crct10dif_generic crct10dif_pclmul drm crc32_pclmul
+crc32c_intel libphy i2c_piix4 usb_common crct10dif_common wmi i2c_hid video
+battery hid button
+[ 6688.175541] CPU: 0 PID: 0 Comm: swapper/0 Tainted: P        W  OE    
+5.10.0-14-amd64 #1 Debian 5.10.113-1
+[ 6688.175542] Hardware name: ASUSTeK COMPUTER INC. TUF Gaming
+FX505DT_FX505DT/FX505DT, BIOS FX505DT.316 01/28/2021
+[ 6688.175548] RIP: 0010:rtw_tx_report_purge_timer+0x20/0x50 [rtw88_core]
+[ 6688.175550] Code: 0f 1f 84 00 00 00 00 00 66 90 0f 1f 44 00 00 8b 47 f0 85
+c0 75 01 c3 41 54 55 53 48 89 fb 48 c7 c7 f8 f4 24 c3 e8 be 53 c4 d9 <0f> 0b 4c
+8d 63 d8 4c 89 e7 e8 b2 a7 c8 d9 48 8d 7b e0 48 89 c5 e8
+[ 6688.175551] RSP: 0018:ffffb0f640003ed0 EFLAGS: 00010286
+[ 6688.175553] RAX: 0000000000000000 RBX: ffff9169039962e8 RCX:
+ffff916a1721ca08
+[ 6688.175554] RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI:
+ffff916a1721ca00
+[ 6688.175555] RBP: ffff9169039962e8 R08: 0000000000000000 R09:
+ffffb0f640003cf0
+[ 6688.175555] R10: ffffb0f640003ce8 R11: ffffffff9dccb408 R12:
+ffffffffc323cc00
+[ 6688.175556] R13: dead000000000122 R14: 0000000000000000 R15:
+ffff916a17220c40
+[ 6688.175557] FS:  0000000000000000(0000) GS:ffff916a17200000(0000)
+knlGS:0000000000000000
+[ 6688.175558] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 6688.175559] CR2: 000014ba0e585000 CR3: 00000001b0124000 CR4:
+00000000003506f0
+[ 6688.175560] Call Trace:
+[ 6688.175563]  <IRQ>
+[ 6688.175569]  ? rtw_tx_write_data_h2c_get+0x90/0x90 [rtw88_core]
+[ 6688.175572]  call_timer_fn+0x29/0xf0
+[ 6688.175574]  __run_timers.part.0+0x1d5/0x250
+[ 6688.175577]  ? recalibrate_cpu_khz+0x10/0x10
+[ 6688.175579]  ? ktime_get+0x38/0xa0
+[ 6688.175581]  ? native_x2apic_icr_read+0x10/0x10
+[ 6688.175582]  ? lapic_next_event+0x1d/0x20
+[ 6688.175585]  ? clockevents_program_event+0x8d/0xf0
+[ 6688.175586]  run_timer_softirq+0x26/0x50
+[ 6688.175589]  __do_softirq+0xc5/0x275
+[ 6688.175591]  asm_call_irq_on_stack+0x12/0x20
+[ 6688.175592]  </IRQ>
+[ 6688.175594]  do_softirq_own_stack+0x37/0x40
+[ 6688.175597]  irq_exit_rcu+0x8e/0xc0
+[ 6688.175600]  sysvec_apic_timer_interrupt+0x36/0x80
+[ 6688.175602]  asm_sysvec_apic_timer_interrupt+0x12/0x20
+[ 6688.175605] RIP: 0010:cpuidle_enter_state+0xc7/0x350
+[ 6688.175606] Code: 8b 3d ed 17 37 63 e8 f8 cc a1 ff 49 89 c5 0f 1f 44 00 00
+31 ff e8 09 d8 a1 ff 45 84 ff 0f 85 fa 00 00 00 fb 66 0f 1f 44 00 00 <45> 85 f6
+0f 88 06 01 00 00 49 63 c6 4c 2b 2c 24 48 8d 14 40 48 8d
+[ 6688.175607] RSP: 0018:ffffffff9dc03e70 EFLAGS: 00000246
+[ 6688.175608] RAX: ffff916a1722fcc0 RBX: 0000000000000001 RCX:
+000000000000001f
+[ 6688.175609] RDX: 0000000000000000 RSI: 000000003d112200 RDI:
+0000000000000000
+[ 6688.175610] RBP: ffff916911da1800 R08: 000006153651edd3 R09:
+0000000000000018
+[ 6688.175611] R10: 000000000000018f R11: 0000000000000013 R12:
+ffffffff9ddb9140
+[ 6688.175611] R13: 000006153651edd3 R14: 0000000000000001 R15:
+0000000000000000
+[ 6688.175614]  cpuidle_enter+0x29/0x40
+[ 6688.175617]  do_idle+0x1ef/0x2b0
+[ 6688.175619]  cpu_startup_entry+0x19/0x20
+[ 6688.175622]  start_kernel+0x587/0x5a8
+[ 6688.175626]  secondary_startup_64_no_verify+0xb0/0xbb
+[ 6688.175628] ---[ end trace dada0beabe9d5364 ]---
+
 -- 
-2.36.0.512.ge40c2bad7a-goog
+You may reply to this email to add a comment.
 
+You are receiving this mail because:
+You are the assignee for the bug.
