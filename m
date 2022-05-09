@@ -2,61 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B53351FABB
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 May 2022 13:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53B8B51FB1A
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 May 2022 13:14:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229807AbiEILES (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 May 2022 07:04:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51716 "EHLO
+        id S232260AbiEILSE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 May 2022 07:18:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230412AbiEILEQ (ORCPT
+        with ESMTP id S232267AbiEILSD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 May 2022 07:04:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3847B1F8C7E;
-        Mon,  9 May 2022 04:00:19 -0700 (PDT)
+        Mon, 9 May 2022 07:18:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C39721D737A
+        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 04:14:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C88B46101F;
-        Mon,  9 May 2022 11:00:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1D2E6C385A8;
-        Mon,  9 May 2022 11:00:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 61CFA61126
+        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 11:14:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D51BC385A8;
+        Mon,  9 May 2022 11:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652094018;
-        bh=ikDxI0UBbdraQb7K+9dalHuQbxbHJSwgNwO+ncLaxr8=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=lMq6013+5MB16OaTDkfHvm37p8w27p/IvAeRRuZB9C8LBw0ksDEch22MAqNv50QPK
-         AiXQKJfX5+d2vb46/7/7jmcDQr0YLjVTsZS4GjxEVQRqO4qmeJHukctIhI3I4WMdpt
-         dW2nsqD2Sc7nTIBm0Vedbm0xHS+q1Zib+MseHgl5rHJRyscyr5dF25F3kZ3j5avmpS
-         EeqdnjwoZSJhCyeGiEIo9qq/89tSh5dMobaE5AzBg8n1pXd0b2VQKtNEI2IgJPPDnu
-         +8C3myn0qZHLsTC+lkzoKQ3erh8QLaFY1FIts5idn6syzNxrTpx/HzXBRIm/+Rn/Cd
-         0u+cJhsNjgyaQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id ED914F03927;
-        Mon,  9 May 2022 11:00:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1652094848;
+        bh=W9XryWWy7zN51m400OZmGHcYJ1ZuaRsz7NhM8mNeJkQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Xpf5P3OOfcsd+kH9cEnSMH+vGHDzeyL8yawjlbrC4VpOC5jYE7ksmIBLOmxumu2e8
+         28hwyl1NJuQ6q30IQYAastsbhiV4cZkNilGtLHTPgCrWEKTmNBe+SNiaFNH1IFWc4t
+         A3Tz7VWhCGtUaAiS5eUMajJrWtlrTl8z0zA16DJM5Cnvpmltb6vOLmC3RqOpEIHSlW
+         Id2g1HxVsCuYVUFQG6lhnO+a8qnbW8MhKi2tz2W8VeB6TsOkTVRb2FVfcfTg2V86em
+         NrP8zJGfd1Kq8LM57q2OvWBjzKdgnvVY5JCzDABBPRPPCQE/jpLDtncN6+Pdtn+PDD
+         pTBsVe3N+J2LQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH wireless-next 0/3] wifi: netif_napi_add() conversions
+References: <20220504163316.549648-1-kuba@kernel.org>
+        <87a6bwzjvk.fsf@kernel.org> <20220505085418.5384f6c9@kernel.org>
+Date:   Mon, 09 May 2022 14:14:02 +0300
+In-Reply-To: <20220505085418.5384f6c9@kernel.org> (Jakub Kicinski's message of
+        "Thu, 5 May 2022 08:54:18 -0700")
+Message-ID: <87pmkn7ybp.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v8 00/14] net: wwan: t7xx: PCIe driver for MediaTek
- M.2 modem
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <165209401796.3033.5690066053334443938.git-patchwork-notify@kernel.org>
-Date:   Mon, 09 May 2022 11:00:17 +0000
-References: <20220506181310.2183829-1-ricardo.martinez@linux.intel.com>
-In-Reply-To: <20220506181310.2183829-1-ricardo.martinez@linux.intel.com>
-To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        andriy.shevchenko@linux.intel.com, dinesh.sharma@intel.com,
-        eliot.lee@intel.com, ilpo.johannes.jarvinen@intel.com,
-        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
-        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
-        sreehari.kancharla@intel.com, madhusmita.sahu@intel.com
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -67,57 +55,91 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+Jakub Kicinski <kuba@kernel.org> writes:
 
-This series was applied to netdev/net-next.git (master)
-by David S. Miller <davem@davemloft.net>:
+> On Thu, 05 May 2022 07:25:03 +0300 Kalle Valo wrote:
+>> Jakub Kicinski <kuba@kernel.org> writes:
+>> 
+>> > Convert wifi callers to the new netif_napi_add() APIs.
+>> >
+>> > The callers passing 64 or NAPI_POLL_WEIGHT to the non-Tx flavor
+>> > are left alone. I'm planning to include wifi drivers in the massive
+>> > tree-wide patch/series which will drop the last argument from
+>> > netif_napi_add(). Alternatively I can switch all of wifi to
+>> > netif_napi_add_tx_weight() and back after the netif_napi_add()
+>> > change makes its wait into wireless-next.
+>> > Please LMK if you prefer that.
+>> >
+>> > Jakub Kicinski (3):
+>> >   wifi: wil6210: switch to netif_napi_add_tx()
+>> >   wifi: mt76: switch to netif_napi_add_tx()
+>> >   wifi: qtnfmac: switch to netif_napi_add_weight()  
+>> 
+>> We don't use that "wifi:" prefix, otherwise looks good. 
+>
+> I know, my silent effort to make git log --oneline be more
+> understandable for folks outside of networking is not really
+> being met with much applause :) Ethernet people also don't
+> like the "eth:" prefix..
+>
+> AFAICS drivers tend to use a format consisting of (numbers at 
+> the top denoting commonality):
+>
+> 3    4       1       2
+> net: vendor: driver: component: bla bla
 
-On Fri,  6 May 2022 11:12:56 -0700 you wrote:
-> t7xx is the PCIe host device driver for Intel 5G 5000 M.2 solution which
-> is based on MediaTek's T700 modem to provide WWAN connectivity.
-> The driver uses the WWAN framework infrastructure to create the following
-> control ports and network interfaces:
-> * /dev/wwan0mbim0 - Interface conforming to the MBIM protocol.
->   Applications like libmbim [1] or Modem Manager [2] from v1.16 onwards
->   with [3][4] can use it to enable data communication towards WWAN.
-> * /dev/wwan0at0 - Interface that supports AT commands.
-> * wwan0 - Primary network interface for IP traffic.
-> 
-> [...]
+To me that's almost like the full path. An example from wireless
+drivers:
 
-Here is the summary with links:
-  - [net-next,v8,01/14] list: Add list_next_entry_circular() and list_prev_entry_circular()
-    https://git.kernel.org/netdev/net-next/c/2fbdf45d7d26
-  - [net-next,v8,02/14] net: skb: introduce skb_data_area_size()
-    https://git.kernel.org/netdev/net-next/c/a4ff365346c9
-  - [net-next,v8,03/14] net: wwan: t7xx: Add control DMA interface
-    https://git.kernel.org/netdev/net-next/c/39d439047f1d
-  - [net-next,v8,04/14] net: wwan: t7xx: Add core components
-    https://git.kernel.org/netdev/net-next/c/13e920d93e37
-  - [net-next,v8,05/14] net: wwan: t7xx: Add port proxy infrastructure
-    https://git.kernel.org/netdev/net-next/c/48cc2f5ef846
-  - [net-next,v8,06/14] net: wwan: t7xx: Add control port
-    https://git.kernel.org/netdev/net-next/c/da45d2566a1d
-  - [net-next,v8,07/14] net: wwan: t7xx: Add AT and MBIM WWAN ports
-    https://git.kernel.org/netdev/net-next/c/61b7a2916a0e
-  - [net-next,v8,08/14] net: wwan: t7xx: Data path HW layer
-    https://git.kernel.org/netdev/net-next/c/33f78ab5a38a
-  - [net-next,v8,09/14] net: wwan: t7xx: Add data path interface
-    https://git.kernel.org/netdev/net-next/c/d642b012df70
-  - [net-next,v8,10/14] net: wwan: t7xx: Add WWAN network interface
-    https://git.kernel.org/netdev/net-next/c/05d19bf500f8
-  - [net-next,v8,11/14] net: wwan: t7xx: Introduce power management
-    https://git.kernel.org/netdev/net-next/c/46e8f49ed7b3
-  - [net-next,v8,12/14] net: wwan: t7xx: Runtime PM
-    https://git.kernel.org/netdev/net-next/c/d10b3a695ba0
-  - [net-next,v8,13/14] net: wwan: t7xx: Device deep sleep lock/unlock
-    https://git.kernel.org/netdev/net-next/c/de49ea38ba11
-  - [net-next,v8,14/14] net: wwan: t7xx: Add maintainers and documentation
-    https://git.kernel.org/netdev/net-next/c/c9933d494c54
+drivers/net/wireless/ath/ath11k/mac.c
 
-You are awesome, thank you!
+net: wireless: ath: ath11k: mac: blah blah
+
+Only the directory name "drivers" is missing from the path.
+
+Wouldn't it be easier to modify the tools showing logs (like git log or
+gitk) to add that to each commit, then people who want to see that can
+enable the feature :)
+
+> Driver name is the most common prefix. It is the most meaningful
+> and natural for people working on the code. Not everyone is working 
+> on the driver code, tho.
+
+Sure, I understand that not everyone are developers. It's always a
+balance.
+
+> 1) When I send PRs to Linus I always wonder how much he can 
+> make out of the shortlog. And if people throw "net:" into the mix
+> whether it's still clear when something is "just" a driver bug vs
+> a core bug affecting everyone. So I started using "eth: " for ethernet
+> drivers, and "wifi: " for wireless drivers in the text of the PRs.
+>
+> 2) For people doing backporting the driver names may not be meaningful,
+> but if I'm doing backports for a datacenter kernel I know to pay
+> attention to "eth:" while "wifi:" I can safely skip.
+
+Is there a specific reason why you use "wifi:" and not "wireless:"? I
+admit the term wireless is not great for our 802.11 subsystem but that
+has been used as long as I know.
+
+> 3) The case of this set - I have conversions for the entire tree queued
+> up on a branch, it's quite useful for me to use a common area-specific
+> prefix to see what goes were.
+>
+> Anyway, that's just me rambling. I hope you don't mind if I send things
+> with a wifi prefix from time to time given it's a convenient way for me
+> to mark the queued patches.
+
+I don't mind if you submit with "wifi:", it's easy to edit patches with
+my patchwork script during commit :) And if there's a strong need I
+think we can change our title scheme in wireless patches. This has come
+before but I have always resisted due to extra work involved. To me most
+important is consistency within wireless subsystem, if different
+wireless drivers (and stack) use a different scheme when the logs will
+become hard to read. So I would hope everyone can agree to the new
+scheme.
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
