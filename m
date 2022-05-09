@@ -2,307 +2,231 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B1D15203B5
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 May 2022 19:45:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8A07520458
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 May 2022 20:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239766AbiEIRoR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 May 2022 13:44:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44706 "EHLO
+        id S240112AbiEISU7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 May 2022 14:20:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239745AbiEIRoQ (ORCPT
+        with ESMTP id S240099AbiEISUw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 May 2022 13:44:16 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3AFEF68BB
-        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 10:40:21 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id c190-20020a1c35c7000000b0038e37907b5bso11319wma.0
-        for <linux-wireless@vger.kernel.org>; Mon, 09 May 2022 10:40:21 -0700 (PDT)
+        Mon, 9 May 2022 14:20:52 -0400
+Received: from mail-ua1-x930.google.com (mail-ua1-x930.google.com [IPv6:2607:f8b0:4864:20::930])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA6D18E1AA
+        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 11:16:57 -0700 (PDT)
+Received: by mail-ua1-x930.google.com with SMTP id v3so5783457uau.4
+        for <linux-wireless@vger.kernel.org>; Mon, 09 May 2022 11:16:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=rMwq9lZNdK380h8KTpihGZ/utFyvqLSsYESPrR+MTfM=;
-        b=mEBrhxcGRCbCtHCeiz4grsbFsr9prl/usFhiEcxacjffgRN12xMpIgu97Yq0XCN8XD
-         IW6xtjmCwtYlRGwdg5kHOonN8chcApM6xRglGXqje5TPWPxtWVg8UMg4sTWt/tAcckua
-         6Ur1+af4ZliDNPIaj6MRcMlHMSc498N9hDhhAe4RG6QegxIQOuRzB+gB7JONHWqDXjZe
-         ZmlZxS9OjUvgKRanBZsqFt3QLvXRbS8YZRwwPUrh3+Y6S5CYweB2U3gGq3rbaWIlzzc7
-         MuFZc0uFOrZ0T9tL5sBwWElUJMmK0YvsUmQSrYWWoEiDBUIlTYu2EKNlG5e66dGhnBZF
-         aZEA==
+        d=gateworks-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CEWD095MTOxfk6m8EXeU/SEynd8zoPXbmNPb5cx6VuQ=;
+        b=yFRVfUfbRFn1oqm8PM9R8gvlByUtyrnryPwjZZr9Mmza9c+/JOUHoEbVxImTSQldPS
+         Vmjyl0CYzISDW164eQCf3kjn91i/O0V89uJVSBB1lk7hv7VBCpX0x47NPVT3kE9URxoI
+         TiZWnEj6Qd247uEAl2KpfA3TrQnhNB6Y9VP1o4c3zxomXFrf77FKS9kdcpzXQor5eVKd
+         Vepju0L3AW9dA75mRUnV7lRajkMVhMCAY1shjObVGi/pbB/BpKjypoxUIHuMHb6mPLlJ
+         UZyxkcEjaaRvrrwalTcsezt1toWlWjFUaIeE87oDish+BEw6UGIo7CWNZlJ3teVLYejB
+         Cq/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=rMwq9lZNdK380h8KTpihGZ/utFyvqLSsYESPrR+MTfM=;
-        b=TmcdMUKT0Fd3G0bUrYvd33Eh3kjK6rHAkx4G1zhBTgs9cTHcXHDVxSK/B3y9ocqdow
-         5TPfQ5rrdtx1MP+y0kQVrWRgqV8/Gagoi1yn/J3qGdi2rDqsjEYbIldM+DUsXh53PmzF
-         1Lrmlrv3/rfij94qGXkbd5cHavLiDIJvMX5l8nzjFGvrjaFNu7bzmbjY3yyLKDe6u2BW
-         akKlxIhHbl6Sd+0xa7+vHo8usdlVgrfQgPkNSRJwaGL27sq/rJnIpzPhcVjTWgr6HUsH
-         Dthn/3t80AVjVzPS25gKTWaqWx1ah3VWXDE+cE5zhe7u1PJ3I5qPvPU+ZF+xnR3FU6tT
-         uJuw==
-X-Gm-Message-State: AOAM532KWB0s9VdGWymBF9M2FRgMmR9Fabm+LKAjaxCzRR7kg8aUyhiF
-        xP8wQpJ20OlXwKvOf2ixuMfUQef3KRg=
-X-Google-Smtp-Source: ABdhPJzwFiufYMx9CZhLNNbEk4Xh57KMYz2z9uH8P8Ux/A5M25Uu3IH9+n5miI1gZcHnly+cTEd8NA==
-X-Received: by 2002:a05:600c:4f52:b0:394:61af:a168 with SMTP id m18-20020a05600c4f5200b0039461afa168mr23582783wmq.114.1652118020134;
-        Mon, 09 May 2022 10:40:20 -0700 (PDT)
-Received: from build-server.fritz.box (p200300c56f11c200880d3dfffedefb04.dip0.t-ipconnect.de. [2003:c5:6f11:c200:880d:3dff:fede:fb04])
-        by smtp.gmail.com with ESMTPSA id bh26-20020a05600c3d1a00b003942a244ee8sm14106253wmb.45.2022.05.09.10.40.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 May 2022 10:40:19 -0700 (PDT)
-From:   Jonas Jelonek <jelonek.jonas@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     nbd@nbd.name, johannes@sipsolutions.net,
-        thomas.huehn@hs-nordhausen.de, greearb@candelatech.com,
-        kvalo@kernel.org, Jonas Jelonek <jelonek.jonas@gmail.com>
-Subject: [PATCH v4 2/2] mac80211: minstrel_ht: support ieee80211_rate_status
-Date:   Mon,  9 May 2022 19:39:58 +0200
-Message-Id: <20220509173958.1398201-3-jelonek.jonas@gmail.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220509173958.1398201-1-jelonek.jonas@gmail.com>
-References: <20220509173958.1398201-1-jelonek.jonas@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CEWD095MTOxfk6m8EXeU/SEynd8zoPXbmNPb5cx6VuQ=;
+        b=0SIOI0FkHnPpUYy+DcCOA+2tlO81ihSUfrEZmNV53Z/798Id48joP26EP8MBxnzEub
+         zMVDEECUtSb4kcQZlQkM3+RIccwp9jnPORLbeBJfN1qLjTiOnLIkCIHf8ZUhFZDemJRS
+         Rs5jRrt7XMi3/5CbTVpwvkBMvemyIxMtLJxm5AWT2wKaJywUZP3kv2n5lQHtZFHAM949
+         JCscjPgQiuBa1lXuMW8Xq9Xu1dny/bZV236MqWtXUJPqkKzE4wKi/SSmoGPrtV4qkB47
+         z1YxLTjdx174+Xh1z5FFhtWn5RO/09hzQ3cFBTTLeqt9Q2v4SCPqy2b+U9Es88nNBSIb
+         PmFw==
+X-Gm-Message-State: AOAM533h7fJc8s9pLpfTiZRiVHQdsCs6udFvq+URXxDeB97ZIYPbwua/
+        LISD7p3xtIukRccLnSDQyYo5lF6sIcNthiH9PYnB
+X-Google-Smtp-Source: ABdhPJwNvAMpqlS3sdklxAuAC6zwn8wlVqWIiEXGzvYdYIvDQRAl2UcE4uvhIBKD3Y/dAq6ICiiF8pgDhTQ+K3aQRvU=
+X-Received: by 2002:a05:6130:3a1:b0:365:84fa:2f57 with SMTP id
+ az33-20020a05613003a100b0036584fa2f57mr10300866uab.62.1652120216817; Mon, 09
+ May 2022 11:16:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20200527165718.129307-1-briannorris@chromium.org>
+ <YmPadTu8CfEARfWs@xps> <CA+ASDXPeJ6fD9hvc0Nq_RY05YRdSP77U_96vUZcTYgkQKY9Bvg@mail.gmail.com>
+In-Reply-To: <CA+ASDXPeJ6fD9hvc0Nq_RY05YRdSP77U_96vUZcTYgkQKY9Bvg@mail.gmail.com>
+From:   Cale Collins <ccollins@gateworks.com>
+Date:   Mon, 9 May 2022 11:16:19 -0700
+Message-ID: <CAG2Q2vXce2V3Y6MnPhV6obcNWyQzyusMTL=5oCQLRNh2_ffNYA@mail.gmail.com>
+Subject: Re: [PATCH] Revert "ath: add support for special 0x0 regulatory domain"
+To:     Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Patrick Steinhardt <ps@pks.im>,
+        ath10k <ath10k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>,
+        Tim Harvey <tharvey@gateworks.com>,
+        Stephen McCarthy <stephen.mccarthy@pctel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds support for the new struct ieee80211_rate_status and its
-annotation in struct ieee80211_tx_status in minstrel_ht.
+Hello Brian and Kalle,
 
-In minstrel_ht_tx_status, a check for the presence of instances of the
-new struct in ieee80211_tx_status is added. Based on this, minstrel_ht
-then gets and updates internal rate stats with either struct
-ieee80211_rate_status or ieee80211_tx_info->status.rates.
-Adjusted variants of minstrel_ht_txstat_valid, minstrel_ht_get_stats,
-minstrel_{ht/vht}_get_group_idx are added which use struct
-ieee80211_rate_status and struct rate_info instead of the legacy structs.
+I'm experiencing an issue very similar to this.  The regulatory domain
+settings wouldn't allow me to create an AP on 5ghz bands on kernels
+newer than 5.10 when using a WLE900VX (QCA9984) radio.  I bisected the
+kernel and ultimately landed on the regression that Brian patched.  I
+applied the patch and that resolved the issue from 5.4 up to 5.10.
+For versions later than that I encountered the same problem.  I tried
+to bisect again but PCI is broken for the ARM board(s) I'm using in
+many of the RC's, I'm pretty new to all of this and it was just over
+my head. I saw Kalle pushed Brian's patch a few weeks ago, so I
+figured the politics behind how the regulatory domain should be
+addressed was decided at that point.  I cherry picked Brian's patch
+onto 5.17 to test, the results are below.  Can someone help me figure
+out what I can do to get 5ghz APs back?
 
-struct rate_info from cfg80211.h does not provide whether short preamble
-was used for the transmission. So we retrieve this information from VIF
-and STA configuration and cache it in a new flag in struct minstrel_ht_sta
-per rate control instance.
+If there's any more information I can provide please let me know, I
+wanted to keep things on the shorter side.
 
-Compile-Tested: current wireless-next tree with all flags on
-Tested-on: Xiaomi 4A Gigabit (MediaTek MT7603E, MT7612E) with OpenWrt
-                Linux 5.10.113
+cale@cale:~/builds/upstream/linux$ git log --oneline
+5c12efe9e783 (HEAD) Revert "ath: add support for special 0x0 regulatory domain"
+f443e374ae13 (tag: v5.17) Linux 5.17
 
-Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
----
- net/mac80211/rc80211_minstrel_ht.c | 138 +++++++++++++++++++++++++++--
- net/mac80211/rc80211_minstrel_ht.h |   2 +-
- 2 files changed, 131 insertions(+), 9 deletions(-)
+#On my ARM64 board
 
-diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
-index 7b1f5c045e06..3533c78df691 100644
---- a/net/mac80211/rc80211_minstrel_ht.c
-+++ b/net/mac80211/rc80211_minstrel_ht.c
-@@ -333,6 +333,16 @@ minstrel_ht_get_group_idx(struct ieee80211_tx_rate *rate)
- 			 !!(rate->flags & IEEE80211_TX_RC_40_MHZ_WIDTH));
- }
- 
-+/*
-+ * Look up an MCS group index based on new cfg80211 rate_info.
-+ */
-+static int
-+minstrel_ht_ri_get_group_idx(struct rate_info *rate) {
-+	return GROUP_IDX((rate->mcs / 8) + 1,
-+			 !!(rate->flags & RATE_INFO_FLAGS_SHORT_GI),
-+			 !!(rate->bw & RATE_INFO_BW_40));
-+}
-+
- static int
- minstrel_vht_get_group_idx(struct ieee80211_tx_rate *rate)
- {
-@@ -342,6 +352,17 @@ minstrel_vht_get_group_idx(struct ieee80211_tx_rate *rate)
- 			     2*!!(rate->flags & IEEE80211_TX_RC_80_MHZ_WIDTH));
- }
- 
-+/*
-+ * Look up an MCS group index based on new cfg80211 rate_info.
-+ */
-+static int
-+minstrel_vht_ri_get_group_idx(struct rate_info *rate) {
-+	return VHT_GROUP_IDX(rate->nss,
-+			     !!(rate->flags & RATE_INFO_FLAGS_SHORT_GI),
-+			     !!(rate->bw & RATE_INFO_BW_40) +
-+			     2*!!(rate->bw & RATE_INFO_BW_80));
-+}
-+
- static struct minstrel_rate_stats *
- minstrel_ht_get_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
- 		      struct ieee80211_tx_rate *rate)
-@@ -385,6 +406,50 @@ minstrel_ht_get_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
- 	return &mi->groups[group].rates[idx];
- }
- 
-+/*
-+ * Get the minstrel rate statistics for specified STA and rate info.
-+ */
-+static struct minstrel_rate_stats *
-+minstrel_ht_ri_get_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
-+			  struct ieee80211_rate_status *rate_status)
-+{
-+	int group, idx;
-+	struct rate_info *rate = &rate_status->rate_idx;
-+
-+	if (rate->flags & RATE_INFO_FLAGS_MCS) {
-+		group = minstrel_ht_ri_get_group_idx(rate);
-+		idx = rate->mcs % 8;
-+		goto out;
-+	}
-+
-+	if (rate->flags & RATE_INFO_FLAGS_VHT_MCS) {
-+		group = minstrel_vht_ri_get_group_idx(rate);
-+		idx = rate->mcs;
-+		goto out;
-+	}
-+
-+	group = MINSTREL_CCK_GROUP;
-+	for (idx = 0; idx < ARRAY_SIZE(mp->cck_rates); idx++) {
-+		if (rate->legacy != minstrel_cck_bitrates[ mp->cck_rates[idx] ])
-+			continue;
-+
-+		/* short preamble */
-+		if ((mi->supported[group] & BIT(idx + 4)) &&
-+							mi->use_short_preamble)
-+			idx += 4;
-+		goto out;
-+	}
-+
-+	group = MINSTREL_OFDM_GROUP;
-+	for (idx = 0; idx < ARRAY_SIZE(mp->ofdm_rates[0]); idx++)
-+		if (rate->legacy == minstrel_ofdm_bitrates[ mp->ofdm_rates[mi->band][idx] ])
-+			goto out;
-+
-+	idx = 0;
-+out:
-+	return &mi->groups[group].rates[idx];
-+}
-+
- static inline struct minstrel_rate_stats *
- minstrel_get_ratestats(struct minstrel_ht_sta *mi, int index)
- {
-@@ -1152,6 +1217,40 @@ minstrel_ht_txstat_valid(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
- 	return false;
- }
- 
-+/*
-+ * Check whether rate_status contains valid information.
-+ */
-+static bool
-+minstrel_ht_ri_txstat_valid(struct minstrel_priv *mp,
-+			    struct minstrel_ht_sta *mi,
-+			    struct ieee80211_rate_status *rate_status)
-+{
-+	int i;
-+
-+	if (!rate_status)
-+		return false;
-+	if (!rate_status->try_count)
-+		return false;
-+
-+	if (rate_status->rate_idx.flags & RATE_INFO_FLAGS_MCS ||
-+	    rate_status->rate_idx.flags & RATE_INFO_FLAGS_VHT_MCS)
-+		return true;
-+
-+	for (i = 0; i < ARRAY_SIZE(mp->cck_rates); i++) {
-+		if (rate_status->rate_idx.legacy ==
-+		    minstrel_cck_bitrates[ mp->cck_rates[i] ])
-+			return true;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(mp->ofdm_rates); i++) {
-+		if (rate_status->rate_idx.legacy ==
-+		    minstrel_ofdm_bitrates[ mp->ofdm_rates[mi->band][i] ])
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static void
- minstrel_downgrade_rate(struct minstrel_ht_sta *mi, u16 *idx, bool primary)
- {
-@@ -1217,16 +1316,34 @@ minstrel_ht_tx_status(void *priv, struct ieee80211_supported_band *sband,
- 	mi->ampdu_packets++;
- 	mi->ampdu_len += info->status.ampdu_len;
- 
--	last = !minstrel_ht_txstat_valid(mp, mi, &ar[0]);
--	for (i = 0; !last; i++) {
--		last = (i == IEEE80211_TX_MAX_RATES - 1) ||
--		       !minstrel_ht_txstat_valid(mp, mi, &ar[i + 1]);
-+	if (st->rates && st->n_rates) {
-+		last = !minstrel_ht_ri_txstat_valid(mp, mi, &(st->rates[0]));
-+		for (i = 0; !last; i++) {
-+			last = (i == st->n_rates - 1) ||
-+				!minstrel_ht_ri_txstat_valid(mp, mi,
-+							&(st->rates[i + 1]));
-+
-+			rate = minstrel_ht_ri_get_stats(mp, mi,
-+							&(st->rates[i]));
-+
-+			if (last)
-+				rate->success += info->status.ampdu_ack_len;
-+
-+			rate->attempts += st->rates[i].try_count *
-+					  info->status.ampdu_len;
-+		}
-+	} else {
-+		last = !minstrel_ht_txstat_valid(mp, mi, &ar[0]);
-+		for (i = 0; !last; i++) {
-+			last = (i == IEEE80211_TX_MAX_RATES - 1) ||
-+				!minstrel_ht_txstat_valid(mp, mi, &ar[i + 1]);
- 
--		rate = minstrel_ht_get_stats(mp, mi, &ar[i]);
--		if (last)
--			rate->success += info->status.ampdu_ack_len;
-+			rate = minstrel_ht_get_stats(mp, mi, &ar[i]);
-+			if (last)
-+				rate->success += info->status.ampdu_ack_len;
- 
--		rate->attempts += ar[i].count * info->status.ampdu_len;
-+			rate->attempts += ar[i].count * info->status.ampdu_len;
-+		}
- 	}
- 
- 	if (mp->hw->max_rates > 1) {
-@@ -1583,6 +1700,7 @@ minstrel_ht_update_caps(void *priv, struct ieee80211_supported_band *sband,
- 	u16 ht_cap = sta->deflink.ht_cap.cap;
- 	struct ieee80211_sta_vht_cap *vht_cap = &sta->deflink.vht_cap;
- 	const struct ieee80211_rate *ctl_rate;
-+	struct sta_info *sta_info;
- 	bool ldpc, erp;
- 	int use_vht;
- 	int n_supported = 0;
-@@ -1701,6 +1819,10 @@ minstrel_ht_update_caps(void *priv, struct ieee80211_supported_band *sband,
- 			n_supported++;
- 	}
- 
-+	sta_info = container_of(sta, struct sta_info, sta);
-+	mi->use_short_preamble = test_sta_flag(sta_info, WLAN_STA_SHORT_PREAMBLE) &&
-+				 sta_info->sdata->vif.bss_conf.use_short_preamble;
-+
- 	minstrel_ht_update_cck(mp, mi, sband, sta);
- 	minstrel_ht_update_ofdm(mp, mi, sband, sta);
- 
-diff --git a/net/mac80211/rc80211_minstrel_ht.h b/net/mac80211/rc80211_minstrel_ht.h
-index 06e7126727ad..1766ff0c78d3 100644
---- a/net/mac80211/rc80211_minstrel_ht.h
-+++ b/net/mac80211/rc80211_minstrel_ht.h
-@@ -180,7 +180,7 @@ struct minstrel_ht_sta {
- 
- 	/* tx flags to add for frames for this sta */
- 	u32 tx_flags;
--
-+	bool use_short_preamble;
- 	u8 band;
- 
- 	u8 sample_seq;
--- 
-2.30.2
+root@focal-ventana:~# uname -a
+Linux focal-ventana 5.17.0-00001-g5c12efe9e783 #1 SMP Wed Apr 6
+16:33:54 PDT 2022 armv7l armv7l armv7l GNU/Linux
 
+
+root@focal-ventana:~# ls /sys/class/net/
+can0  eth0  lo  sit0  wlp6s0
+
+root@focal-ventana:~# iw phy phy0 info | grep " MHz \[" | grep -v "no
+IR\|disabled"
+            * 2412 MHz [1] (20.0 dBm)
+            * 2417 MHz [2] (20.0 dBm)
+            * 2422 MHz [3] (20.0 dBm)
+            * 2427 MHz [4] (20.0 dBm)
+            * 2432 MHz [5] (20.0 dBm)
+            * 2437 MHz [6] (20.0 dBm)
+            * 2442 MHz [7] (20.0 dBm)
+            * 2447 MHz [8] (20.0 dBm)
+            * 2452 MHz [9] (20.0 dBm)
+            * 2457 MHz [10] (20.0 dBm)
+            * 2462 MHz [11] (20.0 dBm)
+
+
+root@focal-ventana:~# iw reg get
+global
+country 00: DFS-UNSET
+    (2402 - 2472 @ 40), (N/A, 20), (N/A)
+    (2457 - 2482 @ 20), (N/A, 20), (N/A), AUTO-BW, NO-IR
+    (2474 - 2494 @ 20), (N/A, 20), (N/A), NO-OFDM, NO-IR
+    (5170 - 5250 @ 80), (N/A, 20), (N/A), AUTO-BW, NO-IR
+    (5250 - 5330 @ 80), (N/A, 20), (0 ms), DFS, AUTO-BW, NO-IR
+    (5490 - 5730 @ 160), (N/A, 20), (0 ms), DFS, NO-IR
+    (5735 - 5835 @ 80), (N/A, 20), (N/A), NO-IR
+    (57240 - 63720 @ 2160), (N/A, 0), (N/A)
+
+phy#0
+country 99: DFS-UNSET
+    (2402 - 2472 @ 40), (N/A, 20), (N/A)
+    (5140 - 5360 @ 80), (N/A, 30), (N/A), PASSIVE-SCAN
+    (5715 - 5860 @ 80), (N/A, 30), (N/A), PASSIVE-SCAN
+
+#dmesg |grep ath output
+
+    [    5.724215] ath10k_pci 0000:06:00.0: enabling device (0140 -> 0142)
+    [    5.732439] ath10k_pci 0000:06:00.0: pci irq msi oper_irq_mode
+2 irq_mode 0 reset_mode 0
+    [   17.573591] ath10k_pci 0000:06:00.0: qca988x hw2.0 target
+0x4100016c chip_id 0x043202ff sub 0000:0000
+    [   17.573707] ath10k_pci 0000:06:00.0: kconfig debug 0 debugfs 0
+tracing 0 dfs 0 testmode 0
+    [   17.575118] ath10k_pci 0000:06:00.0: firmware ver
+10.2.4-1.0-00047 api 5 features no-p2p,raw-mode,mfp,allows-mesh-bcast
+crc32 35bd9258
+    [   17.637397] ath10k_pci 0000:06:00.0: board_file api 1 bmi_id
+N/A crc32 bebc7c08
+    [   18.849651] ath10k_pci 0000:06:00.0: htt-ver 2.1 wmi-op 5
+htt-op 2 cal otp max-sta 128 raw 0 hwcrypto 1
+
+Best regards,
+
+Cale Collins
+
+
+Cale Collins
+Field Applications Engineer II
+Gateworks Corporation
+(805)781-2000 x37
+3026 S. Higuera, San Luis Obispo, CA 93401
+www.gateworks.com
+
+
+
+On Mon, Apr 25, 2022 at 11:55 AM Brian Norris <briannorris@chromium.org> wrote:
+>
+> Hi Patrick,
+>
+> On Sat, Apr 23, 2022 at 3:52 AM Patrick Steinhardt <ps@pks.im> wrote:
+> > This revert is in fact causing problems on my machine. I have a QCA9984,
+> > which exports two network interfaces. While I was able to still use one
+> > of both NICs for 2.4GHz, I couldn't really use the other card to set up
+> > a 5GHz AP anymore because all frequencies were restricted. This has
+> > started with v5.17.1, to which this revert was backported.
+> >
+> > Reverting this patch again fixes the issue on my system. So it seems
+> > like there still are cards out there in the wild which have a value of
+> > 0x0 as their regulatory domain.
+> >
+> > Quoting from your other mail:
+> >
+> > > My understanding was that no QCA modules *should* be shipped with a
+> > > value of 0 in this field. The instance I'm aware of was more or less a
+> > > manufacturing error I think, and we got Qualcomm to patch it over in
+> > > software.
+> >
+> > This sounds like the issue should've already been fixed in firmware,
+> > right?
+>
+> See the original patch:
+> https://git.kernel.org/linus/2dc016599cfa9672a147528ca26d70c3654a5423
+>
+> "Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00029."
+>
+> That patch was only tested for QCA6174 SDIO, and the 6174 firmware has
+> since been updated. So none of that really applies to QCA9984. I
+> suppose your device was also not working before v5.6 either, and IIUC,
+> according to Qualcomm your hardware is a manufacturing error (i.e.,
+> invalid country code).
+>
+> I don't know what to tell you exactly, other than that the original
+> patch was wrong/unnecessary (and broke various existing systems) so it
+> should be reverted. I'm not quite sure how to fix the variety of
+> hardware out there (like yours) that may be using non-conforming
+> EEPROM settings. It would seem to me that we might need some more
+> targeted way of addressing broken hardware, rather than changing this
+> particular default workaround. I'm honestly not that familiar with
+> this Qualcomm regulatory stuff though, so my main contribution was
+> just to suggest reverting (i.e., don't break what used to work); I'm
+> not as savvy on providing alternative "fixes" for you.
+>
+> (That said: I *think* what's happening is that in the absence of a
+> proper EEPROM code, ath drivers fall back to a default=US country
+> code, and without further information to know you're compliant,
+> regulatory rules disallow initiating radiation (such as, an AP) on
+> 5GHz.)
+>
+> >  I've added the relevant dmesg
+> > snippets though in case I'm mistaken:
+>
+> With what kernel? That looks like pre-v5.17.1. The "broken"
+> (post-5.17.1) logs might be a bit more informative.
+>
+> Sorry,
+> Brian
