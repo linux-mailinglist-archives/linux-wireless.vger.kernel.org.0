@@ -2,166 +2,478 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1C9D52082D
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 May 2022 01:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0799520B18
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 May 2022 04:20:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232208AbiEIXPE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 May 2022 19:15:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44882 "EHLO
+        id S234605AbiEJCWI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 May 2022 22:22:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232215AbiEIXPC (ORCPT
+        with ESMTP id S234599AbiEJCWH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 May 2022 19:15:02 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B549D185CB2
-        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 16:11:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652137862; x=1683673862;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1GpyiiA3RoJxNTwWlJhPfMCUE4hqw+HxAyGb1rXGiog=;
-  b=RDp6OsVOdEID+kotz1XNza/JIg8h2/DK/ShfIx3SYDGLneEvnLrZLMnc
-   g7v3l4sbkgTMNtZ6wN9hqAyn8ZQU9wRRzz8YdEYHfbiXY4kyyKgkywdSO
-   52fPjY73jEwQ1M1mm1kPzO3Fw3OUOqvNyY2AeBhNXOB5NcI7uUVXgfVgd
-   7BK73k18/Io7NAnTk2CQGr/im032N9+bwW72qvo0uzB3l3wHjfZ5hvnfY
-   qSBuO9s3S03mqmySnPXD0iKEctopGVdfI+8GLvRhiSqb/WaNmGNHZW84E
-   v6jJx47pbq5ryCWkEZ0IFzCngJgppoE5fbABg2qknc082CGYCEoqJbgrH
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10342"; a="294422470"
-X-IronPort-AV: E=Sophos;i="5.91,212,1647327600"; 
-   d="scan'208";a="294422470"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2022 16:11:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,212,1647327600"; 
-   d="scan'208";a="657353291"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 09 May 2022 16:11:01 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1noCWq-000Gzg-FQ;
-        Mon, 09 May 2022 23:11:00 +0000
-Date:   Tue, 10 May 2022 07:10:47 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Aloka Dixit <quic_alokad@quicinc.com>, johannes@sipsolutions.net
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        linux-wireless@vger.kernel.org,
-        Aloka Dixit <quic_alokad@quicinc.com>
-Subject: Re: [PATCH v3 1/2] nl80211: process additional attributes in
- NL80211_CMD_SET_BEACON
-Message-ID: <202205100703.8aYeYjJx-lkp@intel.com>
-References: <20220509173354.2482-2-quic_alokad@quicinc.com>
+        Mon, 9 May 2022 22:22:07 -0400
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71EE3293B4A
+        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 19:18:09 -0700 (PDT)
+Received: by mail-il1-x135.google.com with SMTP id z12so10494928ilp.8
+        for <linux-wireless@vger.kernel.org>; Mon, 09 May 2022 19:18:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Wtvbdm5RoaA8oDIBKyDNKWt9MnB6vy/mwNf4axxFeBk=;
+        b=oItulGg9BGZBdDyin3sZYsYFYznrZztbhi/KZysNi7IXJl/SGx49xwPpZsU0Vvl4fR
+         1uAv6SWUEBSbodqoCpeRYnpdZ5KKjGYIuJ02Iuh2T6hIkTFjUsh5PYSp3uaFkVcnzZJC
+         hgWZO7FM5WGgzQP3UsTbb+RLTsrd9f0Af7wNs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Wtvbdm5RoaA8oDIBKyDNKWt9MnB6vy/mwNf4axxFeBk=;
+        b=FNYYdtaBBHZRfT1dO2EME8oYzA947k/HZCCJkHaJgNsN/1wf8S52SS7SibdhxAqEGs
+         mL38MYrhwIEmP6BRtkQh/7+jDY8oSoQ8X89laM0AiwdtBljWFLBwl7M41F738+2D75RY
+         Jp15DMQVMVeY0lTgaZQImtF0rlOq3/NU7j2nzmnnq8u6nrS5RRMEuZevHQ/zyyBoD3Vf
+         gEmEEOrs2iOjpEKBa/zQiceh/XyEeZ/5qscCvQ64nZI7KqNVpF2G7pH09/DBAZ+7XRBx
+         Ud08YFOt6QSoFhQz1pb/b9nNqdVn6ebqfeSx10dSpFw2D7le4yfJcDQZI1MUwJUnQNhs
+         KPpg==
+X-Gm-Message-State: AOAM530djzzFE0RLtdfYMNlvBhEvXS9NcBswTGaYdtKcZ0a0DL9jBK6M
+        dkM3kQXngl67AJPk2yTetjOI4cC+BGyWnUxjwalSkQ==
+X-Google-Smtp-Source: ABdhPJySvIoH96yNR86Q/snGnbAX8RhlrPzfmxUrP3c2xmurI7eieZMg/IBEEQaJ0WpNrpWIrYlZaVzSFLnADXVtZBM=
+X-Received: by 2002:a92:c567:0:b0:2cf:592e:f8ed with SMTP id
+ b7-20020a92c567000000b002cf592ef8edmr7569982ilj.205.1652149088768; Mon, 09
+ May 2022 19:18:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220509173354.2482-2-quic_alokad@quicinc.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220509022618.v3.1.Ibfd52b9f0890fffe87f276fa84deaf6f1fb0055c@changeid>
+ <e824a9d7-7d30-c9e6-fc27-65af0dcd958b@quicinc.com> <CAB5ih=O325ndrYqLWwug01tSmketLDrsJgtX5DvR38Om6T8ZCQ@mail.gmail.com>
+In-Reply-To: <CAB5ih=O325ndrYqLWwug01tSmketLDrsJgtX5DvR38Om6T8ZCQ@mail.gmail.com>
+From:   Abhishek Kumar <kuabhs@chromium.org>
+Date:   Mon, 9 May 2022 19:17:56 -0700
+Message-ID: <CACTWRwsru+TFTMnqp1+MxwMYqvE7m16W5OXWCTCGwX9rpk+XNg@mail.gmail.com>
+Subject: Re: [PATCH v3] ath10k: improve BDF search fallback strategy
+To:     Abhishek Kumar <kuabhs@google.com>
+Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>, kvalo@kernel.org,
+        netdev@vger.kernel.org, dianders@chromium.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ath10k@lists.infradead.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Aloka,
+Replying again ...
 
-Thank you for the patch! Yet something to improve:
+Thanks for the review Jeff, I have replied below and will address
+these comments in next iteration. I will wait for a day more to get
+some more reviews and collectively make the change.
 
-[auto build test ERROR on fc20106d6e2086dd37bf286605c28b28b4f2492c]
+On Mon, May 9, 2022 at 10:22 AM Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
+>
+> On 5/8/2022 7:26 PM, Abhishek Kumar wrote:
+> > Board data files wrapped inside board-2.bin files are
+> > identified based on a combination of bus architecture,
+> > chip-id, board-id or variants. Here is one such example
+> > of a BDF entry in board-2.bin file:
+> > bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_XXXX
+> > It is possible for few platforms none of the combinations
+> > of bus,qmi-board,chip-id or variants match, e.g. if
+> > board-id is not programmed and thus reads board-id=0xff,
+> > there won't be any matching BDF to be found. In such
+> > situations, the wlan will fail to enumerate.
+> >
+> > Currently, to search for BDF, there are two fallback
+> > boardnames creates to search for BDFs in case the full BDF
+> > is not found. It is still possible that even the fallback
+> > boardnames do not match.
+> >
+> > As an improvement, search for BDF with full BDF combination
+> > and perform the fallback searches by stripping down the last
+> > elements until a BDF entry is found or none is found for all
+> > possible BDF combinations.e.g.
+> > Search for initial BDF first then followed by reduced BDF
+> > names as follows:
+> > bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_XXXX
+> > bus=snoc,qmi-board-id=67,qmi-chip-id=320
+> > bus=snoc,qmi-board-id=67
+> > bus=snoc
+> > <No BDF found>
+> >
+> > Tested-on: WCN3990/hw1.0 WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
+> > Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
+> > ---
+> >
+> > Changes in v3:
+> > - As discussed, instead of adding support for default BDF in DT, added
+> > a method to drop the last elements from full BDF until a BDF is found.
+> > - Previous patch was "ath10k: search for default BDF name provided in DT"
+> >
+> >   drivers/net/wireless/ath/ath10k/core.c | 65 +++++++++++++-------------
+> >   1 file changed, 32 insertions(+), 33 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+> > index 688177453b07..ebb0d2a02c28 100644
+> > --- a/drivers/net/wireless/ath/ath10k/core.c
+> > +++ b/drivers/net/wireless/ath/ath10k/core.c
+> > @@ -1426,15 +1426,31 @@ static int ath10k_core_search_bd(struct ath10k *ar,
+> >       return ret;
+> >   }
+> >
+> > +static bool ath10k_create_reduced_boardname(struct ath10k *ar, char *boardname)
+> > +{
+> > +     /* Find last BDF element */
+> > +     char *last_field = strrchr(boardname, ',');
+> > +
+> > +     if (last_field) {
+> > +             /* Drop the last BDF element */
+> > +             last_field[0] = '\0';
+> > +             ath10k_dbg(ar, ATH10K_DBG_BOOT,
+> > +                        "boardname =%s\n", boardname);
+>
+> nit: strange spacing in the message. i'd expect consistent spacing on
+> both side of "=", either one space on both sides or no space on both
+> sides.  also the use of "=" here is inconsistent with the use of ":" in
+> a log later below
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Aloka-Dixit/Additional-processing-in-NL80211_CMD_SET_BEACON/20220510-013948
-base:   fc20106d6e2086dd37bf286605c28b28b4f2492c
-config: mips-randconfig-r011-20220509 (https://download.01.org/0day-ci/archive/20220510/202205100703.8aYeYjJx-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 3abb68a626160e019c30a4860e569d7bc75e486a)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install mips cross compiling tool for clang build
-        # apt-get install binutils-mips-linux-gnu
-        # https://github.com/intel-lab-lkp/linux/commit/4b2583148641664d3a44d750efff98707ea07b23
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Aloka-Dixit/Additional-processing-in-NL80211_CMD_SET_BEACON/20220510-013948
-        git checkout 4b2583148641664d3a44d750efff98707ea07b23
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=mips SHELL=/bin/bash drivers/net/
+Ack, will fix this in the next iteration.
+>
+>
+> > +             return 0;
+> > +     }
+> > +     return -ENODATA;
+> > +}
+> > +
+> >   static int ath10k_core_fetch_board_data_api_n(struct ath10k *ar,
+> >                                             const char *boardname,
+> > -                                           const char *fallback_boardname1,
+> > -                                           const char *fallback_boardname2,
+> >                                             const char *filename)
+> >   {
+> > -     size_t len, magic_len;
+> > +     size_t len, magic_len, board_len;
+> >       const u8 *data;
+> >       int ret;
+> > +     char temp_boardname[100];
+> > +
+> > +     board_len = 100 * sizeof(temp_boardname[0]);
+> >
+> >       /* Skip if already fetched during board data download */
+> >       if (!ar->normal_mode_fw.board)
+> > @@ -1474,20 +1490,24 @@ static int ath10k_core_fetch_board_data_api_n(struct ath10k *ar,
+> >       data += magic_len;
+> >       len -= magic_len;
+> >
+> > -     /* attempt to find boardname in the IE list */
+> > -     ret = ath10k_core_search_bd(ar, boardname, data, len);
+> > +     memcpy(temp_boardname, boardname, board_len);
+> > +     ath10k_dbg(ar, ATH10K_DBG_BOOT, "boardname :%s\n", boardname);
+>
+> nit: use of ":" inconsistent with use of "=" noted above.
+> also expect space after ":, not before: "boardname: %s\n"
+>
+Ack, will remove the extra space.
+>
+>
+> >
+> > -     /* if we didn't find it and have a fallback name, try that */
+> > -     if (ret == -ENOENT && fallback_boardname1)
+> > -             ret = ath10k_core_search_bd(ar, fallback_boardname1, data, len);
+> > +retry_search:
+> > +     /* attempt to find boardname in the IE list */
+> > +     ret = ath10k_core_search_bd(ar, temp_boardname, data, len);
+> >
+> > -     if (ret == -ENOENT && fallback_boardname2)
+> > -             ret = ath10k_core_search_bd(ar, fallback_boardname2, data, len);
+> > +     /* If the full BDF entry was not found then drop the last element and
+> > +      * recheck until a BDF is found or until all options are exhausted.
+> > +      */
+> > +     if (ret == -ENOENT)
+> > +             if (!ath10k_create_reduced_boardname(ar, temp_boardname))
+> > +                     goto retry_search;
+> >
+> >       if (ret == -ENOENT) {
+>
+> note that ath10k_create_reduced_boardname() returns -ENODATA when
+> truncation fails and hence you won't log this error when that occurs
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+Hmmm, I think it makes sense to log each failure to find as a debug
+log and log as err only if nothing matches (when ENODATA is returned).
+>
+>
+> >               ath10k_err(ar,
+> >                          "failed to fetch board data for %s from %s/%s\n",
+> > -                        boardname, ar->hw_params.fw.dir, filename);
+> > +                        temp_boardname, ar->hw_params.fw.dir, filename);
+>
+> does it really make sense to log the last name tried, temp_boardname? or
+> does it make more sense to still log the original name, boardname?
 
-All errors (new ones prefixed by >>):
+Thinking about it a bit more, it makes sense to log the original name
+rather than last name.
+>
+>
+> maybe log each failure in the loop, before calling
+> ath10k_create_reduced_boardname()?
 
->> drivers/net/wireless/ath/ath6kl/cfg80211.c:3457:19: error: incompatible function pointer types initializing 'int (*)(struct wiphy *, struct net_device *, struct cfg80211_ap_settings *)' with an expression of type 'int (struct wiphy *, struct net_device *, struct cfg80211_beacon_data *)' [-Werror,-Wincompatible-function-pointer-types]
-           .change_beacon = ath6kl_change_beacon,
-                            ^~~~~~~~~~~~~~~~~~~~
-   1 error generated.
---
->> drivers/net/wireless/marvell/mwifiex/cfg80211.c:4239:19: error: incompatible function pointer types initializing 'int (*)(struct wiphy *, struct net_device *, struct cfg80211_ap_settings *)' with an expression of type 'int (struct wiphy *, struct net_device *, struct cfg80211_beacon_data *)' [-Werror,-Wincompatible-function-pointer-types]
-           .change_beacon = mwifiex_cfg80211_change_beacon,
-                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 error generated.
---
->> drivers/net/wireless/quantenna/qtnfmac/cfg80211.c:1004:20: error: incompatible function pointer types initializing 'int (*)(struct wiphy *, struct net_device *, struct cfg80211_ap_settings *)' with an expression of type 'int (struct wiphy *, struct net_device *, struct cfg80211_beacon_data *)' [-Werror,-Wincompatible-function-pointer-types]
-           .change_beacon          = qtnf_change_beacon,
-                                     ^~~~~~~~~~~~~~~~~~
-   1 error generated.
---
->> drivers/net/wireless/ath/wil6210/cfg80211.c:2656:19: error: incompatible function pointer types initializing 'int (*)(struct wiphy *, struct net_device *, struct cfg80211_ap_settings *)' with an expression of type 'int (struct wiphy *, struct net_device *, struct cfg80211_beacon_data *)' [-Werror,-Wincompatible-function-pointer-types]
-           .change_beacon = wil_cfg80211_change_beacon,
-                            ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 error generated.
+As mentioned above, it makes sense to log as debug for each failure to
+find and log as error if nothing matches, will make this change in the
+next iteration.
 
+>               ret = -ENODATA;
+>       }
+>
+> @@ -1566,7 +1586,7 @@ static int ath10k_core_create_eboard_name(struct ath10k *ar, char *name,
+>
+>   int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
+>   {
+> -     char boardname[100], fallback_boardname1[100], fallback_boardname2[100];
+> +     char boardname[100];
+>       int ret;
+>
+>       if (bd_ie_type == ATH10K_BD_IE_BOARD) {
+> @@ -1579,25 +1599,6 @@ int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
+>                       return ret;
+>               }
+>
+> -             /* Without variant and only chip-id */
+> -             ret = ath10k_core_create_board_name(ar, fallback_boardname1,
+> -                                                 sizeof(boardname), false,
+> -                                                 true);
+> -             if (ret) {
+> -                     ath10k_err(ar, "failed to create 1st fallback board name: %d",
+> -                                ret);
+> -                     return ret;
+> -             }
+> -
+> -             /* Without variant and without chip-id */
+> -             ret = ath10k_core_create_board_name(ar, fallback_boardname2,
+> -                                                 sizeof(boardname), false,
+> -                                                 false);
+> -             if (ret) {
+> -                     ath10k_err(ar, "failed to create 2nd fallback board name: %d",
+> -                                ret);
+> -                     return ret;
+> -             }
+>       } else if (bd_ie_type == ATH10K_BD_IE_BOARD_EXT) {
+>               ret = ath10k_core_create_eboard_name(ar, boardname,
+>                                                    sizeof(boardname));
+> @@ -1609,8 +1610,6 @@ int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
+>
+>       ar->bd_api = 2;
+>       ret = ath10k_core_fetch_board_data_api_n(ar, boardname,
+> -                                              fallback_boardname1,
+> -                                              fallback_boardname2,
+>                                                ATH10K_BOARD_API2_FILE);
+>       if (!ret)
+>               goto success;
+-Abhishek
 
-vim +3457 drivers/net/wireless/ath/ath6kl/cfg80211.c
-
-f80574ae1538f6 Jouni Malinen             2011-08-30  3429  
-bdcd81707973cf Kalle Valo                2011-07-18  3430  static struct cfg80211_ops ath6kl_cfg80211_ops = {
-55055976fe15f4 Vasanthakumar Thiagarajan 2011-10-25  3431  	.add_virtual_intf = ath6kl_cfg80211_add_iface,
-55055976fe15f4 Vasanthakumar Thiagarajan 2011-10-25  3432  	.del_virtual_intf = ath6kl_cfg80211_del_iface,
-bdcd81707973cf Kalle Valo                2011-07-18  3433  	.change_virtual_intf = ath6kl_cfg80211_change_iface,
-bdcd81707973cf Kalle Valo                2011-07-18  3434  	.scan = ath6kl_cfg80211_scan,
-bdcd81707973cf Kalle Valo                2011-07-18  3435  	.connect = ath6kl_cfg80211_connect,
-bdcd81707973cf Kalle Valo                2011-07-18  3436  	.disconnect = ath6kl_cfg80211_disconnect,
-bdcd81707973cf Kalle Valo                2011-07-18  3437  	.add_key = ath6kl_cfg80211_add_key,
-bdcd81707973cf Kalle Valo                2011-07-18  3438  	.get_key = ath6kl_cfg80211_get_key,
-bdcd81707973cf Kalle Valo                2011-07-18  3439  	.del_key = ath6kl_cfg80211_del_key,
-bdcd81707973cf Kalle Valo                2011-07-18  3440  	.set_default_key = ath6kl_cfg80211_set_default_key,
-bdcd81707973cf Kalle Valo                2011-07-18  3441  	.set_wiphy_params = ath6kl_cfg80211_set_wiphy_params,
-bdcd81707973cf Kalle Valo                2011-07-18  3442  	.set_tx_power = ath6kl_cfg80211_set_txpower,
-bdcd81707973cf Kalle Valo                2011-07-18  3443  	.get_tx_power = ath6kl_cfg80211_get_txpower,
-bdcd81707973cf Kalle Valo                2011-07-18  3444  	.set_power_mgmt = ath6kl_cfg80211_set_power_mgmt,
-bdcd81707973cf Kalle Valo                2011-07-18  3445  	.join_ibss = ath6kl_cfg80211_join_ibss,
-bdcd81707973cf Kalle Valo                2011-07-18  3446  	.leave_ibss = ath6kl_cfg80211_leave_ibss,
-bdcd81707973cf Kalle Valo                2011-07-18  3447  	.get_station = ath6kl_get_station,
-bdcd81707973cf Kalle Valo                2011-07-18  3448  	.set_pmksa = ath6kl_set_pmksa,
-bdcd81707973cf Kalle Valo                2011-07-18  3449  	.del_pmksa = ath6kl_del_pmksa,
-bdcd81707973cf Kalle Valo                2011-07-18  3450  	.flush_pmksa = ath6kl_flush_pmksa,
-003353b0d27489 Kalle Valo                2011-09-01  3451  	CFG80211_TESTMODE_CMD(ath6kl_tm_cmd)
-abcb344b3b823c Kalle Valo                2011-07-22  3452  #ifdef CONFIG_PM
-52d81a6883fb36 Kalle Valo                2011-11-01  3453  	.suspend = __ath6kl_cfg80211_suspend,
-52d81a6883fb36 Kalle Valo                2011-11-01  3454  	.resume = __ath6kl_cfg80211_resume,
-abcb344b3b823c Kalle Valo                2011-07-22  3455  #endif
-8860020e0be1f0 Johannes Berg             2012-02-13  3456  	.start_ap = ath6kl_start_ap,
-8860020e0be1f0 Johannes Berg             2012-02-13 @3457  	.change_beacon = ath6kl_change_beacon,
-8860020e0be1f0 Johannes Berg             2012-02-13  3458  	.stop_ap = ath6kl_stop_ap,
-33e5308d8a0fb8 Jouni Malinen             2011-12-27  3459  	.del_station = ath6kl_del_station,
-238751365a1c42 Jouni Malinen             2011-08-30  3460  	.change_station = ath6kl_change_station,
-63fa1e0ca7a2c1 Jouni Malinen             2011-08-30  3461  	.remain_on_channel = ath6kl_remain_on_channel,
-63fa1e0ca7a2c1 Jouni Malinen             2011-08-30  3462  	.cancel_remain_on_channel = ath6kl_cancel_remain_on_channel,
-8a6c8060c0b166 Jouni Malinen             2011-08-30  3463  	.mgmt_tx = ath6kl_mgmt_tx,
-6cd536fe62ef58 Johannes Berg             2020-04-17  3464  	.update_mgmt_frame_registrations =
-6cd536fe62ef58 Johannes Berg             2020-04-17  3465  		ath6kl_update_mgmt_frame_registrations,
-9c2e90ffc97a8f Ben Greear                2015-10-21  3466  	.get_antenna = ath6kl_get_antenna,
-10509f903ebb7d Kalle Valo                2011-12-13  3467  	.sched_scan_start = ath6kl_cfg80211_sscan_start,
-10509f903ebb7d Kalle Valo                2011-12-13  3468  	.sched_scan_stop = ath6kl_cfg80211_sscan_stop,
-06e360ace9434b Bala Shanmugam            2012-05-22  3469  	.set_bitrate_mask = ath6kl_cfg80211_set_bitrate,
-279b2862ee6ba9 Thomas Pedersen           2012-07-17  3470  	.set_cqm_txe_config = ath6kl_cfg80211_set_txe_config,
-bdcd81707973cf Kalle Valo                2011-07-18  3471  };
-bdcd81707973cf Kalle Valo                2011-07-18  3472  
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+On Mon, May 9, 2022 at 7:04 PM Abhishek Kumar <kuabhs@google.com> wrote:
+>
+> Thanks for the review Jeff, I have replied below and will address these comments in next iteration. I will wait for a day more to get some more reviews and collectively make the change.
+>
+> On Mon, May 9, 2022 at 10:22 AM Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
+>>
+>> On 5/8/2022 7:26 PM, Abhishek Kumar wrote:
+>> > Board data files wrapped inside board-2.bin files are
+>> > identified based on a combination of bus architecture,
+>> > chip-id, board-id or variants. Here is one such example
+>> > of a BDF entry in board-2.bin file:
+>> > bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_XXXX
+>> > It is possible for few platforms none of the combinations
+>> > of bus,qmi-board,chip-id or variants match, e.g. if
+>> > board-id is not programmed and thus reads board-id=0xff,
+>> > there won't be any matching BDF to be found. In such
+>> > situations, the wlan will fail to enumerate.
+>> >
+>> > Currently, to search for BDF, there are two fallback
+>> > boardnames creates to search for BDFs in case the full BDF
+>> > is not found. It is still possible that even the fallback
+>> > boardnames do not match.
+>> >
+>> > As an improvement, search for BDF with full BDF combination
+>> > and perform the fallback searches by stripping down the last
+>> > elements until a BDF entry is found or none is found for all
+>> > possible BDF combinations.e.g.
+>> > Search for initial BDF first then followed by reduced BDF
+>> > names as follows:
+>> > bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_XXXX
+>> > bus=snoc,qmi-board-id=67,qmi-chip-id=320
+>> > bus=snoc,qmi-board-id=67
+>> > bus=snoc
+>> > <No BDF found>
+>> >
+>> > Tested-on: WCN3990/hw1.0 WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
+>> > Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
+>> > ---
+>> >
+>> > Changes in v3:
+>> > - As discussed, instead of adding support for default BDF in DT, added
+>> > a method to drop the last elements from full BDF until a BDF is found.
+>> > - Previous patch was "ath10k: search for default BDF name provided in DT"
+>> >
+>> >   drivers/net/wireless/ath/ath10k/core.c | 65 +++++++++++++-------------
+>> >   1 file changed, 32 insertions(+), 33 deletions(-)
+>> >
+>> > diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+>> > index 688177453b07..ebb0d2a02c28 100644
+>> > --- a/drivers/net/wireless/ath/ath10k/core.c
+>> > +++ b/drivers/net/wireless/ath/ath10k/core.c
+>> > @@ -1426,15 +1426,31 @@ static int ath10k_core_search_bd(struct ath10k *ar,
+>> >       return ret;
+>> >   }
+>> >
+>> > +static bool ath10k_create_reduced_boardname(struct ath10k *ar, char *boardname)
+>> > +{
+>> > +     /* Find last BDF element */
+>> > +     char *last_field = strrchr(boardname, ',');
+>> > +
+>> > +     if (last_field) {
+>> > +             /* Drop the last BDF element */
+>> > +             last_field[0] = '\0';
+>> > +             ath10k_dbg(ar, ATH10K_DBG_BOOT,
+>> > +                        "boardname =%s\n", boardname);
+>>
+>> nit: strange spacing in the message. i'd expect consistent spacing on
+>> both side of "=", either one space on both sides or no space on both
+>> sides.  also the use of "=" here is inconsistent with the use of ":" in
+>> a log later below
+>
+> Ack, will fix this in the next iteration.
+>>
+>>
+>> > +             return 0;
+>> > +     }
+>> > +     return -ENODATA;
+>> > +}
+>> > +
+>> >   static int ath10k_core_fetch_board_data_api_n(struct ath10k *ar,
+>> >                                             const char *boardname,
+>> > -                                           const char *fallback_boardname1,
+>> > -                                           const char *fallback_boardname2,
+>> >                                             const char *filename)
+>> >   {
+>> > -     size_t len, magic_len;
+>> > +     size_t len, magic_len, board_len;
+>> >       const u8 *data;
+>> >       int ret;
+>> > +     char temp_boardname[100];
+>> > +
+>> > +     board_len = 100 * sizeof(temp_boardname[0]);
+>> >
+>> >       /* Skip if already fetched during board data download */
+>> >       if (!ar->normal_mode_fw.board)
+>> > @@ -1474,20 +1490,24 @@ static int ath10k_core_fetch_board_data_api_n(struct ath10k *ar,
+>> >       data += magic_len;
+>> >       len -= magic_len;
+>> >
+>> > -     /* attempt to find boardname in the IE list */
+>> > -     ret = ath10k_core_search_bd(ar, boardname, data, len);
+>> > +     memcpy(temp_boardname, boardname, board_len);
+>> > +     ath10k_dbg(ar, ATH10K_DBG_BOOT, "boardname :%s\n", boardname);
+>>
+>> nit: use of ":" inconsistent with use of "=" noted above.
+>> also expect space after ":, not before: "boardname: %s\n"
+>>
+> Ack, will remove the extra space.
+>>
+>>
+>> >
+>> > -     /* if we didn't find it and have a fallback name, try that */
+>> > -     if (ret == -ENOENT && fallback_boardname1)
+>> > -             ret = ath10k_core_search_bd(ar, fallback_boardname1, data, len);
+>> > +retry_search:
+>> > +     /* attempt to find boardname in the IE list */
+>> > +     ret = ath10k_core_search_bd(ar, temp_boardname, data, len);
+>> >
+>> > -     if (ret == -ENOENT && fallback_boardname2)
+>> > -             ret = ath10k_core_search_bd(ar, fallback_boardname2, data, len);
+>> > +     /* If the full BDF entry was not found then drop the last element and
+>> > +      * recheck until a BDF is found or until all options are exhausted.
+>> > +      */
+>> > +     if (ret == -ENOENT)
+>> > +             if (!ath10k_create_reduced_boardname(ar, temp_boardname))
+>> > +                     goto retry_search;
+>> >
+>> >       if (ret == -ENOENT) {
+>>
+>> note that ath10k_create_reduced_boardname() returns -ENODATA when
+>> truncation fails and hence you won't log this error when that occurs
+>
+> Hmmm, I think it makes sense to log each failure to find as a debug log and log as err only if nothing matches (when ENODATA is returned).
+>>
+>>
+>> >               ath10k_err(ar,
+>> >                          "failed to fetch board data for %s from %s/%s\n",
+>> > -                        boardname, ar->hw_params.fw.dir, filename);
+>> > +                        temp_boardname, ar->hw_params.fw.dir, filename);
+>>
+>> does it really make sense to log the last name tried, temp_boardname? or
+>> does it make more sense to still log the original name, boardname?
+>
+> Thinking about it a bit more, it makes sense to log the original name rather than last name.
+>>
+>>
+>> maybe log each failure in the loop, before calling
+>> ath10k_create_reduced_boardname()?
+>
+> As mentioned above, it makes sense to log as debug for each failure to find and log as error if nothing matches, will make this change in next iteration.
+>>
+>>
+>> >               ret = -ENODATA;
+>> >       }
+>> >
+>> > @@ -1566,7 +1586,7 @@ static int ath10k_core_create_eboard_name(struct ath10k *ar, char *name,
+>> >
+>> >   int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
+>> >   {
+>> > -     char boardname[100], fallback_boardname1[100], fallback_boardname2[100];
+>> > +     char boardname[100];
+>> >       int ret;
+>> >
+>> >       if (bd_ie_type == ATH10K_BD_IE_BOARD) {
+>> > @@ -1579,25 +1599,6 @@ int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
+>> >                       return ret;
+>> >               }
+>> >
+>> > -             /* Without variant and only chip-id */
+>> > -             ret = ath10k_core_create_board_name(ar, fallback_boardname1,
+>> > -                                                 sizeof(boardname), false,
+>> > -                                                 true);
+>> > -             if (ret) {
+>> > -                     ath10k_err(ar, "failed to create 1st fallback board name: %d",
+>> > -                                ret);
+>> > -                     return ret;
+>> > -             }
+>> > -
+>> > -             /* Without variant and without chip-id */
+>> > -             ret = ath10k_core_create_board_name(ar, fallback_boardname2,
+>> > -                                                 sizeof(boardname), false,
+>> > -                                                 false);
+>> > -             if (ret) {
+>> > -                     ath10k_err(ar, "failed to create 2nd fallback board name: %d",
+>> > -                                ret);
+>> > -                     return ret;
+>> > -             }
+>> >       } else if (bd_ie_type == ATH10K_BD_IE_BOARD_EXT) {
+>> >               ret = ath10k_core_create_eboard_name(ar, boardname,
+>> >                                                    sizeof(boardname));
+>> > @@ -1609,8 +1610,6 @@ int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
+>> >
+>> >       ar->bd_api = 2;
+>> >       ret = ath10k_core_fetch_board_data_api_n(ar, boardname,
+>> > -                                              fallback_boardname1,
+>> > -                                              fallback_boardname2,
+>> >                                                ATH10K_BOARD_API2_FILE);
+>> >       if (!ret)
+>> >               goto success;
+>
+> -Abhishek
