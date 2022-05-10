@@ -2,100 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F2DF52248A
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 May 2022 21:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25DE4522493
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 May 2022 21:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245139AbiEJTOX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 May 2022 15:14:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48208 "EHLO
+        id S233581AbiEJTRR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 May 2022 15:17:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349110AbiEJTOF (ORCPT
+        with ESMTP id S243946AbiEJTRQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 May 2022 15:14:05 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6793121606B
-        for <linux-wireless@vger.kernel.org>; Tue, 10 May 2022 12:14:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=yagBwk9pW1NwSKdbl9fGHZ2nsd9rjaRs0Bi76+zwz6c=;
-        t=1652210044; x=1653419644; b=ZUiA/0sTPeDY2RFP9KqNTzSPsOdq9xyXIo+6uNefTBJn7pq
-        uLpVxWlVNxMaIU5h1BjE0Bo8ZciT/JcVrgf3IcetzFuv+gx0qHxQabufIxd6NjUQEvl8EuhGVeJ65
-        aW7sGdvn/5nqPBIZparUoA5xoRZi1MUl/EUglbJ9dvdabQXYouwUqxP0MmOEDIUMIBS482sHnUftn
-        3GJlGjtPQyh+cLXpk4DmIjhjorC+4ls9iE3olcIn8R9THdokMgmKKFvXPGgBVa1sknuDbBvXvVwr4
-        xXcrAun5BNg/wi24viEOdrNGQYqIfyIqca3Xhjvls7sGejXmExTj9psienvxzVKQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1noVJ3-007vUJ-Ov;
-        Tue, 10 May 2022 21:14:01 +0200
-Message-ID: <292d11498e4b7c94aa716280361e56b065a2fd49.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] cfg80211: Add support for sending more than two AKMs
- in crypto settings
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jouni Malinen <j@w1.fi>
-Cc:     Veerendranath Jakkam <quic_vjakkam@quicinc.com>,
-        linux-wireless@vger.kernel.org
-Date:   Tue, 10 May 2022 21:14:01 +0200
-In-Reply-To: <20220505181917.GA25102@w1.fi>
-References: <1650344143-1615-1-git-send-email-quic_vjakkam@quicinc.com>
-         <cb419675d2ae276d9b4eac8ab5deafe62167051f.camel@sipsolutions.net>
-         <22bf2f78-587d-429b-867f-f73e542018d2@quicinc.com>
-         <53062c8fbe3eaaa281f24c4808a15804938c83ef.camel@sipsolutions.net>
-         <20220505181917.GA25102@w1.fi>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+        Tue, 10 May 2022 15:17:16 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B01CC2609E1
+        for <linux-wireless@vger.kernel.org>; Tue, 10 May 2022 12:17:14 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.179])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 43CAD2006B;
+        Tue, 10 May 2022 19:17:13 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id ED74CAC0082;
+        Tue, 10 May 2022 19:17:12 +0000 (UTC)
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 71BEF13C2B0;
+        Tue, 10 May 2022 12:17:12 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 71BEF13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1652210232;
+        bh=a+DETeVVzyxfwDRqN/z04fSHCz58SMe4mhdhxXlnLro=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=T7E7CkmF0S5TnxcUp7LhVlZO2sXy5aS7Xq1YM6K0X+7aG6Gk07sFnwqq6vErPmNz8
+         V4dTp8Nh+iPZuVH3JTaY1jKiNkyip7UFBGZwXuH0cUK2k89vmpOPxTrWhDf21+5bit
+         kVm6ZiOHL95MEYum0mP6xgD8KsmiGXAMRNIGe+XM=
+Subject: Re: AP + STA on DFS channel breaks DFS detection.
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <c937f0dc-5be7-8986-01a5-152c6b20e868@candelatech.com>
+ <4281590ec280540e52202e052a23cbba3a33a474.camel@sipsolutions.net>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <f90b2b0f-df5c-88e7-8417-c0060f386779@candelatech.com>
+Date:   Tue, 10 May 2022 12:17:12 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <4281590ec280540e52202e052a23cbba3a33a474.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-MDID: 1652210233-hmcHmPVXYDUb
+X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2022-05-05 at 21:19 +0300, Jouni Malinen wrote:
-> On Thu, May 05, 2022 at 09:18:40AM +0200, Johannes Berg wrote:
-> > I also came to think - where's the upstream driver using this?
+On 5/10/22 7:31 AM, Johannes Berg wrote:
+> On Wed, 2022-04-27 at 14:32 -0700, Ben Greear wrote:
+>> I am using 5.17.4+ kernel, MT7915 radios.  One radio (wiphy0) is acting as AP on
+>> channel 132.  It starts, does CAC and starts working fine.
+>>
+>> Then, I bring up a station on wiphy1 (on same machine).  The STA connects to the AP
+>> on wiphy0 and starts running traffic for a short time (usually < 1 minute).  And then
+>> the AP gets stopped.  I don't think this is specific to connecting AP to STA on same machine,
+>> probably if STA connected to another AP on channel 132 it would have same issue.
+>>
+>> I think I have tracked this down by adding prints and WARN_ON to find
+>> the interesting state changes.  It looks like when the STA changes its
+>> regdom (probably because it is admin-up and/or associated to the AP), then the state of the
+>> channel's dfs_state is reset.  Channel objects are per band, not per wiphy.
 > 
-> This capability is needed to implement WPA3-Personal transition mode
-> correctly with any driver that handles roaming internally, i.e., that
-> advertises NL80211_ATTR_ROAM_SUPPORT (WIPHY_FLAG_SUPPORTS_FW_ROAM). It
-> looks like there are two such drivers in the upstream tree today: ath6kl
-> and brcmfmac. Since WPA3 requires PMF, ath6kl is not really a candidate
-> for the main use for this (having to indicate PSK, PSK-SHA-256, and SAE
-> AKMs as allowed), but brcmfmac looks like an example that would need
-> this to allow the local network profile parameters to be set
-> appropriately to the driver to allow all the desired roaming cases
-> between BSSs using different AKM suite selectors to be performed.
+> Actually, they are per wiphy, unless the driver sets up something else?
+> I couldn't really figure out the code there, but it looked dynamically
+> allocated, so not sure...
+> 
+>> And then a bit later, a timer kicks off and decides that CAC has not completed
+>> (because it already completed earlier on the AP, but chan->dfs_state was lost,
+>> and STA will not do CAC anyway.)
+>>
+>> So, question is, how in the world to fix this properly!
+>>
+> 
+> Good question!
+> 
+> But I'm not sure your description of this is quite right - the point
+> isn't that the channels are shared, the point is that you're getting to
+> update_all_wiphy_regulatory() which does update _all_ of the devices,
+> since you've just switched the regulatory domain.
 
+It is a tangled mess of code, but if I understand it properly, the channel objects
+*are* shared between wiphy devices, and...not sure it really matters either way,
+since logically the regdom stuff is combined and then the values that are actually
+used are the subset that is supported by all regdom configuration?  Maybe there
+are special cases to that for things like iwlwifi that does its own regdom
+stuff too...but I was only using mtk radios int his particular test case.
 
-Makes sense.
+> 
+> I guess if the rules are identical on a given channel before/after the
+> regdomain switch, we might get away with not resetting the dfs_state?
 
-> That said, I do not know whether someone would be planning on using this
-> additional capability to extend brcmfmac to take benefit of the proposed
-> extension. I would support this capability in wpa_supplicant, though, so
-> the information would be available for that purpose.
+Yes, and it seems very painful to properly make that determination the way
+the regdom code is currently implemented:  I could not see a clean way to grab
+a 'before' and 'after' snapshot to compare against.  During the regdom rebuild process,
+the regdom changes with each new regdom input applied, so you cannot really check
+incremental changes to detect a change in the end result.
 
-:)
+Thanks,
+Ben
 
-Honestly for this patch, I'd drop the dynamic allocation parts that are
-problematic - assuming we can limit to something else that's sensible
-like 4 or 5 entries?
-
-> Do you have any preference on how to address out-of-the-tree driver
-> needs for this type of functionality? 
+> 
+> johannes
 > 
 
-I don't - I'm just noting we keep having this discussion. And I'm just
-grumpy because all my tests failed on this, probably with a kfree() of a
-stray pointer or so :)
 
-Upstream the driver? ;-)
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
-johannes
