@@ -2,478 +2,298 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0799520B18
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 May 2022 04:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA429520BBA
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 May 2022 05:11:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234605AbiEJCWI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 May 2022 22:22:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57316 "EHLO
+        id S235153AbiEJDO5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 May 2022 23:14:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234599AbiEJCWH (ORCPT
+        with ESMTP id S234030AbiEJDOz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 May 2022 22:22:07 -0400
-Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71EE3293B4A
-        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 19:18:09 -0700 (PDT)
-Received: by mail-il1-x135.google.com with SMTP id z12so10494928ilp.8
-        for <linux-wireless@vger.kernel.org>; Mon, 09 May 2022 19:18:09 -0700 (PDT)
+        Mon, 9 May 2022 23:14:55 -0400
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0721B1DE56A
+        for <linux-wireless@vger.kernel.org>; Mon,  9 May 2022 20:10:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Wtvbdm5RoaA8oDIBKyDNKWt9MnB6vy/mwNf4axxFeBk=;
-        b=oItulGg9BGZBdDyin3sZYsYFYznrZztbhi/KZysNi7IXJl/SGx49xwPpZsU0Vvl4fR
-         1uAv6SWUEBSbodqoCpeRYnpdZ5KKjGYIuJ02Iuh2T6hIkTFjUsh5PYSp3uaFkVcnzZJC
-         hgWZO7FM5WGgzQP3UsTbb+RLTsrd9f0Af7wNs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Wtvbdm5RoaA8oDIBKyDNKWt9MnB6vy/mwNf4axxFeBk=;
-        b=FNYYdtaBBHZRfT1dO2EME8oYzA947k/HZCCJkHaJgNsN/1wf8S52SS7SibdhxAqEGs
-         mL38MYrhwIEmP6BRtkQh/7+jDY8oSoQ8X89laM0AiwdtBljWFLBwl7M41F738+2D75RY
-         Jp15DMQVMVeY0lTgaZQImtF0rlOq3/NU7j2nzmnnq8u6nrS5RRMEuZevHQ/zyyBoD3Vf
-         gEmEEOrs2iOjpEKBa/zQiceh/XyEeZ/5qscCvQ64nZI7KqNVpF2G7pH09/DBAZ+7XRBx
-         Ud08YFOt6QSoFhQz1pb/b9nNqdVn6ebqfeSx10dSpFw2D7le4yfJcDQZI1MUwJUnQNhs
-         KPpg==
-X-Gm-Message-State: AOAM530djzzFE0RLtdfYMNlvBhEvXS9NcBswTGaYdtKcZ0a0DL9jBK6M
-        dkM3kQXngl67AJPk2yTetjOI4cC+BGyWnUxjwalSkQ==
-X-Google-Smtp-Source: ABdhPJySvIoH96yNR86Q/snGnbAX8RhlrPzfmxUrP3c2xmurI7eieZMg/IBEEQaJ0WpNrpWIrYlZaVzSFLnADXVtZBM=
-X-Received: by 2002:a92:c567:0:b0:2cf:592e:f8ed with SMTP id
- b7-20020a92c567000000b002cf592ef8edmr7569982ilj.205.1652149088768; Mon, 09
- May 2022 19:18:08 -0700 (PDT)
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1652152259; x=1683688259;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=V7r9UDAF32Op6nQWPJgUB1GtZAZUSeIIpJjBWj7lUK0=;
+  b=o5fe+Ci/vjhqZYRQuMHOc6u3lr+MLYpZXXvO9GWz+eMyPuLhQug6e3ka
+   g28eLjnoWa1QhqjCcN9MyhZmHN3kGaK/5fur5P9MIZaANfBxR+UoFi+Yv
+   PBBDTN9HmtPJWaKbHgCCgNT+x/w5EC7A+VyE0D3jZacTdoSh18KP+Zvxh
+   M=;
+Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 09 May 2022 20:10:57 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2022 20:10:57 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 9 May 2022 20:10:57 -0700
+Received: from srirrama-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 9 May 2022 20:10:55 -0700
+From:   Sriram R <quic_srirrama@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Sriram R <quic_srirrama@quicinc.com>
+Subject: [PATCH] ath11k: update missing mumimo and ofdma stats
+Date:   Tue, 10 May 2022 08:40:36 +0530
+Message-ID: <1652152236-12038-1-git-send-email-quic_srirrama@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-References: <20220509022618.v3.1.Ibfd52b9f0890fffe87f276fa84deaf6f1fb0055c@changeid>
- <e824a9d7-7d30-c9e6-fc27-65af0dcd958b@quicinc.com> <CAB5ih=O325ndrYqLWwug01tSmketLDrsJgtX5DvR38Om6T8ZCQ@mail.gmail.com>
-In-Reply-To: <CAB5ih=O325ndrYqLWwug01tSmketLDrsJgtX5DvR38Om6T8ZCQ@mail.gmail.com>
-From:   Abhishek Kumar <kuabhs@chromium.org>
-Date:   Mon, 9 May 2022 19:17:56 -0700
-Message-ID: <CACTWRwsru+TFTMnqp1+MxwMYqvE7m16W5OXWCTCGwX9rpk+XNg@mail.gmail.com>
-Subject: Re: [PATCH v3] ath10k: improve BDF search fallback strategy
-To:     Abhishek Kumar <kuabhs@google.com>
-Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>, kvalo@kernel.org,
-        netdev@vger.kernel.org, dianders@chromium.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ath10k@lists.infradead.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Replying again ...
+Update the missing MU-MIMO/OFDMA info in PDEV RX,
+trigger and schedule stats. i.e HTT stats type 10, 12 and 17
+respectively.
 
-Thanks for the review Jeff, I have replied below and will address
-these comments in next iteration. I will wait for a day more to get
-some more reviews and collectively make the change.
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4-01209-QCAHKSWPL_SILICONZ-1
 
-On Mon, May 9, 2022 at 10:22 AM Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
->
-> On 5/8/2022 7:26 PM, Abhishek Kumar wrote:
-> > Board data files wrapped inside board-2.bin files are
-> > identified based on a combination of bus architecture,
-> > chip-id, board-id or variants. Here is one such example
-> > of a BDF entry in board-2.bin file:
-> > bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_XXXX
-> > It is possible for few platforms none of the combinations
-> > of bus,qmi-board,chip-id or variants match, e.g. if
-> > board-id is not programmed and thus reads board-id=0xff,
-> > there won't be any matching BDF to be found. In such
-> > situations, the wlan will fail to enumerate.
-> >
-> > Currently, to search for BDF, there are two fallback
-> > boardnames creates to search for BDFs in case the full BDF
-> > is not found. It is still possible that even the fallback
-> > boardnames do not match.
-> >
-> > As an improvement, search for BDF with full BDF combination
-> > and perform the fallback searches by stripping down the last
-> > elements until a BDF entry is found or none is found for all
-> > possible BDF combinations.e.g.
-> > Search for initial BDF first then followed by reduced BDF
-> > names as follows:
-> > bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_XXXX
-> > bus=snoc,qmi-board-id=67,qmi-chip-id=320
-> > bus=snoc,qmi-board-id=67
-> > bus=snoc
-> > <No BDF found>
-> >
-> > Tested-on: WCN3990/hw1.0 WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
-> > Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
-> > ---
-> >
-> > Changes in v3:
-> > - As discussed, instead of adding support for default BDF in DT, added
-> > a method to drop the last elements from full BDF until a BDF is found.
-> > - Previous patch was "ath10k: search for default BDF name provided in DT"
-> >
-> >   drivers/net/wireless/ath/ath10k/core.c | 65 +++++++++++++-------------
-> >   1 file changed, 32 insertions(+), 33 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-> > index 688177453b07..ebb0d2a02c28 100644
-> > --- a/drivers/net/wireless/ath/ath10k/core.c
-> > +++ b/drivers/net/wireless/ath/ath10k/core.c
-> > @@ -1426,15 +1426,31 @@ static int ath10k_core_search_bd(struct ath10k *ar,
-> >       return ret;
-> >   }
-> >
-> > +static bool ath10k_create_reduced_boardname(struct ath10k *ar, char *boardname)
-> > +{
-> > +     /* Find last BDF element */
-> > +     char *last_field = strrchr(boardname, ',');
-> > +
-> > +     if (last_field) {
-> > +             /* Drop the last BDF element */
-> > +             last_field[0] = '\0';
-> > +             ath10k_dbg(ar, ATH10K_DBG_BOOT,
-> > +                        "boardname =%s\n", boardname);
->
-> nit: strange spacing in the message. i'd expect consistent spacing on
-> both side of "=", either one space on both sides or no space on both
-> sides.  also the use of "=" here is inconsistent with the use of ":" in
-> a log later below
+Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+---
+ .../net/wireless/ath/ath11k/debugfs_htt_stats.c    | 78 +++++++++++++++++++++-
+ .../net/wireless/ath/ath11k/debugfs_htt_stats.h    | 36 ++++++++++
+ 2 files changed, 113 insertions(+), 1 deletion(-)
 
-Ack, will fix this in the next iteration.
->
->
-> > +             return 0;
-> > +     }
-> > +     return -ENODATA;
-> > +}
-> > +
-> >   static int ath10k_core_fetch_board_data_api_n(struct ath10k *ar,
-> >                                             const char *boardname,
-> > -                                           const char *fallback_boardname1,
-> > -                                           const char *fallback_boardname2,
-> >                                             const char *filename)
-> >   {
-> > -     size_t len, magic_len;
-> > +     size_t len, magic_len, board_len;
-> >       const u8 *data;
-> >       int ret;
-> > +     char temp_boardname[100];
-> > +
-> > +     board_len = 100 * sizeof(temp_boardname[0]);
-> >
-> >       /* Skip if already fetched during board data download */
-> >       if (!ar->normal_mode_fw.board)
-> > @@ -1474,20 +1490,24 @@ static int ath10k_core_fetch_board_data_api_n(struct ath10k *ar,
-> >       data += magic_len;
-> >       len -= magic_len;
-> >
-> > -     /* attempt to find boardname in the IE list */
-> > -     ret = ath10k_core_search_bd(ar, boardname, data, len);
-> > +     memcpy(temp_boardname, boardname, board_len);
-> > +     ath10k_dbg(ar, ATH10K_DBG_BOOT, "boardname :%s\n", boardname);
->
-> nit: use of ":" inconsistent with use of "=" noted above.
-> also expect space after ":, not before: "boardname: %s\n"
->
-Ack, will remove the extra space.
->
->
-> >
-> > -     /* if we didn't find it and have a fallback name, try that */
-> > -     if (ret == -ENOENT && fallback_boardname1)
-> > -             ret = ath10k_core_search_bd(ar, fallback_boardname1, data, len);
-> > +retry_search:
-> > +     /* attempt to find boardname in the IE list */
-> > +     ret = ath10k_core_search_bd(ar, temp_boardname, data, len);
-> >
-> > -     if (ret == -ENOENT && fallback_boardname2)
-> > -             ret = ath10k_core_search_bd(ar, fallback_boardname2, data, len);
-> > +     /* If the full BDF entry was not found then drop the last element and
-> > +      * recheck until a BDF is found or until all options are exhausted.
-> > +      */
-> > +     if (ret == -ENOENT)
-> > +             if (!ath10k_create_reduced_boardname(ar, temp_boardname))
-> > +                     goto retry_search;
-> >
-> >       if (ret == -ENOENT) {
->
-> note that ath10k_create_reduced_boardname() returns -ENODATA when
-> truncation fails and hence you won't log this error when that occurs
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c
+index 4484235..4517a3e 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c
++++ b/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
++ * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #include <linux/vmalloc.h>
+@@ -1403,6 +1404,8 @@ htt_print_tx_selfgen_ax_stats_tlv(const void *tag_buf,
+ 			 htt_stats_buf->ax_mu_mimo_brpoll_7);
+ 	len += scnprintf(buf + len, buf_len - len, "ax_basic_trigger = %u\n",
+ 			 htt_stats_buf->ax_basic_trigger);
++	len += scnprintf(buf + len, buf_len - len, "ax_ulmumimo_trigger = %u\n",
++			 htt_stats_buf->ax_ulmumimo_trigger);
+ 	len += scnprintf(buf + len, buf_len - len, "ax_bsr_trigger = %u\n",
+ 			 htt_stats_buf->ax_bsr_trigger);
+ 	len += scnprintf(buf + len, buf_len - len, "ax_mu_bar_trigger = %u\n",
+@@ -1485,6 +1488,8 @@ htt_print_tx_selfgen_ax_err_stats_tlv(const void *tag_buf,
+ 			 htt_stats_buf->ax_mu_mimo_brp7_err);
+ 	len += scnprintf(buf + len, buf_len - len, "ax_basic_trigger_err = %u\n",
+ 			 htt_stats_buf->ax_basic_trigger_err);
++	len += scnprintf(buf + len, buf_len - len, "ax_ulmumimo_trigger_err = %u\n",
++			 htt_stats_buf->ax_ulmumimo_trigger_err);
+ 	len += scnprintf(buf + len, buf_len - len, "ax_bsr_trigger_err = %u\n",
+ 			 htt_stats_buf->ax_bsr_trigger_err);
+ 	len += scnprintf(buf + len, buf_len - len, "ax_mu_bar_trigger_err = %u\n",
+@@ -1519,6 +1524,16 @@ htt_print_tx_pdev_mu_mimo_sch_stats_tlv(const void *tag_buf,
+ 	len += scnprintf(buf + len, buf_len - len, "mu_mimo_ppdu_posted = %u\n\n",
+ 			 htt_stats_buf->mu_mimo_ppdu_posted);
+ 
++	for (i = 0; i < HTT_TX_PDEV_STATS_NUM_AC_MUMIMO_USER_STATS; i++)
++		len += scnprintf(buf + len, buf_len - len,
++				 "ac_mu_mimo_sch_posted_per_group_index %u = %u\n",
++				 i, htt_stats_buf->ac_mu_mimo_sch_posted_per_grp_sz[i]);
++
++	for (i = 0; i < HTT_TX_PDEV_STATS_NUM_AX_MUMIMO_USER_STATS; i++)
++		len += scnprintf(buf + len, buf_len - len,
++				 "ax_mu_mimo_sch_posted_per_group_index %u = %u\n",
++				 i, htt_stats_buf->ax_mu_mimo_sch_posted_per_grp_sz[i]);
++
+ 	len += scnprintf(buf + len, buf_len - len, "11ac MU_MIMO SCH STATS:\n");
+ 
+ 	for (i = 0; i < HTT_TX_PDEV_STATS_NUM_AC_MUMIMO_USER_STATS; i++)
+@@ -1535,10 +1550,34 @@ htt_print_tx_pdev_mu_mimo_sch_stats_tlv(const void *tag_buf,
+ 
+ 	len += scnprintf(buf + len, buf_len - len, "\n11ax OFDMA SCH STATS:\n");
+ 
+-	for (i = 0; i < HTT_TX_PDEV_STATS_NUM_OFDMA_USER_STATS; i++)
++	for (i = 0; i < HTT_TX_PDEV_STATS_NUM_OFDMA_USER_STATS; i++) {
+ 		len += scnprintf(buf + len, buf_len - len,
+ 				 "ax_ofdma_sch_nusers_%u = %u\n",
+ 				 i, htt_stats_buf->ax_ofdma_sch_nusers[i]);
++		len += scnprintf(buf + len, buf_len - len,
++				 "ax_ul_ofdma_basic_sch_nusers_%u = %u\n",
++				 i, htt_stats_buf->ax_ul_ofdma_basic_sch_nusers[i]);
++		len += scnprintf(buf + len, buf_len - len,
++				 "ax_ul_ofdma_bsr_sch_nusers_%u = %u\n",
++				 i, htt_stats_buf->ax_ul_ofdma_bsr_sch_nusers[i]);
++		len += scnprintf(buf + len, buf_len - len,
++				 "ax_ul_ofdma_sch_bar_nusers_%u = %u\n",
++				 i, htt_stats_buf->ax_ul_ofdma_bar_sch_nusers[i]);
++		len += scnprintf(buf + len, buf_len - len,
++				 "ax_ul_ofdma_brp_sch_nusers_%u = %u\n",
++				 i, htt_stats_buf->ax_ul_ofdma_brp_sch_nusers[i]);
++	}
++
++	len += scnprintf(buf + len, buf_len - len, "\n11ax UL MUMIO SCH STATS:\n");
++
++	for (i = 0; i < HTT_TX_PDEV_STATS_NUM_UL_MUMIMO_USER_STATS; i++) {
++		len += scnprintf(buf + len, buf_len - len,
++				 "ax_ul_mumimo_basic_sch_nusers_%u = %u\n",
++				 i, htt_stats_buf->ax_ul_mumimo_basic_sch_nusers[i]);
++		len += scnprintf(buf + len, buf_len - len,
++				 "ax_ul_mumimo_brp_sch_nusers_%u = %u\n",
++				 i, htt_stats_buf->ax_ul_mumimo_brp_sch_nusers[i]);
++	}
+ 
+ 	if (len >= buf_len)
+ 		buf[buf_len - 1] = 0;
+@@ -2933,6 +2972,19 @@ static inline void htt_print_rx_pdev_rate_stats_tlv(const void *tag_buf,
+ 	len += scnprintf(buf + len, buf_len - len, "txbf = %u\n",
+ 			 htt_stats_buf->txbf);
+ 
++	len += scnprintf(buf + len, buf_len - len, "\nrx_su_ndpa = %u",
++			 htt_stats_buf->rx_su_ndpa);
++	PRINT_ARRAY_TO_BUF(buf, len, htt_stats_buf->rx_11ax_su_txbf_mcs,
++			   "rx_11ax_su_txbf_mcs", HTT_RX_PDEV_STATS_NUM_MCS_COUNTERS, "\n");
++
++	len += scnprintf(buf + len, buf_len - len, "\nrx_mu_ndpa = %u",
++			 htt_stats_buf->rx_mu_ndpa);
++	PRINT_ARRAY_TO_BUF(buf, len, htt_stats_buf->rx_11ax_mu_txbf_mcs,
++			   "rx_11ax_mu_txbf_mcs", HTT_RX_PDEV_STATS_NUM_MCS_COUNTERS, "\n");
++
++	len += scnprintf(buf + len, buf_len - len, "\nrx_br_poll = %u",
++			 htt_stats_buf->rx_br_poll);
++
+ 	PRINT_ARRAY_TO_BUF(buf, len, htt_stats_buf->rx_legacy_cck_rate,
+ 			   "rx_legacy_cck_rate",
+ 			   HTT_RX_PDEV_STATS_NUM_LEGACY_CCK_STATS, "\n");
+@@ -2995,6 +3047,30 @@ static inline void htt_print_rx_pdev_rate_stats_tlv(const void *tag_buf,
+ 		len += scnprintf(buf + len, buf_len - len, "\n");
+ 	}
+ 
++	PRINT_ARRAY_TO_BUF(buf, len, htt_stats_buf->rx_ulofdma_non_data_nusers,
++			   "rx_ulofdma_non_data_nusers", HTT_RX_PDEV_MAX_OFDMA_NUM_USER, "\n");
++
++	PRINT_ARRAY_TO_BUF(buf, len, htt_stats_buf->rx_ulofdma_data_nusers,
++			   "rx_ulofdma_data_nusers", HTT_RX_PDEV_MAX_OFDMA_NUM_USER, "\n");
++
++	PRINT_ARRAY_TO_BUF(buf, len, htt_stats_buf->rx_11ax_dl_ofdma_mcs,
++			   "rx_11ax_dl_ofdma_mcs", HTT_RX_PDEV_STATS_NUM_MCS_COUNTERS, "\n");
++
++	PRINT_ARRAY_TO_BUF(buf, len, htt_stats_buf->rx_11ax_dl_ofdma_ru,
++			   "rx_11ax_dl_ofdma_ru", HTT_RX_PDEV_STATS_NUM_RU_SIZE_COUNTERS, "\n");
++
++	PRINT_ARRAY_TO_BUF(buf, len, htt_stats_buf->rx_ulmumimo_non_data_ppdu,
++			   "rx_ulmumimo_non_data_ppdu", HTT_RX_PDEV_MAX_ULMUMIMO_NUM_USER, "\n");
++
++	PRINT_ARRAY_TO_BUF(buf, len, htt_stats_buf->rx_ulmumimo_data_ppdu,
++			   "rx_ulmumimo_data_ppdu", HTT_RX_PDEV_MAX_ULMUMIMO_NUM_USER, "\n");
++
++	PRINT_ARRAY_TO_BUF(buf, len, htt_stats_buf->rx_ulmumimo_mpdu_ok,
++			   "rx_ulmumimo_mpdu_ok", HTT_RX_PDEV_MAX_ULMUMIMO_NUM_USER, "\n");
++
++	PRINT_ARRAY_TO_BUF(buf, len, htt_stats_buf->rx_ulmumimo_mpdu_fail,
++			   "rx_ulmumimo_mpdu_fail", HTT_RX_PDEV_MAX_ULMUMIMO_NUM_USER, "\n");
++
+ 	len += scnprintf(buf + len, buf_len - len, "per_chain_rssi_pkt_type = %#x\n",
+ 			 htt_stats_buf->per_chain_rssi_pkt_type);
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.h
+index dc210c5..08f1493 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.h
++++ b/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.h
+@@ -1,6 +1,7 @@
+ /* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
++ * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #ifndef DEBUG_HTT_STATS_H
+@@ -682,6 +683,7 @@ struct htt_tx_selfgen_ax_stats_tlv {
+ 	u32 ax_bsr_trigger;
+ 	u32 ax_mu_bar_trigger;
+ 	u32 ax_mu_rts_trigger;
++	u32 ax_ulmumimo_trigger;
+ };
+ 
+ struct htt_tx_selfgen_ac_err_stats_tlv {
+@@ -712,12 +714,14 @@ struct htt_tx_selfgen_ax_err_stats_tlv {
+ 	u32 ax_bsr_trigger_err;
+ 	u32 ax_mu_bar_trigger_err;
+ 	u32 ax_mu_rts_trigger_err;
++	u32 ax_ulmumimo_trigger_err;
+ };
+ 
+ /* == TX MU STATS == */
+ #define HTT_TX_PDEV_STATS_NUM_AC_MUMIMO_USER_STATS 4
+ #define HTT_TX_PDEV_STATS_NUM_AX_MUMIMO_USER_STATS 8
+ #define HTT_TX_PDEV_STATS_NUM_OFDMA_USER_STATS    74
++#define HTT_TX_PDEV_STATS_NUM_UL_MUMIMO_USER_STATS 8
+ 
+ struct htt_tx_pdev_mu_mimo_sch_stats_tlv {
+ 	/* mu-mimo sw sched cmd stats */
+@@ -734,6 +738,21 @@ struct htt_tx_pdev_mu_mimo_sch_stats_tlv {
+ 	u32 ac_mu_mimo_sch_nusers[HTT_TX_PDEV_STATS_NUM_AC_MUMIMO_USER_STATS];
+ 	u32 ax_mu_mimo_sch_nusers[HTT_TX_PDEV_STATS_NUM_AX_MUMIMO_USER_STATS];
+ 	u32 ax_ofdma_sch_nusers[HTT_TX_PDEV_STATS_NUM_OFDMA_USER_STATS];
++	u32 ax_ul_ofdma_basic_sch_nusers[HTT_TX_PDEV_STATS_NUM_OFDMA_USER_STATS];
++	u32 ax_ul_ofdma_bsr_sch_nusers[HTT_TX_PDEV_STATS_NUM_OFDMA_USER_STATS];
++	u32 ax_ul_ofdma_bar_sch_nusers[HTT_TX_PDEV_STATS_NUM_OFDMA_USER_STATS];
++	u32 ax_ul_ofdma_brp_sch_nusers[HTT_TX_PDEV_STATS_NUM_OFDMA_USER_STATS];
++	/* UL MUMIMO */
++	/* ax_ul_mumimo_basic_sch_nusers[i] is the number of basic triggers sent
++	 * for (i+1) users
++	 */
++	u32 ax_ul_mumimo_basic_sch_nusers[HTT_TX_PDEV_STATS_NUM_UL_MUMIMO_USER_STATS];
++	/* ax_ul_mumimo_brp_sch_nusers[i] is the number of brp triggers sent
++	 * for (i+1) users
++	 */
++	u32 ax_ul_mumimo_brp_sch_nusers[HTT_TX_PDEV_STATS_NUM_UL_MUMIMO_USER_STATS];
++	u32 ac_mu_mimo_sch_posted_per_grp_sz[HTT_TX_PDEV_STATS_NUM_AC_MUMIMO_USER_STATS];
++	u32 ax_mu_mimo_sch_posted_per_grp_sz[HTT_TX_PDEV_STATS_NUM_AX_MUMIMO_USER_STATS];
+ };
+ 
+ struct htt_tx_pdev_mu_mimo_mpdu_stats_tlv {
+@@ -1297,6 +1316,8 @@ struct htt_tx_pdev_rate_stats_tlv {
+ #define HTT_RX_PDEV_STATS_NUM_PREAMBLE_TYPES       HTT_STATS_PREAM_COUNT
+ #define HTT_RX_PDEV_MAX_OFDMA_NUM_USER             8
+ #define HTT_RX_PDEV_STATS_RXEVM_MAX_PILOTS_PER_NSS 16
++#define HTT_RX_PDEV_STATS_NUM_RU_SIZE_COUNTERS     6
++#define HTT_RX_PDEV_MAX_ULMUMIMO_NUM_USER          8
+ 
+ struct htt_rx_pdev_rate_stats_tlv {
+ 	u32 mac_id__word;
+@@ -1375,6 +1396,21 @@ struct htt_rx_pdev_rate_stats_tlv {
+ 	u32 per_chain_rssi_pkt_type;
+ 	s8 rx_per_chain_rssi_in_dbm[HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS]
+ 				   [HTT_RX_PDEV_STATS_NUM_BW_COUNTERS];
++
++	u32 rx_su_ndpa;
++	u32 rx_11ax_su_txbf_mcs[HTT_RX_PDEV_STATS_NUM_MCS_COUNTERS];
++	u32 rx_mu_ndpa;
++	u32 rx_11ax_mu_txbf_mcs[HTT_RX_PDEV_STATS_NUM_MCS_COUNTERS];
++	u32 rx_br_poll;
++	u32 rx_11ax_dl_ofdma_mcs[HTT_RX_PDEV_STATS_NUM_MCS_COUNTERS];
++	u32 rx_11ax_dl_ofdma_ru[HTT_RX_PDEV_STATS_NUM_RU_SIZE_COUNTERS];
++
++	u32 rx_ulmumimo_non_data_ppdu[HTT_RX_PDEV_MAX_ULMUMIMO_NUM_USER]; /* ppdu level */
++	u32 rx_ulmumimo_data_ppdu[HTT_RX_PDEV_MAX_ULMUMIMO_NUM_USER];     /* ppdu level */
++	u32 rx_ulmumimo_mpdu_ok[HTT_RX_PDEV_MAX_ULMUMIMO_NUM_USER];       /* mpdu level */
++	u32 rx_ulmumimo_mpdu_fail[HTT_RX_PDEV_MAX_ULMUMIMO_NUM_USER];     /* mpdu level */
++	u32 rx_ulofdma_non_data_nusers[HTT_RX_PDEV_MAX_OFDMA_NUM_USER];
++	u32 rx_ulofdma_data_nusers[HTT_RX_PDEV_MAX_OFDMA_NUM_USER];
+ };
+ 
+ /* == RX PDEV/SOC STATS == */
+-- 
+2.7.4
 
-Hmmm, I think it makes sense to log each failure to find as a debug
-log and log as err only if nothing matches (when ENODATA is returned).
->
->
-> >               ath10k_err(ar,
-> >                          "failed to fetch board data for %s from %s/%s\n",
-> > -                        boardname, ar->hw_params.fw.dir, filename);
-> > +                        temp_boardname, ar->hw_params.fw.dir, filename);
->
-> does it really make sense to log the last name tried, temp_boardname? or
-> does it make more sense to still log the original name, boardname?
-
-Thinking about it a bit more, it makes sense to log the original name
-rather than last name.
->
->
-> maybe log each failure in the loop, before calling
-> ath10k_create_reduced_boardname()?
-
-As mentioned above, it makes sense to log as debug for each failure to
-find and log as error if nothing matches, will make this change in the
-next iteration.
-
->               ret = -ENODATA;
->       }
->
-> @@ -1566,7 +1586,7 @@ static int ath10k_core_create_eboard_name(struct ath10k *ar, char *name,
->
->   int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
->   {
-> -     char boardname[100], fallback_boardname1[100], fallback_boardname2[100];
-> +     char boardname[100];
->       int ret;
->
->       if (bd_ie_type == ATH10K_BD_IE_BOARD) {
-> @@ -1579,25 +1599,6 @@ int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
->                       return ret;
->               }
->
-> -             /* Without variant and only chip-id */
-> -             ret = ath10k_core_create_board_name(ar, fallback_boardname1,
-> -                                                 sizeof(boardname), false,
-> -                                                 true);
-> -             if (ret) {
-> -                     ath10k_err(ar, "failed to create 1st fallback board name: %d",
-> -                                ret);
-> -                     return ret;
-> -             }
-> -
-> -             /* Without variant and without chip-id */
-> -             ret = ath10k_core_create_board_name(ar, fallback_boardname2,
-> -                                                 sizeof(boardname), false,
-> -                                                 false);
-> -             if (ret) {
-> -                     ath10k_err(ar, "failed to create 2nd fallback board name: %d",
-> -                                ret);
-> -                     return ret;
-> -             }
->       } else if (bd_ie_type == ATH10K_BD_IE_BOARD_EXT) {
->               ret = ath10k_core_create_eboard_name(ar, boardname,
->                                                    sizeof(boardname));
-> @@ -1609,8 +1610,6 @@ int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
->
->       ar->bd_api = 2;
->       ret = ath10k_core_fetch_board_data_api_n(ar, boardname,
-> -                                              fallback_boardname1,
-> -                                              fallback_boardname2,
->                                                ATH10K_BOARD_API2_FILE);
->       if (!ret)
->               goto success;
--Abhishek
-
-On Mon, May 9, 2022 at 7:04 PM Abhishek Kumar <kuabhs@google.com> wrote:
->
-> Thanks for the review Jeff, I have replied below and will address these comments in next iteration. I will wait for a day more to get some more reviews and collectively make the change.
->
-> On Mon, May 9, 2022 at 10:22 AM Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
->>
->> On 5/8/2022 7:26 PM, Abhishek Kumar wrote:
->> > Board data files wrapped inside board-2.bin files are
->> > identified based on a combination of bus architecture,
->> > chip-id, board-id or variants. Here is one such example
->> > of a BDF entry in board-2.bin file:
->> > bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_XXXX
->> > It is possible for few platforms none of the combinations
->> > of bus,qmi-board,chip-id or variants match, e.g. if
->> > board-id is not programmed and thus reads board-id=0xff,
->> > there won't be any matching BDF to be found. In such
->> > situations, the wlan will fail to enumerate.
->> >
->> > Currently, to search for BDF, there are two fallback
->> > boardnames creates to search for BDFs in case the full BDF
->> > is not found. It is still possible that even the fallback
->> > boardnames do not match.
->> >
->> > As an improvement, search for BDF with full BDF combination
->> > and perform the fallback searches by stripping down the last
->> > elements until a BDF entry is found or none is found for all
->> > possible BDF combinations.e.g.
->> > Search for initial BDF first then followed by reduced BDF
->> > names as follows:
->> > bus=snoc,qmi-board-id=67,qmi-chip-id=320,variant=GO_XXXX
->> > bus=snoc,qmi-board-id=67,qmi-chip-id=320
->> > bus=snoc,qmi-board-id=67
->> > bus=snoc
->> > <No BDF found>
->> >
->> > Tested-on: WCN3990/hw1.0 WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
->> > Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
->> > ---
->> >
->> > Changes in v3:
->> > - As discussed, instead of adding support for default BDF in DT, added
->> > a method to drop the last elements from full BDF until a BDF is found.
->> > - Previous patch was "ath10k: search for default BDF name provided in DT"
->> >
->> >   drivers/net/wireless/ath/ath10k/core.c | 65 +++++++++++++-------------
->> >   1 file changed, 32 insertions(+), 33 deletions(-)
->> >
->> > diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
->> > index 688177453b07..ebb0d2a02c28 100644
->> > --- a/drivers/net/wireless/ath/ath10k/core.c
->> > +++ b/drivers/net/wireless/ath/ath10k/core.c
->> > @@ -1426,15 +1426,31 @@ static int ath10k_core_search_bd(struct ath10k *ar,
->> >       return ret;
->> >   }
->> >
->> > +static bool ath10k_create_reduced_boardname(struct ath10k *ar, char *boardname)
->> > +{
->> > +     /* Find last BDF element */
->> > +     char *last_field = strrchr(boardname, ',');
->> > +
->> > +     if (last_field) {
->> > +             /* Drop the last BDF element */
->> > +             last_field[0] = '\0';
->> > +             ath10k_dbg(ar, ATH10K_DBG_BOOT,
->> > +                        "boardname =%s\n", boardname);
->>
->> nit: strange spacing in the message. i'd expect consistent spacing on
->> both side of "=", either one space on both sides or no space on both
->> sides.  also the use of "=" here is inconsistent with the use of ":" in
->> a log later below
->
-> Ack, will fix this in the next iteration.
->>
->>
->> > +             return 0;
->> > +     }
->> > +     return -ENODATA;
->> > +}
->> > +
->> >   static int ath10k_core_fetch_board_data_api_n(struct ath10k *ar,
->> >                                             const char *boardname,
->> > -                                           const char *fallback_boardname1,
->> > -                                           const char *fallback_boardname2,
->> >                                             const char *filename)
->> >   {
->> > -     size_t len, magic_len;
->> > +     size_t len, magic_len, board_len;
->> >       const u8 *data;
->> >       int ret;
->> > +     char temp_boardname[100];
->> > +
->> > +     board_len = 100 * sizeof(temp_boardname[0]);
->> >
->> >       /* Skip if already fetched during board data download */
->> >       if (!ar->normal_mode_fw.board)
->> > @@ -1474,20 +1490,24 @@ static int ath10k_core_fetch_board_data_api_n(struct ath10k *ar,
->> >       data += magic_len;
->> >       len -= magic_len;
->> >
->> > -     /* attempt to find boardname in the IE list */
->> > -     ret = ath10k_core_search_bd(ar, boardname, data, len);
->> > +     memcpy(temp_boardname, boardname, board_len);
->> > +     ath10k_dbg(ar, ATH10K_DBG_BOOT, "boardname :%s\n", boardname);
->>
->> nit: use of ":" inconsistent with use of "=" noted above.
->> also expect space after ":, not before: "boardname: %s\n"
->>
-> Ack, will remove the extra space.
->>
->>
->> >
->> > -     /* if we didn't find it and have a fallback name, try that */
->> > -     if (ret == -ENOENT && fallback_boardname1)
->> > -             ret = ath10k_core_search_bd(ar, fallback_boardname1, data, len);
->> > +retry_search:
->> > +     /* attempt to find boardname in the IE list */
->> > +     ret = ath10k_core_search_bd(ar, temp_boardname, data, len);
->> >
->> > -     if (ret == -ENOENT && fallback_boardname2)
->> > -             ret = ath10k_core_search_bd(ar, fallback_boardname2, data, len);
->> > +     /* If the full BDF entry was not found then drop the last element and
->> > +      * recheck until a BDF is found or until all options are exhausted.
->> > +      */
->> > +     if (ret == -ENOENT)
->> > +             if (!ath10k_create_reduced_boardname(ar, temp_boardname))
->> > +                     goto retry_search;
->> >
->> >       if (ret == -ENOENT) {
->>
->> note that ath10k_create_reduced_boardname() returns -ENODATA when
->> truncation fails and hence you won't log this error when that occurs
->
-> Hmmm, I think it makes sense to log each failure to find as a debug log and log as err only if nothing matches (when ENODATA is returned).
->>
->>
->> >               ath10k_err(ar,
->> >                          "failed to fetch board data for %s from %s/%s\n",
->> > -                        boardname, ar->hw_params.fw.dir, filename);
->> > +                        temp_boardname, ar->hw_params.fw.dir, filename);
->>
->> does it really make sense to log the last name tried, temp_boardname? or
->> does it make more sense to still log the original name, boardname?
->
-> Thinking about it a bit more, it makes sense to log the original name rather than last name.
->>
->>
->> maybe log each failure in the loop, before calling
->> ath10k_create_reduced_boardname()?
->
-> As mentioned above, it makes sense to log as debug for each failure to find and log as error if nothing matches, will make this change in next iteration.
->>
->>
->> >               ret = -ENODATA;
->> >       }
->> >
->> > @@ -1566,7 +1586,7 @@ static int ath10k_core_create_eboard_name(struct ath10k *ar, char *name,
->> >
->> >   int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
->> >   {
->> > -     char boardname[100], fallback_boardname1[100], fallback_boardname2[100];
->> > +     char boardname[100];
->> >       int ret;
->> >
->> >       if (bd_ie_type == ATH10K_BD_IE_BOARD) {
->> > @@ -1579,25 +1599,6 @@ int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
->> >                       return ret;
->> >               }
->> >
->> > -             /* Without variant and only chip-id */
->> > -             ret = ath10k_core_create_board_name(ar, fallback_boardname1,
->> > -                                                 sizeof(boardname), false,
->> > -                                                 true);
->> > -             if (ret) {
->> > -                     ath10k_err(ar, "failed to create 1st fallback board name: %d",
->> > -                                ret);
->> > -                     return ret;
->> > -             }
->> > -
->> > -             /* Without variant and without chip-id */
->> > -             ret = ath10k_core_create_board_name(ar, fallback_boardname2,
->> > -                                                 sizeof(boardname), false,
->> > -                                                 false);
->> > -             if (ret) {
->> > -                     ath10k_err(ar, "failed to create 2nd fallback board name: %d",
->> > -                                ret);
->> > -                     return ret;
->> > -             }
->> >       } else if (bd_ie_type == ATH10K_BD_IE_BOARD_EXT) {
->> >               ret = ath10k_core_create_eboard_name(ar, boardname,
->> >                                                    sizeof(boardname));
->> > @@ -1609,8 +1610,6 @@ int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type)
->> >
->> >       ar->bd_api = 2;
->> >       ret = ath10k_core_fetch_board_data_api_n(ar, boardname,
->> > -                                              fallback_boardname1,
->> > -                                              fallback_boardname2,
->> >                                                ATH10K_BOARD_API2_FILE);
->> >       if (!ret)
->> >               goto success;
->
-> -Abhishek
