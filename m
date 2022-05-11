@@ -2,51 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DD7A522B5B
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 May 2022 06:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BCBD522B67
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 May 2022 06:51:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242019AbiEKElp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 May 2022 00:41:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47566 "EHLO
+        id S232723AbiEKEvF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 May 2022 00:51:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239632AbiEKElg (ORCPT
+        with ESMTP id S235636AbiEKEvB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 May 2022 00:41:36 -0400
+        Wed, 11 May 2022 00:51:01 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D0F6B03E
-        for <linux-wireless@vger.kernel.org>; Tue, 10 May 2022 21:41:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 238E237A94;
+        Tue, 10 May 2022 21:51:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4E401B82013
-        for <linux-wireless@vger.kernel.org>; Wed, 11 May 2022 04:41:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03009C385DB;
-        Wed, 11 May 2022 04:41:30 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C4B3BB8211A;
+        Wed, 11 May 2022 04:50:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB600C385DB;
+        Wed, 11 May 2022 04:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652244092;
-        bh=wPetpvpmXglh7SVFtEWh8pbnlApf9kJM1ighISf3zHY=;
+        s=k20201202; t=1652244657;
+        bh=LpwTYJ2bTlah3a8a15V9HoQ1uA7dwyzrw3H6Zhd1XFI=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=rJI7fV0HXYMMA38PtDVT0cFF7kHaY5XJCma0j4vMUCctC27dWMZFzohRI9bVWsy46
-         VjPPKAC33F6AwqeYQGMQZohKg0LaBOftb9i4YUAOWmWwGm4W0kytfQg9FvQWmcwOYs
-         843dxqnLHbj1nrGzjo6FfPpeaghpU1O/9T9f3c0FFtjhCPiJczhsb1eiWqbvV8YLuC
-         L5aE77UjEk2sDxhZ9NAxhANG+IN2GgJyjuisMELssxBId2SURpJTv+1P5JkWDHZfJQ
-         tfGTqN3p1rC1kDREuPSIoiariWHAMvvR9K983Bw7FBiMIj1JxHsaVJhSP70x/dkdPV
-         +wB0MhI2S/UFQ==
+        b=kU0waMTx5CInPR+QO0yRUXu1lPiXK6kQDtSkcO4BqoRl1y1/7bg16R1yAJrAJ8zmy
+         fZn6snHY7mrGvBtNjI5/RMeYHvYbSQN/gDhR5atJtubwWTlizd/0z4b6QnJjGITdc2
+         XOtPjUOkdPc0IJTthAHoOzXE3cMSD2wAd2Yw1iCqiPROGVPE2UhJ+v14kyBsX+jjuR
+         ZgyHPYS9GaP/1JlNJyPNvZpsxmwP+j/fi4TGfZSy3Nzp9q9MZmS40TU6QQoNMyTPT+
+         3OgRxwdXJFXpqBmgpMvoft1DSI/Ua6BHg5It2YWT1paynftZOvBI+bjY0F7bwZ+rd8
+         /HmUgDdn98GYg==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     <Ajay.Kathat@microchip.com>
-Cc:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>,
-        <Claudiu.Beznea@microchip.com>, <Sripad.Balwadgi@microchip.com>
-Subject: Re: [PATCH 3/5] wilc1000: fix crash observed in AP mode with cfg80211_register_netdevice()
-References: <20220504161924.2146601-1-ajay.kathat@microchip.com>
-        <20220504161924.2146601-3-ajay.kathat@microchip.com>
-        <87pmkmylex.fsf@kernel.org>
-        <aeafb6e2-d294-475b-1c43-1f90bf8d5114@microchip.com>
-        <57cb3e2f1ba75aec472ca5cfdcd8fc3c7ffffeb0.camel@sipsolutions.net>
-        <112580fc-4394-f6f2-2b85-b385ba4714b2@microchip.com>
-Date:   Wed, 11 May 2022 07:41:28 +0300
-In-Reply-To: <112580fc-4394-f6f2-2b85-b385ba4714b2@microchip.com> (Ajay
-        Kathat's message of "Tue, 10 May 2022 09:55:16 +0000")
-Message-ID: <87h75wy93b.fsf@kernel.org>
+To:     Pavel Skripkin <paskripkin@gmail.com>
+Cc:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Toke =?utf-8?Q?H?= =?utf-8?Q?=C3=B8iland-J=C3=B8rgensen?= 
+        <toke@toke.dk>, ath9k-devel@qca.qualcomm.com, davem@davemloft.net,
+        kuba@kernel.org, linville@tuxdriver.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
+        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+Subject: Re: [PATCH v3 1/2] ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
+References: <80962aae265995d1cdb724f5362c556d494c7566.1644265120.git.paskripkin@gmail.com>
+        <87h799a007.fsf@toke.dk>
+        <6f0615da-aa0b-df8e-589c-f5caf09d3449@gmail.com>
+        <5fd22dda-01d6-cfae-3458-cb3fa23eb84d@I-love.SAKURA.ne.jp>
+        <3cb712d9-c6be-94b7-6135-10b0eabba341@gmail.com>
+        <d9e6cf88-4f19-bd50-3d73-e2aee1caefa4@I-love.SAKURA.ne.jp>
+        <426f6965-152c-6d59-90e0-34fe3cd208ee@gmail.com>
+Date:   Wed, 11 May 2022 07:50:50 +0300
+In-Reply-To: <426f6965-152c-6d59-90e0-34fe3cd208ee@gmail.com> (Pavel
+        Skripkin's message of "Tue, 10 May 2022 22:26:38 +0300")
+Message-ID: <87ilqc7jv9.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -60,34 +67,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<Ajay.Kathat@microchip.com> writes:
+Pavel Skripkin <paskripkin@gmail.com> writes:
 
-> On 10/05/22 01:14, Johannes Berg wrote:
->> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
->>
->> On Mon, 2022-05-09 at 13:49 +0000, Ajay.Kathat@microchip.com wrote:
->>> As I understand, in WILC "ieee80211_ptr" is used for the station/AP
->>> interface but not to configure the monitor interface which gets
->>> additionally added in AP mode. In AP mode, for an interface( wlan0 ), an
->>> additional monitor interface( mon.wlan0 ) gets created. A netdevice is
->>> register for monitor interface(mon.wlan0) to transmit/receive frames
->>> from/to hostapd. That interface doesn't explicitly set up
->>> 'ieee80211_ptr' because the original interface(wlan0) uses it, so using
->>> "cfg80211_register/unregister" API's for mon.wlan0 interfaces fails.
->> Btw, this probably should just be removed in favour of using the nl80211
->> based APIs for hostapd ...
->>
->> But I think as a quick bugfix goes this is fine, but it'd be better to
->> remove this and either allow hostapd to create the interface with the
->> proper ieee80211_ptr, or to just use the nl80211-based TX/RX.
+> Hi Tetsuo,
 >
+> On 5/6/22 02:31, Tetsuo Handa wrote:
+>> On 2022/05/06 4:09, Pavel Skripkin wrote:
+>>>>> And we can meet NULL defer even if we leave drv_priv = priv initialization
+>>>>> on it's place.
+>>>>
+>>>> I didn't catch the location. As long as "htc_handle->drv_priv = priv;" is done
+>>>> before complete_all(&hif_dev->fw_done) is done, is something wrong?
+>>>>
+>>>
+>>> I don't really remember why I said that, but looks like I just haven't opened callbacks' code.
+>>
+>> OK. Then, why not accept Pavel's patch?
 >
-> Thanks Johannes. Yes, this patch would help to make the AP mode work.
-> I will check on using nl80211 based APIs for hostapd but might take some 
-> time to change.
+> As you might expect, I have same question. This series is under review
+> for like 7-8 months.
+>
+> I have no ath9 device, so I can't test it on real hw, so somebody else
+> should do it for me. It's requirement to get patch accepted.
 
-Ok, I'll take this as a quick fix but please switch to using proper
-interfaces.
+As Toke stepped up to be the ath9k maintainer the situation with ath9k
+is now much better. I recommend resubmitting any ath9k patches you might
+have.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
