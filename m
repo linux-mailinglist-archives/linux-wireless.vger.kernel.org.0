@@ -2,115 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD6DC522917
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 May 2022 03:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1434522B3B
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 May 2022 06:40:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239228AbiEKBqN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 May 2022 21:46:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38930 "EHLO
+        id S240492AbiEKEkI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 May 2022 00:40:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240757AbiEKBqK (ORCPT
+        with ESMTP id S239460AbiEKEj1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 May 2022 21:46:10 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF67B3586E;
-        Tue, 10 May 2022 18:46:08 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id g23so729030edy.13;
-        Tue, 10 May 2022 18:46:08 -0700 (PDT)
+        Wed, 11 May 2022 00:39:27 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C2CB14FCB7
+        for <linux-wireless@vger.kernel.org>; Tue, 10 May 2022 21:39:24 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-edeb6c3642so1500416fac.3
+        for <linux-wireless@vger.kernel.org>; Tue, 10 May 2022 21:39:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lyB03zfkduhEQiKRtkxNNhqSXJSw0Ic5n3CoIbYjaT8=;
-        b=PQfJWnTl4JTkqYV9vXc5RAPcrHTk3U40whCmQ7E/JC7ivDUBuz4k48ILtQKDiSWBRG
-         JptbT4Td5Rn1lOXj5gyNVWMVXgdEVd3Ikn5LUZwwkSdotAC5tFwvqrboc+E0fahrbkVy
-         fDsek+rD/1D3nA1uh/mw06whwWIKbVdw7j5F5UioiQBnXsflDDlC/8hrYpqu3sUNS0Tv
-         iYK5aXLgujdlQVA8Pja79jS8+mLsuWN8dPobMkyYnJLMGH3Ar3tvUk+eR6AJFQYhsoXv
-         UWcsSB7JLJ0CVPd0PV98W6sq+N1z+l5+iRmiPBEi8PjXuRT8iYWVkX7Z5yC+rEcHZg2v
-         w04g==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=nrkBIDyCffFbQz5WNhQU88q5l+bx8m1CoLNL/nRcxBFZRgp3B2RwRJzpJi69hjmFPQ
+         Eotn36CVTQor8sTwq84btYhQQ+OsypTpYdHIfGkC/Ekjg8a9U0HkQq0T/gbcQg5/if4Y
+         i1yzcJYhTRMm8ny1NIiOYUNRazrfloxlCC/1XVxW2+TG0ItQpx2/G3cXjgMuOALgO1Rc
+         auxKHXwS3ghK6vFFIfR8essc70JXfRi2oIpi3YT/VLqISCMTaVWCOI/Xf0rWfpfTmlnw
+         XgqCFC8jOuHD5AjsEtox3h0b9tzcHlVM0fA1RrJyDFubK9aS707t1BYf/K43qSc4slo4
+         wrQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lyB03zfkduhEQiKRtkxNNhqSXJSw0Ic5n3CoIbYjaT8=;
-        b=FV4SIkobs4KTgj4J6oAiymy1Rxt5jDNfk/5+vUgpFvwSeV8HfBJ957kVgts4ITnobP
-         KshvHfPYMN+BQzVlRmhQLIJz5bLvvq5tlOlXo57g+tnM6TOEm7MqIuZ4Cqj/DeESTva7
-         J0J9SKC3CNZmH3x/EpgASdgI9zjM2yRVQ33zhGl9tXCDemhb1Jf190Mw1gagxbrUj/T9
-         3raok+RQ32fcZ8KZfzvrzdWOTRUH+JlnALUFFsnHaFRpOSkLjYKS2kpTfUUg5aquAZdG
-         TLQBmX4FfdV3V9UM5df8bhM+jV2vGr7JWCNcsH5kZeyTZ64O+iiJFIUtlq8Okl+4r/N4
-         KiRg==
-X-Gm-Message-State: AOAM533Q0+F/V81u8nX0aHh1K1cohbxuN0+dX2CEkrSJbExZn1Wp3u7x
-        8aYK0VPR9zRu3/O04p+Y9+FZ3QAnbrODSAtLwSw=
-X-Google-Smtp-Source: ABdhPJyqTVojPz5rdn5gqtln5rHLx1GDmbyqtSJ8oJaxRgefOPVmNUn4LBKW8qWffhB2mSlIbhsHF6lAOHGx1jixXLw=
-X-Received: by 2002:aa7:cd58:0:b0:427:b21f:5f79 with SMTP id
- v24-20020aa7cd58000000b00427b21f5f79mr25894850edw.172.1652233566587; Tue, 10
- May 2022 18:46:06 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=g5AUP3/h5tMNFSfBrpG+w5D8WyVLSdFvPjBfpBZrp6/Q/1k6V/w2Jf/5cyp17L7arZ
+         d3R7lfZi+mfxymCI5jKeDxjuMkBHk7t5QnH/q1zMk9VVrDXKI3gdJltELF/zH7MBA+PM
+         6efShTMRlB36H+X6rNoohTKhAxMjyV395q2t/EYOSQzh/6n1N0eHzn5UtOITrQgl7vsN
+         0c0BG5QHtGjFL0wr9UATlnezPRfGYi3oirKEUfhmbUKLi2Ddcp/mAd2mvHvgOgg0uZ/z
+         aXwr+9zob8B5J6FM5TNnYCcsvVQPXXGNPhSD+YGZumYg7fzofIEU0GK1hVsJw68mOPay
+         wCvA==
+X-Gm-Message-State: AOAM532Qe303WJF/4IpZ79YwNpPH6UqfPiwpseW0ysWXsW+dCBGwRe6u
+        SdWpCQ5zKtPhG0jEPnzIyxlyh5NI3L7OkPBIXi8uxUhZMfDMig==
+X-Google-Smtp-Source: ABdhPJwbKHmbnZDflMHBZCcp2YbZAAZvFdPcM4owWeuPIkoxodmwIZJ+Xpgi08ylB1RFXLrw63SQRxJzumbwJKMTxhs=
+X-Received: by 2002:a17:90b:1007:b0:1dc:9862:68af with SMTP id
+ gm7-20020a17090b100700b001dc986268afmr3261389pjb.205.1652243951499; Tue, 10
+ May 2022 21:39:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220510092503.1546698-1-dzm91@hust.edu.cn> <87ee118kmk.fsf@kernel.org>
-In-Reply-To: <87ee118kmk.fsf@kernel.org>
-From:   Dongliang Mu <mudongliangabcd@gmail.com>
-Date:   Wed, 11 May 2022 09:45:40 +0800
-Message-ID: <CAD-N9QULVjecGcsmFGREGV=joyA2SoZFzLB9A-2tRPsVM0_Ohg@mail.gmail.com>
-Subject: Re: [PATCH] net: rtlwifi: Use pr_warn_once instead of WARN_ONCE
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Dongliang Mu <dzm91@hust.edu.cn>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org,
-        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
+Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:39:10
+ -0700 (PDT)
+From:   Private Mail <privatemail1961@gmail.com>
+Date:   Tue, 10 May 2022 21:39:10 -0700
+Message-ID: <CANjAOAiiVcSrSv31FjThCVmeppS54UVvGVj3SRSvMfxOB+T8DA@mail.gmail.com>
+Subject: Have you had this? It is for your Benefit
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
+        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
+        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, May 10, 2022 at 11:37 PM Kalle Valo <kvalo@kernel.org> wrote:
->
-> Dongliang Mu <dzm91@hust.edu.cn> writes:
->
-> > From: Dongliang Mu <mudongliangabcd@gmail.com>
-> >
-> > This memory allocation failure can be triggered by fault injection or
-> > high pressure testing, resulting a WARN.
-> >
-> > Fix this by replacing WARN with pr_warn_once.
-> >
-> > Signed-off-by: Dongliang Mu <mudongliangabcd@gmail.com>
-> > ---
-> >  drivers/net/wireless/realtek/rtlwifi/usb.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-> > index 86a236873254..acb0c15e9748 100644
-> > --- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-> > +++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-> > @@ -1014,7 +1014,7 @@ int rtl_usb_probe(struct usb_interface *intf,
-> >       hw = ieee80211_alloc_hw(sizeof(struct rtl_priv) +
-> >                               sizeof(struct rtl_usb_priv), &rtl_ops);
-> >       if (!hw) {
-> > -             WARN_ONCE(true, "rtl_usb: ieee80211 alloc failed\n");
-> > +             pr_warn_once("rtl_usb: ieee80211 alloc failed\n");
-> >               return -ENOMEM;
-> >       }
-> >       rtlpriv = hw->priv;
->
-> I think we should warn every time ieee80211_alloc_hw() fails, it's
-> called only once per device initialisation, so pr_warn() is more
-> approriate.
+Our Ref: BG/WA0151/2022
 
-Yes, this is better. Already sent a v2 patch.
+Dear Beneficiary
 
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Subject: An Estate of US$15.8 Million
+
+Blount and Griffin Genealogical Investigators specializes in probate
+research to locate missing heirs and beneficiaries to estates in the
+United Kingdom and Europe.
+
+We can also help you find wills, obtain copies of certificates, help
+you to administer an estate, as well as calculating how an estate,
+intestacy or trust should be distributed.
+
+You may be entitled to a large pay out for an inheritance in Europe
+worth US$15.8 million. We have discovered an estate belonging to the
+late Depositor has remained unclaimed since he died in 2011 and we
+have strong reasons to believe you are the closest living relative to
+the deceased we can find.
+
+You may unknowingly be the heir of this person who died without
+leaving a will (intestate). We will conduct a probate research to
+prove your entitlement, and can submit a claim on your behalf all at
+no risk to yourselves.
+
+Our service fee of 10% will be paid to us after you have received the estate.
+
+The estate transfer process should take just a matter of days as we
+have the mechanism and expertise to get this done very quickly. This
+message may come to you as a shock, however we hope to work with you
+to transfer the estate to you as quickly as possible.
+
+Feel free to email our senior case worker Mr. Malcolm Casey on email:
+malcolmcasey68@yahoo.com for further discussions.
+
+With warm regards,
+
+Mr. Blount W. Gort, CEO.
+Blount and Griffin Associates Inc
