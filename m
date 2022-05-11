@@ -2,237 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD4DD52406B
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 May 2022 00:53:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15458524084
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 May 2022 01:06:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348898AbiEKWw7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 May 2022 18:52:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49548 "EHLO
+        id S1348993AbiEKXGr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 May 2022 19:06:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233822AbiEKWw5 (ORCPT
+        with ESMTP id S1346495AbiEKXGq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 May 2022 18:52:57 -0400
-Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C906339B
-        for <linux-wireless@vger.kernel.org>; Wed, 11 May 2022 15:52:55 -0700 (PDT)
-Received: by mail-vk1-xa33.google.com with SMTP id y27so1854539vkl.8
-        for <linux-wireless@vger.kernel.org>; Wed, 11 May 2022 15:52:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gateworks-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=29E8HlhduSQieWez20AluJPdVntOzq6QdIcJrP9MAKk=;
-        b=eXGPAqhI9a4OPJLyWf2JCXYWPoGF2Iqgn/jpjizCOMqrKYoxsu1tb7zHp3VJp3IFTo
-         9yAYtEqlcPCbW21popx8Zr45u8pa+c9YhpeTgmeLUZo0K6sfDkZg+TRKDhcITVSjd6ET
-         zKDrLLI2q4L+21rdFSp174xKy8LWXr9bNw/3XZGcMo3ke+9mdeNHfzLeZlAavO+zzdnx
-         VRDsPxze0AR4UuOxdZwyW6VCwrI9v1kHbE1dKzaXVQ9tYQPORPjLUuTtxOYnxkD/zr8i
-         0uUdnLTlZWQKD/qJyTxesp836Zw49IcLVD9QHDeByverzbHjaJDoWoSV5qW0RhxqtPoq
-         LVQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=29E8HlhduSQieWez20AluJPdVntOzq6QdIcJrP9MAKk=;
-        b=4s1qTndCRX7gtsOcnNEwBm73ckalMWKItbmFBhTFlgxnsFtwA5nWlVgDQII46AP6mc
-         447tBlmZ8/yrYvoxGX5IF8GR1qAz/SNdLuGjZ/rRrlSiJeXBAkpW+B4c87qcwdnMizoJ
-         yL1F89tHPnI0lU/Vx2v+itBwuo4RvclE3Ey+u3RLbCZPYZ93J21bWZt5ldgPxvf+f60K
-         K5bkrJMm6y/ipBJe1JkCzDPedUPYg+Grn7tvIgFSmrMZlLyx1w+pbIY0VwZz8DN2SXZy
-         ygWLKBn3H6N7F9QRiOHvm3rG70qYuqx0m3LPBNTx5dVLTQcUkFsEW0+q2dgCscHzve06
-         9BLg==
-X-Gm-Message-State: AOAM53118akPDuZ6eUZPxNiFMdMoJjRl5jnrk8Wom+wlW6cwmwJbnvjz
-        P0NnYjkVIOE5al68efv6+C2bYGPoguF8e+bRUZqP92esMA==
-X-Google-Smtp-Source: ABdhPJzmuGqT2ng35Dpv3DBtE0pM/yQmY6DTNKnBIPS+Zw6hZvfILYF5ZN6FVAZD2LvgVRo04xAXzJ4beqwpGm+ZkrI=
-X-Received: by 2002:a1f:91cb:0:b0:34e:10c8:cf1c with SMTP id
- t194-20020a1f91cb000000b0034e10c8cf1cmr15641958vkd.31.1652309574277; Wed, 11
- May 2022 15:52:54 -0700 (PDT)
+        Wed, 11 May 2022 19:06:46 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 631AA5839C
+        for <linux-wireless@vger.kernel.org>; Wed, 11 May 2022 16:06:45 -0700 (PDT)
+X-UUID: 1115d125ad0a4ee3b6168e1df6d7a9ec-20220512
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.4,REQID:608cf369-65f1-468d-895c-d53c14a6965b,OB:0,LO
+        B:0,IP:0,URL:5,TC:0,Content:-20,EDM:0,RT:0,SF:100,FILE:0,RULE:Release_Ham,
+        ACTION:release,TS:85
+X-CID-INFO: VERSION:1.1.4,REQID:608cf369-65f1-468d-895c-d53c14a6965b,OB:0,LOB:
+        0,IP:0,URL:5,TC:0,Content:-20,EDM:0,RT:0,SF:100,FILE:0,RULE:Spam_GS981B3D,
+        ACTION:quarantine,TS:85
+X-CID-META: VersionHash:faefae9,CLOUDID:10ab78b3-56b5-4c9e-8d83-0070b288eb6a,C
+        OID:18dd51732351,Recheck:0,SF:28|16|19|48,TC:nil,Content:0,EDM:-3,File:nil
+        ,QS:0,BEC:nil
+X-UUID: 1115d125ad0a4ee3b6168e1df6d7a9ec-20220512
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 172880938; Thu, 12 May 2022 07:06:39 +0800
+Received: from mtkmbs07n1.mediatek.inc (172.21.101.16) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Thu, 12 May 2022 07:06:38 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 12 May 2022 07:06:37 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.3 via Frontend Transport; Thu, 12 May 2022 07:06:37 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
+        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <ted.huang@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <Stella.Chang@mediatek.com>, <Tom.Chou@mediatek.com>,
+        <steve.lee@mediatek.com>, <jsiuda@google.com>,
+        <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: [PATCH v2 1/2] mt76: add gfp to mt76_mcu_msg_alloc signature
+Date:   Thu, 12 May 2022 07:06:35 +0800
+Message-ID: <51d96f159ec37c2610d3c444177508ffc7781e2c.1652310294.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-References: <20200527165718.129307-1-briannorris@chromium.org>
- <YmPadTu8CfEARfWs@xps> <CA+ASDXPeJ6fD9hvc0Nq_RY05YRdSP77U_96vUZcTYgkQKY9Bvg@mail.gmail.com>
- <CAG2Q2vXce2V3Y6MnPhV6obcNWyQzyusMTL=5oCQLRNh2_ffNYA@mail.gmail.com>
-In-Reply-To: <CAG2Q2vXce2V3Y6MnPhV6obcNWyQzyusMTL=5oCQLRNh2_ffNYA@mail.gmail.com>
-From:   Cale Collins <ccollins@gateworks.com>
-Date:   Wed, 11 May 2022 15:52:18 -0700
-Message-ID: <CAG2Q2vXFcSVwF4CbU5o3VP1MWwrdqrZjTHgfBj_Q0t3nNipJRw@mail.gmail.com>
-Subject: Re: [PATCH] Revert "ath: add support for special 0x0 regulatory domain"
-To:     kvalo@kernel.org, Brian Norris <briannorris@chromium.org>
-Cc:     Patrick Steinhardt <ps@pks.im>,
-        ath10k <ath10k@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>,
-        Tim Harvey <tharvey@gateworks.com>,
-        Stephen McCarthy <stephen.mccarthy@pctel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Adding Kalle, I got his address wrong the first time.
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
+Introduce __mt76_mcu_msg_alloc utility routine in order to specify gfp
+flags for mcu message allocation.
 
-On Mon, May 9, 2022 at 11:16 AM Cale Collins <ccollins@gateworks.com> wrote:
->
-> Hello Brian and Kalle,
->
-> I'm experiencing an issue very similar to this.  The regulatory domain
-> settings wouldn't allow me to create an AP on 5ghz bands on kernels
-> newer than 5.10 when using a WLE900VX (QCA9984) radio.  I bisected the
-> kernel and ultimately landed on the regression that Brian patched.  I
-> applied the patch and that resolved the issue from 5.4 up to 5.10.
-> For versions later than that I encountered the same problem.  I tried
-> to bisect again but PCI is broken for the ARM board(s) I'm using in
-> many of the RC's, I'm pretty new to all of this and it was just over
-> my head. I saw Kalle pushed Brian's patch a few weeks ago, so I
-> figured the politics behind how the regulatory domain should be
-> addressed was decided at that point.  I cherry picked Brian's patch
-> onto 5.17 to test, the results are below.  Can someone help me figure
-> out what I can do to get 5ghz APs back?
->
-> If there's any more information I can provide please let me know, I
-> wanted to keep things on the shorter side.
->
-> cale@cale:~/builds/upstream/linux$ git log --oneline
-> 5c12efe9e783 (HEAD) Revert "ath: add support for special 0x0 regulatory domain"
-> f443e374ae13 (tag: v5.17) Linux 5.17
->
-> #On my ARM64 board
->
-> root@focal-ventana:~# uname -a
-> Linux focal-ventana 5.17.0-00001-g5c12efe9e783 #1 SMP Wed Apr 6
-> 16:33:54 PDT 2022 armv7l armv7l armv7l GNU/Linux
->
->
-> root@focal-ventana:~# ls /sys/class/net/
-> can0  eth0  lo  sit0  wlp6s0
->
-> root@focal-ventana:~# iw phy phy0 info | grep " MHz \[" | grep -v "no
-> IR\|disabled"
->             * 2412 MHz [1] (20.0 dBm)
->             * 2417 MHz [2] (20.0 dBm)
->             * 2422 MHz [3] (20.0 dBm)
->             * 2427 MHz [4] (20.0 dBm)
->             * 2432 MHz [5] (20.0 dBm)
->             * 2437 MHz [6] (20.0 dBm)
->             * 2442 MHz [7] (20.0 dBm)
->             * 2447 MHz [8] (20.0 dBm)
->             * 2452 MHz [9] (20.0 dBm)
->             * 2457 MHz [10] (20.0 dBm)
->             * 2462 MHz [11] (20.0 dBm)
->
->
-> root@focal-ventana:~# iw reg get
-> global
-> country 00: DFS-UNSET
->     (2402 - 2472 @ 40), (N/A, 20), (N/A)
->     (2457 - 2482 @ 20), (N/A, 20), (N/A), AUTO-BW, NO-IR
->     (2474 - 2494 @ 20), (N/A, 20), (N/A), NO-OFDM, NO-IR
->     (5170 - 5250 @ 80), (N/A, 20), (N/A), AUTO-BW, NO-IR
->     (5250 - 5330 @ 80), (N/A, 20), (0 ms), DFS, AUTO-BW, NO-IR
->     (5490 - 5730 @ 160), (N/A, 20), (0 ms), DFS, NO-IR
->     (5735 - 5835 @ 80), (N/A, 20), (N/A), NO-IR
->     (57240 - 63720 @ 2160), (N/A, 0), (N/A)
->
-> phy#0
-> country 99: DFS-UNSET
->     (2402 - 2472 @ 40), (N/A, 20), (N/A)
->     (5140 - 5360 @ 80), (N/A, 30), (N/A), PASSIVE-SCAN
->     (5715 - 5860 @ 80), (N/A, 30), (N/A), PASSIVE-SCAN
->
-> #dmesg |grep ath output
->
->     [    5.724215] ath10k_pci 0000:06:00.0: enabling device (0140 -> 0142)
->     [    5.732439] ath10k_pci 0000:06:00.0: pci irq msi oper_irq_mode
-> 2 irq_mode 0 reset_mode 0
->     [   17.573591] ath10k_pci 0000:06:00.0: qca988x hw2.0 target
-> 0x4100016c chip_id 0x043202ff sub 0000:0000
->     [   17.573707] ath10k_pci 0000:06:00.0: kconfig debug 0 debugfs 0
-> tracing 0 dfs 0 testmode 0
->     [   17.575118] ath10k_pci 0000:06:00.0: firmware ver
-> 10.2.4-1.0-00047 api 5 features no-p2p,raw-mode,mfp,allows-mesh-bcast
-> crc32 35bd9258
->     [   17.637397] ath10k_pci 0000:06:00.0: board_file api 1 bmi_id
-> N/A crc32 bebc7c08
->     [   18.849651] ath10k_pci 0000:06:00.0: htt-ver 2.1 wmi-op 5
-> htt-op 2 cal otp max-sta 128 raw 0 hwcrypto 1
->
-> Best regards,
->
-> Cale Collins
->
->
-> Cale Collins
-> Field Applications Engineer II
-> Gateworks Corporation
-> (805)781-2000 x37
-> 3026 S. Higuera, San Luis Obispo, CA 93401
-> www.gateworks.com
->
->
->
-> On Mon, Apr 25, 2022 at 11:55 AM Brian Norris <briannorris@chromium.org> wrote:
-> >
-> > Hi Patrick,
-> >
-> > On Sat, Apr 23, 2022 at 3:52 AM Patrick Steinhardt <ps@pks.im> wrote:
-> > > This revert is in fact causing problems on my machine. I have a QCA9984,
-> > > which exports two network interfaces. While I was able to still use one
-> > > of both NICs for 2.4GHz, I couldn't really use the other card to set up
-> > > a 5GHz AP anymore because all frequencies were restricted. This has
-> > > started with v5.17.1, to which this revert was backported.
-> > >
-> > > Reverting this patch again fixes the issue on my system. So it seems
-> > > like there still are cards out there in the wild which have a value of
-> > > 0x0 as their regulatory domain.
-> > >
-> > > Quoting from your other mail:
-> > >
-> > > > My understanding was that no QCA modules *should* be shipped with a
-> > > > value of 0 in this field. The instance I'm aware of was more or less a
-> > > > manufacturing error I think, and we got Qualcomm to patch it over in
-> > > > software.
-> > >
-> > > This sounds like the issue should've already been fixed in firmware,
-> > > right?
-> >
-> > See the original patch:
-> > https://git.kernel.org/linus/2dc016599cfa9672a147528ca26d70c3654a5423
-> >
-> > "Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00029."
-> >
-> > That patch was only tested for QCA6174 SDIO, and the 6174 firmware has
-> > since been updated. So none of that really applies to QCA9984. I
-> > suppose your device was also not working before v5.6 either, and IIUC,
-> > according to Qualcomm your hardware is a manufacturing error (i.e.,
-> > invalid country code).
-> >
-> > I don't know what to tell you exactly, other than that the original
-> > patch was wrong/unnecessary (and broke various existing systems) so it
-> > should be reverted. I'm not quite sure how to fix the variety of
-> > hardware out there (like yours) that may be using non-conforming
-> > EEPROM settings. It would seem to me that we might need some more
-> > targeted way of addressing broken hardware, rather than changing this
-> > particular default workaround. I'm honestly not that familiar with
-> > this Qualcomm regulatory stuff though, so my main contribution was
-> > just to suggest reverting (i.e., don't break what used to work); I'm
-> > not as savvy on providing alternative "fixes" for you.
-> >
-> > (That said: I *think* what's happening is that in the absence of a
-> > proper EEPROM code, ath drivers fall back to a default=US country
-> > code, and without further information to know you're compliant,
-> > regulatory rules disallow initiating radiation (such as, an AP) on
-> > 5GHz.)
-> >
-> > >  I've added the relevant dmesg
-> > > snippets though in case I'm mistaken:
-> >
-> > With what kernel? That looks like pre-v5.17.1. The "broken"
-> > (post-5.17.1) logs might be a bit more informative.
-> >
-> > Sorry,
-> > Brian
+Acked-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+v2: new created
+---
+ drivers/net/wireless/mediatek/mt76/mcu.c  | 8 ++++----
+ drivers/net/wireless/mediatek/mt76/mt76.h | 9 ++++++++-
+ 2 files changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mcu.c b/drivers/net/wireless/mediatek/mt76/mcu.c
+index 3f94c37251df..914ee278e6e2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mcu.c
+@@ -6,14 +6,14 @@
+ #include "mt76.h"
+ 
+ struct sk_buff *
+-mt76_mcu_msg_alloc(struct mt76_dev *dev, const void *data,
+-		   int data_len)
++__mt76_mcu_msg_alloc(struct mt76_dev *dev, const void *data,
++		     int data_len, gfp_t gfp)
+ {
+ 	const struct mt76_mcu_ops *ops = dev->mcu_ops;
+ 	int length = ops->headroom + data_len + ops->tailroom;
+ 	struct sk_buff *skb;
+ 
+-	skb = alloc_skb(length, GFP_KERNEL);
++	skb = alloc_skb(length, gfp);
+ 	if (!skb)
+ 		return NULL;
+ 
+@@ -25,7 +25,7 @@ mt76_mcu_msg_alloc(struct mt76_dev *dev, const void *data,
+ 
+ 	return skb;
+ }
+-EXPORT_SYMBOL_GPL(mt76_mcu_msg_alloc);
++EXPORT_SYMBOL_GPL(__mt76_mcu_msg_alloc);
+ 
+ struct sk_buff *mt76_mcu_get_response(struct mt76_dev *dev,
+ 				      unsigned long expires)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index dc0f1b0aa34a..4e8997c45c1b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1345,8 +1345,15 @@ int mt76s_rd_rp(struct mt76_dev *dev, u32 base,
+ 		struct mt76_reg_pair *data, int len);
+ 
+ struct sk_buff *
++__mt76_mcu_msg_alloc(struct mt76_dev *dev, const void *data,
++		     int data_len, gfp_t gfp);
++static inline struct sk_buff *
+ mt76_mcu_msg_alloc(struct mt76_dev *dev, const void *data,
+-		   int data_len);
++		   int data_len)
++{
++	return __mt76_mcu_msg_alloc(dev, data, data_len, GFP_KERNEL);
++}
++
+ void mt76_mcu_rx_event(struct mt76_dev *dev, struct sk_buff *skb);
+ struct sk_buff *mt76_mcu_get_response(struct mt76_dev *dev,
+ 				      unsigned long expires);
+-- 
+2.25.1
+
