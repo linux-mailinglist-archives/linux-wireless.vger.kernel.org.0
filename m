@@ -2,55 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 293F5522FF5
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 May 2022 11:54:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A806B523004
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 May 2022 11:57:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237682AbiEKJyJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 May 2022 05:54:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50620 "EHLO
+        id S236492AbiEKJzz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 May 2022 05:55:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233303AbiEKJyA (ORCPT
+        with ESMTP id S240478AbiEKJy6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 May 2022 05:54:00 -0400
-Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 388528CCCD;
-        Wed, 11 May 2022 02:53:25 -0700 (PDT)
+        Wed, 11 May 2022 05:54:58 -0400
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA1C16A253
+        for <linux-wireless@vger.kernel.org>; Wed, 11 May 2022 02:54:40 -0700 (PDT)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1652262803; bh=+1U3flpqWJAv5df7SW1MN/dDT5tlFWQa/zIqHpVu/94=;
+        t=1652262879; bh=VKWCcJLOHT41GgeUdbBcTcp8vWh2RnSvUPQ0RMYQq6A=;
         h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=pQ4WE1MiEekSRpCqyLnNMJUfVxyA1jwmuXHXtesfricLrC9TjnPKYNsu5d2h+VyR9
-         eZl9AJWS12FQUnBC9g6O/kcq9wwh0KlLGd1Y4ZJTTIuaUyDeA7IMRGotSrZPbWb8ZP
-         F9EmvtYZK7UUfH0OZqvzjFlPoiLVrgrTn5f8wkTH7UzEZhlDYRyhDEzDDUvkhhlNVN
-         1jrz2yiKw1fDXrOPiOo8k/U2cOYgsL4yMMqwZmzIO2T/LbcjdIiSJqTkWEU75mjtbx
-         IlfELp6+Gv75kMPpo2rbLAoQrGPCZP3MJ5RPr+PMU9vqSd55xl/1UfXvZl3zH6phDZ
-         bvOCm1vlX2xcQ==
-To:     Kalle Valo <kvalo@kernel.org>,
-        Pavel Skripkin <paskripkin@gmail.com>
-Cc:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        ath9k-devel@qca.qualcomm.com, davem@davemloft.net, kuba@kernel.org,
-        linville@tuxdriver.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
-        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
-Subject: Re: [PATCH v3 1/2] ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
-In-Reply-To: <87ilqc7jv9.fsf@kernel.org>
-References: <80962aae265995d1cdb724f5362c556d494c7566.1644265120.git.paskripkin@gmail.com>
- <87h799a007.fsf@toke.dk> <6f0615da-aa0b-df8e-589c-f5caf09d3449@gmail.com>
- <5fd22dda-01d6-cfae-3458-cb3fa23eb84d@I-love.SAKURA.ne.jp>
- <3cb712d9-c6be-94b7-6135-10b0eabba341@gmail.com>
- <d9e6cf88-4f19-bd50-3d73-e2aee1caefa4@I-love.SAKURA.ne.jp>
- <426f6965-152c-6d59-90e0-34fe3cd208ee@gmail.com>
- <87ilqc7jv9.fsf@kernel.org>
-Date:   Wed, 11 May 2022 11:53:23 +0200
+        b=Rnod7s8cmguUZ5Y+gbmtqiN522x1ksuW0pM39bynqJ6QiuS00KWSiB+NfliU3VGjF
+         cNKaiQMtigfsrhlAtp7LECgYoRmHGzvja7oNfygTtC8sMq//B5n9ZWVwS5J8s3AyBC
+         lTk+aoFH3FXjlhlncyAs7xPNsFuMR/dDX5zG7LC/+qBW7CCOW20hFxtPbA78DlgSCo
+         f2K5++dpnuFhYxTCpXkgc2ZX57mr4VZZbRtO47eZG3ZjyGqyFe1gmV6QORY6Nql+Pq
+         sP2mSrcWRLmN29EydHmfODBfYcl7igA9ixQo7dxddA2aupvIVaxlE0Mvu7EVVlo8X6
+         /BF33X6imu/bw==
+To:     Kalle Valo <kvalo@kernel.org>, Wenli Looi <wlooi@ucalgary.ca>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 0/9] ath9k: add support for QCN550x
+In-Reply-To: <87lev8y95t.fsf@kernel.org>
+References: <20220418071313.882179-1-wlooi@ucalgary.ca>
+ <CAKe_nd1-twgutVV8Ls_7Y=q8o6ua9_W9x6q_HvevWsv3uwnh5Q@mail.gmail.com>
+ <87lev8y95t.fsf@kernel.org>
+Date:   Wed, 11 May 2022 11:54:39 +0200
 X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87o804wg30.fsf@toke.dk>
+Message-ID: <87lev8wg0w.fsf@toke.dk>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -59,35 +49,19 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Kalle Valo <kvalo@kernel.org> writes:
 
-> Pavel Skripkin <paskripkin@gmail.com> writes:
+> Wenli Looi <wlooi@ucalgary.ca> writes:
 >
->> Hi Tetsuo,
+>> Thanks Kalle for the comments.
 >>
->> On 5/6/22 02:31, Tetsuo Handa wrote:
->>> On 2022/05/06 4:09, Pavel Skripkin wrote:
->>>>>> And we can meet NULL defer even if we leave drv_priv = priv initialization
->>>>>> on it's place.
->>>>>
->>>>> I didn't catch the location. As long as "htc_handle->drv_priv = priv;" is done
->>>>> before complete_all(&hif_dev->fw_done) is done, is something wrong?
->>>>>
->>>>
->>>> I don't really remember why I said that, but looks like I just haven't opened callbacks' code.
->>>
->>> OK. Then, why not accept Pavel's patch?
->>
->> As you might expect, I have same question. This series is under review
->> for like 7-8 months.
->>
->> I have no ath9 device, so I can't test it on real hw, so somebody else
->> should do it for me. It's requirement to get patch accepted.
+>> Please let me know if I should resend the patch with the minor changes
+>> or if there are additional comments.
 >
-> As Toke stepped up to be the ath9k maintainer the situation with ath9k
-> is now much better. I recommend resubmitting any ath9k patches you might
-> have.
+> The patchset is set to 'Changes Requested' in patchwork:
+>
+> https://patchwork.kernel.org/project/linux-wireless/list/?series=632942&state=*&order=date
+>
+> This means you need to submit v2.
 
-No need to resubmit this one, it's still in patchwork waiting for me to
-take a closer look. I have a conference this week, but should hopefully
-have some time for this next week.
+Yes, please resubmit with Kalle's comments addressed :)
 
 -Toke
