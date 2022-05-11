@@ -2,49 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC2E6522BB6
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 May 2022 07:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B04C522BBC
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 May 2022 07:33:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237027AbiEKFbk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 May 2022 01:31:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38756 "EHLO
+        id S240239AbiEKFdL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 May 2022 01:33:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240993AbiEKFbV (ORCPT
+        with ESMTP id S229532AbiEKFdJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 May 2022 01:31:21 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8588A4D9C8
-        for <linux-wireless@vger.kernel.org>; Tue, 10 May 2022 22:31:20 -0700 (PDT)
+        Wed, 11 May 2022 01:33:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89FA93DA54;
+        Tue, 10 May 2022 22:33:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3B97CB82119
-        for <linux-wireless@vger.kernel.org>; Wed, 11 May 2022 05:31:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E00C385DB;
-        Wed, 11 May 2022 05:31:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D0DB616D7;
+        Wed, 11 May 2022 05:33:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C883C385DB;
+        Wed, 11 May 2022 05:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652247077;
-        bh=TtPv5TDkpP0u1SaXn1uzIZDsANWmkgrqpjLSWok9+KM=;
+        s=k20201202; t=1652247187;
+        bh=NGoQcJ+iAsisQ8f+zssQ2YRnfJafdWbUwxc1jht6wNA=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=qnQBJ+jJtG7xUI+QXEy9UoCyDVX0RupkdiMq8jyPg2ncgEHrrosoMTMCqG4RtCCwk
-         Z2c8Q1PrVoFMDdot1pZzlNnO9VBjbWjFcfSsll1TM9bf+9Q38bfPFuNfD6hQSNXZ5f
-         /B7BaWnuuQ8OqtUWtQlnHcLmGE+ktz9clgkqd+5Sw75D8gdPyk8/HHv5WC9UeRAz8b
-         6aA3KsKPnHFUD66iPYN0YXw9UYs1C9AHcwv89+OpdOl/x2wo2V8bqAxqYMSDv22OBN
-         Wm2wHlbUyuW9bmKl1nHhQBnYfhk+5ujRoYJI8hHXzrRhWZ3TUsksZ66BQ1QB61Y1WL
-         fQKQ2LHBSczkQ==
+        b=cSB4IaOnU68YF8oFv+bQqP4IiBCvoQJF27pXbBm7YR5F/jxe0zMv0GrC4hE762vYm
+         7gfBSxFgQbWdZFr8p8ItlLSTB/wp0t/3HdlhAGWAgm+kLV65+9BSXyXEqckrr4Aqxr
+         PjKGBj44lQ4pQLMBHlgT0SF+Wfcc0ZU+wmhyCOGSQXQYep4MbrbM2Ou4qu/4ejNupQ
+         nbYUTTDtq/84GOzULUkRBSbd1qXrBNp7igdsmsNtansWVvzghdS6xWu9qKjfhLbNQH
+         CcLFkW+EB3lJFozt1YMFSMHoV6hTI4jj9Bl2ZJFKHvnYpycUuTTWj1yQLoODaXFUFf
+         iJOtghB0hljoA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/5] rtw89: 8852c: add settings to decrease the effect of
- DC
+Subject: Re: [PATCH v6] wfx: use container_of() to get vif
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220506120216.58567-2-pkshih@realtek.com>
-References: <20220506120216.58567-2-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>, <hsuan8331@realtek.com>
+In-Reply-To: <20220506170046.GA1297231@jaehee-ThinkPad-X1-Extreme>
+References: <20220506170046.GA1297231@jaehee-ThinkPad-X1-Extreme>
+To:     Jaehee Park <jhpark1013@gmail.com>
+Cc:     =?iso-8859-1?q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
+        outreachy@lists.linux.dev, Jaehee Park <jhpark1013@gmail.com>,
+        Stefano Brivio <sbrivio@redhat.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165224707541.19198.1864840297230506413.kvalo@kernel.org>
-Date:   Wed, 11 May 2022 05:31:16 +0000 (UTC)
+Message-ID: <165224718272.19198.8867712647289084011.kvalo@kernel.org>
+Date:   Wed, 11 May 2022 05:33:04 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,26 +61,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Jaehee Park <jhpark1013@gmail.com> wrote:
 
-> From: Hsuan Hung <hsuan8331@realtek.com>
+> Currently, upon virtual interface creation, wfx_add_interface() stores
+> a reference to the corresponding struct ieee80211_vif in private data,
+> for later usage. This is not needed when using the container_of
+> construct. This construct already has all the info it needs to retrieve
+> the reference to the corresponding struct from the offset that is
+> already available, inherent in container_of(), between its type and
+> member inputs (struct ieee80211_vif and drv_priv, respectively).
+> Remove vif (which was previously storing the reference to the struct
+> ieee80211_vif) from the struct wfx_vif, define a function
+> wvif_to_vif(wvif) for container_of(), and replace all wvif->vif with
+> the newly defined container_of construct.
 > 
-> Modify NBI and PD boost settings according to different primary channels.
-> This setting can decrease the false alarm induced by DC.
-> 
-> Signed-off-by: Hsuan Hung <hsuan8331@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: Jaehee Park <jhpark1013@gmail.com>
 
-5 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-0cd75e4f1c9d rtw89: 8852c: add settings to decrease the effect of DC
-4b0d341b2e04 rtw89: correct setting of RX MPDU length
-98ed6159a505 rtw89: correct CCA control
-0b75b35c3867 rtw89: add debug select to dump MAC pages 0x30 to 0x33
-dadb20864d89 rtw89: add debug entry to dump BSSID CAM
+2c33360bce6a wfx: use container_of() to get vif
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220506120216.58567-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220506170046.GA1297231@jaehee-ThinkPad-X1-Extreme/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
