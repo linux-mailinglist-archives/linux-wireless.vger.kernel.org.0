@@ -2,49 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B74F523605
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 May 2022 16:45:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 228B552379D
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 May 2022 17:45:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243123AbiEKOpT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 May 2022 10:45:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43344 "EHLO
+        id S241211AbiEKPpj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 May 2022 11:45:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233848AbiEKOpS (ORCPT
+        with ESMTP id S229713AbiEKPpi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 May 2022 10:45:18 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84066106A54
-        for <linux-wireless@vger.kernel.org>; Wed, 11 May 2022 07:45:17 -0700 (PDT)
+        Wed, 11 May 2022 11:45:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EDAFE52A8;
+        Wed, 11 May 2022 08:45:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 22B4BB82454
-        for <linux-wireless@vger.kernel.org>; Wed, 11 May 2022 14:45:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA59C34113;
-        Wed, 11 May 2022 14:45:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CDA5B619FF;
+        Wed, 11 May 2022 15:45:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A12C340EE;
+        Wed, 11 May 2022 15:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652280314;
-        bh=4emqUvocU097sO9W+zS/fxWNl/kZXPaTxF/+/3aijwA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=amrvuSWON3+2a+7/nCgU7vtimYV3QJFfkUJS/dO15nhEznOHZHLXcl3rbrBkR4e2n
-         77KM1yBJEk7ETqNXRPWoYTQ6VoQ9iIv8kkAwb8D+4hDFh7CC/1N2Sly+vhrw22jXwx
-         kKiENPOIqgJpgJ0uOtvNMWH4rY8nxSk/qfIV9fu2T/MHLJY4M7J5QiPO8aDExb6uoA
-         udZiOxh1Q3iaqAp+/rGx+tqhqAkHBonTQsWu0SGNJHZdUm7ra9Bxz29b9/sZFVNDIy
-         KPJICGmFlITRVynUeujo46hCkcstwdi/JR+0H6udpeQeNuNXMhEtvqdCvxmxRI6c8v
-         3AaRnCx+25FwA==
-Date:   Wed, 11 May 2022 09:45:13 -0500
-From:   "sforshee@kernel.org" <sforshee@kernel.org>
-To:     Claudio Menendez <cmenendez@openleanux.ca>
-Cc:     "wireless-regdb@lists.infradead.org" 
-        <wireless-regdb@lists.infradead.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: wireless-regdb: Update regulatory rules for Canada (CA) on 6GHz
-Message-ID: <YnvL+XqurmpV3HyN@ubuntu-x1>
-References: <DM4PR12MB524525E824BA0B505B4E48E1BCF59@DM4PR12MB5245.namprd12.prod.outlook.com>
+        s=k20201202; t=1652283936;
+        bh=Wl6m78q9A+1NzTJSqbbz44DDdAKqmmGu2spKYC7SMlo=;
+        h=From:Subject:To:Cc:Date:From;
+        b=MSnOgAsAUDt70k3zGlv8KQowQTJjMIYLwxaUobdEqfHiskCBcPPOPG9chR88ang19
+         3G4NpTZV9EMZTijdxmU79UDuINf6UPAk0KFrFnFdOaplC1gJp7ijjcBXwkLWITw+EX
+         POw45TyUcwEM32mipXQW9AM6TMuk17j4qaL1pat41x8PV+WLQwY+i0gyAMWwm2NdKS
+         6WpseribzU8eWUjRduHBgf+2FRz0impW0PMkcqdtCAYDHqYjprKD5smW1YWBwRZVKC
+         g2JRi1dh7t40gb3rirO/kPoAcJtefd3Gr/Gxg5R8zcwIZ13jmhXkyzTpBLs4ZKYSHn
+         TmnUYwSRm4EBw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM4PR12MB524525E824BA0B505B4E48E1BCF59@DM4PR12MB5245.namprd12.prod.outlook.com>
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@kernel.org>
+Subject: pull-request: wireless-2022-05-11
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20220511154535.A1A12C340EE@smtp.kernel.org>
+Date:   Wed, 11 May 2022 15:45:35 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,20 +51,77 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Apr 20, 2022 at 05:56:43PM +0000, Claudio Menendez wrote:
-> Hi Seth,
-> 
-> I tried to commit diff to add the 6Ghz band for Canada on the db.txt, but I believe I did it wrong - sorry, I am a newbie at git.
-> 
-> Anyway, below you can see the resolution from ISED to allow indoor use on the 6 GHz band to a max channel of 320 with a max e.i.r.p of 24 dBm. The radio standard specification (RSS-248) is dated last November, and I did not see it in the latest version of the DB.txt.
-> 
-> Please advise if you need any clarification.
+Hi,
 
-Thanks for the messages, and sorry about the delay in responding. I just
-applied a patch to enable 6GHz in Canada. Note though that it has a
-power limit of 12 dBm as a result of the PSD limits, which are not
-currently supported directly in Linux or wireless-regdb. This is
-described in detail in the patch description.
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-Thanks,
-Seth
+Kalle
+
+The following changes since commit ef27324e2cb7bb24542d6cb2571740eefe6b00dc:
+
+  nfc: nci: add flush_workqueue to prevent uaf (2022-04-13 14:44:44 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-05-11
+
+for you to fetch changes up to a36e07dfe6ee71e209383ea9288cd8d1617e14f9:
+
+  rfkill: uapi: fix RFKILL_IOCTL_MAX_SIZE ioctl request definition (2022-05-09 14:00:07 +0200)
+
+----------------------------------------------------------------
+wireless fixes for v5.18
+
+Second set of fixes for v5.18 and hopefully the last one. We have a
+new iwlwifi maintainer, a fix to rfkill ioctl interface and important
+fixes to both stack and two drivers.
+
+----------------------------------------------------------------
+Felix Fietkau (1):
+      mac80211: fix rx reordering with non explicit / psmp ack policy
+
+Gleb Fotengauer-Malinovskiy (1):
+      rfkill: uapi: fix RFKILL_IOCTL_MAX_SIZE ioctl request definition
+
+Gregory Greenman (1):
+      MAINTAINERS: update iwlwifi driver maintainer
+
+Guenter Roeck (1):
+      iwlwifi: iwl-dbg: Use del_timer_sync() before freeing
+
+Johannes Berg (3):
+      mac80211_hwsim: fix RCU protected chanctx access
+      mac80211_hwsim: call ieee80211_tx_prepare_skb under RCU protection
+      nl80211: fix locking in nl80211_set_tx_bitrate_mask()
+
+Kalle Valo (1):
+      mailmap: update Kalle Valo's email
+
+Kieran Frewen (2):
+      nl80211: validate S1G channel width
+      cfg80211: retrieve S1G operating channel number
+
+Manikanta Pubbisetty (1):
+      mac80211: Reset MBSSID parameters upon connection
+
+Wen Gong (1):
+      ath11k: reduce the wait time of 11d scan and hw scan while add interface
+
+ .mailmap                                         |  1 +
+ MAINTAINERS                                      |  2 +-
+ drivers/net/wireless/ath/ath11k/core.c           |  1 +
+ drivers/net/wireless/ath/ath11k/core.h           | 13 ++++-
+ drivers/net/wireless/ath/ath11k/mac.c            | 71 ++++++++++--------------
+ drivers/net/wireless/ath/ath11k/mac.h            |  2 +-
+ drivers/net/wireless/ath/ath11k/reg.c            | 43 +++++++++-----
+ drivers/net/wireless/ath/ath11k/reg.h            |  2 +-
+ drivers/net/wireless/ath/ath11k/wmi.c            | 16 +++++-
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c |  2 +-
+ drivers/net/wireless/mac80211_hwsim.c            | 10 +++-
+ include/uapi/linux/rfkill.h                      |  2 +-
+ net/mac80211/mlme.c                              |  6 ++
+ net/mac80211/rx.c                                |  3 +-
+ net/wireless/nl80211.c                           | 18 +++++-
+ net/wireless/scan.c                              |  2 +-
+ 16 files changed, 120 insertions(+), 74 deletions(-)
