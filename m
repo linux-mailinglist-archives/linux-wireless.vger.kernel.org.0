@@ -2,102 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32463524E34
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 May 2022 15:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0022524EAB
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 May 2022 15:48:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354357AbiELN0p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 May 2022 09:26:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59020 "EHLO
+        id S1354637AbiELNsj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 May 2022 09:48:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354370AbiELN0l (ORCPT
+        with ESMTP id S1354631AbiELNsg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 May 2022 09:26:41 -0400
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6F5A49F80
-        for <linux-wireless@vger.kernel.org>; Thu, 12 May 2022 06:26:36 -0700 (PDT)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-ed9ac77cbbso6625606fac.1
-        for <linux-wireless@vger.kernel.org>; Thu, 12 May 2022 06:26:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+qXYGHJV7s/qc8a2bttGMmvI6F9hk+zqKIrq4cJ0DmU=;
-        b=p5qo31Endpk0PNn9e3rHVmQRh3VEa3O+meW4Q3NJCquH/Bm4gLrkYGb1x+F+vr7niZ
-         fYnIba2uOcs1Mp4BRPiMc/BzFDOPCpiPIoo/Pfvc/RzY1k+KZf15Fpa4ioTFzJa+cfME
-         laxB9eNk8zRL8kYdh7hrekiB0RSi+H2isqG1wMpPiAQJgCFdlck0g2RU0kPdPu2HpDB0
-         d1l/hnCcOzfh2I+JFwbCtPM683VJgw2Dnn8T7IegJqIzc4gPZ1QQnzajBbZwucJ940B1
-         FIzaqIF+EDSX9LkV2zQwBPOM1sAVIA74Vm6E0cg4+5wCR5h/S3M4tqfXZea/Mu3xvluy
-         clfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+qXYGHJV7s/qc8a2bttGMmvI6F9hk+zqKIrq4cJ0DmU=;
-        b=X2cI46hC9ka4a1p1M+Vk2OkOpYpQdEYVDRen0p0biEA70eYkxAKq6dQh+0FNcEAO/u
-         mlExrkDvk0scEYfcqBYFmryXu6n1vyPgOWe64cv5QBWIpEKTrLZCb+06uIUtQwLoDimA
-         DlRf4VUMRPnpo35HyB3wlok1/NCdV3D/nsEnWzH1jaBqhVZaVP+aaaSn7hwHGwu8x07r
-         FSV+bh3aM5UE9r3zAfi2VI2kcqkiZHZKQYTSRy0xuirKSttiB33xQVhjmqH3AHFy97dL
-         iuAh6O0e06hj9p59XU/HexrBTnLvBSbAEuBTYdD4RL3FRi9si9wcOsY3y8WUC6keYMcx
-         obJg==
-X-Gm-Message-State: AOAM5339KH/QhcMjR1Q+QCm8k+IqUQ2FZ8xhetnHV2FCPMxYDtCVpnFE
-        JMjLc2DcZVDdJUD7UhUrU2XUS43pEE1JrCvk38txvA==
-X-Google-Smtp-Source: ABdhPJxa1sYZ9ij0YDVXf2N9J+toT0J5aHixWE1j06eRnE3ey2ZaFodcwSgEd8WzFVTLnKccj4vh5912hBbCQAH4Efc=
-X-Received: by 2002:a05:6870:d254:b0:db:12b5:da3 with SMTP id
- h20-20020a056870d25400b000db12b50da3mr5505714oac.211.1652361995905; Thu, 12
- May 2022 06:26:35 -0700 (PDT)
+        Thu, 12 May 2022 09:48:36 -0400
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE310644D3;
+        Thu, 12 May 2022 06:48:31 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1652363309; bh=blX63fNBGtPLVWob9X9ETslO5YPtKIw3mZLNDG9ks5o=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=hiHqRnVtYx6ket6hb/L9fydLguY2ye051mhuoiXDA5jDZFBfKkkJ1KeAoonLIjgCH
+         WTj4ARFuwPxQhjuHT/+6cwgbtQK0/oLt0Pav9QO4DzESWOOLir93VPSQKQm2wkrrcX
+         hMPCtLTOfWNeRe4F+wUoE6NEPGJdHIAvgzyh/ldeUivozBfMmt1rjATTBWWvMpiqC3
+         BGPwUWvOjKW4r9f9+Yq3xDpJDTN+r/KAttVWMAaT4EIL+6IL/KP0/GMqvSWPYUgJia
+         jIl3k+snTsfi4XPG7jMj6GyADw0GFACFO51PoeJK8A07kykVrMdzhYLqx06udRGz4R
+         Xu1ZUqg8PbXiw==
+To:     Pavel Skripkin <paskripkin@gmail.com>,
+        ath9k-devel@qca.qualcomm.com, kvalo@kernel.org,
+        davem@davemloft.net, kuba@kernel.org, linville@tuxdriver.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
+        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+Subject: Re: [PATCH v3 1/2] ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
+In-Reply-To: <246ba9d2-2afd-c6c0-9cc2-9e5598407c70@gmail.com>
+References: <80962aae265995d1cdb724f5362c556d494c7566.1644265120.git.paskripkin@gmail.com>
+ <87r14yhq4q.fsf@toke.dk> <246ba9d2-2afd-c6c0-9cc2-9e5598407c70@gmail.com>
+Date:   Thu, 12 May 2022 15:48:29 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87ilqahnf6.fsf@toke.dk>
 MIME-Version: 1.0
-References: <0000000000001779fd05a46b001f@google.com> <0000000000006574b705dbe3533f@google.com>
-In-Reply-To: <0000000000006574b705dbe3533f@google.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Thu, 12 May 2022 15:26:25 +0200
-Message-ID: <CACT4Y+afw6PR=8iKbg8iT0y2+hef8fxDxA4u6aNQjG9Gjser9Q@mail.gmail.com>
-Subject: Re: [syzbot] INFO: task hung in linkwatch_event (2)
-To:     syzbot <syzbot+96ff6cfc4551fcc29342@syzkaller.appspotmail.com>
-Cc:     allison@lohutok.net, andrew@lunn.ch, aviad.krawczyk@huawei.com,
-        axboe@kernel.dk, davem@davemloft.net, gregkh@linuxfoundation.org,
-        hdanton@sina.com, io-uring@vger.kernel.org,
-        johannes.berg@intel.com, johannes@sipsolutions.net,
-        kuba@kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linyunsheng@huawei.com, luobin9@huawei.com, netdev@vger.kernel.org,
-        pabeni@redhat.com, phind.uet@gmail.com,
-        syzkaller-bugs@googlegroups.com, tglx@linutronix.de,
-        viro@zeniv.linux.org.uk, xiaoguang.wang@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-15.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SORTED_RECIPS,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 5 Apr 2022 at 09:38, syzbot
-<syzbot+96ff6cfc4551fcc29342@syzkaller.appspotmail.com> wrote:
->
-> syzbot suspects this issue was fixed by commit:
->
-> commit 563fbefed46ae4c1f70cffb8eb54c02df480b2c2
-> Author: Nguyen Dinh Phi <phind.uet@gmail.com>
-> Date:   Wed Oct 27 17:37:22 2021 +0000
->
->     cfg80211: call cfg80211_stop_ap when switch from P2P_GO type
->
-> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1048725f700000
-> start commit:   dd86e7fa07a3 Merge tag 'pci-v5.11-fixes-2' of git://git.ke..
-> git tree:       upstream
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=e83e68d0a6aba5f6
-> dashboard link: https://syzkaller.appspot.com/bug?extid=96ff6cfc4551fcc29342
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11847bc4d00000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1267e5a0d00000
->
-> If the result looks correct, please mark the issue as fixed by replying with:
->
-> #syz fix: cfg80211: call cfg80211_stop_ap when switch from P2P_GO type
+Pavel Skripkin <paskripkin@gmail.com> writes:
 
-Looks possible:
+> Hi Toke,
+>
+> On 5/12/22 15:49, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> Pavel Skripkin <paskripkin@gmail.com> writes:
+>>=20
+>>> Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb(). The
+>>> problem was in incorrect htc_handle->drv_priv initialization.
+>>>
+>>> Probable call trace which can trigger use-after-free:
+>>>
+>>> ath9k_htc_probe_device()
+>>>   /* htc_handle->drv_priv =3D priv; */
+>>>   ath9k_htc_wait_for_target()      <--- Failed
+>>>   ieee80211_free_hw()		   <--- priv pointer is freed
+>>>
+>>> <IRQ>
+>>> ...
+>>> ath9k_hif_usb_rx_cb()
+>>>   ath9k_hif_usb_rx_stream()
+>>>    RX_STAT_INC()		<--- htc_handle->drv_priv access
+>>>
+>>> In order to not add fancy protection for drv_priv we can move
+>>> htc_handle->drv_priv initialization at the end of the
+>>> ath9k_htc_probe_device() and add helper macro to make
+>>> all *_STAT_* macros NULL save.
+>>>
+>>> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+>>> Reported-and-tested-by: syzbot+03110230a11411024147@syzkaller.appspotma=
+il.com
+>>> Reported-and-tested-by: syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotma=
+il.com
+>>> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+>>=20
+>> Could you link the original syzbot report in the commit message as well,
+>
+> Sure! See links below
+>
+> use-after-free bug:
+> https://syzkaller.appspot.com/bug?id=3D6ead44e37afb6866ac0c7dd121b4ce07cb=
+665f60
+>
+> NULL deref bug:
+> https://syzkaller.appspot.com/bug?id=3Db8101ffcec107c0567a0cd8acbbacec91e=
+9ee8de
+>
+> I can add them in commit message if you want :)
 
-#syz fix: cfg80211: call cfg80211_stop_ap when switch from P2P_GO type
+Yes, please do!
+
+>> please? Also that 'tested-by' implies that syzbot run-tested this? How
+>> does it do that; does it have ath9k_htc hardware?
+>>=20
+>
+> No, it uses CONFIG_USB_RAW_GADGET and CONFIG_USB_DUMMY_HCD for gadgets=20
+> for emulating usb devices.
+>
+> Basically these things "connect" fake USB device with random usb ids=20
+> from hardcoded table and try to do various things with usb driver
+
+Ah, right, hence the failures I suppose? Makes sense.
+
+> [snip]
+>
+>>> -#define TX_STAT_INC(c) (hif_dev->htc_handle->drv_priv->debug.tx_stats.=
+c++)
+>>> -#define TX_STAT_ADD(c, a) (hif_dev->htc_handle->drv_priv->debug.tx_sta=
+ts.c +=3D a)
+>>> -#define RX_STAT_INC(c) (hif_dev->htc_handle->drv_priv->debug.skbrx_sta=
+ts.c++)
+>>> -#define RX_STAT_ADD(c, a) (hif_dev->htc_handle->drv_priv->debug.skbrx_=
+stats.c +=3D a)
+>>> +#define __STAT_SAVE(expr) (hif_dev->htc_handle->drv_priv ? (expr) : 0)
+>>> +#define TX_STAT_INC(c) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debu=
+g.tx_stats.c++)
+>>> +#define TX_STAT_ADD(c, a) __STAT_SAVE(hif_dev->htc_handle->drv_priv->d=
+ebug.tx_stats.c +=3D a)
+>>> +#define RX_STAT_INC(c) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debu=
+g.skbrx_stats.c++)
+>>> +#define RX_STAT_ADD(c, a) __STAT_SAVE(hif_dev->htc_handle->drv_priv->d=
+ebug.skbrx_stats.c +=3D a)
+>>>  #define CAB_STAT_INC   priv->debug.tx_stats.cab_queued++
+>>=20
+>> s/SAVE/SAFE/ here and in the next patch (and the commit message).
+>>=20
+>
+> Oh, sorry about that! Will update in next version
+
+Thanks! Other than that, I think the patch looks reasonable...
+
+-Toke
