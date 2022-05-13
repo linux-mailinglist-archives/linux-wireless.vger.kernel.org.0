@@ -2,56 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20846525B8C
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 May 2022 08:27:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF75B525B7C
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 May 2022 08:27:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377209AbiEMGUk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 May 2022 02:20:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44780 "EHLO
+        id S1377285AbiEMGYX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 May 2022 02:24:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377208AbiEMGU2 (ORCPT
+        with ESMTP id S240920AbiEMGYT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 May 2022 02:20:28 -0400
+        Fri, 13 May 2022 02:24:19 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFAAB284912;
-        Thu, 12 May 2022 23:20:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9305828E4E3
+        for <linux-wireless@vger.kernel.org>; Thu, 12 May 2022 23:24:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 79056B82C40;
-        Fri, 13 May 2022 06:20:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95A3C34100;
-        Fri, 13 May 2022 06:20:21 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 40EECB82C52
+        for <linux-wireless@vger.kernel.org>; Fri, 13 May 2022 06:24:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65800C3411C;
+        Fri, 13 May 2022 06:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652422824;
-        bh=aHkk3J36Z8kJ+ZUFvfd3KyBC3/yaAGpykvfzHN6wCKc=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=aqKE+MHQ+fSAyMhnhSC+cX4cD/jnkTNa0vAXgm7tBAEtkZW+G/DrvhyDVU0PQUBme
-         EJz2oI5oFwO0z78KktKpH1sCnc2+CLbhM5LsiWtGGTlJe/hA8VgDMity1mReG4667D
-         bbXq2OH5QHBf2dYyJP7odXgWoXeUFbml72wE6GK1YQGne4abJIqBgtqPAy1aWmfe4I
-         zqdWtqmEE/PkxZ9vYupmQ6ayR1dRll/5y78BrhlKb0SiE7Fb7gBC9JYt/ggDPEPIeo
-         wk5QfySK/2yhiE75xLnDsZ04x23GeAwqPIsKcx0MS82kLYry9DNBwMInaTtc/me/fl
-         tponHj0EHzETA==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [v2] rtlwifi: Use pr_warn instead of WARN_ONCE
+        s=k20201202; t=1652423056;
+        bh=eymVdpYJtDpzpCVbtneJ6XoAhBjlEqEkQU0jvJxDDIU=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Hqcdi0zfVxIsRHVhP1lezCg7Oe9OYyhhqPlLciWyz1yCi9Wkj4qjDb/z7gTX6c9Io
+         b8bEqBSS5ZvOOVzRGwuVXQPBOafGz7+yujGmqHXUTKsEFHx0c+JkYa9Ugcqn/7uR7d
+         ICifTxIMAI/j8qkdneCeeornLSCsazlUeoOQ8zZzrneIRLYimro6kX+crwS4smuTaq
+         tcJjoaNE/ZCLFD2U9ZwNA8VeCE0vmH6MCXwo76OU38NAKDvGOMrLBMgbKTqUnVOVvi
+         pO6pa8NBuIzhVTo7fMkjCj1jldRP2aaq5ON5N60y0RccNQMWMHEB7MMgwQZ5h3yqqM
+         y/b7v60Pa3VuQ==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220511014453.1621366-1-dzm91@hust.edu.cn>
-References: <20220511014453.1621366-1-dzm91@hust.edu.cn>
-To:     Dongliang Mu <dzm91@hust.edu.cn>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Dongliang Mu <mudongliangabcd@gmail.com>,
-        syzkaller <syzkaller@googlegroups.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165242279758.13495.9636671855029489659.kvalo@kernel.org>
-Date:   Fri, 13 May 2022 06:20:21 +0000 (UTC)
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: pull request: mt76 2022-05-12
+References: <32474297-71bc-9f16-a2ce-d90d9e37082b@nbd.name>
+Date:   Fri, 13 May 2022 09:24:12 +0300
+In-Reply-To: <32474297-71bc-9f16-a2ce-d90d9e37082b@nbd.name> (Felix Fietkau's
+        message of "Thu, 12 May 2022 11:39:16 +0200")
+Message-ID: <87r14y54s3.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -62,24 +54,56 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dongliang Mu <dzm91@hust.edu.cn> wrote:
+Felix Fietkau <nbd@nbd.name> writes:
 
-> From: Dongliang Mu <mudongliangabcd@gmail.com>
-> 
-> This memory allocation failure can be triggered by fault injection or
-> high pressure testing, resulting a WARN.
-> 
-> Fix this by replacing WARN with pr_warn.
-> 
-> Reported-by: syzkaller <syzkaller@googlegroups.com>
-> Signed-off-by: Dongliang Mu <mudongliangabcd@gmail.com>
+> Hi Kalle,
+>
+> here's my first pull request for 5.19
+>
+> - Felix
+>
+> The following changes since commit 2c33360bce6af0948fa162cdbd373d49be5a7491:
+>
+>   wfx: use container_of() to get vif (2022-05-11 08:32:57 +0300)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2022-05-12
+>
+> for you to fetch changes up to 50662fae4fad14dace11954a2e8e5212330de14a:
+>
+>   mt76: mt7921: add ipv6 NS offload support (2022-05-12 11:33:54 +0200)
+>
+> ----------------------------------------------------------------
+> mt76 patches for 5.19
+>
+> - tx locking improvements
+> - wireless ethernet dispatch support for flow offload
+> - non-standard VHT MCS10-11 support
+> - fixes
+> - runtime PM improvements
+> - mt7921 AP mode support
+> - mt7921 ipv6 NS offload support
+>
+> ----------------------------------------------------------------
 
-Patch applied to wireless-next.git, thanks.
+There's one warning:
 
-ad732da434a2 rtlwifi: Use pr_warn instead of WARN_ONCE
+In commit
+
+  3b4852e3cfad ("mt76: mt7915: do not pass data pointer to mt7915_mcu_muru_debug_set")
+
+Fixes tag
+
+  Fixes: 1966a5078f2d2 (mt76: mt7915: add mu-mimo and ofdma debugfs knobs")
+
+has these problem(s):
+
+  - Subject does not match target commit subject
+    Just use
+	git log -1 --format='Fixes: %h ("%s")'
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220511014453.1621366-1-dzm91@hust.edu.cn/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
