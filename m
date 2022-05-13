@@ -2,158 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 029D0526A64
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 May 2022 21:29:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A1B7526C20
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 May 2022 23:12:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353561AbiEMT3V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 May 2022 15:29:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52630 "EHLO
+        id S1376264AbiEMVMD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 May 2022 17:12:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1383888AbiEMT3N (ORCPT
+        with ESMTP id S1343722AbiEMVMB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 May 2022 15:29:13 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF20F2A9
-        for <linux-wireless@vger.kernel.org>; Fri, 13 May 2022 12:29:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652470151; x=1684006151;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jxyF+pUkOhXeP3sURtGIsbWu1ZHHNg6clR3K8RRCTgA=;
-  b=YRr/HDrus9K3bTFog+/5eFva6DqxmKxJ7Bh01S15OsGlC7dH4wb3rIP0
-   6l05RDj3ajixaCv+6XG6TsmfAOlT2g7OJcw4mjHCaVXuaWJ4bzg1H0zbM
-   lnTfw0mT8867ce5LrF3DSy9VluzJ0vZGM51qGNvrDGTv2r606AILC2hfH
-   Y1MAQgGIU8opLSc/i8kG2v1fkbfu7tqsplJz27XwirlMutfkpbVw/B8hH
-   NvaxAnHKxS++hI+SD7eXDlvn9spsxiZURoMTG4x0VI2crs7/3I8wdQCVp
-   Kcy+mzdDzlIUo5ZBrufJy825TLv5fHhRwgWhx4EayfKbA/aI13BNV+izj
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10346"; a="252437737"
-X-IronPort-AV: E=Sophos;i="5.91,223,1647327600"; 
-   d="scan'208";a="252437737"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2022 12:29:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,223,1647327600"; 
-   d="scan'208";a="637409143"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 13 May 2022 12:29:01 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1npayC-000M3M-SD;
-        Fri, 13 May 2022 19:29:00 +0000
-Date:   Sat, 14 May 2022 03:28:43 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH 3/3] mac80211: mlme: use local SSID copy
-Message-ID: <202205140341.A1zkqlx2-lkp@intel.com>
-References: <20220513154805.89b855fd46f3.Ibdacb74eb4f9b21bc473072605df05bfd8bb2d75@changeid>
+        Fri, 13 May 2022 17:12:01 -0400
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-eopbgr70049.outbound.protection.outlook.com [40.107.7.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA3311010
+        for <linux-wireless@vger.kernel.org>; Fri, 13 May 2022 14:11:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Q3rjJq69rwUKgLQCfnCFHP+L5RIxAUho0N/ZfkxGhV9UOHWUi3S160D3xNL63gXD7vxNCvK6yrdr/MaHhyJHfhQ+wjRHEFQE7HNx8Rl1I8lCMQIQFASaOckwkL54DmgFBJ/JNeqZUsDkC/lqT1sJxSdvpg3gpc4keycQEXfAmYqgN/hPX1pGx9OQp5MVvhHhrIo9AYb0/T/VwJ1hd+fr+vixvTN2f2EeSc/aAHwN8of1ud3/xCuFgW0/++vBXLLfxFGkPVa09N8jEmgICpu7ESbuGpzQQXmbaF8K6WTjbKHRNUu0We0h2A6b12j/fLcXy6/eWHmVSPyXCAcnIGVyaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kZCzUX+t1GqLLmaLR6YrmC/uJRt5jqnhbb9wZWbejWM=;
+ b=YojibQOZzzL2JMDHx0E2QzCswaN38xqPKZtZ9Ldk6g3CDMdIwk/hKX/YBImYxaTYQ9fkNyZbtNX8tmantfCiq7FB0EP8hK3V0WzgE8i29M4uB6pxYtOl7CLoLceXN8KMfsx1OcWy09ccCaXmzO0lUvJb4fapKsEWaxC8z0LuVeX6WIGuybo4o6cYl2X9qFDz9iOL3GsplOfCykaCMnmXPo8lKMIWY+yXy0t1OjwvUx7Mskfsv6cxytKAqdEIIewYWmFSfJjstKJaG++GD1sR+cXESozClJD6rnmZ3TuvCuuh053yI9sXQjZU6F/pIVoifX2JSFmLO4+HAOQhr3csUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
+ dkim=pass header.d=celeno.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kZCzUX+t1GqLLmaLR6YrmC/uJRt5jqnhbb9wZWbejWM=;
+ b=lS+h+JbsRZBxM6UrnZXCzOKs2r8dn1eRSt2QVFOhm3qHhLAaWdbKOGa99xDgwtjklUP7dEFwzb8blQ5TwnJn3CWn/j4pU+KqjnfE5KR8k4iu7yA0KdhXXa3bWzIr43yzXjaj6MGKLfpHCCwGUgTj+9OGkUnA0fAg2xAYqKAke6c=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=celeno.com;
+Received: from PAXP192MB1423.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:1a5::21)
+ by VE1P192MB0815.EURP192.PROD.OUTLOOK.COM (2603:10a6:800:16b::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5250.13; Fri, 13 May
+ 2022 21:11:51 +0000
+Received: from PAXP192MB1423.EURP192.PROD.OUTLOOK.COM
+ ([fe80::f0df:27f:4129:1dd8]) by PAXP192MB1423.EURP192.PROD.OUTLOOK.COM
+ ([fe80::f0df:27f:4129:1dd8%5]) with mapi id 15.20.5250.015; Fri, 13 May 2022
+ 21:11:51 +0000
+From:   viktor.barna@celeno.com
+To:     kvalo@codeaurora.org
+Cc:     aviad.brikman@celeno.com, davem@davemloft.net,
+        eliav.farber@gmail.com, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, oleksandr.savchenko@celeno.com,
+        shay.bar@celeno.com, viktor.barna@celeno.com
+Subject: Re: [RFC v1 000/256] wireless: cl8k driver for Celeno IEEE 802.11ax devices
+Date:   Sat, 14 May 2022 00:11:40 +0300
+Message-Id: <20220513211140.2596547-1-viktor.barna@celeno.com>
+X-Mailer: git-send-email 2.36.1
+In-Reply-To: <87mtrmicj8.fsf@codeaurora.org>
+References: <87mtrmicj8.fsf@codeaurora.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AM5PR1001CA0058.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:206:15::35) To PAXP192MB1423.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:102:1a5::21)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220513154805.89b855fd46f3.Ibdacb74eb4f9b21bc473072605df05bfd8bb2d75@changeid>
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 7533c15c-7d55-483e-8d97-08da352532f0
+X-MS-TrafficTypeDiagnostic: VE1P192MB0815:EE_
+X-LD-Processed: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8,ExtFwd
+X-Microsoft-Antispam-PRVS: <VE1P192MB0815A472E389F530113E1BB1F6CA9@VE1P192MB0815.EURP192.PROD.OUTLOOK.COM>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: GUqWzMwOKq8H2pawIjlfbQUkpEo2llpff6H+5PXaCS23miPLJkBOHMwLhHwwEUyT5xAIHItX7Diqg3owzvvtiN2ra9KtpYpd1vIGUa0Kc+IHHdJTLurt7BMRiEBCUJfAKxsFVbydEZCl0l8cyDGwVqQKyQIQH+gOusNdPfE2VFpqn3B2ck9bddnhmYOzRLbMcbWMDwlOeuRN7HALUbnzi4KVzKHcz8k6dvAAA4hzdcCGuJkDZWCPw9aCD2/q+yv5SfzEt0AEtdZzZzZ3/jt+xiChaE2jidY87tISYf+yEfmD3+zz8Swr6XE+PX6QEgOwNXUR22skt46mDkMaSH5Z0Wx6b9G1AbmGpofqKz+FpIpaJWH/0lT9HyTsWMC86kJesAK+uODrHc3zGv1+QDD06HTkyqYIr7DyGzyfggHoIUTvSqdyhVlJszb6+UD1s7TbnsR8aWKfOBQKJCV3WaZikC/R+jMTIFeVPUH8t0CtMeRjtm/ZA+cvBEiGHmUCgjhWJQ7FeUjIF4wfAVttpSHUjBYq4B+CIAUuwgoSdTnim5uXdEugQ8BsUttPK6jigdW0C4YAqTm+44ZkeoUD27vOn7cP78wTUTWXc/kp6KpmxlBB9Zn0puSgoh+7N69wqfHs5Tgb7/7cQN+cr3LTRXoutmfdnLcKhrV9QDEPVHlTXJrlX8CCzkxS4RKQ5QJ0aS6axwjbcmcnx/OciyD5B7T2Feciv5DFY0i/c5rdA3im8Dg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXP192MB1423.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(39850400004)(376002)(396003)(136003)(346002)(366004)(66946007)(508600001)(86362001)(66556008)(66476007)(6666004)(6486002)(8676002)(4326008)(38100700002)(38350700002)(316002)(6916009)(186003)(1076003)(83380400001)(52116002)(9686003)(6506007)(26005)(6512007)(107886003)(2616005)(2906002)(5660300002)(36756003)(4744005)(8936002)(32563001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QIZJqZTMeaya9so08ama/Y4guIOpQuKQ4cwOGQCQe06Nva784782X3MjoD2M?=
+ =?us-ascii?Q?p1JeVPgM35mmu0dpHSBO2tLH9DjZiT4xqsQsqTWwkfnhXyFjrn5bn3aTEPWT?=
+ =?us-ascii?Q?/ZQmBfWhIV32zA5gqb/iiCAP1/hcRTFjnhjhOArM23KAd9yE3hnqPNNrbFEZ?=
+ =?us-ascii?Q?SPavxej460jsRnoSCj/UEYwAc1vP1HyAjHwtZVJO0BZLgsomak0V6ghaCvue?=
+ =?us-ascii?Q?DSOIkY25zxTrIsNZhMTBjRB7HwUp/N0BNhbeY6uBn1OxuRm3qlJ4UBCS+l0T?=
+ =?us-ascii?Q?6G/QvpZ9NulbJNyHsnUSfTOpuchzNNgTmveKyTbbV/UJ5YWhPIuQxSafm4P/?=
+ =?us-ascii?Q?sNdABLfi/KxW6b3I87xtCEkObGcUdVn6/Z26g7EjedM1ye2xeCbQ0pvj9maz?=
+ =?us-ascii?Q?+cZeFj0Cmum8a/5cCrbM9ScI3our5Gt51YS2rtF69NCnH1GBjTEfSceloT85?=
+ =?us-ascii?Q?z8lnXRqnQ7v6Fys/Qrdk/dMQux8Fw2M1d+CQpcBCfd/PGgWT8z42JOYzX7vJ?=
+ =?us-ascii?Q?8OTShKERQFaNchNNOYqB86QLluhElyvRPmF+UuBpfahBpfXo06X7QjKq7i7u?=
+ =?us-ascii?Q?BP/QHaDAvdpuJVOdZAZKak4YoSO1Z+0sq4AB1k+EM6KZOdZq9UVTXn3328Ng?=
+ =?us-ascii?Q?BCGvPnlyCVCHhSzrthU8aLz8dGuvAUUCz28viWNIU356q2FEvcWgCSE+dDqF?=
+ =?us-ascii?Q?aQ0yBq5v9IHJOvOypxNgrYJTyV86xztAN+EAm7V/IcVJY2u2G9pKEVPIZUzo?=
+ =?us-ascii?Q?fpA9HZ8dkkbhj1g46PaxSjHs1A9urtWhSPnm8eMNU8zVmw+kz/iBiSudVlW6?=
+ =?us-ascii?Q?Gh5B4YS93EUR4O0L/cvfz6Bjj9JXh4jDGio/ATNDi0+5vVp3nwD0js4ZrpUl?=
+ =?us-ascii?Q?DhqvHT6BiBgngrwCuKPLYPFynOKEUrw1YADGNwsvkwttscVQfU+OVTP7bfbr?=
+ =?us-ascii?Q?4ezkvnNTcHQN3deGDcas+TVqXkns5EXAi9lfp04mgj3xIcDA/3XqG7MkoMin?=
+ =?us-ascii?Q?C012R6ppyP7nrOM1OJpD61C+1uxcaCYwn2rLaTBlBj4tO14vRwFURXceNX9h?=
+ =?us-ascii?Q?reKuH0CNM+iJVFvPux4ua5B5B+oV8/r00LfN+4IC6N0YMTSU8dVRfEmlWVYa?=
+ =?us-ascii?Q?kRKzfuuaZRVB+PWr+qvvjqVaTCS3kt97dvjpKUuLTMAJBgSfJS700Zjb/SZX?=
+ =?us-ascii?Q?YhaJ5JqbDF+KV2YG0wfxVsC8Eu3aNEp26qoH+TGsTZV59pnw1xcgo6uwGgT1?=
+ =?us-ascii?Q?oxrH4pPVx1icHSeiFLEFGG07729GZiLT7BKz4ao4BTdPflP06oPC3CtHeyd8?=
+ =?us-ascii?Q?gFop7eYOuDFP/5XylIksQCw8AVA9HWRyEvNuFKAIRKbPGU+RFpHpgUKwe6Ia?=
+ =?us-ascii?Q?xlGs5wmUBqza9iSmufMXrR6NRShqzvdbDBSkAlT1zqL9juZDfyKfQ7trAmNn?=
+ =?us-ascii?Q?w/IbLVQi+VYJY+/AD9FqAs5JI5ABMzYpMK7KELpUUGCZjzgOOgUOKjQAIWby?=
+ =?us-ascii?Q?QSoYxrEsb+c+71+Lw1hES3MU52e4oNbPAf1yd8DBdzLQnQYFaKYKoCtSaRnc?=
+ =?us-ascii?Q?QY79RFBPgF7BSgQmAvYVuc1execdACMgH7LoLPH53Q7s+HlU9W4MKUZDNV2A?=
+ =?us-ascii?Q?Q9CrCGOY8q7CrrbXJM8vYolYUfxcPG4YrxE/L+kW4r6J9XLURVz6IWR9Us1G?=
+ =?us-ascii?Q?7JBhJFppF3tJhtfW3xJdiZ0ChB7R7g6FHcU/9q/lptWwSjQCZCfSMxk4u9uT?=
+ =?us-ascii?Q?vGhazruop89R2rP9At1JnEROCEG8hfQ=3D?=
+X-OriginatorOrg: celeno.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7533c15c-7d55-483e-8d97-08da352532f0
+X-MS-Exchange-CrossTenant-AuthSource: PAXP192MB1423.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2022 21:11:51.5720
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5CYiCPvC3SFlckRIhwVOBXC0f7fMNpFyr/rWqdzoU2DElNKH9HFjzbdI50y5aNDZmgWBtOrhB2I6JD5SRIxXiw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1P192MB0815
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+Kalle Valo <kvalo@codeaurora.org> wrote:
+> I'm not going to review a driver with a disclaimer like this.
+    
+Hi Kalle,
 
-I love your patch! Yet something to improve:
+first of all, thanks for the comment, we are very sorry for the
+prolonged delay in the response - comments from Johannes were taken into
+account and the new RFC is almost ready and on the way. Regarding the
+disclaimer mistake - our mail gateway automatically appends such text by
+modifying original message and it was not detected earlier because of the
+advanced filters which skipped such appending in internal tests. Many
+apologizes for that. Now the filter has several new exceptions for kernel.org
+and friends.
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on wireless/main v5.18-rc6 next-20220513]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Can you, please, respond to this email with info whether the disclaimer is
+still present in your inbox? That will help to continue with RFCv2. 
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Johannes-Berg/mac80211-mlme-move-in-RSSI-reporting-code/20220513-215204
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-config: hexagon-randconfig-r041-20220512 (https://download.01.org/0day-ci/archive/20220514/202205140341.A1zkqlx2-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 38189438b69ca27b4c6ce707c52dbd217583d046)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/64db83d0f7472324be9dce953061d4219b420e1c
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Johannes-Berg/mac80211-mlme-move-in-RSSI-reporting-code/20220513-215204
-        git checkout 64db83d0f7472324be9dce953061d4219b420e1c
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash net/mac80211/
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
->> net/mac80211/mlme.c:2645:23: error: no member named 'cfg' in 'struct ieee80211_vif'
-                                                 sdata->vif.cfg.ssid,
-                                                 ~~~~~~~~~~ ^
-   net/mac80211/mlme.c:2646:23: error: no member named 'cfg' in 'struct ieee80211_vif'
-                                                 sdata->vif.cfg.ssid_len,
-                                                 ~~~~~~~~~~ ^
-   2 errors generated.
-
-
-vim +2645 net/mac80211/mlme.c
-
-  2607	
-  2608	static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
-  2609	{
-  2610		struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
-  2611		u8 *dst = ifmgd->bssid;
-  2612		u8 unicast_limit = max(1, max_probe_tries - 3);
-  2613		struct sta_info *sta;
-  2614	
-  2615		/*
-  2616		 * Try sending broadcast probe requests for the last three
-  2617		 * probe requests after the first ones failed since some
-  2618		 * buggy APs only support broadcast probe requests.
-  2619		 */
-  2620		if (ifmgd->probe_send_count >= unicast_limit)
-  2621			dst = NULL;
-  2622	
-  2623		/*
-  2624		 * When the hardware reports an accurate Tx ACK status, it's
-  2625		 * better to send a nullfunc frame instead of a probe request,
-  2626		 * as it will kick us off the AP quickly if we aren't associated
-  2627		 * anymore. The timeout will be reset if the frame is ACKed by
-  2628		 * the AP.
-  2629		 */
-  2630		ifmgd->probe_send_count++;
-  2631	
-  2632		if (dst) {
-  2633			mutex_lock(&sdata->local->sta_mtx);
-  2634			sta = sta_info_get(sdata, dst);
-  2635			if (!WARN_ON(!sta))
-  2636				ieee80211_check_fast_rx(sta);
-  2637			mutex_unlock(&sdata->local->sta_mtx);
-  2638		}
-  2639	
-  2640		if (ieee80211_hw_check(&sdata->local->hw, REPORTS_TX_ACK_STATUS)) {
-  2641			ifmgd->nullfunc_failed = false;
-  2642			ieee80211_send_nullfunc(sdata->local, sdata, false);
-  2643		} else {
-  2644			ieee80211_mlme_send_probe_req(sdata, sdata->vif.addr, dst,
-> 2645						      sdata->vif.cfg.ssid,
-  2646						      sdata->vif.cfg.ssid_len,
-  2647						      ifmgd->associated->channel);
-  2648		}
-  2649	
-  2650		ifmgd->probe_timeout = jiffies + msecs_to_jiffies(probe_wait_ms);
-  2651		run_again(sdata, ifmgd->probe_timeout);
-  2652	}
-  2653	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Best regards,
+Viktor Barna
