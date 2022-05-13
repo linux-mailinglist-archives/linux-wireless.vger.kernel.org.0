@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 076D352681C
+	by mail.lfdr.de (Postfix) with ESMTP id 5434452681D
 	for <lists+linux-wireless@lfdr.de>; Fri, 13 May 2022 19:18:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376785AbiEMRSK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 May 2022 13:18:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47606 "EHLO
+        id S1358943AbiEMRSL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 May 2022 13:18:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351346AbiEMRSC (ORCPT
+        with ESMTP id S242563AbiEMRSD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 May 2022 13:18:02 -0400
+        Fri, 13 May 2022 13:18:03 -0400
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170A9AE62
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 562EEDE96
         for <linux-wireless@vger.kernel.org>; Fri, 13 May 2022 10:18:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
   t=1652462282; x=1683998282;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=QvPShWavlqycyc7emBoGM/bci8w1HSNyYRjB+2WLsK8=;
-  b=dNETtf0K/8SNPJOQ6pndQmzdbZJ6BlqytjDLPyj8TXxSyP856hDbf5BH
-   tz0mqnI0ssPfxclCrzxVNQVPKE8HRAwkncIQLV+AZy3/yX98jbuOXQx84
-   0cDWKPo12SMFuFHZPRSwL7zhyTptTYQhhghRASZNMzhS+BMJMk70qtYtK
-   SjyyUqbJ8f9HGg+WmAanUz8u3M/WcRdCpuA2CobM9ATsBSEKlChfhP/Ra
-   BF5Xl5Hv+lAqN+LqebZRIVUe1PpgtZNsk4jzyRG5czrirsVSrj1ysr5Nk
-   BTHEj6HeatEt221sz4HREYOYG7yqYX0F1VsNpDl3q0oy+1OX04t3xZAj7
-   w==;
+  bh=IhT2NfWmxVRWlbfqSlP/fzKzzP1qCdcO0mVCpmGEZa4=;
+  b=s97vtcCjyva9KOBdLJTt6ttyziWtnRWtXR9KXGawn5b/ZkpWT4nnm8Gf
+   HERBZYlgmtLfFkgi0dCcuKIgLFp0Tn/tlBLGM9KmwcsGafTSn8s2lK/LS
+   iBlOwannFLXXAmItIW38U3LVksI48Qn6FKdATC7JRHN5hUGRSDWvVeC7m
+   CMa5rrf6u78nqsJqdGFsTHkHY0ZmOvftdXWdnOl3ae+OgOhmWi6gm5vGS
+   0o6kcTT7hRFBY7qulu2VyaL0AwX8nilNC/KxJY2HrwmZ8mjsRsIBydO5u
+   VIhsCfNccdTzHBVyULMPslf/f8Gtbcd7EctZIY1XGbBwvNUDwlsWPEEZX
+   A==;
 X-IronPort-AV: E=Sophos;i="5.91,223,1647327600"; 
-   d="scan'208";a="155983588"
+   d="scan'208";a="155983590"
 Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
   by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 13 May 2022 10:17:58 -0700
 Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
  chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Fri, 13 May 2022 10:17:56 -0700
+ 15.1.2375.17; Fri, 13 May 2022 10:17:57 -0700
 Received: from NAM11-DM6-obe.outbound.protection.outlook.com (10.10.215.89) by
  email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17 via Frontend
- Transport; Fri, 13 May 2022 10:17:56 -0700
+ Transport; Fri, 13 May 2022 10:17:57 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RaA+cBDoUaijtpQZ+teb6sQfC/BYXqYAGzL8FROS3OqhpEQbkoGkXFLNdoQtPBQFvWjDhvIJGjRD+1gBoXqWEO7U3F4MvEwukXWRirVo3m3UrEV2hwWGi9h9xLJ4nhrvB/LP5FSK0nwT1uH6rVenjPb2zYbjRfwhTqu3AP5tOxRwidhOoyrNJXQ7zMrj57VHPAtur0tdPZuElzR5yka2qD+qMALnEr8zGn601uAVlI3172zlOVyeBs/rdSQrC4SHyWs9hUSh6vRuKKIg0qnPdQKjJ6z2GlyHOdUQWMh4bny2ATNsHiRidiLrruN+Zl6GNRkH6vFyzSW0o4iou5fzxw==
+ b=hXiZFgG9x5F/X1NleH/9T/gXzHPtZco3m9+imrw0OmKDEw0b8oHC+/6xwfoQol0ZZO1nBVFFtOwz/Ub5Tn//VMdnL5qLJEsqOFQDDyGB4AoIFAhJHhhrNecN+5mNdSntYXMLJfvGrCMZiT8o947jOLFKKi4gi9xEpdF3DHF84Nnwc/vCzG6gFSIV8Tt3Pj+ki58gDHcacjiO9796oGD6rdxxzh6hrQMneieCR0YMd10x33kOyEdpciSgA7w7ktEMGDDsDGgh2zacioMqLs421zhmgkCSshXinN5SgNSnZathK+N6YZQQSqZ7rhy4VDbE1mb8m+Yd6eCV8qEa0i07jw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O6OPWaXFTzPjXUf2LRzjG60TuPUkZcQmmsfiZeowXhQ=;
- b=JwGuBiLnjpeBd47fb382MzVDHiwWZ3phR8wGa4I8OmC5SeDrBqqrIwUAYA5tB5QKZ/rtDKmQR4S4TbRSjJqu0YSFVJ1xVx7E8dn3q5PLYiQ+qjuXQvNGg7h4PGHvm5sMqMTu+PJj1Wqw3LOtR17qtrRr7LzMS1wbRp6WjGK7sps9PULccCfO9LCCj/HClCyT+mMH0mOUuCuHJhX/eTIfCCOd9NT6rdujU9Kxl9JA/5gsZ+bgE69unD1ZavmdryDim1VBwMyWsTmro2b+8Lg3VLLInoznaZ/UvLQimnTaGPC8AZ+kVbqj9aQfp6WhlxZlB9ZgUR/Tr16MP9gVVeC1Kg==
+ bh=kCan1DL3Ze61y1TL9Q5Wr8xTbYicK6XEQjhlsYqKI2I=;
+ b=Wdm5soYdiX4GR7XFCYp+VuQ24mktLuBCg0B2RLQ/616igCeXXpRdgMOBC2CAsXykZLRKN/zzGBw2paUIIKIiNYehNe2eWzuhH3O/WESgP1kfo+BZcv4+SeAtY1imlffNKOV8opEAw6TqlwQ5LqQ4B901Wcg+KMA/6bFrFgFG/68fpjILuWbNZ/jqc8lG+WCM3PxqjMXGeyAnHJOEP47pqLaSxwB64PUVgmgO4NoEVy5CSRu2CpMPiNLOtc+wk8X0CW0UxkHKhtit2FzSPHbfDVIjcHVpV/LgLu1fV3uFgXJb5Z56OFY7ARpnnzTXh1+6/0npQPVToE895m86l/JK3A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=microchip.com; dmarc=pass action=none
  header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
@@ -54,26 +54,26 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=microchiptechnology.onmicrosoft.com;
  s=selector2-microchiptechnology-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O6OPWaXFTzPjXUf2LRzjG60TuPUkZcQmmsfiZeowXhQ=;
- b=YJnoD1xOzyVpXjkVuT5RBoWm7T1KFn3cMDbOEcD3MrAxTQvaLiAKsxbSEn7CSkbaw+nwC85sbuGBxkKbmPB1MQQkuohXxfSq2bTJiKBCiAJ8Oc05mdyyNsd0thnJdpi/MwUYjVgRyDVXTvERSVUpjigQSy+UfOGyNZMM8vBchDA=
+ bh=kCan1DL3Ze61y1TL9Q5Wr8xTbYicK6XEQjhlsYqKI2I=;
+ b=cZXpm6y2nVvt0C2bx6AGOZcVDnVwIxTwIkcA4z+phkZOR3BBQRba9YBpALKAX7p6z3I/1ttcE4eOIlihZsP2FublFyzJxlqLdmKmWheB5z8g8hiR6IiEbBaR9Hs8blrzuMBS3+7Ie3VQ5/fQZRVrCTOs6wOM5BtdxD+ocjykazU=
 Received: from PH0PR11MB5176.namprd11.prod.outlook.com (2603:10b6:510:3f::5)
  by BL0PR11MB3441.namprd11.prod.outlook.com (2603:10b6:208:6a::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5250.15; Fri, 13 May
- 2022 17:17:52 +0000
+ 2022 17:17:53 +0000
 Received: from PH0PR11MB5176.namprd11.prod.outlook.com
  ([fe80::d0fc:845b:ce0b:11fa]) by PH0PR11MB5176.namprd11.prod.outlook.com
  ([fe80::d0fc:845b:ce0b:11fa%9]) with mapi id 15.20.5250.015; Fri, 13 May 2022
- 17:17:52 +0000
+ 17:17:53 +0000
 From:   <Ajay.Kathat@microchip.com>
 To:     <linux-wireless@vger.kernel.org>
 CC:     <Claudiu.Beznea@microchip.com>, <Sripad.Balwadgi@microchip.com>,
         <Ajay.Kathat@microchip.com>
-Subject: [PATCH 2/4] wilc1000: remove WEP security support
-Thread-Topic: [PATCH 2/4] wilc1000: remove WEP security support
-Thread-Index: AQHYZu1gY4UNGguFWUSVWAd/9KDHRQ==
-Date:   Fri, 13 May 2022 17:17:52 +0000
-Message-ID: <20220513171741.26701-2-ajay.kathat@microchip.com>
+Subject: [PATCH 3/4] wilc1000: add WPA3 SAE support
+Thread-Topic: [PATCH 3/4] wilc1000: add WPA3 SAE support
+Thread-Index: AQHYZu1h0NW5KIWnr0OKB0zhecXd5Q==
+Date:   Fri, 13 May 2022 17:17:53 +0000
+Message-ID: <20220513171741.26701-3-ajay.kathat@microchip.com>
 References: <20220513171741.26701-1-ajay.kathat@microchip.com>
 In-Reply-To: <20220513171741.26701-1-ajay.kathat@microchip.com>
 Accept-Language: en-US
@@ -84,58 +84,58 @@ x-mailer: git-send-email 2.25.1
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=microchip.com;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 4676d97e-e898-4d64-a01b-08da35048326
+x-ms-office365-filtering-correlation-id: e80b7827-8f73-41d5-baf1-08da350483a9
 x-ms-traffictypediagnostic: BL0PR11MB3441:EE_
-x-microsoft-antispam-prvs: <BL0PR11MB3441177B42E972700D2F0B3FE3CA9@BL0PR11MB3441.namprd11.prod.outlook.com>
+x-microsoft-antispam-prvs: <BL0PR11MB3441AFDC41EE75E6F6A8777DE3CA9@BL0PR11MB3441.namprd11.prod.outlook.com>
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: NNY6T/AS0Jt73ahGpUzc2oDs0X8RcyM8GlZS/edE3W1DPUTV53v5HMMy/Qgw/PCIOIU6eYsBm4Dozthsyc2wykdfE4eS8Mej6o5mf39syt9eZkaFt9ltPXPv+LVYh2jHrSI5Mzk7mO+ElgAjlxG4ahz5WJtv7r3g4ZkjXMwZyv7SNmoYw13HGdlNJS/wv9mqef2oICQp4qDlvFRkwlO3qHzGSYOD1AX4+Rg2ahG9cVp2ykdNYsHd1+IVKalt2XKk444jiQUIHbunhv/Za9iQ8zgD/0VTtHHHw9ak1+p4byIAqoi1v3PdeEN4VVHdYmysZ2UjWma6UiTihwODi0Z+nTI54apoNMFwtGKs71FeV3Tcf1Lr+vUB1nbxW6tfcjrrUjQDO4Iu+88N+j7VCrHDdCRle9pY50iazzGf5v5JfCx0X1VBl2lTdQA4v7e1fEYEXadES93FF6rElkQVLYvmNLRCkxu0NHZ9bYjOeym5luEYOKMOKruG8kTjySC/TdRC8AOD060u5ETcw3FaHaCrpzUtC0OWLZql8rcNzlHYip4FPWxEbEbHqowV0IpLYr1Dxn6HX8nJpXFqaFBOvv0xpJ1a353u0c5I6JKmY08Ygx9He5ut9hOp4esWMTYsC0QWYwQq/5qQbsRx5JzbCU2nLitr9pMTEH3WFQ8GGZPNOyjD4DEVuzDiJVFjvoKzei4Sd8lK9RP5C7SEbiy1wkcyxA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5176.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(316002)(54906003)(38070700005)(38100700002)(1076003)(36756003)(186003)(83380400001)(107886003)(6486002)(508600001)(8936002)(15650500001)(2906002)(5660300002)(86362001)(6506007)(91956017)(6916009)(122000001)(4326008)(8676002)(6512007)(71200400001)(26005)(2616005)(66476007)(66946007)(66556008)(76116006)(66446008)(64756008);DIR:OUT;SFP:1101;
+x-microsoft-antispam-message-info: +j4izPdkDyI8s4MvXHhQ6RFKtCDMqPXKCL/ZGDHHeh9Fptwrg52O5hMyZ8c/mXnspTzZCZqp8IkwWIuNmi9955gO6i2RaC4QYI8YYUwyabnPSzC5syv9JaT43NPzbS4YIhhuXV2dX7WS1sNaQmed2xxPjBau3gGAZJURmAh2yYWhzNVdlWIh2bqwhoy1oQ+fL5WVUmUAAyr7tyPSgpyZzSZ+2OXbxOMpm9x2spg/vdtWDyUcnKz2hc0UycwhRpAHXH+u5+/tCB74YwgtjYNZP8mzmiadDdik8IGMuMDravlNu1wm1GWcMMJTxr1YiuUK6vecsZk0v6cf+uJut2E9SBQjFvD0UXuruyOje/UixTO1+/QRYg9hAzf8UzIJISE1rQYzRsZB0uu6bpLV8j8fAwnjX1hfvCdoAQ4zBnHKZBIhneladITl61NFQxc0uhpV+M/vjZ7OqV6+Q/oE6d7q+laZAeWU6KxLeFqQgxkDTSJPRG/HJvmOQTxpMftXAQCaNpFcJiLOVeBKNMMi5JKiJ0d0edMSjo1U6E3kuGKSm0TAdI6AGKUBH7dWh92F03Cj5FBis2MfcSHpBNzYaTKsnHb6zd1YOkZXk0xFs2nj85YlypqSZboyWThlLif9GVFvnKrg+WzGaROHzyPZeQZ5ZiosOofBkdxZyoGJxiSchK6ILEHMmdmYPwq+80HSikBvW7q2Ftkn8aQ66uZYTkudXA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5176.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(316002)(54906003)(38070700005)(38100700002)(1076003)(36756003)(186003)(83380400001)(107886003)(6486002)(30864003)(508600001)(8936002)(2906002)(5660300002)(86362001)(6506007)(91956017)(6916009)(122000001)(4326008)(8676002)(6512007)(71200400001)(26005)(2616005)(66476007)(66946007)(66556008)(76116006)(66446008)(64756008);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?tba7mu+s+4u08M1SPAs3HNBTz0uEOVPFwqWEpXoxo9iHN5o8fUXdHmXFaW?=
- =?iso-8859-1?Q?lBGk9Ie0HztEUASKmu7k0Tf7feRZGCw5bix1wcLEs6KCvbDLrlaXPsDIix?=
- =?iso-8859-1?Q?iOMv0S8WD+/T7KV9lnMtkHPeBRMjU2k4x6vGDvxbsmy+9AHs+M0fp/02j5?=
- =?iso-8859-1?Q?fAAmg+Muya+doSo5eD53UNhrHorOHg7SuewWhA5MJfR8L3TkL1O4ogW36z?=
- =?iso-8859-1?Q?JShvK0Af1zv5WBTOl25APcSJcKUhffM2VNiHbH1uglUKIi+g5c0JIF/Amz?=
- =?iso-8859-1?Q?4NxtGcMNqSvybJB82oda+hnc71upbX1kBO6UJ9hKKbSLGADBmGqY84UYWZ?=
- =?iso-8859-1?Q?yuFiDTyXcn+fSqIYKgjcc3g4I7nREaN7Y3PkLfIIj60TY04i8kyaIXIu2p?=
- =?iso-8859-1?Q?wrsrxuYZhnSzSmWLTUaStTP6+ng2jw+MiKpg7+Bl2gc8TcIcbqn0Dz+B7+?=
- =?iso-8859-1?Q?lqUxXa0aNX6hQ4DOOfIWL5eI3n9SXpzZjZrxcKkgUFHAR4cPdOkKphtH7M?=
- =?iso-8859-1?Q?5yd1qoMMDuwfUBk1F650m98M47/keZ+7gJifOerF3AwEyx0qtnolPYHlKa?=
- =?iso-8859-1?Q?2U+tqVeuZ+zE4PdhcbVrG2qlAZsgVGcY9pILnQP2JZ5czx9DfIug84WBbs?=
- =?iso-8859-1?Q?PIRiTK10J22jzJsn8l1UtAhacNx7m2VleTdUwcJu/tScofHUBcOMGPNLFw?=
- =?iso-8859-1?Q?4YpcLaz9ffa8i8ZPyjS8rS67eygsm5hzitDISbWKrp3P7mSTxj7yrUIJ1r?=
- =?iso-8859-1?Q?pllFzBeg9XrpZPGElhhtpeAXeO0ctnWcC9niZrZFBeOR0rmPqzblxHzlWC?=
- =?iso-8859-1?Q?+M3TSKBBLrOVoFCRkTqvqvVPouUSLk+hDlHja8Ez7aGTZowC7Rj10lAsDr?=
- =?iso-8859-1?Q?7NMqBEwEZ2puLns8CYuCUpm3j1U8Uff/AkrzxkdCKTGmzAEANrCVcHpFo5?=
- =?iso-8859-1?Q?Zor6XCpKpdnAuUdVJLj5X6sg7wLXaLO29JN8qACEO4VWJ2XBs0+PML/VvC?=
- =?iso-8859-1?Q?9OyW5EldE2zHRKVVf94iFV/MlIvd/sPTVcKTjJYKD8qqLhCTk1uyVGZn2E?=
- =?iso-8859-1?Q?2JYR8EwGkf6WmEE3n4mQSEWCUzbnZRZvhXihW3pJcs/+uZkF7k3ye9hTQ/?=
- =?iso-8859-1?Q?pcMAQPFR7KH6qzTrzyBp4nK1UWip8eD9JntIAzkx1TaVAgEtXW1a8kCD2B?=
- =?iso-8859-1?Q?ClzlrzpwY3B3w9nTxChwnSQ+hTcJOXK8zrF8B5MoE0aidIpnqFSKJQbPwA?=
- =?iso-8859-1?Q?O/MydWU3kHnBMkjGFyyCZyj2bfv2LMqWTpS7F+NtQacb/WJeozRglf9bGq?=
- =?iso-8859-1?Q?w80JvRdFOxfcvQtv5MbmJC/foJ0LQVbSbWvuanGdEUjmbHfjMhGrlTpduv?=
- =?iso-8859-1?Q?vAAJmqth+FfLQh6O1n7nbiIYrcB0NHJPmFC+PDMONDv9y10HOXjMFQ0xt9?=
- =?iso-8859-1?Q?HO0Lt371Nijf/zdUBE/LFt4XfrYk57i52dwM1oNpPhYbIKZtj2yVD9BjBb?=
- =?iso-8859-1?Q?YKBYBDsSjjmdWTTO7jLH90lbpLzybaHPVyrJ1M/7iMXgHaMAyU5C02HF/D?=
- =?iso-8859-1?Q?aE5QG2AUEGarz1e0TVMvbAv+L0OLST6LAprk3YmYZaZ2J9hUHVq0hE6HSW?=
- =?iso-8859-1?Q?7IZSeWNniF53l3C9J0fzNm0hvZk67gPa9uy7R47JNYaeQxVQ51gMhJsIPT?=
- =?iso-8859-1?Q?jk/KCiQsuuiqtb8VLqYh6oGFSr+pn11nGPWIf8Z1vtyXknvibKVpCfszMi?=
- =?iso-8859-1?Q?qc86o7+aQeenfgi2/gHXIfXPzDMEvF4VenyrzjQoy7L9x5hnG9R5/5K333?=
- =?iso-8859-1?Q?YkHiLQ68x0RYEt+vAc/+Q0c1IjV0T2vzLZnwSPGthRzs7K83qfBo?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?qHRd08xOubOoPeAoOO97SXTsYeagVeY0e2+234fluG9M8QlU+l9SryUaK6?=
+ =?iso-8859-1?Q?LEoEPpX5v2kpVmJnREB0UsDacXOyuu/25rg7fzGy6xoKzLDDM7LhrOKT8H?=
+ =?iso-8859-1?Q?btwIGlg+dYyP7a03k9lsrDHzj6Cp4AFqxFqT/a0ePANAIRxYK53ztNC2D9?=
+ =?iso-8859-1?Q?21U3xU/7VHdG0HnzljWkPkTSfkGK6PWSU4tI1ScqZP+Hm8VQOEUDcYc7+C?=
+ =?iso-8859-1?Q?AdKx2YwSuryNdBhQFjEkbahWI8NL0vtlCMeBL30camzHdmrfkGC2i02jCh?=
+ =?iso-8859-1?Q?+PyWhGGA1UzymYmuwsqLb2p2rrcz+j8u7nO3a+DlJtgw/nbMgG9yoGtqdc?=
+ =?iso-8859-1?Q?kEBtLANL6dXUJAlbyqUHcBvwSLI9z9KgapflZlVyw5nJEjfv6kxjhYgRV1?=
+ =?iso-8859-1?Q?Q8nZbQnSBIs6ML07hCHKwttJ+TQnKR2po4KMsMfxc57//yl2aioR3fOCGA?=
+ =?iso-8859-1?Q?cOtQnHhoWhWYpsHvB8QpdZ5pDO6VSHynZzyorb8V2DYU1Yh2hA9viV5l8l?=
+ =?iso-8859-1?Q?RvHsdUT482y8224D3X9s8x6peI59XlpWSD5CYJ6RTyJRg/nCyELb48SOne?=
+ =?iso-8859-1?Q?kdUi1IBd9+VSPdRJjdQHe0qMsXaZfEMYI4Qf7hVCPYZ3UjatVr32gZ1PO+?=
+ =?iso-8859-1?Q?646QUKLdYuX6Czopo1V/M++ZKBYO5OQibrpA7RstNfOiKp4AVKBBtGRmKz?=
+ =?iso-8859-1?Q?ldtQIwcw86TeWkMxI/MikEOlzLm7pH9jijmpPNqlb0d2Z9UQJufdqFK+uH?=
+ =?iso-8859-1?Q?iBaWO/wMbyB+oK8WR9gbxSKNVHxeR+p0pM8jADBD1t17zGBrA7nomA7rv2?=
+ =?iso-8859-1?Q?5dvK45g6+FhYbtNcvwMXhxx1/quqJRZzRtKeschJz+gO4pdw9kwHgP/UmT?=
+ =?iso-8859-1?Q?BuicOjXUuuLtsoll6jHQ462yJJiMH+MyloS4dUu5djW5Cg2rT2rI+in8PP?=
+ =?iso-8859-1?Q?fymCw4DJhoVfXRZnAnXxDNMQMzgX2xph2W2F/QjA8X4g0ry8OtuAjFHmSb?=
+ =?iso-8859-1?Q?aBvqIP5eMfY/v/sbc5EQTKDu/5rqLvnmlLVK0CEE/KcT2TNkcU26c+CHbx?=
+ =?iso-8859-1?Q?VCmEiiND1ADI/RrIZI/FPR6W+YLt0A2XlIkS8lCwzVfrw0GmKyvZIjOnTq?=
+ =?iso-8859-1?Q?6oq1QbIFaaqP4xglU85BTYcDq8iVA/8LX2+gIjA7dQdoeqaGWGu6oZdxJd?=
+ =?iso-8859-1?Q?fFjAQKYyDA3TL5U//ieZrp89gLb7Xqy5eSKkP8nl7BOap7c0VS6P5OVXNf?=
+ =?iso-8859-1?Q?oXIxW+r9Zxc+SfBPBlNcrOd6ZHO+w1XBji/kPNT9c8oAujQ3EuJ3IUpUPD?=
+ =?iso-8859-1?Q?5QHpVnIO1NfKRQ4qmrG28QOLudUtaAGvvSSKZ14jX7Sf8iouhl1/Ato0xb?=
+ =?iso-8859-1?Q?IiL18LUdTFlITkSTDHLZYD4pwbKBNapWr6GV58u2QKwH7tP6i3ol5dTvof?=
+ =?iso-8859-1?Q?3TaVQBTTJunORx43o4/mlkOZbdCDW1U6MtX+Q6mM4F77pQ/1Wnnms1994P?=
+ =?iso-8859-1?Q?viIWIKOr7stbPdBQ0ToXaSjbZUHLrURcSmm0vzEX9+dib9S8IvJAvL1WTz?=
+ =?iso-8859-1?Q?zCtkRZ483UYmkvfQ7gSsc526s0bnLRqNKk+17xb5KRXBk1/Km/iINL5KL7?=
+ =?iso-8859-1?Q?DCqBT0xnX52CGfZXZQvyXSA7W0upPZezes8LwanlqXQnC6oiosHMSaRai8?=
+ =?iso-8859-1?Q?fRJfO0kAW/mq3GXtfVQQ5vlnvQh3HqeH1uVma0SdgYAnGutu8+nf7XLDOi?=
+ =?iso-8859-1?Q?rta4k7GbWp64i0IOOKLVUO8PAjY5vSMJQOE9F0beU2vBgnPImYV8+JvW8g?=
+ =?iso-8859-1?Q?IH5FIbk6jfq7H0D4wzqmpD1R3Mp7CA995e713fqz+JRTl0d3Tu+l?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5176.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4676d97e-e898-4d64-a01b-08da35048326
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2022 17:17:52.2522
+X-MS-Exchange-CrossTenant-Network-Message-Id: e80b7827-8f73-41d5-baf1-08da350483a9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2022 17:17:53.1270
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: q6atOWHG1EW090r97GM9DKV/jPpM6xg9S6oKSQL299OyvEE/DLTqFnCzFcFJDEpT35Qhwumgp17WK9EK6gfPfq6uaJgj9/vYtizGim0GQdI=
+X-MS-Exchange-CrossTenant-userprincipalname: 2oORap9RMHJObgVPnSLhRD6IzF4Tvvm4FZUxzn34IA5VEUNgaJjJdy5zFmz2njHInyjPr4Be1cv4QcjHvSX67u0s+pcQWPufopH7a1/z2hQ=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR11MB3441
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
@@ -149,338 +149,427 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ajay Singh <ajay.kathat@microchip.com>
 
-Deprecated WEP security for WILC driver as well as in firmware from
-15.6 FW release onwards. After WEP security removal, freeup some codespace
-which helped to add new features like WPA3 etc.
+Enable SAE authentication for AP and STA mode. In STA mode, allow the
+driver to pass the auth frames which are received from firmware to
+userspace application(hostapd) so that SAE authentication is offloaded to
+userspace.
 
 Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
 ---
- .../wireless/microchip/wilc1000/cfg80211.c    |  76 +------------
- drivers/net/wireless/microchip/wilc1000/fw.h  |   6 --
- drivers/net/wireless/microchip/wilc1000/hif.c | 102 ------------------
- drivers/net/wireless/microchip/wilc1000/hif.h |   6 --
- .../net/wireless/microchip/wilc1000/netdev.h  |  10 --
- 5 files changed, 2 insertions(+), 198 deletions(-)
+ .../wireless/microchip/wilc1000/cfg80211.c    | 62 +++++++++++++++++--
+ drivers/net/wireless/microchip/wilc1000/fw.h  |  9 +++
+ drivers/net/wireless/microchip/wilc1000/hif.c | 44 ++++++++++++-
+ drivers/net/wireless/microchip/wilc1000/hif.h |  3 +
+ .../net/wireless/microchip/wilc1000/netdev.c  | 13 +++-
+ .../net/wireless/microchip/wilc1000/netdev.h  |  3 +-
+ .../net/wireless/microchip/wilc1000/wlan.c    |  3 +-
+ .../net/wireless/microchip/wilc1000/wlan.h    |  2 +
+ .../net/wireless/microchip/wilc1000/wlan_if.h | 10 ++-
+ 9 files changed, 135 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/n=
 et/wireless/microchip/wilc1000/cfg80211.c
-index 8d8378bafd9b..256026d57a70 100644
+index 256026d57a70..ea59ce9fd991 100644
 --- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
 +++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-@@ -313,32 +313,9 @@ static int connect(struct wiphy *wiphy, struct net_dev=
-ice *dev,
-=20
- 	vif->connecting =3D true;
-=20
--	memset(priv->wep_key, 0, sizeof(priv->wep_key));
--	memset(priv->wep_key_len, 0, sizeof(priv->wep_key_len));
--
- 	cipher_group =3D sme->crypto.cipher_group;
- 	if (cipher_group !=3D 0) {
--		if (cipher_group =3D=3D WLAN_CIPHER_SUITE_WEP40) {
--			security =3D WILC_FW_SEC_WEP;
--
--			priv->wep_key_len[sme->key_idx] =3D sme->key_len;
--			memcpy(priv->wep_key[sme->key_idx], sme->key,
--			       sme->key_len);
--
--			wilc_set_wep_default_keyid(vif, sme->key_idx);
--			wilc_add_wep_key_bss_sta(vif, sme->key, sme->key_len,
--						 sme->key_idx);
--		} else if (cipher_group =3D=3D WLAN_CIPHER_SUITE_WEP104) {
--			security =3D WILC_FW_SEC_WEP_EXTENDED;
--
--			priv->wep_key_len[sme->key_idx] =3D sme->key_len;
--			memcpy(priv->wep_key[sme->key_idx], sme->key,
--			       sme->key_len);
--
--			wilc_set_wep_default_keyid(vif, sme->key_idx);
--			wilc_add_wep_key_bss_sta(vif, sme->key, sme->key_len,
--						 sme->key_idx);
--		} else if (sme->crypto.wpa_versions & NL80211_WPA_VERSION_2) {
-+		if (sme->crypto.wpa_versions & NL80211_WPA_VERSION_2) {
- 			if (cipher_group =3D=3D WLAN_CIPHER_SUITE_TKIP)
- 				security =3D WILC_FW_SEC_WPA2_TKIP;
- 			else
-@@ -373,10 +350,6 @@ static int connect(struct wiphy *wiphy, struct net_dev=
+@@ -20,9 +20,11 @@
+ static const struct ieee80211_txrx_stypes
+ 	wilc_wfi_cfg80211_mgmt_types[NUM_NL80211_IFTYPES] =3D {
+ 	[NL80211_IFTYPE_STATION] =3D {
+-		.tx =3D 0xffff,
++		.tx =3D BIT(IEEE80211_STYPE_ACTION >> 4) |
++			BIT(IEEE80211_STYPE_AUTH >> 4),
+ 		.rx =3D BIT(IEEE80211_STYPE_ACTION >> 4) |
+-			BIT(IEEE80211_STYPE_PROBE_REQ >> 4)
++			BIT(IEEE80211_STYPE_PROBE_REQ >> 4) |
++			BIT(IEEE80211_STYPE_AUTH >> 4)
+ 	},
+ 	[NL80211_IFTYPE_AP] =3D {
+ 		.tx =3D 0xffff,
+@@ -350,6 +352,16 @@ static int connect(struct wiphy *wiphy, struct net_dev=
 ice *dev,
  		auth_type =3D WILC_FW_AUTH_OPEN_SYSTEM;
  		break;
 =20
--	case NL80211_AUTHTYPE_SHARED_KEY:
--		auth_type =3D WILC_FW_AUTH_SHARED_KEY;
--		break;
--
++	case NL80211_AUTHTYPE_SAE:
++		auth_type =3D WILC_FW_AUTH_SAE;
++		if (sme->ssid_len) {
++			memcpy(vif->auth.ssid.ssid, sme->ssid, sme->ssid_len);
++			vif->auth.ssid.ssid_len =3D sme->ssid_len;
++		}
++		vif->auth.key_mgmt_suite =3D cpu_to_be32(sme->crypto.akm_suites[0]);
++		ether_addr_copy(vif->auth.bssid, sme->bssid);
++		break;
++
  	default:
  		break;
  	}
-@@ -487,14 +460,6 @@ static int disconnect(struct wiphy *wiphy, struct net_=
-device *dev,
- 	return ret;
- }
-=20
--static inline void wilc_wfi_cfg_copy_wep_info(struct wilc_priv *priv,
--					      u8 key_index,
--					      struct key_params *params)
--{
--	priv->wep_key_len[key_index] =3D params->key_len;
--	memcpy(priv->wep_key[key_index], params->key, params->key_len);
--}
--
- static int wilc_wfi_cfg_allocate_wpa_entry(struct wilc_priv *priv, u8 idx)
- {
- 	if (!priv->wilc_gtk[idx]) {
-@@ -552,33 +517,6 @@ static int add_key(struct wiphy *wiphy, struct net_dev=
-ice *netdev, u8 key_index,
- 	struct wilc_priv *priv =3D &vif->priv;
-=20
- 	switch (params->cipher) {
--	case WLAN_CIPHER_SUITE_WEP40:
--	case WLAN_CIPHER_SUITE_WEP104:
--		if (priv->wdev.iftype =3D=3D NL80211_IFTYPE_AP) {
--			wilc_wfi_cfg_copy_wep_info(priv, key_index, params);
--
--			if (params->cipher =3D=3D WLAN_CIPHER_SUITE_WEP40)
--				mode =3D WILC_FW_SEC_WEP;
--			else
--				mode =3D WILC_FW_SEC_WEP_EXTENDED;
--
--			ret =3D wilc_add_wep_key_bss_ap(vif, params->key,
--						      params->key_len,
--						      key_index, mode,
--						      WILC_FW_AUTH_OPEN_SYSTEM);
--			break;
--		}
--		if (memcmp(params->key, priv->wep_key[key_index],
--			   params->key_len)) {
--			wilc_wfi_cfg_copy_wep_info(priv, key_index, params);
--
--			ret =3D wilc_add_wep_key_bss_sta(vif, params->key,
--						       params->key_len,
--						       key_index);
--		}
--
--		break;
--
- 	case WLAN_CIPHER_SUITE_TKIP:
- 	case WLAN_CIPHER_SUITE_CCMP:
- 		if (priv->wdev.iftype =3D=3D NL80211_IFTYPE_AP ||
-@@ -676,13 +614,6 @@ static int del_key(struct wiphy *wiphy, struct net_dev=
-ice *netdev,
- 		priv->wilc_ptk[key_index] =3D NULL;
+@@ -357,6 +369,10 @@ static int connect(struct wiphy *wiphy, struct net_dev=
+ice *dev,
+ 	if (sme->crypto.n_akm_suites) {
+ 		if (sme->crypto.akm_suites[0] =3D=3D WLAN_AKM_SUITE_8021X)
+ 			auth_type =3D WILC_FW_AUTH_IEEE8021;
++		else if (sme->crypto.akm_suites[0] =3D=3D WLAN_AKM_SUITE_PSK_SHA256)
++			auth_type =3D WILC_FW_AUTH_OPEN_SYSTEM_SHA256;
++		else if (sme->crypto.akm_suites[0] =3D=3D WLAN_AKM_SUITE_8021X_SHA256)
++			auth_type =3D WILC_FW_AUTH_IEE8021X_SHA256;
  	}
 =20
--	if (key_index <=3D 3 && priv->wep_key_len[key_index]) {
--		memset(priv->wep_key[key_index], 0,
--		       priv->wep_key_len[key_index]);
--		priv->wep_key_len[key_index] =3D 0;
--		wilc_remove_wep_key(vif, key_index);
--	}
--
- 	return 0;
+ 	if (wfi_drv->usr_scan_req.scan_result) {
+@@ -905,6 +921,18 @@ static inline void wilc_wfi_cfg_parse_ch_attr(u8 *buf,=
+ u32 len, u8 sta_ch)
+ 	}
  }
 =20
-@@ -713,13 +644,10 @@ static int get_key(struct wiphy *wiphy, struct net_de=
-vice *netdev, u8 key_index,
- 	return 0;
- }
-=20
-+/* wiphy_new_nm() will WARNON if not present */
- static int set_default_key(struct wiphy *wiphy, struct net_device *netdev,
- 			   u8 key_index, bool unicast, bool multicast)
++bool wilc_wfi_mgmt_frame_rx(struct wilc_vif *vif, u8 *buff, u32 size)
++{
++	struct wilc *wl =3D vif->wilc;
++	struct wilc_priv *priv =3D &vif->priv;
++	int freq, ret;
++
++	freq =3D ieee80211_channel_to_frequency(wl->op_ch, NL80211_BAND_2GHZ);
++	ret =3D cfg80211_rx_mgmt(&priv->wdev, freq, 0, buff, size, 0);
++
++	return ret;
++}
++
+ void wilc_wfi_p2p_rx(struct wilc_vif *vif, u8 *buff, u32 size)
  {
--	struct wilc_vif *vif =3D netdev_priv(netdev);
--
--	wilc_set_wep_default_keyid(vif, key_index);
--
- 	return 0;
+ 	struct wilc *wl =3D vif->wilc;
+@@ -1090,8 +1118,14 @@ static int mgmt_tx(struct wiphy *wiphy,
+ 		goto out_txq_add_pkt;
+ 	}
+=20
+-	if (!ieee80211_is_public_action((struct ieee80211_hdr *)buf, len))
++	if (!ieee80211_is_public_action((struct ieee80211_hdr *)buf, len)) {
++		if (chan)
++			wilc_set_mac_chnl_num(vif, chan->hw_value);
++		else
++			wilc_set_mac_chnl_num(vif, vif->wilc->op_ch);
++
+ 		goto out_set_timeout;
++	}
+=20
+ 	d =3D (struct wilc_p2p_pub_act_frame *)(&mgmt->u.action);
+ 	if (d->oui_type !=3D WLAN_OUI_TYPE_WFA_P2P ||
+@@ -1158,6 +1192,7 @@ void wilc_update_mgmt_frame_registrations(struct wiph=
+y *wiphy,
+ 	struct wilc_vif *vif =3D netdev_priv(wdev->netdev);
+ 	u32 presp_bit =3D BIT(IEEE80211_STYPE_PROBE_REQ >> 4);
+ 	u32 action_bit =3D BIT(IEEE80211_STYPE_ACTION >> 4);
++	u32 pauth_bit =3D BIT(IEEE80211_STYPE_AUTH >> 4);
+=20
+ 	if (wl->initialized) {
+ 		bool prev =3D vif->mgmt_reg_stypes & presp_bit;
+@@ -1171,10 +1206,26 @@ void wilc_update_mgmt_frame_registrations(struct wi=
+phy *wiphy,
+=20
+ 		if (now !=3D prev)
+ 			wilc_frame_register(vif, IEEE80211_STYPE_ACTION, now);
++
++		prev =3D vif->mgmt_reg_stypes & pauth_bit;
++		now =3D upd->interface_stypes & pauth_bit;
++		if (now !=3D prev)
++			wilc_frame_register(vif, IEEE80211_STYPE_AUTH, now);
+ 	}
+=20
+ 	vif->mgmt_reg_stypes =3D
+-		upd->interface_stypes & (presp_bit | action_bit);
++		upd->interface_stypes & (presp_bit | action_bit | pauth_bit);
++}
++
++static int external_auth(struct wiphy *wiphy, struct net_device *dev,
++			 struct cfg80211_external_auth_params *auth)
++{
++	struct wilc_vif *vif =3D netdev_priv(dev);
++
++	if (auth->status =3D=3D WLAN_STATUS_SUCCESS)
++		wilc_set_external_auth_param(vif, auth);
++
++	return 0;
  }
 =20
+ static int set_cqm_rssi_config(struct wiphy *wiphy, struct net_device *dev=
+,
+@@ -1590,6 +1641,7 @@ static const struct cfg80211_ops wilc_cfg80211_ops =
+=3D {
+ 	.change_bss =3D change_bss,
+ 	.set_wiphy_params =3D set_wiphy_params,
+=20
++	.external_auth =3D external_auth,
+ 	.set_pmksa =3D set_pmksa,
+ 	.del_pmksa =3D del_pmksa,
+ 	.flush_pmksa =3D flush_pmksa,
+@@ -1732,7 +1784,7 @@ struct wilc *wilc_create_wiphy(struct device *dev)
+ 				BIT(NL80211_IFTYPE_P2P_GO) |
+ 				BIT(NL80211_IFTYPE_P2P_CLIENT);
+ 	wiphy->flags |=3D WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL;
+-
++	wiphy->features |=3D NL80211_FEATURE_SAE;
+ 	set_wiphy_dev(wiphy, dev);
+ 	wl->wiphy =3D wiphy;
+ 	ret =3D wiphy_register(wiphy);
 diff --git a/drivers/net/wireless/microchip/wilc1000/fw.h b/drivers/net/wir=
 eless/microchip/wilc1000/fw.h
-index 1114530d03e4..237ca348d1f8 100644
+index 237ca348d1f8..9449c5d0b472 100644
 --- a/drivers/net/wireless/microchip/wilc1000/fw.h
 +++ b/drivers/net/wireless/microchip/wilc1000/fw.h
-@@ -41,12 +41,6 @@ struct wilc_drv_handler {
- 	u8 mode;
+@@ -110,4 +110,13 @@ struct wilc_join_bss_param {
+ 		struct wilc_noa_opp_enable opp_en;
+ 	};
  } __packed;
-=20
--struct wilc_wep_key {
--	u8 index;
--	u8 key_len;
--	u8 key[];
--} __packed;
--
- struct wilc_sta_wpa_ptk {
- 	u8 mac_addr[ETH_ALEN];
- 	u8 key_len;
++
++struct wilc_external_auth_param {
++	u8 action;
++	u8 bssid[ETH_ALEN];
++	u8 ssid[IEEE80211_MAX_SSID_LEN];
++	u8 ssid_len;
++	__le32 key_mgmt_suites;
++	__le16 status;
++} __packed;
+ #endif
 diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wi=
 reless/microchip/wilc1000/hif.c
-index 71b44cfe0dfc..573750356007 100644
+index 573750356007..5d9d3aba737c 100644
 --- a/drivers/net/wireless/microchip/wilc1000/hif.c
 +++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-@@ -1038,108 +1038,6 @@ static void timer_connect_cb(struct timer_list *t)
- 		kfree(msg);
+@@ -306,7 +306,10 @@ static int wilc_send_connect_wid(struct wilc_vif *vif)
+ 		netdev_err(vif->ndev, "failed to send config packet\n");
+ 		goto error;
+ 	} else {
+-		hif_drv->hif_state =3D HOST_IF_WAITING_CONN_RESP;
++                if (conn_attr->auth_type =3D=3D WILC_FW_AUTH_SAE)
++                        hif_drv->hif_state =3D HOST_IF_EXTERNAL_AUTH;
++                else
++                        hif_drv->hif_state =3D HOST_IF_WAITING_CONN_RESP;
+ 	}
+=20
+ 	return 0;
+@@ -665,7 +668,12 @@ static void handle_rcvd_gnrl_async_info(struct work_st=
+ruct *work)
+ 		goto free_msg;
+ 	}
+=20
+-	if (hif_drv->hif_state =3D=3D HOST_IF_WAITING_CONN_RESP) {
++
++        if (hif_drv->hif_state =3D=3D HOST_IF_EXTERNAL_AUTH) {
++                cfg80211_external_auth_request(vif->ndev, &vif->auth,
++					       GFP_KERNEL);
++                hif_drv->hif_state =3D HOST_IF_WAITING_CONN_RESP;
++        } else if (hif_drv->hif_state =3D=3D HOST_IF_WAITING_CONN_RESP) {
+ 		host_int_parse_assoc_resp_info(vif, mac_info->status);
+ 	} else if (mac_info->status =3D=3D WILC_MAC_STATUS_DISCONNECTED) {
+ 		if (hif_drv->hif_state =3D=3D HOST_IF_CONNECTED) {
+@@ -710,7 +718,8 @@ int wilc_disconnect(struct wilc_vif *vif)
+ 	}
+=20
+ 	if (conn_info->conn_result) {
+-		if (hif_drv->hif_state =3D=3D HOST_IF_WAITING_CONN_RESP)
++		if (hif_drv->hif_state =3D=3D HOST_IF_WAITING_CONN_RESP ||
++		    hif_drv->hif_state =3D=3D HOST_IF_EXTERNAL_AUTH)
+ 			del_timer(&hif_drv->connect_timer);
+=20
+ 		conn_info->conn_result(CONN_DISCONN_EVENT_DISCONN_NOTIF, 0,
+@@ -986,6 +995,31 @@ void wilc_set_wowlan_trigger(struct wilc_vif *vif, boo=
+l enabled)
+ 		pr_err("Failed to send wowlan trigger config packet\n");
  }
 =20
--int wilc_remove_wep_key(struct wilc_vif *vif, u8 index)
--{
--	struct wid wid;
--	int result;
--
--	wid.id =3D WID_REMOVE_WEP_KEY;
--	wid.type =3D WID_STR;
--	wid.size =3D sizeof(char);
--	wid.val =3D &index;
--
--	result =3D wilc_send_config_pkt(vif, WILC_SET_CFG, &wid, 1);
--	if (result)
--		netdev_err(vif->ndev,
--			   "Failed to send remove wep key config packet\n");
--	return result;
--}
--
--int wilc_set_wep_default_keyid(struct wilc_vif *vif, u8 index)
--{
--	struct wid wid;
--	int result;
--
--	wid.id =3D WID_KEY_ID;
--	wid.type =3D WID_CHAR;
--	wid.size =3D sizeof(char);
--	wid.val =3D &index;
--	result =3D wilc_send_config_pkt(vif, WILC_SET_CFG, &wid, 1);
--	if (result)
--		netdev_err(vif->ndev,
--			   "Failed to send wep default key config packet\n");
--
--	return result;
--}
--
--int wilc_add_wep_key_bss_sta(struct wilc_vif *vif, const u8 *key, u8 len,
--			     u8 index)
--{
--	struct wid wid;
--	int result;
--	struct wilc_wep_key *wep_key;
--
--	wid.id =3D WID_ADD_WEP_KEY;
--	wid.type =3D WID_STR;
--	wid.size =3D sizeof(*wep_key) + len;
--	wep_key =3D kzalloc(wid.size, GFP_KERNEL);
--	if (!wep_key)
--		return -ENOMEM;
--
--	wid.val =3D (u8 *)wep_key;
--
--	wep_key->index =3D index;
--	wep_key->key_len =3D len;
--	memcpy(wep_key->key, key, len);
--
--	result =3D wilc_send_config_pkt(vif, WILC_SET_CFG, &wid, 1);
--	if (result)
--		netdev_err(vif->ndev,
--			   "Failed to add wep key config packet\n");
--
--	kfree(wep_key);
--	return result;
--}
--
--int wilc_add_wep_key_bss_ap(struct wilc_vif *vif, const u8 *key, u8 len,
--			    u8 index, u8 mode, enum authtype auth_type)
--{
--	struct wid wid_list[3];
--	int result;
--	struct wilc_wep_key *wep_key;
--
--	wid_list[0].id =3D WID_11I_MODE;
--	wid_list[0].type =3D WID_CHAR;
--	wid_list[0].size =3D sizeof(char);
--	wid_list[0].val =3D &mode;
--
--	wid_list[1].id =3D WID_AUTH_TYPE;
--	wid_list[1].type =3D WID_CHAR;
--	wid_list[1].size =3D sizeof(char);
--	wid_list[1].val =3D (s8 *)&auth_type;
--
--	wid_list[2].id =3D WID_WEP_KEY_VALUE;
--	wid_list[2].type =3D WID_STR;
--	wid_list[2].size =3D sizeof(*wep_key) + len;
--	wep_key =3D kzalloc(wid_list[2].size, GFP_KERNEL);
--	if (!wep_key)
--		return -ENOMEM;
--
--	wid_list[2].val =3D (u8 *)wep_key;
--
--	wep_key->index =3D index;
--	wep_key->key_len =3D len;
--	memcpy(wep_key->key, key, len);
--	result =3D wilc_send_config_pkt(vif, WILC_SET_CFG, wid_list,
--				      ARRAY_SIZE(wid_list));
--	if (result)
--		netdev_err(vif->ndev,
--			   "Failed to add wep ap key config packet\n");
--
--	kfree(wep_key);
--	return result;
--}
--
- int wilc_add_ptk(struct wilc_vif *vif, const u8 *ptk, u8 ptk_key_len,
- 		 const u8 *mac_addr, const u8 *rx_mic, const u8 *tx_mic,
- 		 u8 mode, u8 cipher_mode, u8 index)
++int wilc_set_external_auth_param(struct wilc_vif *vif,
++				 struct cfg80211_external_auth_params *auth)
++{
++	int ret;
++	struct wid wid;
++	struct wilc_external_auth_param *param;
++
++	wid.id =3D WID_EXTERNAL_AUTH_PARAM;
++	wid.type =3D WID_BIN_DATA;
++	wid.size =3D sizeof(*param);
++	param =3D kzalloc(sizeof(*param), GFP_KERNEL);
++	if (!param)
++		return -EINVAL;
++
++	wid.val =3D (u8 *)param;
++	param->action =3D auth->action;
++	ether_addr_copy(param->bssid, auth->bssid);
++	memcpy(param->ssid, auth->ssid.ssid, auth->ssid.ssid_len);
++	param->ssid_len =3D auth->ssid.ssid_len;
++	ret =3D wilc_send_config_pkt(vif, WILC_SET_CFG, &wid, 1);
++
++	kfree(param);
++	return ret;
++}
++
+ static void handle_scan_timer(struct work_struct *work)
+ {
+ 	struct host_if_msg *msg =3D container_of(work, struct host_if_msg, work);
+@@ -1647,6 +1681,10 @@ void wilc_frame_register(struct wilc_vif *vif, u16 f=
+rame_type, bool reg)
+ 		reg_frame.reg_id =3D WILC_FW_PROBE_REQ_IDX;
+ 		break;
+=20
++        case IEEE80211_STYPE_AUTH:
++                reg_frame.reg_id =3D WILC_FW_AUTH_REQ_IDX;
++                break;
++
+ 	default:
+ 		break;
+ 	}
 diff --git a/drivers/net/wireless/microchip/wilc1000/hif.h b/drivers/net/wi=
 reless/microchip/wilc1000/hif.h
-index 77616fc77575..c9740457ed58 100644
+index c9740457ed58..f1a0a1f042ca 100644
 --- a/drivers/net/wireless/microchip/wilc1000/hif.h
 +++ b/drivers/net/wireless/microchip/wilc1000/hif.h
-@@ -151,12 +151,6 @@ struct host_if_drv {
+@@ -47,6 +47,7 @@ enum host_if_state {
+ 	HOST_IF_WAITING_CONN_RESP	=3D 3,
+ 	HOST_IF_CONNECTED		=3D 4,
+ 	HOST_IF_P2P_LISTEN		=3D 5,
++	HOST_IF_EXTERNAL_AUTH           =3D 6,
+ 	HOST_IF_FORCE_32BIT		=3D 0xFFFFFFFF
  };
 =20
- struct wilc_vif;
--int wilc_remove_wep_key(struct wilc_vif *vif, u8 index);
--int wilc_set_wep_default_keyid(struct wilc_vif *vif, u8 index);
--int wilc_add_wep_key_bss_sta(struct wilc_vif *vif, const u8 *key, u8 len,
--			     u8 index);
--int wilc_add_wep_key_bss_ap(struct wilc_vif *vif, const u8 *key, u8 len,
--			    u8 index, u8 mode, enum authtype auth_type);
- int wilc_add_ptk(struct wilc_vif *vif, const u8 *ptk, u8 ptk_key_len,
- 		 const u8 *mac_addr, const u8 *rx_mic, const u8 *tx_mic,
- 		 u8 mode, u8 cipher_mode, u8 index);
+@@ -202,6 +203,8 @@ int wilc_get_vif_idx(struct wilc_vif *vif);
+ int wilc_set_tx_power(struct wilc_vif *vif, u8 tx_power);
+ int wilc_get_tx_power(struct wilc_vif *vif, u8 *tx_power);
+ void wilc_set_wowlan_trigger(struct wilc_vif *vif, bool enabled);
++int wilc_set_external_auth_param(struct wilc_vif *vif,
++				 struct cfg80211_external_auth_params *param);
+ void wilc_scan_complete_received(struct wilc *wilc, u8 *buffer, u32 length=
+);
+ void wilc_network_info_received(struct wilc *wilc, u8 *buffer, u32 length)=
+;
+ void wilc_gnrl_async_info_received(struct wilc *wilc, u8 *buffer, u32 leng=
+th);
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net=
+/wireless/microchip/wilc1000/netdev.c
+index 3c292e3464c2..6fdd16e9bf6a 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.c
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
+@@ -835,15 +835,26 @@ void wilc_frmw_to_host(struct wilc *wilc, u8 *buff, u=
+32 size,
+ 	}
+ }
+=20
+-void wilc_wfi_mgmt_rx(struct wilc *wilc, u8 *buff, u32 size)
++void wilc_wfi_mgmt_rx(struct wilc *wilc, u8 *buff, u32 size, bool is_auth)
+ {
+ 	int srcu_idx;
+ 	struct wilc_vif *vif;
+=20
+ 	srcu_idx =3D srcu_read_lock(&wilc->srcu);
+ 	list_for_each_entry_rcu(vif, &wilc->vif_list, list) {
++		struct wilc_priv *priv;
++		struct ieee80211_mgmt *mgmt =3D (struct ieee80211_mgmt *)buff;
+ 		u16 type =3D le16_to_cpup((__le16 *)buff);
+ 		u32 type_bit =3D BIT(type >> 4);
++		u32 auth_bit =3D BIT(IEEE80211_STYPE_AUTH >> 4);
++
++		priv =3D &vif->priv;
++		if ((vif->mgmt_reg_stypes & auth_bit &&
++		     ieee80211_is_auth(mgmt->frame_control)) &&
++		    vif->iftype =3D=3D WILC_STATION_MODE && is_auth) {
++			wilc_wfi_mgmt_frame_rx(vif, buff, size);
++			break;
++		}
+=20
+ 		if (vif->priv.p2p_listen_state &&
+ 		    vif->mgmt_reg_stypes & type_bit)
 diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net=
 /wireless/microchip/wilc1000/netdev.h
-index a067274c2014..630b1e85e68f 100644
+index 630b1e85e68f..a0d9e981500e 100644
 --- a/drivers/net/wireless/microchip/wilc1000/netdev.h
 +++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
-@@ -45,12 +45,6 @@ struct wilc_wfi_key {
- 	u32 cipher;
+@@ -185,6 +185,7 @@ struct wilc_vif {
+ 	struct wilc_priv priv;
+ 	struct list_head list;
+ 	struct cfg80211_bss *bss;
++	struct cfg80211_external_auth_params auth;
  };
 =20
--struct wilc_wfi_wep_key {
--	u8 *key;
--	u8 key_len;
--	u8 key_idx;
--};
+ struct wilc_tx_queue_status {
+@@ -278,7 +279,7 @@ struct wilc_wfi_mon_priv {
+ void wilc_frmw_to_host(struct wilc *wilc, u8 *buff, u32 size, u32 pkt_offs=
+et);
+ void wilc_mac_indicate(struct wilc *wilc);
+ void wilc_netdev_cleanup(struct wilc *wilc);
+-void wilc_wfi_mgmt_rx(struct wilc *wilc, u8 *buff, u32 size);
++void wilc_wfi_mgmt_rx(struct wilc *wilc, u8 *buff, u32 size, bool is_auth)=
+;
+ void wilc_wlan_set_bssid(struct net_device *wilc_netdev, const u8 *bssid,
+ 			 u8 mode);
+ struct wilc_vif *wilc_netdev_ifc_init(struct wilc *wl, const char *name,
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/w=
+ireless/microchip/wilc1000/wlan.c
+index 48441f0389ca..f3f504d12873 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -968,7 +968,8 @@ static void wilc_wlan_handle_rx_buff(struct wilc *wilc,=
+ u8 *buffer, int size)
+=20
+ 		if (pkt_offset & IS_MANAGMEMENT) {
+ 			buff_ptr +=3D HOST_HDR_OFFSET;
+-			wilc_wfi_mgmt_rx(wilc, buff_ptr, pkt_len);
++			wilc_wfi_mgmt_rx(wilc, buff_ptr, pkt_len,
++					 pkt_offset & IS_MGMT_AUTH_PKT);
+ 		} else {
+ 			if (!is_cfg_packet) {
+ 				wilc_frmw_to_host(wilc, buff_ptr, pkt_len,
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/w=
+ireless/microchip/wilc1000/wlan.h
+index eb7978166d73..b45e72789a0e 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.h
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
+@@ -305,6 +305,7 @@
+ #define IS_MANAGMEMENT		0x100
+ #define IS_MANAGMEMENT_CALLBACK	0x080
+ #define IS_MGMT_STATUS_SUCCES	0x040
++#define IS_MGMT_AUTH_PKT       0x010
+=20
+ #define WILC_WID_TYPE		GENMASK(15, 12)
+ #define WILC_VMM_ENTRY_FULL_RETRY	1
+@@ -423,6 +424,7 @@ int wilc_wlan_get_num_conn_ifcs(struct wilc *wilc);
+ netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *dev);
+=20
+ void wilc_wfi_p2p_rx(struct wilc_vif *vif, u8 *buff, u32 size);
++bool wilc_wfi_mgmt_frame_rx(struct wilc_vif *vif, u8 *buff, u32 size);
+ void host_wakeup_notify(struct wilc *wilc);
+ void host_sleep_notify(struct wilc *wilc);
+ void chip_allow_sleep(struct wilc *wilc);
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan_if.h b/drivers/ne=
+t/wireless/microchip/wilc1000/wlan_if.h
+index 6eb7eb4ac294..18f13b5643e8 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan_if.h
++++ b/drivers/net/wireless/microchip/wilc1000/wlan_if.h
+@@ -85,7 +85,10 @@ enum authtype {
+ 	WILC_FW_AUTH_OPEN_SYSTEM =3D 1,
+ 	WILC_FW_AUTH_SHARED_KEY =3D 2,
+ 	WILC_FW_AUTH_ANY =3D 3,
+-	WILC_FW_AUTH_IEEE8021 =3D 5
++	WILC_FW_AUTH_IEEE8021 =3D 5,
++	WILC_FW_AUTH_SAE =3D 7,
++	WILC_FW_AUTH_IEE8021X_SHA256 =3D 9,
++	WILC_FW_AUTH_OPEN_SYSTEM_SHA256 =3D 13
+ };
+=20
+ enum site_survey {
+@@ -176,7 +179,8 @@ enum {
+=20
+ enum {
+ 	WILC_FW_ACTION_FRM_IDX =3D 0,
+-	WILC_FW_PROBE_REQ_IDX =3D 1
++	WILC_FW_PROBE_REQ_IDX =3D 1,
++	WILC_FW_AUTH_REQ_IDX =3D 2
+ };
+=20
+ enum wid_type {
+@@ -789,7 +793,7 @@ enum {
+ 	WID_ADD_BEACON			=3D 0x408a,
+=20
+ 	WID_SETUP_MULTICAST_FILTER	=3D 0x408b,
 -
- struct sta_info {
- 	u8 sta_associated_bss[WILC_MAX_NUM_STA][ETH_ALEN];
- };
-@@ -63,8 +57,6 @@ struct wilc_wfi_p2p_listen_params {
- };
-=20
- static const u32 wilc_cipher_suites[] =3D {
--	WLAN_CIPHER_SUITE_WEP40,
--	WLAN_CIPHER_SUITE_WEP104,
- 	WLAN_CIPHER_SUITE_TKIP,
- 	WLAN_CIPHER_SUITE_CCMP,
- 	WLAN_CIPHER_SUITE_AES_CMAC
-@@ -132,8 +124,6 @@ struct wilc_priv {
- 	struct net_device *dev;
- 	struct host_if_drv *hif_drv;
- 	struct wilc_pmkid_attr pmkid_list;
--	u8 wep_key[4][WLAN_KEY_LEN_WEP104];
--	u8 wep_key_len[4];
-=20
- 	/* The real interface that the monitor is on */
- 	struct net_device *real_ndev;
++	WID_EXTERNAL_AUTH_PARAM		=3D 0x408d,
+ 	/* Miscellaneous WIDs */
+ 	WID_ALL				=3D 0x7FFE,
+ 	WID_MAX				=3D 0xFFFF
 --=20
 2.25.1
