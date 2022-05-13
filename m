@@ -2,108 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF75B525B7C
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 May 2022 08:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76D20525C50
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 May 2022 09:30:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377285AbiEMGYX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 May 2022 02:24:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58658 "EHLO
+        id S1377793AbiEMHUL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 May 2022 03:20:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240920AbiEMGYT (ORCPT
+        with ESMTP id S1377786AbiEMHUF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 May 2022 02:24:19 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9305828E4E3
-        for <linux-wireless@vger.kernel.org>; Thu, 12 May 2022 23:24:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 40EECB82C52
-        for <linux-wireless@vger.kernel.org>; Fri, 13 May 2022 06:24:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65800C3411C;
-        Fri, 13 May 2022 06:24:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652423056;
-        bh=eymVdpYJtDpzpCVbtneJ6XoAhBjlEqEkQU0jvJxDDIU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Hqcdi0zfVxIsRHVhP1lezCg7Oe9OYyhhqPlLciWyz1yCi9Wkj4qjDb/z7gTX6c9Io
-         b8bEqBSS5ZvOOVzRGwuVXQPBOafGz7+yujGmqHXUTKsEFHx0c+JkYa9Ugcqn/7uR7d
-         ICifTxIMAI/j8qkdneCeeornLSCsazlUeoOQ8zZzrneIRLYimro6kX+crwS4smuTaq
-         tcJjoaNE/ZCLFD2U9ZwNA8VeCE0vmH6MCXwo76OU38NAKDvGOMrLBMgbKTqUnVOVvi
-         pO6pa8NBuIzhVTo7fMkjCj1jldRP2aaq5ON5N60y0RccNQMWMHEB7MMgwQZ5h3yqqM
-         y/b7v60Pa3VuQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: pull request: mt76 2022-05-12
-References: <32474297-71bc-9f16-a2ce-d90d9e37082b@nbd.name>
-Date:   Fri, 13 May 2022 09:24:12 +0300
-In-Reply-To: <32474297-71bc-9f16-a2ce-d90d9e37082b@nbd.name> (Felix Fietkau's
-        message of "Thu, 12 May 2022 11:39:16 +0200")
-Message-ID: <87r14y54s3.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 13 May 2022 03:20:05 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CABF62AA2C4
+        for <linux-wireless@vger.kernel.org>; Fri, 13 May 2022 00:19:59 -0700 (PDT)
+X-UUID: 1b18e5f55e4e4342ad9396f2cffc441e-20220513
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.5,REQID:5c111e56-be8d-47ba-9138-6863e8ea2fe3,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,RULE:Release_Ham,AC
+        TION:release,TS:100
+X-CID-INFO: VERSION:1.1.5,REQID:5c111e56-be8d-47ba-9138-6863e8ea2fe3,OB:0,LOB:
+        0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,RULE:Spam_GS981B3D,AC
+        TION:quarantine,TS:100
+X-CID-META: VersionHash:2a19b09,CLOUDID:af962ca7-eab7-4b74-a74d-5359964535a9,C
+        OID:202dd7195bdb,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,QS:0,BEC:nil
+X-UUID: 1b18e5f55e4e4342ad9396f2cffc441e-20220513
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <evelyn.tsai@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1346203577; Fri, 13 May 2022 15:19:50 +0800
+Received: from mtkmbs07n1.mediatek.inc (172.21.101.16) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Fri, 13 May 2022 15:19:49 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 13 May 2022 15:19:49 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 13 May 2022 15:19:49 +0800
+From:   Evelyn Tsai <evelyn.tsai@mediatek.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>
+Subject: [PATCH] mac80211: Use ATF by NL80211_EXT_FEATURE_AIRTIME_FAIRNESS
+Date:   Fri, 13 May 2022 15:19:48 +0800
+Message-ID: <20220513071948.2419-1-evelyn.tsai@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Except for using debugfs to change airtime_flags (AIRTIME_USE_TX/RX),
+turn ATF into a proper NL80211_EXT_FEATURE, so the driver can determine
+whether using airtime scheduling.
 
-> Hi Kalle,
->
-> here's my first pull request for 5.19
->
-> - Felix
->
-> The following changes since commit 2c33360bce6af0948fa162cdbd373d49be5a7491:
->
->   wfx: use container_of() to get vif (2022-05-11 08:32:57 +0300)
->
-> are available in the Git repository at:
->
->   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2022-05-12
->
-> for you to fetch changes up to 50662fae4fad14dace11954a2e8e5212330de14a:
->
->   mt76: mt7921: add ipv6 NS offload support (2022-05-12 11:33:54 +0200)
->
-> ----------------------------------------------------------------
-> mt76 patches for 5.19
->
-> - tx locking improvements
-> - wireless ethernet dispatch support for flow offload
-> - non-standard VHT MCS10-11 support
-> - fixes
-> - runtime PM improvements
-> - mt7921 AP mode support
-> - mt7921 ipv6 NS offload support
->
-> ----------------------------------------------------------------
+Signed-off-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
+Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
+---
+ net/mac80211/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-There's one warning:
-
-In commit
-
-  3b4852e3cfad ("mt76: mt7915: do not pass data pointer to mt7915_mcu_muru_debug_set")
-
-Fixes tag
-
-  Fixes: 1966a5078f2d2 (mt76: mt7915: add mu-mimo and ofdma debugfs knobs")
-
-has these problem(s):
-
-  - Subject does not match target commit subject
-    Just use
-	git log -1 --format='Fixes: %h ("%s")'
-
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 5311c3cd3050..89542bed7d89 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -717,7 +717,9 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
+ 			IEEE80211_DEFAULT_AQL_TXQ_LIMIT_H;
+ 	}
+ 
+-	local->airtime_flags = AIRTIME_USE_TX | AIRTIME_USE_RX;
++	if (wiphy_ext_feature_isset(local->hw.wiphy,
++				    NL80211_EXT_FEATURE_AIRTIME_FAIRNESS))
++		local->airtime_flags = AIRTIME_USE_TX | AIRTIME_USE_RX;
+ 	local->aql_threshold = IEEE80211_AQL_THRESHOLD;
+ 	atomic_set(&local->aql_total_pending_airtime, 0);
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.29.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
