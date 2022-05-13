@@ -2,85 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3AA25266A6
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 May 2022 17:57:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D55F65266B6
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 May 2022 18:03:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234862AbiEMP5f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 May 2022 11:57:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33830 "EHLO
+        id S1381644AbiEMQDW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 May 2022 12:03:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234346AbiEMP5d (ORCPT
+        with ESMTP id S1378196AbiEMQDT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 May 2022 11:57:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 674CA21E3E;
-        Fri, 13 May 2022 08:57:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B85161D80;
-        Fri, 13 May 2022 15:57:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D57C34100;
-        Fri, 13 May 2022 15:57:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652457450;
-        bh=inFWBKZ2hLGY2XuT1PW3OLXnYsuMwC9oDE6tzFgnnbY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=l3lnbu8RQyakdlKidWtlRtKUk/OPBmDr34NuMgc+l/K8Yv7KoZfFFfox58XAvT00O
-         V0+5mFRHSXYwOihOKacp9N37ZyNHgX3PQXgMM0xn2F/mdm+9Tdj3vi57mcg5TxtlQ3
-         TBBZ5ZvzAHg/3CX+3HGFb8fYD6HQgm0A7jd5dAP9rgbHTk0JdpodmuCJzx8pjG+XpD
-         /woHIaW9aNAvclnuUKfLUQt9IQiYBLlR/4iAEv16eP8uIBRsZXwSqnrV9xM3HnqGHe
-         j+0Nap862r7n2MEtSxO+LFc1fs/rB9YRY/MCvuTFdbvL97lmO/rwcX8AUCDrYzfmt4
-         wS0SU6x/ey6Bg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Govind Singh <govinds@codeaurora.org>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH] ath10k: do not enforce interrupt trigger type
-References: <20220513151516.357549-1-krzysztof.kozlowski@linaro.org>
-Date:   Fri, 13 May 2022 18:57:22 +0300
-In-Reply-To: <20220513151516.357549-1-krzysztof.kozlowski@linaro.org>
-        (Krzysztof Kozlowski's message of "Fri, 13 May 2022 17:15:16 +0200")
-Message-ID: <87zgjl4e8t.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 13 May 2022 12:03:19 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79B40286
+        for <linux-wireless@vger.kernel.org>; Fri, 13 May 2022 09:03:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=U0ndl2yVU12GGWHlImb/3ibYgf12hCdLV2/qOqFkYyo=; t=1652457798; x=1653667398; 
+        b=q+l5KiqeyU0bOWfVQKFJLtbbD7cEHDt+diQSdvTdLcDIcvc/RQwdYXRaoZy0apCLvUqsZHY4yfh
+        TzwmqN34g+TVO2p9NAHoC1K9bYZk9S1yo8uzJnHizvJEJf4Yb4W/q3sPazNwNHNoPgGTtfp3BVHbi
+        IP8hiCHRM46aWn7P+4Wq5CbAG58LSY/klPbeY7+rF0qurgLv5xqvLQJ1BYaLN05LBmZZvl5wqYtnV
+        VA6Jw70K3+w2EfYqYT2S+gOwJBBmEaTpDEmJ8AfCe4qlj8IgQHaiOuyPmc0k2rKg7Sr2rXHtv5Itn
+        UWbqvvjobv7VMnlhSbAz02WZ9oJ203H3cU1g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1npXl6-00AfFY-LO;
+        Fri, 13 May 2022 18:03:16 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] mac80211: mlme: track assoc_bss/associated separately
+Date:   Fri, 13 May 2022 18:03:14 +0200
+Message-Id: <20220513180239.fc51207a1228.I48646f2b5c4b52736e2d82919e436391e0b5ca55@changeid>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> writes:
+From: Johannes Berg <johannes.berg@intel.com>
 
-> Interrupt line can be configured on different hardware in different way,
-> even inverted.  Therefore driver should not enforce specific trigger
-> type - edge rising - but instead rely on Devicetree to configure it.
->
-> All Qualcomm DTSI with WCN3990 define the interrupt type as level high,
-> so the mismatch between DTSI and driver causes rebind issues:
->
->   $ echo 18800000.wifi > /sys/bus/platform/drivers/ath10k_snoc/unbind
->   $ echo 18800000.wifi > /sys/bus/platform/drivers/ath10k_snoc/bind
->   [   44.763114] irq: type mismatch, failed to map hwirq-446 for interrupt-controller@17a00000!
->   [   44.763130] ath10k_snoc 18800000.wifi: error -ENXIO: IRQ index 0 not found
->   [   44.763140] ath10k_snoc 18800000.wifi: failed to initialize resource: -6
+We currently track whether we're associated and which the
+BSS is in the same variable (ifmgd->associated), but for
+MLD we'll need to move the BSS pointer to be per link,
+while the question whether we're associated or not is for
+the whole interface.
 
-So you tested on WCN3990? On what firmware version? I can add the
-Tested-on tag if you provide that.
+Add ifmgd->assoc_bss that stores the pointer and change
+ifmgd->associated to be just a bool, so the question of
+whether we're associated can continue working after MLD
+rework, without requiring changes, while the BSS pointer
+will have to be changed/used checked per link.
 
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/ieee80211_i.h |  5 +++--
+ net/mac80211/mlme.c        | 18 ++++++++++--------
+ 2 files changed, 13 insertions(+), 10 deletions(-)
+
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index d072f20e3c5a..86ef0a46a68c 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -453,9 +453,10 @@ struct ieee80211_if_managed {
+ 	bool nullfunc_failed;
+ 	u8 connection_loss:1,
+ 	   driver_disconnect:1,
+-	   reconnect:1;
++	   reconnect:1,
++	   associated:1;
+ 
+-	struct cfg80211_bss *associated;
++	struct cfg80211_bss *assoc_bss;
+ 	struct ieee80211_mgd_auth_data *auth_data;
+ 	struct ieee80211_mgd_assoc_data *assoc_data;
+ 
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index d38d100b5aed..9eb0bd4e2dc3 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -1376,7 +1376,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
+ {
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+-	struct cfg80211_bss *cbss = ifmgd->associated;
++	struct cfg80211_bss *cbss = ifmgd->assoc_bss;
+ 	struct ieee80211_chanctx_conf *conf;
+ 	struct ieee80211_chanctx *chanctx;
+ 	enum nl80211_band current_band;
+@@ -2266,7 +2266,8 @@ static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
+ 	sdata->u.mgd.beacon_timeout = usecs_to_jiffies(ieee80211_tu_to_usec(
+ 		beacon_loss_count * bss_conf->beacon_int));
+ 
+-	sdata->u.mgd.associated = cbss;
++	sdata->u.mgd.associated = true;
++	sdata->u.mgd.assoc_bss = cbss;
+ 	memcpy(sdata->u.mgd.bssid, cbss->bssid, ETH_ALEN);
+ 
+ 	ieee80211_check_rate_mask(sdata);
+@@ -2361,7 +2362,8 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 
+ 	ieee80211_stop_poll(sdata);
+ 
+-	ifmgd->associated = NULL;
++	ifmgd->associated = false;
++	ifmgd->assoc_bss = NULL;
+ 	netif_carrier_off(sdata->dev);
+ 
+ 	/*
+@@ -2644,7 +2646,7 @@ static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
+ 		ieee80211_mlme_send_probe_req(sdata, sdata->vif.addr, dst,
+ 					      sdata->vif.cfg.ssid,
+ 					      sdata->vif.cfg.ssid_len,
+-					      ifmgd->associated->channel);
++					      ifmgd->assoc_bss->channel);
+ 	}
+ 
+ 	ifmgd->probe_timeout = jiffies + msecs_to_jiffies(probe_wait_ms);
+@@ -2734,7 +2736,7 @@ struct sk_buff *ieee80211_ap_probereq_get(struct ieee80211_hw *hw,
+ 	sdata_assert_lock(sdata);
+ 
+ 	if (ifmgd->associated)
+-		cbss = ifmgd->associated;
++		cbss = ifmgd->assoc_bss;
+ 	else if (ifmgd->auth_data)
+ 		cbss = ifmgd->auth_data->bss;
+ 	else if (ifmgd->assoc_data)
+@@ -2799,7 +2801,7 @@ static void __ieee80211_disconnect(struct ieee80211_sub_if_data *sdata)
+ 		 * AP is probably out of range (or not reachable for another
+ 		 * reason) so remove the bss struct for that AP.
+ 		 */
+-		cfg80211_unlink_bss(local->hw.wiphy, ifmgd->associated);
++		cfg80211_unlink_bss(local->hw.wiphy, ifmgd->assoc_bss);
+ 	}
+ 
+ 	ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
+@@ -4185,7 +4187,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	if (!ifmgd->associated ||
+-	    !ieee80211_rx_our_beacon(bssid,  ifmgd->associated))
++	    !ieee80211_rx_our_beacon(bssid, ifmgd->assoc_bss))
+ 		return;
+ 	bssid = ifmgd->bssid;
+ 
+@@ -6287,7 +6289,7 @@ int ieee80211_mgd_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	 * to cfg80211 while that's in a locked section already
+ 	 * trying to tell us that the user wants to disconnect.
+ 	 */
+-	if (ifmgd->associated != req->bss)
++	if (ifmgd->assoc_bss != req->bss)
+ 		return -ENOLINK;
+ 
+ 	sdata_info(sdata,
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.35.3
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
