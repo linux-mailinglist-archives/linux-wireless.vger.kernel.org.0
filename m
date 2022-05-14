@@ -2,54 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95ACF526F3E
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 May 2022 09:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28D65526EE6
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 May 2022 09:14:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231759AbiENEZM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 14 May 2022 00:25:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45788 "EHLO
+        id S231801AbiENFGJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 14 May 2022 01:06:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230201AbiENEZK (ORCPT
+        with ESMTP id S231734AbiENFF4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 14 May 2022 00:25:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01CD52D3F58
-        for <linux-wireless@vger.kernel.org>; Fri, 13 May 2022 21:25:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AE6260B03
-        for <linux-wireless@vger.kernel.org>; Sat, 14 May 2022 04:25:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D61C340EE;
-        Sat, 14 May 2022 04:25:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652502307;
-        bh=GpwfvokPbAX7dabaFpWTDJOOyuLpy0kuKAxPhaY6AA4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=hQxvF8qnUVshBVs5QA+7Eq/emzEDdtb+ah08qGZXaSyPbpPfhnEJVA9z2xLdATH0l
-         EmFzBFO42QwaB+5xe82GckDBM7X84CBv5SCtZDMm1ces7HkAmwH3LXGDF3X4cqDwvY
-         rUlavSPy4XTmzbtK3JEzdwiGME0+ItcWVZjboTX1sGdQxwBfNp8HS0JnSb4AL76i7G
-         29EuHMezaapDpufLi6jDuU+n8jqi9gf09s554hM+9sU0CF5goZPDG/hFVLtC2NXMYK
-         OOCBXinLOX6Gm1hgofKgmjGTrodwW7QOWIPHsY4jCAuux+1TiWzrVbpSYByAi6R6kj
-         IZWRANlpYQJ5A==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     viktor.barna@celeno.com
-Cc:     aviad.brikman@celeno.com, davem@davemloft.net,
-        eliav.farber@gmail.com, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, oleksandr.savchenko@celeno.com,
-        shay.bar@celeno.com
-Subject: Re: [RFC v1 000/256] wireless: cl8k driver for Celeno IEEE 802.11ax devices
-References: <87mtrmicj8.fsf@codeaurora.org>
-        <20220513211140.2596547-1-viktor.barna@celeno.com>
-Date:   Sat, 14 May 2022 07:25:02 +0300
-In-Reply-To: <20220513211140.2596547-1-viktor.barna@celeno.com> (viktor
-        barna's message of "Sat, 14 May 2022 00:11:40 +0300")
-Message-ID: <87a6bkyc4h.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Sat, 14 May 2022 01:05:56 -0400
+Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF9D27B
+        for <linux-wireless@vger.kernel.org>; Fri, 13 May 2022 22:05:50 -0700 (PDT)
+Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-ed9ac77cbbso12972155fac.1
+        for <linux-wireless@vger.kernel.org>; Fri, 13 May 2022 22:05:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kali.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=X/IAgav4s9J/eHMYgeYeDUOX7BruZpeeDkv9wTzgnWY=;
+        b=M+uGt8zf3J9fvCZPki4VDQjO6k9RWF3TwzCJRZ6+pV6g+35xfeih5qRCucqItHYPs8
+         zougwwQRL7sVf3h8t8ZDSs8xtH5HxaP/km8HpN+fbk+xgOwWOJFpgTdZK4VhKDpWY2R/
+         ctcgmcFlPVqmahsyZlDFQW8L7yO1N/8HoK4umZw/7LxTF9JzS8ps6YhLfImaSDoSFRia
+         X6elXH8asqFGSE0kbdJTxe2rUptET18s22Cz8anvGjPQK3npB6wZuLCdHwE4U6TG8fo7
+         3YJf4h/lcttSV3z/UFbeuLC4zxMuMpWfflC+7um8RCFp956evzBFGVvQOETo5b3oxKYv
+         RI4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=X/IAgav4s9J/eHMYgeYeDUOX7BruZpeeDkv9wTzgnWY=;
+        b=uqPQ9EJs22NMwj72n7k2eAEUKDey4hpEKl9Rd6Rz8AoNWB6SrDNwEHqWIKQ2OQwZja
+         P/FlqCgVT21Z9+Z1/qG9cHMgnXlzswSK4hG8OTSLNGksifc2AFRn91c8bcKUGL3q2gV2
+         4SYww8i+MmIA661nqBE3v49G5Zc1ixFeyHM3fy+aY1j6lHH2XlCeJpmn5sDAi8Van2V5
+         9q8smI/F4chFQ6JFC8jYe4ekl4zwoYV5sXX7BN7oFr2QWzjRG3UyoYEcSNNUIfrSpdcm
+         o8cJZDBGm+1x21ncNMrsah0VcArYiJoXcCrDH+28Cr0IEGWpEvDsfo7znqUc7jadNy1U
+         8YGA==
+X-Gm-Message-State: AOAM532AyeqhwVXBpQZij0zk3QHmAW01vqr6AEPA5HdqTyhs7sRjn72w
+        Gb17l8c54QHHup1etZLRr2Bgbg==
+X-Google-Smtp-Source: ABdhPJy70FSboA/M7j4vD92dz5/lEptNURnyMkDTAyA1IhHQZoa5U8vy7hqJG1EE8gw+gexfUrUTGA==
+X-Received: by 2002:a05:6870:a2cd:b0:ed:754:a2c6 with SMTP id w13-20020a056870a2cd00b000ed0754a2c6mr9067488oak.270.1652504750057;
+        Fri, 13 May 2022 22:05:50 -0700 (PDT)
+Received: from [192.168.11.16] (cpe-173-173-107-246.satx.res.rr.com. [173.173.107.246])
+        by smtp.gmail.com with ESMTPSA id r25-20020a4a7019000000b0035eb4e5a6c8sm2006483ooc.30.2022.05.13.22.05.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 May 2022 22:05:49 -0700 (PDT)
+Message-ID: <3d856d44-a2d6-b5b8-ec78-ce19a3686986@kali.org>
+Date:   Sat, 14 May 2022 00:05:46 -0500
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.9.0
+Subject: Re: [PATCH] ath10k: do not enforce interrupt trigger type
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Govind Singh <govinds@codeaurora.org>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-arm-msm@vger.kernel.org
+References: <20220513151516.357549-1-krzysztof.kozlowski@linaro.org>
+ <87zgjl4e8t.fsf@kernel.org>
+From:   Steev Klimaszewski <steev@kali.org>
+In-Reply-To: <87zgjl4e8t.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,31 +83,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-viktor.barna@celeno.com writes:
 
-> Kalle Valo <kvalo@codeaurora.org> wrote:
->> I'm not going to review a driver with a disclaimer like this.
->     
-> Hi Kalle,
+On 5/13/22 10:57 AM, Kalle Valo wrote:
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> writes:
 >
-> first of all, thanks for the comment, we are very sorry for the
-> prolonged delay in the response - comments from Johannes were taken into
-> account and the new RFC is almost ready and on the way. Regarding the
-> disclaimer mistake - our mail gateway automatically appends such text by
-> modifying original message and it was not detected earlier because of the
-> advanced filters which skipped such appending in internal tests. Many
-> apologizes for that. Now the filter has several new exceptions for kernel.org
-> and friends.
+>> Interrupt line can be configured on different hardware in different way,
+>> even inverted.  Therefore driver should not enforce specific trigger
+>> type - edge rising - but instead rely on Devicetree to configure it.
+>>
+>> All Qualcomm DTSI with WCN3990 define the interrupt type as level high,
+>> so the mismatch between DTSI and driver causes rebind issues:
+>>
+>>    $ echo 18800000.wifi > /sys/bus/platform/drivers/ath10k_snoc/unbind
+>>    $ echo 18800000.wifi > /sys/bus/platform/drivers/ath10k_snoc/bind
+>>    [   44.763114] irq: type mismatch, failed to map hwirq-446 for interrupt-controller@17a00000!
+>>    [   44.763130] ath10k_snoc 18800000.wifi: error -ENXIO: IRQ index 0 not found
+>>    [   44.763140] ath10k_snoc 18800000.wifi: failed to initialize resource: -6
+> So you tested on WCN3990? On what firmware version? I can add the
+> Tested-on tag if you provide that.
 >
-> Can you, please, respond to this email with info whether the disclaimer is
-> still present in your inbox? That will help to continue with RFCv2. 
+Hello Krzystof, Kalle,
 
-I don't see any disclaimers now, thanks for fixing it. Also lore looks
-good:
+I have seen this issue as well on a Lenovo Flex 5G, which has a WCN3990:
 
-https://lore.kernel.org/all/20220513211140.2596547-1-viktor.barna@celeno.com/
+wcn3990 hw1.0 target 0x00000008 chip_id 0x00000000 sub 0000:0000
+kconfig debug 0 debugfs 0 tracing 0 dfs 0 testmode 0
+firmware ver  api 5 features wowlan,mgmt-tx-by-reference,non-bmi crc32 
+b3d4b790
+htt-ver 3.86 wmi-op 4 htt-op 3 cal file max-sta 32 raw 0 hwcrypto 1
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+With this patch applied, I no longer see the error message in the commit 
+message, when I unbind/bind when wifi stops working.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Tested-by: Steev Klimaszewski <steev@kali.org>
+
+-- Steev
+
