@@ -2,61 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1539526EB8
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 May 2022 09:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0FED52736B
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 May 2022 20:09:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232068AbiENGt2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 14 May 2022 02:49:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41996 "EHLO
+        id S232952AbiENSJR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 14 May 2022 14:09:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231653AbiENGt1 (ORCPT
+        with ESMTP id S230459AbiENSJQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 14 May 2022 02:49:27 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DA5D3467D
-        for <linux-wireless@vger.kernel.org>; Fri, 13 May 2022 23:49:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652510966; x=1684046966;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=S7CeSZT5P5efH0mPrKoXjprz7uPBlIHVxVgpKvJBhu8=;
-  b=F9XNMHaNzZUA1iDwfbOPdizB3xiHaqTQP+/ZTEuvbIZspWwHCmP7mB/+
-   Y41qAahAVSUYDJrjKw1BwbVTdK1W2m8uy4QQB5jP6JNV1n48VqdlALxme
-   quM5QfI1XKU9s0RGZ49B8AaWWl2SNmgtqrXEVIkvLiXYoWhvVNPh609D3
-   VoDhAMqFNGg8Dv2q3axPre1ilV9qPqadaFJDErO4zMnVMxqoFyxmGB/CV
-   ZtCLOT+lE+XLBLxLcbEXJNFFjcH/ddgVrnyWRrGg8lh7NhCcVdjK2lV8S
-   Bu+qndCDvnfFmN4pW3jzVGQT3/LksAMD5PNlPFEy0C74Zw1krqVzxL8L7
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10346"; a="268066460"
-X-IronPort-AV: E=Sophos;i="5.91,225,1647327600"; 
-   d="scan'208";a="268066460"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2022 23:49:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,225,1647327600"; 
-   d="scan'208";a="659418786"
-Received: from lkp-server01.sh.intel.com (HELO d1462bc4b09b) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 13 May 2022 23:49:23 -0700
-Received: from kbuild by d1462bc4b09b with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nplac-0000J8-Pr;
-        Sat, 14 May 2022 06:49:22 +0000
-Date:   Sat, 14 May 2022 14:48:22 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ajay.Kathat@microchip.com, linux-wireless@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, Claudiu.Beznea@microchip.com,
-        Sripad.Balwadgi@microchip.com, Ajay.Kathat@microchip.com
-Subject: Re: [PATCH 3/4] wilc1000: add WPA3 SAE support
-Message-ID: <202205141457.gyZ6XGV0-lkp@intel.com>
-References: <20220513171741.26701-3-ajay.kathat@microchip.com>
+        Sat, 14 May 2022 14:09:16 -0400
+Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7046E01F
+        for <linux-wireless@vger.kernel.org>; Sat, 14 May 2022 11:09:14 -0700 (PDT)
+Received: by mail-oi1-x230.google.com with SMTP id n24so13901557oie.12
+        for <linux-wireless@vger.kernel.org>; Sat, 14 May 2022 11:09:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kali.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language
+         :from:to:cc:references:in-reply-to:content-transfer-encoding;
+        bh=9VxSQhrcxP+Zxiex+/IGfZgunbN+QMPUuJtoX8ADJq0=;
+        b=gwi8wGZKaAhyEL2N8U2FdTZRADeWgto+anF1Hh8tRJwSSQjeEhaDwQcYwrSGkxXZ0W
+         BCnI9tOAs0bAF5kUYusrUQSQ0N5RSoYQ3/USaCh27tau0QhOVZfZuHOhEDaS7aLc+8HU
+         dnKwj/A8/ag0Bg+w26MOFg3Sej3B3TuZ/jPyZHQMU3KUEXOu07NXmArf+6PcFmy7olm0
+         vbJ5cYaHQt6BfVv3iaGLTcz2U1ovsCpDQleUmuoPAW9taQVe1uBMhabIY1Twl1gBjcLw
+         6rGUvCe89RNNnWV+75sAC5j4pzGeBBWu97+HuM7nEEnWLTSnqUukEukd9a1Lk7nzb96O
+         Mcyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:from:to:cc:references:in-reply-to
+         :content-transfer-encoding;
+        bh=9VxSQhrcxP+Zxiex+/IGfZgunbN+QMPUuJtoX8ADJq0=;
+        b=iyzYpirR/qMF1oqABFsPijPH0TpRokd9ZOK7jEjV1vJUHDjgX2MlUSfn8hXhA8v2+r
+         HfDzbhek/FFFcVFBZbCJFU8ELGi+1/auvijrseGlpEzeBMoW6qBTj1IEcUT5DazdFzfD
+         VfwYDaJvCRriVV5WTgNgwfteK3ANqA/f6xfYNoQFQlDMM8lQpwmy7gQqxgWqmmTGBfDM
+         ZZkG35ezgobIEzCuAynnfQ4DlelS0uhO/K+dH0GOIEmqHZIAeK28/PgzBs88gKbfGjUd
+         +dEyWTakMtdaBZPSiyYHZKquuMZcWP3n972IiIkLZo0PuIKUlT+5arfHp6fDRQV4zTGi
+         JpDQ==
+X-Gm-Message-State: AOAM533ooM+ibjHhfdyHHPxgORTx4B3oLZDDcQuinnXBGDNg+BEcj/Dn
+        ptgWJ15QA186Htn2RmSREKhCag==
+X-Google-Smtp-Source: ABdhPJwrvgAl50ASW9OPusxZQgrhHauO8CR+M14xcbBoh7KOYWtJ47rV3oDIQEF/CrNs8vca+izgNw==
+X-Received: by 2002:a05:6808:98f:b0:325:d44d:62d6 with SMTP id a15-20020a056808098f00b00325d44d62d6mr10052930oic.145.1652551754058;
+        Sat, 14 May 2022 11:09:14 -0700 (PDT)
+Received: from [192.168.11.16] (cpe-173-173-107-246.satx.res.rr.com. [173.173.107.246])
+        by smtp.gmail.com with ESMTPSA id y127-20020aca3285000000b00328e70cae5csm774163oiy.43.2022.05.14.11.09.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 14 May 2022 11:09:13 -0700 (PDT)
+Message-ID: <3bf28d29-f841-81f7-68f8-3fb7f9c274bf@kali.org>
+Date:   Sat, 14 May 2022 13:09:11 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220513171741.26701-3-ajay.kathat@microchip.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.9.0
+Subject: Re: [PATCH] ath10k: do not enforce interrupt trigger type
+Content-Language: en-US
+From:   Steev Klimaszewski <steev@kali.org>
+To:     Kalle Valo <kvalo@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Govind Singh <govinds@codeaurora.org>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-arm-msm@vger.kernel.org
+References: <20220513151516.357549-1-krzysztof.kozlowski@linaro.org>
+ <87zgjl4e8t.fsf@kernel.org> <3d856d44-a2d6-b5b8-ec78-ce19a3686986@kali.org>
+In-Reply-To: <3d856d44-a2d6-b5b8-ec78-ce19a3686986@kali.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,77 +83,63 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
 
-I love your patch! Perhaps something to improve:
+On 5/14/22 12:05 AM, Steev Klimaszewski wrote:
+>
+> On 5/13/22 10:57 AM, Kalle Valo wrote:
+>> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> writes:
+>>
+>>> Interrupt line can be configured on different hardware in different 
+>>> way,
+>>> even inverted.  Therefore driver should not enforce specific trigger
+>>> type - edge rising - but instead rely on Devicetree to configure it.
+>>>
+>>> All Qualcomm DTSI with WCN3990 define the interrupt type as level high,
+>>> so the mismatch between DTSI and driver causes rebind issues:
+>>>
+>>>    $ echo 18800000.wifi > /sys/bus/platform/drivers/ath10k_snoc/unbind
+>>>    $ echo 18800000.wifi > /sys/bus/platform/drivers/ath10k_snoc/bind
+>>>    [   44.763114] irq: type mismatch, failed to map hwirq-446 for 
+>>> interrupt-controller@17a00000!
+>>>    [   44.763130] ath10k_snoc 18800000.wifi: error -ENXIO: IRQ index 
+>>> 0 not found
+>>>    [   44.763140] ath10k_snoc 18800000.wifi: failed to initialize 
+>>> resource: -6
+>> So you tested on WCN3990? On what firmware version? I can add the
+>> Tested-on tag if you provide that.
+>>
+> Hello Krzystof, Kalle,
+>
+> I have seen this issue as well on a Lenovo Flex 5G, which has a WCN3990:
+>
+> wcn3990 hw1.0 target 0x00000008 chip_id 0x00000000 sub 0000:0000
+> kconfig debug 0 debugfs 0 tracing 0 dfs 0 testmode 0
+> firmware ver  api 5 features wowlan,mgmt-tx-by-reference,non-bmi crc32 
+> b3d4b790
+> htt-ver 3.86 wmi-op 4 htt-op 3 cal file max-sta 32 raw 0 hwcrypto 1
+>
+> With this patch applied, I no longer see the error message in the 
+> commit message, when I unbind/bind when wifi stops working.
+>
+> Tested-by: Steev Klimaszewski <steev@kali.org>
+>
+> -- Steev
+>
+Apologies for the second email - I've tested this now on both the Lenovo 
+Flex 5G, as I have seen the issue on it as well, as well as on the 
+Lenovo Yoga C630, where I did not but I did have issues with attempting 
+to rebind the device, prior to this patch.
 
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on wireless/main v5.18-rc6 next-20220513]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Firmware version for the Flex 5G is
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ajay-Kathat-microchip-com/wilc1000-use-correct-sequence-of-RESET-for-chip-Power-UP-Down/20220514-011943
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-config: alpha-allmodconfig (https://download.01.org/0day-ci/archive/20220514/202205141457.gyZ6XGV0-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 11.3.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/cd10e5eab42df173c299af63e2f50308bbf0f27e
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Ajay-Kathat-microchip-com/wilc1000-use-correct-sequence-of-RESET-for-chip-Power-UP-Down/20220514-011943
-        git checkout cd10e5eab42df173c299af63e2f50308bbf0f27e
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=alpha SHELL=/bin/bash drivers/clk/mediatek/ drivers/net/wireless/microchip/wilc1000/
+qmi chip_id 0x30224 chip_family 0x4001 board_id 0xff soc_id 0x40060000
+qmi fw_version 0x32080009 fw_build_timestamp 2020-11-16 14:44 
+fw_build_id 
+QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.0.c8-00009-QCAHLSWSC8180XMTPLZ-1
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+Firmware version on the Yoga C630 is
 
-All warnings (new ones prefixed by >>):
+qmi chip_id 0x30214 chip_family 0x4001 board_id 0xff soc_id 0x40030001
+qmi fw_version 0x2009856b fw_build_timestamp 2018-07-19 12:28 
+fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HL.2.0-01387-QCAHLSWMTPLZ-1
 
-   drivers/net/wireless/microchip/wilc1000/netdev.c: In function 'wilc_wfi_mgmt_rx':
->> drivers/net/wireless/microchip/wilc1000/netdev.c:845:35: warning: variable 'priv' set but not used [-Wunused-but-set-variable]
-     845 |                 struct wilc_priv *priv;
-         |                                   ^~~~
-
-
-vim +/priv +845 drivers/net/wireless/microchip/wilc1000/netdev.c
-
-   837	
-   838	void wilc_wfi_mgmt_rx(struct wilc *wilc, u8 *buff, u32 size, bool is_auth)
-   839	{
-   840		int srcu_idx;
-   841		struct wilc_vif *vif;
-   842	
-   843		srcu_idx = srcu_read_lock(&wilc->srcu);
-   844		list_for_each_entry_rcu(vif, &wilc->vif_list, list) {
- > 845			struct wilc_priv *priv;
-   846			struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)buff;
-   847			u16 type = le16_to_cpup((__le16 *)buff);
-   848			u32 type_bit = BIT(type >> 4);
-   849			u32 auth_bit = BIT(IEEE80211_STYPE_AUTH >> 4);
-   850	
-   851			priv = &vif->priv;
-   852			if ((vif->mgmt_reg_stypes & auth_bit &&
-   853			     ieee80211_is_auth(mgmt->frame_control)) &&
-   854			    vif->iftype == WILC_STATION_MODE && is_auth) {
-   855				wilc_wfi_mgmt_frame_rx(vif, buff, size);
-   856				break;
-   857			}
-   858	
-   859			if (vif->priv.p2p_listen_state &&
-   860			    vif->mgmt_reg_stypes & type_bit)
-   861				wilc_wfi_p2p_rx(vif, buff, size);
-   862	
-   863			if (vif->monitor_flag)
-   864				wilc_wfi_monitor_rx(wilc->monitor_dev, buff, size);
-   865		}
-   866		srcu_read_unlock(&wilc->srcu, srcu_idx);
-   867	}
-   868	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
