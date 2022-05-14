@@ -2,303 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3FC352737E
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 May 2022 20:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A96E5273BB
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 May 2022 21:32:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234708AbiENSpL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 14 May 2022 14:45:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54104 "EHLO
+        id S234912AbiENTcO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 14 May 2022 15:32:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232026AbiENSpK (ORCPT
+        with ESMTP id S234727AbiENTcN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 14 May 2022 14:45:10 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8DA720F55;
-        Sat, 14 May 2022 11:45:08 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id v4so13790790ljd.10;
-        Sat, 14 May 2022 11:45:08 -0700 (PDT)
+        Sat, 14 May 2022 15:32:13 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 026FD1B7A6
+        for <linux-wireless@vger.kernel.org>; Sat, 14 May 2022 12:32:11 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id i10so19678982lfg.13
+        for <linux-wireless@vger.kernel.org>; Sat, 14 May 2022 12:32:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Lqb/xi4zgm6BZ82Vq3eIArgI9bpcLj3fSiAA0sQJVd8=;
-        b=NL2K2suU4Ut8Z6KbRpb38hfbys40VhX9VpLmiolfqHQ9JN5sQcMFkWBlpvv0Vwr/sk
-         kYsSW+/BCORtsdlE3Lvz7Lk43Bu3KNmVwzZRzeGszExcdXqat5CoghvwFxCFheF3f0PE
-         HUPq/NXfRcsy5B4db9zDipx9rlpWYpzUhXXJ3KiyH0tuHQBwmClC4EHcFKv8HfyUuvpv
-         lQGaYFUUSG8vkc42A0b0eUlhd9rvwGN6Nbz3bCal0RIXcClJ7NFiO0NO50dbN960geod
-         vVyNLyGC5vtTLhnXunC8lLr98Rrn3QE5K1HG0ysu1hgi6HLWjj+Tk9bbzsecbWZwUu0f
-         1Sow==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=fXzV1fpic6FIBZFtsxUjhfRXDG+va5qpRFfngHIik8E=;
+        b=WMwBL9u+A7cVFaSFpoSvfQhotjddSY3EEfSStc/go3iWLy7T4NqDaod58gnHU1T6tR
+         wCYfEEHhQ5L1xTZcF8uiyLWh2mJET+ibN/8dtyMkATHs1Y+W/rIhs+qVls6IG+J1Qnyf
+         0wRGdwZhCF3ZFyfePovHpgZYVssiFt1X4SnGLnQkPv6o9t+0fWEUzT05nVparICioHLg
+         FWsIDfC7Ta3IiKHQS81GQyErMdey8NdrKvgB3l4VDgqAS8V9XoOSMI7dCIbBcuRMHP0V
+         OkWnBgClT2qMSjiFN4LPWsNPbZAiwo+XJJ6Qd2muplhM2Mqi3MCQECnKH13Cx5WN6Ib6
+         PQkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Lqb/xi4zgm6BZ82Vq3eIArgI9bpcLj3fSiAA0sQJVd8=;
-        b=Umn8w6kzhNZ788mxE6r4+AEaEGTBFrky9xV7R8x+SWNIgQiPAGmISW4CB9/mVlj/A2
-         jpxcj3vAHmB7nkhuXgObQjqSaEseC+b3xGqX9elhoMU5myV69+y8hTcc2vJX49C8PXV+
-         UN2l3s2PH/6YuVqb3aP4BqyCXH0fYVjaYFws69AgUDy+vp0ELJ+XjZq3fssxp8xgNIvi
-         KoNJ/UNKFYyYcHFYO/NG/q2YYHQNhMh5L1WHd6W010a9AP+RcCToNfeCkdjFJag2YjP5
-         /g3gIuxm28TipxlFalwLjIklW97tlHCljLHUXSfHBY1dg9ZbHis2qAHb2TLZJzP9CwZX
-         xgWQ==
-X-Gm-Message-State: AOAM530MyuVLbrZ3wFXEGsHwW+APLOxt28KegVLo/t+AqWK10UiZUINb
-        trXO+Pr4GMY0Ikk79uu6SlI=
-X-Google-Smtp-Source: ABdhPJxJZ36o48HeDVsQpOHnhc5iVsPCUgL97wa2FkwhBjbkt1i7PnGj/zxrg0wzMNViX8bkpVhcUQ==
-X-Received: by 2002:a05:651c:1506:b0:250:6459:d6d4 with SMTP id e6-20020a05651c150600b002506459d6d4mr6587702ljf.271.1652553906448;
-        Sat, 14 May 2022 11:45:06 -0700 (PDT)
-Received: from localhost.localdomain ([217.117.245.216])
-        by smtp.gmail.com with ESMTPSA id q4-20020ac25fc4000000b0047255d21189sm780573lfg.184.2022.05.14.11.45.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 May 2022 11:45:05 -0700 (PDT)
-From:   Pavel Skripkin <paskripkin@gmail.com>
-To:     toke@toke.dk, kvalo@kernel.org, davem@davemloft.net,
-        kuba@kernel.org, pabeni@redhat.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Pavel Skripkin <paskripkin@gmail.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: [PATCH v4 2/2] ath9k: htc: clean up statistics macros
-Date:   Sat, 14 May 2022 21:45:03 +0300
-Message-Id: <4456bd112b9d35f1cb659ed2ecc1c7107ebf2b91.1652553719.git.paskripkin@gmail.com>
-X-Mailer: git-send-email 2.36.0
-In-Reply-To: <f158608e209a6f45c76ec856474a796df93d9dcf.1652553719.git.paskripkin@gmail.com>
-References: <f158608e209a6f45c76ec856474a796df93d9dcf.1652553719.git.paskripkin@gmail.com>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=fXzV1fpic6FIBZFtsxUjhfRXDG+va5qpRFfngHIik8E=;
+        b=tONfhf1d5R5wI3+XSIiCwkId443MV8TKNJY0ogrACP4EmdL+OXF3VjeJcV76eNF3zT
+         Ep54qjWRqNZH0dX+dpzTRrU8/jOwPghvYl0XgD8RmiOb9z717N6xuZ22u1hqtrTgfITH
+         42GFHpuPYJcibwpVC28Uq+ZikuMjC96yGNsiDGL6Ao+ScbWD9cfgba55m8W18io1Yvub
+         KRBLvVamIzRlclhRuUlhe9JDrZpm1mvexStxubfNFEBGoYsk17vL5QQcwwqouj4uwRKv
+         06/WMX/SmNIRJ76YUwGFyqTC5n38ZYEdxJimt7HhpZZY4TJk9UMXiQUlGJtIflhZlLgh
+         mtAw==
+X-Gm-Message-State: AOAM531BeffsKNscD+q7y94hfyRnLCq54opQl5HUap5txFcja4MJDORL
+        t/Wlq3RIVkAaZHcm004ApsKSBA==
+X-Google-Smtp-Source: ABdhPJwe5i88awrmyIJNqgBJD6YgpXCrsim3T+efhyaQX+lVYDbU3HXxwumOjap7znAZcwsvxAG5iA==
+X-Received: by 2002:a05:6512:3f8c:b0:45d:cb2a:8779 with SMTP id x12-20020a0565123f8c00b0045dcb2a8779mr7745769lfa.499.1652556729330;
+        Sat, 14 May 2022 12:32:09 -0700 (PDT)
+Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id f13-20020a2eb5ad000000b0024f3d1daedfsm896630ljn.103.2022.05.14.12.32.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 14 May 2022 12:32:08 -0700 (PDT)
+Message-ID: <93181c1d-16a7-697e-976c-190b1c99f2c2@linaro.org>
+Date:   Sat, 14 May 2022 21:32:07 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH] ath10k: do not enforce interrupt trigger type
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Govind Singh <govinds@codeaurora.org>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-arm-msm@vger.kernel.org
+References: <20220513151516.357549-1-krzysztof.kozlowski@linaro.org>
+ <87zgjl4e8t.fsf@kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <87zgjl4e8t.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I've changed *STAT_* macros a bit in previous patch and I seems like
-they become really unreadable. Align these macros definitions to make
-code cleaner and fix folllowing checkpatch warning
+On 13/05/2022 17:57, Kalle Valo wrote:
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> writes:
+> 
+>> Interrupt line can be configured on different hardware in different way,
+>> even inverted.  Therefore driver should not enforce specific trigger
+>> type - edge rising - but instead rely on Devicetree to configure it.
+>>
+>> All Qualcomm DTSI with WCN3990 define the interrupt type as level high,
+>> so the mismatch between DTSI and driver causes rebind issues:
+>>
+>>   $ echo 18800000.wifi > /sys/bus/platform/drivers/ath10k_snoc/unbind
+>>   $ echo 18800000.wifi > /sys/bus/platform/drivers/ath10k_snoc/bind
+>>   [   44.763114] irq: type mismatch, failed to map hwirq-446 for interrupt-controller@17a00000!
+>>   [   44.763130] ath10k_snoc 18800000.wifi: error -ENXIO: IRQ index 0 not found
+>>   [   44.763140] ath10k_snoc 18800000.wifi: failed to initialize resource: -6
+> 
+> So you tested on WCN3990? On what firmware version?
 
-ERROR: Macros with complex values should be enclosed in parentheses
 
-Also, statistics macros now accept an hif_dev as argument, since
-macros that depend on having a local variable with a magic name
-don't abide by the coding style.
+I run it on a Qualcomm RB3 board with Qualcomm SDM845 and WCN3990.
+However on that kernel I did not manage to WiFi actually work -
+regardless of that patch - so I would no count it yet as fully tested.
 
-No functional change
+It would be great if someone would provide some tests. I saw Steev's
+replies - thanks!
 
-Suggested-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
----
-
-Changes since v3:
-	- Added additional clean up related to relying on magical
-	  name from outside of the macro
-
-Changes since v2:
-	- My send-email script forgot, that mailing lists exist.
-	  Added back all related lists
-	- Fixed checkpatch warning
-
-Changes since v1:
-	- Added this patch
-
----
- drivers/net/wireless/ath/ath9k/hif_usb.c      | 26 +++++++--------
- drivers/net/wireless/ath/ath9k/htc.h          | 32 +++++++++++--------
- drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 10 +++---
- 3 files changed, 36 insertions(+), 32 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
-index f06eec99de68..c5d41a134bff 100644
---- a/drivers/net/wireless/ath/ath9k/hif_usb.c
-+++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -244,11 +244,11 @@ static inline void ath9k_skb_queue_complete(struct hif_device_usb *hif_dev,
- 		ath9k_htc_txcompletion_cb(hif_dev->htc_handle,
- 					  skb, txok);
- 		if (txok) {
--			TX_STAT_INC(skb_success);
--			TX_STAT_ADD(skb_success_bytes, ln);
-+			TX_STAT_INC(hif_dev, skb_success);
-+			TX_STAT_ADD(hif_dev, skb_success_bytes, ln);
- 		}
- 		else
--			TX_STAT_INC(skb_failed);
-+			TX_STAT_INC(hif_dev, skb_failed);
- 	}
- }
- 
-@@ -302,7 +302,7 @@ static void hif_usb_tx_cb(struct urb *urb)
- 	hif_dev->tx.tx_buf_cnt++;
- 	if (!(hif_dev->tx.flags & HIF_USB_TX_STOP))
- 		__hif_usb_tx(hif_dev); /* Check for pending SKBs */
--	TX_STAT_INC(buf_completed);
-+	TX_STAT_INC(hif_dev, buf_completed);
- 	spin_unlock(&hif_dev->tx.tx_lock);
- }
- 
-@@ -353,7 +353,7 @@ static int __hif_usb_tx(struct hif_device_usb *hif_dev)
- 			tx_buf->len += tx_buf->offset;
- 
- 		__skb_queue_tail(&tx_buf->skb_queue, nskb);
--		TX_STAT_INC(skb_queued);
-+		TX_STAT_INC(hif_dev, skb_queued);
- 	}
- 
- 	usb_fill_bulk_urb(tx_buf->urb, hif_dev->udev,
-@@ -371,7 +371,7 @@ static int __hif_usb_tx(struct hif_device_usb *hif_dev)
- 	}
- 
- 	if (!ret)
--		TX_STAT_INC(buf_queued);
-+		TX_STAT_INC(hif_dev, buf_queued);
- 
- 	return ret;
- }
-@@ -515,7 +515,7 @@ static void hif_usb_sta_drain(void *hif_handle, u8 idx)
- 			ath9k_htc_txcompletion_cb(hif_dev->htc_handle,
- 						  skb, false);
- 			hif_dev->tx.tx_skb_cnt--;
--			TX_STAT_INC(skb_failed);
-+			TX_STAT_INC(hif_dev, skb_failed);
- 		}
- 	}
- 
-@@ -586,14 +586,14 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
- 		pkt_tag = get_unaligned_le16(ptr + index + 2);
- 
- 		if (pkt_tag != ATH_USB_RX_STREAM_MODE_TAG) {
--			RX_STAT_INC(skb_dropped);
-+			RX_STAT_INC(hif_dev, skb_dropped);
- 			return;
- 		}
- 
- 		if (pkt_len > 2 * MAX_RX_BUF_SIZE) {
- 			dev_err(&hif_dev->udev->dev,
- 				"ath9k_htc: invalid pkt_len (%x)\n", pkt_len);
--			RX_STAT_INC(skb_dropped);
-+			RX_STAT_INC(hif_dev, skb_dropped);
- 			return;
- 		}
- 
-@@ -619,7 +619,7 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
- 				goto err;
- 			}
- 			skb_reserve(nskb, 32);
--			RX_STAT_INC(skb_allocated);
-+			RX_STAT_INC(hif_dev, skb_allocated);
- 
- 			memcpy(nskb->data, &(skb->data[chk_idx+4]),
- 			       hif_dev->rx_transfer_len);
-@@ -640,7 +640,7 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
- 				goto err;
- 			}
- 			skb_reserve(nskb, 32);
--			RX_STAT_INC(skb_allocated);
-+			RX_STAT_INC(hif_dev, skb_allocated);
- 
- 			memcpy(nskb->data, &(skb->data[chk_idx+4]), pkt_len);
- 			skb_put(nskb, pkt_len);
-@@ -650,10 +650,10 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
- 
- err:
- 	for (i = 0; i < pool_index; i++) {
--		RX_STAT_ADD(skb_completed_bytes, skb_pool[i]->len);
-+		RX_STAT_ADD(hif_dev, skb_completed_bytes, skb_pool[i]->len);
- 		ath9k_htc_rx_msg(hif_dev->htc_handle, skb_pool[i],
- 				 skb_pool[i]->len, USB_WLAN_RX_PIPE);
--		RX_STAT_INC(skb_completed);
-+		RX_STAT_INC(hif_dev, skb_completed);
- 	}
- }
- 
-diff --git a/drivers/net/wireless/ath/ath9k/htc.h b/drivers/net/wireless/ath/ath9k/htc.h
-index e3d546ef71dd..30f0765fb9fd 100644
---- a/drivers/net/wireless/ath/ath9k/htc.h
-+++ b/drivers/net/wireless/ath/ath9k/htc.h
-@@ -327,14 +327,18 @@ static inline struct ath9k_htc_tx_ctl *HTC_SKB_CB(struct sk_buff *skb)
- }
- 
- #ifdef CONFIG_ATH9K_HTC_DEBUGFS
--#define __STAT_SAFE(expr) (hif_dev->htc_handle->drv_priv ? (expr) : 0)
--#define TX_STAT_INC(c) __STAT_SAFE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
--#define TX_STAT_ADD(c, a) __STAT_SAFE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
--#define RX_STAT_INC(c) __STAT_SAFE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
--#define RX_STAT_ADD(c, a) __STAT_SAFE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
--#define CAB_STAT_INC   priv->debug.tx_stats.cab_queued++
--
--#define TX_QSTAT_INC(q) (priv->debug.tx_stats.queue_stats[q]++)
-+#define __STAT_SAFE(hif_dev, expr)	((hif_dev)->htc_handle->drv_priv ? (expr) : 0)
-+#define CAB_STAT_INC(priv)		((priv)->debug.tx_stats.cab_queued++)
-+#define TX_QSTAT_INC(priv, q)		((priv)->debug.tx_stats.queue_stats[q]++)
-+
-+#define TX_STAT_INC(hif_dev, c) \
-+		__STAT_SAFE((hif_dev), (hif_dev)->htc_handle->drv_priv->debug.tx_stats.c++)
-+#define TX_STAT_ADD(hif_dev, c, a) \
-+		__STAT_SAFE((hif_dev), (hif_dev)->htc_handle->drv_priv->debug.tx_stats.c += a)
-+#define RX_STAT_INC(hif_dev, c) \
-+		__STAT_SAFE((hif_dev), (hif_dev)->htc_handle->drv_priv->debug.skbrx_stats.c++)
-+#define RX_STAT_ADD(hif_dev, c, a) \
-+		__STAT_SAFE((hif_dev), (hif_dev)->htc_handle->drv_priv->debug.skbrx_stats.c += a)
- 
- void ath9k_htc_err_stat_rx(struct ath9k_htc_priv *priv,
- 			   struct ath_rx_status *rs);
-@@ -374,13 +378,13 @@ void ath9k_htc_get_et_stats(struct ieee80211_hw *hw,
- 			    struct ethtool_stats *stats, u64 *data);
- #else
- 
--#define TX_STAT_INC(c) do { } while (0)
--#define TX_STAT_ADD(c, a) do { } while (0)
--#define RX_STAT_INC(c) do { } while (0)
--#define RX_STAT_ADD(c, a) do { } while (0)
--#define CAB_STAT_INC   do { } while (0)
-+#define TX_STAT_INC(hif_dev, c)
-+#define TX_STAT_ADD(hif_dev, c, a)
-+#define RX_STAT_INC(hif_dev, c)
-+#define RX_STAT_ADD(hif_dev, c, a)
- 
--#define TX_QSTAT_INC(c) do { } while (0)
-+#define CAB_STAT_INC(priv)
-+#define TX_QSTAT_INC(priv, c)
- 
- static inline void ath9k_htc_err_stat_rx(struct ath9k_htc_priv *priv,
- 					 struct ath_rx_status *rs)
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-index 6a850a0bfa8a..08b04533e1f2 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-@@ -106,20 +106,20 @@ static inline enum htc_endpoint_id get_htc_epid(struct ath9k_htc_priv *priv,
- 
- 	switch (qnum) {
- 	case 0:
--		TX_QSTAT_INC(IEEE80211_AC_VO);
-+		TX_QSTAT_INC(priv, IEEE80211_AC_VO);
- 		epid = priv->data_vo_ep;
- 		break;
- 	case 1:
--		TX_QSTAT_INC(IEEE80211_AC_VI);
-+		TX_QSTAT_INC(priv, IEEE80211_AC_VI);
- 		epid = priv->data_vi_ep;
- 		break;
- 	case 2:
--		TX_QSTAT_INC(IEEE80211_AC_BE);
-+		TX_QSTAT_INC(priv, IEEE80211_AC_BE);
- 		epid = priv->data_be_ep;
- 		break;
- 	case 3:
- 	default:
--		TX_QSTAT_INC(IEEE80211_AC_BK);
-+		TX_QSTAT_INC(priv, IEEE80211_AC_BK);
- 		epid = priv->data_bk_ep;
- 		break;
- 	}
-@@ -328,7 +328,7 @@ static void ath9k_htc_tx_data(struct ath9k_htc_priv *priv,
- 	memcpy(tx_fhdr, (u8 *) &tx_hdr, sizeof(tx_hdr));
- 
- 	if (is_cab) {
--		CAB_STAT_INC;
-+		CAB_STAT_INC(priv);
- 		tx_ctl->epid = priv->cab_ep;
- 		return;
- 	}
--- 
-2.36.0
-
+Best regards,
+Krzysztof
