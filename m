@@ -2,65 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5E64527EDA
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 09:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B104A527EE6
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 09:54:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241312AbiEPHvO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 May 2022 03:51:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32844 "EHLO
+        id S241339AbiEPHx4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 May 2022 03:53:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241387AbiEPHvM (ORCPT
+        with ESMTP id S234133AbiEPHxz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 May 2022 03:51:12 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF2C927153;
-        Mon, 16 May 2022 00:51:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652687471; x=1684223471;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gxYxB/yE8IbLAZa6f2e+K6PHlgWLfPazfz5SGyAIbTc=;
-  b=DQ7WCK6XVQkZcBH1epTqyvetEfRL41PyAnA/HOADx62J5BeVN2AmTN6u
-   uCow9ZmS1DoWR4Ev5nxeTPuCWEpMBIWQU2SC64Xcsv+zdNlJu2e05ix7S
-   5EIix/W8vWVygfyd5wwbTT4a4sBneXRktW8ZXn7xlCJxsYko4G55XBir0
-   Z2CwTU2ARo8Xd/vcAWXe28/4KSNk+0pzVMfx3AaWk0YQr9xBxstoYjF4D
-   vvwIVzSO5HTc/Nb6rxN/ddWWGtBtMNBkqjOURDFj04VRFUoWGX88Pw2MS
-   d5iOI5aqMi3IqXbvinRDWukmkAPYk7oqlrj1ffNCX3KikPD3CJLD17dTc
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10348"; a="258332156"
-X-IronPort-AV: E=Sophos;i="5.91,229,1647327600"; 
-   d="scan'208";a="258332156"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2022 00:50:59 -0700
-X-IronPort-AV: E=Sophos;i="5.91,229,1647327600"; 
-   d="scan'208";a="604755423"
-Received: from caofangy-mobl1.ccr.corp.intel.com ([10.255.31.246])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2022 00:50:55 -0700
-Message-ID: <7f41b0d7f3b13dbf6dcd6abcba4836422cbbbffe.camel@intel.com>
-Subject: Re: [PATCH 7/7] rtc: cmos: Add suspend/resume endurance testing hook
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     rjw@rjwysocki.net, kvalo@kernel.org, linux-pm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-wireless@vger.kernel.org, daniel.lezcano@linaro.org,
-        merez@codeaurora.org, mat.jonczyk@o2.pl,
-        sumeet.r.pawnikar@intel.com, len.brown@intel.com
-Date:   Mon, 16 May 2022 15:50:52 +0800
-In-Reply-To: <831d118f3eaa6abde991ea3c9f55b6befa956f15.camel@intel.com>
-References: <20220505015814.3727692-1-rui.zhang@intel.com>
-         <20220505015814.3727692-8-rui.zhang@intel.com>
-         <YnWXQE9QASycOzZo@mail.local>
-         <320773e042a538782411f4db838bdc70a1b0851b.camel@intel.com>
-         <YnYgTtwTOtITODD4@mail.local>
-         <831d118f3eaa6abde991ea3c9f55b6befa956f15.camel@intel.com>
+        Mon, 16 May 2022 03:53:55 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 714D227CE6
+        for <linux-wireless@vger.kernel.org>; Mon, 16 May 2022 00:53:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=l/03mwnhAR+BDJ+VXcmFznp/o59n1ox5tWpbwkwwXg8=;
+        t=1652687634; x=1653897234; b=dA4/QuOSfAXWmPYtCwhm0TR8tuB7ErOS1hNSca+cOYAZ06Z
+        CSa5TzoIDV6ZDEcqsNEs3PNmlYSaazkMpmG4Ye32+DorecBbqWruoME1VOf+2dFMsFTUWHPCxydel
+        OPW6hRbZe2w5XQMh44oCn5TMfYv2pRqhWwjdng3x0EfIQBfP/uAJQsnGJ+b/ieFD6C5VV3A+1f7PA
+        2GHuEN037kKSxMY6zppEyVi0sBHOAJpg8sYgKLYjDcx8eg91ZJUMyf7CzJuLhiUJxoZjKncUcgqVN
+        3k1VW7LtaBwQbpKulvUpHyC10ZSjBqwZsy41gg7+WcGQiz35ZnN/zGFP4OYci3IA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nqVY6-00DHls-4F;
+        Mon, 16 May 2022 09:53:50 +0200
+Message-ID: <ed2d6619d4f5b47582ba5edd0751eb16c18b5747.camel@sipsolutions.net>
+Subject: Re: [PATCH v4] cfg80211: additional processing in
+ NL80211_CMD_SET_BEACON
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Aloka Dixit <quic_alokad@quicinc.com>
+Cc:     linux-wireless@vger.kernel.org, kernel test robot <lkp@intel.com>
+Date:   Mon, 16 May 2022 09:53:49 +0200
+In-Reply-To: <20220509225237.15955-1-quic_alokad@quicinc.com>
+References: <20220509225237.15955-1-quic_alokad@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.1 (3.44.1-1.fc36) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,114 +53,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, Alexandre,
+On Mon, 2022-05-09 at 15:52 -0700, Aloka Dixit wrote:
+> FILS discovery and unsolicited broadcast probe response transmissions
+> are configured as part of NL80211_CMD_START_AP, however both stop
+> after userspace uses the NL80211_CMD_SET_BEACON command as these
+> attributes are not processed as part of this command.
+>=20
+> - Add the missing implementation in nl80211 and mac80211.
+> - Modify the local variable in nl80211_set_beacon() and input parameter
+> to rdev_change_beacon() from type struct cfg80211_beacon_data to
+> type struct cfg80211_ap_settings to support the new processing.
+> - Modify ieee80211_change_beacon() to reflect the new input parameter typ=
+e.
+> - Modify driver specific functions pointed by change_beacon to
+> reflect the new input parameter type.
+>=20
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+> ---
+> v4:
+> - Modifications to all driver specific function pointers.
 
-May I know if this addresses your concern or not?
+That's fine.
 
-thanks,
-rui
+> - Also included all files in a single patch instead of splitting as per
+> the modules because otherwise compilation fails with changes in only
+> net/wireless and include/net directories.
+>=20
 
-On Sat, 2022-05-07 at 15:41 +0800, Zhang Rui wrote:
-> On Sat, 2022-05-07 at 09:31 +0200, Alexandre Belloni wrote:
-> > On 07/05/2022 10:00:40+0800, Zhang Rui wrote:
-> > > Hi, Alexandre,
-> > > 
-> > > Thanks for reviewing the patch.
-> > > 
-> > > On Fri, 2022-05-06 at 23:46 +0200, Alexandre Belloni wrote:
-> > > > Hello,
-> > > > 
-> > > > I assume I can ignore this patch as this seems to be only for
-> > > > testing
-> > > 
-> > > The main purpose of this patch is for automate testing.
-> > > But this doesn't mean it cannot be part of upstream code, right?
-> > > 
-> > > > I'm not even sure why this is needed as this completely breaks
-> > > > setting
-> > > > the alarm time.
-> > > 
-> > > Or overrides the alarm time, :)
-> > > 
-> > > People rely on the rtc alarm in the automated suspend stress
-> > > test,
-> > > which suspend and resume the system for over 1000 iterations.
-> > > As I mentioned in the cover letter of this patch series, if the
-> > > system
-> > > suspend time varies from under 1 second to over 60 seconds, how
-> > > to
-> > > alarm the RTC before suspend?
-> > > This feature is critical in this scenario.
-> > > 
-> > > Plus, the current solution is transparent to people who don't
-> > > known/use
-> > > this "rtc_wake_override_sec" parameter. And for people who use
-> > > this,
-> > > they should know that the previous armed RTC alarm will be
-> > > overrode
-> > > whenever a system suspend is triggered. I can add a message when
-> > > the
-> > > parameter is set, if needed.
-> > > 
-> > 
-> > It is not transparent, if I read your patch properly, this breaks
-> > wakeup
-> > for everyone...
-> > 
-> > > > On 05/05/2022 09:58:14+0800, Zhang Rui wrote:
-> > > > > +static int cmos_pm_notify(struct notifier_block *nb,
-> > > > > unsigned
-> > > > > long
-> > > > > mode, void *_unused)
-> > > > > +{
-> > > > > +	struct cmos_rtc *cmos = container_of(nb, struct
-> > > > > cmos_rtc,
-> > > > > pm_nb);
-> > > > > +	struct rtc_device       *rtc = cmos->rtc;
-> > > > > +	unsigned long           now;
-> > > > > +	struct rtc_wkalrm       alm;
-> > > > > +
-> > > > > +	if (rtc_wake_override_sec == 0)
-> > > > > +		return NOTIFY_OK;
-> > > > > +
-> > > > > +	switch (mode) {
-> > > > > +	case PM_SUSPEND_PREPARE:
-> > > > > +		/*
-> > > > > +		 * Cancel the timer to make sure it won't fire
-> > > > > +		 * before rtc is rearmed later.
-> > > > > +		 */
-> > > > > +		rtc_timer_cancel(rtc, &rtc->aie_timer);
-> > > > > +		break;
-> > > > > +	case PM_SUSPEND_LATE:
-> > > > > +		if (rtc_read_time(rtc, &alm.time))
-> > > > > +			return NOTIFY_BAD;
-> > > > > +
-> > > > > +		now = rtc_tm_to_time64(&alm.time);
-> > > > > +		memset(&alm, 0, sizeof(alm));
-> > > > > +		rtc_time64_to_tm(now + rtc_wake_override_sec,
-> > > > > &alm.time);
-> > > > > +		alm.enabled = true;
-> > > > > +		if (rtc_set_alarm(rtc, &alm))
-> > > > > +			return NOTIFY_BAD;
-> > 
-> > ... because if rtc_wake_override_sec is not set, this sets the
-> > alarm
-> > to
-> > now which is the current RTC time, ensuring the alarm will never
-> > trigger.
-> 
-> No.
-> As the code below
-> > > > > 
-> > > > > 	if (rtc_wake_override_sec == 0)
-> > > > > +		return NOTIFY_OK;
-> 
-> We check for rtc_wake_override_sec at the beginning of the notifier
-> callback. So it takes effect only if a) rtc_wake_override_sec is set,
-> AND b) a suspend is triggered.
-> 
-> thanks,
-> rui
-> 
-> 
+That I prefer not. Please send the mac80211 (and/or driver) changes
+separately (make sure you edit the commit logs appropriately), with the
+first cfg80211 change only containing the API updates across the rest of
+the tree.
 
+johannes
