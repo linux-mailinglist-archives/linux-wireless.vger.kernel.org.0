@@ -2,112 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1E3752831A
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 13:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F01A0528370
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 13:44:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233909AbiEPLXx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 May 2022 07:23:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41738 "EHLO
+        id S233342AbiEPLol (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 May 2022 07:44:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243099AbiEPLXw (ORCPT
+        with ESMTP id S235303AbiEPLoh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 May 2022 07:23:52 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94DBF387A2;
-        Mon, 16 May 2022 04:23:49 -0700 (PDT)
-Date:   Mon, 16 May 2022 13:23:46 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652700228;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=S5NxAJPVWcMi6gSub2SnJmtVeydspv2dOKKX4Sgbo2E=;
-        b=lJ/ua/xT36CFkqAG2YmuUJzsMegjfmmNTNqFT+fjWUS0gy0CFATLEgN6pymWdJzZRXx+c2
-        +2tnuSQnhzScgw8CD400ykPzDIZ34DTelPol+ky2h5ZdINhBstvnNH2N6Xwral/bK94Srw
-        GcE97KmJQRokY9lLjkxkE0MajKpJCpKkpsFmmNGZLC0M4eGr2JrDlIkWq+IUovdVExg15j
-        ngczzWRkxsTGvHYwzULb4NfvLr1Zvc1S1egZzwo3HBfWnvIZhMwtnLjGw44Udvu5b7unJQ
-        2rRFDnGD6COThS/URwcxwBvcZchfuCohtpzk9klqe6WeAdWfuiCwwSPp0C+O9g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652700228;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=S5NxAJPVWcMi6gSub2SnJmtVeydspv2dOKKX4Sgbo2E=;
-        b=54/Hu5OcF7w+aG2PdqmJIRu09tvXTti1VbEvmiab9M9zPRjw3PZQbf8xF5NEXBPzJfk2jw
-        5Mtg5wpN0Ua/JmBg==
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     Lukas Wunner <lukas@wunner.de>
-Cc:     linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mark Gross <markgross@kernel.org>, Michael Buesch <m@bues.ch>,
-        Rafa?? Mi??ecki <zajec5@gmail.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        linux-gpio@vger.kernel.org, linux-wireless@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [RFC PATCH] genirq: Provide generic_handle_domain_irq_safe().
-Message-ID: <YoI0QiM4ntJP/9fQ@linutronix.de>
-References: <YnkfWFzvusFFktSt@linutronix.de>
- <20220516101814.GA18490@wunner.de>
+        Mon, 16 May 2022 07:44:37 -0400
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89028E0B7
+        for <linux-wireless@vger.kernel.org>; Mon, 16 May 2022 04:44:36 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id a11so13806134pff.1
+        for <linux-wireless@vger.kernel.org>; Mon, 16 May 2022 04:44:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=w97FCN2M4uEzx9WBQGj+Mylv6fqD2SJAkNQi+Noub7o=;
+        b=fuOkW3iIuEvNeM8d+TFf25RZ+jh8lk2KvYhn/Kz9W7kHCtMQOojKxCrzfC8s07TMi1
+         LUSRMUfejCmta1HTUhMXTRBtyTHSBWJAuJ/DvlRJMCXB/ZTBGUvCwYOlDdHf/ZitlsIW
+         Cq/wn4zDII8sU4i2pYptLX+Nbb1kxKURUxVdZcgn5dxI7rtBnIKTVPV0p0DAnJQY9Lx7
+         ilKzf04PUrEwcchd8lBoXdojIR9q5rKAo197hsx2niXL13etiq3GZhpEipN4XJ5Gw5S/
+         vdeXA4Nq9xPBTdOsQ4DZWgT5pomVjM4wjqO07RlQRgx8ZBqr2kuR+7HOhchv9qkU+KR3
+         XZeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=w97FCN2M4uEzx9WBQGj+Mylv6fqD2SJAkNQi+Noub7o=;
+        b=dHM6FgbbbtBQcfjI7DsVGZtss1k1IinfoNHXazLx80cL2UbUK+vOueWX1iv+2OTWsw
+         BIdJHxI/LiX56QbMkpaxNGTPM3PlldG3zKEy/63Ud2eP92SwPBx+Svy2TGRW1jUMMUjH
+         vCFvP9c4QmcYeTzX1YePNpI0yQ543bwhgnAiZPIi6QxPw/2yDJEkQERwcuHaKyp8c1VN
+         HIMco1sBgIUQ8FRLlq2hr2gYH3YBxxo2S6MfNGrVaEoNU0WoqGqqMAmvPpCNZeQJ8fbd
+         CfAEf+CSMKCT5++BAEWVINwEj65RcS/J9mE76Nx0Bbo7eiBly2kraDR9YijYka678tQE
+         m4UA==
+X-Gm-Message-State: AOAM530GBRqGU56qeoyEtM9rfUw2vFuEWpQze8oQSlYJOoA3C1+YQDR/
+        KZpmUwqzoh2A//W1RT/ypbytItTjwIKZAht8pSc=
+X-Google-Smtp-Source: ABdhPJygcjJ5SlRqBr/nTOMxdYarPxB1sMaHyLexi/gVh9xoJozLNJ3iUzaIrQD3hP3Bx3xVKI9J5ovppUNAxGquXKo=
+X-Received: by 2002:a65:6e0d:0:b0:3c6:12af:15b4 with SMTP id
+ bd13-20020a656e0d000000b003c612af15b4mr14814255pgb.338.1652701475971; Mon, 16
+ May 2022 04:44:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220516101814.GA18490@wunner.de>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Received: by 2002:ac4:a0d1:0:b0:4b8:cb66:93b4 with HTTP; Mon, 16 May 2022
+ 04:44:35 -0700 (PDT)
+Reply-To: attorneyjoel4ever2021@gmail.com
+From:   Felix Joel <daterdet200@gmail.com>
+Date:   Mon, 16 May 2022 11:44:35 +0000
+Message-ID: <CAEg8PkakqOdF5aDWtc-RXYUfQAKURQ=3xZbEpjOKJBzvo0mE7A@mail.gmail.com>
+Subject: =?UTF-8?B?dmVudGVyIHDDpSDDpSBow7hyZSBmcmEgZGVn?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:42e listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4974]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [daterdet200[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [attorneyjoel4ever2021[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [daterdet200[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.4 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2022-05-16 12:18:14 [+0200], Lukas Wunner wrote:
-> On Mon, May 09, 2022 at 04:04:08PM +0200, Sebastian Andrzej Siewior wrote:
-> > The problem with generic_handle_domain_irq() is that with `threadirqs'
-> > it will trigger "WARN_ON_ONCE(!in_hardirq())".
-> 
-> Now silenced by:
-> https://git.kernel.org/linus/792ea6a074ae
-> 
-> 
-> > +int generic_handle_domain_irq_safe(struct irq_domain *domain, unsigned int hwirq)
-> > +{
-> > +	unsigned long flags;
-> > +	int ret;
-> > +
-> > +	local_irq_save(flags);
-> > +	ret = handle_irq_desc(irq_resolve_mapping(domain, hwirq));
-> > +	local_irq_restore(flags);
-> > +	return ret;
-> > +}
-> > +EXPORT_SYMBOL_GPL(generic_handle_domain_irq_safe);
-> 
-> AFAICS you don't need to disable hardirqs at least for the "threadirqs"
-> case because irq_forced_thread_fn() already does that.
+--=20
 
-PREEMPT_RT does not disable interrupts. Also completions in softirq
-won't disable interrupts.
-
-> 
-> >  drivers/bcma/driver_gpio.c                 |  2 +-
-> >  drivers/gpio/gpio-mlxbf2.c                 |  6 ++----
-> >  drivers/pinctrl/pinctrl-amd.c              |  2 +-
-> >  drivers/platform/x86/intel/int0002_vgpio.c |  3 +--
-> >  drivers/ssb/driver_gpio.c                  |  6 ++++--
-> 
-> From a quick look, the proper solution for all of those drivers is
-> probably to just add IRQF_NO_THREAD and be done with it.
-
-I think I mentioned that part in the commit description: IRQF_NO_THREAD
-must be specified by all handlers of a shared interrupt. It is an option
-for the handler that owns an interrupt exclusive.
-
-> Thanks,
-> 
-> Lukas
-
-Sebastian
+Hallo,
+Vennligst godta mine unnskyldninger. Jeg =C3=B8nsker ikke =C3=A5 invadere
+privatlivet ditt, jeg er Felix Joel, en advokat av yrke. Jeg har
+skrevet en tidligere e-post til deg, men uten svar, og i min f=C3=B8rste
+e-post nevnte jeg til deg om min avd=C3=B8de klient , som b=C3=A6rer samme
+etternavn som deg. Siden hans d=C3=B8d har jeg mottatt flere brev fra
+banken hans hvor han har gjort innskudd f=C3=B8r sin d=C3=B8d, har banken b=
+edt
+meg om =C3=A5 gi hans n=C3=A6rmeste eller noen av hans slektninger som kan =
+gj=C3=B8re
+krav p=C3=A5 hans midler eller det vil bli konfiskert, og siden jeg ikke
+kunne finne noen av hans slektninger, bestemte jeg meg for =C3=A5 kontakte
+deg for dette kravet, og du har derfor samme etternavn som ham.
+Kontakt meg snarest for mer informasjon.
+Vennlig hilsen,
+Barrister Felix Joel
