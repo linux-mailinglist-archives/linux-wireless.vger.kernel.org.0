@@ -2,68 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24AFF529030
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 22:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AE215291F6
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 22:49:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239487AbiEPUeC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 May 2022 16:34:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56606 "EHLO
+        id S229585AbiEPUtO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 May 2022 16:49:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349178AbiEPUcO (ORCPT
+        with ESMTP id S1348199AbiEPUsH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 May 2022 16:32:14 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E990A2126E;
-        Mon, 16 May 2022 13:16:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9C366B8160F;
-        Mon, 16 May 2022 20:16:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A03C34100;
-        Mon, 16 May 2022 20:16:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652732164;
-        bh=ME96KX8IfX1svEsT1z2Dl5hSwjXyNb9P2yDf0uGA9FI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=O0S4GRNM6WUisWnWefckQXgbR6PZD+pb7qWIyAS80cWIqtkYFGEqTiXoM0C8+PXTh
-         F59z5FAtrV9TgdbPvFLCsthZn3BL0km6e8LY3p6X4TLCswVx6PREdHIRrqdmcYSa2R
-         yqDF2uCaa+ZZOqqAS2ZdR88IVh2JT3zfq0shj29RnD9a7NFcF6ktABlDs93Sz8mXlF
-         IoSDKLxBiYjc6dEr50+2tC5tDBvKh5RTGSGNvTGCFqHhapqxaRYK5chPgdTj0AX4uN
-         4vm+E0+rjYccB934PBjZQv8twso3aZ9Wawv4JE4UEgONtBK0OOddQ6NTuw6abU0xbU
-         iWV4JSCCOuZpA==
-Date:   Mon, 16 May 2022 13:16:02 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, andriy.shevchenko@linux.intel.com,
-        dinesh.sharma@intel.com, ilpo.jarvinen@linux.intel.com,
-        moises.veleta@intel.com, sreehari.kancharla@intel.com
-Subject: Re: [PATCH net-next 0/2] net: skb: Remove skb_data_area_size()
-Message-ID: <20220516131602.3dfddf42@kernel.org>
-In-Reply-To: <20220513173400.3848271-1-ricardo.martinez@linux.intel.com>
-References: <20220513173400.3848271-1-ricardo.martinez@linux.intel.com>
+        Mon, 16 May 2022 16:48:07 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD32954032
+        for <linux-wireless@vger.kernel.org>; Mon, 16 May 2022 13:25:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1652732706; x=1684268706;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=logqdQO0AhOWfcr9pxeL7bvtV12AiySCPbMN2suLmyI=;
+  b=uFUUTckF1tGhH9uor+TCa10fRnw/in0CvWpyby7Myd9ubhWVRS0Upohi
+   hDwu+CLsS2Tp3bwh9kByVVXbrZa9eSuvYidbvSeAN/xTH4P55NZl0ez2Y
+   4h3exKPkkAt9R2PvsStf28VSiTC944b7kkD1hofwAaEz6/DK/erWJhzR8
+   Y=;
+Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
+  by alexa-out.qualcomm.com with ESMTP; 16 May 2022 13:25:05 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2022 13:25:05 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 16 May 2022 13:25:04 -0700
+Received: from alokad-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 16 May 2022 13:25:04 -0700
+From:   Aloka Dixit <quic_alokad@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>,
+        Aloka Dixit <quic_alokad@quicinc.com>
+Subject: [PATCH v5 0/3] additional processing in NL80211_CMD_SET_BEACON
+Date:   Mon, 16 May 2022 13:24:51 -0700
+Message-ID: <20220516202454.4925-1-quic_alokad@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 13 May 2022 10:33:58 -0700 Ricardo Martinez wrote:
-> This patch series removes the skb_data_area_size() helper,
-> replacing it in t7xx driver with the size used during skb allocation.
-> 
-> https://lore.kernel.org/netdev/CAHNKnsTmH-rGgWi3jtyC=ktM1DW2W1VJkYoTMJV2Z_Bt498bsg@mail.gmail.com/
+FILS discovery and unsolicited broadcast probe response transmissions
+are configured as part of NL80211_CMD_START_AP, however both stop
+after userspace uses the NL80211_CMD_SET_BEACON command as these
+attributes are not processed as part of this command.
 
-Thanks for following up!
+- Add the missing implementation in nl80211 and mac80211.
+- Modify the local variable in nl80211_set_beacon() and input parameter
+to rdev_change_beacon() from type struct cfg80211_beacon_data to
+type struct cfg80211_ap_settings to support the new processing.
+- Modify ieee80211_change_beacon() to reflect the new input parameter type.
+- Modify driver specific functions pointed by change_beacon to
+reflect the new input parameter type.
+
+Aloka Dixit (3):
+  cfg80211: additional processing in NL80211_CMD_SET_BEACON
+  mac80211: process additional data during beacon change
+  drivers: modify prototype for beacon change functions
+
+ drivers/net/wireless/ath/ath6kl/cfg80211.c    |  4 +-
+ drivers/net/wireless/ath/wil6210/cfg80211.c   |  3 +-
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  4 +-
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |  3 +-
+ .../wireless/microchip/wilc1000/cfg80211.c    |  4 +-
+ .../net/wireless/quantenna/qtnfmac/cfg80211.c |  4 +-
+ include/net/cfg80211.h                        |  2 +-
+ net/mac80211/cfg.c                            | 34 +++++++++---
+ net/wireless/nl80211.c                        | 28 ++++++++--
+ net/wireless/rdev-ops.h                       |  2 +-
+ net/wireless/trace.h                          | 52 +++++++++++--------
+ 11 files changed, 94 insertions(+), 46 deletions(-)
+
+
+base-commit: 9335156ac0e174721921c404bd173526c8509124
+-- 
+2.31.1
+
