@@ -2,48 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 239AE528AA9
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 18:36:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58B9F528B88
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 19:04:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232623AbiEPQgi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 May 2022 12:36:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38906 "EHLO
+        id S1344023AbiEPREc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 May 2022 13:04:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343776AbiEPQgG (ORCPT
+        with ESMTP id S1344066AbiEPREa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 May 2022 12:36:06 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D756DF60
-        for <linux-wireless@vger.kernel.org>; Mon, 16 May 2022 09:36:02 -0700 (PDT)
+        Mon, 16 May 2022 13:04:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71CCB27B37;
+        Mon, 16 May 2022 10:04:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id EB82EB8125C
-        for <linux-wireless@vger.kernel.org>; Mon, 16 May 2022 16:36:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23A0C385AA;
-        Mon, 16 May 2022 16:35:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 141D36124A;
+        Mon, 16 May 2022 17:04:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11760C34113;
+        Mon, 16 May 2022 17:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652718959;
-        bh=4Gr2UMaY2vre3+l0Z/vZmHdEqnbxdBbORKHtVrhxuf4=;
+        s=k20201202; t=1652720667;
+        bh=hFTULSm9gjKLJhiZF+rVg4Hgs0VcXXmYTYwDxYJvn5I=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=pALU45M6RSdK7jSjZMMdMmT87g+XckxPnvwriAOxW2RocPj0T7rqueRaOH5CMTSX4
-         0bVD4qTCPAO8oWZ5hN9HtxuBPE/fEVj4z+Ty9rYC2aDj6yOLkyrbYLRbdciFCvB5qs
-         4p8xu7r+OJ2OCG21fOiKl6l8XWbB6LFkYg5hE5cMnHkwVH/EiAQnzg6RNZcP88leDC
-         +Sxup/j7d/MO+CtBgjG5j/dAXnTSpCyKAojtm3b/N1Ch3Z9e4HUvTtPF87rUROTVDv
-         BMEL2wraQbVhgeCJ5qzsI5v4/p9O46vML6zIaWPs3MkbfbPgh0xMmo5btb3JVPOCYt
-         3zdhA6/A1MBNA==
+        b=qP8F06M90hEBDfKMozhcKPHBnPKAf5XO30YiZx48MNi2WmlTEioN0D7nxx1GifHzJ
+         OQRUMy4TcBn2tJWMPejOLGjYhr+X615s+XOYnepAsBlxRhg0eBUsU7vCpDj6Ar53AT
+         YDGHHleZmIJVdHyFe0rgzStzs92Za90WDVYs8tTBpsMAeulTIxmckyn4r4M/Vvclwl
+         5bqL0Tlw36mHX/T5ptkPccHs/ekPGtATGovTJJUOR8DR3w+bdgjmP0KUcFcotkmiE9
+         4grV7hgLxsQtspbG/bRMqmw0rH/Vw7bUkMWZ0izszdjE2LLZAPAbqW2ymvUF0MDO+K
+         YKMw6KpFU7dGA==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Maxime Bizon <mbizon@freebox.fr>
-Cc:     ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] ath10k: fix misreported tx bandwidth for 160Mhz
-References: <cd2735a40da7f4fcc5323e3fca3775e7b5402ece.camel@freebox.fr>
-        <87o7zx4fue.fsf@kernel.org>
-        <c4bf5262bc250afd9c9e52248f1b576a7882c8d4.camel@freebox.fr>
-Date:   Mon, 16 May 2022 19:35:54 +0300
-In-Reply-To: <c4bf5262bc250afd9c9e52248f1b576a7882c8d4.camel@freebox.fr>
-        (Maxime Bizon's message of "Mon, 16 May 2022 18:23:25 +0200")
-Message-ID: <87fsl94eqd.fsf@kernel.org>
+To:     Guo Zhengkui <guozhengkui@vivo.com>
+Cc:     Jiri Slaby <jirislaby@kernel.org>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        linux-wireless@vger.kernel.org (open list:ATHEROS ATH5K WIRELESS DRIVER),
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+        linux-kernel@vger.kernel.org (open list),
+        zhengkui_guo@outlook.com
+Subject: Re: [PATCH linux-next] net: ath: fix minmax.cocci warnings
+References: <20220516134057.72365-1-guozhengkui@vivo.com>
+Date:   Mon, 16 May 2022 20:04:21 +0300
+In-Reply-To: <20220516134057.72365-1-guozhengkui@vivo.com> (Guo Zhengkui's
+        message of "Mon, 16 May 2022 21:40:57 +0800")
+Message-ID: <874k1pxvca.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -57,18 +65,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Maxime Bizon <mbizon@freebox.fr> writes:
+Guo Zhengkui <guozhengkui@vivo.com> writes:
 
-> On Mon, 2022-05-16 at 19:11 +0300, Kalle Valo wrote:
+> Fix the following coccicheck warnings:
 >
->> On what ath10k hardware and afirmware version did you test this? I
->> can add that to the commit log.
->> 
+> drivers/net/wireless/ath/ath5k/phy.c:3139:62-63: WARNING
+> opportunity for min()
+> drivers/net/wireless/ath/ath9k/dfs.c:249:28-30: WARNING
+> opportunity for max()
 >
-> QCA9984 
-> 10.4-3.10-00047
+> Signed-off-by: Guo Zhengkui <guozhengkui@vivo.com>
+> ---
+>  drivers/net/wireless/ath/ath5k/phy.c | 2 +-
+>  drivers/net/wireless/ath/ath9k/dfs.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Thanks, I added that in the pending branch.
+Please split this into two patches, one for ath5k and one for ath9k.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
