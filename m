@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B3A4527B22
+	by mail.lfdr.de (Postfix) with ESMTP id 2EFDC527B21
 	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 02:52:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236491AbiEPAwj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 May 2022 20:52:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48326 "EHLO
+        id S235758AbiEPAwi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 May 2022 20:52:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232404AbiEPAwg (ORCPT
+        with ESMTP id S232864AbiEPAwg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 15 May 2022 20:52:36 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AFD52558A
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13D0525592
         for <linux-wireless@vger.kernel.org>; Sun, 15 May 2022 17:52:34 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24G0qSJr9000815, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24G0qSJr9000815
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24G0qTyfD000846, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24G0qTyfD000846
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 16 May 2022 08:52:28 +0800
+        Mon, 16 May 2022 08:52:29 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Mon, 16 May 2022 08:52:28 +0800
+ 15.1.2308.27; Mon, 16 May 2022 08:52:29 +0800
 Received: from localhost (172.16.17.21) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Mon, 16 May
- 2022 08:52:27 +0800
+ 2022 08:52:28 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
-Subject: [PATCH v2 1/6] rtw89: add ieee80211::sta_rc_update ops
-Date:   Mon, 16 May 2022 08:52:10 +0800
-Message-ID: <20220516005215.5878-2-pkshih@realtek.com>
+Subject: [PATCH v2 2/6] rtw89: 8852c: set TX antenna path
+Date:   Mon, 16 May 2022 08:52:11 +0800
+Message-ID: <20220516005215.5878-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220516005215.5878-1-pkshih@realtek.com>
 References: <20220516005215.5878-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzUvMTUgpFWkyCAxMDowMDowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -68,101 +68,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When peer's NSS, rate or bandwidth is changed, we update RA(rate adaptive)
-mask to ensure transmitting packets properly.
+To make user space can set TX antenna via iw command. Then, we can diagnose
+antenna is connected properly or not, and measure TX power in single path.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/mac80211.c | 12 +++++++++++-
- drivers/net/wireless/realtek/rtw89/phy.c      | 12 +++++++++---
- drivers/net/wireless/realtek/rtw89/phy.h      |  3 ++-
- 3 files changed, 22 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index 8da3e117ad382..f24e4a208376b 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -630,7 +630,7 @@ static void rtw89_ra_mask_info_update_iter(void *data, struct ieee80211_sta *sta
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 77dcdbd86c63a..64840c8d9efe8 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -2360,19 +2360,19 @@ static void rtw8852c_ctrl_tx_path_tmac(struct rtw89_dev *rtwdev, u8 tx_path,
+ 		rtw89_write32(rtwdev, reg, 0);
+ 	}
  
- 	rtwsta->use_cfg_mask = true;
- 	rtwsta->mask = *br_data->mask;
--	rtw89_phy_ra_updata_sta(br_data->rtwdev, sta);
-+	rtw89_phy_ra_updata_sta(br_data->rtwdev, sta, IEEE80211_RC_SUPP_RATES_CHANGED);
- }
- 
- static void rtw89_ra_mask_info_update(struct rtw89_dev *rtwdev,
-@@ -759,6 +759,15 @@ static void rtw89_ops_cancel_hw_scan(struct ieee80211_hw *hw,
- 	mutex_unlock(&rtwdev->mutex);
- }
- 
-+static void rtw89_ops_sta_rc_update(struct ieee80211_hw *hw,
-+				    struct ieee80211_vif *vif,
-+				    struct ieee80211_sta *sta, u32 changed)
-+{
-+	struct rtw89_dev *rtwdev = hw->priv;
-+
-+	rtw89_phy_ra_updata_sta(rtwdev, sta, changed);
-+}
-+
- const struct ieee80211_ops rtw89_ops = {
- 	.tx			= rtw89_ops_tx,
- 	.wake_tx_queue		= rtw89_ops_wake_tx_queue,
-@@ -788,5 +797,6 @@ const struct ieee80211_ops rtw89_ops = {
- 	.hw_scan		= rtw89_ops_hw_scan,
- 	.cancel_hw_scan		= rtw89_ops_cancel_hw_scan,
- 	.set_sar_specs		= rtw89_ops_set_sar_specs,
-+	.sta_rc_update		= rtw89_ops_sta_rc_update,
- };
- EXPORT_SYMBOL(rtw89_ops);
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 33494e8451cf3..c9a4ae989ac7d 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -357,13 +357,19 @@ static void rtw89_phy_ra_sta_update(struct rtw89_dev *rtwdev,
- 	ra->csi_mode = csi_mode;
- }
- 
--void rtw89_phy_ra_updata_sta(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta)
-+void rtw89_phy_ra_updata_sta(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta,
-+			     u32 changed)
+-	if (tx_path == RF_PATH_A) {
++	if (tx_path == RF_A) {
+ 		path_com[0].data = AX_PATH_COM0_PATHA;
+ 		path_com[1].data = AX_PATH_COM1_PATHA;
+ 		path_com[2].data = AX_PATH_COM2_PATHA;
+ 		path_com[7].data = AX_PATH_COM7_PATHA;
+ 		path_com[8].data = AX_PATH_COM8_PATHA;
+-	} else if (tx_path == RF_PATH_B) {
++	} else if (tx_path == RF_B) {
+ 		path_com[0].data = AX_PATH_COM0_PATHB;
+ 		path_com[1].data = AX_PATH_COM1_PATHB;
+ 		path_com[2].data = AX_PATH_COM2_PATHB;
+ 		path_com[7].data = AX_PATH_COM7_PATHB;
+ 		path_com[8].data = AX_PATH_COM8_PATHB;
+-	} else if (tx_path == RF_PATH_AB) {
++	} else if (tx_path == RF_AB) {
+ 		path_com[0].data = AX_PATH_COM0_PATHAB;
+ 		path_com[1].data = AX_PATH_COM1_PATHAB;
+ 		path_com[2].data = AX_PATH_COM2_PATHAB;
+@@ -2457,6 +2457,7 @@ static void rtw8852c_bb_ctrl_btc_preagc(struct rtw89_dev *rtwdev, bool bt_en)
+ static void rtw8852c_bb_cfg_txrx_path(struct rtw89_dev *rtwdev)
  {
- 	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
- 	struct rtw89_ra_info *ra = &rtwsta->ra;
+ 	struct rtw89_hal *hal = &rtwdev->hal;
++	u8 ntx_path = hal->antenna_tx ? hal->antenna_tx : RF_AB;
  
- 	rtw89_phy_ra_sta_update(rtwdev, sta, false);
--	ra->upd_mask = 1;
-+
-+	if (changed & IEEE80211_RC_SUPP_RATES_CHANGED)
-+		ra->upd_mask = 1;
-+	if (changed & (IEEE80211_RC_BW_CHANGED | IEEE80211_RC_NSS_CHANGED))
-+		ra->upd_bw_nss_mask = 1;
-+
- 	rtw89_debug(rtwdev, RTW89_DBG_RA,
- 		    "ra updat: macid = %d, bw = %d, nss = %d, gi = %d %d",
- 		    ra->macid,
-@@ -487,7 +493,7 @@ static void rtw89_phy_ra_updata_sta_iter(void *data, struct ieee80211_sta *sta)
- {
- 	struct rtw89_dev *rtwdev = (struct rtw89_dev *)data;
+ 	rtw8852c_bb_cfg_rx_path(rtwdev, RF_PATH_AB);
  
--	rtw89_phy_ra_updata_sta(rtwdev, sta);
-+	rtw89_phy_ra_updata_sta(rtwdev, sta, IEEE80211_RC_SUPP_RATES_CHANGED);
+@@ -2472,7 +2473,7 @@ static void rtw8852c_bb_cfg_txrx_path(struct rtw89_dev *rtwdev)
+ 		rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHETB_MAX_NSS, 1);
+ 	}
+ 
+-	rtw8852c_ctrl_tx_path_tmac(rtwdev, RF_PATH_AB, RTW89_MAC_0);
++	rtw8852c_ctrl_tx_path_tmac(rtwdev, ntx_path, RTW89_MAC_0);
  }
  
- void rtw89_phy_ra_update(struct rtw89_dev *rtwdev)
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index 3ca5efa4c097b..291660154d58d 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.h
-+++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -471,7 +471,8 @@ s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev,
- 			      u8 bw, u8 ntx, u8 rs, u8 bf, u8 ch);
- void rtw89_phy_ra_assoc(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta);
- void rtw89_phy_ra_update(struct rtw89_dev *rtwdev);
--void rtw89_phy_ra_updata_sta(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta);
-+void rtw89_phy_ra_updata_sta(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta,
-+			     u32 changed);
- void rtw89_phy_rate_pattern_vif(struct rtw89_dev *rtwdev,
- 				struct ieee80211_vif *vif,
- 				const struct cfg80211_bitrate_mask *mask);
+ static u8 rtw8852c_get_thermal(struct rtw89_dev *rtwdev, enum rtw89_rf_path rf_path)
 -- 
 2.25.1
 
