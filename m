@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EFDC527B21
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 02:52:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12E29527B23
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 02:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235758AbiEPAwi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 May 2022 20:52:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48330 "EHLO
+        id S237664AbiEPAwk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 May 2022 20:52:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232864AbiEPAwg (ORCPT
+        with ESMTP id S231476AbiEPAwi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 May 2022 20:52:36 -0400
+        Sun, 15 May 2022 20:52:38 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13D0525592
-        for <linux-wireless@vger.kernel.org>; Sun, 15 May 2022 17:52:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A95242559B
+        for <linux-wireless@vger.kernel.org>; Sun, 15 May 2022 17:52:36 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24G0qTyfD000846, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24G0qTyfD000846
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24G0qU8u9000850, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24G0qU8u9000850
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 16 May 2022 08:52:29 +0800
+        Mon, 16 May 2022 08:52:30 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Mon, 16 May 2022 08:52:29 +0800
+ 15.1.2375.28; Mon, 16 May 2022 08:52:30 +0800
 Received: from localhost (172.16.17.21) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Mon, 16 May
- 2022 08:52:28 +0800
+ 2022 08:52:30 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
-Subject: [PATCH v2 2/6] rtw89: 8852c: set TX antenna path
-Date:   Mon, 16 May 2022 08:52:11 +0800
-Message-ID: <20220516005215.5878-3-pkshih@realtek.com>
+Subject: [PATCH v2 3/6] rtw89: cfo: check mac_id to avoid out-of-bounds
+Date:   Mon, 16 May 2022 08:52:12 +0800
+Message-ID: <20220516005215.5878-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220516005215.5878-1-pkshih@realtek.com>
 References: <20220516005215.5878-1-pkshih@realtek.com>
@@ -55,7 +55,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzUvMTUgpFWkyCAxMDowMDowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -68,58 +68,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-To make user space can set TX antenna via iw command. Then, we can diagnose
-antenna is connected properly or not, and measure TX power in single path.
+Somehow, hardware reports incorrect mac_id and pollute memory. Check index
+before we access the array.
+
+  UBSAN: array-index-out-of-bounds in rtw89/phy.c:2517:23
+  index 188 is out of range for type 's32 [64]'
+  CPU: 1 PID: 51550 Comm: irq/35-rtw89_pc Tainted: G           OE
+  Call Trace:
+   <IRQ>
+   show_stack+0x52/0x58
+   dump_stack_lvl+0x4c/0x63
+   dump_stack+0x10/0x12
+   ubsan_epilogue+0x9/0x45
+   __ubsan_handle_out_of_bounds.cold+0x44/0x49
+   ? __alloc_skb+0x92/0x1d0
+   rtw89_phy_cfo_parse+0x44/0x7f [rtw89_core]
+   rtw89_core_rx+0x261/0x871 [rtw89_core]
+   ? __alloc_skb+0xee/0x1d0
+   rtw89_pci_napi_poll+0x3fa/0x4ea [rtw89_pci]
+   __napi_poll+0x33/0x1a0
+   net_rx_action+0x126/0x260
+   ? __queue_work+0x217/0x4c0
+   __do_softirq+0xd9/0x315
+   ? disable_irq_nosync+0x10/0x10
+   do_softirq.part.0+0x6d/0x90
+   </IRQ>
+   <TASK>
+   __local_bh_enable_ip+0x62/0x70
+   rtw89_pci_interrupt_threadfn+0x182/0x1a6 [rtw89_pci]
+   irq_thread_fn+0x28/0x60
+   irq_thread+0xc8/0x190
+   ? irq_thread_fn+0x60/0x60
+   kthread+0x16b/0x190
+   ? irq_thread_check_affinity+0xe0/0xe0
+   ? set_kthread_struct+0x50/0x50
+   ret_from_fork+0x22/0x30
+   </TASK>
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/rtw8852c.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/phy.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 77dcdbd86c63a..64840c8d9efe8 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -2360,19 +2360,19 @@ static void rtw8852c_ctrl_tx_path_tmac(struct rtw89_dev *rtwdev, u8 tx_path,
- 		rtw89_write32(rtwdev, reg, 0);
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index c9a4ae989ac7d..79e4c28495c80 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -2462,6 +2462,11 @@ void rtw89_phy_cfo_parse(struct rtw89_dev *rtwdev, s16 cfo_val,
+ 	struct rtw89_cfo_tracking_info *cfo = &rtwdev->cfo_tracking;
+ 	u8 macid = phy_ppdu->mac_id;
  
--	if (tx_path == RF_PATH_A) {
-+	if (tx_path == RF_A) {
- 		path_com[0].data = AX_PATH_COM0_PATHA;
- 		path_com[1].data = AX_PATH_COM1_PATHA;
- 		path_com[2].data = AX_PATH_COM2_PATHA;
- 		path_com[7].data = AX_PATH_COM7_PATHA;
- 		path_com[8].data = AX_PATH_COM8_PATHA;
--	} else if (tx_path == RF_PATH_B) {
-+	} else if (tx_path == RF_B) {
- 		path_com[0].data = AX_PATH_COM0_PATHB;
- 		path_com[1].data = AX_PATH_COM1_PATHB;
- 		path_com[2].data = AX_PATH_COM2_PATHB;
- 		path_com[7].data = AX_PATH_COM7_PATHB;
- 		path_com[8].data = AX_PATH_COM8_PATHB;
--	} else if (tx_path == RF_PATH_AB) {
-+	} else if (tx_path == RF_AB) {
- 		path_com[0].data = AX_PATH_COM0_PATHAB;
- 		path_com[1].data = AX_PATH_COM1_PATHAB;
- 		path_com[2].data = AX_PATH_COM2_PATHAB;
-@@ -2457,6 +2457,7 @@ static void rtw8852c_bb_ctrl_btc_preagc(struct rtw89_dev *rtwdev, bool bt_en)
- static void rtw8852c_bb_cfg_txrx_path(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_hal *hal = &rtwdev->hal;
-+	u8 ntx_path = hal->antenna_tx ? hal->antenna_tx : RF_AB;
- 
- 	rtw8852c_bb_cfg_rx_path(rtwdev, RF_PATH_AB);
- 
-@@ -2472,7 +2473,7 @@ static void rtw8852c_bb_cfg_txrx_path(struct rtw89_dev *rtwdev)
- 		rtw89_phy_write32_mask(rtwdev, R_RXHE, B_RXHETB_MAX_NSS, 1);
- 	}
- 
--	rtw8852c_ctrl_tx_path_tmac(rtwdev, RF_PATH_AB, RTW89_MAC_0);
-+	rtw8852c_ctrl_tx_path_tmac(rtwdev, ntx_path, RTW89_MAC_0);
- }
- 
- static u8 rtw8852c_get_thermal(struct rtw89_dev *rtwdev, enum rtw89_rf_path rf_path)
++	if (macid >= CFO_TRACK_MAX_USER) {
++		rtw89_warn(rtwdev, "mac_id %d is out of range\n", macid);
++		return;
++	}
++
+ 	cfo->cfo_tail[macid] += cfo_val;
+ 	cfo->cfo_cnt[macid]++;
+ 	cfo->packet_count++;
 -- 
 2.25.1
 
