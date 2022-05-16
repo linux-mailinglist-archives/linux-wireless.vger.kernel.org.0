@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E21CE527C4F
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 05:26:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B780527C50
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 05:26:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239642AbiEPDZq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 May 2022 23:25:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50618 "EHLO
+        id S239630AbiEPDZs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 May 2022 23:25:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239630AbiEPDZl (ORCPT
+        with ESMTP id S239631AbiEPDZn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 May 2022 23:25:41 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86EDA1C925
-        for <linux-wireless@vger.kernel.org>; Sun, 15 May 2022 20:25:39 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id l19so16563326ljb.7
-        for <linux-wireless@vger.kernel.org>; Sun, 15 May 2022 20:25:39 -0700 (PDT)
+        Sun, 15 May 2022 23:25:43 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA4D1098
+        for <linux-wireless@vger.kernel.org>; Sun, 15 May 2022 20:25:40 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id i10so23524456lfg.13
+        for <linux-wireless@vger.kernel.org>; Sun, 15 May 2022 20:25:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=3xta7mXhm2Fn94nk/9joq4nWctV2Qx65e2rWuESLvCI=;
-        b=Hioqv9TGU/FbI35sE3TREY8e3/vmNZPGONyFHjiAwcc9MDOvUNHPD53QhsY149u620
-         Vevyl1GrZSRsjOrDS9hggWqA7R/8Hsht1AGFl0kqZhdN43sML7EG0G2kgzFXOhGDp8S1
-         ROaX1Nacry7w/o0XmxHtgGPgdVPDCvhxWwfg04FUCJuSA1M6DR91zYq2LrrSJLJpbuKv
-         XjKSkDLL32I9GYe25ZdEh8+tUT7zEiRFi6SMcXZ++DBT9aW5c99BJUvFc0Pen4tudogj
-         0a4sHa5IcbbnspNdJloR3QO1OJqMmkv0JX3n2+cxZHAVKf4WFXbWNDH0u6sDp116Ljv1
-         xr/w==
+        bh=PbV+baTfSf6u1EDu9ZnZDC1YNNi38GdcisAOvMHD4Bw=;
+        b=QjqTZxQwXXCe9KlmtuQOjaJbbV3YEk8MZRY48gyp7x0GHLEwRygQadvXbirjLzk+zj
+         Sp8Jc53dQmw18KW02rUNzBVVgbzVRbTPjNWSQ5EzSuDw/S0zcz4PLpbB3gdAAKBcOi2I
+         LXB/ynjKURRV6uQf9/q1fXPbEgdD8PF7RrQHhZsFNSW4EMx8vQcC6FPNY99DYQTNqWZv
+         HI8R3e3c3Yv1LN/UCTibYdHm79gEmpEK6Xgb7XxvGhB+Kwt741oZDJswLDcKU0n/5dwY
+         mr4Qhfu2rgsPJLntQZUB9vDSv508LyqDPSFvqzYJSgT2Kmihbx/1gq7RQB9h2tQZTyy8
+         qv4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=3xta7mXhm2Fn94nk/9joq4nWctV2Qx65e2rWuESLvCI=;
-        b=vns+5LSXF26OVyuHe8koDSjO8DG2Qo5AUmZxW3xEi8tsem7ZnMoHpZNV+jtVkLAnVY
-         51bpLz7Db6mJFSyjJEMeUkSP+q8jk8XVHWzkLKNluxGxz+NRduW0lNjTGHbcjvcqU3pG
-         WRBajccOuhd/JeVH8g7zLtZtjCxytBOB2bnJvNjUS1sMrG5N77afvA7+dP5Zfs7dFlDE
-         5MITtazZxZnN6SH/6tG5OLtiLVvpJm/JaRl26c3Cx0CZzt3cAmNUOOMFAxZ7qNhYRCSL
-         VmlV220nOVC04C4897hpRNSruOcAcHCI7sXcCRPYP8L/e0/y/XIkhjux2wCNFOIBym3N
-         Bdeg==
-X-Gm-Message-State: AOAM533PJtSvtEMXt9+Hz085yZcYU08vIJrbtR7YclB4rT19hqDe+wC2
-        XQOTez5Ri3zPkh1u7DS8ovY=
-X-Google-Smtp-Source: ABdhPJwG21mD1Uu47jm2MyFyRUP+b0rBLtkvdr0bu9qRGPrQoG4/kzUA6vA7jP5N0Yy80KvBI1zgrg==
-X-Received: by 2002:a2e:9e03:0:b0:24f:153c:c479 with SMTP id e3-20020a2e9e03000000b0024f153cc479mr10429362ljk.13.1652671537745;
-        Sun, 15 May 2022 20:25:37 -0700 (PDT)
+        bh=PbV+baTfSf6u1EDu9ZnZDC1YNNi38GdcisAOvMHD4Bw=;
+        b=BtdEEMZwj00KlfFDL4o/ugys9aBVsDwpnm0LdzndhhPOKg6eu7qlUUF8lg4lyzAVhW
+         KDRsZpHMAros3WR2hepWMfDo73tn2RSXMYTFDmKF4tOkq5iUCpw2ff5Pa9El3FC8jE4k
+         +14zyK4r+WLmtRKBW8bv6abL0yhmrEmqS8JZbP1iNp8pk7t6azu8gyBIUFf8GBRfKQCr
+         68xqLGzpnR1Re0ltpzIvY/6Q3MdUbfoYqTYuDEWazAwXMhYwlS0WQTtRG1xDZoAmDOqI
+         KUqKH/VK4MsjPxGmi7NvGAnInJIwnvYFxsICwcxPH+8sc0EROXOaSvJBaykPxveQoGc+
+         YsCA==
+X-Gm-Message-State: AOAM533QY1MiMlQFMahZ5ixpxaS3lmyMYHTTr2VxUwm6TJffqxNZ6Emb
+        LZMGPbSO5IullT/9lIQPYi0=
+X-Google-Smtp-Source: ABdhPJwU9s6rz8F3sSWiajSPUAgQAz/+1eMgZfds0TGo4wJnVLbd99mweI9PRVB8lYbNM+sP4Y8NKg==
+X-Received: by 2002:a05:6512:2308:b0:473:da88:ea2b with SMTP id o8-20020a056512230800b00473da88ea2bmr11781591lfu.339.1652671538728;
+        Sun, 15 May 2022 20:25:38 -0700 (PDT)
 Received: from rsa-laptop.internal.lan ([217.25.229.52])
-        by smtp.gmail.com with ESMTPSA id q18-20020a2e9152000000b0024f3d1daee5sm1337251ljg.109.2022.05.15.20.25.36
+        by smtp.gmail.com with ESMTPSA id q18-20020a2e9152000000b0024f3d1daee5sm1337251ljg.109.2022.05.15.20.25.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 May 2022 20:25:37 -0700 (PDT)
+        Sun, 15 May 2022 20:25:38 -0700 (PDT)
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To:     Kalle Valo <kvalo@kernel.org>
 Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
@@ -57,14 +57,13 @@ Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
         Tom Psyborg <pozega.tomislav@gmail.com>,
         Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>,
         Zhijun You <hujy652@gmail.com>
-Subject: [PATCH 1/4] ath10k: improve tx status reporting
-Date:   Mon, 16 May 2022 06:25:16 +0300
-Message-Id: <20220516032519.29831-2-ryazanov.s.a@gmail.com>
+Subject: [PATCH 2/4] ath10k: htt_tx: do not interpret Eth frames as WiFi
+Date:   Mon, 16 May 2022 06:25:17 +0300
+Message-Id: <20220516032519.29831-3-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220516032519.29831-1-ryazanov.s.a@gmail.com>
 References: <20220516032519.29831-1-ryazanov.s.a@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -76,67 +75,168 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We use ieee80211_tx_status() to report each completed tx frame.
-Internally, this function calls sta_info_get_by_addrs(), what has a
-couple of drawbacks:
-1. additional station lookup causes a performance degradation;
-2. mac80211 can not properly account Ethernet encapsulated frames due
-   to the inability to properly determine the destination (station) MAC
-   address since ieee80211_tx_status() assumes the frame has a 802.11
-   header.
+The xmit path for the Ethernet encapsulated frames become more or less
+usable since d740d8fd2439 ("ath10k: unify tx mode and dispatch"). This
+change reorganize the xmit path in a manageable way to properly support
+various tx modes, but misses that the Ethernet encapsulated frame is a
+special case. We do not have an IEEE 802.11 header at the begining of
+them. But the HTT Tx handler still interprets first bytes of each frame
+as an IEEE 802.11 Frame Control field.
 
-The latter is especially destructive if we want to use hardware frames
-encapsulation.
+Than this code was copied by e62ee5c381c5 ("ath10k: Add support for
+htt_data_tx_desc_64 descriptor") and a2097d6444c3 ("ath10k: htt: High
+latency TX support") to another handlers. In fact the issue in the high
+latency (HL) handler was introduced by 83ac260151e7 ("ath10k: add mic
+bytes for pmf management packet").
 
-To fix both of these issues, replace ieee80211_tx_status() with
-ieee80211_tx_status_ext() call and feed it station pointer from the tx
-queue associated with the transmitted frame.
+Ethernet encapsulated frame tx mode stay unused until 75d85fd9993c
+("ath10k: introduce basic tdls functionality") started using it for TDLS
+frames to avoid key selection issue in some firmwares.
 
-Tested-on: QCA9888 hw 2.0 10.4-3.9.0.2-00131
-Tested-on: QCA6174 hw 3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
+Trying to interpret the begining of an Ethernet encapsulated frame as an
+IEEE 802.11 header was not hurt us noticeably since we need to meet two
+conditions: (1) xmit should be performed towards a TDLS peer, and (2)
+the TDLS peer should have a specific OUI part of its MAC address. Looks
+like that the rareness in TDLS communications of OUIs that can be
+interpreted as an 802.11 management frame saves users from facing this
+issue earlier.
+
+Improve Ethernet tx mode support in the HTT Tx handler by avoiding
+interpreting its first bytes as an IEEE 802.11 header. While at it, make
+the ieee80211_hdr variable local to the code block that is guarded by
+!is_eth check. In this way, we clarify in which cases a frame can be
+interpreted as IEEE 802.11, and saves us from similar issues in the
+future.
+
+Credits: this change as part of xmit encapsulation offloading support
+was originally made by QCA and then submitted for inclusion by John
+Crispin [1]. But the whole work was not accepted due to the lack of a
+part for 64-bits descriptors [2]. Zhijun You then pointed this out to me
+in a reply to my initial RFC patch series. And I made this slightly
+reworked version that covered all the HTT Tx handler variants.
+
+1. https://lore.kernel.org/all/20191216092207.31032-1-john@phrozen.org/
+2. https://patchwork.kernel.org/project/linux-wireless/patch/20191216092207.31032-1-john@phrozen.org/
+
+Reported-by: Zhijun You <hujy652@gmail.com>
+Signed-off-by: Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>
+Signed-off-by: John Crispin <john@phrozen.org>
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Tested-by: Oldřich Jedlička <oldium.pro@gmail.com> # TP-Link Archer C7 v4 & v5 (QCA9563 + QCA9880)
-Tested-by: Edward Matijevic <motolav@gmail.com> # TP-Link Archer C2600 (IPQ8064 + QCA9980 10.4.1.00030-1)
-Tested-by: Edward Matijevic <motolav@gmail.com> # QCA9377 PCI in Sta mode
-Tested-by: Zhijun You <hujy652@gmail.com> # NETGEAR R7800 (QCA9984 10.4-3.9.0.2-00159)
 ---
 
 Changes since RFC:
- * new Tested-on and Tested-by tags
+ * new patch
 
- drivers/net/wireless/ath/ath10k/txrx.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/htt_tx.c | 61 ++++++++++++++----------
+ 1 file changed, 35 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/txrx.c b/drivers/net/wireless/ath/ath10k/txrx.c
-index 10123974c3da..72540434c75b 100644
---- a/drivers/net/wireless/ath/ath10k/txrx.c
-+++ b/drivers/net/wireless/ath/ath10k/txrx.c
-@@ -43,6 +43,7 @@ static void ath10k_report_offchan_tx(struct ath10k *ar, struct sk_buff *skb)
- int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
- 			 const struct htt_tx_done *tx_done)
- {
-+	struct ieee80211_tx_status status;
+diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
+index 9842a4b2f78f..a19b0795c86d 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_tx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+@@ -1275,7 +1275,6 @@ static int ath10k_htt_tx_hl(struct ath10k_htt *htt, enum ath10k_hw_txrx_mode txm
  	struct ath10k *ar = htt->ar;
- 	struct device *dev = ar->dev;
- 	struct ieee80211_tx_info *info;
-@@ -128,7 +129,16 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
- 		info->status.flags |= IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
+ 	int res, data_len;
+ 	struct htt_cmd_hdr *cmd_hdr;
+-	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)msdu->data;
+ 	struct htt_data_tx_desc *tx_desc;
+ 	struct ath10k_skb_cb *skb_cb = ATH10K_SKB_CB(msdu);
+ 	struct sk_buff *tmp_skb;
+@@ -1286,11 +1285,15 @@ static int ath10k_htt_tx_hl(struct ath10k_htt *htt, enum ath10k_hw_txrx_mode txm
+ 	u16 flags1 = 0;
+ 	u16 msdu_id = 0;
+ 
+-	if ((ieee80211_is_action(hdr->frame_control) ||
+-	     ieee80211_is_deauth(hdr->frame_control) ||
+-	     ieee80211_is_disassoc(hdr->frame_control)) &&
+-	     ieee80211_has_protected(hdr->frame_control)) {
+-		skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++	if (!is_eth) {
++		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)msdu->data;
++
++		if ((ieee80211_is_action(hdr->frame_control) ||
++		     ieee80211_is_deauth(hdr->frame_control) ||
++		     ieee80211_is_disassoc(hdr->frame_control)) &&
++		     ieee80211_has_protected(hdr->frame_control)) {
++			skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++		}
  	}
  
--	ieee80211_tx_status(htt->ar->hw, msdu);
-+	memset(&status, 0, sizeof(status));
-+	status.skb = msdu;
-+	status.info = info;
-+
-+	rcu_read_lock();
-+	if (txq && txq->sta)
-+		status.sta = txq->sta;
-+	ieee80211_tx_status_ext(htt->ar->hw, &status);
-+	rcu_read_unlock();
-+
- 	/* we do not own the msdu anymore */
+ 	data_len = msdu->len;
+@@ -1387,7 +1390,6 @@ static int ath10k_htt_tx_32(struct ath10k_htt *htt,
+ {
+ 	struct ath10k *ar = htt->ar;
+ 	struct device *dev = ar->dev;
+-	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)msdu->data;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(msdu);
+ 	struct ath10k_skb_cb *skb_cb = ATH10K_SKB_CB(msdu);
+ 	struct ath10k_hif_sg_item sg_items[2];
+@@ -1419,15 +1421,19 @@ static int ath10k_htt_tx_32(struct ath10k_htt *htt,
+ 	txbuf_paddr = htt->txbuf.paddr +
+ 		      (sizeof(struct ath10k_htt_txbuf_32) * msdu_id);
  
- 	return 0;
+-	if ((ieee80211_is_action(hdr->frame_control) ||
+-	     ieee80211_is_deauth(hdr->frame_control) ||
+-	     ieee80211_is_disassoc(hdr->frame_control)) &&
+-	     ieee80211_has_protected(hdr->frame_control)) {
+-		skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
+-	} else if (!(skb_cb->flags & ATH10K_SKB_F_NO_HWCRYPT) &&
+-		   txmode == ATH10K_HW_TXRX_RAW &&
+-		   ieee80211_has_protected(hdr->frame_control)) {
+-		skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++	if (!is_eth) {
++		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)msdu->data;
++
++		if ((ieee80211_is_action(hdr->frame_control) ||
++		     ieee80211_is_deauth(hdr->frame_control) ||
++		     ieee80211_is_disassoc(hdr->frame_control)) &&
++		     ieee80211_has_protected(hdr->frame_control)) {
++			skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++		} else if (!(skb_cb->flags & ATH10K_SKB_F_NO_HWCRYPT) &&
++			   txmode == ATH10K_HW_TXRX_RAW &&
++			   ieee80211_has_protected(hdr->frame_control)) {
++			skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++		}
+ 	}
+ 
+ 	skb_cb->paddr = dma_map_single(dev, msdu->data, msdu->len,
+@@ -1589,7 +1595,6 @@ static int ath10k_htt_tx_64(struct ath10k_htt *htt,
+ {
+ 	struct ath10k *ar = htt->ar;
+ 	struct device *dev = ar->dev;
+-	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)msdu->data;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(msdu);
+ 	struct ath10k_skb_cb *skb_cb = ATH10K_SKB_CB(msdu);
+ 	struct ath10k_hif_sg_item sg_items[2];
+@@ -1621,15 +1626,19 @@ static int ath10k_htt_tx_64(struct ath10k_htt *htt,
+ 	txbuf_paddr = htt->txbuf.paddr +
+ 		      (sizeof(struct ath10k_htt_txbuf_64) * msdu_id);
+ 
+-	if ((ieee80211_is_action(hdr->frame_control) ||
+-	     ieee80211_is_deauth(hdr->frame_control) ||
+-	     ieee80211_is_disassoc(hdr->frame_control)) &&
+-	     ieee80211_has_protected(hdr->frame_control)) {
+-		skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
+-	} else if (!(skb_cb->flags & ATH10K_SKB_F_NO_HWCRYPT) &&
+-		   txmode == ATH10K_HW_TXRX_RAW &&
+-		   ieee80211_has_protected(hdr->frame_control)) {
+-		skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++	if (!is_eth) {
++		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)msdu->data;
++
++		if ((ieee80211_is_action(hdr->frame_control) ||
++		     ieee80211_is_deauth(hdr->frame_control) ||
++		     ieee80211_is_disassoc(hdr->frame_control)) &&
++		     ieee80211_has_protected(hdr->frame_control)) {
++			skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++		} else if (!(skb_cb->flags & ATH10K_SKB_F_NO_HWCRYPT) &&
++			   txmode == ATH10K_HW_TXRX_RAW &&
++			   ieee80211_has_protected(hdr->frame_control)) {
++			skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++		}
+ 	}
+ 
+ 	skb_cb->paddr = dma_map_single(dev, msdu->data, msdu->len,
 -- 
 2.35.1
 
