@@ -2,199 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A381527970
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 May 2022 21:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A73A527B05
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 02:41:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238383AbiEOTWf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 May 2022 15:22:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58298 "EHLO
+        id S236177AbiEPAli (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 May 2022 20:41:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229587AbiEOTWe (ORCPT
+        with ESMTP id S229508AbiEPAlg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 May 2022 15:22:34 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCFB322BD7
-        for <linux-wireless@vger.kernel.org>; Sun, 15 May 2022 12:22:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652642553; x=1684178553;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=L423Nc+0s9W4OIhmaTybKmHZki+QBuh1vQ2fQQ5jdjc=;
-  b=KdTt/9brHZ1h1yz4WTTV415lZ2vm8psknZbpUMJximNgC20zak42GbkJ
-   D49VERRGl0xjcrwcORrE/0KfQvP9OkekqiWzYCv2uyk0hPnr+nu/w+KXH
-   QpfYZgcUb7Ab7XlntWim8b0RjvgBkMu1ZX42samLStJgzUEaS0j19i2Tx
-   +yWcBIZCLXcOWoIHtrctdR1jvxBT13bqgPZB+nunMq5HmUSaguX0yMAg+
-   6iW0GAUMRRbezanzQNEnPhKqMRHcNbm5DSYIMs4+r8mXcwLFRZyfw7qzs
-   Bn2c84dwSGR7vGBw6CDB1FUOPY1L4J8QrgCuLveKDVHjxt+R9Gihug182
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10348"; a="270367240"
-X-IronPort-AV: E=Sophos;i="5.91,228,1647327600"; 
-   d="scan'208";a="270367240"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2022 12:22:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,228,1647327600"; 
-   d="scan'208";a="699242091"
-Received: from lkp-server01.sh.intel.com (HELO d1462bc4b09b) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 15 May 2022 12:22:29 -0700
-Received: from kbuild by d1462bc4b09b with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nqJoy-0001vV-9I;
-        Sun, 15 May 2022 19:22:28 +0000
-Date:   Mon, 16 May 2022 03:22:08 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: [wireless-next:mld] BUILD SUCCESS
- e530de7bdb0bff462c9b8c7f4ac36df378a21d23
-Message-ID: <628152e0.SavnwxafMUWyTm5Z%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Sun, 15 May 2022 20:41:36 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 984A0193C1
+        for <linux-wireless@vger.kernel.org>; Sun, 15 May 2022 17:41:30 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24G0fF8A1031527, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24G0fF8A1031527
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 16 May 2022 08:41:15 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Mon, 16 May 2022 08:41:15 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Mon, 16 May 2022 08:41:14 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
+ RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
+ 15.01.2308.021; Mon, 16 May 2022 08:41:14 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "quic_jjohnson@quicinc.com" <quic_jjohnson@quicinc.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Kevin Yang" <kevin_yang@realtek.com>
+Subject: Re: [PATCH 5/6] rtw89: convert rtw89_band to nl80211_band precisely
+Thread-Topic: [PATCH 5/6] rtw89: convert rtw89_band to nl80211_band precisely
+Thread-Index: AQHYZoxesbYsXfXU+0WOl6NbvpqPxa0ce10AgAOstgA=
+Date:   Mon, 16 May 2022 00:41:14 +0000
+Message-ID: <4dab18241944c2e262190500ecd9d524e69d711e.camel@realtek.com>
+References: <20220513054224.16902-1-pkshih@realtek.com>
+         <20220513054224.16902-6-pkshih@realtek.com>
+         <548d2149-f47a-6afb-92e5-124abcecfe51@quicinc.com>
+In-Reply-To: <548d2149-f47a-6afb-92e5-124abcecfe51@quicinc.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [172.16.17.21]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzUvMTUg5LiL5Y2IIDEwOjAwOjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <1E50B2759AC04D4D84029ED21EDFCBC6@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git mld
-branch HEAD: e530de7bdb0bff462c9b8c7f4ac36df378a21d23  mac80211: move interface config to new struct
-
-elapsed time: 4530m
-
-configs tested: 116
-configs skipped: 4
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                              allmodconfig
-arm                              allyesconfig
-arm                                 defconfig
-arm64                               defconfig
-arm64                            allyesconfig
-i386                          randconfig-c001
-h8300                     edosk2674_defconfig
-mips                        bcm47xx_defconfig
-arm                            hisi_defconfig
-sh                      rts7751r2d1_defconfig
-sh                              ul2_defconfig
-sh                           se7712_defconfig
-arm                         axm55xx_defconfig
-nios2                         3c120_defconfig
-m68k                       bvme6000_defconfig
-i386                             alldefconfig
-sh                         ecovec24_defconfig
-ia64                         bigsur_defconfig
-m68k                        mvme147_defconfig
-mips                       capcella_defconfig
-arm                     eseries_pxa_defconfig
-parisc                generic-64bit_defconfig
-arm                        cerfcube_defconfig
-mips                           gcw0_defconfig
-parisc                generic-32bit_defconfig
-sh                            hp6xx_defconfig
-sh                           se7751_defconfig
-sh                          rsk7264_defconfig
-sh                        sh7763rdp_defconfig
-powerpc                     stx_gp3_defconfig
-arm                  randconfig-c002-20220512
-x86_64                        randconfig-c001
-ia64                             allmodconfig
-ia64                             allyesconfig
-ia64                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-alpha                               defconfig
-csky                                defconfig
-nios2                            allyesconfig
-alpha                            allyesconfig
-sh                               allmodconfig
-arc                                 defconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-s390                                defconfig
-s390                             allmodconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                             allyesconfig
-sparc                               defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-arc                  randconfig-r043-20220512
-riscv                randconfig-r042-20220512
-s390                 randconfig-r044-20220512
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                                  kexec
-x86_64                           rhel-8.3-syz
-x86_64                          rhel-8.3-func
-x86_64                               rhel-8.3
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-
-clang tested configs:
-powerpc                     tqm5200_defconfig
-powerpc                      ppc64e_defconfig
-x86_64                           allyesconfig
-arm                         orion5x_defconfig
-arm                      pxa255-idp_defconfig
-mips                      pic32mzda_defconfig
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-hexagon              randconfig-r041-20220512
-hexagon              randconfig-r045-20220512
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+T24gRnJpLCAyMDIyLTA1LTEzIGF0IDA5OjM0IC0wNzAwLCBKZWZmIEpvaG5zb24gd3JvdGU6DQo+
+IE9uIDUvMTIvMjAyMiAxMDo0MiBQTSwgUGluZy1LZSBTaGloIHdyb3RlOg0KPiA+IEZyb206IFpv
+bmctWmhlIFlhbmcgPGtldmluX3lhbmdAcmVhbHRlay5jb20+DQo+ID4gDQo+ID4gQmVmb3JlIDZH
+IGJhbmQgd2FzIHN1cHBvcnRlZCwgaS5lLiBvbmx5IDJHIGFuZCA1RywgdGhleSB3ZXJlIHRoZSBz
+YW1lDQo+ID4gZnJvbSB0aGUgbnVtZXJpY2FsIHBvaW50IG9mIHZpZXcuIEhvd2V2ZXIsIGFmdGVy
+IDZHIGJhbmQgc3VwcG9ydCwgd2UNCj4gPiBuZWVkIHRvIGRvIHRoaXMgY29udmVyc2lvbiBsb2dp
+Y2FsbHkuDQo+IA0KPiBJbiB0aGUgYXRoIGRyaXZlcnMgd2UndmUgYmVlbiB0cnlpbmcgdG8gYXZv
+aWQgdXNpbmcgdGhlIHRlcm1zIDJHLzVHLzZHIA0KPiB0byBkZXNjcmliZSBmcmVxdWVuY2llcyBz
+aW5jZSB0aGF0IHVzYWdlIGNvbmZsaWN0cyB3aXRoIHRoZSBjZWxsdWxhciB1c2UgDQo+IG9mIHNp
+bWlsYXIgdGVybXMgdG8gZGVzY3JpYmUgZ2VuZXJhdGlvbnMgb2YgdGhlIHRlY2hub2xvZ3ksIGFu
+ZCBmdXJ0aGVyIA0KPiBjb3VsZCBjYXVzZSBjb25mdXNpb24gbm93IHRoYXQgV0ZBIGlzIGFsc28g
+ZGVmaW5pbmcgZ2VuZXJhdGlvbnMgb2YgV2ktRmkgDQo+IGJ5IG51bWJlciBpbnN0ZWFkIG9mIGJ5
+IElFRUUgODAyLjExIGFtZW5kbWVudC4NCj4gDQo+IFRvIHRoYXQgZW5kIGl0IHdvdWxkIGJlIG5p
+Y2UgaWYgd2UgY291bGQgdW5pdmVyc2FsbHkgYWRvcHQgdXNpbmcgcHJvcGVyIA0KPiBTSSB0ZXJt
+aW5vbG9neSB3aGVuIHJlZmVycmluZyB0byBXaS1GaSBmcmVxdWVuY2llczoNCj4gMiBHSHogKG9y
+IDIuNCBHSHopLCA1IEdIeiwgJiA2IEdIeg0KPiANCg0KSSB3aWxsIHVzZSBTSSB0ZXJtaW5vbG9n
+eSBieSB2MiwgYW5kIHNoYXJlIHRoaXMgaW5mb3JtYXRpb24gd2l0aCBteQ0KbWVtYmVycy4gQWxz
+bywgSSB3aWxsIHBsYW4gdG8gcmVuYW1lIHRoZSBlbnVtKHMpIG9mIGRyaXZlciBpbiBzZXBhcmF0
+ZQ0KcGF0Y2ggbGF0ZXIuDQoNCi0tDQpQaW5nLUtlDQoNCg==
