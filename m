@@ -2,168 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 297B05282B9
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 12:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1E3752831A
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 May 2022 13:24:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238325AbiEPK5w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 May 2022 06:57:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49902 "EHLO
+        id S233909AbiEPLXx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 May 2022 07:23:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242370AbiEPK5s (ORCPT
+        with ESMTP id S243099AbiEPLXw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 May 2022 06:57:48 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1627E28E1B
-        for <linux-wireless@vger.kernel.org>; Mon, 16 May 2022 03:57:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=2QsqNvHxG9X3UsNDcUybgPCqpIreWmgaU6Fp2tMAY/M=; t=1652698658; x=1653908258; 
-        b=R0q0bb4FnqIGEv8CxkusULFNF//g0HTru9GvuEhONdEnBocfLM4MKpdMiDzTQnnirfyhDxt1QGk
-        G3qdaVdHWV4vQbPKUC2zsAOPkgAtpsQL2gj3nbdlvIZO0Y4B9UqvWwswIxGD7v0/4suLz2ilL0hat
-        QSDR5oHrB2vC3ivWt8j68CPD+lKfAkGOzeGmGymTwDDvedjJzGKsjLq7Jd6obGOzIuGH0AWU8qnnl
-        brd2YM6jS8okO8+lJEVmJvNwTm5FYc7Id2d9H5mS6+oVgBo4rtooNdPSdyssIYQpKTqagdpXXnMmg
-        ayeURxTD1vq9sG7mV5aVddDMr/Mn785GRYsQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nqYPu-00DLLC-Uk;
-        Mon, 16 May 2022 12:57:35 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] mac80211: refactor freeing the next_beacon
-Date:   Mon, 16 May 2022 12:57:32 +0200
-Message-Id: <20220516125731.c463ee66ce05.I10a3a666030edf78e6dde4347040b03409e1aa92@changeid>
-X-Mailer: git-send-email 2.36.1
+        Mon, 16 May 2022 07:23:52 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94DBF387A2;
+        Mon, 16 May 2022 04:23:49 -0700 (PDT)
+Date:   Mon, 16 May 2022 13:23:46 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1652700228;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=S5NxAJPVWcMi6gSub2SnJmtVeydspv2dOKKX4Sgbo2E=;
+        b=lJ/ua/xT36CFkqAG2YmuUJzsMegjfmmNTNqFT+fjWUS0gy0CFATLEgN6pymWdJzZRXx+c2
+        +2tnuSQnhzScgw8CD400ykPzDIZ34DTelPol+ky2h5ZdINhBstvnNH2N6Xwral/bK94Srw
+        GcE97KmJQRokY9lLjkxkE0MajKpJCpKkpsFmmNGZLC0M4eGr2JrDlIkWq+IUovdVExg15j
+        ngczzWRkxsTGvHYwzULb4NfvLr1Zvc1S1egZzwo3HBfWnvIZhMwtnLjGw44Udvu5b7unJQ
+        2rRFDnGD6COThS/URwcxwBvcZchfuCohtpzk9klqe6WeAdWfuiCwwSPp0C+O9g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1652700228;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=S5NxAJPVWcMi6gSub2SnJmtVeydspv2dOKKX4Sgbo2E=;
+        b=54/Hu5OcF7w+aG2PdqmJIRu09tvXTti1VbEvmiab9M9zPRjw3PZQbf8xF5NEXBPzJfk2jw
+        5Mtg5wpN0Ua/JmBg==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Lukas Wunner <lukas@wunner.de>
+Cc:     linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Mark Gross <markgross@kernel.org>, Michael Buesch <m@bues.ch>,
+        Rafa?? Mi??ecki <zajec5@gmail.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        linux-gpio@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [RFC PATCH] genirq: Provide generic_handle_domain_irq_safe().
+Message-ID: <YoI0QiM4ntJP/9fQ@linutronix.de>
+References: <YnkfWFzvusFFktSt@linutronix.de>
+ <20220516101814.GA18490@wunner.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220516101814.GA18490@wunner.de>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On 2022-05-16 12:18:14 [+0200], Lukas Wunner wrote:
+> On Mon, May 09, 2022 at 04:04:08PM +0200, Sebastian Andrzej Siewior wrote:
+> > The problem with generic_handle_domain_irq() is that with `threadirqs'
+> > it will trigger "WARN_ON_ONCE(!in_hardirq())".
+> 
+> Now silenced by:
+> https://git.kernel.org/linus/792ea6a074ae
+> 
+> 
+> > +int generic_handle_domain_irq_safe(struct irq_domain *domain, unsigned int hwirq)
+> > +{
+> > +	unsigned long flags;
+> > +	int ret;
+> > +
+> > +	local_irq_save(flags);
+> > +	ret = handle_irq_desc(irq_resolve_mapping(domain, hwirq));
+> > +	local_irq_restore(flags);
+> > +	return ret;
+> > +}
+> > +EXPORT_SYMBOL_GPL(generic_handle_domain_irq_safe);
+> 
+> AFAICS you don't need to disable hardirqs at least for the "threadirqs"
+> case because irq_forced_thread_fn() already does that.
 
-We have this code seven times, refactor it into a
-separate function.
+PREEMPT_RT does not disable interrupts. Also completions in softirq
+won't disable interrupts.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/cfg.c | 45 ++++++++++++++++++---------------------------
- 1 file changed, 18 insertions(+), 27 deletions(-)
+> 
+> >  drivers/bcma/driver_gpio.c                 |  2 +-
+> >  drivers/gpio/gpio-mlxbf2.c                 |  6 ++----
+> >  drivers/pinctrl/pinctrl-amd.c              |  2 +-
+> >  drivers/platform/x86/intel/int0002_vgpio.c |  3 +--
+> >  drivers/ssb/driver_gpio.c                  |  6 ++++--
+> 
+> From a quick look, the proper solution for all of those drivers is
+> probably to just add IRQF_NO_THREAD and be done with it.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index bbec7d778084..f7896f257e1b 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1348,6 +1348,16 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
- 	return 0;
- }
- 
-+static void ieee80211_free_next_beacon(struct ieee80211_sub_if_data *sdata)
-+{
-+	if (!sdata->u.ap.next_beacon)
-+		return;
-+
-+	kfree(sdata->u.ap.next_beacon->mbssid_ies);
-+	kfree(sdata->u.ap.next_beacon);
-+	sdata->u.ap.next_beacon = NULL;
-+}
-+
- static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
- {
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
-@@ -1382,11 +1392,7 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev)
- 
- 	mutex_unlock(&local->mtx);
- 
--	if (sdata->u.ap.next_beacon) {
--		kfree(sdata->u.ap.next_beacon->mbssid_ies);
--		kfree(sdata->u.ap.next_beacon);
--		sdata->u.ap.next_beacon = NULL;
--	}
-+	ieee80211_free_next_beacon(sdata);
- 
- 	/* turn off carrier for this interface and dependent VLANs */
- 	list_for_each_entry(vlan, &sdata->u.ap.vlans, u.vlan.list)
-@@ -3321,9 +3327,7 @@ static int ieee80211_set_after_csa_beacon(struct ieee80211_sub_if_data *sdata,
- 
- 		err = ieee80211_assign_beacon(sdata, sdata->u.ap.next_beacon,
- 					      NULL, NULL);
--		kfree(sdata->u.ap.next_beacon->mbssid_ies);
--		kfree(sdata->u.ap.next_beacon);
--		sdata->u.ap.next_beacon = NULL;
-+		ieee80211_free_next_beacon(sdata);
- 
- 		if (err < 0)
- 			return err;
-@@ -3479,9 +3483,7 @@ static int ieee80211_set_csa_beacon(struct ieee80211_sub_if_data *sdata,
- 		     IEEE80211_MAX_CNTDWN_COUNTERS_NUM) ||
- 		    (params->n_counter_offsets_presp >
- 		     IEEE80211_MAX_CNTDWN_COUNTERS_NUM)) {
--			kfree(sdata->u.ap.next_beacon->mbssid_ies);
--			kfree(sdata->u.ap.next_beacon);
--			sdata->u.ap.next_beacon = NULL;
-+			ieee80211_free_next_beacon(sdata);
- 			return -EINVAL;
- 		}
- 
-@@ -3493,9 +3495,7 @@ static int ieee80211_set_csa_beacon(struct ieee80211_sub_if_data *sdata,
- 
- 		err = ieee80211_assign_beacon(sdata, &params->beacon_csa, &csa, NULL);
- 		if (err < 0) {
--			kfree(sdata->u.ap.next_beacon->mbssid_ies);
--			kfree(sdata->u.ap.next_beacon);
--			sdata->u.ap.next_beacon = NULL;
-+			ieee80211_free_next_beacon(sdata);
- 			return err;
- 		}
- 		*changed |= err;
-@@ -3585,11 +3585,8 @@ static int ieee80211_set_csa_beacon(struct ieee80211_sub_if_data *sdata,
- static void ieee80211_color_change_abort(struct ieee80211_sub_if_data  *sdata)
- {
- 	sdata->vif.color_change_active = false;
--	if (sdata->u.ap.next_beacon) {
--		kfree(sdata->u.ap.next_beacon->mbssid_ies);
--		kfree(sdata->u.ap.next_beacon);
--		sdata->u.ap.next_beacon = NULL;
--	}
-+
-+	ieee80211_free_next_beacon(sdata);
- 
- 	cfg80211_color_change_aborted_notify(sdata->dev);
- }
-@@ -4330,9 +4327,7 @@ ieee80211_set_after_color_change_beacon(struct ieee80211_sub_if_data *sdata,
- 
- 		ret = ieee80211_assign_beacon(sdata, sdata->u.ap.next_beacon,
- 					      NULL, NULL);
--		kfree(sdata->u.ap.next_beacon->mbssid_ies);
--		kfree(sdata->u.ap.next_beacon);
--		sdata->u.ap.next_beacon = NULL;
-+		ieee80211_free_next_beacon(sdata);
- 
- 		if (ret < 0)
- 			return ret;
-@@ -4375,11 +4370,7 @@ ieee80211_set_color_change_beacon(struct ieee80211_sub_if_data *sdata,
- 		err = ieee80211_assign_beacon(sdata, &params->beacon_color_change,
- 					      NULL, &color_change);
- 		if (err < 0) {
--			if (sdata->u.ap.next_beacon) {
--				kfree(sdata->u.ap.next_beacon->mbssid_ies);
--				kfree(sdata->u.ap.next_beacon);
--				sdata->u.ap.next_beacon = NULL;
--			}
-+			ieee80211_free_next_beacon(sdata);
- 			return err;
- 		}
- 		*changed |= err;
--- 
-2.36.1
+I think I mentioned that part in the commit description: IRQF_NO_THREAD
+must be specified by all handlers of a shared interrupt. It is an option
+for the handler that owns an interrupt exclusive.
 
+> Thanks,
+> 
+> Lukas
+
+Sebastian
