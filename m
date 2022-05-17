@@ -2,96 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A091A52A988
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 19:45:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C290452A9D9
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 20:03:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351576AbiEQRos (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 May 2022 13:44:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48364 "EHLO
+        id S1351732AbiEQSDY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 May 2022 14:03:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237818AbiEQRoq (ORCPT
+        with ESMTP id S1351728AbiEQSDX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 May 2022 13:44:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD84C4EDD0;
-        Tue, 17 May 2022 10:44:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 77C5B6146C;
-        Tue, 17 May 2022 17:44:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A92C385B8;
-        Tue, 17 May 2022 17:44:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652809484;
-        bh=a6ecI+YK6t5cM5g7o9lfYB2kOKuzTjQtsmRTgpCAMUk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=vPoGzwlwklp8BToV5DpNv2Q8z6R4acgEa0G/iiyIE32cKrbYlsWJsQReWD3nnqrUB
-         tS5mVetCpQDsk/oi+zFixfG7wCgo64IRlI2s1LnK4RkGt9SZBcl8A5xE7Yley13X1l
-         zp91STWC1iC4pgBXQ9cTFVvw9bBIhtpg5hWYicUv9bkSVAeIoKZXjCySLpfvSG9Oi8
-         Nb2lEH7hsAPxYQf81Se0ZLqft7pF7CmCrQ4DXX7K8c1FnwSa/B0OEZWPU+NLAuMw3X
-         gJslbqT/wZtyxAttNCqvqU/ixmGWgg7ZXEjnxKtEFNrgmYhByweGFRYVOTnjC9kzzP
-         P/KdrwnKFMKfQ==
-Date:   Tue, 17 May 2022 10:44:43 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
+        Tue, 17 May 2022 14:03:23 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 168FC3F88C;
+        Tue, 17 May 2022 11:03:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=q+RecylktAwR687l+V8VNYANCujHqskNlwbFHpY2uCU=;
+        t=1652810602; x=1654020202; b=pUYgcEv6JAzhUOkPiO+Rxmrd7kELI0HHCl7LzF+O0bNUOb7
+        KKYba32EuvCQjfBjk7iY+gH90O86oOpFHDbSKNEs18avlp243PbTBjuvAC3Cs+n8qK6laIcqmrXPn
+        F/eq+sj9XAZfDvfttm0opCCNgzPPi9F+Q1xA5/jHibnsB4rM4fsC6z8tNa/Rz1yg+3i+Mm0O34ci+
+        jnbfFEIx76fKj3Oc1BkMElAHi+PKIHUYLfOyMPETuht4NwZJoH7AUksf57k4I/y/rLRmtnIGIzpHS
+        XKesGAAWMzsa7Ogq5FHhJs7hcY0O0ZQBNn7Vw2ZlK7R1fqscjRm17Q+qyphQNrqg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nr1XG-00EVCp-Hm;
+        Tue, 17 May 2022 20:03:06 +0200
+Message-ID: <8e2b5378a073006e99d46f648c0cacd31daf2e2c.camel@sipsolutions.net>
+Subject: Re: [PATCH net-next] net: ifdefy the wireless pointers in struct
+ net_device
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jakub Kicinski <kuba@kernel.org>
 Cc:     davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
         pabeni@redhat.com, alex.aring@gmail.com, stefan@datenfreihafen.org,
         mareklindner@neomailbox.ch, sw@simonwunderlich.de, a@unstable.cc,
         sven@narfation.org, linux-wireless@vger.kernel.org,
         linux-wpan@vger.kernel.org
-Subject: Re: [PATCH net-next] net: ifdefy the wireless pointers in struct
- net_device
-Message-ID: <20220517104443.68756db3@kernel.org>
-In-Reply-To: <8b9d18e351cc58aed65c4a4c7f12f167984ee088.camel@sipsolutions.net>
+Date:   Tue, 17 May 2022 20:03:05 +0200
+In-Reply-To: <20220517104443.68756db3@kernel.org>
 References: <20220516215638.1787257-1-kuba@kernel.org>
-        <8b9d18e351cc58aed65c4a4c7f12f167984ee088.camel@sipsolutions.net>
+         <8b9d18e351cc58aed65c4a4c7f12f167984ee088.camel@sipsolutions.net>
+         <20220517104443.68756db3@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.1 (3.44.1-1.fc36) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 17 May 2022 09:51:31 +0200 Johannes Berg wrote:
-> On Mon, 2022-05-16 at 14:56 -0700, Jakub Kicinski wrote:
-> > 
-> > +#if IS_ENABLED(CONFIG_WIRELESS)
-> >  	struct wireless_dev	*ieee80211_ptr;
-> > +#endif  
-> 
-> Technically, you should be able to use CONFIG_CFG80211 here, but in
-> practice I'd really hope nobody enables WIRELESS without CFG80211 :)
+On Tue, 2022-05-17 at 10:44 -0700, Jakub Kicinski wrote:
+>=20
+> Would you be willing to do that as a follow up?=C2=A0
+>=20
 
-ack
+Sure.
 
-> > +++ b/include/net/cfg80211.h
-> > @@ -8004,10 +8004,7 @@ int cfg80211_register_netdevice(struct net_device *dev);
-> >   *
-> >   * Requires the RTNL and wiphy mutex to be held.
-> >   */
-> > -static inline void cfg80211_unregister_netdevice(struct net_device *dev)
-> > -{
-> > -	cfg80211_unregister_wdev(dev->ieee80211_ptr);
-> > -}
-> > +void cfg80211_unregister_netdevice(struct net_device *dev);  
-> 
-> Exported functions aren't free either - I think in this case I'd
-> (slightly) prefer the extra ifdef.
+> Are you talking about
+> wifi only or all the proto pointers?
 
-fine
+Well it only makes sense if at least two protocols join forces :-)
 
-> Anyway, we can do this, but I also like Florian's suggestion about the
-> union, and sent an attempt at a disambiguation patch there.
+> As a netdev maintainer I'd like to reduce the divergence in whether=20
+> the proto pointers are ifdef'd or not.
+>=20
+Sure, no objection to the ifdef.
 
-Would you be willing to do that as a follow up? Are you talking about
-wifi only or all the proto pointers?
+johannes
 
-As a netdev maintainer I'd like to reduce the divergence in whether 
-the proto pointers are ifdef'd or not.
