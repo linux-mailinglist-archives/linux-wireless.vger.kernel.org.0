@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E388529D77
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 11:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D159529D7C
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 11:08:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244299AbiEQJIK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 May 2022 05:08:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34358 "EHLO
+        id S244341AbiEQJIH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 May 2022 05:08:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244350AbiEQJHn (ORCPT
+        with ESMTP id S244345AbiEQJHn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 17 May 2022 05:07:43 -0400
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C706A237D3
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C699520BD7
         for <linux-wireless@vger.kernel.org>; Tue, 17 May 2022 02:06:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1652778405; x=1684314405;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=KmWmLlbKUi121ynjXFfpB6/+wcP8pN4quC5pQRcgklE=;
-  b=YH6JDToA5fXJiHpG4jrANUsgPTRNnYyFL0TxfZiUZ6NW1qxwDr2zQ+ye
-   u+o2t4OiLWqPKsHr0cn63lwUFOq/wwjZoY22rD5GBb03sR6fhpbG/ZW+n
-   BR2GphdwbIkPe7OOjDfLojzzHoJK+jcEcTjDNsJdCce2bx05q/RRFZL0B
-   ZbDX9BhIkw624vgN1qt+voTTrrbst8d/qsdz+euI1nDFpZVagyfVFTr+R
-   n49G0mw5K8nvd4Yvc5u4eA8gtZdlFwSKemmvuj4+afVn3iFLUb94U3sAe
-   eEE+s87iv6M9LOB9SSqcWUVsfCq/Pmr4B2kt3cNT3MNHSC1PV+Hm9ZZe6
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10349"; a="271064796"
+  bh=DGSOyS/l9Mp9ua7U5b2t4HvZ60aLMXEX8U7XTxT8758=;
+  b=LYJJDGLLrBb37WdX5em7pgcE6+JHSiPI8Q8CFXH7wzm3MxNqzs1/c/5z
+   qLvoakJIYc51d7U+Lwq6jyVYHn+kwbHEcVXsDl6XtWI0k94XkNP2bYVoo
+   YrxxmuavbS2GDTYbJmbp2j+tYbhKNcCrHihVqPyi1L0FBYAycva0BWwpG
+   UJXa3UT7GSo7I4iuROyrRseBs19GQ1U8SwVSQtPHA6ukNc7DgwXkxsF0+
+   9ih99FNCFeUXag5ty8qz0Xq1lRH82mc7xjvSPxCw6yZ1EjO8S1QFFvurk
+   HM3SOAcMI7YsPO80K3T9knByXeAPXrSYjHbflRSZyJILHkLpohLBq8Blz
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10349"; a="271064812"
 X-IronPort-AV: E=Sophos;i="5.91,232,1647327600"; 
-   d="scan'208";a="271064796"
+   d="scan'208";a="271064812"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:06:29 -0700
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:06:30 -0700
 X-IronPort-AV: E=Sophos;i="5.91,232,1647327600"; 
-   d="scan'208";a="741679742"
+   d="scan'208";a="741679751"
 Received: from sgens-mobl3.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.212.48])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:06:27 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:06:29 -0700
 From:   gregory.greenman@intel.com
 To:     kvalo@kernel.org
 Cc:     johannes@sipsolutions.net, gregory.greenman@intel.com,
         linux-wireless@vger.kernel.org,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>
-Subject: [PATCH 06/10] iwlwifi: mvm: add OTP info in case of init failure
-Date:   Tue, 17 May 2022 12:05:10 +0300
-Message-Id: <20220517120045.48464938b27a.I9b381f0da5e0636ad6a5f6c13f98edb9031b50fb@changeid>
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH 07/10] iwlwifi: mvm: always tell the firmware to accept MCAST frames in BSS
+Date:   Tue, 17 May 2022 12:05:11 +0300
+Message-Id: <20220517120045.479956a46317.I21fac7ede9eca85a662671d694872898df884f0b@changeid>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220517090514.211796-1-gregory.greenman@intel.com>
 References: <20220517090514.211796-1-gregory.greenman@intel.com>
@@ -60,67 +60,121 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-This helps to understand HW issues that can happen while
-initializing the nic.
+Make the firmware's life easier and always accept MCAST frames. If
+needed, drop them in the driver. We need to filter out MCAST frames
+in order not to have false positives in the decryption check. If we
+accept MCAST frames before we have the GKT installed, we'll end up
+complaining that we can't decrypt the frame.
+Implement the same filtering, but in the driver.
 
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  2 ++
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 15 +++++++++------
- 2 files changed, 11 insertions(+), 6 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 13 +++---
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   | 44 ++++++++++++++-----
+ 2 files changed, 38 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-index a22788a68168..157d1f31c487 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-@@ -389,6 +389,8 @@ enum {
- #define WFPM_LMAC1_PD_NOTIFICATION      0xa0338c
- #define WFPM_ARC1_PD_NOTIFICATION       0xa03044
- #define HPM_SECONDARY_DEVICE_STATE      0xa03404
-+#define WFPM_MAC_OTP_CFG7_ADDR		0xa03338
-+#define WFPM_MAC_OTP_CFG7_DATA		0xa0333c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index e7f18f549ca9..56fa20596f16 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -552,6 +552,12 @@ static int iwl_mvm_mac_ctxt_cmd_sta(struct iwl_mvm *mvm,
+ 	/* Fill the common data for all mac context types */
+ 	iwl_mvm_mac_ctxt_cmd_common(mvm, vif, &cmd, bssid_override, action);
  
- 
- /* For UMAG_GEN_HW_STATUS reg check */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index e842816134f1..f041e77af059 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -287,6 +287,9 @@ static bool iwl_wait_phy_db_entry(struct iwl_notif_wait_data *notif_wait,
- 
- static void iwl_mvm_print_pd_notification(struct iwl_mvm *mvm)
- {
-+#define IWL_FW_PRINT_REG_INFO(reg_name) \
-+	IWL_ERR(mvm, #reg_name ": 0x%x\n", iwl_read_umac_prph(trans, reg_name))
++	/*
++	 * We always want to hear MCAST frames, if we're not authorized yet,
++	 * we'll drop them.
++	 */
++	cmd.filter_flags |= cpu_to_le32(MAC_FILTER_ACCEPT_GRP);
 +
- 	struct iwl_trans *trans = mvm->trans;
- 	enum iwl_device_family device_family = trans->trans_cfg->device_family;
+ 	if (vif->p2p) {
+ 		struct ieee80211_p2p_noa_attr *noa =
+ 			&vif->bss_conf.p2p_noa_attr;
+@@ -608,13 +614,6 @@ static int iwl_mvm_mac_ctxt_cmd_sta(struct iwl_mvm *mvm,
+ 				IWL_UCODE_TLV_CAPA_COEX_HIGH_PRIO))
+ 			ctxt_sta->data_policy |=
+ 				cpu_to_le32(COEX_HIGH_PRIORITY_ENABLE);
+-
+-		/*
+-		 * allow multicast data frames only as long as the station is
+-		 * authorized, i.e., GTK keys are already installed (if needed)
+-		 */
+-		if (mvmvif->authorized)
+-			cmd.filter_flags |= cpu_to_le32(MAC_FILTER_ACCEPT_GRP);
+ 	} else {
+ 		ctxt_sta->is_assoc = cpu_to_le32(0);
  
-@@ -294,15 +297,15 @@ static void iwl_mvm_print_pd_notification(struct iwl_mvm *mvm)
- 		return;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+index 78198da7e55b..49ca1e168fc5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2012-2014, 2018-2021 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -326,17 +326,6 @@ void iwl_mvm_rx_rx_mpdu(struct iwl_mvm *mvm, struct napi_struct *napi,
  
- 	if (device_family <= IWL_DEVICE_FAMILY_9000)
--		IWL_ERR(mvm, "WFPM_ARC1_PD_NOTIFICATION: 0x%x\n",
--			iwl_read_umac_prph(trans, WFPM_ARC1_PD_NOTIFICATION));
-+		IWL_FW_PRINT_REG_INFO(WFPM_ARC1_PD_NOTIFICATION);
- 	else
--		IWL_ERR(mvm, "WFPM_LMAC1_PD_NOTIFICATION: 0x%x\n",
--			iwl_read_umac_prph(trans, WFPM_LMAC1_PD_NOTIFICATION));
-+		IWL_FW_PRINT_REG_INFO(WFPM_LMAC1_PD_NOTIFICATION);
+ 	rx_status = IEEE80211_SKB_RXCB(skb);
  
--	IWL_ERR(mvm, "HPM_SECONDARY_DEVICE_STATE: 0x%x\n",
--		iwl_read_umac_prph(trans, HPM_SECONDARY_DEVICE_STATE));
-+	IWL_FW_PRINT_REG_INFO(HPM_SECONDARY_DEVICE_STATE);
+-	/*
+-	 * drop the packet if it has failed being decrypted by HW
+-	 */
+-	if (iwl_mvm_set_mac80211_rx_flag(mvm, hdr, rx_status, rx_pkt_status,
+-					 &crypt_len)) {
+-		IWL_DEBUG_DROP(mvm, "Bad decryption results 0x%08x\n",
+-			       rx_pkt_status);
+-		kfree_skb(skb);
+-		return;
+-	}
+-
+ 	/*
+ 	 * Keep packets with CRC errors (and with overrun) for monitor mode
+ 	 * (otherwise the firmware discards them) but mark them as bad.
+@@ -386,6 +375,37 @@ void iwl_mvm_rx_rx_mpdu(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 		sta = ieee80211_find_sta_by_ifaddr(mvm->hw, hdr->addr2, NULL);
+ 	}
  
-+	/* print OPT info */
-+	IWL_FW_PRINT_REG_INFO(WFPM_MAC_OTP_CFG7_ADDR);
-+	IWL_FW_PRINT_REG_INFO(WFPM_MAC_OTP_CFG7_DATA);
- }
- 
- static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
++	if (sta) {
++		struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
++		struct ieee80211_vif *vif = mvmsta->vif;
++		struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++
++		/*
++		 * Don't even try to decrypt a MCAST frame that was received
++		 * before the managed vif is authorized, we'd fail anyway.
++		 */
++		if (vif->type == NL80211_IFTYPE_STATION &&
++		    !mvmvif->authorized &&
++		    is_multicast_ether_addr(hdr->addr1)) {
++			IWL_DEBUG_DROP(mvm, "MCAST before the vif is authorized\n");
++			kfree_skb(skb);
++			rcu_read_unlock();
++			return;
++		}
++	}
++
++	/*
++	 * drop the packet if it has failed being decrypted by HW
++	 */
++	if (iwl_mvm_set_mac80211_rx_flag(mvm, hdr, rx_status, rx_pkt_status,
++					 &crypt_len)) {
++		IWL_DEBUG_DROP(mvm, "Bad decryption results 0x%08x\n",
++			       rx_pkt_status);
++		kfree_skb(skb);
++		rcu_read_unlock();
++		return;
++	}
++
+ 	if (sta) {
+ 		struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
+ 		struct ieee80211_vif *tx_blocked_vif =
 -- 
 2.35.1
 
