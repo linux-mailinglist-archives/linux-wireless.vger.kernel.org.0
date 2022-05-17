@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FB18529D80
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 11:08:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EC67529D7E
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 11:08:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244306AbiEQJIV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 May 2022 05:08:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34400 "EHLO
+        id S234407AbiEQJII (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 May 2022 05:08:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244374AbiEQJHn (ORCPT
+        with ESMTP id S244368AbiEQJHn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 17 May 2022 05:07:43 -0400
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0FBA23BD7
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C10CC23BDA
         for <linux-wireless@vger.kernel.org>; Tue, 17 May 2022 02:06:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1652778408; x=1684314408;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=pO4K6ca3nxEpvtgRs0gQbHdPYjJFJErgmD63DL4qbGY=;
-  b=V4KGJ0wPoOypeo5LPXdO/Ko0C5v0tw+R50JkyZjfHFGyJhFTcaKBaJuF
-   INTtKENaGENYVsayI03LoXJiUmgI0ShMMbTXf9sLJTnfF4JUMv7sEpXYo
-   V9t+hXamqDrujwTMaC34UdVmXdBle4ZvAh3rIZU/ACanUJBfWLzq7dSF/
-   uajkOxmMxULsIi2mEiuEMF02UYpw+kBVX1sYfd1pQvQMSwSDnSgjQhTEF
-   g7evBYFiU+6AcpOsZ/+zmlV79WuuSMhMVy4Vtn7ZUSAOOveeMKERK3+oE
-   qZY11avRPPQemZt38nLqrE2rNmC58AXltHc7jIoyiqLb+wah6HlUJk78N
+  bh=X7hqQuWLjGbzwuQc3/hk7pjGIVA3iPZ8N9MJZIMMrtg=;
+  b=O1T+UOMoXOMnmaeFiwgNLbjM6U3v+lgA0URwJPXdq5mf9ZaoFM/StABm
+   YGypyG7+gQHGvIKEp3CISsthOdCAh3Ag9Q3QVELtvXSxBkTR8s42zsFPr
+   UKkiytsUjTG8WweK+VQgzvcj0eXaGyf2HTuGLKjmVk34l5cElU2I+w8IQ
+   1zwOl/BkZ5+tZvo/OWYAZFw4qyklSdtLuChs7NHvIblaSJNHfokx8MJZ8
+   GcGFp7r+t9t0c7OTGqFvapKvILi985LupCWnZn5FiQ1EMlAtZCTNid4rv
+   G0nkpHB3u4DdwfHz04ksMIQ9waqTFPCyqRUAxCE5ofIyizSU5jj5+CvwJ
    w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10349"; a="271064839"
+X-IronPort-AV: E=McAfee;i="6400,9594,10349"; a="271064846"
 X-IronPort-AV: E=Sophos;i="5.91,232,1647327600"; 
-   d="scan'208";a="271064839"
+   d="scan'208";a="271064846"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:06:34 -0700
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:06:36 -0700
 X-IronPort-AV: E=Sophos;i="5.91,232,1647327600"; 
-   d="scan'208";a="741679771"
+   d="scan'208";a="741679785"
 Received: from sgens-mobl3.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.212.48])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:06:32 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:06:34 -0700
 From:   gregory.greenman@intel.com
 To:     kvalo@kernel.org
 Cc:     johannes@sipsolutions.net, gregory.greenman@intel.com,
         linux-wireless@vger.kernel.org,
-        Avraham Stern <avraham.stern@intel.com>
-Subject: [PATCH 09/10] iwlwifi: mei: clear the sap data header before sending
-Date:   Tue, 17 May 2022 12:05:13 +0300
-Message-Id: <20220517120045.8dd3423cf683.I02976028eaa6aab395cb2e701fa7127212762eb7@changeid>
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 10/10] iwlwifi: mei: fix potential NULL-ptr deref
+Date:   Tue, 17 May 2022 12:05:14 +0300
+Message-Id: <20220517120045.90c1b1fd534e.Ibb42463e74d0ec7d36ec81df22e171ae1f6268b0@changeid>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220517090514.211796-1-gregory.greenman@intel.com>
 References: <20220517090514.211796-1-gregory.greenman@intel.com>
@@ -60,30 +60,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-The SAP data header has some fields that are marked as reserved
-but are actually in use by CSME. Clear those fields before sending
-the data to avoid having random values in those fields.
+If SKB allocation fails, continue rather than using the NULL
+pointer.
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Coverity CID: 1497650
+
+Fixes: 2da4366f9e2c ("iwlwifi: mei: add the driver to allow cooperation with CSME")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mei/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mei/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mei/main.c b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-index b4f45234cfc8..3d2eb15a9662 100644
+index 3d2eb15a9662..357f14626cf4 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mei/main.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-@@ -493,6 +493,7 @@ void iwl_mei_add_data_to_ring(struct sk_buff *skb, bool cb_tx)
- 	if (cb_tx) {
- 		struct iwl_sap_cb_data *cb_hdr = skb_push(skb, sizeof(*cb_hdr));
+@@ -1020,6 +1020,8 @@ static void iwl_mei_handle_sap_data(struct mei_cl_device *cldev,
  
-+		memset(cb_hdr, 0, sizeof(*cb_hdr));
- 		cb_hdr->hdr.type = cpu_to_le16(SAP_MSG_CB_DATA_PACKET);
- 		cb_hdr->hdr.len = cpu_to_le16(skb->len - sizeof(cb_hdr->hdr));
- 		cb_hdr->hdr.seq_num = cpu_to_le32(atomic_inc_return(&mei->sap_seq_no));
+ 		/* We need enough room for the WiFi header + SNAP + IV */
+ 		skb = netdev_alloc_skb(netdev, len + QOS_HDR_IV_SNAP_LEN);
++		if (!skb)
++			continue;
+ 
+ 		skb_reserve(skb, QOS_HDR_IV_SNAP_LEN);
+ 		ethhdr = skb_push(skb, sizeof(*ethhdr));
 -- 
 2.35.1
 
