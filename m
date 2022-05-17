@@ -2,152 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35F8A529775
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 04:41:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4137F529872
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 05:57:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235010AbiEQClu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 May 2022 22:41:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48656 "EHLO
+        id S233963AbiEQD5r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 May 2022 23:57:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229553AbiEQClt (ORCPT
+        with ESMTP id S229898AbiEQD5o (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 May 2022 22:41:49 -0400
-Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01on2098.outbound.protection.outlook.com [40.107.117.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71702271E;
-        Mon, 16 May 2022 19:41:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cqEGwCMMxBYwBVVtoJQHeydxcehYxK891AzNbNgp1wuohFycOtnCW5HrTNeyL4z8e/p13DGcle+db6BOZsZI5E8Ttt4m5hr3mWr7TMFVJOjZzgkRK6A9AJHC8NClFmWDrGg9JLnrqpyBNXAknXuvyQ+gXjNPnQ9GVefWlKBtnAoCqaE/UQGPfV5F8FA9jjUAZJro1DoJmzAeIMXM9cGuOkIZS0+UOwzLugJJ6XWHd62d2wltKaJ05EAd/X246wLJTEHZ6sFIi7KCZMBDBHL/hnNL3p7TS/z7B0gRV1vtFlgkzE95yPeNzZNfEgECwjovDoNVqMTrMzU51+4vYareIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1z5+fqQW73EH1Uz88Qrbw4Xb1UTgCrRNgp1Jh9tnV54=;
- b=eG03ROnJbXfZfMTxmwB7YcRgiRY8r9Lfr+P5RYh4C+3fZmWinAzlKpK8bLKLy2mThhUg158hXj8KZFKVPrP8S75KvWJzIcQpEqL4Nqew3Ax+cBGIx6tUzAfaQojY8Ee337Hiw1yyxiZWqIviAxFlvbR/U8cuCDZ1lyBA+DQut5BVzw89A2F+aI1i979qZgMRQBHzokUmK65x4348UIIsTTyQ0VyURAFStwDAJ3tReujClz2KhbQ8GUBBM385PeIXvGS/73L6HFUS6lBkivI0uZXRaSeJiAIqb36F5eBFqDX59pYRamQPEAGw5CKkswe+dwtS/xQFXqeDDEL0i7ZqhA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com;
- s=selector2-vivo0-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1z5+fqQW73EH1Uz88Qrbw4Xb1UTgCrRNgp1Jh9tnV54=;
- b=EOGRhxm/BetReTlKJVjnZga0M5UkrOcgz3KNX9CsHKjP0I+pcyhxvOT7Ntn76zXFnHeqzePbCJ9IeVvsvtv2f/0qupqHy+8lJnAjrvJgXDC6FGnerxqECJMcJFjWd6VysdotTXdEf6bOaTBYNaQXfpwwCoxVFDpGq6vJBOnz5Sk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from HK2PR06MB3492.apcprd06.prod.outlook.com (2603:1096:202:2f::10)
- by PS2PR06MB3622.apcprd06.prod.outlook.com (2603:1096:300:6e::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5250.13; Tue, 17 May
- 2022 02:41:44 +0000
-Received: from HK2PR06MB3492.apcprd06.prod.outlook.com
- ([fe80::88e1:dc04:6851:ad08]) by HK2PR06MB3492.apcprd06.prod.outlook.com
- ([fe80::88e1:dc04:6851:ad08%7]) with mapi id 15.20.5250.018; Tue, 17 May 2022
- 02:41:44 +0000
-From:   Guo Zhengkui <guozhengkui@vivo.com>
-To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org (open list:QUALCOMM ATHEROS ATH9K
-        WIRELESS DRIVER),
-        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-        linux-kernel@vger.kernel.org (open list)
-Cc:     zhengkui_guo@outlook.com, Guo Zhengkui <guozhengkui@vivo.com>
-Subject: [PATCH linux-next v2] net: ath9k: replace ternary operator with max()
-Date:   Tue, 17 May 2022 10:41:06 +0800
-Message-Id: <20220517024106.77050-1-guozhengkui@vivo.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <874k1pxvca.fsf@kernel.org>
-References: <874k1pxvca.fsf@kernel.org>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TY2PR06CA0009.apcprd06.prod.outlook.com
- (2603:1096:404:42::21) To HK2PR06MB3492.apcprd06.prod.outlook.com
- (2603:1096:202:2f::10)
+        Mon, 16 May 2022 23:57:44 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B680B33E36
+        for <linux-wireless@vger.kernel.org>; Mon, 16 May 2022 20:57:43 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id p8so15788444pfh.8
+        for <linux-wireless@vger.kernel.org>; Mon, 16 May 2022 20:57:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=RA/GUWzgAi0lwcfXCy8dlx+jGczfHJXUzSsauTL7va8=;
+        b=BeY8zMiMW/X7WmzuCHmm965ikZQBIMdHFO0I2g7IFpQ/ePUkEQrrbK1b7NOv03NgJy
+         jUgWTBWWp3kBDafKOX1jHwQM0owBrZLkeuGN2XSMwL80ZByHsYivfiFBkgJwqxmQtTEB
+         32JfrkJUSOkiHW4FZ+uaFMe3qwYV1PWn0AOBU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=RA/GUWzgAi0lwcfXCy8dlx+jGczfHJXUzSsauTL7va8=;
+        b=MfDUZMPGFxPFXwqr+CvqJyteEyrzH8rLd/J8gtm8anNSK4LCy2qUNXx6ynab97Q7wc
+         9xUDiQkDrgDmRsS+BlyK+zxgCbxfUVGdWecwON1nJzvNvyaBupE0p7/gvHc8c5ZkKB3c
+         QSWaL8dTgEGYXgXilpQQfKzQ+zumHUB2HmwaF0GUBvnCxXTyDQk/FqSZxHKBBmStJYna
+         n2R2OykaY+nFHZrUdF1gKQAFHcsNkvfOJ9dpAsYGQLQoDpkX3S2pGkwudwHQVsRDwHoR
+         Ay8xYpKON127IeJ8ne+pCl5vnO3tw+ES2roFNqKHk9sUt+Ibs9qteWtZY/FtemTONxDC
+         QJCQ==
+X-Gm-Message-State: AOAM530Y1jgMkvJa8jiHJ0Hf/ogJiRWZOAq7BmsVDQSTrsYo+dMI94I3
+        aPm4MgyXVaYgLUkux4MKjFFZBg==
+X-Google-Smtp-Source: ABdhPJx7EyLV14gnE/eybLsCaXASC+lPagUlZeJRA4bfE1u5jFeEF85vrcWSpco4cEgBtHask9Z3Bw==
+X-Received: by 2002:a63:1904:0:b0:3c6:3fd3:4c28 with SMTP id z4-20020a631904000000b003c63fd34c28mr17768518pgl.308.1652759863198;
+        Mon, 16 May 2022 20:57:43 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id a1-20020a170902900100b0015e8d4eb2dfsm7711105plp.297.2022.05.16.20.57.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 May 2022 20:57:42 -0700 (PDT)
+Date:   Mon, 16 May 2022 20:57:42 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 05/32] brcmfmac: Use mem_to_flex_dup() with struct
+ brcmf_fweh_queue_item
+Message-ID: <202205162056.F8D1BF3E@keescook>
+References: <20220504014440.3697851-1-keescook@chromium.org>
+ <20220504014440.3697851-6-keescook@chromium.org>
+ <b197ca6d-4285-5310-7e98-918c885a2e38@broadcom.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: cd1fb0dc-4994-43cf-380f-08da37aec7eb
-X-MS-TrafficTypeDiagnostic: PS2PR06MB3622:EE_
-X-Microsoft-Antispam-PRVS: <PS2PR06MB36221BFC788949BAD998E675C7CE9@PS2PR06MB3622.apcprd06.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: fKfImLTYDs1U1W8XEZfMuCGE1R1tXMI0VvavXLGS+6qEoTcMSwNaRazW88YwevbULA8DRbpyU1Sk2P/fl0m+fGCk+aXj+zWBThbK6Yv2GjCkTZBHSdcGJTRBEOcgGYEeLGq6HTsFvxEkJiTOKG264DRs0YpcLMELVlHG7Y3tgo+Npo2K517SOkJH7UTu9TgmF+t7lo8mxEzV1fCiDE5/+QQOxkKajWon1vCCKEbwfESsJ4T7MYc56QWuyXmTJ5nOutT8uCZ7x/3GXh4Kt5IGRZfCETpMtQrheUgiFHXxiCx4zRh+nJgDvTzq3rLcsMa+KJBHFmivTwXkhv7/+jCiZrL1WEuLao/UIGduRke3nxh/TUDmZQWyxJqDIKSfDGfVuNH2X4gEdrQmun6od7S65aZKVFDBe2vZ5BuOMDCE4klxwpIRw1B5JR95k6G75E+Muvi5YbmLICSBLV6XmyQgo7WNmmH5kvSjzVWtKy1fsd4FXJdFHPXmlLAdMIyeXruDthQzd4imHPvWK3XPXDE1G2cKZn+l2mVWGM789ARQ1XaZVK91mCUeo/jPl8TZJOR11FT+4mWdgxvKjZXptGg84aPD5F0bfCUbwLCB4oK3PqscuqprqEBkv4zeEGAk6kuJyqch5nZz3z+V2CYe2PWXUtMo22OcBQNsVuzirQ2/zQb27+wq20uhzvqqYFoto2JAo+WYi6rL2AIgx6EGKcHclg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HK2PR06MB3492.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(86362001)(26005)(8676002)(2616005)(4326008)(2906002)(52116002)(6486002)(6506007)(83380400001)(8936002)(508600001)(6666004)(6512007)(38350700002)(38100700002)(5660300002)(36756003)(186003)(316002)(7416002)(66946007)(66476007)(4744005)(107886003)(66556008)(110136005)(1076003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?62NkKavqPaRCDcj5YpiHPESyKZ+A3RyK4NhQx7RTE0quOhOJPgPEyE0IqlYh?=
- =?us-ascii?Q?DXhEohxHSjfVVC7+HQW7Z83O7jCBqWoTO6t8svkEbTVPLkIrEPNEbTmdw8y5?=
- =?us-ascii?Q?P4WeEleY3hsQ+MhDEnc8hGRWARR6j/c4QBUk3tQEpgVYdPaEZGrKCEIxTt6O?=
- =?us-ascii?Q?wNZ6sTrAzy3w0KNVC5roKNfGlLgTWKwRzPwFMCxo16xXp3F8OMXmndUAnHrL?=
- =?us-ascii?Q?LzsSpbljJt+nS754bCyV3K/tx2m7yKSsMI8/2DOkTyssmc4pzcgAB6h+Dkdd?=
- =?us-ascii?Q?iAYIaCYu/lpzjb6dgKnEy2ZKeOAf7GjFRdAWy4CMFJk1cirEROWJ5IkAMnvj?=
- =?us-ascii?Q?57IyxZ5WUTCYj4ScJID8nDmorbiITe8F4p/kT1q2p7f9ifrDKGnzk9+0Nnyw?=
- =?us-ascii?Q?fbYqUeGvW6Dyqclx2iI0QDYOCKt4y16Usqi4JykeMVIJ8tYFP6yuARltpsRi?=
- =?us-ascii?Q?5h/XUT4OaF3mGCU4rP6HHH9nnf5GUSEThSB68nnYkfj/bBzJRh16xWwlpAfS?=
- =?us-ascii?Q?laUUkekNWbCS1+XdAVhp779S1HjQ5W6xeM/aUTJots4Zaqep+YxPnSyv0W3n?=
- =?us-ascii?Q?JNh43DpHAp7gpMTppg2FNFIyuIq/RAjQdUoOayUO2t+vtEn5+YVKfIkjrF9i?=
- =?us-ascii?Q?NqgsoInwsC+XGeP/76ZizfL5s++PIPgHnPtKH/+47i3Y8PWLnuM9ZEHun9Fn?=
- =?us-ascii?Q?lwm5A5y0RYG8ip+8R3QcESXmbMbSHtu4FcSXcpDApE/b4KDqSij/HZ1unkig?=
- =?us-ascii?Q?C8CZO4nnEThHk7Zx7hG+ZvDp4IL1pkCuA8HE45IhbhxUgunOPdta1UlfVwST?=
- =?us-ascii?Q?TI20xCY4Y+T+6yRXOCxN92eN9Ag4SfEGtmwP1+YkxsLtbuIxj05n1PxOyWAC?=
- =?us-ascii?Q?lGJJMi+hXVb0OfI9UKG85m4LJ/8sEvpmaHo1AOa1TrzBV7eD33kolhbNng05?=
- =?us-ascii?Q?Fmo10v6bQ1pv3hOIztmNwpceePWnbjC20pjAt4uX4rzF5FOo/lxY18A9ehiH?=
- =?us-ascii?Q?kOZKTC8EmxlXZ5nrPArJHWNgmY6bTYG1W2kmxaq4gOmIw5nwuE42J4ZDGXEC?=
- =?us-ascii?Q?hnXqvWQFSdzYsXQIHzBaXvSMw5fD0qIOdEV+GH/+597QxSyaW0zXmRvgfgkO?=
- =?us-ascii?Q?kNnlZCVjBeUf4SUw0EKumW3P6fd8/2fnSoBk8g7QLEC9Ig9wzZ3/9W9cZfV+?=
- =?us-ascii?Q?6T+8jA5H3dWhcyjewOx9yXUveHJGIXCS0+x14cHyRiDeT4kWdsJJ1wGsJS/L?=
- =?us-ascii?Q?ec184Xf84Ve92OT7o2whjb/9Uj8LpwuPkM77baX0N3LchRIbHtCPSqn+HdxV?=
- =?us-ascii?Q?sfrHh5gahztuUloEoTercDPbuoNlvObUOk3bZUR5kfd/otpA8v2pm4Q7GYY0?=
- =?us-ascii?Q?fG8vPfzeGMHbo5/N46Kfk6QvxRFZFN7yvw8AX0KQNokXcJSEUPK8lzTpV/T/?=
- =?us-ascii?Q?GPqfJcT51qi8LEfmt7LmOopTDmlyDvHRrgTsXG3EkNQmfSkozYuRSL/JQbQo?=
- =?us-ascii?Q?bizhCSPhfxgUMN52nCq2xWXgE1oy7r4XFUIEcb1nPGcpdgYynYcCLoOVzGfT?=
- =?us-ascii?Q?7QFsTbnazi3342UjnCt9ibFrLaPYImu0TFWOR9qiWnrZP2l6zz/lndu7EHjI?=
- =?us-ascii?Q?UKM49ubup2T5O4nOyGSnpux7A8IaRLtO+7mB62R2I7c3ncxm797xDNcK+fgf?=
- =?us-ascii?Q?js6bPScP4Q6kyeabnSLWA0U4nBbl7IOjogia6dx49QFai4q9+2b6o7htDHU7?=
- =?us-ascii?Q?49+N4xFrFQ=3D=3D?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd1fb0dc-4994-43cf-380f-08da37aec7eb
-X-MS-Exchange-CrossTenant-AuthSource: HK2PR06MB3492.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2022 02:41:44.5827
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Pp6KXCnwqGxLL6VK3RbwCgn21jUfnLZuQrIYnBr1XvfvLIXIYta8LyvBS6zL+aMdPFx3QOKYtHGLRNmX9rGSBw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PS2PR06MB3622
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b197ca6d-4285-5310-7e98-918c885a2e38@broadcom.com>
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following coccicheck warning:
+On Mon, May 16, 2022 at 02:49:21PM +0200, Arend van Spriel wrote:
+> On 5/4/2022 3:44 AM, Kees Cook wrote:
+> > As part of the work to perform bounds checking on all memcpy() uses,
+> > replace the open-coded a deserialization of bytes out of memory into a
+> > trailing flexible array by using a flex_array.h helper to perform the
+> > allocation, bounds checking, and copying.
+> > 
+> Reviewed-by: Arend van Spriel <aspriel@gmail.com>
 
-drivers/net/wireless/ath/ath9k/dfs.c:249:28-30: WARNING
-opportunity for max()
+Thanks!
 
-Signed-off-by: Guo Zhengkui <guozhengkui@vivo.com>
----
- drivers/net/wireless/ath/ath9k/dfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> > [...]
+> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+> > index bc3f4e4edcdf..bea798ca6466 100644
+> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+> > @@ -32,8 +32,8 @@ struct brcmf_fweh_queue_item {
+> >   	u8 ifidx;
+> >   	u8 ifaddr[ETH_ALEN];
+> >   	struct brcmf_event_msg_be emsg;
+> > -	u32 datalen;
+> > -	u8 data[];
+> > +	DECLARE_FLEX_ARRAY_ELEMENTS_COUNT(u32, datalen);
+> > +	DECLARE_FLEX_ARRAY_ELEMENTS(u8, data);
+> >   };
+> > [...]
+> > @@ -414,8 +414,7 @@ void brcmf_fweh_process_event(struct brcmf_pub *drvr,
+> >   	    datalen + sizeof(*event_packet) > packet_len)
+> >   		return;
+> > -	event = kzalloc(sizeof(*event) + datalen, gfp);
+> > -	if (!event)
+> > +	if (mem_to_flex_dup(&event, data, datalen, gfp))
+> >   		return;
+> >   	event->code = code;
+> > @@ -423,8 +422,6 @@ void brcmf_fweh_process_event(struct brcmf_pub *drvr,
+> >   	/* use memcpy to get aligned event message */
+> >   	memcpy(&event->emsg, &event_packet->msg, sizeof(event->emsg));
+> > -	memcpy(event->data, data, datalen);
+> > -	event->datalen = datalen;
+> 
+> So does mem_to_flex_dup() store event->datalen?
+> 
+> Don't have the entire thread so missing bits and pieces, but at least this
+> raises questions for me.
 
-diff --git a/drivers/net/wireless/ath/ath9k/dfs.c b/drivers/net/wireless/ath/ath9k/dfs.c
-index acb9602aa464..11349218bc21 100644
---- a/drivers/net/wireless/ath/ath9k/dfs.c
-+++ b/drivers/net/wireless/ath/ath9k/dfs.c
-@@ -246,7 +246,7 @@ ath9k_postprocess_radar_event(struct ath_softc *sc,
- 		DFS_STAT_INC(sc, dc_phy_errors);
- 
- 		/* when both are present use stronger one */
--		rssi = (ard->rssi < ard->ext_rssi) ? ard->ext_rssi : ard->rssi;
-+		rssi = max(ard->rssi, ard->ext_rssi);
- 		break;
- 	default:
- 		/*
+Yes, that's part of the internal workings here -- the flex array counter
+is declared and will be set as part of the copy.
+
 -- 
-2.20.1
-
+Kees Cook
