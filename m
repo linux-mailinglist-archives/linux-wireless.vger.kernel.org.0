@@ -2,44 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01111529F30
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 12:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF407529F5F
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 12:28:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343887AbiEQKRe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 May 2022 06:17:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33946 "EHLO
+        id S240698AbiEQK1w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 May 2022 06:27:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344929AbiEQKRP (ORCPT
+        with ESMTP id S1343929AbiEQKZJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 May 2022 06:17:15 -0400
+        Tue, 17 May 2022 06:25:09 -0400
 Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A826D4D276;
-        Tue, 17 May 2022 03:14:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1A7D182;
+        Tue, 17 May 2022 03:24:33 -0700 (PDT)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1652782473; bh=YrEZUatGpcW6tx9M6a5LX6XMkYrfUhXhCp7HQ5atufo=;
+        t=1652783072; bh=4NsMZH0iSGXiN/MjWHJRukAiwqP9eAfEKGtYlhI1X8M=;
         h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=TrXosL0UZZkkt6fgbk91csygw41EyeGqBPO2f0cbhR2uUJgC9DINRS7ou8/BH23sE
-         XHIMAtA8Ni+ZFeQdICfmXbsMbNC/u4lT7JEFQ5Fdk7FjbXNdxYJrtbh9E4Unyk/fyk
-         +KwfvycX5F184GS4qDFYApGLW3dmgQq8SRv3whpEjIc7y1ZuFkGCeM9exzmly6LzY0
-         zy4ZyS1WopTWdsRyTgkmy3HomagWPwB3QycXz+L/DG9KKVqfH8nqd2ytCPMhvAiZDy
-         Ehy6rYKsFo67oBWSg5SbKYrtUATZ6VbcHOapx2ZSrOih0JbyyoiTm1SgwlTtkkodtd
-         5RbsJIH+0gn6w==
-To:     Pavel Skripkin <paskripkin@gmail.com>, kvalo@kernel.org,
-        davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Pavel Skripkin <paskripkin@gmail.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: Re: [PATCH v4 2/2] ath9k: htc: clean up statistics macros
-In-Reply-To: <4456bd112b9d35f1cb659ed2ecc1c7107ebf2b91.1652553719.git.paskripkin@gmail.com>
-References: <f158608e209a6f45c76ec856474a796df93d9dcf.1652553719.git.paskripkin@gmail.com>
- <4456bd112b9d35f1cb659ed2ecc1c7107ebf2b91.1652553719.git.paskripkin@gmail.com>
-Date:   Tue, 17 May 2022 12:14:33 +0200
+        b=bXESjwSXOba8zLy/g5zj29ZEl0pCaDX/d6sdqyGgElBYYKXZiDnPjNwoPpYNmI5F4
+         pe7KpZ04y6ncl0ZlzpUyBBSQ4FkEABaPfSybvvH/lZHM8XXdBEePUoFYjuQWbjnECv
+         JCE1bioYK7Jzvt6OuTv1wuecXeK73bAKBXA7NWtChcyUv2HimMlPPyG4tY2s4oMyXo
+         z0Fp4wozyWSOhw5sgmaWv7YfYeKoZTa5ZjvXe7mKp46KbR3Zq4J7mSDfVlzjHocezS
+         OUZkr3mhTw1tRIviqsN5zv4CFXZUf8ThtUY+4HoTb0T6BOLsIyuvPK4KRMH1nrG8qO
+         9KG9HodwfmpLg==
+To:     Guo Zhengkui <guozhengkui@vivo.com>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "open list:QUALCOMM ATHEROS ATH9K WIRELESS DRIVER" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Cc:     zhengkui_guo@outlook.com, Guo Zhengkui <guozhengkui@vivo.com>
+Subject: Re: [PATCH linux-next v2] net: ath9k: replace ternary operator with
+ max()
+In-Reply-To: <20220517024106.77050-1-guozhengkui@vivo.com>
+References: <874k1pxvca.fsf@kernel.org>
+ <20220517024106.77050-1-guozhengkui@vivo.com>
+Date:   Tue, 17 May 2022 12:24:31 +0200
 X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <871qwscvp2.fsf@toke.dk>
+Message-ID: <87wnekbgo0.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
@@ -49,25 +55,13 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pavel Skripkin <paskripkin@gmail.com> writes:
+Guo Zhengkui <guozhengkui@vivo.com> writes:
 
-> I've changed *STAT_* macros a bit in previous patch and I seems like
-> they become really unreadable. Align these macros definitions to make
-> code cleaner and fix folllowing checkpatch warning
+> Fix the following coccicheck warning:
 >
-> ERROR: Macros with complex values should be enclosed in parentheses
+> drivers/net/wireless/ath/ath9k/dfs.c:249:28-30: WARNING
+> opportunity for max()
 >
-> Also, statistics macros now accept an hif_dev as argument, since
-> macros that depend on having a local variable with a magic name
-> don't abide by the coding style.
->
-> No functional change
->
-> Suggested-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
-> ---
+> Signed-off-by: Guo Zhengkui <guozhengkui@vivo.com>
 
-This patch doesn't apply; please rebase on top of the ath-next branch in
-Kalle's 'ath' tree...
-
--Toke
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
