@@ -2,50 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AF4D52A947
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 19:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22E9C52A969
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 19:38:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243835AbiEQRcI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 May 2022 13:32:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44934 "EHLO
+        id S1351512AbiEQRiF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 May 2022 13:38:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbiEQRcH (ORCPT
+        with ESMTP id S1351501AbiEQRiD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 May 2022 13:32:07 -0400
+        Tue, 17 May 2022 13:38:03 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8100438D91;
-        Tue, 17 May 2022 10:32:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC2D3A18E;
+        Tue, 17 May 2022 10:38:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3B384B81B2F;
-        Tue, 17 May 2022 17:32:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE9EC385B8;
-        Tue, 17 May 2022 17:32:03 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 343A6B81B18;
+        Tue, 17 May 2022 17:38:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BF6C385B8;
+        Tue, 17 May 2022 17:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652808723;
-        bh=NuGBigtyGKPXWM/MaUlUZBG/HmD7xPOta8lEUkmex90=;
+        s=k20201202; t=1652809080;
+        bh=eHifGayDG02quoV3KcJSM+PxEDMZbY8lAV/ptLfgFvM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qVBFvUazhsMIfj1pq7ETdVEoefWaS76SV63TUTf1coelXoWWkpalWhLKM29j2Fzoe
-         vGRMEQ2619Ac8qIs1iRMUY/y2jyTYP7dKO7wEWZcMiswmUGRQbxhBa2ovTiBY9BadF
-         imlibOD7C5l9QrXcmsk7FwU8mDo17RyswZHX3woicUYa0RPPOBlZO8yKUjwswPpZd1
-         rOpVKpgAVcixZVnuIX7SlJUNmPBExMnue8iblSy201Ixn4zAnk6gWIomXpGof0RaFc
-         g6Lh/QKQHnj8JjlnnLb2zv1dMjfXcPqSYlnUI/Xu+/4mqfC0wrsYImiVfEH93RGpT/
-         yJ+cX/Tp0I5CQ==
-Date:   Tue, 17 May 2022 10:32:02 -0700
+        b=I5kAF3I/AUbaMnhhKAimpquiSrx5qPouEKWy+HiK6ll1MuFC+ZQ/CRNvNLRMxWWiv
+         OrdhZaLWneMrYP8oaN1bqO29C0RQCkLY2a7BsSB+/lAn9UcZpJ+8ExeBuA45n0Y2Ui
+         LlEFcrQ1rI34YVg7s100GRSK9jDE7hNzV/X1rUBUHpZmLBADNzm6w4hVP9/cl0KZwP
+         8XNxUeLUfyuUO9mb5zFChF3PvCVunKudgTXZltGi3atXRWlqYLRLzFrttc4JNZuRma
+         F/pxcMYztZPQOHcwCvnX4d/HKYKGnEkVRax6QUemNClmKfA95fQP+fZfa/VEV7dFZr
+         sv8ohsqoDSuPw==
+Date:   Tue, 17 May 2022 10:37:58 -0700
 From:   Jakub Kicinski <kuba@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-        pabeni@redhat.com, johannes@sipsolutions.net, alex.aring@gmail.com,
-        stefan@datenfreihafen.org, mareklindner@neomailbox.ch,
-        sw@simonwunderlich.de, a@unstable.cc, sven@narfation.org,
-        linux-wireless@vger.kernel.org, linux-wpan@vger.kernel.org
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>, davem@davemloft.net,
+        netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+        alex.aring@gmail.com, stefan@datenfreihafen.org,
+        mareklindner@neomailbox.ch, sw@simonwunderlich.de, a@unstable.cc,
+        sven@narfation.org, linux-wireless@vger.kernel.org,
+        linux-wpan@vger.kernel.org
 Subject: Re: [PATCH net-next] net: ifdefy the wireless pointers in struct
  net_device
-Message-ID: <20220517103202.6613c5ef@kernel.org>
-In-Reply-To: <87zgjgwza1.fsf@kernel.org>
+Message-ID: <20220517103758.353c2476@kernel.org>
+In-Reply-To: <74bdbec0580ed05d0f18533eae9af50bc0a4a0ef.camel@sipsolutions.net>
 References: <20220516215638.1787257-1-kuba@kernel.org>
-        <87zgjgwza1.fsf@kernel.org>
+        <8e9f1b04-d17b-2812-22bb-e62b5560aa6e@gmail.com>
+        <74bdbec0580ed05d0f18533eae9af50bc0a4a0ef.camel@sipsolutions.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -59,16 +61,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 17 May 2022 07:36:54 +0300 Kalle Valo wrote:
-> > +void cfg80211_unregister_netdevice(struct net_device *dev)
-> > +{
-> > +	cfg80211_unregister_wdev(dev->ieee80211_ptr);
-> > +}
-> > +EXPORT_SYMBOL(cfg80211_unregister_netdevice);  
+On Tue, 17 May 2022 09:48:24 +0200 Johannes Berg wrote:
+> On Mon, 2022-05-16 at 19:12 -0700, Florian Fainelli wrote:
+> > 
+> > On 5/16/2022 2:56 PM, Jakub Kicinski wrote:  
+> > > Most protocol-specific pointers in struct net_device are under
+> > > a respective ifdef. Wireless is the notable exception. Since
+> > > there's a sizable number of custom-built kernels for datacenter
+> > > workloads which don't build wireless it seems reasonable to
+> > > ifdefy those pointers as well.
+> > > 
+> > > While at it move IPv4 and IPv6 pointers up, those are special
+> > > for obvious reasons.
+> > > 
+> > > Signed-off-by: Jakub Kicinski <kuba@kernel.org>  
+> > 
+> > Could not we move to an union of pointers in the future since in many 
+> > cases a network device can only have one of those pointers at any given 
+> > time?  
 > 
-> Why moving this to a proper function? Just curious, I couldn't figure it
-> out.
+> Then at the very least we'd need some kind of type that we can assign to
+> disambiguate, because today e.g. we have a netdev notifier (and other
+> code) that could get a non-wireless netdev and check like this:
+> 
+> static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
+>                                          unsigned long state, void *ptr)
+> {
+>         struct net_device *dev = netdev_notifier_info_to_dev(ptr);
+>         struct wireless_dev *wdev = dev->ieee80211_ptr;
+> [...]
+>         if (!wdev)
+>                 return NOTIFY_DONE;
 
-Sorry, I went too far with the "explain what not why".
-The header is included in places which get built without 
-WIRELESS while the C source is not.
+Can we use enum netdev_ml_priv_type netdev::ml_priv and
+netdev::ml_priv_type for this?
