@@ -2,49 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E87195298D9
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 06:37:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B54745298E1
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 06:45:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234645AbiEQEhF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 May 2022 00:37:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39416 "EHLO
+        id S235222AbiEQEpX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 May 2022 00:45:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229769AbiEQEhE (ORCPT
+        with ESMTP id S229569AbiEQEpV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 May 2022 00:37:04 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 668553AA52;
-        Mon, 16 May 2022 21:37:03 -0700 (PDT)
+        Tue, 17 May 2022 00:45:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A30F25C5D
+        for <linux-wireless@vger.kernel.org>; Mon, 16 May 2022 21:45:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 20948B80936;
-        Tue, 17 May 2022 04:37:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B89C385B8;
-        Tue, 17 May 2022 04:36:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE67E614FB
+        for <linux-wireless@vger.kernel.org>; Tue, 17 May 2022 04:45:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC78C385B8;
+        Tue, 17 May 2022 04:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652762220;
-        bh=yqrFLKUyZSPOO62w2yYncUxQ/cjrWKNlIzELs9lP7vU=;
+        s=k20201202; t=1652762718;
+        bh=3SQJnwz9IYrVf3OXuaFRzBe8PfK65G1u+4sgg+zlAvo=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=VDAy7fAWds24lPLb33S5Yc7u8cbzgx/sP436FkaTD/doVNGCTiN2ze8/iSqxGwMUX
-         E3cc5xpta8piTbowEu9yvT5faQyKGaak7U9AbyPF4E2AcmsGsp1Mklshsy2Em7eg1M
-         0tJ2+bM4wuodmpwGiKLlhIimlQFBWgdjTt9R2xhNUke0NOvckVBrBiRMGKG480D5P5
-         CZPc3kmtaKu9HR9pCgHF0b9JupiwO+PWUEHkW0u/uCYofeqqzlnAQ+WBN/jSqp+6Dv
-         Khwt6AAPY0+rPaLLTdhhtkoaBrKcX9WTwbCP92aeGBNO3XdgefXAjkss9bPwyvONq+
-         ucqy1S7HlEadg==
+        b=qwZ08JpdkRTl+ynu8UEs8gEcc9p+whCN5D/oOjTT11iR3ProLG+jtCQ/0CQwx6v0j
+         vEDrH8uBHjwuZvD3bGhtzp6X7z9EIsrMZShVNf4ghLw9ybn//1Ff4fKljYoCHMEz43
+         F6ofZ0XA56vcD7r4DcyNTT2lZGx4dLGt+oaUfs3oeYHAnjCD2XZQo6jgHShJQlztCS
+         w7ofBh5oC8djQk22dEtrWHswXQdxnSWrStqXUwg2NtohpWoVBW4muQ1cFOEtdrqtBK
+         V2qy3u+gyerht154uu83o35wBxpKZN/MAV+XIKMGU/7PxV3yNU1+Kk1uOjT5V08bIk
+         gkaqW/GTmT8/Q==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-        pabeni@redhat.com, johannes@sipsolutions.net, alex.aring@gmail.com,
-        stefan@datenfreihafen.org, mareklindner@neomailbox.ch,
-        sw@simonwunderlich.de, a@unstable.cc, sven@narfation.org,
-        linux-wireless@vger.kernel.org, linux-wpan@vger.kernel.org
-Subject: Re: [PATCH net-next] net: ifdefy the wireless pointers in struct net_device
-References: <20220516215638.1787257-1-kuba@kernel.org>
-Date:   Tue, 17 May 2022 07:36:54 +0300
-In-Reply-To: <20220516215638.1787257-1-kuba@kernel.org> (Jakub Kicinski's
-        message of "Mon, 16 May 2022 14:56:38 -0700")
-Message-ID: <87zgjgwza1.fsf@kernel.org>
+To:     Aloka Dixit <quic_alokad@quicinc.com>
+Cc:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v5 1/3] cfg80211: additional processing in NL80211_CMD_SET_BEACON
+References: <20220516202454.4925-1-quic_alokad@quicinc.com>
+        <20220516202454.4925-2-quic_alokad@quicinc.com>
+Date:   Tue, 17 May 2022 07:45:15 +0300
+In-Reply-To: <20220516202454.4925-2-quic_alokad@quicinc.com> (Aloka Dixit's
+        message of "Mon, 16 May 2022 13:24:52 -0700")
+Message-ID: <87v8u4wyw4.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -58,62 +55,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Aloka Dixit <quic_alokad@quicinc.com> writes:
 
-> Most protocol-specific pointers in struct net_device are under
-> a respective ifdef. Wireless is the notable exception. Since
-> there's a sizable number of custom-built kernels for datacenter
-> workloads which don't build wireless it seems reasonable to
-> ifdefy those pointers as well.
+> FILS discovery and unsolicited broadcast probe response transmissions
+> are configured as part of NL80211_CMD_START_AP, however both stop
+> after userspace uses the NL80211_CMD_SET_BEACON command as these
+> attributes are not processed in that command.
 >
-> While at it move IPv4 and IPv6 pointers up, those are special
-> for obvious reasons.
+> - Add the missing implementation.
+> - Modify the local variable in nl80211_set_beacon() and input parameter
+> to rdev_change_beacon() from type struct cfg80211_beacon_data to
+> type struct cfg80211_ap_settings to support the new processing.
 >
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
 > ---
-> CC: johannes@sipsolutions.net
-> CC: alex.aring@gmail.com
-> CC: stefan@datenfreihafen.org
-> CC: mareklindner@neomailbox.ch
-> CC: sw@simonwunderlich.de
-> CC: a@unstable.cc
-> CC: sven@narfation.org
-> CC: linux-wireless@vger.kernel.org
-> CC: linux-wpan@vger.kernel.org
-
-[...]
-
+>  include/net/cfg80211.h  |  2 +-
+>  net/wireless/nl80211.c  | 28 ++++++++++++++++++----
+>  net/wireless/rdev-ops.h |  2 +-
+>  net/wireless/trace.h    | 52 +++++++++++++++++++++++------------------
+>  4 files changed, 55 insertions(+), 29 deletions(-)
+>
+> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+> index 97a5804ccdcf..880ade4a0430 100644
 > --- a/include/net/cfg80211.h
 > +++ b/include/net/cfg80211.h
-> @@ -8004,10 +8004,7 @@ int cfg80211_register_netdevice(struct net_device *dev);
->   *
->   * Requires the RTNL and wiphy mutex to be held.
->   */
-> -static inline void cfg80211_unregister_netdevice(struct net_device *dev)
-> -{
-> -	cfg80211_unregister_wdev(dev->ieee80211_ptr);
-> -}
-> +void cfg80211_unregister_netdevice(struct net_device *dev);
->  
->  /**
->   * struct cfg80211_ft_event_params - FT Information Elements
+> @@ -4200,7 +4200,7 @@ struct cfg80211_ops {
+>  	int	(*start_ap)(struct wiphy *wiphy, struct net_device *dev,
+>  			    struct cfg80211_ap_settings *settings);
+>  	int	(*change_beacon)(struct wiphy *wiphy, struct net_device *dev,
+> -				 struct cfg80211_beacon_data *info);
+> +				 struct cfg80211_ap_settings *info);
 
-[...]
-
-> --- a/net/wireless/core.c
-> +++ b/net/wireless/core.c
-> @@ -1374,6 +1374,12 @@ int cfg80211_register_netdevice(struct net_device *dev)
->  }
->  EXPORT_SYMBOL(cfg80211_register_netdevice);
->  
-> +void cfg80211_unregister_netdevice(struct net_device *dev)
-> +{
-> +	cfg80211_unregister_wdev(dev->ieee80211_ptr);
-> +}
-> +EXPORT_SYMBOL(cfg80211_unregister_netdevice);
-
-Why moving this to a proper function? Just curious, I couldn't figure it
-out.
+Shouldn't patch 3 folded into patch 1? I don't see how patch 1 as is
+would compile without warnings.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
