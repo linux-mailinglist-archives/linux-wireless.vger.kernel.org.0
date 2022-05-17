@@ -2,67 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4137F529872
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 05:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E87195298D9
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 06:37:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233963AbiEQD5r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 May 2022 23:57:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53996 "EHLO
+        id S234645AbiEQEhF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 May 2022 00:37:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229898AbiEQD5o (ORCPT
+        with ESMTP id S229769AbiEQEhE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 May 2022 23:57:44 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B680B33E36
-        for <linux-wireless@vger.kernel.org>; Mon, 16 May 2022 20:57:43 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id p8so15788444pfh.8
-        for <linux-wireless@vger.kernel.org>; Mon, 16 May 2022 20:57:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=RA/GUWzgAi0lwcfXCy8dlx+jGczfHJXUzSsauTL7va8=;
-        b=BeY8zMiMW/X7WmzuCHmm965ikZQBIMdHFO0I2g7IFpQ/ePUkEQrrbK1b7NOv03NgJy
-         jUgWTBWWp3kBDafKOX1jHwQM0owBrZLkeuGN2XSMwL80ZByHsYivfiFBkgJwqxmQtTEB
-         32JfrkJUSOkiHW4FZ+uaFMe3qwYV1PWn0AOBU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RA/GUWzgAi0lwcfXCy8dlx+jGczfHJXUzSsauTL7va8=;
-        b=MfDUZMPGFxPFXwqr+CvqJyteEyrzH8rLd/J8gtm8anNSK4LCy2qUNXx6ynab97Q7wc
-         9xUDiQkDrgDmRsS+BlyK+zxgCbxfUVGdWecwON1nJzvNvyaBupE0p7/gvHc8c5ZkKB3c
-         QSWaL8dTgEGYXgXilpQQfKzQ+zumHUB2HmwaF0GUBvnCxXTyDQk/FqSZxHKBBmStJYna
-         n2R2OykaY+nFHZrUdF1gKQAFHcsNkvfOJ9dpAsYGQLQoDpkX3S2pGkwudwHQVsRDwHoR
-         Ay8xYpKON127IeJ8ne+pCl5vnO3tw+ES2roFNqKHk9sUt+Ibs9qteWtZY/FtemTONxDC
-         QJCQ==
-X-Gm-Message-State: AOAM530Y1jgMkvJa8jiHJ0Hf/ogJiRWZOAq7BmsVDQSTrsYo+dMI94I3
-        aPm4MgyXVaYgLUkux4MKjFFZBg==
-X-Google-Smtp-Source: ABdhPJx7EyLV14gnE/eybLsCaXASC+lPagUlZeJRA4bfE1u5jFeEF85vrcWSpco4cEgBtHask9Z3Bw==
-X-Received: by 2002:a63:1904:0:b0:3c6:3fd3:4c28 with SMTP id z4-20020a631904000000b003c63fd34c28mr17768518pgl.308.1652759863198;
-        Mon, 16 May 2022 20:57:43 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id a1-20020a170902900100b0015e8d4eb2dfsm7711105plp.297.2022.05.16.20.57.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 May 2022 20:57:42 -0700 (PDT)
-Date:   Mon, 16 May 2022 20:57:42 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     "Gustavo A . R . Silva" <gustavoars@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 05/32] brcmfmac: Use mem_to_flex_dup() with struct
- brcmf_fweh_queue_item
-Message-ID: <202205162056.F8D1BF3E@keescook>
-References: <20220504014440.3697851-1-keescook@chromium.org>
- <20220504014440.3697851-6-keescook@chromium.org>
- <b197ca6d-4285-5310-7e98-918c885a2e38@broadcom.com>
+        Tue, 17 May 2022 00:37:04 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 668553AA52;
+        Mon, 16 May 2022 21:37:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 20948B80936;
+        Tue, 17 May 2022 04:37:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B89C385B8;
+        Tue, 17 May 2022 04:36:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1652762220;
+        bh=yqrFLKUyZSPOO62w2yYncUxQ/cjrWKNlIzELs9lP7vU=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=VDAy7fAWds24lPLb33S5Yc7u8cbzgx/sP436FkaTD/doVNGCTiN2ze8/iSqxGwMUX
+         E3cc5xpta8piTbowEu9yvT5faQyKGaak7U9AbyPF4E2AcmsGsp1Mklshsy2Em7eg1M
+         0tJ2+bM4wuodmpwGiKLlhIimlQFBWgdjTt9R2xhNUke0NOvckVBrBiRMGKG480D5P5
+         CZPc3kmtaKu9HR9pCgHF0b9JupiwO+PWUEHkW0u/uCYofeqqzlnAQ+WBN/jSqp+6Dv
+         Khwt6AAPY0+rPaLLTdhhtkoaBrKcX9WTwbCP92aeGBNO3XdgefXAjkss9bPwyvONq+
+         ucqy1S7HlEadg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+        pabeni@redhat.com, johannes@sipsolutions.net, alex.aring@gmail.com,
+        stefan@datenfreihafen.org, mareklindner@neomailbox.ch,
+        sw@simonwunderlich.de, a@unstable.cc, sven@narfation.org,
+        linux-wireless@vger.kernel.org, linux-wpan@vger.kernel.org
+Subject: Re: [PATCH net-next] net: ifdefy the wireless pointers in struct net_device
+References: <20220516215638.1787257-1-kuba@kernel.org>
+Date:   Tue, 17 May 2022 07:36:54 +0300
+In-Reply-To: <20220516215638.1787257-1-kuba@kernel.org> (Jakub Kicinski's
+        message of "Mon, 16 May 2022 14:56:38 -0700")
+Message-ID: <87zgjgwza1.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b197ca6d-4285-5310-7e98-918c885a2e38@broadcom.com>
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -71,53 +58,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 16, 2022 at 02:49:21PM +0200, Arend van Spriel wrote:
-> On 5/4/2022 3:44 AM, Kees Cook wrote:
-> > As part of the work to perform bounds checking on all memcpy() uses,
-> > replace the open-coded a deserialization of bytes out of memory into a
-> > trailing flexible array by using a flex_array.h helper to perform the
-> > allocation, bounds checking, and copying.
-> > 
-> Reviewed-by: Arend van Spriel <aspriel@gmail.com>
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Thanks!
+> Most protocol-specific pointers in struct net_device are under
+> a respective ifdef. Wireless is the notable exception. Since
+> there's a sizable number of custom-built kernels for datacenter
+> workloads which don't build wireless it seems reasonable to
+> ifdefy those pointers as well.
+>
+> While at it move IPv4 and IPv6 pointers up, those are special
+> for obvious reasons.
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: johannes@sipsolutions.net
+> CC: alex.aring@gmail.com
+> CC: stefan@datenfreihafen.org
+> CC: mareklindner@neomailbox.ch
+> CC: sw@simonwunderlich.de
+> CC: a@unstable.cc
+> CC: sven@narfation.org
+> CC: linux-wireless@vger.kernel.org
+> CC: linux-wpan@vger.kernel.org
 
-> > [...]
-> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
-> > index bc3f4e4edcdf..bea798ca6466 100644
-> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
-> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
-> > @@ -32,8 +32,8 @@ struct brcmf_fweh_queue_item {
-> >   	u8 ifidx;
-> >   	u8 ifaddr[ETH_ALEN];
-> >   	struct brcmf_event_msg_be emsg;
-> > -	u32 datalen;
-> > -	u8 data[];
-> > +	DECLARE_FLEX_ARRAY_ELEMENTS_COUNT(u32, datalen);
-> > +	DECLARE_FLEX_ARRAY_ELEMENTS(u8, data);
-> >   };
-> > [...]
-> > @@ -414,8 +414,7 @@ void brcmf_fweh_process_event(struct brcmf_pub *drvr,
-> >   	    datalen + sizeof(*event_packet) > packet_len)
-> >   		return;
-> > -	event = kzalloc(sizeof(*event) + datalen, gfp);
-> > -	if (!event)
-> > +	if (mem_to_flex_dup(&event, data, datalen, gfp))
-> >   		return;
-> >   	event->code = code;
-> > @@ -423,8 +422,6 @@ void brcmf_fweh_process_event(struct brcmf_pub *drvr,
-> >   	/* use memcpy to get aligned event message */
-> >   	memcpy(&event->emsg, &event_packet->msg, sizeof(event->emsg));
-> > -	memcpy(event->data, data, datalen);
-> > -	event->datalen = datalen;
-> 
-> So does mem_to_flex_dup() store event->datalen?
-> 
-> Don't have the entire thread so missing bits and pieces, but at least this
-> raises questions for me.
+[...]
 
-Yes, that's part of the internal workings here -- the flex array counter
-is declared and will be set as part of the copy.
+> --- a/include/net/cfg80211.h
+> +++ b/include/net/cfg80211.h
+> @@ -8004,10 +8004,7 @@ int cfg80211_register_netdevice(struct net_device *dev);
+>   *
+>   * Requires the RTNL and wiphy mutex to be held.
+>   */
+> -static inline void cfg80211_unregister_netdevice(struct net_device *dev)
+> -{
+> -	cfg80211_unregister_wdev(dev->ieee80211_ptr);
+> -}
+> +void cfg80211_unregister_netdevice(struct net_device *dev);
+>  
+>  /**
+>   * struct cfg80211_ft_event_params - FT Information Elements
+
+[...]
+
+> --- a/net/wireless/core.c
+> +++ b/net/wireless/core.c
+> @@ -1374,6 +1374,12 @@ int cfg80211_register_netdevice(struct net_device *dev)
+>  }
+>  EXPORT_SYMBOL(cfg80211_register_netdevice);
+>  
+> +void cfg80211_unregister_netdevice(struct net_device *dev)
+> +{
+> +	cfg80211_unregister_wdev(dev->ieee80211_ptr);
+> +}
+> +EXPORT_SYMBOL(cfg80211_unregister_netdevice);
+
+Why moving this to a proper function? Just curious, I couldn't figure it
+out.
 
 -- 
-Kees Cook
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
