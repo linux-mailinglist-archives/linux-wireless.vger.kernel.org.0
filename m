@@ -2,209 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C01E52AB82
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 21:07:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C5AC52AC08
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 21:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352506AbiEQTH3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 May 2022 15:07:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49886 "EHLO
+        id S1352792AbiEQTdY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 May 2022 15:33:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231967AbiEQTH1 (ORCPT
+        with ESMTP id S1352797AbiEQTdS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 May 2022 15:07:27 -0400
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C26AAB3F;
-        Tue, 17 May 2022 12:07:25 -0700 (PDT)
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-2f16645872fso1170967b3.4;
-        Tue, 17 May 2022 12:07:25 -0700 (PDT)
+        Tue, 17 May 2022 15:33:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 65E74522DD
+        for <linux-wireless@vger.kernel.org>; Tue, 17 May 2022 12:33:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1652815995;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=+1sB48ou7sq4iG5odbW5UgPnDZdHq+eVYauDlKBiRrs=;
+        b=S463gJCBWFlvOXD5DmJehN0IxcF2rgSDzJByhhg0VPsfxkq4iZaJVTuE+k9HgLy5DAJaYg
+        Al/FB5np77IXpON5MDaYZxLRAlSpCoSORPQltRuGQvtXcq7d7DpfWZYMK5oBmixIIUR5sv
+        /bYZ1F1rnfGxKQtgTAGmPzvbNVINxRg=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-369-3ep1lnnzOCqVwzhGVcBQyg-1; Tue, 17 May 2022 15:33:14 -0400
+X-MC-Unique: 3ep1lnnzOCqVwzhGVcBQyg-1
+Received: by mail-qv1-f69.google.com with SMTP id 11-20020a0562140d0b00b0045aac32023fso15614074qvh.19
+        for <linux-wireless@vger.kernel.org>; Tue, 17 May 2022 12:33:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=sduYyeVxKqNpGkWhBxHiPbrXuQpVfXTI/19h1XUIt6k=;
-        b=2N37fk8pndEs7lG6RfQoBUi4XZ2n+lqjmXOQXZ18FIH0UNdpVDG3ChqcYW1eRSYPLC
-         BjgRJgENhMylWznbOCHnywADGl5Kw87cwoMxs6JMd+euBz5trnlFwPTCs/v9XfZMBHSs
-         nOKQdK4RnPsbzoeJqrFiIfAVLfiRZSy2YxmD24QZTsMoCHb+SA7c/IRClT99Df83DDTL
-         9lIaCaWWMl/Wn2V+ytyLd7KmUIITO5J2cAHcClQ6wkVTmJRgv3kRz9I6Tpum3Od7Ob5b
-         iteCI3lQ32V27uLXk9cX1x3jmfvjFYW2OIogpKVFO/jN/Mv+LEsAn6pKVLvpCVUAaNwO
-         7m0A==
-X-Gm-Message-State: AOAM531MnIhBcrik4Wbnb+hvXmsq3G/jJIn8Ct02yMwRMQIJA9TZXybo
-        FERQuQMQl6rDK74dDipi/8K30gY/zHK4XnyWGbM=
-X-Google-Smtp-Source: ABdhPJzUYv2OrRrI3N1qBYg19RgG8O0CEOuy67iukFNgVk/13X7zQPxtxxFKGk0ZKcppI+w+ImdB0lohrDi45EAoT4k=
-X-Received: by 2002:a0d:c442:0:b0:2fe:beab:1fef with SMTP id
- g63-20020a0dc442000000b002febeab1fefmr24237356ywd.196.1652814445013; Tue, 17
- May 2022 12:07:25 -0700 (PDT)
+        bh=+1sB48ou7sq4iG5odbW5UgPnDZdHq+eVYauDlKBiRrs=;
+        b=3GVgO5vSVKeXmONZV8FZOHWLrxBVtCP9PAgvjl51ucW8ANYOIvw3OsvkD4oTQ0PDH7
+         5h2UzLwFKj1fpZbQZJBTYAeDM2cx3x4ITveLaRemYlOvgbWGYIp7MfJFed++KX2GKFzl
+         kl1+P+ZMtYr/nI3fU/OPryti98jZfxTrJjASagBXCqv49N9uKC5jP3wau8hv7GCuDrDd
+         64/dbWf7nf6hyo8C6sylAnSHOx1RqOOT4Aeyi7c9NhnR5h5IGcpV07KUm7zq/6RYtHz2
+         LNDy+1A/ztPdC8e3vDjBzq5rJ3TR4ZRIDBUZX82OrG1WtcJV0JRvkawtn8d5WHDfoCNT
+         Fekw==
+X-Gm-Message-State: AOAM532x2jPPvM4oFoGyJk88Cv+3mD0ZyyIFC3bibqGunVMpJZ2l0hbJ
+        TuSyHl1Msvy6xTQR+aeh5TdyutXAlIxyZAXn9TQwAstwgHUDjsNk1eS8ptbDiXsq0SUajfT/4sh
+        TUGLpxcT7Wm1fZKXCzNlK2C36ahf+FwOxdszsxrCBzXM=
+X-Received: by 2002:a05:620a:40c2:b0:6a0:2b1b:2b86 with SMTP id g2-20020a05620a40c200b006a02b1b2b86mr17543588qko.80.1652815993429;
+        Tue, 17 May 2022 12:33:13 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyErJA1QMczBYTs9gR2mpRT35GolnnXP55O3949L3bTONuRk5dupXTRdiVJjTkve0f85GDa08PrMhPUDoaknLI=
+X-Received: by 2002:a05:620a:40c2:b0:6a0:2b1b:2b86 with SMTP id
+ g2-20020a05620a40c200b006a02b1b2b86mr17543569qko.80.1652815993241; Tue, 17
+ May 2022 12:33:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220507125443.2766939-1-daniel.lezcano@linexp.org>
- <20220507125443.2766939-2-daniel.lezcano@linexp.org> <CAJZ5v0ik_JQ4Awtw7iR68W4-9ZL8FRDsDd-kWmL-n09fgg3reg@mail.gmail.com>
- <7b1a9f3b5b5087f47bf4839858c7bfebdb60aa2f.camel@linux.intel.com>
- <CAJZ5v0hqN-zKZvWTNPzW2P22Dirmyh99qyycf+US4Z9Yxw9mhA@mail.gmail.com> <afcc7b08ebe2578d32e6595d258afeec3e73512e.camel@linux.intel.com>
-In-Reply-To: <afcc7b08ebe2578d32e6595d258afeec3e73512e.camel@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 17 May 2022 21:07:14 +0200
-Message-ID: <CAJZ5v0gBm+rEkAZ-9DGoR5Z0HS=D-b_XeJSyUUX6Ui5sgh7MwQ@mail.gmail.com>
-Subject: Re: [PATCH v2 01/14] thermal/core: Change thermal_zone_ops to thermal_sensor_ops
-To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linexp.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Alexandre Bailon <abailon@baylibre.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Jonathan Corbet <corbet@lwn.net>, Len Brown <lenb@kernel.org>,
-        Raju Rangoju <rajur@chelsio.com>,
+References: <20220516215638.1787257-1-kuba@kernel.org> <8e9f1b04-d17b-2812-22bb-e62b5560aa6e@gmail.com>
+In-Reply-To: <8e9f1b04-d17b-2812-22bb-e62b5560aa6e@gmail.com>
+From:   Alexander Aring <aahringo@redhat.com>
+Date:   Tue, 17 May 2022 15:33:02 -0400
+Message-ID: <CAK-6q+jRDMDGbNS2JkTXmW2dp6D7mGzZ6ghrjf7m-wp7Xo9weQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: ifdefy the wireless pointers in struct net_device
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@kernel.org>, Peter Kaestle <peter@piie.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Chuansheng Liu <chuansheng.liu@intel.com>,
-        Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Antoine Tenart <atenart@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>,
-        "open list:CXGB4 ETHERNET DRIVER (CXGB4)" <netdev@vger.kernel.org>,
-        "open list:INTEL WIRELESS WIFI LINK (iwlwifi)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:ACER ASPIRE ONE TEMPERATURE AND FAN DRIVER" 
-        <platform-driver-x86@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "open list:RENESAS R-CAR THERMAL DRIVERS" 
-        <linux-renesas-soc@vger.kernel.org>
+        Network Development <netdev@vger.kernel.org>,
+        edumazet@google.com, Paolo Abeni <pabeni@redhat.com>,
+        johannes@sipsolutions.net, Alexander Aring <alex.aring@gmail.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        mareklindner@neomailbox.ch, sw@simonwunderlich.de, a@unstable.cc,
+        sven@narfation.org, linux-wireless@vger.kernel.org,
+        linux-wpan - ML <linux-wpan@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, May 17, 2022 at 9:02 PM srinivas pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
+Hi,
+
+On Mon, May 16, 2022 at 10:13 PM Florian Fainelli <f.fainelli@gmail.com> wrote:
 >
-> On Tue, 2022-05-17 at 20:53 +0200, Rafael J. Wysocki wrote:
-> > On Tue, May 17, 2022 at 6:51 PM srinivas pandruvada
-> > <srinivas.pandruvada@linux.intel.com> wrote:
-> > >
-> > > On Tue, 2022-05-17 at 17:42 +0200, Rafael J. Wysocki wrote:
-> > > > On Sat, May 7, 2022 at 2:55 PM Daniel Lezcano
-> > > > <daniel.lezcano@linexp.org> wrote:
-> > > > >
-> > > > > A thermal zone is software abstraction of a sensor associated
-> > > > > with
-> > > > > properties and cooling devices if any.
-> > > > >
-> > > > > The fact that we have thermal_zone and thermal_zone_ops mixed
-> > > > > is
-> > > > > confusing and does not clearly identify the different
-> > > > > components
-> > > > > entering in the thermal management process. A thermal zone
-> > > > > appears
-> > > > > to
-> > > > > be a sensor while it is not.
-> > > >
-> > > > Well, the majority of the operations in thermal_zone_ops don't
-> > > > apply
-> > > > to thermal sensors.  For example, ->set_trips(), -
-> > > > >get_trip_type(),
-> > > > ->get_trip_temp().
-> > > >
-> > > In past we discussed adding thermal sensor sysfs with threshold to
-> > > notify temperature.
-> > >
-> > > So sensor can have set/get_threshold() functions instead of the
-> > > set/get_trip for zones.
-> > >
-> > > Like we have /sys/class/thermal_zone* we can have
-> > > /sys/class/thermal_sensor*.
-> >
-> > Exactly, so renaming thermal_zone_ops as thermal_sensor_ops isn't
-> > quite helpful in this respect.
-> >
-> > IMO there should be operations for sensors and there should be
-> > operations for thermal zones and those two sets of operations should
-> > be different.
-> >
-> > > Thermal sensor(s) are bound to  thermal zones.
-> >
-> > So I think that this binding should be analogous to the binding
-> > between thermal zones and cooling devices.
-> >
-> > > This can also include multiple sensors in a zone and can create a
-> > > virtual sensor also.
-> >
-> > It can.
-> >
-> > However, what's the difference between a thermal zone with multiple
-> > sensors and a thermal zone with one virtual sensor being an aggregate
-> > of multiple physical sensors?
-> >
-> Either way is fine. A thermal sensor can be aggregate of other sensors.
-
-Agreed.
-
-But the point is that if we go with thermal zones bound to multiple
-physical sensors, I don't see much point in using virtual sensors.
-And the other way around.
-
-Daniel seems to be preferring the thermal zones bound to multiple
-physical sensors approach.
-
-
-> > Both involve some type of aggregation of temperature values measured
-> > by the physical sensors.
-> >
-> > > > > In order to set the scene for multiple thermal sensors
-> > > > > aggregated
-> > > > > into
-> > > > > a single thermal zone. Rename the thermal_zone_ops to
-> > > > > thermal_sensor_ops, that will appear clearyl the thermal zone
-> > > > > is
-> > > > > not a
-> > > > > sensor but an abstraction of one [or multiple] sensor(s).
-> > > >
-> > > > So I'm not convinced that the renaming mentioned above is
-> > > > particularly
-> > > > clean either.
-> > > >
-> > > > IMV the way to go would be to split the thermal sensor
-> > > > operations,
-> > > > like ->get_temp(), out of thermal_zone_ops.
-> > > >
-> > > > But then it is not clear what a thermal zone with multiple
-> > > > sensors in
-> > > > it really means.  I guess it would require an aggregation
-> > > > function to
-> > > > combine the thermal sensors in it that would produce an effective
-> > > > temperature to check against the trip points.
-> > > >
-> > > > Honestly, I don't think that setting a separate set of trips for
-> > > > each
-> > > > sensor in a thermal zone would make a lot of sense.
-> > >
 >
+>
+> On 5/16/2022 2:56 PM, Jakub Kicinski wrote:
+> > Most protocol-specific pointers in struct net_device are under
+> > a respective ifdef. Wireless is the notable exception. Since
+> > there's a sizable number of custom-built kernels for datacenter
+> > workloads which don't build wireless it seems reasonable to
+> > ifdefy those pointers as well.
+> >
+> > While at it move IPv4 and IPv6 pointers up, those are special
+> > for obvious reasons.
+> >
+> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>
+> Could not we move to an union of pointers in the future since in many
+> cases a network device can only have one of those pointers at any given
+> time?
+
+note that ieee802154 has also functionality like __dev_get_by_index()
+and checks via "if (netdev->ieee802154_ptr)" if it's a wpan interface
+or not, guess the solution would be like it's done in wireless then.
+
+- Alex
+
