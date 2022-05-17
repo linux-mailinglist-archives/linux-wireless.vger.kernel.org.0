@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8FD5529D78
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 11:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0083E529D7B
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 11:08:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232766AbiEQJIP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 May 2022 05:08:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58012 "EHLO
+        id S244386AbiEQJIC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 May 2022 05:08:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244342AbiEQJHn (ORCPT
+        with ESMTP id S244333AbiEQJHn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 17 May 2022 05:07:43 -0400
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 743D723171
-        for <linux-wireless@vger.kernel.org>; Tue, 17 May 2022 02:06:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A654B237C6
+        for <linux-wireless@vger.kernel.org>; Tue, 17 May 2022 02:06:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652778404; x=1684314404;
+  t=1652778405; x=1684314405;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ttOpXnLYQ6yRfaXL5Oy3O3S8eImL4Z4PjMNZ2xkhqFE=;
-  b=WGGAHc2UNslVfsoJ5iSmnMyqPqNTE9u8J82bKw6A0A3eHiMNvLrkHO1Y
-   Rp5f1tEO6tgDCq/ji+BmYYNOsPGkBcx1bYA8GVewgtH3dFu40YZ0DNHBf
-   jvlY5PiqUgTz3G44EK+YGRK//QuA9uvGt1NY7h0Sdcqx5HPoC/F1irZfa
-   iEqgpUKMx5FECFv1JKa4MWskRA12kaDuBNSG+SSnxS+qzaIsJDuRt1ee3
-   y/iwxhYPLZ8nLho48ngRhU9TK2NPzWjG0ndySMEXMnJpRZnvZgLNVRudR
-   rTa/8SA0dAprUl3xGemLfM33is/vTZqC0OfXzFVeREBa0DuGeYudu8eF4
+  bh=pxzImEr2FqVezDKIsh+BgClOxH9/kQuTHkdbYQzNPZ4=;
+  b=c0WlRuoMGqffEQ3HinjcIG/su6bdzuNodVcslyoI1q/mtIDnZTfDeb1T
+   z5MYmu06miyR5Rkcmh6RiIlgjh3U4KmkalP9pCdS96ntsVJwiHpxv/YZ9
+   NpkKMT/mytlPjz9OkSiHfUsta9dqbxy8o9Vs1WKSuD5D+h4P6O7CyrBBy
+   6djGP8Y7gGgfg5cPK3Wl1LqLzpIEA4YztCL+ihP96nvYHfmQ/ZDYTePz2
+   tIzi4JXco3ZN9cHrrq1XiOIN3YkXUGFez4LHnVHvy5AFHMNIHrGr3BVcd
+   r/FQ4X9Z+qQ8+12bqbuHtOgpzmJLxF3mF2mtUFLcf6gaR6EMiCnUbmoiA
    A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10349"; a="271064762"
+X-IronPort-AV: E=McAfee;i="6400,9594,10349"; a="271064778"
 X-IronPort-AV: E=Sophos;i="5.91,232,1647327600"; 
-   d="scan'208";a="271064762"
+   d="scan'208";a="271064778"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:06:25 -0700
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:06:27 -0700
 X-IronPort-AV: E=Sophos;i="5.91,232,1647327600"; 
-   d="scan'208";a="741679715"
+   d="scan'208";a="741679730"
 Received: from sgens-mobl3.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.212.48])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:06:23 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:06:25 -0700
 From:   gregory.greenman@intel.com
 To:     kvalo@kernel.org
 Cc:     johannes@sipsolutions.net, gregory.greenman@intel.com,
         linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 04/10] iwlwifi: fw: init SAR GEO table only if data is present
-Date:   Tue, 17 May 2022 12:05:08 +0300
-Message-Id: <20220517120044.bc45923b74e9.Id2b4362234b7f8ced82c591b95d4075dd2ec12f4@changeid>
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH 05/10] iwlwifi: mvm: fix assert 1F04 upon reconfig
+Date:   Tue, 17 May 2022 12:05:09 +0300
+Message-Id: <20220517120044.ed2ffc8ce732.If786e19512d0da4334a6382ea6148703422c7d7b@changeid>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220517090514.211796-1-gregory.greenman@intel.com>
 References: <20220517090514.211796-1-gregory.greenman@intel.com>
@@ -60,37 +60,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-When no table data was read from ACPI, then filling the data
-and returning success here will fill zero values, which means
-transmit power will be limited to 0 dBm. This is clearly not
-intended.
+When we reconfig we must not send the MAC_POWER command that relates to
+a MAC that was not yet added to the firmware.
 
-Return an error from iwl_sar_geo_init() if there's no data to
-fill into the command structure.
+Ignore those in the iterator.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Fixes: 78a19d5285d9 ("iwlwifi: mvm: Read the PPAG and SAR tables at INIT stage")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 3 +++
+ drivers/net/wireless/intel/iwlwifi/mvm/power.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index 33aae639ad37..e6d64152c81a 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -937,6 +937,9 @@ int iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
- {
- 	int i, j;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/power.c b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
+index b2ea2fca5376..b9bd81242b21 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/power.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
+@@ -563,6 +563,9 @@ static void iwl_mvm_power_get_vifs_iterator(void *_data, u8 *mac,
+ 	struct iwl_power_vifs *power_iterator = _data;
+ 	bool active = mvmvif->phy_ctxt && mvmvif->phy_ctxt->id < NUM_PHY_CTX;
  
-+	if (!fwrt->geo_enabled)
-+		return -ENODATA;
++	if (!mvmvif->uploaded)
++		return;
 +
- 	if (!iwl_sar_geo_support(fwrt))
- 		return -EOPNOTSUPP;
- 
+ 	switch (ieee80211_vif_type_p2p(vif)) {
+ 	case NL80211_IFTYPE_P2P_DEVICE:
+ 		break;
 -- 
 2.35.1
 
