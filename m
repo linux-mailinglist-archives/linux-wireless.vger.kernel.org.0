@@ -2,45 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BDB1529FAD
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 12:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91946529FC7
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 12:52:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344615AbiEQKpJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 May 2022 06:45:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48492 "EHLO
+        id S1343758AbiEQKwC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 May 2022 06:52:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344576AbiEQKo0 (ORCPT
+        with ESMTP id S239664AbiEQKud (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 May 2022 06:44:26 -0400
+        Tue, 17 May 2022 06:50:33 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88539326D7
-        for <linux-wireless@vger.kernel.org>; Tue, 17 May 2022 03:43:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 893E342EFD
+        for <linux-wireless@vger.kernel.org>; Tue, 17 May 2022 03:50:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=BObO6BJaMT7dTAEIwQTWGhVjByZmrwcvf0lp6lJBLHw=; t=1652784233; x=1653993833; 
-        b=sbS9Mdn6B/dMqyCCMSNk65hta4u2gbpgdsHehRgaMKsL2QZEwY3O1TJ9BLyq4+VmbIbOYpKfOCv
-        LK5n6o+CzemtmRvG9qy7+C/T3iwL6bCO5diBUkgw7Tp3BKhH90xWyoD+CujSXTpMD+EWiCiCP0Vhd
-        tKKfUxmdMV9IKEEXMBZI9pHoOjW+rh5GpdMLOOZp1v6pokoSicztPER08/RXDyrh7i5q3t3feBXiF
-        Qh0W8fXQNNurWSKF+/wd/9c1snSlAkMVDgkR3diq4HkxAl7ytM/n+ylZ7GUtC9sEM0bVddS8ckLrd
-        P3dpZHdiCcZy4d6WLCWUuS5ukOc75T//WuLw==;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=CZKbvyuo9jMSxGCEvHVocW/LbxZNQg7LeMHvamwIiG0=;
+        t=1652784632; x=1653994232; b=C8YqUqGqwJ2sitT4cyM7MIfktf/0X3kVk/g0hFL3Jt7AaAR
+        5HqNt/B9l1xxkoCukd7V5fVOZCMBl4hOAo6f1IXQb4rOltHfNUQrxfrhTEGBaY2HhtVFiUnfTir58
+        HCoXt84LnPhJ/D3Axzrv8nheB/R/tVK4Yfb+I2R4MBp7WPMEgRNoJz9F+fvAoTp6FnZaSA9RdlZ8c
+        TYUEXkcjmPsp7tuEiPL4Q9tvVuqR1Ma5StKkMQYiuzZn7LTyZUCbdmMemeZBdXkxCe2tYgU5Gz8bB
+        GnQFrZrQu7bkdxqyIDH2kbJARxz2z39Qe6C8lY3iZm1JozTPaxFgakC1z+vi4q2w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nqug9-00ELOf-IM;
-        Tue, 17 May 2022 12:43:49 +0200
+        id 1nqumW-00ELXJ-U3;
+        Tue, 17 May 2022 12:50:25 +0200
+Message-ID: <c41731aea4fc043bad1ab6db724c2283df0a3d42.camel@sipsolutions.net>
+Subject: Re: [PATCH v5 1/3] cfg80211: additional processing in
+ NL80211_CMD_SET_BEACON
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: [PATCH] cfg80211: fix kernel-doc for cfg80211_beacon_data
-Date:   Tue, 17 May 2022 12:43:46 +0200
-Message-Id: <20220517124345.d2020efa3a07.Ibe44080e86665722f16a9251ef21964cd2e7b8cb@changeid>
-X-Mailer: git-send-email 2.36.1
+To:     Kalle Valo <kvalo@kernel.org>,
+        Aloka Dixit <quic_alokad@quicinc.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 17 May 2022 12:50:24 +0200
+In-Reply-To: <87v8u4wyw4.fsf@kernel.org>
+References: <20220516202454.4925-1-quic_alokad@quicinc.com>
+         <20220516202454.4925-2-quic_alokad@quicinc.com> <87v8u4wyw4.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.1 (3.44.1-1.fc36) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
@@ -50,34 +55,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Tue, 2022-05-17 at 07:45 +0300, Kalle Valo wrote:
+>=20
+> > +++ b/include/net/cfg80211.h
+> > @@ -4200,7 +4200,7 @@ struct cfg80211_ops {
+> >  	int	(*start_ap)(struct wiphy *wiphy, struct net_device *dev,
+> >  			    struct cfg80211_ap_settings *settings);
+> >  	int	(*change_beacon)(struct wiphy *wiphy, struct net_device *dev,
+> > -				 struct cfg80211_beacon_data *info);
+> > +				 struct cfg80211_ap_settings *info);
+>=20
+> Shouldn't patch 3 folded into patch 1? I don't see how patch 1 as is
+> would compile without warnings.
+>=20
+Yes, and parts of patch 2 as well.
 
-The kernel-doc comment is formatted badly, resulting
-in a warning:
-
-  include/net/cfg80211.h:1188: warning: bad line: [...]
-
-Fix that.
-
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- include/net/cfg80211.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 8b9d1d9c7ec4..1b52189ac3fb 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -1186,7 +1186,7 @@ struct cfg80211_mbssid_elems {
-  * @civicloc_len: Civic location data length
-  * @he_bss_color: BSS Color settings
-  * @he_bss_color_valid: indicates whether bss color
--	attribute is present in beacon data or not.
-+ *	attribute is present in beacon data or not.
-  */
- struct cfg80211_beacon_data {
- 	unsigned int link_id;
--- 
-2.36.1
-
+johannes
