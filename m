@@ -2,93 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B11B4529EA4
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 12:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F9FB529F27
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 12:17:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245484AbiEQKAd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 May 2022 06:00:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51988 "EHLO
+        id S243313AbiEQKRY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 May 2022 06:17:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245426AbiEQKAa (ORCPT
+        with ESMTP id S1344541AbiEQKRA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 May 2022 06:00:30 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E95693C71B;
-        Tue, 17 May 2022 03:00:28 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4L2Wp15S1Mz4xY4;
-        Tue, 17 May 2022 20:00:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1652781627;
-        bh=ACzjneqDXRTFSb31q0UAPmXWo5ic5ZuLKSemylhPJjk=;
-        h=Date:From:To:Cc:Subject:From;
-        b=BhcTrHEsF+igXDnkrdFg745RQpjTleUFXXiLwZbglwW3SfcncFuLK5lQwSBh7IEdO
-         AXmbV650JkEH894TqAOtUdWrQ8K5laKvMxdTNf825rCUy8fu5BR6P0ARMaEU3B7eDi
-         gdx7tUKs5Y6pRDEwzSP3C1p7Xvrqd0OgX2udR3Ij+IHMvzqOf1ADfRoo5+5oWBiso2
-         H0Lty5G+VqU8sZNx1JdwRvNzg4jOvGeZkN6/rUqQRCAc72slMeWufB005zS35bbPcS
-         jZX8s+VIWQUf8aQsNKq+ah9XdsIbowpwbMzQPGQ7xXF5MKzxRONuAlUR8oHTu24I0c
-         5cLl+iT3y9m7g==
-Date:   Tue, 17 May 2022 20:00:24 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Wireless <linux-wireless@vger.kernel.org>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: build warning after merge of the wireless-next tree
-Message-ID: <20220517200024.3bc972ed@canb.auug.org.au>
+        Tue, 17 May 2022 06:17:00 -0400
+Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 843D44CD49;
+        Tue, 17 May 2022 03:14:01 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1652782439; bh=FgLlz7yX3If1Y6jUp+qPllpmpLPTg7kdgt59d0KH3GU=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=kvpDqQveB2NW67xPPY6OyXlsFGsGQ+9IgrnaHQ09tj25bU6d5fC4v0rs5uMf1Clum
+         tgEnkIIYgCsOY+EU2zm25nkrz/bieQom7u6OAIbFw3JoL67esL3eXhazO14fvQWzdQ
+         L0dEv1VVn+66gwn7kxJbuek5YbVwZoopUgnDQNWUZ3WFAXDPTLzr6hZpCFpjZCPLSp
+         GDmeh0EzvfAc62RVv5Ocm13EDJ2FDfPGZq9l+JbuZMAxgPqTV9WFWUy/DV1sz+V8zY
+         Mgb3xNr2yIo/whq1DKzqjNF4wIjVkK1gGaTAQM+GJ6UcbQRF5gAwAsb4aKZ2/7inHZ
+         67IaLaZaGTfLQ==
+To:     Pavel Skripkin <paskripkin@gmail.com>, kvalo@kernel.org,
+        davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Pavel Skripkin <paskripkin@gmail.com>,
+        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
+        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+Subject: Re: [PATCH v4 1/2] ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
+In-Reply-To: <f158608e209a6f45c76ec856474a796df93d9dcf.1652553719.git.paskripkin@gmail.com>
+References: <f158608e209a6f45c76ec856474a796df93d9dcf.1652553719.git.paskripkin@gmail.com>
+Date:   Tue, 17 May 2022 12:13:58 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <874k1ocvq1.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/Vh5HJxTto_A7tISj4ndI+2F";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/Vh5HJxTto_A7tISj4ndI+2F
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Pavel Skripkin <paskripkin@gmail.com> writes:
 
-Hi all,
+> Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb() [0]. The
+> problem was in incorrect htc_handle->drv_priv initialization.
+>
+> Probable call trace which can trigger use-after-free:
+>
+> ath9k_htc_probe_device()
+>   /* htc_handle->drv_priv = priv; */
+>   ath9k_htc_wait_for_target()      <--- Failed
+>   ieee80211_free_hw()		   <--- priv pointer is freed
+>
+> <IRQ>
+> ...
+> ath9k_hif_usb_rx_cb()
+>   ath9k_hif_usb_rx_stream()
+>    RX_STAT_INC()		<--- htc_handle->drv_priv access
+>
+> In order to not add fancy protection for drv_priv we can move
+> htc_handle->drv_priv initialization at the end of the
+> ath9k_htc_probe_device() and add helper macro to make
+> all *_STAT_* macros NULL save, since syzbot has reported related NULL
 
-After merging the wireless-next tree, today's linux-next build (htmldocs)
-produced this warning:
+s/save/safe here as well :)
 
-include/net/cfg80211.h:1188: warning: bad line:         attribute is presen=
-t in beacon data or not.
-
-Introduced by commit
-
-  3d48cb74816d ("nl80211: Parse NL80211_ATTR_HE_BSS_COLOR as a part of nl80=
-211_parse_beacon")
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/Vh5HJxTto_A7tISj4ndI+2F
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmKDcjgACgkQAVBC80lX
-0GxCuAf7BopOsVfrp3A6v/pMXmeaHb/fLGl+J5r1mtNFolUtGq0H8k58NpBX69ch
-64W9XJBeDx4fBfWgeFjHPl9b4XrsKg/q7JheNQBRgrdRri6dINfUXFjZb7Ps5H4K
-8EAOCaT8zFR+7jS3jBgCCM+frX1Ea/QHrBGA5aBz5U6CCkvWunHxHjGfYDuz33ds
-FC3wMqtWhQ8bix7CH9xF0jkpxCfcl0PvV2k1G/YZwZ46ob/hYpFu9CopELjNi0Fo
-dpHry2ENOBGfb9eP97jLT8j3+8Fj3bL1iU4tM20aJUyckt5hf8tW6D7VJHa7juIc
-KB+/lIQw4kr5bDs5+dWzctt3x8JPWQ==
-=gHGq
------END PGP SIGNATURE-----
-
---Sig_/Vh5HJxTto_A7tISj4ndI+2F--
+-Toke
