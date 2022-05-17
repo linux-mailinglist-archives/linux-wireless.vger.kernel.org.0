@@ -2,89 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D67C2529CA6
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 10:37:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0B62529D6F
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 May 2022 11:07:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238468AbiEQIhv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 May 2022 04:37:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54364 "EHLO
+        id S234206AbiEQJHp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 May 2022 05:07:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232605AbiEQIht (ORCPT
+        with ESMTP id S243998AbiEQJGp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 May 2022 04:37:49 -0400
-Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A83636151
-        for <linux-wireless@vger.kernel.org>; Tue, 17 May 2022 01:37:48 -0700 (PDT)
-Received: by mail-vk1-xa33.google.com with SMTP id e144so8681714vke.9
-        for <linux-wireless@vger.kernel.org>; Tue, 17 May 2022 01:37:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=d9Asr0SeltTw/PH/mfYIRVg4glPFZ1rj4w1tcUD07rs=;
-        b=PIYIRnb82+X/4SqmLtRLy7keWVP2YyhMzpyh9YAKvbSGIIACp3IurgVNVgMpFh3cRo
-         y7iHeZ7/vfQt/kEaAHdq45GTyzvSPoxboGVuLozgy/VyzG1LID+3VCdZIiei2y0W07pC
-         o0WzSsGYaJwTGceJg3nMuh6hGG+RoytIKdztWMSnC3JMzHioRNGR3s9LDLaVIDfckDA0
-         0cSxjpsqs8x0RyMLeKnhPe04lsGbrIwx8HnhprF+ZF16Nj9rwr4M0+6T0Sv8UNNrjlkw
-         gdcxGEJcWiC/+mRpXsbn44FM1v3QeYubU6Znziqj71tAPxysaNGX5rmqhI58DpX2Dhv4
-         fdYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=d9Asr0SeltTw/PH/mfYIRVg4glPFZ1rj4w1tcUD07rs=;
-        b=e5sPlkCb/1+NH1UnqMzDZKDDGqvH6dG7aw5y+KWqAa3WbC3eney53GLt4/k+TGfevt
-         Pn52fUi1oY2X/7q833ZvL1kH7fjWKQUfn8LXMBuMGu6uVhmIAZyxird17SWaOZ7RDHAD
-         3kiAODExjH6XPsNG6NxrbEGr01uazuCIqfx61IehF9RzZmyRrhekqosaURr5b3gpWXkT
-         eu5n4aP9Z2Hy3w9UZjZfdXqTuPKGLka+f/+fSwTRnsjxyUNm0ubPW43qxTYTEexp8cZN
-         ZAjUBiPAcJOYNPQdYZqro/AjpaH/LD0wDGuV2dL77aO+D2d0JG/vnnZDkAb4oWjwUo9r
-         6AdA==
-X-Gm-Message-State: AOAM5308KS2OLjGysIJmbjmru3rM29eGZLmGh3DireEwFHa6LC1g8qB2
-        vOv2xso5QWVkUKtz8eglv01CvF6yiDbNrmg6ne6Djt+IgZw=
-X-Google-Smtp-Source: ABdhPJz1VBgB0+0+lF8vdD2fAqckoVwXjPs32pRcGWWJu3JLt4+yvqqO3vM9ugzS91PuNTenkRJRAc2813RR0OA0L7c=
-X-Received: by 2002:a05:6122:890:b0:352:b096:d44b with SMTP id
- 16-20020a056122089000b00352b096d44bmr8021401vkf.41.1652776667432; Tue, 17 May
- 2022 01:37:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220516032519.29831-1-ryazanov.s.a@gmail.com> <CAByNJ6qDgqwxqGe0+uKSGCFKLULqEQ+NeBr-dAP=2Maov9ynqA@mail.gmail.com>
-In-Reply-To: <CAByNJ6qDgqwxqGe0+uKSGCFKLULqEQ+NeBr-dAP=2Maov9ynqA@mail.gmail.com>
-From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Date:   Tue, 17 May 2022 11:37:36 +0300
-Message-ID: <CAHNKnsRx0VWDVsP_KOKaPrU=eODOUCmpyBbYsN1rYEBXvRdaGA@mail.gmail.com>
-Subject: Re: [PATCH 0/4] ath10k: add encapsulation offloading support
-To:     Edward Matijevic <motolav@gmail.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, ath10k@lists.infradead.org,
+        Tue, 17 May 2022 05:06:45 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC2A21828
+        for <linux-wireless@vger.kernel.org>; Tue, 17 May 2022 02:06:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1652778393; x=1684314393;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=X/uyHbVlQA8hVGzzFATBMx7IXCafqOtE0vkyAZoaYt4=;
+  b=DBuWS8ie161NXtPdMuok0Jvx7q1ig6syn6lLjlj4vmD1+Yjh6bq4+P+2
+   /6a2cLIZNFO8AM76tAdSZD28lS3BJ771lo3ARy3RCoSLDf4DrbDkcOIfu
+   snwHjonrDA+iOz4sc+nbJiBoD2LzX9CqAyVUaFomtE9aco/hLTpu8JqAP
+   xY1AiNlWdC0xn0F+p0/lCjqZM1Qu3fOwWigjFPlqGepQTLuQbT9PvjWP4
+   jBXh7fx7t9kERQ1GE8rA4MkgfPAra1m2NT578pLzxGtZ2jvvL0m76UbaZ
+   kLQkryXBbm2hLmsMUQgpaDkXw3QnVjRxprenhs/IEzwjalp056Olq8HLz
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10349"; a="268700427"
+X-IronPort-AV: E=Sophos;i="5.91,232,1647327600"; 
+   d="scan'208";a="268700427"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:05:53 -0700
+X-IronPort-AV: E=Sophos;i="5.91,232,1647327600"; 
+   d="scan'208";a="741679516"
+Received: from sgens-mobl3.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.212.48])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 02:05:51 -0700
+From:   gregory.greenman@intel.com
+To:     kvalo@kernel.org
+Cc:     johannes@sipsolutions.net, gregory.greenman@intel.com,
         linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Subject: [PATCH 00/10] iwlwifi: updates intended for v5.18 2022-05-17
+Date:   Tue, 17 May 2022 12:05:04 +0300
+Message-Id: <20220517090514.211796-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Edward,
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-On Tue, May 17, 2022 at 5:37 AM Edward Matijevic <motolav@gmail.com> wrote:
-> Hello,
-> I confirm now my QCA9377 pci module has no regressions in either modes
-> with these patches
-> I was able to test it as an AP and it worked under ETHERNET mode
-> without any obvious regressions but I'm unable to check maximum
-> throughput
->
-> My hardware info from dmesg and tested on kernel 5.17.7
-> qca9377 hw1.0 target 0x05020000 chip_id 0x003820ff sub 11ad:0806
-> firmware ver WLAN.TF.2.1-00021-QCARMSWP-1 api 6 features
-> wowlan,ignore-otp crc32 42e41877
->
-> My quoted statement of a possible regression seems to have been my old
-> CPU acting up and is ok to remove
+Hello,
 
-Thank you for the update.
+Here's a set of patches intended for v5.18 if time permits. It's the
+usual developement, bugfixes and small cleanups. Nothing major in this
+series.
+
+Thanks,
+Gregory
+
+Avraham Stern (1):
+  iwlwifi: mei: clear the sap data header before sending
+
+Emmanuel Grumbach (2):
+  iwlwifi: mvm: fix assert 1F04 upon reconfig
+  iwlwifi: mvm: always tell the firmware to accept MCAST frames in BSS
+
+Haim Dreyfuss (1):
+  iwlwifi: mvm: use NULL instead of ERR_PTR when parsing wowlan status
+
+Johannes Berg (4):
+  iwlwifi: pcie: simplify MSI-X cause mapping
+  iwlwifi: mvm: clean up authorized condition
+  iwlwifi: fw: init SAR GEO table only if data is present
+  iwlwifi: mei: fix potential NULL-ptr deref
+
+Miri Korenblit (1):
+  iwlwifi: mvm: remove vif_count
+
+Mordechay Goodstein (1):
+  iwlwifi: mvm: add OTP info in case of init failure
+
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  3 ++
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  2 +
+ drivers/net/wireless/intel/iwlwifi/mei/main.c |  3 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   | 22 ++++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 15 +++---
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 32 +++----------
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 17 ++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  1 -
+ .../net/wireless/intel/iwlwifi/mvm/power.c    |  3 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   | 44 ++++++++++++-----
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 48 +++++++++++--------
+ 11 files changed, 102 insertions(+), 88 deletions(-)
 
 -- 
-Sergey
+2.35.1
+
