@@ -2,116 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B28752B833
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 May 2022 12:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5429E52BA35
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 May 2022 14:38:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235267AbiERK5V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 May 2022 06:57:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55118 "EHLO
+        id S236385AbiERM06 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 May 2022 08:26:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235266AbiERK5T (ORCPT
+        with ESMTP id S236406AbiERM0x (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 May 2022 06:57:19 -0400
-Received: from mail-vs1-xe2b.google.com (mail-vs1-xe2b.google.com [IPv6:2607:f8b0:4864:20::e2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3783253A75
-        for <linux-wireless@vger.kernel.org>; Wed, 18 May 2022 03:57:18 -0700 (PDT)
-Received: by mail-vs1-xe2b.google.com with SMTP id c26so1590874vsl.6
-        for <linux-wireless@vger.kernel.org>; Wed, 18 May 2022 03:57:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/aD6sJmhRWlpTVYgDySx2h2Vn69aUP+JH8c/uIV9LhQ=;
-        b=okouQH+NMTlsBTKbFwaFR/BwO0UoksgscPIBvu1EJf4eWTneQsnCLjKBF5caIBhYWn
-         RMQbXqJJxLAfrgkkW5D0nNgiBxIzGXbdTNefawTfi3CnhPu6HDiBYhxGZg6LpeT/lP9k
-         ladRVC+1l1vQmfFujzqFtdRsYEqtgolTIap4b8EGFh8vIf6oijzZB1HrjcAdvtG3q1XO
-         d1pR34KvB524BgdyLl7CqEV4eNAFeIyJKwVh8ZHwpq7YMDcusPNjajKFHSjZh4604M5j
-         xF0ZxcFeqaIjNCWV5cUhKy301FJCCG1SKb+Sx5k1YIUbX4Of4FRhZUiW4Swb4vSa6ncn
-         Ic7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/aD6sJmhRWlpTVYgDySx2h2Vn69aUP+JH8c/uIV9LhQ=;
-        b=ukvOGheilzQRF4rV/zYfGCvSdZa1rYvZBEZaLuJ21LFoN1EUYEKVIpatZFBuzhMbnD
-         wF9zjNziXPTeAvUZX9MmfmvXZtC+424830ePv/qvlbfTbfg2Ep6WjELm4JLDi+I2jRCn
-         76pY1DPNxje0+Jr+0bW9psbEUUpKXHKCWz9spy3LtyRDgXIV0+3Of7/0qcGsFeDW2hoV
-         lWgmiIkeVoO20cLMgvEu+5zpuIFf9PT7P9WVpsL3mc8U76ohKa6ZlUh52hsnuJ6D1LZR
-         hK9p9eraqOS+QHAvtrqTsGqkVc3lo/DwBjw2PyNL9iYKkr/nNNH1Wyw1b4bwlrdiWftB
-         Tuww==
-X-Gm-Message-State: AOAM532gDyhL91Fqkw0Fn/bcU6YDBfCeWCY4y0u5RBSUh9vpGLXM6hH0
-        PzdB1T2rvxNediVjdZZ/9rpnUdnflAocmdel7yjDDiRL+v0=
-X-Google-Smtp-Source: ABdhPJzg6TiAUdTqTvninpNAkSXje1mC5UsUpDNTi6DZGeF3q3f+CUKh2YCZOT5ezeDhA8i2+qFWIkv2ULeNvg+IhPo=
-X-Received: by 2002:a67:d492:0:b0:335:c3fc:f312 with SMTP id
- g18-20020a67d492000000b00335c3fcf312mr2799796vsj.32.1652871437343; Wed, 18
- May 2022 03:57:17 -0700 (PDT)
+        Wed, 18 May 2022 08:26:53 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B71676CF50;
+        Wed, 18 May 2022 05:26:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7B3B2B81F40;
+        Wed, 18 May 2022 12:26:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4EDCC34117;
+        Wed, 18 May 2022 12:26:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1652876808;
+        bh=1qHNBJuS77VJ2N1x92VkPHw4z8C7RONAALqWccL52UU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Z4z2XHuJFE/3wF4nYro8xqKbUELOaklH6EaYI1sPShRXIxdPbcK3h/Bvgu3xLiwv8
+         LQx9bxRGFhNh8U6Qi3FWZQaoLHV+Qeao8nU0dQw5OthZQ2h+FR1Ob56qhsTIVuTL4j
+         /zzubgmkqCd4ZDwPyyuVSzqwpU6fD3fvxMxXflyAxc/NvmMXmKWyY7nqHoe25pS2Z+
+         3yoHcbf158kS1A3cO6Sy87ZkWtwrtxv2jLfbYsftqo0lDIN3NN/WCdN8OPcsi7TeNB
+         p2xQJKU7t61JNVMbo7TPKtp+9/0O/bgheIyJseCXCm/j93KeWQGjq5YnvakXy8/7UT
+         fGqQfDYUFnh0A==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.17 03/23] mac80211: fix rx reordering with non explicit / psmp ack policy
+Date:   Wed, 18 May 2022 08:26:16 -0400
+Message-Id: <20220518122641.342120-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220518122641.342120-1-sashal@kernel.org>
+References: <20220518122641.342120-1-sashal@kernel.org>
 MIME-Version: 1.0
-References: <20220516032519.29831-1-ryazanov.s.a@gmail.com>
- <20220516032519.29831-2-ryazanov.s.a@gmail.com> <CAHNKnsS2_vVPZT-PSjNDzfQmyXEaOJNO8MHqVfntN=GSG3P_Ng@mail.gmail.com>
- <87tu9n2t8m.fsf@kernel.org>
-In-Reply-To: <87tu9n2t8m.fsf@kernel.org>
-From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Date:   Wed, 18 May 2022 13:57:06 +0300
-Message-ID: <CAHNKnsT8HfH2E3H61oafYE-nLtv8ZQYkBktCtczTn5JVYgLPRA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] ath10k: improve tx status reporting
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Edward Matijevic <motolav@gmail.com>,
-        John Crispin <john@phrozen.org>,
-        =?UTF-8?B?T2xkxZlpY2ggSmVkbGnEjWth?= <oldium.pro@gmail.com>,
-        Tom Psyborg <pozega.tomislav@gmail.com>,
-        Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>,
-        Zhijun You <hujy652@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, May 18, 2022 at 10:30 AM Kalle Valo <kvalo@kernel.org> wrote:
-> Sergey Ryazanov <ryazanov.s.a@gmail.com> writes:
->> On Mon, May 16, 2022 at 6:25 AM Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
->>> --- a/drivers/net/wireless/ath/ath10k/txrx.c
->>> +++ b/drivers/net/wireless/ath/ath10k/txrx.c
->>> @@ -43,6 +43,7 @@ static void ath10k_report_offchan_tx(struct ath10k *ar, struct sk_buff *skb)
->>>  int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
->>>                          const struct htt_tx_done *tx_done)
->>>  {
->>> +       struct ieee80211_tx_status status;
->>>         struct ath10k *ar = htt->ar;
->>>         struct device *dev = ar->dev;
->>>         struct ieee80211_tx_info *info;
->>> @@ -128,7 +129,16 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
->>>                 info->status.flags |= IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
->>>         }
->>>
->>> -       ieee80211_tx_status(htt->ar->hw, msdu);
->>> +       memset(&status, 0, sizeof(status));
->>> +       status.skb = msdu;
->>> +       status.info = info;
->>> +
->>> +       rcu_read_lock();
->>> +       if (txq && txq->sta)
->>> +               status.sta = txq->sta;
->>
->> Just noticed that since we do not dereference the txq->sta pointer
->> here, the above code can be simplified to:
->>
->> if (txq)
->>         status.sta = txq->sta;
->>
->> Kalle, should I send V2 or can you change this in your tree?
->
-> I changed this in the pending branch, please check my changes:
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=1bd0c16e10229683fab1dd8adf8c4339992688b7
+From: Felix Fietkau <nbd@nbd.name>
 
-Exactly what I meant. Thank you!
+[ Upstream commit 5e469ed9764d4722c59562da13120bd2dc6834c5 ]
 
---
-Sergey
+When the QoS ack policy was set to non explicit / psmp ack, frames are treated
+as not being part of a BA session, which causes extra latency on reordering.
+Fix this by only bypassing reordering for packets with no-ack policy
+
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://lore.kernel.org/r/20220420105038.36443-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mac80211/rx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 48d9553dafe3..7e2404fd85b6 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -1405,8 +1405,7 @@ static void ieee80211_rx_reorder_ampdu(struct ieee80211_rx_data *rx,
+ 		goto dont_reorder;
+ 
+ 	/* not part of a BA session */
+-	if (ack_policy != IEEE80211_QOS_CTL_ACK_POLICY_BLOCKACK &&
+-	    ack_policy != IEEE80211_QOS_CTL_ACK_POLICY_NORMAL)
++	if (ack_policy == IEEE80211_QOS_CTL_ACK_POLICY_NOACK)
+ 		goto dont_reorder;
+ 
+ 	/* new, potentially un-ordered, ampdu frame - process it */
+-- 
+2.35.1
+
