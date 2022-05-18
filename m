@@ -2,46 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A889352BDC5
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 May 2022 17:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6081152BE97
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 May 2022 17:26:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238901AbiEROqK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 May 2022 10:46:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59910 "EHLO
+        id S239042AbiERPCv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 May 2022 11:02:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238892AbiEROqC (ORCPT
+        with ESMTP id S238931AbiERPCt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 May 2022 10:46:02 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22F4810FC0;
-        Wed, 18 May 2022 07:46:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652885161; x=1684421161;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gXoZ0ellxDf5DW/hOT3AppLjG2uBvaTOmGsHg3Apdkc=;
-  b=imHYQhpNeh5P0m3jb3IaA4jFAKZMj3uy9JqxNWmouTSoaIEmPS9cE/Uc
-   EHlTiph8oC4nreADni7AQyI+zsCB1ljxWX7/sqi+FRQZRjevdLJIZBDT3
-   8HYelzQqK4NC9vheElZMkcAlrSQtxjvzNNVyfoWSNn6EKy0rg0J0VI/on
-   z0yFfmSuvjrSmMyGuB3cuez0OWs9sD6uVzS2N4/MCXIQi3s1hPJp9VtOD
-   y+BRhE9U1AJF0eF4AahYzqQaqKQ0eK1N+1x9DhNo4R1IfGdRJDEfiV2RF
-   lK6w72zBjr0tlhY9RK0pmQkvYTFE65RCRmaXkDTl4RHyzoDEKSSlEwNxn
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10351"; a="252226059"
-X-IronPort-AV: E=Sophos;i="5.91,235,1647327600"; 
-   d="scan'208";a="252226059"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2022 07:44:53 -0700
-X-IronPort-AV: E=Sophos;i="5.91,235,1647327600"; 
-   d="scan'208";a="569503708"
-Received: from zhenyan1-mobl1.ccr.corp.intel.com ([10.249.171.228])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2022 07:44:49 -0700
-Message-ID: <2dc4aa933d07add206a2aeefa15a4837aca6ff62.camel@intel.com>
+        Wed, 18 May 2022 11:02:49 -0400
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09FC21D2FDF;
+        Wed, 18 May 2022 08:02:49 -0700 (PDT)
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-2f16645872fso27702697b3.4;
+        Wed, 18 May 2022 08:02:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ayfHAoqEtV8GWKK73lN72HvcNOrapmeyJaXzktDoFp4=;
+        b=0i5R4c053As+/XsqizslXydUIJ3zc2GmYzYmsbGzyDsvfQEmDz9nt9BL9ZWLrk1iQm
+         wK7buiSbeuJ0X7+02xpGS9WeyJidOBfWANio9IXfWqno+JILwfOZUIidLDmde9JXVoSH
+         gc0d9hZAt3IeL5Ip7sr9anauGOAwDeAQyDukL0nyncEfQdjdQvKFCVR7Q9h7i/SDCIw1
+         NBL+gtRjMXVoGIkc3cmumb4bDHQDRtqI4mcUbExt1LQU5L1MMWGnu5UjxsuKqO/WOvig
+         3R5kX5gBS2eeWmD/ngH3zjA8AfbpMCSQVcbZQyleLYSMDSywIHSfA6ipfWUVxt56ggOW
+         HCPA==
+X-Gm-Message-State: AOAM531dd/v7QHFtaJM8WIG9A0fl/0+SEV8/RdQHopAcHneknrjNb0DX
+        aFvKVJOJspX5GLxmKp0cHqk6gz+Uu2cYL95AQRw=
+X-Google-Smtp-Source: ABdhPJxTDH362ZG7eZ1d0YXaROwhqfIiGt6sEyNfxW0dpdRgj7GdGxC2HW6tdf9RvBVyBjQZxaFchoSUUWT+jEJGtQE=
+X-Received: by 2002:a81:91d4:0:b0:2fe:e300:3581 with SMTP id
+ i203-20020a8191d4000000b002fee3003581mr19834231ywg.7.1652886168249; Wed, 18
+ May 2022 08:02:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220505015814.3727692-1-rui.zhang@intel.com> <20220505015814.3727692-8-rui.zhang@intel.com>
+ <CAJZ5v0jt1OND_d08mC0TC1LZ-JGANDY5fiDmH5RUfdtRk1vZFw@mail.gmail.com> <2dc4aa933d07add206a2aeefa15a4837aca6ff62.camel@intel.com>
+In-Reply-To: <2dc4aa933d07add206a2aeefa15a4837aca6ff62.camel@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 18 May 2022 17:02:37 +0200
+Message-ID: <CAJZ5v0h=pYZkbhN2EiYzUGn36Q4-2tMyzfUP0uyFO=Sybse4DA@mail.gmail.com>
 Subject: Re: [PATCH 7/7] rtc: cmos: Add suspend/resume endurance testing hook
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>, kvalo@kernel.org,
+To:     Zhang Rui <rui.zhang@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Kalle Valo <kvalo@kernel.org>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Linux PM <linux-pm@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
@@ -52,64 +56,61 @@ Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>, kvalo@kernel.org,
         merez@codeaurora.org, mat.jonczyk@o2.pl,
         Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
         Len Brown <len.brown@intel.com>
-Date:   Wed, 18 May 2022 22:44:46 +0800
-In-Reply-To: <CAJZ5v0jt1OND_d08mC0TC1LZ-JGANDY5fiDmH5RUfdtRk1vZFw@mail.gmail.com>
-References: <20220505015814.3727692-1-rui.zhang@intel.com>
-         <20220505015814.3727692-8-rui.zhang@intel.com>
-         <CAJZ5v0jt1OND_d08mC0TC1LZ-JGANDY5fiDmH5RUfdtRk1vZFw@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2022-05-17 at 17:14 +0200, Rafael J. Wysocki wrote:
-> On Thu, May 5, 2022 at 3:58 AM Zhang Rui <rui.zhang@intel.com> wrote:
-> > 
-> > Automated suspend/resume testing uses the RTC for wakeup.
-> > A short rtcwake period is desirable, so that more suspend/resume
-> > cycles can be completed, while the machine is available for
-> > testing.
-> > 
-> > But if too short a wake interval is specified, the event can occur,
-> > while still suspending, and then no event wakes the suspended
-> > system
-> > until the user notices that testing has stalled, and manually
-> > intervenes.
-> 
-> If the wakeup event occurs while still suspending, it should abort
-> the
-> suspend in progress, shouldn't it?  But the above implies that it
-> doesn't do that.
-> 
-> If this is fixed, wouldn't it address the issue at hand?
+On Wed, May 18, 2022 at 4:45 PM Zhang Rui <rui.zhang@intel.com> wrote:
+>
+> On Tue, 2022-05-17 at 17:14 +0200, Rafael J. Wysocki wrote:
+> > On Thu, May 5, 2022 at 3:58 AM Zhang Rui <rui.zhang@intel.com> wrote:
+> > >
+> > > Automated suspend/resume testing uses the RTC for wakeup.
+> > > A short rtcwake period is desirable, so that more suspend/resume
+> > > cycles can be completed, while the machine is available for
+> > > testing.
+> > >
+> > > But if too short a wake interval is specified, the event can occur,
+> > > while still suspending, and then no event wakes the suspended
+> > > system
+> > > until the user notices that testing has stalled, and manually
+> > > intervenes.
+> >
+> > If the wakeup event occurs while still suspending, it should abort
+> > the
+> > suspend in progress, shouldn't it?  But the above implies that it
+> > doesn't do that.
+> >
+> > If this is fixed, wouldn't it address the issue at hand?
+>
+> I think the rootcause of the original problem is that
+> 1. on some systems, the ACPI RTC Fixed event is used during suspend
+> only, and the ACPI Fixed event is enabled in the rtc-cmos driver
+> .suspend() callback
+> and
+> 2. if the RTC Alarm already expires before .suspend() invoked, we will
+> lose the ACPI RTC Fixed Event as well as the wakeup event, say 20
+> seconds delay in freeze processes.
 
-I think the rootcause of the original problem is that
-1. on some systems, the ACPI RTC Fixed event is used during suspend
-only, and the ACPI Fixed event is enabled in the rtc-cmos driver
-.suspend() callback
-and
-2. if the RTC Alarm already expires before .suspend() invoked, we will
-lose the ACPI RTC Fixed Event as well as the wakeup event, say 20
-seconds delay in freeze processes.
+Well, the RTC Fixed event can be armed in a PM/HIBERNATE notifier and
+if it fires before .suspend() runs, system wakeup can be triggered
+from there.
 
-But, even if that problem is fixed, the suspend aborts and "fails" as
-expected, this is still a problem for the suspend-automation scenario,
-because the system actually can suspend successfully if we don't set
-the RTC alarm too aggressively. And in PCH overheating case, surely we
-will get false alarms, because we will never use a 60s+ rtc alarm for
-suspend-automation.
+> But, even if that problem is fixed, the suspend aborts and "fails" as
+> expected, this is still a problem for the suspend-automation scenario,
+> because the system actually can suspend successfully if we don't set
+> the RTC alarm too aggressively. And in PCH overheating case, surely we
+> will get false alarms, because we will never use a 60s+ rtc alarm for
+> suspend-automation.
 
-thanks,
-rui
+I'm not sure why this is a problem.
 
-
-
+It only means that occasionally the system will not reach the final
+"suspended" state, but that can happen regardless.
