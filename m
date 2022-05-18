@@ -2,156 +2,178 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 534DD52BF36
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 May 2022 18:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4E1B52C065
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 May 2022 19:10:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239839AbiERQIj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 May 2022 12:08:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54254 "EHLO
+        id S240572AbiERQ5M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 May 2022 12:57:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239832AbiERQIh (ORCPT
+        with ESMTP id S240573AbiERQ5L (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 May 2022 12:08:37 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A71B1A8E33;
-        Wed, 18 May 2022 09:08:36 -0700 (PDT)
+        Wed, 18 May 2022 12:57:11 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCBA1B8BE8;
+        Wed, 18 May 2022 09:57:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652890117; x=1684426117;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=vwPFdV0OOofwiF6H6fH/GIodsFAIrAmgW41cFNehEjY=;
-  b=ENjDHeHQhClwWGkDhJEEH72kXUQYlbifxUOSxRF/kvDyrBrY8nVOljCe
-   TqYtoG7xLSxNsfWyDuuSzl8BA5/ckIdhpxVAObGCu20mCO1gcF/UFyO6G
-   cVbkUgIpuDshcGKjuMrPmOlVcsXV3nHi+NtQ33WBBRXF2MBxzp56rrEhq
-   w4zgA7q2x3xIopKG+BDBwsriE6bKHnpXUNxZb0PuZjbJyF6j/qSZKnmz0
-   ut+s46PEFcXixPMsB7yVz5SnIUdvXQ2NGTeNIe2QoXDeGxyPSFxApcP49
-   e3WH2R9vlZj5VS3t0uzrJ6wD6crK6/njKXb4I4gHGdSMQp20jPsp63rUy
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10351"; a="253793388"
+  t=1652893030; x=1684429030;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Z/CTK7bNBAIerAtCFC6veGQRng0kyr18RgfO+QSHa/g=;
+  b=Y9l53pMFDiTdYdDYE6FL2tJC4axgvYfJ9aQ7EcFl+q2IFybBaJAmOzZd
+   mdTg2Xrmdhp5YHZBIicidP0eUkMviPda+Y42k/5E94Dgjs+0qQNfr14fg
+   zLr9WrkqoO9W7vsxmb3oDtHG8/RL5uDRCw0Xv4XFwZejp4tMEpK1JJlE5
+   6UM2XQ1TWQ3QgthwOxsWUWv2mYU/jp99Z05znctVuP9gPyslEr9V/16/I
+   Qy5Pt+Et20WAFcdCYVIdyIcaXe2tAcQCTILmgE02YBZwNzdPm763ZML8E
+   ww4fFR9i3mkk59f2lHW1JHGgvhPGNvIcuKvGAAqzSTisQ3rhr9z66/GZs
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10351"; a="271468778"
 X-IronPort-AV: E=Sophos;i="5.91,235,1647327600"; 
-   d="scan'208";a="253793388"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2022 09:07:18 -0700
+   d="scan'208";a="271468778"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2022 09:56:44 -0700
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.91,235,1647327600"; 
-   d="scan'208";a="597878764"
-Received: from zhenyan1-mobl1.ccr.corp.intel.com ([10.249.171.228])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2022 09:07:14 -0700
-Message-ID: <20ad397b7975775d69d6c0ea902ca362fa3cf395.camel@intel.com>
-Subject: Re: [PATCH 7/7] rtc: cmos: Add suspend/resume endurance testing hook
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Kalle Valo <kvalo@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-rtc@vger.kernel.org,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        merez@codeaurora.org, mat.jonczyk@o2.pl,
-        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-        Len Brown <len.brown@intel.com>
-Date:   Thu, 19 May 2022 00:07:12 +0800
-In-Reply-To: <CAJZ5v0h=pYZkbhN2EiYzUGn36Q4-2tMyzfUP0uyFO=Sybse4DA@mail.gmail.com>
-References: <20220505015814.3727692-1-rui.zhang@intel.com>
-         <20220505015814.3727692-8-rui.zhang@intel.com>
-         <CAJZ5v0jt1OND_d08mC0TC1LZ-JGANDY5fiDmH5RUfdtRk1vZFw@mail.gmail.com>
-         <2dc4aa933d07add206a2aeefa15a4837aca6ff62.camel@intel.com>
-         <CAJZ5v0h=pYZkbhN2EiYzUGn36Q4-2tMyzfUP0uyFO=Sybse4DA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+   d="scan'208";a="639365223"
+Received: from lkp-server02.sh.intel.com (HELO 242b25809ac7) ([10.239.97.151])
+  by fmsmga004.fm.intel.com with ESMTP; 18 May 2022 09:56:41 -0700
+Received: from kbuild by 242b25809ac7 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nrMyX-0002QL-2k;
+        Wed, 18 May 2022 16:56:41 +0000
+Date:   Thu, 19 May 2022 00:55:45 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Sascha Hauer <s.hauer@pengutronix.de>,
+        linux-wireless@vger.kernel.org
+Cc:     kbuild-all@lists.01.org, Neo Jou <neojou@gmail.com>,
+        Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        kernel@pengutronix.de, Johannes Berg <johannes@sipsolutions.net>,
+        Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 07/10] rtw88: Add rtw8723du chipset support
+Message-ID: <202205190028.z15SPbJx-lkp@intel.com>
+References: <20220518082318.3898514-8-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220518082318.3898514-8-s.hauer@pengutronix.de>
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2022-05-18 at 17:02 +0200, Rafael J. Wysocki wrote:
-> On Wed, May 18, 2022 at 4:45 PM Zhang Rui <rui.zhang@intel.com>
-> wrote:
-> > 
-> > On Tue, 2022-05-17 at 17:14 +0200, Rafael J. Wysocki wrote:
-> > > On Thu, May 5, 2022 at 3:58 AM Zhang Rui <rui.zhang@intel.com>
-> > > wrote:
-> > > > 
-> > > > Automated suspend/resume testing uses the RTC for wakeup.
-> > > > A short rtcwake period is desirable, so that more
-> > > > suspend/resume
-> > > > cycles can be completed, while the machine is available for
-> > > > testing.
-> > > > 
-> > > > But if too short a wake interval is specified, the event can
-> > > > occur,
-> > > > while still suspending, and then no event wakes the suspended
-> > > > system
-> > > > until the user notices that testing has stalled, and manually
-> > > > intervenes.
-> > > 
-> > > If the wakeup event occurs while still suspending, it should
-> > > abort
-> > > the
-> > > suspend in progress, shouldn't it?  But the above implies that it
-> > > doesn't do that.
-> > > 
-> > > If this is fixed, wouldn't it address the issue at hand?
-> > 
-> > I think the rootcause of the original problem is that
-> > 1. on some systems, the ACPI RTC Fixed event is used during suspend
-> > only, and the ACPI Fixed event is enabled in the rtc-cmos driver
-> > .suspend() callback
-> > and
-> > 2. if the RTC Alarm already expires before .suspend() invoked, we
-> > will
-> > lose the ACPI RTC Fixed Event as well as the wakeup event, say 20
-> > seconds delay in freeze processes.
-> 
-> Well, the RTC Fixed event can be armed in a PM/HIBERNATE notifier and
-> if it fires before .suspend() runs, system wakeup can be triggered
-> from there.
+Hi Sascha,
 
-Agreed.
+I love your patch! Perhaps something to improve:
 
-Len,
-Do you recall any other case that we may miss the RTC wakeup event?
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on wireless/main v5.18-rc7 next-20220518]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-> 
-> > But, even if that problem is fixed, the suspend aborts and "fails"
-> > as
-> > expected, this is still a problem for the suspend-automation
-> > scenario,
-> > because the system actually can suspend successfully if we don't
-> > set
-> > the RTC alarm too aggressively. And in PCH overheating case, surely
-> > we
-> > will get false alarms, because we will never use a 60s+ rtc alarm
-> > for
-> > suspend-automation.
-> 
-> I'm not sure why this is a problem.
-> 
-> It only means that occasionally the system will not reach the final
-> "suspended" state, but that can happen regardless.
+url:    https://github.com/intel-lab-lkp/linux/commits/Sascha-Hauer/RTW88-Add-support-for-USB-variants/20220518-162621
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20220519/202205190028.z15SPbJx-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 11.3.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/0a06adba364ef264404e3c7ae111a71f0d74c5a9
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Sascha-Hauer/RTW88-Add-support-for-USB-variants/20220518-162621
+        git checkout 0a06adba364ef264404e3c7ae111a71f0d74c5a9
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash drivers/net/wireless/realtek/rtw88/
 
-It is not a kernel problem.
-It is a problem for suspend-automation. Because suspend-automation is
-chasing for kernel suspend problems, and IMO, cases like suspend aborts
-because of long suspend delay from PCH thermal driver are not kernel
-problems.
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-It would be nice to leverage a kernel I/F to get rid of such issues, 
-But if the patch is rejected, I agree we can live without it.
+All warnings (new ones prefixed by >>):
 
-thanks,
-rui
+>> drivers/net/wireless/realtek/rtw88/util.c:119:6: warning: no previous prototype for 'rtw_collect_sta_iter' [-Wmissing-prototypes]
+     119 | void rtw_collect_sta_iter(void *data, struct ieee80211_sta *sta)
+         |      ^~~~~~~~~~~~~~~~~~~~
+>> drivers/net/wireless/realtek/rtw88/util.c:165:6: warning: no previous prototype for 'rtw_collect_vif_iter' [-Wmissing-prototypes]
+     165 | void rtw_collect_vif_iter(void *data, u8 *mac, struct ieee80211_vif *vif)
+         |      ^~~~~~~~~~~~~~~~~~~~
 
 
+vim +/rtw_collect_sta_iter +119 drivers/net/wireless/realtek/rtw88/util.c
 
+1c99f6652d3fbb Sascha Hauer 2022-05-18  118  
+1c99f6652d3fbb Sascha Hauer 2022-05-18 @119  void rtw_collect_sta_iter(void *data, struct ieee80211_sta *sta)
+1c99f6652d3fbb Sascha Hauer 2022-05-18  120  {
+1c99f6652d3fbb Sascha Hauer 2022-05-18  121  	struct rtw_iter_stas_data *iter_stas = data;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  122  	struct rtw_stas_entry *stas_entry;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  123  
+1c99f6652d3fbb Sascha Hauer 2022-05-18  124  	stas_entry = kmalloc(sizeof(*stas_entry), GFP_ATOMIC);
+1c99f6652d3fbb Sascha Hauer 2022-05-18  125  	if (!stas_entry)
+1c99f6652d3fbb Sascha Hauer 2022-05-18  126  		return;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  127  
+1c99f6652d3fbb Sascha Hauer 2022-05-18  128  	stas_entry->sta = sta;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  129  	list_add_tail(&stas_entry->list, &iter_stas->list);
+1c99f6652d3fbb Sascha Hauer 2022-05-18  130  }
+1c99f6652d3fbb Sascha Hauer 2022-05-18  131  
+1c99f6652d3fbb Sascha Hauer 2022-05-18  132  void rtw_iterate_stas(struct rtw_dev *rtwdev,
+1c99f6652d3fbb Sascha Hauer 2022-05-18  133  		      void (*iterator)(void *data,
+1c99f6652d3fbb Sascha Hauer 2022-05-18  134  				       struct ieee80211_sta *sta),
+1c99f6652d3fbb Sascha Hauer 2022-05-18  135  				       void *data)
+1c99f6652d3fbb Sascha Hauer 2022-05-18  136  {
+1c99f6652d3fbb Sascha Hauer 2022-05-18  137  	struct rtw_iter_stas_data iter_data;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  138  	struct rtw_stas_entry *sta_entry, *tmp;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  139  
+1c99f6652d3fbb Sascha Hauer 2022-05-18  140  	iter_data.rtwdev = rtwdev;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  141  	INIT_LIST_HEAD(&iter_data.list);
+1c99f6652d3fbb Sascha Hauer 2022-05-18  142  
+1c99f6652d3fbb Sascha Hauer 2022-05-18  143  	ieee80211_iterate_stations_atomic(rtwdev->hw, rtw_collect_sta_iter,
+1c99f6652d3fbb Sascha Hauer 2022-05-18  144  					  &iter_data);
+1c99f6652d3fbb Sascha Hauer 2022-05-18  145  
+1c99f6652d3fbb Sascha Hauer 2022-05-18  146  	list_for_each_entry_safe(sta_entry, tmp, &iter_data.list,
+1c99f6652d3fbb Sascha Hauer 2022-05-18  147  				 list) {
+1c99f6652d3fbb Sascha Hauer 2022-05-18  148  		list_del_init(&sta_entry->list);
+1c99f6652d3fbb Sascha Hauer 2022-05-18  149  		iterator(data, sta_entry->sta);
+1c99f6652d3fbb Sascha Hauer 2022-05-18  150  		kfree(sta_entry);
+1c99f6652d3fbb Sascha Hauer 2022-05-18  151  	}
+1c99f6652d3fbb Sascha Hauer 2022-05-18  152  }
+1c99f6652d3fbb Sascha Hauer 2022-05-18  153  
+1c99f6652d3fbb Sascha Hauer 2022-05-18  154  struct rtw_vifs_entry {
+1c99f6652d3fbb Sascha Hauer 2022-05-18  155  	struct list_head list;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  156  	struct ieee80211_vif *vif;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  157  	u8 mac[ETH_ALEN];
+1c99f6652d3fbb Sascha Hauer 2022-05-18  158  };
+1c99f6652d3fbb Sascha Hauer 2022-05-18  159  
+1c99f6652d3fbb Sascha Hauer 2022-05-18  160  struct rtw_iter_vifs_data {
+1c99f6652d3fbb Sascha Hauer 2022-05-18  161  	struct rtw_dev *rtwdev;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  162  	struct list_head list;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  163  };
+1c99f6652d3fbb Sascha Hauer 2022-05-18  164  
+1c99f6652d3fbb Sascha Hauer 2022-05-18 @165  void rtw_collect_vif_iter(void *data, u8 *mac, struct ieee80211_vif *vif)
+1c99f6652d3fbb Sascha Hauer 2022-05-18  166  {
+1c99f6652d3fbb Sascha Hauer 2022-05-18  167  	struct rtw_iter_vifs_data *iter_stas = data;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  168  	struct rtw_vifs_entry *vifs_entry;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  169  
+1c99f6652d3fbb Sascha Hauer 2022-05-18  170  	vifs_entry = kmalloc(sizeof(*vifs_entry), GFP_ATOMIC);
+1c99f6652d3fbb Sascha Hauer 2022-05-18  171  	if (!vifs_entry)
+1c99f6652d3fbb Sascha Hauer 2022-05-18  172  		return;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  173  
+1c99f6652d3fbb Sascha Hauer 2022-05-18  174  	vifs_entry->vif = vif;
+1c99f6652d3fbb Sascha Hauer 2022-05-18  175  	ether_addr_copy(vifs_entry->mac, mac);
+1c99f6652d3fbb Sascha Hauer 2022-05-18  176  	list_add_tail(&vifs_entry->list, &iter_stas->list);
+1c99f6652d3fbb Sascha Hauer 2022-05-18  177  }
+1c99f6652d3fbb Sascha Hauer 2022-05-18  178  
 
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
