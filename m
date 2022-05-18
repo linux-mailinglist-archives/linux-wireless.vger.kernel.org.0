@@ -2,58 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13FB052B37F
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 May 2022 09:39:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5241652B500
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 May 2022 10:38:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232120AbiERHaO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 May 2022 03:30:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40352 "EHLO
+        id S233121AbiERIXt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 May 2022 04:23:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232127AbiERHaL (ORCPT
+        with ESMTP id S233032AbiERIXg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 May 2022 03:30:11 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C7A55D1B9
-        for <linux-wireless@vger.kernel.org>; Wed, 18 May 2022 00:30:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E685EB81EB1
-        for <linux-wireless@vger.kernel.org>; Wed, 18 May 2022 07:30:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6157C34113;
-        Wed, 18 May 2022 07:30:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652859007;
-        bh=+zhe42QWlOeLYawRxZmuopv435lwPm0NJK4t2EQvtbg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=BQgKbMW8o5UfMeC9g0Wy8YBi41Mm8ZMQDmvfkL6RtWo+DLlC7i3aLFZcsWxFJ9VbC
-         PECKIZCsG0fRgoHVE8f8NPhzdaAJaiDq22hXbm/hF1QaRVkmyrrK7Rts7kfTeGL7lc
-         jk/NpzPwU/KeJe/cxbr4qKBt7lMKcKIAqOJFqiJtFElu0ekLc4u9U+sXtWf2/IKdlE
-         A1UTZYy8XGdc3rruRVBw4KOpt6+0scBxhGbSFh87zwaBO88xXWAJ7IByoPgNhsMt1i
-         gQDQ6VfaTRo+iHU2G0rLXlMJjkUoYCpeJJLPAhd+fA827K0Rc4W480+iyD86l1KEWn
-         E0HN9Ebf6CwXQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Edward Matijevic <motolav@gmail.com>,
-        John Crispin <john@phrozen.org>,
-        =?utf-8?Q?Old=C5=99ich_Jedli=C4=8Dka?= <oldium.pro@gmail.com>,
-        Tom Psyborg <pozega.tomislav@gmail.com>,
-        Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>,
-        Zhijun You <hujy652@gmail.com>
-Subject: Re: [PATCH 1/4] ath10k: improve tx status reporting
-References: <20220516032519.29831-1-ryazanov.s.a@gmail.com>
-        <20220516032519.29831-2-ryazanov.s.a@gmail.com>
-        <CAHNKnsS2_vVPZT-PSjNDzfQmyXEaOJNO8MHqVfntN=GSG3P_Ng@mail.gmail.com>
-Date:   Wed, 18 May 2022 10:30:01 +0300
-In-Reply-To: <CAHNKnsS2_vVPZT-PSjNDzfQmyXEaOJNO8MHqVfntN=GSG3P_Ng@mail.gmail.com>
-        (Sergey Ryazanov's message of "Mon, 16 May 2022 23:57:34 +0300")
-Message-ID: <87tu9n2t8m.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 18 May 2022 04:23:36 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A93F710789A
+        for <linux-wireless@vger.kernel.org>; Wed, 18 May 2022 01:23:33 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1nrExn-0004R1-0u; Wed, 18 May 2022 10:23:23 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <sha@pengutronix.de>)
+        id 1nrExm-0032pC-NS; Wed, 18 May 2022 10:23:21 +0200
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <sha@pengutronix.de>)
+        id 1nrExj-00GXTV-RY; Wed, 18 May 2022 10:23:19 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     linux-wireless@vger.kernel.org
+Cc:     Neo Jou <neojou@gmail.com>, Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        kernel@pengutronix.de, Johannes Berg <johannes@sipsolutions.net>,
+        Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH 00/10] RTW88: Add support for USB variants
+Date:   Wed, 18 May 2022 10:23:08 +0200
+Message-Id: <20220518082318.3898514-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,45 +56,107 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sergey Ryazanov <ryazanov.s.a@gmail.com> writes:
-> On Mon, May 16, 2022 at 6:25 AM Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
->
->> --- a/drivers/net/wireless/ath/ath10k/txrx.c
->> +++ b/drivers/net/wireless/ath/ath10k/txrx.c
->> @@ -43,6 +43,7 @@ static void ath10k_report_offchan_tx(struct ath10k *ar, struct sk_buff *skb)
->>  int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
->>                          const struct htt_tx_done *tx_done)
->>  {
->> +       struct ieee80211_tx_status status;
->>         struct ath10k *ar = htt->ar;
->>         struct device *dev = ar->dev;
->>         struct ieee80211_tx_info *info;
->> @@ -128,7 +129,16 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
->>                 info->status.flags |= IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
->>         }
->>
->> -       ieee80211_tx_status(htt->ar->hw, msdu);
->> +       memset(&status, 0, sizeof(status));
->> +       status.skb = msdu;
->> +       status.info = info;
->> +
->> +       rcu_read_lock();
->> +       if (txq && txq->sta)
->> +               status.sta = txq->sta;
->
-> Just noticed that since we do not dereference the txq->sta pointer
-> here, the above code can be simplified to:
->
-> if (txq)
->         status.sta = txq->sta;
->
-> Kalle, should I send V2 or can you change this in your tree?
+This series adds support for the USB chip variants to the RTW88 driver.
 
-I changed this in the pending branch, please check my changes:
+The first patches in the series consolidate the locking in the driver.
+The rtw88 driver protects the register accesses with spinlocks which
+naturally don't cope well with the asynchronous nature of USB. It turned
+out though that in most cases where additional locks are taken the
+global driver mutex is acquired anyway which makes them mostly
+unnecessary. The exception is the debugfs code which depends on the
+additional locks. This is changed to acquire the global driver mutex as
+well, so the additional locks can be removed.  I verified the callstacks
+leading to the different locks with a cscope based shell script, so I am
+pretty confident that I haven't missed any pathes. Nevertheless please
+have a careful look, please.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=1bd0c16e10229683fab1dd8adf8c4339992688b7
+Another problem to address is that the driver uses
+ieee80211_iterate_stations_atomic() and
+ieee80211_iterate_active_interfaces_atomic() and does register accesses
+in the iterator. This doesn't work with USB, so iteration is done in two
+steps now: The ieee80211_iterate_*_atomic() functions are only used to
+collect the stations/interfaces on a list which is then iterated over
+non-atomically in the second step. The implementation for this is
+basically the one suggested by Ping-Ke here:
+https://lore.kernel.org/lkml/423f474e15c948eda4db5bc9a50fd391@realtek.com/
+
+The USB driver code itself is based on
+https://github.com/ulli-kroll/rtw88-usb.git.  The most significant
+change to that code base is likely the TX queue handling.  It seems the
+PCI versions of the RTW88 chips have eight differently prioritized TX
+queues whereas the USB variants only have one to three queues (one per
+bulk endpoint).  The original code base first mapped the TX packets
+coming into the driver onto eight TX queues which were then re-mapped
+again to the existing endpoints. As the eight TX queues do not
+physically exist on the USB variants I changed that to map the incoming
+TX packets directly onto the bulk endpoints.
+
+I tested this series on the RTW8822CU only. I don't have access to any
+of the other chips supported by the RTW88 driver, so testing feedback
+would be greatly appreciated.
+
+This is my first excursion to the Linux wireless world, so please review
+carefully :)
+
+Sascha
+
+
+Sascha Hauer (10):
+  rtw88: Call rtw_fw_beacon_filter_config() with rtwdev->mutex held
+  rtw88: Drop rf_lock
+  rtw88: Drop h2c.lock
+  rtw88: Drop coex mutex
+  rtw88: Do not access registers while atomic
+  rtw88: Add common USB chip support
+  rtw88: Add rtw8723du chipset support
+  rtw88: Add rtw8821cu chipset support
+  rtw88: Add rtw8822bu chipset support
+  rtw88: Add rtw8822cu chipset support
+
+ drivers/net/wireless/realtek/rtw88/Kconfig    |   47 +
+ drivers/net/wireless/realtek/rtw88/Makefile   |   14 +
+ drivers/net/wireless/realtek/rtw88/coex.c     |    3 +-
+ drivers/net/wireless/realtek/rtw88/debug.c    |   15 +
+ drivers/net/wireless/realtek/rtw88/fw.c       |   13 +-
+ drivers/net/wireless/realtek/rtw88/hci.h      |    9 +-
+ drivers/net/wireless/realtek/rtw88/mac.c      |    3 +
+ drivers/net/wireless/realtek/rtw88/mac80211.c |    2 +-
+ drivers/net/wireless/realtek/rtw88/main.c     |    9 +-
+ drivers/net/wireless/realtek/rtw88/main.h     |   11 +-
+ drivers/net/wireless/realtek/rtw88/phy.c      |    6 +-
+ drivers/net/wireless/realtek/rtw88/ps.c       |    2 +-
+ drivers/net/wireless/realtek/rtw88/reg.h      |    1 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c |   19 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.h |    1 +
+ .../net/wireless/realtek/rtw88/rtw8723du.c    |   40 +
+ .../net/wireless/realtek/rtw88/rtw8723du.h    |   13 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |   23 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.h |   21 +
+ .../net/wireless/realtek/rtw88/rtw8821cu.c    |   69 ++
+ .../net/wireless/realtek/rtw88/rtw8821cu.h    |   15 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |   19 +
+ .../net/wireless/realtek/rtw88/rtw8822bu.c    |   62 +
+ .../net/wireless/realtek/rtw88/rtw8822bu.h    |   15 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |   24 +
+ .../net/wireless/realtek/rtw88/rtw8822cu.c    |   40 +
+ .../net/wireless/realtek/rtw88/rtw8822cu.h    |   15 +
+ drivers/net/wireless/realtek/rtw88/tx.h       |   31 +
+ drivers/net/wireless/realtek/rtw88/usb.c      | 1051 +++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/usb.h      |  109 ++
+ drivers/net/wireless/realtek/rtw88/util.c     |   92 ++
+ drivers/net/wireless/realtek/rtw88/util.h     |   12 +-
+ 32 files changed, 1770 insertions(+), 36 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8723du.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8723du.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821cu.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821cu.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822bu.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822bu.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822cu.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822cu.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/usb.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/usb.h
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.30.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
