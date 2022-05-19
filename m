@@ -2,67 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C07E52C9D5
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 04:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D875052CC0C
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 08:39:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232906AbiESCd4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 May 2022 22:33:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39766 "EHLO
+        id S229656AbiESGjD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 May 2022 02:39:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbiESCdz (ORCPT
+        with ESMTP id S229502AbiESGjC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 May 2022 22:33:55 -0400
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12548C6E74;
-        Wed, 18 May 2022 19:33:55 -0700 (PDT)
-Received: by mail-vk1-f177.google.com with SMTP id d132so2118250vke.0;
-        Wed, 18 May 2022 19:33:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=e6jbyutOwumj+LrvLcjzetQUKqPKzUNIp/FTCu48hvw=;
-        b=jOoVC97FIxfNPed3L7v50RfQbh4AxRDz6r5YpX9jAZhcRTU0o+NQKZykKjHAh2F/ys
-         xrm0S25mrpm5bSv+yLmkFFLSy7E/yEB1FdoBWm40eZqCcIqzOHOyz3T0aJ7jJk8q+bSK
-         MHNlEdAHDIapuoQug+gYN8/qLy2ZuuEKXToj7ELyy0Q8jDxQj2QJiYHv67p9Dar+Tfpi
-         KzUczpBWalmeW13dOSI428BpE2wF8Ao+1QAp6M2v/wyw/3d8X3SH7oWwOodIuuyOzUzj
-         4gZxvH3+fnz2X5zF+db+v5uAiHLXzSe7bJPGIm/0vbEdygxuJxOW9AWTAtvEd0AyCTht
-         RC3A==
-X-Gm-Message-State: AOAM530F454QTKv0KMPfxJUShz+1r9KRmFXRwOYuVoL1bEyqPCu0gPFc
-        zDzLC9EjLHuS6wFEP4vKSwRrb6JDUpVPhHhkrK8=
-X-Google-Smtp-Source: ABdhPJwON+5z8eNTjw6bpXmLZQJvvRhiCNs5QCAZObqr3pRwKRoTxGdMQmC3/+8n/nYodjdo61T9rduIi1V9+RNE1ck=
-X-Received: by 2002:a1f:5907:0:b0:352:6327:926f with SMTP id
- n7-20020a1f5907000000b003526327926fmr986181vkb.1.1652927634185; Wed, 18 May
- 2022 19:33:54 -0700 (PDT)
+        Thu, 19 May 2022 02:39:02 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D16DB41FD
+        for <linux-wireless@vger.kernel.org>; Wed, 18 May 2022 23:39:00 -0700 (PDT)
+X-UUID: a5b3662451d34596bae6b8bb67f1d21b-20220519
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.5,REQID:4df1b030-7bb2-46ae-bd7f-8097d13e1cac,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:100,FILE:0,RULE:Release_Ham,A
+        CTION:release,TS:95
+X-CID-INFO: VERSION:1.1.5,REQID:4df1b030-7bb2-46ae-bd7f-8097d13e1cac,OB:0,LOB:
+        0,IP:0,URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:100,FILE:0,RULE:Spam_GS981B3D,A
+        CTION:quarantine,TS:95
+X-CID-META: VersionHash:2a19b09,CLOUDID:69bad279-5ef6-470b-96c9-bdb8ced32786,C
+        OID:a1f5ff08d558,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,QS:0,BEC:nil
+X-UUID: a5b3662451d34596bae6b8bb67f1d21b-20220519
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 446670915; Thu, 19 May 2022 14:38:56 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Thu, 19 May 2022 14:38:55 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 19 May 2022 14:38:55 +0800
+From:   Deren Wu <Deren.Wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Shayne Chen" <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH 0/3] introduce BIOS SAR support
+Date:   Thu, 19 May 2022 14:38:21 +0800
+Message-ID: <cover.1652941276.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-References: <20220505015814.3727692-1-rui.zhang@intel.com> <20220505015814.3727692-8-rui.zhang@intel.com>
- <CAJZ5v0jt1OND_d08mC0TC1LZ-JGANDY5fiDmH5RUfdtRk1vZFw@mail.gmail.com>
- <2dc4aa933d07add206a2aeefa15a4837aca6ff62.camel@intel.com>
- <CAJZ5v0h=pYZkbhN2EiYzUGn36Q4-2tMyzfUP0uyFO=Sybse4DA@mail.gmail.com> <20ad397b7975775d69d6c0ea902ca362fa3cf395.camel@intel.com>
-In-Reply-To: <20ad397b7975775d69d6c0ea902ca362fa3cf395.camel@intel.com>
-From:   Len Brown <lenb@kernel.org>
-Date:   Wed, 18 May 2022 16:33:43 -1000
-Message-ID: <CAJvTdKnRmsR+1b2urHr7=u7AcvCfr7m+GqLfLLgOgoB9KaB-zQ@mail.gmail.com>
-Subject: Re: [PATCH 7/7] rtc: cmos: Add suspend/resume endurance testing hook
-To:     Zhang Rui <rui.zhang@intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Kalle Valo <kvalo@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-rtc@vger.kernel.org,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        merez@codeaurora.org, mat.jonczyk@o2.pl,
-        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-        Len Brown <len.brown@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,52 +73,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-First let's agree on why this should not be ignored.
+From: Deren Wu <deren.wu@mediatek.com>
 
-Our development team at Intel has lab with laptops, we run sleepgraph
-on every RC, and we publish the tool in public:
-https://www.intel.com/content/www/us/en/developer/topic-technology/open/pm-graph/overview.html
+Introduce BIOS SAR support for mt7921 serials.
 
-But even if we were funded to do it (which we are not), we can't
-possibly test every kind of device.
-We need the community to help testing Linux (suspend/resume,
-specifically) on a broad range of devices, so together we can make it
-better for all.
+Deren Wu (3):
+  mt76: add 6G band support in mt76_sar_freq_ranges
+  mt76: mt7921: introduce BIOS SAR support
+  mt76: mt7921: introduce BIOS SAR config in tx power
 
-The community is made up mostly of users, rather than kernel hackers,
-and so this effectively means that distro binary kernels need to be
-able to support testing.
+ drivers/net/wireless/mediatek/mt76/mac80211.c |   6 +
+ .../wireless/mediatek/mt76/mt7921/Makefile    |   1 +
+ .../wireless/mediatek/mt76/mt7921/bios_sar.c  | 281 ++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7921/bios_sar.h  |  93 ++++++
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |   5 +-
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |  32 +-
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  22 ++
+ 7 files changed, 429 insertions(+), 11 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/bios_sar.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/bios_sar.h
 
-Enabling that broad community of users/contributors is the goal.
+-- 
+2.18.0
 
-As Rui explained, this patch does nothing and breaks nothing if the
-new hook remains unused.
-If it is used, then overrides the wakeup duration for all subsequent
-system suspends, until it is cleared.
-If it does more than that, or does that in a clumsy way, then let's fix that.
-
-Today it gives us two new capabilities:
-
-1. Prevents a lost wake event.  Commonly we see this with kcompatd
-taking 20 seconds when we had previously armed the RTC for 15 seconds.
-The system will sleep forever, until the user intervenes -- which may
-be a very long time later.
-
-Rafael, If you have a better way to fix that, I'm all ears.  Aborted
-suspend flows are ugly -- particularly when the user didn't want them,
-but they are much less ugly then losing a wake event, which can result
-in losing, say 10-hours of test time.
-
-2. Allows more suspends/resume cycles per time.  Say the early wake is
-fixed.  Then we have to decide how long to sleep before being
-suspended.  If we set it for 1 second, and suspend takes longer than 1
-second, then all of our tests will fail with early wakeups and we have
-tested nothing.  If we set it to 60 seconds, and suspend takes 1
-second, then 59/60 seconds are spent sleeping, when they could be
-spent testing Linux.  With this patch, we can set it to the minimum of
-2 seconds right before we sleep, guaranteeing that we spend at least 1
-second, and under 2 seconds sleeping, and the rest of the time testing
--- which allows us to meet the goal.
-
-thanks,
-Len Brown, Intel
