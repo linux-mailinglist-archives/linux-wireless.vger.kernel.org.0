@@ -2,149 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5972952D0E7
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 12:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D56E52D0F0
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 12:57:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234481AbiESK4q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 May 2022 06:56:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40100 "EHLO
+        id S237095AbiESK5n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 May 2022 06:57:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbiESK4n (ORCPT
+        with ESMTP id S237060AbiESK5l (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 May 2022 06:56:43 -0400
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E80F9674C8;
-        Thu, 19 May 2022 03:56:40 -0700 (PDT)
-Received: by mail-yb1-f182.google.com with SMTP id i11so8345727ybq.9;
-        Thu, 19 May 2022 03:56:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CsPdkWTA95Eqpmk1DP4Hoq5zSJ+0tKlh8Uu+b07Gp3I=;
-        b=pIf9QKtn0Qd8es0SBlcyJKGIswkPAhV0/KRRrAqIAsw4SwWd8xzfHjc3NOIzEdh3UI
-         7LQRwDP193hX6DmoWepvqYsQ7fSFqyAKMbwxaMOjLgkRLCbV+HtHm8MXt4pPq3Xrng2T
-         ap78Cl6ELvduRBYu75MIciyMirRy95/Q+rqNlsg7d3L8BXi7XHGz3qxzPerP7kSzO32K
-         KVpt6OJmIVG17h9qE0ZhanakzNQs0dEvVeCoz5QvHGPa3r54JQH/DDQ3Qkt12jXawLue
-         yayGoIMH8fjNl8TZygpRvSZXeolOmXEICXbYExj6YRLtYUhEh456FrhV6B5g3orZ7YUu
-         MJaQ==
-X-Gm-Message-State: AOAM533ukr+QXG+k42c1XIe3DyItwTc8ZlXX7fyKUT10AQxZBCjabc6y
-        DqFzbKg/EzzsForx2bsN/lrT/ydQ5ljjqZyhGTnalOMxvOw=
-X-Google-Smtp-Source: ABdhPJwCu8Y04Iz7ROUNEcavVfM2tjOMiMfDIW+3GBT9+Gd0rU87hBC+0P8SwDbKar1qT4O1G+LjmO2Jv1cWC99NNq8=
-X-Received: by 2002:a25:d687:0:b0:64e:3a41:8d5 with SMTP id
- n129-20020a25d687000000b0064e3a4108d5mr3688875ybg.622.1652957800200; Thu, 19
- May 2022 03:56:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220505015814.3727692-1-rui.zhang@intel.com> <20220505015814.3727692-8-rui.zhang@intel.com>
- <CAJZ5v0jt1OND_d08mC0TC1LZ-JGANDY5fiDmH5RUfdtRk1vZFw@mail.gmail.com>
- <2dc4aa933d07add206a2aeefa15a4837aca6ff62.camel@intel.com>
- <CAJZ5v0h=pYZkbhN2EiYzUGn36Q4-2tMyzfUP0uyFO=Sybse4DA@mail.gmail.com>
- <20ad397b7975775d69d6c0ea902ca362fa3cf395.camel@intel.com> <CAJvTdKnRmsR+1b2urHr7=u7AcvCfr7m+GqLfLLgOgoB9KaB-zQ@mail.gmail.com>
-In-Reply-To: <CAJvTdKnRmsR+1b2urHr7=u7AcvCfr7m+GqLfLLgOgoB9KaB-zQ@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 19 May 2022 12:56:28 +0200
-Message-ID: <CAJZ5v0jZgLdVboWEG_akqC1U3wk4q9NqiFVqiOdvDMw1uqK_oA@mail.gmail.com>
-Subject: Re: [PATCH 7/7] rtc: cmos: Add suspend/resume endurance testing hook
-To:     Len Brown <lenb@kernel.org>
-Cc:     Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Kalle Valo <kvalo@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-rtc@vger.kernel.org,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        merez@codeaurora.org, mat.jonczyk@o2.pl,
-        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-        Len Brown <len.brown@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        Thu, 19 May 2022 06:57:41 -0400
+X-Greylist: delayed 93 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 19 May 2022 03:57:39 PDT
+Received: from azure-sdnproxy-3.icoremail.net (azure-sdnproxy.icoremail.net [20.232.28.96])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 8D3F6AF326;
+        Thu, 19 May 2022 03:57:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pku.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
+        Message-Id; bh=IM2J7NHYnrpaK9J+N0RQ6liKfpIkzPdy5Vj0scWlvm0=; b=a
+        hFy5lpRObySYXD8/fA9aWHSQuXau41ydyqvj6huPmdyD4vWobGeKcDMQuYxVwVFY
+        YpJC4VfC2K3/XqjRvmrFcztlkmpcQ4t5PgqRpzeizZ6kvMEtcSBFrlSEB2F/vBr4
+        /PVk0bv1h5V5vjcfOf/sNyNdPBL0VAjQcZg6xISHT4=
+Received: from localhost (unknown [10.129.21.144])
+        by front02 (Coremail) with SMTP id 54FpogB3fHiTIoZi47SYBg--.24223S2;
+        Thu, 19 May 2022 18:57:23 +0800 (CST)
+From:   Yongzhi Liu <lyz_cs@pku.edu.cn>
+To:     amitkarwar@gmail.com, ganapathi017@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, arend.vanspriel@broadcom.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, fuyq@stu.pku.edu.cn,
+        Yongzhi Liu <lyz_cs@pku.edu.cn>
+Subject: [PATCH] mwifiex:  Fix potential dereference of NULL pointer
+Date:   Thu, 19 May 2022 03:57:19 -0700
+Message-Id: <1652957839-127949-1-git-send-email-lyz_cs@pku.edu.cn>
+X-Mailer: git-send-email 2.7.4
+X-CM-TRANSID: 54FpogB3fHiTIoZi47SYBg--.24223S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtw1ftw4rJr4xZFW8Jw1DZFb_yoWDCrX_K3
+        97Za13Gr4UKw18Kw4jyFsxZr9Yyr43XFn7Can3trZ3CFWIv3y3ZrZ5ZFWkJrW3Cw4vvwnx
+        Jr98ta4rJayUXjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUb3AFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
+        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
+        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E
+        87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
+        8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_
+        JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+        xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK
+        6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_Kr1UJr1l4I8I3I0E4IkC6x
+        0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+        zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+        4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+        CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
+        nIWIevJa73UjIFyTuYvjfUF9a9DUUUU
+X-CM-SenderInfo: irzqijirqukmo6sn3hxhgxhubq/1tbiAwELBlPy7vJhCwAFsd
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, May 19, 2022 at 4:33 AM Len Brown <lenb@kernel.org> wrote:
->
-> First let's agree on why this should not be ignored.
->
-> Our development team at Intel has lab with laptops, we run sleepgraph
-> on every RC, and we publish the tool in public:
-> https://www.intel.com/content/www/us/en/developer/topic-technology/open/pm-graph/overview.html
->
-> But even if we were funded to do it (which we are not), we can't
-> possibly test every kind of device.
-> We need the community to help testing Linux (suspend/resume,
-> specifically) on a broad range of devices, so together we can make it
-> better for all.
->
-> The community is made up mostly of users, rather than kernel hackers,
-> and so this effectively means that distro binary kernels need to be
-> able to support testing.
->
-> Enabling that broad community of users/contributors is the goal.
->
-> As Rui explained, this patch does nothing and breaks nothing if the
-> new hook remains unused.
-> If it is used, then overrides the wakeup duration for all subsequent
-> system suspends, until it is cleared.
-> If it does more than that, or does that in a clumsy way, then let's fix that.
->
-> Today it gives us two new capabilities:
->
-> 1. Prevents a lost wake event.  Commonly we see this with kcompatd
-> taking 20 seconds when we had previously armed the RTC for 15 seconds.
-> The system will sleep forever, until the user intervenes -- which may
-> be a very long time later.
->
-> Rafael, If you have a better way to fix that, I'm all ears.  Aborted
-> suspend flows are ugly -- particularly when the user didn't want them,
-> but they are much less ugly then losing a wake event, which can result
-> in losing, say 10-hours of test time.
+If 'card' is not valid, then we need to check the
+field 'adapter' and 'priv_num' to avoid use of NULL
+pointer in function 'mwifiex_get_priv'. Fix this by
+adding the null pointer check on them.
 
-The real problem here is the missed wakeup events and I've already
-said in this thread how this can be fixed and Rui appears to agree
-with me.
+Fixes: 21c5c83ce ("mwifiex: support sysfs initiated device coredump")
 
-So I'd say why don't we just go and fix it?
+Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>
+---
+ drivers/net/wireless/marvell/mwifiex/usb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-And it is orthogonal to the first 3 patches in this series, because
-they move the PCH thermal delay to the noirq phase which is later than
-the arming of the RTC Fixed Event IIUC.
+diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
+index 8f01fcb..c635206 100644
+--- a/drivers/net/wireless/marvell/mwifiex/usb.c
++++ b/drivers/net/wireless/marvell/mwifiex/usb.c
+@@ -686,6 +686,8 @@ static void mwifiex_usb_coredump(struct device *dev)
+ {
+ 	struct usb_interface *intf = to_usb_interface(dev);
+ 	struct usb_card_rec *card = usb_get_intfdata(intf);
++	if (!card->adapter || !card->adapter->priv_num)
++		return;
+ 
+ 	mwifiex_fw_dump_event(mwifiex_get_priv(card->adapter,
+ 					       MWIFIEX_BSS_ROLE_ANY));
+-- 
+2.7.4
 
-> 2. Allows more suspends/resume cycles per time.  Say the early wake is
-> fixed.  Then we have to decide how long to sleep before being
-> suspended.  If we set it for 1 second, and suspend takes longer than 1
-> second, then all of our tests will fail with early wakeups and we have
-> tested nothing.
-
-We have tested "early" wakeups which is what the users would see on
-the system in question if they set the RTC wake time to 1 second
-before suspending.
-
-This may not be what we want to test, though, but that is a different
-problem, as discussed below.
-
-> If we set it to 60 seconds, and suspend takes 1
-> second, then 59/60 seconds are spent sleeping, when they could be
-> spent testing Linux.  With this patch, we can set it to the minimum of
-> 2 seconds right before we sleep, guaranteeing that we spend at least 1
-> second, and under 2 seconds sleeping, and the rest of the time testing
-> -- which allows us to meet the goal.
-
-So the goal specifically is to test the last phase of system suspend
-and in particular whether or not the platform has reached the specific
-minimum-power state at the end of it.
-
-In order to do that, we basically want to ignore all of the wakeup
-events except for the special RTC wakeup 1 second after the platform
-has been asked to get into the minimum-power state, so what we are
-talking about here really is a special suspend test mode using the RTC
-as a wakeup vehicle.
