@@ -2,56 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B20552D35D
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 14:59:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E880C52D53A
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 15:55:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234985AbiESM7d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 May 2022 08:59:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38550 "EHLO
+        id S239343AbiESNzg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 May 2022 09:55:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238109AbiESM7I (ORCPT
+        with ESMTP id S239361AbiESNzY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 May 2022 08:59:08 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F48DE732B
-        for <linux-wireless@vger.kernel.org>; Thu, 19 May 2022 05:58:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1652965095; x=1684501095;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=jYwDht3oXd+jf0z1KjRp0bFkmv9I/TqMmsa/01rrl6M=;
-  b=jE0kaqnEc66AiR1DVeD0OQUS8xGyeA74DDAisCgrt/cscNp3eNSICKm5
-   oXWqLSWhWNExnHzjo1dviBS6sXEbIhzXzt5Z8s3O8VZlBVUe9eWMGMSMl
-   689eR7Q5B7n+49GnQ8zdj5/KNmF7bfYXsB6H6a7dNOwGaDCdI0zau+7vP
-   4=;
-Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
-  by alexa-out.qualcomm.com with ESMTP; 19 May 2022 05:58:15 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2022 05:58:14 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Thu, 19 May 2022 05:58:14 -0700
-Received: from cdchalpyex0390930-lin.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Thu, 19 May 2022 05:58:12 -0700
-From:   Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>
-Subject: [PATCH] ath11k: support avg signal in station dump
-Date:   Thu, 19 May 2022 18:27:41 +0530
-Message-ID: <1652965061-30457-1-git-send-email-quic_tmariyap@quicinc.com>
-X-Mailer: git-send-email 2.7.4
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        Thu, 19 May 2022 09:55:24 -0400
+Received: from azure-sdnproxy-1.icoremail.net (azure-sdnproxy.icoremail.net [52.237.72.81])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id C818FE274F;
+        Thu, 19 May 2022 06:54:08 -0700 (PDT)
+Received: from ubuntu.localdomain (unknown [124.236.130.193])
+        by mail-app4 (Coremail) with SMTP id cS_KCgDnN+DqS4ZivQ92AA--.55027S2;
+        Thu, 19 May 2022 21:53:55 +0800 (CST)
+From:   Duoming Zhou <duoming@zju.edu.cn>
+To:     linux-kernel@vger.kernel.org
+Cc:     amitkarwar@gmail.com, ganapathi017@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, Duoming Zhou <duoming@zju.edu.cn>
+Subject: [PATCH net v2] net: wireless: marvell: mwifiex: fix sleep in atomic context bugs
+Date:   Thu, 19 May 2022 21:53:45 +0800
+Message-Id: <20220519135345.109936-1-duoming@zju.edu.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: cS_KCgDnN+DqS4ZivQ92AA--.55027S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAr1UWr15KrWktw1rKw43GFg_yoWrXryxpa
+        n8KF93Zw40qrs0k3yDJa1kZF98K3WrKry2kFs7Aw4F9F4fGryrZFyaqFyIgFs8XF4vqa4a
+        vrn0qw13Arn3tFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+        1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4U
+        JVW0owA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+        Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+        I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+        4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+        n2kIc2xKxwCY02Avz4vE14v_Xr4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
+        0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
+        17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
+        C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
+        6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
+        73UjIFyTuYvjfUnpnQUUUUU
+X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAggPAVZdtZx5OgAVsw
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,85 +56,103 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently mac80211 doesn't calculate average signal when RSS(Receive side
-scaling) is enabled from the driver, so average signal isn't printed in
-the station dump. To address this issue, calculate the average signal
-from RSSI within driver and display in the station dump.
+There are sleep in atomic context bugs when uploading device dump
+data on usb interface. The root cause is that the operations that
+may sleep are called in fw_dump_timer_fn which is a timer handler.
+The call tree shows the execution paths that could lead to bugs:
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
+   (Interrupt context)
+fw_dump_timer_fn
+  mwifiex_upload_device_dump
+    dev_coredumpv(..., GFP_KERNEL)
+      dev_coredumpm()
+        kzalloc(sizeof(*devcd), gfp); //may sleep
+        dev_set_name
+          kobject_set_name_vargs
+            kvasprintf_const(GFP_KERNEL, ...); //may sleep
+            kstrdup(s, GFP_KERNEL); //may sleep
 
-Signed-off-by: Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>
+This patch moves the operations that may sleep into a work item.
+The work item will run in another kernel thread which is in
+process context to execute the bottom half of the interrupt.
+So it could prevent atomic context from sleeping.
+
+Fixes: f5ecd02a8b20 ("mwifiex: device dump support for usb interface")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
 ---
- drivers/net/wireless/ath/ath11k/core.h  | 4 ++++
- drivers/net/wireless/ath/ath11k/dp_rx.c | 3 +++
- drivers/net/wireless/ath/ath11k/mac.c   | 4 ++++
- 3 files changed, 11 insertions(+)
+Changes in v2:
+  - Fix compile problem.
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 95bca0b..ea31016 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -14,6 +14,7 @@
- #include <linux/dmi.h>
- #include <linux/ctype.h>
- #include <linux/rhashtable.h>
-+#include <linux/average.h>
- #include "qmi.h"
- #include "htc.h"
- #include "wmi.h"
-@@ -464,6 +465,8 @@ struct ath11k_per_ppdu_tx_stats {
- 	u32 retry_bytes;
- };
- 
-+DECLARE_EWMA(avg_rssi, 10, 8)
-+
- struct ath11k_sta {
- 	struct ath11k_vif *arvif;
- 
-@@ -482,6 +485,7 @@ struct ath11k_sta {
- 	u64 rx_duration;
- 	u64 tx_duration;
- 	u8 rssi_comb;
-+	struct ewma_avg_rssi avg_rssi;
- 	s8 rssi_beacon;
- 	s8 chain_signal[IEEE80211_MAX_CHAINS];
- 	struct ath11k_htt_tx_stats *tx_stats;
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 049774cc..e16beb9 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2765,6 +2765,9 @@ static void ath11k_dp_rx_update_peer_stats(struct ath11k_sta *arsta,
- 	if (!rx_stats)
- 		return;
- 
-+	arsta->rssi_comb = ppdu_info->rssi_comb;
-+	ewma_avg_rssi_add(&arsta->avg_rssi, ppdu_info->rssi_comb);
-+
- 	num_msdu = ppdu_info->tcp_msdu_count + ppdu_info->tcp_ack_msdu_count +
- 		   ppdu_info->udp_msdu_count + ppdu_info->other_msdu_count;
- 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index ee1590b..362a07a 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -4479,6 +4479,7 @@ static int ath11k_mac_station_add(struct ath11k *ar,
- 		}
- 	}
- 
-+	ewma_avg_rssi_init(&arsta->avg_rssi);
- 	return 0;
- 
- free_tx_stats:
-@@ -8161,6 +8162,9 @@ static void ath11k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 		sinfo->signal = db2dbm ? signal : signal + ATH11K_DEFAULT_NOISE_FLOOR;
- 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
- 	}
-+
-+	sinfo->signal_avg = ewma_avg_rssi_read(&arsta->avg_rssi) + ATH11K_DEFAULT_NOISE_FLOOR;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL_AVG);
+ drivers/net/wireless/marvell/mwifiex/init.c      | 12 +++++++++++-
+ drivers/net/wireless/marvell/mwifiex/main.h      |  1 +
+ drivers/net/wireless/marvell/mwifiex/sta_event.c |  1 +
+ 3 files changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/init.c b/drivers/net/wireless/marvell/mwifiex/init.c
+index 88c72d1827a..cc3f1121eb9 100644
+--- a/drivers/net/wireless/marvell/mwifiex/init.c
++++ b/drivers/net/wireless/marvell/mwifiex/init.c
+@@ -63,11 +63,19 @@ static void wakeup_timer_fn(struct timer_list *t)
+ 		adapter->if_ops.card_reset(adapter);
  }
  
- #if IS_ENABLED(CONFIG_IPV6)
++static void fw_dump_work(struct work_struct *work)
++{
++	struct mwifiex_adapter *adapter =
++		container_of(work, struct mwifiex_adapter, devdump_work);
++
++	mwifiex_upload_device_dump(adapter);
++}
++
+ static void fw_dump_timer_fn(struct timer_list *t)
+ {
+ 	struct mwifiex_adapter *adapter = from_timer(adapter, t, devdump_timer);
+ 
+-	mwifiex_upload_device_dump(adapter);
++	schedule_work(&adapter->devdump_work);
+ }
+ 
+ /*
+@@ -321,6 +329,7 @@ static void mwifiex_init_adapter(struct mwifiex_adapter *adapter)
+ 	adapter->active_scan_triggered = false;
+ 	timer_setup(&adapter->wakeup_timer, wakeup_timer_fn, 0);
+ 	adapter->devdump_len = 0;
++	INIT_WORK(&adapter->devdump_work, fw_dump_work);
+ 	timer_setup(&adapter->devdump_timer, fw_dump_timer_fn, 0);
+ }
+ 
+@@ -401,6 +410,7 @@ mwifiex_adapter_cleanup(struct mwifiex_adapter *adapter)
+ {
+ 	del_timer(&adapter->wakeup_timer);
+ 	del_timer_sync(&adapter->devdump_timer);
++	cancel_work_sync(&adapter->devdump_work);
+ 	mwifiex_cancel_all_pending_cmd(adapter);
+ 	wake_up_interruptible(&adapter->cmd_wait_q.wait);
+ 	wake_up_interruptible(&adapter->hs_activate_wait_q);
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+index 332dd1c8db3..c8ac2f57f18 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.h
++++ b/drivers/net/wireless/marvell/mwifiex/main.h
+@@ -900,6 +900,7 @@ struct mwifiex_adapter {
+ 	struct work_struct rx_work;
+ 	struct workqueue_struct *dfs_workqueue;
+ 	struct work_struct dfs_work;
++	struct work_struct devdump_work;
+ 	bool rx_work_enabled;
+ 	bool rx_processing;
+ 	bool delay_main_work;
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_event.c b/drivers/net/wireless/marvell/mwifiex/sta_event.c
+index 7d42c5d2dbf..8e28d0107d7 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_event.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_event.c
+@@ -644,6 +644,7 @@ mwifiex_fw_dump_info_event(struct mwifiex_private *priv,
+ 
+ upload_dump:
+ 	del_timer_sync(&adapter->devdump_timer);
++	cancel_work_sync(&adapter->devdump_work);
+ 	mwifiex_upload_device_dump(adapter);
+ }
+ 
 -- 
-2.7.4
+2.17.1
 
