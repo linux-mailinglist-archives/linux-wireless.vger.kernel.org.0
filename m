@@ -2,147 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE22252DA12
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 18:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A9352DA62
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 18:38:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240414AbiESQWS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 May 2022 12:22:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52202 "EHLO
+        id S235537AbiESQgF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 May 2022 12:36:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232987AbiESQWQ (ORCPT
+        with ESMTP id S241643AbiESQgA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 May 2022 12:22:16 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9842EC1EE7
-        for <linux-wireless@vger.kernel.org>; Thu, 19 May 2022 09:22:11 -0700 (PDT)
-X-UUID: 4dd7ca02c51f46fdbd8903ef4d3ffce3-20220520
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.5,REQID:e119717e-d9d0-47aa-975b-453033f9ba35,OB:0,LO
-        B:0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
-        ON:release,TS:5
-X-CID-META: VersionHash:2a19b09,CLOUDID:b0d3e379-5ef6-470b-96c9-bdb8ced32786,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
-        ,QS:0,BEC:nil
-X-UUID: 4dd7ca02c51f46fdbd8903ef4d3ffce3-20220520
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 658681106; Fri, 20 May 2022 00:22:06 +0800
-Received: from MTKMBS07N2.mediatek.inc (172.21.101.141) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Fri, 20 May 2022 00:22:05 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 20 May 2022 00:22:05 +0800
-Received: from mtksdccf07 (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 20 May 2022 00:22:05 +0800
-Message-ID: <db3cf5f53242ec98406e4bb577f7bbb40b371231.camel@mediatek.com>
-Subject: Re: [PATCH 3/3] mt76: mt7921: introduce BIOS SAR config in tx power
-From:   Deren Wu <deren.wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        "Ryder Lee" <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Date:   Fri, 20 May 2022 00:22:05 +0800
-In-Reply-To: <8207b98b-0c10-aff4-55c4-6c7118454832@nbd.name>
-References: <cover.1652941276.git.deren.wu@mediatek.com>
-         <2e6b69a763d60897639101506e39a2b1a81d8eab.1652941276.git.deren.wu@mediatek.com>
-         <8207b98b-0c10-aff4-55c4-6c7118454832@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        Thu, 19 May 2022 12:36:00 -0400
+Received: from azure-sdnproxy-2.icoremail.net (azure-sdnproxy.icoremail.net [52.175.55.52])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id C9FF5126;
+        Thu, 19 May 2022 09:35:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pku.edu.cn; s=dkim; h=Received:Date:From:To:Cc:Subject:
+        In-Reply-To:References:Content-Transfer-Encoding:Content-Type:
+        MIME-Version:Message-ID; bh=fF518Hc8uEuEf9r8ke5GEOjm5Z2WXlFO1tYv
+        q8jSjcQ=; b=PFvkBAqPoDxwCJmm6z1Khpz/B48C4ZkPVwCay8bZY1DVKyOxzMf0
+        UcZ9z7NYGvgVFQ28k4u2iIeQLOd6y84/G0ZzybxzcUPyCJPgdezQ3kirvK7Sm4DS
+        p9a5eKaFhWxY6CvEONL5sSVGzH0cf2lCvsfUJEpXQtRYIUtkca6jS6M=
+Received: by ajax-webmail-front02 (Coremail) ; Fri, 20 May 2022 00:35:35
+ +0800 (GMT+08:00)
+X-Originating-IP: [10.129.37.75]
+Date:   Fri, 20 May 2022 00:35:35 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From:   =?UTF-8?B?5YiY5rC45b+X?= <lyz_cs@pku.edu.cn>
+To:     "kalle valo" <kvalo@kernel.org>
+Cc:     amitkarwar@gmail.com, ganapathi017@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, arend.vanspriel@broadcom.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: vadc: Fix potential dereference of NULL pointer
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210104(ab8c30b6)
+ Copyright (c) 2002-2022 www.mailtech.cn
+ mispb-1ea67e80-64e4-49d5-bd9f-3beeae24b9f2-pku.edu.cn
+In-Reply-To: <87v8u11qvo.fsf@kernel.org>
+References: <1652957674-127802-1-git-send-email-lyz_cs@pku.edu.cn>
+ <87v8u11qvo.fsf@kernel.org>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+Message-ID: <7e12c127.2a22e.180dd2cb2a3.Coremail.lyz_cs@pku.edu.cn>
+X-Coremail-Locale: en_US
+X-CM-TRANSID: 54FpogBXJOTXcYZifHmeBg--.18762W
+X-CM-SenderInfo: irzqijirqukmo6sn3hxhgxhubq/1tbiAwELBlPy7vKMbgAAsQ
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+        daVFxhVjvjDU=
+X-Spam-Status: No, score=-0.4 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_VALIDITY_RPBL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Felix,
-
-On Thu, 2022-05-19 at 17:33 +0200, Felix Fietkau wrote:
-> On 19.05.22 08:38, Deren Wu wrote:
-> > From: Deren Wu <deren.wu@mediatek.com>
-> > 
-> > Add new function mt7921_set_tx_sar_pwr() to update SAR power from
-> > .set_sar_specs and BIOS setting. Both settings would be merged into
-> > mt76_freq_range_power for final tx power value.
-> > 
-> > Reviewed-by: Sean Wang <sean.wang@mediatek.com>
-> > Co-developed-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> > Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> > Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> > ---
-> >   .../net/wireless/mediatek/mt76/mt7921/init.c  |  3 +-
-> >   .../net/wireless/mediatek/mt76/mt7921/main.c  | 32 +++++++++++++-
-> > -----
-> >   .../wireless/mediatek/mt76/mt7921/mt7921.h    |  2 ++
-> >   3 files changed, 26 insertions(+), 11 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > index 80279f342109..c86d8805f291 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > @@ -1469,20 +1469,34 @@ static void mt7921_ipv6_addr_change(struct
-> > ieee80211_hw *hw,
-> >   }
-> >   #endif
-> >   
-> > +int mt7921_set_tx_sar_pwr(struct ieee80211_hw *hw,
-> > +			  const struct cfg80211_sar_specs *sar)
-> > +{
-> > +	struct mt76_phy *mphy = hw->priv;
-> > +	int err;
-> > +
-> > +	if (sar) {
-> > +		err = mt76_init_sar_power(hw, sar);
-> > +		if (err)
-> > +			return err;
-> > +	}
-> > +
-> > +	mt7921_init_bios_sar_power(mt7921_hw_phy(hw), !sar);
-> > +
-> > +	err = mt76_connac_mcu_set_rate_txpower(mphy);
-> > +
-> > +	return err;
-> > +}
-> > +EXPORT_SYMBOL_GPL(mt7921_set_tx_sar_pwr);
-> 
-> Why is this exported?
-
-Thanks for pointing out. I will remove unnecessary export in next
-version.
-
-
-Regards,
-Deren
-
-> 
-> - Felix
-> 
-> _______________________________________________
-> Linux-mediatek mailing list
-> Linux-mediatek@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-mediatek
-
+CgoKPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2VzLS0tLS0KPiBGcm9tOiAiS2FsbGUgVmFsbyIgPGt2
+YWxvQGtlcm5lbC5vcmc+Cj4gU2VudCBUaW1lOiAyMDIyLTA1LTE5IDIzOjMwOjUxIChUaHVyc2Rh
+eSkKPiBUbzogIllvbmd6aGkgTGl1IiA8bHl6X2NzQHBrdS5lZHUuY24+Cj4gQ2M6IGFtaXRrYXJ3
+YXJAZ21haWwuY29tLCBnYW5hcGF0aGkwMTdAZ21haWwuY29tLCBzaGFydmFyaS5oYXJpc2FuZ2Ft
+QG54cC5jb20sIGh1eGlubWluZzgyMEBnbWFpbC5jb20sIGRhdmVtQGRhdmVtbG9mdC5uZXQsIGVk
+dW1hemV0QGdvb2dsZS5jb20sIGt1YmFAa2VybmVsLm9yZywgcGFiZW5pQHJlZGhhdC5jb20sIGFy
+ZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20sIGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9y
+ZywgbmV0ZGV2QHZnZXIua2VybmVsLm9yZywgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZywg
+ZnV5cUBzdHUucGt1LmVkdS5jbgo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjJdIGlpbzogdmFkYzog
+Rml4IHBvdGVudGlhbCBkZXJlZmVyZW5jZSBvZiBOVUxMIHBvaW50ZXIKPiAKPiBZb25nemhpIExp
+dSA8bHl6X2NzQHBrdS5lZHUuY24+IHdyaXRlczoKPiAKPiA+IFRoZSByZXR1cm4gdmFsdWUgb2Yg
+dmFkY19nZXRfY2hhbm5lbCgpIG5lZWRzIHRvIGJlIGNoZWNrZWQKPiA+IHRvIGF2b2lkIHVzZSBv
+ZiBOVUxMIHBvaW50ZXIuIEZpeCB0aGlzIGJ5IGFkZGluZyB0aGUgbnVsbAo+ID4gcG9pbnRlciBj
+aGVjayBvbiBwcm9wLgo+ID4KPiA+IEZpeGVzOiAwOTE3ZGU5NGMgKCJpaW86IHZhZGM6IFF1YWxj
+b21tIFNQTUkgUE1JQyB2b2x0YWdlIEFEQyBkcml2ZXIiKQo+ID4KPiA+IFNpZ25lZC1vZmYtYnk6
+IFlvbmd6aGkgTGl1IDxseXpfY3NAcGt1LmVkdS5jbj4KPiA+IC0tLQo+ID4gIGRyaXZlcnMvaWlv
+L2FkYy9xY29tLXNwbWktdmFkYy5jIHwgMjMgKysrKysrKysrKysrKysrKysrKysrKy0KPiA+ICAx
+IGZpbGUgY2hhbmdlZCwgMjIgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQo+IAoKSSdtIHNv
+cnJ5IHRvIHNlbmQgdGhpcyB0byBsaW51eC13aXJlbGVzcyBieSBtaXN0YWtlLiBJIHdpbGwgY2F1
+dGlvdXNseSBzdWJtaXQgcGF0Y2hlcyBsYXRlci4KCj4gRGlkIHlvdSBzZW50IHRoaXMgdG8gbGlu
+dXgtd2lyZWxlc3MgYnkgbWlzdGFrZT8KPiAKPiAtLSAKPiBodHRwczovL3BhdGNod29yay5rZXJu
+ZWwub3JnL3Byb2plY3QvbGludXgtd2lyZWxlc3MvbGlzdC8KPiAKPiBodHRwczovL3dpcmVsZXNz
+Lndpa2kua2VybmVsLm9yZy9lbi9kZXZlbG9wZXJzL2RvY3VtZW50YXRpb24vc3VibWl0dGluZ3Bh
+dGNoZXMK
