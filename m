@@ -2,133 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E27452D117
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 13:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5972952D0E7
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 12:57:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236765AbiESLEC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 May 2022 07:04:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56252 "EHLO
+        id S234481AbiESK4q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 May 2022 06:56:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230280AbiESLEB (ORCPT
+        with ESMTP id S229498AbiESK4n (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 May 2022 07:04:01 -0400
-X-Greylist: delayed 473 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 19 May 2022 04:03:57 PDT
-Received: from azure-sdnproxy-2.icoremail.net (azure-sdnproxy.icoremail.net [52.175.55.52])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 029AB5C347;
-        Thu, 19 May 2022 04:03:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pku.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
-        Message-Id; bh=pYmFxl5EX9FT7BHXjR4DHU5ZJgyGAjXjcQaIbNKJXKE=; b=Q
-        QGH5HTEz3arrj+Cgu4Iiy2c3lD4z54VgmsnOKBmRA5CrmGu/N23RBP6CkjU+O3Pf
-        OJeE6UrdJrDrZ1FRplmI8zdl2ydfLmGO9B4KtJ90yNub4ZFMEt606Acl/xEGx22j
-        MC1XGBFKs0muU1ROz3rN8Phf29SAPw1DhrwTViXBhc=
-Received: from localhost (unknown [10.129.21.144])
-        by front01 (Coremail) with SMTP id 5oFpogD3_6fvIYZi3ip+Bw--.21549S2;
-        Thu, 19 May 2022 18:54:39 +0800 (CST)
-From:   Yongzhi Liu <lyz_cs@pku.edu.cn>
-To:     amitkarwar@gmail.com, ganapathi017@gmail.com,
-        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
-        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, arend.vanspriel@broadcom.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, fuyq@stu.pku.edu.cn,
-        Yongzhi Liu <lyz_cs@pku.edu.cn>
-Subject: [PATCH v2] iio: vadc: Fix potential dereference of NULL pointer
-Date:   Thu, 19 May 2022 03:54:34 -0700
-Message-Id: <1652957674-127802-1-git-send-email-lyz_cs@pku.edu.cn>
-X-Mailer: git-send-email 2.7.4
-X-CM-TRANSID: 5oFpogD3_6fvIYZi3ip+Bw--.21549S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7urWfuFyktr18KrWxGryfJFb_yoW8CF43pa
-        yktayrKry2ka1fJ3WftFWDXryaqw42q3yUGFWxJ3W3Ar43trnYyw1aqw1FkFn7uFWxC3ya
-        yr4YyFnYgr4Dur7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUU9F1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-        IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
-        z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
-        Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
-        6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-        vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkIecxE
-        wVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26w4UJr1UMxC20s026xCaFV
-        Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-        x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
-        1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
-        JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
-        sGvfC2KfnxnUUI43ZEXa7VUbXdbUUUUUU==
-X-CM-SenderInfo: irzqijirqukmo6sn3hxhgxhubq/1tbiAwELBlPy7vJhCwADsb
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_VALIDITY_RPBL,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        Thu, 19 May 2022 06:56:43 -0400
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E80F9674C8;
+        Thu, 19 May 2022 03:56:40 -0700 (PDT)
+Received: by mail-yb1-f182.google.com with SMTP id i11so8345727ybq.9;
+        Thu, 19 May 2022 03:56:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CsPdkWTA95Eqpmk1DP4Hoq5zSJ+0tKlh8Uu+b07Gp3I=;
+        b=pIf9QKtn0Qd8es0SBlcyJKGIswkPAhV0/KRRrAqIAsw4SwWd8xzfHjc3NOIzEdh3UI
+         7LQRwDP193hX6DmoWepvqYsQ7fSFqyAKMbwxaMOjLgkRLCbV+HtHm8MXt4pPq3Xrng2T
+         ap78Cl6ELvduRBYu75MIciyMirRy95/Q+rqNlsg7d3L8BXi7XHGz3qxzPerP7kSzO32K
+         KVpt6OJmIVG17h9qE0ZhanakzNQs0dEvVeCoz5QvHGPa3r54JQH/DDQ3Qkt12jXawLue
+         yayGoIMH8fjNl8TZygpRvSZXeolOmXEICXbYExj6YRLtYUhEh456FrhV6B5g3orZ7YUu
+         MJaQ==
+X-Gm-Message-State: AOAM533ukr+QXG+k42c1XIe3DyItwTc8ZlXX7fyKUT10AQxZBCjabc6y
+        DqFzbKg/EzzsForx2bsN/lrT/ydQ5ljjqZyhGTnalOMxvOw=
+X-Google-Smtp-Source: ABdhPJwCu8Y04Iz7ROUNEcavVfM2tjOMiMfDIW+3GBT9+Gd0rU87hBC+0P8SwDbKar1qT4O1G+LjmO2Jv1cWC99NNq8=
+X-Received: by 2002:a25:d687:0:b0:64e:3a41:8d5 with SMTP id
+ n129-20020a25d687000000b0064e3a4108d5mr3688875ybg.622.1652957800200; Thu, 19
+ May 2022 03:56:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220505015814.3727692-1-rui.zhang@intel.com> <20220505015814.3727692-8-rui.zhang@intel.com>
+ <CAJZ5v0jt1OND_d08mC0TC1LZ-JGANDY5fiDmH5RUfdtRk1vZFw@mail.gmail.com>
+ <2dc4aa933d07add206a2aeefa15a4837aca6ff62.camel@intel.com>
+ <CAJZ5v0h=pYZkbhN2EiYzUGn36Q4-2tMyzfUP0uyFO=Sybse4DA@mail.gmail.com>
+ <20ad397b7975775d69d6c0ea902ca362fa3cf395.camel@intel.com> <CAJvTdKnRmsR+1b2urHr7=u7AcvCfr7m+GqLfLLgOgoB9KaB-zQ@mail.gmail.com>
+In-Reply-To: <CAJvTdKnRmsR+1b2urHr7=u7AcvCfr7m+GqLfLLgOgoB9KaB-zQ@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 19 May 2022 12:56:28 +0200
+Message-ID: <CAJZ5v0jZgLdVboWEG_akqC1U3wk4q9NqiFVqiOdvDMw1uqK_oA@mail.gmail.com>
+Subject: Re: [PATCH 7/7] rtc: cmos: Add suspend/resume endurance testing hook
+To:     Len Brown <lenb@kernel.org>
+Cc:     Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Kalle Valo <kvalo@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-rtc@vger.kernel.org,
+        "open list:NETWORKING DRIVERS (WIRELESS)" 
+        <linux-wireless@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        merez@codeaurora.org, mat.jonczyk@o2.pl,
+        Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
+        Len Brown <len.brown@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The return value of vadc_get_channel() needs to be checked
-to avoid use of NULL pointer. Fix this by adding the null
-pointer check on prop.
+On Thu, May 19, 2022 at 4:33 AM Len Brown <lenb@kernel.org> wrote:
+>
+> First let's agree on why this should not be ignored.
+>
+> Our development team at Intel has lab with laptops, we run sleepgraph
+> on every RC, and we publish the tool in public:
+> https://www.intel.com/content/www/us/en/developer/topic-technology/open/pm-graph/overview.html
+>
+> But even if we were funded to do it (which we are not), we can't
+> possibly test every kind of device.
+> We need the community to help testing Linux (suspend/resume,
+> specifically) on a broad range of devices, so together we can make it
+> better for all.
+>
+> The community is made up mostly of users, rather than kernel hackers,
+> and so this effectively means that distro binary kernels need to be
+> able to support testing.
+>
+> Enabling that broad community of users/contributors is the goal.
+>
+> As Rui explained, this patch does nothing and breaks nothing if the
+> new hook remains unused.
+> If it is used, then overrides the wakeup duration for all subsequent
+> system suspends, until it is cleared.
+> If it does more than that, or does that in a clumsy way, then let's fix that.
+>
+> Today it gives us two new capabilities:
+>
+> 1. Prevents a lost wake event.  Commonly we see this with kcompatd
+> taking 20 seconds when we had previously armed the RTC for 15 seconds.
+> The system will sleep forever, until the user intervenes -- which may
+> be a very long time later.
+>
+> Rafael, If you have a better way to fix that, I'm all ears.  Aborted
+> suspend flows are ugly -- particularly when the user didn't want them,
+> but they are much less ugly then losing a wake event, which can result
+> in losing, say 10-hours of test time.
 
-Fixes: 0917de94c ("iio: vadc: Qualcomm SPMI PMIC voltage ADC driver")
+The real problem here is the missed wakeup events and I've already
+said in this thread how this can be fixed and Rui appears to agree
+with me.
 
-Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>
----
- drivers/iio/adc/qcom-spmi-vadc.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+So I'd say why don't we just go and fix it?
 
-diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
-index 34202ba..9fa61fb 100644
---- a/drivers/iio/adc/qcom-spmi-vadc.c
-+++ b/drivers/iio/adc/qcom-spmi-vadc.c
-@@ -358,14 +358,25 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
- 	vadc->graph[VADC_CALIB_ABSOLUTE].dx = VADC_ABSOLUTE_RANGE_UV;
- 
- 	prop = vadc_get_channel(vadc, VADC_REF_1250MV);
-+	if (!prop) {
-+		dev_err(vadc->dev, "Please define 1.25V channel\n");
-+		ret = -ENODEV;
-+		goto err;
-+	}
- 	ret = vadc_do_conversion(vadc, prop, &read_1);
- 	if (ret)
- 		goto err;
- 
- 	/* Try with buffered 625mV channel first */
- 	prop = vadc_get_channel(vadc, VADC_SPARE1);
--	if (!prop)
-+	if (!prop) {
- 		prop = vadc_get_channel(vadc, VADC_REF_625MV);
-+		if (!prop) {
-+			dev_err(vadc->dev, "Please define 0.625V channel\n");
-+			ret = -ENODEV;
-+			goto err;
-+		}
-+	}
- 
- 	ret = vadc_do_conversion(vadc, prop, &read_2);
- 	if (ret)
-@@ -381,11 +392,21 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
- 
- 	/* Ratiometric calibration */
- 	prop = vadc_get_channel(vadc, VADC_VDD_VADC);
-+	if (!prop) {
-+		dev_err(vadc->dev, "Please define VDD channel\n");
-+		ret = -ENODEV;
-+		goto err;
-+	}
- 	ret = vadc_do_conversion(vadc, prop, &read_1);
- 	if (ret)
- 		goto err;
- 
- 	prop = vadc_get_channel(vadc, VADC_GND_REF);
-+	if (!prop) {
-+		dev_err(vadc->dev, "Please define GND channel\n");
-+		ret = -ENODEV;
-+		goto err;
-+	}
- 	ret = vadc_do_conversion(vadc, prop, &read_2);
- 	if (ret)
- 		goto err;
--- 
-2.7.4
+And it is orthogonal to the first 3 patches in this series, because
+they move the PCH thermal delay to the noirq phase which is later than
+the arming of the RTC Fixed Event IIUC.
 
+> 2. Allows more suspends/resume cycles per time.  Say the early wake is
+> fixed.  Then we have to decide how long to sleep before being
+> suspended.  If we set it for 1 second, and suspend takes longer than 1
+> second, then all of our tests will fail with early wakeups and we have
+> tested nothing.
+
+We have tested "early" wakeups which is what the users would see on
+the system in question if they set the RTC wake time to 1 second
+before suspending.
+
+This may not be what we want to test, though, but that is a different
+problem, as discussed below.
+
+> If we set it to 60 seconds, and suspend takes 1
+> second, then 59/60 seconds are spent sleeping, when they could be
+> spent testing Linux.  With this patch, we can set it to the minimum of
+> 2 seconds right before we sleep, guaranteeing that we spend at least 1
+> second, and under 2 seconds sleeping, and the rest of the time testing
+> -- which allows us to meet the goal.
+
+So the goal specifically is to test the last phase of system suspend
+and in particular whether or not the platform has reached the specific
+minimum-power state at the end of it.
+
+In order to do that, we basically want to ignore all of the wakeup
+events except for the special RTC wakeup 1 second after the platform
+has been asked to get into the minimum-power state, so what we are
+talking about here really is a special suspend test mode using the RTC
+as a wakeup vehicle.
