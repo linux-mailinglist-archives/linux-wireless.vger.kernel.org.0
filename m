@@ -2,93 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D56E52D0F0
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 12:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D578952D197
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 13:37:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237095AbiESK5n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 May 2022 06:57:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41466 "EHLO
+        id S237472AbiESLhG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 May 2022 07:37:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237060AbiESK5l (ORCPT
+        with ESMTP id S231274AbiESLhB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 May 2022 06:57:41 -0400
-X-Greylist: delayed 93 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 19 May 2022 03:57:39 PDT
-Received: from azure-sdnproxy-3.icoremail.net (azure-sdnproxy.icoremail.net [20.232.28.96])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 8D3F6AF326;
-        Thu, 19 May 2022 03:57:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pku.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
-        Message-Id; bh=IM2J7NHYnrpaK9J+N0RQ6liKfpIkzPdy5Vj0scWlvm0=; b=a
-        hFy5lpRObySYXD8/fA9aWHSQuXau41ydyqvj6huPmdyD4vWobGeKcDMQuYxVwVFY
-        YpJC4VfC2K3/XqjRvmrFcztlkmpcQ4t5PgqRpzeizZ6kvMEtcSBFrlSEB2F/vBr4
-        /PVk0bv1h5V5vjcfOf/sNyNdPBL0VAjQcZg6xISHT4=
-Received: from localhost (unknown [10.129.21.144])
-        by front02 (Coremail) with SMTP id 54FpogB3fHiTIoZi47SYBg--.24223S2;
-        Thu, 19 May 2022 18:57:23 +0800 (CST)
-From:   Yongzhi Liu <lyz_cs@pku.edu.cn>
-To:     amitkarwar@gmail.com, ganapathi017@gmail.com,
-        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
-        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, arend.vanspriel@broadcom.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, fuyq@stu.pku.edu.cn,
-        Yongzhi Liu <lyz_cs@pku.edu.cn>
-Subject: [PATCH] mwifiex:  Fix potential dereference of NULL pointer
-Date:   Thu, 19 May 2022 03:57:19 -0700
-Message-Id: <1652957839-127949-1-git-send-email-lyz_cs@pku.edu.cn>
-X-Mailer: git-send-email 2.7.4
-X-CM-TRANSID: 54FpogB3fHiTIoZi47SYBg--.24223S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrtw1ftw4rJr4xZFW8Jw1DZFb_yoWDCrX_K3
-        97Za13Gr4UKw18Kw4jyFsxZr9Yyr43XFn7Can3trZ3CFWIv3y3ZrZ5ZFWkJrW3Cw4vvwnx
-        Jr98ta4rJayUXjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUb3AFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
-        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
-        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E
-        87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
-        8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_
-        JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
-        xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK
-        6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_Kr1UJr1l4I8I3I0E4IkC6x
-        0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-        zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-        4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-        CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-        nIWIevJa73UjIFyTuYvjfUF9a9DUUUU
-X-CM-SenderInfo: irzqijirqukmo6sn3hxhgxhubq/1tbiAwELBlPy7vJhCwAFsd
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Thu, 19 May 2022 07:37:01 -0400
+X-Greylist: delayed 4751 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 19 May 2022 04:36:58 PDT
+Received: from azure-sdnproxy-1.icoremail.net (azure-sdnproxy.icoremail.net [52.237.72.81])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 8F41339828;
+        Thu, 19 May 2022 04:36:57 -0700 (PDT)
+Received: by ajax-webmail-mail-app3 (Coremail) ; Thu, 19 May 2022 19:36:35
+ +0800 (GMT+08:00)
+X-Originating-IP: [124.236.130.193]
+Date:   Thu, 19 May 2022 19:36:35 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From:   duoming@zju.edu.cn
+To:     "Kalle Valo" <kvalo@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, amitkarwar@gmail.com,
+        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
+        huxinming820@gmail.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH net] net: wireless: marvell: mwifiex: fix sleep in
+ atomic context bugs
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210104(ab8c30b6)
+ Copyright (c) 2002-2022 www.mailtech.cn zju.edu.cn
+In-Reply-To: <87fsl53jic.fsf@kernel.org>
+References: <20220519101656.44513-1-duoming@zju.edu.cn>
+ <87fsl53jic.fsf@kernel.org>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
+MIME-Version: 1.0
+Message-ID: <257f8e7.216cd.180dc1af4d3.Coremail.duoming@zju.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: cC_KCgDHa7jDK4ZifB2FAA--.10644W
+X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAgkPAVZdtZx1iAACsY
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+        daVFxhVjvjDU=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If 'card' is not valid, then we need to check the
-field 'adapter' and 'priv_num' to avoid use of NULL
-pointer in function 'mwifiex_get_priv'. Fix this by
-adding the null pointer check on them.
-
-Fixes: 21c5c83ce ("mwifiex: support sysfs initiated device coredump")
-
-Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>
----
- drivers/net/wireless/marvell/mwifiex/usb.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
-index 8f01fcb..c635206 100644
---- a/drivers/net/wireless/marvell/mwifiex/usb.c
-+++ b/drivers/net/wireless/marvell/mwifiex/usb.c
-@@ -686,6 +686,8 @@ static void mwifiex_usb_coredump(struct device *dev)
- {
- 	struct usb_interface *intf = to_usb_interface(dev);
- 	struct usb_card_rec *card = usb_get_intfdata(intf);
-+	if (!card->adapter || !card->adapter->priv_num)
-+		return;
- 
- 	mwifiex_fw_dump_event(mwifiex_get_priv(card->adapter,
- 					       MWIFIEX_BSS_ROLE_ANY));
--- 
-2.7.4
-
+SGVsbG8sCgpPbiBUaHUsIDE5IE1heSAyMDIyIDEzOjI3OjA3ICswMzAwIEthbGxlIFZhbG8gd3Jv
+dGU6Cgo+ID4gVGhlcmUgYXJlIHNsZWVwIGluIGF0b21pYyBjb250ZXh0IGJ1Z3Mgd2hlbiB1cGxv
+YWRpbmcgZGV2aWNlIGR1bXAKPiA+IGRhdGEgb24gdXNiIGludGVyZmFjZS4gVGhlIHJvb3QgY2F1
+c2UgaXMgdGhhdCB0aGUgb3BlcmF0aW9ucyB0aGF0Cj4gPiBtYXkgc2xlZXAgYXJlIGNhbGxlZCBp
+biBmd19kdW1wX3RpbWVyX2ZuIHdoaWNoIGlzIGEgdGltZXIgaGFuZGxlci4KPiA+IFRoZSBjYWxs
+IHRyZWUgc2hvd3MgdGhlIGV4ZWN1dGlvbiBwYXRocyB0aGF0IGNvdWxkIGxlYWQgdG8gYnVnczoK
+PiA+Cj4gPiAgICAoSW50ZXJydXB0IGNvbnRleHQpCj4gPiBmd19kdW1wX3RpbWVyX2ZuCj4gPiAg
+IG13aWZpZXhfdXBsb2FkX2RldmljZV9kdW1wCj4gPiAgICAgZGV2X2NvcmVkdW1wdiguLi4sIEdG
+UF9LRVJORUwpCj4gPiAgICAgICBkZXZfY29yZWR1bXBtKCkKPiA+ICAgICAgICAga3phbGxvYyhz
+aXplb2YoKmRldmNkKSwgZ2ZwKTsgLy9tYXkgc2xlZXAKPiA+ICAgICAgICAgZGV2X3NldF9uYW1l
+Cj4gPiAgICAgICAgICAga29iamVjdF9zZXRfbmFtZV92YXJncwo+ID4gICAgICAgICAgICAga3Zh
+c3ByaW50Zl9jb25zdChHRlBfS0VSTkVMLCAuLi4pOyAvL21heSBzbGVlcAo+ID4gICAgICAgICAg
+ICAga3N0cmR1cChzLCBHRlBfS0VSTkVMKTsgLy9tYXkgc2xlZXAKPiA+Cj4gPiBUaGlzIHBhdGNo
+IG1vdmVzIHRoZSBvcGVyYXRpb25zIHRoYXQgbWF5IHNsZWVwIGludG8gYSB3b3JrIGl0ZW0uCj4g
+PiBUaGUgd29yayBpdGVtIHdpbGwgcnVuIGluIGFub3RoZXIga2VybmVsIHRocmVhZCB3aGljaCBp
+cyBpbgo+ID4gcHJvY2VzcyBjb250ZXh0IHRvIGV4ZWN1dGUgdGhlIGJvdHRvbSBoYWxmIG9mIHRo
+ZSBpbnRlcnJ1cHQuCj4gPiBTbyBpdCBjb3VsZCBwcmV2ZW50IGF0b21pYyBjb250ZXh0IGZyb20g
+c2xlZXBpbmcuCj4gPgo+ID4gRml4ZXM6IGY1ZWNkMDJhOGIyMCAoIm13aWZpZXg6IGRldmljZSBk
+dW1wIHN1cHBvcnQgZm9yIHVzYiBpbnRlcmZhY2UiKQo+ID4gU2lnbmVkLW9mZi1ieTogRHVvbWlu
+ZyBaaG91IDxkdW9taW5nQHpqdS5lZHUuY24+Cj4gCj4gSGF2ZSB5b3UgdGVzdGVkIHRoaXMgb24g
+cmVhbCBoYXJkd2FyZT8gT3IgaXMgdGhpcyBqdXN0IGEgdGhlb3JldGljYWwKPiBmaXg/CgpUaGlz
+IGlzIGEgdGhlb3JldGljYWwgZml4LiBJIGRvbid0IGhhdmUgdGhlIHJlYWwgaGFyZHdhcmUuCgpC
+ZXN0IHJlZ2FyZHMsCkR1b21pbmcgWmhvdQo=
