@@ -2,188 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E766552CC0F
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 08:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3028252CC40
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 May 2022 08:53:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231262AbiESGjY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 May 2022 02:39:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42612 "EHLO
+        id S234391AbiESGxs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 May 2022 02:53:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231940AbiESGjU (ORCPT
+        with ESMTP id S229562AbiESGxq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 May 2022 02:39:20 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CF13B82C9
-        for <linux-wireless@vger.kernel.org>; Wed, 18 May 2022 23:39:18 -0700 (PDT)
-X-UUID: 7d2659f85fe04b5bab4626200b881fa4-20220519
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.5,REQID:38029157-df3d-462d-a5a7-fb72770bb149,OB:0,LO
-        B:0,IP:0,URL:5,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACT
-        ION:release,TS:0
-X-CID-META: VersionHash:2a19b09,CLOUDID:c5bfd279-5ef6-470b-96c9-bdb8ced32786,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
-        ,QS:0,BEC:nil
-X-UUID: 7d2659f85fe04b5bab4626200b881fa4-20220519
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1468344312; Thu, 19 May 2022 14:39:11 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Thu, 19 May 2022 14:39:10 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 19 May 2022 14:39:09 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>,
-        Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Subject: [PATCH 3/3] mt76: mt7921: introduce BIOS SAR config in tx power
-Date:   Thu, 19 May 2022 14:38:24 +0800
-Message-ID: <2e6b69a763d60897639101506e39a2b1a81d8eab.1652941276.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <cover.1652941276.git.deren.wu@mediatek.com>
-References: <cover.1652941276.git.deren.wu@mediatek.com>
+        Thu, 19 May 2022 02:53:46 -0400
+X-Greylist: delayed 155062 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 18 May 2022 23:53:42 PDT
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 305D5B82FC;
+        Wed, 18 May 2022 23:53:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1652943219;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=9I1ByNdBJU9iQW2DNhg/h5E5pbMnvG3nYpxZmRsX1DI=;
+        b=wAVbfJ9XHqBzaF1USTjDN8fFEHpmvhojnDKQrPLoaC/U7KjBFQgG48Y16OEilW9jxf4QQM
+        3m+xNw0Rv2tSye2yWiCQJhf2LBp12OR6Hd6xJgKRAbyMq5gfqSSQ6GjZgiOQqd/7bpw1bn
+        qGHYXPI902jap7A3AeQFOMAcf4zFdDg=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>
+Cc:     netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+        Jakub Kicinski <kuba@kernel.org>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        johannes@sipsolutions.net, alex.aring@gmail.com,
+        mareklindner@neomailbox.ch, sw@simonwunderlich.de, a@unstable.cc,
+        linux-wireless@vger.kernel.org, linux-wpan@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: ifdefy the wireless pointers in struct net_device
+Date:   Thu, 19 May 2022 08:53:37 +0200
+Message-ID: <9613306.YnBLfnAi8y@ripper>
+In-Reply-To: <20220518181807.2030747-1-kuba@kernel.org>
+References: <20220518181807.2030747-1-kuba@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="nextPart4659350.0FORYR1UfH"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+--nextPart4659350.0FORYR1UfH
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com, Jakub Kicinski <kuba@kernel.org>, Stefan Schmidt <stefan@datenfreihafen.org>, johannes@sipsolutions.net, alex.aring@gmail.com, mareklindner@neomailbox.ch, sw@simonwunderlich.de, a@unstable.cc, linux-wireless@vger.kernel.org, linux-wpan@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: ifdefy the wireless pointers in struct net_device
+Date: Thu, 19 May 2022 08:53:37 +0200
+Message-ID: <9613306.YnBLfnAi8y@ripper>
+In-Reply-To: <20220518181807.2030747-1-kuba@kernel.org>
+References: <20220518181807.2030747-1-kuba@kernel.org>
 
-Add new function mt7921_set_tx_sar_pwr() to update SAR power from
-.set_sar_specs and BIOS setting. Both settings would be merged into
-mt76_freq_range_power for final tx power value.
+On Wednesday, 18 May 2022 20:18:07 CEST Jakub Kicinski wrote:
+> diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
+> index 83fb51b6e299..b8f8da7ee3de 100644
+> --- a/net/batman-adv/hard-interface.c
+> +++ b/net/batman-adv/hard-interface.c
+> @@ -307,9 +307,11 @@ static bool batadv_is_cfg80211_netdev(struct net_device *net_device)
+>         if (!net_device)
+>                 return false;
+>  
+> +#if IS_ENABLED(CONFIG_CFG80211)
+>         /* cfg80211 drivers have to set ieee80211_ptr */
+>         if (net_device->ieee80211_ptr)
+>                 return true;
+> +#endif
+>  
+>         return false;
+>  }
 
-Reviewed-by: Sean Wang <sean.wang@mediatek.com>
-Co-developed-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7921/init.c  |  3 +-
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 32 +++++++++++++------
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  2 ++
- 3 files changed, 26 insertions(+), 11 deletions(-)
+Acked-by: Sven Eckelmann <sven@narfation.org>
+--nextPart4659350.0FORYR1UfH
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index ae406f1b31a0..4043c81bfbca 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -34,14 +34,13 @@ mt7921_regd_notifier(struct wiphy *wiphy,
- {
- 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
- 	struct mt7921_dev *dev = mt7921_hw_dev(hw);
--	struct mt7921_phy *phy = mt7921_hw_phy(hw);
- 
- 	memcpy(dev->mt76.alpha2, request->alpha2, sizeof(dev->mt76.alpha2));
- 	dev->mt76.region = request->dfs_region;
- 
- 	mt7921_mutex_acquire(dev);
- 	mt76_connac_mcu_set_channel_domain(hw->priv);
--	mt76_connac_mcu_set_rate_txpower(phy->mt76);
-+	mt7921_set_tx_sar_pwr(hw, NULL);
- 	mt7921_mutex_release(dev);
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 80279f342109..c86d8805f291 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -257,7 +257,7 @@ int __mt7921_start(struct mt7921_phy *phy)
- 	if (err)
- 		return err;
- 
--	err = mt76_connac_mcu_set_rate_txpower(phy->mt76);
-+	err = mt7921_set_tx_sar_pwr(mphy->hw, NULL);
- 	if (err)
- 		return err;
- 
-@@ -548,7 +548,7 @@ static int mt7921_config(struct ieee80211_hw *hw, u32 changed)
- 	mt7921_mutex_acquire(dev);
- 
- 	if (changed & IEEE80211_CONF_CHANGE_POWER) {
--		ret = mt76_connac_mcu_set_rate_txpower(phy->mt76);
-+		ret = mt7921_set_tx_sar_pwr(hw, NULL);
- 		if (ret)
- 			goto out;
- 	}
-@@ -1469,20 +1469,34 @@ static void mt7921_ipv6_addr_change(struct ieee80211_hw *hw,
- }
- #endif
- 
-+int mt7921_set_tx_sar_pwr(struct ieee80211_hw *hw,
-+			  const struct cfg80211_sar_specs *sar)
-+{
-+	struct mt76_phy *mphy = hw->priv;
-+	int err;
-+
-+	if (sar) {
-+		err = mt76_init_sar_power(hw, sar);
-+		if (err)
-+			return err;
-+	}
-+
-+	mt7921_init_bios_sar_power(mt7921_hw_phy(hw), !sar);
-+
-+	err = mt76_connac_mcu_set_rate_txpower(mphy);
-+
-+	return err;
-+}
-+EXPORT_SYMBOL_GPL(mt7921_set_tx_sar_pwr);
-+
- static int mt7921_set_sar_specs(struct ieee80211_hw *hw,
- 				const struct cfg80211_sar_specs *sar)
- {
- 	struct mt7921_dev *dev = mt7921_hw_dev(hw);
--	struct mt76_phy *mphy = hw->priv;
- 	int err;
- 
- 	mt7921_mutex_acquire(dev);
--	err = mt76_init_sar_power(hw, sar);
--	if (err)
--		goto out;
--
--	err = mt76_connac_mcu_set_rate_txpower(mphy);
--out:
-+	err = mt7921_set_tx_sar_pwr(hw, sar);
- 	mt7921_mutex_release(dev);
- 
- 	return err;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index e5d541291919..a63c4848ced4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -501,4 +501,6 @@ mt7921_init_bios_sar_power(struct mt7921_phy *phy, bool set_default)
- 	return 0;
- }
- #endif
-+int mt7921_set_tx_sar_pwr(struct ieee80211_hw *hw,
-+			  const struct cfg80211_sar_specs *sar);
- #endif
--- 
-2.18.0
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmKF6XEACgkQXYcKB8Em
+e0b7JxAAvG4arhZjsM0vWxljExgbu0ArtAZG6my2XE6gczf1v1+DLcCnyLf2U8ps
+NmpPpt5wPXmZpKJMEvr+v/mm3U3m1nDjPxV/44aEvVh9APsIuB7qAfipT2hFaJiG
+0LijjxQZAUK+2NU3j4MQbSSLe/oJ4Ia6+sU6YjAU42C2TAJIGyJwyX5GMlS4dvjc
+B6sOGjaprfERSSPiN4ztpHveRPv+3tzUfl65Pui7qrYLetthCGx7dyqgrjBaXA92
+hB2/tJeAQTOa/hhhTPbZl3hzAH9WuypZB6zne6YoaJ4QIAmQqjoZf1rU+MY+WxhY
+2KtvuRSPeRtPx6uk01vVw65+GGBKEYrGY5hfXvtV4FKYsHXMHJheaTRogcyb99/a
+2XT/azMwSducaSjZ4xjOs9frLw5zJLiVUZDfrYxEcZq4NwaGn8WM1RFMbmnfE8I9
+3pbe2V3Q7CNlLJ1C1S7n1bp2F93B/aEpPnHPt6VzgYeRNA3oztjnHnsTUSlnKo1/
+hvuT61DAhlY3Pb4ucm5/3gymx/IfdBaxKEBYQcn+GGsXAltwmR4a2g7GW9ChrHB7
+Mc3skEknhyNAgoEV5ZDcpuqoInx2E0baAxSwM8jQxCY5Xg07MvtE/DYUII1n0USM
+YtEw+QZGXYNU+aaZVj3JygdOIoPz9UUzMGrkNahxuMKGIjTgDDc=
+=DM23
+-----END PGP SIGNATURE-----
+
+--nextPart4659350.0FORYR1UfH--
+
+
 
