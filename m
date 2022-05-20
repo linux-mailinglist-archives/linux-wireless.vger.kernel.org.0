@@ -2,64 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FAD652E81F
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 May 2022 10:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B3C952E838
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 May 2022 11:04:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236005AbiETI4e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 May 2022 04:56:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59290 "EHLO
+        id S1345182AbiETJEF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 May 2022 05:04:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347319AbiETI4d (ORCPT
+        with ESMTP id S237101AbiETJEE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 May 2022 04:56:33 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44BA45A2C3
-        for <linux-wireless@vger.kernel.org>; Fri, 20 May 2022 01:56:32 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1nryQr-00075f-K0; Fri, 20 May 2022 10:56:25 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1nryQq-0005Y9-NT; Fri, 20 May 2022 10:56:24 +0200
-Date:   Fri, 20 May 2022 10:56:24 +0200
-From:   "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux@ulli-kroll.de" <linux@ulli-kroll.de>,
-        "martin.blumenstingl@googlemail.com" 
-        <martin.blumenstingl@googlemail.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "neojou@gmail.com" <neojou@gmail.com>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>
-Subject: Re: [PATCH 10/10] rtw88: Add rtw8822cu chipset support
-Message-ID: <20220520085624.GF25578@pengutronix.de>
-References: <20220518082318.3898514-1-s.hauer@pengutronix.de>
- <20220518082318.3898514-11-s.hauer@pengutronix.de>
- <b19fcc328a8e436d27579bbf9e217a2be71b57b5.camel@realtek.com>
+        Fri, 20 May 2022 05:04:04 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D26AEAD2A
+        for <linux-wireless@vger.kernel.org>; Fri, 20 May 2022 02:04:03 -0700 (PDT)
+X-UUID: ea964a35bced48f48ed0769782e46feb-20220520
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.5,REQID:4b16dcb3-f01e-4278-935c-4b2e86aa4e7f,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACT
+        ION:release,TS:-5
+X-CID-META: VersionHash:2a19b09,CLOUDID:d114ff79-5ef6-470b-96c9-bdb8ced32786,C
+        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil
+        ,QS:0,BEC:nil
+X-UUID: ea964a35bced48f48ed0769782e46feb-20220520
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1607449350; Fri, 20 May 2022 17:03:58 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
+ Fri, 20 May 2022 17:03:57 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.3 via Frontend Transport; Fri, 20 May 2022 17:03:57 +0800
+From:   Deren Wu <Deren.Wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH v2 0/3] introduce ACPI SAR support
+Date:   Fri, 20 May 2022 17:03:36 +0800
+Message-ID: <cover.1653032296.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b19fcc328a8e436d27579bbf9e217a2be71b57b5.camel@realtek.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 10:53:21 up 50 days, 21:23, 57 users,  load average: 0.04, 0.05,
- 0.07
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,49 +70,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 20, 2022 at 08:03:30AM +0000, Pkshih wrote:
-> On Wed, 2022-05-18 at 10:23 +0200, Sascha Hauer wrote:
-> > Add support for the rtw8822cu chipset based on
-> > https://github.com/ulli-kroll/rtw88-usb.git
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  drivers/net/wireless/realtek/rtw88/Kconfig    | 11 +++++
-> >  drivers/net/wireless/realtek/rtw88/Makefile   |  3 ++
-> >  drivers/net/wireless/realtek/rtw88/rtw8822c.c | 24 +++++++++++
-> >  .../net/wireless/realtek/rtw88/rtw8822cu.c    | 40 +++++++++++++++++++
-> >  .../net/wireless/realtek/rtw88/rtw8822cu.h    | 15 +++++++
-> >  5 files changed, 93 insertions(+)
-> >  create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822cu.c
-> >  create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822cu.h
-> > 
-> > 
-> 
-> [...]
-> 
-> > +MODULE_AUTHOR("Realtek Corporation");
-> 
-> Out of curiosity, there are many authors in your patchset.
-> Do you collect these driver from various places?
+From: Deren Wu <deren.wu@mediatek.com>
 
-No, the driver is completely based on
-https://github.com/ulli-kroll/rtw88-usb.git
+Introduce ACPI SAR support for mt7921 serials.
 
-> 
-> rtw8723du.c:MODULE_AUTHOR("Hans Ulli Kroll <linux@ulli-kroll.de>");
-> rtw8821cu.c:MODULE_AUTHOR("Hans Ulli Kroll <linux@ulli-kroll.de>");
-> rtw8822bu.c:MODULE_AUTHOR("Realtek Corporation");
-> rtw8822cu.c:MODULE_AUTHOR("Realtek Corporation");
-> usb.c:MODULE_AUTHOR("Realtek Corporation");
+Changes since v1:
+- replace BIOS with ACPI
+- replace "6G" with "6 GHz" in patch subject
+- remove unnecessary function export
 
-The driver is originally from Neo Jou (at least that's what the git log
-tells me). The rtw8723du and rtw8821cu support was added later by Ulli
-Kroll.
+Deren Wu (3):
+  mt76: add 6 GHz band support in mt76_sar_freq_ranges
+  mt76: mt7921: introduce ACPI SAR support
+  mt76: mt7921: introduce ACPI SAR config in tx power
 
-Sascha
+ drivers/net/wireless/mediatek/mt76/mac80211.c |   6 +
+ .../wireless/mediatek/mt76/mt7921/Makefile    |   1 +
+ .../wireless/mediatek/mt76/mt7921/acpi_sar.c  | 279 ++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7921/acpi_sar.h  |  93 ++++++
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |   5 +-
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |  31 +-
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  22 ++
+ 7 files changed, 426 insertions(+), 11 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.18.0
+
