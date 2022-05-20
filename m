@@ -2,150 +2,271 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A7EF52E3D9
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 May 2022 06:35:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 063AA52E45B
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 May 2022 07:33:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345273AbiETEfA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 May 2022 00:35:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37102 "EHLO
+        id S1345592AbiETFcc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 May 2022 01:32:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234666AbiETEe5 (ORCPT
+        with ESMTP id S235577AbiETFcb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 May 2022 00:34:57 -0400
-X-Greylist: delayed 896 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 19 May 2022 21:34:54 PDT
-Received: from CN01-SHA-obe.outbound.protection.partner.outlook.cn (mail-shahn0099.outbound.protection.partner.outlook.cn [42.159.164.99])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CB3D11801B;
-        Thu, 19 May 2022 21:34:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=U53Sc9W/cvpZF6Zg7ExNgusicyH8UbMZA5IMjXFAW0Knkr6+YZisXkl5gnuskxkeMY73b2OWsvRRqgWfQi9EYYum/AbTIn2R79VZ9f0Pc72AsZbPiPVy0yO1P5VOcVtlDoE1NgmCQ2xFLgfW7dK06x/pW6e40Nqcu0LL8St5fnmDeKpProtr4ujEfdO+EbItJGeSZXodrtPyCq0Wcoh3JaQtZyTG06xsVuLP/L9XBFk623uzSz5Qqx+BVGtLoA+kZlkiqhGuflmP040YHegVuBM52MzEL5Uu5uGbCg+kY4Tj+91p2Xwb8eCy1L54uNL2F9T0+OZCdx+ZGryp51zJxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XHa7Vpxtm/u3S4otqoZTmpXUuVJNGmaT4A6UJUMDuKo=;
- b=DLVYgyqK1Tc8RT1DzbVlphEZBDaO6ooU+sljOK4Kwe287cZ+jSjSUppqBqgnB6qes1ecG00W2XwxxDRoAyvab7vmBgGqbmASX1oEx6v3/IDji0W6ypwD0LcYFdIqd/VrqQByixYNZ0L4aaCCarSt8qj/4C1l3JASB32HXe4uHKDpATwOmRKDL0NRBtx7b41vBQKmSrsTMCZOzn2zr2VTwktwvNFRtpJ8CIHSSJ0juXvnQZJ4vhxtr+VCr++IewdxAiJR0uAR0A/mLCfdmF06tqJewYUtLaBbmVFDqqalTTB9ZGE5lRLOjP13EWEVtWuMMGk4mT/bXC9lmWi239Klfg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=gientech.com; dmarc=pass action=none header.from=gientech.com;
- dkim=pass header.d=gientech.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gientech.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XHa7Vpxtm/u3S4otqoZTmpXUuVJNGmaT4A6UJUMDuKo=;
- b=jDaTucfQIdyn0lcdd6uScrYEtiJuc02Td9uODmxhKEd1s5wWlb2tRet1GckmudstGc4etC01C0MBUQ8g0T7uxBRcv/nGdFIcXNZufFNp5sc99qC7MMjPDvrtHusT0GhKCTy9TSodN49+iA22jDWdnHh3/l4XEp2vEY0e/9EG46FZCi2qol6Nl9wJxEwuplhURDtKHvWE/m4YWQ+WPDZA3/Vh8IbLDh5IoEyJvfAw/IBHTe+3KVnmJXd9N0effb9p4CtQRa3rpycXVGm+s+HcdDyVpslNQnJKqIWW1+DfQU+zDApo2lRdSsapNP9zpaMhhF4Q7tbOjc7JeHB8FsjC4w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=gientech.com;
-Received: from SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn (10.43.110.19) by
- SHXPR01MB0509.CHNPR01.prod.partner.outlook.cn (10.43.110.12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5273.14; Fri, 20 May 2022 04:19:56 +0000
-Received: from SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn ([10.43.110.19])
- by SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn ([10.43.110.19]) with mapi
- id 15.20.5273.017; Fri, 20 May 2022 04:19:56 +0000
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Ree
-To:     Recipients <cuidong.liu@gientech.com>
-From:   "J Wu" <cuidong.liu@gientech.com>
-Date:   Wed, 18 May 2022 21:19:18 +0000
-Reply-To: contact@jimmywu.online
-X-ClientProxiedBy: BJSPR01CA0015.CHNPR01.prod.partner.outlook.cn
- (10.43.34.155) To SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn
- (10.43.110.19)
-Message-ID: <SHXPR01MB0623CDE66AD90B4EBEA7BE6A89D19@SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn>
+        Fri, 20 May 2022 01:32:31 -0400
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B5F6F137D
+        for <linux-wireless@vger.kernel.org>; Thu, 19 May 2022 22:32:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1653024750; x=1684560750;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=lHbrc7VNeAsy+eDs9RZ8tRISmZ49meZSrww9VNUBqGY=;
+  b=FV8Ty7RvPno1UflhdasN9ZWbncIjFQz3paW97m+pKuNLKM1btqBmqUjZ
+   oT93cs63oPmaj9Rb7Deb9WYmsse71huczaOvAdf97gIlRjoqmIP5F4cTx
+   FSIHfCi+c2JDuxfTz9Vu+h1bDQ4T0Y7UEEkYJKCBCEfySN++YNH+cMKyp
+   U=;
+Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 19 May 2022 22:32:29 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2022 22:32:29 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Thu, 19 May 2022 22:31:54 -0700
+Received: from hu-vjakkam-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Thu, 19 May 2022 22:31:53 -0700
+From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH v3] cfg80211: Increase akm_suites array size in cfg80211_crypto_settings
+Date:   Fri, 20 May 2022 11:01:42 +0530
+Message-ID: <1653024702-5304-1-git-send-email-quic_vjakkam@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1285adc9-e304-4310-661a-08da39141ffa
-X-MS-TrafficTypeDiagnostic: SHXPR01MB0509:EE_
-X-Microsoft-Antispam-PRVS: <SHXPR01MB0509287DC1B285E160A5050789D39@SHXPR01MB0509.CHNPR01.prod.partner.outlook.cn>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?cm1/ZaWoOumpk/++hFlvUcqm3skW0XWmpu6WJXB/0LW5bFZ31KSHayvhM4?=
- =?iso-8859-1?Q?lt2oZbSoav/xN5qvSf0sfzHiT2D9tt7Bm+kIcNjwIJ/c2NbpFfRLC8IOsd?=
- =?iso-8859-1?Q?ve7ajqh/gJ9Dir6tvQzfYfR9BR+wI1YvR92Lq4STABN1o8H0sYMB3MWTYw?=
- =?iso-8859-1?Q?ElIT0d4TgJEnEnx0/dVaaE5+Bqa/cS8tCjxXKonvJXwUpLtjWkQU/pxR45?=
- =?iso-8859-1?Q?ij9aIuU447nW2tVeYxHhpxyFqi8Pfwc6qv14ox+DI8RkcpVulq0zpuZYRD?=
- =?iso-8859-1?Q?TN2Jib6Ph3lJsk2jEKfqc2mxMiKh2QpXw8njQXT+TOLdgFneoPhMX5qaWq?=
- =?iso-8859-1?Q?RN3fVn8RHWzdjdIotiAUXt0qIzyoyXSyXsknI1vpCfKX64lUfrttqaDMNw?=
- =?iso-8859-1?Q?XjF01X33zP9bS19SSw/hxZnmAfBIqNMpS+C+9iNIMGENcF36G3nfOUK1Z4?=
- =?iso-8859-1?Q?/EXCgJbUzRltYjWzezJ9DdL+noc3OwXfkqHR5/7yn6CmotZECGKJBnfX46?=
- =?iso-8859-1?Q?vL3c+TJ/7tYsN+l4OHUj12voP/qg/Y2l122a//wMpCmZa610z5fUpSqrdq?=
- =?iso-8859-1?Q?mU7rSh6nK4CXd3D/a9TSlIfV6pbQ7SeEm7jqF4yWQYhVe8PUZqPnHCtwwe?=
- =?iso-8859-1?Q?BLfUBxgYD5qQITq32U+TgG2rbZhRNRVCO7XD0gbgjLsOGwn0DerNBnWIEY?=
- =?iso-8859-1?Q?uRd4w1iAysc4MndAPlN+8vkTxwO0hCjggEeo+im61bDdeEDwjZe9d/syMw?=
- =?iso-8859-1?Q?XouLeg9l9GPTsgdt4JCiKkXKdBx2KKF5ZBF3LzMpqSw3aPx19kMy6Qhs+M?=
- =?iso-8859-1?Q?XcBv4duq0sv2B4hO29OJGdoBPaSJSj30gxXZ02kl6p8KpspowFILWPjEF5?=
- =?iso-8859-1?Q?q6v16nAu3ns6sWsg6v2W2Ja/D3UF/JD+RlxFvPsOJy9vaQneKtZv6pfNlx?=
- =?iso-8859-1?Q?n0M+AHaVodmJFd6+EIszRRBBn+ygBa1hpjvNPuEywkSEttFpgj27G9TJcW?=
- =?iso-8859-1?Q?H5ni7eSpZsvouhs+VnlDRMM1ZwaoMGTLX/XoI1wx7gtYRgg/tufKHespEE?=
- =?iso-8859-1?Q?iQ=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:5;SRV:;IPV:NLI;SFV:SPM;H:SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:OSPM;SFS:(13230001)(366004)(6666004)(52116002)(7116003)(6200100001)(40180700001)(8676002)(33656002)(40160700002)(558084003)(4270600006)(86362001)(66476007)(66556008)(66946007)(9686003)(26005)(3480700007)(8936002)(55016003)(6862004)(19618925003)(7696005)(7416002)(7366002)(7406005)(2906002)(38350700002)(38100700002)(186003)(508600001)(62346012);DIR:OUT;SFP:1501;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?20VE92N5m5+eBcutZCZuePzuuVgjOyWjIIPNE2gmQ7V523KZZlZIgt36Lg?=
- =?iso-8859-1?Q?yS4mAVvoUaE3k7i8ZRSepYssU8kLzvijtjzlVUtm9+Z5DoFO7LKUGC44Fc?=
- =?iso-8859-1?Q?oCdjxt4avJXbEYduxwN9jGv9UqCM1W6geDz5LYEHzELe8bZ2J+g2pa6/eA?=
- =?iso-8859-1?Q?vdmcmATgQMRHdZCkH2/0hgQBBuikmJnPQ7sPnGFsEeEgnIbD+NgiLKpHFU?=
- =?iso-8859-1?Q?dtKFMSnn8ZciqIE4N7C+gwQKzsenjTI/SFEYkzz5sNXX5FLiSUs1awltYN?=
- =?iso-8859-1?Q?rl/w83oIPuzJsgrNC0P6gCH45ss3DyrsdwPatveeisLBtk2ZUBxFYhR1hp?=
- =?iso-8859-1?Q?Ma5dfJHz/KIVpKoinytEZGzoJ5wO8wGaiyCk0O7XNZ0xkSEDp5lM6Unus9?=
- =?iso-8859-1?Q?lQAxEaVtru/c4qCDP7He2Q5yHkl0y622aXmRpvnFlfT8erefFszHkhaUG2?=
- =?iso-8859-1?Q?XI8mFg+p0v4b0mUXPOtQ782mlFUnX/j7wEY8shgaQofxPR3xL4nu8YCEut?=
- =?iso-8859-1?Q?w2ldEHysbGNRHfzkqaTYVSuecqkpncoYdou/0k2h7xgQWKNnbo5pUdRv4O?=
- =?iso-8859-1?Q?K0JVRqyhcrS6iVMYYOYX/DLvMIrkS6jp+jA0WArk5TNyXb+J4Lmrw4QZux?=
- =?iso-8859-1?Q?bNLTyGGWJeM41W/4muBitoE+mjITHeWc5ax5XVqNSjmSumSPtdWWek7twX?=
- =?iso-8859-1?Q?0wX1tIvp1zQir6jziKyHvUMN9DTZHw4YMjhzF1YCJUW6fsA3fE+9Org1EA?=
- =?iso-8859-1?Q?gdqBxLGZyI+BmISlVD9NrXSfonxV7hRPw/GCxH8yotdpxqEZp7r2lCU+6X?=
- =?iso-8859-1?Q?eFMA7SIeHCT43JXDQvlEqg8Hs1tQUeWJIIKWINmRAW6rPhAeBXCdNHM3yF?=
- =?iso-8859-1?Q?CPcO5xT3FOM6peKVPeeIaHApIZ2tkKFe/LL9bMgP+Pg2+JRUxK1aiByH8r?=
- =?iso-8859-1?Q?Afhoi8jg4kwWaxn0Az6zKQYkNe/XT+MW7K8V4eRa5+QsYcw3wvv/rurdvB?=
- =?iso-8859-1?Q?jevt91GH+KmQu6/uZ9pP7ODAsUUdP6je8Eoa3UMrV8ehsP+W+F/vBjirTm?=
- =?iso-8859-1?Q?Q3fIWqhBrhqq+b19pwazZfieR/xEpsV2wzvC9vCHbjMVLxai43aC3kkpYJ?=
- =?iso-8859-1?Q?oW1yHpU5OJFsVoZNNYxnEfUEKIFVCEROL7EcKOBwkLoMG9PDeuDjKbxMel?=
- =?iso-8859-1?Q?CokCk1aVI5IgUyX4oQdhGKnUJyFv0BflUEYDL6ewTIAcZvaJxCP5vJNJA7?=
- =?iso-8859-1?Q?L2n7+OwmUqdQu4E5ehU1Lh5zPzov7O/VHqOqllLqRvg3dBTv5RkR357YfS?=
- =?iso-8859-1?Q?NaUfCCSMC602Z6jARgwFuQSoeXa4STum75WIN/9U36zYNsCN25Auv/q2MC?=
- =?iso-8859-1?Q?awzVqw4M9Cw0JJbjZUEOQSmplCF4F/xCqyqDVsDm8v44I1g+voN+sS0Gc7?=
- =?iso-8859-1?Q?QMdccGdMP1aYYKDOWDtvxIuDneWN4nJM8y2CICB9upkLOIc72wWLuCQKP9?=
- =?iso-8859-1?Q?/cc9h9GaEBlSuCg9vwa6lSFzr7OFZsCskCM7f2OJSorGpk0ZT+PVs0/hEo?=
- =?iso-8859-1?Q?O1MXoVU9/jhf+0tuxjJaHMxCKFc1KrflSlwqKXCQsQwY9vCoPs225/+RYa?=
- =?iso-8859-1?Q?dnoEzhq7nWXwMSbSGusy4u9oPmQB7Kwld9Ud/BYOxM/fI7Mj94X1GMLJGI?=
- =?iso-8859-1?Q?ED5/y+0NnGno2N9tyeCHz1r0dPcy0j8k2qgDAJ30K5iD3Ryp/vYMa5Ovtn?=
- =?iso-8859-1?Q?Dq8g=3D=3D?=
-X-OriginatorOrg: gientech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1285adc9-e304-4310-661a-08da39141ffa
-X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0623.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2022 21:19:42.6073
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 89592e53-6f9d-4b93-82b1-9f8da689f1b4
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kPRZmwQ7fsDsbbUNOZ7BcXEHImA3ZnCm/zzwAHOc68LPad8GfhrGXB4JyRAMlyEGVNzImiiNgPIaR8Oo5Qn3yS8oAtj6RY+3OUj2w4wAa2w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0509
-X-Spam-Status: Yes, score=6.4 required=5.0 tests=BAYES_50,DATE_IN_PAST_24_48,
-        DKIM_INVALID,DKIM_SIGNED,RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_PSBL,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
-        *      bl.spamcop.net
-        *      [Blocked - see <https://www.spamcop.net/bl.shtml?42.159.164.99>]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4705]
-        *  2.7 RCVD_IN_PSBL RBL: Received via a relay in PSBL
-        *      [42.159.164.99 listed in psbl.surriel.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        *  1.3 DATE_IN_PAST_24_48 Date: is 24 to 48 hours before Received:
-        *      date
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-X-Spam-Level: ******
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Can you do a job with me?
+Increase akm_suites array size in struct cfg80211_crypto_settings to 10
+and advertise the capability to userspace. This allows userspace to send
+more than two AKMs to driver in netlink commands such as
+NL80211_CMD_CONNECT.
+
+This capability needed for implementing WPA3-Personal transition mode
+correctly with any driver that handles roaming internally. Currently,
+the possible AKMs for multi-AKM connect can include PSK, PSK-SHA-256,
+SAE, FT-PSK and FT-SAE since the count is already 5, Increasing
+the akm_suites array size to 10 should be reasonable for future
+usecases.
+
+Contains a fix for the issue:
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+---
+v3:
+ - Increase akm_suites array size in cfg80211_crypto_settings instead
+   of allocating the array dynamically.
+v2:
+ - Fixed issue reported by kernel test robot.
+---
+ drivers/net/wireless/quantenna/qtnfmac/commands.c | 12 ++++++++----
+ include/net/cfg80211.h                            | 11 ++++++++++-
+ include/uapi/linux/nl80211.h                      | 14 ++++++++++++++
+ net/wireless/core.c                               |  6 ++++++
+ net/wireless/nl80211.c                            | 10 +++++++++-
+ 5 files changed, 47 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/commands.c b/drivers/net/wireless/quantenna/qtnfmac/commands.c
+index c68563c..2c84736 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/commands.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/commands.c
+@@ -241,6 +241,7 @@ int qtnf_cmd_send_start_ap(struct qtnf_vif *vif,
+ 	struct qlink_auth_encr *aen;
+ 	int ret;
+ 	int i;
++	int n;
+ 
+ 	if (!qtnf_cmd_start_ap_can_fit(vif, s))
+ 		return -E2BIG;
+@@ -280,8 +281,9 @@ int qtnf_cmd_send_start_ap(struct qtnf_vif *vif,
+ 	for (i = 0; i < QLINK_MAX_NR_CIPHER_SUITES; i++)
+ 		aen->ciphers_pairwise[i] =
+ 				cpu_to_le32(s->crypto.ciphers_pairwise[i]);
+-	aen->n_akm_suites = cpu_to_le32(s->crypto.n_akm_suites);
+-	for (i = 0; i < QLINK_MAX_NR_AKM_SUITES; i++)
++	n = min(QLINK_MAX_NR_AKM_SUITES, s->crypto.n_akm_suites);
++	aen->n_akm_suites = cpu_to_le32(n);
++	for (i = 0; i < n; i++)
+ 		aen->akm_suites[i] = cpu_to_le32(s->crypto.akm_suites[i]);
+ 	aen->control_port = s->crypto.control_port;
+ 	aen->control_port_no_encrypt = s->crypto.control_port_no_encrypt;
+@@ -2076,6 +2078,7 @@ int qtnf_cmd_send_connect(struct qtnf_vif *vif,
+ 	struct qlink_auth_encr *aen;
+ 	int ret;
+ 	int i;
++	int n;
+ 	u32 connect_flags = 0;
+ 
+ 	cmd_skb = qtnf_cmd_alloc_new_cmdskb(vif->mac->macid, vif->vifid,
+@@ -2132,9 +2135,10 @@ int qtnf_cmd_send_connect(struct qtnf_vif *vif,
+ 		aen->ciphers_pairwise[i] =
+ 			cpu_to_le32(sme->crypto.ciphers_pairwise[i]);
+ 
+-	aen->n_akm_suites = cpu_to_le32(sme->crypto.n_akm_suites);
++	n = min(QLINK_MAX_NR_AKM_SUITES, sme->crypto.n_akm_suites);
++	aen->n_akm_suites = cpu_to_le32(n);
+ 
+-	for (i = 0; i < QLINK_MAX_NR_AKM_SUITES; i++)
++	for (i = 0; i < n; i++)
+ 		aen->akm_suites[i] = cpu_to_le32(sme->crypto.akm_suites[i]);
+ 
+ 	aen->control_port = sme->crypto.control_port;
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index cc8a988..33919256 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1061,6 +1061,7 @@ struct survey_info {
+ };
+ 
+ #define CFG80211_MAX_WEP_KEYS	4
++#define CFG80211_MAX_NUM_AKM_SUITES	10
+ 
+ /**
+  * struct cfg80211_crypto_settings - Crypto settings
+@@ -1112,7 +1113,7 @@ struct cfg80211_crypto_settings {
+ 	int n_ciphers_pairwise;
+ 	u32 ciphers_pairwise[NL80211_MAX_NR_CIPHER_SUITES];
+ 	int n_akm_suites;
+-	u32 akm_suites[NL80211_MAX_NR_AKM_SUITES];
++	u32 akm_suites[CFG80211_MAX_NUM_AKM_SUITES];
+ 	bool control_port;
+ 	__be16 control_port_ethertype;
+ 	bool control_port_no_encrypt;
+@@ -5134,6 +5135,13 @@ struct wiphy_iftype_akm_suites {
+  * @ema_max_profile_periodicity: maximum profile periodicity supported by
+  *	the driver. Setting this field to a non-zero value indicates that the
+  *	driver supports enhanced multi-BSSID advertisements (EMA AP).
++ * @max_num_akm_suites: maximum number of AKM suites allowed for
++ *	configuration through %NL80211_CMD_CONNECT, %NL80211_CMD_ASSOCIATE and
++ *	%NL80211_CMD_START_AP. Set to NL80211_MAX_NR_AKM_SUITES if not set by
++ *	driver. If set by driver minimum allowed value is
++ *	NL80211_MAX_NR_AKM_SUITES in order to avoid compatibility issues with
++ *	legacy userspace and maximum allowed value is
++ *	CFG80211_MAX_NUM_AKM_SUITES.
+  */
+ struct wiphy {
+ 	struct mutex mtx;
+@@ -5280,6 +5288,7 @@ struct wiphy {
+ 
+ 	u8 mbssid_max_interfaces;
+ 	u8 ema_max_profile_periodicity;
++	u16 max_num_akm_suites;
+ 
+ 	char priv[] __aligned(NETDEV_ALIGN);
+ };
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index d9490e3..246bd00 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -2663,6 +2663,13 @@ enum nl80211_commands {
+  *	association request when used with NL80211_CMD_NEW_STATION). Can be set
+  *	only if %NL80211_STA_FLAG_WME is set.
+  *
++ * @NL80211_ATTR_MAX_NUM_AKM_SUITES: U16 attribute. Indicates maximum number of
++ *	AKM suites allowed for %NL80211_CMD_CONNECT, %NL80211_CMD_ASSOCIATE and
++ *	%NL80211_CMD_START_AP in %NL80211_CMD_GET_WIPHY response. If this
++ *	attribute is not present userspace shall consider maximum number of AKM
++ *	suites allowed as %NL80211_MAX_NR_AKM_SUITES which is the legacy maximum
++ *	number prior to the introduction of this attribute.
++ *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -3177,6 +3184,8 @@ enum nl80211_attrs {
+ 
+ 	NL80211_ATTR_DISABLE_EHT,
+ 
++	NL80211_ATTR_MAX_NUM_AKM_SUITES,
++
+ 	/* add attributes here, update the policy in nl80211.c */
+ 
+ 	__NL80211_ATTR_AFTER_LAST,
+@@ -3231,6 +3240,11 @@ enum nl80211_attrs {
+ #define NL80211_HE_MIN_CAPABILITY_LEN           16
+ #define NL80211_HE_MAX_CAPABILITY_LEN           54
+ #define NL80211_MAX_NR_CIPHER_SUITES		5
++
++/*
++ * NL80211_MAX_NR_AKM_SUITES is obsolete when %NL80211_ATTR_MAX_NUM_AKM_SUITES
++ * present in %NL80211_CMD_GET_WIPHY response.
++ */
+ #define NL80211_MAX_NR_AKM_SUITES		2
+ #define NL80211_EHT_MIN_CAPABILITY_LEN          13
+ #define NL80211_EHT_MAX_CAPABILITY_LEN          51
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index f08d4b3..8d42fc4 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -913,6 +913,12 @@ int wiphy_register(struct wiphy *wiphy)
+ 		return -EINVAL;
+ #endif
+ 
++	if (!wiphy->max_num_akm_suites)
++		wiphy->max_num_akm_suites = NL80211_MAX_NR_AKM_SUITES;
++	else if (wiphy->max_num_akm_suites < NL80211_MAX_NR_AKM_SUITES ||
++		 wiphy->max_num_akm_suites > CFG80211_MAX_NUM_AKM_SUITES)
++		return -EINVAL;
++
+ 	/* check and set up bitrates */
+ 	ieee80211_set_bitrate_flags(wiphy);
+ 
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 842f82f..2134430 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -792,6 +792,10 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 				 NL80211_EHT_MIN_CAPABILITY_LEN,
+ 				 NL80211_EHT_MAX_CAPABILITY_LEN),
+ 	[NL80211_ATTR_DISABLE_EHT] = { .type = NLA_FLAG },
++	[NL80211_ATTR_MAX_NUM_AKM_SUITES] =
++		NLA_POLICY_RANGE(NLA_U16,
++				 NL80211_MAX_NR_AKM_SUITES,
++				 CFG80211_MAX_NUM_AKM_SUITES),
+ };
+ 
+ /* policy for the key attributes */
+@@ -2891,6 +2895,10 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
+ 		if (nl80211_put_mbssid_support(&rdev->wiphy, msg))
+ 			goto nla_put_failure;
+ 
++		if (nla_put_u16(msg, NL80211_ATTR_MAX_NUM_AKM_SUITES,
++				rdev->wiphy.max_num_akm_suites))
++			goto nla_put_failure;
++
+ 		/* done */
+ 		state->split_start = 0;
+ 		break;
+@@ -10263,7 +10271,7 @@ static int nl80211_crypto_settings(struct cfg80211_registered_device *rdev,
+ 		if (len % sizeof(u32))
+ 			return -EINVAL;
+ 
+-		if (settings->n_akm_suites > NL80211_MAX_NR_AKM_SUITES)
++		if (settings->n_akm_suites > rdev->wiphy.max_num_akm_suites)
+ 			return -EINVAL;
+ 
+ 		memcpy(settings->akm_suites, data, len);
+-- 
+2.7.4
+
