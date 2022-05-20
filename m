@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DF4252E60C
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 May 2022 09:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6CD452E60B
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 May 2022 09:18:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346211AbiETHSh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 May 2022 03:18:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44920 "EHLO
+        id S1346236AbiETHSj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 May 2022 03:18:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241014AbiETHSc (ORCPT
+        with ESMTP id S1345619AbiETHSe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 May 2022 03:18:32 -0400
+        Fri, 20 May 2022 03:18:34 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 269573ED17
-        for <linux-wireless@vger.kernel.org>; Fri, 20 May 2022 00:18:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B12E93ED22
+        for <linux-wireless@vger.kernel.org>; Fri, 20 May 2022 00:18:02 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24K7HtAV2023730, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24K7HtAV2023730
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24K7HuQhA023735, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24K7HuQhA023735
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 20 May 2022 15:17:55 +0800
+        Fri, 20 May 2022 15:17:56 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Fri, 20 May 2022 15:17:55 +0800
+ 15.1.2308.27; Fri, 20 May 2022 15:17:56 +0800
 Received: from localhost (172.16.17.21) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 20 May
- 2022 15:17:54 +0800
+ 2022 15:17:56 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>,
         <kevin_yang@realtek.com>
-Subject: [PATCH 4/6] rtw89: 8852c: rfk: re-calibrate RX DCK once thermal changes a lot
-Date:   Fri, 20 May 2022 15:17:29 +0800
-Message-ID: <20220520071731.38563-5-pkshih@realtek.com>
+Subject: [PATCH 5/6] rtw89: sar: adjust and support SAR on 6GHz band
+Date:   Fri, 20 May 2022 15:17:30 +0800
+Message-ID: <20220520071731.38563-6-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220520071731.38563-1-pkshih@realtek.com>
 References: <20220520071731.38563-1-pkshih@realtek.com>
@@ -56,7 +56,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzUvMjAgpFekyCAwNjowMDowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -69,117 +69,258 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RX DCK is receiver DC calibration. To keep good RF performance, do this
-calibration again if the delta of thermal value from the last calibration
-is more than 8.
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
+Since SAR is more expected to follow U-NII bands to plan subbands,
+division of 6GHz band is quite different from defined enum of subbands
+which is used by PHY in most cases. It's hard and painful if we want to
+keep using the same enum on SAR. So, we introduce another enum for SAR
+subbands and adjust SAR flow to use it.
+
+Besides, since 6GHz SAR subbands won't be divided with edge alignment,
+some cases will span two SAR subbands. For these cases, we describe them
+within an array of rtw89_sar_span and take the smaller one between SAR
+settings of the two subbands.
+
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h     |  5 ++++
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
- .../net/wireless/realtek/rtw89/rtw8852c_rfk.c | 27 +++++++++++++++++++
- .../net/wireless/realtek/rtw89/rtw8852c_rfk.h |  1 +
- 4 files changed, 34 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.h  |  19 ++-
+ drivers/net/wireless/realtek/rtw89/debug.h |   1 +
+ drivers/net/wireless/realtek/rtw89/sar.c   | 140 ++++++++++++++++++---
+ 3 files changed, 140 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index e8a77225a90ff..35619435ea0a2 100644
+index 35619435ea0a2..6dd341f3fd33e 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2646,6 +2646,10 @@ struct rtw89_lck_info {
- 	u8 thermal[RF_PATH_MAX];
+@@ -2550,9 +2550,24 @@ enum rtw89_sar_sources {
+ 	RTW89_SAR_SOURCE_NR,
  };
  
-+struct rtw89_rx_dck_info {
-+	u8 thermal[RF_PATH_MAX];
++enum rtw89_sar_subband {
++	RTW89_SAR_2GHZ_SUBBAND,
++	RTW89_SAR_5GHZ_SUBBAND_1_2, /* U-NII-1 and U-NII-2 */
++	RTW89_SAR_5GHZ_SUBBAND_2_E, /* U-NII-2-Extended */
++	RTW89_SAR_5GHZ_SUBBAND_3,   /* U-NII-3 */
++	RTW89_SAR_6GHZ_SUBBAND_5_L, /* U-NII-5 lower part */
++	RTW89_SAR_6GHZ_SUBBAND_5_H, /* U-NII-5 higher part */
++	RTW89_SAR_6GHZ_SUBBAND_6,   /* U-NII-6 */
++	RTW89_SAR_6GHZ_SUBBAND_7_L, /* U-NII-7 lower part */
++	RTW89_SAR_6GHZ_SUBBAND_7_H, /* U-NII-7 higher part */
++	RTW89_SAR_6GHZ_SUBBAND_8,   /* U-NII-8 */
++
++	RTW89_SAR_SUBBAND_NR,
 +};
 +
- struct rtw89_iqk_info {
- 	bool lok_cor_fail[RTW89_IQK_CHS_NR][RTW89_IQK_PATH_NR];
- 	bool lok_fin_fail[RTW89_IQK_CHS_NR][RTW89_IQK_PATH_NR];
-@@ -3125,6 +3129,7 @@ struct rtw89_dev {
- 	struct rtw89_dpk_info dpk;
- 	struct rtw89_mcc_info mcc;
- 	struct rtw89_lck_info lck;
-+	struct rtw89_rx_dck_info rx_dck;
- 	bool is_tssi_mode[RF_PATH_MAX];
- 	bool is_bt_iqk_timeout;
+ struct rtw89_sar_cfg_common {
+-	bool set[RTW89_SUBBAND_NR];
+-	s32 cfg[RTW89_SUBBAND_NR];
++	bool set[RTW89_SAR_SUBBAND_NR];
++	s32 cfg[RTW89_SAR_SUBBAND_NR];
+ };
  
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 64840c8d9efe8..b697aef2faf2d 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -1861,6 +1861,7 @@ static void rtw8852c_rfk_track(struct rtw89_dev *rtwdev)
- {
- 	rtw8852c_dpk_track(rtwdev);
- 	rtw8852c_lck_track(rtwdev);
-+	rtw8852c_rx_dck_track(rtwdev);
- }
+ struct rtw89_sar_info {
+diff --git a/drivers/net/wireless/realtek/rtw89/debug.h b/drivers/net/wireless/realtek/rtw89/debug.h
+index de72155ad1fea..561b04faf703d 100644
+--- a/drivers/net/wireless/realtek/rtw89/debug.h
++++ b/drivers/net/wireless/realtek/rtw89/debug.h
+@@ -24,6 +24,7 @@ enum rtw89_debug_mask {
+ 	RTW89_DBG_BTC = BIT(13),
+ 	RTW89_DBG_BF = BIT(14),
+ 	RTW89_DBG_HW_SCAN = BIT(15),
++	RTW89_DBG_SAR = BIT(16),
+ };
  
- static u32 rtw8852c_bb_cal_txpwr_ref(struct rtw89_dev *rtwdev,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-index dfb9caba9bc41..4186d825d19b7 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-@@ -3864,6 +3864,7 @@ void rtw8852c_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
+ enum rtw89_debug_mac_reg_sel {
+diff --git a/drivers/net/wireless/realtek/rtw89/sar.c b/drivers/net/wireless/realtek/rtw89/sar.c
+index 097c87899ceaa..eb2d3ec28775f 100644
+--- a/drivers/net/wireless/realtek/rtw89/sar.c
++++ b/drivers/net/wireless/realtek/rtw89/sar.c
+@@ -5,15 +5,122 @@
+ #include "debug.h"
+ #include "sar.h"
  
- void rtw8852c_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy, bool is_afe)
- {
-+	struct rtw89_rx_dck_info *rx_dck = &rtwdev->rx_dck;
- 	u8 path, kpath;
- 	u32 rf_reg5;
- 
-@@ -3883,6 +3884,7 @@ void rtw8852c_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy, bool is_a
- 		rtw89_write_rf(rtwdev, path, RR_RSV1, RR_RSV1_RST, 0x0);
- 		rtw89_write_rf(rtwdev, path, RR_MOD, RR_MOD_MASK, RR_MOD_V_RX);
- 		_set_rx_dck(rtwdev, phy, path, is_afe);
-+		rx_dck->thermal[path] = ewma_thermal_read(&rtwdev->phystat.avg_thermal[path]);
- 		rtw89_write_rf(rtwdev, path, RR_RSV1, RFREG_MASK, rf_reg5);
- 
- 		if (rtwdev->is_tssi_mode[path])
-@@ -3891,6 +3893,31 @@ void rtw8852c_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy, bool is_a
- 	}
- }
- 
-+#define RTW8852C_RX_DCK_TH 8
-+
-+void rtw8852c_rx_dck_track(struct rtw89_dev *rtwdev)
++static enum rtw89_sar_subband rtw89_sar_get_subband(struct rtw89_dev *rtwdev,
++						    u32 center_freq)
 +{
-+	struct rtw89_rx_dck_info *rx_dck = &rtwdev->rx_dck;
-+	u8 cur_thermal;
-+	int delta;
-+	int path;
++	switch (center_freq) {
++	default:
++		rtw89_debug(rtwdev, RTW89_DBG_SAR,
++			    "center freq: %u to SAR subband is unhandled\n",
++			    center_freq);
++		fallthrough;
++	case 2412 ... 2484:
++		return RTW89_SAR_2GHZ_SUBBAND;
++	case 5180 ... 5320:
++		return RTW89_SAR_5GHZ_SUBBAND_1_2;
++	case 5500 ... 5720:
++		return RTW89_SAR_5GHZ_SUBBAND_2_E;
++	case 5745 ... 5825:
++		return RTW89_SAR_5GHZ_SUBBAND_3;
++	case 5955 ... 6155:
++		return RTW89_SAR_6GHZ_SUBBAND_5_L;
++	case 6175 ... 6415:
++		return RTW89_SAR_6GHZ_SUBBAND_5_H;
++	case 6435 ... 6515:
++		return RTW89_SAR_6GHZ_SUBBAND_6;
++	case 6535 ... 6695:
++		return RTW89_SAR_6GHZ_SUBBAND_7_L;
++	case 6715 ... 6855:
++		return RTW89_SAR_6GHZ_SUBBAND_7_H;
 +
-+	for (path = 0; path < RF_PATH_NUM_8852C; path++) {
-+		cur_thermal =
-+			ewma_thermal_read(&rtwdev->phystat.avg_thermal[path]);
-+		delta = abs((int)cur_thermal - rx_dck->thermal[path]);
++	/* freq 6875 (ch 185, 20MHz) spans RTW89_SAR_6GHZ_SUBBAND_7_H
++	 * and RTW89_SAR_6GHZ_SUBBAND_8, so directly describe it with
++	 * struct rtw89_sar_span in the following.
++	 */
 +
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK_TRACK,
-+			    "[RX_DCK] path=%d current thermal=0x%x delta=0x%x\n",
-+			    path, cur_thermal, delta);
-+
-+		if (delta >= RTW8852C_RX_DCK_TH) {
-+			rtw8852c_rx_dck(rtwdev, RTW89_PHY_0, false);
-+			return;
-+		}
++	case 6895 ... 7115:
++		return RTW89_SAR_6GHZ_SUBBAND_8;
 +	}
 +}
 +
- void rtw8852c_dpk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
++struct rtw89_sar_span {
++	enum rtw89_sar_subband subband_low;
++	enum rtw89_sar_subband subband_high;
++};
++
++#define RTW89_SAR_SPAN_VALID(span) ((span)->subband_high)
++
++#define RTW89_SAR_6GHZ_SPAN_HEAD 6145
++#define RTW89_SAR_6GHZ_SPAN_IDX(center_freq) \
++	((((int)(center_freq) - RTW89_SAR_6GHZ_SPAN_HEAD) / 5) / 2)
++
++#define RTW89_DECL_SAR_6GHZ_SPAN(center_freq, subband_l, subband_h) \
++	[RTW89_SAR_6GHZ_SPAN_IDX(center_freq)] = { \
++		.subband_low = RTW89_SAR_6GHZ_ ## subband_l, \
++		.subband_high = RTW89_SAR_6GHZ_ ## subband_h, \
++	}
++
++/* Since 6GHz SAR subbands are not edge aligned, some cases span two SAR
++ * subbands. In the following, we describe each of them with rtw89_sar_span.
++ */
++static const struct rtw89_sar_span rtw89_sar_overlapping_6ghz[] = {
++	RTW89_DECL_SAR_6GHZ_SPAN(6145, SUBBAND_5_L, SUBBAND_5_H),
++	RTW89_DECL_SAR_6GHZ_SPAN(6165, SUBBAND_5_L, SUBBAND_5_H),
++	RTW89_DECL_SAR_6GHZ_SPAN(6185, SUBBAND_5_L, SUBBAND_5_H),
++	RTW89_DECL_SAR_6GHZ_SPAN(6505, SUBBAND_6, SUBBAND_7_L),
++	RTW89_DECL_SAR_6GHZ_SPAN(6525, SUBBAND_6, SUBBAND_7_L),
++	RTW89_DECL_SAR_6GHZ_SPAN(6545, SUBBAND_6, SUBBAND_7_L),
++	RTW89_DECL_SAR_6GHZ_SPAN(6665, SUBBAND_7_L, SUBBAND_7_H),
++	RTW89_DECL_SAR_6GHZ_SPAN(6705, SUBBAND_7_L, SUBBAND_7_H),
++	RTW89_DECL_SAR_6GHZ_SPAN(6825, SUBBAND_7_H, SUBBAND_8),
++	RTW89_DECL_SAR_6GHZ_SPAN(6865, SUBBAND_7_H, SUBBAND_8),
++	RTW89_DECL_SAR_6GHZ_SPAN(6875, SUBBAND_7_H, SUBBAND_8),
++	RTW89_DECL_SAR_6GHZ_SPAN(6885, SUBBAND_7_H, SUBBAND_8),
++};
++
+ static int rtw89_query_sar_config_common(struct rtw89_dev *rtwdev, s32 *cfg)
  {
- 	u32 tx_en;
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.h b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.h
-index c32756f0c01a9..5118a49da8d3e 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.h
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.h
-@@ -12,6 +12,7 @@ void rtw8852c_rck(struct rtw89_dev *rtwdev);
- void rtw8852c_dack(struct rtw89_dev *rtwdev);
- void rtw8852c_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx);
- void rtw8852c_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx, bool is_afe);
-+void rtw8852c_rx_dck_track(struct rtw89_dev *rtwdev);
- void rtw8852c_dpk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy);
- void rtw8852c_dpk_track(struct rtw89_dev *rtwdev);
- void rtw8852c_tssi(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy);
+ 	struct rtw89_sar_cfg_common *rtwsar = &rtwdev->sar.cfg_common;
+-	enum rtw89_subband subband = rtwdev->hal.current_subband;
++	struct rtw89_hal *hal = &rtwdev->hal;
++	enum rtw89_band band = hal->current_band_type;
++	u32 center_freq = hal->current_freq;
++	const struct rtw89_sar_span *span = NULL;
++	enum rtw89_sar_subband subband_l, subband_h;
++	int idx;
++
++	if (band == RTW89_BAND_6G) {
++		idx = RTW89_SAR_6GHZ_SPAN_IDX(center_freq);
++		/* To decrease size of rtw89_sar_overlapping_6ghz[],
++		 * RTW89_SAR_6GHZ_SPAN_IDX() truncates the leading NULLs
++		 * to make first span as index 0 of the table. So, if center
++		 * frequency is less than the first one, it will get netative.
++		 */
++		if (idx >= 0 && idx < ARRAY_SIZE(rtw89_sar_overlapping_6ghz))
++			span = &rtw89_sar_overlapping_6ghz[idx];
++	}
++
++	if (span && RTW89_SAR_SPAN_VALID(span)) {
++		subband_l = span->subband_low;
++		subband_h = span->subband_high;
++	} else {
++		subband_l = rtw89_sar_get_subband(rtwdev, center_freq);
++		subband_h = subband_l;
++	}
++
++	rtw89_debug(rtwdev, RTW89_DBG_SAR,
++		    "for {band %u, center_freq %u}, SAR subband: {%u, %u}\n",
++		    band, center_freq, subband_l, subband_h);
+ 
+-	if (!rtwsar->set[subband])
++	if (!rtwsar->set[subband_l] && !rtwsar->set[subband_h])
+ 		return -ENODATA;
+ 
+-	*cfg = rtwsar->cfg[subband];
++	if (!rtwsar->set[subband_l])
++		*cfg = rtwsar->cfg[subband_h];
++	else if (!rtwsar->set[subband_h])
++		*cfg = rtwsar->cfg[subband_l];
++	else
++		*cfg = min(rtwsar->cfg[subband_l], rtwsar->cfg[subband_h]);
++
+ 	return 0;
+ }
+ 
+@@ -128,21 +235,20 @@ static int rtw89_apply_sar_common(struct rtw89_dev *rtwdev,
+ 	return ret;
+ }
+ 
+-static const u8 rtw89_common_sar_subband_map[] = {
+-	RTW89_CH_2G,
+-	RTW89_CH_5G_BAND_1,
+-	RTW89_CH_5G_BAND_3,
+-	RTW89_CH_5G_BAND_4,
+-};
+-
+ static const struct cfg80211_sar_freq_ranges rtw89_common_sar_freq_ranges[] = {
+ 	{ .start_freq = 2412, .end_freq = 2484, },
+ 	{ .start_freq = 5180, .end_freq = 5320, },
+ 	{ .start_freq = 5500, .end_freq = 5720, },
+ 	{ .start_freq = 5745, .end_freq = 5825, },
++	{ .start_freq = 5955, .end_freq = 6155, },
++	{ .start_freq = 6175, .end_freq = 6415, },
++	{ .start_freq = 6435, .end_freq = 6515, },
++	{ .start_freq = 6535, .end_freq = 6695, },
++	{ .start_freq = 6715, .end_freq = 6875, },
++	{ .start_freq = 6875, .end_freq = 7115, },
+ };
+ 
+-static_assert(ARRAY_SIZE(rtw89_common_sar_subband_map) ==
++static_assert(RTW89_SAR_SUBBAND_NR ==
+ 	      ARRAY_SIZE(rtw89_common_sar_freq_ranges));
+ 
+ const struct cfg80211_sar_capa rtw89_sar_capa = {
+@@ -159,7 +265,6 @@ int rtw89_ops_set_sar_specs(struct ieee80211_hw *hw,
+ 	u8 fct;
+ 	u32 freq_start;
+ 	u32 freq_end;
+-	u32 band;
+ 	s32 power;
+ 	u32 i, idx;
+ 
+@@ -175,15 +280,14 @@ int rtw89_ops_set_sar_specs(struct ieee80211_hw *hw,
+ 
+ 		freq_start = rtw89_common_sar_freq_ranges[idx].start_freq;
+ 		freq_end = rtw89_common_sar_freq_ranges[idx].end_freq;
+-		band = rtw89_common_sar_subband_map[idx];
+ 		power = sar->sub_specs[i].power;
+ 
+-		rtw89_info(rtwdev, "On freq %u to %u, ", freq_start, freq_end);
+-		rtw89_info(rtwdev, "set SAR power limit %d (unit: 1/%lu dBm)\n",
+-			   power, BIT(fct));
++		rtw89_debug(rtwdev, RTW89_DBG_SAR,
++			    "On freq %u to %u, set SAR limit %d (unit: 1/%lu dBm)\n",
++			    freq_start, freq_end, power, BIT(fct));
+ 
+-		sar_common.set[band] = true;
+-		sar_common.cfg[band] = power;
++		sar_common.set[idx] = true;
++		sar_common.cfg[idx] = power;
+ 	}
+ 
+ 	return rtw89_apply_sar_common(rtwdev, &sar_common);
 -- 
 2.25.1
 
