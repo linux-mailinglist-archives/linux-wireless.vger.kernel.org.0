@@ -2,41 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E240152E609
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 May 2022 09:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E06F952E607
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 May 2022 09:18:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235909AbiETHSg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 May 2022 03:18:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44846 "EHLO
+        id S1345351AbiETHSd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 May 2022 03:18:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239714AbiETHSc (ORCPT
+        with ESMTP id S239625AbiETHSc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 20 May 2022 03:18:32 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E68F921E36
-        for <linux-wireless@vger.kernel.org>; Fri, 20 May 2022 00:17:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFF102E0AF
+        for <linux-wireless@vger.kernel.org>; Fri, 20 May 2022 00:17:57 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24K7HnT92023699, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24K7HnT92023699
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24K7HpkaE023703, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24K7HpkaE023703
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 20 May 2022 15:17:50 +0800
+        Fri, 20 May 2022 15:17:51 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Fri, 20 May 2022 15:17:49 +0800
+ 15.1.2308.27; Fri, 20 May 2022 15:17:51 +0800
 Received: from localhost (172.16.17.21) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 20 May
- 2022 15:17:49 +0800
+ 2022 15:17:50 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>,
         <kevin_yang@realtek.com>
-Subject: [PATCH 0/6] rtw89: fix HW scan and complement some functions
-Date:   Fri, 20 May 2022 15:17:25 +0800
-Message-ID: <20220520071731.38563-1-pkshih@realtek.com>
+Subject: [PATCH 1/6] rtw89: fix channel inconsistency during hw_scan
+Date:   Fri, 20 May 2022 15:17:26 +0800
+Message-ID: <20220520071731.38563-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220520071731.38563-1-pkshih@realtek.com>
+References: <20220520071731.38563-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -54,7 +56,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzUvMjAgpFekyCAwNjowMDowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -67,50 +69,144 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Patches in this patchset don't have functional dependency, but I submit
-them together to prevent merge conflict.
+From: Po Hao Huang <phhuang@realtek.com>
 
-Fix some bugs related HW scan by first two patches. Third patch is to
-handle more one SER event to recover firmware and hardware. Forth patch
-is to re-calibrate RX DCK if thermal value is changed, and then we can
-keep RF performance as expectation.
+Previously channel maintained by driver could be different from the
+ones hardware actually is. Restore these variables back to prevent
+unexpected behavior.
 
-Since 8852CE can support 6GHz band, add SAR 6GHz frequency ranges by
-fifth patch.
+Signed-off-by: Po Hao Huang <phhuang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/core.c     |  2 +-
+ drivers/net/wireless/realtek/rtw89/fw.c       | 20 ++++++++++++++-----
+ drivers/net/wireless/realtek/rtw89/fw.h       |  5 +----
+ drivers/net/wireless/realtek/rtw89/mac.c      | 15 ++++++++------
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  2 +-
+ 5 files changed, 27 insertions(+), 17 deletions(-)
 
-The last patch is to fix BSSID mask setting introduced by 8852CE chip,
-and I do support of multiple BSSID as well.
-
-Ping-Ke Shih (3):
-  rtw89: pci: handle hardware watchdog timeout interrupt status
-  rtw89: 8852c: rfk: re-calibrate RX DCK once thermal changes a lot
-  rtw89: support MULTI_BSSID and correct BSSID mask of H2C
-
-Po Hao Huang (2):
-  rtw89: fix channel inconsistency during hw_scan
-  rtw89: fix null vif pointer when hw_scan fails
-
-Zong-Zhe Yang (1):
-  rtw89: sar: adjust and support SAR on 6GHz band
-
- drivers/net/wireless/realtek/rtw89/cam.c      |   9 ++
- drivers/net/wireless/realtek/rtw89/cam.h      |   5 +
- drivers/net/wireless/realtek/rtw89/core.c     |   8 +-
- drivers/net/wireless/realtek/rtw89/core.h     |  24 ++-
- drivers/net/wireless/realtek/rtw89/debug.h    |   1 +
- drivers/net/wireless/realtek/rtw89/fw.c       |  24 ++-
- drivers/net/wireless/realtek/rtw89/fw.h       |   5 +-
- drivers/net/wireless/realtek/rtw89/mac.c      |  15 +-
- drivers/net/wireless/realtek/rtw89/mac.h      |   1 +
- drivers/net/wireless/realtek/rtw89/mac80211.c |   2 +-
- drivers/net/wireless/realtek/rtw89/pci.c      |   9 +-
- drivers/net/wireless/realtek/rtw89/pci.h      |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |   1 +
- .../net/wireless/realtek/rtw89/rtw8852c_rfk.c |  27 ++++
- .../net/wireless/realtek/rtw89/rtw8852c_rfk.h |   1 +
- drivers/net/wireless/realtek/rtw89/sar.c      | 140 +++++++++++++++---
- 16 files changed, 230 insertions(+), 43 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index a6a90572e74bf..e24e133a94df6 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -1608,7 +1608,7 @@ static void rtw89_core_update_rx_status(struct rtw89_dev *rtwdev,
+ 
+ 	if (rtwdev->scanning &&
+ 	    RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw)) {
+-		u8 chan = hal->current_channel;
++		u8 chan = hal->current_primary_channel;
+ 		u8 band = hal->current_band_type;
+ 		enum nl80211_band nl_band;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 4718aced1428a..7fb4509a6c72a 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -2339,6 +2339,9 @@ void rtw89_hw_scan_complete(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 	rtwvif->scan_req = NULL;
+ 	rtwvif->scan_ies = NULL;
+ 	rtwdev->scan_info.scanning_vif = NULL;
++
++	if (rtwvif->net_type != RTW89_NET_TYPE_NO_LINK)
++		rtw89_store_op_chan(rtwdev, false);
+ }
+ 
+ void rtw89_hw_scan_abort(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif)
+@@ -2370,15 +2373,22 @@ int rtw89_hw_scan_offload(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 	return ret;
+ }
+ 
+-void rtw89_store_op_chan(struct rtw89_dev *rtwdev)
++void rtw89_store_op_chan(struct rtw89_dev *rtwdev, bool backup)
+ {
+ 	struct rtw89_hw_scan_info *scan_info = &rtwdev->scan_info;
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+ 
+-	scan_info->op_pri_ch = hal->current_primary_channel;
+-	scan_info->op_chan = hal->current_channel;
+-	scan_info->op_bw = hal->current_band_width;
+-	scan_info->op_band = hal->current_band_type;
++	if (backup) {
++		scan_info->op_pri_ch = hal->current_primary_channel;
++		scan_info->op_chan = hal->current_channel;
++		scan_info->op_bw = hal->current_band_width;
++		scan_info->op_band = hal->current_band_type;
++	} else {
++		hal->current_primary_channel = scan_info->op_pri_ch;
++		hal->current_channel = scan_info->op_chan;
++		hal->current_band_width = scan_info->op_bw;
++		hal->current_band_type = scan_info->op_band;
++	}
+ }
+ 
+ #define H2C_FW_CPU_EXCEPTION_LEN 4
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+index 95a55c4213db3..e75ad22aa85df 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.h
++++ b/drivers/net/wireless/realtek/rtw89/fw.h
+@@ -2633,17 +2633,14 @@ int rtw89_fw_msg_reg(struct rtw89_dev *rtwdev,
+ 		     struct rtw89_mac_c2h_info *c2h_info);
+ int rtw89_fw_h2c_fw_log(struct rtw89_dev *rtwdev, bool enable);
+ void rtw89_fw_st_dbg_dump(struct rtw89_dev *rtwdev);
+-void rtw89_store_op_chan(struct rtw89_dev *rtwdev);
++void rtw89_store_op_chan(struct rtw89_dev *rtwdev, bool backup);
+ void rtw89_hw_scan_start(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 			 struct ieee80211_scan_request *req);
+ void rtw89_hw_scan_complete(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 			    bool aborted);
+ int rtw89_hw_scan_offload(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 			  bool enable);
+-void rtw89_hw_scan_status_report(struct rtw89_dev *rtwdev, struct sk_buff *skb);
+-void rtw89_hw_scan_chan_switch(struct rtw89_dev *rtwdev, struct sk_buff *skb);
+ void rtw89_hw_scan_abort(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif);
+-void rtw89_store_op_chan(struct rtw89_dev *rtwdev);
+ int rtw89_fw_h2c_trigger_cpu_exception(struct rtw89_dev *rtwdev);
+ 
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 3cf892912c1d9..93124b815825f 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -3681,17 +3681,20 @@ rtw89_mac_c2h_scanofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
+ 		rtw89_hw_scan_complete(rtwdev, vif, false);
+ 		break;
+ 	case RTW89_SCAN_ENTER_CH_NOTIFY:
+-		if (rtw89_is_op_chan(rtwdev, band, chan))
++		hal->prev_band_type = hal->current_band_type;
++		hal->current_band_type = band;
++		hal->prev_primary_channel = hal->current_primary_channel;
++		hal->current_primary_channel = chan;
++		hal->current_channel = chan;
++		hal->current_band_width = RTW89_CHANNEL_WIDTH_20;
++		if (rtw89_is_op_chan(rtwdev, band, chan)) {
++			rtw89_store_op_chan(rtwdev, false);
+ 			ieee80211_wake_queues(rtwdev->hw);
++		}
+ 		break;
+ 	default:
+ 		return;
+ 	}
+-
+-	hal->prev_band_type = hal->current_band_type;
+-	hal->prev_primary_channel = hal->current_channel;
+-	hal->current_channel = chan;
+-	hal->current_band_type = band;
+ }
+ 
+ static void
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index f24e4a208376b..6d0c62c545a78 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -350,7 +350,7 @@ static void rtw89_ops_bss_info_changed(struct ieee80211_hw *hw,
+ 			rtw89_phy_set_bss_color(rtwdev, vif);
+ 			rtw89_chip_cfg_txpwr_ul_tb_offset(rtwdev, vif);
+ 			rtw89_mac_port_update(rtwdev, rtwvif);
+-			rtw89_store_op_chan(rtwdev);
++			rtw89_store_op_chan(rtwdev, true);
+ 		} else {
+ 			/* Abort ongoing scan if cancel_scan isn't issued
+ 			 * when disconnected by peer
 -- 
 2.25.1
 
