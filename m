@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA05C52EADB
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 May 2022 13:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB18152EADC
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 May 2022 13:33:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348557AbiETLc7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 May 2022 07:32:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50610 "EHLO
+        id S1348547AbiETLc6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 May 2022 07:32:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348544AbiETLc4 (ORCPT
+        with ESMTP id S1348546AbiETLc4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 20 May 2022 07:32:56 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16C44583A3
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780FC580FD
         for <linux-wireless@vger.kernel.org>; Fri, 20 May 2022 04:32:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=eOAOF+XX86+ml91ZB+goac63OLNH27Uicj+le8PgZFE=;
-        t=1653046368; x=1654255968; b=Qtx2qBd/fWiyl6NCePsAjYXmdRc9loXuQFeJUdgSCZFGnfN
-        fk5y0HQ31Y+3pXh9zIFoE7fprUbX6e6Yg5attn6pjlRODrsB4pO25KSGdNwexiSe6aR2/SkavVfcB
-        u/r3hRD7J1Rp5Dy8pkVJfcmhiEfIdcft/xbhmeHARrtgJho01+MDZnM7DaDnSlD+p7DYQULSi4Zd9
-        BFuZl9VxPXyBU7GWJhCdscIVipaELMdMiYsCRjcHOIITiOeUl+hWEPT+j5qSAJEliFMkknXmTcMFR
-        wcIcCDKI6bqTLC5GJ7kNyD6NwfwbXnls2HAXJVVm+4nDoc6HCjEfK3aVYYIz5HHQ==;
+        Resent-Cc:Resent-Message-ID; bh=oR437Dl/rx7+X3X7WnnsERsKete6yaEOBVBS8/asx5M=;
+        t=1653046368; x=1654255968; b=QJKoAtiOnrRsG0Tc2uyv3BjYsTgtoM84xra0rY1yPJueEW+
+        z1WSh2FlxaD7J3Aw2BuCu7F3qHSVtSZeX1czsP77NsS2oqb/ibhxTI+I+tL2osm/t6zYXE57DApK8
+        p/W7nsf3zVwTFiBTvMJi349QxZZptEpcg/Bt0al4gxCc75TzB+C1zlkC4SooLUOXINzWgmGjzAfYj
+        IsBRGlU7yFhYmijtE8ZOGwkrF3goaftEdRW0k9ShdXQbcIBAGKWL6xfR8bhAOeo2uYOrZp2Zujj5a
+        TEr6RPqhTQ3CZCMtGMVzx9YV0ZTLqqax4HmKVLy/T32fbLTWCugnP6tolmxY29fQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1ns0s9-00HJjx-JM;
-        Fri, 20 May 2022 13:32:45 +0200
+        id 1ns0sA-00HJjx-1D;
+        Fri, 20 May 2022 13:32:46 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 3/4] mac80211: move interface config to new struct
-Date:   Fri, 20 May 2022 13:32:41 +0200
-Message-Id: <20220520132938.3c2ce764e4bc.If45210f0a19c37327a15727ff6c90cd06f3502d2@changeid>
+Subject: [PATCH 4/4] mac80211: reorg some iface data structs for MLD
+Date:   Fri, 20 May 2022 13:32:42 +0200
+Message-Id: <20220520132938.418110601b17.I0d793aafc2c08cac45fbe634122165cc907114d6@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220520113242.129546-1-johannes@sipsolutions.net>
 References: <20220520113242.129546-1-johannes@sipsolutions.net>
@@ -52,2937 +52,3178 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We'll use bss_conf for per-link configuration later, so
-move out all the non-link-specific data out into a new
-struct ieee80211_vif_cfg used in the vif.
-
-Some adjustments were done with the following spatch:
-
-    @@
-    expression sdata;
-    struct ieee80211_vif *vifp;
-    identifier var = { assoc, ibss_joined, aid, arp_addr_list, arp_addr_cnt, ssid, ssid_len, s1g, ibss_creator };
-    @@
-    (
-    -sdata->vif.bss_conf.var
-    +sdata->vif.cfg.var
-    |
-    -vifp->bss_conf.var
-    +vifp->cfg.var
-    )
-
-    @bss_conf@
-    struct ieee80211_bss_conf *bss_conf;
-    identifier var = { assoc, ibss_joined, aid, arp_addr_list, arp_addr_cnt, ssid, ssid_len, s1g, ibss_creator };
-    @@
-    -bss_conf->var
-    +vif_cfg->var
-
-(though more manual fixups were needed, e.g. replacing
-"vif_cfg->" by "vif->cfg." in many files.)
+Start reorganizing interface related data structures toward
+MLD. The most complex part here is for the keys, since we
+have to split the various kinds of GTKs off to the link but
+still need to use (for WEP) the other keys as a fallback
+even for multicast frames.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/ath/ar5523/ar5523.c      | 10 ++--
- drivers/net/wireless/ath/ath10k/mac.c         | 29 +++++-----
- drivers/net/wireless/ath/ath11k/mac.c         | 22 +++----
- drivers/net/wireless/ath/ath5k/mac80211-ops.c | 12 ++--
- drivers/net/wireless/ath/ath9k/beacon.c       | 11 ++--
- drivers/net/wireless/ath/ath9k/htc_drv_main.c | 16 ++---
- drivers/net/wireless/ath/ath9k/main.c         |  8 +--
- drivers/net/wireless/ath/carl9170/main.c      |  2 +-
- drivers/net/wireless/ath/wcn36xx/main.c       | 16 ++---
- drivers/net/wireless/ath/wcn36xx/smd.c        |  2 +-
- .../broadcom/brcm80211/brcmsmac/mac80211_if.c | 12 ++--
- .../net/wireless/intel/iwlegacy/3945-mac.c    |  6 +-
- drivers/net/wireless/intel/iwlegacy/4965.c    |  6 +-
- drivers/net/wireless/intel/iwlegacy/common.c  | 10 ++--
- drivers/net/wireless/intel/iwlwifi/dvm/rxon.c | 16 ++---
- drivers/net/wireless/intel/iwlwifi/mvm/coex.c |  4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |  2 +-
- .../intel/iwlwifi/mvm/ftm-initiator.c         | 10 ++--
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 12 ++--
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 24 ++++----
- .../wireless/intel/iwlwifi/mvm/offloading.c   |  4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  2 +-
- .../net/wireless/intel/iwlwifi/mvm/power.c    |  2 +-
- .../net/wireless/intel/iwlwifi/mvm/quota.c    |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c |  4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sf.c   |  4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  2 +-
- .../wireless/intel/iwlwifi/mvm/time-event.c   |  8 +--
- .../net/wireless/intel/iwlwifi/mvm/utils.c    |  4 +-
- drivers/net/wireless/intersil/p54/main.c      |  4 +-
- drivers/net/wireless/mac80211_hwsim.c         |  6 +-
- drivers/net/wireless/marvell/mwl8k.c          | 10 ++--
- .../net/wireless/mediatek/mt76/mt7603/main.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt7615/main.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  2 +-
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 10 ++--
- .../net/wireless/mediatek/mt76/mt7915/main.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/main.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  2 +-
- drivers/net/wireless/mediatek/mt7601u/phy.c   |  9 ++-
- .../net/wireless/ralink/rt2x00/rt2x00config.c |  4 +-
- .../net/wireless/ralink/rt2x00/rt2x00mac.c    |  2 +-
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 10 ++--
- drivers/net/wireless/realtek/rtlwifi/core.c   |  4 +-
- drivers/net/wireless/realtek/rtw88/bf.c       |  2 +-
- drivers/net/wireless/realtek/rtw88/mac80211.c |  4 +-
- drivers/net/wireless/realtek/rtw88/main.c     | 13 +++--
- drivers/net/wireless/realtek/rtw89/cam.c      |  2 +-
- drivers/net/wireless/realtek/rtw89/core.h     |  2 +-
- drivers/net/wireless/realtek/rtw89/mac80211.c |  2 +-
- drivers/net/wireless/realtek/rtw89/phy.c      |  4 +-
- drivers/net/wireless/rsi/rsi_91x_core.c       |  3 +-
- drivers/net/wireless/rsi/rsi_91x_hal.c        |  5 +-
- drivers/net/wireless/rsi/rsi_91x_mac80211.c   | 31 +++++-----
- drivers/net/wireless/rsi/rsi_91x_mgmt.c       |  3 +-
- drivers/net/wireless/silabs/wfx/hif_tx.c      | 12 ++--
- drivers/net/wireless/silabs/wfx/sta.c         | 24 ++++----
- drivers/net/wireless/st/cw1200/sta.c          | 36 ++++++------
- drivers/net/wireless/st/cw1200/txrx.c         |  4 +-
- drivers/net/wireless/ti/wl1251/main.c         |  8 +--
- drivers/net/wireless/ti/wlcore/cmd.c          |  4 +-
- drivers/net/wireless/ti/wlcore/main.c         | 35 +++++------
- drivers/staging/vt6655/device_main.c          |  6 +-
- drivers/staging/vt6656/main_usb.c             |  4 +-
- include/net/mac80211.h                        | 58 +++++++++++--------
- net/mac80211/cfg.c                            | 10 ++--
- net/mac80211/debugfs_netdev.c                 |  4 +-
- net/mac80211/ibss.c                           | 26 ++++-----
- net/mac80211/main.c                           | 10 ++--
- net/mac80211/mlme.c                           | 26 +++++----
- net/mac80211/offchannel.c                     |  2 +-
- net/mac80211/scan.c                           |  2 +-
- net/mac80211/tdls.c                           |  4 +-
- net/mac80211/trace.h                          | 39 ++++++++-----
- net/mac80211/tx.c                             |  2 +-
- net/mac80211/util.c                           |  2 +-
- 76 files changed, 379 insertions(+), 343 deletions(-)
+ net/mac80211/agg-rx.c         |   2 +-
+ net/mac80211/agg-tx.c         |   2 +-
+ net/mac80211/cfg.c            | 165 ++++++++++--------
+ net/mac80211/chan.c           |  95 +++++------
+ net/mac80211/debugfs_key.c    |   8 +-
+ net/mac80211/debugfs_netdev.c |  12 +-
+ net/mac80211/ethtool.c        |   2 +-
+ net/mac80211/ht.c             |  13 +-
+ net/mac80211/ibss.c           |  10 +-
+ net/mac80211/ieee80211_i.h    | 173 ++++++++++---------
+ net/mac80211/iface.c          |  44 ++---
+ net/mac80211/key.c            |  38 +++--
+ net/mac80211/mlme.c           | 310 +++++++++++++++++-----------------
+ net/mac80211/ocb.c            |   4 +-
+ net/mac80211/offchannel.c     |   6 +-
+ net/mac80211/rx.c             |  25 +--
+ net/mac80211/sta_info.c       |   5 +-
+ net/mac80211/status.c         |   2 +-
+ net/mac80211/tdls.c           |  12 +-
+ net/mac80211/tx.c             |  61 +++----
+ net/mac80211/util.c           |  22 ++-
+ net/mac80211/wme.c            |   2 +-
+ 22 files changed, 533 insertions(+), 480 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
-index 9f84a6fde0c2..4cd06a0942d4 100644
---- a/drivers/net/wireless/ath/ar5523/ar5523.c
-+++ b/drivers/net/wireless/ath/ar5523/ar5523.c
-@@ -1256,14 +1256,14 @@ static int ar5523_create_connection(struct ar5523 *ar,
- 				sizeof(create), 0);
- }
+diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
+index bfab39320004..a09240c87f22 100644
+--- a/net/mac80211/agg-rx.c
++++ b/net/mac80211/agg-rx.c
+@@ -242,7 +242,7 @@ static void ieee80211_send_addba_resp(struct sta_info *sta, u8 *da, u16 tid,
+ 	    sdata->vif.type == NL80211_IFTYPE_MESH_POINT)
+ 		memcpy(mgmt->bssid, sdata->vif.addr, ETH_ALEN);
+ 	else if (sdata->vif.type == NL80211_IFTYPE_STATION)
+-		memcpy(mgmt->bssid, sdata->u.mgd.bssid, ETH_ALEN);
++		memcpy(mgmt->bssid, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
+ 		memcpy(mgmt->bssid, sdata->u.ibss.bssid, ETH_ALEN);
+ 
+diff --git a/net/mac80211/agg-tx.c b/net/mac80211/agg-tx.c
+index 91878ed5ec46..b13f4b7b740d 100644
+--- a/net/mac80211/agg-tx.c
++++ b/net/mac80211/agg-tx.c
+@@ -82,7 +82,7 @@ static void ieee80211_send_addba_request(struct ieee80211_sub_if_data *sdata,
+ 	    sdata->vif.type == NL80211_IFTYPE_MESH_POINT)
+ 		memcpy(mgmt->bssid, sdata->vif.addr, ETH_ALEN);
+ 	else if (sdata->vif.type == NL80211_IFTYPE_STATION)
+-		memcpy(mgmt->bssid, sdata->u.mgd.bssid, ETH_ALEN);
++		memcpy(mgmt->bssid, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
+ 		memcpy(mgmt->bssid, sdata->u.ibss.bssid, ETH_ALEN);
  
--static int ar5523_write_associd(struct ar5523 *ar,
--				struct ieee80211_bss_conf *bss)
-+static int ar5523_write_associd(struct ar5523 *ar, struct ieee80211_vif *vif)
- {
-+	struct ieee80211_bss_conf *bss = &vif->bss_conf;
- 	struct ar5523_cmd_set_associd associd;
- 
- 	memset(&associd, 0, sizeof(associd));
- 	associd.defaultrateix = cpu_to_be32(0);	/* XXX */
--	associd.associd = cpu_to_be32(bss->aid);
-+	associd.associd = cpu_to_be32(vif->cfg.aid);
- 	associd.timoffset = cpu_to_be32(0x3b);	/* XXX */
- 	memcpy(associd.bssid, bss->bssid, ETH_ALEN);
- 	return ar5523_cmd_write(ar, WDCMSG_WRITE_ASSOCID, &associd,
-@@ -1284,7 +1284,7 @@ static void ar5523_bss_info_changed(struct ieee80211_hw *hw,
- 	if (!(changed & BSS_CHANGED_ASSOC))
- 		goto out_unlock;
- 
--	if (bss->assoc) {
-+	if (vif->cfg.assoc) {
- 		error = ar5523_create_connection(ar, vif, bss);
- 		if (error) {
- 			ar5523_err(ar, "could not create connection\n");
-@@ -1297,7 +1297,7 @@ static void ar5523_bss_info_changed(struct ieee80211_hw *hw,
- 			goto out_unlock;
- 		}
- 
--		error = ar5523_write_associd(ar, bss);
-+		error = ar5523_write_associd(ar, vif);
- 		if (error) {
- 			ar5523_err(ar, "could not set association\n");
- 			goto out_unlock;
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 6407f509e91b..409777a15dcb 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -1509,8 +1509,8 @@ static int ath10k_vdev_start_restart(struct ath10k_vif *arvif,
- 		arg.channel.chan_radar =
- 			!!(chandef->chan->flags & IEEE80211_CHAN_RADAR);
- 	} else if (arvif->vdev_type == WMI_VDEV_TYPE_IBSS) {
--		arg.ssid = arvif->vif->bss_conf.ssid;
--		arg.ssid_len = arvif->vif->bss_conf.ssid_len;
-+		arg.ssid = arvif->vif->cfg.ssid;
-+		arg.ssid_len = arvif->vif->cfg.ssid_len;
- 	}
- 
- 	ath10k_dbg(ar, ATH10K_DBG_MAC,
-@@ -1823,8 +1823,7 @@ static void ath10k_control_beaconing(struct ath10k_vif *arvif,
- }
- 
- static void ath10k_control_ibss(struct ath10k_vif *arvif,
--				struct ieee80211_bss_conf *info,
--				const u8 self_peer[ETH_ALEN])
-+				struct ieee80211_vif *vif)
- {
- 	struct ath10k *ar = arvif->ar;
- 	u32 vdev_param;
-@@ -1832,7 +1831,7 @@ static void ath10k_control_ibss(struct ath10k_vif *arvif,
- 
- 	lockdep_assert_held(&arvif->ar->conf_mutex);
- 
--	if (!info->ibss_joined) {
-+	if (!vif->cfg.ibss_joined) {
- 		if (is_zero_ether_addr(arvif->bssid))
- 			return;
- 
-@@ -2163,7 +2162,7 @@ static void ath10k_peer_assoc_h_basic(struct ath10k *ar,
- 	lockdep_assert_held(&ar->conf_mutex);
- 
- 	if (vif->type == NL80211_IFTYPE_STATION)
--		aid = vif->bss_conf.aid;
-+		aid = vif->cfg.aid;
- 	else
- 		aid = sta->aid;
- 
-@@ -2193,7 +2192,8 @@ static void ath10k_peer_assoc_h_crypto(struct ath10k *ar,
- 		return;
- 
- 	bss = cfg80211_get_bss(ar->hw->wiphy, def.chan, info->bssid,
--			       info->ssid_len ? info->ssid : NULL, info->ssid_len,
-+			       vif->cfg.ssid_len ? vif->cfg.ssid : NULL,
-+			       vif->cfg.ssid_len,
- 			       IEEE80211_BSS_TYPE_ANY, IEEE80211_PRIVACY_ANY);
- 	if (bss) {
- 		const struct cfg80211_bss_ies *ies;
-@@ -3118,11 +3118,11 @@ static void ath10k_bss_assoc(struct ieee80211_hw *hw,
- 
- 	ath10k_dbg(ar, ATH10K_DBG_MAC,
- 		   "mac vdev %d up (associated) bssid %pM aid %d\n",
--		   arvif->vdev_id, bss_conf->bssid, bss_conf->aid);
-+		   arvif->vdev_id, bss_conf->bssid, vif->cfg.aid);
- 
- 	WARN_ON(arvif->is_up);
- 
--	arvif->aid = bss_conf->aid;
-+	arvif->aid = vif->cfg.aid;
- 	ether_addr_copy(arvif->bssid, bss_conf->bssid);
- 
- 	ret = ath10k_wmi_pdev_set_param(ar,
-@@ -6048,7 +6048,7 @@ static void ath10k_bss_info_changed(struct ieee80211_hw *hw,
- 	mutex_lock(&ar->conf_mutex);
- 
- 	if (changed & BSS_CHANGED_IBSS)
--		ath10k_control_ibss(arvif, info, vif->addr);
-+		ath10k_control_ibss(arvif, vif);
- 
- 	if (changed & BSS_CHANGED_BEACON_INT) {
- 		arvif->beacon_interval = info->beacon_int;
-@@ -6113,9 +6113,10 @@ static void ath10k_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & BSS_CHANGED_SSID &&
- 	    vif->type == NL80211_IFTYPE_AP) {
--		arvif->u.ap.ssid_len = info->ssid_len;
--		if (info->ssid_len)
--			memcpy(arvif->u.ap.ssid, info->ssid, info->ssid_len);
-+		arvif->u.ap.ssid_len = vif->cfg.ssid_len;
-+		if (vif->cfg.ssid_len)
-+			memcpy(arvif->u.ap.ssid, vif->cfg.ssid,
-+			       vif->cfg.ssid_len);
- 		arvif->u.ap.hidden_ssid = info->hidden_ssid;
- 	}
- 
-@@ -6192,7 +6193,7 @@ static void ath10k_bss_info_changed(struct ieee80211_hw *hw,
- 	}
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
--		if (info->assoc) {
-+		if (vif->cfg.assoc) {
- 			/* Workaround: Make sure monitor vdev is not running
- 			 * when associating to prevent some firmware revisions
- 			 * (e.g. 10.1 and 10.2) from crashing.
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index f6ae3b308ac8..7ec0df2fc107 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1539,7 +1539,7 @@ static void ath11k_peer_assoc_h_basic(struct ath11k *ar,
- 	lockdep_assert_held(&ar->conf_mutex);
- 
- 	if (vif->type == NL80211_IFTYPE_STATION)
--		aid = vif->bss_conf.aid;
-+		aid = vif->cfg.aid;
- 	else
- 		aid = sta->aid;
- 
-@@ -2749,7 +2749,7 @@ static void ath11k_bss_assoc(struct ieee80211_hw *hw,
- 
- 	WARN_ON(arvif->is_up);
- 
--	arvif->aid = bss_conf->aid;
-+	arvif->aid = vif->cfg.aid;
- 	ether_addr_copy(arvif->bssid, bss_conf->bssid);
- 
- 	ret = ath11k_wmi_vdev_up(ar, arvif->vdev_id, arvif->aid, arvif->bssid);
-@@ -2764,7 +2764,7 @@ static void ath11k_bss_assoc(struct ieee80211_hw *hw,
- 
- 	ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
- 		   "mac vdev %d up (associated) bssid %pM aid %d\n",
--		   arvif->vdev_id, bss_conf->bssid, bss_conf->aid);
-+		   arvif->vdev_id, bss_conf->bssid, vif->cfg.aid);
- 
- 	spin_lock_bh(&ar->ab->base_lock);
- 
-@@ -3185,9 +3185,10 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & BSS_CHANGED_SSID &&
- 	    vif->type == NL80211_IFTYPE_AP) {
--		arvif->u.ap.ssid_len = info->ssid_len;
--		if (info->ssid_len)
--			memcpy(arvif->u.ap.ssid, info->ssid, info->ssid_len);
-+		arvif->u.ap.ssid_len = vif->cfg.ssid_len;
-+		if (vif->cfg.ssid_len)
-+			memcpy(arvif->u.ap.ssid, vif->cfg.ssid,
-+			       vif->cfg.ssid_len);
- 		arvif->u.ap.hidden_ssid = info->hidden_ssid;
- 	}
- 
-@@ -3275,7 +3276,7 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 	}
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
--		if (info->assoc)
-+		if (vif->cfg.assoc)
- 			ath11k_bss_assoc(hw, vif, info);
- 		else
- 			ath11k_bss_disassoc(hw, vif);
-@@ -3406,14 +3407,15 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 		ath11k_mac_fils_discovery(arvif, info);
- 
- 	if (changed & BSS_CHANGED_ARP_FILTER) {
--		ipv4_cnt = min(info->arp_addr_cnt, ATH11K_IPV4_MAX_COUNT);
--		memcpy(arvif->arp_ns_offload.ipv4_addr, info->arp_addr_list,
-+		ipv4_cnt = min(vif->cfg.arp_addr_cnt, ATH11K_IPV4_MAX_COUNT);
-+		memcpy(arvif->arp_ns_offload.ipv4_addr,
-+		       vif->cfg.arp_addr_list,
- 		       ipv4_cnt * sizeof(u32));
- 		memcpy(arvif->arp_ns_offload.mac_addr, vif->addr, ETH_ALEN);
- 		arvif->arp_ns_offload.ipv4_count = ipv4_cnt;
- 
- 		ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "mac arp_addr_cnt %d vif->addr %pM, offload_addr %pI4\n",
--			   info->arp_addr_cnt,
-+			   vif->cfg.arp_addr_cnt,
- 			   vif->addr, arvif->arp_ns_offload.ipv4_addr);
- 	}
- 
-diff --git a/drivers/net/wireless/ath/ath5k/mac80211-ops.c b/drivers/net/wireless/ath/ath5k/mac80211-ops.c
-index 532eeac9e83e..0df0fa1da181 100644
---- a/drivers/net/wireless/ath/ath5k/mac80211-ops.c
-+++ b/drivers/net/wireless/ath/ath5k/mac80211-ops.c
-@@ -278,9 +278,9 @@ ath5k_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	}
- 
- 	if (changes & BSS_CHANGED_ASSOC) {
--		avf->assoc = bss_conf->assoc;
--		if (bss_conf->assoc)
--			ah->assoc = bss_conf->assoc;
-+		avf->assoc = vif->cfg.assoc;
-+		if (vif->cfg.assoc)
-+			ah->assoc = vif->cfg.assoc;
- 		else
- 			ah->assoc = ath5k_any_vif_assoc(ah);
- 
-@@ -288,11 +288,11 @@ ath5k_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			ath5k_set_beacon_filter(hw, ah->assoc);
- 		ath5k_hw_set_ledstate(ah, ah->assoc ?
- 			AR5K_LED_ASSOC : AR5K_LED_INIT);
--		if (bss_conf->assoc) {
-+		if (vif->cfg.assoc) {
- 			ATH5K_DBG(ah, ATH5K_DEBUG_ANY,
- 				  "Bss Info ASSOC %d, bssid: %pM\n",
--				  bss_conf->aid, common->curbssid);
--			common->curaid = bss_conf->aid;
-+				  vif->cfg.aid, common->curbssid);
-+			common->curaid = vif->cfg.aid;
- 			ath5k_hw_set_bssid(ah);
- 			/* Once ANI is available you would start it here */
- 		}
-diff --git a/drivers/net/wireless/ath/ath9k/beacon.c b/drivers/net/wireless/ath/ath9k/beacon.c
-index 8b1b966bcef1..d41988f8ea3f 100644
---- a/drivers/net/wireless/ath/ath9k/beacon.c
-+++ b/drivers/net/wireless/ath/ath9k/beacon.c
-@@ -585,8 +585,9 @@ static void ath9k_beacon_config_adhoc(struct ath_softc *sc,
- 
- static void ath9k_cache_beacon_config(struct ath_softc *sc,
- 				      struct ath_chanctx *ctx,
--				      struct ieee80211_bss_conf *bss_conf)
-+				      struct ieee80211_vif *vif)
- {
-+	struct ieee80211_bss_conf *bss_conf = &vif->bss_conf;
- 	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
- 	struct ath_beacon_config *cur_conf = &ctx->beacon;
- 
-@@ -596,7 +597,7 @@ static void ath9k_cache_beacon_config(struct ath_softc *sc,
- 	cur_conf->beacon_interval = bss_conf->beacon_int;
- 	cur_conf->dtim_period = bss_conf->dtim_period;
- 	cur_conf->dtim_count = 1;
--	cur_conf->ibss_creator = bss_conf->ibss_creator;
-+	cur_conf->ibss_creator = vif->cfg.ibss_creator;
- 
- 	/*
- 	 * It looks like mac80211 may end up using beacon interval of zero in
-@@ -649,7 +650,7 @@ void ath9k_beacon_config(struct ath_softc *sc, struct ieee80211_vif *main_vif,
- 	cur_conf->enable_beacon = beacons;
- 
- 	if (sc->sc_ah->opmode == NL80211_IFTYPE_STATION) {
--		ath9k_cache_beacon_config(sc, ctx, &main_vif->bss_conf);
-+		ath9k_cache_beacon_config(sc, ctx, main_vif);
- 
- 		ath9k_set_beacon(sc);
- 		set_bit(ATH_OP_BEACONS, &common->op_flags);
-@@ -657,7 +658,7 @@ void ath9k_beacon_config(struct ath_softc *sc, struct ieee80211_vif *main_vif,
- 	}
- 
- 	/* Update the beacon configuration. */
--	ath9k_cache_beacon_config(sc, ctx, &main_vif->bss_conf);
-+	ath9k_cache_beacon_config(sc, ctx, main_vif);
- 
- 	/*
- 	 * Configure the HW beacon registers only when we have a valid
-@@ -670,7 +671,7 @@ void ath9k_beacon_config(struct ath_softc *sc, struct ieee80211_vif *main_vif,
- 		 * IBSS interface.
- 		 */
- 		if (sc->sc_ah->opmode == NL80211_IFTYPE_ADHOC &&
--		    !enabled && beacons && !main_vif->bss_conf.ibss_creator) {
-+		    !enabled && beacons && !main_vif->cfg.ibss_creator) {
- 			spin_lock_irqsave(&sc->sc_pm_lock, flags);
- 			sc->ps_flags |= PS_BEACON_SYNC | PS_WAIT_FOR_BEACON;
- 			spin_unlock_irqrestore(&sc->sc_pm_lock, flags);
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_main.c b/drivers/net/wireless/ath/ath9k/htc_drv_main.c
-index cfee732a89b1..3a5ec4da6a38 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_main.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_main.c
-@@ -100,7 +100,7 @@ static void ath9k_htc_vif_iter(void *data, u8 *mac, struct ieee80211_vif *vif)
- 		priv->rearm_ani = true;
- 	}
- 
--	if (bss_conf->assoc) {
-+	if (vif->cfg.assoc) {
- 		priv->rearm_ani = true;
- 		priv->reconfig_beacon = true;
- 	}
-@@ -1488,8 +1488,8 @@ static void ath9k_htc_bss_iter(void *data, u8 *mac, struct ieee80211_vif *vif)
- 	struct ath_common *common = ath9k_hw_common(priv->ah);
- 	struct ieee80211_bss_conf *bss_conf = &vif->bss_conf;
- 
--	if ((vif->type == NL80211_IFTYPE_STATION) && bss_conf->assoc) {
--		common->curaid = bss_conf->aid;
-+	if ((vif->type == NL80211_IFTYPE_STATION) && vif->cfg.assoc) {
-+		common->curaid = vif->cfg.aid;
- 		common->last_rssi = ATH_RSSI_DUMMY_MARKER;
- 		memcpy(common->curbssid, bss_conf->bssid, ETH_ALEN);
- 		set_bit(ATH_OP_PRIM_STA_VIF, &common->op_flags);
-@@ -1521,17 +1521,17 @@ static void ath9k_htc_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
- 		ath_dbg(common, CONFIG, "BSS Changed ASSOC %d\n",
--			bss_conf->assoc);
-+			vif->cfg.assoc);
- 
--		bss_conf->assoc ?
-+		vif->cfg.assoc ?
- 			priv->num_sta_assoc_vif++ : priv->num_sta_assoc_vif--;
- 
--		if (!bss_conf->assoc)
-+		if (!vif->cfg.assoc)
- 			clear_bit(ATH_OP_PRIM_STA_VIF, &common->op_flags);
- 
- 		if (priv->ah->opmode == NL80211_IFTYPE_STATION) {
- 			ath9k_htc_choose_set_bssid(priv);
--			if (bss_conf->assoc && (priv->num_sta_assoc_vif == 1))
-+			if (vif->cfg.assoc && (priv->num_sta_assoc_vif == 1))
- 				ath9k_htc_start_ani(priv);
- 			else if (priv->num_sta_assoc_vif == 0)
- 				ath9k_htc_stop_ani(priv);
-@@ -1540,7 +1540,7 @@ static void ath9k_htc_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & BSS_CHANGED_IBSS) {
- 		if (priv->ah->opmode == NL80211_IFTYPE_ADHOC) {
--			common->curaid = bss_conf->aid;
-+			common->curaid = vif->cfg.aid;
- 			memcpy(common->curbssid, bss_conf->bssid, ETH_ALEN);
- 			ath9k_htc_set_bssid(priv);
- 		}
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 77144647f4fc..56c2681e5192 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -1881,11 +1881,11 @@ static void ath9k_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
- 		ath_dbg(common, CONFIG, "BSSID %pM Changed ASSOC %d\n",
--			bss_conf->bssid, bss_conf->assoc);
-+			bss_conf->bssid, vif->cfg.assoc);
- 
- 		memcpy(avp->bssid, bss_conf->bssid, ETH_ALEN);
--		avp->aid = bss_conf->aid;
--		avp->assoc = bss_conf->assoc;
-+		avp->aid = vif->cfg.aid;
-+		avp->assoc = vif->cfg.assoc;
- 
- 		ath9k_calculate_summary_state(sc, avp->chanctx);
- 	}
-@@ -1893,7 +1893,7 @@ static void ath9k_bss_info_changed(struct ieee80211_hw *hw,
- 	if ((changed & BSS_CHANGED_IBSS) ||
- 	      (changed & BSS_CHANGED_OCB)) {
- 		memcpy(common->curbssid, bss_conf->bssid, ETH_ALEN);
--		common->curaid = bss_conf->aid;
-+		common->curaid = vif->cfg.aid;
- 		ath9k_hw_write_associd(sc->sc_ah);
- 	}
- 
-diff --git a/drivers/net/wireless/ath/carl9170/main.c b/drivers/net/wireless/ath/carl9170/main.c
-index 101295162967..e28a5f3085c0 100644
---- a/drivers/net/wireless/ath/carl9170/main.c
-+++ b/drivers/net/wireless/ath/carl9170/main.c
-@@ -1115,7 +1115,7 @@ static void carl9170_op_bss_info_changed(struct ieee80211_hw *hw,
- 	}
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
--		ar->common.curaid = bss_conf->aid;
-+		ar->common.curaid = vif->cfg.aid;
- 		err = carl9170_set_beacon_timers(ar);
- 		if (err)
- 			goto out;
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index e34d3d0b7082..72ba2e2fc93a 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -919,17 +919,17 @@ static void wcn36xx_bss_info_changed(struct ieee80211_hw *hw,
- 		wcn36xx_dbg(WCN36XX_DBG_MAC,
- 			    "mac bss changed ssid\n");
- 		wcn36xx_dbg_dump(WCN36XX_DBG_MAC, "ssid ",
--				 bss_conf->ssid, bss_conf->ssid_len);
-+				 vif->cfg.ssid, vif->cfg.ssid_len);
- 
--		vif_priv->ssid.length = bss_conf->ssid_len;
-+		vif_priv->ssid.length = vif->cfg.ssid_len;
- 		memcpy(&vif_priv->ssid.ssid,
--		       bss_conf->ssid,
--		       bss_conf->ssid_len);
-+		       vif->cfg.ssid,
-+		       vif->cfg.ssid_len);
- 	}
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
- 		vif_priv->is_joining = false;
--		if (bss_conf->assoc) {
-+		if (vif->cfg.assoc) {
- 			struct ieee80211_sta *sta;
- 			struct wcn36xx_sta *sta_priv;
- 
-@@ -937,7 +937,7 @@ static void wcn36xx_bss_info_changed(struct ieee80211_hw *hw,
- 				    "mac assoc bss %pM vif %pM AID=%d\n",
- 				     bss_conf->bssid,
- 				     vif->addr,
--				     bss_conf->aid);
-+				     vif->cfg.aid);
- 
- 			vif_priv->sta_assoc = true;
- 
-@@ -963,7 +963,7 @@ static void wcn36xx_bss_info_changed(struct ieee80211_hw *hw,
- 			wcn36xx_smd_config_bss(wcn, vif, sta,
- 					       bss_conf->bssid,
- 					       true);
--			sta_priv->aid = bss_conf->aid;
-+			sta_priv->aid = vif->cfg.aid;
- 			/*
- 			 * config_sta must be called from  because this is the
- 			 * place where AID is available.
-@@ -977,7 +977,7 @@ static void wcn36xx_bss_info_changed(struct ieee80211_hw *hw,
- 				    "disassociated bss %pM vif %pM AID=%d\n",
- 				    bss_conf->bssid,
- 				    vif->addr,
--				    bss_conf->aid);
-+				    vif->cfg.aid);
- 			vif_priv->sta_assoc = false;
- 			wcn36xx_smd_set_link_st(wcn,
- 						bss_conf->bssid,
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index 7ac9a1e6f768..46ab21824d63 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.c
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -3005,7 +3005,7 @@ int wcn36xx_smd_arp_offload(struct wcn36xx *wcn, struct ieee80211_vif *vif,
- 		msg_body.host_offload_params.enable =
- 			WCN36XX_HAL_OFFLOAD_ARP_AND_BCAST_FILTER_ENABLE;
- 		memcpy(&msg_body.host_offload_params.u,
--		       &vif->bss_conf.arp_addr_list[0], sizeof(__be32));
-+		       &vif->cfg.arp_addr_list[0], sizeof(__be32));
- 	}
- 	msg_body.ns_offload_params.bss_index = vif_priv->bss_index;
- 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-index 8c741b98d8e5..e6cd638a85d6 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-@@ -507,7 +507,7 @@ brcms_ops_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 		brcms_c_start_station(wl->wlc, vif->addr);
- 	else if (vif->type == NL80211_IFTYPE_AP)
- 		brcms_c_start_ap(wl->wlc, vif->addr, vif->bss_conf.bssid,
--				 vif->bss_conf.ssid, vif->bss_conf.ssid_len);
-+				 vif->cfg.ssid, vif->cfg.ssid_len);
- 	else if (vif->type == NL80211_IFTYPE_ADHOC)
- 		brcms_c_start_adhoc(wl->wlc, vif->addr);
- 	spin_unlock_bh(&wl->lock);
-@@ -592,9 +592,9 @@ brcms_ops_bss_info_changed(struct ieee80211_hw *hw,
- 		 * also implies a change in the AID.
- 		 */
- 		brcms_err(core, "%s: %s: %sassociated\n", KBUILD_MODNAME,
--			  __func__, info->assoc ? "" : "dis");
-+			  __func__, vif->cfg.assoc ? "" : "dis");
- 		spin_lock_bh(&wl->lock);
--		brcms_c_associate_upd(wl->wlc, info->assoc);
-+		brcms_c_associate_upd(wl->wlc, vif->cfg.assoc);
- 		spin_unlock_bh(&wl->lock);
- 	}
- 	if (changed & BSS_CHANGED_ERP_SLOT) {
-@@ -669,7 +669,7 @@ brcms_ops_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_SSID) {
- 		/* BSSID changed, for whatever reason (IBSS and managed mode) */
- 		spin_lock_bh(&wl->lock);
--		brcms_c_set_ssid(wl->wlc, info->ssid, info->ssid_len);
-+		brcms_c_set_ssid(wl->wlc, vif->cfg.ssid, vif->cfg.ssid_len);
- 		spin_unlock_bh(&wl->lock);
- 	}
- 	if (changed & BSS_CHANGED_BEACON) {
-@@ -715,13 +715,13 @@ brcms_ops_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_IBSS) {
- 		/* IBSS join status changed */
- 		brcms_err(core, "%s: IBSS joined: %s (implement)\n",
--			  __func__, info->ibss_joined ? "true" : "false");
-+			  __func__, vif->cfg.ibss_joined ? "true" : "false");
- 	}
- 
- 	if (changed & BSS_CHANGED_ARP_FILTER) {
- 		/* Hardware ARP filter address list or state changed */
- 		brcms_err(core, "%s: arp filtering: %d addresses"
--			  " (implement)\n", __func__, info->arp_addr_cnt);
-+			  " (implement)\n", __func__, vif->cfg.arp_addr_cnt);
- 	}
- 
- 	if (changed & BSS_CHANGED_QOS) {
-diff --git a/drivers/net/wireless/intel/iwlegacy/3945-mac.c b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-index bd4e7d752958..846138d6e33d 100644
---- a/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-@@ -2701,7 +2701,7 @@ il3945_post_associate(struct il_priv *il)
- 	if (!il->vif || !il->is_open)
- 		return;
- 
--	D_ASSOC("Associated as %d to: %pM\n", il->vif->bss_conf.aid,
-+	D_ASSOC("Associated as %d to: %pM\n", il->vif->cfg.aid,
- 		il->active.bssid_addr);
- 
- 	if (test_bit(S_EXIT_PENDING, &il->status))
-@@ -2718,9 +2718,9 @@ il3945_post_associate(struct il_priv *il)
- 
- 	il->staging.filter_flags |= RXON_FILTER_ASSOC_MSK;
- 
--	il->staging.assoc_id = cpu_to_le16(il->vif->bss_conf.aid);
-+	il->staging.assoc_id = cpu_to_le16(il->vif->cfg.aid);
- 
--	D_ASSOC("assoc id %d beacon interval %d\n", il->vif->bss_conf.aid,
-+	D_ASSOC("assoc id %d beacon interval %d\n", il->vif->cfg.aid,
- 		il->vif->bss_conf.beacon_int);
- 
- 	if (il->vif->bss_conf.use_short_preamble)
-diff --git a/drivers/net/wireless/intel/iwlegacy/4965.c b/drivers/net/wireless/intel/iwlegacy/4965.c
-index 9fa556486511..c34729f576cd 100644
---- a/drivers/net/wireless/intel/iwlegacy/4965.c
-+++ b/drivers/net/wireless/intel/iwlegacy/4965.c
-@@ -1756,9 +1756,9 @@ il4965_post_associate(struct il_priv *il)
- 	if (il->ops->set_rxon_chain)
- 		il->ops->set_rxon_chain(il);
- 
--	il->staging.assoc_id = cpu_to_le16(vif->bss_conf.aid);
-+	il->staging.assoc_id = cpu_to_le16(vif->cfg.aid);
- 
--	D_ASSOC("assoc id %d beacon interval %d\n", vif->bss_conf.aid,
-+	D_ASSOC("assoc id %d beacon interval %d\n", vif->cfg.aid,
- 		vif->bss_conf.beacon_int);
- 
- 	if (vif->bss_conf.use_short_preamble)
-@@ -1775,7 +1775,7 @@ il4965_post_associate(struct il_priv *il)
- 
- 	il_commit_rxon(il);
- 
--	D_ASSOC("Associated as %d to: %pM\n", vif->bss_conf.aid,
-+	D_ASSOC("Associated as %d to: %pM\n", vif->cfg.aid,
- 		il->active.bssid_addr);
- 
- 	switch (vif->type) {
-diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
-index 8299d89e7505..b01945415be6 100644
---- a/drivers/net/wireless/intel/iwlegacy/common.c
-+++ b/drivers/net/wireless/intel/iwlegacy/common.c
-@@ -5427,8 +5427,8 @@ il_mac_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	}
- 
- 	if (changes & BSS_CHANGED_ASSOC) {
--		D_MAC80211("ASSOC %d\n", bss_conf->assoc);
--		if (bss_conf->assoc) {
-+		D_MAC80211("ASSOC %d\n", vif->cfg.assoc);
-+		if (vif->cfg.assoc) {
- 			il->timestamp = bss_conf->sync_tsf;
- 
- 			if (!il_is_rfkill(il))
-@@ -5437,7 +5437,7 @@ il_mac_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			il_set_no_assoc(il, vif);
- 	}
- 
--	if (changes && il_is_associated(il) && bss_conf->aid) {
-+	if (changes && il_is_associated(il) && vif->cfg.aid) {
- 		D_MAC80211("Changes (%#x) while associated\n", changes);
- 		ret = il_send_rxon_assoc(il);
- 		if (!ret) {
-@@ -5459,10 +5459,10 @@ il_mac_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 
- 	if (changes & BSS_CHANGED_IBSS) {
- 		ret = il->ops->manage_ibss_station(il, vif,
--						   bss_conf->ibss_joined);
-+						   vif->cfg.ibss_joined);
- 		if (ret)
- 			IL_ERR("failed to %s IBSS station %pM\n",
--			       bss_conf->ibss_joined ? "add" : "remove",
-+			       vif->cfg.ibss_joined ? "add" : "remove",
- 			       bss_conf->bssid);
- 	}
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rxon.c b/drivers/net/wireless/intel/iwlwifi/dvm/rxon.c
-index 5dd2d43a01d8..bf756301f7f4 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/rxon.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/rxon.c
-@@ -563,11 +563,11 @@ int iwlagn_set_pan_params(struct iwl_priv *priv)
- 
- 		if (test_bit(STATUS_SCAN_HW, &priv->status) ||
- 		    (!ctx_bss->vif->bss_conf.idle &&
--		     !ctx_bss->vif->bss_conf.assoc)) {
-+		     !ctx_bss->vif->cfg.assoc)) {
- 			slot0 = dtim * bcnint * 3 - IWL_MIN_SLOT_TIME;
- 			slot1 = IWL_MIN_SLOT_TIME;
- 		} else if (!ctx_pan->vif->bss_conf.idle &&
--			   !ctx_pan->vif->bss_conf.assoc) {
-+			   !ctx_pan->vif->cfg.assoc) {
- 			slot1 = dtim * bcnint * 3 - IWL_MIN_SLOT_TIME;
- 			slot0 = IWL_MIN_SLOT_TIME;
- 		}
-@@ -1420,14 +1420,14 @@ void iwlagn_bss_info_changed(struct ieee80211_hw *hw,
- 		iwlagn_update_qos(priv, ctx);
- 	}
- 
--	ctx->staging.assoc_id = cpu_to_le16(vif->bss_conf.aid);
-+	ctx->staging.assoc_id = cpu_to_le16(vif->cfg.aid);
- 	if (vif->bss_conf.use_short_preamble)
- 		ctx->staging.flags |= RXON_FLG_SHORT_PREAMBLE_MSK;
- 	else
- 		ctx->staging.flags &= ~RXON_FLG_SHORT_PREAMBLE_MSK;
- 
- 	if (changes & BSS_CHANGED_ASSOC) {
--		if (bss_conf->assoc) {
-+		if (vif->cfg.assoc) {
- 			priv->timestamp = bss_conf->sync_tsf;
- 			ctx->staging.filter_flags |= RXON_FILTER_ASSOC_MSK;
- 		} else {
-@@ -1483,7 +1483,7 @@ void iwlagn_bss_info_changed(struct ieee80211_hw *hw,
- 	 */
- 
- 	if (vif->type == NL80211_IFTYPE_STATION) {
--		if (!bss_conf->assoc)
-+		if (!vif->cfg.assoc)
- 			ctx->staging.filter_flags |= RXON_FILTER_BCON_AWARE_MSK;
- 		else
- 			ctx->staging.filter_flags &=
-@@ -1493,7 +1493,7 @@ void iwlagn_bss_info_changed(struct ieee80211_hw *hw,
- 	if (force || memcmp(&ctx->staging, &ctx->active, sizeof(ctx->staging)))
- 		iwlagn_commit_rxon(priv, ctx);
- 
--	if (changes & BSS_CHANGED_ASSOC && bss_conf->assoc) {
-+	if (changes & BSS_CHANGED_ASSOC && vif->cfg.assoc) {
- 		/*
- 		 * The chain noise calibration will enable PM upon
- 		 * completion. If calibration has already been run
-@@ -1509,10 +1509,10 @@ void iwlagn_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (changes & BSS_CHANGED_IBSS) {
- 		ret = iwlagn_manage_ibss_station(priv, vif,
--						 bss_conf->ibss_joined);
-+						 vif->cfg.ibss_joined);
- 		if (ret)
- 			IWL_ERR(priv, "failed to %s IBSS station %pM\n",
--				bss_conf->ibss_joined ? "add" : "remove",
-+				vif->cfg.ibss_joined ? "add" : "remove",
- 				bss_conf->bssid);
- 	}
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/coex.c b/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
-index ed2a0678ccb7..35d6f54aced7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
-@@ -311,7 +311,7 @@ static void iwl_mvm_bt_notif_iterator(void *_data, u8 *mac,
- 		smps_mode = IEEE80211_SMPS_DYNAMIC;
- 
- 	/* relax SMPS constraints for next association */
--	if (!vif->bss_conf.assoc)
-+	if (!vif->cfg.assoc)
- 		smps_mode = IEEE80211_SMPS_AUTOMATIC;
- 
- 	if (mvmvif->phy_ctxt &&
-@@ -382,7 +382,7 @@ static void iwl_mvm_bt_notif_iterator(void *_data, u8 *mac,
- 	 *  we are not associated
- 	 */
- 	if (iwl_get_coex_type(mvm, vif) == BT_COEX_LOOSE_LUT ||
--	    mvm->cfg->bt_shared_single_ant || !vif->bss_conf.assoc ||
-+	    mvm->cfg->bt_shared_single_ant || !vif->cfg.assoc ||
- 	    le32_to_cpu(mvm->last_bt_notif.bt_activity_grading) == BT_OFF) {
- 		iwl_mvm_bt_coex_reduced_txp(mvm, mvmvif->ap_sta_id, false);
- 		iwl_mvm_bt_coex_enable_rssi_event(mvm, vif, false, 0);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 8edc8646a23a..aeb0015b73d2 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -749,7 +749,7 @@ static int iwl_mvm_d3_reprogram(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 	/* add back the MAC */
- 	mvmvif->uploaded = false;
- 
--	if (WARN_ON(!vif->bss_conf.assoc))
-+	if (WARN_ON(!vif->cfg.assoc))
- 		return -EINVAL;
- 
- 	ret = iwl_mvm_mac_ctxt_add(mvm, vif);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-index 430044bc4755..efb070899d6b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-@@ -67,7 +67,7 @@ int iwl_mvm_ftm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 	 * the TK is already configured for this station, so it
- 	 * shouldn't be set again here.
- 	 */
--	if (vif->bss_conf.assoc &&
-+	if (vif->cfg.assoc &&
- 	    !memcmp(addr, vif->bss_conf.bssid, ETH_ALEN)) {
- 		struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
- 		struct ieee80211_sta *sta;
-@@ -222,7 +222,7 @@ static void iwl_mvm_ftm_cmd_v5(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 	for (i = 0; i < ETH_ALEN; i++)
- 		cmd->macaddr_mask[i] = ~req->mac_addr_mask[i];
- 
--	if (vif->bss_conf.assoc)
-+	if (vif->cfg.assoc)
- 		memcpy(cmd->range_req_bssid, vif->bss_conf.bssid, ETH_ALEN);
- 	else
- 		eth_broadcast_addr(cmd->range_req_bssid);
-@@ -254,7 +254,7 @@ static void iwl_mvm_ftm_cmd_common(struct iwl_mvm *mvm,
- 	for (i = 0; i < ETH_ALEN; i++)
- 		cmd->macaddr_mask[i] = ~req->mac_addr_mask[i];
- 
--	if (vif->bss_conf.assoc) {
-+	if (vif->cfg.assoc) {
- 		memcpy(cmd->range_req_bssid, vif->bss_conf.bssid, ETH_ALEN);
- 
- 		/* AP's TSF is only relevant if associated */
-@@ -503,7 +503,7 @@ iwl_mvm_ftm_put_target(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 
- 	iwl_mvm_ftm_put_target_common(mvm, peer, target);
- 
--	if (vif->bss_conf.assoc &&
-+	if (vif->cfg.assoc &&
- 	    !memcmp(peer->addr, vif->bss_conf.bssid, ETH_ALEN)) {
- 		struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
- 		struct ieee80211_sta *sta;
-@@ -693,7 +693,7 @@ iwl_mvm_ftm_set_secured_ranging(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 		target->cipher = entry->cipher;
- 		memcpy(target->hltk, entry->hltk, sizeof(target->hltk));
- 
--		if (vif->bss_conf.assoc &&
-+		if (vif->cfg.assoc &&
- 		    !memcmp(vif->bss_conf.bssid, target->bssid,
- 			    sizeof(target->bssid)))
- 			ieee80211_iter_keys(mvm->hw, vif, iter, target);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index 7756ac0faf3f..65df8cbb57d9 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -570,7 +570,7 @@ static int iwl_mvm_mac_ctxt_cmd_sta(struct iwl_mvm *mvm,
- 	}
- 
- 	/* We need the dtim_period to set the MAC as associated */
--	if (vif->bss_conf.assoc && vif->bss_conf.dtim_period &&
-+	if (vif->cfg.assoc && vif->bss_conf.dtim_period &&
- 	    !force_assoc_off) {
- 		struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
- 		u32 dtim_offs;
-@@ -628,9 +628,9 @@ static int iwl_mvm_mac_ctxt_cmd_sta(struct iwl_mvm *mvm,
- 					      vif->bss_conf.dtim_period);
- 
- 	ctxt_sta->listen_interval = cpu_to_le32(mvm->hw->conf.listen_interval);
--	ctxt_sta->assoc_id = cpu_to_le32(vif->bss_conf.aid);
-+	ctxt_sta->assoc_id = cpu_to_le32(vif->cfg.aid);
- 
--	if (vif->probe_req_reg && vif->bss_conf.assoc && vif->p2p)
-+	if (vif->probe_req_reg && vif->cfg.assoc && vif->p2p)
- 		cmd.filter_flags |= cpu_to_le32(MAC_FILTER_IN_PROBE_REQUEST);
- 
- 	if (vif->bss_conf.he_support && !iwlwifi_mod_params.disable_11ax) {
-@@ -944,8 +944,8 @@ static int iwl_mvm_mac_ctxt_send_beacon_v9(struct iwl_mvm *mvm,
- 			IWL_MAC_BEACON_FILS :
- 			IWL_MAC_BEACON_FILS_V1;
- 		beacon_cmd.short_ssid =
--			cpu_to_le32(~crc32_le(~0, vif->bss_conf.ssid,
--					      vif->bss_conf.ssid_len));
-+			cpu_to_le32(~crc32_le(~0, vif->cfg.ssid,
-+					      vif->cfg.ssid_len));
- 	}
- 	rcu_read_unlock();
- 
-@@ -1031,7 +1031,7 @@ static void iwl_mvm_mac_ap_iterator(void *_data, u8 *mac,
- {
- 	struct iwl_mvm_mac_ap_iterator_data *data = _data;
- 
--	if (vif->type != NL80211_IFTYPE_STATION || !vif->bss_conf.assoc)
-+	if (vif->type != NL80211_IFTYPE_STATION || !vif->cfg.assoc)
- 		return;
- 
- 	/* Station client has higher priority over P2P client*/
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index c5626ff83805..31290c0f210c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1614,7 +1614,7 @@ static void iwl_mvm_mc_iface_iterator(void *_data, u8 *mac,
- 		return;
- 
- 	if (vif->type != NL80211_IFTYPE_STATION ||
--	    !vif->bss_conf.assoc)
-+	    !vif->cfg.assoc)
- 		return;
- 
- 	cmd->port_id = data->port_id++;
-@@ -1740,7 +1740,7 @@ static void iwl_mvm_config_iface_filter(struct ieee80211_hw *hw,
- 		return;
- 
- 	/* Supported only for p2p client interfaces */
--	if (vif->type != NL80211_IFTYPE_STATION || !vif->bss_conf.assoc ||
-+	if (vif->type != NL80211_IFTYPE_STATION || !vif->cfg.assoc ||
- 	    !vif->p2p)
- 		return;
- 
-@@ -2191,7 +2191,7 @@ static void iwl_mvm_bss_info_changed_station(struct iwl_mvm *mvm,
- 	 * on the beacon interval, which was not known when the station
- 	 * interface was added.
- 	 */
--	if (changes & BSS_CHANGED_ASSOC && bss_conf->assoc) {
-+	if (changes & BSS_CHANGED_ASSOC && vif->cfg.assoc) {
- 		if (vif->bss_conf.he_support &&
- 		    !iwlwifi_mod_params.disable_11ax)
- 			iwl_mvm_cfg_he_sta(mvm, vif, mvmvif->ap_sta_id);
-@@ -2201,7 +2201,7 @@ static void iwl_mvm_bss_info_changed_station(struct iwl_mvm *mvm,
- 
- 	/* Update MU EDCA params */
- 	if (changes & BSS_CHANGED_QOS && mvmvif->associated &&
--	    bss_conf->assoc && vif->bss_conf.he_support &&
-+	    vif->cfg.assoc && vif->bss_conf.he_support &&
- 	    !iwlwifi_mod_params.disable_11ax)
- 		iwl_mvm_cfg_he_sta(mvm, vif, mvmvif->ap_sta_id);
- 
-@@ -2220,10 +2220,10 @@ static void iwl_mvm_bss_info_changed_station(struct iwl_mvm *mvm,
- 
- 	/* after sending it once, adopt mac80211 data */
- 	memcpy(mvmvif->bssid, bss_conf->bssid, ETH_ALEN);
--	mvmvif->associated = bss_conf->assoc;
-+	mvmvif->associated = vif->cfg.assoc;
- 
- 	if (changes & BSS_CHANGED_ASSOC) {
--		if (bss_conf->assoc) {
-+		if (vif->cfg.assoc) {
- 			/* clear statistics to get clean beacon counter */
- 			iwl_mvm_request_statistics(mvm, true);
- 			memset(&mvmvif->beacon_stats, 0,
-@@ -3020,7 +3020,7 @@ static void iwl_mvm_mei_host_associated(struct iwl_mvm *mvm,
- #if IS_ENABLED(CONFIG_IWLMEI)
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
- 	struct iwl_mei_conn_info conn_info = {
--		.ssid_len = vif->bss_conf.ssid_len,
-+		.ssid_len = vif->cfg.ssid_len,
- 		.channel = vif->bss_conf.chandef.chan->hw_value,
- 	};
- 
-@@ -3068,7 +3068,7 @@ static void iwl_mvm_mei_host_associated(struct iwl_mvm *mvm,
- 		return;
- 	}
- 
--	memcpy(conn_info.ssid, vif->bss_conf.ssid, vif->bss_conf.ssid_len);
-+	memcpy(conn_info.ssid, vif->cfg.ssid, vif->cfg.ssid_len);
- 	memcpy(conn_info.bssid,  vif->bss_conf.bssid, ETH_ALEN);
- 
- 	/* TODO: add support for collocated AP data */
-@@ -3747,7 +3747,7 @@ static int iwl_mvm_send_aux_roc_cmd(struct iwl_mvm *mvm,
- 	 * like the delay to be for 2-3 dtim intervals, in case there are
- 	 * other time events with higher priority.
- 	 */
--	if (vif->bss_conf.assoc) {
-+	if (vif->cfg.assoc) {
- 		delay = min_t(u32, dtim_interval * 3, AUX_ROC_MAX_DELAY);
- 		/* We cannot remain off-channel longer than the DTIM interval */
- 		if (dtim_interval <= req_dur) {
-@@ -4502,7 +4502,7 @@ static int __iwl_mvm_mac_testmode_cmd(struct iwl_mvm *mvm,
- 	case IWL_MVM_TM_CMD_SET_BEACON_FILTER:
- 		/* must be associated client vif - ignore authorized */
- 		if (!vif || vif->type != NL80211_IFTYPE_STATION ||
--		    !vif->bss_conf.assoc || !vif->bss_conf.dtim_period ||
-+		    !vif->cfg.assoc || !vif->bss_conf.dtim_period ||
- 		    !tb[IWL_MVM_TM_ATTR_BEACON_FILTER_STATE])
- 			return -EINVAL;
- 
-@@ -4670,7 +4670,7 @@ static int iwl_mvm_pre_channel_switch(struct ieee80211_hw *hw,
- 		 * we don't know the dtim period. In this case, the firmware can't
- 		 * track the beacons.
- 		 */
--		if (!vif->bss_conf.assoc || !vif->bss_conf.dtim_period) {
-+		if (!vif->cfg.assoc || !vif->bss_conf.dtim_period) {
- 			ret = -EBUSY;
- 			goto out_unlock;
- 		}
-@@ -5069,7 +5069,7 @@ static void iwl_mvm_mac_sta_statistics(struct ieee80211_hw *hw,
- 	if (!(vif->driver_flags & IEEE80211_VIF_BEACON_FILTER))
- 		return;
- 
--	if (!vif->bss_conf.assoc)
-+	if (!vif->cfg.assoc)
- 		return;
- 
- 	mutex_lock(&mvm->mutex);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/offloading.c b/drivers/net/wireless/intel/iwlwifi/mvm/offloading.c
-index c7dabc6b3765..b1ded76299f8 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/offloading.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/offloading.c
-@@ -192,9 +192,9 @@ int iwl_mvm_send_proto_offload(struct iwl_mvm *mvm,
- 		size = sizeof(cmd.v1);
- 	}
- 
--	if (vif->bss_conf.arp_addr_cnt) {
-+	if (vif->cfg.arp_addr_cnt) {
- 		enabled |= IWL_D3_PROTO_OFFLOAD_ARP | IWL_D3_PROTO_IPV4_VALID;
--		common->host_ipv4_addr = vif->bss_conf.arp_addr_list[0];
-+		common->host_ipv4_addr = vif->cfg.arp_addr_list[0];
- 		memcpy(common->arp_mac_addr, vif->addr, ETH_ALEN);
- 	}
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index b2f33ebdf485..db43c8a83a31 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -162,7 +162,7 @@ static void iwl_mvm_rx_monitor_notif(struct iwl_mvm *mvm,
- 	    vif->bss_conf.chandef.width < NL80211_CHAN_WIDTH_40)
- 		return;
- 
--	if (!vif->bss_conf.assoc)
-+	if (!vif->cfg.assoc)
- 		return;
- 
- 	/* this shouldn't happen *again*, ignore it */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/power.c b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-index afdf3bb523e9..b49f265a421f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-@@ -223,7 +223,7 @@ static void iwl_mvm_p2p_standalone_iterator(void *_data, u8 *mac,
- 		*is_p2p_standalone = false;
- 		break;
- 	case NL80211_IFTYPE_STATION:
--		if (vif->bss_conf.assoc)
-+		if (vif->cfg.assoc)
- 			*is_p2p_standalone = false;
- 		break;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/quota.c b/drivers/net/wireless/intel/iwlwifi/mvm/quota.c
-index c862bd243b55..0453f5d54885 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/quota.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/quota.c
-@@ -47,7 +47,7 @@ static void iwl_mvm_quota_iterator(void *_data, u8 *mac,
- 
- 	switch (vif->type) {
- 	case NL80211_IFTYPE_STATION:
--		if (vif->bss_conf.assoc)
-+		if (vif->cfg.assoc)
- 			break;
- 		return;
- 	case NL80211_IFTYPE_AP:
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index a4077053e374..582a95ffc7ab 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -1948,14 +1948,14 @@ static void iwl_mvm_scan_6ghz_passive_scan(struct iwl_mvm *mvm,
- 	 * reset or resume flow, or while not associated and a large interval
- 	 * has passed since the last 6GHz passive scan.
- 	 */
--	if ((vif->bss_conf.assoc ||
-+	if ((vif->cfg.assoc ||
- 	     time_after(mvm->last_6ghz_passive_scan_jiffies +
- 			(IWL_MVM_6GHZ_PASSIVE_SCAN_TIMEOUT * HZ), jiffies)) &&
- 	    (time_before(mvm->last_reset_or_resume_time_jiffies +
- 			 (IWL_MVM_6GHZ_PASSIVE_SCAN_ASSOC_TIMEOUT * HZ),
- 			 jiffies))) {
- 		IWL_DEBUG_SCAN(mvm, "6GHz passive scan: %s\n",
--			       vif->bss_conf.assoc ? "associated" :
-+			       vif->cfg.assoc ? "associated" :
- 			       "timeout did not expire");
- 		return;
- 	}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sf.c b/drivers/net/wireless/intel/iwlwifi/mvm/sf.c
-index 693752d8f65b..22476a8364c3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sf.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sf.c
-@@ -31,7 +31,7 @@ static void iwl_mvm_bound_iface_iterator(void *_data, u8 *mac,
- 
- 	if (vif->type == NL80211_IFTYPE_STATION) {
- 		data->sta_vif_ap_sta_id = mvmvif->ap_sta_id;
--		if (vif->bss_conf.assoc)
-+		if (vif->cfg.assoc)
- 			data->sta_vif_state = SF_FULL_ON;
- 		else
- 			data->sta_vif_state = SF_INIT_OFF;
-@@ -261,7 +261,7 @@ int iwl_mvm_sf_update(struct iwl_mvm *mvm, struct ieee80211_vif *changed_vif,
- 				return -EINVAL;
- 			if (changed_vif->type != NL80211_IFTYPE_STATION) {
- 				new_state = SF_UNINIT;
--			} else if (changed_vif->bss_conf.assoc &&
-+			} else if (changed_vif->cfg.assoc &&
- 				   changed_vif->bss_conf.dtim_period) {
- 				mvmvif = iwl_mvm_vif_from_mac80211(changed_vif);
- 				sta_id = mvmvif->ap_sta_id;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 406f0a50a5bf..3c7f65af22f7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -1948,7 +1948,7 @@ int iwl_mvm_rm_sta(struct iwl_mvm *mvm,
- 	if (vif->type == NL80211_IFTYPE_STATION &&
- 	    mvmvif->ap_sta_id == sta_id) {
- 		/* if associated - we can't remove the AP STA now */
--		if (vif->bss_conf.assoc)
-+		if (vif->cfg.assoc)
- 			return ret;
- 
- 		/* unassoc - go ahead - remove the AP STA now */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-index b8c2fe639220..56a91e1f2d9a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-@@ -160,7 +160,7 @@ static bool iwl_mvm_te_check_disconnect(struct iwl_mvm *mvm,
- 	if (vif->type != NL80211_IFTYPE_STATION)
- 		return false;
- 
--	if (!mvmvif->csa_bcn_pending && vif->bss_conf.assoc &&
-+	if (!mvmvif->csa_bcn_pending && vif->cfg.assoc &&
- 	    vif->bss_conf.dtim_period)
- 		return false;
- 	if (errmsg)
-@@ -176,7 +176,7 @@ static bool iwl_mvm_te_check_disconnect(struct iwl_mvm *mvm,
- 		rcu_read_unlock();
- 	}
- 
--	if (vif->bss_conf.assoc) {
-+	if (vif->cfg.assoc) {
- 		/*
- 		 * When not associated, this will be called from
- 		 * iwl_mvm_event_mlme_callback_ini()
-@@ -346,7 +346,7 @@ static void iwl_mvm_te_handle_notif(struct iwl_mvm *mvm,
- 			 * and know the dtim period.
- 			 */
- 			iwl_mvm_te_check_disconnect(mvm, te_data->vif,
--				!te_data->vif->bss_conf.assoc ?
-+				!te_data->vif->cfg.assoc ?
- 				"Not associated and the time event is over already..." :
- 				"No beacon heard and the time event is over already...");
- 			break;
-@@ -859,7 +859,7 @@ void iwl_mvm_rx_session_protect_notif(struct iwl_mvm *mvm,
- 			 * and know the dtim period.
- 			 */
- 			iwl_mvm_te_check_disconnect(mvm, vif,
--						    !vif->bss_conf.assoc ?
-+						    !vif->cfg.assoc ?
- 						    "Not associated and the session protection is over already..." :
- 						    "No beacon heard and the session protection is over already...");
- 			spin_lock_bh(&mvm->time_event_lock);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
-index bc947733d982..3ee5ea3484be 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
-@@ -604,7 +604,7 @@ static void iwl_mvm_sta_iface_iterator(void *_data, u8 *mac,
- 	if (vif->type != NL80211_IFTYPE_STATION)
- 		return;
- 
--	if (vif->bss_conf.assoc)
-+	if (vif->cfg.assoc)
- 		data->assoc = true;
- }
- 
-@@ -816,7 +816,7 @@ static void iwl_mvm_uapsd_agg_disconnect(struct iwl_mvm *mvm,
- 	if (vif->type != NL80211_IFTYPE_STATION)
- 		return;
- 
--	if (!vif->bss_conf.assoc)
-+	if (!vif->cfg.assoc)
- 		return;
- 
- 	if (!mvmvif->queue_params[IEEE80211_AC_VO].uapsd &&
-diff --git a/drivers/net/wireless/intersil/p54/main.c b/drivers/net/wireless/intersil/p54/main.c
-index a3ca6620dc0c..a9dfe6a3da0d 100644
---- a/drivers/net/wireless/intersil/p54/main.c
-+++ b/drivers/net/wireless/intersil/p54/main.c
-@@ -480,8 +480,8 @@ static void p54_bss_info_changed(struct ieee80211_hw *dev,
- 			p54_scan(priv, P54_SCAN_EXIT, 0);
- 	}
- 	if (changed & BSS_CHANGED_ASSOC) {
--		if (info->assoc) {
--			priv->aid = info->aid;
-+		if (vif->cfg.assoc) {
-+			priv->aid = vif->cfg.aid;
- 			priv->wakeup_timer = info->beacon_int *
- 					     info->dtim_period * 5;
- 			p54_setup_mac(priv);
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index 53333e6ebdc2..b034d34745ab 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -2119,9 +2119,9 @@ static void mac80211_hwsim_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
- 		wiphy_dbg(hw->wiphy, "  ASSOC: assoc=%d aid=%d\n",
--			  info->assoc, info->aid);
--		vp->assoc = info->assoc;
--		vp->aid = info->aid;
-+			  vif->cfg.assoc, vif->cfg.aid);
-+		vp->assoc = vif->cfg.assoc;
-+		vp->aid = vif->cfg.aid;
- 	}
- 
- 	if (changed & BSS_CHANGED_BEACON_ENABLED) {
-diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-index 36c24d17136c..5f1bcfb5e3f6 100644
---- a/drivers/net/wireless/marvell/mwl8k.c
-+++ b/drivers/net/wireless/marvell/mwl8k.c
-@@ -3250,7 +3250,7 @@ mwl8k_cmd_set_aid(struct ieee80211_hw *hw,
- 
- 	cmd->header.code = cpu_to_le16(MWL8K_CMD_SET_AID);
- 	cmd->header.length = cpu_to_le16(sizeof(*cmd));
--	cmd->aid = cpu_to_le16(vif->bss_conf.aid);
-+	cmd->aid = cpu_to_le16(vif->cfg.aid);
- 	memcpy(cmd->bssid, vif->bss_conf.bssid, ETH_ALEN);
- 
- 	if (vif->bss_conf.use_cts_prot) {
-@@ -5013,13 +5013,13 @@ mwl8k_bss_info_changed_sta(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	/*
- 	 * No need to capture a beacon if we're no longer associated.
- 	 */
--	if ((changed & BSS_CHANGED_ASSOC) && !vif->bss_conf.assoc)
-+	if ((changed & BSS_CHANGED_ASSOC) && !vif->cfg.assoc)
- 		priv->capture_beacon = false;
- 
- 	/*
- 	 * Get the AP's legacy and MCS rates.
- 	 */
--	if (vif->bss_conf.assoc) {
-+	if (vif->cfg.assoc) {
- 		struct ieee80211_sta *ap;
- 
- 		rcu_read_lock();
-@@ -5085,7 +5085,7 @@ mwl8k_bss_info_changed_sta(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			goto out;
- 	}
- 
--	if (vif->bss_conf.assoc && !priv->ap_fw &&
-+	if (vif->cfg.assoc && !priv->ap_fw &&
- 	    (changed & (BSS_CHANGED_ASSOC | BSS_CHANGED_ERP_CTS_PROT |
- 			BSS_CHANGED_HT))) {
- 		rc = mwl8k_cmd_set_aid(hw, vif, ap_legacy_rates);
-@@ -5093,7 +5093,7 @@ mwl8k_bss_info_changed_sta(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			goto out;
- 	}
- 
--	if (vif->bss_conf.assoc &&
-+	if (vif->cfg.assoc &&
- 	    (changed & (BSS_CHANGED_ASSOC | BSS_CHANGED_BEACON_INT))) {
- 		/*
- 		 * Finalize the join.  Tell rx handler to process
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/main.c b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-index 91425b454cae..1f14ecda1f55 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-@@ -305,7 +305,7 @@ mt7603_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	mutex_lock(&dev->mt76.mutex);
- 
- 	if (changed & (BSS_CHANGED_ASSOC | BSS_CHANGED_BSSID)) {
--		if (info->assoc || info->ibss_joined) {
-+		if (vif->cfg.assoc || vif->cfg.ibss_joined) {
- 			mt76_wr(dev, MT_BSSID0(mvif->idx),
- 				get_unaligned_le32(info->bssid));
- 			mt76_wr(dev, MT_BSSID1(mvif->idx),
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index a9c9b97d173e..d992fdea0f32 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -616,7 +616,7 @@ static void mt7615_bss_info_changed(struct ieee80211_hw *hw,
- 	}
- 
- 	if (changed & BSS_CHANGED_ASSOC)
--		mt7615_mac_set_beacon_filter(phy, vif, info->assoc);
-+		mt7615_mac_set_beacon_filter(phy, vif, vif->cfg.assoc);
- 
- 	mt7615_mutex_release(dev);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 8fb6c9d735dc..f58376733c67 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -2530,7 +2530,7 @@ int mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 		u8 pad;
- 	} req = {
- 		.bss_idx = mvif->mt76.idx,
--		.aid = cpu_to_le16(vif->bss_conf.aid),
-+		.aid = cpu_to_le16(vif->cfg.aid),
- 		.dtim_period = vif->bss_conf.dtim_period,
- 		.bcn_interval = cpu_to_le16(vif->bss_conf.beacon_int),
- 	};
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index faa279bbbcb2..d3da54e6670b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -402,7 +402,7 @@ void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
- 		else
- 			conn_type = CONNECTION_INFRA_AP;
- 		basic->conn_type = cpu_to_le32(conn_type);
--		basic->aid = cpu_to_le16(vif->bss_conf.aid);
-+		basic->aid = cpu_to_le16(vif->cfg.aid);
- 		break;
- 	case NL80211_IFTYPE_ADHOC:
- 		basic->conn_type = cpu_to_le32(CONNECTION_IBSS_ADHOC);
-@@ -546,7 +546,7 @@ void mt76_connac_mcu_wtbl_generic_tlv(struct mt76_dev *dev,
- 
- 	if (sta) {
- 		if (vif->type == NL80211_IFTYPE_STATION)
--			generic->partial_aid = cpu_to_le16(vif->bss_conf.aid);
-+			generic->partial_aid = cpu_to_le16(vif->cfg.aid);
- 		else
- 			generic->partial_aid = cpu_to_le16(sta->aid);
- 		memcpy(generic->peer_addr, sta->addr, ETH_ALEN);
-@@ -2157,8 +2157,10 @@ int mt76_connac_mcu_update_arp_filter(struct mt76_dev *dev,
- 				      struct mt76_vif *vif,
- 				      struct ieee80211_bss_conf *info)
- {
-+	struct ieee80211_vif *mvif = container_of(info, struct ieee80211_vif,
-+						  bss_conf);
- 	struct sk_buff *skb;
--	int i, len = min_t(int, info->arp_addr_cnt,
-+	int i, len = min_t(int, mvif->cfg.arp_addr_cnt,
- 			   IEEE80211_BSS_ARP_ADDR_LIST_LEN);
- 	struct {
- 		struct {
-@@ -2186,7 +2188,7 @@ int mt76_connac_mcu_update_arp_filter(struct mt76_dev *dev,
- 
- 	skb_put_data(skb, &req_hdr, sizeof(req_hdr));
- 	for (i = 0; i < len; i++)
--		skb_put_data(skb, &info->arp_addr_list[i], sizeof(__be32));
-+		skb_put_data(skb, &mvif->cfg.arp_addr_list[i], sizeof(__be32));
- 
- 	return mt76_mcu_skb_send_msg(dev, skb, MCU_UNI_CMD(OFFLOAD), true);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 710ca757fb52..05327b0b6fc3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -593,7 +593,7 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
- 	}
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
--		mt7915_mcu_add_bss_info(phy, vif, info->assoc);
-+		mt7915_mcu_add_bss_info(phy, vif, vif->cfg.assoc);
- 		mt7915_mcu_add_obss_spr(dev, vif, info->he_obss_pd.enable);
- 	}
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 80279f342109..8532033794bd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -678,7 +678,7 @@ static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
- 		mt7921_mcu_sta_update(dev, NULL, vif, true,
- 				      MT76_STA_INFO_STATE_ASSOC);
- 		if (dev->pm.enable)
--			mt7921_mcu_set_beacon_filter(dev, vif, info->assoc);
-+			mt7921_mcu_set_beacon_filter(dev, vif, vif->cfg.assoc);
- 	}
- 
- 	if (changed & BSS_CHANGED_ARP_FILTER) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 12bab18c4171..64fc400bd981 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1036,7 +1036,7 @@ mt7921_mcu_set_bss_pm(struct mt7921_dev *dev, struct ieee80211_vif *vif,
- 		u8 pad;
- 	} req = {
- 		.bss_idx = mvif->mt76.idx,
--		.aid = cpu_to_le16(vif->bss_conf.aid),
-+		.aid = cpu_to_le16(vif->cfg.aid),
- 		.dtim_period = vif->bss_conf.dtim_period,
- 		.bcn_interval = cpu_to_le16(vif->bss_conf.beacon_int),
- 	};
-diff --git a/drivers/net/wireless/mediatek/mt7601u/phy.c b/drivers/net/wireless/mediatek/mt7601u/phy.c
-index 8a00f6a75ca9..d4cd2215aba9 100644
---- a/drivers/net/wireless/mediatek/mt7601u/phy.c
-+++ b/drivers/net/wireless/mediatek/mt7601u/phy.c
-@@ -1097,7 +1097,10 @@ static void mt7601u_phy_freq_cal(struct work_struct *work)
- void mt7601u_phy_con_cal_onoff(struct mt7601u_dev *dev,
- 			       struct ieee80211_bss_conf *info)
- {
--	if (!info->assoc)
-+	struct ieee80211_vif *vif = container_of(info, struct ieee80211_vif,
-+						 bss_conf);
-+
-+	if (!vif->cfg.assoc)
- 		cancel_delayed_work_sync(&dev->freq_cal.work);
- 
- 	/* Start/stop collecting beacon data */
-@@ -1108,10 +1111,10 @@ void mt7601u_phy_con_cal_onoff(struct mt7601u_dev *dev,
- 	spin_unlock_bh(&dev->con_mon_lock);
- 
- 	dev->freq_cal.freq = dev->ee->rf_freq_off;
--	dev->freq_cal.enabled = info->assoc;
-+	dev->freq_cal.enabled = vif->cfg.assoc;
- 	dev->freq_cal.adjusting = false;
- 
--	if (info->assoc)
-+	if (vif->cfg.assoc)
- 		ieee80211_queue_delayed_work(dev->hw, &dev->freq_cal.work,
- 					     MT_FREQ_CAL_INIT_DELAY);
- }
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00config.c b/drivers/net/wireless/ralink/rt2x00/rt2x00config.c
-index 6bafdd991171..f895f560a185 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00config.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00config.c
-@@ -70,6 +70,8 @@ void rt2x00lib_config_erp(struct rt2x00_dev *rt2x00dev,
- 			  struct ieee80211_bss_conf *bss_conf,
- 			  u32 changed)
- {
-+	struct ieee80211_vif *vif = container_of(bss_conf, struct ieee80211_vif,
-+						 bss_conf);
- 	struct rt2x00lib_erp erp;
- 
- 	memset(&erp, 0, sizeof(erp));
-@@ -87,7 +89,7 @@ void rt2x00lib_config_erp(struct rt2x00_dev *rt2x00dev,
- 	erp.beacon_int = bss_conf->beacon_int;
- 
- 	/* Update the AID, this is needed for dynamic PS support */
--	rt2x00dev->aid = bss_conf->assoc ? bss_conf->aid : 0;
-+	rt2x00dev->aid = vif->cfg.assoc ? vif->cfg.aid : 0;
- 	rt2x00dev->last_beacon = bss_conf->sync_tsf;
- 
- 	/* Update global beacon interval time, this is needed for PS support */
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-index dea5babd30fe..660554a01894 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-@@ -645,7 +645,7 @@ void rt2x00mac_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changes & BSS_CHANGED_ASSOC) {
- 		rt2x00dev->link.count = 0;
- 
--		if (bss_conf->assoc)
-+		if (vif->cfg.assoc)
- 			rt2x00dev->intf_associated++;
- 		else
- 			rt2x00dev->intf_associated--;
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 8b2ca9e8eac6..0239e12ec8a5 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4570,11 +4570,11 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	rarpt = &priv->ra_report;
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
--		dev_dbg(dev, "Changed ASSOC: %i!\n", bss_conf->assoc);
-+		dev_dbg(dev, "Changed ASSOC: %i!\n", vif->cfg.assoc);
- 
- 		rtl8xxxu_set_linktype(priv, vif->type);
- 
--		if (bss_conf->assoc) {
-+		if (vif->cfg.assoc) {
- 			u32 ramask;
- 			int sgi = 0;
- 			u8 highest_rate;
-@@ -4639,7 +4639,7 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 
- 			/* joinbss sequence */
- 			rtl8xxxu_write16(priv, REG_BCN_PSR_RPT,
--					 0xc000 | bss_conf->aid);
-+					 0xc000 | vif->cfg.aid);
- 
- 			priv->fops->report_connect(priv, 0, true);
- 		} else {
-@@ -5405,7 +5405,7 @@ void rtl8723bu_handle_bt_inquiry(struct rtl8xxxu_priv *priv)
- 
- 	vif = priv->vif;
- 	btcoex = &priv->bt_coex;
--	wifi_connected = (vif && vif->bss_conf.assoc);
-+	wifi_connected = (vif && vif->cfg.assoc);
- 
- 	if (!wifi_connected) {
- 		rtl8723bu_set_ps_tdma(priv, 0x8, 0x0, 0x0, 0x0, 0x0);
-@@ -5431,7 +5431,7 @@ void rtl8723bu_handle_bt_info(struct rtl8xxxu_priv *priv)
- 
- 	vif = priv->vif;
- 	btcoex = &priv->bt_coex;
--	wifi_connected = (vif && vif->bss_conf.assoc);
-+	wifi_connected = (vif && vif->cfg.assoc);
- 
- 	if (wifi_connected) {
- 		u32 val32 = 0;
-diff --git a/drivers/net/wireless/realtek/rtlwifi/core.c b/drivers/net/wireless/realtek/rtlwifi/core.c
-index 99a1d91ced5a..5177eb02740e 100644
---- a/drivers/net/wireless/realtek/rtlwifi/core.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/core.c
-@@ -1094,7 +1094,7 @@ static void rtl_op_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_ASSOC) {
- 		u8 mstatus;
- 
--		if (bss_conf->assoc) {
-+		if (vif->cfg.assoc) {
- 			struct ieee80211_sta *sta = NULL;
- 			u8 keep_alive = 10;
- 
-@@ -1111,7 +1111,7 @@ static void rtl_op_bss_info_changed(struct ieee80211_hw *hw,
- 
- 			mac->link_state = MAC80211_LINKED;
- 			mac->cnt_after_linked = 0;
--			mac->assoc_id = bss_conf->aid;
-+			mac->assoc_id = vif->cfg.aid;
- 			memcpy(mac->bssid, bss_conf->bssid, ETH_ALEN);
- 
- 			if (rtlpriv->cfg->ops->linked_set_reg)
-diff --git a/drivers/net/wireless/realtek/rtw88/bf.c b/drivers/net/wireless/realtek/rtw88/bf.c
-index e76841d3417b..76c7f3257dd3 100644
---- a/drivers/net/wireless/realtek/rtw88/bf.c
-+++ b/drivers/net/wireless/realtek/rtw88/bf.c
-@@ -67,7 +67,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 		ether_addr_copy(bfee->mac_addr, bssid);
- 		bfee->role = RTW_BFEE_MU;
- 		bfee->p_aid = (bssid[5] << 1) | (bssid[4] >> 7);
--		bfee->aid = bss_conf->aid;
-+		bfee->aid = vif->cfg.aid;
- 		bfinfo->bfer_mu_cnt++;
- 
- 		rtw_chip_config_bfee(rtwdev, rtwvif, bfee, true);
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index 30903c567cd9..52e2c93d02f0 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -369,12 +369,12 @@ static void rtw_ops_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
- 		rtw_vif_assoc_changed(rtwvif, conf);
--		if (conf->assoc) {
-+		if (vif->cfg.assoc) {
- 			rtw_coex_connect_notify(rtwdev, COEX_ASSOCIATE_FINISH);
- 
- 			rtw_fw_download_rsvd_page(rtwdev);
- 			rtw_send_rsvd_page_h2c(rtwdev);
--			rtw_coex_media_status_notify(rtwdev, conf->assoc);
-+			rtw_coex_media_status_notify(rtwdev, vif->cfg.assoc);
- 			if (rtw_bf_support)
- 				rtw_bf_assoc(rtwdev, vif, conf);
- 			rtw_store_op_chan(rtwdev);
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 14289f83feb5..b151af13e310 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -171,7 +171,7 @@ static void rtw_vif_watch_dog_iter(void *data, u8 *mac,
- 	struct rtw_vif *rtwvif = (struct rtw_vif *)vif->drv_priv;
- 
- 	if (vif->type == NL80211_IFTYPE_STATION)
--		if (vif->bss_conf.assoc)
-+		if (vif->cfg.assoc)
- 			iter_data->rtwvif = rtwvif;
- 
- 	rtw_dynamic_csi_rate(iter_data->rtwdev, rtwvif);
-@@ -525,8 +525,13 @@ EXPORT_SYMBOL(rtw_dump_reg);
- void rtw_vif_assoc_changed(struct rtw_vif *rtwvif,
- 			   struct ieee80211_bss_conf *conf)
- {
--	if (conf && conf->assoc) {
--		rtwvif->aid = conf->aid;
-+	struct ieee80211_vif *vif = NULL;
-+
-+	if (conf)
-+		vif = container_of(conf, struct ieee80211_vif, bss_conf);
-+
-+	if (conf && vif->cfg.assoc) {
-+		rtwvif->aid = vif->cfg.aid;
- 		rtwvif->net_type = RTW_NET_MGD_LINKED;
- 	} else {
- 		rtwvif->aid = 0;
-@@ -1587,7 +1592,7 @@ static void rtw_vif_smps_iter(void *data, u8 *mac,
- {
- 	struct rtw_dev *rtwdev = (struct rtw_dev *)data;
- 
--	if (vif->type != NL80211_IFTYPE_STATION || !vif->bss_conf.assoc)
-+	if (vif->type != NL80211_IFTYPE_STATION || !vif->cfg.assoc)
- 		return;
- 
- 	if (rtwdev->hal.txrx_1ss)
-diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
-index 8a26adeb23fb..5e3f6a74a896 100644
---- a/drivers/net/wireless/realtek/rtw89/cam.c
-+++ b/drivers/net/wireless/realtek/rtw89/cam.c
-@@ -694,7 +694,7 @@ void rtw89_cam_fill_addr_cam_info(struct rtw89_dev *rtwdev,
- 	FWCMD_SET_ADDR_FRM_TGT_IND(cmd, rtwvif->frm_tgt_ind);
- 	FWCMD_SET_ADDR_MACID(cmd, rtwsta ? rtwsta->mac_id : rtwvif->mac_id);
- 	if (rtwvif->net_type == RTW89_NET_TYPE_INFRA)
--		FWCMD_SET_ADDR_AID12(cmd, vif->bss_conf.aid & 0xfff);
-+		FWCMD_SET_ADDR_AID12(cmd, vif->cfg.aid & 0xfff);
- 	else if (rtwvif->net_type == RTW89_NET_TYPE_AP_MODE)
- 		FWCMD_SET_ADDR_AID12(cmd, sta ? sta->aid & 0xfff : 0);
- 	FWCMD_SET_ADDR_WOL_PATTERN(cmd, rtwvif->wowlan_pattern);
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index e8a77225a90f..c86055341d91 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3674,7 +3674,7 @@ void rtw89_chip_cfg_txpwr_ul_tb_offset(struct rtw89_dev *rtwdev,
- 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
- 
--	if (!vif->bss_conf.he_support || !vif->bss_conf.assoc)
-+	if (!vif->bss_conf.he_support || !vif->cfg.assoc)
- 		return;
- 
- 	if (chip->ops->set_txpwr_ul_tb_offset)
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index f24e4a208376..6fc125deba28 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -345,7 +345,7 @@ static void rtw89_ops_bss_info_changed(struct ieee80211_hw *hw,
- 	rtw89_leave_ps_mode(rtwdev);
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
--		if (conf->assoc) {
-+		if (vif->cfg.assoc) {
- 			rtw89_station_mode_sta_assoc(rtwdev, vif, conf);
- 			rtw89_phy_set_bss_color(rtwdev, vif);
- 			rtw89_chip_cfg_txpwr_ul_tb_offset(rtwdev, vif);
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 762cdba9d3cf..e773f6869245 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -3612,7 +3612,7 @@ void rtw89_phy_set_bss_color(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif
- 	enum rtw89_phy_idx phy_idx = RTW89_PHY_0;
- 	u8 bss_color;
- 
--	if (!vif->bss_conf.he_support || !vif->bss_conf.assoc)
-+	if (!vif->bss_conf.he_support || !vif->cfg.assoc)
- 		return;
- 
- 	bss_color = vif->bss_conf.he_bss_color.color;
-@@ -3622,7 +3622,7 @@ void rtw89_phy_set_bss_color(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif
- 	rtw89_phy_write32_idx(rtwdev, R_BSS_CLR_MAP, B_BSS_CLR_MAP_TGT, bss_color,
- 			      phy_idx);
- 	rtw89_phy_write32_idx(rtwdev, R_BSS_CLR_MAP, B_BSS_CLR_MAP_STAID,
--			      vif->bss_conf.aid, phy_idx);
-+			      vif->cfg.aid, phy_idx);
- }
- 
- static void
-diff --git a/drivers/net/wireless/rsi/rsi_91x_core.c b/drivers/net/wireless/rsi/rsi_91x_core.c
-index 6bfaab48b507..0f3a80f66b61 100644
---- a/drivers/net/wireless/rsi/rsi_91x_core.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_core.c
-@@ -420,7 +420,8 @@ void rsi_core_xmit(struct rsi_common *common, struct sk_buff *skb)
- 			rsi_hal_send_sta_notify_frame(common,
- 						      RSI_IFTYPE_STATION,
- 						      STA_CONNECTED, bss->bssid,
--						      bss->qos, bss->aid, 0,
-+						      bss->qos, vif->cfg.aid,
-+						      0,
- 						      vif);
- 		}
- 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_hal.c b/drivers/net/wireless/rsi/rsi_91x_hal.c
-index dca81a4bbdd7..d7c0da8f315b 100644
---- a/drivers/net/wireless/rsi/rsi_91x_hal.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_hal.c
-@@ -311,7 +311,7 @@ int rsi_send_data_pkt(struct rsi_common *common, struct sk_buff *skb)
- 
- 	if (((vif->type == NL80211_IFTYPE_STATION) ||
- 	     (vif->type == NL80211_IFTYPE_P2P_CLIENT)) &&
--	    (!bss->assoc))
-+	    (!vif->cfg.assoc))
- 		goto err;
- 
- 	status = rsi_send_pkt_to_bus(common, skb);
-@@ -367,7 +367,8 @@ int rsi_send_mgmt_pkt(struct rsi_common *common,
- 	xtend_desc = (struct rsi_xtended_desc *)&skb->data[FRAME_DESC_SZ];
- 
- 	/* Indicate to firmware to give cfm for probe */
--	if (ieee80211_is_probe_req(wh->frame_control) && !bss->assoc) {
-+	if (ieee80211_is_probe_req(wh->frame_control) &&
-+	    !info->control.vif->cfg.assoc) {
- 		rsi_dbg(INFO_ZONE,
- 			"%s: blocking mgmt queue\n", __func__);
- 		mgmt_desc->misc_flags = RSI_DESC_REQUIRE_CFM_TO_HOST;
-diff --git a/drivers/net/wireless/rsi/rsi_91x_mac80211.c b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-index f01e82b90c07..d4b3834388ab 100644
---- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-@@ -237,7 +237,6 @@ static int rsi_mac80211_hw_scan_start(struct ieee80211_hw *hw,
- 	struct cfg80211_scan_request *scan_req = &hw_req->req;
- 	struct rsi_hw *adapter = hw->priv;
- 	struct rsi_common *common = adapter->priv;
--	struct ieee80211_bss_conf *bss = &vif->bss_conf;
- 
- 	rsi_dbg(INFO_ZONE, "***** Hardware scan start *****\n");
- 	common->mac_ops_resumed = false;
-@@ -256,7 +255,7 @@ static int rsi_mac80211_hw_scan_start(struct ieee80211_hw *hw,
- 	/* If STA is not connected, return with special value 1, in order
- 	 * to start sw_scan in mac80211
- 	 */
--	if (!bss->assoc)
-+	if (!vif->cfg.assoc)
- 		return 1;
- 
- 	mutex_lock(&common->mutex);
-@@ -579,7 +578,6 @@ static int rsi_channel_change(struct ieee80211_hw *hw)
- 	struct ieee80211_channel *curchan = hw->conf.chandef.chan;
- 	u16 channel = curchan->hw_value;
- 	struct ieee80211_vif *vif;
--	struct ieee80211_bss_conf *bss;
- 	bool assoc = false;
- 	int i;
- 
-@@ -593,8 +591,7 @@ static int rsi_channel_change(struct ieee80211_hw *hw)
- 		if (!vif)
- 			continue;
- 		if (vif->type == NL80211_IFTYPE_STATION) {
--			bss = &vif->bss_conf;
--			if (bss->assoc) {
-+			if (vif->cfg.assoc) {
- 				assoc = true;
- 				break;
- 			}
-@@ -700,7 +697,7 @@ static int rsi_mac80211_config(struct ieee80211_hw *hw,
- 			}
- 			if ((vif->type == NL80211_IFTYPE_STATION ||
- 			     vif->type == NL80211_IFTYPE_P2P_CLIENT) &&
--			    (!sta_vif || vif->bss_conf.assoc))
-+			    (!sta_vif || vif->cfg.assoc))
- 				sta_vif = vif;
- 		}
- 		if (set_ps && sta_vif) {
-@@ -797,8 +794,8 @@ static void rsi_mac80211_bss_info_changed(struct ieee80211_hw *hw,
- 	mutex_lock(&common->mutex);
- 	if (changed & BSS_CHANGED_ASSOC) {
- 		rsi_dbg(INFO_ZONE, "%s: Changed Association status: %d\n",
--			__func__, bss_conf->assoc);
--		if (bss_conf->assoc) {
-+			__func__, vif->cfg.assoc);
-+		if (vif->cfg.assoc) {
- 			/* Send the RX filter frame */
- 			rx_filter_word = (ALLOW_DATA_ASSOC_PEER |
- 					  ALLOW_CTRL_ASSOC_PEER |
-@@ -807,17 +804,17 @@ static void rsi_mac80211_bss_info_changed(struct ieee80211_hw *hw,
- 		}
- 		rsi_inform_bss_status(common,
- 				      RSI_OPMODE_STA,
--				      bss_conf->assoc,
-+				      vif->cfg.assoc,
- 				      bss_conf->bssid,
- 				      bss_conf->qos,
--				      bss_conf->aid,
-+				      vif->cfg.aid,
- 				      NULL, 0,
- 				      bss_conf->assoc_capability, vif);
- 		adapter->ps_info.dtim_interval_duration = bss->dtim_period;
- 		adapter->ps_info.listen_interval = conf->listen_interval;
- 
- 		/* If U-APSD is updated, send ps parameters to firmware */
--		if (bss->assoc) {
-+		if (vif->cfg.assoc) {
- 			if (common->uapsd_bitmap) {
- 				rsi_dbg(INFO_ZONE, "Configuring UAPSD\n");
- 				rsi_conf_uapsd(adapter, vif);
-@@ -1359,7 +1356,7 @@ static void rsi_fill_rx_status(struct ieee80211_hw *hw,
- 	if (!bss)
- 		return;
- 	/* CQM only for connected AP beacons, the RSSI is a weighted avg */
--	if (bss->assoc && !(memcmp(bss->bssid, hdr->addr2, ETH_ALEN))) {
-+	if (vif->cfg.assoc && !(memcmp(bss->bssid, hdr->addr2, ETH_ALEN))) {
- 		if (ieee80211_is_beacon(hdr->frame_control))
- 			rsi_perform_cqm(common, hdr->addr2, rxs->signal, vif);
- 	}
-@@ -1737,7 +1734,7 @@ static void rsi_resume_conn_channel(struct rsi_common *common)
- 		}
- 		if (((vif->type == NL80211_IFTYPE_STATION) ||
- 		     (vif->type == NL80211_IFTYPE_P2P_CLIENT)) &&
--		    vif->bss_conf.assoc) {
-+		    vif->cfg.assoc) {
- 			rsi_switch_channel(adapter, vif);
- 			break;
- 		}
-@@ -1862,17 +1859,15 @@ static u16 rsi_wow_map_triggers(struct rsi_common *common,
- int rsi_config_wowlan(struct rsi_hw *adapter, struct cfg80211_wowlan *wowlan)
- {
- 	struct rsi_common *common = adapter->priv;
-+	struct ieee80211_vif *vif = adapter->vifs[0];
- 	u16 triggers = 0;
- 	u16 rx_filter_word = 0;
--	struct ieee80211_bss_conf *bss = NULL;
- 
- 	rsi_dbg(INFO_ZONE, "Config WoWLAN to device\n");
- 
--	if (!adapter->vifs[0])
-+	if (!vif)
- 		return -EINVAL;
- 
--	bss = &adapter->vifs[0]->bss_conf;
--
- 	if (WARN_ON(!wowlan)) {
- 		rsi_dbg(ERR_ZONE, "WoW triggers not enabled\n");
- 		return -EINVAL;
-@@ -1884,7 +1879,7 @@ int rsi_config_wowlan(struct rsi_hw *adapter, struct cfg80211_wowlan *wowlan)
- 		rsi_dbg(ERR_ZONE, "%s:No valid WoW triggers\n", __func__);
- 		return -EINVAL;
- 	}
--	if (!bss->assoc) {
-+	if (!vif->cfg.assoc) {
- 		rsi_dbg(ERR_ZONE,
- 			"Cannot configure WoWLAN (Station not connected)\n");
- 		common->wow_flags |= RSI_WOW_NO_CONNECTION;
-diff --git a/drivers/net/wireless/rsi/rsi_91x_mgmt.c b/drivers/net/wireless/rsi/rsi_91x_mgmt.c
-index c14689266fec..1b309e47a1f1 100644
---- a/drivers/net/wireless/rsi/rsi_91x_mgmt.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_mgmt.c
-@@ -1635,7 +1635,6 @@ int rsi_send_ps_request(struct rsi_hw *adapter, bool enable,
- 			struct ieee80211_vif *vif)
- {
- 	struct rsi_common *common = adapter->priv;
--	struct ieee80211_bss_conf *bss = &vif->bss_conf;
- 	struct rsi_request_ps *ps;
- 	struct rsi_ps_info *ps_info;
- 	struct sk_buff *skb;
-@@ -1669,7 +1668,7 @@ int rsi_send_ps_request(struct rsi_hw *adapter, bool enable,
- 	ps->ps_sleep.sleep_duration =
- 		cpu_to_le32(ps_info->deep_sleep_wakeup_period);
- 
--	if (bss->assoc)
-+	if (vif->cfg.assoc)
- 		ps->ps_sleep.connected_sleep = RSI_CONNECTED_SLEEP;
- 	else
- 		ps->ps_sleep.connected_sleep = RSI_DEEP_SLEEP;
-diff --git a/drivers/net/wireless/silabs/wfx/hif_tx.c b/drivers/net/wireless/silabs/wfx/hif_tx.c
-index 2b92c227efbc..85b053e4c40c 100644
---- a/drivers/net/wireless/silabs/wfx/hif_tx.c
-+++ b/drivers/net/wireless/silabs/wfx/hif_tx.c
-@@ -282,6 +282,8 @@ int wfx_hif_stop_scan(struct wfx_vif *wvif)
- int wfx_hif_join(struct wfx_vif *wvif, const struct ieee80211_bss_conf *conf,
- 		 struct ieee80211_channel *channel, const u8 *ssid, int ssidlen)
- {
-+	struct ieee80211_vif *vif = container_of(conf, struct ieee80211_vif,
-+						 bss_conf);
- 	int ret;
- 	struct wfx_hif_msg *hif;
- 	struct wfx_hif_req_join *body = wfx_alloc_hif(sizeof(*body), &hif);
-@@ -289,10 +291,10 @@ int wfx_hif_join(struct wfx_vif *wvif, const struct ieee80211_bss_conf *conf,
- 	WARN_ON(!conf->beacon_int);
- 	WARN_ON(!conf->basic_rates);
- 	WARN_ON(sizeof(body->ssid) < ssidlen);
--	WARN(!conf->ibss_joined && !ssidlen, "joining an unknown BSS");
-+	WARN(!vif->cfg.ibss_joined && !ssidlen, "joining an unknown BSS");
- 	if (!hif)
- 		return -ENOMEM;
--	body->infrastructure_bss_mode = !conf->ibss_joined;
-+	body->infrastructure_bss_mode = !vif->cfg.ibss_joined;
- 	body->short_preamble = conf->use_short_preamble;
- 	body->probe_for_join = !(channel->flags & IEEE80211_CHAN_NO_IR);
- 	body->channel_number = channel->hw_value;
-@@ -417,6 +419,8 @@ int wfx_hif_set_pm(struct wfx_vif *wvif, bool ps, int dynamic_ps_timeout)
- int wfx_hif_start(struct wfx_vif *wvif, const struct ieee80211_bss_conf *conf,
- 		  const struct ieee80211_channel *channel)
- {
-+        struct ieee80211_vif *vif = container_of(conf, struct ieee80211_vif,
-+						 bss_conf);
- 	int ret;
- 	struct wfx_hif_msg *hif;
- 	struct wfx_hif_req_start *body = wfx_alloc_hif(sizeof(*body), &hif);
-@@ -429,8 +433,8 @@ int wfx_hif_start(struct wfx_vif *wvif, const struct ieee80211_bss_conf *conf,
- 	body->channel_number = channel->hw_value;
- 	body->beacon_interval = cpu_to_le32(conf->beacon_int);
- 	body->basic_rate_set = cpu_to_le32(wfx_rate_mask_to_hw(wvif->wdev, conf->basic_rates));
--	body->ssid_length = conf->ssid_len;
--	memcpy(body->ssid, conf->ssid, conf->ssid_len);
-+	body->ssid_length = vif->cfg.ssid_len;
-+	memcpy(body->ssid, vif->cfg.ssid, vif->cfg.ssid_len);
- 	wfx_fill_header(hif, wvif->id, HIF_REQ_ID_START, sizeof(*body));
- 	ret = wfx_cmd_send(wvif->wdev, hif, NULL, 0, false);
- 	kfree(hif);
-diff --git a/drivers/net/wireless/silabs/wfx/sta.c b/drivers/net/wireless/silabs/wfx/sta.c
-index e551fa284a43..3fc55c0c0b4d 100644
---- a/drivers/net/wireless/silabs/wfx/sta.c
-+++ b/drivers/net/wireless/silabs/wfx/sta.c
-@@ -156,7 +156,7 @@ static int wfx_get_ps_timeout(struct wfx_vif *wvif, bool *enable_ps)
- 	struct ieee80211_conf *conf = &wvif->wdev->hw->conf;
- 	struct ieee80211_vif *vif = wvif_to_vif(wvif);
- 
--	WARN(!vif->bss_conf.assoc && enable_ps,
-+	WARN(!vif->cfg.assoc && enable_ps,
- 	     "enable_ps is reliable only if associated");
- 	if (wdev_to_wvif(wvif->wdev, 0)) {
- 		struct wfx_vif *wvif_ch0 = wdev_to_wvif(wvif->wdev, 0);
-@@ -175,7 +175,7 @@ static int wfx_get_ps_timeout(struct wfx_vif *wvif, bool *enable_ps)
- 			/* It is useless to enable PS if channels are the same. */
- 			if (enable_ps)
- 				*enable_ps = false;
--			if (vif->bss_conf.assoc && vif->bss_conf.ps)
-+			if (vif->cfg.assoc && vif->bss_conf.ps)
- 				dev_info(wvif->wdev->dev, "ignoring requested PS mode");
- 			return -1;
- 		}
-@@ -189,7 +189,7 @@ static int wfx_get_ps_timeout(struct wfx_vif *wvif, bool *enable_ps)
- 	}
- 	if (enable_ps)
- 		*enable_ps = vif->bss_conf.ps;
--	if (vif->bss_conf.assoc && vif->bss_conf.ps)
-+	if (vif->cfg.assoc && vif->bss_conf.ps)
- 		return conf->dynamic_ps_timeout;
- 	else
- 		return -1;
-@@ -201,7 +201,7 @@ int wfx_update_pm(struct wfx_vif *wvif)
- 	int ps_timeout;
- 	bool ps;
- 
--	if (!vif->bss_conf.assoc)
-+	if (!vif->cfg.assoc)
- 		return 0;
- 	ps_timeout = wfx_get_ps_timeout(wvif, &ps);
- 	if (!ps)
-@@ -417,7 +417,7 @@ static void wfx_join(struct wfx_vif *wvif)
- 
- 	bss = cfg80211_get_bss(wvif->wdev->hw->wiphy, wvif->channel, conf->bssid, NULL, 0,
- 			       IEEE80211_BSS_TYPE_ANY, IEEE80211_PRIVACY_ANY);
--	if (!bss && !conf->ibss_joined) {
-+	if (!bss && !vif->cfg.ibss_joined) {
- 		wfx_tx_unlock(wvif->wdev);
- 		return;
- 	}
-@@ -458,7 +458,7 @@ static void wfx_join_finalize(struct wfx_vif *wvif, struct ieee80211_bss_conf *i
- 	bool greenfield = false;
- 
- 	rcu_read_lock(); /* protect sta */
--	if (info->bssid && !info->ibss_joined)
-+	if (info->bssid && !vif->cfg.ibss_joined)
- 		sta = ieee80211_find_sta(vif, info->bssid);
- 	if (sta && sta->deflink.ht_cap.ht_supported)
- 		ampdu_density = sta->deflink.ht_cap.ampdu_density;
-@@ -471,7 +471,7 @@ static void wfx_join_finalize(struct wfx_vif *wvif, struct ieee80211_bss_conf *i
- 	wfx_hif_set_association_mode(wvif, ampdu_density, greenfield, info->use_short_preamble);
- 	wfx_hif_keep_alive_period(wvif, 0);
- 	/* beacon_loss_count is defined to 7 in net/mac80211/mlme.c. Let's use the same value. */
--	wfx_hif_set_bss_params(wvif, info->aid, 7);
-+	wfx_hif_set_bss_params(wvif, vif->cfg.aid, 7);
- 	wfx_hif_set_beacon_wakeup_period(wvif, 1, 1);
- 	wfx_update_pm(wvif);
- }
-@@ -522,9 +522,9 @@ void wfx_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	}
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
--		if (info->assoc || info->ibss_joined)
-+		if (vif->cfg.assoc || vif->cfg.ibss_joined)
- 			wfx_join_finalize(wvif, info);
--		else if (!info->assoc && vif->type == NL80211_IFTYPE_STATION)
-+		else if (!vif->cfg.assoc && vif->type == NL80211_IFTYPE_STATION)
- 			wfx_reset(wvif);
- 		else
- 			dev_warn(wdev->dev, "misunderstood change: ASSOC\n");
-@@ -540,11 +540,11 @@ void wfx_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 
- 	if (changed & BSS_CHANGED_ARP_FILTER) {
- 		for (i = 0; i < HIF_MAX_ARP_IP_ADDRTABLE_ENTRIES; i++) {
--			__be32 *arp_addr = &info->arp_addr_list[i];
-+			__be32 *arp_addr = &vif->cfg.arp_addr_list[i];
- 
--			if (info->arp_addr_cnt > HIF_MAX_ARP_IP_ADDRTABLE_ENTRIES)
-+			if (vif->cfg.arp_addr_cnt > HIF_MAX_ARP_IP_ADDRTABLE_ENTRIES)
- 				arp_addr = NULL;
--			if (i >= info->arp_addr_cnt)
-+			if (i >= vif->cfg.arp_addr_cnt)
- 				arp_addr = NULL;
- 			wfx_hif_set_arp_ipv4_filter(wvif, i, arp_addr);
- 		}
-diff --git a/drivers/net/wireless/st/cw1200/sta.c b/drivers/net/wireless/st/cw1200/sta.c
-index 321df124d449..3f48def51ebc 100644
---- a/drivers/net/wireless/st/cw1200/sta.c
-+++ b/drivers/net/wireless/st/cw1200/sta.c
-@@ -1208,8 +1208,8 @@ static void cw1200_do_join(struct cw1200_common *priv)
- 	struct cfg80211_bss *bss = NULL;
- 	struct wsm_protected_mgmt_policy mgmt_policy;
- 	struct wsm_join join = {
--		.mode = conf->ibss_joined ?
--				WSM_JOIN_MODE_IBSS : WSM_JOIN_MODE_BSS,
-+		.mode = priv->vif->cfg.ibss_joined ?
-+		WSM_JOIN_MODE_IBSS : WSM_JOIN_MODE_BSS,
- 		.preamble_type = WSM_JOIN_PREAMBLE_LONG,
- 		.probe_for_join = 1,
- 		.atim_window = 0,
-@@ -1230,7 +1230,7 @@ static void cw1200_do_join(struct cw1200_common *priv)
- 	bss = cfg80211_get_bss(priv->hw->wiphy, priv->channel, bssid, NULL, 0,
- 			       IEEE80211_BSS_TYPE_ANY, IEEE80211_PRIVACY_ANY);
- 
--	if (!bss && !conf->ibss_joined) {
-+	if (!bss && !priv->vif->cfg.ibss_joined) {
- 		wsm_unlock_tx(priv);
- 		return;
- 	}
-@@ -1284,7 +1284,7 @@ static void cw1200_do_join(struct cw1200_common *priv)
- 		 join.bssid,
- 		 join.dtim_period, priv->beacon_int);
- 
--	if (!conf->ibss_joined) {
-+	if (!priv->vif->cfg.ibss_joined) {
- 		const u8 *ssidie;
- 		rcu_read_lock();
- 		ssidie = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
-@@ -1302,7 +1302,7 @@ static void cw1200_do_join(struct cw1200_common *priv)
- 	}
- 
- 	/* Enable asynchronous join calls */
--	if (!conf->ibss_joined) {
-+	if (!priv->vif->cfg.ibss_joined) {
- 		join.flags |= WSM_JOIN_FLAGS_FORCE;
- 		join.flags |= WSM_JOIN_FLAGS_FORCE_WITH_COMPLETE_IND;
- 	}
-@@ -1813,15 +1813,15 @@ void cw1200_bss_info_changed(struct ieee80211_hw *dev,
- 		int i;
- 
- 		pr_debug("[STA] BSS_CHANGED_ARP_FILTER cnt: %d\n",
--			 info->arp_addr_cnt);
-+			 vif->cfg.arp_addr_cnt);
- 
- 		/* Currently only one IP address is supported by firmware.
- 		 * In case of more IPs arp filtering will be disabled.
- 		 */
--		if (info->arp_addr_cnt > 0 &&
--		    info->arp_addr_cnt <= WSM_MAX_ARP_IP_ADDRTABLE_ENTRIES) {
--			for (i = 0; i < info->arp_addr_cnt; i++) {
--				filter.ipv4addrs[i] = info->arp_addr_list[i];
-+		if (vif->cfg.arp_addr_cnt > 0 &&
-+		    vif->cfg.arp_addr_cnt <= WSM_MAX_ARP_IP_ADDRTABLE_ENTRIES) {
-+			for (i = 0; i < vif->cfg.arp_addr_cnt; i++) {
-+				filter.ipv4addrs[i] = vif->cfg.arp_addr_list[i];
- 				pr_debug("[STA] addr[%d]: 0x%X\n",
- 					 i, filter.ipv4addrs[i]);
- 			}
-@@ -1857,7 +1857,7 @@ void cw1200_bss_info_changed(struct ieee80211_hw *dev,
- 
- 	if (changed & BSS_CHANGED_BEACON_INT) {
- 		pr_debug("CHANGED_BEACON_INT\n");
--		if (info->ibss_joined)
-+		if (vif->cfg.ibss_joined)
- 			do_join = true;
- 		else if (priv->join_status == CW1200_JOIN_STATUS_AP)
- 			cw1200_update_beaconing(priv);
-@@ -1882,7 +1882,7 @@ void cw1200_bss_info_changed(struct ieee80211_hw *dev,
- 	     BSS_CHANGED_BASIC_RATES |
- 	     BSS_CHANGED_HT)) {
- 		pr_debug("BSS_CHANGED_ASSOC\n");
--		if (info->assoc) {
-+		if (vif->cfg.assoc) {
- 			if (priv->join_status < CW1200_JOIN_STATUS_PRE_STA) {
- 				ieee80211_connection_loss(vif);
- 				mutex_unlock(&priv->conf_mutex);
-@@ -1894,7 +1894,7 @@ void cw1200_bss_info_changed(struct ieee80211_hw *dev,
- 			do_join = true;
- 		}
- 
--		if (info->assoc || info->ibss_joined) {
-+		if (vif->cfg.assoc || vif->cfg.ibss_joined) {
- 			struct ieee80211_sta *sta = NULL;
- 			__le32 htprot = 0;
- 
-@@ -1904,7 +1904,7 @@ void cw1200_bss_info_changed(struct ieee80211_hw *dev,
- 
- 			rcu_read_lock();
- 
--			if (info->bssid && !info->ibss_joined)
-+			if (info->bssid && !vif->cfg.ibss_joined)
- 				sta = ieee80211_find_sta(vif, info->bssid);
- 			if (sta) {
- 				priv->ht_info.ht_cap = sta->deflink.ht_cap;
-@@ -1958,7 +1958,7 @@ void cw1200_bss_info_changed(struct ieee80211_hw *dev,
- 			cancel_work_sync(&priv->unjoin_work);
- 
- 			priv->bss_params.beacon_lost_count = priv->cqm_beacon_loss_count;
--			priv->bss_params.aid = info->aid;
-+			priv->bss_params.aid = vif->cfg.aid;
- 
- 			if (priv->join_dtim_period < 1)
- 				priv->join_dtim_period = 1;
-@@ -1973,7 +1973,7 @@ void cw1200_bss_info_changed(struct ieee80211_hw *dev,
- 				 priv->association_mode.basic_rate_set);
- 			wsm_set_association_mode(priv, &priv->association_mode);
- 
--			if (!info->ibss_joined) {
-+			if (!vif->cfg.ibss_joined) {
- 				wsm_keep_alive_period(priv, 30 /* sec */);
- 				wsm_set_bss_params(priv, &priv->bss_params);
- 				priv->setbssparams_done = true;
-@@ -2330,8 +2330,8 @@ static int cw1200_start_ap(struct cw1200_common *priv)
- 
- 	memset(start.ssid, 0, sizeof(start.ssid));
- 	if (!conf->hidden_ssid) {
--		start.ssid_len = conf->ssid_len;
--		memcpy(start.ssid, conf->ssid, start.ssid_len);
-+		start.ssid_len = priv->vif->cfg.ssid_len;
-+		memcpy(start.ssid, priv->vif->cfg.ssid, start.ssid_len);
- 	}
- 
- 	priv->beacon_int = conf->beacon_int;
-diff --git a/drivers/net/wireless/st/cw1200/txrx.c b/drivers/net/wireless/st/cw1200/txrx.c
-index 7de666b90ff5..fde21fca6c5e 100644
---- a/drivers/net/wireless/st/cw1200/txrx.c
-+++ b/drivers/net/wireless/st/cw1200/txrx.c
-@@ -1183,8 +1183,8 @@ void cw1200_rx_cb(struct cw1200_common *priv,
- 
- 		/* Disable beacon filter once we're associated... */
- 		if (priv->disable_beacon_filter &&
--		    (priv->vif->bss_conf.assoc ||
--		     priv->vif->bss_conf.ibss_joined)) {
-+		    (priv->vif->cfg.assoc ||
-+		     priv->vif->cfg.ibss_joined)) {
- 			priv->disable_beacon_filter = false;
- 			queue_work(priv->workqueue,
- 				   &priv->update_filtering_work);
-diff --git a/drivers/net/wireless/ti/wl1251/main.c b/drivers/net/wireless/ti/wl1251/main.c
-index a25a6143e65f..bdc93c4f54ba 100644
---- a/drivers/net/wireless/ti/wl1251/main.c
-+++ b/drivers/net/wireless/ti/wl1251/main.c
-@@ -1123,7 +1123,7 @@ static void wl1251_op_bss_info_changed(struct ieee80211_hw *hw,
- 	}
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
--		if (bss_conf->assoc) {
-+		if (vif->cfg.assoc) {
- 			wl->beacon_int = bss_conf->beacon_int;
- 
- 			skb = ieee80211_pspoll_get(wl->hw, wl->vif);
-@@ -1137,7 +1137,7 @@ static void wl1251_op_bss_info_changed(struct ieee80211_hw *hw,
- 			if (ret < 0)
- 				goto out_sleep;
- 
--			ret = wl1251_acx_aid(wl, bss_conf->aid);
-+			ret = wl1251_acx_aid(wl, vif->cfg.aid);
- 			if (ret < 0)
- 				goto out_sleep;
- 		} else {
-@@ -1176,10 +1176,10 @@ static void wl1251_op_bss_info_changed(struct ieee80211_hw *hw,
- 	}
- 
- 	if (changed & BSS_CHANGED_ARP_FILTER) {
--		__be32 addr = bss_conf->arp_addr_list[0];
-+		__be32 addr = vif->cfg.arp_addr_list[0];
- 		WARN_ON(wl->bss_type != BSS_TYPE_STA_BSS);
- 
--		enable = bss_conf->arp_addr_cnt == 1 && bss_conf->assoc;
-+		enable = vif->cfg.arp_addr_cnt == 1 && vif->cfg.assoc;
- 		ret = wl1251_acx_arp_ip_filter(wl, enable, addr);
- 		if (ret < 0)
- 			goto out_sleep;
-diff --git a/drivers/net/wireless/ti/wlcore/cmd.c b/drivers/net/wireless/ti/wlcore/cmd.c
-index df6029ef6304..138edd28b0de 100644
---- a/drivers/net/wireless/ti/wlcore/cmd.c
-+++ b/drivers/net/wireless/ti/wlcore/cmd.c
-@@ -675,8 +675,8 @@ int wl12xx_cmd_role_start_ap(struct wl1271 *wl, struct wl12xx_vif *wlvif)
- 		memcpy(cmd->ap.ssid, wlvif->ssid, wlvif->ssid_len);
- 	} else {
- 		cmd->ap.ssid_type = WL12XX_SSID_TYPE_HIDDEN;
--		cmd->ap.ssid_len = bss_conf->ssid_len;
--		memcpy(cmd->ap.ssid, bss_conf->ssid, bss_conf->ssid_len);
-+		cmd->ap.ssid_len = vif->cfg.ssid_len;
-+		memcpy(cmd->ap.ssid, vif->cfg.ssid, vif->cfg.ssid_len);
- 	}
- 
- 	supported_rates = CONF_TX_ENABLED_RATES | CONF_TX_MCS_RATES |
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index 21a9e3b0cbac..3195c07bdc12 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -2904,10 +2904,12 @@ static int wlcore_set_assoc(struct wl1271 *wl, struct wl12xx_vif *wlvif,
- 			    struct ieee80211_bss_conf *bss_conf,
- 			    u32 sta_rate_set)
- {
-+	struct ieee80211_vif *vif = container_of(bss_conf, struct ieee80211_vif,
-+						 bss_conf);
- 	int ieoffset;
- 	int ret;
- 
--	wlvif->aid = bss_conf->aid;
-+	wlvif->aid = vif->cfg.aid;
- 	wlvif->channel_type = cfg80211_get_chandef_type(&bss_conf->chandef);
- 	wlvif->beacon_int = bss_conf->beacon_int;
- 	wlvif->wmm_enabled = bss_conf->qos;
-@@ -3935,7 +3937,6 @@ static int wl1271_ap_set_probe_resp_tmpl_legacy(struct wl1271 *wl,
- 					     u32 rates)
- {
- 	struct wl12xx_vif *wlvif = wl12xx_vif_to_data(vif);
--	struct ieee80211_bss_conf *bss_conf = &vif->bss_conf;
- 	u8 probe_rsp_templ[WL1271_CMD_TEMPL_MAX_SIZE];
- 	int ssid_ie_offset, ie_offset, templ_len;
- 	const u8 *ptr;
-@@ -3948,7 +3949,7 @@ static int wl1271_ap_set_probe_resp_tmpl_legacy(struct wl1271 *wl,
- 					       probe_rsp_len, 0,
- 					       rates);
- 
--	if (probe_rsp_len + bss_conf->ssid_len > WL1271_CMD_TEMPL_MAX_SIZE) {
-+	if (probe_rsp_len + vif->cfg.ssid_len > WL1271_CMD_TEMPL_MAX_SIZE) {
- 		wl1271_error("probe_rsp template too big");
- 		return -EINVAL;
- 	}
-@@ -3970,12 +3971,12 @@ static int wl1271_ap_set_probe_resp_tmpl_legacy(struct wl1271 *wl,
- 
- 	/* insert SSID from bss_conf */
- 	probe_rsp_templ[ssid_ie_offset] = WLAN_EID_SSID;
--	probe_rsp_templ[ssid_ie_offset + 1] = bss_conf->ssid_len;
-+	probe_rsp_templ[ssid_ie_offset + 1] = vif->cfg.ssid_len;
- 	memcpy(probe_rsp_templ + ssid_ie_offset + 2,
--	       bss_conf->ssid, bss_conf->ssid_len);
--	templ_len = ssid_ie_offset + 2 + bss_conf->ssid_len;
-+	       vif->cfg.ssid, vif->cfg.ssid_len);
-+	templ_len = ssid_ie_offset + 2 + vif->cfg.ssid_len;
- 
--	memcpy(probe_rsp_templ + ssid_ie_offset + 2 + bss_conf->ssid_len,
-+	memcpy(probe_rsp_templ + ssid_ie_offset + 2 + vif->cfg.ssid_len,
- 	       ptr, probe_rsp_len - (ptr - probe_rsp_data));
- 	templ_len += probe_rsp_len - (ptr - probe_rsp_data);
- 
-@@ -4255,15 +4256,15 @@ static void wl1271_bss_info_changed_ap(struct wl1271 *wl,
- }
- 
- static int wlcore_set_bssid(struct wl1271 *wl, struct wl12xx_vif *wlvif,
--			    struct ieee80211_bss_conf *bss_conf,
--			    u32 sta_rate_set)
-+			    struct ieee80211_vif *vif, u32 sta_rate_set)
- {
-+	struct ieee80211_bss_conf *bss_conf = &vif->bss_conf;
- 	u32 rates;
- 	int ret;
- 
- 	wl1271_debug(DEBUG_MAC80211,
- 	     "changed_bssid: %pM, aid: %d, bcn_int: %d, brates: 0x%x sta_rate_set: 0x%x",
--	     bss_conf->bssid, bss_conf->aid,
-+	     bss_conf->bssid, vif->cfg.aid,
- 	     bss_conf->beacon_int,
- 	     bss_conf->basic_rates, sta_rate_set);
- 
-@@ -4351,7 +4352,7 @@ static void wl1271_bss_info_changed_sta(struct wl1271 *wl,
- 	}
- 
- 	if (changed & BSS_CHANGED_IBSS) {
--		if (bss_conf->ibss_joined) {
-+		if (vif->cfg.ibss_joined) {
- 			set_bit(WLVIF_FLAG_IBSS_JOINED, &wlvif->flags);
- 			ibss_joined = true;
- 		} else {
-@@ -4411,7 +4412,7 @@ static void wl1271_bss_info_changed_sta(struct wl1271 *wl,
- 
- 	if (changed & BSS_CHANGED_BSSID) {
- 		if (!is_zero_ether_addr(bss_conf->bssid)) {
--			ret = wlcore_set_bssid(wl, wlvif, bss_conf,
-+			ret = wlcore_set_bssid(wl, wlvif, vif,
- 					       sta_rate_set);
- 			if (ret < 0)
- 				goto out;
-@@ -4427,9 +4428,9 @@ static void wl1271_bss_info_changed_sta(struct wl1271 *wl,
- 
- 	if (changed & BSS_CHANGED_IBSS) {
- 		wl1271_debug(DEBUG_ADHOC, "ibss_joined: %d",
--			     bss_conf->ibss_joined);
-+			     vif->cfg.ibss_joined);
- 
--		if (bss_conf->ibss_joined) {
-+		if (vif->cfg.ibss_joined) {
- 			u32 rates = bss_conf->basic_rates;
- 			wlvif->basic_rate_set =
- 				wl1271_tx_enabled_rates_get(wl, rates,
-@@ -4466,7 +4467,7 @@ static void wl1271_bss_info_changed_sta(struct wl1271 *wl,
- 	}
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
--		if (bss_conf->assoc) {
-+		if (vif->cfg.assoc) {
- 			ret = wlcore_set_assoc(wl, wlvif, bss_conf,
- 					       sta_rate_set);
- 			if (ret < 0)
-@@ -4541,11 +4542,11 @@ static void wl1271_bss_info_changed_sta(struct wl1271 *wl,
- 	/* Handle arp filtering. Done after join. */
- 	if ((changed & BSS_CHANGED_ARP_FILTER) ||
- 	    (!is_ibss && (changed & BSS_CHANGED_QOS))) {
--		__be32 addr = bss_conf->arp_addr_list[0];
-+		__be32 addr = vif->cfg.arp_addr_list[0];
- 		wlvif->sta.qos = bss_conf->qos;
- 		WARN_ON(wlvif->bss_type != BSS_TYPE_STA_BSS);
- 
--		if (bss_conf->arp_addr_cnt == 1 && bss_conf->assoc) {
-+		if (vif->cfg.arp_addr_cnt == 1 && vif->cfg.assoc) {
- 			wlvif->ip_addr = addr;
- 			/*
- 			 * The template should have been configured only upon
-diff --git a/drivers/staging/vt6655/device_main.c b/drivers/staging/vt6655/device_main.c
-index 897d70cf32b8..741e1b9d6677 100644
---- a/drivers/staging/vt6655/device_main.c
-+++ b/drivers/staging/vt6655/device_main.c
-@@ -980,7 +980,7 @@ static void vnt_check_bb_vga(struct vnt_private *priv)
- 	if (priv->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
- 		return;
- 
--	if (!(priv->vif->bss_conf.assoc && priv->current_rssi))
-+	if (!(priv->vif->cfg.assoc && priv->current_rssi))
- 		return;
- 
- 	RFvRSSITodBm(priv, (u8)priv->current_rssi, &dbm);
-@@ -1400,7 +1400,7 @@ static void vnt_bss_info_changed(struct ieee80211_hw *hw,
- {
- 	struct vnt_private *priv = hw->priv;
- 
--	priv->current_aid = conf->aid;
-+	priv->current_aid = vif->cfg.aid;
- 
- 	if (changed & BSS_CHANGED_BSSID && conf->bssid) {
- 		unsigned long flags;
-@@ -1469,7 +1469,7 @@ static void vnt_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & (BSS_CHANGED_ASSOC | BSS_CHANGED_BEACON_INFO) &&
- 	    priv->op_mode != NL80211_IFTYPE_AP) {
--		if (conf->assoc && conf->beacon_rate) {
-+		if (vif->cfg.assoc && conf->beacon_rate) {
- 			CARDbUpdateTSF(priv, conf->beacon_rate->hw_value,
- 				       conf->sync_tsf);
- 
-diff --git a/drivers/staging/vt6656/main_usb.c b/drivers/staging/vt6656/main_usb.c
-index ae7f5916d4d6..3ab8a7bb9715 100644
---- a/drivers/staging/vt6656/main_usb.c
-+++ b/drivers/staging/vt6656/main_usb.c
-@@ -749,7 +749,7 @@ static void vnt_bss_info_changed(struct ieee80211_hw *hw,
- {
- 	struct vnt_private *priv = hw->priv;
- 
--	priv->current_aid = conf->aid;
-+	priv->current_aid = vif->cfg.aid;
- 
- 	if (changed & BSS_CHANGED_BSSID && conf->bssid)
- 		vnt_mac_set_bssid_addr(priv, (u8 *)conf->bssid);
-@@ -811,7 +811,7 @@ static void vnt_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & (BSS_CHANGED_ASSOC | BSS_CHANGED_BEACON_INFO) &&
- 	    priv->op_mode != NL80211_IFTYPE_AP) {
--		if (conf->assoc && conf->beacon_rate) {
-+		if (vif->cfg.assoc && conf->beacon_rate) {
- 			u16 ps_beacon_int = conf->beacon_int;
- 
- 			if (conf->dtim_period)
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index e3ded46f70ac..48f786d1e9d5 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -526,11 +526,6 @@ struct ieee80211_fils_discovery {
-  *	mode only, set if the AP advertises TWT responder role)
-  * @twt_protected: does this BSS support protected TWT frames
-  * @twt_broadcast: does this BSS support broadcast TWT
-- * @assoc: association status
-- * @ibss_joined: indicates whether this station is part of an IBSS
-- *	or not
-- * @ibss_creator: indicates if a new IBSS network is being created
-- * @aid: association ID number, valid only when @assoc is true
-  * @use_cts_prot: use CTS protection
-  * @use_short_preamble: use 802.11b short preamble
-  * @use_short_slot: use short slot time (only relevant for ERP)
-@@ -551,6 +546,8 @@ struct ieee80211_fils_discovery {
-  *	IMPORTANT: These three sync_* parameters would possibly be out of sync
-  *	by the time the driver will use them. The synchronized view is currently
-  *	guaranteed only in certain callbacks.
-+ *	Note also that this is not used with MLD associations, mac80211 doesn't
-+ *	know how to track beacons for all of the links for this.
-  * @beacon_int: beacon interval
-  * @assoc_capability: capabilities taken from assoc resp
-  * @basic_rates: bitmap of basic rates, each bit stands for an
-@@ -576,21 +573,12 @@ struct ieee80211_fils_discovery {
-  *	threshold event and can't be enabled simultaneously with it.
-  * @cqm_rssi_high: Connection quality monitor RSSI upper threshold.
-  * @cqm_rssi_hyst: Connection quality monitor RSSI hysteresis
-- * @arp_addr_list: List of IPv4 addresses for hardware ARP filtering. The
-- *	may filter ARP queries targeted for other addresses than listed here.
-- *	The driver must allow ARP queries targeted for all address listed here
-- *	to pass through. An empty list implies no ARP queries need to pass.
-- * @arp_addr_cnt: Number of addresses currently on the list. Note that this
-- *	may be larger than %IEEE80211_BSS_ARP_ADDR_LIST_LEN (the arp_addr_list
-- *	array size), it's up to the driver what to do in that case.
-  * @qos: This is a QoS-enabled BSS.
-  * @idle: This interface is idle. There's also a global idle flag in the
-  *	hardware config which may be more appropriate depending on what
-  *	your driver/device needs to do.
-  * @ps: power-save mode (STA only). This flag is NOT affected by
-  *	offchannel/dynamic_ps operations.
-- * @ssid: The SSID of the current vif. Valid in AP and IBSS mode.
-- * @ssid_len: Length of SSID given in @ssid.
-  * @hidden_ssid: The SSID of the current vif is hidden. Only valid in AP-mode.
-  * @txpower: TX power in dBm.  INT_MIN means not configured.
-  * @txpower_type: TX power adjustment used to control per packet Transmit
-@@ -628,7 +616,6 @@ struct ieee80211_fils_discovery {
-  * @fils_discovery: FILS discovery configuration
-  * @unsol_bcast_probe_resp_interval: Unsolicited broadcast probe response
-  *	interval.
-- * @s1g: BSS is S1G BSS (affects Association Request format).
-  * @beacon_tx_rate: The configured beacon transmit rate that needs to be passed
-  *	to driver when rate control is offloaded to firmware.
-  * @power_type: power type of BSS for 6 GHz
-@@ -661,10 +648,6 @@ struct ieee80211_bss_conf {
- 	bool twt_responder;
- 	bool twt_protected;
- 	bool twt_broadcast;
--	/* association related data */
--	bool assoc, ibss_joined;
--	bool ibss_creator;
--	u16 aid;
- 	/* erp related data */
- 	bool use_cts_prot;
- 	bool use_short_preamble;
-@@ -686,13 +669,9 @@ struct ieee80211_bss_conf {
- 	s32 cqm_rssi_high;
- 	struct cfg80211_chan_def chandef;
- 	struct ieee80211_mu_group_data mu_group;
--	__be32 arp_addr_list[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
--	int arp_addr_cnt;
- 	bool qos;
- 	bool idle;
- 	bool ps;
--	u8 ssid[IEEE80211_MAX_SSID_LEN];
--	size_t ssid_len;
- 	bool hidden_ssid;
- 	int txpower;
- 	enum nl80211_tx_power_setting txpower_type;
-@@ -717,7 +696,6 @@ struct ieee80211_bss_conf {
- 	struct cfg80211_he_bss_color he_bss_color;
- 	struct ieee80211_fils_discovery fils_discovery;
- 	u32 unsol_bcast_probe_resp_interval;
--	bool s1g;
- 	struct cfg80211_bitrate_mask beacon_tx_rate;
- 	enum ieee80211_ap_reg_power power_type;
- 	struct ieee80211_tx_pwr_env tx_pwr_env[IEEE80211_TPE_MAX_IE_COUNT];
-@@ -1721,6 +1699,36 @@ enum ieee80211_offload_flags {
- 	IEEE80211_OFFLOAD_DECAP_ENABLED		= BIT(2),
- };
- 
-+/**
-+ * struct ieee80211_vif_cfg - interface configuration
-+ * @assoc: association status
-+ * @ibss_joined: indicates whether this station is part of an IBSS or not
-+ * @ibss_creator: indicates if a new IBSS network is being created
-+ * @aid: association ID number, valid only when @assoc is true
-+ * @arp_addr_list: List of IPv4 addresses for hardware ARP filtering. The
-+ *	may filter ARP queries targeted for other addresses than listed here.
-+ *	The driver must allow ARP queries targeted for all address listed here
-+ *	to pass through. An empty list implies no ARP queries need to pass.
-+ * @arp_addr_cnt: Number of addresses currently on the list. Note that this
-+ *	may be larger than %IEEE80211_BSS_ARP_ADDR_LIST_LEN (the arp_addr_list
-+ *	array size), it's up to the driver what to do in that case.
-+ * @ssid: The SSID of the current vif. Valid in AP and IBSS mode.
-+ * @ssid_len: Length of SSID given in @ssid.
-+ * @s1g: BSS is S1G BSS (affects Association Request format).
-+ */
-+struct ieee80211_vif_cfg {
-+	/* association related data */
-+	bool assoc, ibss_joined;
-+	bool ibss_creator;
-+	u16 aid;
-+
-+	__be32 arp_addr_list[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
-+	int arp_addr_cnt;
-+	u8 ssid[IEEE80211_MAX_SSID_LEN];
-+	size_t ssid_len;
-+	bool s1g;
-+};
-+
- /**
-  * struct ieee80211_vif - per-interface data
-  *
-@@ -1728,6 +1736,7 @@ enum ieee80211_offload_flags {
-  * use during the life of a virtual interface.
-  *
-  * @type: type of this virtual interface
-+ * @cfg: vif configuration, see &struct ieee80211_vif_cfg
-  * @bss_conf: BSS configuration for this interface, either our own
-  *	or the BSS we're associated to
-  * @addr: address of this interface
-@@ -1762,6 +1771,7 @@ enum ieee80211_offload_flags {
-  */
- struct ieee80211_vif {
- 	enum nl80211_iftype type;
-+	struct ieee80211_vif_cfg cfg;
- 	struct ieee80211_bss_conf bss_conf;
- 	u8 addr[ETH_ALEN] __aligned(2);
- 	bool p2p;
 diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 5915772713e1..1b23403602fc 100644
+index 1b23403602fc..040a766b8c19 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -1214,12 +1214,12 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 	sdata->vif.bss_conf.twt_responder = params->twt_responder;
- 	sdata->vif.bss_conf.he_obss_pd = params->he_obss_pd;
- 	sdata->vif.bss_conf.he_bss_color = params->beacon.he_bss_color;
--	sdata->vif.bss_conf.s1g = params->chandef.chan->band ==
-+	sdata->vif.cfg.s1g = params->chandef.chan->band ==
- 				  NL80211_BAND_S1GHZ;
+@@ -205,7 +205,7 @@ static int ieee80211_change_iface(struct wiphy *wiphy,
+ 			return 0;
  
--	sdata->vif.bss_conf.ssid_len = params->ssid_len;
-+	sdata->vif.cfg.ssid_len = params->ssid_len;
- 	if (params->ssid_len)
--		memcpy(sdata->vif.bss_conf.ssid, params->ssid,
-+		memcpy(sdata->vif.cfg.ssid, params->ssid,
- 		       params->ssid_len);
- 	sdata->vif.bss_conf.hidden_ssid =
- 		(params->hidden_ssid != NL80211_HIDDEN_SSID_NOT_IN_USE);
-@@ -1403,7 +1403,7 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+ 		mutex_lock(&local->sta_mtx);
+-		sta = sta_info_get(sdata, ifmgd->bssid);
++		sta = sta_info_get(sdata, sdata->deflink.u.mgd.bssid);
+ 		if (sta)
+ 			drv_sta_set_4addr(local, sdata, &sta->sta,
+ 					  params->use_4addr);
+@@ -538,6 +538,7 @@ ieee80211_lookup_key(struct ieee80211_sub_if_data *sdata,
+ 		     u8 key_idx, bool pairwise, const u8 *mac_addr)
+ {
+ 	struct ieee80211_local *local = sdata->local;
++	struct ieee80211_key *key;
+ 	struct sta_info *sta;
  
- 	sdata->vif.bss_conf.enable_beacon = false;
- 	sdata->beacon_rate_set = false;
--	sdata->vif.bss_conf.ssid_len = 0;
-+	sdata->vif.cfg.ssid_len = 0;
- 	clear_bit(SDATA_STATE_OFFCHANNEL_BEACON_STOPPED, &sdata->state);
- 	ieee80211_bss_info_change_notify(sdata, BSS_CHANGED_BEACON_ENABLED);
+ 	if (mac_addr) {
+@@ -559,6 +560,14 @@ ieee80211_lookup_key(struct ieee80211_sub_if_data *sdata,
+ 		return NULL;
+ 	}
  
-@@ -3486,7 +3486,7 @@ static int ieee80211_set_csa_beacon(struct ieee80211_sub_if_data *sdata,
++	if (pairwise && key_idx < NUM_DEFAULT_KEYS)
++		return rcu_dereference_check_key_mtx(local,
++						     sdata->keys[key_idx]);
++
++	key = rcu_dereference_check_key_mtx(local, sdata->deflink.gtk[key_idx]);
++	if (key)
++		return key;
++
+ 	if (key_idx < NUM_DEFAULT_KEYS)
+ 		return rcu_dereference_check_key_mtx(local,
+ 						     sdata->keys[key_idx]);
+@@ -861,7 +870,7 @@ ieee80211_set_probe_resp(struct ieee80211_sub_if_data *sdata,
+ 	if (!resp || !resp_len)
+ 		return 1;
  
- 		break;
- 	case NL80211_IFTYPE_ADHOC:
--		if (!sdata->vif.bss_conf.ibss_joined)
-+		if (!sdata->vif.cfg.ibss_joined)
+-	old = sdata_dereference(sdata->u.ap.probe_resp, sdata);
++	old = sdata_dereference(sdata->deflink.u.ap.probe_resp, sdata);
+ 
+ 	new = kzalloc(sizeof(struct probe_resp) + resp_len, GFP_KERNEL);
+ 	if (!new)
+@@ -877,7 +886,7 @@ ieee80211_set_probe_resp(struct ieee80211_sub_if_data *sdata,
+ 	else if (cca)
+ 		new->cntdwn_counter_offsets[0] = cca->counter_offset_presp;
+ 
+-	rcu_assign_pointer(sdata->u.ap.probe_resp, new);
++	rcu_assign_pointer(sdata->deflink.u.ap.probe_resp, new);
+ 	if (old)
+ 		kfree_rcu(old, rcu_head);
+ 
+@@ -897,13 +906,13 @@ static int ieee80211_set_fils_discovery(struct ieee80211_sub_if_data *sdata,
+ 	fd->min_interval = params->min_interval;
+ 	fd->max_interval = params->max_interval;
+ 
+-	old = sdata_dereference(sdata->u.ap.fils_discovery, sdata);
++	old = sdata_dereference(sdata->deflink.u.ap.fils_discovery, sdata);
+ 	new = kzalloc(sizeof(*new) + params->tmpl_len, GFP_KERNEL);
+ 	if (!new)
+ 		return -ENOMEM;
+ 	new->len = params->tmpl_len;
+ 	memcpy(new->data, params->tmpl, params->tmpl_len);
+-	rcu_assign_pointer(sdata->u.ap.fils_discovery, new);
++	rcu_assign_pointer(sdata->deflink.u.ap.fils_discovery, new);
+ 
+ 	if (old)
+ 		kfree_rcu(old, rcu_head);
+@@ -920,13 +929,14 @@ ieee80211_set_unsol_bcast_probe_resp(struct ieee80211_sub_if_data *sdata,
+ 	if (!params->tmpl || !params->tmpl_len)
+ 		return -EINVAL;
+ 
+-	old = sdata_dereference(sdata->u.ap.unsol_bcast_probe_resp, sdata);
++	old = sdata_dereference(sdata->deflink.u.ap.unsol_bcast_probe_resp,
++				sdata);
+ 	new = kzalloc(sizeof(*new) + params->tmpl_len, GFP_KERNEL);
+ 	if (!new)
+ 		return -ENOMEM;
+ 	new->len = params->tmpl_len;
+ 	memcpy(new->data, params->tmpl, params->tmpl_len);
+-	rcu_assign_pointer(sdata->u.ap.unsol_bcast_probe_resp, new);
++	rcu_assign_pointer(sdata->deflink.u.ap.unsol_bcast_probe_resp, new);
+ 
+ 	if (old)
+ 		kfree_rcu(old, rcu_head);
+@@ -1007,8 +1017,7 @@ static int ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
+ 	int size, err;
+ 	u32 changed = BSS_CHANGED_BEACON;
+ 
+-	old = sdata_dereference(sdata->u.ap.beacon, sdata);
+-
++	old = sdata_dereference(sdata->deflink.u.ap.beacon, sdata);
+ 
+ 	/* Need to have a beacon head if we don't have one yet */
+ 	if (!params->head && !old)
+@@ -1114,7 +1123,8 @@ static int ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
+ 		changed |= BSS_CHANGED_FTM_RESPONDER;
+ 	}
+ 
+-	rcu_assign_pointer(sdata->u.ap.beacon, new);
++	rcu_assign_pointer(sdata->deflink.u.ap.beacon, new);
++	sdata->u.ap.active = true;
+ 
+ 	if (old)
+ 		kfree_rcu(old, rcu_head);
+@@ -1139,16 +1149,16 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 	int i, err;
+ 	int prev_beacon_int;
+ 
+-	old = sdata_dereference(sdata->u.ap.beacon, sdata);
++	old = sdata_dereference(sdata->deflink.u.ap.beacon, sdata);
+ 	if (old)
+ 		return -EALREADY;
+ 
+ 	if (params->smps_mode != NL80211_SMPS_OFF)
+ 		return -ENOTSUPP;
+ 
+-	sdata->smps_mode = IEEE80211_SMPS_OFF;
++	sdata->deflink.smps_mode = IEEE80211_SMPS_OFF;
+ 
+-	sdata->needed_rx_chains = sdata->local->rx_chains;
++	sdata->deflink.needed_rx_chains = sdata->local->rx_chains;
+ 
+ 	prev_beacon_int = sdata->vif.bss_conf.beacon_int;
+ 	sdata->vif.bss_conf.beacon_int = params->beacon_interval;
+@@ -1269,11 +1279,12 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 
+ 	err = drv_start_ap(sdata->local, sdata);
+ 	if (err) {
+-		old = sdata_dereference(sdata->u.ap.beacon, sdata);
++		old = sdata_dereference(sdata->deflink.u.ap.beacon, sdata);
+ 
+ 		if (old)
+ 			kfree_rcu(old, rcu_head);
+-		RCU_INIT_POINTER(sdata->u.ap.beacon, NULL);
++		RCU_INIT_POINTER(sdata->deflink.u.ap.beacon, NULL);
++		sdata->u.ap.active = false;
+ 		goto error;
+ 	}
+ 
+@@ -1311,7 +1322,7 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
+ 	if (sdata->vif.bss_conf.csa_active || sdata->vif.bss_conf.color_change_active)
+ 		return -EBUSY;
+ 
+-	old = sdata_dereference(sdata->u.ap.beacon, sdata);
++	old = sdata_dereference(sdata->deflink.u.ap.beacon, sdata);
+ 	if (!old)
+ 		return -ENOENT;
+ 
+@@ -1332,12 +1343,12 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
+ 
+ static void ieee80211_free_next_beacon(struct ieee80211_sub_if_data *sdata)
+ {
+-	if (!sdata->u.ap.next_beacon)
++	if (!sdata->deflink.u.ap.next_beacon)
+ 		return;
+ 
+-	kfree(sdata->u.ap.next_beacon->mbssid_ies);
+-	kfree(sdata->u.ap.next_beacon);
+-	sdata->u.ap.next_beacon = NULL;
++	kfree(sdata->deflink.u.ap.next_beacon->mbssid_ies);
++	kfree(sdata->deflink.u.ap.next_beacon);
++	sdata->deflink.u.ap.next_beacon = NULL;
+ }
+ 
+ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+@@ -1354,23 +1365,24 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+ 
+ 	sdata_assert_lock(sdata);
+ 
+-	old_beacon = sdata_dereference(sdata->u.ap.beacon, sdata);
++	old_beacon = sdata_dereference(sdata->deflink.u.ap.beacon, sdata);
+ 	if (!old_beacon)
+ 		return -ENOENT;
+-	old_probe_resp = sdata_dereference(sdata->u.ap.probe_resp, sdata);
+-	old_fils_discovery = sdata_dereference(sdata->u.ap.fils_discovery,
++	old_probe_resp = sdata_dereference(sdata->deflink.u.ap.probe_resp,
++					   sdata);
++	old_fils_discovery = sdata_dereference(sdata->deflink.u.ap.fils_discovery,
+ 					       sdata);
+ 	old_unsol_bcast_probe_resp =
+-		sdata_dereference(sdata->u.ap.unsol_bcast_probe_resp,
++		sdata_dereference(sdata->deflink.u.ap.unsol_bcast_probe_resp,
+ 				  sdata);
+ 
+ 	/* abort any running channel switch */
+ 	mutex_lock(&local->mtx);
+ 	sdata->vif.bss_conf.csa_active = false;
+-	if (sdata->csa_block_tx) {
++	if (sdata->deflink.csa_block_tx) {
+ 		ieee80211_wake_vif_queues(local, sdata,
+ 					  IEEE80211_QUEUE_STOP_REASON_CSA);
+-		sdata->csa_block_tx = false;
++		sdata->deflink.csa_block_tx = false;
+ 	}
+ 
+ 	mutex_unlock(&local->mtx);
+@@ -1383,10 +1395,11 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+ 	netif_carrier_off(dev);
+ 
+ 	/* remove beacon and probe response */
+-	RCU_INIT_POINTER(sdata->u.ap.beacon, NULL);
+-	RCU_INIT_POINTER(sdata->u.ap.probe_resp, NULL);
+-	RCU_INIT_POINTER(sdata->u.ap.fils_discovery, NULL);
+-	RCU_INIT_POINTER(sdata->u.ap.unsol_bcast_probe_resp, NULL);
++	sdata->u.ap.active = false;
++	RCU_INIT_POINTER(sdata->deflink.u.ap.beacon, NULL);
++	RCU_INIT_POINTER(sdata->deflink.u.ap.probe_resp, NULL);
++	RCU_INIT_POINTER(sdata->deflink.u.ap.fils_discovery, NULL);
++	RCU_INIT_POINTER(sdata->deflink.u.ap.unsol_bcast_probe_resp, NULL);
+ 	kfree_rcu(old_beacon, rcu_head);
+ 	if (old_probe_resp)
+ 		kfree_rcu(old_probe_resp, rcu_head);
+@@ -1409,7 +1422,7 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+ 
+ 	if (sdata->wdev.cac_started) {
+ 		chandef = sdata->vif.bss_conf.chandef;
+-		cancel_delayed_work_sync(&sdata->dfs_cac_timer_work);
++		cancel_delayed_work_sync(&sdata->deflink.dfs_cac_timer_work);
+ 		cfg80211_cac_event(sdata->dev, &chandef,
+ 				   NL80211_RADAR_CAC_ABORTED,
+ 				   GFP_KERNEL);
+@@ -2386,8 +2399,8 @@ static int ieee80211_join_mesh(struct wiphy *wiphy, struct net_device *dev,
+ 	sdata->control_port_over_nl80211 = setup->control_port_over_nl80211;
+ 
+ 	/* can mesh use other SMPS modes? */
+-	sdata->smps_mode = IEEE80211_SMPS_OFF;
+-	sdata->needed_rx_chains = sdata->local->rx_chains;
++	sdata->deflink.smps_mode = IEEE80211_SMPS_OFF;
++	sdata->deflink.needed_rx_chains = sdata->local->rx_chains;
+ 
+ 	mutex_lock(&sdata->local->mtx);
+ 	err = ieee80211_vif_use_channel(sdata, &setup->chandef,
+@@ -2421,7 +2434,7 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
+ 	struct ieee80211_supported_band *sband;
+ 	u32 changed = 0;
+ 
+-	if (!sdata_dereference(sdata->u.ap.beacon, sdata))
++	if (!sdata_dereference(sdata->deflink.u.ap.beacon, sdata))
+ 		return -ENOENT;
+ 
+ 	sband = ieee80211_get_sband(sdata);
+@@ -2586,7 +2599,7 @@ static int ieee80211_scan(struct wiphy *wiphy,
+ 		 * the  frames sent while scanning on other channel will be
+ 		 * lost)
+ 		 */
+-		if (sdata->u.ap.beacon &&
++		if (sdata->deflink.u.ap.beacon &&
+ 		    (!(wiphy->features & NL80211_FEATURE_AP_SCAN) ||
+ 		     !(req->flags & NL80211_SCAN_FLAG_AP)))
+ 			return -EOPNOTSUPP;
+@@ -2767,14 +2780,15 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
+ 
+ 		switch (type) {
+ 		case NL80211_TX_POWER_AUTOMATIC:
+-			sdata->user_power_level = IEEE80211_UNSET_POWER_LEVEL;
++			sdata->deflink.user_power_level =
++				IEEE80211_UNSET_POWER_LEVEL;
+ 			txp_type = NL80211_TX_POWER_LIMITED;
+ 			break;
+ 		case NL80211_TX_POWER_LIMITED:
+ 		case NL80211_TX_POWER_FIXED:
+ 			if (mbm < 0 || (mbm % 100))
+ 				return -EOPNOTSUPP;
+-			sdata->user_power_level = MBM_TO_DBM(mbm);
++			sdata->deflink.user_power_level = MBM_TO_DBM(mbm);
+ 			break;
+ 		}
+ 
+@@ -2807,7 +2821,7 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
+ 			has_monitor = true;
+ 			continue;
+ 		}
+-		sdata->user_power_level = local->user_power_level;
++		sdata->deflink.user_power_level = local->user_power_level;
+ 		if (txp_type != sdata->vif.bss_conf.txpower_type)
+ 			update_txp_type = true;
+ 		sdata->vif.bss_conf.txpower_type = txp_type;
+@@ -2823,7 +2837,7 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
+ 		sdata = wiphy_dereference(local->hw.wiphy,
+ 					  local->monitor_sdata);
+ 		if (sdata) {
+-			sdata->user_power_level = local->user_power_level;
++			sdata->deflink.user_power_level = local->user_power_level;
+ 			if (txp_type != sdata->vif.bss_conf.txpower_type)
+ 				update_txp_type = true;
+ 			sdata->vif.bss_conf.txpower_type = txp_type;
+@@ -2910,8 +2924,8 @@ int __ieee80211_request_smps_mgd(struct ieee80211_sub_if_data *sdata,
+ 	if (WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_STATION))
+ 		return -EINVAL;
+ 
+-	old_req = sdata->u.mgd.req_smps;
+-	sdata->u.mgd.req_smps = smps_mode;
++	old_req = sdata->deflink.u.mgd.req_smps;
++	sdata->deflink.u.mgd.req_smps = smps_mode;
+ 
+ 	if (old_req == smps_mode &&
+ 	    smps_mode != IEEE80211_SMPS_AUTOMATIC)
+@@ -2926,7 +2940,7 @@ int __ieee80211_request_smps_mgd(struct ieee80211_sub_if_data *sdata,
+ 	    sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_20_NOHT)
+ 		return 0;
+ 
+-	ap = sdata->u.mgd.bssid;
++	ap = sdata->deflink.u.mgd.bssid;
+ 
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(sta, &sdata->local->sta_list, list) {
+@@ -2950,7 +2964,7 @@ int __ieee80211_request_smps_mgd(struct ieee80211_sub_if_data *sdata,
+ 	err = ieee80211_send_smps_action(sdata, smps_mode,
+ 					 ap, ap);
+ 	if (err)
+-		sdata->u.mgd.req_smps = old_req;
++		sdata->deflink.u.mgd.req_smps = old_req;
+ 	else if (smps_mode != IEEE80211_SMPS_OFF && tdls_peer_found)
+ 		ieee80211_teardown_tdls_peers(sdata);
+ 
+@@ -2978,7 +2992,7 @@ static int ieee80211_set_power_mgmt(struct wiphy *wiphy, struct net_device *dev,
+ 
+ 	/* no change, but if automatic follow powersave */
+ 	sdata_lock(sdata);
+-	__ieee80211_request_smps_mgd(sdata, sdata->u.mgd.req_smps);
++	__ieee80211_request_smps_mgd(sdata, sdata->deflink.u.mgd.req_smps);
+ 	sdata_unlock(sdata);
+ 
+ 	if (ieee80211_hw_check(&local->hw, SUPPORTS_DYNAMIC_PS))
+@@ -3011,7 +3025,7 @@ static int ieee80211_set_cqm_rssi_config(struct wiphy *wiphy,
+ 	bss_conf->cqm_rssi_hyst = rssi_hyst;
+ 	bss_conf->cqm_rssi_low = 0;
+ 	bss_conf->cqm_rssi_high = 0;
+-	sdata->u.mgd.last_cqm_event_signal = 0;
++	sdata->deflink.u.mgd.last_cqm_event_signal = 0;
+ 
+ 	/* tell the driver upon association, unless already associated */
+ 	if (sdata->u.mgd.associated &&
+@@ -3036,7 +3050,7 @@ static int ieee80211_set_cqm_rssi_range_config(struct wiphy *wiphy,
+ 	bss_conf->cqm_rssi_high = rssi_high;
+ 	bss_conf->cqm_rssi_thold = 0;
+ 	bss_conf->cqm_rssi_hyst = 0;
+-	sdata->u.mgd.last_cqm_event_signal = 0;
++	sdata->deflink.u.mgd.last_cqm_event_signal = 0;
+ 
+ 	/* tell the driver upon association, unless already associated */
+ 	if (sdata->u.mgd.associated &&
+@@ -3130,8 +3144,8 @@ static int ieee80211_start_radar_detection(struct wiphy *wiphy,
+ 	}
+ 
+ 	/* whatever, but channel contexts should not complain about that one */
+-	sdata->smps_mode = IEEE80211_SMPS_OFF;
+-	sdata->needed_rx_chains = local->rx_chains;
++	sdata->deflink.smps_mode = IEEE80211_SMPS_OFF;
++	sdata->deflink.needed_rx_chains = local->rx_chains;
+ 
+ 	err = ieee80211_vif_use_channel(sdata, chandef,
+ 					IEEE80211_CHANCTX_SHARED);
+@@ -3139,7 +3153,7 @@ static int ieee80211_start_radar_detection(struct wiphy *wiphy,
+ 		goto out_unlock;
+ 
+ 	ieee80211_queue_delayed_work(&sdata->local->hw,
+-				     &sdata->dfs_cac_timer_work,
++				     &sdata->deflink.dfs_cac_timer_work,
+ 				     msecs_to_jiffies(cac_time_ms));
+ 
+  out_unlock:
+@@ -3159,7 +3173,7 @@ static void ieee80211_end_cac(struct wiphy *wiphy,
+ 		 * by the time it gets it, sdata->wdev.cac_started
+ 		 * will no longer be true
+ 		 */
+-		cancel_delayed_work(&sdata->dfs_cac_timer_work);
++		cancel_delayed_work(&sdata->deflink.dfs_cac_timer_work);
+ 
+ 		if (sdata->wdev.cac_started) {
+ 			ieee80211_vif_release_channel(sdata);
+@@ -3278,10 +3292,10 @@ void ieee80211_csa_finish(struct ieee80211_vif *vif)
+ 				continue;
+ 
+ 			ieee80211_queue_work(&iter->local->hw,
+-					     &iter->csa_finalize_work);
++					     &iter->deflink.csa_finalize_work);
+ 		}
+ 	}
+-	ieee80211_queue_work(&local->hw, &sdata->csa_finalize_work);
++	ieee80211_queue_work(&local->hw, &sdata->deflink.csa_finalize_work);
+ 
+ 	rcu_read_unlock();
+ }
+@@ -3293,7 +3307,7 @@ void ieee80211_channel_switch_disconnect(struct ieee80211_vif *vif, bool block_t
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	struct ieee80211_local *local = sdata->local;
+ 
+-	sdata->csa_block_tx = block_tx;
++	sdata->deflink.csa_block_tx = block_tx;
+ 	sdata_info(sdata, "channel switch failed, disconnecting\n");
+ 	ieee80211_queue_work(&local->hw, &ifmgd->csa_connection_drop_work);
+ }
+@@ -3306,10 +3320,11 @@ static int ieee80211_set_after_csa_beacon(struct ieee80211_sub_if_data *sdata,
+ 
+ 	switch (sdata->vif.type) {
+ 	case NL80211_IFTYPE_AP:
+-		if (!sdata->u.ap.next_beacon)
++		if (!sdata->deflink.u.ap.next_beacon)
  			return -EINVAL;
  
- 		if (params->chandef.width != sdata->u.ibss.chandef.width)
-diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
-index cf71484658c6..dd71cb7b3f75 100644
---- a/net/mac80211/debugfs_netdev.c
-+++ b/net/mac80211/debugfs_netdev.c
-@@ -233,7 +233,7 @@ IEEE80211_IF_FILE_R(hw_queues);
+-		err = ieee80211_assign_beacon(sdata, sdata->u.ap.next_beacon,
++		err = ieee80211_assign_beacon(sdata,
++					      sdata->deflink.u.ap.next_beacon,
+ 					      NULL, NULL);
+ 		ieee80211_free_next_beacon(sdata);
  
- /* STA attributes */
- IEEE80211_IF_FILE(bssid, u.mgd.bssid, MAC);
--IEEE80211_IF_FILE(aid, vif.bss_conf.aid, DEC);
-+IEEE80211_IF_FILE(aid, vif.cfg.aid, DEC);
- IEEE80211_IF_FILE(beacon_timeout, u.mgd.beacon_timeout, JIFFIES_TO_MS);
+@@ -3356,20 +3371,20 @@ static int __ieee80211_csa_finalize(struct ieee80211_sub_if_data *sdata)
+ 	 * completed successfully
+ 	 */
  
- static int ieee80211_set_smps(struct ieee80211_sub_if_data *sdata,
-@@ -366,7 +366,7 @@ IEEE80211_IF_FILE_W(tkip_mic_test);
- static ssize_t ieee80211_if_parse_beacon_loss(
- 	struct ieee80211_sub_if_data *sdata, const char *buf, int buflen)
+-	if (sdata->reserved_chanctx) {
++	if (sdata->deflink.reserved_chanctx) {
+ 		/*
+ 		 * with multi-vif csa driver may call ieee80211_csa_finish()
+ 		 * many times while waiting for other interfaces to use their
+ 		 * reservations
+ 		 */
+-		if (sdata->reserved_ready)
++		if (sdata->deflink.reserved_ready)
+ 			return 0;
+ 
+ 		return ieee80211_vif_use_reserved_context(sdata);
+ 	}
+ 
+ 	if (!cfg80211_chandef_identical(&sdata->vif.bss_conf.chandef,
+-					&sdata->csa_chandef))
++					&sdata->deflink.csa_chandef))
+ 		return -EINVAL;
+ 
+ 	sdata->vif.bss_conf.csa_active = false;
+@@ -3380,17 +3395,17 @@ static int __ieee80211_csa_finalize(struct ieee80211_sub_if_data *sdata)
+ 
+ 	ieee80211_bss_info_change_notify(sdata, changed);
+ 
+-	if (sdata->csa_block_tx) {
++	if (sdata->deflink.csa_block_tx) {
+ 		ieee80211_wake_vif_queues(local, sdata,
+ 					  IEEE80211_QUEUE_STOP_REASON_CSA);
+-		sdata->csa_block_tx = false;
++		sdata->deflink.csa_block_tx = false;
+ 	}
+ 
+ 	err = drv_post_channel_switch(sdata);
+ 	if (err)
+ 		return err;
+ 
+-	cfg80211_ch_switch_notify(sdata->dev, &sdata->csa_chandef, 0);
++	cfg80211_ch_switch_notify(sdata->dev, &sdata->deflink.csa_chandef, 0);
+ 
+ 	return 0;
+ }
+@@ -3408,7 +3423,7 @@ void ieee80211_csa_finalize_work(struct work_struct *work)
  {
--	if (!ieee80211_sdata_running(sdata) || !sdata->vif.bss_conf.assoc)
-+	if (!ieee80211_sdata_running(sdata) || !sdata->vif.cfg.assoc)
- 		return -ENOTCONN;
- 
- 	ieee80211_beacon_loss(&sdata->vif);
-diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
-index aebae1f4d288..056da2ff65f4 100644
---- a/net/mac80211/ibss.c
-+++ b/net/mac80211/ibss.c
-@@ -244,9 +244,9 @@ static void __ieee80211_sta_join_ibss(struct ieee80211_sub_if_data *sdata,
- 		sta_info_flush(sdata);
- 
- 	/* if merging, indicate to driver that we leave the old IBSS */
--	if (sdata->vif.bss_conf.ibss_joined) {
--		sdata->vif.bss_conf.ibss_joined = false;
--		sdata->vif.bss_conf.ibss_creator = false;
-+	if (sdata->vif.cfg.ibss_joined) {
-+		sdata->vif.cfg.ibss_joined = false;
-+		sdata->vif.cfg.ibss_creator = false;
- 		sdata->vif.bss_conf.enable_beacon = false;
- 		netif_carrier_off(sdata->dev);
- 		ieee80211_bss_info_change_notify(sdata,
-@@ -326,8 +326,8 @@ static void __ieee80211_sta_join_ibss(struct ieee80211_sub_if_data *sdata,
- 	sdata->vif.bss_conf.enable_beacon = true;
- 	sdata->vif.bss_conf.beacon_int = beacon_int;
- 	sdata->vif.bss_conf.basic_rates = basic_rates;
--	sdata->vif.bss_conf.ssid_len = ifibss->ssid_len;
--	memcpy(sdata->vif.bss_conf.ssid, ifibss->ssid, ifibss->ssid_len);
-+	sdata->vif.cfg.ssid_len = ifibss->ssid_len;
-+	memcpy(sdata->vif.cfg.ssid, ifibss->ssid, ifibss->ssid_len);
- 	bss_change = BSS_CHANGED_BEACON_INT;
- 	bss_change |= ieee80211_reset_erp_info(sdata);
- 	bss_change |= BSS_CHANGED_BSSID;
-@@ -359,15 +359,15 @@ static void __ieee80211_sta_join_ibss(struct ieee80211_sub_if_data *sdata,
- 
- 	ieee80211_set_wmm_default(sdata, true, false);
- 
--	sdata->vif.bss_conf.ibss_joined = true;
--	sdata->vif.bss_conf.ibss_creator = creator;
-+	sdata->vif.cfg.ibss_joined = true;
-+	sdata->vif.cfg.ibss_creator = creator;
- 
- 	err = drv_join_ibss(local, sdata);
- 	if (err) {
--		sdata->vif.bss_conf.ibss_joined = false;
--		sdata->vif.bss_conf.ibss_creator = false;
-+		sdata->vif.cfg.ibss_joined = false;
-+		sdata->vif.cfg.ibss_creator = false;
- 		sdata->vif.bss_conf.enable_beacon = false;
--		sdata->vif.bss_conf.ssid_len = 0;
-+		sdata->vif.cfg.ssid_len = 0;
- 		RCU_INIT_POINTER(ifibss->presp, NULL);
- 		kfree_rcu(presp, rcu_head);
- 		mutex_lock(&local->mtx);
-@@ -708,10 +708,10 @@ static void ieee80211_ibss_disconnect(struct ieee80211_sub_if_data *sdata)
- 
- 	netif_carrier_off(sdata->dev);
- 
--	sdata->vif.bss_conf.ibss_joined = false;
--	sdata->vif.bss_conf.ibss_creator = false;
-+	sdata->vif.cfg.ibss_joined = false;
-+	sdata->vif.cfg.ibss_creator = false;
- 	sdata->vif.bss_conf.enable_beacon = false;
--	sdata->vif.bss_conf.ssid_len = 0;
-+	sdata->vif.cfg.ssid_len = 0;
- 
- 	/* remove beacon */
- 	presp = rcu_dereference_protected(ifibss->presp,
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index ebde131efcaa..0c81ae492df4 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -349,7 +349,7 @@ static int ieee80211_ifa_changed(struct notifier_block *nb,
- 	struct wireless_dev *wdev = ndev->ieee80211_ptr;
- 	struct in_device *idev;
- 	struct ieee80211_sub_if_data *sdata;
--	struct ieee80211_bss_conf *bss_conf;
-+	struct ieee80211_vif_cfg *vif_cfg;
- 	struct ieee80211_if_managed *ifmgd;
- 	int c = 0;
- 
-@@ -361,7 +361,7 @@ static int ieee80211_ifa_changed(struct notifier_block *nb,
- 		return NOTIFY_DONE;
- 
- 	sdata = IEEE80211_DEV_TO_SUB_IF(ndev);
--	bss_conf = &sdata->vif.bss_conf;
-+	vif_cfg = &sdata->vif.cfg;
- 
- 	/* ARP filtering is only supported in managed mode */
- 	if (sdata->vif.type != NL80211_IFTYPE_STATION)
-@@ -374,16 +374,16 @@ static int ieee80211_ifa_changed(struct notifier_block *nb,
- 	ifmgd = &sdata->u.mgd;
- 	sdata_lock(sdata);
- 
--	/* Copy the addresses to the bss_conf list */
-+	/* Copy the addresses to the vif config list */
- 	ifa = rtnl_dereference(idev->ifa_list);
- 	while (ifa) {
- 		if (c < IEEE80211_BSS_ARP_ADDR_LIST_LEN)
--			bss_conf->arp_addr_list[c] = ifa->ifa_address;
-+			vif_cfg->arp_addr_list[c] = ifa->ifa_address;
- 		ifa = rtnl_dereference(ifa->ifa_next);
- 		c++;
- 	}
- 
--	bss_conf->arp_addr_cnt = c;
-+	vif_cfg->arp_addr_cnt = c;
- 
- 	/* Configure driver only if associated (which also implies it is up) */
- 	if (ifmgd->associated)
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index c526af66ff8d..4a792e88568d 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -2258,6 +2258,7 @@ static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_bss *bss = (void *)cbss->priv;
+ 	struct ieee80211_sub_if_data *sdata =
+ 		container_of(work, struct ieee80211_sub_if_data,
+-			     csa_finalize_work);
++			     deflink.csa_finalize_work);
  	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_bss_conf *bss_conf = &sdata->vif.bss_conf;
-+	struct ieee80211_vif_cfg *vif_cfg = &sdata->vif.cfg;
  
- 	bss_info_changed |= BSS_CHANGED_ASSOC;
- 	bss_info_changed |= ieee80211_handle_bss_capability(sdata,
-@@ -2317,7 +2318,7 @@ static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
- 		bss_conf->dtim_period = 0;
- 	}
+ 	sdata_lock(sdata);
+@@ -3439,9 +3454,9 @@ static int ieee80211_set_csa_beacon(struct ieee80211_sub_if_data *sdata,
  
--	bss_conf->assoc = 1;
-+	vif_cfg->assoc = 1;
+ 	switch (sdata->vif.type) {
+ 	case NL80211_IFTYPE_AP:
+-		sdata->u.ap.next_beacon =
++		sdata->deflink.u.ap.next_beacon =
+ 			cfg80211_beacon_dup(&params->beacon_after);
+-		if (!sdata->u.ap.next_beacon)
++		if (!sdata->deflink.u.ap.next_beacon)
+ 			return -ENOMEM;
  
- 	/* Tell the driver to monitor connection quality (if supported) */
- 	if (sdata->vif.driver_flags & IEEE80211_VIF_SUPPORTS_CQM_RSSI &&
-@@ -2325,7 +2326,7 @@ static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
- 		bss_info_changed |= BSS_CHANGED_CQM;
- 
- 	/* Enable ARP filtering */
--	if (bss_conf->arp_addr_cnt)
-+	if (vif_cfg->arp_addr_cnt)
- 		bss_info_changed |= BSS_CHANGED_ARP_FILTER;
- 
- 	ieee80211_bss_info_change_notify(sdata, bss_info_changed);
-@@ -2419,7 +2420,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 	/* clear bssid only after building the needed mgmt frames */
- 	eth_zero_addr(ifmgd->bssid);
- 
--	sdata->vif.bss_conf.ssid_len = 0;
-+	sdata->vif.cfg.ssid_len = 0;
- 
- 	/* remove AP and TDLS peers */
- 	sta_info_flush(sdata);
-@@ -2429,7 +2430,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 
- 	ieee80211_led_assoc(local, 0);
- 	changed |= BSS_CHANGED_ASSOC;
--	sdata->vif.bss_conf.assoc = false;
-+	sdata->vif.cfg.assoc = false;
- 
- 	ifmgd->p2p_noa_index = -1;
- 	memset(&sdata->vif.bss_conf.p2p_noa_attr, 0,
-@@ -2455,7 +2456,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 	cancel_work_sync(&local->dynamic_ps_enable_work);
- 
- 	/* Disable ARP filtering */
--	if (sdata->vif.bss_conf.arp_addr_cnt)
-+	if (sdata->vif.cfg.arp_addr_cnt)
- 		changed |= BSS_CHANGED_ARP_FILTER;
- 
- 	sdata->vif.bss_conf.qos = false;
-@@ -2642,8 +2643,8 @@ static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
- 		ieee80211_send_nullfunc(sdata->local, sdata, false);
- 	} else {
- 		ieee80211_mlme_send_probe_req(sdata, sdata->vif.addr, dst,
--					      sdata->vif.bss_conf.ssid,
--					      sdata->vif.bss_conf.ssid_len,
-+					      sdata->vif.cfg.ssid,
-+					      sdata->vif.cfg.ssid_len,
- 					      ifmgd->assoc_bss->channel);
- 	}
- 
-@@ -3425,7 +3426,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 		/*
+@@ -3653,15 +3668,16 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
  		goto out;
  	}
  
--	sdata->vif.bss_conf.aid = aid;
-+	sdata->vif.cfg.aid = aid;
- 	ifmgd->tdls_chan_switch_prohibited =
- 		elems->ext_capab && elems->ext_capab_len >= 5 &&
- 		(elems->ext_capab[4] & WLAN_EXT_CAPA5_TDLS_CH_SW_PROHIBITED);
-@@ -4102,6 +4103,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
- {
- 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
- 	struct ieee80211_bss_conf *bss_conf = &sdata->vif.bss_conf;
-+	struct ieee80211_vif_cfg *vif_cfg = &sdata->vif.cfg;
- 	struct ieee80211_mgmt *mgmt = (void *) hdr;
- 	size_t baselen;
- 	struct ieee802_11_elems *elems;
-@@ -4226,7 +4228,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
- 	ncrc = elems->crc;
+-	sdata->csa_chandef = params->chandef;
+-	sdata->csa_block_tx = params->block_tx;
++	sdata->deflink.csa_chandef = params->chandef;
++	sdata->deflink.csa_block_tx = params->block_tx;
+ 	sdata->vif.bss_conf.csa_active = true;
  
- 	if (ieee80211_hw_check(&local->hw, PS_NULLFUNC_STACK) &&
--	    ieee80211_check_tim(elems->tim, elems->tim_len, bss_conf->aid)) {
-+	    ieee80211_check_tim(elems->tim, elems->tim_len, vif_cfg->aid)) {
- 		if (local->hw.conf.dynamic_ps_timeout > 0) {
- 			if (local->hw.conf.flags & IEEE80211_CONF_PS) {
- 				local->hw.conf.flags &= ~IEEE80211_CONF_PS;
-@@ -5877,7 +5879,7 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_mgd_assoc_data *assoc_data;
- 	const struct cfg80211_bss_ies *beacon_ies;
- 	struct ieee80211_supported_band *sband;
--	struct ieee80211_bss_conf *bss_conf = &sdata->vif.bss_conf;
-+	struct ieee80211_vif_cfg *vif_cfg = &sdata->vif.cfg;
- 	const struct element *ssid_elem, *ht_elem, *vht_elem;
- 	int i, err;
- 	bool override = false;
-@@ -5895,8 +5897,8 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
- 	}
- 	memcpy(assoc_data->ssid, ssid_elem->data, ssid_elem->datalen);
- 	assoc_data->ssid_len = ssid_elem->datalen;
--	memcpy(bss_conf->ssid, assoc_data->ssid, assoc_data->ssid_len);
--	bss_conf->ssid_len = assoc_data->ssid_len;
-+	memcpy(vif_cfg->ssid, assoc_data->ssid, assoc_data->ssid_len);
-+	vif_cfg->ssid_len = assoc_data->ssid_len;
- 	rcu_read_unlock();
+-	if (sdata->csa_block_tx)
++	if (sdata->deflink.csa_block_tx)
+ 		ieee80211_stop_vif_queues(local, sdata,
+ 					  IEEE80211_QUEUE_STOP_REASON_CSA);
  
- 	if (ifmgd->associated) {
-diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
-index b62d382433f9..5e20e19e7679 100644
---- a/net/mac80211/offchannel.c
-+++ b/net/mac80211/offchannel.c
-@@ -785,7 +785,7 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+-	cfg80211_ch_switch_started_notify(sdata->dev, &sdata->csa_chandef,
++	cfg80211_ch_switch_started_notify(sdata->dev,
++					  &sdata->deflink.csa_chandef,
+ 					  params->count, params->block_tx);
+ 
+ 	if (changed) {
+@@ -4308,10 +4324,11 @@ ieee80211_set_after_color_change_beacon(struct ieee80211_sub_if_data *sdata,
+ 	case NL80211_IFTYPE_AP: {
+ 		int ret;
+ 
+-		if (!sdata->u.ap.next_beacon)
++		if (!sdata->deflink.u.ap.next_beacon)
+ 			return -EINVAL;
+ 
+-		ret = ieee80211_assign_beacon(sdata, sdata->u.ap.next_beacon,
++		ret = ieee80211_assign_beacon(sdata,
++					      sdata->deflink.u.ap.next_beacon,
+ 					      NULL, NULL);
+ 		ieee80211_free_next_beacon(sdata);
+ 
+@@ -4339,9 +4356,9 @@ ieee80211_set_color_change_beacon(struct ieee80211_sub_if_data *sdata,
  
  	switch (sdata->vif.type) {
- 	case NL80211_IFTYPE_ADHOC:
--		if (!sdata->vif.bss_conf.ibss_joined)
-+		if (!sdata->vif.cfg.ibss_joined)
- 			need_offchan = true;
- #ifdef CONFIG_MAC80211_MESH
- 		fallthrough;
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index b698756887eb..f80284eee055 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -177,7 +177,7 @@ ieee80211_bss_info_update(struct ieee80211_local *local,
- 	rcu_read_lock();
- 	scan_sdata = rcu_dereference(local->scan_sdata);
- 	if (scan_sdata && scan_sdata->vif.type == NL80211_IFTYPE_STATION &&
--	    scan_sdata->vif.bss_conf.assoc &&
-+	    scan_sdata->vif.cfg.assoc &&
- 	    ieee80211_have_rx_timestamp(rx_status)) {
- 		bss_meta.parent_tsf =
- 			ieee80211_calculate_rx_timestamp(local, rx_status,
-diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index 1902bcffb21b..dc3f149ce18f 100644
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -230,7 +230,7 @@ ieee80211_tdls_add_aid(struct ieee80211_sub_if_data *sdata, struct sk_buff *skb)
+ 	case NL80211_IFTYPE_AP:
+-		sdata->u.ap.next_beacon =
++		sdata->deflink.u.ap.next_beacon =
+ 			cfg80211_beacon_dup(&params->beacon_next);
+-		if (!sdata->u.ap.next_beacon)
++		if (!sdata->deflink.u.ap.next_beacon)
+ 			return -ENOMEM;
  
- 	*pos++ = WLAN_EID_AID;
- 	*pos++ = 2; /* len */
--	put_unaligned_le16(sdata->vif.bss_conf.aid, pos);
-+	put_unaligned_le16(sdata->vif.cfg.aid, pos);
- }
- 
- /* translate numbering in the WMM parameter IE to the mac80211 notation */
-@@ -1444,7 +1444,7 @@ void ieee80211_tdls_oper_request(struct ieee80211_vif *vif, const u8 *peer,
+ 		if (params->count <= 1)
+@@ -4423,7 +4440,7 @@ void ieee80211_color_change_finalize_work(struct work_struct *work)
  {
+ 	struct ieee80211_sub_if_data *sdata =
+ 		container_of(work, struct ieee80211_sub_if_data,
+-			     color_change_finalize_work);
++			     deflink.color_change_finalize_work);
+ 	struct ieee80211_local *local = sdata->local;
+ 
+ 	sdata_lock(sdata);
+@@ -4448,7 +4465,7 @@ void ieee80211_color_change_finish(struct ieee80211_vif *vif)
  	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
  
--	if (vif->type != NL80211_IFTYPE_STATION || !vif->bss_conf.assoc) {
-+	if (vif->type != NL80211_IFTYPE_STATION || !vif->cfg.assoc) {
- 		sdata_err(sdata, "Discarding TDLS oper %d - not STA or disconnected\n",
- 			  oper);
+ 	ieee80211_queue_work(&sdata->local->hw,
+-			     &sdata->color_change_finalize_work);
++			     &sdata->deflink.color_change_finalize_work);
+ }
+ EXPORT_SYMBOL_GPL(ieee80211_color_change_finish);
+ 
+diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+index 8bcdddaf066d..9c189fe8c940 100644
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -92,9 +92,9 @@ ieee80211_chanctx_reserved_chandef(struct ieee80211_local *local,
+ 	list_for_each_entry(sdata, &ctx->reserved_vifs,
+ 			    reserved_chanctx_list) {
+ 		if (!compat)
+-			compat = &sdata->reserved_chandef;
++			compat = &sdata->deflink.reserved_chandef;
+ 
+-		compat = cfg80211_chandef_compatible(&sdata->reserved_chandef,
++		compat = cfg80211_chandef_compatible(&sdata->deflink.reserved_chandef,
+ 						     compat);
+ 		if (!compat)
+ 			break;
+@@ -114,7 +114,7 @@ ieee80211_chanctx_non_reserved_chandef(struct ieee80211_local *local,
+ 
+ 	list_for_each_entry(sdata, &ctx->assigned_vifs,
+ 			    assigned_chanctx_list) {
+-		if (sdata->reserved_chanctx != NULL)
++		if (sdata->deflink.reserved_chanctx != NULL)
+ 			continue;
+ 
+ 		if (!compat)
+@@ -508,7 +508,7 @@ bool ieee80211_is_radar_required(struct ieee80211_local *local)
+ 
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
+-		if (sdata->radar_required) {
++		if (sdata->deflink.radar_required) {
+ 			rcu_read_unlock();
+ 			return true;
+ 		}
+@@ -535,7 +535,7 @@ ieee80211_chanctx_radar_required(struct ieee80211_local *local,
+ 			continue;
+ 		if (rcu_access_pointer(sdata->vif.bss_conf.chanctx_conf) != conf)
+ 			continue;
+-		if (!sdata->radar_required)
++		if (!sdata->deflink.radar_required)
+ 			continue;
+ 
+ 		required = true;
+@@ -848,18 +848,18 @@ void ieee80211_recalc_smps_chanctx(struct ieee80211_local *local,
+ 			WARN_ON_ONCE(1);
+ 		}
+ 
+-		switch (sdata->smps_mode) {
++		switch (sdata->deflink.smps_mode) {
+ 		default:
+ 			WARN_ONCE(1, "Invalid SMPS mode %d\n",
+-				  sdata->smps_mode);
++				  sdata->deflink.smps_mode);
+ 			fallthrough;
+ 		case IEEE80211_SMPS_OFF:
+-			needed_static = sdata->needed_rx_chains;
+-			needed_dynamic = sdata->needed_rx_chains;
++			needed_static = sdata->deflink.needed_rx_chains;
++			needed_dynamic = sdata->deflink.needed_rx_chains;
+ 			break;
+ 		case IEEE80211_SMPS_DYNAMIC:
+ 			needed_static = 1;
+-			needed_dynamic = sdata->needed_rx_chains;
++			needed_dynamic = sdata->deflink.needed_rx_chains;
+ 			break;
+ 		case IEEE80211_SMPS_STATIC:
+ 			needed_static = 1;
+@@ -942,7 +942,7 @@ void ieee80211_vif_copy_chanctx_to_vlans(struct ieee80211_sub_if_data *sdata,
+ 
+ int ieee80211_vif_unreserve_chanctx(struct ieee80211_sub_if_data *sdata)
+ {
+-	struct ieee80211_chanctx *ctx = sdata->reserved_chanctx;
++	struct ieee80211_chanctx *ctx = sdata->deflink.reserved_chanctx;
+ 
+ 	lockdep_assert_held(&sdata->local->chanctx_mtx);
+ 
+@@ -950,7 +950,7 @@ int ieee80211_vif_unreserve_chanctx(struct ieee80211_sub_if_data *sdata)
+ 		return -EINVAL;
+ 
+ 	list_del(&sdata->reserved_chanctx_list);
+-	sdata->reserved_chanctx = NULL;
++	sdata->deflink.reserved_chanctx = NULL;
+ 
+ 	if (ieee80211_chanctx_refcount(sdata->local, ctx) == 0) {
+ 		if (ctx->replace_state == IEEE80211_CHANCTX_REPLACES_OTHER) {
+@@ -1063,10 +1063,10 @@ int ieee80211_vif_reserve_chanctx(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	list_add(&sdata->reserved_chanctx_list, &new_ctx->reserved_vifs);
+-	sdata->reserved_chanctx = new_ctx;
+-	sdata->reserved_chandef = *chandef;
+-	sdata->reserved_radar_required = radar_required;
+-	sdata->reserved_ready = false;
++	sdata->deflink.reserved_chanctx = new_ctx;
++	sdata->deflink.reserved_chandef = *chandef;
++	sdata->deflink.reserved_radar_required = radar_required;
++	sdata->deflink.reserved_ready = false;
+ 
+ 	return 0;
+ }
+@@ -1080,7 +1080,7 @@ ieee80211_vif_chanctx_reservation_complete(struct ieee80211_sub_if_data *sdata)
+ 	case NL80211_IFTYPE_MESH_POINT:
+ 	case NL80211_IFTYPE_OCB:
+ 		ieee80211_queue_work(&sdata->local->hw,
+-				     &sdata->csa_finalize_work);
++				     &sdata->deflink.csa_finalize_work);
+ 		break;
+ 	case NL80211_IFTYPE_STATION:
+ 		ieee80211_queue_work(&sdata->local->hw,
+@@ -1128,10 +1128,10 @@ ieee80211_vif_use_reserved_reassign(struct ieee80211_sub_if_data *sdata)
+ 	lockdep_assert_held(&local->mtx);
+ 	lockdep_assert_held(&local->chanctx_mtx);
+ 
+-	new_ctx = sdata->reserved_chanctx;
++	new_ctx = sdata->deflink.reserved_chanctx;
+ 	old_ctx = ieee80211_vif_get_chanctx(sdata);
+ 
+-	if (WARN_ON(!sdata->reserved_ready))
++	if (WARN_ON(!sdata->deflink.reserved_ready))
+ 		return -EBUSY;
+ 
+ 	if (WARN_ON(!new_ctx))
+@@ -1145,14 +1145,14 @@ ieee80211_vif_use_reserved_reassign(struct ieee80211_sub_if_data *sdata)
+ 		return -EINVAL;
+ 
+ 	chandef = ieee80211_chanctx_non_reserved_chandef(local, new_ctx,
+-				&sdata->reserved_chandef);
++				&sdata->deflink.reserved_chandef);
+ 	if (WARN_ON(!chandef))
+ 		return -EINVAL;
+ 
+-	if (sdata->vif.bss_conf.chandef.width != sdata->reserved_chandef.width)
++	if (sdata->vif.bss_conf.chandef.width != sdata->deflink.reserved_chandef.width)
+ 		changed = BSS_CHANGED_BANDWIDTH;
+ 
+-	ieee80211_vif_update_chandef(sdata, &sdata->reserved_chandef);
++	ieee80211_vif_update_chandef(sdata, &sdata->deflink.reserved_chandef);
+ 
+ 	ieee80211_change_chanctx(local, new_ctx, old_ctx, chandef);
+ 
+@@ -1161,7 +1161,7 @@ ieee80211_vif_use_reserved_reassign(struct ieee80211_sub_if_data *sdata)
+ 	vif_chsw[0].new_ctx = &new_ctx->conf;
+ 
+ 	list_del(&sdata->reserved_chanctx_list);
+-	sdata->reserved_chanctx = NULL;
++	sdata->deflink.reserved_chanctx = NULL;
+ 
+ 	err = drv_switch_vif_chanctx(local, vif_chsw, 1,
+ 				     CHANCTX_SWMODE_REASSIGN_VIF);
+@@ -1204,9 +1204,9 @@ ieee80211_vif_use_reserved_assign(struct ieee80211_sub_if_data *sdata)
+ 	int err;
+ 
+ 	old_ctx = ieee80211_vif_get_chanctx(sdata);
+-	new_ctx = sdata->reserved_chanctx;
++	new_ctx = sdata->deflink.reserved_chanctx;
+ 
+-	if (WARN_ON(!sdata->reserved_ready))
++	if (WARN_ON(!sdata->deflink.reserved_ready))
+ 		return -EINVAL;
+ 
+ 	if (WARN_ON(old_ctx))
+@@ -1220,14 +1220,14 @@ ieee80211_vif_use_reserved_assign(struct ieee80211_sub_if_data *sdata)
+ 		return -EINVAL;
+ 
+ 	chandef = ieee80211_chanctx_non_reserved_chandef(local, new_ctx,
+-				&sdata->reserved_chandef);
++				&sdata->deflink.reserved_chandef);
+ 	if (WARN_ON(!chandef))
+ 		return -EINVAL;
+ 
+ 	ieee80211_change_chanctx(local, new_ctx, new_ctx, chandef);
+ 
+ 	list_del(&sdata->reserved_chanctx_list);
+-	sdata->reserved_chanctx = NULL;
++	sdata->deflink.reserved_chanctx = NULL;
+ 
+ 	err = ieee80211_assign_vif_chanctx(sdata, new_ctx);
+ 	if (err) {
+@@ -1249,7 +1249,7 @@ ieee80211_vif_has_in_place_reservation(struct ieee80211_sub_if_data *sdata)
+ 
+ 	lockdep_assert_held(&sdata->local->chanctx_mtx);
+ 
+-	new_ctx = sdata->reserved_chanctx;
++	new_ctx = sdata->deflink.reserved_chanctx;
+ 	old_ctx = ieee80211_vif_get_chanctx(sdata);
+ 
+ 	if (!old_ctx)
+@@ -1421,9 +1421,9 @@ static int ieee80211_vif_use_reserved_switch(struct ieee80211_local *local)
+ 		list_for_each_entry(sdata, &ctx->replace_ctx->assigned_vifs,
+ 				    assigned_chanctx_list) {
+ 			n_assigned++;
+-			if (sdata->reserved_chanctx) {
++			if (sdata->deflink.reserved_chanctx) {
+ 				n_reserved++;
+-				if (sdata->reserved_ready)
++				if (sdata->deflink.reserved_ready)
+ 					n_ready++;
+ 			}
+ 		}
+@@ -1443,7 +1443,7 @@ static int ieee80211_vif_use_reserved_switch(struct ieee80211_local *local)
+ 		list_for_each_entry(sdata, &ctx->reserved_vifs,
+ 				    reserved_chanctx_list) {
+ 			if (ieee80211_vif_has_in_place_reservation(sdata) &&
+-			    !sdata->reserved_ready)
++			    !sdata->deflink.reserved_ready)
+ 				return -EAGAIN;
+ 
+ 			old_ctx = ieee80211_vif_get_chanctx(sdata);
+@@ -1457,7 +1457,7 @@ static int ieee80211_vif_use_reserved_switch(struct ieee80211_local *local)
+ 				n_vifs_ctxless++;
+ 			}
+ 
+-			if (sdata->reserved_radar_required)
++			if (sdata->deflink.reserved_radar_required)
+ 				ctx->conf.radar_enabled = true;
+ 		}
+ 	}
+@@ -1524,13 +1524,14 @@ static int ieee80211_vif_use_reserved_switch(struct ieee80211_local *local)
+ 
+ 			ieee80211_check_fast_xmit_iface(sdata);
+ 
+-			sdata->radar_required = sdata->reserved_radar_required;
++			sdata->deflink.radar_required = sdata->deflink.reserved_radar_required;
+ 
+ 			if (sdata->vif.bss_conf.chandef.width !=
+-			    sdata->reserved_chandef.width)
++			    sdata->deflink.reserved_chandef.width)
+ 				changed = BSS_CHANGED_BANDWIDTH;
+ 
+-			ieee80211_vif_update_chandef(sdata, &sdata->reserved_chandef);
++			ieee80211_vif_update_chandef(sdata,
++						     &sdata->deflink.reserved_chandef);
+ 			if (changed)
+ 				ieee80211_bss_info_change_notify(sdata,
+ 								 changed);
+@@ -1551,7 +1552,7 @@ static int ieee80211_vif_use_reserved_switch(struct ieee80211_local *local)
+ 			list_del(&sdata->reserved_chanctx_list);
+ 			list_move(&sdata->assigned_chanctx_list,
+ 				  &ctx->assigned_vifs);
+-			sdata->reserved_chanctx = NULL;
++			sdata->deflink.reserved_chanctx = NULL;
+ 
+ 			ieee80211_vif_chanctx_reservation_complete(sdata);
+ 		}
+@@ -1569,10 +1570,10 @@ static int ieee80211_vif_use_reserved_switch(struct ieee80211_local *local)
+ 					sdata)))
+ 				continue;
+ 
+-			if (WARN_ON(sdata->reserved_chanctx != ctx))
++			if (WARN_ON(sdata->deflink.reserved_chanctx != ctx))
+ 				continue;
+ 
+-			if (!sdata->reserved_ready)
++			if (!sdata->deflink.reserved_ready)
+ 				continue;
+ 
+ 			if (ieee80211_vif_get_chanctx(sdata))
+@@ -1642,11 +1643,11 @@ static void __ieee80211_vif_release_channel(struct ieee80211_sub_if_data *sdata)
+ 
+ 	ctx = container_of(conf, struct ieee80211_chanctx, conf);
+ 
+-	if (sdata->reserved_chanctx) {
+-		if (sdata->reserved_chanctx->replace_state ==
++	if (sdata->deflink.reserved_chanctx) {
++		if (sdata->deflink.reserved_chanctx->replace_state ==
+ 		    IEEE80211_CHANCTX_REPLACES_OTHER &&
+ 		    ieee80211_chanctx_num_reserved(local,
+-						   sdata->reserved_chanctx) > 1)
++						   sdata->deflink.reserved_chanctx) > 1)
+ 			use_reserved_switch = true;
+ 
+ 		ieee80211_vif_unreserve_chanctx(sdata);
+@@ -1656,7 +1657,7 @@ static void __ieee80211_vif_release_channel(struct ieee80211_sub_if_data *sdata)
+ 	if (ieee80211_chanctx_refcount(local, ctx) == 0)
+ 		ieee80211_free_chanctx(local, ctx);
+ 
+-	sdata->radar_required = false;
++	sdata->deflink.radar_required = false;
+ 
+ 	/* Unreserving may ready an in-place reservation. */
+ 	if (use_reserved_switch)
+@@ -1686,7 +1687,7 @@ int ieee80211_vif_use_channel(struct ieee80211_sub_if_data *sdata,
+ 	if (ret > 0)
+ 		radar_detect_width = BIT(chandef->width);
+ 
+-	sdata->radar_required = ret;
++	sdata->deflink.radar_required = ret;
+ 
+ 	ret = ieee80211_check_combinations(sdata, chandef, mode,
+ 					   radar_detect_width);
+@@ -1717,7 +1718,7 @@ int ieee80211_vif_use_channel(struct ieee80211_sub_if_data *sdata,
+ 	ieee80211_recalc_radar_chanctx(local, ctx);
+  out:
+ 	if (ret)
+-		sdata->radar_required = false;
++		sdata->deflink.radar_required = false;
+ 
+ 	mutex_unlock(&local->chanctx_mtx);
+ 	return ret;
+@@ -1733,7 +1734,7 @@ int ieee80211_vif_use_reserved_context(struct ieee80211_sub_if_data *sdata)
+ 	lockdep_assert_held(&local->mtx);
+ 	lockdep_assert_held(&local->chanctx_mtx);
+ 
+-	new_ctx = sdata->reserved_chanctx;
++	new_ctx = sdata->deflink.reserved_chanctx;
+ 	old_ctx = ieee80211_vif_get_chanctx(sdata);
+ 
+ 	if (WARN_ON(!new_ctx))
+@@ -1743,10 +1744,10 @@ int ieee80211_vif_use_reserved_context(struct ieee80211_sub_if_data *sdata)
+ 		    IEEE80211_CHANCTX_WILL_BE_REPLACED))
+ 		return -EINVAL;
+ 
+-	if (WARN_ON(sdata->reserved_ready))
++	if (WARN_ON(sdata->deflink.reserved_ready))
+ 		return -EINVAL;
+ 
+-	sdata->reserved_ready = true;
++	sdata->deflink.reserved_ready = true;
+ 
+ 	if (new_ctx->replace_state == IEEE80211_CHANCTX_REPLACE_NONE) {
+ 		if (old_ctx)
+diff --git a/net/mac80211/debugfs_key.c b/net/mac80211/debugfs_key.c
+index edc7792e1361..6f117648f5e0 100644
+--- a/net/mac80211/debugfs_key.c
++++ b/net/mac80211/debugfs_key.c
+@@ -395,9 +395,9 @@ void ieee80211_debugfs_key_update_default(struct ieee80211_sub_if_data *sdata)
+ 	debugfs_remove(sdata->debugfs.default_multicast_key);
+ 	sdata->debugfs.default_multicast_key = NULL;
+ 
+-	if (sdata->default_multicast_key) {
++	if (sdata->deflink.default_multicast_key) {
+ 		key = key_mtx_dereference(sdata->local,
+-					  sdata->default_multicast_key);
++					  sdata->deflink.default_multicast_key);
+ 		sprintf(buf, "../keys/%d", key->debugfs.cnt);
+ 		sdata->debugfs.default_multicast_key =
+ 			debugfs_create_symlink("default_multicast_key",
+@@ -414,7 +414,7 @@ void ieee80211_debugfs_key_add_mgmt_default(struct ieee80211_sub_if_data *sdata)
  		return;
-diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
-index 743adfbb9b15..42a6fdbb9c70 100644
---- a/net/mac80211/trace.h
-+++ b/net/mac80211/trace.h
-@@ -425,14 +425,14 @@ TRACE_EVENT(drv_bss_info_changed,
- 		__field(u32, channel_cfreq1)
- 		__field(u32, channel_cfreq1_offset)
- 		__dynamic_array(u32, arp_addr_list,
--				info->arp_addr_cnt > IEEE80211_BSS_ARP_ADDR_LIST_LEN ?
-+				sdata->vif.cfg.arp_addr_cnt > IEEE80211_BSS_ARP_ADDR_LIST_LEN ?
- 					IEEE80211_BSS_ARP_ADDR_LIST_LEN :
--					info->arp_addr_cnt)
-+					sdata->vif.cfg.arp_addr_cnt)
- 		__field(int, arp_addr_cnt)
- 		__field(bool, qos)
- 		__field(bool, idle)
- 		__field(bool, ps)
--		__dynamic_array(u8, ssid, info->ssid_len)
-+		__dynamic_array(u8, ssid, sdata->vif.cfg.ssid_len)
- 		__field(bool, hidden_ssid)
- 		__field(int, txpower)
- 		__field(u8, p2p_oppps_ctwindow)
-@@ -442,10 +442,10 @@ TRACE_EVENT(drv_bss_info_changed,
- 		LOCAL_ASSIGN;
- 		VIF_ASSIGN;
- 		__entry->changed = changed;
--		__entry->aid = info->aid;
--		__entry->assoc = info->assoc;
--		__entry->ibss_joined = info->ibss_joined;
--		__entry->ibss_creator = info->ibss_creator;
-+		__entry->aid = sdata->vif.cfg.aid;
-+		__entry->assoc = sdata->vif.cfg.assoc;
-+		__entry->ibss_joined = sdata->vif.cfg.ibss_joined;
-+		__entry->ibss_creator = sdata->vif.cfg.ibss_creator;
- 		__entry->shortpre = info->use_short_preamble;
- 		__entry->cts = info->use_cts_prot;
- 		__entry->shortslot = info->use_short_slot;
-@@ -465,15 +465,18 @@ TRACE_EVENT(drv_bss_info_changed,
- 		__entry->channel_width = info->chandef.width;
- 		__entry->channel_cfreq1 = info->chandef.center_freq1;
- 		__entry->channel_cfreq1_offset = info->chandef.freq1_offset;
--		__entry->arp_addr_cnt = info->arp_addr_cnt;
--		memcpy(__get_dynamic_array(arp_addr_list), info->arp_addr_list,
--		       sizeof(u32) * (info->arp_addr_cnt > IEEE80211_BSS_ARP_ADDR_LIST_LEN ?
-+		__entry->arp_addr_cnt = sdata->vif.cfg.arp_addr_cnt;
-+		memcpy(__get_dynamic_array(arp_addr_list),
-+		       sdata->vif.cfg.arp_addr_list,
-+		       sizeof(u32) * (sdata->vif.cfg.arp_addr_cnt > IEEE80211_BSS_ARP_ADDR_LIST_LEN ?
- 					IEEE80211_BSS_ARP_ADDR_LIST_LEN :
--					info->arp_addr_cnt));
-+					sdata->vif.cfg.arp_addr_cnt));
- 		__entry->qos = info->qos;
- 		__entry->idle = info->idle;
- 		__entry->ps = info->ps;
--		memcpy(__get_dynamic_array(ssid), info->ssid, info->ssid_len);
-+		memcpy(__get_dynamic_array(ssid),
-+		       sdata->vif.cfg.ssid,
-+		       sdata->vif.cfg.ssid_len);
- 		__entry->hidden_ssid = info->hidden_ssid;
- 		__entry->txpower = info->txpower;
- 		__entry->p2p_oppps_ctwindow = info->p2p_noa_attr.oppps_ctwindow;
-@@ -1719,7 +1722,7 @@ TRACE_EVENT(drv_start_ap,
- 		VIF_ENTRY
- 		__field(u8, dtimper)
- 		__field(u16, bcnint)
--		__dynamic_array(u8, ssid, info->ssid_len)
-+		__dynamic_array(u8, ssid, sdata->vif.cfg.ssid_len)
- 		__field(bool, hidden_ssid)
- 	),
  
-@@ -1728,7 +1731,9 @@ TRACE_EVENT(drv_start_ap,
- 		VIF_ASSIGN;
- 		__entry->dtimper = info->dtim_period;
- 		__entry->bcnint = info->beacon_int;
--		memcpy(__get_dynamic_array(ssid), info->ssid, info->ssid_len);
-+		memcpy(__get_dynamic_array(ssid),
-+		       sdata->vif.cfg.ssid,
-+		       sdata->vif.cfg.ssid_len);
- 		__entry->hidden_ssid = info->hidden_ssid;
- 	),
+ 	key = key_mtx_dereference(sdata->local,
+-				  sdata->default_mgmt_key);
++				  sdata->deflink.default_mgmt_key);
+ 	if (key) {
+ 		sprintf(buf, "../keys/%d", key->debugfs.cnt);
+ 		sdata->debugfs.default_mgmt_key =
+@@ -443,7 +443,7 @@ ieee80211_debugfs_key_add_beacon_default(struct ieee80211_sub_if_data *sdata)
+ 		return;
  
-@@ -1786,7 +1791,7 @@ TRACE_EVENT(drv_join_ibss,
- 		VIF_ENTRY
- 		__field(u8, dtimper)
- 		__field(u16, bcnint)
--		__dynamic_array(u8, ssid, info->ssid_len)
-+		__dynamic_array(u8, ssid, sdata->vif.cfg.ssid_len)
- 	),
+ 	key = key_mtx_dereference(sdata->local,
+-				  sdata->default_beacon_key);
++				  sdata->deflink.default_beacon_key);
+ 	if (key) {
+ 		sprintf(buf, "../keys/%d", key->debugfs.cnt);
+ 		sdata->debugfs.default_beacon_key =
+diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
+index dd71cb7b3f75..72989d209f63 100644
+--- a/net/mac80211/debugfs_netdev.c
++++ b/net/mac80211/debugfs_netdev.c
+@@ -208,8 +208,8 @@ IEEE80211_IF_FILE_R(rc_rateidx_vht_mcs_mask_5ghz);
+ IEEE80211_IF_FILE(flags, flags, HEX);
+ IEEE80211_IF_FILE(state, state, LHEX);
+ IEEE80211_IF_FILE(txpower, vif.bss_conf.txpower, DEC);
+-IEEE80211_IF_FILE(ap_power_level, ap_power_level, DEC);
+-IEEE80211_IF_FILE(user_power_level, user_power_level, DEC);
++IEEE80211_IF_FILE(ap_power_level, deflink.ap_power_level, DEC);
++IEEE80211_IF_FILE(user_power_level, deflink.user_power_level, DEC);
  
- 	TP_fast_assign(
-@@ -1794,7 +1799,9 @@ TRACE_EVENT(drv_join_ibss,
- 		VIF_ASSIGN;
- 		__entry->dtimper = info->dtim_period;
- 		__entry->bcnint = info->beacon_int;
--		memcpy(__get_dynamic_array(ssid), info->ssid, info->ssid_len);
-+		memcpy(__get_dynamic_array(ssid),
-+		       sdata->vif.cfg.ssid,
-+		       sdata->vif.cfg.ssid_len);
- 	),
+ static ssize_t
+ ieee80211_if_fmt_hw_queues(const struct ieee80211_sub_if_data *sdata,
+@@ -232,7 +232,7 @@ ieee80211_if_fmt_hw_queues(const struct ieee80211_sub_if_data *sdata,
+ IEEE80211_IF_FILE_R(hw_queues);
  
- 	TP_printk(
+ /* STA attributes */
+-IEEE80211_IF_FILE(bssid, u.mgd.bssid, MAC);
++IEEE80211_IF_FILE(bssid, deflink.u.mgd.bssid, MAC);
+ IEEE80211_IF_FILE(aid, vif.cfg.aid, DEC);
+ IEEE80211_IF_FILE(beacon_timeout, u.mgd.beacon_timeout, JIFFIES_TO_MS);
+ 
+@@ -274,8 +274,8 @@ static ssize_t ieee80211_if_fmt_smps(const struct ieee80211_sub_if_data *sdata,
+ {
+ 	if (sdata->vif.type == NL80211_IFTYPE_STATION)
+ 		return snprintf(buf, buflen, "request: %s\nused: %s\n",
+-				smps_modes[sdata->u.mgd.req_smps],
+-				smps_modes[sdata->smps_mode]);
++				smps_modes[sdata->deflink.u.mgd.req_smps],
++				smps_modes[sdata->deflink.smps_mode]);
+ 	return -EINVAL;
+ }
+ 
+@@ -337,7 +337,7 @@ static ssize_t ieee80211_if_parse_tkip_mic_test(
+ 			dev_kfree_skb(skb);
+ 			return -ENOTCONN;
+ 		}
+-		memcpy(hdr->addr1, sdata->u.mgd.bssid, ETH_ALEN);
++		memcpy(hdr->addr1, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 		memcpy(hdr->addr2, sdata->vif.addr, ETH_ALEN);
+ 		memcpy(hdr->addr3, addr, ETH_ALEN);
+ 		sdata_unlock(sdata);
+diff --git a/net/mac80211/ethtool.c b/net/mac80211/ethtool.c
+index e7a41db9e659..4b237abd4f74 100644
+--- a/net/mac80211/ethtool.c
++++ b/net/mac80211/ethtool.c
+@@ -105,7 +105,7 @@ static void ieee80211_get_stats(struct net_device *dev,
+ 	mutex_lock(&local->sta_mtx);
+ 
+ 	if (sdata->vif.type == NL80211_IFTYPE_STATION) {
+-		sta = sta_info_get_bss(sdata, sdata->u.mgd.bssid);
++		sta = sta_info_get_bss(sdata, sdata->deflink.u.mgd.bssid);
+ 
+ 		if (!(sta && !WARN_ON(sta->sdata->dev != dev)))
+ 			goto do_survey;
+diff --git a/net/mac80211/ht.c b/net/mac80211/ht.c
+index 171bd16b13f3..705deacebe04 100644
+--- a/net/mac80211/ht.c
++++ b/net/mac80211/ht.c
+@@ -433,7 +433,7 @@ void ieee80211_send_delba(struct ieee80211_sub_if_data *sdata,
+ 	    sdata->vif.type == NL80211_IFTYPE_MESH_POINT)
+ 		memcpy(mgmt->bssid, sdata->vif.addr, ETH_ALEN);
+ 	else if (sdata->vif.type == NL80211_IFTYPE_STATION)
+-		memcpy(mgmt->bssid, sdata->u.mgd.bssid, ETH_ALEN);
++		memcpy(mgmt->bssid, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
+ 		memcpy(mgmt->bssid, sdata->u.ibss.bssid, ETH_ALEN);
+ 
+@@ -543,10 +543,11 @@ void ieee80211_request_smps_mgd_work(struct work_struct *work)
+ {
+ 	struct ieee80211_sub_if_data *sdata =
+ 		container_of(work, struct ieee80211_sub_if_data,
+-			     u.mgd.request_smps_work);
++			     deflink.u.mgd.request_smps_work);
+ 
+ 	sdata_lock(sdata);
+-	__ieee80211_request_smps_mgd(sdata, sdata->u.mgd.driver_smps_mode);
++	__ieee80211_request_smps_mgd(sdata,
++				     sdata->deflink.u.mgd.driver_smps_mode);
+ 	sdata_unlock(sdata);
+ }
+ 
+@@ -558,12 +559,12 @@ void ieee80211_request_smps(struct ieee80211_vif *vif,
+ 	if (WARN_ON_ONCE(vif->type != NL80211_IFTYPE_STATION))
+ 		return;
+ 
+-	if (sdata->u.mgd.driver_smps_mode == smps_mode)
++	if (sdata->deflink.u.mgd.driver_smps_mode == smps_mode)
+ 		return;
+ 
+-	sdata->u.mgd.driver_smps_mode = smps_mode;
++	sdata->deflink.u.mgd.driver_smps_mode = smps_mode;
+ 	ieee80211_queue_work(&sdata->local->hw,
+-			     &sdata->u.mgd.request_smps_work);
++			     &sdata->deflink.u.mgd.request_smps_work);
+ }
+ /* this might change ... don't want non-open drivers using it */
+ EXPORT_SYMBOL_GPL(ieee80211_request_smps);
+diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
+index 056da2ff65f4..a81af745892a 100644
+--- a/net/mac80211/ibss.c
++++ b/net/mac80211/ibss.c
+@@ -309,7 +309,7 @@ static void __ieee80211_sta_join_ibss(struct ieee80211_sub_if_data *sdata,
+ 		mutex_unlock(&local->mtx);
+ 		return;
+ 	}
+-	sdata->radar_required = radar_required;
++	sdata->deflink.radar_required = radar_required;
+ 	mutex_unlock(&local->mtx);
+ 
+ 	memcpy(ifibss->bssid, bssid, ETH_ALEN);
+@@ -544,12 +544,12 @@ int ieee80211_ibss_finish_csa(struct ieee80211_sub_if_data *sdata)
+ 					IEEE80211_PRIVACY(ifibss->privacy));
+ 		/* XXX: should not really modify cfg80211 data */
+ 		if (cbss) {
+-			cbss->channel = sdata->csa_chandef.chan;
++			cbss->channel = sdata->deflink.csa_chandef.chan;
+ 			cfg80211_put_bss(sdata->local->hw.wiphy, cbss);
+ 		}
+ 	}
+ 
+-	ifibss->chandef = sdata->csa_chandef;
++	ifibss->chandef = sdata->deflink.csa_chandef;
+ 
+ 	/* generate the beacon */
+ 	return ieee80211_ibss_csa_beacon(sdata, NULL);
+@@ -1853,8 +1853,8 @@ int ieee80211_ibss_join(struct ieee80211_sub_if_data *sdata,
+ 	changed |= BSS_CHANGED_HT | BSS_CHANGED_MCAST_RATE;
+ 	ieee80211_bss_info_change_notify(sdata, changed);
+ 
+-	sdata->smps_mode = IEEE80211_SMPS_OFF;
+-	sdata->needed_rx_chains = local->rx_chains;
++	sdata->deflink.smps_mode = IEEE80211_SMPS_OFF;
++	sdata->deflink.needed_rx_chains = local->rx_chains;
+ 	sdata->control_port_over_nl80211 = params->control_port_over_nl80211;
+ 
+ 	ieee80211_queue_work(&local->hw, &sdata->work);
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 5a1347727b4a..f0a8bb444033 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -293,19 +293,13 @@ struct ps_data {
+ };
+ 
+ struct ieee80211_if_ap {
+-	struct beacon_data __rcu *beacon;
+-	struct probe_resp __rcu *probe_resp;
+-	struct fils_discovery_data __rcu *fils_discovery;
+-	struct unsol_bcast_probe_resp_data __rcu *unsol_bcast_probe_resp;
+-
+-	/* to be used after channel switch. */
+-	struct cfg80211_beacon_data *next_beacon;
+ 	struct list_head vlans; /* write-protected with RTNL and local->mtx */
+ 
+ 	struct ps_data ps;
+ 	atomic_t num_mcast_sta; /* number of stations receiving multicast */
+ 
+ 	bool multicast_to_unicast;
++	bool active;
+ };
+ 
+ struct ieee80211_if_vlan {
+@@ -456,29 +450,14 @@ struct ieee80211_if_managed {
+ 	   reconnect:1,
+ 	   associated:1;
+ 
+-	struct cfg80211_bss *assoc_bss;
+ 	struct ieee80211_mgd_auth_data *auth_data;
+ 	struct ieee80211_mgd_assoc_data *assoc_data;
+ 
+-	u8 bssid[ETH_ALEN] __aligned(2);
+-
+ 	bool powersave; /* powersave requested for this iface */
+ 	bool broken_ap; /* AP is broken -- turn off powersave */
+-	bool have_beacon;
+-	u8 dtim_period;
+-	enum ieee80211_smps_mode req_smps, /* requested smps mode */
+-				 driver_smps_mode; /* smps mode request */
+-
+-	struct work_struct request_smps_work;
+ 
+ 	unsigned int flags;
+ 
+-	bool csa_waiting_bcn;
+-	bool csa_ignored_same_chan;
+-
+-	bool beacon_crc_valid;
+-	u32 beacon_crc;
+-
+ 	bool status_acked;
+ 	bool status_received;
+ 	__le16 status_fc;
+@@ -503,39 +482,14 @@ struct ieee80211_if_managed {
+ 	 */
+ 	unsigned int uapsd_max_sp_len;
+ 
+-	int wmm_last_param_set;
+-	int mu_edca_last_param_set;
+-
+ 	u8 use_4addr;
+ 
+-	s16 p2p_noa_index;
+-
+-	struct ewma_beacon_signal ave_beacon_signal;
+-
+-	/*
+-	 * Number of Beacon frames used in ave_beacon_signal. This can be used
+-	 * to avoid generating less reliable cqm events that would be based
+-	 * only on couple of received frames.
+-	 */
+-	unsigned int count_beacon_signal;
+-
+-	/* Number of times beacon loss was invoked. */
+-	unsigned int beacon_loss_count;
+-
+-	/*
+-	 * Last Beacon frame signal strength average (ave_beacon_signal / 16)
+-	 * that triggered a cqm event. 0 indicates that no event has been
+-	 * generated for the current association.
+-	 */
+-	int last_cqm_event_signal;
+-
+ 	/*
+ 	 * State variables for keeping track of RSSI of the AP currently
+ 	 * connected to and informing driver when RSSI has gone
+ 	 * below/above a certain threshold.
+ 	 */
+ 	int rssi_min_thold, rssi_max_thold;
+-	int last_ave_beacon_signal;
+ 
+ 	struct ieee80211_ht_cap ht_capa; /* configured ht-cap over-rides */
+ 	struct ieee80211_ht_cap ht_capa_mask; /* Valid parts of ht_capa */
+@@ -901,6 +855,97 @@ struct ieee80211_if_nan {
+ 	struct idr function_inst_ids;
+ };
+ 
++struct ieee80211_link_data_managed {
++	u8 bssid[ETH_ALEN] __aligned(2);
++
++	u8 dtim_period;
++	enum ieee80211_smps_mode req_smps, /* requested smps mode */
++				 driver_smps_mode; /* smps mode request */
++
++	s16 p2p_noa_index;
++
++	bool have_beacon;
++
++	bool csa_waiting_bcn;
++	bool csa_ignored_same_chan;
++
++	struct work_struct request_smps_work;
++	bool beacon_crc_valid;
++	u32 beacon_crc;
++	struct ewma_beacon_signal ave_beacon_signal;
++	int last_ave_beacon_signal;
++
++	/*
++	 * Number of Beacon frames used in ave_beacon_signal. This can be used
++	 * to avoid generating less reliable cqm events that would be based
++	 * only on couple of received frames.
++	 */
++	unsigned int count_beacon_signal;
++
++	/* Number of times beacon loss was invoked. */
++	unsigned int beacon_loss_count;
++
++	/*
++	 * Last Beacon frame signal strength average (ave_beacon_signal / 16)
++	 * that triggered a cqm event. 0 indicates that no event has been
++	 * generated for the current association.
++	 */
++	int last_cqm_event_signal;
++
++	int wmm_last_param_set;
++	int mu_edca_last_param_set;
++
++	struct cfg80211_bss *bss;
++};
++
++struct ieee80211_link_data_ap {
++	struct beacon_data __rcu *beacon;
++	struct probe_resp __rcu *probe_resp;
++	struct fils_discovery_data __rcu *fils_discovery;
++	struct unsol_bcast_probe_resp_data __rcu *unsol_bcast_probe_resp;
++
++	/* to be used after channel switch. */
++	struct cfg80211_beacon_data *next_beacon;
++};
++
++struct ieee80211_link_data {
++	/* multicast keys only */
++	struct ieee80211_key __rcu *gtk[NUM_DEFAULT_KEYS +
++					NUM_DEFAULT_MGMT_KEYS +
++					NUM_DEFAULT_BEACON_KEYS];
++	struct ieee80211_key __rcu *default_multicast_key;
++	struct ieee80211_key __rcu *default_mgmt_key;
++	struct ieee80211_key __rcu *default_beacon_key;
++
++	struct airtime_info airtime[IEEE80211_NUM_ACS];
++
++	struct work_struct csa_finalize_work;
++	bool csa_block_tx; /* write-protected by sdata_lock and local->mtx */
++	struct cfg80211_chan_def csa_chandef;
++
++	struct work_struct color_change_finalize_work;
++
++	/* context reservation -- protected with chanctx_mtx */
++	struct ieee80211_chanctx *reserved_chanctx;
++	struct cfg80211_chan_def reserved_chandef;
++	bool reserved_radar_required;
++	bool reserved_ready;
++
++	u8 needed_rx_chains;
++	enum ieee80211_smps_mode smps_mode;
++
++	int user_power_level; /* in dBm */
++	int ap_power_level; /* in dBm */
++
++	bool radar_required;
++	struct delayed_work dfs_cac_timer_work;
++
++	union {
++		struct ieee80211_link_data_managed mgd;
++		struct ieee80211_link_data_ap ap;
++	} u;
++};
++
+ struct ieee80211_sub_if_data {
+ 	struct list_head list;
+ 
+@@ -931,13 +976,8 @@ struct ieee80211_sub_if_data {
+ 	/* bit field of ACM bits (BIT(802.1D tag)) */
+ 	u8 wmm_acm;
+ 
+-	struct ieee80211_key __rcu *keys[NUM_DEFAULT_KEYS +
+-					 NUM_DEFAULT_MGMT_KEYS +
+-					 NUM_DEFAULT_BEACON_KEYS];
++	struct ieee80211_key __rcu *keys[NUM_DEFAULT_KEYS];
+ 	struct ieee80211_key __rcu *default_unicast_key;
+-	struct ieee80211_key __rcu *default_multicast_key;
+-	struct ieee80211_key __rcu *default_mgmt_key;
+-	struct ieee80211_key __rcu *default_beacon_key;
+ 
+ 	u16 sequence_number;
+ 	__be16 control_port_protocol;
+@@ -949,23 +989,9 @@ struct ieee80211_sub_if_data {
+ 	struct ieee80211_tx_queue_params tx_conf[IEEE80211_NUM_ACS];
+ 	struct mac80211_qos_map __rcu *qos_map;
+ 
+-	struct airtime_info airtime[IEEE80211_NUM_ACS];
+-
+-	struct work_struct csa_finalize_work;
+-	bool csa_block_tx; /* write-protected by sdata_lock and local->mtx */
+-	struct cfg80211_chan_def csa_chandef;
+-
+-	struct work_struct color_change_finalize_work;
+-
+ 	struct list_head assigned_chanctx_list; /* protected by chanctx_mtx */
+ 	struct list_head reserved_chanctx_list; /* protected by chanctx_mtx */
+ 
+-	/* context reservation -- protected with chanctx_mtx */
+-	struct ieee80211_chanctx *reserved_chanctx;
+-	struct cfg80211_chan_def reserved_chandef;
+-	bool reserved_radar_required;
+-	bool reserved_ready;
+-
+ 	/* used to reconfigure hardware SM PS */
+ 	struct work_struct recalc_smps;
+ 
+@@ -973,15 +999,6 @@ struct ieee80211_sub_if_data {
+ 	struct sk_buff_head skb_queue;
+ 	struct sk_buff_head status_queue;
+ 
+-	u8 needed_rx_chains;
+-	enum ieee80211_smps_mode smps_mode;
+-
+-	int user_power_level; /* in dBm */
+-	int ap_power_level; /* in dBm */
+-
+-	bool radar_required;
+-	struct delayed_work dfs_cac_timer_work;
+-
+ 	/*
+ 	 * AP this belongs to: self in AP mode and
+ 	 * corresponding AP in VLAN mode, NULL for
+@@ -1013,6 +1030,8 @@ struct ieee80211_sub_if_data {
+ 		struct ieee80211_if_nan nan;
+ 	} u;
+ 
++	struct ieee80211_link_data deflink;
++
+ #ifdef CONFIG_MAC80211_DEBUGFS
+ 	struct {
+ 		struct dentry *subdir_stations;
+@@ -1670,7 +1689,7 @@ static inline struct airtime_info *to_airtime_info(struct ieee80211_txq *txq)
+ 	}
+ 
+ 	sdata = vif_to_sdata(txq->vif);
+-	return &sdata->airtime[txq->ac];
++	return &sdata->deflink.airtime[txq->ac];
+ }
+ 
+ /* To avoid divisions in the fast path, we keep pre-computed reciprocals for
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 9e0e71ca8068..6475b13eed04 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -60,11 +60,11 @@ bool __ieee80211_recalc_txpower(struct ieee80211_sub_if_data *sdata)
+ 	power = ieee80211_chandef_max_power(&chanctx_conf->def);
+ 	rcu_read_unlock();
+ 
+-	if (sdata->user_power_level != IEEE80211_UNSET_POWER_LEVEL)
+-		power = min(power, sdata->user_power_level);
++	if (sdata->deflink.user_power_level != IEEE80211_UNSET_POWER_LEVEL)
++		power = min(power, sdata->deflink.user_power_level);
+ 
+-	if (sdata->ap_power_level != IEEE80211_UNSET_POWER_LEVEL)
+-		power = min(power, sdata->ap_power_level);
++	if (sdata->deflink.ap_power_level != IEEE80211_UNSET_POWER_LEVEL)
++		power = min(power, sdata->deflink.ap_power_level);
+ 
+ 	if (power != sdata->vif.bss_conf.txpower) {
+ 		sdata->vif.bss_conf.txpower = power;
+@@ -452,19 +452,19 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
+ 	mutex_lock(&local->mtx);
+ 	sdata->vif.bss_conf.csa_active = false;
+ 	if (sdata->vif.type == NL80211_IFTYPE_STATION)
+-		sdata->u.mgd.csa_waiting_bcn = false;
+-	if (sdata->csa_block_tx) {
++		sdata->deflink.u.mgd.csa_waiting_bcn = false;
++	if (sdata->deflink.csa_block_tx) {
+ 		ieee80211_wake_vif_queues(local, sdata,
+ 					  IEEE80211_QUEUE_STOP_REASON_CSA);
+-		sdata->csa_block_tx = false;
++		sdata->deflink.csa_block_tx = false;
+ 	}
+ 	mutex_unlock(&local->mtx);
+ 	sdata_unlock(sdata);
+ 
+-	cancel_work_sync(&sdata->csa_finalize_work);
+-	cancel_work_sync(&sdata->color_change_finalize_work);
++	cancel_work_sync(&sdata->deflink.csa_finalize_work);
++	cancel_work_sync(&sdata->deflink.color_change_finalize_work);
+ 
+-	cancel_delayed_work_sync(&sdata->dfs_cac_timer_work);
++	cancel_delayed_work_sync(&sdata->deflink.dfs_cac_timer_work);
+ 
+ 	if (sdata->wdev.cac_started) {
+ 		chandef = sdata->vif.bss_conf.chandef;
+@@ -831,7 +831,7 @@ static int ieee80211_netdev_fill_forward_path(struct net_device_path_ctx *ctx,
+ 			}
+ 		}
+ 
+-		sta = sta_info_get(sdata, sdata->u.mgd.bssid);
++		sta = sta_info_get(sdata, sdata->deflink.u.mgd.bssid);
+ 		break;
+ 	default:
+ 		goto out;
+@@ -1208,7 +1208,7 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
+ 	switch (sdata->vif.type) {
+ 	case NL80211_IFTYPE_AP_VLAN:
+ 		/* no need to tell driver, but set carrier and chanctx */
+-		if (rtnl_dereference(sdata->bss->beacon)) {
++		if (sdata->bss->active) {
+ 			ieee80211_vif_vlan_copy_chanctx(sdata);
+ 			netif_carrier_on(dev);
+ 			ieee80211_set_vif_encap_ops(sdata);
+@@ -1630,8 +1630,9 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
+ 	static const u8 bssid_wildcard[ETH_ALEN] = {0xff, 0xff, 0xff,
+ 						    0xff, 0xff, 0xff};
+ 
+-	/* clear type-dependent union */
++	/* clear type-dependent unions */
+ 	memset(&sdata->u, 0, sizeof(sdata->u));
++	memset(&sdata->deflink.u, 0, sizeof(sdata->deflink.u));
+ 
+ 	/* and set some type-dependent values */
+ 	sdata->vif.type = type;
+@@ -1657,8 +1658,10 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
+ 	skb_queue_head_init(&sdata->status_queue);
+ 	INIT_WORK(&sdata->work, ieee80211_iface_work);
+ 	INIT_WORK(&sdata->recalc_smps, ieee80211_recalc_smps_work);
+-	INIT_WORK(&sdata->csa_finalize_work, ieee80211_csa_finalize_work);
+-	INIT_WORK(&sdata->color_change_finalize_work, ieee80211_color_change_finalize_work);
++	INIT_WORK(&sdata->deflink.csa_finalize_work,
++		  ieee80211_csa_finalize_work);
++	INIT_WORK(&sdata->deflink.color_change_finalize_work,
++		  ieee80211_color_change_finalize_work);
+ 	INIT_LIST_HEAD(&sdata->assigned_chanctx_list);
+ 	INIT_LIST_HEAD(&sdata->reserved_chanctx_list);
+ 
+@@ -1679,7 +1682,7 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
+ 		sdata->vif.p2p = true;
+ 		fallthrough;
+ 	case NL80211_IFTYPE_STATION:
+-		sdata->vif.bss_conf.bssid = sdata->u.mgd.bssid;
++		sdata->vif.bss_conf.bssid = sdata->deflink.u.mgd.bssid;
+ 		ieee80211_sta_setup_sdata(sdata);
+ 		break;
+ 	case NL80211_IFTYPE_OCB:
+@@ -2076,7 +2079,7 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 
+ 	INIT_LIST_HEAD(&sdata->key_list);
+ 
+-	INIT_DELAYED_WORK(&sdata->dfs_cac_timer_work,
++	INIT_DELAYED_WORK(&sdata->deflink.dfs_cac_timer_work,
+ 			  ieee80211_dfs_cac_timer_work);
+ 	INIT_DELAYED_WORK(&sdata->dec_tailroom_needed_wk,
+ 			  ieee80211_delayed_tailroom_dec);
+@@ -2106,12 +2109,13 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 	}
+ 
+ 	for (i = 0; i < IEEE80211_NUM_ACS; i++)
+-		init_airtime_info(&sdata->airtime[i], &local->airtime[i]);
++		init_airtime_info(&sdata->deflink.airtime[i],
++				  &local->airtime[i]);
+ 
+ 	ieee80211_set_default_queues(sdata);
+ 
+-	sdata->ap_power_level = IEEE80211_UNSET_POWER_LEVEL;
+-	sdata->user_power_level = local->user_power_level;
++	sdata->deflink.ap_power_level = IEEE80211_UNSET_POWER_LEVEL;
++	sdata->deflink.user_power_level = local->user_power_level;
+ 
+ 	/* setup type-dependent data */
+ 	ieee80211_setup_sdata(sdata, type);
+diff --git a/net/mac80211/key.c b/net/mac80211/key.c
+index 81dda0ca4d9f..d09980cbc8be 100644
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -351,8 +351,11 @@ static void __ieee80211_set_default_key(struct ieee80211_sub_if_data *sdata,
+ 
+ 	assert_key_lock(sdata->local);
+ 
+-	if (idx >= 0 && idx < NUM_DEFAULT_KEYS)
++	if (idx >= 0 && idx < NUM_DEFAULT_KEYS) {
+ 		key = key_mtx_dereference(sdata->local, sdata->keys[idx]);
++		if (!key)
++			key = key_mtx_dereference(sdata->local, sdata->deflink.gtk[idx]);
++	}
+ 
+ 	if (uni) {
+ 		rcu_assign_pointer(sdata->default_unicast_key, key);
+@@ -362,7 +365,7 @@ static void __ieee80211_set_default_key(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	if (multi)
+-		rcu_assign_pointer(sdata->default_multicast_key, key);
++		rcu_assign_pointer(sdata->deflink.default_multicast_key, key);
+ 
+ 	ieee80211_debugfs_key_update_default(sdata);
+ }
+@@ -384,9 +387,10 @@ __ieee80211_set_default_mgmt_key(struct ieee80211_sub_if_data *sdata, int idx)
+ 
+ 	if (idx >= NUM_DEFAULT_KEYS &&
+ 	    idx < NUM_DEFAULT_KEYS + NUM_DEFAULT_MGMT_KEYS)
+-		key = key_mtx_dereference(sdata->local, sdata->keys[idx]);
++		key = key_mtx_dereference(sdata->local,
++					  sdata->deflink.gtk[idx]);
+ 
+-	rcu_assign_pointer(sdata->default_mgmt_key, key);
++	rcu_assign_pointer(sdata->deflink.default_mgmt_key, key);
+ 
+ 	ieee80211_debugfs_key_update_default(sdata);
+ }
+@@ -409,9 +413,10 @@ __ieee80211_set_default_beacon_key(struct ieee80211_sub_if_data *sdata, int idx)
+ 	if (idx >= NUM_DEFAULT_KEYS + NUM_DEFAULT_MGMT_KEYS &&
+ 	    idx < NUM_DEFAULT_KEYS + NUM_DEFAULT_MGMT_KEYS +
+ 	    NUM_DEFAULT_BEACON_KEYS)
+-		key = key_mtx_dereference(sdata->local, sdata->keys[idx]);
++		key = key_mtx_dereference(sdata->local,
++					  sdata->deflink.gtk[idx]);
+ 
+-	rcu_assign_pointer(sdata->default_beacon_key, key);
++	rcu_assign_pointer(sdata->deflink.default_beacon_key, key);
+ 
+ 	ieee80211_debugfs_key_update_default(sdata);
+ }
+@@ -501,13 +506,13 @@ static int ieee80211_key_replace(struct ieee80211_sub_if_data *sdata,
+ 						sdata->default_unicast_key);
+ 		defmultikey = old &&
+ 			old == key_mtx_dereference(sdata->local,
+-						sdata->default_multicast_key);
++						sdata->deflink.default_multicast_key);
+ 		defmgmtkey = old &&
+ 			old == key_mtx_dereference(sdata->local,
+-						sdata->default_mgmt_key);
++						sdata->deflink.default_mgmt_key);
+ 		defbeaconkey = old &&
+ 			old == key_mtx_dereference(sdata->local,
+-						   sdata->default_beacon_key);
++						   sdata->deflink.default_beacon_key);
+ 
+ 		if (defunikey && !new)
+ 			__ieee80211_set_default_key(sdata, -1, true, false);
+@@ -518,7 +523,11 @@ static int ieee80211_key_replace(struct ieee80211_sub_if_data *sdata,
+ 		if (defbeaconkey && !new)
+ 			__ieee80211_set_default_beacon_key(sdata, -1);
+ 
+-		rcu_assign_pointer(sdata->keys[idx], new);
++		if (is_wep || pairwise)
++			rcu_assign_pointer(sdata->keys[idx], new);
++		else
++			rcu_assign_pointer(sdata->deflink.gtk[idx], new);
++
+ 		if (defunikey && new)
+ 			__ieee80211_set_default_key(sdata, new->conf.keyidx,
+ 						    true, false);
+@@ -795,7 +804,7 @@ int ieee80211_key_link(struct ieee80211_key *key,
+ 		       struct sta_info *sta)
+ {
+ 	static atomic_t key_color = ATOMIC_INIT(0);
+-	struct ieee80211_key *old_key;
++	struct ieee80211_key *old_key = NULL;
+ 	int idx = key->conf.keyidx;
+ 	bool pairwise = key->conf.flags & IEEE80211_KEY_FLAG_PAIRWISE;
+ 	/*
+@@ -824,7 +833,12 @@ int ieee80211_key_link(struct ieee80211_key *key,
+ 		old_key = key_mtx_dereference(sdata->local,
+ 					      sta->deflink.gtk[idx]);
+ 	} else {
+-		old_key = key_mtx_dereference(sdata->local, sdata->keys[idx]);
++		if (idx < NUM_DEFAULT_KEYS)
++			old_key = key_mtx_dereference(sdata->local,
++						      sdata->keys[idx]);
++		if (!old_key)
++			old_key = key_mtx_dereference(sdata->local,
++						      sdata->deflink.gtk[idx]);
+ 	}
+ 
+ 	/* Non-pairwise keys must also not switch the cipher on rekey */
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 4a792e88568d..fd1b97e1e990 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -459,7 +459,7 @@ static int ieee80211_config_bw(struct ieee80211_sub_if_data *sdata,
+ 	sdata_info(sdata,
+ 		   "AP %pM changed bandwidth, new config is %d.%03d MHz, "
+ 		   "width %d (%d.%03d/%d MHz)\n",
+-		   ifmgd->bssid, chandef.chan->center_freq,
++		   sdata->deflink.u.mgd.bssid, chandef.chan->center_freq,
+ 		   chandef.chan->freq_offset, chandef.width,
+ 		   chandef.center_freq1, chandef.freq1_offset,
+ 		   chandef.center_freq2);
+@@ -475,7 +475,7 @@ static int ieee80211_config_bw(struct ieee80211_sub_if_data *sdata,
+ 	    !cfg80211_chandef_valid(&chandef)) {
+ 		sdata_info(sdata,
+ 			   "AP %pM changed caps/bw in a way we can't support (0x%x/0x%x) - disconnect\n",
+-			   ifmgd->bssid, flags, ifmgd->flags);
++			   sdata->deflink.u.mgd.bssid, flags, ifmgd->flags);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -484,7 +484,7 @@ static int ieee80211_config_bw(struct ieee80211_sub_if_data *sdata,
+ 	if (ret) {
+ 		sdata_info(sdata,
+ 			   "AP %pM changed bandwidth to incompatible one - disconnect\n",
+-			   ifmgd->bssid);
++			   sdata->deflink.u.mgd.bssid);
+ 		return ret;
+ 	}
+ 
+@@ -997,7 +997,7 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ 	if (sband->band != NL80211_BAND_6GHZ &&
+ 	    !(ifmgd->flags & IEEE80211_STA_DISABLE_HT))
+ 		ieee80211_add_ht_ie(sdata, skb, assoc_data->ap_ht_param,
+-				    sband, chan, sdata->smps_mode);
++				    sband, chan, sdata->deflink.smps_mode);
+ 
+ 	/* if present, add any custom IEs that go before VHT */
+ 	if (assoc_data->ie_len) {
+@@ -1201,9 +1201,9 @@ void ieee80211_send_4addr_nullfunc(struct ieee80211_local *local,
+ 	fc = cpu_to_le16(IEEE80211_FTYPE_DATA | IEEE80211_STYPE_NULLFUNC |
+ 			 IEEE80211_FCTL_FROMDS | IEEE80211_FCTL_TODS);
+ 	nullfunc->frame_control = fc;
+-	memcpy(nullfunc->addr1, sdata->u.mgd.bssid, ETH_ALEN);
++	memcpy(nullfunc->addr1, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 	memcpy(nullfunc->addr2, sdata->vif.addr, ETH_ALEN);
+-	memcpy(nullfunc->addr3, sdata->u.mgd.bssid, ETH_ALEN);
++	memcpy(nullfunc->addr3, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 	memcpy(nullfunc->addr4, sdata->vif.addr, ETH_ALEN);
+ 
+ 	IEEE80211_SKB_CB(skb)->flags |= IEEE80211_TX_INTFL_DONT_ENCRYPT;
+@@ -1239,13 +1239,13 @@ static void ieee80211_chswitch_work(struct work_struct *work)
+ 	 * completed successfully
+ 	 */
+ 
+-	if (sdata->reserved_chanctx) {
++	if (sdata->deflink.reserved_chanctx) {
+ 		/*
+ 		 * with multi-vif csa driver may call ieee80211_csa_finish()
+ 		 * many times while waiting for other interfaces to use their
+ 		 * reservations
+ 		 */
+-		if (sdata->reserved_ready)
++		if (sdata->deflink.reserved_ready)
+ 			goto out;
+ 
+ 		ret = ieee80211_vif_use_reserved_context(sdata);
+@@ -1262,7 +1262,7 @@ static void ieee80211_chswitch_work(struct work_struct *work)
+ 	}
+ 
+ 	if (!cfg80211_chandef_identical(&sdata->vif.bss_conf.chandef,
+-					&sdata->csa_chandef)) {
++					&sdata->deflink.csa_chandef)) {
+ 		sdata_info(sdata,
+ 			   "failed to finalize channel switch, disconnecting\n");
+ 		ieee80211_queue_work(&sdata->local->hw,
+@@ -1270,7 +1270,7 @@ static void ieee80211_chswitch_work(struct work_struct *work)
+ 		goto out;
+ 	}
+ 
+-	ifmgd->csa_waiting_bcn = true;
++	sdata->deflink.u.mgd.csa_waiting_bcn = true;
+ 
+ 	ieee80211_sta_reset_beacon_monitor(sdata);
+ 	ieee80211_sta_reset_conn_monitor(sdata);
+@@ -1291,19 +1291,19 @@ static void ieee80211_chswitch_post_beacon(struct ieee80211_sub_if_data *sdata)
+ 
+ 	WARN_ON(!sdata->vif.bss_conf.csa_active);
+ 
+-	if (sdata->csa_block_tx) {
++	if (sdata->deflink.csa_block_tx) {
+ 		ieee80211_wake_vif_queues(local, sdata,
+ 					  IEEE80211_QUEUE_STOP_REASON_CSA);
+-		sdata->csa_block_tx = false;
++		sdata->deflink.csa_block_tx = false;
+ 	}
+ 
+ 	sdata->vif.bss_conf.csa_active = false;
+-	ifmgd->csa_waiting_bcn = false;
++	sdata->deflink.u.mgd.csa_waiting_bcn = false;
+ 	/*
+ 	 * If the CSA IE is still present on the beacon after the switch,
+ 	 * we need to consider it as a new CSA (possibly to self).
+ 	 */
+-	ifmgd->beacon_crc_valid = false;
++	sdata->deflink.u.mgd.beacon_crc_valid = false;
+ 
+ 	ret = drv_post_channel_switch(sdata);
+ 	if (ret) {
+@@ -1314,7 +1314,8 @@ static void ieee80211_chswitch_post_beacon(struct ieee80211_sub_if_data *sdata)
+ 		return;
+ 	}
+ 
+-	cfg80211_ch_switch_notify(sdata->dev, &sdata->reserved_chandef, 0);
++	cfg80211_ch_switch_notify(sdata->dev, &sdata->deflink.reserved_chandef,
++				  0);
+ }
+ 
+ void ieee80211_chswitch_done(struct ieee80211_vif *vif, bool success)
+@@ -1356,11 +1357,11 @@ ieee80211_sta_abort_chanswitch(struct ieee80211_sub_if_data *sdata)
+ 	ieee80211_vif_unreserve_chanctx(sdata);
+ 	mutex_unlock(&local->chanctx_mtx);
+ 
+-	if (sdata->csa_block_tx)
++	if (sdata->deflink.csa_block_tx)
+ 		ieee80211_wake_vif_queues(local, sdata,
+ 					  IEEE80211_QUEUE_STOP_REASON_CSA);
+ 
+-	sdata->csa_block_tx = false;
++	sdata->deflink.csa_block_tx = false;
+ 	sdata->vif.bss_conf.csa_active = false;
+ 
+ 	mutex_unlock(&local->mtx);
+@@ -1376,7 +1377,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
+ {
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+-	struct cfg80211_bss *cbss = ifmgd->assoc_bss;
++	struct cfg80211_bss *cbss = sdata->deflink.u.mgd.bss;
+ 	struct ieee80211_chanctx_conf *conf;
+ 	struct ieee80211_chanctx *chanctx;
+ 	enum nl80211_band current_band;
+@@ -1398,7 +1399,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
+ 	res = ieee80211_parse_ch_switch_ie(sdata, elems, current_band,
+ 					   bss->vht_cap_info,
+ 					   ifmgd->flags,
+-					   ifmgd->bssid, &csa_ie);
++					   sdata->deflink.u.mgd.bssid, &csa_ie);
+ 
+ 	if (!res) {
+ 		ch_switch.timestamp = timestamp;
+@@ -1412,7 +1413,8 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
+ 	if (res < 0)
+ 		goto lock_and_drop_connection;
+ 
+-	if (beacon && sdata->vif.bss_conf.csa_active && !ifmgd->csa_waiting_bcn) {
++	if (beacon && sdata->vif.bss_conf.csa_active &&
++	    !sdata->deflink.u.mgd.csa_waiting_bcn) {
+ 		if (res)
+ 			ieee80211_sta_abort_chanswitch(sdata);
+ 		else
+@@ -1427,7 +1429,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
+ 	    csa_ie.chandef.chan->band) {
+ 		sdata_info(sdata,
+ 			   "AP %pM switches to different band (%d MHz, width:%d, CF1/2: %d/%d MHz), disconnecting\n",
+-			   ifmgd->bssid,
++			   sdata->deflink.u.mgd.bssid,
+ 			   csa_ie.chandef.chan->center_freq,
+ 			   csa_ie.chandef.width, csa_ie.chandef.center_freq1,
+ 			   csa_ie.chandef.center_freq2);
+@@ -1440,7 +1442,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
+ 			   "AP %pM switches to unsupported channel "
+ 			   "(%d.%03d MHz, width:%d, CF1/2: %d.%03d/%d MHz), "
+ 			   "disconnecting\n",
+-			   ifmgd->bssid,
++			   sdata->deflink.u.mgd.bssid,
+ 			   csa_ie.chandef.chan->center_freq,
+ 			   csa_ie.chandef.chan->freq_offset,
+ 			   csa_ie.chandef.width, csa_ie.chandef.center_freq1,
+@@ -1452,12 +1454,12 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
+ 	if (cfg80211_chandef_identical(&csa_ie.chandef,
+ 				       &sdata->vif.bss_conf.chandef) &&
+ 	    (!csa_ie.mode || !beacon)) {
+-		if (ifmgd->csa_ignored_same_chan)
++		if (sdata->deflink.u.mgd.csa_ignored_same_chan)
+ 			return;
+ 		sdata_info(sdata,
+ 			   "AP %pM tries to chanswitch to same channel, ignore\n",
+-			   ifmgd->bssid);
+-		ifmgd->csa_ignored_same_chan = true;
++			   sdata->deflink.u.mgd.bssid);
++		sdata->deflink.u.mgd.csa_ignored_same_chan = true;
+ 		return;
+ 	}
+ 
+@@ -1505,12 +1507,12 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
+ 	mutex_unlock(&local->chanctx_mtx);
+ 
+ 	sdata->vif.bss_conf.csa_active = true;
+-	sdata->csa_chandef = csa_ie.chandef;
+-	sdata->csa_block_tx = csa_ie.mode;
+-	ifmgd->csa_ignored_same_chan = false;
+-	ifmgd->beacon_crc_valid = false;
++	sdata->deflink.csa_chandef = csa_ie.chandef;
++	sdata->deflink.csa_block_tx = csa_ie.mode;
++	sdata->deflink.u.mgd.csa_ignored_same_chan = false;
++	sdata->deflink.u.mgd.beacon_crc_valid = false;
+ 
+-	if (sdata->csa_block_tx)
++	if (sdata->deflink.csa_block_tx)
+ 		ieee80211_stop_vif_queues(local, sdata,
+ 					  IEEE80211_QUEUE_STOP_REASON_CSA);
+ 	mutex_unlock(&local->mtx);
+@@ -1544,7 +1546,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
+ 	 * reset when the disconnection worker runs.
+ 	 */
+ 	sdata->vif.bss_conf.csa_active = true;
+-	sdata->csa_block_tx = csa_ie.mode;
++	sdata->deflink.csa_block_tx = csa_ie.mode;
+ 
+ 	ieee80211_queue_work(&local->hw, &ifmgd->csa_connection_drop_work);
+ 	mutex_unlock(&local->chanctx_mtx);
+@@ -1679,25 +1681,25 @@ static u32 ieee80211_handle_pwr_constr(struct ieee80211_sub_if_data *sdata,
+ 	    (!has_cisco_pwr || pwr_level_80211h <= pwr_level_cisco)) {
+ 		new_ap_level = pwr_level_80211h;
+ 
+-		if (sdata->ap_power_level == new_ap_level)
++		if (sdata->deflink.ap_power_level == new_ap_level)
+ 			return 0;
+ 
+ 		sdata_dbg(sdata,
+ 			  "Limiting TX power to %d (%d - %d) dBm as advertised by %pM\n",
+ 			  pwr_level_80211h, chan_pwr, pwr_reduction_80211h,
+-			  sdata->u.mgd.bssid);
++			  sdata->deflink.u.mgd.bssid);
+ 	} else {  /* has_cisco_pwr is always true here. */
+ 		new_ap_level = pwr_level_cisco;
+ 
+-		if (sdata->ap_power_level == new_ap_level)
++		if (sdata->deflink.ap_power_level == new_ap_level)
+ 			return 0;
+ 
+ 		sdata_dbg(sdata,
+ 			  "Limiting TX power to %d dBm as advertised by %pM\n",
+-			  pwr_level_cisco, sdata->u.mgd.bssid);
++			  pwr_level_cisco, sdata->deflink.u.mgd.bssid);
+ 	}
+ 
+-	sdata->ap_power_level = new_ap_level;
++	sdata->deflink.ap_power_level = new_ap_level;
+ 	if (__ieee80211_recalc_txpower(sdata))
+ 		return BSS_CHANGED_TXPOWER;
+ 	return 0;
+@@ -1765,11 +1767,11 @@ static bool ieee80211_powersave_allowed(struct ieee80211_sub_if_data *sdata)
+ 	if (mgd->flags & IEEE80211_STA_CONNECTION_POLL)
+ 		return false;
+ 
+-	if (!mgd->have_beacon)
++	if (!sdata->deflink.u.mgd.have_beacon)
+ 		return false;
+ 
+ 	rcu_read_lock();
+-	sta = sta_info_get(sdata, mgd->bssid);
++	sta = sta_info_get(sdata, sdata->deflink.u.mgd.bssid);
+ 	if (sta)
+ 		authorized = test_sta_flag(sta, WLAN_STA_AUTHORIZED);
+ 	rcu_read_unlock();
+@@ -1807,7 +1809,7 @@ void ieee80211_recalc_ps(struct ieee80211_local *local)
+ 	}
+ 
+ 	if (count == 1 && ieee80211_powersave_allowed(found)) {
+-		u8 dtimper = found->u.mgd.dtim_period;
++		u8 dtimper = found->deflink.u.mgd.dtim_period;
+ 
+ 		timeout = local->dynamic_ps_forced_timeout;
+ 		if (timeout < 0)
+@@ -1935,7 +1937,7 @@ void ieee80211_dfs_cac_timer_work(struct work_struct *work)
+ 	struct delayed_work *delayed_work = to_delayed_work(work);
+ 	struct ieee80211_sub_if_data *sdata =
+ 		container_of(delayed_work, struct ieee80211_sub_if_data,
+-			     dfs_cac_timer_work);
++			     deflink.dfs_cac_timer_work);
+ 	struct cfg80211_chan_def chandef = sdata->vif.bss_conf.chandef;
+ 
+ 	mutex_lock(&sdata->local->mtx);
+@@ -2076,11 +2078,11 @@ ieee80211_sta_wmm_params(struct ieee80211_local *local,
+ 	 * the driver about it.
+ 	 */
+ 	mu_edca_count = mu_edca ? mu_edca->mu_qos_info & 0x0f : -1;
+-	if (count == ifmgd->wmm_last_param_set &&
+-	    mu_edca_count == ifmgd->mu_edca_last_param_set)
++	if (count == sdata->deflink.u.mgd.wmm_last_param_set &&
++	    mu_edca_count == sdata->deflink.u.mgd.mu_edca_last_param_set)
+ 		return false;
+-	ifmgd->wmm_last_param_set = count;
+-	ifmgd->mu_edca_last_param_set = mu_edca_count;
++	sdata->deflink.u.mgd.wmm_last_param_set = count;
++	sdata->deflink.u.mgd.mu_edca_last_param_set = mu_edca_count;
+ 
+ 	pos = wmm_param + 8;
+ 	left = wmm_param_len - 8;
+@@ -2268,8 +2270,8 @@ static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
+ 		beacon_loss_count * bss_conf->beacon_int));
+ 
+ 	sdata->u.mgd.associated = true;
+-	sdata->u.mgd.assoc_bss = cbss;
+-	memcpy(sdata->u.mgd.bssid, cbss->bssid, ETH_ALEN);
++	sdata->deflink.u.mgd.bss = cbss;
++	memcpy(sdata->deflink.u.mgd.bssid, cbss->bssid, ETH_ALEN);
+ 
+ 	ieee80211_check_rate_mask(sdata);
+ 
+@@ -2290,7 +2292,7 @@ static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
+ 					(u8 *) &bss_conf->p2p_noa_attr,
+ 					sizeof(bss_conf->p2p_noa_attr));
+ 			if (ret >= 2) {
+-				sdata->u.mgd.p2p_noa_index =
++				sdata->deflink.u.mgd.p2p_noa_index =
+ 					bss_conf->p2p_noa_attr.index;
+ 				bss_info_changed |= BSS_CHANGED_P2P_PS;
+ 			}
+@@ -2303,14 +2305,14 @@ static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
+ 
+ 	ieee80211_led_assoc(local, 1);
+ 
+-	if (sdata->u.mgd.have_beacon) {
++	if (sdata->deflink.u.mgd.have_beacon) {
+ 		/*
+ 		 * If the AP is buggy we may get here with no DTIM period
+ 		 * known, so assume it's 1 which is the only safe assumption
+ 		 * in that case, although if the TIM IE is broken powersave
+ 		 * probably just won't work at all.
+ 		 */
+-		bss_conf->dtim_period = sdata->u.mgd.dtim_period ?: 1;
++		bss_conf->dtim_period = sdata->deflink.u.mgd.dtim_period ?: 1;
+ 		bss_conf->beacon_rate = bss->beacon_rate;
+ 		bss_info_changed |= BSS_CHANGED_BEACON_INFO;
+ 	} else {
+@@ -2364,7 +2366,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	ieee80211_stop_poll(sdata);
+ 
+ 	ifmgd->associated = false;
+-	ifmgd->assoc_bss = NULL;
++	sdata->deflink.u.mgd.bss = NULL;
+ 	netif_carrier_off(sdata->dev);
+ 
+ 	/*
+@@ -2402,12 +2404,12 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 		 * driver requested so.
+ 		 */
+ 		if (ieee80211_hw_check(&local->hw, DEAUTH_NEED_MGD_TX_PREP) &&
+-		    !ifmgd->have_beacon) {
++		    !sdata->deflink.u.mgd.have_beacon) {
+ 			drv_mgd_prepare_tx(sdata->local, sdata, &info);
+ 		}
+ 
+-		ieee80211_send_deauth_disassoc(sdata, ifmgd->bssid,
+-					       ifmgd->bssid, stype, reason,
++		ieee80211_send_deauth_disassoc(sdata, sdata->deflink.u.mgd.bssid,
++					       sdata->deflink.u.mgd.bssid, stype, reason,
+ 					       tx, frame_buf);
+ 	}
+ 
+@@ -2418,7 +2420,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	drv_mgd_complete_tx(sdata->local, sdata, &info);
+ 
+ 	/* clear bssid only after building the needed mgmt frames */
+-	eth_zero_addr(ifmgd->bssid);
++	eth_zero_addr(sdata->deflink.u.mgd.bssid);
+ 
+ 	sdata->vif.cfg.ssid_len = 0;
+ 
+@@ -2432,7 +2434,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	changed |= BSS_CHANGED_ASSOC;
+ 	sdata->vif.cfg.assoc = false;
+ 
+-	ifmgd->p2p_noa_index = -1;
++	sdata->deflink.u.mgd.p2p_noa_index = -1;
+ 	memset(&sdata->vif.bss_conf.p2p_noa_attr, 0,
+ 	       sizeof(sdata->vif.bss_conf.p2p_noa_attr));
+ 
+@@ -2450,7 +2452,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	changed |= BSS_CHANGED_MU_GROUPS;
+ 	sdata->vif.bss_conf.mu_mimo_owner = false;
+ 
+-	sdata->ap_power_level = IEEE80211_UNSET_POWER_LEVEL;
++	sdata->deflink.ap_power_level = IEEE80211_UNSET_POWER_LEVEL;
+ 
+ 	del_timer_sync(&local->dynamic_ps_timer);
+ 	cancel_work_sync(&local->dynamic_ps_enable_work);
+@@ -2477,19 +2479,19 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	sdata->vif.bss_conf.dtim_period = 0;
+ 	sdata->vif.bss_conf.beacon_rate = NULL;
+ 
+-	ifmgd->have_beacon = false;
++	sdata->deflink.u.mgd.have_beacon = false;
+ 
+ 	ifmgd->flags = 0;
+ 	mutex_lock(&local->mtx);
+ 	ieee80211_vif_release_channel(sdata);
+ 
+ 	sdata->vif.bss_conf.csa_active = false;
+-	ifmgd->csa_waiting_bcn = false;
+-	ifmgd->csa_ignored_same_chan = false;
+-	if (sdata->csa_block_tx) {
++	sdata->deflink.u.mgd.csa_waiting_bcn = false;
++	sdata->deflink.u.mgd.csa_ignored_same_chan = false;
++	if (sdata->deflink.csa_block_tx) {
+ 		ieee80211_wake_vif_queues(local, sdata,
+ 					  IEEE80211_QUEUE_STOP_REASON_CSA);
+-		sdata->csa_block_tx = false;
++		sdata->deflink.csa_block_tx = false;
+ 	}
+ 	mutex_unlock(&local->mtx);
+ 
+@@ -2609,7 +2611,7 @@ static void ieee80211_mlme_send_probe_req(struct ieee80211_sub_if_data *sdata,
+ static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
+ {
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+-	u8 *dst = ifmgd->bssid;
++	u8 *dst = sdata->deflink.u.mgd.bssid;
+ 	u8 unicast_limit = max(1, max_probe_tries - 3);
+ 	struct sta_info *sta;
+ 
+@@ -2645,7 +2647,7 @@ static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
+ 		ieee80211_mlme_send_probe_req(sdata, sdata->vif.addr, dst,
+ 					      sdata->vif.cfg.ssid,
+ 					      sdata->vif.cfg.ssid_len,
+-					      ifmgd->assoc_bss->channel);
++					      sdata->deflink.u.mgd.bss->channel);
+ 	}
+ 
+ 	ifmgd->probe_timeout = jiffies + msecs_to_jiffies(probe_wait_ms);
+@@ -2735,7 +2737,7 @@ struct sk_buff *ieee80211_ap_probereq_get(struct ieee80211_hw *hw,
+ 	sdata_assert_lock(sdata);
+ 
+ 	if (ifmgd->associated)
+-		cbss = ifmgd->assoc_bss;
++		cbss = sdata->deflink.u.mgd.bss;
+ 	else if (ifmgd->auth_data)
+ 		cbss = ifmgd->auth_data->bss;
+ 	else if (ifmgd->assoc_data)
+@@ -2793,14 +2795,14 @@ static void __ieee80211_disconnect(struct ieee80211_sub_if_data *sdata)
+ 		return;
+ 	}
+ 
+-	tx = !sdata->csa_block_tx;
++	tx = !sdata->deflink.csa_block_tx;
+ 
+ 	if (!ifmgd->driver_disconnect) {
+ 		/*
+ 		 * AP is probably out of range (or not reachable for another
+ 		 * reason) so remove the bss struct for that AP.
+ 		 */
+-		cfg80211_unlink_bss(local->hw.wiphy, ifmgd->assoc_bss);
++		cfg80211_unlink_bss(local->hw.wiphy, sdata->deflink.u.mgd.bss);
+ 	}
+ 
+ 	ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
+@@ -2810,11 +2812,11 @@ static void __ieee80211_disconnect(struct ieee80211_sub_if_data *sdata)
+ 			       tx, frame_buf);
+ 	mutex_lock(&local->mtx);
+ 	sdata->vif.bss_conf.csa_active = false;
+-	ifmgd->csa_waiting_bcn = false;
+-	if (sdata->csa_block_tx) {
++	sdata->deflink.u.mgd.csa_waiting_bcn = false;
++	if (sdata->deflink.csa_block_tx) {
+ 		ieee80211_wake_vif_queues(local, sdata,
+ 					  IEEE80211_QUEUE_STOP_REASON_CSA);
+-		sdata->csa_block_tx = false;
++		sdata->deflink.csa_block_tx = false;
+ 	}
+ 	mutex_unlock(&local->mtx);
+ 
+@@ -2834,17 +2836,17 @@ static void ieee80211_beacon_connection_loss_work(struct work_struct *work)
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 
+ 	if (ifmgd->associated)
+-		ifmgd->beacon_loss_count++;
++		sdata->deflink.u.mgd.beacon_loss_count++;
+ 
+ 	if (ifmgd->connection_loss) {
+ 		sdata_info(sdata, "Connection to AP %pM lost\n",
+-			   ifmgd->bssid);
++			   sdata->deflink.u.mgd.bssid);
+ 		__ieee80211_disconnect(sdata);
+ 		ifmgd->connection_loss = false;
+ 	} else if (ifmgd->driver_disconnect) {
+ 		sdata_info(sdata,
+ 			   "Driver requested disconnection from AP %pM\n",
+-			   ifmgd->bssid);
++			   sdata->deflink.u.mgd.bssid);
+ 		__ieee80211_disconnect(sdata);
+ 		ifmgd->driver_disconnect = false;
+ 	} else {
+@@ -2917,7 +2919,7 @@ static void ieee80211_destroy_auth_data(struct ieee80211_sub_if_data *sdata,
+ 		del_timer_sync(&sdata->u.mgd.timer);
+ 		sta_info_destroy_addr(sdata, auth_data->bss->bssid);
+ 
+-		eth_zero_addr(sdata->u.mgd.bssid);
++		eth_zero_addr(sdata->deflink.u.mgd.bssid);
+ 		ieee80211_bss_info_change_notify(sdata, BSS_CHANGED_BSSID);
+ 		sdata->u.mgd.flags = 0;
+ 		mutex_lock(&sdata->local->mtx);
+@@ -2946,7 +2948,7 @@ static void ieee80211_destroy_assoc_data(struct ieee80211_sub_if_data *sdata,
+ 		del_timer_sync(&sdata->u.mgd.timer);
+ 		sta_info_destroy_addr(sdata, assoc_data->bss->bssid);
+ 
+-		eth_zero_addr(sdata->u.mgd.bssid);
++		eth_zero_addr(sdata->deflink.u.mgd.bssid);
+ 		ieee80211_bss_info_change_notify(sdata, BSS_CHANGED_BSSID);
+ 		sdata->u.mgd.flags = 0;
+ 		sdata->vif.bss_conf.mu_mimo_owner = false;
+@@ -3210,8 +3212,8 @@ static void ieee80211_rx_mgmt_deauth(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	if (ifmgd->associated &&
+-	    ether_addr_equal(mgmt->bssid, ifmgd->bssid)) {
+-		const u8 *bssid = ifmgd->bssid;
++	    ether_addr_equal(mgmt->bssid, sdata->deflink.u.mgd.bssid)) {
++		const u8 *bssid = sdata->deflink.u.mgd.bssid;
+ 
+ 		sdata_info(sdata, "deauthenticated from %pM (Reason: %u=%s)\n",
+ 			   bssid, reason_code,
+@@ -3253,7 +3255,7 @@ static void ieee80211_rx_mgmt_disassoc(struct ieee80211_sub_if_data *sdata,
+ 		return;
+ 
+ 	if (!ifmgd->associated ||
+-	    !ether_addr_equal(mgmt->bssid, ifmgd->bssid))
++	    !ether_addr_equal(mgmt->bssid, sdata->deflink.u.mgd.bssid))
+ 		return;
+ 
+ 	reason_code = le16_to_cpu(mgmt->u.disassoc.reason_code);
+@@ -3714,8 +3716,8 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 	 * that effect because the AP values is an unsigned
+ 	 * 4-bit value.
+ 	 */
+-	ifmgd->wmm_last_param_set = -1;
+-	ifmgd->mu_edca_last_param_set = -1;
++	sdata->deflink.u.mgd.wmm_last_param_set = -1;
++	sdata->deflink.u.mgd.mu_edca_last_param_set = -1;
+ 
+ 	if (ifmgd->flags & IEEE80211_STA_DISABLE_WMM) {
+ 		ieee80211_set_wmm_default(sdata, false, false);
+@@ -3963,7 +3965,7 @@ static void ieee80211_rx_mgmt_probe_resp(struct ieee80211_sub_if_data *sdata,
+ 	ieee80211_rx_bss_info(sdata, mgmt, len, rx_status);
+ 
+ 	if (ifmgd->associated &&
+-	    ether_addr_equal(mgmt->bssid, ifmgd->bssid))
++	    ether_addr_equal(mgmt->bssid, sdata->deflink.u.mgd.bssid))
+ 		ieee80211_reset_ap_probe(sdata);
+ }
+ 
+@@ -4001,20 +4003,21 @@ static void ieee80211_handle_beacon_sig(struct ieee80211_sub_if_data *sdata,
+ 
+ 	if (ifmgd->flags & IEEE80211_STA_RESET_SIGNAL_AVE) {
+ 		ifmgd->flags &= ~IEEE80211_STA_RESET_SIGNAL_AVE;
+-		ewma_beacon_signal_init(&ifmgd->ave_beacon_signal);
+-		ifmgd->last_cqm_event_signal = 0;
+-		ifmgd->count_beacon_signal = 1;
+-		ifmgd->last_ave_beacon_signal = 0;
++		ewma_beacon_signal_init(&sdata->deflink.u.mgd.ave_beacon_signal);
++		sdata->deflink.u.mgd.last_cqm_event_signal = 0;
++		sdata->deflink.u.mgd.count_beacon_signal = 1;
++		sdata->deflink.u.mgd.last_ave_beacon_signal = 0;
+ 	} else {
+-		ifmgd->count_beacon_signal++;
++		sdata->deflink.u.mgd.count_beacon_signal++;
+ 	}
+ 
+-	ewma_beacon_signal_add(&ifmgd->ave_beacon_signal, -rx_status->signal);
++	ewma_beacon_signal_add(&sdata->deflink.u.mgd.ave_beacon_signal,
++			       -rx_status->signal);
+ 
+ 	if (ifmgd->rssi_min_thold != ifmgd->rssi_max_thold &&
+-	    ifmgd->count_beacon_signal >= IEEE80211_SIGNAL_AVE_MIN_COUNT) {
+-		int sig = -ewma_beacon_signal_read(&ifmgd->ave_beacon_signal);
+-		int last_sig = ifmgd->last_ave_beacon_signal;
++	    sdata->deflink.u.mgd.count_beacon_signal >= IEEE80211_SIGNAL_AVE_MIN_COUNT) {
++		int sig = -ewma_beacon_signal_read(&sdata->deflink.u.mgd.ave_beacon_signal);
++		int last_sig = sdata->deflink.u.mgd.last_ave_beacon_signal;
+ 		struct ieee80211_event event = {
+ 			.type = RSSI_EVENT,
+ 		};
+@@ -4025,36 +4028,36 @@ static void ieee80211_handle_beacon_sig(struct ieee80211_sub_if_data *sdata,
+ 		 */
+ 		if (sig > ifmgd->rssi_max_thold &&
+ 		    (last_sig <= ifmgd->rssi_min_thold || last_sig == 0)) {
+-			ifmgd->last_ave_beacon_signal = sig;
++			sdata->deflink.u.mgd.last_ave_beacon_signal = sig;
+ 			event.u.rssi.data = RSSI_EVENT_HIGH;
+ 			drv_event_callback(local, sdata, &event);
+ 		} else if (sig < ifmgd->rssi_min_thold &&
+ 			   (last_sig >= ifmgd->rssi_max_thold ||
+ 			   last_sig == 0)) {
+-			ifmgd->last_ave_beacon_signal = sig;
++			sdata->deflink.u.mgd.last_ave_beacon_signal = sig;
+ 			event.u.rssi.data = RSSI_EVENT_LOW;
+ 			drv_event_callback(local, sdata, &event);
+ 		}
+ 	}
+ 
+ 	if (bss_conf->cqm_rssi_thold &&
+-	    ifmgd->count_beacon_signal >= IEEE80211_SIGNAL_AVE_MIN_COUNT &&
++	    sdata->deflink.u.mgd.count_beacon_signal >= IEEE80211_SIGNAL_AVE_MIN_COUNT &&
+ 	    !(sdata->vif.driver_flags & IEEE80211_VIF_SUPPORTS_CQM_RSSI)) {
+-		int sig = -ewma_beacon_signal_read(&ifmgd->ave_beacon_signal);
+-		int last_event = ifmgd->last_cqm_event_signal;
++		int sig = -ewma_beacon_signal_read(&sdata->deflink.u.mgd.ave_beacon_signal);
++		int last_event = sdata->deflink.u.mgd.last_cqm_event_signal;
+ 		int thold = bss_conf->cqm_rssi_thold;
+ 		int hyst = bss_conf->cqm_rssi_hyst;
+ 
+ 		if (sig < thold &&
+ 		    (last_event == 0 || sig < last_event - hyst)) {
+-			ifmgd->last_cqm_event_signal = sig;
++			sdata->deflink.u.mgd.last_cqm_event_signal = sig;
+ 			ieee80211_cqm_rssi_notify(
+ 				&sdata->vif,
+ 				NL80211_CQM_RSSI_THRESHOLD_EVENT_LOW,
+ 				sig, GFP_KERNEL);
+ 		} else if (sig > thold &&
+ 			   (last_event == 0 || sig > last_event + hyst)) {
+-			ifmgd->last_cqm_event_signal = sig;
++			sdata->deflink.u.mgd.last_cqm_event_signal = sig;
+ 			ieee80211_cqm_rssi_notify(
+ 				&sdata->vif,
+ 				NL80211_CQM_RSSI_THRESHOLD_EVENT_HIGH,
+@@ -4063,22 +4066,22 @@ static void ieee80211_handle_beacon_sig(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	if (bss_conf->cqm_rssi_low &&
+-	    ifmgd->count_beacon_signal >= IEEE80211_SIGNAL_AVE_MIN_COUNT) {
+-		int sig = -ewma_beacon_signal_read(&ifmgd->ave_beacon_signal);
+-		int last_event = ifmgd->last_cqm_event_signal;
++	    sdata->deflink.u.mgd.count_beacon_signal >= IEEE80211_SIGNAL_AVE_MIN_COUNT) {
++		int sig = -ewma_beacon_signal_read(&sdata->deflink.u.mgd.ave_beacon_signal);
++		int last_event = sdata->deflink.u.mgd.last_cqm_event_signal;
+ 		int low = bss_conf->cqm_rssi_low;
+ 		int high = bss_conf->cqm_rssi_high;
+ 
+ 		if (sig < low &&
+ 		    (last_event == 0 || last_event >= low)) {
+-			ifmgd->last_cqm_event_signal = sig;
++			sdata->deflink.u.mgd.last_cqm_event_signal = sig;
+ 			ieee80211_cqm_rssi_notify(
+ 				&sdata->vif,
+ 				NL80211_CQM_RSSI_THRESHOLD_EVENT_LOW,
+ 				sig, GFP_KERNEL);
+ 		} else if (sig > high &&
+ 			   (last_event == 0 || last_event <= high)) {
+-			ifmgd->last_cqm_event_signal = sig;
++			sdata->deflink.u.mgd.last_cqm_event_signal = sig;
+ 			ieee80211_cqm_rssi_notify(
+ 				&sdata->vif,
+ 				NL80211_CQM_RSSI_THRESHOLD_EVENT_HIGH,
+@@ -4161,8 +4164,8 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 		ieee80211_rx_bss_info(sdata, mgmt, len, rx_status);
+ 
+ 		if (elems->dtim_period)
+-			ifmgd->dtim_period = elems->dtim_period;
+-		ifmgd->have_beacon = true;
++			sdata->deflink.u.mgd.dtim_period = elems->dtim_period;
++		sdata->deflink.u.mgd.have_beacon = true;
+ 		ifmgd->assoc_data->need_beacon = false;
+ 		if (ieee80211_hw_check(&local->hw, TIMING_BEACON_ONLY)) {
+ 			sdata->vif.bss_conf.sync_tsf =
+@@ -4193,9 +4196,9 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	if (!ifmgd->associated ||
+-	    !ieee80211_rx_our_beacon(bssid, ifmgd->assoc_bss))
++	    !ieee80211_rx_our_beacon(bssid, sdata->deflink.u.mgd.bss))
+ 		return;
+-	bssid = ifmgd->bssid;
++	bssid = sdata->deflink.u.mgd.bssid;
+ 
+ 	if (!(rx_status->flag & RX_FLAG_NO_SIGNAL_VAL))
+ 		ieee80211_handle_beacon_sig(sdata, ifmgd, bss_conf,
+@@ -4261,27 +4264,27 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 					    IEEE80211_P2P_ATTR_ABSENCE_NOTICE,
+ 					    (u8 *) &noa, sizeof(noa));
+ 		if (ret >= 2) {
+-			if (sdata->u.mgd.p2p_noa_index != noa.index) {
++			if (sdata->deflink.u.mgd.p2p_noa_index != noa.index) {
+ 				/* valid noa_attr and index changed */
+-				sdata->u.mgd.p2p_noa_index = noa.index;
++				sdata->deflink.u.mgd.p2p_noa_index = noa.index;
+ 				memcpy(&bss_conf->p2p_noa_attr, &noa, sizeof(noa));
+ 				changed |= BSS_CHANGED_P2P_PS;
+ 				/*
+ 				 * make sure we update all information, the CRC
+ 				 * mechanism doesn't look at P2P attributes.
+ 				 */
+-				ifmgd->beacon_crc_valid = false;
++				sdata->deflink.u.mgd.beacon_crc_valid = false;
+ 			}
+-		} else if (sdata->u.mgd.p2p_noa_index != -1) {
++		} else if (sdata->deflink.u.mgd.p2p_noa_index != -1) {
+ 			/* noa_attr not found and we had valid noa_attr before */
+-			sdata->u.mgd.p2p_noa_index = -1;
++			sdata->deflink.u.mgd.p2p_noa_index = -1;
+ 			memset(&bss_conf->p2p_noa_attr, 0, sizeof(bss_conf->p2p_noa_attr));
+ 			changed |= BSS_CHANGED_P2P_PS;
+-			ifmgd->beacon_crc_valid = false;
++			sdata->deflink.u.mgd.beacon_crc_valid = false;
+ 		}
+ 	}
+ 
+-	if (ifmgd->csa_waiting_bcn)
++	if (sdata->deflink.u.mgd.csa_waiting_bcn)
+ 		ieee80211_chswitch_post_beacon(sdata);
+ 
+ 	/*
+@@ -4301,11 +4304,11 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 		sdata->vif.bss_conf.sync_dtim_count = elems->dtim_count;
+ 	}
+ 
+-	if ((ncrc == ifmgd->beacon_crc && ifmgd->beacon_crc_valid) ||
++	if ((ncrc == sdata->deflink.u.mgd.beacon_crc && sdata->deflink.u.mgd.beacon_crc_valid) ||
+ 	    ieee80211_is_s1g_short_beacon(mgmt->frame_control))
+ 		goto free;
+-	ifmgd->beacon_crc = ncrc;
+-	ifmgd->beacon_crc_valid = true;
++	sdata->deflink.u.mgd.beacon_crc = ncrc;
++	sdata->deflink.u.mgd.beacon_crc_valid = true;
+ 
+ 	ieee80211_rx_bss_info(sdata, mgmt, len, rx_status);
+ 
+@@ -4323,12 +4326,12 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 	 * If we haven't had a beacon before, tell the driver about the
+ 	 * DTIM period (and beacon timing if desired) now.
+ 	 */
+-	if (!ifmgd->have_beacon) {
++	if (!sdata->deflink.u.mgd.have_beacon) {
+ 		/* a few bogus AP send dtim_period = 0 or no TIM IE */
+ 		bss_conf->dtim_period = elems->dtim_period ?: 1;
+ 
+ 		changed |= BSS_CHANGED_BEACON_INFO;
+-		ifmgd->have_beacon = true;
++		sdata->deflink.u.mgd.have_beacon = true;
+ 
+ 		mutex_lock(&local->iflist_mtx);
+ 		ieee80211_recalc_ps(local);
+@@ -4724,7 +4727,8 @@ void ieee80211_sta_work(struct ieee80211_sub_if_data *sdata)
+ 
+ 	if (ifmgd->assoc_data && ifmgd->assoc_data->timeout_started &&
+ 	    time_after(jiffies, ifmgd->assoc_data->timeout)) {
+-		if ((ifmgd->assoc_data->need_beacon && !ifmgd->have_beacon) ||
++		if ((ifmgd->assoc_data->need_beacon &&
++		     !sdata->deflink.u.mgd.have_beacon) ||
+ 		    ieee80211_do_assoc(sdata)) {
+ 			struct cfg80211_bss *bss = ifmgd->assoc_data->bss;
+ 			struct ieee80211_event event = {
+@@ -4742,7 +4746,7 @@ void ieee80211_sta_work(struct ieee80211_sub_if_data *sdata)
+ 
+ 	if (ifmgd->flags & IEEE80211_STA_CONNECTION_POLL &&
+ 	    ifmgd->associated) {
+-		u8 *bssid = ifmgd->bssid;
++		u8 *bssid = sdata->deflink.u.mgd.bssid;
+ 		int max_tries;
+ 
+ 		if (ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS))
+@@ -4803,9 +4807,9 @@ static void ieee80211_sta_bcn_mon_timer(struct timer_list *t)
+ {
+ 	struct ieee80211_sub_if_data *sdata =
+ 		from_timer(sdata, t, u.mgd.bcn_mon_timer);
+-	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 
+-	if (sdata->vif.bss_conf.csa_active && !ifmgd->csa_waiting_bcn)
++	if (sdata->vif.bss_conf.csa_active &&
++	    !sdata->deflink.u.mgd.csa_waiting_bcn)
+ 		return;
+ 
+ 	if (sdata->vif.driver_flags & IEEE80211_VIF_BEACON_FILTER)
+@@ -4825,10 +4829,11 @@ static void ieee80211_sta_conn_mon_timer(struct timer_list *t)
+ 	struct sta_info *sta;
+ 	unsigned long timeout;
+ 
+-	if (sdata->vif.bss_conf.csa_active && !ifmgd->csa_waiting_bcn)
++	if (sdata->vif.bss_conf.csa_active &&
++	    !sdata->deflink.u.mgd.csa_waiting_bcn)
+ 		return;
+ 
+-	sta = sta_info_get(sdata, ifmgd->bssid);
++	sta = sta_info_get(sdata, sdata->deflink.u.mgd.bssid);
+ 	if (!sta)
+ 		return;
+ 
+@@ -4924,7 +4929,7 @@ void ieee80211_mgd_quiesce(struct ieee80211_sub_if_data *sdata)
+ 			.bssid = bssid,
+ 		};
+ 
+-		memcpy(bssid, ifmgd->bssid, ETH_ALEN);
++		memcpy(bssid, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 		ieee80211_mgd_deauth(sdata, &req);
+ 	}
+ 
+@@ -4977,7 +4982,8 @@ void ieee80211_sta_setup_sdata(struct ieee80211_sub_if_data *sdata)
+ 		  ieee80211_beacon_connection_loss_work);
+ 	INIT_WORK(&ifmgd->csa_connection_drop_work,
+ 		  ieee80211_csa_connection_drop_work);
+-	INIT_WORK(&ifmgd->request_smps_work, ieee80211_request_smps_mgd_work);
++	INIT_WORK(&sdata->deflink.u.mgd.request_smps_work,
++		  ieee80211_request_smps_mgd_work);
+ 	INIT_DELAYED_WORK(&ifmgd->tdls_peer_del_work,
+ 			  ieee80211_tdls_peer_del_work);
+ 	timer_setup(&ifmgd->timer, ieee80211_sta_timer, 0);
+@@ -4991,12 +4997,12 @@ void ieee80211_sta_setup_sdata(struct ieee80211_sub_if_data *sdata)
+ 	ifmgd->powersave = sdata->wdev.ps;
+ 	ifmgd->uapsd_queues = sdata->local->hw.uapsd_queues;
+ 	ifmgd->uapsd_max_sp_len = sdata->local->hw.uapsd_max_sp_len;
+-	ifmgd->p2p_noa_index = -1;
++	sdata->deflink.u.mgd.p2p_noa_index = -1;
+ 
+ 	if (sdata->local->hw.wiphy->features & NL80211_FEATURE_DYNAMIC_SMPS)
+-		ifmgd->req_smps = IEEE80211_SMPS_AUTOMATIC;
++		sdata->deflink.u.mgd.req_smps = IEEE80211_SMPS_AUTOMATIC;
+ 	else
+-		ifmgd->req_smps = IEEE80211_SMPS_OFF;
++		sdata->deflink.u.mgd.req_smps = IEEE80211_SMPS_OFF;
+ 
+ 	/* Setup TDLS data */
+ 	spin_lock_init(&ifmgd->teardown_lock);
+@@ -5469,8 +5475,8 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 						     s1g_oper,
+ 						     &chandef, false);
+ 
+-	sdata->needed_rx_chains = min(ieee80211_max_rx_chains(sdata, cbss),
+-				      local->rx_chains);
++	sdata->deflink.needed_rx_chains =
++		min(ieee80211_max_rx_chains(sdata, cbss), local->rx_chains);
+ 
+ 	rcu_read_unlock();
+ 	/* the element data was RCU protected so no longer valid anyway */
+@@ -5483,7 +5489,7 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	/* will change later if needed */
+-	sdata->smps_mode = IEEE80211_SMPS_OFF;
++	sdata->deflink.smps_mode = IEEE80211_SMPS_OFF;
+ 
+ 	mutex_lock(&local->mtx);
+ 	/*
+@@ -5647,7 +5653,7 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ 			sdata->flags &= ~IEEE80211_SDATA_OPERATING_GMODE;
+ 
+ skip_rates:
+-		memcpy(ifmgd->bssid, cbss->bssid, ETH_ALEN);
++		memcpy(sdata->deflink.u.mgd.bssid, cbss->bssid, ETH_ALEN);
+ 
+ 		/* set timing information */
+ 		sdata->vif.bss_conf.beacon_int = cbss->beacon_interval;
+@@ -5707,7 +5713,7 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ 			return err;
+ 		}
+ 	} else
+-		WARN_ON_ONCE(!ether_addr_equal(ifmgd->bssid, cbss->bssid));
++		WARN_ON_ONCE(!ether_addr_equal(sdata->deflink.u.mgd.bssid, cbss->bssid));
+ 
+ 	/* Cancel scan to ensure that nothing interferes with connection */
+ 	if (local->scanning)
+@@ -5830,7 +5836,7 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+ 
+ 		sdata_info(sdata,
+ 			   "disconnect from AP %pM for new auth to %pM\n",
+-			   ifmgd->bssid, req->bss->bssid);
++			   sdata->deflink.u.mgd.bssid, req->bss->bssid);
+ 		ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
+ 				       WLAN_REASON_UNSPECIFIED,
+ 				       false, frame_buf);
+@@ -5858,7 +5864,7 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+ 	return 0;
+ 
+  err_clear:
+-	eth_zero_addr(ifmgd->bssid);
++	eth_zero_addr(sdata->deflink.u.mgd.bssid);
+ 	ieee80211_bss_info_change_notify(sdata, BSS_CHANGED_BSSID);
+ 	ifmgd->auth_data = NULL;
+ 	mutex_lock(&sdata->local->mtx);
+@@ -5906,7 +5912,7 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 
+ 		sdata_info(sdata,
+ 			   "disconnect from AP %pM for new assoc to %pM\n",
+-			   ifmgd->bssid, req->bss->bssid);
++			   sdata->deflink.u.mgd.bssid, req->bss->bssid);
+ 		ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
+ 				       WLAN_REASON_UNSPECIFIED,
+ 				       false, frame_buf);
+@@ -5931,13 +5937,14 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 		bool match;
+ 
+ 		/* keep sta info, bssid if matching */
+-		match = ether_addr_equal(ifmgd->bssid, req->bss->bssid);
++		match = ether_addr_equal(sdata->deflink.u.mgd.bssid,
++					 req->bss->bssid);
+ 		ieee80211_destroy_auth_data(sdata, match);
+ 	}
+ 
+ 	/* prepare assoc data */
+ 
+-	ifmgd->beacon_crc_valid = false;
++	sdata->deflink.u.mgd.beacon_crc_valid = false;
+ 
+ 	assoc_data->wmm = bss->wmm_used &&
+ 			  (local->hw.queues >= IEEE80211_NUM_ACS);
+@@ -6075,8 +6082,8 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 	/* kick off associate process */
+ 
+ 	ifmgd->assoc_data = assoc_data;
+-	ifmgd->dtim_period = 0;
+-	ifmgd->have_beacon = false;
++	sdata->deflink.u.mgd.dtim_period = 0;
++	sdata->deflink.u.mgd.have_beacon = false;
+ 
+ 	/* override HT/VHT configuration only if the AP and we support it */
+ 	if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HT)) {
+@@ -6125,13 +6132,13 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 	if (err)
+ 		goto err_clear;
+ 
+-	if (ifmgd->req_smps == IEEE80211_SMPS_AUTOMATIC) {
++	if (sdata->deflink.u.mgd.req_smps == IEEE80211_SMPS_AUTOMATIC) {
+ 		if (ifmgd->powersave)
+-			sdata->smps_mode = IEEE80211_SMPS_DYNAMIC;
++			sdata->deflink.smps_mode = IEEE80211_SMPS_DYNAMIC;
+ 		else
+-			sdata->smps_mode = IEEE80211_SMPS_OFF;
++			sdata->deflink.smps_mode = IEEE80211_SMPS_OFF;
+ 	} else {
+-		sdata->smps_mode = ifmgd->req_smps;
++		sdata->deflink.smps_mode = sdata->deflink.u.mgd.req_smps;
+ 	}
+ 
+ 	rcu_read_lock();
+@@ -6144,7 +6151,7 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 		 * should this be more if we miss one?
+ 		 */
+ 		sdata_info(sdata, "waiting for beacon from %pM\n",
+-			   ifmgd->bssid);
++			   sdata->deflink.u.mgd.bssid);
+ 		assoc_data->timeout = TU_TO_EXP_TIME(req->bss->beacon_interval);
+ 		assoc_data->timeout_started = true;
+ 		assoc_data->need_beacon = true;
+@@ -6153,9 +6160,9 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 		u8 dtim_count = 0;
+ 
+ 		ieee80211_get_dtim(beacon_ies, &dtim_count,
+-				   &ifmgd->dtim_period);
++				   &sdata->deflink.u.mgd.dtim_period);
+ 
+-		ifmgd->have_beacon = true;
++		sdata->deflink.u.mgd.have_beacon = true;
+ 		assoc_data->timeout = jiffies;
+ 		assoc_data->timeout_started = true;
+ 
+@@ -6204,7 +6211,7 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 
+ 	return 0;
+  err_clear:
+-	eth_zero_addr(ifmgd->bssid);
++	eth_zero_addr(sdata->deflink.u.mgd.bssid);
+ 	ieee80211_bss_info_change_notify(sdata, BSS_CHANGED_BSSID);
+ 	ifmgd->assoc_data = NULL;
+  err_free:
+@@ -6262,7 +6269,7 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	if (ifmgd->associated &&
+-	    ether_addr_equal(ifmgd->bssid, req->bssid)) {
++	    ether_addr_equal(sdata->deflink.u.mgd.bssid, req->bssid)) {
+ 		sdata_info(sdata,
+ 			   "deauthenticating from %pM by local choice (Reason: %u=%s)\n",
+ 			   req->bssid, req->reason_code,
+@@ -6283,7 +6290,6 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
+ int ieee80211_mgd_disassoc(struct ieee80211_sub_if_data *sdata,
+ 			   struct cfg80211_disassoc_request *req)
+ {
+-	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	u8 bssid[ETH_ALEN];
+ 	u8 frame_buf[IEEE80211_DEAUTH_FRAME_LEN];
+ 
+@@ -6293,7 +6299,7 @@ int ieee80211_mgd_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	 * to cfg80211 while that's in a locked section already
+ 	 * trying to tell us that the user wants to disconnect.
+ 	 */
+-	if (ifmgd->assoc_bss != req->bss)
++	if (sdata->deflink.u.mgd.bss != req->bss)
+ 		return -ENOLINK;
+ 
+ 	sdata_info(sdata,
+@@ -6322,7 +6328,7 @@ void ieee80211_mgd_stop(struct ieee80211_sub_if_data *sdata)
+ 	 */
+ 	cancel_work_sync(&ifmgd->monitor_work);
+ 	cancel_work_sync(&ifmgd->beacon_connection_loss_work);
+-	cancel_work_sync(&ifmgd->request_smps_work);
++	cancel_work_sync(&sdata->deflink.u.mgd.request_smps_work);
+ 	cancel_work_sync(&ifmgd->csa_connection_drop_work);
+ 	cancel_work_sync(&ifmgd->chswitch_work);
+ 	cancel_delayed_work_sync(&ifmgd->tdls_peer_del_work);
+diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
+index de8f5dd0fbaf..dc99ae5e6bf0 100644
+--- a/net/mac80211/ocb.c
++++ b/net/mac80211/ocb.c
+@@ -181,8 +181,8 @@ int ieee80211_ocb_join(struct ieee80211_sub_if_data *sdata,
+ 		return -EINVAL;
+ 
+ 	sdata->flags |= IEEE80211_SDATA_OPERATING_GMODE;
+-	sdata->smps_mode = IEEE80211_SMPS_OFF;
+-	sdata->needed_rx_chains = sdata->local->rx_chains;
++	sdata->deflink.smps_mode = IEEE80211_SMPS_OFF;
++	sdata->deflink.needed_rx_chains = sdata->local->rx_chains;
+ 
+ 	mutex_lock(&sdata->local->mtx);
+ 	err = ieee80211_vif_use_channel(sdata, &setup->chandef,
+diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
+index 5e20e19e7679..09e9243e2a02 100644
+--- a/net/mac80211/offchannel.c
++++ b/net/mac80211/offchannel.c
+@@ -800,7 +800,7 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 	case NL80211_IFTYPE_P2P_GO:
+ 		if (sdata->vif.type != NL80211_IFTYPE_ADHOC &&
+ 		    !ieee80211_vif_is_mesh(&sdata->vif) &&
+-		    !rcu_access_pointer(sdata->bss->beacon))
++		    !sdata->bss->active)
+ 			need_offchan = true;
+ 		if (!ieee80211_is_action(mgmt->frame_control) ||
+ 		    mgmt->u.action.category == WLAN_CATEGORY_PUBLIC ||
+@@ -819,7 +819,7 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		if (!sdata->u.mgd.associated ||
+ 		    (params->offchan && params->wait &&
+ 		     local->ops->remain_on_channel &&
+-		     memcmp(sdata->u.mgd.bssid,
++		     memcmp(sdata->deflink.u.mgd.bssid,
+ 			    mgmt->bssid, ETH_ALEN)))
+ 			need_offchan = true;
+ 		sdata_unlock(sdata);
+@@ -887,7 +887,7 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		rcu_read_lock();
+ 
+ 		if (sdata->vif.type == NL80211_IFTYPE_AP)
+-			beacon = rcu_dereference(sdata->u.ap.beacon);
++			beacon = rcu_dereference(sdata->deflink.u.ap.beacon);
+ 		else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
+ 			beacon = rcu_dereference(sdata->u.ibss.presp);
+ 		else if (ieee80211_vif_is_mesh(&sdata->vif))
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 9a179a18aafc..21e7424f261a 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -1872,11 +1872,11 @@ ieee80211_rx_get_bigtk(struct ieee80211_rx_data *rx, int idx)
+ 	if (rx->sta)
+ 		key = rcu_dereference(rx->sta->deflink.gtk[idx]);
+ 	if (!key)
+-		key = rcu_dereference(sdata->keys[idx]);
++		key = rcu_dereference(sdata->deflink.gtk[idx]);
+ 	if (!key && rx->sta)
+ 		key = rcu_dereference(rx->sta->deflink.gtk[idx2]);
+ 	if (!key)
+-		key = rcu_dereference(sdata->keys[idx2]);
++		key = rcu_dereference(sdata->deflink.gtk[idx2]);
+ 
+ 	return key;
+ }
+@@ -1990,7 +1990,7 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
+ 			rx->key = rcu_dereference(rx->sta->deflink.gtk[mmie_keyidx]);
+ 		}
+ 		if (!rx->key)
+-			rx->key = rcu_dereference(rx->sdata->keys[mmie_keyidx]);
++			rx->key = rcu_dereference(rx->sdata->deflink.gtk[mmie_keyidx]);
+ 	} else if (!ieee80211_has_protected(fc)) {
+ 		/*
+ 		 * The frame was not protected, so skip decryption. However, we
+@@ -2006,7 +2006,7 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
+ 			key = ieee80211_rx_get_bigtk(rx, -1);
+ 		} else if (ieee80211_is_mgmt(fc) &&
+ 			   is_multicast_ether_addr(hdr->addr1)) {
+-			key = rcu_dereference(rx->sdata->default_mgmt_key);
++			key = rcu_dereference(rx->sdata->deflink.default_mgmt_key);
+ 		} else {
+ 			if (rx->sta) {
+ 				for (i = 0; i < NUM_DEFAULT_KEYS; i++) {
+@@ -2017,7 +2017,7 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
+ 			}
+ 			if (!key) {
+ 				for (i = 0; i < NUM_DEFAULT_KEYS; i++) {
+-					key = rcu_dereference(sdata->keys[i]);
++					key = rcu_dereference(sdata->deflink.gtk[i]);
+ 					if (key)
+ 						break;
+ 				}
+@@ -2051,7 +2051,10 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
+ 
+ 		/* if not found, try default key */
+ 		if (!rx->key) {
+-			rx->key = rcu_dereference(rx->sdata->keys[keyidx]);
++			if (is_multicast_ether_addr(hdr->addr1))
++				rx->key = rcu_dereference(rx->sdata->deflink.gtk[keyidx]);
++			if (!rx->key)
++				rx->key = rcu_dereference(rx->sdata->keys[keyidx]);
+ 
+ 			/*
+ 			 * RSNA-protected unicast frames should always be
+@@ -3121,8 +3124,8 @@ static void ieee80211_process_sa_query_req(struct ieee80211_sub_if_data *sdata,
+ 		return;
+ 	}
+ 
+-	if (!ether_addr_equal(mgmt->sa, sdata->u.mgd.bssid) ||
+-	    !ether_addr_equal(mgmt->bssid, sdata->u.mgd.bssid)) {
++	if (!ether_addr_equal(mgmt->sa, sdata->deflink.u.mgd.bssid) ||
++	    !ether_addr_equal(mgmt->bssid, sdata->deflink.u.mgd.bssid)) {
+ 		/* Not from the current AP or not associated yet. */
+ 		return;
+ 	}
+@@ -3140,7 +3143,7 @@ static void ieee80211_process_sa_query_req(struct ieee80211_sub_if_data *sdata,
+ 	resp = skb_put_zero(skb, 24);
+ 	memcpy(resp->da, mgmt->sa, ETH_ALEN);
+ 	memcpy(resp->sa, sdata->vif.addr, ETH_ALEN);
+-	memcpy(resp->bssid, sdata->u.mgd.bssid, ETH_ALEN);
++	memcpy(resp->bssid, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 	resp->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
+ 					  IEEE80211_STYPE_ACTION);
+ 	skb_put(skb, 1 + sizeof(resp->u.action.u.sa_query));
+@@ -3423,7 +3426,7 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
+ 			break;
+ 		if (!rx->sta)
+ 			break;
+-		if (!ether_addr_equal(mgmt->bssid, sdata->u.mgd.bssid))
++		if (!ether_addr_equal(mgmt->bssid, sdata->deflink.u.mgd.bssid))
+ 			break;
+ 		if (mgmt->u.action.u.ext_chan_switch.action_code !=
+ 				WLAN_PUB_ACTION_EXT_CHANSW_ANN)
+@@ -3524,7 +3527,7 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
+ 				break;
+ 
+ 			if (sdata->vif.type == NL80211_IFTYPE_STATION)
+-				bssid = sdata->u.mgd.bssid;
++				bssid = sdata->deflink.u.mgd.bssid;
+ 			else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
+ 				bssid = sdata->u.ibss.bssid;
+ 			else if (sdata->vif.type == NL80211_IFTYPE_MESH_POINT)
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 7eeb6919d2b7..115efa830673 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -2312,7 +2312,7 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
+ 	 * (or just modify the value entirely, of course)
+ 	 */
+ 	if (sdata->vif.type == NL80211_IFTYPE_STATION)
+-		sinfo->rx_beacon = sdata->u.mgd.count_beacon_signal;
++		sinfo->rx_beacon = sdata->deflink.u.mgd.count_beacon_signal;
+ 
+ 	drv_sta_statistics(local, sdata, &sta->sta, sinfo);
+ 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_INACTIVE_TIME) |
+@@ -2323,7 +2323,8 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
+ 			 BIT_ULL(NL80211_STA_INFO_RX_DROP_MISC);
+ 
+ 	if (sdata->vif.type == NL80211_IFTYPE_STATION) {
+-		sinfo->beacon_loss_count = sdata->u.mgd.beacon_loss_count;
++		sinfo->beacon_loss_count =
++			sdata->deflink.u.mgd.beacon_loss_count;
+ 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_BEACON_LOSS);
+ 	}
+ 
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index e69272139437..d9cad6ad7a65 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -223,7 +223,7 @@ static void ieee80211_frame_acked(struct sta_info *sta, struct sk_buff *skb)
+ 			 * only be the AP. And the only other place updating
+ 			 * this variable in managed mode is before association.
+ 			 */
+-			sdata->smps_mode = smps_mode;
++			sdata->deflink.smps_mode = smps_mode;
+ 			ieee80211_queue_work(&local->hw, &sdata->recalc_smps);
+ 		} else if (sdata->vif.type == NL80211_IFTYPE_AP ||
+ 			   sdata->vif.type == NL80211_IFTYPE_AP_VLAN) {
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index dc3f149ce18f..d67842bded76 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -218,7 +218,7 @@ static void ieee80211_tdls_add_link_ie(struct ieee80211_sub_if_data *sdata,
+ 	lnkid->ie_type = WLAN_EID_LINK_ID;
+ 	lnkid->ie_len = sizeof(struct ieee80211_tdls_lnkie) - 2;
+ 
+-	memcpy(lnkid->bssid, sdata->u.mgd.bssid, ETH_ALEN);
++	memcpy(lnkid->bssid, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 	memcpy(lnkid->init_sta, init_addr, ETH_ALEN);
+ 	memcpy(lnkid->resp_sta, rsp_addr, ETH_ALEN);
+ }
+@@ -545,7 +545,6 @@ ieee80211_tdls_add_setup_cfm_ies(struct ieee80211_sub_if_data *sdata,
+ 				 size_t extra_ies_len)
+ {
+ 	struct ieee80211_local *local = sdata->local;
+-	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	size_t offset = 0, noffset;
+ 	struct sta_info *sta, *ap_sta;
+ 	struct ieee80211_supported_band *sband;
+@@ -558,7 +557,7 @@ ieee80211_tdls_add_setup_cfm_ies(struct ieee80211_sub_if_data *sdata,
+ 	mutex_lock(&local->sta_mtx);
+ 
+ 	sta = sta_info_get(sdata, peer);
+-	ap_sta = sta_info_get(sdata, ifmgd->bssid);
++	ap_sta = sta_info_get(sdata, sdata->deflink.u.mgd.bssid);
+ 	if (WARN_ON_ONCE(!sta || !ap_sta)) {
+ 		mutex_unlock(&local->sta_mtx);
+ 		return;
+@@ -833,7 +832,7 @@ ieee80211_prep_tdls_direct(struct wiphy *wiphy, struct net_device *dev,
+ 	mgmt = skb_put_zero(skb, 24);
+ 	memcpy(mgmt->da, peer, ETH_ALEN);
+ 	memcpy(mgmt->sa, sdata->vif.addr, ETH_ALEN);
+-	memcpy(mgmt->bssid, sdata->u.mgd.bssid, ETH_ALEN);
++	memcpy(mgmt->bssid, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 
+ 	mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
+ 					  IEEE80211_STYPE_ACTION);
+@@ -1072,7 +1071,8 @@ ieee80211_tdls_mgmt_setup(struct wiphy *wiphy, struct net_device *dev,
+ {
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+ 	struct ieee80211_local *local = sdata->local;
+-	enum ieee80211_smps_mode smps_mode = sdata->u.mgd.driver_smps_mode;
++	enum ieee80211_smps_mode smps_mode =
++		sdata->deflink.u.mgd.driver_smps_mode;
+ 	int ret;
+ 
+ 	/* don't support setup with forced SMPS mode that's not off */
+@@ -1431,7 +1431,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+ 
+ 	if (ret == 0)
+ 		ieee80211_queue_work(&sdata->local->hw,
+-				     &sdata->u.mgd.request_smps_work);
++				     &sdata->deflink.u.mgd.request_smps_work);
+ 
+ 	mutex_unlock(&local->mtx);
+ 	sdata_unlock(sdata);
 diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index e5edc6fd21c0..a4270e9ec10e 100644
+index a4270e9ec10e..8530363b2666 100644
 --- a/net/mac80211/tx.c
 +++ b/net/mac80211/tx.c
-@@ -5381,7 +5381,7 @@ struct sk_buff *ieee80211_pspoll_get(struct ieee80211_hw *hw,
- 	pspoll = skb_put_zero(skb, sizeof(*pspoll));
- 	pspoll->frame_control = cpu_to_le16(IEEE80211_FTYPE_CTL |
- 					    IEEE80211_STYPE_PSPOLL);
--	pspoll->aid = cpu_to_le16(sdata->vif.bss_conf.aid);
-+	pspoll->aid = cpu_to_le16(sdata->vif.cfg.aid);
+@@ -593,15 +593,15 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
+ 	    (key = rcu_dereference(tx->sta->ptk[tx->sta->ptk_idx])))
+ 		tx->key = key;
+ 	else if (ieee80211_is_group_privacy_action(tx->skb) &&
+-		(key = rcu_dereference(tx->sdata->default_multicast_key)))
++		(key = rcu_dereference(tx->sdata->deflink.default_multicast_key)))
+ 		tx->key = key;
+ 	else if (ieee80211_is_mgmt(hdr->frame_control) &&
+ 		 is_multicast_ether_addr(hdr->addr1) &&
+ 		 ieee80211_is_robust_mgmt_frame(tx->skb) &&
+-		 (key = rcu_dereference(tx->sdata->default_mgmt_key)))
++		 (key = rcu_dereference(tx->sdata->deflink.default_mgmt_key)))
+ 		tx->key = key;
+ 	else if (is_multicast_ether_addr(hdr->addr1) &&
+-		 (key = rcu_dereference(tx->sdata->default_multicast_key)))
++		 (key = rcu_dereference(tx->sdata->deflink.default_multicast_key)))
+ 		tx->key = key;
+ 	else if (!is_multicast_ether_addr(hdr->addr1) &&
+ 		 (key = rcu_dereference(tx->sdata->default_unicast_key)))
+@@ -2477,7 +2477,7 @@ int ieee80211_lookup_ra_sta(struct ieee80211_sub_if_data *sdata,
  
+ 		}
+ 
+-		sta = sta_info_get(sdata, sdata->u.mgd.bssid);
++		sta = sta_info_get(sdata, sdata->deflink.u.mgd.bssid);
+ 		if (!sta)
+ 			return -ENOLINK;
+ 		break;
+@@ -2712,14 +2712,14 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
+ 			/* DA SA BSSID */
+ 			memcpy(hdr.addr1, skb->data, ETH_ALEN);
+ 			memcpy(hdr.addr2, skb->data + ETH_ALEN, ETH_ALEN);
+-			memcpy(hdr.addr3, sdata->u.mgd.bssid, ETH_ALEN);
++			memcpy(hdr.addr3, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 			hdrlen = 24;
+ 		}  else if (sdata->u.mgd.use_4addr &&
+ 			    cpu_to_be16(ethertype) != sdata->control_port_protocol) {
+ 			fc |= cpu_to_le16(IEEE80211_FCTL_FROMDS |
+ 					  IEEE80211_FCTL_TODS);
+ 			/* RA TA DA SA */
+-			memcpy(hdr.addr1, sdata->u.mgd.bssid, ETH_ALEN);
++			memcpy(hdr.addr1, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 			memcpy(hdr.addr2, sdata->vif.addr, ETH_ALEN);
+ 			memcpy(hdr.addr3, skb->data, ETH_ALEN);
+ 			memcpy(hdr.addr4, skb->data + ETH_ALEN, ETH_ALEN);
+@@ -2727,7 +2727,7 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
+ 		} else {
+ 			fc |= cpu_to_le16(IEEE80211_FCTL_TODS);
+ 			/* BSSID SA DA */
+-			memcpy(hdr.addr1, sdata->u.mgd.bssid, ETH_ALEN);
++			memcpy(hdr.addr1, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 			memcpy(hdr.addr2, skb->data + ETH_ALEN, ETH_ALEN);
+ 			memcpy(hdr.addr3, skb->data, ETH_ALEN);
+ 			hdrlen = 24;
+@@ -3004,7 +3004,7 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
+ 			/* DA SA BSSID */
+ 			build.da_offs = offsetof(struct ieee80211_hdr, addr1);
+ 			build.sa_offs = offsetof(struct ieee80211_hdr, addr2);
+-			memcpy(hdr->addr3, sdata->u.mgd.bssid, ETH_ALEN);
++			memcpy(hdr->addr3, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 			build.hdr_len = 24;
+ 			break;
+ 		}
+@@ -3014,7 +3014,7 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
+ 			fc |= cpu_to_le16(IEEE80211_FCTL_FROMDS |
+ 					  IEEE80211_FCTL_TODS);
+ 			/* RA TA DA SA */
+-			memcpy(hdr->addr1, sdata->u.mgd.bssid, ETH_ALEN);
++			memcpy(hdr->addr1, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 			memcpy(hdr->addr2, sdata->vif.addr, ETH_ALEN);
+ 			build.da_offs = offsetof(struct ieee80211_hdr, addr3);
+ 			build.sa_offs = offsetof(struct ieee80211_hdr, addr4);
+@@ -3023,7 +3023,7 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
+ 		}
+ 		fc |= cpu_to_le16(IEEE80211_FCTL_TODS);
+ 		/* BSSID SA DA */
+-		memcpy(hdr->addr1, sdata->u.mgd.bssid, ETH_ALEN);
++		memcpy(hdr->addr1, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 		build.da_offs = offsetof(struct ieee80211_hdr, addr3);
+ 		build.sa_offs = offsetof(struct ieee80211_hdr, addr2);
+ 		build.hdr_len = 24;
+@@ -3250,7 +3250,7 @@ static bool ieee80211_amsdu_prepare_head(struct ieee80211_sub_if_data *sdata,
+ 	 */
+ 	switch (sdata->vif.type) {
+ 	case NL80211_IFTYPE_STATION:
+-		bssid = sdata->u.mgd.bssid;
++		bssid = sdata->deflink.u.mgd.bssid;
+ 		break;
+ 	case NL80211_IFTYPE_AP:
+ 	case NL80211_IFTYPE_AP_VLAN:
+@@ -4804,7 +4804,7 @@ static void ieee80211_set_beacon_cntdwn(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	rcu_read_lock();
+-	resp = rcu_dereference(sdata->u.ap.probe_resp);
++	resp = rcu_dereference(sdata->deflink.u.ap.probe_resp);
+ 
+ 	bcn_offsets = beacon->cntdwn_counter_offsets;
+ 	count = beacon->cntdwn_current_counter;
+@@ -4848,7 +4848,7 @@ u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif)
+ 	rcu_read_lock();
+ 
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP)
+-		beacon = rcu_dereference(sdata->u.ap.beacon);
++		beacon = rcu_dereference(sdata->deflink.u.ap.beacon);
+ 	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
+ 		beacon = rcu_dereference(sdata->u.ibss.presp);
+ 	else if (ieee80211_vif_is_mesh(&sdata->vif))
+@@ -4873,7 +4873,7 @@ void ieee80211_beacon_set_cntdwn(struct ieee80211_vif *vif, u8 counter)
+ 	rcu_read_lock();
+ 
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP)
+-		beacon = rcu_dereference(sdata->u.ap.beacon);
++		beacon = rcu_dereference(sdata->deflink.u.ap.beacon);
+ 	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
+ 		beacon = rcu_dereference(sdata->u.ibss.presp);
+ 	else if (ieee80211_vif_is_mesh(&sdata->vif))
+@@ -4903,9 +4903,7 @@ bool ieee80211_beacon_cntdwn_is_complete(struct ieee80211_vif *vif)
+ 
+ 	rcu_read_lock();
+ 	if (vif->type == NL80211_IFTYPE_AP) {
+-		struct ieee80211_if_ap *ap = &sdata->u.ap;
+-
+-		beacon = rcu_dereference(ap->beacon);
++		beacon = rcu_dereference(sdata->deflink.u.ap.beacon);
+ 		if (WARN_ON(!beacon || !beacon->tail))
+ 			goto out;
+ 		beacon_data = beacon->tail;
+@@ -4958,7 +4956,7 @@ static int ieee80211_beacon_protect(struct sk_buff *skb,
+ 	struct sk_buff *check_skb;
+ 
+ 	memset(&tx, 0, sizeof(tx));
+-	tx.key = rcu_dereference(sdata->default_beacon_key);
++	tx.key = rcu_dereference(sdata->deflink.default_beacon_key);
+ 	if (!tx.key)
+ 		return 0;
+ 	tx.local = local;
+@@ -5128,9 +5126,7 @@ __ieee80211_beacon_get(struct ieee80211_hw *hw,
+ 		memset(offs, 0, sizeof(*offs));
+ 
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP) {
+-		struct ieee80211_if_ap *ap = &sdata->u.ap;
+-
+-		beacon = rcu_dereference(ap->beacon);
++		beacon = rcu_dereference(sdata->deflink.u.ap.beacon);
+ 		if (!beacon)
+ 			goto out;
+ 
+@@ -5268,7 +5264,6 @@ EXPORT_SYMBOL(ieee80211_beacon_get_tim);
+ struct sk_buff *ieee80211_proberesp_get(struct ieee80211_hw *hw,
+ 					struct ieee80211_vif *vif)
+ {
+-	struct ieee80211_if_ap *ap = NULL;
+ 	struct sk_buff *skb = NULL;
+ 	struct probe_resp *presp = NULL;
+ 	struct ieee80211_hdr *hdr;
+@@ -5278,9 +5273,7 @@ struct sk_buff *ieee80211_proberesp_get(struct ieee80211_hw *hw,
+ 		return NULL;
+ 
+ 	rcu_read_lock();
+-
+-	ap = &sdata->u.ap;
+-	presp = rcu_dereference(ap->probe_resp);
++	presp = rcu_dereference(sdata->deflink.u.ap.probe_resp);
+ 	if (!presp)
+ 		goto out;
+ 
+@@ -5310,7 +5303,7 @@ struct sk_buff *ieee80211_get_fils_discovery_tmpl(struct ieee80211_hw *hw,
+ 		return NULL;
+ 
+ 	rcu_read_lock();
+-	tmpl = rcu_dereference(sdata->u.ap.fils_discovery);
++	tmpl = rcu_dereference(sdata->deflink.u.ap.fils_discovery);
+ 	if (!tmpl) {
+ 		rcu_read_unlock();
+ 		return NULL;
+@@ -5339,7 +5332,7 @@ ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
+ 		return NULL;
+ 
+ 	rcu_read_lock();
+-	tmpl = rcu_dereference(sdata->u.ap.unsol_bcast_probe_resp);
++	tmpl = rcu_dereference(sdata->deflink.u.ap.unsol_bcast_probe_resp);
+ 	if (!tmpl) {
+ 		rcu_read_unlock();
+ 		return NULL;
+@@ -5360,7 +5353,6 @@ struct sk_buff *ieee80211_pspoll_get(struct ieee80211_hw *hw,
+ 				     struct ieee80211_vif *vif)
+ {
+ 	struct ieee80211_sub_if_data *sdata;
+-	struct ieee80211_if_managed *ifmgd;
+ 	struct ieee80211_pspoll *pspoll;
+ 	struct ieee80211_local *local;
+ 	struct sk_buff *skb;
+@@ -5369,7 +5361,6 @@ struct sk_buff *ieee80211_pspoll_get(struct ieee80211_hw *hw,
+ 		return NULL;
+ 
+ 	sdata = vif_to_sdata(vif);
+-	ifmgd = &sdata->u.mgd;
+ 	local = sdata->local;
+ 
+ 	skb = dev_alloc_skb(local->hw.extra_tx_headroom + sizeof(*pspoll));
+@@ -5386,7 +5377,7 @@ struct sk_buff *ieee80211_pspoll_get(struct ieee80211_hw *hw,
  	/* aid in PS-Poll has its two MSBs each set to 1 */
  	pspoll->aid |= cpu_to_le16(1 << 15 | 1 << 14);
+ 
+-	memcpy(pspoll->bssid, ifmgd->bssid, ETH_ALEN);
++	memcpy(pspoll->bssid, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 	memcpy(pspoll->ta, vif->addr, ETH_ALEN);
+ 
+ 	return skb;
+@@ -5399,7 +5390,6 @@ struct sk_buff *ieee80211_nullfunc_get(struct ieee80211_hw *hw,
+ {
+ 	struct ieee80211_hdr_3addr *nullfunc;
+ 	struct ieee80211_sub_if_data *sdata;
+-	struct ieee80211_if_managed *ifmgd;
+ 	struct ieee80211_local *local;
+ 	struct sk_buff *skb;
+ 	bool qos = false;
+@@ -5408,14 +5398,13 @@ struct sk_buff *ieee80211_nullfunc_get(struct ieee80211_hw *hw,
+ 		return NULL;
+ 
+ 	sdata = vif_to_sdata(vif);
+-	ifmgd = &sdata->u.mgd;
+ 	local = sdata->local;
+ 
+ 	if (qos_ok) {
+ 		struct sta_info *sta;
+ 
+ 		rcu_read_lock();
+-		sta = sta_info_get(sdata, ifmgd->bssid);
++		sta = sta_info_get(sdata, sdata->deflink.u.mgd.bssid);
+ 		qos = sta && sta->sta.wme;
+ 		rcu_read_unlock();
+ 	}
+@@ -5444,9 +5433,9 @@ struct sk_buff *ieee80211_nullfunc_get(struct ieee80211_hw *hw,
+ 		skb_put_data(skb, &qoshdr, sizeof(qoshdr));
+ 	}
+ 
+-	memcpy(nullfunc->addr1, ifmgd->bssid, ETH_ALEN);
++	memcpy(nullfunc->addr1, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 	memcpy(nullfunc->addr2, vif->addr, ETH_ALEN);
+-	memcpy(nullfunc->addr3, ifmgd->bssid, ETH_ALEN);
++	memcpy(nullfunc->addr3, sdata->deflink.u.mgd.bssid, ETH_ALEN);
+ 
+ 	return skb;
+ }
+@@ -5543,7 +5532,7 @@ ieee80211_get_buffered_bc(struct ieee80211_hw *hw,
+ 
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP) {
+ 		struct beacon_data *beacon =
+-				rcu_dereference(sdata->u.ap.beacon);
++				rcu_dereference(sdata->deflink.u.ap.beacon);
+ 
+ 		if (!beacon || !beacon->head)
+ 			goto out;
 diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 48d8f0aad69f..dccc757baab2 100644
+index dccc757baab2..9cbc09e6d84e 100644
 --- a/net/mac80211/util.c
 +++ b/net/mac80211/util.c
-@@ -2496,7 +2496,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 		case NL80211_IFTYPE_MONITOR:
- 			break;
- 		case NL80211_IFTYPE_ADHOC:
--			if (sdata->vif.bss_conf.ibss_joined)
-+			if (sdata->vif.cfg.ibss_joined)
- 				WARN_ON(drv_join_ibss(local, sdata));
+@@ -2533,7 +2533,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 				   BSS_CHANGED_PS;
+ 
+ 			/* Re-send beacon info report to the driver */
+-			if (sdata->u.mgd.have_beacon)
++			if (sdata->deflink.u.mgd.have_beacon)
+ 				changed |= BSS_CHANGED_BEACON_INFO;
+ 
+ 			if (sdata->vif.bss_conf.max_idle_period ||
+@@ -2562,7 +2562,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 			if (sdata->vif.type == NL80211_IFTYPE_AP) {
+ 				changed |= BSS_CHANGED_AP_PROBE_RESP;
+ 
+-				if (rcu_access_pointer(sdata->u.ap.beacon))
++				if (rcu_access_pointer(sdata->deflink.u.ap.beacon))
+ 					drv_start_ap(local, sdata);
+ 			}
  			fallthrough;
- 		default:
+@@ -3041,7 +3041,7 @@ void ieee80211_ie_build_he_6ghz_cap(struct ieee80211_sub_if_data *sdata,
+ 	cap = le16_to_cpu(iftd->he_6ghz_capa.capa);
+ 	cap &= ~IEEE80211_HE_6GHZ_CAP_SM_PS;
+ 
+-	switch (sdata->smps_mode) {
++	switch (sdata->deflink.smps_mode) {
+ 	case IEEE80211_SMPS_AUTOMATIC:
+ 	case IEEE80211_SMPS_NUM_MODES:
+ 		WARN_ON(1);
+@@ -3775,13 +3775,11 @@ int ieee80211_add_ext_srates_ie(struct ieee80211_sub_if_data *sdata,
+ int ieee80211_ave_rssi(struct ieee80211_vif *vif)
+ {
+ 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
+-	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 
+-	if (WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_STATION)) {
+-		/* non-managed type inferfaces */
++	if (WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_STATION))
+ 		return 0;
+-	}
+-	return -ewma_beacon_signal_read(&ifmgd->ave_beacon_signal);
++
++	return -ewma_beacon_signal_read(&sdata->deflink.u.mgd.ave_beacon_signal);
+ }
+ EXPORT_SYMBOL_GPL(ieee80211_ave_rssi);
+ 
+@@ -3973,7 +3971,7 @@ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local)
+ 		 * by the time it gets it, sdata->wdev.cac_started
+ 		 * will no longer be true
+ 		 */
+-		cancel_delayed_work(&sdata->dfs_cac_timer_work);
++		cancel_delayed_work(&sdata->deflink.dfs_cac_timer_work);
+ 
+ 		if (sdata->wdev.cac_started) {
+ 			chandef = sdata->vif.bss_conf.chandef;
+@@ -4412,8 +4410,8 @@ static u8 ieee80211_chanctx_radar_detect(struct ieee80211_local *local,
+ 		return 0;
+ 
+ 	list_for_each_entry(sdata, &ctx->reserved_vifs, reserved_chanctx_list)
+-		if (sdata->reserved_radar_required)
+-			radar_detect |= BIT(sdata->reserved_chandef.width);
++		if (sdata->deflink.reserved_radar_required)
++			radar_detect |= BIT(sdata->deflink.reserved_chandef.width);
+ 
+ 	/*
+ 	 * An in-place reservation context should not have any assigned vifs
+@@ -4423,7 +4421,7 @@ static u8 ieee80211_chanctx_radar_detect(struct ieee80211_local *local,
+ 		!list_empty(&ctx->assigned_vifs));
+ 
+ 	list_for_each_entry(sdata, &ctx->assigned_vifs, assigned_chanctx_list)
+-		if (sdata->radar_required)
++		if (sdata->deflink.radar_required)
+ 			radar_detect |= BIT(sdata->vif.bss_conf.chandef.width);
+ 
+ 	return radar_detect;
+diff --git a/net/mac80211/wme.c b/net/mac80211/wme.c
+index 62c6733e0792..f4c9c9498e91 100644
+--- a/net/mac80211/wme.c
++++ b/net/mac80211/wme.c
+@@ -210,7 +210,7 @@ u16 ieee80211_select_queue(struct ieee80211_sub_if_data *sdata,
+ 		if (sta)
+ 			break;
+ 
+-		ra = sdata->u.mgd.bssid;
++		ra = sdata->deflink.u.mgd.bssid;
+ 		break;
+ 	case NL80211_IFTYPE_ADHOC:
+ 		ra = skb->data;
 -- 
 2.36.1
 
