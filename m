@@ -2,28 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C82FC52E56A
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 May 2022 08:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A470752E5E3
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 May 2022 09:08:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345919AbiETGyt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 May 2022 02:54:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50254 "EHLO
+        id S1345521AbiETHII (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 May 2022 03:08:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232991AbiETGyr (ORCPT
+        with ESMTP id S1344021AbiETHIG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 May 2022 02:54:47 -0400
+        Fri, 20 May 2022 03:08:06 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EE7614E2E8
-        for <linux-wireless@vger.kernel.org>; Thu, 19 May 2022 23:54:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB03414CDEE
+        for <linux-wireless@vger.kernel.org>; Fri, 20 May 2022 00:08:05 -0700 (PDT)
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <sha@pengutronix.de>)
-        id 1nrwWy-00071N-Bi; Fri, 20 May 2022 08:54:36 +0200
+        id 1nrwjr-0000vr-10; Fri, 20 May 2022 09:07:55 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
         (envelope-from <sha@pengutronix.de>)
-        id 1nrwWx-0006qD-69; Fri, 20 May 2022 08:54:35 +0200
-Date:   Fri, 20 May 2022 08:54:35 +0200
+        id 1nrwjp-0008KI-GX; Fri, 20 May 2022 09:07:53 +0200
+Date:   Fri, 20 May 2022 09:07:53 +0200
 From:   "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
 To:     Pkshih <pkshih@realtek.com>
 Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
@@ -37,22 +37,22 @@ Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         <martin.blumenstingl@googlemail.com>,
         "linux@ulli-kroll.de" <linux@ulli-kroll.de>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH 02/10] rtw88: Drop rf_lock
-Message-ID: <20220520065435.GB25578@pengutronix.de>
+Subject: Re: [PATCH 05/10] rtw88: Do not access registers while atomic
+Message-ID: <20220520070753.GC25578@pengutronix.de>
 References: <20220518082318.3898514-1-s.hauer@pengutronix.de>
- <20220518082318.3898514-3-s.hauer@pengutronix.de>
- <af80039404cb3eb9dd036ab5734ddea95d31cf49.camel@realtek.com>
+ <20220518082318.3898514-6-s.hauer@pengutronix.de>
+ <e33aaa2ab60e04d3449273e117ca73acb3895ed3.camel@realtek.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <af80039404cb3eb9dd036ab5734ddea95d31cf49.camel@realtek.com>
+In-Reply-To: <e33aaa2ab60e04d3449273e117ca73acb3895ed3.camel@realtek.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL:  http://www.pengutronix.de/
 X-IRC:  #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 08:45:02 up 50 days, 19:14, 44 users,  load average: 0.02, 0.06,
- 0.07
+X-Uptime: 09:05:18 up 50 days, 19:34, 45 users,  load average: 0.35, 0.29,
+ 0.19
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
 X-SA-Exim-Mail-From: sha@pengutronix.de
@@ -67,70 +67,63 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 20, 2022 at 03:49:06AM +0000, Pkshih wrote:
+On Fri, May 20, 2022 at 06:06:05AM +0000, Pkshih wrote:
 > On Wed, 2022-05-18 at 10:23 +0200, Sascha Hauer wrote:
-> > The rtwdev->rf_lock spinlock protects the rf register accesses in
-> > rtw_read_rf() and rtw_write_rf(). Most callers of these functions hold
-> > rtwdev->mutex already with the exception of the callsites in the debugfs
-> > code. The debugfs code doesn't justify an extra lock, so acquire the mutex
-> > there as well before calling rf register accessors and drop the now
-> > unnecessary spinlock.
+> > The driver uses ieee80211_iterate_active_interfaces_atomic()
+> > and ieee80211_iterate_stations_atomic() in several places and does
+> > register accesses in the iterators. This doesn't cope with upcoming
+>                                            ^^^^^^^ does?
+> > USB support as registers can only be accessed non-atomically.
 > > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  drivers/net/wireless/realtek/rtw88/debug.c | 11 +++++++++++
-> >  drivers/net/wireless/realtek/rtw88/hci.h   |  9 +++------
-> >  drivers/net/wireless/realtek/rtw88/main.c  |  1 -
-> >  drivers/net/wireless/realtek/rtw88/main.h  |  3 ---
-> >  4 files changed, 14 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/realtek/rtw88/debug.c
-> > b/drivers/net/wireless/realtek/rtw88/debug.c
-> > index 1a52ff585fbc7..ba5ba852efb8c 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/debug.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/debug.c
-> > 
+> > Split these into a two stage process: First use the atomic iterator
+> > functions to collect all active interfaces or stations on a list, then
+> > iterate over the list non-atomically and call the iterator on each
+> > entry.
+> 
+> I think the subject could be "iterate over vif/sta list non-atomically"
+
+Ok.
+
+> > +void rtw_iterate_stas(struct rtw_dev *rtwdev,
+> > +		      void (*iterator)(void *data,
+> > +				       struct ieee80211_sta *sta),
+> > +				       void *data)
+> > +{
+> > +	struct rtw_iter_stas_data iter_data;
+> > +	struct rtw_stas_entry *sta_entry, *tmp;
+> 
+> lockdep_assert_held(&rtwdev->mutex);
+> 
+> > +
+> > +	iter_data.rtwdev = rtwdev;
+> > +	INIT_LIST_HEAD(&iter_data.list);
+> > +
+> > +	ieee80211_iterate_stations_atomic(rtwdev->hw, rtw_collect_sta_iter,
+> > +					  &iter_data);
+> > +
+> > +	list_for_each_entry_safe(sta_entry, tmp, &iter_data.list,
+> > +				 list) {
+> > +		list_del_init(&sta_entry->list);
+> > +		iterator(data, sta_entry->sta);
+> > +		kfree(sta_entry);
+> > +	}
+> > +}
+> > +
 > 
 > [...]
 > 
-> > @@ -523,6 +527,8 @@ static int rtw_debug_get_rf_dump(struct seq_file *m, void *v)
-> >  	u32 addr, offset, data;
-> >  	u8 path;
-> >  
-> > +	mutex_lock(&rtwdev->mutex);
-> > +
-> >  	for (path = 0; path < rtwdev->hal.rf_path_num; path++) {
-> >  		seq_printf(m, "RF path:%d\n", path);
-> >  		for (addr = 0; addr < 0x100; addr += 4) {
-> > @@ -537,6 +543,8 @@ static int rtw_debug_get_rf_dump(struct seq_file *m, void *v)
-> >  		seq_puts(m, "\n");
-> >  	}
-> >  
-> > +	mutex_unlock(&rtwdev->mutex);
-> > +
-> >  	return 0;
-> >  }
-> > 
+> > +void rtw_iterate_vifs(struct rtw_dev *rtwdev,
+> > +		      void (*iterator)(void *data, u8 *mac,
+> > +				       struct ieee80211_vif *vif),
+> > +		      void *data)
+> > +{
+> > +	struct rtw_iter_vifs_data iter_data;
+> > +	struct rtw_vifs_entry *vif_entry, *tmp;
 > 
-> This will take time to dump all RF registers for debugging
-> purpose. For PCI interface, I think this would be okay.
-> Could you try to dump registers via debufs while you are
-> using a USB WiFi device, such as play Youtube or download files...
+> lockdep_assert_held(&rtwdev->mutex);
 
-I just did a ping and iperf test while doing a:
-
-while true; do cat /sys/kernel/debug/ieee80211/phy0/rtw88/rf_dump ; done
-
-The register dumping has no influence on neither the throughput or the
-latency.
-
-Adding some debugging to the mutex_lock also tells why: rtwdev->mutex
-isn't acquired for normal rx/tx. It is only acquired every two seconds
-or so.
-
-So I would say adding the mutex_lock around the register dump is not a
-problem. If latency is a concern we could still move the mutex_lock()
-into the loop.
+Ok, will add these. For what it's worth they didn't trigger in a short
+test.
 
 Sascha
 
