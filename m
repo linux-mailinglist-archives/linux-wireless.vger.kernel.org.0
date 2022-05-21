@@ -2,43 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8395652FE97
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 May 2022 19:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6C3D52FEA8
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 May 2022 19:54:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245194AbiEURcx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 May 2022 13:32:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34470 "EHLO
+        id S239119AbiEURxy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 May 2022 13:53:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236589AbiEURcw (ORCPT
+        with ESMTP id S233987AbiEURxv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 May 2022 13:32:52 -0400
-Received: from p-impout001.msg.pkvw.co.charter.net (p-impout010aa.msg.pkvw.co.charter.net [47.43.26.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 789F152E45
-        for <linux-wireless@vger.kernel.org>; Sat, 21 May 2022 10:32:51 -0700 (PDT)
-Received: from 2603-8090-2005-39b3-0000-0000-0000-100e.res6.spectrum.com.com ([24.31.246.181])
-        by cmsmtp with ESMTP
-        id sSy9npnEsHQLKsSy9ntM6h; Sat, 21 May 2022 17:32:50 +0000
-X-Authority-Analysis: v=2.4 cv=FcIkeby6 c=1 sm=1 tr=0 ts=62892242
- a=cAe/7qmlxnd6JlJqP68I9A==:117 a=cAe/7qmlxnd6JlJqP68I9A==:17 a=yQdBAQUQAAAA:8
- a=DY4fc44Ji0MHZCRQ1l4A:9 a=SzazLyfi1tnkUD6oumHU:22
-From:   Larry Finger <Larry.Finger@lwfinger.net>
+        Sat, 21 May 2022 13:53:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C4D430563;
+        Sat, 21 May 2022 10:53:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 76D9460DBB;
+        Sat, 21 May 2022 17:53:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8679FC385A5;
+        Sat, 21 May 2022 17:53:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653155628;
+        bh=WwJ0Klea9YYR9cQCsY3YH4X/9vxjCNFz617ym6nPn7M=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=a2l1DZCpMf1fDVGl985fu8cUJQQDoXxmHCUp0DrHih2z5/orxMc861fqX1FknFuO0
+         mmfb6trXNOmbpWTHD9Hia9J/WqE0miORv5ec7lMEi+8oWgCcM4BAbc97uSYGoupPgB
+         wn9Hg8eyi8/HqnJ58u4hhQb5W7rQQ8rRtb1DEeAiuwI1VvF868RJHNQUXjjVf1w3ye
+         unwD0Cn2LwomzDRwQYbIf0ofnIRkzZPyc6zK3U2saBSJCnpQNx+NngCDWQ2pGF8/XE
+         N82WpQwj42VOOXAsdmNfD8dY5MDnoG/VUD2WlzmkoAdbU8qguSAW6ZQ9k8ppKvrCxV
+         aOrPNMAIx/aEg==
+Date:   Sat, 21 May 2022 10:53:47 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
 To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH v2 4/4] rtw88: Make rtw8821c_hw_spec be static
-Date:   Sat, 21 May 2022 12:32:45 -0500
-Message-Id: <20220521173245.11463-1-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.36.1
+Cc:     johannes@sipsolutions.net, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, toke@toke.dk,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH net-next 2/8] wifi: ath9k: silence array-bounds warning
+ on GCC 12
+Message-ID: <20220521105347.39cac555@kernel.org>
+In-Reply-To: <87h75j1iej.fsf@kernel.org>
+References: <20220520194320.2356236-1-kuba@kernel.org>
+        <20220520194320.2356236-3-kuba@kernel.org>
+        <87h75j1iej.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfIx3QmqnvxU6BTolkQ33n7Q+rvJgltbMF6/WxbeJWheURCWPl+gHOpVgIb/cFHDNO8WQ/zuG4k4yXC00/rMVepcUI7Q+Ik9PP9C3Hn6QBnp1QfNAGupQ
- b08y6g3y6mfh0hJiCc2gD7bG/+PXy4MN6wMLidV9rrYKwcEQed98dyJAonURgAZdETchGAjpB3fIZwqityzIvFZgOvnwUtk9p8PJhfhJX/yXr4TM2a/6DqBf
- Z4czoZdax8n1q1GncKJdz4vxRb/hdt5EyL5J9xvQe+r6berR0HPvloHNusjCYBLHVMs+MbmQTgt2KQaTD5tNmG5Sk+yU6QEuODSjn8kKQ6P/znzNACZLMIsS
- zjVmzHlLqboq49zn6iancTxEBZXOANw0bTu73oiN7icvr64MGWA=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,31 +59,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sparse lists the following:
+On Sat, 21 May 2022 09:58:28 +0300 Kalle Valo wrote:
+> > +# FIXME: temporarily silence -Warray-bounds on non W=1+ builds
+> > +ifndef KBUILD_EXTRA_WARN
+> > +CFLAGS_mac.o += -Wno-array-bounds
+> > +endif  
+> 
+> There are now four wireless drivers which need this hack. Wouldn't it be
+> easier to add -Wno-array-bounds for GCC 12 globally instead of adding
+> the same hack to multiple drivers?
 
-  CHECK   drivers/net/wireless/realtek/rtw88/rtw8821c.c
-drivers/net/wireless/realtek/rtw88/rtw8821c.c:1880:22: warning: symbol 'rtw8821c_hw_spec' was not declared. Should it be static?
+I mean.. it's definitely a hack, I'm surprised more people aren't
+complaining. Kees was against disabling it everywhere, AFAIU:
 
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
----
-v2 - change subject as recommended by Kalle
----
- drivers/net/wireless/realtek/rtw88/rtw8821c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+https://lore.kernel.org/all/202204201117.F44DCF9@keescook/
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-index ffee39ea5df6..c0bfda189b99 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-@@ -1877,7 +1877,7 @@ static const struct rtw_reg_domain coex_info_hw_regs_8821c[] = {
- 	{0x60A, MASKBYTE0, RTW_REG_DOMAIN_MAC8},
- };
- 
--struct rtw_chip_info rtw8821c_hw_spec = {
-+static struct rtw_chip_info rtw8821c_hw_spec = {
- 	.ops = &rtw8821c_ops,
- 	.id = RTW_CHIP_TYPE_8821C,
- 	.fw_name = "rtw88/rtw8821c_fw.bin",
--- 
-2.36.1
+WiFi is a bit unfortunate but we only have 3 cases in the rest of
+networking so it's not _terribly_ common.
 
+IDK, I'd love to not see all the warnings every time someone touches
+netdevice.h :( I made a note to remove the workaround once GCC 12 gets
+its act together, that's the best I could come up with.
