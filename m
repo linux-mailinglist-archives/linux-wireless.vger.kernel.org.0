@@ -2,47 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 227BC52F90A
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 May 2022 07:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0515452F940
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 May 2022 08:32:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353898AbiEUFxG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 May 2022 01:53:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52600 "EHLO
+        id S1344176AbiEUGcq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 May 2022 02:32:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348003AbiEUFxG (ORCPT
+        with ESMTP id S229929AbiEUGcp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 May 2022 01:53:06 -0400
+        Sat, 21 May 2022 02:32:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78BEF195BE0
-        for <linux-wireless@vger.kernel.org>; Fri, 20 May 2022 22:53:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 906058BD32;
+        Fri, 20 May 2022 23:32:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F1A766090C
-        for <linux-wireless@vger.kernel.org>; Sat, 21 May 2022 05:53:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72668C385AA;
-        Sat, 21 May 2022 05:53:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A92760EE7;
+        Sat, 21 May 2022 06:32:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A612C385AA;
+        Sat, 21 May 2022 06:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653112384;
-        bh=vJKmSh5WZ8dXLCLJvcjtmFpNGAOZmJxwXJpODM9EzD8=;
+        s=k20201202; t=1653114763;
+        bh=efPk0p+UJo7cJytlqn2hlByqat6qgT2sqsmvczDyuOU=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=qf8ulcuUGFsjmhpeM+HeXQiBddPSOiKOq9RhYiYcW9i2MirTq7E80FeI60NkJgeId
-         FsCCyk3ZF/7fwdaf8A+xXMTx8N7Qul2cYDlC6ZTeo8cjXi/eB4SJlJ0inMS/PbFNX/
-         E2WJyfQmjSTovzYBvj0VMamKYGAbHeUAZYaYMdxdMQFotqv6xYOu9hbYTblOh3mxdK
-         7qCWoxGVHYY4RRN8pFJ1VWxkyaGzeuaIZKKzhD7+x4gUds0nVxycRTXhwCce1pao88
-         aKpWnYqEJ36mgT7Hk9h+4ghLyCrgFV23NhYj8F3VkcAH/nNsD5Nj+Plft3g4eOnS9l
-         S/gvflGPzcOOw==
+        b=eWo/ItEBDBK0OihZ+HzktBCA5tpCrqzI4ghXzoycnIn0buMzK34JtPjbEQiy7Ttej
+         JkAEwYJVSbdOhuO9VlFZuZeIaKerTn529eE2zPBqjYSSeup4eEH5vEDw/gsvCi79Jl
+         cf7gAnzcr8Q3LhGtgUj7Q6O33x8WAvQC4p4SIBHtoCJPfY8YnQ+Km7/RVDJfLtouFB
+         jVx/RoGxb4LnXuawOOE6eezWRlPckH6jYcKTcjDXPidld2vHjymWAtiG3B0ltTlD9D
+         Osbh8C1ZlPOP7kd4ER31LdlSGlVHV/QFpsDMvy7xJ9SFVLxgNSpXND7yxnLDvXur75
+         nHyH3teb/klOw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: [PATCH 1/4] rtw88: Fix Sparse warning for rtw8822b
-References: <20220520184528.4078-1-Larry.Finger@lwfinger.net>
-        <20220520184528.4078-2-Larry.Finger@lwfinger.net>
-Date:   Sat, 21 May 2022 08:52:58 +0300
-In-Reply-To: <20220520184528.4078-2-Larry.Finger@lwfinger.net> (Larry Finger's
-        message of "Fri, 20 May 2022 13:45:25 -0500")
-Message-ID: <87mtfbwhxh.fsf@kernel.org>
+To:     duoming@zju.edu.cn
+Cc:     "Jeff Johnson" <quic_jjohnson@quicinc.com>,
+        linux-kernel@vger.kernel.org, amitkarwar@gmail.com,
+        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
+        huxinming820@gmail.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH net v2] net: wireless: marvell: mwifiex: fix sleep in atomic context bugs
+References: <20220519135345.109936-1-duoming@zju.edu.cn>
+        <87zgjd1sd4.fsf@kernel.org>
+        <699e56d5.22006.180dce26e02.Coremail.duoming@zju.edu.cn>
+        <18852332-ee42-ef7e-67a3-bbd91a6694ba@quicinc.com>
+        <4e778cb1.22654.180decbcb8e.Coremail.duoming@zju.edu.cn>
+        <ec16c0b5-b8c7-3bd1-e733-f054ec3c2cd1@quicinc.com>
+        <ed03525.253c1.180e4a21950.Coremail.duoming@zju.edu.cn>
+Date:   Sat, 21 May 2022 09:32:37 +0300
+In-Reply-To: <ed03525.253c1.180e4a21950.Coremail.duoming@zju.edu.cn>
+        (duoming's message of "Sat, 21 May 2022 11:21:10 +0800 (GMT+08:00)")
+Message-ID: <87ilpzwg3e.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -56,37 +65,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Larry Finger <Larry.Finger@lwfinger.net> writes:
+duoming@zju.edu.cn writes:
 
-> Sparse lists the following for rtw88:
+> Hello,
 >
->   CHECK   drivers/net/wireless/realtek/rtw88/rtw8822b.c
-> drivers/net/wireless/realtek/rtw88/rtw8822b.c:2500:22: warning: symbol 'rtw8822b_hw_spec' was not declared. Should it be static?
+> On Fri, 20 May 2022 09:08:52 -0700 Jeff Johnson wrote:
 >
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-
-It's good to try to make title's unique, so maybe something like this:
-
-rtw88: make rtw8822b_hw_spec static
-
-> ---
->  drivers/net/wireless/realtek/rtw88/rtw8822b.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>> >>>>> There are sleep in atomic context bugs when uploading device dump
+>> >>>>> data on usb interface. The root cause is that the operations that
+>> >>>>> may sleep are called in fw_dump_timer_fn which is a timer handler.
+>> >>>>> The call tree shows the execution paths that could lead to bugs:
+>> >>>>>
+>> >>>>>      (Interrupt context)
+>> >>>>> fw_dump_timer_fn
+>> >>>>>     mwifiex_upload_device_dump
+>> >>>>>       dev_coredumpv(..., GFP_KERNEL)
+>> >>
+>> >> just looking at this description, why isn't the simple fix just to
+>> >> change this call to use GFP_ATOMIC?
+>> > 
+>> > Because change the parameter of dev_coredumpv() to GFP_ATOMIC could only solve
+>> > partial problem. The following GFP_KERNEL parameters are in /lib/kobject.c
+>> > which is not influenced by dev_coredumpv().
+>> > 
+>> >   kobject_set_name_vargs
+>> >     kvasprintf_const(GFP_KERNEL, ...); //may sleep
+>> >     kstrdup(s, GFP_KERNEL); //may sleep
+>> 
+>> Then it seems there is a problem with dev_coredumpm().
+>> 
+>> dev_coredumpm() takes a gfp param which means it expects to be called in 
+>> any context, but it then calls dev_set_name() which, as you point out, 
+>> cannot be called from an atomic context.
+>> 
+>> So if we cannot change the fact that dev_set_name() cannot be called 
+>> from an atomic context, then it would seem to follow that 
+>> dev_coredumpv also cannot be called from an atomic 
+>> context and hence their gfp param is pointless and should presumably be 
+>> removed.
 >
-> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-> index dccd722b8e62..60c4e75df035 100644
-> --- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-> +++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-> @@ -2497,7 +2497,7 @@ static struct rtw_hw_reg_offset rtw8822b_edcca_th[] = {
->  	[EDCCA_TH_H2L_IDX] = {{.addr = 0x8a4, .mask = MASKBYTE1}, .offset = 0},
->  };
->  
-> -struct rtw_chip_info rtw8822b_hw_spec = {
-> +static struct rtw_chip_info rtw8822b_hw_spec = {
+> Thanks for your time and suggestions! I think the gfp_t parameter of dev_coredumpv and
+> dev_coredumpm may not be removed, because it could be used to pass value to gfp_t
+> parameter of kzalloc in dev_coredumpm. What's more, there are also many other places
+> use dev_coredumpv and dev_coredumpm, if we remove the gfp_t parameter, there are too many
+> places that need to modify and these places are not in interrupt
+> context.
 
-This should be static const to make sure it's not modified.
+"Too many users" is not a valid reason to leave a bug in place, either
+dev_coredumpv() should support GFP_ATOMIC or the gfp_t parameter should
+be removed.
 
-Similar comments for other patches in this patchset.
+> There are two solutions now: one is to moves the operations that may
+> sleep into a work item.
+
+That does not fix the root cause that dev_coredumpv() claims it can be
+called in atomic contexts.
+
+> Another is to change the gfp_t parameter of dev_coredumpv from GFP_KERNEL to GFP_ATOMIC, and
+> change the gfp_t parameter of kvasprintf_const and kstrdup from GFP_KERNEL to 
+> "in_interrupt() ? GFP_ATOMIC : GFP_KERNEL".
+
+in_interrupt() is deprecated and should not be used. And I don't think
+it detects all atomic contexts like spinlocks.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
