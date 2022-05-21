@@ -2,45 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5640652FAE5
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 May 2022 13:12:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FBEA52FB41
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 May 2022 13:14:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244776AbiEULMQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 May 2022 07:12:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
+        id S1349253AbiEULOR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 May 2022 07:14:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242381AbiEULMD (ORCPT
+        with ESMTP id S1354936AbiEULM7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 May 2022 07:12:03 -0400
+        Sat, 21 May 2022 07:12:59 -0400
 Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78C452AE24;
-        Sat, 21 May 2022 04:12:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02B7E2AE22;
+        Sat, 21 May 2022 04:12:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=inria.fr; s=dc;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=9TaEFXjcNLICw/mDteFXy61oA1U1Jw505RhR4LQRyTI=;
-  b=d8yfTArbdsNkMYoGPetsmWowhEvlRXHM6DIL4ceckPEUd37PhGZtFQRJ
-   kZWG7TYrpZYh+yQWyTbkAHxfotigp30vGS3QZ5Da4EEnwrok1gz/Scrdk
-   zYS/e4Gvl4gouWFu7s77UHi9ADbf8QWnuH57qHNI3J/JuaKs8TfeCf6TS
-   8=;
+  bh=rMKMMl4ihKpnbEEt18X3rlVUd1mf+9F9wh4MmnsL4og=;
+  b=S5D4ZzoqiDR1hKQ8lyF25jk02dyp9KlyesV4iAmLzuQO7QQKbeE6PtZR
+   ml4eiOQwnq6dmtjybm/XuWywHezEaZ2orGYHSpJMhb3Wirxh9nEDhbjDQ
+   G/B0xrqoW+fVWupcuEtijX3q55qBSmeZZW77m8U4koA1SSURzpvifLtWF
+   0=;
 Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
 X-IronPort-AV: E=Sophos;i="5.91,242,1647298800"; 
-   d="scan'208";a="14727909"
+   d="scan'208";a="14727985"
 Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2022 13:11:54 +0200
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2022 13:12:05 +0200
 From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     kernel-janitors@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] ath6kl: fix typo in comment
-Date:   Sat, 21 May 2022 13:10:24 +0200
-Message-Id: <20220521111145.81697-14-Julia.Lawall@inria.fr>
+Subject: [PATCH] nl80211: fix typo in comment
+Date:   Sat, 21 May 2022 13:11:27 +0200
+Message-Id: <20220521111145.81697-77-Julia.Lawall@inria.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -60,20 +55,20 @@ Detected with the help of Coccinelle.
 Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
 ---
- drivers/net/wireless/ath/ath6kl/wmi.h |    2 +-
+ include/uapi/linux/nl80211.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/wmi.h b/drivers/net/wireless/ath/ath6kl/wmi.h
-index 672014973cee..0d99f754b7e7 100644
---- a/drivers/net/wireless/ath/ath6kl/wmi.h
-+++ b/drivers/net/wireless/ath/ath6kl/wmi.h
-@@ -1278,7 +1278,7 @@ struct wmi_snr_threshold_params_cmd {
- 	/* "alpha" */
- 	u8 weight;
- 
--	/* lowest of uppper */
-+	/* lowest of upper */
- 	u8 thresh_above1_val;
- 
- 	u8 thresh_above2_val;
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index d9490e3062a7..98f905f16411 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -5874,7 +5874,7 @@ enum nl80211_ap_sme_features {
+  * @NL80211_FEATURE_INACTIVITY_TIMER: This driver takes care of freeing up
+  *	the connected inactive stations in AP mode.
+  * @NL80211_FEATURE_CELL_BASE_REG_HINTS: This driver has been tested
+- *	to work properly to suppport receiving regulatory hints from
++ *	to work properly to support receiving regulatory hints from
+  *	cellular base stations.
+  * @NL80211_FEATURE_P2P_DEVICE_NEEDS_CHANNEL: (no longer available, only
+  *	here to reserve the value for API/ABI compatibility)
 
