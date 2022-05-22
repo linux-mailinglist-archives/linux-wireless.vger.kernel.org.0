@@ -2,208 +2,199 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51A2E530249
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 May 2022 12:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3884453028D
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 May 2022 13:07:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239318AbiEVKIZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 May 2022 06:08:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37532 "EHLO
+        id S244719AbiEVLHa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 May 2022 07:07:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230244AbiEVKIY (ORCPT
+        with ESMTP id S230323AbiEVLH3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 May 2022 06:08:24 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DACFE3E5FB;
-        Sun, 22 May 2022 03:08:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1653214102; x=1684750102;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pVft9LSqtJKDfrQbwqF0zRGlcBrMn4ja8wUJvCE+/nY=;
-  b=TgXqUcUTGFU6F8r0VXovUIBN2fNlx8wzJpIROEyOcNthc90/1Td4D6JC
-   RazkWMCmSb85wsCwjmeQe1lFf/gp+TncapCCGiG3VjrcocfKqwaV11qkt
-   8Ck95hQtXEXOnO+8rIGOdte3kNDDSud1F1gqqWfSffSd7i95KrE2boQU/
-   n/CrAyuaSW0fWEarJ93s/Z+GP9y/rX0afSVgHFRp+xj2n4RWpNrfvKyrz
-   nuEY8qIicTfEPFM+HVsAlgZ8aZgzhPyng2h41Pi9kQgAk96mFpUo9V0w+
-   8p3MnwGWv60NgoNxEhG6lcrepVh6LmDm7Wxc7RlxWhH5EMFlBOb/atl0v
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10354"; a="333605223"
-X-IronPort-AV: E=Sophos;i="5.91,244,1647327600"; 
-   d="scan'208";a="333605223"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2022 03:08:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,244,1647327600"; 
-   d="scan'208";a="819309267"
-Received: from lkp-server01.sh.intel.com (HELO db63a1be7222) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 22 May 2022 03:08:18 -0700
-Received: from kbuild by db63a1be7222 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nsiVW-0000HU-6O;
-        Sun, 22 May 2022 10:08:18 +0000
-Date:   Sun, 22 May 2022 18:07:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Pavel Skripkin <paskripkin@gmail.com>, toke@toke.dk,
-        kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
-        pabeni@redhat.com, senthilkumar@atheros.com
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Pavel Skripkin <paskripkin@gmail.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: Re: [PATCH v5 2/2] ath9k: htc: clean up statistics macros
-Message-ID: <202205221713.VsmyJA1I-lkp@intel.com>
-References: <7bb006bb88e280c596d0e86ece7d251a21b8ed1f.1653168225.git.paskripkin@gmail.com>
+        Sun, 22 May 2022 07:07:29 -0400
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 262AA3BBE8
+        for <linux-wireless@vger.kernel.org>; Sun, 22 May 2022 04:07:25 -0700 (PDT)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-2ff39b44b06so122563857b3.13
+        for <linux-wireless@vger.kernel.org>; Sun, 22 May 2022 04:07:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=1RqWQUDdAXqtIhUjsxYu40IGVme2To9vWJye1o8DdfQ=;
+        b=J8bUjxxJUlQvh6ecjbxj2mXhmxcJgeit4zM5pCKBzaThwGw4G9AufUfu3ELWLW12Eh
+         fEgxqFlypjl4jM8JDDWWvSLLSq32kw6YEkNG5OhgLNj5DmrR5PYczLQurXPMRdzZeP2w
+         /S53q9TQJYgTR0hqSZXlJMPm9Sa/YlXlG23e32ThMjW++GBkWMC+VBBVKHLLASsyFMIy
+         K4qppM+0lfnRHIHdQVco060qocejcYMWAulKUeTC+qM4qI4+EuGjeOfbQ0QeWoEQFh/k
+         iSaQhkH3MHMUtNQeoZ4QwOYd3pLcUxqlH+P8S2gcTUixKdedlBK4IgQG0y1MvEnSbmqI
+         +SDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=1RqWQUDdAXqtIhUjsxYu40IGVme2To9vWJye1o8DdfQ=;
+        b=R6CSxcEwijtWLGs30JiVST0/Pwgg5hzAKxYRjVlqIoYGUlMrVcIN41OQszQdjKQB7o
+         m3xkF96C4zGSwhqg8zMJxig7gIoQmGgat+GWzrDelKBvk8smR8SC4fmv3kY3tUG8hUw6
+         CjKIM/F1QlBO+XO9swbJZ1/sajOavUHhgwAfpygAMBLvqwV+74HBaup9q/yEgBz15P4D
+         roptj8IweNAtHOhZzGE1BRbYK58SVxlhzDJKRbHMfOGu8ga69Qey2et1FzJlUWAJ4P9v
+         lqZ4pNea77rJh6P49tsNGRBscdJp5JeYBAj8AM7Oswt+UN643mOaghbYDwNkufP4bWta
+         ZKoQ==
+X-Gm-Message-State: AOAM530EwA5hcw4h6jNhRc/3Kwm2NvdsxYq+bSXB7tKQQSfctipi5LA2
+        AS3x1Y2jRa9znRWA2QR7l/2+wx+XxnzYa02JDdKQpXBhHzU=
+X-Google-Smtp-Source: ABdhPJy7e1hhobCRj+WnTW2DNADKOEwkef/g5KmqGuX1CPvwcvgh/1CKJh+m052KGG7KtEzT9vsNoh0vrSvLUShgSl0=
+X-Received: by 2002:a81:1583:0:b0:2ff:306c:16fc with SMTP id
+ 125-20020a811583000000b002ff306c16fcmr18091667ywv.213.1653217644129; Sun, 22
+ May 2022 04:07:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7bb006bb88e280c596d0e86ece7d251a21b8ed1f.1653168225.git.paskripkin@gmail.com>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   koos vriezen <koos.vriezen@gmail.com>
+Date:   Sun, 22 May 2022 13:07:12 +0200
+Message-ID: <CAGCbPWQXxGQqxnR1U6oExYU=Y7cww4F1gG2VbKvRRs=iXe8BGA@mail.gmail.com>
+Subject: Crash ath10 after resume from suspend to ram, linux-5.17.7
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Pavel,
+Hi,
 
-Thank you for the patch! Yet something to improve:
+On my dell xps 9380 debian I got this crash. Only saw it once so far and I
+do quite often a suspend/resume
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on next-20220520]
-[cannot apply to wireless/main linus/master v5.18-rc7]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+02:00.0 Network controller: Qualcomm Atheros QCA6174 802.11ac Wireless
+Network Adapter (rev 32)
+ii  firmware-atheros                              20210818-1
+all          Binary firmware for Qualcomm Atheros wireless cards
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Pavel-Skripkin/ath9k-fix-use-after-free-in-ath9k_hif_usb_rx_cb/20220522-053020
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20220522/202205221713.VsmyJA1I-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 1443dbaba6f0e57be066995db9164f89fb57b413)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install arm64 cross compiling tool for clang build
-        # apt-get install binutils-aarch64-linux-gnu
-        # https://github.com/intel-lab-lkp/linux/commit/712472af928db8726d53f2c63ea05430e57f4727
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Pavel-Skripkin/ath9k-fix-use-after-free-in-ath9k_hif_usb_rx_cb/20220522-053020
-        git checkout 712472af928db8726d53f2c63ea05430e57f4727
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash drivers/net/wireless/ath/ath9k/
+May 21 08:23:26 airbus wpa_supplicant[731]: wlp2s0:
+CTRL-EVENT-REGDOM-CHANGE init=COUNTRY_IE type=COUNTRY alpha2=DE
+May 21 08:23:26 airbus kernel: ------------[ cut here ]------------
+May 21 08:23:26 airbus kernel: WARNING: CPU: 0 PID: 0 at
+drivers/net/wireless/ath/ath10k/htt_rx.c:35
+ath10k_htt_rx_pop_paddr+0xac/
+0xc0 [ath10k_core]
+May 21 08:23:26 airbus kernel: Modules linked in: snd_seq_dummy(E)
+snd_hrtimer(E) snd_seq(E) snd_seq_device(E) ctr(E) ccm(E) btusb
+(E) btrtl(E) btbcm(E) btintel(E) bluetooth(E) snd_hda_codec_hdmi(E)
+jitterentropy_rng(E) sha512_ssse3(E) sha512_generic(E) uvcvide
+o(E) videobuf2_vmalloc(E) videobuf2_memops(E) drbg(E)
+videobuf2_v4l2(E) videobuf2_common(E) ansi_cprng(E) videodev(E)
+ecdh_generic
+(E) ecc(E) mc(E) cpufreq_powersave(E) cpufreq_conservative(E)
+cpufreq_userspace(E) nls_ascii(E) nls_cp437(E) vfat(E) fat(E) intel_
+tcc_cooling(E) snd_ctl_led(E) x86_pkg_temp_thermal(E)
+snd_hda_codec_realtek(E) intel_powerclamp(E) snd_hda_codec_generic(E)
+corete
+mp(E) kvm_intel(E) ath10k_pci(E) dell_laptop(E) kvm(E) dell_wmi(E)
+ath10k_core(E) ledtrig_audio(E) irqbypass(E) crct10dif_pclmul(E
+) ath(E) intel_rapl_msr(E) dell_smbios(E) crc32_pclmul(E) mac80211(E)
+dcdbas(E) dell_wmi_descriptor(E) wmi_bmof(E) ghash_clmulni_i
+ntel(E) dell_smm_hwmon(E) joydev(E) snd_soc_skl(E) snd_soc_hdac_hda(E)
+snd_hda_ext_core(E)
+May 21 08:23:26 airbus kernel:  snd_soc_acpi_intel_match(E)
+snd_soc_acpi(E) snd_soc_sst_ipc(E) snd_soc_sst_dsp(E) snd_soc_core(E)
+aesni_intel(E) crypto_simd(E) snd_hda_intel(E) cryptd(E)
+snd_intel_dspcfg(E) rapl(E) snd_hda_codec(E) intel_cstate(E)
+snd_hwdep(E) processor_thermal_device_pci_legacy(E) snd_pcsp(E)
+snd_hda_core(E) processor_thermal_device(E) intel_uncore(E)
+cfg80211(E) processor_thermal_rfim(E) evdev(E) snd_pcm(E) snd_timer(E)
+processor_thermal_mbox(E) snd(E) processor_thermal_rapl(E)
+serio_raw(E) efi_pstore(E) soundcore(E) hid_multitouch(E) rfkill(E)
+libarc4(E) i915(E) intel_rapl_common(E) intel_soc_dts_iosf(E)
+ucsi_acpi(E) ttm(E) typec_ucsi(E) intel_pch_thermal(E) roles(E)
+typec(E) tpm_crb(E) tiny_power_button(E) wmi(E) battery(E) button(E)
+video(E) int3403_thermal(E) tpm_tis(E) int340x_thermal_zone(E)
+tpm_tis_core(E) tpm(E) rng_core(E) intel_hid(E) sparse_keymap(E)
+acpi_pad(E) int3400_thermal(E) acpi_thermal_rel(E) ac(E) fuse(E)
+configfs(E) efivarfs(E) ip_tables(E) x_tables(E) autofs4(E)
+May 21 08:23:26 airbus kernel:  ext4(E) crc32c_generic(E) crc16(E)
+mbcache(E) jbd2(E) hid_generic(E) rtsx_pci_sdmmc(E) mmc_core(E)
+crc32c_intel(E) i2c_i801(E) i2c_smbus(E) xhci_pci(E) xhci_hcd(E)
+intel_lpss_pci(E) rtsx_pci(E) intel_lpss(E) usbcore(E) idma64(E)
+usb_common(E) thermal(E) i2c_hid_acpi(E) i2c_hid(E) hid(E)
+May 21 08:23:26 airbus kernel: CPU: 0 PID: 0 Comm: swapper/0 Tainted:
+G     U      E     5.17.7 #4
+May 21 08:23:26 airbus kernel: Hardware name: Dell Inc. XPS 13
+9380/0KTW76, BIOS 1.13.1 03/25/2021
+May 21 08:23:26 airbus kernel: RIP:
+0010:ath10k_htt_rx_pop_paddr+0xac/0xc0 [ath10k_core]
+May 21 08:23:26 airbus kernel: Code: 0c 03 90 94 00 00 00 2b 90 90 00
+00 00 48 8b b9 b8 03 00 00 45 31 c0 b9 02 00 00 00 48 8b 30 e8 ea 4d
+9c ec 4c 89 e0 41 5c c3 <0f> 0b 45 31 e4 4c 89 e0 41 5c c3 66 0f 1f 84
+00 00 00 00 00 41 57
+May 21 08:23:26 airbus kernel: RSP: 0018:ffffa9fe40003da0 EFLAGS: 00010246
+May 21 08:23:26 airbus kernel: RAX: 0000000000000000 RBX:
+ffffa9fe40003e60 RCX: ffff93d885b420a0
+May 21 08:23:26 airbus kernel: RDX: 0000000000000000 RSI:
+000000002e0c2000 RDI: ffff93d885b42d18
+May 21 08:23:26 airbus kernel: RBP: ffffa9fe40003ed0 R08:
+0000000000000206 R09: 0000000000000000
+May 21 08:23:26 airbus kernel: R10: 0000000000000000 R11:
+ffffffffaeb75c40 R12: ffff93d91f4676c8
+May 21 08:23:26 airbus kernel: R13: ffff93d885b420a0 R14:
+ffff93d885b420a0 R15: ffff93d91f4676d0
+May 21 08:23:26 airbus kernel: FS:  0000000000000000(0000)
+GS:ffff93dc1e600000(0000) knlGS:0000000000000000
+May 21 08:23:26 airbus kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+May 21 08:23:26 airbus kernel: CR2: 00007fe0077a9548 CR3:
+000000014e5a6004 CR4: 00000000003706f0
+May 21 08:23:26 airbus kernel: Call Trace:
+May 21 08:23:26 airbus kernel:  <IRQ>
+May 21 08:23:26 airbus kernel:
+ath10k_htt_txrx_compl_task+0x66e/0x12d0 [ath10k_core]
+May 21 08:23:26 airbus kernel:  ? ath10k_pci_rx_post_pipe+0x2c0/0x2c0
+[ath10k_pci]
+May 21 08:23:26 airbus kernel:  ? ath10k_bss_info_changed+0xb0/0x1050
+[ath10k_core]
+May 21 08:23:26 airbus kernel:  ?
+ath10k_ce_per_engine_service+0x53/0x80 [ath10k_core]
+May 21 08:23:26 airbus kernel:  ? ath10k_pci_napi_poll+0x4c/0x120 [ath10k_pci]
+May 21 08:23:26 airbus kernel:  ath10k_pci_napi_poll+0x4c/0x120 [ath10k_pci]
+May 21 08:23:26 airbus kernel:  __napi_poll+0x22/0x110
+May 21 08:23:26 airbus kernel:  net_rx_action+0x206/0x260
+May 21 08:23:26 airbus kernel:  __do_softirq+0xb2/0x1d7
+May 21 08:23:26 airbus kernel:  irq_exit_rcu+0x7a/0xa0
+May 21 08:23:26 airbus kernel:  common_interrupt+0x80/0xa0
+May 21 08:23:26 airbus kernel:  </IRQ>
+May 21 08:23:26 airbus kernel:  <TASK>
+May 21 08:23:26 airbus kernel:  asm_common_interrupt+0x1e/0x40
+May 21 08:23:26 airbus kernel: RIP: 0010:cpuidle_enter_state+0xb8/0x270
+May 21 08:23:26 airbus kernel: Code: e8 8d cb b4 ff 31 ff 49 89 c6 e8
+a3 d4 b4 ff 45 84 ff 74 12 9c 58 f6 c4 02 0f 85 a5 01 00 00 31 ff e8
+4c d4 b9 ff fb 45 85 ed <0f> 88 ad 00 00 00 49 63 cd 4c 2b 34 24 48 89
+c8 48 6b d1 68 48 c1
+May 21 08:23:26 airbus kernel: RSP: 0018:ffffffffae603e60 EFLAGS: 00000202
+May 21 08:23:26 airbus kernel: RAX: ffff93dc1e622440 RBX:
+0000000000000001 RCX: 000000000000001f
+May 21 08:23:26 airbus kernel: RDX: 0000000000000000 RSI:
+000000004041c640 RDI: 0000000000000000
+May 21 08:23:26 airbus kernel: RBP: ffff93dc1e62b300 R08:
+00005d36cb6fb0dc R09: 0000000000000001
+May 21 08:23:26 airbus kernel: R10: 0000000000000012 R11:
+0000000000000009 R12: ffffffffae6c8780
+May 21 08:23:26 airbus kernel: R13: 0000000000000001 R14:
+00005d36cb6fb0dc R15: 0000000000000000
+May 21 08:23:26 airbus kernel:  cpuidle_enter+0x24/0x40
+May 21 08:23:26 airbus kernel:  do_idle+0x1a2/0x220
+May 21 08:23:26 airbus kernel:  cpu_startup_entry+0x14/0x20
+May 21 08:23:26 airbus kernel:  start_kernel+0x880/0x892
+May 21 08:23:26 airbus kernel:  ? load_ucode_intel_bsp+0xc/0x28
+May 21 08:23:26 airbus kernel:  secondary_startup_64_no_verify+0xc3/0xcb
+May 21 08:23:26 airbus kernel:  </TASK>
+May 21 08:23:26 airbus kernel: ---[ end trace 0000000000000000 ]---
+May 21 08:23:26 airbus kernel: ath10k_pci 0000:02:00.0: failed to pop
+paddr list: -2
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+Reloading the wireless related kernel modules didn't make this device work,
+had to reboot.
 
-All errors (new ones prefixed by >>):
-
->> drivers/net/wireless/ath/ath9k/hif_usb.c:372:15: error: use of undeclared identifier 'hiv_dev'; did you mean 'hif_dev'?
-                   TX_STAT_INC(hiv_dev, buf_queued);
-                               ^~~~~~~
-                               hif_dev
-   drivers/net/wireless/ath/ath9k/htc.h:335:16: note: expanded from macro 'TX_STAT_INC'
-                   __STAT_SAFE((hif_dev), (hif_dev)->htc_handle->drv_priv->debug.tx_stats.c++)
-                                ^
-   drivers/net/wireless/ath/ath9k/htc.h:330:38: note: expanded from macro '__STAT_SAFE'
-   #define __STAT_SAFE(hif_dev, expr)      ((hif_dev)->htc_handle->drv_priv ? (expr) : 0)
-                                             ^
-   drivers/net/wireless/ath/ath9k/hif_usb.c:310:48: note: 'hif_dev' declared here
-   static int __hif_usb_tx(struct hif_device_usb *hif_dev)
-                                                  ^
->> drivers/net/wireless/ath/ath9k/hif_usb.c:372:15: error: use of undeclared identifier 'hiv_dev'; did you mean 'hif_dev'?
-                   TX_STAT_INC(hiv_dev, buf_queued);
-                               ^~~~~~~
-                               hif_dev
-   drivers/net/wireless/ath/ath9k/htc.h:335:27: note: expanded from macro 'TX_STAT_INC'
-                   __STAT_SAFE((hif_dev), (hif_dev)->htc_handle->drv_priv->debug.tx_stats.c++)
-                                           ^
-   drivers/net/wireless/ath/ath9k/htc.h:330:72: note: expanded from macro '__STAT_SAFE'
-   #define __STAT_SAFE(hif_dev, expr)      ((hif_dev)->htc_handle->drv_priv ? (expr) : 0)
-                                                                               ^
-   drivers/net/wireless/ath/ath9k/hif_usb.c:310:48: note: 'hif_dev' declared here
-   static int __hif_usb_tx(struct hif_device_usb *hif_dev)
-                                                  ^
-   2 errors generated.
+Found one similar report here
+https://bbs.archlinux.org/viewtopic.php?id=276259
 
 
-vim +372 drivers/net/wireless/ath/ath9k/hif_usb.c
-
-   308	
-   309	/* TX lock has to be taken */
-   310	static int __hif_usb_tx(struct hif_device_usb *hif_dev)
-   311	{
-   312		struct tx_buf *tx_buf = NULL;
-   313		struct sk_buff *nskb = NULL;
-   314		int ret = 0, i;
-   315		u16 tx_skb_cnt = 0;
-   316		u8 *buf;
-   317		__le16 *hdr;
-   318	
-   319		if (hif_dev->tx.tx_skb_cnt == 0)
-   320			return 0;
-   321	
-   322		/* Check if a free TX buffer is available */
-   323		if (list_empty(&hif_dev->tx.tx_buf))
-   324			return 0;
-   325	
-   326		tx_buf = list_first_entry(&hif_dev->tx.tx_buf, struct tx_buf, list);
-   327		list_move_tail(&tx_buf->list, &hif_dev->tx.tx_pending);
-   328		hif_dev->tx.tx_buf_cnt--;
-   329	
-   330		tx_skb_cnt = min_t(u16, hif_dev->tx.tx_skb_cnt, MAX_TX_AGGR_NUM);
-   331	
-   332		for (i = 0; i < tx_skb_cnt; i++) {
-   333			nskb = __skb_dequeue(&hif_dev->tx.tx_skb_queue);
-   334	
-   335			/* Should never be NULL */
-   336			BUG_ON(!nskb);
-   337	
-   338			hif_dev->tx.tx_skb_cnt--;
-   339	
-   340			buf = tx_buf->buf;
-   341			buf += tx_buf->offset;
-   342			hdr = (__le16 *)buf;
-   343			*hdr++ = cpu_to_le16(nskb->len);
-   344			*hdr++ = cpu_to_le16(ATH_USB_TX_STREAM_MODE_TAG);
-   345			buf += 4;
-   346			memcpy(buf, nskb->data, nskb->len);
-   347			tx_buf->len = nskb->len + 4;
-   348	
-   349			if (i < (tx_skb_cnt - 1))
-   350				tx_buf->offset += (((tx_buf->len - 1) / 4) + 1) * 4;
-   351	
-   352			if (i == (tx_skb_cnt - 1))
-   353				tx_buf->len += tx_buf->offset;
-   354	
-   355			__skb_queue_tail(&tx_buf->skb_queue, nskb);
-   356			TX_STAT_INC(hif_dev, skb_queued);
-   357		}
-   358	
-   359		usb_fill_bulk_urb(tx_buf->urb, hif_dev->udev,
-   360				  usb_sndbulkpipe(hif_dev->udev, USB_WLAN_TX_PIPE),
-   361				  tx_buf->buf, tx_buf->len,
-   362				  hif_usb_tx_cb, tx_buf);
-   363	
-   364		ret = usb_submit_urb(tx_buf->urb, GFP_ATOMIC);
-   365		if (ret) {
-   366			tx_buf->len = tx_buf->offset = 0;
-   367			ath9k_skb_queue_complete(hif_dev, &tx_buf->skb_queue, false);
-   368			__skb_queue_head_init(&tx_buf->skb_queue);
-   369			list_move_tail(&tx_buf->list, &hif_dev->tx.tx_buf);
-   370			hif_dev->tx.tx_buf_cnt++;
-   371		} else {
- > 372			TX_STAT_INC(hiv_dev, buf_queued);
-   373		}
-   374	
-   375		return ret;
-   376	}
-   377	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Regards,
+Koos Vriezen
