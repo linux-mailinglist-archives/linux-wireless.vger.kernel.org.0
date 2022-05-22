@@ -2,57 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B671530301
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 May 2022 14:22:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 660DF53030B
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 May 2022 14:28:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344082AbiEVMWZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 May 2022 08:22:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49774 "EHLO
+        id S242083AbiEVM2J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 May 2022 08:28:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229928AbiEVMWX (ORCPT
+        with ESMTP id S229928AbiEVM2I (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 May 2022 08:22:23 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C99DB3BBDD;
-        Sun, 22 May 2022 05:22:21 -0700 (PDT)
+        Sun, 22 May 2022 08:28:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB30A3CA65
+        for <linux-wireless@vger.kernel.org>; Sun, 22 May 2022 05:28:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 80FFDB80B05;
-        Sun, 22 May 2022 12:22:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8980EC385AA;
-        Sun, 22 May 2022 12:22:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 45A1F60FBE
+        for <linux-wireless@vger.kernel.org>; Sun, 22 May 2022 12:28:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDE3C385AA;
+        Sun, 22 May 2022 12:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653222139;
-        bh=Mfo0m4hywKPiCkbJC9Y94IuwEqZd7gBdjqZR9nR3ImA=;
+        s=k20201202; t=1653222486;
+        bh=Gr6lYAsULYInKXakt5MSXApQOLKEm9j6nKisVE6yrMg=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=oPLBRLUW8NAnzWitefrHXNP5m6s6TJXvVI1/cuJft5+KabX5BlIvZFC/mDwceWP8A
-         0goICNZ0uEiVd3NfLswcqUTIq2ULS3Oo/xooWVY3o1vt1YTTE0PDpXOmAeGX0+aJSl
-         KQdOL8aS6ET76aTf37oHSht1TaJwQxD2Ctj/zF2has+e5rO176lGOsBbSwTUAnFWjj
-         wBWdYFTHD2pgiuku6A2o34SbwqFyfqB8BdNRujiTgR4nCMgoe9NoK3WsdO78Wqnchs
-         /Ljpmm+wLyl0c64oFtbMHCTmW1GiQOqKofxvjMRplMefk0h/iJsvRwfdF9A1n4EVwn
-         eUD62H5gc4eUA==
+        b=b2BVJAEeOC+9I1zZfh0k1UCp7EJHWSHs1NSRhe9dsY/AiIH7RDpSm69Ba6cNTPrDJ
+         Kh3fVyRoIj72dNbEHtrZQyPWiZJevloeT/mpOA7Ox8zDDYaa717VEAgOHSQgYvk3H+
+         kvtubdfDgN6FXBtF7o+/HumxrquwnmtmfmH3NSWh63zmMdZxFfOoHkG4pSXaeugcx5
+         MjbWofwIiyPKIZ26oWklLqp0x0BHTfxhR3paKrFNnuEkn14wp4cJyl4EEqYW5f0eim
+         ddbUI6Gdcat1RcfZg7DwxDLaW+q8fZ/b2jPXrOpMh8BNBc5sktDkL5X8bUaYYiya+m
+         evzhyDGFvCJBg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k: do not enforce interrupt trigger type
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/4] ath10k: improve tx status reporting
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220513151516.357549-1-krzysztof.kozlowski@linaro.org>
-References: <20220513151516.357549-1-krzysztof.kozlowski@linaro.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Govind Singh <govinds@codeaurora.org>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-arm-msm@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220516032519.29831-2-ryazanov.s.a@gmail.com>
+References: <20220516032519.29831-2-ryazanov.s.a@gmail.com>
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Edward Matijevic <motolav@gmail.com>,
+        John Crispin <john@phrozen.org>,
+        =?utf-8?b?T2xkxZlpY2ggSmVkbGnEjWth?= <oldium.pro@gmail.com>,
+        Tom Psyborg <pozega.tomislav@gmail.com>,
+        Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>,
+        Zhijun You <hujy652@gmail.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165322213441.774.12044822958989724904.kvalo@kernel.org>
-Date:   Sun, 22 May 2022 12:22:16 +0000 (UTC)
+Message-ID: <165322248212.774.8451941042648724092.kvalo@kernel.org>
+Date:   Sun, 22 May 2022 12:28:04 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -63,35 +60,43 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
 
-> Interrupt line can be configured on different hardware in different way,
-> even inverted.  Therefore driver should not enforce specific trigger
-> type - edge rising - but instead rely on Devicetree to configure it.
+> We use ieee80211_tx_status() to report each completed tx frame.
+> Internally, this function calls sta_info_get_by_addrs(), what has a
+> couple of drawbacks:
+> 1. additional station lookup causes a performance degradation;
+> 2. mac80211 can not properly account Ethernet encapsulated frames due
+>    to the inability to properly determine the destination (station) MAC
+>    address since ieee80211_tx_status() assumes the frame has a 802.11
+>    header.
 > 
-> All Qualcomm DTSI with WCN3990 define the interrupt type as level high,
-> so the mismatch between DTSI and driver causes rebind issues:
+> The latter is especially destructive if we want to use hardware frames
+> encapsulation.
 > 
->   $ echo 18800000.wifi > /sys/bus/platform/drivers/ath10k_snoc/unbind
->   $ echo 18800000.wifi > /sys/bus/platform/drivers/ath10k_snoc/bind
->   [   44.763114] irq: type mismatch, failed to map hwirq-446 for interrupt-controller@17a00000!
->   [   44.763130] ath10k_snoc 18800000.wifi: error -ENXIO: IRQ index 0 not found
->   [   44.763140] ath10k_snoc 18800000.wifi: failed to initialize resource: -6
+> To fix both of these issues, replace ieee80211_tx_status() with
+> ieee80211_tx_status_ext() call and feed it station pointer from the tx
+> queue associated with the transmitted frame.
 > 
-> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.0.c8-00009-QCAHLSWSC8180XMTPLZ-1
-> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.2.0-01387-QCAHLSWMTPLZ-1
+> Tested-on: QCA9888 hw2.0 PCI 10.4-3.9.0.2-00131
+> Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
 > 
-> Fixes: c963a683e701 ("ath10k: add resource init and deinit for WCN3990")
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Tested-by: Steev Klimaszewski <steev@kali.org>
+> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+> Tested-by: Oldřich Jedlička <oldium.pro@gmail.com> # TP-Link Archer C7 v4 & v5 (QCA9563 + QCA9880)
+> Tested-by: Edward Matijevic <motolav@gmail.com> # TP-Link Archer C2600 (IPQ8064 + QCA9980 10.4.1.00030-1)
+> Tested-by: Edward Matijevic <motolav@gmail.com> # QCA9377 PCI in Sta mode
+> Tested-by: Zhijun You <hujy652@gmail.com> # NETGEAR R7800 (QCA9984 10.4-3.9.0.2-00159)
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Patch applied to ath-next branch of ath.git, thanks.
+4 patches applied to ath-next branch of ath.git, thanks.
 
-1ee6c5abebd3 ath10k: do not enforce interrupt trigger type
+2587d5198aa5 ath10k: improve tx status reporting
+70f119fb82af ath10k: htt_tx: do not interpret Eth frames as WiFi
+a09740548275 ath10k: turn rawmode into frame_mode
+af6d8265c47e ath10k: add encapsulation offloading support
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220513151516.357549-1-krzysztof.kozlowski@linaro.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220516032519.29831-2-ryazanov.s.a@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
