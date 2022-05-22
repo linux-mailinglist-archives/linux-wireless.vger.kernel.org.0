@@ -2,59 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1029B53030F
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 May 2022 14:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81FEF530313
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 May 2022 14:31:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344255AbiEVM34 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 May 2022 08:29:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58414 "EHLO
+        id S1344963AbiEVMbD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 May 2022 08:31:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240899AbiEVM3z (ORCPT
+        with ESMTP id S237009AbiEVMbC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 May 2022 08:29:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EAF63CA65;
-        Sun, 22 May 2022 05:29:55 -0700 (PDT)
+        Sun, 22 May 2022 08:31:02 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 370A2DF1
+        for <linux-wireless@vger.kernel.org>; Sun, 22 May 2022 05:30:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 074DF60FC9;
-        Sun, 22 May 2022 12:29:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B385AC385AA;
-        Sun, 22 May 2022 12:29:51 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id DFCDCB80B34
+        for <linux-wireless@vger.kernel.org>; Sun, 22 May 2022 12:30:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A221DC385AA;
+        Sun, 22 May 2022 12:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653222594;
-        bh=pQa0Xfjqbbh3fqvKaRXDPRrQF3+yVWTnEMtE0LqO6bo=;
+        s=k20201202; t=1653222656;
+        bh=BYVDciy1MFj7bFAO0Jc9HGcx2iNA66NF58AjAeNr7pA=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=RLi6vuckQutx3V0a3ySVeCd85K4m+tV7vG3hnhJ9i/JIJhVC8xXu6B5AKpksJW2dh
-         mc8+fE00D3z3pecaYVxgahx48PY8juKa0uA21WQ0aENItOn63l4j6aTchI8FvAg6YP
-         j3dQXZ7+zgNWy6neF9tYsownHEItAFzaKXvgx9V421oQ4nlAj2xyU+V+Id5zHHx2cp
-         KXyIX0We37G/+aPo1XjwEryab8d1BWOSYxVOOpz/7BowK5eNO4fjG/4LI/cdBjLMjS
-         M+Meu177PJ+ylUR/+615ZioCHplEKnwwyZVbmI4a10J76oSt0sxfxYfeVWxARKQQTZ
-         HKDtB6hZrA6IA==
+        b=Cm5EzfPS8IR4k+5iuSwFBZXPSF+lkutXa/VARPsRhSTDoF0vhWVDhLLP2Es1E4wtB
+         G6r76lXemWx+SZwu86MKepZUeFEDPqnigguZswSBUTdl+OksV7VoYd3Hgx7NbIdwDw
+         niep+V9ypsv8WG7KDQOcAIho79es997P8phuDIf1E94pzt+LAmASYaNuSSTeCFJdgd
+         YmkbgwoddSU8EIF9URMJDMiigiheMoN6U9A5lleHU65Z240a7lDlEKjE/Nvv07HVGX
+         TzQUdLxmaQhg5cduJo0eeYQSh1OH6VQ+2mUUlmfNEqI0e91azBqJOO4D1AVKhsGniv
+         wbjqLRhGPlt3A==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH linux-next v2] net: ath5k: replace ternary operator with
- min()
+Subject: Re: [PATCH] ath11k: Init hw_params before setting up AHB resources
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220517023923.76989-1-guozhengkui@vivo.com>
-References: <20220517023923.76989-1-guozhengkui@vivo.com>
-To:     Guo Zhengkui <guozhengkui@vivo.com>
-Cc:     Jiri Slaby <jirislaby@kernel.org>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org (open list:ATHEROS ATH5K WIRELESS DRIVER),
-        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-        linux-kernel@vger.kernel.org (open list),
-        zhengkui_guo@outlook.com, Guo Zhengkui <guozhengkui@vivo.com>
+In-Reply-To: <20220517055241.15885-1-quic_mpubbise@quicinc.com>
+References: <20220517055241.15885-1-quic_mpubbise@quicinc.com>
+To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165322258657.774.8414386492190244747.kvalo@kernel.org>
-Date:   Sun, 22 May 2022 12:29:51 +0000 (UTC)
+Message-ID: <165322265355.774.15991530710426373571.kvalo@kernel.org>
+Date:   Sun, 22 May 2022 12:30:55 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -65,22 +55,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Guo Zhengkui <guozhengkui@vivo.com> wrote:
+Manikanta Pubbisetty <quic_mpubbise@quicinc.com> wrote:
 
-> Fix the following coccicheck warning:
+> As part of adding the support of WCN6750 to ath11k, bus_params
+> were moved to hw_params and this regressed the initialization
+> of WCN6750. By the time AHB resources are setup for WCN6750,
+> hw_params will not be initialized and therefore initialization
+> for WCN6750 will fail. This is applicable only for WCN6750,
+> no other device is impacted.
 > 
-> drivers/net/wireless/ath/ath5k/phy.c:3139:62-63: WARNING
-> opportunity for min()
+> Fix this by moving the initialization of hw_params before
+> setting up AHB resources.
 > 
-> Signed-off-by: Guo Zhengkui <guozhengkui@vivo.com>
+> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
+> 
+> Fixes: 00402f49d26f ("ath11k: Add support for WCN6750 device")
+> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-b380d2056ebb ath5k: replace ternary operator with min()
+bebcfd2534a6 ath11k: Init hw_params before setting up AHB resources
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220517023923.76989-1-guozhengkui@vivo.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220517055241.15885-1-quic_mpubbise@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
