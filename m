@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54AD653030D
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 May 2022 14:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8371953030E
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 May 2022 14:29:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243513AbiEVM2n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 May 2022 08:28:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58052 "EHLO
+        id S1343782AbiEVM3L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 May 2022 08:29:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243025AbiEVM2m (ORCPT
+        with ESMTP id S243025AbiEVM3J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 May 2022 08:28:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE0743CA68
-        for <linux-wireless@vger.kernel.org>; Sun, 22 May 2022 05:28:41 -0700 (PDT)
+        Sun, 22 May 2022 08:29:09 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB353CA65
+        for <linux-wireless@vger.kernel.org>; Sun, 22 May 2022 05:29:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BBBF60FC9
-        for <linux-wireless@vger.kernel.org>; Sun, 22 May 2022 12:28:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E51C34115;
-        Sun, 22 May 2022 12:28:39 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 0F075CE0ACE
+        for <linux-wireless@vger.kernel.org>; Sun, 22 May 2022 12:29:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D59C385AA;
+        Sun, 22 May 2022 12:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653222520;
-        bh=SHwBJAlJbMrb7pFQPgPdo1i0G8FnT0RktAK/BJZwtWU=;
+        s=k20201202; t=1653222545;
+        bh=TTwbaWYmNhgxiA2PEesTWAdjhrl9YmH717xkWYfvxco=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=nQTFxvhnhIAzuCVy4TO4T0TNjLmrRWjlxbGJYLLpT4O6V8ZfH75d7CU+dG5CSMZVq
-         4c0DP8qenXbRs/dTAJQsngnbAfN/swegzOaT9hwvxGMdnjFePKpuUjGd49cn1jWAKl
-         3fJ+4tyvmpdyevl+xd7UujrjhhuB/zEyxV+8FvhVc8AK0MCUAs7yHa/4ETdbmGFDev
-         Z3emTHRCA3FCRLeiI33slY4NSrssSEy/9NM71dVkIWoWZ37JfGonVOghcT+Z/9mxoZ
-         9v36iHYoMYntCuDFvJ+MUFF1wRviy0VSiciaxJ6/xXXpaXVo++c5wOWtmi+KOefONd
-         mGlwPun84s7aw==
+        b=oWGa0P0xDhe/Utv0yFmPrBBhs0UnOj5pEKQ3eW0m4WUtLm/Wrpn0Z7L1vj4xpyIeo
+         dhhMDmD4hDKX0UxE2zrl/qWWGchYg7vV7RG+F3eu1iJzW0EftDsSPHoCLOodEnWZyW
+         4+adJ30P7ulCPoUk5OHHcsXrcuHlpdcHi0Mr0cpJ3TWq+VxDzDZ7fNSKEDmBaHN9uS
+         OJUz3ay3xv3GyzaBPbewPZexjgk8GCctk4Nc9fuJM8TNE92tGG7WV2eiDicrFe4Ln0
+         r0JOmkcRlvyU/9seAPilsWPIFxr0+qkMKwjYcTbyyoEz8NQ373I3U2kLTz5777zcL9
+         qcOTmB4FYmgdA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k: fix misreported tx bandwidth for 160Mhz
+Subject: Re: [PATCH] ath11k: Fix warning on variable 'sar' dereference before
+ check
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <cd2735a40da7f4fcc5323e3fca3775e7b5402ece.camel@freebox.fr>
-References: <cd2735a40da7f4fcc5323e3fca3775e7b5402ece.camel@freebox.fr>
-To:     Maxime Bizon <mbizon@freebox.fr>
-Cc:     ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>
+In-Reply-To: <20220517004844.2412660-1-quic_bqiang@quicinc.com>
+References: <20220517004844.2412660-1-quic_bqiang@quicinc.com>
+To:     Baochen Qiang <quic_bqiang@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165322251769.774.13199637884291132797.kvalo@kernel.org>
-Date:   Sun, 22 May 2022 12:28:39 +0000 (UTC)
+Message-ID: <165322254267.774.12155186929267464272.kvalo@kernel.org>
+Date:   Sun, 22 May 2022 12:29:04 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,23 +55,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Maxime Bizon <mbizon@freebox.fr> wrote:
+Baochen Qiang <quic_bqiang@quicinc.com> wrote:
 
-> Because of this missing switch case, 160Mhz transmit was reported as
-> 20Mhz, leading to wrong airtime calculation and AQL limiting max
-> throughput.
+> We are seeing below warning:
+> warn: variable dereferenced before check 'sar'
 > 
-> Tested-on: QCA9984 hw2.0 PCI 10.4-3.10-00047
+> Fix it by moving ahead pointer check on 'sar'.
 > 
-> Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+> 
+> Fixes: 652f69ed9c1b ("ath11k: Add support for SAR")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-75a7062e533e ath10k: fix misreported tx bandwidth for 160Mhz
+77bbbd5e0ed3 ath11k: Fix warning on variable 'sar' dereference before check
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/cd2735a40da7f4fcc5323e3fca3775e7b5402ece.camel@freebox.fr/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220517004844.2412660-1-quic_bqiang@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
