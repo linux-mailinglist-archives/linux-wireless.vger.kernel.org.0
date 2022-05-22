@@ -2,96 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF6D053035B
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 May 2022 15:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40C1A5304C6
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 May 2022 18:56:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345995AbiEVNc0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 May 2022 09:32:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44794 "EHLO
+        id S1347280AbiEVQ4b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 May 2022 12:56:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234645AbiEVNcZ (ORCPT
+        with ESMTP id S235505AbiEVQ43 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 May 2022 09:32:25 -0400
-Received: from zg8tmtyylji0my4xnjqunzqa.icoremail.net (zg8tmtyylji0my4xnjqunzqa.icoremail.net [162.243.164.74])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 524239FF3
-        for <linux-wireless@vger.kernel.org>; Sun, 22 May 2022 06:32:24 -0700 (PDT)
-Received: from ubuntu.localdomain (unknown [124.236.130.193])
-        by mail-app3 (Coremail) with SMTP id cC_KCgDnXk4QO4pixPeoAA--.22593S2;
-        Sun, 22 May 2022 21:31:04 +0800 (CST)
-From:   Duoming Zhou <duoming@zju.edu.cn>
-To:     linux-wireless@vger.kernel.org
-Cc:     pontus.fuchs@gmail.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH wireless] ar5523: Fix deadlock bugs caused by cancel_work_sync in ar5523_stop
-Date:   Sun, 22 May 2022 21:30:55 +0800
-Message-Id: <20220522133055.96405-1-duoming@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: cC_KCgDnXk4QO4pixPeoAA--.22593S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cr1DWry8WFyrAr13WrWDCFg_yoW8Xr1xpF
-        4F9rW7WFW8AFWjq3yDXF4fZ3WrG3ZrKF12kr13Wws5uFZ3J3WaqF1jkFyIgr1vvrW7Xaya
-        vF47ZrWfZ3WY9r7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-        1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-        JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-        CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-        2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-        W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-        Y2ka0xkIwI1lc2xSY4AK67AK6ry8MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
-        1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
-        b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
-        vE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
-        cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa
-        73UjIFyTuYvjfUnpnQUUUUU
-X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAgQSAVZdtZ0PcQAIsA
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Sun, 22 May 2022 12:56:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 969EA24F13;
+        Sun, 22 May 2022 09:56:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 977DBB80CA9;
+        Sun, 22 May 2022 16:56:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10466C385AA;
+        Sun, 22 May 2022 16:56:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653238583;
+        bh=6EXJtR4cnG6MT8IMxtERRltKbq2qz/Ha2duwGNw13bk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=lKWgbNsiaqRtbV3r6a2ViNIYqdG5Ns9vbH5NfxQMge/ZoIk/+wkfwi3o3GoJGOMDq
+         RZD3ZHYl0Iq+kcWts9MSsaZbnekLnL4Xsqfvt9g/AS3ZUL2A2sMF2Vf7QjFLRaNncC
+         k6TZa/RKiB4BxesqYUOP5KD+zjFa2Z5NnipunYAJfxrmxoexVyaNn88vmywSdi7ysA
+         N4lFzFT9VShcjlYCXa9y5Y3INulO4C1DGo4tGZarKr9ewaKs+dQM89Poa5w8f1lZtg
+         rCfVSe5z219dUm+rPp/T3R9+mMOaxoCxFvzOfwNXSQlYN6ggk/A8nkbnxuE08m5Jva
+         t/98T6y5c2dkQ==
+Date:   Sun, 22 May 2022 09:56:21 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     kvalo@kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, libertas-dev@lists.infradead.org
+Subject: Re: [PATCH net-next 7/8] wifi: libertas: silence a GCC 12
+ -Warray-bounds warning
+Message-ID: <20220522095621.369292d1@kernel.org>
+In-Reply-To: <dfc9d27acf3eaf6222b920701e478c3e9c22fefc.camel@sipsolutions.net>
+References: <20220520194320.2356236-1-kuba@kernel.org>
+        <20220520194320.2356236-8-kuba@kernel.org>
+        <dfc9d27acf3eaf6222b920701e478c3e9c22fefc.camel@sipsolutions.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If the work item is running, the cancel_work_sync in ar5523_stop will
-not return until work item is finished. If we hold mutex_lock and use
-cancel_work_sync to wait the work item to finish, the work item such as
-ar5523_tx_wd_work and ar5523_tx_work also require mutex_lock. As a result,
-the ar5523_stop will be blocked forever. One of the race conditions is
-shown below:
+On Sun, 22 May 2022 00:03:22 +0200 Johannes Berg wrote:
+> I had a similar issue in our driver, and I could work around it there
+> with a simple cast ... here not, but perhaps we should consider
+> something like the below?
 
-    (Thread 1)             |   (Thread 2)
-ar5523_stop                |
-  mutex_lock(&ar->mutex)   | ar5523_tx_wd_work
-                           |   mutex_lock(&ar->mutex)
-  cancel_work_sync         |   ...
-
-This patch moves cancel_work_sync out of mutex_lock in order to mitigate
-deadlock bugs.
-
-Fixes: b7d572e1871d ("ar5523: Add new driver")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
----
- drivers/net/wireless/ath/ar5523/ar5523.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
-index 9cabd342d15..99d6b13ffcf 100644
---- a/drivers/net/wireless/ath/ar5523/ar5523.c
-+++ b/drivers/net/wireless/ath/ar5523/ar5523.c
-@@ -1071,8 +1071,10 @@ static void ar5523_stop(struct ieee80211_hw *hw)
- 	ar5523_cmd_write(ar, WDCMSG_TARGET_STOP, NULL, 0, 0);
- 
- 	del_timer_sync(&ar->tx_wd_timer);
-+	mutex_unlock(&ar->mutex);
- 	cancel_work_sync(&ar->tx_wd_work);
- 	cancel_work_sync(&ar->rx_refill_work);
-+	mutex_lock(&ar->mutex);
- 	ar5523_cancel_rx_bufs(ar);
- 	mutex_unlock(&ar->mutex);
- }
--- 
-2.17.1
-
+Excellent, LGTM. Would you be willing to submit this officially?
+I'll drop patch 7 for now.
