@@ -2,286 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62428531081
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 May 2022 15:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1FE55310B7
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 May 2022 15:20:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235334AbiEWMFN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 May 2022 08:05:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49868 "EHLO
+        id S235487AbiEWMfY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 May 2022 08:35:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235284AbiEWMFJ (ORCPT
+        with ESMTP id S235526AbiEWMfV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 May 2022 08:05:09 -0400
-X-Greylist: delayed 518 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 May 2022 05:05:05 PDT
-Received: from mail.alyce.ch (mail.alyce.ch [95.217.248.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDE072D1EC;
-        Mon, 23 May 2022 05:05:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rincat.ch; s=dkim;
-        t=1653306979;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=z0ReiEb0VyOX2aaKJA+ivHNXEZZkQgCfhkpZMJ+OtkI=;
-        b=Ac2+RwEOjsbE/K4yUMvhb84uAA+XS3qhrxSriYOXF6A8T4wPZ/1e98lZ4hHVsRk6s/XWhL
-        BQDXUnr0tWCUyTRn3z7OfRpXrvvBMgcOVcojkCZWWxl2dz4zz/u7blPWreiSdmZkHeu+eV
-        4b4EPfaDuUpTsZSc6RgfJqrJSr+g6515g5l3GNpKUHWemtTf9ST2jC0IwvmCX2O9j0S5b/
-        Ln2ckH5xgMT9+GJ9Tmn22m3RfH3NGGPuvOfwoFYaulN3V5La44Vr2GN+tUqMyzR9wDn+NQ
-        Fr71GtU/BGiVixCtgAOtnZUinnx0TwqL7aZvpLY1XGQc6pnzT7bVVCRQ2jdATA==
-Message-ID: <5646cf79-248e-e80c-d1af-47887dc5232a@rincat.ch>
-Date:   Mon, 23 May 2022 07:56:14 -0400
-MIME-Version: 1.0
-Content-Language: en-US
-To:     Sascha Hauer <s.hauer@pengutronix.de>,
-        linux-wireless@vger.kernel.org
-Cc:     Neo Jou <neojou@gmail.com>, Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Mon, 23 May 2022 08:35:21 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD42842EDA
+        for <linux-wireless@vger.kernel.org>; Mon, 23 May 2022 05:35:05 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1nt7Gt-0005Is-VB; Mon, 23 May 2022 14:34:51 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1nt7Gs-0002S5-Hu; Mon, 23 May 2022 14:34:50 +0200
+Date:   Mon, 23 May 2022 14:34:50 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     Rin Cat =?utf-8?B?KOmItOeMqyk=?= <dev@rincat.ch>
+Cc:     linux-wireless@vger.kernel.org, Neo Jou <neojou@gmail.com>,
+        Hans Ulli Kroll <linux@ulli-kroll.de>,
         Ping-Ke Shih <pkshih@realtek.com>,
         Yan-Hsuan Chuang <tony0620emma@gmail.com>,
         Kalle Valo <kvalo@kernel.org>, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
         kernel@pengutronix.de, Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: [PATCH 09/10] rtw88: Add rtw8822bu chipset support
+Message-ID: <20220523123450.GP25578@pengutronix.de>
 References: <20220518082318.3898514-1-s.hauer@pengutronix.de>
  <20220518082318.3898514-10-s.hauer@pengutronix.de>
-From:   =?UTF-8?B?UmluIENhdCAo6Yi054yrKQ==?= <dev@rincat.ch>
-Subject: Re: [PATCH 09/10] rtw88: Add rtw8822bu chipset support
-In-Reply-To: <20220518082318.3898514-10-s.hauer@pengutronix.de>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------aO0Y8CEUjcLjAwJ0Zzta9L7d"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+ <5646cf79-248e-e80c-d1af-47887dc5232a@rincat.ch>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5646cf79-248e-e80c-d1af-47887dc5232a@rincat.ch>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 14:19:07 up 54 days, 48 min, 75 users,  load average: 0.06, 0.17,
+ 0.25
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------aO0Y8CEUjcLjAwJ0Zzta9L7d
-Content-Type: multipart/mixed; boundary="------------kbOkN4fTM5ov0y37C3qUv0op";
- protected-headers="v1"
-From: =?UTF-8?B?UmluIENhdCAo6Yi054yrKQ==?= <dev@rincat.ch>
-To: Sascha Hauer <s.hauer@pengutronix.de>, linux-wireless@vger.kernel.org
-Cc: Neo Jou <neojou@gmail.com>, Hans Ulli Kroll <linux@ulli-kroll.de>,
- Ping-Ke Shih <pkshih@realtek.com>, Yan-Hsuan Chuang
- <tony0620emma@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- kernel@pengutronix.de, Johannes Berg <johannes@sipsolutions.net>
-Message-ID: <5646cf79-248e-e80c-d1af-47887dc5232a@rincat.ch>
-Subject: Re: [PATCH 09/10] rtw88: Add rtw8822bu chipset support
-References: <20220518082318.3898514-1-s.hauer@pengutronix.de>
- <20220518082318.3898514-10-s.hauer@pengutronix.de>
-In-Reply-To: <20220518082318.3898514-10-s.hauer@pengutronix.de>
+On Mon, May 23, 2022 at 07:56:14AM -0400, Rin Cat (鈴猫) wrote:
+> Hi, here are all current known vender rtw8822bu devices IDs from my
+> maintained Realtek driver.
+> https://github.com/RinCat/RTL88x2BU-Linux-Driver/blob/master/os_dep/linux/usb_intf.c#L239=
 
---------------kbOkN4fTM5ov0y37C3qUv0op
-Content-Type: multipart/mixed; boundary="------------e0OVuE7jeIuuK8p1FFRrLPaG"
+Man, how many incarnations of this driver are there? It's really about time
+to mainline it.
 
---------------e0OVuE7jeIuuK8p1FFRrLPaG
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Modulo the IDs posted by Nick Morrow already only this one is missing:
 
-SGksIGhlcmUgYXJlIGFsbCBjdXJyZW50IGtub3duIHZlbmRlciBydHc4ODIyYnUgZGV2aWNl
-cyBJRHMgZnJvbSBteSBtYWludGFpbmVkIA0KUmVhbHRlayBkcml2ZXIuDQpodHRwczovL2dp
-dGh1Yi5jb20vUmluQ2F0L1JUTDg4eDJCVS1MaW51eC1Ecml2ZXIvYmxvYi9tYXN0ZXIvb3Nf
-ZGVwL2xpbnV4L3VzYl9pbnRmLmMjTDIzOT0NCg0KQVNVUyB2ZW5kZXIgSUQgMHgwQjA1Og0K
-MHgxODQxIEFTVVMgQUMxMzAwIFVTQi1BQzU1IEIxDQoweDE4NEMgQVNVUyBVMg0KMHgxOUFB
-IEFTVVMgVVNCLUFDNTgNCg0KRWRpbWF4IHZlbmRlciBJRCAweDczOTI6DQoweEI4MjIgRWRp
-bWF4IEVXLTc4MjJVTEMNCjB4QzgyMiBFZGltYXggRVctNzgyMlVUQw0KMHhGODIyIEVkaW1h
-eCBFVy03ODIyVUFEDQoNCkRsaW5rIHZlbmRlciBJRCAweDIwMDE6DQoweDMzMUUgRGxpbmsg
-LSBEV0EtMTgxDQoweDMzMUMgRGxpbmsgLSBEV0EtMTgyDQoweDMzMUYgRGxpbmsgLSBEV0Et
-MTgzIFZlci4gRA0KDQpOZXRHZWFyIHZlbmRlciBJRCAweDA4NDY6DQoweDkwNTUgTmV0R2Vh
-ciBBNjE1MA0KDQpUUC1MaW5rIHZlbmRlciBJRCAweDIzNTc6DQoweDAxMkQgVFAtTGluayBB
-cmNoZXIgVDNVDQoweDAxMzggVFAtTGluayBBcmNoZXIgVDNVIFBsdXMNCjB4MDExNSBUUC1M
-aW5rIEFyY2hlciBUNFUgVjMNCg0KVFJFTkRuZXQgdmVuZGVyIElEIDB4MjBGNDoNCjB4ODA4
-QSBUUkVORG5ldCBURVctODA4VUJNDQoNClRoYW5rcy4NCg0KU2lnbmVkLW9mZi1ieTogUmlu
-IENhdCAo6Yi054yrKSA8ZGV2QHJpbmNhdC5jaD4NCg0KT24gMjAyMi0wNS0xOCAwNDoyMywg
-U2FzY2hhIEhhdWVyIHdyb3RlOg0KPiBBZGQgc3VwcG9ydCBmb3IgdGhlIHJ0dzg4MjJidSBj
-aGlwc2V0IGJhc2VkIG9uDQo+IGh0dHBzOi8vZ2l0aHViLmNvbS91bGxpLWtyb2xsL3J0dzg4
-LXVzYi5naXQNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBw
-ZW5ndXRyb25peC5kZT4NCj4gLS0tDQo+ICAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
-ay9ydHc4OC9LY29uZmlnICAgIHwgMTEgKysrKw0KPiAgIGRyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODgvTWFrZWZpbGUgICB8ICAzICsNCj4gICBkcml2ZXJzL25ldC93aXJl
-bGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg4MjJiLmMgfCAxOSArKysrKysNCj4gICAuLi4vbmV0
-L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmJ1LmMgICAgfCA2MiArKysrKysrKysr
-KysrKysrKysrDQo+ICAgLi4uL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg4MjJi
-dS5oICAgIHwgMTUgKysrKysNCj4gICA1IGZpbGVzIGNoYW5nZWQsIDExMCBpbnNlcnRpb25z
-KCspDQo+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnR3ODgvcnR3ODgyMmJ1LmMNCj4gICBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4ODIyYnUuaA0KPiANCj4gZGlmZiAtLWdp
-dCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvS2NvbmZpZyBiL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvS2NvbmZpZw0KPiBpbmRleCA1YjFiYWZj
-Y2QzZDRjLi5lNGM2MGYxNDQ5ZWM4IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJl
-bGVzcy9yZWFsdGVrL3J0dzg4L0tjb25maWcNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydHc4OC9LY29uZmlnDQo+IEBAIC00Miw2ICs0MiwxNyBAQCBjb25maWcg
-UlRXODhfODgyMkJFDQo+ICAgDQo+ICAgCSAgODAyLjExYWMgUENJZSB3aXJlbGVzcyBuZXR3
-b3JrIGFkYXB0ZXINCj4gICANCj4gK2NvbmZpZyBSVFc4OF84ODIyQlUNCj4gKwl0cmlzdGF0
-ZSAiUmVhbHRlayA4ODIyQlUgVVNCIHdpcmVsZXNzIG5ldHdvcmsgYWRhcHRlciINCj4gKwlk
-ZXBlbmRzIG9uIFVTQg0KPiArCXNlbGVjdCBSVFc4OF9DT1JFDQo+ICsJc2VsZWN0IFJUVzg4
-X1VTQg0KPiArCXNlbGVjdCBSVFc4OF84ODIyQg0KPiArCWhlbHANCj4gKwkgIFNlbGVjdCB0
-aGlzIG9wdGlvbiB3aWxsIGVuYWJsZSBzdXBwb3J0IGZvciA4ODIyQlUgY2hpcHNldA0KPiAr
-DQo+ICsJICA4MDIuMTFhYyBVU0Igd2lyZWxlc3MgbmV0d29yayBhZGFwdGVyDQo+ICsNCj4g
-ICBjb25maWcgUlRXODhfODgyMkNFDQo+ICAgCXRyaXN0YXRlICJSZWFsdGVrIDg4MjJDRSBQ
-Q0kgd2lyZWxlc3MgbmV0d29yayBhZGFwdGVyIg0KPiAgIAlkZXBlbmRzIG9uIFBDSQ0KPiBk
-aWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9NYWtlZmls
-ZSBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvTWFrZWZpbGUNCj4gaW5k
-ZXggNTQ5OGU4YmJjYmYxNy4uZTQxMjZkZGY3ZDY1OSAxMDA2NDQNCj4gLS0tIGEvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9NYWtlZmlsZQ0KPiArKysgYi9kcml2ZXJz
-L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L01ha2VmaWxlDQo+IEBAIC0yNiw2ICsyNiw5
-IEBAIHJ0dzg4Xzg4MjJiLW9ianMJCTo9IHJ0dzg4MjJiLm8gcnR3ODgyMmJfdGFibGUubw0K
-PiAgIG9iai0kKENPTkZJR19SVFc4OF84ODIyQkUpCSs9IHJ0dzg4Xzg4MjJiZS5vDQo+ICAg
-cnR3ODhfODgyMmJlLW9ianMJCTo9IHJ0dzg4MjJiZS5vDQo+ICAgDQo+ICtvYmotJChDT05G
-SUdfUlRXODhfODgyMkJVKQkrPSBydHc4OF84ODIyYnUubw0KPiArcnR3ODhfODgyMmJ1LW9i
-anMJCTo9IHJ0dzg4MjJidS5vDQo+ICsNCj4gICBvYmotJChDT05GSUdfUlRXODhfODgyMkMp
-CSs9IHJ0dzg4Xzg4MjJjLm8NCj4gICBydHc4OF84ODIyYy1vYmpzCQk6PSBydHc4ODIyYy5v
-IHJ0dzg4MjJjX3RhYmxlLm8NCj4gICANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmIuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmIuYw0KPiBpbmRleCBlZWU3YmYwMzU0MDMwLi4xMDQ5
-N2QzNTFmMjI5IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVr
-L3J0dzg4L3J0dzg4MjJiLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
-ay9ydHc4OC9ydHc4ODIyYi5jDQo+IEBAIC0yNiw2ICsyNiwxMiBAQCBzdGF0aWMgdm9pZCBy
-dHc4ODIyYmVfZWZ1c2VfcGFyc2luZyhzdHJ1Y3QgcnR3X2VmdXNlICplZnVzZSwNCj4gICAJ
-ZXRoZXJfYWRkcl9jb3B5KGVmdXNlLT5hZGRyLCBtYXAtPmUubWFjX2FkZHIpOw0KPiAgIH0N
-Cj4gICANCj4gK3N0YXRpYyB2b2lkIHJ0dzg4MjJidV9lZnVzZV9wYXJzaW5nKHN0cnVjdCBy
-dHdfZWZ1c2UgKmVmdXNlLA0KPiArCQkJCSAgICBzdHJ1Y3QgcnR3ODgyMmJfZWZ1c2UgKm1h
-cCkNCj4gK3sNCj4gKwlldGhlcl9hZGRyX2NvcHkoZWZ1c2UtPmFkZHIsIG1hcC0+dS5tYWNf
-YWRkcik7DQo+ICt9DQo+ICsNCj4gICBzdGF0aWMgaW50IHJ0dzg4MjJiX3JlYWRfZWZ1c2Uo
-c3RydWN0IHJ0d19kZXYgKnJ0d2RldiwgdTggKmxvZ19tYXApDQo+ICAgew0KPiAgIAlzdHJ1
-Y3QgcnR3X2VmdXNlICplZnVzZSA9ICZydHdkZXYtPmVmdXNlOw0KPiBAQCAtNTYsNiArNjIs
-OSBAQCBzdGF0aWMgaW50IHJ0dzg4MjJiX3JlYWRfZWZ1c2Uoc3RydWN0IHJ0d19kZXYgKnJ0
-d2RldiwgdTggKmxvZ19tYXApDQo+ICAgCWNhc2UgUlRXX0hDSV9UWVBFX1BDSUU6DQo+ICAg
-CQlydHc4ODIyYmVfZWZ1c2VfcGFyc2luZyhlZnVzZSwgbWFwKTsNCj4gICAJCWJyZWFrOw0K
-PiArCWNhc2UgUlRXX0hDSV9UWVBFX1VTQjoNCj4gKwkJcnR3ODgyMmJ1X2VmdXNlX3BhcnNp
-bmcoZWZ1c2UsIG1hcCk7DQo+ICsJCWJyZWFrOw0KPiAgIAlkZWZhdWx0Og0KPiAgIAkJLyog
-dW5zdXBwb3J0ZWQgbm93ICovDQo+ICAgCQlyZXR1cm4gLUVOT1RTVVBQOw0KPiBAQCAtMTU4
-OCw2ICsxNTk3LDE1IEBAIHN0YXRpYyB2b2lkIHJ0dzg4MjJiX2FkYXB0aXZpdHkoc3RydWN0
-IHJ0d19kZXYgKnJ0d2RldikNCj4gICAJcnR3X3BoeV9zZXRfZWRjY2FfdGgocnR3ZGV2LCBs
-MmgsIGgybCk7DQo+ICAgfQ0KPiAgIA0KPiArc3RhdGljIHZvaWQgcnR3ODgyMmJfZmlsbF90
-eGRlc2NfY2hlY2tzdW0oc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwNCj4gKwkJCQkJICBzdHJ1
-Y3QgcnR3X3R4X3BrdF9pbmZvICpwa3RfaW5mbywNCj4gKwkJCQkJICB1OCAqdHhkZXNjKQ0K
-PiArew0KPiArCXNpemVfdCB3b3JkcyA9IDMyIC8gMjsgLyogY2FsY3VsYXRlIHRoZSBmaXJz
-dCAzMiBieXRlcyAoMTYgd29yZHMpICovDQo+ICsNCj4gKwlmaWxsX3R4ZGVzY19jaGVja3N1
-bV9jb21tb24odHhkZXNjLCB3b3Jkcyk7DQo+ICt9DQo+ICsNCj4gICBzdGF0aWMgY29uc3Qg
-c3RydWN0IHJ0d19wd3Jfc2VxX2NtZCB0cmFuc19jYXJkZGlzX3RvX2NhcmRlbXVfODgyMmJb
-XSA9IHsNCj4gICAJezB4MDA4NiwNCj4gICAJIFJUV19QV1JfQ1VUX0FMTF9NU0ssDQo+IEBA
-IC0yMTYzLDYgKzIxODEsNyBAQCBzdGF0aWMgc3RydWN0IHJ0d19jaGlwX29wcyBydHc4ODIy
-Yl9vcHMgPSB7DQo+ICAgCS5jZmdfY3NpX3JhdGUJCT0gcnR3X2JmX2NmZ19jc2lfcmF0ZSwN
-Cj4gICAJLmFkYXB0aXZpdHlfaW5pdAk9IHJ0dzg4MjJiX2FkYXB0aXZpdHlfaW5pdCwNCj4g
-ICAJLmFkYXB0aXZpdHkJCT0gcnR3ODgyMmJfYWRhcHRpdml0eSwNCj4gKwkuZmlsbF90eGRl
-c2NfY2hlY2tzdW0JPSBydHc4ODIyYl9maWxsX3R4ZGVzY19jaGVja3N1bSwNCj4gICANCj4g
-ICAJLmNvZXhfc2V0X2luaXQJCT0gcnR3ODgyMmJfY29leF9jZmdfaW5pdCwNCj4gICAJLmNv
-ZXhfc2V0X2FudF9zd2l0Y2gJPSBydHc4ODIyYl9jb2V4X2NmZ19hbnRfc3dpdGNoLA0KPiBk
-aWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4ODIy
-YnUuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmJ1LmMN
-Cj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gaW5kZXggMDAwMDAwMDAwMDAwMC4uNWJlY2Vi
-ZGMzMjQ3MQ0KPiAtLS0gL2Rldi9udWxsDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmJ1LmMNCj4gQEAgLTAsMCArMSw2MiBAQA0KPiArLy8g
-U1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAgT1IgQlNELTMtQ2xhdXNlDQo+ICsv
-KiBDb3B5cmlnaHQoYykgMjAxOC0yMDE5ICBSZWFsdGVrIENvcnBvcmF0aW9uDQo+ICsgKi8N
-Cj4gKw0KPiArI2luY2x1ZGUgPGxpbnV4L21vZHVsZS5oPg0KPiArI2luY2x1ZGUgPGxpbnV4
-L3VzYi5oPg0KPiArI2luY2x1ZGUgIm1haW4uaCINCj4gKyNpbmNsdWRlICJydHc4ODIyYnUu
-aCINCj4gKyNpbmNsdWRlICJ1c2IuaCINCj4gKw0KPiArI2RlZmluZSBSVFdfVVNCX1ZFTkRF
-Ul9JRF9FRElNQVgJMHg3MzkyDQo+ICsNCj4gK3N0YXRpYyBjb25zdCBzdHJ1Y3QgdXNiX2Rl
-dmljZV9pZCBydHdfODgyMmJ1X2lkX3RhYmxlW10gPSB7DQo+ICsJeyBVU0JfREVWSUNFX0FO
-RF9JTlRFUkZBQ0VfSU5GTyhSVFdfVVNCX1ZFTkRPUl9JRF9SRUFMVEVLLA0KPiArCQkJCSAg
-ICAgICBSVFdfVVNCX1BST0RVQ1RfSURfUkVBTFRFS184ODEyQiwNCj4gKwkJCQkgICAgICAg
-MHhmZiwgMHhmZiwgMHhmZiksDQo+ICsJICAuZHJpdmVyX2luZm8gPSAoa2VybmVsX3Vsb25n
-X3QpJihydHc4ODIyYl9od19zcGVjKSB9LA0KPiArCXsgVVNCX0RFVklDRV9BTkRfSU5URVJG
-QUNFX0lORk8oUlRXX1VTQl9WRU5ET1JfSURfUkVBTFRFSywNCj4gKwkJCQkgICAgICAgUlRX
-X1VTQl9QUk9EVUNUX0lEX1JFQUxURUtfODgyMkIsDQo+ICsJCQkJICAgICAgIDB4ZmYsIDB4
-ZmYsIDB4ZmYpLA0KPiArCSAgLmRyaXZlcl9pbmZvID0gKGtlcm5lbF91bG9uZ190KSYocnR3
-ODgyMmJfaHdfc3BlYykgfSwNCj4gKwl7IFVTQl9ERVZJQ0VfQU5EX0lOVEVSRkFDRV9JTkZP
-KFJUV19VU0JfVkVOREVSX0lEX0VESU1BWCwNCj4gKwkJCQkJMHhCODIyLA0KPiArCQkJCQkw
-eGZmLCAweGZmLCAweGZmKSwNCj4gKwkgIC5kcml2ZXJfaW5mbyA9IChrZXJuZWxfdWxvbmdf
-dCkmKHJ0dzg4MjJiX2h3X3NwZWMpIH0sDQo+ICsJeyBVU0JfREVWSUNFX0FORF9JTlRFUkZB
-Q0VfSU5GTyhSVFdfVVNCX1ZFTkRFUl9JRF9FRElNQVgsDQo+ICsJCQkJCTB4QzgyMiwNCj4g
-KwkJCQkJMHhmZiwgMHhmZiwgMHhmZiksDQo+ICsJICAuZHJpdmVyX2luZm8gPSAoa2VybmVs
-X3Vsb25nX3QpJihydHc4ODIyYl9od19zcGVjKSB9LA0KPiArCXsgVVNCX0RFVklDRSgweDBi
-MDUsIDB4MTg0YyksCS8qIEFTVVMgQUM1MyBOYW5vICovDQo+ICsJICAuZHJpdmVyX2luZm8g
-PSAoa2VybmVsX3Vsb25nX3QpJihydHc4ODIyYl9od19zcGVjKSB9LA0KPiArCXsgVVNCX0RF
-VklDRSgweDBiMDUsIDB4MTg0MSksCS8qIEFTVVMgQUM1NSBCMSAqLw0KPiArCSAgLmRyaXZl
-cl9pbmZvID0gKGtlcm5lbF91bG9uZ190KSYocnR3ODgyMmJfaHdfc3BlYykgfSwNCj4gKwl7
-IFVTQl9ERVZJQ0UoMHgyMDAxLCAweDMzMWMpLAkvKiBELUxpbmsgRFdBLTE4MiByZXYgRDEg
-Ki8NCj4gKwkgIC5kcml2ZXJfaW5mbyA9IChrZXJuZWxfdWxvbmdfdCkmKHJ0dzg4MjJiX2h3
-X3NwZWMpIH0sDQo+ICsJeyBVU0JfREVWSUNFKDB4MTNiMSwgMHgwMDQzKSwJLyogTGlua3N5
-cyBXVVNCNjQwME0gKi8NCj4gKwkgIC5kcml2ZXJfaW5mbyA9IChrZXJuZWxfdWxvbmdfdCkm
-KHJ0dzg4MjJiX2h3X3NwZWMpIH0sDQo+ICsJeyBVU0JfREVWSUNFKDB4MjM1NywgMHgwMTJE
-KSwJLyogVFAtTGluayBBQzEzMDAgVDNVICovDQo+ICsJICAuZHJpdmVyX2luZm8gPSAoa2Vy
-bmVsX3Vsb25nX3QpJihydHc4ODIyYl9od19zcGVjKSB9LA0KPiArCXsgVVNCX0RFVklDRSgw
-eDIzNTcsIDB4MDEzOCksCS8qIFRQLUxpbmsgQUMxMzAwIFQzVSAqLw0KPiArCSAgLmRyaXZl
-cl9pbmZvID0gKGtlcm5lbF91bG9uZ190KSYocnR3ODgyMmJfaHdfc3BlYykgfSwNCj4gKwl7
-fSwNCj4gK307DQo+ICtNT0RVTEVfREVWSUNFX1RBQkxFKHVzYiwgcnR3Xzg4MjJidV9pZF90
-YWJsZSk7DQo+ICsNCj4gK3N0YXRpYyBpbnQgcnR3ODgyMmJ1X3Byb2JlKHN0cnVjdCB1c2Jf
-aW50ZXJmYWNlICppbnRmLA0KPiArCQkJICAgIGNvbnN0IHN0cnVjdCB1c2JfZGV2aWNlX2lk
-ICppZCkNCj4gK3sNCj4gKwlyZXR1cm4gcnR3X3VzYl9wcm9iZShpbnRmLCBpZCk7DQo+ICt9
-DQo+ICsNCj4gK3N0YXRpYyBzdHJ1Y3QgdXNiX2RyaXZlciBydHdfODgyMmJ1X2RyaXZlciA9
-IHsNCj4gKwkubmFtZSA9ICJydHdfODgyMmJ1IiwNCj4gKwkuaWRfdGFibGUgPSBydHdfODgy
-MmJ1X2lkX3RhYmxlLA0KPiArCS5wcm9iZSA9IHJ0dzg4MjJidV9wcm9iZSwNCj4gKwkuZGlz
-Y29ubmVjdCA9IHJ0d191c2JfZGlzY29ubmVjdCwNCj4gK307DQo+ICttb2R1bGVfdXNiX2Ry
-aXZlcihydHdfODgyMmJ1X2RyaXZlcik7DQo+ICsNCj4gK01PRFVMRV9BVVRIT1IoIlJlYWx0
-ZWsgQ29ycG9yYXRpb24iKTsNCj4gK01PRFVMRV9ERVNDUklQVElPTigiUmVhbHRlayA4MDIu
-MTFhYyB3aXJlbGVzcyA4ODIyYnUgZHJpdmVyIik7DQo+ICtNT0RVTEVfTElDRU5TRSgiRHVh
-bCBCU0QvR1BMIik7DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFs
-dGVrL3J0dzg4L3J0dzg4MjJidS5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9y
-dHc4OC9ydHc4ODIyYnUuaA0KPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiBpbmRleCAwMDAw
-MDAwMDAwMDAwLi4yMGYwMWVjZDc0NDE1DQo+IC0tLSAvZGV2L251bGwNCj4gKysrIGIvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4ODIyYnUuaA0KPiBAQCAtMCww
-ICsxLDE1IEBADQo+ICsvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMCBPUiBC
-U0QtMy1DbGF1c2UgKi8NCj4gKy8qIENvcHlyaWdodChjKSAyMDE4LTIwMTkgIFJlYWx0ZWsg
-Q29ycG9yYXRpb24NCj4gKyAqLw0KPiArDQo+ICsjaWZuZGVmIF9fUlRXXzg4MjJCVV9IXw0K
-PiArI2RlZmluZSBfX1JUV184ODIyQlVfSF8NCj4gKw0KPiArLyogVVNCIFZlbmRvci9Qcm9k
-dWN0IElEcyAqLw0KPiArI2RlZmluZSBSVFdfVVNCX1ZFTkRPUl9JRF9SRUFMVEVLCQkweDBC
-REENCj4gKyNkZWZpbmUgUlRXX1VTQl9QUk9EVUNUX0lEX1JFQUxURUtfODgxMkIJMHhCODEy
-DQo+ICsjZGVmaW5lIFJUV19VU0JfUFJPRFVDVF9JRF9SRUFMVEVLXzg4MjJCCTB4QjgyQw0K
-PiArDQo+ICtleHRlcm4gc3RydWN0IHJ0d19jaGlwX2luZm8gcnR3ODgyMmJfaHdfc3BlYzsN
-Cj4gKw0KPiArI2VuZGlmDQo=
---------------e0OVuE7jeIuuK8p1FFRrLPaG
-Content-Type: application/pgp-keys; name="OpenPGP_0xDAB75F2C42EA262D.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xDAB75F2C42EA262D.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+	{USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x331f, 0xff, 0xff, 0xff),
+	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec)}, /* Dlink - DWA-183 D Ver */
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+Will add it for the next round.
 
-xjMEYPXItRYJKwYBBAHaRw8BAQdASk85zgrUDXOUihKbVzlfpFqpPtfJiHHWrdDd
-9in1Vt7NJlJpbiBDYXQgKOmItOeMqykgKERldikgPGRldkByaW5jYXQuY2g+wpkE
-ExYKAEECGwEFCQZ/rAkFCwkIBwMFFQoJCAsFFgMCAQACHgECF4AWIQSDMpqtAMvY
-WsmP/Hbat18sQuomLQUCYPXI/gIZAQAKCRDat18sQuomLQQ8AQDYcmCYlG4OU8oz
-qyWS3ci5OrhbHmL6jMwa5NFoW2SSUAEA98uF1kgY2EUVqJO65k7j31UdF/v7Rvr6
-heFedAlLOQ/CdQQQFgoAHRYhBHZkfEeFCzOTjpLd5dWBIaAIDC3oBQJg9clcAAoJ
-ENWBIaAIDC3oJYAA/19R0wQSwTr1vYp3GPhk1kYGC15ld1gXPF9KriFmlB3fAQCF
-700RDZX/JntIM2yUWJv0OAsJDJNYmf5WTZzpEDdoDc4zBGD1yNAWCSsGAQQB2kcP
-AQEHQFXQPQfLiltWbaYb585pK/E7G/CgoD7g1o4YfDhtOtwSwsCWBBgWCgAmFiEE
-gzKarQDL2FrJj/x22rdfLELqJi0FAmD1yNACGwIFCQK78zkA4gkQ2rdfLELqJi3A
-FiAEGRYKAH0WIQSMe+CQzU+/D/DeMitA3PGOlxUHlQUCYPXI0F8UgAAAAAAuAChp
-c3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0OEM3
-QkUwOTBDRDRGQkYwRkYwREUzMjJCNDBEQ0YxOEU5NzE1MDc5NQAKCRBA3PGOlxUH
-lQf8AQCSoNONEGv8ow1Hm8q1QQs4Ea62IU0Iu1YuuH5rYGUKQwD/RO9qMoNHicdJ
-nIPZwiJvzLIE5MYJm7wpucWvSOYkKwSwhgD/Sbzkk1cWhxso3bgfHRI5t3QEb1gK
-8V47jcTkZ4hcVF4BALhJfGzF1e2L1BUVupqBkNQ6xrKs1xlSqbwZBeTqBdsHzjgE
-YPXI5xIKKwYBBAGXVQEFAQEHQBFoCEOoBFDCCBJ47Hsk2BYaLjmIAjnM7O5BpglG
-THIvAwEIB8J+BBgWCgAmFiEEgzKarQDL2FrJj/x22rdfLELqJi0FAmD1yOcCGwwF
-CQK78yIACgkQ2rdfLELqJi3mMAEAgC2VuSijXP359yp8yN6Qlk2JtUzpP5g2ZLuv
-53A8/QsA/2Bwu/u24hNTSpMuJbEOM3zR9Enqz+v8tYSrPmS4QVAE
-=3D5wHZ
------END PGP PUBLIC KEY BLOCK-----
+Thanks,
+  Sascha
 
---------------e0OVuE7jeIuuK8p1FFRrLPaG--
-
---------------kbOkN4fTM5ov0y37C3qUv0op--
-
---------------aO0Y8CEUjcLjAwJ0Zzta9L7d
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wnsEABYIACMWIQSMe+CQzU+/D/DeMitA3PGOlxUHlQUCYot2XgUDAAAAAAAKCRBA3PGOlxUHlalk
-AP9xvB09zYYjeXp7Eg/pPhW1eQh3NhSckJQCQdRRQm4k3AD/QXLlm8DiK6YpyCabNfGbmB46C1J8
-x7YVKo+OZw8mzQs=
-=V/6s
------END PGP SIGNATURE-----
-
---------------aO0Y8CEUjcLjAwJ0Zzta9L7d--
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
