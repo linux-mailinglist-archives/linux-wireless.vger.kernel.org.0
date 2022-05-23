@@ -2,107 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07BD853100E
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 May 2022 15:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 375A0531014
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 May 2022 15:19:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234927AbiEWLb7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 May 2022 07:31:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37398 "EHLO
+        id S235009AbiEWLkd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 May 2022 07:40:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234793AbiEWLb6 (ORCPT
+        with ESMTP id S234991AbiEWLk3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 May 2022 07:31:58 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BCE236E0E;
-        Mon, 23 May 2022 04:31:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AC846B81014;
-        Mon, 23 May 2022 11:31:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33631C385A9;
-        Mon, 23 May 2022 11:31:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653305515;
-        bh=ec/8ICRiIA0J8KQbodu4J3bWjx7guSjaJnAwLaZGMX4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=dQizoHBLLVHuA3n7nqEfZI++hCTQbJHicLcfHSH/o17PYAIPjNqCNjRmH1zRNa70U
-         k6JL9Qx9HHRuPQ/RDggsbYIzN5gEXNTxRshBY3YuOOisHu5lD9v5+Axnem6zzGqC6g
-         9da0NUsOF5VKxk4txqaFArTcmYDWxVT3Ku2H8RY2S/O+3Gb95ZkjelB+yrJaJNqfxf
-         hzRYuOb1srEuafbL5rjexfvb9qsGOXSrPQhuIdJoi6zZjwwtYWww2inEeFm9KlTEHc
-         J6yumbfutNVJcClnaZYsU1vQsjMt2oMw7mn9od0+VdtLyj63Y9ds+G64idfz9NhIoj
-         uFW94L1PYooNA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     duoming@zju.edu.cn
-Cc:     "Greg KH" <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org, amitkarwar@gmail.com,
-        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
-        huxinming820@gmail.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rafael@kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: Re: [PATCH v3] mwifiex: fix sleep in atomic context bugs caused by dev_coredumpv
-References: <20220523052810.24767-1-duoming@zju.edu.cn>
-        <YosqUjCYioGh3kBW@kroah.com>
-        <41a266af.2abb6.180efa8594d.Coremail.duoming@zju.edu.cn>
-Date:   Mon, 23 May 2022 14:31:48 +0300
-In-Reply-To: <41a266af.2abb6.180efa8594d.Coremail.duoming@zju.edu.cn>
-        (duoming's message of "Mon, 23 May 2022 14:43:49 +0800 (GMT+08:00)")
-Message-ID: <87r14kzdqz.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 23 May 2022 07:40:29 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB2265045F;
+        Mon, 23 May 2022 04:40:26 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24NBdo8uB012846, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24NBdo8uB012846
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 23 May 2022 19:39:50 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.28; Mon, 23 May 2022 19:39:50 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Mon, 23 May 2022 19:39:50 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
+ RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
+ 15.01.2308.021; Mon, 23 May 2022 19:39:49 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "linux@ulli-kroll.de" <linux@ulli-kroll.de>
+CC:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "neojou@gmail.com" <neojou@gmail.com>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "martin.blumenstingl@googlemail.com" 
+        <martin.blumenstingl@googlemail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH 00/10] RTW88: Add support for USB variants
+Thread-Topic: [PATCH 00/10] RTW88: Add support for USB variants
+Thread-Index: AQHYapDZwMHGDOiyz0ihhLmh/UE9+a0rWe8AgAAuhwCAAE/oAA==
+Date:   Mon, 23 May 2022 11:39:49 +0000
+Message-ID: <68a979f3fe3c80a460528605f03d85c2a265ff50.camel@realtek.com>
+References: <20220518082318.3898514-1-s.hauer@pengutronix.de>
+         <55f569899e4e894970b826548cd5439f5def2183.camel@ulli-kroll.de>
+         <20220523065348.GK25578@pengutronix.de>
+In-Reply-To: <20220523065348.GK25578@pengutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [114.26.229.84]
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzUvMjMg5LiK5Y2IIDA5OjIyOjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <DA3557C8A58552428DEEED4E61485A01@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(adding Johannes)
-
-duoming@zju.edu.cn writes:
-
->> > --- a/lib/kobject.c
->> > +++ b/lib/kobject.c
->> > @@ -254,7 +254,7 @@ int kobject_set_name_vargs(struct kobject *kobj, const char *fmt,
->> >  	if (kobj->name && !fmt)
->> >  		return 0;
->> >  
->> > -	s = kvasprintf_const(GFP_KERNEL, fmt, vargs);
->> > +	s = kvasprintf_const(GFP_ATOMIC, fmt, vargs);
->> >  	if (!s)
->> >  		return -ENOMEM;
->> >  
->> > @@ -267,7 +267,7 @@ int kobject_set_name_vargs(struct kobject *kobj, const char *fmt,
->> >  	if (strchr(s, '/')) {
->> >  		char *t;
->> >  
->> > -		t = kstrdup(s, GFP_KERNEL);
->> > +		t = kstrdup(s, GFP_ATOMIC);
->> >  		kfree_const(s);
->> >  		if (!t)
->> >  			return -ENOMEM;
->> 
->> Please no, you are hurting the whole kernel because of one odd user.
->> Please do not make these calls under atomic context.
->
-> Thanks for your time and suggestions. I will remove the gfp_t
-> parameter of dev_coredumpv in order to show it could not be used in
-> atomic context.
-
-In a way it would be nice to be able to call dev_coredump from atomic
-contexts, though I don't know how practical it actually is. Is there any
-other option? What about adding a gfp_t parameter to dev_set_name()? Or
-is there an alternative for dev_set_name() which can be called in atomic
-contexts?
-
-Johannes&Greg, any ideas?
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+T24gTW9uLCAyMDIyLTA1LTIzIGF0IDA4OjUzICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6DQo+
+IEhpIEhhbnMgVWxsaSwNCj4gDQo+IE9uIE1vbiwgTWF5IDIzLCAyMDIyIGF0IDA2OjA3OjE2QU0g
+KzAyMDAsIEhhbnMgVWxsaSBLcm9sbCB3cm90ZToNCj4gPiBPbiBXZWQsIDIwMjItMDUtMTggYXQg
+MTA6MjMgKzAyMDAsIFNhc2NoYSBIYXVlciB3cm90ZToNCj4gPiA+IFRoaXMgc2VyaWVzIGFkZHMg
+c3VwcG9ydCBmb3IgdGhlIFVTQiBjaGlwIHZhcmlhbnRzIHRvIHRoZSBSVFc4OCBkcml2ZXIuDQo+
+ID4gPiANCj4gPiANCj4gPiBIaSBTYXNjaGENCj4gPiANCj4gPiBnbGFkIHlvdSBmb3VuZCBzb21l
+ICp3b3JraW5nKiBkZXZpY2VzIGZvciBydHc4OCAhDQo+IA0KPiBXZWxsLCBub3QgZnVsbHkuIEkg
+aGFkIHRvIGFkZCBbM10gPSBSVFdfREVGX1JGRSg4ODIyYywgMCwgMCksIHRvIHRoZQ0KPiBydHc4
+ODIyY19yZmVfZGVmcyBhcnJheS4NCj4gDQo+ID4gSSBzcGVuZCBzb21lIG9mIHRoZSB3ZWVrZW5k
+IHRlc3RpbmcgeW91ciBkcml2ZXIgc3VibWlzc2lvbi4NCj4gPiANCj4gPiBmb3IgcnRsODgyMWN1
+IGRldmljZXMgSSBnZXQgZm9sbG93aW5nIG91dHB1dA0KPiA+IA0KPiA+IHNvbWUgTG9naWxpbmsg
+ZGV2aWNlDQo+ID4gDQo+ID4gWyAxNjg2LjYwNTU2N10gdXNiIDEtNS4xLjI6IE5ldyBVU0IgZGV2
+aWNlIGZvdW5kLCBpZFZlbmRvcj0wYmRhLCBpZFByb2R1Y3Q9YzgxMSwgYmNkRGV2aWNlPQ0KPiA+
+IDIuMDANCj4gPiBbIDE2ODYuNjE0MTg2XSB1c2IgMS01LjEuMjogTmV3IFVTQiBkZXZpY2Ugc3Ry
+aW5nczogTWZyPTEsIFByb2R1Y3Q9MiwgU2VyaWFsTnVtYmVyPTMNCj4gPiBbIDE2ODYuNjIxNzIx
+XSB1c2IgMS01LjEuMjogUHJvZHVjdDogODAyLjExYWMgTklDDQo+ID4gWyAxNjg2LjYyNjIyN10g
+dXNiIDEtNS4xLjI6IE1hbnVmYWN0dXJlcjogUmVhbHRlaw0KPiA+IFsgMTY4Ni42MzA2OTVdIHVz
+YiAxLTUuMS4yOiBTZXJpYWxOdW1iZXI6IDEyMzQ1Ng0KPiA+IFsgMTY4Ni42NDA0ODBdIHJ0d184
+ODIxY3UgMS01LjEuMjoxLjA6IEZpcm13YXJlIHZlcnNpb24gMjQuNS4wLCBIMkMgdmVyc2lvbiAx
+Mg0KPiA+IFsgMTY4Ni45MzI4MjhdIHJ0d184ODIxY3UgMS01LjEuMjoxLjA6IGZhaWxlZCB0byBk
+b3dubG9hZCBmaXJtd2FyZQ0KPiA+IFsgMTY4Ni45NDUyMDZdIHJ0d184ODIxY3UgMS01LjEuMjox
+LjA6IGZhaWxlZCB0byBzZXR1cCBjaGlwIGVmdXNlIGluZm8NCj4gPiBbIDE2ODYuOTUxNTM4XSBy
+dHdfODgyMWN1IDEtNS4xLjI6MS4wOiBmYWlsZWQgdG8gc2V0dXAgY2hpcCBpbmZvcm1hdGlvbg0K
+PiA+IFsgMTY4Ni45NTg0MDJdIHJ0d184ODIxY3U6IHByb2JlIG9mIDEtNS4xLjI6MS4wIGZhaWxl
+ZCB3aXRoIGVycm9yIC0yMg0KPiA+IA0KPiA+IGFib3ZlIGlzIHNhbWUgd2l0aCBzb21lIGZyb20g
+Q29tZmFzdA0KPiA+IA0KPiA+IFRoZSB3b3JzdCBpbiB0aGUgbGlzdCBpcyBvbmUgZnJvbSBFRFVQ
+DQo+ID4gDQo+ID4gWyAxODE3Ljg1NTcwNF0gcnR3Xzg4MjFjdSAxLTUuMS4yOjEuMjogRmlybXdh
+cmUgdmVyc2lvbiAyNC41LjAsIEgyQyB2ZXJzaW9uIDEyDQo+ID4gWyAxODE4LjE1MzkxOF0gcnR3
+Xzg4MjFjdSAxLTUuMS4yOjEuMjogcmZlIDI1NSBpc24ndCBzdXBwb3J0ZWQNCj4gPiBbIDE4MTgu
+MTY1MTc2XSBydHdfODgyMWN1IDEtNS4xLjI6MS4yOiBmYWlsZWQgdG8gc2V0dXAgY2hpcCBlZnVz
+ZSBpbmZvDQo+ID4gWyAxODE4LjE3MTUwNV0gcnR3Xzg4MjFjdSAxLTUuMS4yOjEuMjogZmFpbGVk
+IHRvIHNldHVwIGNoaXAgaW5mb3JtYXRpb24NCj4gDQo+IERvIHRoZXNlIGNoaXBzIHdvcmsgd2l0
+aCB5b3VyIG91dCBvZiB0cmVlIHZhcmlhbnQgb2YgdGhpcyBkcml2ZXI/DQo+IA0KPiBJcyB0aGUg
+ZWZ1c2UgaW5mbyBjb21wbGV0ZWx5IDB4ZmYgb3Igb25seSB0aGUgZmllbGQgaW5kaWNhdGluZyB0
+aGUgcmZlDQo+IG9wdGlvbj8NCg0KSSBjaGVjayBSRkUgYWxsb2NhdGlvbiBvZiA4ODIxYy4gMjU1
+IGlzbid0IGRlZmluZWQuDQpJZiBlZnVzZSBpbmZvIGlzbid0IGNvbXBsZXRlIDB4ZmYsIHRyeSB0
+byBmb3JjZSBSRkUgMCB0byBzZWUgaWYgaXQgd29ya3MuDQoNCj4gDQo+ID4gcnRsODgyMmJ1IGRl
+dmljZXMgYXJlIHdvcmtpbmcgZmluZSAuLi4NCj4gDQo+IE5pY2UuIERpZCB5b3UgdGVzdCBhIHJ0
+dzg3MjNkdSBkZXZpY2UgYXMgd2VsbD8NCj4gDQoNCkkgaGF2ZSBhIDg3MjNEVSBtb2R1bGUuDQoN
+CldpdGggdGhpcyBwYXRjaHNldCwgaXQgY2FuIGZpbmQgQVAsIGJ1dCBjYW4ndCBlc3RpYWJsaXNo
+IGNvbm5lY3Rpb24uDQpJIGNoZWNrIGFpciBjYXB0dXJlLCBidXQgbm8gVFggcGFja2V0cyBmb3Vu
+ZC4NClRoYXQgc2F5cyBSWCB3b3JrcywgYnV0IFRYIGRvZXNuJ3QuDQoNCldpdGggbWFzdGVyIGJy
+YW5jaCBvZiBIYW5zIFVsbGkgR2l0SHViLCBpdCBzaG93cyBtYW55ICJhdG9taWMgc2NoZWR1bGlu
+ZyINCndhcm5pbmdzIHdoZW4gSSBpbnNlcnQgdGhlIFVTQiBkb25nbGUuDQpXaGVuIEkgZG8gJ2l3
+IHNjYW4nLCBpdCBpcyBnb2luZyB0byBnZXQgc3R1Y2ssIGFuZCBJIGNhbiBvbmx5IHB1c2gNCnBv
+d2VyIGJ1dHRvbiB0byB0dXJuIG9mZiBteSBsYXB0b3AuDQoNClBpbmctS2UNCg0KDQo=
