@@ -2,90 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B89A530606
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 May 2022 23:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1E3B5306E9
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 May 2022 02:46:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351284AbiEVVAQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 May 2022 17:00:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57928 "EHLO
+        id S232334AbiEWAqO convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 May 2022 20:46:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235201AbiEVVAO (ORCPT
+        with ESMTP id S230095AbiEWAqM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 May 2022 17:00:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8382738DB3;
-        Sun, 22 May 2022 14:00:13 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B58F60EED;
-        Sun, 22 May 2022 21:00:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 622ABC34117;
-        Sun, 22 May 2022 21:00:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653253212;
-        bh=+je1WtpiONe7QXdb5p6y5pwgJ78n2MxgtryLiQhP9d8=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=Cn/MxRME0Fys4R6ZdKoXeENGbz2X9mf94jPO64S04nzDP6YfRy8x9sThTTTEYBs1z
-         vAomVSInF1+eUmegilfOfe10PERuV8NLAs+UBvEha3dsF+fTCmjavBdutq3tyS+PIf
-         VVctY44FQZNmCMITsYiYIR8y3kRg4jIxO6RYs/r6EPJoX5uwjcnbNRX6eU/CMX8gPf
-         36fDXxRH2NQg4oCWMUCxNJDxLPgpGd/5tEmYPinowI5dT5qqMrWioSkNyAKC2+jeh9
-         PRjBCXWxKiMDoUAYOndXeg+I2+gyXbJ0Pr1Zk4QqgHXt4b9muCnenCUSRCzFhtc5XK
-         XUqhQJqEzey3Q==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 414C2F03944;
-        Sun, 22 May 2022 21:00:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Sun, 22 May 2022 20:46:12 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BCC011141
+        for <linux-wireless@vger.kernel.org>; Sun, 22 May 2022 17:46:09 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24N0jf7mB000647, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24N0jf7mB000647
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 23 May 2022 08:45:41 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.28; Mon, 23 May 2022 08:45:41 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Mon, 23 May 2022 08:45:40 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
+ RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
+ 15.01.2308.021; Mon, 23 May 2022 08:45:40 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Kalle Valo <kvalo@kernel.org>
+CC:     Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 1/4] rtw88: Fix Sparse warning for rtw8822b
+Thread-Topic: [PATCH 1/4] rtw88: Fix Sparse warning for rtw8822b
+Thread-Index: AQHYbHnbH9w9YKP6Ik6hgAtKEYBpL60roVrQ
+Date:   Mon, 23 May 2022 00:45:40 +0000
+Message-ID: <e4d1d6cfcd9a423990a1a1e1cae38c0a@realtek.com>
+References: <20220520184528.4078-1-Larry.Finger@lwfinger.net>
+ <20220520184528.4078-2-Larry.Finger@lwfinger.net>
+In-Reply-To: <20220520184528.4078-2-Larry.Finger@lwfinger.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/5/22_=3F=3F_10:00:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3] net: wrap the wireless pointers in struct
- net_device in an ifdef
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <165325321226.25167.8062837622435317741.git-patchwork-notify@kernel.org>
-Date:   Sun, 22 May 2022 21:00:12 +0000
-References: <20220519202054.2200749-1-kuba@kernel.org>
-In-Reply-To: <20220519202054.2200749-1-kuba@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-        pabeni@redhat.com, johannes@sipsolutions.net,
-        stefan@datenfreihafen.org, sven@narfation.org,
-        alex.aring@gmail.com, mareklindner@neomailbox.ch,
-        sw@simonwunderlich.de, a@unstable.cc,
-        linux-wireless@vger.kernel.org, linux-wpan@vger.kernel.org
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
 
-This patch was applied to netdev/net-next.git (master)
-by David S. Miller <davem@davemloft.net>:
-
-On Thu, 19 May 2022 13:20:54 -0700 you wrote:
-> Most protocol-specific pointers in struct net_device are under
-> a respective ifdef. Wireless is the notable exception. Since
-> there's a sizable number of custom-built kernels for datacenter
-> workloads which don't build wireless it seems reasonable to
-> ifdefy those pointers as well.
+> -----Original Message-----
+> From: Larry Finger <Larry.Finger@lwfinger.net>
+> Sent: Saturday, May 21, 2022 2:45 AM
+> To: Kalle Valo <kvalo@kernel.org>
+> Cc: Johannes Berg <johannes@sipsolutions.net>; linux-wireless@vger.kernel.org; Larry Finger
+> <Larry.Finger@lwfinger.net>; Pkshih <pkshih@realtek.com>
+> Subject: [PATCH 1/4] rtw88: Fix Sparse warning for rtw8822b
 > 
-> While at it move IPv4 and IPv6 pointers up, those are special
-> for obvious reasons.
+> Sparse lists the following for rtw88:
 > 
-> [...]
+>   CHECK   drivers/net/wireless/realtek/rtw88/rtw8822b.c
+> drivers/net/wireless/realtek/rtw88/rtw8822b.c:2500:22: warning: symbol 'rtw8822b_hw_spec' was not
+> declared. Should it be static?
+> 
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+> ---
+>  drivers/net/wireless/realtek/rtw88/rtw8822b.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+> b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+> index dccd722b8e62..60c4e75df035 100644
+> --- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+> +++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+> @@ -2497,7 +2497,7 @@ static struct rtw_hw_reg_offset rtw8822b_edcca_th[] = {
+>  	[EDCCA_TH_H2L_IDX] = {{.addr = 0x8a4, .mask = MASKBYTE1}, .offset = 0},
+>  };
+> 
+> -struct rtw_chip_info rtw8822b_hw_spec = {
+> +static struct rtw_chip_info rtw8822b_hw_spec = {
 
-Here is the summary with links:
-  - [net-next,v3] net: wrap the wireless pointers in struct net_device in an ifdef
-    https://git.kernel.org/netdev/net-next/c/c304eddcecfe
+As Kalle's recommendation, this should be 'const'
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+>  	.ops = &rtw8822b_ops,
+>  	.id = RTW_CHIP_TYPE_8822B,
+>  	.fw_name = "rtw88/rtw8822b_fw.bin",
 
+I do grep with 'rtw8822b_hw_spec': 
+
+rtw8822b.c:struct rtw_chip_info rtw8822b_hw_spec = {
+rtw8822b.c:EXPORT_SYMBOL(rtw8822b_hw_spec);
+rtw8822be.c:            .driver_data = (kernel_ulong_t)&rtw8822b_hw_spec
+rtw8822be.h:extern struct rtw_chip_info rtw8822b_hw_spec;
+
+Making rtw8822b_hw_spec static can avoid sparse warning, but I worry that it can't
+be loaded, because it is an "external" symbol and used by rtw8822be.ko.
+Spuriously, it works. 
+
+However, I think we should correct them by moving extern prototype to rtw8822b.h and
+include rtw8822b.h by rtw8822be.c.
+
+
+Ping-Ke
 
