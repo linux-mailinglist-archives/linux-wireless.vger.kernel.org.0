@@ -2,58 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23F07530D85
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 May 2022 12:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07BD853100E
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 May 2022 15:19:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233980AbiEWKOE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 May 2022 06:14:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33574 "EHLO
+        id S234927AbiEWLb7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 May 2022 07:31:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233934AbiEWKOD (ORCPT
+        with ESMTP id S234793AbiEWLb6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 May 2022 06:14:03 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 178EBBE13
-        for <linux-wireless@vger.kernel.org>; Mon, 23 May 2022 03:14:02 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1nt54T-0006QP-Ud; Mon, 23 May 2022 12:13:53 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1nt54S-0001yL-Nx; Mon, 23 May 2022 12:13:52 +0200
-Date:   Mon, 23 May 2022 12:13:52 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Hans Ulli Kroll <linux@ulli-kroll.de>
-Cc:     linux-wireless@vger.kernel.org, Neo Jou <neojou@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        kernel@pengutronix.de, Johannes Berg <johannes@sipsolutions.net>
-Subject: Re: [PATCH 00/10] RTW88: Add support for USB variants
-Message-ID: <20220523101352.GM25578@pengutronix.de>
-References: <20220518082318.3898514-1-s.hauer@pengutronix.de>
- <55f569899e4e894970b826548cd5439f5def2183.camel@ulli-kroll.de>
+        Mon, 23 May 2022 07:31:58 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BCE236E0E;
+        Mon, 23 May 2022 04:31:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AC846B81014;
+        Mon, 23 May 2022 11:31:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33631C385A9;
+        Mon, 23 May 2022 11:31:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653305515;
+        bh=ec/8ICRiIA0J8KQbodu4J3bWjx7guSjaJnAwLaZGMX4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=dQizoHBLLVHuA3n7nqEfZI++hCTQbJHicLcfHSH/o17PYAIPjNqCNjRmH1zRNa70U
+         k6JL9Qx9HHRuPQ/RDggsbYIzN5gEXNTxRshBY3YuOOisHu5lD9v5+Axnem6zzGqC6g
+         9da0NUsOF5VKxk4txqaFArTcmYDWxVT3Ku2H8RY2S/O+3Gb95ZkjelB+yrJaJNqfxf
+         hzRYuOb1srEuafbL5rjexfvb9qsGOXSrPQhuIdJoi6zZjwwtYWww2inEeFm9KlTEHc
+         J6yumbfutNVJcClnaZYsU1vQsjMt2oMw7mn9od0+VdtLyj63Y9ds+G64idfz9NhIoj
+         uFW94L1PYooNA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     duoming@zju.edu.cn
+Cc:     "Greg KH" <gregkh@linuxfoundation.org>,
+        linux-wireless@vger.kernel.org, amitkarwar@gmail.com,
+        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
+        huxinming820@gmail.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rafael@kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: [PATCH v3] mwifiex: fix sleep in atomic context bugs caused by dev_coredumpv
+References: <20220523052810.24767-1-duoming@zju.edu.cn>
+        <YosqUjCYioGh3kBW@kroah.com>
+        <41a266af.2abb6.180efa8594d.Coremail.duoming@zju.edu.cn>
+Date:   Mon, 23 May 2022 14:31:48 +0300
+In-Reply-To: <41a266af.2abb6.180efa8594d.Coremail.duoming@zju.edu.cn>
+        (duoming's message of "Mon, 23 May 2022 14:43:49 +0800 (GMT+08:00)")
+Message-ID: <87r14kzdqz.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <55f569899e4e894970b826548cd5439f5def2183.camel@ulli-kroll.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 12:08:14 up 53 days, 22:37, 77 users,  load average: 0.16, 0.21,
- 0.16
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,47 +62,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 23, 2022 at 06:07:16AM +0200, Hans Ulli Kroll wrote:
-> On Wed, 2022-05-18 at 10:23 +0200, Sascha Hauer wrote:
-> > This series adds support for the USB chip variants to the RTW88 driver.
-> > 
-> 
-> Hi Sascha
-> 
-> glad you found some *working* devices for rtw88 !
-> 
-> I spend some of the weekend testing your driver submission.
-> 
-> for rtl8821cu devices I get following output
-> 
-> some Logilink device
-> 
-> [ 1686.605567] usb 1-5.1.2: New USB device found, idVendor=0bda, idProduct=c811, bcdDevice=
-> 2.00
+(adding Johannes)
 
-Most devices in the driver are described as:
+duoming@zju.edu.cn writes:
 
-	USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc82c, 0xff, 0xff, 0xff),
+>> > --- a/lib/kobject.c
+>> > +++ b/lib/kobject.c
+>> > @@ -254,7 +254,7 @@ int kobject_set_name_vargs(struct kobject *kobj, const char *fmt,
+>> >  	if (kobj->name && !fmt)
+>> >  		return 0;
+>> >  
+>> > -	s = kvasprintf_const(GFP_KERNEL, fmt, vargs);
+>> > +	s = kvasprintf_const(GFP_ATOMIC, fmt, vargs);
+>> >  	if (!s)
+>> >  		return -ENOMEM;
+>> >  
+>> > @@ -267,7 +267,7 @@ int kobject_set_name_vargs(struct kobject *kobj, const char *fmt,
+>> >  	if (strchr(s, '/')) {
+>> >  		char *t;
+>> >  
+>> > -		t = kstrdup(s, GFP_KERNEL);
+>> > +		t = kstrdup(s, GFP_ATOMIC);
+>> >  		kfree_const(s);
+>> >  		if (!t)
+>> >  			return -ENOMEM;
+>> 
+>> Please no, you are hurting the whole kernel because of one odd user.
+>> Please do not make these calls under atomic context.
+>
+> Thanks for your time and suggestions. I will remove the gfp_t
+> parameter of dev_coredumpv in order to show it could not be used in
+> atomic context.
 
-This particular one has:
+In a way it would be nice to be able to call dev_coredump from atomic
+contexts, though I don't know how practical it actually is. Is there any
+other option? What about adding a gfp_t parameter to dev_set_name()? Or
+is there an alternative for dev_set_name() which can be called in atomic
+contexts?
 
-	USB_DEVICE(0x0bda, 0xc811),
-
-When I use USB_DEVICE() instead of USB_DEVICE_AND_INTERFACE_INFO() on my
-device then the Wifi driver tries to bind to the bluetooth interface on
-the same device which then fails with similar error messages. Maybe you
-have to use
-
-	USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc811, 0xff, 0xff, 0xff)
-
-instead. I could imagine that the plain USB_DEVICE() once worked for you
-because the bluetooth driver was faster to probe and only left the Wifi
-interface free for the Wifi driver to probe.
-
-Sascha
+Johannes&Greg, any ideas?
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
