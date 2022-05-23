@@ -2,162 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 721D8531CF5
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 May 2022 22:57:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04CE453170B
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 May 2022 22:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238912AbiEWQbq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 May 2022 12:31:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43092 "EHLO
+        id S239733AbiEWRNq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 May 2022 13:13:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238911AbiEWQbp (ORCPT
+        with ESMTP id S240834AbiEWRMl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 May 2022 12:31:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A97C72983F;
-        Mon, 23 May 2022 09:31:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D3CE6124B;
-        Mon, 23 May 2022 16:31:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8360FC385AA;
-        Mon, 23 May 2022 16:31:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653323502;
-        bh=rr535/e5CTloClQFK/m/2NvyT5fJ5UrwoAoj2Pa5vzk=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=n0uAv6E1yLvecES93QppfWTT2L790dPoly4bfHBG4gAIGCSuKwNNtby2ycnXBFr9p
-         ttXPnJU92el+foon66YPJfQ2FnZ8DwrHq8k4ErqcnoS3tBH7qSu79i/hKzVlkRbmKm
-         FHXAtS3Z9XZJ2Jbqj8mhgnvm9qSdRgJs+E778Uu8S0utScavCQfqGFEMKp9YTonH1d
-         bks6CIU8xe7l3iMSTj0qvnzZvj7rgExfqhyXN/xdfmmhDcWgnmeroAqOGnqPIECwPb
-         L7N8qck1Vl8mWnuQ/0jkacD0RpR9dDFRwf8kKkUWJDK4Quq3X8giaZxWH8aFifr2zu
-         uSM6Jk4nOF/VQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     duoming@zju.edu.cn
-Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
-        linux-wireless@vger.kernel.org, amitkarwar@gmail.com,
-        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
-        huxinming820@gmail.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
-        rafael@kernel.org
-Subject: Re: [PATCH v3] mwifiex: fix sleep in atomic context bugs caused by dev_coredumpv
-References: <20220523052810.24767-1-duoming@zju.edu.cn>
-        <87o7zoxrdf.fsf@email.froward.int.ebiederm.org>
-        <6a270950.2c659.180f1a46e8c.Coremail.duoming@zju.edu.cn>
-Date:   Mon, 23 May 2022 19:31:35 +0300
-In-Reply-To: <6a270950.2c659.180f1a46e8c.Coremail.duoming@zju.edu.cn>
-        (duoming's message of "Mon, 23 May 2022 23:58:46 +0800 (GMT+08:00)")
-Message-ID: <87ee0kyzvc.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 23 May 2022 13:12:41 -0400
+Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 163FA6BFD7
+        for <linux-wireless@vger.kernel.org>; Mon, 23 May 2022 10:12:08 -0700 (PDT)
+Received: by mail-il1-x12e.google.com with SMTP id t13so3380771ilm.9
+        for <linux-wireless@vger.kernel.org>; Mon, 23 May 2022 10:12:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=vsoZkcYm3jCCjpX9R4JNfB/t4Y2EE574Kr+1kQkq8IE=;
+        b=KYxjcNiybC108JsuQ9VvDdOY+A62ix0fZKBDUhsF0gCJMhMGaPdboME8o4kk7EOlHL
+         Y+oe+NleGaX9TNOmVUi7RA9OOiBNwp5HxD7FlR74fXw8ZAehK3wy/FMiXpklCTggtEbY
+         PTi8GSlmIXLLc6xO0z25LLLD4QJ4pnKip6n/c3KaHkkSLad/rxSSmGdvyCaIuTy97pRS
+         FlN3PGMf5RFylBRKdw3Zp1eTDa1eHZN1eqHFTFQgO5rwrxaFJ2qX1fAn6dRc0gOkgDXH
+         sSgwxjVLfnsZkwQ5R8yBV/KIN53WVhyTMrgJBexUMowcjYnV47y9tnDjjob7yE3Su83a
+         0zZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=vsoZkcYm3jCCjpX9R4JNfB/t4Y2EE574Kr+1kQkq8IE=;
+        b=vdPS/x+7S3pm6rrtQTPnNoWV3dPef7phLoU4zuJQyrGB/Ywst1VKpp8aXvAUMVVhmt
+         r86BATvAcIjwzp2jfDxjA10A1yDyFgGNhBViUv4NwoPpAfvRDqI8Q1PWj208xyFKo5JK
+         UR7POWDW3wPudVDX30uYO3OhbbkQkdILhw1scrxqE7N+dUhGC/PnjbaQ9Wl85wcwcQKw
+         e5KixSQDfzf/hCf6WsJM0xaowWXTmiA+azYf+sQLw/XxrFr+zdVyxrcBaPZ372t1YlfF
+         q7zlcaqgsWoAVpU0z4l7B21ud4qbBAscu8QUDonbHj+vyW8jDgw4/hG5Qt/peJUoLuJx
+         1ZeA==
+X-Gm-Message-State: AOAM532z80evVN+ozp9vLmmR/GkuA/M2Lvz9QSeDOqw5wbpgLMXxdJ+l
+        mVOlqPrq0CD8YLiYS1sI60EiF2U4NF/WL09K0g0=
+X-Google-Smtp-Source: ABdhPJwWcueot0Mxo+0p0VKjmL4BUkwkHwyADIikhd9AXDKz+Zo1WtVgIBIH7ZvwU8P0COIOJ9pUtus2BVmYGCKlT5Q=
+X-Received: by 2002:a05:6e02:2142:b0:2d1:4344:2431 with SMTP id
+ d2-20020a056e02214200b002d143442431mr12120442ilv.188.1653325893824; Mon, 23
+ May 2022 10:11:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Sender: nicolemarois222@gmail.com
+Received: by 2002:a05:6638:339f:0:0:0:0 with HTTP; Mon, 23 May 2022 10:11:33
+ -0700 (PDT)
+From:   Miss Qing Yu <qing9560yu@gmail.com>
+Date:   Mon, 23 May 2022 17:11:33 +0000
+X-Google-Sender-Auth: A93i-LO44QCWuQPq7-XYmhtkgSE
+Message-ID: <CAH7nGPuWhmtcL+V08v1D+Avvjz+==-vK2+41A9bc6st7z2yAew@mail.gmail.com>
+Subject: Hello!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,HK_SCAM,LOTS_OF_MONEY,MILLION_USD,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-duoming@zju.edu.cn writes:
-
-> Hello maintainers,
->
-> Thank you for your time and suggestions! 
->
->> > There are sleep in atomic context bugs when uploading device dump
->> > data in mwifiex. The root cause is that dev_coredumpv could not
->> > be used in atomic contexts, because it calls dev_set_name which
->> > include operations that may sleep. The call tree shows execution
->> > paths that could lead to bugs:
->> >
->> >    (Interrupt context)
->> > fw_dump_timer_fn
->> >   mwifiex_upload_device_dump
->> >     dev_coredumpv(..., GFP_KERNEL)
->> >       dev_coredumpm()
->> >         kzalloc(sizeof(*devcd), gfp); //may sleep
->> >         dev_set_name
->> >           kobject_set_name_vargs
->> >             kvasprintf_const(GFP_KERNEL, ...); //may sleep
->> >             kstrdup(s, GFP_KERNEL); //may sleep
->> >
->> > In order to let dev_coredumpv support atomic contexts, this patch
->> > changes the gfp_t parameter of kvasprintf_const and kstrdup in
->> > kobject_set_name_vargs from GFP_KERNEL to GFP_ATOMIC. What's more,
->> > In order to mitigate bug, this patch changes the gfp_t parameter
->> > of dev_coredumpv from GFP_KERNEL to GFP_ATOMIC.
->> 
->> vmalloc in atomic context?
->> 
->> Not only does dev_coredumpm set a device name dev_coredumpm creates an
->> entire device to hold the device dump.
->> 
->> My sense is that either dev_coredumpm needs to be rebuilt on a
->> completely different principle that does not need a device to hold the
->> coredump (so that it can be called from interrupt context) or that
->> dev_coredumpm should never be called in an context that can not sleep.
->
-> The following solution removes the gfp_t parameter of dev_coredumpv(), 
-> dev_coredumpm() and dev_coredumpsg() and change the gfp_t parameter of 
-> kzalloc() in dev_coredumpm() to GFP_KERNEL, in order to show that these 
-> functions can not be used in atomic context.
->
-> What's more, I move the operations that may sleep into a work item and use
-> schedule_work() to call a kernel thread to do the operations that may sleep.
->
-
-[...]
-
-> --- a/drivers/net/wireless/marvell/mwifiex/init.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/init.c
-> @@ -63,11 +63,19 @@ static void wakeup_timer_fn(struct timer_list *t)
->  		adapter->if_ops.card_reset(adapter);
->  }
->  
-> +static void fw_dump_work(struct work_struct *work)
-> +{
-> +	struct mwifiex_adapter *adapter =
-> +		container_of(work, struct mwifiex_adapter, devdump_work);
-> +
-> +	mwifiex_upload_device_dump(adapter);
-> +}
-> +
->  static void fw_dump_timer_fn(struct timer_list *t)
->  {
->  	struct mwifiex_adapter *adapter = from_timer(adapter, t, devdump_timer);
->  
-> -	mwifiex_upload_device_dump(adapter);
-> +	schedule_work(&adapter->devdump_work);
->  }
->  
->  /*
-> @@ -321,6 +329,7 @@ static void mwifiex_init_adapter(struct mwifiex_adapter *adapter)
->  	adapter->active_scan_triggered = false;
->  	timer_setup(&adapter->wakeup_timer, wakeup_timer_fn, 0);
->  	adapter->devdump_len = 0;
-> +	INIT_WORK(&adapter->devdump_work, fw_dump_work);
->  	timer_setup(&adapter->devdump_timer, fw_dump_timer_fn, 0);
->  }
->  
-> @@ -401,6 +410,7 @@ mwifiex_adapter_cleanup(struct mwifiex_adapter *adapter)
->  {
->  	del_timer(&adapter->wakeup_timer);
->  	del_timer_sync(&adapter->devdump_timer);
-> +	cancel_work_sync(&adapter->devdump_work);
->  	mwifiex_cancel_all_pending_cmd(adapter);
->  	wake_up_interruptible(&adapter->cmd_wait_q.wait);
->  	wake_up_interruptible(&adapter->hs_activate_wait_q);
-
-In this patch please only do the API change in mwifiex. The change to
-using a workqueue needs to be in separate patch so it can be properly
-tested. I don't want a change like that going to the kernel without
-testing on a real device.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+       I am Mrs Yu. Ging Yunnan, and i have Covid-19 and the doctor
+said I will not survive it with the critical condition am in because
+all vaccines has been given to me but to no avian, am a China woman
+but I base here in France because am married here and I have no child
+for my late husband and now am a widow. My reason of communicating you
+is that i have $9.2million USD which was deposited in BNP Paribas Bank
+here in France by my late husband which am the next of kin to and I
+want you to stand as the replacement beneficiary beneficiary. Can you
+handle the process?
+                                Mrs Yu. Ging Yunnan.
