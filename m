@@ -2,38 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA35C530AFB
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 May 2022 10:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0785530AA8
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 May 2022 10:01:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230454AbiEWHqt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 May 2022 03:46:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59628 "EHLO
+        id S231326AbiEWHqm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 May 2022 03:46:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231237AbiEWHqk (ORCPT
+        with ESMTP id S231295AbiEWHqg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 May 2022 03:46:40 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E828183B9
-        for <linux-wireless@vger.kernel.org>; Mon, 23 May 2022 00:46:38 -0700 (PDT)
+        Mon, 23 May 2022 03:46:36 -0400
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D309318387
+        for <linux-wireless@vger.kernel.org>; Mon, 23 May 2022 00:46:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1653291998; x=1684827998;
+  t=1653291994; x=1684827994;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+q0WXzxSQbtArcEIo1rVm0eVyYhPsRQcHJbnG4aVD2A=;
-  b=HaHKOAGGSLmPmGgPxSp1Vc5VyBytxVfsQ255KTwczKrzNiNbXVO0U4MP
-   2OlNgejqOwTAF23Njl0ep+FzSgjJPUkmbXVqDNqSiHjI7NENTJieiMeoG
-   uP571DPNlrWQZTLr5lC0PeV+UPQyP2LX5KZyTqpwQnxxCfhFTciYdgK5I
-   8=;
-Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
-  by alexa-out.qualcomm.com with ESMTP; 22 May 2022 23:01:28 -0700
+  bh=SYZtd6kbLP5eqlkD9Nn28cDORVEsM1UcG2akq0E0BvM=;
+  b=yWcvORW2JwOU4OfniMafuz8cR0bz/vu84MzFKpFakdOEwUMoiZzhfsM8
+   aclYRsocpq18y28yOqixdQfiDyNRFMckxM73xBF7Lth3lbYla0x0xtaPR
+   0Rn4a4dGpsk/UvPUFWyFBC+bcNmErIYwNzNqFdBnojDiQFpU+Ld/YdZwl
+   Y=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 22 May 2022 23:01:28 -0700
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2022 23:01:28 -0700
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2022 23:01:28 -0700
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Sun, 22 May 2022 23:01:27 -0700
+ 15.2.986.22; Sun, 22 May 2022 23:01:28 -0700
 Received: from alokad-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -43,9 +43,9 @@ To:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>,
         <ath11k@lists.infradead.org>
 CC:     Aloka Dixit <quic_alokad@quicinc.com>,
         John Crispin <john@phrozen.org>
-Subject: [PATCH 5/9] ath11k: create a structure for WMI vdev up parameters
-Date:   Sun, 22 May 2022 23:01:04 -0700
-Message-ID: <20220523060108.23982-6-quic_alokad@quicinc.com>
+Subject: [PATCH 6/9] ath11k: configure MBSSID device parameters
+Date:   Sun, 22 May 2022 23:01:05 -0700
+Message-ID: <20220523060108.23982-7-quic_alokad@quicinc.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20220523060108.23982-1-quic_alokad@quicinc.com>
 References: <20220523060108.23982-1-quic_alokad@quicinc.com>
@@ -55,8 +55,8 @@ Content-Type: text/plain
 X-Originating-IP: [10.80.80.8]
 X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,203 +65,130 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Include an instance of the structure instead of individual parameters
-as input to ath11k_wmi_vdev_up().
+Add new field nontransmitting_vif_count in struct ath11k_vif which
+keeps track of non-transmitting interfaces associated with a
+transmitting interface when MBSSID is enabled.
+The count is decremented when WMI vdev down is invoked and incremented
+when WMI vdev up is invoked.
+Use this field to set the profile index and total profile count during
+WMI vdev up operation.
 
 Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
 Co-developed-by: John Crispin <john@phrozen.org>
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 31 +++++++++++++++++++++------
- drivers/net/wireless/ath/ath11k/wmi.c | 15 +++++++------
- drivers/net/wireless/ath/ath11k/wmi.h | 16 ++++++++++----
- 3 files changed, 45 insertions(+), 17 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.h |  2 ++
+ drivers/net/wireless/ath/ath11k/mac.c  | 32 +++++++++++++++++++++++---
+ 2 files changed, 31 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 95bca0b078b1..750dc9b46860 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -357,6 +357,8 @@ struct ath11k_vif {
+ #ifdef CONFIG_ATH11K_DEBUGFS
+ 	struct dentry *debugfs_twt;
+ #endif /* CONFIG_ATH11K_DEBUGFS */
++
++	u8 nontransmitting_vif_count;
+ };
+ 
+ struct ath11k_vif_iter {
 diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 8f629e54a53d..32ddb80f4cec 100644
+index 32ddb80f4cec..10d35cdfafdb 100644
 --- a/drivers/net/wireless/ath/ath11k/mac.c
 +++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -920,6 +920,7 @@ static int ath11k_mac_monitor_vdev_start(struct ath11k *ar, int vdev_id,
- 	struct ieee80211_channel *channel;
- 	struct wmi_vdev_start_req_arg arg = {};
- 	int ret;
-+	struct vdev_up_params params = { 0 };
- 
- 	lockdep_assert_held(&ar->conf_mutex);
- 
-@@ -960,7 +961,9 @@ static int ath11k_mac_monitor_vdev_start(struct ath11k *ar, int vdev_id,
- 		return ret;
- 	}
- 
--	ret = ath11k_wmi_vdev_up(ar, vdev_id, 0, ar->mac_addr);
-+	params.vdev_id = vdev_id,
-+	params.bssid = ar->mac_addr,
-+	ret = ath11k_wmi_vdev_up(ar, &params);
- 	if (ret) {
- 		ath11k_warn(ar->ab, "failed to put up monitor vdev %i: %d\n",
- 			    vdev_id, ret);
-@@ -1419,6 +1422,7 @@ static void ath11k_control_beaconing(struct ath11k_vif *arvif,
+@@ -1421,9 +1421,13 @@ static void ath11k_control_beaconing(struct ath11k_vif *arvif,
+ 				     struct ieee80211_bss_conf *info)
  {
  	struct ath11k *ar = arvif->ar;
++	struct ath11k_vif *tx_arvif = NULL;
  	int ret = 0;
-+	struct vdev_up_params params = { 0 };
+ 	struct vdev_up_params params = { 0 };
  
++	if (arvif->vif->mbssid_tx_vif)
++		tx_arvif = (void *)arvif->vif->mbssid_tx_vif->drv_priv;
++
  	lockdep_assert_held(&arvif->ar->conf_mutex);
  
-@@ -1446,8 +1450,10 @@ static void ath11k_control_beaconing(struct ath11k_vif *arvif,
- 
- 	ether_addr_copy(arvif->bssid, info->bssid);
- 
--	ret = ath11k_wmi_vdev_up(arvif->ar, arvif->vdev_id, arvif->aid,
--				 arvif->bssid);
-+	params.vdev_id = arvif->vdev_id;
-+	params.aid = arvif->aid;
-+	params.bssid = arvif->bssid;
-+	ret = ath11k_wmi_vdev_up(arvif->ar, &params);
- 	if (ret) {
- 		ath11k_warn(ar->ab, "failed to bring up vdev %d: %i\n",
- 			    arvif->vdev_id, ret);
-@@ -2704,6 +2710,7 @@ static void ath11k_bss_assoc(struct ieee80211_hw *hw,
- 	struct ath11k_peer *peer;
- 	bool is_auth = false;
- 	int ret;
-+	struct vdev_up_params params = { 0 };
- 
- 	lockdep_assert_held(&ar->conf_mutex);
- 
-@@ -2752,7 +2759,10 @@ static void ath11k_bss_assoc(struct ieee80211_hw *hw,
- 	arvif->aid = bss_conf->aid;
- 	ether_addr_copy(arvif->bssid, bss_conf->bssid);
- 
--	ret = ath11k_wmi_vdev_up(ar, arvif->vdev_id, arvif->aid, arvif->bssid);
-+	params.vdev_id = arvif->vdev_id;
-+	params.aid = arvif->aid;
-+	params.bssid = arvif->bssid;
-+	ret = ath11k_wmi_vdev_up(ar, &params);
- 	if (ret) {
- 		ath11k_warn(ar->ab, "failed to set vdev %d up: %d\n",
- 			    arvif->vdev_id, ret);
-@@ -6956,6 +6966,8 @@ ath11k_mac_update_vif_chan(struct ath11k *ar,
- 	/* TODO: Update ar->rx_channel */
- 
- 	for (i = 0; i < n_vifs; i++) {
-+		struct vdev_up_params params = { 0 };
-+
- 		arvif = (void *)vifs[i].vif->drv_priv;
- 
- 		if (WARN_ON(!arvif->is_started))
-@@ -6996,8 +7008,10 @@ ath11k_mac_update_vif_chan(struct ath11k *ar,
- 			ath11k_warn(ab, "failed to update bcn tmpl during csa: %d\n",
- 				    ret);
- 
--		ret = ath11k_wmi_vdev_up(arvif->ar, arvif->vdev_id, arvif->aid,
--					 arvif->bssid);
-+		params.vdev_id = arvif->vdev_id;
-+		params.aid = arvif->aid;
-+		params.bssid = arvif->bssid;
-+		ret = ath11k_wmi_vdev_up(arvif->ar, &params);
- 		if (ret) {
- 			ath11k_warn(ab, "failed to bring vdev up %d: %d\n",
+ 	if (!info->enable_beacon) {
+@@ -1433,6 +1437,9 @@ static void ath11k_control_beaconing(struct ath11k_vif *arvif,
  				    arvif->vdev_id, ret);
-@@ -7089,6 +7103,7 @@ static int ath11k_start_vdev_delay(struct ieee80211_hw *hw,
- 	struct ath11k_base *ab = ar->ab;
- 	struct ath11k_vif *arvif = (void *)vif->drv_priv;
- 	int ret;
-+	struct vdev_up_params params = { 0 };
  
- 	if (WARN_ON(arvif->is_started))
- 		return -EBUSY;
-@@ -7115,7 +7130,9 @@ static int ath11k_start_vdev_delay(struct ieee80211_hw *hw,
+ 		arvif->is_up = false;
++		if (tx_arvif)
++			tx_arvif->nontransmitting_vif_count = 0;
++
+ 		return;
  	}
  
- 	if (arvif->vdev_type == WMI_VDEV_TYPE_MONITOR) {
--		ret = ath11k_wmi_vdev_up(ar, arvif->vdev_id, 0, ar->mac_addr);
-+		params.vdev_id = arvif->vdev_id,
-+		params.bssid = ar->mac_addr,
-+		ret = ath11k_wmi_vdev_up(ar, &params);
- 		if (ret) {
- 			ath11k_warn(ab, "failed put monitor up: %d\n", ret);
- 			return ret;
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index d0716f6208b2..fa443a2646b5 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -996,7 +996,7 @@ int ath11k_wmi_vdev_start(struct ath11k *ar, struct wmi_vdev_start_req_arg *arg,
- 	return ret;
- }
- 
--int ath11k_wmi_vdev_up(struct ath11k *ar, u32 vdev_id, u32 aid, const u8 *bssid)
-+int ath11k_wmi_vdev_up(struct ath11k *ar, struct vdev_up_params *params)
- {
- 	struct ath11k_pdev_wmi *wmi = ar->wmi;
- 	struct wmi_vdev_up_cmd *cmd;
-@@ -1011,10 +1011,13 @@ int ath11k_wmi_vdev_up(struct ath11k *ar, u32 vdev_id, u32 aid, const u8 *bssid)
- 
- 	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_VDEV_UP_CMD) |
- 			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
--	cmd->vdev_id = vdev_id;
--	cmd->vdev_assoc_id = aid;
--
--	ether_addr_copy(cmd->vdev_bssid.addr, bssid);
-+	cmd->vdev_id = params->vdev_id;
-+	cmd->vdev_assoc_id = params->aid;
-+	ether_addr_copy(cmd->vdev_bssid.addr, params->bssid);
-+	cmd->profile_idx = params->profile_idx;
-+	cmd->profile_count = params->profile_count;
-+	if (params->tx_bssid)
-+		ether_addr_copy(cmd->tx_vdev_bssid.addr, params->tx_bssid);
- 
- 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_VDEV_UP_CMDID);
+@@ -1453,6 +1460,13 @@ static void ath11k_control_beaconing(struct ath11k_vif *arvif,
+ 	params.vdev_id = arvif->vdev_id;
+ 	params.aid = arvif->aid;
+ 	params.bssid = arvif->bssid;
++	if (tx_arvif) {
++		params.tx_bssid = tx_arvif->bssid;
++		params.profile_idx = info->bssid_index;
++		if (params.profile_idx >= tx_arvif->nontransmitting_vif_count)
++			tx_arvif->nontransmitting_vif_count = params.profile_idx;
++		params.profile_count = tx_arvif->nontransmitting_vif_count;
++	}
+ 	ret = ath11k_wmi_vdev_up(arvif->ar, &params);
  	if (ret) {
-@@ -1024,7 +1027,7 @@ int ath11k_wmi_vdev_up(struct ath11k *ar, u32 vdev_id, u32 aid, const u8 *bssid)
+ 		ath11k_warn(ar->ab, "failed to bring up vdev %d: %i\n",
+@@ -2813,7 +2827,7 @@ static void ath11k_bss_disassoc(struct ieee80211_hw *hw,
+ 				struct ieee80211_vif *vif)
+ {
+ 	struct ath11k *ar = hw->priv;
+-	struct ath11k_vif *arvif = (void *)vif->drv_priv;
++	struct ath11k_vif *arvif = (void *)vif->drv_priv, *tx_arvif;
+ 	int ret;
  
- 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
- 		   "WMI mgmt vdev up id 0x%x assoc id %d bssid %pM\n",
--		   vdev_id, aid, bssid);
-+		   params->vdev_id, params->aid, params->bssid);
+ 	lockdep_assert_held(&ar->conf_mutex);
+@@ -2827,6 +2841,11 @@ static void ath11k_bss_disassoc(struct ieee80211_hw *hw,
+ 			    arvif->vdev_id, ret);
  
- 	return ret;
- }
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index c572774b9659..fa46fb6ef1ad 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -2611,14 +2611,23 @@ struct wmi_vdev_delete_cmd {
- 	u32 vdev_id;
- } __packed;
+ 	arvif->is_up = false;
++	if (arvif->vif->mbssid_tx_vif) {
++		tx_arvif = (void *)arvif->vif->mbssid_tx_vif->drv_priv;
++		if (tx_arvif != arvif)
++			tx_arvif->nontransmitting_vif_count--;
++	}
  
-+struct vdev_up_params {
-+	u32 vdev_id;
-+	u16 aid;
-+	const u8 *bssid;
-+	u32 profile_idx;
-+	u32 profile_count;
-+	u8 *tx_bssid;
-+};
-+
- struct wmi_vdev_up_cmd {
- 	u32 tlv_header;
- 	u32 vdev_id;
- 	u32 vdev_assoc_id;
- 	struct wmi_mac_addr vdev_bssid;
--	struct wmi_mac_addr trans_bssid;
-+	struct wmi_mac_addr tx_vdev_bssid;
- 	u32 profile_idx;
--	u32 profile_num;
-+	u32 profile_count;
- } __packed;
+ 	memset(&arvif->rekey_data, 0, sizeof(arvif->rekey_data));
  
- struct wmi_vdev_stop_cmd {
-@@ -5998,8 +6007,7 @@ int ath11k_wmi_bcn_tmpl(struct ath11k *ar, u32 vdev_id,
- 			struct ieee80211_mutable_offsets *offs,
- 			struct sk_buff *bcn);
- int ath11k_wmi_vdev_down(struct ath11k *ar, u8 vdev_id);
--int ath11k_wmi_vdev_up(struct ath11k *ar, u32 vdev_id, u32 aid,
--		       const u8 *bssid);
-+int ath11k_wmi_vdev_up(struct ath11k *ar, struct vdev_up_params *params);
- int ath11k_wmi_vdev_stop(struct ath11k *ar, u8 vdev_id);
- int ath11k_wmi_vdev_start(struct ath11k *ar, struct wmi_vdev_start_req_arg *arg,
- 			  bool restart);
+@@ -3372,7 +3391,8 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+ 			ret = ath11k_wmi_send_obss_color_collision_cfg_cmd(
+ 				ar, arvif->vdev_id, info->he_bss_color.color,
+ 				ATH11K_BSS_COLOR_COLLISION_DETECTION_AP_PERIOD_MS,
+-				info->he_bss_color.enabled);
++				arvif->vif->bss_conf.nontransmitted ?
++				0 : info->he_bss_color.enabled);
+ 			if (ret)
+ 				ath11k_warn(ar->ab, "failed to set bss color collision on vdev %i: %d\n",
+ 					    arvif->vdev_id,  ret);
+@@ -6952,7 +6972,7 @@ ath11k_mac_update_vif_chan(struct ath11k *ar,
+ 			   int n_vifs)
+ {
+ 	struct ath11k_base *ab = ar->ab;
+-	struct ath11k_vif *arvif;
++	struct ath11k_vif *arvif, *tx_arvif;
+ 	int ret;
+ 	int i;
+ 	bool monitor_vif = false;
+@@ -7011,6 +7031,12 @@ ath11k_mac_update_vif_chan(struct ath11k *ar,
+ 		params.vdev_id = arvif->vdev_id;
+ 		params.aid = arvif->aid;
+ 		params.bssid = arvif->bssid;
++		if (arvif->vif->mbssid_tx_vif) {
++			tx_arvif = (void *)arvif->vif->mbssid_tx_vif->drv_priv;
++			params.tx_bssid = tx_arvif->bssid;
++			params.profile_idx = arvif->vif->bss_conf.bssid_index;
++			params.profile_count = tx_arvif->nontransmitting_vif_count;
++		}
+ 		ret = ath11k_wmi_vdev_up(arvif->ar, &params);
+ 		if (ret) {
+ 			ath11k_warn(ab, "failed to bring vdev up %d: %d\n",
 -- 
 2.31.1
 
