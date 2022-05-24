@@ -2,42 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C728532DAA
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 17:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B381532DB4
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 17:39:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238971AbiEXPh0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 May 2022 11:37:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39804 "EHLO
+        id S239009AbiEXPjW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 May 2022 11:39:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236252AbiEXPhZ (ORCPT
+        with ESMTP id S239008AbiEXPjT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 May 2022 11:37:25 -0400
-Received: from p-impout007.msg.pkvw.co.charter.net (p-impout007aa.msg.pkvw.co.charter.net [47.43.26.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D78FD6223D
-        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 08:37:21 -0700 (PDT)
-Received: from 2603-8090-2005-39b3-0000-0000-0000-100e.res6.spectrum.com.com ([24.31.246.181])
-        by cmsmtp with ESMTP
-        id tWb2nfQAktfLptWb2ny5i8; Tue, 24 May 2022 15:37:20 +0000
-X-Authority-Analysis: v=2.4 cv=A+F/goaG c=1 sm=1 tr=0 ts=628cfbb0
- a=cAe/7qmlxnd6JlJqP68I9A==:117 a=cAe/7qmlxnd6JlJqP68I9A==:17 a=yQdBAQUQAAAA:8
- a=TcJKRCS9Dne6_0BgUPwA:9 a=SzazLyfi1tnkUD6oumHU:22
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH v3 4/4] rtw88: Fix Sparse warning for rtw8821c_hw_spec
-Date:   Tue, 24 May 2022 10:37:16 -0500
-Message-Id: <20220524153716.20450-1-Larry.Finger@lwfinger.net>
+        Tue, 24 May 2022 11:39:19 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BE79703E3;
+        Tue, 24 May 2022 08:39:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1653406756; x=1684942756;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=4rd15RSs+bC2DmRXjk8iPqEenJ0gefzbXgGg23o0n4E=;
+  b=fEPaH8SKVsM7s0KJvdxgMBc3qylwc3wR8cdEKxYucHe3Wphba3HK1YvE
+   GTMLsDNVVT5HrdsHVb7PbKKGbC/fv//sd0cO59OUif5YeavdOF3rdtHw1
+   I17JiQ34X/CTPphMK2V0JouOGTWAeXP8uswrGSBiyr3D8ddmGW0i2xwge
+   G6j5hT1ZocbWkolwLm4vSmD7T5CsLLjXD6j1QxfGKU8WGmv3USi+tz5bg
+   xrcC7IVUriMtmuZEOa4jE5PkDsmnhAucb8sAcSF+XZQnQU6cgJHBNjaDb
+   O6Lrun4DUlPWYhBNAlk3d2e0RBhX+w8HRaE6fmKVnQ4tL/2evesZTF1x3
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10357"; a="359958128"
+X-IronPort-AV: E=Sophos;i="5.91,248,1647327600"; 
+   d="scan'208";a="359958128"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2022 08:39:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,248,1647327600"; 
+   d="scan'208";a="577938831"
+Received: from irvmail001.ir.intel.com ([10.43.11.63])
+  by fmsmga007.fm.intel.com with ESMTP; 24 May 2022 08:39:01 -0700
+Received: from newjersey.igk.intel.com (newjersey.igk.intel.com [10.102.20.203])
+        by irvmail001.ir.intel.com (8.14.3/8.13.6/MailSET/Hub) with ESMTP id 24OFd0qk001875;
+        Tue, 24 May 2022 16:39:00 +0100
+From:   Alexander Lobakin <alexandr.lobakin@intel.com>
+To:     Nathan Chancellor <nathan@kernel.org>
+Cc:     Alexander Lobakin <alexandr.lobakin@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, "kernelci.org bot" <bot@kernelci.org>
+Subject: Re: [PATCH] ath6kl: Use cc-disable-warning to disable -Wdangling-pointer
+Date:   Tue, 24 May 2022 17:38:14 +0200
+Message-Id: <20220524153814.1093477-1-alexandr.lobakin@intel.com>
 X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220524145655.869822-1-nathan@kernel.org>
+References: <20220524145655.869822-1-nathan@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfKXdI5JdOdRDI0h2q/oxxcBBA6Rw2hqZQvQQe3GfZLXb0+Im+I0PPBhvrk7d9a3iYmryZ8Ts77Alt1x/IynnhrIw4ddH82lDQw9g2HcioIamYZ8nmr5W
- MOwHdSwXZeN1GYwWDDvZeC0R3evPmZ6yOdLTYFUPEFh/4IQVvCQnJSmUYfUAgEdkH7yc8ZZsixX7rlEu8JaKHUy5A4/uIQSPcU0huJkfzOEYR5K+JDjYgj7y
- oIYwwzEx3zHksspvC12PVTdE988GwgmI5AMBak9Sky8elPQSvVMise4ZWHRqHgYD1Ln9Xc7KpFfAdpkh8eSSWkBaznxXS/q76eWyifSo8kiOLX2PTGdsVyt0
- d6Qx5wZ5mDbI7ipNtMqT4FKS76tqVfXZ+pNMGQMxCTsfJ7TCxpo=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
+X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -46,85 +70,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sparse lists the following:
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 24 May 2022 07:56:55 -0700
 
-  CHECK   drivers/net/wireless/realtek/rtw88/rtw8821c.c
-drivers/net/wireless/realtek/rtw88/rtw8821c.c:1880:22: warning: symbol 'rtw8821c_hw_spec' was not declared. Should it be static?
+> Clang does not support this option so the build fails:
+> 
+>   error: unknown warning option '-Wno-dangling-pointer' [-Werror,-Wunknown-warning-option]
+> 
+> Use cc-disable-warning so that the option is only added when it is
+> supported.
+> 
+> Fixes: bd1d129daa3e ("wifi: ath6k: silence false positive -Wno-dangling-pointer warning on GCC 12")
+> Reported-by: "kernelci.org bot" <bot@kernelci.org>
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
-The warning arises because the external declaration for rtw8821c_hw_spec
-occurs in rtw8821ce.h, which is not included in rtw8821c.h. That line is
-moved, and the now empty file rtw8821ce.h is deleted.
+I was just about to send it :D
 
-Symbol 'rtw8821c_hw_spec' can be made constant.
+Reviewed-and-tested-by: Alexander Lobakin <alexandr.lobakin@intel.com>
 
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
----
-v2 Change patch subjects as recommended by Kalle
-v3 Make the correct fix for the warnings - 'static' is incorrect, but const is correct
----
+> ---
+>  drivers/net/wireless/ath/ath6kl/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath6kl/Makefile b/drivers/net/wireless/ath/ath6kl/Makefile
+> index 01cc0d50fee6..a75bfa9fd1cf 100644
+> --- a/drivers/net/wireless/ath/ath6kl/Makefile
+> +++ b/drivers/net/wireless/ath/ath6kl/Makefile
+> @@ -38,7 +38,7 @@ ath6kl_core-y += recovery.o
+>  
+>  # FIXME: temporarily silence -Wdangling-pointer on non W=1+ builds
+>  ifndef KBUILD_EXTRA_WARN
+> -CFLAGS_htc_mbox.o += -Wno-dangling-pointer
+> +CFLAGS_htc_mbox.o += $(call cc-disable-warning, dangling-pointer)
+>  endif
+>  
+>  ath6kl_core-$(CONFIG_NL80211_TESTMODE) += testmode.o
+> 
+> base-commit: 677fb7525331375ba2f90f4bc94a80b9b6e697a3
+> -- 
+> 2.36.1
 
- drivers/net/wireless/realtek/rtw88/rtw8821c.c  |  2 +-
- drivers/net/wireless/realtek/rtw88/rtw8821c.h  |  2 ++
- drivers/net/wireless/realtek/rtw88/rtw8821ce.c |  2 +-
- drivers/net/wireless/realtek/rtw88/rtw8821ce.h | 10 ----------
- 4 files changed, 4 insertions(+), 12 deletions(-)
- delete mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821ce.h
-
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-index ffee39ea5df6..42841f5d502c 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-@@ -1877,7 +1877,7 @@ static const struct rtw_reg_domain coex_info_hw_regs_8821c[] = {
- 	{0x60A, MASKBYTE0, RTW_REG_DOMAIN_MAC8},
- };
- 
--struct rtw_chip_info rtw8821c_hw_spec = {
-+const struct rtw_chip_info rtw8821c_hw_spec = {
- 	.ops = &rtw8821c_ops,
- 	.id = RTW_CHIP_TYPE_8821C,
- 	.fw_name = "rtw88/rtw8821c_fw.bin",
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.h b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-index d9fbddd7b0f3..2698801fc35d 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-@@ -84,6 +84,8 @@ _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
- 	rtw_write32_mask(rtwdev, addr + 0x200, mask, data);
- }
- 
-+extern const struct rtw_chip_info rtw8821c_hw_spec;
-+
- #define rtw_write32s_mask(rtwdev, addr, mask, data)			       \
- 	do {								       \
- 		BUILD_BUG_ON((addr) < 0xC00 || (addr) >= 0xD00);	       \
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821ce.c b/drivers/net/wireless/realtek/rtw88/rtw8821ce.c
-index 56d22f9de904..f3d971feda04 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821ce.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821ce.c
-@@ -5,7 +5,7 @@
- #include <linux/module.h>
- #include <linux/pci.h>
- #include "pci.h"
--#include "rtw8821ce.h"
-+#include "rtw8821c.h"
- 
- static const struct pci_device_id rtw_8821ce_id_table[] = {
- 	{
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821ce.h b/drivers/net/wireless/realtek/rtw88/rtw8821ce.h
-deleted file mode 100644
-index 54142acca534..000000000000
---- a/drivers/net/wireless/realtek/rtw88/rtw8821ce.h
-+++ /dev/null
-@@ -1,10 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
--/* Copyright(c) 2018-2019  Realtek Corporation
-- */
--
--#ifndef __RTW_8821CE_H_
--#define __RTW_8821CE_H_
--
--extern struct rtw_chip_info rtw8821c_hw_spec;
--
--#endif
--- 
-2.36.1
-
+Thanks,
+Al
