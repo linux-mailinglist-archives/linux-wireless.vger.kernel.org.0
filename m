@@ -2,45 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3747532957
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:40:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86EB953295F
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:40:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236865AbiEXLkB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 May 2022 07:40:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42360 "EHLO
+        id S236869AbiEXLjy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 May 2022 07:39:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236875AbiEXLj5 (ORCPT
+        with ESMTP id S236870AbiEXLjx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 May 2022 07:39:57 -0400
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2071.outbound.protection.outlook.com [40.107.20.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42D7791550
-        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:39:33 -0700 (PDT)
+        Tue, 24 May 2022 07:39:53 -0400
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2088.outbound.protection.outlook.com [40.107.20.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B509792D05
+        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:39:30 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IVT0B+CQqEzKsIfpsxf4PYEWy49ZtTNEzAMGGId0cZfnM+Pc0ulACtpFHPPBaWmIN7WrhwJSJtiM1Yt+fon+c19/ZeWdB+PxEB9Qti3lEhfsxIUC2DelRb+yir/ZuvPNCs5boPpYXkk6b+dDAqXSC1iduXoLaCMm2oaGTri+6wcPaoF1xQfx8+FE2CDJf/H3KbCMGnM9Vd6FXOgm6lsuEx8Y/EbE2wzb4+Hx3E3OgDctCYDeOhi5vbyxIoSns/vP5N3wPC8nfD++N8jQgNlNY81x/iKNHZiGnfWpH3nVyRNb7GtaNZShX6RheVemWvaP8KshQGbbqzRNf6PKX1MDaw==
+ b=LWTpbQv5pe9mtuMCi0QiSsB+99jnWNXrBv8pbFCik0+NMY842FXHjETLPl4f8Hv7JXB9sc6USzQoL3/nUtL8VK2mmA3qqNWi3jO5ova4PbXg5XUq1IOiHVVXdWyf+sPzn/wW7nxalnLXpNelrmvEXTl9uMYyfxpKCemD7z/73mlI/A9ejuMRWQDYzKPuONmiOnoRUqJFkCtjtkifDtjRO8r/RIU+P9klDclN+n5bVSg633x3FvavWBGqb4bPOLN7bzwIuw73ECEceM8SGkSE6/uysWPvxlfEqUklVP+Ay4QqEh0yoQSP+mbPx82WRmxhoPx5dfJvGUuWQlb3zbVQ5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ucTvL73BxGU3jwDbQm7KMzdaWcUR66LqkJX67jbRs6E=;
- b=IvEg2vnj4DRzQGLIgEMyQmmF0jkBRRb20LF2T0RIlwaNF5MvhCNROa5eonqVB9Ha7+w7pNlCQXc3mJXT/rTWYuQ/kDwdwvjynr+0F9hyDH41p5K/rKWKgSp2UQM4ENeDPndnCQq4LKS6u2Wm7CCBkkgt7B2+gtApbRE7Ej+WGeBiEtvc+/i38sPdpXH7lRhUyygsea5vZybK3cjdLj3jxbBvc3KRuNGlcdc7Ng8h/gnJ0ps8j98+Lg4FEY7w64CQRlqM8/6u8+C5B1/rDW6Y5dJcP5HLh8zqC1ya5HHgcxH+c1SfBgKNFX5p4PAapnXIEM8O6RYi3R4AVYHCZRz/+g==
+ bh=1QMp427PszoGDOKJWlCbEEHJoWVoA48pzfD1C6lCKNk=;
+ b=aqE2x4tVRLG16zNaWOr8oUzlsZI08gKXcqsPAkBbFgwh/EjzVqhsu/7gJFYTL/VAHa8SGSTFHATFsMiwgoiXvjPY87SQsUTAARobZ5FLTwdJbh83PTNkmsDI/eXDWgxvbP+u3j8BXSAiyF64uTc8+CciJ3OVqZ85jw9zjUJH8SoDDBUSbqik8HCTc7dp90pw2ive6aDD73pb63OB04SAmtvPJYQqKxdRZK+//xrhK5tvnGpFz1DMeKfpQ/cl7m32f2wllYylkjB7fuAC/iBWh1jrE+4pmzWcQ/itSJFu6O75yT4OOFWd9GRMgFrpYSTL7BYE1waGx53yPMCdsfPeAQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ucTvL73BxGU3jwDbQm7KMzdaWcUR66LqkJX67jbRs6E=;
- b=RkaNVLV+rFQvOK/127rZ01gexe5vGasNBmt5lFtCRxYPggvhim0KQiu+v5qUdNUbB2qkWkWELFgjb0ngDFp9WoNiX8ZzcJZKYGx587e2sa6AV60nup9OIDryr0mith9x59EgQowuP7xTPU+AFkE49jXqbwZI9pxNaCInk3YProU=
+ bh=1QMp427PszoGDOKJWlCbEEHJoWVoA48pzfD1C6lCKNk=;
+ b=TmLh1+dsuMSTqLk3JI1uxEbIYz5WOiqrktOF/hbcWsiKFijCelm2BosqFhhYdZJ4xjwAFwXVLbNyMKSKMahQ46IaeLIhrSXGNJpfRcAMDnXP0eQxn9AuAOtmJbZflYSZ/7ruBuubv5qmq2uchzW6KtgWwa9ZCAOdNyQ0P2RHUxo=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by VE1P192MB0669.EURP192.PROD.OUTLOOK.COM (2603:10a6:800:16f::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.14; Tue, 24 May
- 2022 11:39:27 +0000
+ 2022 11:39:28 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::6c57:2d13:9162:cbbb]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::6c57:2d13:9162:cbbb%8]) with mapi id 15.20.5293.013; Tue, 24 May 2022
- 11:39:27 +0000
+ 11:39:28 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -52,9 +52,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v2 76/96] cl8k: add stats.c
-Date:   Tue, 24 May 2022 14:34:42 +0300
-Message-Id: <20220524113502.1094459-77-viktor.barna@celeno.com>
+Subject: [RFC v2 77/96] cl8k: add stats.h
+Date:   Tue, 24 May 2022 14:34:43 +0300
+Message-Id: <20220524113502.1094459-78-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220524113502.1094459-1-viktor.barna@celeno.com>
 References: <20220524113502.1094459-1-viktor.barna@celeno.com>
@@ -65,56 +65,56 @@ X-ClientProxiedBy: AM6PR10CA0092.EURPRD10.PROD.OUTLOOK.COM
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b6b1bf08-8085-4f3b-6153-08da3d79f903
+X-MS-Office365-Filtering-Correlation-Id: 78a1538a-0bbe-478e-a99f-08da3d79f98b
 X-MS-TrafficTypeDiagnostic: VE1P192MB0669:EE_
 X-LD-Processed: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8,ExtFwd
-X-Microsoft-Antispam-PRVS: <VE1P192MB066919C41FFEF79B7A78AAB8F6D79@VE1P192MB0669.EURP192.PROD.OUTLOOK.COM>
+X-Microsoft-Antispam-PRVS: <VE1P192MB0669C8AE6FF8AC105C51EE3CF6D79@VE1P192MB0669.EURP192.PROD.OUTLOOK.COM>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: cXIB0EY0g5AI1ykespUgkVJEg5q/yPjXBIQYPoQrpYMnXl0l9nS8KvdKbMIc0fMSIE2i1loCJjHo7nMEZ1ZTsn9DloQVOpnY29KIkJfdtqYVaqNzkgrx9/H9YLPBpZcdshju3mUciKHmZre1egk9USFTL8nRDcEd8IXhoSNEGlwhwFTdpL1JubLiI/MWVFlSCFElUYslRYKy5ZsErSzwd5V14TFVu6K0Yf5eHBwhuaMgBTuljlw9ZgsGw8be4GtgAzAYzFKLsK3NlqoXzLlWOByvISV+ScoHhOFnXVu+SW3bh0WUGqiynbLvsCwiF+Xk0YrCMCA66r6Gp/bL+sadrxDHi9To0+7ARUoJOq2QZuUFtLx+ygfFadbBgUAmViXf30QCXrOzOG/wdalvQ2yuFnXINBu+v/KcLKQuQruxgZ4JOsN+LT3dxONKX8wi0h8yjG96orLMF+PpSAwUGBVB23FBF9/HYb4LFz6PvuRYVyK0RIVu+a9nqLslV5ZpDG+NmwXFd+j6QwUmRE0QRYaFSqbGrbjKp/kL6VvVUhQcmgP4lBd2h+9s+trm0DL+bIu3bgzX7LMay1+hBB+tfTW7g1UmEDJqJNG6/i80fS5Fy7cILo/D0ET7BLS3NHNi5ESgCB7oGoQdNZR1pvYPywMpO87uQYZ2VzXBQMGZRoWglXrjFRayWOjI/DF/0JGwNrjR4hYWK51RjaQ5S1Ibq1BgGreLns9S9pknrsNEnITChpU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(396003)(376002)(136003)(366004)(346002)(39850400004)(8676002)(9686003)(26005)(36756003)(66946007)(66556008)(66476007)(4326008)(107886003)(83380400001)(6512007)(5660300002)(38350700002)(38100700002)(1076003)(2616005)(316002)(6916009)(6506007)(6486002)(54906003)(86362001)(8936002)(508600001)(41300700001)(6666004)(2906002)(186003)(52116002)(30864003)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: ceDYCliiYMwD4+YvDLZD4WKnE5eTRIEuciXvMl2jBj4ndwU9bk6dweJFKsgN3wRHFkBKaD5MXAC978/wfUKdCBlor9Jy5Q2MkrV3XxHtGE8i/Vf9Ar7jkyCDUoTrKpWyst06ojd4RCn87vKo32OnHwsKxnvdOrqJxcAYasH62Cd42/j4y5px/b9itijFMacbAb+S3CeIs9EGUytzwZjIx4yHu+KtIs20Gz0HzsA+gwVCsw2BDoIaT+4EnxyLkjgoDSw6R2r2xEdWCp1H72UidwrHx17Tou21WBeq2bCMf1/SrDWPrWOy/sadInxei2BVc8WfWwpo1S62j0QbJNIy/EQSGXPrB1IyZDtB52mKal9q+cJV5sgedEpfx6hijQvxM2+1WnEkrgNJha4PlrFAJ4XM5aZiEQHqLKGEIx2qW6GcL50g2+MYtdVv0jMlTxMg/drgQ+OExz+lzYNpXgVqS/84mc9VzNeAr1po/JCJI0kltJruSk/yEeh6FYdSuRdoDh2cTxYnSrZEm9C+ItUY1g/UIoGuy7WZXqADuYabaAV6qS9rWfZ1RjDjvEl5Dr9n/Ruf6AX2qCJHg1FORwQIFtU0j1dzvOiCKVhXdaBXa3lVtXdvNSY+RC1wMJ5tMzrcRK/RX6Jeh36PdnUWBpmv4YNNKbf6ZMBJb2Te/v+P+sYMKfUUAbDyU+rVGckryy48SKkzybl6eFlcwifuVdnW/TWP+6DZs44SzPz7hWKUlxw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(396003)(376002)(136003)(366004)(346002)(39850400004)(8676002)(9686003)(26005)(36756003)(66946007)(66556008)(66476007)(4326008)(107886003)(83380400001)(6512007)(5660300002)(38350700002)(38100700002)(1076003)(2616005)(316002)(6916009)(6506007)(6486002)(54906003)(86362001)(8936002)(508600001)(41300700001)(6666004)(2906002)(186003)(52116002)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?YW8FiAqDtU1Z/zojI1k/8wf01HAEEmrGWlEU7Ab5iZoLqK/VPU/qhMsmvAc+?=
- =?us-ascii?Q?WUOMxqb6EapBrj1026q+XE9tRL/BlphkF3b+VEdnq1e5slj7dFLzY7vmoT2J?=
- =?us-ascii?Q?+qt0LZhiiP2UdYDeF5UM+B75jbehHnEnGf1z4vhFzk2mLtlq3wVUxSgp834F?=
- =?us-ascii?Q?KZykkrVRmqHDHOwK2nHDvLX/zAGs6Hv4qIKpxd1OR5frLPYeXPmHvf41pRA+?=
- =?us-ascii?Q?Fjc7DUkMWOsxRvb02wKIZhA5E/1dAK0zZFGfdM9qLxCXgKGOiQKrgLBqiReg?=
- =?us-ascii?Q?yMaHeIrsAX++ia0+kr8z9TKJc0R1UWRodhhx+onDCO17mFMzmil86i6/50TI?=
- =?us-ascii?Q?eduC1DVReazJkrwSBCmykMGQkIKDVDX/CznQykRGdXzFJNMYxLpR7nIU2Qc3?=
- =?us-ascii?Q?bYYrrm0g1Wj3kizKfaNEw3t+L38BBmQpB344wcWG6MoKdR3LQZYEte/4fqxy?=
- =?us-ascii?Q?zx0HSIxQadOjrQKhh374++xofI12+4uRrTbadhJGGyZWaOFjmbjWg7Jc6EPK?=
- =?us-ascii?Q?2JLdOpvR7NjAH0ur9e14fGMeDn8Ra4DtC9ROdOyMzJ38IZ+ryDnR0xSL6pYA?=
- =?us-ascii?Q?UKhJ86YRMnqZtASxpqNz0b3cH3/y6fBTSduWLB7YKNIAHtwRlC2CnjtvFXtz?=
- =?us-ascii?Q?OMi2oMiCBHG74baa96bosNdTU57rT11pHGueonbaC+hbV/zL8LRAT7kw6CT/?=
- =?us-ascii?Q?unI5R1Rab2wo9N8u8wqs3td4n2z2JPJO8XiRe5e+Ulwd04NEnkhzCOLfmISn?=
- =?us-ascii?Q?bW11Mthr3u8leXbdS1ZDWl+Rm4dQcNhINmBd+/dljxXPSm5rYr5SiTCP4Lf4?=
- =?us-ascii?Q?4Q6dnK/B3oPtQhzXu8RLjhPkGs55+zwiP7JMyasmupLBmTyw7+9TVptYjwTv?=
- =?us-ascii?Q?lYn9fKwwNsvdlcKjewTr1m6IP2siOl6ZKFVUGTD5J8+WjDMjFmR+oT2yU5VG?=
- =?us-ascii?Q?ugKc3IBaVMa6yLfY4UsV+RMUWU4Lgkw7layWsOun1iLuCGLiOz2pkat3xiP4?=
- =?us-ascii?Q?7/FlYNEKlzeflv7VgDDUdiGtce/HQNcFBjwqk9i7zv5AYPHzS2Q2PGfKcHIY?=
- =?us-ascii?Q?ALyBJ9t1D53CnfXL8hDWG3Qo18d05+gc/R5c7OBm9RERWaSL0sbgO+fm+9ps?=
- =?us-ascii?Q?lIczuQD1b5nNHt0HBRdWZXEVqMR1V/fuJkot7h505AjvuCf8vgsbGxVfBi+6?=
- =?us-ascii?Q?O7BRO01ZhUr98rbbo37/ag7eQ/YC0oPRT7adGj3DWn5VphRPDVa8V1oTAEJT?=
- =?us-ascii?Q?PC/2zLvudwrXkfpXVFQiFwZoz6pO8I/rATzPKR9zs4RkBiXDrelKfH0lntEV?=
- =?us-ascii?Q?ol1iNL6Tl+RO6ywtVnj8tNIcpdOXbnbqgxwZa1eOusViHG3qzI3daqzDmdxu?=
- =?us-ascii?Q?5plZ/0pLrXJAbBynSgEEeJkJX0OFfesmqc7pQfNpU/rDaNvT4hqS1S0064r+?=
- =?us-ascii?Q?wmlscMUOueaeRI0AN6JDnk0JbPj0BDC9nR+OG0oHpcT/NFieRowcb9vzI2ja?=
- =?us-ascii?Q?Of4GhM5kXrxD35SNBU8gMPovEz5oqz1XGmpe2f0R6sQTraoVcxjS1Yn1l7JS?=
- =?us-ascii?Q?jX+IVIfBiwyzKFQH81/aq/G/V4rrSFUC/y8dkk+mx2dhzl4pHzRgzun4mBQQ?=
- =?us-ascii?Q?fYpkMXx4B5s8TxqkGXZRuxh4qB70GqDY6PRDSFnNdsTRNh4yLWy1iEnEfAg3?=
- =?us-ascii?Q?M0cw2ed5cgkZ/4kct+LXUOkPe2402rGfeW3k3ZEgLZkkKnZhhCN5sk05uglU?=
- =?us-ascii?Q?D+wzKpzOKVdYOlqlZ15CrZVctVb3/3c=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Uc9BXoNzBr66O890ubizoxFmiYFR8/uf0KohNyjOGUAZCweKpgOJ5B1DUUjt?=
+ =?us-ascii?Q?z4Q0CjrQaF/Rzoy9BsS5NrppiLna+hAzJ/BA94iFbzDIIEo1IqUlOn528Lue?=
+ =?us-ascii?Q?Xto1yOoZqnqzMixUp5HukOeCgkJhR0N2bkucZ4LycSFProjpWYf82aF6HAWY?=
+ =?us-ascii?Q?+YA9W0/Xoxp798yYH1Utwgk3qB3wmAxebk6TjZyg9sMFUEKkcl77BoRyxXX+?=
+ =?us-ascii?Q?5P2wFeRdWP2Ln3BM+AIRTj79csSme7+mHABX+fZhLuhOR2iRpKyQlzZX2tfM?=
+ =?us-ascii?Q?tKORc11R2hAA/Q3/iawG7ZVwZ3fsCRYFn03ZLsXO6LPzqPNnkvb4hoZysGx1?=
+ =?us-ascii?Q?lbzFOQz3rUT/C7ZH6b2fK9dhg7JG1C78Ea58yVSPd93RmPQdsA74F2UYAH0M?=
+ =?us-ascii?Q?NxbDow+YotW2Iw2XLBZW3cFCcO8xNMt2U/H5V8TjPSV8gP80Wo/gkddzt+Ta?=
+ =?us-ascii?Q?EnaEoAZXpec9Sw3WM1w0soOceN90TPT38d+3Q4O3/S4GNcwKu3m13s40BWEz?=
+ =?us-ascii?Q?FhVh+DTQV5I9chNm1RfZUaOmcR3VdX7tkkQNjXNyU85ZzDBznm9W+ommSzGq?=
+ =?us-ascii?Q?CDCEPlWhxUH1fHoHbQKGa3lAqtxg1jyxlsXdSvBcPmoqQuWK/4A2CEBJuHhT?=
+ =?us-ascii?Q?3gbUPplXX6KmoOfb0dsFeJlRMhis4TmLNZ6U9mqukVMUedCjyHjWGCDueZFH?=
+ =?us-ascii?Q?iq5Ec1jlyK4mSuiO49RssXR3etzPY9cCPftBvANkRPSjvlhBIAlAEjcAizDM?=
+ =?us-ascii?Q?/Ct5TNnppMKmYfAVZs1jHJRJz9AgaQ0g4KhZoo/ZFvYdJVdO0m68lFtTF9y+?=
+ =?us-ascii?Q?iSU1UYpv6A478wGW4GDIJuS18W/YcnTamPINlETdYlutiwlwz3LFYLAVYzhp?=
+ =?us-ascii?Q?trXdOTkQnBPr8l6+CmfZWBoOBWFJzwusEoJoR823XqReV6uyaMER1IkbbTvh?=
+ =?us-ascii?Q?KghJ8wN6AH8ojkDj5WfIdawZyzWeXcMFmB1ycQf2RxY5W7G7X5ZeUDFQ/3+2?=
+ =?us-ascii?Q?3dLwO6V+Axixp6+y0L6kH3IMBR9OJD5CqoofquL+J+2Xsv1auTWFAgkf+wsj?=
+ =?us-ascii?Q?OV5QzZ/xGKfDbzzeDNALlUY763PNujQVXnIe/A3K9XX7p+L2F4OndXSikaYt?=
+ =?us-ascii?Q?Whn27HhoYSKq8HV9swzFhNmpp7igJBcBWDVS5DkaomYZQuQmgy9t0WYM+AtH?=
+ =?us-ascii?Q?Yd6790xIADE4SiJ6vCf4Z/0QqDmx7n8ofnZJtEEE3EOhsje9sVLVHCVZo0+J?=
+ =?us-ascii?Q?v1P/nYJpZUDX+re60I22Eo6+5uMU7J6fYKpfit9V59AKrOvea2mpRgB9vBhj?=
+ =?us-ascii?Q?nltc9udYmGkIKe4hGzZsuu+MK/cINpAV5BQn5CMkEzpUNNIrHYBvDWEwm8CO?=
+ =?us-ascii?Q?f4qAH9nGnMLMvEmOfaR0+7WJSYpSqHFrQLfDpu0iFMTrGqtxr+P5qHEY/Pdx?=
+ =?us-ascii?Q?zrCmsXAq5YKeOe2XQZuUIvVfl8eL7z0lfjqILY/KbWKh0ZmlyxRDPJVwBDak?=
+ =?us-ascii?Q?9PNFBbE0nz/FSlbYbUDirg1CpryGanaa+KIqMo1eAZeDosvLg30b7MegtnKV?=
+ =?us-ascii?Q?wiHL0rXd2+YxTP/XOhg9z1KdkYT7cPnhllkztvi/EwZNh8ZlxVJfRof1HluV?=
+ =?us-ascii?Q?Tj07o56BeDeBfZFPmbPlzs+Gm0ayLRs3osdbGIGe+7F3oVlyZeSqWu1WLT/J?=
+ =?us-ascii?Q?3QvAsOfe9Cnwi8qVlq86T26tmHFurpRt/0V+o3dFffeozNoLYQqazoPG6is7?=
+ =?us-ascii?Q?ODQteKzOV6k7LNhcWRK3h67j16kXQ20=3D?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6b1bf08-8085-4f3b-6153-08da3d79f903
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78a1538a-0bbe-478e-a99f-08da3d79f98b
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:38:50.5852
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:38:51.4925
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Qqp7MWf63nb6WDPMSosjxVqwl2e4mlVu/4S1klqBTW6Cdo6o5oy0z3Re9ZQNf1rJZWDoAMwJjRgC+39VR9aryw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 74y5lPh9EvFKLVtMO4c+N3b/LAVfHPtExmy8Y/zzP1EhfRAa9rPbdJevvztiG+jmacdl1WUOS1ZrJwpVT0V4Cg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1P192MB0669
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -133,454 +133,124 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/stats.c | 438 +++++++++++++++++++++++
- 1 file changed, 438 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/stats.c
+ drivers/net/wireless/celeno/cl8k/stats.h | 108 +++++++++++++++++++++++
+ 1 file changed, 108 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/stats.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/stats.c b/drivers/net/wireless/celeno/cl8k/stats.c
+diff --git a/drivers/net/wireless/celeno/cl8k/stats.h b/drivers/net/wireless/celeno/cl8k/stats.h
 new file mode 100644
-index 000000000000..c526199513f4
+index 000000000000..480c00b395f1
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/stats.c
-@@ -0,0 +1,438 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
++++ b/drivers/net/wireless/celeno/cl8k/stats.h
+@@ -0,0 +1,108 @@
++/* SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause */
 +/* Copyright(c) 2019-2022, Celeno Communications Ltd. */
 +
-+#include <linux/string.h>
++#ifndef CL_STATS_H
++#define CL_STATS_H
 +
-+#include "reg/reg_access.h"
-+#include "sta.h"
-+#include "utils.h"
-+#include "reg/reg_defs.h"
-+#include "rates.h"
-+#include "debug.h"
-+#include "tx.h"
-+#include "vif.h"
-+#include "stats.h"
++#include "wrs.h"
 +
-+static void cll_stats_config_ps(struct cl_sta *cl_sta)
-+{
-+	struct sta_info *stainfo = IEEE80211_STA_TO_STAINFO(cl_sta->sta);
++enum cl_rx_stats_flag {
++	RX_STATS_CCK = 0x01,
++	RX_STATS_OFDM = 0x02,
++	RX_STATS_HT = 0x04,
++	RX_STATS_VHT = 0x08,
++	RX_STATS_HE_SU = 0x10,
++	RX_STATS_HE_MU = 0x20,
++	RX_STATS_HE_EXT = 0x40,
++	RX_STATS_HE_TRIG = 0x80,
++};
 +
-+	cl_sta->stats->ps.timestamp_sleep = jiffies;
-+	cl_sta->stats->ps.is_ps = test_sta_flag(stainfo, WLAN_STA_PS_STA);
-+}
++struct cl_rx_stats {
++	u32 he_trig[CHNL_BW_MAX_HE][WRS_SS_MAX][WRS_MCS_MAX_HE][WRS_GI_MAX_HE];
++	u32 he_ext[CHNL_BW_MAX_HE][WRS_SS_MAX][WRS_MCS_MAX_HE][WRS_GI_MAX_HE];
++	u32 he_mu[CHNL_BW_MAX_HE][WRS_SS_MAX][WRS_MCS_MAX_HE][WRS_GI_MAX_HE];
++	u32 he_su[CHNL_BW_MAX_HE][WRS_SS_MAX][WRS_MCS_MAX_HE][WRS_GI_MAX_HE];
++	u32 vht[CHNL_BW_MAX_VHT][WRS_SS_MAX][WRS_MCS_MAX_VHT][WRS_GI_MAX_VHT];
++	u32 ht[CHNL_BW_MAX_HT][WRS_SS_MAX][WRS_MCS_MAX_HT][WRS_GI_MAX_HT];
++	u32 ofdm[WRS_MCS_MAX_OFDM];
++	u32 cck[WRS_MCS_MAX_CCK];
++	u8 flag;
++	u64 packet_success;
++};
 +
-+static void cl_stats_free(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
-+{
-+	kfree(cl_sta->stats);
-+	cl_sta->stats = NULL;
-+}
++#define RSSI_ARR_SIZE 128
++#define BF_IDX_MAX 2
 +
-+static void cl_stats_disable(struct cl_hw *cl_hw)
-+{
-+	pr_debug("Statistics disabled\n");
-+	cl_hw->conf->ci_stats_en = false;
-+	cl_sta_loop(cl_hw, cl_stats_free);
++struct cl_tx_cntrs {
++	u32 success;
++	u32 fail;
++};
 +
-+	if (cl_hw_is_prod_or_listener(cl_hw)) {
-+		kfree(cl_hw->rx_stats);
-+		cl_hw->rx_stats = NULL;
-+	}
-+}
++struct cl_tx_stats {
++	struct cl_tx_cntrs he[CHNL_BW_MAX][WRS_SS_MAX][WRS_MCS_MAX][WRS_GI_MAX][BF_IDX_MAX];
++	struct cl_tx_cntrs
++		vht[CHNL_BW_MAX_VHT][WRS_SS_MAX][WRS_MCS_MAX_VHT][WRS_GI_MAX_VHT][BF_IDX_MAX];
++	struct cl_tx_cntrs ht[CHNL_BW_MAX_HT][WRS_SS_MAX][WRS_MCS_MAX_HT][WRS_GI_MAX_HT];
++	struct cl_tx_cntrs ofdm[WRS_MCS_MAX_OFDM];
++	struct cl_tx_cntrs cck[WRS_MCS_MAX_CCK];
++	u32 agg_cntr;
++	u32 fail_cntr;
++	u64 packet_success;
++	u64 packet_fail;
++};
 +
-+static void _cl_stats_update_tx(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+				struct cl_agg_tx_report *agg_report)
-+{
-+	struct cl_stats *stats = cl_sta->stats;
-+	struct cl_tx_cntrs *cntrs;
-+	union cl_rate_ctrl_info rate_ctrl_info = {
-+		.word = le32_to_cpu(agg_report->rate_cntrl_info)};
-+	u8 bw, nss, mcs, gi, bf;
++enum cl_ps_period {
++	PS_PERIOD_50MS,
++	PS_PERIOD_100MS,
++	PS_PERIOD_250MS,
++	PS_PERIOD_500MS,
++	PS_PERIOD_750MS,
++	PS_PERIOD_1000MS,
++	PS_PERIOD_2000MS,
++	PS_PERIOD_5000MS,
++	PS_PERIOD_10000MS,
++	PS_PERIOD_ABOVE,
 +
-+	switch (rate_ctrl_info.field.format_mod) {
-+	case WRS_MODE_HE:
-+		nss = (rate_ctrl_info.field.mcs_index >> 4);
-+		mcs = (rate_ctrl_info.field.mcs_index & 0xF);
-+		gi = rate_ctrl_info.field.gi;
++	PS_PERIOD_MAX
++};
 +
-+		{
-+			bw = rate_ctrl_info.field.bw;
-+			bf = agg_report->bf;
++struct cl_ps_stats {
++	bool is_ps;
++	unsigned long timestamp_sleep;
++	u32 period[PS_PERIOD_MAX];
++};
 +
-+				cntrs = &stats->tx.he[bw][nss][mcs][gi][bf];
-+		}
-+		break;
-+	case WRS_MODE_VHT:
-+		bw = rate_ctrl_info.field.bw;
-+		nss = (rate_ctrl_info.field.mcs_index >> 4);
-+		mcs = (rate_ctrl_info.field.mcs_index & 0xF);
-+		gi = rate_ctrl_info.field.gi;
-+		bf = agg_report->bf;
++enum cl_fec_coding {
++	CL_FEC_CODING_BCC,
++	CL_FEC_CODING_LDPC,
++	CL_FEC_CODING_MAX
++};
 +
-+			cntrs = &stats->tx.vht[bw][nss][mcs][gi][bf];
-+		break;
-+	case WRS_MODE_HT:
-+		bw = rate_ctrl_info.field.bw;
-+		nss = (rate_ctrl_info.field.mcs_index >> 3);
-+		mcs = (rate_ctrl_info.field.mcs_index & 0x7);
-+		gi = rate_ctrl_info.field.gi;
-+		cntrs = &stats->tx.ht[bw][nss][mcs][gi];
-+		break;
-+	case WRS_MODE_OFDM:
-+		mcs = rate_ctrl_info.field.mcs_index - RATE_CTRL_OFFSET_OFDM;
-+		cntrs = &stats->tx.ofdm[mcs];
-+		break;
-+	case WRS_MODE_CCK:
-+		mcs = rate_ctrl_info.field.mcs_index;
-+		cntrs = &stats->tx.cck[mcs];
-+		break;
-+	default:
-+		return;
-+	}
++struct cl_stats {
++	struct cl_tx_stats tx;
++	struct cl_rx_stats rx;
++	u32 rssi[RSSI_ARR_SIZE][MAX_ANTENNAS];
++	u32 fec_coding[CL_FEC_CODING_MAX];
++	struct cl_ps_stats ps;
++};
 +
-+	cntrs->success += agg_report->success;
-+	cntrs->fail += agg_report->fail;
-+	stats->tx.packet_success += agg_report->success;
-+	stats->tx.packet_fail += agg_report->fail;
-+}
++struct cl_vif;
 +
-+static void _cl_stats_update_rx_rate(struct cl_hw *cl_hw, struct cl_rx_stats *rx_stats,
-+				     struct hw_rxhdr *rxhdr)
-+{
-+	u8 bw, nss, mcs, gi;
-+
-+	switch (rxhdr->format_mod) {
-+	case FORMATMOD_HE_TRIG:
-+		nss = rxhdr->n_sts & 0x3;
-+		mcs = min_t(u8, rxhdr->mcs, WRS_MCS_MAX_HE);
-+		gi = min_t(u8, rxhdr->gi_type, WRS_GI_MAX_HE);
-+		rx_stats->he_trig[rxhdr->ch_bw][nss][mcs][gi] += rxhdr->frm_successful_rx;
-+		rx_stats->flag |= RX_STATS_HE_TRIG;
-+		break;
-+	case FORMATMOD_HE_EXT:
-+		nss = rxhdr->n_sts & 0x3;
-+		mcs = min_t(u8, rxhdr->mcs, WRS_MCS_MAX_HE);
-+		gi = min_t(u8, rxhdr->gi_type, WRS_GI_MAX_HE);
-+		rx_stats->he_ext[rxhdr->ch_bw][nss][mcs][gi] += rxhdr->frm_successful_rx;
-+		rx_stats->flag |= RX_STATS_HE_EXT;
-+		break;
-+	case FORMATMOD_HE_MU:
-+		nss = rxhdr->n_sts & 0x3;
-+		mcs = min_t(u8, rxhdr->mcs, WRS_MCS_MAX_HE);
-+		gi = min_t(u8, rxhdr->gi_type, WRS_GI_MAX_HE);
-+		rx_stats->he_mu[rxhdr->ch_bw][nss][mcs][gi] += rxhdr->frm_successful_rx;
-+		rx_stats->flag |= RX_STATS_HE_MU;
-+		break;
-+	case FORMATMOD_HE_SU:
-+		nss = rxhdr->n_sts & 0x3;
-+		mcs = min_t(u8, rxhdr->mcs, WRS_MCS_MAX_HE);
-+		gi = min_t(u8, rxhdr->gi_type, WRS_GI_MAX_HE);
-+		rx_stats->he_su[rxhdr->ch_bw][nss][mcs][gi] += rxhdr->frm_successful_rx;
-+		rx_stats->flag |= RX_STATS_HE_SU;
-+		break;
-+	case FORMATMOD_VHT:
-+		nss = rxhdr->n_sts & 0x3;
-+		mcs = min_t(u8, rxhdr->mcs, WRS_MCS_MAX_VHT);
-+		gi = rxhdr->gi_type & 0x1;
-+		rx_stats->vht[rxhdr->ch_bw][nss][mcs][gi] += rxhdr->frm_successful_rx;
-+		rx_stats->flag |= RX_STATS_VHT;
-+		break;
-+	case FORMATMOD_HT_MF:
-+	case FORMATMOD_HT_GF:
-+		bw = rxhdr->ch_bw & 0x1;
-+		nss = (rxhdr->mcs >> 3) & 0x3;
-+		mcs = rxhdr->mcs & 0x7;
-+		gi = rxhdr->gi_type & 0x1;
-+		rx_stats->ht[bw][nss][mcs][gi] += rxhdr->frm_successful_rx;
-+		rx_stats->flag |= RX_STATS_HT;
-+		break;
-+	case FORMATMOD_NON_HT:
-+		if (rxhdr->mcs >= RATE_CTRL_OFFSET_OFDM) {
-+			mcs = (rxhdr->mcs - RATE_CTRL_OFFSET_OFDM) & 0x7;
-+			rx_stats->ofdm[mcs] += rxhdr->frm_successful_rx;
-+			rx_stats->flag |= RX_STATS_OFDM;
-+		} else if (cl_band_is_24g(cl_hw)) {
-+			mcs = rxhdr->mcs & 0x3;
-+			rx_stats->cck[mcs] += rxhdr->frm_successful_rx;
-+			rx_stats->flag |= RX_STATS_CCK;
-+		}
-+		break;
-+	}
-+
-+	rx_stats->packet_success += rxhdr->frm_successful_rx;
-+}
-+
-+void cl_stats_init(struct cl_hw *cl_hw)
-+{
-+	spin_lock_init(&cl_hw->lock_stats);
-+
-+	if (cl_hw->conf->ci_stats_en && cl_hw_is_prod_or_listener(cl_hw)) {
-+		cl_hw->rx_stats = kzalloc(sizeof(*cl_hw->rx_stats), GFP_ATOMIC);
-+
-+		if (!cl_hw->rx_stats)
-+			cl_hw->conf->ci_stats_en = false;
-+	}
-+}
-+
-+void cl_stats_deinit(struct cl_hw *cl_hw)
-+{
-+	spin_lock_bh(&cl_hw->lock_stats);
-+
-+	if (cl_hw->conf->ci_stats_en && (cl_hw_is_prod_or_listener(cl_hw))) {
-+		cl_hw->conf->ci_stats_en = false;
-+
-+		kfree(cl_hw->rx_stats);
-+		cl_hw->rx_stats = NULL;
-+	}
-+
-+	spin_unlock_bh(&cl_hw->lock_stats);
-+}
-+
-+void cl_stats_sta_add(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
-+{
-+	/*
-+	 * If allocation failed disable ci_stats_en
-+	 * and free the memory of all other stations
-+	 */
-+	bool disable = false;
-+
-+	if (cl_hw->conf->ci_stats_en) {
-+		/*
-+		 * Take regular lock and not BH,
-+		 * because cl_sta_add_to_lut() already disables BH
-+		 */
-+		spin_lock(&cl_hw->lock_stats);
-+
-+		cl_sta->stats = kzalloc(sizeof(*cl_sta->stats), GFP_ATOMIC);
-+
-+		if (cl_sta->stats)
-+			cll_stats_config_ps(cl_sta);
-+		else
-+			disable = true;
-+
-+		spin_unlock(&cl_hw->lock_stats);
-+	}
-+
-+	if (disable && cl_hw->conf->ci_stats_en) {
-+		spin_lock_bh(&cl_hw->lock_stats);
-+		cl_stats_disable(cl_hw);
-+		spin_unlock_bh(&cl_hw->lock_stats);
-+	}
-+}
-+
-+void cl_stats_sta_remove(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
-+{
-+	if (!cl_hw->conf->ci_stats_en)
-+		return;
-+
-+	spin_lock_bh(&cl_hw->lock_stats);
-+
-+	cl_stats_free(cl_hw, cl_sta);
-+
-+	spin_unlock_bh(&cl_hw->lock_stats);
-+}
-+
++void cl_stats_init(struct cl_hw *cl_hw);
++void cl_stats_deinit(struct cl_hw *cl_hw);
++void cl_stats_sta_add(struct cl_hw *cl_hw, struct cl_sta *cl_sta);
++void cl_stats_sta_remove(struct cl_hw *cl_hw, struct cl_sta *cl_sta);
 +void cl_stats_update_tx_agg(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+			    struct cl_agg_tx_report *agg_report)
-+{
-+	struct cl_stats *stats = cl_sta->stats;
-+
-+	if (!cl_hw->conf->ci_stats_en)
-+		return;
-+
-+	spin_lock(&cl_hw->lock_stats);
-+
-+	stats->tx.agg_cntr++;
-+	stats->tx.fail_cntr += agg_report->fail;
-+	_cl_stats_update_tx(cl_hw, cl_sta, agg_report);
-+
-+	spin_unlock(&cl_hw->lock_stats);
-+}
-+
++			    struct cl_agg_tx_report *agg_report);
 +void cl_stats_update_tx_single(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+			       struct cl_agg_tx_report *agg_report)
-+{
-+	if (!cl_hw->conf->ci_stats_en)
-+		return;
-+
-+	spin_lock(&cl_hw->lock_stats);
-+
-+	cl_sta->stats->tx.fail_cntr += agg_report->fail;
-+	_cl_stats_update_tx(cl_hw, cl_sta, agg_report);
-+
-+	spin_unlock(&cl_hw->lock_stats);
-+}
-+
-+void cl_stats_update_rx_rssi(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+			     s8 rssi[MAX_ANTENNAS])
-+{
-+	int i;
-+	s8 rx_rssi;
-+
-+	if (!cl_hw->conf->ci_stats_en)
-+		return;
-+
-+	spin_lock_bh(&cl_hw->lock_stats);
-+
-+	for (i = 0; i < cl_hw->num_antennas; i++) {
-+		rx_rssi = rssi[i] * -1;
-+
-+		if (rx_rssi >= 0 && rx_rssi < RSSI_ARR_SIZE)
-+			cl_sta->stats->rssi[rx_rssi][i]++;
-+	}
-+
-+	spin_unlock_bh(&cl_hw->lock_stats);
-+}
-+
-+void cl_stats_update_rx_rate(struct cl_hw *cl_hw, struct cl_sta *cl_sta, struct hw_rxhdr *rxhdr)
-+{
-+	if (!cl_hw->conf->ci_stats_en)
-+		return;
-+
-+	spin_lock(&cl_hw->lock_stats);
-+
-+	_cl_stats_update_rx_rate(cl_hw, &cl_sta->stats->rx, rxhdr);
-+	cl_sta->stats->fec_coding[rxhdr->fec_coding]++;
-+
-+	spin_unlock(&cl_hw->lock_stats);
-+}
-+
-+void cl_stats_update_rx_rate_production(struct cl_hw *cl_hw, struct hw_rxhdr *rxhdr)
-+{
-+	if (!cl_hw->conf->ci_stats_en)
-+		return;
-+
-+	spin_lock(&cl_hw->lock_stats);
-+
-+	_cl_stats_update_rx_rate(cl_hw, cl_hw->rx_stats, rxhdr);
-+
-+	spin_unlock(&cl_hw->lock_stats);
-+}
-+
-+void cl_stats_update_ps(struct cl_hw *cl_hw, struct cl_sta *cl_sta, bool is_ps)
-+{
-+	struct cl_ps_stats *ps;
-+
-+	if (!cl_hw->conf->ci_stats_en)
-+		return;
-+
-+	spin_lock_bh(&cl_hw->lock_stats);
-+
-+	ps = &cl_sta->stats->ps;
-+
-+	if (ps->is_ps == is_ps)
-+		goto out;
-+
-+	ps->is_ps = is_ps;
-+
-+	if (is_ps) {
-+		ps->timestamp_sleep = jiffies;
-+	} else {
-+		unsigned long sleep_time = jiffies_to_msecs(jiffies - ps->timestamp_sleep);
-+
-+		if (sleep_time <= 50)
-+			ps->period[PS_PERIOD_50MS]++;
-+		else if (sleep_time <= 100)
-+			ps->period[PS_PERIOD_100MS]++;
-+		else if (sleep_time <= 250)
-+			ps->period[PS_PERIOD_250MS]++;
-+		else if (sleep_time <= 500)
-+			ps->period[PS_PERIOD_500MS]++;
-+		else if (sleep_time <= 750)
-+			ps->period[PS_PERIOD_750MS]++;
-+		else if (sleep_time <= 1000)
-+			ps->period[PS_PERIOD_1000MS]++;
-+		else if (sleep_time <= 2000)
-+			ps->period[PS_PERIOD_2000MS]++;
-+		else if (sleep_time <= 5000)
-+			ps->period[PS_PERIOD_5000MS]++;
-+		else if (sleep_time <= 10000)
-+			ps->period[PS_PERIOD_10000MS]++;
-+		else
-+			ps->period[PS_PERIOD_ABOVE]++;
-+	}
-+
-+out:
-+	spin_unlock_bh(&cl_hw->lock_stats);
-+}
-+
-+int cl_stats_get_rssi(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
-+{
-+	struct cl_stats *stats = NULL;
-+	u32 i = 0, j = 0;
-+	u64 total_rssi = 0;
-+	s8 avg_signal = 0;
-+
-+	if (!cl_hw->conf->ci_stats_en)
-+		return 0;
-+
-+	u64 avg_rssi[MAX_ANTENNAS] = {0};
-+	u64 sum_rssi[MAX_ANTENNAS] = {0};
-+
-+	spin_lock_bh(&cl_hw->lock_stats);
-+
-+	stats = cl_sta->stats;
-+
-+	if (!stats)
-+		goto out;
-+
-+	for (i = 0; i < RSSI_ARR_SIZE; i++) {
-+		total_rssi = 0;
-+
-+		for (j = 0; j < cl_hw->num_antennas; j++) {
-+			sum_rssi[j] += stats->rssi[i][j];
-+			avg_rssi[j] += i * stats->rssi[i][j];
-+		}
-+	}
-+
-+	for (j = 0; j < cl_hw->num_antennas; j++)
-+		if (sum_rssi[j])
-+			avg_rssi[j] = div64_u64(avg_rssi[j], sum_rssi[j]);
-+
-+	for (j = 0; j < cl_hw->num_antennas; j++)
-+		total_rssi += avg_rssi[j];
-+
-+	avg_signal = -div64_u64(total_rssi, cl_hw->num_antennas);
-+out:
-+	spin_unlock_bh(&cl_hw->lock_stats);
-+
-+	return avg_signal;
-+}
-+
++			       struct cl_agg_tx_report *agg_report);
++void cl_stats_update_rx_rssi(struct cl_hw *cl_hw, struct cl_sta *cl_sta, s8 rssi[MAX_ANTENNAS]);
++void cl_stats_update_rx_rate(struct cl_hw *cl_hw, struct cl_sta *cl_sta, struct hw_rxhdr *rxhdr);
++void cl_stats_update_rx_rate_production(struct cl_hw *cl_hw, struct hw_rxhdr *rxhdr);
++void cl_stats_update_ps(struct cl_hw *cl_hw, struct cl_sta *cl_sta, bool is_ps);
 +void cl_stats_get_tx(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+		     u64 *total_tx_success, u64 *total_tx_fail)
-+{
-+	if (!cl_hw->conf->ci_stats_en)
-+		return;
++		     u64 *total_success, u64 *total_fail);
++u64 cl_stats_get_rx(struct cl_hw *cl_hw, struct cl_sta *cl_sta);
++int cl_stats_get_rssi(struct cl_hw *cl_hw, struct cl_sta *cl_sta);
 +
-+	spin_lock_bh(&cl_hw->lock_stats);
-+
-+	if (!cl_sta->stats)
-+		goto out;
-+
-+	*total_tx_success = cl_sta->stats->tx.packet_success;
-+	*total_tx_fail = cl_sta->stats->tx.packet_fail;
-+
-+out:
-+	spin_unlock_bh(&cl_hw->lock_stats);
-+}
-+
-+u64 cl_stats_get_rx(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
-+{
-+	u64 total_rx_packets = 0;
-+
-+	if (!cl_hw->conf->ci_stats_en)
-+		return 0;
-+
-+	spin_lock_bh(&cl_hw->lock_stats);
-+
-+	if (!cl_sta->stats)
-+		goto out;
-+
-+	total_rx_packets = cl_sta->stats->rx.packet_success;
-+
-+out:
-+	spin_unlock_bh(&cl_hw->lock_stats);
-+
-+	return total_rx_packets;
-+}
-+
++#endif /* CL_STATS_H */
 -- 
 2.36.1
 
