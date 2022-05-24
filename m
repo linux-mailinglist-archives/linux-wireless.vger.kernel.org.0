@@ -2,45 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D430053298C
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A30D753297F
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:43:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237012AbiEXLl0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 May 2022 07:41:26 -0400
+        id S236939AbiEXLl1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 May 2022 07:41:27 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237017AbiEXLlH (ORCPT
+        with ESMTP id S237045AbiEXLlK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 May 2022 07:41:07 -0400
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2071.outbound.protection.outlook.com [40.107.20.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10383939BE
-        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:40:32 -0700 (PDT)
+        Tue, 24 May 2022 07:41:10 -0400
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2050.outbound.protection.outlook.com [40.107.20.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EB5094181
+        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:40:35 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AeChDJQW2HtgD9WHtLgW+fgvSN7tG9L5+LCkHGO1nQSU1sWv1wo8o49UmpK0Pwd9t4c5nZ3CBfLo4UhFmVMdaHbGIr2lpm3lrNKsVc8VuxQ0a7Q3daiRPQ58eNR8n2MX3ksoF/EODNKmzlXrLH8m8Qcw0ogNPOnrM1EI8sih/vEkRlWNDt0CXm4BrKTGg0ezFwkMBL2fGg3L7h6zGlcHhKEjSqeSyqNVvC86PKWHUtJdptRofy7rgxTlrZJmjYocyP6X2oGvN3QYNTNLMSisRUV0d8UwVjlNc3+JA7F0+pSBEl7FDqf1kJSOc7/8PewcZdYLljtIBNFgfN/8vtbyTg==
+ b=YvYHWzJS7WogT6dRVwS8X7XQT38oXay9UytdXdrlwouH2MIkEqaX3yHEAj378XJHiBleNl26sEGEpyE38w3GGhsY6l5Tu7K0txYWmsdjHJvz4KGTXp6mU9v26C2A3l4QUXIHywcGY26oa+MwoPbdEO043Qi/SPxo55TB/2dfQ0O6Yn7RDbYyeRiDeZNH69a0czVNKo6Yf5/ec9aqI6sVgUK1xuKpTQ9e6E4KveYZWtwN0oZnVDvn+2GV69E7QtORr34ccFm55P+vjRg8AlmJWhgBH5+jRyXi9AcPnM0OhrkrvE7px2Z2Z0dwh6oURKa+9h0pITQrsbqXBVxhjNIacg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=16SuCED5knND0f2MxrWSMbU0eRI0jQmTNqWcGCg9jaQ=;
- b=B/J2YQ+PqeGL7DG635pJ+A0oLRzdJ6YUdoYTbxc5ag3qv20+SDpBjeD5ywzIjXsaJaBok7biL2JtoVKPx+jyb3sgGA4hCx9w6f97L12+UfECyYC6x9ZH8lqP1CirX2aHOOsJmSZfUgxVBVP6L7R9NfJsAeowjX3Lc7PleSNp4NUm8vaIt6zVdkAOnYe7+waRPnN0ckgJBVcbqtCoValv+Z+YNAdau6TBcm8CRADH9mwNSjSWG2YWON92BIbFCfc4qH3WgTpBfd8KYWuk98HUXwE5kGry1Rrd1YcLyjhEypmGxbYO1yCs3jlxZfp6eSv7zc7I0EfZajXnnh6FSD9u9A==
+ bh=jQ5oewS1o33UM4gcl+FntTjVuVyd+jWmG0sYFqV785I=;
+ b=aNPUPrWSmKyEMscJjZWcoDwpjvrkYr3h3ZlkL/i07L5baeoMclqyno3M4BHGTIlAApwyt44/GUigSD5bISnwQJw+80iDkbXOMksqbPqdqhJRuuDL/BDYZVPxK0uJDe9NlGyOexA9mzmPD6c74GiE9iMGvRsbe3HMS7G7MNlGaWTkBWxOfwUM9bYPb2IVZjtctapr5AVcJBhxHHQq5O3hWWsFk0ktqCgvXXWwnTGa3sLYZtAdO2/Pjh1dV73LsaaPKg4s0f/1FbRHeYq1CmZQ6Ogwf9t67y0M+Z/GHJdvvb8tYw1hIQ5u7mezhQdqSvZZoANNGDNQ7aK8yN0+/uEIrA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=16SuCED5knND0f2MxrWSMbU0eRI0jQmTNqWcGCg9jaQ=;
- b=D2afiEZJTtOsg82SM909VxQXOl0fmtRatxo3UuB7i2Rep1nYJWCoVWDepDg5et/uurR09nZMN/pRgXB2HizgTMkh3jMKeXsqcMM1Bf2DSnokDNGvOfEjaNwDzfp0ZSJLqepcsVouicGVSfGBns7Nd2aNK5TQ92Fnuxg31OHRg7k=
+ bh=jQ5oewS1o33UM4gcl+FntTjVuVyd+jWmG0sYFqV785I=;
+ b=OGQ9g3wp7V4SanFmUwd0fdOzUu7L1Fq4y7njaon8hsLxoIEaiY8usI2HnY2s5SLdTIp30ItpruKHhbbASpvKhW0FCZPmwYC8QDIKOWWpjRnqhfE8rKVB6w/77BA9QJ3hptqYDi1Z7Exr5Y+h0D0Bsl5jx2+IVt5KVGGaTq5T6NQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by VE1P192MB0669.EURP192.PROD.OUTLOOK.COM (2603:10a6:800:16f::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.14; Tue, 24 May
- 2022 11:39:32 +0000
+ 2022 11:39:33 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::6c57:2d13:9162:cbbb]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::6c57:2d13:9162:cbbb%8]) with mapi id 15.20.5293.013; Tue, 24 May 2022
- 11:39:32 +0000
+ 11:39:33 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -52,9 +52,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v2 85/96] cl8k: add tx.h
-Date:   Tue, 24 May 2022 14:34:51 +0300
-Message-Id: <20220524113502.1094459-86-viktor.barna@celeno.com>
+Subject: [RFC v2 86/96] cl8k: add utils.c
+Date:   Tue, 24 May 2022 14:34:52 +0300
+Message-Id: <20220524113502.1094459-87-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220524113502.1094459-1-viktor.barna@celeno.com>
 References: <20220524113502.1094459-1-viktor.barna@celeno.com>
@@ -65,56 +65,56 @@ X-ClientProxiedBy: AM6PR10CA0092.EURPRD10.PROD.OUTLOOK.COM
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7232e032-a562-418e-7c56-08da3d79fd70
+X-MS-Office365-Filtering-Correlation-Id: 0e8b9b24-e92f-4ec0-e7cd-08da3d79fde2
 X-MS-TrafficTypeDiagnostic: VE1P192MB0669:EE_
 X-LD-Processed: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8,ExtFwd
-X-Microsoft-Antispam-PRVS: <VE1P192MB0669A288A7623C73BF01F343F6D79@VE1P192MB0669.EURP192.PROD.OUTLOOK.COM>
+X-Microsoft-Antispam-PRVS: <VE1P192MB066950B75AAC9B64337470AFF6D79@VE1P192MB0669.EURP192.PROD.OUTLOOK.COM>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: rBcp4u79+VEfkQf7xONjlUrmB6VtqJGNDWhXkacULVMzVCrPBwZb01aFXXUX02oAwHwcY47O3LhDNQYNDrBw89s+63XbTPAic9xMGW1u7fUjwCEejyCrxxK/ny6yBYUwuNAeuGee7PwR+XTHi/dNHZ93oU6KinJT8avoctWrBD6GxtWHDNr/L9RjKtHXT5IaIScumdyM4NvTrCofeqfPLL0YOegYF9Pq1NuhOHaO4uF/j/MnHVbbjjpKoundqzJNbeUwlfzD+ElW6jDgjVWhzU0NKKrWyJLBBJtNECmvBerII6b6RNyBFKlCNLg0oP+KhXbw7pMEG7jtkG8uyQFkZuKQ9m1rZornTxYsKhEGQOD29pY2gW7ulHVJLP3BmKO5lgjHPbmULJ5rGFxgP0Xe+nt3jCVb56059ShSveuw7s8xjj92qYLsq3eEt8Mbsa4/N7Vte6FAEVwV8dQbXJhjZf+4F2J8yP+ZrH3r+vnKEurBNTXrHxUfd86Wsf/EQkysW/+ginLZZ/Og4qltrYlwL0Kynqy/GL/PEXhVBVDopojrjgHQaxUr/YeEpmJGK74bKFW9SICF8YbT8h8tPtEswfDBW18Us5AoXumWbKAdpG+ky9G0TbBVxIL2Smq6/6g8ON/ulXZB5vaUNO9PeJKXNvdkmXqIrLOUluIq0h7iGyRT+eQjob8H2OBdlT+U6BL6MhvOrLoWZPmqwOYPQd2OqW0GLGI/8+krst3G6xie+ZQ=
+X-Microsoft-Antispam-Message-Info: fQ48fZtIwOEuCJJGaGhL4hm7lV4UrDjEZJlYLvmcKuV8QfmjbJ1Ov0ttfYwLrL4RGJwiwXeNAkdi+uacc/mKERwnnpdBNGo3XHZ5flH0zCQqXnNEIb5LphyRAL++Ofj+Xr6WyEQPtsRNpeqWz/1vuW7++qqKuQZNehad1d/neYUTzbblH0yMq7lxJa9bTSu8ebfp043wcLtPzo881nGrmV7vDLx9kVMy8ZByrbuiHp8gfr3QdcEZpqh+yi20WcwD7yzQeQwh3Xp594CBExQGZ07o9bJ4PQvSjzXktYPKJHA7R9D5Zu5KfqyMCwe3FRYI8dL8GoCqWv1WmXpA4e1pury9ZxZKDYJZT6ruwT6e0LQubp+P8B9H1gM7gAcP6qvQ7kUI3IgJQwYq2Rp+ev3rbaRKCpVue8JBQTVFxVVmz0FsvVa2S3KYkKsmREWbXu0/BEwXibTlGCcQTob7fLXMifFOVjCF4JJM+xhqXlQzkce+A96Bl464Vcq1aLIFEAeP5mAtnEwrfleF5ctjA62rzxznzf+N7h3BgrEQWONhFZEf/n5L4PTj3tspfBGk17jOvIj4DeTBGQewUUU0HbZhDl+yr7VLxSYkY0WnnNQRtEoOmKMvx86sta/Qzk235sDUWQzsm8Sw9grLTxd2NbK/jlZeyJNVL3eu2y9RT1wAwKKPUx67BmtR4ojxAS5pRJ4JsMtAVX40pN+AJQn6b42hAhWGP1YS2YGg6VxlZ3h10eQ=
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(396003)(376002)(136003)(366004)(346002)(39850400004)(8676002)(9686003)(26005)(36756003)(66946007)(66556008)(66476007)(4326008)(107886003)(83380400001)(6512007)(5660300002)(38350700002)(38100700002)(1076003)(2616005)(316002)(6916009)(6506007)(6486002)(54906003)(86362001)(8936002)(508600001)(41300700001)(6666004)(2906002)(186003)(52116002)(30864003)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?wyL/M6hquR8nUeP0JdpImrpJ6Ao8lZ7+qBUwzqqe59pyMSXU88v5H8vcYhwX?=
- =?us-ascii?Q?VFuKGBfFZ8u0xq6M5nlcFCfMNudccDOMcKwav287wPKPkO9biU0KkixM7TUc?=
- =?us-ascii?Q?QKnVMfxS0pLLptny3Za3tOG/P0AImtm/0AI26ptTY9LLdAiTo+jUsnna5maX?=
- =?us-ascii?Q?W427/SbBFBmdl+4vYXHcUCR711FO4+RPqKxROrat1bWUv4yzJO7Q/tgotfzn?=
- =?us-ascii?Q?F4bpSDyvJE7NWv7srUim30MsBTVOtbqZBcRqflePmWF+1aZe5Qq4qkCrwdmW?=
- =?us-ascii?Q?Go396GANXUqVOSprF4xZNlClzr/lADnYId+dFPg/YDmwpOiZnU4CZNvCM1wD?=
- =?us-ascii?Q?zukITkN2FhCF7KHxXfMqKrnWLHusPlF4O4tUJXMi/g+kFFIsLdjvLHauOYJI?=
- =?us-ascii?Q?ArfznmZSKKDt6+TN4lG1UVFDlEMLVxibcoejr4TJVQT9r57Met8syWAsjxuA?=
- =?us-ascii?Q?i7KGIsP1Cc/+XuK3yUYP9Ux+J17ZLqMFEZOb5JSHOIPx7xi+TbazWP4j9HGr?=
- =?us-ascii?Q?c7M3Ob/2EkqgtCltt8nU/hWe0bfTSFlhk1F1sobq1mb7yqY/uqnBeBODarfg?=
- =?us-ascii?Q?mIpZV0h3RnKw6hAYnebkVjWFHUOSbb2M9FkK7ahHsOMxaYV3q/L5Mp8sfpCv?=
- =?us-ascii?Q?/fWZTGOPxkImgZNV9noa+YulAkylWdw2vlGEb50gtxI8PD72O+GJQFAhZ6zz?=
- =?us-ascii?Q?PlrwUAOPuPwFFEbqPp/8lDAHXnMQ/4m9tC0iGWwdCB/AAgz50EGt4iNO45ub?=
- =?us-ascii?Q?pKO3htRIHD6SjyMJ4hX1a84H5SFFvbZuz2r4d2S8uJplRbNwBla73Rpzw8V0?=
- =?us-ascii?Q?FRkackW5YDoW7+dCEM7i1RYkeetGndFurxl7tb/Evm3hg/5UBqYn9CND6keb?=
- =?us-ascii?Q?0SshfC5g2Bt9md4CgNTEB/0udZm4UnS12CVDX4jZ+tw9eu7TupXQcLQB1Kyu?=
- =?us-ascii?Q?awlXO0RP8LTBgqtn/bONue4PPRs1varkKW005R9Z5B4NprW7XnqXMaaulDRw?=
- =?us-ascii?Q?YZqXcBcz1+pSp+ONEIIgrVNbZDoEGU93VMCr5QuHFhUKZcqz0axvmE2y5So1?=
- =?us-ascii?Q?RsLYLzPzCsT12yGlH0jKEx8L3sdGLT9HuN8g6+x5viUfFfSu41zAdnu5TXAC?=
- =?us-ascii?Q?w1PgWuZ/etix305deWInEba7C2KsbC3Ba/U7dH5gT/Q4kZ6unUsgdAuzu4F4?=
- =?us-ascii?Q?226ou/5ciFtX9oJFxPP1HrwF9P/+CbSPoqPsOUB8FOyPnROUhaVjL9aTd8TX?=
- =?us-ascii?Q?/ngyAerO/36V5aBdbzXVUvvxRFmUcErF/eWWwPGhc25/Js1bfmsgXILD9MKe?=
- =?us-ascii?Q?8Qv7ztxNGJP3iDbdVRUyx2Pf086wz2+AVTUY994obW0GIUsArPOn2k373M+7?=
- =?us-ascii?Q?4uUHRwahQ4rx43VQ2mmoQhF/uQA/sxthtuy53EcbAsk2lUdPK6zFoMDhZ528?=
- =?us-ascii?Q?LRMHgcONsRFuYrcXTCv+sDeYgBRNfWv5W1UbqJRcO5+uWLhmMpuGbwVxk+U9?=
- =?us-ascii?Q?mkGkuCtahp3Sw3dI8nvmFE0mOFwPWIVkDdotUxMNPUwsguiBEfjCr3bPUW4t?=
- =?us-ascii?Q?EsI02WxlpLhVSu8MN5Ok8aRluPOPCqHtlfvSnr0SjxLdiVMedi3jt54DYo9F?=
- =?us-ascii?Q?qBQ2fqIfkKvQFzFCo0AISNefImjOdiIjm0fAk24RuChwZQqAweJ2zUY4t6i9?=
- =?us-ascii?Q?2xfQfx1FBEWvYm21V9LnSPSa2TqI51KcJNHiHW8q7ILQP4G1RNYgIT4iBvZe?=
- =?us-ascii?Q?KlXhxgKZ5vEboQGMaBXiLsQQUMZgoZU=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?il3780JClZic2+wL8K3eixoxL9c9jIqsRKb4dtor4LScFF4uYKsCJzYcpvWF?=
+ =?us-ascii?Q?ydTIhqiWg0TZkItWrHKYxgLpOkHF+SgqpCWUIxoZ8ieS/rL7SnW+waNMkoxz?=
+ =?us-ascii?Q?GprUqz6DhBiza/dbcTMf7FshC0pgnhg8jOuwHj2KAEtXoUBQheP4G8W3gyP3?=
+ =?us-ascii?Q?UCCse+Q7UGQ+HASIfJrTJGG3MRu/LYSJ1NT7D5SGsZ8kKitK7eOUMQqobRI7?=
+ =?us-ascii?Q?20mJl0cCb7N6iWnZlDIV9cWAu+43mGEcOsTnrO+efNnLOPQY9PkxzJF+fZ2l?=
+ =?us-ascii?Q?iTC/vmi+ZDpNYHcR2otci7ByqcPfW7/uBVCIdYHmfJdeQx+gPyxro2jy/RWp?=
+ =?us-ascii?Q?gusNU6nKxWsONlH4Uqtm76PM1+AaupEVKo8pU3TgfnLhSKzCH+3paoWS6u7C?=
+ =?us-ascii?Q?0j9aPvNe7K8fOygiysiSYxoLylle3BlbX5RgrnDarQvv69TfZDppm4EhDOng?=
+ =?us-ascii?Q?YTZeDO8C2TFbQd9GtbfpnJFXrpCq/lTH9JBughU3OzVcUiPSrwPZ1uCt/ypj?=
+ =?us-ascii?Q?LMzgqawFBoksXm0oWWy6fxZU8q1mqhQXNGXgqHewZ5mt8zW1pO4V1v8NUPtB?=
+ =?us-ascii?Q?xRlCQ+7SKYb/HEIsuujKuLduyUByOYMd3KSNLZYzgBDuC+weEEqfDA6WVlLB?=
+ =?us-ascii?Q?Q5zy08pSVcVJETd2uIK4B/tQI4/I2pnLjxp0LsTwwPdb7qz/iug3iHzC9XP5?=
+ =?us-ascii?Q?RXnagFAQ9dp43oTgWTnsD5YLOqnwwclUD9t/MgWBntBCCdskxjv12UuMb5pS?=
+ =?us-ascii?Q?gSAo6YGpR7i3nmrKeZPsCCJIQlmbzShsmKk7Li+mj++JPDjKAocLmrLFI06z?=
+ =?us-ascii?Q?xtJW+hDs4vVqHoeE+RD2D8bozEGLxcHCvMa50Ma3NcPxDMdVsGR1/fk7s/gZ?=
+ =?us-ascii?Q?2/sGtZsnYAwdlprAU7BvUGhE3UhoTjmtSv4MIw8mkOrlHN273TUsSmHPh17z?=
+ =?us-ascii?Q?DlP76ut04Z3rjS4VloYgwQCO2mS6SycTz7BYtEP/7BqTdB2DZG4y8WfG0H57?=
+ =?us-ascii?Q?466UZG81wDRZUil796XMsK4VcD/wFTGxLG0jV9Y5dhq6OlpN2VGHYg+hA03H?=
+ =?us-ascii?Q?DBkJ+xMHJjRMInchDksr1kDDAAI4CMCaS0c8ln/7t4G4DtuMwY2Q02+2AUVi?=
+ =?us-ascii?Q?JHKMRDT2ek/WK7Crbk+oxDLNjuDoY5OEGzW2E8rRWxtr18ozeWi7EwHBK3Pd?=
+ =?us-ascii?Q?USB/poyqc8y4JJzt3BQXv6uVrPbOCCut0IncQ76iv3prJFu7mIqWWn0rL0Lu?=
+ =?us-ascii?Q?fWCTXgI5K7hNnKqWN/5a77zHLba82ENrfs6r19S8HqMD7dttQnRO7ZyS65qR?=
+ =?us-ascii?Q?53hY68Fg+f9NBCy/zpeyTpn+pL5CVjAJ+hlDceWqjt8Kj6xh0SlTVpR3B5OW?=
+ =?us-ascii?Q?oP1hkCJDUyb2vvVXGIMTNP08sK4/BKdNcPDbyGrj9ttJC0d4VhfxihJV5hR2?=
+ =?us-ascii?Q?0UOwg/B2ebzfS5zmjCahsaaBKhQtdLFRXCISpRMz7QaQkMJdMzvMVer4nLV4?=
+ =?us-ascii?Q?rkR1FH3of1btK0S/FjKDVMentY93Y2O5f1vEFy2l/MTyQG7weANyIAeCo3hn?=
+ =?us-ascii?Q?a3LnGlGij2W+h6MxEMv0yS8pG/hP0yGqWC73IcSO5R/2rQ/bDUeAHhwkdp9i?=
+ =?us-ascii?Q?pPD9KOUeYL/SIW6musVKdTgyuUyZGHK3ItpqvjByDjiOQTlvwHO2hQj5CQn8?=
+ =?us-ascii?Q?mnW1xeA7ON61OutO+x/zB7JXNC3XVvuCP9+dkw/VHt1C78VApuGxac20KdMW?=
+ =?us-ascii?Q?lQdoa79bfOWcu0/EpnW0Ywm6wKMhJzM=3D?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7232e032-a562-418e-7c56-08da3d79fd70
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e8b9b24-e92f-4ec0-e7cd-08da3d79fde2
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:38:58.0097
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:38:58.7908
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x2de/OPgdmeBmiKg+PcNeC1HwFL4ilVXeMUlGbGxPpApIG3NeEpFYs6E44skFBK27QSvbgXfyYiDKE/QNH4+Zg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: qISVjIc1bqTM6+bnzCV/HVh/4MREDHTKds7iwQGI+kpW30k2rM/LuqrAaqPW7+YsRIgeMWjMb5t0Rzj8sdam7w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1P192MB0669
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -133,483 +133,658 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/tx.h | 467 ++++++++++++++++++++++++++
- 1 file changed, 467 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/tx.h
+ drivers/net/wireless/celeno/cl8k/utils.c | 642 +++++++++++++++++++++++
+ 1 file changed, 642 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/utils.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/tx.h b/drivers/net/wireless/celeno/cl8k/tx.h
+diff --git a/drivers/net/wireless/celeno/cl8k/utils.c b/drivers/net/wireless/celeno/cl8k/utils.c
 new file mode 100644
-index 000000000000..d36a7d703df6
+index 000000000000..fadc586e9579
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/tx.h
-@@ -0,0 +1,467 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause */
++++ b/drivers/net/wireless/celeno/cl8k/utils.c
+@@ -0,0 +1,642 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
 +/* Copyright(c) 2019-2022, Celeno Communications Ltd. */
 +
-+#ifndef CL_TX_H
-+#define CL_TX_H
++#include <linux/dma-mapping.h>
++#include <linux/list.h>
++#include <linux/jiffies.h>
++#include <linux/kthread.h>
++#include <net/mac80211.h>
++#include <linux/sched/signal.h>
++#include <linux/firmware.h>
++#include <linux/if_vlan.h>
++#include <linux/ip.h>
++#include <linux/ipv6.h>
 +
-+#include <linux/interrupt.h>
-+
-+#include "sta_info.h"
-+#include "vif.h"
++#include "hw.h"
 +#include "ipc_shared.h"
-+#include "fw.h"
-+#include "wrs.h"
++#include "radio.h"
++#include "traffic.h"
++#include "reg/reg_defs.h"
++#include "utils.h"
 +
-+enum cl_queue_type {
-+	QUEUE_TYPE_SINGLE,
-+	QUEUE_TYPE_AGG,
-+	QUEUE_TYPE_BCMC,
++#define GI_08  0
++#define GI_16  1
++#define GI_32  2
++#define GI_04  3
 +
-+	QUEUE_TYPE_MAX
++#define GI_MAX_FW 4
++#define GI_MAX_HE 3
++#define GI_MAX_HT_VHT 2
++
++static u8 conv_wrs_gi_ht_vht[GI_MAX_HT_VHT] = {
++	[WRS_GI_LONG] = GI_08,
++	[WRS_GI_SHORT] = GI_04
 +};
 +
-+#define QUEUE_IDX(sta, ac)  ((sta) + (ac) * FW_MAX_NUM_STA)
-+
-+#define TX_PUSH_LOGGER_SIZE 256
-+
-+#define BCMC_POLL_TIMEOUT 50
-+
-+enum cl_tx_push_logger_param {
-+	TX_PUSH_LOGGER_DRV_CNT,
-+	TX_PUSH_LOGGER_FW_CNT,
-+	TX_PUSH_LOGGER_PKT_PUSHED,
-+	TX_PUSH_LOGGER_MAX,
++static u8 conv_wrs_gi_he[GI_MAX_HE] = {
++	[WRS_GI_LONG] = GI_32,
++	[WRS_GI_SHORT] = GI_16,
++	[WRS_GI_VSHORT] = GI_08
 +};
 +
-+struct cl_tx_push_cntrs {
-+	u32 tx_push_cntr_hist[TXDESC_AGG_Q_SIZE_MAX + 1];
-+	u32 tx_push_logger[TX_PUSH_LOGGER_SIZE][TX_PUSH_LOGGER_MAX];
-+	u32 tx_push_logger_idx;
++static u8 conv_fw_gi_ht_vht[GI_MAX_FW] = {
++	[GI_08] = WRS_GI_LONG,
++	[GI_16] = 0,
++	[GI_32] = 0,
++	[GI_04] = WRS_GI_SHORT,
 +};
 +
-+struct cl_tx_queue {
-+	struct list_head sched_list;
-+	struct list_head hdrs;
-+	struct cl_sta *cl_sta;
-+	bool sched;
-+	u16 fw_free_space;
-+	u16 fw_max_size;
-+	u8 type;
-+	u8 tid;
-+	u8 hw_index;
-+	u16 index;
-+	u16 max_packets;
-+	u16 num_packets;
-+	u32 total_packets;
-+	u32 total_fw_push_desc;
-+	u32 total_fw_push_skb;
-+	u32 total_fw_cfm;
-+	u32 dump_queue_full;
-+	u32 dump_dma_map_fail;
-+	u32 stats_hw_amsdu_cnt[CL_AMSDU_TX_PAYLOAD_MAX];
-+	u32 stats_sw_amsdu_cnt[MAX_TX_SW_AMSDU_PACKET];
-+	u32 hist_xmit_to_push[DELAY_HIST_SIZE];
-+	u32 hist_push_to_cfm[DELAY_HIST_SIZE];
-+	struct cl_tx_push_cntrs push_cntrs_db;
++static u8 conv_fw_gi_he[GI_MAX_FW] = {
++	[GI_08] = WRS_GI_VSHORT,
++	[GI_16] = WRS_GI_SHORT,
++	[GI_32] = WRS_GI_LONG,
++	[GI_04] = 0,
 +};
 +
-+/*
-+ * struct cl_tx_queues:
-+ * This structure holds all driver TX queues,
-+ * The queues buffer frames pushed by upper layer and push them to lower IPC layer.
-+ */
-+struct cl_tx_queues {
-+	struct cl_tx_queue agg[IPC_MAX_BA_SESSIONS];
-+	struct cl_tx_queue single[MAX_SINGLE_QUEUES];
-+	struct cl_tx_queue bcmc;
++static const u8 cl_mu_ofdma_ru_type_to_bw_conversion[CL_MU_OFDMA_RU_TYPE_MAX] = {
++	CHNL_BW_2_5,
++	CHNL_BW_2_5,
++	CHNL_BW_5,
++	CHNL_BW_10,
++	CHNL_BW_20,
++	CHNL_BW_40,
++	CHNL_BW_80,
++	CHNL_BW_160
 +};
 +
-+struct cl_req_agg_db {
-+	bool is_used;
-+	u8 sta_idx;
-+	u8 tid;
-+};
-+
-+#define INC_SN(sn) (((sn) + 0x10) & IEEE80211_SCTL_SEQ)
-+#define DEC_SN(sn) (((sn) - 0x10) & IEEE80211_SCTL_SEQ)
-+
-+#define CL_TX_LIFETIME_MS 4000
-+
-+#define CL_SKB_DATA_ALIGN_SZ      4
-+#define CL_SKB_DATA_ALIGN_MSK     (CL_SKB_DATA_ALIGN_SZ - 1)
-+#define CL_SKB_DATA_ALIGN_PADS(x) \
-+	((CL_SKB_DATA_ALIGN_SZ - ((ptrdiff_t)(x) & CL_SKB_DATA_ALIGN_MSK)) & CL_SKB_DATA_ALIGN_MSK)
-+
-+#define CL_TX_MAX_FRAME_LEN_SINGLE 4096
-+#define CL_TX_MAX_FRAME_LEN_AGG 2000
-+
-+struct cl_hw_tx_status {
-+	u32 mcs_index          : 7; /* [6:0] */
-+	u32 is_bcmc            : 1; /* [7] */
-+	u32 num_mpdu_retries   : 4; /* [11:8] */
-+	u32 rsv                : 4; /* [15:12] */
-+	u32 format_mod         : 4; /* [19:16] */
-+	u32 bw_requested       : 2; /* [21:20] */
-+	u32 bf                 : 1; /* [22] */
-+	u32 frm_successful     : 1; /* [23] */
-+	u32 bw_transmitted     : 2; /* [25:24] */
-+	u32 freespace_inc_skip : 1; /* [26] */
-+	u32 keep_skb           : 1; /* [27] */
-+	u32 gi                 : 2; /* [29:28] */
-+	u32 descriptor_done_sw : 1; /* [30] */
-+	u32 descriptor_done_hw : 1; /* [31] */
-+};
-+
-+enum cl_tx_flags {
-+	CL_TX_EN_DFS,
-+	CL_TX_EN_SCAN
-+};
-+
-+enum cl_tx_single_frame_type {
-+	CL_TX_SINGLE_FRAME_TYPE_QOS_DATA,
-+	CL_TX_SINGLE_FRAME_TYPE_QOS_NULL,
-+	CL_TX_SINGLE_FRAME_TYPE_MANAGEMENT,
-+	CL_TX_SINGLE_FRAME_TYPE_OTHER
-+};
-+
-+struct cl_tx_db {
-+	bool force_amsdu;
-+	bool block_bcn;
-+	bool block_prob_resp;
-+};
-+
-+struct cl_tx_drop_cntr {
-+	u32 radio_off;
-+	u32 in_recovery;
-+	u32 short_length;
-+	u32 pending_full;
-+	u32 packet_limit;
-+	u32 dev_flags;
-+	u32 tx_disable;
-+	u32 length_limit;
-+	u32 txhdr_alloc_fail;
-+	u32 queue_null;
-+	u32 amsdu_alloc_fail;
-+	u32 amsdu_dma_map_err;
-+	u32 build_hdr_fail;
-+	u32 key_disable;
-+	u32 queue_flush;
-+	u32 probe_response;
-+	u32 sta_null_in_agg;
-+	u32 sta_stop_tx;
-+};
-+
-+struct cl_tx_forward_cntr {
-+	u32 tx_start;
-+	u32 drv_fast_agg;
-+	u32 drv_fast_single;
-+	u32 to_mac;
-+	u32 from_mac_single;
-+	u32 from_mac_agg;
-+};
-+
-+struct cl_tx_transfer_cntr {
-+	u32 single_to_agg;
-+	u32 agg_to_single;
-+};
-+
-+struct cl_tx_packet_cntr {
-+	struct cl_tx_forward_cntr forward;
-+	struct cl_tx_drop_cntr drop;
-+	struct cl_tx_transfer_cntr transfer;
-+};
-+
-+struct cl_cpu_cntr {
-+	u32 tx_agg[CPU_MAX_NUM];
-+	u32 tx_single[CPU_MAX_NUM];
-+};
-+
-+static inline bool cl_tx_ctrl_is_amsdu(struct ieee80211_tx_info *tx_info)
++void cl_hex_dump(char *caption, u8 *buffer, u32 length, u32 offset, bool is_byte)
 +{
-+	return !!(tx_info->control.flags & IEEE80211_TX_CTRL_AMSDU);
++	u8 *pt = buffer;
++	u32 i;
++	bool end_nl = false;
++	char buf[STR_LEN_256B] = {0};
++	int len = 0;
++
++	if (caption)
++		pr_debug("%s: %p, len = %u\n", caption, buffer, length);
++
++	if (is_byte) {
++		for (i = 0; i < length; i++) {
++			if (i % 16 == 0)
++				len += snprintf(buf + len, sizeof(buf) - len,
++						"0x%04x : ", i + offset);
++			len += snprintf(buf + len, sizeof(buf) - len,
++					"%02x ", ((u8)pt[i]));
++			end_nl = true;
++			if (i % 16 == 15) {
++				pr_debug("%s", buf);
++				len = 0;
++				end_nl = false;
++			}
++		}
++	} else {
++		for (i = 0; i < (length / sizeof(u32)); i++) {
++			if (i % 4 == 0)
++				len += snprintf(buf + len, sizeof(buf) - len,
++						"0x%04x : ",
++						(u32)(i * sizeof(u32) + offset));
++			len += snprintf(buf + len, sizeof(buf) - len,
++					"%08x ", *((u32 *)(pt + i * sizeof(u32))));
++			end_nl = true;
++			if (i % 4 == 3) {
++				pr_debug("%s", buf);
++				len = 0;
++				end_nl = false;
++			}
++		}
++	}
++
++	if (end_nl)
++		pr_debug("%s", buf);
 +}
 +
-+static inline bool cl_tx_ctrl_is_eapol(struct ieee80211_tx_info *tx_info)
++u8 cl_convert_gi_format_wrs_to_fw(u8 wrs_mode, u8 gi)
 +{
-+	return !!(tx_info->control.flags & IEEE80211_TX_CTRL_PORT_CTRL_PROTO);
++	if (wrs_mode == WRS_MODE_HE && gi < GI_MAX_HE)
++		return conv_wrs_gi_he[gi];
++	else if (wrs_mode > WRS_MODE_OFDM && gi < GI_MAX_HT_VHT)
++		return conv_wrs_gi_ht_vht[gi];
++	else
++		return 0;
 +}
 +
-+struct cl_agg_cfm_queue {
-+	struct list_head head;
-+	struct cl_tx_queue *tx_queue;
-+	u16 ssn;
++u8 cl_convert_gi_format_fw_to_wrs(u8 format_mode, u8 gi)
++{
++	if (gi < GI_MAX_FW) {
++		if (format_mode >= FORMATMOD_HE_SU)
++			return conv_fw_gi_he[gi];
++		else if (format_mode >= FORMATMOD_HT_MF)
++			return conv_fw_gi_ht_vht[gi];
++	}
++
++	return 0;
++}
++
++static u8 map_gi_to_ltf[WRS_GI_MAX] = {
++	[WRS_GI_LONG] = LTF_X4,
++	[WRS_GI_SHORT] = LTF_X2,
++	[WRS_GI_VSHORT] = LTF_X2,
 +};
 +
-+/* Structure containing the parameters of the MM_AGG_TX_REPORT_IND message. */
-+struct cl_agg_tx_report {
-+	__le32 rate_cntrl_info;
-+	__le32 rate_cntrl_info_he;
++u8 cl_map_gi_to_ltf(u8 mode, u8 gi)
++{
++	if (mode == WRS_MODE_HE && gi < WRS_GI_MAX)
++		return map_gi_to_ltf[gi];
 +
-+#if defined(__LITTLE_ENDIAN_BITFIELD)
-+	u32 sta_idx                    : 8,
-+	    is_sta_ps                  : 1,
-+	    bw_requested               : 2,
-+	    is_agg                     : 1,
-+	    ba_not_received            : 1,
-+	    ba_received_empty          : 1,
-+	    bf                         : 1,
-+	    is_fallback                : 1,
-+	    mu_su_gid                  : 6,
-+	    mu_mimo_valid              : 1,
-+	    mu_ofdma_valid             : 1,
-+	    rate_fix_mcs1              : 1,
-+	    rsv0                       : 7;
++	return 0;
++}
 +
-+	u32 success                    : 9,
-+	    fail                       : 9,
-+	    below_baw_cnt              : 9,
-+	    num_prot_retries           : 5;
++/* This table holds 10^(-110 -> 0) Q39 values for rx RSSI and noise floor calculations */
++#define CL_EXP_TBL_SIZE 111 /* 10^x table size (-110 -> 0dBm) */
 +
-+	u32 success_after_retry        : 9,
-+	    success_more_one_retry     : 9,
-+	    retry_limit_reached        : 9,
-+	    is_retry                   : 1,
-+	    is_rts_retry_limit_reached : 1,
-+	    prot_type                  : 3;
-+
-+	u32 rssi1                      : 8,
-+	    rssi2                      : 8,
-+	    rssi3                      : 8,
-+	    rssi4                      : 8;
-+
-+	u32 rssi5                      : 8,
-+	    rssi6                      : 8,
-+	    rsv1                       : 16;
-+#else
-+	u32 rsv0                       : 7,
-+	    rate_fix_mcs1              : 1,
-+	    mu_ofdma_valid             : 1,
-+	    mu_mimo_valid              : 1,
-+	    mu_su_gid                  : 6,
-+	    is_fallback                : 1,
-+	    bf                         : 1,
-+	    ba_received_empty          : 1,
-+	    ba_not_received            : 1,
-+	    is_agg                     : 1,
-+	    bw_requested               : 2,
-+	    is_sta_ps                  : 1,
-+	    sta_idx                    : 8;
-+
-+	u32 num_prot_retries           : 5,
-+	    below_baw_cnt              : 9,
-+	    fail                       : 9,
-+	    success                    : 9;
-+
-+	u32 prot_type                  : 3,
-+	    is_rts_retry_limit_reached : 1,
-+	    is_retry                   : 1,
-+	    retry_limit_reached        : 9,
-+	    success_more_one_retry     : 9,
-+	    success_after_retry        : 9;
-+
-+	u32 rssi4                      : 8,
-+	    rssi3                      : 8,
-+	    rssi2                      : 8,
-+	    rssi1                      : 8;
-+
-+	u32 rsv1                       : 16,
-+	    rssi6                      : 8,
-+	    rssi5                      : 8;
-+#endif
-+	u16 new_ssn;
-+	u8  tx_queue_idx;
-+
++static u64 CL_EXP_10[CL_EXP_TBL_SIZE] = {
++	0x7FFFFFFFFFULL, 0x65AC8C2F36ULL, 0x50C335D3DBULL, 0x4026E73CCDULL, 0x32F52CFEEAULL,
++	0x287A26C490ULL, 0x2026F30FBBULL, 0x198A13577CULL, 0x144960C577ULL, 0x101D3F2D96ULL,
++	0x0CCCCCCCCDULL, 0x0A2ADAD185ULL, 0x08138561FCULL, 0x066A4A52E1ULL, 0x0518847FE4ULL,
++	0x040C3713A8ULL, 0x0337184E5FULL, 0x028DCEBBF3ULL, 0x0207567A25ULL, 0x019C86515CULL,
++	0x0147AE147BULL, 0x01044914F4ULL, 0x00CEC089CCULL, 0x00A43AA1E3ULL, 0x008273A664ULL,
++	0x00679F1B91ULL, 0x00524F3B0AULL, 0x0041617932ULL, 0x0033EF0C37ULL, 0x002940A1BCULL,
++	0x0020C49BA6ULL, 0x001A074EE5ULL, 0x0014ACDA94ULL, 0x00106C4364ULL, 0x000D0B90A4ULL,
++	0x000A5CB5F5ULL, 0x00083B1F81ULL, 0x000689BF52ULL, 0x0005318139ULL, 0x000420102CULL,
++	0x000346DC5DULL, 0x00029A54B1ULL, 0x000211490FULL, 0x0001A46D24ULL, 0x00014DF4DDULL,
++	0x0001094565ULL, 0x0000D2B65AULL, 0x0000A75FEFULL, 0x000084F352ULL, 0x0000699B38ULL,
++	0x000053E2D6ULL, 0x000042A212ULL, 0x000034EDB5ULL, 0x00002A0AEAULL, 0x0000216549ULL,
++	0x00001A86F1ULL, 0x000015123CULL, 0x000010BCCBULL, 0x00000D4B88ULL, 0x00000A8F86ULL,
++	0x000008637CULL, 0x000006A9CFULL, 0x0000054AF8ULL, 0x000004344BULL, 0x00000356EEULL,
++	0x000002A718ULL, 0x0000021B6CULL, 0x000001AC7BULL, 0x000001545AULL, 0x0000010E5AULL,
++	0x000000D6C0ULL, 0x000000AA95ULL, 0x000000877FULL, 0x0000006BA1ULL, 0x000000557EULL,
++	0x00000043E9ULL, 0x00000035F1ULL, 0x0000002AD9ULL, 0x0000002209ULL, 0x0000001B09ULL,
++	0x000000157AULL, 0x000000110FULL, 0x0000000D8DULL, 0x0000000AC3ULL, 0x000000088DULL,
++	0x00000006CAULL, 0x0000000565ULL, 0x0000000449ULL, 0x0000000367ULL, 0x00000002B4ULL,
++	0x0000000226ULL, 0x00000001B5ULL, 0x000000015BULL, 0x0000000114ULL, 0x00000000DBULL,
++	0x00000000AEULL, 0x000000008AULL, 0x000000006EULL, 0x0000000057ULL, 0x0000000045ULL,
++	0x0000000037ULL, 0x000000002CULL, 0x0000000023ULL, 0x000000001CULL, 0x0000000016ULL,
++	0x0000000011ULL, 0x000000000EULL, 0x000000000BULL, 0x0000000009ULL, 0x0000000007ULL,
++	0x0000000005ULL
 +};
 +
-+void cl_agg_tx_report_handler(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+			      struct cl_agg_tx_report *agg_report);
-+void cl_agg_tx_report_simulate_for_single(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+					  struct cl_hw_tx_status *status);
++static s8 cl_eng_to_noise_floor(u64 eng)
++{
++	s8 i = 0;
++	s8 noise = 0;
++	s64 min_delta = S64_MAX;
 +
-+/* Per RA/TID Data for AMPDU TX */
-+struct cl_baw {
-+	u8 fw_agg_idx;
-+	bool amsdu;
-+	bool action_start;
-+	u16 ssn;
-+	u16 tid_seq;
-+	struct sk_buff_head pending;
++	for (i = CL_EXP_TBL_SIZE - 1; i >= 0; i--) {
++		if (abs((s64)(((s64)eng) - ((s64)CL_EXP_10[i]))) < min_delta) {
++			min_delta = abs((s64)(((s64)eng) - ((s64)CL_EXP_10[i])));
++			noise = i;
++		}
++	}
++
++	return (-noise);
++}
++
++static void cl_read_reg_noise(struct cl_hw *cl_hw, s8 res[4])
++{
++	u32 reg_val = riu_agcinbdpow_20_pnoisestat_get(cl_hw);
++	u8 i = 0;
++
++	for (i = 0; i < 4; i++) {
++		u8 curr_val = (reg_val >> (i * 8)) & 0xFF;
++		/* Convert reg value to real value */
++		res[i] = curr_val - 0xFF;
++	}
++}
++
++s8 cl_calc_noise_floor(struct cl_hw *cl_hw, const s8 *reg_noise_floor)
++{
++	s8 noise_floor[4] = {0};
++	u64 noise_floor_eng = 0;
++
++	if (reg_noise_floor)
++		memcpy(noise_floor, reg_noise_floor, sizeof(noise_floor));
++	else
++		cl_read_reg_noise(cl_hw, noise_floor);
++
++	noise_floor[0] = abs(noise_floor[0]);
++	noise_floor[1] = abs(noise_floor[1]);
++	noise_floor[2] = abs(noise_floor[2]);
++	noise_floor[3] = abs(noise_floor[3]);
++
++	BUILD_BUG_ON(CL_EXP_TBL_SIZE > S8_MAX);
++	noise_floor_eng = (CL_EXP_10[min_t(s8, noise_floor[0], CL_EXP_TBL_SIZE - 1)] +
++			   CL_EXP_10[min_t(s8, noise_floor[1], CL_EXP_TBL_SIZE - 1)] +
++			   CL_EXP_10[min_t(s8, noise_floor[2], CL_EXP_TBL_SIZE - 1)] +
++			   CL_EXP_10[min_t(s8, noise_floor[3], CL_EXP_TBL_SIZE - 1)]);
++
++	noise_floor_eng = div64_u64(noise_floor_eng, 4);
++
++	return cl_eng_to_noise_floor(noise_floor_eng);
++}
++
++u8 cl_convert_signed_to_reg_value(s8 val)
++{
++	bool sign = val < 0;
++	u8 res = abs(val);
++
++	if (sign)
++		res |= (1 << 7);
++
++	return res;
++}
++
++static const int nl_width_to_phy_bw[] = {
++	[NL80211_CHAN_WIDTH_20_NOHT] = CHNL_BW_20,
++	[NL80211_CHAN_WIDTH_20]      = CHNL_BW_20,
++	[NL80211_CHAN_WIDTH_40]      = CHNL_BW_40,
++	[NL80211_CHAN_WIDTH_80]      = CHNL_BW_80,
++	[NL80211_CHAN_WIDTH_80P80]   = CHNL_BW_20,
++	[NL80211_CHAN_WIDTH_160]     = CHNL_BW_160,
++	[NL80211_CHAN_WIDTH_5]       = CHNL_BW_20,
++	[NL80211_CHAN_WIDTH_10]      = CHNL_BW_20,
 +};
 +
-+enum cl_amsdu_result {
-+	CL_AMSDU_ANCHOR_SET,
-+	CL_AMSDU_SUB_FRAME_SET,
-+	CL_AMSDU_SKIP,
-+	CL_AMSDU_FAILED
-+};
++u8 cl_width_to_bw(enum nl80211_chan_width width)
++{
++	if (width <= NL80211_CHAN_WIDTH_10)
++		return nl_width_to_phy_bw[width];
 +
-+/* Max size of 802.11 WLAN header */
-+#define CL_WLAN_HEADER_MAX_SIZE 36
++	return CHNL_BW_20;
++}
 +
-+#define CL_AMSDU_MIN_AGG_SIZE 3
-+#define CL_AMSDU_CONST_LEN    256
++u8 cl_center_freq_offset(u8 bw)
++{
++	if (bw == CHNL_BW_160)
++		return 70;
 +
-+struct cl_amsdu_txhdr {
-+	struct list_head list;
-+	struct list_head list_pool;
-+	struct sk_buff *skb;
-+	dma_addr_t dma_addr;
-+};
++	if (bw == CHNL_BW_80)
++		return 30;
 +
-+struct cl_amsdu_ctrl {
-+	struct cl_sw_txhdr *sw_txhdr;
-+	u16 rem_len;
-+	u16 max_len;
-+	u16 hdrlen;
-+	u8 packet_cnt;
-+	bool is_sw_amsdu;
-+};
++	if (bw == CHNL_BW_40)
++		return 10;
 +
-+struct cl_sw_txhdr {
-+	struct list_head list_pool;
-+	struct list_head tx_queue_list;
-+	struct list_head cfm_list;
-+	struct ieee80211_hdr *hdr80211;
-+	struct cl_tx_queue *tx_queue;
-+	struct cl_sta *cl_sta;
-+	struct cl_vif *cl_vif;
-+	struct cl_amsdu_txhdr amsdu_txhdr;
-+	u8 hw_queue            : 3,
-+	   is_bcn              : 1,
-+	   tid                 : 4;
-+	u8 ac                  : 2,
-+	   is_sw_amsdu         : 1,
-+	   sw_amsdu_packet_cnt : 4,
-+	   rsv                 : 1;
++	return 0;
++}
++
++u8 cl_max_bw_idx(u8 wrs_mode, bool is_24g)
++{
++	if (wrs_mode < WRS_MODE_HT)
++		return CHNL_BW_20 + 1;
++
++	if (wrs_mode == WRS_MODE_HT || is_24g)
++		return CHNL_BW_40 + 1;
++
++	return CHNL_BW_MAX;
++}
++
++bool cl_hw_mode_is_b_or_bg(struct cl_hw *cl_hw)
++{
++	return (cl_hw->hw_mode == HW_MODE_B ||
++		cl_hw->hw_mode == HW_MODE_BG);
++}
++
++#define LENGTH_LLC   3
++#define LENGTH_SSNAP 5
++
++bool cl_is_eapol(struct sk_buff *skb)
++{
++	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++	__le16 fc = hdr->frame_control;
++	unsigned int hdrlen = 0;
++	unsigned short ethertype = 0;
++	u8 *temp = NULL;
++
++	/* Find the wireless header size */
++	hdrlen = ieee80211_has_a4(fc) ? 30 : 24;
++
++	if (ieee80211_is_data_qos(fc)) {
++		hdrlen += IEEE80211_QOS_CTL_LEN;
++
++		if (ieee80211_has_order(fc))
++			hdrlen += IEEE80211_HT_CTL_LEN;
++	}
++
++	/* Skip wireless header */
++	temp = (u8 *)(skb->data + hdrlen);
++
++	/* Skip LLC and SNAP header */
++	if (PKT_HAS_LLC_HDR(temp))
++		ethertype = cl_get_ether_type(LENGTH_LLC + LENGTH_SSNAP - 2, temp);
++
++	return ethertype == ETH_P_PAE;
++}
++
++u8 cl_ru_alloc_to_ru_type(u8 ru_alloc)
++{
++	if (ru_alloc <= CL_TF_RU_ALLOC_MAX_TYPE_1)
++		return CL_MU_OFDMA_RU_TYPE_26;
++	else if (ru_alloc <= CL_TF_RU_ALLOC_MAX_TYPE_2)
++		return CL_MU_OFDMA_RU_TYPE_52;
++	else if (ru_alloc <= CL_TF_RU_ALLOC_MAX_TYPE_3)
++		return CL_MU_OFDMA_RU_TYPE_106;
++	else if (ru_alloc <= CL_TF_RU_ALLOC_MAX_TYPE_4)
++		return CL_MU_OFDMA_RU_TYPE_242;
++	else if (ru_alloc <= CL_TF_RU_ALLOC_MAX_TYPE_5)
++		return CL_MU_OFDMA_RU_TYPE_484;
++	else if (ru_alloc <= CL_TF_RU_ALLOC_MAX_TYPE_6)
++		return CL_MU_OFDMA_RU_TYPE_996;
++	else
++		return CL_MU_OFDMA_RU_TYPE_2x996;
++}
++
++bool cl_is_valid_g_rates(const u8 *rate_ie)
++{
++	int i, rate;
++
++	for (i = 0; i < rate_ie[1]; i++) {
++		rate = rate_ie[2 + i] & CL_SUPP_RATE_MASK;
++		switch (rate) {
++		case CL_80211G_RATE_6MB:
++		case CL_80211G_RATE_9MB:
++		case CL_80211G_RATE_12MB:
++		case CL_80211G_RATE_18MB:
++		case CL_80211G_RATE_24MB:
++		case CL_80211G_RATE_36MB:
++		case CL_80211G_RATE_48MB:
++		case CL_80211G_RATE_54MB:
++			return true;
++		}
++	}
++	return false;
++}
++
++enum cl_wireless_mode cl_recalc_wireless_mode(struct cl_hw *cl_hw,
++					      bool ieee80211n,
++					      bool ieee80211ac,
++					      bool ieee80211ax)
++{
++	enum cl_wireless_mode wireless_mode = cl_hw->wireless_mode;
++
++	if (!ieee80211n && !ieee80211ac && !ieee80211ax)
++		wireless_mode = WIRELESS_MODE_LEGACY;
++	else if (ieee80211n && (cl_band_is_24g(cl_hw) || ieee80211ac) && ieee80211ax)
++		wireless_mode = WIRELESS_MODE_HT_VHT_HE;
++	else if (ieee80211n && ieee80211ac)
++		wireless_mode =  WIRELESS_MODE_HT_VHT;
++	else if (ieee80211n)
++		wireless_mode = WIRELESS_MODE_HT;
++	else if (ieee80211ax)
++		wireless_mode = WIRELESS_MODE_HE;
++
++	return wireless_mode;
++}
++
++enum nl80211_he_ru_alloc cl_ru_type_to_nl80211_he_ru_alloc(enum cl_mu_ofdma_ru_type ru_type)
++{
++	switch (ru_type) {
++	case CL_MU_OFDMA_RU_TYPE_26:
++		return NL80211_RATE_INFO_HE_RU_ALLOC_26;
++	case CL_MU_OFDMA_RU_TYPE_52:
++		return NL80211_RATE_INFO_HE_RU_ALLOC_52;
++	case CL_MU_OFDMA_RU_TYPE_106:
++		return NL80211_RATE_INFO_HE_RU_ALLOC_106;
++	case CL_MU_OFDMA_RU_TYPE_242:
++		return NL80211_RATE_INFO_HE_RU_ALLOC_242;
++	case CL_MU_OFDMA_RU_TYPE_484:
++		return NL80211_RATE_INFO_HE_RU_ALLOC_484;
++	case CL_MU_OFDMA_RU_TYPE_996:
++		return NL80211_RATE_INFO_HE_RU_ALLOC_996;
++	case CL_MU_OFDMA_RU_TYPE_2x996:
++		return NL80211_RATE_INFO_HE_RU_ALLOC_2x996;
++	default:
++		return 0;
++	}
++}
++
++u8 cl_mu_ofdma_grp_convert_ru_type_to_bw(struct cl_hw *cl_hw, u8 ru_type)
++{
++	if (ru_type >= CL_MU_OFDMA_RU_TYPE_MAX) {
++		pr_err("Invalid RU type %u\n", ru_type);
++		return 0;
++	}
++
++	return cl_mu_ofdma_ru_type_to_bw_conversion[ru_type];
++}
++
++void cl_ieee802_11_parse_elems(const u8 *ies, size_t ies_len, struct ieee802_11_elems *elems)
++{
++	u8 *ie = NULL;
++
++	memset(elems, 0, sizeof(*elems));
++
++	ie = (u8 *)cfg80211_find_ie(WLAN_EID_SSID, ies, ies_len);
++	if (ie) {
++		elems->ssid = (const u8 *)&ie[2];
++		elems->ssid_len = ie[1];
++	}
++
++	ie = (u8 *)cfg80211_find_ie(WLAN_EID_SUPP_RATES, ies, ies_len);
++	if (ie) {
++		elems->supp_rates = (const u8 *)&ie[2];
++		elems->supp_rates_len = ie[1];
++	}
++
++	ie = (u8 *)cfg80211_find_ie(WLAN_EID_HT_CAPABILITY, ies, ies_len);
++	if (ie)
++		elems->ht_cap_elem = (struct ieee80211_ht_cap *)&ie[2];
++
++	ie = (u8 *)cfg80211_find_ie(WLAN_EID_HT_OPERATION, ies, ies_len);
++	if (ie)
++		elems->ht_operation = (struct ieee80211_ht_operation *)&ie[2];
++
++	ie = (u8 *)cfg80211_find_ie(WLAN_EID_VHT_CAPABILITY, ies, ies_len);
++	if (ie)
++		elems->vht_cap_elem =  (struct ieee80211_vht_cap *)&ie[2];
++
++	ie = (u8 *)cfg80211_find_ie(WLAN_EID_VHT_OPERATION, ies, ies_len);
++	if (ie)
++		elems->vht_operation =  (struct ieee80211_vht_operation *)&ie[2];
++
++	ie = (u8 *)cfg80211_find_ie(WLAN_EID_TIM, ies, ies_len);
++	if (ie) {
++		elems->tim = (struct ieee80211_tim_ie *)&ie[2];
++		elems->tim_len = ie[1];
++	}
++
++	ie = (u8 *)cfg80211_find_ie(WLAN_EID_RSN, ies, ies_len);
++	if (ie) {
++		elems->rsn = (const u8 *)&ie[2];
++		elems->rsn_len = ie[1];
++	}
++
++	ie = (u8 *)cfg80211_find_ext_ie(WLAN_EID_EXT_SUPP_RATES, ies, ies_len);
++	if (ie) {
++		elems->ext_supp_rates = (const u8 *)&ie[2];
++		elems->ext_supp_rates_len = ie[1];
++	}
++
++	ie = (u8 *)cfg80211_find_ext_ie(WLAN_EID_EXT_HE_CAPABILITY, ies, ies_len);
++	if (ie) {
++		elems->he_cap = (const u8 *)&ie[2];
++		elems->he_cap_len = ie[1];
++	}
++
++	ie = (u8 *)cfg80211_find_ext_ie(WLAN_EID_EXT_HE_OPERATION, ies, ies_len);
++	if (ie)
++		elems->he_operation = (struct ieee80211_he_operation *)&ie[2];
++}
++
++size_t cl_file_open_and_read(struct cl_chip *chip, const char *filename,
++			     char **buf)
++{
++	const struct firmware *fw;
++	size_t size = 0;
++	int ret = 0;
++	char path_name[CL_PATH_MAX] = {0};
++
++	snprintf(path_name, sizeof(path_name), "cl8k/%s", filename);
++	ret = request_firmware_direct(&fw, path_name, chip->dev);
++
++	if (ret) {
++		cl_dbg_chip_err(chip, "request_firmware_direct %s failed\n",
++				path_name);
++		return 0;
++	}
++
++	if (!fw || !fw->data) {
++		cl_dbg_chip_err(chip, "Invalid firmware %s\n", path_name);
++		goto out;
++	}
++
++	size = fw->size;
++
 +	/*
-+	 * singles queue index used to push the txdesc to the ipc layer
-+	 * this issue solve race condition in which we
-+	 * CFM of packet that associated with disconnected STA and has invalid
-+	 * cl_sta pointerinside this struct
++	 * Add one byte with a '\0' so that string manipulation functions
++	 * used for parsing these files can find the string '\0' terminator.
++	 * Make sure size is aligned to 4.
 +	 */
-+	u8 sta_idx;
-+	__le16 fc;
-+	struct sk_buff *skb;
-+	struct txdesc txdesc;
-+	size_t map_len;
-+	u16 total_pkt_len;
++	*buf = kzalloc(ALIGN(size + 1, 4), GFP_KERNEL);
++	if (!(*buf)) {
++		size = 0;
++		goto out;
++	}
++
++	memcpy(*buf, fw->data, size);
++
++out:
++	release_firmware(fw);
++
++	return size;
++}
++
++static __be16 cl_get_eth_proto(struct sk_buff *skb)
++{
++	if (!skb->mac_header)
++		skb_reset_mac_header(skb);
++
++	if (eth_hdr(skb)->h_proto == htons(ETH_P_8021Q))
++		return vlan_eth_hdr(skb)->h_vlan_encapsulated_proto;
++	else
++		return eth_hdr(skb)->h_proto;
++}
++
++bool cl_set_network_header_if_proto(struct sk_buff *skb, u16 protocol)
++{
++	if (cl_get_eth_proto(skb) == htons(protocol)) {
++		const bool has_vlan_header = eth_hdr(skb)->h_proto == htons(ETH_P_8021Q);
++		const size_t h_offset =
++			(eth_hdr(skb) == (struct ethhdr *)(skb->data)) ? ETH_HLEN : 0;
++
++		skb_set_network_header(skb, h_offset + ((has_vlan_header) ? VLAN_HLEN : 0));
++
++		return true;
++	}
++
++	return false;
++}
++
++bool cl_is_ipv4_packet(struct sk_buff *skb)
++{
++	return cl_set_network_header_if_proto(skb, ETH_P_IP) &&
++	       (ip_hdr(skb)->ihl >= 5) &&
++	       (ip_hdr(skb)->version == IPVERSION);
++}
++
++bool cl_is_ipv6_packet(struct sk_buff *skb)
++{
++	return cl_set_network_header_if_proto(skb, ETH_P_IPV6) &&
++	       (ipv6_hdr(skb)->version == 6);
++}
++
++#define TCP_ACK_MAX_LEN 100
++
++bool cl_is_tcp_ack(struct sk_buff *skb, bool *syn_rst_push)
++{
++	if (skb->len > TCP_ACK_MAX_LEN)
++		goto out;
++
++	if (cl_is_ipv4_packet(skb)) {
++		struct iphdr *iphdr = ip_hdr(skb);
++
++		if (iphdr->protocol == IPPROTO_TCP) {
++			struct tcphdr *tcp_hdr = (struct tcphdr *)
++						 ((char *)iphdr +
++						  IPV4_HDR_LEN(iphdr->ihl));
++			u16 data_size = ntohs(iphdr->tot_len) -
++					IPV4_HDR_LEN(iphdr->ihl) -
++					(tcp_hdr->doff * 4);
++
++			*syn_rst_push = tcp_hdr->syn || tcp_hdr->rst || tcp_hdr->psh;
++
++			return (data_size == 0);
++		}
++	} else if (cl_is_ipv6_packet(skb)) {
++		struct ipv6hdr *ipv6hdr = ipv6_hdr(skb);
++
++		if (ipv6hdr->nexthdr == IPPROTO_TCP) {
++			struct tcphdr *tcp_hdr = (struct tcphdr *)
++						 ((char *)ipv6hdr +
++						 sizeof(struct ipv6hdr));
++			u16 data_size = ntohs(ipv6hdr->payload_len) -
++					(tcp_hdr->doff * 4);
++
++			*syn_rst_push = tcp_hdr->syn || tcp_hdr->rst || tcp_hdr->psh;
++
++			return (data_size == 0);
++		}
++	}
++
++out:
++	*syn_rst_push = false;
++	return false;
++}
++
++bool cl_band_is_6g(struct cl_hw *cl_hw)
++{
++	return (cl_hw->conf->ci_band_num == 6);
++}
++
++bool cl_band_is_5g(struct cl_hw *cl_hw)
++{
++	return (cl_hw->conf->ci_band_num == 5);
++}
++
++bool cl_band_is_24g(struct cl_hw *cl_hw)
++{
++	return (cl_hw->conf->ci_band_num == 24);
++}
++
++u8 cl_band_to_fw_idx(struct cl_hw *cl_hw)
++{
++	if (cl_hw->nl_band == NL80211_BAND_6GHZ)
++		return FW_BAND_6GHZ;
++
++	if (cl_hw->nl_band == NL80211_BAND_5GHZ)
++		return FW_BAND_5GHZ;
++
++	return FW_BAND_2GHZ;
++}
++
++static u8 fw_to_nl_band[FW_BAND_MAX] = {
++	[FW_BAND_6GHZ] = NL80211_BAND_6GHZ,
++	[FW_BAND_5GHZ] = NL80211_BAND_5GHZ,
++	[FW_BAND_2GHZ] = NL80211_BAND_2GHZ,
 +};
 +
-+void cl_tx_init(struct cl_hw *cl_hw);
-+void cl_tx_check_start_ba_session(struct cl_hw *cl_hw,
-+				  struct ieee80211_sta *sta,
-+				  struct sk_buff *skb);
-+void cl_tx_bcns_tasklet(unsigned long data);
-+void cl_tx_single_free_skb(struct cl_hw *cl_hw, struct sk_buff *skb);
-+void cl_tx_single(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+		  struct sk_buff *skb, bool is_vns, bool lock);
-+void cl_tx_fast_single(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+		       struct sk_buff *skb, bool lock);
-+void cl_tx_agg_prep(struct cl_hw *cl_hw, struct cl_sw_txhdr *sw_txhdr,
-+		    u16 frame_len, u8 hdr_pads, bool hdr_conv);
-+void cl_tx_agg(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+	       struct sk_buff *skb, bool hdr_conv, bool lock);
-+void cl_tx_fast_agg(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+		    struct sk_buff *skb, bool lock);
-+u16 cl_tx_prepare_wlan_hdr(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+			   struct sk_buff *skb, struct ieee80211_hdr *hdr);
-+void cl_tx_wlan_to_8023(struct sk_buff *skb);
-+int cl_tx_8023_to_wlan(struct cl_hw *cl_hw, struct sk_buff *skb, struct cl_sta *cl_sta, u8 tid);
-+void cl_tx_push(struct cl_hw *cl_hw, struct cl_sw_txhdr *sw_txhdr, struct cl_tx_queue *tx_queue);
-+void cl_tx_bcn_mesh_task(unsigned long data);
-+void cl_tx_en(struct cl_hw *cl_hw, u8 reason, bool enable);
-+void cl_tx_off(struct cl_hw *cl_hw);
-+void cl_tx_drop_skb(struct sk_buff *skb);
-+void cl_tx_update_hist_tstamp(struct cl_tx_queue *tx_queue, struct sk_buff *skb,
-+			      u32 tstamp_hist[DELAY_HIST_SIZE], bool update_skb_ktime);
-+bool cl_is_tx_allowed(struct cl_hw *cl_hw);
-+void cl_agg_cfm_init(struct cl_hw *cl_hw);
-+void cl_agg_cfm_add(struct cl_hw *cl_hw, struct cl_sw_txhdr *sw_txhdr, u8 agg_idx);
-+void cl_agg_cfm_free_head_skb(struct cl_hw *cl_hw,
-+			      struct cl_agg_cfm_queue *cfm_queue,
-+			      u8 ba_queue_idx);
-+void cl_agg_cfm_flush_all(struct cl_hw *cl_hw);
-+void cl_agg_cfm_poll_empty(struct cl_hw *cl_hw, u8 agg_idx, bool flush);
-+void cl_agg_cfm_poll_empty_sta(struct cl_hw *cl_hw, struct cl_sta *cl_sta);
-+void cl_agg_cfm_clear_tim_bit_sta(struct cl_hw *cl_hw, struct cl_sta *cl_sta);
-+void cl_agg_cfm_set_ssn(struct cl_hw *cl_hw, u16 ssn, u8 idx);
-+void cl_agg_cfm_set_tx_queue(struct cl_hw *cl_hw, struct cl_tx_queue *tx_queue, u8 idx);
-+void cl_baw_init(struct cl_sta *cl_sta);
-+void cl_baw_start(struct cl_baw *baw, u16 ssn);
-+void cl_baw_operational(struct cl_hw *cl_hw, struct cl_baw *baw,
-+			u8 fw_agg_idx, bool amsdu_supported);
-+void cl_baw_stop(struct cl_baw *baw);
-+void cl_baw_pending_to_agg(struct cl_hw *cl_hw,
-+			   struct cl_sta *cl_sta,
-+			   u8 tid);
-+void cl_baw_pending_to_single(struct cl_hw *cl_hw,
-+			      struct cl_sta *cl_sta,
-+			      struct cl_baw *baw);
-+void cl_baw_pending_purge(struct cl_baw *baw);
++u8 cl_band_from_fw_idx(u32 phy_band)
++{
++	if (phy_band < FW_BAND_MAX)
++		return fw_to_nl_band[phy_band];
 +
-+void cl_bcmc_cfm_init(struct cl_hw *cl_hw);
-+void cl_bcmc_cfm_add(struct cl_hw *cl_hw, struct cl_sw_txhdr *sw_txhdr);
-+struct cl_sw_txhdr *cl_bcmc_cfm_find(struct cl_hw *cl_hw, dma_addr_t dma_addr,
-+				     bool keep_in_list);
-+void cl_bcmc_cfm_flush_queue(struct cl_hw *cl_hw, struct cl_vif *cl_vif);
-+void cl_bcmc_cfm_poll_empty_per_vif(struct cl_hw *cl_hw,
-+				    struct cl_vif *cl_vif);
-+
-+struct cl_single_cfm_queue {
-+	struct list_head head;
-+};
-+
-+void cl_single_cfm_init(struct cl_hw *cl_hw);
-+void cl_single_cfm_add(struct cl_hw *cl_hw, struct cl_sw_txhdr *sw_txhdr, u32 queue_idx);
-+struct cl_sw_txhdr *cl_single_cfm_find(struct cl_hw *cl_hw, u32 queue_idx,
-+				       dma_addr_t dma_addr);
-+void cl_single_cfm_flush_all(struct cl_hw *cl_hw);
-+void cl_single_cfm_flush_sta(struct cl_hw *cl_hw, u8 sta_idx);
-+void cl_single_cfm_poll_empty(struct cl_hw *cl_hw, u32 queue_idx);
-+void cl_single_cfm_poll_empty_sta(struct cl_hw *cl_hw, u8 sta_idx);
-+void cl_single_cfm_clear_tim_bit_sta(struct cl_hw *cl_hw, u8 sta_idx);
-+
-+int cl_sw_txhdr_init(struct cl_hw *cl_hw);
-+void cl_sw_txhdr_deinit(struct cl_hw *cl_hw);
-+struct cl_sw_txhdr *cl_sw_txhdr_alloc(struct cl_hw *cl_hw);
-+void cl_sw_txhdr_free(struct cl_hw *cl_hw, struct cl_sw_txhdr *sw_txhdr);
-+void cl_tx_amsdu_anchor_init(struct cl_amsdu_ctrl *amsdu_anchor);
-+void cl_tx_amsdu_anchor_reset(struct cl_amsdu_ctrl *amsdu_anchor);
-+void cl_tx_amsdu_set_max_len(struct cl_hw *cl_hw, struct cl_sta *cl_sta, u8 tid);
-+void cl_tx_amsdu_first_sub_frame(struct cl_sw_txhdr *sw_txhdr, struct cl_sta *cl_sta,
-+				 struct sk_buff *skb, u8 tid);
-+void cl_tx_amsdu_flush_sub_frames(struct cl_hw *cl_hw, struct cl_sw_txhdr *sw_txhdr);
-+void cl_tx_amsdu_transfer_single(struct cl_hw *cl_hw, struct cl_sw_txhdr *sw_txhdr);
-+int cl_tx_amsdu_set(struct cl_hw *cl_hw, struct cl_sta *cl_sta, struct sk_buff *skb, u8 tid);
-+void cl_tx_amsdu_unset(struct cl_sw_txhdr *sw_txhdr);
-+
-+int cl_tx_amsdu_txhdr_init(struct cl_hw *cl_hw);
-+void cl_tx_amsdu_txhdr_deinit(struct cl_hw *cl_hw);
-+void cl_tx_amsdu_txhdr_free(struct cl_hw *cl_hw, struct cl_amsdu_txhdr *amsdu_txhdr);
-+
-+void cl_txq_init(struct cl_hw *cl_hw);
-+void cl_txq_stop(struct cl_hw *cl_hw);
-+struct cl_tx_queue *cl_txq_get(struct cl_hw *cl_hw, struct cl_sw_txhdr *sw_txhdr);
-+void cl_txq_push(struct cl_hw *cl_hw, struct cl_sw_txhdr *sw_txhdr);
-+void cl_txq_sched(struct cl_hw *cl_hw, struct cl_tx_queue *tx_queue);
-+void cl_txq_agg_alloc(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+		      struct mm_ba_add_cfm *ba_add_cfm, u16 buf_size);
-+void cl_txq_agg_free(struct cl_hw *cl_hw, struct cl_tx_queue *tx_queue,
-+		     struct cl_sta *cl_sta, u8 tid);
-+void cl_txq_agg_stop(struct cl_sta *cl_sta, u8 tid);
-+void cl_txq_sta_add(struct cl_hw *cl_hw, struct cl_sta *cl_sta);
-+void cl_txq_sta_remove(struct cl_hw *cl_hw, u8 sta_idx);
-+void cl_txq_transfer_agg_to_single(struct cl_hw *cl_hw, struct cl_tx_queue *agg_queue);
-+void cl_txq_flush_agg(struct cl_hw *cl_hw, struct cl_tx_queue *tx_queue, bool lock);
-+void cl_txq_flush_all_agg(struct cl_hw *cl_hw);
-+void cl_txq_flush_all_single(struct cl_hw *cl_hw);
-+void cl_txq_flush_sta(struct cl_hw *cl_hw, struct cl_sta *cl_sta);
-+void cl_txq_agg_request_add(struct cl_hw *cl_hw, u8 sta_idx, u8 tid);
-+void cl_txq_agg_request_del(struct cl_hw *cl_hw, u8 sta_idx, u8 tid);
-+bool cl_txq_is_agg_available(struct cl_hw *cl_hw);
-+bool cl_txq_is_fw_empty(struct cl_tx_queue *tx_queue);
-+bool cl_txq_is_fw_full(struct cl_tx_queue *tx_queue);
-+u16 cl_txq_desc_in_fw(struct cl_tx_queue *tx_queue);
-+bool cl_txq_frames_pending(struct cl_hw *cl_hw);
-+
-+#endif /* CL_TX_H */
++	return FW_BAND_MAX;
++}
 -- 
 2.36.1
 
