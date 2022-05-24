@@ -2,49 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEB04531ADF
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 May 2022 22:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A00A9531FE8
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 02:38:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232054AbiEWUDQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 May 2022 16:03:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59016 "EHLO
+        id S231326AbiEXAiH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 May 2022 20:38:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229706AbiEWUDO (ORCPT
+        with ESMTP id S230441AbiEXAiH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 May 2022 16:03:14 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE3EF13
-        for <linux-wireless@vger.kernel.org>; Mon, 23 May 2022 13:03:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=Gvnld1leQffvrLnz+tA3maEoaU4zFyI0xpDDj2YM3Ys=; t=1653336193; x=1654545793; 
-        b=N6wpHLxTVlzjmOMoKhYOTfXeDrlIV0jA9TAoD9S8zoRflXtkrfqPqG5TQPSaVTLuA5iwLefxgWx
-        +Zybdfq5Ergxmx1BACrpn1eYrTslOSZYrUcrEhVUXGeObBRIjWik3HP3Q7CDrFs3AHPedL7n6x6P4
-        V6KYbvhTMvXBc7dZbwFIA4uhNpzwYnnY/xln0Offe1QZfTu43J+37INlaoNfcmOnFZ7ONWbrtyet5
-        5V5wdi6NuVu9c5Y+VW2RE6buU/eZpawbb5IFSsNMTGb3gZXxct9zZdhY9RbWIKUsotW+sXLreG2dS
-        eR54eb2kF04pEC11XMZN48Br5PSwBYHdhBiw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1ntEGj-002YJl-SS;
-        Mon, 23 May 2022 22:03:09 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH] iwlwifi: pcie: rename CAUSE macro
-Date:   Mon, 23 May 2022 22:03:01 +0200
-Message-Id: <20220523220300.682be2029361.I283200b18da589a975a284073dca8ed001ee107a@changeid>
-X-Mailer: git-send-email 2.36.1
+        Mon, 23 May 2022 20:38:07 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 686C474DD0
+        for <linux-wireless@vger.kernel.org>; Mon, 23 May 2022 17:38:04 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24O0bu8V3005416, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24O0bu8V3005416
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 24 May 2022 08:37:56 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Tue, 24 May 2022 08:37:56 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Tue, 24 May
+ 2022 08:37:56 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>, <kuba@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH net-next] rtlwifi: 8192de: correct checking of IQK reload
+Date:   Tue, 24 May 2022 08:37:50 +0800
+Message-ID: <20220524003750.3989-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 05/24/2022 00:15:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzUvMjMgpFWkyCAxMDowMDowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,76 +66,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+This mistake is existing since initial commit, and I recall the vendor
+driver to find correctness.
 
-At least mips64 has ist own CAUSE macro, so rename ours to
-IWL_CAUSE to fix build issues.
-
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Fixes: c1918196427b ("iwlwifi: pcie: simplify MSI-X cause mapping")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: ee3db469dd31 ("wifi: rtlwifi: remove always-true condition pointed out by GCC 12")
+Cc: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- .../net/wireless/intel/iwlwifi/pcie/trans.c   | 34 +++++++++----------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+This patch should go through net-next tree, because this one is going to fix
+"wifi: rtlwifi: remove always-true condition pointed out by GCC 12" that only
+exits in that tree.
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 6fc69c42f36e..bd50f52a1aad 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -1090,7 +1090,7 @@ struct iwl_causes_list {
- 	u8 addr;
- };
- 
--#define CAUSE(reg, mask)						\
-+#define IWL_CAUSE(reg, mask)						\
- 	{								\
- 		.mask_reg = reg,					\
- 		.bit = ilog2(mask),					\
-@@ -1101,28 +1101,28 @@ struct iwl_causes_list {
- 	}
- 
- static const struct iwl_causes_list causes_list_common[] = {
--	CAUSE(CSR_MSIX_FH_INT_MASK_AD, MSIX_FH_INT_CAUSES_D2S_CH0_NUM),
--	CAUSE(CSR_MSIX_FH_INT_MASK_AD, MSIX_FH_INT_CAUSES_D2S_CH1_NUM),
--	CAUSE(CSR_MSIX_FH_INT_MASK_AD, MSIX_FH_INT_CAUSES_S2D),
--	CAUSE(CSR_MSIX_FH_INT_MASK_AD, MSIX_FH_INT_CAUSES_FH_ERR),
--	CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_ALIVE),
--	CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_WAKEUP),
--	CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_RESET_DONE),
--	CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_CT_KILL),
--	CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_RF_KILL),
--	CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_PERIODIC),
--	CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_SCD),
--	CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_FH_TX),
--	CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_HW_ERR),
--	CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_HAP),
-+	IWL_CAUSE(CSR_MSIX_FH_INT_MASK_AD, MSIX_FH_INT_CAUSES_D2S_CH0_NUM),
-+	IWL_CAUSE(CSR_MSIX_FH_INT_MASK_AD, MSIX_FH_INT_CAUSES_D2S_CH1_NUM),
-+	IWL_CAUSE(CSR_MSIX_FH_INT_MASK_AD, MSIX_FH_INT_CAUSES_S2D),
-+	IWL_CAUSE(CSR_MSIX_FH_INT_MASK_AD, MSIX_FH_INT_CAUSES_FH_ERR),
-+	IWL_CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_ALIVE),
-+	IWL_CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_WAKEUP),
-+	IWL_CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_RESET_DONE),
-+	IWL_CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_CT_KILL),
-+	IWL_CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_RF_KILL),
-+	IWL_CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_PERIODIC),
-+	IWL_CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_SCD),
-+	IWL_CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_FH_TX),
-+	IWL_CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_HW_ERR),
-+	IWL_CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_HAP),
- };
- 
- static const struct iwl_causes_list causes_list_pre_bz[] = {
--	CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_SW_ERR),
-+	IWL_CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_SW_ERR),
- };
- 
- static const struct iwl_causes_list causes_list_bz[] = {
--	CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_SW_ERR_BZ),
-+	IWL_CAUSE(CSR_MSIX_HW_INT_MASK_AD, MSIX_HW_INT_CAUSES_REG_SW_ERR_BZ),
- };
- 
- static void iwl_pcie_map_list(struct iwl_trans *trans,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+index 15e6a6aded319..f6ff32658863d 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+@@ -2386,7 +2386,10 @@ void rtl92d_phy_reload_iqk_setting(struct ieee80211_hw *hw, u8 channel)
+ 			rtl_dbg(rtlpriv, COMP_SCAN, DBG_LOUD,
+ 				"Just Read IQK Matrix reg for channel:%d....\n",
+ 				channel);
+-			_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
++			if ((rtlphy->iqk_matrix[indexforchannel].
++			     value[0][0] != 0)
++				/*&&(regea4 != 0) */)
++				_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
+ 					rtlphy->iqk_matrix[
+ 					indexforchannel].value,	0,
+ 					(rtlphy->iqk_matrix[
 -- 
-2.36.1
+2.25.1
 
