@@ -2,69 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 914A1532F92
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 19:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAAA853306C
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 20:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235115AbiEXRYT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 May 2022 13:24:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33680 "EHLO
+        id S239730AbiEXSaR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 May 2022 14:30:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234115AbiEXRYR (ORCPT
+        with ESMTP id S231477AbiEXSaP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 May 2022 13:24:17 -0400
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 386BB7CDE2
-        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 10:24:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1653413056; x=1684949056;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=T5zm1O2oEgLCR2clggqyywPvK9Mai5fRqlMto8pnhJU=;
-  b=y8qX4uDoRel207UTZsMBiUYrYjwq4+sOtSvYXSrf+lcQ1EKhHrpK6lh4
-   T2tRsZxLmJ/Psckc+mF5fkcvDWBf4Got9LlCDJQWtRBe3QYzl2plXhJJI
-   o0qZNdYSBSo2dFboiJxCZzA4OfOie6znfYlXhPcDNECkyWTCcz9imGqYk
-   8=;
-Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 24 May 2022 10:24:16 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2022 10:24:15 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Tue, 24 May 2022 10:24:15 -0700
-Received: from [10.110.85.248] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Tue, 24 May
- 2022 10:24:14 -0700
-Message-ID: <e5e339a8-30c2-2659-a4a6-7fa424d35f20@quicinc.com>
-Date:   Tue, 24 May 2022 10:24:13 -0700
+        Tue, 24 May 2022 14:30:15 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7FA7A82E;
+        Tue, 24 May 2022 11:30:14 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9AA71B81A99;
+        Tue, 24 May 2022 18:30:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5300FC34113;
+        Tue, 24 May 2022 18:30:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653417012;
+        bh=GP5RryM2eOy2O5bC9iq4ToSK1JrnSaWXLglPy8paLP4=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=V+Py4Q54RGyMQshiLufQfFQYp26TUly4S70IK1zOy+Igy72ZdM2vd0rCEot9l7FcA
+         fw3wPXKmXi9ahusl6hz40GnKcu7LH9Du10etw1/xJcrbDzXP2/xKgqTPareZ5ZnOYL
+         pBEYfvppRKaqc9B8UUBWbGj6QzFhxRPWOYWqy/KBZlwt3Rp/lcWJr9Vi0bdQJ7SwHt
+         5hV1NGPKObdzwkjxkNhdD6t3oWriZQlEdQh9XC/oWOcrlw3vxkzgcMXXWHMB4o6LQq
+         ueQJBkFpHpE6jnZR3jcnnVocxD0HEJSlCm9IVnr6YSsvWQHqSFzMj2h/JigUrYApvp
+         WBV7tEbxfTTpw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 36FE6F03943;
+        Tue, 24 May 2022 18:30:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [RFC v2 07/96] cl8k: add bf.c
-Content-Language: en-US
-To:     <viktor.barna@celeno.com>, <linux-wireless@vger.kernel.org>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Aviad Brikman <aviad.brikman@celeno.com>,
-        Eliav Farber <eliav.farber@gmail.com>,
-        "Maksym Kokhan" <maksym.kokhan@celeno.com>,
-        Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
-        Shay Bar <shay.bar@celeno.com>
-References: <20220524113502.1094459-1-viktor.barna@celeno.com>
- <20220524113502.1094459-8-viktor.barna@celeno.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20220524113502.1094459-8-viktor.barna@celeno.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] ath6kl: Use cc-disable-warning to disable -Wdangling-pointer
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <165341701222.5478.18284548057978733772.git-patchwork-notify@kernel.org>
+Date:   Tue, 24 May 2022 18:30:12 +0000
+References: <20220524145655.869822-1-nathan@kernel.org>
+In-Reply-To: <20220524145655.869822-1-nathan@kernel.org>
+To:     Nathan Chancellor <nathan@kernel.org>
+Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, kvalo@kernel.org, ndesaulniers@google.com,
+        trix@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, bot@kernelci.org
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -73,32 +60,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/24/2022 4:33 AM, viktor.barna@celeno.com wrote:
-[snip]
+Hello:
 
-> +void cl_bf_sounding_start(struct cl_hw *cl_hw, enum sounding_type type, struct cl_sta **cl_sta_arr,
-> +			  u8 sta_num, struct cl_sounding_info *recovery_elem)
-> +{
-> +#define STA_INDICES_STR_SIZE 64
-> +
-> +	/* Send request to start sounding */
-> +	u8 i, bw = CHNL_BW_MAX;
-> +	char sta_indices_str[STA_INDICES_STR_SIZE] = {0};
-> +	u8 str_len = 0;
-> +
-> +	for (i = 0; i < sta_num; i++) {
-> +		struct cl_sta *cl_sta = cl_sta_arr[i];
-> +		struct cl_bf_sta_db *bf_db = &cl_sta->bf_db;
-> +
-> +		bw = cl_sta->wrs_sta.assoc_bw;
-> +		bf_db->synced = false;
-> +		bf_db->sounding_start = true;
-> +		bf_db->sounding_indications = 0;
-> +
-> +		str_len += snprintf(sta_indices_str, STA_INDICES_STR_SIZE - str_len, "%u%s",
-> +				    cl_sta->sta_idx, (i == sta_num - 1 ? ", " : ""));
+This patch was applied to netdev/net-next.git (master)
+by Jakub Kicinski <kuba@kernel.org>:
 
-note that this may not actually be safe from overflow due to the 
-semantics of the snprintf return value.
+On Tue, 24 May 2022 07:56:55 -0700 you wrote:
+> Clang does not support this option so the build fails:
+> 
+>   error: unknown warning option '-Wno-dangling-pointer' [-Werror,-Wunknown-warning-option]
+> 
+> Use cc-disable-warning so that the option is only added when it is
+> supported.
+> 
+> [...]
 
-using scnprintf() is preferred for this usage pattern
+Here is the summary with links:
+  - ath6kl: Use cc-disable-warning to disable -Wdangling-pointer
+    https://git.kernel.org/netdev/net-next/c/48a75b979940
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
