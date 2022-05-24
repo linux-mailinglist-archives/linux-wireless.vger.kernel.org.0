@@ -2,158 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A43B532F3A
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 18:52:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEC35532F46
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 18:55:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238066AbiEXQwD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 May 2022 12:52:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33104 "EHLO
+        id S239504AbiEXQzx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 May 2022 12:55:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234234AbiEXQv7 (ORCPT
+        with ESMTP id S233792AbiEXQzw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 May 2022 12:51:59 -0400
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 467033B54E
-        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 09:51:57 -0700 (PDT)
-Date:   Tue, 24 May 2022 16:51:45 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dannyvanheumen.nl;
-        s=protonmail2; t=1653411112; x=1653670312;
-        bh=eub/et+mHH8VEHCirBk8CEjJyfwhvFaMCP9BnHpivR4=;
-        h=Date:To:From:Reply-To:Subject:Message-ID:Feedback-ID:From:To:Cc:
-         Date:Subject:Reply-To:Feedback-ID:Message-ID;
-        b=f1qHqhS4rH/7CTLRQqhKUdNnGFDc+FfoylppBrQCBZqGNjN1haXmUtCfkF+0QrMEP
-         rMYxwgUYDLUW+KriohCNPE2MO8ZD+LUJDzKC8bO9RIf0F1upHWKCaLIr67tZTkYGjA
-         KtN/3Aiq1Dy79VmPq7ijTbZmKAFOb70CD2JiIrA5EAHFZH8qhX6drOJ2q7eWfC5gNF
-         uD7GEu8MZb1KMJegSL294XB+Zp9s6/lf9OsnR8adJdIrreALigyWMf6jz8coAOf7wh
-         gUM2nuP4cUpeqn9hapUdebnxY0idA9bkzWgm68tWXKBvujEiI47ygI3DPhpQVozlLa
-         K5LF0r1WYy0MA==
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>
-From:   Danny van Heumen <danny@dannyvanheumen.nl>
-Reply-To: Danny van Heumen <danny@dannyvanheumen.nl>
-Subject: [PATCH] work-in-progress: double-free after hardware reset due to firmware-crash
-Message-ID: <UXibAXk2GByhvw88A6LIDXHSlkP79-ML7FrtyfnHuiC34qUd-zx03BAJAtzluyEvfwPBR0tac4hC72zKI1qT3CtgmvvVohr1v8a49TqYVSw=@dannyvanheumen.nl>
-Feedback-ID: 15073070:user:proton
+        Tue, 24 May 2022 12:55:52 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 592A06D3B6
+        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 09:55:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1653411351; x=1684947351;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=6gpi1uL5DAC6JB3mblf/EaX3MPtBaI+z6fsMFa2ISYI=;
+  b=nNb9yBCYh7BYc+fFZvCKWzAKR3qZqG15ZelB8DmsZPidLxm5GNlDb3j5
+   H3+dtd9El86UvhEA1z5w0B6iJc5ygDAyKkTTIHEDQEKhdkfrHJqGc8ydt
+   A44C3hinJeTEvbzM7nzQ2NjbsHYUQpeECfGtrEnTI37zdM+N1nI4aaHSQ
+   bygjGozPJfbPeJgf5ZN1mzpuM1so1wvvaRr9Ch/sWVL9sap2xOL+B769y
+   mU+h0A89QOJyicVvmOSXSWRg1zBDRTu1i23HXIj+iIFzcsWG4zArbRY3S
+   sL2t6G9JXOrk+slc/FIL92YAIuiPB4NuMTCLLEPC9gMY3f0uKy7Iy01c3
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10357"; a="271160533"
+X-IronPort-AV: E=Sophos;i="5.91,248,1647327600"; 
+   d="scan'208";a="271160533"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2022 09:55:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,248,1647327600"; 
+   d="scan'208";a="608745012"
+Received: from lkp-server01.sh.intel.com (HELO db63a1be7222) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 24 May 2022 09:55:48 -0700
+Received: from kbuild by db63a1be7222 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1ntXox-0002H9-Vv;
+        Tue, 24 May 2022 16:55:47 +0000
+Date:   Wed, 25 May 2022 00:54:59 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     kbuild-all@lists.01.org, Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless-next:mld 8/8] net/mac80211/./trace.h:21:25: warning:
+ format '%x' expects argument of type 'unsigned int', but argument 7 has type
+ 'u64' {aka 'long long unsigned int'}
+Message-ID: <202205250015.t5c8iOSm-lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="b1_RPhNPD9Bya3UKZFdwHbHQzdDkAkL7WNqxfiTeZTk"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is a multi-part message in MIME format.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git mld
+head:   3a74f2e20dace2e2c0cad079226b9107862271b5
+commit: 3a74f2e20dace2e2c0cad079226b9107862271b5 [8/8] mac80211: split bss_info_changed method
+config: arc-allyesconfig (https://download.01.org/0day-ci/archive/20220525/202205250015.t5c8iOSm-lkp@intel.com/config)
+compiler: arceb-elf-gcc (GCC) 11.3.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/commit/?id=3a74f2e20dace2e2c0cad079226b9107862271b5
+        git remote add wireless-next https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
+        git fetch --no-tags wireless-next mld
+        git checkout 3a74f2e20dace2e2c0cad079226b9107862271b5
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=arc SHELL=/bin/bash net/mac80211/
 
---b1_RPhNPD9Bya3UKZFdwHbHQzdDkAkL7WNqxfiTeZTk
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
 
-Dear all,
+All warnings (new ones prefixed by >>):
 
-I am not a regular C developer nor kernel developer. I don't regularly repo=
-rt issues, so I will probably do things wrong.
+   In file included from include/trace/define_trace.h:102,
+                    from net/mac80211/trace.h:2944,
+                    from net/mac80211/trace.c:11:
+   net/mac80211/./trace.h: In function 'trace_raw_output_drv_vif_cfg_changed':
+>> net/mac80211/./trace.h:21:25: warning: format '%x' expects argument of type 'unsigned int', but argument 7 has type 'u64' {aka 'long long unsigned int'} [-Wformat=]
+      21 | #define LOCAL_PR_FMT    "%s"
+         |                         ^~~~
+   include/trace/trace_events.h:203:34: note: in definition of macro 'DECLARE_EVENT_CLASS'
+     203 |         trace_event_printf(iter, print);                                \
+         |                                  ^~~~~
+   include/trace/trace_events.h:45:30: note: in expansion of macro 'PARAMS'
+      45 |                              PARAMS(print));                   \
+         |                              ^~~~~~
+   net/mac80211/./trace.h:393:1: note: in expansion of macro 'TRACE_EVENT'
+     393 | TRACE_EVENT(drv_vif_cfg_changed,
+         | ^~~~~~~~~~~
+   net/mac80211/./trace.h:440:9: note: in expansion of macro 'TP_printk'
+     440 |         TP_printk(
+         |         ^~~~~~~~~
+   net/mac80211/./trace.h:441:17: note: in expansion of macro 'LOCAL_PR_FMT'
+     441 |                 LOCAL_PR_FMT  VIF_PR_FMT " changed:%#x",
+         |                 ^~~~~~~~~~~~
+   net/mac80211/./trace.h: In function 'trace_raw_output_drv_link_info_changed':
+   net/mac80211/./trace.h:21:25: warning: format '%x' expects argument of type 'unsigned int', but argument 8 has type 'u64' {aka 'long long unsigned int'} [-Wformat=]
+      21 | #define LOCAL_PR_FMT    "%s"
+         |                         ^~~~
+   include/trace/trace_events.h:203:34: note: in definition of macro 'DECLARE_EVENT_CLASS'
+     203 |         trace_event_printf(iter, print);                                \
+         |                                  ^~~~~
+   include/trace/trace_events.h:45:30: note: in expansion of macro 'PARAMS'
+      45 |                              PARAMS(print));                   \
+         |                              ^~~~~~
+   net/mac80211/./trace.h:446:1: note: in expansion of macro 'TRACE_EVENT'
+     446 | TRACE_EVENT(drv_link_info_changed,
+         | ^~~~~~~~~~~
+   net/mac80211/./trace.h:514:9: note: in expansion of macro 'TP_printk'
+     514 |         TP_printk(
+         |         ^~~~~~~~~
+   net/mac80211/./trace.h:515:17: note: in expansion of macro 'LOCAL_PR_FMT'
+     515 |                 LOCAL_PR_FMT  VIF_PR_FMT " link_id:%d, changed:%#x",
+         |                 ^~~~~~~~~~~~
 
-I investigated a crash that IIUC occurs with hardened memory allocation ena=
-bled and a firmware-crash followed by an early failure during hardware rein=
-itialization/probing. The hardened allocator detects double-free issue.
 
-I have created the patch (see attachment) against linux-5.18. Though, pleas=
-e check carefully, because I have not been able to confirm that it actually=
- works. I am hoping someone familiar with the code-base can either test thi=
-s easily, or confirm from review/analysis.
+vim +21 net/mac80211/./trace.h
 
-The commit message describes it in more detail. In summary:
-'brcmf_sdio_bus_reset' cleans up and reinitializes the hardware. It frees m=
-emory used by (struct brcmf_sdio_dev)->freezer (struct brcmf_sdiod_freezer)=
-. However, it then goes to probe the hardware, and an early failure to prob=
-e results in the same freeing, both called through function 'brcmf_sdiod_fr=
-eezer_detach' called inside 'brcmf_sdiod_remove'. Which results in double f=
-reeing.
+0a2b8bb24d4eb67 net/mac80211/driver-trace.h Johannes Berg 2009-07-07  17  
+0a2b8bb24d4eb67 net/mac80211/driver-trace.h Johannes Berg 2009-07-07  18  #define MAXNAME		32
+0a2b8bb24d4eb67 net/mac80211/driver-trace.h Johannes Berg 2009-07-07  19  #define LOCAL_ENTRY	__array(char, wiphy_name, 32)
+0a2b8bb24d4eb67 net/mac80211/driver-trace.h Johannes Berg 2009-07-07  20  #define LOCAL_ASSIGN	strlcpy(__entry->wiphy_name, wiphy_name(local->hw.wiphy), MAXNAME)
+0a2b8bb24d4eb67 net/mac80211/driver-trace.h Johannes Berg 2009-07-07 @21  #define LOCAL_PR_FMT	"%s"
+0a2b8bb24d4eb67 net/mac80211/driver-trace.h Johannes Berg 2009-07-07  22  #define LOCAL_PR_ARG	__entry->wiphy_name
+0a2b8bb24d4eb67 net/mac80211/driver-trace.h Johannes Berg 2009-07-07  23  
 
-As mentioned before, I was not able to test this and I do not regularly dev=
-elop in C. I am not confident that this is the proper way to fix it, but it=
- seemed obvious enough. I hope you can support in fixing this bug.
+:::::: The code at line 21 was first introduced by commit
+:::::: 0a2b8bb24d4eb67788edd71d1ef8aa86c2e17e0f mac80211: driver operation debugging
 
-Kind regards,
-Danny
+:::::: TO: Johannes Berg <johannes@sipsolutions.net>
+:::::: CC: John W. Linville <linville@tuxdriver.com>
 
-PS: Please let me know if I am doing things wrong. I have included both mai=
-ntainers and mailing lists from https://docs.kernel.org/process/maintainers=
-.html#broadcom-brcm80211-ieee802-11n-wireless-driver I hope I this is alrig=
-ht.
---b1_RPhNPD9Bya3UKZFdwHbHQzdDkAkL7WNqxfiTeZTk
-Content-Type: text/x-patch; name=0001-brcmfmac-prevent-double-free-on-hardware-reset.patch
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename=0001-brcmfmac-prevent-double-free-on-hardware-reset.patch
-
-RnJvbSBkZGIyODFlMmViZjdlNmJkODlmMDkxNDAzNjE2YTlkNzdkNzNiZTYzIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBEYW5ueSB2YW4gSGV1bWVuIDxkYW5ueUBkYW5ueXZhbmhldW1l
-bi5ubD4KRGF0ZTogVHVlLCAyNCBNYXkgMjAyMiAxODozMDo1MCArMDIwMApTdWJqZWN0OiBbUEFU
-Q0hdIGJyY21mbWFjOiBwcmV2ZW50IGRvdWJsZS1mcmVlIG9uIGhhcmR3YXJlLXJlc2V0LgoKSW4g
-Y2FzZSBvZiBidWdneSBmaXJtd2FyZSwgYnJjbWZtYWMgbWF5IHBlcmZvcm0gYSBoYXJkd2FyZSBy
-ZXNldC4gSWYgZHVyaW5nCnJlc2V0IGFuZCBzdWJzZXF1ZW50IHByb2JpbmcgYW4gZWFybHkgZmFp
-bHVyZSBvY2N1cnMsIGEgbWVtb3J5IHJlZ2lvbiBpcwphY2NpZGVudGFsbHkgZG91YmxlLWZyZWVk
-LiBXaXRoIGhhcmRlbmVkIG1lbW9yeSBhbGxvY2F0aW9uIGVuYWJsZWQsIHRoaXMgZXJyb3IKd2ls
-bCBiZSBkZXRlY3RlZC4KCkdpdmVuIGEgZmlybXdhcmUgY3Jhc2gsIGZ1bmN0aW9uICdicmNtZl9z
-ZGlvX2J1c19yZXNldCcgaXMgY2FsbGVkLiBJdCBjYWxscwonYnJjbWZfc2Rpb2RfcmVtb3ZlJywg
-dGhlbiBmb2xsb3dzIHVwIHdpdGggJ2JyY21mX3NkaW9kX3Byb2JlJyB0byByZWluaXRpYWxpemUK
-dGhlIGhhcmR3YXJlLiBJZiAnYnJjbWZfc2Rpb2RfcHJvYmUnIGZhaWxzIHRvICJzZXQgRjEgYmxv
-Y2tzaXplIiwgaXQgZXhpdHMKZWFybHksIHdoaWNoIGluY2x1ZGVzIGNhbGxpbmcgJ2JyY21mX3Nk
-aW9kX3JlbW92ZScuIEluIGJvdGggY2FzZXMKJ2JyY21mX3NkaW9kX2ZyZWV6ZXJfZGV0YWNoJyBp
-cyBjYWxsZWQgdG8gZnJlZSBhbGxvY2F0ZWQgJy5mcmVlemVyJywgd2hpY2gKaGFzIG5vdCB5ZXQg
-YmVlbiByZS1hbGxvY2F0ZWQgdGhlIHNlY29uZCB0aW1lLgoKU3RhY2t0cmFjZSBvZiAoZmFpbGlu
-ZykgaGFyZHdhcmUgcmVzZXQgYWZ0ZXIgZmlybXdhcmUtY3Jhc2g6CgpDb2RlOiBiOTQwMmI4MiA4
-YjAyMDJjMCBlYjFhMDJkZiA1NDAwMDA0MSAoZDQyMTAwMDApCiByZXRfZnJvbV9mb3JrKzB4MTAv
-MHgyMAoga3RocmVhZCsweDE1NC8weDE2MAogd29ya2VyX3RocmVhZCsweDE4OC8weDUwNAogcHJv
-Y2Vzc19vbmVfd29yaysweDFmNC8weDQ5MAogYnJjbWZfY29yZV9idXNfcmVzZXQrMHgzNC8weDQ0
-IFticmNtZm1hY10KIGJyY21mX3NkaW9fYnVzX3Jlc2V0KzB4NjgvMHhjMCBbYnJjbWZtYWNdCiBi
-cmNtZl9zZGlvZF9wcm9iZSsweDE3MC8weDIxYyBbYnJjbWZtYWNdCiBicmNtZl9zZGlvZF9yZW1v
-dmUrMHg0OC8weGMwIFticmNtZm1hY10KIGtmcmVlKzB4MjEwLzB4MjIwCiBfX3NsYWJfZnJlZSsw
-eDU4LzB4NDBjCkNhbGwgdHJhY2U6CngyIDogMDAwMDAwMDAwMDAwMDA0MCB4MSA6IGZmZmZmYzAw
-MDAyZDJiODAgeDAgOiBmZmZmMDAwMDBiNGFlZTQwCng1IDogZmZmZjgwMDAwMTNmYTcyOCB4NCA6
-IDAwMDAwMDAwMDAwMDAwMDEgeDMgOiBmZmZmMDAwMDBiNGFlZTAwCng4IDogZmZmZjgwMDAwOTk2
-N2NlMCB4NyA6IGZmZmY4MDAwMDk5YmZjZTAgeDYgOiAwMDAwMDAwNmY4MDA1ZDAxCngxMTogZmZm
-ZjgwMDAwOTliZmNlMCB4MTA6IDAwMDAwMDAwZmZmZmYwMDAgeDkgOiBmZmZmODAwMDA4MzQwMWQw
-CngxNDogMDAwMDAwMDAwMDAwMDAwMCB4MTM6IDY1N2E2OTczNmI2MzZmNmMgeDEyOiA2MjIwMzE0
-NjIwNzQ2NTczCngxNzogMDAwMDAwMDAwMDAwMDAwMCB4MTY6IDAwMDAwMDAwMDAwMDAwMDAgeDE1
-OiAwMDAwMDAwMDAwMDAwMDMwCngyMDogZmZmZmZjMDAwMDJkMmJhMCB4MTk6IGZmZmZmYzAwMDAy
-ZDJiODAgeDE4OiAwMDAwMDAwMDAwMDAwMDAwCngyMzogZmZmZjAwMDAwYjRhZWUwMCB4MjI6IGZm
-ZmYwMDAwMGI0YWVlMDAgeDIxOiAwMDAwMDAwMDAwMDAwMDAxCngyNjogZmZmZjAwMDAwYjRhZWUw
-MCB4MjU6IGZmZmYwMDAwZjc3NTM3MDUgeDI0OiAwMDAwMDAwMDAwMDEyODhhCngyOTogZmZmZjgw
-MDAwYTIyYmJmMCB4Mjg6IGZmZmYwMDAwMDA0MDEyMDAgeDI3OiAwMDAwMDAwMDgwMjAwMDFhCnNw
-IDogZmZmZjgwMDAwYTIyYmJmMApsciA6IGtmcmVlKzB4MjEwLzB4MjIwCnBjIDogX19zbGFiX2Zy
-ZWUrMHg1OC8weDQwYwpwc3RhdGU6IDYwMDAwMDA1IChuWkN2IGRhaWYgLVBBTiAtVUFPIC1UQ08g
-LURJVCAtU1NCUyBCVFlQRT0tLSkKV29ya3F1ZXVlOiBldmVudHMgYnJjbWZfY29yZV9idXNfcmVz
-ZXQgW2JyY21mbWFjXQpIYXJkd2FyZSBuYW1lOiBQaW5lNjQgUGluZWJvb2sgUHJvIChEVCkKQ1BV
-OiAyIFBJRDogNjM5IENvbW06IGt3b3JrZXIvMjoyIFRhaW50ZWQ6IEcgICAgICAgICBDICAgICAg
-ICA1LjE2LjAtMC5icG8uNC1hcm02NCAjMSAgRGViaWFuIDUuMTYuMTItMX5icG8xMSsxCiBudm1l
-bV9yb2NrY2hpcF9lZnVzZSBpbmR1c3RyaWFsaW9fdHJpZ2dlcmVkX2J1ZmZlciB2aWRlb2RldiBz
-bmRfc29jX2NvcmUgc25kX3BjbV9kbWFlbmdpbmUga2ZpZm9fYnVmIHNuZF9wY20gaW9fZG9tYWlu
-IG1jIGluZHVzdHJpYWxpbyBtdD4KTW9kdWxlcyBsaW5rZWQgaW46IHNuZF9zZXFfZHVtbXkgc25k
-X2hydGltZXIgc25kX3NlcSBzbmRfc2VxX2RldmljZSBuZnRfZmliX2luZXQgbmZ0X2ZpYl9pcHY0
-IG5mdF9maWJfaXB2NiBuZnRfZmliIG5mdF9yZWplY3RfaW5ldCBuZl9yZWplPgpJbnRlcm5hbCBl
-cnJvcjogT29wcyAtIEJVRzogMCBbIzFdIFNNUAprZXJuZWwgQlVHIGF0IG1tL3NsdWIuYzozNzkh
-Ci0tLQogZHJpdmVycy9uZXQvd2lyZWxlc3MvYnJvYWRjb20vYnJjbTgwMjExL2JyY21mbWFjL2Jj
-bXNkaC5jIHwgMSArCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykKCmRpZmYgLS1naXQg
-YS9kcml2ZXJzL25ldC93aXJlbGVzcy9icm9hZGNvbS9icmNtODAyMTEvYnJjbWZtYWMvYmNtc2Ro
-LmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9icm9hZGNvbS9icmNtODAyMTEvYnJjbWZtYWMvYmNt
-c2RoLmMKaW5kZXggYWMwMjI0NGE2ZmRmLi43MGE2NjRmMmE2OTcgMTAwNjQ0Ci0tLSBhL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL2Jyb2FkY29tL2JyY204MDIxMS9icmNtZm1hYy9iY21zZGguYworKysg
-Yi9kcml2ZXJzL25ldC93aXJlbGVzcy9icm9hZGNvbS9icmNtODAyMTEvYnJjbWZtYWMvYmNtc2Ro
-LmMKQEAgLTgwMiw2ICs4MDIsNyBAQCBzdGF0aWMgdm9pZCBicmNtZl9zZGlvZF9mcmVlemVyX2Rl
-dGFjaChzdHJ1Y3QgYnJjbWZfc2Rpb19kZXYgKnNkaW9kZXYpCiAJaWYgKHNkaW9kZXYtPmZyZWV6
-ZXIpIHsKIAkJV0FSTl9PTihhdG9taWNfcmVhZCgmc2Rpb2Rldi0+ZnJlZXplci0+ZnJlZXppbmcp
-KTsKIAkJa2ZyZWUoc2Rpb2Rldi0+ZnJlZXplcik7CisJCXNkaW9kZXYtPmZyZWV6ZXIgPSBOVUxM
-OwogCX0KIH0KIAotLSAKMi4zNC4xCgo=
-
---b1_RPhNPD9Bya3UKZFdwHbHQzdDkAkL7WNqxfiTeZTk--
-
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
