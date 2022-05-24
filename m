@@ -2,45 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3605532937
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:39:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1278532934
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:39:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236824AbiEXLiw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 May 2022 07:38:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41100 "EHLO
+        id S236828AbiEXLiy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 May 2022 07:38:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235816AbiEXLit (ORCPT
+        with ESMTP id S236819AbiEXLiu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 May 2022 07:38:49 -0400
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-eopbgr70052.outbound.protection.outlook.com [40.107.7.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E15654130C
-        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:38:34 -0700 (PDT)
+        Tue, 24 May 2022 07:38:50 -0400
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-eopbgr70041.outbound.protection.outlook.com [40.107.7.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7484279828
+        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:38:36 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=C/oiYRUj+7CTbeqh3LZ5KQ3r/3sPTUhRcRkkub1QeEpv/H4HUPIqioAikjxnYcdivOpbrInKB2BIUoPajYGs5QoiDq4Yb4D5T86uD9+hrUoHCmoyeNAbFmlpzydzBU7DiOUtfy8yj5hXatuOaX02o+lSXg4GrWwe1yVEwVEDAN1O+oEjB6ly4JODm+JczpUYUwHdr82pmhoJhdQKE3gt/pT7q2IsV16MLK9KHLqJmbWszc/KTOpNSxpu4fuXb+ucijsZmSRo57s7sXH+Slh0bqvJc6/W619CM3Ga6lK5n7sl2jY4Cx+8u8HRVTi0uJSSn3Rrb6411Jmf9CmpbQqhWQ==
+ b=i6ZJsfEfy9B7z88h1pbP7dvUjGAwFVhNjHkn66e8yy11mjtLJWM+Ouc/Qe7gVDhzrz8Uho6r2nuCBOYV3+ssN+t62n5g7alknmX4Otocz4vFSBEHKDN26TsyiVLUp2Z8Ybj1bnlBkSP9F55zP/eu5kKtXmLvgMKBZCCgyeRRfqBAhp8VeJFZILakn4BPqLAnrdhjA60UwVs6Z4jPGu5wwtLHMDiRBcjALCCXgU1guU45AJK8uTI5fe48VFsW5UJxAl8CXVZ6XMuGPSDhMyruhin/mb/KeKLhrB2RRmp7WhLXLJf9mMcMt2ORc/YycrkNSx6ue/waoa2zJQrrRZwE1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=34gWxQjNsWnRqnKnL7hgF8K8oGx292n9Ds70+XyAb1E=;
- b=nQaWaju465OqlpEw6ZwAFX9bCj/0Uo6NgbmDfUSYmcz3nJlH/QZAfFSoZLWiKAbLURh4da9uudiosh5N1xgfg7jGeulKdrpB7v5AVKG4DyuQG2sj1VehdoiRhx+FVYjbpKf68UNRaqgCZQIdnVsSqWntcHio3G9lg8D1iAUuflohJOF53Vm1Y90KIZI6M9IJqyqelmW8oLhyO97WJ+27Ac72qfo/tjqn2oNKNluFQmZ0H5bbynmIJ2nb+//TFywBBdxjoXHH5K3CSXQ6LW0QuioJ+MAQFNixjh3fjL+PB5uT4g5c9U9/AYdAnkp951GgwP7cRJAmOL6YUdcIqIvhGg==
+ bh=daaN8cov8RRoxAdX/xwqo1j8Z7No5bLADTD+H4jsGms=;
+ b=ZtwVaqyAdOP03YpHnL1A+5a0tdHKGKxqxgHM+E1u4mxyLbZQLuK8sN9dKSvBcosySxZDMsP8AmPmh4vEDEmlWebuJh7XgK+RhJVaN74MswYUHHoNqQwE+J5IPA/egit17bz2EzSsa/biqmPC8ACDtEsj8NpeiKfjoo35yX5jqhpSqDZP1r3rNnl7q4Dyunj5uRHg+uc6qbE38usdfQBTTMMgm5ldvyaqNcZQF3YtVOP/luKhl9DupGe9OgW/nsW7UIdOKPVeTQwKHi1rVGf3UBdRMWp6MrbPEMi61YVYsNmxClLCWuziuD4L0U50TOD6ozzb4eX/CPNFP7cOcruZ5A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=34gWxQjNsWnRqnKnL7hgF8K8oGx292n9Ds70+XyAb1E=;
- b=OuBM0aZNZkZbE2Pff++OhQEjma/SN81/krdICa/AUo9hvhnL65dEejgygMTNnokWX3q8/j29HwD5kox/ZC1E6OuZdw+nhxBZMKOr3Ljl/mIK89vxIFN42gdjbrHfURVsYiyYhORSxdV2JfUOHiZOw+ZpHogjXKwu40qodfBJ5zA=
+ bh=daaN8cov8RRoxAdX/xwqo1j8Z7No5bLADTD+H4jsGms=;
+ b=n+ftqe7bnidfQYqWlPhqqNyjfvU+/F8HDgg91NlCAK9tHVq8NOLJeh7jAJkHVXULo84v0IzIfRCfSkIJerVsKOMBrQpYtYUOXxgCW1XtXjQI32LonKV0mhJm5XtamdsdXyIxiQ3fDyvKWBhw2jvDiNpCwhxd7ma3ocrEVq0oyCI=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by AM6P192MB0469.EURP192.PROD.OUTLOOK.COM (2603:10a6:209:32::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.14; Tue, 24 May
- 2022 11:38:02 +0000
+ 2022 11:38:03 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::6c57:2d13:9162:cbbb]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::6c57:2d13:9162:cbbb%8]) with mapi id 15.20.5293.013; Tue, 24 May 2022
- 11:38:02 +0000
+ 11:38:03 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -52,9 +52,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v2 26/96] cl8k: add eeprom.h
-Date:   Tue, 24 May 2022 14:33:52 +0300
-Message-Id: <20220524113502.1094459-27-viktor.barna@celeno.com>
+Subject: [RFC v2 27/96] cl8k: add ela.c
+Date:   Tue, 24 May 2022 14:33:53 +0300
+Message-Id: <20220524113502.1094459-28-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220524113502.1094459-1-viktor.barna@celeno.com>
 References: <20220524113502.1094459-1-viktor.barna@celeno.com>
@@ -65,61 +65,61 @@ X-ClientProxiedBy: AM6PR10CA0092.EURPRD10.PROD.OUTLOOK.COM
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d5094714-0b42-40e3-3d00-08da3d79dc5a
+X-MS-Office365-Filtering-Correlation-Id: 7d0adce3-d62a-47ac-ffed-08da3d79dcd3
 X-MS-TrafficTypeDiagnostic: AM6P192MB0469:EE_
 X-LD-Processed: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8,ExtFwd
-X-Microsoft-Antispam-PRVS: <AM6P192MB046979088F9B204846ADB861F6D79@AM6P192MB0469.EURP192.PROD.OUTLOOK.COM>
+X-Microsoft-Antispam-PRVS: <AM6P192MB0469947C6F3E0F221EC23827F6D79@AM6P192MB0469.EURP192.PROD.OUTLOOK.COM>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: iXXmCPnNL/cpt0ShRn+5LWf/znLSWuikuHhTUaGs0cjm5ddsvQO1HmmwLRS7sIaI4vtBHy5++iqJKKJP8o86+kSH9dqj6r7vsfNTe3olVXztw5bwVUfhmms00ZS8GteawsPg39tmhSSIqIDDmCyE2wUpBG19sWLLGVtuCE+5elHGg1DiBzvx2CaZTLZVz6jC6evhqpCvT+uM/kYvjv4yeP92NNygujAprHJxFaA7Z1YzO4sAFhqe0jVlzbrIa2+RIjzzMVPuUpl6VIIfqpSc1+SjSONhravCBgs9iGdf4fHMXzdB/AUIjQ4gVwTpHEhvgYv21LaORSAV9bMjlLZgbbtkPEh2QZIOGkF+kyQRe3UDBqaZvPwoNpTDHk1IvgFYqPUPKPSGbqcmXEHnC05y3VchkmfpT1dl7uTwgWzCwGWwGriea7tdB5NiA1BU6+fYrYQUmR/80fHdP2h51V34e9LDLA0EeKW9QVzRbNiIm2SlJnMlUzI25jwHhGG8GpUCGd11d5FuKSmaPz+XToWSHL9OJw8rGzyBhofNlsruhkW2iWTAHHpShaiJ6ocMMUlTIjHTFhcw5vqGNnO2S8Rh4dPlDYFWfGAz8E0xIenwweQLBakptTnidHAx7BUa3M9dWEQgCP2btCJ20XLR1jl4JdSQMLWZ3bkJtCEn17JqHfByJHljVXOOJFcrnMccsHAG0+SIjrKZ09cbDhAgm1IrgCp+TZf0uKX/m7ro2YRcJVQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(396003)(346002)(376002)(136003)(366004)(39850400004)(6486002)(30864003)(6916009)(508600001)(8936002)(86362001)(2906002)(5660300002)(4326008)(1076003)(36756003)(38100700002)(41300700001)(52116002)(186003)(66556008)(2616005)(6506007)(6512007)(26005)(316002)(54906003)(107886003)(8676002)(9686003)(66476007)(38350700002)(66946007)(6666004)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: yiaoEEeJwgzvULvx36d04fNE3bjnFZ+oU554uGX7iMFq0YTOqW29laAB6NPy0r5eE4M6sMhkUV6SwiMtwnHgKaj3pOtsMbcPXl3gpTCBY5HwixX2aABNs0EmyUQvt2g5twa7gcRkLPQC0OfkA9CEvJXO4HTRlNhe72bpfPN/VaBBtdmaRj3Eb2zWGq04eVk298qld3FHeZLjRJblZsiA4kdT2vcZBXi8vPrCG2XEhAmVqPDLPh9Bx9R5de1Fzi8V8DtSDSM/mYw7MqtIYVa8TrUNpWYDaCJ5HNF+/MwyW1l+SNRCXoSUYBpF1jS0i1kSOLdshuWTlwaYd9BnJM7WlkF/sx8CGPRx8F1EnKnXJnQzTfcdIYj1Bbb2WX9fwWg4Kwy7ukwTE0GxdRLsPJ5SErPxkVlHpKei8ttx7Kuek1B2eGgswL3fHxdfUh9/HNHbiS2pWCgGhxcDrMSKdt3BgwMlh3NAs9vtDBwu9ZpHWyBHsx2nqBVE00oYBs2+dwJClvS8CoNrdP3hJlMNSp4LHrlUzkh50PkjNMIi+Nl6ReGS4JXutQHD5BRNi/0X48w0zhGjob3PJiVAUO3Ba86K0akf4yorVgG4Va/Zgd+G3Afr9XFNJ9GrRpMlW0VABsO5nIEBvlEd4F+9XLJrE3BdLnQaYSHzrn3rK+G7nZKJQ54bxc1WdZroEulu2Z7c+FhyobNBeVxXBTHvQnCX6OayT4yPM/XXNWBhIlFdS4bWkqaWUCfsCojRrcmyXTaj7zqkmw+9ThrtV48Z8jwI0wMYVA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(396003)(346002)(376002)(136003)(366004)(39850400004)(6486002)(6916009)(508600001)(8936002)(86362001)(2906002)(5660300002)(4326008)(1076003)(83380400001)(36756003)(38100700002)(41300700001)(52116002)(186003)(66556008)(2616005)(6506007)(6512007)(26005)(316002)(54906003)(107886003)(8676002)(9686003)(66476007)(38350700002)(66946007)(6666004)(32563001)(309714004);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3V18H+xqz+L4cq38/KtkIlN2VjJqBBxAGl401hnfuFSo9IC+ry+GRdJI8LXt?=
- =?us-ascii?Q?4rwGAY83fi/0zD2dzNhW50W7pNHcZfFABt84j8nFkITdfMoThmllAjrbTH+4?=
- =?us-ascii?Q?BMz0AO8sCSdsJyE6oFKOG155NEmqPjMl1D/C8JwCM64WjTesgZjhSdMoP6r/?=
- =?us-ascii?Q?dT8wH0rW4/qzVkaT7UVsH1ysVpf2MYVwJAzu8RH+/NjghFwDfYaYJLQjItiN?=
- =?us-ascii?Q?4vC31T3pvatYakLkPMqVUtvUgvNueaRDSLFHgllTn7ZGjVc7/Dly4R7suSos?=
- =?us-ascii?Q?RBiBD1VqdGlflBEd+14B2kDbkLSAiMhMs0qHpmNeyhieogOFhA+sqkwsVzIp?=
- =?us-ascii?Q?VgzIDgI8iqy7kG+QN0StmfzYuqTsjYk06mKYlGe4x8dUhz4OzPC+OM7K5xZY?=
- =?us-ascii?Q?vq9akBPOOMj0NJVegSgNkQzj7dzK59NiXmu0BDTWV5TWoGASANztTH6a/8e0?=
- =?us-ascii?Q?QI/QNhBahLONeJFNCUi/E8auQJ8u4ZNsePca4v137Z6KZuYEPBtsjH4XI5jZ?=
- =?us-ascii?Q?lP8V+lhRTDv4d+hDotE6SWlyODh7rWjyeAlxyIm8a3noswImcT/HuDPoCDI3?=
- =?us-ascii?Q?PXIk3MEcWUSrKJTHmIbRxwKmJvaHKCsJJaLsl2CI9FBKPj8jGi1rd/VV9ld1?=
- =?us-ascii?Q?/mjFv07p/WxO8u58eEorJTIJZ/kQMmyw34Hm4QYS09JnGst08Pvl9r0DqH1p?=
- =?us-ascii?Q?9WHqilx2ZvF4djEfBeuW7BW6ic0y8+S2mJpSOL6cYX9ABeMbmxFmLHoNTjAk?=
- =?us-ascii?Q?6XOBPnlobiM7pEfFrUTJ+Deh+SsFVvFlB1vQyipNKrGgSAJV0vgmjtRFqXMm?=
- =?us-ascii?Q?PCNTnUCuxZL5zsiXkI+DODc4wJTKwg6zZItsuKCPK8ZrkYd7T5D3eyIOaAlL?=
- =?us-ascii?Q?dksmoEWsTqYDsqkwhB1hKM4l9digIIQ5tGLuFsodDb/ChYFAKKmrKDdWG+2e?=
- =?us-ascii?Q?6PSSRWApiam1NhWjOQMy3fZ1v+NiPrz1/L/mvA8UqaiiWBzuw+j/9D41XJdV?=
- =?us-ascii?Q?Ysz/s/EF+/UGGIxkSAmp8fMuXOw0sm3fKlqul7EtsH6mhvsN3o8JQYeElrva?=
- =?us-ascii?Q?prRd4n6uU/iJKoSWWTYBaGqnQlywA2hWVXomxIR5ynw/xdVNUBTFvMXuW1ot?=
- =?us-ascii?Q?LTHonxp8SbRbk9Z8QfTBJJqAe5d2eMXCY/dXHcRrNIE6CJJPzcgNkneujcZC?=
- =?us-ascii?Q?+lFOI9rOrFjZip07pZVk8EFKETC1xvl6LzCWf9415gtF8LZIswDszfVXPdtH?=
- =?us-ascii?Q?rnaoZaGNCdXq/J+wDHHBSUYSeHigajXcX5WIzpOwGQCsR6lgQXm86LcUGT4/?=
- =?us-ascii?Q?Rbvf+9oG4qSLJuPbvNpFWAX7jZGrTgUFWgJbsfw+PNwWvnIWPhoVEu8obF9I?=
- =?us-ascii?Q?xQ7b5q+v4VAUkoajz12FzyYz0+eyR8Nhhsg6QTQB/Ktw29gQCwBOul4AIbYj?=
- =?us-ascii?Q?KphKbVx1GRtiXcJxNGfOAiG0sR211g9Szi7caXsm06u2PJwYRG+D+yBQKy1e?=
- =?us-ascii?Q?QQ9stl1U3l+r6jwxnvIhaWyHfHx5htrSnTuh/iLjnYLpZO+t7uitCc9rbRTA?=
- =?us-ascii?Q?EvrX0WmvgfE5uqcgtDJLAvx+nojqKnW2ZQ+03XYVO1PVqh4lAUxRN1jzY+c/?=
- =?us-ascii?Q?jeLg1/6xkRl1IpDzb6vCuAlr4Lncy2TpNJyc61XA2hGb/WGgZn8crTw9L/9c?=
- =?us-ascii?Q?OKliMfL/mojGwLDIiXgH9Xt7ulCs+q1z0FleRfbrb1uC9Scx7kAmtHSYfmkw?=
- =?us-ascii?Q?178XBMSmb5UdDd9aJNS+sL/pgb9/mJI=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?uZPq8H0a5CCngy0j6j4wMLHPoDIYvMX2PK+7kn/0Fbj8Nch3sYvJxV6Ol07/?=
+ =?us-ascii?Q?cAvG/14Rmqr5rOQdSQnmML2x+km2eG1XpdZmux1deX/udxbOfaWpqYSCUULN?=
+ =?us-ascii?Q?qAUBDCwRpW0y9LljCmuKadu6gbQ4niNfrmO/jGhub6rIKMfqpOCo1f7EtBro?=
+ =?us-ascii?Q?tCwzkQBfuSf/lx4nC4R/Qx9FmQ0PIlbk7W1Wa75yZ+73m/3fzk/YUY4vuWSf?=
+ =?us-ascii?Q?nJoWNt3pOx6GRg4GvODXE0lIcg4W6QqgdferQvx8iOzBtC92b+bbbqU+fgEY?=
+ =?us-ascii?Q?M8/IFECpu2tWnfcHu9QS4Ng0OVg02Oc40vTOndm14MV0STKojNbew6KvOlNe?=
+ =?us-ascii?Q?4ggn3hm5YiSkluFkhQb5cjWPZQgo8DcYoVcBczsDfbIAN6HKZlDjZDy8HXGk?=
+ =?us-ascii?Q?h+6Fn2a3Q/aANnCm8u/tuDXy4LyK42Ts5ETPSglYOaODQqiJMnGEVNs5TLLA?=
+ =?us-ascii?Q?gdfvKQfFpiMiZHfB7MkiPu4nQ07bmvL25D0VEpc46D+JnI5tA4Q7iRTTlDl6?=
+ =?us-ascii?Q?9wsdnqCkgWODza1T1ejjFJCD+XR+QyUfr8PKNpgjdPkJQGQyC36zbqJwX4tv?=
+ =?us-ascii?Q?43Q06cuZRyhTV5hVJGlD7ZuUgaQSph/ES7u3xG4Ng+076sq8pQ0lX+yp43pF?=
+ =?us-ascii?Q?XuvY1JP+MX346EvPQISJKkDv802Yyqs9zf3haxapb4NrzNvPzIsQ6+0QFjjo?=
+ =?us-ascii?Q?kiYWKCCZYnZvnxRkF43PBMNxmVGOYjrLaMje56fH1durfogXJDlWvFhCOENj?=
+ =?us-ascii?Q?3uHUynvNFq+6uiZLH/Vlc7VWz/HWv0Wd/ge+qjLmKa+G77peOwzwuVKtTCOR?=
+ =?us-ascii?Q?6RMG3ylbZSGl4+vGb9rhotKtn06JqMs0MUnXkAe2kf//3IPmwrt1EWdN733f?=
+ =?us-ascii?Q?Sx+H0+ek7O8h55WHw3+NRHXyVocjZA9hImA5exHesxbbsNgbGO6OrDmUwhty?=
+ =?us-ascii?Q?Vnse/GKDPDkoMTz1No7XsZHYaLgiSF3Mjo6R1Flgd4CmZ0LirijScpJKxKbz?=
+ =?us-ascii?Q?ZcnN69PkK8Vjkq5wQdUzBAuB+N0TY47JZefK2AGu4o1uNtur5YXdgz16a29b?=
+ =?us-ascii?Q?tTDZ5NO1dye5gNRoqrAA51LYcqESbifSR/zA0WtZz+oiLbyR3qagvkeQdCjQ?=
+ =?us-ascii?Q?7F5VbeuufpJ/0uNTqhlFXib8IwLNKo6iF7CrWfgvSf37kcGKFVGqdgmmBfI7?=
+ =?us-ascii?Q?4HSEKELpXFKgUtmLBU7aIQhOd46rak2k9ALLuKApgNnMBtZKptZPosiK0xBR?=
+ =?us-ascii?Q?LdDwUNt27/Wnde+MYuNe78g6XT14tn5YYT3IxDK3YRXR+p7Hl4KD4kP7W+04?=
+ =?us-ascii?Q?dtPiL/xh1g2boWwjV5sYmZEke2tidCYgUqwcXWnR+lLfPbCEp0liougispqb?=
+ =?us-ascii?Q?QkkIVv6RD1nHmmhi14MgrhI6TDXumkv+puMwYTfMgc4GF6aL5jvVlpRa3ObP?=
+ =?us-ascii?Q?XVPlnUVM79u/uhRnt5kSu1XZMWhrtpOHsXTDwjgRxL/Kq3NcelOy2UEQUFac?=
+ =?us-ascii?Q?y8YGArrPxtT+H+3OaDLkyMb40qYLDbbmoH2yFiHayRLlZOcM1bLT56jUC46M?=
+ =?us-ascii?Q?7CYFuW8bsiWT/2iwf5hWb4MbJBOJuD4IKEsQATM7QrQ7xGBgrhjkCU9gfUuq?=
+ =?us-ascii?Q?i1l7exkzrciOJ8ERiHcJ9Ud2o9KedUzxPTe6FJz1RjfPBbEzAuPIIaV3YKjM?=
+ =?us-ascii?Q?xkxFQk1C207CgXFVZDckjw7h+PL5UF+Ainw8KeJcJYaAI3e+v+Rkf+t+X4pB?=
+ =?us-ascii?Q?C0wkpxqq5b7Rw46h8wimjnpY24tfxqA=3D?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5094714-0b42-40e3-3d00-08da3d79dc5a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7d0adce3-d62a-47ac-ffed-08da3d79dcd3
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:38:02.5303
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:38:03.2814
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AzBeuHoCbDT7EC8tRBPOxDT1NxIxeGKb/2wbKw0lHpR34v+A7ZPyA8kGFep0jXLoVpZiD6q9EQCcFV641DYJHw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 39uwfPDE8BCdwlbREKCHdAAFglEaf0BcKEC8zdmydWy5Tll7hHj5qTwUaAdoTjIx57WB8qAgIAAzEWZkbR5tMg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6P192MB0469
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UPPERCASE_50_75 autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -133,299 +133,246 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/eeprom.h | 283 ++++++++++++++++++++++
- 1 file changed, 283 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/eeprom.h
+ drivers/net/wireless/celeno/cl8k/ela.c | 230 +++++++++++++++++++++++++
+ 1 file changed, 230 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/ela.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/eeprom.h b/drivers/net/wireless/celeno/cl8k/eeprom.h
+diff --git a/drivers/net/wireless/celeno/cl8k/ela.c b/drivers/net/wireless/celeno/cl8k/ela.c
 new file mode 100644
-index 000000000000..2680af90484b
+index 000000000000..c2419b11b5c0
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/eeprom.h
-@@ -0,0 +1,283 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause */
-+/* Copyright(c) 2019-2022, Celeno Communications Ltd. */
++++ b/drivers/net/wireless/celeno/cl8k/ela.c
+@@ -0,0 +1,230 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
++/* Copyright(c) 2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_EEPROM_H
-+#define CL_EEPROM_H
++#include "reg/reg_access.h"
++#include "reg/reg_defs.h"
++#include "utils.h"
++#include "ela.h"
 +
-+#include <linux/kernel.h>
++#define CL_ELA_MODE_DFLT_ALIAS          "default"
++#define CL_ELA_MODE_DFLT_SYMB_LINK      "lcu_default.conf"
++#define CL_ELA_MODE_DFLT_OFF            "OFF"
++#define CL_ELA_LCU_CONF_TOKENS_CNT      3 /* cmd addr1 addr2 */
++#define CL_ELA_LCU_MEM_WRITE_CMD_STR    "mem_write"
++#define CL_ELA_LCU_MEM_WRITE_CMD_SZ     sizeof(CL_ELA_LCU_MEM_WRITE_CMD_STR)
++#define CL_ELA_LCU_UNKNOWN_CMD_TYPE     0
++#define CL_ELA_LCU_MEM_WRITE_CMD_TYPE   1
++#define CL_ELA_LCU_UNKNOWN_CMD_STR      "unknown"
 +
-+#include "def.h"
-+#include "phy.h"
-+#include "calib.h"
++static int __must_check get_lcu_cmd_type(char *cmd)
++{
++	if (!strncmp(CL_ELA_LCU_MEM_WRITE_CMD_STR, cmd, CL_ELA_LCU_MEM_WRITE_CMD_SZ))
++		return CL_ELA_LCU_MEM_WRITE_CMD_TYPE;
 +
-+#define SERIAL_NUMBER_SIZE 32
-+#define BIT_MAP_SIZE   20
-+#define EXT_BIT_MAP_SIZE (BIT_MAP_SIZE * 2)
-+#define NUM_OF_PIVOTS  20
-+#define NUM_PIVOT_PHYS (MAX_ANTENNAS * NUM_OF_PIVOTS)
++	return CL_ELA_LCU_UNKNOWN_CMD_TYPE;
++}
 +
-+#ifdef CONFIG_CL8K_EEPROM_STM24256
-+#define BIT_MAP_SIZE_20MHZ_TCV0  9
-+#define BIT_MAP_SIZE_20MHZ_TCV1  6
-+#define BIT_MAP_SIZE_40MHZ_TCV0  4
-+#define BIT_MAP_SIZE_40MHZ_TCV1  4
-+#define BIT_MAP_SIZE_80MHZ_TCV0  2
-+#define BIT_MAP_SIZE_80MHZ_TCV1  2
-+#define BIT_MAP_SIZE_160MHZ_TCV0 1
-+#define BIT_MAP_SIZE_160MHZ_TCV1 3
++static int add_lcu_cmd(struct cl_ela_db *ed, u32 type, u32 offset, u32 value)
++{
++	struct cl_lcu_cmd *cmd = NULL;
 +
-+#define EEPROM_CALIB_DATA_ELEM_NUM_20MHZ_TCV0   10
-+#define EEPROM_CALIB_DATA_ELEM_NUM_20MHZ_TCV1   7
-+#define EEPROM_CALIB_DATA_ELEM_NUM_40MHZ_TCV0   9
-+#define EEPROM_CALIB_DATA_ELEM_NUM_40MHZ_TCV1   7
-+#define EEPROM_CALIB_DATA_ELEM_NUM_80MHZ_TCV0   8
-+#define EEPROM_CALIB_DATA_ELEM_NUM_80MHZ_TCV1   6
-+#define EEPROM_CALIB_DATA_ELEM_NUM_160MHZ_TCV0  6
-+#define EEPROM_CALIB_DATA_ELEM_NUM_160MHZ_TCV1  2
-+#endif
++	cmd = kzalloc(sizeof(*cmd), GFP_ATOMIC);
++	if (!cmd)
++		return -ENOMEM;
 +
-+struct eeprom_hw {
-+	u8 reserved[96];
-+} __packed;
++	cmd->type = type;
++	cmd->offset = offset;
++	cmd->value = value;
 +
-+struct eeprom_general {
-+	u8 version;
-+	u8 flavor;
-+	u8 mac_address[6];
-+	u8 temp_diff; /* Default value TEMP_DIFF_INVALID = 0x7F */
-+	u8 serial_number[SERIAL_NUMBER_SIZE];
-+	u8 pwr_table_id[2];
-+	u8 reserved[53];
-+} __packed;
++	list_add_tail(&cmd->cmd_list, &ed->cmd_head);
 +
-+struct eeprom_fem {
-+	u8 wiring_id;
-+	u16 fem_lut[FEM_TYPE_MAX];
-+	u32 platform_id;
-+	u8 reserved[19];
-+} __packed;
++	return 0;
++}
 +
-+struct eeprom_phy_calib {
-+	s8 pow;
-+	s8 offset;
-+	s8 tmp;
-+} __packed;
++static void remove_lcu_cmd(struct cl_lcu_cmd *cmd)
++{
++	list_del(&cmd->cmd_list);
++	kfree(cmd);
++}
 +
-+struct point {
-+	u8 chan;
-+	u8 phy;
-+	u8 idx;
-+	u16 addr;
-+	struct eeprom_phy_calib calib;
-+} __packed;
++static void reset_stats(struct cl_ela_db *db)
++{
++	memset(&db->stats, 0, sizeof(db->stats));
++}
 +
-+#ifdef CONFIG_CL8K_EEPROM_STM24256
-+struct iq {
-+	__le32 coef0;
-+	__le32 coef1;
-+	__le32 coef2;
-+	__le32 gain;
-+} __packed;
++static int load_cmds_from_buf(struct cl_chip *chip, char *buf, size_t size)
++{
++	struct cl_ela_db *ed = &chip->ela_db;
++	char *line = buf;
++	char cmd[STR_LEN_256B];
++	u32 type = CL_ELA_LCU_UNKNOWN_CMD_TYPE;
++	u32 offset = 0;
++	u32 value = 0;
++	int tokens_cnt = 0;
++	int ret = 0;
 +
-+struct score {
-+	s8 iq_tx_score;
-+	s8 iq_tx_worst_score;
-+	s8 iq_rx_score;
-+	s8 iq_rx_worst_score;
-+	s16 dcoc_i_mv[DCOC_LNA_GAIN_NUM];
-+	s16 dcoc_q_mv[DCOC_LNA_GAIN_NUM];
-+	s32 lolc_score;
-+} __packed;
++	while (line && strlen(line) && (line != (buf + size))) {
++		if ((*line == '#') || (*line == '\n')) {
++			/* Skip comment or blank line */
++			line = strstr(line, "\n") + 1;
++		} else if (*line) {
++			tokens_cnt = sscanf(line, "%s %x %x\n", cmd, &offset, &value);
++			cl_dbg_chip_trace(chip,
++					  "tokens(%d):cmd(%s), offset(0x%X), value(0x%X)\n",
++					  tokens_cnt, cmd, offset, value);
 +
-+struct eeprom_calib_data {
-+	u8 valid;
-+	u8 temperature;
-+	u32 lolc[MAX_ANTENNAS];
-+	struct cl_dcoc_calib dcoc[MAX_ANTENNAS][DCOC_LNA_GAIN_NUM];
-+	struct iq iq_tx[MAX_ANTENNAS];
-+	struct iq iq_rx[MAX_ANTENNAS];
-+	struct score score[MAX_ANTENNAS];
-+} __packed;
-+#endif
++			type = get_lcu_cmd_type(cmd);
++			if (type == CL_ELA_LCU_UNKNOWN_CMD_TYPE) {
++				cl_dbg_chip_trace(chip, "Detected extra token, skipping\n");
++				goto newline;
++			}
++			if (tokens_cnt != CL_ELA_LCU_CONF_TOKENS_CNT) {
++				cl_dbg_chip_err(chip,
++						"Tokens count is wrong! (%d != %d)\n",
++						CL_ELA_LCU_CONF_TOKENS_CNT,
++						tokens_cnt);
++				ret = -EBADMSG;
++				goto exit;
++			}
 +
-+struct eeprom_calib_power {
-+	u16 freq_offset;
-+	u8 chan_bmp[BIT_MAP_SIZE];
-+	struct eeprom_phy_calib phy_calib[NUM_PIVOT_PHYS];
-+} __packed;
++			ret = add_lcu_cmd(ed, type, offset, value);
++			if (ret)
++				goto exit;
 +
-+#ifdef CONFIG_CL8K_EEPROM_STM24256
-+struct eeprom_calib_iq_dcoc {
-+	u8 calib_version;
-+	u8 chan_20mhz_bmp_tcv0[BIT_MAP_SIZE_20MHZ_TCV0];
-+	u8 chan_20mhz_bmp_tcv1[BIT_MAP_SIZE_20MHZ_TCV1];
-+	u8 chan_40mhz_bmp_tcv0[BIT_MAP_SIZE_40MHZ_TCV0];
-+	u8 chan_40mhz_bmp_tcv1[BIT_MAP_SIZE_40MHZ_TCV1];
-+	u8 chan_80mhz_bmp_tcv0[BIT_MAP_SIZE_80MHZ_TCV0];
-+	u8 chan_80mhz_bmp_tcv1[BIT_MAP_SIZE_80MHZ_TCV1];
-+	u8 chan_160mhz_bmp_tcv0[BIT_MAP_SIZE_160MHZ_TCV0];
-+	u8 chan_160mhz_bmp_tcv1[BIT_MAP_SIZE_160MHZ_TCV1];
-+	struct eeprom_calib_data
-+		calib_20_data_tcv0[EEPROM_CALIB_DATA_ELEM_NUM_20MHZ_TCV0];
-+	struct eeprom_calib_data
-+		calib_20_data_tcv1[EEPROM_CALIB_DATA_ELEM_NUM_20MHZ_TCV1];
-+	struct eeprom_calib_data
-+		calib_40_data_tcv0[EEPROM_CALIB_DATA_ELEM_NUM_40MHZ_TCV0];
-+	struct eeprom_calib_data
-+		calib_40_data_tcv1[EEPROM_CALIB_DATA_ELEM_NUM_40MHZ_TCV1];
-+	struct eeprom_calib_data
-+		calib_80_data_tcv0[EEPROM_CALIB_DATA_ELEM_NUM_80MHZ_TCV0];
-+	struct eeprom_calib_data
-+		calib_80_data_tcv1[EEPROM_CALIB_DATA_ELEM_NUM_80MHZ_TCV1];
-+	struct eeprom_calib_data
-+		calib_160_data_tcv0[EEPROM_CALIB_DATA_ELEM_NUM_160MHZ_TCV0];
-+	struct eeprom_calib_data
-+		calib_160_data_tcv1[EEPROM_CALIB_DATA_ELEM_NUM_160MHZ_TCV1];
-+} __packed;
-+#endif
++newline:
++			line = strstr(line, "\n") + 1;
++		}
++	}
 +
-+struct eeprom {
-+	struct eeprom_hw hw;
-+	struct eeprom_general general;
-+	struct eeprom_fem fem;
-+	struct eeprom_calib_power calib_power;
-+#ifdef CONFIG_CL8K_EEPROM_STM24256
-+	struct eeprom_calib_iq_dcoc calib_iq_dcoc;
-+#endif
-+} __packed;
++exit:
++	ed->stats.adaptations_cnt++;
++	return ret;
++}
 +
-+enum {
-+	ADDR_HW = offsetof(struct eeprom, hw),
-+	ADDR_HW_RESERVED = ADDR_HW + offsetof(struct eeprom_hw, reserved),
++void cl_ela_lcu_reset(struct cl_chip *chip)
++{
++	lcu_common_sw_rst_set(chip, 0x1);
 +
-+	ADDR_GEN = offsetof(struct eeprom, general),
-+	ADDR_GEN_VERSION = ADDR_GEN + offsetof(struct eeprom_general, version),
-+	ADDR_GEN_FLAVOR = ADDR_GEN + offsetof(struct eeprom_general, flavor),
-+	ADDR_GEN_MAC_ADDR = ADDR_GEN + offsetof(struct eeprom_general, mac_address),
-+	ADDR_GEN_TEMP_DIFF = ADDR_GEN + offsetof(struct eeprom_general, temp_diff),
-+	ADDR_GEN_SERIAL_NUMBER = ADDR_GEN + offsetof(struct eeprom_general, serial_number),
-+	ADDR_GEN_PWR_TABLE_ID = ADDR_GEN + offsetof(struct eeprom_general, pwr_table_id),
-+	ADDR_GEN_RESERVED = ADDR_GEN + offsetof(struct eeprom_general, reserved),
++	if (chip->cl_hw_tcv0)
++		lcu_phy_lcu_sw_rst_set(chip->cl_hw_tcv0, 0x1);
 +
-+	ADDR_FEM = offsetof(struct eeprom, fem),
-+	ADDR_FEM_WIRING_ID = ADDR_FEM + offsetof(struct eeprom_fem, wiring_id),
-+	ADDR_FEM_LUT = ADDR_FEM + offsetof(struct eeprom_fem, fem_lut),
-+	ADDR_FEM_PLATFORM_ID = ADDR_FEM + offsetof(struct eeprom_fem, platform_id),
-+	ADDR_FEM_RESERVED = ADDR_FEM + offsetof(struct eeprom_fem, reserved),
++	if (chip->cl_hw_tcv1)
++		lcu_phy_lcu_sw_rst_set(chip->cl_hw_tcv1, 0x1);
++}
 +
-+	ADDR_CALIB_POWER = offsetof(struct eeprom, calib_power),
-+	ADDR_CALIB_POWER_FREQ_OFFSET = ADDR_CALIB_POWER +
-+		offsetof(struct eeprom_calib_power, freq_offset),
-+	ADDR_CALIB_POWER_CHAN_BMP = ADDR_CALIB_POWER +
-+		offsetof(struct eeprom_calib_power, chan_bmp),
-+	ADDR_CALIB_POWER_PHY = ADDR_CALIB_POWER +
-+		offsetof(struct eeprom_calib_power, phy_calib),
++void cl_ela_lcu_apply_config(struct cl_chip *chip)
++{
++	struct cl_ela_db *ed = &chip->ela_db;
++	struct cl_lcu_cmd *cmd = NULL;
++	unsigned long flags;
 +
-+#ifdef CONFIG_CL8K_EEPROM_STM24256
-+	ADDR_CALIB_IQ_DCOC = offsetof(struct eeprom, calib_iq_dcoc),
-+	ADDR_CALIB_IQ_DCOC_VERSION = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, calib_version),
-+	ADDR_CALIB_IQ_DCOC_CHANNEL_20MHZ_BMP_TCV0 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, chan_20mhz_bmp_tcv0),
-+	ADDR_CALIB_IQ_DCOC_CHANNEL_20MHZ_BMP_TCV1 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, chan_20mhz_bmp_tcv1),
-+	ADDR_CALIB_IQ_DCOC_CHANNEL_40MHZ_BMP_TCV0 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, chan_40mhz_bmp_tcv0),
-+	ADDR_CALIB_IQ_DCOC_CHANNEL_40MHZ_BMP_TCV1 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, chan_40mhz_bmp_tcv1),
-+	ADDR_CALIB_IQ_DCOC_CHANNEL_80MHZ_BMP_TCV0 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, chan_80mhz_bmp_tcv0),
-+	ADDR_CALIB_IQ_DCOC_CHANNEL_80MHZ_BMP_TCV1 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, chan_80mhz_bmp_tcv1),
-+	ADDR_CALIB_IQ_DCOC_CHANNEL_160MHZ_BMP_TCV0 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, chan_160mhz_bmp_tcv0),
-+	ADDR_CALIB_IQ_DCOC_CHANNEL_160MHZ_BMP_TCV1 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, chan_160mhz_bmp_tcv1),
-+	ADDR_CALIB_IQ_DCOC_DATA_20MHZ_TCV0 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, calib_20_data_tcv0),
-+	ADDR_CALIB_IQ_DCOC_DATA_20MHZ_TCV1 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, calib_20_data_tcv1),
-+	ADDR_CALIB_IQ_DCOC_DATA_40MHZ_TCV0 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, calib_40_data_tcv0),
-+	ADDR_CALIB_IQ_DCOC_DATA_40MHZ_TCV1 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, calib_40_data_tcv1),
-+	ADDR_CALIB_IQ_DCOC_DATA_80MHZ_TCV0 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, calib_80_data_tcv0),
-+	ADDR_CALIB_IQ_DCOC_DATA_80MHZ_TCV1 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, calib_80_data_tcv1),
-+	ADDR_CALIB_IQ_DCOC_DATA_160MHZ_TCV0 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, calib_160_data_tcv0),
-+	ADDR_CALIB_IQ_DCOC_DATA_160MHZ_TCV1 = ADDR_CALIB_IQ_DCOC +
-+		offsetof(struct eeprom_calib_iq_dcoc, calib_160_data_tcv1),
-+#endif
-+	SIZE_HW = sizeof(struct eeprom_hw),
-+	SIZE_HW_RESERVED = ADDR_GEN - ADDR_HW_RESERVED,
++	if (!cl_ela_lcu_is_valid_config(chip)) {
++		cl_dbg_chip_err(chip, "Active ELA LCU config is not valid\n");
++		return;
++	}
 +
-+	SIZE_GEN = sizeof(struct eeprom_general),
-+	SIZE_GEN_VERSION = ADDR_GEN_FLAVOR - ADDR_GEN_VERSION,
-+	SIZE_GEN_FLAVOR = ADDR_GEN_MAC_ADDR - ADDR_GEN_FLAVOR,
-+	SIZE_GEN_MAC_ADDR = ADDR_GEN_TEMP_DIFF - ADDR_GEN_MAC_ADDR,
-+	SIZE_GEN_TEMP_DIFF = ADDR_GEN_SERIAL_NUMBER - ADDR_GEN_TEMP_DIFF,
-+	SIZE_GEN_SERIAL_NUMBER = ADDR_GEN_PWR_TABLE_ID - ADDR_GEN_SERIAL_NUMBER,
-+	SIZE_GEN_PWR_TABLE_ID = ADDR_GEN_RESERVED - ADDR_GEN_PWR_TABLE_ID,
-+	SIZE_GEN_RESERVED = ADDR_FEM - ADDR_GEN_RESERVED,
++	/* Extra safety to avoid local CPU interference during LCU reconfiguration */
++	local_irq_save(flags);
++	list_for_each_entry(cmd, &ed->cmd_head, cmd_list) {
++		cl_dbg_chip_info(chip, "Writing cmd (0x%X, 0x%X)\n",
++				 cmd->offset, cmd->value);
++		if (!chip->cl_hw_tcv1 && cl_reg_is_phy_tcv1(cmd->offset)) {
++			ed->stats.tcv1_skips_cnt++;
++			continue;
++		} else if (!chip->cl_hw_tcv0 && cl_reg_is_phy_tcv0(cmd->offset)) {
++			ed->stats.tcv0_skips_cnt++;
++			continue;
++		}
++		cl_reg_write_chip(chip, cmd->offset, cmd->value);
++	}
++	local_irq_restore(flags);
++	ed->stats.applications_cnt++;
++}
 +
-+	SIZE_FEM = sizeof(struct eeprom_fem),
-+	SIZE_FEM_WIRING_ID = ADDR_FEM_LUT - ADDR_FEM_WIRING_ID,
-+	SIZE_FEM_LUT = ADDR_FEM_PLATFORM_ID - ADDR_FEM_LUT,
-+	SIZE_FEM_PLATFORM_ID = ADDR_FEM_RESERVED - ADDR_FEM_PLATFORM_ID,
++bool cl_ela_is_on(struct cl_chip *chip)
++{
++	return !!strncmp(CL_ELA_MODE_DFLT_OFF, chip->conf->ce_ela_mode,
++			 sizeof(chip->conf->ce_ela_mode));
++}
 +
-+	SIZE_CALIB_POWER = sizeof(struct eeprom_calib_power),
-+	SIZE_CALIB_POWER_FREQ_OFFSET = ADDR_CALIB_POWER_CHAN_BMP - ADDR_CALIB_POWER_FREQ_OFFSET,
-+	SIZE_CALIB_POWER_CHAN_BMP = ADDR_CALIB_POWER_PHY - ADDR_CALIB_POWER_CHAN_BMP,
-+#ifdef CONFIG_CL8K_EEPROM_STM24256
-+	SIZE_CALIB_POWER_PHY = ADDR_CALIB_IQ_DCOC_VERSION - ADDR_CALIB_POWER_PHY,
-+#else
-+	SIZE_CALIB_POWER_PHY = sizeof(struct eeprom_phy_calib) * NUM_PIVOT_PHYS,
-+#endif
++bool cl_ela_is_default(struct cl_chip *chip)
++{
++	return !strncmp(CL_ELA_MODE_DFLT_ALIAS, chip->conf->ce_ela_mode,
++			sizeof(chip->conf->ce_ela_mode));
++}
 +
-+#ifdef CONFIG_CL8K_EEPROM_STM24256
-+	SIZE_CALIB_IQ_DCOC_VERSION = ADDR_CALIB_IQ_DCOC_CHANNEL_20MHZ_BMP_TCV0 -
-+		ADDR_CALIB_IQ_DCOC_VERSION,
-+	SIZE_CALIB_IQ_DCOC_20MHZ_BMP_TCV0 = ADDR_CALIB_IQ_DCOC_CHANNEL_20MHZ_BMP_TCV1 -
-+		ADDR_CALIB_IQ_DCOC_CHANNEL_20MHZ_BMP_TCV0,
-+	SIZE_CALIB_IQ_DCOC_20MHZ_BMP_TCV1 = ADDR_CALIB_IQ_DCOC_CHANNEL_40MHZ_BMP_TCV0 -
-+		ADDR_CALIB_IQ_DCOC_CHANNEL_20MHZ_BMP_TCV1,
-+	SIZE_CALIB_IQ_DCOC_40MHZ_BMP_TCV0 = ADDR_CALIB_IQ_DCOC_CHANNEL_40MHZ_BMP_TCV1 -
-+		ADDR_CALIB_IQ_DCOC_CHANNEL_40MHZ_BMP_TCV0,
-+	SIZE_CALIB_IQ_DCOC_40MHZ_BMP_TCV1 = ADDR_CALIB_IQ_DCOC_CHANNEL_80MHZ_BMP_TCV0 -
-+		ADDR_CALIB_IQ_DCOC_CHANNEL_40MHZ_BMP_TCV1,
-+	SIZE_CALIB_IQ_DCOC_80MHZ_BMP_TCV0 = ADDR_CALIB_IQ_DCOC_CHANNEL_80MHZ_BMP_TCV1 -
-+		ADDR_CALIB_IQ_DCOC_CHANNEL_80MHZ_BMP_TCV0,
-+	SIZE_CALIB_IQ_DCOC_80MHZ_BMP_TCV1 = ADDR_CALIB_IQ_DCOC_CHANNEL_160MHZ_BMP_TCV0 -
-+		ADDR_CALIB_IQ_DCOC_CHANNEL_80MHZ_BMP_TCV1,
-+	SIZE_CALIB_IQ_DCOC_160MHZ_BMP_TCV0 = ADDR_CALIB_IQ_DCOC_CHANNEL_160MHZ_BMP_TCV1 -
-+		ADDR_CALIB_IQ_DCOC_CHANNEL_160MHZ_BMP_TCV0,
-+	SIZE_CALIB_IQ_DCOC_160MHZ_BMP_TCV1 = ADDR_CALIB_IQ_DCOC_DATA_20MHZ_TCV0 -
-+		ADDR_CALIB_IQ_DCOC_CHANNEL_160MHZ_BMP_TCV1,
-+	SIZE_CALIB_IQ_DCOC_DATA_20MHZ_TCV0 = ADDR_CALIB_IQ_DCOC_DATA_20MHZ_TCV1 -
-+		ADDR_CALIB_IQ_DCOC_DATA_20MHZ_TCV0,
-+	SIZE_CALIB_IQ_DCOC_DATA_20MHZ_TCV1 = ADDR_CALIB_IQ_DCOC_DATA_40MHZ_TCV0 -
-+		ADDR_CALIB_IQ_DCOC_DATA_20MHZ_TCV1,
-+	SIZE_CALIB_IQ_DCOC_DATA_40MHZ_TCV0 = ADDR_CALIB_IQ_DCOC_DATA_40MHZ_TCV1 -
-+		ADDR_CALIB_IQ_DCOC_DATA_40MHZ_TCV0,
-+	SIZE_CALIB_IQ_DCOC_DATA_40MHZ_TCV1 = ADDR_CALIB_IQ_DCOC_DATA_80MHZ_TCV0 -
-+		ADDR_CALIB_IQ_DCOC_DATA_40MHZ_TCV1,
-+	SIZE_CALIB_IQ_DCOC_DATA_80MHZ_TCV0 = ADDR_CALIB_IQ_DCOC_DATA_80MHZ_TCV1 -
-+		ADDR_CALIB_IQ_DCOC_DATA_80MHZ_TCV0,
-+	SIZE_CALIB_IQ_DCOC_DATA_80MHZ_TCV1 = ADDR_CALIB_IQ_DCOC_CHANNEL_160MHZ_BMP_TCV0 -
-+		ADDR_CALIB_IQ_DCOC_DATA_80MHZ_TCV1,
-+	SIZE_CALIB_IQ_DCOC_DATA_160MHZ_TCV0 = ADDR_CALIB_IQ_DCOC_CHANNEL_160MHZ_BMP_TCV1 -
-+		ADDR_CALIB_IQ_DCOC_CHANNEL_160MHZ_BMP_TCV0,
-+	SIZE_CALIB_IQ_DCOC_DATA_160MHZ_TCV1 = sizeof(struct eeprom_calib_data) *
-+		ADDR_CALIB_IQ_DCOC_CHANNEL_160MHZ_BMP_TCV1,
-+	EEPROM_BASIC_NUM_BYTES = sizeof(struct eeprom) - sizeof(struct eeprom_calib_iq_dcoc),
-+#else
-+	EEPROM_BASIC_NUM_BYTES = sizeof(struct eeprom),
-+#endif
-+	EEPROM_NUM_BYTES = sizeof(struct eeprom),
++bool cl_ela_lcu_is_valid_config(struct cl_chip *chip)
++{
++	struct cl_ela_db *ed = &chip->ela_db;
 +
-+	EEPROM_LAST_BYTE = EEPROM_NUM_BYTES - 1,
-+};
++	return ed->error_state == 0;
++}
 +
-+#endif /* CL_EEPROM_H */
++char *cl_ela_lcu_config_name(struct cl_chip *chip)
++{
++	if (!cl_ela_is_on(chip))
++		return CL_ELA_MODE_DFLT_OFF;
++
++	if (cl_ela_is_default(chip))
++		return CL_ELA_MODE_DFLT_SYMB_LINK;
++
++	return chip->conf->ce_ela_mode;
++}
++
++int cl_ela_lcu_config_read(struct cl_chip *chip)
++{
++	struct cl_ela_db *ed = &chip->ela_db;
++	char filename[CL_FILENAME_MAX] = {0};
++	size_t size = 0;
++	int ret = 0;
++
++	if (!cl_ela_is_on(chip)) {
++		ret = -EOPNOTSUPP;
++		goto exit;
++	}
++
++	reset_stats(ed);
++
++	snprintf(filename, sizeof(filename), "%s", cl_ela_lcu_config_name(chip));
++	size = cl_file_open_and_read(chip, filename, &ed->raw_lcu_config);
++	if (!ed->raw_lcu_config) {
++		ret = -ENODATA;
++		goto exit;
++	}
++
++	ret = load_cmds_from_buf(chip, ed->raw_lcu_config, size);
++exit:
++	ed->error_state = ret;
++	return ret;
++}
++
++int cl_ela_init(struct cl_chip *chip)
++{
++	struct cl_ela_db *ed = &chip->ela_db;
++	int ret = 0;
++
++	INIT_LIST_HEAD(&ed->cmd_head);
++
++	if (!cl_ela_is_on(chip))
++		return 0;
++
++	ret = cl_ela_lcu_config_read(chip);
++	if (ret == 0) {
++		cl_ela_lcu_reset(chip);
++		cl_ela_lcu_apply_config(chip);
++	}
++
++	return ret;
++}
++
++void cl_ela_deinit(struct cl_chip *chip)
++{
++	struct cl_ela_db *ed = &chip->ela_db;
++	struct cl_lcu_cmd *cmd = NULL, *cmd_tmp = NULL;
++
++	kfree(ed->raw_lcu_config);
++	ed->raw_lcu_config = NULL;
++
++	list_for_each_entry_safe(cmd, cmd_tmp, &ed->cmd_head, cmd_list)
++		remove_lcu_cmd(cmd);
++}
 -- 
 2.36.1
 
