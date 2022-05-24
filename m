@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D786953298F
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3D43532989
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:43:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236934AbiEXLks (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 May 2022 07:40:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43136 "EHLO
+        id S236975AbiEXLl2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 May 2022 07:41:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236947AbiEXLkm (ORCPT
+        with ESMTP id S237053AbiEXLlL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 May 2022 07:40:42 -0400
+        Tue, 24 May 2022 07:41:11 -0400
 Received: from EUR02-AM5-obe.outbound.protection.outlook.com (mail-eopbgr00041.outbound.protection.outlook.com [40.107.0.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 489AF8CCF2
-        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:40:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C62A1941BA
+        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:40:36 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Y10+JGXUeOkSl02b/vo7aelSFUkr4A50JcWoSDczOlXzF/e8TJEZvciCS6vFdb8ubb6ZCWzWZSeargbISPnwg25BgC7at6o0y5s+mLkVfAPLHaAOMiI1XZ19kBC0FJQZk9P9/THNoBUd2ceFo/4wDtANMfSRZz7KbZRTEJyFANdlQ+BiEsRsyFrUzZEDonlCuSN+dZU70VblGIrhqtz18oan6Pwp2iWa3sBghE5oczBvqf39aeiCmC4c2MAXDqFfaORJIpTKwbyjsryuNE7gkG3b/77ylIJsr3E6X1spc6GKlWltxumJKXd0YuWR3v0luMsQc3WIcjL+826+oWGRvA==
+ b=n/wlAiSGQhkb2tRJ9DeuA7LOKHL0fy9qHf1I81O9hUBCsr20oCF0FURgz68Y+M12BPf/5MYmab9rnmBfxnNXTUfJaE6ngunbnSxytPwhm5j7uvOKfz+sGm+hNBPbgPWqFwockNDHB2O9tCZRtl9cI7S1/PpIE/k1asH+Jb3OzJMFBiU4V3bkcfYxuBOS1vjK0ZHnYwbdTqs0t2yTpNLrMTcr+rd8WNZp0JRPdTzoBJFoTXM0TZThxXGOQHV24uQwY7drUEcsDyfCYm8fEJ04vT5nTne1qF8RGV0pslgFUHIGLxRUfTSgHy+a7avLVp8vF3cdQZVEV3WT/0JRGH2bRQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jq9xtePaeQ03sbSbP+zGe1BtdAMepLr/4o+DOmD1hJk=;
- b=XK5U8HomLkiN16k2u0LjPXnH6i0E9o/m/g+WEeX/nU5P092Y6zfiJ25PGLciJP0qoOzeu6afzwkGOGDXlyTBZkvUYLqE9NvbCxIPkRq8fPlR7wTVoXK/qNZ5y8nipdDfjjQWZ/ZSkWudhahtGX9eTrjpZU8tPABH20IfwXSFRUio73N9oC0/jRmwuKwwBvK7otRd50C5zqqPG4uUPVOe+G858VFT/NHD2qxIYZ1hWr7MXPXBAC5KyDgFA8cQEZFoucBKAp3X9BX3zv7OrHeTNH8LK+NntVoThG0cUdKogQIGVtpApmGTKG7nptT6Qk9yYAQ8jrduecL2dmXC0P7kXg==
+ bh=hLsiStGhBV+fyJYbOK9tcR6/jxKYf7YVRl0ZH+zdLek=;
+ b=E4KjV/119CwdlJ98xMLitilgy4wLxuRi8G1tMGIbg25xvmOCQdc5sujW/Jl1m9HIt5CBROVJbhlDTH+EV4RhSGX3Bb86lMurJSU+wc0lRmVS1PVww9VLakq5YgTDYsucNmal61ATdQnsKtdY3iCFNV9cMpy9HCPSlZVJ//E2DDJvGpyC5mMU1BusEUoZo9aserTUtVT0aRD6e22bzD69SOVeKs0Bd/3PXnWaeC8FvxXfElVvZSyKa6u783UVt59dwRmfL2bzXT8Gcx8UGuM37vRBcnbltfzm/wkGOiwtsiNTnm+K+LoPWSPVfEPzSAlkTkwZlZ89OWUDE4LSekVo6A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jq9xtePaeQ03sbSbP+zGe1BtdAMepLr/4o+DOmD1hJk=;
- b=SHd73JnIbP8qX2MU5TApWBIK5P2QPhXuD1UUdC2i96OC+2YUmhno/wlvCNRiWSpvuh4CH2XkKWY/LW6r3IdJJVzFgnh5WrXt1A2p9CTtYcqNUvfFlt7mW3VzTpOhzsKpxBhGO2Bp7yyQY+rKPs2iAlLV4LQmtSwlXLi+twrbk/0=
+ bh=hLsiStGhBV+fyJYbOK9tcR6/jxKYf7YVRl0ZH+zdLek=;
+ b=iyc68KrUggfVpTxPkfDJWer/IbGm/w5m+cmYB6l1InglPqZIuWorLr7bAaGtkw2q2klfdMWI51sK8XsHaB+1tmUwWYt1wYZhyI5KYsQkuOGbHPIKylolTapYKCUN/OQ9B9V33RA1xr7KcXHjCO0Lh3zyWa8MJVGzP5vh7cRJsvM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -52,9 +52,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v2 91/96] cl8k: add vif.h
-Date:   Tue, 24 May 2022 14:34:57 +0300
-Message-Id: <20220524113502.1094459-92-viktor.barna@celeno.com>
+Subject: [RFC v2 92/96] cl8k: add vns.c
+Date:   Tue, 24 May 2022 14:34:58 +0300
+Message-Id: <20220524113502.1094459-93-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220524113502.1094459-1-viktor.barna@celeno.com>
 References: <20220524113502.1094459-1-viktor.barna@celeno.com>
@@ -65,56 +65,56 @@ X-ClientProxiedBy: AM6PR10CA0092.EURPRD10.PROD.OUTLOOK.COM
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7b63ce08-379f-46e5-6dae-08da3d7a002b
+X-MS-Office365-Filtering-Correlation-Id: 478eed20-10ef-470e-57c8-08da3d7a00ac
 X-MS-TrafficTypeDiagnostic: DBAP192MB1033:EE_
 X-LD-Processed: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8,ExtFwd
-X-Microsoft-Antispam-PRVS: <DBAP192MB10335280D97A1AE68B6901EFF6D79@DBAP192MB1033.EURP192.PROD.OUTLOOK.COM>
+X-Microsoft-Antispam-PRVS: <DBAP192MB103310381F80E561A3A8CA47F6D79@DBAP192MB1033.EURP192.PROD.OUTLOOK.COM>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: yW4GqbLTfM+5OsnXMhGys4yrKW0XKuzSmI44q2zbc+RBpESpcnDElV/ulmZULNwZ8pMgEBjBClCxw72SFk8nJsLWGdKhF9AEDUYe4OvrHofU/L1+Jk7m4YDRVr3mYF21sNt9bGrkF3TpBR+s4bmihZs1MmjR7v2Uw+LResV+e7UbBiFPdAr4kq2BdkCEDFQzBgLkB6niQDyvDqhJgXyHrD/BGaOY5O8M+JmpVoNaVp/s4u2OR8HWbAwAv1agETQpXwqn9yCHETx6FdP+a2ZcoBfTGvLeaMDHT0KLHuUJhxyGLTyJyDNSzSi9wzNGNojfTuqTaSwNgmyULKIdxI3rD7KEdrlul6Q54Muxk5n3e6IV0ye2Bq0IUA+y9ll+cVZmLQY7gsCOp4WQhDypBC9cIdF/aXg2XU/IWFTTK3KuGqfiSZ9Nm0uwOJ6BdazryLlknfY6fziFn0zTG4SLzsmUWpIZ7bLa42Hd4at92Wo9H9kZ23xH1femYqGsbtvxFzJ0dPKsb9nEbFmKwksKhqvBa2xTkxdnbO4AKMFW56BtzIihY2tlpDvyLzO3c3j0T4NHOD4uh4t35b2Rf5SaS6shcKswiLBuNMGf+mjwu36pjwEG/eAvyPJww0516BbhuiHrcMvEbh6jWxgukiA4Z3E4F7Mr2JKBCGEVuqv2ucOIE0AfowdKvGSVzdjSLJkydvrRoVP17oxZ1aP1oIiBrLQFC3iBfoYVZ+LAlvMyj0RXEcA=
+X-Microsoft-Antispam-Message-Info: wLYHMZsga955sZsw7/yp97VmYJTCtbdDMxMBCDpwXKHI/D3lLqoNlJKWWuhFaK92aAUITv/FjAl+s3fObcB+e3KSvTPlKFB8g+2YRlggDXQ13xPc7LHnuGZHJqWZJS6A2Dx30YihjJpZQg6lbX9RCvIh6umgxJo0wxAUh87BdOmTNOJFCc7srDNb3CNzIdB0YCe8eULa7mu+i6zqFREBXkgpq8e4z3BBwdwZKpK9mpZONXu6pIVVgeP80yQ+MxVblcz5PWkhQXDsWRDcSD6yJVjkw4b1+hau5/a+cvpgJegkYCS0OHW8fdDcCAKTkp/lfOfHFGaHdFnx9/ZItJD5kOktTQdf9tNPEDYtWyYSnsCSZDqbUf2D4oeyrKHkTmWHvG3MK+Pz3QFMg5VXRlnPzgZ9nTmQv7GJYf/peHqxnkVoD+Pt28OcWx+6scTUyZ0VOjgiHrezVuMxhOVX3s9fZ/HunsabVJ4BXkoAaCxqvjehwIGTYKns5fYgbyrH43kDpvgODs9zojQsnKe5Cz9xoi8G4KzGPglvpfniuD2LJslxxnTGISzeELwrd18AnBy3EwZIuwuYBeW4JT21XTQE2r6QzK/WfCoXrAZBPTKImz+bCEq2SaJcmTx37dIXUQ/J4YjGrFej973M6tm/oX/hTqpEPngsAdhy4u2DF2Nmt975IitmynxGWqI4+WYhMxPcQR53w4DXM9KJMmU6QxRHhtvpeOro3fQ03cqG2iR75+o=
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(346002)(376002)(366004)(136003)(396003)(39850400004)(2906002)(4326008)(6916009)(38350700002)(8676002)(86362001)(316002)(54906003)(38100700002)(66476007)(66556008)(26005)(2616005)(52116002)(9686003)(36756003)(6486002)(66946007)(6512007)(6506007)(107886003)(5660300002)(508600001)(83380400001)(8936002)(186003)(1076003)(41300700001)(6666004)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?FvFVUSydHtTTI0rVSsuwT53zFHX+fahEr2hVD7uMyPBuIlwnRoChzAn+FIJO?=
- =?us-ascii?Q?XnkU1gE0MnZ/otQ4pXOVfgJaoNJbRDoosQy2GrCjqHTejBMCHJH8u3ULXN3u?=
- =?us-ascii?Q?WwtDNwPb2CjPyQ6o5qChGL2JuiBlrvMQGhtUj0KnK/lz3/N/cy8vFupGXUN4?=
- =?us-ascii?Q?h+pvp//XBEr/tqnpcAhwMROn4gPuVPRGoHdI3HJcUFpT0pqDP61C2OHJuC83?=
- =?us-ascii?Q?xFT4C4zLiJFeEiKSvu3OdG2wpZooLT7/S0KTq+z/BBoXteW3jjxteXnbQCcX?=
- =?us-ascii?Q?8E+faz/y6EXLvB6P1FHNWNGqHVs3/P6wEbO/UZs7SAEcuPqilRUGzxPo7nnK?=
- =?us-ascii?Q?zmVB8Bx3kX4iLdrOMbYHPXrX05Gm9cyEaGkKiXNw/pJfGNcanKATL2bouSID?=
- =?us-ascii?Q?l4x41+XIljHPHfg1dOIgjl9pajUgIc+8mlneKEZmYx7DG171r3hQeTcSzH5p?=
- =?us-ascii?Q?Wl+E+QmPfOPEOH7ouu1SckNS3UU/oL16ACP7V+uoASiSNRV0ZrDDIwq5vZrV?=
- =?us-ascii?Q?PfFSFAkIO7Tf4ITL9gXnCoRtw0L0bwU6sHUdEpyL7o8hc/xv4WegyAJlNLmF?=
- =?us-ascii?Q?u5N+9f9Vz1OpnNKy2LsE8/mcMOkNYhslPfKa+DbhtKQHlEpwPJq9gg2UyGlg?=
- =?us-ascii?Q?s6YZjmCH/rdYKqWnwpdFnanJCBSNMFW1H7T8fck4kgivs0NWBDOuLxFnhyFd?=
- =?us-ascii?Q?Ngsn8Md+05NSO5MicEzXprMOJXktgedy8PfFxU4uxUE+hg6WHyGsf4DKT+2Q?=
- =?us-ascii?Q?YtZHSCzGxqJNZKFfviUS4T3+uzRPoM1oOMjdDvxdJuk9ZMHYfmkw3e+8FcqG?=
- =?us-ascii?Q?l/TlufU+YM6adnSyboC2WXf9P77iK/itSg8wNDZRlr4bSH0JQrrTuKVtyjnb?=
- =?us-ascii?Q?6lYTpmjws9S35DUuHud+NIDikUjpONK8k2AT8FcoDvMDm2UCKPqSIPgODOSn?=
- =?us-ascii?Q?dwhGfK4cnjOqhQ3EQjqOrs4pHSa7e+Il6AZJVe0zUvQEgOKI692MSI1zqHhQ?=
- =?us-ascii?Q?/WNkUTs3VN7NbUxLFvbxyUEmlZXV0qk8f+rPW0Q0E5LdM6LACTyJJMMbMMuc?=
- =?us-ascii?Q?/uFUOu9GYpT7hIqaflIpSAQ0aCWXDKlf0Q1a5Ftir7acyxlB/7fl/qjbrYKi?=
- =?us-ascii?Q?M5lXxHAnpdm60DtGELeFCyK0BDEzSCWGpuDCQ/zAp5NVce/jS0O+mklBfXg8?=
- =?us-ascii?Q?+SsHo38KC0FuGQIWY12n8HcgwmpOSIqRo8kP1VXPlT4yEKwmI8IQOd/7C5PQ?=
- =?us-ascii?Q?wlVWGL9rp3xHWKh5Rldwc6J/0CO5FLakVhRwOftHkl9NpMybtRsW0cUIsQS3?=
- =?us-ascii?Q?c6XLhI242X8bC8l84oACLBHhX5nTDMLsKr21x3tZJbvt21kaY55WZvd39lrX?=
- =?us-ascii?Q?tQHuM2Li1t1QOxeRJpyiVEaYwaoHSB+Gd5lpIGMmtU1VlH8GiLrs04QXwaFh?=
- =?us-ascii?Q?kJUi/lieeGgiLSO/wr+OsFudfCZ7h19B54VCRcNIQN3IvLVHLPWnJOQOXbBg?=
- =?us-ascii?Q?mVzdrP8DVxAue9YYMeuyXk1g/XeJFaKd0rMkJyaiqFAerVX9PflECotGHMmA?=
- =?us-ascii?Q?tPMHKD+1mOqVGadreqvi9RCPtzm8YxOsS1IXcVkQkNGDWmICrkm7kW6A0RSo?=
- =?us-ascii?Q?cKh+r3uel6B1EBLcsAo7ISgdYbB8aS43cICOI6iLD7gIl6SuapVNmw01mjxo?=
- =?us-ascii?Q?JWWGWIj+OyzObL9bD+EMLPGE7A7pU6uaUPInDkN99Rr4iPr0Mkh6J6fEd2i2?=
- =?us-ascii?Q?jMK3jYOugDgz4CTTc4718SVNsXzSwcY=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?W6z7eB4gybonHrkr3TonQ1IhtIyioMJK60D2XzcHNrUvWWc6J1fIWmoj2vdJ?=
+ =?us-ascii?Q?+gZwnr0bq3uHkllSgN++tSYIhFUj2k+u3XFcdMcODygOVdBCe+qTAAICPQZ/?=
+ =?us-ascii?Q?QDocJKdOYJuvb98jazdk/a+v+woQ/IAARvHMGMjvq2nesGmFB63k5MiYcHPP?=
+ =?us-ascii?Q?CqLgeXEXRK2oS3KKUcG53oRTunsZdN+INVEGiR3CjXzJNVbq3fWt9InPnySo?=
+ =?us-ascii?Q?fDeeBJBWjG8897EThoXKQlpnoXgKpGi0oOsjGQBef5wFzama45DjAc/FhIUF?=
+ =?us-ascii?Q?EDsmdoQKK8ujWawUa1Aee4EfXSUgzPSDmEHpUJ08pGJaTJzhsZBTjAU6GX+/?=
+ =?us-ascii?Q?XNvNYw8klKVOSS1k3w+mRHAAkqivpv+N395/n4fBz+wfiMEVBQ8l6OPkgNHh?=
+ =?us-ascii?Q?j/6zTy5Wqbf6/bb9de8zhinkSeoAFTcVGVmsvFXh9TQQjWJCJKtAzbZetpxe?=
+ =?us-ascii?Q?EAQVI25xnGm3V5/XEVupzv6mSTrd0CXy45uMvbaT1kRZsn97uOLA4VdBuBT0?=
+ =?us-ascii?Q?obzA23Gp/nWiTQQAjWKC/FI/p1UDvv7fo4RBsm5FDkISEsti+2ySnmvh5I+5?=
+ =?us-ascii?Q?r17Jge4gM2thnNVXDTSDsouHE4bWncS7lUiSj5EcMQVadD5tmF5g4vj0ctBz?=
+ =?us-ascii?Q?qRv9z6CVXylr517Qtljtx1m58pLL2RF4aU7zj+wX3rCmj89lm+e+UFoW/Z/H?=
+ =?us-ascii?Q?HHxxcv/hQrohFcaN6hLcCOoy5rslN47c+nkh9pzPrVXnGRIdSKc8TSsyTIUm?=
+ =?us-ascii?Q?INNbLzn4Wty5nBCy4ri/KvFymWKyUM62WDbcHNAMmBrZjyYk0eN1aia+fqMd?=
+ =?us-ascii?Q?QV7HwBunWI5ItYvigVse49oZW70BJEe4/qoPNvZ1lKP0aMdWeCVDSAofSoSz?=
+ =?us-ascii?Q?TSzozxiWDqyObQj22/Wf4AxFl2yBco1kec0psBww5kecDtHlKYRFZyqs9LH2?=
+ =?us-ascii?Q?pmW/aHkPWws1Auoxqp1qKU7i1KRyd2XTTT5+ySfzdvFDpcnWRBxfkDipTC3c?=
+ =?us-ascii?Q?9wDCRR0+B/ByvfIz9fWLbzOH7d8PXGtQliD3CAkt2fw0BnGlvtoFIOStua3h?=
+ =?us-ascii?Q?h+D+4IJ9OqmzVrb/fxQPC68eWuyiYtCihWEJ8kaz6DKpWgAvUJfMCd5+B0ym?=
+ =?us-ascii?Q?SodwvVHu4exgzJC6xjLoPwBEbx5Fj1VhbVSEkNJqaEv8ctrdYwBYXQNNfTHM?=
+ =?us-ascii?Q?aCAZ1GdaBbrX0ndVUTnYTwX76dKvyRjgcXUGUH4AQxxcLnmPvSGrPtQ8Z62G?=
+ =?us-ascii?Q?iUCq+zFmccIfpo7UQVobvng+M3YaBSMOSD7Ae1TpEfNtkqr81HoyJgdCqwab?=
+ =?us-ascii?Q?gu6uK+LjLKaHZ9IQOlVj5bgJCSxULeBfqpaRwHH/9Rl8rLqX8pXfNcp1fP3m?=
+ =?us-ascii?Q?KfVX3gZnnaw/QcYUyLY42/e7qdbpjYORZDDA0IeQizOgNs2d51QXrkLPnzpB?=
+ =?us-ascii?Q?nvicdqv1Jnbh+sdiERYXy+pIoDZP4HLkeDXpBhWqCnXHPLbf+0hyHI32E4t0?=
+ =?us-ascii?Q?0rdDHoz8d4XeQuKEEfvEl9Tbz+d+SObL3/UJ8rSKsPw3pJ6ovm76TIMAkadm?=
+ =?us-ascii?Q?Hv31kcBIHyaxiBpwKwy3/uXFNLyRzsMhbROA8kuJ8/GG57YEfjiUkSkKgD42?=
+ =?us-ascii?Q?IiMzlVt3hwDHkLwxkj4jCn5gGpMeDAtVUfWWJ1gnrKathsNubdnb1SzmC5Q2?=
+ =?us-ascii?Q?KSSntvXxZcVxLVgPhJzxIDrQtR4DYTUIT2leXQL28Ih0ALU1t/imZ06yWX88?=
+ =?us-ascii?Q?Rg0eukjgFJX0sgUMlvbXr7ctAypl7A8=3D?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b63ce08-379f-46e5-6dae-08da3d7a002b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 478eed20-10ef-470e-57c8-08da3d7a00ac
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:39:02.6215
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:39:03.4351
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VDw6Em73yh4hCsrWSVWE043IJn/ll0Vx5z3XbqCEojFYK/MtpSaIsiRAZe0GcVDN12mzgTQV+tBqf5GqFX3a9Q==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 23m9EuLLu1BqmWZYG1Pg+6fM046CGpKcv84utPXiEFxScX0a4t0sndL6NfIP7VQ1cYYxmdGdxceVRPvnsv+axg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAP192MB1033
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -133,97 +133,370 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/vif.h | 81 ++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/vif.h
+ drivers/net/wireless/celeno/cl8k/vns.c | 354 +++++++++++++++++++++++++
+ 1 file changed, 354 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/vns.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/vif.h b/drivers/net/wireless/celeno/cl8k/vif.h
+diff --git a/drivers/net/wireless/celeno/cl8k/vns.c b/drivers/net/wireless/celeno/cl8k/vns.c
 new file mode 100644
-index 000000000000..2563c6c3222d
+index 000000000000..6f79b36d0a5c
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/vif.h
-@@ -0,0 +1,81 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause */
++++ b/drivers/net/wireless/celeno/cl8k/vns.c
+@@ -0,0 +1,354 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
 +/* Copyright(c) 2019-2022, Celeno Communications Ltd. */
 +
-+#ifndef CL_VIF_H
-+#define CL_VIF_H
++#include "maintenance.h"
++#include "mac_addr.h"
++#include "debug.h"
++#include "vns.h"
 +
-+#include <linux/netdevice.h>
++#define CL_VNS_HASH_IDX    (ETH_ALEN - 2)
++#define CL_VNS_MGMT_AGEOUT 200
 +
-+#include "wrs.h"
++#define vns_pr(...) \
++	do { \
++		if (unlikely(cl_hw->vns_db->dbg)) \
++			pr_debug("[VNS]" __VA_ARGS__); \
++	} while (0)
 +
-+struct cl_connection_data {
-+	u32 max_client;            /* MAX Clients of the SSID */
-+	u32 max_client_timestamp;  /* MAX Clients Timestamp of the SSID */
-+	u32 watermark_threshold;   /* Number of clients threshold for watermark */
-+	u32 watermark_reached_cnt; /* Number of times the watermark threshold was reached */
-+};
++#define vns_pr_pkt(...) \
++	do { \
++		if (unlikely(cl_hw->vns_db->dbg_per_packet)) \
++			pr_debug("[VNS-pkt]" __VA_ARGS__); \
++	} while (0)
 +
-+struct cl_traffic_counters {
-+	u64 tx_packets;
-+	u64 tx_bytes;
-+	u64 rx_packets;
-+	u64 rx_bytes;
-+	u32 tx_errors;
-+	u32 rx_errors;
-+	u32 tx_dropped;
-+	u32 rx_dropped;
-+};
++static void cl_vns_mgmt_list_add(struct cl_hw *cl_hw, u8 *addr, s8 strongset_rssi)
++{
++	/* Add entry to mgmt list */
++	struct cl_vns_rssi_entry *entry = kzalloc(sizeof(*entry), GFP_ATOMIC);
 +
-+/*
-+ * Structure used to save information relative to the managed interfaces.
-+ * Will be used as the 'drv_priv' field of the "struct ieee80211_vif" structure.
-+ * This is also linked within the cl_hw vifs list.
-+ */
-+struct cl_vif {
-+	struct list_head list;
-+	struct cl_hw *cl_hw;
-+	struct ieee80211_vif *vif;
-+	struct net_device *dev;
-+	struct list_head key_list_head;
-+	struct cl_key_conf *key;
-+	int key_idx_default;
-+	u32 unicast_tx;
-+	u32 unicast_rx;
-+	u32 multicast_tx;
-+	u32 multicast_rx;
-+	u32 broadcast_tx;
-+	u32 broadcast_rx;
-+	u16 sequence_number;
-+	u8 num_sta; /* Number of station connected per SSID */
-+	struct cl_connection_data *conn_data;
-+	u8 vif_index;
-+	bool tx_en;
-+	/* Holds info for channel utilization stats */
-+	u32 chan_util_last_tx_bytes;
-+	u32 chan_util;
-+	struct mcast_table *mcast_table;
-+	struct cl_wrs_rate_params fixed_params;
-+	struct cl_traffic_counters trfc_cntrs[AC_MAX];
-+	bool wmm_enabled;
-+	u16 mesh_basic_rates;
-+};
++	if (!entry)
++		return;
 +
-+struct cl_vif_db {
-+	struct list_head head;
-+	rwlock_t lock;
-+	u8 num_iface_bcn;
-+};
++	/* Fill entry parameters */
++	INIT_LIST_HEAD(&entry->list_all);
++	INIT_LIST_HEAD(&entry->list_addr);
++	cl_mac_addr_copy(entry->addr, addr);
++	entry->strongset_rssi = strongset_rssi;
++	entry->timestamp = jiffies;
 +
-+void cl_vif_init(struct cl_hw *cl_hw);
-+void cl_vif_add(struct cl_hw *cl_hw, struct cl_vif *cl_vif);
-+void cl_vif_remove(struct cl_hw *cl_hw, struct cl_vif *cl_vif);
-+struct cl_vif *cl_vif_get_next(struct cl_hw *cl_hw, struct cl_vif *cl_vif);
-+struct cl_vif *cl_vif_get_by_dev(struct cl_hw *cl_hw, struct net_device *dev);
-+struct cl_vif *cl_vif_get_by_mac(struct cl_hw *cl_hw, u8 *mac_addr);
-+struct cl_vif *cl_vif_get_first(struct cl_hw *cl_hw);
-+struct cl_vif *cl_vif_get_first_ap(struct cl_hw *cl_hw);
-+struct net_device *cl_vif_get_first_net_device(struct cl_hw *cl_hw);
-+struct net_device *cl_vif_get_dev_by_index(struct cl_hw *cl_hw, u8 index);
-+void cl_vif_ap_tx_enable(struct cl_hw *cl_hw, bool enable);
++	/* Add to list */
++	cl_hw->vns_db->mgmt_db.num_entries++;
++	list_add(&entry->list_all, &cl_hw->vns_db->mgmt_db.list_all);
++	list_add(&entry->list_addr, &cl_hw->vns_db->mgmt_db.list_addr[addr[CL_VNS_HASH_IDX]]);
++}
 +
-+#endif /* CL_VIF_H */
++static void cl_vns_mgmt_list_remove(struct cl_hw *cl_hw, struct cl_vns_rssi_entry *entry)
++{
++	/* Remove entry from mgmt list */
++	cl_hw->vns_db->mgmt_db.num_entries--;
++	list_del(&entry->list_all);
++	list_del(&entry->list_addr);
++	kfree(entry);
++}
++
++static void cl_vns_mgmt_list_flush(struct cl_hw *cl_hw)
++{
++	/* Flush all mgmt list */
++	if (cl_hw->vns_db->mgmt_db.num_entries > 0) {
++		struct cl_vns_rssi_entry *entry = NULL, *tmp = NULL;
++
++		list_for_each_entry_safe(entry, tmp, &cl_hw->vns_db->mgmt_db.list_all, list_all)
++			cl_vns_mgmt_list_remove(cl_hw, entry);
++	}
++}
++
++static struct cl_vns_rssi_entry *cl_vns_mgmt_list_find(struct cl_hw *cl_hw, u8 *addr)
++{
++	/* Search for entry in mgmt list */
++	struct cl_vns_mgmt_db *mgmt_db = &cl_hw->vns_db->mgmt_db;
++
++	if (mgmt_db->num_entries > 0) {
++		struct cl_vns_rssi_entry *entry = NULL;
++
++		list_for_each_entry(entry, &mgmt_db->list_addr[addr[CL_VNS_HASH_IDX]], list_addr)
++			if (ether_addr_equal(entry->addr, addr))
++				return entry;
++	}
++
++	return NULL;
++}
++
++static bool cl_vns_mgmt_list_find_and_remove(struct cl_hw *cl_hw, u8 *addr)
++{
++	/*
++	 * Search for entry in mgmt list
++	 * If entry found remove it and return true
++	 */
++	struct cl_vns_rssi_entry *entry = cl_vns_mgmt_list_find(cl_hw, addr);
++
++	if (entry) {
++		cl_vns_mgmt_list_remove(cl_hw, entry);
++		return true;
++	}
++
++	return false;
++}
++
++static void cl_vns_mgmt_list_ageout(struct cl_hw *cl_hw)
++{
++	/* Remove old entries from mgmt list */
++	struct cl_vns_mgmt_db *mgmt_db = &cl_hw->vns_db->mgmt_db;
++
++	if (mgmt_db->num_entries > 0) {
++		struct cl_vns_rssi_entry *entry = NULL, *tmp = NULL;
++		unsigned long delta_time;
++
++		list_for_each_entry_safe(entry, tmp, &mgmt_db->list_all, list_all) {
++			delta_time = jiffies_to_msecs(jiffies - entry->timestamp);
++
++			if (delta_time > CL_VNS_MGMT_AGEOUT) {
++				vns_pr("sta %pM removed from list because of ageout\n",
++				       entry->addr);
++				cl_vns_mgmt_list_remove(cl_hw, entry);
++			}
++		}
++	}
++}
++
++static s8 cl_vns_get_strongest_rssi(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
++{
++	struct cl_vns_sta_db *vns_db = &cl_sta->vns_db;
++	s32 rssi_samples = vns_db->rssi_samples;
++
++	if (rssi_samples > 0) {
++		u8 i;
++		s32 strongest_rssi = S32_MIN;
++
++		for (i = 0; i < cl_hw->num_antennas; i++)
++			if (vns_db->rssi_sum[i] > strongest_rssi)
++				strongest_rssi = vns_db->rssi_sum[i];
++
++		/* Reset rssi for next time that cl_vns_get_strongest_rssi() will be called */
++		memset(vns_db->rssi_sum, 0, sizeof(vns_db->rssi_sum));
++		vns_db->rssi_samples = 0;
++
++		return (s8)(strongest_rssi / rssi_samples);
++	}
++
++	return 0;
++}
++
++static void cl_vns_monitor_rssi(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
++{
++	/* Monitor RSSI of associated stations and update state if necessary */
++	struct cl_vns_sta_db *vns_db = &cl_sta->vns_db;
++	s8 strongset_rssi = cl_vns_get_strongest_rssi(cl_hw, cl_sta);
++	s8 rssi_thr = 0;
++	bool is_vns = false;
++
++	if (strongset_rssi == 0)
++		return;
++
++	/*
++	 * Calculate RSSI threshold (take hystersis into
++	 *  consideration according to current state)
++	 */
++	if (vns_db->is_very_near)
++		rssi_thr = cl_hw->conf->ci_vns_rssi_thr - cl_hw->conf->ci_vns_rssi_hys;
++	else
++		rssi_thr = cl_hw->conf->ci_vns_rssi_thr + cl_hw->conf->ci_vns_rssi_hys;
++
++	is_vns = strongset_rssi > rssi_thr;
++	/* Avoid toggling of VNS state - require two consecutive same decisions */
++	if (is_vns != vns_db->prev_decision) {
++		vns_db->prev_decision = is_vns;
++		return;
++	}
++
++	if (is_vns != vns_db->is_very_near) {
++		vns_pr("sta %pM changed state, strongset_rssi = %d, is_vns = %s\n",
++		       cl_sta->addr, strongset_rssi, is_vns ? "TRUE" : "FALSE");
++		vns_db->is_very_near = is_vns;
++		cl_msg_tx_set_vns(cl_hw, cl_sta->sta_idx, is_vns);
++	}
++}
++
++static void cl_vns_recovery_sta(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
++{
++	if (cl_sta->vns_db.is_very_near)
++		cl_msg_tx_set_vns(cl_hw, cl_sta->sta_idx, true);
++}
++
++int cl_vns_init(struct cl_hw *cl_hw)
++{
++	int i = 0;
++	u8 vns_pwr_mode = cl_hw->conf->ci_vns_pwr_mode;
++
++	cl_hw->vns_db = vzalloc(sizeof(*cl_hw->vns_db));
++	if (!cl_hw->vns_db)
++		return -ENOMEM;
++
++	if (vns_pwr_mode == VNS_MODE_DATA || vns_pwr_mode == VNS_MODE_ALL)
++		cl_hw->vns_db->enable = true;
++
++	spin_lock_init(&cl_hw->vns_db->lock);
++
++	INIT_LIST_HEAD(&cl_hw->vns_db->mgmt_db.list_all);
++
++	for (i = 0; i < STA_HASH_SIZE; i++)
++		INIT_LIST_HEAD(&cl_hw->vns_db->mgmt_db.list_addr[i]);
++
++	return 0;
++}
++
++void cl_vns_close(struct cl_hw *cl_hw)
++{
++	if (cl_hw->vns_db->enable) {
++		spin_lock_bh(&cl_hw->vns_db->lock);
++		cl_vns_mgmt_list_flush(cl_hw);
++		spin_unlock_bh(&cl_hw->vns_db->lock);
++
++		cl_hw->vns_db->enable = false;
++	}
++
++	vfree(cl_hw->vns_db);
++	cl_hw->vns_db = NULL;
++}
++
++void cl_vns_maintenance(struct cl_hw *cl_hw)
++{
++	/*
++	 * Maintenance:
++	 * 1) Remove old entries from mgmt list
++	 * 2) Update state for associated clients
++	 */
++	if (!cl_hw->vns_db || !cl_hw->vns_db->enable)
++		return;
++
++	cl_hw->vns_db->interval_period += CL_MAINTENANCE_PERIOD_SLOW_MS;
++
++	if (cl_hw->vns_db->interval_period < cl_hw->conf->ci_vns_maintenance_time)
++		return;
++
++	cl_hw->vns_db->interval_period = 0;
++
++	spin_lock_bh(&cl_hw->vns_db->lock);
++	cl_vns_mgmt_list_ageout(cl_hw);
++	spin_unlock_bh(&cl_hw->vns_db->lock);
++
++	/* Check RSSI of associated stations */
++	cl_sta_loop(cl_hw, cl_vns_monitor_rssi);
++}
++
++void cl_vns_mgmt_handler(struct cl_hw *cl_hw, u8 *addr, s8 rssi[MAX_ANTENNAS])
++{
++	/*
++	 * Handle management frames of non-associated stations,
++	 * and save the very-near ones in the mgmt list
++	 */
++	s8 strongset_rssi = 0;
++	struct cl_vns_rssi_entry *entry = NULL;
++
++	if (!cl_hw->vns_db->enable)
++		return;
++
++	strongset_rssi = cl_rssi_get_strongest(cl_hw, rssi);
++
++	spin_lock_bh(&cl_hw->vns_db->lock);
++
++	entry = cl_vns_mgmt_list_find(cl_hw, addr);
++
++	if (entry) {
++		if (strongset_rssi > cl_hw->conf->ci_vns_rssi_thr) {
++			/* Update exisiting entry */
++			entry->strongset_rssi = strongset_rssi;
++			entry->timestamp = jiffies;
++			vns_pr("sta %pM updated in list (rssi=%d)\n",
++			       addr, strongset_rssi);
++		} else {
++			/* Remove exisiting entry */
++			cl_vns_mgmt_list_remove(cl_hw, entry);
++			vns_pr("sta %pM removed from list (rssi=%d)\n",
++			       addr, strongset_rssi);
++		}
++	} else {
++		if (strongset_rssi > cl_hw->conf->ci_vns_rssi_thr) {
++			/* Add new entry */
++			cl_vns_mgmt_list_add(cl_hw, addr, strongset_rssi);
++			vns_pr("sta %pM added to list (rssi=%d)\n",
++			       addr, strongset_rssi);
++		}
++	}
++
++	spin_unlock_bh(&cl_hw->vns_db->lock);
++}
++
++bool cl_vns_is_very_near(struct cl_hw *cl_hw, struct cl_sta *cl_sta, struct sk_buff *skb)
++{
++	bool is_vns = false;
++	/* This function checks for every TX packet whether it's VNS or not */
++	if (!cl_hw->vns_db->enable)
++		return false;
++
++	if (unlikely(!cl_sta)) {
++		struct ieee80211_hdr *mac_hdr = (struct ieee80211_hdr *)skb->data;
++
++		spin_lock_bh(&cl_hw->vns_db->lock);
++		is_vns = cl_vns_mgmt_list_find(cl_hw, mac_hdr->addr1);
++		spin_unlock_bh(&cl_hw->vns_db->lock);
++
++		vns_pr_pkt("mgmt-sta %pM, is_vns = %s\n",
++			   mac_hdr->addr1, is_vns ? "TRUE" : "FALSE");
++
++		return is_vns;
++	}
++	is_vns = cl_sta->vns_db.is_very_near;
++
++	vns_pr_pkt("assoc-sta %pM, is_vns = %s\n",
++		   cl_sta->addr, is_vns ? "TRUE" : "FALSE");
++
++	return is_vns;
++}
++
++void cl_vns_sta_add(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
++{
++	/* Update is_very_near according to mgmt list */
++	bool is_vns = false;
++
++	if (!cl_hw->vns_db->enable)
++		return;
++
++	spin_lock_bh(&cl_hw->vns_db->lock);
++	is_vns = cl_vns_mgmt_list_find_and_remove(cl_hw, cl_sta->addr);
++	spin_unlock_bh(&cl_hw->vns_db->lock);
++
++	if (is_vns) {
++		vns_pr("sta %pM connected - is_vns = TRUE\n", cl_sta->addr);
++		cl_sta->vns_db.is_very_near = true;
++		cl_sta->vns_db.prev_decision = true;
++		cl_msg_tx_set_vns(cl_hw, cl_sta->sta_idx, true);
++	} else {
++		vns_pr("sta %pM connected - is_vns = FALSE\n", cl_sta->addr);
++	}
++}
++
++void cl_vns_handle_rssi(struct cl_hw *cl_hw, struct cl_sta *cl_sta, s8 rssi[MAX_ANTENNAS])
++{
++	/* Collect rssi samples */
++	int i;
++
++	if (!cl_hw->vns_db->enable)
++		return;
++
++	for (i = 0; i < cl_hw->num_antennas; i++)
++		cl_sta->vns_db.rssi_sum[i] += rssi[i];
++
++	cl_sta->vns_db.rssi_samples++;
++}
++
++void cl_vns_recovery(struct cl_hw *cl_hw)
++{
++	vns_pr("Recovery\n");
++	cl_sta_loop_bh(cl_hw, cl_vns_recovery_sta);
++}
++
 -- 
 2.36.1
 
