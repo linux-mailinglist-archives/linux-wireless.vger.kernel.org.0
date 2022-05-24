@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7A6E53293F
+	by mail.lfdr.de (Postfix) with ESMTP id F3D8C532940
 	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:39:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236793AbiEXLiG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 May 2022 07:38:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40276 "EHLO
+        id S236786AbiEXLiH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 May 2022 07:38:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236786AbiEXLiF (ORCPT
+        with ESMTP id S236773AbiEXLiG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 May 2022 07:38:05 -0400
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-eopbgr60084.outbound.protection.outlook.com [40.107.6.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D2BB8BD09
-        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:37:58 -0700 (PDT)
+        Tue, 24 May 2022 07:38:06 -0400
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-eopbgr70041.outbound.protection.outlook.com [40.107.7.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 731F68CCCF
+        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:38:00 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kOXnxCzDcAjNaKEwYtbV3dps/RNditZizRWyvM07ZmjpvZSEpie1qqNQ0kOBh6aVCB/eN/Hkbj6hNs+bx8SSPMMhzETKuDsbMcW7cIpQp5qEqoahJEwzHIBcrxTkPEMHEDMZ8THBwmkZ3cF/4ri6t8gIxOwoj2CAx/pAxjr7FRmqr7PNfok3EEKzizzHS695qWWQOz8vHhW9wStm7JXIuuu6rEWRmJcS/TaSHknBbi4O5IGmRpxxC4O203RS3DbkQn8UAjX54rh++8J9Jt3wH04hVKDua2sui3Io6PVYDyevcFhxA1wT4KVCumIJ1qvxkalOeRws67AS0Q0eXPcO4w==
+ b=iK74rTsn1WRQVC2r5rRE7rpIo46/fRNfddVd8OQ3hMvD4H0PZd9Lm8c1RBmesVZf7NGm+dQ64j5dwi+PYb6otWJSBFLVdNCHeqRHNMPZErwk8iDULm//7wwjPoH1Zsm68/rUeP9YSGuhoWU831b6m52tJ+nhD11d0c8g8DGFRH7lnRjdCpSRwJmrYI+NOPevd1wbWhfObfH7ozorflTmIJ7t+aaDomXvw0d+rfwOeFvqePFR9fXoTGgyC2D1mk3ILxVfnvQf6iXCtprIABo7yys7InFkIrzXZqCffdLq4ox/vSkYenESFazqvG27ZwCoLkOtWsUaYN4XglYUYEr43w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n/yje7kGVUxMRVXinPBQpt7CEFdo5vm3t3XU8367uwc=;
- b=iy20+KlFAO1M1yf9+xidU/lmiPYALYxokVvphp+0doTJp5F7fv2b/WF2atLaJhXtNbQh3kRNeJqaC9MfmsAQrZi4mp+UsvKXgy8R3f9Em0v9eQF+aYFSfsxKvmiCEpjZq4o4uCiN5LqcKpvpuzdx5SfJjCwGlj0n0gEkI5GmgYxbE+grdZgFoZ0z0RxfoBYoCb+WhNvj+IkU2x/9ksE40ARdmUPp6gFusv+h/TDw8pxmyoi1d7/ZUxwAjji7OxXYK19wufNJBRW7RdfRosZccBsvX4tvmk44nTGJAy+8agHRvvQ4wr4Xvx6n3BU/5gBzMTG0GURn70Hif4U4lI2Pag==
+ bh=Co7LvVuHe8CONzs7QyYAq8Y2I8T5eAave9eAfyV0OEA=;
+ b=nri3IsI6R2cthe6MU/PhXxoMtE3z1yyry97I8t+tAl8n9SSbhUGJ0/6QufyCkj3ViFNG2QG+BZMTbSD3rWNuMLYsZqbHkTAZGUf+AFucofpdiIW3gDdxJpI5Fzjr6sLHkLVm6wQ5kBIteWTsyWPSkr07AQuuezwazcRH/g1ICHPOOP41RbVYTSpFp6kH11g1aRcgg0BzK0BZ0NEUWDt7Of3zX6cIThYriInPHU78rR+dBZc22gEyeWQKrdCA4R5krCqE+lOKsHNgVY4O/s0DhDo9Ie8fkZieltxG0qgK6orYBqzsiyyOHQAFQJ11FROYj+Rv5HeH/EMGmWG0iVEekA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n/yje7kGVUxMRVXinPBQpt7CEFdo5vm3t3XU8367uwc=;
- b=SPxOxu8Hrp8dtLaj8mFrKOH9HvRpLTlfF7pItr1Z+LoEXBzLRw7bWwEtoBjGz7S+2NwnTxg810MKdZCWdmRxz8h/a1ExGiGTogPy2dNFdD1Hi7r6GF5O4NMwQS/rIzCZat4fO6GD0hzIj/CJOMDnbsSXPCcsOsMwmjaY0UGtnII=
+ bh=Co7LvVuHe8CONzs7QyYAq8Y2I8T5eAave9eAfyV0OEA=;
+ b=3Ivzs3VH1kqHZcwWvWNVpWCcMAli1jEiiEPUJgxD1unGe37hl09T4Mk6k/jKtoYe2fnnSGNLGjpI712vXakyA2TBZaDLAuE7rx5j/feirsH7oxECQPWSVz5DPTejkxH7qwYOn04hFSiwzNd/av7lo8Ms/O5gNgKc/3NlYBC3bkk=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -52,9 +52,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v2 14/96] cl8k: add chip.h
-Date:   Tue, 24 May 2022 14:33:40 +0300
-Message-Id: <20220524113502.1094459-15-viktor.barna@celeno.com>
+Subject: [RFC v2 15/96] cl8k: add config.c
+Date:   Tue, 24 May 2022 14:33:41 +0300
+Message-Id: <20220524113502.1094459-16-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220524113502.1094459-1-viktor.barna@celeno.com>
 References: <20220524113502.1094459-1-viktor.barna@celeno.com>
@@ -65,56 +65,56 @@ X-ClientProxiedBy: AM6PR10CA0092.EURPRD10.PROD.OUTLOOK.COM
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 8d2c010b-46bc-49e1-5f21-08da3d79d69f
+X-MS-Office365-Filtering-Correlation-Id: b16ff473-d815-4edc-369d-08da3d79d72c
 X-MS-TrafficTypeDiagnostic: AM6P192MB0469:EE_
 X-LD-Processed: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8,ExtFwd
-X-Microsoft-Antispam-PRVS: <AM6P192MB04696E1BC1E9A46C745BBB2BF6D79@AM6P192MB0469.EURP192.PROD.OUTLOOK.COM>
+X-Microsoft-Antispam-PRVS: <AM6P192MB0469C69003CE38AF710BDE89F6D79@AM6P192MB0469.EURP192.PROD.OUTLOOK.COM>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: f/z2CFkn0y5qlHHsWyEIUOH/bIXhRygIQgdSTiQ46HMmt5t7pC4+pwHjjHHwvzFDGmyF//K7fsCiUQ26SbPn+0YgSTQWafKeRQEMYBQx1+3I7dQVNtVp7iv+UDI+1yCblWMmVhUJdskSTsukE+eY4FPsfY4EmZgHXtlLoiUxLZs3ZKk3YD9DDfvBhxGtDmGy0nAJ+qcOX3PcLoUQmZ0LVJXlNdmxTRjTSYJUy1baUDm7/+z3JigTfh372waVINjM8efCTli6Sk8+y/NgI+dtnVZr50W3rBOOKWzSdoQ7ZSGKavMn/PpOCYgMVbi858jg2noNZj59NF4Zxz3ZUTF9/QT0cYyglmhKAwADSCtOgg0izs/xedcPJskzo4258B8G8q/kR+WsgNnSCyzuJUJUQwBqDI2HRL6jBcauZMmdBWu4AVLfQcPWqTKgBwfJKUoYYnYbaAmfkHMD9Y5ssKYx/m56m8VI40BTnUdYL8aZdjFqEKg3Z5w2fWFzUQw+EkK5qnkVfFxP8qKLXkBsupaYOLmcl1zmXaviWUFcSd5ZFOtxox7bD9Bxjm35dA2e3zcbWElj41S1hnWfJCUtMvBQEIOum3yBft3/CjgE/YZGKhTxPoeALCvqqUs8Lz0FIZNEP3Nhrvihk9i04moDGs0qp/IHMmI7sWqh1INHmumz5kTFF73jmw7XJYVsLStsSXB+DvshPT2jvQFC91OBxRNxUuU8JbMcgZ2iR/g3EMUSBx8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(396003)(346002)(376002)(136003)(366004)(39850400004)(6486002)(6916009)(508600001)(8936002)(86362001)(2906002)(5660300002)(4326008)(1076003)(83380400001)(36756003)(38100700002)(41300700001)(52116002)(186003)(66556008)(2616005)(6506007)(6512007)(26005)(316002)(54906003)(107886003)(8676002)(9686003)(66476007)(38350700002)(66946007)(6666004)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: Q9Fa3nR5MAGvJdDLUpVVXHn0lf9R4oVzqYqXpkoLbBqKCthXzQvwmDXvMe4KqKe90LXwlF0pBs35++J3Q0I+QfZxLXrkc+WsQ4Qd1FxW2yg23HYP2K8JrTGXs2Px9rKHeRz5fiorWXo7005KnEU8lZX22GzG7F2t37JfzA7QABOcCvy+7XJ8y30trZ9oECxDGB1DmGOiNeOowwlhJff9dylpmLWtEtVK013P2x+3cRFThy0KkR+aA4lnQYvsJte2vtaqMVh0e+CotrVeaQE1YJhH4lqQFx09Ps7Lt+A1UyzOw1K+zRnRCou7u/rcagXxyu14cH2OhRPIFOMJtEo4oeoccUab45DrTMpE87KzuMAs1q+U0zry5bqpiHdwuaRLXCqH5PS3x/IHFbxbHLbva8uovJtxwWYO/mIjWkOa5iqiMbSvk+lXLtOPe5Hfk7X2UJc5FzS/qcwG9JK7iyJTAmGvk5GQ5Q7gWr6IpJtBAiN/WQFvj9614pifbcKxRarLCjHn9nFyr+Ce4Td7diIQl6VAR4MXaqzmN4dn6yXj9akr+JCvZwC/ypbVq5kX1snzWp6pSMz5lvAdsUhvCUMY+2pTzCl+c48Tl0R+Jj/pi1PBa6tMEWnXCqwokkeXmMkOllLIHb0d+FEerrX1rPO6yVMXty5hDRbju2qF9Anq2Blht+olk7TyiVJdpkyECoZfcbYVDwVE4AIxw31nQqiYKrsuFIOg3npQ50fohMUkE0o=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(396003)(346002)(376002)(136003)(366004)(39850400004)(6486002)(6916009)(508600001)(8936002)(86362001)(2906002)(5660300002)(4326008)(1076003)(36756003)(38100700002)(41300700001)(52116002)(186003)(66556008)(2616005)(6506007)(6512007)(26005)(316002)(54906003)(107886003)(8676002)(9686003)(66476007)(38350700002)(66946007)(6666004)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?FlyoC+fWvhKVE7dyuEy/F3b8FpPF0WFm9JCx0k52bDWe6odrTrR8zlbAMcxG?=
- =?us-ascii?Q?lOo4wkJSaX+sjKBPzslYcmftjAVYDpQp8Ieh9Irp7CVqLVnb3HQbQg1kpZCp?=
- =?us-ascii?Q?H3w40zA5JxojIRjDbypVbxYi3hyKycD7Ud8M2wpxcUzWDeDujyRursK/m331?=
- =?us-ascii?Q?D4Dubix/PRDpQV/9MkF9ypMtSOFoTFG7srwXZPmV9c3jADdq2272sDdCTxz6?=
- =?us-ascii?Q?I9HlAv5unXwIIIZoTz2hMA4V06iEyYiNB1Sfkee/ktP/YXPJrJHH0Kndm3gz?=
- =?us-ascii?Q?odpNjksgngrpdPH3OoRLv9EpcnyYr7C6DoWi1NQe9n6w1QHCeAhIaszmh0zu?=
- =?us-ascii?Q?CmTD37iguKYr3+q6rit/O0nn1mIPdJ74ONnSnk0eC7w2ExwB+i3JzO4IQhZH?=
- =?us-ascii?Q?7U/PsZ4/QfG8MgNiX9dVGFG2GjWp97+ZlWcFX4Tbr4iaOvu7hmHHUI5ryDHX?=
- =?us-ascii?Q?gxEpIYxJmsS6VdMw4T+vbf3vsPkEtNZAZxzc+gM4WnKDcRvj82bjeGyEPK4/?=
- =?us-ascii?Q?rnGrhp+UlqogF3pQLYmFw2xYpT7gRg0gulE7YcVFq8Ao6iqY6dzwbuk8rWEo?=
- =?us-ascii?Q?v00257GSLksj42PtLhX/BagDzpFA9csLKUzsHFDmU2hfAtH4vdOvpFNc1erW?=
- =?us-ascii?Q?LQ96fg43JDtumQJi68xDxmRcNX7PmRvKRLKR6mbyYRF1kR/us1NXOD7N1Z4n?=
- =?us-ascii?Q?Qbnj/7NfA3QIQ0q6uYno1eRrum6+mMvdbqtnCVSrLpoFlOW6tlxTWAR6ztOQ?=
- =?us-ascii?Q?f4oKD0JipTR9CGjDufNCEVeJycYBurp9L/SOc3h2iT5CDcQPzg2DMD3MYxVS?=
- =?us-ascii?Q?jthT0Q9fqR5XrC3pvYBNAgQoRtw9aN2sBGl2FQg7s7jwiFXJpjJ8cgXs99DB?=
- =?us-ascii?Q?KKekX3oe6VG4zW3ZogfjqF2ru7cGTr+N8vaXnGn+UkVYnarihm5UhRukEAdO?=
- =?us-ascii?Q?u+1y4MA9cFoS4m3NEqcgPhNUlUo+DNHGBYtdodhp8juxdmOVbezRgwhRF19R?=
- =?us-ascii?Q?FAKb5E/dDhrTMfmbZr3qX8ieLZIoZJ0ZXhk0zZaab5GZU4h8vKKig4yXZiQU?=
- =?us-ascii?Q?lFunpZqQeyUN13QOtv4rXz9M955uPl0s+7Sob0LkBhsuJM/07F65CZUI6McE?=
- =?us-ascii?Q?mhQyW33zgxQg375PlTAJZ+FELondf/i4Wiso8Tzfzyo4zgF4dQvLHbRStu9O?=
- =?us-ascii?Q?dCNgBiyuX8O+3N+qZpZlp+Scc71lwzopEjU4U2McMgcRYOO50ykxyVMAvnV7?=
- =?us-ascii?Q?M0CfqcirK1YCOMMvq9XboY/rXYRLLQQB8vtyAS2579X+ipSQcFA2LjNXSglM?=
- =?us-ascii?Q?0G0QLHaZ5+VsVy4dtPOoX1NWfutZoAmKXbpzfbQm1Kb3VIEyLDW54Xd7HvZ0?=
- =?us-ascii?Q?WdLSEOv+E3Hb3YPUUnZHf4+k4rKrwbTNQGy7b8D4YraF3XkzFfCNlgeEwCUw?=
- =?us-ascii?Q?wPO9ppCey6ftZxyAFR3VnEMV+fm9VZk/OmrCNv5P6b4F1e1d1nPJMrfvWmKj?=
- =?us-ascii?Q?LFaDWOaEi87OwXxBwsBbig1hd9B9YbTogCJZiqoA3eBVlSXr3dY0xHvKcGj/?=
- =?us-ascii?Q?K/vssJZJEgPFQZtipGyi5HCm7F8hR11yDkcOQoHRXCNpJ+J4Mdqc+J9KGaVN?=
- =?us-ascii?Q?7FZkrOyAgsKNmX0jM421Nq7f8bi8XaPRJDZ09YYVyA01khDUzNTPRcnHPUrR?=
- =?us-ascii?Q?SA1bTNv+0il7hB3p2eyE/OEUYn7XM4VVHo02u7j9HFLFOTS3zhN8zll+tAwd?=
- =?us-ascii?Q?PygEx58DHmmIvYing4ldm5h3RyvCJNQ=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?rXdaXMHcSATpxgI4z4Lqk2Cd8qTXTLfruXZH3SlHZbXFYQE6fDvLQ/0NthBE?=
+ =?us-ascii?Q?i101ArrscKOLyWBszMLocH351dYYSwlAGhSsXEJH27x3pqfdvQ3n/KMJtSLb?=
+ =?us-ascii?Q?i7ge7g6nIGb5+x850defj69m+WK0ogy5uuEgQYTGUPg/jjvFuheJEXkHEp39?=
+ =?us-ascii?Q?Xv7pYO+j3eKZA02FdpIQrbygdPW9cSV4rFTCI6grPmyokB52w2uydPFugs3x?=
+ =?us-ascii?Q?xl/7aCs0MSq0LR4DaGTQeGXtDq06hwoZpEKgDr4s1/0OfxYLdeuG2O0X6EiF?=
+ =?us-ascii?Q?9XsgvQGQnGN+VdaB47LKAAhqoeLZr2rwUq9ng6mAlMRTFbPhAIqKrQ5PeKAz?=
+ =?us-ascii?Q?7htwyb2M2kRcDfG4omIe4Avf2492miG66DwEzegVOlyQ+a6FWTwzTVeGZ+1n?=
+ =?us-ascii?Q?T9PDI1ETa9bvuiTQbBYvW4VDE14CE3pjPhyTcuUQCAjYiatRl41lTRhhVspW?=
+ =?us-ascii?Q?nSruQrj3Fla/YYBXVs5GswNUEkZtJGjAwq+kleqvpEpaQJn55QPLrO86vMkK?=
+ =?us-ascii?Q?qWKGXpt+PWqm+9fVbet8k5qkt1m3IAAyPzdhi+RZCsI7RP9naVKaVqvEwJZa?=
+ =?us-ascii?Q?A60K8Lp23RshrudMOxFj/O6yQAkZ7ak/bilRluzX+xBZCCoufkunJ6EHYmnb?=
+ =?us-ascii?Q?pkXgSgw0vVZnWKNRuLDXD5KM/nDsKJBhZk95UEIoz1oynoLCfYGfIJcKs/iz?=
+ =?us-ascii?Q?oFmt4hKYUzJGuuV79CJPprhrspYHcob2Ery5ycUOQi4BLnrL6149S8PSOlSo?=
+ =?us-ascii?Q?EPqABRXyE74C2a8/oxvTGBRdECFUwVh5RazBbtU1bAv+bAVav+RnaGL37rk1?=
+ =?us-ascii?Q?uV10GhZilMb7lc2OsyXLo13Q5b5haWasQA0n17xSx8x19zmF74MQLOLji/4p?=
+ =?us-ascii?Q?y1F8FRllK+SmGP1nbwnlrgSpJWinfCCSQ4jxErM/AXIdJEcFCdlC2dp7cXJj?=
+ =?us-ascii?Q?UdhMelAJ5DzOiZQRSWbPQvlrxD8u6PTkHWvZfUDvnA0Vd5MOmM4PWEc1Jtxs?=
+ =?us-ascii?Q?nUykjmMFDP8aso8YdEANE2TTMNJxdPaw7QS4JZ4iJ+IJMvxLyxfYzB40jT/4?=
+ =?us-ascii?Q?3ogsTpeU2YQ/tGnh21aHy2O599/oP/fnZ4BW/Qnf3m3J2P03jBUfRXAZrPNh?=
+ =?us-ascii?Q?A5+ILo5LA05xWcHpQca1aSXT/Sk50tHOvhxdiLiqhJgDlvi2WLGXUngF3fVf?=
+ =?us-ascii?Q?21aIPrekxLBTEDr6i/T+fqo3+hlRhJyr1wnu5ctfGlI6LJpBzK4vj7hl7Kcm?=
+ =?us-ascii?Q?YoKnLQjn1VRbsue4/P+MHpQ/EtP0OuRtzidPWhynCcslhORss/Rig58Rlx/S?=
+ =?us-ascii?Q?AzwIeVWLSr0N656j+DkQ/YoD/CJOYUHONpGfvwdXnRGs+4LGAjSXag3/ACVX?=
+ =?us-ascii?Q?nYDymmjPUn77Kn/bAsT0llueqwNkst0Wjd+wBfkD3mMn1DE1bzyKnDH3G3UE?=
+ =?us-ascii?Q?4nzmx27IgaI9Lc/k+w0ezPy7Z0pf/WY1Rxb1wqfJIytt0LFmGqfmVYlpKtjC?=
+ =?us-ascii?Q?6spVE0YaaofWwm7wLYehTy9preemTFEYcvdPF8ZqLiIY1YLh138hBSkYU4/7?=
+ =?us-ascii?Q?QtjTDgIDQMQwm1HcBBOcWMnMRsO0RycU3OuirUMfQZt6on6wPlokhmGgLUwQ?=
+ =?us-ascii?Q?dVe1jvmvBfvRl+Vagu0w77VQDCA0ZNhlGaaEHkFYRLnJDyp78j92u+M2qBmy?=
+ =?us-ascii?Q?XsSQ6p8xQktUzSkoKv4WI5BaNXTLK4izQH7epN5D0Nf09c+LpbhWHevDE0se?=
+ =?us-ascii?Q?AvX4Kirz6uYa1rYUQqssriNCgmYqvU4=3D?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8d2c010b-46bc-49e1-5f21-08da3d79d69f
+X-MS-Exchange-CrossTenant-Network-Message-Id: b16ff473-d815-4edc-369d-08da3d79d72c
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:37:53.0590
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:37:53.8713
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BNxgSnDZycQecMiBjoRI47ETF1rym5OtUo+kFroMTqpogzcZak9n8T9wWvOUuNea8hdNiOJCAtKJqsVxnT696w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: w2wB3x8prcasP/iAEX9C2mlbAgDKHzguRmb6u9fScyGlU9oq5fHNwVQMJx19IbT3VQ9suIc7GgwvCCfjdBVC9g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6P192MB0469
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -133,198 +133,62 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/chip.h | 182 ++++++++++++++++++++++++
- 1 file changed, 182 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/chip.h
+ drivers/net/wireless/celeno/cl8k/config.c | 46 +++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/config.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/chip.h b/drivers/net/wireless/celeno/cl8k/chip.h
+diff --git a/drivers/net/wireless/celeno/cl8k/config.c b/drivers/net/wireless/celeno/cl8k/config.c
 new file mode 100644
-index 000000000000..29d02cb85fb4
+index 000000000000..dbf94060bfa4
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/chip.h
-@@ -0,0 +1,182 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause */
++++ b/drivers/net/wireless/celeno/cl8k/config.c
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
 +/* Copyright(c) 2019-2022, Celeno Communications Ltd. */
 +
-+#ifndef CL_CHIP_H
-+#define CL_CHIP_H
++#include "hw.h"
++#include "debug.h"
++#include "config.h"
 +
-+#include <linux/types.h>
-+#include <linux/spinlock.h>
-+#include <linux/pci.h>
-+
-+#include "pci.h"
-+#include "calib.h"
-+#include "sounding.h"
-+#include "temperature.h"
-+#include "platform.h"
-+#include "phy.h"
-+#include "ela.h"
-+
-+/**
-+ * DOC: Chip basics
-+ *
-+ * Each physical device of ours is a separate chip, that is being described by
-+ * %cl_chip structure. Each chip may be several (%TCV_MAX) transceivers (bands),
-+ * which are operating simultaneously and are described via own %ieee80211_hw
-+ * unit (it refers to the private driver via specific pointer, described by
-+ * %cl_hw). Totally, 3 types of bands are supported - 2.4G/5.2G/6G. Driver
-+ * supports multiple chips (up to %CHIP_MAX). Since the driver can control up
-+ * to %TCV_TOTAL entities, it is important to pass it's pointer to each
-+ * function, that operates somehow with specific band/transceiver.
-+ *
-+ * Chip instance is being created during bus probing procedure and is being
-+ * destroyed during bus removal procedure.
-+ *
-+ * Physically, 80xx chips family may have different amount of antennas (4/6/8),
-+ * each of which may not be hardly bounded to the specific band (both bands are
-+ * sharing them and may change antenna combinations in specific circumstances).
-+ *
-+ * Each band (transceiver) has own FW, that is being loaded by
-+ * request_firmware() call during chip structure initialization procedure. At
-+ * lower layer each band is associated with own HW die by LMAC and SMAC names
-+ * (e.g: 5.2G and 2.4G). Celeno is using XMAC naming when we are referring to any
-+ * of LMAC/SMAC components.
-+ */
-+
-+struct cl_ring_indices {
-+	struct cl_ipc_ring_indices *params;
-+	dma_addr_t dma_addr;
-+	struct dma_pool *pool;
++static char *non_driver_conf_params[] = {
++	"ws_",
++	"ha_",
++	"uuid1",
++	"ce_pci_id",
++	"ce_rst_gpio",
++	"ce_iface_eth",
++	"ce_iface_vlan",
++	"ce_iface_ip",
++	"ci_sim_chip_num",
++	"ci_lcu_dump_folder",
++	"ci_server_addr",
++	"ci_server_user",
++	"ci_pci_tune_en",
++	"ce_uapsd_en",
++	"ce_channel_bandwidth",
++	"ce_ht_rxldpc_en",
++	"ce_vht_rxldpc_en",
++	"ce_he_rxldpc_en",
++	"ce_bf_en",
++	"ce_bss_num",
++	"ce_iface_type",
++	"ce_mu_mimo_state",
++	"ce_wireless_mode",
++	"ce_extension_channel",
++	NULL
 +};
 +
-+struct cl_chip {
-+	u8 idx;
-+	bool umac_active;
-+	u8 max_antennas;
-+	u8 rfic_version;
-+	enum cl_bus_type bus_type;
-+	struct pci_driver pci_drv;
-+	struct pci_dev *pci_dev;
-+	void __iomem *pci_bar0_virt_addr;
-+	struct cl_irq_stats irq_stats;
-+	struct cl_temperature temperature;
-+	struct cl_chip_conf *conf;
-+	struct device *dev;
-+	struct cl_hw *cl_hw_lut[TCV_MAX];
-+	struct cl_hw *cl_hw_tcv0;
-+	struct cl_hw *cl_hw_tcv1;
-+	u8 cdb_mode_maj;
-+	spinlock_t isr_lock;
-+	spinlock_t spi_lock;
-+	struct mutex start_msg_lock;
-+	bool first_start_sent;
-+	rwlock_t cl_hw_lock;
-+	void (*ipc_host2xmac_trigger_set)(struct cl_chip *chip, u32 value);
-+	bool rf_reg_overwrite;
-+	struct cl_fem_params fem;
-+	struct eeprom *eeprom_cache;
-+	size_t eeprom_bin_size;
-+	int (*eeprom_read_block)(struct cl_chip *chip, u16 addr, u16 num_of_byte, u8 *data);
-+	int (*eeprom_write_block)(struct cl_chip *chip, u16 addr, u16 num_of_byte, u8 *data);
-+	struct cl_iq_dcoc_conf iq_dcoc_conf;
-+	struct cl_afe_reg orig_afe_reg;
-+	struct cl_calib_db calib_db;
-+	struct cl_ela_db ela_db;
-+	struct cl_ring_indices ring_indices;
-+	u8 reg_dbg;
-+	struct cl_xmem xmem_db;
-+	bool is_calib_eeprom_loaded;
-+	struct workqueue_struct *chip_workqueue;
-+	struct mutex recovery_mutex;
-+	struct mutex calib_runtime_mutex;
-+	struct mutex set_idle_mutex;
-+	struct cl_platform platform;
-+};
++bool cl_config_is_non_driver_param(char *name)
++{
++	int i = 0;
 +
-+struct cl_controller_reg {
-+	u32 breset;
-+	u32 debug_enable;
-+	u32 dreset;
-+	u32 ocd_halt_on_reset;
-+	u32 run_stall;
-+};
++	for (i = 0; non_driver_conf_params[i]; i++)
++		if (!strncmp(name, non_driver_conf_params[i], strlen(non_driver_conf_params[i])))
++			return true;
 +
-+struct cl_chip *cl_chip_alloc(u8 idx);
-+void cl_chip_dealloc(struct cl_chip *chip);
-+int cl_chip_init(struct cl_chip *chip);
-+void cl_chip_deinit(struct cl_chip *chip);
-+bool cl_chip_is_enabled(struct cl_chip *chip);
-+bool cl_chip_is_both_enabled(struct cl_chip *chip);
-+bool cl_chip_is_tcv0_enabled(struct cl_chip *chip);
-+bool cl_chip_is_tcv1_enabled(struct cl_chip *chip);
-+bool cl_chip_is_only_tcv0_enabled(struct cl_chip *chip);
-+bool cl_chip_is_only_tcv1_enabled(struct cl_chip *chip);
-+void cl_chip_set_hw(struct cl_chip *chip, struct cl_hw *cl_hw);
-+void cl_chip_unset_hw(struct cl_chip *chip, struct cl_hw *cl_hw);
-+bool cl_chip_is_8ant(struct cl_chip *chip);
-+bool cl_chip_is_6ant(struct cl_chip *chip);
-+bool cl_chip_is_4ant(struct cl_chip *chip);
-+bool cl_chip_is_3ant(struct cl_chip *chip);
-+bool cl_chip_is_6g(struct cl_chip *chip);
-+u16 cl_chip_get_device_id(struct cl_chip *chip);
++	return false;
++}
 +
-+#define CC_MAX_LEN 3 /* 2 characters + null */
-+#define RM_MAX_LEN 5 /* 4 characters + null */
-+#define FW_MAX_NAME 32
-+
-+struct cl_chip_conf {
-+	bool ce_tcv_enabled[TCV_MAX];
-+	s8 ce_lmac[FW_MAX_NAME];
-+	s8 ce_smac[FW_MAX_NAME];
-+	s32 ce_irq_smp_affinity;
-+	u8 ce_eeprom_mode;
-+	bool ce_production_mode;
-+	bool ci_pci_msi_enable;
-+	u8 ci_dma_lli_max_chan[TCV_MAX];
-+	s8 ci_country_code[CC_MAX_LEN];
-+	s8 ci_regdom_mode[RM_MAX_LEN];
-+	s8 ce_ela_mode[STR_LEN_64B];
-+	u8 ci_phy_dev;
-+	s8 ce_debug_level;
-+	u8 ce_host_pci_gen_ver;
-+	s32 ci_scale_down_fw;
-+	bool ce_temp_comp_en;
-+	u8 ce_temp_protect_en;
-+	s8 ce_temp_protect_delta;
-+	s16 ce_temp_protect_th_max;
-+	s16 ce_temp_protect_th_min;
-+	u16 ce_temp_protect_tx_period_ms;
-+	s16 ce_temp_protect_radio_off_th;
-+	bool ci_phy_load_bootdrv;
-+	u8 ce_phys_mac_addr[ETH_ALEN];
-+	bool ce_lam_enable;
-+	u8 ce_first_mask_bit;
-+	bool ci_no_capture_noise_sleep;
-+	bool ci_afe_config_en;
-+	u32 ci_afe_vc_ref;
-+	u32 ci_afe_vc_avd;
-+	u32 ci_afe_vc_cml;
-+	u16 ci_afe_eoc_ctrl;
-+	u8 ci_afe_ch_cml_sel;
-+	u8 ci_afe_cml_sel;
-+	bool ci_afe_loopback;
-+	bool ci_afe_hw_mode;
-+	u8 ci_dcoc_mv_thr[CHNL_BW_MAX];
-+	bool ci_calib_check_errors;
-+	s8 ci_lolc_db_thr;
-+	s8 ci_iq_db_thr;
-+	bool ci_rx_resched_tasklet;
-+	u32 ci_rx_skb_max;
-+	bool ci_tcv1_chains_sx0;
-+	u16 ci_sim_device_id;
-+	bool ce_calib_runtime_en;
-+	bool ci_calib_eeprom_en;
-+	bool ci_calib_runtime_force;
-+	bool ci_la_mirror_en;
-+
-+	/* New NVRAM parameters must be added to cl_chip_config_print() */
-+};
-+
-+int cl_chip_config_read(struct cl_chip *chip);
-+void cl_chip_config_dealloc(struct cl_chip *chip);
-+
-+#endif /* CL_CHIP_H */
 -- 
 2.36.1
 
