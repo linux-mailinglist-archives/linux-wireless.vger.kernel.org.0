@@ -2,106 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30ADA531FED
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 02:41:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51CF6532050
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 03:41:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231584AbiEXAll convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 May 2022 20:41:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47096 "EHLO
+        id S232473AbiEXBlb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 May 2022 21:41:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230125AbiEXAlj (ORCPT
+        with ESMTP id S229783AbiEXBl3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 May 2022 20:41:39 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17D813EA88;
-        Mon, 23 May 2022 17:41:37 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24O0fDkxD006008, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24O0fDkxD006008
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 24 May 2022 08:41:13 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Tue, 24 May 2022 08:41:13 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Tue, 24 May 2022 08:41:13 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
- RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
- 15.01.2308.021; Tue, 24 May 2022 08:41:13 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "colin.king@intel.com" <colin.king@intel.com>
-Subject: RE: [PATCH net-next 3/8] wifi: rtlwifi: remove always-true condition pointed out by GCC 12
-Thread-Topic: [PATCH net-next 3/8] wifi: rtlwifi: remove always-true condition
- pointed out by GCC 12
-Thread-Index: AQHYbIHjnrV5IT1AtUasPUOuHqV18a0rwWxwgABa7oCAARgbsA==
-Date:   Tue, 24 May 2022 00:41:12 +0000
-Message-ID: <d9690c0a1e444dcdbab8a9c1eb0f98df@realtek.com>
-References: <20220520194320.2356236-1-kuba@kernel.org>
-        <20220520194320.2356236-4-kuba@kernel.org>
-        <8fb9d491692a4a2dabe783ffefc76ded@realtek.com>
- <20220523085701.3d7550ff@kernel.org>
-In-Reply-To: <20220523085701.3d7550ff@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/5/23_=3F=3F_10:00:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Mon, 23 May 2022 21:41:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A8151FCF9
+        for <linux-wireless@vger.kernel.org>; Mon, 23 May 2022 18:41:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 44E63B8171A
+        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 01:41:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAED4C385A9;
+        Tue, 24 May 2022 01:41:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653356484;
+        bh=4dy72oYg9k2X8H32D5/XCxRKxkXr4YsMmwLk3aY3qds=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=BOXjkTv6EM81k0wUe2I7OaRVqVqivWC0UYIZYyNEdejtZ7lWyRFL2Pqk7WiFL+baP
+         JfxN5oFJsIG1g6JoQrm5a273QGJFyGXABww+4QiifMjAMxw86FXto2QVS8ApPKK4m6
+         Oy7IHNhJAxLFLM0wjJrdkH659ejneIfXOnnKfKOxQIsdi6N2C13jzGr1wGtoHXqxTw
+         mADjF5+pDOf09KNpctjo5eDBqmNhxYyvnD3tARdHCnQURRMB7ivAXCgaBTOQpkbd8P
+         j33njnv4ceU6wBIMY5mFdb9OCC9BhCSJ2e3j4t4Np+W9dEXHr0UC0D5wkxbBTBTDHo
+         AVTN07gWqPP1g==
+Date:   Mon, 23 May 2022 18:41:23 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH net-next] rtlwifi: 8192de: correct checking of IQK
+ reload
+Message-ID: <20220523184123.4b22fd72@kernel.org>
+In-Reply-To: <20220524003750.3989-1-pkshih@realtek.com>
+References: <20220524003750.3989-1-pkshih@realtek.com>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-> -----Original Message-----
-> From: Jakub Kicinski <kuba@kernel.org>
-> Sent: Monday, May 23, 2022 11:57 PM
-> To: Ping-Ke Shih <pkshih@realtek.com>
-> Cc: kvalo@kernel.org; johannes@sipsolutions.net; netdev@vger.kernel.org; linux-wireless@vger.kernel.org;
-> keescook@chromium.org; colin.king@intel.com
-> Subject: Re: [PATCH net-next 3/8] wifi: rtlwifi: remove always-true condition pointed out by GCC 12
+On Tue, 24 May 2022 08:37:50 +0800 Ping-Ke Shih wrote:
+> This mistake is existing since initial commit, and I recall the vendor
+> driver to find correctness.
 > 
-> On Mon, 23 May 2022 02:35:32 +0000 Ping-Ke Shih wrote:
-> > This is a typo since initial commit. Correct it by
-> > -			     value[0] != NULL)
-> > +			     value[0][0] != 0)
-> >
-> > So, NACK this patch.
-> 
-> Too, late, the patches were already applied, sorry. Please post a fixup.
+> Fixes: ee3db469dd31 ("wifi: rtlwifi: remove always-true condition pointed out by GCC 12")
 
-I have sent a patch to correct it: 
-https://lore.kernel.org/linux-wireless/20220524003750.3989-1-pkshih@realtek.com/T/#u
+Not fair, I did not break this code. My change did not alter 
+the functionality.
 
-Please take it into net-next tree.
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> ---
+> This patch should go through net-next tree, because this one is going to fix
+> "wifi: rtlwifi: remove always-true condition pointed out by GCC 12" that only
+> exits in that tree.
 
-Thank you
-Ping-Ke
+If you want it to go via net-next you must CC netdev@.
 
+But I don't see any reason to rush it, AFAICS the code was added in
+2011 - commit 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
+or so. We waited 11 years to notice, we can wait a few weeks for the 
+patch to propagate thru wireless tree.
+
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> index 15e6a6aded319..f6ff32658863d 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> @@ -2386,7 +2386,10 @@ void rtl92d_phy_reload_iqk_setting(struct ieee80211_hw *hw, u8 channel)
+>  			rtl_dbg(rtlpriv, COMP_SCAN, DBG_LOUD,
+>  				"Just Read IQK Matrix reg for channel:%d....\n",
+>  				channel);
+> -			_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
+> +			if ((rtlphy->iqk_matrix[indexforchannel].
+> +			     value[0][0] != 0)
+> +				/*&&(regea4 != 0) */)
+
+Please don't add the extra brackets around the condition
+and the commented out code back in.
+
+> +				_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
+>  					rtlphy->iqk_matrix[
+>  					indexforchannel].value,	0,
+>  					(rtlphy->iqk_matrix[
