@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A30D753297F
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:43:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDB30532986
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:43:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236939AbiEXLl1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 May 2022 07:41:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43766 "EHLO
+        id S234493AbiEXLlj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 May 2022 07:41:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237045AbiEXLlK (ORCPT
+        with ESMTP id S235724AbiEXLlf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 May 2022 07:41:10 -0400
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2050.outbound.protection.outlook.com [40.107.20.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EB5094181
-        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:40:35 -0700 (PDT)
+        Tue, 24 May 2022 07:41:35 -0400
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2088.outbound.protection.outlook.com [40.107.20.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B9D41316
+        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:40:58 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YvYHWzJS7WogT6dRVwS8X7XQT38oXay9UytdXdrlwouH2MIkEqaX3yHEAj378XJHiBleNl26sEGEpyE38w3GGhsY6l5Tu7K0txYWmsdjHJvz4KGTXp6mU9v26C2A3l4QUXIHywcGY26oa+MwoPbdEO043Qi/SPxo55TB/2dfQ0O6Yn7RDbYyeRiDeZNH69a0czVNKo6Yf5/ec9aqI6sVgUK1xuKpTQ9e6E4KveYZWtwN0oZnVDvn+2GV69E7QtORr34ccFm55P+vjRg8AlmJWhgBH5+jRyXi9AcPnM0OhrkrvE7px2Z2Z0dwh6oURKa+9h0pITQrsbqXBVxhjNIacg==
+ b=AmA2g69I2MKneHs6rxRuya8wRBG3TMyh/5F4jpJstQgbnQ4/OK6CGD0xwHCcI8r6vhogDD0z9/rpY5QZF3t3/4YSPYrc+3oqhlC1U0jkX59amJ4pyACz341G7bOnDOXkfJgj4OJRXm7RM7XS7c6j5rycqf0acNFMPqQDmJW65mXG0A/7dhCIs5tPvOdhwF33Ga1N15psTQjFpQR5F+0kxvHbRDGjys7skSaDidMO3BlVjZSt/HWlzhUhKmppkBaNsq5B1kCAU0dWX6VkDOASAENO8WDz6IyaI0Vl6+GVPo4jOO+0E+5lSLmNg52qoMkTruPYf6dkFK8a3pfc6pItsw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jQ5oewS1o33UM4gcl+FntTjVuVyd+jWmG0sYFqV785I=;
- b=aNPUPrWSmKyEMscJjZWcoDwpjvrkYr3h3ZlkL/i07L5baeoMclqyno3M4BHGTIlAApwyt44/GUigSD5bISnwQJw+80iDkbXOMksqbPqdqhJRuuDL/BDYZVPxK0uJDe9NlGyOexA9mzmPD6c74GiE9iMGvRsbe3HMS7G7MNlGaWTkBWxOfwUM9bYPb2IVZjtctapr5AVcJBhxHHQq5O3hWWsFk0ktqCgvXXWwnTGa3sLYZtAdO2/Pjh1dV73LsaaPKg4s0f/1FbRHeYq1CmZQ6Ogwf9t67y0M+Z/GHJdvvb8tYw1hIQ5u7mezhQdqSvZZoANNGDNQ7aK8yN0+/uEIrA==
+ bh=Vv3Azjr+w6grboMjCEQiIIVS7F/Ov3OpdstixAN8Moc=;
+ b=Nr4xkNzlbCGv/4FEEC2nikUk1dh1MXqgze2mka+jB4yiRD2oB1lEfg/PxBvxdt1LxsLB6oWOImhPCAKQrnZEjm1pP21aAXX6q7G84So+3n7owoaFkj7tVtlokflB43d2jQ1E4m+uhbRyE+5opOG6dDmEtKKleOxhDZU4yBkXw11Md+4AKZ14wuWi1El+rwWdE5ujYn6GCIKzoRdg3KaQaWwGlrf0tf4gx5JyA5gJlW5l5/Qyf3r/fOFIZ7lrNvWkjRvFeOJmT1xfQJtdBBRH+dStaVVoZxbIC0hgNvlj+WJpoX368eoCo+aD1J39E55GqhQurme5N5tlaC39bbE6bg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jQ5oewS1o33UM4gcl+FntTjVuVyd+jWmG0sYFqV785I=;
- b=OGQ9g3wp7V4SanFmUwd0fdOzUu7L1Fq4y7njaon8hsLxoIEaiY8usI2HnY2s5SLdTIp30ItpruKHhbbASpvKhW0FCZPmwYC8QDIKOWWpjRnqhfE8rKVB6w/77BA9QJ3hptqYDi1Z7Exr5Y+h0D0Bsl5jx2+IVt5KVGGaTq5T6NQ=
+ bh=Vv3Azjr+w6grboMjCEQiIIVS7F/Ov3OpdstixAN8Moc=;
+ b=y09XWT+3Cz7YIS+XH6RMrLJlhrKtroZ6Ju0JvZaQ157ujnW1kKxJ/32g3/pV0KLmYOl3RnbFWObVNgUOBD74xVV/MyDv8FpNQcl21kwi9C/znAqNwWlORvIlOjtfcNyEhz/TPqRRauiJTK/hO9zFjgPYI/1t3wvRwHsc4Uz77WE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -52,9 +52,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v2 86/96] cl8k: add utils.c
-Date:   Tue, 24 May 2022 14:34:52 +0300
-Message-Id: <20220524113502.1094459-87-viktor.barna@celeno.com>
+Subject: [RFC v2 87/96] cl8k: add utils.h
+Date:   Tue, 24 May 2022 14:34:53 +0300
+Message-Id: <20220524113502.1094459-88-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220524113502.1094459-1-viktor.barna@celeno.com>
 References: <20220524113502.1094459-1-viktor.barna@celeno.com>
@@ -65,56 +65,56 @@ X-ClientProxiedBy: AM6PR10CA0092.EURPRD10.PROD.OUTLOOK.COM
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 0e8b9b24-e92f-4ec0-e7cd-08da3d79fde2
+X-MS-Office365-Filtering-Correlation-Id: 8b7de008-f36f-47b1-20da-08da3d79fe5a
 X-MS-TrafficTypeDiagnostic: VE1P192MB0669:EE_
 X-LD-Processed: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8,ExtFwd
-X-Microsoft-Antispam-PRVS: <VE1P192MB066950B75AAC9B64337470AFF6D79@VE1P192MB0669.EURP192.PROD.OUTLOOK.COM>
+X-Microsoft-Antispam-PRVS: <VE1P192MB0669D2171731D1A06CD6F437F6D79@VE1P192MB0669.EURP192.PROD.OUTLOOK.COM>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: fQ48fZtIwOEuCJJGaGhL4hm7lV4UrDjEZJlYLvmcKuV8QfmjbJ1Ov0ttfYwLrL4RGJwiwXeNAkdi+uacc/mKERwnnpdBNGo3XHZ5flH0zCQqXnNEIb5LphyRAL++Ofj+Xr6WyEQPtsRNpeqWz/1vuW7++qqKuQZNehad1d/neYUTzbblH0yMq7lxJa9bTSu8ebfp043wcLtPzo881nGrmV7vDLx9kVMy8ZByrbuiHp8gfr3QdcEZpqh+yi20WcwD7yzQeQwh3Xp594CBExQGZ07o9bJ4PQvSjzXktYPKJHA7R9D5Zu5KfqyMCwe3FRYI8dL8GoCqWv1WmXpA4e1pury9ZxZKDYJZT6ruwT6e0LQubp+P8B9H1gM7gAcP6qvQ7kUI3IgJQwYq2Rp+ev3rbaRKCpVue8JBQTVFxVVmz0FsvVa2S3KYkKsmREWbXu0/BEwXibTlGCcQTob7fLXMifFOVjCF4JJM+xhqXlQzkce+A96Bl464Vcq1aLIFEAeP5mAtnEwrfleF5ctjA62rzxznzf+N7h3BgrEQWONhFZEf/n5L4PTj3tspfBGk17jOvIj4DeTBGQewUUU0HbZhDl+yr7VLxSYkY0WnnNQRtEoOmKMvx86sta/Qzk235sDUWQzsm8Sw9grLTxd2NbK/jlZeyJNVL3eu2y9RT1wAwKKPUx67BmtR4ojxAS5pRJ4JsMtAVX40pN+AJQn6b42hAhWGP1YS2YGg6VxlZ3h10eQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(396003)(376002)(136003)(366004)(346002)(39850400004)(8676002)(9686003)(26005)(36756003)(66946007)(66556008)(66476007)(4326008)(107886003)(83380400001)(6512007)(5660300002)(38350700002)(38100700002)(1076003)(2616005)(316002)(6916009)(6506007)(6486002)(54906003)(86362001)(8936002)(508600001)(41300700001)(6666004)(2906002)(186003)(52116002)(30864003)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: Bc0CB20GHBakoVz6zAmDpfKwDMevHSN8D2o9iFHoIMo07AjJ+b5nlMu/IcLELrKvgdsmc6PJpqfOH4ilVs5ju3/5POETsI9EHbOLRH6blulsqRnkRVqWO9/8Kls9M5i3KT1S1ZwMFuCMjlUXxxFkoM3YmRdcGgncfEu1lqON0ec2AGbwdsApDChkAmXuQjSyUkE9hlVZtC8JQ137KggRgxzShlB+kOZo2udWGItiNfrKAR1CWIr9uXyv7SdV27LARgnMs0soPTjSWGpwOTXMG9DzrPDd2BVyowJaBSPY9ARyluFdDlsn17z1B+GQ6mWAZcegPU3CA1omZ92Z0YmHfQPVYDWy+9ViCTp1DE93sOu3+AJ+zHnb5pWwFPQqZeipLH/acluZwgRBPRkm74uH4PgDOXdIWc77CUJ5RlfqeuG6F/3h6jqL/jKjKNotWfZb/G4YR2GlC3zSAktWewicAc972wQJFYpowXa/Oa15bbHEPHYeI2pW6ltLX6pezR0iXeAklbgZO5WK6wUthLoJp08dFstWFdmGvNGhUHxC/cdDWQbXA8Ck+dAOL/N7vrQFstfrQexTj9LReDWDEc9YMLOb+OTMlODkbdczQLfrA7+SJ0yDaOJSLPyf56OnbELm12ZgRq2MZ3fskRhm+nq3p1Fh0Wo0b80D1WNpCPWJ9ZDKI1ORb/h/pqz5Jh+LGrhvPE5UrAMwtJ4Dw5yaoIZYPYD0oEaKhdV0V3AURfAMOuY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(396003)(376002)(136003)(366004)(346002)(39850400004)(8676002)(9686003)(26005)(36756003)(66946007)(66556008)(66476007)(4326008)(107886003)(83380400001)(6512007)(5660300002)(38350700002)(38100700002)(1076003)(2616005)(316002)(6916009)(6506007)(6486002)(54906003)(86362001)(8936002)(508600001)(41300700001)(6666004)(2906002)(186003)(52116002)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?il3780JClZic2+wL8K3eixoxL9c9jIqsRKb4dtor4LScFF4uYKsCJzYcpvWF?=
- =?us-ascii?Q?ydTIhqiWg0TZkItWrHKYxgLpOkHF+SgqpCWUIxoZ8ieS/rL7SnW+waNMkoxz?=
- =?us-ascii?Q?GprUqz6DhBiza/dbcTMf7FshC0pgnhg8jOuwHj2KAEtXoUBQheP4G8W3gyP3?=
- =?us-ascii?Q?UCCse+Q7UGQ+HASIfJrTJGG3MRu/LYSJ1NT7D5SGsZ8kKitK7eOUMQqobRI7?=
- =?us-ascii?Q?20mJl0cCb7N6iWnZlDIV9cWAu+43mGEcOsTnrO+efNnLOPQY9PkxzJF+fZ2l?=
- =?us-ascii?Q?iTC/vmi+ZDpNYHcR2otci7ByqcPfW7/uBVCIdYHmfJdeQx+gPyxro2jy/RWp?=
- =?us-ascii?Q?gusNU6nKxWsONlH4Uqtm76PM1+AaupEVKo8pU3TgfnLhSKzCH+3paoWS6u7C?=
- =?us-ascii?Q?0j9aPvNe7K8fOygiysiSYxoLylle3BlbX5RgrnDarQvv69TfZDppm4EhDOng?=
- =?us-ascii?Q?YTZeDO8C2TFbQd9GtbfpnJFXrpCq/lTH9JBughU3OzVcUiPSrwPZ1uCt/ypj?=
- =?us-ascii?Q?LMzgqawFBoksXm0oWWy6fxZU8q1mqhQXNGXgqHewZ5mt8zW1pO4V1v8NUPtB?=
- =?us-ascii?Q?xRlCQ+7SKYb/HEIsuujKuLduyUByOYMd3KSNLZYzgBDuC+weEEqfDA6WVlLB?=
- =?us-ascii?Q?Q5zy08pSVcVJETd2uIK4B/tQI4/I2pnLjxp0LsTwwPdb7qz/iug3iHzC9XP5?=
- =?us-ascii?Q?RXnagFAQ9dp43oTgWTnsD5YLOqnwwclUD9t/MgWBntBCCdskxjv12UuMb5pS?=
- =?us-ascii?Q?gSAo6YGpR7i3nmrKeZPsCCJIQlmbzShsmKk7Li+mj++JPDjKAocLmrLFI06z?=
- =?us-ascii?Q?xtJW+hDs4vVqHoeE+RD2D8bozEGLxcHCvMa50Ma3NcPxDMdVsGR1/fk7s/gZ?=
- =?us-ascii?Q?2/sGtZsnYAwdlprAU7BvUGhE3UhoTjmtSv4MIw8mkOrlHN273TUsSmHPh17z?=
- =?us-ascii?Q?DlP76ut04Z3rjS4VloYgwQCO2mS6SycTz7BYtEP/7BqTdB2DZG4y8WfG0H57?=
- =?us-ascii?Q?466UZG81wDRZUil796XMsK4VcD/wFTGxLG0jV9Y5dhq6OlpN2VGHYg+hA03H?=
- =?us-ascii?Q?DBkJ+xMHJjRMInchDksr1kDDAAI4CMCaS0c8ln/7t4G4DtuMwY2Q02+2AUVi?=
- =?us-ascii?Q?JHKMRDT2ek/WK7Crbk+oxDLNjuDoY5OEGzW2E8rRWxtr18ozeWi7EwHBK3Pd?=
- =?us-ascii?Q?USB/poyqc8y4JJzt3BQXv6uVrPbOCCut0IncQ76iv3prJFu7mIqWWn0rL0Lu?=
- =?us-ascii?Q?fWCTXgI5K7hNnKqWN/5a77zHLba82ENrfs6r19S8HqMD7dttQnRO7ZyS65qR?=
- =?us-ascii?Q?53hY68Fg+f9NBCy/zpeyTpn+pL5CVjAJ+hlDceWqjt8Kj6xh0SlTVpR3B5OW?=
- =?us-ascii?Q?oP1hkCJDUyb2vvVXGIMTNP08sK4/BKdNcPDbyGrj9ttJC0d4VhfxihJV5hR2?=
- =?us-ascii?Q?0UOwg/B2ebzfS5zmjCahsaaBKhQtdLFRXCISpRMz7QaQkMJdMzvMVer4nLV4?=
- =?us-ascii?Q?rkR1FH3of1btK0S/FjKDVMentY93Y2O5f1vEFy2l/MTyQG7weANyIAeCo3hn?=
- =?us-ascii?Q?a3LnGlGij2W+h6MxEMv0yS8pG/hP0yGqWC73IcSO5R/2rQ/bDUeAHhwkdp9i?=
- =?us-ascii?Q?pPD9KOUeYL/SIW6musVKdTgyuUyZGHK3ItpqvjByDjiOQTlvwHO2hQj5CQn8?=
- =?us-ascii?Q?mnW1xeA7ON61OutO+x/zB7JXNC3XVvuCP9+dkw/VHt1C78VApuGxac20KdMW?=
- =?us-ascii?Q?lQdoa79bfOWcu0/EpnW0Ywm6wKMhJzM=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?RbHyk4SePv3cQPm6qp3JZ4NM76fodeCW6Xcrc2wFc/YdOFhk7nEt24b5SvbH?=
+ =?us-ascii?Q?EOjQuKLq7FcU+UXhudYgheYNqetF5fs6xza/dtTTaZ6ZDuGnxkMZV5h4mtQi?=
+ =?us-ascii?Q?tnuGt01HtQ3GCPNS0Cfg4ZKKmO+tyx70VWdYNvePCn+0et0V6xnNIFmiMxWD?=
+ =?us-ascii?Q?Kp2s0anjPqblww5r1+OvTBakCrou2KyTrmV9IMhfOhjhK4jWtfGRHYsrPyz8?=
+ =?us-ascii?Q?f+Py9bi/0ki+oyftyj8OoNuNL0L9jNWr0LXFo5v/tgKICgmiosY42JhEP7NX?=
+ =?us-ascii?Q?q1xjTAeDXqgfX52ih6oj+oHBulcvr4cMziuZSfSJ87qFzkVhEoUNkZAwcf5i?=
+ =?us-ascii?Q?DPDDd6xfmzcVhT2OI1yY5kkNPYIVrDHbNCdTbUAARFXieCvVPvpk/1f77R/t?=
+ =?us-ascii?Q?d/WPoG6++h6nXsDyD9Y8YmKc/mSEkLAg/bAxtFrCy9RFChRUc0eycZ4ohT+/?=
+ =?us-ascii?Q?lB2H4DGPlGzAxBQ0HbdprrYOBIw2dXOnaXFTkEYj8EYWmq8xDO8M22uZY9/j?=
+ =?us-ascii?Q?AB6g+0MWuf/swyx6Fw4//kD0cqFO3bviXWkonK6h/gCfIchBrky6fXyngcTB?=
+ =?us-ascii?Q?DtF4kUFUbslY7X2+U/R+ajSEpdn77MiKfrb0w7vEmt4KFSCL/Oc8WYFv5r3c?=
+ =?us-ascii?Q?cZmf7tFzYugMNqce2yjTs5rGoF+n+gBPe9oI2UdgdNtdxjv1LLvLxFeqhfKF?=
+ =?us-ascii?Q?mtUtXmvuOx4AEADLYNVoyPyX7Lky6vZ288VD9h6tU3nihzc3n1KHoi+iqFFg?=
+ =?us-ascii?Q?WzbLnMhhaPJGTxpRRdwt6n52hKCh1ynx9xoLrKSAUuZZCgBesjo0ekpnPQec?=
+ =?us-ascii?Q?eHh3TkQoMRdTmLgue+XvQrYbx4aEolgJ3MkQvAErV7y+YtmKZGrNsUjwSeI5?=
+ =?us-ascii?Q?efBd3Zdvs/gOQpgV+I40j77K9pY3/OC3sJ5EKZWgY24UI86iSJg/0E/uwDUs?=
+ =?us-ascii?Q?TbjdFxOYm2TY3DNY+Xcs/dD16ut6mZv8pVd9cpwRNGczfPQrwWmIT/iQG7pF?=
+ =?us-ascii?Q?NqF1/C8uQVGbP17f82qp4Gx+TFlx1oObGY6x92LcNR/ZWCEmlHssEW4mBKwg?=
+ =?us-ascii?Q?O5E3P6yAM/M1DpxKbzYHH6p6PVLZAIXHNXqNC86sndL4ryChvftgUHYzj1ru?=
+ =?us-ascii?Q?innpIhINtDZ3wS8r+NGCR7tykgGbYQYsk+NEBPlD1OFpsOKilTza8L0Ei+Xt?=
+ =?us-ascii?Q?urFCsCp6W/1r50VgdzVfiUnQZbIhLdvmWMfOS4Kp+Vo1x/vMvW+L0BMeDXJz?=
+ =?us-ascii?Q?Y6+oR50vc3XqeAQsuViyCQ97MlzveFXmS9hm/gTzH2aZVkiVjdQl2Kq07WiD?=
+ =?us-ascii?Q?0cHVcUp4xzwFZOkhvdCZCMcHFwLc8GtG7gCRrPwxrHJ+1XfE9vuFJJp3eVbD?=
+ =?us-ascii?Q?InjSrmbI6N+7GKgfbijBCg6nkH44W2zvXbGwM4AkmfmghlgzN8/++HiqCtaF?=
+ =?us-ascii?Q?fXlGNwb2MGdShERNO53Nyk1UbipagPecaywwM9978Nw4elfILdgEjHuG3fsd?=
+ =?us-ascii?Q?06PNkmEiiBNU9ptICXzLjqE266xANLiv5kb7qPsHrbc40L4s3Qo9ejNMZkBV?=
+ =?us-ascii?Q?v91RmNzBrafsruv+Omt4hQeeVEgWp70esvgOyTi9NU2jhMH/kVp1HKH5WpvM?=
+ =?us-ascii?Q?5rzHj/US5/UfP7nsBICTYCboHpDBeyrFbGkBd6u+zN0AFysJVtzFQ8FEU8GQ?=
+ =?us-ascii?Q?EUkx7TOb31MmcF5r/zOnMdTcFrwxhDpTY5OQQmRCgGZAdi8fRSegCEa2TvgM?=
+ =?us-ascii?Q?6/cZaASgwEtbIzxrZcK7Nyb7cSuKoMk=3D?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e8b9b24-e92f-4ec0-e7cd-08da3d79fde2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b7de008-f36f-47b1-20da-08da3d79fe5a
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:38:58.7908
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:38:59.5565
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qISVjIc1bqTM6+bnzCV/HVh/4MREDHTKds7iwQGI+kpW30k2rM/LuqrAaqPW7+YsRIgeMWjMb5t0Rzj8sdam7w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0Q2+0BkXMa225GkI9yyzvGokMAnWz0nZgIsdoyFIR40ThakhSIUSbAeDK9Eq/286GcODtwYN4Wrui1MKD9prdQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1P192MB0669
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -133,658 +133,201 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/utils.c | 642 +++++++++++++++++++++++
- 1 file changed, 642 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/utils.c
+ drivers/net/wireless/celeno/cl8k/utils.h | 185 +++++++++++++++++++++++
+ 1 file changed, 185 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/utils.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/utils.c b/drivers/net/wireless/celeno/cl8k/utils.c
+diff --git a/drivers/net/wireless/celeno/cl8k/utils.h b/drivers/net/wireless/celeno/cl8k/utils.h
 new file mode 100644
-index 000000000000..fadc586e9579
+index 000000000000..052687183dd3
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/utils.c
-@@ -0,0 +1,642 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
++++ b/drivers/net/wireless/celeno/cl8k/utils.h
+@@ -0,0 +1,185 @@
++/* SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause */
 +/* Copyright(c) 2019-2022, Celeno Communications Ltd. */
 +
-+#include <linux/dma-mapping.h>
-+#include <linux/list.h>
-+#include <linux/jiffies.h>
-+#include <linux/kthread.h>
-+#include <net/mac80211.h>
-+#include <linux/sched/signal.h>
-+#include <linux/firmware.h>
-+#include <linux/if_vlan.h>
-+#include <linux/ip.h>
-+#include <linux/ipv6.h>
++#ifndef CL_UTILS_H
++#define CL_UTILS_H
 +
-+#include "hw.h"
-+#include "ipc_shared.h"
-+#include "radio.h"
-+#include "traffic.h"
-+#include "reg/reg_defs.h"
-+#include "utils.h"
++#include "def.h"
++#include "ieee80211_i.h"
++#include "chip.h"
 +
-+#define GI_08  0
-+#define GI_16  1
-+#define GI_32  2
-+#define GI_04  3
++/*
++ * GI_LTF field for common info
++ * 0 - 1x HE-LTF + 1.6 us GI
++ * 1 - 2x HE-LTF + 1.6 us GI
++ * 2 - 4x HE-LTF + 3.2 us GI
++ */
++enum cl_he_ltf_gi {
++	HE_LTF_X1_GI_16, /* Not supported */
++	HE_LTF_X2_GI_16,
++	HE_LTF_X4_GI_32,
 +
-+#define GI_MAX_FW 4
-+#define GI_MAX_HE 3
-+#define GI_MAX_HT_VHT 2
-+
-+static u8 conv_wrs_gi_ht_vht[GI_MAX_HT_VHT] = {
-+	[WRS_GI_LONG] = GI_08,
-+	[WRS_GI_SHORT] = GI_04
++	HE_LTF_MAX
 +};
 +
-+static u8 conv_wrs_gi_he[GI_MAX_HE] = {
-+	[WRS_GI_LONG] = GI_32,
-+	[WRS_GI_SHORT] = GI_16,
-+	[WRS_GI_VSHORT] = GI_08
++#define CL_TF_GI_LTF_TO_GI(gi_ltf) \
++	((gi_ltf) == HE_LTF_X4_GI_32 ? WRS_GI_LONG : \
++	 ((gi_ltf) == HE_LTF_X2_GI_16 ? WRS_GI_SHORT : \
++	   ((gi_ltf) == HE_LTF_X1_GI_16 ? WRS_GI_SHORT : WRS_GI_LONG)))
++
++#define CL_TF_GI_TO_GI_LTF(gi) \
++	((gi) == WRS_GI_LONG ? HE_LTF_X4_GI_32 : \
++	 ((gi) == WRS_GI_SHORT ? HE_LTF_X2_GI_16 : \
++	   ((gi) == WRS_GI_VSHORT ? HE_LTF_X2_GI_16 : HE_LTF_X4_GI_32)))
++
++#define CL_TF_RU_ALLOC_MAX_TYPE_1 36
++#define CL_TF_RU_ALLOC_MAX_TYPE_2 52
++#define CL_TF_RU_ALLOC_MAX_TYPE_3 60
++#define CL_TF_RU_ALLOC_MAX_TYPE_4 64
++#define CL_TF_RU_ALLOC_MAX_TYPE_5 66
++#define CL_TF_RU_ALLOC_MAX_TYPE_6 67
++#define CL_TF_RU_ALLOC_MAX_TYPE_7 68
++
++/*
++ *IEEE80211 G Rate provided by Hostapd in WLAN_EID_SUPP_RATES EID
++ *EID Rate = ieee802Rate/5
++ */
++#define CL_80211G_RATE_6MB     12
++#define CL_80211G_RATE_9MB     18
++#define CL_80211G_RATE_12MB     24
++#define CL_80211G_RATE_18MB     36
++#define CL_80211G_RATE_24MB     48
++#define CL_80211G_RATE_36MB     72
++#define CL_80211G_RATE_48MB     96
++#define CL_80211G_RATE_54MB     108
++
++#define CL_SUPP_RATE_MASK     0x7F
++
++#define BAND_IS_5G_6G(cl_hw) \
++		(cl_band_is_5g(cl_hw) || cl_band_is_6g(cl_hw))
++
++static const u8 tid_to_ac[] = {
++	AC_BE, AC_BK, AC_BK, AC_BE, AC_VI, AC_VI, AC_VO, AC_VO
 +};
 +
-+static u8 conv_fw_gi_ht_vht[GI_MAX_FW] = {
-+	[GI_08] = WRS_GI_LONG,
-+	[GI_16] = 0,
-+	[GI_32] = 0,
-+	[GI_04] = WRS_GI_SHORT,
-+};
-+
-+static u8 conv_fw_gi_he[GI_MAX_FW] = {
-+	[GI_08] = WRS_GI_VSHORT,
-+	[GI_16] = WRS_GI_SHORT,
-+	[GI_32] = WRS_GI_LONG,
-+	[GI_04] = 0,
-+};
-+
-+static const u8 cl_mu_ofdma_ru_type_to_bw_conversion[CL_MU_OFDMA_RU_TYPE_MAX] = {
-+	CHNL_BW_2_5,
-+	CHNL_BW_2_5,
-+	CHNL_BW_5,
-+	CHNL_BW_10,
-+	CHNL_BW_20,
-+	CHNL_BW_40,
-+	CHNL_BW_80,
-+	CHNL_BW_160
-+};
-+
-+void cl_hex_dump(char *caption, u8 *buffer, u32 length, u32 offset, bool is_byte)
++static inline u16 cl_adc_to_mv(u16 adc)
 +{
-+	u8 *pt = buffer;
-+	u32 i;
-+	bool end_nl = false;
-+	char buf[STR_LEN_256B] = {0};
-+	int len = 0;
++	return (adc * 1800) >> 12;
++}
 +
-+	if (caption)
-+		pr_debug("%s: %p, len = %u\n", caption, buffer, length);
++static inline struct ieee80211_vif *NETDEV_TO_VIF(struct net_device *dev)
++{
++	struct wireless_dev *wdev = dev->ieee80211_ptr;
 +
-+	if (is_byte) {
-+		for (i = 0; i < length; i++) {
-+			if (i % 16 == 0)
-+				len += snprintf(buf + len, sizeof(buf) - len,
-+						"0x%04x : ", i + offset);
-+			len += snprintf(buf + len, sizeof(buf) - len,
-+					"%02x ", ((u8)pt[i]));
-+			end_nl = true;
-+			if (i % 16 == 15) {
-+				pr_debug("%s", buf);
-+				len = 0;
-+				end_nl = false;
-+			}
-+		}
-+	} else {
-+		for (i = 0; i < (length / sizeof(u32)); i++) {
-+			if (i % 4 == 0)
-+				len += snprintf(buf + len, sizeof(buf) - len,
-+						"0x%04x : ",
-+						(u32)(i * sizeof(u32) + offset));
-+			len += snprintf(buf + len, sizeof(buf) - len,
-+					"%08x ", *((u32 *)(pt + i * sizeof(u32))));
-+			end_nl = true;
-+			if (i % 4 == 3) {
-+				pr_debug("%s", buf);
-+				len = 0;
-+				end_nl = false;
-+			}
-+		}
++	if (!wdev)
++		return NULL;
++
++	return wdev_to_ieee80211_vif(wdev);
++}
++
++static inline struct cl_hw *NETDEV_TO_CL_HW(struct net_device *dev)
++{
++	struct ieee80211_hw *hw = wdev_priv(dev->ieee80211_ptr);
++
++	return hw->priv;
++}
++
++static inline struct cl_vif *NETDEV_TO_CL_VIF(struct net_device *dev)
++{
++	struct ieee80211_vif *vif = NETDEV_TO_VIF(dev);
++
++	WARN_ON(!vif);
++
++	if (unlikely(vif->type == NL80211_IFTYPE_AP_VLAN)) {
++		struct cl_hw *cl_hw = NETDEV_TO_CL_HW(dev);
++
++		return cl_vif_get_by_dev(cl_hw, dev);
 +	}
 +
-+	if (end_nl)
-+		pr_debug("%s", buf);
++	return (struct cl_vif *)vif->drv_priv;
 +}
 +
-+u8 cl_convert_gi_format_wrs_to_fw(u8 wrs_mode, u8 gi)
++static inline struct cl_vif *TX_INFO_TO_CL_VIF(struct cl_hw *cl_hw,
++					       struct ieee80211_tx_info *tx_info)
 +{
-+	if (wrs_mode == WRS_MODE_HE && gi < GI_MAX_HE)
-+		return conv_wrs_gi_he[gi];
-+	else if (wrs_mode > WRS_MODE_OFDM && gi < GI_MAX_HT_VHT)
-+		return conv_wrs_gi_ht_vht[gi];
-+	else
-+		return 0;
++	struct ieee80211_vif *vif = tx_info->control.vif;
++
++	WARN_ON(!vif);
++
++	if (unlikely(vif->type == NL80211_IFTYPE_AP_VLAN))
++		return cl_vif_get_by_mac(cl_hw, vif->addr);
++
++	return (struct cl_vif *)(vif->drv_priv);
 +}
 +
-+u8 cl_convert_gi_format_fw_to_wrs(u8 format_mode, u8 gi)
-+{
-+	if (gi < GI_MAX_FW) {
-+		if (format_mode >= FORMATMOD_HE_SU)
-+			return conv_fw_gi_he[gi];
-+		else if (format_mode >= FORMATMOD_HT_MF)
-+			return conv_fw_gi_ht_vht[gi];
-+	}
-+
-+	return 0;
-+}
-+
-+static u8 map_gi_to_ltf[WRS_GI_MAX] = {
-+	[WRS_GI_LONG] = LTF_X4,
-+	[WRS_GI_SHORT] = LTF_X2,
-+	[WRS_GI_VSHORT] = LTF_X2,
-+};
-+
-+u8 cl_map_gi_to_ltf(u8 mode, u8 gi)
-+{
-+	if (mode == WRS_MODE_HE && gi < WRS_GI_MAX)
-+		return map_gi_to_ltf[gi];
-+
-+	return 0;
-+}
-+
-+/* This table holds 10^(-110 -> 0) Q39 values for rx RSSI and noise floor calculations */
-+#define CL_EXP_TBL_SIZE 111 /* 10^x table size (-110 -> 0dBm) */
-+
-+static u64 CL_EXP_10[CL_EXP_TBL_SIZE] = {
-+	0x7FFFFFFFFFULL, 0x65AC8C2F36ULL, 0x50C335D3DBULL, 0x4026E73CCDULL, 0x32F52CFEEAULL,
-+	0x287A26C490ULL, 0x2026F30FBBULL, 0x198A13577CULL, 0x144960C577ULL, 0x101D3F2D96ULL,
-+	0x0CCCCCCCCDULL, 0x0A2ADAD185ULL, 0x08138561FCULL, 0x066A4A52E1ULL, 0x0518847FE4ULL,
-+	0x040C3713A8ULL, 0x0337184E5FULL, 0x028DCEBBF3ULL, 0x0207567A25ULL, 0x019C86515CULL,
-+	0x0147AE147BULL, 0x01044914F4ULL, 0x00CEC089CCULL, 0x00A43AA1E3ULL, 0x008273A664ULL,
-+	0x00679F1B91ULL, 0x00524F3B0AULL, 0x0041617932ULL, 0x0033EF0C37ULL, 0x002940A1BCULL,
-+	0x0020C49BA6ULL, 0x001A074EE5ULL, 0x0014ACDA94ULL, 0x00106C4364ULL, 0x000D0B90A4ULL,
-+	0x000A5CB5F5ULL, 0x00083B1F81ULL, 0x000689BF52ULL, 0x0005318139ULL, 0x000420102CULL,
-+	0x000346DC5DULL, 0x00029A54B1ULL, 0x000211490FULL, 0x0001A46D24ULL, 0x00014DF4DDULL,
-+	0x0001094565ULL, 0x0000D2B65AULL, 0x0000A75FEFULL, 0x000084F352ULL, 0x0000699B38ULL,
-+	0x000053E2D6ULL, 0x000042A212ULL, 0x000034EDB5ULL, 0x00002A0AEAULL, 0x0000216549ULL,
-+	0x00001A86F1ULL, 0x000015123CULL, 0x000010BCCBULL, 0x00000D4B88ULL, 0x00000A8F86ULL,
-+	0x000008637CULL, 0x000006A9CFULL, 0x0000054AF8ULL, 0x000004344BULL, 0x00000356EEULL,
-+	0x000002A718ULL, 0x0000021B6CULL, 0x000001AC7BULL, 0x000001545AULL, 0x0000010E5AULL,
-+	0x000000D6C0ULL, 0x000000AA95ULL, 0x000000877FULL, 0x0000006BA1ULL, 0x000000557EULL,
-+	0x00000043E9ULL, 0x00000035F1ULL, 0x0000002AD9ULL, 0x0000002209ULL, 0x0000001B09ULL,
-+	0x000000157AULL, 0x000000110FULL, 0x0000000D8DULL, 0x0000000AC3ULL, 0x000000088DULL,
-+	0x00000006CAULL, 0x0000000565ULL, 0x0000000449ULL, 0x0000000367ULL, 0x00000002B4ULL,
-+	0x0000000226ULL, 0x00000001B5ULL, 0x000000015BULL, 0x0000000114ULL, 0x00000000DBULL,
-+	0x00000000AEULL, 0x000000008AULL, 0x000000006EULL, 0x0000000057ULL, 0x0000000045ULL,
-+	0x0000000037ULL, 0x000000002CULL, 0x0000000023ULL, 0x000000001CULL, 0x0000000016ULL,
-+	0x0000000011ULL, 0x000000000EULL, 0x000000000BULL, 0x0000000009ULL, 0x0000000007ULL,
-+	0x0000000005ULL
-+};
-+
-+static s8 cl_eng_to_noise_floor(u64 eng)
-+{
-+	s8 i = 0;
-+	s8 noise = 0;
-+	s64 min_delta = S64_MAX;
-+
-+	for (i = CL_EXP_TBL_SIZE - 1; i >= 0; i--) {
-+		if (abs((s64)(((s64)eng) - ((s64)CL_EXP_10[i]))) < min_delta) {
-+			min_delta = abs((s64)(((s64)eng) - ((s64)CL_EXP_10[i])));
-+			noise = i;
-+		}
-+	}
-+
-+	return (-noise);
-+}
-+
-+static void cl_read_reg_noise(struct cl_hw *cl_hw, s8 res[4])
-+{
-+	u32 reg_val = riu_agcinbdpow_20_pnoisestat_get(cl_hw);
-+	u8 i = 0;
-+
-+	for (i = 0; i < 4; i++) {
-+		u8 curr_val = (reg_val >> (i * 8)) & 0xFF;
-+		/* Convert reg value to real value */
-+		res[i] = curr_val - 0xFF;
-+	}
-+}
-+
-+s8 cl_calc_noise_floor(struct cl_hw *cl_hw, const s8 *reg_noise_floor)
-+{
-+	s8 noise_floor[4] = {0};
-+	u64 noise_floor_eng = 0;
-+
-+	if (reg_noise_floor)
-+		memcpy(noise_floor, reg_noise_floor, sizeof(noise_floor));
-+	else
-+		cl_read_reg_noise(cl_hw, noise_floor);
-+
-+	noise_floor[0] = abs(noise_floor[0]);
-+	noise_floor[1] = abs(noise_floor[1]);
-+	noise_floor[2] = abs(noise_floor[2]);
-+	noise_floor[3] = abs(noise_floor[3]);
-+
-+	BUILD_BUG_ON(CL_EXP_TBL_SIZE > S8_MAX);
-+	noise_floor_eng = (CL_EXP_10[min_t(s8, noise_floor[0], CL_EXP_TBL_SIZE - 1)] +
-+			   CL_EXP_10[min_t(s8, noise_floor[1], CL_EXP_TBL_SIZE - 1)] +
-+			   CL_EXP_10[min_t(s8, noise_floor[2], CL_EXP_TBL_SIZE - 1)] +
-+			   CL_EXP_10[min_t(s8, noise_floor[3], CL_EXP_TBL_SIZE - 1)]);
-+
-+	noise_floor_eng = div64_u64(noise_floor_eng, 4);
-+
-+	return cl_eng_to_noise_floor(noise_floor_eng);
-+}
-+
-+u8 cl_convert_signed_to_reg_value(s8 val)
-+{
-+	bool sign = val < 0;
-+	u8 res = abs(val);
-+
-+	if (sign)
-+		res |= (1 << 7);
-+
-+	return res;
-+}
-+
-+static const int nl_width_to_phy_bw[] = {
-+	[NL80211_CHAN_WIDTH_20_NOHT] = CHNL_BW_20,
-+	[NL80211_CHAN_WIDTH_20]      = CHNL_BW_20,
-+	[NL80211_CHAN_WIDTH_40]      = CHNL_BW_40,
-+	[NL80211_CHAN_WIDTH_80]      = CHNL_BW_80,
-+	[NL80211_CHAN_WIDTH_80P80]   = CHNL_BW_20,
-+	[NL80211_CHAN_WIDTH_160]     = CHNL_BW_160,
-+	[NL80211_CHAN_WIDTH_5]       = CHNL_BW_20,
-+	[NL80211_CHAN_WIDTH_10]      = CHNL_BW_20,
-+};
-+
-+u8 cl_width_to_bw(enum nl80211_chan_width width)
-+{
-+	if (width <= NL80211_CHAN_WIDTH_10)
-+		return nl_width_to_phy_bw[width];
-+
-+	return CHNL_BW_20;
-+}
-+
-+u8 cl_center_freq_offset(u8 bw)
-+{
-+	if (bw == CHNL_BW_160)
-+		return 70;
-+
-+	if (bw == CHNL_BW_80)
-+		return 30;
-+
-+	if (bw == CHNL_BW_40)
-+		return 10;
-+
-+	return 0;
-+}
-+
-+u8 cl_max_bw_idx(u8 wrs_mode, bool is_24g)
-+{
-+	if (wrs_mode < WRS_MODE_HT)
-+		return CHNL_BW_20 + 1;
-+
-+	if (wrs_mode == WRS_MODE_HT || is_24g)
-+		return CHNL_BW_40 + 1;
-+
-+	return CHNL_BW_MAX;
-+}
-+
-+bool cl_hw_mode_is_b_or_bg(struct cl_hw *cl_hw)
-+{
-+	return (cl_hw->hw_mode == HW_MODE_B ||
-+		cl_hw->hw_mode == HW_MODE_BG);
-+}
-+
-+#define LENGTH_LLC   3
-+#define LENGTH_SSNAP 5
-+
-+bool cl_is_eapol(struct sk_buff *skb)
-+{
-+	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
-+	__le16 fc = hdr->frame_control;
-+	unsigned int hdrlen = 0;
-+	unsigned short ethertype = 0;
-+	u8 *temp = NULL;
-+
-+	/* Find the wireless header size */
-+	hdrlen = ieee80211_has_a4(fc) ? 30 : 24;
-+
-+	if (ieee80211_is_data_qos(fc)) {
-+		hdrlen += IEEE80211_QOS_CTL_LEN;
-+
-+		if (ieee80211_has_order(fc))
-+			hdrlen += IEEE80211_HT_CTL_LEN;
-+	}
-+
-+	/* Skip wireless header */
-+	temp = (u8 *)(skb->data + hdrlen);
-+
-+	/* Skip LLC and SNAP header */
-+	if (PKT_HAS_LLC_HDR(temp))
-+		ethertype = cl_get_ether_type(LENGTH_LLC + LENGTH_SSNAP - 2, temp);
-+
-+	return ethertype == ETH_P_PAE;
-+}
-+
-+u8 cl_ru_alloc_to_ru_type(u8 ru_alloc)
-+{
-+	if (ru_alloc <= CL_TF_RU_ALLOC_MAX_TYPE_1)
-+		return CL_MU_OFDMA_RU_TYPE_26;
-+	else if (ru_alloc <= CL_TF_RU_ALLOC_MAX_TYPE_2)
-+		return CL_MU_OFDMA_RU_TYPE_52;
-+	else if (ru_alloc <= CL_TF_RU_ALLOC_MAX_TYPE_3)
-+		return CL_MU_OFDMA_RU_TYPE_106;
-+	else if (ru_alloc <= CL_TF_RU_ALLOC_MAX_TYPE_4)
-+		return CL_MU_OFDMA_RU_TYPE_242;
-+	else if (ru_alloc <= CL_TF_RU_ALLOC_MAX_TYPE_5)
-+		return CL_MU_OFDMA_RU_TYPE_484;
-+	else if (ru_alloc <= CL_TF_RU_ALLOC_MAX_TYPE_6)
-+		return CL_MU_OFDMA_RU_TYPE_996;
-+	else
-+		return CL_MU_OFDMA_RU_TYPE_2x996;
-+}
-+
-+bool cl_is_valid_g_rates(const u8 *rate_ie)
-+{
-+	int i, rate;
-+
-+	for (i = 0; i < rate_ie[1]; i++) {
-+		rate = rate_ie[2 + i] & CL_SUPP_RATE_MASK;
-+		switch (rate) {
-+		case CL_80211G_RATE_6MB:
-+		case CL_80211G_RATE_9MB:
-+		case CL_80211G_RATE_12MB:
-+		case CL_80211G_RATE_18MB:
-+		case CL_80211G_RATE_24MB:
-+		case CL_80211G_RATE_36MB:
-+		case CL_80211G_RATE_48MB:
-+		case CL_80211G_RATE_54MB:
-+			return true;
-+		}
-+	}
-+	return false;
-+}
-+
++void cl_hex_dump(char *caption, u8 *buffer, u32 length, u32 offset, bool is_byte);
++u8 cl_convert_gi_format_wrs_to_fw(u8 wrs_mode, u8 gi);
++u8 cl_convert_gi_format_fw_to_wrs(u8 format_mode, u8 gi);
++u8 cl_map_gi_to_ltf(u8 mode, u8 gi);
++s8 cl_calc_noise_floor(struct cl_hw *cl_hw, const s8 *reg_noise_floor);
++u8 cl_convert_signed_to_reg_value(s8 val);
++u8 cl_width_to_bw(enum nl80211_chan_width width);
++u8 cl_center_freq_offset(u8 bw);
++u8 cl_max_bw_idx(u8 wrs_mode, bool is_24g);
++bool cl_hw_mode_is_b_or_bg(struct cl_hw *cl_hw);
++bool cl_is_eapol(struct sk_buff *skb);
++u8 cl_ru_alloc_to_ru_type(u8 ru_alloc);
++bool cl_is_valid_g_rates(const u8 *rate_ie);
 +enum cl_wireless_mode cl_recalc_wireless_mode(struct cl_hw *cl_hw,
 +					      bool ieee80211n,
 +					      bool ieee80211ac,
-+					      bool ieee80211ax)
-+{
-+	enum cl_wireless_mode wireless_mode = cl_hw->wireless_mode;
++					      bool ieee80211ax);
 +
-+	if (!ieee80211n && !ieee80211ac && !ieee80211ax)
-+		wireless_mode = WIRELESS_MODE_LEGACY;
-+	else if (ieee80211n && (cl_band_is_24g(cl_hw) || ieee80211ac) && ieee80211ax)
-+		wireless_mode = WIRELESS_MODE_HT_VHT_HE;
-+	else if (ieee80211n && ieee80211ac)
-+		wireless_mode =  WIRELESS_MODE_HT_VHT;
-+	else if (ieee80211n)
-+		wireless_mode = WIRELESS_MODE_HT;
-+	else if (ieee80211ax)
-+		wireless_mode = WIRELESS_MODE_HE;
-+
-+	return wireless_mode;
-+}
-+
-+enum nl80211_he_ru_alloc cl_ru_type_to_nl80211_he_ru_alloc(enum cl_mu_ofdma_ru_type ru_type)
-+{
-+	switch (ru_type) {
-+	case CL_MU_OFDMA_RU_TYPE_26:
-+		return NL80211_RATE_INFO_HE_RU_ALLOC_26;
-+	case CL_MU_OFDMA_RU_TYPE_52:
-+		return NL80211_RATE_INFO_HE_RU_ALLOC_52;
-+	case CL_MU_OFDMA_RU_TYPE_106:
-+		return NL80211_RATE_INFO_HE_RU_ALLOC_106;
-+	case CL_MU_OFDMA_RU_TYPE_242:
-+		return NL80211_RATE_INFO_HE_RU_ALLOC_242;
-+	case CL_MU_OFDMA_RU_TYPE_484:
-+		return NL80211_RATE_INFO_HE_RU_ALLOC_484;
-+	case CL_MU_OFDMA_RU_TYPE_996:
-+		return NL80211_RATE_INFO_HE_RU_ALLOC_996;
-+	case CL_MU_OFDMA_RU_TYPE_2x996:
-+		return NL80211_RATE_INFO_HE_RU_ALLOC_2x996;
-+	default:
-+		return 0;
-+	}
-+}
-+
-+u8 cl_mu_ofdma_grp_convert_ru_type_to_bw(struct cl_hw *cl_hw, u8 ru_type)
-+{
-+	if (ru_type >= CL_MU_OFDMA_RU_TYPE_MAX) {
-+		pr_err("Invalid RU type %u\n", ru_type);
-+		return 0;
-+	}
-+
-+	return cl_mu_ofdma_ru_type_to_bw_conversion[ru_type];
-+}
-+
-+void cl_ieee802_11_parse_elems(const u8 *ies, size_t ies_len, struct ieee802_11_elems *elems)
-+{
-+	u8 *ie = NULL;
-+
-+	memset(elems, 0, sizeof(*elems));
-+
-+	ie = (u8 *)cfg80211_find_ie(WLAN_EID_SSID, ies, ies_len);
-+	if (ie) {
-+		elems->ssid = (const u8 *)&ie[2];
-+		elems->ssid_len = ie[1];
-+	}
-+
-+	ie = (u8 *)cfg80211_find_ie(WLAN_EID_SUPP_RATES, ies, ies_len);
-+	if (ie) {
-+		elems->supp_rates = (const u8 *)&ie[2];
-+		elems->supp_rates_len = ie[1];
-+	}
-+
-+	ie = (u8 *)cfg80211_find_ie(WLAN_EID_HT_CAPABILITY, ies, ies_len);
-+	if (ie)
-+		elems->ht_cap_elem = (struct ieee80211_ht_cap *)&ie[2];
-+
-+	ie = (u8 *)cfg80211_find_ie(WLAN_EID_HT_OPERATION, ies, ies_len);
-+	if (ie)
-+		elems->ht_operation = (struct ieee80211_ht_operation *)&ie[2];
-+
-+	ie = (u8 *)cfg80211_find_ie(WLAN_EID_VHT_CAPABILITY, ies, ies_len);
-+	if (ie)
-+		elems->vht_cap_elem =  (struct ieee80211_vht_cap *)&ie[2];
-+
-+	ie = (u8 *)cfg80211_find_ie(WLAN_EID_VHT_OPERATION, ies, ies_len);
-+	if (ie)
-+		elems->vht_operation =  (struct ieee80211_vht_operation *)&ie[2];
-+
-+	ie = (u8 *)cfg80211_find_ie(WLAN_EID_TIM, ies, ies_len);
-+	if (ie) {
-+		elems->tim = (struct ieee80211_tim_ie *)&ie[2];
-+		elems->tim_len = ie[1];
-+	}
-+
-+	ie = (u8 *)cfg80211_find_ie(WLAN_EID_RSN, ies, ies_len);
-+	if (ie) {
-+		elems->rsn = (const u8 *)&ie[2];
-+		elems->rsn_len = ie[1];
-+	}
-+
-+	ie = (u8 *)cfg80211_find_ext_ie(WLAN_EID_EXT_SUPP_RATES, ies, ies_len);
-+	if (ie) {
-+		elems->ext_supp_rates = (const u8 *)&ie[2];
-+		elems->ext_supp_rates_len = ie[1];
-+	}
-+
-+	ie = (u8 *)cfg80211_find_ext_ie(WLAN_EID_EXT_HE_CAPABILITY, ies, ies_len);
-+	if (ie) {
-+		elems->he_cap = (const u8 *)&ie[2];
-+		elems->he_cap_len = ie[1];
-+	}
-+
-+	ie = (u8 *)cfg80211_find_ext_ie(WLAN_EID_EXT_HE_OPERATION, ies, ies_len);
-+	if (ie)
-+		elems->he_operation = (struct ieee80211_he_operation *)&ie[2];
-+}
-+
-+size_t cl_file_open_and_read(struct cl_chip *chip, const char *filename,
-+			     char **buf)
-+{
-+	const struct firmware *fw;
-+	size_t size = 0;
-+	int ret = 0;
-+	char path_name[CL_PATH_MAX] = {0};
-+
-+	snprintf(path_name, sizeof(path_name), "cl8k/%s", filename);
-+	ret = request_firmware_direct(&fw, path_name, chip->dev);
-+
-+	if (ret) {
-+		cl_dbg_chip_err(chip, "request_firmware_direct %s failed\n",
-+				path_name);
-+		return 0;
-+	}
-+
-+	if (!fw || !fw->data) {
-+		cl_dbg_chip_err(chip, "Invalid firmware %s\n", path_name);
-+		goto out;
-+	}
-+
-+	size = fw->size;
-+
-+	/*
-+	 * Add one byte with a '\0' so that string manipulation functions
-+	 * used for parsing these files can find the string '\0' terminator.
-+	 * Make sure size is aligned to 4.
-+	 */
-+	*buf = kzalloc(ALIGN(size + 1, 4), GFP_KERNEL);
-+	if (!(*buf)) {
-+		size = 0;
-+		goto out;
-+	}
-+
-+	memcpy(*buf, fw->data, size);
-+
-+out:
-+	release_firmware(fw);
-+
-+	return size;
-+}
-+
-+static __be16 cl_get_eth_proto(struct sk_buff *skb)
-+{
-+	if (!skb->mac_header)
-+		skb_reset_mac_header(skb);
-+
-+	if (eth_hdr(skb)->h_proto == htons(ETH_P_8021Q))
-+		return vlan_eth_hdr(skb)->h_vlan_encapsulated_proto;
-+	else
-+		return eth_hdr(skb)->h_proto;
-+}
-+
-+bool cl_set_network_header_if_proto(struct sk_buff *skb, u16 protocol)
-+{
-+	if (cl_get_eth_proto(skb) == htons(protocol)) {
-+		const bool has_vlan_header = eth_hdr(skb)->h_proto == htons(ETH_P_8021Q);
-+		const size_t h_offset =
-+			(eth_hdr(skb) == (struct ethhdr *)(skb->data)) ? ETH_HLEN : 0;
-+
-+		skb_set_network_header(skb, h_offset + ((has_vlan_header) ? VLAN_HLEN : 0));
-+
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
-+bool cl_is_ipv4_packet(struct sk_buff *skb)
-+{
-+	return cl_set_network_header_if_proto(skb, ETH_P_IP) &&
-+	       (ip_hdr(skb)->ihl >= 5) &&
-+	       (ip_hdr(skb)->version == IPVERSION);
-+}
-+
-+bool cl_is_ipv6_packet(struct sk_buff *skb)
-+{
-+	return cl_set_network_header_if_proto(skb, ETH_P_IPV6) &&
-+	       (ipv6_hdr(skb)->version == 6);
-+}
-+
-+#define TCP_ACK_MAX_LEN 100
-+
-+bool cl_is_tcp_ack(struct sk_buff *skb, bool *syn_rst_push)
-+{
-+	if (skb->len > TCP_ACK_MAX_LEN)
-+		goto out;
-+
-+	if (cl_is_ipv4_packet(skb)) {
-+		struct iphdr *iphdr = ip_hdr(skb);
-+
-+		if (iphdr->protocol == IPPROTO_TCP) {
-+			struct tcphdr *tcp_hdr = (struct tcphdr *)
-+						 ((char *)iphdr +
-+						  IPV4_HDR_LEN(iphdr->ihl));
-+			u16 data_size = ntohs(iphdr->tot_len) -
-+					IPV4_HDR_LEN(iphdr->ihl) -
-+					(tcp_hdr->doff * 4);
-+
-+			*syn_rst_push = tcp_hdr->syn || tcp_hdr->rst || tcp_hdr->psh;
-+
-+			return (data_size == 0);
-+		}
-+	} else if (cl_is_ipv6_packet(skb)) {
-+		struct ipv6hdr *ipv6hdr = ipv6_hdr(skb);
-+
-+		if (ipv6hdr->nexthdr == IPPROTO_TCP) {
-+			struct tcphdr *tcp_hdr = (struct tcphdr *)
-+						 ((char *)ipv6hdr +
-+						 sizeof(struct ipv6hdr));
-+			u16 data_size = ntohs(ipv6hdr->payload_len) -
-+					(tcp_hdr->doff * 4);
-+
-+			*syn_rst_push = tcp_hdr->syn || tcp_hdr->rst || tcp_hdr->psh;
-+
-+			return (data_size == 0);
-+		}
-+	}
-+
-+out:
-+	*syn_rst_push = false;
-+	return false;
-+}
-+
-+bool cl_band_is_6g(struct cl_hw *cl_hw)
-+{
-+	return (cl_hw->conf->ci_band_num == 6);
-+}
-+
-+bool cl_band_is_5g(struct cl_hw *cl_hw)
-+{
-+	return (cl_hw->conf->ci_band_num == 5);
-+}
-+
-+bool cl_band_is_24g(struct cl_hw *cl_hw)
-+{
-+	return (cl_hw->conf->ci_band_num == 24);
-+}
-+
-+u8 cl_band_to_fw_idx(struct cl_hw *cl_hw)
-+{
-+	if (cl_hw->nl_band == NL80211_BAND_6GHZ)
-+		return FW_BAND_6GHZ;
-+
-+	if (cl_hw->nl_band == NL80211_BAND_5GHZ)
-+		return FW_BAND_5GHZ;
-+
-+	return FW_BAND_2GHZ;
-+}
-+
-+static u8 fw_to_nl_band[FW_BAND_MAX] = {
-+	[FW_BAND_6GHZ] = NL80211_BAND_6GHZ,
-+	[FW_BAND_5GHZ] = NL80211_BAND_5GHZ,
-+	[FW_BAND_2GHZ] = NL80211_BAND_2GHZ,
++enum cl_mu_ofdma_ru_type {
++	CL_MU_OFDMA_RU_TYPE_NONE = 0,
++	CL_MU_OFDMA_RU_TYPE_26,    /* 2.5MHz */
++	CL_MU_OFDMA_RU_TYPE_52,    /* 5MHz */
++	CL_MU_OFDMA_RU_TYPE_106,   /* 10MHz */
++	CL_MU_OFDMA_RU_TYPE_242,   /* 20MHz */
++	CL_MU_OFDMA_RU_TYPE_484,   /* 40MHz */
++	CL_MU_OFDMA_RU_TYPE_996,   /* 80MHz */
++	CL_MU_OFDMA_RU_TYPE_2x996, /* 160MHz */
++	CL_MU_OFDMA_RU_TYPE_MAX
 +};
 +
-+u8 cl_band_from_fw_idx(u32 phy_band)
-+{
-+	if (phy_band < FW_BAND_MAX)
-+		return fw_to_nl_band[phy_band];
++enum nl80211_he_ru_alloc cl_ru_type_to_nl80211_he_ru_alloc(enum cl_mu_ofdma_ru_type ru_type);
++u8 cl_mu_ofdma_grp_convert_ru_type_to_bw(struct cl_hw *cl_hw, u8 ru_type);
++void cl_ieee802_11_parse_elems(const u8 *ies, size_t ies_len, struct ieee802_11_elems *elems);
 +
-+	return FW_BAND_MAX;
++/*
++ * cl_file_open_and_read - Read the whole file into an allocated buffer.
++ *
++ * Allocates a buffer large enough to hold the contents of file at @filename and reads the
++ * contents of that file into that buffer. Upon success, the address of the allocated buffer
++ * is returned (which needs to be free later). Upon failure, returns NULL.
++ */
++size_t cl_file_open_and_read(struct cl_chip *chip, const char *filename,
++			     char **buf);
++
++/* Traffic analysis */
++/* Check if a packet has specific LLC fields e.g. DSAP, SSAP and Control */
++#define PKT_HAS_LLC_HDR(a) ((a[0] == 0xAA) && (a[1] == 0xAA) && (a[2] == 0x03))
++
++/* Multiply by 4 because IHL is number of 32-bit words */
++#define IPV4_HDR_LEN(ihl) ((ihl) << 2)
++
++bool cl_set_network_header_if_proto(struct sk_buff *skb, u16 protocol);
++bool cl_is_ipv4_packet(struct sk_buff *skb);
++bool cl_is_ipv6_packet(struct sk_buff *skb);
++bool cl_is_tcp_ack(struct sk_buff *skb, bool *syn_rst_push);
++
++/* Band helpers */
++bool cl_band_is_6g(struct cl_hw *cl_hw);
++bool cl_band_is_5g(struct cl_hw *cl_hw);
++bool cl_band_is_24g(struct cl_hw *cl_hw);
++u8 cl_band_to_fw_idx(struct cl_hw *cl_hw);
++u8 cl_band_from_fw_idx(u32 phy_band);
++
++static inline unsigned short cl_get_ether_type(int offset, unsigned char *src_buf)
++{
++	unsigned short type_len = *(unsigned short *)(src_buf + offset);
++
++	return (unsigned short)be16_to_cpu(htons(type_len));
 +}
++
++#endif /* CL_UTILS_H */
 -- 
 2.36.1
 
