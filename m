@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEE32532948
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 570CD532956
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236833AbiEXLjK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 May 2022 07:39:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41472 "EHLO
+        id S236849AbiEXLj0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 May 2022 07:39:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233616AbiEXLjJ (ORCPT
+        with ESMTP id S235357AbiEXLjY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 May 2022 07:39:09 -0400
+        Tue, 24 May 2022 07:39:24 -0400
 Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-eopbgr60047.outbound.protection.outlook.com [40.107.6.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A6B3532C4
-        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:38:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 461428DDC1
+        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:39:09 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nPyCu/ZiK4GwqmFEBCdWcUOsQXuvewMEmrPOzC84QEPEUnO0/+JyoN4pqeoYL2sCRbdX/ccGwXy7V97oFHvq3i8fXl+Gaz3D9RChv/Sy8w63bw+IgLyvasfQK+uVqP4CIfqb4YHjJgTBv9llgODT/N2vD+M40HhKsRcvA22K2TzY/CJPv3lAnPwAFV7vCbq0SB2TV+kOiYdedYBJSnqjMVhGV4HOBot+pp0KIE6VpU7Tv9dNH6JtWO+Qlg04DHEISBxWeiqn6qRss1rt9IQIn612Iy73Npz30785wgmSzw9iw4jwUed4eh0C6iBKiQ+cEXk3elAkkn8yxY1Orwqaqw==
+ b=dEIuaI9wJ9G4PkHzGhMiRyKdLQnXG4YqL7l8VjVzgbzPPWyvBFjR8US/zRV4r9E5FCbSFEq+/tYeUk+qgKgJGD+cI9yiFuhIc69+3F4UOsSsNWv/H2tHjZILsgOBH76fff5KkV/k+QAAQDsujVsjOFIQOtFtjZCH4DFVb2ve1XiOMmXV+FMJ/ncNPmVpOygJPWXR0PbJxyLDFJyqsdZLIt0aohoB/F392Fh3o9ZzRb7AX9dwAhTzB0awAoIhDei0xRPVgVWRtpD+N3Ciiyu6chAmF9LPi2bhPF/9OBIRaShyeGtgLw43Thga/HFKb14oB5iMgnMILfD48XYQDvRaEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RcmkEnhLJ6CF6jArpVXBbfMrT/pwQUHyBkZBxXDxtHo=;
- b=Qj70DEXAbuFPRpYvvuD1f5XJHIx+EUrXw8GpB/461fcE5s8W53mDrq1tGdFuMjdPlPhlGbryUPrMw79VaKZN/S4z2oBCLPKWlkqB2kaUHIH/7SM5kgfPmkyj9BclavdzWeCRmhqNeqSxdrEloa2Dj3u2CtIBDEDlgOFgVxnRUbGFhvbKaznt5JN0ZIm07NdGjnUIJbcBmNLfCnOuR9DrciZY6aN1cZzqIDRzDCKmu0o2vrLRl/z++PC5OK4BTtxQAmnSGI2q3eeooTjGw22Sp9UcVKtTioNHTgesschYKF7XMKDtBUa721Lqz/FIeD4RmgsmTpwao4BJvSxFPAS5fg==
+ bh=xcDpzWGMW77bGjdY+GT2edSgQ8KR6rmN61X/5EOoDp4=;
+ b=LLRBbnkkaRGhxjRW/AkUzbh69/iCt6N1XsfQI1gb8+k5K1uEtzljufFN1AY+H9um49XDTTTV4OGnvUnWeoPRq3BHCVNV29XU/jU1UrxiDEm8zKC1WwsDS9P0dcWa1dCJIPZStEurk61GFeKrL1/v41UvWukKXKs7mNcasnzFJX4IzPHmnr+fApBKvAPwHGE0BvEqHWR4dHn4RHMRaV6fzCzML7vTxXy7ySDikbMfcBt7jVRj7VQWMS2GDpD/j8tpPHr4ETfXPp+MWO7fTeBHugZXUZymqU0fJgOyVJaqCA32cM+kl5MWovDK7ziwLXlkFbprx7WarFIlyYrDY8c+zA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RcmkEnhLJ6CF6jArpVXBbfMrT/pwQUHyBkZBxXDxtHo=;
- b=CpvZcNrHnHRySRissJ6L19keqhbRO1D6QJHgpO6lDVqmtp4Vf9MamkjKfquLbn7J65L79LadQHFH796TP+vg+4HAOp4jBgn135cLlAzqoM4RXzNtCWJ+Ge1Lt3wc1MBRXVkedZzcyOarIOHCSlORzIXDiYegyMRtM8r960W5f9A=
+ bh=xcDpzWGMW77bGjdY+GT2edSgQ8KR6rmN61X/5EOoDp4=;
+ b=I8UzIBvkyjXqswDrsvjU1MIkT4WjSwNkwIvTjOLVTtZ5L/JokvaRQ+bJyKM+Rk7zLVKsCfenUhdK+A4iSgAPXkNousA4RNivhm7cUdGTtk6swNnLdYUuXwsGTPjAy/OXsCwqLBA9ljB6VJCwthndNwYJX/o5zqSxPrJi9pN3EqA=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -52,9 +52,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v2 59/96] cl8k: add rates.h
-Date:   Tue, 24 May 2022 14:34:25 +0300
-Message-Id: <20220524113502.1094459-60-viktor.barna@celeno.com>
+Subject: [RFC v2 60/96] cl8k: add recovery.c
+Date:   Tue, 24 May 2022 14:34:26 +0300
+Message-Id: <20220524113502.1094459-61-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220524113502.1094459-1-viktor.barna@celeno.com>
 References: <20220524113502.1094459-1-viktor.barna@celeno.com>
@@ -65,56 +65,56 @@ X-ClientProxiedBy: AM6PR10CA0092.EURPRD10.PROD.OUTLOOK.COM
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d866c8ef-ed8b-4388-1d81-08da3d79f0ad
+X-MS-Office365-Filtering-Correlation-Id: 0352b016-a06e-4dc5-3016-08da3d79f116
 X-MS-TrafficTypeDiagnostic: AM8P192MB0915:EE_
 X-LD-Processed: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8,ExtFwd
-X-Microsoft-Antispam-PRVS: <AM8P192MB091530FBBEC036548210B560F6D79@AM8P192MB0915.EURP192.PROD.OUTLOOK.COM>
+X-Microsoft-Antispam-PRVS: <AM8P192MB0915C9EF6584F6A2EE49C77BF6D79@AM8P192MB0915.EURP192.PROD.OUTLOOK.COM>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Fz5KSW1MlZR92ea3o7rifGPuJ/iwUELI1DuG5FMOVwyL89NNda2augsvsihVkykpCL3nL4zD47/kd8JBxABvEfTwKBeP2eM4rABm0tdg9F/YgkfzpvSfoToMva6+OU25MT7c+TiMFjjtTsNWdeXMo4ENQAi/Nb4WzvnOaJtUryxRWicmXWl5GqDURefVltj9UHjF0yT3T20e3jM4p+iynWjxO27nD4StjyqdcuRz7hhFyGDZWubF1p3L88gtop/NiIryp68qtY32ya4V9+xZjUxtf44cNwg0cG0BQoqPVc4Lca2rfpxLKGMvJCEXRvXqY08FCehYsv/D9b/jFsju0TpL2/SyuNJUDpQNFJMKHlp+jSER7ZZAq/IuDLHmklmrlLrQwJjk/0oYQk+Zf0/MtxuOVn02Lau12XwMhmZrZT4pXQjp9BzrICCnYmjCWQKuuELb4JOz6F+JzuGx0XcaRAd7hjYhofweX+ezLRiFF3FND1iGJrJ7G4RQG8Y3u/7y+zfCPLaJvcij3Fpqf5fLpBVry3f9k4W5KCDYgjUYjZZANLhGuISoPCZM8ZPeM6mqisuTQspUtWcHbUdhZ8r0XMnCs9TXLRUanwsnijdZtGoymCb4yIJcjAIz/2OO8VsnIN9tH5z/lUgz3/lklTZEVIE/ODZSzZTVZn0cZeWAaa8knzCLq6aJBwzWnK3z/3UVTUi7BLMHUlzGvrZtqiwhLjB6AM0EZlErUmq+9nd8KoA=
+X-Microsoft-Antispam-Message-Info: Jm69/zNlrjcT3cqhd6u1jbUPdZ3xUTjVOyK/SFwpCR3hJTH0LKN6bL4MOEb3Et0ETRsjFachylxbF467cjnMyyWZ1xhJCAPr82sGa2E/HxIlv5eFxEOqu0uVqzrWM81gIczZPr3eZpLynfTaZndZz27sTu2jVu/xIo0S4tjd0jC8AGsvgioPmVjm/DLyjTrzc9G5mgOW0DGtOydRkA35iAxx6WcrY9UIxdCdemUOvx+J/eneQPQSd+6GlGBqkedOvSPHqKFtSRaQ4I/O+31ZlzPgCXLZiFEI4o5GEhuCjJeBoF3A3NIXrICdNeXwhWXucr6nmPBmO8sixYyvADu9hjTh8suWjlyOCgYvueBgJQd23ilkE9yr6hTKvkvXA0jakz9FEs4MzH3bwYVq7msJkyot8eYNg4In4gwgreefkBNjuk+VSothHCEp+ePwY0lvvir5v1vWIhZOEA5B7l9K/yuRGjR9hIeXLqe99HAeyUQksZ6SEi4+QtADjqTIK6ya8ui4gyCiyiDRWWnMFJPhVmBGg9DtmtNVRpwSOU/KmkZVyxdqfBk2i2Knv5FvuzQ347uSpnGPAVu7VpQxrqrkA+Hi0pir7oc9/hg/xPzzNPBpArvvUF7f9Fm5PDbdHACil9IgiKHGlvRx9U+qNu94qPOLj1qIoW0HbYEqFEmwq49rl0J8dYvVlsto5EkjH2MfPdNDPQP92Eosn1DL435AfdA+5YLc2FjC/DnD00t8BJ8=
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(136003)(366004)(396003)(376002)(346002)(39850400004)(83380400001)(54906003)(186003)(36756003)(107886003)(2906002)(2616005)(1076003)(6916009)(41300700001)(66946007)(8936002)(6666004)(9686003)(66476007)(26005)(86362001)(66556008)(5660300002)(6512007)(4326008)(38350700002)(316002)(6506007)(52116002)(8676002)(6486002)(38100700002)(508600001)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?JxW/yuCO7rAWk4ST5vXd9wssBY2C5q7SPhC6jFGWga8f8DDZ398ePwy9N+dG?=
- =?us-ascii?Q?1IsqyZ5ZzcmsnLeQYDIQAPUgpXqTCdnO5S/t5hinEq8UPu7XbBZ4rVl/Ulw+?=
- =?us-ascii?Q?KKNocr6FZI3K/Tzy8dGQICltCTd5QpYIFaGIgU0wBgJ5PWD4FaIE46oT/CPs?=
- =?us-ascii?Q?xk5+x48oqhQNPzQFO/pC27AF4Lfq9F3BIG3vi64pfutPybr7grcpcYD/7acg?=
- =?us-ascii?Q?joIuWw+JAmsb9HDQqki7PEYCVRzel4eySiu/tVSmihTmL2wFVST5oD0BvqvQ?=
- =?us-ascii?Q?o0NVqZWTEKP+GPZz90mIW8592Il5o2OsR54woI24m2WTM+P5nb1eD8uYaYP1?=
- =?us-ascii?Q?BzmfksWEkbkQIAZcoDit7zvcwIqxbJDy0yhvdvPE5Cs3quuPoQkAIw0csxaY?=
- =?us-ascii?Q?HZ7oMymi0KcEZc7u1ytPbZc84P5q0BtSdIotkJs0rnVletFLszodKu2uglrQ?=
- =?us-ascii?Q?UIPG/yGdWh53/idlCdpWl81COXWzFyF0ePy9d2858bboMJ/iaM2/fbAJ66ko?=
- =?us-ascii?Q?R09GCdG0XunUDcWX+Al+JegMyU9rNMCtdzK8LkF0sWU6/kX+2h9hck9WW9DK?=
- =?us-ascii?Q?/u9kQUltCyD3iQLWNC9HRuC6F79x4Zz/L2ParxtuVDhUR54BFfATc6P5KjNa?=
- =?us-ascii?Q?/99siOhscg0WwJp0+XYnzrt28WQTALyy7BEfmvqlnanyS8w1VhehLUGyTKMa?=
- =?us-ascii?Q?tnHTrbRQ4eC6e7NN1x9co63PhVQ8ELlmy71aNtl1GGWDwnP32/ivCG5ngdWg?=
- =?us-ascii?Q?Y1DJgxcHs0/VcAlATTRC25Cl2cYl0xJYc1d6scEcz8jxrYNARAaXezdxEppz?=
- =?us-ascii?Q?aT3QHUXBxG5u/K5FQdwkKvwsrpTRQpG8TVS+kFcr7FenF+akpSGBUS3tyCAP?=
- =?us-ascii?Q?Z/FAIPVGm5dKEA3FPtcCr7q48xT4Tf0BplFhSTRHS36Ipp7VYFXZljRI5HuX?=
- =?us-ascii?Q?cyQkEF1tImLA+9B3DMIsIux3/NTh5V51yngBE2CgRSNcMQOHD9Sz3N3EGu5+?=
- =?us-ascii?Q?NBwanN6MI1FqL92rTtKTWapTj/TuapYuUQxrH/Dtz3/lLlbjrxzZC9oUHr7e?=
- =?us-ascii?Q?Vk7vIKaJrrMgAtdHXpqWQugeBz2ij8piIk8P/tzA+SBieMR9Q9qmlaMuq7xR?=
- =?us-ascii?Q?i1coBtVP1/0eLmAD5pQx7G1W7UzrbA1+kHHE1GFWXxrojA3uVVfFW2AEFn3N?=
- =?us-ascii?Q?C+tFQNCQoU06atVteg7g+lpNoeHBduUtvEo+wvPvX48g+JJIfM6Hgl42fPsp?=
- =?us-ascii?Q?uaqiSnU9MGafD+ktLxF+eJMhvg0L9XNWnisqtDvcUZDh+CB4qlVxv1BHwR+Z?=
- =?us-ascii?Q?VwWXjKdmMotkNSuLULCjiwyiOmZ5BZTItEQTnUd8xPV8v+nbj6b5AONRFEou?=
- =?us-ascii?Q?cHj5Xw68qyvqbzmm09pTUp/zYzEn9bp2Q8UHLLNoh4l8huQ1FOqBuu92zY0b?=
- =?us-ascii?Q?le8riLYIKE7RbF/Mgi/o6Dw3TgKf396W4a2kPqr6pRgDC5+HYWwUEmN2Eb22?=
- =?us-ascii?Q?HQMmC3TGb0xsU01tUpdncCkt3ymR0ULtLTt2NmbxfWUwjOnARsgayNsv35L+?=
- =?us-ascii?Q?fHfhKn6LM7ivEe7e0E5Cx55fTiIEoNIzIVHZ5W9ZeQNroXYyUD9cwDmDIjR6?=
- =?us-ascii?Q?+QzxybwJLM7MNs+g/5soBg+0w74s1S1VWvXIZc/Q8hQnICtHSncFSsnZUuL8?=
- =?us-ascii?Q?RKgxHG6A2D3/TqvY+TG8NtoV949L2tgUFBph0826LjTO05YgGJBDD9NsQ+Mk?=
- =?us-ascii?Q?jCBOmwcURkrgU2f7H756FupRQBGxeF4=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Sk0WbPkZVGmBKz2AAOgdvA9fp+qw33jDJvu6xXPUJb1+9JkCUb9OYgKQMydC?=
+ =?us-ascii?Q?fQLlywvN+a4OrBHS3q3wfRkx3f6+17OMfJx6RQD6hGOHfYp9WxJpWgc4hKHo?=
+ =?us-ascii?Q?FlnIfYHRtMeN1RD2+5Uu8CRddZoiASPoAvYRNFdaPC3EYsfrhNESnaFHpqwL?=
+ =?us-ascii?Q?h/4KAY6JYs4jIUff9pZJFlq5nfh29Ydwg4pCNs+mDUcCLFEIYDeSG74Ah/7l?=
+ =?us-ascii?Q?3aoIQTLp8fazecR5rrOZ2gwwd+9XITLic8Tgi1n/JJjmuDwazzMb60Jw4zx2?=
+ =?us-ascii?Q?3pJ+6Nide1bLORO9fLs3wB+mnlT18qd+3Vag1eMFsU5zsM92fIJBWeBrxdNI?=
+ =?us-ascii?Q?yZ6pG71h3RebqBAhf2kYX24B783I8taNoWEvtktjrfnRI3XTotRzgirVUjqS?=
+ =?us-ascii?Q?ZL2vKN2WLRs7PyD8zRzeRkh9gPJ/8RPg/2E38vMquzpS6QCbBhLPgbiKpYLx?=
+ =?us-ascii?Q?DflgakbDduHOEErzFjSBbWzNIZYdo3+DN+GyfAIktEVZvgo9hW7r40aCPq2I?=
+ =?us-ascii?Q?was2kGxd7gl+Zj1H3oVgLdOdPo0D9N05VbkNfGXENK0xa2zBjU9WI9wFdwap?=
+ =?us-ascii?Q?7xlAvEvwOM8u7+cS29Z8TVjmdGjr1VE+Ix0sqokyBXpsoZ/TTvbiamVHisIH?=
+ =?us-ascii?Q?MijiuSpOEDYiUjZJOZd2+HEEgwtwN3py4R0Ts1BqtpEYAdo0fNEG5z1x1qRx?=
+ =?us-ascii?Q?rPp5S8tfUyDl7+uDHblZgR7LwCneHujfnx2Ds3ydVnZLIOK+TGcsE+Cv12VQ?=
+ =?us-ascii?Q?83f4hOYfwBRapYSORyRP9PafmsWcfkK5exgofD9eTfHA1Dn9kC/Fw8AZvihu?=
+ =?us-ascii?Q?MTx60vzn2AmNqCz2DC0VZ1Sr1WIjw2RT+QfHy+L4LxEhP+PjH6czM1GWLz5M?=
+ =?us-ascii?Q?y29KAlzbunc5NJzWL1BCLVG8JWT4+c9ZQ1NyChp3Aq18aWLLx8vYXWpt9MZw?=
+ =?us-ascii?Q?zBUUblcQ3Fbwk7GgK1094UK1XMeTpTvpMPQcVbl6srb+rWle2QeYHxs/sol9?=
+ =?us-ascii?Q?xQB3+z+sIAs6/KjpR3kh2ycg8JXc64FOlUSH8FCk30Q03F+a5c9DM0t41lKr?=
+ =?us-ascii?Q?Cexjb+e6aVwP5qfoxwbIBlERwOekggbmIG1Z8oFrEPeIx8Qa0HZ/YRSFqJgv?=
+ =?us-ascii?Q?hSG20WSuxcDgEaiqQSRqxT5uRAI+EQTjzcvSoJh8D6IzGlPM+3/OKdk/wiUD?=
+ =?us-ascii?Q?27PQeR02E7P8PE9fwk9w45bQXzTIOrsUGFx4nLpPljqDU1S3axgnjgmszxIa?=
+ =?us-ascii?Q?2paE4Ly/Ot9c0bKN16HKPiA5McM0dTY0NxCo9zFCX8CELAqZNASXev5KMtd4?=
+ =?us-ascii?Q?MMoV6Z6kjKvUpsAyWluzOmrK3gkJlnBRldCvLr9EaRr1HmH5Jq+vT5rRv3EU?=
+ =?us-ascii?Q?zSMP3Fyw0SnFo0nv/NOwJF4c8AIyfoe03F1dxYEzfDGUVrWL63Z+iLOoWwao?=
+ =?us-ascii?Q?MehOOxyLnODRMAqlmif6wO74N4YS0xGZSsrXwVUsZTFjy2MEoZWuNcybr90h?=
+ =?us-ascii?Q?9LlaIm0Qfg8fnbYP7fA/N33DFAzxW5gsf4oeRigWq9QbNNyNZkrRI3bPiwja?=
+ =?us-ascii?Q?wAGsd+q/ExrfH4jr5q8Y+1nu/DHtEP7t9KjTKFhgXIQXvr02l4skat9TJi7l?=
+ =?us-ascii?Q?jKBrvnmVXGmV0om6g7NGWgXzWNvSxIXSMcudFB1k/DdFZxlGjpbH/tOjxZHY?=
+ =?us-ascii?Q?HzRW2wm3grcg3LWz8P7bvOAGHoiAK4Bnth0QxFd71FUukFct9r/wnGNP3iH8?=
+ =?us-ascii?Q?rFqSJeK1m4medco2MxLhijw7jZzmSjo=3D?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d866c8ef-ed8b-4388-1d81-08da3d79f0ad
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0352b016-a06e-4dc5-3016-08da3d79f116
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:38:36.5966
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:38:37.3009
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: h8O0x5MSZxqODJ410B1CAuq6gXln3sgLrg+6ZmqkfdizG/JF/4wp9zFMv1E/XFoOgJRXCov1gVbFE3VQvQ+B2w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4ftDW0wkeHF8pe2qjzQKz2AoBNDULqBMCch5okmn30I/9zHaYGhk+jO4DRArT7SkNBUVj+B9+j5l7ot3DSJpVA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8P192MB0915
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -133,170 +133,296 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/rates.h | 154 +++++++++++++++++++++++
- 1 file changed, 154 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/rates.h
+ drivers/net/wireless/celeno/cl8k/recovery.c | 280 ++++++++++++++++++++
+ 1 file changed, 280 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/recovery.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/rates.h b/drivers/net/wireless/celeno/cl8k/rates.h
+diff --git a/drivers/net/wireless/celeno/cl8k/recovery.c b/drivers/net/wireless/celeno/cl8k/recovery.c
 new file mode 100644
-index 000000000000..223924f21dc2
+index 000000000000..dc0c33be9200
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/rates.h
-@@ -0,0 +1,154 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause */
++++ b/drivers/net/wireless/celeno/cl8k/recovery.c
+@@ -0,0 +1,280 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
 +/* Copyright(c) 2019-2022, Celeno Communications Ltd. */
 +
-+#ifndef CL_RATE_CTRL_H
-+#define CL_RATE_CTRL_H
++#include "hw.h"
++#include "main.h"
++#include "phy.h"
++#include "vif.h"
++#include "dfs.h"
++#include "maintenance.h"
++#include "vns.h"
++#include "config.h"
++#include "ela.h"
++#include "radio.h"
++#include "recovery.h"
 +
-+#include <linux/types.h>
-+
-+#include "ipc_shared.h"
-+#include "wrs.h"
-+
-+#define RATE_CTRL_OFFSET_OFDM          4
-+#define RATE_CNTRL_HE_SPATIAL_CONF_DEF 0xF
-+
-+/* Op_mode field in mm_update_rate_dl_req structure */
-+enum cl_op_mode {
-+	RATE_OP_MODE_FIXED,
-+	RATE_OP_MODE_DEFAULT_HE,
-+	RATE_OP_MODE_DEFAULT_OFDM,
-+	RATE_OP_MODE_DEFAULT_CCK,
-+	RATE_OP_MODE_STA_SU,
-+	RATE_OP_MODE_STA_MU,
-+	RATE_OP_MODE_MCAST,
-+	RATE_OP_MODE_BCAST
++struct cl_recovery_work {
++	struct work_struct ws;
++	struct cl_hw *cl_hw;
++	int reason;
 +};
 +
-+/* Value to be set in tx_host_info */
-+enum cl_rate_ctrl_entry {
-+	RATE_CTRL_ENTRY_NA = 0,
++#define RECOVERY_POLL_TIMEOUT 6
 +
-+	RATE_CTRL_ENTRY_STA,
-+	RATE_CTRL_ENTRY_FIXED_RATE,
-+	RATE_CTRL_ENTRY_MIN_HE,
-+	RATE_CTRL_ENTRY_MIN_OFDM,
-+	RATE_CTRL_ENTRY_MIN_CCK,
-+	RATE_CTRL_ENTRY_MCAST,
-+	RATE_CTRL_ENTRY_BCAST,
++static void cl_recovery_poll_completion(struct cl_hw *cl_hw)
++{
++	u8 cntr = 0;
 +
-+	/* Entry size in firmware is represented by 3 bits */
-+	RATE_CTRL_ENTRY_MAX = 8
-+};
++	while (test_bit(CL_DEV_SW_RESTART, &cl_hw->drv_flags)) {
++		msleep(1000);
 +
-+/*
-+ * sw_ctrl includes eights bits (16 - 23) to be used by software.
-+ * Bit 16 is used by driver to indicate tx_bf.
-+ * Bit 17 is used by driver to indicate fallback.
-+ * Bit 18 - 23 are still free.
-+ */
-+struct cl_rate_ctrl_info_fields {
-+	u32 mcs_index        : 7;   /* [6:0] */
-+	u32 bw               : 2;   /* [8:7] */
-+	u32 gi               : 2;   /* [10:9] */
-+	u32 pre_type_or_stbc : 1;   /* [11] */
-+	u32 format_mod       : 4;   /* [15:12] */
-+	u32 tx_bf            : 1;   /* [16] */
-+	u32 fallback         : 1;   /* [17] */
-+	u32 sw_ctrl          : 6;   /* [23:18] */
-+	u32 tx_chains        : 8;   /* [31:24] */
-+};
++		if (++cntr == RECOVERY_POLL_TIMEOUT) {
++			cl_dbg_verbose(cl_hw, "\n");
++			cl_dbg_err(cl_hw, "Driver handgup was detected!...");
++			break;
++		}
++	}
++}
 +
-+union cl_rate_ctrl_info {
-+	struct cl_rate_ctrl_info_fields field;
-+	u32 word;
-+};
++static void cl_recovery_start_hw(struct cl_hw *cl_hw)
++{
++	clear_bit(CL_DEV_STOP_HW, &cl_hw->drv_flags);
 +
-+struct cl_rate_ctrl_info_he_fields {
-+	u32 spatial_conf    : 4;   /* [3:0] */
-+	u32 starting_sts    : 3;   /* [6:4] */
-+	u32 ru_index        : 6;   /* [12:7] */
-+	u32 ru_type         : 3;   /* [15:13] */
-+	u32 ru_band         : 1;   /* [16] */
-+	u32 mu_usr_pos      : 2;   /* [18:17] */
-+	u32 dcm_data        : 1;   /* [19] */
-+	u32 num_usrs_mu_dl  : 4;   /* [23:20] */
-+	u32 ru_alloc        : 8;   /* [31:24] */
-+};
++	/* Restart MAC firmware... */
++	if (cl_main_on(cl_hw)) {
++		cl_dbg_err(cl_hw, "Couldn't turn platform on .. aborting\n");
++		return;
++	}
 +
-+union cl_rate_ctrl_info_he {
-+	struct cl_rate_ctrl_info_he_fields field;
-+	u32 word;
-+};
++	if (cl_msg_tx_reset(cl_hw)) {
++		cl_dbg_err(cl_hw, "Failed to send firmware reset .. aborting\n");
++		return;
++	}
 +
-+#define DATA_RATE_INVERSE_Q 15
++	set_bit(CL_DEV_SW_RESTART, &cl_hw->drv_flags);
++	clear_bit(CL_DEV_HW_RESTART, &cl_hw->drv_flags);
 +
-+struct cl_inverse_data_rate {
-+	u16 he[CHNL_BW_MAX][WRS_SS_MAX][WRS_MCS_MAX_HE][WRS_GI_MAX_HE];
-+	u16 ht_vht[CHNL_BW_MAX][WRS_SS_MAX][WRS_MCS_MAX_VHT][WRS_GI_MAX_VHT];
-+	u16 ofdm[WRS_MCS_MAX_OFDM];
-+	u16 cck[WRS_MCS_MAX_CCK];
-+};
++	/* Hand over to mac80211 from here */
++	ieee80211_restart_hw(cl_hw->hw);
++	/* Start firmware */
++	if (cl_msg_tx_start(cl_hw)) {
++		cl_dbg_err(cl_hw, "Failed to send firmware start .. aborting\n");
++		return;
++	}
 +
-+extern struct cl_inverse_data_rate inverse_data_rate;
++	cl_recovery_poll_completion(cl_hw);
++}
 +
-+extern const u16 data_rate_he_x10[CHNL_BW_MAX][WRS_SS_MAX][WRS_MCS_MAX_HE][WRS_GI_MAX_HE];
-+extern const u16 data_rate_ht_vht_x10[CHNL_BW_MAX][WRS_SS_MAX][WRS_MCS_MAX_VHT][WRS_GI_MAX_VHT];
-+extern const u16 data_rate_ofdm_x10[];
-+extern const u16 data_rate_cck_x10[];
++static void cl_recovery_stop_hw(struct cl_hw *cl_hw)
++{
++	/* Start recovery process */
++	ieee80211_stop_queues(cl_hw->hw);
++	cl_hw->recovery_db.in_recovery = true;
 +
-+struct cl_hw;
-+struct cl_sta;
-+struct cl_sw_txhdr;
++	clear_bit(CL_DEV_STARTED, &cl_hw->drv_flags);
++	set_bit(CL_DEV_HW_RESTART, &cl_hw->drv_flags);
++	set_bit(CL_DEV_STOP_HW, &cl_hw->drv_flags);
++	/* Disable interrupts */
++	cl_irq_disable(cl_hw, cl_hw->ipc_e2a_irq.all);
++	cl_maintenance_stop(cl_hw);
 +
-+u32 cl_rate_ctrl_generate(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+			  u8 mode, u8 bw, u8 nss, u8 mcs, u8 gi,
-+			  bool fallback_en, bool mu_valid);
-+void cl_rate_ctrl_convert(union cl_rate_ctrl_info *rate_ctrl_info);
-+void cl_rate_ctrl_parse(union cl_rate_ctrl_info *rate_ctrl_info, u8 *nss, u8 *mcs);
++	mutex_lock(&cl_hw->dbginfo.mutex);
 +
-+void cl_rate_ctrl_set_default(struct cl_hw *cl_hw);
++	cl_main_off(cl_hw);
 +
-+void cl_rate_ctrl_set_default_per_he_minrate(struct cl_hw *cl_hw, u8 bw,
-+					     u8 nss, u8 mcs, u8 gi);
-+bool cl_rate_ctrl_set_mcast(struct cl_hw *cl_hw, u8 mode, u8 mcs);
-+void cl_rate_ctrl_update_desc_single(struct cl_hw *cl_hw, struct tx_host_info *info,
-+				     struct cl_sw_txhdr *sw_txhdr);
-+void cl_rate_ctrl_update_desc_agg(struct cl_hw *cl_hw, struct tx_host_info *info);
-+void cl_data_rates_inverse_build(void);
-+u16 cl_data_rates_get(u8 mode, u8 bw, u8 nss, u8 mcs, u8 gi);
-+u16 cl_data_rates_get_x10(u8 mode, u8 bw, u8 nss, u8 mcs, u8 gi);
++	cl_hw->fw_active = false;
++	cl_hw->fw_send_start = false;
 +
-+#ifdef CONFIG_CL8K_DYN_BCAST_RATE
++	mutex_unlock(&cl_hw->dbginfo.mutex);
 +
-+struct cl_dyn_bcast_rate {
-+	u8 sta_min_mcs;
-+	u8 bcast_mcs;
-+	u8 wrs_mode;
-+	u8 ltf;
-+};
++	/* Reset it so MM_SET_FILTER_REQ will be called during the recovery */
++	cl_hw->rx_filter = 0;
 +
-+void cl_dyn_bcast_rate_init(struct cl_hw *cl_hw);
-+void cl_dyn_bcast_rate_set(struct cl_hw *cl_hw, u8 bcast_mcs);
-+void cl_dyn_bcast_rate_recovery(struct cl_hw *cl_hw);
-+void cl_dyn_bcast_rate_change(struct cl_hw *cl_hw, struct cl_sta *cl_sta_change,
-+			      u8 old_mcs, u8 new_mcs);
-+void cl_dyn_bcast_rate_update_upon_assoc(struct cl_hw *cl_hw, u8 mcs, u8 num_sta);
-+void cl_dyn_bcast_rate_update_upon_disassoc(struct cl_hw *cl_hw, u8 mcs, u8 num_sta);
-+void cl_dyn_bcast_update(struct cl_hw *cl_hw);
-+#endif /* CONFIG_CL8K_DYN_BCAST_RATE */
++	/*
++	 * Reset channel/frequency parameters so that cl_msg_tx_set_channel()
++	 * will not be skipped in cl_ops_config()
++	 */
++	cl_hw->channel = 0;
++	cl_hw->primary_freq = 0;
++	cl_hw->center_freq = 0;
++}
++
++static void cl_recovery_process(struct cl_hw *cl_hw)
++{
++	int ret;
++	struct cl_chip *chip = cl_hw->chip;
++
++	mutex_lock(&chip->recovery_mutex);
++
++	cl_dbg_verbose(cl_hw, "Start\n");
++
++	cl_recovery_stop_hw(cl_hw);
++
++	if (chip->conf->ci_phy_dev != PHY_DEV_DUMMY) {
++		cl_phy_reset(cl_hw);
++
++		ret = cl_phy_load_recovery(cl_hw);
++		if (ret) {
++			cl_dbg_err(cl_hw, "cl_phy_load_recovery failed %d\n", ret);
++			goto out;
++		}
++	}
++
++	cl_recovery_start_hw(cl_hw);
++
++out:
++	mutex_unlock(&chip->recovery_mutex);
++}
++
++static void cl_recovery_handler(struct cl_hw *cl_hw, int reason)
++{
++	unsigned long recovery_diff = jiffies_to_msecs(jiffies - cl_hw->recovery_db.last_restart);
++
++	cl_hw->recovery_db.restart_cnt++;
++
++	if (recovery_diff > cl_hw->conf->ce_fw_watchdog_limit_time) {
++		cl_hw->recovery_db.restart_cnt = 1;
++	} else if (cl_hw->recovery_db.restart_cnt > cl_hw->conf->ce_fw_watchdog_limit_count) {
++		cl_dbg_verbose(cl_hw, "Too many failures... aborting\n");
++		cl_hw->conf->ce_fw_watchdog_mode = FW_WD_DISABLE;
++		return;
++	}
++
++	cl_hw->recovery_db.last_restart = jiffies;
++
++	/* Count recovery attempts for statistics */
++	cl_hw->fw_recovery_cntr++;
++	cl_dbg_trace(cl_hw, "Recovering from firmware failure, attempt #%i\n",
++		     cl_hw->fw_recovery_cntr);
++
++	cl_recovery_process(cl_hw);
++}
++
++static void cl_recovery_work_do(struct work_struct *ws)
++{
++	/* Worker for restarting hw. */
++	struct cl_recovery_work *recovery_work = container_of(ws, struct cl_recovery_work, ws);
++
++	recovery_work->cl_hw->assert_info.restart_sched = false;
++	cl_recovery_handler(recovery_work->cl_hw, recovery_work->reason);
++	kfree(recovery_work);
++}
++
++static void cl_recovery_work_sched(struct cl_hw *cl_hw, int reason)
++{
++	/*
++	 * Schedule work to restart device and firmware
++	 * This is scheduled when driver detects hw assert storm.
++	 */
++	struct cl_recovery_work *recovery_work;
++
++	if (!cl_hw->ipc_env || cl_hw->is_stop_context) {
++		cl_dbg_warn(cl_hw, "Skip recovery - Running down!\n");
++		return;
++	}
++
++	/* If restart is already scheduled - exit */
++	if (cl_hw->assert_info.restart_sched)
++		return;
++
++	cl_hw->assert_info.restart_sched = true;
++
++	/* Recovery_work will be freed by cl_recovery_work_do */
++	recovery_work = kzalloc(sizeof(*recovery_work), GFP_ATOMIC);
++
++	if (!recovery_work)
++		return;
++
++	INIT_WORK(&recovery_work->ws, cl_recovery_work_do);
++	recovery_work->cl_hw = cl_hw;
++	recovery_work->reason = reason;
++
++	queue_work(cl_hw->drv_workqueue, &recovery_work->ws);
++}
++
++bool cl_recovery_in_progress(struct cl_hw *cl_hw)
++{
++	return cl_hw->recovery_db.in_recovery;
++}
++
++void cl_recovery_reconfig_complete(struct cl_hw *cl_hw)
++{
++	clear_bit(CL_DEV_SW_RESTART, &cl_hw->drv_flags);
++
++	if (cl_ela_is_on(cl_hw->chip)) {
++		cl_ela_lcu_reset(cl_hw->chip);
++		cl_ela_lcu_apply_config(cl_hw->chip);
++	}
++
 +#ifdef CONFIG_CL8K_DYN_MCAST_RATE
++	cl_dyn_mcast_rate_recovery(cl_hw);
 +
-+struct cl_dyn_mcast_rate {
-+	u8 wrs_mode_default;
-+	u8 wrs_mode_curr;
-+};
-+
-+void cl_dyn_mcast_rate_init(struct cl_hw *cl_hw);
-+void cl_dyn_mcast_rate_set(struct cl_hw *cl_hw);
-+void cl_dyn_mcast_rate_recovery(struct cl_hw *cl_hw);
-+void cl_dyn_mcast_rate_update_upon_assoc(struct cl_hw *cl_hw, u8 wrs_mode, u8 num_sta);
-+void cl_dyn_mcast_rate_update_upon_disassoc(struct cl_hw *cl_hw, u8 wrs_mode, u8 num_sta);
-+void cl_dyn_mcast_update(struct cl_hw *cl_hw);
 +#endif /* CONFIG_CL8K_DYN_MCAST_RATE */
++#ifdef CONFIG_CL8K_DYN_BCAST_RATE
++	cl_dyn_bcast_rate_recovery(cl_hw);
 +
-+#endif /* CL_RATE_CTRL_H */
++#endif /* CONFIG_CL8K_DYN_BCAST_RATE */
++	/* DFS recovery */
++	cl_dfs_recovery(cl_hw);
++
++	/* VNS recovery */
++	cl_vns_recovery(cl_hw);
++
++	/* Restore EDCA configuration */
++	cl_edca_recovery(cl_hw);
++
++	/* Temperature  recovery */
++	cl_temperature_recovery(cl_hw);
++
++	/* Sounding recovery */
++	cl_sounding_recovery(cl_hw);
++
++	/*
++	 * Update Tx params for all connected stations to sync firmware after the
++	 * recovery process. Should be called after cl_mu_ofdma_grp_recovery to let
++	 * MU-OFDMA rates in FW be updated successfully
++	 */
++	cl_wrs_api_recovery(cl_hw);
++
++	/* Enable maintenance timers back */
++	cl_maintenance_start(cl_hw);
++	if (cl_radio_is_on(cl_hw)) {
++		/*
++		 * Rearm last_tbtt_ind so that error message will
++		 * not be printed in cl_irq_status_tbtt()
++		 */
++		cl_hw->last_tbtt_irq = jiffies;
++
++		cl_msg_tx_set_idle(cl_hw, MAC_ACTIVE, true);
++	}
++
++	cl_hw->recovery_db.in_recovery = false;
++
++	pr_debug("cl_recovery: complete\n");
++
++	cl_rx_post_recovery(cl_hw);
++}
++
++void cl_recovery_start(struct cl_hw *cl_hw, int reason)
++{
++	/* Prevent new messages to be sent until firmware has recovered */
++	set_bit(CL_DEV_FW_ERROR, &cl_hw->drv_flags);
++
++	switch (cl_hw->conf->ce_fw_watchdog_mode) {
++	case FW_WD_DISABLE:
++		cl_dbg_info(cl_hw, "Skip recovery - Watchdog is off!\n");
++		break;
++
++	case FW_WD_INTERNAL_RECOVERY:
++		cl_recovery_work_sched(cl_hw, reason);
++		break;
++
++	case FW_WD_DRV_RELOAD:
++		/* TODO: Implement netlink hint to the userspace */
++		cl_dbg_info(cl_hw, "RELOAD handler is absent, doing nothing");
++		break;
++
++	default:
++		break;
++	}
++}
 -- 
 2.36.1
 
