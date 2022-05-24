@@ -2,45 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 453F153293B
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BBA5532938
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 May 2022 13:39:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236775AbiEXLhu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 May 2022 07:37:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39964 "EHLO
+        id S236787AbiEXLiF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 May 2022 07:38:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236765AbiEXLht (ORCPT
+        with ESMTP id S236773AbiEXLiD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 May 2022 07:37:49 -0400
+        Tue, 24 May 2022 07:38:03 -0400
 Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2084.outbound.protection.outlook.com [40.107.21.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0647640A01
-        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:37:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A90D8CB3D
+        for <linux-wireless@vger.kernel.org>; Tue, 24 May 2022 04:37:57 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=i7jcpENGP9ZHize1ms1y+fU/rjgS5RX6Aa80S0SQ2jTujVbSQVGyEjhX4DWafTbZxHA6BLJHK2ytEYOfwe5U9Lw/NUG6BbQZgbvL+h2gAIh3f9ZWxcBYM1H8VZNwjDGlTNp6S3uh/RvTWpPb8rBdsyWcnnFXLlM1+Q8LfhZdfqZwI2Z5K0ISSfBgX6ZEuzbgpn9AUSA6EErZt0vI4CqGrKIf4btwLkmnoyckKIgi1EDxyo5r5hgyb6iCRa9gQxLd4oiLx71b1lJrMHx2cCGwiku67GIX3s3va2aeCLwnr9b74k2NR6kxhhsb0QUBkF9f8SMIRblEEZICOpOrGeQ49w==
+ b=TlYKdxQTfsFtCrMoPbhvuNIco4X0EOa3b3kKL6J2CqyE0JVmtMlst8omIrRrCmdy6rsT331qqLIRBRchGbNl9h9CUIZVaulRwLaF8FSx7jlApRVTimBSODFQob2geXP+rB2PbNh0j05bkj0T9kNPBnilJeim8Hf6N5yTafx73typvTNaMdoFCMJ56y9rUKC4d0Fd5hh95K0QBH2No/Faec6DxL+BA/GXEeubvTqhsn1dBWOeuKtDuiElbTqs4LMuridIcKFLxvmGxQXFl4qyBA1Z9LR7kYUgV2vdQdRbA662RbD3vfq+Yn646aI/4hTxvxhnv7Jv7XQVf8kYBH2wEg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6pb9OdR9RorX0vFEVOIWgvic/lEeuE/yg3byo4XZRIY=;
- b=QcqM4JqbtM2UfQB2/D0LF/dgrWcsTgnL3KoJsRRYnrN2/dyfLadvWJTssvZ9XsuOcXU5J71UAYZ5k+1D+kF1pijoUpYhaSwAt2EO6Pyjgl9v6U/AP66uvxuQjTXwXu7m4lvLQUijlijjnLo1xFZBXHoBt/DnKOe17To/cQsK0VXmp0TYsT3Y0JldjWmhj/5TneIDKij15vdu0ZMM7n/uxM4gtFbNks+PUpWFbGRCEbyv07LQ6k19MK5fN47ar0evCsh27U9gEOag1DzySwoK5/TNbr+ROCiUNl7D4suAQRMdrv3vT4m6NOCD8xUNDr4pmiVqXd3qvNdPUeM2SHTnIQ==
+ bh=+GlnspchVv5AHBSQqu5yoZUXIRzjxSemY+DHvskgNa8=;
+ b=K6z9MnhhBETXk1lWwr1Akve+ayZn/9bcSlcPQ0zPYKOzqnrdpBRw7VNWIuDs/CYxVVxr/hgsEt0Cl1ZvQMWkBBfosuBFKb+H2vSFS/yWsP0x0kSPUq+t9dEqOD7X8lFZ8mLFbZ2JgIOjtHTsMATXIbmfKn3UAmu+BmEyXUGmj2cl8kEM1oR4Cmzdn7tOz+j5pYbFKRsA23jF+B+BMtI6aAqL3No8t03SCpP5ggBiPyk1iqyKI3DqueDxyZUZweP8GL4qRO91EhIu3jfRgojZ4tIOF9DuLdrPBxQFONGV/ru9IDL6AJyWobKtJ8zX8TpKZjJq/RJgANn4YcD7i/tiGA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6pb9OdR9RorX0vFEVOIWgvic/lEeuE/yg3byo4XZRIY=;
- b=x2XW4JB6m2vS3EPfEznb9nbJvYSXV9r6e2Im8BZbXB1+P68gVrPL0I26BYaLqkgcN31JTpvMUztQ4+cnFukPxYM/FLBQJr9Iro0mnL4PbD76SSPJ//J0Z4BjruWpFrffFyaGqMhb4Gt+B6WV8KlrUp1oswV57wrDwZltC/SsUYc=
+ bh=+GlnspchVv5AHBSQqu5yoZUXIRzjxSemY+DHvskgNa8=;
+ b=aXMZEUhEBvcL8OPC4+R/4iwpkGADnjlRkZHCu4Rg1DMJtzUnSH0uabCdvemRDtx/qSGnRKEQsNRr/0juHV0EhhkpcSyfsr9zuS8TqxKOnEtfMl4ZbAN9RjnBn+B4IDw1mJjjP/c+JM4bjUsFbzA/bvB7SZxpbYp/mYYm5S8Em1s=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by AM0P192MB0305.EURP192.PROD.OUTLOOK.COM (2603:10a6:208:4e::33) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.15; Tue, 24 May
- 2022 11:37:44 +0000
+ 2022 11:37:50 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::6c57:2d13:9162:cbbb]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::6c57:2d13:9162:cbbb%8]) with mapi id 15.20.5293.013; Tue, 24 May 2022
- 11:37:44 +0000
+ 11:37:50 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -52,9 +52,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v2 10/96] cl8k: add calib.h
-Date:   Tue, 24 May 2022 14:33:36 +0300
-Message-Id: <20220524113502.1094459-11-viktor.barna@celeno.com>
+Subject: [RFC v2 11/96] cl8k: add channel.c
+Date:   Tue, 24 May 2022 14:33:37 +0300
+Message-Id: <20220524113502.1094459-12-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220524113502.1094459-1-viktor.barna@celeno.com>
 References: <20220524113502.1094459-1-viktor.barna@celeno.com>
@@ -65,56 +65,56 @@ X-ClientProxiedBy: AM6PR10CA0092.EURPRD10.PROD.OUTLOOK.COM
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 75fa00fb-7431-4332-5b0a-08da3d79d0b1
+X-MS-Office365-Filtering-Correlation-Id: 8f23b0ff-89b7-4550-637c-08da3d79d3dd
 X-MS-TrafficTypeDiagnostic: AM0P192MB0305:EE_
 X-LD-Processed: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8,ExtFwd
-X-Microsoft-Antispam-PRVS: <AM0P192MB03051AEF13F9CFFFE22E80CDF6D79@AM0P192MB0305.EURP192.PROD.OUTLOOK.COM>
+X-Microsoft-Antispam-PRVS: <AM0P192MB0305AC66D84AAC167707A284F6D79@AM0P192MB0305.EURP192.PROD.OUTLOOK.COM>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7UfmOCJwMSF5pCYb3Ecqq2INHkFfJAmbxtdxH6oDVVk2mPCiNH0y7gZn4Ph5wUbbkGhAbP7a2IE7zt/WSuZYrvwncoJXTiuWhUDlkspeRVaJFWqLB2fMa1rtiQVU9exjYskZUzuaGPII3D1SmvrKeiq4B4ks/N2q9cqqa+FzgmCTdMNjXuom43Tb5fU+ZIOd9LyB3HhT7QT7RDDbImKXzox1wLXOPIa/KPcCBmUEvQE0Oy6MC7DABBLfa1OIgQM31S4/eBgpBGoym9tzprFo8h2LTiQkzRmccqqs3m2NYBDYWsNJRwtx0XjgS5F36XOev3JekNUcTcfW14Z2Ls6D98V7Pk1P+/ofyg8tyuMJwxz1LnJ652Byz/eHmWqSh/tdMXHY7yaqZmAQ7TlZWhWAOZ4QV5LOot+VeuuH2S+dKcUyG2W0kBF1sxbyWffXkjUXVPpMCDZ6k/6lLrq0tmu5a7bHoOK3VqO0EF9t5Z9EVGMdVJr4/PoQj9J+0eGlo6dvVh9n9jjPG6kdfMF8DeNvByoSclVeJq7qjitcs+VuUO2n4UAgxvle3sTP3cdlI+eM0crltIkCGnscfgfmSgR8XaxO3qayZ+F2+Aibyur/HxIIbNgpP+Tz7BUZXF7TKpMx6wTjk9KwXgbSW2k/zcDuS5jeH6ecKTS9FgL3okhEuQdHD4kNUe3YOQQ/6JhOMweAmbzAEBl8MajksxwC4UaJmFzVK/ubS3kkKtBbE/lPcXA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(346002)(396003)(366004)(39850400004)(376002)(136003)(6486002)(6916009)(508600001)(38350700002)(38100700002)(52116002)(6666004)(2906002)(8936002)(54906003)(6512007)(6506007)(26005)(9686003)(30864003)(8676002)(36756003)(5660300002)(316002)(66476007)(4326008)(66556008)(107886003)(66946007)(1076003)(41300700001)(186003)(2616005)(83380400001)(86362001)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: DpmwIsn2PcGDvV6cIwScEhKns9qIJCbzsJ+Tn0hlHmKKMt6/eMBozgGa3H1vi1Nle5pOcQOU37YhTD70ZyocGWNCNJ6PzNFwmwSFsSUO/UukCnflX8l8x6kH/pLUOyzEEGFY0wrhAgUBC/91tQXMSK+4HF1iU9nnrO2hwMrDkcZhMM3eOYCc8c649t2BFHPInGxDNUb/r/piV+mdk3piRgpVy9fMG/7ZblrbA/qaGryq/ErUg4lr+KYCdsyssuInXWKpTRku/Xa9tpnQIcF2Q37LvaGgIbHoykh7hoZPD5VPd7z8sLK/8ySll8r6SPQL8fsbZSDP9mw52q1jsmTDog9KteneLcD35aEdBTI9aLe/3zrePCLqLR5/4oRHlf594Pgw9MgcXqKCgcmvGsap9KnjhAcv6sw0wgmVurMJxrUNdtR3PuO4ecd9L0tvIaBzKBTIqPPaqQANz99HxQj3s8ZBrNZ6E9zWVgPz9T6JTVX/a91YDEYuFegTNUgDRBdRnf+4LSPs4QmuWIpgr6rCWRQsgws81RW5OUYgB73uMM5Td9bu/b0qqU72o9tCPrQV0RWWBYQQg3utFMq7pwpgpnhZdcnSv0Im1vaXjmbkdXNcw/hdZ51QuPg9SJLhryShHeLaoDBc+exUGaz5mTZdi/QbGCSziSswLFsoTeBhSaKh0sd4zu7rfTPrP0v40zPTwV7Lzm+Aw+YgNFGuWRkDM/uDW0l2/99IJMlUPeQS8vk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(346002)(396003)(366004)(39850400004)(376002)(136003)(6486002)(6916009)(508600001)(38350700002)(38100700002)(52116002)(6666004)(2906002)(8936002)(54906003)(6512007)(6506007)(26005)(9686003)(30864003)(8676002)(36756003)(5660300002)(316002)(66476007)(4326008)(66556008)(107886003)(66946007)(1076003)(41300700001)(186003)(2616005)(83380400001)(86362001)(32563001)(579004);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?aggxSA0jRrujROP65F/qGjpJTkrnMe7nxLl8zcuwzoIncp51ZGiYQwBXaER4?=
- =?us-ascii?Q?LP/rdXoXLJxaqk+jlorJZVNfTLTvrGuJv0j5qJuItPBjZJNsQERp+uPeFmCz?=
- =?us-ascii?Q?p+5DlBgOFPWerp7TDi7MsR+ASZNpxMe8SuuEkMfotZVv+LvP9mdPRcmhbSQm?=
- =?us-ascii?Q?qXDjv7uYzWQMi0S1zax9DWYIYW4xo+Wgah7Pih7rQEFXBzCz0tmP3Tk5gtOi?=
- =?us-ascii?Q?oiebqfhpx+e0+WWm4mZFwRM05+/DAEd/d9WwDVnpX4zmARtHhf1qm3Z5L24r?=
- =?us-ascii?Q?4IQKp8sgVrHVFrSxlGHF6usmU5aeE7jaB1Zz3sWDZ3TOdbLv26W1Dj3WOw7U?=
- =?us-ascii?Q?/eoxADOUmL4FriDVWiBn6BsUhAzw/0iYHqAu9CD47nKDw8ABTBluRYNZ7FIq?=
- =?us-ascii?Q?TRAI4ICFK6q765BdzoUdli93piyBy8O5TfmDoZkxXbjto9ThurFgHNHvvYuq?=
- =?us-ascii?Q?1LzkoMZQn0bzQYkSFiVvo+/uAyCYFun6W+7dQqGriVJYxeqhLpHJIWP0e6DC?=
- =?us-ascii?Q?uuHYW/XPpVjEFSz4YlZGD/GNZqnA+PzAmwMCeE8UYSdWDayo/KRkqiu97aho?=
- =?us-ascii?Q?eqWXDFc++3/vy7QR9OJ8g8o6xdEtcrOOMqITyY+gkTJBosQaAnnGEIZS3eWw?=
- =?us-ascii?Q?dIAvhwTWLgiBciN1kE7YSyadnW2XlNKemYv0EgLlNCJ1uxzKMDr4Bc4eDew0?=
- =?us-ascii?Q?JnYNvbdulO6Wy726zXArTXvGEfFru+mjXfTUR1OwiBXSGOsI7/xx5qH5fFyL?=
- =?us-ascii?Q?4P1wuXaXtBHPKfw6cdIVk30w5zCddpEFrTkjKrQP8cP50pURWYnOlpu6mqBz?=
- =?us-ascii?Q?IK46IRqtNl+51mo7q5XWtdxp8QTI8cw1mQYkikpTwJnN99NygVai+YsRY3y7?=
- =?us-ascii?Q?VHvB0GTYDvXTEGmbDjZuz6pDFhrRHMjK/ttiNgAmXi5vn/jfv1s8iZJNyou8?=
- =?us-ascii?Q?EYWdTxq6T8fogQH0Mv7fydvPhWTjVonNtx5Y/XQ0iAvC4q08AMbvWexOlNE9?=
- =?us-ascii?Q?zN15ntUwp18+hOsAWLIzM1Y+vf6RG+CKQPisDUyTP49E0mbcIMSfZTKIGU3U?=
- =?us-ascii?Q?C8gHIfKEOBLum5dfel5Q4PjDse2Xu5Duu3jVQWidgQRJKFrCzwpXz2SaGSnI?=
- =?us-ascii?Q?Yxt46qB5VFIUTSCjKoZI/UhzZGMVpg9N1NhkpakFj41cCo+VkJwd7UMbYjYD?=
- =?us-ascii?Q?XWzCWkS1pi2MOaDRNOgoGjQ6j1ZBCtTPFVUJUL2I4tTld2N/q1VYnBKwlpjj?=
- =?us-ascii?Q?EpMEFDExrz48d50jh3vW6e/RfRVOvcIZm3z7ZQJNr0d4J/qzoncbNf3M3Dcd?=
- =?us-ascii?Q?1xDF4PSfOnwnjKNbzsIHRJ1S8imdDDZ2W4+93IyRFNFo1tWEvpJLC86PFvrx?=
- =?us-ascii?Q?yzQ4Hd9YrgZsj9THwyhMzvF5RhkH4mLsyPti8fduuSLo0OfrqTS5SndH0ju8?=
- =?us-ascii?Q?u07Jh/3iZpfsi7vUjnC2KShXUnQAeE9NSOtqXyD3IlZefefXu+T/F8XdNR6G?=
- =?us-ascii?Q?7fvtvy2y2RjsYJ0cCT8gs56KgHDkhrQIjBoJsOUWKP5VPzq8dEl8WmgcbW2V?=
- =?us-ascii?Q?8bJJ51d/2Cl0xx6xSNaqK0psqg4cC1FkBwEw0a002LRE8/ZtjX1q/Wya5G9C?=
- =?us-ascii?Q?ARivbWzABJXdO+CHujafHJ8EbgkQ681YqCiGGwy2pl6bns1gTlcIX+u6Py/j?=
- =?us-ascii?Q?QRrEC4Xpv398pC6NOetMsUiBF8bISqoqWRS47x9HqNABHSQlNdCApY2jlL6O?=
- =?us-ascii?Q?dDCoPqWhw8S1mSmGyUqD+p+KoxCPUTM=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?WVWvwrJ0qGwG9ro0q61K9HqUG9lLcadMLVe/KhJ0eTfXhr3mL4pogfj4ipjn?=
+ =?us-ascii?Q?EMBJBqFn0U7iBhbe9+8PWxqK+wcztW0mlWcvUdxbglJVp5UuOWK2NwpH0n7N?=
+ =?us-ascii?Q?bPOTrLOReMhcloUXWRBIgeiA0vxpY4xm5yDoDnQG4TsSPOi2MHicJgwuNBjP?=
+ =?us-ascii?Q?Y4Y5uMBLxq7H/TqBiqBHkcem9lMuIsR/etzs06EKpw+om5gSpFn4I16WOJNc?=
+ =?us-ascii?Q?E/YtRe06xFhs3DW8dYz11dq9yRuHYVEAcUsXauT4/+qDtv28oBMnHf28zJwx?=
+ =?us-ascii?Q?Z6c1adbkxE+yh4upGCjj4yCKqcFaQjsspIvju0aAFWQqsHJjPF6EOQN3sQ6V?=
+ =?us-ascii?Q?JLYd67z4bKaT1pk0jkQ8mXra3A6HcZ7Z846+Oil7QDU12NFdxF1luHzeiqbh?=
+ =?us-ascii?Q?RPpTjdao+b9Akvu6IPhbJSLNkUy7kyCKcDjhU4/2vh5965YxMER/BSeGXOJT?=
+ =?us-ascii?Q?BZLpuoafstwVC5JCYQ8G5Z85lIQ38lOz4CIeRRS2b0otIpuZ5wZ+wOw50IYI?=
+ =?us-ascii?Q?uMZKWfMKqtPX5hx0L0+eaolMnR130s7VeYdN3sCnwl+kBUCP9YkVVpmazDUs?=
+ =?us-ascii?Q?uvBe8EnjsG+8HldNbrbENRaL/c8PjxvDJrY0n9HAUA5HyBTpk8Rfos+eqav0?=
+ =?us-ascii?Q?dWN60um5bu6QNsb/PLIPjm2KicHXF16OBFCIZlvMMZlvmlQ0mgkJJHbi1nRo?=
+ =?us-ascii?Q?3z8zRi7aEFGOomJeDYgejaQsueuO9e7vtaZoFk8hBofDWzhYsWlNeSscBQAR?=
+ =?us-ascii?Q?+JFsFdXgY6/vqPsbptRFNK9DB8YKQ/XheM641N3JAN31evVX3Sn/2lxmToWn?=
+ =?us-ascii?Q?npa7ehDToC4/7XUAHLUvHRryC+nmi+SWabCcI4i+SaeME6EjcRssgWbBy2L5?=
+ =?us-ascii?Q?2EaPQsrabMs3k0fmUUVvafn7VXcAN/ojJZfjZXHht7saLK3jnmwz1/+DVJnA?=
+ =?us-ascii?Q?2NYVSGLEtr1Utrm4+QSc+Zp9n6LimNIi3BewkUx50OxgE+KbIve1FzycL97L?=
+ =?us-ascii?Q?eX4RhRXcnSqtvFGgJLv6dc5SoZLwGvqBDQ1TmHEC/gQXunV1qNFvGNlHZn6h?=
+ =?us-ascii?Q?vevK5vtkUQf148R/0l/4Qqozc0qryt4CG3NOewLb0sV1Onq0dJ8laQsHKxSv?=
+ =?us-ascii?Q?ZOKu/Uy1W/7cAFhHN3A4/+F+UYSwcIyRFFWePV2l9y/WfpbliXb74JI0MP5i?=
+ =?us-ascii?Q?bo5Qz4mQe557ezrwn8QTmu23huIpVkYrYY2OJytQtMANxUjYI76Jj5FAKM5B?=
+ =?us-ascii?Q?j/sCHIfxOs0EcNuO/PAJFrbPXti7wl1e6A7ZnWZYvum93lIsxddXJHSFidIf?=
+ =?us-ascii?Q?oFGQDNaiQfqaoqW9wlVesltGlIzgbfH3yMGDTNn5UgSAo07Ov7A8grbMqrgi?=
+ =?us-ascii?Q?UYwLCdBM9SFlR+urxqifjqe7ZlY3falv1WfwYRHgsFP+XmGFaPP8fN3QCkv5?=
+ =?us-ascii?Q?19/4ipbhVvaGalTqa0Houz1x0OMrabs9/j8KsiYBw89LX+hNfPKXqhtbxGHd?=
+ =?us-ascii?Q?D8YP8cjUJgIdsK1nWL8I1JdPcWMujwQ4dnmuxwO7vSmQ+Gn9EhzTcqip1uAf?=
+ =?us-ascii?Q?fAr3USVyec+9CqS7wQkUYfS2spC1fPFxs+AvfuCzciLZQ2Q+dWx+4RiqM18P?=
+ =?us-ascii?Q?Kmzb1HIEgEUg3ZIJxAC7FneOaV9nLSUe4t4xoMUOeRYGt12n8YPt4Sv7KB6D?=
+ =?us-ascii?Q?fLutkMAfGZvP7n+SuiHp7b9MsfGeEx/l+0ylkLMUX7ZKUT/TBo7Qwh/1yLDy?=
+ =?us-ascii?Q?Q2YL5m1pzUTMYbPWPW21soiecBzM8dk=3D?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 75fa00fb-7431-4332-5b0a-08da3d79d0b1
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f23b0ff-89b7-4550-637c-08da3d79d3dd
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:37:42.9387
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2022 11:37:50.5557
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TFAAefCeV1xjxG1ituUNi6wun4QPP7KY6L3bHh5+2ZvfLUbYUmDYkL5CDaRC23/UrtUq3mxi8G2PG8Rc+jjRsQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ew+2t3blf0KtpkmvKd299suhyQZl6+yKHDz4T/ViyzyjWTsILUAM3SLFv59KweHyHCWGmAHd0XEvy7z7Iwg2Rw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0305
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -133,406 +133,1672 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/calib.h | 390 +++++++++++++++++++++++
- 1 file changed, 390 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/calib.h
+ drivers/net/wireless/celeno/cl8k/channel.c | 1656 ++++++++++++++++++++
+ 1 file changed, 1656 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/channel.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/calib.h b/drivers/net/wireless/celeno/cl8k/calib.h
+diff --git a/drivers/net/wireless/celeno/cl8k/channel.c b/drivers/net/wireless/celeno/cl8k/channel.c
 new file mode 100644
-index 000000000000..6eb286392dd6
+index 000000000000..777c5f749059
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/calib.h
-@@ -0,0 +1,390 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause */
++++ b/drivers/net/wireless/celeno/cl8k/channel.c
+@@ -0,0 +1,1656 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
 +/* Copyright(c) 2019-2022, Celeno Communications Ltd. */
 +
-+#ifndef CL_CALIB_H
-+#define CL_CALIB_H
++#include "vif.h"
++#include "dfs.h"
++#include "reg/reg_defs.h"
++#include "hw.h"
++#include "utils.h"
++#include "channel.h"
 +
-+#include <linux/workqueue.h>
-+#include <net/cfg80211.h>
++#define CASE_CHAN2BITMAP_IDX_6G(_chan) { case _chan: return (b6g_ch ## _chan); }
++#define CASE_CHAN2EXT_IDX_6G(_chan) { case _chan: return (ext_b6g_ch ## _chan); }
++#define CASE_CHAN2IDX_5G(_chan) { case _chan: return (b5g_ch ## _chan); }
++#define CASE_CHAN2IDX_2G(_chan) { case _chan: return (b24g_ch ## _chan); }
 +
-+#include "def.h"
++#define CASE_BITMAP_IDX2FREQ_6G(_chan) { case (b6g_ch ## _chan): return FREQ6G(_chan); }
++#define CASE_EXT_IDX2FREQ_6G(_chan) { case (ext_b6g_ch ## _chan): return FREQ6G(_chan); }
++#define CASE_IDX2FREQ_5G(_chan) { case (b5g_ch ## _chan): return FREQ5G(_chan); }
++#define CASE_IDX2FREQ_2G(_chan) { case (b24g_ch ## _chan): return FREQ2G(_chan); }
 +
-+#define DCOC_LNA_GAIN_NUM     8
-+#define MAX_SX                2
-+#define IQ_NUM_TONES_REQ      8
-+#define IQ_NUM_TONES_CFM      (2 * IQ_NUM_TONES_REQ)
-+#define SINGLETONS_MAX_NUM    1
-+#define LOOPS_MAX_NUM         (2 + SINGLETONS_MAX_NUM) /* 1: pre,2-11:singletone,12:post */
-+#define SX_FREQ_OFFSET_Q2     5
++#define INVALID_FREQ 0xffff
 +
-+enum calib_cfm_id_type {
-+	CALIB_CFM_DCOC,
-+	CALIB_CFM_IQ,
-+	CALIB_CFM_MAX
-+};
++static u8 cl_channel_to_bitmap_index_6g(struct cl_hw *cl_hw, u32 channel)
++{
++	switch (channel) {
++	CASE_CHAN2BITMAP_IDX_6G(1);
++	CASE_CHAN2BITMAP_IDX_6G(2);
++	CASE_CHAN2BITMAP_IDX_6G(5);
++	CASE_CHAN2BITMAP_IDX_6G(9);
++	CASE_CHAN2BITMAP_IDX_6G(13);
++	CASE_CHAN2BITMAP_IDX_6G(17);
++	CASE_CHAN2BITMAP_IDX_6G(21);
++	CASE_CHAN2BITMAP_IDX_6G(25);
++	CASE_CHAN2BITMAP_IDX_6G(29);
++	CASE_CHAN2BITMAP_IDX_6G(33);
++	CASE_CHAN2BITMAP_IDX_6G(37);
++	CASE_CHAN2BITMAP_IDX_6G(41);
++	CASE_CHAN2BITMAP_IDX_6G(45);
++	CASE_CHAN2BITMAP_IDX_6G(49);
++	CASE_CHAN2BITMAP_IDX_6G(53);
++	CASE_CHAN2BITMAP_IDX_6G(57);
++	CASE_CHAN2BITMAP_IDX_6G(61);
++	CASE_CHAN2BITMAP_IDX_6G(65);
++	CASE_CHAN2BITMAP_IDX_6G(69);
++	CASE_CHAN2BITMAP_IDX_6G(73);
++	CASE_CHAN2BITMAP_IDX_6G(77);
++	CASE_CHAN2BITMAP_IDX_6G(81);
++	CASE_CHAN2BITMAP_IDX_6G(85);
++	CASE_CHAN2BITMAP_IDX_6G(89);
++	CASE_CHAN2BITMAP_IDX_6G(93);
++	CASE_CHAN2BITMAP_IDX_6G(97);
++	CASE_CHAN2BITMAP_IDX_6G(101);
++	CASE_CHAN2BITMAP_IDX_6G(105);
++	CASE_CHAN2BITMAP_IDX_6G(109);
++	CASE_CHAN2BITMAP_IDX_6G(113);
++	CASE_CHAN2BITMAP_IDX_6G(117);
++	CASE_CHAN2BITMAP_IDX_6G(121);
++	CASE_CHAN2BITMAP_IDX_6G(125);
++	CASE_CHAN2BITMAP_IDX_6G(129);
++	CASE_CHAN2BITMAP_IDX_6G(133);
++	CASE_CHAN2BITMAP_IDX_6G(137);
++	CASE_CHAN2BITMAP_IDX_6G(141);
++	CASE_CHAN2BITMAP_IDX_6G(145);
++	CASE_CHAN2BITMAP_IDX_6G(149);
++	CASE_CHAN2BITMAP_IDX_6G(153);
++	CASE_CHAN2BITMAP_IDX_6G(157);
++	CASE_CHAN2BITMAP_IDX_6G(161);
++	CASE_CHAN2BITMAP_IDX_6G(165);
++	CASE_CHAN2BITMAP_IDX_6G(169);
++	CASE_CHAN2BITMAP_IDX_6G(173);
++	CASE_CHAN2BITMAP_IDX_6G(177);
++	CASE_CHAN2BITMAP_IDX_6G(181);
++	CASE_CHAN2BITMAP_IDX_6G(185);
++	CASE_CHAN2BITMAP_IDX_6G(189);
++	CASE_CHAN2BITMAP_IDX_6G(193);
++	CASE_CHAN2BITMAP_IDX_6G(197);
++	CASE_CHAN2BITMAP_IDX_6G(201);
++	CASE_CHAN2BITMAP_IDX_6G(205);
++	CASE_CHAN2BITMAP_IDX_6G(209);
++	CASE_CHAN2BITMAP_IDX_6G(213);
++	CASE_CHAN2BITMAP_IDX_6G(217);
++	CASE_CHAN2BITMAP_IDX_6G(221);
++	CASE_CHAN2BITMAP_IDX_6G(225);
++	CASE_CHAN2BITMAP_IDX_6G(229);
++	CASE_CHAN2BITMAP_IDX_6G(233);
++	};
 +
-+enum calib_channel_idx_24g {
-+	CALIB_CHAN_24G_1,
-+	CALIB_CHAN_24G_6,
-+	CALIB_CHAN_24G_11,
-+	CALIB_CHAN_24G_MAX,
-+};
++	return INVALID_CHAN_IDX;
++}
 +
-+enum calib_channel_idx_5g {
-+	CALIB_CHAN_5G_36,
-+	CALIB_CHAN_5G_40,
-+	CALIB_CHAN_5G_44,
-+	CALIB_CHAN_5G_48,
-+	CALIB_CHAN_5G_52,
-+	CALIB_CHAN_5G_56,
-+	CALIB_CHAN_5G_60,
-+	CALIB_CHAN_5G_64,
-+	CALIB_CHAN_5G_100,
-+	CALIB_CHAN_5G_104,
-+	CALIB_CHAN_5G_108,
-+	CALIB_CHAN_5G_112,
-+	CALIB_CHAN_5G_116,
-+	CALIB_CHAN_5G_120,
-+	CALIB_CHAN_5G_124,
-+	CALIB_CHAN_5G_128,
-+	CALIB_CHAN_5G_132,
-+	CALIB_CHAN_5G_136,
-+	CALIB_CHAN_5G_140,
-+	CALIB_CHAN_5G_144,
-+	CALIB_CHAN_5G_149,
-+	CALIB_CHAN_5G_153,
-+	CALIB_CHAN_5G_157,
-+	CALIB_CHAN_5G_161,
-+	CALIB_CHAN_5G_165,
-+	CALIB_CHAN_5G_MAX
-+};
++u8 cl_channel_to_ext_index_6g(struct cl_hw *cl_hw, u32 channel)
++{
++	switch (channel) {
++	CASE_CHAN2EXT_IDX_6G(1);
++	CASE_CHAN2EXT_IDX_6G(2);
++	CASE_CHAN2EXT_IDX_6G(3);
++	CASE_CHAN2EXT_IDX_6G(5);
++	CASE_CHAN2EXT_IDX_6G(7);
++	CASE_CHAN2EXT_IDX_6G(9);
++	CASE_CHAN2EXT_IDX_6G(11);
++	CASE_CHAN2EXT_IDX_6G(13);
++	CASE_CHAN2EXT_IDX_6G(15);
++	CASE_CHAN2EXT_IDX_6G(17);
++	CASE_CHAN2EXT_IDX_6G(19);
++	CASE_CHAN2EXT_IDX_6G(21);
++	CASE_CHAN2EXT_IDX_6G(23);
++	CASE_CHAN2EXT_IDX_6G(25);
++	CASE_CHAN2EXT_IDX_6G(27);
++	CASE_CHAN2EXT_IDX_6G(29);
++	CASE_CHAN2EXT_IDX_6G(31);
++	CASE_CHAN2EXT_IDX_6G(33);
++	CASE_CHAN2EXT_IDX_6G(35);
++	CASE_CHAN2EXT_IDX_6G(37);
++	CASE_CHAN2EXT_IDX_6G(39);
++	CASE_CHAN2EXT_IDX_6G(41);
++	CASE_CHAN2EXT_IDX_6G(43);
++	CASE_CHAN2EXT_IDX_6G(45);
++	CASE_CHAN2EXT_IDX_6G(47);
++	CASE_CHAN2EXT_IDX_6G(49);
++	CASE_CHAN2EXT_IDX_6G(51);
++	CASE_CHAN2EXT_IDX_6G(53);
++	CASE_CHAN2EXT_IDX_6G(55);
++	CASE_CHAN2EXT_IDX_6G(57);
++	CASE_CHAN2EXT_IDX_6G(59);
++	CASE_CHAN2EXT_IDX_6G(61);
++	CASE_CHAN2EXT_IDX_6G(63);
++	CASE_CHAN2EXT_IDX_6G(65);
++	CASE_CHAN2EXT_IDX_6G(67);
++	CASE_CHAN2EXT_IDX_6G(69);
++	CASE_CHAN2EXT_IDX_6G(71);
++	CASE_CHAN2EXT_IDX_6G(73);
++	CASE_CHAN2EXT_IDX_6G(75);
++	CASE_CHAN2EXT_IDX_6G(77);
++	CASE_CHAN2EXT_IDX_6G(79);
++	CASE_CHAN2EXT_IDX_6G(81);
++	CASE_CHAN2EXT_IDX_6G(83);
++	CASE_CHAN2EXT_IDX_6G(85);
++	CASE_CHAN2EXT_IDX_6G(87);
++	CASE_CHAN2EXT_IDX_6G(89);
++	CASE_CHAN2EXT_IDX_6G(91);
++	CASE_CHAN2EXT_IDX_6G(93);
++	CASE_CHAN2EXT_IDX_6G(95);
++	CASE_CHAN2EXT_IDX_6G(97);
++	CASE_CHAN2EXT_IDX_6G(99);
++	CASE_CHAN2EXT_IDX_6G(101);
++	CASE_CHAN2EXT_IDX_6G(103);
++	CASE_CHAN2EXT_IDX_6G(105);
++	CASE_CHAN2EXT_IDX_6G(107);
++	CASE_CHAN2EXT_IDX_6G(109);
++	CASE_CHAN2EXT_IDX_6G(111);
++	CASE_CHAN2EXT_IDX_6G(113);
++	CASE_CHAN2EXT_IDX_6G(115);
++	CASE_CHAN2EXT_IDX_6G(117);
++	CASE_CHAN2EXT_IDX_6G(119);
++	CASE_CHAN2EXT_IDX_6G(121);
++	CASE_CHAN2EXT_IDX_6G(123);
++	CASE_CHAN2EXT_IDX_6G(125);
++	CASE_CHAN2EXT_IDX_6G(127);
++	CASE_CHAN2EXT_IDX_6G(129);
++	CASE_CHAN2EXT_IDX_6G(131);
++	CASE_CHAN2EXT_IDX_6G(133);
++	CASE_CHAN2EXT_IDX_6G(135);
++	CASE_CHAN2EXT_IDX_6G(137);
++	CASE_CHAN2EXT_IDX_6G(139);
++	CASE_CHAN2EXT_IDX_6G(141);
++	CASE_CHAN2EXT_IDX_6G(143);
++	CASE_CHAN2EXT_IDX_6G(145);
++	CASE_CHAN2EXT_IDX_6G(147);
++	CASE_CHAN2EXT_IDX_6G(149);
++	CASE_CHAN2EXT_IDX_6G(151);
++	CASE_CHAN2EXT_IDX_6G(153);
++	CASE_CHAN2EXT_IDX_6G(155);
++	CASE_CHAN2EXT_IDX_6G(157);
++	CASE_CHAN2EXT_IDX_6G(159);
++	CASE_CHAN2EXT_IDX_6G(161);
++	CASE_CHAN2EXT_IDX_6G(163);
++	CASE_CHAN2EXT_IDX_6G(165);
++	CASE_CHAN2EXT_IDX_6G(167);
++	CASE_CHAN2EXT_IDX_6G(169);
++	CASE_CHAN2EXT_IDX_6G(171);
++	CASE_CHAN2EXT_IDX_6G(173);
++	CASE_CHAN2EXT_IDX_6G(175);
++	CASE_CHAN2EXT_IDX_6G(177);
++	CASE_CHAN2EXT_IDX_6G(179);
++	CASE_CHAN2EXT_IDX_6G(181);
++	CASE_CHAN2EXT_IDX_6G(183);
++	CASE_CHAN2EXT_IDX_6G(185);
++	CASE_CHAN2EXT_IDX_6G(187);
++	CASE_CHAN2EXT_IDX_6G(189);
++	CASE_CHAN2EXT_IDX_6G(191);
++	CASE_CHAN2EXT_IDX_6G(193);
++	CASE_CHAN2EXT_IDX_6G(195);
++	CASE_CHAN2EXT_IDX_6G(197);
++	CASE_CHAN2EXT_IDX_6G(199);
++	CASE_CHAN2EXT_IDX_6G(201);
++	CASE_CHAN2EXT_IDX_6G(203);
++	CASE_CHAN2EXT_IDX_6G(205);
++	CASE_CHAN2EXT_IDX_6G(207);
++	CASE_CHAN2EXT_IDX_6G(209);
++	CASE_CHAN2EXT_IDX_6G(211);
++	CASE_CHAN2EXT_IDX_6G(213);
++	CASE_CHAN2EXT_IDX_6G(215);
++	CASE_CHAN2EXT_IDX_6G(217);
++	CASE_CHAN2EXT_IDX_6G(219);
++	CASE_CHAN2EXT_IDX_6G(221);
++	CASE_CHAN2EXT_IDX_6G(223);
++	CASE_CHAN2EXT_IDX_6G(225);
++	CASE_CHAN2EXT_IDX_6G(227);
++	CASE_CHAN2EXT_IDX_6G(229);
++	CASE_CHAN2EXT_IDX_6G(231);
++	CASE_CHAN2EXT_IDX_6G(233);
++	};
 +
-+enum calib_channel_idx_6g {
-+	CALIB_CHAN_6G_1,
-+	CALIB_CHAN_6G_5,
-+	CALIB_CHAN_6G_9,
-+	CALIB_CHAN_6G_13,
-+	CALIB_CHAN_6G_17,
-+	CALIB_CHAN_6G_21,
-+	CALIB_CHAN_6G_25,
-+	CALIB_CHAN_6G_29,
-+	CALIB_CHAN_6G_33,
-+	CALIB_CHAN_6G_37,
-+	CALIB_CHAN_6G_41,
-+	CALIB_CHAN_6G_45,
-+	CALIB_CHAN_6G_49,
-+	CALIB_CHAN_6G_53,
-+	CALIB_CHAN_6G_57,
-+	CALIB_CHAN_6G_61,
-+	CALIB_CHAN_6G_65,
-+	CALIB_CHAN_6G_69,
-+	CALIB_CHAN_6G_73,
-+	CALIB_CHAN_6G_77,
-+	CALIB_CHAN_6G_81,
-+	CALIB_CHAN_6G_85,
-+	CALIB_CHAN_6G_89,
-+	CALIB_CHAN_6G_93,
-+	CALIB_CHAN_6G_97,
-+	CALIB_CHAN_6G_101,
-+	CALIB_CHAN_6G_105,
-+	CALIB_CHAN_6G_109,
-+	CALIB_CHAN_6G_113,
-+	CALIB_CHAN_6G_117,
-+	CALIB_CHAN_6G_121,
-+	CALIB_CHAN_6G_125,
-+	CALIB_CHAN_6G_129,
-+	CALIB_CHAN_6G_133,
-+	CALIB_CHAN_6G_137,
-+	CALIB_CHAN_6G_141,
-+	CALIB_CHAN_6G_145,
-+	CALIB_CHAN_6G_149,
-+	CALIB_CHAN_6G_153,
-+	CALIB_CHAN_6G_157,
-+	CALIB_CHAN_6G_161,
-+	CALIB_CHAN_6G_165,
-+	CALIB_CHAN_6G_169,
-+	CALIB_CHAN_6G_173,
-+	CALIB_CHAN_6G_177,
-+	CALIB_CHAN_6G_181,
-+	CALIB_CHAN_6G_185,
-+	CALIB_CHAN_6G_189,
-+	CALIB_CHAN_6G_193,
-+	CALIB_CHAN_6G_197,
-+	CALIB_CHAN_6G_201,
-+	CALIB_CHAN_6G_205,
-+	CALIB_CHAN_6G_209,
-+	CALIB_CHAN_6G_213,
-+	CALIB_CHAN_6G_217,
-+	CALIB_CHAN_6G_221,
-+	CALIB_CHAN_6G_225,
-+	CALIB_CHAN_6G_229,
-+	CALIB_CHAN_6G_233,
-+	CALIB_CHAN_6G_MAX,
-+};
++	return INVALID_CHAN_IDX;
++}
 +
-+/* MAX(CALIB_CHAN_24G_MAX, CALIB_CHAN_5G_MAX, CALIB_CHAN_6G_MAX) */
-+#define CALIB_CHAN_MAX CALIB_CHAN_6G_MAX
++static u8 cl_channel_to_index_5g(struct cl_hw *cl_hw, u32 channel)
++{
++	switch (channel) {
++	CASE_CHAN2IDX_5G(36);
++	CASE_CHAN2IDX_5G(38);
++	CASE_CHAN2IDX_5G(40);
++	CASE_CHAN2IDX_5G(42);
++	CASE_CHAN2IDX_5G(44);
++	CASE_CHAN2IDX_5G(46);
++	CASE_CHAN2IDX_5G(48);
++	CASE_CHAN2IDX_5G(50);
++	CASE_CHAN2IDX_5G(52);
++	CASE_CHAN2IDX_5G(54);
++	CASE_CHAN2IDX_5G(56);
++	CASE_CHAN2IDX_5G(58);
++	CASE_CHAN2IDX_5G(60);
++	CASE_CHAN2IDX_5G(62);
++	CASE_CHAN2IDX_5G(64);
++	CASE_CHAN2IDX_5G(100);
++	CASE_CHAN2IDX_5G(102);
++	CASE_CHAN2IDX_5G(104);
++	CASE_CHAN2IDX_5G(106);
++	CASE_CHAN2IDX_5G(108);
++	CASE_CHAN2IDX_5G(110);
++	CASE_CHAN2IDX_5G(112);
++	CASE_CHAN2IDX_5G(114);
++	CASE_CHAN2IDX_5G(116);
++	CASE_CHAN2IDX_5G(118);
++	CASE_CHAN2IDX_5G(120);
++	CASE_CHAN2IDX_5G(122);
++	CASE_CHAN2IDX_5G(124);
++	CASE_CHAN2IDX_5G(126);
++	CASE_CHAN2IDX_5G(128);
++	/* 130 - invalid */
++	CASE_CHAN2IDX_5G(132);
++	CASE_CHAN2IDX_5G(134);
++	CASE_CHAN2IDX_5G(136);
++	CASE_CHAN2IDX_5G(138);
++	CASE_CHAN2IDX_5G(140);
++	CASE_CHAN2IDX_5G(142);
++	CASE_CHAN2IDX_5G(144);
++	CASE_CHAN2IDX_5G(149);
++	CASE_CHAN2IDX_5G(151);
++	CASE_CHAN2IDX_5G(153);
++	CASE_CHAN2IDX_5G(155);
++	CASE_CHAN2IDX_5G(157);
++	CASE_CHAN2IDX_5G(159);
++	CASE_CHAN2IDX_5G(161);
++	/* 163 - invalid */
++	CASE_CHAN2IDX_5G(165);
++	};
 +
-+struct cl_dcoc_calib {
-+	s8 i;
-+	s8 q;
-+};
++	return INVALID_CHAN_IDX;
++}
 +
-+struct cl_dcoc_report {
-+	__le16 i_dc;
-+	__le16 i_iterations;
-+	__le16 q_dc;
-+	__le16 q_iterations;
-+};
++static u8 cl_channel_to_index_24g(struct cl_hw *cl_hw, u32 channel)
++{
++	switch (channel) {
++	CASE_CHAN2IDX_2G(1);
++	CASE_CHAN2IDX_2G(2);
++	CASE_CHAN2IDX_2G(3);
++	CASE_CHAN2IDX_2G(4);
++	CASE_CHAN2IDX_2G(5);
++	CASE_CHAN2IDX_2G(6);
++	CASE_CHAN2IDX_2G(7);
++	CASE_CHAN2IDX_2G(8);
++	CASE_CHAN2IDX_2G(9);
++	CASE_CHAN2IDX_2G(10);
++	CASE_CHAN2IDX_2G(11);
++	CASE_CHAN2IDX_2G(12);
++	CASE_CHAN2IDX_2G(13);
++	CASE_CHAN2IDX_2G(14);
++	};
 +
-+struct cl_iq_report {
-+	u8 status;
-+	__le16 amplitude_mismatch[IQ_NUM_TONES_CFM];
-+	__le16 phase_mismatch[IQ_NUM_TONES_CFM];
-+	s8 ir_db[LOOPS_MAX_NUM][IQ_NUM_TONES_CFM];
-+	s8 ir_db_avg_post;
-+};
++	return INVALID_CHAN_IDX;
++}
 +
-+struct cl_iq_calib {
-+	__le32 coef0;
-+	__le32 coef1;
-+	__le32 coef2;
-+	__le32 gain;
-+};
++u8 cl_channel_to_index(struct cl_hw *cl_hw, u32 channel)
++{
++	/* Calculate index for a given channel */
++	if (cl_band_is_6g(cl_hw))
++		return cl_channel_to_ext_index_6g(cl_hw, channel);
++	else if (cl_band_is_5g(cl_hw))
++		return cl_channel_to_index_5g(cl_hw, channel);
++	else
++		return cl_channel_to_index_24g(cl_hw, channel);
++}
 +
-+struct cl_lolc_report {
-+	u8 status;
-+	u8 n_iter;
-+	__le16 lolc_qual;
-+};
++u8 cl_channel_to_bitmap_index(struct cl_hw *cl_hw, u32 channel)
++{
++	/* Calculate index for a given channel */
++	if (cl_band_is_6g(cl_hw))
++		return cl_channel_to_bitmap_index_6g(cl_hw, channel);
++	else if (cl_band_is_5g(cl_hw))
++		return cl_channel_to_index_5g(cl_hw, channel);
++	else
++		return cl_channel_to_index_24g(cl_hw, channel);
++}
 +
-+struct cl_gain_report {
-+	u8 status;
-+	u8 rx_gain;
-+	u8 tx_gain;
-+	u8 gain_quality;
-+	__le16 final_p2p;
-+	__le16 initial_p2p;
-+};
++static u16 cl_channel_bitmap_idx_to_freq_6g(struct cl_hw *cl_hw, u8 index)
++{
++	switch (index) {
++	CASE_BITMAP_IDX2FREQ_6G(1);
++	CASE_BITMAP_IDX2FREQ_6G(2);
++	CASE_BITMAP_IDX2FREQ_6G(5);
++	CASE_BITMAP_IDX2FREQ_6G(9);
++	CASE_BITMAP_IDX2FREQ_6G(13);
++	CASE_BITMAP_IDX2FREQ_6G(17);
++	CASE_BITMAP_IDX2FREQ_6G(21);
++	CASE_BITMAP_IDX2FREQ_6G(25);
++	CASE_BITMAP_IDX2FREQ_6G(29);
++	CASE_BITMAP_IDX2FREQ_6G(33);
++	CASE_BITMAP_IDX2FREQ_6G(37);
++	CASE_BITMAP_IDX2FREQ_6G(41);
++	CASE_BITMAP_IDX2FREQ_6G(45);
++	CASE_BITMAP_IDX2FREQ_6G(49);
++	CASE_BITMAP_IDX2FREQ_6G(53);
++	CASE_BITMAP_IDX2FREQ_6G(57);
++	CASE_BITMAP_IDX2FREQ_6G(61);
++	CASE_BITMAP_IDX2FREQ_6G(65);
++	CASE_BITMAP_IDX2FREQ_6G(69);
++	CASE_BITMAP_IDX2FREQ_6G(73);
++	CASE_BITMAP_IDX2FREQ_6G(77);
++	CASE_BITMAP_IDX2FREQ_6G(81);
++	CASE_BITMAP_IDX2FREQ_6G(85);
++	CASE_BITMAP_IDX2FREQ_6G(89);
++	CASE_BITMAP_IDX2FREQ_6G(93);
++	CASE_BITMAP_IDX2FREQ_6G(97);
++	CASE_BITMAP_IDX2FREQ_6G(101);
++	CASE_BITMAP_IDX2FREQ_6G(105);
++	CASE_BITMAP_IDX2FREQ_6G(109);
++	CASE_BITMAP_IDX2FREQ_6G(113);
++	CASE_BITMAP_IDX2FREQ_6G(117);
++	CASE_BITMAP_IDX2FREQ_6G(121);
++	CASE_BITMAP_IDX2FREQ_6G(125);
++	CASE_BITMAP_IDX2FREQ_6G(129);
++	CASE_BITMAP_IDX2FREQ_6G(133);
++	CASE_BITMAP_IDX2FREQ_6G(137);
++	CASE_BITMAP_IDX2FREQ_6G(141);
++	CASE_BITMAP_IDX2FREQ_6G(145);
++	CASE_BITMAP_IDX2FREQ_6G(149);
++	CASE_BITMAP_IDX2FREQ_6G(153);
++	CASE_BITMAP_IDX2FREQ_6G(157);
++	CASE_BITMAP_IDX2FREQ_6G(161);
++	CASE_BITMAP_IDX2FREQ_6G(165);
++	CASE_BITMAP_IDX2FREQ_6G(169);
++	CASE_BITMAP_IDX2FREQ_6G(173);
++	CASE_BITMAP_IDX2FREQ_6G(177);
++	CASE_BITMAP_IDX2FREQ_6G(181);
++	CASE_BITMAP_IDX2FREQ_6G(185);
++	CASE_BITMAP_IDX2FREQ_6G(189);
++	CASE_BITMAP_IDX2FREQ_6G(193);
++	CASE_BITMAP_IDX2FREQ_6G(197);
++	CASE_BITMAP_IDX2FREQ_6G(201);
++	CASE_BITMAP_IDX2FREQ_6G(205);
++	CASE_BITMAP_IDX2FREQ_6G(209);
++	CASE_BITMAP_IDX2FREQ_6G(213);
++	CASE_BITMAP_IDX2FREQ_6G(217);
++	CASE_BITMAP_IDX2FREQ_6G(221);
++	CASE_BITMAP_IDX2FREQ_6G(225);
++	CASE_BITMAP_IDX2FREQ_6G(229);
++	CASE_BITMAP_IDX2FREQ_6G(233);
++	};
 +
-+struct cl_iq_dcoc_conf {
-+	bool dcoc_calib_needed[TCV_MAX];
-+	u8 dcoc_file_num_ant[TCV_MAX];
-+	bool iq_calib_needed;
-+	u8 iq_file_num_ant[TCV_MAX];
-+	bool force_calib;
-+};
++	return INVALID_FREQ;
++}
 +
-+struct cl_iq_dcoc_info {
-+	struct cl_dcoc_calib dcoc[DCOC_LNA_GAIN_NUM][MAX_ANTENNAS];
-+	struct cl_iq_calib iq_tx[MAX_ANTENNAS];
-+	__le32 iq_tx_lolc[MAX_ANTENNAS];
-+	struct cl_iq_calib iq_rx[MAX_ANTENNAS];
-+};
++u16 cl_channel_ext_idx_to_freq_6g(struct cl_hw *cl_hw, u8 index)
++{
++	switch (index) {
++	CASE_EXT_IDX2FREQ_6G(1);
++	CASE_EXT_IDX2FREQ_6G(2);
++	CASE_EXT_IDX2FREQ_6G(3);
++	CASE_EXT_IDX2FREQ_6G(5);
++	CASE_EXT_IDX2FREQ_6G(7);
++	CASE_EXT_IDX2FREQ_6G(9);
++	CASE_EXT_IDX2FREQ_6G(11);
++	CASE_EXT_IDX2FREQ_6G(13);
++	CASE_EXT_IDX2FREQ_6G(15);
++	CASE_EXT_IDX2FREQ_6G(17);
++	CASE_EXT_IDX2FREQ_6G(19);
++	CASE_EXT_IDX2FREQ_6G(21);
++	CASE_EXT_IDX2FREQ_6G(23);
++	CASE_EXT_IDX2FREQ_6G(25);
++	CASE_EXT_IDX2FREQ_6G(27);
++	CASE_EXT_IDX2FREQ_6G(29);
++	CASE_EXT_IDX2FREQ_6G(31);
++	CASE_EXT_IDX2FREQ_6G(33);
++	CASE_EXT_IDX2FREQ_6G(35);
++	CASE_EXT_IDX2FREQ_6G(37);
++	CASE_EXT_IDX2FREQ_6G(39);
++	CASE_EXT_IDX2FREQ_6G(41);
++	CASE_EXT_IDX2FREQ_6G(43);
++	CASE_EXT_IDX2FREQ_6G(45);
++	CASE_EXT_IDX2FREQ_6G(47);
++	CASE_EXT_IDX2FREQ_6G(49);
++	CASE_EXT_IDX2FREQ_6G(51);
++	CASE_EXT_IDX2FREQ_6G(53);
++	CASE_EXT_IDX2FREQ_6G(55);
++	CASE_EXT_IDX2FREQ_6G(57);
++	CASE_EXT_IDX2FREQ_6G(59);
++	CASE_EXT_IDX2FREQ_6G(61);
++	CASE_EXT_IDX2FREQ_6G(63);
++	CASE_EXT_IDX2FREQ_6G(65);
++	CASE_EXT_IDX2FREQ_6G(67);
++	CASE_EXT_IDX2FREQ_6G(69);
++	CASE_EXT_IDX2FREQ_6G(71);
++	CASE_EXT_IDX2FREQ_6G(73);
++	CASE_EXT_IDX2FREQ_6G(75);
++	CASE_EXT_IDX2FREQ_6G(77);
++	CASE_EXT_IDX2FREQ_6G(79);
++	CASE_EXT_IDX2FREQ_6G(81);
++	CASE_EXT_IDX2FREQ_6G(83);
++	CASE_EXT_IDX2FREQ_6G(85);
++	CASE_EXT_IDX2FREQ_6G(87);
++	CASE_EXT_IDX2FREQ_6G(89);
++	CASE_EXT_IDX2FREQ_6G(91);
++	CASE_EXT_IDX2FREQ_6G(93);
++	CASE_EXT_IDX2FREQ_6G(95);
++	CASE_EXT_IDX2FREQ_6G(97);
++	CASE_EXT_IDX2FREQ_6G(99);
++	CASE_EXT_IDX2FREQ_6G(101);
++	CASE_EXT_IDX2FREQ_6G(103);
++	CASE_EXT_IDX2FREQ_6G(105);
++	CASE_EXT_IDX2FREQ_6G(107);
++	CASE_EXT_IDX2FREQ_6G(109);
++	CASE_EXT_IDX2FREQ_6G(111);
++	CASE_EXT_IDX2FREQ_6G(113);
++	CASE_EXT_IDX2FREQ_6G(115);
++	CASE_EXT_IDX2FREQ_6G(117);
++	CASE_EXT_IDX2FREQ_6G(119);
++	CASE_EXT_IDX2FREQ_6G(121);
++	CASE_EXT_IDX2FREQ_6G(123);
++	CASE_EXT_IDX2FREQ_6G(125);
++	CASE_EXT_IDX2FREQ_6G(127);
++	CASE_EXT_IDX2FREQ_6G(129);
++	CASE_EXT_IDX2FREQ_6G(131);
++	CASE_EXT_IDX2FREQ_6G(133);
++	CASE_EXT_IDX2FREQ_6G(135);
++	CASE_EXT_IDX2FREQ_6G(137);
++	CASE_EXT_IDX2FREQ_6G(139);
++	CASE_EXT_IDX2FREQ_6G(141);
++	CASE_EXT_IDX2FREQ_6G(143);
++	CASE_EXT_IDX2FREQ_6G(145);
++	CASE_EXT_IDX2FREQ_6G(147);
++	CASE_EXT_IDX2FREQ_6G(149);
++	CASE_EXT_IDX2FREQ_6G(151);
++	CASE_EXT_IDX2FREQ_6G(153);
++	CASE_EXT_IDX2FREQ_6G(155);
++	CASE_EXT_IDX2FREQ_6G(157);
++	CASE_EXT_IDX2FREQ_6G(159);
++	CASE_EXT_IDX2FREQ_6G(161);
++	CASE_EXT_IDX2FREQ_6G(163);
++	CASE_EXT_IDX2FREQ_6G(165);
++	CASE_EXT_IDX2FREQ_6G(167);
++	CASE_EXT_IDX2FREQ_6G(169);
++	CASE_EXT_IDX2FREQ_6G(171);
++	CASE_EXT_IDX2FREQ_6G(173);
++	CASE_EXT_IDX2FREQ_6G(175);
++	CASE_EXT_IDX2FREQ_6G(177);
++	CASE_EXT_IDX2FREQ_6G(179);
++	CASE_EXT_IDX2FREQ_6G(181);
++	CASE_EXT_IDX2FREQ_6G(183);
++	CASE_EXT_IDX2FREQ_6G(185);
++	CASE_EXT_IDX2FREQ_6G(187);
++	CASE_EXT_IDX2FREQ_6G(189);
++	CASE_EXT_IDX2FREQ_6G(191);
++	CASE_EXT_IDX2FREQ_6G(193);
++	CASE_EXT_IDX2FREQ_6G(195);
++	CASE_EXT_IDX2FREQ_6G(197);
++	CASE_EXT_IDX2FREQ_6G(199);
++	CASE_EXT_IDX2FREQ_6G(201);
++	CASE_EXT_IDX2FREQ_6G(203);
++	CASE_EXT_IDX2FREQ_6G(205);
++	CASE_EXT_IDX2FREQ_6G(207);
++	CASE_EXT_IDX2FREQ_6G(209);
++	CASE_EXT_IDX2FREQ_6G(211);
++	CASE_EXT_IDX2FREQ_6G(213);
++	CASE_EXT_IDX2FREQ_6G(215);
++	CASE_EXT_IDX2FREQ_6G(217);
++	CASE_EXT_IDX2FREQ_6G(219);
++	CASE_EXT_IDX2FREQ_6G(221);
++	CASE_EXT_IDX2FREQ_6G(223);
++	CASE_EXT_IDX2FREQ_6G(225);
++	CASE_EXT_IDX2FREQ_6G(227);
++	CASE_EXT_IDX2FREQ_6G(229);
++	CASE_EXT_IDX2FREQ_6G(231);
++	CASE_EXT_IDX2FREQ_6G(233);
++	};
 +
-+struct cl_iq_dcoc_report {
-+	struct cl_dcoc_report dcoc[DCOC_LNA_GAIN_NUM][MAX_ANTENNAS];
-+	struct cl_gain_report gain_tx[MAX_ANTENNAS];
-+	struct cl_gain_report gain_rx[MAX_ANTENNAS];
-+	struct cl_lolc_report lolc_report[MAX_ANTENNAS];
-+	struct cl_iq_report iq_tx[MAX_ANTENNAS];
-+	struct cl_iq_report iq_rx[MAX_ANTENNAS];
-+};
++	return INVALID_FREQ;
++}
 +
-+struct calib_cfm {
-+	u8 status;
-+	__le16 raw_bits_data_0;
-+	__le16 raw_bits_data_1;
-+};
++static u16 cl_channel_idx_to_freq_5g(struct cl_hw *cl_hw, u8 index)
++{
++	switch (index) {
++	CASE_IDX2FREQ_5G(36);
++	CASE_IDX2FREQ_5G(38);
++	CASE_IDX2FREQ_5G(40);
++	CASE_IDX2FREQ_5G(42);
++	CASE_IDX2FREQ_5G(44);
++	CASE_IDX2FREQ_5G(46);
++	CASE_IDX2FREQ_5G(48);
++	CASE_IDX2FREQ_5G(50);
++	CASE_IDX2FREQ_5G(52);
++	CASE_IDX2FREQ_5G(54);
++	CASE_IDX2FREQ_5G(56);
++	CASE_IDX2FREQ_5G(58);
++	CASE_IDX2FREQ_5G(60);
++	CASE_IDX2FREQ_5G(62);
++	CASE_IDX2FREQ_5G(64);
++	CASE_IDX2FREQ_5G(100);
++	CASE_IDX2FREQ_5G(102);
++	CASE_IDX2FREQ_5G(104);
++	CASE_IDX2FREQ_5G(106);
++	CASE_IDX2FREQ_5G(108);
++	CASE_IDX2FREQ_5G(110);
++	CASE_IDX2FREQ_5G(112);
++	CASE_IDX2FREQ_5G(114);
++	CASE_IDX2FREQ_5G(116);
++	CASE_IDX2FREQ_5G(118);
++	CASE_IDX2FREQ_5G(120);
++	CASE_IDX2FREQ_5G(122);
++	CASE_IDX2FREQ_5G(124);
++	CASE_IDX2FREQ_5G(126);
++	CASE_IDX2FREQ_5G(128);
++	CASE_IDX2FREQ_5G(132);
++	CASE_IDX2FREQ_5G(134);
++	CASE_IDX2FREQ_5G(136);
++	CASE_IDX2FREQ_5G(138);
++	CASE_IDX2FREQ_5G(140);
++	CASE_IDX2FREQ_5G(142);
++	CASE_IDX2FREQ_5G(144);
++	CASE_IDX2FREQ_5G(149);
++	CASE_IDX2FREQ_5G(151);
++	CASE_IDX2FREQ_5G(153);
++	CASE_IDX2FREQ_5G(155);
++	CASE_IDX2FREQ_5G(157);
++	CASE_IDX2FREQ_5G(159);
++	CASE_IDX2FREQ_5G(161);
++	CASE_IDX2FREQ_5G(165);
++	};
 +
-+struct cl_iq_dcoc_data {
-+	struct cl_iq_dcoc_info iq_dcoc_db;
-+	struct cl_iq_dcoc_report report;
-+	struct calib_cfm dcoc_iq_cfm[CALIB_CFM_MAX];
-+};
++	return INVALID_FREQ;
++}
 +
-+struct cl_iq_dcoc_data_info {
-+	struct cl_iq_dcoc_data *iq_dcoc_data;
-+	u32 dma_addr;
-+};
++static u16 cl_channel_idx_to_freq_24g(struct cl_hw *cl_hw, u8 index)
++{
++	switch (index) {
++	CASE_IDX2FREQ_2G(1);
++	CASE_IDX2FREQ_2G(2);
++	CASE_IDX2FREQ_2G(3);
++	CASE_IDX2FREQ_2G(4);
++	CASE_IDX2FREQ_2G(5);
++	CASE_IDX2FREQ_2G(6);
++	CASE_IDX2FREQ_2G(7);
++	CASE_IDX2FREQ_2G(8);
++	CASE_IDX2FREQ_2G(9);
++	CASE_IDX2FREQ_2G(10);
++	CASE_IDX2FREQ_2G(11);
++	CASE_IDX2FREQ_2G(12);
++	CASE_IDX2FREQ_2G(13);
++	CASE_IDX2FREQ_2G(14);
++	};
 +
-+struct cl_calib_params {
-+	u8 mode;
-+	bool first_channel;
-+	s8 sx_freq_offset_mhz;
-+	u32 plan_bitmap;
-+};
++	return INVALID_FREQ;
++}
 +
-+struct cl_calib_work {
-+	struct work_struct ws;
-+	struct cl_hw *cl_hw;
-+};
++u16 cl_channel_idx_to_freq(struct cl_hw *cl_hw, u8 index)
++{
++	/* Calculate frequency of a given idnex */
++	if (cl_band_is_6g(cl_hw))
++		return cl_channel_bitmap_idx_to_freq_6g(cl_hw, index);
++	else if (cl_band_is_5g(cl_hw))
++		return cl_channel_idx_to_freq_5g(cl_hw, index);
++	else
++		return cl_channel_idx_to_freq_24g(cl_hw, index);
++}
 +
-+struct cl_calib_chain {
-+	u8 pair;
-+	u8 initial_tx_gain;
-+	u8 initial_rx_gain;
-+};
++bool cl_channel_is_valid(struct cl_hw *cl_hw, u8 channel)
++{
++	if (cl_band_is_24g(cl_hw)) {
++		return (channel > 0 && channel <= 14);
++	} else if (cl_band_is_5g(cl_hw)) {
++		if (channel >= 36 && channel <= 64)
++			return ((channel & 0x1) == 0x0);
 +
-+enum cl_calib_flags {
-+	CALIB_FLAG_CREATE = 1 << 0,
-+	CALIB_FLAG_VERSION = 1 << 1,
-+	CALIB_FLAG_TITLE = 1 << 2,
-+	CALIB_FLAG_HEADER_TCV0 = 1 << 3,
-+	CALIB_FLAG_HEADER_TCV1 = 1 << 4,
++		if (channel >= 100 && channel <= 144)
++			return ((channel & 0x1) == 0x0);
 +
-+	CALIB_FLAG_HEADER_TCV01 = (CALIB_FLAG_HEADER_TCV0 |
-+				   CALIB_FLAG_HEADER_TCV1),
-+	CALIB_FLAG_ALL_REPORT = (CALIB_FLAG_CREATE |
-+				 CALIB_FLAG_VERSION |
-+				 CALIB_FLAG_TITLE),
-+	CALIB_FLAG_ALL = (CALIB_FLAG_CREATE |
-+			  CALIB_FLAG_VERSION |
-+			  CALIB_FLAG_TITLE |
-+			  CALIB_FLAG_HEADER_TCV0 |
-+			  CALIB_FLAG_HEADER_TCV1)
-+};
++		if (channel >= 149 && channel <= 161)
++			return ((channel & 0x1) == 0x1);
 +
-+struct cl_calib_file_flags {
-+	u8 dcoc;
-+	u8 dcoc_report;
-+	u8 lolc;
-+	u8 lolc_report;
-+	u8 iq_tx;
-+	u8 iq_tx_report;
-+	u8 iq_rx;
-+	u8 iq_rx_report;
-+	u8 rx_gain_report;
-+	bool iq_plan;
-+};
++		if (channel == 165)
++			return true;
++	} else {
++		if (channel == 2)
++			return true;
 +
-+struct cl_calib_errors {
-+	u16 dcoc;
-+	u16 lolc;
-+	u16 iq_tx;
-+	u16 iq_rx;
-+};
++		if (channel >= 1 && channel <= 233)
++			if ((channel & 0x3) == 0x1)
++				return true;
++	}
 +
-+struct cl_calib_db {
-+	struct cl_dcoc_calib
-+		dcoc[TCV_MAX][CALIB_CHAN_MAX][CHNL_BW_MAX][MAX_SX][MAX_ANTENNAS][DCOC_LNA_GAIN_NUM];
-+	u32 iq_tx_lolc[TCV_MAX][CALIB_CHAN_MAX][CHNL_BW_MAX][MAX_SX][MAX_ANTENNAS];
-+	struct cl_iq_calib iq_tx[TCV_MAX][CALIB_CHAN_MAX][CHNL_BW_MAX][MAX_SX][MAX_ANTENNAS];
-+	struct cl_iq_calib iq_rx[TCV_MAX][CALIB_CHAN_MAX][CHNL_BW_MAX][MAX_SX][MAX_ANTENNAS];
-+	struct cl_calib_file_flags file_flags;
-+	struct cl_calib_errors errors[TCV_MAX];
-+	struct list_head plan[TCV_MAX][CALIB_CHAN_MAX][CHNL_BW_MAX];
-+	bool is_plan_initialized;
-+};
++	return false;
++}
 +
-+#define SET_PHY_DATA_FLAGS_DCOC       0x1 /* Set DCOC calibration data.*/
-+#define SET_PHY_DATA_FLAGS_IQ_TX      0x2 /* Set IQ Tx calibration data.*/
-+#define SET_PHY_DATA_FLAGS_IQ_RX      0x4 /* Set IQ Rx calibration data.*/
-+#define SET_PHY_DATA_FLAGS_IQ_TX_LOLC 0x8 /* Set IQ Tx LOLC calibration data.*/
-+#define SET_PHY_DATA_FLAGS_ALL ( \
-+	SET_PHY_DATA_FLAGS_DCOC | \
-+	SET_PHY_DATA_FLAGS_IQ_TX | \
-+	SET_PHY_DATA_FLAGS_IQ_RX | \
-+	SET_PHY_DATA_FLAGS_IQ_TX_LOLC)
-+#define SET_PHY_DATA_FLAGS_LISTENER ( \
-+	SET_PHY_DATA_FLAGS_DCOC | \
-+	SET_PHY_DATA_FLAGS_IQ_RX)
++u32 cl_channel_num(struct cl_hw *cl_hw)
++{
++	if (cl_hw->conf->ci_band_num == 6)
++		return NUM_BITMAP_CHANNELS_6G;
 +
-+#define CL_CALIB_PARAMS_DEFAULT_STRUCT \
-+	((struct cl_calib_params){SET_CHANNEL_MODE_OPERETIONAL, false, 0, 0})
++	if (cl_hw->conf->ci_band_num == 5)
++		return NUM_CHANNELS_5G;
 +
-+#define CALIB_CHAN_5G_PLAN 6
-+#define CALIB_CHAN_6G_PLAN 15
++	return NUM_CHANNELS_24G;
++}
 +
-+struct cl_chip;
++bool cl_channel_is_dfs(struct cl_hw *cl_hw, u8 channel)
++{
++	if (!cl_band_is_5g(cl_hw))
++		return false;
 +
-+void cl_calib_dcoc_init_calibration(struct cl_hw *cl_hw);
-+u8 cl_calib_dcoc_channel_bw_to_idx(struct cl_hw *cl_hw, u8 channel, u8 bw);
-+void cl_calib_dcoc_fill_data(struct cl_hw *cl_hw, struct cl_iq_dcoc_info *iq_dcoc_db);
-+u8 cl_calib_dcoc_tcv_channel_to_idx(struct cl_chip *chip, u8 tcv_idx, u8 channel, u8 bw);
-+void cl_calib_dcoc_handle_set_channel_cfm(struct cl_hw *cl_hw, bool first_channel);
-+void cl_calib_common_start_work(struct cl_hw *cl_hw);
-+void cl_calib_common_fill_phy_data(struct cl_hw *cl_hw, struct cl_iq_dcoc_info *iq_dcoc_db,
-+				   u8 flags);
-+int cl_calib_common_tables_alloc(struct cl_hw *cl_hw);
-+void cl_calib_common_tables_free(struct cl_hw *cl_hw);
-+int cl_calib_common_handle_set_channel_cfm(struct cl_hw *cl_hw,
-+					   struct cl_calib_params calib_params);
-+int cl_calib_common_check_errors(struct cl_hw *cl_hw);
-+s16 cl_calib_common_get_temperature(struct cl_hw *cl_hw, u8 cfm_type);
++	return channel >= 36 && channel <= 144;
++}
 +
-+/* Calibration constants */
-+#define CALIB_TX_GAIN_DEFAULT        (0x75)
-+#define GAIN_SLEEVE_TRSHLD_DEFAULT   (2)
-+#define CALIB_NCO_AMP_DEFAULT        (-10)
-+#define CALIB_NCO_FREQ_DEFAULT       (16)       /* 5M/312.5K for LO & RGC */
-+#define LO_P_THRESH                  (1000000)
-+#define N_SAMPLES_EXP_LOLC           (13)
-+#define N_SAMPLES_EXP_IQC            (13)
-+#define N_BIT_FIR_SCALE              (11)
-+#define N_BIT_AMP_SCALE              (10)
-+#define N_BIT_PHASE_SCALE            (10)
-+#define GP_RAD_TRSHLD_DEFAULT        (1144) /* Represents 1 degree in Q(16,16): 1*(pi/180) */
-+#define GA_LIN_UPPER_TRSHLD_DEFAULT  (66295) /* Represents 0.1 db in Q(16,16): 10^( 0.1/20)*2^16 */
-+#define GA_LIN_LOWER_TRSHLD_DEFAULT  (64786) /* Represents -0.1 db in Q(16,16): 10^(-0.1/20)*2^16 */
-+#define COMP_FILTER_LEN_DEFAULT      (9)
-+#define SINGLETONS_NUM_DEFAULT       (10) /* Set to SINGLETONS_MAX_NUM for now */
-+#define IQ_POST_IDX                  (LOOPS_MAX_NUM - 1)
-+#define RAMPUP_TIME                  (50)
-+#define LO_COARSE_STEP               (20)
-+#define LO_FINE_STEP                 (1)
++u32 cl_channel_get_cac_time_ms(struct cl_hw *cl_hw, u8 channel)
++{
++	if (!cl_band_is_5g(cl_hw))
++		return 0;
 +
-+#define DCOC_MAX_VGA                      0x14
-+#define CALIB_RX_GAIN_DEFAULT             0x83
-+#define CALIB_RX_GAIN_UPPER_LIMIT         0x14
-+#define CALIB_RX_GAIN_LOWER_LIMIT         0x0
-+#define DCOC_MAX_VGA_ATHOS                0x1E
-+#define CALIB_RX_GAIN_DEFAULT_ATHOS       0x8D
-+#define CALIB_RX_GAIN_UPPER_LIMIT_ATHOS   0x1E
-+#define CALIB_RX_GAIN_LOWER_LIMIT_ATHOS   0x0A
-+#define DCOC_MAX_VGA_ATHOS_B              0x14
-+#define CALIB_RX_GAIN_DEFAULT_ATHOS_B     0x81
-+#define CALIB_RX_GAIN_UPPER_LIMIT_ATHOS_B 0x14
-+#define CALIB_RX_GAIN_LOWER_LIMIT_ATHOS_B 0x0
++	if (!cl_channel_is_dfs(cl_hw, channel))
++		return 0;
 +
-+struct cl_calib_iq_restore {
++	/* FIXME: CAC time for weather channels may differ for some regions */
++	if (channel >= 120 && channel <= 128)
++		return IEEE80211_DFS_WEATHER_MIN_CAC_TIME_MS;
++
++	return IEEE80211_DFS_MIN_CAC_TIME_MS;
++}
++
++static void _cl_fill_channel_info(struct cl_hw *cl_hw, u8 bw, u8 ch_idx, u8 channel,
++				  u8 country_max_power_q2, u8 max_power_q2,
++				  u32 flags, u32 dfs_cac_ms)
++{
++	struct cl_chan_info *chan_info = &cl_hw->channel_info.channels[bw][ch_idx];
++
++	chan_info->channel = channel;
++	chan_info->country_max_power_q2 = country_max_power_q2;
++	chan_info->max_power_q2 = max_power_q2;
++	chan_info->flags = flags;
++	chan_info->dfs_cac_ms = dfs_cac_ms;
++}
++
++static void cl_fill_channel_info(struct cl_hw *cl_hw, u8 bw, u8 ch_idx, u8 channel,
++				 u8 country_max_power_q2, u8 max_power_q2)
++{
++	_cl_fill_channel_info(cl_hw, bw, ch_idx, channel, country_max_power_q2, max_power_q2, 0, 0);
++}
++
++static void cl_fill_channel_info_5g(struct cl_hw *cl_hw, u8 bw, u8 ch_idx, u8 channel,
++				    u8 country_max_power_q2, u8 max_power_q2)
++{
++	u32 flags = 0;
++	u32 dfs_cac_ms = 0;
++
++	if (cl_hw->conf->ci_ieee80211h && cl_channel_is_dfs(cl_hw, channel)) {
++		flags |= IEEE80211_CHAN_RADAR;
++		dfs_cac_ms = cl_channel_get_cac_time_ms(cl_hw, channel);
++	}
++
++	_cl_fill_channel_info(cl_hw, bw, ch_idx, channel, country_max_power_q2,
++			      max_power_q2, flags, dfs_cac_ms);
++}
++
++static inline s32 cl_convert_str_int_q2(s8 *str)
++{
++	s32 x, y;
++
++	if (!str)
++		return 0;
++	if (sscanf(str, "%d.%2d", &x, &y) != 2)
++		return 0;
++	if (!strstr(str, "."))
++		return x * 4;
++	if (y < 10 && (*(strstr(str, ".") + 1) != '0'))
++		y *= 10;
++	return (x * 100 + y) * 4 / 100;
++}
++
++static int cl_parse_reg_domain(struct cl_hw *cl_hw, char **str)
++{
++	/* Check if current line contains "FCC" or "ETSI" */
++	char *token = strsep(str, "\n");
++
++	if (!token)
++		goto err;
++
++	if (strstr(token, "FCC")) {
++		cl_hw->channel_info.standard = NL80211_DFS_FCC;
++		cl_dbg_info(cl_hw, "Standard = FCC\n");
++		return 0;
++	}
++
++	if (strstr(token, "ETSI")) {
++		cl_hw->channel_info.standard = NL80211_DFS_ETSI;
++		cl_dbg_info(cl_hw, "Standard = ETSI\n");
++		return 0;
++	}
++
++err:
++	cl_dbg_err(cl_hw, "Illegal regulatory domain\n");
++	cl_hw->channel_info.standard = NL80211_DFS_UNSET;
++	return -1;
++}
++
++#define MAX_CC_STR 4
++#define MAX_BW_STR 8
++
++static bool cl_parse_channel_info_txt(struct cl_hw *cl_hw)
++{
++	/*
++	 * Example of country information in channel_info.txt:
++	 *
++	 * [EU (European Union)ETSI]
++	 * 2.4GHz/20MHz: 2412(1,20) 2417(2,20) 2422(3,20) 2427(4,20) 2432(5,20) 2437(6,20)
++	 *               2442(7,20) 2447(8,20) 2452(9,20) 2457(10,20) 2462(11,20) 2467(12,20)
++	 *               2472(13,20)
++	 * 2.4GHz/40MHz: 2422(1,20) 2427(2,20) 2432(3,20) 2437(4,20) 2442(5,20) 2447(6,20)
++	 *               2452(7,20) 2457(8,20) 2462(9,20) 2467(10,20) 2472(11,20)
++	 * 5.2GHz/20MHz: 5180(36,23) 5200(40,23) 5220(44,23) 5240(48,23) 5260(52,23) 5280(56,23)
++	 *               5300(60,23) 5320(64,23) 5500(100,30) 5520(104,30) 5540(108,30)
++	 *               5560(112,30)5580(116,30) 5600(120,30) 5620(124,30) 5640(128,30)
++	 *               5660(132,30) 5680(136,30) 5700(140,30)
++	 * 5.2GHz/40MHz: 5180(36,23) 5200(40,23) 5220(44,23) 5240(48,23) 5260(52,23) 5280(56,23)
++	 *               5300(60,23) 5310(64,23) 5510(100,30) 5510(104,30) 5550(108,30)
++	 *               5550(112,30) 5590(116,30) 5590(120,30) 5630(124,30) 5630(128,30)
++	 *               5670(132,30) 5670(136,30)
++	 * 5.2GHz/80MHz: 5180(36,23) 5200(40,23) 5220(44,23) 5240(48,23) 5260(52,23) 5280(56,23)
++	 *               5300(60,23) 5310(64,23) 5510(100,30) 5510(104,30) 5550(108,30)
++	 *               5550(112,30) 5590(116,30) 5590(120,30) 5630(124,30) 5630(128,30)
++	 * 5.2GHz/160MHz: 5180(36,23) 5200(40,23) 5220(44,23) 5240(48,23) 5260(52,23) 5280(56,23)
++	 *                5300(60,23) 5310(64,23) 5510(100,30) 5510(104,30) 5550(108,30)
++	 *                5550(112,30) 5590(116,30) 5590(120,30) 5630(124,30) 5630(128,30)
++	 */
++
++	char *buf = NULL, *ptr = NULL;
++	char cc_str[MAX_CC_STR] = {0};
++	char bw_str[MAX_BW_STR] = {0};
++	size_t size;
++	u8 bw, bw_mhz, bw_max, max_power, channel, i;
++	char file_name[CL_FILENAME_MAX] = {0};
++
++	snprintf(file_name, sizeof(file_name), "channel_info_chip%d.txt", cl_hw->chip->idx);
++
++	/* Read channel_info.txt into buf */
++	size = cl_file_open_and_read(cl_hw->chip, file_name, &buf);
++
++	if (!buf)
++		return false;
++
++	/* Jump to the correct country in the file */
++	snprintf(cc_str, sizeof(cc_str), "[%s", cl_hw->chip->conf->ci_country_code);
++	ptr = strstr(buf, cc_str);
++	if (!ptr)
++		goto out;
++
++	if (cl_parse_reg_domain(cl_hw, &ptr))
++		goto out;
++
++	/* Jump to the relevant band */
++	if (cl_band_is_24g(cl_hw)) {
++		bw_max = CHNL_BW_40;
++		ptr = strstr(ptr, "2.4GHz");
++	} else if (cl_band_is_5g(cl_hw)) {
++		ptr = strstr(ptr, "5.2GHz");
++		bw_max = CHNL_BW_160;
++	} else {
++		ptr = strstr(ptr, "6GHz");
++		bw_max = CHNL_BW_160;
++	}
++
++	for (bw = 0; bw <= bw_max; bw++) {
++		if (!ptr)
++			goto out;
++
++		i = 0;
++
++		/* Jump to relevant bandwidth */
++		bw_mhz = BW_TO_MHZ(bw);
++		snprintf(bw_str, sizeof(bw_str), "%uMHz:", bw_mhz);
++		ptr = strstr(ptr, bw_str);
++
++		/* Iterate until end of line and parse (channel, max_power) */
++		while (ptr && (ptr + 1) && (*(ptr + 1) != '\n')) {
++			u32 flags = 0, dfs_cac_ms = 0;
++
++			ptr = strstr(ptr, "(");
++			if (!ptr)
++				goto out;
++
++			if (sscanf(ptr, "(%hhu,%hhu)", &channel, &max_power) != 2)
++				goto out;
++
++			if (!cl_channel_is_valid(cl_hw, channel) ||
++			    i == cl_channel_num(cl_hw))
++				goto out;
++
++			if (cl_hw->conf->ci_ieee80211h && cl_channel_is_dfs(cl_hw, channel)) {
++				flags |= IEEE80211_CHAN_RADAR;
++				dfs_cac_ms = cl_channel_get_cac_time_ms(cl_hw, channel);
++			}
++
++			_cl_fill_channel_info(cl_hw, bw, i, channel, max_power << 2,
++					      max_power << 2, flags, dfs_cac_ms);
++
++			i++;
++			ptr = strstr(ptr, ")");
++		}
++	}
++
++	kfree(buf);
++	return true;
++
++out:
++	kfree(buf);
++	return false;
++}
++
++static bool cl_is_parsing_success(struct cl_hw *cl_hw)
++{
++	/* Check that there is at least one channel in any bw */
 +	u8 bw;
-+	u32 primary;
-+	u32 center;
-+	u8 channel;
-+};
++	u8 max_bw = BAND_IS_5G_6G(cl_hw) ? CHNL_BW_160 : CHNL_BW_40;
 +
-+bool cl_calib_iq_calibration_needed(struct cl_hw *cl_hw);
-+void cl_calib_iq_file_flags_clear(struct cl_chip *chip);
-+void cl_calib_iq_file_flags_set(struct cl_chip *chip);
-+int cl_calib_iq_post_read_actions(struct cl_chip *chip, char *buf);
-+void cl_calib_iq_init_calibration(struct cl_hw *cl_hw);
-+void cl_calib_iq_fill_data(struct cl_hw *cl_hw, struct cl_iq_calib *iq_data,
-+			   struct cl_iq_calib *iq_chip_data);
-+void cl_calib_iq_lolc_fill_data(struct cl_hw *cl_hw, __le32 *iq_lolc);
-+void cl_calib_iq_handle_set_channel_cfm(struct cl_hw *cl_hw, u8 plan_bitmap);
-+void cl_calib_iq_lolc_handle_set_channel_cfm(struct cl_hw *cl_hw, u8 plan_bitmap);
-+int cl_calib_iq_lolc_write_version(struct cl_hw *cl_hw);
-+int cl_calib_iq_lolc_report_write_version(struct cl_hw *cl_hw);
-+int cl_calib_iq_lolc_write_file(struct cl_hw *cl_hw, s32 *params);
-+int cl_calib_iq_lolc_report_write_file(struct cl_hw *cl_hw, s32 *params);
-+void cl_calib_iq_get_tone_vector(struct cl_hw *cl_hw, __le16 *tone_vector);
-+void cl_calib_iq_init_production(struct cl_hw *cl_hw);
-+int cl_calib_iq_set_idle(struct cl_hw *cl_hw, bool idle);
-+void cl_calib_restore_channel(struct cl_hw *cl_hw, struct cl_calib_iq_restore *iq_restore);
-+void cl_calib_save_channel(struct cl_hw *cl_hw, struct cl_calib_iq_restore *iq_restore);
++	for (bw = 0; bw <= max_bw; bw++)
++		if (!cl_hw->channel_info.channels[bw][0].channel)
++			return false;
 +
-+#define UNCALIBRATED_POWER        15
-+#define UNCALIBRATED_POWER_OFFSET 0
-+#define UNCALIBRATED_TEMPERATURE  35
++	return true;
++}
 +
-+struct point;
-+void cl_calib_power_read(struct cl_hw *cl_hw);
-+void cl_calib_power_offset_fill(struct cl_hw *cl_hw, u8 channel,
-+				u8 bw, u8 offset[MAX_ANTENNAS]);
-+int cl_calib_runtime_and_switch_channel(struct cl_hw *cl_hw, u32 channel, u8 bw, u32 primary,
-+					u32 center);
-+void cl_calib_runtime_work(struct cl_hw *cl_hw, u32 channel, u8 bw, u16 primary, u16 center);
-+bool cl_calib_runtime_is_allowed(struct cl_hw *cl_hw);
++static void cl_chan_info_set_max_bw_6g(struct cl_hw *cl_hw)
++{
++	u8 i, bw, bw_cnt, channel, channel_gap;
++	struct cl_chan_info *chan_info;
 +
-+#endif /* CL_CALIB_H */
++	for (bw = 0; bw < CHNL_BW_MAX; bw++) {
++		chan_info = cl_hw->channel_info.channels[bw];
++		bw_cnt = 0;
++
++		for (i = 0; i < NUM_BITMAP_CHANNELS_6G; i++) {
++			channel = chan_info[i].channel;
++
++			if (channel == 0)
++				break;
++
++			channel_gap = channel - START_CHAN_IDX_6G;
++
++			/*
++			 * Verify that we don't combine together channels
++			 * from different 80MHz sections
++			 */
++			if ((channel_gap % CL_160MHZ_CH_GAP) == 0)
++				bw_cnt = 0;
++
++			if (i > 0)
++				bw_cnt++;
++
++			/* Verify that we don't make illegal 80MHz combination */
++			if ((channel_gap % CL_80MHZ_CH_GAP == 0) && bw_cnt == 3)
++				bw_cnt = 0;
++
++			/* Verify that we don't make illegal 40MHz combination */
++			if ((channel_gap % CL_40MHZ_CH_GAP == 0) && bw_cnt == 1)
++				bw_cnt = 0;
++
++			if ((((bw_cnt + 1) % CL_160MHZ_HOP) == 0) && bw == CHNL_BW_160) {
++				chan_info[i].max_bw = CHNL_BW_160;
++				chan_info[i - 1].max_bw = CHNL_BW_160;
++				chan_info[i - 2].max_bw = CHNL_BW_160;
++				chan_info[i - 3].max_bw = CHNL_BW_160;
++				chan_info[i - 4].max_bw = CHNL_BW_160;
++				chan_info[i - 5].max_bw = CHNL_BW_160;
++				chan_info[i - 6].max_bw = CHNL_BW_160;
++				chan_info[i - 7].max_bw = CHNL_BW_160;
++			} else if ((((bw_cnt + 1) % CL_80MHZ_HOP) == 0) && (bw == CHNL_BW_80)) {
++				chan_info[i].max_bw = CHNL_BW_80;
++				chan_info[i - 1].max_bw = CHNL_BW_80;
++				chan_info[i - 2].max_bw = CHNL_BW_80;
++				chan_info[i - 3].max_bw = CHNL_BW_80;
++			} else if ((((bw_cnt + 1) % CL_40MHZ_HOP) == 0) && (bw >= CHNL_BW_40)) {
++				chan_info[i].max_bw = CHNL_BW_40;
++				chan_info[i - 1].max_bw = CHNL_BW_40;
++			} else {
++				chan_info[i].max_bw = CHNL_BW_20;
++			}
++		}
++	}
++}
++
++static void cl_chan_info_set_max_bw_5g(struct cl_hw *cl_hw)
++{
++	u8 i, bw, bw_cnt, channel, channel_gap;
++	struct cl_chan_info *chan_info;
++
++	for (bw = 0; bw < CHNL_BW_MAX; bw++) {
++		chan_info = cl_hw->channel_info.channels[bw];
++		bw_cnt = 0;
++
++		for (i = 0; i < NUM_CHANNELS_5G; i++) {
++			channel = chan_info[i].channel;
++
++			if (channel == 0)
++				break;
++
++			if (channel < 149)
++				channel_gap = channel - 36;
++			else
++				channel_gap = channel - 149;
++
++			/*
++			 * Verify that we don't combine together channels from
++			 * different 80MHz sections
++			 * (i.e. 36-48 can be combined into 80MHz channels, unlike 40-52)
++			 */
++			if ((channel_gap % CL_160MHZ_CH_GAP) == 0)
++				bw_cnt = 0;
++
++			/* Check if 20MHz channels can be combined into 40MHz or 80MHz channels */
++			if (i > 0) {
++				/*
++				 * Verify that we don't combine together unsecutive channels
++				 * (like 36 and 44 when 40 is missing)
++				 */
++				if ((chan_info[i].channel - chan_info[i - 1].channel) >
++				    CL_20MHZ_CH_GAP)
++					bw_cnt = 0;
++				else
++					bw_cnt++;
++			}
++
++			/* Verify that we don't make illegal 80MHz combination (like 44-56) */
++			if ((channel_gap % CL_80MHZ_CH_GAP == 0) && bw_cnt == 3)
++				bw_cnt = 0;
++
++			/* Verify that we don't make illegal 40MHz combination (like 40-44) */
++			if ((channel_gap % CL_40MHZ_CH_GAP == 0) && bw_cnt == 1)
++				bw_cnt = 0;
++
++			if ((((bw_cnt + 1) % CL_160MHZ_HOP) == 0) && bw == CHNL_BW_160) {
++				chan_info[i].max_bw = CHNL_BW_160;
++				chan_info[i - 1].max_bw = CHNL_BW_160;
++				chan_info[i - 2].max_bw = CHNL_BW_160;
++				chan_info[i - 3].max_bw = CHNL_BW_160;
++				chan_info[i - 4].max_bw = CHNL_BW_160;
++				chan_info[i - 5].max_bw = CHNL_BW_160;
++				chan_info[i - 6].max_bw = CHNL_BW_160;
++				chan_info[i - 7].max_bw = CHNL_BW_160;
++			} else if ((((bw_cnt + 1) % CL_80MHZ_HOP) == 0) && bw == CHNL_BW_80) {
++				chan_info[i].max_bw = CHNL_BW_80;
++				chan_info[i - 1].max_bw = CHNL_BW_80;
++				chan_info[i - 2].max_bw = CHNL_BW_80;
++				chan_info[i - 3].max_bw = CHNL_BW_80;
++			} else if ((((bw_cnt + 1) % CL_40MHZ_HOP) == 0) && bw >= CHNL_BW_40) {
++				chan_info[i].max_bw = CHNL_BW_40;
++				chan_info[i - 1].max_bw = CHNL_BW_40;
++			} else {
++				chan_info[i].max_bw = CHNL_BW_20;
++			}
++		}
++	}
++}
++
++static void cl_chan_info_set_max_bw_24g(struct cl_hw *cl_hw)
++{
++	u8 i, bw, channel;
++	struct cl_chan_info *chan_info;
++
++	for (bw = 0; bw < CHNL_BW_80; bw++) {
++		chan_info = cl_hw->channel_info.channels[bw];
++
++		for (i = 0; i < NUM_CHANNELS_24G; i++) {
++			channel = chan_info[i].channel;
++
++			if (channel == 0)
++				break;
++
++			if (channel < 14)
++				chan_info[i].max_bw = CHNL_BW_40;
++			else
++				chan_info[i].max_bw = CHNL_BW_20;
++		}
++	}
++}
++
++static void cl_chan_info_set_max_bw(struct cl_hw *cl_hw)
++{
++	if (cl_band_is_6g(cl_hw))
++		cl_chan_info_set_max_bw_6g(cl_hw);
++	else if (cl_band_is_5g(cl_hw))
++		cl_chan_info_set_max_bw_5g(cl_hw);
++	else
++		cl_chan_info_set_max_bw_24g(cl_hw);
++}
++
++static void cl_chan_info_dbg(struct cl_hw *cl_hw)
++{
++	struct cl_chan_info *chan_info;
++	u32 max_power_integer, max_power_fraction;
++	u8 i, j;
++
++	for (i = 0; i < CHNL_BW_MAX; i++) {
++		cl_dbg_info(cl_hw, "Bandwidth = %uMHz\n", BW_TO_MHZ(i));
++		for (j = 0; j < cl_channel_num(cl_hw); j++) {
++			chan_info = &cl_hw->channel_info.channels[i][j];
++
++			if (chan_info->channel == 0)
++				continue;
++
++			max_power_integer = (chan_info->max_power_q2 / 4);
++			max_power_fraction =
++				(100 * (chan_info->max_power_q2 - 4 * max_power_integer) / 4);
++
++			cl_dbg_info(cl_hw, "Channel = %u, max EIRP = %3u.%02u, bw = %uMHz\n",
++				    chan_info->channel, max_power_integer,
++				    max_power_fraction, BW_TO_MHZ(chan_info->max_bw));
++		}
++	}
++}
++
++/* Band 6G - default power */
++#define UNII_5_POW_Q2     (27 << 2)
++#define UNII_6_POW_Q2     (27 << 2)
++#define UNII_7_POW_Q2     (27 << 2)
++#define UNII_8_POW_Q2     (27 << 2)
++
++/* Band 5G - default power */
++/* Default regulatory domain:
++ * country US: DFS-FCC
++ *       (2400 - 2472 @ 40), (N/A, 30), (N/A)
++ *       (5150 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW
++ *       (5250 - 5350 @ 80), (N/A, 23), (0 ms), DFS, AUTO-BW
++ *       (5470 - 5730 @ 160), (N/A, 23), (0 ms), DFS
++ *       (5730 - 5850 @ 80), (N/A, 30), (N/A), AUTO-BW
++ *       (5850 - 5895 @ 40), (N/A, 27), (N/A), NO-OUTDOOR, AUTO-BW, PASSIVE-SCAN
++ *       (57240 - 71000 @ 2160), (N/A, 40), (N/A)
++ */
++#define UNII_1_POW_Q2     (23 << 2)
++#define UNII_2_POW_Q2     (23 << 2)
++#define UNII_2_EXT_POW_Q2 (23 << 2)
++#define UNII_3_POW_Q2     (30 << 2)
++
++/* Band 2.4G - default power */
++#define BAND_24G_POW_Q2   (30 << 2)
++
++static void cl_set_default_channel_info_6g(struct cl_hw *cl_hw)
++{
++	u8 i, j, k;
++
++	for (i = 0; i < CHNL_BW_MAX; i++) {
++		k = 0;
++
++		/* Ch2 is a special case */
++		cl_fill_channel_info(cl_hw, i, k, 2, UNII_5_POW_Q2, UNII_5_POW_Q2);
++		k++;
++
++		for (j = START_CHAN_IDX_UNII5; j <= END_CHAN_IDX_UNII5; j += 4) {
++			cl_fill_channel_info(cl_hw, i, k, j, UNII_5_POW_Q2, UNII_5_POW_Q2);
++			k++;
++		}
++
++		for (j = START_CHAN_IDX_UNII6; j <= END_CHAN_IDX_UNII6; j += 4) {
++			cl_fill_channel_info(cl_hw, i, k, j, UNII_6_POW_Q2, UNII_6_POW_Q2);
++			k++;
++		}
++
++		for (j = START_CHAN_IDX_UNII7; j <= END_CHAN_IDX_UNII7; j += 4) {
++			cl_fill_channel_info(cl_hw, i, k, j, UNII_7_POW_Q2, UNII_7_POW_Q2);
++			k++;
++		}
++
++		for (j = START_CHAN_IDX_UNII8; j <= END_CHAN_IDX_UNII8; j += 4) {
++			/* Channel 233 is valid only in 20MHz */
++			if (i != CHNL_BW_20 && j == END_CHAN_IDX_UNII8)
++				break;
++
++			cl_fill_channel_info(cl_hw, i, k, j, UNII_8_POW_Q2, UNII_8_POW_Q2);
++			k++;
++		}
++	}
++}
++
++static void cl_set_default_channel_info_5g(struct cl_hw *cl_hw)
++{
++	u8 i, j, k;
++
++	for (i = 0; i < CHNL_BW_MAX; i++) {
++		k = 0;
++
++		for (j = 36; j <= 48; j += 4) {
++			cl_fill_channel_info_5g(cl_hw, i, k, j, UNII_1_POW_Q2, UNII_1_POW_Q2);
++			k++;
++		}
++
++		for (j = 52; j <= 64; j += 4) {
++			cl_fill_channel_info_5g(cl_hw, i, k, j, UNII_2_POW_Q2, UNII_2_POW_Q2);
++			k++;
++		}
++
++		for (j = 100; j <= 144; j += 4) {
++			/* 160MHz is supported only in channel 36 - 64 and 100 - 128 */
++			if (i == CHNL_BW_160 && j == 132)
++				return;
++
++			cl_fill_channel_info_5g(cl_hw, i, k, j,
++						UNII_2_EXT_POW_Q2, UNII_2_EXT_POW_Q2);
++			k++;
++		}
++
++		for (j = 149; j <= 165; j += 4) {
++			/* Channel 165 is valid only in 20MHz */
++			if (i != CHNL_BW_20 && j == 165)
++				break;
++
++			cl_fill_channel_info_5g(cl_hw, i, k, j, UNII_3_POW_Q2, UNII_3_POW_Q2);
++			k++;
++		}
++	}
++}
++
++static void cl_set_default_channel_info_24g(struct cl_hw *cl_hw)
++{
++	u8 i, j;
++
++	for (i = 0; i <= CHNL_BW_40; i++)
++		for (j = 0; j < 13; j++)
++			cl_fill_channel_info(cl_hw, i, j, j + 1, BAND_24G_POW_Q2, BAND_24G_POW_Q2);
++}
++
++static void cl_set_default_channel_info(struct cl_hw *cl_hw)
++{
++	struct cl_channel_info *channel_info = &cl_hw->channel_info;
++
++	memset(channel_info->channels, 0, sizeof(channel_info->channels));
++
++	channel_info->standard = NL80211_DFS_FCC;
++
++	if (cl_band_is_6g(cl_hw))
++		cl_set_default_channel_info_6g(cl_hw);
++	else if (cl_band_is_5g(cl_hw))
++		cl_set_default_channel_info_5g(cl_hw);
++	else
++		cl_set_default_channel_info_24g(cl_hw);
++}
++
++/*
++ * cl_hardware_power_table_update: Applies individual regulatory table entry
++ *   Inputs: cl_hw      - pointer to cl_hw
++ *           bw_mhz     - current bandwidth in MHz
++ *           chan_start - match channels greater or equal to chan_start
++ *           chan_end   - match channels less than chan_end
++ *           reg_pwr    - ensure channel_info.channels[bw][ch_idx].max_power does not exceed this
++ *   Output: updated channel_info.channels[bw][ch_idx].max_power
++ *           and channel_info.channels[bw][ch_idx].max_total_power
++ *           on all channels that match specified range
++ */
++static void cl_hardware_power_table_update(struct cl_hw *cl_hw, u8 bw_mhz,
++					   u8 chan_start, u8 chan_end, u8 pwr_q2)
++{
++	struct cl_chan_info *chan_info = NULL;
++	u8 bw = 0;
++	u8 ch_idx = 0;
++	bool ch_found = false;
++	bool is_24g = cl_band_is_24g(cl_hw);
++
++	if (bw_mhz == 20 || bw_mhz == 40 || (!is_24g && (bw_mhz == 80 || bw_mhz == 160))) {
++		bw = MHZ_TO_BW(bw_mhz);
++	} else {
++		cl_dbg_err(cl_hw, "Invalid bw %u\n", bw_mhz);
++		return;
++	}
++
++	/* Iterate through all cl_channels[bw][ch_idx] - to find all matches */
++	for (ch_idx = 0; ch_idx < cl_channel_num(cl_hw); ch_idx++) {
++		chan_info = &cl_hw->channel_info.channels[bw][ch_idx];
++
++		if (chan_start <= chan_info->channel && chan_info->channel < chan_end) {
++			ch_found = true;
++
++			/*
++			 * Max-Power =
++			 * minimum beteen hardware_power_table and country code definition
++			 */
++			chan_info->max_power_q2 = min(pwr_q2, chan_info->max_power_q2);
++			chan_info->hardware_max_power_q2 = pwr_q2;
++		}
++	}
++
++	if (!ch_found)
++		cl_dbg_info(cl_hw, "Skipping invalid channel range: %u - %u\n",
++			    chan_start, chan_end);
++}
++
++/*
++ * cl_hardware_power_table_parse():
++ * Iterate through hardware power table entries and apply each one.
++ * Expected format:
++ *     bw1(chan1=reg_pwr1;chan2=reg_pwr2;...)#bw2(chan3=reg_pwr3;chan4=reg_pwr4;...) ...
++ * Example:
++ *     20(36=22.0;40=22.75;149=21.75)#40(36=22.5;40=23.0;149=21.75)#80(36=21.75;40=21.5;149=22.25)
++ */
++static void cl_hardware_power_table_parse(struct cl_hw *cl_hw)
++{
++	char *table_str = NULL;
++	char *table_str_p = NULL;
++	char *channel_str = NULL;
++	char *channel_str_p = NULL;
++	char *bw_set = NULL;
++	char *out_tok = NULL;
++	s8 in_reg_pwr[16] = {0};
++	u8 bw_mhz = 0;
++	u8 chan_start = 0;
++	u8 chan_end = 0;
++	u8 curr_pwr_q2 = 0;
++	u8 next_pwr_q2 = 0;
++
++	if (strlen(cl_hw->conf->ce_hardware_power_table) == 0)
++		return; /* Not configured */
++
++	table_str_p = kzalloc(CL_MAX_STR_BUFFER_SIZE / 2, GFP_KERNEL);
++	if (!table_str_p)
++		return;
++
++	channel_str_p = kzalloc(CL_MAX_STR_BUFFER_SIZE / 2, GFP_KERNEL);
++	if (!channel_str_p) {
++		kfree(table_str_p);
++		cl_dbg_err(cl_hw, "Failed to allocate channel_str\n");
++		return;
++	}
++
++	table_str = table_str_p;
++
++	strncpy(table_str,
++		cl_hw->conf->ce_hardware_power_table,
++		(CL_MAX_STR_BUFFER_SIZE / 2) - 1);
++
++	/* Iterate through all bandwidth sets included in table_str */
++	bw_set = strsep(&table_str, "#");
++	while (bw_set) {
++		channel_str = channel_str_p;
++		if (sscanf(bw_set, "%hhu(%s)", &bw_mhz, channel_str) != 2) {
++			bw_set = strsep(&table_str, "#");
++			continue;
++		}
++
++		/* Iterate through each channel in this bandwidth set */
++		chan_start = 0;
++		chan_end = 0;
++		curr_pwr_q2 = 0;
++		next_pwr_q2 = 0;
++		out_tok = strsep(&channel_str, ";");
++
++		while (out_tok) {
++			if (sscanf(out_tok, "%hhu=%s", &chan_end, in_reg_pwr) == 2) {
++				next_pwr_q2 = cl_convert_str_int_q2(in_reg_pwr);
++
++				/* Apply regulatory table rule. Skip initial case */
++				if (curr_pwr_q2 != 0 && chan_start != 0)
++					cl_hardware_power_table_update(cl_hw, bw_mhz, chan_start,
++								       chan_end, curr_pwr_q2);
++
++				/* Prepare next iteration */
++				chan_start = chan_end;
++				curr_pwr_q2 = next_pwr_q2;
++			}
++			out_tok = strsep(&channel_str, ";");
++		}
++
++		/* Handle last channel case */
++		if (next_pwr_q2 != 0 && chan_start != 0) {
++			u8 chan_end;
++
++			if (cl_band_is_6g(cl_hw))
++				chan_end = 234;
++			else if (cl_band_is_5g(cl_hw))
++				chan_end = 166;
++			else
++				chan_end = 15;
++
++			cl_hardware_power_table_update(cl_hw, bw_mhz, chan_start,
++						       chan_end, curr_pwr_q2);
++		}
++
++		bw_set = strsep(&table_str, "#");
++	}
++
++	kfree(table_str_p);
++	kfree(channel_str_p);
++}
++
++static void cl_chan_info_ieee80211_update_max_power(struct cl_hw *cl_hw)
++{
++	struct ieee80211_supported_band *sband =  &cl_hw->sband;
++	struct ieee80211_channel *chan = NULL;
++	int i = 0, channel;
++
++	for (i = 0; i < sband->n_channels; i++) {
++		chan = &sband->channels[i];
++		channel = ieee80211_frequency_to_channel(chan->center_freq);
++		chan->max_power = cl_chan_info_get_max_power(cl_hw, channel);
++	}
++}
++
++void cl_chan_info_init(struct cl_hw *cl_hw)
++{
++	struct cl_channel_info *channel_info = &cl_hw->channel_info;
++
++	channel_info->use_channel_info = true;
++
++	if (channel_info->use_channel_info) {
++		if (!cl_parse_channel_info_txt(cl_hw) || !cl_is_parsing_success(cl_hw)) {
++			CL_DBG_WARNING(cl_hw, "Error parsing channel_info.txt. Using default!\n");
++			cl_set_default_channel_info(cl_hw);
++		}
++
++		cl_chan_info_ieee80211_update_max_power(cl_hw);
++		cl_chan_info_set_max_bw(cl_hw);
++		cl_chan_info_dbg(cl_hw);
++	} else {
++		cl_set_default_channel_info(cl_hw);
++	}
++
++	cl_hardware_power_table_parse(cl_hw);
++}
++
++void cl_chan_info_deinit(struct cl_hw *cl_hw)
++{
++	if (cl_hw->channel_info.rd &&
++	    cl_hw->channel_info.use_channel_info)
++		kfree(cl_hw->channel_info.rd);
++}
++
++struct cl_chan_info *cl_chan_info_get(struct cl_hw *cl_hw, u8 channel, u8 bw)
++{
++	int i = 0;
++	struct cl_chan_info *chan_info;
++
++	for (i = 0; i < cl_channel_num(cl_hw); i++) {
++		chan_info = &cl_hw->channel_info.channels[bw][i];
++
++		if (chan_info->channel == channel)
++			return chan_info;
++	}
++
++	return NULL;
++}
++
++u8 cl_chan_info_get_max_bw(struct cl_hw *cl_hw, u8 channel)
++{
++	s8 bw = 0;
++
++	for (bw = CHNL_BW_160; bw > CHNL_BW_20; bw--)
++		if (cl_chan_info_get(cl_hw, channel, bw))
++			return (u8)bw;
++
++	return CHNL_BW_20;
++}
++
++s16 cl_chan_info_get_eirp_limit_q8(struct cl_hw *cl_hw, u8 bw)
++{
++	/* Eirp_limit = min(country_limit, hw_limit) */
++	struct cl_chan_info *chan_info = cl_chan_info_get(cl_hw, cl_hw->channel, bw);
++
++	return chan_info ? (chan_info->max_power_q2 << 6) : CL_DEFAULT_CHANNEL_POWER_Q8;
++}
++
++u8 cl_chan_info_get_max_power(struct cl_hw *cl_hw, u8 channel)
++{
++	struct cl_chan_info *chan_info;
++	u8 bw = 0;
++	u8 max_power_q2 = 0;
++
++	for (bw = 0; bw < CHNL_BW_MAX; bw++) {
++		chan_info = cl_chan_info_get(cl_hw, channel, bw);
++
++		if (!chan_info)
++			continue;
++
++		if (chan_info->max_power_q2 > max_power_q2)
++			max_power_q2 = chan_info->max_power_q2;
++	}
++
++	return max_power_q2 >> 2;
++}
++
++static void cl_chan_update_channel_info(struct cl_hw *cl_hw, struct ieee80211_channel *channel)
++{
++	u8 bw;
++	u32 chan = ieee80211_frequency_to_channel(channel->center_freq);
++	struct cl_chan_info *chan_info;
++
++	for (bw = CHNL_BW_20; bw < CHNL_BW_MAX; bw++) {
++		chan_info = cl_chan_info_get(cl_hw, chan, bw);
++		if (!chan_info || chan_info->channel == 0)
++			continue;
++
++		chan_info->max_power_q2         = channel->max_power << 2;
++		chan_info->country_max_power_q2 = channel->max_reg_power << 2;
++		chan_info->flags = channel->flags;
++		chan_info->dfs_cac_ms = channel->dfs_cac_ms;
++	}
++}
++
++void cl_chan_update_channels_info(struct cl_hw *cl_hw,
++				  const struct ieee80211_supported_band *cfg_band)
++{
++	int i = 0;
++
++	spin_lock_bh(&cl_hw->channel_info_lock);
++	for (i = 0; i < cfg_band->n_channels; ++i)
++		cl_chan_update_channel_info(cl_hw, &cfg_band->channels[i]);
++	spin_unlock_bh(&cl_hw->channel_info_lock);
++}
++
++#define CENTER_FREQ_24G_BW_80MHZ  2442
++#define CENTER_FREQ_24G_BW_160MHZ 2482
++
++static int cl_chandef_calc_6g(struct cl_hw *cl_hw, u16 freq, u32 bw, u32 offset,
++			      u32 *primary, u32 *center)
++{
++	u32 bw_mhz = BW_TO_MHZ(bw);
++	u32 min_freq = 0;
++
++	if (freq == FREQ6G(2)) {
++		min_freq = FREQ6G(2);
++	} else if (freq >= FREQ6G(1) && freq <= FREQ6G(233)) {
++		min_freq = FREQ6G(1);
++	} else {
++		cl_dbg_err(cl_hw, "Invalid frequecy - %u\n", freq);
++		return -EINVAL;
++	}
++
++	*primary = freq - (freq - min_freq) % 20;
++	*center = *primary - (*primary - min_freq) % bw_mhz + offset;
++
++	return 0;
++}
++
++static int cl_chandef_calc_5g(struct cl_hw *cl_hw, u16 freq, u32 bw, u32 offset,
++			      u32 *primary, u32 *center)
++{
++	u32 bw_mhz = BW_TO_MHZ(bw);
++	u32 min_freq = 0;
++
++	if ((freq >= FREQ5G(36) && freq <= FREQ5G(64)) ||
++	    (freq >= FREQ5G(100) && freq <= FREQ5G(144))) {
++		min_freq = FREQ5G(36);
++	} else if (freq >= FREQ5G(149) && freq <= FREQ5G(165)) {
++		min_freq = FREQ5G(149);
++	} else {
++		cl_dbg_err(cl_hw, "Invalid frequecy - %u\n", freq);
++		return -EINVAL;
++	}
++
++	*primary = freq - (freq - min_freq) % 20;
++	*center = *primary - (*primary - min_freq) % bw_mhz + offset;
++
++	return 0;
++}
++
++static int cl_chandef_calc_24g(struct cl_hw *cl_hw, u16 freq, u32 bw, u32 offset,
++			       u32 *primary, u32 *center)
++{
++	u32 min_freq = 0;
++
++	if (freq < FREQ2G(1) || freq > FREQ2G(14)) {
++		cl_dbg_err(cl_hw, "Invalid frequecy - %u\n", freq);
++		return -EINVAL;
++	}
++
++	min_freq = freq < FREQ2G(14) ? FREQ2G(1) : FREQ2G(14);
++	*primary = freq - (freq - min_freq) % 5;
++
++	if (bw == CHNL_BW_20) {
++		*center = *primary;
++	} else if (bw == CHNL_BW_40) {
++		if (freq <= FREQ2G(4)) {
++			/* Above extension channel */
++			*center = *primary + offset;
++		} else if (freq >= FREQ2G(10)) {
++			/* Below extension channel */
++			*center = *primary - offset;
++		} else {
++			/* Channels 8-9 must be below if channel 13 is not supported */
++			if (freq >= FREQ2G(8) && !cl_chan_info_get(cl_hw, 13, CHNL_BW_20) &&
++			    /* For Calibration, when using 2.4GHz channels on TCV0 to set SX0. */
++			    !cl_chan_info_get(cl_hw->chip->cl_hw_tcv1, 13, CHNL_BW_20)) {
++				*center = *primary - offset;
++			} else {
++				/**
++				 * Set below/above according to the current hapd configuration.
++				 * If undefined, preffer above offset.
++				 */
++				if (cl_hw->ht40_preffered_ch_type == NL80211_CHAN_HT40MINUS)
++					*center = *primary - offset;
++				else
++					*center = *primary + offset;
++			}
++		}
++	} else if (bw == CHNL_BW_80) {
++		*center = CENTER_FREQ_24G_BW_80MHZ;
++	} else {
++		/* 160MHz */
++		*center = CENTER_FREQ_24G_BW_160MHZ;
++	}
++
++	return 0;
++}
++
++int cl_chandef_calc(struct cl_hw *cl_hw, u32 channel, u32 bw,
++		    enum nl80211_chan_width *width, u32 *primary, u32 *center)
++{
++	u16 freq = ieee80211_channel_to_frequency(channel, cl_hw->nl_band);
++	u32 offset = 0;
++	int ret = 0;
++
++	switch (bw) {
++	case CHNL_BW_20:
++		offset = 0;
++		if (channel == 14)
++			*width = NL80211_CHAN_WIDTH_20_NOHT;
++		else
++			*width = NL80211_CHAN_WIDTH_20;
++		break;
++	case CHNL_BW_40:
++		offset = 10;
++		*width = NL80211_CHAN_WIDTH_40;
++		break;
++	case CHNL_BW_80:
++		if (!cl_hw->chip->conf->ce_production_mode && cl_band_is_24g(cl_hw)) {
++			cl_dbg_err(cl_hw, "Invalid bandwidth - %u\n", bw);
++			return -EINVAL;
++		}
++
++		offset = 30;
++		*width = NL80211_CHAN_WIDTH_80;
++		break;
++	case CHNL_BW_160:
++		/* Verify 2.4G bandwidth validity only in operational mode */
++		if (!cl_hw->chip->conf->ce_production_mode && cl_band_is_24g(cl_hw)) {
++			cl_dbg_err(cl_hw, "Invalid bandwidth - %u\n", bw);
++			return -EINVAL;
++		}
++
++		offset = 70;
++		*width = NL80211_CHAN_WIDTH_160;
++		break;
++	default:
++		cl_dbg_err(cl_hw, "Invalid bandwidth - %u\n", bw);
++		return -EINVAL;
++	}
++
++	if (cl_band_is_6g(cl_hw))
++		ret = cl_chandef_calc_6g(cl_hw, freq, bw, offset, primary, center);
++	else if (cl_band_is_5g(cl_hw))
++		ret = cl_chandef_calc_5g(cl_hw, freq, bw, offset, primary, center);
++	else
++		ret = cl_chandef_calc_24g(cl_hw, freq, bw, offset, primary, center);
++
++	cl_dbg_trace(cl_hw, "primary=%u center=%u\n", *primary, *center);
++
++	return ret;
++}
++
++int cl_chandef_get_default(struct cl_hw *cl_hw, u32 *channel, u8 *bw,
++			   enum nl80211_chan_width *width,
++			   u32 *primary, u32 *center)
++{
++	*bw = cl_hw->conf->ci_chandef_bandwidth;
++	*channel = cl_hw->conf->ci_chandef_channel;
++
++	return cl_chandef_calc(cl_hw, *channel, *bw, width, primary, center);
++}
++
++int cl_init_channel_stats(struct cl_hw *cl_hw,
++			  struct cl_channel_stats *ch_stats, u32 freq)
++{
++	memset(ch_stats, 0, sizeof(*ch_stats));
++
++	ch_stats->channel = ieee80211_frequency_to_channel(freq);
++	if (ch_stats->channel == INVALID_CHAN_IDX) {
++		cl_dbg_err(cl_hw, "Failed to get channel num for freq %u\n", freq);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++void cl_get_final_channel_stats(struct cl_hw *cl_hw, struct cl_channel_stats *ch_stats)
++{
++	u32 tx_mine, rx_mine, edca_cca;
++
++	/*
++	 * Currently mac_hw_rx_mine_busy_get() doesn't work properly,
++	 * so use mac_hw_edca_cca_busy_get() as workaround.
++	 * After scan mac_hw_rx_mine_busy_get almost always returns zeros
++	 * or some very small values.
++	 * Use of EDCA CCA is less accurate, since it also includes non-wifi noise
++	 */
++	tx_mine = mac_hw_tx_mine_busy_get(cl_hw);
++	edca_cca = mac_hw_edca_cca_busy_get(cl_hw);
++	rx_mine = edca_cca;
++
++	ch_stats->util_time_tx = max_t(s64, tx_mine - ch_stats->util_time_tx_total, 0);
++	ch_stats->util_time_rx = max_t(s64, rx_mine - ch_stats->util_time_rx_total, 0);
++	ch_stats->edca_cca_time = max_t(s64, edca_cca - ch_stats->edca_cca_time_total, 0);
++
++	ch_stats->util_time_busy = ch_stats->edca_cca_time + ch_stats->util_time_tx;
++
++	ch_stats->ch_noise = cl_calc_noise_floor(cl_hw, NULL);
++
++	ch_stats->scan_time_ms = jiffies_to_msecs(get_jiffies_64() - ch_stats->scan_start_jiffies);
++}
++
++void cl_get_initial_channel_stats(struct cl_hw *cl_hw, struct cl_channel_stats *ch_stats)
++{
++	ch_stats->util_time_tx = 0;
++	ch_stats->util_time_rx = 0;
++	ch_stats->edca_cca_time = 0;
++	ch_stats->util_time_busy = 0;
++	ch_stats->ch_noise = 0;
++	ch_stats->scan_time_ms = 0;
++
++	ch_stats->util_time_tx_total = mac_hw_tx_mine_busy_get(cl_hw);
++	ch_stats->edca_cca_time_total = mac_hw_edca_cca_busy_get(cl_hw);
++	ch_stats->util_time_rx_total = ch_stats->edca_cca_time_total;
++
++	ch_stats->scan_start_jiffies = get_jiffies_64();
++}
 -- 
 2.36.1
 
