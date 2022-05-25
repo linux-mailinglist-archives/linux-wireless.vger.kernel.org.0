@@ -2,59 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98F45533DFB
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 May 2022 15:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AD5A534287
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 May 2022 19:54:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239288AbiEYNhm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 May 2022 09:37:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59064 "EHLO
+        id S239655AbiEYRyd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 May 2022 13:54:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229569AbiEYNhl (ORCPT
+        with ESMTP id S232408AbiEYRyb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 May 2022 09:37:41 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59C2CDFC4;
-        Wed, 25 May 2022 06:37:40 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id gh17so28713512ejc.6;
-        Wed, 25 May 2022 06:37:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=32xzrDUStBHgmCZ60mJZDqe8jlYunkyDsm5fnUw7zgg=;
-        b=BuagVDvD15lp98anttQopHV7UY6gNGq3AJOBHPXvpaRfIryMWcHppsruIJncReQT4z
-         /s199964wNU8pJ/rhs8M+LtAER9hLfWHCM1VzI+oPrG9nWxyxqYyIcbss/TsLgOKOwHS
-         fx0DnHhHaZeUJcQn3JEvN+iD8nxpdpEaH1LsE0BoPXFl56RRJk++r9LEIR+zMWPhiUVc
-         AF67NC08fM7fgadRzfMFtbegY2KtvJ+/qn55pLMupynup93qgiCx7tWZ7RkVJyGYWZZc
-         J/krDvJ8HaIRaCHc28sMCpORMNrGVHMXBbrMMTY4jQe1Y/RS0gNIth5lcJEzJpqYVnoK
-         Y58g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=32xzrDUStBHgmCZ60mJZDqe8jlYunkyDsm5fnUw7zgg=;
-        b=a5mRRcxHnv1rbOMCrHUYzLQ8PWZsxm9Mcr3C4v4qDWDJb850cUZjsBK2QVvMLv780f
-         oXPoXK6PFFfbgld+2cPe+MogsrFFBDSyTgbl6DqYjBWPRLpZdGuzSTs2HWZt90NqGyu1
-         SXmbibq/22PyjWXK0nrBQGs+dFTwLRuNKg7RHwnPTkojNP5bcMLgHtTJWX1USa1mqrex
-         dfRoLa+QsDz0yp7NC2a88xwgR+FWL4aWks6RGVZDTZ97vG5K+Y0STmPVg5kh+fhsY+jK
-         5jH8R3Uganh7mqm3j6+UV0Db1P1rVH6jM09Vupd6576UPjgcHJabAJlwMb8EDTKeKhHW
-         HUGQ==
-X-Gm-Message-State: AOAM531JGcKV8KzWQEsBX1L55YtrxTdiJOBSmXrVNwWDxaz/27NMLeLN
-        rFZAGafAZX9Ocjk5bCypyBjxv4ZEgdzEyCYrFmE=
-X-Google-Smtp-Source: ABdhPJxhc82v+selJT7Vf3mDNUrgEjGyupGkiG5hSSkVwovF4jBRDnfmuauz9V/o0YfIbpvTOnrK2TwL85qTwoa5CVw=
-X-Received: by 2002:a17:907:3f0f:b0:6ff:11b7:f037 with SMTP id
- hq15-20020a1709073f0f00b006ff11b7f037mr2832343ejc.253.1653485858807; Wed, 25
- May 2022 06:37:38 -0700 (PDT)
+        Wed, 25 May 2022 13:54:31 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A862DE91;
+        Wed, 25 May 2022 10:54:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=BEtX22N4nmBUvhPs2dpMmIQif4Ym/qoHwx4bgdAzRGE=; b=nuxS1TC0TNX+Ii9C8/PoUC6ICY
+        Ojvw8ZoRBI+SVXviS1qtEMR8w/BEntIGqZe8vM9vjSfuIvUqMHO+9UZUkdnwdywPDjbI2Ab1Mg1aX
+        zFp5EEHQlZlO8kP2Ozyo84g7wBSzep6nmqc2hcwEi9I6IgS3eO3L4jImBme7RmukxE8U=;
+Received: from p200300daa70ef2005cc39ce6374ff633.dip0.t-ipconnect.de ([2003:da:a70e:f200:5cc3:9ce6:374f:f633] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1ntvDC-0002o2-DA; Wed, 25 May 2022 19:54:22 +0200
+Message-ID: <592e2b28-2463-dece-8315-180089aadfee@nbd.name>
+Date:   Wed, 25 May 2022 19:54:20 +0200
 MIME-Version: 1.0
-References: <20220525103512.3666956-1-gasmibal@gmail.com> <87r14hoox8.fsf@toke.dk>
- <CALxDnQa8d8CGXz2Mxvsz5csLj3KuTDW=z65DSzHk5x1Vg+y-rw@mail.gmail.com> <92ca6224-9232-2648-0123-7096aafa17fb@nbd.name>
-In-Reply-To: <92ca6224-9232-2648-0123-7096aafa17fb@nbd.name>
-From:   Baligh GASMI <gasmibal@gmail.com>
-Date:   Wed, 25 May 2022 15:37:28 +0200
-Message-ID: <CALxDnQYHoZuv7hxLfagJRGRxw=UOFNmuBVHS8YghDwtfkLPAvg@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/1] mac80211: use AQL airtime for expected throughput.
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.9.0
+Subject: Re: [RFC PATCH 1/1] mac80211: use AQL airtime for expected
+ throughput.
+Content-Language: en-US
+To:     Baligh GASMI <gasmibal@gmail.com>
+Cc:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
         Johannes Berg <johannes@sipsolutions.net>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -62,19 +46,33 @@ Cc:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
         "open list:MAC80211" <linux-wireless@vger.kernel.org>,
         "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
         open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220525103512.3666956-1-gasmibal@gmail.com>
+ <87r14hoox8.fsf@toke.dk>
+ <CALxDnQa8d8CGXz2Mxvsz5csLj3KuTDW=z65DSzHk5x1Vg+y-rw@mail.gmail.com>
+ <92ca6224-9232-2648-0123-7096aafa17fb@nbd.name>
+ <CALxDnQYHoZuv7hxLfagJRGRxw=UOFNmuBVHS8YghDwtfkLPAvg@mail.gmail.com>
+From:   Felix Fietkau <nbd@nbd.name>
+In-Reply-To: <CALxDnQYHoZuv7hxLfagJRGRxw=UOFNmuBVHS8YghDwtfkLPAvg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Indeed it's less expensive.
 
-I'll try to make something in this direction to see what it looks like.
+On 25.05.22 15:37, Baligh GASMI wrote:
+> Indeed it's less expensive.
+> 
+> I'll try to make something in this direction to see what it looks like.
+Thanks. Please also make sure that all of this extra work is not 
+performed for drivers that don't need it, because they either implement 
+.get_expected_throughput, or use minstrel, which also implements it in a 
+better way.
 
-- Baligh
+- Felix
