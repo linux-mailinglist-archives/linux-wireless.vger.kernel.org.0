@@ -2,134 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC52453435F
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 May 2022 20:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B115B534360
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 May 2022 20:58:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343857AbiEYSwT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 May 2022 14:52:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58354 "EHLO
+        id S244745AbiEYS6z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 May 2022 14:58:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233736AbiEYSwS (ORCPT
+        with ESMTP id S233736AbiEYS6z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 May 2022 14:52:18 -0400
-X-Greylist: delayed 329 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 25 May 2022 11:52:16 PDT
-Received: from ns.iliad.fr (ns.iliad.fr [212.27.33.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E62B41F9;
-        Wed, 25 May 2022 11:52:15 -0700 (PDT)
-Received: from ns.iliad.fr (localhost [127.0.0.1])
-        by ns.iliad.fr (Postfix) with ESMTP id 1735520041;
-        Wed, 25 May 2022 20:46:44 +0200 (CEST)
-Received: from sakura (freebox.vlq16.iliad.fr [213.36.7.13])
-        by ns.iliad.fr (Postfix) with ESMTP id 121931FFE1;
-        Wed, 25 May 2022 20:46:44 +0200 (CEST)
-Message-ID: <bd6d97a4cc6665d0ee632444f75e3480160387ec.camel@freebox.fr>
-Subject: Re: [PATCH v7 4/9] ath11k: Add register access logic for WCN6750
-From:   Maxime Bizon <mbizon@freebox.fr>
-Reply-To: mbizon@freebox.fr
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
-        ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
-        robh@kernel.org, mka@chromium.org
-Date:   Wed, 25 May 2022 20:46:43 +0200
-In-Reply-To: <20220429170502.20080-5-quic_mpubbise@quicinc.com>
-References: <20220429170502.20080-1-quic_mpubbise@quicinc.com>
-         <20220429170502.20080-5-quic_mpubbise@quicinc.com>
-Organization: Freebox
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
-Mime-Version: 1.0
+        Wed, 25 May 2022 14:58:55 -0400
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E646334BA7
+        for <linux-wireless@vger.kernel.org>; Wed, 25 May 2022 11:58:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1653505133; x=1685041133;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=BnwJaH37X3htVt45pLN0Ls+I+oYD06TfiuEYxjzJzD0=;
+  b=dR7UFKfhED0tNvoEwbcnm0wzjsE95I4eVMm0zkhLwPdCnxDOjtcDBMkC
+   l2OAE6vWiCSKD5wKgF3evwVZT26yxyKODNnSIQqGRvMJBOh8Z9qYGHOcK
+   lxRpFR+jfdzjkOTZkQMiN47IUwQo0Rp7cy8SLfYaO3gt0CABuQ45bUh99
+   M=;
+Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 25 May 2022 11:58:53 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2022 11:58:52 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 25 May 2022 11:58:52 -0700
+Received: from [10.110.85.248] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Wed, 25 May
+ 2022 11:58:51 -0700
+Message-ID: <1e7d525f-b080-1ee4-3446-c29d1278ffae@quicinc.com>
+Date:   Wed, 25 May 2022 11:58:49 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [RFC v2 32/96] cl8k: add fw.h
+Content-Language: en-US
+To:     <viktor.barna@celeno.com>, <linux-wireless@vger.kernel.org>
+CC:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Aviad Brikman <aviad.brikman@celeno.com>,
+        Eliav Farber <eliav.farber@gmail.com>,
+        "Maksym Kokhan" <maksym.kokhan@celeno.com>,
+        Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
+        Shay Bar <shay.bar@celeno.com>
+References: <20220524113502.1094459-1-viktor.barna@celeno.com>
+ <20220524113502.1094459-33-viktor.barna@celeno.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20220524113502.1094459-33-viktor.barna@celeno.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ; Wed May 25 20:46:44 2022 +0200 (CEST)
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 5/24/2022 4:33 AM, viktor.barna@celeno.com wrote:
+[snip]
 
-On Fri, 2022-04-29 at 22:34 +0530, Manikanta Pubbisetty wrote:
+> +/* Message structure. */
+> +struct cl_fw_msg {
+> +	__le16 msg_id;  /* Message ID. */
+> +	u8 dst_kern_id; /* Destination kernel ID. */
+> +	u8 dst_task_id; /* Destination task ID. */
+> +	u8 src_kern_id; /* Source kernel ID. */
+> +	u8 src_task_id; /* Source task ID. */
+> +	__le16 param_len;  /* Parameter embedded struct length. */
+> +	__le32 param[1];   /* Parameter embedded struct - must be word-aligned. */
 
-Hello Manikanta,
+use of [1] is deprecated and this usage will potentially break with 
+upcoming "fortify source" kernel changes
 
-> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-
-> QCAHKSWPL_SILICONZ-1
+see 
+<https://www.kernel.org/doc/html/latest/process/deprecated.html#zero-length-and-one-element-arrays>
 
-Nope your patch breaks QCN9074:
-
-[   13.660963] ath11k_pci 0000:03:00.0: failed to set pcie link register 0x01e0e0a8: 0xffffffff != 0x00000010
-[   13.675994] ath11k_pci 0000:03:00.0: failed to set sysclk: -110
-
-device still seem to work though
-
-> @@ -134,16 +134,13 @@ EXPORT_SYMBOL(ath11k_pcic_init_msi_config);
->  static inline u32 ath11k_pcic_get_window_start(struct ath11k_base *ab,
->  					       u32 offset)
->  {
-> -	u32 window_start;
-> +	u32 window_start = 0;
->  
-> -	/* If offset lies within DP register range, use 3rd window */
->  	if ((offset ^ HAL_SEQ_WCSS_UMAC_OFFSET) < ATH11K_PCI_WINDOW_RANGE_MASK)
-> -		window_start = 3 * ATH11K_PCI_WINDOW_START;
-> -	/* If offset lies within CE register range, use 2nd window */
-> -	else if ((offset ^ HAL_CE_WFSS_CE_REG_BASE) < ATH11K_PCI_WINDOW_RANGE_MASK)
-> -		window_start = 2 * ATH11K_PCI_WINDOW_START;
-> -	else
-> -		window_start = ATH11K_PCI_WINDOW_START;
-> +		window_start = ab->hw_params.dp_window_idx * ATH11K_PCI_WINDOW_START;
-> +	else if ((offset ^ HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab)) <
-> +		 ATH11K_PCI_WINDOW_RANGE_MASK)
-> +		window_start = ab->hw_params.ce_window_idx * ATH11K_PCI_WINDOW_START;
->  
->  	return window_start;
->  }
-
-
-for some offsets, previous code could return ATH11K_PCI_WINDOW_START,
-whereas new code now returns 0
-
-
-> @@ -162,19 +159,12 @@ void ath11k_pcic_write32(struct ath11k_base *ab, u32 offset, u32 value)
->  
->  	if (offset < ATH11K_PCI_WINDOW_START) {
->  		iowrite32(value, ab->mem  + offset);
-> -	} else {
-> -		if (ab->hw_params.static_window_map)
-> -			window_start = ath11k_pcic_get_window_start(ab, offset);
-> -		else
-> -			window_start = ATH11K_PCI_WINDOW_START;
-> -
-> -		if (window_start == ATH11K_PCI_WINDOW_START &&
-> -		    ab->pci.ops->window_write32) {
-> -			ab->pci.ops->window_write32(ab, offset, value);
-> -		} else {
-> -			iowrite32(value, ab->mem + window_start +
-> -				  (offset & ATH11K_PCI_WINDOW_RANGE_MASK));
-> -		}
-> +	} else if (ab->hw_params.static_window_map) {
-> +		window_start = ath11k_pcic_get_window_start(ab, offset);
-> +		iowrite32(value, ab->mem + window_start +
-> +			  (offset & ATH11K_PCI_WINDOW_RANGE_MASK));
-> +	} else if (ab->pci.ops->window_write32) {
-> +		ab->pci.ops->window_write32(ab, offset, value);
->  	}
-> 
-
-with previous code on QCN9074, when ath11k_pcic_get_window_start()
-returned ATH11K_PCI_WINDOW_START, then it would call window_write32()
-
-with new code on QCN9074, static_window_map is true, so window_write32
-will never be called.
-
->  u32 ath11k_pcic_read32(struct ath11k_base *ab, u32 offset)
-
-ditto here
-
--- 
-Maxime
-
-
-
+when you change to use just [] make sure that any code that uses 
+sizeof(the current struct) is modified to account for the removal of one 
+__le32 from the struct
