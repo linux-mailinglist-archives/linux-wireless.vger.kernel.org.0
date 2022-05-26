@@ -2,70 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 716AE535614
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 May 2022 00:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A545353561D
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 May 2022 00:42:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240818AbiEZWbH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 May 2022 18:31:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50422 "EHLO
+        id S1346980AbiEZWl7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 May 2022 18:41:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229604AbiEZWbG (ORCPT
+        with ESMTP id S229604AbiEZWl6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 May 2022 18:31:06 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A0709D05B
-        for <linux-wireless@vger.kernel.org>; Thu, 26 May 2022 15:31:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1653604265; x=1685140265;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=tN2K/qTQa2PBgFum7VLRKOtgtqFCoA+gLm/pxJC0OZU=;
-  b=oLKX0wlcUxXwanPZbF2+jCkc222+K83pKJwEDrgZijOb9HxuFRFG418r
-   G8BmhR2Y7oKjC7MdTQydsMM18skwIqX4vji5hRg2NItB/cJqthzP8Hcbe
-   TmSTleYmYc7LgmfAn9gZF3UucAetzwBpNWAXg0XeSjca8mqCFpbK+tEnF
-   4=;
-Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
-  by alexa-out.qualcomm.com with ESMTP; 26 May 2022 15:31:05 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2022 15:31:04 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Thu, 26 May 2022 15:31:04 -0700
-Received: from [10.110.93.98] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Thu, 26 May
- 2022 15:31:03 -0700
-Message-ID: <17620927-df81-142b-8d19-03bb386fbb7c@quicinc.com>
-Date:   Thu, 26 May 2022 15:31:02 -0700
+        Thu, 26 May 2022 18:41:58 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AC669A9B5;
+        Thu, 26 May 2022 15:41:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+        :In-Reply-To:From:Cc:References:To:Subject:MIME-Version:Date:Message-ID:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=t9V8ivaNhN/SJ/RRUI+LCheLSr6jqFHdYqB8gYqAS2w=; b=cBHXJjVkQaOwVaeHmogMSYcTkv
+        vcMIMFWMqio/ti+IYV5n1zPl6OUe9+svgT/vexn5h1fEpvE/LyiVnwJ4pjxZSKimN5UQvFU0EgrcK
+        Usi7/sNWDAbMLdJgnAy5b8G4lN/qXjAPVJ+SVUZOTgAR16uLt3SMfajam+5N97PxJ/2l6eyVaKtYO
+        vTElQfxT56JDmOGAOEDT4Orti4r2Zz0CqY4z3bCRVcWHfZ84iPzvrVLxZXZKJH7WiiPYYEQZej/Gn
+        rhyNxNYrzYCY1YpAKmb82e2N6ggSFPjtNfQ+Xlrmh6m0mB12tQu7LG3+xYq17emARwjY85711kwQS
+        hFBD+LFw==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nuMAu-0021ay-9c; Thu, 26 May 2022 22:41:52 +0000
+Message-ID: <96fccaa4-9416-65c3-2d6c-a7f5b9f13f1b@infradead.org>
+Date:   Thu, 26 May 2022 15:41:42 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.1
-Subject: Re: [RFC v2 40/96] cl8k: add mac_addr.c
+Subject: Re: iwlwifi keep crashing the kernel
 Content-Language: en-US
-To:     <viktor.barna@celeno.com>, <linux-wireless@vger.kernel.org>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Aviad Brikman <aviad.brikman@celeno.com>,
-        Eliav Farber <eliav.farber@gmail.com>,
-        "Maksym Kokhan" <maksym.kokhan@celeno.com>,
-        Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
-        Shay Bar <shay.bar@celeno.com>
-References: <20220524113502.1094459-1-viktor.barna@celeno.com>
- <20220524113502.1094459-41-viktor.barna@celeno.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20220524113502.1094459-41-viktor.barna@celeno.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To:     Tommy Zhang <va7tch@students.cs.ubc.ca>,
+        linux-kernel@vger.kernel.org
+References: <8322144e-db5b-e82d-a3f5-c09ace7a6340@students.cs.ubc.ca>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <8322144e-db5b-e82d-a3f5-c09ace7a6340@students.cs.ubc.ca>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
 X-Spam-Status: No, score=-6.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,59 +53,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/24/2022 4:34 AM, viktor.barna@celeno.com wrote:
-[snip]
+[add linux-wireless]
 
-> +	/* Determine the bits necessary to cover the number of BSSIDs. */
-> +	u8 num_bits_to_mask[ARRAY_SIZE(cl_hw->addresses) * TCV_MAX] = {
+On 5/25/22 21:33, Tommy Zhang wrote:
+> Hi folks,
+> 
+> I hope this email finds you well. I'm running ArchLinux with kernel
+> 5.17.9-arch1-1 #1 SMP PREEMPT on ThinkPad T440 with product code
+> 20B6002XCD. The OEM wireless adapter malfunctioned previously;
+> therefore, I have upgraded it to Intel AC-7260, the latest FRU-capable
+> wireless adapter I could find on the market. However, the iwlwifi module
+> recently kept causing kernel panics which freezes the system incurring
+> disruption and data loss. It reads from the kernel log that there is a
+> kernel BUG at line 379 of mm/slub.c, which is attached to this email.
+> Before filing a bug in Bugzilla, I'd like to hear advice and comments
+> from Linux-wireless. Please feel free to reply to this thread if
+> anything is worth sharing.
+> 
+> Sincerely,
+> Tommy Zhang
 
-is there a reason this isn't static const?
-
-> +		0, /* 0 : 00:1C:51:BD:FB:(0b 0000 0000) -> 0-bit diff (no LAM, original MAC) */
-> +		0, /* 1 : 02:1C:51:BD:FB:(0b 0000 0000) -> 0-bit diff (LAM) */
-> +
-> +		1, /* 2 : 02:1C:51:BD:FB:(0b 0000 0001) -> 1-bit diff (LAM, between address #1) */
-> +
-> +		2, /* 3 : 02:1C:51:BD:FB:(0b 0000 0011) -> 2-bit diff (LAM) */
-> +		2, /* 4 : 02:1C:51:BD:FB:(0b 0000 0010) -> 2-bit diff (LAM) */
-> +
-> +		3, /* 5 : 02:1C:51:BD:FB:(0b 0000 0111) -> 3-bit diff (LAM) */
-> +		3, /* 6 : 02:1C:51:BD:FB:(0b 0000 0100) -> 3-bit diff (LAM) */
-> +		3, /* 7 : 02:1C:51:BD:FB:(0b 0000 0101) -> 3-bit diff (LAM) */
-> +		3, /* 8 : 02:1C:51:BD:FB:(0b 0000 0110) -> 3-bit diff (LAM) */
-> +
-> +		4, /* 9 : 02:1C:51:BD:FB:(0b 0000 1111) -> 4-bit diff (LAM) */
-> +		4, /* 10: 02:1C:51:BD:FB:(0b 0000 1000) -> 4-bit diff (LAM) */
-> +		4, /* 11: 02:1C:51:BD:FB:(0b 0000 1001) -> 4-bit diff (LAM) */
-> +		4, /* 12: 02:1C:51:BD:FB:(0b 0000 1010) -> 4-bit diff (LAM) */
-> +		4, /* 13: 02:1C:51:BD:FB:(0b 0000 1100) -> 4-bit diff (LAM) */
-> +		4, /* 14: 02:1C:51:BD:FB:(0b 0000 1110) -> 4-bit diff (LAM) */
-> +		4, /* 15: 02:1C:51:BD:FB:(0b 0000 1011) -> 4-bit diff (LAM) */
-> +	};
-> +
-
-[snip]
-
-> +	u8 lam_bit_mask[ARRAY_SIZE(cl_hw->addresses) * TCV_MAX] = {
-
-static const?
-
-> +		0b0000, /* 1 addr,  0-bit diff between MAC addrs, LAM is not affecting it */
-> +		0b0000, /* 2 addrs, 0-bit diff between MAC addrs, first differs by LAM !!! */
-> +		0b0001, /* 3 addrs, 1-bit diff */
-> +		0b0011, /* 4 addrs, 2-bit diff */
-> +		0b0011, /* 5 addrs, 2-bit diff */
-> +
-> +		0b0111, /* 6 addrs, 3-bit diff */
-> +		0b0111, /* 7 addrs, 3-bit diff */
-> +		0b0111, /* 8 addrs, 3-bit diff */
-> +		0b0111, /* 9 addrs, 3-bit diff */
-> +
-> +		0b1111, /* 10 addrs, 4-bit diff */
-> +		0b1111, /* 11 addrs, 4-bit diff */
-> +		0b1111, /* 12 addrs, 4-bit diff */
-> +		0b1111, /* 13 addrs, 4-bit diff */
-> +		0b1111, /* 14 addrs, 4-bit diff */
-> +		0b1111, /* 15 addrs, 4-bit diff */
-> +		0b1111, /* 16 addrs, 4-bit diff */
-> +	};
+-- 
+~Randy
