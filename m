@@ -2,221 +2,274 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C258534A2B
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 May 2022 07:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42015534C4A
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 May 2022 11:09:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232815AbiEZFNS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 May 2022 01:13:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54412 "EHLO
+        id S1346827AbiEZJI6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 May 2022 05:08:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230040AbiEZFNR (ORCPT
+        with ESMTP id S1346823AbiEZJI4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 May 2022 01:13:17 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EE77AEE3A
-        for <linux-wireless@vger.kernel.org>; Wed, 25 May 2022 22:13:14 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 24Q5CxS42004891, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 24Q5CxS42004891
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 26 May 2022 13:12:59 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Thu, 26 May 2022 13:12:59 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Thu, 26 May
- 2022 13:12:58 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <megi@xff.cz>,
-        <phhuang@realtek.com>
-Subject: [PATCH] rtw88: add a work to correct atomic scheduling warning of ::set_tim
-Date:   Thu, 26 May 2022 13:12:51 +0800
-Message-ID: <20220526051251.281905-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Thu, 26 May 2022 05:08:56 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55EBD1FCC0;
+        Thu, 26 May 2022 02:08:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1653556135; x=1685092135;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BbgZo0fAvzwrr8/AxG79gLLntIyYXKjXVTnVr9TmLbk=;
+  b=SVgZeJbXKOBo9mrpxgOMMYUr8dmEe/CAmRHumIk54DTikZcKKGFhuOfF
+   lanoOGZQ2ayux9AcnfflaGZwN4gHCcTebsPyG+6Yd056IUh1pBKWQ19PM
+   NJaH8VGasGpppcUw82GPySPIBIZmFl+voqji8930s3aeNJMvxzU9HpWCv
+   hIZtu5pedx2dLQOc4Vh6RJXvNNft8qpt1lvUrI7ndhweF3Qn8XtgxHFbq
+   47Hf+8Nxg125Jcecm0y+fqIXNzsCPFvfug6+nCQKSVNAnJYNpQPYxkFRW
+   UikBpGA0LlpL5zll7P4n3o4ygyfIxodIXYgVbSz0TQXq2C2741jhFrEJx
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10358"; a="299428592"
+X-IronPort-AV: E=Sophos;i="5.91,252,1647327600"; 
+   d="scan'208";a="299428592"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2022 02:08:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,252,1647327600"; 
+   d="scan'208";a="718170597"
+Received: from lkp-server01.sh.intel.com (HELO db63a1be7222) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 26 May 2022 02:08:52 -0700
+Received: from kbuild by db63a1be7222 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nu9UB-0003jg-Gz;
+        Thu, 26 May 2022 09:08:51 +0000
+Date:   Thu, 26 May 2022 17:02:43 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jianglei Nie <niejianglei2021@163.com>, pizza@shaftnet.org,
+        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jianglei Nie <niejianglei2021@163.com>
+Subject: Re: [PATCH] cw1200: Fix memory leak in cw1200_set_key()
+Message-ID: <202205261656.CWDWN8nG-lkp@intel.com>
+References: <20220526033003.473943-1-niejianglei2021@163.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 05/26/2022 05:00:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzUvMjYg5LiK5Y2IIDAxOjU1OjAw?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220526033003.473943-1-niejianglei2021@163.com>
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The set_tim is supposed to be atomic, but we should download beacon
-context to firmware with a mutex lock. To avoid warning, do the thing in
-another work.
+Hi Jianglei,
 
-BUG: scheduling while atomic: swapper/1/0/0x00000700
-Modules linked in:
-CPU: 1 PID: 0 Comm: swapper/1 Tainted: G        W         5.18.0-rc7-00703-g33b5ee09a0c1 #4
-Hardware name: Pine64 RK3566 Quartz64-A Board (DT)
-Call trace:
- dump_backtrace.part.0+0xc4/0xd0
- show_stack+0x14/0x60
- dump_stack_lvl+0x60/0x78
- dump_stack+0x14/0x2c
- __schedule_bug+0x5c/0x70
- __schedule+0x5c4/0x630
- schedule+0x44/0xb0
- schedule_preempt_disabled+0xc/0x14
- __mutex_lock.constprop.0+0x538/0x56c
- __mutex_lock_slowpath+0x10/0x20
- mutex_lock+0x54/0x60
- rtw_ops_set_tim+0x20/0x40
- __sta_info_recalc_tim+0x150/0x250
- sta_info_recalc_tim+0x10/0x20
- invoke_tx_handlers_early+0x4e4/0x5c0
- ieee80211_tx+0x78/0x110
- ieee80211_xmit+0x94/0xc0
- __ieee80211_subif_start_xmit+0x818/0xd20
- ieee80211_subif_start_xmit+0x44/0x2d0
- dev_hard_start_xmit+0xd0/0x150
- __dev_queue_xmit+0x250/0xb30
- dev_queue_xmit+0x10/0x20
- br_dev_queue_push_xmit+0x94/0x174
- br_forward_finish+0x90/0xa0
- __br_forward+0xc0/0x13c
- br_forward+0x108/0x134
- br_dev_xmit+0x1cc/0x3a4
- dev_hard_start_xmit+0xd0/0x150
- __dev_queue_xmit+0x250/0xb30
- dev_queue_xmit+0x10/0x20
- arp_xmit+0x6c/0x7c
- arp_send_dst+0x8c/0xc0
- arp_solicit+0xd4/0x1e0
- neigh_probe+0x58/0xa0
- neigh_timer_handler+0x27c/0x380
- call_timer_fn.constprop.0+0x20/0x80
- __run_timers.part.0+0x230/0x280
- run_timer_softirq+0x38/0x70
- _stext+0x104/0x278
- __irq_exit_rcu+0xa4/0xdc
- irq_exit_rcu+0xc/0x14
- el1_interrupt+0x34/0x50
- el1h_64_irq_handler+0x14/0x20
- el1h_64_irq+0x64/0x68
- arch_cpu_idle+0x14/0x20
- do_idle+0x208/0x290
- cpu_startup_entry+0x20/0x30
- secondary_start_kernel+0x130/0x144
- __secondary_switched+0x54/0x58
+Thank you for the patch! Yet something to improve:
 
-Fixes: f2217968ffda ("rtw88: Add update beacon flow for AP mode")
-Reported-by: Ondřej Jirman <megi@xff.cz>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/fw.c       | 10 ++++++++++
- drivers/net/wireless/realtek/rtw88/fw.h       |  1 +
- drivers/net/wireless/realtek/rtw88/mac80211.c |  4 +---
- drivers/net/wireless/realtek/rtw88/main.c     |  2 ++
- drivers/net/wireless/realtek/rtw88/main.h     |  1 +
- 5 files changed, 15 insertions(+), 3 deletions(-)
+[auto build test ERROR on wireless-next/main]
+[also build test ERROR on wireless/main v5.18 next-20220526]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 090610e48d08c..c3ae631c2264f 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -1602,6 +1602,16 @@ int rtw_fw_download_rsvd_page(struct rtw_dev *rtwdev)
- 	return ret;
- }
- 
-+void rtw_fw_update_beacon_work(struct work_struct *work)
-+{
-+	struct rtw_dev *rtwdev = container_of(work, struct rtw_dev,
-+					      update_beacon_work);
-+
-+	mutex_lock(&rtwdev->mutex);
-+	rtw_fw_download_rsvd_page(rtwdev);
-+	mutex_unlock(&rtwdev->mutex);
-+}
-+
- static void rtw_fw_read_fifo_page(struct rtw_dev *rtwdev, u32 offset, u32 size,
- 				  u32 *buf, u32 residue, u16 start_pg)
- {
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
-index 734113fba184e..7a37675c61e89 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.h
-+++ b/drivers/net/wireless/realtek/rtw88/fw.h
-@@ -809,6 +809,7 @@ void rtw_add_rsvd_page_pno(struct rtw_dev *rtwdev,
- void rtw_add_rsvd_page_sta(struct rtw_dev *rtwdev,
- 			   struct rtw_vif *rtwvif);
- int rtw_fw_download_rsvd_page(struct rtw_dev *rtwdev);
-+void rtw_fw_update_beacon_work(struct work_struct *work);
- void rtw_send_rsvd_page_h2c(struct rtw_dev *rtwdev);
- int rtw_dump_drv_rsvd_page(struct rtw_dev *rtwdev,
- 			   u32 offset, u32 size, u32 *buf);
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index 30903c567cd9b..4310362dc333e 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -493,9 +493,7 @@ static int rtw_ops_set_tim(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
- {
- 	struct rtw_dev *rtwdev = hw->priv;
- 
--	mutex_lock(&rtwdev->mutex);
--	rtw_fw_download_rsvd_page(rtwdev);
--	mutex_unlock(&rtwdev->mutex);
-+	ieee80211_queue_work(hw, &rtwdev->update_beacon_work);
- 
- 	return 0;
- }
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 14289f83feb54..efabd5b1bf5b6 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1442,6 +1442,7 @@ void rtw_core_stop(struct rtw_dev *rtwdev)
- 	mutex_unlock(&rtwdev->mutex);
- 
- 	cancel_work_sync(&rtwdev->c2h_work);
-+	cancel_work_sync(&rtwdev->update_beacon_work);
- 	cancel_delayed_work_sync(&rtwdev->watch_dog_work);
- 	cancel_delayed_work_sync(&coex->bt_relink_work);
- 	cancel_delayed_work_sync(&coex->bt_reenable_work);
-@@ -1998,6 +1999,7 @@ int rtw_core_init(struct rtw_dev *rtwdev)
- 	INIT_WORK(&rtwdev->c2h_work, rtw_c2h_work);
- 	INIT_WORK(&rtwdev->ips_work, rtw_ips_work);
- 	INIT_WORK(&rtwdev->fw_recovery_work, rtw_fw_recovery_work);
-+	INIT_WORK(&rtwdev->update_beacon_work, rtw_fw_update_beacon_work);
- 	INIT_WORK(&rtwdev->ba_work, rtw_txq_ba_work);
- 	skb_queue_head_init(&rtwdev->c2h_queue);
- 	skb_queue_head_init(&rtwdev->coex.queue);
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 0baaf5a32e82d..c02be4ac159e3 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -2008,6 +2008,7 @@ struct rtw_dev {
- 	struct work_struct c2h_work;
- 	struct work_struct ips_work;
- 	struct work_struct fw_recovery_work;
-+	struct work_struct update_beacon_work;
- 
- 	/* used to protect txqs list */
- 	spinlock_t txq_lock;
+url:    https://github.com/intel-lab-lkp/linux/commits/Jianglei-Nie/cw1200-Fix-memory-leak-in-cw1200_set_key/20220526-114747
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+config: x86_64-randconfig-a003 (https://download.01.org/0day-ci/archive/20220526/202205261656.CWDWN8nG-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 3d546191ad9d7d2ad2c7928204b9de51deafa675)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/1e40283730dea11a1556d589925313cdca295484
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Jianglei-Nie/cw1200-Fix-memory-leak-in-cw1200_set_key/20220526-114747
+        git checkout 1e40283730dea11a1556d589925313cdca295484
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/net/wireless/st/cw1200/
+
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+>> drivers/net/wireless/st/cw1200/sta.c:826:26: error: use of undeclared identifier 'idx'
+                           cw1200_free_key(priv, idx);
+                                                 ^
+   1 error generated.
+
+
+vim +/idx +826 drivers/net/wireless/st/cw1200/sta.c
+
+   679	
+   680	int cw1200_set_key(struct ieee80211_hw *dev, enum set_key_cmd cmd,
+   681			   struct ieee80211_vif *vif, struct ieee80211_sta *sta,
+   682			   struct ieee80211_key_conf *key)
+   683	{
+   684		int ret = -EOPNOTSUPP;
+   685		struct cw1200_common *priv = dev->priv;
+   686		struct ieee80211_key_seq seq;
+   687	
+   688		mutex_lock(&priv->conf_mutex);
+   689	
+   690		if (cmd == SET_KEY) {
+   691			u8 *peer_addr = NULL;
+   692			int pairwise = (key->flags & IEEE80211_KEY_FLAG_PAIRWISE) ?
+   693				1 : 0;
+   694			int idx = cw1200_alloc_key(priv);
+   695			struct wsm_add_key *wsm_key = &priv->keys[idx];
+   696	
+   697			if (idx < 0) {
+   698				ret = -EINVAL;
+   699				goto finally;
+   700			}
+   701	
+   702			if (sta)
+   703				peer_addr = sta->addr;
+   704	
+   705			key->flags |= IEEE80211_KEY_FLAG_PUT_IV_SPACE |
+   706				      IEEE80211_KEY_FLAG_RESERVE_TAILROOM;
+   707	
+   708			switch (key->cipher) {
+   709			case WLAN_CIPHER_SUITE_WEP40:
+   710			case WLAN_CIPHER_SUITE_WEP104:
+   711				if (key->keylen > 16) {
+   712					cw1200_free_key(priv, idx);
+   713					ret = -EINVAL;
+   714					goto finally;
+   715				}
+   716	
+   717				if (pairwise) {
+   718					wsm_key->type = WSM_KEY_TYPE_WEP_PAIRWISE;
+   719					memcpy(wsm_key->wep_pairwise.peer,
+   720					       peer_addr, ETH_ALEN);
+   721					memcpy(wsm_key->wep_pairwise.keydata,
+   722					       &key->key[0], key->keylen);
+   723					wsm_key->wep_pairwise.keylen = key->keylen;
+   724				} else {
+   725					wsm_key->type = WSM_KEY_TYPE_WEP_DEFAULT;
+   726					memcpy(wsm_key->wep_group.keydata,
+   727					       &key->key[0], key->keylen);
+   728					wsm_key->wep_group.keylen = key->keylen;
+   729					wsm_key->wep_group.keyid = key->keyidx;
+   730				}
+   731				break;
+   732			case WLAN_CIPHER_SUITE_TKIP:
+   733				ieee80211_get_key_rx_seq(key, 0, &seq);
+   734				if (pairwise) {
+   735					wsm_key->type = WSM_KEY_TYPE_TKIP_PAIRWISE;
+   736					memcpy(wsm_key->tkip_pairwise.peer,
+   737					       peer_addr, ETH_ALEN);
+   738					memcpy(wsm_key->tkip_pairwise.keydata,
+   739					       &key->key[0], 16);
+   740					memcpy(wsm_key->tkip_pairwise.tx_mic_key,
+   741					       &key->key[16], 8);
+   742					memcpy(wsm_key->tkip_pairwise.rx_mic_key,
+   743					       &key->key[24], 8);
+   744				} else {
+   745					size_t mic_offset =
+   746						(priv->mode == NL80211_IFTYPE_AP) ?
+   747						16 : 24;
+   748					wsm_key->type = WSM_KEY_TYPE_TKIP_GROUP;
+   749					memcpy(wsm_key->tkip_group.keydata,
+   750					       &key->key[0], 16);
+   751					memcpy(wsm_key->tkip_group.rx_mic_key,
+   752					       &key->key[mic_offset], 8);
+   753	
+   754					wsm_key->tkip_group.rx_seqnum[0] = seq.tkip.iv16 & 0xff;
+   755					wsm_key->tkip_group.rx_seqnum[1] = (seq.tkip.iv16 >> 8) & 0xff;
+   756					wsm_key->tkip_group.rx_seqnum[2] = seq.tkip.iv32 & 0xff;
+   757					wsm_key->tkip_group.rx_seqnum[3] = (seq.tkip.iv32 >> 8) & 0xff;
+   758					wsm_key->tkip_group.rx_seqnum[4] = (seq.tkip.iv32 >> 16) & 0xff;
+   759					wsm_key->tkip_group.rx_seqnum[5] = (seq.tkip.iv32 >> 24) & 0xff;
+   760					wsm_key->tkip_group.rx_seqnum[6] = 0;
+   761					wsm_key->tkip_group.rx_seqnum[7] = 0;
+   762	
+   763					wsm_key->tkip_group.keyid = key->keyidx;
+   764				}
+   765				break;
+   766			case WLAN_CIPHER_SUITE_CCMP:
+   767				ieee80211_get_key_rx_seq(key, 0, &seq);
+   768				if (pairwise) {
+   769					wsm_key->type = WSM_KEY_TYPE_AES_PAIRWISE;
+   770					memcpy(wsm_key->aes_pairwise.peer,
+   771					       peer_addr, ETH_ALEN);
+   772					memcpy(wsm_key->aes_pairwise.keydata,
+   773					       &key->key[0], 16);
+   774				} else {
+   775					wsm_key->type = WSM_KEY_TYPE_AES_GROUP;
+   776					memcpy(wsm_key->aes_group.keydata,
+   777					       &key->key[0], 16);
+   778	
+   779					wsm_key->aes_group.rx_seqnum[0] = seq.ccmp.pn[5];
+   780					wsm_key->aes_group.rx_seqnum[1] = seq.ccmp.pn[4];
+   781					wsm_key->aes_group.rx_seqnum[2] = seq.ccmp.pn[3];
+   782					wsm_key->aes_group.rx_seqnum[3] = seq.ccmp.pn[2];
+   783					wsm_key->aes_group.rx_seqnum[4] = seq.ccmp.pn[1];
+   784					wsm_key->aes_group.rx_seqnum[5] = seq.ccmp.pn[0];
+   785					wsm_key->aes_group.rx_seqnum[6] = 0;
+   786					wsm_key->aes_group.rx_seqnum[7] = 0;
+   787					wsm_key->aes_group.keyid = key->keyidx;
+   788				}
+   789				break;
+   790			case WLAN_CIPHER_SUITE_SMS4:
+   791				if (pairwise) {
+   792					wsm_key->type = WSM_KEY_TYPE_WAPI_PAIRWISE;
+   793					memcpy(wsm_key->wapi_pairwise.peer,
+   794					       peer_addr, ETH_ALEN);
+   795					memcpy(wsm_key->wapi_pairwise.keydata,
+   796					       &key->key[0], 16);
+   797					memcpy(wsm_key->wapi_pairwise.mic_key,
+   798					       &key->key[16], 16);
+   799					wsm_key->wapi_pairwise.keyid = key->keyidx;
+   800				} else {
+   801					wsm_key->type = WSM_KEY_TYPE_WAPI_GROUP;
+   802					memcpy(wsm_key->wapi_group.keydata,
+   803					       &key->key[0],  16);
+   804					memcpy(wsm_key->wapi_group.mic_key,
+   805					       &key->key[16], 16);
+   806					wsm_key->wapi_group.keyid = key->keyidx;
+   807				}
+   808				break;
+   809			default:
+   810				pr_warn("Unhandled key type %d\n", key->cipher);
+   811				cw1200_free_key(priv, idx);
+   812				ret = -EOPNOTSUPP;
+   813				goto finally;
+   814			}
+   815			ret = wsm_add_key(priv, wsm_key);
+   816			if (!ret)
+   817				key->hw_key_idx = idx;
+   818			else
+   819				cw1200_free_key(priv, idx);
+   820		} else if (cmd == DISABLE_KEY) {
+   821			struct wsm_remove_key wsm_key = {
+   822				.index = key->hw_key_idx,
+   823			};
+   824	
+   825			if (wsm_key.index > WSM_KEY_MAX_INDEX) {
+ > 826				cw1200_free_key(priv, idx);
+   827				ret = -EINVAL;
+   828				goto finally;
+   829			}
+   830	
+   831			cw1200_free_key(priv, wsm_key.index);
+   832			ret = wsm_remove_key(priv, &wsm_key);
+   833		} else {
+   834			pr_warn("Unhandled key command %d\n", cmd);
+   835		}
+   836	
+   837	finally:
+   838		mutex_unlock(&priv->conf_mutex);
+   839		return ret;
+   840	}
+   841	
+
 -- 
-2.25.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
