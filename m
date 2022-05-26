@@ -2,35 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 667EF535341
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 May 2022 20:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F6CE53534E
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 May 2022 20:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240170AbiEZSTt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 May 2022 14:19:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40106 "EHLO
+        id S1348593AbiEZSXF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 May 2022 14:23:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236191AbiEZSTm (ORCPT
+        with ESMTP id S1348597AbiEZSW5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 May 2022 14:19:42 -0400
+        Thu, 26 May 2022 14:22:57 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8556D506DE
-        for <linux-wireless@vger.kernel.org>; Thu, 26 May 2022 11:19:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C82ADEEA
+        for <linux-wireless@vger.kernel.org>; Thu, 26 May 2022 11:22:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=1rRQEPeAmfrGFVhlJRON9pa9G0CJ9lRsgKJVlprLDVo=;
-        t=1653589177; x=1654798777; b=QMJd3gw0rtPLVu6IY8IHk5m/bBLYNIA9TIW1Td6/vG69e0b
-        DzGaVuuCNsgpwGsv8kYTFWDvYkSSBKjoJDKGOmsM/UmaXebfWWO6GeClDXSq/jdFQji8Du/yiEz2T
-        VAgcC1jmWVqwzWVinM3h8MbbuyvUB16F9p8135ZJMs1eTjF4G5lTRSb5CFrWDvJBpsUy5P2CMrTb3
-        C6UqKL5+ZlzNOD6b2vG7suGkiQU8B8fvq/dFJNMGI494r09KjVgZHOkBFJL31CdHmgId3KAGJQIdH
-        xwZpuU3o603+fSgXSjUPkl4vFkVIfF7eSuV7ZXFO/2+h6a1z3j5GN/MRxiJXGIWw==;
+        Resent-Cc:Resent-Message-ID; bh=BuIjDyivpmYEOCsVLIh544YjZRSmIQmxmWhMohtSE5w=;
+        t=1653589376; x=1654798976; b=b68KMFqW3LT1TTgVemDgBj+RQZ7xaHiC/KArwo0BiZutPs+
+        9O0ZzGNU4zcjRkWB/M/DCM3BWSYgKtyxc8wvDH0F/oC5G2x7wTp8R6GGZ8LYDgOesHWIehzi2jIel
+        Pk0MtQvnboxorpZibco9eYi5fcQxh3hi6oXNmF2/Fc4Qm+ovmK3vJRFFg9tTGTDnY7j7G8gA6mGXt
+        4cCDLL2NOjII4WeSDNXFL477Iiv9RQ79VtjEEcXri/dzIya8IAbTVJbmxZu2JWFAvB0pj8YyLfSa5
+        W3HTo4YfjxQZg11Ugg/4ZfTME8wvZp+VCLrTgBp9TcjoJhfQhUCT6EfkFTs6WpZA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nuI58-005EZE-8g;
-        Thu, 26 May 2022 20:19:34 +0200
-Message-ID: <9dfe69b9194c0a95cb554b952b84c5c1d00e3349.camel@sipsolutions.net>
+        id 1nuI8M-005Ed9-7W;
+        Thu, 26 May 2022 20:22:54 +0200
+Message-ID: <72c7c72f71d8568d28429ec2fa1323564b4f25cc.camel@sipsolutions.net>
 Subject: Re: [RFC v2 05/96] cl8k: add ampdu.c
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     viktor.barna@celeno.com, linux-wireless@vger.kernel.org
@@ -42,7 +42,7 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Maksym Kokhan <maksym.kokhan@celeno.com>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>
-Date:   Thu, 26 May 2022 20:19:33 +0200
+Date:   Thu, 26 May 2022 20:22:53 +0200
 In-Reply-To: <20220524113502.1094459-6-viktor.barna@celeno.com>
 References: <20220524113502.1094459-1-viktor.barna@celeno.com>
          <20220524113502.1094459-6-viktor.barna@celeno.com>
@@ -62,18 +62,29 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Tue, 2022-05-24 at 14:33 +0300, viktor.barna@celeno.com wrote:
 >=20
-> +	if (!ieee80211_hw_check(cl_hw->hw, AMPDU_AGGREGATION) || !cl_hw->conf->=
-ci_agg_tx)
-> +		return -ENOTSUPP;
-> +
-> +	if (!cl_txq_is_agg_available(cl_hw)) {
-> +		cl_dbg_warn(cl_hw, "No free aggregation queue for sta_idx [%u] tid [%u=
-]\n",
-> +			    cl_sta->sta_idx, tid);
-> +		return -1;
->=20
+> +	if (sta->vht_cap.vht_supported) {
+> +		u32 vht_exp =3D (sta->vht_cap.cap &
+> +			       IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK) >>
+> +			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_SHIFT;
 
-That'd be -EPERM, which is really not what you want to return - please
-use symbolic errors throughout. Maybe -ENOSPC in this case.
+You can (often) simplify that kind of thing using u32_get_bits()
+
+> +	he_exp =3D (mac_cap_info3 & IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_MAS=
+K) >>
+> +		HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_OFFSET;
+
+or u8_get_bits(), etc.
+
+There are even le/be versions.
+
+> +		struct ieee80211_he_6ghz_capa *he_6g_cap =3D &sta->he_6ghz_capa;
+> +		u8 he_exp_6ghz =3D (le16_to_cpu(he_6g_cap->capa) &
+> +				  HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP_MASK) >>
+> +				  HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP_OFFSET;
+
+which you could use here.
+
+I know we don't use it everywhere yet, but IMHO it's ultimately nicer
+code, and I definitely try to use it in new code.
 
 johannes
