@@ -2,154 +2,270 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EEEB53677F
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 May 2022 21:31:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EE3E536788
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 May 2022 21:36:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243270AbiE0Tby (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 May 2022 15:31:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49674 "EHLO
+        id S1354424AbiE0TgR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 May 2022 15:36:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238483AbiE0Tbx (ORCPT
+        with ESMTP id S238483AbiE0TgQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 May 2022 15:31:53 -0400
-Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EA2013C094
-        for <linux-wireless@vger.kernel.org>; Fri, 27 May 2022 12:31:51 -0700 (PDT)
-Received: by mail-ot1-x330.google.com with SMTP id e11-20020a9d6e0b000000b0060afcbafa80so3593071otr.3
-        for <linux-wireless@vger.kernel.org>; Fri, 27 May 2022 12:31:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=taIZOP88c/8jIq0PRDOgEnC3ZWTsJa0UDOqT7eeY5Yg=;
-        b=YRFCXRG49jC29R03e9OBlcn6gW/4DEM7tk/1almo1rWuH60lgOOPuKoiLSEU9qRVFS
-         bAlfeT8KUkJ35UdpSzOZFqKkH+xFsGa5y6ww5Ag7gOibl8Q2wSPerwAhTJuUe7H1Xf64
-         QYow/d+oLQpMjZB2cSsDI0kkEjPJrFe5q80tfiMNq+C4+eMpPCKD901mpxCgj6o77oES
-         hHieDhiRZXL1lma7NETiygbwyz89TtJozS7p3pMOeu0CQLNy0WBZ8By3kLrW91wqy+re
-         GeyUcSfQugPavwWd1z3jwTWYICxI5kZvjngookkRjpB7R1CYTQP71FzXk6lRFjnSxsk4
-         lvHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=taIZOP88c/8jIq0PRDOgEnC3ZWTsJa0UDOqT7eeY5Yg=;
-        b=QmjPGCvvNMq8LG2g0/B2X+0HQFJDDy8kgHAWvYkJqptNfMEJOB4T+/8IYr08xBSQMG
-         dKtp+WkNTqmoW9RjOtV2DPZh3cqPyoL86sqtxlcEjWKf8fMhjXdUMVMnz3Nj5I3wRCkb
-         1AOu7cIUsFXGASb/39Lt64GFqRy2Bvq6NAMvKMVQ1xkk9ZATuaOn3F5Mw+C47oOFNL2p
-         Kz8Tim7Qa8jdyaoGzpIRfi+90KyNSnYlfrIL/mCvFr26h98VVZJ11J/1mRJPTVO/Dppi
-         Js1vU8ftqutU21kuBq9g0qo/PEz1BsNUYYWCzSv8taHe2AG3BxFxIibOr/SrQv9ay0ib
-         w4+Q==
-X-Gm-Message-State: AOAM533RwbI66X5CPA0jyKYdFDm6i+rbADkFjYgvZiVPRDbXhRW+mWVV
-        g4qn/0u4iUPdzkZK2zYk5e0=
-X-Google-Smtp-Source: ABdhPJyHCwsNWdRgZpvcDy0fPKsf67vLTbTAct19ftyLGc35aYQ6sQPPO+zjMgWhkz68y0jUdjFFtg==
-X-Received: by 2002:a05:6830:1485:b0:60b:51d:436e with SMTP id s5-20020a056830148500b0060b051d436emr11852383otq.59.1653679910580;
-        Fri, 27 May 2022 12:31:50 -0700 (PDT)
-Received: from localhost ([2605:a601:ac0f:820:c968:d547:ede0:d371])
-        by smtp.gmail.com with ESMTPSA id t15-20020a9d590f000000b0060603221280sm2089462oth.80.2022.05.27.12.31.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 May 2022 12:31:50 -0700 (PDT)
-Sender: Seth Forshee <seth.forshee@gmail.com>
-From:   Seth Forshee <seth@forshee.me>
-X-Google-Original-From: Seth Forshee <sforshee@kernel.org>
-To:     wireless-regdb@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Dennis Bland <dennis@dbperformance.com>
-Subject: [PATCH] wireless-regdb: Remove AUTO-BW from 6 GHz rules
-Date:   Fri, 27 May 2022 14:31:49 -0500
-Message-Id: <20220527193149.127735-1-sforshee@kernel.org>
-X-Mailer: git-send-email 2.34.1
+        Fri, 27 May 2022 15:36:16 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70FB32BC0
+        for <linux-wireless@vger.kernel.org>; Fri, 27 May 2022 12:36:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1653680175; x=1685216175;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RRbCU7XlDIvNKXn8paf7kG2lWS5BkpaZJQWQejDT9OY=;
+  b=Eq9IX9lau9awSr48enYr9zhqzKhXhCf9WGnyr2AU/89tjL/O5+sv5Vuc
+   oETqiXjXqOQ/ehsj40Syk1oIb6K6oMINm8JjtJQTJiDmDppxIYsP1CWcn
+   cD+bnWuvpdwvPcKZ0W8TVCbgPZEfClf1h7zOCFXcUkWAx1bcfZClt6rQ5
+   XyFTUNSPWPF/XJfgr43g+0jQ2SkFOtiEvmJ51caPrcBhJyt0lzxUWrkM6
+   gBhG2qJ4rHgEh1t2ai6D2t9iAv3wRNnFi53WCMnv5zPPVdyiXs4h1XCbZ
+   M6yrBjR21Zq5OTanNx6INFRdztfoHVo6kE4eAiK098UKBHcVdE6eHK5g3
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10360"; a="274662276"
+X-IronPort-AV: E=Sophos;i="5.91,256,1647327600"; 
+   d="scan'208";a="274662276"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2022 12:36:15 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,256,1647327600"; 
+   d="scan'208";a="705268071"
+Received: from lkp-server01.sh.intel.com (HELO db63a1be7222) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 27 May 2022 12:36:12 -0700
+Received: from kbuild by db63a1be7222 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nufkq-00054d-7d;
+        Fri, 27 May 2022 19:36:12 +0000
+Date:   Sat, 28 May 2022 03:35:57 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless:for-next] BUILD SUCCESS
+ a54ce3703613e41fe1d98060b62ec09a3984dc28
+Message-ID: <6291281d.CdpF+7gDPxB8H8Fd%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-No other bands are directly adjacent to this one, so AUTO-BW doesn't
-make sense. Remove it, and also fix a nearby whitespace mistake found
-while doing this update.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: a54ce3703613e41fe1d98060b62ec09a3984dc28  net: sched: fixed barrier to prevent skbuff sticking in qdisc backlog
 
-Cc: Dennis Bland <dennis@dbperformance.com>
-Signed-off-by: Seth Forshee <sforshee@kernel.org>
----
- db.txt | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+elapsed time: 908m
 
-diff --git a/db.txt b/db.txt
-index cf35883d1867..47850c051c9a 100644
---- a/db.txt
-+++ b/db.txt
-@@ -470,7 +470,7 @@ country DE: DFS-ETSI
- 	# short range devices (ETSI EN 300 440-1)
- 	(5725 - 5875 @ 80), (25 mW)
- 	# WiFi 6E
--	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
-+	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, wmmrule=ETSI
- 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
- 	(57000 - 66000 @ 2160), (40)
- 
-@@ -558,7 +558,7 @@ country ES: DFS-ETSI
- 	# short range devices (ETSI EN 300 440-1)
- 	(5725 - 5875 @ 80), (25 mW)
- 	# WiFi 6E
--	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
-+	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, wmmrule=ETSI
- 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
- 	(57000 - 66000 @ 2160), (40)
- 
-@@ -582,8 +582,8 @@ country FI: DFS-ETSI
- 	# short range devices (ETSI EN 300 440-1)
- 	(5725 - 5875 @ 80), (25 mW)
- 	# 6 GHz band
--	(5945 - 6425 @ 160), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
--        # 60 GHz band channels 1-4 (ETSI EN 302 567)
-+	(5945 - 6425 @ 160), (23), NO-OUTDOOR, wmmrule=ETSI
-+	# 60 GHz band channels 1-4 (ETSI EN 302 567)
- 	(57000 - 66000 @ 2160), (40)
- 
- country FM: DFS-FCC
-@@ -607,7 +607,7 @@ country FR: DFS-ETSI
- 	# short range devices (ETSI EN 300 440-1)
- 	(5725 - 5875 @ 80), (25 mW)
- 	# WiFi 6E low power indoor
--	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
-+	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, wmmrule=ETSI
- 	# 60 GHz band channels 1-6 (ETSI EN 302 567 v2.2.1)
- 	(57000 - 71000 @ 2160), (40)
- 
-@@ -732,7 +732,7 @@ country HR: DFS-ETSI
- 	# short range devices (ETSI EN 300 440-1)
- 	(5725 - 5875 @ 80), (25 mW)
- 	# WiFi 6E
--	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
-+	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, wmmrule=ETSI
- 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
- 	(57000 - 66000 @ 2160), (40)
- 
-@@ -1222,7 +1222,7 @@ country NL: DFS-ETSI
- 	# short range devices (ETSI EN 300 440-1)
- 	(5725 - 5875 @ 80), (25 mW)
- 	# WiFi 6E
--	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
-+	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, wmmrule=ETSI
- 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
- 	(57000 - 66000 @ 2160), (40)
- 
-@@ -1242,7 +1242,7 @@ country NO: DFS-ETSI
- 	# short range devices (ETSI EN 300 440-1)
- 	(5725 - 5875 @ 80), (25 mW)
- 	# WiFi 6E
--	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
-+	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, wmmrule=ETSI
- 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
- 	(57000 - 71000 @ 2160), (40)
- 
+configs tested: 184
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm64                               defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                          randconfig-c001
+powerpc                      pcm030_defconfig
+mips                         db1xxx_defconfig
+sh                          polaris_defconfig
+arm                         assabet_defconfig
+arm                            mps2_defconfig
+m68k                          sun3x_defconfig
+powerpc                      ppc6xx_defconfig
+arm                       multi_v4t_defconfig
+sparc64                             defconfig
+arc                         haps_hs_defconfig
+openrisc                         alldefconfig
+powerpc64                           defconfig
+um                                  defconfig
+sh                               alldefconfig
+arm                           sama5_defconfig
+arm                           imxrt_defconfig
+parisc                           alldefconfig
+parisc64                            defconfig
+arm                         vf610m4_defconfig
+sh                             sh03_defconfig
+xtensa                           alldefconfig
+arc                     haps_hs_smp_defconfig
+powerpc                 mpc8540_ads_defconfig
+sh                            hp6xx_defconfig
+mips                 decstation_r4k_defconfig
+sh                            titan_defconfig
+sh                           sh2007_defconfig
+sh                           se7712_defconfig
+arm                          pxa3xx_defconfig
+sh                ecovec24-romimage_defconfig
+mips                         bigsur_defconfig
+xtensa                    xip_kc705_defconfig
+powerpc                     tqm8555_defconfig
+microblaze                      mmu_defconfig
+arc                        nsimosci_defconfig
+sh                             espt_defconfig
+sh                            shmin_defconfig
+arm                           u8500_defconfig
+um                               alldefconfig
+sh                           se7619_defconfig
+powerpc                     ep8248e_defconfig
+sh                          sdk7786_defconfig
+xtensa                  cadence_csp_defconfig
+sh                          kfr2r09_defconfig
+sparc                       sparc32_defconfig
+arm                            pleb_defconfig
+powerpc                     asp8347_defconfig
+arm                     eseries_pxa_defconfig
+sparc                       sparc64_defconfig
+sh                        apsh4ad0a_defconfig
+sh                           se7343_defconfig
+microblaze                          defconfig
+m68k                          multi_defconfig
+arm                          pxa910_defconfig
+arc                      axs103_smp_defconfig
+sh                           se7780_defconfig
+sh                   sh7724_generic_defconfig
+arm                      footbridge_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                         microdev_defconfig
+s390                       zfcpdump_defconfig
+arm                        trizeps4_defconfig
+riscv                    nommu_k210_defconfig
+m68k                        m5407c3_defconfig
+arc                            hsdk_defconfig
+arm                        shmobile_defconfig
+nios2                         10m50_defconfig
+arm                          lpd270_defconfig
+arm                  randconfig-c002-20220526
+arm                  randconfig-c002-20220524
+x86_64                        randconfig-c001
+ia64                                defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+riscv                             allnoconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+csky                                defconfig
+nios2                            allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+s390                                defconfig
+s390                             allmodconfig
+parisc                              defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+sparc                               defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+arc                  randconfig-r043-20220526
+arc                  randconfig-r043-20220524
+s390                 randconfig-r044-20220526
+s390                 randconfig-r044-20220524
+riscv                randconfig-r042-20220526
+riscv                randconfig-r042-20220524
+arc                  randconfig-r043-20220527
+arc                  randconfig-r043-20220525
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                                  kexec
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+
+clang tested configs:
+arm                  randconfig-c002-20220524
+x86_64                        randconfig-c007
+s390                 randconfig-c005-20220524
+i386                          randconfig-c001
+powerpc              randconfig-c003-20220524
+riscv                randconfig-c006-20220524
+mips                 randconfig-c004-20220524
+powerpc                  mpc885_ads_defconfig
+mips                      pic32mzda_defconfig
+powerpc                       ebony_defconfig
+mips                           ip28_defconfig
+mips                         tb0287_defconfig
+powerpc                      obs600_defconfig
+arm                        mvebu_v5_defconfig
+mips                  cavium_octeon_defconfig
+mips                           ip22_defconfig
+arm                     am200epdkit_defconfig
+powerpc                          allyesconfig
+powerpc                    mvme5100_defconfig
+arm                      pxa255-idp_defconfig
+arm                       aspeed_g4_defconfig
+mips                     cu1830-neo_defconfig
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+hexagon              randconfig-r045-20220527
+hexagon              randconfig-r041-20220527
+s390                 randconfig-r044-20220527
+riscv                randconfig-r042-20220527
+hexagon              randconfig-r045-20220524
+hexagon              randconfig-r045-20220526
+hexagon              randconfig-r041-20220526
+hexagon              randconfig-r041-20220524
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
