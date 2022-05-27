@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D50A8535D9B
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 May 2022 11:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B196535E11
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 May 2022 12:21:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350677AbiE0Jtr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 May 2022 05:49:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40260 "EHLO
+        id S1350892AbiE0KVB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 May 2022 06:21:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233600AbiE0Jtp (ORCPT
+        with ESMTP id S241726AbiE0KU7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 May 2022 05:49:45 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9427B106364;
-        Fri, 27 May 2022 02:49:44 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id z15so5159829wrg.11;
-        Fri, 27 May 2022 02:49:44 -0700 (PDT)
+        Fri, 27 May 2022 06:20:59 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6BC9128146;
+        Fri, 27 May 2022 03:20:58 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id p10so5260759wrg.12;
+        Fri, 27 May 2022 03:20:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=m5bhK0uuFpLsSa23o9aOkF1WGUPThssNTQf5QyxyuwE=;
-        b=gzubcYVM/O9mZoQOrIoCLFARZILBxl76EnsbMDjmDLTR1xdGgM3OG3wU9FQACapiSL
-         eL2LQzmlh4IdYNGcbQMcOxalzdMOuqTc3zpFIlOZqXkTcmpDp1k27p6YuXR2ShuRpeqc
-         RSLyZu2yLTX/jFHhFJjFGzsoiOVEnV5nzqJM7ieRQ9rZp3sVPZ3FouRFXMVX+N/jbKdJ
-         N9By0IHK+dr/SciAK+LQVs1q/vaJNg5QtBPKurLokkGCf99jLaSpkSVGGXuSlQ3Egmr7
-         Cs0nRTnRdZxiAzT9f06hM9Rti9btnT7RhBjyE5n5dtQ+RjH13xo3NIt8ntEHavYnWqe0
-         2hcA==
+        bh=5gwPr7LjNcXQJ+T49cK0g1nGx/GxeM1oD069psfY/W4=;
+        b=Vrf44SpKpcAri+VmyqXuuRxeQ21nMXLuq6gDJPJ8OxKdtI/HTOgMm0T7HtsySlMaPV
+         oRnyXucrBmme2bEifUipgV89mevObJVnCH2in3AXg00q5W00oSROiPO/zqdbOtqAMydJ
+         huwz9ID6iYAyhiq3jhvSNGBBGYTqQJYKoWlfAdtJEY3JMNT/tSBEdoGuv8vp7xbigrWY
+         cGitCIOZsD4JdA5EGAKd8QGqCI+A8Z1JAc0mcpa3kKif85AVWm6zBbsWNz9aBAW6vnSy
+         O83ZNvDpkilhNuXMYnnkjyvD5QVeMg+CqWRr0wVIkv4xPhmQ3UbZH4ggxMQto0p7e/Y0
+         5ylw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=m5bhK0uuFpLsSa23o9aOkF1WGUPThssNTQf5QyxyuwE=;
-        b=g9zxJvrX3FH6QcKL4CyNwSaxKlucV0qCdHBphjDww+C5FTqL3do8ey+ZtlNUZY1l1Z
-         qzzw/CeAVbOH6b/qb2Ge97N+MzWrGbOIIqlHWt0UjkT6ylDbNNd9mlG9OaL6hUGms/wT
-         F8ms/qPvYbYJ/+ZWY/x/5or5V4chSahEFsZmYVGto32Nt5zl0rVhcmfxJ8wzj0NhLSVQ
-         Xitnc6PeQqQPfvjazaASI124ij3nkoV0HecWek5DhQsf622kKdpf4DpeiP0Qb5B5k5+c
-         hPNaxcD6em12eBkz6l0v+PPwJRM9nz00w6y51bi05oRvGdwGeugSPaCzni8z+3QhVYqQ
-         sI8w==
-X-Gm-Message-State: AOAM5313RXNHWxpsxtXVRgQW1LCiXPvVkM4YiJrkf3J+ft+samLEfkCC
-        ZdBUUJwUE1lzcxpuUxUWvWQ=
-X-Google-Smtp-Source: ABdhPJzRcMe77jX+bSVANL7BNzVOXlNv/j6Idml3JlAMJdczhtyBa2UE66MOq9xxg++HaI7eeruEEQ==
-X-Received: by 2002:a05:6000:1acc:b0:20f:e35e:450 with SMTP id i12-20020a0560001acc00b0020fe35e0450mr17993001wry.531.1653644982985;
-        Fri, 27 May 2022 02:49:42 -0700 (PDT)
+        bh=5gwPr7LjNcXQJ+T49cK0g1nGx/GxeM1oD069psfY/W4=;
+        b=bruWTf9rqbIoLuvZGplnR7r6NFqgQ/DNqshoJRgT5eA0XjjZPiidDqYgdzXGLb2LVL
+         DmhHuyEgSIxUFQYjT8t91Yh9q6UMP103ly6p/4fZrZuXit8CbICaahnwJTagzuFMSuiW
+         4bCYPIEwxBfbCj7EpNJl2q0MWZANUdywLIMmqhGnUXFhzw0MYJuctzcVgClEoOyZYiON
+         1Io/pK3T0QWHNs/eGNu7Y/0LZcNh/n2PwtvUEb5Vhs/INTGihInEPjIE0/Gx2qPM4ONJ
+         Ym4QobHeI3gE0dQCXmZVA6eZYn9yp3BWnMRkPH0y0KbTp1x10vBcfE+NOdqOLXmzh2r9
+         6vcg==
+X-Gm-Message-State: AOAM532P5IkZQKj5/u6LDH9jufs+oy9OPJpn6T/Z7cJGuwhVXv6WsNgG
+        zYTNOvXjd3393mwwo3y4T+g=
+X-Google-Smtp-Source: ABdhPJzvaWZL4k4MQJAF4sP2ZGQW2JCcu0mAYETMK+qMfZtv80OQf+p+NJlvkuYQ4JUpP2As5pNrkg==
+X-Received: by 2002:a5d:4572:0:b0:20f:ca8a:bc5a with SMTP id a18-20020a5d4572000000b0020fca8abc5amr24048553wrc.514.1653646857302;
+        Fri, 27 May 2022 03:20:57 -0700 (PDT)
 Received: from baligh-ThinkCentre-M720q.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.googlemail.com with ESMTPSA id o15-20020a5d58cf000000b0020d02ddf4d0sm1257376wrf.69.2022.05.27.02.49.42
+        by smtp.googlemail.com with ESMTPSA id k7-20020a1ca107000000b00394708a3d7dsm1739192wme.15.2022.05.27.03.20.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 May 2022 02:49:42 -0700 (PDT)
+        Fri, 27 May 2022 03:20:56 -0700 (PDT)
 From:   Baligh Gasmi <gasmibal@gmail.com>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     Baligh Gasmi <gasmibal@gmail.com>,
@@ -57,9 +57,9 @@ Cc:     Baligh Gasmi <gasmibal@gmail.com>,
         linux-wireless@vger.kernel.org (open list:MAC80211),
         netdev@vger.kernel.org (open list:NETWORKING [GENERAL]),
         linux-kernel@vger.kernel.org (open list)
-Subject: [RFC PATCH v1 1/1] mac80211: use AQL airtime for expected throughput.
-Date:   Fri, 27 May 2022 11:49:28 +0200
-Message-Id: <20220527094928.3153984-1-gasmibal@gmail.com>
+Subject: [RFC PATCH v2 1/1] mac80211: use AQL airtime for expected throughput.
+Date:   Fri, 27 May 2022 12:20:54 +0200
+Message-Id: <20220527102054.3194209-1-gasmibal@gmail.com>
 X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -157,7 +157,7 @@ index 91fbb1ee5c38..f39d7ec2238d 100644
  			enum ieee80211_sta_state new_state)
  {
 diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index 379fd367197f..0c1ebf8d87ef 100644
+index 379fd367197f..b285e62ba210 100644
 --- a/net/mac80211/sta_info.h
 +++ b/net/mac80211/sta_info.h
 @@ -123,6 +123,7 @@ enum ieee80211_sta_info_flags {
@@ -202,8 +202,8 @@ index 379fd367197f..0c1ebf8d87ef 100644
  		struct ieee80211_tx_rate last_rate;
  		struct rate_info last_rate_info;
  		u64 msdu[IEEE80211_NUM_TIDS + 1];
-+		u32 tp_tx_size;
-+		u32 tp_tx_time_est;
++		u64 tp_tx_size;
++		u64 tp_tx_time_est;
  	} tx_stats;
  	u16 tid_seq[IEEE80211_QOS_CTL_TID_MASK + 1];
  
