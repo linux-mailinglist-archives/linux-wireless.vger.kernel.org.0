@@ -2,105 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F31D535D47
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 May 2022 11:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65096535D38
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 May 2022 11:22:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350004AbiE0JNu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 May 2022 05:13:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35714 "EHLO
+        id S1344232AbiE0JVK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 May 2022 05:21:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350268AbiE0JNL (ORCPT
+        with ESMTP id S231964AbiE0JVH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 May 2022 05:13:11 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F382A5E16D;
-        Fri, 27 May 2022 02:13:09 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id j25so5055810wrb.6;
-        Fri, 27 May 2022 02:13:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
-        bh=RetBFMCG9lpCLQ9GX70HNv/afENGPmJuOklOwoJiSPQ=;
-        b=ZQzyFVLp2dzDfjoAsp+7ZPY0X7JBg5tzdnvBkc7uQnGV83c10Sr1XPTlos1jrEsUT1
-         C3OazIfS1PM+ifZ4BvTZHzp6L80SBBywV4vDDNzIE+6bcVIKccnpdiLbS0RfO41NiAhT
-         m3i95T6UBdPqQOmakprbQwctYjhsBtCw8f88ecv53H9W/LKylsWYPG5Y9wPm1TGVA0Nj
-         aXGZONEFX7snSTyARs8L3uT4z23vge+hYk6gfdLfa5fRI7ysCXcprdoQFfhVAW+bou33
-         6bgZ9JOLjHUNM/ikf7kRfrfvLiaeKQcJW/4VxHAmraVEjdcqex0Mm1AXAjQaoC7qhlGY
-         KtwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition;
-        bh=RetBFMCG9lpCLQ9GX70HNv/afENGPmJuOklOwoJiSPQ=;
-        b=MZolrHWbgxwQWhyTPCnBlaW6H+zz506kuZWu+CmWWHkairALTdBr3BDxQGz9o0PMQ1
-         lUgl4xLaZbb1vBikVGei1qhS+JcKueFBp6sOtOtfOBlY6ayYbuVQpVFekk4X/sITQ+qs
-         VcF1ZTJzfncz7dZaMyz7W/xxZ8n8Sd6BM/SVAYMSkSXE58rbbXYQNguxBBPeTgvf5/Aa
-         Y5LddAB6AXGJ3yFkk0fud/CQ6nYnGzFbNxRpGnOTb/fcej/RiuclcInJu1suzmpWWWJ0
-         2pJGKxCntHaca5t7+UXdMI4sV6Id9HtBs5/CRlr8ixVx2pUvwYiwoGi8qjO2EMsZgZnX
-         d4/A==
-X-Gm-Message-State: AOAM533PQjSYv2d9fnDfQZOIkmyjJ5dxTBwI6fNbGLEGNIupveZXxwcA
-        1s1J1G8YLWSEIvKg4+1e2/k+f8zNpW4=
-X-Google-Smtp-Source: ABdhPJwtWKYLZA55ZTOzSRd4thmuCkh/99+ZZ5lCisRvMKaSENv9Y2FPT/alaE3MhJ+wR45C+2Pxkw==
-X-Received: by 2002:a5d:64e4:0:b0:20f:eb22:1af1 with SMTP id g4-20020a5d64e4000000b0020feb221af1mr16226781wri.437.1653642788602;
-        Fri, 27 May 2022 02:13:08 -0700 (PDT)
-Received: from debian (host-2-98-37-191.as13285.net. [2.98.37.191])
-        by smtp.gmail.com with ESMTPSA id 8-20020a1c0208000000b003942a244ed1sm1615289wmc.22.2022.05.27.02.13.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 May 2022 02:13:08 -0700 (PDT)
-Date:   Fri, 27 May 2022 10:13:06 +0100
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-To:     Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Cc:     Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
+        Fri, 27 May 2022 05:21:07 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECF236AA6B;
+        Fri, 27 May 2022 02:21:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A8F55B823D0;
+        Fri, 27 May 2022 09:21:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4F2C385A9;
+        Fri, 27 May 2022 09:20:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653643262;
+        bh=ez+vHDC1JZcB/q4Ew/Nyp1xMVHDbgDrO5Einjt3rI1Y=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Fp0qRcCM5reRtgw54xqvPVkW6BPvu4O4gz4OU03NnufzAV4is8i2DjZoOq1zQb8c2
+         UjvtzMWfTZC8s2apsETWVIzqv60bTNo3unCIl+va6LKfel6wdoK0jx2cNL6O3iwWJv
+         n3pwSTz7j5c40e52EJizBgJoxqwF//PPnf4CsBYbn00yREr6BRobJQZAMAsFI808RS
+         Mp42fs4uyS5Zp3R4sXMzZFgXAxpWSam3vEuKwagyq2yYpzF7MhZLOZjIELWLiVEuHj
+         gnt5g/ARK2DT3sp/hzSbxY/I/BOOZ2rfhGVrITvAdA0VoQ3aFzNMsstZOqvkjLOCcf
+         PoCZ35692YRRA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, torvalds@linux-foundation.org
-Subject: mainline build failure due to c1918196427b ("iwlwifi: pcie: simplify
- MSI-X cause mapping")
-Message-ID: <YpCWIlVFd7JDPfT+@debian>
+Subject: Re: mainline build failure due to c1918196427b ("iwlwifi: pcie: simplify MSI-X cause mapping")
+References: <YpCWIlVFd7JDPfT+@debian>
+Date:   Fri, 27 May 2022 12:20:55 +0300
+In-Reply-To: <YpCWIlVFd7JDPfT+@debian> (Sudip Mukherjee's message of "Fri, 27
+        May 2022 10:13:06 +0100")
+Message-ID: <875ylrqqko.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi All,
+Sudip Mukherjee <sudipm.mukherjee@gmail.com> writes:
 
-The latest mainline kernel branch fails to build for mips allmodconfig
-with the error:
+> The latest mainline kernel branch fails to build for mips allmodconfig
+> with the error:
+>
+> drivers/net/wireless/intel/iwlwifi/pcie/trans.c:1093: error: "CAUSE" redefined [-Werror]
+>  1093 | #define CAUSE(reg, mask)                                                \
+>       | 
+> In file included from ./arch/mips/include/asm/ptrace.h:19,
+>                  from ./include/linux/sched/signal.h:14,
+>                  from ./include/linux/rcuwait.h:6,
+>                  from ./include/linux/percpu-rwsem.h:7,
+>                  from ./include/linux/fs.h:33,
+>                  from ./arch/mips/include/asm/elf.h:12,
+>                  from ./include/linux/elf.h:6,
+>                  from ./include/linux/module.h:19,
+>                  from ./include/linux/device/driver.h:21,
+>                  from ./include/linux/device.h:32,
+>                  from ./include/linux/pci.h:37,
+>                  from drivers/net/wireless/intel/iwlwifi/pcie/trans.c:7:
+> ./arch/mips/include/uapi/asm/ptrace.h:18: note: this is the location of the previous definition
+>    18 | #define CAUSE           65
+>
+> git bisect pointed to c1918196427b ("iwlwifi: pcie: simplify MSI-X cause mapping")
+>
+> And, reverting it on top of mainline branch has fixed the build failure.
 
-drivers/net/wireless/intel/iwlwifi/pcie/trans.c:1093: error: "CAUSE" redefined [-Werror]
- 1093 | #define CAUSE(reg, mask)                                                \
-      | 
-In file included from ./arch/mips/include/asm/ptrace.h:19,
-                 from ./include/linux/sched/signal.h:14,
-                 from ./include/linux/rcuwait.h:6,
-                 from ./include/linux/percpu-rwsem.h:7,
-                 from ./include/linux/fs.h:33,
-                 from ./arch/mips/include/asm/elf.h:12,
-                 from ./include/linux/elf.h:6,
-                 from ./include/linux/module.h:19,
-                 from ./include/linux/device/driver.h:21,
-                 from ./include/linux/device.h:32,
-                 from ./include/linux/pci.h:37,
-                 from drivers/net/wireless/intel/iwlwifi/pcie/trans.c:7:
-./arch/mips/include/uapi/asm/ptrace.h:18: note: this is the location of the previous definition
-   18 | #define CAUSE           65
+We have a fix:
 
-git bisect pointed to c1918196427b ("iwlwifi: pcie: simplify MSI-X cause mapping")
+iwlwifi: pcie: rename CAUSE macro
 
-And, reverting it on top of mainline branch has fixed the build failure.
+https://patchwork.kernel.org/project/linux-wireless/patch/20220523220300.682be2029361.I283200b18da589a975a284073dca8ed001ee107a@changeid/
 
---
-Regards
-Sudip
+It's marked as accepted but I don't know where it's applied to, Gregory?
+This is failing the build, should Linus apply the fix directly to his
+tree?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
