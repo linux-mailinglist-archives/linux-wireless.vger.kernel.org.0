@@ -2,138 +2,154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C9E7536292
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 May 2022 14:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EEEB53677F
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 May 2022 21:31:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343808AbiE0M2R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 May 2022 08:28:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46948 "EHLO
+        id S243270AbiE0Tby (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 May 2022 15:31:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355284AbiE0M1f (ORCPT
+        with ESMTP id S238483AbiE0Tbx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 May 2022 08:27:35 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5398DA5;
-        Fri, 27 May 2022 05:06:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 06BDCB824D8;
-        Fri, 27 May 2022 12:06:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8554BC385A9;
-        Fri, 27 May 2022 12:06:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653653199;
-        bh=fPR03DvN6aZCOlnsEZXaYA7hSzVMz0SsOW9oln+FOMg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=F5r1R/3pIR8wIVp5nBZnJpKz9BS0ECMiDAdNrh5eEazvJH/fZeVNJu6UQ6933OaW3
-         803TrXtUatxRXokzpOrYNZMqxmyKEL22HN2Shvjff8FXu7H1Vr0F/Q51ZJyb4qbcYd
-         aC4yuQdR5gxOb9PxCEaCuwI4Egq6/fAj1D87GVEpLxdO+oqBHWPBaE+t/rmfszV+eB
-         jjmCkfN3EGo+uUExNnDFrLGbLYQn/I2fbrB9GugdN5G3cMTFkNrbm9AddEikKfbGav
-         4ByKTY6pRvYtNwj1yC1M/Mux+wQOBCWNAZ65n9YagKD/sNf29uWtbHwaIcM6bCBeIA
-         i8y2lXJ9XnMGQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC] ath11k: fix netdev open race
-References: <20220517103436.15867-1-johan+linaro@kernel.org>
-        <YouezMIwm3PYxOKY@hovoldconsulting.com> <875ylwysoy.fsf@kernel.org>
-        <YoyIn5L8cIwxHxR0@hovoldconsulting.com>
-Date:   Fri, 27 May 2022 15:06:35 +0300
-In-Reply-To: <YoyIn5L8cIwxHxR0@hovoldconsulting.com> (Johan Hovold's message
-        of "Tue, 24 May 2022 09:26:23 +0200")
-Message-ID: <87mtf3p4c4.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 27 May 2022 15:31:53 -0400
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EA2013C094
+        for <linux-wireless@vger.kernel.org>; Fri, 27 May 2022 12:31:51 -0700 (PDT)
+Received: by mail-ot1-x330.google.com with SMTP id e11-20020a9d6e0b000000b0060afcbafa80so3593071otr.3
+        for <linux-wireless@vger.kernel.org>; Fri, 27 May 2022 12:31:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=taIZOP88c/8jIq0PRDOgEnC3ZWTsJa0UDOqT7eeY5Yg=;
+        b=YRFCXRG49jC29R03e9OBlcn6gW/4DEM7tk/1almo1rWuH60lgOOPuKoiLSEU9qRVFS
+         bAlfeT8KUkJ35UdpSzOZFqKkH+xFsGa5y6ww5Ag7gOibl8Q2wSPerwAhTJuUe7H1Xf64
+         QYow/d+oLQpMjZB2cSsDI0kkEjPJrFe5q80tfiMNq+C4+eMpPCKD901mpxCgj6o77oES
+         hHieDhiRZXL1lma7NETiygbwyz89TtJozS7p3pMOeu0CQLNy0WBZ8By3kLrW91wqy+re
+         GeyUcSfQugPavwWd1z3jwTWYICxI5kZvjngookkRjpB7R1CYTQP71FzXk6lRFjnSxsk4
+         lvHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=taIZOP88c/8jIq0PRDOgEnC3ZWTsJa0UDOqT7eeY5Yg=;
+        b=QmjPGCvvNMq8LG2g0/B2X+0HQFJDDy8kgHAWvYkJqptNfMEJOB4T+/8IYr08xBSQMG
+         dKtp+WkNTqmoW9RjOtV2DPZh3cqPyoL86sqtxlcEjWKf8fMhjXdUMVMnz3Nj5I3wRCkb
+         1AOu7cIUsFXGASb/39Lt64GFqRy2Bvq6NAMvKMVQ1xkk9ZATuaOn3F5Mw+C47oOFNL2p
+         Kz8Tim7Qa8jdyaoGzpIRfi+90KyNSnYlfrIL/mCvFr26h98VVZJ11J/1mRJPTVO/Dppi
+         Js1vU8ftqutU21kuBq9g0qo/PEz1BsNUYYWCzSv8taHe2AG3BxFxIibOr/SrQv9ay0ib
+         w4+Q==
+X-Gm-Message-State: AOAM533RwbI66X5CPA0jyKYdFDm6i+rbADkFjYgvZiVPRDbXhRW+mWVV
+        g4qn/0u4iUPdzkZK2zYk5e0=
+X-Google-Smtp-Source: ABdhPJyHCwsNWdRgZpvcDy0fPKsf67vLTbTAct19ftyLGc35aYQ6sQPPO+zjMgWhkz68y0jUdjFFtg==
+X-Received: by 2002:a05:6830:1485:b0:60b:51d:436e with SMTP id s5-20020a056830148500b0060b051d436emr11852383otq.59.1653679910580;
+        Fri, 27 May 2022 12:31:50 -0700 (PDT)
+Received: from localhost ([2605:a601:ac0f:820:c968:d547:ede0:d371])
+        by smtp.gmail.com with ESMTPSA id t15-20020a9d590f000000b0060603221280sm2089462oth.80.2022.05.27.12.31.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 May 2022 12:31:50 -0700 (PDT)
+Sender: Seth Forshee <seth.forshee@gmail.com>
+From:   Seth Forshee <seth@forshee.me>
+X-Google-Original-From: Seth Forshee <sforshee@kernel.org>
+To:     wireless-regdb@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Dennis Bland <dennis@dbperformance.com>
+Subject: [PATCH] wireless-regdb: Remove AUTO-BW from 6 GHz rules
+Date:   Fri, 27 May 2022 14:31:49 -0500
+Message-Id: <20220527193149.127735-1-sforshee@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johan Hovold <johan@kernel.org> writes:
+No other bands are directly adjacent to this one, so AUTO-BW doesn't
+make sense. Remove it, and also fix a nearby whitespace mistake found
+while doing this update.
 
-> On Mon, May 23, 2022 at 10:06:37PM +0300, Kalle Valo wrote:
->> Johan Hovold <johan@kernel.org> writes:
->> 
->> > On Tue, May 17, 2022 at 12:34:36PM +0200, Johan Hovold wrote:
->> >> Make sure to allocate resources needed before registering the device.
->> >> 
->> >> This specifically avoids having a racing open() trigger a BUG_ON() in
->> >> mod_timer() when ath11k_mac_op_start() is called before the
->> >> mon_reap_timer as been set up.
->> >> 
->> >> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
->> >> Fixes: 840c36fa727a ("ath11k: dp: stop rx pktlog before suspend")
->> >> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
->> >> ---
->> >
->> > For completeness:
->> >
->> > Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
->> 
->> Thanks, added in the pending branch.
->> 
->> You submitted this as RFC but do you mind if I apply this anyway? The
->> patch looks good and passes my tests. But I do wonder why I haven't seen
->> the crash...
->
-> If it looks good to you then please do apply it.
->
-> I was just worried that there may be some subtle reason for why
-> ath11k_dp_pdev_alloc() was called after netdev registration in the first
-> place and that it might need to be split up so that for example
-> ath11k_dp_rx_pdev_mon_attach() isn't called until after registration.
+Cc: Dennis Bland <dennis@dbperformance.com>
+Signed-off-by: Seth Forshee <sforshee@kernel.org>
+---
+ db.txt | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-At least I'm not aware of anything like that? Any comments from others?
-
-> I did not see this issue with next-20220310, but I hit it on every probe
-> with next-20220511. Perhaps some timing changed in between.
->
-> Here's the backtrace for completeness in case someone else starts hitting
-> this and searches the archives:
->
-> [   51.346947] kernel BUG at kernel/time/timer.c:990!
-> [   51.346958] Internal error: Oops - BUG: 0 [#1] PREEMPT SMP
-> ...
-> [   51.578225] Call trace:
-> [   51.583293]  __mod_timer+0x298/0x390
-> [   51.589518]  mod_timer+0x14/0x20
-> [   51.595368]  ath11k_mac_op_start+0x41c/0x4a0 [ath11k]
-> [   51.603165]  drv_start+0x38/0x60 [mac80211]
-> [   51.610110]  ieee80211_do_open+0x29c/0x7d0 [mac80211]
-> [   51.617945]  ieee80211_open+0x60/0xb0 [mac80211]
-> [   51.625311]  __dev_open+0x100/0x1c0
-> [   51.631420]  __dev_change_flags+0x194/0x210
-> [   51.638214]  dev_change_flags+0x24/0x70
-> [   51.644646]  do_setlink+0x228/0xdb0
-> [   51.650723]  __rtnl_newlink+0x460/0x830
-> [   51.657162]  rtnl_newlink+0x4c/0x80
-> [   51.663229]  rtnetlink_rcv_msg+0x124/0x390
-> [   51.669917]  netlink_rcv_skb+0x58/0x130
-> [   51.676314]  rtnetlink_rcv+0x18/0x30
-> [   51.682460]  netlink_unicast+0x250/0x310
-> [   51.688960]  netlink_sendmsg+0x19c/0x3e0
-> [   51.695458]  ____sys_sendmsg+0x220/0x290
-> [   51.701938]  ___sys_sendmsg+0x7c/0xc0
-> [   51.708148]  __sys_sendmsg+0x68/0xd0
-> [   51.714254]  __arm64_sys_sendmsg+0x28/0x40
-> [   51.720900]  invoke_syscall+0x48/0x120
-
-Thanks, this is good info and I added this to the commit log.
-
+diff --git a/db.txt b/db.txt
+index cf35883d1867..47850c051c9a 100644
+--- a/db.txt
++++ b/db.txt
+@@ -470,7 +470,7 @@ country DE: DFS-ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+ 	# WiFi 6E
+-	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, wmmrule=ETSI
+ 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+@@ -558,7 +558,7 @@ country ES: DFS-ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+ 	# WiFi 6E
+-	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, wmmrule=ETSI
+ 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+@@ -582,8 +582,8 @@ country FI: DFS-ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+ 	# 6 GHz band
+-	(5945 - 6425 @ 160), (23), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+-        # 60 GHz band channels 1-4 (ETSI EN 302 567)
++	(5945 - 6425 @ 160), (23), NO-OUTDOOR, wmmrule=ETSI
++	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+ country FM: DFS-FCC
+@@ -607,7 +607,7 @@ country FR: DFS-ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+ 	# WiFi 6E low power indoor
+-	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, wmmrule=ETSI
+ 	# 60 GHz band channels 1-6 (ETSI EN 302 567 v2.2.1)
+ 	(57000 - 71000 @ 2160), (40)
+ 
+@@ -732,7 +732,7 @@ country HR: DFS-ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+ 	# WiFi 6E
+-	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, wmmrule=ETSI
+ 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+@@ -1222,7 +1222,7 @@ country NL: DFS-ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+ 	# WiFi 6E
+-	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, wmmrule=ETSI
+ 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
+@@ -1242,7 +1242,7 @@ country NO: DFS-ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
+ 	# WiFi 6E
+-	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, wmmrule=ETSI
+ 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 71000 @ 2160), (40)
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
