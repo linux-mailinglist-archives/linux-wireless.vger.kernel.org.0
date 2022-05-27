@@ -2,71 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BF64535CA8
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 May 2022 11:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F31D535D47
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 May 2022 11:22:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350471AbiE0JBy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 May 2022 05:01:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52686 "EHLO
+        id S1350004AbiE0JNu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 May 2022 05:13:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351186AbiE0JBR (ORCPT
+        with ESMTP id S1350268AbiE0JNL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 May 2022 05:01:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEB15131F1D;
-        Fri, 27 May 2022 01:58:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EB9D761DAA;
-        Fri, 27 May 2022 08:58:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C52C385B8;
-        Fri, 27 May 2022 08:58:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653641887;
-        bh=vtIL1AtMpLcio7YqtKfT6YKBW9nOoxqbyZgQaIm/YHY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=InbCzu+6Zsz6QSOHa7uUWZigezehIi/o3brESO4ewqp/awp28k46VeWfVvJ8WOq0m
-         JrqnW68ZjTfcmG0bPzdlqIcmMW4VYBfI1M2/wTvKd0eHCUm2liPXMiaiFvcm4WmiHq
-         dkEVINT9+KJF7ryb2S1rzp77i0SCwJ9gL2bBjY3eHoAw5874iygJrQDXwH+2dtsqix
-         UuGMZSOII4v9ostIZdF8ZZs7fA+qyCztGAxlDxqub+Y+b1MVomr40lueTxtqaj4oTk
-         th9ed7w9abDZB/M56wM5q3v5WpV1CNHow9rxNw1Zs3aGK+cMLBDsZh21SgVIYr3miJ
-         OsrwusV6zZrKw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: linux-next: wireless for-next branches
-Date:   Fri, 27 May 2022 11:58:03 +0300
-Message-ID: <87a6b3qrms.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 27 May 2022 05:13:11 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F382A5E16D;
+        Fri, 27 May 2022 02:13:09 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id j25so5055810wrb.6;
+        Fri, 27 May 2022 02:13:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=RetBFMCG9lpCLQ9GX70HNv/afENGPmJuOklOwoJiSPQ=;
+        b=ZQzyFVLp2dzDfjoAsp+7ZPY0X7JBg5tzdnvBkc7uQnGV83c10Sr1XPTlos1jrEsUT1
+         C3OazIfS1PM+ifZ4BvTZHzp6L80SBBywV4vDDNzIE+6bcVIKccnpdiLbS0RfO41NiAhT
+         m3i95T6UBdPqQOmakprbQwctYjhsBtCw8f88ecv53H9W/LKylsWYPG5Y9wPm1TGVA0Nj
+         aXGZONEFX7snSTyARs8L3uT4z23vge+hYk6gfdLfa5fRI7ysCXcprdoQFfhVAW+bou33
+         6bgZ9JOLjHUNM/ikf7kRfrfvLiaeKQcJW/4VxHAmraVEjdcqex0Mm1AXAjQaoC7qhlGY
+         KtwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=RetBFMCG9lpCLQ9GX70HNv/afENGPmJuOklOwoJiSPQ=;
+        b=MZolrHWbgxwQWhyTPCnBlaW6H+zz506kuZWu+CmWWHkairALTdBr3BDxQGz9o0PMQ1
+         lUgl4xLaZbb1vBikVGei1qhS+JcKueFBp6sOtOtfOBlY6ayYbuVQpVFekk4X/sITQ+qs
+         VcF1ZTJzfncz7dZaMyz7W/xxZ8n8Sd6BM/SVAYMSkSXE58rbbXYQNguxBBPeTgvf5/Aa
+         Y5LddAB6AXGJ3yFkk0fud/CQ6nYnGzFbNxRpGnOTb/fcej/RiuclcInJu1suzmpWWWJ0
+         2pJGKxCntHaca5t7+UXdMI4sV6Id9HtBs5/CRlr8ixVx2pUvwYiwoGi8qjO2EMsZgZnX
+         d4/A==
+X-Gm-Message-State: AOAM533PQjSYv2d9fnDfQZOIkmyjJ5dxTBwI6fNbGLEGNIupveZXxwcA
+        1s1J1G8YLWSEIvKg4+1e2/k+f8zNpW4=
+X-Google-Smtp-Source: ABdhPJwtWKYLZA55ZTOzSRd4thmuCkh/99+ZZ5lCisRvMKaSENv9Y2FPT/alaE3MhJ+wR45C+2Pxkw==
+X-Received: by 2002:a5d:64e4:0:b0:20f:eb22:1af1 with SMTP id g4-20020a5d64e4000000b0020feb221af1mr16226781wri.437.1653642788602;
+        Fri, 27 May 2022 02:13:08 -0700 (PDT)
+Received: from debian (host-2-98-37-191.as13285.net. [2.98.37.191])
+        by smtp.gmail.com with ESMTPSA id 8-20020a1c0208000000b003942a244ed1sm1615289wmc.22.2022.05.27.02.13.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 May 2022 02:13:08 -0700 (PDT)
+Date:   Fri, 27 May 2022 10:13:06 +0100
+From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+To:     Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org
+Subject: mainline build failure due to c1918196427b ("iwlwifi: pcie: simplify
+ MSI-X cause mapping")
+Message-ID: <YpCWIlVFd7JDPfT+@debian>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Stephen,
+Hi All,
 
-We are experimenting how we could take "next-next" patches during merge
-windows and avoid accumulation of patches for the period which is in
-practice three weeks for wireless patches. To do that could you please
-change linux-next to pull from wireless trees for-next branches instead
-of main branches? So the new locations are:
+The latest mainline kernel branch fails to build for mips allmodconfig
+with the error:
 
-git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git for-next
+drivers/net/wireless/intel/iwlwifi/pcie/trans.c:1093: error: "CAUSE" redefined [-Werror]
+ 1093 | #define CAUSE(reg, mask)                                                \
+      | 
+In file included from ./arch/mips/include/asm/ptrace.h:19,
+                 from ./include/linux/sched/signal.h:14,
+                 from ./include/linux/rcuwait.h:6,
+                 from ./include/linux/percpu-rwsem.h:7,
+                 from ./include/linux/fs.h:33,
+                 from ./arch/mips/include/asm/elf.h:12,
+                 from ./include/linux/elf.h:6,
+                 from ./include/linux/module.h:19,
+                 from ./include/linux/device/driver.h:21,
+                 from ./include/linux/device.h:32,
+                 from ./include/linux/pci.h:37,
+                 from drivers/net/wireless/intel/iwlwifi/pcie/trans.c:7:
+./arch/mips/include/uapi/asm/ptrace.h:18: note: this is the location of the previous definition
+   18 | #define CAUSE           65
 
-The idea we have is that wireless-next for-next branch is not updated
-during the merge window and then the "next-next" patches will not be
-included in linux-next until the merge window has closed.
+git bisect pointed to c1918196427b ("iwlwifi: pcie: simplify MSI-X cause mapping")
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+And, reverting it on top of mainline branch has fixed the build failure.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+--
+Regards
+Sudip
