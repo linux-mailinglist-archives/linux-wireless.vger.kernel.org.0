@@ -2,104 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC3FC536D45
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 May 2022 16:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98AB9536E23
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 May 2022 21:08:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236437AbiE1OZ6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 28 May 2022 10:25:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45064 "EHLO
+        id S229752AbiE1TI0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 28 May 2022 15:08:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236354AbiE1OZz (ORCPT
+        with ESMTP id S229506AbiE1TIX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 28 May 2022 10:25:55 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5B8418365
-        for <linux-wireless@vger.kernel.org>; Sat, 28 May 2022 07:25:54 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id h11so8498187eda.8
-        for <linux-wireless@vger.kernel.org>; Sat, 28 May 2022 07:25:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=KbxWDlL+f31Iv4yXrvS4EjbF/ghfF72fs8lCTuVNEck=;
-        b=bxjjLNS6XZw7QGXX5R+4Jf0lwNKpUqVRrxJataQlYji7m3EUis/wMQhmoW9bglan4M
-         /UZSk+W3vUM/S67Fhk7RW5yi+n2BqJbUXg8teg7fS3l5g9iz++mQrbkhMrE6B3WobQjh
-         MxDcYq2y+JktasQOXhELvnDKsTSInvOj8y9liVQ/A8mEcwo+uoGLs2QeR2pFpS2ZOjgd
-         tZ3bd8zIvOFwX6luOaC6dF5JP/xKFh0afLaSN/F7EArwrmfg2XQSEjgcYfe74Ozi7s6b
-         NOZpkaALfL8C3ZXOQpRuIhNnTYKfZ7s2c3bI41TczZtNpK/5bccbv7+3gs03ymeD1o8o
-         lExg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=KbxWDlL+f31Iv4yXrvS4EjbF/ghfF72fs8lCTuVNEck=;
-        b=6TBNwjhk4iKbgJFe59C3xG9n5osxxsZE+AjO7gfxdmrcl6f7Uj7523/Q3Gyhh0C6tA
-         40R1JdNaUPU7/ohrSsmtRz1MdfrTHafTAHrza0PpT12RBs547Y00JdM9yes56jvjxhuU
-         9GvBcYrDETzgpwfJV142RsfUT7AjKYjWMMLZl8DbADvBg4rHknmlFzU7W2Pw7Bfn0etM
-         yb7cbt4XIPDVfxR6ZaQfHa3a3Qf3ZWjCm2V8M6or1y1vEYkFo4mqIidgAbGfQ/qR3mer
-         HkbALXkzW/2LTLdBFQYeqAZfjCDcu8ibuEV4bTSy1CroCCg5foPQA0eToMDyr4fF0xbu
-         A4Gg==
-X-Gm-Message-State: AOAM533NOICKGMt8nWamCacmD1G1qNKwwXX3HNvxhHU8XS93RuVnxfKz
-        5bC7SoAfulq6LKtRh9sfc52aFQC3LPs=
-X-Google-Smtp-Source: ABdhPJyfxT8XAzGJC0dKREtecTLuyCjugmGL4SpYp30E2dfWq45XCrO/Sz1dg8SdzdayCNAjoJVh6A==
-X-Received: by 2002:a50:d0da:0:b0:42b:cfa8:f1ce with SMTP id g26-20020a50d0da000000b0042bcfa8f1cemr16534313edf.365.1653747953124;
-        Sat, 28 May 2022 07:25:53 -0700 (PDT)
-Received: from localhost.localdomain (93-42-70-190.ip85.fastwebnet.it. [93.42.70.190])
-        by smtp.googlemail.com with ESMTPSA id m3-20020a50d7c3000000b0042bc5e8f7fdsm3601915edj.16.2022.05.28.07.25.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 May 2022 07:25:52 -0700 (PDT)
-From:   Christian 'Ansuel' Marangi <ansuelsmth@gmail.com>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Christian 'Ansuel' Marangi <ansuelsmth@gmail.com>
-Subject: [PATCH 2/2] ath11k: fix missing skb drop on htc_tx_completion error
-Date:   Sat, 28 May 2022 16:25:16 +0200
-Message-Id: <20220528142516.20819-2-ansuelsmth@gmail.com>
+        Sat, 28 May 2022 15:08:23 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7095366CA6
+        for <linux-wireless@vger.kernel.org>; Sat, 28 May 2022 12:08:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=pRb8ZqgqF8AvvI7Ut4kAtfhG3/ph6FAi+ZwaBJ7f/iU=; b=PP55yxdjhspQmevAEXrnmaD4as
+        vqbRpcp4J0UZQEInBIrItZMrs7lvjYCrWEWqjSDYWywxF7qTiX6xEaGmqd4l1Xg4+sd8wZQ2dveMa
+        1hppZrp2Y9j62qr37eSrl7zOj+A1TY3AEMRthSHlc6tKwcr62YFBeMTc+gCBo2PPjkN0=;
+Received: from p200300daa70ef20028a6398bc2612af0.dip0.t-ipconnect.de ([2003:da:a70e:f200:28a6:398b:c261:2af0] helo=Maecks.lan)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1nv1n7-0000FH-6e; Sat, 28 May 2022 21:08:01 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
+Subject: [RFC/RFT 1/2] mac80211: fix overflow issues in airtime fairness code
+Date:   Sat, 28 May 2022 21:07:55 +0200
+Message-Id: <20220528190756.31029-1-nbd@nbd.name>
 X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220528142516.20819-1-ansuelsmth@gmail.com>
-References: <20220528142516.20819-1-ansuelsmth@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On htc_tx_completion error the skb is not dropped. This is wrong since
-the completion_handler logic expect the skb to be consumed anyway even
-when an error is triggerer. Not freeing the skb on error is a memory
-leak since the skb won't be freed anywere else. Correctly free the
-packet on eid >= ATH11K_HTC_EP_COUNT before returning.
+The airtime weight calculation overflows with a default weight value of 256
+whenever more than 8ms worth of airtime is reported.
+Bigger weight values impose even smaller limits on maximum airtime values.
+This can mess up airtime based calculations for drivers that don't report
+per-PPDU airtime values, but batch up values instead.
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
+Fix this by reordering multiplications/shifts and by reducing unnecessary
+intermediate precision (which was lost in a later stage anyway).
 
-Fixes: f951380a6022 ("ath11k: Disabling credit flow for WMI path")
-Signed-off-by: Christian 'Ansuel' Marangi <ansuelsmth@gmail.com>
+The new shift value limits the maximum weight to 4096, which should be more
+than enough. Any values bigger than that will be clamped to the upper limit.
+
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/ath/ath11k/htc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/ieee80211_i.h | 42 ++++++++++++--------------------------
+ net/mac80211/sta_info.c    | 11 ++++------
+ 2 files changed, 17 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/htc.c b/drivers/net/wireless/ath/ath11k/htc.c
-index 069c29a4fac7..ca3aedc0252d 100644
---- a/drivers/net/wireless/ath/ath11k/htc.c
-+++ b/drivers/net/wireless/ath/ath11k/htc.c
-@@ -258,8 +258,10 @@ void ath11k_htc_tx_completion_handler(struct ath11k_base *ab,
- 	u8 eid;
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 86ef0a46a68c..5ca4c2c6aa3c 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1677,50 +1677,34 @@ static inline struct airtime_info *to_airtime_info(struct ieee80211_txq *txq)
+ /* To avoid divisions in the fast path, we keep pre-computed reciprocals for
+  * airtime weight calculations. There are two different weights to keep track
+  * of: The per-station weight and the sum of weights per phy.
+- *
+- * For the per-station weights (kept in airtime_info below), we use 32-bit
+- * reciprocals with a devisor of 2^19. This lets us keep the multiplications and
+- * divisions for the station weights as 32-bit operations at the cost of a bit
+- * of rounding error for high weights; but the choice of divisor keeps rounding
+- * errors <10% for weights <2^15, assuming no more than 8ms of airtime is
+- * reported at a time.
+- *
+- * For the per-phy sum of weights the values can get higher, so we use 64-bit
+- * operations for those with a 32-bit divisor, which should avoid any
+- * significant rounding errors.
++ * The per-sta shift value supports weight values of 1-4096
+  */
+-#define IEEE80211_RECIPROCAL_DIVISOR_64 0x100000000ULL
+-#define IEEE80211_RECIPROCAL_SHIFT_64 32
+-#define IEEE80211_RECIPROCAL_DIVISOR_32 0x80000U
+-#define IEEE80211_RECIPROCAL_SHIFT_32 19
++#define IEEE80211_RECIPROCAL_SHIFT_SUM	24
++#define IEEE80211_RECIPROCAL_SHIFT_STA	12
++#define IEEE80211_WEIGHT_SHIFT		8
  
- 	eid = ATH11K_SKB_CB(skb)->eid;
--	if (eid >= ATH11K_HTC_EP_COUNT)
-+	if (eid >= ATH11K_HTC_EP_COUNT) {
-+		dev_kfree_skb_any(skb);
+-static inline void airtime_weight_set(struct airtime_info *air_info, u16 weight)
++static inline void airtime_weight_set(struct airtime_info *air_info, u32 weight)
+ {
++	weight = min_t(u32, weight, BIT(IEEE80211_RECIPROCAL_SHIFT_STA));
+ 	if (air_info->weight == weight)
  		return;
-+	}
  
- 	ep = &htc->endpoint[eid];
- 	spin_lock_bh(&htc->tx_lock);
+ 	air_info->weight = weight;
+-	if (weight) {
+-		air_info->weight_reciprocal =
+-			IEEE80211_RECIPROCAL_DIVISOR_32 / weight;
+-	} else {
+-		air_info->weight_reciprocal = 0;
+-	}
++	if (weight)
++		weight = BIT(IEEE80211_RECIPROCAL_SHIFT_STA) / weight;
++	air_info->weight_reciprocal = weight;
+ }
+ 
+ static inline void airtime_weight_sum_set(struct airtime_sched_info *air_sched,
+-					  int weight_sum)
++					  u32 weight_sum)
+ {
+ 	if (air_sched->weight_sum == weight_sum)
+ 		return;
+ 
+ 	air_sched->weight_sum = weight_sum;
+-	if (air_sched->weight_sum) {
+-		air_sched->weight_sum_reciprocal = IEEE80211_RECIPROCAL_DIVISOR_64;
+-		do_div(air_sched->weight_sum_reciprocal, air_sched->weight_sum);
+-	} else {
+-		air_sched->weight_sum_reciprocal = 0;
+-	}
++	if (weight_sum)
++		weight_sum = BIT(IEEE80211_RECIPROCAL_SHIFT_SUM) / weight_sum;
++	air_sched->weight_sum_reciprocal = weight_sum;
+ }
+ 
+ /* A problem when trying to enforce airtime fairness is that we want to divide
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index e04a0905e941..b843b0ac6360 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -1919,9 +1919,6 @@ void ieee80211_register_airtime(struct ieee80211_txq *txq,
+ 	if (local->airtime_flags & AIRTIME_USE_RX)
+ 		airtime += rx_airtime;
+ 
+-	/* Weights scale so the unit weight is 256 */
+-	airtime <<= 8;
+-
+ 	spin_lock_bh(&air_sched->lock);
+ 
+ 	air_info->tx_airtime += tx_airtime;
+@@ -1936,10 +1933,10 @@ void ieee80211_register_airtime(struct ieee80211_txq *txq,
+ 	}
+ 
+ 	/* Round the calculation of global vt */
+-	air_sched->v_t += (u64)((airtime + (weight_sum >> 1)) *
+-				weight_sum_reciprocal) >> IEEE80211_RECIPROCAL_SHIFT_64;
+-	air_info->v_t += (u32)((airtime + (air_info->weight >> 1)) *
+-			       air_info->weight_reciprocal) >> IEEE80211_RECIPROCAL_SHIFT_32;
++	air_sched->v_t += ((u64)airtime * weight_sum_reciprocal) >>
++			  (IEEE80211_RECIPROCAL_SHIFT_SUM - IEEE80211_WEIGHT_SHIFT);
++	air_info->v_t += (airtime * air_info->weight_reciprocal) >>
++			 (IEEE80211_RECIPROCAL_SHIFT_STA - IEEE80211_WEIGHT_SHIFT);
+ 	ieee80211_resort_txq(&local->hw, txq);
+ 
+ 	spin_unlock_bh(&air_sched->lock);
 -- 
 2.36.1
 
