@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FBD5537B99
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 15:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 838B8537BC6
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 15:28:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236712AbiE3NZL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 May 2022 09:25:11 -0400
+        id S236625AbiE3NZD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 May 2022 09:25:03 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236603AbiE3NYz (ORCPT
+        with ESMTP id S236630AbiE3NY4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 May 2022 09:24:55 -0400
+        Mon, 30 May 2022 09:24:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E14E819B7;
-        Mon, 30 May 2022 06:24:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89DC68215A;
+        Mon, 30 May 2022 06:24:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C613660E8E;
-        Mon, 30 May 2022 13:24:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00B5C36AE7;
-        Mon, 30 May 2022 13:24:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BB3F60E8E;
+        Mon, 30 May 2022 13:24:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AFCFC3411F;
+        Mon, 30 May 2022 13:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653917086;
-        bh=2nJqjbrkEXx+zlta2BV0O1ePumXPRWHtyr5AtREfBTY=;
+        s=k20201202; t=1653917089;
+        bh=+WgOzsWRKetzAfOsz+S4/Q/45z6GGe4m0xrIXOZM+yA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NXaRchUtiQhdrX3BLzp7KbspSPkJtgCBkoRLkaDu3PVLOJfYnHnGiHjNF9XaDHKPa
-         j0INvzXZuOhsaoGfR7d3ni7RRPhQJHvsfEnQdQiJBxviB660sjaBeSK30MnC4XwxP2
-         K6lDfTGKj68lbV6pXh0CzLDZtxWSj1f8Q5qMpsAEXEdvx4yTIzEhwgB/p6DjpmZmFt
-         yv7vqsB1JwDgHv1h/is+0ufT6BvRRhC96pNVEXqYeQwdCFXnCmmwV7BNhhC086VpUc
-         DgeTDJmdLpB9A0jUuMdEQUORMZrLEKwpxUPCycpjhCymvEOa0lwp4SNfJuOv878SZB
-         nCc0OFjj/NJ4A==
+        b=Vef2bsG5vKClxBkZEGJB30WM2c9eKD0rQLnBtHd8Ze0zBVpbmhYx1WvSPPd1gndDh
+         X7xIx1DK21xv4Wh4UQIyXrH0cuuOYxfA5bCxA3jJAlSiQWDjjCZKFvqF2r/oZfQlJb
+         Qx7lceUzTHwK6Dt/a6rDkCftEjPMD/NFiMHPZq397Wj+Bbpq2ygIOe6bRkf+ib22xt
+         /qQi/cPsacr77Xo2Gn0Xj7L69TRBLWo3rnA8TJowUfnYFYN3uJUioA9KF2q1LkPtKF
+         PipbcluxBGxG+S+ByTqZENNhwvxP4R6fhnDJg2PORnaArN/pUwqPBoBKpvzBdasBTt
+         gXU3G6Jk1JuxA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
+Cc:     Zong-Zhe Yang <kevin_yang@realtek.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.18 008/159] ath11k: Change max no of active probe SSID and BSSID to fw capability
-Date:   Mon, 30 May 2022 09:21:53 -0400
-Message-Id: <20220530132425.1929512-8-sashal@kernel.org>
+        pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.18 010/159] rtw89: ser: fix CAM leaks occurring in L2 reset
+Date:   Mon, 30 May 2022 09:21:55 -0400
+Message-Id: <20220530132425.1929512-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220530132425.1929512-1-sashal@kernel.org>
 References: <20220530132425.1929512-1-sashal@kernel.org>
@@ -60,77 +60,121 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit 50dc9ce9f80554a88e33b73c30851acf2be36ed3 ]
+[ Upstream commit b169f877f001a474fb89939842c390518160bcc5 ]
 
-The maximum number of SSIDs in a for active probe requests is currently
-reported as 16 (WLAN_SCAN_PARAMS_MAX_SSID) when registering the driver.
-The scan_req_params structure only has the capacity to hold 10 SSIDs.
-This leads to a buffer overflow which can be triggered from
-wpa_supplicant in userspace. When copying the SSIDs into the
-scan_req_params structure in the ath11k_mac_op_hw_scan route, it can
-overwrite the extraie pointer.
+The CAM, meaning address CAM and bssid CAM here, will get leaks during
+SER (system error recover) L2 reset process and ieee80211_restart_hw()
+which is called by L2 reset process eventually.
 
-Firmware supports 16 ssid * 4 bssid, for each ssid 4 bssid combo probe
-request will be sent, so totally 64 probe requests supported. So
-set both max ssid and bssid to 16 and 4 respectively. Remove the
-redundant macros of ssid and bssid.
+The normal flow would be like
+-> add interface (acquire 1)
+-> enter ips (release 1)
+-> leave ips (acquire 1)
+-> connection (occupy 1) <(A) 1 leak after L2 reset if non-sec connection>
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01300-QCAHKSWPL_SILICONZ-1
+The ieee80211_restart_hw() flow (under connection)
+-> ieee80211 reconfig
+-> add interface (acquire 1)
+-> leave ips (acquire 1)
+-> connection (occupy (A) + 2) <(B) 1 more leak>
 
-Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20220329150221.21907-1-quic_kathirve@quicinc.com
+Originally, CAM is released before HW restart only if connection is under
+security. Now, release CAM whatever connection it is to fix leak in (A).
+OTOH, check if CAM is already valid to avoid acquiring multiple times to
+fix (B).
+
+Besides, if AP mode, release address CAM of all stations before HW restart.
+
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20220314071250.40292-2-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.h | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ drivers/net/wireless/realtek/rtw89/cam.c | 14 ++++++++++++--
+ drivers/net/wireless/realtek/rtw89/ser.c | 21 +++++++++++++++++++++
+ 2 files changed, 33 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 587f42307250..b5b72483477d 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -3088,9 +3088,6 @@ enum scan_dwelltime_adaptive_mode {
- 	SCAN_DWELL_MODE_STATIC = 4
- };
+diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
+index 305dbbebff6b..26bef9fdd205 100644
+--- a/drivers/net/wireless/realtek/rtw89/cam.c
++++ b/drivers/net/wireless/realtek/rtw89/cam.c
+@@ -421,10 +421,8 @@ static void rtw89_cam_reset_key_iter(struct ieee80211_hw *hw,
+ 				     void *data)
+ {
+ 	struct rtw89_dev *rtwdev = (struct rtw89_dev *)data;
+-	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
  
--#define WLAN_SCAN_MAX_NUM_SSID          10
--#define WLAN_SCAN_MAX_NUM_BSSID         10
--
- #define WLAN_SSID_MAX_LEN 32
+ 	rtw89_cam_sec_key_del(rtwdev, vif, sta, key, false);
+-	rtw89_cam_deinit(rtwdev, rtwvif);
+ }
  
- struct element_info {
-@@ -3105,7 +3102,6 @@ struct wlan_ssid {
+ void rtw89_cam_deinit_addr_cam(struct rtw89_dev *rtwdev,
+@@ -480,6 +478,12 @@ int rtw89_cam_init_addr_cam(struct rtw89_dev *rtwdev,
+ 	int i;
+ 	int ret;
  
- #define WMI_IE_BITMAP_SIZE             8
++	if (unlikely(addr_cam->valid)) {
++		rtw89_debug(rtwdev, RTW89_DBG_FW,
++			    "addr cam is already valid; skip init\n");
++		return 0;
++	}
++
+ 	ret = rtw89_cam_get_avail_addr_cam(rtwdev, &addr_cam_idx);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to get available addr cam\n");
+@@ -531,6 +535,12 @@ static int rtw89_cam_init_bssid_cam(struct rtw89_dev *rtwdev,
+ 	u8 bssid_cam_idx;
+ 	int ret;
  
--#define WMI_SCAN_MAX_NUM_SSID                0x0A
- /* prefix used by scan requestor ids on the host */
- #define WMI_HOST_SCAN_REQUESTOR_ID_PREFIX 0xA000
++	if (unlikely(bssid_cam->valid)) {
++		rtw89_debug(rtwdev, RTW89_DBG_FW,
++			    "bssid cam is already valid; skip init\n");
++		return 0;
++	}
++
+ 	ret = rtw89_cam_get_avail_bssid_cam(rtwdev, &bssid_cam_idx);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to get available bssid cam\n");
+diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
+index 837cdc366a61..e86f3d89ef1b 100644
+--- a/drivers/net/wireless/realtek/rtw89/ser.c
++++ b/drivers/net/wireless/realtek/rtw89/ser.c
+@@ -220,11 +220,32 @@ static void ser_reset_vif(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
+ 	rtwvif->trigger = false;
+ }
  
-@@ -3113,10 +3109,6 @@ struct wlan_ssid {
- /* host cycles through the lower 12 bits to generate ids */
- #define WMI_HOST_SCAN_REQ_ID_PREFIX 0xA000
++static void ser_sta_deinit_addr_cam_iter(void *data, struct ieee80211_sta *sta)
++{
++	struct rtw89_dev *rtwdev = (struct rtw89_dev *)data;
++	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
++
++	rtw89_cam_deinit_addr_cam(rtwdev, &rtwsta->addr_cam);
++}
++
++static void ser_deinit_cam(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
++{
++	if (rtwvif->net_type == RTW89_NET_TYPE_AP_MODE)
++		ieee80211_iterate_stations_atomic(rtwdev->hw,
++						  ser_sta_deinit_addr_cam_iter,
++						  rtwdev);
++
++	rtw89_cam_deinit(rtwdev, rtwvif);
++}
++
+ static void ser_reset_mac_binding(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_vif *rtwvif;
  
--#define WLAN_SCAN_PARAMS_MAX_SSID    16
--#define WLAN_SCAN_PARAMS_MAX_BSSID   4
--#define WLAN_SCAN_PARAMS_MAX_IE_LEN  256
--
- /* Values lower than this may be refused by some firmware revisions with a scan
-  * completion with a timedout reason.
-  */
-@@ -3312,8 +3304,8 @@ struct scan_req_params {
- 	u32 n_probes;
- 	u32 *chan_list;
- 	u32 notify_scan_events;
--	struct wlan_ssid ssid[WLAN_SCAN_MAX_NUM_SSID];
--	struct wmi_mac_addr bssid_list[WLAN_SCAN_MAX_NUM_BSSID];
-+	struct wlan_ssid ssid[WLAN_SCAN_PARAMS_MAX_SSID];
-+	struct wmi_mac_addr bssid_list[WLAN_SCAN_PARAMS_MAX_BSSID];
- 	struct element_info extraie;
- 	struct element_info htcap;
- 	struct element_info vhtcap;
+ 	rtw89_cam_reset_keys(rtwdev);
++	rtw89_for_each_rtwvif(rtwdev, rtwvif)
++		ser_deinit_cam(rtwdev, rtwvif);
++
+ 	rtw89_core_release_all_bits_map(rtwdev->mac_id_map, RTW89_MAX_MAC_ID_NUM);
+ 	rtw89_for_each_rtwvif(rtwdev, rtwvif)
+ 		ser_reset_vif(rtwdev, rtwvif);
 -- 
 2.35.1
 
