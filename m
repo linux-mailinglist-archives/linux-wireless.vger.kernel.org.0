@@ -2,58 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C15653790F
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 12:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 824EB537989
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 13:03:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235181AbiE3KQp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 May 2022 06:16:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50352 "EHLO
+        id S234255AbiE3LDo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 May 2022 07:03:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234721AbiE3KQo (ORCPT
+        with ESMTP id S231140AbiE3LDn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 May 2022 06:16:44 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 660DEBE17
-        for <linux-wireless@vger.kernel.org>; Mon, 30 May 2022 03:16:43 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1nvcRv-0003fA-BD; Mon, 30 May 2022 12:16:35 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1nvcRu-0001E5-MC; Mon, 30 May 2022 12:16:34 +0200
-Date:   Mon, 30 May 2022 12:16:34 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        Hans Ulli Kroll <linux@ulli-kroll.de>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        linux-kernel@vger.kernel.org, Neo Jou <neojou@gmail.com>,
-        kernel@pengutronix.de, Johannes Berg <johannes@sipsolutions.net>
-Subject: Re: [PATCH 00/10] RTW88: Add support for USB variants
-Message-ID: <20220530101634.GJ1615@pengutronix.de>
-References: <20220518082318.3898514-1-s.hauer@pengutronix.de>
- <87fskrv0cm.fsf@kernel.org>
- <20220530095232.GI1615@pengutronix.de>
- <87a6azpc4i.fsf@kernel.org>
+        Mon, 30 May 2022 07:03:43 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCDBA55483
+        for <linux-wireless@vger.kernel.org>; Mon, 30 May 2022 04:03:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 99084B80CEE
+        for <linux-wireless@vger.kernel.org>; Mon, 30 May 2022 11:03:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABD4C34119;
+        Mon, 30 May 2022 11:03:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653908620;
+        bh=X40VI3AosjrLpvwIwftcg91/LZSossmVmIlKDyaA++k=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=tqxfnyAKekng3o3WkK//N44tyrQxt6XmHfAdJ7siLww8cwz85XLY7ROISNY3A0ofL
+         gMQEyersHdfvE65sV4OH1N5Jd+W3XICFJM8X27An4z+WYewY1U3lbjH9U/sHXsDbwJ
+         2qKQrMRBoKGL9QnBNB8yS2HcwYxKFjCnN0BgwM2S8IQjkcO04+j0CbrqLYfiXK9/kI
+         /8+a0yMqK8PBAYJ6CMRrkReNJJUl5oO9nT3rdt1ZM/GEbOu+rWKtdvZzoDVxUBSoyL
+         +bgfPxidCvE9fzYTAD4vxjEdR+q5dj0MLQNCuNMv/Zr9GhpglLKD+BL0w9sf9dt4wU
+         BZ4+rlF4kChqw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87a6azpc4i.fsf@kernel.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] rtw88: fix null vif pointer when hw_scan fails
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20220520081523.45987-1-pkshih@realtek.com>
+References: <20220520081523.45987-1-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <phhuang@realtek.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <165390861413.29197.7583524491539911829.kvalo@kernel.org>
+Date:   Mon, 30 May 2022 11:03:39 +0000 (UTC)
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,46 +55,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 30, 2022 at 01:07:25PM +0300, Kalle Valo wrote:
-> Sascha Hauer <s.hauer@pengutronix.de> writes:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
+
+> From: Po-Hao Huang <phhuang@realtek.com>
 > 
-> > On Mon, May 30, 2022 at 12:25:13PM +0300, Kalle Valo wrote:
-> >> Sascha Hauer <s.hauer@pengutronix.de> writes:
-> >> 
-> >> > Another problem to address is that the driver uses
-> >> > ieee80211_iterate_stations_atomic() and
-> >> > ieee80211_iterate_active_interfaces_atomic() and does register accesses
-> >> > in the iterator. This doesn't work with USB, so iteration is done in two
-> >> > steps now: The ieee80211_iterate_*_atomic() functions are only used to
-> >> > collect the stations/interfaces on a list which is then iterated over
-> >> > non-atomically in the second step. The implementation for this is
-> >> > basically the one suggested by Ping-Ke here:
-> >> >
-> >> > https://lore.kernel.org/lkml/423f474e15c948eda4db5bc9a50fd391@realtek.com/
-> >> 
-> >> Isn't this racy? What guarantees that vifs are not deleted after
-> >> ieee80211_iterate_active_interfaces_atomic() call?
-> >
-> > The driver mutex &rtwdev->mutex is acquired during the whole
-> > collection/iteration process. For deleting an interface
-> > ieee80211_ops::remove_interface would have to be called, right?
-> > That would acquire &rtwdev->mutex as well, so I think this should be
-> > safe.
+> Add this check to avoid crash by dereferencing a null pointer. When hwscan
+> fails due to no memory or dma failure, the scan flag in ieee80211_local is
+> cleared. So mac80211 determine that it's not hw_scan then calls
+> sw_scan_complete() with null vif, which is also freed during the fail.
 > 
-> Can you add a comment to the code explaining this?
+> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Sure.
+Patch applied to wireless-next.git, thanks.
 
-> And
-> lockdep_assert_held() is a good way to guarantee that the mutex is
-> really held.
-
-Yes, Ping-Ke already pointed that out. Will add in the next round.
-
-Sascha
+32621eb61bfd rtw88: fix null vif pointer when hw_scan fails
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+https://patchwork.kernel.org/project/linux-wireless/patch/20220520081523.45987-1-pkshih@realtek.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
