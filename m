@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87D0D537B6B
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 15:25:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FBD5537B99
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 15:27:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236537AbiE3NYl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 May 2022 09:24:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57216 "EHLO
+        id S236712AbiE3NZL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 May 2022 09:25:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236539AbiE3NYk (ORCPT
+        with ESMTP id S236603AbiE3NYz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 May 2022 09:24:40 -0400
+        Mon, 30 May 2022 09:24:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02F7F62F6;
-        Mon, 30 May 2022 06:24:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E14E819B7;
+        Mon, 30 May 2022 06:24:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F45A60EE6;
-        Mon, 30 May 2022 13:24:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED55C3411F;
-        Mon, 30 May 2022 13:24:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C613660E8E;
+        Mon, 30 May 2022 13:24:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00B5C36AE7;
+        Mon, 30 May 2022 13:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653917078;
-        bh=bGvWXSsVYE8QDR2oEurh5TCb6bubWjqxrbK4wgMkhpQ=;
+        s=k20201202; t=1653917086;
+        bh=2nJqjbrkEXx+zlta2BV0O1ePumXPRWHtyr5AtREfBTY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Axnl1UMfJiFoY/5gMlKFTab/rk12IDCxAb96M56MpOBhvbnqyrMwZNG4qLqfcCFL2
-         qqnq9z52HMFEOyFEnSzvK/LoVFtrjxiblxtowkoEobpr9RXfgVei4JVtageApITrVf
-         2mWNTLjzod5J3JJ2aF2a429aEUqxCXAFKLfHskdoLC5Ios6EsH2ZQxS3PPVOXL8TWu
-         kvZ65Yt0Ad926QXhMM0se0eklRdX4jBwi6CCg1lFuD/t7mUBvGBKaZmVMUix03U1FB
-         KHtH2kJqlAkIfKotIIl6+WL/BuJ/0AVqliVXfPTxXGGMrQaopmvGgbR4iUOaFzawu+
-         x8VXxyS9pI0fg==
+        b=NXaRchUtiQhdrX3BLzp7KbspSPkJtgCBkoRLkaDu3PVLOJfYnHnGiHjNF9XaDHKPa
+         j0INvzXZuOhsaoGfR7d3ni7RRPhQJHvsfEnQdQiJBxviB660sjaBeSK30MnC4XwxP2
+         K6lDfTGKj68lbV6pXh0CzLDZtxWSj1f8Q5qMpsAEXEdvx4yTIzEhwgB/p6DjpmZmFt
+         yv7vqsB1JwDgHv1h/is+0ufT6BvRRhC96pNVEXqYeQwdCFXnCmmwV7BNhhC086VpUc
+         DgeTDJmdLpB9A0jUuMdEQUORMZrLEKwpxUPCycpjhCymvEOa0lwp4SNfJuOv878SZB
+         nCc0OFjj/NJ4A==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wen Gong <quic_wgong@quicinc.com>,
+Cc:     Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
         Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
         pabeni@redhat.com, ath11k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.18 004/159] ath11k: fix the warning of dev_wake in mhi_pm_disable_transition()
-Date:   Mon, 30 May 2022 09:21:49 -0400
-Message-Id: <20220530132425.1929512-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.18 008/159] ath11k: Change max no of active probe SSID and BSSID to fw capability
+Date:   Mon, 30 May 2022 09:21:53 -0400
+Message-Id: <20220530132425.1929512-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220530132425.1929512-1-sashal@kernel.org>
 References: <20220530132425.1929512-1-sashal@kernel.org>
@@ -60,131 +60,77 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Wen Gong <quic_wgong@quicinc.com>
+From: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
 
-[ Upstream commit 0d7a8a6204ea9271f1d0a8c66a9fd2f54d2e3cbc ]
+[ Upstream commit 50dc9ce9f80554a88e33b73c30851acf2be36ed3 ]
 
-When test device recovery with below command, it has warning in message
-as below.
-echo assert > /sys/kernel/debug/ath11k/wcn6855\ hw2.0/simulate_fw_crash
-echo assert > /sys/kernel/debug/ath11k/qca6390\ hw2.0/simulate_fw_crash
+The maximum number of SSIDs in a for active probe requests is currently
+reported as 16 (WLAN_SCAN_PARAMS_MAX_SSID) when registering the driver.
+The scan_req_params structure only has the capacity to hold 10 SSIDs.
+This leads to a buffer overflow which can be triggered from
+wpa_supplicant in userspace. When copying the SSIDs into the
+scan_req_params structure in the ath11k_mac_op_hw_scan route, it can
+overwrite the extraie pointer.
 
-warning message:
-[ 1965.642121] ath11k_pci 0000:06:00.0: simulating firmware assert crash
-[ 1968.471364] ieee80211 phy0: Hardware restart was requested
-[ 1968.511305] ------------[ cut here ]------------
-[ 1968.511368] WARNING: CPU: 3 PID: 1546 at drivers/bus/mhi/core/pm.c:505 mhi_pm_disable_transition+0xb37/0xda0 [mhi]
-[ 1968.511443] Modules linked in: ath11k_pci ath11k mac80211 libarc4 cfg80211 qmi_helpers qrtr_mhi mhi qrtr nvme nvme_core
-[ 1968.511563] CPU: 3 PID: 1546 Comm: kworker/u17:0 Kdump: loaded Tainted: G        W         5.17.0-rc3-wt-ath+ #579
-[ 1968.511629] Hardware name: Intel(R) Client Systems NUC8i7HVK/NUC8i7HVB, BIOS HNKBLi70.86A.0067.2021.0528.1339 05/28/2021
-[ 1968.511704] Workqueue: mhi_hiprio_wq mhi_pm_st_worker [mhi]
-[ 1968.511787] RIP: 0010:mhi_pm_disable_transition+0xb37/0xda0 [mhi]
-[ 1968.511870] Code: a9 fe ff ff 4c 89 ff 44 89 04 24 e8 03 46 f6 e5 44 8b 04 24 41 83 f8 01 0f 84 21 fe ff ff e9 4c fd ff ff 0f 0b e9 af f8 ff ff <0f> 0b e9 5c f8 ff ff 48 89 df e8 da 9e ee e3 e9 12 fd ff ff 4c 89
-[ 1968.511923] RSP: 0018:ffffc900024efbf0 EFLAGS: 00010286
-[ 1968.511969] RAX: 00000000ffffffff RBX: ffff88811d241250 RCX: ffffffffc0176922
-[ 1968.512014] RDX: 0000000000000000 RSI: 0000000000000004 RDI: ffff888118a90a24
-[ 1968.512059] RBP: ffff888118a90800 R08: 0000000000000000 R09: ffff888118a90a27
-[ 1968.512102] R10: ffffed1023152144 R11: 0000000000000001 R12: ffff888118a908ac
-[ 1968.512229] R13: ffff888118a90928 R14: dffffc0000000000 R15: ffff888118a90a24
-[ 1968.512310] FS:  0000000000000000(0000) GS:ffff888234200000(0000) knlGS:0000000000000000
-[ 1968.512405] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 1968.512493] CR2: 00007f5538f443a8 CR3: 000000016dc28001 CR4: 00000000003706e0
-[ 1968.512587] Call Trace:
-[ 1968.512672]  <TASK>
-[ 1968.512751]  ? _raw_spin_unlock_irq+0x1f/0x40
-[ 1968.512859]  mhi_pm_st_worker+0x3ac/0x790 [mhi]
-[ 1968.512959]  ? mhi_pm_mission_mode_transition.isra.0+0x7d0/0x7d0 [mhi]
-[ 1968.513063]  process_one_work+0x86a/0x1400
-[ 1968.513184]  ? pwq_dec_nr_in_flight+0x230/0x230
-[ 1968.513312]  ? move_linked_works+0x125/0x290
-[ 1968.513416]  worker_thread+0x6db/0xf60
-[ 1968.513536]  ? process_one_work+0x1400/0x1400
-[ 1968.513627]  kthread+0x241/0x2d0
-[ 1968.513733]  ? kthread_complete_and_exit+0x20/0x20
-[ 1968.513821]  ret_from_fork+0x22/0x30
-[ 1968.513924]  </TASK>
+Firmware supports 16 ssid * 4 bssid, for each ssid 4 bssid combo probe
+request will be sent, so totally 64 probe requests supported. So
+set both max ssid and bssid to 16 and 4 respectively. Remove the
+redundant macros of ssid and bssid.
 
-Reason is mhi_deassert_dev_wake() from mhi_device_put() is called
-but mhi_assert_dev_wake() from __mhi_device_get_sync() is not called
-in progress of recovery. Commit 8e0559921f9a ("bus: mhi: core:
-Skip device wake in error or shutdown state") add check for the
-pm_state of mhi in __mhi_device_get_sync(), and the pm_state is not
-the normal state untill recovery is completed, so it leads the
-dev_wake is not 0 and above warning print in mhi_pm_disable_transition()
-while checking mhi_cntrl->dev_wake.
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01300-QCAHKSWPL_SILICONZ-1
 
-Add check in ath11k_pci_write32()/ath11k_pci_read32() to skip call
-mhi_device_put() if mhi_device_get_sync() does not really do wake,
-then the warning gone.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03003-QCAHSPSWPL_V1_V2_SILICONZ_LITE-2
-
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20220228064606.8981-5-quic_wgong@quicinc.com
+Link: https://lore.kernel.org/r/20220329150221.21907-1-quic_kathirve@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/pci.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.h | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index 903758751c99..8a3ff12057e8 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -191,6 +191,7 @@ void ath11k_pci_write32(struct ath11k_base *ab, u32 offset, u32 value)
- {
- 	struct ath11k_pci *ab_pci = ath11k_pci_priv(ab);
- 	u32 window_start;
-+	int ret = 0;
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index 587f42307250..b5b72483477d 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -3088,9 +3088,6 @@ enum scan_dwelltime_adaptive_mode {
+ 	SCAN_DWELL_MODE_STATIC = 4
+ };
  
- 	/* for offset beyond BAR + 4K - 32, may
- 	 * need to wakeup MHI to access.
-@@ -198,7 +199,7 @@ void ath11k_pci_write32(struct ath11k_base *ab, u32 offset, u32 value)
- 	if (ab->hw_params.wakeup_mhi &&
- 	    test_bit(ATH11K_PCI_FLAG_INIT_DONE, &ab_pci->flags) &&
- 	    offset >= ACCESS_ALWAYS_OFF)
--		mhi_device_get_sync(ab_pci->mhi_ctrl->mhi_dev);
-+		ret = mhi_device_get_sync(ab_pci->mhi_ctrl->mhi_dev);
+-#define WLAN_SCAN_MAX_NUM_SSID          10
+-#define WLAN_SCAN_MAX_NUM_BSSID         10
+-
+ #define WLAN_SSID_MAX_LEN 32
  
- 	if (offset < WINDOW_START) {
- 		iowrite32(value, ab->mem  + offset);
-@@ -222,7 +223,8 @@ void ath11k_pci_write32(struct ath11k_base *ab, u32 offset, u32 value)
+ struct element_info {
+@@ -3105,7 +3102,6 @@ struct wlan_ssid {
  
- 	if (ab->hw_params.wakeup_mhi &&
- 	    test_bit(ATH11K_PCI_FLAG_INIT_DONE, &ab_pci->flags) &&
--	    offset >= ACCESS_ALWAYS_OFF)
-+	    offset >= ACCESS_ALWAYS_OFF &&
-+	    !ret)
- 		mhi_device_put(ab_pci->mhi_ctrl->mhi_dev);
- }
+ #define WMI_IE_BITMAP_SIZE             8
  
-@@ -230,6 +232,7 @@ u32 ath11k_pci_read32(struct ath11k_base *ab, u32 offset)
- {
- 	struct ath11k_pci *ab_pci = ath11k_pci_priv(ab);
- 	u32 val, window_start;
-+	int ret = 0;
+-#define WMI_SCAN_MAX_NUM_SSID                0x0A
+ /* prefix used by scan requestor ids on the host */
+ #define WMI_HOST_SCAN_REQUESTOR_ID_PREFIX 0xA000
  
- 	/* for offset beyond BAR + 4K - 32, may
- 	 * need to wakeup MHI to access.
-@@ -237,7 +240,7 @@ u32 ath11k_pci_read32(struct ath11k_base *ab, u32 offset)
- 	if (ab->hw_params.wakeup_mhi &&
- 	    test_bit(ATH11K_PCI_FLAG_INIT_DONE, &ab_pci->flags) &&
- 	    offset >= ACCESS_ALWAYS_OFF)
--		mhi_device_get_sync(ab_pci->mhi_ctrl->mhi_dev);
-+		ret = mhi_device_get_sync(ab_pci->mhi_ctrl->mhi_dev);
+@@ -3113,10 +3109,6 @@ struct wlan_ssid {
+ /* host cycles through the lower 12 bits to generate ids */
+ #define WMI_HOST_SCAN_REQ_ID_PREFIX 0xA000
  
- 	if (offset < WINDOW_START) {
- 		val = ioread32(ab->mem + offset);
-@@ -261,7 +264,8 @@ u32 ath11k_pci_read32(struct ath11k_base *ab, u32 offset)
- 
- 	if (ab->hw_params.wakeup_mhi &&
- 	    test_bit(ATH11K_PCI_FLAG_INIT_DONE, &ab_pci->flags) &&
--	    offset >= ACCESS_ALWAYS_OFF)
-+	    offset >= ACCESS_ALWAYS_OFF &&
-+	    !ret)
- 		mhi_device_put(ab_pci->mhi_ctrl->mhi_dev);
- 
- 	return val;
+-#define WLAN_SCAN_PARAMS_MAX_SSID    16
+-#define WLAN_SCAN_PARAMS_MAX_BSSID   4
+-#define WLAN_SCAN_PARAMS_MAX_IE_LEN  256
+-
+ /* Values lower than this may be refused by some firmware revisions with a scan
+  * completion with a timedout reason.
+  */
+@@ -3312,8 +3304,8 @@ struct scan_req_params {
+ 	u32 n_probes;
+ 	u32 *chan_list;
+ 	u32 notify_scan_events;
+-	struct wlan_ssid ssid[WLAN_SCAN_MAX_NUM_SSID];
+-	struct wmi_mac_addr bssid_list[WLAN_SCAN_MAX_NUM_BSSID];
++	struct wlan_ssid ssid[WLAN_SCAN_PARAMS_MAX_SSID];
++	struct wmi_mac_addr bssid_list[WLAN_SCAN_PARAMS_MAX_BSSID];
+ 	struct element_info extraie;
+ 	struct element_info htcap;
+ 	struct element_info vhtcap;
 -- 
 2.35.1
 
