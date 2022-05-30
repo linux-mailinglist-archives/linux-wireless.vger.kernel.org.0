@@ -2,54 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E62C25376B2
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 10:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 171A8537832
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 12:06:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233842AbiE3IaP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 May 2022 04:30:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38022 "EHLO
+        id S234543AbiE3Iyv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 May 2022 04:54:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231432AbiE3IaN (ORCPT
+        with ESMTP id S234576AbiE3Iyf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 May 2022 04:30:13 -0400
+        Mon, 30 May 2022 04:54:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACB5A75212;
-        Mon, 30 May 2022 01:30:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C968B79803;
+        Mon, 30 May 2022 01:54:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46B8B60DD8;
-        Mon, 30 May 2022 08:30:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877D7C385B8;
-        Mon, 30 May 2022 08:30:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 65FAA60F5D;
+        Mon, 30 May 2022 08:54:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24D5C385B8;
+        Mon, 30 May 2022 08:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653899411;
-        bh=/tZ0Vu5aT5OryBX4TVZ47LFjNaoFWQryrceZ5hFB8xc=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=qSlraGWG9JUGjkvG0CRRTWCgIWF/IiZCaeXEKBKfLxcG/Jqsm5RK0KcYVFmnchGHq
-         S9oj/RZOSU6rXy7lp0T0SLivjFJwiqscWDN/LxYtxqdGmjMMZe3GLoomolYJ/+wHlo
-         TX5fA/DToXiS4JFCJjNzQkxFKVtZOMI1iHG/Pki8PqWJVCdSuYHGV07x3/IF7Uky89
-         gnY4tU7XawTsYc6+Jk42/+Kv65maydbURDWrwOV6jtMhQoeGXqwD7p3R+yxN2ggHeB
-         2sZ/y0GcRaeQBh/65n6TLkg99HU0KYItRTGogFenmCWsQwfZk+XAY8LJEnYMBzC82Q
-         HYAXuvwYK9GjQ==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: wifi: cw1200: cleanup the code a bit
+        s=k20201202; t=1653900858;
+        bh=yEKVmMWK6lyNhSCmKPWhzyc4BzhgTKEYjm2tPlbe8uo=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=X/KDvl6KPIRfTvroX/sm7epzNqtcT4vTaafU5hMARos7ERYM6vWOgchH7gLo4Tx+1
+         f0+TKkogF6+Z9sqW9ayj1GZT5Xg6LgzPR97rBQ5bMQV24EVwwaA5qlLN4rJ35edSSn
+         1kqFZX9P/bb9s9pyEpyiZgZO4iMGM3IHRMrl0aPH9nuU/Sg+MaOtgKVfXeueO3ZTL4
+         rxTlIuak7mSOD1VQd7o+BmzmiYnXAOU99r3mRugXG5//Bhj5Q13jygasATQLN6vOyB
+         aM27ya63BbEEeKkLK1LLG54xcfp96dkOTd34zGf8287vfqdJsz+tm34YRXxqWqg3su
+         WBRk7iklIfj+A==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220517014136.410450-1-bernard@vivo.com>
-References: <20220517014136.410450-1-bernard@vivo.com>
-To:     Bernard Zhao <bernard@vivo.com>
-Cc:     Solomon Peachy <pizza@shaftnet.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, zhaojunkui2008@126.com,
-        Bernard Zhao <bernard@vivo.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165389938026.27266.17563804631194227085.kvalo@kernel.org>
-Date:   Mon, 30 May 2022 08:30:09 +0000 (UTC)
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: linux-next: wireless for-next branches
+References: <87a6b3qrms.fsf@kernel.org>
+        <20220528102053.3733f275@canb.auug.org.au>
+Date:   Mon, 30 May 2022 11:54:13 +0300
+In-Reply-To: <20220528102053.3733f275@canb.auug.org.au> (Stephen Rothwell's
+        message of "Sat, 28 May 2022 10:20:53 +1000")
+Message-ID: <87ilpnpfii.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -60,19 +55,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bernard Zhao <bernard@vivo.com> wrote:
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
 
-> Delete if NULL check before dev_kfree_skb call.
-> This change is to cleanup the code a bit.
-> 
-> Signed-off-by: Bernard Zhao <bernard@vivo.com>
+> On Fri, 27 May 2022 11:58:03 +0300 Kalle Valo <kvalo@kernel.org> wrote:
+>>
+>> We are experimenting how we could take "next-next" patches during merge
+>> windows and avoid accumulation of patches for the period which is in
+>> practice three weeks for wireless patches. To do that could you please
+>> change linux-next to pull from wireless trees for-next branches instead
+>> of main branches? So the new locations are:
+>> 
+>> git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+>> git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git for-next
+>> 
+>> The idea we have is that wireless-next for-next branch is not updated
+>> during the merge window and then the "next-next" patches will not be
+>> included in linux-next until the merge window has closed.
+>
+> OK, I have switched to using those branches.
 
-Patch applied to wireless-next.git, thanks.
+Great, thank you Stephen. I now took the first patch[1] to wireless-next
+main branch but you should not see it in for-next branch until the merge
+window is closed.
 
-d092de2c28dc wifi: cw1200: cleanup the code a bit
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/commit/?id=d092de2c28dcf752890252dedefed98f00a631fe
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220517014136.410450-1-bernard@vivo.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
