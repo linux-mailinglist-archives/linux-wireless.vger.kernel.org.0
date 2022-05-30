@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97B7C538108
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 16:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0F39537E76
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 16:13:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238321AbiE3NwT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 May 2022 09:52:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60372 "EHLO
+        id S234828AbiE3NxW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 May 2022 09:53:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238145AbiE3NtM (ORCPT
+        with ESMTP id S239292AbiE3Nv0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 May 2022 09:49:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C96A6A76CD;
-        Mon, 30 May 2022 06:34:44 -0700 (PDT)
+        Mon, 30 May 2022 09:51:26 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFA1E819BE;
+        Mon, 30 May 2022 06:36:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A19B60F2A;
-        Mon, 30 May 2022 13:34:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7F4C3411E;
-        Mon, 30 May 2022 13:34:42 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 557E4B80DB3;
+        Mon, 30 May 2022 13:36:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3CBC3411C;
+        Mon, 30 May 2022 13:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653917684;
-        bh=a6ZbcZ0pyviOct835Ub4+gXpK5eWBK1Jv1/OF+CY8kE=;
+        s=k20201202; t=1653917760;
+        bh=KcMfdVrPS5sBaTos33sAmjiggMA4Goon5JHj92fmjP8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sNVSZm/XxGzJHSuqwDrdzDJzk0yIgyOvlq7RBHUU+g+pAcnW/o9iSt0lja5ZnuVbe
-         B6rLmoNnnOMt5w0Dlbj9TrkL/IRKuXi9SU4NDGA+naYHllp+qe1bhOKGrfxhmIOs+E
-         wr53G+3/qR+viW0figuO2/LPFZ+X0pv/WB85skHVtOAPUEavOIIUcDCXNNTa6uGX55
-         VIRjBFjZrf00+S5uBAgl0F28UCd/teHHWE7IrhdJqYhIY5MOtNbUP0+Pt8HdTEEcdp
-         x8xSy+VrDdeePGPbIeF6A3XrHf0Bf+vnYoBBiuqfwap1eZfFf93dPirXuuQmjGBMqa
-         j2qtbeo/vC6yg==
+        b=LD57BDZlE0dVjE3jVxR9E1V818g85VF4EnZ55p479/ZqGKHWCBCznnYFcIOhgVEYy
+         IDRjm2i4J96iqjxFXuBzIGdn832CTV913JdbWJK2oy25s4LFXOkRPvmvFvWF58m08J
+         pTOJ5Vm/alBsx9f2daogiaeUiG4K3PWz2MaDR1Ug8FRG4ewa9c2IA0YTZZ9Pg/FvYN
+         oQyxY7RS9FazAdD43Tu3XB/tUzwxtK74WnCpjWZHwxuzbjhdPt90808GwM+F+qnLCJ
+         rYVOZpYxWdiCkgPZs/756HNrHOTNg41vQh1AAJNYhKMar65OKGF+MK82fE9r7wg7sc
+         4BwUnc59TzL1w==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wen Gong <quic_wgong@quicinc.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.17 061/135] ath11k: fix warning of not found station for bssid in message
-Date:   Mon, 30 May 2022 09:30:19 -0400
-Message-Id: <20220530133133.1931716-61-sashal@kernel.org>
+Cc:     Dongliang Mu <mudongliangabcd@gmail.com>,
+        syzkaller <syzkaller@googlegroups.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        pkshih@realtek.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.17 090/135] rtlwifi: Use pr_warn instead of WARN_ONCE
+Date:   Mon, 30 May 2022 09:30:48 -0400
+Message-Id: <20220530133133.1931716-90-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220530133133.1931716-1-sashal@kernel.org>
 References: <20220530133133.1931716-1-sashal@kernel.org>
@@ -60,98 +60,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Wen Gong <quic_wgong@quicinc.com>
+From: Dongliang Mu <mudongliangabcd@gmail.com>
 
-[ Upstream commit 7330e1ec9748948177830c6e1a13379835d577f9 ]
+[ Upstream commit ad732da434a2936128769216eddaece3b1af4588 ]
 
-When test connect/disconnect to an AP frequently with WCN6855, sometimes
-it show below log.
+This memory allocation failure can be triggered by fault injection or
+high pressure testing, resulting a WARN.
 
-[  277.040121] wls1: deauthenticating from 8c:21:0a:b3:5a:64 by local choice (Reason: 3=DEAUTH_LEAVING)
-[  277.050906] ath11k_pci 0000:05:00.0: wmi stats vdev id 0 mac 00:03:7f:29:61:11
-[  277.050944] ath11k_pci 0000:05:00.0: wmi stats bssid 8c:21:0a:b3:5a:64 vif         pK-error
-[  277.050954] ath11k_pci 0000:05:00.0: not found station for bssid 8c:21:0a:b3:5a:64
-[  277.050961] ath11k_pci 0000:05:00.0: failed to parse rssi chain -71
-[  277.050967] ath11k_pci 0000:05:00.0: failed to pull fw stats: -71
-[  277.050976] ath11k_pci 0000:05:00.0: wmi stats vdev id 0 mac 00:03:7f:29:61:11
-[  277.050983] ath11k_pci 0000:05:00.0: wmi stats bssid 8c:21:0a:b3:5a:64 vif         pK-error
-[  277.050989] ath11k_pci 0000:05:00.0: not found station for bssid 8c:21:0a:b3:5a:64
-[  277.050995] ath11k_pci 0000:05:00.0: failed to parse rssi chain -71
-[  277.051000] ath11k_pci 0000:05:00.0: failed to pull fw stats: -71
-[  278.064050] ath11k_pci 0000:05:00.0: failed to request fw stats: -110
+Fix this by replacing WARN with pr_warn.
 
-Reason is:
-When running disconnect operation, sta_info removed from local->sta_hash
-by __sta_info_destroy_part1() from __sta_info_flush(), after this,
-ieee80211_find_sta_by_ifaddr() which called by
-ath11k_wmi_tlv_fw_stats_data_parse() and ath11k_wmi_tlv_rssi_chain_parse()
-cannot find this station, then failed log printed.
-
-steps are like this:
-1. when disconnect from AP, __sta_info_destroy() called __sta_info_destroy_part1()
-and __sta_info_destroy_part2().
-
-2. in __sta_info_destroy_part1(),  it has "sta_info_hash_del(local, sta)"
-and "list_del_rcu(&sta->list)", it will remove the ieee80211_sta from the
-list of ieee80211_hw.
-
-3. in __sta_info_destroy_part2(), it called drv_sta_state()->ath11k_mac_op_sta_state(),
-then peer->sta is clear at this moment.
-
-4. in __sta_info_destroy_part2(), it then called sta_set_sinfo()->drv_sta_statistics()
-->ath11k_mac_op_sta_statistics(), then WMI_REQUEST_STATS_CMDID sent to firmware.
-
-5. WMI_UPDATE_STATS_EVENTID reported from firmware, at this moment, the
-ieee80211_sta can not be found again because it has remove from list in
-step2 and also peer->sta is clear in step3.
-
-6. in __sta_info_destroy_part2(), it then called cleanup_single_sta()->
-sta_info_free()->kfree(sta), at this moment, the ieee80211_sta is freed
-in memory, then the failed log will not happen because function
-ath11k_mac_op_sta_state() will not be called.
-
-Actually this print log is not a real error, it is only to skip parse the
-info, so change to skip print by default debug setting.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
-
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20220428022426.2927-1-quic_wgong@quicinc.com
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Dongliang Mu <mudongliangabcd@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20220511014453.1621366-1-dzm91@hust.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 22921673e956..4ad3fe7d7d1f 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -5616,9 +5616,9 @@ static int ath11k_wmi_tlv_rssi_chain_parse(struct ath11k_base *ab,
- 					   arvif->bssid,
- 					   NULL);
- 	if (!sta) {
--		ath11k_warn(ab, "not found station for bssid %pM\n",
--			    arvif->bssid);
--		ret = -EPROTO;
-+		ath11k_dbg(ab, ATH11K_DBG_WMI,
-+			   "not found station of bssid %pM for rssi chain\n",
-+			   arvif->bssid);
- 		goto exit;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index 86a236873254..a8eebafb9a7e 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -1014,7 +1014,7 @@ int rtl_usb_probe(struct usb_interface *intf,
+ 	hw = ieee80211_alloc_hw(sizeof(struct rtl_priv) +
+ 				sizeof(struct rtl_usb_priv), &rtl_ops);
+ 	if (!hw) {
+-		WARN_ONCE(true, "rtl_usb: ieee80211 alloc failed\n");
++		pr_warn("rtl_usb: ieee80211 alloc failed\n");
+ 		return -ENOMEM;
  	}
- 
-@@ -5716,8 +5716,9 @@ static int ath11k_wmi_tlv_fw_stats_data_parse(struct ath11k_base *ab,
- 					   "wmi stats vdev id %d snr %d\n",
- 					   src->vdev_id, src->beacon_snr);
- 			} else {
--				ath11k_warn(ab, "not found station for bssid %pM\n",
--					    arvif->bssid);
-+				ath11k_dbg(ab, ATH11K_DBG_WMI,
-+					   "not found station of bssid %pM for vdev stat\n",
-+					   arvif->bssid);
- 			}
- 		}
- 
+ 	rtlpriv = hw->priv;
 -- 
 2.35.1
 
