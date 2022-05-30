@@ -2,51 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E939553781A
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 12:06:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 878E153787B
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 12:06:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234790AbiE3JgT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 May 2022 05:36:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40900 "EHLO
+        id S234891AbiE3Jwq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 May 2022 05:52:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233330AbiE3JgS (ORCPT
+        with ESMTP id S233008AbiE3Jwn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 May 2022 05:36:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E446170906
-        for <linux-wireless@vger.kernel.org>; Mon, 30 May 2022 02:36:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FD6960FC0
-        for <linux-wireless@vger.kernel.org>; Mon, 30 May 2022 09:36:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04217C385B8;
-        Mon, 30 May 2022 09:36:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653903376;
-        bh=GqthqfRo2eR91bxQwvJiFFIaRm2bDtRGSvRVPzBPu68=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=VxphTHO2R5YOYcw2+7wr3J1vY1XT72hwBoUaeUZK8ExAhqTN/f2lblO64RTZOxIZD
-         fCzmcAKvePRodR9SH/B3kWC7VioAzYXu3jNCS1Ct2Sjzo8s9SuKtGwk5PM28SCh85z
-         KN6rgxPoXcEa6ohuy9RZh5t5g5Xxa3vgZbA6UgqcoHqCQ4XR2bfWMUKMNPTrVIrbWc
-         1Zm2aPpdltfBjO3OnMKhnViEUKuFDJPjWNY6us0WPtXGni7hViuNBcVufvmk5lGeBe
-         Bck4gGp0Ie/wTqEjNGo+k4kbdfjOigBJ5FMCsO1hmNe1Kn6ogCotz+B+OqcmmD/RYZ
-         o8iznU2RrS/LA==
-Content-Type: text/plain; charset="utf-8"
+        Mon, 30 May 2022 05:52:43 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B937EA463
+        for <linux-wireless@vger.kernel.org>; Mon, 30 May 2022 02:52:42 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1nvc4g-0008P8-Vu; Mon, 30 May 2022 11:52:34 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1nvc4e-0007Yd-Tf; Mon, 30 May 2022 11:52:32 +0200
+Date:   Mon, 30 May 2022 11:52:32 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, Neo Jou <neojou@gmail.com>,
+        Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        kernel@pengutronix.de, Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: [PATCH 00/10] RTW88: Add support for USB variants
+Message-ID: <20220530095232.GI1615@pengutronix.de>
+References: <20220518082318.3898514-1-s.hauer@pengutronix.de>
+ <87fskrv0cm.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/6] rtw89: fix channel inconsistency during hw_scan
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220520071731.38563-2-pkshih@realtek.com>
-References: <20220520071731.38563-2-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>,
-        <kevin_yang@realtek.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165390337244.8190.8846980623597465907.kvalo@kernel.org>
-Date:   Mon, 30 May 2022 09:36:15 +0000 (UTC)
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87fskrv0cm.fsf@kernel.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,27 +59,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
-
-> From: Po Hao Huang <phhuang@realtek.com>
+On Mon, May 30, 2022 at 12:25:13PM +0300, Kalle Valo wrote:
+> Sascha Hauer <s.hauer@pengutronix.de> writes:
 > 
-> Previously channel maintained by driver could be different from the
-> ones hardware actually is. Restore these variables back to prevent
-> unexpected behavior.
+> > Another problem to address is that the driver uses
+> > ieee80211_iterate_stations_atomic() and
+> > ieee80211_iterate_active_interfaces_atomic() and does register accesses
+> > in the iterator. This doesn't work with USB, so iteration is done in two
+> > steps now: The ieee80211_iterate_*_atomic() functions are only used to
+> > collect the stations/interfaces on a list which is then iterated over
+> > non-atomically in the second step. The implementation for this is
+> > basically the one suggested by Ping-Ke here:
+> >
+> > https://lore.kernel.org/lkml/423f474e15c948eda4db5bc9a50fd391@realtek.com/
 > 
-> Signed-off-by: Po Hao Huang <phhuang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Isn't this racy? What guarantees that vifs are not deleted after
+> ieee80211_iterate_active_interfaces_atomic() call?
 
-5 patches applied to wireless-next.git, thanks.
+The driver mutex &rtwdev->mutex is acquired during the whole
+collection/iteration process. For deleting an interface
+ieee80211_ops::remove_interface would have to be called, right?
+That would acquire &rtwdev->mutex as well, so I think this should be
+safe.
 
-28000f7baa9c rtw89: fix channel inconsistency during hw_scan
-6d7d1fef3f18 rtw89: fix null vif pointer when hw_scan fails
-768992eb92ec rtw89: pci: handle hardware watchdog timeout interrupt status
-e3d365ff0b6c rtw89: 8852c: rfk: re-calibrate RX DCK once thermal changes a lot
-425671f03b4e rtw89: sar: adjust and support SAR on 6GHz band
+Sascha
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220520071731.38563-2-pkshih@realtek.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
