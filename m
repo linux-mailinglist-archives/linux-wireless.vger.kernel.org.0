@@ -2,54 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 772295381EE
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 16:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0309553828D
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 16:35:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241269AbiE3OVZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 May 2022 10:21:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40318 "EHLO
+        id S238660AbiE3OYT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 May 2022 10:24:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241540AbiE3ORl (ORCPT
+        with ESMTP id S242194AbiE3OSa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 May 2022 10:17:41 -0400
+        Mon, 30 May 2022 10:18:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0A8454BD7;
-        Mon, 30 May 2022 06:47:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CB5D91573;
+        Mon, 30 May 2022 06:49:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 03F1860FDD;
-        Mon, 30 May 2022 13:47:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC426C3411C;
-        Mon, 30 May 2022 13:47:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2176060FE3;
+        Mon, 30 May 2022 13:48:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A29DC36AE3;
+        Mon, 30 May 2022 13:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653918458;
-        bh=6GPI7gYf07+zFN1Ol/tp6iH7PZSLrK3qLnRFMdReihY=;
+        s=k20201202; t=1653918524;
+        bh=hqCtAb/WgSm7rzufedKllC993dM4mSQ0Ss6AEyB21jo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GxxOmnX1ukZZYtkOvHDzlPJtXu9mERRWGMaqcomkbi6MQxAAhIjdAyiIHTOAmav7I
-         r0roOAX5K1jxh8NNdOTyrdnxqEkQ/MMG0rzhRgL3GGk/EEb/3bsNVorFd4OxPZ92xf
-         oqELeh0GryGorA1RBJxCQGejjBVpD5TsgUParwfKYHdRRiuEJ7n12Db/YqVoteknb1
-         Tvbb0jMxrFo7M4vbq8YnjyTG28zyz68ZmTsnSWOj9Z0DKEqb8vC7b7HZk2m78VCh4+
-         af/NdZZtwCL1VbsfzWhkZF4sgVMOkOtQHVt85/eNmuElV2Hdjis7G4WdJAgC5JQiBt
-         VdqqIUXY7ZetQ==
+        b=biJIFPlBEHiLGmsHm5yxhwSDNu+r6ev9N2je8L2R8FHm7RlxdLNBuXVS3WsJZ22zq
+         NspRNcms1wTy+pvNhKnkAfQ27OukFAZvm53tBtnn1dH3dyffzIcN6d5ghvnbkjEUAS
+         bFjSXc5EqvFJCdCxMp8Ttg0JDDC0cc3haRIdpbBpKg4fw8YdGqqKOytIMw4EQuVADP
+         lvned5DUt0sdccjGVd8fOsPcbIQntyq8ZOQVga/fyKBberBJAbzqDfogGY2FQ4+hX1
+         vNWD6u2cL8TaYi7psgIpagTC5rfOfAU1xOLPcFwI8ldpfLoRMVJuI4DQ23bgY/WTtl
+         OBEFzW7H+VTSQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     =?UTF-8?q?Thibaut=20VAR=C3=88NE?= <hacks+kernel@slashdirt.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
+Cc:     Dongliang Mu <mudongliangabcd@gmail.com>,
+        syzkaller <syzkaller@googlegroups.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        pkshih@realtek.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 14/55] ath9k: fix QCA9561 PA bias level
-Date:   Mon, 30 May 2022 09:46:20 -0400
-Message-Id: <20220530134701.1935933-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 41/55] rtlwifi: Use pr_warn instead of WARN_ONCE
+Date:   Mon, 30 May 2022 09:46:47 -0400
+Message-Id: <20220530134701.1935933-41-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220530134701.1935933-1-sashal@kernel.org>
 References: <20220530134701.1935933-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -63,49 +60,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Thibaut VARÈNE <hacks+kernel@slashdirt.org>
+From: Dongliang Mu <mudongliangabcd@gmail.com>
 
-[ Upstream commit e999a5da28a0e0f7de242d841ef7d5e48f4646ae ]
+[ Upstream commit ad732da434a2936128769216eddaece3b1af4588 ]
 
-This patch fixes an invalid TX PA DC bias level on QCA9561, which
-results in a very low output power and very low throughput as devices
-are further away from the AP (compared to other 2.4GHz APs).
+This memory allocation failure can be triggered by fault injection or
+high pressure testing, resulting a WARN.
 
-This patch was suggested by Felix Fietkau, who noted[1]:
-"The value written to that register is wrong, because while the mask
-definition AR_CH0_TOP2_XPABIASLVL uses a different value for 9561, the
-shift definition AR_CH0_TOP2_XPABIASLVL_S is hardcoded to 12, which is
-wrong for 9561."
+Fix this by replacing WARN with pr_warn.
 
-In real life testing, without this patch the 2.4GHz throughput on
-Yuncore XD3200 is around 10Mbps sitting next to the AP, and closer to
-practical maximum with the patch applied.
-
-[1] https://lore.kernel.org/all/91c58969-c60e-2f41-00ac-737786d435ae@nbd.name
-
-Signed-off-by: Thibaut VARÈNE <hacks+kernel@slashdirt.org>
-Acked-by: Felix Fietkau <nbd@nbd.name>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20220417145145.1847-1-hacks+kernel@slashdirt.org
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Dongliang Mu <mudongliangabcd@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20220511014453.1621366-1-dzm91@hust.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/ar9003_phy.h | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_phy.h b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
-index a171dbb29fbb..ad949eb02f3d 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_phy.h
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
-@@ -720,7 +720,7 @@
- #define AR_CH0_TOP2		(AR_SREV_9300(ah) ? 0x1628c : \
- 					(AR_SREV_9462(ah) ? 0x16290 : 0x16284))
- #define AR_CH0_TOP2_XPABIASLVL		(AR_SREV_9561(ah) ? 0x1e00 : 0xf000)
--#define AR_CH0_TOP2_XPABIASLVL_S	12
-+#define AR_CH0_TOP2_XPABIASLVL_S	(AR_SREV_9561(ah) ? 9 : 12)
- 
- #define AR_CH0_XTAL		(AR_SREV_9300(ah) ? 0x16294 : \
- 				 ((AR_SREV_9462(ah) || AR_SREV_9565(ah)) ? 0x16298 : \
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index bad06939a247..9bcb187d37dc 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -1013,7 +1013,7 @@ int rtl_usb_probe(struct usb_interface *intf,
+ 	hw = ieee80211_alloc_hw(sizeof(struct rtl_priv) +
+ 				sizeof(struct rtl_usb_priv), &rtl_ops);
+ 	if (!hw) {
+-		WARN_ONCE(true, "rtl_usb: ieee80211 alloc failed\n");
++		pr_warn("rtl_usb: ieee80211 alloc failed\n");
+ 		return -ENOMEM;
+ 	}
+ 	rtlpriv = hw->priv;
 -- 
 2.35.1
 
