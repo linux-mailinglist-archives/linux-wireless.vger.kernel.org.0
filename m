@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C8FF5379EF
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 13:32:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 920EC5379FB
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 13:35:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232920AbiE3LcO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 May 2022 07:32:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42930 "EHLO
+        id S235953AbiE3Lfu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 May 2022 07:35:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229986AbiE3LcL (ORCPT
+        with ESMTP id S235902AbiE3Lfa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 May 2022 07:32:11 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3031580E6;
-        Mon, 30 May 2022 04:32:10 -0700 (PDT)
+        Mon, 30 May 2022 07:35:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B156813CA;
+        Mon, 30 May 2022 04:35:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 60B8FB80D82;
-        Mon, 30 May 2022 11:32:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04862C385B8;
-        Mon, 30 May 2022 11:32:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 69C216117E;
+        Mon, 30 May 2022 11:35:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEBADC34119;
+        Mon, 30 May 2022 11:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653910328;
-        bh=LVrwAmQkYHzGF8RQ7QeyXmZ9t3aKlO9mRE+QvNW53IA=;
+        s=k20201202; t=1653910519;
+        bh=26Kux3PyarW6Nbrz6s4UxEYoay2f7CdauW6UqGckS+k=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=VfOPh+Au3x9aMhtuZcCtk8jUZfm8qggVdYpMbjJUqjJCvS2rgviPCaeHWJGFZaAJr
-         tLCF+sgNbUjbxOezs5Rn8fX3VZ7wKvXeMQZAuRM+xVr3AFNCLarnB18vAZ2VgDVyVm
-         2vhb6OqUCoXVCoSfQV4EwcJkSaevqNYhVlV9Sx0CPq5gZQQaVXvg3dSV+3FBD+f+ac
-         rphhKFos6PoCmkrWMEt7Ca0ygIPwz5l3IZI+bAC2YxVVGaeXHH6FnUoHrzR0fAvjU8
-         i1E51GZChD3rmT7wxDdbJPn3o45lzDvndjtTDdLIRtMlS4DZtqLk9JsBmN3BK/QXhg
-         rNgeVJLhS2ovA==
+        b=hesDoJ9mh+BacantMkXObjjJEpRvskiv0cxJk74iEc86IjtFhT4Rsn/zt4CSXNSXp
+         mH/RT02CmIf1Ov0vZFaQbPp5PFkN4KZxRCgD+ADT8eV6+LHZihOtl3EaOxkeLqlnbA
+         1uSV1F0g4UmVQ5C9EPjjS0Wn3HhoKHUyz78TkjVJy+jL7zFBJW83oSyE/U4nBGiw00
+         jaI/AVsSv4XEdtJhTeS6TGKgKwk817SyMy6HUvCoVUeHObw5KzU1kTQrNSYm7Q+z2B
+         eavxX2Dc3JLqRZ1d7+l44EN6ygjK/Kvd1BpgS1v8FoxwPpdPD+Uoc6l4kgSBfu4+p1
+         LUw7VJJg6qvpw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -47,8 +47,8 @@ Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
         linux-kernel@vger.kernel.org,
         Jianglei Nie <niejianglei2021@163.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165391032080.5601.13315150837208103728.kvalo@kernel.org>
-Date:   Mon, 30 May 2022 11:32:05 +0000 (UTC)
+Message-ID: <165391051496.5601.1908067980296464087.kvalo@kernel.org>
+Date:   Mon, 30 May 2022 11:35:17 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -74,11 +74,15 @@ Jianglei Nie <niejianglei2021@163.com> wrote:
 > 
 > Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
 
-Please always include a changelog from previous version:
+Fails to apply, please rebase on top of ath.git master branch:
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#changelog_missing
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/
 
-No need to resend because of this, a reply to this email is sufficient.
+error: patch failed: drivers/net/wireless/ath/ath11k/mhi.c:367
+error: drivers/net/wireless/ath/ath11k/mhi.c: patch does not apply
+stg import: Diff does not apply cleanly
+
+Patch set to Changes Requested.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/patch/20220530080610.143925-1-niejianglei2021@163.com/
