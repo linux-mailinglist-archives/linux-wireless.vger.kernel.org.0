@@ -2,123 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01561537649
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 10:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E62C25376B2
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 10:50:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231828AbiE3IHL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 May 2022 04:07:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53114 "EHLO
+        id S233842AbiE3IaP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 May 2022 04:30:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230147AbiE3IHG (ORCPT
+        with ESMTP id S231432AbiE3IaN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 May 2022 04:07:06 -0400
-Received: from mail-m972.mail.163.com (mail-m972.mail.163.com [123.126.97.2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9B1613FBC2;
-        Mon, 30 May 2022 01:07:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=Tj+2x
-        aAcY6dalUpOJzC6dld8hSXl1LyIhtvLrJnzwZg=; b=G2nvkRL8UJQWrrTBpV3WZ
-        5YFO1arfhl1hIgRxGmzdR1lx5RDQUfUGDMEf4dKLIuCs/e2zVNU9yt4Zo1DC5NC8
-        kaZFOUHIEWfvn+ctFmTsdztfZM7YvbvauTEks6ER/dkBuNVm2Ot6rB4b5iNWSOrv
-        z5xEGHBmplGj7cUBFLr9a4=
-Received: from localhost.localdomain (unknown [123.112.69.106])
-        by smtp2 (Coremail) with SMTP id GtxpCgBXFQj0epRilgL9FQ--.40673S4;
-        Mon, 30 May 2022 16:06:33 +0800 (CST)
-From:   Jianglei Nie <niejianglei2021@163.com>
-To:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jianglei Nie <niejianglei2021@163.com>
-Subject: [PATCH v2] ath11k: mhi: fix potential memory leak in ath11k_mhi_register()
-Date:   Mon, 30 May 2022 16:06:10 +0800
-Message-Id: <20220530080610.143925-1-niejianglei2021@163.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 30 May 2022 04:30:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACB5A75212;
+        Mon, 30 May 2022 01:30:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 46B8B60DD8;
+        Mon, 30 May 2022 08:30:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877D7C385B8;
+        Mon, 30 May 2022 08:30:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653899411;
+        bh=/tZ0Vu5aT5OryBX4TVZ47LFjNaoFWQryrceZ5hFB8xc=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=qSlraGWG9JUGjkvG0CRRTWCgIWF/IiZCaeXEKBKfLxcG/Jqsm5RK0KcYVFmnchGHq
+         S9oj/RZOSU6rXy7lp0T0SLivjFJwiqscWDN/LxYtxqdGmjMMZe3GLoomolYJ/+wHlo
+         TX5fA/DToXiS4JFCJjNzQkxFKVtZOMI1iHG/Pki8PqWJVCdSuYHGV07x3/IF7Uky89
+         gnY4tU7XawTsYc6+Jk42/+Kv65maydbURDWrwOV6jtMhQoeGXqwD7p3R+yxN2ggHeB
+         2sZ/y0GcRaeQBh/65n6TLkg99HU0KYItRTGogFenmCWsQwfZk+XAY8LJEnYMBzC82Q
+         HYAXuvwYK9GjQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: GtxpCgBXFQj0epRilgL9FQ--.40673S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CF1Dtw1fGF4UZryxuFy8Xwb_yoW8KrW5pF
-        4fWw47AFyrAF4fWFWrtF1kJFy3Wa93Ar1DK39rG34rCrnavF90q345JFyrXFyakw4xGFyU
-        ZF4Ut3W3Gas8AF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pibo7AUUUUU=
-X-Originating-IP: [123.112.69.106]
-X-CM-SenderInfo: xqlhyxxdqjzvrlsqjii6rwjhhfrp/1tbiFQkRjF5mK76qWwAAsd
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: wifi: cw1200: cleanup the code a bit
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20220517014136.410450-1-bernard@vivo.com>
+References: <20220517014136.410450-1-bernard@vivo.com>
+To:     Bernard Zhao <bernard@vivo.com>
+Cc:     Solomon Peachy <pizza@shaftnet.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, zhaojunkui2008@126.com,
+        Bernard Zhao <bernard@vivo.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <165389938026.27266.17563804631194227085.kvalo@kernel.org>
+Date:   Mon, 30 May 2022 08:30:09 +0000 (UTC)
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mhi_alloc_controller() allocates a memory space for mhi_ctrl. When some
-errors occur, mhi_ctrl should be freed by mhi_free_controller() and set
-ab_pci->mhi_ctrl = NULL because ab_pci->mhi_ctrl has a dangling pointer
-to the freed memory. But when ath11k_mhi_read_addr_from_dt() fails, the
-function returns without calling mhi_free_controller(), which will lead
-to a memory leak.
+Bernard Zhao <bernard@vivo.com> wrote:
 
-We can fix it by calling mhi_free_controller() when
-ath11k_mhi_read_addr_from_dt() fails and set ab_pci->mhi_ctrl = NULL in
-all of the places where we call mhi_free_controller().
+> Delete if NULL check before dev_kfree_skb call.
+> This change is to cleanup the code a bit.
+> 
+> Signed-off-by: Bernard Zhao <bernard@vivo.com>
 
-Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
----
- drivers/net/wireless/ath/ath11k/mhi.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+Patch applied to wireless-next.git, thanks.
 
-diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
-index fc3524e83e52..fc1bbf91c58e 100644
---- a/drivers/net/wireless/ath/ath11k/mhi.c
-+++ b/drivers/net/wireless/ath/ath11k/mhi.c
-@@ -367,8 +367,7 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
- 	ret = ath11k_mhi_get_msi(ab_pci);
- 	if (ret) {
- 		ath11k_err(ab, "failed to get msi for mhi\n");
--		mhi_free_controller(mhi_ctrl);
--		return ret;
-+		goto free_controller;
- 	}
- 
- 	if (!test_bit(ATH11K_PCI_FLAG_MULTI_MSI_VECTORS, &ab_pci->flags))
-@@ -377,7 +376,7 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
- 	if (test_bit(ATH11K_FLAG_FIXED_MEM_RGN, &ab->dev_flags)) {
- 		ret = ath11k_mhi_read_addr_from_dt(mhi_ctrl);
- 		if (ret < 0)
--			return ret;
-+			goto free_controller;
- 	} else {
- 		mhi_ctrl->iova_start = 0;
- 		mhi_ctrl->iova_stop = 0xFFFFFFFF;
-@@ -405,18 +404,22 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
- 	default:
- 		ath11k_err(ab, "failed assign mhi_config for unknown hw rev %d\n",
- 			   ab->hw_rev);
--		mhi_free_controller(mhi_ctrl);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto free_controller;
- 	}
- 
- 	ret = mhi_register_controller(mhi_ctrl, ath11k_mhi_config);
- 	if (ret) {
- 		ath11k_err(ab, "failed to register to mhi bus, err = %d\n", ret);
--		mhi_free_controller(mhi_ctrl);
--		return ret;
-+		goto free_controller;
- 	}
- 
- 	return 0;
-+
-+free_controller:
-+	mhi_free_controller(mhi_ctrl);
-+	ab_pci->mhi_ctrl = NULL;
-+	return ret;
- }
- 
- void ath11k_mhi_unregister(struct ath11k_pci *ab_pci)
+d092de2c28dc wifi: cw1200: cleanup the code a bit
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20220517014136.410450-1-bernard@vivo.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
