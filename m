@@ -2,46 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53FC1537BBE
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 15:28:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93650537BB6
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 May 2022 15:28:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236732AbiE3NZS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 May 2022 09:25:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57954 "EHLO
+        id S236755AbiE3N0M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 May 2022 09:26:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236666AbiE3NZE (ORCPT
+        with ESMTP id S236691AbiE3NZf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 May 2022 09:25:04 -0400
+        Mon, 30 May 2022 09:25:35 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D47F819B6;
-        Mon, 30 May 2022 06:25:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F64982157;
+        Mon, 30 May 2022 06:25:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2C188B80DA9;
-        Mon, 30 May 2022 13:25:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE7CAC3411F;
-        Mon, 30 May 2022 13:24:59 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 79EA9B80D84;
+        Mon, 30 May 2022 13:25:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FDAC341C0;
+        Mon, 30 May 2022 13:25:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653917100;
-        bh=gam7VJRU5tQrQ47mhnmERO7Bdx+TDXwHG5e3vtQwqLQ=;
+        s=k20201202; t=1653917115;
+        bh=C9X33pXWCcfrKODJ1R5etG2iGEZfHfyCD+gmXXOfpYc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qjKqVoB50y/nPyVPr0HxMLkawzkGoo2J2AAzzke9w2SmTdbrOXp1PWTbnYNK0zv3u
-         LLq/2O1M4+Lo+4or928CPmBc0BvHEMVrXv+pjtNjBRloY8kDfbw/In6zm7c6ioPNMN
-         UTY+FH+Nr577lhyneKNQmE+Al8JXjKashRTkSZD4veSNlZgPWnmImJ/Ccn/ks6HXjy
-         wYWQOFhLMXyFsVyO52lUMVPh1A73ZfHULD3BdCuGuhrlOXwukUZCEeBFg3biYps7Yz
-         fS/vgI5GowAnWkQNop0pYkj4vtGxVTYyL+Z28FfUMtfkO7oEg3mdXs4vXHsdqLQtPo
-         tHqEF0Up+mocw==
+        b=bu4rxuFX1nR7SOveLWHZO3OyzxMqTgmyJMidCIuZQpgik96MTdMjDaPpUxOr3wowr
+         u91TIXoF/cdcdb2UMBgdpE5eMazTyBzwVFXiFzqMH575SaOtr2KksPPKPO3d1IAD7t
+         i83ebJD/r1Zfe87Z94X0MyhSZAFnPDO1t8EXUYhvmLWrhKAbRP+cbudv/SEM9bQiLE
+         FaodA0wzi6z7Z6eSZsjZShrQ9pTAOKHW+T/7PNESUydb+febfRzli3w0WQNvm81Vce
+         M5j8EmpzTKSNOIieKIYh5v0wDQybchzHXRLkbWX9/FBb8wbWyMTywl1BhNnGQjkNT3
+         dWbk5kWMNLlIw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Haowen Bai <baihaowen@meizu.com>, Kalle Valo <kvalo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, stas.yakovlev@gmail.com,
+Cc:     Peter Seiderer <ps.report@gmx.net>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
         pabeni@redhat.com, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.18 015/159] ipw2x00: Fix potential NULL dereference in libipw_xmit()
-Date:   Mon, 30 May 2022 09:22:00 -0400
-Message-Id: <20220530132425.1929512-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.18 021/159] mac80211: minstrel_ht: fix where rate stats are stored (fixes debugfs output)
+Date:   Mon, 30 May 2022 09:22:06 -0400
+Message-Id: <20220530132425.1929512-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220530132425.1929512-1-sashal@kernel.org>
 References: <20220530132425.1929512-1-sashal@kernel.org>
@@ -59,33 +60,72 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Haowen Bai <baihaowen@meizu.com>
+From: Peter Seiderer <ps.report@gmx.net>
 
-[ Upstream commit e8366bbabe1d207cf7c5b11ae50e223ae6fc278b ]
+[ Upstream commit 5c6dd7bd569b54c0d2904125d7366aa93f077f67 ]
 
-crypt and crypt->ops could be null, so we need to checking null
-before dereference
+Using an ath9k card the debugfs output of minstrel_ht looks like the following
+(note the zero values for the first four rates sum-of success/attempts):
 
-Signed-off-by: Haowen Bai <baihaowen@meizu.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/1648797055-25730-1-git-send-email-baihaowen@meizu.com
+             best    ____________rate__________    ____statistics___    _____last____    ______sum-of________
+mode guard #  rate   [name   idx airtime  max_tp]  [avg(tp) avg(prob)]  [retry|suc|att]  [#success | #attempts]
+OFDM       1    DP     6.0M  272    1640     5.2       3.1      53.8       3     0 0             0   0
+OFDM       1   C       9.0M  273    1104     7.7       4.6      53.8       4     0 0             0   0
+OFDM       1  B       12.0M  274     836    10.0       6.0      53.8       4     0 0             0   0
+OFDM       1 A    S   18.0M  275     568    14.3       8.5      53.8       5     0 0             0   0
+OFDM       1      S   24.0M  276     436    18.1       0.0       0.0       5     0 1            80   1778
+OFDM       1          36.0M  277     300    24.9       0.0       0.0       0     0 1             0   107
+OFDM       1      S   48.0M  278     236    30.4       0.0       0.0       0     0 0             0   75
+OFDM       1          54.0M  279     212    33.0       0.0       0.0       0     0 0             0   72
+
+Total packet count::    ideal 16582      lookaround 885
+Average # of aggregated frames per A-MPDU: 1.0
+
+Debugging showed that the rate statistics for the first four rates where
+stored in the MINSTREL_CCK_GROUP instead of the MINSTREL_OFDM_GROUP because
+in minstrel_ht_get_stats() the supported check was not honoured as done in
+various other places, e.g net/mac80211/rc80211_minstrel_ht_debugfs.c:
+
+ 74                 if (!(mi->supported[i] & BIT(j)))
+ 75                         continue;
+
+With the patch applied the output looks good:
+
+              best    ____________rate__________    ____statistics___    _____last____    ______sum-of________
+mode guard #  rate   [name   idx airtime  max_tp]  [avg(tp) avg(prob)]  [retry|suc|att]  [#success | #attempts]
+OFDM       1    D      6.0M  272    1640     5.2       5.2     100.0       3     0 0             1   1
+OFDM       1   C       9.0M  273    1104     7.7       7.7     100.0       4     0 0            38   38
+OFDM       1  B       12.0M  274     836    10.0       9.9      89.5       4     2 2           372   395
+OFDM       1 A   P    18.0M  275     568    14.3      14.3      97.2       5    52 53         6956   7181
+OFDM       1      S   24.0M  276     436    18.1       0.0       0.0       0     0 1             6   163
+OFDM       1          36.0M  277     300    24.9       0.0       0.0       0     0 1             0   35
+OFDM       1      S   48.0M  278     236    30.4       0.0       0.0       0     0 0             0   38
+OFDM       1      S   54.0M  279     212    33.0       0.0       0.0       0     0 0             0   38
+
+Total packet count::    ideal 7097      lookaround 287
+Average # of aggregated frames per A-MPDU: 1.0
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+Link: https://lore.kernel.org/r/20220404165414.1036-1-ps.report@gmx.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/ipw2x00/libipw_tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/rc80211_minstrel_ht.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_tx.c b/drivers/net/wireless/intel/ipw2x00/libipw_tx.c
-index 36d1e6b2568d..4aec1fce1ae2 100644
---- a/drivers/net/wireless/intel/ipw2x00/libipw_tx.c
-+++ b/drivers/net/wireless/intel/ipw2x00/libipw_tx.c
-@@ -383,7 +383,7 @@ netdev_tx_t libipw_xmit(struct sk_buff *skb, struct net_device *dev)
+diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
+index 9c6ace858107..5a6bf46a4248 100644
+--- a/net/mac80211/rc80211_minstrel_ht.c
++++ b/net/mac80211/rc80211_minstrel_ht.c
+@@ -362,6 +362,9 @@ minstrel_ht_get_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
  
- 		/* Each fragment may need to have room for encryption
- 		 * pre/postfix */
--		if (host_encrypt)
-+		if (host_encrypt && crypt && crypt->ops)
- 			bytes_per_frag -= crypt->ops->extra_mpdu_prefix_len +
- 			    crypt->ops->extra_mpdu_postfix_len;
+ 	group = MINSTREL_CCK_GROUP;
+ 	for (idx = 0; idx < ARRAY_SIZE(mp->cck_rates); idx++) {
++		if (!(mi->supported[group] & BIT(idx)))
++			continue;
++
+ 		if (rate->idx != mp->cck_rates[idx])
+ 			continue;
  
 -- 
 2.35.1
