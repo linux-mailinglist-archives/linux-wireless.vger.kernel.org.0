@@ -2,76 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B14D55393D4
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 May 2022 17:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B8825394FD
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 May 2022 18:32:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345609AbiEaPUd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 May 2022 11:20:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47244 "EHLO
+        id S1346152AbiEaQcA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 May 2022 12:32:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237532AbiEaPUb (ORCPT
+        with ESMTP id S1346169AbiEaQb7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 May 2022 11:20:31 -0400
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF5B633AE;
-        Tue, 31 May 2022 08:20:30 -0700 (PDT)
-Received: by mail-oi1-f170.google.com with SMTP id k11so4244742oia.12;
-        Tue, 31 May 2022 08:20:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=5T9PqeW++1xR8KKb+9Iejw7mcxEUijjXojRIr46Glmk=;
-        b=fSj9MiGFVu/I11xxqO9+Jy+11hkELC+K7pW925nSsxDrjAa4brjDS/TKYwDlpZkv/I
-         +2+LtU4zREFKnWBzInsdw5dciR8/CCpBQftiSy5qpDtxLJXyyTcMDBvX8uOPEuDagvaG
-         n2KzM19l21s/WBOlh2jVrN1ItCO1JE5XI9dMh8bBfIPa+5iWMzxGA9OZr1FInEqi50Sy
-         FkcKLTvwK9kdt3C1SPh9B7Dg3j3zRGHPzDTjqkAeZg47PJirOGzYowmryymCHEGhpHBS
-         SYQ9td83unP5iiKKhhxCFdyYWKuauzkuDMCrX1oEAK862MAMdxQb2ClAk+CoPYV96sAK
-         xVkg==
-X-Gm-Message-State: AOAM532AyLpr8jNtV/xCLgUu5GqSsd5k+YvgRSkoKBHGGTcIBK7G9fUz
-        ePZOOriDLiD4PtxF/ikAlw==
-X-Google-Smtp-Source: ABdhPJxjR2JRyWzVqnm7ztIPcE+YpVknf54yXEDm7ZWqZcTjkkBQ/BU8e6ghx/26uMLfuoLOoS41AA==
-X-Received: by 2002:aca:61c1:0:b0:2ec:d091:ff53 with SMTP id v184-20020aca61c1000000b002ecd091ff53mr12581172oib.235.1654010430172;
-        Tue, 31 May 2022 08:20:30 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id r19-20020a056820039300b00333220959b9sm6169928ooj.1.2022.05.31.08.20.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 May 2022 08:20:29 -0700 (PDT)
-Received: (nullmailer pid 1785018 invoked by uid 1000);
-        Tue, 31 May 2022 15:20:28 -0000
-Date:   Tue, 31 May 2022 10:20:28 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Biao Huang <biao.huang@mediatek.com>
-Cc:     netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] dt-bindings: net: Fix unevaluatedProperties warnings in
- examples
-Message-ID: <20220531152028.GF1742958-robh@kernel.org>
-References: <20220526014149.2872762-1-robh@kernel.org>
+        Tue, 31 May 2022 12:31:59 -0400
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2521B49A
+        for <linux-wireless@vger.kernel.org>; Tue, 31 May 2022 09:31:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1654014717; x=1685550717;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=1cPvus7fKmvFBoSVFioWFzPZTRn7k5ZIyp8cpXTF7hU=;
+  b=gmAzVgE9RMYAiUcRwoW9vspo63cTk+Ems1f6FhujsJmGBUXCToyqnRZd
+   9SDOi674XAl+gI5sAq3HzDugdPdINlX+OlYAC+8Vp7VVjHWC0t2BdvS90
+   4b/on/PHSg/IekipwvJvFjGQFEKNZXpOW+0OaKqAO81/vN6EU6FKo2tcj
+   A=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 31 May 2022 09:31:57 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2022 09:31:56 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Tue, 31 May 2022 09:31:56 -0700
+Received: from [10.110.67.112] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Tue, 31 May
+ 2022 09:31:55 -0700
+Message-ID: <ed095171-3617-3066-e3df-8091f84078a2@quicinc.com>
+Date:   Tue, 31 May 2022 09:31:54 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220526014149.2872762-1-robh@kernel.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH 0/4] initial interface-related MLO work
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+References: <20220520113242.129546-1-johannes@sipsolutions.net>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20220520113242.129546-1-johannes@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,18 +65,55 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, May 25, 2022 at 08:41:48PM -0500, Rob Herring wrote:
-> The 'unevaluatedProperties' schema checks is not fully working and doesn't
-> catch some cases where there's a $ref to another schema. A fix is pending,
-> but results in new warnings in examples. Fix the warnings by removing
-> spurious properties or adding missing properties to the schema.
+On 5/20/2022 4:32 AM, Johannes Berg wrote:
+> Hi,
 > 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  Documentation/devicetree/bindings/net/cdns,macb.yaml           | 1 -
->  Documentation/devicetree/bindings/net/mediatek,net.yaml        | 3 +++
->  Documentation/devicetree/bindings/net/mediatek-dwmac.yaml      | 3 +++
->  .../devicetree/bindings/net/wireless/mediatek,mt76.yaml        | 2 +-
->  4 files changed, 7 insertions(+), 2 deletions(-)
+> (Note the dependency on these three patches:
+> https://lore.kernel.org/linux-wireless/20220519232721.af7f735316fb.I77ae111a28f7c0e9fd1ebcee7f39dbec5c606770@changeid/)
+> 
+> This series contains initial refactoring of data structures in both
+> cfg80211 and mac80211 for MLO support. This is likely not complete,
+> but it serves to illustrate the future layout of data structures in
+> the stack with MLO support.
+> 
+> This also doesn't enable anything yet - you cannot use the link ID
+> attribute yet since you cannot use the new ADD_LINK command, it's
+> gated by a wiphy flag that isn't set.
+> 
+> However, this is a stepping stone - from here, we can even consider
+> splitting up work, e.g. separately focus on AP mode, clients with
+> AUTH/ASSOC, and clients with CONNECT (i.e. not mac80211).
+> 
+> The next things with this would be:
+>   1) Look at the auth/assoc APIs, at present I'm not even
+>      certain where we do what, I guess userspace would pick
+>      the BSS entries and send them in the LINKS attribute,
+>      per link, or so, and mac80211 builds the multi-link
+>      element(s) as appropriate?
+> 
+>   2) Look at interface combinations advertisement and tie it
+>      into this patch where appropriate; Vasanth is looking
+>      at this.
+> 
+>   3) Try to get to a point where we can at least start the
+>      beaconing process, i.e. look at mac80211 much more and
+>      refactor data structures there.
+> 
+> I'll probably start with (3) since at least beaconing lets
+> me then test at least scanning for (1) and perhaps sending
+> the association request etc.
+> 
+> I'm aware that this leaves a number of FIXME comments in cfg80211,
+> we'll have to fill those in as we port features to MLD one by one.
+> 
+> We'll also have to properly implement the REMOVE_LINK command and
+> various other bits here and there, but I think with these patches
+> we can start working in different areas independently.
+> 
+> johannes
 
-Applied, thanks.
+Thanks Johannes,
+This is a great start, and looks good to me and my team!
+
+/jeff
+
