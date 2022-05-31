@@ -2,110 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 166BA538C44
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 May 2022 09:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 628FB538CBE
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 May 2022 10:23:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237048AbiEaHvY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 May 2022 03:51:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38104 "EHLO
+        id S240098AbiEaIXa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 May 2022 04:23:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244640AbiEaHvR (ORCPT
+        with ESMTP id S244788AbiEaIXP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 May 2022 03:51:17 -0400
-Received: from zg8tmtyylji0my4xnjqunzqa.icoremail.net (zg8tmtyylji0my4xnjqunzqa.icoremail.net [162.243.164.74])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id ACEF19549D
-        for <linux-wireless@vger.kernel.org>; Tue, 31 May 2022 00:50:57 -0700 (PDT)
-Received: by ajax-webmail-mail-app2 (Coremail) ; Tue, 31 May 2022 15:50:38
- +0800 (GMT+08:00)
-X-Originating-IP: [106.117.80.109]
-Date:   Tue, 31 May 2022 15:50:38 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   duoming@zju.edu.cn
-To:     "Kalle Valo" <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, pontus.fuchs@gmail.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH wireless] ar5523: Fix deadlock bugs caused by
- cancel_work_sync in ar5523_stop
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210104(ab8c30b6)
- Copyright (c) 2002-2022 www.mailtech.cn zju.edu.cn
-In-Reply-To: <877d63uuuj.fsf@kernel.org>
-References: <20220522133055.96405-1-duoming@zju.edu.cn>
- <877d63uuuj.fsf@kernel.org>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+        Tue, 31 May 2022 04:23:15 -0400
+Received: from mail.onlinesuccesses.pl (mail.onlinesuccesses.pl [198.244.150.235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0401226E7
+        for <linux-wireless@vger.kernel.org>; Tue, 31 May 2022 01:23:15 -0700 (PDT)
+Received: by mail.onlinesuccesses.pl (Postfix, from userid 1002)
+        id 2A94BAE353; Tue, 31 May 2022 08:17:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onlinesuccesses.pl;
+        s=mail; t=1653985054;
+        bh=nE8HqilgMh4dy7+Z8ksfg7Bc9rmPeQtYFq3/3YR2ODU=;
+        h=Date:From:To:Subject:From;
+        b=g5bCsD3vWzqokOn3JJDL6Fgf0BEIICGFKhblxjSxSN15CZcJPys9bf+nbKYzTUBW3
+         mywJHo6OerRkmpSPkJ4XObvhHPcyG2De9BW6fpn5bNj2hxPnnsXXo2tLG0+hkfPh2y
+         G6LILiI3tzxsKUOadxJfs3MiQ4MgBj/eMVsVWDZmERccTpU5A5kh2PoyMV3/PMHl4g
+         9PxFMTWO+mmk3LjAHFN+VWRP96t69UwP8Ra6TGqnx2cxU8frt6seh/DMSitGL/DL4M
+         lmYQrpnYb1cBmCxPICMyEnGlQ0ydGABeWiH1XbzpyrzoGHDD7g6gFK7Q60WpskgFNO
+         qUhOnngq5mnnQ==
+Received: by mail.onlinesuccesses.pl for <linux-wireless@vger.kernel.org>; Tue, 31 May 2022 08:15:36 GMT
+Message-ID: <20220531064501-0.1.4l.1ddcl.0.8z5frcgdgd@onlinesuccesses.pl>
+Date:   Tue, 31 May 2022 08:15:36 GMT
+From:   "Wiktor Zielonko" <wiktor.zielonko@onlinesuccesses.pl>
+To:     <linux-wireless@vger.kernel.org>
+Subject: Ruch z pierwszej pozycji w Google
+X-Mailer: mail.onlinesuccesses.pl
 MIME-Version: 1.0
-Message-ID: <666661b7.4331b.18119186503.Coremail.duoming@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: by_KCgDH3EDOyJVidrcTAQ--.25771W
-X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAgIHAVZdtZ+JzwABsg
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-        daVFxhVjvjDU=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGVsbG8sCgpPbiBNb24sIDMwIE1heSAyMDIyIDE0OjI0OjA0ICswMzAwIEthbGxlIFZhbG8gd3Jv
-dGU6Cgo+IER1b21pbmcgWmhvdSA8ZHVvbWluZ0B6anUuZWR1LmNuPiB3cml0ZXM6Cj4gCj4gPiBJ
-ZiB0aGUgd29yayBpdGVtIGlzIHJ1bm5pbmcsIHRoZSBjYW5jZWxfd29ya19zeW5jIGluIGFyNTUy
-M19zdG9wIHdpbGwKPiA+IG5vdCByZXR1cm4gdW50aWwgd29yayBpdGVtIGlzIGZpbmlzaGVkLiBJ
-ZiB3ZSBob2xkIG11dGV4X2xvY2sgYW5kIHVzZQo+ID4gY2FuY2VsX3dvcmtfc3luYyB0byB3YWl0
-IHRoZSB3b3JrIGl0ZW0gdG8gZmluaXNoLCB0aGUgd29yayBpdGVtIHN1Y2ggYXMKPiA+IGFyNTUy
-M190eF93ZF93b3JrIGFuZCBhcjU1MjNfdHhfd29yayBhbHNvIHJlcXVpcmUgbXV0ZXhfbG9jay4g
-QXMgYSByZXN1bHQsCj4gPiB0aGUgYXI1NTIzX3N0b3Agd2lsbCBiZSBibG9ja2VkIGZvcmV2ZXIu
-IE9uZSBvZiB0aGUgcmFjZSBjb25kaXRpb25zIGlzCj4gPiBzaG93biBiZWxvdzoKPiA+Cj4gPiAg
-ICAgKFRocmVhZCAxKSAgICAgICAgICAgICB8ICAgKFRocmVhZCAyKQo+ID4gYXI1NTIzX3N0b3Ag
-ICAgICAgICAgICAgICAgfAo+ID4gICBtdXRleF9sb2NrKCZhci0+bXV0ZXgpICAgfCBhcjU1MjNf
-dHhfd2Rfd29yawo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIG11dGV4X2xvY2so
-JmFyLT5tdXRleCkKPiA+ICAgY2FuY2VsX3dvcmtfc3luYyAgICAgICAgIHwgICAuLi4KPiA+Cj4g
-PiBUaGlzIHBhdGNoIG1vdmVzIGNhbmNlbF93b3JrX3N5bmMgb3V0IG9mIG11dGV4X2xvY2sgaW4g
-b3JkZXIgdG8gbWl0aWdhdGUKPiA+IGRlYWRsb2NrIGJ1Z3MuCj4gPgo+ID4gRml4ZXM6IGI3ZDU3
-MmUxODcxZCAoImFyNTUyMzogQWRkIG5ldyBkcml2ZXIiKQo+ID4gU2lnbmVkLW9mZi1ieTogRHVv
-bWluZyBaaG91IDxkdW9taW5nQHpqdS5lZHUuY24+Cj4gCj4gSSBhc3N1bWUgeW91IGhhdmUgZm91
-bmQgdGhpcyB3aXRoIGEgc3RhdGljIGNoZWNrZXIgdG9vbCwgaXQgd291bGQgYmUKPiBnb29kIGRv
-Y3VtZW50IHdoYXQgdG9vbCB5b3UgYXJlIHVzaW5nLiBBbmQgaWYgeW91IGhhdmUgbm90IHRlc3Rl
-ZCB0aGlzCj4gd2l0aCByZWFsIGhhcmR3YXJlIGNsZWFybHkgbWVudGlvbiB0aGF0IHdpdGggIkNv
-bXBpbGUgdGVzdGVkIG9ubHkiLgo+IAo+ID4gLS0tCj4gPiAgZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-YXRoL2FyNTUyMy9hcjU1MjMuYyB8IDIgKysKPiA+ICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRp
-b25zKCspCj4gPgo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2F0aC9hcjU1
-MjMvYXI1NTIzLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9hdGgvYXI1NTIzL2FyNTUyMy5jCj4g
-PiBpbmRleCA5Y2FiZDM0MmQxNS4uOTlkNmIxM2ZmY2YgMTAwNjQ0Cj4gPiAtLS0gYS9kcml2ZXJz
-L25ldC93aXJlbGVzcy9hdGgvYXI1NTIzL2FyNTUyMy5jCj4gPiArKysgYi9kcml2ZXJzL25ldC93
-aXJlbGVzcy9hdGgvYXI1NTIzL2FyNTUyMy5jCj4gPiBAQCAtMTA3MSw4ICsxMDcxLDEwIEBAIHN0
-YXRpYyB2b2lkIGFyNTUyM19zdG9wKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3KQo+ID4gIAlhcjU1
-MjNfY21kX3dyaXRlKGFyLCBXRENNU0dfVEFSR0VUX1NUT1AsIE5VTEwsIDAsIDApOwo+ID4gIAo+
-ID4gIAlkZWxfdGltZXJfc3luYygmYXItPnR4X3dkX3RpbWVyKTsKPiA+ICsJbXV0ZXhfdW5sb2Nr
-KCZhci0+bXV0ZXgpOwo+ID4gIAljYW5jZWxfd29ya19zeW5jKCZhci0+dHhfd2Rfd29yayk7Cj4g
-PiAgCWNhbmNlbF93b3JrX3N5bmMoJmFyLT5yeF9yZWZpbGxfd29yayk7Cj4gPiArCW11dGV4X2xv
-Y2soJmFyLT5tdXRleCk7Cj4gPiAgCWFyNTUyM19jYW5jZWxfcnhfYnVmcyhhcik7Cj4gPiAgCW11
-dGV4X3VubG9jaygmYXItPm11dGV4KTsKPiA+ICB9Cj4gCj4gUmVsZWFzaW5nIGEgbG9jayBhbmQg
-dGFraW5nIGl0IGFnYWluIGxvb2tzIGxpa2UgYSBoYWNrIHRvIG1lLiBQbGVhc2UKPiB0ZXN0IHdp
-dGggYSByZWFsIGRldmljZSBhbmQgdHJ5IHRvIGZpbmQgYSBiZXR0ZXIgc29sdXRpb24uCgpUaGUg
-Zm9sbG93aW5nIGlzIGEgbmV3IHNvbHV0aW9uOgoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL2F0aC9hcjU1MjMvYXI1NTIzLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9hdGgvYXI1
-NTIzL2FyNTUyMy5jCmluZGV4IDljYWJkMzQyZDE1Li44YWRhZTg1ZmNiOSAxMDA2NDQKLS0tIGEv
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2FyNTUyMy9hcjU1MjMuYworKysgYi9kcml2ZXJzL25l
-dC93aXJlbGVzcy9hdGgvYXI1NTIzL2FyNTUyMy5jCkBAIC05MTAsNyArOTEwLDExIEBAIHN0YXRp
-YyB2b2lkIGFyNTUyM190eF93ZF93b3JrKHN0cnVjdCB3b3JrX3N0cnVjdCAqd29yaykKICAgICAg
-ICAgKiByZWNvdmVyIHNlZW1zIHRvIGJlIHRvIHJlc2V0IHRoZSBkb25nbGUuCiAgICAgICAgICov
-CgotICAgICAgIG11dGV4X2xvY2soJmFyLT5tdXRleCk7CisgICAgICAgaWYoIW11dGV4X3RyeWxv
-Y2soJmFyLT5tdXRleCkpIHsKKyAgICAgICAgICAgICAgIGlmKHRlc3RfYml0KEFSNTUyM19IV19V
-UCwgJmFyLT5mbGFncykpCisgICAgICAgICAgICAgICAgICAgICAgIGllZWU4MDIxMV9xdWV1ZV93
-b3JrKGFyLT5odywgJmFyLT50eF93ZF93b3JrKTsKKyAgICAgICAgICAgICAgIHJldHVybjsKKyAg
-ICAgICB9CiAgICAgICAgYXI1NTIzX2VycihhciwgIlRYIHF1ZXVlIHN0dWNrICh0b3QgJWQgcGVu
-ZCAlZClcbiIsCiAgICAgICAgICAgICAgICAgICBhdG9taWNfcmVhZCgmYXItPnR4X25yX3RvdGFs
-KSwKICAgICAgICAgICAgICAgICAgIGF0b21pY19yZWFkKCZhci0+dHhfbnJfcGVuZGluZykpOwoK
-SWYgYXI1NTIzX3N0b3AoKSBoYXMgYWNxdWlyZWQgImFyLT5tdXRleCIgbG9jaywgdGhlIGFyNTUy
-M190eF93ZF93b3JrKCkgd2lsbCBkaXJlY3RseSByZXR1cm4uCklmICJhci0+bXV0ZXgiIGxvY2sg
-aGFzIGFjcXVpcmVkIGJ5IG90aGVyIGZ1bmN0aW9ucyBleGNlcHQgYXI1NTIzX3N0b3AoKSwgYXI1
-NTIzX3R4X3dkX3dvcmsoKQp3aWxsIHJlLXF1ZXVlIGl0c2VsZi4KClNvLCB0aGlzIHNvbHV0aW9u
-IGNvdWxkIG1pdGlnYXRlIHRoZSBkZWFkbG9jayBiZXR3ZWVuIGFyNTUyM19zdG9wKCkgYW5kIGFy
-NTUyM190eF93ZF93b3JrKCkuCgpCZXN0IHJlZ2FyZHMsCkR1b21pbmcgWmhvdQ==
+Dzie=C5=84 dobry,=20
+
+jaki=C5=9B czas temu zg=C5=82osi=C5=82a si=C4=99 do nas firma, kt=C3=B3re=
+j strona internetowa nie pozycjonowa=C5=82a si=C4=99 wysoko w wyszukiwarc=
+e Google.=20
+
+Na podstawie wykonanego przez nas audytu SEO zoptymalizowali=C5=9Bmy tre=C5=
+=9Bci na stronie pod k=C4=85tem wcze=C5=9Bniej opracowanych s=C5=82=C3=B3=
+w kluczowych. Nasz wewn=C4=99trzny system codziennie analizuje prawid=C5=82=
+owe dzia=C5=82anie witryny.  Dzi=C4=99ki indywidualnej strategii, firma z=
+dobywa coraz wi=C4=99cej Klient=C3=B3w. =20
+
+Czy chcieliby Pa=C5=84stwo zwi=C4=99kszy=C4=87 liczb=C4=99 os=C3=B3b odwi=
+edzaj=C4=85cych stron=C4=99 internetow=C4=85 firmy? M=C3=B3g=C5=82bym prz=
+edstawi=C4=87 ofert=C4=99?=20
+
+
+Pozdrawiam serdecznie,
+Wiktor Zielonko
