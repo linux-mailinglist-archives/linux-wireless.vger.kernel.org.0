@@ -2,244 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4455A538E86
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 May 2022 12:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 931E9538EE6
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 May 2022 12:30:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245422AbiEaKJ5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 May 2022 06:09:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44640 "EHLO
+        id S245727AbiEaK3u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 May 2022 06:29:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245400AbiEaKJu (ORCPT
+        with ESMTP id S245730AbiEaK3r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 May 2022 06:09:50 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80E68996AD;
-        Tue, 31 May 2022 03:09:48 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id k16so13642271wrg.7;
-        Tue, 31 May 2022 03:09:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=PSCX4PHCAROocqljRy3ZnI/Dr3u/fImtm88PpfecH+0=;
-        b=hgL7i4XhVKnDz+kV6ZUE7M1I5YWxgyeFW2IZF2mSrdg4RvA1wzUpEjpZp0UL8CTzy4
-         +6zDKiJjI/xbhMEf/hdKbj+GEz7nQr3s94DqNwb4DnmCKFcUxk0OeQ9vQCKA6ez2anWb
-         QbVooWUWhpKl2Yn7AHI9HP6ngfob1aHHe5a9xbOSfuj2OmrK4N9X477rxL8O9b1OsD+g
-         PtUvha7RK1clPNKDMorU2IBsVZJQsvxfkCMkcfShi9SxTLwHDC7bnNoB0Lxi8+/+AkuR
-         HCru7e1wLgDwrbmJYV3oA2c3aN4+ehq1Vicg0eUYQqvQ1+C0RNIh4ob3SZt4spKW/PxT
-         i8Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=PSCX4PHCAROocqljRy3ZnI/Dr3u/fImtm88PpfecH+0=;
-        b=LZzoGtgAci/jXSpdWjGrhinc4o/sUt+cQXdag+rSLtNDMYiAuc2iQnHFJI3WEKRxO4
-         strcHSNd5+7myhZzJVg4ho7XCEWjaYMCJf7xf39NGtk4bmqn5gUlHKbpHZUEE5ezSHWg
-         3xfMb5qkAxQpAwTUOBmYZgTmv711zX+gY+xymVRKt0S4h9EBv89K/ELBKKLbCLnTmQfN
-         McXVr1ws15hSW/3g8XerGVj4KiV6aLl9rK5itdCOar+yu2ciEEMYKs1uFV7zS23123nt
-         0uovx2uwZVYCgbtf7XPP3Wso36jpM/s9/a3bT77ySqCqeC0PArWRelHEe1kbVBW25Nis
-         CChg==
-X-Gm-Message-State: AOAM533QdCfhHe4mtuCJTLst/RNiWMUnotfZgJN2Drrgn0POF/k7iglI
-        tWCtES4wkLVfvEf3afp6y4M=
-X-Google-Smtp-Source: ABdhPJzEABsFC0dAQtKAZa34WuskN0k+eNzR8nofFV3y4fHwJcykXVBdRQaxtQGc/Y72uF6IkW2opA==
-X-Received: by 2002:a05:6000:1542:b0:20f:f809:cf89 with SMTP id 2-20020a056000154200b0020ff809cf89mr27658582wry.361.1653991786933;
-        Tue, 31 May 2022 03:09:46 -0700 (PDT)
-Received: from baligh-ThinkCentre-M720q.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.googlemail.com with ESMTPSA id n6-20020a05600c4f8600b0039b006bd6d9sm1975543wmq.6.2022.05.31.03.09.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 May 2022 03:09:46 -0700 (PDT)
-From:   Baligh Gasmi <gasmibal@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Baligh Gasmi <gasmibal@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org (open list:MAC80211),
-        netdev@vger.kernel.org (open list:NETWORKING [GENERAL]),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [RFC PATCH v3 1/1] mac80211: use AQL airtime for expected throughput.
-Date:   Tue, 31 May 2022 12:09:22 +0200
-Message-Id: <20220531100922.491344-1-gasmibal@gmail.com>
-X-Mailer: git-send-email 2.36.1
+        Tue, 31 May 2022 06:29:47 -0400
+Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D45AB9A9BD
+        for <linux-wireless@vger.kernel.org>; Tue, 31 May 2022 03:29:43 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.w1.fi (Postfix) with ESMTP id 5922410FE6;
+        Tue, 31 May 2022 10:29:42 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at w1.fi
+Received: from mail.w1.fi ([127.0.0.1])
+        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id yksIswjC4KIL; Tue, 31 May 2022 10:29:40 +0000 (UTC)
+Received: by jm (sSMTP sendmail emulation); Tue, 31 May 2022 13:29:38 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
+        t=1653992980; bh=8ElSHmuLvrxixw5fyWuxpZWSKmxc7jARvKspZTkCjH4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=xZpYlMDt3QrwIOC9w9BreTCwWc4fM1sIEVpF4cQUH9y5CbYKx8e6RuJuDPX14lNoP
+         jkx+CskcrqAcPBJBXEC5anxaq7P7CvDWQyiD5WjCcr/LUtMXgLtjBTntLTXR1N0naV
+         ErwRIj8PHnq3IgBQkbwLrmDwqQ5lr5FvOVVnxAg9Gp2PuJbSdGfmbEjwbf+rVpl6Xe
+         rJrgfwOhXHTaeaHMY491XMLPw6JBa1jq4kGML+aAKzhkFPvAdd2gA0Fb+WP/zu9hsm
+         Tv9bQFVE6My0VEsmtK3S26QlE5i4ub+Hi6sovLF+YPdf1Yb5jjgK9I+VZNU0RD0KXn
+         9weaWFML6SjPw==
+Date:   Tue, 31 May 2022 13:29:38 +0300
+From:   Jouni Malinen <j@w1.fi>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     hostap@lists.infradead.org,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: using WPA3 SAE
+Message-ID: <20220531102938.GA425760@w1.fi>
+References: <18b4d773-a7b4-54a2-4742-a368bf535384@broadcom.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <18b4d773-a7b4-54a2-4742-a368bf535384@broadcom.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since the integration of AQL, packet TX airtime estimation is
-calculated and counted to be used for the dequeue limit.
+On Tue, May 31, 2022 at 10:44:32AM +0200, Arend van Spriel wrote:
+> I am trying to get WPA3 SAE working with brcmfmac driver. Actually it was
+> Cypress who added support for that in brcmfmac, but for me it fails now
+> because wpa_versions bitmask we get from nl80211 indicates only WPA2. I know
+> that wpa_supplicant does not make a difference in the config network block,
+> but I did not expect that choice to affect nl80211 API usage. Do you
+> consider this a bug in driver_nl80211.c? In nl80211 in the kernel we do not
+> check wpa_versions versus key management suites so I guess other vendor
+> drivers are more lenient.
 
-Use this estimated airtime to compute expected throughput for
-each station.
+Why would one need WPA3 indication to be able to use SAE? SAE was
+defined in IEEE Std 802.11-2011, i.e., almost ten years before WPA3 was
+launched. It worked and still works just fine without WPA3.
+WPA3-Personal just happens to be a marketing name for SAE with PMF
+enabled. So no, this is certainly not a bug in driver_nl80211.c, but
+IMHO, a somewhat strange constraint in a driver to try to prevent SAE
+from being used. No driver should place such arbitrary constraints on
+being able to use more secure mechanisms.
 
-It will be a generic mac80211 implementation. If the driver has
-get_expected_throughput implementation, it will be used instead.
+I don't see much, if any, real use for the NL80211_WPA_VERSION_3 bit in
+nl80211 since it should not result in any difference in driver behavior.
+SAE can be used without it being called WPA3-Personal and so can PMF.
 
-Useful for L2 routing protocols, like B.A.T.M.A.N.
+All that said, if someone really wants to use NL80211_WPA_VERSION_3 for
+something, I don't think I would have anything against making
+wpa_supplicant add that bit when including the NL80211_ATTR_WPA_VERSIONS
+attribute for cases where both SAE and PMF are enabled for a connection.
+I would not promote use of this in any driver, though, since it would
+just result in issues with older versions of user space components and
+there does is no WPA3 specific functionality that would be enabled (or
+disabled) based on that bit.
 
-Signed-off-by: Baligh Gasmi <gasmibal@gmail.com>
----
- net/mac80211/driver-ops.h |  2 ++
- net/mac80211/sta_info.c   | 39 +++++++++++++++++++++++++++++++++++++++
- net/mac80211/sta_info.h   | 11 +++++++++++
- net/mac80211/status.c     |  2 ++
- net/mac80211/tx.c         |  8 +++++++-
- 5 files changed, 61 insertions(+), 1 deletion(-)
-
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index 4e2fc1a08681..fa9952154795 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -1142,6 +1142,8 @@ static inline u32 drv_get_expected_throughput(struct ieee80211_local *local,
- 	trace_drv_get_expected_throughput(&sta->sta);
- 	if (local->ops->get_expected_throughput && sta->uploaded)
- 		ret = local->ops->get_expected_throughput(&local->hw, &sta->sta);
-+	else
-+		ret = ewma_avg_est_tp_read(&sta->deflink.status_stats.avg_est_tp);
- 	trace_drv_return_u32(local, ret);
- 
- 	return ret;
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index e04a0905e941..201aab465234 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1993,6 +1993,45 @@ void ieee80211_sta_update_pending_airtime(struct ieee80211_local *local,
- 			       tx_pending, 0);
- }
- 
-+void ieee80211_sta_update_tp(struct ieee80211_local *local,
-+			     struct sta_info *sta,
-+			     struct sk_buff *skb,
-+			     u16 tx_time_est,
-+			     bool ack, int retry)
-+{
-+	unsigned long diff;
-+	struct rate_control_ref *ref = NULL;
-+
-+	if (!skb || !sta || !tx_time_est)
-+		return;
-+
-+	if (test_sta_flag(sta, WLAN_STA_RATE_CONTROL))
-+		ref = sta->rate_ctrl;
-+
-+	if (ref && ref->ops->get_expected_throughput)
-+		return;
-+
-+	if (local->ops->get_expected_throughput)
-+		return;
-+
-+	tx_time_est += ack ? 4 : 0;
-+	tx_time_est += retry ? retry * 2 : 2;
-+
-+	sta->deflink.tx_stats.tp_tx_size += (skb->len * 8) * 1000;
-+	sta->deflink.tx_stats.tp_tx_time_est += tx_time_est;
-+
-+	diff = jiffies - sta->deflink.status_stats.last_tp_update;
-+	if (diff > HZ / 10) {
-+		ewma_avg_est_tp_add(&sta->deflink.status_stats.avg_est_tp,
-+				    sta->deflink.tx_stats.tp_tx_size /
-+				    sta->deflink.tx_stats.tp_tx_time_est);
-+
-+		sta->deflink.tx_stats.tp_tx_size = 0;
-+		sta->deflink.tx_stats.tp_tx_time_est = 0;
-+		sta->deflink.status_stats.last_tp_update = jiffies;
-+	}
-+}
-+
- int sta_info_move_state(struct sta_info *sta,
- 			enum ieee80211_sta_state new_state)
- {
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index 35c390bedfba..4200856fefcd 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -123,6 +123,7 @@ enum ieee80211_sta_info_flags {
- #define HT_AGG_STATE_STOP_CB		7
- #define HT_AGG_STATE_SENT_ADDBA		8
- 
-+DECLARE_EWMA(avg_est_tp, 8, 16)
- DECLARE_EWMA(avg_signal, 10, 8)
- enum ieee80211_agg_stop_reason {
- 	AGG_STOP_DECLINED,
-@@ -157,6 +158,12 @@ void ieee80211_register_airtime(struct ieee80211_txq *txq,
- 
- struct sta_info;
- 
-+void ieee80211_sta_update_tp(struct ieee80211_local *local,
-+			     struct sta_info *sta,
-+			     struct sk_buff *skb,
-+			     u16 tx_time_est,
-+			     bool ack, int retry);
-+
- /**
-  * struct tid_ampdu_tx - TID aggregation information (Tx).
-  *
-@@ -549,6 +556,8 @@ struct link_sta_info {
- 		s8 last_ack_signal;
- 		bool ack_signal_filled;
- 		struct ewma_avg_signal avg_ack_signal;
-+		struct ewma_avg_est_tp avg_est_tp;
-+		unsigned long last_tp_update;
- 	} status_stats;
- 
- 	/* Updated from TX path only, no locking requirements */
-@@ -558,6 +567,8 @@ struct link_sta_info {
- 		struct ieee80211_tx_rate last_rate;
- 		struct rate_info last_rate_info;
- 		u64 msdu[IEEE80211_NUM_TIDS + 1];
-+		u64 tp_tx_size;
-+		u64 tp_tx_time_est;
- 	} tx_stats;
- 
- 	enum ieee80211_sta_rx_bandwidth cur_max_bandwidth;
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index e69272139437..1fb93abc1709 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -1152,6 +1152,8 @@ void ieee80211_tx_status_ext(struct ieee80211_hw *hw,
- 	ack_signal_valid =
- 		!!(info->status.flags & IEEE80211_TX_STATUS_ACK_SIGNAL_VALID);
- 
-+	ieee80211_sta_update_tp(local, sta, skb, tx_time_est, acked, retry_count);
-+
- 	if (pubsta) {
- 		struct ieee80211_sub_if_data *sdata = sta->sdata;
- 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 0e4efc08c762..e58d89c108a4 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3632,6 +3632,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	struct ieee80211_tx_data tx;
- 	ieee80211_tx_result r;
- 	struct ieee80211_vif *vif = txq->vif;
-+	struct rate_control_ref *ref = NULL;
- 
- 	WARN_ON_ONCE(softirq_count() == 0);
- 
-@@ -3790,8 +3791,13 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- encap_out:
- 	IEEE80211_SKB_CB(skb)->control.vif = vif;
- 
-+	if (tx.sta && test_sta_flag(tx.sta, WLAN_STA_RATE_CONTROL))
-+		ref = tx.sta->deflink.rate_ctrl;
-+
- 	if (vif &&
--	    wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL)) {
-+	    ((!local->ops->get_expected_throughput &&
-+	     (!ref || !ref->ops->get_expected_throughput)) ||
-+	    wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL))) {
- 		bool ampdu = txq->ac != IEEE80211_AC_VO;
- 		u32 airtime;
- 
 -- 
-2.36.1
-
+Jouni Malinen                                            PGP id EFC895FA
