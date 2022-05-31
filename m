@@ -2,228 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCC1F5397FC
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 May 2022 22:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98620539907
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 May 2022 23:51:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347754AbiEaUda (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 May 2022 16:33:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43606 "EHLO
+        id S1348222AbiEaVve (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 May 2022 17:51:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347751AbiEaUd2 (ORCPT
+        with ESMTP id S1348184AbiEaVva (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 May 2022 16:33:28 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0BDF8DDD2
-        for <linux-wireless@vger.kernel.org>; Tue, 31 May 2022 13:33:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654029207; x=1685565207;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=oLhRWt5/RvAT0daoMeS58JDv3UZIbA8x2lPxu/uVsTE=;
-  b=DDjTw86ejeRogR4BbwwflrDRKWQLvwm3uIpd0l6jyWpy8chQfjzzsGic
-   KGr7b318rpp8NjLDy9iCKHnRj3E1NVVQAsasan6D9v/XOjGiDK+2p5qwL
-   3vk548p5b6MNIO++398g794fl+H+3oONgvW+EqfljS3NR/YZRamQHt+sj
-   sxXepyKPn6qvlDjbUO+E/bPzXN6PiVRp67x4UphvV3X6inhFNG5KLrHSt
-   7DhjjKmkiyJSAL5NiLOYw5FMiSP5N8cEZ30TplHSWdn0cTf157HtuQwOF
-   +bXl15iLwMu2Bbnxfw3o4vit4EW+Q2Gk6Fb87fYmmJrNcnib+7Bs9SDPQ
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10364"; a="263012325"
-X-IronPort-AV: E=Sophos;i="5.91,266,1647327600"; 
-   d="scan'208";a="263012325"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2022 13:33:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,266,1647327600"; 
-   d="scan'208";a="904139528"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 31 May 2022 13:33:25 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nw8YO-000333-Jk;
-        Tue, 31 May 2022 20:33:24 +0000
-Date:   Wed, 01 Jun 2022 04:33:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: [wireless-next:mld] BUILD SUCCESS
- 252b352055a7d66f2c83d7abfe999d34c2dfb1f6
-Message-ID: <62967b8a.uOH0Cncr50NnvvRh%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Tue, 31 May 2022 17:51:30 -0400
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD5DC994C0;
+        Tue, 31 May 2022 14:51:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1654033889; x=1685569889;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ADSONrRrcYWIBItW/IDoJda+KltF0U2bPCMO56q/27Q=;
+  b=axl+sUbBgmnRpbpXqj9aJDIgDauyAg1hPJY9dezI/Kn+ifUv8OJYfXB8
+   8GRfqeViLsUUuf8K7wI+OP4hXJSSahTLChgEUEUSul5d9DLGoy+FwejVg
+   4MGvd5hSXBoG8a7kGMfQ8ZLCEc8DL5iiYDa4thJE3KWvjjel50/bq6Xd9
+   w=;
+Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 31 May 2022 14:51:29 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2022 14:51:28 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Tue, 31 May 2022 14:51:28 -0700
+Received: from [10.110.67.112] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Tue, 31 May
+ 2022 14:51:26 -0700
+Message-ID: <bbc9d5c1-6b05-4e8a-3141-ffdb23e586be@quicinc.com>
+Date:   Tue, 31 May 2022 14:51:25 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v2] ath11k: mhi: fix potential memory leak in
+ ath11k_mhi_register()
+Content-Language: en-US
+To:     Jianglei Nie <niejianglei2021@163.com>, <kvalo@kernel.org>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20220530080610.143925-1-niejianglei2021@163.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20220530080610.143925-1-niejianglei2021@163.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git mld
-branch HEAD: 252b352055a7d66f2c83d7abfe999d34c2dfb1f6  mac80211: correct link config data in tracing
+On 5/30/2022 1:06 AM, Jianglei Nie wrote:
+> mhi_alloc_controller() allocates a memory space for mhi_ctrl. When some
+> errors occur, mhi_ctrl should be freed by mhi_free_controller() and set
+> ab_pci->mhi_ctrl = NULL because ab_pci->mhi_ctrl has a dangling pointer
+> to the freed memory. But when ath11k_mhi_read_addr_from_dt() fails, the
+> function returns without calling mhi_free_controller(), which will lead
+> to a memory leak.
+> 
+> We can fix it by calling mhi_free_controller() when
+> ath11k_mhi_read_addr_from_dt() fails and set ab_pci->mhi_ctrl = NULL in
+> all of the places where we call mhi_free_controller().
+> 
+> Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
+> ---
+>   drivers/net/wireless/ath/ath11k/mhi.c | 17 ++++++++++-------
+>   1 file changed, 10 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
+> index fc3524e83e52..fc1bbf91c58e 100644
+> --- a/drivers/net/wireless/ath/ath11k/mhi.c
+> +++ b/drivers/net/wireless/ath/ath11k/mhi.c
+> @@ -367,8 +367,7 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
+>   	ret = ath11k_mhi_get_msi(ab_pci);
+>   	if (ret) {
+>   		ath11k_err(ab, "failed to get msi for mhi\n");
+> -		mhi_free_controller(mhi_ctrl);
+> -		return ret;
+> +		goto free_controller;
+>   	}
+>   
+>   	if (!test_bit(ATH11K_PCI_FLAG_MULTI_MSI_VECTORS, &ab_pci->flags))
+> @@ -377,7 +376,7 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
+>   	if (test_bit(ATH11K_FLAG_FIXED_MEM_RGN, &ab->dev_flags)) {
+>   		ret = ath11k_mhi_read_addr_from_dt(mhi_ctrl);
+>   		if (ret < 0)
+> -			return ret;
+> +			goto free_controller;
+>   	} else {
+>   		mhi_ctrl->iova_start = 0;
+>   		mhi_ctrl->iova_stop = 0xFFFFFFFF;
+> @@ -405,18 +404,22 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
+>   	default:
+>   		ath11k_err(ab, "failed assign mhi_config for unknown hw rev %d\n",
+>   			   ab->hw_rev);
+> -		mhi_free_controller(mhi_ctrl);
+> -		return -EINVAL;
+> +		ret = -EINVAL;
+> +		goto free_controller;
+>   	}
+>   
+>   	ret = mhi_register_controller(mhi_ctrl, ath11k_mhi_config);
+>   	if (ret) {
+>   		ath11k_err(ab, "failed to register to mhi bus, err = %d\n", ret);
+> -		mhi_free_controller(mhi_ctrl);
+> -		return ret;
+> +		goto free_controller;
+>   	}
+>   
+>   	return 0;
+> +
+> +free_controller:
+> +	mhi_free_controller(mhi_ctrl);
+> +	ab_pci->mhi_ctrl = NULL;
+> +	return ret;
+>   }
+>   
+>   void ath11k_mhi_unregister(struct ath11k_pci *ab_pci)
 
-elapsed time: 728m
+LGTM, thanks
 
-configs tested: 144
-configs skipped: 3
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm64                               defconfig
-arm64                            allyesconfig
-arm                              allmodconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                          randconfig-c001
-sh                  sh7785lcr_32bit_defconfig
-arm64                            alldefconfig
-sh                   sh7770_generic_defconfig
-sh                          lboxre2_defconfig
-sh                        sh7763rdp_defconfig
-powerpc                      pcm030_defconfig
-xtensa                  cadence_csp_defconfig
-m68k                             allmodconfig
-arm                        realview_defconfig
-arm                        mvebu_v7_defconfig
-arm                        spear6xx_defconfig
-powerpc                     pq2fads_defconfig
-openrisc                 simple_smp_defconfig
-powerpc                     tqm8555_defconfig
-sh                     magicpanelr2_defconfig
-m68k                       bvme6000_defconfig
-arm                          badge4_defconfig
-arc                                 defconfig
-xtensa                  nommu_kc705_defconfig
-arm                            zeus_defconfig
-alpha                            alldefconfig
-sparc                       sparc32_defconfig
-parisc64                         alldefconfig
-arc                           tb10x_defconfig
-sh                          sdk7786_defconfig
-powerpc                     stx_gp3_defconfig
-powerpc                      mgcoge_defconfig
-parisc                           alldefconfig
-h8300                               defconfig
-ia64                         bigsur_defconfig
-sh                        dreamcast_defconfig
-parisc                generic-64bit_defconfig
-arm                        clps711x_defconfig
-h8300                            alldefconfig
-powerpc                 mpc8540_ads_defconfig
-mips                       bmips_be_defconfig
-h8300                            allyesconfig
-sh                          r7780mp_defconfig
-microblaze                          defconfig
-sh                          rsk7269_defconfig
-powerpc                 linkstation_defconfig
-ia64                                defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-riscv                             allnoconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-csky                                defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-sh                               allmodconfig
-s390                                defconfig
-s390                             allmodconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                             allyesconfig
-sparc                               defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-arc                  randconfig-r043-20220531
-s390                 randconfig-r044-20220531
-riscv                randconfig-r042-20220531
-riscv                            allyesconfig
-riscv                            allmodconfig
-riscv                    nommu_k210_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_virt_defconfig
-riscv                               defconfig
-x86_64                    rhel-8.3-kselftests
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                                  kexec
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-
-clang tested configs:
-mips                 randconfig-c004-20220531
-x86_64                        randconfig-c007
-i386                          randconfig-c001
-s390                 randconfig-c005-20220531
-arm                  randconfig-c002-20220531
-powerpc              randconfig-c003-20220531
-riscv                randconfig-c006-20220531
-arm                            mmp2_defconfig
-mips                       rbtx49xx_defconfig
-powerpc                     mpc512x_defconfig
-arm                             mxs_defconfig
-mips                      maltaaprp_defconfig
-powerpc                     tqm5200_defconfig
-powerpc                     akebono_defconfig
-powerpc                   lite5200b_defconfig
-arm                   milbeaut_m10v_defconfig
-arm                           sama7_defconfig
-arm                         shannon_defconfig
-mips                malta_qemu_32r6_defconfig
-powerpc                     skiroot_defconfig
-powerpc                    ge_imp3a_defconfig
-mips                         tb0287_defconfig
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
-x86_64                        randconfig-a001
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-hexagon              randconfig-r041-20220531
-hexagon              randconfig-r045-20220531
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
