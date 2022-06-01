@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70FDE539E85
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 09:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ABF0539E87
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 09:40:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350329AbiFAHkO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jun 2022 03:40:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33642 "EHLO
+        id S1350325AbiFAHkL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jun 2022 03:40:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345381AbiFAHkG (ORCPT
+        with ESMTP id S1345110AbiFAHkG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 1 Jun 2022 03:40:06 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74899986E4
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E4DB972BE
         for <linux-wireless@vger.kernel.org>; Wed,  1 Jun 2022 00:40:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=x7ZQcFvXpMeB75paJmKGva+u4ftpNNQ94kdXj2XJjo8=;
-        t=1654069205; x=1655278805; b=HU1UWkPV/oe1peFu8FTNCeOYlFhh1CVZlVngqecAu+31Qql
-        3KJz/aJV4+szE1/m9GPrWcDpbqdbSOUCJnqwucdCnyqiV9EzOhzdOxPqV1/fDZFyWvudt76EAeAzU
-        /LLuPi9Zu/s3hObj/oPK8hirlIxHApKJLyLpwMwDLj06wov1yW07+z7AFSd+D0nhWRJPSslVb0ouQ
-        1nIVULSlQhkgBEZaEJJp4pzu8z6fD7ipf4cMK9X0A7liVIsks57sYbu27/o1WM5/k056eASD7Ep3R
-        fJpXv6t2oJpDa2VxawwANeSESHEAgQuxgTqTIDK/RCnSY0tNDh+gOSBjB6l3fIgA==;
+        Resent-Cc:Resent-Message-ID; bh=ma6NY/yDeNWSdZDnYqORkmknqq/c7h0TANOhkMUqrL8=;
+        t=1654069205; x=1655278805; b=RLRBiHvQE08iBupMnLVCvjvplufeU2TgOjXednGL9F9Xtgx
+        7nnTeYyRPs+ACSm44uL/q0ghUZ28gM0tnFwbuWTZqrj1irhJVoDBg1FC2dPNF8KuqLO2vhvK9SneA
+        8u8PQV35ndMrXJvkNAzShj9S6i9llr7L/5cme8XL10INddl6e/QnhrlrkM41r2l8Ni50cquBWnrAY
+        9bGY/JJU7qP/XPJQ0iX8u+10XgBzGE63XMf0vi/PFsnk6CS04HPEI2sBUtXRCWR8eE9NHxsqszGuh
+        hhR0WGktW+DrmopG0gtxjSFDaZP67KJ4KiYg2rOSPZMt3EaLwZ9+/g+akBFbHhoQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nwIxW-00AJPK-Lu;
-        Wed, 01 Jun 2022 09:40:02 +0200
+        id 1nwIxW-00AJPK-VL;
+        Wed, 01 Jun 2022 09:40:03 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 05/15] mac80211: remove sta_info_tx_streams()
-Date:   Wed,  1 Jun 2022 09:39:48 +0200
-Message-Id: <20220601093922.d4aa77956a2a.I204d488e980cbba5353fca23fed38d8205dbd4f7@changeid>
+Subject: [PATCH 06/15] mac80211: refactor some sta_info link handling
+Date:   Wed,  1 Jun 2022 09:39:49 +0200
+Message-Id: <20220601093922.6c0a4c18504b.I3424a3712c5005740d65a62ba766469dead8689c@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220601073958.8345-1-johannes@sipsolutions.net>
 References: <20220601073958.8345-1-johannes@sipsolutions.net>
@@ -52,73 +52,153 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-The function is unused since commit 52b4810bed83 ("mac80211: Remove
-support for changing AP SMPS mode") so we can just remove it.
+Refactor the code a bit to initialize a link belonging
+to a station, and (later) free all allocated links.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/sta_info.c | 35 -----------------------------------
- net/mac80211/sta_info.h |  1 -
- 2 files changed, 36 deletions(-)
+ net/mac80211/sta_info.c | 79 +++++++++++++++++++++++++++++------------
+ 1 file changed, 56 insertions(+), 23 deletions(-)
 
 diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 9a70d846d0dd..6f6d83def8b8 100644
+index 6f6d83def8b8..f20ce7bbcb39 100644
 --- a/net/mac80211/sta_info.c
 +++ b/net/mac80211/sta_info.c
-@@ -2093,41 +2093,6 @@ int sta_info_move_state(struct sta_info *sta,
+@@ -245,6 +245,20 @@ struct sta_info *sta_info_get_by_idx(struct ieee80211_sub_if_data *sdata,
+ 	return NULL;
+ }
+ 
++static void sta_info_free_links(struct sta_info *sta)
++{
++	unsigned int link_id;
++
++	for (link_id = 0; link_id < ARRAY_SIZE(sta->link); link_id++) {
++		if (!sta->link[link_id])
++			continue;
++		free_percpu(sta->link[link_id]->pcpu_rx_stats);
++
++		if (sta->link[link_id] != &sta->deflink)
++			kfree(sta->link[link_id]);
++	}
++}
++
+ /**
+  * sta_info_free - free STA
+  *
+@@ -287,7 +301,8 @@ void sta_info_free(struct ieee80211_local *local, struct sta_info *sta)
+ #ifdef CONFIG_MAC80211_MESH
+ 	kfree(sta->mesh);
+ #endif
+-	free_percpu(sta->deflink.pcpu_rx_stats);
++
++	sta_info_free_links(sta);
+ 	kfree(sta);
+ }
+ 
+@@ -333,6 +348,40 @@ static int sta_prepare_rate_control(struct ieee80211_local *local,
  	return 0;
  }
  
--u8 sta_info_tx_streams(struct sta_info *sta)
--{
--	struct ieee80211_sta_ht_cap *ht_cap = &sta->sta.deflink.ht_cap;
--	u8 rx_streams;
--
--	if (!sta->sta.deflink.ht_cap.ht_supported)
--		return 1;
--
--	if (sta->sta.deflink.vht_cap.vht_supported) {
--		int i;
--		u16 tx_mcs_map =
--			le16_to_cpu(sta->sta.deflink.vht_cap.vht_mcs.tx_mcs_map);
--
--		for (i = 7; i >= 0; i--)
--			if ((tx_mcs_map & (0x3 << (i * 2))) !=
--			    IEEE80211_VHT_MCS_NOT_SUPPORTED)
--				return i + 1;
--	}
--
--	if (ht_cap->mcs.rx_mask[3])
--		rx_streams = 4;
--	else if (ht_cap->mcs.rx_mask[2])
--		rx_streams = 3;
--	else if (ht_cap->mcs.rx_mask[1])
--		rx_streams = 2;
--	else
--		rx_streams = 1;
--
--	if (!(ht_cap->mcs.tx_params & IEEE80211_HT_MCS_TX_RX_DIFF))
--		return rx_streams;
--
--	return ((ht_cap->mcs.tx_params & IEEE80211_HT_MCS_TX_MAX_STREAMS_MASK)
--			>> IEEE80211_HT_MCS_TX_MAX_STREAMS_SHIFT) + 1;
--}
--
- static struct ieee80211_sta_rx_stats *
- sta_get_last_rx_stats(struct sta_info *sta)
++static int sta_info_init_link(struct sta_info *sta,
++			      unsigned int link_id,
++			      struct link_sta_info *link_info,
++			      struct ieee80211_link_sta *link_sta,
++			      gfp_t gfp)
++{
++	struct ieee80211_local *local = sta->local;
++	struct ieee80211_hw *hw = &local->hw;
++	int i;
++
++	link_info->sta = sta;
++	link_info->link_id = link_id;
++
++	if (ieee80211_hw_check(hw, USES_RSS)) {
++		link_info->pcpu_rx_stats =
++			alloc_percpu_gfp(struct ieee80211_sta_rx_stats, gfp);
++		if (!link_info->pcpu_rx_stats)
++			return -ENOMEM;
++	}
++
++	sta->link[link_id] = link_info;
++	sta->sta.link[link_id] = link_sta;
++
++	link_info->rx_stats.last_rx = jiffies;
++	u64_stats_init(&link_info->rx_stats.syncp);
++
++	ewma_signal_init(&link_info->rx_stats_avg.signal);
++	ewma_avg_signal_init(&link_info->status_stats.avg_ack_signal);
++	for (i = 0; i < ARRAY_SIZE(link_info->rx_stats_avg.chain_signal); i++)
++		ewma_signal_init(&link_info->rx_stats_avg.chain_signal[i]);
++
++	return 0;
++}
++
+ struct sta_info *sta_info_alloc(struct ieee80211_sub_if_data *sdata,
+ 				const u8 *addr, gfp_t gfp)
  {
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index aa6950aa49a9..134a7dad0ac4 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -891,7 +891,6 @@ u32 sta_get_expected_throughput(struct sta_info *sta);
+@@ -345,12 +394,11 @@ struct sta_info *sta_info_alloc(struct ieee80211_sub_if_data *sdata,
+ 	if (!sta)
+ 		return NULL;
  
- void ieee80211_sta_expire(struct ieee80211_sub_if_data *sdata,
- 			  unsigned long exp_time);
--u8 sta_info_tx_streams(struct sta_info *sta);
+-	if (ieee80211_hw_check(hw, USES_RSS)) {
+-		sta->deflink.pcpu_rx_stats =
+-			alloc_percpu_gfp(struct ieee80211_sta_rx_stats, gfp);
+-		if (!sta->deflink.pcpu_rx_stats)
+-			goto free;
+-	}
++	sta->local = local;
++	sta->sdata = sdata;
++
++	if (sta_info_init_link(sta, 0, &sta->deflink, &sta->sta.deflink, gfp))
++		return NULL;
  
- void ieee80211_sta_ps_deliver_wakeup(struct sta_info *sta);
- void ieee80211_sta_ps_deliver_poll_response(struct sta_info *sta);
+ 	spin_lock_init(&sta->lock);
+ 	spin_lock_init(&sta->ps_lock);
+@@ -378,12 +426,6 @@ struct sta_info *sta_info_alloc(struct ieee80211_sub_if_data *sdata,
+ 
+ 	/* TODO link specific alloc and assignments for MLO Link STA */
+ 
+-	/* For non MLO STA, link info can be accessed either via deflink
+-	 * or link[0]
+-	 */
+-	sta->link[0] = &sta->deflink;
+-	sta->sta.link[0] = &sta->sta.deflink;
+-
+ 	/* Extended Key ID needs to install keys for keyid 0 and 1 Rx-only.
+ 	 * The Tx path starts to use a key as soon as the key slot ptk_idx
+ 	 * references to is not NULL. To not use the initial Rx-only key
+@@ -393,11 +435,6 @@ struct sta_info *sta_info_alloc(struct ieee80211_sub_if_data *sdata,
+ 	BUILD_BUG_ON(ARRAY_SIZE(sta->ptk) <= INVALID_PTK_KEYIDX);
+ 	sta->ptk_idx = INVALID_PTK_KEYIDX;
+ 
+-	sta->local = local;
+-	sta->sdata = sdata;
+-	sta->deflink.rx_stats.last_rx = jiffies;
+-
+-	u64_stats_init(&sta->deflink.rx_stats.syncp);
+ 
+ 	ieee80211_init_frag_cache(&sta->frags);
+ 
+@@ -407,10 +444,6 @@ struct sta_info *sta_info_alloc(struct ieee80211_sub_if_data *sdata,
+ 	sta->reserved_tid = IEEE80211_TID_UNRESERVED;
+ 
+ 	sta->last_connected = ktime_get_seconds();
+-	ewma_signal_init(&sta->deflink.rx_stats_avg.signal);
+-	ewma_avg_signal_init(&sta->deflink.status_stats.avg_ack_signal);
+-	for (i = 0; i < ARRAY_SIZE(sta->deflink.rx_stats_avg.chain_signal); i++)
+-		ewma_signal_init(&sta->deflink.rx_stats_avg.chain_signal[i]);
+ 
+ 	if (local->ops->wake_tx_queue) {
+ 		void *txq_data;
+@@ -532,7 +565,7 @@ struct sta_info *sta_info_alloc(struct ieee80211_sub_if_data *sdata,
+ 	if (sta->sta.txq[0])
+ 		kfree(to_txq_info(sta->sta.txq[0]));
+ free:
+-	free_percpu(sta->deflink.pcpu_rx_stats);
++	sta_info_free_links(sta);
+ #ifdef CONFIG_MAC80211_MESH
+ 	kfree(sta->mesh);
+ #endif
 -- 
 2.36.1
 
