@@ -2,53 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45C9A539CC4
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 07:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22933539D22
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 08:19:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349742AbiFAFtE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jun 2022 01:49:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46474 "EHLO
+        id S1349761AbiFAGTK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jun 2022 02:19:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349743AbiFAFtC (ORCPT
+        with ESMTP id S1349769AbiFAGTF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Jun 2022 01:49:02 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA76B326EA;
-        Tue, 31 May 2022 22:48:58 -0700 (PDT)
+        Wed, 1 Jun 2022 02:19:05 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 870BF6A066
+        for <linux-wireless@vger.kernel.org>; Tue, 31 May 2022 23:19:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 0E104CE19D9;
-        Wed,  1 Jun 2022 05:48:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EADC385A5;
-        Wed,  1 Jun 2022 05:48:53 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D0A9DB817F3
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Jun 2022 06:19:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC04C385B8;
+        Wed,  1 Jun 2022 06:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654062535;
-        bh=6t4my5SVSuWyRsbgRzJu1RWUBtMadQQHSTtdzc6C3Pk=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=APXOtnlvafGXZFJGJVqYq+y4Yu8jPQgWVzaAO2X0MNrWVxyI+Dzs47vPx+ACRX5PW
-         /Nhklb0VOHr8YNPlDD7CmEo6S+V9nl46RVGW5RHmj3efWrmMboZ7T4OzxWP+ZfV+4b
-         0Gahec1c6VhvYhj4B8Puwy11F8EUpTORH4G1UgN5y3YZBD3nqOhVeQhZo1QKaZxSIO
-         WgrWCJ1PqRjMlZdUbiexeVTOxjXIltBYhX3EvgJjCfEbsT80lru7KPhQe1cirHRvPc
-         7Bs1kFRwxdOO/l9OCyOLTlrTIMA51msed+NkrtiolO04P7egtR6RBystDcjyWzpBtZ
-         y+EFe2bUNVQWQ==
+        s=k20201202; t=1654064341;
+        bh=ahMPCuEzja98C3+MLmZ8Jd2FzggqehBUIJvPVQ7VFrY=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=ieofgAtaeXVEwHv6/xMMfC6LsZGlRXwgU0WGN63NxOW68KVRKcw4oginLBIbr5qH4
+         m7vVoN9aTHIHG9EbdYuohnVVGVATwWnvCN/eMQCb1bEjoFLGHFx2eqvKjlWiDeYEh6
+         yLUWs4PDlORmjhqDWyLOQLSjBEL6a43PiE1N3m3lJGaPz1DfEM6j/E4/mmY9R04I1t
+         eHMxJI1toIpkbpc22UbZWqDTcc5rTP0q7L1yd1pPkoeub9dzYXH4mKMiDnrzvoJ+on
+         O7+F2Fulig1h2+l2JQqyoyHNTaD5QQQpt8RXM9m8slxSoYUi89TtP5BviEILphwfiM
+         wfteuSsgHI6Qw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Baligh Gasmi <gasmibal@gmail.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org (open list:MAC80211),
-        netdev@vger.kernel.org (open list:NETWORKING [GENERAL]),
-        linux-kernel@vger.kernel.org (open list)
-Subject: Re: [RFC PATCH v3 1/1] mac80211: use AQL airtime for expected throughput.
-References: <20220531100922.491344-1-gasmibal@gmail.com>
-Date:   Wed, 01 Jun 2022 08:48:48 +0300
-In-Reply-To: <20220531100922.491344-1-gasmibal@gmail.com> (Baligh Gasmi's
-        message of "Tue, 31 May 2022 12:09:22 +0200")
-Message-ID: <87y1yhszlr.fsf@kernel.org>
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     Christian 'Ansuel' Marangi <ansuelsmth@gmail.com>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 2/2] ath11k: fix missing skb drop on htc_tx_completion error
+In-Reply-To: <cfb03aa3-1a98-8131-0090-93c8ae918e7f@quicinc.com> (Jeff
+        Johnson's message of "Tue, 31 May 2022 13:32:18 -0700")
+References: <20220528142516.20819-1-ansuelsmth@gmail.com>
+        <20220528142516.20819-2-ansuelsmth@gmail.com>
+        <cfb03aa3-1a98-8131-0090-93c8ae918e7f@quicinc.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Wed, 01 Jun 2022 09:18:57 +0300
+Message-ID: <87v8tkoqi6.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -61,25 +57,18 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Baligh Gasmi <gasmibal@gmail.com> writes:
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> Since the integration of AQL, packet TX airtime estimation is
-> calculated and counted to be used for the dequeue limit.
+> On 5/28/2022 7:25 AM, Christian 'Ansuel' Marangi wrote:
+>> On htc_tx_completion error the skb is not dropped. This is wrong since
+>> the completion_handler logic expect the skb to be consumed anyway even
+>> when an error is triggerer. Not freeing the skb on error is a memory
 >
-> Use this estimated airtime to compute expected throughput for
-> each station.
+> nit: s/triggerer/triggered/
 >
-> It will be a generic mac80211 implementation. If the driver has
-> get_expected_throughput implementation, it will be used instead.
->
-> Useful for L2 routing protocols, like B.A.T.M.A.N.
->
-> Signed-off-by: Baligh Gasmi <gasmibal@gmail.com>
+> Kalle can fix this when he merges so no need to post a correction
 
-Please include a changelog to show what has changed since previous
-versions:
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#changelog_missing
+Yup, fixed now in the pending branch.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
