@@ -2,127 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8A9F539E8E
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 09:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 818C6539F9D
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 10:37:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350327AbiFAHkZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jun 2022 03:40:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33704 "EHLO
+        id S1350843AbiFAIh1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jun 2022 04:37:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350321AbiFAHkI (ORCPT
+        with ESMTP id S1350842AbiFAIhO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Jun 2022 03:40:08 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4136F972BE
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Jun 2022 00:40:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=YpRqZdE/+/b7j9vWq1FHZaqY7Fpd3+VzegIh6LJTuOI=;
-        t=1654069207; x=1655278807; b=cJUvV1nYZRkqDkIMWes5jkGFTYNgaoTJCqkn5OUgNgnheXp
-        m25d+8qPCkIwyw3tTh4r7tnNnm5JI68ZCINe6gAFN3WH+Do4vvkOHsxAPDZlK+qAMLxO/+F+PB97L
-        6X+5oHaJ+rturn0c6GOkNM/A3i2UyMHZNUkWwelQPbf4MOy03QroQvmp3RtJAS9NWf2/zSZfs+4Fk
-        cu7YWlEnieWGpzfCqF41NVlB0aMlzS0qfOOc5MAIIbREs00wYFkU/YPgFA7D63197OTNUYreU2ox2
-        ucUI/8w/EOh6b/6ARsL1MR7fgqUxtMywf0NWRwpLUak5/DZD3PMaJii8KnePKmZQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nwIxZ-00AJPK-Cg;
-        Wed, 01 Jun 2022 09:40:05 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 15/15] mac80211: correct link config data in tracing
-Date:   Wed,  1 Jun 2022 09:39:58 +0200
-Message-Id: <20220601093922.4e2c96a3d24d.I2f422bb67b9e7b051a5ef3cee532231e518d0318@changeid>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220601073958.8345-1-johannes@sipsolutions.net>
-References: <20220601073958.8345-1-johannes@sipsolutions.net>
+        Wed, 1 Jun 2022 04:37:14 -0400
+X-Greylist: delayed 521 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 01 Jun 2022 01:37:12 PDT
+Received: from smtp-8faf.mail.infomaniak.ch (smtp-8faf.mail.infomaniak.ch [IPv6:2001:1600:3:17::8faf])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFBBE1EC70
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Jun 2022 01:37:12 -0700 (PDT)
+Received: from smtp-2-0000.mail.infomaniak.ch (unknown [10.5.36.107])
+        by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4LCj3106knzMprL9;
+        Wed,  1 Jun 2022 10:28:29 +0200 (CEST)
+Received: from [10.0.0.141] (unknown [31.10.206.125])
+        by smtp-2-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4LCj300xmMzlhs7p;
+        Wed,  1 Jun 2022 10:28:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=pschenker.ch;
+        s=20220412; t=1654072108;
+        bh=Mxe97A1GNK58/rOoNSBOXmeHmHULjXJ31P/mKWrLzv4=;
+        h=Subject:From:Reply-To:To:Cc:Date:In-Reply-To:References:From;
+        b=I+VDQNdDVJO53tsfUev2HYDDi2xbfy+3H92LPzqKmqJBf57b1oH/UVgYjGKgs4Pdb
+         wU0PTT2ybRQi5XSUqyvtb5AsTfFbuzSk7vdgjuDSSpSB2YqoIfjAWzqEYcQ/xBhJEP
+         ChW2tB1NS/RJdQL+nA3t7oXYxTR0ukB7FXRaO9c8=
+Message-ID: <e93aef5c9f8a97efe23cfb5892f78f919ce328e7.camel@pschenker.ch>
+Subject: Re: [PATCH] Revert "mt76: mt7921: enable aspm by default"
+From:   Philippe Schenker <dev@pschenker.ch>
+Reply-To: dev@pschenker.ch
+To:     Deren Wu <deren.wu@mediatek.com>, Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        linux@leemhuis.info, "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Date:   Wed, 01 Jun 2022 10:28:27 +0200
+In-Reply-To: <668f1310cc78b17c24ce7be10f5f907d5578e280.camel@mediatek.com>
+References: <20220412090415.17541-1-dev@pschenker.ch>
+         <87y20aod5d.fsf@kernel.org>
+         <668f1310cc78b17c24ce7be10f5f907d5578e280.camel@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Tue, 2022-04-12 at 19:06 +0800, Deren Wu wrote:
+> On Tue, 2022-04-12 at 12:37 +0300, Kalle Valo wrote:
+> > Philippe Schenker <dev@pschenker.ch> writes:
+> >=20
+> > > This reverts commit bf3747ae2e25dda6a9e6c464a717c66118c588c8.
+> > >=20
+> > > This commit introduces a regression on some systems where the
+> > > kernel is
+> > > crashing in different locations after a reboot was issued.
+> > >=20
+> > > This issue was bisected on a Thinkpad P14s Gen2 (AMD) with latest
+> > > firmware.
+> > >=20
+> > > Link:=20
+> > > https://urldefense.com/v3/__https://lore.kernel.org/linux-wireless/50=
+77a953487275837e81bdf1808ded00b9676f9f.camel@pschenker.ch/__;!!CTRNKA9wMg0A=
+Rbw!09tjyaQlMci3fVI3yiNiDJKUW_qwNA_CbVhoAraeIX96B99Q14J4iDycWA9cq36Y$
+> > > =C2=A0
+> > > Signed-off-by: Philippe Schenker <dev@pschenker.ch>
+> >=20
+> > Can I take this to wireless tree? Felix, ack?
+> >=20
+> > I'll also add:
+> >=20
+> > Fixes: bf3747ae2e25 ("mt76: mt7921: enable aspm by default")
+> >=20
+>=20
+> Hi Kalle,
+>=20
+> We have a patch for a similar problem. Can you wait for the
+> verification by Philippe?
+> Commit 602cc0c9618a81 ("mt76: mt7921e: fix possible probe failure
+> after
+> reboot")
+> Link:=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
+/drivers/net/wireless/mediatek/mt76?id=3D602cc0c9618a819ab00ea3c9400742a0ca=
+318380
+>=20
+> I can reproduce the problem in my v5.16-rc5 desktop. And the issue can
+> be fixed when the patch applied.
+>=20
+>=20
+> Hi Philippe,
+>=20
+> Can you please help to check the patch in your platform?
 
-We need to no longer use bss_conf here, but the per-link data.
+Hi Kalle and Deren,
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/trace.h | 48 +++++++++++++++++++++++---------------------
- 1 file changed, 25 insertions(+), 23 deletions(-)
+I just noticed on my system and mainline v5.18 reboots do now work
+however Bluetooth is no longer accessible after a reboot.
 
-diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
-index 5c941fe4d70a..4c6c02dd697d 100644
---- a/net/mac80211/trace.h
-+++ b/net/mac80211/trace.h
-@@ -481,34 +481,36 @@ TRACE_EVENT(drv_link_info_changed,
- 	),
- 
- 	TP_fast_assign(
-+		struct ieee80211_bss_conf *link_conf = sdata->vif.link_conf[link_id];
-+
- 		LOCAL_ASSIGN;
- 		VIF_ASSIGN;
- 		__entry->changed = changed;
- 		__entry->link_id = link_id;
--		__entry->shortpre = sdata->vif.bss_conf.use_short_preamble;
--		__entry->cts = sdata->vif.bss_conf.use_cts_prot;
--		__entry->shortslot = sdata->vif.bss_conf.use_short_slot;
--		__entry->enable_beacon = sdata->vif.bss_conf.enable_beacon;
--		__entry->dtimper = sdata->vif.bss_conf.dtim_period;
--		__entry->bcnint = sdata->vif.bss_conf.beacon_int;
--		__entry->assoc_cap = sdata->vif.bss_conf.assoc_capability;
--		__entry->sync_tsf = sdata->vif.bss_conf.sync_tsf;
--		__entry->sync_device_ts = sdata->vif.bss_conf.sync_device_ts;
--		__entry->sync_dtim_count = sdata->vif.bss_conf.sync_dtim_count;
--		__entry->basic_rates = sdata->vif.bss_conf.basic_rates;
--		memcpy(__entry->mcast_rate, sdata->vif.bss_conf.mcast_rate,
-+		__entry->shortpre = link_conf->use_short_preamble;
-+		__entry->cts = link_conf->use_cts_prot;
-+		__entry->shortslot = link_conf->use_short_slot;
-+		__entry->enable_beacon = link_conf->enable_beacon;
-+		__entry->dtimper = link_conf->dtim_period;
-+		__entry->bcnint = link_conf->beacon_int;
-+		__entry->assoc_cap = link_conf->assoc_capability;
-+		__entry->sync_tsf = link_conf->sync_tsf;
-+		__entry->sync_device_ts = link_conf->sync_device_ts;
-+		__entry->sync_dtim_count = link_conf->sync_dtim_count;
-+		__entry->basic_rates = link_conf->basic_rates;
-+		memcpy(__entry->mcast_rate, link_conf->mcast_rate,
- 		       sizeof(__entry->mcast_rate));
--		__entry->ht_operation_mode = sdata->vif.bss_conf.ht_operation_mode;
--		__entry->cqm_rssi_thold = sdata->vif.bss_conf.cqm_rssi_thold;
--		__entry->cqm_rssi_hyst = sdata->vif.bss_conf.cqm_rssi_hyst;
--		__entry->channel_width = sdata->vif.bss_conf.chandef.width;
--		__entry->channel_cfreq1 = sdata->vif.bss_conf.chandef.center_freq1;
--		__entry->channel_cfreq1_offset = sdata->vif.bss_conf.chandef.freq1_offset;
--		__entry->qos = sdata->vif.bss_conf.qos;
--		__entry->ps = sdata->vif.bss_conf.ps;
--		__entry->hidden_ssid = sdata->vif.bss_conf.hidden_ssid;
--		__entry->txpower = sdata->vif.bss_conf.txpower;
--		__entry->p2p_oppps_ctwindow = sdata->vif.bss_conf.p2p_noa_attr.oppps_ctwindow;
-+		__entry->ht_operation_mode = link_conf->ht_operation_mode;
-+		__entry->cqm_rssi_thold = link_conf->cqm_rssi_thold;
-+		__entry->cqm_rssi_hyst = link_conf->cqm_rssi_hyst;
-+		__entry->channel_width = link_conf->chandef.width;
-+		__entry->channel_cfreq1 = link_conf->chandef.center_freq1;
-+		__entry->channel_cfreq1_offset = link_conf->chandef.freq1_offset;
-+		__entry->qos = link_conf->qos;
-+		__entry->ps = link_conf->ps;
-+		__entry->hidden_ssid = link_conf->hidden_ssid;
-+		__entry->txpower = link_conf->txpower;
-+		__entry->p2p_oppps_ctwindow = link_conf->p2p_noa_attr.oppps_ctwindow;
- 	),
- 
- 	TP_printk(
--- 
-2.36.1
+Reverting commit bf3747ae2e25dda6a9e6c464a717c66118c588c8 on top of
+v5.18 solves this problem for me.
+
+@Deren are you aware of this bug?
+@Kalle Is there a bugtracker somewhere I can submit this?
+
+Thanks,
+Philippe
+
+>=20
+>=20
+> Regards,
+> Deren
+>=20
 
