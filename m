@@ -2,66 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6B1B53A2CA
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 12:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAF0B53A395
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 13:08:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244122AbiFAKhB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jun 2022 06:37:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58448 "EHLO
+        id S1352495AbiFALHt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jun 2022 07:07:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352109AbiFAKfB (ORCPT
+        with ESMTP id S241487AbiFALHs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Jun 2022 06:35:01 -0400
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CE1F7CB42
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Jun 2022 03:34:57 -0700 (PDT)
-Received: by mail-qt1-x832.google.com with SMTP id hh4so815541qtb.10
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Jun 2022 03:34:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=AX1aU92WNtfdOkIt5sxzsSkaDvk1+o93dreOm4oGYGk=;
-        b=MpHJ6ZZ+VY6LYh2Tbdy+UL75aLbwI+CBqbg8hdrtFQNmpeG9/j1cgb79l8nkNg/oWZ
-         S5P00PFcOTyEBHx3245sZsgKdLXx46LI328Xmw8Wc0jbr318yNAwgiRAJjCMuzi9UniD
-         ysuUiaiseboWAV3ANBCCwvS2RDvPZqYV3mGkQ4ieNctvI4SBEE0cGuQezTDazDxa9r7n
-         jFA9p9yFbLgD6p+PnSB65+clN+etJVe7BZTN4yDoJK6efgqPUqc396RNFmr8hX7njBJQ
-         nSxYfFfx4+WTyDERQrLw96Ez4crrUu/2IyekAhWxd7nPB545KMGy8oqheoTF/h/OUQJ8
-         T+Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=AX1aU92WNtfdOkIt5sxzsSkaDvk1+o93dreOm4oGYGk=;
-        b=Kg8h1AJeXvLTsm5RIbEYCsSUcXIhLhgr3iX0Rxo+69efhbGVHLZPApTraFUVJE1aHi
-         PNN6vg1ZzIuMTBBlS+/QEOrcOu3nQquEkVqr9zDZr83PXzPTGH8CJErTbYaSONSoPuy3
-         1j8Jx211KWEH1WSkxCEctnuZSEycnbKIo+bv8JylzUaflkUtPQIDp2T2iG0DU/nNoP1V
-         TfebGNQkQVFmcMYwleUyffuRNNSiZ65culPSz8djCVFupy5Ll/+tcZfapiwWxDMdiFRy
-         chshzJJ5amkrrHKxDjcUcpLdf3e6asY/QWcxK6Q7rosEbwqlq1b0ZbZeCthKGcslu0VA
-         7qzw==
-X-Gm-Message-State: AOAM532P1c0/i/TeNqhs3fBIok1h09L8sUwMuzx36I6GV8IZIUYdDvHd
-        tw5nj/LKseKF7xDLhydTvgNazwAeK8Y7d5O9kRvEGId54Us=
-X-Google-Smtp-Source: ABdhPJyxtzlXZmOy66yFMqw6hawHCM74kzO8BgZgrPRFgx/TQPeT2PGwJX08xXjicyp+Dem9JsTuXFxZ0el5Ho78CrA=
-X-Received: by 2002:ac8:5990:0:b0:304:c8d6:3147 with SMTP id
- e16-20020ac85990000000b00304c8d63147mr419347qte.370.1654079696073; Wed, 01
- Jun 2022 03:34:56 -0700 (PDT)
+        Wed, 1 Jun 2022 07:07:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B13AB87A0C;
+        Wed,  1 Jun 2022 04:07:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B686D60A5F;
+        Wed,  1 Jun 2022 11:07:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B28C385A5;
+        Wed,  1 Jun 2022 11:07:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654081662;
+        bh=NMq6E0rr5JH1CfhO/51aFCcQsRAMGd+J2O1xwTmas9s=;
+        h=From:Subject:To:Cc:Date:From;
+        b=LZGT89y5hDfSAX+vuOujX4bM42PflI77U/Ro2ka1fCX67An81mXC76D84rK952cpz
+         pxCTvYlfir13EXzJmmNOQvPhRXLKeDQp0bTCQ0+dbLnedoLvWX7KZD5brxkzCQzRdU
+         J2Fl5Nr2RwKOE7ueArkvUf5/LhEUo+W+KHUfiKZ8vbmVwYvqOXY1i8sEx9vcVoMcUq
+         L91EoRH7YvY0IGGI1xUOAhiQBCQqo49NQ1mySXFysFF8WhtuLVOGj1HG+pSVHHssJs
+         PRHtyq5S903KPdRI3GWxnIdLc2YRvA1IrElPFvDoCGeCzrS7b4f8ksQSBgvIwFdzmz
+         72g7fYk2NSO8w==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <BYAPR02MB4567E377F14F272DFF48907A92FA9@BYAPR02MB4567.namprd02.prod.outlook.com>
- <332e62e5-b04d-3a6a-38fe-924d056bf0f8@linaro.org> <87k0b8fnpj.fsf@kernel.org>
- <CAA8EJpr3Uxa-Tif5TyHfXL03j1--vrAb+DgT=0DY8KDpvHPjeQ@mail.gmail.com> <87r148opbm.fsf@kernel.org>
-In-Reply-To: <87r148opbm.fsf@kernel.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Wed, 1 Jun 2022 13:34:44 +0300
-Message-ID: <CAA8EJpqj57v6yetGLHHi-xZocsGfAyPfdHZFV4wZ+Cpz2XaRvg@mail.gmail.com>
-Subject: Re: [PULL linux-firmware] ath10k & ath11k firmware 20220423
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>,
-        "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@kernel.org>
+Subject: pull-request: wireless-2022-06-01
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20220601110741.90B28C385A5@smtp.kernel.org>
+Date:   Wed,  1 Jun 2022 11:07:41 +0000 (UTC)
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -70,39 +51,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 1 Jun 2022 at 09:44, Kalle Valo <kvalo@kernel.org> wrote:
->
-> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
->
-> > On Fri, 29 Apr 2022 at 08:44, Kalle Valo <kvalo@kernel.org> wrote:
-> >>
-> >> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
-> >>
-> >> > Hi Kalle,
-> >> >
-> >> > On 27/04/2022 11:32, Kalle Valo wrote:
-> >> >> Add support for QCN9074 and WCN6750 ath11k hardware families. Also
-> >> >> there are several updates to existing firmwares and board files for both ath10k
-> >> >> and ath11k.
-> >> >>
-> >> >> Please let me know if there are any problems.
-> >> >
-> >> > I noticed that this pull request doesn't include the board file for
-> >> > WCN3990. Is there any issue with it that we can solve on our side?
-> >>
-> >> Oh, sorry about that. I guess this is just a bug in my scripts, I'll
-> >> include the wcn3990 board file in the next pull request.
-> >
-> > Thank you! No problem, it was more of a question if we missed something.
->
-> It was pulled now:
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/?id=86f0c5642c4c06583fccce8e03ca400300330cba
->
-> Do let me know if there's anything missing or wrong.
+Hi,
 
-The board file looks fine to me. Thanks a lot!
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
--- 
-With best wishes
-Dmitry
+Kalle
+
+The following changes since commit a54ce3703613e41fe1d98060b62ec09a3984dc28:
+
+  net: sched: fixed barrier to prevent skbuff sticking in qdisc backlog (2022-05-26 20:45:46 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2022-06-01
+
+for you to fetch changes up to 2965c4cdf7ad9ce0796fac5e57debb9519ea721e:
+
+  wifi: mac80211: fix use-after-free in chanctx code (2022-06-01 12:41:41 +0300)
+
+----------------------------------------------------------------
+wireless fixes for v5.19
+
+First set of fixes for v5.19. Build fixes for iwlwifi and libertas, a
+scheduling while atomic fix for rtw88 and use-after-free fix for
+mac80211.
+
+----------------------------------------------------------------
+Johannes Berg (3):
+      wifi: libertas: use variable-size data in assoc req/resp cmd
+      wifi: iwlwifi: pcie: rename CAUSE macro
+      wifi: mac80211: fix use-after-free in chanctx code
+
+Ping-Ke Shih (1):
+      wifi: rtw88: add a work to correct atomic scheduling warning of ::set_tim
+
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 34 ++++++++++++-------------
+ drivers/net/wireless/marvell/libertas/cfg.c     |  4 +--
+ drivers/net/wireless/marvell/libertas/host.h    |  6 +++--
+ drivers/net/wireless/realtek/rtw88/fw.c         | 10 ++++++++
+ drivers/net/wireless/realtek/rtw88/fw.h         |  1 +
+ drivers/net/wireless/realtek/rtw88/mac80211.c   |  4 +--
+ drivers/net/wireless/realtek/rtw88/main.c       |  2 ++
+ drivers/net/wireless/realtek/rtw88/main.h       |  1 +
+ net/mac80211/chan.c                             |  7 ++---
+ 9 files changed, 39 insertions(+), 30 deletions(-)
