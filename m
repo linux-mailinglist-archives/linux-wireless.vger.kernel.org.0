@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AAFD539E89
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 09:40:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46CC9539E8D
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 09:40:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347765AbiFAHkS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jun 2022 03:40:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33702 "EHLO
+        id S1350331AbiFAHkV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jun 2022 03:40:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350313AbiFAHkI (ORCPT
+        with ESMTP id S1350310AbiFAHkI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 1 Jun 2022 03:40:08 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D18439969F
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2B2F996B9
         for <linux-wireless@vger.kernel.org>; Wed,  1 Jun 2022 00:40:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=U7VDzUfo/MComxW8ryPBxSJ4ZD+uAoFOMoqs2ae4fr8=;
-        t=1654069206; x=1655278806; b=PV+GoeD75LkTFuOERIfAmTnDcQnjd0I8nPxYhbVoS/GxJWa
-        inIBi9ksrCJlKbPKxCKUmxAAPG4ll02a1z1jkXdV9LKD/GLwWEo+g39ywDjLenI4OYQL2Ladx8RTy
-        MC+Vguxa1JnlT14WzYP3UaAROLqFtDPREyfPV3r1k2XCqUbW5cvRvZnF7Fu2vEXihMPF553S0ThF5
-        xiwmv3O/vV0rKQChgVYyPJve9X900L5/1HvfYtVhHP4PdQrSg6HNnuH2ixeO0wtauWG+6kSdEDYAA
-        1QAI/C4CGlKl1KYl5lf9WiKQAHb1pzF9yz+Vg4/qNII5BfGY5+qAHY5hbajbyrAQ==;
+        Resent-Cc:Resent-Message-ID; bh=D81KOglcWeLn2KQhYc8nohtfeYLH/BrQ4mCfsMVhdsM=;
+        t=1654069206; x=1655278806; b=gAd3zUiwxoYBbUssztQI93cCwhnWe6dyVRDmZ6VOmS0qzzw
+        5YKKYFQ7ma4Z6BTuZV9Eq3JmNozLdqyrMG/xSrEreuBrs9W6N00OU2kKxSbnyMa7FJ7UVnHiYtMPO
+        Mqbn4KNq5NSh6X9xOq/Ym0wxZmLYFpdKhNN2TyVPoFYR+9Efj/9rF1GpxVktbj8DqBm/V4SDm785k
+        DIIhGrB0EVORreoYdqlJwrUNktJAZ9Z4qQ9ZNk8PBi+BhwQ0OG1JzAEsQmGQGlE9buG2l/Nmb6d9d
+        BnXcGWe0zCwIt8CQFCuJSKol6kdFvgn65bpzOnzKWdj6iz2dz1lS+IEpPG7xOLqw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nwIxY-00AJPK-RZ;
-        Wed, 01 Jun 2022 09:40:04 +0200
+        id 1nwIxZ-00AJPK-4O;
+        Wed, 01 Jun 2022 09:40:05 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 13/15] mac80211: make some SMPS code MLD-aware
-Date:   Wed,  1 Jun 2022 09:39:56 +0200
-Message-Id: <20220601093922.399d17ff5c3b.Ia03d9b83db279084b47d4ed449e70735155f3bf2@changeid>
+Subject: [PATCH 14/15] mac80211: make ieee80211_he_cap_ie_to_sta_he_cap() MLO-aware
+Date:   Wed,  1 Jun 2022 09:39:57 +0200
+Message-Id: <20220601093922.a6b1df141776.I5ccafef7ec56a6fa393852b2489ebbd955b0bdec@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220601073958.8345-1-johannes@sipsolutions.net>
 References: <20220601073958.8345-1-johannes@sipsolutions.net>
@@ -52,291 +52,120 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Start making some SMPS related code MLD-aware. This isn't
-really done yet, but again cuts down our 'deflink' reliance.
+Add the link_id parameter and adjust the code accordingly.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/lib.c  |  4 +--
- .../net/wireless/intel/iwlwifi/mvm/utils.c    |  2 +-
- drivers/net/wireless/realtek/rtw88/main.c     |  4 +--
- include/net/mac80211.h                        |  3 +-
- net/mac80211/cfg.c                            | 19 ++++++++----
- net/mac80211/debugfs_netdev.c                 |  2 +-
- net/mac80211/ht.c                             | 29 ++++++++++---------
- net/mac80211/ieee80211_i.h                    |  4 ++-
- net/mac80211/iface.c                          |  2 +-
- net/mac80211/mlme.c                           |  2 +-
- net/mac80211/util.c                           |  5 ++--
- 11 files changed, 45 insertions(+), 31 deletions(-)
+ net/mac80211/cfg.c         |  2 +-
+ net/mac80211/he.c          | 16 +++++++++-------
+ net/mac80211/ieee80211_i.h |  2 +-
+ net/mac80211/mesh_plink.c  |  2 +-
+ net/mac80211/mlme.c        |  2 +-
+ 5 files changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/lib.c b/drivers/net/wireless/intel/iwlwifi/dvm/lib.c
-index 40d790b36d85..1dc974e2c511 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/lib.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/lib.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /******************************************************************************
-  *
-- * Copyright(c) 2008 - 2014 Intel Corporation. All rights reserved.
-+ * Copyright(c) 2008 - 2014, 2022 Intel Corporation. All rights reserved.
-  *****************************************************************************/
- #include <linux/etherdevice.h>
- #include <linux/kernel.h>
-@@ -441,7 +441,7 @@ static void iwlagn_bt_traffic_change_work(struct work_struct *work)
- 		priv->current_ht_config.smps = smps_request;
- 		for_each_context(priv, ctx) {
- 			if (ctx->vif && ctx->vif->type == NL80211_IFTYPE_STATION)
--				ieee80211_request_smps(ctx->vif, smps_request);
-+				ieee80211_request_smps(ctx->vif, 0, smps_request);
- 		}
- 	}
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
-index 3ee5ea3484be..14b2de65bd84 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
-@@ -304,7 +304,7 @@ void iwl_mvm_update_smps(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 			smps_mode = IEEE80211_SMPS_DYNAMIC;
- 	}
- 
--	ieee80211_request_smps(vif, smps_mode);
-+	ieee80211_request_smps(vif, 0, smps_mode);
- }
- 
- static bool iwl_wait_stats_complete(struct iwl_notif_wait_data *notif_wait,
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index b151af13e310..a5d541b71ab9 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1596,9 +1596,9 @@ static void rtw_vif_smps_iter(void *data, u8 *mac,
- 		return;
- 
- 	if (rtwdev->hal.txrx_1ss)
--		ieee80211_request_smps(vif, IEEE80211_SMPS_STATIC);
-+		ieee80211_request_smps(vif, 0, IEEE80211_SMPS_STATIC);
- 	else
--		ieee80211_request_smps(vif, IEEE80211_SMPS_OFF);
-+		ieee80211_request_smps(vif, 0, IEEE80211_SMPS_OFF);
- }
- 
- void rtw_set_txrx_1ss(struct rtw_dev *rtwdev, bool txrx_1ss)
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index a3621900fbe4..e7e91b283cab 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -6210,13 +6210,14 @@ void ieee80211_channel_switch_disconnect(struct ieee80211_vif *vif,
- /**
-  * ieee80211_request_smps - request SM PS transition
-  * @vif: &struct ieee80211_vif pointer from the add_interface callback.
-+ * @link_id: link ID for MLO, or 0
-  * @smps_mode: new SM PS mode
-  *
-  * This allows the driver to request an SM PS transition in managed
-  * mode. This is useful when the driver has more information than
-  * the stack about possible interference, for example by bluetooth.
-  */
--void ieee80211_request_smps(struct ieee80211_vif *vif,
-+void ieee80211_request_smps(struct ieee80211_vif *vif, unsigned int link_id,
- 			    enum ieee80211_smps_mode smps_mode);
- 
- /**
 diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index cc332b31d219..cf63542d40fa 100644
+index cf63542d40fa..bc243716bda0 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -2917,6 +2917,7 @@ static int ieee80211_testmode_dump(struct wiphy *wiphy,
- #endif
+@@ -1774,7 +1774,7 @@ static int sta_apply_parameters(struct ieee80211_local *local,
+ 						  (void *)params->he_capa,
+ 						  params->he_capa_len,
+ 						  (void *)params->he_6ghz_capa,
+-						  sta);
++						  sta, 0);
  
- int __ieee80211_request_smps_mgd(struct ieee80211_sub_if_data *sdata,
-+				 unsigned int link_id,
- 				 enum ieee80211_smps_mode smps_mode)
+ 	if (params->eht_capa)
+ 		ieee80211_eht_cap_ie_to_sta_eht_cap(sdata, sband,
+diff --git a/net/mac80211/he.c b/net/mac80211/he.c
+index 20448dda8c4d..e48e9a021622 100644
+--- a/net/mac80211/he.c
++++ b/net/mac80211/he.c
+@@ -10,7 +10,7 @@
+ 
+ static void
+ ieee80211_update_from_he_6ghz_capa(const struct ieee80211_he_6ghz_capa *he_6ghz_capa,
+-				   struct sta_info *sta)
++				   struct sta_info *sta, unsigned int link_id)
  {
- 	const u8 *ap;
-@@ -2930,8 +2931,8 @@ int __ieee80211_request_smps_mgd(struct ieee80211_sub_if_data *sdata,
- 	if (WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_STATION))
- 		return -EINVAL;
+ 	enum ieee80211_smps_mode smps_mode;
  
--	old_req = sdata->deflink.u.mgd.req_smps;
--	sdata->deflink.u.mgd.req_smps = smps_mode;
-+	old_req = sdata->link[link_id]->u.mgd.req_smps;
-+	sdata->link[link_id]->u.mgd.req_smps = smps_mode;
+@@ -49,7 +49,7 @@ ieee80211_update_from_he_6ghz_capa(const struct ieee80211_he_6ghz_capa *he_6ghz_
+ 		break;
+ 	}
  
- 	if (old_req == smps_mode &&
- 	    smps_mode != IEEE80211_SMPS_AUTOMATIC)
-@@ -2943,10 +2944,10 @@ int __ieee80211_request_smps_mgd(struct ieee80211_sub_if_data *sdata,
- 	 * the new value until we associate.
- 	 */
- 	if (!sdata->u.mgd.associated ||
--	    sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_20_NOHT)
-+	    sdata->vif.link_conf[link_id]->chandef.width == NL80211_CHAN_WIDTH_20_NOHT)
- 		return 0;
- 
--	ap = sdata->deflink.u.mgd.bssid;
-+	ap = sdata->link[link_id]->u.mgd.bssid;
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(sta, &sdata->local->sta_list, list) {
-@@ -2970,7 +2971,7 @@ int __ieee80211_request_smps_mgd(struct ieee80211_sub_if_data *sdata,
- 	err = ieee80211_send_smps_action(sdata, smps_mode,
- 					 ap, ap);
- 	if (err)
--		sdata->deflink.u.mgd.req_smps = old_req;
-+		sdata->link[link_id]->u.mgd.req_smps = old_req;
- 	else if (smps_mode != IEEE80211_SMPS_OFF && tdls_peer_found)
- 		ieee80211_teardown_tdls_peers(sdata);
- 
-@@ -2982,6 +2983,7 @@ static int ieee80211_set_power_mgmt(struct wiphy *wiphy, struct net_device *dev,
- {
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
- 	struct ieee80211_local *local = wdev_priv(dev->ieee80211_ptr);
-+	unsigned int link_id;
- 
- 	if (sdata->vif.type != NL80211_IFTYPE_STATION)
- 		return -EOPNOTSUPP;
-@@ -2998,7 +3000,12 @@ static int ieee80211_set_power_mgmt(struct wiphy *wiphy, struct net_device *dev,
- 
- 	/* no change, but if automatic follow powersave */
- 	sdata_lock(sdata);
--	__ieee80211_request_smps_mgd(sdata, sdata->deflink.u.mgd.req_smps);
-+	for (link_id = 0; link_id < ARRAY_SIZE(sdata->link); link_id++) {
-+		if (!sdata->link[link_id])
-+			continue;
-+		__ieee80211_request_smps_mgd(sdata, link_id,
-+					     sdata->link[link_id]->u.mgd.req_smps);
-+	}
- 	sdata_unlock(sdata);
- 
- 	if (ieee80211_hw_check(&local->hw, SUPPORTS_DYNAMIC_PS))
-diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
-index bd398b631763..dfb194e15018 100644
---- a/net/mac80211/debugfs_netdev.c
-+++ b/net/mac80211/debugfs_netdev.c
-@@ -256,7 +256,7 @@ static int ieee80211_set_smps(struct ieee80211_sub_if_data *sdata,
- 		return -EOPNOTSUPP;
- 
- 	sdata_lock(sdata);
--	err = __ieee80211_request_smps_mgd(sdata, smps_mode);
-+	err = __ieee80211_request_smps_mgd(sdata, 0, smps_mode);
- 	sdata_unlock(sdata);
- 
- 	return err;
-diff --git a/net/mac80211/ht.c b/net/mac80211/ht.c
-index 22677df83ed8..111828b559a0 100644
---- a/net/mac80211/ht.c
-+++ b/net/mac80211/ht.c
-@@ -542,30 +542,33 @@ int ieee80211_send_smps_action(struct ieee80211_sub_if_data *sdata,
- 
- void ieee80211_request_smps_mgd_work(struct work_struct *work)
- {
--	struct ieee80211_sub_if_data *sdata =
--		container_of(work, struct ieee80211_sub_if_data,
--			     deflink.u.mgd.request_smps_work);
--
--	sdata_lock(sdata);
--	__ieee80211_request_smps_mgd(sdata,
--				     sdata->deflink.u.mgd.driver_smps_mode);
--	sdata_unlock(sdata);
-+	struct ieee80211_link_data *link =
-+		container_of(work, struct ieee80211_link_data,
-+			     u.mgd.request_smps_work);
-+
-+	sdata_lock(link->sdata);
-+	__ieee80211_request_smps_mgd(link->sdata, link->link_id,
-+				     link->u.mgd.driver_smps_mode);
-+	sdata_unlock(link->sdata);
+-	sta->sta.deflink.he_6ghz_capa = *he_6ghz_capa;
++	sta->sta.link[link_id]->he_6ghz_capa = *he_6ghz_capa;
  }
  
--void ieee80211_request_smps(struct ieee80211_vif *vif,
-+void ieee80211_request_smps(struct ieee80211_vif *vif, unsigned int link_id,
- 			    enum ieee80211_smps_mode smps_mode)
+ static void ieee80211_he_mcs_disable(__le16 *he_mcs)
+@@ -108,9 +108,9 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
+ 				  struct ieee80211_supported_band *sband,
+ 				  const u8 *he_cap_ie, u8 he_cap_len,
+ 				  const struct ieee80211_he_6ghz_capa *he_6ghz_capa,
+-				  struct sta_info *sta)
++				  struct sta_info *sta, unsigned int link_id)
  {
- 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
-+	struct ieee80211_link_data *link = sdata->link[link_id];
+-	struct ieee80211_sta_he_cap *he_cap = &sta->sta.deflink.he_cap;
++	struct ieee80211_sta_he_cap *he_cap = &sta->sta.link[link_id]->he_cap;
+ 	struct ieee80211_sta_he_cap own_he_cap;
+ 	struct ieee80211_he_cap_elem *he_cap_ie_elem = (void *)he_cap_ie;
+ 	u8 he_ppe_size;
+@@ -153,11 +153,13 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
  
- 	if (WARN_ON_ONCE(vif->type != NL80211_IFTYPE_STATION))
- 		return;
+ 	he_cap->has_he = true;
  
--	if (sdata->deflink.u.mgd.driver_smps_mode == smps_mode)
-+	if (WARN_ON(!link))
- 		return;
+-	sta->deflink.cur_max_bandwidth = ieee80211_sta_cap_rx_bw(sta, 0);
+-	sta->sta.deflink.bandwidth = ieee80211_sta_cur_vht_bw(sta, 0);
++	sta->link[link_id]->cur_max_bandwidth =
++		ieee80211_sta_cap_rx_bw(sta, link_id);
++	sta->sta.link[link_id]->bandwidth =
++		ieee80211_sta_cur_vht_bw(sta, link_id);
  
--	sdata->deflink.u.mgd.driver_smps_mode = smps_mode;
--	ieee80211_queue_work(&sdata->local->hw,
--			     &sdata->deflink.u.mgd.request_smps_work);
-+	if (link->u.mgd.driver_smps_mode == smps_mode)
-+		return;
-+
-+	link->u.mgd.driver_smps_mode = smps_mode;
-+	ieee80211_queue_work(&sdata->local->hw, &link->u.mgd.request_smps_work);
- }
- /* this might change ... don't want non-open drivers using it */
- EXPORT_SYMBOL_GPL(ieee80211_request_smps);
+ 	if (sband->band == NL80211_BAND_6GHZ && he_6ghz_capa)
+-		ieee80211_update_from_he_6ghz_capa(he_6ghz_capa, sta);
++		ieee80211_update_from_he_6ghz_capa(he_6ghz_capa, sta, link_id);
+ 
+ 	ieee80211_he_mcs_intersection(&own_he_cap.he_mcs_nss_supp.rx_mcs_80,
+ 				      &he_cap->he_mcs_nss_supp.rx_mcs_80,
 diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index e75496a99299..0948d074c4b9 100644
+index 0948d074c4b9..c3387ffe27f5 100644
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -2422,8 +2422,10 @@ u32 ieee80211_sta_get_rates(struct ieee80211_sub_if_data *sdata,
- 			    struct ieee802_11_elems *elems,
- 			    enum nl80211_band band, u32 *basic_rates);
- int __ieee80211_request_smps_mgd(struct ieee80211_sub_if_data *sdata,
-+				 unsigned int link_id,
- 				 enum ieee80211_smps_mode smps_mode);
--void ieee80211_recalc_smps(struct ieee80211_sub_if_data *sdata);
-+void ieee80211_recalc_smps(struct ieee80211_sub_if_data *sdata,
-+			   unsigned int link_id);
- void ieee80211_recalc_min_chandef(struct ieee80211_sub_if_data *sdata);
+@@ -2153,7 +2153,7 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
+ 				  struct ieee80211_supported_band *sband,
+ 				  const u8 *he_cap_ie, u8 he_cap_len,
+ 				  const struct ieee80211_he_6ghz_capa *he_6ghz_capa,
+-				  struct sta_info *sta);
++				  struct sta_info *sta, unsigned int link_id);
+ void
+ ieee80211_he_spr_ie_to_bss_conf(struct ieee80211_vif *vif,
+ 				const struct ieee80211_he_spr *he_spr_ie_elem);
+diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
+index b64614cd314d..e24bd48bc915 100644
+--- a/net/mac80211/mesh_plink.c
++++ b/net/mac80211/mesh_plink.c
+@@ -447,7 +447,7 @@ static void mesh_sta_info_init(struct ieee80211_sub_if_data *sdata,
+ 	ieee80211_he_cap_ie_to_sta_he_cap(sdata, sband, elems->he_cap,
+ 					  elems->he_cap_len,
+ 					  elems->he_6ghz_capa,
+-					  sta);
++					  sta, 0);
  
- size_t ieee80211_ie_split_vendor(const u8 *ies, size_t ielen, size_t offset);
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index c5be60ee12d8..ea75d5d5cb6a 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -1657,7 +1657,7 @@ static void ieee80211_recalc_smps_work(struct work_struct *work)
- 	struct ieee80211_sub_if_data *sdata =
- 		container_of(work, struct ieee80211_sub_if_data, recalc_smps);
- 
--	ieee80211_recalc_smps(sdata);
-+	ieee80211_recalc_smps(sdata, 0);
- }
- 
- /*
+ 	if (bw != sta->sta.deflink.bandwidth)
+ 		changed |= IEEE80211_RC_BW_CHANGED;
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 30423b2d4eee..cdbf7a5dc2ba 100644
+index cdbf7a5dc2ba..b6ee8da07663 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -2337,7 +2337,7 @@ static void ieee80211_set_associated(struct ieee80211_sub_if_data *sdata,
- 	ieee80211_recalc_ps(local);
- 	mutex_unlock(&local->iflist_mtx);
+@@ -3579,7 +3579,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 						  elems->he_cap,
+ 						  elems->he_cap_len,
+ 						  elems->he_6ghz_capa,
+-						  sta);
++						  sta, 0);
  
--	ieee80211_recalc_smps(sdata);
-+	ieee80211_recalc_smps(sdata, 0);
- 	ieee80211_recalc_ps_vif(sdata);
- 
- 	netif_carrier_on(sdata->dev);
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 4ec96170a679..ecda655e7481 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2803,7 +2803,8 @@ void ieee80211_resume_disconnect(struct ieee80211_vif *vif)
- }
- EXPORT_SYMBOL_GPL(ieee80211_resume_disconnect);
- 
--void ieee80211_recalc_smps(struct ieee80211_sub_if_data *sdata)
-+void ieee80211_recalc_smps(struct ieee80211_sub_if_data *sdata,
-+			   unsigned int link_id)
- {
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_chanctx_conf *chanctx_conf;
-@@ -2811,7 +2812,7 @@ void ieee80211_recalc_smps(struct ieee80211_sub_if_data *sdata)
- 
- 	mutex_lock(&local->chanctx_mtx);
- 
--	chanctx_conf = rcu_dereference_protected(sdata->vif.bss_conf.chanctx_conf,
-+	chanctx_conf = rcu_dereference_protected(sdata->vif.link_conf[link_id]->chanctx_conf,
- 						 lockdep_is_held(&local->chanctx_mtx));
- 
- 	/*
+ 		bss_conf->he_support = sta->sta.deflink.he_cap.has_he;
+ 		if (elems->rsnx && elems->rsnx_len &&
 -- 
 2.36.1
 
