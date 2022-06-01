@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46CC9539E8D
+	by mail.lfdr.de (Postfix) with ESMTP id B8A9F539E8E
 	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 09:40:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350331AbiFAHkV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jun 2022 03:40:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33700 "EHLO
+        id S1350327AbiFAHkZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jun 2022 03:40:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350310AbiFAHkI (ORCPT
+        with ESMTP id S1350321AbiFAHkI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 1 Jun 2022 03:40:08 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2B2F996B9
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Jun 2022 00:40:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4136F972BE
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Jun 2022 00:40:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=D81KOglcWeLn2KQhYc8nohtfeYLH/BrQ4mCfsMVhdsM=;
-        t=1654069206; x=1655278806; b=gAd3zUiwxoYBbUssztQI93cCwhnWe6dyVRDmZ6VOmS0qzzw
-        5YKKYFQ7ma4Z6BTuZV9Eq3JmNozLdqyrMG/xSrEreuBrs9W6N00OU2kKxSbnyMa7FJ7UVnHiYtMPO
-        Mqbn4KNq5NSh6X9xOq/Ym0wxZmLYFpdKhNN2TyVPoFYR+9Efj/9rF1GpxVktbj8DqBm/V4SDm785k
-        DIIhGrB0EVORreoYdqlJwrUNktJAZ9Z4qQ9ZNk8PBi+BhwQ0OG1JzAEsQmGQGlE9buG2l/Nmb6d9d
-        BnXcGWe0zCwIt8CQFCuJSKol6kdFvgn65bpzOnzKWdj6iz2dz1lS+IEpPG7xOLqw==;
+        Resent-Cc:Resent-Message-ID; bh=YpRqZdE/+/b7j9vWq1FHZaqY7Fpd3+VzegIh6LJTuOI=;
+        t=1654069207; x=1655278807; b=cJUvV1nYZRkqDkIMWes5jkGFTYNgaoTJCqkn5OUgNgnheXp
+        m25d+8qPCkIwyw3tTh4r7tnNnm5JI68ZCINe6gAFN3WH+Do4vvkOHsxAPDZlK+qAMLxO/+F+PB97L
+        6X+5oHaJ+rturn0c6GOkNM/A3i2UyMHZNUkWwelQPbf4MOy03QroQvmp3RtJAS9NWf2/zSZfs+4Fk
+        cu7YWlEnieWGpzfCqF41NVlB0aMlzS0qfOOc5MAIIbREs00wYFkU/YPgFA7D63197OTNUYreU2ox2
+        ucUI/8w/EOh6b/6ARsL1MR7fgqUxtMywf0NWRwpLUak5/DZD3PMaJii8KnePKmZQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nwIxZ-00AJPK-4O;
+        id 1nwIxZ-00AJPK-Cg;
         Wed, 01 Jun 2022 09:40:05 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 14/15] mac80211: make ieee80211_he_cap_ie_to_sta_he_cap() MLO-aware
-Date:   Wed,  1 Jun 2022 09:39:57 +0200
-Message-Id: <20220601093922.a6b1df141776.I5ccafef7ec56a6fa393852b2489ebbd955b0bdec@changeid>
+Subject: [PATCH 15/15] mac80211: correct link config data in tracing
+Date:   Wed,  1 Jun 2022 09:39:58 +0200
+Message-Id: <20220601093922.4e2c96a3d24d.I2f422bb67b9e7b051a5ef3cee532231e518d0318@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220601073958.8345-1-johannes@sipsolutions.net>
 References: <20220601073958.8345-1-johannes@sipsolutions.net>
@@ -52,120 +52,77 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Add the link_id parameter and adjust the code accordingly.
+We need to no longer use bss_conf here, but the per-link data.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/cfg.c         |  2 +-
- net/mac80211/he.c          | 16 +++++++++-------
- net/mac80211/ieee80211_i.h |  2 +-
- net/mac80211/mesh_plink.c  |  2 +-
- net/mac80211/mlme.c        |  2 +-
- 5 files changed, 13 insertions(+), 11 deletions(-)
+ net/mac80211/trace.h | 48 +++++++++++++++++++++++---------------------
+ 1 file changed, 25 insertions(+), 23 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index cf63542d40fa..bc243716bda0 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1774,7 +1774,7 @@ static int sta_apply_parameters(struct ieee80211_local *local,
- 						  (void *)params->he_capa,
- 						  params->he_capa_len,
- 						  (void *)params->he_6ghz_capa,
--						  sta);
-+						  sta, 0);
+diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
+index 5c941fe4d70a..4c6c02dd697d 100644
+--- a/net/mac80211/trace.h
++++ b/net/mac80211/trace.h
+@@ -481,34 +481,36 @@ TRACE_EVENT(drv_link_info_changed,
+ 	),
  
- 	if (params->eht_capa)
- 		ieee80211_eht_cap_ie_to_sta_eht_cap(sdata, sband,
-diff --git a/net/mac80211/he.c b/net/mac80211/he.c
-index 20448dda8c4d..e48e9a021622 100644
---- a/net/mac80211/he.c
-+++ b/net/mac80211/he.c
-@@ -10,7 +10,7 @@
+ 	TP_fast_assign(
++		struct ieee80211_bss_conf *link_conf = sdata->vif.link_conf[link_id];
++
+ 		LOCAL_ASSIGN;
+ 		VIF_ASSIGN;
+ 		__entry->changed = changed;
+ 		__entry->link_id = link_id;
+-		__entry->shortpre = sdata->vif.bss_conf.use_short_preamble;
+-		__entry->cts = sdata->vif.bss_conf.use_cts_prot;
+-		__entry->shortslot = sdata->vif.bss_conf.use_short_slot;
+-		__entry->enable_beacon = sdata->vif.bss_conf.enable_beacon;
+-		__entry->dtimper = sdata->vif.bss_conf.dtim_period;
+-		__entry->bcnint = sdata->vif.bss_conf.beacon_int;
+-		__entry->assoc_cap = sdata->vif.bss_conf.assoc_capability;
+-		__entry->sync_tsf = sdata->vif.bss_conf.sync_tsf;
+-		__entry->sync_device_ts = sdata->vif.bss_conf.sync_device_ts;
+-		__entry->sync_dtim_count = sdata->vif.bss_conf.sync_dtim_count;
+-		__entry->basic_rates = sdata->vif.bss_conf.basic_rates;
+-		memcpy(__entry->mcast_rate, sdata->vif.bss_conf.mcast_rate,
++		__entry->shortpre = link_conf->use_short_preamble;
++		__entry->cts = link_conf->use_cts_prot;
++		__entry->shortslot = link_conf->use_short_slot;
++		__entry->enable_beacon = link_conf->enable_beacon;
++		__entry->dtimper = link_conf->dtim_period;
++		__entry->bcnint = link_conf->beacon_int;
++		__entry->assoc_cap = link_conf->assoc_capability;
++		__entry->sync_tsf = link_conf->sync_tsf;
++		__entry->sync_device_ts = link_conf->sync_device_ts;
++		__entry->sync_dtim_count = link_conf->sync_dtim_count;
++		__entry->basic_rates = link_conf->basic_rates;
++		memcpy(__entry->mcast_rate, link_conf->mcast_rate,
+ 		       sizeof(__entry->mcast_rate));
+-		__entry->ht_operation_mode = sdata->vif.bss_conf.ht_operation_mode;
+-		__entry->cqm_rssi_thold = sdata->vif.bss_conf.cqm_rssi_thold;
+-		__entry->cqm_rssi_hyst = sdata->vif.bss_conf.cqm_rssi_hyst;
+-		__entry->channel_width = sdata->vif.bss_conf.chandef.width;
+-		__entry->channel_cfreq1 = sdata->vif.bss_conf.chandef.center_freq1;
+-		__entry->channel_cfreq1_offset = sdata->vif.bss_conf.chandef.freq1_offset;
+-		__entry->qos = sdata->vif.bss_conf.qos;
+-		__entry->ps = sdata->vif.bss_conf.ps;
+-		__entry->hidden_ssid = sdata->vif.bss_conf.hidden_ssid;
+-		__entry->txpower = sdata->vif.bss_conf.txpower;
+-		__entry->p2p_oppps_ctwindow = sdata->vif.bss_conf.p2p_noa_attr.oppps_ctwindow;
++		__entry->ht_operation_mode = link_conf->ht_operation_mode;
++		__entry->cqm_rssi_thold = link_conf->cqm_rssi_thold;
++		__entry->cqm_rssi_hyst = link_conf->cqm_rssi_hyst;
++		__entry->channel_width = link_conf->chandef.width;
++		__entry->channel_cfreq1 = link_conf->chandef.center_freq1;
++		__entry->channel_cfreq1_offset = link_conf->chandef.freq1_offset;
++		__entry->qos = link_conf->qos;
++		__entry->ps = link_conf->ps;
++		__entry->hidden_ssid = link_conf->hidden_ssid;
++		__entry->txpower = link_conf->txpower;
++		__entry->p2p_oppps_ctwindow = link_conf->p2p_noa_attr.oppps_ctwindow;
+ 	),
  
- static void
- ieee80211_update_from_he_6ghz_capa(const struct ieee80211_he_6ghz_capa *he_6ghz_capa,
--				   struct sta_info *sta)
-+				   struct sta_info *sta, unsigned int link_id)
- {
- 	enum ieee80211_smps_mode smps_mode;
- 
-@@ -49,7 +49,7 @@ ieee80211_update_from_he_6ghz_capa(const struct ieee80211_he_6ghz_capa *he_6ghz_
- 		break;
- 	}
- 
--	sta->sta.deflink.he_6ghz_capa = *he_6ghz_capa;
-+	sta->sta.link[link_id]->he_6ghz_capa = *he_6ghz_capa;
- }
- 
- static void ieee80211_he_mcs_disable(__le16 *he_mcs)
-@@ -108,9 +108,9 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
- 				  struct ieee80211_supported_band *sband,
- 				  const u8 *he_cap_ie, u8 he_cap_len,
- 				  const struct ieee80211_he_6ghz_capa *he_6ghz_capa,
--				  struct sta_info *sta)
-+				  struct sta_info *sta, unsigned int link_id)
- {
--	struct ieee80211_sta_he_cap *he_cap = &sta->sta.deflink.he_cap;
-+	struct ieee80211_sta_he_cap *he_cap = &sta->sta.link[link_id]->he_cap;
- 	struct ieee80211_sta_he_cap own_he_cap;
- 	struct ieee80211_he_cap_elem *he_cap_ie_elem = (void *)he_cap_ie;
- 	u8 he_ppe_size;
-@@ -153,11 +153,13 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
- 
- 	he_cap->has_he = true;
- 
--	sta->deflink.cur_max_bandwidth = ieee80211_sta_cap_rx_bw(sta, 0);
--	sta->sta.deflink.bandwidth = ieee80211_sta_cur_vht_bw(sta, 0);
-+	sta->link[link_id]->cur_max_bandwidth =
-+		ieee80211_sta_cap_rx_bw(sta, link_id);
-+	sta->sta.link[link_id]->bandwidth =
-+		ieee80211_sta_cur_vht_bw(sta, link_id);
- 
- 	if (sband->band == NL80211_BAND_6GHZ && he_6ghz_capa)
--		ieee80211_update_from_he_6ghz_capa(he_6ghz_capa, sta);
-+		ieee80211_update_from_he_6ghz_capa(he_6ghz_capa, sta, link_id);
- 
- 	ieee80211_he_mcs_intersection(&own_he_cap.he_mcs_nss_supp.rx_mcs_80,
- 				      &he_cap->he_mcs_nss_supp.rx_mcs_80,
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 0948d074c4b9..c3387ffe27f5 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2153,7 +2153,7 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
- 				  struct ieee80211_supported_band *sband,
- 				  const u8 *he_cap_ie, u8 he_cap_len,
- 				  const struct ieee80211_he_6ghz_capa *he_6ghz_capa,
--				  struct sta_info *sta);
-+				  struct sta_info *sta, unsigned int link_id);
- void
- ieee80211_he_spr_ie_to_bss_conf(struct ieee80211_vif *vif,
- 				const struct ieee80211_he_spr *he_spr_ie_elem);
-diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
-index b64614cd314d..e24bd48bc915 100644
---- a/net/mac80211/mesh_plink.c
-+++ b/net/mac80211/mesh_plink.c
-@@ -447,7 +447,7 @@ static void mesh_sta_info_init(struct ieee80211_sub_if_data *sdata,
- 	ieee80211_he_cap_ie_to_sta_he_cap(sdata, sband, elems->he_cap,
- 					  elems->he_cap_len,
- 					  elems->he_6ghz_capa,
--					  sta);
-+					  sta, 0);
- 
- 	if (bw != sta->sta.deflink.bandwidth)
- 		changed |= IEEE80211_RC_BW_CHANGED;
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index cdbf7a5dc2ba..b6ee8da07663 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -3579,7 +3579,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
- 						  elems->he_cap,
- 						  elems->he_cap_len,
- 						  elems->he_6ghz_capa,
--						  sta);
-+						  sta, 0);
- 
- 		bss_conf->he_support = sta->sta.deflink.he_cap.has_he;
- 		if (elems->rsnx && elems->rsnx_len &&
+ 	TP_printk(
 -- 
 2.36.1
 
