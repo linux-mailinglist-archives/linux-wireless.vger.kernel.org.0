@@ -2,109 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 524BE539A5D
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 02:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D71E539AD2
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 03:40:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346797AbiFAA1o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 May 2022 20:27:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42494 "EHLO
+        id S1348893AbiFABkB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 May 2022 21:40:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235844AbiFAA1m (ORCPT
+        with ESMTP id S1348917AbiFABkA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 May 2022 20:27:42 -0400
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com [199.106.114.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7534451307
-        for <linux-wireless@vger.kernel.org>; Tue, 31 May 2022 17:27:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1654043261; x=1685579261;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=MzVto5JifBCcRpXWLop2l1aIQWQ2PohzEiDsbqbZdrs=;
-  b=gCH18Qa5uTRPe69+95CTWvDQ2bfR9JaowAAZLg5bYjSFgJkDkRsDMtOX
-   EaKZh6IhJomdgGgjLNW1LTnuyylXzO6KLIsYBHZsSQQg+eYEHTFd5AXh1
-   U3BvBdyYsnPf1/jvNtMYn3lLnkr3NcrEkvKMHhDg4fDIbQWsO42T6BEam
-   o=;
-Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 31 May 2022 17:27:39 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2022 17:27:39 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Tue, 31 May 2022 17:27:39 -0700
-Received: from [10.110.67.112] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Tue, 31 May
- 2022 17:27:37 -0700
-Message-ID: <51843710-a1ec-b1f6-8d1a-972ca5b40af4@quicinc.com>
-Date:   Tue, 31 May 2022 17:27:36 -0700
+        Tue, 31 May 2022 21:40:00 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1EFC71A32
+        for <linux-wireless@vger.kernel.org>; Tue, 31 May 2022 18:39:58 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2511dcvhF005977, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2511dcvhF005977
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 1 Jun 2022 09:39:38 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Wed, 1 Jun 2022 09:39:38 +0800
+Received: from localhost (172.16.20.31) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Wed, 1 Jun
+ 2022 09:39:37 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>, <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>, <echuang@realtek.com>,
+        <phhuang@realtek.com>
+Subject: [PATCH 0/3] rtw89: use count of trigger frames as a clue to accelerate CFO tracking
+Date:   Wed, 1 Jun 2022 09:39:14 +0800
+Message-ID: <20220601013917.18814-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [RFC v2 50/96] cl8k: add phy.c
-Content-Language: en-US
-To:     <viktor.barna@celeno.com>, <linux-wireless@vger.kernel.org>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Aviad Brikman <aviad.brikman@celeno.com>,
-        Eliav Farber <eliav.farber@gmail.com>,
-        "Maksym Kokhan" <maksym.kokhan@celeno.com>,
-        Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
-        Shay Bar <shay.bar@celeno.com>
-References: <20220524113502.1094459-1-viktor.barna@celeno.com>
- <20220524113502.1094459-51-viktor.barna@celeno.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20220524113502.1094459-51-viktor.barna@celeno.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.16.20.31]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 06/01/2022 01:18:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzUvMzEgpFWkyCAxMDoxMjowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/24/2022 4:34 AM, viktor.barna@celeno.com wrote:
-> From: Viktor Barna <viktor.barna@celeno.com>
-> 
-> (Part of the split. Please, take a look at the cover letter for more
-> details).
-> 
-> Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
-> ---
->   drivers/net/wireless/celeno/cl8k/phy.c | 9648 ++++++++++++++++++++++++
->   1 file changed, 9648 insertions(+)
->   create mode 100644 drivers/net/wireless/celeno/cl8k/phy.c
-> 
-> diff --git a/drivers/net/wireless/celeno/cl8k/phy.c b/drivers/net/wireless/celeno/cl8k/phy.c
-> new file mode 100644
-> index 000000000000..dfc7f5a95d3d
-> --- /dev/null
-> +++ b/drivers/net/wireless/celeno/cl8k/phy.c
-> @@ -0,0 +1,9648 @@
-> +// SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-> +/* Copyright(c) 2019-2022, Celeno Communications Ltd. */
-> +
-> +#include "tx.h"
-> +#include "reg/reg_defs.h"
-> +#include "radio.h"
-> +#include "dsp.h"
-> +#include "rfic.h"
-> +#include "e2p.h"
-> +#include "phy.h"
-> +
-> +#define FEM_LUT_EMPTY 0x0
-> +
-> +const struct common_lut_line athos_lut_6g_40_mhz[ATHOS_LUT_CHAN_6G_MAX] = {
+The CFO (central frequency offset) is very important to yeild good UL-OFDMA
+performance. To track CFO accurately, adjust CFO in shorter period of time.
+Since this is only needed by UL-OFDMA, we use trigger frames as a clue.
 
-in this file and in power.c you have multiple lookup tables that look 
-like they could/should be static to limit their scope to the current file
+Eric Huang (1):
+  rtw89: add new state to CFO state machine for UL-OFDMA
+
+Po Hao Huang (2):
+  ieee80211: add trigger frame definition
+  rtw89: 8852c: add trigger frame counter
+
+ drivers/net/wireless/realtek/rtw89/core.c  | 48 ++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/core.h  | 21 ++++++++++
+ drivers/net/wireless/realtek/rtw89/debug.c |  3 +-
+ drivers/net/wireless/realtek/rtw89/phy.c   | 24 +++++++++--
+ drivers/net/wireless/realtek/rtw89/phy.h   |  1 +
+ include/linux/ieee80211.h                  | 31 ++++++++++++++
+ 6 files changed, 124 insertions(+), 4 deletions(-)
+
+-- 
+2.25.1
+
