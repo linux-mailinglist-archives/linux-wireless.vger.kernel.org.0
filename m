@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C288539E84
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 09:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD3D9539E86
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jun 2022 09:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350272AbiFAHkK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jun 2022 03:40:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33630 "EHLO
+        id S1345110AbiFAHkO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jun 2022 03:40:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241208AbiFAHkG (ORCPT
+        with ESMTP id S1346505AbiFAHkH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Jun 2022 03:40:06 -0400
+        Wed, 1 Jun 2022 03:40:07 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E8D7980B0
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECAF4986EB
         for <linux-wireless@vger.kernel.org>; Wed,  1 Jun 2022 00:40:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=xhdesWb3xU1jVHvzhdmWuWQI2b5u4IA6OwxzPdrqLcA=;
-        t=1654069205; x=1655278805; b=uzSUKePthxz7s5DYkrBZ+B/CyiMfmz8z2PgYhMjSyTpa38L
-        04jsKXndWMFnx+CVgrmTUDChlq2K9OG7GqnPq2sDRHOK8QWP94UJi9VwQcreI5R5gecVPIw0XMulq
-        A4+C2DyROzl1fbUlTsylA20ESDxG+20H0JRye+CsWK+lU/+eVH6Ixq2M6SQDoCoD0xtaZQSNQmnM1
-        Eq3SCfheOAqWu1Gn9HuU/Onvs9cH88K7XWCvXFYxOpOUNkBLOkTMEq1i2naoyjLOww76/Fsi7PMUw
-        TQ5CEaqH/0dtHKzXGeOVAD8BddSGY0wE8UAC5qqehhi2CnEWm34zQEnvrHucnUDQ==;
+        Resent-Cc:Resent-Message-ID; bh=lojIq1zlQlZ7/qjd0G6TeOJ4z9KxMnwBQCbUjyie160=;
+        t=1654069206; x=1655278806; b=iKGwARluRLpXnHkfHwibaebNUdZ47mwYOAGCfT2DvrhLh8g
+        mg4YpTDoDayHs+ub6yDdEAydcZuAe/JSw7ecurcgi5hff4mKYNEAw/jEkwGrn3siapHZkZjyVRM9Q
+        3dJ1jbYcLQKxChRi/KieCLSXjzGZukRdmXUZosja+JJWBxusbqpgKGQT1czoah+AeBxF0kXM6jlqF
+        Ug+uXukEChDIJFphO+tj2W7X3UJIxNmzZ2VNGIxB05nY6fDU5+Lf+0Cvu+ZK08oZU0tlFdjla76n2
+        /bixwFuBnilTGLUK0ioMQ3FkJIlAoIIcQUlJkpkkLH9LlnyWrBVhWeb3N0UYcejA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1nwIxX-00AJPK-6r;
+        id 1nwIxX-00AJPK-ET;
         Wed, 01 Jun 2022 09:40:03 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 07/15] mac80211: use IEEE80211_MLD_MAX_NUM_LINKS
-Date:   Wed,  1 Jun 2022 09:39:50 +0200
-Message-Id: <20220601093922.583c5774aaae.I8ee15fc715cd84eb4dd0d11f9d86949adb09ec5f@changeid>
+Subject: [PATCH 08/15] mac80211: validate some driver features for MLO
+Date:   Wed,  1 Jun 2022 09:39:51 +0200
+Message-Id: <20220601093922.ae4718d24726.I81112aa6318e50bebba53117f8b39f255b41b28e@changeid>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220601073958.8345-1-johannes@sipsolutions.net>
 References: <20220601073958.8345-1-johannes@sipsolutions.net>
@@ -52,50 +52,68 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Remove MAX_STA_LINKS and use IEEE80211_MLD_MAX_NUM_LINKS
-instead to unify between the station and other data structures.
+If MLO is enabled by the driver then validate a set of
+capabilities that mac80211 will initially not support
+in MLO. This might change if features are implemented.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/net/mac80211.h  | 4 +---
- net/mac80211/sta_info.h | 2 +-
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ net/mac80211/main.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 4b3d19d88954..66a18dc4462f 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -2061,8 +2061,6 @@ struct ieee80211_sta_txpwr {
- 	enum nl80211_tx_power_setting type;
- };
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 6165b90bf0e2..c5553d68d779 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -951,6 +951,48 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 		    (!local->ops->start_nan || !local->ops->stop_nan)))
+ 		return -EINVAL;
  
--#define MAX_STA_LINKS			15
--
- /**
-  * struct ieee80211_link_sta - station Link specific info
-  * All link specific info for a STA link for a non MLD STA(single)
-@@ -2190,7 +2188,7 @@ struct ieee80211_sta {
- 
- 	bool multi_link_sta;
- 	struct ieee80211_link_sta deflink;
--	struct ieee80211_link_sta *link[MAX_STA_LINKS];
-+	struct ieee80211_link_sta *link[IEEE80211_MLD_MAX_NUM_LINKS];
- 
- 	/* must be last */
- 	u8 drv_priv[] __aligned(sizeof(void *));
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index 134a7dad0ac4..2ff3d5fd0cbf 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -710,7 +710,7 @@ struct sta_info {
- 
- 	bool multi_link_sta;
- 	struct link_sta_info deflink;
--	struct link_sta_info *link[MAX_STA_LINKS];
-+	struct link_sta_info *link[IEEE80211_MLD_MAX_NUM_LINKS];
- 
- 	/* keep last! */
- 	struct ieee80211_sta sta;
++	if (hw->wiphy->flags & WIPHY_FLAG_SUPPORTS_MLO) {
++		/*
++		 * For drivers capable of doing MLO, assume modern driver
++		 * or firmware facilities, so software doesn't have to do
++		 * as much, e.g. monitoring beacons would be hard if we
++		 * might not even know which link is active at which time.
++		 */
++		if (WARN_ON(!local->use_chanctx))
++			return -EINVAL;
++
++		if (WARN_ON(!local->ops->link_info_changed))
++			return -EINVAL;
++
++		if (WARN_ON(!ieee80211_hw_check(hw, HAS_RATE_CONTROL)))
++			return -EINVAL;
++
++		if (WARN_ON(!ieee80211_hw_check(hw, AMPDU_AGGREGATION)))
++			return -EINVAL;
++
++		if (WARN_ON(ieee80211_hw_check(hw, HOST_BROADCAST_PS_BUFFERING)))
++			return -EINVAL;
++
++		if (WARN_ON(ieee80211_hw_check(hw, SUPPORTS_PS) &&
++			    !ieee80211_hw_check(hw, SUPPORTS_DYNAMIC_PS)))
++			return -EINVAL;
++
++		if (WARN_ON(!ieee80211_hw_check(hw, MFP_CAPABLE)))
++			return -EINVAL;
++
++		if (WARN_ON(!ieee80211_hw_check(hw, CONNECTION_MONITOR)))
++			return -EINVAL;
++
++		if (WARN_ON(ieee80211_hw_check(hw, NEED_DTIM_BEFORE_ASSOC)))
++			return -EINVAL;
++
++		if (WARN_ON(ieee80211_hw_check(hw, TIMING_BEACON_ONLY)))
++			return -EINVAL;
++
++		if (WARN_ON(!ieee80211_hw_check(hw, AP_LINK_PS)))
++			return -EINVAL;
++	}
++
+ #ifdef CONFIG_PM
+ 	if (hw->wiphy->wowlan && (!local->ops->suspend || !local->ops->resume))
+ 		return -EINVAL;
 -- 
 2.36.1
 
