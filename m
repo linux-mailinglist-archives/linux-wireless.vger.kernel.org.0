@@ -2,200 +2,153 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B925B53B005
+	by mail.lfdr.de (Postfix) with ESMTP id 15FD353B003
 	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jun 2022 00:51:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230150AbiFAUxq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jun 2022 16:53:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58690 "EHLO
+        id S232245AbiFAWXi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jun 2022 18:23:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230211AbiFAUxo (ORCPT
+        with ESMTP id S232229AbiFAWXh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Jun 2022 16:53:44 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D39A20EE8E
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Jun 2022 13:53:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654116822; x=1685652822;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=8Nyzb8ZO1bDXC/sSFr1dSx3DYH26bvypWv07ysEH8HQ=;
-  b=EbBmKQbXNYl5PBkGAI9jtN52gBvS0SYOd5ySt+obL6TR7lqcI6DXcKsv
-   O7K/cfUtn5qeMJ6TV5k2mW9RyzV8ufhEe6Ga1OtfvruCyWj/nbXIkZ8Pp
-   ANFbUvGhW150WGny/VHFuI1edwHsbHf4a1rU3Pum6LNkaGMv7G6yYqz2k
-   +9fnlIVj1tFFOf0j5TlQ1JLRhvf5zSMx0XPpxTk+1JQahsaxMPz0GvxJK
-   QTqpnLuUwLIx1ntpybmzUwLvS33Q/rV88GkTzmrHbIucC+Q8IcnGDT17r
-   3gFl4L+3hH8Fd/5BVJhHcbVVqlzj4XnkUdKiKe7l2H6RNaBbZaX6cN3z2
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10365"; a="301076185"
-X-IronPort-AV: E=Sophos;i="5.91,269,1647327600"; 
-   d="scan'208";a="301076185"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2022 13:11:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,269,1647327600"; 
-   d="scan'208";a="707219106"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 01 Jun 2022 13:11:17 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nwUgW-0004Mo-Bn;
-        Wed, 01 Jun 2022 20:11:16 +0000
-Date:   Thu, 02 Jun 2022 04:11:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: [wireless-next:mld] BUILD SUCCESS
- 4e2c96a3d24de3bff59bb1ee7ae071f2ffd10307
-Message-ID: <6297c7e2.lwxzEWrL0x54SCaL%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Wed, 1 Jun 2022 18:23:37 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06E2FFC9;
+        Wed,  1 Jun 2022 15:23:31 -0700 (PDT)
+X-UUID: 3adf2b09e9054a8ebf80d0196da9e7aa-20220602
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.5,REQID:f7e979cc-3c39-4192-b114-63159e78c769,OB:10,L
+        OB:0,IP:0,URL:25,TC:0,Content:3,EDM:0,RT:0,SF:54,FILE:0,RULE:Release_Ham,A
+        CTION:release,TS:82
+X-CID-INFO: VERSION:1.1.5,REQID:f7e979cc-3c39-4192-b114-63159e78c769,OB:10,LOB
+        :0,IP:0,URL:25,TC:0,Content:3,EDM:0,RT:0,SF:54,FILE:0,RULE:Spam_GS981B3D,A
+        CTION:quarantine,TS:82
+X-CID-META: VersionHash:2a19b09,CLOUDID:ad70f514-b515-4766-a72d-4514488fe823,C
+        OID:519d15beb0b2,Recheck:0,SF:28|16|19|48,TC:nil,Content:3,EDM:-3,IP:nil,U
+        RL:1,File:nil,QS:0,BEC:nil
+X-UUID: 3adf2b09e9054a8ebf80d0196da9e7aa-20220602
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 290362415; Thu, 02 Jun 2022 06:23:25 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Thu, 2 Jun 2022 06:23:23 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 2 Jun 2022 06:23:23 +0800
+From:   <sean.wang@mediatek.com>
+To:     <dev@pschenker.ch>
+CC:     <deren.wu@mediatek.com>, <kvalo@kernel.org>,
+        <linux-wireless@vger.kernel.org>, <nbd@nbd.name>,
+        <linux@leemhuis.info>, <davem@davemloft.net>, <kuba@kernel.org>,
+        <lorenzo.bianconi83@gmail.com>, <matthias.bgg@gmail.com>,
+        <pabeni@redhat.com>, <ryder.lee@mediatek.com>,
+        <sean.wang@mediatek.com>, <shayne.chen@mediatek.com>,
+        <yn.chen@mediatek.com>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH] Revert "mt76: mt7921: enable aspm by default"
+Date:   Thu, 2 Jun 2022 06:23:23 +0800
+Message-ID: <1654122203-26090-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <e93aef5c9f8a97efe23cfb5892f78f919ce328e7.camel@pschenker.ch--annotate>
+References: <e93aef5c9f8a97efe23cfb5892f78f919ce328e7.camel@pschenker.ch--annotate>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_HI,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git mld
-branch HEAD: 4e2c96a3d24de3bff59bb1ee7ae071f2ffd10307  mac80211: correct link config data in tracing
+From: Sean Wang <sean.wang@mediatek.com>
 
-elapsed time: 728m
+>On Tue, 2022-04-12 at 19:06 +0800, Deren Wu wrote:
+>> On Tue, 2022-04-12 at 12:37 +0300, Kalle Valo wrote:
+>> > Philippe Schenker <dev@pschenker.ch> writes:
+>> >
+>> > > This reverts commit bf3747ae2e25dda6a9e6c464a717c66118c588c8.
+>> > >
+>> > > This commit introduces a regression on some systems where the
+>> > > kernel is crashing in different locations after a reboot was
+>> > > issued.
+>> > >
+>> > > This issue was bisected on a Thinkpad P14s Gen2 (AMD) with latest
+>> > > firmware.
+>> > >
+>> > > Link:
+>> > > https://urldefense.com/v3/__https://lore.kernel.org/linux-wireless
+>> > > /5077a953487275837e81bdf1808ded00b9676f9f.camel@pschenker.ch/__;!!
+>> > > CTRNKA9wMg0ARbw!09tjyaQlMci3fVI3yiNiDJKUW_qwNA_CbVhoAraeIX96B99Q14
+>> > > J4iDycWA9cq36Y$
+>> > >
+>> > > Signed-off-by: Philippe Schenker <dev@pschenker.ch>
+>> >
+>> > Can I take this to wireless tree? Felix, ack?
+>> >
+>> > I'll also add:
+>> >
+>> > Fixes: bf3747ae2e25 ("mt76: mt7921: enable aspm by default")
+>> >
+>>
+>> Hi Kalle,
+>>
+>> We have a patch for a similar problem. Can you wait for the
+>> verification by Philippe?
+>> Commit 602cc0c9618a81 ("mt76: mt7921e: fix possible probe failure
+>> after
+>> reboot")
+>> Link:
+>> https://urldefense.com/v3/__https://git.kernel.org/pub/scm/linux/kerne
+>> l/git/torvalds/linux.git/commit/drivers/net/wireless/mediatek/mt76?id=
+>> 602cc0c9618a819ab00ea3c9400742a0ca318380__;!!CTRNKA9wMg0ARbw!3N9I3iKwS
+>> 3XCNAb4LuhbFqt_el1yiOaJzSdUjaJsTaxRCHiWhXnEgbk3bOqYTy6T$
+>>
+>> I can reproduce the problem in my v5.16-rc5 desktop. And the issue can
+>> be fixed when the patch applied.
+>>
+>>
+>> Hi Philippe,
+>>
+>> Can you please help to check the patch in your platform?
+>
+>Hi Kalle and Deren,
+>
+>I just noticed on my system and mainline v5.18 reboots do now work however Bluetooth is no longer accessible after a reboot.
+>
+>Reverting commit bf3747ae2e25dda6a9e6c464a717c66118c588c8 on top of
+>v5.18 solves this problem for me.
+>
+>@Deren are you aware of this bug?
+>@Kalle Is there a bugtracker somewhere I can submit this?
 
-configs tested: 115
-configs skipped: 4
+Hi Philippe,
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Could you try the latest firmware to see if it can help with the issue you reported here ?
 
-gcc tested configs:
-arm                              allmodconfig
-arm                              allyesconfig
-arm                                 defconfig
-arm64                               defconfig
-arm64                            allyesconfig
-i386                          randconfig-c001
-sh                  sh7785lcr_32bit_defconfig
-arm64                            alldefconfig
-sh                   sh7770_generic_defconfig
-sh                          lboxre2_defconfig
-arm                         cm_x300_defconfig
-arc                      axs103_smp_defconfig
-m68k                           sun3_defconfig
-powerpc                     tqm8555_defconfig
-mips                       capcella_defconfig
-arm                           tegra_defconfig
-arm                        shmobile_defconfig
-sh                          rsk7201_defconfig
-xtensa                  nommu_kc705_defconfig
-arm                            zeus_defconfig
-alpha                            alldefconfig
-ia64                         bigsur_defconfig
-sh                        dreamcast_defconfig
-parisc                generic-64bit_defconfig
-sh                          kfr2r09_defconfig
-sh                          r7780mp_defconfig
-mips                         bigsur_defconfig
-arm                        cerfcube_defconfig
-parisc64                            defconfig
-ia64                                defconfig
-riscv                             allnoconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-alpha                               defconfig
-csky                                defconfig
-nios2                            allyesconfig
-alpha                            allyesconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-s390                             allyesconfig
-sparc                               defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allmodconfig
-mips                             allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-arc                  randconfig-r043-20220531
-s390                 randconfig-r044-20220531
-riscv                randconfig-r042-20220531
-riscv                            allyesconfig
-riscv                            allmodconfig
-riscv                    nommu_k210_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_virt_defconfig
-riscv                               defconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                                  kexec
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
+Please check out https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/mediatek
+and replace the following three files in /lib/firmware/mediatek on your target and reboot
+1) BT_RAM_CODE_MT7961_1_2_hdr.bin
+2) WIFI_MT7961_patch_mcu_1_2_hdr.bin
+3) WIFI_RAM_CODE_MT7961_1.bin
 
-clang tested configs:
-mips                 randconfig-c004-20220531
-x86_64                        randconfig-c007
-i386                          randconfig-c001
-s390                 randconfig-c005-20220531
-arm                  randconfig-c002-20220531
-powerpc              randconfig-c003-20220531
-riscv                randconfig-c006-20220531
-arm                                 defconfig
-powerpc                      acadia_defconfig
-powerpc                     kmeter1_defconfig
-mips                  cavium_octeon_defconfig
-mips                         tb0287_defconfig
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-hexagon              randconfig-r041-20220531
-hexagon              randconfig-r045-20220531
+	Sean
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+>
+>Thanks,
+>Philippe
+>
+>>
+>>
+>> Regards,
+>> Deren
+>>
+>
+>
+>
