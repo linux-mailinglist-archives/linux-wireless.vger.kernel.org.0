@@ -2,205 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DC1453B2E6
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jun 2022 07:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5C9C53B3F3
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jun 2022 08:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230010AbiFBFOv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Jun 2022 01:14:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38842 "EHLO
+        id S231510AbiFBG4U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Jun 2022 02:56:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230005AbiFBFOt (ORCPT
+        with ESMTP id S231545AbiFBG4R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Jun 2022 01:14:49 -0400
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 935F3FC4C1
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Jun 2022 22:14:48 -0700 (PDT)
+        Thu, 2 Jun 2022 02:56:17 -0400
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDCBFA7771
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Jun 2022 23:56:16 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id n2-20020a9d6f02000000b0060b22af84d4so2843265otq.1
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Jun 2022 23:56:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1654146888; x=1685682888;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version;
-  bh=bNlas2jCBHRERNM0J6iM7bEC6MIm+oNEf0L7hMpp1sY=;
-  b=HA2O6SqUwE0K9DAC/bcOVFVxhHVGLWvkZuM5m5tmShZ9xew+z6pYSjwu
-   bVnWVNaA+4alX4VBN33Vm1wyqWPwbPx59odDKPIKM+7uRbLa0sT1ScvMG
-   Ae14Cja6AFwQXbc1wJQITE0w5fbx93y34HO2rEHWWOsFCnF8Jh2qtCr7b
-   k=;
-Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 01 Jun 2022 22:14:48 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2022 22:14:48 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 1 Jun 2022 22:14:47 -0700
-Received: from adisi-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 1 Jun 2022 22:14:45 -0700
-From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Aditya Kumar Singh <quic_adisi@quicinc.com>
-Subject: [PATCH 2/2] ath11k: add get_txpower mac ops
-Date:   Thu, 2 Jun 2022 10:44:25 +0530
-Message-ID: <20220602051425.9265-3-quic_adisi@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220602051425.9265-1-quic_adisi@quicinc.com>
-References: <20220602051425.9265-1-quic_adisi@quicinc.com>
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=YxhW7zDRDh6dnmp9Pn3W43cT3aYvwAcpBakNxGARvoc=;
+        b=D4Y9c6SA9hayHgA3aOCEjZr316DkJTPICd6vt8lQlu22+IURA/8k89BdJOJOGmRnYu
+         cYpyOQvCyOekAKkoNd+wRb6/RpH8TXfe8Q/OJLoOPzd9c3JxAXFSP+STqBHWNwDdGiRm
+         YbOCMobWfxKs39Bfyc+CI73HcLW2crgw8zA0IDD+rfYdAaezjiWw/Mfz5KVV+yCkaeZ5
+         0Y3vmN5YK+kueAp2zZyGpeiGCy6qO61SmDrLXfDmUagE4IOZ18LdLwrnHPf8/ie8B9xq
+         jccglOJ8UXb05NJAB6BLUSUc/WRq+47Y/ZOL+HwSXT4jl/MxGkL0YaU+gz9PUyNJbhaG
+         ylNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=YxhW7zDRDh6dnmp9Pn3W43cT3aYvwAcpBakNxGARvoc=;
+        b=jHiY6h+xLlZNum1HtoaLbebDxtzUTwYFcqIc6iPMCP3F6MH8CjqdSEg+Ncwjtmep1y
+         dHTpy+wLmBujx3xk7yhEznaz043ig41rLZYuPVmQnvmfmsNIjI2IKaW2Uc4f/gBrlvj+
+         V2Jd2QxAQqK7sYBhPpV/iHLOFWK/76HsZZ9jbILcooc+JPQGGlQ0pno6HXvSutw4LKbd
+         7wRrT4iFfe8VYaWN3h/XOBrkw0OymKjiPrD0Mi3fRLBgyM1IH9IqR6txyEpuWo7V2gTH
+         NfnjONZbDmvlJyUlhJsMV0I9P4RimOGgi7V86IVwR8pJLBKMcrd6wGKMF/tNz32PePXK
+         qUFQ==
+X-Gm-Message-State: AOAM5325oqXkHW0CSudT0ybEyhJvEA6HjgHZW9V41iVGKRsJS3HzGss4
+        F+P7f+S7jDqZach9NQ+SGRl3itKaKS24xEnDM9g=
+X-Google-Smtp-Source: ABdhPJwvWOb+CA3u6X2VfjfVv2CAxogexAau/p2OYHlLKttrQiD/cVbeHEIireWzy0YbdyGqUxe2m7L9CbBr+duLUxw=
+X-Received: by 2002:a9d:6e8d:0:b0:60b:b084:d3ee with SMTP id
+ a13-20020a9d6e8d000000b0060bb084d3eemr1516602otr.41.1654152976263; Wed, 01
+ Jun 2022 23:56:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Reply-To: malinarakovic@hotmail.com
+Sender: petjoefirm@gmail.com
+Received: by 2002:a05:6358:42a3:b0:a3:2845:b675 with HTTP; Wed, 1 Jun 2022
+ 23:56:15 -0700 (PDT)
+From:   "Mrs. Malina Rakovic" <malinarakovic@gmail.com>
+Date:   Thu, 2 Jun 2022 15:56:15 +0900
+X-Google-Sender-Auth: NYuUp5iH56KHo217mXXxspQZ_gA
+Message-ID: <CAMH+tFi09HZzGZ8SkFHp030zYdWNrpq3D8TOfzc1ktefBzmD8A@mail.gmail.com>
+Subject: Mr Jerry Dosso
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Driver does not support get_txpower mac ops because of which
-cfg80211 returns vif->bss_conf.txpower to user space. bss_conf.txpower
-gets its value from ieee80211_channel->max_reg_power. However, the final
-txpower is dependent on few other parameters apart from max regulatory
-supported power. It is the firmware which knows about all these
-parameters and considers the minimum for each packet transmission.
-
-All ath11k firmware reports the final tx power in firmware pdev stats
-which falls under fw_stats.
-
-Add get_txpower mac ops to get the tx power from firmware leveraging
-fw_stats and return it accordingly.
-
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
-
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 91 +++++++++++++++++++++++++++
- 1 file changed, 91 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index f11956163822..f2502ce7deac 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -8471,6 +8471,94 @@ static int ath11k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- 	return ret;
- }
- 
-+static int ath11k_fw_stats_request(struct ath11k *ar,
-+				   struct stats_request_params *req_param)
-+{
-+	struct ath11k_base *ab = ar->ab;
-+	unsigned long time_left;
-+	int ret;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	spin_lock_bh(&ar->data_lock);
-+	ar->fw_stats_done = false;
-+	ath11k_fw_stats_pdevs_free(&ar->fw_stats.pdevs);
-+	spin_unlock_bh(&ar->data_lock);
-+
-+	reinit_completion(&ar->fw_stats_complete);
-+
-+	ret = ath11k_wmi_send_stats_request_cmd(ar, req_param);
-+	if (ret) {
-+		ath11k_warn(ab, "could not request fw stats (%d)\n",
-+			    ret);
-+		return ret;
-+	}
-+
-+	time_left = wait_for_completion_timeout(&ar->fw_stats_complete,
-+						1 * HZ);
-+
-+	if (!time_left)
-+		return -ETIMEDOUT;
-+
-+	return 0;
-+}
-+
-+static int ath11k_mac_op_get_txpower(struct ieee80211_hw *hw,
-+				     struct ieee80211_vif *vif,
-+				     int *dbm)
-+{
-+	struct ath11k *ar = hw->priv;
-+	struct ath11k_base *ab = ar->ab;
-+	struct stats_request_params req_param;
-+	struct ath11k_fw_stats_pdev *pdev;
-+	int ret;
-+
-+	/* Final Tx power is minimum of Target Power, CTL power, Regulatory
-+	 * Power, PSD EIRP Power. We just know the Regulatory power from the
-+	 * regulatory rules obtained. FW knows all these power and sets the min
-+	 * of these. Hence, we request the FW pdev stats in which FW reports
-+	 * the minimum of all vdev's channel Tx power.
-+	 */
-+	mutex_lock(&ar->conf_mutex);
-+
-+	if (ar->state != ATH11K_STATE_ON)
-+		goto err_fallback;
-+
-+	req_param.pdev_id = ar->pdev->pdev_id;
-+	req_param.vdev_id = 0;
-+	req_param.stats_id = WMI_REQUEST_PDEV_STAT;
-+
-+	ret = ath11k_fw_stats_request(ar, &req_param);
-+	if (ret) {
-+		ath11k_warn(ab, "failed to request fw pdev stats: %d\n", ret);
-+		goto err_fallback;
-+	}
-+
-+	spin_lock_bh(&ar->data_lock);
-+	pdev = list_first_entry_or_null(&ar->fw_stats.pdevs,
-+					struct ath11k_fw_stats_pdev, list);
-+	if (!pdev) {
-+		spin_unlock_bh(&ar->data_lock);
-+		goto err_fallback;
-+	}
-+
-+	/* tx power is set as 2 units per dBm in FW. */
-+	*dbm = pdev->chan_tx_power / 2;
-+
-+	spin_unlock_bh(&ar->data_lock);
-+	mutex_unlock(&ar->conf_mutex);
-+
-+	ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "%s: txpower: %d from fw\n", __func__, *dbm);
-+	return 0;
-+
-+err_fallback:
-+	mutex_unlock(&ar->conf_mutex);
-+	/* We didn't get txpower from FW. Hence, relying on vif->bss_conf.txpower */
-+	*dbm = vif->bss_conf.txpower;
-+	ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "%s: txpower from bss_conf\n", __func__);
-+	return 0;
-+}
-+
- static const struct ieee80211_ops ath11k_ops = {
- 	.tx				= ath11k_mac_op_tx,
- 	.start                          = ath11k_mac_op_start,
-@@ -8521,6 +8609,7 @@ static const struct ieee80211_ops ath11k_ops = {
- #if IS_ENABLED(CONFIG_IPV6)
- 	.ipv6_addr_change = ath11k_mac_op_ipv6_changed,
- #endif
-+	.get_txpower                    = ath11k_mac_op_get_txpower,
- 
- 	.set_sar_specs			= ath11k_mac_op_set_bios_sar_specs,
- 	.remain_on_channel		= ath11k_mac_op_remain_on_channel,
-@@ -9129,6 +9218,8 @@ int ath11k_mac_allocate(struct ath11k_base *ab)
- 		clear_bit(ATH11K_FLAG_MONITOR_VDEV_CREATED, &ar->monitor_flags);
- 		ar->vdev_id_11d_scan = ATH11K_11D_INVALID_VDEV_ID;
- 		init_completion(&ar->completed_11d_scan);
-+
-+		ath11k_fw_stats_init(ar);
- 	}
- 
- 	return 0;
 -- 
-2.17.1
+My Dear Friend,
 
+Did you receive the message i sent to you?
+
+Regards,
+Mrs. Malina Rakovic
