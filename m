@@ -2,86 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BF4A53C974
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jun 2022 13:36:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F43B53CA41
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jun 2022 14:56:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244040AbiFCLdS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Jun 2022 07:33:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56752 "EHLO
+        id S244446AbiFCM4y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Jun 2022 08:56:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244057AbiFCLdM (ORCPT
+        with ESMTP id S233094AbiFCM4w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Jun 2022 07:33:12 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 735E93C73A
-        for <linux-wireless@vger.kernel.org>; Fri,  3 Jun 2022 04:33:01 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id u8so5695611wrm.13
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Jun 2022 04:33:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=PaEzrm9U0WjJMxkE+zbw8yGRv0uhjcRl9sFl9vmbKpk=;
-        b=jd2M5ci6kw29Z5Ep1D/Fy3EfjZBMjGFL0gAHqOijXroWbariraQkgVFGD+Zq1Ffq+3
-         HBHb7yuNTC6AHAOS9skKngRDHJttP0hygfDHYAJWWAb/sbIX46Quf4mG3/T7I4lWleu7
-         XCmURv9OmyhHMdSfi6ceoBXmASCqI6qF/4MJriQFPmbZpAL6fwsQToRCu14lfPh8CzrL
-         vJyaubiYBwsTy+48OLKu/UF68tGv/tccbefw3b788NAtofCai6tMPdORyLsjpS3Ag07c
-         I8d6+vK8u5vSHVnW+x1YH4GgA8isyPkq4Xu8zp0o4uLowOH329uLrNakW6TcLlzWilOV
-         0yag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=PaEzrm9U0WjJMxkE+zbw8yGRv0uhjcRl9sFl9vmbKpk=;
-        b=wdZWDgIPt3ItU+kxTBjwjWrkmKYvWtkHs0DczisAahHhFS99fwKa7ve9sEAJvxS94k
-         ijnjfzN7t+LwpbLh6oWDBntN9ovzjr6R7bBY6Zq1HpIVUO2qFcV5VySzmVTrsbe5es+1
-         LwYi06PN7SWhpF3yrmRjY362EWxeweKpJB/9GFkyrAUZUxPNZqH8Sp7gguny/ZdKOfxm
-         RABUZGlo6BNVM7TAzOSB4s0MOKYigMkTtgUSUYv4CxmjvbgtITFnj5un4NJUxlPf3HDG
-         pdXRaxiSSLewJa9BjHGqFY5SyuXxCL/K+wCyP+9sG74vj8GsIUsMNXUvImbn/Yv0eOyr
-         SLDg==
-X-Gm-Message-State: AOAM533noeBgc3wpvvJtSs5Z0yyRIcyNubTY0sefmANrL76+sF7UDAty
-        hm/IMkCVEx6amcnQJgNVQ3Knm4DQI0zo0WQXRfM=
-X-Google-Smtp-Source: ABdhPJzRVgFo2R9R0SFZzg3zzjIJIEWKnY3FH3aUkXX4RvwEXgOAVQHQPXOBe+HAkyYrZ3oIkGvL2YY6j8Kf1a2qQb0=
-X-Received: by 2002:a05:6000:1f89:b0:210:552a:644c with SMTP id
- bw9-20020a0560001f8900b00210552a644cmr7583573wrb.667.1654255979750; Fri, 03
- Jun 2022 04:32:59 -0700 (PDT)
+        Fri, 3 Jun 2022 08:56:52 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA059DD8;
+        Fri,  3 Jun 2022 05:56:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654261010; x=1685797010;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=iHvWelEz+kZnPb6N3D7Tq7OPEoo6lTW/H9Qskkfqi1g=;
+  b=VL2vQMAfSs2i+9+NG6/KcoE+jW9CneLRuZrLqj8Ixw9gezwQLRVJz3lW
+   tfgbeC/7ROh3kS2EeipjrqA/7ZxlY3FTeNIjZLZw4+Aut6Sk8lCHn0Vfq
+   7KGTbcCTEVRyawQB4c7jGvxBQccTeYSNh3kGHC5MateCsG0648ropdvO3
+   x6hmv6R1Oz5t8iTXw5fvpjyMfiNMfMe4WZyc30ZHwDSquBgijQ/kaB8EU
+   hA1TtnTteCQd52/suuvapIzpIHf5TTSczUNqw7bxQ4/8lcMZlf6vOOXSa
+   mk/iPd321jysEENZyTJhO6mXgqBPhxd9Hj1N+fu2kUjMAjk4e6ezmsip5
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10366"; a="256720822"
+X-IronPort-AV: E=Sophos;i="5.91,274,1647327600"; 
+   d="scan'208";a="256720822"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2022 05:56:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,274,1647327600"; 
+   d="scan'208";a="905446738"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga005.fm.intel.com with ESMTP; 03 Jun 2022 05:56:47 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 4B5DEF8; Fri,  3 Jun 2022 15:56:50 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] rtw88: use %*ph to print small buffer
+Date:   Fri,  3 Jun 2022 15:56:48 +0300
+Message-Id: <20220603125648.46873-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Received: by 2002:a5d:64ed:0:0:0:0:0 with HTTP; Fri, 3 Jun 2022 04:32:58 -0700 (PDT)
-Reply-To: markwillima00@gmail.com
-From:   Mark <mariamabdul888@gmail.com>
-Date:   Fri, 3 Jun 2022 04:32:58 -0700
-Message-ID: <CAP9xyD1jdj5ift2Tq-tPU4g8vGaYyZJGAFwyP1O1Bkdve=SVTQ@mail.gmail.com>
-Subject: Re: Greetings!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Use %*ph format to print small buffer as hex string.
 
-Good day,
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/net/wireless/realtek/rtw88/debug.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-The HSBC Bank is a financial institution in United Kingdom. We
-promotes long-term,sustainable and broad-based economic growth in
-developing and emerging countries by providing financial support like
-loans and investment to large, small and
-medium-sized companies (SMEs) as well as fast-growing enterprises
-which in turn helps to create secure and permanent jobs and reduce
-poverty.
+diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
+index 1a52ff585fbc..7cde6bcf253b 100644
+--- a/drivers/net/wireless/realtek/rtw88/debug.c
++++ b/drivers/net/wireless/realtek/rtw88/debug.c
+@@ -269,11 +269,7 @@ static int rtw_debugfs_get_rsvd_page(struct seq_file *m, void *v)
+ 	for (i = 0 ; i < buf_size ; i += 8) {
+ 		if (i % page_size == 0)
+ 			seq_printf(m, "PAGE %d\n", (i + offset) / page_size);
+-		seq_printf(m, "%2.2x %2.2x %2.2x %2.2x %2.2x %2.2x %2.2x %2.2x\n",
+-			   *(buf + i), *(buf + i + 1),
+-			   *(buf + i + 2), *(buf + i + 3),
+-			   *(buf + i + 4), *(buf + i + 5),
+-			   *(buf + i + 6), *(buf + i + 7));
++		seq_printf(m, "%8ph\n", buf + i);
+ 	}
+ 	vfree(buf);
+ 
+-- 
+2.35.1
 
-If you need fund to promotes your business, project(Project Funding),
-Loan, planning, budgeting and expansion of your business(s) , do not
-hesitate to indicate your interest as we are here to serve you better
-by granting your request.
-
-
-Thank you
-Mr:Mark
