@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA1E653C65B
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jun 2022 09:36:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC55053C6E1
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jun 2022 10:22:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242514AbiFCHfZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Jun 2022 03:35:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60380 "EHLO
+        id S241483AbiFCIWD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Jun 2022 04:22:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242620AbiFCHfP (ORCPT
+        with ESMTP id S229744AbiFCIV5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Jun 2022 03:35:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A324338AB
-        for <linux-wireless@vger.kernel.org>; Fri,  3 Jun 2022 00:35:14 -0700 (PDT)
+        Fri, 3 Jun 2022 04:21:57 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E0BDF71
+        for <linux-wireless@vger.kernel.org>; Fri,  3 Jun 2022 01:21:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4DE0618F3
-        for <linux-wireless@vger.kernel.org>; Fri,  3 Jun 2022 07:35:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78AFEC385A9;
-        Fri,  3 Jun 2022 07:35:12 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D9E3BB82239
+        for <linux-wireless@vger.kernel.org>; Fri,  3 Jun 2022 08:21:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B26C385A9;
+        Fri,  3 Jun 2022 08:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654241713;
-        bh=9RgZEj/aGukWMOOD7s+ViFEIX89kzK0VQUFSq29TzN4=;
+        s=k20201202; t=1654244512;
+        bh=pciJPhkaAn/akGeYwFsJVrfngr0jwtrdXbFX0+GzWEg=;
         h=From:To:Cc:Subject:Date:From;
-        b=oJwNILuTb9E5eh/dThPHVa7ATUct1Jr5mmWOkUKpHAEsslk6ttYgtC03kIrbJFbAE
-         gHbcnn8yxletEK8gJNOmHrSZKX9vj+zICk2Z0HnV0CH1vTOTNC4+6lGY+EfghnPx/y
-         ebyoe8zjg4xW/TKx0/R72MjGtnLMPINj0qq/dXd/LrelkYEdAAx/8tqcmLET1nL31L
-         tPF1kSmww5EHkmMTE/5GlnwIVKZIq6uWaPUJ1MIjyuHadTAZtQRkAoDcJORSOeq4Zq
-         9V3EcfVYFdxnwFzLS1h6FiRayDjtjCeXy27dW5i60hRuhu7De0QrwDv8xJ4hGWMIrg
-         YaVplggsr09aw==
+        b=Ii9LYhO0dRAwgyxkxiFj6/CrfRLXdFDRlgKbz9KeVwFq9fKCYJsKMqM+L4faCik6j
+         fCehJeZJ8KFw8TjiQRLF5wHH4BE9GZTv0Fw8id7aoH87QkPE7yb73oyn0i/zl+c1Im
+         xQjaT/9qobHWmE/LY919IzIhVHB7m8RKSm84LoljkQWfVsSIj9Yry2YELCDwWwdfeW
+         yyAxwJn+cpgkD1laPy/AK8zmRP95jlcOPX1NvZxEvKQUt4zDXuJ1iaSLL36bBjAAeZ
+         rCl0zSZIs5qzAaaac5ipRJYhcdqkCG9Y4v4auL0DYQJMZ5uYLLVs8r+pySy2x5qGD7
+         cS/fqi5ex5rNA==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH] mt76: mt7921: add missing bh-disable around rx napi schedule
-Date:   Fri,  3 Jun 2022 09:35:00 +0200
-Message-Id: <e409d1226c837d609b80611a569ff3cf93b88093.1654241613.git.lorenzo@kernel.org>
+Subject: [PATCH] mt76: mt7921: get rid of mt7921_mcu_exit
+Date:   Fri,  3 Jun 2022 10:21:37 +0200
+Message-Id: <f8387f10fc256660f905e61319fe8546510188ff.1654244410.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -51,30 +51,108 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-napi_schedule() can call __raise_softirq_irqoff(), which can perform
-softirq handling, so it must not be called in a pure process context
-with BH enabled.
+Run skb_queue_purge when needed.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c     | 6 ------
+ drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h  | 1 -
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/sdio.c    | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/usb.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c | 4 ++--
+ 6 files changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index a630ddbf19e5..01ed779d3976 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -1538,8 +1538,10 @@ void mt7921_pm_wake_work(struct work_struct *work)
- 			mt76_connac_pm_dequeue_skbs(mphy, &dev->pm);
- 			mt76_worker_schedule(&mdev->sdio.txrx_worker);
- 		} else {
-+			local_bh_disable();
- 			mt76_for_each_q_rx(mdev, i)
- 				napi_schedule(&mdev->napi[i]);
-+			local_bh_enable();
- 			mt76_connac_pm_dequeue_skbs(mphy, &dev->pm);
- 			mt7921_mcu_tx_cleanup(dev);
- 		}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index d0a7c3128d5a..4217c35acb82 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -773,12 +773,6 @@ int mt7921_run_firmware(struct mt7921_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(mt7921_run_firmware);
+ 
+-void mt7921_mcu_exit(struct mt7921_dev *dev)
+-{
+-	skb_queue_purge(&dev->mt76.mcu.res_q);
+-}
+-EXPORT_SYMBOL_GPL(mt7921_mcu_exit);
+-
+ int mt7921_mcu_set_tx(struct mt7921_dev *dev, struct ieee80211_vif *vif)
+ {
+ 	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index 5ca584bb2fc6..953459031ae3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -301,7 +301,6 @@ int mt7921_mcu_get_rx_rate(struct mt7921_phy *phy, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta, struct rate_info *rate);
+ int mt7921_mcu_fw_log_2_host(struct mt7921_dev *dev, u8 ctrl);
+ void mt7921_mcu_rx_event(struct mt7921_dev *dev, struct sk_buff *skb);
+-void mt7921_mcu_exit(struct mt7921_dev *dev);
+ 
+ static inline void mt7921_irq_enable(struct mt7921_dev *dev, u32 mask)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index b5fb22b8e086..624eb75c15cd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -116,7 +116,7 @@ static void mt7921e_unregister_device(struct mt7921_dev *dev)
+ 	mt7921_mcu_drv_pmctrl(dev);
+ 	mt7921_dma_cleanup(dev);
+ 	mt7921_wfsys_reset(dev);
+-	mt7921_mcu_exit(dev);
++	skb_queue_purge(&dev->mt76.mcu.res_q);
+ 
+ 	tasklet_disable(&dev->irq_tasklet);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+index af26d59fa2f0..487acd6e2be8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+@@ -48,7 +48,7 @@ static void mt7921s_unregister_device(struct mt7921_dev *dev)
+ 
+ 	mt76s_deinit(&dev->mt76);
+ 	mt7921s_wfsys_reset(dev);
+-	mt7921_mcu_exit(dev);
++	skb_queue_purge(&dev->mt76.mcu.res_q);
+ 
+ 	mt76_free_device(&dev->mt76);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+index dc38baef273a..4e4cd2dc2aeb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+@@ -158,7 +158,7 @@ static void mt7921u_cleanup(struct mt7921_dev *dev)
+ {
+ 	clear_bit(MT76_STATE_INITIALIZED, &dev->mphy.state);
+ 	mt7921u_wfsys_reset(dev);
+-	mt7921_mcu_exit(dev);
++	skb_queue_purge(&dev->mt76.mcu.res_q);
+ 	mt76u_queues_deinit(&dev->mt76);
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
+index cd2f09743d2f..efbd3954c883 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
+@@ -185,7 +185,7 @@ int mt7921u_init_reset(struct mt7921_dev *dev)
+ 	set_bit(MT76_RESET, &dev->mphy.state);
+ 
+ 	wake_up(&dev->mt76.mcu.wait);
+-	mt7921_mcu_exit(dev);
++	skb_queue_purge(&dev->mt76.mcu.res_q);
+ 
+ 	mt76u_stop_rx(&dev->mt76);
+ 	mt76u_stop_tx(&dev->mt76);
+@@ -208,7 +208,7 @@ int mt7921u_mac_reset(struct mt7921_dev *dev)
+ 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
+ 
+ 	wake_up(&dev->mt76.mcu.wait);
+-	mt7921_mcu_exit(dev);
++	skb_queue_purge(&dev->mt76.mcu.res_q);
+ 
+ 	mt76u_stop_rx(&dev->mt76);
+ 	mt76u_stop_tx(&dev->mt76);
 -- 
 2.35.3
 
