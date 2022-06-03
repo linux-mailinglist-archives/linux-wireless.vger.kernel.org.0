@@ -2,106 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0FB753CDB6
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jun 2022 19:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 375E053D1A7
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jun 2022 20:40:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344225AbiFCRFL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Jun 2022 13:05:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41924 "EHLO
+        id S1346922AbiFCSkN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Jun 2022 14:40:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344221AbiFCRFK (ORCPT
+        with ESMTP id S244339AbiFCSjS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Jun 2022 13:05:10 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54F8F51E4D;
-        Fri,  3 Jun 2022 10:05:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654275909; x=1685811909;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cyKQTmlb0QCRYTmE5OMWOU0sKSOShEX69kWs2+Ah3Ho=;
-  b=BIEGXGgzQkqVdvUJdIhbeNrky90d922gAphN16IXWpRXKOsbbTLvcTWy
-   d//rLEzA/MxliRmjrKXOh9SmgUhFO2qulK/11mUJ4KkzNBi+Dv9OaVD/N
-   L/CzjXuQIeUVPlNJ8o1hiBqg71V39qAVokRGdGO67pfjFKq0Ief7y/Ucn
-   3UraaBmXLAubFJEc8qNH7RfpiwrrtE+gHmex65BBvUlZUcGk1t+IlaDD/
-   KEtFnR+IbMLkHCU4UebfscoFdaw8R6EyP+hd+zTFHKkFADQZRVeQlvIlQ
-   cMyWYc6r5NXAIn2gqQJB2XY2h5+ilg2vqjdyN43pKodggEkPQbvdkfO72
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10367"; a="276045773"
-X-IronPort-AV: E=Sophos;i="5.91,275,1647327600"; 
-   d="scan'208";a="276045773"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2022 10:05:09 -0700
-X-IronPort-AV: E=Sophos;i="5.91,275,1647327600"; 
-   d="scan'208";a="613354138"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2022 10:05:06 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nxAjP-000Sca-Lp;
-        Fri, 03 Jun 2022 20:05:03 +0300
-Date:   Fri, 3 Jun 2022 20:05:03 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Joe Perches <joe@perches.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH v1 1/2] wireless: ray_cs: Utilize strnlen() in
- parse_addr()
-Message-ID: <Ypo/P1LpcGEGDT1/@smile.fi.intel.com>
-References: <20220603164414.48436-1-andriy.shevchenko@linux.intel.com>
- <b59b922f96603468cbbe69b6359ec417083c526b.camel@perches.com>
+        Fri, 3 Jun 2022 14:39:18 -0400
+Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E24CC6
+        for <linux-wireless@vger.kernel.org>; Fri,  3 Jun 2022 11:39:15 -0700 (PDT)
+Date:   Fri, 03 Jun 2022 18:39:02 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dannyvanheumen.nl;
+        s=protonmail2; t=1654281553; x=1654540753;
+        bh=Cq0/pCC/saQhbhE+l3whMTZvXQSRJ5YdHrdQJ0ldUkk=;
+        h=Date:To:From:Reply-To:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID;
+        b=CUAnnq3sJZKviJfbfCDqdqRhBBfsNMlxRJE8zdMDu3uf8/4Dtk/2VfF5VWERJJuqo
+         /42V5TRfw15pvIjkqo0FcwdCWfbBG27c06gZNX/4obJ9gSSKlN2uraCPANa+k76VaW
+         J15qo9XgQZ+gRkjQGGDwGJ4Ohc38WEJG1Pdwe45DRQMZn21C7GObZj62cX9UpOQHbU
+         Vn6LLpVdoDG6UNsN+Lo4eljvlSogPuEt096Y48qj5NL5n73moVMUAlyFifUQTqcsNW
+         VffHyOgCHZi5DMPUENnZojl39REz2TJs3LA5O8jjjTieYGZYMwe51kMalBxtUkc++7
+         RDugzKVmbVGUw==
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>
+From:   Danny van Heumen <danny@dannyvanheumen.nl>
+Reply-To: Danny van Heumen <danny@dannyvanheumen.nl>
+Subject: Re: [PATCH] work-in-progress: double-free after hardware reset due to firmware-crash
+Message-ID: <Y_XMhLmW7kj2Ls3X8pCfFd2RdWzXd9UWdv3ksFrVi7xh79wY7l6K52N3ODhI3_UK_IqG1uJcIEv0PxT-wQG9tdYu9krraq7gxsprUu-RtjQ=@dannyvanheumen.nl>
+In-Reply-To: <Uba0mwWYafMZd4JdEJVxMd-Uh8M6T4dHoTse71YdCikdJLYLxunwtrxxbasffgMuXtPVi_JmJrtAnqviM6x-99_SyysHZm-Yvz933mPXr74=@dannyvanheumen.nl>
+References: <UXibAXk2GByhvw88A6LIDXHSlkP79-ML7FrtyfnHuiC34qUd-zx03BAJAtzluyEvfwPBR0tac4hC72zKI1qT3CtgmvvVohr1v8a49TqYVSw=@dannyvanheumen.nl> <Uba0mwWYafMZd4JdEJVxMd-Uh8M6T4dHoTse71YdCikdJLYLxunwtrxxbasffgMuXtPVi_JmJrtAnqviM6x-99_SyysHZm-Yvz933mPXr74=@dannyvanheumen.nl>
+Feedback-ID: 15073070:user:proton
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b59b922f96603468cbbe69b6359ec417083c526b.camel@perches.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jun 03, 2022 at 09:50:55AM -0700, Joe Perches wrote:
-> On Fri, 2022-06-03 at 19:44 +0300, Andy Shevchenko wrote:
-> > Instead of doing simple operations and using an additional variable on stack,
-> > utilize strnlen() and reuse len variable.
-> []
-> > diff --git a/drivers/net/wireless/ray_cs.c b/drivers/net/wireless/ray_cs.c
-> []
-> > +	while (len > 0) {
-> > +		if ((k = hex_to_bin(in_str[len--])) != -1)
-> >  			out[i] = k;
-> >  		else
-> >  			return 0;
-> 
-> could be reversed and unindented
-> 
-> >  
-> > -		if (j == 0)
-> > +		if (len == 0)
-> >  			break;
-> > -		if ((k = hex_to_bin(in_str[j--])) != -1)
-> > +		if ((k = hex_to_bin(in_str[len--])) != -1)
-> >  			out[i] += k << 4;
-> >  		else
-> >  			return 0;
-> 
-> and here
+Hi,
 
-It might be done as a follow up. Thanks!
+------- Original Message -------
+On Monday, May 30th, 2022 at 19:59, Danny van Heumen <danny@dannyvanheumen.=
+nl> wrote:
 
+> Hi all,
+>
+> I'd like to follow up with an updated patch. I had another look at the co=
+de. I think the
+> following proposal may correct the control flow to prevent the double-fre=
+e from happening
+> in the first place.
+>
+> Again, I would appreciate any feedback you might have, as I have little e=
+xperience in this
+> area. A stacktrace is present in the commit message, in case you are look=
+ing for extra data
+> that demonstrates the issue.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Could someone follow up on this?
+
+I have not received any response, so it is not clear to me if the patch is =
+the issue,
+or whether it is something else. I am running these changes on my Pinebook =
+Pro laptop,
+so far without issue.
+
+Thanks in advance,
+Danny
 
 
+> [..]
+>
+> ------- Original Message -------
+> On Tuesday, May 24th, 2022 at 18:51, Danny van Heumen danny@dannyvanheume=
+n.nl wrote:
+>
+>
+>
+> > Dear all,
+> >
+> > I am not a regular C developer nor kernel developer. I don't regularly =
+report issues, so I will probably do things wrong.
+> >
+> > I investigated a crash that IIUC occurs with hardened memory allocation=
+ enabled and a firmware-crash followed by an early failure during hardware =
+reinitialization/probing. The hardened allocator detects double-free issue.
+> >
+> > I have created the patch (see attachment) against linux-5.18. Though, p=
+lease check carefully, because I have not been able to confirm that it actu=
+ally works. I am hoping someone familiar with the code-base can either test=
+ this easily, or confirm from review/analysis.
+> >
+> > The commit message describes it in more detail. In summary:
+> > 'brcmf_sdio_bus_reset' cleans up and reinitializes the hardware. It fre=
+es memory used by (struct brcmf_sdio_dev)->freezer (struct brcmf_sdiod_free=
+zer). However, it then goes to probe the hardware, and an early failure to =
+probe results in the same freeing, both called through function 'brcmf_sdio=
+d_freezer_detach' called inside 'brcmf_sdiod_remove'. Which results in doub=
+le freeing.
+> >
+> > As mentioned before, I was not able to test this and I do not regularly=
+ develop in C. I am not confident that this is the proper way to fix it, bu=
+t it seemed obvious enough. I hope you can support in fixing this bug.
+> >
+> > Kind regards,
+> > Danny
+> >
+> > PS: Please let me know if I am doing things wrong. I have included both=
+ maintainers and mailing lists from https://docs.kernel.org/process/maintai=
+ners.html#broadcom-brcm80211-ieee802-11n-wireless-driver I hope I this is a=
+lright.
