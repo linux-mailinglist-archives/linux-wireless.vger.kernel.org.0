@@ -2,94 +2,186 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F43B53CA41
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jun 2022 14:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0E653CD64
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jun 2022 18:43:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244446AbiFCM4y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Jun 2022 08:56:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38928 "EHLO
+        id S1344026AbiFCQnL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Jun 2022 12:43:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233094AbiFCM4w (ORCPT
+        with ESMTP id S244604AbiFCQnL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Jun 2022 08:56:52 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA059DD8;
-        Fri,  3 Jun 2022 05:56:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654261010; x=1685797010;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=iHvWelEz+kZnPb6N3D7Tq7OPEoo6lTW/H9Qskkfqi1g=;
-  b=VL2vQMAfSs2i+9+NG6/KcoE+jW9CneLRuZrLqj8Ixw9gezwQLRVJz3lW
-   tfgbeC/7ROh3kS2EeipjrqA/7ZxlY3FTeNIjZLZw4+Aut6Sk8lCHn0Vfq
-   7KGTbcCTEVRyawQB4c7jGvxBQccTeYSNh3kGHC5MateCsG0648ropdvO3
-   x6hmv6R1Oz5t8iTXw5fvpjyMfiNMfMe4WZyc30ZHwDSquBgijQ/kaB8EU
-   hA1TtnTteCQd52/suuvapIzpIHf5TTSczUNqw7bxQ4/8lcMZlf6vOOXSa
-   mk/iPd321jysEENZyTJhO6mXgqBPhxd9Hj1N+fu2kUjMAjk4e6ezmsip5
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10366"; a="256720822"
-X-IronPort-AV: E=Sophos;i="5.91,274,1647327600"; 
-   d="scan'208";a="256720822"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2022 05:56:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,274,1647327600"; 
-   d="scan'208";a="905446738"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 03 Jun 2022 05:56:47 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 4B5DEF8; Fri,  3 Jun 2022 15:56:50 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] rtw88: use %*ph to print small buffer
-Date:   Fri,  3 Jun 2022 15:56:48 +0300
-Message-Id: <20220603125648.46873-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
+        Fri, 3 Jun 2022 12:43:11 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E54F844A34
+        for <linux-wireless@vger.kernel.org>; Fri,  3 Jun 2022 09:43:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=YFAuZK3IjSVFKlxIy72wF5nE/Y62njySheaIF4pGFsg=; b=LJaISMF+MY/DRHLzjfmbhPUAhb
+        wwH0aOv8cjrKWd7G5lmJ+mWLbioTnMDwq+BhVDm9psbfxZN0dpGi9uBDYrbyhP115aTo1rqAPHGCB
+        uiMpFIn2cfMZnUHX33qfQ7Ska3ZIYltftx6MFj96woHB30MUlowQLkS9wns7SbcKOo/g=;
+Received: from p200300daa70ef200855b9684f56ef019.dip0.t-ipconnect.de ([2003:da:a70e:f200:855b:9684:f56e:f019] helo=Maecks.lan)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1nxAOB-0001lB-Ob; Fri, 03 Jun 2022 18:43:07 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH 1/2] mac80211: fix overflow issues in airtime fairness code
+Date:   Fri,  3 Jun 2022 18:43:06 +0200
+Message-Id: <20220603164307.92189-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use %*ph format to print small buffer as hex string.
+The airtime weight calculation overflows with a default weight value of 256
+whenever more than 8ms worth of airtime is reported.
+Bigger weight values impose even smaller limits on maximum airtime values.
+This can mess up airtime based calculations for drivers that don't report
+per-PPDU airtime values, but batch up values instead.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fix this by reordering multiplications/shifts and by reducing unnecessary
+intermediate precision (which was lost in a later stage anyway).
+
+The new shift value limits the maximum weight to 4096, which should be more
+than enough. Any values bigger than that will be clamped to the upper limit.
+
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/realtek/rtw88/debug.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/mac80211/ieee80211_i.h | 42 ++++++++++++--------------------------
+ net/mac80211/sta_info.c    | 20 +++++++-----------
+ 2 files changed, 20 insertions(+), 42 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-index 1a52ff585fbc..7cde6bcf253b 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.c
-+++ b/drivers/net/wireless/realtek/rtw88/debug.c
-@@ -269,11 +269,7 @@ static int rtw_debugfs_get_rsvd_page(struct seq_file *m, void *v)
- 	for (i = 0 ; i < buf_size ; i += 8) {
- 		if (i % page_size == 0)
- 			seq_printf(m, "PAGE %d\n", (i + offset) / page_size);
--		seq_printf(m, "%2.2x %2.2x %2.2x %2.2x %2.2x %2.2x %2.2x %2.2x\n",
--			   *(buf + i), *(buf + i + 1),
--			   *(buf + i + 2), *(buf + i + 3),
--			   *(buf + i + 4), *(buf + i + 5),
--			   *(buf + i + 6), *(buf + i + 7));
-+		seq_printf(m, "%8ph\n", buf + i);
- 	}
- 	vfree(buf);
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 86ef0a46a68c..5ca4c2c6aa3c 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1677,50 +1677,34 @@ static inline struct airtime_info *to_airtime_info(struct ieee80211_txq *txq)
+ /* To avoid divisions in the fast path, we keep pre-computed reciprocals for
+  * airtime weight calculations. There are two different weights to keep track
+  * of: The per-station weight and the sum of weights per phy.
+- *
+- * For the per-station weights (kept in airtime_info below), we use 32-bit
+- * reciprocals with a devisor of 2^19. This lets us keep the multiplications and
+- * divisions for the station weights as 32-bit operations at the cost of a bit
+- * of rounding error for high weights; but the choice of divisor keeps rounding
+- * errors <10% for weights <2^15, assuming no more than 8ms of airtime is
+- * reported at a time.
+- *
+- * For the per-phy sum of weights the values can get higher, so we use 64-bit
+- * operations for those with a 32-bit divisor, which should avoid any
+- * significant rounding errors.
++ * The per-sta shift value supports weight values of 1-4096
+  */
+-#define IEEE80211_RECIPROCAL_DIVISOR_64 0x100000000ULL
+-#define IEEE80211_RECIPROCAL_SHIFT_64 32
+-#define IEEE80211_RECIPROCAL_DIVISOR_32 0x80000U
+-#define IEEE80211_RECIPROCAL_SHIFT_32 19
++#define IEEE80211_RECIPROCAL_SHIFT_SUM	24
++#define IEEE80211_RECIPROCAL_SHIFT_STA	12
++#define IEEE80211_WEIGHT_SHIFT		8
  
+-static inline void airtime_weight_set(struct airtime_info *air_info, u16 weight)
++static inline void airtime_weight_set(struct airtime_info *air_info, u32 weight)
+ {
++	weight = min_t(u32, weight, BIT(IEEE80211_RECIPROCAL_SHIFT_STA));
+ 	if (air_info->weight == weight)
+ 		return;
+ 
+ 	air_info->weight = weight;
+-	if (weight) {
+-		air_info->weight_reciprocal =
+-			IEEE80211_RECIPROCAL_DIVISOR_32 / weight;
+-	} else {
+-		air_info->weight_reciprocal = 0;
+-	}
++	if (weight)
++		weight = BIT(IEEE80211_RECIPROCAL_SHIFT_STA) / weight;
++	air_info->weight_reciprocal = weight;
+ }
+ 
+ static inline void airtime_weight_sum_set(struct airtime_sched_info *air_sched,
+-					  int weight_sum)
++					  u32 weight_sum)
+ {
+ 	if (air_sched->weight_sum == weight_sum)
+ 		return;
+ 
+ 	air_sched->weight_sum = weight_sum;
+-	if (air_sched->weight_sum) {
+-		air_sched->weight_sum_reciprocal = IEEE80211_RECIPROCAL_DIVISOR_64;
+-		do_div(air_sched->weight_sum_reciprocal, air_sched->weight_sum);
+-	} else {
+-		air_sched->weight_sum_reciprocal = 0;
+-	}
++	if (weight_sum)
++		weight_sum = BIT(IEEE80211_RECIPROCAL_SHIFT_SUM) / weight_sum;
++	air_sched->weight_sum_reciprocal = weight_sum;
+ }
+ 
+ /* A problem when trying to enforce airtime fairness is that we want to divide
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index e04a0905e941..2f1cf9d4e68d 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -1906,9 +1906,9 @@ void ieee80211_register_airtime(struct ieee80211_txq *txq,
+ {
+ 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(txq->vif);
+ 	struct ieee80211_local *local = sdata->local;
+-	u64 weight_sum, weight_sum_reciprocal;
+ 	struct airtime_sched_info *air_sched;
+ 	struct airtime_info *air_info;
++	u64 weight_sum_reciprocal;
+ 	u32 airtime = 0;
+ 
+ 	air_sched = &local->airtime[txq->ac];
+@@ -1919,27 +1919,21 @@ void ieee80211_register_airtime(struct ieee80211_txq *txq,
+ 	if (local->airtime_flags & AIRTIME_USE_RX)
+ 		airtime += rx_airtime;
+ 
+-	/* Weights scale so the unit weight is 256 */
+-	airtime <<= 8;
+-
+ 	spin_lock_bh(&air_sched->lock);
+ 
+ 	air_info->tx_airtime += tx_airtime;
+ 	air_info->rx_airtime += rx_airtime;
+ 
+-	if (air_sched->weight_sum) {
+-		weight_sum = air_sched->weight_sum;
++	if (air_sched->weight_sum)
+ 		weight_sum_reciprocal = air_sched->weight_sum_reciprocal;
+-	} else {
+-		weight_sum = air_info->weight;
++	else
+ 		weight_sum_reciprocal = air_info->weight_reciprocal;
+-	}
+ 
+ 	/* Round the calculation of global vt */
+-	air_sched->v_t += (u64)((airtime + (weight_sum >> 1)) *
+-				weight_sum_reciprocal) >> IEEE80211_RECIPROCAL_SHIFT_64;
+-	air_info->v_t += (u32)((airtime + (air_info->weight >> 1)) *
+-			       air_info->weight_reciprocal) >> IEEE80211_RECIPROCAL_SHIFT_32;
++	air_sched->v_t += ((u64)airtime * weight_sum_reciprocal) >>
++			  (IEEE80211_RECIPROCAL_SHIFT_SUM - IEEE80211_WEIGHT_SHIFT);
++	air_info->v_t += (airtime * air_info->weight_reciprocal) >>
++			 (IEEE80211_RECIPROCAL_SHIFT_STA - IEEE80211_WEIGHT_SHIFT);
+ 	ieee80211_resort_txq(&local->hw, txq);
+ 
+ 	spin_unlock_bh(&air_sched->lock);
 -- 
-2.35.1
+2.36.1
 
