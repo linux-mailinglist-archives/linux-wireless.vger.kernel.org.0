@@ -2,24 +2,23 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ECC653D4B7
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jun 2022 03:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C448653D4DD
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jun 2022 04:22:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348671AbiFDBwn convert rfc822-to-8bit (ORCPT
+        id S232127AbiFDCWG convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Jun 2022 21:52:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38530 "EHLO
+        Fri, 3 Jun 2022 22:22:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232100AbiFDBwn (ORCPT
+        with ESMTP id S232124AbiFDCWF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Jun 2022 21:52:43 -0400
-X-Greylist: delayed 304 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 03 Jun 2022 18:52:41 PDT
+        Fri, 3 Jun 2022 22:22:05 -0400
 Received: from srv-correo.valvulasarco.es (srv-correo.valvulasarco.es [217.130.82.102])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 180B916581;
-        Fri,  3 Jun 2022 18:52:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8600C2630;
+        Fri,  3 Jun 2022 19:21:59 -0700 (PDT)
 Received: from [103.153.79.240] (103.153.79.240) by SRV-MAIL.jferrer.es
  (172.16.22.8) with Microsoft SMTP Server (TLS) id 8.3.348.2; Sat, 4 Jun 2022
- 03:35:24 +0200
+ 04:21:58 +0200
 Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8BIT
@@ -27,9 +26,9 @@ Content-Description: Mail message body
 Subject: Hi...
 To:     Recipients <mbravo@valvulasarco.es>
 From:   MIKE TAILOR INVESTMENT <mbravo@valvulasarco.es>
-Date:   Fri, 3 Jun 2022 18:20:36 -0700
+Date:   Fri, 3 Jun 2022 19:07:10 -0700
 Reply-To: <investmentdept2022@miketailorinv.us>
-Message-ID: <b3cabe0c-e19b-49cf-bc17-a8e684117d7a@SRV-MAIL.jferrer.es>
+Message-ID: <31deaa64-1272-4641-8694-8870ebfc8efd@SRV-MAIL.jferrer.es>
 X-EXCLAIMER-MD-CONFIG: 34136305-f895-4c7a-ba04-06adf52f1cb6
 X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_50,NIXSPAM_IXHASH,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
