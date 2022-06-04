@@ -2,86 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DB4A53D6F0
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jun 2022 15:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CD8C53D763
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jun 2022 17:00:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240688AbiFDNH0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 4 Jun 2022 09:07:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47180 "EHLO
+        id S237102AbiFDPAV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 4 Jun 2022 11:00:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236189AbiFDNHY (ORCPT
+        with ESMTP id S237689AbiFDPAI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 4 Jun 2022 09:07:24 -0400
-Received: from mail-oa1-x41.google.com (mail-oa1-x41.google.com [IPv6:2001:4860:4864:20::41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9EB42252B
-        for <linux-wireless@vger.kernel.org>; Sat,  4 Jun 2022 06:07:20 -0700 (PDT)
-Received: by mail-oa1-x41.google.com with SMTP id 586e51a60fabf-e93bbb54f9so13826809fac.12
-        for <linux-wireless@vger.kernel.org>; Sat, 04 Jun 2022 06:07:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=XXEhaw3EyxGH5Hb/RtU9Bqf726dwWbeMmBNixXdVBho=;
-        b=YdJZXgHJ/I8hXG0ekFy7RZTPgSnurEQ+JBj3OlEknwK3IPrbMfOv9xF6IwY0dZchQ3
-         ozjpz2yAsuLZA1sa/EKqO1Pe92RCZq4QL9pGjYjU1YgDftj4Ktl7M17pm/EVz5nWxC/f
-         0TNoADnsN3Ntn/XEhjBiNWOUAFgccHr8KOsNi6BubALk5KFuDi8XBRTOg+dGuJhrZJLn
-         CuU2e2d/WJRiKwFZaOoqwTC3Y56IZznDSEWmerQVbs6siCTFLQd6WtPPdEtg5dqaFzRP
-         mN6EdlNFKlBhQjoGODMJoUHYNH+BEi8fJ5L+PjAnk4yiA7wgZ5OnCJDOYqHXXEpVsa97
-         NxFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=XXEhaw3EyxGH5Hb/RtU9Bqf726dwWbeMmBNixXdVBho=;
-        b=YF962SlZS0ZkN2jEfLS0RkzxTcszK43mfAXaL1duyaBxGJQeQaGJe6kEmr47WJwhgV
-         jwjKdogX9cRtuAm2waUGp/zNBZXwIstmTGKZqSAfghSM2ZVd8JAnn1kQJknX18a0qOYI
-         EqbJalAaVuFOA/3l/TfHnWlS6s1h+6fyz2y9IyZRnSvJGbf/jT+2o0MBVIiVe25FopLS
-         0tL4aB+bv/EJuq3WZNvz8Hpkk6qZlJSmZ0T0pgQMUrPQ1ubfkFNIYgln8PX9/8B0r3Ef
-         i9wkdF332XXRKGojO0p6WU+bEWgK9ri0fVes//V3wNQpuwTmktpNR/pAPFAukX+Ohqfy
-         a7QA==
-X-Gm-Message-State: AOAM531qUQIay4QsaAFP22K54CHR4t9DkevnrcH4B4vZdiYx0JjfDe0Q
-        d9ACUNq+nI19oemlM4yeuBIx8VqiUY7y3+uNCvk=
-X-Google-Smtp-Source: ABdhPJzfhEU24yqqtfLVVAX5G6kqQdY6jloYffDGXzPZeH87AtJpWn//ve+/ShIFv/HX+AauefON+f3EI5cUYjyGfk0=
-X-Received: by 2002:a05:6870:c348:b0:ed:f231:2b41 with SMTP id
- e8-20020a056870c34800b000edf2312b41mr25784453oak.23.1654348039822; Sat, 04
- Jun 2022 06:07:19 -0700 (PDT)
+        Sat, 4 Jun 2022 11:00:08 -0400
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B26B52EA13
+        for <linux-wireless@vger.kernel.org>; Sat,  4 Jun 2022 08:00:06 -0700 (PDT)
+Date:   Sat, 04 Jun 2022 14:59:52 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dannyvanheumen.nl;
+        s=protonmail2; t=1654354801; x=1654614001;
+        bh=CaIKHW9IpR3uwvvAJ5S/+qjR5x5LFqm3na/+pKJ115E=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
+         Feedback-ID:Message-ID;
+        b=aTyyeJcKu1oPqdvCPOnJomyr3SHlfPHmDrVcMijMhjcCG1aJtOkAl6pvQ/IZt+c6q
+         Iz9UgiDlXhLYGcaWdH1IpNCHV+deSFbfXHNiijYmZ6uFTpkSBzx6whhzcoVXvD+jo2
+         genab3WIeRQm0aNp1vzMuNjXz0VHDYRl78wQo6DUYfBGuwfhx6r1QZjyZsjnFZtBNC
+         uGYTLaK9OHrxNa3SB8RJcbJl6RRPhWfSmCC5sJmPUzCZxPDY0W8JizAwSlvNeTfU+a
+         8NI1zRkYuAbhLrlOq0XHkgkw/ZDXewvc5YuWMT4RggNCxKtD2pHLTTtka/2RTdAcbF
+         LjiM/Kwihn3kw==
+To:     Franky Lin <franky.lin@broadcom.com>
+From:   Danny van Heumen <danny@dannyvanheumen.nl>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>
+Reply-To: Danny van Heumen <danny@dannyvanheumen.nl>
+Subject: Re: [PATCH] work-in-progress: double-free after hardware reset due to firmware-crash
+Message-ID: <jJuvC2YezD_e1G6VFXwJjFFUAir0HFcDnBaZGRvKtnaY69v8aI3KkCouzzyOjrb9bZOnSzinETjNNxHvlmYCwNijdmts_5bEXZSV7dMNi0s=@dannyvanheumen.nl>
+In-Reply-To: <51CC1C7B-400C-4A7A-A5D3-EB457DC6862F@broadcom.com>
+References: <UXibAXk2GByhvw88A6LIDXHSlkP79-ML7FrtyfnHuiC34qUd-zx03BAJAtzluyEvfwPBR0tac4hC72zKI1qT3CtgmvvVohr1v8a49TqYVSw=@dannyvanheumen.nl> <Uba0mwWYafMZd4JdEJVxMd-Uh8M6T4dHoTse71YdCikdJLYLxunwtrxxbasffgMuXtPVi_JmJrtAnqviM6x-99_SyysHZm-Yvz933mPXr74=@dannyvanheumen.nl> <Y_XMhLmW7kj2Ls3X8pCfFd2RdWzXd9UWdv3ksFrVi7xh79wY7l6K52N3ODhI3_UK_IqG1uJcIEv0PxT-wQG9tdYu9krraq7gxsprUu-RtjQ=@dannyvanheumen.nl> <51CC1C7B-400C-4A7A-A5D3-EB457DC6862F@broadcom.com>
+Feedback-ID: 15073070:user:proton
 MIME-Version: 1.0
-Sender: hamp56690@gmail.com
-Received: by 2002:ac9:7fd2:0:0:0:0:0 with HTTP; Sat, 4 Jun 2022 06:07:19 -0700 (PDT)
-From:   Pavillion Tchi <pavilliontch27@gmail.com>
-Date:   Sat, 4 Jun 2022 13:07:19 +0000
-X-Google-Sender-Auth: 4k7otY6yv2gZkxy-Z391gcQ25Ng
-Message-ID: <CAGPqaA5zkXz_6cretVpjAdi-mbsrQgpdK65g5cXQwnHTURASmw@mail.gmail.com>
-Subject: =?UTF-8?B?2YXZitix2KfYqw==?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-LS0gDQrZitmI2YUg2KzZhdmK2YTYjA0K2YTZgtivINmD2KrYqNiqINmE2YMg2YXZhiDZgtio2YQg
-2YjZhNmD2YbZgyDZhNmFINiq2LHYryDYudmE2Ykg2KjYsdmK2K/ZiiDYp9mE2KXZhNmD2KrYsdmI
-2YbZii4NCtmD2YrZgSDYrdin2YTZgyDZiNi52KfYptmE2KrZgyDYp9mE2YrZiNmF2J8g2KLZhdmE
-INij2YbZgyDYrNmK2K8hINmF2Lkg2K7Yp9mE2LUg2KfZhNiq2YLYr9mK2LEg2Iwg2KPZhtinINin
-2YTZhdit2KfZhdmKDQrYqNin2YHZitmE2YrZiNmGINiq2LTZiiDYjCDYo9ix2LPZhNiqINmE2YMg
-2K7Yt9in2KjZi9inINin2YTYtNmH2LEg2KfZhNmF2KfYttmKINiMINmE2YPZhtmDINmE2YUg2KrY
-sdivINi52YTZiiDYjCDZiNmE2K/Zig0K2YXYudmE2YjZhdin2Kog2YXZh9mF2Kkg2K3ZiNmEINmF
-2YrYsdin2KvZgyDYp9mE2LDZiiDYqtio2YTYuiDZgtmK2YXYqtmHIDUuNSDZhdmE2YrZiNmGINiv
-2YjZhNin2LEuINin2KjZhiDYudmF2YoNCtin2YTZhdiq2YjZgdmJINmF2YYg2KjZhNiv2YMuINij
-2LfZhNioINmF2YjYp9mB2YLYqtmDINi52YTZiSDYqtmC2K/ZitmF2YMg2KjYtdmB2KrZgyDYo9mC
-2LHYqCDYo9mC2LHYqNin2KbZgyDZhNi32YTYqCDZh9iw2KcNCtin2YTYtdmG2K/ZiNmCINiMINit
-2YrYqyDZg9mE2YHZhtmKINin2YTYqNmG2YMg2KjYqtmC2K/ZitmFINij2YLYsdioINin2YTYo9mC
-2KfYsdioINmE2YfZhSDZhNiq2YXZg9mK2YbZh9mFINmF2YYg2KjYr9ihDQrYp9mE2KXYrNix2KfY
-odin2Kog2KfZhNmC2KfZhtmI2YbZitipINmE2KrYrdmI2YrZhCDZh9iw2Kcg2KfZhNi12YbYr9mI
-2YIg2KXZhNmJINit2LPYp9io2YMg2KfZhNmF2LXYsdmB2YouIC4NCg0K2LPZitmD2YjZhiDZhdmI
-2LbYuSDYqtmC2K/ZitixINin2LPYqtis2KfYqNiq2YMg2KfZhNiz2LHZiti52Kkg2YTZhdiy2YrY
-ryDZhdmGINin2YTYqtmB2KfYtdmK2YQuDQrYqNil2K7ZhNin2LXYjA0K2KzZhtin2K0g2KrYtNmK
-DQo=
+Hi Franky,
+
+------- Original Message -------
+On Saturday, June 4th, 2022 at 00:58, Franky Lin <franky.lin@broadcom.com> =
+wrote:
+
+> Hi Danny,
+>
+> [..]
+>
+> Thanks for reporting and sending out a patch to fix this.
+>
+> If the problem is double freeing the freezer buffer, it should be address=
+ed from the root by setting pointer to NULL. Same thing might need to be do=
+ne for sg table as well. Sorry I don=E2=80=99t have any sdio module to repr=
+oduce and test. Please see if the below change fixes the problem.
+
+Your suggestion to set the freeze buffer address to zero was also my first =
+proposal. I have since
+revised, because there are a few things I considered, although I am not sur=
+e:
+
+- does zero-ing the address prevent future detection of double-frees with t=
+he hardened memory
+  allocator? (If so, I would prefer to avoid doing this.)
+- IIUC correctly, 'sdio_set_block_size' does not do any meaningful "activat=
+ion" or "allocation".
+  Therefore would not need to be *undone*. (repeated probes would override =
+previous calls)
+- Starting with the call 'sdio_enable_func', I guess/suspect more elaborate=
+ "cleanup" is necessary
+  therefore, leaving the 'goto out' from that point on. I would assume (for=
+ lack of evidence to the
+  contrary) that the logic at 'goto out' provides proper clean-up.
+
+So, returning immediately with the errorcode seemed more appropriate. Regar=
+dless, I have only
+incidental knowledge from checking the code just for this particular proble=
+m. In the end my goal
+is to have the issues addressed so that I am not forced to reboot my system=
+ to get it back in
+working order.
+
+As for your remark about sg-table: I had not considered that, but if my not=
+es above check out,
+maybe this does not need to be treated conditionally at all.
+
+Kind regards,
+Danny
+
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/=
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> index ac02244a6fdf..e9bad7197ba9 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> @@ -802,6 +802,7 @@ static void brcmf_sdiod_freezer_detach(struct brcmf_s=
+dio_dev *sdiodev)
+> if (sdiodev->freezer) {
+>
+> WARN_ON(atomic_read(&sdiodev->freezer->freezing));
+>
+> kfree(sdiodev->freezer);
+>
+> + sdiodev->freezer =3D NULL;
+>
+> }
+> }
+>
+> @@ -885,7 +886,11 @@ int brcmf_sdiod_remove(struct brcmf_sdio_dev *sdiode=
+v)
+> sdio_disable_func(sdiodev->func1);
+>
+> sdio_release_host(sdiodev->func1);
+>
+>
+> - sg_free_table(&sdiodev->sgtable);
+>
+> + if (sdiodev->sgtable) {
+>
+> + sg_free_table(&sdiodev->sgtable);
+>
+> + sdiodev->sgtable =3D NULL;
+>
+> + }
+> +
+> sdiodev->sbwad =3D 0;
+>
+>
+> pm_runtime_allow(sdiodev->func1->card->host->parent);
+>
+>
+> As for submitting patch to linux-wireless, please follow the guideline. [=
+1]
+>
+> Thanks,
+> - Franky
+>
+> [1] https://wireless.wiki.kernel.org/en/developers/documentation/submitti=
+ngpatches
+>
+>
+>
+> --
+> This electronic communication and the information and any files transmitt=
+ed
+> with it, or attached to it, are confidential and are intended solely for
+> the use of the individual or entity to whom it is addressed and may conta=
+in
+> information that is confidential, legally privileged, protected by privac=
+y
+> laws, or otherwise restricted from disclosure to anyone else. If you are
+> not the intended recipient or the person responsible for delivering the
+> e-mail to the intended recipient, you are hereby notified that any use,
+> copying, distributing, dissemination, forwarding, printing, or copying of
+> this e-mail is strictly prohibited. If you received this e-mail in error,
+> please return the e-mail to the sender, delete it from your computer, and
+> destroy any printed copy of it.
