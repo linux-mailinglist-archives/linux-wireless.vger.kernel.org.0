@@ -2,172 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CD8C53D763
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jun 2022 17:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D79F753DB4F
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jun 2022 13:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237102AbiFDPAV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 4 Jun 2022 11:00:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34418 "EHLO
+        id S242459AbiFELJw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Jun 2022 07:09:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237689AbiFDPAI (ORCPT
+        with ESMTP id S232695AbiFELJv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 4 Jun 2022 11:00:08 -0400
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B26B52EA13
-        for <linux-wireless@vger.kernel.org>; Sat,  4 Jun 2022 08:00:06 -0700 (PDT)
-Date:   Sat, 04 Jun 2022 14:59:52 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dannyvanheumen.nl;
-        s=protonmail2; t=1654354801; x=1654614001;
-        bh=CaIKHW9IpR3uwvvAJ5S/+qjR5x5LFqm3na/+pKJ115E=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
-         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
-         Feedback-ID:Message-ID;
-        b=aTyyeJcKu1oPqdvCPOnJomyr3SHlfPHmDrVcMijMhjcCG1aJtOkAl6pvQ/IZt+c6q
-         Iz9UgiDlXhLYGcaWdH1IpNCHV+deSFbfXHNiijYmZ6uFTpkSBzx6whhzcoVXvD+jo2
-         genab3WIeRQm0aNp1vzMuNjXz0VHDYRl78wQo6DUYfBGuwfhx6r1QZjyZsjnFZtBNC
-         uGYTLaK9OHrxNa3SB8RJcbJl6RRPhWfSmCC5sJmPUzCZxPDY0W8JizAwSlvNeTfU+a
-         8NI1zRkYuAbhLrlOq0XHkgkw/ZDXewvc5YuWMT4RggNCxKtD2pHLTTtka/2RTdAcbF
-         LjiM/Kwihn3kw==
-To:     Franky Lin <franky.lin@broadcom.com>
-From:   Danny van Heumen <danny@dannyvanheumen.nl>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>
-Reply-To: Danny van Heumen <danny@dannyvanheumen.nl>
-Subject: Re: [PATCH] work-in-progress: double-free after hardware reset due to firmware-crash
-Message-ID: <jJuvC2YezD_e1G6VFXwJjFFUAir0HFcDnBaZGRvKtnaY69v8aI3KkCouzzyOjrb9bZOnSzinETjNNxHvlmYCwNijdmts_5bEXZSV7dMNi0s=@dannyvanheumen.nl>
-In-Reply-To: <51CC1C7B-400C-4A7A-A5D3-EB457DC6862F@broadcom.com>
-References: <UXibAXk2GByhvw88A6LIDXHSlkP79-ML7FrtyfnHuiC34qUd-zx03BAJAtzluyEvfwPBR0tac4hC72zKI1qT3CtgmvvVohr1v8a49TqYVSw=@dannyvanheumen.nl> <Uba0mwWYafMZd4JdEJVxMd-Uh8M6T4dHoTse71YdCikdJLYLxunwtrxxbasffgMuXtPVi_JmJrtAnqviM6x-99_SyysHZm-Yvz933mPXr74=@dannyvanheumen.nl> <Y_XMhLmW7kj2Ls3X8pCfFd2RdWzXd9UWdv3ksFrVi7xh79wY7l6K52N3ODhI3_UK_IqG1uJcIEv0PxT-wQG9tdYu9krraq7gxsprUu-RtjQ=@dannyvanheumen.nl> <51CC1C7B-400C-4A7A-A5D3-EB457DC6862F@broadcom.com>
-Feedback-ID: 15073070:user:proton
+        Sun, 5 Jun 2022 07:09:51 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D589D344FA
+        for <linux-wireless@vger.kernel.org>; Sun,  5 Jun 2022 04:09:44 -0700 (PDT)
+X-UUID: b76f4990c64345d7acd733a2213bdb73-20220605
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.5,REQID:743400eb-12ec-4d90-8fad-9373651d21ac,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:100,FILE:0,RULE:Release_Ham,A
+        CTION:release,TS:95
+X-CID-INFO: VERSION:1.1.5,REQID:743400eb-12ec-4d90-8fad-9373651d21ac,OB:0,LOB:
+        0,IP:0,URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:100,FILE:0,RULE:Spam_GS981B3D,A
+        CTION:quarantine,TS:95
+X-CID-META: VersionHash:2a19b09,CLOUDID:00e5ea6e-b02c-4af4-b838-5c14aaa063c7,C
+        OID:222eabdaf9c8,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,QS:0,BEC:nil
+X-UUID: b76f4990c64345d7acd733a2213bdb73-20220605
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1022898998; Sun, 05 Jun 2022 19:09:38 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Sun, 5 Jun 2022 19:09:37 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.3 via Frontend Transport; Sun, 5 Jun 2022 19:09:37 +0800
+From:   Deren Wu <Deren.Wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Shayne Chen" <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH 1/1] mt76: mt7921: fix warning Using plain integer as NULL pointer
+Date:   Sun, 5 Jun 2022 19:08:59 +0800
+Message-ID: <2a3f2334e18a7ad2dbc2cbb410d1b2f9f3690b11.1654424403.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <cover.1654424403.git.deren.wu@mediatek.com>
+References: <cover.1654424403.git.deren.wu@mediatek.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Franky,
+From: Deren Wu <deren.wu@mediatek.com>
 
-------- Original Message -------
-On Saturday, June 4th, 2022 at 00:58, Franky Lin <franky.lin@broadcom.com> =
-wrote:
+Changed "0 to NULL" to avoid below sparse warnings
+.../mt76/mt7921/acpi_sar.c:64:68: sparse: Using plain integer as NULL pointer
 
-> Hi Danny,
->
-> [..]
->
-> Thanks for reporting and sending out a patch to fix this.
->
-> If the problem is double freeing the freezer buffer, it should be address=
-ed from the root by setting pointer to NULL. Same thing might need to be do=
-ne for sg table as well. Sorry I don=E2=80=99t have any sdio module to repr=
-oduce and test. Please see if the below change fixes the problem.
+Fixes: ab79a7d7a96f ("mt76: mt7921: introduce ACPI SAR support")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Your suggestion to set the freeze buffer address to zero was also my first =
-proposal. I have since
-revised, because there are a few things I considered, although I am not sur=
-e:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c b/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c
+index fb3d31b96682..be4f07ad3af9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c
+@@ -61,7 +61,7 @@ mt7921_acpi_read(struct mt7921_dev *dev, u8 *method, u8 **tbl, u32 *len)
+ static int
+ mt7921_asar_acpi_read_mtcl(struct mt7921_dev *dev, u8 **table, u8 *version)
+ {
+-	*version = (mt7921_acpi_read(dev, MT7921_ACPI_MTCL, table, 0) < 0)
++	*version = (mt7921_acpi_read(dev, MT7921_ACPI_MTCL, table, NULL) < 0)
+ 		   ? 1 : 2;
+ 	return 0;
+ }
+-- 
+2.18.0
 
-- does zero-ing the address prevent future detection of double-frees with t=
-he hardened memory
-  allocator? (If so, I would prefer to avoid doing this.)
-- IIUC correctly, 'sdio_set_block_size' does not do any meaningful "activat=
-ion" or "allocation".
-  Therefore would not need to be *undone*. (repeated probes would override =
-previous calls)
-- Starting with the call 'sdio_enable_func', I guess/suspect more elaborate=
- "cleanup" is necessary
-  therefore, leaving the 'goto out' from that point on. I would assume (for=
- lack of evidence to the
-  contrary) that the logic at 'goto out' provides proper clean-up.
-
-So, returning immediately with the errorcode seemed more appropriate. Regar=
-dless, I have only
-incidental knowledge from checking the code just for this particular proble=
-m. In the end my goal
-is to have the issues addressed so that I am not forced to reboot my system=
- to get it back in
-working order.
-
-As for your remark about sg-table: I had not considered that, but if my not=
-es above check out,
-maybe this does not need to be treated conditionally at all.
-
-Kind regards,
-Danny
-
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/=
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> index ac02244a6fdf..e9bad7197ba9 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> @@ -802,6 +802,7 @@ static void brcmf_sdiod_freezer_detach(struct brcmf_s=
-dio_dev *sdiodev)
-> if (sdiodev->freezer) {
->
-> WARN_ON(atomic_read(&sdiodev->freezer->freezing));
->
-> kfree(sdiodev->freezer);
->
-> + sdiodev->freezer =3D NULL;
->
-> }
-> }
->
-> @@ -885,7 +886,11 @@ int brcmf_sdiod_remove(struct brcmf_sdio_dev *sdiode=
-v)
-> sdio_disable_func(sdiodev->func1);
->
-> sdio_release_host(sdiodev->func1);
->
->
-> - sg_free_table(&sdiodev->sgtable);
->
-> + if (sdiodev->sgtable) {
->
-> + sg_free_table(&sdiodev->sgtable);
->
-> + sdiodev->sgtable =3D NULL;
->
-> + }
-> +
-> sdiodev->sbwad =3D 0;
->
->
-> pm_runtime_allow(sdiodev->func1->card->host->parent);
->
->
-> As for submitting patch to linux-wireless, please follow the guideline. [=
-1]
->
-> Thanks,
-> - Franky
->
-> [1] https://wireless.wiki.kernel.org/en/developers/documentation/submitti=
-ngpatches
->
->
->
-> --
-> This electronic communication and the information and any files transmitt=
-ed
-> with it, or attached to it, are confidential and are intended solely for
-> the use of the individual or entity to whom it is addressed and may conta=
-in
-> information that is confidential, legally privileged, protected by privac=
-y
-> laws, or otherwise restricted from disclosure to anyone else. If you are
-> not the intended recipient or the person responsible for delivering the
-> e-mail to the intended recipient, you are hereby notified that any use,
-> copying, distributing, dissemination, forwarding, printing, or copying of
-> this e-mail is strictly prohibited. If you received this e-mail in error,
-> please return the e-mail to the sender, delete it from your computer, and
-> destroy any printed copy of it.
