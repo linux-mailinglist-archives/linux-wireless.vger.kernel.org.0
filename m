@@ -2,74 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 925A053DD5B
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jun 2022 19:25:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A54AC53DF6F
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jun 2022 03:42:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346383AbiFERZa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Jun 2022 13:25:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38342 "EHLO
+        id S1352002AbiFFBms (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Jun 2022 21:42:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232266AbiFERZ2 (ORCPT
+        with ESMTP id S233230AbiFFBmr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Jun 2022 13:25:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68D4518344
-        for <linux-wireless@vger.kernel.org>; Sun,  5 Jun 2022 10:25:28 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 020DB6114D
-        for <linux-wireless@vger.kernel.org>; Sun,  5 Jun 2022 17:25:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBEFC385A5;
-        Sun,  5 Jun 2022 17:25:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654449927;
-        bh=kA1rE6coALLPyy9Pp2w6PONiCb6kJCX0DuutN6amvxU=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=knL7dzbC2lKmFSVvKivkCTWvrtliUavnOD5Hc+D6/gMkH/bWiOwuFhu8MPqaiBAH6
-         NDEUq4XCGWib2Q3wqrVrjoOdz6r9ymlKzyL+FugdLzTyVjXezBKTizHMv0pSQlGyDQ
-         eNLXmIpJKoUEogK+1KnclbCAwUT05OZNwGbMssTpqLpHy5tzchDxhgtBf1zgplAaxQ
-         d7xBtPrANAm45BWN6uwEkSRHWXqNf/kf/4gC/1mFtKtNBOn56fmQXBQD1LOGsI7mRY
-         8j/jGX6kX1b+9eI0ituo+ygcX6XBK5Z/We3Y6rTXLCsSKgwooK8z3sA0ir9mFBZhg3
-         DBfZ/2IZZkZcg==
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 6C129405523; Sun,  5 Jun 2022 19:23:37 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-Subject: Re: [PATCH] mac80211: do not wake queues on a vif that is being
- stopped
-In-Reply-To: <20220531190824.60019-1-nbd@nbd.name>
-References: <20220531190824.60019-1-nbd@nbd.name>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Sun, 05 Jun 2022 19:23:37 +0200
-Message-ID: <874k0zowh2.fsf@toke.dk>
+        Sun, 5 Jun 2022 21:42:47 -0400
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7259115A29;
+        Sun,  5 Jun 2022 18:42:45 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id z17so11573059pff.7;
+        Sun, 05 Jun 2022 18:42:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=TPsp63SRNfrlmWUFAaYwuy4IKLsk/bOVD4a+ZunMsqU=;
+        b=gjSrYOahe4ZLVzp+dfg7eA/1/f2LLxTxb5YR5WNC/aHtzoCApg7tia110SIVMLb/JB
+         jF41Lgu8lVCgVsJ+jsa6Yg8tseg0rOULxnHmdoeD3UogqkGhTbGQU1zGQxpnlMZZASnY
+         jnpGzw9EuOK8gFK/rw76R1Xa05nDFkOVM9hl18LfgQ3jWLLxYDoJHds83M1XhOVgPz3W
+         tEecS/JBq7gIIUWllp9GrsUBfE5FJLda+imOMWjAiEdqvSB26ej9DFN+/vCfffNEb/Jb
+         /DlzGHoGGK0BovrjLQ4l3Kov90IhXVQY87xgwR/Ja+oRLojuVtcCkJETwH5c+ZBGaiyb
+         H3qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=TPsp63SRNfrlmWUFAaYwuy4IKLsk/bOVD4a+ZunMsqU=;
+        b=ms38wAE8PHQ0QdC4WbX5JR02dFbwojqzihAai09ggNHyDbSLRcozyfU8JDyal6ZZl0
+         y5TIFUlLkZkMBvlp8IWcwN3k7utREda2QtgmVkXJ0U66LP2z9Gh+b9fKhmJqHvv9TeNP
+         kZa98QGih/Kn4JJOg/I4nizUcUaayVpqzjrGrDwdTxd+iFBjCTPLwTUtE0lyYMZHDZ7X
+         2qv25BDva6eum1J3rXbcHK8LFbgum34kZ2TV97CTz+VinL/tTr4D8EkGeTQt8mgFx2Fb
+         DZbuTvNa+01aNWPbcHs94AMUJNKnSaakqDlIhKu4DbXp97Cm+5DEt30+zLFuMOjpkdkK
+         klwA==
+X-Gm-Message-State: AOAM53122wwJSGiz5QLh85YvKw2XyIzo3JhaYpGz7EWttHUPDc7YzD/w
+        RXP8I0QSLFnH99DiiasMk0A=
+X-Google-Smtp-Source: ABdhPJyDPELFrkCUWQ71OuoRmUSZwuyyBnGmeVqPqh4orOJwbE0n8P5LAnI03IY0dWYYdrRjjnTf5w==
+X-Received: by 2002:a63:7d4:0:b0:3fc:7507:cb09 with SMTP id 203-20020a6307d4000000b003fc7507cb09mr19384751pgh.582.1654479765030;
+        Sun, 05 Jun 2022 18:42:45 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id a6-20020a1709027e4600b0015e8d4eb24bsm9430487pln.149.2022.06.05.18.42.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Jun 2022 18:42:44 -0700 (PDT)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: chi.minghao@zte.com.cn
+To:     jerome.pouiller@silabs.com
+Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] staging: wfx: Remove redundant NULL check before release_firmware() call
+Date:   Mon,  6 Jun 2022 01:42:37 +0000
+Message-Id: <20220606014237.290466-1-chi.minghao@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+From: Minghao Chi <chi.minghao@zte.com.cn>
 
-> When a vif is being removed and sdata->bss is cleared, __ieee80211_wake_t=
-xqs
-> can still be called on it, which crashes as soon as sdata->bss is being
-> dereferenced.
-> To fix this properly, check for SDATA_STATE_RUNNING before waking queues,
-> and take the fq lock when setting it (to ensure that __ieee80211_wake_txqs
-> observes the change when running on a different CPU
->
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+release_firmware() checks for NULL pointers internally so checking
+before calling it is redundant.
 
-I think it's a little ugly to expand usage of fq.lock across more and
-more places, I don't really have a good alternative, so:
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+---
+ drivers/net/wireless/silabs/wfx/fwio.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@kernel.org>
+diff --git a/drivers/net/wireless/silabs/wfx/fwio.c b/drivers/net/wireless/silabs/wfx/fwio.c
+index 3d1b8a135dc0..52c7f560b062 100644
+--- a/drivers/net/wireless/silabs/wfx/fwio.c
++++ b/drivers/net/wireless/silabs/wfx/fwio.c
+@@ -286,8 +286,7 @@ static int load_firmware_secure(struct wfx_dev *wdev)
+ 
+ error:
+ 	kfree(buf);
+-	if (fw)
+-		release_firmware(fw);
++	release_firmware(fw);
+ 	if (ret)
+ 		print_boot_status(wdev);
+ 	return ret;
+-- 
+2.25.1
+
+
