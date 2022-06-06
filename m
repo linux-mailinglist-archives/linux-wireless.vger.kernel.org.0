@@ -2,75 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 176C153E21D
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jun 2022 10:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAF6453E75E
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jun 2022 19:07:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230053AbiFFGqX convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jun 2022 02:46:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51152 "EHLO
+        id S232848AbiFFJZR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jun 2022 05:25:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229989AbiFFGqX (ORCPT
+        with ESMTP id S232815AbiFFJZO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jun 2022 02:46:23 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A6102AE14;
-        Sun,  5 Jun 2022 23:46:21 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2566jevbF024779, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2566jevbF024779
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 6 Jun 2022 14:45:41 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Mon, 6 Jun 2022 14:45:40 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Mon, 6 Jun 2022 14:45:40 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
- RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
- 15.01.2308.021; Mon, 6 Jun 2022 14:45:40 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: RE: [PATCH v1 1/1] rtw88: use %*ph to print small buffer
-Thread-Topic: [PATCH v1 1/1] rtw88: use %*ph to print small buffer
-Thread-Index: AQHYd0loB302XcSN/EKwwVKyV1mFxK1B81/w
-Date:   Mon, 6 Jun 2022 06:45:40 +0000
-Message-ID: <62e1b53ebdc844acb504698433ed8baa@realtek.com>
-References: <20220603125648.46873-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20220603125648.46873-1-andriy.shevchenko@linux.intel.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/6/6_=3F=3F_02:55:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Mon, 6 Jun 2022 05:25:14 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B5536B0BF
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Jun 2022 02:25:09 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id u23so22367466lfc.1
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jun 2022 02:25:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=DCTOHlnn9bgmau2O5B11dgpXKkwCcv7DNwv92J7STCs=;
+        b=Fe24jRmVB8wf0EoN2JMaAHULLWYYo6Ma8WNnGqIzOB0kEMZVs3gzRe2E74cA8Yk08p
+         3A/WXQh3oT6Me2UaXj0H8oGyqsZ/ins20lXm74aTGjCqYg3G6prd1uV24NwZMjnot1wn
+         KzaJQAWYjHofC4QNMgAHoaTtILDet2rAfcExXhuI5ucQBUNKndELPeuKrN4NkVTCj7Hw
+         busCADbirW1jMT0EEQfNSCek0u3kCc7HoB1ho+8Nl3YG4CK4oA10XuQ4IkHtbE2RxH2p
+         Ho3wLz5dtYB98taRI5BeXS/kKhDa3onee3sOQMlVnn3kSCOFo9IOqCb4YWgNDksjLV1w
+         VUlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=DCTOHlnn9bgmau2O5B11dgpXKkwCcv7DNwv92J7STCs=;
+        b=wASza3xRVtmdaoZnEFR7Yqldc7kMIBt6I/eSC3B0NmqbyVvNlPqrpUqZsN41RKArBD
+         xf60MOSPgoKZfQ4nthnvy6dcwyzcqVfF8UbaF4Vv5kcBKp6SKJypU9veo6tl69ugROoW
+         psldkGkWJRF0fWvIrVLGtn2KPOHEZeiqUwRZe2quUzj/Lsys6RaAPcq003uR88vxGGfJ
+         jPvhoavAKwmy3Ea8va6lGMQ7Qa70ZgamXqRvziMeUq85+VKnWTAHD8Is4WKq8Km4E8qi
+         Kc/F15c71vvNlDuUro42CcsE/hcKyQ4JE3GxClbAmQ+ZJxs0ZKFDKDRpnraMBSnwwv3E
+         1+vQ==
+X-Gm-Message-State: AOAM532jfR/9kyYZNirw8vl/WSTh8xr5wOPqw6gIyz6hkAUuMjhgyc82
+        A+qHpvPTe3OL2dZ2rkNba2JIRbyGwOjwlLHaue0=
+X-Google-Smtp-Source: ABdhPJyPbHARf6EZ9D1yKBLzZvHEOyWeOLIIm1QQZ94Rp9cT8C0gE1I6A18PXHmm+BZ/4KYY4P6IeLLhkHpwn9PLxw8=
+X-Received: by 2002:a19:640e:0:b0:479:5347:b86e with SMTP id
+ y14-20020a19640e000000b004795347b86emr1160163lfb.563.1654507506890; Mon, 06
+ Jun 2022 02:25:06 -0700 (PDT)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Sender: avrilharri612@gmail.com
+Received: by 2002:a05:6504:2d4:0:0:0:0 with HTTP; Mon, 6 Jun 2022 02:25:06
+ -0700 (PDT)
+From:   Kayla Manthey <sgtkaylamanthey612@gmail.com>
+Date:   Mon, 6 Jun 2022 09:25:06 +0000
+X-Google-Sender-Auth: zjDZzG-yAZAWazPR4JEcmcNf-jI
+Message-ID: <CAHnu19Lw=-G8AJ0NDWzGK84FHo+Mq94L4PQ0HjSFMOk_fHcZgg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_05,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,46 +66,5 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-> -----Original Message-----
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Sent: Friday, June 3, 2022 8:57 PM
-> To: Ping-Ke Shih <pkshih@realtek.com>; Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org;
-> netdev@vger.kernel.org; linux-kernel@vger.kernel.org
-> Cc: Yan-Hsuan Chuang <tony0620emma@gmail.com>; David S. Miller <davem@davemloft.net>; Eric Dumazet
-> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com>
-> Subject: [PATCH v1 1/1] rtw88: use %*ph to print small buffer
-> 
-> Use %*ph format to print small buffer as hex string.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-Thanks!
-
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-
-> ---
->  drivers/net/wireless/realtek/rtw88/debug.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-> index 1a52ff585fbc..7cde6bcf253b 100644
-> --- a/drivers/net/wireless/realtek/rtw88/debug.c
-> +++ b/drivers/net/wireless/realtek/rtw88/debug.c
-> @@ -269,11 +269,7 @@ static int rtw_debugfs_get_rsvd_page(struct seq_file *m, void *v)
->  	for (i = 0 ; i < buf_size ; i += 8) {
->  		if (i % page_size == 0)
->  			seq_printf(m, "PAGE %d\n", (i + offset) / page_size);
-> -		seq_printf(m, "%2.2x %2.2x %2.2x %2.2x %2.2x %2.2x %2.2x %2.2x\n",
-> -			   *(buf + i), *(buf + i + 1),
-> -			   *(buf + i + 2), *(buf + i + 3),
-> -			   *(buf + i + 4), *(buf + i + 5),
-> -			   *(buf + i + 6), *(buf + i + 7));
-> +		seq_printf(m, "%8ph\n", buf + i);
->  	}
->  	vfree(buf);
-> 
-> --
-> 2.35.1
-
+Hi, how have you been? I'm yet to receive a reply from you in regards
+to my two previous emails, please check and get back to me.
