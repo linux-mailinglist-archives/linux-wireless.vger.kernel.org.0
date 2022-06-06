@@ -2,63 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0019B53ED25
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jun 2022 19:44:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 697B753EDB1
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jun 2022 20:14:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229981AbiFFRoa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jun 2022 13:44:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42912 "EHLO
+        id S231424AbiFFSOS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jun 2022 14:14:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229971AbiFFRo3 (ORCPT
+        with ESMTP id S231415AbiFFSOL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jun 2022 13:44:29 -0400
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41DFE3207DE
-        for <linux-wireless@vger.kernel.org>; Mon,  6 Jun 2022 10:44:25 -0700 (PDT)
+        Mon, 6 Jun 2022 14:14:11 -0400
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 121AA5E172
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Jun 2022 11:14:10 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id d129so13543241pgc.9
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jun 2022 11:14:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1654537467; x=1686073467;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=YGCEWByr0RM/Jt3IOLrXNAWT9eGJc6wa/BxW1Oupg1U=;
-  b=oRXQZS96MnJmHHddw+ZXtFidF5BhnLi5toiuHs7VMbLcYQ5lprfi2rbR
-   qzmGD+DTTRv5XYYBPks8y97bCFR5mujsS9ej4JqAYy/WX+bTb6Kkkmx6k
-   IXmW7uaoHelKGaJXAuQkQ8ZUP4TSvE1Je2SEEYY45rU+fCIxaN4yiCXqm
-   w=;
-Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
-  by alexa-out.qualcomm.com with ESMTP; 06 Jun 2022 10:44:25 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2022 10:44:25 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Mon, 6 Jun 2022 10:44:24 -0700
-Received: from [10.242.6.223] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Mon, 6 Jun 2022
- 10:44:23 -0700
-Message-ID: <3db08cbd-53b5-1a55-76c0-9b353efe52d5@quicinc.com>
-Date:   Mon, 6 Jun 2022 23:14:20 +0530
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=BKtPwMUXie7g4BTvnYFB06bJ1lqeS0VDnIi+PuKvIk4=;
+        b=QPYDCgOhcWP7ZJtPVM6YyQMFudpnbxAWNVBjk8usYVzstW9wTP7fRz9d1vsueKTkXQ
+         lJavanuHLYqsz2sdKXd8Aj4un3caqBzXCxcyrvmF/cMqN8V4akbOG2caMaOAWkK/lAz3
+         cmwpPdLT8pjFTMWPD2ocNkEfovkxtcqr+ou5c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=BKtPwMUXie7g4BTvnYFB06bJ1lqeS0VDnIi+PuKvIk4=;
+        b=ZzktpXb+slZA0/s+jYomaKGa9fHJrm4HeZI9jsW27BAYQdUpZBrakvdjPyVPnXt/Cs
+         6Q7S1wqpnOt4uGVCH+H+OgPci2KskXYHs61MGiab8Z7kIfkQ9YJUYSF6IbmBsvUN6WPv
+         w0ejkDJnLdnfeu9qyFhZxB3sK5AG3N41NdSEKyCljlPL5V+0ZbJe5hB7jCagoxGg42my
+         IEaN2WM61mP16khn6YSTxohf77+/iN8v0eX8AlD43cpCmKKec6K/e4pPTTjBTu+dYWZS
+         qNTegFOz8znOX7Lf9TPUFZF9ftuJBC0NUmDjBxJg6XcWMdZ/66nTX2B6JLI9QpUeAwyj
+         n8TQ==
+X-Gm-Message-State: AOAM533qJ4NlucJVP3C+Y0a77pgr3/FjAe2dNbzzXezyJ6JDSORRVH+B
+        sVd9HHcRJBSmG2s+S0VKwHv9HQ==
+X-Google-Smtp-Source: ABdhPJzXbGFrXBHqxba8t5vpk4T6DIeM1IIDerEZasSPyWlyYN/rGgwQDFwyqowzN83RwvX0/qpenQ==
+X-Received: by 2002:a65:5188:0:b0:3fa:6081:7393 with SMTP id h8-20020a655188000000b003fa60817393mr21698692pgq.72.1654539249516;
+        Mon, 06 Jun 2022 11:14:09 -0700 (PDT)
+Received: from google.com ([2620:15c:202:201:6e63:c427:72dc:aaa8])
+        by smtp.gmail.com with ESMTPSA id cp14-20020a170902e78e00b0015e8d4eb1d3sm10770551plb.29.2022.06.06.11.14.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jun 2022 11:14:08 -0700 (PDT)
+Date:   Mon, 6 Jun 2022 11:14:05 -0700
+From:   Brian Norris <briannorris@chromium.org>
+To:     Duoming Zhou <duoming@zju.edu.cn>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        amitkarwar@gmail.com, ganapathi017@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+        johannes@sipsolutions.net, gregkh@linuxfoundation.org,
+        rafael@kernel.org
+Subject: Re: [PATCH v5 2/2] mwifiex: fix sleep in atomic context bugs caused
+ by dev_coredumpv
+Message-ID: <Yp5D7TRdNJ+bW1ud@google.com>
+References: <cover.1654229964.git.duoming@zju.edu.cn>
+ <54f886c2fce5948a8743b9de65d36ec3e8adfaf1.1654229964.git.duoming@zju.edu.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [RFC] cfg80211: Indicate MLO connection info in connect and roam
- callbacks
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>
-References: <1653528391-21718-1-git-send-email-quic_vjakkam@quicinc.com>
- <9270689aeb7de1c2f9764d8e79f28c2b9aafcedc.camel@sipsolutions.net>
-From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-In-Reply-To: <9270689aeb7de1c2f9764d8e79f28c2b9aafcedc.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <54f886c2fce5948a8743b9de65d36ec3e8adfaf1.1654229964.git.duoming@zju.edu.cn>
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -67,59 +74,93 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thanks for reviewing the patch.
+On Fri, Jun 03, 2022 at 01:09:35PM +0800, Duoming Zhou wrote:
+> There are sleep in atomic context bugs when uploading device dump
+> data in mwifiex. The root cause is that dev_coredumpv could not
+> be used in atomic contexts, because it calls dev_set_name which
+> include operations that may sleep. The call tree shows execution
+> paths that could lead to bugs:
+...
+> Fixes: f5ecd02a8b20 ("mwifiex: device dump support for usb interface")
+> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+> ---
+> Changes in v5:
+>   - Use delayed work to replace timer.
+> 
+>  drivers/net/wireless/marvell/mwifiex/init.c      | 10 ++++++----
+>  drivers/net/wireless/marvell/mwifiex/main.h      |  2 +-
+>  drivers/net/wireless/marvell/mwifiex/sta_event.c |  6 +++---
+>  3 files changed, 10 insertions(+), 8 deletions(-)
 
-On 5/27/2022 1:26 PM, Johannes Berg wrote:
+Looks great! Thanks for working on this.
 
->
->> +			for_each_valid_link(cr, link)
->> +				cfg80211_put_bss(wdev->wiphy, cr->links[link].bss);
+Reviewed-by: Brian Norris <briannorris@chromium.org>
 
+Some small nitpicks below, but they're definitely not critical.
 
-reduced the repeated code by using "out" label.  Can't make common 
-utility function
+> diff --git a/drivers/net/wireless/marvell/mwifiex/init.c b/drivers/net/wireless/marvell/mwifiex/init.c
+> index 88c72d1827a..3713f3e323f 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/init.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/init.c
+> @@ -63,9 +63,11 @@ static void wakeup_timer_fn(struct timer_list *t)
+>  		adapter->if_ops.card_reset(adapter);
+>  }
+>  
+> -static void fw_dump_timer_fn(struct timer_list *t)
+> +static void fw_dump_work(struct work_struct *work)
+>  {
+> -	struct mwifiex_adapter *adapter = from_timer(adapter, t, devdump_timer);
+> +	struct mwifiex_adapter *adapter = container_of(work,
+> +					struct mwifiex_adapter,
+> +					devdump_work.work);
 
-for both roam and connect callbacks since variables in links struct 
-differs for connect result and roam info.
+Super nitpicky: the hanging indent style seems a bit off. I typically
+see people try to align to the first character after the parenthesis,
+like:
 
-Also, addressed several other comments about code cleanup and nits in v2.
+	struct mwifiex_adapter *adapter = container_of(work,
+						       struct mwifiex_adapter,
+						       devdump_work.work);
 
+It's not a clearly-specified style rule I think, so I definitely
+wouldn't insist.
 
->
->> -	if (WARN_ON(!info->bss))
->> +	if (WARN_ON(!bss_found))
->>   		return;
-> This goes with my question earlier - here you're basically assuming
-> finding a single BSS is fine. Do we really think so? It used to be we
-> wanted all of them, and I kind of tend to think drivers should just make
-> sure they have all of them - once we have the entry it can be updated,
-> but if we don't have one, we'll never again get the information on the
-> BSS, for purposes such as "iw link" output.
->
-> I tend to think we should always require all BSS entries to exist, even
-> if the driver initially has to make up a fake entry with pretty much no
-> information.
->
-> Or maybe we have enough information here already (BSSID/frequency) to
-> make up a fake entry in cfg80211?
->
+On the bright side: I think the clang-format rules (in .clang-format)
+are getting better, so one can make some formatting decisions via tools
+instead of opinion and close reading! Unfortunately, we probably can't
+do that extensively and automatically, because I doubt people will love
+all the reformatting because of all the existing inconsistent style.
 
-Agree, Drivers should have enough formation to create a BSS entry for 
-all the links.
+Anyway, to cut to the chase: clang-format chooses moving to a new line:
 
-As suggested added checks for all bss entries availability in v2 patch.
+	struct mwifiex_adapter *adapter =
+		container_of(work, struct mwifiex_adapter, devdump_work.work);
 
->> +	if (info->ap_mld_addr) {
->> +		ev->rm.ap_mld_addr = next;
->> +		memcpy((void *)ev->rm.ap_mld_addr, info->ap_mld_addr,
->> +		       ETH_ALEN);
-> Why the cast?
+More info if you're interested:
+https://www.kernel.org/doc/html/latest/process/clang-format.html
 
-Without casting it gives below error.
+>  
+>  	mwifiex_upload_device_dump(adapter);
+>  }
 
-note: expected 'void *' but argument is of type 'const u8 *' {aka 'const unsigned char *'}
+...
 
---
-veeru
+> diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+> index 332dd1c8db3..6530c6ee308 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/main.h
+> +++ b/drivers/net/wireless/marvell/mwifiex/main.h
+> @@ -1055,7 +1055,7 @@ struct mwifiex_adapter {
 
+Nitpick: main.h is probably missing a lot of #includes, but you could
+probably add <linux/workqueue.h> while you're at it.
 
+Brian
+
+>  	/* Device dump data/length */
+>  	void *devdump_data;
+>  	int devdump_len;
+> -	struct timer_list devdump_timer;
+> +	struct delayed_work devdump_work;
+>  
+>  	bool ignore_btcoex_events;
+>  };
