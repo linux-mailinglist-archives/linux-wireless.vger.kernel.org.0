@@ -2,41 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02874542F45
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 13:34:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BB62542F41
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 13:34:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238110AbiFHLdQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Jun 2022 07:33:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41076 "EHLO
+        id S238096AbiFHLdP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Jun 2022 07:33:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238084AbiFHLdM (ORCPT
+        with ESMTP id S238092AbiFHLdM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 8 Jun 2022 07:33:12 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1660812DBE0
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 04:33:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16DCE17C6B1
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 04:33:08 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 258BWp8L2008908, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 258BWp8L2008908
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 258BWrXeA008918, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 258BWrXeA008918
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 8 Jun 2022 19:32:51 +0800
+        Wed, 8 Jun 2022 19:32:53 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Wed, 8 Jun 2022 19:32:51 +0800
+ 15.1.2375.28; Wed, 8 Jun 2022 19:32:53 +0800
 Received: from localhost (172.16.16.197) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Wed, 8 Jun
- 2022 19:32:51 +0800
+ 2022 19:32:52 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>, <johannes@sipsolutions.net>
 CC:     <linux-wireless@vger.kernel.org>, <echuang@realtek.com>,
         <phhuang@realtek.com>
-Subject: [PATCH v2 0/3] rtw89: use count of trigger frames as a clue to accelerate CFO tracking
-Date:   Wed, 8 Jun 2022 19:32:21 +0800
-Message-ID: <20220608113224.11193-1-pkshih@realtek.com>
+Subject: [PATCH v2 1/3] ieee80211: add trigger frame definition
+Date:   Wed, 8 Jun 2022 19:32:22 +0800
+Message-ID: <20220608113224.11193-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220608113224.11193-1-pkshih@realtek.com>
+References: <20220608113224.11193-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -54,7 +56,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzYvOCCkV6TIIDA5OjMxOjAw?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -67,27 +69,80 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The CFO (central frequency offset) is very important to yeild good UL-OFDMA
-performance. To track CFO accurately, adjust CFO in shorter period of time.
-Since this is only needed by UL-OFDMA, we use trigger frames as a clue.
+From: Po Hao Huang <phhuang@realtek.com>
 
-v2: remove ULL suffix from MASK definition
+Define trigger stype of control frame, and its checking function, struct
+and trigger type within common_info of trigger.
 
-Eric Huang (1):
-  rtw89: add new state to CFO state machine for UL-OFDMA
+Signed-off-by: Po Hao Huang <phhuang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ include/linux/ieee80211.h | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-Po Hao Huang (2):
-  ieee80211: add trigger frame definition
-  rtw89: 8852c: add trigger frame counter
-
- drivers/net/wireless/realtek/rtw89/core.c  | 48 ++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/core.h  | 21 ++++++++++
- drivers/net/wireless/realtek/rtw89/debug.c |  3 +-
- drivers/net/wireless/realtek/rtw89/phy.c   | 24 +++++++++--
- drivers/net/wireless/realtek/rtw89/phy.h   |  1 +
- include/linux/ieee80211.h                  | 31 ++++++++++++++
- 6 files changed, 124 insertions(+), 4 deletions(-)
-
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 75d40acb60c1c..5c65ae6b81543 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -76,6 +76,7 @@
+ #define IEEE80211_STYPE_ACTION		0x00D0
+ 
+ /* control */
++#define IEEE80211_STYPE_TRIGGER		0x0020
+ #define IEEE80211_STYPE_CTL_EXT		0x0060
+ #define IEEE80211_STYPE_BACK_REQ	0x0080
+ #define IEEE80211_STYPE_BACK		0x0090
+@@ -295,6 +296,17 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
+ 
+ #define IEEE80211_HT_CTL_LEN		4
+ 
++/* trigger type within common_info of trigger frame */
++#define IEEE80211_TRIGGER_TYPE_MASK		0xf
++#define IEEE80211_TRIGGER_TYPE_BASIC		0x0
++#define IEEE80211_TRIGGER_TYPE_BFRP		0x1
++#define IEEE80211_TRIGGER_TYPE_MU_BAR		0x2
++#define IEEE80211_TRIGGER_TYPE_MU_RTS		0x3
++#define IEEE80211_TRIGGER_TYPE_BSRP		0x4
++#define IEEE80211_TRIGGER_TYPE_GCR_MU_BAR	0x5
++#define IEEE80211_TRIGGER_TYPE_BQRP		0x6
++#define IEEE80211_TRIGGER_TYPE_NFRP		0x7
++
+ struct ieee80211_hdr {
+ 	__le16 frame_control;
+ 	__le16 duration_id;
+@@ -324,6 +336,15 @@ struct ieee80211_qos_hdr {
+ 	__le16 qos_ctrl;
+ } __packed __aligned(2);
+ 
++struct ieee80211_trigger {
++	__le16 frame_control;
++	__le16 duration;
++	u8 ra[ETH_ALEN];
++	u8 ta[ETH_ALEN];
++	__le64 common_info;
++	u8 variable[];
++} __packed __aligned(2);
++
+ /**
+  * ieee80211_has_tods - check if IEEE80211_FCTL_TODS is set
+  * @fc: frame control bytes in little-endian byteorder
+@@ -729,6 +750,16 @@ static inline bool ieee80211_is_qos_nullfunc(__le16 fc)
+ 	       cpu_to_le16(IEEE80211_FTYPE_DATA | IEEE80211_STYPE_QOS_NULLFUNC);
+ }
+ 
++/**
++ * ieee80211_is_trigger - check if frame is trigger frame
++ * @fc: frame control field in little-endian byteorder
++ */
++static inline bool ieee80211_is_trigger(__le16 fc)
++{
++	return (fc & cpu_to_le16(IEEE80211_FCTL_FTYPE | IEEE80211_FCTL_STYPE)) ==
++	       cpu_to_le16(IEEE80211_FTYPE_CTL | IEEE80211_STYPE_TRIGGER);
++}
++
+ /**
+  * ieee80211_is_any_nullfunc - check if frame is regular or QoS nullfunc frame
+  * @fc: frame control bytes in little-endian byteorder
 -- 
 2.25.1
 
