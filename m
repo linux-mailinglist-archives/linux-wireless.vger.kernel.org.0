@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA24B542F3D
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 13:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9CEC542F44
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 13:34:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238046AbiFHLdN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Jun 2022 07:33:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41012 "EHLO
+        id S238093AbiFHLdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Jun 2022 07:33:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238042AbiFHLdL (ORCPT
+        with ESMTP id S238074AbiFHLdL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 8 Jun 2022 07:33:11 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 173331BC79E
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1729C1BC78C
         for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 04:33:08 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 258BWsFyA008932, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 258BWsFyA008932
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 258BWtFjA008936, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 258BWtFjA008936
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 8 Jun 2022 19:32:54 +0800
+        Wed, 8 Jun 2022 19:32:55 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Wed, 8 Jun 2022 19:32:54 +0800
+ 15.1.2375.28; Wed, 8 Jun 2022 19:32:55 +0800
 Received: from localhost (172.16.16.197) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Wed, 8 Jun
- 2022 19:32:53 +0800
+ 2022 19:32:55 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>, <johannes@sipsolutions.net>
 CC:     <linux-wireless@vger.kernel.org>, <echuang@realtek.com>,
         <phhuang@realtek.com>
-Subject: [PATCH v2 2/3] rtw89: 8852c: add trigger frame counter
-Date:   Wed, 8 Jun 2022 19:32:23 +0800
-Message-ID: <20220608113224.11193-3-pkshih@realtek.com>
+Subject: [PATCH v2 3/3] rtw89: add new state to CFO state machine for UL-OFDMA
+Date:   Wed, 8 Jun 2022 19:32:24 +0800
+Message-ID: <20220608113224.11193-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220608113224.11193-1-pkshih@realtek.com>
 References: <20220608113224.11193-1-pkshih@realtek.com>
@@ -56,7 +56,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzYvOCCkV6TIIDA5OjMxOjAw?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -69,138 +69,113 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po Hao Huang <phhuang@realtek.com>
+From: Eric Huang <echuang@realtek.com>
 
-Adding this allows us to maintain trigger frame statistics, which is
-required for our CFO tracking decisions.
+Add an new state, RTW89_PHY_DCFO_STATE_HOLD, to keep CFO acceleration
+after CFO_PERIOD_CNT if the traffic is UL-OFDMA, which is calculated
+based on RX trigger frame counter.
 
-Signed-off-by: Po Hao Huang <phhuang@realtek.com>
+Signed-off-by: Eric Huang <echuang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c  | 48 ++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/core.h  | 14 +++++++
- drivers/net/wireless/realtek/rtw89/debug.c |  3 +-
- 3 files changed, 64 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/core.h |  7 +++++++
+ drivers/net/wireless/realtek/rtw89/phy.c  | 24 ++++++++++++++++++++---
+ drivers/net/wireless/realtek/rtw89/phy.h  |  1 +
+ 3 files changed, 29 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 4df81f00c2211..d2f2a3d65ef6f 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1343,6 +1343,47 @@ struct rtw89_vif_rx_stats_iter_data {
- 	const u8 *bssid;
- };
- 
-+static void rtw89_stats_trigger_frame(struct rtw89_dev *rtwdev,
-+				      struct ieee80211_vif *vif,
-+				      struct sk_buff *skb)
-+{
-+	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
-+	struct ieee80211_trigger *tf = (struct ieee80211_trigger *)skb->data;
-+	u8 *pos, *end, type;
-+	u16 aid;
-+
-+	if (!ether_addr_equal(vif->bss_conf.bssid, tf->ta) ||
-+	    rtwvif->wifi_role != RTW89_WIFI_ROLE_STATION ||
-+	    rtwvif->net_type == RTW89_NET_TYPE_NO_LINK)
-+		return;
-+
-+	type = le64_get_bits(tf->common_info, IEEE80211_TRIGGER_TYPE_MASK);
-+	if (type != IEEE80211_TRIGGER_TYPE_BASIC)
-+		return;
-+
-+	end = (u8 *)tf + skb->len;
-+	pos = tf->variable;
-+
-+	while (end - pos >= RTW89_TF_BASIC_USER_INFO_SZ) {
-+		aid = RTW89_GET_TF_USER_INFO_AID12(pos);
-+		rtw89_debug(rtwdev, RTW89_DBG_TXRX,
-+			    "[TF] aid: %d, ul_mcs: %d, rua: %d\n",
-+			    aid, RTW89_GET_TF_USER_INFO_UL_MCS(pos),
-+			    RTW89_GET_TF_USER_INFO_RUA(pos));
-+
-+		if (aid == RTW89_TF_PAD)
-+			break;
-+
-+		if (aid == vif->bss_conf.aid) {
-+			rtwvif->stats.rx_tf_acc++;
-+			rtwdev->stats.rx_tf_acc++;
-+			break;
-+		}
-+
-+		pos += RTW89_TF_BASIC_USER_INFO_SZ;
-+	}
-+}
-+
- static void rtw89_vif_rx_stats_iter(void *data, u8 *mac,
- 				    struct ieee80211_vif *vif)
- {
-@@ -1355,6 +1396,11 @@ static void rtw89_vif_rx_stats_iter(void *data, u8 *mac,
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	const u8 *bssid = iter_data->bssid;
- 
-+	if (ieee80211_is_trigger(hdr->frame_control)) {
-+		rtw89_stats_trigger_frame(rtwdev, vif, skb);
-+		return;
-+	}
-+
- 	if (!ether_addr_equal(vif->bss_conf.bssid, bssid))
- 		return;
- 
-@@ -2023,6 +2069,8 @@ static bool rtw89_traffic_stats_calc(struct rtw89_dev *rtwdev,
- 	stats->rx_unicast = 0;
- 	stats->tx_cnt = 0;
- 	stats->rx_cnt = 0;
-+	stats->rx_tf_periodic = stats->rx_tf_acc;
-+	stats->rx_tf_acc = 0;
- 
- 	if (tx_tfc_lv != stats->tx_tfc_lv || rx_tfc_lv != stats->rx_tfc_lv)
- 		return true;
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 6dd341f3fd33e..1fa6fe8b99530 100644
+index 1fa6fe8b99530..239d47d0ec6d6 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -55,6 +55,16 @@ enum htc_om_channel_width {
- #define RTW89_HTC_MASK_HTC_OM_DL_MU_MIMO_RR BIT(16)
- #define RTW89_HTC_MASK_HTC_OM_UL_MU_DATA_DIS BIT(17)
+@@ -2809,13 +2809,20 @@ enum rtw89_multi_cfo_mode {
+ enum rtw89_phy_cfo_status {
+ 	RTW89_PHY_DCFO_STATE_NORMAL = 0,
+ 	RTW89_PHY_DCFO_STATE_ENHANCE = 1,
++	RTW89_PHY_DCFO_STATE_HOLD = 2,
+ 	RTW89_PHY_DCFO_STATE_MAX
+ };
  
-+#define RTW89_TF_PAD GENMASK(11, 0)
-+#define RTW89_TF_BASIC_USER_INFO_SZ 6
++enum rtw89_phy_cfo_ul_ofdma_acc_mode {
++	RTW89_CFO_UL_OFDMA_ACC_DISABLE = 0,
++	RTW89_CFO_UL_OFDMA_ACC_ENABLE = 1
++};
 +
-+#define RTW89_GET_TF_USER_INFO_AID12(data)	\
-+	le32_get_bits(*((const __le32 *)(data)), GENMASK(11, 0))
-+#define RTW89_GET_TF_USER_INFO_RUA(data)	\
-+	le32_get_bits(*((const __le32 *)(data)), GENMASK(19, 12))
-+#define RTW89_GET_TF_USER_INFO_UL_MCS(data)	\
-+	le32_get_bits(*((const __le32 *)(data)), GENMASK(24, 21))
-+
- enum rtw89_subband {
- 	RTW89_CH_2G = 0,
- 	RTW89_CH_5G_BAND_1 = 1,
-@@ -943,6 +953,10 @@ struct rtw89_traffic_stats {
- 	u32 rx_throughput;
- 	u32 tx_throughput_raw;
- 	u32 rx_throughput_raw;
-+
-+	u32 rx_tf_acc;
-+	u32 rx_tf_periodic;
-+
- 	enum rtw89_tfc_lv tx_tfc_lv;
- 	enum rtw89_tfc_lv rx_tfc_lv;
- 	struct ewma_tp tx_ewma_tp;
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index 7820bc3ab3b47..f00f81916f2f5 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.c
-+++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -2376,7 +2376,8 @@ static int rtw89_debug_priv_phy_info_get(struct seq_file *m, void *v)
- 	seq_printf(m, "TP TX: %u [%u] Mbps (lv: %d), RX: %u [%u] Mbps (lv: %d)\n",
- 		   stats->tx_throughput, stats->tx_throughput_raw, stats->tx_tfc_lv,
- 		   stats->rx_throughput, stats->rx_throughput_raw, stats->rx_tfc_lv);
--	seq_printf(m, "Beacon: %u\n", pkt_stat->beacon_nr);
-+	seq_printf(m, "Beacon: %u, TF: %u\n", pkt_stat->beacon_nr,
-+		   stats->rx_tf_periodic);
- 	seq_printf(m, "Avg packet length: TX=%u, RX=%u\n", stats->tx_avg_len,
- 		   stats->rx_avg_len);
+ struct rtw89_cfo_tracking_info {
+ 	u16 cfo_timer_ms;
+ 	bool cfo_trig_by_timer_en;
+ 	enum rtw89_phy_cfo_status phy_cfo_status;
++	enum rtw89_phy_cfo_ul_ofdma_acc_mode cfo_ul_ofdma_acc_mode;
+ 	u8 phy_cfo_trk_cnt;
+ 	bool is_adjust;
+ 	enum rtw89_multi_cfo_mode rtw89_multi_cfo_mode;
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 762cdba9d3cfd..217aacb6e8c1b 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -2151,6 +2151,7 @@ static void rtw89_phy_cfo_init(struct rtw89_dev *rtwdev)
+ 	cfo->cfo_trig_by_timer_en = false;
+ 	cfo->phy_cfo_trk_cnt = 0;
+ 	cfo->phy_cfo_status = RTW89_PHY_DCFO_STATE_NORMAL;
++	cfo->cfo_ul_ofdma_acc_mode = RTW89_CFO_UL_OFDMA_ACC_ENABLE;
+ }
  
+ static void rtw89_phy_cfo_crystal_cap_adjust(struct rtw89_dev *rtwdev,
+@@ -2419,6 +2420,13 @@ void rtw89_phy_cfo_track(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_cfo_tracking_info *cfo = &rtwdev->cfo_tracking;
+ 	struct rtw89_traffic_stats *stats = &rtwdev->stats;
++	bool is_ul_ofdma = false, ofdma_acc_en = false;
++
++	if (stats->rx_tf_periodic > CFO_TF_CNT_TH)
++		is_ul_ofdma = true;
++	if (cfo->cfo_ul_ofdma_acc_mode == RTW89_CFO_UL_OFDMA_ACC_ENABLE &&
++	    is_ul_ofdma)
++		ofdma_acc_en = true;
+ 
+ 	switch (cfo->phy_cfo_status) {
+ 	case RTW89_PHY_DCFO_STATE_NORMAL:
+@@ -2430,16 +2438,26 @@ void rtw89_phy_cfo_track(struct rtw89_dev *rtwdev)
+ 		}
+ 		break;
+ 	case RTW89_PHY_DCFO_STATE_ENHANCE:
+-		if (cfo->phy_cfo_trk_cnt >= CFO_PERIOD_CNT) {
++		if (stats->tx_throughput <= CFO_TP_LOWER)
++			cfo->phy_cfo_status = RTW89_PHY_DCFO_STATE_NORMAL;
++		else if (ofdma_acc_en &&
++			 cfo->phy_cfo_trk_cnt >= CFO_PERIOD_CNT)
++			cfo->phy_cfo_status = RTW89_PHY_DCFO_STATE_HOLD;
++		else
++			cfo->phy_cfo_trk_cnt++;
++
++		if (cfo->phy_cfo_status == RTW89_PHY_DCFO_STATE_NORMAL) {
+ 			cfo->phy_cfo_trk_cnt = 0;
+ 			cfo->cfo_trig_by_timer_en = false;
+ 		}
+-		if (cfo->cfo_trig_by_timer_en == 1)
+-			cfo->phy_cfo_trk_cnt++;
++		break;
++	case RTW89_PHY_DCFO_STATE_HOLD:
+ 		if (stats->tx_throughput <= CFO_TP_LOWER) {
+ 			cfo->phy_cfo_status = RTW89_PHY_DCFO_STATE_NORMAL;
+ 			cfo->phy_cfo_trk_cnt = 0;
+ 			cfo->cfo_trig_by_timer_en = false;
++		} else {
++			cfo->phy_cfo_trk_cnt++;
+ 		}
+ 		break;
+ 	default:
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
+index 291660154d58d..e20636f54b553 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.h
++++ b/drivers/net/wireless/realtek/rtw89/phy.h
+@@ -62,6 +62,7 @@
+ #define CFO_COMP_PERIOD 250
+ #define CFO_COMP_WEIGHT 8
+ #define MAX_CFO_TOLERANCE 30
++#define CFO_TF_CNT_TH 300
+ 
+ #define CCX_MAX_PERIOD 2097
+ #define CCX_MAX_PERIOD_UNIT 32
 -- 
 2.25.1
 
