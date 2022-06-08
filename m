@@ -2,43 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DB28543A74
+	by mail.lfdr.de (Postfix) with ESMTP id 85BCD543A75
 	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 19:31:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231701AbiFHRbM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Jun 2022 13:31:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59154 "EHLO
+        id S231345AbiFHRbN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Jun 2022 13:31:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230339AbiFHRbI (ORCPT
+        with ESMTP id S231495AbiFHRbK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Jun 2022 13:31:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A29F225E
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 10:31:05 -0700 (PDT)
+        Wed, 8 Jun 2022 13:31:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D7151CF
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 10:31:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ED6FD61B39
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 17:31:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0058C3411D;
-        Wed,  8 Jun 2022 17:31:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BB40561B3B
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 17:31:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2318C34116;
+        Wed,  8 Jun 2022 17:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654709464;
-        bh=x0+mxRosk5DQk+T5jAKidRYIG4qiaJNmqrIjwOg8r9s=;
+        s=k20201202; t=1654709466;
+        bh=fj5CJYjT8Hd107d3E7VWLNVo0k2IxWrju5V5ZIk2J1s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cOnoS1Kkv14XQZLXkzcoVFR5qgoG7Ng37ld0e4rO+JCrC0J3RLKELU4B5bvyBOwhT
-         87BbyyZze0zqRQvH6qUGjfg0UED8sGYtjYF8idyTuwTNeP3wAMxUGqpWkQSCNQbTVq
-         hzbSYKcLOBUZ0WAWFnpBvc/NIp3gJizBd+sWth+jzrh25jWhUL/Az2KnDF7Rrul7DH
-         O8k4eYJKFyU3P86IWSgTq4zloJnJSMW1z7MT1H6gZ2VRLYmspqlLc6D2iTqZsuCu/2
-         8AEEXXrUxWjROenh3E11tOoYHfkd+r8j1QTp0eHiecqkEt0xCm0RreM6VHYq6Bp+XE
-         TkRYSdTqxq6UA==
+        b=GgQpfKUOWBloEeFQsNCes7pHlgjQrX+LH7X4rUMmUDgYopPI3cqIA7mwlw7YVIxbQ
+         nOb0ixCTSCbAVCvv3T4pkxz1VX0rFki900WQMFYGg7LSW2IxMmd73HP11xZ+974bq4
+         vLh430xuGhoHXyT8M7FknEdo+9IH9Kic2eELYhRYBgCbrFxa4kaEerdXzXd1yH5er1
+         KOq4yXTpmXO9dBb7RSuTqEj5QBLsLuypa9O44azSleJ1ycOcGrC2sUS+kBBdk1Fbef
+         csWXweeSOgSvpwcG4cBctuTSi7Y2/r4rOKpfVlLOpgWKR12jPFyFL11bnE23V9Lpb/
+         AhZ7tokEdy8dw==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         ryder.lee@mediatek.com, sean.wang@mediatek.com
-Subject: [PATCH 1/3] mt76: connac: move HE radiotap parsing in connac module
-Date:   Wed,  8 Jun 2022 19:30:29 +0200
-Message-Id: <7dfc09b781d775002b8e33eaf8b19689afca905b.1654709072.git.lorenzo@kernel.org>
+Subject: [PATCH 2/3] mt76: connac: move mt76_connac2_reverse_frag0_hdr_trans in mt76-connac module
+Date:   Wed,  8 Jun 2022 19:30:30 +0200
+Message-Id: <606ede0ee0352e0d8767a8fe0378f75dbe199417.1654709072.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <cover.1654709072.git.lorenzo@kernel.org>
 References: <cover.1654709072.git.lorenzo@kernel.org>
@@ -54,852 +54,667 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-HE radiotap parsing code is shared between connac2 devices.
+mt76_connac2_reverse_frag0_hdr_trans routine is shared between mt7921
+and mt7915e drivers.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt76_connac.h  |   3 +
- .../wireless/mediatek/mt76/mt76_connac2_mac.h |  56 ++++++
- .../wireless/mediatek/mt76/mt76_connac_mac.c  | 187 ++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 180 +----------------
- .../net/wireless/mediatek/mt76/mt7915/mac.h   |  52 -----
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 187 +-----------------
- .../net/wireless/mediatek/mt76/mt7921/mac.h   |  52 -----
- 7 files changed, 251 insertions(+), 466 deletions(-)
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |  2 +
+ .../wireless/mediatek/mt76/mt76_connac2_mac.h | 86 ++++++++++++++++
+ .../wireless/mediatek/mt76/mt76_connac_mac.c  | 76 +++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 97 +++----------------
+ .../net/wireless/mediatek/mt76/mt7915/mac.h   | 87 -----------------
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 95 +++---------------
+ .../net/wireless/mediatek/mt76/mt7921/mac.h   | 84 ----------------
+ 7 files changed, 189 insertions(+), 338 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-index 6b8d6c5d621a..c06a320b53bc 100644
+index c06a320b53bc..27ab1f2355ce 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-@@ -253,5 +253,8 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 				  int pid, __le32 *txs_data,
- 				  struct mt76_sta_stats *stats);
-+void mt76_connac2_mac_decode_he_radiotap(struct mt76_dev *dev,
-+					 struct sk_buff *skb,
-+					 __le32 *rxv, u32 mode);
+@@ -256,5 +256,7 @@ bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid *wcid,
+ void mt76_connac2_mac_decode_he_radiotap(struct mt76_dev *dev,
+ 					 struct sk_buff *skb,
+ 					 __le32 *rxv, u32 mode);
++int mt76_connac2_reverse_frag0_hdr_trans(struct ieee80211_vif *vif,
++					 struct sk_buff *skb, u16 hdr_offset);
  
  #endif /* __MT76_CONNAC_H */
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-index c9d9c8475a38..f2de2f6d04a1 100644
+index f2de2f6d04a1..0d04207b4292 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-@@ -164,4 +164,60 @@ enum {
+@@ -164,6 +164,92 @@ enum {
  
  #define MT_TXS4_TIMESTAMP		GENMASK(31, 0)
  
-+/* P-RXV DW0 */
-+#define MT_PRXV_TX_RATE			GENMASK(6, 0)
-+#define MT_PRXV_TX_DCM			BIT(4)
-+#define MT_PRXV_TX_ER_SU_106T		BIT(5)
-+#define MT_PRXV_NSTS			GENMASK(9, 7)
-+#define MT_PRXV_TXBF			BIT(10)
-+#define MT_PRXV_HT_AD_CODE		BIT(11)
-+#define MT_PRXV_HE_RU_ALLOC_L		GENMASK(31, 28)
++/* RXD DW1 */
++#define MT_RXD1_NORMAL_WLAN_IDX		GENMASK(9, 0)
++#define MT_RXD1_NORMAL_GROUP_1		BIT(11)
++#define MT_RXD1_NORMAL_GROUP_2		BIT(12)
++#define MT_RXD1_NORMAL_GROUP_3		BIT(13)
++#define MT_RXD1_NORMAL_GROUP_4		BIT(14)
++#define MT_RXD1_NORMAL_GROUP_5		BIT(15)
++#define MT_RXD1_NORMAL_SEC_MODE		GENMASK(20, 16)
++#define MT_RXD1_NORMAL_KEY_ID		GENMASK(22, 21)
++#define MT_RXD1_NORMAL_CM		BIT(23)
++#define MT_RXD1_NORMAL_CLM		BIT(24)
++#define MT_RXD1_NORMAL_ICV_ERR		BIT(25)
++#define MT_RXD1_NORMAL_TKIP_MIC_ERR	BIT(26)
++#define MT_RXD1_NORMAL_FCS_ERR		BIT(27)
++#define MT_RXD1_NORMAL_BAND_IDX		BIT(28)
++#define MT_RXD1_NORMAL_SPP_EN		BIT(29)
++#define MT_RXD1_NORMAL_ADD_OM		BIT(30)
++#define MT_RXD1_NORMAL_SEC_DONE		BIT(31)
 +
-+#define MT_PRXV_FRAME_MODE		GENMASK(14, 12)
-+#define MT_PRXV_HT_SGI			GENMASK(16, 15)
-+#define MT_PRXV_HT_STBC			GENMASK(23, 22)
-+#define MT_PRXV_TX_MODE			GENMASK(27, 24)
-+#define MT_PRXV_DCM			BIT(17)
-+#define MT_PRXV_NUM_RX			BIT(20, 18)
++/* RXD DW2 */
++#define MT_RXD2_NORMAL_BSSID		GENMASK(5, 0)
++#define MT_RXD2_NORMAL_CO_ANT		BIT(6)
++#define MT_RXD2_NORMAL_BF_CQI		BIT(7)
++#define MT_RXD2_NORMAL_MAC_HDR_LEN	GENMASK(12, 8)
++#define MT_RXD2_NORMAL_HDR_TRANS	BIT(13)
++#define MT_RXD2_NORMAL_HDR_OFFSET	GENMASK(15, 14)
++#define MT_RXD2_NORMAL_TID		GENMASK(19, 16)
++#define MT_RXD2_NORMAL_MU_BAR		BIT(21)
++#define MT_RXD2_NORMAL_SW_BIT		BIT(22)
++#define MT_RXD2_NORMAL_AMSDU_ERR	BIT(23)
++#define MT_RXD2_NORMAL_MAX_LEN_ERROR	BIT(24)
++#define MT_RXD2_NORMAL_HDR_TRANS_ERROR	BIT(25)
++#define MT_RXD2_NORMAL_INT_FRAME	BIT(26)
++#define MT_RXD2_NORMAL_FRAG		BIT(27)
++#define MT_RXD2_NORMAL_NULL_FRAME	BIT(28)
++#define MT_RXD2_NORMAL_NDATA		BIT(29)
++#define MT_RXD2_NORMAL_NON_AMPDU	BIT(30)
++#define MT_RXD2_NORMAL_BF_REPORT	BIT(31)
 +
-+/* P-RXV DW1 */
-+#define MT_PRXV_RCPI3			GENMASK(31, 24)
-+#define MT_PRXV_RCPI2			GENMASK(23, 16)
-+#define MT_PRXV_RCPI1			GENMASK(15, 8)
-+#define MT_PRXV_RCPI0			GENMASK(7, 0)
-+#define MT_PRXV_HE_RU_ALLOC_H		GENMASK(3, 0)
++/* RXD DW4 */
++#define MT_RXD4_NORMAL_PAYLOAD_FORMAT	GENMASK(1, 0)
++#define MT_RXD4_FIRST_AMSDU_FRAME	GENMASK(1, 0)
++#define MT_RXD4_MID_AMSDU_FRAME		BIT(1)
++#define MT_RXD4_LAST_AMSDU_FRAME	BIT(0)
++#define MT_RXD4_NORMAL_PATTERN_DROP	BIT(9)
++#define MT_RXD4_NORMAL_CLS		BIT(10)
++#define MT_RXD4_NORMAL_OFLD		GENMASK(12, 11)
++#define MT_RXD4_NORMAL_MAGIC_PKT	BIT(13)
++#define MT_RXD4_NORMAL_WOL		GENMASK(18, 14)
++#define MT_RXD4_NORMAL_CLS_BITMAP	GENMASK(28, 19)
++#define MT_RXD3_NORMAL_PF_MODE		BIT(29)
++#define MT_RXD3_NORMAL_PF_STS		GENMASK(31, 30)
 +
-+/* C-RXV */
-+#define MT_CRXV_HT_STBC			GENMASK(1, 0)
-+#define MT_CRXV_TX_MODE			GENMASK(7, 4)
-+#define MT_CRXV_FRAME_MODE		GENMASK(10, 8)
-+#define MT_CRXV_HT_SHORT_GI		GENMASK(14, 13)
-+#define MT_CRXV_HE_LTF_SIZE		GENMASK(18, 17)
-+#define MT_CRXV_HE_LDPC_EXT_SYM		BIT(20)
-+#define MT_CRXV_HE_PE_DISAMBIG		BIT(23)
-+#define MT_CRXV_HE_NUM_USER		GENMASK(30, 24)
-+#define MT_CRXV_HE_UPLINK		BIT(31)
++#define MT_RXV_HDR_BAND_IDX		BIT(24)
 +
-+#define MT_CRXV_HE_RU0			GENMASK(7, 0)
-+#define MT_CRXV_HE_RU1			GENMASK(15, 8)
-+#define MT_CRXV_HE_RU2			GENMASK(23, 16)
-+#define MT_CRXV_HE_RU3			GENMASK(31, 24)
++/* RXD DW3 */
++#define MT_RXD3_NORMAL_RXV_SEQ		GENMASK(7, 0)
++#define MT_RXD3_NORMAL_CH_FREQ		GENMASK(15, 8)
++#define MT_RXD3_NORMAL_ADDR_TYPE	GENMASK(17, 16)
++#define MT_RXD3_NORMAL_U2M		BIT(0)
++#define MT_RXD3_NORMAL_HTC_VLD		BIT(0)
++#define MT_RXD3_NORMAL_TSF_COMPARE_LOSS	BIT(19)
++#define MT_RXD3_NORMAL_BEACON_MC	BIT(20)
++#define MT_RXD3_NORMAL_BEACON_UC	BIT(21)
++#define MT_RXD3_NORMAL_AMSDU		BIT(22)
++#define MT_RXD3_NORMAL_MESH		BIT(23)
++#define MT_RXD3_NORMAL_MHCP		BIT(24)
++#define MT_RXD3_NORMAL_NO_INFO_WB	BIT(25)
++#define MT_RXD3_NORMAL_DISABLE_RX_HDR_TRANS	BIT(26)
++#define MT_RXD3_NORMAL_POWER_SAVE_STAT	BIT(27)
++#define MT_RXD3_NORMAL_MORE		BIT(28)
++#define MT_RXD3_NORMAL_UNWANT		BIT(29)
++#define MT_RXD3_NORMAL_RX_DROP		BIT(30)
++#define MT_RXD3_NORMAL_VLAN2ETH		BIT(31)
 +
-+#define MT_CRXV_HE_MU_AID		GENMASK(30, 20)
++/* RXD GROUP4 */
++#define MT_RXD6_FRAME_CONTROL		GENMASK(15, 0)
++#define MT_RXD6_TA_LO			GENMASK(31, 16)
 +
-+#define MT_CRXV_HE_SR_MASK		GENMASK(11, 8)
-+#define MT_CRXV_HE_SR1_MASK		GENMASK(16, 12)
-+#define MT_CRXV_HE_SR2_MASK             GENMASK(20, 17)
-+#define MT_CRXV_HE_SR3_MASK             GENMASK(24, 21)
++#define MT_RXD7_TA_HI			GENMASK(31, 0)
 +
-+#define MT_CRXV_HE_BSS_COLOR		GENMASK(5, 0)
-+#define MT_CRXV_HE_TXOP_DUR		GENMASK(12, 6)
-+#define MT_CRXV_HE_BEAM_CHNG		BIT(13)
-+#define MT_CRXV_HE_DOPPLER		BIT(16)
++#define MT_RXD8_SEQ_CTRL		GENMASK(15, 0)
++#define MT_RXD8_QOS_CTL			GENMASK(31, 16)
 +
-+#define MT_CRXV_SNR		GENMASK(18, 13)
-+#define MT_CRXV_FOE_LO		GENMASK(31, 19)
-+#define MT_CRXV_FOE_HI		GENMASK(6, 0)
-+#define MT_CRXV_FOE_SHIFT	13
++#define MT_RXD9_HT_CONTROL		GENMASK(31, 0)
 +
- #endif /* __MT76_CONNAC2_MAC_H */
+ /* P-RXV DW0 */
+ #define MT_PRXV_TX_RATE			GENMASK(6, 0)
+ #define MT_PRXV_TX_DCM			BIT(4)
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index 3f2680b8c2c2..08cd2e1d8625 100644
+index 08cd2e1d8625..6ac1ac3f5480 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -4,6 +4,10 @@
- #include "mt76_connac.h"
- #include "mt76_connac2_mac.h"
- 
-+#define HE_BITS(f)		cpu_to_le16(IEEE80211_RADIOTAP_HE_##f)
-+#define HE_PREP(f, m, v)	le16_encode_bits(le32_get_bits(v, MT_CRXV_HE_##m),\
-+						 IEEE80211_RADIOTAP_HE_##f)
-+
- int mt76_connac_pm_wake(struct mt76_phy *phy, struct mt76_connac_pm *pm)
- {
- 	struct mt76_dev *dev = phy->dev;
-@@ -521,3 +525,186 @@ bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 	return !!skb;
+@@ -708,3 +708,79 @@ void mt76_connac2_mac_decode_he_radiotap(struct mt76_dev *dev,
+ 	}
  }
- EXPORT_SYMBOL_GPL(mt76_connac2_mac_add_txs_skb);
+ EXPORT_SYMBOL_GPL(mt76_connac2_mac_decode_he_radiotap);
 +
-+static void
-+mt76_connac2_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
-+				       struct ieee80211_radiotap_he *he,
-+				       __le32 *rxv)
-+{
-+	u32 ru_h, ru_l;
-+	u8 ru, offs = 0;
-+
-+	ru_l = le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC_L);
-+	ru_h = le32_get_bits(rxv[1], MT_PRXV_HE_RU_ALLOC_H);
-+	ru = (u8)(ru_l | ru_h << 4);
-+
-+	status->bw = RATE_INFO_BW_HE_RU;
-+
-+	switch (ru) {
-+	case 0 ... 36:
-+		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_26;
-+		offs = ru;
-+		break;
-+	case 37 ... 52:
-+		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_52;
-+		offs = ru - 37;
-+		break;
-+	case 53 ... 60:
-+		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_106;
-+		offs = ru - 53;
-+		break;
-+	case 61 ... 64:
-+		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_242;
-+		offs = ru - 61;
-+		break;
-+	case 65 ... 66:
-+		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_484;
-+		offs = ru - 65;
-+		break;
-+	case 67:
-+		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_996;
-+		break;
-+	case 68:
-+		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_2x996;
-+		break;
-+	}
-+
-+	he->data1 |= HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
-+	he->data2 |= HE_BITS(DATA2_RU_OFFSET_KNOWN) |
-+		     le16_encode_bits(offs,
-+				      IEEE80211_RADIOTAP_HE_DATA2_RU_OFFSET);
-+}
-+
-+static void
-+mt76_connac2_mac_decode_he_mu_radiotap(struct mt76_dev *dev, struct sk_buff *skb,
-+				       __le32 *rxv)
++/* The HW does not translate the mac header to 802.3 for mesh point */
++int mt76_connac2_reverse_frag0_hdr_trans(struct ieee80211_vif *vif,
++					 struct sk_buff *skb, u16 hdr_offset)
 +{
 +	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
-+	static struct ieee80211_radiotap_he_mu mu_known = {
-+		.flags1 = HE_BITS(MU_FLAGS1_SIG_B_MCS_KNOWN) |
-+			  HE_BITS(MU_FLAGS1_SIG_B_DCM_KNOWN) |
-+			  HE_BITS(MU_FLAGS1_CH1_RU_KNOWN) |
-+			  HE_BITS(MU_FLAGS1_SIG_B_SYMS_USERS_KNOWN),
-+		.flags2 = HE_BITS(MU_FLAGS2_BW_FROM_SIG_A_BW_KNOWN),
-+	};
-+	struct ieee80211_radiotap_he_mu *he_mu;
++	struct ethhdr *eth_hdr = (struct ethhdr *)(skb->data + hdr_offset);
++	__le32 *rxd = (__le32 *)skb->data;
++	struct ieee80211_sta *sta;
++	struct ieee80211_hdr hdr;
++	u16 frame_control;
 +
-+	if (is_mt7921(dev)) {
-+		mu_known.flags1 |= HE_BITS(MU_FLAGS1_SIG_B_COMP_KNOWN);
-+		mu_known.flags2 |= HE_BITS(MU_FLAGS2_PUNC_FROM_SIG_A_BW_KNOWN);
-+	}
++	if (le32_get_bits(rxd[3], MT_RXD3_NORMAL_ADDR_TYPE) !=
++	    MT_RXD3_NORMAL_U2M)
++		return -EINVAL;
 +
-+	status->flag |= RX_FLAG_RADIOTAP_HE_MU;
++	if (!(le32_to_cpu(rxd[1]) & MT_RXD1_NORMAL_GROUP_4))
++		return -EINVAL;
 +
-+	he_mu = skb_push(skb, sizeof(mu_known));
-+	memcpy(he_mu, &mu_known, sizeof(mu_known));
++	sta = container_of((void *)status->wcid, struct ieee80211_sta, drv_priv);
 +
-+#define MU_PREP(f, v)	le16_encode_bits(v, IEEE80211_RADIOTAP_HE_MU_##f)
++	/* store the info from RXD and ethhdr to avoid being overridden */
++	frame_control = le32_get_bits(rxd[6], MT_RXD6_FRAME_CONTROL);
++	hdr.frame_control = cpu_to_le16(frame_control);
++	hdr.seq_ctrl = cpu_to_le16(le32_get_bits(rxd[8], MT_RXD8_SEQ_CTRL));
++	hdr.duration_id = 0;
 +
-+	he_mu->flags1 |= MU_PREP(FLAGS1_SIG_B_MCS, status->rate_idx);
-+	if (status->he_dcm)
-+		he_mu->flags1 |= MU_PREP(FLAGS1_SIG_B_DCM, status->he_dcm);
-+
-+	he_mu->flags2 |= MU_PREP(FLAGS2_BW_FROM_SIG_A_BW, status->bw) |
-+			 MU_PREP(FLAGS2_SIG_B_SYMS_USERS,
-+				 le32_get_bits(rxv[2], MT_CRXV_HE_NUM_USER));
-+
-+	he_mu->ru_ch1[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU0);
-+
-+	if (status->bw >= RATE_INFO_BW_40) {
-+		he_mu->flags1 |= HE_BITS(MU_FLAGS1_CH2_RU_KNOWN);
-+		he_mu->ru_ch2[0] =
-+			le32_get_bits(rxv[3], MT_CRXV_HE_RU1);
-+	}
-+
-+	if (status->bw >= RATE_INFO_BW_80) {
-+		he_mu->ru_ch1[1] =
-+			le32_get_bits(rxv[3], MT_CRXV_HE_RU2);
-+		he_mu->ru_ch2[1] =
-+			le32_get_bits(rxv[3], MT_CRXV_HE_RU3);
-+	}
-+}
-+
-+void mt76_connac2_mac_decode_he_radiotap(struct mt76_dev *dev,
-+					 struct sk_buff *skb,
-+					 __le32 *rxv, u32 mode)
-+{
-+	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
-+	static const struct ieee80211_radiotap_he known = {
-+		.data1 = HE_BITS(DATA1_DATA_MCS_KNOWN) |
-+			 HE_BITS(DATA1_DATA_DCM_KNOWN) |
-+			 HE_BITS(DATA1_STBC_KNOWN) |
-+			 HE_BITS(DATA1_CODING_KNOWN) |
-+			 HE_BITS(DATA1_LDPC_XSYMSEG_KNOWN) |
-+			 HE_BITS(DATA1_DOPPLER_KNOWN) |
-+			 HE_BITS(DATA1_SPTL_REUSE_KNOWN) |
-+			 HE_BITS(DATA1_BSS_COLOR_KNOWN),
-+		.data2 = HE_BITS(DATA2_GI_KNOWN) |
-+			 HE_BITS(DATA2_TXBF_KNOWN) |
-+			 HE_BITS(DATA2_PE_DISAMBIG_KNOWN) |
-+			 HE_BITS(DATA2_TXOP_KNOWN),
-+	};
-+	u32 ltf_size = le32_get_bits(rxv[2], MT_CRXV_HE_LTF_SIZE) + 1;
-+	struct ieee80211_radiotap_he *he;
-+
-+	status->flag |= RX_FLAG_RADIOTAP_HE;
-+
-+	he = skb_push(skb, sizeof(known));
-+	memcpy(he, &known, sizeof(known));
-+
-+	he->data3 = HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[14]) |
-+		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[2]);
-+	he->data4 = HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[11]);
-+	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[2]) |
-+		    le16_encode_bits(ltf_size,
-+				     IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE);
-+	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
-+		he->data5 |= HE_BITS(DATA5_TXBF);
-+	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[14]) |
-+		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[14]);
-+
-+	switch (mode) {
-+	case MT_PHY_TYPE_HE_SU:
-+		he->data1 |= HE_BITS(DATA1_FORMAT_SU) |
-+			     HE_BITS(DATA1_UL_DL_KNOWN) |
-+			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN) |
-+			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
-+
-+		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[14]) |
-+			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
++	ether_addr_copy(hdr.addr1, vif->addr);
++	ether_addr_copy(hdr.addr2, sta->addr);
++	switch (frame_control & (IEEE80211_FCTL_TODS |
++				 IEEE80211_FCTL_FROMDS)) {
++	case 0:
++		ether_addr_copy(hdr.addr3, vif->bss_conf.bssid);
 +		break;
-+	case MT_PHY_TYPE_HE_EXT_SU:
-+		he->data1 |= HE_BITS(DATA1_FORMAT_EXT_SU) |
-+			     HE_BITS(DATA1_UL_DL_KNOWN) |
-+			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
-+
-+		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
++	case IEEE80211_FCTL_FROMDS:
++		ether_addr_copy(hdr.addr3, eth_hdr->h_source);
 +		break;
-+	case MT_PHY_TYPE_HE_MU:
-+		he->data1 |= HE_BITS(DATA1_FORMAT_MU) |
-+			     HE_BITS(DATA1_UL_DL_KNOWN);
-+
-+		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
-+		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[7]);
-+
-+		mt76_connac2_mac_decode_he_radiotap_ru(status, he, rxv);
-+		mt76_connac2_mac_decode_he_mu_radiotap(dev, skb, rxv);
++	case IEEE80211_FCTL_TODS:
++		ether_addr_copy(hdr.addr3, eth_hdr->h_dest);
 +		break;
-+	case MT_PHY_TYPE_HE_TB:
-+		he->data1 |= HE_BITS(DATA1_FORMAT_TRIG) |
-+			     HE_BITS(DATA1_SPTL_REUSE2_KNOWN) |
-+			     HE_BITS(DATA1_SPTL_REUSE3_KNOWN) |
-+			     HE_BITS(DATA1_SPTL_REUSE4_KNOWN);
-+
-+		he->data4 |= HE_PREP(DATA4_TB_SPTL_REUSE1, SR_MASK, rxv[11]) |
-+			     HE_PREP(DATA4_TB_SPTL_REUSE2, SR1_MASK, rxv[11]) |
-+			     HE_PREP(DATA4_TB_SPTL_REUSE3, SR2_MASK, rxv[11]) |
-+			     HE_PREP(DATA4_TB_SPTL_REUSE4, SR3_MASK, rxv[11]);
-+
-+		mt76_connac2_mac_decode_he_radiotap_ru(status, he, rxv);
++	case IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS:
++		ether_addr_copy(hdr.addr3, eth_hdr->h_dest);
++		ether_addr_copy(hdr.addr4, eth_hdr->h_source);
 +		break;
 +	default:
 +		break;
 +	}
++
++	skb_pull(skb, hdr_offset + sizeof(struct ethhdr) - 2);
++	if (eth_hdr->h_proto == cpu_to_be16(ETH_P_AARP) ||
++	    eth_hdr->h_proto == cpu_to_be16(ETH_P_IPX))
++		ether_addr_copy(skb_push(skb, ETH_ALEN), bridge_tunnel_header);
++	else if (be16_to_cpu(eth_hdr->h_proto) >= ETH_P_802_3_MIN)
++		ether_addr_copy(skb_push(skb, ETH_ALEN), rfc1042_header);
++	else
++		skb_pull(skb, 2);
++
++	if (ieee80211_has_order(hdr.frame_control))
++		memcpy(skb_push(skb, IEEE80211_HT_CTL_LEN), &rxd[9],
++		       IEEE80211_HT_CTL_LEN);
++	if (ieee80211_is_data_qos(hdr.frame_control)) {
++		__le16 qos_ctrl;
++
++		qos_ctrl = cpu_to_le16(le32_get_bits(rxd[8], MT_RXD8_QOS_CTL));
++		memcpy(skb_push(skb, IEEE80211_QOS_CTL_LEN), &qos_ctrl,
++		       IEEE80211_QOS_CTL_LEN);
++	}
++
++	if (ieee80211_has_a4(hdr.frame_control))
++		memcpy(skb_push(skb, sizeof(hdr)), &hdr, sizeof(hdr));
++	else
++		memcpy(skb_push(skb, sizeof(hdr) - 6), &hdr, sizeof(hdr) - 6);
++
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(mt76_connac2_mac_decode_he_radiotap);
++EXPORT_SYMBOL_GPL(mt76_connac2_reverse_frag0_hdr_trans);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 428c4fd9a0a6..27b2a9edb317 100644
+index 27b2a9edb317..1d83f8790c44 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -10,10 +10,6 @@
- 
- #define to_rssi(field, rxv)	((FIELD_GET(field, rxv) - 220) / 2)
- 
--#define HE_BITS(f)		cpu_to_le16(IEEE80211_RADIOTAP_HE_##f)
--#define HE_PREP(f, m, v)	le16_encode_bits(le32_get_bits(v, MT_CRXV_HE_##m),\
--						 IEEE80211_RADIOTAP_HE_##f)
--
- static const struct mt7915_dfs_radar_spec etsi_radar_specs = {
- 	.pulse_th = { 110, -10, -80, 40, 5200, 128, 5200 },
- 	.radar_pattern = {
-@@ -218,178 +214,6 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
+@@ -176,7 +176,7 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
+ 		/*
+ 		 * We don't support reading GI info from txs packets.
+ 		 * For accurate tx status reporting and AQL improvement,
+-		 * we need to make sure that flags match so polling GI
++		  we need to make sure that flags match so polling GI
+ 		 * from per-sta counters directly.
+ 		 */
+ 		rate = &msta->wcid.rate;
+@@ -214,86 +214,6 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
  	rcu_read_unlock();
  }
  
--static void
--mt7915_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
--				 struct ieee80211_radiotap_he *he,
--				 __le32 *rxv)
--{
--	u32 ru_h, ru_l;
--	u8 ru, offs = 0;
--
--	ru_l = le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC_L);
--	ru_h = le32_get_bits(rxv[1], MT_PRXV_HE_RU_ALLOC_H);
--	ru = (u8)(ru_l | ru_h << 4);
--
--	status->bw = RATE_INFO_BW_HE_RU;
--
--	switch (ru) {
--	case 0 ... 36:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_26;
--		offs = ru;
--		break;
--	case 37 ... 52:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_52;
--		offs = ru - 37;
--		break;
--	case 53 ... 60:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_106;
--		offs = ru - 53;
--		break;
--	case 61 ... 64:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_242;
--		offs = ru - 61;
--		break;
--	case 65 ... 66:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_484;
--		offs = ru - 65;
--		break;
--	case 67:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_996;
--		break;
--	case 68:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_2x996;
--		break;
--	}
--
--	he->data1 |= HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
--	he->data2 |= HE_BITS(DATA2_RU_OFFSET_KNOWN) |
--		     le16_encode_bits(offs,
--				      IEEE80211_RADIOTAP_HE_DATA2_RU_OFFSET);
--}
--
--static void
--mt7915_mac_decode_he_mu_radiotap(struct sk_buff *skb, __le32 *rxv)
+-/* The HW does not translate the mac header to 802.3 for mesh point */
+-static int mt7915_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
 -{
 -	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
--	static const struct ieee80211_radiotap_he_mu mu_known = {
--		.flags1 = HE_BITS(MU_FLAGS1_SIG_B_MCS_KNOWN) |
--			  HE_BITS(MU_FLAGS1_SIG_B_DCM_KNOWN) |
--			  HE_BITS(MU_FLAGS1_CH1_RU_KNOWN) |
--			  HE_BITS(MU_FLAGS1_SIG_B_SYMS_USERS_KNOWN),
--		.flags2 = HE_BITS(MU_FLAGS2_BW_FROM_SIG_A_BW_KNOWN),
--	};
--	struct ieee80211_radiotap_he_mu *he_mu = NULL;
+-	struct ethhdr *eth_hdr = (struct ethhdr *)(skb->data + hdr_gap);
+-	struct mt7915_sta *msta = (struct mt7915_sta *)status->wcid;
+-	__le32 *rxd = (__le32 *)skb->data;
+-	struct ieee80211_sta *sta;
+-	struct ieee80211_vif *vif;
+-	struct ieee80211_hdr hdr;
+-	u16 frame_control;
 -
--	status->flag |= RX_FLAG_RADIOTAP_HE_MU;
+-	if (le32_get_bits(rxd[3], MT_RXD3_NORMAL_ADDR_TYPE) !=
+-	    MT_RXD3_NORMAL_U2M)
+-		return -EINVAL;
 -
--	he_mu = skb_push(skb, sizeof(mu_known));
--	memcpy(he_mu, &mu_known, sizeof(mu_known));
+-	if (!(le32_to_cpu(rxd[1]) & MT_RXD1_NORMAL_GROUP_4))
+-		return -EINVAL;
 -
--#define MU_PREP(f, v)	le16_encode_bits(v, IEEE80211_RADIOTAP_HE_MU_##f)
+-	if (!msta || !msta->vif)
+-		return -EINVAL;
 -
--	he_mu->flags1 |= MU_PREP(FLAGS1_SIG_B_MCS, status->rate_idx);
--	if (status->he_dcm)
--		he_mu->flags1 |= MU_PREP(FLAGS1_SIG_B_DCM, status->he_dcm);
+-	sta = container_of((void *)msta, struct ieee80211_sta, drv_priv);
+-	vif = container_of((void *)msta->vif, struct ieee80211_vif, drv_priv);
 -
--	he_mu->flags2 |= MU_PREP(FLAGS2_BW_FROM_SIG_A_BW, status->bw) |
--			 MU_PREP(FLAGS2_SIG_B_SYMS_USERS,
--				 le32_get_bits(rxv[2], MT_CRXV_HE_NUM_USER));
+-	/* store the info from RXD and ethhdr to avoid being overridden */
+-	frame_control = le32_get_bits(rxd[6], MT_RXD6_FRAME_CONTROL);
+-	hdr.frame_control = cpu_to_le16(frame_control);
+-	hdr.seq_ctrl = cpu_to_le16(le32_get_bits(rxd[8], MT_RXD8_SEQ_CTRL));
+-	hdr.duration_id = 0;
 -
--	he_mu->ru_ch1[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU0);
--
--	if (status->bw >= RATE_INFO_BW_40) {
--		he_mu->flags1 |= HE_BITS(MU_FLAGS1_CH2_RU_KNOWN);
--		he_mu->ru_ch2[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU1);
--	}
--
--	if (status->bw >= RATE_INFO_BW_80) {
--		he_mu->ru_ch1[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU2);
--		he_mu->ru_ch2[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU3);
--	}
--}
--
--static void
--mt7915_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
--{
--	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
--	static const struct ieee80211_radiotap_he known = {
--		.data1 = HE_BITS(DATA1_DATA_MCS_KNOWN) |
--			 HE_BITS(DATA1_DATA_DCM_KNOWN) |
--			 HE_BITS(DATA1_STBC_KNOWN) |
--			 HE_BITS(DATA1_CODING_KNOWN) |
--			 HE_BITS(DATA1_LDPC_XSYMSEG_KNOWN) |
--			 HE_BITS(DATA1_DOPPLER_KNOWN) |
--			 HE_BITS(DATA1_SPTL_REUSE_KNOWN) |
--			 HE_BITS(DATA1_BSS_COLOR_KNOWN),
--		.data2 = HE_BITS(DATA2_GI_KNOWN) |
--			 HE_BITS(DATA2_TXBF_KNOWN) |
--			 HE_BITS(DATA2_PE_DISAMBIG_KNOWN) |
--			 HE_BITS(DATA2_TXOP_KNOWN),
--	};
--	struct ieee80211_radiotap_he *he = NULL;
--	u32 ltf_size = le32_get_bits(rxv[2], MT_CRXV_HE_LTF_SIZE) + 1;
--
--	status->flag |= RX_FLAG_RADIOTAP_HE;
--
--	he = skb_push(skb, sizeof(known));
--	memcpy(he, &known, sizeof(known));
--
--	he->data3 = HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[14]) |
--		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[2]);
--	he->data4 = HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[11]);
--	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[2]) |
--		    le16_encode_bits(ltf_size,
--				     IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE);
--	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
--		he->data5 |= HE_BITS(DATA5_TXBF);
--	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[14]) |
--		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[14]);
--
--	switch (mode) {
--	case MT_PHY_TYPE_HE_SU:
--		he->data1 |= HE_BITS(DATA1_FORMAT_SU) |
--			     HE_BITS(DATA1_UL_DL_KNOWN) |
--			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN) |
--			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
--
--		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[14]) |
--			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
+-	ether_addr_copy(hdr.addr1, vif->addr);
+-	ether_addr_copy(hdr.addr2, sta->addr);
+-	switch (frame_control & (IEEE80211_FCTL_TODS |
+-				 IEEE80211_FCTL_FROMDS)) {
+-	case 0:
+-		ether_addr_copy(hdr.addr3, vif->bss_conf.bssid);
 -		break;
--	case MT_PHY_TYPE_HE_EXT_SU:
--		he->data1 |= HE_BITS(DATA1_FORMAT_EXT_SU) |
--			     HE_BITS(DATA1_UL_DL_KNOWN) |
--			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
--
--		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
+-	case IEEE80211_FCTL_FROMDS:
+-		ether_addr_copy(hdr.addr3, eth_hdr->h_source);
 -		break;
--	case MT_PHY_TYPE_HE_MU:
--		he->data1 |= HE_BITS(DATA1_FORMAT_MU) |
--			     HE_BITS(DATA1_UL_DL_KNOWN);
--
--		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
--		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[7]);
--
--		mt7915_mac_decode_he_radiotap_ru(status, he, rxv);
--		mt7915_mac_decode_he_mu_radiotap(skb, rxv);
+-	case IEEE80211_FCTL_TODS:
+-		ether_addr_copy(hdr.addr3, eth_hdr->h_dest);
 -		break;
--	case MT_PHY_TYPE_HE_TB:
--		he->data1 |= HE_BITS(DATA1_FORMAT_TRIG) |
--			     HE_BITS(DATA1_SPTL_REUSE2_KNOWN) |
--			     HE_BITS(DATA1_SPTL_REUSE3_KNOWN) |
--			     HE_BITS(DATA1_SPTL_REUSE4_KNOWN);
--
--		he->data4 |= HE_PREP(DATA4_TB_SPTL_REUSE1, SR_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE2, SR1_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE3, SR2_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE4, SR3_MASK, rxv[11]);
--
--		mt7915_mac_decode_he_radiotap_ru(status, he, rxv);
+-	case IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS:
+-		ether_addr_copy(hdr.addr3, eth_hdr->h_dest);
+-		ether_addr_copy(hdr.addr4, eth_hdr->h_source);
 -		break;
 -	default:
 -		break;
 -	}
+-
+-	skb_pull(skb, hdr_gap + sizeof(struct ethhdr) - 2);
+-	if (eth_hdr->h_proto == cpu_to_be16(ETH_P_AARP) ||
+-	    eth_hdr->h_proto == cpu_to_be16(ETH_P_IPX))
+-		ether_addr_copy(skb_push(skb, ETH_ALEN), bridge_tunnel_header);
+-	else if (be16_to_cpu(eth_hdr->h_proto) >= ETH_P_802_3_MIN)
+-		ether_addr_copy(skb_push(skb, ETH_ALEN), rfc1042_header);
+-	else
+-		skb_pull(skb, 2);
+-
+-	if (ieee80211_has_order(hdr.frame_control))
+-		memcpy(skb_push(skb, IEEE80211_HT_CTL_LEN), &rxd[9],
+-		       IEEE80211_HT_CTL_LEN);
+-	if (ieee80211_is_data_qos(hdr.frame_control)) {
+-		__le16 qos_ctrl;
+-
+-		qos_ctrl = cpu_to_le16(le32_get_bits(rxd[8], MT_RXD8_QOS_CTL));
+-		memcpy(skb_push(skb, IEEE80211_QOS_CTL_LEN), &qos_ctrl,
+-		       IEEE80211_QOS_CTL_LEN);
+-	}
+-
+-	if (ieee80211_has_a4(hdr.frame_control))
+-		memcpy(skb_push(skb, sizeof(hdr)), &hdr, sizeof(hdr));
+-	else
+-		memcpy(skb_push(skb, sizeof(hdr) - 6), &hdr, sizeof(hdr) - 6);
+-
+-	return 0;
 -}
 -
- /* The HW does not translate the mac header to 802.3 for mesh point */
- static int mt7915_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
- {
-@@ -489,7 +313,7 @@ mt7915_mac_fill_rx_rate(struct mt7915_dev *dev,
+ static int
+ mt7915_mac_fill_rx_rate(struct mt7915_dev *dev,
+ 			struct mt76_rx_status *status,
+@@ -414,6 +334,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 	bool unicast, insert_ccmp_hdr = false;
+ 	u8 remove_pad, amsdu_info;
+ 	u8 mode = 0, qos_ctl = 0;
++	struct mt7915_sta *msta;
+ 	bool hdr_trans;
+ 	u16 hdr_gap;
+ 	u16 seq_ctrl = 0;
+@@ -450,8 +371,6 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 	status->wcid = mt7915_rx_get_wcid(dev, idx, unicast);
  
- 	if (!is_mt7915(&dev->mt76)) {
- 		stbc = FIELD_GET(MT_PRXV_HT_STBC, v0);
--		gi = FIELD_GET(MT_PRXV_HT_SHORT_GI, v0);
-+		gi = FIELD_GET(MT_PRXV_HT_SGI, v0);
- 		*mode = FIELD_GET(MT_PRXV_TX_MODE, v0);
- 		dcm = FIELD_GET(MT_PRXV_DCM, v0);
- 		bw = FIELD_GET(MT_PRXV_FRAME_MODE, v0);
-@@ -832,7 +656,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 	}
+ 	if (status->wcid) {
+-		struct mt7915_sta *msta;
+-
+ 		msta = container_of(status->wcid, struct mt7915_sta, wcid);
+ 		spin_lock_bh(&dev->sta_poll_lock);
+ 		if (list_empty(&msta->poll_list))
+@@ -605,8 +524,18 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
  
- 	if (rxv && mode >= MT_PHY_TYPE_HE_SU && !(status->flag & RX_FLAG_8023))
--		mt7915_mac_decode_he_radiotap(skb, rxv, mode);
-+		mt76_connac2_mac_decode_he_radiotap(&dev->mt76, skb, rxv, mode);
- 
- 	if (!status->wcid || !ieee80211_is_data_qos(fc))
- 		return 0;
+ 	hdr_gap = (u8 *)rxd - skb->data + 2 * remove_pad;
+ 	if (hdr_trans && ieee80211_has_morefrags(fc)) {
+-		if (mt7915_reverse_frag0_hdr_trans(skb, hdr_gap))
++		struct ieee80211_vif *vif;
++		int err;
++
++		if (!msta || !msta->vif)
+ 			return -EINVAL;
++
++		vif = container_of((void *)msta->vif, struct ieee80211_vif,
++				   drv_priv);
++		err = mt76_connac2_reverse_frag0_hdr_trans(vif, skb, hdr_gap);
++		if (err)
++			return err;
++
+ 		hdr_trans = false;
+ 	} else {
+ 		int pad_start = 0;
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
-index f581ae27375b..611bf23b2eb0 100644
+index 611bf23b2eb0..724feb2df4a0 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
-@@ -116,58 +116,6 @@ enum rx_pkt_type {
+@@ -29,93 +29,6 @@ enum rx_pkt_type {
+ 	PKT_TYPE_TXRX_NOTIFY_V0 = 0x18,
+ };
  
- #define MT_RXD9_HT_CONTROL		GENMASK(31, 0)
- 
--/* P-RXV */
--#define MT_PRXV_TX_RATE			GENMASK(6, 0)
--#define MT_PRXV_TX_DCM			BIT(4)
--#define MT_PRXV_TX_ER_SU_106T		BIT(5)
--#define MT_PRXV_NSTS			GENMASK(9, 7)
--#define MT_PRXV_TXBF			BIT(10)
--#define MT_PRXV_HT_AD_CODE		BIT(11)
--#define MT_PRXV_HE_RU_ALLOC_L		GENMASK(31, 28)
--#define MT_PRXV_HE_RU_ALLOC_H		GENMASK(3, 0)
--#define MT_PRXV_RCPI3			GENMASK(31, 24)
--#define MT_PRXV_RCPI2			GENMASK(23, 16)
--#define MT_PRXV_RCPI1			GENMASK(15, 8)
--#define MT_PRXV_RCPI0			GENMASK(7, 0)
--#define MT_PRXV_HT_SHORT_GI		GENMASK(16, 15)
--#define MT_PRXV_HT_STBC			GENMASK(23, 22)
--#define MT_PRXV_TX_MODE			GENMASK(27, 24)
--#define MT_PRXV_FRAME_MODE		GENMASK(14, 12)
--#define MT_PRXV_DCM			BIT(17)
--#define MT_PRXV_NUM_RX			BIT(20, 18)
+-/* RXD DW1 */
+-#define MT_RXD1_NORMAL_WLAN_IDX		GENMASK(9, 0)
+-#define MT_RXD1_NORMAL_GROUP_1		BIT(11)
+-#define MT_RXD1_NORMAL_GROUP_2		BIT(12)
+-#define MT_RXD1_NORMAL_GROUP_3		BIT(13)
+-#define MT_RXD1_NORMAL_GROUP_4		BIT(14)
+-#define MT_RXD1_NORMAL_GROUP_5		BIT(15)
+-#define MT_RXD1_NORMAL_SEC_MODE		GENMASK(20, 16)
+-#define MT_RXD1_NORMAL_KEY_ID		GENMASK(22, 21)
+-#define MT_RXD1_NORMAL_CM		BIT(23)
+-#define MT_RXD1_NORMAL_CLM		BIT(24)
+-#define MT_RXD1_NORMAL_ICV_ERR		BIT(25)
+-#define MT_RXD1_NORMAL_TKIP_MIC_ERR	BIT(26)
+-#define MT_RXD1_NORMAL_FCS_ERR		BIT(27)
+-#define MT_RXD1_NORMAL_BAND_IDX		BIT(28)
+-#define MT_RXD1_NORMAL_SPP_EN		BIT(29)
+-#define MT_RXD1_NORMAL_ADD_OM		BIT(30)
+-#define MT_RXD1_NORMAL_SEC_DONE		BIT(31)
 -
--/* C-RXV */
--#define MT_CRXV_HT_STBC			GENMASK(1, 0)
--#define MT_CRXV_TX_MODE			GENMASK(7, 4)
--#define MT_CRXV_FRAME_MODE		GENMASK(10, 8)
--#define MT_CRXV_HT_SHORT_GI		GENMASK(14, 13)
--#define MT_CRXV_HE_LTF_SIZE		GENMASK(18, 17)
--#define MT_CRXV_HE_LDPC_EXT_SYM		BIT(20)
--#define MT_CRXV_HE_PE_DISAMBIG		BIT(23)
--#define MT_CRXV_HE_NUM_USER		GENMASK(30, 24)
--#define MT_CRXV_HE_UPLINK		BIT(31)
--#define MT_CRXV_HE_RU0			GENMASK(7, 0)
--#define MT_CRXV_HE_RU1			GENMASK(15, 8)
--#define MT_CRXV_HE_RU2			GENMASK(23, 16)
--#define MT_CRXV_HE_RU3			GENMASK(31, 24)
+-/* RXD DW2 */
+-#define MT_RXD2_NORMAL_BSSID		GENMASK(5, 0)
+-#define MT_RXD2_NORMAL_CO_ANT		BIT(6)
+-#define MT_RXD2_NORMAL_BF_CQI		BIT(7)
+-#define MT_RXD2_NORMAL_MAC_HDR_LEN	GENMASK(12, 8)
+-#define MT_RXD2_NORMAL_HDR_TRANS	BIT(13)
+-#define MT_RXD2_NORMAL_HDR_OFFSET	GENMASK(15, 14)
+-#define MT_RXD2_NORMAL_TID		GENMASK(19, 16)
+-#define MT_RXD2_NORMAL_MU_BAR		BIT(21)
+-#define MT_RXD2_NORMAL_SW_BIT		BIT(22)
+-#define MT_RXD2_NORMAL_AMSDU_ERR	BIT(23)
+-#define MT_RXD2_NORMAL_MAX_LEN_ERROR	BIT(24)
+-#define MT_RXD2_NORMAL_HDR_TRANS_ERROR	BIT(25)
+-#define MT_RXD2_NORMAL_INT_FRAME	BIT(26)
+-#define MT_RXD2_NORMAL_FRAG		BIT(27)
+-#define MT_RXD2_NORMAL_NULL_FRAME	BIT(28)
+-#define MT_RXD2_NORMAL_NDATA		BIT(29)
+-#define MT_RXD2_NORMAL_NON_AMPDU	BIT(30)
+-#define MT_RXD2_NORMAL_BF_REPORT	BIT(31)
 -
--#define MT_CRXV_HE_MU_AID		GENMASK(30, 20)
+-/* RXD DW3 */
+-#define MT_RXD3_NORMAL_RXV_SEQ		GENMASK(7, 0)
+-#define MT_RXD3_NORMAL_CH_FREQ		GENMASK(15, 8)
+-#define MT_RXD3_NORMAL_ADDR_TYPE	GENMASK(17, 16)
+-#define MT_RXD3_NORMAL_U2M		BIT(0)
+-#define MT_RXD3_NORMAL_HTC_VLD		BIT(0)
+-#define MT_RXD3_NORMAL_TSF_COMPARE_LOSS	BIT(19)
+-#define MT_RXD3_NORMAL_BEACON_MC	BIT(20)
+-#define MT_RXD3_NORMAL_BEACON_UC	BIT(21)
+-#define MT_RXD3_NORMAL_AMSDU		BIT(22)
+-#define MT_RXD3_NORMAL_MESH		BIT(23)
+-#define MT_RXD3_NORMAL_MHCP		BIT(24)
+-#define MT_RXD3_NORMAL_NO_INFO_WB	BIT(25)
+-#define MT_RXD3_NORMAL_DISABLE_RX_HDR_TRANS	BIT(26)
+-#define MT_RXD3_NORMAL_POWER_SAVE_STAT	BIT(27)
+-#define MT_RXD3_NORMAL_MORE		BIT(28)
+-#define MT_RXD3_NORMAL_UNWANT		BIT(29)
+-#define MT_RXD3_NORMAL_RX_DROP		BIT(30)
+-#define MT_RXD3_NORMAL_VLAN2ETH		BIT(31)
 -
--#define MT_CRXV_HE_SR_MASK		GENMASK(11, 8)
--#define MT_CRXV_HE_SR1_MASK		GENMASK(16, 12)
--#define MT_CRXV_HE_SR2_MASK             GENMASK(20, 17)
--#define MT_CRXV_HE_SR3_MASK             GENMASK(24, 21)
+-/* RXD DW4 */
+-#define MT_RXD4_NORMAL_PAYLOAD_FORMAT	GENMASK(1, 0)
+-#define MT_RXD4_FIRST_AMSDU_FRAME	GENMASK(1, 0)
+-#define MT_RXD4_MID_AMSDU_FRAME		BIT(1)
+-#define MT_RXD4_LAST_AMSDU_FRAME	BIT(0)
 -
--#define MT_CRXV_HE_BSS_COLOR		GENMASK(5, 0)
--#define MT_CRXV_HE_TXOP_DUR		GENMASK(12, 6)
--#define MT_CRXV_HE_BEAM_CHNG		BIT(13)
--#define MT_CRXV_HE_DOPPLER		BIT(16)
+-#define MT_RXD4_NORMAL_PATTERN_DROP	BIT(9)
+-#define MT_RXD4_NORMAL_CLS		BIT(10)
+-#define MT_RXD4_NORMAL_OFLD		GENMASK(12, 11)
+-#define MT_RXD4_NORMAL_MAGIC_PKT	BIT(13)
+-#define MT_RXD4_NORMAL_WOL		GENMASK(18, 14)
+-#define MT_RXD4_NORMAL_CLS_BITMAP	GENMASK(28, 19)
+-#define MT_RXD3_NORMAL_PF_MODE		BIT(29)
+-#define MT_RXD3_NORMAL_PF_STS		GENMASK(31, 30)
 -
--#define MT_CRXV_SNR		GENMASK(18, 13)
--#define MT_CRXV_FOE_LO		GENMASK(31, 19)
--#define MT_CRXV_FOE_HI		GENMASK(6, 0)
--#define MT_CRXV_FOE_SHIFT	13
+-#define MT_RXV_HDR_BAND_IDX		BIT(24)
+-
+-/* RXD GROUP4 */
+-#define MT_RXD6_FRAME_CONTROL		GENMASK(15, 0)
+-#define MT_RXD6_TA_LO			GENMASK(31, 16)
+-
+-#define MT_RXD7_TA_HI			GENMASK(31, 0)
+-
+-#define MT_RXD8_SEQ_CTRL		GENMASK(15, 0)
+-#define MT_RXD8_QOS_CTL			GENMASK(31, 16)
+-
+-#define MT_RXD9_HT_CONTROL		GENMASK(31, 0)
 -
  enum tx_port_idx {
  	MT_TX_PORT_IDX_LMAC,
  	MT_TX_PORT_IDX_MCU
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index ccaf4d539852..4c2f62696b56 100644
+index 4c2f62696b56..5b48a725e637 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -9,10 +9,6 @@
- #include "mac.h"
- #include "mcu.h"
- 
--#define HE_BITS(f)		cpu_to_le16(IEEE80211_RADIOTAP_HE_##f)
--#define HE_PREP(f, m, v)	le16_encode_bits(le32_get_bits(v, MT_CRXV_HE_##m),\
--						 IEEE80211_RADIOTAP_HE_##f)
--
- static struct mt76_wcid *mt7921_rx_get_wcid(struct mt7921_dev *dev,
- 					    u16 idx, bool unicast)
- {
-@@ -168,183 +164,6 @@ void mt7921_mac_sta_poll(struct mt7921_dev *dev)
+@@ -218,86 +218,6 @@ mt7921_mac_assoc_rssi(struct mt7921_dev *dev, struct sk_buff *skb)
+ 		mt7921_mac_rssi_iter, skb);
  }
- EXPORT_SYMBOL_GPL(mt7921_mac_sta_poll);
  
--static void
--mt7921_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
--				 struct ieee80211_radiotap_he *he,
--				 __le32 *rxv)
--{
--	u32 ru_h, ru_l;
--	u8 ru, offs = 0;
--
--	ru_l = le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC_L);
--	ru_h = le32_get_bits(rxv[1], MT_PRXV_HE_RU_ALLOC_H);
--	ru = (u8)(ru_l | ru_h << 4);
--
--	status->bw = RATE_INFO_BW_HE_RU;
--
--	switch (ru) {
--	case 0 ... 36:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_26;
--		offs = ru;
--		break;
--	case 37 ... 52:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_52;
--		offs = ru - 37;
--		break;
--	case 53 ... 60:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_106;
--		offs = ru - 53;
--		break;
--	case 61 ... 64:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_242;
--		offs = ru - 61;
--		break;
--	case 65 ... 66:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_484;
--		offs = ru - 65;
--		break;
--	case 67:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_996;
--		break;
--	case 68:
--		status->he_ru = NL80211_RATE_INFO_HE_RU_ALLOC_2x996;
--		break;
--	}
--
--	he->data1 |= HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
--	he->data2 |= HE_BITS(DATA2_RU_OFFSET_KNOWN) |
--		     le16_encode_bits(offs,
--				      IEEE80211_RADIOTAP_HE_DATA2_RU_OFFSET);
--}
--
--static void
--mt7921_mac_decode_he_mu_radiotap(struct sk_buff *skb, __le32 *rxv)
+-/* The HW does not translate the mac header to 802.3 for mesh point */
+-static int mt7921_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
 -{
 -	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
--	static const struct ieee80211_radiotap_he_mu mu_known = {
--		.flags1 = HE_BITS(MU_FLAGS1_SIG_B_MCS_KNOWN) |
--			  HE_BITS(MU_FLAGS1_SIG_B_DCM_KNOWN) |
--			  HE_BITS(MU_FLAGS1_CH1_RU_KNOWN) |
--			  HE_BITS(MU_FLAGS1_SIG_B_SYMS_USERS_KNOWN) |
--			  HE_BITS(MU_FLAGS1_SIG_B_COMP_KNOWN),
--		.flags2 = HE_BITS(MU_FLAGS2_BW_FROM_SIG_A_BW_KNOWN) |
--			  HE_BITS(MU_FLAGS2_PUNC_FROM_SIG_A_BW_KNOWN),
--	};
--	struct ieee80211_radiotap_he_mu *he_mu;
+-	struct ethhdr *eth_hdr = (struct ethhdr *)(skb->data + hdr_gap);
+-	struct mt7921_sta *msta = (struct mt7921_sta *)status->wcid;
+-	__le32 *rxd = (__le32 *)skb->data;
+-	struct ieee80211_sta *sta;
+-	struct ieee80211_vif *vif;
+-	struct ieee80211_hdr hdr;
+-	u16 frame_control;
 -
--	status->flag |= RX_FLAG_RADIOTAP_HE_MU;
+-	if (le32_get_bits(rxd[3], MT_RXD3_NORMAL_ADDR_TYPE) !=
+-	    MT_RXD3_NORMAL_U2M)
+-		return -EINVAL;
 -
--	he_mu = skb_push(skb, sizeof(mu_known));
--	memcpy(he_mu, &mu_known, sizeof(mu_known));
+-	if (!(le32_to_cpu(rxd[1]) & MT_RXD1_NORMAL_GROUP_4))
+-		return -EINVAL;
 -
--#define MU_PREP(f, v)	le16_encode_bits(v, IEEE80211_RADIOTAP_HE_MU_##f)
+-	if (!msta || !msta->vif)
+-		return -EINVAL;
 -
--	he_mu->flags1 |= MU_PREP(FLAGS1_SIG_B_MCS, status->rate_idx);
--	if (status->he_dcm)
--		he_mu->flags1 |= MU_PREP(FLAGS1_SIG_B_DCM, status->he_dcm);
+-	sta = container_of((void *)msta, struct ieee80211_sta, drv_priv);
+-	vif = container_of((void *)msta->vif, struct ieee80211_vif, drv_priv);
 -
--	he_mu->flags2 |= MU_PREP(FLAGS2_BW_FROM_SIG_A_BW, status->bw) |
--			 MU_PREP(FLAGS2_SIG_B_SYMS_USERS,
--				 le32_get_bits(rxv[2], MT_CRXV_HE_NUM_USER));
+-	/* store the info from RXD and ethhdr to avoid being overridden */
+-	frame_control = le32_get_bits(rxd[6], MT_RXD6_FRAME_CONTROL);
+-	hdr.frame_control = cpu_to_le16(frame_control);
+-	hdr.seq_ctrl = cpu_to_le16(le32_get_bits(rxd[8], MT_RXD8_SEQ_CTRL));
+-	hdr.duration_id = 0;
 -
--	he_mu->ru_ch1[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU0);
--
--	if (status->bw >= RATE_INFO_BW_40) {
--		he_mu->flags1 |= HE_BITS(MU_FLAGS1_CH2_RU_KNOWN);
--		he_mu->ru_ch2[0] =
--			le32_get_bits(rxv[3], MT_CRXV_HE_RU1);
--	}
--
--	if (status->bw >= RATE_INFO_BW_80) {
--		he_mu->ru_ch1[1] =
--			le32_get_bits(rxv[3], MT_CRXV_HE_RU2);
--		he_mu->ru_ch2[1] =
--			le32_get_bits(rxv[3], MT_CRXV_HE_RU3);
--	}
--}
--
--static void
--mt7921_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u32 mode)
--{
--	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
--	static const struct ieee80211_radiotap_he known = {
--		.data1 = HE_BITS(DATA1_DATA_MCS_KNOWN) |
--			 HE_BITS(DATA1_DATA_DCM_KNOWN) |
--			 HE_BITS(DATA1_STBC_KNOWN) |
--			 HE_BITS(DATA1_CODING_KNOWN) |
--			 HE_BITS(DATA1_LDPC_XSYMSEG_KNOWN) |
--			 HE_BITS(DATA1_DOPPLER_KNOWN) |
--			 HE_BITS(DATA1_SPTL_REUSE_KNOWN) |
--			 HE_BITS(DATA1_BSS_COLOR_KNOWN),
--		.data2 = HE_BITS(DATA2_GI_KNOWN) |
--			 HE_BITS(DATA2_TXBF_KNOWN) |
--			 HE_BITS(DATA2_PE_DISAMBIG_KNOWN) |
--			 HE_BITS(DATA2_TXOP_KNOWN),
--	};
--	struct ieee80211_radiotap_he *he = NULL;
--	u32 ltf_size = le32_get_bits(rxv[2], MT_CRXV_HE_LTF_SIZE) + 1;
--
--	status->flag |= RX_FLAG_RADIOTAP_HE;
--
--	he = skb_push(skb, sizeof(known));
--	memcpy(he, &known, sizeof(known));
--
--	he->data3 = HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[14]) |
--		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[2]);
--	he->data4 = HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[11]);
--	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[2]) |
--		    le16_encode_bits(ltf_size,
--				     IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE);
--	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
--		he->data5 |= HE_BITS(DATA5_TXBF);
--	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[14]) |
--		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[14]);
--
--	switch (mode) {
--	case MT_PHY_TYPE_HE_SU:
--		he->data1 |= HE_BITS(DATA1_FORMAT_SU) |
--			     HE_BITS(DATA1_UL_DL_KNOWN) |
--			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN) |
--			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
--
--		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[14]) |
--			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
+-	ether_addr_copy(hdr.addr1, vif->addr);
+-	ether_addr_copy(hdr.addr2, sta->addr);
+-	switch (frame_control & (IEEE80211_FCTL_TODS |
+-				 IEEE80211_FCTL_FROMDS)) {
+-	case 0:
+-		ether_addr_copy(hdr.addr3, vif->bss_conf.bssid);
 -		break;
--	case MT_PHY_TYPE_HE_EXT_SU:
--		he->data1 |= HE_BITS(DATA1_FORMAT_EXT_SU) |
--			     HE_BITS(DATA1_UL_DL_KNOWN) |
--			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
--
--		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
+-	case IEEE80211_FCTL_FROMDS:
+-		ether_addr_copy(hdr.addr3, eth_hdr->h_source);
 -		break;
--	case MT_PHY_TYPE_HE_MU:
--		he->data1 |= HE_BITS(DATA1_FORMAT_MU) |
--			     HE_BITS(DATA1_UL_DL_KNOWN);
--
--		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
--		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[7]);
--
--		mt7921_mac_decode_he_radiotap_ru(status, he, rxv);
--		mt7921_mac_decode_he_mu_radiotap(skb, rxv);
+-	case IEEE80211_FCTL_TODS:
+-		ether_addr_copy(hdr.addr3, eth_hdr->h_dest);
 -		break;
--	case MT_PHY_TYPE_HE_TB:
--		he->data1 |= HE_BITS(DATA1_FORMAT_TRIG) |
--			     HE_BITS(DATA1_SPTL_REUSE2_KNOWN) |
--			     HE_BITS(DATA1_SPTL_REUSE3_KNOWN) |
--			     HE_BITS(DATA1_SPTL_REUSE4_KNOWN);
--
--		he->data4 |= HE_PREP(DATA4_TB_SPTL_REUSE1, SR_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE2, SR1_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE3, SR2_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE4, SR3_MASK, rxv[11]);
--
--		mt7921_mac_decode_he_radiotap_ru(status, he, rxv);
+-	case IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS:
+-		ether_addr_copy(hdr.addr3, eth_hdr->h_dest);
+-		ether_addr_copy(hdr.addr4, eth_hdr->h_source);
 -		break;
 -	default:
 -		break;
 -	}
+-
+-	skb_pull(skb, hdr_gap + sizeof(struct ethhdr) - 2);
+-	if (eth_hdr->h_proto == cpu_to_be16(ETH_P_AARP) ||
+-	    eth_hdr->h_proto == cpu_to_be16(ETH_P_IPX))
+-		ether_addr_copy(skb_push(skb, ETH_ALEN), bridge_tunnel_header);
+-	else if (be16_to_cpu(eth_hdr->h_proto) >= ETH_P_802_3_MIN)
+-		ether_addr_copy(skb_push(skb, ETH_ALEN), rfc1042_header);
+-	else
+-		skb_pull(skb, 2);
+-
+-	if (ieee80211_has_order(hdr.frame_control))
+-		memcpy(skb_push(skb, IEEE80211_HT_CTL_LEN), &rxd[9],
+-		       IEEE80211_HT_CTL_LEN);
+-	if (ieee80211_is_data_qos(hdr.frame_control)) {
+-		__le16 qos_ctrl;
+-
+-		qos_ctrl = cpu_to_le16(le32_get_bits(rxd[8], MT_RXD8_QOS_CTL));
+-		memcpy(skb_push(skb, IEEE80211_QOS_CTL_LEN), &qos_ctrl,
+-		       IEEE80211_QOS_CTL_LEN);
+-	}
+-
+-	if (ieee80211_has_a4(hdr.frame_control))
+-		memcpy(skb_push(skb, sizeof(hdr)), &hdr, sizeof(hdr));
+-	else
+-		memcpy(skb_push(skb, sizeof(hdr) - 6), &hdr, sizeof(hdr) - 6);
+-
+-	return 0;
 -}
 -
- static void
- mt7921_get_status_freq_info(struct mt7921_dev *dev, struct mt76_phy *mphy,
- 			    struct mt76_rx_status *status, u8 chfreq)
-@@ -672,8 +491,8 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 					     status->chain_signal[i]);
- 		}
+ static int
+ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
+ {
+@@ -315,6 +235,7 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
+ 	u32 rxd2 = le32_to_cpu(rxd[2]);
+ 	u32 rxd3 = le32_to_cpu(rxd[3]);
+ 	u32 rxd4 = le32_to_cpu(rxd[4]);
++	struct mt7921_sta *msta;
+ 	u16 seq_ctrl = 0;
+ 	__le16 fc = 0;
+ 	u32 mode = 0;
+@@ -345,8 +266,6 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
+ 	status->wcid = mt7921_rx_get_wcid(dev, idx, unicast);
  
--		stbc = FIELD_GET(MT_PRXV_STBC, v0);
--		gi = FIELD_GET(MT_PRXV_SGI, v0);
-+		stbc = FIELD_GET(MT_PRXV_HT_STBC, v0);
-+		gi = FIELD_GET(MT_PRXV_HT_SGI, v0);
- 		cck = false;
+ 	if (status->wcid) {
+-		struct mt7921_sta *msta;
+-
+ 		msta = container_of(status->wcid, struct mt7921_sta, wcid);
+ 		spin_lock_bh(&dev->sta_poll_lock);
+ 		if (list_empty(&msta->poll_list))
+@@ -581,8 +500,18 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
  
- 		idx = i = FIELD_GET(MT_PRXV_TX_RATE, v0);
-@@ -796,7 +615,7 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 	mt7921_mac_assoc_rssi(dev, skb);
- 
- 	if (rxv && mode >= MT_PHY_TYPE_HE_SU && !(status->flag & RX_FLAG_8023))
--		mt7921_mac_decode_he_radiotap(skb, rxv, mode);
-+		mt76_connac2_mac_decode_he_radiotap(&dev->mt76, skb, rxv, mode);
- 
- 	if (!status->wcid || !ieee80211_is_data_qos(fc))
- 		return 0;
+ 	hdr_gap = (u8 *)rxd - skb->data + 2 * remove_pad;
+ 	if (hdr_trans && ieee80211_has_morefrags(fc)) {
+-		if (mt7921_reverse_frag0_hdr_trans(skb, hdr_gap))
++		struct ieee80211_vif *vif;
++		int err;
++
++		if (!msta || !msta->vif)
+ 			return -EINVAL;
++
++		vif = container_of((void *)msta->vif, struct ieee80211_vif,
++				   drv_priv);
++		err = mt76_connac2_reverse_frag0_hdr_trans(vif, skb, hdr_gap);
++		if (err)
++			return err;
++
+ 		hdr_trans = false;
+ 	} else {
+ 		skb_pull(skb, hdr_gap);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
-index 556e687bd235..6e31ae7d39d3 100644
+index 6e31ae7d39d3..ca2ec83bc831 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
-@@ -113,58 +113,6 @@ enum rx_pkt_type {
+@@ -29,90 +29,6 @@ enum rx_pkt_type {
+ 	PKT_TYPE_NORMAL_MCU,
+ };
  
- #define MT_RXD9_HT_CONTROL		GENMASK(31, 0)
- 
--/* P-RXV DW0 */
--#define MT_PRXV_TX_RATE			GENMASK(6, 0)
--#define MT_PRXV_TX_DCM			BIT(4)
--#define MT_PRXV_TX_ER_SU_106T		BIT(5)
--#define MT_PRXV_NSTS			GENMASK(9, 7)
--#define MT_PRXV_TXBF			BIT(10)
--#define MT_PRXV_HT_AD_CODE		BIT(11)
--#define MT_PRXV_FRAME_MODE		GENMASK(14, 12)
--#define MT_PRXV_SGI			GENMASK(16, 15)
--#define MT_PRXV_STBC			GENMASK(23, 22)
--#define MT_PRXV_TX_MODE			GENMASK(27, 24)
--#define MT_PRXV_HE_RU_ALLOC_L		GENMASK(31, 28)
+-/* RXD DW1 */
+-#define MT_RXD1_NORMAL_WLAN_IDX		GENMASK(9, 0)
+-#define MT_RXD1_NORMAL_GROUP_1		BIT(11)
+-#define MT_RXD1_NORMAL_GROUP_2		BIT(12)
+-#define MT_RXD1_NORMAL_GROUP_3		BIT(13)
+-#define MT_RXD1_NORMAL_GROUP_4		BIT(14)
+-#define MT_RXD1_NORMAL_GROUP_5		BIT(15)
+-#define MT_RXD1_NORMAL_SEC_MODE		GENMASK(20, 16)
+-#define MT_RXD1_NORMAL_KEY_ID		GENMASK(22, 21)
+-#define MT_RXD1_NORMAL_CM		BIT(23)
+-#define MT_RXD1_NORMAL_CLM		BIT(24)
+-#define MT_RXD1_NORMAL_ICV_ERR		BIT(25)
+-#define MT_RXD1_NORMAL_TKIP_MIC_ERR	BIT(26)
+-#define MT_RXD1_NORMAL_FCS_ERR		BIT(27)
+-#define MT_RXD1_NORMAL_BAND_IDX		BIT(28)
+-#define MT_RXD1_NORMAL_SPP_EN		BIT(29)
+-#define MT_RXD1_NORMAL_ADD_OM		BIT(30)
+-#define MT_RXD1_NORMAL_SEC_DONE		BIT(31)
 -
--/* P-RXV DW1 */
--#define MT_PRXV_RCPI3			GENMASK(31, 24)
--#define MT_PRXV_RCPI2			GENMASK(23, 16)
--#define MT_PRXV_RCPI1			GENMASK(15, 8)
--#define MT_PRXV_RCPI0			GENMASK(7, 0)
--#define MT_PRXV_HE_RU_ALLOC_H		GENMASK(3, 0)
+-/* RXD DW2 */
+-#define MT_RXD2_NORMAL_BSSID		GENMASK(5, 0)
+-#define MT_RXD2_NORMAL_CO_ANT		BIT(6)
+-#define MT_RXD2_NORMAL_BF_CQI		BIT(7)
+-#define MT_RXD2_NORMAL_MAC_HDR_LEN	GENMASK(12, 8)
+-#define MT_RXD2_NORMAL_HDR_TRANS	BIT(13)
+-#define MT_RXD2_NORMAL_HDR_OFFSET	GENMASK(15, 14)
+-#define MT_RXD2_NORMAL_TID		GENMASK(19, 16)
+-#define MT_RXD2_NORMAL_MU_BAR		BIT(21)
+-#define MT_RXD2_NORMAL_SW_BIT		BIT(22)
+-#define MT_RXD2_NORMAL_AMSDU_ERR	BIT(23)
+-#define MT_RXD2_NORMAL_MAX_LEN_ERROR	BIT(24)
+-#define MT_RXD2_NORMAL_HDR_TRANS_ERROR	BIT(25)
+-#define MT_RXD2_NORMAL_INT_FRAME	BIT(26)
+-#define MT_RXD2_NORMAL_FRAG		BIT(27)
+-#define MT_RXD2_NORMAL_NULL_FRAME	BIT(28)
+-#define MT_RXD2_NORMAL_NDATA		BIT(29)
+-#define MT_RXD2_NORMAL_NON_AMPDU	BIT(30)
+-#define MT_RXD2_NORMAL_BF_REPORT	BIT(31)
 -
--/* C-RXV */
--#define MT_CRXV_HT_STBC			GENMASK(1, 0)
--#define MT_CRXV_TX_MODE			GENMASK(7, 4)
--#define MT_CRXV_FRAME_MODE		GENMASK(10, 8)
--#define MT_CRXV_HT_SHORT_GI		GENMASK(14, 13)
--#define MT_CRXV_HE_LTF_SIZE		GENMASK(18, 17)
--#define MT_CRXV_HE_LDPC_EXT_SYM		BIT(20)
--#define MT_CRXV_HE_PE_DISAMBIG		BIT(23)
--#define MT_CRXV_HE_NUM_USER		GENMASK(30, 24)
--#define MT_CRXV_HE_UPLINK		BIT(31)
+-/* RXD DW3 */
+-#define MT_RXD3_NORMAL_RXV_SEQ		GENMASK(7, 0)
+-#define MT_RXD3_NORMAL_CH_FREQ		GENMASK(15, 8)
+-#define MT_RXD3_NORMAL_ADDR_TYPE	GENMASK(17, 16)
+-#define MT_RXD3_NORMAL_U2M		BIT(0)
+-#define MT_RXD3_NORMAL_HTC_VLD		BIT(0)
+-#define MT_RXD3_NORMAL_TSF_COMPARE_LOSS	BIT(19)
+-#define MT_RXD3_NORMAL_BEACON_MC	BIT(20)
+-#define MT_RXD3_NORMAL_BEACON_UC	BIT(21)
+-#define MT_RXD3_NORMAL_AMSDU		BIT(22)
+-#define MT_RXD3_NORMAL_MESH		BIT(23)
+-#define MT_RXD3_NORMAL_MHCP		BIT(24)
+-#define MT_RXD3_NORMAL_NO_INFO_WB	BIT(25)
+-#define MT_RXD3_NORMAL_DISABLE_RX_HDR_TRANS	BIT(26)
+-#define MT_RXD3_NORMAL_POWER_SAVE_STAT	BIT(27)
+-#define MT_RXD3_NORMAL_MORE		BIT(28)
+-#define MT_RXD3_NORMAL_UNWANT		BIT(29)
+-#define MT_RXD3_NORMAL_RX_DROP		BIT(30)
+-#define MT_RXD3_NORMAL_VLAN2ETH		BIT(31)
 -
--#define MT_CRXV_HE_RU0			GENMASK(7, 0)
--#define MT_CRXV_HE_RU1			GENMASK(15, 8)
--#define MT_CRXV_HE_RU2			GENMASK(23, 16)
--#define MT_CRXV_HE_RU3			GENMASK(31, 24)
--#define MT_CRXV_HE_MU_AID		GENMASK(30, 20)
+-/* RXD DW4 */
+-#define MT_RXD4_NORMAL_PAYLOAD_FORMAT	GENMASK(1, 0)
+-#define MT_RXD4_FIRST_AMSDU_FRAME	GENMASK(1, 0)
+-#define MT_RXD4_MID_AMSDU_FRAME		BIT(1)
+-#define MT_RXD4_LAST_AMSDU_FRAME	BIT(0)
+-#define MT_RXD4_NORMAL_PATTERN_DROP	BIT(9)
+-#define MT_RXD4_NORMAL_CLS		BIT(10)
+-#define MT_RXD4_NORMAL_OFLD		GENMASK(12, 11)
+-#define MT_RXD4_NORMAL_MAGIC_PKT	BIT(13)
+-#define MT_RXD4_NORMAL_WOL		GENMASK(18, 14)
+-#define MT_RXD4_NORMAL_CLS_BITMAP	GENMASK(28, 19)
+-#define MT_RXD3_NORMAL_PF_MODE		BIT(29)
+-#define MT_RXD3_NORMAL_PF_STS		GENMASK(31, 30)
 -
--#define MT_CRXV_HE_SR_MASK		GENMASK(11, 8)
--#define MT_CRXV_HE_SR1_MASK		GENMASK(16, 12)
--#define MT_CRXV_HE_SR2_MASK             GENMASK(20, 17)
--#define MT_CRXV_HE_SR3_MASK             GENMASK(24, 21)
+-/* RXD GROUP4 */
+-#define MT_RXD6_FRAME_CONTROL		GENMASK(15, 0)
+-#define MT_RXD6_TA_LO			GENMASK(31, 16)
 -
--#define MT_CRXV_HE_BSS_COLOR		GENMASK(5, 0)
--#define MT_CRXV_HE_TXOP_DUR		GENMASK(12, 6)
--#define MT_CRXV_HE_BEAM_CHNG		BIT(13)
--#define MT_CRXV_HE_DOPPLER		BIT(16)
+-#define MT_RXD7_TA_HI			GENMASK(31, 0)
 -
--#define MT_CRXV_SNR		GENMASK(18, 13)
--#define MT_CRXV_FOE_LO		GENMASK(31, 19)
--#define MT_CRXV_FOE_HI		GENMASK(6, 0)
--#define MT_CRXV_FOE_SHIFT	13
+-#define MT_RXD8_SEQ_CTRL		GENMASK(15, 0)
+-#define MT_RXD8_QOS_CTL			GENMASK(31, 16)
+-
+-#define MT_RXD9_HT_CONTROL		GENMASK(31, 0)
 -
  enum tx_port_idx {
  	MT_TX_PORT_IDX_LMAC,
