@@ -2,138 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1D485422F3
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 08:50:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA5545423DE
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 08:51:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354297AbiFHBDv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jun 2022 21:03:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36996 "EHLO
+        id S235895AbiFHCzZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jun 2022 22:55:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1586177AbiFGXuv (ORCPT
+        with ESMTP id S1442550AbiFHCwf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jun 2022 19:50:51 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C7932E43B4;
-        Tue,  7 Jun 2022 15:06:28 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id m20so37807645ejj.10;
-        Tue, 07 Jun 2022 15:06:28 -0700 (PDT)
+        Tue, 7 Jun 2022 22:52:35 -0400
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 053761A43C3
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Jun 2022 17:24:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ALd0eOORSOPkFVDrzHX6x7yxY/dHxk/oAxZcRLZpKk8=;
-        b=Ju0rSQOF4ohU1iMi2o5c94qKHMnjUgxcFGRMOI/OIBoiHhfHMwSiUkh7r+fPpagtFq
-         /3QWMmCORHVnxrVWROQOfvOuEpJHi9I1whS1eolI/rQr9vEAbKfsazjkfaBci94ts62/
-         NFZArgHXsDQEgCJ9vfl0dqAqt5mWIlt3qVxmHA840maUWKJmnfoiUa9XCxI2kW+25se/
-         RIajjfSZkUs4GlB3VD3fPxK733ckd6IyGUt1SOBVDkqABgt3PtNAcQ2A3zTxCbugXkfZ
-         Ki8LZ2cD8iNnGey0em0VqQYggZwSbpht3fpvDZPsb1V/doO3pOGck9G7ChImMXDb3zZG
-         A1Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ALd0eOORSOPkFVDrzHX6x7yxY/dHxk/oAxZcRLZpKk8=;
-        b=502yb6/YGobL6mFMzzHxHigMjvqi6c6nGwdyCGt4MSgpqrEIaI2Tf1dn49gcWQCxaq
-         x5u70fKRxKqv8OVnre8Agtf34+gwKI6+6aHxTBgffMV9P0jqlcoQuBxsXB6uA8NuWiE5
-         6AsWNqZhHdxu4TY8/6ReT0o1rIdlj96EnekNoSd8+KAJKOTS6eT/ei2I/njLj+60FWhV
-         ibAnBUxwCSk9746bXmAHXvYnMTTrMII9UfnUc3EO1PMjekToQhiCzDANmvhGTxLFVUS0
-         04i471PvD3GSu5gzAAROuw3VTtlWnPxudBNIMlMfW2MY9VP4QnLAA2sv62kjMno1lxVU
-         cdFg==
-X-Gm-Message-State: AOAM5321qodYzYN3VpmF6w5RWK6SOckgNl5tdBCDQWQYfjEAxPYUrwhw
-        7QR5Y/DjlSSemONUCCwPSmhozB7P9obgseOtvG0=
-X-Google-Smtp-Source: ABdhPJxXaHUQ1t3Fs2bSMI3+q6sxcHm8rkhZ9MBNJzCeoX+bDvFVR+JvWTugFFPoWKkVMocln9rP5ok83qFIjfh1Fus=
-X-Received: by 2002:a17:907:72cf:b0:6ff:4607:1bf with SMTP id
- du15-20020a17090772cf00b006ff460701bfmr30230387ejc.649.1654639586442; Tue, 07
- Jun 2022 15:06:26 -0700 (PDT)
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1654647900; x=1686183900;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=hlSiFHR4ZysHbi7t0JzTMdVqRHsFwkY40C5oQWFVqEY=;
+  b=e5/tb617CColUDvK64itAt5e2c+h3gCiMjmQ+pu+mU/XhLwz0aQJmkE9
+   90O3uFk8pbUs3uOAzSlWtsPD4UrTnhHuXBo7X/6TDKxwg8AN+xOYThHMl
+   47eBrg+/qopdnOAA2n6zptSj4rH+DcTY2vGFH6cKXMB1mOHM5GLahW5Fn
+   0=;
+Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
+  by alexa-out.qualcomm.com with ESMTP; 07 Jun 2022 17:24:20 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2022 17:24:20 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Tue, 7 Jun 2022 17:24:19 -0700
+Received: from [10.110.12.119] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Tue, 7 Jun 2022
+ 17:24:18 -0700
+Message-ID: <25ed0281-0880-1e8f-154c-53ee056e8879@quicinc.com>
+Date:   Tue, 7 Jun 2022 17:24:17 -0700
 MIME-Version: 1.0
-References: <20220530135457.1104091-1-s.hauer@pengutronix.de> <20220530135457.1104091-6-s.hauer@pengutronix.de>
-In-Reply-To: <20220530135457.1104091-6-s.hauer@pengutronix.de>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Wed, 8 Jun 2022 00:06:15 +0200
-Message-ID: <CAFBinCDgErZzFs5NiDT0JAOhziz5WLiy0+yxF9Z-kXPxD1j8Dw@mail.gmail.com>
-Subject: Re: [PATCH v2 05/10] rtw88: iterate over vif/sta list non-atomically
-To:     Sascha Hauer <s.hauer@pengutronix.de>
-Cc:     linux-wireless@vger.kernel.org, Neo Jou <neojou@gmail.com>,
-        Hans Ulli Kroll <linux@ulli-kroll.de>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@pengutronix.de,
-        Johannes Berg <johannes@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [RFC v2] cfg80211: Indicate MLO connection info in connect and
+ roam callbacks
+Content-Language: en-US
+To:     Veerendranath Jakkam <quic_vjakkam@quicinc.com>,
+        <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>
+References: <1654536690-12588-1-git-send-email-quic_vjakkam@quicinc.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <1654536690-12588-1-git-send-email-quic_vjakkam@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Sascha,
+On 6/6/2022 10:31 AM, Veerendranath Jakkam wrote:
+> The MLO links used for connection with an MLD AP are decided by the
+> driver in case of SME offloaded to driver.
+> 
+> Add support for the drivers to indicate the information of links used
+> for MLO connection in connect and roam callbacks, update the connected
+> links information in wdev from connect/roam result sent by driver.
+> Also, send the connected links information to userspace.
+> 
+> Add a netlink flag attribute to indicate that userspace supports
+> handling of MLO connection. Drivers must not do MLO connection when this
+> flag is not set. This is to maintain backwards compatibility with older
+> supplicant versions which doesn't have support for MLO connection.
+> 
+> Signed-off-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+> ---
+[snip]
+I had one bikeshed observation...
 
-thanks for this patch!
+> @@ -17176,6 +17199,38 @@ void nl80211_send_connect_result(struct cfg80211_registered_device *rdev,
+>   	       nla_put(msg, NL80211_ATTR_PMKID, WLAN_PMKID_LEN, cr->fils.pmkid)))))
+>   		goto nla_put_failure;
+>   
+> +	if (cr->valid_links) {
+> +		int i = 0;
 
-On Mon, May 30, 2022 at 3:55 PM Sascha Hauer <s.hauer@pengutronix.de> wrote:
-[...]
->  drivers/net/wireless/realtek/rtw88/phy.c  |   6 +-
->  drivers/net/wireless/realtek/rtw88/ps.c   |   2 +-
->  drivers/net/wireless/realtek/rtw88/util.c | 103 ++++++++++++++++++++++
->  drivers/net/wireless/realtek/rtw88/util.h |  12 ++-
->  4 files changed, 116 insertions(+), 7 deletions(-)
-I compared the changes from this patch with my earlier work. I would
-like to highlight a few functions to understand if they were left out
-on purpose or by accident.
+perhaps = 1? see below
 
-__fw_recovery_work() in main.c (unfortunately I am not sure how to
-trigger/test this "firmware recovery" logic):
-- this is already called with &rtwdev->mutex held
-- it uses rtw_iterate_keys_rcu() (which internally uses rtw_write32
-from rtw_sec_clear_cam). feel free to either add [0] to your series or
-even squash it into an existing patch
-- it uses rtw_iterate_stas_atomic() (which internally uses
-rtw_fw_send_h2c_command from rtw_fw_media_status_report)
-- it uses rtw_iterate_vifs_atomic() (which internally can read/write
-registers from rtw_chip_config_bfee)
-- in my previous series I simply replaced the
-rtw_iterate_stas_atomic() and rtw_iterate_vifs_atomic() calls with the
-non-atomic variants (for the rtw_iterate_keys_rcu() call I did some
-extra cleanup, see [0])
+> +		struct nlattr *nested;
+> +
+> +		nested = nla_nest_start(msg, NL80211_ATTR_MLO_LINKS);
+> +		if (!nested)
+> +			goto nla_put_failure;
+> +
+> +		for_each_valid_link(cr, link) {
+> +			struct nlattr *nested_mlo_links;
+> +			const u8 *bssid = cr->links[link].bss ?
+> +					  cr->links[link].bss->bssid :
+> +					  cr->links[link].bssid;
+> +
+> +			nested_mlo_links = nla_nest_start(msg, i + 1);
 
-rtw_wow_fw_media_status() in wow.c (unfortunately I am also not sure
-how to test WoWLAN):
-- I am not sure if &rtwdev->mutex is held when this function is called
-- it uses rtw_iterate_stas_atomic() (which internally uses
-rtw_fw_send_h2c_command from rtw_fw_media_status_report)
-- in my previous series I simply replaced rtw_iterate_stas_atomic()
-with it's non-atomic variant
+why i+1?
+if you don't want to use 0 for the first entry (why not?) then init i to 1
 
-Additionally I rebased my SDIO work on top of your USB series.
-This makes SDIO support a lot easier - so thank you for your work!
-I found that three of my previous patches (in addition to [0] which I
-already mentioned earlier) are still needed to get rid of some
-warnings when using the SDIO interface (the same warnings may or may
-not be there with the USB interface - it just depends on whether your
-AP makes rtw88 hit that specific code-path):
-- [1]: rtw88: Configure the registers from rtw_bf_assoc() outside the RCU lock
-- [2]: rtw88: Move rtw_chip_cfg_csi_rate() out of rtw_vif_watch_dog_iter()
-- [3]: rtw88: Move rtw_update_sta_info() out of rtw_ra_mask_info_update_iter()
+alternately since this is the only place i is used, use ++i or i++ as 
+you see fit and remove the i++ later
 
-These three patches are freshly rebased to apply on top of your series.
-If you (or Ping-Ke) think those are needed for USB support then please
-feel free to include them in your series, squash them into one of your
-patches or just ask me to send them as an individual series)
+ultimately we should only need to calculate i+1 once
 
-I am running out of time for today. I'll be able to continue on this
-later this week/during the weekend.
+these comments apply to nl80211_send_roamed() as well
 
-
-Best regards,
-Martin
-
-
-[0] https://lore.kernel.org/all/20220108005533.947787-6-martin.blumenstingl@googlemail.com/
-[1] https://github.com/xdarklight/linux/commit/420bb40511151fbc9f5447aced4fde3a7bb0566b.patch
-[2] https://github.com/xdarklight/linux/commit/cc08cc8fb697157b99304ad3ec89b1cca0900697.patch
-[3] https://github.com/xdarklight/linux/commit/5db636e3035a425e104fba7983301b0085366268.patch
+(BTW I do see this pattern in some of the existing code, but I also see 
+0 being used for the first record)
