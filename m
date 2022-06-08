@@ -2,90 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 883CD5429EC
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 10:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E92B5542A0A
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 10:55:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232494AbiFHIv5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Jun 2022 04:51:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60412 "EHLO
+        id S233106AbiFHIzK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Jun 2022 04:55:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231599AbiFHIvO (ORCPT
+        with ESMTP id S232823AbiFHIyZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Jun 2022 04:51:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 886A91F0A4F;
-        Wed,  8 Jun 2022 01:08:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FBCA615BA;
-        Wed,  8 Jun 2022 08:02:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB481C34116;
-        Wed,  8 Jun 2022 08:02:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654675352;
-        bh=hff+p9zArgrmQROBhByJgUoot02ijHcUk2SxTMWafGU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=QEoqHaABFoBzHKVseuF6OsuPJsNrsLIBzbvMYwUNMKRb0lT3LcMEVlTGmjjQB7uWE
-         +BjKvnjdu9YlJposcmoqzV1yX4sjCHqN0PTUbO2OiXr/zOAyGq/XopnjoeuexBMIvb
-         jjCcbZMOYr4I1mOgL8gawoWk9gX3Td1M+mNx7u56r1Osc8TeOqadQcawuiRNKSpsFx
-         77O2CNerHGhNV3E6IlQr1PTb1XzV95V9xzblIm/PblIJ26fExnAWsgRozgkaNMjrf2
-         ITcCjEmzZTW0te5uu4scQg7PbI++NORxEMq5JoOCyOtqwIVMsZlvmgW03LJ7Yfc9Ma
-         sxxez4xy4w9jg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
-Cc:     cgel.zte@gmail.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: Re: [PATCH] staging: wfx: Remove redundant NULL check before release_firmware() call
-References: <20220606014237.290466-1-chi.minghao@zte.com.cn>
-        <5637060.DvuYhMxLoT@pc-42>
-Date:   Wed, 08 Jun 2022 11:02:27 +0300
-In-Reply-To: <5637060.DvuYhMxLoT@pc-42> (=?utf-8?B?IkrDqXLDtG1l?=
- Pouiller"'s message of "Mon,
-        06 Jun 2022 08:36:37 +0200")
-Message-ID: <87leu7shv0.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 8 Jun 2022 04:54:25 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 708183B172B
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 01:14:58 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 25885kkaE020259, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 25885kkaE020259
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 8 Jun 2022 16:05:46 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Wed, 8 Jun 2022 16:05:46 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Wed, 8 Jun 2022 16:05:46 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
+ RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
+ 15.01.2308.021; Wed, 8 Jun 2022 16:05:46 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH v3 4/4] rtw88: Fix Sparse warning for rtw8821c_hw_spec
+Thread-Topic: [PATCH v3 4/4] rtw88: Fix Sparse warning for rtw8821c_hw_spec
+Thread-Index: AQHYb4QquNlgqX2VSESbLHcGkKULkq1D3fwAgAAnIgCAALd/MP//hVkAgACHK4CAAG9Eq4AAAM7w
+Date:   Wed, 8 Jun 2022 08:05:46 +0000
+Message-ID: <5c48cda63e844e3f9703506309854a63@realtek.com>
+References: <20220524153716.20450-1-Larry.Finger@lwfinger.net>
+        <Yp+hfo5Uual8ZUkR@dev-arch.thelio-3990X>
+        <e28ce50b-c1e6-74ae-6f57-5f864ba0c93a@lwfinger.net>
+        <45a6b6ea84c74ffeafff1b68c2e1c5e3@realtek.com>
+        <aad47f4f-a5bc-e8e2-15d3-2baf2512b661@lwfinger.net>
+        <764fc8f115dc411e82938311273d9b51@realtek.com> <87bkv3r43b.fsf@kernel.org>
+In-Reply-To: <87bkv3r43b.fsf@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/6/8_=3F=3F_06:01:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com> writes:
 
-> On Monday 6 June 2022 03:42:37 CEST cgel.zte@gmail.com wrote:
->> From: Minghao Chi <chi.minghao@zte.com.cn>
->>=20
->> release_firmware() checks for NULL pointers internally so checking
->> before calling it is redundant.
->>=20
->> Reported-by: Zeal Robot <zealci@zte.com.cn>
->> Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+> -----Original Message-----
+> From: Kalle Valo <kvalo@kernel.org>
+> Sent: Wednesday, June 8, 2022 3:45 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: Larry Finger <Larry.Finger@lwfinger.net>; Nathan Chancellor <nathan@kernel.org>; Johannes Berg
+> <johannes@sipsolutions.net>; linux-wireless@vger.kernel.org
+> Subject: Re: [PATCH v3 4/4] rtw88: Fix Sparse warning for rtw8821c_hw_spec
+> 
+> Ping-Ke Shih <pkshih@realtek.com> writes:
+> 
+> >
+> > The ch_param[3] is only used by 8821c, so it doesn't affect other devices.
+> > I will prepare a patch to fix it.
+> 
+> But why didn't the compiler catch this? Is there some evil cast
+> somewhere which removes the const? We should fix that as well (in a
+> separate patch).
+> 
 
-[...]
+This is because we assign a const to .driver_data that is non-const kernel_ulong_t:
 
-> Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+static const struct pci_device_id rtw_8821ce_id_table[] = {
+	{
+		.driver_data = (kernel_ulong_t)&rtw8821c_hw_spec
+	},
 
-I'll change this to Acked-by, s-o-b should be used only when you are
-part of patch distribution:
+When casting it back in pci_probe(), we need to add 'const' after Larry's patches:
 
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#when=
--to-use-acked-by-cc-and-co-developed-by
+rtwdev->chip = (struct rtw_chip_info *)id->driver_data;
 
-And please edit your quotes, otherwise using patchwork will be painful.
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+I will prepare another patch to fix that.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+Ping-Ke
+
