@@ -2,74 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D36905429F6
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 10:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08942542A0D
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 10:55:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231268AbiFHIxm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Jun 2022 04:53:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56304 "EHLO
+        id S231954AbiFHIyY convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Jun 2022 04:54:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230445AbiFHIwu (ORCPT
+        with ESMTP id S231966AbiFHIxs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Jun 2022 04:52:50 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AE7D37DDB5
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 01:11:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=ooljqvKu8YfWBa0CL23mUSYO7OyivDRUhmoqMH4e7Y8=;
-        t=1654675877; x=1655885477; b=mLOFqViRDoMfkQ7RXi66KFjS60ytj0fn5LZPvSx3xHUK4IA
-        ZJIYU+SlGdJJB8MDrf1ul1I9Jr/OzDLfG1Qph570cQuv4WMqR03ugmKRsC0DCBnk6TJ7FDM/5CPrn
-        5RElBnnnD5wAclMMAWL5+iY39gPW7YAPll705aCWK92rqUQmffrUZ+7zAGPuqW36+nqyG0t/ARzkJ
-        h42nqQC4QODm54C++1m4Vqy3Gcx+8z5fGMsdCEy0+Lf0a0KGuLIRlM1/eIdC52vPk7SxnHvSBJCRd
-        aIY9qy0j7pyqoTnPapigs75Oz8lu+4ngTUwPjFftKjR6Gy5VdhflpHPaJAzqDNtQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nyqmZ-00Gqf7-Mn;
-        Wed, 08 Jun 2022 10:11:15 +0200
-Message-ID: <f51343d5add4f25582d1ead3346435db960eaecf.camel@sipsolutions.net>
-Subject: Re: [RFC v2] cfg80211: Indicate MLO connection info in connect and
- roam callbacks
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 08 Jun 2022 10:11:14 +0200
-In-Reply-To: <2a8e08b3-4c93-4a29-a2ac-8f7c122e1aaa@quicinc.com>
-References: <1654536690-12588-1-git-send-email-quic_vjakkam@quicinc.com>
-         <a2cc93f959394a3430755d4664d9f2abeabb3ab7.camel@sipsolutions.net>
-         <e75ddf50-348b-eaf2-4033-6a32ef65a41c@quicinc.com>
-         <3fa8911111ff380615ca5b3ffcd61644fae5e8ea.camel@sipsolutions.net>
-         <2a8e08b3-4c93-4a29-a2ac-8f7c122e1aaa@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.2 (3.44.2-1.fc36) 
+        Wed, 8 Jun 2022 04:53:48 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56C0A3A9CF8
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 01:13:17 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2588D6OW0022289, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2588D6OW0022289
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 8 Jun 2022 16:13:06 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.28; Wed, 8 Jun 2022 16:13:05 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Wed, 8 Jun 2022 16:13:05 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
+ RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
+ 15.01.2308.021; Wed, 8 Jun 2022 16:13:05 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Eric Huang <echuang@realtek.com>,
+        Bernie Huang <phhuang@realtek.com>
+Subject: RE: [PATCH 1/3] ieee80211: add trigger frame definition
+Thread-Topic: [PATCH 1/3] ieee80211: add trigger frame definition
+Thread-Index: AQHYdViFkfeE8bWkU0utvOMtYIYSNa1FMsc0gAAAurA=
+Date:   Wed, 8 Jun 2022 08:13:05 +0000
+Message-ID: <edc136dc78b142c5a8f4c73e5464d994@realtek.com>
+References: <20220601013917.18814-1-pkshih@realtek.com>
+        <20220601013917.18814-2-pkshih@realtek.com> <87h74vshno.fsf@kernel.org>
+In-Reply-To: <87h74vshno.fsf@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2022/6/8_=3F=3F_06:01:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2022-06-08 at 13:40 +0530, Veerendranath Jakkam wrote:
->=20
-> Now I am thinking we can simply do like this. Sorry,=C2=A0 somehow I made=
- it=20
-> complex earlier.. :)
->=20
-> +	if (cr->status =3D=3D WLAN_STATUS_SUCCESS) {
-> +		for_each_valid_link(cr, link) {
-> +			if (WARN_ON_ONCE(!cr->links[link].bss))
-> +				break;
-> +		}
->=20
 
-Huh, yeah, nice!
+> -----Original Message-----
+> From: Kalle Valo <kvalo@kernel.org>
+> Sent: Wednesday, June 8, 2022 4:07 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: johannes@sipsolutions.net; linux-wireless@vger.kernel.org; Eric Huang <echuang@realtek.com>; Bernie
+> Huang <phhuang@realtek.com>
+> Subject: Re: [PATCH 1/3] ieee80211: add trigger frame definition
+> 
+> Ping-Ke Shih <pkshih@realtek.com> writes:
+> 
+> > From: Po Hao Huang <phhuang@realtek.com>
+> >
+> > Define trigger stype of control frame, and its checking function, struct
+> > and trigger type within common_info of trigger.
+> >
+> > Signed-off-by: Po Hao Huang <phhuang@realtek.com>
+> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> > ---
+> >  include/linux/ieee80211.h | 31 +++++++++++++++++++++++++++++++
+> >  1 file changed, 31 insertions(+)
+> >
+> > diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+> > index 75d40acb60c1c..f3b2d5b56d643 100644
+> > --- a/include/linux/ieee80211.h
+> > +++ b/include/linux/ieee80211.h
+> > @@ -76,6 +76,7 @@
+> >  #define IEEE80211_STYPE_ACTION		0x00D0
+> >
+> >  /* control */
+> > +#define IEEE80211_STYPE_TRIGGER		0x0020
+> >  #define IEEE80211_STYPE_CTL_EXT		0x0060
+> >  #define IEEE80211_STYPE_BACK_REQ	0x0080
+> >  #define IEEE80211_STYPE_BACK		0x0090
+> > @@ -295,6 +296,17 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
+> >
+> >  #define IEEE80211_HT_CTL_LEN		4
+> >
+> > +/* trigger type within common_info of trigger frame */
+> > +#define IEEE80211_TRIGGER_TYPE_MASK		0xfULL
+> > +#define IEEE80211_TRIGGER_TYPE_BASIC		0x0
+> > +#define IEEE80211_TRIGGER_TYPE_BFRP		0x1
+> > +#define IEEE80211_TRIGGER_TYPE_MU_BAR		0x2
+> > +#define IEEE80211_TRIGGER_TYPE_MU_RTS		0x3
+> > +#define IEEE80211_TRIGGER_TYPE_BSRP		0x4
+> > +#define IEEE80211_TRIGGER_TYPE_GCR_MU_BAR	0x5
+> > +#define IEEE80211_TRIGGER_TYPE_BQRP		0x6
+> > +#define IEEE80211_TRIGGER_TYPE_NFRP		0x7
+> 
+> Why ULL in the mask? I don't see it used anywhere else in the file.
+> 
 
-johannes
+This is because common_info in ieee80211_trigger is __le64:
+
++struct ieee80211_trigger {
+	...
++	__le64 common_info;
+	...
++}
+
+Then, 
+	type = le64_get_bits(tf->common_info, IEEE80211_TRIGGER_TYPE_MASK);
+is used to access trigger type of common_info in patch 2/3.
+
+Ping-Ke
+
