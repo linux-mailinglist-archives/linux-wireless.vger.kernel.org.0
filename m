@@ -2,85 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5422B542A0E
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 10:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79E0D542A17
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 10:57:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233112AbiFHIzU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Jun 2022 04:55:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43490 "EHLO
+        id S233195AbiFHI4p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Jun 2022 04:56:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232464AbiFHIy0 (ORCPT
+        with ESMTP id S233196AbiFHI4C (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Jun 2022 04:54:26 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B340307216
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 01:15:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=QuiuH8bsKzoFqBGf6cF/rDdrmAo45idRj64/C8aHK/g=;
-        t=1654676103; x=1655885703; b=U6evwd+kMZdpj0X9VRGXkd6Ba+f3NiKJO8SK7HifMCb3+u1
-        IzSR/a9yrXo1KIrHkn7ISil0OJqOWTfU+N4+ScFct/b/7kWFD8hJ/Ax25V2x96kzfX82FfSS52Jim
-        /PDZvVi+knxb9MRj87XEuPLkSQVvVQ7zzgceuM6/Ix86n6pK7b9myYkMFi9CvB2+9FEteyCxuoixh
-        PdCK44MUfC/m5OA3tHm9dzcjitsbjGnheeRSm634SMR7dQGrMn/BWUvGjk1VlCVSfL0bYPWYXQqTV
-        xyUCiXgnnRf0/Nk9Xr4JqeMhdZSpTNokCR2+6tT/sWUyVRgTzVW6lBzZJ33kRqdw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1nyqqC-00Gqm7-N6;
-        Wed, 08 Jun 2022 10:15:00 +0200
-Message-ID: <7a2f5d0430c86fe7baeb68d1479f09b504f0eed4.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/3] ieee80211: add trigger frame definition
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Eric Huang <echuang@realtek.com>,
-        Bernie Huang <phhuang@realtek.com>
-Date:   Wed, 08 Jun 2022 10:14:59 +0200
-In-Reply-To: <edc136dc78b142c5a8f4c73e5464d994@realtek.com>
-References: <20220601013917.18814-1-pkshih@realtek.com>
-         <20220601013917.18814-2-pkshih@realtek.com> <87h74vshno.fsf@kernel.org>
-         <edc136dc78b142c5a8f4c73e5464d994@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.2 (3.44.2-1.fc36) 
+        Wed, 8 Jun 2022 04:56:02 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D5A63CE241
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 01:16:57 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id EA6D8B825A0
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 08:16:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CAFC341C0;
+        Wed,  8 Jun 2022 08:16:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654676214;
+        bh=Evnfp3bZxO7b1ZMmJ/xwt8jr7WQx6ELnm8EwvF7sqlM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=M0Ri5KV1hhn1jkOigYeDsgmX7wQM+WB4Us1/HYD0XFwEe1YTswQ2WSFMwUjPT88tB
+         I9FBVzQjo7wTSEaq0S2OUHhjyE8HDf8ZtsFzN/w0291x4dRvU4NFm2St/Qy31zPGM+
+         QmM1FbDPZmtb6RgUpZ5RXfJ85NamKz0BQE/PEUl0QX116/N3EQalKK6I5PrlcDfNJq
+         VKjHpMpM9K27pN55ctKr0HUdrqFBVWmZrU6YwBWPZFmx/gn86OARAN7y30x6nNwSnf
+         cmdEacPwXBCNWMCvpOYOquMZwuc9J2zXwVxHeKxojESXnNQBf0GjCF8mVDzOvYWpig
+         fYdTV0LStlckg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v3 4/4] rtw88: Fix Sparse warning for rtw8821c_hw_spec
+References: <20220524153716.20450-1-Larry.Finger@lwfinger.net>
+        <Yp+hfo5Uual8ZUkR@dev-arch.thelio-3990X>
+        <e28ce50b-c1e6-74ae-6f57-5f864ba0c93a@lwfinger.net>
+        <45a6b6ea84c74ffeafff1b68c2e1c5e3@realtek.com>
+        <aad47f4f-a5bc-e8e2-15d3-2baf2512b661@lwfinger.net>
+        <764fc8f115dc411e82938311273d9b51@realtek.com>
+        <87bkv3r43b.fsf@kernel.org>
+        <5c48cda63e844e3f9703506309854a63@realtek.com>
+Date:   Wed, 08 Jun 2022 11:16:49 +0300
+In-Reply-To: <5c48cda63e844e3f9703506309854a63@realtek.com> (Ping-Ke Shih's
+        message of "Wed, 8 Jun 2022 08:05:46 +0000")
+Message-ID: <8735gfr2mm.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2022-06-08 at 08:13 +0000, Ping-Ke Shih wrote:
->=20
->=20
-> This is because common_info in ieee80211_trigger is __le64:
->=20
-> +struct ieee80211_trigger {
-> 	...
-> +	__le64 common_info;
-> 	...
-> +}
->=20
-> Then,=20
-> 	type =3D le64_get_bits(tf->common_info,
-> IEEE80211_TRIGGER_TYPE_MASK);
-> is used to access trigger type of common_info in patch 2/3.
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-Yep, but you have (after macro expansion)
+>> -----Original Message-----
+>> From: Kalle Valo <kvalo@kernel.org>
+>> Sent: Wednesday, June 8, 2022 3:45 PM
+>> To: Ping-Ke Shih <pkshih@realtek.com>
+>> Cc: Larry Finger <Larry.Finger@lwfinger.net>; Nathan Chancellor
+>> <nathan@kernel.org>; Johannes Berg
+>> <johannes@sipsolutions.net>; linux-wireless@vger.kernel.org
+>> Subject: Re: [PATCH v3 4/4] rtw88: Fix Sparse warning for rtw8821c_hw_spec
+>> 
+>> Ping-Ke Shih <pkshih@realtek.com> writes:
+>> 
+>> >
+>> > The ch_param[3] is only used by 8821c, so it doesn't affect other devices.
+>> > I will prepare a patch to fix it.
+>> 
+>> But why didn't the compiler catch this? Is there some evil cast
+>> somewhere which removes the const? We should fix that as well (in a
+>> separate patch).
+>> 
+>
+> This is because we assign a const to .driver_data that is non-const kernel_ulong_t:
+>
+> static const struct pci_device_id rtw_8821ce_id_table[] = {
+> 	{
+> 		.driver_data = (kernel_ulong_t)&rtw8821c_hw_spec
+> 	},
+>
+> When casting it back in pci_probe(), we need to add 'const' after Larry's patches:
+>
+> rtwdev->chip = (struct rtw_chip_info *)id->driver_data;
 
-static __always_inline u64 le64_get_bits(__le64 v, u64 field)
-{
-	return ...;
-}
+Yeah, that definitely needs to be const.
 
+> I will prepare another patch to fix that.
 
-so you can easily pass any number as the 'field' argument, it doesn't
-need to already be ULL :-)
+Great, thanks!
 
-johannes
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
