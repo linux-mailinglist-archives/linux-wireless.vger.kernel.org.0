@@ -2,180 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9CEC542F44
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 13:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDE8B5430DB
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 14:54:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238093AbiFHLdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Jun 2022 07:33:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41008 "EHLO
+        id S238169AbiFHMx6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Jun 2022 08:53:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238074AbiFHLdL (ORCPT
+        with ESMTP id S230261AbiFHMx5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Jun 2022 07:33:11 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1729C1BC78C
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 04:33:08 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 258BWtFjA008936, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 258BWtFjA008936
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 8 Jun 2022 19:32:55 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Wed, 8 Jun 2022 19:32:55 +0800
-Received: from localhost (172.16.16.197) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Wed, 8 Jun
- 2022 19:32:55 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>, <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>, <echuang@realtek.com>,
-        <phhuang@realtek.com>
-Subject: [PATCH v2 3/3] rtw89: add new state to CFO state machine for UL-OFDMA
-Date:   Wed, 8 Jun 2022 19:32:24 +0800
-Message-ID: <20220608113224.11193-4-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220608113224.11193-1-pkshih@realtek.com>
-References: <20220608113224.11193-1-pkshih@realtek.com>
+        Wed, 8 Jun 2022 08:53:57 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4FBE184845
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 05:53:54 -0700 (PDT)
+X-UUID: 6234f834df1a4ab7aaa3a76a1e058c87-20220608
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.5,REQID:481c9f07-978e-49ab-b31c-e33af576400d,OB:0,LO
+        B:0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
+        ON:release,TS:5
+X-CID-META: VersionHash:2a19b09,CLOUDID:2dbaa77e-c8dc-403a-96e8-6237210dceee,C
+        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
+        ,QS:0,BEC:nil
+X-UUID: 6234f834df1a4ab7aaa3a76a1e058c87-20220608
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1592995163; Wed, 08 Jun 2022 20:53:49 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
+ Wed, 8 Jun 2022 20:53:47 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.3 via Frontend Transport; Wed, 8 Jun 2022 20:53:47 +0800
+From:   Deren Wu <Deren.Wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH 1/2] mt76: mt7921: not support beacon offload disable command
+Date:   Wed, 8 Jun 2022 20:53:25 +0800
+Message-ID: <9a167f91fc8ea846583a49fa35c5ddb70e5afae4.1654691030.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <cover.1654691030.git.deren.wu@mediatek.com>
+References: <cover.1654691030.git.deren.wu@mediatek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.16.197]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/08/2022 11:15:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzYvOCCkV6TIIDA5OjMxOjAw?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Eric Huang <echuang@realtek.com>
+From: Deren Wu <deren.wu@mediatek.com>
 
-Add an new state, RTW89_PHY_DCFO_STATE_HOLD, to keep CFO acceleration
-after CFO_PERIOD_CNT if the traffic is UL-OFDMA, which is calculated
-based on RX trigger frame counter.
+Beacon disable flow would be handled in bss stop handler automatically.
+Force return -EOPNOTSUPP in disable case.
 
-Signed-off-by: Eric Huang <echuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Fixes: 116c69603b01 ("mt76: mt7921: Add AP mode support")
+Reviewed-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h |  7 +++++++
- drivers/net/wireless/realtek/rtw89/phy.c  | 24 ++++++++++++++++++++---
- drivers/net/wireless/realtek/rtw89/phy.h  |  1 +
- 3 files changed, 29 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 1fa6fe8b99530..239d47d0ec6d6 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2809,13 +2809,20 @@ enum rtw89_multi_cfo_mode {
- enum rtw89_phy_cfo_status {
- 	RTW89_PHY_DCFO_STATE_NORMAL = 0,
- 	RTW89_PHY_DCFO_STATE_ENHANCE = 1,
-+	RTW89_PHY_DCFO_STATE_HOLD = 2,
- 	RTW89_PHY_DCFO_STATE_MAX
- };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 12bab18c4171..de096f090da3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -1255,8 +1255,11 @@ mt7921_mcu_uni_add_beacon_offload(struct mt7921_dev *dev,
+ 	};
+ 	struct sk_buff *skb;
  
-+enum rtw89_phy_cfo_ul_ofdma_acc_mode {
-+	RTW89_CFO_UL_OFDMA_ACC_DISABLE = 0,
-+	RTW89_CFO_UL_OFDMA_ACC_ENABLE = 1
-+};
-+
- struct rtw89_cfo_tracking_info {
- 	u16 cfo_timer_ms;
- 	bool cfo_trig_by_timer_en;
- 	enum rtw89_phy_cfo_status phy_cfo_status;
-+	enum rtw89_phy_cfo_ul_ofdma_acc_mode cfo_ul_ofdma_acc_mode;
- 	u8 phy_cfo_trk_cnt;
- 	bool is_adjust;
- 	enum rtw89_multi_cfo_mode rtw89_multi_cfo_mode;
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 762cdba9d3cfd..217aacb6e8c1b 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -2151,6 +2151,7 @@ static void rtw89_phy_cfo_init(struct rtw89_dev *rtwdev)
- 	cfo->cfo_trig_by_timer_en = false;
- 	cfo->phy_cfo_trk_cnt = 0;
- 	cfo->phy_cfo_status = RTW89_PHY_DCFO_STATE_NORMAL;
-+	cfo->cfo_ul_ofdma_acc_mode = RTW89_CFO_UL_OFDMA_ACC_ENABLE;
++	/* support enable/update process only
++	 * disable flow would be handled in bss stop handler automatically
++	 */
+ 	if (!enable)
+-		goto out;
++		return -EOPNOTSUPP;
+ 
+ 	skb = ieee80211_beacon_get_template(mt76_hw(dev), vif, &offs);
+ 	if (!skb)
+@@ -1282,7 +1285,6 @@ mt7921_mcu_uni_add_beacon_offload(struct mt7921_dev *dev,
+ 	}
+ 	dev_kfree_skb(skb);
+ 
+-out:
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(BSS_INFO_UPDATE),
+ 				 &req, sizeof(req), true);
  }
- 
- static void rtw89_phy_cfo_crystal_cap_adjust(struct rtw89_dev *rtwdev,
-@@ -2419,6 +2420,13 @@ void rtw89_phy_cfo_track(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_cfo_tracking_info *cfo = &rtwdev->cfo_tracking;
- 	struct rtw89_traffic_stats *stats = &rtwdev->stats;
-+	bool is_ul_ofdma = false, ofdma_acc_en = false;
-+
-+	if (stats->rx_tf_periodic > CFO_TF_CNT_TH)
-+		is_ul_ofdma = true;
-+	if (cfo->cfo_ul_ofdma_acc_mode == RTW89_CFO_UL_OFDMA_ACC_ENABLE &&
-+	    is_ul_ofdma)
-+		ofdma_acc_en = true;
- 
- 	switch (cfo->phy_cfo_status) {
- 	case RTW89_PHY_DCFO_STATE_NORMAL:
-@@ -2430,16 +2438,26 @@ void rtw89_phy_cfo_track(struct rtw89_dev *rtwdev)
- 		}
- 		break;
- 	case RTW89_PHY_DCFO_STATE_ENHANCE:
--		if (cfo->phy_cfo_trk_cnt >= CFO_PERIOD_CNT) {
-+		if (stats->tx_throughput <= CFO_TP_LOWER)
-+			cfo->phy_cfo_status = RTW89_PHY_DCFO_STATE_NORMAL;
-+		else if (ofdma_acc_en &&
-+			 cfo->phy_cfo_trk_cnt >= CFO_PERIOD_CNT)
-+			cfo->phy_cfo_status = RTW89_PHY_DCFO_STATE_HOLD;
-+		else
-+			cfo->phy_cfo_trk_cnt++;
-+
-+		if (cfo->phy_cfo_status == RTW89_PHY_DCFO_STATE_NORMAL) {
- 			cfo->phy_cfo_trk_cnt = 0;
- 			cfo->cfo_trig_by_timer_en = false;
- 		}
--		if (cfo->cfo_trig_by_timer_en == 1)
--			cfo->phy_cfo_trk_cnt++;
-+		break;
-+	case RTW89_PHY_DCFO_STATE_HOLD:
- 		if (stats->tx_throughput <= CFO_TP_LOWER) {
- 			cfo->phy_cfo_status = RTW89_PHY_DCFO_STATE_NORMAL;
- 			cfo->phy_cfo_trk_cnt = 0;
- 			cfo->cfo_trig_by_timer_en = false;
-+		} else {
-+			cfo->phy_cfo_trk_cnt++;
- 		}
- 		break;
- 	default:
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index 291660154d58d..e20636f54b553 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.h
-+++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -62,6 +62,7 @@
- #define CFO_COMP_PERIOD 250
- #define CFO_COMP_WEIGHT 8
- #define MAX_CFO_TOLERANCE 30
-+#define CFO_TF_CNT_TH 300
- 
- #define CCX_MAX_PERIOD 2097
- #define CCX_MAX_PERIOD_UNIT 32
 -- 
-2.25.1
+2.18.0
 
