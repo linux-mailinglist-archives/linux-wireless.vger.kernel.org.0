@@ -2,427 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAF11543A76
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jun 2022 19:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B645D5441B1
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jun 2022 04:56:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231321AbiFHRbO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Jun 2022 13:31:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59576 "EHLO
+        id S237280AbiFICzt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Jun 2022 22:55:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231506AbiFHRbN (ORCPT
+        with ESMTP id S237271AbiFICzs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Jun 2022 13:31:13 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 736151CF
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 10:31:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 89DC0CE2A89
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Jun 2022 17:31:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A006BC3411D;
-        Wed,  8 Jun 2022 17:31:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654709467;
-        bh=BuLMZyL09LchjBAqY5cs+FMJZ0GYoWVB4KjPCYos8Zg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CyefMviVodiTq8rUmbu+v5kWHhdEJ8KM7WzGJ3v/XVSmTrPsClWmqukILx63k9lUJ
-         SSHNObe43LlZlSVLfdU9qpe+uEvV4ixBhpYxnUVkRgIU00HJNbcJXf43NpEo2RZx0h
-         gJuhii4CeOzS65q272Zznz9qdKJVbX61/bFfyGQGbCoXiugzKwsryDDClNmi1mNTs4
-         49E8eJV6kGepMGEMx8P00sW8+6D7wBC5G79izQ9iDXE3Ix3Jo3x4tmYXCdtGSwkmgX
-         XRaIuEAJ862lPZp8H7uu4u3tkCRaUZ45cMPNp9yVIRNBw2VUx1XAt46/vsHD7hgyJx
-         TqFbDMdUBjZ6A==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        ryder.lee@mediatek.com, sean.wang@mediatek.com
-Subject: [PATCH 3/3] mt76: connac: move mt76_connac2_mac_fill_rx_rate in connac module
-Date:   Wed,  8 Jun 2022 19:30:31 +0200
-Message-Id: <2a947f4f82507060f7edb1a6a8ff92f35219231e.1654709072.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <cover.1654709072.git.lorenzo@kernel.org>
-References: <cover.1654709072.git.lorenzo@kernel.org>
+        Wed, 8 Jun 2022 22:55:48 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A50F1A29F2;
+        Wed,  8 Jun 2022 19:55:43 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 2592t2o05008872, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 2592t2o05008872
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 9 Jun 2022 10:55:02 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.28; Thu, 9 Jun 2022 10:55:02 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Thu, 9 Jun 2022 10:55:01 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
+ RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
+ 15.01.2308.021; Thu, 9 Jun 2022 10:55:01 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "neojou@gmail.com" <neojou@gmail.com>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "martin.blumenstingl@googlemail.com" 
+        <martin.blumenstingl@googlemail.com>,
+        "linux@ulli-kroll.de" <linux@ulli-kroll.de>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH v2 05/10] rtw88: iterate over vif/sta list non-atomically
+Thread-Topic: [PATCH v2 05/10] rtw88: iterate over vif/sta list non-atomically
+Thread-Index: AQHYdDPOvAC5P6vVz0elhZc8Fv6eZa1F6gcA
+Date:   Thu, 9 Jun 2022 02:55:01 +0000
+Message-ID: <523bb16608f48852b180121696d31cf82fb55484.camel@realtek.com>
+References: <20220530135457.1104091-1-s.hauer@pengutronix.de>
+         <20220530135457.1104091-6-s.hauer@pengutronix.de>
+In-Reply-To: <20220530135457.1104091-6-s.hauer@pengutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzYvOCDkuIvljYggMTA6MTk6MDA=?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <4922BF3DEA0C7049AC1B7D51BF1A184E@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rely on mt76_connac2_mac_fill_rx_rate routine in mt7921 driver.
-
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt76_connac.h  |   4 +
- .../wireless/mediatek/mt76/mt76_connac_mac.c  | 105 +++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 106 +-----------------
- .../net/wireless/mediatek/mt76/mt7921/mac.c   |  82 +-------------
- 4 files changed, 117 insertions(+), 180 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-index 27ab1f2355ce..a9927dcf3d6c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-@@ -258,5 +258,9 @@ void mt76_connac2_mac_decode_he_radiotap(struct mt76_dev *dev,
- 					 __le32 *rxv, u32 mode);
- int mt76_connac2_reverse_frag0_hdr_trans(struct ieee80211_vif *vif,
- 					 struct sk_buff *skb, u16 hdr_offset);
-+int mt76_connac2_mac_fill_rx_rate(struct mt76_dev *dev,
-+				  struct mt76_rx_status *status,
-+				  struct ieee80211_supported_band *sband,
-+				  __le32 *rxv, u8 *mode);
- 
- #endif /* __MT76_CONNAC_H */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index 6ac1ac3f5480..6aa02ace365b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -784,3 +784,108 @@ int mt76_connac2_reverse_frag0_hdr_trans(struct ieee80211_vif *vif,
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(mt76_connac2_reverse_frag0_hdr_trans);
-+
-+int mt76_connac2_mac_fill_rx_rate(struct mt76_dev *dev,
-+				  struct mt76_rx_status *status,
-+				  struct ieee80211_supported_band *sband,
-+				  __le32 *rxv, u8 *mode)
-+{
-+	u32 v0, v2;
-+	u8 stbc, gi, bw, dcm, nss;
-+	int i, idx;
-+	bool cck = false;
-+
-+	v0 = le32_to_cpu(rxv[0]);
-+	v2 = le32_to_cpu(rxv[2]);
-+
-+	idx = i = FIELD_GET(MT_PRXV_TX_RATE, v0);
-+	nss = FIELD_GET(MT_PRXV_NSTS, v0) + 1;
-+
-+	if (!is_mt7915(dev)) {
-+		stbc = FIELD_GET(MT_PRXV_HT_STBC, v0);
-+		gi = FIELD_GET(MT_PRXV_HT_SGI, v0);
-+		*mode = FIELD_GET(MT_PRXV_TX_MODE, v0);
-+		if (is_mt7921(dev))
-+			dcm = !!(idx & MT_PRXV_TX_DCM);
-+		else
-+			dcm = FIELD_GET(MT_PRXV_DCM, v0);
-+		bw = FIELD_GET(MT_PRXV_FRAME_MODE, v0);
-+	} else {
-+		stbc = FIELD_GET(MT_CRXV_HT_STBC, v2);
-+		gi = FIELD_GET(MT_CRXV_HT_SHORT_GI, v2);
-+		*mode = FIELD_GET(MT_CRXV_TX_MODE, v2);
-+		dcm = !!(idx & GENMASK(3, 0) & MT_PRXV_TX_DCM);
-+		bw = FIELD_GET(MT_CRXV_FRAME_MODE, v2);
-+	}
-+
-+	switch (*mode) {
-+	case MT_PHY_TYPE_CCK:
-+		cck = true;
-+		fallthrough;
-+	case MT_PHY_TYPE_OFDM:
-+		i = mt76_get_rate(dev, sband, i, cck);
-+		break;
-+	case MT_PHY_TYPE_HT_GF:
-+	case MT_PHY_TYPE_HT:
-+		status->encoding = RX_ENC_HT;
-+		if (gi)
-+			status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
-+		if (i > 31)
-+			return -EINVAL;
-+		break;
-+	case MT_PHY_TYPE_VHT:
-+		status->nss = nss;
-+		status->encoding = RX_ENC_VHT;
-+		if (gi)
-+			status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
-+		if (i > 11)
-+			return -EINVAL;
-+		break;
-+	case MT_PHY_TYPE_HE_MU:
-+	case MT_PHY_TYPE_HE_SU:
-+	case MT_PHY_TYPE_HE_EXT_SU:
-+	case MT_PHY_TYPE_HE_TB:
-+		status->nss = nss;
-+		status->encoding = RX_ENC_HE;
-+		i &= GENMASK(3, 0);
-+
-+		if (gi <= NL80211_RATE_INFO_HE_GI_3_2)
-+			status->he_gi = gi;
-+
-+		status->he_dcm = dcm;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	status->rate_idx = i;
-+
-+	switch (bw) {
-+	case IEEE80211_STA_RX_BW_20:
-+		break;
-+	case IEEE80211_STA_RX_BW_40:
-+		if (*mode & MT_PHY_TYPE_HE_EXT_SU &&
-+		    (idx & MT_PRXV_TX_ER_SU_106T)) {
-+			status->bw = RATE_INFO_BW_HE_RU;
-+			status->he_ru =
-+				NL80211_RATE_INFO_HE_RU_ALLOC_106;
-+		} else {
-+			status->bw = RATE_INFO_BW_40;
-+		}
-+		break;
-+	case IEEE80211_STA_RX_BW_80:
-+		status->bw = RATE_INFO_BW_80;
-+		break;
-+	case IEEE80211_STA_RX_BW_160:
-+		status->bw = RATE_INFO_BW_160;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	status->enc_flags |= RX_ENC_FLAG_STBC_MASK * stbc;
-+	if (*mode < MT_PHY_TYPE_HE_SU && gi)
-+		status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac2_mac_fill_rx_rate);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 1d83f8790c44..a575a44685b2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -214,108 +214,6 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
- 	rcu_read_unlock();
- }
- 
--static int
--mt7915_mac_fill_rx_rate(struct mt7915_dev *dev,
--			struct mt76_rx_status *status,
--			struct ieee80211_supported_band *sband,
--			__le32 *rxv, u8 *mode)
--{
--	u32 v0, v2;
--	u8 stbc, gi, bw, dcm, nss;
--	int i, idx;
--	bool cck = false;
--
--	v0 = le32_to_cpu(rxv[0]);
--	v2 = le32_to_cpu(rxv[2]);
--
--	idx = i = FIELD_GET(MT_PRXV_TX_RATE, v0);
--	nss = FIELD_GET(MT_PRXV_NSTS, v0) + 1;
--
--	if (!is_mt7915(&dev->mt76)) {
--		stbc = FIELD_GET(MT_PRXV_HT_STBC, v0);
--		gi = FIELD_GET(MT_PRXV_HT_SGI, v0);
--		*mode = FIELD_GET(MT_PRXV_TX_MODE, v0);
--		dcm = FIELD_GET(MT_PRXV_DCM, v0);
--		bw = FIELD_GET(MT_PRXV_FRAME_MODE, v0);
--	} else {
--		stbc = FIELD_GET(MT_CRXV_HT_STBC, v2);
--		gi = FIELD_GET(MT_CRXV_HT_SHORT_GI, v2);
--		*mode = FIELD_GET(MT_CRXV_TX_MODE, v2);
--		dcm = !!(idx & GENMASK(3, 0) & MT_PRXV_TX_DCM);
--		bw = FIELD_GET(MT_CRXV_FRAME_MODE, v2);
--	}
--
--	switch (*mode) {
--	case MT_PHY_TYPE_CCK:
--		cck = true;
--		fallthrough;
--	case MT_PHY_TYPE_OFDM:
--		i = mt76_get_rate(&dev->mt76, sband, i, cck);
--		break;
--	case MT_PHY_TYPE_HT_GF:
--	case MT_PHY_TYPE_HT:
--		status->encoding = RX_ENC_HT;
--		if (gi)
--			status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
--		if (i > 31)
--			return -EINVAL;
--		break;
--	case MT_PHY_TYPE_VHT:
--		status->nss = nss;
--		status->encoding = RX_ENC_VHT;
--		if (gi)
--			status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
--		if (i > 11)
--			return -EINVAL;
--		break;
--	case MT_PHY_TYPE_HE_MU:
--	case MT_PHY_TYPE_HE_SU:
--	case MT_PHY_TYPE_HE_EXT_SU:
--	case MT_PHY_TYPE_HE_TB:
--		status->nss = nss;
--		status->encoding = RX_ENC_HE;
--		i &= GENMASK(3, 0);
--
--		if (gi <= NL80211_RATE_INFO_HE_GI_3_2)
--			status->he_gi = gi;
--
--		status->he_dcm = dcm;
--		break;
--	default:
--		return -EINVAL;
--	}
--	status->rate_idx = i;
--
--	switch (bw) {
--	case IEEE80211_STA_RX_BW_20:
--		break;
--	case IEEE80211_STA_RX_BW_40:
--		if (*mode & MT_PHY_TYPE_HE_EXT_SU &&
--		    (idx & MT_PRXV_TX_ER_SU_106T)) {
--			status->bw = RATE_INFO_BW_HE_RU;
--			status->he_ru =
--				NL80211_RATE_INFO_HE_RU_ALLOC_106;
--		} else {
--			status->bw = RATE_INFO_BW_40;
--		}
--		break;
--	case IEEE80211_STA_RX_BW_80:
--		status->bw = RATE_INFO_BW_80;
--		break;
--	case IEEE80211_STA_RX_BW_160:
--		status->bw = RATE_INFO_BW_160;
--		break;
--	default:
--		return -EINVAL;
--	}
--
--	status->enc_flags |= RX_ENC_FLAG_STBC_MASK * stbc;
--	if (*mode < MT_PHY_TYPE_HE_SU && gi)
--		status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
--
--	return 0;
--}
--
- static int
- mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- {
-@@ -508,8 +406,8 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 		}
- 
- 		if (!is_mt7915(&dev->mt76) || (rxd1 & MT_RXD1_NORMAL_GROUP_5)) {
--			ret = mt7915_mac_fill_rx_rate(dev, status, sband, rxv,
--						      &mode);
-+			ret = mt76_connac2_mac_fill_rx_rate(&dev->mt76, status,
-+							    sband, rxv, &mode);
- 			if (ret < 0)
- 				return ret;
- 		}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 5b48a725e637..b8fe61355cce 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -238,7 +238,7 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 	struct mt7921_sta *msta;
- 	u16 seq_ctrl = 0;
- 	__le16 fc = 0;
--	u32 mode = 0;
-+	u8 mode = 0;
- 	int i, idx;
- 
- 	memset(status, 0, sizeof(*status));
-@@ -380,9 +380,8 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 
- 	/* RXD Group 3 - P-RXV */
- 	if (rxd1 & MT_RXD1_NORMAL_GROUP_3) {
--		u8 stbc, gi;
- 		u32 v0, v1;
--		bool cck;
-+		int ret;
- 
- 		rxv = rxd;
- 		rxd += 2;
-@@ -410,79 +409,10 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 					     status->chain_signal[i]);
- 		}
- 
--		stbc = FIELD_GET(MT_PRXV_HT_STBC, v0);
--		gi = FIELD_GET(MT_PRXV_HT_SGI, v0);
--		cck = false;
--
--		idx = i = FIELD_GET(MT_PRXV_TX_RATE, v0);
--		mode = FIELD_GET(MT_PRXV_TX_MODE, v0);
--
--		switch (mode) {
--		case MT_PHY_TYPE_CCK:
--			cck = true;
--			fallthrough;
--		case MT_PHY_TYPE_OFDM:
--			i = mt76_get_rate(&dev->mt76, sband, i, cck);
--			break;
--		case MT_PHY_TYPE_HT_GF:
--		case MT_PHY_TYPE_HT:
--			status->encoding = RX_ENC_HT;
--			if (i > 31)
--				return -EINVAL;
--			break;
--		case MT_PHY_TYPE_VHT:
--			status->nss =
--				FIELD_GET(MT_PRXV_NSTS, v0) + 1;
--			status->encoding = RX_ENC_VHT;
--			if (i > 11)
--				return -EINVAL;
--			break;
--		case MT_PHY_TYPE_HE_MU:
--		case MT_PHY_TYPE_HE_SU:
--		case MT_PHY_TYPE_HE_EXT_SU:
--		case MT_PHY_TYPE_HE_TB:
--			status->nss =
--				FIELD_GET(MT_PRXV_NSTS, v0) + 1;
--			status->encoding = RX_ENC_HE;
--			i &= GENMASK(3, 0);
--
--			if (gi <= NL80211_RATE_INFO_HE_GI_3_2)
--				status->he_gi = gi;
--
--			status->he_dcm = !!(idx & MT_PRXV_TX_DCM);
--			break;
--		default:
--			return -EINVAL;
--		}
--
--		status->rate_idx = i;
--
--		switch (FIELD_GET(MT_PRXV_FRAME_MODE, v0)) {
--		case IEEE80211_STA_RX_BW_20:
--			break;
--		case IEEE80211_STA_RX_BW_40:
--			if (mode & MT_PHY_TYPE_HE_EXT_SU &&
--			    (idx & MT_PRXV_TX_ER_SU_106T)) {
--				status->bw = RATE_INFO_BW_HE_RU;
--				status->he_ru =
--					NL80211_RATE_INFO_HE_RU_ALLOC_106;
--			} else {
--				status->bw = RATE_INFO_BW_40;
--			}
--			break;
--		case IEEE80211_STA_RX_BW_80:
--			status->bw = RATE_INFO_BW_80;
--			break;
--		case IEEE80211_STA_RX_BW_160:
--			status->bw = RATE_INFO_BW_160;
--			break;
--		default:
--			return -EINVAL;
--		}
--
--		status->enc_flags |= RX_ENC_FLAG_STBC_MASK * stbc;
--		if (mode < MT_PHY_TYPE_HE_SU && gi)
--			status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
-+		ret = mt76_connac2_mac_fill_rx_rate(&dev->mt76, status, sband,
-+						    rxv, &mode);
-+		if (ret < 0)
-+			return ret;
- 
- 		if (rxd1 & MT_RXD1_NORMAL_GROUP_5) {
- 			rxd += 18;
--- 
-2.35.3
-
+T24gTW9uLCAyMDIyLTA1LTMwIGF0IDE1OjU0ICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6DQo+
+IFRoZSBkcml2ZXIgdXNlcyBpZWVlODAyMTFfaXRlcmF0ZV9hY3RpdmVfaW50ZXJmYWNlc19hdG9t
+aWMoKQ0KPiBhbmQgaWVlZTgwMjExX2l0ZXJhdGVfc3RhdGlvbnNfYXRvbWljKCkgaW4gc2V2ZXJh
+bCBwbGFjZXMgYW5kIGRvZXMNCj4gcmVnaXN0ZXIgYWNjZXNzZXMgaW4gdGhlIGl0ZXJhdG9ycy4g
+VGhpcyBkb2Vzbid0IGNvcGUgd2l0aCB1cGNvbWluZw0KPiBVU0Igc3VwcG9ydCBhcyByZWdpc3Rl
+cnMgY2FuIG9ubHkgYmUgYWNjZXNzZWQgbm9uLWF0b21pY2FsbHkuDQo+IA0KPiBTcGxpdCB0aGVz
+ZSBpbnRvIGEgdHdvIHN0YWdlIHByb2Nlc3M6IEZpcnN0IHVzZSB0aGUgYXRvbWljIGl0ZXJhdG9y
+DQo+IGZ1bmN0aW9ucyB0byBjb2xsZWN0IGFsbCBhY3RpdmUgaW50ZXJmYWNlcyBvciBzdGF0aW9u
+cyBvbiBhIGxpc3QsIHRoZW4NCj4gaXRlcmF0ZSBvdmVyIHRoZSBsaXN0IG5vbi1hdG9taWNhbGx5
+IGFuZCBjYWxsIHRoZSBpdGVyYXRvciBvbiBlYWNoDQo+IGVudHJ5Lg0KPiANCj4gU2lnbmVkLW9m
+Zi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPg0KPiBTdWdnZXN0ZWQt
+Ynk6IFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiAtLS0NCj4gDQo+IE5vdGVzOg0KPiAg
+ICAgQ2hhbmdlcyBzaW5jZSB2MToNCj4gICAgIC0gQ2hhbmdlIHN1YmplY3QNCj4gICAgIC0gQWRk
+IHNvbWUgbG9ja2RlcF9hc3NlcnRfaGVsZCgmcnR3ZGV2LT5tdXRleCk7DQo+ICAgICAtIG1ha2Ug
+bG9jYWxseSB1c2VkIGZ1bmN0aW9ucyBzdGF0aWMNCj4gICAgIC0gQWRkIGNvbW1lbnQgaG93ICZy
+dHdkZXYtPm11dGV4IHByb3RlY3RzIHVzIGZyb20gc3RhdGlvbnMvaW50ZXJmYWNlcw0KPiAgICAg
+ICBiZWluZyBkZWxldGVkIGJldHdlZW4gY29sbGVjdGluZyB0aGVtIGFuZCBpdGVyYXRpbmcgb3Zl
+ciB0aGVtLg0KPiANCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGh5LmMg
+IHwgICA2ICstDQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BzLmMgICB8
+ICAgMiArLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC91dGlsLmMgfCAx
+MDMgKysrKysrKysrKysrKysrKysrKysrKw0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
+ay9ydHc4OC91dGlsLmggfCAgMTIgKystDQo+ICA0IGZpbGVzIGNoYW5nZWQsIDExNiBpbnNlcnRp
+b25zKCspLCA3IGRlbGV0aW9ucygtKQ0KPiANCj4gDQoNClsuLi5dDQoNCj4gKw0KPiArc3RydWN0
+IHJ0d192aWZzX2VudHJ5IHsNCj4gKwlzdHJ1Y3QgbGlzdF9oZWFkIGxpc3Q7DQo+ICsJc3RydWN0
+IGllZWU4MDIxMV92aWYgKnZpZjsNCj4gKwl1OCBtYWNbRVRIX0FMRU5dOw0KPiArfTsNCj4gKw0K
+PiArc3RydWN0IHJ0d19pdGVyX3ZpZnNfZGF0YSB7DQo+ICsJc3RydWN0IHJ0d19kZXYgKnJ0d2Rl
+djsNCj4gKwlzdHJ1Y3QgbGlzdF9oZWFkIGxpc3Q7DQo+ICt9Ow0KPiArDQo+ICt2b2lkIHJ0d19j
+b2xsZWN0X3ZpZl9pdGVyKHZvaWQgKmRhdGEsIHU4ICptYWMsIHN0cnVjdCBpZWVlODAyMTFfdmlm
+ICp2aWYpDQoNCllvdSBkbyB0aGlzIGNoYW5nZSBpbiBwYXRjaCAicnR3ODg6IEFkZCBjb21tb24g
+VVNCIGNoaXAgc3VwcG9ydCIuDQpQbGVhc2UgbW92ZSB0byBoZXJlLg0KDQotdm9pZCBydHdfY29s
+bGVjdF92aWZfaXRlcih2b2lkICpkYXRhLCB1OCAqbWFjLCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAq
+dmlmKQ0KK3N0YXRpYyB2b2lkIHJ0d19jb2xsZWN0X3ZpZl9pdGVyKHZvaWQgKmRhdGEsIHU4ICpt
+YWMsIHN0cnVjdCBpZWVlODAyMTFfdmlmICp2aWYpDQoNCj4gK3sNCj4gKwlzdHJ1Y3QgcnR3X2l0
+ZXJfdmlmc19kYXRhICppdGVyX3N0YXMgPSBkYXRhOw0KPiArCXN0cnVjdCBydHdfdmlmc19lbnRy
+eSAqdmlmc19lbnRyeTsNCj4gKw0KPiArCXZpZnNfZW50cnkgPSBrbWFsbG9jKHNpemVvZigqdmlm
+c19lbnRyeSksIEdGUF9BVE9NSUMpOw0KPiArCWlmICghdmlmc19lbnRyeSkNCj4gKwkJcmV0dXJu
+Ow0KPiArDQo+ICsJdmlmc19lbnRyeS0+dmlmID0gdmlmOw0KPiArCWV0aGVyX2FkZHJfY29weSh2
+aWZzX2VudHJ5LT5tYWMsIG1hYyk7DQo+ICsJbGlzdF9hZGRfdGFpbCgmdmlmc19lbnRyeS0+bGlz
+dCwgJml0ZXJfc3Rhcy0+bGlzdCk7DQo+ICt9DQo+ICsNCj4gK3ZvaWQgcnR3X2l0ZXJhdGVfdmlm
+cyhzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LA0KPiArCQkgICAgICB2b2lkICgqaXRlcmF0b3IpKHZv
+aWQgKmRhdGEsIHU4ICptYWMsDQo+ICsJCQkJICAgICAgIHN0cnVjdCBpZWVlODAyMTFfdmlmICp2
+aWYpLA0KPiArCQkgICAgICB2b2lkICpkYXRhKQ0KPiArew0KPiArCXN0cnVjdCBydHdfaXRlcl92
+aWZzX2RhdGEgaXRlcl9kYXRhOw0KPiArCXN0cnVjdCBydHdfdmlmc19lbnQNCg0KWy4uLl0NCg0K
+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC91dGlsLmgg
+Yi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3V0aWwuaA0KPiBpbmRleCAwYzIz
+YjUwNjliZTBiLi5kYzg5NjU1MjU0MDAyIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJl
+bGVzcy9yZWFsdGVrL3J0dzg4L3V0aWwuaA0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9y
+ZWFsdGVrL3J0dzg4L3V0aWwuaA0KPiBAQCAtNyw5ICs3LDYgQEANCj4gIA0KPiAgc3RydWN0IHJ0
+d19kZXY7DQo+ICANCj4gLSNkZWZpbmUgcnR3X2l0ZXJhdGVfdmlmcyhydHdkZXYsIGl0ZXJhdG9y
+LCBkYXRhKSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcDQo+IC0JaWVlZTgwMjExX2l0
+ZXJhdGVfYWN0aXZlX2ludGVyZmFjZXMocnR3ZGV2LT5odywgICAgICAgICAgICAgICAgICAgICAg
+ICBcDQo+IC0JCQlJRUVFODAyMTFfSUZBQ0VfSVRFUl9OT1JNQUwsIGl0ZXJhdG9yLCBkYXRhKQ0K
+PiAgI2RlZmluZSBydHdfaXRlcmF0ZV92aWZzX2F0b21pYyhydHdkZXYsIGl0ZXJhdG9yLCBkYXRh
+KSAgICAgICAgICAgICAgICAgICAgICAgIFwNCj4gIAlpZWVlODAyMTFfaXRlcmF0ZV9hY3RpdmVf
+aW50ZXJmYWNlc19hdG9taWMocnR3ZGV2LT5odywgICAgICAgICAgICAgICAgIFwNCj4gIAkJCUlF
+RUU4MDIxMV9JRkFDRV9JVEVSX05PUk1BTCwgaXRlcmF0b3IsIGRhdGEpDQoNCkFmdGVyIHJlYWQg
+TWFydGluJ3MgcGF0Y2hlcywgSSB0aGluayB3ZSBjYW4gcmV2aWV3IGFsbCBwbGFjZXMgd2hlcmUg
+dXNlDQpfYW90bWljIHZlcnNpb24gb2YgdmlmIGFuZCBzdGEsIGV2ZW4gd2UgZG9uJ3QgcmVhbGx5
+IG1lZXQgcHJvYmxlbSBmb3Igbm93Lg0KVGhlbiwgdXNlIG5vbi1hdG9taWMgdmVyc2lvbiBpZiBw
+b3NzaWJsZS4NCg0KUGluZy1LZQ0KDQoNCg==
