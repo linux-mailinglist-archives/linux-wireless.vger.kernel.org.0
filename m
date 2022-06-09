@@ -2,106 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 858D9544CA0
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jun 2022 14:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB6345450E1
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jun 2022 17:33:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244822AbiFIMw2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Jun 2022 08:52:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52918 "EHLO
+        id S237328AbiFIPdH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Jun 2022 11:33:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232691AbiFIMw0 (ORCPT
+        with ESMTP id S236999AbiFIPdG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Jun 2022 08:52:26 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 452D017E13;
-        Thu,  9 Jun 2022 05:52:23 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 259CpnrzF023806, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 259CpnrzF023806
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 9 Jun 2022 20:51:50 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Thu, 9 Jun 2022 20:51:49 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Thu, 9 Jun 2022 20:51:49 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6]) by
- RTEXMBS04.realtek.com.tw ([fe80::34e7:ab63:3da4:27c6%5]) with mapi id
- 15.01.2308.021; Thu, 9 Jun 2022 20:51:49 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-CC:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "neojou@gmail.com" <neojou@gmail.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "martin.blumenstingl@googlemail.com" 
-        <martin.blumenstingl@googlemail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux@ulli-kroll.de" <linux@ulli-kroll.de>
-Subject: Re: [PATCH v2 10/10] rtw88: disable powersave modes for USB devices
-Thread-Topic: [PATCH v2 10/10] rtw88: disable powersave modes for USB devices
-Thread-Index: AQHYdDPI/ma2VkQlBE+TWL8Uknp8la03pxKAgABucQCADm9uAA==
-Date:   Thu, 9 Jun 2022 12:51:49 +0000
-Message-ID: <8443f8e51774a4f80fed494321fcc410e7174bf1.camel@realtek.com>
-References: <20220530135457.1104091-1-s.hauer@pengutronix.de>
-         <20220530135457.1104091-11-s.hauer@pengutronix.de>
-         <1493412d473614dfafd4c03832e71f86831fa43b.camel@realtek.com>
-         <20220531074244.GN1615@pengutronix.de>
-In-Reply-To: <20220531074244.GN1615@pengutronix.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [125.224.76.119]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzYvOSDkuIrljYggMTA6NTU6MDA=?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <89046CFEA2994E40A02DFC7EC4D3F71E@realtek.com>
-Content-Transfer-Encoding: base64
+        Thu, 9 Jun 2022 11:33:06 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 775764F1D3
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Jun 2022 08:33:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ualphzSRMcpR/j7yZ7iHbJPU8LTywlVVlmZmkrMSbfo=; b=MipUN/50ltFUqY8mp+LPlhoHHj
+        vNfXsbPRdMen90wHEMz1Shy1R+On9RtaggN6HpYw7z8JtuYP6nr6MH9W/Wy5JIJeRA1NnpTHvzKfC
+        IzLioZzEE3H4KjOrOS2lFKJMPJdAEMwoxOmRhUo6901h8bDCeHVygb5OEebut5ebktzw=;
+Received: from p57a6f999.dip0.t-ipconnect.de ([87.166.249.153] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1nzK9d-0002L1-U1; Thu, 09 Jun 2022 17:33:02 +0200
+Message-ID: <1d7870e7-6b41-3eb6-910f-8df335b222bc@nbd.name>
+Date:   Thu, 9 Jun 2022 17:33:01 +0200
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.9.1
+Subject: Re: [PATCH 1/2] mac80211: fix overflow issues in airtime fairness
+ code
+Content-Language: en-US
+To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@kernel.org>,
+        linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+References: <20220603164307.92189-1-nbd@nbd.name> <87bkv7owq1.fsf@toke.dk>
+From:   Felix Fietkau <nbd@nbd.name>
+In-Reply-To: <87bkv7owq1.fsf@toke.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVHVlLCAyMDIyLTA1LTMxIGF0IDA5OjQyICswMjAwLCBzLmhhdWVyQHBlbmd1dHJvbml4LmRl
-IHdyb3RlOg0KPiBPbiBUdWUsIE1heSAzMSwgMjAyMiBhdCAwMTowNzozNkFNICswMDAwLCBQaW5n
-LUtlIFNoaWggd3JvdGU6DQo+ID4gT24gTW9uLCAyMDIyLTA1LTMwIGF0IDE1OjU0ICswMjAwLCBT
-YXNjaGEgSGF1ZXIgd3JvdGU6DQo+ID4gPiBUaGUgcG93ZXJzYXZlIG1vZGVzIGRvIG5vdCB3b3Jr
-IHdpdGggVVNCIGRldmljZXMgKHRlc3RlZCB3aXRoIGENCj4gPiA+IFJUVzg4MjJDVSkgcHJvcGVy
-bHkuIFdpdGggcG93ZXJzYXZlIG1vZGVzIGVuYWJsZWQgdGhlIGRyaXZlciBpc3N1ZXMNCj4gPiA+
-IG1lc3NhZ2VzIGxpa2U6DQo+ID4gPiANCj4gPiA+IHJ0d184ODIyY3UgMS0xOjEuMjogZmlybXdh
-cmUgZmFpbGVkIHRvIGxlYXZlIGxwcyBzdGF0ZQ0KPiA+ID4gcnR3Xzg4MjJjdSAxLTE6MS4yOiB0
-aW1lZCBvdXQgdG8gZmx1c2ggcXVldWUgMw0KPiA+IA0KPiA+IENvdWxkIHlvdSB0cnkgbW9kdWxl
-IHBhcmFtZXRlciBydHdfZGlzYWJsZV9scHNfZGVlcF9tb2RlPTEgdG8gc2VlDQo+ID4gaWYgaXQg
-Y2FuIHdvcms/DQo+IA0KPiBObywgdGhpcyBtb2R1bGUgcGFyYW1ldGVyIGRvZXNuJ3Qgc2VlbSB0
-byBtYWtlIGFueSBkaWZmZXJlbmNlLg0KPiANCj4gIyBjYXQgL3N5cy9tb2R1bGUvcnR3ODhfY29y
-ZS9wYXJhbWV0ZXJzL2Rpc2FibGVfbHBzX2RlZXANCj4gWQ0KPiANCj4gU3RpbGwgImZpcm13YXJl
-IGZhaWxlZCB0byBsZWF2ZSBscHMgc3RhdGUiIGFuZCBwb29yIHBlcmZvcm1hbmNlLg0KPiANCj4g
-QW55IG90aGVyIGlkZWFzIHdoYXQgbWF5IGdvIHdyb25nIGhlcmU/DQo+IA0KDQpUb2RheSwgSSBi
-b3Jyb3cgYSA4ODIyY3UsIGFuZCB1c2UgeW91ciBwYXRjaHNldCBidXQgcmV2ZXJ0DQpwYXRjaCAx
-MC8xMCB0byByZXByb2R1Y2UgdGhpcyBpc3N1ZS4gV2l0aCBmaXJtd2FyZSA3LjMuMCwNCml0IGxv
-b2tzIGJhZC4gQWZ0ZXIgY2hlY2tpbmcgc29tZXRoaW5nIGFib3V0IGZpcm13YXJlLCBJDQpmb3Vu
-ZCB0aGUgZmlybXdhcmUgaXMgb2xkLCBzbyB1cGdyYWRlIHRvIDkuOS4xMSwgYW5kIHRoZW4NCml0
-IHdvcmtzIHdlbGwgZm9yIDEwIG1pbnV0ZXMsIG5vIGFibm9ybWFsIG1lc3NhZ2VzLg0KDQpQbGVh
-c2UgdHJ5IGlmIGl0IGFsc28gd29ya3MgdG8geW91Lg0KDQpQaW5nLUtlDQoNCg0K
+On 05.06.22 19:18, Toke Høiland-Jørgensen wrote:
+> Felix Fietkau <nbd@nbd.name> writes:
+> 
+>> The airtime weight calculation overflows with a default weight value of 256
+>> whenever more than 8ms worth of airtime is reported.
+>> Bigger weight values impose even smaller limits on maximum airtime values.
+>> This can mess up airtime based calculations for drivers that don't report
+>> per-PPDU airtime values, but batch up values instead.
+>>
+>> Fix this by reordering multiplications/shifts and by reducing unnecessary
+>> intermediate precision (which was lost in a later stage anyway).
+>>
+>> The new shift value limits the maximum weight to 4096, which should be more
+>> than enough. Any values bigger than that will be clamped to the upper limit.
+>>
+>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> 
+> The weights are UAPI, so I guess we could run into applications that
+> expect to be able to set a weight higher than 4096? I don't think this
+> is too likely, but maybe it is better to reject such attempts instead of
+> silently clamping the value, to flush out any breakage if it does occur?
+Will do this in v2.
+
+Thanks,
+
+- Felix
