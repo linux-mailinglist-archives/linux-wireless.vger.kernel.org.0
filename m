@@ -2,418 +2,232 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4932654517D
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jun 2022 18:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F41FD54546D
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jun 2022 20:51:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238047AbiFIQDC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Jun 2022 12:03:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54620 "EHLO
+        id S1345514AbiFISvm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Jun 2022 14:51:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231679AbiFIQDB (ORCPT
+        with ESMTP id S241494AbiFISvl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Jun 2022 12:03:01 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7533F1D0CF
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Jun 2022 09:02:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:Subject:
-        From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID
-        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-        Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
-        :List-Post:List-Owner:List-Archive;
-        bh=xFyfzBxB9cXuqDZPYCzry5cKXt5vi1lbGDEyHTEH5RA=; b=JuZqkIzchmBIMc6WI7VrYH7lQA
-        mok6F303Zwtaj2spNKctvZJkNkX2a6TWWmv3rERk1YRpsxlc9OtRMLa5xqJXxbwe6Ia8INHdjtaeg
-        Y9bCA2UO+SMp9Lq2ml2Mzx1syNhgH5anmktXjsaHZKZHXBsfn1B1aRwmw+q6Hdsc/XcI=;
-Received: from p57a6f999.dip0.t-ipconnect.de ([87.166.249.153] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1nzKcb-0003TY-Pc; Thu, 09 Jun 2022 18:02:57 +0200
-Message-ID: <266ef9bc-42c9-59e1-8e7c-368bb8e5179b@nbd.name>
-Date:   Thu, 9 Jun 2022 18:02:57 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.9.1
+        Thu, 9 Jun 2022 14:51:41 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9300F2B2B80
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Jun 2022 11:51:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654800698; x=1686336698;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=IyvhnFVKvy2A2QJmh5qWc9uRnzJY1dK+ku8Bk35XCDY=;
+  b=lmqzOa0T4yn1GZ+Ir6t2tUGMLl3ZN9qBGmSAjEOxZCFAGr6mE8oU3OZL
+   1Sp3qtc7TwoQqOJTHcTO1wGU+dsVnkEUfBWLB6NmgcWoRrSOJvroeRivL
+   Gf74S5KL3e+Ercu8PDi720/YK1FGCTRhAPcmiumQssnozeD5CIUUZf5so
+   DFagYs4xYsexGJf/PuuZmm9a/f29ysCr03uoPMffKAwX/7ZKDsgeAa9uh
+   qHrfGaT+6IDt2nv/c3YNat5pR9PeHFYAqpANVGzUYxJ+sGwE2/vTD/MpO
+   zNRJRi2UBy9ZqAWVchSmsjXwbJeTCfI0D4xEd0CZcZi+ZXIyHeyXhlwfi
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="339141823"
+X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
+   d="scan'208";a="339141823"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 11:51:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
+   d="scan'208";a="710571541"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orsmga004.jf.intel.com with ESMTP; 09 Jun 2022 11:51:37 -0700
+Received: from orsmsx608.amr.corp.intel.com (10.22.229.21) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Thu, 9 Jun 2022 11:51:37 -0700
+Received: from orsmsx604.amr.corp.intel.com (10.22.229.17) by
+ ORSMSX608.amr.corp.intel.com (10.22.229.21) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Thu, 9 Jun 2022 11:51:36 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx604.amr.corp.intel.com (10.22.229.17) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27 via Frontend Transport; Thu, 9 Jun 2022 11:51:36 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.175)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2308.27; Thu, 9 Jun 2022 11:51:36 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kPCkP17iP2LE2HmWyVgBCqZPBnC5UnXl+hOdQEf3D42WCI/Zef+hRGflZ+zLkVx90aUoI+AWmyelEbFtib118f1sY6g92J7tGUpR3ObhvMr++/Pb6T4VHF5t9atDvy/nqJMrRYtoyhdTzcN6GbI+MUiUGzxckN2DOqmq/bQXZAYcKzbMESaR5thdJO/UobDB/Wz7DR8UwxsM75fGQpSqBJTTS9uf2Vn6s8INXBCNFqb9LiubUQjycbsBBHOFCaU6bFNV6otWF7G1Dv++FgXaDuGr5pOHLc6HVgPRBmqIkUh3cJ9zLmuCmuoQk/Hld8CNqdIhHT4uf4wghH+m6TJtFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IyvhnFVKvy2A2QJmh5qWc9uRnzJY1dK+ku8Bk35XCDY=;
+ b=C/GrXn9aIFw0/jb3RF7fLoWuAHkhoMzA5HNIuHQMPktotWVAL2zoGW+Qa/FnwuB4H2MHpgv/xavvNz+uCN4yQ8grn+iAFle8WCGuc7FD500jzs5U6uJejjo1XSGyGRxVWVZwgOMrfDYJjmp1MEa+ouj+jRpNsOu+GnbTPQT101Xzs3jspTBY2pL3nDg1ShiYf1gvB/mK0Clq7oNb9d/7oPSxcBzAhlUZhBqxS/rSara7SEk99ctqyx891EIDPId0ohG70BeMWIfjJsQ5UyEtBsFUzBpV9h0r3A5oXNJLHg+p8iiFeeO5i6fEloDM3wh0bbFK8YavcutOusVCfghbsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5987.namprd11.prod.outlook.com (2603:10b6:208:372::8)
+ by MWHPR11MB1869.namprd11.prod.outlook.com (2603:10b6:300:108::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5314.12; Thu, 9 Jun
+ 2022 18:51:34 +0000
+Received: from MN0PR11MB5987.namprd11.prod.outlook.com
+ ([fe80::e5b2:f15a:9bbd:1ca7]) by MN0PR11MB5987.namprd11.prod.outlook.com
+ ([fe80::e5b2:f15a:9bbd:1ca7%7]) with mapi id 15.20.5314.012; Thu, 9 Jun 2022
+ 18:51:34 +0000
+From:   "Greenman, Gregory" <gregory.greenman@intel.com>
+To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+CC:     "Hutchings, Ben" <ben@decadent.org.uk>,
+        "kyle@infradead.org" <kyle@infradead.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Ben Ami, Golan" <golan.ben.ami@intel.com>,
+        "jwboyer@kernel.org" <jwboyer@kernel.org>,
+        "Coelho, Luciano" <luciano.coelho@intel.com>,
+        "Yang, You-Sheng" <vicamo.yang@canonical.com>
+Subject: Re: pull request: iwlwifi firmware updates iwlwifi-fw-2022-06-09
+Thread-Topic: pull request: iwlwifi firmware updates iwlwifi-fw-2022-06-09
+Thread-Index: AQHYfALB0kmimN5RO06UIxQC2JQTKq1Ha9kA
+Date:   Thu, 9 Jun 2022 18:51:34 +0000
+Message-ID: <2d4e7c863938728e661e7bf93f42d26ee8456c58.camel@intel.com>
+References: <9ec532a3e9c5b67bcb00e64c0cbe9b371e9509cc.camel@intel.com>
+In-Reply-To: <9ec532a3e9c5b67bcb00e64c0cbe9b371e9509cc.camel@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@kernel.org>,
-        linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-References: <20220603164307.92189-1-nbd@nbd.name>
- <20220603164307.92189-2-nbd@nbd.name> <87a6arowpz.fsf@toke.dk>
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH 2/2] mac80211: rework the airtime fairness implementation
-In-Reply-To: <87a6arowpz.fsf@toke.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 840f7893-f13b-4ee5-b730-08da4a49133a
+x-ms-traffictypediagnostic: MWHPR11MB1869:EE_
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-microsoft-antispam-prvs: <MWHPR11MB18694F1074D4B9E2657A93AA8BA79@MWHPR11MB1869.namprd11.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 0H20KM+GwAVWinV7tAf3F3YjGeUPsa+3Y1UFzgC/FqjCDVhDwjduEsl1pBYpaJeYHzmMCjhh2woVtfG4WJ83SyPitHjaBhPXhFRdXSwT6bCYlF+k/zG+qODMne99gXQ0C5ZHfLxJtuEp0CLFl/BuI5vnk4nu6sNe7cpw5ZIMmKYuufpZ6VQ5HY5qhwSmiUODel9qMf1OI9fZNWZ3WOpoqApjZ0uerJHT7WRTqjqEX95s+RCOa7hDhaE/IEvoDMryXXefihCHXDdnECiD2tn6WWuEMHaB5FOliSfpJF5FIck2VK0bFoNvwDBTIyHmnnc4D1J9sJ9lYxV8l82Z/l70giSShhq2dNfHy2EcqAPyXQWtRUAR/d8y4BqkdfzFd4Q2x9gD8glcru41U9NQrws+L5adctWWboLFBodHuoOHYm9a9wd5Sz1Mtd9+g/ZaA+qcn9pdjRKcfBv5w1nJfSAzuuVAc0jnOF6gvaZfdDcSrM87UlKO5gkTIe0wEbX0YH17ceV8acmvsAsurC95OH4/+V8dc3CqDuSmht4kjidPtyUFKiB/NvAbpeYASPau+EDg0AA4GGd5KuA8s0zFRP4asS0/JWnX9UVC6Dn3cXnET9EILn9RVIhg0XsU/erthTvohFnYJQLU8aWHB1UIFiDRXlH8b4sSrZ28ytz1AFnQzoErxll/7JDls8yWJreA1tqz1dara4BrC0L8V06mtbjZrLTQz7sC9BPgcTSdToNXcCZuYmN0lzYKaogn+lqdwor70kOC0mi4LixgIRS6COLIkQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5987.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(38100700002)(83380400001)(6916009)(6486002)(66476007)(66446008)(64756008)(8936002)(316002)(66556008)(76116006)(966005)(6506007)(8676002)(15650500001)(4326008)(122000001)(86362001)(26005)(66946007)(54906003)(186003)(36756003)(82960400001)(19627235002)(6512007)(2616005)(2906002)(91956017)(508600001)(5660300002)(38070700005)(71200400001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZWdPN2VDVVJzTDJaamF5QXA1T3dGUjlzT0FSRFZMME5ISk1Fdm5MdWx6ZDU2?=
+ =?utf-8?B?dXJwNzIyK2xOSlBzclNZNEJQbWdtVlhuUXJnTGtJNE8wSk1URTEwOEZCdll1?=
+ =?utf-8?B?bWNGenNqdVlmUVZ0ald6NjF2Z2orL2hyK09IVS9BVzlIQkd2Y0pNWmxJYjdS?=
+ =?utf-8?B?YmVveU95Y2hRRDZsTVpkTkZkd2NZaTZYTW8rTm9tRjlnR3FRZGV5L3Q0cjAv?=
+ =?utf-8?B?S2xIRSt0cUJPQXM1WnVVdTZIWngrUVcwRnBmSS83VEszZUFEOFN4Nkl1Z3U3?=
+ =?utf-8?B?Q1ZZaDUrd1VTdjhHUE9oVys5RkhGMVZkdS9aTlYvd1R1cFg2Wm9pYkN0UXd5?=
+ =?utf-8?B?YUZQeEVXdzlydWU3QnVscXVSLzV5Q0NrSEhaSFM1dFVuQUZMZXBoSWVKbFkr?=
+ =?utf-8?B?QXViV1VxMm9yVzlxRHRpQXRXTDJPZkFKMitUYU1xYVdkYWsyTWhMSkZ2V2JK?=
+ =?utf-8?B?YWZNbUQvdkdWNlYvRStEam0rcHA5VGJEcS9aSDQrb21uVkdZNEtkRFRMYXBt?=
+ =?utf-8?B?R01XUUl5d0I5bklqcVBJOGpKaXZydk9KMnV5TDRjbk16RjNiL0VNNTZEbHdM?=
+ =?utf-8?B?TFRka0xxLzZnN0tzRWdqYkV5UVVOaUhzMUx2YnVzd2c5SisvRGtBUUNzL2li?=
+ =?utf-8?B?dGdMbGdOOVFkR29ZVzBrRnNjY054YVk1Q0thL3puVjNDZGROSXg5U1VpcXdK?=
+ =?utf-8?B?cHFLbE5FWm9wOFFDc1hsaStUZzBMYUlXTy9KZDI0TUMzUzNBNXpISVNLUElz?=
+ =?utf-8?B?bFdmUmdma1BuOUdXVnlNV0hqcDJLdTdsZlNzVmRRV01lOGR1YWxmeDVpVjEx?=
+ =?utf-8?B?eXlQRFphQTVFak5WNkYwcHJaMEdZa3hwZnRQZGZMYlZKVFM0ei8rWGp2NW0x?=
+ =?utf-8?B?dmNHYjFMU2F2YUp3WWlxaVo0VUgzenAxK0lPdi9yQ2d0cFhQQmZTUE15eFpJ?=
+ =?utf-8?B?VHl4V2prdG10a3hFNWhxczN0TkVnUEZGTzFJa0ZPTzVQVHIvUlN4UE9JQmJl?=
+ =?utf-8?B?c3JFK3JYWHNQZFl2UzhCTFFnd010b3JDWVVKbFpLYlM1djhJRFpTTG1Qc2FD?=
+ =?utf-8?B?ZHdzZTRtaHVVdkhNejNxL2tCRmdQY0V6MUNlUE45MFpiMktuRXJHYVNlQnZv?=
+ =?utf-8?B?Tzg1a3d6WVFKck9mNlA3YkJUclpWbllOTS9yeWN3YjAxQ3V3eW4vOHc5Y29F?=
+ =?utf-8?B?bEs2bVdqTk4zRE1wd1VsUFBEbzdHaVBrK3RuZ1VGbU90SWlnajF1OFJuTDZn?=
+ =?utf-8?B?aXBNKzVubHl6SUxycDJESTZWYzkzT1d0UjcwOE03cFdlSjUzdHJ6K1BmRVhI?=
+ =?utf-8?B?UmdVKzkzWWhxbHA4T2hSOEZWQ0g2Y2NFMndBNVRIVy82K1QvekdER01hSTd1?=
+ =?utf-8?B?VDJ1UHg2bWdRVlN4R2ljQXN6Z1oxRXIxQUYwVnFZTGdwKzNsS1pOQkphQWpj?=
+ =?utf-8?B?OXUyMVR5ZDlFTkRZd3dFczJTMTNmUVp2aW9TODBsaDVjZ09mdWVVcGw2Qkgy?=
+ =?utf-8?B?YlRSc080UmY3VmpZTzVSVjAvMUkyUVlWUTNFcEMyZUVoN05MMU5hUGNsTUpq?=
+ =?utf-8?B?bmhzUVN4c2ZtMUlycE4vNUxTMjZVcGptQjZtWXdocFJITkhhVTF3Uk9lOUlt?=
+ =?utf-8?B?d3lxWUNsQWRnQ0dka0FZa2p1M0pkMDJ2NUN2bkdoWjc0MnRnM0F6WTc4NmVZ?=
+ =?utf-8?B?RHdJWmhQT3BDT0ZEMEdIYUNyeEF6SkxuWDNMVXpnMmRjZ1djWjdLdXJYSmMz?=
+ =?utf-8?B?L0dyUXRRTUxSNXZYVlJ2Wit6ZjFXY0xpVFQ4bnY5aTY1aWVyV2I3ZUVYRXZM?=
+ =?utf-8?B?ZnMrKy9haGVvQjFRZW5TVytYOEI0K3E0ejNDYzEzanFxK29NYi9Uc0h0d1RC?=
+ =?utf-8?B?L2VXSG9zYVFIME9Ga3RsSjlOcTdVUmhCR2I2L0V4OTFLVkdXYnpSVTZzL1BF?=
+ =?utf-8?B?dUkzWEFKOUVwdUtQTVE2N0d6UUxrdTgvZVg1Rnc4bHA0K0s5V2ljWUgvUDNR?=
+ =?utf-8?B?aXRkMG5GM1lYOURqcUg0KytMc3czUXhUTFdoWjlVSEtra0dxbGd6R2NEa2xx?=
+ =?utf-8?B?OXhoallZS25nSm1haVdDTWxKZmdudXJXcDlzdnMrbVhPVjErcDAyRWNyY3dM?=
+ =?utf-8?B?K1dMZTBaVHRVbGM3eEVCTFNTUzBnUC9LZnZQMFlyZUdTci9MWWlnT3Rua3E0?=
+ =?utf-8?B?TXk4ZDdwYTBpT0gvZE5SOFVaOWQrTitOdEkvRXMzdS9CR3NyMi9CV3M4Yzh3?=
+ =?utf-8?B?YlFJaEVxelFlR250VTQwWDY1UEtFN01iY2lYaVZSRzZDQlU2SGRQNTN4K05Y?=
+ =?utf-8?B?bzdHTFpIS2hEZVc4cWRpczV3NW5vU1BOeG9HLys0WTcvSDRySDlaRFVrdlhT?=
+ =?utf-8?Q?NIdFC4aG8RRoNcXWTRXHH4ycQxM4TE31R5OJS?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <76842CB6595CA143BA8E54255FD15241@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5987.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 840f7893-f13b-4ee5-b730-08da4a49133a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jun 2022 18:51:34.1717
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: OH0UrXioFUqGWLBSLSHE9jcnzD0QnDCWUfyN/Z5cADcUEbwdvQ+fFj3xX9HRlZLCAf+3S0uL0J2d9ZcHC3RwtS4AbP3v2RYGd0MDaio5E90=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB1869
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 05.06.22 19:18, Toke Høiland-Jørgensen wrote:
-> Felix Fietkau <nbd@nbd.name> writes:
-> 
->> The current ATF implementation has a number of issues which have shown up
->> during testing. Since it does not take into account the AQL budget of
->> pending packets, the implementation might queue up large amounts of packets
->> for a single txq until airtime gets reported after tx completion.
->> The same then happens to the next txq afterwards. While the end result could
->> still be considered fair, the bursty behavior introduces a large amount of
->> latency.
->> The current code also tries to avoid frequent re-sorting of txq entries in
->> order to avoid having to re-balance the rbtree often.
->>
->> In order to fix these issues, introduce skip lists as a data structure, which
->> offer similar lookup/insert/delete times as rbtree, but avoids the need for
->> rebalacing by being probabilistic.
->> Use this to keep tx entries sorted by virtual time + pending AQL budget and
->> re-sort after each ieee80211_return_txq call.
->>
->> Since multiple txqs share a single air_time struct with a virtual time value,
->> switch the active_txqs list to queue up air_time structs instead of queues.
->> This helps avoid imbalance between shared txqs by servicing them round robin.
->>
->> ieee80211_next_txq now only dequeues the first element of active_txqs. To
->> make that work for non-AQL or non-ATF drivers as well, add estimated tx
->> airtime directly to air_info virtual time if either AQL or ATF is not
->> supported.
->>
->> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> 
-> Thank you for working on this! I generally approve of this, with a few
-> comments and questions below:
-> 
->> ---
->>  include/linux/skiplist.h   | 250 +++++++++++++++++++++++++++++++++++++
->>  net/mac80211/cfg.c         |   5 -
->>  net/mac80211/ieee80211_i.h |  27 +++-
->>  net/mac80211/main.c        |   2 +-
->>  net/mac80211/sta_info.c    |   3 +-
->>  net/mac80211/sta_info.h    |   6 +-
->>  net/mac80211/tx.c          | 244 +++++++++++++++++-------------------
->>  7 files changed, 396 insertions(+), 141 deletions(-)
->>  create mode 100644 include/linux/skiplist.h
->>
->> diff --git a/include/linux/skiplist.h b/include/linux/skiplist.h
->> new file mode 100644
->> index 000000000000..2312ed87cfe9
->> --- /dev/null
->> +++ b/include/linux/skiplist.h
->> @@ -0,0 +1,250 @@
->> +/* SPDX-License-Identifier: GPL-2.0-or-later */
->> +/*
->> + * A skip list is a probabilistic alternative to balanced trees. Unlike the
->> + * red-black tree, it does not require rebalancing.
->> + *
->> + * This implementation uses only unidirectional next pointers and is optimized
->> + * for use in a priority queue where elements are mostly deleted from the front
->> + * of the queue.
->> + *
->> + * When storing up to 2^n elements in a n-level skiplist. lookup and deletion
->> + * for the first element happens in O(1) time, other than that, insertion and
->> + * deletion takes O(log n) time, assuming that the number of elements for an
->> + * n-level list does not exceed 2^n.
->> + *
->> + * Usage:
->> + * DECLARE_SKIPLIST_TYPE(foo, 5) will define the data types for a 5-level list:
->> + * struct foo_list: the list data type
->> + * struct foo_node: the node data for an element in the list
->> + *
->> + * DECLARE_SKIPLIST_IMPL(foo, foo_cmp_fn)
-> 
-> I'm a little bit on the fence as to whether the macro-based definitions
-> is a bit too magical. It's not how any of the other list structures in
-> the kernel is done. OTOH, it's nice to have usage-specific structure
-> names. So yeah, on the fence... Hopefully others have a stronger opinion :)
-I tried to avoid it, but I didn't find a better way to do it. I added it 
-in order to define the number of levels for the skiplist only once and 
-make the code resolve it for the individual functions at compile time in 
-a type safe way.
-Other data structures in the kernel don't need this, because their 
-member node struct size typically doesn't change based on a given parameter.
-
-
->> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
->> index 0e4efc08c762..3a81829d2a7a 100644
->> --- a/net/mac80211/tx.c
->> +++ b/net/mac80211/tx.c
->> @@ -3790,21 +3800,26 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
->>  encap_out:
->>  	IEEE80211_SKB_CB(skb)->control.vif = vif;
->>  
->> -	if (vif &&
->> -	    wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL)) {
->> -		bool ampdu = txq->ac != IEEE80211_AC_VO;
->> -		u32 airtime;
->> -
->> -		airtime = ieee80211_calc_expected_tx_airtime(hw, vif, txq->sta,
->> -							     skb->len, ampdu);
->> -		if (airtime) {
->> -			airtime = ieee80211_info_set_tx_time_est(info, airtime);
->> -			ieee80211_sta_update_pending_airtime(local, tx.sta,
->> -							     txq->ac,
->> -							     airtime,
->> -							     false);
->> -		}
->> -	}
->> +	if (!vif)
->> +		return skb;
->> +
->> +	ampdu = txq->ac != IEEE80211_AC_VO;
->> +	airtime = ieee80211_calc_expected_tx_airtime(hw, vif, txq->sta,
->> +						     skb->len, ampdu);
->> +	if (!airtime)
->> +		return skb;
->> +
->> +	if (!wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL) ||
->> +	    !wiphy_ext_feature_isset(local->hw.wiphy,
->> +				     NL80211_EXT_FEATURE_AIRTIME_FAIRNESS))
->> +		ieee80211_register_airtime(txq, airtime, 0);
-> 
-> So this implies that we always schedule in airtime order (i.e., enforce
-> fairness) for any driver that can get a meaningful value returned from
-> ieee80211_calc_expected_tx_airtime(), right? That's probably OK, but
-> just want to make sure we've thought through all the implications of
-> this.
-> 
-> A comment here explaining why this is done would be useful; it's a bit
-> counter-intuitive when just looking at the code. Your comment in the
-> commit message implies that scheduling doesn't work correctly if this is
-> not done, but then what happens if airtime is 0 and we bail out above?
-I guess I need to add something to deal with that corner case, maybe by 
-returning the smallest possible value for expected tx airtime if it 
-can't be calculated.
-
->> +	if (!wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL))
->> +		return skb;
->> +
->> +	airtime = ieee80211_info_set_tx_time_est(info, airtime);
->> +	ieee80211_sta_update_pending_airtime(local, tx.sta, txq->ac,
->> +					     airtime, false);
->>  
->>  	return skb;
->>  
->> @@ -3815,85 +3830,95 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
->>  }
->>  EXPORT_SYMBOL(ieee80211_tx_dequeue);
->>  
->> +static void
->> +airtime_info_next_txq_idx(struct airtime_info *air_info)
->> +{
->> +	air_info->txq_idx++;
->> +	if (air_info->txq_idx >= ARRAY_SIZE(air_info->txq) ||
->> +	    !air_info->txq[air_info->txq_idx])
->> +		air_info->txq_idx = 0;
->> +}
-> 
-> The void function is a bit cumbersome in use IMO. How about making it
-> return the txq pointer directly? You can still save the current txq_idx
-> at the beginning of the loop below to detect cycles.
-Will do that in v2.
-
->>  struct ieee80211_txq *ieee80211_next_txq(struct ieee80211_hw *hw, u8 ac)
->>  {
->>  	struct ieee80211_local *local = hw_to_local(hw);
->>  	struct airtime_sched_info *air_sched;
->>  	u64 now = ktime_get_coarse_boottime_ns();
->> -	struct ieee80211_txq *ret = NULL;
->> +	struct airtime_sched_node *node = NULL;
->> +	struct ieee80211_txq *txq;
->>  	struct airtime_info *air_info;
->>  	struct txq_info *txqi = NULL;
->> -	struct rb_node *node;
->> -	bool first = false;
->> +	u8 txq_idx;
->>  
->>  	air_sched = &local->airtime[ac];
->>  	spin_lock_bh(&air_sched->lock);
->>  
->> -	node = air_sched->schedule_pos;
->> -
->>  begin:
->> -	if (!node) {
->> -		node = rb_first_cached(&air_sched->active_txqs);
->> -		first = true;
->> -	} else {
->> -		node = rb_next(node);
->> -	}
->> +	txq = NULL;
->> +	if (airtime_sched_peek(&air_sched->active_txqs) ==
->> +	    air_sched->schedule_pos)
->> +		goto out;
->>  
->> +	node = airtime_sched_dequeue(&air_sched->active_txqs);
->>  	if (!node)
->>  		goto out;
->>  
->> -	txqi = container_of(node, struct txq_info, schedule_order);
->> -	air_info = to_airtime_info(&txqi->txq);
->> +	air_info = container_of(node, struct airtime_info, schedule_order);
->>  
->> -	if (air_info->v_t > air_sched->v_t &&
->> -	    (!first || !airtime_catchup_v_t(air_sched, air_info->v_t, now)))
->> -		goto out;
->> -
->> -	if (!ieee80211_txq_airtime_check(hw, &txqi->txq)) {
->> -		first = false;
->> +	airtime_info_next_txq_idx(air_info);
->> +	txq_idx = air_info->txq_idx;
->> +	txq = air_info->txq[txq_idx];
->> +	if (!txq || !ieee80211_txq_airtime_check(hw, txq))
->>  		goto begin;
-> 
-> Can txq actually be NULL here? airtime_info_next_txq_idx() has a NULL
-> check inside it as well...
-I don't think it can be NULL, I'll remove the check.
-
->> +	while (1) {
->> +		txqi = to_txq_info(txq);
->> +		if (test_and_clear_bit(IEEE80211_TXQ_FORCE_ACTIVE, &txqi->flags))
->> +			break;
->> +
->> +		if (txq_has_queue(txq))
->> +			break;
->> +
->> +		airtime_info_next_txq_idx(air_info);
->> +		txq = air_info->txq[air_info->txq_idx];
->> +		if (txq_idx == air_info->txq_idx)
->> +			goto begin;
-> 
-> How can this happen in normal operation? This implies that a TXQ was
-> scheduled without a backlog; isn't that a bug that we should warn on?
-At least mt76 assumes that calling ieee80211_next_txq in a loop during a 
-scheduling round will eventually return NULL, even when no frames were 
-queued. ath9k could potentially also need this, depending on the block 
-ack window state.
-This assumption was valid for the previous implementation, and I figured 
-it would be cleaner and more robust to preserve it.
-
->> +	}
->> +
->> +	if (air_info->v_t_cur > air_sched->v_t) {
->> +		if (node == airtime_sched_peek(&air_sched->active_txqs))
->> +			airtime_catchup_v_t(air_sched, air_info->v_t_cur, now);
-> 
-> We obtained node with a dequeue above, so presumably it's no longer at
-> the head of the queue? So how can this check ever be true?
-Right, I forgot to remove this check. It was needed in an earlier local 
-version of the code where I didn't do the dequeue.
-
-
->> @@ -4022,19 +4013,10 @@ static void __ieee80211_unschedule_txq(struct ieee80211_hw *hw,
->>  		ieee80211_update_airtime_weight(local, air_sched, 0, true);
->>  	}
->>  
->> -	if (RB_EMPTY_NODE(&txqi->schedule_order))
->> -		return;
->> -
->> -	if (air_sched->schedule_pos == &txqi->schedule_order)
->> -		air_sched->schedule_pos = rb_prev(&txqi->schedule_order);
->> -
->> +	airtime_sched_delete(&air_sched->active_txqs, &air_info->schedule_order);
->>  	if (!purge)
->>  		airtime_set_active(air_sched, air_info,
->>  				   ktime_get_coarse_boottime_ns());
-> 
-> Now that there's no early return, this could be made an 'else' branch of
-> the if (purge) block above...
-Right, will do that in v2.
-
->> @@ -4054,14 +4036,24 @@ void ieee80211_return_txq(struct ieee80211_hw *hw,
->>  {
->>  	struct ieee80211_local *local = hw_to_local(hw);
->>  	struct txq_info *txqi = to_txq_info(txq);
->> +	struct airtime_sched_info *air_sched;
->> +	struct airtime_info *air_info;
->>  
->> -	spin_lock_bh(&local->airtime[txq->ac].lock);
->> +	air_sched = &local->airtime[txq->ac];
->> +	air_info = to_airtime_info(&txqi->txq);
->>  
->> -	if (!RB_EMPTY_NODE(&txqi->schedule_order) && !force &&
->> -	    !txq_has_queue(txq))
->> -		__ieee80211_unschedule_txq(hw, txq, false);
->> +	if (force)
->> +		set_bit(IEEE80211_TXQ_FORCE_ACTIVE, &txqi->flags);
-> 
-> This sets the bit even if the AQL check fails below; is that intentional?
-Yes. The bit indicates that the queue should be passed to the driver 
-even when mac80211 has no frames queued for it (presumably because the 
-driver has queued some internally).
-
->> -	spin_unlock_bh(&local->airtime[txq->ac].lock);
->> +	spin_lock_bh(&air_sched->lock);
->> +	if (!ieee80211_txq_airtime_check(hw, &txqi->txq))
->> +	    airtime_sched_delete(&air_sched->active_txqs,
->> +				 &air_info->schedule_order);
-> 
-> why delete here instead of unschedule?
-Right, unschedule makes sense.
-
->> @@ -4100,46 +4092,48 @@ EXPORT_SYMBOL(ieee80211_txq_airtime_check);
->>  bool ieee80211_txq_may_transmit(struct ieee80211_hw *hw,
->>  				struct ieee80211_txq *txq)
->>  {
->> -	struct txq_info *first_txqi = NULL, *txqi = to_txq_info(txq);
->> +	struct txq_info *txqi = to_txq_info(txq);
->>  	struct ieee80211_local *local = hw_to_local(hw);
->>  	struct airtime_sched_info *air_sched;
->> +	struct airtime_sched_node *node = NULL;
->>  	struct airtime_info *air_info;
->> -	struct rb_node *node = NULL;
->>  	bool ret = false;
->> +	u32 aql_slack;
->>  	u64 now;
->>  
->> -
->>  	if (!ieee80211_txq_airtime_check(hw, txq))
->>  		return false;
->>  
->>  	air_sched = &local->airtime[txq->ac];
->>  	spin_lock_bh(&air_sched->lock);
->>  
->> -	if (RB_EMPTY_NODE(&txqi->schedule_order))
->> -		goto out;
->> -
->>  	now = ktime_get_coarse_boottime_ns();
->>  
->>  	/* Like in ieee80211_next_txq(), make sure the first station in the
->>  	 * scheduling order is eligible for transmission to avoid starvation.
->>  	 */
->> -	node = rb_first_cached(&air_sched->active_txqs);
->> +	node = airtime_sched_peek(&air_sched->active_txqs);
->>  	if (node) {
->> -		first_txqi = container_of(node, struct txq_info,
->> -					  schedule_order);
->> -		air_info = to_airtime_info(&first_txqi->txq);
->> +		air_info = container_of(node, struct airtime_info,
->> +					schedule_order);
->>  
->>  		if (air_sched->v_t < air_info->v_t)
->>  			airtime_catchup_v_t(air_sched, air_info->v_t, now);
->>  	}
->>  
->>  	air_info = to_airtime_info(&txqi->txq);
->> -	if (air_info->v_t <= air_sched->v_t) {
->> +	aql_slack = air_info->aql_limit_low;
->> +	aql_slack *= air_info->weight_reciprocal;
->> +	aql_slack >>= IEEE80211_RECIPROCAL_SHIFT_STA - IEEE80211_WEIGHT_SHIFT;
->> +	/*
->> +	 * add extra slack of aql_limit_low in order to avoid queue
->> +	 * starvation when bypassing normal scheduling order
->> +	 */
->> +	if (air_info->v_t <= air_sched->v_t + aql_slack) {
-> 
-> I get the intention behind this, and think it's (probably) reasonable.
-> But testing it with an actual ath10k device in push/pull mode would be
-> good :)
-I'm not very familiar with ath10k, could you help me with that?
-
-Thanks for the detailed review!
-
-- Felix
+T24gVGh1LCAyMDIyLTA2LTA5IGF0IDE2OjEzICswMzAwLCBHcmVlbm1hbiwgR3JlZ29yeSB3cm90
+ZToNCj4gSGksDQo+IA0KPiBJJ20gdGhlIG5ldyBtYWludGFpbmVyIG9mIGl3bHdpZmkgZHJpdmVy
+LCBhZGRpbmcgTHVjYSBpbiBjYyBmb3IgbXkgZmlyc3QNCj4gcHVsbCByZXF1ZXN0LiANCj4gDQo+
+IFRoaXMgY29udGFpbnMgc29tZSBuZXcgYW5kIHVwZGF0ZWQgZmlybXdhcmVzIGZvciBhbGwgb3Vy
+IGN1cnJlbnRseQ0KPiBtYWludGFpbmVkIEZXIGJpbmFyaWVzLg0KPiANCj4gUGxlYXNlIHB1bGwg
+b3IgbGV0IG1lIGtub3cgaWYgdGhlcmUgYXJlIGFueSBpc3N1ZXMuDQo+IA0KPiAtLQ0KPiBUaGFu
+a3MsDQo+IEdyZWdvcnkNCj4gDQo+IFRoZSBmb2xsb3dpbmcgY2hhbmdlcyBzaW5jZSBjb21taXQg
+MDJjNjk4NjNjODg1ZGI5NjNmOGMwMTIxYjUzM2YyODE2ZWY1YmUzYjoNCj4gDQo+IMKgIHJ0bF9i
+dDogVXBkYXRlIFJUTDg4NTJBIEJUIFVTQiBmaXJtd2FyZSB0byAweERGQjhfMDYzNCAoMjAyMi0w
+Ni0wNyAwODozMjozOSAtMDQwMCkNCj4gDQo+IGFyZSBhdmFpbGFibGUgaW4gdGhlIEdpdCByZXBv
+c2l0b3J5IGF0Og0KPiDCoA0KPiBodHRwOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9r
+ZXJuZWwvZ2l0L2l3bHdpZmkvbGludXgtZmlybXdhcmUuZ2l0wqB0YWdzL2l3bHdpZmktZnctMjAy
+Mi0wNi0wOQ0KPiANCj4gZm9yIHlvdSB0byBmZXRjaCBjaGFuZ2VzIHVwIHRvIDk5Y2I0YjA5NWI3
+Njc5NTk2ZWQ5ZmJmMTU3ODU2OGRmMTgzNzc4NjY6DQo+IA0KPiDCoCBpd2x3aWZpOiBhZGQgbmV3
+IEZXcyBmcm9tIGNvcmU3MC04NyByZWxlYXNlICgyMDIyLTA2LTA5IDEwOjE5OjMyICswMzAwKQ0K
+PiANCj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLQ0KPiBVcGRhdGUgYW5kIGFkZCBpd2x3aWZpIGZpcm13YXJlIGJpbmFyaWVz
+IGZvciByZWxlYXNlIENvcmU3MC04Nw0KPiANCj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiBHcmVnb3J5IEdyZWVubWFu
+ICgyKToNCj4gwqDCoMKgwqDCoCBpd2x3aWZpOiB1cGRhdGUgOTAwMC1mYW1pbHkgZmlybXdhcmVz
+IHRvIGNvcmU3MC04Nw0KPiDCoMKgwqDCoMKgIGl3bHdpZmk6IGFkZCBuZXcgRldzIGZyb20gY29y
+ZTcwLTg3IHJlbGVhc2UNCj4gDQo+IMKgV0hFTkNFwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCA0MA0KPiArKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKy0tDQo+IMKgaXdsd2lmaS05MDAwLXB1LWIwLWpmLWIwLTQ2LnVj
+b2RlIHwgQmluIDE1MjAyMDggLT4gMTUxODc4OCBieXRlcw0KPiDCoGl3bHdpZmktOTI2MC10aC1i
+MC1qZi1iMC00Ni51Y29kZSB8IEJpbiAxNDkxMDU2IC0+IDE0ODk1NDggYnl0ZXMNCj4gwqBpd2x3
+aWZpLVF1LWIwLWhyLWIwLTczLnVjb2RlwqDCoMKgwqDCoCB8IEJpbiAwIC0+IDEzNjk4NDAgYnl0
+ZXMNCj4gwqBpd2x3aWZpLVF1LWIwLWpmLWIwLTczLnVjb2RlwqDCoMKgwqDCoCB8IEJpbiAwIC0+
+IDEyOTAwODQgYnl0ZXMNCj4gwqBpd2x3aWZpLVF1LWMwLWhyLWIwLTczLnVjb2RlwqDCoMKgwqDC
+oCB8IEJpbiAwIC0+IDEzNjk4NTYgYnl0ZXMNCj4gwqBpd2x3aWZpLVF1LWMwLWpmLWIwLTczLnVj
+b2RlwqDCoMKgwqDCoCB8IEJpbiAwIC0+IDEyOTAxMDAgYnl0ZXMNCj4gwqBpd2x3aWZpLVF1Wi1h
+MC1oci1iMC03My51Y29kZcKgwqDCoMKgIHwgQmluIDAgLT4gMTM2OTk3NiBieXRlcw0KPiDCoGl3
+bHdpZmktUXVaLWEwLWpmLWIwLTczLnVjb2RlwqDCoMKgwqAgfCBCaW4gMCAtPiAxMjkwMjIwIGJ5
+dGVzDQo+IMKgaXdsd2lmaS1jYy1hMC03My51Y29kZcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCBC
+aW4gMCAtPiAxMzMzMjk2IGJ5dGVzDQo+IMKgaXdsd2lmaS1zby1hMC1nZi1hMC03My51Y29kZcKg
+wqDCoMKgwqAgfCBCaW4gMCAtPiAxNTYzNjkyIGJ5dGVzDQo+IMKgaXdsd2lmaS1zby1hMC1nZi1h
+MC5wbnZtwqDCoMKgwqDCoMKgwqDCoMKgIHwgQmluIDQxODA4IC0+IDQxODA4IGJ5dGVzDQo+IMKg
+aXdsd2lmaS1zby1hMC1nZjQtYTAtNzMudWNvZGXCoMKgwqDCoCB8IEJpbiAwIC0+IDE1ODc4MDAg
+Ynl0ZXMNCj4gwqBpd2x3aWZpLXNvLWEwLWdmNC1hMC5wbnZtwqDCoMKgwqDCoMKgwqDCoCB8IEJp
+biAyODA2NCAtPiAyODA2NCBieXRlcw0KPiDCoGl3bHdpZmktc28tYTAtaHItYjAtNzMudWNvZGXC
+oMKgwqDCoMKgIHwgQmluIDAgLT4gMTQ2NTIwOCBieXRlcw0KPiDCoGl3bHdpZmktc28tYTAtamYt
+YjAtNzMudWNvZGXCoMKgwqDCoMKgIHwgQmluIDAgLT4gMTQwOTMzNiBieXRlcw0KPiDCoGl3bHdp
+ZmktdHktYTAtZ2YtYTAtNzMudWNvZGXCoMKgwqDCoMKgIHwgQmluIDAgLT4gMTUwMjkwMCBieXRl
+cw0KPiDCoGl3bHdpZmktdHktYTAtZ2YtYTAucG52bcKgwqDCoMKgwqDCoMKgwqDCoCB8IEJpbiA0
+MTU4OCAtPiA0MTU4OCBieXRlcw0KPiDCoDE4IGZpbGVzIGNoYW5nZWQsIDM4IGluc2VydGlvbnMo
+KyksIDIgZGVsZXRpb25zKC0pDQo+IMKgY3JlYXRlIG1vZGUgMTAwNjQ0IGl3bHdpZmktUXUtYjAt
+aHItYjAtNzMudWNvZGUNCj4gwqBjcmVhdGUgbW9kZSAxMDA2NDQgaXdsd2lmaS1RdS1iMC1qZi1i
+MC03My51Y29kZQ0KPiDCoGNyZWF0ZSBtb2RlIDEwMDY0NCBpd2x3aWZpLVF1LWMwLWhyLWIwLTcz
+LnVjb2RlDQo+IMKgY3JlYXRlIG1vZGUgMTAwNjQ0IGl3bHdpZmktUXUtYzAtamYtYjAtNzMudWNv
+ZGUNCj4gwqBjcmVhdGUgbW9kZSAxMDA2NDQgaXdsd2lmaS1RdVotYTAtaHItYjAtNzMudWNvZGUN
+Cj4gwqBjcmVhdGUgbW9kZSAxMDA2NDQgaXdsd2lmaS1RdVotYTAtamYtYjAtNzMudWNvZGUNCj4g
+wqBjcmVhdGUgbW9kZSAxMDA2NDQgaXdsd2lmaS1jYy1hMC03My51Y29kZQ0KPiDCoGNyZWF0ZSBt
+b2RlIDEwMDY0NCBpd2x3aWZpLXNvLWEwLWdmLWEwLTczLnVjb2RlDQo+IMKgY3JlYXRlIG1vZGUg
+MTAwNjQ0IGl3bHdpZmktc28tYTAtZ2Y0LWEwLTczLnVjb2RlDQo+IMKgY3JlYXRlIG1vZGUgMTAw
+NjQ0IGl3bHdpZmktc28tYTAtaHItYjAtNzMudWNvZGUNCj4gwqBjcmVhdGUgbW9kZSAxMDA2NDQg
+aXdsd2lmaS1zby1hMC1qZi1iMC03My51Y29kZQ0KPiDCoGNyZWF0ZSBtb2RlIDEwMDY0NCBpd2x3
+aWZpLXR5LWEwLWdmLWEwLTczLnVjb2RlDQo+IA0KDQpJIGZvcmdvdCB0byBjYyBsaW51eC13aXJl
+bGVzcyBpbiB0aGUgb3JpZ2luYWwgcHVsbCByZXF1ZXN0LA0Kc28gYWRkaW5nIGl0IGhlcmUuDQo=
