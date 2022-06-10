@@ -2,50 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E67F546EEC
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jun 2022 23:02:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F38A8546FBF
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Jun 2022 00:52:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348645AbiFJVCL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Jun 2022 17:02:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43634 "EHLO
+        id S235334AbiFJWwC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Jun 2022 18:52:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346839AbiFJVCK (ORCPT
+        with ESMTP id S232323AbiFJWv7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Jun 2022 17:02:10 -0400
-Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072674DF5F;
-        Fri, 10 Jun 2022 14:02:06 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1654894924; bh=nJ5MFlI7bZgvfzzBUZG0yDIB0cURw2j0N/Z0XV16DgM=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=ona/SbCQfx0pRd6c3vM6AB+M0QbCy3M9JMTMdO7aqXiEbNpmwTYGd77hskQc1PATt
-         MjrEuszx+mhwOQw0lj5br+mlKrCA5G9ik2v36JbE8u+dGNcSgmZ1kkexrzIFQpN393
-         zFeV3e0+oGAVmYTvmV3qbtjBjO/54H7VphjA9gsfvyoBwWOZIpfvUJYH/HNp0XZUx2
-         Ydj5MmxW7Cr1rPzBBWNc5wY3LvokXPmst0Bs54ctXNvAaT5sH7HyfdvRz3f/UuTOc2
-         aCk6QpEMyXxRZfbmaOOk/kc2QRu9LMe6IE7SuuM0MvfnVDKWhXVIELUPJsoV5a3LOZ
-         IdYwUTuN3C+xg==
-To:     Pavel Skripkin <paskripkin@gmail.com>, Takashi Iwai <tiwai@suse.de>
-Cc:     kvalo@kernel.org, davem@davemloft.net, kuba@kernel.org,
-        pabeni@redhat.com, senthilkumar@atheros.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
-        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
-Subject: Re: [PATCH v5 1/2] ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
-In-Reply-To: <dabcbe61-5d77-7290-efd5-3fe71ca60640@gmail.com>
-References: <961b028f073d0d5541de66c00a517495431981f9.1653168225.git.paskripkin@gmail.com>
- <87bkv0vg2p.wl-tiwai@suse.de> <87r13w2wxq.fsf@toke.dk>
- <dabcbe61-5d77-7290-efd5-3fe71ca60640@gmail.com>
-Date:   Fri, 10 Jun 2022 23:02:04 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <878rq42pwz.fsf@toke.dk>
+        Fri, 10 Jun 2022 18:51:59 -0400
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C5613D6E
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Jun 2022 15:51:57 -0700 (PDT)
+Received: from fsav117.sakura.ne.jp (fsav117.sakura.ne.jp [27.133.134.244])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 25AMpjra090332;
+        Sat, 11 Jun 2022 07:51:45 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav117.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav117.sakura.ne.jp);
+ Sat, 11 Jun 2022 07:51:45 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav117.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 25AMpjqo090329
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Sat, 11 Jun 2022 07:51:45 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <886f1a69-5688-196c-90f1-e1324e941e77@I-love.SAKURA.ne.jp>
+Date:   Sat, 11 Jun 2022 07:51:42 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH] ath6kl: avoid flush_scheduled_work() usage
+Content-Language: en-US
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <8de85fd9-50a1-aad7-86f7-24834be8bbc0@I-love.SAKURA.ne.jp>
+ <acb6a5e3-d349-76da-27fc-3377d3343dc0@quicinc.com>
+ <376b3413-c584-192c-756d-609f7c55d742@quicinc.com>
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <376b3413-c584-192c-756d-609f7c55d742@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,26 +55,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pavel Skripkin <paskripkin@gmail.com> writes:
+On 2022/06/11 4:10, Jeff Johnson wrote:
+> On 6/10/2022 12:05 PM, Jeff Johnson wrote:
+>>> +static int __init ath6kl_init(void)
+>>> +{
+>>> +    int ret;
+>>> +
+>>> +    ath6kl_wq = alloc_workqueue("ath6kl_wq", 0, 0);
+>>> +    if (!ath6kl_wq)
+>>> +        return -ENOMEM;
+>>
+>> this approach means the driver will always allocate a workqueue even if the associated hardware is never present.
 
-> Hi Toke,
->
-> On 6/10/22 21:30, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>=20
->> In general, if a patch is marked as "changes requested", the right thing
->> to do is to bug the submitter to resubmit. Which I guess you just did,
->> so hopefully we'll get an update soon :)
->>=20
->
->
-> I agree here. The build fix is trivial, I just wanted to reply to
-> Hillf like 2 weeks ago, but an email got lost in my inbox.
->
-> So, i don't know what is correct thing to do rn: wait for Hillf's
-> reply or to quickly respin with build error addressed?
+Creating a WQ without WQ_MEM_RECLAIM flag consumes little resource.
 
-Up to you. If you respin it now we can just let it sit in patchwork over
-the weekend and see if it attracts any further comment; or you can wait
-and respin on Monday...
+>>
+>> did you consider instead having the allocation take place within the processing of ath6kl_usb_probe() and the destroy take place within the processing of ath6kl_usb_pm_remove()?
+> 
+> typo: ath6kl_usb_pm_remove() => ath6kl_usb_remove()
 
--Toke
+Technically possible to use ath6kl_usb_create()/ath6kl_usb_destroy() if you prefer it.
+
+Do you want ath6kl_wq be shared within this module (using a refcount), or be local to
+each "struct ath6kl_usb" (adding a member and accessing via usb_get_intfdata()) ?
+
