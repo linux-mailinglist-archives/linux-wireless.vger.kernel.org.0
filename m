@@ -2,66 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DABC2545D5B
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jun 2022 09:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7596B545DAE
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jun 2022 09:39:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346483AbiFJH1a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Jun 2022 03:27:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42066 "EHLO
+        id S1346826AbiFJHjZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Jun 2022 03:39:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346759AbiFJH1D (ORCPT
+        with ESMTP id S242965AbiFJHjY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Jun 2022 03:27:03 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94AC9110984
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Jun 2022 00:27:01 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 25A7QuZO2010189, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 25A7QuZO2010189
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 10 Jun 2022 15:26:57 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Fri, 10 Jun 2022 15:26:56 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 10 Jun
- 2022 15:26:56 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <damon.chen@realtek.com>,
-        <phhuang@realtek.com>
-Subject: [PATCH 11/11] rtw89: disable invalid phy reports for all ICs
-Date:   Fri, 10 Jun 2022 15:26:10 +0800
-Message-ID: <20220610072610.27095-12-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220610072610.27095-1-pkshih@realtek.com>
-References: <20220610072610.27095-1-pkshih@realtek.com>
+        Fri, 10 Jun 2022 03:39:24 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBFF3132766;
+        Fri, 10 Jun 2022 00:39:23 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A5A78B831CF;
+        Fri, 10 Jun 2022 07:39:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E8AC3411B;
+        Fri, 10 Jun 2022 07:39:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654846761;
+        bh=hCht15CTX44Sxk0pUcKGojtW+Cz5f/KZ5jdF4JOrrho=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=D4uf040VQO4M09A8PXRpNKasuCp1C/MOzTMav9sOMCmqRbhu/MiZdTLL3FfuXszpj
+         Fnw8puVMUizdbPAyVg9zTNgvz7TA0NwUA1QKurIYTCkBQ+rDpu30xr4XA+8X+Wl6hU
+         fNpdtGPsY86G0L9fMqKJQvkWcWxrlcih/5rJBsuf3MIsI7qvT3SWEeeRpDyfE2t8we
+         KEsZ+Bi3pJcNyaO9RWLbiPWg1P5zqMFYzoFiSV9xLp3DRRpD8IM8UxUBSKkIlfckcs
+         rSAKClt9RaW8tUz0+MwQ78FTyTlVqoHXxRHLEgx9U+FQdT2GHkLf0Thop4dItQ50Ng
+         ulpIq0spROH7g==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/10/2022 07:06:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzYvMTAgpFekyCAwNjowMDowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Transfer-Encoding: 8bit
+Subject: Re: wifi: wfx: Remove redundant NULL check before release_firmware()
+ call
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20220606014237.290466-1-chi.minghao@zte.com.cn>
+References: <20220606014237.290466-1-chi.minghao@zte.com.cn>
+To:     cgel.zte@gmail.com
+Cc:     jerome.pouiller@silabs.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Minghao Chi <chi.minghao@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <165484674004.24214.13068275820248967076.kvalo@kernel.org>
+Date:   Fri, 10 Jun 2022 07:39:18 +0000 (UTC)
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,34 +59,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
+cgel.zte@gmail.com wrote:
 
-Previously we only disable invalid reports for 52A, since we plan to
-support more ICs in the future, enable settings for those as well.
+> From: Minghao Chi <chi.minghao@zte.com.cn>
+> 
+> release_firmware() checks for NULL pointers internally so checking
+> before calling it is redundant.
+> 
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+> Acked-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/phy.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Patch applied to wireless-next.git, thanks.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 2d9d2d4c8fecf..403884a959273 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -3107,11 +3107,9 @@ static void rtw89_physts_enable_fail_report(struct rtw89_dev *rtwdev,
- 
- static void rtw89_physts_parsing_init(struct rtw89_dev *rtwdev)
- {
--	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	u8 i;
- 
--	if (chip->chip_id == RTL8852A && rtwdev->hal.cv == CHIP_CBV)
--		rtw89_physts_enable_fail_report(rtwdev, false, RTW89_PHY_0);
-+	rtw89_physts_enable_fail_report(rtwdev, false, RTW89_PHY_0);
- 
- 	for (i = 0; i < RTW89_PHYSTS_BITMAP_NUM; i++) {
- 		if (i >= RTW89_CCK_PKT)
+05a2eebfa650 wifi: wfx: Remove redundant NULL check before release_firmware() call
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20220606014237.290466-1-chi.minghao@zte.com.cn/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
