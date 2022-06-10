@@ -2,134 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7866546539
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jun 2022 13:13:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42A275466DC
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jun 2022 14:51:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343956AbiFJLMf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Jun 2022 07:12:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49222 "EHLO
+        id S1344080AbiFJMtl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Jun 2022 08:49:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345493AbiFJLMe (ORCPT
+        with ESMTP id S1344133AbiFJMti (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Jun 2022 07:12:34 -0400
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 600361498CC
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Jun 2022 04:12:33 -0700 (PDT)
-Received: from fsav120.sakura.ne.jp (fsav120.sakura.ne.jp [27.133.134.247])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 25ABCT4m013374;
-        Fri, 10 Jun 2022 20:12:29 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav120.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav120.sakura.ne.jp);
- Fri, 10 Jun 2022 20:12:29 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav120.sakura.ne.jp)
-Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 25ABCSGR013370
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-        Fri, 10 Jun 2022 20:12:28 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <8de85fd9-50a1-aad7-86f7-24834be8bbc0@I-love.SAKURA.ne.jp>
-Date:   Fri, 10 Jun 2022 20:12:25 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Subject: [PATCH] ath6kl: avoid flush_scheduled_work() usage
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Fri, 10 Jun 2022 08:49:38 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 287AE434B0;
+        Fri, 10 Jun 2022 05:49:36 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id D532C1F8F4;
+        Fri, 10 Jun 2022 12:49:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1654865374; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=9H7m1p7Hd8wQqS681RPJsXjIq/ib1U8qc0tAtgwGvUo=;
+        b=bE3ewOj/Nrf8BZYeOFRqTboKQLaw1isuludRhcUjE0hNtMpoYJyG/tgUzR0FlacYCNf2LX
+        SZQ9xMUu6blYKA/61K+62bc1DSxv7RQS9Gyg6YmiRr/om5icy2y9PYAfBT5mA5yySVAu6X
+        QtxbJ602VN7eYVlLJd1JpQSGcI1rius=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1654865374;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=9H7m1p7Hd8wQqS681RPJsXjIq/ib1U8qc0tAtgwGvUo=;
+        b=xgrsl1Ih1LKPeMpfIQu0+jvEUsh3W/durC325u8ovbVuYbta2WfWlhdD1X+VnEiLbcqiru
+        fwsgf8vDt4rjfHBg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 95DFD13941;
+        Fri, 10 Jun 2022 12:49:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id X67aI949o2J5OQAAMHmgww
+        (envelope-from <tiwai@suse.de>); Fri, 10 Jun 2022 12:49:34 +0000
+Date:   Fri, 10 Jun 2022 14:49:34 +0200
+Message-ID: <87bkv0vg2p.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     toke@toke.dk
+Cc:     Pavel Skripkin <paskripkin@gmail.com>, kvalo@kernel.org,
+        davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        senthilkumar@atheros.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
+        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+Subject: Re: [PATCH v5 1/2] ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
+In-Reply-To: <961b028f073d0d5541de66c00a517495431981f9.1653168225.git.paskripkin@gmail.com>
+References: <961b028f073d0d5541de66c00a517495431981f9.1653168225.git.paskripkin@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use local wq in order to avoid flush_scheduled_work() usage.
+On Sat, 21 May 2022 23:28:01 +0200,
+Pavel Skripkin wrote:
+> 
+> Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb() [0]. The
+> problem was in incorrect htc_handle->drv_priv initialization.
+> 
+> Probable call trace which can trigger use-after-free:
+> 
+> ath9k_htc_probe_device()
+>   /* htc_handle->drv_priv = priv; */
+>   ath9k_htc_wait_for_target()      <--- Failed
+>   ieee80211_free_hw()		   <--- priv pointer is freed
+> 
+> <IRQ>
+> ...
+> ath9k_hif_usb_rx_cb()
+>   ath9k_hif_usb_rx_stream()
+>    RX_STAT_INC()		<--- htc_handle->drv_priv access
+> 
+> In order to not add fancy protection for drv_priv we can move
+> htc_handle->drv_priv initialization at the end of the
+> ath9k_htc_probe_device() and add helper macro to make
+> all *_STAT_* macros NULL safe, since syzbot has reported related NULL
+> deref in that macros [1]
+> 
+> Link: https://syzkaller.appspot.com/bug?id=6ead44e37afb6866ac0c7dd121b4ce07cb665f60 [0]
+> Link: https://syzkaller.appspot.com/bug?id=b8101ffcec107c0567a0cd8acbbacec91e9ee8de [1]
+> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+> Reported-and-tested-by: syzbot+03110230a11411024147@syzkaller.appspotmail.com
+> Reported-and-tested-by: syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
 
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
----
-Please see commit c4f135d643823a86 ("workqueue: Wrap flush_workqueue()
-using a macro") for background.
+Hi Toke, any update on this?
 
-This is a blind conversion, and is only compile tested.
+I'm asking it because this is a fix for a security issue
+(CVE-2022-1679 [*]), and distros have been waiting for the fix getting
+merged to the upstream for weeks.
 
- drivers/net/wireless/ath/ath6kl/usb.c | 29 +++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+[*] https://nvd.nist.gov/vuln/detail/CVE-2022-1679
 
-diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
-index 65e683effdcb..e3c65a671be1 100644
---- a/drivers/net/wireless/ath/ath6kl/usb.c
-+++ b/drivers/net/wireless/ath/ath6kl/usb.c
-@@ -21,6 +21,8 @@
- #include "debug.h"
- #include "core.h"
- 
-+static struct workqueue_struct *ath6kl_wq;
-+
- /* constants */
- #define TX_URB_COUNT            32
- #define RX_URB_COUNT            32
-@@ -478,7 +480,7 @@ static void ath6kl_usb_flush_all(struct ath6kl_usb *ar_usb)
- 	 * Flushing any pending I/O may schedule work this call will block
- 	 * until all scheduled work runs to completion.
- 	 */
--	flush_scheduled_work();
-+	flush_workqueue(ath6kl_wq);
- }
- 
- static void ath6kl_usb_start_recv_pipes(struct ath6kl_usb *ar_usb)
-@@ -544,7 +546,7 @@ static void ath6kl_usb_recv_complete(struct urb *urb)
- 
- 	/* note: queue implements a lock */
- 	skb_queue_tail(&pipe->io_comp_queue, skb);
--	schedule_work(&pipe->io_complete_work);
-+	queue_work(ath6kl_wq, &pipe->io_complete_work);
- 
- cleanup_recv_urb:
- 	ath6kl_usb_cleanup_recv_urb(urb_context);
-@@ -579,7 +581,7 @@ static void ath6kl_usb_usb_transmit_complete(struct urb *urb)
- 
- 	/* note: queue implements a lock */
- 	skb_queue_tail(&pipe->io_comp_queue, skb);
--	schedule_work(&pipe->io_complete_work);
-+	queue_work(ath6kl_wq, &pipe->io_complete_work);
- }
- 
- static void ath6kl_usb_io_comp_work(struct work_struct *work)
-@@ -1234,7 +1236,26 @@ static struct usb_driver ath6kl_usb_driver = {
- 	.disable_hub_initiated_lpm = 1,
- };
- 
--module_usb_driver(ath6kl_usb_driver);
-+static int __init ath6kl_init(void)
-+{
-+	int ret;
-+
-+	ath6kl_wq = alloc_workqueue("ath6kl_wq", 0, 0);
-+	if (!ath6kl_wq)
-+		return -ENOMEM;
-+	ret = usb_register(&ath6kl_usb_driver);
-+	if (ret)
-+		destroy_workqueue(ath6kl_wq);
-+	return ret;
-+}
-+module_init(ath6kl_init);
-+
-+static void __exit ath6kl_exit(void)
-+{
-+	usb_deregister(&ath6kl_usb_driver);
-+	destroy_workqueue(ath6kl_wq);
-+}
-+module_exit(ath6kl_exit);
- 
- MODULE_AUTHOR("Atheros Communications, Inc.");
- MODULE_DESCRIPTION("Driver support for Atheros AR600x USB devices");
--- 
-2.18.4
 
+thanks,
+
+Takashi
