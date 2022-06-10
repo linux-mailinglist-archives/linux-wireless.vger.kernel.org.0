@@ -2,53 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7596B545DAE
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jun 2022 09:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4CDE545DB3
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jun 2022 09:41:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346826AbiFJHjZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Jun 2022 03:39:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54458 "EHLO
+        id S1346750AbiFJHli (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Jun 2022 03:41:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242965AbiFJHjY (ORCPT
+        with ESMTP id S244446AbiFJHli (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Jun 2022 03:39:24 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBFF3132766;
-        Fri, 10 Jun 2022 00:39:23 -0700 (PDT)
+        Fri, 10 Jun 2022 03:41:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 149404F461
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Jun 2022 00:41:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A5A78B831CF;
-        Fri, 10 Jun 2022 07:39:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E8AC3411B;
-        Fri, 10 Jun 2022 07:39:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B08161FF5
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Jun 2022 07:41:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87246C34114;
+        Fri, 10 Jun 2022 07:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654846761;
-        bh=hCht15CTX44Sxk0pUcKGojtW+Cz5f/KZ5jdF4JOrrho=;
+        s=k20201202; t=1654846895;
+        bh=70JLSD9rVuYwkUc4Ze7ggjfWBTJdzchfQ+IAx4ykUgM=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=D4uf040VQO4M09A8PXRpNKasuCp1C/MOzTMav9sOMCmqRbhu/MiZdTLL3FfuXszpj
-         Fnw8puVMUizdbPAyVg9zTNgvz7TA0NwUA1QKurIYTCkBQ+rDpu30xr4XA+8X+Wl6hU
-         fNpdtGPsY86G0L9fMqKJQvkWcWxrlcih/5rJBsuf3MIsI7qvT3SWEeeRpDyfE2t8we
-         KEsZ+Bi3pJcNyaO9RWLbiPWg1P5zqMFYzoFiSV9xLp3DRRpD8IM8UxUBSKkIlfckcs
-         rSAKClt9RaW8tUz0+MwQ78FTyTlVqoHXxRHLEgx9U+FQdT2GHkLf0Thop4dItQ50Ng
-         ulpIq0spROH7g==
+        b=I1cNtJ+TFVCs2X3PVKnj+k1ljFsCsU7qO9r0yCKclxFe4E3i+wWhbGAjfQlByLa3T
+         HqJ75c1Jdi7dGsP17IEYDZwTwloErpDZpm6G/U2fKtzlHPKfS+z0twGYbdtbO6KnZ0
+         i437vGOqRrvZHxoWUXFyDSaAnh4ooqAtN10B37PVmVgnY5Wzq7ugqCJAKy5B1zfl0J
+         NwVGX8AzRTCdQj9TDo3vxxSX5Kz1KnpTNlnW8VgH8PsNDex3xZsqgl4lZvcACd3ZaB
+         Pxi3BKbowuG6aPDwy3OeT9LeVknVBnnS3edEXSBD4rcXOwuXB2lk0bZo7LJq49/ofK
+         shCvOOeJTFDMg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: wifi: wfx: Remove redundant NULL check before release_firmware()
- call
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/3] ieee80211: add trigger frame definition
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20220606014237.290466-1-chi.minghao@zte.com.cn>
-References: <20220606014237.290466-1-chi.minghao@zte.com.cn>
-To:     cgel.zte@gmail.com
-Cc:     jerome.pouiller@silabs.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
+In-Reply-To: <20220608113224.11193-2-pkshih@realtek.com>
+References: <20220608113224.11193-2-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>,
+        <echuang@realtek.com>, <phhuang@realtek.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165484674004.24214.13068275820248967076.kvalo@kernel.org>
-Date:   Fri, 10 Jun 2022 07:39:18 +0000 (UTC)
+Message-ID: <165484689243.24214.16051989736625303750.kvalo@kernel.org>
+Date:   Fri, 10 Jun 2022 07:41:34 +0000 (UTC)
 X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -59,23 +55,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-cgel.zte@gmail.com wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Minghao Chi <chi.minghao@zte.com.cn>
+> From: Po Hao Huang <phhuang@realtek.com>
 > 
-> release_firmware() checks for NULL pointers internally so checking
-> before calling it is redundant.
+> Define trigger stype of control frame, and its checking function, struct
+> and trigger type within common_info of trigger.
 > 
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
-> Acked-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+> Signed-off-by: Po Hao Huang <phhuang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Patch applied to wireless-next.git, thanks.
+3 patches applied to wireless-next.git, thanks.
 
-05a2eebfa650 wifi: wfx: Remove redundant NULL check before release_firmware() call
+21ab562c1f65 ieee80211: add trigger frame definition
+5165f1689a2c rtw89: 8852c: add trigger frame counter
+bc0130524cd9 rtw89: add new state to CFO state machine for UL-OFDMA
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220606014237.290466-1-chi.minghao@zte.com.cn/
+https://patchwork.kernel.org/project/linux-wireless/patch/20220608113224.11193-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
