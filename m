@@ -2,170 +2,213 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A43325477AF
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Jun 2022 23:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8DE5477DE
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Jun 2022 01:14:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232140AbiFKVV4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Jun 2022 17:21:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54394 "EHLO
+        id S229575AbiFKWuw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Jun 2022 18:50:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232134AbiFKVVz (ORCPT
+        with ESMTP id S229558AbiFKWuu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Jun 2022 17:21:55 -0400
-X-Greylist: delayed 21544 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 11 Jun 2022 14:21:55 PDT
-Received: from mail-4324.protonmail.ch (mail-4324.protonmail.ch [185.70.43.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0921F56392
-        for <linux-wireless@vger.kernel.org>; Sat, 11 Jun 2022 14:21:54 -0700 (PDT)
-Date:   Sat, 11 Jun 2022 21:21:39 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1654982512; x=1655241712;
-        bh=P2w4X5KgIZKL08LXAw/UHBS0bTCAsiO237cPTnD3Hko=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
-         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
-         Feedback-ID:Message-ID;
-        b=QeF5FRKgIFRiqL4WsDpfKVPt2IdHs60KghwVI2xuZPiX6PbVjLiPy4RJ0qZ8GgQej
-         3eCpJqBJMH5A9TeO4pAFrCxPfUiUKCSy9r8CmojDuyDiT29zWk6BPsbfOmhFCuBo+Q
-         foTp7jN7S2nfpSpEcuqVcCDEMPwhlesBkUzU5YhABLqPYdZjXlY/lWH58/GJTd/iJs
-         5jzEQDlsQHyC61ZHB7mRvWUafBStd5Tr5dXqM051iyVX+kOjIcdvpMR2zVH0kEuCvQ
-         u5JuBMH+bedGs3Q/UoaQ5cLUm3Ai8vhhUpBL5QAXyFmxiE24d8zPMoV7pyzGzpaIko
-         V5hIrHCwgKgoA==
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-From:   rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Reply-To: rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
-Subject: Re: rtw88: 8821CE: WARNING firmware failed to ack driver for leaving Deep Power mode
-Message-ID: <AddyIjbiK7b1NCW00ISPDaXRRPPNiv4sbHC4h1w2mtpIvNK9f2eSzwxVkVZO34j0QARuVF741IPIsTnBbJCoDKY1z__2lwG4CUR6ZEB5mLQ=@protonmail.com>
-In-Reply-To: <1f0afd0a-86a4-f676-11c7-458d55e3ac90@lwfinger.net>
-References: <V-sIKLj8AVfO-urzfoLZQZsEfGX4TSs9kBvfrw3o8ouYk0sA8zRYMpPEVFAW4lUtLdLtQtVKfvxFaOeXpaFcuAJNgxYfNRzx2t9I4F7EDmk=@protonmail.com> <1f0afd0a-86a4-f676-11c7-458d55e3ac90@lwfinger.net>
-Feedback-ID: 34463299:user:proton
+        Sat, 11 Jun 2022 18:50:50 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19FC36AA4F
+        for <linux-wireless@vger.kernel.org>; Sat, 11 Jun 2022 15:50:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654987850; x=1686523850;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=CuCeoguGctaO9ftlnqR7iJG0ODbf2ZmWUp8hnOK/RD4=;
+  b=i5omBIukgCN95kDxpo9Z3/AaZnVmpkWaOVmTHn5vCJ9kS/kyiO1twn8W
+   x/kwrKJPBFXlR864Un1E1ERpnM8I2YgAvjK3bt0jH2c6VKqwhI4DwfjpQ
+   FfOJhRglN0X+0wjplYQsQc1oZU46gAm7/zdLW27OTwbIG1/z2dvsK9cYb
+   homA7PEvir2QGoBxQz3MhH/rw05RAwj6dZIQEO5Gci15VZjt+VOPDWVrc
+   y6qMPiWcrFMOKdKzNHiNxo5HID2Ln/ieqJQyU1Hvddo8sswdFIw3E9xpg
+   GQ9iOj5D8eVGkjnqo6whgMXvDDQypx99ItGND7Ggtb7pQpRB1oSv+++pq
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10375"; a="303343587"
+X-IronPort-AV: E=Sophos;i="5.91,294,1647327600"; 
+   d="scan'208";a="303343587"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2022 15:50:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,294,1647327600"; 
+   d="scan'208";a="672555533"
+Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 11 Jun 2022 15:50:47 -0700
+Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1o09wN-000JOH-0n;
+        Sat, 11 Jun 2022 22:50:47 +0000
+Date:   Sun, 12 Jun 2022 06:49:57 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ b97dcb85750b7e8bc5aaed5403ddf4b0552c7993
+Message-ID: <62a51c15.GkEQRHU46GspnOWf%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Saturday, June 11th, 2022 at 7:46 PM, Larry Finger <Larry.Finger@lwfinge=
-r.net> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: b97dcb85750b7e8bc5aaed5403ddf4b0552c7993  Merge tag 'wireless-next-2022-06-10' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next
 
+elapsed time: 1702m
 
-> On 6/11/22 10:22, rtl8821cerfe2 wrote:
->
-> > Hi!
-> >
-> > I saw this warning today:
-> >
-> > Jun 11 15:43:38 home kernel: ------------[ cut here ]------------
-> > Jun 11 15:43:38 home kernel: firmware failed to ack driver for leaving =
-Deep Power mode
-> > Jun 11 15:43:38 home kernel: WARNING: CPU: 3 PID: 66361 at drivers/net/=
-wireless/realtek/rtw88/ps.c:104 rtw_power_mode_change+0x107/0x120 [rtw88_co=
-re]
-> > Jun 11 15:43:38 home kernel: Modules linked in: ccm snd_seq_dummy snd_h=
-rtimer snd_seq snd_seq_device rfcomm snd_soc_skl snd_soc_hdac_hda snd_hda_e=
-xt_core snd_hda_codec_hdmi snd_soc_sst_ipc intel_tcc_cooling snd_soc_sst_ds=
-p x86_pkg_temp_thermal snd_soc_acpi_intel_match snd_soc_acpi intel_powercla=
-mp snd_soc_core coretemp snd_compress snd_hda_codec_realtek kvm_intel ac97_=
-bus snd_hda_codec_generic ledtrig_audio snd_pcm_dmaengine kvm snd_hda_intel=
- snd_intel_dspcfg irqbypass cmac snd_intel_sdw_acpi crct10dif_pclmul algif_=
-hash rtw88_8821ce iTCO_wdt crc32_pclmul hp_wmi joydev snd_hda_codec algif_s=
-kcipher rtw88_8821c intel_pmc_bxt af_alg ghash_clmulni_intel mousedev qrtr =
-aesni_intel bnep crypto_simd ee1004 mei_hdcp cryptd iTCO_vendor_support mei=
-_pxp intel_wmi_thunderbolt intel_rapl_msr wmi_bmof platform_profile snd_hda=
-_core rapl rtw88_pci rtw88_core btusb snd_hwdep intel_cstate uvcvideo snd_p=
-cm btrtl intel_uncore mac80211 pcspkr snd_timer btbcm videobuf2_vmalloc psm=
-ouse btintel i2c_i801
-> > Jun 11 15:43:38 home kernel: processor_thermal_device_pci_legacy snd r8=
-169 btmtk libarc4 i915 videobuf2_memops processor_thermal_device i2c_smbus =
-videobuf2_v4l2 processor_thermal_rfim soundcore realtek mei_me mdio_devres =
-bluetooth processor_thermal_mbox videobuf2_common cfg80211 libphy ecdh_gene=
-ric mei drm_buddy processor_thermal_rapl rfkill videodev ttm intel_rapl_com=
-mon nls_iso8859_1 intel_pch_thermal intel_xhci_usb_role_switch drm_dp_helpe=
-r int340x_thermal_zone vfat mc roles intel_gtt intel_soc_dts_iosf wmi fat k=
-xcjk_1013 intel_vbtn industrialio_triggered_buffer sparse_keymap cm32181 kf=
-ifo_buf video industrialio int3400_thermal acpi_thermal_rel wireless_hotkey=
- acpi_pad acpi_tad mac_hid dm_multipath dm_mod crypto_user fuse bpf_preload=
- ip_tables x_tables ext4 crc32c_generic crc16 mbcache jbd2 serio_raw atkbd =
-libps2 vivaldi_fmap xhci_pci crc32c_intel xhci_pci_renesas i8042 serio
-> > Jun 11 15:43:38 home kernel: CPU: 3 PID: 66361 Comm: kworker/u8:1 Taint=
-ed: G W 5.18.0-arch1-1 #1 b71a70fe104889aac2f32556bc52f649da2881d2
-> > Jun 11 15:43:38 home kernel: Hardware name: HP HP 250 G7 Notebook PC/84=
-A6, BIOS F.19 05/06/2019
-> > Jun 11 15:43:38 home kernel: Workqueue: phy0 ieee80211_beacon_connectio=
-n_loss_work [mac80211]
-> > Jun 11 15:43:38 home kernel: RIP: 0010:rtw_power_mode_change+0x107/0x12=
-0 [rtw88_core]
-> > Jun 11 15:43:38 home kernel: Code: 9f 43 f3 e5 44 30 e0 78 23 45 84 ed =
-48 c7 c0 0f b7 0d c1 48 c7 c6 18 b7 0d c1 48 c7 c7 e0 98 0d c1 48 0f 45 f0 =
-e8 a1 43 c7 e5 <0f> 0b 5b 5d 41 5c 41 5d c3 cc 66 66 2e 0f 1f 84 00 00 00 0=
-0 00 0f
-> > Jun 11 15:43:38 home kernel: RSP: 0018:ffffb7c0c158bd88 EFLAGS: 0001028=
-2
-> > Jun 11 15:43:38 home kernel: RAX: 0000000000000000 RBX: ffff923e949a20e=
-0 RCX: 0000000000000027
-> > Jun 11 15:43:38 home kernel: RDX: ffff923fe6da16a8 RSI: 000000000000000=
-1 RDI: ffff923fe6da16a0
-> > Jun 11 15:43:38 home kernel: RBP: 000025cf57441865 R08: 000000000000000=
-0 R09: ffffb7c0c158bb98
-> > Jun 11 15:43:38 home kernel: R10: 0000000000000003 R11: ffffffffa7ecaa0=
-8 R12: 00000000c05ea080
-> > Jun 11 15:43:38 home kernel: R13: 0000000000000000 R14: ffff923ef3fbf3c=
-0 R15: 0000000000000010
-> > Jun 11 15:43:38 home kernel: FS: 0000000000000000(0000) GS:ffff923fe6d8=
-0000(0000) knlGS:0000000000000000
-> > Jun 11 15:43:38 home kernel: CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080=
-050033
-> > Jun 11 15:43:38 home kernel: CR2: 00007f662824487c CR3: 000000016a01000=
-2 CR4: 00000000003706e0
-> > Jun 11 15:43:38 home kernel: Call Trace:
-> > Jun 11 15:43:38 home kernel: <TASK>
-> > Jun 11 15:43:38 home kernel: rtw_pci_deep_ps+0xaa/0xd0 [rtw88_pci 5c347=
-3c65c1ef2d2a75611035c99d8c7ddd975f7]
-> > Jun 11 15:43:38 home kernel: rtw_ops_config+0x42/0x100 [rtw88_core c98e=
-023d541cb3d50ab10ce0e14b1134c5e44008]
-> > Jun 11 15:43:38 home kernel: ieee80211_hw_config+0x201/0x3f0 [mac80211 =
-05293841fc04d80013efc49f47d5dec34a8b2f08]
-> > Jun 11 15:43:38 home kernel: ieee80211_recalc_ps.part.0+0x14e/0x1c0 [ma=
-c80211 05293841fc04d80013efc49f47d5dec34a8b2f08]
-> > Jun 11 15:43:38 home kernel: ieee80211_mgd_probe_ap.part.0+0xc2/0x160 [=
-mac80211 05293841fc04d80013efc49f47d5dec34a8b2f08]
-> > Jun 11 15:43:38 home kernel: process_one_work+0x1c7/0x380
-> > Jun 11 15:43:38 home kernel: worker_thread+0x51/0x380
-> > Jun 11 15:43:38 home kernel: ? rescuer_thread+0x3a0/0x3a0
-> > Jun 11 15:43:38 home kernel: kthread+0xde/0x110
-> > Jun 11 15:43:38 home kernel: ? kthread_complete_and_exit+0x20/0x20
-> > Jun 11 15:43:38 home kernel: ret_from_fork+0x22/0x30
-> > Jun 11 15:43:38 home kernel: </TASK>
-> > Jun 11 15:43:38 home kernel: ---[ end trace 0000000000000000 ]---
-> >
-> > I attached part of journalctl for context.
-> >
-> > The laptop is HP 250 G7.
-> > The RTL8821CE wifi card is RFE 2 type.
-> > The kernel version is 5.18-arch1-1 from Arch Linux.
-> > The wifi firmware version is 24.11.0.
-> > The access point is Fiberhome HG6544C.
-> > The NetworkManager version is 1.38.0.
-> > The wpa_supplicant version is 2.10.
-> > I passed disable_aspm=3D1 to rtw88_pci to avoid the new freezes [0].
-> >
-> > I hope this helps.
-> >
-> > [0] https://lore.kernel.org/linux-wireless/Te_PJvJjKCi-lK28Zu0d8VQG0AGd=
-wTl6cJydYEETLbc3gN0l8liXH1DSOZnKxUHYGxavLBCs1sqos2e6jeiRzzO0RLRSISdWvTiiPp0=
-v9kM=3D@protonmail.com/
->
->
-> Since deep-power mode is mentioned, have you tried the 'disable_lps_deep=
-=3Dy' for
-> rtw88_core?
->
-> Larry
+configs tested: 130
+configs skipped: 3
 
-I imagine disable_lps_deep=3Dy will stop the warning. I will try it.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm64                               defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                          randconfig-c001
+ia64                         bigsur_defconfig
+m68k                        m5272c3_defconfig
+sh                            titan_defconfig
+powerpc                 mpc837x_mds_defconfig
+mips                         tb0226_defconfig
+powerpc64                           defconfig
+sh                          rsk7201_defconfig
+powerpc                 canyonlands_defconfig
+sh                          lboxre2_defconfig
+xtensa                           allyesconfig
+sh                           se7780_defconfig
+mips                         cobalt_defconfig
+xtensa                generic_kc705_defconfig
+powerpc                      makalu_defconfig
+powerpc                        cell_defconfig
+s390                          debug_defconfig
+powerpc                      tqm8xx_defconfig
+h8300                            allyesconfig
+arm                           h5000_defconfig
+mips                       capcella_defconfig
+riscv             nommu_k210_sdcard_defconfig
+sh                   secureedge5410_defconfig
+powerpc                      ep88xc_defconfig
+powerpc                       maple_defconfig
+sh                     magicpanelr2_defconfig
+arm                          badge4_defconfig
+riscv                    nommu_k210_defconfig
+sparc64                             defconfig
+sh                           se7750_defconfig
+arm64                            alldefconfig
+sh                           sh2007_defconfig
+arm                            pleb_defconfig
+m68k                        m5307c3_defconfig
+powerpc                     ep8248e_defconfig
+powerpc                      mgcoge_defconfig
+nios2                               defconfig
+m68k                          amiga_defconfig
+sh                         microdev_defconfig
+um                           x86_64_defconfig
+sh                   sh7770_generic_defconfig
+arc                    vdk_hs38_smp_defconfig
+powerpc                    adder875_defconfig
+openrisc                  or1klitex_defconfig
+arm                             pxa_defconfig
+powerpc                      ppc40x_defconfig
+xtensa                           alldefconfig
+mips                          rb532_defconfig
+arm                          pxa3xx_defconfig
+sh                            shmin_defconfig
+powerpc                     tqm8541_defconfig
+sh                                  defconfig
+sh                        sh7785lcr_defconfig
+x86_64                        randconfig-c001
+arm                  randconfig-c002-20220611
+ia64                                defconfig
+riscv                             allnoconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+arc                              allyesconfig
+alpha                               defconfig
+csky                                defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+s390                                defconfig
+s390                             allmodconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+sparc                               defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+riscv                randconfig-r042-20220611
+arc                  randconfig-r043-20220611
+s390                 randconfig-r044-20220611
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                               defconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+x86_64                    rhel-8.3-kselftests
+um                             i386_defconfig
+x86_64                                  kexec
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+
+clang tested configs:
+hexagon                          alldefconfig
+arm                          ep93xx_defconfig
+x86_64                        randconfig-k001
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
