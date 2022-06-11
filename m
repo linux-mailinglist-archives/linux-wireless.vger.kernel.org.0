@@ -2,184 +2,201 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29B07547690
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Jun 2022 18:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7580F547766
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Jun 2022 22:01:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236038AbiFKQqR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Jun 2022 12:46:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36970 "EHLO
+        id S231484AbiFKUBQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Jun 2022 16:01:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235964AbiFKQqQ (ORCPT
+        with ESMTP id S229518AbiFKUBP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Jun 2022 12:46:16 -0400
-Received: from mail-oo1-xc2b.google.com (mail-oo1-xc2b.google.com [IPv6:2607:f8b0:4864:20::c2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4E3859B82
-        for <linux-wireless@vger.kernel.org>; Sat, 11 Jun 2022 09:46:15 -0700 (PDT)
-Received: by mail-oo1-xc2b.google.com with SMTP id v12-20020a4a314c000000b0041b65c7e100so434048oog.8
-        for <linux-wireless@vger.kernel.org>; Sat, 11 Jun 2022 09:46:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=H3YCrBzcLO/k9ZwVtvxssvb42b4tQt2P+9Qx6i0NDpw=;
-        b=QJ06q7bAESGySZegTCLq8vC9wGmpYF9cxLtiW5zcPAR3are8jaXCx06Pu2Yy3r4Qdf
-         3Pag1kGy6hKYq0fdPAHvWX3YEcnwdxxZkps7gO7i6/9LHTWzApUI3xE86yEpUYQ8owHz
-         nDT+vEu5Nh3yAEOn4lRL8BNsbcK8MndcxgVNKI1KN4V+QX1NXiUuyDrwaSIMrI+X2IsH
-         vPqpAVfPGokbecabf6/auwgQNdxeq19vE/e9ziBn0f6GFhzlzUzkgHYGsjXFAw365ucm
-         YF/Tprn8lIeMTBSA2hFNkSwtY1G2ARsrFpfY5SxWRQ5CIBWQY7nLERn0Pcn/02soy65P
-         McnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=H3YCrBzcLO/k9ZwVtvxssvb42b4tQt2P+9Qx6i0NDpw=;
-        b=aTJ1ZTqTszSWrW0EyMXclu7OSpeFrvjlJZjslRZohpnTBWuRz/3x61vGGmsyvkohxu
-         wpjatophVNKQnDyBym76IL7UKtaQAbY7RfSDnbX00BVju+TvGqTMwvRTaxTdhXxWjXpK
-         H0pzDoCWgSUZdE/Z2YLlINHgPeSBa0vWWj31yA57ignMUBlFDXPyQHtQ20zB2XfP8RqG
-         GN48r+NFREjTpdPi5SwoPv4LUgQv/5nj6/TVZFHfyytohvNcQ3qXIeoeaIgkblktFE3j
-         yAN7zZ1xHpNqkJfY6/BpjP2OshJvaZn5ZYbCzSKxRgNNAWNm4pC6Nkdw9oVY5QQ+YB+J
-         ME5A==
-X-Gm-Message-State: AOAM530CQWoFlCya3tUeCyGQOGz1MD4y9/WFryq0h8HT3IA0DgXgka2e
-        r5EPoG0rJRh6VOxpG25vMgJffXAtcVY=
-X-Google-Smtp-Source: ABdhPJycQ7ty4vHD97zXhugZuLzXPJbyXlZqCmG1fSJTsByxtfRg5tt3cxwg90lTgs4IScJ25SnBJg==
-X-Received: by 2002:a4a:4188:0:b0:41b:7763:6846 with SMTP id x130-20020a4a4188000000b0041b77636846mr13887725ooa.52.1654965975131;
-        Sat, 11 Jun 2022 09:46:15 -0700 (PDT)
-Received: from [10.62.118.127] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
-        by smtp.gmail.com with ESMTPSA id gb14-20020a056870670e00b000f33f8b7603sm1222114oab.17.2022.06.11.09.46.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 11 Jun 2022 09:46:14 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <1f0afd0a-86a4-f676-11c7-458d55e3ac90@lwfinger.net>
-Date:   Sat, 11 Jun 2022 11:46:12 -0500
+        Sat, 11 Jun 2022 16:01:15 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 343F65047B
+        for <linux-wireless@vger.kernel.org>; Sat, 11 Jun 2022 13:01:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=d6sTUbUivEtpfmRsj7vKeQSr/6AJc12qoqS7/p3P1AU=; b=kh2lnaVh39B1iZMU6TCQi1NSSG
+        TFVC5Z3jruBeVSkpBUMzfNVF1sAOWMU5+mKLjlkJky80j/5PMtDQsdtnEpntcnduN8lrG+9HM6Kdb
+        PSj2qqzZMI3ndt70BrXUAMu5A5RJioCNwL1x+limo1++rjcjFQ4WUCM4bN3P4KTM/2b8=;
+Received: from p57a6f441.dip0.t-ipconnect.de ([87.166.244.65] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1o07IC-0006oU-MV; Sat, 11 Jun 2022 22:01:08 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, toke@kernel.org
+Subject: [PATCH v2 1/4] mac80211: fix overflow issues in airtime fairness code
+Date:   Sat, 11 Jun 2022 22:01:03 +0200
+Message-Id: <20220611200106.34319-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: rtw88: 8821CE: WARNING firmware failed to ack driver for leaving
- Deep Power mode
-Content-Language: en-US
-To:     rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <V-sIKLj8AVfO-urzfoLZQZsEfGX4TSs9kBvfrw3o8ouYk0sA8zRYMpPEVFAW4lUtLdLtQtVKfvxFaOeXpaFcuAJNgxYfNRzx2t9I4F7EDmk=@protonmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <V-sIKLj8AVfO-urzfoLZQZsEfGX4TSs9kBvfrw3o8ouYk0sA8zRYMpPEVFAW4lUtLdLtQtVKfvxFaOeXpaFcuAJNgxYfNRzx2t9I4F7EDmk=@protonmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gNi8xMS8yMiAxMDoyMiwgcnRsODgyMWNlcmZlMiB3cm90ZToNCj4gSGkhDQo+IA0KPiBJ
-IHNhdyB0aGlzIHdhcm5pbmcgdG9kYXk6DQo+IA0KPiBKdW4gMTEgMTU6NDM6MzggaG9tZSBr
-ZXJuZWw6IC0tLS0tLS0tLS0tLVsgY3V0IGhlcmUgXS0tLS0tLS0tLS0tLQ0KPiBKdW4gMTEg
-MTU6NDM6MzggaG9tZSBrZXJuZWw6IGZpcm13YXJlIGZhaWxlZCB0byBhY2sgZHJpdmVyIGZv
-ciBsZWF2aW5nIERlZXAgUG93ZXIgbW9kZQ0KPiBKdW4gMTEgMTU6NDM6MzggaG9tZSBrZXJu
-ZWw6IFdBUk5JTkc6IENQVTogMyBQSUQ6IDY2MzYxIGF0IGRyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODgvcHMuYzoxMDQgcnR3X3Bvd2VyX21vZGVfY2hhbmdlKzB4MTA3LzB4
-MTIwIFtydHc4OF9jb3JlXQ0KPiBKdW4gMTEgMTU6NDM6MzggaG9tZSBrZXJuZWw6IE1vZHVs
-ZXMgbGlua2VkIGluOiBjY20gc25kX3NlcV9kdW1teSBzbmRfaHJ0aW1lciBzbmRfc2VxIHNu
-ZF9zZXFfZGV2aWNlIHJmY29tbSBzbmRfc29jX3NrbCBzbmRfc29jX2hkYWNfaGRhIHNuZF9o
-ZGFfZXh0X2NvcmUgc25kX2hkYV9jb2RlY19oZG1pIHNuZF9zb2Nfc3N0X2lwYyBpbnRlbF90
-Y2NfY29vbGluZyBzbmRfc29jX3NzdF9kc3AgeDg2X3BrZ190ZW1wX3RoZXJtYWwgc25kX3Nv
-Y19hY3BpX2ludGVsX21hdGNoIHNuZF9zb2NfYWNwaSBpbnRlbF9wb3dlcmNsYW1wIHNuZF9z
-b2NfY29yZSBjb3JldGVtcCBzbmRfY29tcHJlc3Mgc25kX2hkYV9jb2RlY19yZWFsdGVrIGt2
-bV9pbnRlbCBhYzk3X2J1cyBzbmRfaGRhX2NvZGVjX2dlbmVyaWMgbGVkdHJpZ19hdWRpbyBz
-bmRfcGNtX2RtYWVuZ2luZSBrdm0gc25kX2hkYV9pbnRlbCBzbmRfaW50ZWxfZHNwY2ZnIGly
-cWJ5cGFzcyBjbWFjIHNuZF9pbnRlbF9zZHdfYWNwaSBjcmN0MTBkaWZfcGNsbXVsIGFsZ2lm
-X2hhc2ggcnR3ODhfODgyMWNlIGlUQ09fd2R0IGNyYzMyX3BjbG11bCBocF93bWkgam95ZGV2
-IHNuZF9oZGFfY29kZWMgYWxnaWZfc2tjaXBoZXIgcnR3ODhfODgyMWMgaW50ZWxfcG1jX2J4
-dCBhZl9hbGcgZ2hhc2hfY2xtdWxuaV9pbnRlbCBtb3VzZWRldiBxcnRyIGFlc25pX2ludGVs
-IGJuZXAgY3J5cHRvX3NpbWQgZWUxMDA0IG1laV9oZGNwIGNyeXB0ZCBpVENPX3ZlbmRvcl9z
-dXBwb3J0IG1laV9weHAgaW50ZWxfd21pX3RodW5kZXJib2x0IGludGVsX3JhcGxfbXNyIHdt
-aV9ibW9mIHBsYXRmb3JtX3Byb2ZpbGUgc25kX2hkYV9jb3JlIHJhcGwgcnR3ODhfcGNpIHJ0
-dzg4X2NvcmUgYnR1c2Igc25kX2h3ZGVwIGludGVsX2NzdGF0ZSB1dmN2aWRlbyBzbmRfcGNt
-IGJ0cnRsIGludGVsX3VuY29yZSBtYWM4MDIxMSBwY3Nwa3Igc25kX3RpbWVyIGJ0YmNtIHZp
-ZGVvYnVmMl92bWFsbG9jIHBzbW91c2UgYnRpbnRlbCBpMmNfaTgwMQ0KPiBKdW4gMTEgMTU6
-NDM6MzggaG9tZSBrZXJuZWw6ICBwcm9jZXNzb3JfdGhlcm1hbF9kZXZpY2VfcGNpX2xlZ2Fj
-eSBzbmQgcjgxNjkgYnRtdGsgbGliYXJjNCBpOTE1IHZpZGVvYnVmMl9tZW1vcHMgcHJvY2Vz
-c29yX3RoZXJtYWxfZGV2aWNlIGkyY19zbWJ1cyB2aWRlb2J1ZjJfdjRsMiBwcm9jZXNzb3Jf
-dGhlcm1hbF9yZmltIHNvdW5kY29yZSByZWFsdGVrIG1laV9tZSBtZGlvX2RldnJlcyBibHVl
-dG9vdGggcHJvY2Vzc29yX3RoZXJtYWxfbWJveCB2aWRlb2J1ZjJfY29tbW9uIGNmZzgwMjEx
-IGxpYnBoeSBlY2RoX2dlbmVyaWMgbWVpIGRybV9idWRkeSBwcm9jZXNzb3JfdGhlcm1hbF9y
-YXBsIHJma2lsbCB2aWRlb2RldiB0dG0gaW50ZWxfcmFwbF9jb21tb24gbmxzX2lzbzg4NTlf
-MSBpbnRlbF9wY2hfdGhlcm1hbCBpbnRlbF94aGNpX3VzYl9yb2xlX3N3aXRjaCBkcm1fZHBf
-aGVscGVyIGludDM0MHhfdGhlcm1hbF96b25lIHZmYXQgbWMgcm9sZXMgaW50ZWxfZ3R0IGlu
-dGVsX3NvY19kdHNfaW9zZiB3bWkgZmF0IGt4Y2prXzEwMTMgaW50ZWxfdmJ0biBpbmR1c3Ry
-aWFsaW9fdHJpZ2dlcmVkX2J1ZmZlciBzcGFyc2Vfa2V5bWFwIGNtMzIxODEga2ZpZm9fYnVm
-IHZpZGVvIGluZHVzdHJpYWxpbyBpbnQzNDAwX3RoZXJtYWwgYWNwaV90aGVybWFsX3JlbCB3
-aXJlbGVzc19ob3RrZXkgYWNwaV9wYWQgYWNwaV90YWQgbWFjX2hpZCBkbV9tdWx0aXBhdGgg
-ZG1fbW9kIGNyeXB0b191c2VyIGZ1c2UgYnBmX3ByZWxvYWQgaXBfdGFibGVzIHhfdGFibGVz
-IGV4dDQgY3JjMzJjX2dlbmVyaWMgY3JjMTYgbWJjYWNoZSBqYmQyIHNlcmlvX3JhdyBhdGti
-ZCBsaWJwczIgdml2YWxkaV9mbWFwIHhoY2lfcGNpIGNyYzMyY19pbnRlbCB4aGNpX3BjaV9y
-ZW5lc2FzIGk4MDQyIHNlcmlvDQo+IEp1biAxMSAxNTo0MzozOCBob21lIGtlcm5lbDogQ1BV
-OiAzIFBJRDogNjYzNjEgQ29tbToga3dvcmtlci91ODoxIFRhaW50ZWQ6IEcgICAgICAgIFcg
-ICAgICAgICA1LjE4LjAtYXJjaDEtMSAjMSBiNzFhNzBmZTEwNDg4OWFhYzJmMzI1NTZiYzUy
-ZjY0OWRhMjg4MWQyDQo+IEp1biAxMSAxNTo0MzozOCBob21lIGtlcm5lbDogSGFyZHdhcmUg
-bmFtZTogSFAgSFAgMjUwIEc3IE5vdGVib29rIFBDLzg0QTYsIEJJT1MgRi4xOSAwNS8wNi8y
-MDE5DQo+IEp1biAxMSAxNTo0MzozOCBob21lIGtlcm5lbDogV29ya3F1ZXVlOiBwaHkwIGll
-ZWU4MDIxMV9iZWFjb25fY29ubmVjdGlvbl9sb3NzX3dvcmsgW21hYzgwMjExXQ0KPiBKdW4g
-MTEgMTU6NDM6MzggaG9tZSBrZXJuZWw6IFJJUDogMDAxMDpydHdfcG93ZXJfbW9kZV9jaGFu
-Z2UrMHgxMDcvMHgxMjAgW3J0dzg4X2NvcmVdDQo+IEp1biAxMSAxNTo0MzozOCBob21lIGtl
-cm5lbDogQ29kZTogOWYgNDMgZjMgZTUgNDQgMzAgZTAgNzggMjMgNDUgODQgZWQgNDggYzcg
-YzAgMGYgYjcgMGQgYzEgNDggYzcgYzYgMTggYjcgMGQgYzEgNDggYzcgYzcgZTAgOTggMGQg
-YzEgNDggMGYgNDUgZjAgZTggYTEgNDMgYzcgZTUgPDBmPiAwYiA1YiA1ZCA0MSA1YyA0MSA1
-ZCBjMyBjYyA2NiA2NiAyZSAwZiAxZiA4NCAwMCAwMCAwMCAwMCAwMCAwZg0KPiBKdW4gMTEg
-MTU6NDM6MzggaG9tZSBrZXJuZWw6IFJTUDogMDAxODpmZmZmYjdjMGMxNThiZDg4IEVGTEFH
-UzogMDAwMTAyODINCj4gSnVuIDExIDE1OjQzOjM4IGhvbWUga2VybmVsOiBSQVg6IDAwMDAw
-MDAwMDAwMDAwMDAgUkJYOiBmZmZmOTIzZTk0OWEyMGUwIFJDWDogMDAwMDAwMDAwMDAwMDAy
-Nw0KPiBKdW4gMTEgMTU6NDM6MzggaG9tZSBrZXJuZWw6IFJEWDogZmZmZjkyM2ZlNmRhMTZh
-OCBSU0k6IDAwMDAwMDAwMDAwMDAwMDEgUkRJOiBmZmZmOTIzZmU2ZGExNmEwDQo+IEp1biAx
-MSAxNTo0MzozOCBob21lIGtlcm5lbDogUkJQOiAwMDAwMjVjZjU3NDQxODY1IFIwODogMDAw
-MDAwMDAwMDAwMDAwMCBSMDk6IGZmZmZiN2MwYzE1OGJiOTgNCj4gSnVuIDExIDE1OjQzOjM4
-IGhvbWUga2VybmVsOiBSMTA6IDAwMDAwMDAwMDAwMDAwMDMgUjExOiBmZmZmZmZmZmE3ZWNh
-YTA4IFIxMjogMDAwMDAwMDBjMDVlYTA4MA0KPiBKdW4gMTEgMTU6NDM6MzggaG9tZSBrZXJu
-ZWw6IFIxMzogMDAwMDAwMDAwMDAwMDAwMCBSMTQ6IGZmZmY5MjNlZjNmYmYzYzAgUjE1OiAw
-MDAwMDAwMDAwMDAwMDEwDQo+IEp1biAxMSAxNTo0MzozOCBob21lIGtlcm5lbDogRlM6ICAw
-MDAwMDAwMDAwMDAwMDAwKDAwMDApIEdTOmZmZmY5MjNmZTZkODAwMDAoMDAwMCkga25sR1M6
-MDAwMDAwMDAwMDAwMDAwMA0KPiBKdW4gMTEgMTU6NDM6MzggaG9tZSBrZXJuZWw6IENTOiAg
-MDAxMCBEUzogMDAwMCBFUzogMDAwMCBDUjA6IDAwMDAwMDAwODAwNTAwMzMNCj4gSnVuIDEx
-IDE1OjQzOjM4IGhvbWUga2VybmVsOiBDUjI6IDAwMDA3ZjY2MjgyNDQ4N2MgQ1IzOiAwMDAw
-MDAwMTZhMDEwMDAyIENSNDogMDAwMDAwMDAwMDM3MDZlMA0KPiBKdW4gMTEgMTU6NDM6Mzgg
-aG9tZSBrZXJuZWw6IENhbGwgVHJhY2U6DQo+IEp1biAxMSAxNTo0MzozOCBob21lIGtlcm5l
-bDogIDxUQVNLPg0KPiBKdW4gMTEgMTU6NDM6MzggaG9tZSBrZXJuZWw6ICBydHdfcGNpX2Rl
-ZXBfcHMrMHhhYS8weGQwIFtydHc4OF9wY2kgNWMzNDczYzY1YzFlZjJkMmE3NTYxMTAzNWM5
-OWQ4YzdkZGQ5NzVmN10NCj4gSnVuIDExIDE1OjQzOjM4IGhvbWUga2VybmVsOiAgcnR3X29w
-c19jb25maWcrMHg0Mi8weDEwMCBbcnR3ODhfY29yZSBjOThlMDIzZDU0MWNiM2Q1MGFiMTBj
-ZTBlMTRiMTEzNGM1ZTQ0MDA4XQ0KPiBKdW4gMTEgMTU6NDM6MzggaG9tZSBrZXJuZWw6ICBp
-ZWVlODAyMTFfaHdfY29uZmlnKzB4MjAxLzB4M2YwIFttYWM4MDIxMSAwNTI5Mzg0MWZjMDRk
-ODAwMTNlZmM0OWY0N2Q1ZGVjMzRhOGIyZjA4XQ0KPiBKdW4gMTEgMTU6NDM6MzggaG9tZSBr
-ZXJuZWw6ICBpZWVlODAyMTFfcmVjYWxjX3BzLnBhcnQuMCsweDE0ZS8weDFjMCBbbWFjODAy
-MTEgMDUyOTM4NDFmYzA0ZDgwMDEzZWZjNDlmNDdkNWRlYzM0YThiMmYwOF0NCj4gSnVuIDEx
-IDE1OjQzOjM4IGhvbWUga2VybmVsOiAgaWVlZTgwMjExX21nZF9wcm9iZV9hcC5wYXJ0LjAr
-MHhjMi8weDE2MCBbbWFjODAyMTEgMDUyOTM4NDFmYzA0ZDgwMDEzZWZjNDlmNDdkNWRlYzM0
-YThiMmYwOF0NCj4gSnVuIDExIDE1OjQzOjM4IGhvbWUga2VybmVsOiAgcHJvY2Vzc19vbmVf
-d29yaysweDFjNy8weDM4MA0KPiBKdW4gMTEgMTU6NDM6MzggaG9tZSBrZXJuZWw6ICB3b3Jr
-ZXJfdGhyZWFkKzB4NTEvMHgzODANCj4gSnVuIDExIDE1OjQzOjM4IGhvbWUga2VybmVsOiAg
-PyByZXNjdWVyX3RocmVhZCsweDNhMC8weDNhMA0KPiBKdW4gMTEgMTU6NDM6MzggaG9tZSBr
-ZXJuZWw6ICBrdGhyZWFkKzB4ZGUvMHgxMTANCj4gSnVuIDExIDE1OjQzOjM4IGhvbWUga2Vy
-bmVsOiAgPyBrdGhyZWFkX2NvbXBsZXRlX2FuZF9leGl0KzB4MjAvMHgyMA0KPiBKdW4gMTEg
-MTU6NDM6MzggaG9tZSBrZXJuZWw6ICByZXRfZnJvbV9mb3JrKzB4MjIvMHgzMA0KPiBKdW4g
-MTEgMTU6NDM6MzggaG9tZSBrZXJuZWw6ICA8L1RBU0s+DQo+IEp1biAxMSAxNTo0MzozOCBo
-b21lIGtlcm5lbDogLS0tWyBlbmQgdHJhY2UgMDAwMDAwMDAwMDAwMDAwMCBdLS0tDQo+IA0K
-PiBJIGF0dGFjaGVkIHBhcnQgb2Ygam91cm5hbGN0bCBmb3IgY29udGV4dC4NCj4gDQo+IFRo
-ZSBsYXB0b3AgaXMgSFAgMjUwIEc3Lg0KPiBUaGUgUlRMODgyMUNFIHdpZmkgY2FyZCBpcyBS
-RkUgMiB0eXBlLg0KPiBUaGUga2VybmVsIHZlcnNpb24gaXMgNS4xOC1hcmNoMS0xIGZyb20g
-QXJjaCBMaW51eC4NCj4gVGhlIHdpZmkgZmlybXdhcmUgdmVyc2lvbiBpcyAyNC4xMS4wLg0K
-PiBUaGUgYWNjZXNzIHBvaW50IGlzIEZpYmVyaG9tZSBIRzY1NDRDLg0KPiBUaGUgTmV0d29y
-a01hbmFnZXIgdmVyc2lvbiBpcyAxLjM4LjAuDQo+IFRoZSB3cGFfc3VwcGxpY2FudCB2ZXJz
-aW9uIGlzIDIuMTAuDQo+IEkgcGFzc2VkIGRpc2FibGVfYXNwbT0xIHRvIHJ0dzg4X3BjaSB0
-byBhdm9pZCB0aGUgbmV3IGZyZWV6ZXMgWzBdLg0KPiANCj4gSSBob3BlIHRoaXMgaGVscHMu
-DQo+IA0KPiBbMF0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtd2lyZWxlc3MvVGVf
-UEp2SmpLQ2ktbEsyOFp1MGQ4VlFHMEFHZHdUbDZjSnlkWUVFVExiYzNnTjBsOGxpWEgxRFNP
-Wm5LeFVIWUd4YXZMQkNzMXNxb3MyZTZqZWlSenpPMFJMUlNJU2RXdlRpaVBwMHY5a009QHBy
-b3Rvbm1haWwuY29tLw0KDQpTaW5jZSBkZWVwLXBvd2VyIG1vZGUgaXMgbWVudGlvbmVkLCBo
-YXZlIHlvdSB0cmllZCB0aGUgJ2Rpc2FibGVfbHBzX2RlZXA9eScgZm9yIA0KcnR3ODhfY29y
-ZT8NCg0KTGFycnkNCg0K
+The airtime weight calculation overflows with a default weight value of 256
+whenever more than 8ms worth of airtime is reported.
+Bigger weight values impose even smaller limits on maximum airtime values.
+This can mess up airtime based calculations for drivers that don't report
+per-PPDU airtime values, but batch up values instead.
+
+Fix this by reordering multiplications/shifts and by reducing unnecessary
+intermediate precision (which was lost in a later stage anyway).
+
+The new shift value limits the maximum weight to 4096, which should be more
+than enough. Any values bigger than that will be rejected
+
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+v2: reject weight values >4096
+ net/mac80211/cfg.c         |  3 +++
+ net/mac80211/ieee80211_i.h | 41 +++++++++++---------------------------
+ net/mac80211/sta_info.c    | 20 +++++++------------
+ 3 files changed, 22 insertions(+), 42 deletions(-)
+
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index f7896f257e1b..fc0e1543bfc8 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1619,6 +1619,9 @@ static int sta_apply_parameters(struct ieee80211_local *local,
+ 	mask = params->sta_flags_mask;
+ 	set = params->sta_flags_set;
+ 
++	if (params->airtime_weight > BIT(IEEE80211_RECIPROCAL_SHIFT_STA))
++		return -EINVAL;
++
+ 	if (ieee80211_vif_is_mesh(&sdata->vif)) {
+ 		/*
+ 		 * In mesh mode, ASSOCIATED isn't part of the nl80211
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 86ef0a46a68c..3bfe0d3e3439 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1677,50 +1677,33 @@ static inline struct airtime_info *to_airtime_info(struct ieee80211_txq *txq)
+ /* To avoid divisions in the fast path, we keep pre-computed reciprocals for
+  * airtime weight calculations. There are two different weights to keep track
+  * of: The per-station weight and the sum of weights per phy.
+- *
+- * For the per-station weights (kept in airtime_info below), we use 32-bit
+- * reciprocals with a devisor of 2^19. This lets us keep the multiplications and
+- * divisions for the station weights as 32-bit operations at the cost of a bit
+- * of rounding error for high weights; but the choice of divisor keeps rounding
+- * errors <10% for weights <2^15, assuming no more than 8ms of airtime is
+- * reported at a time.
+- *
+- * For the per-phy sum of weights the values can get higher, so we use 64-bit
+- * operations for those with a 32-bit divisor, which should avoid any
+- * significant rounding errors.
++ * The per-sta shift value supports weight values of 1-4096
+  */
+-#define IEEE80211_RECIPROCAL_DIVISOR_64 0x100000000ULL
+-#define IEEE80211_RECIPROCAL_SHIFT_64 32
+-#define IEEE80211_RECIPROCAL_DIVISOR_32 0x80000U
+-#define IEEE80211_RECIPROCAL_SHIFT_32 19
++#define IEEE80211_RECIPROCAL_SHIFT_SUM	24
++#define IEEE80211_RECIPROCAL_SHIFT_STA	12
++#define IEEE80211_WEIGHT_SHIFT		8
+ 
+-static inline void airtime_weight_set(struct airtime_info *air_info, u16 weight)
++static inline void airtime_weight_set(struct airtime_info *air_info, u32 weight)
+ {
+ 	if (air_info->weight == weight)
+ 		return;
+ 
+ 	air_info->weight = weight;
+-	if (weight) {
+-		air_info->weight_reciprocal =
+-			IEEE80211_RECIPROCAL_DIVISOR_32 / weight;
+-	} else {
+-		air_info->weight_reciprocal = 0;
+-	}
++	if (weight)
++		weight = BIT(IEEE80211_RECIPROCAL_SHIFT_STA) / weight;
++	air_info->weight_reciprocal = weight;
+ }
+ 
+ static inline void airtime_weight_sum_set(struct airtime_sched_info *air_sched,
+-					  int weight_sum)
++					  u32 weight_sum)
+ {
+ 	if (air_sched->weight_sum == weight_sum)
+ 		return;
+ 
+ 	air_sched->weight_sum = weight_sum;
+-	if (air_sched->weight_sum) {
+-		air_sched->weight_sum_reciprocal = IEEE80211_RECIPROCAL_DIVISOR_64;
+-		do_div(air_sched->weight_sum_reciprocal, air_sched->weight_sum);
+-	} else {
+-		air_sched->weight_sum_reciprocal = 0;
+-	}
++	if (weight_sum)
++		weight_sum = BIT(IEEE80211_RECIPROCAL_SHIFT_SUM) / weight_sum;
++	air_sched->weight_sum_reciprocal = weight_sum;
+ }
+ 
+ /* A problem when trying to enforce airtime fairness is that we want to divide
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index e04a0905e941..2f1cf9d4e68d 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -1906,9 +1906,9 @@ void ieee80211_register_airtime(struct ieee80211_txq *txq,
+ {
+ 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(txq->vif);
+ 	struct ieee80211_local *local = sdata->local;
+-	u64 weight_sum, weight_sum_reciprocal;
+ 	struct airtime_sched_info *air_sched;
+ 	struct airtime_info *air_info;
++	u64 weight_sum_reciprocal;
+ 	u32 airtime = 0;
+ 
+ 	air_sched = &local->airtime[txq->ac];
+@@ -1919,27 +1919,21 @@ void ieee80211_register_airtime(struct ieee80211_txq *txq,
+ 	if (local->airtime_flags & AIRTIME_USE_RX)
+ 		airtime += rx_airtime;
+ 
+-	/* Weights scale so the unit weight is 256 */
+-	airtime <<= 8;
+-
+ 	spin_lock_bh(&air_sched->lock);
+ 
+ 	air_info->tx_airtime += tx_airtime;
+ 	air_info->rx_airtime += rx_airtime;
+ 
+-	if (air_sched->weight_sum) {
+-		weight_sum = air_sched->weight_sum;
++	if (air_sched->weight_sum)
+ 		weight_sum_reciprocal = air_sched->weight_sum_reciprocal;
+-	} else {
+-		weight_sum = air_info->weight;
++	else
+ 		weight_sum_reciprocal = air_info->weight_reciprocal;
+-	}
+ 
+ 	/* Round the calculation of global vt */
+-	air_sched->v_t += (u64)((airtime + (weight_sum >> 1)) *
+-				weight_sum_reciprocal) >> IEEE80211_RECIPROCAL_SHIFT_64;
+-	air_info->v_t += (u32)((airtime + (air_info->weight >> 1)) *
+-			       air_info->weight_reciprocal) >> IEEE80211_RECIPROCAL_SHIFT_32;
++	air_sched->v_t += ((u64)airtime * weight_sum_reciprocal) >>
++			  (IEEE80211_RECIPROCAL_SHIFT_SUM - IEEE80211_WEIGHT_SHIFT);
++	air_info->v_t += (airtime * air_info->weight_reciprocal) >>
++			 (IEEE80211_RECIPROCAL_SHIFT_STA - IEEE80211_WEIGHT_SHIFT);
+ 	ieee80211_resort_txq(&local->hw, txq);
+ 
+ 	spin_unlock_bh(&air_sched->lock);
+-- 
+2.36.1
+
