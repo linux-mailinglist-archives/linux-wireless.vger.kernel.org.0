@@ -2,106 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CE02549EB5
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jun 2022 22:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD5FF54A01A
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jun 2022 22:49:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351018AbiFMUPl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Jun 2022 16:15:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52476 "EHLO
+        id S245304AbiFMUs5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Jun 2022 16:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233870AbiFMUP2 (ORCPT
+        with ESMTP id S1351238AbiFMUrQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Jun 2022 16:15:28 -0400
-Received: from mail-4323.proton.ch (mail-4323.proton.ch [185.70.43.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17791BC10
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Jun 2022 11:51:06 -0700 (PDT)
-Date:   Mon, 13 Jun 2022 18:50:57 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dannyvanheumen.nl;
-        s=protonmail2; t=1655146264; x=1655405464;
-        bh=k/A5E+7ARJ/sHkIngRT1u7vG7uuzBLZuLrkFI/eXrY4=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
-         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
-         Feedback-ID:Message-ID;
-        b=Yq77ZG0M4duLrWuYx2XkU+C6R+GaWB2P/ew0KaNrJ2o1egHPTtwU6bP2XzhqPewNW
-         GCgh8amuQ2XqtWIERDa+KBZK57Z2ktyHF1bMt0808nFqSeYlfKQGZEaMrYBT3e0iVg
-         AZJMF9FXKOCA9hDX/i/1K629srhE14nm7Bl2fwa14SnkOpEjGgSOpcvkqP9GKKz70W
-         NG3IVS8fjj8h9ZRRCk4z2RM4ZJKg7ypJRIW8eWnLWxOxCWSq86/Ct+9SPHEDxwbrSz
-         bRl4kGKM6IFkJroRm0X9JKNHEtJ1GjIGNhdonnHpmGJ9xfh5D7xxYj+YYx7t/zvbHm
-         KXRw4L287Glhg==
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-From:   Danny van Heumen <danny@dannyvanheumen.nl>
-Cc:     Franky Lin <franky.lin@broadcom.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Reply-To: Danny van Heumen <danny@dannyvanheumen.nl>
-Subject: Re: [PATCH] work-in-progress: double-free after hardware reset due to firmware-crash
-Message-ID: <PDYrcmiOE8drECietqr7SILEQI8DpX6gL8pbVCR6IbqNrKjyXTLYPhgsWfHL-s9FuElU5v84HUUWaFntR5RZJG5EBABE2XilCP_2O9ZipMk=@dannyvanheumen.nl>
-In-Reply-To: <1815e2011e8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-References: <UXibAXk2GByhvw88A6LIDXHSlkP79-ML7FrtyfnHuiC34qUd-zx03BAJAtzluyEvfwPBR0tac4hC72zKI1qT3CtgmvvVohr1v8a49TqYVSw=@dannyvanheumen.nl> <51CC1C7B-400C-4A7A-A5D3-EB457DC6862F@broadcom.com> <jJuvC2YezD_e1G6VFXwJjFFUAir0HFcDnBaZGRvKtnaY69v8aI3KkCouzzyOjrb9bZOnSzinETjNNxHvlmYCwNijdmts_5bEXZSV7dMNi0s=@dannyvanheumen.nl> <B08447EB-F222-49B5-A411-0DB6848A80ED@broadcom.com> <EbyrCYK_mR6ppJYbSc5JfGGG_QZEZb2Zp8Htx9f-orZ_wX0Dpz1pXhDjQ9P1nGuyTH041zvsScaRIPllClzLpLgwVuff4ZTTAiVOXe5-Mwg=@dannyvanheumen.nl> <1a116224-66ff-17b1-bb8b-9c0918dd47e4@broadcom.com> <kB9OdQYlBnucF05VoKxTvsT8eUrPGJc_we9irAdR-2gmXsEl4NvkhMzDcTahLm3HLA2zKVXnhEOstESbIEcHGKYHvMOyIcr4vh80f0eJCJ0=@dannyvanheumen.nl> <MV9-h4Mgj6FKxRJY93AQMhYFsz2yz0CoDQ70V8JWe742HUdLdl6Q1LbFTxGa-NCzodUmI3dbSoRGXebbE5rWPKKehHdixSTjW4TKZt10AJk=@dannyvanheumen.nl> <1815e2011e8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-Feedback-ID: 15073070:user:proton
+        Mon, 13 Jun 2022 16:47:16 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FE9F2A940;
+        Mon, 13 Jun 2022 13:03:12 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id v25so8694588eda.6;
+        Mon, 13 Jun 2022 13:03:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=O2td3YP3JdUJuU07d3g8dndjMkX/4E+coAFBXOpD16E=;
+        b=JMkGk63f6veModCTgkLMWMKyGEaydw5MgeRkLBOCjl+edkC8l6swYd6lK5XvGB1uDI
+         C6j2NjFSj1Y+VNJoX+K3fXxfv4BCldHpQP1G4DF6WAPjgMWTtwk2A+iD5j8/2f70X4Zl
+         PL6VeYes3d1ImWkIkEL8JK081lUKcpvfIOlyonY2g8oorwEKgKoh/f3RpfcT4Y86wZkh
+         AR5rzkq41X9KEy5t18yxRzj9Q9jr29jMJGCILcWUk3tLjS7apGXFwRqDJ2fxiQdlLdff
+         RcnJn3/nQogPSbr6nF03vZ2dB4WyJYeznggeZ1FX92Laz/D1R2959Up9yIBOrNysZH5p
+         Hoew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=O2td3YP3JdUJuU07d3g8dndjMkX/4E+coAFBXOpD16E=;
+        b=kTXLS/DzElqRoIzpjzxwqA8X0ZBGGvgQsmrpjjjVzkgdiTQnUFmvSrbGAOKjEhk6WC
+         D2YWKwT3yLuhjx9SiA6yvIGyEWZ1k9Bvfpn6StXGa2SMpazwFZmDwEyjI8tHfknIOM99
+         vmzTnSVU1FFIfrnmsYK2oOYa87kOHVv88Ef0y1eVInzUST5JZhOUAf5VFpcVWmxok2HO
+         b3OPDjY56UClgcUiuzW1fJxzikk8q8cp5nueU2iUbMORgmaHLbGDjLTqMiRGXoFn0wpS
+         Nvn3bTelscIgniZNelSUehtpOLHXuCKvJSmK5BBpm8PAT+tux4yJAgklWXc/p2/+ivvq
+         iuxQ==
+X-Gm-Message-State: AOAM533L2VHfrx9OLBtQ+7FC+WO4+43/5FAmPOfnke6HzE90Dg/KR7Zw
+        D9x8Ay0i8pi7nn6tonJ6nWlRjBfDt3zKzM7BN64NmhFD+l8=
+X-Google-Smtp-Source: ABdhPJw2yRloQpbm6sxa+GrLKvGbTyCPyWW+lcJOlNOcBAd9ZPR5hEzRjfBokj5OwA6RXjIWWGTL3Pfzc7umGHPa950=
+X-Received: by 2002:a05:6402:3546:b0:42e:2f58:2c90 with SMTP id
+ f6-20020a056402354600b0042e2f582c90mr1710971edd.84.1655150590514; Mon, 13 Jun
+ 2022 13:03:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <297d2547ff2ee627731662abceeab9dbdaf23231.1655068321.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <297d2547ff2ee627731662abceeab9dbdaf23231.1655068321.git.christophe.jaillet@wanadoo.fr>
+From:   Christian Lamparter <chunkeey@gmail.com>
+Date:   Mon, 13 Jun 2022 22:02:58 +0200
+Message-ID: <CAAd0S9DgctqyRx+ppfT6dNntUR-cpySnsYaL=unboQ+qTK2wGQ@mail.gmail.com>
+Subject: Re: [PATCH v2] p54: Fix an error handling path in p54spi_probe()
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Christian Lamparter <chunkeey@web.de>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Arend,
-
-------- Original Message -------
-On Monday, June 13th, 2022 at 19:32, Arend Van Spriel <arend.vanspriel@broa=
-dcom.com> wrote:
-
-> [..]
-> > What would be the next steps?
+On Sun, Jun 12, 2022 at 11:12 PM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
 >
+> If an error occurs after a successful call to p54spi_request_firmware(), it
+> must be undone by a corresponding release_firmware() as already done in
+> the error handling path of p54spi_request_firmware() and in the .remove()
+> function.
 >
-> You should send a proper patch to the linux-wireless list, ie. not in an
-> attachment but the commit message and patch diff in plain text email
-> message. Please refer to [1] for guidelines.
+> Add the missing call in the error handling path and remove it from
+> p54spi_request_firmware() now that it is the responsibility of the caller
+> to release the firmawre
 
-Thanks. Will do.
+that last word hast a typo:  firmware. (maybe Kalle can fix this in post).
 
-> I reinstated SDIO card in my test setup so I can test your patch.
+> Fixes: cd8d3d321285 ("p54spi: p54spi driver")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
+(Though, v1 was fine too.)
+> ---
+> v2: reduce diffstat and take advantage on the fact that release_firmware()
+> checks for NULL
 
-That's great!
+Heh, ok ;) . Now that I see it,  the "ret = p54_parse_firmware(...); ... "
+could have been replaced with "return p54_parse_firmware(dev, priv->firmware);"
+so the p54spi.c could shrink another 5-6 lines.
 
-I have tried to reduce/remove the probe-logic in `.reset`, but I can simply=
- not reach that logic reliably (or at all atm), so I cannot test even basic=
- simplifications of the hardware-reset logic.
+I think leaving p54spi_request_firmware() callee to deal with
+releasing the firmware
+in the error case as well is nicer because it gets rid of a "but in
+this case" complexity.
 
+(I still have hope for the devres-firmware to hit some day).
 
-> Regards,
-> Arend
+Cheers
+Christian
+
+> ---
+>  drivers/net/wireless/intersil/p54/p54spi.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> [1]
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
-
-
-
-Another question:
-
-`BRCMF_FW_DEF(43456, "brcmfmac43456-sdio");`
-
-This line defines IIUC that a firmware-binary exists. However, there is ano=
-ther macro that defines both the firmware-binary and the clm_blob binary. A=
-FAIK, BCM4345/9 (brcmfmac43456-sdio) supports loading a *.clm_blob file. So=
- I suppose the line should be:
-
-`BRCMF_FW_CLM_DEF(43456, "brcmfmac43456-sdio");`
-
-Does this really matter? Should I also submit a patch for this?
-
-Thanks so far,
-Danny
-
+> diff --git a/drivers/net/wireless/intersil/p54/p54spi.c b/drivers/net/wireless/intersil/p54/p54spi.c
+> index f99b7ba69fc3..19152fd449ba 100644
+> --- a/drivers/net/wireless/intersil/p54/p54spi.c
+> +++ b/drivers/net/wireless/intersil/p54/p54spi.c
+> @@ -164,7 +164,7 @@ static int p54spi_request_firmware(struct ieee80211_hw *dev)
+>
+>         ret = p54_parse_firmware(dev, priv->firmware);
+>         if (ret) {
+> -               release_firmware(priv->firmware);
+> +               /* the firmware is released by the caller */
+>                 return ret;
+>         }
+>
+> @@ -659,6 +659,7 @@ static int p54spi_probe(struct spi_device *spi)
+>         return 0;
+>
+>  err_free_common:
+> +       release_firmware(priv->firmware);
+>         free_irq(gpio_to_irq(p54spi_gpio_irq), spi);
+>  err_free_gpio_irq:
+>         gpio_free(p54spi_gpio_irq);
+> --
+> 2.34.1
+>
