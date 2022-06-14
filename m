@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBB8154A580
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jun 2022 04:22:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13F8C54A5AA
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jun 2022 04:22:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353299AbiFNCPY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Jun 2022 22:15:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54914 "EHLO
+        id S1352760AbiFNCTp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Jun 2022 22:19:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354525AbiFNCOt (ORCPT
+        with ESMTP id S1353126AbiFNCQz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Jun 2022 22:14:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2982A3C4A7;
-        Mon, 13 Jun 2022 19:08:52 -0700 (PDT)
+        Mon, 13 Jun 2022 22:16:55 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 630F93E5EE;
+        Mon, 13 Jun 2022 19:09:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6279361019;
-        Tue, 14 Jun 2022 02:08:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8226C3411E;
-        Tue, 14 Jun 2022 02:08:49 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B2666B816B9;
+        Tue, 14 Jun 2022 02:09:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31599C3411B;
+        Tue, 14 Jun 2022 02:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655172530;
+        s=k20201202; t=1655172575;
         bh=2aLdP/aNbtKqn9jTpTpT0xifj7OJXFEgTqbU/YlfGfc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DLxpjKjlUfBlFwEDdl2zbulb9+OntYBjapbaUlG1JAgcL7fQwJluq6KB79LEiBA4g
-         VDjIer3HKJhOr29LYkLPZ3iM4fZqSgiW+s0W9mKlZkjP5ObEIyDeH3KvFGZNz32rCa
-         1CX+8/iVFtI4Ql+7nazLqTQTwY+QDozTqsOhRXwHwndm3g1NPU3qcM/Yk+4XVdNtxP
-         LEpOstGQ30gSOIqzqN4Z3rGYT6SBqLPHtNDT2adLcvU26+jb/Ioble1stM8KookAjU
-         2C48sQW1VOrpP3qXfcjIUTo0tFaY2SDFXijSLVit0OfsgLeV+8Y5FEeOE8u3MemAuW
-         0wDWjnCpmdP3A==
+        b=cHlEc0zCDYaZllJejuNQLDjcXrb0FMbZzXNtwmHsKzvWVjZY4bJMAFASsBIUDIPXE
+         2mgOwacYsOYNJMYyt8UeoTMVBAbotvPmGFmbs4hAhbV3saBMOA/d48QF6ZY2/0SSGn
+         VU6xhrZHhxbzkn7QQP48/YD+Y13oVItiBTrB28bq8YKT0aPrWQPpCsZfspgLjUrQZX
+         59wBfLw+oaSr2PsJkkHla7L8k1PHiph5CRW8UCVlHmNoHOG9AhEh77JDn8wduhEqxa
+         TfRTTBRSt2ZDklBAk2S5DTCyqA4CWagNUP/diaX3O6gyR9s1mFo6+UduyEFdcjOkbM
+         YNHKsgTOJ2vzw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Xiaohui Zhang <xiaohuizhang@ruc.edu.cn>,
@@ -40,12 +40,12 @@ Cc:     Xiaohui Zhang <xiaohuizhang@ruc.edu.cn>,
         Sasha Levin <sashal@kernel.org>, lauro.venancio@openbossa.org,
         aloisio.almeida@openbossa.org, sameo@linux.intel.com,
         linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 23/29] nfc: nfcmrvl: Fix memory leak in nfcmrvl_play_deferred
-Date:   Mon, 13 Jun 2022 22:08:09 -0400
-Message-Id: <20220614020815.1099999-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 20/23] nfc: nfcmrvl: Fix memory leak in nfcmrvl_play_deferred
+Date:   Mon, 13 Jun 2022 22:08:56 -0400
+Message-Id: <20220614020900.1100401-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220614020815.1099999-1-sashal@kernel.org>
-References: <20220614020815.1099999-1-sashal@kernel.org>
+In-Reply-To: <20220614020900.1100401-1-sashal@kernel.org>
+References: <20220614020900.1100401-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
