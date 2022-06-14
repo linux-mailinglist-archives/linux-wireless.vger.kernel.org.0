@@ -2,109 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E15054A22C
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jun 2022 00:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E56F154A454
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jun 2022 04:07:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241222AbiFMWkw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Jun 2022 18:40:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43464 "EHLO
+        id S1352126AbiFNCHE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Jun 2022 22:07:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232406AbiFMWkv (ORCPT
+        with ESMTP id S1351539AbiFNCGG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Jun 2022 18:40:51 -0400
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B7B231201
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Jun 2022 15:40:50 -0700 (PDT)
-Received: by mail-il1-x12e.google.com with SMTP id f7so5365471ilr.5
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Jun 2022 15:40:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bobcopeland-com.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Tqq8Ug/EqtkzORZL90pCviuNcEhayeMVzSL/wXVCwy4=;
-        b=C0Wqy4RlNX4uITk55yB04SgXFCcl6LzJtpHp2yb8NZ8iflcJy9Wi4SfYWZvwqDirqR
-         7aHudNoMPa71X/egLpuLEtfBRVwIBuS8zmP4IOE5veeRUv9OYtuwx+BKmApBJge6pI8h
-         S2TfLupdROd94TabQXk0uHrBez9qjaA8TIFnYR+Bch3HVX/mKtqP143GYz9quO7x+jaO
-         q/fYmLLFQTXribUVijtBLXDrtquFfClv9k6OJuuL4tq7GTeduLrmgJpamHKHs1ErfygL
-         aVlJMUQEjvVXMLbbNPjwPbn1fqg2R2WiKn9LSSYt828RhALpoFUkMjU5imieM+PyS/kM
-         ogLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Tqq8Ug/EqtkzORZL90pCviuNcEhayeMVzSL/wXVCwy4=;
-        b=YMR9qw/OGs4Vt7WjGSI6Z2iWnbp6TvfOaQ3/BczhJq+tpRFFP02whNR21/zeklFdWm
-         iOgp0sqvRC97p0HjdO9gfGQsG5Gdhg+Pzs8qMa4qF5Rq3q775tlOyBI09rHW1g+K8wMG
-         RmULInseDayJ7e83vmV7mLA6DyYFtGzuT88iMpONKAOPSJrKyQChJBDnQgsWQp7IdJ09
-         39pWen72FC65iJ8yZPXXLRQtmh36eg59QjDOgEe7vnSbCK9+H+Nsf2X0ITtuz4knsBNi
-         mG3I3YVtHzKFEFG6jaY5udJ06fiFHiLGl114Ob+e34WdREOwKv/IBDa/lv/9OoNtOvQh
-         uUGw==
-X-Gm-Message-State: AJIora/WBJOMMbe6Y5Bv0TS4lJZL8oUZwM9FyleCrPbFEkE9t2Wwfu5k
-        cwdKdJYhHjVrlX0NaQlQtxsaqA==
-X-Google-Smtp-Source: AGRyM1tjq+KmPCarJeQ9VzZrtSVHoICOq3twLcOGtnWddzE5IICqCwaSPm7uCWUrNw92U/Pv3MhtbA==
-X-Received: by 2002:a05:6e02:1a44:b0:2d3:ff91:12a3 with SMTP id u4-20020a056e021a4400b002d3ff9112a3mr1259727ilv.82.1655160049803;
-        Mon, 13 Jun 2022 15:40:49 -0700 (PDT)
-Received: from elrond.bobcopeland.com (cpe30b5c2fb365b-cma456cc3dfbbf.cpe.net.cable.rogers.com. [99.232.36.65])
-        by smtp.gmail.com with ESMTPSA id o188-20020a0222c5000000b003317fc4aa87sm4064722jao.150.2022.06.13.15.40.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jun 2022 15:40:49 -0700 (PDT)
-Received: by elrond.bobcopeland.com (Postfix, from userid 1000)
-        id 380F8FC00A8; Mon, 13 Jun 2022 18:40:48 -0400 (EDT)
-Date:   Mon, 13 Jun 2022 18:40:48 -0400
-From:   Bob Copeland <me@bobcopeland.com>
-To:     Xiang wangx <wangxiang@cdjrlc.com>
-Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, loic.poulain@linaro.org,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wcn36xx: Fix typo in comment
-Message-ID: <Yqe88CP9URS/E30s@bobcopeland.com>
-References: <20220613172818.7491-1-wangxiang@cdjrlc.com>
+        Mon, 13 Jun 2022 22:06:06 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3139534652;
+        Mon, 13 Jun 2022 19:05:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C71B2B816AC;
+        Tue, 14 Jun 2022 02:05:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A77FC34114;
+        Tue, 14 Jun 2022 02:05:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655172336;
+        bh=WVB2cZoIsM8ti2+D/PLRAPxWV297NPg1wTNvLUzUnTo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=c1BoGgK2VKVd79okHn2mkEZJYe7ASt9WqjKI/AEV72Vzn5BeKeidYwxKYwH56ZVrK
+         xDZucanulIlahGj9ZHrwmuy3WMR5CeguAbiP4FvjTfPEgSQr53AXuqxREPi87atPTR
+         uPmPx2T4KKe7mKigklsVhGbaACHw49p0tzwEP5QIgob0B+7TXhtxO9AXVs6h9tadIF
+         uNDkobcB3HFbFzHNM7cXxgmR2kKgdxbrQJYysDQTWcBeQCrkbYWZSOA8xByPDlTADd
+         Nv1O117XCp1uTxToKJQJ02RPlptbkTAfJGd/cu3SY6odYCUpOMgmWf8SGG1xoP+Wq2
+         v2+L4IccoDxTg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Xiaohui Zhang <xiaohuizhang@ruc.edu.cn>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, lauro.venancio@openbossa.org,
+        aloisio.almeida@openbossa.org, sameo@linux.intel.com,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.18 32/47] nfc: nfcmrvl: Fix memory leak in nfcmrvl_play_deferred
+Date:   Mon, 13 Jun 2022 22:04:25 -0400
+Message-Id: <20220614020441.1098348-32-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220614020441.1098348-1-sashal@kernel.org>
+References: <20220614020441.1098348-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220613172818.7491-1-wangxiang@cdjrlc.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jun 14, 2022 at 01:28:18AM +0800, Xiang wangx wrote:
-> Delete the redundant word 'the'.
-> 
-> Signed-off-by: Xiang wangx <wangxiang@cdjrlc.com>
-> ---
->  drivers/net/wireless/ath/wcn36xx/hal.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/wcn36xx/hal.h b/drivers/net/wireless/ath/wcn36xx/hal.h
-> index 46a49f0a51b3..874746b5993c 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/hal.h
-> +++ b/drivers/net/wireless/ath/wcn36xx/hal.h
-> @@ -1961,7 +1961,7 @@ struct wcn36xx_hal_config_bss_params {
->  
->  	/* HAL should update the existing BSS entry, if this flag is set.
->  	 * UMAC will set this flag in case of reassoc, where we want to
-> -	 * resue the the old BSSID and still return success 0 = Add, 1 =
-> +	 * resue the old BSSID and still return success 0 = Add, 1 =
->  	 * Update */
+From: Xiaohui Zhang <xiaohuizhang@ruc.edu.cn>
 
-Also "reuse"
+[ Upstream commit 8a4d480702b71184fabcf379b80bf7539716752e ]
 
->  	u8 action;
->  
-> @@ -2098,7 +2098,7 @@ struct wcn36xx_hal_config_bss_params_v1 {
->  
->  	/* HAL should update the existing BSS entry, if this flag is set.
->  	 * UMAC will set this flag in case of reassoc, where we want to
-> -	 * resue the the old BSSID and still return success 0 = Add, 1 =
-> +	 * resue the old BSSID and still return success 0 = Add, 1 =
+Similar to the handling of play_deferred in commit 19cfe912c37b
+("Bluetooth: btusb: Fix memory leak in play_deferred"), we thought
+a patch might be needed here as well.
 
-Here too.
+Currently usb_submit_urb is called directly to submit deferred tx
+urbs after unanchor them.
 
+So the usb_giveback_urb_bh would failed to unref it in usb_unanchor_urb
+and cause memory leak.
+
+Put those urbs in tx_anchor to avoid the leak, and also fix the error
+handling.
+
+Signed-off-by: Xiaohui Zhang <xiaohuizhang@ruc.edu.cn>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20220607083230.6182-1-xiaohuizhang@ruc.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/nfc/nfcmrvl/usb.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/nfc/nfcmrvl/usb.c b/drivers/nfc/nfcmrvl/usb.c
+index a99aedff795d..ea7309453096 100644
+--- a/drivers/nfc/nfcmrvl/usb.c
++++ b/drivers/nfc/nfcmrvl/usb.c
+@@ -388,13 +388,25 @@ static void nfcmrvl_play_deferred(struct nfcmrvl_usb_drv_data *drv_data)
+ 	int err;
+ 
+ 	while ((urb = usb_get_from_anchor(&drv_data->deferred))) {
++		usb_anchor_urb(urb, &drv_data->tx_anchor);
++
+ 		err = usb_submit_urb(urb, GFP_ATOMIC);
+-		if (err)
++		if (err) {
++			kfree(urb->setup_packet);
++			usb_unanchor_urb(urb);
++			usb_free_urb(urb);
+ 			break;
++		}
+ 
+ 		drv_data->tx_in_flight++;
++		usb_free_urb(urb);
++	}
++
++	/* Cleanup the rest deferred urbs. */
++	while ((urb = usb_get_from_anchor(&drv_data->deferred))) {
++		kfree(urb->setup_packet);
++		usb_free_urb(urb);
+ 	}
+-	usb_scuttle_anchored_urbs(&drv_data->deferred);
+ }
+ 
+ static int nfcmrvl_resume(struct usb_interface *intf)
 -- 
-Bob Copeland %% https://bobcopeland.com/
+2.35.1
+
