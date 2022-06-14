@@ -2,57 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A7E554A669
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jun 2022 04:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFCFF54A88C
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jun 2022 07:07:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354392AbiFNCZA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Jun 2022 22:25:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58806 "EHLO
+        id S232850AbiFNFHU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Jun 2022 01:07:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355304AbiFNCYP (ORCPT
+        with ESMTP id S229791AbiFNFHS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Jun 2022 22:24:15 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A933A41982;
-        Mon, 13 Jun 2022 19:10:59 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4A570B816C0;
-        Tue, 14 Jun 2022 02:10:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02DDC34114;
-        Tue, 14 Jun 2022 02:10:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655172658;
-        bh=r8lvdLrTRpr0JO0BJ5yTk+PV/xkIpP+MsXfGHsZLz0I=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jk57c/5BkWOS67zOF672XbutnIJSHoCYf8LTwBQ9Rj5KjpD6gRXLeJI9+fPYL6ght
-         wrNhc1hAvKrlprsqiQg25MD3FNUhti+FXxHpmHbtjlLrwt572RwdVgAh1hwvyBsNLR
-         5r1s3Uqkb17/QBSd8aa9UlqMrGvaFwYPcJGAsw31ZdHxM238Uquq9DwDcQSnvHgLXV
-         HwHqEmI4GM3RmUJWlFvLoRa1T3GY1k/R3aPn6jkLDWmsSbbmnBEmjXn1IIczmsEjvK
-         AAVXYbZpCcy/DkJI2N+1NJAtvv8rSo4iENPT9+uyDvmA5IaQG7oAn5yaHnRNKvuyi4
-         Pfi5Qa8+v1wJg==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Xiaohui Zhang <xiaohuizhang@ruc.edu.cn>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, lauro.venancio@openbossa.org,
-        aloisio.almeida@openbossa.org, sameo@linux.intel.com,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 10/12] nfc: nfcmrvl: Fix memory leak in nfcmrvl_play_deferred
-Date:   Mon, 13 Jun 2022 22:10:38 -0400
-Message-Id: <20220614021040.1101131-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220614021040.1101131-1-sashal@kernel.org>
-References: <20220614021040.1101131-1-sashal@kernel.org>
+        Tue, 14 Jun 2022 01:07:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 77D163A5C5
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Jun 2022 22:07:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1655183236;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=NGvImExXlnUvkSpclN++7AJoDvqpEU5Yxt0bwUxlgmk=;
+        b=KfZdpShVQhaSU/DyfDmhiYRHq0FSE4btUHTVlFedGs3ODoDygF72SBH6I0sD7S5jmpBkb0
+        3VAhyoMkPmqEWjFCtDJ3Exui+8chyBFzcDsC4L+D2XNYDmB1OyNxgSqxX+kmerY7NC9Xnp
+        P/zwGlQ8EjD3ZKcerPL9wTslmUg4HIs=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-131-ZaIbwpIgMEWGVLQJDToipA-1; Tue, 14 Jun 2022 01:07:13 -0400
+X-MC-Unique: ZaIbwpIgMEWGVLQJDToipA-1
+Received: by mail-lf1-f70.google.com with SMTP id u5-20020a056512128500b00479784f526cso3987225lfs.13
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Jun 2022 22:07:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NGvImExXlnUvkSpclN++7AJoDvqpEU5Yxt0bwUxlgmk=;
+        b=Lq0DtQ70QpyviPULciUr7S3vLDlROX1xb6Bemh8uY8TPLeV0IsCnsJqxgZJYrM1oRY
+         En4/eWyUyOouPtevXgehueM0fAdL0EhxSLTAZffl3GP/v32NDwJg59BYLCz6LFakOMBf
+         utgKnlKpt7yQNcJNytnkxNYQ0QDxpGIEEeLM0BtynXoEHs3N6j210rStTH8MmkbX3NIX
+         thM7tW6xH1iNQPTuxaY5dBhH7TELdhscUq5Czz5jmfPPpHL3ZkOfiNjHD3kb38E1HStf
+         kbo9reAcIiA9oia/AGaJnOK+Lf7sRkZQTnCKeUZ/OTor/sIiVtcemsqvRC8yjS90xs7G
+         JLGA==
+X-Gm-Message-State: AJIora9pZgT5+FMeG5QBUxKIx5tibr/PJrr/Uzu6sZe3wHPlZ3c/xfRw
+        ZymuUYfRpy+TVV3OFxHqVfKKGWGg/oi0+1Pibf7G6COE/kgInSGHtzZNCSQl9h7rp1ZvtJUUa8E
+        8eQnsZ46x5Bakp5snCIeqZt4rmnUQltNx6R5EOL82KLs=
+X-Received: by 2002:a05:651c:88f:b0:253:f747:2fd8 with SMTP id d15-20020a05651c088f00b00253f7472fd8mr1483822ljq.496.1655183231470;
+        Mon, 13 Jun 2022 22:07:11 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1sfdKuwTBBRBTaa7sl2k2KiAuTiEB8/sb1ytEdtUtElSmFjVEiJ++BL1Ov7aEhUWJV44v6OdG4WMjqySXOheJU=
+X-Received: by 2002:a05:651c:88f:b0:253:f747:2fd8 with SMTP id
+ d15-20020a05651c088f00b00253f7472fd8mr1483811ljq.496.1655183231260; Mon, 13
+ Jun 2022 22:07:11 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20220613210401.327958-1-johannes@sipsolutions.net>
+In-Reply-To: <20220613210401.327958-1-johannes@sipsolutions.net>
+From:   Jason Wang <jasowang@redhat.com>
+Date:   Tue, 14 Jun 2022 13:07:00 +0800
+Message-ID: <CACGkMEv-2U7TSkqLEOr=pd9MH8h=CEFzk0CtX1gao2CO2x0PJw@mail.gmail.com>
+Subject: Re: [PATCH] mac80211_hwsim: set virtio device ready in probe()
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,64 +73,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Xiaohui Zhang <xiaohuizhang@ruc.edu.cn>
+On Tue, Jun 14, 2022 at 5:04 AM Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> From: Johannes Berg <johannes.berg@intel.com>
+>
+> Just like a similar commit to arch/um/drivers/virt-pci.c, call
+> virtio_device_ready() to make this driver work after commit
+> b4ec69d7e09 ("virtio: harden vring IRQ"), since the driver uses
+> the virtqueues in the probe function.  (The virtio core sets
+> the device ready when probe returns.)
+>
+> Change-Id: I617d3b819b5e5345471a8e79db25342981a92424
+> Fixes: 8b4ec69d7e09 ("virtio: harden vring IRQ")
+> Fixes: 5d44fe7c9808 ("mac80211_hwsim: add frame transmission support over virtio")
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 8a4d480702b71184fabcf379b80bf7539716752e ]
+Acked-by: Jason Wang <jasowang@redhat.com>
 
-Similar to the handling of play_deferred in commit 19cfe912c37b
-("Bluetooth: btusb: Fix memory leak in play_deferred"), we thought
-a patch might be needed here as well.
-
-Currently usb_submit_urb is called directly to submit deferred tx
-urbs after unanchor them.
-
-So the usb_giveback_urb_bh would failed to unref it in usb_unanchor_urb
-and cause memory leak.
-
-Put those urbs in tx_anchor to avoid the leak, and also fix the error
-handling.
-
-Signed-off-by: Xiaohui Zhang <xiaohuizhang@ruc.edu.cn>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20220607083230.6182-1-xiaohuizhang@ruc.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/nfc/nfcmrvl/usb.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/nfc/nfcmrvl/usb.c b/drivers/nfc/nfcmrvl/usb.c
-index 585a0f20835b..3263e2a2bdfd 100644
---- a/drivers/nfc/nfcmrvl/usb.c
-+++ b/drivers/nfc/nfcmrvl/usb.c
-@@ -401,13 +401,25 @@ static void nfcmrvl_play_deferred(struct nfcmrvl_usb_drv_data *drv_data)
- 	int err;
- 
- 	while ((urb = usb_get_from_anchor(&drv_data->deferred))) {
-+		usb_anchor_urb(urb, &drv_data->tx_anchor);
-+
- 		err = usb_submit_urb(urb, GFP_ATOMIC);
--		if (err)
-+		if (err) {
-+			kfree(urb->setup_packet);
-+			usb_unanchor_urb(urb);
-+			usb_free_urb(urb);
- 			break;
-+		}
- 
- 		drv_data->tx_in_flight++;
-+		usb_free_urb(urb);
-+	}
-+
-+	/* Cleanup the rest deferred urbs. */
-+	while ((urb = usb_get_from_anchor(&drv_data->deferred))) {
-+		kfree(urb->setup_packet);
-+		usb_free_urb(urb);
- 	}
--	usb_scuttle_anchored_urbs(&drv_data->deferred);
- }
- 
- static int nfcmrvl_resume(struct usb_interface *intf)
--- 
-2.35.1
+> ---
+>  drivers/net/wireless/mac80211_hwsim.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+> index 02108b94d6b8..d2b31595856d 100644
+> --- a/drivers/net/wireless/mac80211_hwsim.c
+> +++ b/drivers/net/wireless/mac80211_hwsim.c
+> @@ -4951,6 +4951,8 @@ static int hwsim_virtio_probe(struct virtio_device *vdev)
+>         if (err)
+>                 return err;
+>
+> +       virtio_device_ready(vdev);
+> +
+>         err = fill_vq(hwsim_vqs[HWSIM_VQ_RX]);
+>         if (err)
+>                 goto out_remove;
+> --
+> 2.36.1
+>
 
