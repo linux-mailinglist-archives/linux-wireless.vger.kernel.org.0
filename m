@@ -2,134 +2,203 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD23754AB0E
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jun 2022 09:53:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46F5254AC2D
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jun 2022 10:46:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355292AbiFNHvh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Jun 2022 03:51:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40504 "EHLO
+        id S1355051AbiFNImU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Jun 2022 04:42:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352435AbiFNHuq (ORCPT
+        with ESMTP id S1354685AbiFNImC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Jun 2022 03:50:46 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACCCC3EF06
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Jun 2022 00:50:36 -0700 (PDT)
-X-UUID: 38d28a7ca6a44524b684f0d6f53acdc3-20220614
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.6,REQID:de3d928b-12ca-4eb4-b001-d22e46d88140,OB:0,LO
-        B:0,IP:0,URL:5,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACT
-        ION:release,TS:0
-X-CID-META: VersionHash:b14ad71,CLOUDID:43b860c5-c67b-4a73-9b18-726dd8f2eb58,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
-        ,QS:nil,BEC:nil,COL:0
-X-UUID: 38d28a7ca6a44524b684f0d6f53acdc3-20220614
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1735940368; Tue, 14 Jun 2022 15:50:32 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Tue, 14 Jun 2022 15:50:31 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.3 via Frontend Transport; Tue, 14 Jun 2022 15:50:31 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        "Shayne Chen" <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH v2] mt76: mt7921s: fix possible sdio deadlock in command fail
-Date:   Tue, 14 Jun 2022 15:50:24 +0800
-Message-ID: <f24180fa3f8bc61e452c0bcda90f50feb2ef72e2.1655192477.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Tue, 14 Jun 2022 04:42:02 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6AB142A28
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Jun 2022 01:41:48 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id s37so5304884pfg.11
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Jun 2022 01:41:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=message-id:date:mime-version:user-agent:subject:from:to:cc
+         :references:in-reply-to;
+        bh=5Jgj71gIRzjnrp1+nr7jAxW63t+bahifEcfs5nKzlXw=;
+        b=D9rHpoBn02R5pkI1Z4WR+ft8XQMBFKCrW/P/WIBsBSwajPdILt7aps8ZBfVDON3Rln
+         Io1+I/eINhA785ntOtbSkh2WOUw5bOU8czTa2ZKuvB3IdC8gYmhJqlMduAFIFYg46gp1
+         bMe3uzv2WqTp3MRYRE9G3qccXyLO7xLYlVPKI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :from:to:cc:references:in-reply-to;
+        bh=5Jgj71gIRzjnrp1+nr7jAxW63t+bahifEcfs5nKzlXw=;
+        b=GyJFgtha9JtAK5+GSPj6PACWy6ROlE0OKCHPGu+VcmcnZHDAxWFW6xYCFfKrEUF8Zc
+         azSCLwhwBkkaVhA321Rl0zjM3YUEmEVfNSytwkVJRIsNLU6vcw3CVVOqEg7nAtbq7Psd
+         oME9myDZWDp9g/G3dloVrVCoPNQgBxhSbd0N20Fyk65Eq6AKqNr+habJ87YJVBg8vbM+
+         +fDptjV4luY1dTBrieJjqD4fxrullJb8SPc0JDmSHqTV7b/S5aj6CO6vahn8QX71m4Jq
+         4SgUa9vCTDfwLvq8+BlD72K63J7qoflqiNxklO/1sM5BTkwBliho3XdAtD930rg4DOl+
+         eGVg==
+X-Gm-Message-State: AJIora/3wS6uIV7tHBxkeqS2l0acI/1pFU47m7pVHshznbcLfNEd2IOt
+        SbNKHenam7ML1bHyZd0TLbio0vIFevDREEoSO8Gcjg==
+X-Google-Smtp-Source: ABdhPJzZCEEtvV0Zl2nDMkKirJQFVqavaQ/IltadqubkLlMESPeMNz2iaRf62yJFNcM6YmEKjnp0hQ==
+X-Received: by 2002:a62:8e11:0:b0:51c:445b:5ae6 with SMTP id k17-20020a628e11000000b0051c445b5ae6mr3683248pfe.48.1655196107980;
+        Tue, 14 Jun 2022 01:41:47 -0700 (PDT)
+Received: from [10.176.68.61] ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id a10-20020a62d40a000000b0051b416c065esm6901619pfh.8.2022.06.14.01.41.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jun 2022 01:41:46 -0700 (PDT)
+Message-ID: <2d921af3-9d21-7d86-e6da-bfcd904513e9@broadcom.com>
+Date:   Tue, 14 Jun 2022 10:41:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: brcmfmac
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+To:     Sebastian Gottschall <s.gottschall@newmedia-net.de>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Hranislav Milenkovic <hmilenkovic@protonmail.com>
+References: <ummn1_Vf6iygnVWDDcx07aAvrz2wPRnpMWB6A205JWSOMEYGVkGv0_uWYymiZTO7bManVdxSskozUDe_TcYAn6loKaOAptYNT2pl-Tu6q-g=@protonmail.com>
+ <dac01b50-c559-c40a-871a-4da514e7c3a3@broadcom.com>
+In-Reply-To: <dac01b50-c559-c40a-871a-4da514e7c3a3@broadcom.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="00000000000012566b05e164608d"
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+--00000000000012566b05e164608d
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Move sdio_release_host() to final resource handing
+On 6/13/2022 11:19 AM, Arend van Spriel wrote:
+> On 6/12/2022 5:49 PM, Hranislav Milenkovic wrote:
+>> Hi Arend,
+>> I fouded your e-mail here 
+>> https://wireless.wiki.kernel.org/en/users/drivers/brcm80211 
+>> <https://wireless.wiki.kernel.org/en/users/drivers/brcm80211>
+>> I have netgear R8000 with brcm 43602 wifi chip. I am using ddwrt with 
+>> experimental build. There are 2 versions of build, normal with dhd and 
+>> experimental with brvmfmac driver 
+>> https://dd-wrt.com/support/other-downloads/?path=betas%2F2022%2F06-10-2022-r49139%2Fnetgear-r8000%2F 
+>> <https://dd-wrt.com/support/other-downloads/?path=betas%2F2022%2F06-10-2022-r49139%2Fnetgear-r8000%2F> 
+>>
+>> Router crashes sometimes and I emailed ddwrt devs with crashlog... but 
+>> they told me
+>>
+>> "there is nothing to fix. its a firmware error. broadcom does not 
+>> provide support for these firmwares . I cannot fix the firmware error 
+>> for that chipset. its a binary. we can only seek for a newer firmware 
+>> binary somewhere in the wild..."
+> 
+> Looked at the log and ddwrt devs are mistaken. In the log it shows:
+> 
+>   Jun 12 13:26:00 109.198.5.214 logger : calling done start_checkhostapd
+>   Jun 12 13:26:07 109.198.5.214 kernel [ 4743.815344] ieee80211 phy2: 
+> brcmf_fil_cmd_data: Firmware error:  (-23) cmd 262
+>   Jun 12 13:27:04 109.198.5.214 kernel [ 4800.660849] Unable to handle 
+> kernel NULL pointer dereference at virtual address 00000058
+> 
+> So there is a command failing in firmware with error -23, but this is 
+> harmless. The NULL pointer dereference is a driver crash. Can you build 
+> the kernel with CONFIG_DEBUG_INFO and provide me with the brcmfmac 
+> kernel module, ie. brcmfmac.ko?
 
-Fixes: b12deb5e86fa ("mt76: mt7921s: fix mt7921s_mcu_[fw|drv]_pmctrl")
-Reported-by: YN Chen <YN.Chen@mediatek.com>
-Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
-v2: 1. Align the code with mt7921e
-    2. Add Lorenzo in co-developer
----
- drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Hi Sebastian,
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
-index 54a5c712a3c3..c572a3107b8b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
-@@ -136,8 +136,8 @@ int mt7921s_mcu_fw_pmctrl(struct mt7921_dev *dev)
- 	struct sdio_func *func = dev->mt76.sdio.func;
- 	struct mt76_phy *mphy = &dev->mt76.phy;
- 	struct mt76_connac_pm *pm = &dev->pm;
--	int err = 0;
- 	u32 status;
-+	int err;
- 
- 	sdio_claim_host(func);
- 
-@@ -148,7 +148,7 @@ int mt7921s_mcu_fw_pmctrl(struct mt7921_dev *dev)
- 					 2000, 1000000);
- 		if (err < 0) {
- 			dev_err(dev->mt76.dev, "mailbox ACK not cleared\n");
--			goto err;
-+			goto out;
- 		}
- 	}
- 
-@@ -156,18 +156,18 @@ int mt7921s_mcu_fw_pmctrl(struct mt7921_dev *dev)
- 
- 	err = readx_poll_timeout(mt76s_read_pcr, &dev->mt76, status,
- 				 !(status & WHLPCR_IS_DRIVER_OWN), 2000, 1000000);
-+out:
- 	sdio_release_host(func);
- 
--err:
- 	if (err < 0) {
- 		dev_err(dev->mt76.dev, "firmware own failed\n");
- 		clear_bit(MT76_STATE_PM, &mphy->state);
--		err = -EIO;
-+		return -EIO;
- 	}
- 
- 	pm->stats.last_doze_event = jiffies;
- 	pm->stats.awake_time += pm->stats.last_doze_event -
- 				pm->stats.last_wake_event;
- 
--	return err;
-+	return 0;
- }
--- 
-2.18.0
+I heared from Hranislav that you have a modified version of brcmfmac so 
+it would not help me to get a .ko with debug info from you. So decided 
+to ask you directly. I doubt you modified much in flowring.c. Not sure 
+about fweh.c, but these are the two source files I am interested in. 
+Also I am not scared to look at the ARM assembly so anything you can 
+throw at me would work.
 
+Regards,
+Arend
+
+--00000000000012566b05e164608d
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
+yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
+0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
+NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
+FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
+aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
+OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
+UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCBtBEr21nCF1ReTHH8
+DrGFN4WZqCsjco9sZLaWz6IX/TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjA2MTQwODQxNDhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAV9RMsaDEYe7NOsO0JsWf8LtvhYG3mDKZ80s6
+0oJ+kL2mZMtMfBJXnFhSi55+krc9K0gZUnF7tSOfiEbO5VooLXwB18zFWxBxdOLyLXvA3y249T6F
+baEC6BGJ7yoh6nKq75DxkPpQ6hKF+9WESWqviWa78mEHjsT09F6QdZSr3bYpopwHRQQ6MGif7oFY
+FgT8n3zVCfZ3XcRtehTQBNxK8vWtv6yJczvw8NCOp0m6RJ5s5PZr7vnFWghvvggWvl7uds0YJDdE
+PAQZhM90sdmsnhabuLq+9QvJtmadcIG0BKYJeKGfWA6cI++ZWObtK1XVoLl6nQYd9PuBwooa5Pyp
+CQ==
+--00000000000012566b05e164608d--
