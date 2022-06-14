@@ -2,70 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFCFF54A88C
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jun 2022 07:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F09E154A945
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jun 2022 08:15:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232850AbiFNFHU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Jun 2022 01:07:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50608 "EHLO
+        id S238756AbiFNGPl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Jun 2022 02:15:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229791AbiFNFHS (ORCPT
+        with ESMTP id S229937AbiFNGPj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Jun 2022 01:07:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 77D163A5C5
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Jun 2022 22:07:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1655183236;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=NGvImExXlnUvkSpclN++7AJoDvqpEU5Yxt0bwUxlgmk=;
-        b=KfZdpShVQhaSU/DyfDmhiYRHq0FSE4btUHTVlFedGs3ODoDygF72SBH6I0sD7S5jmpBkb0
-        3VAhyoMkPmqEWjFCtDJ3Exui+8chyBFzcDsC4L+D2XNYDmB1OyNxgSqxX+kmerY7NC9Xnp
-        P/zwGlQ8EjD3ZKcerPL9wTslmUg4HIs=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-131-ZaIbwpIgMEWGVLQJDToipA-1; Tue, 14 Jun 2022 01:07:13 -0400
-X-MC-Unique: ZaIbwpIgMEWGVLQJDToipA-1
-Received: by mail-lf1-f70.google.com with SMTP id u5-20020a056512128500b00479784f526cso3987225lfs.13
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Jun 2022 22:07:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NGvImExXlnUvkSpclN++7AJoDvqpEU5Yxt0bwUxlgmk=;
-        b=Lq0DtQ70QpyviPULciUr7S3vLDlROX1xb6Bemh8uY8TPLeV0IsCnsJqxgZJYrM1oRY
-         En4/eWyUyOouPtevXgehueM0fAdL0EhxSLTAZffl3GP/v32NDwJg59BYLCz6LFakOMBf
-         utgKnlKpt7yQNcJNytnkxNYQ0QDxpGIEEeLM0BtynXoEHs3N6j210rStTH8MmkbX3NIX
-         thM7tW6xH1iNQPTuxaY5dBhH7TELdhscUq5Czz5jmfPPpHL3ZkOfiNjHD3kb38E1HStf
-         kbo9reAcIiA9oia/AGaJnOK+Lf7sRkZQTnCKeUZ/OTor/sIiVtcemsqvRC8yjS90xs7G
-         JLGA==
-X-Gm-Message-State: AJIora9pZgT5+FMeG5QBUxKIx5tibr/PJrr/Uzu6sZe3wHPlZ3c/xfRw
-        ZymuUYfRpy+TVV3OFxHqVfKKGWGg/oi0+1Pibf7G6COE/kgInSGHtzZNCSQl9h7rp1ZvtJUUa8E
-        8eQnsZ46x5Bakp5snCIeqZt4rmnUQltNx6R5EOL82KLs=
-X-Received: by 2002:a05:651c:88f:b0:253:f747:2fd8 with SMTP id d15-20020a05651c088f00b00253f7472fd8mr1483822ljq.496.1655183231470;
-        Mon, 13 Jun 2022 22:07:11 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1sfdKuwTBBRBTaa7sl2k2KiAuTiEB8/sb1ytEdtUtElSmFjVEiJ++BL1Ov7aEhUWJV44v6OdG4WMjqySXOheJU=
-X-Received: by 2002:a05:651c:88f:b0:253:f747:2fd8 with SMTP id
- d15-20020a05651c088f00b00253f7472fd8mr1483811ljq.496.1655183231260; Mon, 13
- Jun 2022 22:07:11 -0700 (PDT)
+        Tue, 14 Jun 2022 02:15:39 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 436D3377CF;
+        Mon, 13 Jun 2022 23:15:38 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id A6661CE182F;
+        Tue, 14 Jun 2022 06:15:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4AB6C3411B;
+        Tue, 14 Jun 2022 06:15:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655187335;
+        bh=vo5JOYkEPeFEWpKNIvUVh541SRQIp5YhW0KwaowC1TE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=EN9q83UhlB8dhqZIow1gnV9jnq1wtW6JSaaGpbPQFx1jpcnu9pWLvl/Ot00hUA5wz
+         RJUDzPVu8bhWqMOjbaytQW1tBJYkzaiO2R4EMYyE9ckYuS3TJxtiUfT5mbDe9FE1c6
+         uCnE7cS3inwzREhYL1LOR1A45ULHJJOdk+G0r9iPi34UU7PHEBL0RlVOorQObAydno
+         llQcgPxq3WUbPPzbiT6WQRGBehDIqXuO+7PSQVzpv9kJX4XnRLc6Femx/AAZXTsmEQ
+         3M8pTbe1A94HsYPT5DMqRPpd0HLaZGpYlahy8IhzIBtdHB6LQx+SLGJWz0tXJ+d2rM
+         vhZulZ2tLmKFA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Christian Lamparter <chunkeey@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Christian Lamparter <chunkeey@web.de>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>
+Subject: Re: [PATCH v2] p54: Fix an error handling path in p54spi_probe()
+References: <297d2547ff2ee627731662abceeab9dbdaf23231.1655068321.git.christophe.jaillet@wanadoo.fr>
+        <CAAd0S9DgctqyRx+ppfT6dNntUR-cpySnsYaL=unboQ+qTK2wGQ@mail.gmail.com>
+        <f13c3976-2ba0-e16d-0853-5b5b1be16d11@wanadoo.fr>
+Date:   Tue, 14 Jun 2022 09:15:28 +0300
+In-Reply-To: <f13c3976-2ba0-e16d-0853-5b5b1be16d11@wanadoo.fr> (Christophe
+        JAILLET's message of "Mon, 13 Jun 2022 22:57:25 +0200")
+Message-ID: <871qvrrcsf.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <20220613210401.327958-1-johannes@sipsolutions.net>
-In-Reply-To: <20220613210401.327958-1-johannes@sipsolutions.net>
-From:   Jason Wang <jasowang@redhat.com>
-Date:   Tue, 14 Jun 2022 13:07:00 +0800
-Message-ID: <CACGkMEv-2U7TSkqLEOr=pd9MH8h=CEFzk0CtX1gao2CO2x0PJw@mail.gmail.com>
-Subject: Re: [PATCH] mac80211_hwsim: set virtio device ready in probe()
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,41 +67,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jun 14, 2022 at 5:04 AM Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> From: Johannes Berg <johannes.berg@intel.com>
->
-> Just like a similar commit to arch/um/drivers/virt-pci.c, call
-> virtio_device_ready() to make this driver work after commit
-> b4ec69d7e09 ("virtio: harden vring IRQ"), since the driver uses
-> the virtqueues in the probe function.  (The virtio core sets
-> the device ready when probe returns.)
->
-> Change-Id: I617d3b819b5e5345471a8e79db25342981a92424
-> Fixes: 8b4ec69d7e09 ("virtio: harden vring IRQ")
-> Fixes: 5d44fe7c9808 ("mac80211_hwsim: add frame transmission support over virtio")
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> writes:
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+> Le 13/06/2022 =C3=A0 22:02, Christian Lamparter a =C3=A9crit=C2=A0:
+>> On Sun, Jun 12, 2022 at 11:12 PM Christophe JAILLET
+>> <christophe.jaillet@wanadoo.fr> wrote:
+>>>
+>>> If an error occurs after a successful call to p54spi_request_firmware()=
+, it
+>>> must be undone by a corresponding release_firmware() as already done in
+>>> the error handling path of p54spi_request_firmware() and in the .remove=
+()
+>>> function.
+>>>
+>>> Add the missing call in the error handling path and remove it from
+>>> p54spi_request_firmware() now that it is the responsibility of the call=
+er
+>>> to release the firmawre
+>>
+>> that last word hast a typo:  firmware. (maybe Kalle can fix this in post=
+).
+>
+> More or less the same typo twice in a row... _Embarrassed_
 
-> ---
->  drivers/net/wireless/mac80211_hwsim.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-> index 02108b94d6b8..d2b31595856d 100644
-> --- a/drivers/net/wireless/mac80211_hwsim.c
-> +++ b/drivers/net/wireless/mac80211_hwsim.c
-> @@ -4951,6 +4951,8 @@ static int hwsim_virtio_probe(struct virtio_device *vdev)
->         if (err)
->                 return err;
->
-> +       virtio_device_ready(vdev);
-> +
->         err = fill_vq(hwsim_vqs[HWSIM_VQ_RX]);
->         if (err)
->                 goto out_remove;
-> --
-> 2.36.1
->
+No worries, I can fix the typo.
 
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
