@@ -2,52 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E64C54C401
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jun 2022 10:55:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5B0E54C438
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jun 2022 11:05:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236742AbiFOIzJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Jun 2022 04:55:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59882 "EHLO
+        id S235819AbiFOJFY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Jun 2022 05:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232993AbiFOIzG (ORCPT
+        with ESMTP id S230240AbiFOJFX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Jun 2022 04:55:06 -0400
-X-Greylist: delayed 183 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 15 Jun 2022 01:55:03 PDT
-Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07F4D2CDCF
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Jun 2022 01:55:02 -0700 (PDT)
-Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:35786 helo=webmail.newmedia-net.de)
-        by mail.as201155.net with esmtps  (TLS1) tls TLS_DHE_RSA_WITH_AES_256_CBC_SHA
-        (Exim 4.95)
-        (envelope-from <s.gottschall@newmedia-net.de>)
-        id 1o1Okl-0005pP-1m;
-        Wed, 15 Jun 2022 10:51:55 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=newmedia-net.de; s=mikd;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID; bh=tU+l7Fdz3abXql+FiXBRId9jYAOiEybU4ZuL1CHIj8E=;
-        b=PqA6fEUQPN7f1n+/ZZFiGXtspy9NovdHKYPGBzAZWnnj1VvJbGNv6qfT2CWHzX/65T9Vyymm+3q3tfrE2qiTGttYxF18HoyLlKEv4nbxJsaSUoyWszVmV5wbw4bPBKj2KvxKWTj6qTHDD5VbgnKL1d0KIZhij/qM6GbYfriFuI4=;
-Message-ID: <8fa4c081-d1f6-8bf5-2799-4b028fe572cf@newmedia-net.de>
-Date:   Wed, 15 Jun 2022 10:51:54 +0200
+        Wed, 15 Jun 2022 05:05:23 -0400
+Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F0FB3980F;
+        Wed, 15 Jun 2022 02:05:22 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1655283921; bh=mZJkc3EtpYZjHnwrFglpnwJJ1Hj8zbOLiuV4Bh+jD24=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=rTztdNLj2oECJXYk09U7wcYFzV90dyQIpL+L/VaZhamY54SGd3n4uQL2C/WlNctWU
+         6ZXx0QFdfMO1/NTh4MN/MnQKB+Ijwx83f6Zqx9dXS7FMxjgJ+6AzP1bcNmn4gNmyOz
+         AK7rP5M/PhBdHWEsNZdk69NrWn741jrwF+2RnSx53RBlZg4CYsnoHWu11V78zOARY5
+         uPMKw4cxbDj5LOiB+BJ0aTFwOPpNFN1p2uOKQFKCdbZ994eIdIXWG2qqjVVey2JnYS
+         JYH2N9qa8D0uC4748Rfzkq74mox10F2ONbrWza91LMwlJfprFJw90ljJmdU1toN2jp
+         pQZRQ4eCMDhwA==
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Pavel Skripkin <paskripkin@gmail.com>, davem@davemloft.net,
+        kuba@kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
+        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+Subject: Re: [PATCH v6 1/2] ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
+In-Reply-To: <87k09ipfl9.fsf@kernel.org>
+References: <d57bbedc857950659bfacac0ab48790c1eda00c8.1655145743.git.paskripkin@gmail.com>
+ <87o7yvzf33.fsf@toke.dk> <87k09ipfl9.fsf@kernel.org>
+Date:   Wed, 15 Jun 2022 11:05:20 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87tu8mxpnz.fsf@toke.dk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.0
-Subject: Re: brcmfmac
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Hranislav Milenkovic <hmilenkovic@protonmail.com>
-References: <ummn1_Vf6iygnVWDDcx07aAvrz2wPRnpMWB6A205JWSOMEYGVkGv0_uWYymiZTO7bManVdxSskozUDe_TcYAn6loKaOAptYNT2pl-Tu6q-g=@protonmail.com>
- <dac01b50-c559-c40a-871a-4da514e7c3a3@broadcom.com>
- <2d921af3-9d21-7d86-e6da-bfcd904513e9@broadcom.com>
-From:   Sebastian Gottschall <s.gottschall@newmedia-net.de>
-In-Reply-To: <2d921af3-9d21-7d86-e6da-bfcd904513e9@broadcom.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Received:  from [81.201.155.134] (helo=[172.29.0.186])
-        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
-        (Exim 4.72)
-        (envelope-from <s.gottschall@newmedia-net.de>)
-        id 1o1Okl-000B1a-Cn; Wed, 15 Jun 2022 10:51:55 +0200
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,66 +51,62 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Kalle Valo <kvalo@kernel.org> writes:
 
-Am 14.06.2022 um 10:41 schrieb Arend van Spriel:
-> On 6/13/2022 11:19 AM, Arend van Spriel wrote:
->> On 6/12/2022 5:49 PM, Hranislav Milenkovic wrote:
->>> Hi Arend,
->>> I fouded your e-mail here 
->>> https://wireless.wiki.kernel.org/en/users/drivers/brcm80211 
->>> <https://wireless.wiki.kernel.org/en/users/drivers/brcm80211>
->>> I have netgear R8000 with brcm 43602 wifi chip. I am using ddwrt 
->>> with experimental build. There are 2 versions of build, normal with 
->>> dhd and experimental with brvmfmac driver 
->>> https://dd-wrt.com/support/other-downloads/?path=betas%2F2022%2F06-10-2022-r49139%2Fnetgear-r8000%2F 
->>> <https://dd-wrt.com/support/other-downloads/?path=betas%2F2022%2F06-10-2022-r49139%2Fnetgear-r8000%2F> 
+> Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
+>
+>> Pavel Skripkin <paskripkin@gmail.com> writes:
+>>
+>>> Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb() [0]. The
+>>> problem was in incorrect htc_handle->drv_priv initialization.
 >>>
->>> Router crashes sometimes and I emailed ddwrt devs with crashlog... 
->>> but they told me
+>>> Probable call trace which can trigger use-after-free:
 >>>
->>> "there is nothing to fix. its a firmware error. broadcom does not 
->>> provide support for these firmwares . I cannot fix the firmware 
->>> error for that chipset. its a binary. we can only seek for a newer 
->>> firmware binary somewhere in the wild..."
+>>> ath9k_htc_probe_device()
+>>>   /* htc_handle->drv_priv =3D priv; */
+>>>   ath9k_htc_wait_for_target()      <--- Failed
+>>>   ieee80211_free_hw()		   <--- priv pointer is freed
+>>>
+>>> <IRQ>
+>>> ...
+>>> ath9k_hif_usb_rx_cb()
+>>>   ath9k_hif_usb_rx_stream()
+>>>    RX_STAT_INC()		<--- htc_handle->drv_priv access
+>>>
+>>> In order to not add fancy protection for drv_priv we can move
+>>> htc_handle->drv_priv initialization at the end of the
+>>> ath9k_htc_probe_device() and add helper macro to make
+>>> all *_STAT_* macros NULL safe, since syzbot has reported related NULL
+>>> deref in that macros [1]
+>>>
+>>> Link: https://syzkaller.appspot.com/bug?id=3D6ead44e37afb6866ac0c7dd121=
+b4ce07cb665f60 [0]
+>>> Link: https://syzkaller.appspot.com/bug?id=3Db8101ffcec107c0567a0cd8acb=
+bacec91e9ee8de [1]
+>>> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+>>> Reported-and-tested-by: syzbot+03110230a11411024147@syzkaller.appspotma=
+il.com
+>>> Reported-and-tested-by: syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotma=
+il.com
+>>> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
 >>
->> Looked at the log and ddwrt devs are mistaken. In the log it shows:
+>> Alright, since we've heard no more objections and the status quo is
+>> definitely broken, let's get this merged and we can follow up with any
+>> other fixes as necessary...
 >>
->>   Jun 12 13:26:00 109.198.5.214 logger : calling done start_checkhostapd
->>   Jun 12 13:26:07 109.198.5.214 kernel [ 4743.815344] ieee80211 phy2: 
->> brcmf_fil_cmd_data: Firmware error:  (-23) cmd 262
->>   Jun 12 13:27:04 109.198.5.214 kernel [ 4800.660849] Unable to 
->> handle kernel NULL pointer dereference at virtual address 00000058
->>
->> So there is a command failing in firmware with error -23, but this is 
->> harmless. The NULL pointer dereference is a driver crash. Can you 
->> build the kernel with CONFIG_DEBUG_INFO and provide me with the 
->> brcmfmac kernel module, ie. brcmfmac.ko?
+>> Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
 >
-> Hi Sebastian,
->
-> I heared from Hranislav that you have a modified version of brcmfmac 
-> so it would not help me to get a .ko with debug info from you. So 
-> decided to ask you directly. I doubt you modified much in flowring.c. 
-> Not sure about fweh.c, but these are the two source files I am 
-> interested in. Also I am not scared to look at the ARM assembly so 
-> anything you can throw at me would work.
-i did not modify much in flowring. nothing in fact. i added some 
-features like airtime reporting and noise reporting in the generic code. 
-so just all the cosmetic things i need for my firmware. some are might 
-be also usefull for merging to upstream. but some of this code might be 
-too ugly for it.
-you can find the sources here 
-https://github.com/mirror/dd-wrt/tree/master/src/router/mac80211/drivers/net/wireless/broadcom/brcm80211/brcmfmac
-the issue hranislav is reporting seems also only to affect bcm43602 
-chipsets. but not 4366 for instance. or at least i have never seen it.
-another thing is that i use customized firmwares for airtime reporting 
-etc. you can find them also here
+> I'm wondering should these go to -rc or -next? Has anyone actually
+> tested these with real hardware? (syzbot testing does not count) With
+> the past bad experience with syzbot fixes I'm leaning towards -next to
+> have more time to fix any regressions.
 
-https://github.com/mirror/dd-wrt/tree/master/src/router/mac80211/ath10k-firmware-38eeda3ae6f90fde5546bdd48ee4ff3090f238c0/brcm
+Hmm, good question. From Takashi's comment on v5, it seems like distros
+are going to backport it anyway, so in that sense it probably doesn't
+matter that much?
 
+In any case I think it has a fairly low probability of breaking real
+users' setup (how often is that error path on setup even hit?), but I'm
+OK with it going to -next to be doubleplus-sure :)
 
-Sebastian
-
->
-> Regards,
-> Arend
+-Toke
