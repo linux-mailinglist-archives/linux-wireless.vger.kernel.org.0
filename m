@@ -2,62 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0441D54C258
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jun 2022 09:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED29054C276
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jun 2022 09:11:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238412AbiFOHG5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Jun 2022 03:06:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50214 "EHLO
+        id S244657AbiFOHKZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Jun 2022 03:10:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230083AbiFOHG5 (ORCPT
+        with ESMTP id S230083AbiFOHKV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Jun 2022 03:06:57 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF5FA167EE
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Jun 2022 00:06:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=ejR15jOo17jAqwb9TH1ItkfDwb9HMdVRIrDnKZ/fF08=;
-        t=1655276815; x=1656486415; b=UkBfRYmnKio3JIKO7lH60HmdLGlW4vma83UohZGXy/adWN6
-        JG65gB6qrXpi4zp6B4CN3SygcXZTf+FcAiOR1gLlOOWuALqz0OcIgr7irWFvgD3W/rNJOPbSdxStR
-        EKdg3ytKCnKKEqFgekLwGrGa9ySBu388wVlBuRc3nlPTgn2uIkgftK9817OT2y1LEIjgZ7/DexdID
-        xLZvXXB1D3D2aiRo77nZZhkD9+g1e1zUloLi1MctsGUdw+AQDK8ILHjct/UCMm6usTzAu2BzC6taM
-        ATC/w/MfRHcH2qeRsXkMMjFWB3Z2WN8YWQ1n1pKwq7Kp4hr9FYlZ9G6vC8Ny4ECw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1o1N76-006MFe-4Q;
-        Wed, 15 Jun 2022 09:06:52 +0200
-Message-ID: <fe88188dfe37050b097803a4ce175478a794208c.camel@sipsolutions.net>
-Subject: Re: [PATCH] iwlwifi: pcie: Fixed integer overflow in
- iwl_write_to_user_buf
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Hyunwoo Kim <imv4bel@gmail.com>, gregory.greenman@intel.com,
-        linux-wireless@vger.kernel.org
-Date:   Wed, 15 Jun 2022 09:06:51 +0200
-In-Reply-To: <20220614173352.GA588327@ubuntu>
-References: <20220614173352.GA588327@ubuntu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.2 (3.44.2-1.fc36) 
+        Wed, 15 Jun 2022 03:10:21 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B6C2A423;
+        Wed, 15 Jun 2022 00:10:19 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5D8EEB81BD5;
+        Wed, 15 Jun 2022 07:10:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8D5C34115;
+        Wed, 15 Jun 2022 07:10:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655277017;
+        bh=mtGHET4UWHTA/01BWBiFQyeYgHdFSuen2FbpnN+C85Y=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=ex8ca7+RD4bQgHhoZ4JMqXDpSkQlSvG9uAgUb4pnyBznybFan9r1TWYy5KGNVHyE5
+         C5v1NyZuBq4Ecrl65S9fkJ+QCXuQQ1WQZ4G0kTF4l8VzyUR/cOD8ZuEsqBxsz1ry8m
+         7Rr0Bhi6NN3M0niPcNasBfN657Bca5JHMDvRqBuYsc6Gg1h5L0Cm5GPQGi4tpVJPa4
+         mQvjgQNZvgmCsR2K0uklsPT6uq2yIxSAuEsuy3FwPelfaarhm3PngU6H0hDyfDej34
+         adbrpa6wbH+48fCIQGcNPKWNo0YhwsZBoNFNtOW2vZp5eME9K5mLp2XVMmASR5zedu
+         7TWu4Q6w2wnyg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc:     Pavel Skripkin <paskripkin@gmail.com>, davem@davemloft.net,
+        kuba@kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
+        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+Subject: Re: [PATCH v6 1/2] ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
+In-Reply-To: <87o7yvzf33.fsf@toke.dk> ("Toke \=\?utf-8\?Q\?H\=C3\=B8iland-J\?\=
+ \=\?utf-8\?Q\?\=C3\=B8rgensen\=22's\?\= message of
+        "Tue, 14 Jun 2022 12:58:40 +0200")
+References: <d57bbedc857950659bfacac0ab48790c1eda00c8.1655145743.git.paskripkin@gmail.com>
+        <87o7yvzf33.fsf@toke.dk>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Wed, 15 Jun 2022 10:10:10 +0300
+Message-ID: <87k09ipfl9.fsf@kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2022-06-14 at 10:33 -0700, Hyunwoo Kim wrote:
-> An integer overflow occurs in the iwl_write_to_user_buf() function,
->    which is called by the iwl_dbgfs_monitor_data_read() function.
->=20
+Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
 
-Out of curiosity, how did you find this?
+> Pavel Skripkin <paskripkin@gmail.com> writes:
+>
+>> Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb() [0]. The
+>> problem was in incorrect htc_handle->drv_priv initialization.
+>>
+>> Probable call trace which can trigger use-after-free:
+>>
+>> ath9k_htc_probe_device()
+>>   /* htc_handle->drv_priv =3D priv; */
+>>   ath9k_htc_wait_for_target()      <--- Failed
+>>   ieee80211_free_hw()		   <--- priv pointer is freed
+>>
+>> <IRQ>
+>> ...
+>> ath9k_hif_usb_rx_cb()
+>>   ath9k_hif_usb_rx_stream()
+>>    RX_STAT_INC()		<--- htc_handle->drv_priv access
+>>
+>> In order to not add fancy protection for drv_priv we can move
+>> htc_handle->drv_priv initialization at the end of the
+>> ath9k_htc_probe_device() and add helper macro to make
+>> all *_STAT_* macros NULL safe, since syzbot has reported related NULL
+>> deref in that macros [1]
+>>
+>> Link: https://syzkaller.appspot.com/bug?id=3D6ead44e37afb6866ac0c7dd121b=
+4ce07cb665f60 [0]
+>> Link: https://syzkaller.appspot.com/bug?id=3Db8101ffcec107c0567a0cd8acbb=
+acec91e9ee8de [1]
+>> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+>> Reported-and-tested-by: syzbot+03110230a11411024147@syzkaller.appspotmai=
+l.com
+>> Reported-and-tested-by: syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmai=
+l.com
+>> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+>
+> Alright, since we've heard no more objections and the status quo is
+> definitely broken, let's get this merged and we can follow up with any
+> other fixes as necessary...
+>
+> Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
 
-johannes
+I'm wondering should these go to -rc or -next? Has anyone actually
+tested these with real hardware? (syzbot testing does not count) With
+the past bad experience with syzbot fixes I'm leaning towards -next to
+have more time to fix any regressions.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
