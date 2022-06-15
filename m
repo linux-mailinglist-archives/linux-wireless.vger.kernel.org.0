@@ -2,69 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D854254BEEC
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jun 2022 02:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0441D54C258
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jun 2022 09:06:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240922AbiFOAxk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Jun 2022 20:53:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60190 "EHLO
+        id S238412AbiFOHG5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Jun 2022 03:06:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240947AbiFOAxX (ORCPT
+        with ESMTP id S230083AbiFOHG5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Jun 2022 20:53:23 -0400
-Received: from out30-57.freemail.mail.aliyun.com (out30-57.freemail.mail.aliyun.com [115.124.30.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCD4844757;
-        Tue, 14 Jun 2022 17:53:21 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0VGQ6.5y_1655254397;
-Received: from localhost(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0VGQ6.5y_1655254397)
-          by smtp.aliyun-inc.com;
-          Wed, 15 Jun 2022 08:53:18 +0800
-From:   Yang Li <yang.lee@linux.alibaba.com>
-To:     amitkarwar@gmail.com
-Cc:     ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
-        huxinming820@gmail.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yang Li <yang.lee@linux.alibaba.com>,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: [PATCH -next] wireless: clean up one inconsistent indenting
-Date:   Wed, 15 Jun 2022 08:53:16 +0800
-Message-Id: <20220615005316.9596-1-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 2.20.1.7.g153144c
+        Wed, 15 Jun 2022 03:06:57 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF5FA167EE
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Jun 2022 00:06:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=ejR15jOo17jAqwb9TH1ItkfDwb9HMdVRIrDnKZ/fF08=;
+        t=1655276815; x=1656486415; b=UkBfRYmnKio3JIKO7lH60HmdLGlW4vma83UohZGXy/adWN6
+        JG65gB6qrXpi4zp6B4CN3SygcXZTf+FcAiOR1gLlOOWuALqz0OcIgr7irWFvgD3W/rNJOPbSdxStR
+        EKdg3ytKCnKKEqFgekLwGrGa9ySBu388wVlBuRc3nlPTgn2uIkgftK9817OT2y1LEIjgZ7/DexdID
+        xLZvXXB1D3D2aiRo77nZZhkD9+g1e1zUloLi1MctsGUdw+AQDK8ILHjct/UCMm6usTzAu2BzC6taM
+        ATC/w/MfRHcH2qeRsXkMMjFWB3Z2WN8YWQ1n1pKwq7Kp4hr9FYlZ9G6vC8Ny4ECw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1o1N76-006MFe-4Q;
+        Wed, 15 Jun 2022 09:06:52 +0200
+Message-ID: <fe88188dfe37050b097803a4ce175478a794208c.camel@sipsolutions.net>
+Subject: Re: [PATCH] iwlwifi: pcie: Fixed integer overflow in
+ iwl_write_to_user_buf
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Hyunwoo Kim <imv4bel@gmail.com>, gregory.greenman@intel.com,
+        linux-wireless@vger.kernel.org
+Date:   Wed, 15 Jun 2022 09:06:51 +0200
+In-Reply-To: <20220614173352.GA588327@ubuntu>
+References: <20220614173352.GA588327@ubuntu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.2 (3.44.2-1.fc36) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Eliminate the follow smatch warning:
-drivers/net/wireless/marvell/mwifiex/pcie.c:3364 mwifiex_unregister_dev() warn: inconsistent indenting
+On Tue, 2022-06-14 at 10:33 -0700, Hyunwoo Kim wrote:
+> An integer overflow occurs in the iwl_write_to_user_buf() function,
+>    which is called by the iwl_dbgfs_monitor_data_read() function.
+>=20
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- drivers/net/wireless/marvell/mwifiex/pcie.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Out of curiosity, how did you find this?
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
-index 20352039a5c3..f7f9277602a5 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie.c
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
-@@ -3361,7 +3361,7 @@ static void mwifiex_unregister_dev(struct mwifiex_adapter *adapter)
- 	} else {
- 		mwifiex_dbg(adapter, INFO,
- 			    "%s(): calling free_irq()\n", __func__);
--	       free_irq(card->dev->irq, &card->share_irq_ctx);
-+		free_irq(card->dev->irq, &card->share_irq_ctx);
- 
- 		if (card->msi_enable)
- 			pci_disable_msi(pdev);
--- 
-2.20.1.7.g153144c
-
+johannes
