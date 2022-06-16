@@ -2,87 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0E9C54E9B4
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jun 2022 20:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F55854EA38
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jun 2022 21:35:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377642AbiFPS6N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jun 2022 14:58:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52916 "EHLO
+        id S1378344AbiFPTfK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jun 2022 15:35:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236007AbiFPS6N (ORCPT
+        with ESMTP id S1377636AbiFPTfK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jun 2022 14:58:13 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B830D1D0CC
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Jun 2022 11:58:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7D3D1B82579
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Jun 2022 18:58:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDF4C34114;
-        Thu, 16 Jun 2022 18:58:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655405889;
-        bh=+33FWUswMZscBh+jqBDYywCE5EEwigUEJN3lzcTaQP4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iMNwklE4d1/OJsJ14nWiP9dvfrpXeFB1b6JjxYF/Wt8MKVgnfwOFyKcoeoQIkPkBA
-         6/vb0cYHLPsNkqu7gDJGTEYkGghkmpSprBZ1UUJQOINzwWKVJTAw86MrkR3Fc1EpYz
-         fTLq9+CpEfHG1I5eVQnJJuBO0SGXK8bOMItLriOA2RmefkrIgBa1dSYEn8Hef24WzC
-         0gCm6ADEa7vFKy5lfW1ys3SUXiEB4yrrKnEzf5Stiw4ntBF5r6SVDZ5EHldgcO2top
-         gdfxAdxedvHTzu3AMeGuU5OBIFU+G0DMOWHsLiKF7ebnfuhtAZioGo/JV4chChWXbh
-         KTr5bFwaQHwXw==
-Date:   Thu, 16 Jun 2022 11:58:08 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     golan.ben.ami@intel.com, Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
-        Udo Steinberg <udo@hypervisor.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: Re: Bug 215635 - iwlwifi: Firmware crash with firmware
- 36.ca7b901d.0 (8265-36.ucode)
-Message-ID: <20220616115808.141dec76@kernel.org>
-In-Reply-To: <915d6d66-4e42-8cbf-76bc-0f2f72d5e7d6@leemhuis.info>
-References: <915d6d66-4e42-8cbf-76bc-0f2f72d5e7d6@leemhuis.info>
+        Thu, 16 Jun 2022 15:35:10 -0400
+Received: from smtp.smtpout.orange.fr (smtp08.smtpout.orange.fr [80.12.242.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5094F57B01
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Jun 2022 12:35:08 -0700 (PDT)
+Received: from [192.168.1.18] ([90.11.190.129])
+        by smtp.orange.fr with ESMTPA
+        id 1vGioIvR7NUm11vGionD4h; Thu, 16 Jun 2022 21:35:06 +0200
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Thu, 16 Jun 2022 21:35:06 +0200
+X-ME-IP: 90.11.190.129
+Message-ID: <70ea2718-4979-5587-7f31-2361ae3ff8ad@wanadoo.fr>
+Date:   Thu, 16 Jun 2022 21:35:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v2] p54: Fix an error handling path in p54spi_probe()
+Content-Language: en-US
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Christian Lamparter <chunkeey@gmail.com>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+References: <297d2547ff2ee627731662abceeab9dbdaf23231.1655068321.git.christophe.jaillet@wanadoo.fr>
+ <CAAd0S9DgctqyRx+ppfT6dNntUR-cpySnsYaL=unboQ+qTK2wGQ@mail.gmail.com>
+ <f13c3976-2ba0-e16d-0853-5b5b1be16d11@wanadoo.fr>
+ <df6b487b-b8b7-44fc-7c2d-e6fd15072c14@gmail.com>
+ <20220616103640.GB16517@kadam>
+ <9fa854e1-ad88-9c18-ca68-5709dc1c7906@gmail.com>
+ <20220616151948.GD16517@kadam>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20220616151948.GD16517@kadam>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 14 Mar 2022 12:51:38 +0100 Thorsten Leemhuis wrote:
-> Hi, this is your Linux kernel regression tracker.
+Le 16/06/2022 à 17:19, Dan Carpenter a écrit :
+> On Thu, Jun 16, 2022 at 03:13:26PM +0200, Christian Lamparter wrote:
+>> On 16/06/2022 12:36, Dan Carpenter wrote:
+>>>>> If it deserves a v3 to axe some lines of code, I can do it but, as said
+>>>>> previously,
+>>>>> v1 is for me the cleaner and more future proof.
+>>>>
+>>>> Gee, that last sentence about "future proof" is daring.
+>>>
+>>> The future is vast and unknowable but one thing which is pretty likely
+>>> is that Christophe's patch will introduce a static checker warning.  We
+>>> really would have expected a to find a release_firmware() in the place
+>>> where it was in the original code.  There is a comment there now so no
+>>> one is going to re-add the release_firmware() but that's been an issue
+>>> in the past.
+>>>
+>>> I'm sort of surprised that it wasn't a static checker warning already.
+>>> Anyway, I'll add this to Smatch check_unwind.c
+>>>
+>>> +         { "request_firmware", ALLOC, 0, "*$", &int_zero, &int_zero},
+>>> +         { "release_firmware", RELEASE, 0, "$"},
+>>
+>> hmm? I don't follow you there. Why should there be a warning "now"?
+>> (I assume you mean with v2 but not with v1?).
 > 
-> I noticed a regression report in bugzilla.kernel.org that afaics isn't
-> properly handled, that's why I decided to forward it to the lists and a
-> few relevant people to the CC. To quote from
-> https://bugzilla.kernel.org/show_bug.cgi?id=215635 :
+> Yep.  Generally, static checkers assume that functions clean up after
+> themselves on error paths so there would be a warning in
+> p54spi_request_firmware().  This is the easiest kind of static analysis
+> to implement and it's the way most kernel error handling is written.
 > 
-> > Seeing the following firmware crash frequently with
-> > firmware-version: 36.ca7b901d.0 8265-36.ucode
-> > 
-> > [...]
-> > 
-> > Afterwards iwlwifi is entirely unusable, i.e. the hardware does not recover.  
+>> If it's because the static
+>> checker can't look beyond the function scope then this would be bad news
+>> since on the "success" path the firmware will stick around until
+>> p54spi_remove().
 > 
-> > I have not been able to observe the problem with 5.15.x so far.
-> > 
-> > The problem manifests either by Wi-Fi becoming entirely unresponsive (not even ping to gateway works anymore) or by producing a firmware crash.
-> > 
-> > In response to #3, the problem was most recently observed as a firmware crash on Linux 5.16.13. HW is Intel Corporation Wireless 8265 / 8275 (rev 78) (Windstorm Peak) and firmware version 36.ca7b901d.0 8265-36.ucode.
-> > 
-> > I'm attaching the dmesg output from 5.16.13 (with the TWT patch mentioned above applied) which includes a firmware crash.  
-> 
-> Could somebody take a look into this? Or was this discussed somewhere
-> else already? Or even fixed?
+> Presumably Christophe found this bug with static analysis already but
 
-Any progress / outputs on this one? Folks are reporting it's still
-happening on Fedora 36 w/ 5.17.13.
+True, I use a coccinelle script that looks at functions called in 
+.remove() functions that are not called in what looks like an error 
+handling path in the corresponding probe.
+
+> my guess is that it has a lot of false positives?
+
+This is SOOOO true !
+The output is 23k LoC, mostly false positive!
+
+In fact I only checks the diff between the outputs of my coccinelle 
+script from time to time.
+
+Looking at only the diff, most of the false positives get ignored and I 
+manage to spot ~5-10 issues of this kind in each dev cycle in new code.
+
+CJ
+
+> 
+> Eventually the leak in the probe function would be found with static
+> analysis as well.  The truth is that there are a lot of leaks so I'm
+> already a bit overwhelmed fixing the ones that I know about.
+> 
+> It would be fairly simple to make a high quality resource leak checker
+> which is specific to probe functions.  But the thing is that leaks in
+> probe functions are not really exploitable.  Also some devices are
+> needed for the system to boot so often the devs don't care about about
+> cleaning up...  My motivation is low.
+> 
+> regards,
+> dan carpenter
+> 
+> 
+
