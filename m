@@ -2,54 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2051B54D8F3
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jun 2022 05:35:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DBF554D9DD
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jun 2022 07:40:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349302AbiFPDft (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Jun 2022 23:35:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55258 "EHLO
+        id S1356444AbiFPFkO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jun 2022 01:40:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238953AbiFPDfr (ORCPT
+        with ESMTP id S1358775AbiFPFkG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Jun 2022 23:35:47 -0400
+        Thu, 16 Jun 2022 01:40:06 -0400
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51CD642A19
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Jun 2022 20:35:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBBDD5A2F2
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Jun 2022 22:39:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655350547; x=1686886547;
+  t=1655357990; x=1686893990;
   h=date:from:to:cc:subject:message-id:mime-version:
    content-transfer-encoding;
-  bh=om39+6iWaC7nWKwgUN1ZaRYuvlhvBeKFI9L/FBscp5U=;
-  b=D4+5eLQTQWdXtgn5JYL9Lc+yv5TLN/w21O1v/wcgfkXEzMWGeAnbeNAD
-   yLjo48UlHJxku0MgcaHsEftjYZR2kgo6ronp27VNJj7ZbQha/u9j1w0FF
-   rezXtx3pZQ111/jGO1Dxtt7qT5g50IZjxeOLafStFcTaX2/UAiiGAnN9X
-   OGffzD+XxsPhWsoWXX6+U0reRpV7eyqNBZxLlbMc43kd3cLYVHA/hGmem
-   PsXZSW4PiSV5oi5NPkHlic2vbawp06wCAwlBFUPQ5ZT/bt4nCcFKCC2Y5
-   271gp6YzN3eIrtFVfxjt/raUW9ZIhmUO6l9PhKdIiLaXOIyrkVMohlPOD
+  bh=IgDZQlcEQFw6BHRvowZn+s+A00xn0820Ki94srvKfbs=;
+  b=V/y5Theqi9pwI5S+PcTTOQ65m2SAMVcPu+vkt4MKCbT+NCEZaD9zjrCY
+   CdDt5mMHNhJnkqOUd75iX54n1WjdBdXzWuDWYMrK1uXfyyaO0w87Hrb7Q
+   BL8STiXSbcWR42bboE9IJZNcGCMaWWdjQkgJP9UR089UyxyQdx1krhM+X
+   63kJk7ufBHL5wYABiFD5jGb4lyJyXkm3ySp8QaECk6+aR5Y73zSNSDckQ
+   rCbmi6htCx7WCtqi9Tlvgrtza2VCaxiI/1eGm3Sxz9AWcYAwnlfUmn3O0
+   pDbhXxYPmrzqj3Jlhs7bHapLBr8fA01MLPUXQSv47hAn9aebHfpTvpFC8
    A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10379"; a="259011713"
-X-IronPort-AV: E=Sophos;i="5.91,302,1647327600"; 
-   d="scan'208";a="259011713"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 20:35:47 -0700
+X-IronPort-AV: E=McAfee;i="6400,9594,10379"; a="259025312"
+X-IronPort-AV: E=Sophos;i="5.91,304,1647327600"; 
+   d="scan'208";a="259025312"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 22:39:50 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,302,1647327600"; 
-   d="scan'208";a="613009734"
+X-IronPort-AV: E=Sophos;i="5.91,304,1647327600"; 
+   d="scan'208";a="713233752"
 Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 15 Jun 2022 20:35:45 -0700
+  by orsmga004.jf.intel.com with ESMTP; 15 Jun 2022 22:39:48 -0700
 Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
         (envelope-from <lkp@intel.com>)
-        id 1o1gIL-000O0h-0t;
-        Thu, 16 Jun 2022 03:35:45 +0000
-Date:   Thu, 16 Jun 2022 11:35:28 +0800
+        id 1o1iEO-000O6L-7G;
+        Thu, 16 Jun 2022 05:39:48 +0000
+Date:   Thu, 16 Jun 2022 13:39:04 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Kalle Valo <kvalo@kernel.org>
 Cc:     linux-wireless@vger.kernel.org,
         Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless:for-next] BUILD SUCCESS
- c2b3a0759c76d67186199eb1d076fb55497eac98
-Message-ID: <62aaa500.RZuZhN7EiQvNKN7S%lkp@intel.com>
+Subject: [wireless-next:main] BUILD SUCCESS
+ 8092a0eed4080a33a4c8681f4231c40c0bb7cb5c
+Message-ID: <62aac1f8.JiZYUSFegbME8vSl%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -64,12 +64,12 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: c2b3a0759c76d67186199eb1d076fb55497eac98  dt-bindings: net: wireless: ath11k: change Kalle's email
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 8092a0eed4080a33a4c8681f4231c40c0bb7cb5c  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
 
-elapsed time: 830m
+elapsed time: 970m
 
-configs tested: 53
+configs tested: 52
 configs skipped: 3
 
 The following configs have been built successfully.
@@ -91,14 +91,13 @@ csky                                defconfig
 nios2                            allyesconfig
 alpha                               defconfig
 alpha                            allyesconfig
-h8300                            allyesconfig
 xtensa                           allyesconfig
 arc                                 defconfig
 sh                               allmodconfig
-s390                                defconfig
-s390                             allmodconfig
 parisc                              defconfig
 parisc64                            defconfig
+s390                             allmodconfig
+s390                                defconfig
 parisc                           allyesconfig
 s390                             allyesconfig
 sparc                               defconfig
@@ -109,9 +108,9 @@ i386                   debian-10.3-kselftests
 i386                              debian-10.3
 mips                             allyesconfig
 mips                             allmodconfig
-powerpc                          allyesconfig
 powerpc                           allnoconfig
 powerpc                          allmodconfig
+powerpc                          allyesconfig
 riscv                               defconfig
 riscv                    nommu_virt_defconfig
 riscv                          rv32_defconfig
