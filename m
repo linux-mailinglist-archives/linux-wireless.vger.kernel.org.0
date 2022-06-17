@@ -2,110 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7D0F54F932
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jun 2022 16:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB36254F9AD
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jun 2022 16:54:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381599AbiFQOba (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Jun 2022 10:31:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37440 "EHLO
+        id S1379298AbiFQOuy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Jun 2022 10:50:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231490AbiFQOb3 (ORCPT
+        with ESMTP id S1358452AbiFQOuv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Jun 2022 10:31:29 -0400
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E7F555348
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Jun 2022 07:31:28 -0700 (PDT)
-Date:   Fri, 17 Jun 2022 14:31:21 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dannyvanheumen.nl;
-        s=protonmail2; t=1655476283; x=1655735483;
-        bh=nxFlsSqiLytB2oybbWxLH4i+nQ3KDMGZZv8tlLCQtE4=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
-         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
-         Feedback-ID:Message-ID;
-        b=bEbir5DiqJP9JPAl284xnMtIO3tD0PCd8/9KeKGuSrtDnencUL5xc0CuqLZTa38ew
-         +9POkrqb7WMhp0K+8kHHYqlcNNLoSqtQmVjbluN7aZGPrhY03qjYa5Nt1VzyLg7CuE
-         3030j7trjcdGJDx7qj+kfBKjjhe0ka5yyCSOXQOTDDfWGf+Wsfdwcq/oG4wZ1m0Agm
-         NC6s/h7S85blT098szIdIL+Hw75FN2PALTxK6jWUvz5mi7pSl7fBXrS7979VAPfp+p
-         F7uNOOueJBfiWXmXbD14FP+X4e12KZQcQZKgtMvCbKWiUwVdSkQXXte/BsxW12TRrp
-         tCwslzrB3hQDg==
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-From:   Danny van Heumen <danny@dannyvanheumen.nl>
-Cc:     Franky Lin <franky.lin@broadcom.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Reply-To: Danny van Heumen <danny@dannyvanheumen.nl>
-Subject: Re: [PATCH] work-in-progress: double-free after hardware reset due to firmware-crash
-Message-ID: <Ct5-sN_CGLyGf5qHNiakimNNG33Yb_7toxutmv8ELxgBqGZQXM6DkaIJg2cctTqSFyawKx8XeU3ySO2Ce6idBXv-ZWrT6Wy5_a9nFr4svy4=@dannyvanheumen.nl>
-In-Reply-To: <PDYrcmiOE8drECietqr7SILEQI8DpX6gL8pbVCR6IbqNrKjyXTLYPhgsWfHL-s9FuElU5v84HUUWaFntR5RZJG5EBABE2XilCP_2O9ZipMk=@dannyvanheumen.nl>
-References: =?us-ascii?Q?<UXibAXk2GByhvw88A6LIDXHSlkP79-ML7FrtyfnHuiC34qUd-zx03BAJAtzluyEvfwPBR0tac4hC72zKI1qT3CtgmvvVohr1v8a49TqYVSw=3D@dannyvanheumen.nl>_<51CC1C7B-400C-4A7A-A5D3-EB457DC6862F@broadcom.com>_<jJuvC2YezD=5Fe1G6VFXwJjFFUAir0HFcDnBaZGRvKtnaY69v8aI3KkCouzzyOjrb9bZOnSzinETjNNxHvlmYCwNijdmts=5F5bEXZSV7dMNi0s=3D@dannyvanheumen.nl>_<B08447EB-F222-49B5-A411-0DB6848A80ED@broadcom.com>_<EbyrCYK=5FmR6ppJYbSc5JfGGG=5FQZEZb2Zp8Htx9f-orZ=5FwX0Dpz1pXhDjQ9P1nGuyTH041zvsScaRIPllClzLpLgwVuff4ZTTAiVOXe5-Mwg=3D@dannyvanheumen.nl>_<1a116224-66ff-17b1-bb8b-9c0918dd47e4@broadcom.com>_<kB9OdQYlBnucF05VoKxTvsT8eUrPGJc=5Fwe9irAdR-2gmXsEl4NvkhMzDcTahLm3HLA2zKVXnhEOstESbIEcHGKYHvMOyIcr4vh80f0eJCJ0=3D@dannyvanheumen.nl>_<MV9-h4Mgj6FKxRJY93AQMhYFsz2yz0CoDQ70V8JWe742HUdLdl6Q1LbFTxGa-NCzodUmI3dbSoRGXebbE5rWPKKehHdixSTjW4TKZt10AJk=3D@dannyvanheumen.nl>_<1815e2011e8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>_<PDYrcmiOE8drECietqr7SILEQI8DpX6gL8pbVCR6IbqNrKjyXTLYPhgsWfHL-s9FuElU5v84HUUWaFntR5RZJG5EBABE2?=
- =?us-ascii?Q?XilCP=5F2O9ZipMk=3D@dannyvanheumen.nl>?=
-Feedback-ID: 15073070:user:proton
+        Fri, 17 Jun 2022 10:50:51 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5593141611
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Jun 2022 07:50:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 01246B82ACA
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Jun 2022 14:50:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C5CC3411B;
+        Fri, 17 Jun 2022 14:50:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655477447;
+        bh=M5/he+GrjhQIeU9BeJjdwoSJo2WLcrjwgadxd/BUjOc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Hik994yWZ1OHmY2jb7UzV/Gqx9JAsGxXem0AR66qQjzyb8tWswEJSfca/kVPdTKZd
+         ZyvVAp9R25b3OJ+VDKqLanZ+iaYnHBu4V9tR7iXg60NlkbosiY8ItWPe8DX2eXXHfG
+         vQCGE/e3nZLN3zEeIq0dTj44r1VuYOiiHqEbqYritDxVahC4mF71ZgrSPyd8H2UONa
+         eJXhD8Fdoh+GJafuw0CK9u2eioKMZizLp1E9vr6Bc9/BLM2ThwWpm5cHZsrw2Jh4sI
+         Q1vz6uURqZIH3VxvGuPmkPrRERzw3J/8PPinjp7gKdhe/A6ONpJVprsuVayoZuQZQT
+         GMhg7VHKIPu1A==
+Date:   Fri, 17 Jun 2022 07:50:46 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Thorsten Leemhuis <regressions@leemhuis.info>
+Cc:     golan.ben.ami@intel.com, Luca Coelho <luciano.coelho@intel.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Udo Steinberg <udo@hypervisor.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: Re: Bug 215635 - iwlwifi: Firmware crash with firmware
+ 36.ca7b901d.0 (8265-36.ucode)
+Message-ID: <20220617075046.79f41945@kernel.org>
+In-Reply-To: <28d2123f-65ce-f69c-12e1-f672b26225f4@leemhuis.info>
+References: <915d6d66-4e42-8cbf-76bc-0f2f72d5e7d6@leemhuis.info>
+        <20220616115808.141dec76@kernel.org>
+        <28d2123f-65ce-f69c-12e1-f672b26225f4@leemhuis.info>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Arend, others,
+On Fri, 17 Jun 2022 08:38:55 +0200 Thorsten Leemhuis wrote:
+> > Any progress / outputs on this one? Folks are reporting it's still
+> > happening on Fedora 36 w/ 5.17.13.  
+> 
+> Jakub, thx for bringing this up, I had "look  into this again" on my
+> todo list for some time already. Out of interest: where where those reports?
 
-------- Original Message -------
-On Monday, June 13th, 2022 at 20:50, Danny van Heumen <danny@dannyvanheumen=
-.nl> wrote:
-
-> [..]
-> >
-> > You should send a proper patch to the linux-wireless list, ie. not in a=
-n
-> > attachment but the commit message and patch diff in plain text email
-> > message. Please refer to [1] for guidelines.
-
-Done. (Sent as separate email not part of this thread.)
-
-> [..]
-> I have tried to reduce/remove the probe-logic in `.reset`, but I can simp=
-ly not reach that logic reliably (or at all atm), so I cannot test even bas=
-ic simplifications of the hardware-reset logic.
-
-I have not made progress concerning the reduced logic in '.reset'.
-I will not attempt this any further as I do not have the right circumstance=
-s
-to test this properly.
-
->
-> > Regards,
-> > Arend
-> >
-> > [1]
-> > https://wireless.wiki.kernel.org/en/developers/documentation/submitting=
-patches
->
-
->
-> Another question:
->
-> `BRCMF_FW_DEF(43456, "brcmfmac43456-sdio");`
->
-> This line defines IIUC that a firmware-binary exists. However, there is a=
-nother macro that defines both the firmware-binary and the clm_blob binary.=
- AFAIK, BCM4345/9 (brcmfmac43456-sdio) supports loading a *.clm_blob file. =
-So I suppose the line should be:
->
-> `BRCMF_FW_CLM_DEF(43456, "brcmfmac43456-sdio");`
->
-> Does this really matter? Should I also submit a patch for this?
-
-This is still an open question to me: from what I can tell,
-'brcmfmac43456-sdio.clm_blob' loads correctly even though the macro
-does not define it. So this may concern certain specific use cases.
-
-Regards,
-Danny
+The reports I was referring to are internal at Meta.
