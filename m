@@ -2,83 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A59854F546
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jun 2022 12:22:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B02EF54F677
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jun 2022 13:11:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381827AbiFQKWL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Jun 2022 06:22:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42210 "EHLO
+        id S1382316AbiFQLLh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Jun 2022 07:11:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381816AbiFQKWK (ORCPT
+        with ESMTP id S1382307AbiFQLLf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Jun 2022 06:22:10 -0400
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4C426A429
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Jun 2022 03:22:08 -0700 (PDT)
-Received: by mail-il1-f198.google.com with SMTP id s15-20020a056e02216f00b002d3d5e41565so2410823ilv.10
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Jun 2022 03:22:08 -0700 (PDT)
+        Fri, 17 Jun 2022 07:11:35 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 408C06CA88
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Jun 2022 04:11:34 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id l18so4350783lje.13
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Jun 2022 04:11:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Jh3M8LDovYWs/mBJiVJoI/DS8xun0EDDqspVSX/swmY=;
+        b=G/dSTlUqlH2258VvjhhJrMT0OtB618hVwgGDjs7n9i870J11YZQC2fCbflI0c5Dhdt
+         MUstXjNrYuDJp786lJze9KH9x/Y0MytV03GmEkcsrXGWTixlIxqKKsHLs8fM3m7lT1SU
+         89YBCRlP2MCkxqpMu/sb2Dbde1NCU2xJEZPznAvn3WR7ZEhpi0LXQ7rnU46F7lo1kEnI
+         cctspph/UXeMMqAbeEKJN3EuO1EfBCkhsI+ENGXXnmSS5PVmi6r+6BSb6mQnCD7kuQxk
+         nxxh5peOLJDNkIhYXY8VoAH4wDrMBcP9dL/D0SFFc2XGOFz/1Vd8kwTdKc2E+5ZF612y
+         iigg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=BHa9+hGQ/IHxpauWdzshJrHjnkYBEraCxfPd/dEUtAU=;
-        b=0Dn/zSZemCe6Ohlp1MfC0wS36qaURI+3IFIVy4muUESH/Xgslu3G+hbR2FD5Jn1oFL
-         j3sp7Lq9UPBdFpzuZHa+yivcUgT/rs8aSgg4OTZpflO3z3FrdnITCsCOMrVgdwoCw2iP
-         39tjWS9YkmhZ0VLY+4JIUEE46t0wvtdTaNWfsKW+RHgjLZZYxYdeKvoG8jQktUhl7u1S
-         tyNIl5kETDjnBqLkbkY19zuel+3QvaVhKmqHglBp+yNGGc4BpCboaS1/6U/pXjoXb2rC
-         IFSGcCmPGmtZeNYKhe3xIfyMXFWOyRVQJ29t0AC3G8Ag7qR/9fvAUc0i2bAtfoxHHxkT
-         3gGQ==
-X-Gm-Message-State: AJIora+VBFYiqJJX9024lY0ZVP9yMjAkPwcX1dtlKOtt49L1WSX0WILY
-        rc8piRfaJBLPv6TYC2woZA3OunL/SE99BNBiSi+qsFiwJPO6
-X-Google-Smtp-Source: AGRyM1smu9GzM0y0cFoa15FxWOxLa+jhsxFr0WpG+sezBX1jAlHrD+nTa4zPVOTrTRzJ5B+qmpSlN4EFeuSvc4Z59pOMCUWl/qZw
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Jh3M8LDovYWs/mBJiVJoI/DS8xun0EDDqspVSX/swmY=;
+        b=563eWjXkrwD++prg5sVSdKDifxmYyJ8rjimb5RhNu/k5g+OsP4HNTRTiHIxzBlLGKo
+         YCX/0VKBp0Z8iHAgji4VCcTN8ON/KNiyUEQ/5raUhnKMqW3Ftsu2slMyUdTajEswz/ol
+         9vPp0BJCfi20YsK/8M83iZBLQt5o8Nq+ZlFkcspCmlhe5s/lenRtWhFrwmYB/ZDZt5Ps
+         sZxVTeRedsGAUig8LML8eDFIF84PjLYhYfcgCUmK1AwFq5f7l60BUatf0jOD0hUNI2Np
+         UwHfA/RoMbaPeio+CsryugocrOZi7dA4GSelJI3llqm/IYC77Cb8kkd02cVm5d26u4aq
+         gQ5Q==
+X-Gm-Message-State: AJIora/A7N52zjOoN1MUi9T3IF6PA1ZF5gGbFhQHIVBYImciGzsQbSRK
+        K7BMa5oV7HbeV5dheyV+fdWlLEr8wq/JHzL1JwE=
+X-Google-Smtp-Source: AGRyM1tYOIEK9rvirUG4+gF7NsJ6+6XoK4ub+ELWclsgzYPMHN5SGnpC2e4sFZaOT+SRNV3yoC5G5coTyj9avBBksv8=
+X-Received: by 2002:a05:651c:1549:b0:257:42aa:2421 with SMTP id
+ y9-20020a05651c154900b0025742aa2421mr4762965ljp.151.1655464292704; Fri, 17
+ Jun 2022 04:11:32 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:329e:b0:331:e8ae:7d9d with SMTP id
- f30-20020a056638329e00b00331e8ae7d9dmr5212322jav.274.1655461328084; Fri, 17
- Jun 2022 03:22:08 -0700 (PDT)
-Date:   Fri, 17 Jun 2022 03:22:08 -0700
-In-Reply-To: <00000000000006b92e05d6ee4fce@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000066643305e1a22061@google.com>
-Subject: Re: [syzbot] KASAN: use-after-free Read in ath9k_hif_usb_reg_in_cb (3)
-From:   syzbot <syzbot+b05dabaed0b1f0b0a5e4@syzkaller.appspotmail.com>
-To:     ath9k-devel@qca.qualcomm.com, davem@davemloft.net,
-        edumazet@google.com, gregkh@linuxfoundation.org,
-        john.ogness@linutronix.de, kuba@kernel.org, kvalo@kernel.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        pabeni@redhat.com, pmladek@suse.com, rostedt@goodmis.org,
-        senozhatsky@chromium.org, syzkaller-bugs@googlegroups.com,
-        toke@toke.dk
+Received: by 2002:ab3:680f:0:0:0:0:0 with HTTP; Fri, 17 Jun 2022 04:11:32
+ -0700 (PDT)
+Reply-To: sj7209917@gmail.com
+From:   Joseph smith <maelyskpeta@gmail.com>
+Date:   Fri, 17 Jun 2022 04:11:32 -0700
+Message-ID: <CACKGxpyoMOts=5RFmMf+deoWONaYxGf5U2n=xN33P+mpZvTx0g@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot suspects this issue was fixed by commit:
-
-commit 09c5ba0aa2fcfdadb17d045c3ee6f86d69270df7
-Author: John Ogness <john.ogness@linutronix.de>
-Date:   Thu Apr 21 21:22:48 2022 +0000
-
-    printk: add kthread console printers
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10e88490080000
-start commit:   210e04ff7681 Merge tag 'pci-v5.18-fixes-1' of git://git.ke..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=902c5209311d387c
-dashboard link: https://syzkaller.appspot.com/bug?extid=b05dabaed0b1f0b0a5e4
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14f2c009f00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11b20b35f00000
-
-If the result looks correct, please mark the issue as fixed by replying with:
-
-#syz fix: printk: add kthread console printers
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Hi   are you available to  speak now
+Thanks
