@@ -2,39 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0162954F91E
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jun 2022 16:24:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7D0F54F932
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jun 2022 16:31:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382498AbiFQOYs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Jun 2022 10:24:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60718 "EHLO
+        id S1381599AbiFQOba (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Jun 2022 10:31:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236841AbiFQOYr (ORCPT
+        with ESMTP id S231490AbiFQOb3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Jun 2022 10:24:47 -0400
-Received: from mail-4022.proton.ch (mail-4022.proton.ch [185.70.40.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C511D205C3
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Jun 2022 07:24:44 -0700 (PDT)
-Date:   Fri, 17 Jun 2022 14:24:32 +0000
+        Fri, 17 Jun 2022 10:31:29 -0400
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E7F555348
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Jun 2022 07:31:28 -0700 (PDT)
+Date:   Fri, 17 Jun 2022 14:31:21 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dannyvanheumen.nl;
-        s=protonmail2; t=1655475881; x=1655735081;
-        bh=8oc95WGMLbKY5AqlvSrVKa6x0dn4EqKvQizMvvd1z84=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:Feedback-ID:From:To:
-         Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID;
-        b=lPZKh+x5tPxc7QKzfD1TPu8Z9ZQH/tmSU4JnH1aYj1R8XH4hfMpf7QKLkT5HvPE94
-         XsVpjEdSnYkE1ymoFRgBq+1twh4HVrQAEnQkpmGQS8DE6GpRhVTYwcqA/jIrtbg8Zw
-         vCBiERH3XJ/5K+GiOm0Hzcd3HFz7mluAPo/IPVt733NzKjM+MLfQBeNzkHlDn2cpii
-         pmwnS64CcFc+BW/XvVnA0VQdGfAgtsK17BC1OAbiNtPmeSRt/fAxL1MkFduA8Qvz1X
-         EjNdHFoamyB3y/fPYmH4N7vijgs652nx97MBhXqZwh0dH2IUZWygq4FtRtGWN+YcZl
-         dOmJSA+BmNN6Q==
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+        s=protonmail2; t=1655476283; x=1655735483;
+        bh=nxFlsSqiLytB2oybbWxLH4i+nQ3KDMGZZv8tlLCQtE4=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
+         Feedback-ID:Message-ID;
+        b=bEbir5DiqJP9JPAl284xnMtIO3tD0PCd8/9KeKGuSrtDnencUL5xc0CuqLZTa38ew
+         +9POkrqb7WMhp0K+8kHHYqlcNNLoSqtQmVjbluN7aZGPrhY03qjYa5Nt1VzyLg7CuE
+         3030j7trjcdGJDx7qj+kfBKjjhe0ka5yyCSOXQOTDDfWGf+Wsfdwcq/oG4wZ1m0Agm
+         NC6s/h7S85blT098szIdIL+Hw75FN2PALTxK6jWUvz5mi7pSl7fBXrS7979VAPfp+p
+         F7uNOOueJBfiWXmXbD14FP+X4e12KZQcQZKgtMvCbKWiUwVdSkQXXte/BsxW12TRrp
+         tCwslzrB3hQDg==
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
 From:   Danny van Heumen <danny@dannyvanheumen.nl>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>
+Cc:     Franky Lin <franky.lin@broadcom.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
 Reply-To: Danny van Heumen <danny@dannyvanheumen.nl>
-Subject: [PATCH v3] brcmfmac: prevent double-free on hardware-reset.
-Message-ID: <ThT2jwvySn9tFQm9FxrlPNMQkiGUnx_87cOhmmeexoVOFZqOkpjmAntCWG-kIBMj2830LHZaOULlJxQKiRXkVtGYrrT8rBaB7R65qjIinYo=@dannyvanheumen.nl>
+Subject: Re: [PATCH] work-in-progress: double-free after hardware reset due to firmware-crash
+Message-ID: <Ct5-sN_CGLyGf5qHNiakimNNG33Yb_7toxutmv8ELxgBqGZQXM6DkaIJg2cctTqSFyawKx8XeU3ySO2Ce6idBXv-ZWrT6Wy5_a9nFr4svy4=@dannyvanheumen.nl>
+In-Reply-To: <PDYrcmiOE8drECietqr7SILEQI8DpX6gL8pbVCR6IbqNrKjyXTLYPhgsWfHL-s9FuElU5v84HUUWaFntR5RZJG5EBABE2XilCP_2O9ZipMk=@dannyvanheumen.nl>
+References: =?us-ascii?Q?<UXibAXk2GByhvw88A6LIDXHSlkP79-ML7FrtyfnHuiC34qUd-zx03BAJAtzluyEvfwPBR0tac4hC72zKI1qT3CtgmvvVohr1v8a49TqYVSw=3D@dannyvanheumen.nl>_<51CC1C7B-400C-4A7A-A5D3-EB457DC6862F@broadcom.com>_<jJuvC2YezD=5Fe1G6VFXwJjFFUAir0HFcDnBaZGRvKtnaY69v8aI3KkCouzzyOjrb9bZOnSzinETjNNxHvlmYCwNijdmts=5F5bEXZSV7dMNi0s=3D@dannyvanheumen.nl>_<B08447EB-F222-49B5-A411-0DB6848A80ED@broadcom.com>_<EbyrCYK=5FmR6ppJYbSc5JfGGG=5FQZEZb2Zp8Htx9f-orZ=5FwX0Dpz1pXhDjQ9P1nGuyTH041zvsScaRIPllClzLpLgwVuff4ZTTAiVOXe5-Mwg=3D@dannyvanheumen.nl>_<1a116224-66ff-17b1-bb8b-9c0918dd47e4@broadcom.com>_<kB9OdQYlBnucF05VoKxTvsT8eUrPGJc=5Fwe9irAdR-2gmXsEl4NvkhMzDcTahLm3HLA2zKVXnhEOstESbIEcHGKYHvMOyIcr4vh80f0eJCJ0=3D@dannyvanheumen.nl>_<MV9-h4Mgj6FKxRJY93AQMhYFsz2yz0CoDQ70V8JWe742HUdLdl6Q1LbFTxGa-NCzodUmI3dbSoRGXebbE5rWPKKehHdixSTjW4TKZt10AJk=3D@dannyvanheumen.nl>_<1815e2011e8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>_<PDYrcmiOE8drECietqr7SILEQI8DpX6gL8pbVCR6IbqNrKjyXTLYPhgsWfHL-s9FuElU5v84HUUWaFntR5RZJG5EBABE2?=
+ =?us-ascii?Q?XilCP=5F2O9ZipMk=3D@dannyvanheumen.nl>?=
 Feedback-ID: 15073070:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -48,106 +55,57 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From f1fcceb65d4a44c078cd684ea25a2f2c7f53deb2 Mon Sep 17 00:00:00 2001
-From: Danny van Heumen <danny@dannyvanheumen.nl>
-Date: Tue, 24 May 2022 18:30:50 +0200
-Subject: [PATCH v3] brcmfmac: prevent double-free on hardware-reset.
+Hi Arend, others,
 
-In case of buggy firmware, brcmfmac may perform a hardware reset. If during
-reset and subsequent probing an early failure occurs, a memory region is
-accidentally double-freed. With hardened memory allocation enabled, this er=
-ror
-will be detected.
+------- Original Message -------
+On Monday, June 13th, 2022 at 20:50, Danny van Heumen <danny@dannyvanheumen=
+.nl> wrote:
 
-- return early where appropriate to skip unnecessary clean-up.
-- set '.freezer' pointer to NULL to prevent double-freeing under possible
-  other circumstances and to re-align result under various different
-  behaviors of memory allocation freeing.
+> [..]
+> >
+> > You should send a proper patch to the linux-wireless list, ie. not in a=
+n
+> > attachment but the commit message and patch diff in plain text email
+> > message. Please refer to [1] for guidelines.
 
-Given a firmware crash, function 'brcmf_sdio_bus_reset' is called. It calls
-'brcmf_sdiod_remove', then follows up with 'brcmf_sdiod_probe' to reinitial=
-ize
-the hardware. If 'brcmf_sdiod_probe' fails to "set F1 blocksize", it exits
-early, which includes calling 'brcmf_sdiod_remove'. In both cases
-'brcmf_sdiod_freezer_detach' is called to free allocated '.freezer', which
-has not yet been re-allocated the second time.
+Done. (Sent as separate email not part of this thread.)
 
-Stacktrace of (failing) hardware reset after firmware-crash:
+> [..]
+> I have tried to reduce/remove the probe-logic in `.reset`, but I can simp=
+ly not reach that logic reliably (or at all atm), so I cannot test even bas=
+ic simplifications of the hardware-reset logic.
 
-Code: b9402b82 8b0202c0 eb1a02df 54000041 (d4210000)
- ret_from_fork+0x10/0x20
- kthread+0x154/0x160
- worker_thread+0x188/0x504
- process_one_work+0x1f4/0x490
- brcmf_core_bus_reset+0x34/0x44 [brcmfmac]
- brcmf_sdio_bus_reset+0x68/0xc0 [brcmfmac]
- brcmf_sdiod_probe+0x170/0x21c [brcmfmac]
- brcmf_sdiod_remove+0x48/0xc0 [brcmfmac]
- kfree+0x210/0x220
- __slab_free+0x58/0x40c
-Call trace:
-x2 : 0000000000000040 x1 : fffffc00002d2b80 x0 : ffff00000b4aee40
-x5 : ffff8000013fa728 x4 : 0000000000000001 x3 : ffff00000b4aee00
-x8 : ffff800009967ce0 x7 : ffff8000099bfce0 x6 : 00000006f8005d01
-x11: ffff8000099bfce0 x10: 00000000fffff000 x9 : ffff8000083401d0
-x14: 0000000000000000 x13: 657a69736b636f6c x12: 6220314620746573
-x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000030
-x20: fffffc00002d2ba0 x19: fffffc00002d2b80 x18: 0000000000000000
-x23: ffff00000b4aee00 x22: ffff00000b4aee00 x21: 0000000000000001
-x26: ffff00000b4aee00 x25: ffff0000f7753705 x24: 000000000001288a
-x29: ffff80000a22bbf0 x28: ffff000000401200 x27: 000000008020001a
-sp : ffff80000a22bbf0
-lr : kfree+0x210/0x220
-pc : __slab_free+0x58/0x40c
-pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
-Workqueue: events brcmf_core_bus_reset [brcmfmac]
-Hardware name: Pine64 Pinebook Pro (DT)
-CPU: 2 PID: 639 Comm: kworker/2:2 Tainted: G         C        5.16.0-0.bpo.=
-4-arm64 #1  Debian 5.16.12-1~bpo11+1
- nvmem_rockchip_efuse industrialio_triggered_buffer videodev snd_soc_core s=
-nd_pcm_dmaengine kfifo_buf snd_pcm io_domain mc industrialio mt>
-Modules linked in: snd_seq_dummy snd_hrtimer snd_seq snd_seq_device nft_fib=
-_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reje>
-Internal error: Oops - BUG: 0 [#1] SMP
-kernel BUG at mm/slub.c:379!
+I have not made progress concerning the reduced logic in '.reset'.
+I will not attempt this any further as I do not have the right circumstance=
+s
+to test this properly.
 
-Signed-off-by: Danny van Heumen <danny@dannyvanheumen.nl>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> > Regards,
+> > Arend
+> >
+> > [1]
+> > https://wireless.wiki.kernel.org/en/developers/documentation/submitting=
+patches
+>
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/dr=
-ivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index 9c598ea97499..40f40ac4ef73 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -802,6 +802,7 @@ static void brcmf_sdiod_freezer_detach(struct brcmf_sdi=
-o_dev *sdiodev)
- =09if (sdiodev->freezer) {
- =09=09WARN_ON(atomic_read(&sdiodev->freezer->freezing));
- =09=09kfree(sdiodev->freezer);
-+=09=09sdiodev->freezer =3D NULL;
- =09}
- }
+>
+> Another question:
+>
+> `BRCMF_FW_DEF(43456, "brcmfmac43456-sdio");`
+>
+> This line defines IIUC that a firmware-binary exists. However, there is a=
+nother macro that defines both the firmware-binary and the clm_blob binary.=
+ AFAIK, BCM4345/9 (brcmfmac43456-sdio) supports loading a *.clm_blob file. =
+So I suppose the line should be:
+>
+> `BRCMF_FW_CLM_DEF(43456, "brcmfmac43456-sdio");`
+>
+> Does this really matter? Should I also submit a patch for this?
 
-@@ -911,7 +912,7 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
- =09if (ret) {
- =09=09brcmf_err("Failed to set F1 blocksize\n");
- =09=09sdio_release_host(sdiodev->func1);
--=09=09goto out;
-+=09=09return ret;
- =09}
- =09switch (sdiodev->func2->device) {
- =09case SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373:
-@@ -933,7 +934,7 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
- =09if (ret) {
- =09=09brcmf_err("Failed to set F2 blocksize\n");
- =09=09sdio_release_host(sdiodev->func1);
--=09=09goto out;
-+=09=09return ret;
- =09} else {
- =09=09brcmf_dbg(SDIO, "set F2 blocksize to %d\n", f2_blksz);
- =09}
---
-2.34.1
+This is still an open question to me: from what I can tell,
+'brcmfmac43456-sdio.clm_blob' loads correctly even though the macro
+does not define it. So this may concern certain specific use cases.
 
+Regards,
+Danny
