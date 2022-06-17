@@ -2,65 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F08354F335
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jun 2022 10:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EABDB54F38D
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Jun 2022 10:50:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380672AbiFQIkU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Jun 2022 04:40:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51810 "EHLO
+        id S1381318AbiFQIul (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Jun 2022 04:50:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381174AbiFQIkL (ORCPT
+        with ESMTP id S1381309AbiFQIuk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Jun 2022 04:40:11 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70C4369B5B
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Jun 2022 01:39:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=0Akty9E+4cwobC/kYyekXkzh/9JPXGz5SU1JwQ8OtfU=; b=nU3KQEiw7kM/xNShDAc8aV1N8q
-        i7Ait6136VZG9uLOfQsrrkYpMrmEJu3SuNho2GalR6AwRVxF2iWCsKeM7eCcvYwmFtPVp0VwuwpNh
-        0deOXzmvaTPElPbQr3BstPzQpQehD9aRjXfe3Ndo9c04e8q5U2kyX8TtOd/wKNu/tzpE=;
-Received: from p54ae95bf.dip0.t-ipconnect.de ([84.174.149.191] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1o27Vt-0004hM-WB; Fri, 17 Jun 2022 10:39:34 +0200
-Message-ID: <b7e3006a-03a9-fad6-3f57-10aed678f211@nbd.name>
-Date:   Fri, 17 Jun 2022 10:39:33 +0200
+        Fri, 17 Jun 2022 04:50:40 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55A7B694B0
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Jun 2022 01:50:39 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 25H8oWKD1020817, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 25H8oWKD1020817
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 17 Jun 2022 16:50:32 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.28; Fri, 17 Jun 2022 16:50:31 +0800
+Received: from localhost (172.16.16.131) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 17 Jun
+ 2022 16:50:31 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
+Subject: [PATCH 00/13] rtw89: support channel context
+Date:   Fri, 17 Jun 2022 16:49:41 +0800
+Message-ID: <20220617084954.61261-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.10.0
-Subject: Re: [PATCH] mt76: mt7921: fix aggregation subframes setting to HE max
-Content-Language: en-US
-To:     Deren Wu <Deren.Wu@mediatek.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-References: <7f5145276d732cb4aebcbffd6fc4a5eb852dd3be.1655393246.git.deren.wu@mediatek.com>
-From:   Felix Fietkau <nbd@nbd.name>
-In-Reply-To: <7f5145276d732cb4aebcbffd6fc4a5eb852dd3be.1655393246.git.deren.wu@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.16.16.131]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 06/17/2022 08:22:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzYvMTcgpFekyCAwNjozNjowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,20 +66,62 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 16.06.22 17:57, Deren Wu wrote:
-> From: Deren Wu <deren.wu@mediatek.com>
-> 
-> mt7921/mt7922 support HE max aggregation subframes 256 for both tx/rx.
-> Get better throughput then before.
-> 
-> Fixes: 94bb18b03d43 ("mt76: mt7921: fix max aggregation subframes setting")
-> Tested-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> Reviewed-by: Sean Wang <sean.wang@mediatek.com>
-> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-When I made the change that you're reverting here, I used the values 
-from the reference SDK that I got, and the change actually seemed to 
-improve performance in my tests.
-Did something change in the firmware, or is there a related chipset 
-difference between 7921 and 7922?
+In order to support multiple channels, we prepare this patchset to have
+initial skeleton of channel context, and only SCC (single channel
+concurrence) is supported for now.
 
-- Felix
+The channel context needs some features, like hardware scan, but not all
+chips can support these features, so this implement can still support
+chips without channel context. The chip_info defines a support_chanctx_num
+field to discriminate a chip can support channel context or not, and we
+use this as clue to hook channel context ops of mac80211. If a chip
+declare it can support channel context, but a old firmware is adopted, it
+could be failed to probe if firmware doesn't support hardware scan.
+
+When we concentrate stuffs of channel, some patches with a lot of changes
+are used to adjust code for new struct. But, not really change logic.
+
+Zong-Zhe Yang (13):
+  rtw89: rewrite decision on channel by entity state
+  rtw89: introduce rtw89_chan for channel stuffs
+  rtw89: re-arrange channel related stuffs under HAL
+  rtw89: create rtw89_chan centrally to avoid breakage
+  rtw89: txpwr: concentrate channel related control to top
+  rtw89: rfk: concentrate parameter control while set_channel()
+  rtw89: concentrate parameter control for setting channel callback
+  rtw89: concentrate chandef setting to stack callback
+  rtw89: initialize entity and configure default chandef
+  rtw89: introduce entity mode and its recalculated prototype
+  rtw89: add skeleton of mac80211 chanctx ops support
+  rtw89: support mac80211 chanctx ops by chip
+  rtw89: prohibit mac80211 chanctx ops without HW scan
+
+ drivers/net/wireless/realtek/rtw89/Makefile   |   1 +
+ drivers/net/wireless/realtek/rtw89/chan.c     | 235 ++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/chan.h     |  64 +++++
+ drivers/net/wireless/realtek/rtw89/coex.c     |  11 +-
+ drivers/net/wireless/realtek/rtw89/coex.h     |   4 +-
+ drivers/net/wireless/realtek/rtw89/core.c     | 255 +++++++++--------
+ drivers/net/wireless/realtek/rtw89/core.h     | 144 +++++++---
+ drivers/net/wireless/realtek/rtw89/debug.c    |   3 +-
+ drivers/net/wireless/realtek/rtw89/fw.c       |  40 ++-
+ drivers/net/wireless/realtek/rtw89/mac.c      |  14 +-
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  75 ++++-
+ drivers/net/wireless/realtek/rtw89/pci.c      |  11 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      | 266 +++++++++++-------
+ drivers/net/wireless/realtek/rtw89/phy.h      |   8 +-
+ drivers/net/wireless/realtek/rtw89/regd.c     |   2 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c | 111 +++++---
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.c |  77 +++--
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 231 ++++++++-------
+ .../net/wireless/realtek/rtw89/rtw8852c_rfk.c |  73 +++--
+ .../net/wireless/realtek/rtw89/rtw8852c_rfk.h |   2 +-
+ drivers/net/wireless/realtek/rtw89/sar.c      |   8 +-
+ drivers/net/wireless/realtek/rtw89/ser.c      |   2 +
+ 22 files changed, 1116 insertions(+), 521 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/chan.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/chan.h
+
+-- 
+2.25.1
+
