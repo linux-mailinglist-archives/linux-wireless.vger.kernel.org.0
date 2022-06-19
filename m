@@ -2,107 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1779E5506C0
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Jun 2022 23:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA27F55094D
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Jun 2022 10:23:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231654AbiFRVAY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Jun 2022 17:00:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54624 "EHLO
+        id S231636AbiFSIXJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Jun 2022 04:23:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231245AbiFRVAX (ORCPT
+        with ESMTP id S229809AbiFSIXJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 18 Jun 2022 17:00:23 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCB94B7DC
-        for <linux-wireless@vger.kernel.org>; Sat, 18 Jun 2022 14:00:20 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id m14so6602105plg.5
-        for <linux-wireless@vger.kernel.org>; Sat, 18 Jun 2022 14:00:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=xHkP1OXpqTGpMnl3S8KzBKz/x+0DBa4e/hpnPNs2B4Y=;
-        b=REVvzCGiKIEVvk4+cZWRokvy1sp2PWlN2ceSL4fnA3ARgMAMjDk6YIFO5NlstDRBWs
-         93+KsCOc3HNZHvcokJRwYgmixXWVczCgSDkGDK/5I+i9hZhcJh09hslFPx+6/tcH9Byy
-         WWIVI2LkOxpDyWA+4p7Qsd1vMbr+SsuKvl64sxu1eUvVROggUN5Ge1UzzJhIulPT6MQq
-         tX94sswVUlU1bhNZPjxEH76qwN+QJV4d7wWV+jHH9X3WGRLlZkA/uCdyMBue83hwR7EQ
-         Zdc6jCfx9nJEVqMB3kuqVrP9kbYSpyQj0wm/c4YcxZFjFYHyjLVfYDmS3uCBeeNSPY2X
-         wPxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=xHkP1OXpqTGpMnl3S8KzBKz/x+0DBa4e/hpnPNs2B4Y=;
-        b=jNfYdf7oddj9vRCTZYzMPfWhVbIWPYhb7O2TcDmGKLEoRHxX4aEPWafB4gpxnXH3Uj
-         NKscT1AUJkEHR13Uw1aEahePXfGTQWtolANKTLto+ADj8ewqeGXh08jZGHq6vMQbKKe/
-         3mOlx++fvo0olfzUArngIjLB+tjduqj9QZDiRzcvxjEDZY2+O7VKciG1PLXv0Pn9WZE8
-         omVxulMNcpg9mu+mrrmWXRrIxyvpnE6jIQwjNDZHXk60XUeN5sX2e7eYFwAicsy2erGk
-         P9M/E62H/3ZT1nB3NDgbsbpGbASRrm4seLl+bnrh+lvUB1Ir5XgbbRG29TK5fyPn3Ufv
-         YLZA==
-X-Gm-Message-State: AJIora+7Rm7v3yPYktenQAcjbCQip4tV++EesbDb2sahArkJQBYDSUxL
-        7C/8f0sjpoXQ/sEpJoHNCxU7QhI2z7SiiqaQu6c=
-X-Google-Smtp-Source: AGRyM1tGbsQAXCraSzNVrQ6U98rmnEHJGLyV+AeusIPpFG51xoKVeIPSPbxng+79YZx3Mj0gdIQqMHwZiK23Hi6R8+I=
-X-Received: by 2002:a17:902:c2d5:b0:16a:1263:9313 with SMTP id
- c21-20020a170902c2d500b0016a12639313mr3541501pla.138.1655586019882; Sat, 18
- Jun 2022 14:00:19 -0700 (PDT)
+        Sun, 19 Jun 2022 04:23:09 -0400
+X-Greylist: delayed 391 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 19 Jun 2022 01:23:06 PDT
+Received: from sargas.put.poznan.pl (sargas.put.poznan.pl [150.254.5.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D231E0F9
+        for <linux-wireless@vger.kernel.org>; Sun, 19 Jun 2022 01:23:06 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by sargas.put.poznan.pl (Postfix) with ESMTP id A03002E160B;
+        Sun, 19 Jun 2022 10:16:30 +0200 (CEST)
+Received: from sargas.put.poznan.pl ([127.0.0.1])
+        by localhost (sargas.put.poznan.pl [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id nseA1U_7bSyA; Sun, 19 Jun 2022 10:16:30 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by sargas.put.poznan.pl (Postfix) with ESMTP id D740B2E1629;
+        Sun, 19 Jun 2022 10:16:28 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 sargas.put.poznan.pl D740B2E1629
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=put.poznan.pl;
+        s=63855CD6-7C59-11E4-9E52-A429F24CC99D; t=1655626590;
+        bh=dbkbBzUR7kgMvHSi1IiMy6yAcyJz0nj1sugNumgIEb4=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=E/zpCivTnhxhKB1jSehBV7SFtPYJ6LlwW1kH4pQ2Zt7Xu7Io4xAxtDJNMD8fRxrQk
+         P6Eq5hrnjcJylJ9cTR8mmLxSanKVpP0abBUGVr8VOZDRZHk3wF67VUG4AOU6Z7b/NQ
+         phfNt2iaDDMXSx4btPeXQdiTTo63JnZgFe8t+GoU=
+X-Virus-Scanned: amavisd-new at sargas.put.poznan.pl
+Received: from sargas.put.poznan.pl ([127.0.0.1])
+        by localhost (sargas.put.poznan.pl [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id yucbGqtkqioz; Sun, 19 Jun 2022 10:16:28 +0200 (CEST)
+Received: from cris-PC.www.huaweimobilewifi.com (unknown [105.12.3.74])
+        by sargas.put.poznan.pl (Postfix) with ESMTPSA id 186C72E142C;
+        Sun, 19 Jun 2022 10:16:14 +0200 (CEST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Sender: zaring.kkipkalya@gmail.com
-Received: by 2002:a05:7300:80c8:b0:66:6a95:2d24 with HTTP; Sat, 18 Jun 2022
- 14:00:19 -0700 (PDT)
-From:   Jackie Grayson <jackiegrayson08@gmail.com>
-Date:   Sat, 18 Jun 2022 09:00:19 -1200
-X-Google-Sender-Auth: VXphVZ8y9pESXdodmwDx5hG2xhE
-Message-ID: <CANmOZ0wGzM2K=FdkrmnEpY9w9PgJh-FLez7OjsEH1=CTTjNa9Q@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
+To:     Recipients <aleksandra.jakubowicz-gaska@put.poznan.pl>
+From:   ''Thomas Yi'' <aleksandra.jakubowicz-gaska@put.poznan.pl>
+Date:   Sun, 19 Jun 2022 16:16:10 +0800
+Reply-To: THOMASYISPENDE@GMAIL.COM
+Message-Id: <20220619081615.186C72E142C@sargas.put.poznan.pl>
+X-EsetResult: clean
+X-Eset-AntiSpam: SPAM
+X-PMX-12: YES
+X-PMX-80: YES
+X-PMX-Spam: Gauge=XXXXXXXXIIIIIIII, Probability=88%, Report='
+ SXL_PARA_SIG 8, WEBMAIL_REPLYTO_NOT_FROM 0.5, FRAUD_WEBMAIL_R_NOT_F 0.1, REPLYTO_FROM_DIFF_ADDY 0.1, UTF8_SUBJ_OBFU 0.1, HTML_00_01 0.05, HTML_00_10 0.05, SUPERLONG_LINE 0.05, BODYTEXTP_SIZE_3000_LESS 0, BODY_SIZE_1000_LESS 0, BODY_SIZE_2000_LESS 0, BODY_SIZE_5000_LESS 0, BODY_SIZE_7000_LESS 0, BODY_SIZE_900_999 0, CTE_QUOTED_PRINTABLE 0, ECARD_KNOWN_DOMAINS 0, FROM_SAME_AS_TO_DOMAIN 0, NO_FUR_HEADER 0, RDNS_NXDOMAIN 0, RDNS_SUSP 0, RDNS_SUSP_GENERIC 0, SENDER_NO_AUTH 0, SINGLE_URI_IN_BODY 0, URI_WITH_PATH_ONLY 0, __ANY_URI 0, __BODY_NO_MAILTO 0, __CP_URI_IN_BODY 0, __CT 0, __CTE 0, __CT_TEXT_PLAIN 0, __DATE_TZ_HK 0, __FRAUD_BODY_WEBMAIL 0, __FRAUD_INTRO 0, __FRAUD_MONEY 0, __FRAUD_MONEY_BIG_COIN 0, __FRAUD_MONEY_BIG_COIN_DIG 0, __FRAUD_MONEY_CURRENCY 0, __FRAUD_MONEY_CURRENCY_DOLLAR 0, __FRAUD_MONEY_CURRENCY_EURO 0, __FRAUD_MONEY_DENOMINATION 0, __FRAUD_MONEY_VALUE 0,
+ __FRAUD_WEBMAIL 0, __FRAUD_WEBMAIL_REPLYTO 0, __FROM_DOMAIN_IN_RCPT 0, __FROM_DOMAIN_NOT_IN_BODY 0, __FROM_NAME_NOT_IN_ADDR 0, __FROM_NAME_NOT_IN_BODY 0, __HAS_FROM 0, __HAS_MSGID 0, __HAS_REPLYTO 0, __HEADER_ORDER_FROM 0, __HIGHBITS 0, __HTTPS_URI 0, __MIME_TEXT_ONLY 0, __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_VERSION 0, __NO_HTML_TAG_RAW 0, __PHISH_SPEAR_GREETING 0, __PHISH_SPEAR_STRUCTURE_1 0, __PHISH_SPEAR_STRUCTURE_2 0, __REPLYTO_GMAIL 0, __SANE_MSGID 0, __SINGLE_URI_TEXT 0, __STOCK_PHRASE_7 0, __SUBJ_ALPHA_END 0, __SUBJ_ALPHA_END2 0, __SUBJ_HIGHBIT 0, __TO_DOMAIN_IN_FROM 0, __TO_DOMAIN_IN_MSGID 0, __TO_HOST_IN_FROM 0, __TO_MALFORMED_2 0, __TO_NAME 0, __TO_NAME_DIFF_FROM_ACC 0, __TO_REAL_NAMES 0, __URI_IN_BODY 0, __URI_MAILTO 0, __URI_NOT_IMG 0, __URI_NS , __URI_WITH_PATH 0, __UTF8_SUBJ 0'
+X-Spam-Status: No, score=2.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_REPLYTO,LOTS_OF_MONEY,
+        MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Good Day Beloved
+Lieber Freund,
 
-   This letter might be a surprise to you, But I believe that you will
-be honest to fulfill my final wish. I bring peace and love to you. It
-is by the grace of god, I had no choice than to do what is lawful and
-right in the sight of God for eternal life and in the sight of man for
-witness of god=E2=80=99s mercy and glory upon my life. My dear, I sent this
-mail praying it will find you in a good condition, since I myself am
-in a very critical health condition in which I sleep every night
-without knowing if I may be alive to see the next day. I am Mrs,Jackie
-Grayson, a widow suffering from a long time illness. I have some funds
-I inherited from my late husband, the sum of ($11,500,000.00,)my
-Doctor told me recently that I have serious sickness which is a cancer
-problem. What disturbs me most is my stroke sickness. Having known my
-condition, I decided to donate this fund to a good person that will
-utilize it the way I am going to instruct herein.
+Ich bin Herr THOMAS YI, FLORIDA, Vereinigte Staaten von Amerika, der Mega-G=
+ewinner von $ 235million In Mega Millions Jackpot, spende ich an 5 zuf=C3=
+=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail n=
+ach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil mein=
+es Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen und =
+Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summ=
+e von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu spe=
+nden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine You T=
+ube Seite unten.
 
-I need a very honest and God fearing person who can claim this money
-and use it for Charity works, for orphanages and gives justice and
-help to the poor, needy and widows says The Lord." Jeremiah 22:15-16.=E2=80=
-=9C
-and also build schools for less privilege that will be named after my
-late husband if possible and to promote the word of god and the effort
-that the house of god is maintained. I do not want a situation where
-this money will be used in an ungodly manner. That's why I'm making
-this decision. I'm not afraid of death,so I know where I'm going. I
-accept this decision because I do not have any child who will inherit
-this money after I die. Please I want your sincere and urgent answer
-to know if you will be able to execute this project, and I will give
-you more information on how the fund will be transferred to your bank
-account. May the grace, peace, love and the truth in the Word of god
-be with you and all those that you love and  care for.
+UHR MICH HIER: https://www.youtube.com/watch?v=3DLJnXI9_t86c
 
-I am waiting for your reply.
-May God Bless you,
-Mrs.Jackie Grayson,
-Written from the Hospital,
+Das ist dein Spendencode: [TH530342021]
+
+
+Antworten Sie mit dem SPENDE-CODE an diese
+
+THOMASYISPENDE@GMAIL.COM
+
+Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
+
+Gr=C3=BC=C3=9Fe
+Herr THOMAS YI
