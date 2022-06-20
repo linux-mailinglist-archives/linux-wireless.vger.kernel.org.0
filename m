@@ -2,53 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAAB3551520
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jun 2022 12:03:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB138551537
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jun 2022 12:05:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240875AbiFTKCq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Jun 2022 06:02:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34036 "EHLO
+        id S239449AbiFTKFm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Jun 2022 06:05:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240775AbiFTKCf (ORCPT
+        with ESMTP id S240977AbiFTKFO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Jun 2022 06:02:35 -0400
+        Mon, 20 Jun 2022 06:05:14 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96BE513EA5;
-        Mon, 20 Jun 2022 03:02:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE15610C8
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Jun 2022 03:04:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 59CEFB80FBD;
-        Mon, 20 Jun 2022 10:02:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2111C3411B;
-        Mon, 20 Jun 2022 10:02:28 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3DE0CB80FA8
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Jun 2022 10:04:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2F4C3411B;
+        Mon, 20 Jun 2022 10:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655719351;
-        bh=1Qix9NjjwRWFg9AdThL/ttBW7iUNhaFy23vyffkXhao=;
+        s=k20201202; t=1655719496;
+        bh=+tMfZ0Il1dvxau8xrzbu0lTjL+tgihqvb3oYf2E/OeM=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=qTPctW0Iv73c1Acdc9eDe/gAi8E44hgW3RmEHZH3wOXop+ey92ZL8HrMu/y9dTSm/
-         BoIMcEOdeLV16nG872tZRRjMBjP6lZ4Z2H08l+pURt8dc8j2f+M8+ugUde6d5q4Fp4
-         B/x9dypApDlNhYYMGxeq8BhO3oBSbpGHTdG+FtMxuw8CW8fmhoIqM5zN4MtYon/49t
-         EEKyVhMSzujNnyvvJtQGNqi+wjCNVKpSKGBedcf+NYM9XY+R/GvNlOWRyqKrsjwRnB
-         6nXzyxDPRawn98BmO14gcB4eWbGEiisppIGEw/7ndBLc4YdRiwzxfxbutL58QGBNxu
-         ZgJsHe1hhsocw==
+        b=tvJUUwbb+CLM4vIvxLlqbcWt2fTw2UNkIkd938Z9vXQqeGiz/56RYbgS+T4uo/pkH
+         5HEXrJH6SQAnkuhrn5G0sEAQcEOCM9LjOEjKvVvtCqZaWQmJMre5XDqcWDtAF4WFg/
+         J7Iku3WkJj85PPKqJIBusuBuEZO5R8IJsQr+BWAPNeac8MYomTfp1axwGd2qxVXd7p
+         mPDJKykDigJyGTy7DynrXWFa+Frp7NS1teXidYpdrjKsbKHGLd35FVhycAUCrtbWya
+         uvCa256lywF8/pQFBs/KmirJ0zskjfYJrdLZ+jfhG+KtMqCwgTSPQy3vkib9LPLoeq
+         ZIS8rcB1eWfpw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v6 1/2] ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3] ath6kl: avoid flush_scheduled_work() usage
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <d57bbedc857950659bfacac0ab48790c1eda00c8.1655145743.git.paskripkin@gmail.com>
-References: <d57bbedc857950659bfacac0ab48790c1eda00c8.1655145743.git.paskripkin@gmail.com>
-To:     Pavel Skripkin <paskripkin@gmail.com>
-Cc:     toke@toke.dk, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Pavel Skripkin <paskripkin@gmail.com>,
-        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
-        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+In-Reply-To: <f78ddbdc-8989-a1a7-2234-ce9ec3894625@I-love.SAKURA.ne.jp>
+References: <f78ddbdc-8989-a1a7-2234-ce9ec3894625@I-love.SAKURA.ne.jp>
+To:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165571934517.23287.2362581008087180339.kvalo@kernel.org>
-Date:   Mon, 20 Jun 2022 10:02:28 +0000 (UTC)
+Message-ID: <165571949355.24910.10080336909041474703.kvalo@kernel.org>
+Date:   Mon, 20 Jun 2022 10:04:55 +0000 (UTC)
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -59,46 +55,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pavel Skripkin <paskripkin@gmail.com> wrote:
+Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp> wrote:
 
-> Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb() [0]. The
-> problem was in incorrect htc_handle->drv_priv initialization.
+> As per commit c4f135d643823a86 ("workqueue: Wrap flush_workqueue() using
+> a macro") says, use per "struct ath6kl_usb" workqueue.
 > 
-> Probable call trace which can trigger use-after-free:
+> This is a blind conversion, and is only compile tested.
 > 
-> ath9k_htc_probe_device()
->   /* htc_handle->drv_priv = priv; */
->   ath9k_htc_wait_for_target()      <--- Failed
->   ieee80211_free_hw()              <--- priv pointer is freed
-> 
-> <IRQ>
-> ...
-> ath9k_hif_usb_rx_cb()
->   ath9k_hif_usb_rx_stream()
->    RX_STAT_INC()                <--- htc_handle->drv_priv access
-> 
-> In order to not add fancy protection for drv_priv we can move
-> htc_handle->drv_priv initialization at the end of the
-> ath9k_htc_probe_device() and add helper macro to make
-> all *_STAT_* macros NULL safe, since syzbot has reported related NULL
-> deref in that macros [1]
-> 
-> Link: https://syzkaller.appspot.com/bug?id=6ead44e37afb6866ac0c7dd121b4ce07cb665f60 [0]
-> Link: https://syzkaller.appspot.com/bug?id=b8101ffcec107c0567a0cd8acbbacec91e9ee8de [1]
-> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-> Reported-and-tested-by: syzbot+03110230a11411024147@syzkaller.appspotmail.com
-> Reported-and-tested-by: syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
-> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
-> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-2 patches applied to ath-next branch of ath.git, thanks.
+Patch applied to ath-next branch of ath.git, thanks.
 
-0ac4827f78c7 ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
-d7fc76039b74 ath9k: htc: clean up statistics macros
+62ebaf2f9261 ath6kl: avoid flush_scheduled_work() usage
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/d57bbedc857950659bfacac0ab48790c1eda00c8.1655145743.git.paskripkin@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/f78ddbdc-8989-a1a7-2234-ce9ec3894625@I-love.SAKURA.ne.jp/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
