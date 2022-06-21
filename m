@@ -2,141 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BE715539AF
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jun 2022 20:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15AF15539B4
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jun 2022 20:48:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245545AbiFUSr5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Jun 2022 14:47:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46378 "EHLO
+        id S231174AbiFUSss (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Jun 2022 14:48:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229877AbiFUSr4 (ORCPT
+        with ESMTP id S229877AbiFUSsr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Jun 2022 14:47:56 -0400
-Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A54866264;
-        Tue, 21 Jun 2022 11:47:55 -0700 (PDT)
-Received: by mail-qv1-xf2c.google.com with SMTP id q4so9637594qvq.8;
-        Tue, 21 Jun 2022 11:47:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TUwsjMEcTcJGTkqP1tI4ks5+DOl4Jo9qz8wBuhs7k1Q=;
-        b=Q+KB8KiHfVZN/IcFhqa6GwDdZVAb/1h5YJpQ4fznMd3FxHLy83GhnTWQ1iWjVerrRQ
-         oIc+S7GlOeG2zMH3AUxQ69u3ZO08rrQGR787XFx7RR3Kw6Fo4484d5rGtoIv49PFSELW
-         1JJjmO7hszywj4GDpeX//vV2vEkF1mORa19P7KWmna8rzhPDm0vsvm7M1xcuqWOUaRPH
-         9FxUKMbFmncFHYT+GhagELHCylo+sxgXgrjada7iWE++btcWJCRGrLWNNmNst2Bg7PgT
-         wTCRoHT2XZe5KHRdycaNfciWRGTrb9+NQWDCAymUVmMrzmW3sSyuMrAgMjJWtZOxxPj3
-         v9BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TUwsjMEcTcJGTkqP1tI4ks5+DOl4Jo9qz8wBuhs7k1Q=;
-        b=lZu9PVACC6j+QoNvYfcUqgNlPSEDtjuUniLKFwdenQkha5/Tyajsef2y0k2Fk7t2mu
-         v24rD9f0AqtxDWBMura+MoHmdSaAv24wz4rfU4Lvz4VYivZepNmuEu7HXRSaZnJVRfva
-         cBHao7ysae25GlhxnJSWIT9VQmxgdd+RmUsdombqDG/Nw8goqUKF4/1pDfyGbZvBRGZ8
-         dmLmHfNCDmnM8sHQWeoOw+SF3gG/LuLMzBAKVk+et0B5QuaCYjmA5s82BhWM8A92ZmzI
-         AGjsLDmebVRASCT19p1EbWxQzvWGLo1TeAWC1ydVtJq0QAYnDrllizowhN1UMJ6AOqfT
-         rUcg==
-X-Gm-Message-State: AJIora98QxLiL3t2F2Gn7GYXAqOLi5/xWUnOjtbpeMWOEz6hxiopRSOd
-        q4k8+8jRZOA1YLKaNgPdoCKGcpUheUyRzrsxxhU=
-X-Google-Smtp-Source: AGRyM1uJLrWycZyA/aGMIqVI7+AUGaxMZh/S4K2wMif+19wdQg8R7fUB79mtPGkugehrz92tJHI4mkE6SgU4G8Y/ujU=
-X-Received: by 2002:ac8:5d8c:0:b0:306:6efd:7fe1 with SMTP id
- d12-20020ac85d8c000000b003066efd7fe1mr24286817qtx.318.1655837274765; Tue, 21
- Jun 2022 11:47:54 -0700 (PDT)
+        Tue, 21 Jun 2022 14:48:47 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1EC713CD1
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Jun 2022 11:48:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=L1FRchUF7jIw9REJ5HkNxIoNqZqIMcTdaZriLqrKW70=; b=HrTvW806k7IBVZU0/OdpCthedj
+        GRVrocqcLmufXXoKP3xVvzGWMdkvbf+rlXN+5wYOWtWA29mlQ+AVj0BPbhTBaFCZ/mSJnZRhqNyyv
+        HsP4uRL8pGIQ970a/JurwGI7HUr5gEcS5N6nNXKfA0kgBjUzwz5BwW/379zXRWDiin90=;
+Received: from p200300daa70a4300f0c34ff46113bff0.dip0.t-ipconnect.de ([2003:da:a70a:4300:f0c3:4ff4:6113:bff0] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1o3ivb-0006gO-GB
+        for linux-wireless@vger.kernel.org; Tue, 21 Jun 2022 20:48:43 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7915: disable UL MU-MIMO for mt7915
+Date:   Tue, 21 Jun 2022 20:48:41 +0200
+Message-Id: <20220621184841.77194-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-References: <20220621135339.1269409-1-robimarko@gmail.com> <a194d4c5-8e31-ecd9-ecd0-0c96af03485b@linaro.org>
-In-Reply-To: <a194d4c5-8e31-ecd9-ecd0-0c96af03485b@linaro.org>
-From:   Robert Marko <robimarko@gmail.com>
-Date:   Tue, 21 Jun 2022 20:47:44 +0200
-Message-ID: <CAOX2RU6fBo5f6cxAUgLKj3j+_oP7nSm7awCpr_yiO_p3NssWkQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath11k: add new DT entry
- for board ID
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Kalle Valo <kvalo@kernel.org>, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        Rob Herring <robh+dt@kernel.org>,
-        krzysztof.kozlowski+dt@linaro.org, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Devicetree List <devicetree@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 21 Jun 2022 at 17:58, Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 21/06/2022 15:53, Robert Marko wrote:
-> > bus + qmi-chip-id + qmi-board-id and optionally the variant are currently
-> > used for identifying the correct board data file.
-> >
-> > This however is sometimes not enough as all of the IPQ8074 boards that I
-> > have access to dont have the qmi-board-id properly fused and simply return
-> > the default value of 0xFF.
-> >
-> > So, to provide the correct qmi-board-id add a new DT property that allows
-> > the qmi-board-id to be overridden from DTS in cases where its not set.
-> > This is what vendors have been doing in the stock firmwares that were
-> > shipped on boards I have.
-> >
-> > Signed-off-by: Robert Marko <robimarko@gmail.com>
->
-> Thank you for your patch. There is something to discuss/improve.
->
-> > ---
-> >  .../devicetree/bindings/net/wireless/qcom,ath11k.yaml     | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> > index a677b056f112..fe6aafdab9d4 100644
-> > --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> > +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> > @@ -41,6 +41,14 @@ properties:
-> >          * reg
-> >          * reg-names
-> >
-> > +  qcom,ath11k-board-id:
->
-> The "board" a bit confuses me because in the context of entire system it
-> means the entire hardware running Qualcomm SoC. This is sometimes
-> encoded as qcom,board-id property.
+After initially establishing a connection, it can produce multi-second latency
+spikes and tx hangs when pushing traffic.
+It should work better for MT7916 and MT7986, so leave it enabled there
 
-Hi Krzysztof,
-I agree that the name is a bit confusing, it's not the same as
-qcom,board-id AFAIK
-and QCA as well as vendors are using a similar property in the wifi
-node to override
-the default qmi-board-id to the correct one as its rarely properly fused.
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 7 ++++---
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c  | 9 +++++----
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
-I assume it would be better-called qcom,ath11k-qmi-board-id as you
-dont even have
-to be using a Qualcomm SoC as the same is used by PCI ath11k cards as well.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 2764c22179fb..6bdbc59beada 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -753,9 +753,10 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_dev *dev,
+ 
+ 	elem->phy_cap_info[7] &= ~IEEE80211_HE_PHY_CAP7_MAX_NC_MASK;
+ 
+-	c = IEEE80211_HE_PHY_CAP2_NDP_4x_LTF_AND_3_2US |
+-	    IEEE80211_HE_PHY_CAP2_UL_MU_FULL_MU_MIMO |
+-	    IEEE80211_HE_PHY_CAP2_UL_MU_PARTIAL_MU_MIMO;
++	c = IEEE80211_HE_PHY_CAP2_NDP_4x_LTF_AND_3_2US;
++	if (!is_mt7915(&dev->mt76))
++		c |= IEEE80211_HE_PHY_CAP2_UL_MU_FULL_MU_MIMO |
++		     IEEE80211_HE_PHY_CAP2_UL_MU_PARTIAL_MU_MIMO;
+ 	elem->phy_cap_info[2] |= c;
+ 
+ 	c = IEEE80211_HE_PHY_CAP4_SU_BEAMFORMEE |
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 207fd0b83417..6b0b9a86b9d7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -826,8 +826,8 @@ mt7915_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ }
+ 
+ static void
+-mt7915_mcu_sta_muru_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+-			struct ieee80211_vif *vif)
++mt7915_mcu_sta_muru_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
++			struct ieee80211_sta *sta, struct ieee80211_vif *vif)
+ {
+ 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+ 	struct ieee80211_he_cap_elem *elem = &sta->deflink.he_cap.he_cap_elem;
+@@ -845,7 +845,8 @@ mt7915_mcu_sta_muru_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ 	muru->cfg.mimo_dl_en = mvif->cap.he_mu_ebfer ||
+ 			       mvif->cap.vht_mu_ebfer ||
+ 			       mvif->cap.vht_mu_ebfee;
+-	muru->cfg.mimo_ul_en = true;
++	if (!is_mt7915(&dev->mt76))
++		muru->cfg.mimo_ul_en = true;
+ 	muru->cfg.ofdma_dl_en = true;
+ 
+ 	if (sta->deflink.vht_cap.vht_supported)
+@@ -1647,7 +1648,7 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 		/* starec he */
+ 		mt7915_mcu_sta_he_tlv(skb, sta, vif);
+ 		/* starec muru */
+-		mt7915_mcu_sta_muru_tlv(skb, sta, vif);
++		mt7915_mcu_sta_muru_tlv(dev, skb, sta, vif);
+ 		/* starec bfee */
+ 		mt7915_mcu_sta_bfee_tlv(dev, skb, vif, sta);
+ 	}
+-- 
+2.36.1
 
-Regards,
-Robert
->
-> Is your property exactly the same?
->
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    description:
-> > +      Board ID to override the one returned by the firmware or the default
-> > +      0xff if it was not set by the vendor at all.
-> > +      It is used along the ath11k-calibration-variant to mach the correct
-> > +      calibration data from board-2.bin.
-> > +
-> >    qcom,ath11k-calibration-variant:
-> >      $ref: /schemas/types.yaml#/definitions/string
-> >      description:
->
->
-> Best regards,
-> Krzysztof
