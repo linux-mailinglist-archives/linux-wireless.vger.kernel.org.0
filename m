@@ -2,113 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15AF15539B4
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jun 2022 20:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFDE6553D9F
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jun 2022 23:25:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231174AbiFUSss (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Jun 2022 14:48:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47476 "EHLO
+        id S1356001AbiFUVYy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Jun 2022 17:24:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229877AbiFUSsr (ORCPT
+        with ESMTP id S1355761AbiFUVY1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Jun 2022 14:48:47 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1EC713CD1
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Jun 2022 11:48:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=L1FRchUF7jIw9REJ5HkNxIoNqZqIMcTdaZriLqrKW70=; b=HrTvW806k7IBVZU0/OdpCthedj
-        GRVrocqcLmufXXoKP3xVvzGWMdkvbf+rlXN+5wYOWtWA29mlQ+AVj0BPbhTBaFCZ/mSJnZRhqNyyv
-        HsP4uRL8pGIQ970a/JurwGI7HUr5gEcS5N6nNXKfA0kgBjUzwz5BwW/379zXRWDiin90=;
-Received: from p200300daa70a4300f0c34ff46113bff0.dip0.t-ipconnect.de ([2003:da:a70a:4300:f0c3:4ff4:6113:bff0] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1o3ivb-0006gO-GB
-        for linux-wireless@vger.kernel.org; Tue, 21 Jun 2022 20:48:43 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7915: disable UL MU-MIMO for mt7915
-Date:   Tue, 21 Jun 2022 20:48:41 +0200
-Message-Id: <20220621184841.77194-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.36.1
+        Tue, 21 Jun 2022 17:24:27 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 609C0C27
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Jun 2022 14:17:45 -0700 (PDT)
+X-UUID: 102a0225717b429ab841ce57d46c8ba1-20220622
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.6,REQID:d6209b91-8719-4f2b-a854-4fb6562955d4,OB:0,LO
+        B:0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,RULE:Release_Ham,AC
+        TION:release,TS:105
+X-CID-INFO: VERSION:1.1.6,REQID:d6209b91-8719-4f2b-a854-4fb6562955d4,OB:0,LOB:
+        0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,RULE:Spam_GS981B3D,AC
+        TION:quarantine,TS:105
+X-CID-META: VersionHash:b14ad71,CLOUDID:421324ea-f7af-4e69-92ee-0fd74a0c286c,C
+        OID:c0fbcd6b924b,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:1,File:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 102a0225717b429ab841ce57d46c8ba1-20220622
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1727542005; Wed, 22 Jun 2022 05:17:42 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Wed, 22 Jun 2022 05:17:41 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 22 Jun 2022 05:17:40 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
+        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
+        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v2 1/2] mt76: mt7921: enable HW beacon filter not depending on PM flag
+Date:   Wed, 22 Jun 2022 05:17:38 +0800
+Message-ID: <b85224ecea092174ee901e14afd5d322744d8fd9.1655846049.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-After initially establishing a connection, it can produce multi-second latency
-spikes and tx hangs when pushing traffic.
-It should work better for MT7916 and MT7986, so leave it enabled there
+From: Sean Wang <sean.wang@mediatek.com>
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+The hardware beacon filter works whether or not the PM flag is set, so we
+drop redundant dependency checks on PM flags.
+
+Additionally, the patch implicitly allow the MT7921[E, S, U] to have a
+consistent configuration of the hardware beacon filter.
+
+Tested-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 7 ++++---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c  | 9 +++++----
- 2 files changed, 9 insertions(+), 7 deletions(-)
+v2:
+1. refine git message to match with code change
+2. rebase and apply to the latest mt76 tree
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 2764c22179fb..6bdbc59beada 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -753,9 +753,10 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_dev *dev,
- 
- 	elem->phy_cap_info[7] &= ~IEEE80211_HE_PHY_CAP7_MAX_NC_MASK;
- 
--	c = IEEE80211_HE_PHY_CAP2_NDP_4x_LTF_AND_3_2US |
--	    IEEE80211_HE_PHY_CAP2_UL_MU_FULL_MU_MIMO |
--	    IEEE80211_HE_PHY_CAP2_UL_MU_PARTIAL_MU_MIMO;
-+	c = IEEE80211_HE_PHY_CAP2_NDP_4x_LTF_AND_3_2US;
-+	if (!is_mt7915(&dev->mt76))
-+		c |= IEEE80211_HE_PHY_CAP2_UL_MU_FULL_MU_MIMO |
-+		     IEEE80211_HE_PHY_CAP2_UL_MU_PARTIAL_MU_MIMO;
- 	elem->phy_cap_info[2] |= c;
- 
- 	c = IEEE80211_HE_PHY_CAP4_SU_BEAMFORMEE |
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 207fd0b83417..6b0b9a86b9d7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -826,8 +826,8 @@ mt7915_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
- }
- 
- static void
--mt7915_mcu_sta_muru_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
--			struct ieee80211_vif *vif)
-+mt7915_mcu_sta_muru_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
-+			struct ieee80211_sta *sta, struct ieee80211_vif *vif)
- {
- 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
- 	struct ieee80211_he_cap_elem *elem = &sta->deflink.he_cap.he_cap_elem;
-@@ -845,7 +845,8 @@ mt7915_mcu_sta_muru_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
- 	muru->cfg.mimo_dl_en = mvif->cap.he_mu_ebfer ||
- 			       mvif->cap.vht_mu_ebfer ||
- 			       mvif->cap.vht_mu_ebfee;
--	muru->cfg.mimo_ul_en = true;
-+	if (!is_mt7915(&dev->mt76))
-+		muru->cfg.mimo_ul_en = true;
- 	muru->cfg.ofdma_dl_en = true;
- 
- 	if (sta->deflink.vht_cap.vht_supported)
-@@ -1647,7 +1648,7 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
- 		/* starec he */
- 		mt7915_mcu_sta_he_tlv(skb, sta, vif);
- 		/* starec muru */
--		mt7915_mcu_sta_muru_tlv(skb, sta, vif);
-+		mt7915_mcu_sta_muru_tlv(dev, skb, sta, vif);
- 		/* starec bfee */
- 		mt7915_mcu_sta_bfee_tlv(dev, skb, vif, sta);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index a9e0e00b764c..4070bedc8eae 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -668,8 +668,7 @@ static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
+ 	if (changed & BSS_CHANGED_ASSOC) {
+ 		mt7921_mcu_sta_update(dev, NULL, vif, true,
+ 				      MT76_STA_INFO_STATE_ASSOC);
+-		if (dev->pm.enable)
+-			mt7921_mcu_set_beacon_filter(dev, vif, vif->cfg.assoc);
++		mt7921_mcu_set_beacon_filter(dev, vif, vif->cfg.assoc);
  	}
+ 
+ 	if (changed & BSS_CHANGED_ARP_FILTER) {
 -- 
-2.36.1
+2.25.1
 
