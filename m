@@ -2,52 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30A0D55337A
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jun 2022 15:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B65D95533AE
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jun 2022 15:37:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351687AbiFUNT6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Jun 2022 09:19:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43940 "EHLO
+        id S229498AbiFUNeg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Jun 2022 09:34:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351571AbiFUNTg (ORCPT
+        with ESMTP id S1351861AbiFUNdC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Jun 2022 09:19:36 -0400
-Received: from mail-4323.proton.ch (mail-4323.proton.ch [185.70.43.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D77BA275DC
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Jun 2022 06:18:49 -0700 (PDT)
-Date:   Tue, 21 Jun 2022 13:18:33 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dannyvanheumen.nl;
-        s=protonmail2; t=1655817527; x=1656076727;
-        bh=+/i0606VmOQY03C5NCSYudMHML0SszctPgEJ4XpmawQ=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
-         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
-         Feedback-ID:Message-ID;
-        b=dmqSQa2UBpGV88Yg7/RwZr7vV2nFb0JM5kFAiA2EIi9+QeHF23DFewgL4fEM+I0cM
-         6sarq04Su/WcR61Sc06Z4W1JBm6lbikjKr+YDPQ4xWpCAwCbseckpnEQsk497yMiFI
-         2tAi8Cu6rx2PQm1h0R20P++W3dCKCxP6q2SAdR1+5ZtZ26TMQ2/uFtkuI+4CR1wZTk
-         rn4jNBI0B+/iRMHXQqZnYYQU+Hgi5EC/bJ1qc+/MzeU/oHMZeYDtXNdHtqADD9KThz
-         vGQnldVGpj+MhxAkVrlb4SL+uO9YCVbvTt8Zmwy3Q3SBozIO7zusyK37Hji4FVuOtD
-         Kb2g//cAtihPg==
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-From:   Danny van Heumen <danny@dannyvanheumen.nl>
-Cc:     Franky Lin <franky.lin@broadcom.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Reply-To: Danny van Heumen <danny@dannyvanheumen.nl>
-Subject: Re: [PATCH] work-in-progress: double-free after hardware reset due to firmware-crash
-Message-ID: <VJRRELjxfxQK1fFLbnYr2IZVHdPU-0YotbBIG2-ycUA2OCppqr4TrzsbXHC_wpS0ZA7HNLJxZNA6-Bzy0BOAuV16DR6wqT9TPDLjQwYcp7w=@dannyvanheumen.nl>
-In-Reply-To: <45d90d65-cd0e-e65f-edcf-d55802a4a6bd@broadcom.com>
-References: =?us-ascii?Q?<UXibAXk2GByhvw88A6LIDXHSlkP79-ML7FrtyfnHuiC34qUd-zx03BAJAtzluyEvfwPBR0tac4hC72zKI1qT3CtgmvvVohr1v8a49TqYVSw=3D@dannyvanheumen.nl>_<B08447EB-F222-49B5-A411-0DB6848A80ED@broadcom.com>_<EbyrCYK=5FmR6ppJYbSc5JfGGG=5FQZEZb2Zp8Htx9f-orZ=5FwX0Dpz1pXhDjQ9P1nGuyTH041zvsScaRIPllClzLpLgwVuff4ZTTAiVOXe5-Mwg=3D@dannyvanheumen.nl>_<1a116224-66ff-17b1-bb8b-9c0918dd47e4@broadcom.com>_<kB9OdQYlBnucF05VoKxTvsT8eUrPGJc=5Fwe9irAdR-2gmXsEl4NvkhMzDcTahLm3HLA2zKVXnhEOstESbIEcHGKYHvMOyIcr4vh80f0eJCJ0=3D@dannyvanheumen.nl>_<MV9-h4Mgj6FKxRJY93AQMhYFsz2yz0CoDQ70V8JWe742HUdLdl6Q1LbFTxGa-NCzodUmI3dbSoRGXebbE5rWPKKehHdixSTjW4TKZt10AJk=3D@dannyvanheumen.nl>_<1815e2011e8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>_<PDYrcmiOE8drECietqr7SILEQI8DpX6gL8pbVCR6IbqNrKjyXTLYPhgsWfHL-s9FuElU5v84HUUWaFntR5RZJG5EBABE2XilCP=5F2O9ZipMk=3D@dannyvanheumen.nl>_<Ct5-sN=5FCGLyGf5qHNiakimNNG33Yb=5F7toxutmv8ELxgBqGZQXM6DkaIJg2cctTqSFyawKx8XeU3ySO2Ce6idBXv-ZWrT6Wy5=5Fa9nFr4svy4=3D@dannyvanheumen.nl>_<45d90d65-c?=
- =?us-ascii?Q?d0e-e65f-edcf-d55802a4a6bd@broadcom.com>?=
-Feedback-ID: 15073070:user:proton
+        Tue, 21 Jun 2022 09:33:02 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E4425C4C
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Jun 2022 06:29:28 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 25LDTEXD0005656, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (smtpsrv.realtek.com[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 25LDTEXD0005656
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 21 Jun 2022 21:29:14 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Tue, 21 Jun 2022 21:29:14 +0800
+Received: from localhost (172.16.16.223) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Tue, 21 Jun
+ 2022 21:29:11 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
+CC:     <gary.chang@realtek.com>, <phhuang@realtek.com>,
+        <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2 0/4] rtw88: use const pointer of chip_info and fix hw_scan misbehavior
+Date:   Tue, 21 Jun 2022 21:28:26 +0800
+Message-ID: <20220621132830.8913-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.16.16.223]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 06/21/2022 13:06:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzYvMjEgpFekyCAxMDozOTowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,32 +67,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Arend,
+Patch 1~3 is to fix hw_scan misbehavior, and the final patch is fix smatch
+warning.
 
-------- Original Message -------
-On Tuesday, June 21st, 2022 at 09:41, Arend van Spriel <arend.vanspriel@bro=
-adcom.com> wrote:
+v2: shink patchset from 5 to 4 patches, because the first patch is based on
+    another patch that get merged into wireless.git. So, the patch is
+    postponed.
 
-> [..]
->
-> Maybe overlooked, but I have not seen a patch from you on the
-> linux-wireless list. Do you have reference, ie. URL or Message-ID?
+Chih-Kang Chang (2):
+  rtw88: fix stopping queues in wrong timing when HW scan
+  rtw88: fix store OP channel info timing when HW scan
 
-I'm not sure what's most convenient here, but here's an archive link:
-https://marc.info/?l=3Dlinux-wireless&m=3D165547582612979
+Po-Hao Huang (1):
+  rtw88: 8822c: extend supported probe request size
 
-Message-ID: ThT2jwvySn9tFQm9FxrlPNMQkiGUnx_87cOhmmeexoVOFZqOkpjmAntCWG-
-kIBMj2830LHZaOULlJxQKiRXkVtGYrrT8rBaB7R65qjIinYo=3D () dannyvanheumen ! nl
+Zong-Zhe Yang (1):
+  rtw88: phy: fix warning of possible buffer overflow
 
-You haven't commented yet on my question regarding definition macro for the=
- clm_blob.
-I intend to send a patch for it, because I believe _at the very least_ some=
- parts of distribution
-processes rely on these firmware entries. It would be good if you can confi=
-rm.
+ drivers/net/wireless/realtek/rtw88/fw.c       | 36 +++++++++++++++----
+ drivers/net/wireless/realtek/rtw88/fw.h       | 19 +++++++++-
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  5 ++-
+ drivers/net/wireless/realtek/rtw88/main.c     | 21 ++++++++++-
+ drivers/net/wireless/realtek/rtw88/main.h     |  4 ++-
+ drivers/net/wireless/realtek/rtw88/phy.c      | 21 +++++------
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c |  3 +-
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |  3 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |  3 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  3 +-
+ 10 files changed, 90 insertions(+), 28 deletions(-)
 
-> Regards,
-> Arend
+-- 
+2.25.1
 
-Regards,
-Danny
