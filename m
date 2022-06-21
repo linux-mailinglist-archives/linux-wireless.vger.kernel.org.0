@@ -2,62 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7A45553E28
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jun 2022 23:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89AAB553EBA
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jun 2022 00:51:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354652AbiFUVtQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Jun 2022 17:49:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35334 "EHLO
+        id S1354838AbiFUWvo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Jun 2022 18:51:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356205AbiFUVs3 (ORCPT
+        with ESMTP id S230021AbiFUWvn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Jun 2022 17:48:29 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C56F6309
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Jun 2022 14:48:22 -0700 (PDT)
-X-UUID: 2340e0f9b03a4020ba8bd2909e513d96-20220622
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.6,REQID:aef8a914-d179-4ba4-a65e-b06995e0ea6b,OB:0,LO
-        B:0,IP:0,URL:5,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
-        ON:release,TS:5
-X-CID-META: VersionHash:b14ad71,CLOUDID:124c24ea-f7af-4e69-92ee-0fd74a0c286c,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
-        ,QS:nil,BEC:nil,COL:0
-X-UUID: 2340e0f9b03a4020ba8bd2909e513d96-20220622
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 756675335; Wed, 22 Jun 2022 05:48:18 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Wed, 22 Jun 2022 05:48:17 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 22 Jun 2022 05:48:09 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
-        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <kuabhs@google.com>,
-        <druth@google.com>, <abhishekpandit@google.com>,
-        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] mt76: mt7921: fix -Werror=incompatible-pointer-types build error
-Date:   Wed, 22 Jun 2022 05:48:09 +0800
-Message-ID: <9586667f647ce4ea5dc140fe73ebb2a8c5772674.1655847900.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
+        Tue, 21 Jun 2022 18:51:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796BD31374
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Jun 2022 15:51:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 157B46160E
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Jun 2022 22:51:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B0DC3411C;
+        Tue, 21 Jun 2022 22:51:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655851902;
+        bh=4W9ii2RKDpZIoHbjqx+xSSzcOKdm2U1i15grOer6jp8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=VXa9Racxx7jz/uEKwYOkISzfote06Z7x8t+Mk9DJuPx3Vud/567zPImzFkXyMbYFd
+         w1WW1x7xxaU7Q0prY/uyoXNCflnsTL8bncZO6FK4UVDEJXJltDr4TmkpuquEz0UcWp
+         3aWgHu0iionmoedmiUc/k88N75SAcjU1g6B+UiAx4NiXtDk/UG9Jb570hAPmlYmKTd
+         s4qV1XsSRhORFXl5vYPrhm/2JT9mSuYAscMoWOuWjKM/RkXjr9OSo5svRaPFBFhoa9
+         4GrxmqJviWYnstiVlgDh11Sggn021BzwKuOVKhA7RfREbXdSMCc3ACeMZt3ghjbexA
+         hxjxlFAn4xCBQ==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] mt76: mt7915: do not copy ieee80211_ops pointer in mt7915_mmio_probe
+Date:   Wed, 22 Jun 2022 00:51:24 +0200
+Message-Id: <1801887f3b435958c2b09d5c5d18c9bede94f333.1655851816.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,44 +51,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+We do not modify ieee80211_ops pointers so we do not need to copy them.
 
-start/stop ap funciton definition is changed since
-'ae7ba17b49b6 ("wifi: mac80211: pass the link id in start/stop ap")' was
-added, so we adapt into it to fix -Werror=incompatible-pointer-types build
-error.
-
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index a9e0e00b764c..4be488da0117 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1505,8 +1505,8 @@ mt7921_channel_switch_beacon(struct ieee80211_hw *hw,
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+index c2646d24b574..930fae7a0bd5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+@@ -661,16 +661,11 @@ struct mt7915_dev *mt7915_mmio_probe(struct device *pdev,
+ 		.sta_remove = mt7915_mac_sta_remove,
+ 		.update_survey = mt7915_update_channel,
+ 	};
+-	struct ieee80211_ops *ops;
+ 	struct mt7915_dev *dev;
+ 	struct mt76_dev *mdev;
+ 	int ret;
  
- static int
--mt7921_start_ap(struct ieee80211_hw *hw,
--		struct ieee80211_vif *vif)
-+mt7921_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+		unsigned int link_id)
- {
- 	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
- 	struct mt7921_phy *phy = mt7921_hw_phy(hw);
-@@ -1527,8 +1527,8 @@ mt7921_start_ap(struct ieee80211_hw *hw,
- }
+-	ops = devm_kmemdup(pdev, &mt7915_ops, sizeof(mt7915_ops), GFP_KERNEL);
+-	if (!ops)
+-		return ERR_PTR(-ENOMEM);
+-
+-	mdev = mt76_alloc_device(pdev, sizeof(*dev), ops, &drv_ops);
++	mdev = mt76_alloc_device(pdev, sizeof(*dev), &mt7915_ops, &drv_ops);
+ 	if (!mdev)
+ 		return ERR_PTR(-ENOMEM);
  
- static void
--mt7921_stop_ap(struct ieee80211_hw *hw,
--	       struct ieee80211_vif *vif)
-+mt7921_stop_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+	       unsigned int link_id)
- {
- 	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
- 	struct mt7921_phy *phy = mt7921_hw_phy(hw);
 -- 
-2.25.1
+2.36.1
 
