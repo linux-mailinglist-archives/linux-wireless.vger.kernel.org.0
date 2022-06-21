@@ -2,128 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F57A5533BB
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jun 2022 15:37:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62788553407
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jun 2022 15:53:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350446AbiFUNei (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Jun 2022 09:34:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55612 "EHLO
+        id S1349841AbiFUNxs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Jun 2022 09:53:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351878AbiFUNdH (ORCPT
+        with ESMTP id S229480AbiFUNxr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Jun 2022 09:33:07 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B85D25E9B
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Jun 2022 06:29:32 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 25LDTJHH0005916, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 25LDTJHH0005916
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 21 Jun 2022 21:29:19 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Tue, 21 Jun 2022 21:29:19 +0800
-Received: from localhost (172.16.16.223) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Tue, 21 Jun
- 2022 21:29:18 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
-CC:     <gary.chang@realtek.com>, <phhuang@realtek.com>,
-        <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 4/4] rtw88: phy: fix warning of possible buffer overflow
-Date:   Tue, 21 Jun 2022 21:28:30 +0800
-Message-ID: <20220621132830.8913-5-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220621132830.8913-1-pkshih@realtek.com>
-References: <20220621132830.8913-1-pkshih@realtek.com>
+        Tue, 21 Jun 2022 09:53:47 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEA8112776;
+        Tue, 21 Jun 2022 06:53:44 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id fu3so27668993ejc.7;
+        Tue, 21 Jun 2022 06:53:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=roHXTUL4tKXVN//IvEXVUmOPrGKI2A3Q1fTOEiNxRiE=;
+        b=P5XX+bTiGw5qp8eSMfarTWvbuYZdIdE/DXb5iSZ8X4x/m9/szH6t40nyGlna8U8T7E
+         e9zqDZ2c7I5374q+h+4xdhLKoMxCMXy3CAWe5PUGt+/SxouSYiYMbhXYZaCNnxA5CkCY
+         wi99hSVxmqCBzZLtZw2muvN23Rdb1KEyGYIJIvFZH7iVLeIhtRqfGWXyMoDw5YUHH5oD
+         reUW+m5SeNYHj1VmO1rijqrQE5gJ5MsjHrO4BSn/hsJsuqzPkXFLkIx1iAHJVbD2a3GB
+         GbnykMSfI7VYnn1KOuERBdm+67sGyC/kkCevOwELffMJ8DnRu1lw4miR8viQYylwXpR9
+         Vb3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=roHXTUL4tKXVN//IvEXVUmOPrGKI2A3Q1fTOEiNxRiE=;
+        b=xWDStEErAEr85ZTnrCOrejctAQYVpp497pS4S5+B/88t4c3an1h6v/fjkhHwyBJj8N
+         l8A7iCW0AYGI1Qy7c8NgCPp4Sh4lihoeHz9qeWQbFoDsytwLHlMI51/6TS9DhHJLKCNf
+         E6ZOL0FkPcC/3UCAYUCMYr4r4X5WS9wAnEfLfwWvaQQjx2/ZiBfsHwFqFMx/nt5TLV2S
+         e+wrDCfXMAfo+UtyB+mG7h0nCowBumPNIRmPNTqa9HiDJeNAo1JOBH+7F8TGs3JXaAW5
+         m8OfWqFSlJuRZkbebZ5P1Bs53IsRgEdur9l8zhihBCiRNxdPVNRYinW4UvrGzQRI7KLF
+         R9aw==
+X-Gm-Message-State: AJIora9GQHmLYcp6zR0VSUX58nEXPVQsg7+irzGd8yO/Tyh13+0azhnt
+        9KWHsXL5IqEK80i9P2cL60XWfeKLOiYvOQ==
+X-Google-Smtp-Source: AGRyM1sczfnqeoBRL2JVbKBxe9KgCynS8OEYJM73QMnSa2Iy5BIRI4fRPUdc2rdfo7pOMxyFAXFyuw==
+X-Received: by 2002:a17:906:c7c8:b0:70c:a62c:d0e8 with SMTP id dc8-20020a170906c7c800b0070ca62cd0e8mr25422461ejb.545.1655819623364;
+        Tue, 21 Jun 2022 06:53:43 -0700 (PDT)
+Received: from fedora.robimarko.hr (dh207-99-158.xnet.hr. [88.207.99.158])
+        by smtp.googlemail.com with ESMTPSA id fy11-20020a1709069f0b00b007104b37aab7sm7325408ejc.106.2022.06.21.06.53.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jun 2022 06:53:42 -0700 (PDT)
+From:   Robert Marko <robimarko@gmail.com>
+To:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Robert Marko <robimarko@gmail.com>
+Subject: [PATCH 1/2] dt-bindings: net: wireless: ath11k: add new DT entry for board ID
+Date:   Tue, 21 Jun 2022 15:53:38 +0200
+Message-Id: <20220621135339.1269409-1-robimarko@gmail.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.16.223]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/21/2022 13:06:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIyLzYvMjEgpFekyCAxMDozOTowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+bus + qmi-chip-id + qmi-board-id and optionally the variant are currently
+used for identifying the correct board data file.
 
-reported by smatch
+This however is sometimes not enough as all of the IPQ8074 boards that I
+have access to dont have the qmi-board-id properly fused and simply return
+the default value of 0xFF.
 
-phy.c:854 rtw_phy_linear_2_db() error: buffer overflow 'db_invert_table[i]'
-8 <= 8 (assuming for loop doesn't break)
+So, to provide the correct qmi-board-id add a new DT property that allows
+the qmi-board-id to be overridden from DTS in cases where its not set.
+This is what vendors have been doing in the stock firmwares that were
+shipped on boards I have.
 
-However, it seems to be a false alarm because we prevent it originally via
-       if (linear >= db_invert_table[11][7])
-               return 96; /* maximum 96 dB */
-
-Still, we adjust the code to be more readable and avoid smatch warning.
-
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Robert Marko <robimarko@gmail.com>
 ---
- drivers/net/wireless/realtek/rtw88/phy.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ .../devicetree/bindings/net/wireless/qcom,ath11k.yaml     | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
-index 8982e0c98dac9..da1efec0aa85c 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.c
-+++ b/drivers/net/wireless/realtek/rtw88/phy.c
-@@ -816,23 +816,18 @@ static u8 rtw_phy_linear_2_db(u64 linear)
- 	u8 j;
- 	u32 dB;
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+index a677b056f112..fe6aafdab9d4 100644
+--- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+@@ -41,6 +41,14 @@ properties:
+         * reg
+         * reg-names
  
--	if (linear >= db_invert_table[11][7])
--		return 96; /* maximum 96 dB */
--
- 	for (i = 0; i < 12; i++) {
--		if (i <= 2 && (linear << FRAC_BITS) <= db_invert_table[i][7])
--			break;
--		else if (i > 2 && linear <= db_invert_table[i][7])
--			break;
-+		for (j = 0; j < 8; j++) {
-+			if (i <= 2 && (linear << FRAC_BITS) <= db_invert_table[i][j])
-+				goto cnt;
-+			else if (i > 2 && linear <= db_invert_table[i][j])
-+				goto cnt;
-+		}
- 	}
- 
--	for (j = 0; j < 8; j++) {
--		if (i <= 2 && (linear << FRAC_BITS) <= db_invert_table[i][j])
--			break;
--		else if (i > 2 && linear <= db_invert_table[i][j])
--			break;
--	}
-+	return 96; /* maximum 96 dB */
- 
-+cnt:
- 	if (j == 0 && i == 0)
- 		goto end;
- 
++  qcom,ath11k-board-id:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Board ID to override the one returned by the firmware or the default
++      0xff if it was not set by the vendor at all.
++      It is used along the ath11k-calibration-variant to mach the correct
++      calibration data from board-2.bin.
++
+   qcom,ath11k-calibration-variant:
+     $ref: /schemas/types.yaml#/definitions/string
+     description:
 -- 
-2.25.1
+2.36.1
 
