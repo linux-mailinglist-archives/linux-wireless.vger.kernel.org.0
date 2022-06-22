@@ -2,62 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05A505543F6
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jun 2022 10:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F8FA55469C
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jun 2022 14:11:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353994AbiFVH43 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Jun 2022 03:56:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57940 "EHLO
+        id S240735AbiFVILx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Jun 2022 04:11:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353757AbiFVH41 (ORCPT
+        with ESMTP id S234563AbiFVILu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Jun 2022 03:56:27 -0400
-Received: from mail.olerise.pl (mail.olerise.pl [46.183.184.59])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A265536E25
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Jun 2022 00:56:26 -0700 (PDT)
-Received: by mail.olerise.pl (Postfix, from userid 1001)
-        id 15FAB25043; Wed, 22 Jun 2022 09:51:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=olerise.pl; s=mail;
-        t=1655884436; bh=FDuFY3XQoq0gMX1b2gxgT7Py2p4Sxl0PJZYZ4NVaPho=;
-        h=Date:From:To:Subject:From;
-        b=L4kinlezkeb9gj8hcp6vfthc+nOIghgumb3oAt2hsBqA1WQPKov9RyRrGuFWwzuMe
-         GCL5P0rIMaKvfHk0hvPtORrnrZO4Easb77NlLTXpQ9jrdq6ifdRuGO56BisDNWFxOe
-         6CaOXL1RqzzqUJ8TmC3Kx7aL99ilzbJMK/EBTNFM76Tclxw27KBzkWv/XSCHje6KYZ
-         k5RcCwop8memTNpK4yYGP6N4US/RAZVAeBO3pzAqQYAW5GsIss887z/ZYxik0JVRh0
-         1Da9dsp0D/iRe5xTqdiioDa3qarI6xpZKre1osA8Q9yZ5dpiJ7jPm8y+so373vPqjV
-         TGUcJVvIbMwrA==
-Received: by mail.olerise.pl for <linux-wireless@vger.kernel.org>; Wed, 22 Jun 2022 07:50:21 GMT
-Message-ID: <20220622084500-0.1.j.bbfq.0.4219qgip0i@olerise.pl>
-Date:   Wed, 22 Jun 2022 07:50:21 GMT
-From:   =?UTF-8?Q? "Przemys=C5=82aw_Wr=C3=B3blewski" ?= 
-        <przemyslaw.wroblewski@olerise.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.olerise.pl
-MIME-Version: 1.0
+        Wed, 22 Jun 2022 04:11:50 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 969AA37BC7
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Jun 2022 01:11:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=ZVbU85c3COMeHYKTxDdta1DL9CoFu+4xk5oUOZLYSW8=;
+        t=1655885506; x=1657095106; b=k7DopqCusYlZHyGJyVyfkddL1NZcIp3/lFK8kgNLSQOmJ9v
+        jjZ3tyaTkjU8/zHSfr+lgYgUqAbPMmoKnCMAnx/y+Y3bd5weVe+JJMLdUWb9QGQ7S7IYZ12F2d/Am
+        pYOOkXsnUXm0uclOeq58ttVqS0YhKQHFs4eGQj9LMGy3tjUFpCIPxccj0E1Z0sKIgScJTzB/HSRek
+        gWpOfnSVQIIFjcf4tS8JhqgtYkJGGgSSZiFXYgVIOWEWswJ1O0zsY9PthFoQvqRUAO0ZswgVwbiug
+        ohIP6tq8e6wrxYYXVndTTsQwa34rTqLwXv0+VBJI2x/s3sG+BK3CJxT9Gd4fTWPQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1o3vSh-00CoHZ-UG;
+        Wed, 22 Jun 2022 10:11:44 +0200
+Message-ID: <0ee06d5296b836312346e23e7876ede8655835a0.camel@sipsolutions.net>
+Subject: Re: [bug report] wifi: nl80211: support MLO in auth/assoc
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Wed, 22 Jun 2022 10:11:42 +0200
+In-Reply-To: <YrK+sjPSFRxX4XAM@kili>
+References: <YrK+sjPSFRxX4XAM@kili>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.2 (3.44.2-1.fc36) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Wed, 2022-06-22 at 10:03 +0300, Dan Carpenter wrote:
+> The patch d648c23024bd: "wifi: nl80211: support MLO in auth/assoc"
+> from May 31, 2022, leads to the following Smatch complaint:
+>=20
+>     net/wireless/mlme.c:328 cfg80211_mlme_assoc()
+>     warn: variable dereferenced before check 'req->bss' (see line 324)
+>=20
+> net/wireless/mlme.c
+>    323=09
+>    324		err =3D rdev_assoc(rdev, dev, req);
+>                                             ^^^
+> req->bss dereferenced inside the function call
+>=20
+>    325		if (!err) {
+>    326			int link_id;
+>    327=09
+>    328			if (req->bss) {
+>                             ^^^^^^^^
+> Check for NULL is too late
+>=20
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+I was writing why all of this is correct but now I realized that
+literally in rdev_assoc() we dereference it ... that's obviously
+garbage, I need to adjust the tracing for all of this.
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+But anyway I should move that into the tracing.
 
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
+For now this is fine because you can't get here with req->bss =3D=3D NULL
+(which would imply req->link[i] !=3D NULL for some value(s) of i) because
+no driver advertises MLO support.
 
+Thanks for the report!
 
-Pozdrawiam,
-Przemys=C5=82aw Wr=C3=B3blewski
+johannes
